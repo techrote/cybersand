@@ -1,0 +1,24 @@
+{
+  "dependency": "Godot Rapier Physics 2D",
+  "selection_status": "vendored-and-selected",
+  "source_repository": "https://github.com/appsinacup/godot-rapier-physics",
+  "documentation": "https://godot.rapier.rs/",
+  "license": "MIT",
+  "godot_version": "4.7.x",
+  "rapier_tag": "v0.35.2",
+  "build": "official 2D single build: parallel SIMD and cross-platform deterministic",
+  "expected_gdextension": "res://addons/godot-rapier2d/godot-rapier2d.gdextension",
+  "expected_addon_directory": "res://addons/godot-rapier2d",
+  "physics_engine_name": "Rapier2D",
+  "release_asset_name": "godot-rapier-2d-single.zip",
+  "release_asset_size_bytes": 48701845,
+  "release_published_at": "2026-08-10T08:03:25Z",
+  "release_asset_sha256": "73b46bfe2cfc40e3875f4f367478bbd2b1090f563eeef57f4fed3fc274aae1f0",
+  "activation_status": "selected; Godot 4.7 Linux x86_64 runtime preflight passed 2026-08-27",
+  "notes": [
+    "The official v0.35.2 2D single release asset was downloaded, hashed, and vendored.",
+    "Install only the 2D addon; do not install Rapier3D or bundle Rapier twice.",
+    "Retain the upstream MIT license and third-party notice with the vendored addon.",
+    "The add-on declares compatibility_minimum=4.7; run the backend preflight with Godot 4.7.x."
+  ]
+}

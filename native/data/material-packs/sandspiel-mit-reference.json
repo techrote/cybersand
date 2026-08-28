@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "pack_id": "sandspiel-mit-reference",
+  "status": "current adapted native rule pack; all valid catalog IDs have executable bounded kernels",
+  "source": {
+    "project": "Sandspiel",
+    "repository": "https://github.com/MaxBittker/sandspiel",
+    "commit": "dc77827b36adc5c04ea063515de4173ce28dbf2c",
+    "source_files": [
+      "crate/src/lib.rs",
+      "crate/src/species.rs",
+      "crate/src/utils.rs",
+      "js/glsl/sand.glsl"
+    ],
+    "license": "MIT",
+    "copyright": "Copyright (c) 2018 Max Bittker"
+  },
+  "integration_policy": {
+    "authoritative_runtime": "Current in native World and the bundled Linux/Windows x86_64 Godot GDExtension. The GDScript world remains an unsupported-platform compatibility fallback.",
+    "purpose": "Record Sandspiel provenance and the complete interaction inventory behind Cyber Sand's compact descriptors and bounded native rule kernels.",
+    "water_exception": "Sandspiel's exact lateral polarity/opinion mutation is not native authority. Native Cyber Sand uses conserved 8-bit pairwise mass transfer and stable render-only dithering; the unsupported-platform GDScript fallback retains directed discrete flow, normalized viscosity, bounded multi-cell dispersion, and stopped-edge pressure look-ahead.",
+    "viscosity": "Current descriptors expose a normalized gameplay viscosity index: 0 is maximally mobile and 255 is slowest. Water is 0; provisional Acid, Oil, and Lava values are 64, 160, and 224. Native fixed-mass flow scales local pairwise transfer without expanding scheduler write radius; the serial Godot reference maps Water to a 24-cell dispersion ceiling.",
+    "density_exchange": "Current directional descriptors let falling materials displace lighter accepting targets and rising gases displace heavier accepting targets. Target permission preserves resistant gels, foams, walls, and future trapped-gas behavior.",
+    "wind_exception": "GPU wind/pressure feedback is recorded but remains deferred and non-authoritative until a field contract is approved.",
+    "randomness": "Browser and mutable global randomness are replaced by deterministic coordinate/tick/rule streams.",
+    "writes": "Every executable rule declares a radius of at most two cells and current implementations write inside phase-exclusive scheduler domains. Replacing the private World-bound dispatcher with a type-enforced bounded RuleContext remains planned."
+  },
+  "materials": [
+    {
+      "id": 0,
+      "name": "Empty",
+      "physical_role": "empty",
+      "reference_state": [],
+      "movement": ["none"],
+      "interactions": ["Acts as the destination for movement, growth, fire drift, cloning, and rocket travel."]
+    },
+    {
+      "id": 1,
+      "name": "Wall",
+      "physical_role": "immovable solid",
+      "reference_state": [],
+      "movement": ["none"],
+      "interactions": ["Blocks movement.", "Resists Acid.", "Cannot be captured by Cloner or Rocket."]
+    },
+    {
+      "id": 2,
+      "name": "Sand",
+      "physical_role": "powder",
+      "reference_state": ["ra: visual grain"],
+      "movement": ["fall down", "fall down-diagonal using a randomized side"],
+      "interactions": ["Displaces Water, Gas, Oil, or Acid directly below.", "May be used as Rocket payload.", "Supports and germinates Seed."]
+    },
+    {
+      "id": 3,
+      "name": "Water",
+      "physical_role": "liquid",
+      "viscosity_index": 0,
+      "reference_state": ["ra: lateral polarity and visual grain", "rb: lateral uncertainty/cooldown"],
+      "movement": ["fall through Empty or Oil", "fall diagonally through Empty or Oil", "spread laterally by stored polarity"],
+      "interactions": ["Extinguishes Fire, burning Wood, burning Plant, burning Fungus, and burning Oil.", "Lava plus Water produces Stone and consumes the sampled Water cell.", "Ice may convert adjacent Water to Ice.", "Plant and Fungus growth sample Water.", "Kills Mite."],
+      "cybersand_override": "Native movement uses conserved fixed-point mass/flux. The separate Godot reference maps zero viscosity to a 24-cell bounded dispersion ceiling and uses stopped-edge look-ahead while retaining finite cellular yield and higher viscosity for future paste/slush modes. Preserve material interactions only where conservation rules define their mass effects."
+    },
+    {
+      "id": 4,
+      "name": "Gas",
+      "cybersand_name": "Smoke",
+      "physical_role": "diffusive gas",
+      "reference_state": ["rb: local molecule count"],
+      "movement": ["select a random neighbor", "move a small packet into Empty", "split larger packets", "merge with a small Gas packet"],
+      "interactions": ["Fire converts sampled Gas to Fire.", "Lava converts sampled Gas to Fire.", "Sand, Stone, Seed, and dormant Rocket can displace Gas downward."],
+      "cybersand_override": "Current Smoke is a full discrete cell with upward density motion. It exchanges through heavier targets only when the target descriptor accepts density exchange; Water and Sand accept, Wall does not."
+    },
+    {
+      "id": 5,
+      "name": "Cloner",
+      "physical_role": "immovable device",
+      "reference_state": ["rb: captured material identifier", "ra: visual state"],
+      "movement": ["none"],
+      "interactions": ["Captures a neighboring material that is not Empty, Cloner, or Wall.", "After capture, occasionally creates the captured material in an adjacent Empty cell."]
+    },
+    {
+      "id": 6,
+      "name": "Fire",
+      "physical_role": "short-lived hot gas",
+      "reference_state": ["ra: remaining lifetime/heat"],
+      "movement": ["drift to a random Empty neighbor", "expire as lifetime decreases"],
+      "interactions": ["Converts sampled Gas or Dust into Fire.", "Is removed when its sampled neighbor is Water.", "Ignites Oil, Wood, Plant, Fungus, and Seed through their own rules.", "Emits heat/density/pressure into the reference wind field."],
+      "deferred_field_effects": ["wind/pressure impulse"]
+    },
+    {
+      "id": 7,
+      "name": "Wood",
+      "physical_role": "combustible solid",
+      "reference_state": ["rb: burn countdown", "ra: visual grain"],
+      "movement": ["none"],
+      "interactions": ["Fire or Lava starts a burn countdown.", "Burning Wood periodically emits Fire into Empty neighbors.", "Water cancels burning and emits a dense field impulse.", "Wood becomes Empty when the countdown finishes.", "Plant and Fungus may grow on or from Wood.", "Mite may consume/move into Wood."]
+    },
+    {
+      "id": 8,
+      "name": "Lava",
+      "physical_role": "dense hot liquid",
+      "viscosity_index": 224,
+      "reference_state": ["ra: visual grain"],
+      "movement": ["fall down", "fall diagonally", "flow laterally"],
+      "interactions": ["Converts sampled Gas or Dust into Fire.", "Lava touching sampled Water becomes Stone and removes that Water.", "Ignites Oil, Wood, Plant, Fungus, and Seed through their own rules.", "Kills Mite.", "Melts Ice to Water.", "Emits a hot field impulse."],
+      "deferred_field_effects": ["wind/heat impulse"]
+    },
+    {
+      "id": 9,
+      "name": "Ice",
+      "physical_role": "phase-change solid",
+      "reference_state": ["ra: visual grain"],
+      "movement": ["none"],
+      "interactions": ["Fire or Lava melts Ice into Water.", "A high reference-field pressure melts Ice into Water.", "Ice occasionally converts sampled Water into Ice.", "Mite may slide laterally when standing on Ice."],
+      "deferred_field_effects": ["pressure-triggered melting"]
+    },
+    {
+      "id": 11,
+      "name": "Plant",
+      "physical_role": "growing combustible solid",
+      "reference_state": ["ra: growth energy/color", "rb: burn countdown"],
+      "movement": ["growth writes into local Empty/Water/Fungus cells", "high-energy growth may extend downward when unsupported"],
+      "interactions": ["Fire or Lava starts a burn countdown.", "Plant can spread near Wood.", "Plant can propagate through local Water/Fungus arrangements.", "Burning Plant emits Fire, is extinguished by Water, and eventually becomes Empty.", "Mite may consume/move into Plant.", "Seed growth replaces mature Seed cells with Plant."]
+    },
+    {
+      "id": 12,
+      "name": "Acid",
+      "physical_role": "corrosive liquid",
+      "viscosity_index": 64,
+      "reference_state": ["ra: remaining corrosive strength"],
+      "movement": ["fall down", "flow laterally", "when trapped, attempt corrosion down, sideways, then upward"],
+      "interactions": ["Dissolves materials other than Wall and Acid.", "Each corrosion step reduces Acid strength and weak Acid becomes Empty.", "Sand, Stone, Seed, and dormant Rocket may displace Acid downward."]
+    },
+    {
+      "id": 13,
+      "name": "Stone",
+      "physical_role": "falling/collapsible solid",
+      "reference_state": ["ra: visual grain"],
+      "cybersand_state": ["state_b: zero for brace-aware Stone; one for explosion-created granular Stone"],
+      "movement": ["remain fixed when braced by Stone above-left and above-right", "otherwise fall vertically"],
+      "interactions": ["Displaces Water, Gas, Oil, or Acid while falling.", "High reference-field pressure converts Stone to Sand.", "Produced by Lava touching Water.", "A bounded explosion may convert nearby static Wall into granular Stone."],
+      "deferred_field_effects": ["pressure-triggered collapse"]
+    },
+    {
+      "id": 14,
+      "name": "Dust",
+      "physical_role": "light powder",
+      "reference_state": ["ra: visual hue"],
+      "movement": ["fall down", "fall diagonally", "displace Water downward"],
+      "interactions": ["Fire or Lava converts sampled Dust to Fire.", "High reference-field pressure converts Dust to Fire and emits a blast impulse.", "Mite may consume or replace Dust."],
+      "deferred_field_effects": ["pressure-triggered ignition"]
+    },
+    {
+      "id": 15,
+      "name": "Mite",
+      "physical_role": "cellular agent",
+      "reference_state": ["ra: horizontal heading", "rb: hop phase/height"],
+      "movement": ["fall", "hop upward then descend", "change heading when blocked", "slide on Ice"],
+      "interactions": ["Dies when sampling Fire, Lava, Water, or Oil.", "Can move into/consume Plant, Wood, or Seed.", "Can consume or replace Dust.", "Dies under local Mite overcrowding."]
+    },
+    {
+      "id": 16,
+      "name": "Oil",
+      "physical_role": "light combustible liquid",
+      "viscosity_index": 160,
+      "reference_state": ["rb: burn countdown", "ra: visual grain"],
+      "movement": ["fall down", "fall diagonally", "flow laterally"],
+      "interactions": ["Fire, Lava, or nearby burning Oil starts a burn countdown.", "Burning Oil emits Fire and a field impulse.", "Water cancels burning.", "Oil becomes Empty when the countdown finishes.", "Water falls through/displaces Oil.", "Kills Mite."],
+      "deferred_field_effects": ["burning field impulse"]
+    },
+    {
+      "id": 17,
+      "name": "Rocket",
+      "physical_role": "programmable projectile cell",
+      "reference_state": ["rb: captured payload material identifier", "ra: dormant/launch/direction state"],
+      "movement": ["fall like powder while dormant", "choose an eight-way launch direction", "advance by two cells while depositing payload behind"],
+      "interactions": ["Defaults to Sand payload.", "Captures a nearby material that is not Empty, Rocket, Wall, or Cloner.", "May travel through Empty, Fire, or Rocket.", "Fizzles when blocked.", "Can displace Water, Gas, Oil, or Acid while dormant."]
+    },
+    {
+      "id": 18,
+      "name": "Fungus",
+      "physical_role": "growing combustible solid",
+      "reference_state": ["ra: growth energy/color", "rb: burn countdown"],
+      "movement": ["growth writes into nearby Empty cells", "colonizes eligible Wood arrangements"],
+      "interactions": ["Fire or Lava starts a burn countdown.", "Fungus grows near non-Empty substrate except Fungus, Fire, or Ice.", "Fungus can colonize Wood under a local neighborhood condition.", "Burning Fungus emits Fire, is extinguished by Water, and eventually becomes Empty.", "Plant growth may sample Fungus." ]
+    },
+    {
+      "id": 19,
+      "name": "Seed",
+      "physical_role": "falling growth source",
+      "reference_state": ["ra: growth stage/energy/color", "rb: germination state"],
+      "movement": ["fall down", "fall diagonally", "after germination, grow a stem upward and later branch/petal growth"],
+      "interactions": ["Fire or Lava converts Seed to short-lived Fire.", "Sand, Plant, or Fungus beneath/near the falling Seed triggers germination.", "Dormant Seed displaces Water, Gas, Oil, or Acid downward.", "Mature growth replaces its current cell with Plant.", "Late growth can create a new Seed when sampling Water.", "Mite may consume/move into Seed."]
+    }
+  ]
+}

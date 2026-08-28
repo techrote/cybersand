@@ -1,0 +1,226 @@
+#pragma once
+
+#include "cybersand/material.hpp"
+#include "cybersand/scheduler_geometry.hpp"
+
+#include <array>
+#include <cstddef>
+#include <cstdint>
+#include <memory>
+#include <optional>
+#include <span>
+#include <unordered_map>
+#include <vector>
+
+namespace cybersand {
+
+class RenderSnapshotExchange;
+
+enum class SimulationBackend : std::uint8_t {
+    SerialInPlace = 0,
+    PhasedInPlace = 1,
+    Buffered = 2,
+};
+
+struct WorldConfig {
+    std::int32_t chunk_size = 128;
+    std::uint32_t sleep_after_quiet_ticks = 3;
+    std::int16_t ambient_temperature = 200;
+    std::size_t initial_chunk_reserve = 64;
+    SimulationBackend backend = SimulationBackend::PhasedInPlace;
+    std::int32_t activity_block_size = 32;
+    std::int32_t scheduling_core_size = 64;
+    std::int32_t maximum_rule_radius = 2;
+    std::uint32_t worker_threads = 1;
+    std::size_t parallel_job_threshold = 8;
+    std::size_t active_core_capacity = 4'096;
+    std::size_t active_chunk_capacity = 4'096;
+    std::size_t maximum_chunk_count = 4'096;
+    std::size_t deferred_event_capacity = 1'024;
+    std::int32_t maximum_explosion_radius = 64;
+};
+
+struct ChunkCoord {
+    std::int64_t x = 0;
+    std::int64_t y = 0;
+
+    [[nodiscard]] friend constexpr bool operator==(const ChunkCoord&, const ChunkCoord&) = default;
+    [[nodiscard]] friend constexpr auto operator<=>(const ChunkCoord&, const ChunkCoord&) = default;
+};
+
+struct ChunkCoordHash {
+    [[nodiscard]] std::size_t operator()(const ChunkCoord& coord) const noexcept;
+};
+
+struct RectI64 {
+    std::int64_t x = 0;
+    std::int64_t y = 0;
+    std::int64_t width = 0;
+    std::int64_t height = 0;
+};
+
+struct TickStats {
+    std::uint64_t tick = 0;
+    std::uint64_t visited_cells = 0;
+    std::uint64_t moved_cells = 0;
+    std::uint64_t active_chunks_before = 0;
+    std::uint64_t active_chunks_after = 0;
+    std::uint64_t dirty_chunks = 0;
+    std::uint64_t scheduled_cores = 0;
+    std::array<std::uint64_t, SchedulerGeometry::kPhaseCount> phase_jobs{};
+    std::uint64_t chunk_allocations = 0;
+    std::uint64_t temperature_field_allocations = 0;
+    std::uint64_t deferred_events = 0;
+};
+
+struct DirtyChunk {
+    ChunkCoord chunk;
+    RectI64 local_rect;
+};
+
+class World {
+public:
+    static constexpr std::uint16_t kMaximumTransientBodies = 16;
+
+    explicit World(WorldConfig config = {});
+    ~World();
+
+    World(const World&) = delete;
+    World& operator=(const World&) = delete;
+    World(World&&) noexcept;
+    World& operator=(World&&) noexcept;
+
+    [[nodiscard]] const WorldConfig& config() const noexcept;
+    [[nodiscard]] SimulationBackend backend() const noexcept;
+    [[nodiscard]] Material get(std::int64_t x, std::int64_t y) const noexcept;
+    [[nodiscard]] Material stored_material(std::int64_t x, std::int64_t y) const noexcept;
+    [[nodiscard]] std::uint8_t stored_state_a(std::int64_t x, std::int64_t y) const noexcept;
+    [[nodiscard]] std::uint8_t stored_state_b(std::int64_t x, std::int64_t y) const noexcept;
+    [[nodiscard]] std::uint8_t liquid_mass(std::int64_t x, std::int64_t y) const noexcept;
+    [[nodiscard]] std::int16_t temperature(std::int64_t x, std::int64_t y) const noexcept;
+
+    void set(std::int64_t x, std::int64_t y, Material material);
+    [[nodiscard]] bool set_cell_state(std::int64_t x, std::int64_t y, Material material,
+                                      std::uint8_t state_a_value,
+                                      std::uint8_t state_b_value);
+    void set_temperature(std::int64_t x, std::int64_t y, std::int16_t temperature);
+    void paint_disc(std::int64_t centre_x, std::int64_t centre_y, std::int32_t radius, Material material);
+    void reserve_region(RectI64 region);
+    void reserve_temperature_region(RectI64 region);
+    void set_simulation_region(std::optional<RectI64> region);
+    void set_liquid_surface_adhesion_enabled(bool enabled) noexcept;
+    [[nodiscard]] bool liquid_surface_adhesion_enabled() const noexcept;
+
+    // Dynamic rigid bodies are represented by a transient collision field,
+    // separate from authoritative material storage. The field is immutable
+    // during tick() and therefore safe for phased worker reads without locks.
+    void configure_transient_obstacles(RectI64 region);
+    void clear_transient_obstacles();
+    [[nodiscard]] bool set_transient_obstacle(std::int64_t x, std::int64_t y,
+                                               std::uint16_t body_id);
+    [[nodiscard]] std::uint16_t transient_obstacle_at(std::int64_t x,
+                                                       std::int64_t y) const noexcept;
+    [[nodiscard]] bool relocate_stored_cell(std::int64_t from_x, std::int64_t from_y,
+                                            std::int64_t to_x, std::int64_t to_y);
+    [[nodiscard]] std::uint64_t transient_contact_count(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] std::int64_t transient_contact_impulse_x(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] std::int64_t transient_contact_impulse_y(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] bool queue_explosion(std::int64_t x, std::int64_t y,
+                                       std::int32_t radius,
+                                       std::uint8_t collapse_strength = 255);
+    void clear();
+
+    [[nodiscard]] TickStats tick();
+    [[nodiscard]] std::uint64_t tick_index() const noexcept;
+    [[nodiscard]] std::size_t chunk_count() const noexcept;
+    [[nodiscard]] std::size_t active_chunk_count() const noexcept;
+    [[nodiscard]] std::size_t resident_cell_bytes() const noexcept;
+    [[nodiscard]] std::uint64_t state_hash() const noexcept;
+    [[nodiscard]] std::uint64_t content_hash() const noexcept;
+    [[nodiscard]] std::uint64_t hard_surface_revision() const noexcept;
+
+    [[nodiscard]] std::size_t dirty_chunk_count() const noexcept;
+    [[nodiscard]] std::vector<DirtyChunk> take_dirty_chunks();
+    void copy_render_cells(RectI64 region, std::span<std::uint8_t> destination,
+                           std::size_t stride_bytes) const;
+    // One display material byte per cell. Fractional Water uses stable
+    // render-only coverage dithering; authoritative mass is never mutated.
+    void copy_material_cells(RectI64 region, std::span<std::uint8_t> destination,
+                             std::size_t stride_bytes) const;
+    void copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::size_t stride_bytes) const;
+
+private:
+    friend class RenderSnapshotExchange;
+
+    struct Chunk;
+    struct Address;
+    struct JobEffects;
+    struct ParallelState;
+    struct TransientObstacleState;
+    struct ExplosionCommand {
+        std::int64_t x = 0;
+        std::int64_t y = 0;
+        std::int32_t radius = 0;
+        std::uint8_t collapse_strength = 0;
+    };
+
+    WorldConfig config_;
+    std::unordered_map<ChunkCoord, std::unique_ptr<Chunk>, ChunkCoordHash> chunks_;
+    std::vector<ChunkCoord> active_chunk_scratch_;
+    std::vector<SchedulingCoreCoord> active_core_scratch_;
+    std::vector<ExplosionCommand> pending_explosions_;
+    SchedulerGeometry scheduler_geometry_;
+    std::unique_ptr<ParallelState> parallel_;
+    std::unique_ptr<TransientObstacleState> transient_obstacles_;
+    std::optional<RectI64> simulation_region_;
+    bool liquid_surface_adhesion_enabled_ = true;
+    std::uint64_t tick_index_ = 0;
+    std::uint8_t update_epoch_ = 0;
+    bool tick_in_progress_ = false;
+    std::uint64_t tick_chunk_allocations_ = 0;
+    std::uint64_t tick_temperature_field_allocations_ = 0;
+    std::uint64_t hard_surface_revision_ = 0;
+
+    [[nodiscard]] Address address(std::int64_t x, std::int64_t y) const noexcept;
+    [[nodiscard]] Chunk* find_chunk(ChunkCoord coord) noexcept;
+    [[nodiscard]] const Chunk* find_chunk(ChunkCoord coord) const noexcept;
+    [[nodiscard]] Chunk& ensure_chunk(ChunkCoord coord);
+    void ensure_temperature_field(Chunk& chunk);
+    void apply_pending_explosions(TickStats& stats);
+    void wake_cell_neighborhood(std::int64_t x, std::int64_t y);
+    void keep_cell_active(std::int64_t x, std::int64_t y) noexcept;
+    void mark_cell_dirty(Chunk& chunk, std::int32_t local_x, std::int32_t local_y);
+    void move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_x,
+                   std::int64_t to_y, bool swap, JobEffects* effects);
+    [[nodiscard]] bool try_move(Material material, std::int64_t x, std::int64_t y, std::int64_t target_x,
+                                std::int64_t target_y, bool allow_swap, JobEffects* effects);
+    [[nodiscard]] bool update_cell(std::int64_t x, std::int64_t y, JobEffects* effects = nullptr);
+    [[nodiscard]] bool update_water(std::int64_t x, std::int64_t y, JobEffects* effects);
+    [[nodiscard]] std::uint16_t transfer_water(std::int64_t from_x, std::int64_t from_y,
+                                               std::int64_t to_x, std::int64_t to_y,
+                                               std::uint16_t requested, JobEffects* effects);
+    [[nodiscard]] std::uint8_t state_a(std::int64_t x, std::int64_t y) const noexcept;
+    [[nodiscard]] std::uint8_t state_b(std::int64_t x, std::int64_t y) const noexcept;
+    [[nodiscard]] bool write_cell(std::int64_t x, std::int64_t y, Material material,
+                                  std::uint8_t state_a_value, std::uint8_t state_b_value,
+                                  JobEffects* effects);
+    [[nodiscard]] bool rule_is_active(Material material, std::uint8_t state_a_value,
+                                      std::uint8_t state_b_value) const noexcept;
+    [[nodiscard]] bool update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y,
+                                          JobEffects* effects);
+    [[nodiscard]] std::uint8_t deterministic_random(std::int64_t x, std::int64_t y,
+                                                    std::uint32_t stream) const noexcept;
+    void record_transient_contact(std::uint16_t body_id, Material material,
+                                  std::int64_t delta_x, std::int64_t delta_y) noexcept;
+    [[nodiscard]] std::int32_t deterministic_direction(std::int64_t x, std::int64_t y) const noexcept;
+    void begin_tick(TickStats& stats);
+    void finish_tick(TickStats& stats);
+    [[nodiscard]] TickStats tick_serial();
+    [[nodiscard]] TickStats tick_phased();
+    void gather_active_cores();
+    void scan_rect(CellRect rect, TickStats& stats, JobEffects* effects = nullptr);
+    void prepare_write_domain(CellRect rect);
+    void merge_job_effects(const JobEffects& effects);
+};
+
+}  // namespace cybersand

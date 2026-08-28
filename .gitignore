@@ -1,0 +1,17 @@
+build/
+.godot/
+*.so
+*.dll
+*.dylib
+*.o
+*.obj
+*.pdb
+*.ilk
+*.exp
+*.lib
+
+# The pinned Rapier2D addon is a runtime dependency, not a local build product.
+# Its release binaries must remain versioned with the project for reproducible
+# desktop/mobile/web exports.
+!godot/addons/godot-rapier2d/**
+!godot/addons/cybersand_native/**
