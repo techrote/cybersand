@@ -4,7 +4,7 @@ status: Current
 scope: Entity/material representation, start-of-stage collision mask, two-way observations, overlap reconciliation, and backend independence
 keywords: [ADR, rigid body, occupancy mask, two-way coupling, overlap, Rapier2D]
 related-documents: [../architecture/rigid-body-and-cellular-coupling.md, ADR-003-godot-bridge-and-immutable-snapshots.md, ../architecture/simulation-tick-and-threading.md]
-last-reviewed: 2026-08-27
+last-reviewed: 2026-08-28
 implementation-state: A rectangular asynchronous Rapier2D proof is Current, including manual stepping, separate endpoint occupancy, and bounded translation sweep; generalized shapes, selective substeps/CCD, torque, particles, and final capacity policy remain Planned.
 ---
 
@@ -18,7 +18,7 @@ implementation-state: A rectangular asynchronous Rapier2D proof is Current, incl
 - Decision: moved-body overlaps use an explicit, ordered reconciliation stage.
 - **Current**: the Godot proof implements this decision for three rectangles.
 - **Current**: moved rectangles reconcile a bounded swept path before retaining only endpoint occupancy.
-- **Planned**: the native bridge and generalized production implementation.
+- **Current**: the native bridge carries packed rectangle samples/results; generalized shapes and production policy remain **Planned**.
 - **Explicitly rejected**: one mutable pixel grid jointly owned by PhysicsServer2D and cellular workers.
 
 ## Search anchors
@@ -27,7 +27,8 @@ ADR rigid body mask, remove restore pixels, start transform obstacle, pixel forc
 
 ## Status
 
-**Current** for the Godot rectangular proof; generalized/native coupling remains **Planned**.
+**Current** for the Godot/native rectangular proof; generalized shapes, torque,
+particles, and final production policy remain **Planned**.
 
 ## Context
 

@@ -1,10 +1,10 @@
 ---
 title: Legacy next-milestone plan
-status: Planned
+status: Ambiguous
 scope: Historical native Godot integration work packages and performance gates
 keywords: [legacy plan, native integration, GDExtension, activity mask, chunk jobs]
 related-documents: [reference/status-and-roadmap.md, architecture/module-boundaries.md, decisions/ADR-002-double-buffered-tile-jobs.md]
-last-reviewed: 2026-08-26
+last-reviewed: 2026-08-28
 implementation-state: Historical plan; its Linux and Windows x86_64 GDExtension, native authority, emissions/queries, activity geometry, phased scheduler, and rectangle coupling items are now implemented, while generalized queues and dirty Godot uploads remain open.
 ---
 

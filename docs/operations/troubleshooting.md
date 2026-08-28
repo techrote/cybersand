@@ -15,11 +15,11 @@ implementation-state: Current guidance distinguishes the preferred native phased
 - Purpose: route a symptom to the likely subsystem before changing algorithms.
 - **Current**: the preferred Linux runtime coordinates on one Godot worker and dispatches cellular phase jobs through a persistent native pool.
 - **Current**: preferred Water uses native conserved mass; directed discrete Water remains in the GDScript fallback.
-- **Current**: full changed snapshots and texture uploads can amplify presentation cost.
+- **Current**: compact dirty patches cross the bridge, but each changed presentation still performs a full RG8 texture update.
 - **Current**, fallback only: adaptive block stride bounds wake-up work; preferred native jobs remain full cadence in the selected region.
 - **Current** source: three rectangle body masks/results expose contacts, displaced cells, and unresolved overlaps.
 - **Current**, partial: native work/phase/allocation/memory/hash metrics exist; per-stage timing and per-worker utilization remain planned.
-- **Current**: native snapshot pressure reports exact required patches/bytes and retains dirty state; Godot does not consume it yet.
+- **Current**: native snapshot pressure reports exact required patches/bytes, retains dirty state, and the Godot adapter consumes successful leases with explicit acknowledgement.
 - Safe rule: reproduce correctness failures in the single-thread reference before optimizing parallel execution.
 - Safe rule: never hide capacity or correctness failures with clipping, dropped work, or hot allocation.
 

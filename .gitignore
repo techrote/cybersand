@@ -1,17 +1,94 @@
-build/
-.godot/
+# Native and GDExtension build output
+/build/
+/build-*/
+/out/
+/dist/
+/cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+compile_commands.json
+*.o
+*.obj
+*.a
+*.lib
+*.exp
+*.ilk
+*.pdb
+*.dSYM/
+
+# Godot imports and editor state. M11 deliberately retains three portable
+# bootstrap files under godot/.godot; everything else there is disposable.
+/godot/.godot/*
+!/godot/.godot/.gdignore
+!/godot/.godot/extension_list.cfg
+!/godot/.godot/global_script_class_cache.cfg
+/.godot/
+*.translation
+
+# The checked-in runtime libraries are release inputs and remain tracked via
+# Git LFS. Other locally built shared libraries are disposable.
 *.so
 *.dll
 *.dylib
-*.o
-*.obj
-*.pdb
-*.ilk
-*.exp
-*.lib
+*.wasm
+!/godot/addons/godot-rapier2d/bin/**
+!/godot/addons/cybersand_native/bin/**
 
-# The pinned Rapier2D addon is a runtime dependency, not a local build product.
-# Its release binaries must remain versioned with the project for reproducible
-# desktop/mobile/web exports.
-!godot/addons/godot-rapier2d/**
-!godot/addons/cybersand_native/**
+# Test, profiling, packaging, and crash output
+Testing/
+coverage/
+*.gcda
+*.gcno
+*.profraw
+*.profdata
+*.log
+*.trace
+*.stackdump
+core
+core.*
+crash-*.txt
+*.dmp
+*.tmp
+*.temp
+*.partial
+*.next
+*.bak
+*.orig
+*.rej
+*.zip
+*.tar
+*.tar.gz
+*.tar.xz
+
+# Local tools, package environments, and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+.sconsign.dblite
+node_modules/
+
+# IDE and operating-system metadata
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Credentials and machine-local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*
+secrets*

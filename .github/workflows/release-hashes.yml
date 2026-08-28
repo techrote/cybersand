@@ -1,0 +1,43 @@
+name: Release artifact hashes
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hashes:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out tagged source and LFS runtime dependencies
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: true
+
+      - name: Verify identity and LFS content
+        run: |
+          timeout 5m python3 tools/ci/check_m11_consistency.py
+          timeout 5m git lfs fsck
+
+      - name: Create deterministic runtime hash manifest
+        run: |
+          mkdir release-hashes
+          find godot/addons/cybersand_native/bin godot/addons/godot-rapier2d/bin \
+            -type f ! -name 'Info.plist' -print0 \
+            | LC_ALL=C sort -z \
+            | xargs -0 sha256sum > release-hashes/runtime-files.sha256
+          sha256sum docs/BUILD_ID.md third_party/*.lock.json > release-hashes/provenance-files.sha256
+          git rev-parse HEAD > release-hashes/git-commit.txt
+          test -s release-hashes/runtime-files.sha256
+
+      - name: Upload hash manifests
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cyber-sand-engine-${{ github.ref_name }}-hashes
+          path: release-hashes/
+          if-no-files-found: error
+          retention-days: 90

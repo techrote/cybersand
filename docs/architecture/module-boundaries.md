@@ -4,7 +4,7 @@ status: Approved design
 scope: Responsibilities, permitted dependencies, forbidden knowledge, and current analogues for each named module
 keywords: [SimulationCore, SimulationScheduler, WorldStorage, TileJob, MaterialRules, RenderBridge, GameplayBridge, rigid body coupling, dependencies]
 related-documents: [overview.md, data-ownership-and-lifetimes.md, rendering-and-gameplay-bridges.md, rigid-body-and-cellular-coupling.md]
-last-reviewed: 2026-08-27
+last-reviewed: 2026-08-28
 implementation-state: Native World combines SimulationCore, Scheduler, WorldStorage, job, and rule responsibilities; the godot-cpp adapter carries dirty RG8 render patches, emissions, queries, metrics, and packed rigid-body samples/results.
 ---
 
@@ -90,8 +90,9 @@ conforming even though its core behavior now exists.
 
 World's phased backend now owns a persistent native worker pool, parity phases,
 barriers, bounded job results, and deterministic merge. CyberSimulationWorker
-still owns wall-clock pacing for the separate Godot proof; no bridge coordinates
-the two.
+owns wall-clock pacing and advances that World through CyberNativeCellWorld on
+bundled Linux and Windows x86_64; the backend boundary passes value data rather
+than exposing worker or storage ownership to Godot.
 
 ## WorldStorage
 

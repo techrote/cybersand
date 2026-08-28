@@ -1,0 +1,37 @@
+name: Documentation and provenance
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  consistency:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out source and LFS runtime dependencies
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: true
+
+      - name: Validate M11 identity, documentation, and dependency pins
+        run: timeout 5m python3 tools/ci/check_m11_consistency.py
+
+      - name: Validate Git LFS objects and whitespace
+        run: |
+          timeout 5m git lfs fsck
+          git diff --check HEAD
+
+      - name: Verify runtime architecture and Linux ABI floor
+        run: |
+          timeout 2m tools/check_linux_runtime_floor.sh
+          file godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll | grep -q 'PE32+ executable (DLL).*x86-64'

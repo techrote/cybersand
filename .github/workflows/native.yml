@@ -1,0 +1,58 @@
+name: Native C++ validation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: native-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      CC: gcc-13
+      CXX: g++-13
+    steps:
+      - name: Check out source and LFS runtime dependencies
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: true
+
+      - name: Record compiler and linker identity
+        run: |
+          gcc-13 --version
+          g++-13 --version
+          ld --version
+          make --version
+
+      - name: Compile C API and native tests
+        run: |
+          timeout 5m make c-header-check
+          timeout 15m make build/tests
+
+      - name: Run native behavioral and integration suite
+        run: timeout 15m ./build/tests
+
+      - name: Compile and run ASan plus UBSan
+        run: |
+          timeout 15m make build/tests_sanitized
+          timeout 15m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 ./build/tests_sanitized
+
+      - name: Compile and run TSan
+        run: |
+          timeout 15m make build/tests_tsan
+          timeout 15m env TSAN_OPTIONS=halt_on_error=1 ./build/tests_tsan
+
+      - name: Compile shared library and benchmark
+        run: |
+          timeout 15m make shared
+          timeout 15m make build/benchmark
+          timeout 10m ./build/benchmark

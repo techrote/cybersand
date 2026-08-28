@@ -127,7 +127,7 @@ reserved for the comparison backend but is not implemented in this checkpoint.
 
 ## Run the Godot sandbox
 
-1. Open `godot/project.godot` in Godot 4.7.x (the add-on declares 4.7 minimum; this checkpoint is locked to 4.7.x).
+1. Open `godot/project.godot` in Godot 4.7 stable. The audited M11 runtime used exact build `4.7.stable.official.5b4e0cb0f`; the add-on declares 4.7 minimum, but other builds are validation drift until tested.
 2. Run the project.
 3. Move with `A`/`D` and hold Space for jetpack thrust.
 4. Pan with the arrow keys and press `F` to toggle follow/free camera mode.

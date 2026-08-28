@@ -4,7 +4,7 @@ status: Approved design
 scope: Gameplay fidelity tiers, temporal sampling, probabilistic rules, strict replay mode, render decoupling, and spatial coarsening limits
 keywords: [ADR, approximation, probabilistic simulation, temporal LOD, dynamic resolution, async rendering, frame budget]
 related-documents: [../operations/profiling-observability-and-performance.md, ../systems/activity-dirty-regions-and-waking.md, ../architecture/simulation-tick-and-threading.md]
-last-reviewed: 2026-08-27
+last-reviewed: 2026-08-28
 implementation-state: The preferred Godot runtime now uses full-rate native active cells, activity sleeping, interest filtering, and optional temporal snapshot interpolation; generalized secondary-field/distant-world fidelity controls remain Planned.
 ---
 
@@ -16,7 +16,7 @@ implementation-state: The preferred Godot runtime now uses full-rate native acti
 - Decision: keep full-resolution material occupancy around gameplay interest while reducing update frequency elsewhere.
 - Decision: probabilistic and sampled rules use explicit rates and preferably stateless seeded choices.
 - Decision: strict replay remains a selectable validation/debug contract for the Current native solver.
-- **Current**: the renderer and GDScript simulation worker already advance independently.
+- **Current**: rendering and CyberSimulationWorker advance independently; that worker selects native World or the GDScript fallback once at startup.
 - **Current**: native active material runs at full cadence; quiet blocks sleep and scheduling cores outside the interest window are rejected.
 - **Current**: presentation may blend immutable snapshots, but authoritative collision and material interactions are not interpolated or delegated to Rapier fluids.
 - **Planned**: coarse secondary fields, distant macro-state, fidelity hysteresis, and backend-specific quality controls.

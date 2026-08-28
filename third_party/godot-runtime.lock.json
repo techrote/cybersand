@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "checkpoint": "m11",
+  "godot_version": "4.7.stable.official.5b4e0cb0f",
+  "godot_api": "4.7",
+  "platform": "linux",
+  "architecture": "x86_64",
+  "editor": {
+    "filename": "Godot_v4.7-stable_linux.x86_64.zip",
+    "origin_url": "https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7",
+    "source_type": "official Godot stable editor archive",
+    "license": "MIT; bundled third-party component notices apply",
+    "redistribution": "permitted with Godot and bundled third-party notices",
+    "size": 75664355,
+    "sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+    "restore": "Download to a temporary file, verify size and SHA-256, test ZIP integrity, extract, and confirm --version is exactly 4.7.stable.official.5b4e0cb0f before use."
+  },
+  "export_templates": {
+    "status": "absent-and-unpinned",
+    "required_for_project_editor_and_headless_tests": false,
+    "release_policy": "Do not run or claim reproducible exports until an exact official 4.7 template archive, size, SHA-256, license record, and validation matrix are added."
+  },
+  "required_extensions": [
+    {
+      "name": "CyberSand native GDExtension",
+      "descriptor": "godot/addons/cybersand_native/cybersand_native.gdextension",
+      "minimum_godot": "4.7"
+    },
+    {
+      "name": "Godot Rapier Physics 2D",
+      "descriptor": "godot/addons/godot-rapier2d/godot-rapier2d.gdextension",
+      "minimum_godot": "4.7"
+    }
+  ]
+}

@@ -113,6 +113,7 @@ Status applies to individual statements and table rows, not merely to the contai
 - [Testing, validation, and replay](operations/testing-validation-and-replay.md)
 - [Troubleshooting](operations/troubleshooting.md)
 - [Rapier2D migration runbook](operations/rapier-2d-migration-runbook.md)
+- [Private GitHub development and release](operations/github-development-and-release.md)
 
 ### Decisions
 
@@ -134,6 +135,7 @@ Status applies to individual statements and table rows, not merely to the contai
 - [Configuration reference](reference/configuration-reference.md)
 - [Status and roadmap](reference/status-and-roadmap.md)
 - [Retrieval index](reference/retrieval-index.md)
+- [Audited M11 baseline evidence](audits/m11/README.md)
 
 ### Research and import ledgers
 
@@ -151,7 +153,7 @@ Status applies to individual statements and table rows, not merely to the contai
 
 ## Known documentation limits
 
-- The versioned C ABI is implemented; final extracted C++ modules and Godot GDExtension classes are not.
+- The versioned C ABI and CyberNativeCellWorld GDExtension are implemented; final extraction of combined `cybersand::World` responsibilities into separate C++ modules is not.
 - No serialized configuration schema or exact capacity key names have been approved.
 - No canonical transfer sort tuple has been approved.
 - Snapshot pressure currently returns non-blocking explicit outcomes and retains dirty state; production capacities and Godot upload policy remain unapproved.

@@ -1,0 +1,69 @@
+name: Godot 4.7 headless regression
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: godot-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+
+jobs:
+  regression:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Check out source and LFS runtime dependencies
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: true
+
+      - name: Fetch and verify exact Godot editor
+        run: |
+          timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          test -n "$GODOT_BIN"
+          chmod +x "$GODOT_BIN"
+          test "$($GODOT_BIN --version)" = "$GODOT_VERSION"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+
+      - name: Run focused Godot regression scripts
+        run: |
+          tests=(
+            test_cell_world.gd
+            test_material_appearance_lut.gd
+            test_presentation_controls.gd
+            test_native_render_bridge_regression.gd
+            test_render_patch_handoff_regression.gd
+            test_native_fire_presentation_regression.gd
+            test_native_edge_contact_regression.gd
+            test_rapier_backend_preflight.gd
+            test_rapier_drop_in.gd
+            test_rapier_manual_step.gd
+            profile_native_world.gd
+            profile_scheduler.gd
+          )
+          for test_script in "${tests[@]}"; do
+            echo "Running $test_script"
+            timeout 20m "$GODOT_BIN" --headless --path godot --script "res://tests/$test_script"
+          done
+
+      - name: Run complete-scene and editor smoke tests
+        run: |
+          timeout 15m "$GODOT_BIN" --headless --path godot --quit-after 180
+          timeout 10m "$GODOT_BIN" --headless --editor --path godot --quit
+
+      - name: Ensure tests did not modify tracked source
+        run: git diff --exit-code

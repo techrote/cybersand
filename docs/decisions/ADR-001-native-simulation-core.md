@@ -1,11 +1,11 @@
 ---
 title: ADR-001 — Native SimulationCore
-status: Approved design
+status: Current
 scope: Authority placement, Godot dependency boundary, standalone validation, and migration from the split prototype
 keywords: [ADR, SimulationCore, native C++, authority, Godot bridge, dual simulation]
 related-documents: [../architecture/overview.md, ../architecture/module-boundaries.md, ADR-003-godot-bridge-and-immutable-snapshots.md]
-last-reviewed: 2026-08-26
-implementation-state: Approved direction; current Godot and native simulations remain separate and no SimulationCore symbol exists.
+last-reviewed: 2026-08-28
+implementation-state: Native cybersand::World is the authoritative Godot cellular backend on bundled Linux and Windows x86_64 through CyberNativeCellWorld; the standalone SimulationCore class extraction and generalized GameplayBridge remain Approved design.
 ---
 
 # ADR-001: Native SimulationCore
@@ -13,7 +13,7 @@ implementation-state: Approved direction; current Godot and native simulations r
 ## At a glance
 
 - Decision: authoritative pixel-physics state and rules belong in native C++ SimulationCore.
-- **Current**: CyberCellWorld powers the Godot proof while cybersand::World is a separate native kernel.
+- **Current**: CyberNativeCellWorld makes `cybersand::World` authoritative on bundled Linux and Windows x86_64; CyberCellWorld is an unsupported-platform fallback.
 - **Approved design**: SimulationCore has no Godot API dependency.
 - **Approved design**: Godot interacts through RenderBridge and GameplayBridge only.
 - Benefit: deterministic native tests and multicore scheduling do not depend on scene/runtime objects.
@@ -26,18 +26,19 @@ why native simulation, authoritative cell owner, can GDScript own physics, Godot
 
 ## Status
 
-**Approved design**.
-
-No repository class or namespace named SimulationCore exists. The decision is not implemented.
+**Current**, with the intended responsibilities still combined in
+`cybersand::World`. A separately named SimulationCore class and generalized
+GameplayBridge remain **Approved design** rather than prerequisites for native
+authority.
 
 ## Context
 
-The current repository has two independent simulation authorities:
-
-- CyberCellWorld in godot/scripts/cell_world.gd owns the runnable finite Godot cell world.
-- cybersand::World in native source owns sparse chunks for standalone tests, benchmarks, and the C API.
-
-CyberSimulationWorker moves GDScript simulation off the main thread but keeps material work serial and dependent on the Godot runtime. Scaling across cores while preserving replay, storage, and ownership requires a platform-neutral authority.
+The repository retains two implementations but selects only one authority per
+run. On bundled Linux and Windows x86_64, CyberSimulationWorker constructs
+CyberNativeCellWorld and advances native `cybersand::World`; the serial
+CyberCellWorld implementation is a compatibility fallback when that extension
+class is unavailable. Native World remains Godot-free and is also exercised by
+standalone tests, benchmarks, and the C API.
 
 ## Decision
 
@@ -63,7 +64,7 @@ Exact interfaces and migration checkpoints remain to be specified in implementat
 
 ### Negative
 
-- The current GDScript proof cannot simply remain the production authority.
+- The GDScript fallback cannot provide native performance or bit-equivalent Water behavior.
 - Commands, results, snapshots, identifiers, and lifetimes need explicit contracts.
 - Debug tooling must cross a bridge instead of reading arrays directly.
 - Migration must temporarily compare old and new behavior without allowing two production authorities.
@@ -71,7 +72,7 @@ Exact interfaces and migration checkpoints remain to be specified in implementat
 ### Risks
 
 - Renaming cybersand::World without separating its mixed responsibilities would create a false module boundary.
-- Keeping both CyberCellWorld and native state live after migration could cause divergence.
+- Keeping both CyberCellWorld and native state live in one run would cause divergence; the Current worker selects exactly one backend.
 - Godot types leaking into native headers would defeat independent validation.
 
 ## Alternatives considered
@@ -94,16 +95,17 @@ Exact interfaces and migration checkpoints remain to be specified in implementat
 
 ## Reversal/migration path
 
-The decision is reversible before Godot production migration by retaining the current GDScript proof as the last working checkpoint.
+The decision remains reversible through the retained GDScript compatibility
+fallback and the audited pre-migration checkpoints.
 
 Migration should:
 
-1. preserve the existing prototype unchanged;
-2. define native authority and test contracts;
-3. create a deterministic single-thread reference;
-4. connect a read-only comparison/view path;
-5. switch Godot to bridge consumption only after parity criteria pass;
-6. remove duplicate production simulation authority.
+1. preserve the compatibility fallback without running it beside native state;
+2. keep native authority and test contracts explicit;
+3. retain deterministic single-thread and phased reference paths;
+4. expand only bounded value-data bridge contracts;
+5. validate new platforms before selecting native authority there;
+6. remove the fallback only after all supported platforms have equivalent native coverage.
 
 Reversing after save formats depend on native state would require an explicit data migration ADR.
 
@@ -114,7 +116,7 @@ Reversing after save formats depend on native state would require an explicit da
 - identical replay inputs yield identical native hashes;
 - commands are applied only at tick boundaries;
 - no Godot API call occurs in SimulationCore or native workers;
-- current GDScript proof remains a rollback point until the bridge checkpoint passes.
+- the backend selector never advances native and fallback authorities together.
 
 ## Related decisions
 

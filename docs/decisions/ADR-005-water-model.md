@@ -4,7 +4,7 @@ status: Current
 scope: Stable conserved liquid invariants, phased pairwise candidate, buffered flux fallback, shared-grid authority, rendering-only dithering, and benchmark gate
 keywords: [ADR, water, fixed-point mass, pairwise transfer, flux, conservation, phased in-place, stable rest]
 related-documents: [../systems/water-design.md, ADR-002-double-buffered-tile-jobs.md, ../operations/testing-validation-and-replay.md]
-last-reviewed: 2026-08-27
+last-reviewed: 2026-08-28
 implementation-state: Preferred Godot runtime uses native World's phased conserved 8-bit pairwise Water, normalized viscosity, coherent emission delay, optional adhesion, and stable render-only dithering; discrete Water remains only in the GDScript platform fallback.
 ---
 
@@ -27,16 +27,18 @@ in-place conserved water, pairwise fixed point transfer, buffered liquid fallbac
 ## Status
 
 **Current** for native phased Water and corrected discrete Godot leveling;
-**Planned** for generalized reaction accounting, native/Godot bridge
-integration, serialization, and the optional buffered fallback.
+**Planned** for generalized reaction accounting, serialization, and the
+optional buffered fallback. Native/Godot integration is **Current** on bundled
+Linux and Windows x86_64.
 
 ## Context
 
-Current Godot Water remains a discrete full-cell reference, but Water now uses
-persistent directed flow, zero normalized viscosity, 24-cell bounded
-dispersion, and a bounded stopped-edge pressure look-ahead. Its earlier finite
-travel limit is retained only as a yielding-liquid extension mode. Native Water
-uses compact mass and viscosity-scaled exact pairwise transfers.
+The preferred Godot runtime uses native compact mass and viscosity-scaled exact
+pairwise transfers. The fallback Godot implementation remains a discrete
+full-cell reference with persistent directed flow, zero normalized viscosity,
+24-cell bounded dispersion, and bounded stopped-edge pressure look-ahead. Its
+earlier finite travel limit is retained only as a yielding-liquid extension
+mode.
 
 The earlier decision coupled conserved water to an immutable-current/next-state flux calculation. The scheduler revision in ADR-002 makes a lower-traffic option credible: exact pairwise transfers performed only where a phase grants exclusive ownership. Conservation and rest are behavioral invariants, not reasons to double-buffer the entire liquid field by default.
 

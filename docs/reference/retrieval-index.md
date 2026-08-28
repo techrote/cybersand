@@ -28,7 +28,7 @@ question to document, rapid context, RAG route, which file explains, safe agent 
 
 | Question/query | Primary document | Supporting document | Short answer |
 |---|---|---|---|
-| Which thread owns authoritative cell state? | [Data ownership](../architecture/data-ownership-and-lifetimes.md) | [Overview](../architecture/overview.md) | **Current**: Godot worker owns CyberCellWorld; native World separately owns native chunks. **Approved design**: SimulationCore/WorldStorage authority, coordinated by SimulationScheduler. |
+| Which thread owns authoritative cell state? | [Data ownership](../architecture/data-ownership-and-lifetimes.md) | [Overview](../architecture/overview.md) | **Current**: CyberSimulationWorker owns the selected backend; bundled Linux/Windows x86_64 select native World, whose phased tick uses a persistent pool. CyberCellWorld is the unsupported-platform fallback. |
 | Can Godot access simulation memory directly? | [Rendering and gameplay bridges](../architecture/rendering-and-gameplay-bridges.md) | [ADR-003](../decisions/ADR-003-godot-bridge-and-immutable-snapshots.md) | No. The **Current** Godot adapter consumes copied immutable dirty RG8 patches; mutable World memory never crosses the bridge. |
 | How are cross-tile transfers ordered? | [Determinism and transfers](../architecture/determinism-and-boundary-transfers.md) | [ADR-002](../decisions/ADR-002-double-buffered-tile-jobs.md) | Canonical deterministic order is required; the exact ordering tuple is not approved. |
 | What happens when capacity is exceeded? | [Configuration and capacity](../operations/configuration-and-capacity-budgets.md) | [ADR-004](../decisions/ADR-004-interest-region-and-reconfiguration.md) | Explosion enqueue rejects full/invalid input; snapshots retain dirty state and report pressure/exact requirements. General live resize remains Planned; never clip or allocate secretly. |
@@ -61,6 +61,8 @@ question to document, rapid context, RAG route, which file explains, safe agent 
 | What is explicitly rejected? | [Principles and non-goals](../architecture/principles-and-non-goals.md) |
 | What crosses the Godot/native boundary? | [Interfaces and contracts](interfaces-and-message-contracts.md) |
 | What code is actually Current? | [Status and roadmap](status-and-roadmap.md) |
+| How is private GitHub development built and released? | [GitHub development and release](../operations/github-development-and-release.md) |
+| Which exact audited M11 evidence was imported? | [M11 audit evidence](../audits/m11/README.md) |
 
 ## Threading and performance queries
 
@@ -119,7 +121,7 @@ question to document, rapid context, RAG route, which file explains, safe agent 
 | Likely query | Read |
 |---|---|
 | What tests currently exist? | [Testing and replay](../operations/testing-validation-and-replay.md) |
-| What blocks native Water integration into Godot? | [ADR-005](../decisions/ADR-005-water-model.md) |
+| What Water work remains after native Godot integration? | [ADR-005](../decisions/ADR-005-water-model.md) |
 | What remains after native multithreading? | [ADR-002](../decisions/ADR-002-double-buffered-tile-jobs.md) |
 | How do I test capacity expansion? | [Testing and replay](../operations/testing-validation-and-replay.md) |
 | What must every checkpoint document? | [Status and roadmap](status-and-roadmap.md) |

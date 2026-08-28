@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "migration_date_utc": "2026-08-28",
+  "authoritative_source": {
+    "archive": "cyber-sand-engine-m11-workspace.zip",
+    "size": 105936992,
+    "sha256": "6faa9c9020bb926088f76013f38c246026dc8e62aab7d33c1a10a1d411577b8b",
+    "source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+    "render_patch_commit": "c644b235fbcb5e085802918c0d6cebec118b6405",
+    "build_id": "m11-audit-remediation-render-handoff-water-native-repro-2026-08-28"
+  },
+  "checksum_sidecar": {
+    "name": "cyber-sand-engine-m11-archives.sha256",
+    "size": 205,
+    "sha256": "33a038a9262f1abcc0330b229b13d7af7c6bf75f7dca7120e476d043ffe8fac5"
+  },
+  "optional_setup_cache": {
+    "archive": "cyber-sand-engine-setup-cache-v2.zip",
+    "size": 227650494,
+    "sha256": "b3824928ac59215a62211c19f4c5bef08e3eb4c79ca4e7c3839ac2dc3a49082c",
+    "included_in_git": false
+  },
+  "audit": {
+    "predecessor_report_original_sha256": "87c7a3ee2f38713f9520221d929863d928f1499b79637db0839cdf3402de940c",
+    "m11_completion_report_sha256": "8589a61fe8a6f4ddace96e4a4ad7126c686d08654e485bc5c22d73f9fa5bc138",
+    "validation_summary_original_sha256": "6ab67a273644eda2fc4ae8e3de89818cc42fd32c905f37c7e8ba991b688ac0c7",
+    "result": "passed-with-inconclusive",
+    "counts": {
+      "passed": 34,
+      "failed": 0,
+      "timed_out": 0,
+      "inconclusive": 1,
+      "skipped": 0
+    },
+    "known_gaps": [
+      "LeakSanitizer could not run on the hosted validation environment",
+      "Windows Godot runtime was not executed",
+      "interactive GPU visual quality was not validated headlessly"
+    ]
+  },
+  "historical_archives_used_as_source": false
+}

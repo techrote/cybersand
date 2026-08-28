@@ -1,0 +1,546 @@
+{
+  "validation_schema_version": 1,
+  "checkpoint": "m11",
+  "created_at_utc": "2026-08-28T20:17:25.549146+00:00",
+  "host": {
+    "system": "Linux",
+    "architecture": "x86_64"
+  },
+  "godot_version_expected": "4.7.stable.official.5b4e0cb0f",
+  "command_timeout_seconds": 1200,
+  "overall_timeout_seconds": 7200,
+  "duration_seconds": 262.74,
+  "counts": {
+    "passed": 34,
+    "failed": 0,
+    "timed-out": 0,
+    "inconclusive": 1,
+    "skipped": 0
+  },
+  "result": "passed-with-inconclusive",
+  "tests": [
+    {
+      "id": "godot-version",
+      "status": "passed",
+      "command": [
+        "$GODOT",
+        "--version"
+      ],
+      "command_display": "$GODOT --version",
+      "timeout_seconds": 30,
+      "duration_seconds": 0.096,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "m11-tooling-tests",
+      "status": "passed",
+      "command": [
+        "$PYTHON",
+        "$WORKSPACE_ROOT/checkpoint/tests/test_m11_tooling.py"
+      ],
+      "command_display": "$PYTHON $WORKSPACE_ROOT/checkpoint/tests/test_m11_tooling.py",
+      "timeout_seconds": 300,
+      "duration_seconds": 0.304,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "m11-manifest-validation",
+      "status": "passed",
+      "command": [
+        "$PYTHON",
+        "$WORKSPACE_ROOT/checkpoint/scripts/validate_manifest.py",
+        "--workspace-root",
+        "$WORKSPACE_ROOT",
+        "--setup-root",
+        "$SETUP_ROOT"
+      ],
+      "command_display": "$PYTHON $WORKSPACE_ROOT/checkpoint/scripts/validate_manifest.py --workspace-root $WORKSPACE_ROOT --setup-root $SETUP_ROOT",
+      "timeout_seconds": 1200,
+      "duration_seconds": 5.828,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "git-fsck",
+      "status": "passed",
+      "command": [
+        "git",
+        "fsck",
+        "--full"
+      ],
+      "command_display": "git fsck --full",
+      "timeout_seconds": 300,
+      "duration_seconds": 2.473,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "native-c-header-compile",
+      "status": "passed",
+      "command": [
+        "make",
+        "c-header-check"
+      ],
+      "command_display": "make c-header-check",
+      "timeout_seconds": 300,
+      "duration_seconds": 0.059,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "native-cpp-compile",
+      "status": "passed",
+      "command": [
+        "make",
+        "build/tests"
+      ],
+      "command_display": "make build/tests",
+      "timeout_seconds": 900,
+      "duration_seconds": 12.441,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "native-tests",
+      "status": "passed",
+      "command": [
+        "./build/tests"
+      ],
+      "command_display": "./build/tests",
+      "timeout_seconds": 900,
+      "duration_seconds": 20.445,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "native-shared",
+      "status": "passed",
+      "command": [
+        "make",
+        "shared"
+      ],
+      "command_display": "make shared",
+      "timeout_seconds": 600,
+      "duration_seconds": 12.216,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "asan-ubsan-compile",
+      "status": "passed",
+      "command": [
+        "make",
+        "build/tests_sanitized"
+      ],
+      "command_display": "make build/tests_sanitized",
+      "timeout_seconds": 900,
+      "duration_seconds": 33.689,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "asan-ubsan-leaks-on",
+      "status": "inconclusive",
+      "command": [
+        "./build/tests_sanitized"
+      ],
+      "command_display": "./build/tests_sanitized",
+      "timeout_seconds": 600,
+      "duration_seconds": 19.09,
+      "exit_code": 1,
+      "reason": "hosted-environment limitation: leaksanitizer has encountered a fatal error"
+    },
+    {
+      "id": "asan-ubsan-leaks-off",
+      "status": "passed",
+      "command": [
+        "./build/tests_sanitized"
+      ],
+      "command_display": "./build/tests_sanitized",
+      "timeout_seconds": 600,
+      "duration_seconds": 19.14,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "tsan-compile",
+      "status": "passed",
+      "command": [
+        "make",
+        "build/tests_tsan"
+      ],
+      "command_display": "make build/tests_tsan",
+      "timeout_seconds": 900,
+      "duration_seconds": 15.734,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "tsan",
+      "status": "passed",
+      "command": [
+        "./build/tests_tsan"
+      ],
+      "command_display": "./build/tests_tsan",
+      "timeout_seconds": 900,
+      "duration_seconds": 25.042,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "benchmark-compile",
+      "status": "passed",
+      "command": [
+        "make",
+        "build/benchmark"
+      ],
+      "command_display": "make build/benchmark",
+      "timeout_seconds": 600,
+      "duration_seconds": 11.572,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "benchmark-default",
+      "status": "passed",
+      "command": [
+        "./build/benchmark"
+      ],
+      "command_display": "./build/benchmark",
+      "timeout_seconds": 600,
+      "duration_seconds": 3.388,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "benchmark-1024-dense",
+      "status": "passed",
+      "command": [
+        "./build/benchmark",
+        "1024",
+        "1024",
+        "120",
+        "128"
+      ],
+      "command_display": "./build/benchmark 1024 1024 120 128",
+      "timeout_seconds": 900,
+      "duration_seconds": 13.783,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "benchmark-2048-sparse",
+      "status": "passed",
+      "command": [
+        "./build/benchmark",
+        "2048",
+        "1024",
+        "120",
+        "128",
+        "sparse",
+        "phased",
+        "4",
+        "preallocated"
+      ],
+      "command_display": "./build/benchmark 2048 1024 120 128 sparse phased 4 preallocated",
+      "timeout_seconds": 900,
+      "duration_seconds": 0.392,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "linux-runtime-floor",
+      "status": "passed",
+      "command": [
+        "tools/check_linux_runtime_floor.sh"
+      ],
+      "command_display": "tools/check_linux_runtime_floor.sh",
+      "timeout_seconds": 60,
+      "duration_seconds": 0.241,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "windows-pe-structure",
+      "status": "passed",
+      "command": [
+        "file",
+        "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
+      ],
+      "command_display": "file godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "timeout_seconds": 30,
+      "duration_seconds": 0.03,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "windows-pe-imports",
+      "status": "passed",
+      "command": [
+        "objdump",
+        "-p",
+        "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
+      ],
+      "command_display": "objdump -p godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "timeout_seconds": 60,
+      "duration_seconds": 0.037,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "godot-test-cell-world",
+      "status": "passed",
+      "command": [
+        "$GODOT",
+        "--headless",
+        "--path",
+        "godot",
+        "--script",
+        "res://tests/test_cell_world.gd"
+      ],
+      "command_display": "$GODOT --headless --path godot --script res://tests/test_cell_world.gd",
+      "timeout_seconds": 1200,
+      "duration_seconds": 17.294,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "godot-test-material-appearance-lut",
+      "status": "passed",
+      "command": [
+        "$GODOT",
+        "--headless",
+        "--path",
+        "godot",
+        "--script",
+        "res://tests/test_material_appearance_lut.gd"
+      ],
+      "command_display": "$GODOT --headless --path godot --script res://tests/test_material_appearance_lut.gd",
+      "timeout_seconds": 600,
+      "duration_seconds": 1.454,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "godot-test-presentation-controls",
+      "status": "passed",
+      "command": [
+        "$GODOT",
+        "--headless",
+        "--path",
+        "godot",
+        "--script",
+        "res://tests/test_presentation_controls.gd"
+      ],
+      "command_display": "$GODOT --headless --path godot --script res://tests/test_presentation_controls.gd",
+      "timeout_seconds": 600,
+      "duration_seconds": 1.067,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "godot-test-native-render-bridge-regression",
+      "status": "passed",
+      "command": [
+        "$GODOT",
+        "--headless",
+        "--path",
+        "godot",
+        "--script",
+        "res://tests/test_native_render_bridge_regression.gd"
+      ],
+      "command_display": "$GODOT --headless --path godot --script res://tests/test_native_render_bridge_regression.gd",
+      "timeout_seconds": 600,
+      "duration_seconds": 0.782,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "godot-test-render-patch-handoff-regression",
+      "status": "passed",
+      "command": [
+        "$GODOT",
+        "--headless",
+        "--path",
+        "godot",
+        "--script",
+        "res://tests/test_render_patch_handoff_regression.gd"
+      ],
+      "command_display": "$GODOT --headless --path godot --script res://tests/test_render_patch_handoff_regression.gd",
+      "timeout_seconds": 600,
+      "duration_seconds": 0.982,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "godot-test-native-fire-presentation-regression",
+      "status": "passed",
+      "command": [
+        "$GODOT",
+        "--headless",
+        "--path",
+        "godot",
+        "--script",
+        "res://tests/test_native_fire_presentation_regression.gd"
+      ],
+      "command_display": "$GODOT --headless --path godot --script res://tests/test_native_fire_presentation_regression.gd",
+      "timeout_seconds": 600,
+      "duration_seconds": 1.105,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "godot-test-native-edge-contact-regression",
+      "status": "passed",
+      "command": [
+        "$GODOT",
+        "--headless",
+        "--path",
+        "godot",
+        "--script",
+        "res://tests/test_native_edge_contact_regression.gd"
+      ],
+      "command_display": "$GODOT --headless --path godot --script res://tests/test_native_edge_contact_regression.gd",
+      "timeout_seconds": 600,
+      "duration_seconds": 1.672,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "godot-test-rapier-backend-preflight",
+      "status": "passed",
+      "command": [
+        "$GODOT",
+        "--headless",
+        "--path",
+        "godot",
+        "--script",
+        "res://tests/test_rapier_backend_preflight.gd"
+      ],
+      "command_display": "$GODOT --headless --path godot --script res://tests/test_rapier_backend_preflight.gd",
+      "timeout_seconds": 600,
+      "duration_seconds": 0.539,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "godot-test-rapier-drop-in",
+      "status": "passed",
+      "command": [
+        "$GODOT",
+        "--headless",
+        "--path",
+        "godot",
+        "--script",
+        "res://tests/test_rapier_drop_in.gd"
+      ],
+      "command_display": "$GODOT --headless --path godot --script res://tests/test_rapier_drop_in.gd",
+      "timeout_seconds": 600,
+      "duration_seconds": 0.594,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "godot-test-rapier-manual-step",
+      "status": "passed",
+      "command": [
+        "$GODOT",
+        "--headless",
+        "--path",
+        "godot",
+        "--script",
+        "res://tests/test_rapier_manual_step.gd"
+      ],
+      "command_display": "$GODOT --headless --path godot --script res://tests/test_rapier_manual_step.gd",
+      "timeout_seconds": 600,
+      "duration_seconds": 1.474,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "godot-profile-native-world",
+      "status": "passed",
+      "command": [
+        "$GODOT",
+        "--headless",
+        "--path",
+        "godot",
+        "--script",
+        "res://tests/profile_native_world.gd"
+      ],
+      "command_display": "$GODOT --headless --path godot --script res://tests/profile_native_world.gd",
+      "timeout_seconds": 600,
+      "duration_seconds": 1.057,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "godot-profile-scheduler",
+      "status": "passed",
+      "command": [
+        "$GODOT",
+        "--headless",
+        "--path",
+        "godot",
+        "--script",
+        "res://tests/profile_scheduler.gd"
+      ],
+      "command_display": "$GODOT --headless --path godot --script res://tests/profile_scheduler.gd",
+      "timeout_seconds": 1200,
+      "duration_seconds": 25.349,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "godot-full-scene-180",
+      "status": "passed",
+      "command": [
+        "$GODOT",
+        "--headless",
+        "--path",
+        "godot",
+        "--quit-after",
+        "180"
+      ],
+      "command_display": "$GODOT --headless --path godot --quit-after 180",
+      "timeout_seconds": 900,
+      "duration_seconds": 2.276,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "godot-headless-editor-start-stop",
+      "status": "passed",
+      "command": [
+        "$GODOT",
+        "--headless",
+        "--editor",
+        "--path",
+        "godot",
+        "--quit"
+      ],
+      "command_display": "$GODOT --headless --editor --path godot --quit",
+      "timeout_seconds": 300,
+      "duration_seconds": 10.255,
+      "exit_code": 0,
+      "reason": null
+    },
+    {
+      "id": "git-clean-after-validation",
+      "status": "passed",
+      "command": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "command_display": "git status --porcelain=v1 --untracked-files=all",
+      "timeout_seconds": 30,
+      "duration_seconds": 0.795,
+      "exit_code": 0,
+      "reason": null
+    }
+  ]
+}

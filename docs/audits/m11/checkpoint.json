@@ -1,0 +1,16 @@
+{
+  "checkpoint_schema_version": 2,
+  "checkpoint_id": "cyber-sand-engine-m11-workspace",
+  "compatibility_id": "cse-m11__setup-v2__godot-4.7.5b4e0cb0f__rapier2d-0.35.2__godotcpp-101ae380__gdapi-4.7",
+  "archive_filename": "cyber-sand-engine-m11-workspace.zip",
+  "linked_setup_cache": "cyber-sand-engine-setup-cache-v2",
+  "setup_cache_optional": true,
+  "source_baseline_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+  "parent_baseline_commit": "9b5856b",
+  "render_patch_commit": "c644b235fbcb5e085802918c0d6cebec118b6405",
+  "build_id": "m11-audit-remediation-render-handoff-water-native-repro-2026-08-28",
+  "created_at_utc": "2026-08-28T00:00:00Z",
+  "godot_project_path": "cyber-sand-engine/godot/project.godot",
+  "expected_godot": "4.7.stable.official.5b4e0cb0f",
+  "archive_finalization_rule": "The sidecar, manifest validation, clean combined restore, workspace-only restore, and complete timeout-bounded validation must pass after publication."
+}

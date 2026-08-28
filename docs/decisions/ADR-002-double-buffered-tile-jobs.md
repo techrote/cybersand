@@ -4,7 +4,7 @@ status: Current
 scope: Primary Noita-style phased in-place prototype, buffered reference/fallback, spatial hierarchy, ownership, barriers, deterministic execution, and decision gate
 keywords: [ADR, phased in-place, checkerboard, Noita, double buffer, TileJob, worker pool, benchmark gate]
 related-documents: [../architecture/chunk-tile-and-buffer-model.md, ../architecture/determinism-and-boundary-transfers.md, ADR-005-water-model.md]
-last-reviewed: 2026-08-27
+last-reviewed: 2026-08-28
 implementation-state: The Noita-inspired four-phase backend, activity hierarchy, bounded write geometry, and persistent worker pool are Current; the buffered fallback remains unimplemented.
 ---
 
@@ -31,7 +31,9 @@ why checkerboard became primary, Noita four phase scheduler, 64 scheduling core,
 
 World implements 32×32 activity blocks, 64×64 parity scheduling cores, four
 phase barriers, declared radius-two write domains, deterministic merge, and a
-persistent worker pool. The runnable Godot proof is not bridged to it.
+persistent worker pool. Bundled Linux and Windows x86_64 Godot builds invoke
+this World through CyberNativeCellWorld; unsupported platforms use the serial
+GDScript fallback.
 
 ## Context
 
