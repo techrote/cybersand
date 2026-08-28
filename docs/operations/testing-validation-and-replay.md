@@ -5,7 +5,7 @@ scope: Current native coverage, strict replay, gameplay-approximation fixtures, 
 keywords: [unit test, deterministic replay, gameplay approximation, rigid body mask, scanline, tile edge, chunk edge, liquid conservation, settled water]
 related-documents: [../architecture/determinism-and-boundary-transfers.md, ../architecture/rigid-body-and-cellular-coupling.md, ../systems/water-design.md, profiling-observability-and-performance.md]
 last-reviewed: 2026-08-28
-implementation-state: Thirty-eight native behavioral/catalogue tests and a focused 81-row appearance-LUT regression pass; Rapier, dirty RG8, shader-loaded full-scene, and Linux native checks pass while Windows runtime, serialization, and target-GPU profiling remain absent.
+implementation-state: Thirty-nine native behavioral/catalogue tests, the nine-fixture fallback interaction suite, and a focused 81-row appearance-LUT regression pass; Rapier, dirty RG8, shader-loaded full-scene, and Linux native checks pass while Windows runtime, serialization, and target-GPU profiling remain absent.
 ---
 
 # Testing, validation, and replay
@@ -23,7 +23,7 @@ implementation-state: Thirty-eight native behavioral/catalogue tests and a focus
 - **Current**: the Godot appearance regression checks 81 palette/program rows, increased solid contrast, representative flair codes, unclamped HDR neon, fallback collision, native ID acceptance, and hard-surface invalidation.
 - **Current**: Rapier preflight checks the pinned Godot version, vendored extension, registered server class, and selected engine; it passes on Linux x86_64.
 - **Current**: focused fixtures confirm ordinary automatic RigidBody2D integration, explicit manual stepping, complete packed body samples, and pause ownership.
-- **Current**, fallback-only known failure: the GDScript nine-fixture run passes Smoke, small Water, body mask/sweep, and scanline groups but its wide Water basin exceeds the two-pixel height bound; the same failure is reproduced in m7 and is not caused by m8 smoke culling.
+- **Current**: the GDScript nine-fixture run passes Smoke, small and wide Water, body mask/sweep, and scanline groups. The wide basin uses bounded contiguous pressure look-ahead; the preferred native Water solver remains authoritative on bundled desktop targets.
 - **Planned**: gameplay bridge, Godot integration, serialization, completion-order perturbation, mirrored bias, and 2× capacity fixtures.
 
 ## Search anchors
@@ -56,8 +56,8 @@ godot/tests/test_material_appearance_lut.gd checks the bounded appearance
 compiler and verifies that the rebuilt native extension accepts themed IDs.
 godot/tests/test_cell_world.gd provides nine runnable Godot regressions for
 Water leveling, Smoke density exchange, body-mask blocking/sweep, and bottom-up
-vertical-chain continuity. Its 2026-08-27 run had one failing group: wide Water
-leveling. The new body-mask and swept-displacement assertions passed.
+vertical-chain continuity. The m11 run passes all nine groups, including the
+5,192-cell wide-Water leveling fixture.
 
 Current gaps:
 
@@ -84,7 +84,7 @@ restrictions rather than a reported project leak.
 | Transfer/merge tests | **Approved design** | Stable edge effects, conflicts, conservation, completion-order independence |
 | Scheduler replay tests | **Current**, partial | Repeat and worker-count equivalence; overload/reconfiguration transitions missing |
 | Bridge contract tests | **Current**, partial native render publication | Immutable snapshot lifetime/pressure/C ownership/concurrency; gameplay and Godot adapters missing |
-| Godot interaction regression | **Current**, fallback-only known failure | Older GDScript nine-fixture run failed wide Water leveling; preferred native Water has separate passing native conservation/settling coverage |
+| Godot interaction regression | **Current**, passing | Nine GDScript fixtures pass, including wide Water; preferred native Water retains separate conservation/settling coverage |
 | Rapier dependency preflight | **Current**, passing on Linux x86_64 | Godot 4.7.x, vendored GDExtension, registered RapierPhysicsServer2D class, and Rapier2D selection |
 | Rapier drop-in fixture | **Current**, passing on Linux x86_64 | Ordinary RigidBody2D plus RectangleShape2D advances under automatic Rapier stepping |
 | Rapier manual-step fixture | **Current**, passing on Linux x86_64 | Bridge initialization, falling transform, three packed samples, and pause stopping `space_step` |

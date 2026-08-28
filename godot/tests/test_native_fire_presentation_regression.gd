@@ -5,6 +5,12 @@ extends SceneTree
 # ignited hard surface is not erased during the first second.
 
 var _failures: int = 0
+const HARD_SURFACE_CHUNK_SIZE: int = 64
+const HARD_SURFACE_CHUNK_COUNT: int = (
+	(CyberCellWorld.WORLD_WIDTH / HARD_SURFACE_CHUNK_SIZE)
+	* (CyberCellWorld.WORLD_HEIGHT / HARD_SURFACE_CHUNK_SIZE)
+)
+const HARD_SURFACE_HEADER_SIZE: int = HARD_SURFACE_CHUNK_COUNT + 2
 
 
 func _init() -> void:
@@ -49,15 +55,24 @@ func _run() -> void:
 	var rectangles: PackedInt32Array = world.get_hard_surface_rectangles()
 	_expect(rectangles.size() % 4 == 0, "hard-surface rectangles are malformed")
 	var chunk_rectangles: PackedInt32Array = world.get_hard_surface_chunk_rectangles()
-	_expect(chunk_rectangles.size() >= 66, "chunked hard-surface snapshot is too short")
-	if chunk_rectangles.size() >= 66:
-		_expect(chunk_rectangles[0] == 64, "chunked hard-surface count is not 64")
-		_expect(chunk_rectangles[1] == 66, "first chunk offset is malformed")
+	_expect(
+		chunk_rectangles.size() >= HARD_SURFACE_HEADER_SIZE,
+		"chunked hard-surface snapshot is too short"
+	)
+	if chunk_rectangles.size() >= HARD_SURFACE_HEADER_SIZE:
 		_expect(
-			chunk_rectangles[65] == chunk_rectangles.size(),
+			chunk_rectangles[0] == HARD_SURFACE_CHUNK_COUNT,
+			"chunked hard-surface count does not match the 64x64 partition"
+		)
+		_expect(
+			chunk_rectangles[1] == HARD_SURFACE_HEADER_SIZE,
+			"first chunk offset is malformed"
+		)
+		_expect(
+			chunk_rectangles[HARD_SURFACE_CHUNK_COUNT + 1] == chunk_rectangles.size(),
 			"final chunk offset does not match snapshot size"
 		)
-		for chunk_index: int in range(64):
+		for chunk_index: int in range(HARD_SURFACE_CHUNK_COUNT):
 			_expect(
 				(chunk_rectangles[chunk_index + 2] - chunk_rectangles[chunk_index + 1]) % 4 == 0,
 				"chunk rectangle payload is malformed"

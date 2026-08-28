@@ -139,8 +139,7 @@ const SLUSH_SURFACE_ADHESION: bool = true
 const PASTE_SURFACE_ADHESION: bool = true
 const MAX_LIQUID_LATERAL_FLOW_RATE: int = 24
 const COHERENT_LIQUID_LATERAL_FLOW_RATE: int = 1
-const LIQUID_LEVEL_SEARCH_DISTANCE: int = 32
-const LIQUID_LEVEL_PROBE_COUNT: int = 5
+const LIQUID_LEVEL_SEARCH_DISTANCE: int = 256
 
 const MAX_BODY_PIXEL_EJECTION_DISTANCE: int = 8
 const MAX_BODY_SWEEP_DISTANCE: float = 32.0
@@ -1780,41 +1779,21 @@ func _liquid_has_pressure_advantage(
 		return true
 
 	# A one-cell-at-a-time comparison can incorrectly accept a long staircase as
-	# equilibrium. Probe one position in each exponentially larger distance band
-	# while still checking every intervening surface cell for an obstruction.
-	# This reduces the old worst case from 256 full 64-cell depth scans to eight;
-	# the tick-varying probes eventually sample different columns without changing
-	# the authoritative grid resolution.
+	# equilibrium. Inspect the bounded contiguous surface run so a lower column
+	# cannot be missed before the cell reaches its sleep threshold. This fallback
+	# is serial; the preferred native solver keeps its phased bounded-write rules.
 	var direction: int = -1 if target_x < source_x else 1
-	var checked_distance: int = 1
-	for probe_index: int in range(LIQUID_LEVEL_PROBE_COUNT):
-		var band_start: int = 2 if probe_index == 0 else (1 << probe_index) + 1
-		var band_end: int = mini(LIQUID_LEVEL_SEARCH_DISTANCE, 1 << (probe_index + 1))
-		if band_start > LIQUID_LEVEL_SEARCH_DISTANCE:
+	for distance: int in range(2, LIQUID_LEVEL_SEARCH_DISTANCE + 1):
+		var sample_x: int = source_x + direction * distance
+		if not in_bounds(sample_x, y) or material_at(sample_x, y) != EMPTY:
 			break
-		var band_span: int = maxi(1, band_end - band_start + 1)
-		var probe_hash: int = absi(
-			source_x * 31 + y * 17 + tick_index * 13 + probe_index * 7
-		)
-		var probe_distance: int = band_start + (probe_hash % band_span)
-		var path_clear: bool = true
-		for distance: int in range(checked_distance + 1, probe_distance + 1):
-			var path_x: int = source_x + direction * distance
-			if not in_bounds(path_x, y) or material_at(path_x, y) != EMPTY:
-				path_clear = false
-				break
-			if (
-				not _liquid_has_surface_adhesion(material_id)
-				and not _liquid_destination_is_supported(material_id, path_x, y)
-			):
-				path_clear = false
-				break
-		if not path_clear:
+		if (
+			not _liquid_has_surface_adhesion(material_id)
+			and not _liquid_destination_is_supported(material_id, sample_x, y)
+		):
 			break
-		var sample_x: int = source_x + direction * probe_distance
 		if source_depth > _liquid_depth_below(material_id, sample_x, y) + yield_depth:
 			return true
-		checked_distance = probe_distance
 	return false
 
 

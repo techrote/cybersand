@@ -5,7 +5,7 @@ scope: Inspected implementation baseline, approved architecture, known contradic
 keywords: [status, roadmap, current implementation, approved design, checkpoint, rollback, technical debt]
 related-documents: [../README.md, ../architecture/overview.md, ../operations/testing-validation-and-replay.md]
 last-reviewed: 2026-08-28
-implementation-state: The m9 GPU-flair checkpoint retains m8 simulation behavior while adding 42 GPU material finishes, neighbour-derived relief, dual-radius bloom, F3 stats visibility, and 1920x1080 output.
+implementation-state: The m11 checkpoint retains the m9 GPU presentation work and adds the render-patch lifetime fix, passing fallback-Water/Fire regressions, pinned native rebuild inputs, and portable archive/restore tooling.
 ---
 
 # Status and roadmap
@@ -35,7 +35,7 @@ what exists now, next implementation phase, rollback point, known defect, bridge
 
 ## Current implementation baseline
 
-Build identity: m9-gpu-flair42-relief-bloom-fhd-win64-2026-08-28.
+Build identity: m11-audit-remediation-render-handoff-water-native-repro-2026-08-28.
 
 | Area | Status | Evidence |
 |---|---|---|
@@ -68,7 +68,7 @@ Build identity: m9-gpu-flair42-relief-bloom-fhd-win64-2026-08-28.
 
 - Unsupported extension architectures fall back to the older discrete GDScript world and therefore do not have native performance or identical Water behavior.
 - Focused Rapier preflight, drop-in, manual-step, and full-scene smoke checks pass with the official Godot 4.7 Linux x86_64 editor. The Windows x86_64 CyberSand DLL is structurally validated but awaits an actual Windows Godot launch.
-- The nine-group Godot interaction regression has one known failure unrelated to Rapier: the wide Water basin retains 9..22-pixel column heights after 360 ticks instead of the asserted two-pixel maximum difference.
+- The nine-group GDScript interaction regression passes in m11, including the wide-Water basin. The fallback still uses a different discrete liquid model and is not a performance or bit-equivalence claim for native Water.
 - Native lazy mode may allocate chunks during a tick; preallocated regions prove zero owned chunk/optional-field allocations and expose any violation in TickStats.
 - Changed Godot revisions copy only accumulated dirty RG8 patches across the native bridge, but the current `ImageTexture.update()` still uploads the full finite RG8 backing image.
 - The pacing/command owner is one Godot Thread, but each native cellular tick dispatches eligible phase jobs across a persistent native worker pool.

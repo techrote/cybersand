@@ -74,7 +74,8 @@ this overload safety policy.
 If the stride remains one during a large spike, confirm `eligible_blocks_last_tick`
 is published and the current cell_world.gd is running. If FPS is still low at a
 high stride, isolate a single active block and profile its material family;
-liquid pressure work should use eight deep band probes, not one for every column.
+fallback liquid pressure work uses a bounded contiguous surface scan; the native
+solver retains its separate phased interaction budget.
 
 Alternating horizontal gaps are not a reason to coarsen the grid. The corrected
 bottom-up rule stamps a written destination but permits a vertically vacated

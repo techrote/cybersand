@@ -5,7 +5,7 @@ scope: Question-to-document and query-to-anchor map for human and agentic retrie
 keywords: [RAG, retrieval index, question map, search anchor, agent context, safe change]
 related-documents: [../README.md, glossary.md, status-and-roadmap.md]
 last-reviewed: 2026-08-28
-implementation-state: Maps the m9 GPU-flair checkpoint, including 42 material effects, neighbour relief, dual-radius bloom, F3 stats visibility, 1920x1080 output, and retained m8 temporal fidelity.
+implementation-state: Maps the m11 checkpoint, including the m9 material presentation baseline, render-patch lifetime fix, corrected fallback regressions, and pinned native rebuild inputs.
 ---
 
 # Retrieval index

@@ -42,7 +42,7 @@ godot/scripts/cell_world.gd retains the unsupported-platform fallback:
 - EMISSION_FLAG_COHERENT_LIQUID stored through an otherwise-unused flow-state bit;
 - COHERENT_LIQUID_LATERAL_FLOW_RATE set to 1;
 - independent per-material surface-adhesion constants plus a runtime override;
-- LIQUID_PRESSURE_SAMPLE_DEPTH set to 64 and LIQUID_LEVEL_SEARCH_DISTANCE set to 256;
+- LIQUID_PRESSURE_SAMPLE_DEPTH set to 32 and LIQUID_LEVEL_SEARCH_DISTANCE set to 256;
 - flow_budget per cell;
 - flow_direction per cell;
 - _try_liquid_lateral;
@@ -56,7 +56,8 @@ small-fixture failure but left broad piles far too slow and able to sleep with
 a residual four-cell mound. The Current serial rule derives a bounded movement
 distance from viscosity, scans every intervening cell, and moves Water up to 24
 empty cells per update. Once momentum stops, pressure look-ahead scans only
-along the open surface row for a genuinely lower column; level pools therefore
+along the bounded contiguous open surface row for a genuinely lower column;
+level pools therefore
 stop rather than reverse and shimmer. Finite travel, higher viscosity, and a
 nonzero pressure yield are now exercised by prototype Paste and Slush without
 changing Water's tuning.

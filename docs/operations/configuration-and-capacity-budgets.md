@@ -56,9 +56,8 @@ change simulation size, capacity exceeded, current and 2x preallocation, active 
 | godot/scripts/cell_world.gd | SLUSH_VISCOSITY / PASTE_VISCOSITY | 192 / 240 | Distinct prototype liquid flow speeds | **Current** prototype tuning |
 | godot/scripts/cell_world.gd | MAX_LIQUID_LATERAL_FLOW_RATE | 24 | Maximum contiguous empty cells crossed by the fastest serial discrete liquid update | **Current** Godot reference constant; not a native scheduler write radius |
 | godot/scripts/cell_world.gd | COHERENT_LIQUID_LATERAL_FLOW_RATE | 1 | Caps supported pressure-flow for coherent-emitted liquid; gravity/density retain the state | **Current** command-selected behavior, independent of viscosity |
-| godot/scripts/cell_world.gd | LIQUID_PRESSURE_SAMPLE_DEPTH | 64 | Bounds stopped-edge depth comparison | **Current** Godot reference constant |
+| godot/scripts/cell_world.gd | LIQUID_PRESSURE_SAMPLE_DEPTH | 32 | Bounds stopped-edge depth comparison | **Current** Godot fallback constant |
 | godot/scripts/cell_world.gd | LIQUID_LEVEL_SEARCH_DISTANCE | 256 | Bounds free-surface look-ahead used to reject staircase heaps | **Current** Godot reference constant |
-| godot/scripts/cell_world.gd | LIQUID_LEVEL_PROBE_COUNT | 8 | Limits deep column samples across the broad look-ahead | **Current** sampled-search proof |
 | godot/scripts/cell_world.gd | MAX_BODY_PIXEL_EJECTION_DISTANCE | 8 | Bounds rectangle-body overlap ejection search | **Current** body proof; unresolved pixels are retained/counted |
 | godot/scripts/cell_world.gd | MAX_BODY_IMPULSE_PER_TICK | 3.0 | Caps accumulated result impulse per body/sample | **Current** body proof tuning |
 | godot/scripts/rigid_body_coupling.gd | MAX_BODIES | 16 | Bounds accepted prototype body IDs/results; scene supplies three | **Current** prototype bound, not production capacity |

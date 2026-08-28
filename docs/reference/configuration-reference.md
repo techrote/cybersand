@@ -90,8 +90,7 @@ Source: godot/scripts/cell_world.gd.
 | SLUSH_SURFACE_ADHESION | true | Allows unsupported lateral bridging for Slush | Prototype material trait |
 | PASTE_SURFACE_ADHESION | true | Allows unsupported lateral bridging for Paste | Prototype material trait |
 | LIQUID_PRESSURE_SAMPLE_DEPTH | 32 | Stopped-edge vertical comparison bound | Script fallback only |
-| LIQUID_LEVEL_SEARCH_DISTANCE | 32 | Stopped-edge horizontal look-ahead bound | Script fallback only |
-| LIQUID_LEVEL_PROBE_COUNT | 5 | Samples across fallback look-ahead bands | Script fallback only; traversed row remains exact |
+| LIQUID_LEVEL_SEARCH_DISTANCE | 256 | Stopped-edge horizontal look-ahead bound | Script fallback only |
 | MAX_BODY_PIXEL_EJECTION_DISTANCE | 8 | Maximum outward search beyond first overlap-exit distance | Current rectangle body proof; no particle fallback |
 | BODY_PIXEL_CONTACT_IMPULSE | 0.025 | Per attempted cell/body impact before density scaling | Prototype coupling tuning, not a physical-unit guarantee |
 | BODY_DISPLACEMENT_REACTION_IMPULSE | 0.18 | Per body-overlap displacement reaction before density scaling | Prototype coupling tuning |

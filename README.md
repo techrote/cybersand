@@ -77,7 +77,13 @@ make benchmark
 make shared
 ```
 
-To rebuild the included Linux GDExtension after building a matching Godot 4.7
+The m11 native release inputs are pinned in
+`third_party/native-toolchain.lock.json`. The separate setup-cache v2 contains
+the exact `godot-cpp` source archive and prebuilt Linux/Windows static libraries,
+the SCons 4.10.1 wheel, and LLVM-MinGW 20260826. The tracked preparation script
+reconstructs those tools offline and refuses checksum or revision drift.
+
+To rebuild the included Linux GDExtension after building the pinned Godot 4.7
 `godot-cpp` checkout:
 
 ```sh
@@ -88,8 +94,19 @@ To cross-build the included Windows x86_64 GDExtension with MinGW-w64 after
 building the matching Windows `godot-cpp` static library:
 
 ```sh
-GODOT_CPP_ROOT=/path/to/godot-cpp tools/build_native_extension_windows.sh
+GODOT_CPP_ROOT=/path/to/godot-cpp \
+WINDOWS_CXX=/path/to/llvm-mingw/bin/x86_64-w64-mingw32-g++ \
+tools/build_native_extension_windows.sh
 ```
+
+`tools/build_pinned_godot_cpp.sh` gives the exact static-library commands, and
+`tools/check_linux_runtime_floor.sh` verifies that the complete Linux bundle's
+minimum glibc remains 2.34. This floor is imposed by the bundled Rapier2D
+library; the CyberSand extension itself is built so it does not import the
+newer `fmodf@GLIBC_2.38` symbol. The extension also requires a C++ runtime
+providing `GLIBCXX_3.4.30` and `CXXABI_1.3.9`. See
+`godot/native_extension/README.md` for the offline sequence and supported tool
+versions.
 
 The benchmark accepts optional arguments:
 

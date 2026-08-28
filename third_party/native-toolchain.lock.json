@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "checkpoint": "m11",
+  "compatibility_id": "cyber-sand-native-godot-4.7-x86_64-v1",
+  "godot_api": "4.7",
+  "artifacts": [
+    {
+      "name": "godot-cpp",
+      "version": "101ae38034304346a46ea9ea84ae156d3e860496",
+      "platform": "source",
+      "architecture": "any",
+      "origin_url": "https://github.com/godotengine/godot-cpp.git",
+      "source_type": "git repository; deterministic git-archive export",
+      "license": "MIT",
+      "redistribution": "permitted with license notice",
+      "cache_filename": "godot-cpp-101ae38034304346a46ea9ea84ae156d3e860496.tar.gz",
+      "size": 2423907,
+      "sha256": "f55d1cd5a2d528a9dc72fc54c1ef2b3d4dd90a0570dd8841d6766cbd4912dad8",
+      "source_file_ledger_sha256": "8a2fb6cdcd174a749692da86716c7a1e008ee4216000b53374bcb89ba31e521b",
+      "required_by": [
+        "libcybersand_native.linux.x86_64.so",
+        "cybersand_native.windows.x86_64.dll"
+      ],
+      "portability": "portable source archive",
+      "restore": "Run tools/prepare_native_build_env.sh so the verified archive is extracted and the exact revision, archive hash, and canonical source-file ledger markers are generated. The archive is created with: git archive --format=tar --prefix=godot-cpp-<commit>/ <commit> | gzip -n -9."
+    },
+    {
+      "name": "SCons",
+      "version": "4.10.1",
+      "platform": "Python 3",
+      "architecture": "any",
+      "origin_url": "https://pypi.org/project/SCons/4.10.1/#files",
+      "source_type": "Python wheel",
+      "license": "MIT",
+      "redistribution": "permitted with license notice",
+      "cache_filename": "scons-4.10.1-py3-none-any.whl",
+      "size": 4136069,
+      "sha256": "bd9d1c52f908d874eba92a8c0c0a8dcf2ed9f3b88ab956d0fce1da479c4e7126",
+      "required_by": [
+        "godot-cpp Linux static library",
+        "godot-cpp Windows static library"
+      ],
+      "portability": "portable wheel",
+      "restore": "Install into an isolated venv with pip --no-index --no-deps, or run tools/prepare_native_build_env.sh."
+    },
+    {
+      "name": "llvm-mingw",
+      "version": "20260826 (LLVM 23.1.0, UCRT)",
+      "platform": "Ubuntu 22.04 or newer Linux host; Windows target",
+      "architecture": "x86_64 host and x86_64-w64-mingw32 target",
+      "origin_url": "https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz",
+      "source_type": "official release archive",
+      "license": "Apache-2.0 WITH LLVM-exception; bundled components retain their own notices",
+      "redistribution": "permitted when the archive's license and component notices are retained",
+      "cache_filename": "llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz",
+      "size": 83880560,
+      "sha256": "cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65",
+      "required_by": [
+        "godot-cpp Windows static library",
+        "cybersand_native.windows.x86_64.dll"
+      ],
+      "portability": "portable across compatible x86_64 Linux hosts",
+      "restore": "Extract without rewriting files, set LLVM_MINGW_ROOT to the extracted root, and use tools/build_pinned_godot_cpp.sh windows."
+    },
+    {
+      "name": "GNU C++",
+      "version": "13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04)",
+      "platform": "Linux",
+      "architecture": "x86_64",
+      "origin_url": "https://packages.ubuntu.com/noble/g++-13",
+      "source_type": "host compiler; not embedded",
+      "license": "GPL-3.0-or-later WITH GCC-exception-3.1",
+      "redistribution": "not included in the setup cache; install from the host distribution",
+      "cache_filename": null,
+      "size": null,
+      "sha256": null,
+      "required_by": [
+        "godot-cpp Linux static library",
+        "libcybersand_native.linux.x86_64.so"
+      ],
+      "portability": "host-specific executable",
+      "restore": "Install g++ 13.3.0 and select it with CYBERSAND_REAL_CXX. Set CYBERSAND_ALLOW_TOOLCHAIN_DRIFT=1 only for a non-release local build."
+    },
+    {
+      "name": "GNU Binutils ld",
+      "version": "2.42",
+      "platform": "Linux",
+      "architecture": "x86_64",
+      "origin_url": "https://packages.ubuntu.com/noble/binutils",
+      "source_type": "host linker; not embedded",
+      "license": "GPL-3.0-or-later",
+      "redistribution": "not included in the setup cache; install from the host distribution",
+      "cache_filename": null,
+      "size": null,
+      "sha256": null,
+      "required_by": [
+        "libcybersand_native.linux.x86_64.so"
+      ],
+      "portability": "host-specific executable",
+      "restore": "Install GNU binutils 2.42. Set CYBERSAND_ALLOW_TOOLCHAIN_DRIFT=1 only for a non-release local build."
+    }
+  ],
+  "linux_host_packages": [
+    {
+      "name": "g++-13, gcc-13, gcc-13-base, libstdc++-13-dev",
+      "version": "13.3.0-6ubuntu2~24.04",
+      "architecture": "amd64",
+      "origin_url": "https://snapshot.ubuntu.com/",
+      "license": "GPL-3.0-or-later WITH GCC-exception-3.1 (component-specific notices apply)",
+      "redistribution": "reference-only; installed packages were not cached locally",
+      "sha256": null,
+      "restore": "Use an Ubuntu snapshot or trusted package mirror to install the exact recorded package versions; verify the package repository metadata before use."
+    },
+    {
+      "name": "binutils, binutils-x86-64-linux-gnu",
+      "version": "2.42-4ubuntu2.5",
+      "architecture": "amd64",
+      "origin_url": "https://snapshot.ubuntu.com/",
+      "license": "GPL-3.0-or-later and component-specific notices",
+      "redistribution": "reference-only; installed packages were not cached locally",
+      "sha256": null,
+      "restore": "Use an Ubuntu snapshot or trusted package mirror to install the exact recorded package versions."
+    },
+    {
+      "name": "libc6, libc6-dev",
+      "version": "2.39-0ubuntu8.6",
+      "architecture": "amd64",
+      "origin_url": "https://snapshot.ubuntu.com/",
+      "license": "LGPL-2.1-or-later and component-specific notices",
+      "redistribution": "reference-only; installed packages were not cached locally",
+      "sha256": null,
+      "restore": "Use an Ubuntu snapshot or trusted package mirror to install the exact recorded package versions."
+    },
+    {
+      "name": "linux-libc-dev",
+      "version": "6.8.0-85.85",
+      "architecture": "amd64",
+      "origin_url": "https://snapshot.ubuntu.com/",
+      "license": "GPL-2.0-only WITH Linux-syscall-note",
+      "redistribution": "reference-only; installed package was not cached locally",
+      "sha256": null,
+      "restore": "Use an Ubuntu snapshot or trusted package mirror to install the exact recorded package version."
+    }
+  ],
+  "cached_build_products": [
+    {
+      "name": "godot-cpp Linux static library",
+      "version": "101ae38034304346a46ea9ea84ae156d3e860496 / Godot API 4.7 / template_debug",
+      "platform": "linux",
+      "architecture": "x86_64",
+      "cache_filename": "libgodot-cpp.linux.template_debug.x86_64.a",
+      "size": 84962712,
+      "sha256": "b99b8868348f0018b9cdbbb186c10dabad13610e537945290e91b69040c7e5e0",
+      "required_by": "libcybersand_native.linux.x86_64.so",
+      "restore": "Copy beside the extracted pinned source under bin/, or rebuild with tools/build_pinned_godot_cpp.sh linux."
+    },
+    {
+      "name": "godot-cpp Windows static library",
+      "version": "101ae38034304346a46ea9ea84ae156d3e860496 / Godot API 4.7 / template_debug",
+      "platform": "windows",
+      "architecture": "x86_64",
+      "cache_filename": "libgodot-cpp.windows.template_debug.x86_64.a",
+      "size": 66374316,
+      "sha256": "db7a8c71f32ba9168b380d6a2599352bb2182178797745dd93956e5294638b09",
+      "required_by": "cybersand_native.windows.x86_64.dll",
+      "restore": "Copy beside the extracted pinned source under bin/, or rebuild with tools/build_pinned_godot_cpp.sh windows."
+    }
+  ],
+  "release_outputs": [
+    {
+      "name": "CyberSand Linux GDExtension",
+      "size": 1099808,
+      "sha256": "bf58b2bf4e6ffb639ce847e6f2eb920f89c69f98fe212eed27ba2aede2ddf677"
+    },
+    {
+      "name": "CyberSand Windows GDExtension",
+      "size": 1675776,
+      "sha256": "58451b8aad79fbaed7833707c26d3f6c54da07cfb26cd2c59ed6ef87651b2aa9"
+    }
+  ],
+  "runtime_floor": {
+    "linux_x86_64": {
+      "glibc": "2.34",
+      "glibcxx": "3.4.30",
+      "cxxabi": "1.3.9",
+      "reason": "The vendored official Rapier2D v0.35.2 Linux libraries require GLIBC_2.34. The CyberSand extension must not add a newer GLIBC requirement.",
+      "cybersand_forbidden_import": "fmodf@GLIBC_2.38",
+      "validation": "tools/check_linux_runtime_floor.sh"
+    }
+  }
+}

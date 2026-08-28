@@ -5,7 +5,7 @@ scope: Entry point, evidence policy, status vocabulary, reading routes, and docu
 keywords: [documentation index, RAG, current, approved design, architecture, retrieval]
 related-documents: [architecture/overview.md, reference/retrieval-index.md, reference/status-and-roadmap.md]
 last-reviewed: 2026-08-28
-implementation-state: This index describes m9 GPU flair: m8 simulation behavior plus 42 presentation classes, four-neighbour relief, wider HDR bloom, F3 stats visibility, and 1920x1080 output.
+implementation-state: This index describes m11: the m9 visual baseline plus the render-patch lifetime fix, corrected fallback regressions, and reproducible portable checkpoint tooling.
 ---
 
 # Cyber Sand Engine documentation
@@ -31,7 +31,7 @@ Source code is authoritative for **Current** status. Existing milestone document
 
 The repository inspected for this baseline is:
 
-- Build identity: **m9-gpu-flair42-relief-bloom-fhd-win64-2026-08-28**
+- Build identity: **m11-audit-remediation-render-handoff-water-native-repro-2026-08-28**
 - Preferred Godot simulation: godot/native_extension/cyber_native_cell_world.cpp plus native/src/world.cpp
 - Platform fallback simulation: godot/scripts/cell_world.gd
 - Current Godot worker: godot/scripts/simulation_worker.gd

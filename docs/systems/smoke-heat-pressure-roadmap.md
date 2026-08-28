@@ -87,8 +87,8 @@ second 1024² age array. It preserves the visual intent, not exact native timing
 
 Native tests cover single-pair Smoke/Water and Smoke/Sand exchange, conserved
 Water mass during exchange, nine-cell displacement, long lifetime, eventual
-culling, and Fire exclusion. The equivalent fallback displacement groups pass;
-its inherited wide-Water leveling assertion remains a separate known failure.
+culling, and Fire exclusion. The equivalent fallback displacement groups and
+the wide-Water leveling assertion pass in m11.
 
 ### Planned questions
 
