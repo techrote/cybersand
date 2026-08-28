@@ -4,7 +4,7 @@ status: Approved design
 scope: Current and approved owners, readers, writers, mutation phases, allocation policy, lifetime, and overflow behavior for buffers and queues
 keywords: [ownership, lifetime, buffer, queue, rigid body mask, current buffer, next buffer, halo, transfer, snapshot]
 related-documents: [module-boundaries.md, simulation-tick-and-threading.md, rigid-body-and-cellular-coupling.md, ../reference/invariants.md]
-last-reviewed: 2026-08-27
+last-reviewed: 2026-08-28
 implementation-state: Current tables describe inspected code; approved tables define constraints but leave unapproved schemas and pressure policies unresolved.
 ---
 
@@ -43,13 +43,17 @@ which job may write, authoritative cell owner, phase write domain, snapshot life
 | Packed rigid-body coupling results | CyberSimulationSnapshot | Godot physics callback | Worker before immutable publication | Snapshot lifetime | After overlap/cellular observations | Current result is bounded by accepted body count; sample IDs prevent duplicate application |
 | Worker frame inputs | CyberSimulationWorker | Worker | Godot main thread under mutex | Replaced as input changes | Between worker steps | Dictionary-based; no bounded schema |
 | Worker material-emission queue | CyberSimulationWorker | Worker | Main thread under mutex; paint is one wrapper/producer | Until drained | Before simulation step | Dynamic Array; no reported capacity; commands contain material IDs, never UI slots |
-| CyberSimulationSnapshot cell bytes | Published snapshot object | Godot main thread | Constructed by worker, then not intentionally mutated | Until consumer releases references | Snapshot publication | Full PackedByteArray duplicate on changed revision |
-| Godot R8 image/texture | Godot main thread | Renderer | main.gd | Application lifetime/update cycle | Render/main thread | Full finite-world upload after changed revision |
+| Worker render-patch accumulation | CyberSimulationWorker | Worker publication stage only | Worker appends native packets until successful consumer acknowledgement | Until the newest render serial is acknowledged | Worker thread only | Dynamic pending RG8 bytes/metadata; threshold overflow is replaced by a complete finite-world refresh |
+| Published GDScript render patches | CyberSimulationSnapshot | Godot main thread | Worker deep-copies a changed pending payload into a cached publication generation; never mutated afterward | Until consumer releases snapshot references | Worker publication, then read-only main-thread validation/upload | Copy occurs only when the pending payload generation changes, not for every 60 Hz state snapshot |
+| CyberSimulationSnapshot cell bytes | Published snapshot object | Godot main thread | Constructed by worker, then not intentionally mutated | Until consumer releases references | Snapshot publication | Full fallback bytes or a full-refresh copy for compatibility paths |
+| Godot RG8 image/textures | Godot main thread | Renderer | main.gd after complete patch-payload validation | Application lifetime/update cycle | Render/main thread | Compact patches update the CPU image; the two persistent GPU textures are ping-ponged after a valid payload |
 
-The GDScript snapshot wrapper is immutable by convention. The preferred runtime
-copies display bytes from native World into that wrapper; native leased dirty
-snapshot data is type-exposed as const and slot-stable but is not yet the path
-used for Godot texture updates.
+The GDScript snapshot wrapper remains writable as a language type, so the worker
+enforces immutability at publication: pending packed arrays are deep-copied into
+a cached generation before their references cross to the main thread. Merely
+retrieving a snapshot does not retire it. The main thread validates every patch,
+updates the texture, and only then acknowledges the render serial. Rejection
+leaves the pending payload unacknowledged and requests a complete refresh.
 
 ## Approved authoritative buffers
 

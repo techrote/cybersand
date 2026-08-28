@@ -4,7 +4,7 @@ status: Current
 scope: Symptom-to-subsystem routing, wake-up overload, scanline artifacts, rigid-body coupling, current and planned diagnostics, safe corrective actions, and escalation conditions
 keywords: [low FPS, wake spike, alternating lines, rigid body overlap, one core, water shimmer, water heap, boundary seam, dirty upload, capacity exhaustion]
 related-documents: [profiling-observability-and-performance.md, testing-validation-and-replay.md, ../architecture/rigid-body-and-cellular-coupling.md, ../systems/water-design.md]
-last-reviewed: 2026-08-27
+last-reviewed: 2026-08-28
 implementation-state: Current guidance distinguishes the preferred native phased runtime from the adaptive GDScript fallback; Rapier is manually stepped and focused Godot 4.7 Linux checks pass.
 ---
 
@@ -203,15 +203,23 @@ Do not fix divergence by sorting only final cells if earlier semantics remain ti
 
 ## Excessive dirty uploads
 
-Current main.gd uploads the full R8 world texture after a changed revision. The
-native exchange already publishes compact dirty patches, but no Godot adapter
-consumes them. Before changing shaders:
+Current main.gd consumes copied native RG8 dirty patches and updates the retained
+CPU image before ping-ponging two complete GPU textures. Before changing shaders:
 
 - determine whether authoritative cells are genuinely changing;
 - separate water dither/presentation animation from authoritative state;
 - measure snapshot and upload bytes;
 - confirm dirty state survives snapshot pressure;
-- map Current immutable snapshot rectangles into Godot texture-region updates.
+- distinguish compact worker-to-main patch bytes from the final full texture update.
+
+If Godot reports that `Image.create_from_data` expected nonzero RG8 bytes but
+received zero, the patch metadata and payload have violated their publication
+contract. Record the render serial, metadata count, payload byte count, rectangle,
+offset, and stride. Do not acknowledge that serial and do not call Image or
+`blit_rect` with the rejected payload. The Current consumer validates those
+fields, requests a full refresh, and acknowledges only after successful upload.
+Repeated rejection after a full refresh indicates producer corruption rather
+than ordinary render pressure.
 
 If native publication returns Backpressure, release stale consumer leases or
 increase capacity during explicit setup; do not clear World dirty state. If it

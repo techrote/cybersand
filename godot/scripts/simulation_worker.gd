@@ -51,7 +51,12 @@ var _pending_render_channels: int = 1
 var _pending_render_full_refresh: bool = false
 var _pending_render_patch_rectangles: PackedInt32Array = PackedInt32Array()
 var _pending_render_patch_cells: PackedByteArray = PackedByteArray()
+var _pending_render_payload_generation: int = 0
+var _published_render_payload_generation: int = -1
+var _published_render_patch_rectangles: PackedInt32Array = PackedInt32Array()
+var _published_render_patch_cells: PackedByteArray = PackedByteArray()
 var _acknowledged_render_snapshot_serial: int = 0
+var _render_full_refresh_requested: bool = false
 var _fallback_render_snapshot_serial: int = 0
 var _snapshot_hard_surface_revision: int = -1
 var _snapshot_hard_surface_rectangles: PackedInt32Array = PackedInt32Array()
@@ -188,13 +193,25 @@ func take_latest_snapshot(after_serial: int) -> CyberSimulationSnapshot:
 	var result: CyberSimulationSnapshot = _published_snapshot
 	if result != null and result.serial <= after_serial:
 		result = null
-	elif result != null:
-		_acknowledged_render_snapshot_serial = maxi(
-			_acknowledged_render_snapshot_serial,
-			result.render_snapshot_serial
-		)
 	_mutex.unlock()
 	return result
+
+
+func acknowledge_render_snapshot(render_snapshot_serial: int) -> void:
+	if render_snapshot_serial <= 0:
+		return
+	_mutex.lock()
+	_acknowledged_render_snapshot_serial = maxi(
+		_acknowledged_render_snapshot_serial,
+		render_snapshot_serial
+	)
+	_mutex.unlock()
+
+
+func request_render_full_refresh() -> void:
+	_mutex.lock()
+	_render_full_refresh_requested = true
+	_mutex.unlock()
 
 
 func _worker_loop() -> void:
@@ -304,17 +321,26 @@ func _publish_snapshot(
 	var copy_start_usec: int = Time.get_ticks_usec()
 	var now_usec: int = Time.get_ticks_usec()
 	var acknowledged_render_serial: int = 0
+	var render_full_refresh_requested: bool = false
 	_mutex.lock()
 	acknowledged_render_serial = _acknowledged_render_snapshot_serial
+	render_full_refresh_requested = _render_full_refresh_requested
+	_render_full_refresh_requested = false
 	_mutex.unlock()
+	force_render_full_refresh = (
+		force_render_full_refresh or render_full_refresh_requested
+	)
 	if (
 		_pending_render_snapshot_serial > 0
 		and acknowledged_render_serial >= _pending_render_snapshot_serial
 	):
 		_clear_pending_render_patches()
 	if (
-		(force_render_full_refresh or _world.revision != _snapshot_world_revision)
-		and now_usec - _last_render_snapshot_usec >= render_snapshot_interval_usec
+		force_render_full_refresh
+		or (
+			_world.revision != _snapshot_world_revision
+			and now_usec - _last_render_snapshot_usec >= render_snapshot_interval_usec
+		)
 	):
 		if _world.has_method(&"take_render_snapshot"):
 			var render_packet: Dictionary = _world.take_render_snapshot(
@@ -329,7 +355,7 @@ func _publish_snapshot(
 			):
 				_append_native_render_packet(_world.take_render_snapshot(true))
 			if _pending_render_full_refresh:
-				_snapshot_cells = _pending_render_patch_cells
+				_snapshot_cells = _pending_render_patch_cells.duplicate()
 		else:
 			_snapshot_cells = PackedByteArray(_world.get_cells())
 			_fallback_render_snapshot_serial += 1
@@ -345,6 +371,7 @@ func _publish_snapshot(
 				CyberCellWorld.WORLD_WIDTH,
 			])
 			_pending_render_patch_cells = _snapshot_cells
+			_pending_render_payload_generation += 1
 		_snapshot_world_revision = _world.revision
 		_last_render_snapshot_usec = now_usec
 	var current_hard_surface_revision: int = int(_world.hard_surface_revision)
@@ -376,8 +403,9 @@ func _publish_snapshot(
 	snapshot.render_snapshot_serial = _pending_render_snapshot_serial
 	snapshot.render_channels = _pending_render_channels
 	snapshot.render_full_refresh = _pending_render_full_refresh
-	snapshot.render_patch_rectangles = _pending_render_patch_rectangles
-	snapshot.render_patch_cells = _pending_render_patch_cells
+	_refresh_published_render_payload()
+	snapshot.render_patch_rectangles = _published_render_patch_rectangles
+	snapshot.render_patch_cells = _published_render_patch_cells
 	snapshot.hard_surface_rectangles = _snapshot_hard_surface_rectangles
 	snapshot.hard_surface_rectangles_valid = _snapshot_hard_surface_rectangles_valid
 	snapshot.hard_surface_chunk_rectangles = _snapshot_hard_surface_chunk_rectangles
@@ -423,6 +451,18 @@ func _clear_pending_render_patches() -> void:
 	_pending_render_full_refresh = false
 	_pending_render_patch_rectangles = PackedInt32Array()
 	_pending_render_patch_cells = PackedByteArray()
+	_pending_render_payload_generation += 1
+
+
+func _refresh_published_render_payload() -> void:
+	if _published_render_payload_generation == _pending_render_payload_generation:
+		return
+	# Packed arrays are reference types. These copies are the ownership boundary
+	# between the worker's mutable accumulation buffers and immutable snapshots
+	# consumed by the main thread.
+	_published_render_patch_rectangles = _pending_render_patch_rectangles.duplicate()
+	_published_render_patch_cells = _pending_render_patch_cells.duplicate()
+	_published_render_payload_generation = _pending_render_payload_generation
 
 
 func _append_native_render_packet(packet: Dictionary) -> void:
@@ -460,3 +500,4 @@ func _append_native_render_packet(packet: Dictionary) -> void:
 
 	_pending_render_snapshot_serial = packet_serial
 	_pending_render_channels = packet_channels
+	_pending_render_payload_generation += 1

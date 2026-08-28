@@ -175,6 +175,13 @@ The focused native Fire presentation check is:
 godot --headless --path godot --script res://tests/test_native_fire_presentation_regression.gd
 ```
 
+The focused render publication checks are:
+
+```sh
+godot --headless --path godot --script res://tests/test_native_render_bridge_regression.gd
+godot --headless --path godot --script res://tests/test_render_patch_handoff_regression.gd
+```
+
 ## Important boundaries
 
 - No Godot node, tile, or physics object is created per material cell.

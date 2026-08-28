@@ -23,6 +23,7 @@ const TEST_RIGID_BODY_SIZE: Vector2 = Vector2(8.0, 14.0)
 const HARD_SURFACE_REBUILD_INTERVAL: float = 0.10
 const HARD_SURFACE_CHUNKS_PER_FRAME: int = 32
 const HARD_SURFACE_FRAME_BUDGET_USEC: int = 750
+const RENDER_PATCH_METADATA_STRIDE: int = 6
 const RENDER_SNAPSHOT_HZ_PRESETS: Array[int] = [30, 45, 60]
 # Prototype paint-tool slots are UI identifiers, not material IDs. Their
 # mappings may change without changing simulation or serialized material identity.
@@ -143,6 +144,9 @@ var last_uploaded_render_snapshot_serial: int = 0
 var last_render_patch_count: int = 0
 var last_render_patch_bytes: int = 0
 var last_render_was_full_refresh: bool = false
+var rejected_render_snapshot_count: int = 0
+var last_rejected_render_snapshot_serial: int = -1
+var last_render_patch_validation_error: String = ""
 var snapshot_blend_start_usec: int = 0
 var glow_enabled: bool = true
 var debug_stats_visible: bool = true
@@ -216,7 +220,6 @@ func _ready() -> void:
 		render_image_format = (
 			Image.FORMAT_RG8 if render_channels == 2 else Image.FORMAT_R8
 		)
-		last_uploaded_render_snapshot_serial = latest_snapshot.render_snapshot_serial
 		record_render_payload(latest_snapshot)
 	initial_cells.resize(
 		CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * render_channels
@@ -228,10 +231,12 @@ func _ready() -> void:
 		render_image_format,
 		initial_cells
 	)
+	var initial_render_uploaded: bool = false
 	if latest_snapshot != null:
-		apply_render_patches_to_image(
+		initial_render_uploaded = apply_render_patches_to_image(
 			latest_snapshot.render_patch_rectangles,
-			latest_snapshot.render_patch_cells
+			latest_snapshot.render_patch_cells,
+			latest_snapshot.render_channels
 		)
 	texture = ImageTexture.create_from_image(image)
 	previous_texture = ImageTexture.create_from_image(image)
@@ -251,8 +256,14 @@ func _ready() -> void:
 	)
 	setup_glow_pipeline()
 	snapshot_blend_start_usec = Time.get_ticks_usec()
-	if latest_snapshot != null:
+	if latest_snapshot != null and initial_render_uploaded:
+		last_uploaded_render_snapshot_serial = latest_snapshot.render_snapshot_serial
 		last_uploaded_revision = latest_snapshot.world_revision
+		simulation_worker.acknowledge_render_snapshot(
+			latest_snapshot.render_snapshot_serial
+		)
+	elif latest_snapshot != null:
+		reject_render_snapshot(latest_snapshot)
 	update_shader_parameters()
 	update_status()
 
@@ -525,15 +536,21 @@ func consume_worker_snapshot() -> void:
 	latest_snapshot = snapshot
 	consumed_snapshot_serial = snapshot.serial
 	character_position = snapshot.character_position
-	if snapshot.world_revision != last_uploaded_revision:
-		if snapshot.render_snapshot_serial > last_uploaded_render_snapshot_serial:
-			record_render_payload(snapshot)
-			upload_texture_patches(
-				snapshot.render_patch_rectangles,
-				snapshot.render_patch_cells,
-				snapshot.world_revision
-			)
+	if snapshot.render_snapshot_serial > last_uploaded_render_snapshot_serial:
+		record_render_payload(snapshot)
+		var render_uploaded: bool = upload_texture_patches(
+			snapshot.render_patch_rectangles,
+			snapshot.render_patch_cells,
+			snapshot.world_revision,
+			snapshot.render_channels
+		)
+		if render_uploaded:
 			last_uploaded_render_snapshot_serial = snapshot.render_snapshot_serial
+			simulation_worker.acknowledge_render_snapshot(
+				snapshot.render_snapshot_serial
+			)
+		else:
+			reject_render_snapshot(snapshot)
 
 
 func record_render_payload(snapshot: CyberSimulationSnapshot) -> void:
@@ -699,29 +716,47 @@ func upload_texture(material_cells: PackedByteArray, world_revision: int) -> voi
 func upload_texture_patches(
 	patch_rectangles: PackedInt32Array,
 	patch_cells: PackedByteArray,
-	world_revision: int
-) -> void:
+	world_revision: int,
+	patch_channels: int
+) -> bool:
 	if image == null or texture == null or previous_texture == null:
-		return
-	if patch_rectangles.is_empty() or patch_cells.is_empty():
-		return
+		last_render_patch_validation_error = "render images are not initialized"
+		return false
 	var start_usec: int = Time.get_ticks_usec()
-	apply_render_patches_to_image(patch_rectangles, patch_cells)
+	if not apply_render_patches_to_image(
+		patch_rectangles,
+		patch_cells,
+		patch_channels
+	):
+		return false
 	finish_texture_upload(world_revision, start_usec)
+	return true
 
 
 func apply_render_patches_to_image(
 	patch_rectangles: PackedInt32Array,
-	patch_cells: PackedByteArray
-) -> void:
-	for metadata_offset: int in range(0, patch_rectangles.size(), 6):
+	patch_cells: PackedByteArray,
+	patch_channels: int
+) -> bool:
+	last_render_patch_validation_error = validate_render_patch_payload(
+		patch_rectangles,
+		patch_cells,
+		patch_channels
+	)
+	if not last_render_patch_validation_error.is_empty():
+		return false
+	for metadata_offset: int in range(
+		0,
+		patch_rectangles.size(),
+		RENDER_PATCH_METADATA_STRIDE
+	):
 		var patch_x: int = patch_rectangles[metadata_offset]
 		var patch_y: int = patch_rectangles[metadata_offset + 1]
 		var patch_width: int = patch_rectangles[metadata_offset + 2]
 		var patch_height: int = patch_rectangles[metadata_offset + 3]
 		var data_offset: int = patch_rectangles[metadata_offset + 4]
 		var row_stride: int = patch_rectangles[metadata_offset + 5]
-		var row_bytes: int = patch_width * render_channels
+		var row_bytes: int = patch_width * patch_channels
 		var compact_cells: PackedByteArray
 		if row_stride == row_bytes:
 			compact_cells = patch_cells.slice(
@@ -737,6 +772,16 @@ func apply_render_patches_to_image(
 					compact_cells[destination_row + byte_index] = (
 						patch_cells[source_row + byte_index]
 					)
+		var expected_compact_size: int = row_bytes * patch_height
+		if compact_cells.size() != expected_compact_size:
+			last_render_patch_validation_error = (
+				"patch %d compacted to %d bytes; expected %d" % [
+					metadata_offset / RENDER_PATCH_METADATA_STRIDE,
+					compact_cells.size(),
+					expected_compact_size,
+				]
+			)
+			return false
 		var patch_image: Image = Image.create_from_data(
 			patch_width,
 			patch_height,
@@ -744,11 +789,111 @@ func apply_render_patches_to_image(
 			render_image_format,
 			compact_cells
 		)
+		if patch_image == null or patch_image.is_empty():
+			last_render_patch_validation_error = (
+				"Image.create_from_data rejected patch %d (%dx%d, %d bytes)" % [
+					metadata_offset / RENDER_PATCH_METADATA_STRIDE,
+					patch_width,
+					patch_height,
+					compact_cells.size(),
+				]
+			)
+			return false
 		image.blit_rect(
 			patch_image,
 			Rect2i(0, 0, patch_width, patch_height),
 			Vector2i(patch_x, patch_y)
 		)
+	return true
+
+
+func validate_render_patch_payload(
+	patch_rectangles: PackedInt32Array,
+	patch_cells: PackedByteArray,
+	patch_channels: int
+) -> String:
+	if patch_channels != render_channels:
+		return "snapshot channel count %d does not match renderer channel count %d" % [
+			patch_channels,
+			render_channels,
+		]
+	if patch_channels != 1 and patch_channels != 2:
+		return "unsupported render channel count %d" % patch_channels
+	if patch_rectangles.is_empty():
+		return "patch metadata is empty"
+	if patch_rectangles.size() % RENDER_PATCH_METADATA_STRIDE != 0:
+		return "patch metadata contains %d integers; expected a multiple of 6" % (
+			patch_rectangles.size()
+		)
+	if patch_cells.is_empty():
+		return "patch payload is empty"
+
+	for metadata_offset: int in range(
+		0,
+		patch_rectangles.size(),
+		RENDER_PATCH_METADATA_STRIDE
+	):
+		var patch_index: int = metadata_offset / RENDER_PATCH_METADATA_STRIDE
+		var patch_x: int = patch_rectangles[metadata_offset]
+		var patch_y: int = patch_rectangles[metadata_offset + 1]
+		var patch_width: int = patch_rectangles[metadata_offset + 2]
+		var patch_height: int = patch_rectangles[metadata_offset + 3]
+		var data_offset: int = patch_rectangles[metadata_offset + 4]
+		var row_stride: int = patch_rectangles[metadata_offset + 5]
+		if patch_width <= 0 or patch_height <= 0:
+			return "patch %d has non-positive dimensions %dx%d" % [
+				patch_index,
+				patch_width,
+				patch_height,
+			]
+		if (
+			patch_x < 0
+			or patch_y < 0
+			or patch_x > CyberCellWorld.WORLD_WIDTH - patch_width
+			or patch_y > CyberCellWorld.WORLD_HEIGHT - patch_height
+		):
+			return "patch %d rectangle (%d,%d %dx%d) exceeds the world" % [
+				patch_index,
+				patch_x,
+				patch_y,
+				patch_width,
+				patch_height,
+			]
+		var row_bytes: int = patch_width * patch_channels
+		if data_offset < 0:
+			return "patch %d has negative data offset %d" % [patch_index, data_offset]
+		if row_stride < row_bytes:
+			return "patch %d row stride %d is smaller than %d bytes" % [
+				patch_index,
+				row_stride,
+				row_bytes,
+			]
+		var required_end: int = (
+			data_offset + (patch_height - 1) * row_stride + row_bytes
+		)
+		if data_offset > patch_cells.size() or required_end > patch_cells.size():
+			return "patch %d requires payload bytes [%d,%d), but only %d exist" % [
+				patch_index,
+				data_offset,
+				required_end,
+				patch_cells.size(),
+			]
+	return ""
+
+
+func reject_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
+	rejected_render_snapshot_count += 1
+	if snapshot.render_snapshot_serial != last_rejected_render_snapshot_serial:
+		push_error(
+			"Rejected render snapshot %d (%d metadata integers, %d payload bytes): %s; requesting full refresh" % [
+				snapshot.render_snapshot_serial,
+				snapshot.render_patch_rectangles.size(),
+				snapshot.render_patch_cells.size(),
+				last_render_patch_validation_error,
+			]
+		)
+		last_rejected_render_snapshot_serial = snapshot.render_snapshot_serial
+	simulation_worker.request_render_full_refresh()
 
 
 func finish_texture_upload(world_revision: int, start_usec: int) -> void:

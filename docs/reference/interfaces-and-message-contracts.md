@@ -4,7 +4,7 @@ status: Approved design
 scope: Current public surfaces and documentation-level contracts required between Godot, rigid bodies, scheduler, jobs, storage, transfers, publication, and reconfiguration
 keywords: [interface, contract, rigid body sample, gameplay command, gameplay result, immutable dirty snapshot, TileJob, transfer, reconfiguration]
 related-documents: [../architecture/module-boundaries.md, ../architecture/rendering-and-gameplay-bridges.md, ../architecture/rigid-body-and-cellular-coupling.md, invariants.md]
-last-reviewed: 2026-08-27
+last-reviewed: 2026-08-28
 implementation-state: Legacy and versioned native C APIs, reusable immutable render exchange/lease contracts, and a copied Godot dirty-RG8 adapter are Current surfaces; generalized GameplayBridge schemas remain Approved design or Planned.
 ---
 
@@ -56,7 +56,12 @@ publication contracts, but there is still no generalized GameplayBridge.
 
 ### Godot worker surface
 
-godot/scripts/simulation_worker.gd exposes GDScript methods for starting/stopping the worker, setting frame inputs, queueing simulation requests, resetting, and obtaining a current snapshot. Inputs use Godot containers and mutex protection.
+godot/scripts/simulation_worker.gd exposes GDScript methods for starting/stopping
+the worker, setting frame inputs, queueing simulation requests, resetting,
+obtaining a current snapshot, acknowledging a successfully uploaded render
+serial, and requesting a full render refresh. Retrieval alone never acknowledges
+or retires render data. Inputs and acknowledgement state use Godot containers
+and mutex protection.
 
 `cybersand_world_resident_cell_bytes` reports hot Cell, activity metadata, and
 optional temperature vector capacity. TickStats reports owned tick-time chunk
@@ -67,7 +72,12 @@ and temperature allocations. Neither is a process-wide memory profiler.
 CyberSimulationSnapshot in simulation_snapshot.gd contains public data fields
 and is treated as immutable after publication. Render fields carry serial,
 channel count, full-refresh flag, rectangle metadata, and copied patch bytes.
-The language/type does not enforce deep immutability.
+The language/type does not enforce deep immutability, so the worker duplicates
+pending packed metadata and bytes at each changed publication generation and
+does not subsequently mutate those published arrays. The main consumer checks
+metadata stride, dimensions, world bounds, channels, row stride, offsets, and
+required byte extent before any Image creation or blit. A failed validation is
+not acknowledged and triggers the explicit full-refresh request path.
 
 Native `RenderSnapshotExchange` preallocates uniform slots. `publish(World&)`
 returns NoChanges, Published, Backpressure, or CapacityExceeded plus exact
