@@ -18,6 +18,7 @@ This directory records the exact evidence associated with source commit
 |---|---|---|
 | `checkpoint.json` | Final M11 archive/source identity | `1f21b01e1c7870ed3c297dd51accebe1418f81459bc2ec56d161001b06deac9b` |
 | `migration-source.json` | Machine-readable authoritative archive, build, audit, and validation state used for migration | generated from the verified final records |
+| `github-migration-validation.md` | Clean-checkout, LFS, functional, and build-path evidence recorded before the private push | generated during migration |
 | `m10-independent-audit-report.redacted.md` | Independent findings that M11 remediated; only creator-machine paths and trailing Markdown whitespace were normalized | original: `87c7a3ee2f38713f9520221d929863d928f1499b79637db0839cdf3402de940c`; repository copy: `ac15871537c8ad9883d351fc7362cbbbcdb78ef1d6459df07d8bee27e09e8fc1` |
 | `m11-completion-report.md` | Resolution and final artifact report | `8589a61fe8a6f4ddace96e4a4ad7126c686d08654e485bc5c22d73f9fa5bc138` |
 | `validation-summary.json` | Machine-readable final clean-restore validation; interpreter path made portable | original: `6ab67a273644eda2fc4ae8e3de89818cc42fd32c905f37c7e8ba991b688ac0c7`; repository copy: `59235c6a3e18584182276847f5c2c63a5ce24830a9d99e9ae4aefeac8a1e9fe5` |
