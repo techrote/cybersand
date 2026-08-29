@@ -21,6 +21,18 @@ implementation-state: This index describes m11: the m9 visual baseline plus the 
 - Use [Status and roadmap](reference/status-and-roadmap.md) before planning implementation work.
 - Rapier2D v0.35.2 is vendored, selected, and manually stepped; use the migration runbook before changing the version, stepping owner, or export bundle.
 
+## Development onboarding
+
+### [Codex Development Handover](operations/codex-development-handover.md)
+
+**Status:** Current  
+**Audience:** Human maintainers and AI development agents  
+**Keywords:** onboarding, M11, AI, architecture, invariants, validation, materials, rendering, Rapier, Git LFS
+
+Operational entry point for continued development from the audited M11 baseline. Records cross-cutting architecture constraints, validation expectations, project-owner preferences, known limitations, non-obvious material and visual intentions, and decisions recovered from the conversational development process.
+
+Read this first when opening the repository in a new agentic task. Then follow its links and the documentation index to load only the focused subsystem documentation and ADRs required for the task.
+
 ## Search anchors
 
 documentation map, status vocabulary, Current evidence, Approved design, Planned, Deferred / experimental, Explicitly rejected, Ambiguous, safe change workflow
@@ -128,7 +140,7 @@ Status applies to individual statements and table rows, not merely to the contai
 - [ADR-009: Rapier2D rigid-body backend](decisions/ADR-009-rapier-2d-rigid-body-backend.md)
 
 ### Reference
-
+| [Codex Development Handover](operations/codex-development-handover.md) | Current | Required onboarding for human and Codex-assisted development; M11 identity, invariants, owner intent, validation and workflow |
 - [Glossary](reference/glossary.md)
 - [Invariants](reference/invariants.md)
 - [Interfaces and message contracts](reference/interfaces-and-message-contracts.md)
