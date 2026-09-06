@@ -90,6 +90,10 @@ protected:
     static void _bind_methods();
 
 private:
+    // The demo adapter exchanges owned byte arrays, never native pointers.
+    // Both adapters must be called by the same exclusive tick-boundary owner.
+    friend class CyberDemoBridge;
+
     struct BodyState {
         std::uint16_t id = 0;
         Vector2 center{};
