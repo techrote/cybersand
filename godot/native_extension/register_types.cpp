@@ -1,4 +1,5 @@
 #include "cyber_native_cell_world.hpp"
+#include "cyber_demo_bridge.hpp"
 
 #include <gdextension_interface.h>
 #include <godot_cpp/core/class_db.hpp>
@@ -10,6 +11,7 @@ using namespace godot;
 void initialize_cybersand_native(ModuleInitializationLevel level) {
     if (level != MODULE_INITIALIZATION_LEVEL_SCENE) return;
     GDREGISTER_CLASS(CyberNativeCellWorld);
+    GDREGISTER_CLASS(CyberDemoBridge);
 }
 
 void uninitialize_cybersand_native(ModuleInitializationLevel level) {
