@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Build CyberSand's existing C++ engine for Godot Web without altering desktop files.
+"""Build CyberSand's C++ engine for Godot Web without altering desktop files.
 
-Requires the pinned godot-cpp checkout, activated Emscripten 4.0.11, SCons 4.10.1,
-Godot 4.7, and its Web templates. See docs/WEB_DEMO.md.
+Requires pinned godot-cpp, activated Emscripten 4.0.11, SCons 4.10.1,
+Godot 4.7 and its Web templates. See docs/WEB_DEMO.md.
 """
 from __future__ import annotations
 import argparse
@@ -41,8 +41,8 @@ def compile_extension(cpp: Path, dest: Path, platform: str, threaded: bool) -> P
     arch = "wasm32" if web else "x86_64"
     run([sys.executable, "-m", "SCons", "-C", str(cpp), f"platform={platform}",
          f"target={target}", f"arch={arch}", f"threads={'yes' if threaded else 'no'}",
-         f"build_profile={ROOT / 'tools/web/build_profile.json'}", "lto=none",
-         "debug_symbols=no", "-j", os.environ.get("SCONS_JOBS", "2")])
+         "api_version=4.7", f"build_profile={ROOT / 'tools/web/build_profile.json'}",
+         "lto=none", "debug_symbols=no", "-j", os.environ.get("SCONS_JOBS", "2")])
     libs = list((cpp / "bin").glob(f"libgodot-cpp.{platform}.{target}.{arch}*.a"))
     libs = [p for p in libs if ("nothreads" not in p.name) == threaded]
     if len(libs) != 1:
@@ -86,9 +86,12 @@ def stage_project(library: Path, native_library: Path | None, cellular_only: boo
     if cellular_only:
         shutil.rmtree(stage / "addons/godot-rapier2d")
         project = project.replace('"Rapier2D"', '"GodotPhysics2D"')
-    # Web adapter explicitly owns the solver at fixed tick boundaries. Desktop
-    # defaults, main scene, binaries and worker ownership remain untouched.
-    project += '\n[cybersand]\nnative_worker_threads=1\nweb_demo=true\n'
+    # Only the disposable Web project overrides desktop settings.
+    project = project.replace("native_worker_threads=0", "native_worker_threads=1\nweb_demo=true")
+    project = project.replace("viewport_width=1920", "viewport_width=1280")
+    project = project.replace("viewport_height=1080", "viewport_height=800")
+    project = project.replace("window_width_override=1920", "window_width_override=1280")
+    project = project.replace("window_height_override=1080", "window_height_override=800")
     (stage / "project.godot").write_text(project)
     return stage
 
@@ -147,7 +150,6 @@ def main() -> None:
     for name in ("index.html", "index.js", "index.wasm", "index.pck"):
         if not (output_dir / name).is_file():
             raise RuntimeError(f"Export missing {name}")
-    # Ship provenance and third-party notices with the static site.
     for name in ("THIRD_PARTY_NOTICES.md", "LICENSE_STATUS.md"):
         shutil.copy2(ROOT / name, output_dir / name)
     shutil.copy2(ROOT / "tools/serve_web.py", output_dir / "serve_web.py")
