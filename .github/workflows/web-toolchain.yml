@@ -1,0 +1,66 @@
+name: Web toolchain cache
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [web-demo-m11]
+    paths: [.github/workflows/web-toolchain.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Prepare Emscripten matching Godot 4.7
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --depth 1 --branch 4.0.11 https://github.com/emscripten-core/emsdk.git "$RUNNER_TEMP/emsdk"
+          cd "$RUNNER_TEMP/emsdk"
+          ./emsdk install 4.0.11
+          ./emsdk activate 4.0.11
+          source ./emsdk_env.sh
+          emcc --version
+          git rev-parse HEAD > "$RUNNER_TEMP/emsdk-source-revision.txt"
+          tar -cJf "$RUNNER_TEMP/emsdk-4.0.11-linux.tar.xz" --exclude=.git --exclude=downloads --exclude=zips -C "$RUNNER_TEMP" emsdk
+          sha256sum "$RUNNER_TEMP/emsdk-4.0.11-linux.tar.xz" > "$RUNNER_TEMP/emsdk-4.0.11-linux.sha256"
+
+      - name: Fetch and verify Godot 4.7 Web export templates
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=https://github.com/godotengine/godot-builds/releases/download/4.7-stable
+          curl --fail --location --retry 3 "$base/SHA512-SUMS.txt" -o "$RUNNER_TEMP/SHA512-SUMS.txt"
+          curl --fail --location --retry 3 "$base/Godot_v4.7-stable_export_templates.tpz" -o "$RUNNER_TEMP/Godot_v4.7-stable_export_templates.tpz"
+          cd "$RUNNER_TEMP"
+          grep ' Godot_v4.7-stable_export_templates.tpz$' SHA512-SUMS.txt | sha512sum --check --strict
+          mkdir web-templates
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+          with ZipFile('Godot_v4.7-stable_export_templates.tpz') as z:
+              for name in z.namelist():
+                  if Path(name).name.startswith('web') and name.endswith('.zip'):
+                      data = z.read(name)
+                      (Path('web-templates') / Path(name).name).write_bytes(data)
+                      print(name, len(data))
+          assert list(Path('web-templates').glob('*dlink*.zip')), 'Missing GDExtension-capable Web templates'
+          PY
+          cp SHA512-SUMS.txt web-templates/
+          tar -cJf godot-4.7-web-templates.tar.xz web-templates
+
+      - name: Retain reproducible offline Web build inputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-toolchain-4.7-emscripten-4.0.11
+          retention-days: 7
+          compression-level: 0
+          if-no-files-found: error
+          path: |
+            ${{ runner.temp }}/emsdk-4.0.11-linux.tar.xz
+            ${{ runner.temp }}/emsdk-4.0.11-linux.sha256
+            ${{ runner.temp }}/emsdk-source-revision.txt
+            ${{ runner.temp }}/godot-4.7-web-templates.tar.xz
