@@ -72,6 +72,12 @@ See [principles](../architecture/principles-and-non-goals.md) and the [ADRs](../
 
 ## Next implementation checkpoints
 
+The [physics characterisation and soliding plan](../operations/physics-characterisation-plan.md)
+is **Planned** work for powder exchange/player support, slow Mercury penetration,
+barrel embedding without creep, and eventual reversible macro objects. Begin
+with measured fixtures; soliding requires an explicit ownership decision before
+dynamic membership handoff. It does not supersede the Current F01/F02 contracts.
+
 1. Preserve the implemented F01 quarantine and F02 pause/re-entry contracts and
    their combined regressions; extend the documented platform/failure-site gaps
    before broader production acceptance. Do not fold in a new solver or backend.

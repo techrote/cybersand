@@ -1,8 +1,31 @@
 {
   "version": 1,
   "frozen_date": "2026-09-08",
-  "purpose": "Supplementary source-discovered challenges added during the rewrite; reported separately from the frozen 32-question development set, without a before/after improvement claim. C03/C04 added for the coordinated implementation, reported separately from C01/C02.",
+  "purpose": "Supplementary source-discovered challenges added during the rewrite; reported separately from the frozen 32-question development set, without a before/after improvement claim. C03/C04 added for the coordinated implementation, reported separately from C01/C02. C05/C06 added for the physics characterisation plan; no runtime acceptance claim.",
   "questions": [
+    {
+      "id": "C05",
+      "query": "Why can powder pass through the player and Mercury pass through sand, and which tuning will help?",
+      "canonical": ["operations/physics-characterisation-plan.md"],
+      "facts": [
+        "Current player predicates accept hard surfaces and Sand specifically; other powders are absent.",
+        "Density exchange uses target permission and relative density; Mercury viscosity gates lateral motion, not downward exchange.",
+        "Pair permeability and granular support are proposed model changes; no runtime correction has been validated by the plan."
+      ],
+      "sources": ["../native/src/material_rules.cpp", "../native/src/world.cpp", "../godot/native_extension/cyber_native_cell_world.cpp"]
+    },
+    {
+      "id": "C06",
+      "query": "How will barrels stop sinking at half depth, and how can rested materials become reversible Rapier objects?",
+      "canonical": ["operations/physics-characterisation-plan.md"],
+      "facts": [
+        "Measure impact depth and long-term creep independently; capped pressure impulses do not establish static granular support.",
+        "Soliding proceeds through diagnostics, stationary proxies and an explicit ownership ADR for dynamic aggregates.",
+        "Promotion and demotion need bounded revision-checked handoffs, exclusive material ownership and conservation; erase/simulate/restore and per-cell physics objects remain rejected.",
+        "These are Planned experiments and architecture candidates, not implemented support or ballistics."
+      ],
+      "sources": ["../godot/native_extension/cyber_native_cell_world.cpp", "decisions/ADR-007-rigid-body-cellular-coupling.md"]
+    },
     {
       "id": "C01",
       "query": "If a tick reports failure after hitting capacity, is it safe to retry as though nothing changed?",

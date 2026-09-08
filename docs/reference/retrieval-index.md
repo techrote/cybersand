@@ -23,6 +23,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Desktop/Web order, synchronous ticks, failed-world reset/replacement | [Tick and threading](../architecture/simulation-tick-and-threading.md) |
 | Web compatibility/threaded Auto and hosting | [Web threading](../operations/web-threading.md) |
 | Body masks, displacement, terrain, Rapier scope | [Rigid-body/cellular coupling](../architecture/rigid-body-and-cellular-coupling.md) |
+| Powder/player collision, Mercury penetration, barrel sinking, reversible soliding | [Physics characterisation plan](../operations/physics-characterisation-plan.md) (source diagnosis and Planned experiments) |
 | Pinned Rapier acquisition and verification | [Rapier runbook](../operations/rapier-2d-migration-runbook.md) |
 | Native snapshots, dirty retention, GPU uploads | [Rendering/gameplay bridges](../architecture/rendering-and-gameplay-bridges.md) |
 | CYSD1 content, import/export ownership, exact resume | [Level saves and replay](level-saves-and-replay.md) |

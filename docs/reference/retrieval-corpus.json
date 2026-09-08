@@ -30,6 +30,7 @@
     "operations/github-development-and-release.md",
     "operations/local-build-and-validation.md",
     "operations/profiling-observability-and-performance.md",
+    "operations/physics-characterisation-plan.md",
     "operations/rapier-2d-migration-runbook.md",
     "operations/source-checkpoint-and-recovery.md",
     "operations/testing-validation-and-replay.md",

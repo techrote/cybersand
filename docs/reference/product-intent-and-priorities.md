@@ -46,6 +46,18 @@ The native [Water contract](../systems/water-design.md),
 Current semantics. Preferences do not authorize weakening conservation,
 collision topology or lifetime safety.
 
+## Physics direction recorded 2026-09-08
+
+**Approved owner direction:** call the red test rectangles **barrels**. Improve
+solid/powder mutual exclusion and powder interaction with the player. Dense
+liquids should not freely cross settled powders; Mercury may retain much slower
+penetration. Barrels should embed on ordinary granular impacts by no more than
+roughly half their depth, then remain supported. Include eventual reversible
+**soliding** of rested, mostly contiguous same-material areas for Rapier macro
+motion and ballistics. Exact thresholds and representation changes are
+**Planned**, not current physics. The [characterisation plan](../operations/physics-characterisation-plan.md)
+owns experiments, candidate tuning and staged architecture decisions.
+
 ## Where is approximation acceptable?
 
 **Approved direction:** explicit bounded temporal/probabilistic work reduction
