@@ -1,12 +1,9 @@
-# Web worker profile
+# Web worker profiles
 
-**Status: Current routing page, reviewed 2026-09-08.** Scope: local workspace
-entry point for compatibility and threaded Web profiles; it carries no separate
-implementation or validation claim.
-
-See the [Web threading guide](../source/docs/operations/web-threading.md) for
-build, hosting, delivery, dated validation evidence, and known limits. That
-focused source document owns the contract. Use the
-[browser procedure](BROWSER_VALIDATION.md) for interactive checks and the
-[current audit](../source/docs/audits/2026-09-08-documentation-audit.md) for source
-identity, fresh checks and outstanding evidence gaps.
+**Current navigation, reviewed 2026-09-08.** The source
+[Web guide](../source/docs/operations/web-threading.md) owns compatibility/threaded
+builds, Auto workers, hosting and benchmark interpretation. Use the
+[browser procedure](BROWSER_VALIDATION.md) for interactive checks,
+[source identity](../source/docs/operations/source-checkpoint-and-recovery.md) for
+checkpoints and the [evidence ledger](../source/docs/reference/validation-evidence.md)
+for dated outcomes. This page adds no independent implementation claim.

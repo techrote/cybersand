@@ -1,32 +1,25 @@
-# Local workspace handover
+# Active workspace instructions
 
-Read `docs/LOCAL_DEVELOPMENT.md`, `LOCAL-DEV-SETUP-REPORT.md`, then
-`source/AGENTS.md` and its referenced documentation before changing code.
+Read [local development](docs/LOCAL_DEVELOPMENT.md), then [source AGENTS](source/AGENTS.md)
+and its required focused documentation before changes. Historical setup/audit
+records describe their dated inputs; use [source identity](source/docs/operations/source-checkpoint-and-recovery.md)
+for the established Git checkpoints and inspect actual working status.
 
-- M13 is the Web packaging identity; M11 C++ remains authoritative.
-- This is a reconstructed `web-demo-m11` snapshot, not the unavailable M13 ZIP.
-  There is no active source Git checkout; the retained outer repository has no
-  commits and its older source copy is an incomplete backup. Read the current
-  [documentation audit](source/docs/audits/2026-09-08-documentation-audit.md)
-  for verified identity, evidence scope, and remaining foundational decisions.
-- Use `dev.cmd` / `tools/dev.py`; preserve exact versions and separate native/Web bindings.
-- Godot requires normal access to its user-data directory. Restricted command
-  execution caused startup crashes; do not diagnose those as solver failures.
-- Keep tools/local paths in ignored `.local/`; do not alter historical release
-  hashes to hide local build differences.
-- Web defaults to single-worker compatibility mode. The optional threaded profile
-  now uses the owner's 2/4/6 Auto rules and offers reference benchmark/stress tests;
-  read docs/WEB_THREADING.md. Both profiles include pinned Rapier2D and Physics
-  Pit; see source/docs/operations/rapier-2d-migration-runbook.md. Fully
-  asynchronous Web simulation/render ownership remains out of scope.
-- No push, PR, upload, deployment or remote mutation is part of this workspace setup.
-- Browser results are in `validation/browser-results.json`; raw local logs are
-  under `validation/local/`. Do not adopt old package totals as new test results.
+- Develop/test in `C:/kybersand`; source is `C:/kybersand/source`.
+- `C:/cybersand` is for functional deliverables. Keep source edits, toolchains and logs here.
+- Godot 4.7 is installed in `C:/Godot47`; `Open-Godot.cmd` opens the editable project.
+- The root workspace and source are separate repositories. Use `git -C source`
+  for source changes; `.local` and generated outputs are ignored.
+- Use `dev.cmd` / `tools/dev.py`, exact pins and separate native/Web bindings.
+  Keep local paths in ignored `.local`; never rewrite historical hashes to accept drift.
+- Godot needs ordinary access to its user-data directory. Past restricted startup
+  crashes were environment failures, not solver evidence.
+- Follow source ownership and documentation synchronization requirements. Current
+  Web threading is synchronous externally; Rapier stays main-thread owned.
+- Keep raw test logs in `validation/local`; add scoped evidence summaries to source
+  documentation. Do not adopt historical totals as new results.
+- No push, PR, upload, deployment or remote mutation is authorized by this documentation task.
 
-## Active locations (user direction, 2026-09-08)
-
-- C:/kybersand is the canonical workspace for human/agent collaboration, development and testing.
-- C:/cybersand contains functional deliverables; keep toolchains, source work and test logs here in C:/kybersand.
-- Use Godot 4.7 from C:/Godot47. Open the editable project with Open-Godot.cmd.
-- Source builds stage under source/build; run Deliver-Web.ps1 to copy the verified Web output to C:/cybersand/web.
-- The old Documents/ChatGPT/cybersand workspace is a retained backup; do not continue development there.
+The older Documents workspace is retained history, not the active development
+location. The user confirmed a USB backup and explicitly asked to stop looking
+for it; do not inspect or search for that backup as part of this task.

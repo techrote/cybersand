@@ -3,9 +3,9 @@
 **Status: Current procedure, reviewed 2026-09-08.** This workspace guide covers
 interactive Chromium acceptance of an identified local Web export. The dated
 results below are historical checkpoint evidence; this documentation audit did
-not execute a browser. See the [current audit](../source/docs/audits/2026-09-08-documentation-audit.md)
-for the reconstructed source identity, incomplete backup, fresh Windows tests
-and existing-export checksum checks. None proves current browser acceptance.
+not execute a browser. Use [source identity](../source/docs/operations/source-checkpoint-and-recovery.md)
+for the established checkout and [validation evidence](../source/docs/reference/validation-evidence.md)
+for dated Windows/browser checks. Existing-export checksums do not prove current browser acceptance.
 
 Use the [Web profile guide](../source/docs/operations/web-threading.md) for
 compatibility/threaded build and hosting requirements. Both profiles currently

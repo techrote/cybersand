@@ -6,5 +6,10 @@
   "source_branch": "codex/rag-docs-foundation",
   "workspace_repository_scope": "Top-level documentation and development wrappers; source has separate Git history; generated outputs and .local excluded",
   "backup": "User confirmed USB backup; not inspected by agent",
-  "created": "2026-09-08"
+  "created": "2026-09-08",
+  "documentation_checkpoint": "38f0ce4d06e56e0d7a1d63534129fde470f62049",
+  "documentation_report": "source/docs/audits/2026-09-08-structural-documentation-audit.md",
+  "retrieval_evaluation": "source/docs/audits/2026-09-08-retrieval-evaluation.md",
+  "implementation_preserved": true,
+  "remote_mutation": "None; no push, publish or delivery"
 }
