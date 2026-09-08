@@ -1,0 +1,74 @@
+name: Web demonstrator
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [web-demo-m11]
+    paths:
+      - .github/workflows/web-demo.yml
+      - tools/web/ci-trigger.txt
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: web-demo-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Check out source and pinned LFS dependencies
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: true
+          fetch-depth: 0
+      - name: Read source identity and run native baseline
+        run: |
+          git status --short --branch
+          git rev-parse HEAD
+          git tag --list
+          git lfs ls-files
+          timeout 300 make test
+      - name: Restore prepared Web toolchain
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: web-toolchain-4.7-emscripten-4.0.11
+          run-id: 34034700056
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/web-input
+      - name: Prepare pinned tools
+        run: |
+          tar -xJf "$RUNNER_TEMP/web-input/emsdk-4.0.11-linux.tar.xz" -C "$RUNNER_TEMP"
+          tar -xJf "$RUNNER_TEMP/web-input/godot-4.7-web-templates.tar.xz" -C "$RUNNER_TEMP"
+          python3 -m venv "$RUNNER_TEMP/web-python"
+          "$RUNNER_TEMP/web-python/bin/pip" install --require-hashes -r tools/requirements-build.txt
+          git init "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin 101ae38034304346a46ea9ea84ae156d3e860496
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          curl -fL --retry 3 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7' -o "$RUNNER_TEMP/godot.zip"
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/godot.zip" | sha256sum -c -
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -type f -name 'Godot*' -print -quit)"
+          chmod +x "$GODOT_BIN"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+      - name: Build Web and Linux adapters
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          WEB_TEMPLATE_ROOT: ${{ runner.temp }}/web-templates
+          SCONS_JOBS: "2"
+        run: |
+          source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
+          "$RUNNER_TEMP/web-python/bin/python" tools/build_web.py --compile-only --native-tests
+      - name: Retain build output
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: web-demo-m11-build-${{ github.run_number }}
+          path: build/web-libs
+          retention-days: 30
+          if-no-files-found: warn

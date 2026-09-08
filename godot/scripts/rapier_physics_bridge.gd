@@ -628,14 +628,15 @@ func step() -> void:
 	if not _initialized:
 		return
 	var step_start_usec: int = Time.get_ticks_usec()
-	RapierPhysicsServer2D.space_step(_space, fixed_delta())
+	ClassDB.class_call_static(EXPECTED_SERVER_CLASS, &"space_step", _space, fixed_delta())
 	_last_step_time_ms = float(Time.get_ticks_usec() - step_start_usec) / 1000.0
 	_manual_step_count += 1
 
 	# Rapier exposes an active-body batch path, avoiding stale scene-node caches
 	# and preparing the bridge for a larger dynamic-body count.
-	var active_body_rids: Array = RapierPhysicsServer2D.space_get_active_bodies(_space)
-	var active_transforms: Array = RapierPhysicsServer2D.space_get_bodies_transform(
+	var active_body_rids: Array = ClassDB.class_call_static(EXPECTED_SERVER_CLASS, &"space_get_active_bodies", _space)
+	var active_transforms: Array = ClassDB.class_call_static(
+		EXPECTED_SERVER_CLASS, &"space_get_bodies_transform",
 		_space,
 		active_body_rids
 	)
@@ -649,7 +650,7 @@ func step() -> void:
 		_transforms[body_index] = active_transforms[active_index]
 
 	var flush_start_usec: int = Time.get_ticks_usec()
-	RapierPhysicsServer2D.space_flush_queries(_space)
+	ClassDB.class_call_static(EXPECTED_SERVER_CLASS, &"space_flush_queries", _space)
 	_last_flush_time_ms = float(Time.get_ticks_usec() - flush_start_usec) / 1000.0
 	refresh_dynamic_states()
 

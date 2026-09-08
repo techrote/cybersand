@@ -1,133 +1,138 @@
 ---
 title: 1024² material lab
+document-kind: runbook
+canonical-for: [material-lab-controls, manual-material-recipes]
 status: Current
-scope: Manual controls, executable material families, representative interactions, and finite-fixture boundaries
-keywords: [material lab, Sandspiel, controls, medieval, castle, cyberpunk, factory, static solid, neon, 1024]
-related-documents: [research/sandspiel-performance-and-material-port.md, systems/materials-and-rule-kernels.md, systems/themed-construction-materials.md, systems/material-appearance-and-rendering.md]
-last-reviewed: 2026-08-28
-implementation-state: The 1024² finite native fixture exposes 79 paintable materials, including IDs 38–80 for themed construction; native Linux/Windows builds, grouped selection, GPU flair programs, and bounded rule kernels are Current.
+scope: Desktop and Web manual controls, repeatable interaction observations, construction recipes, and finite-demo limits
+last-reviewed: 2026-09-08
+related-documents: [systems/materials-and-rule-kernels.md, systems/themed-construction-materials.md, systems/water-design.md, reference/configuration-reference.md, reference/level-saves-and-replay.md]
 ---
 
 # 1024² material lab
 
-## At a glance
+**Current:** CyberSand exposes 79 paintable materials in a finite 1024×1024 native
+world. Desktop and Web have different controllers and controls. This page is a
+manual observation runbook, not proof that every pairing or visual has passed
+acceptance. Source/runtime identity and dated checks are in the
+[checkpoint](operations/source-checkpoint-and-recovery.md) and
+[evidence ledger](reference/validation-evidence.md).
 
-- **Current**: the manual fixture is 1024×1024, aligned to 64 native 128×128 storage chunks.
-- **Current**: logical render size and simulation margin are independently selectable.
-- **Current**: 79 materials can be selected without treating paint slots as material IDs.
-- **Current**: Shift+Q/E jumps between the core/reactive, medieval, industrial, and luminous groups.
-- **Current**: 43 themed construction materials add castle/village and chemical-factory/alley vocabulary; 41 are inert radius-zero hard surfaces and Oak Timber/Thatch are combustible.
-- **Current**: representative density, combustion, phase, corrosion, growth, replication, and agent interactions execute in native bounded kernels.
-- **Current**: the 1920×1080 window aspect-fits every logical view and uses the same fitted rectangle for shader sampling and mouse-to-world mapping.
-- **Current**: reactive hard-surface changes publish offset-indexed native chunk geometry; Rapier applies at most 8 chunks or 0.75 ms per rendered frame.
-- **Current**: Fire motion remains 60 Hz, rendering defaults to interpolated 45 Hz snapshots with live 30/45/60 Hz comparison, and destructive ignition checks are distributed at 0.5 Hz per cell.
-- **Current**: material colour and condition response come from GPU palette/program LUTs; native dirty RG8 patches update a persistent CPU image and a half-resolution HDR glow pass is optional.
-- Sandspiel's MIT notice and provenance are retained; CyberSand Water deliberately uses its own conserved-mass solver.
-- Streaming, formal 1024² performance fixtures, and production tuning remain outside this checkpoint.
+Open the desktop project through the [local workflow](operations/local-build-and-validation.md).
+For Web, use the built HTTP preview described in the
+[Web guide](operations/web-threading.md). Native C++ supplies current cellular
+behavior; the desktop fallback is a narrower, different implementation.
+Physics Pit requires the [Rapier capability checks](operations/rapier-2d-migration-runbook.md).
 
-## Search anchors
+## Desktop controls
 
-material selector, Q E Page Up Page Down, aspect ratio, mouse mapping, view size, simulation margin, steam brine sodium, gunpowder coal, cement concrete, metal spark, mercury glass foam
-
-The current sandbox is a finite 1024×1024 manual interaction fixture. It keeps
-the 128×128 native storage chunks, 32×32 native activity blocks, and 64×64
-phased scheduling cores used by the larger-world architecture. It does not add
-streaming or choose a future maximum world size.
-
-## Controls
+Source: [main.gd::_unhandled_key_input, update_camera, update_worker_frame_state](../godot/scripts/main.gd).
 
 | Control | Effect |
 |---|---|
-| Left/right mouse | Emit selected material / erase |
-| `1`–`6` | Quick slots: Sand, Water, Wall, Smoke, Paste, Slush |
-| `Q`/`E` or Page Up/Page Down | Cycle every paintable material |
-| `Shift+Q`/`Shift+E` | Jump between core/reactive, medieval, industrial, and luminous groups |
-| `V` | Cycle logical render view: 320×180, 480×270, 640×360, 960×540 |
-| `B` | Cycle per-side simulation margin: 0×0, 32×36, 128×128, 256×256 |
-| `L` | Toggle selected interest window / whole-world simulation |
-| `C` | Toggle normal Water spray / 12-tick coherent emission |
-| `T` | Toggle the current native Water surface-film comparison |
-| `K` | Toggle temporal render smoothing |
-| `H` | Cycle render publication at 30, 45, or 60 Hz; simulation remains 60 Hz |
-| `F3` | Hide/show the debug statistics readout; hidden mode also skips periodic string construction |
-| `G` | Toggle the downsampled material-emission glow pass and its render updates |
-| `P` / `R` | Pause / reset |
+| LMB / RMB | Emit selected material / erase |
+| A / D; Space | Move character left/right; jetpack |
+| Arrow keys; F | Pan camera (disables follow); toggle character follow |
+| 1–6 | Quick slots: Sand, Water, Wall, Smoke, Paste, Slush |
+| Q / E or Page Up / Page Down | Cycle all paintable materials |
+| Shift plus those cycling keys | Jump core/reactive, medieval, industrial, luminous groups |
+| V / B | Cycle logical view / independent per-side simulation margins |
+| L | Toggle camera-interest / whole finite-world simulation |
+| C | Toggle ordinary Water emission / coherent lateral-delay emission |
+| T | Toggle native Water supported-film adhesion |
+| K | Toggle render smoothing; also forwards fallback sparse-flight sampling option |
+| H | Cycle render publication target through 30/45/60 Hz |
+| G | Toggle glow overlay and glow SubViewport updates |
+| F3 | Toggle statistics and periodic status-string construction |
+| P / R | Pause / reset |
 
-Paint slots are UI shortcuts and never become material IDs. Material cycling changes
-the selected material directly and reports its stable ID in the status line.
+Paint slots map to stable material IDs; slot 5 is Paste ID 20 and slot 6 is
+Slush ID 21. The status line identifies the selected material. View/margin
+presets and defaults are owned by the [configuration reference](reference/configuration-reference.md).
+The 1920×1080 window aspect-fits the logical view, and mouse mapping uses the
+same fitted rectangle.
 
-## Executable material families
+Changing H or K does not change native fixed-tick semantics or enable a strict
+simulation mode. Target cadence is not guaranteed wall-clock progress.
 
-| Family | Materials | Representative current behavior |
-|---|---|---|
-| Powder and density | Sand, Stone, Dust | Gravity, diagonal settling, opt-in density exchange; Stone can retain supported structures; Dust ignites |
-| Conserved liquid | Water | Fixed-point mass, fast self-leveling, stable rest, render-only dithering, density displacement |
-| Yielding liquid | Paste, Slush | Whole-cell viscosity, heap-capable flow, and presentation-only moving bands for gels/slurries |
-| Buoyant gas | Smoke | Rises through accepting denser materials, slowly thins/culls, and cannot host Fire |
-| Combustion | Fire, Wood, Oil | Fire drifts at full rate but samples destructive ignition at a distributed 0.5 Hz; Wood burns down gradually; Oil propagates fire; Water extinguishes immediately |
-| Thermal/phase | Lava, Ice, Water, Steam | Lava ignites and melts Ice; Ice freezes adjacent Water slowly; Water hit by Fire/Lava becomes Steam; Steam later condenses |
-| Corrosion | Acid | Mobile corrosive liquid consumes eligible neighboring material and expends finite strength; Wall resists it |
-| Growth | Plant, Fungus, Seed | Energy-bounded local growth; Fungus colonizes Wood; supported Seed germinates; growth materials burn |
-| Replication | Cloner | Captures a valid adjacent material and emits initialized copies into empty neighbors |
-| Agents | Mite, Rocket | Mite moves and consumes biological/powder targets; Rocket captures a payload, launches when heated, deposits a trail, and burns on impact |
-| Dissolution/reactive powder | Salt, Brine, Sodium | Salt and Water form heavier Brine; Sodium reacts with Water or Brine into Fire and Steam |
-| Energetic solids | Gunpowder, Coal | Gunpowder flashes into Fire; Coal falls, burns slowly, emits Fire/Smoke, and leaves Dust |
-| Conductive/structural | Metal, Rust, Spark | Spark charges adjacent Metal; charge propagates locally and can boil Water; Acid turns Metal into Rust and Smoke |
-| Curing material | Cement, Concrete | Wet Cement flows slowly and cures when exposed to air, Water/Brine, or existing Concrete; water accelerates curing |
-| Dense/scientific liquids | Toxic Sludge, Mercury | Water purifies adjacent sludge; Mercury's high density makes it displace ordinary liquids downward |
-| Glass family | Glass, Molten Glass | Lava remelts Glass; Molten Glass flows slowly, cools into a hard surface, and quenches against Water |
-| Light cellular fluid | Foam | Short-lived Foam rises through accepting liquids and disperses laterally |
-| Medieval construction | Limestone, Sandstone, Granite, Cobblestone, Brick, Plaster, timber, roofing, historic metals/glass, Packed Earth | Static collision palette; Oak Timber and Thatch reuse bounded combustion |
-| Industrial construction | Industrial Brick, Reinforced Concrete, asphalt, plates, corrugation, grating, chainlink, pipes, tile, glass, rubber, cables, insulation | Static hard surfaces with zero active-rule cost after settling |
-| Luminous construction | Hazard Stripe, three Neon colours, LED White | Analytic pattern/HDR programs; bounded glow and render-only animation |
+## Web controls and menu
 
-These are bounded CyberSand adaptations of Sandspiel's material vocabulary and
-interaction ideas, not a byte-for-byte port. Water deliberately retains the
-CyberSand conserved-mass solver instead of Sandspiel's mutable lateral-polarity
-rule. Random choices use deterministic coordinate/tick streams and ordinary
-rule writes stay within their declared scheduler radius.
+Source: [web_demo_controller.gd](../godot/scripts/web_demo_controller.gd),
+[web_demo_menu.gd](../godot/scripts/web_demo_menu.gd), and
+[demo_worlds.gd](../godot/scripts/demo_worlds.gd).
 
-## Useful manual pairings
+Web offers Material Lab, Waterworks, Foundry, Neon Works, and Physics Pit.
+Escape opens/closes the menu; during a reference benchmark it requests cancel.
+Gameplay shortcuts are ignored while the menu is open. Shared shortcuts are
+mouse paint/erase, A/D, Space, 1–6, Q/E, P, R, F, C, T, G, and F3. X requests
+a bounded radius-20 explosion at the valid world pointer. Desktop's V/B/L/K/H,
+Page keys, and Shift-group shortcuts are not a Web shortcut contract.
 
-- Place Water above Oil to observe density separation.
-- Trap Smoke below Water or Sand to verify upward density exchange.
-- Paint Fire beside Wood, Oil, Dust, Plant, Fungus, Seed, Water, and Ice.
-- Put Lava against Water and Ice.
-- Put Salt or Sodium into Water; compare the resulting Brine and Steam/Fire reactions.
-- Ignite Gunpowder and Coal, then compare their short flash and slow-burn behavior.
-- Draw a Metal wire, touch one end with Spark, and place Water near another section.
-- Pour Cement into a cavity and compare air curing with Water-accelerated curing.
-- Drop Mercury through Water, Oil, Brine, or sludge to compare density exchange.
-- Put Lava against Glass, or quench Molten Glass with Water.
-- Paint Foam below a liquid pool and watch it exchange upward before decaying.
-- Enclose Acid with Sand, Wood, Stone, or biological material, leaving Wall as a control.
-- Put Plant or Fungus beside compatible substrate, then introduce Fire.
-- Place Seed on Sand and allow vertical room for growth.
-- Put a Cloner beside one chosen material, then clear empty output space around it.
-- Place Rocket beside a desired payload before adding Fire or Lava.
-- Compare Water, Slush, and Paste on the same stepped slope.
+LOW/NORMAL/HIGH pair view, margins, and publication rate. The menu also exposes
+level text export/import, a local save slot, and isolated performance/stress
+fixtures. A saved level does not preserve exact future continuation; review
+[level saves and replay](reference/level-saves-and-replay.md) before interpreting
+round-trip results. Browser storage depends on the origin and profile.
 
-Sandspiel provenance and the full port ledger remain in
-`docs/research/sandspiel-performance-and-material-port.md`, with its MIT notice
-retained in `THIRD_PARTY_NOTICES.md`.
+Both compatibility and threaded Web use native cells; compatibility selects one
+cellular worker. Neither profile makes Web rendering asynchronous with a native
+tick. This matters when interpreting slow controls or frame timing.
 
-Appearance is intentionally separate from behavior. The native bridge projects
-one material-specific condition byte alongside each material ID; the GPU derives
-variation, condition response, alpha, emission, and a bounded procedural flair
-class from the existing LUT reads. A separate common relief stage then samples
-four neighbours from the already-uploaded RG8 texture; it adds no CPU payload or
-world image. See
-`docs/systems/material-appearance-and-rendering.md` for the exact Current path
-and the remaining full-GPU-upload limitation.
+## Repeatable interaction observations
 
-The exact themed IDs, construction roles, performance implications, and example
-castle/village/factory/alley recipes are in
-`docs/systems/themed-construction-materials.md`.
+Reset, select a known view and margin, note native/fallback and worker profile,
+then create one pairing at a time. Hold inputs across actual physics callbacks.
+Capture material IDs, geometry, relevant toggles, tick interval, and observed
+outcome. Secondary reactions are sampled on
+[kernel-specific lanes](systems/materials-and-rule-kernels.md#kernel-execution-and-cadence);
+one brief contact with no reaction is not sufficient evidence of a defect.
 
-## Related decisions
+| Setup | What to inspect |
+|---|---|
+| Water above Oil; Smoke trapped under Water/Sand | Directional density separation and target exchange permission |
+| Water, Slush, Paste on matching stepped slopes | Free mass versus heap-capable yield; C/T Water comparisons |
+| Fire beside Wood/Oil/Dust/plants, then Water | Ignition, burn progression, sampled extinguishing behavior |
+| Lava against Water/Ice; Lava against Glass | Phase/reaction outcomes; compare quenching Molten Glass |
+| Salt or Sodium in Water | Brine formation versus energetic Fire/Steam reaction |
+| Ignite Gunpowder and Coal | Short flash versus slower burn/emission |
+| Spark at one end of Metal, Water by another | Local charge propagation and nearby reaction |
+| Cement cavities exposed to air versus Water | Cure progression under different neighbors |
+| Mercury through Water/Oil/Brine/sludge | High-density exchange |
+| Foam beneath a liquid pool | Upward movement followed by decay |
+| Acid against several materials, Wall as control | Finite corrosion and exceptions |
+| Plant/Fungus beside substrate; Seed on Sand | Growth, germination, and later ignition |
+| Cloner beside one material with empty output space | Capture and initialized emission |
+| Rocket beside payload, then Fire/Lava | Capture, launch trigger, trail, and impact |
 
-- [Material rules](systems/materials-and-rule-kernels.md)
-- [Themed construction materials](systems/themed-construction-materials.md)
-- [Water model](decisions/ADR-005-water-model.md)
-- [Bounded approximate fidelity](decisions/ADR-008-bounded-approximate-fidelity.md)
-- [Item-authored material programs](architecture/item-authored-material-programs.md)
+For Water conservation/rest assertions use native fixture mass and
+`content_hash()`, not apparent particle count or advancing `state_hash()`.
+The [Water contract](systems/water-design.md) defines acceptance bounds.
+
+## Construction recipes
+
+These are authoring suggestions using the
+[complete themed catalogue](systems/themed-construction-materials.md).
+
+| Scene | Suggested composition |
+|---|---|
+| Castle wall/gate | Granite foundation; Limestone/Sandstone walls; Oak gate; Wrought Iron fittings; Slate/Lead roof details; Stained Glass; localized Mossy Cobblestone |
+| Village house | Oak frame; Wattle and Daub/Lime Plaster infill; Thatch/Terracotta roof; Red Brick chimney; Packed Earth path |
+| Chemical bay | Reinforced Concrete/Ceramic shell; Steel Plate tanks; Painted Steel panels; Steel/Copper Pipes; Cable/Rubber/Insulation; Chemical Glass inspection zones |
+| Rainy alley | Industrial Brick; Wet Asphalt/Cobblestone; Rusted/Corrugated Steel; Chainlink; narrow cyan/magenta neon; Smoke/Steam/reactive liquids |
+
+Chainlink and grating collide as solid cells despite visual holes. Decorative
+metal/glass names do not inherit every reaction of base Metal/Glass. Use Empty
+cells for actual holes, and use the [appearance contract](systems/material-appearance-and-rendering.md)
+when evaluating GPU finish, glow, and temporal motion.
+
+## Interpretation limits
+
+- Native camera re-entry has a [confirmed wake defect](systems/world-storage-and-interest-region.md#interest-filtering-and-re-entry):
+  returning to excluded material can leave it frozen until an external wake.
+- The desktop Rapier collider consumer processes at most 32 queued chunks per
+  rendered frame, with a 750 µs check between chunks. One chunk can exceed that
+  time. Native geometry extraction, packed validation/copy, and queueing are
+  outside this consumer budget; it is not a total physics-frame guarantee.
+- Current dirty CPU patches still cause full RG8 GPU updates on changed
+  publications. Patch KiB is not GPU transfer KiB.
+- Manual scenes are finite fixtures, not streaming worlds, production physics
+  acceptance, calibrated material science, or universal 1024² frame-time proof.

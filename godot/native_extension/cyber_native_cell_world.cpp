@@ -59,6 +59,8 @@ CyberNativeCellWorld::CyberNativeCellWorld() {
 CyberNativeCellWorld::~CyberNativeCellWorld() = default;
 
 void CyberNativeCellWorld::_bind_methods() {
+    ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("auto_worker_threads", "logical_threads"), &CyberNativeCellWorld::auto_worker_threads);
+    ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("logical_processor_count"), &CyberNativeCellWorld::logical_processor_count);
     ClassDB::bind_method(D_METHOD("reset_demo_world"),
                          &CyberNativeCellWorld::reset_demo_world);
     ClassDB::bind_method(D_METHOD("simulation_tick"),
@@ -176,11 +178,18 @@ void CyberNativeCellWorld::_bind_methods() {
                  "get_simulation_time_ms");
 }
 
+std::int64_t CyberNativeCellWorld::auto_worker_threads(std::int64_t logical_threads) {
+    return logical_threads < 4 ? 2 : logical_threads < 12 ? 4 : 6;
+}
+
+std::int64_t CyberNativeCellWorld::logical_processor_count() {
+    return std::max(1U, std::thread::hardware_concurrency());
+}
+
 void CyberNativeCellWorld::create_world() {
     try {
         const auto processors = std::max(1U, std::thread::hardware_concurrency());
-        const auto automatic_threads = std::clamp(
-            processors > 2U ? processors - 2U : 1U, 1U, 8U);
+        const auto automatic_threads = static_cast<std::uint32_t>(auto_worker_threads(processors));
         const auto requested_threads = static_cast<std::int64_t>(
             ProjectSettings::get_singleton()->get_setting(
                 "cybersand/native_worker_threads", 0));
@@ -188,6 +197,9 @@ void CyberNativeCellWorld::create_world() {
                               ? static_cast<std::uint32_t>(std::clamp<std::int64_t>(
                                     requested_threads, 1, std::min<std::uint32_t>(32U, processors)))
                               : automatic_threads;
+#if defined(__EMSCRIPTEN__) && !defined(__EMSCRIPTEN_PTHREADS__)
+        worker_threads_ = 1; // No-thread Web cannot instantiate a pthread pool.
+#endif
         cybersand::WorldConfig config{};
         config.worker_threads = worker_threads_;
         config.backend = cybersand::SimulationBackend::PhasedInPlace;

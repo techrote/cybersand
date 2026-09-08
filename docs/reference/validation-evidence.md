@@ -1,0 +1,82 @@
+---
+title: Validation evidence ledger
+status: Current
+document-kind: reference
+scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
+canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
+last-reviewed: 2026-09-08
+related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md]
+---
+
+# Validation evidence ledger
+
+## What has actually passed?
+
+**Current evidence policy:** a result applies to its recorded source/artifact,
+platform, profile and fixture. A source inspection, checksum, headless run,
+browser run and visual review establish different things. None silently
+certifies a later binary, another platform or complete replay.
+
+| Evidence ID/date | Executed check and outcome | Limits and record |
+|---|---|---|
+| E-M11, 2026-08-28 | Historical audited M11: 34 passed, one inconclusive LeakSanitizer run | Linux-era audit; Windows format/import inspection was not runtime execution. [Retained records](../audits/m11/README.md) |
+| E-SETUP, 2026-09-07 | 39 native tests, 11 Godot fixture runners; Chromium compatibility demo/save checks | Before threaded/Rapier Web work. `C:/kybersand/LOCAL-DEV-SETUP-REPORT.md` retains original results |
+| E-RAPIER-WEB, 2026-09-08 | Windows/Chromium compatibility 1-worker and threaded 6-worker rectangle proof: 600 ticks, 308,087 contacts, 151 displaced cells; no recorded browser errors/warnings | Retained browser record lacks complete immutable source/export binding; not a fresh browser run at the current HEAD. `validation/local/rapier-web-20260908/browser-results.json` |
+| E-AUDIT-TOOLS, 2026-09-08 | Six `dev.cmd doctor` version checks passed | `validation/local/20260908-201008/` |
+| E-AUDIT-NATIVE, 2026-09-08 | 39/39 freshly compiled native Debug tests plus C11 header check, 21.621 s | Windows x86_64, Clang 23.1.0; one unused-capture warning at `world.cpp:1419`, no sanitizer run. `validation/local/20260908-201010/native-test.json` |
+| E-AUDIT-GODOT, 2026-09-08 | Import and 15/15 fixture runners, 48.473 s fixture total | Windows Godot 4.7, retained extension DLL, not rebuilt. 240 s import/180 s per-fixture timeouts. `validation/local/20260908-201106/godot-fixtures.json` |
+| E-AUDIT-EXPORT, 2026-09-08 | Existing compatibility and threaded exports each matched 18/18 manifest entries | Checksum evidence only; no new compile, HTTP or browser execution. [Audit evidence JSON](../audits/2026-09-08-documentation-audit-evidence.json) |
+| E-INTEREST, 2026-09-08 | Fresh native diagnostic confirms excluded phased blocks can sleep without re-entry wake, and serial ignores region filtering | A reproduced limitation, not a pass for intended waking. [Canonical behavior](../systems/world-storage-and-interest-region.md), [diagnostic record](../audits/2026-09-08-foundation-diagnostics.md); `validation/local/20260908-rag-interest-probe/result.json` |
+| E-TICK-FAIL, 2026-09-08 | Fresh source-built diagnostic confirms planning failure advances tick identity and retains an applied explosion while draining its queue | Windows x86_64, Clang 23.1.0 Debug, one worker/core capacity one; compile/run exits 0 with 60 s/10 s limits. Reproduced limitation, not transactional acceptance. [Diagnostic record](../audits/2026-09-08-foundation-diagnostics.md) |
+
+Local `validation/...` paths above are relative to `C:/kybersand` and are retained
+outside source history. The curated audit JSON preserves command and artifact
+references when those local logs are unavailable.
+
+## Which binaries and dependencies did E-AUDIT use?
+
+- Godot: `4.7.stable.official.5b4e0cb0f`, Windows x86_64, `C:/Godot47`.
+- Native CyberSand DLL SHA-256:
+  `402732d3b1625eace69e2130356137f0ebef14d9113d3d8d22716d9e4ea2bb17`.
+- Rapier Windows DLL SHA-256:
+  `4e26ffa78ec2aaff434c4a70cd2ec85288b10ba5237912c35f204cb1e6ed2180`.
+- Separate native/Web `godot-cpp` checkouts were clean at
+  `101ae38034304346a46ea9ea84ae156d3e860496`.
+- Python 3.12.14, SCons 4.10.1, Clang 23.1.0 and Emscripten 4.0.20 were observed.
+
+The implementation bytes were subsequently checkpointed at
+`126175cfc4dd1fb8659212f62b9b517bac54d8c2`; this does not retroactively prove the
+retained extension was rebuilt from that source. See
+[source identity](../operations/source-checkpoint-and-recovery.md).
+
+## What do the Rapier and save passes not prove?
+
+The three-rectangle fixture permits transient floor penetration: maximum body
+centre y=160.317276, settled y=159.000656, approximately 1.32 pixels transient
+penetration, within the fixture's two-pixel acceptance bound. It is not
+zero-penetration, arbitrary-shape, high-count or universal
+CCD coverage. Body restoration allows `1e-5` error. Exact cellular payload
+restoration is not full next-tick or Rapier replay; see
+[level saves](level-saves-and-replay.md).
+
+A Windows headless runner named `test_web_rapier.gd` executes the Web scene on
+Windows. Browser WASM execution requires a separately identified exported build.
+Nine groups inside `test_cell_world.gd` count as one runner, not nine extra files.
+
+## Which gates remain absent or failing?
+
+- No current Linux/macOS/WSL runtime run; required Linux payloads remain pointers.
+- No fresh Firefox/Safari or current-artifact browser acceptance.
+- No current ASan/UBSan/TSan/LeakSanitizer or clean cold-build attestation.
+- No full replay persistence, generalized shapes, exhaustive boundary matrix or
+  transactional tick-failure guarantee.
+- The unchanged M11 consistency checker reports seven historical source/hash
+  mismatches. Preserve its record; run the separate current documentation check.
+- Web CI arguments/toolchain and historical template-lock metadata conflict with
+  the local builder; [build guide](../operations/local-build-and-validation.md)
+  records those exact gaps.
+
+New results belong in a new evidence record with command, timeout, date,
+platform/profile, source identity, input/worker configuration, artifact hashes,
+exit status and explicit limits. Historical records are never rewritten to
+make a later checkpoint look validated.

@@ -10,3 +10,7 @@ linux.debug.x86_64 = "res://addons/cybersand_native/bin/libcybersand_native.linu
 linux.release.x86_64 = "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so"
 windows.debug.x86_64 = "res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
 windows.release.x86_64 = "res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
+web.debug.threads.wasm32 = "res://addons/cybersand_native/bin/libcybersand_native.web.threads.wasm"
+web.release.threads.wasm32 = "res://addons/cybersand_native/bin/libcybersand_native.web.threads.wasm"
+web.debug.wasm32 = "res://addons/cybersand_native/bin/libcybersand_native.web.nothreads.wasm"
+web.release.wasm32 = "res://addons/cybersand_native/bin/libcybersand_native.web.nothreads.wasm"

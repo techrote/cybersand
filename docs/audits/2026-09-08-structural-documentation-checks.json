@@ -1,0 +1,218 @@
+{
+  "scope": "Final local documentation checks; executable simulation files unchanged; historical M11 gate remains failing",
+  "date_utc": "2026-09-08T20:23:17.085136+00:00",
+  "source_baseline": "126175cfc4dd1fb8659212f62b9b517bac54d8c2",
+  "source_branch": "codex/rag-docs-foundation",
+  "implementation_preservation": {
+    "existing_non_markdown_files_checked": 205,
+    "changed": [],
+    "aggregate_sha256": "0f07e1029418c0bca47a66f6c75b088a42f2871448794f9be2ca3971e1957b52",
+    "expected_first_audit_aggregate": "0f07e1029418c0bca47a66f6c75b088a42f2871448794f9be2ca3971e1957b52"
+  },
+  "historical_preservation": {
+    "docs/ARCHITECTURE.md": {
+      "byte_identical_to_git_blob": true,
+      "content_identical_with_git_lf_normalization": true,
+      "working_sha256": "0a969455d61b0ab30f5feff59cf59ac8337c358cc3cd4b6e0b779bc5033b86f0"
+    },
+    "docs/BUILD_ID.md": {
+      "byte_identical_to_git_blob": true,
+      "content_identical_with_git_lf_normalization": true,
+      "working_sha256": "7a89c254ade720d22b7daef5a23869221ed98e1fb2191dad3daa784ff16a3dad"
+    },
+    "docs/LARGE_WORLD_PROOF.md": {
+      "byte_identical_to_git_blob": true,
+      "content_identical_with_git_lf_normalization": true,
+      "working_sha256": "e4fd47d3c06f8f20ba1236bc247a53c3e072d9fc0264bbb04493508786c1fdf9"
+    },
+    "docs/NEXT_MILESTONE.md": {
+      "byte_identical_to_git_blob": true,
+      "content_identical_with_git_lf_normalization": true,
+      "working_sha256": "071c2be740e061cba13c2d9b6eff7c1fc047d2fc6dbb4f47f63d7fbd2f50b47f"
+    },
+    "docs/PERFORMANCE.md": {
+      "byte_identical_to_git_blob": true,
+      "content_identical_with_git_lf_normalization": true,
+      "working_sha256": "ade546c75863ca8a4cb8125993e98fb9316738a161ddc86a0204d64d4c19cc6b"
+    },
+    "docs/STATUS.md": {
+      "byte_identical_to_git_blob": true,
+      "content_identical_with_git_lf_normalization": true,
+      "working_sha256": "020bd134e2615c6561cbb443de2b002011e40dd45121e8ae8599ce6b08022ac9"
+    },
+    "docs/audits/2026-09-08-documentation-audit-evidence.json": {
+      "byte_identical_to_git_blob": false,
+      "content_identical_with_git_lf_normalization": true,
+      "working_sha256": "eea5d0ebc55f1ee7d3a9f1018f4ea570f68bc6338e4410310351ad10509bc8fc"
+    },
+    "docs/audits/2026-09-08-documentation-audit.md": {
+      "byte_identical_to_git_blob": true,
+      "content_identical_with_git_lf_normalization": true,
+      "working_sha256": "2d2650a4cccc8f85832e0f18e015b1a7318c57bdb22242116579991ef1abd471"
+    },
+    "docs/audits/m11/README.md": {
+      "byte_identical_to_git_blob": true,
+      "content_identical_with_git_lf_normalization": true,
+      "working_sha256": "78335d52b938b8631c4473536f23162300a4bf6448a5ce9ef9978ec0d0e2bc44"
+    },
+    "docs/audits/m11/checkpoint.json": {
+      "byte_identical_to_git_blob": true,
+      "content_identical_with_git_lf_normalization": true,
+      "working_sha256": "1f21b01e1c7870ed3c297dd51accebe1418f81459bc2ec56d161001b06deac9b"
+    },
+    "docs/audits/m11/github-migration-validation.md": {
+      "byte_identical_to_git_blob": true,
+      "content_identical_with_git_lf_normalization": true,
+      "working_sha256": "f7d34c98336b3c495e8ba15abdc39c260410c38297295130eb5e1f43418af877"
+    },
+    "docs/audits/m11/m10-independent-audit-report.redacted.md": {
+      "byte_identical_to_git_blob": true,
+      "content_identical_with_git_lf_normalization": true,
+      "working_sha256": "ac15871537c8ad9883d351fc7362cbbbcdb78ef1d6459df07d8bee27e09e8fc1"
+    },
+    "docs/audits/m11/m11-completion-report.md": {
+      "byte_identical_to_git_blob": true,
+      "content_identical_with_git_lf_normalization": true,
+      "working_sha256": "8589a61fe8a6f4ddace96e4a4ad7126c686d08654e485bc5c22d73f9fa5bc138"
+    },
+    "docs/audits/m11/migration-source.json": {
+      "byte_identical_to_git_blob": true,
+      "content_identical_with_git_lf_normalization": true,
+      "working_sha256": "e8a103414d3181efcd2b43ad7f9efa16ad38dcb144dcd3556710d5400be753ac"
+    },
+    "docs/audits/m11/validation-summary.json": {
+      "byte_identical_to_git_blob": true,
+      "content_identical_with_git_lf_normalization": true,
+      "working_sha256": "59235c6a3e18584182276847f5c2c63a5ce24830a9d99e9ae4aefeac8a1e9fe5"
+    }
+  },
+  "documentation_structure": {
+    "status": "passed",
+    "documents": 47,
+    "navigation_link_documents": 8,
+    "canonical_claims": 81,
+    "local_links": 680,
+    "heading_anchors": 26,
+    "questions": 32,
+    "errors": [],
+    "warnings": [],
+    "limitations": [
+      "Does not verify source semantics or runtime claims",
+      "Does not fetch external URLs",
+      "Does not rewrite or reattest historical audits",
+      "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+    ]
+  },
+  "workspace_navigation": {
+    "files": 6,
+    "links": 41,
+    "errors": []
+  },
+  "encoding_errors": [],
+  "commands": {
+    "structure": {
+      "command": [
+        "C:\\kybersand\\.local\\python\\Scripts\\python.exe",
+        "tools/ci/check_docs.py"
+      ],
+      "timeout_seconds": 60,
+      "exit": 0
+    },
+    "m11": {
+      "command": [
+        "C:\\kybersand\\.local\\python\\Scripts\\python.exe",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "timeout_seconds": 60,
+      "exit": 1
+    },
+    "source_diff": {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "timeout_seconds": 60,
+      "exit": 0
+    },
+    "workspace_diff": {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "timeout_seconds": 60,
+      "exit": 0
+    },
+    "source_fsck": {
+      "command": [
+        "git",
+        "fsck",
+        "--full"
+      ],
+      "timeout_seconds": 60,
+      "exit": 0
+    },
+    "workspace_fsck": {
+      "command": [
+        "git",
+        "fsck",
+        "--full"
+      ],
+      "timeout_seconds": 60,
+      "exit": 0
+    }
+  },
+  "m11_errors": [
+    "ERROR: BUILD_ID source hash changed: godot/native_extension/cyber_native_cell_world.hpp",
+    "ERROR: BUILD_ID source hash changed: godot/native_extension/cyber_native_cell_world.cpp",
+    "ERROR: BUILD_ID source hash changed: godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "ERROR: BUILD_ID source hash changed: godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "ERROR: BUILD_ID source hash changed: godot/scripts/main.gd",
+    "ERROR: BUILD_ID source hash changed: godot/scripts/rapier_physics_bridge.gd",
+    "ERROR: BUILD_ID source hash changed: godot/project.godot"
+  ],
+  "raw_local_evidence": "validation/local/rag-rewrite-20260908/final-checks.json",
+  "checker_probe": {
+    "valid_fixture": {
+      "status": "passed",
+      "documents": 2,
+      "navigation_link_documents": 0,
+      "canonical_claims": 2,
+      "local_links": 1,
+      "heading_anchors": 1,
+      "questions": 1,
+      "errors": [],
+      "warnings": [],
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ]
+    },
+    "intentional_invalid_fixture": {
+      "status": "failed",
+      "documents": 2,
+      "navigation_link_documents": 0,
+      "canonical_claims": 1,
+      "local_links": 2,
+      "heading_anchors": 1,
+      "questions": 1,
+      "errors": [
+        "Canonical claim 'first' has multiple owners: reference/a.md and reference/b.md",
+        "docs/reference/a.md: missing heading anchor b.md#absent",
+        "docs/reference/a.md: broken link lost.md"
+      ],
+      "warnings": [],
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ]
+    },
+    "passed": true,
+    "scope": "Valid corpus accepted; duplicate canonical ownership, missing Markdown anchor and missing linked file each rejected in an isolated synthetic directory."
+  }
+}

@@ -32,6 +32,9 @@ public:
     CyberNativeCellWorld();
     ~CyberNativeCellWorld() override;
 
+    [[nodiscard]] static std::int64_t auto_worker_threads(std::int64_t logical_threads);
+    [[nodiscard]] static std::int64_t logical_processor_count();
+
     void reset_demo_world();
     [[nodiscard]] bool simulation_tick();
     void emit_disc(std::int64_t centre_x, std::int64_t centre_y,
@@ -90,6 +93,10 @@ protected:
     static void _bind_methods();
 
 private:
+    // The demo adapter exchanges owned byte arrays, never native pointers.
+    // Both adapters must be called by the same exclusive tick-boundary owner.
+    friend class CyberDemoBridge;
+
     struct BodyState {
         std::uint16_t id = 0;
         Vector2 center{};

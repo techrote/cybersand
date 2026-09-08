@@ -1,0 +1,654 @@
+{
+  "scope": "Documentation audit, 2026-09-08, local Windows x86_64 reconstructed source; not a Git commit, clean build attestation, or browser rerun",
+  "source_base_claim": "e2892c54d4bd91aac60971e81c748bd49fbe2adb",
+  "active_git": "absent",
+  "retained_git": "unborn master, no commits, no remotes, no tags; local only",
+  "non_document_source_files": 205,
+  "non_document_source_sha256": "0f07e1029418c0bca47a66f6c75b088a42f2871448794f9be2ca3971e1957b52",
+  "source_hash_algorithm": "SHA256 of sorted lines: <file sha256>  <source-relative path> LF; excludes Markdown, build, .git, .godot and __pycache__",
+  "backup_comparison": {
+    "backup_root": "C:\\Users\\-\\Documents\\ChatGPT\\cybersand\\cybersand-m13-dev\\source",
+    "backup_identical_count": 230,
+    "backup_differing": [
+      "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "docs/architecture/simulation-tick-and-threading.md",
+      "docs/decisions/ADR-002-double-buffered-tile-jobs.md",
+      "docs/decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+      "docs/operations/cybersand-codex-development-handover.md",
+      "docs/operations/rapier-2d-migration-runbook.md",
+      "docs/reference/configuration-reference.md",
+      "docs/reference/status-and-roadmap.md",
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm",
+      "godot/native_extension/cyber_native_cell_world.cpp",
+      "godot/native_extension/cyber_native_cell_world.hpp",
+      "godot/project.godot",
+      "godot/scripts/main.gd",
+      "godot/scripts/web_capabilities.gd",
+      "godot/scripts/web_demo_controller.gd",
+      "godot/scripts/web_demo_menu.gd",
+      "godot/third_party/rapier2d.lock.json",
+      "tools/build_web.py"
+    ],
+    "backup_absent": [
+      "docs/operations/web-threading.md",
+      "godot/scripts/web_rapier_probe.gd",
+      "godot/scripts/web_rapier_probe.gd.uid",
+      "godot/scripts/web_worker_probe.gd",
+      "godot/scripts/web_worker_probe.gd.uid",
+      "godot/scripts/worker_benchmark.gd",
+      "godot/scripts/worker_benchmark.gd.uid",
+      "godot/tests/run_worker_benchmark.gd",
+      "godot/tests/run_worker_benchmark.gd.uid",
+      "godot/tests/test_auto_worker_policy.gd",
+      "godot/tests/test_auto_worker_policy.gd.uid",
+      "godot/tests/test_web_rapier.gd",
+      "godot/tests/test_web_rapier.gd.uid",
+      "godot/tests/test_web_worker_parity.gd",
+      "godot/tests/test_web_worker_parity.gd.uid",
+      "godot/tests/test_worker_benchmark.gd",
+      "godot/tests/test_worker_benchmark.gd.uid"
+    ]
+  },
+  "acquisition_comparison": {
+    "original_files": 244,
+    "changed_existing_files_excluding_generated_imports": 25,
+    "added_files_excluding_generated_imports": 26,
+    "missing_files": [],
+    "native_original": 18,
+    "native_original_unchanged": 18,
+    "remaining_lfs_pointers": [
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib"
+    ]
+  },
+  "artifacts": {
+    "source/godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "402732d3b1625eace69e2130356137f0ebef14d9113d3d8d22716d9e4ea2bb17",
+    "source/godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "4e26ffa78ec2aaff434c4a70cd2ec85288b10ba5237912c35f204cb1e6ed2180",
+    "source/godot/addons/godot-rapier2d/bin/godot_rapier.wasm": "b4020962f6ff6c5f2c07436a94cdbf7b5e2096a5fc5832e4ff5526378ce88528",
+    "source/godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm": "5ff6933670c1377c24dcbac30d67758a307165eacdcbd33b25bf01669577c4c2"
+  },
+  "bindings": {
+    "godot-cpp-native": {
+      "rev-parse HEAD": {
+        "exit_code": 0,
+        "stdout": "101ae38034304346a46ea9ea84ae156d3e860496\n",
+        "stderr": ""
+      },
+      "status --porcelain": {
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    "godot-cpp-web": {
+      "rev-parse HEAD": {
+        "exit_code": 0,
+        "stdout": "101ae38034304346a46ea9ea84ae156d3e860496\n",
+        "stderr": ""
+      },
+      "status --porcelain": {
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      }
+    }
+  },
+  "toolchain_log_directory": "C:/kybersand/validation/local/20260908-201008",
+  "native_result": {
+    "command": [
+      "C:\\kybersand\\.local\\llvm-mingw-20260826-ucrt-x86_64\\bin\\mingw32-make.EXE",
+      "test",
+      "CXX=clang++",
+      "CC=clang"
+    ],
+    "cwd": "C:\\kybersand\\source",
+    "exit_code": 0,
+    "passed": true,
+    "elapsed_seconds": 21.621,
+    "log": "validation\\local\\20260908-201010\\native-test.log",
+    "passed_tests": 39
+  },
+  "native_limit": "Current C++ source recompiled; one unused-lambda-capture warning at native/src/world.cpp:1419. No sanitizer run.",
+  "godot": {
+    "runtime": "4.7.stable.official.5b4e0cb0f",
+    "platform": "Windows x86_64",
+    "fixture_timeout_seconds": 180,
+    "import_timeout_seconds": 240,
+    "passed": 15,
+    "total": 15,
+    "fixture_elapsed_seconds": 48.473,
+    "results": [
+      {
+        "command": [
+          "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\kybersand\\source\\godot",
+          "--script",
+          "res://tests/test_auto_worker_policy.gd"
+        ],
+        "cwd": "C:\\kybersand\\source",
+        "exit_code": 0,
+        "passed": true,
+        "elapsed_seconds": 0.335,
+        "log": "validation\\local\\20260908-201106\\test_auto_worker_policy.log"
+      },
+      {
+        "command": [
+          "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\kybersand\\source\\godot",
+          "--script",
+          "res://tests/test_cell_world.gd"
+        ],
+        "cwd": "C:\\kybersand\\source",
+        "exit_code": 0,
+        "passed": true,
+        "elapsed_seconds": 18.924,
+        "log": "validation\\local\\20260908-201106\\test_cell_world.log"
+      },
+      {
+        "command": [
+          "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\kybersand\\source\\godot",
+          "--script",
+          "res://tests/test_material_appearance_lut.gd"
+        ],
+        "cwd": "C:\\kybersand\\source",
+        "exit_code": 0,
+        "passed": true,
+        "elapsed_seconds": 1.163,
+        "log": "validation\\local\\20260908-201106\\test_material_appearance_lut.log"
+      },
+      {
+        "command": [
+          "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\kybersand\\source\\godot",
+          "--script",
+          "res://tests/test_native_edge_contact_regression.gd"
+        ],
+        "cwd": "C:\\kybersand\\source",
+        "exit_code": 0,
+        "passed": true,
+        "elapsed_seconds": 0.787,
+        "log": "validation\\local\\20260908-201106\\test_native_edge_contact_regression.log"
+      },
+      {
+        "command": [
+          "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\kybersand\\source\\godot",
+          "--script",
+          "res://tests/test_native_fire_presentation_regression.gd"
+        ],
+        "cwd": "C:\\kybersand\\source",
+        "exit_code": 0,
+        "passed": true,
+        "elapsed_seconds": 0.511,
+        "log": "validation\\local\\20260908-201106\\test_native_fire_presentation_regression.log"
+      },
+      {
+        "command": [
+          "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\kybersand\\source\\godot",
+          "--script",
+          "res://tests/test_native_render_bridge_regression.gd"
+        ],
+        "cwd": "C:\\kybersand\\source",
+        "exit_code": 0,
+        "passed": true,
+        "elapsed_seconds": 0.414,
+        "log": "validation\\local\\20260908-201106\\test_native_render_bridge_regression.log"
+      },
+      {
+        "command": [
+          "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\kybersand\\source\\godot",
+          "--script",
+          "res://tests/test_presentation_controls.gd"
+        ],
+        "cwd": "C:\\kybersand\\source",
+        "exit_code": 0,
+        "passed": true,
+        "elapsed_seconds": 0.603,
+        "log": "validation\\local\\20260908-201106\\test_presentation_controls.log"
+      },
+      {
+        "command": [
+          "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\kybersand\\source\\godot",
+          "--script",
+          "res://tests/test_rapier_backend_preflight.gd"
+        ],
+        "cwd": "C:\\kybersand\\source",
+        "exit_code": 0,
+        "passed": true,
+        "elapsed_seconds": 0.323,
+        "log": "validation\\local\\20260908-201106\\test_rapier_backend_preflight.log"
+      },
+      {
+        "command": [
+          "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\kybersand\\source\\godot",
+          "--script",
+          "res://tests/test_rapier_drop_in.gd"
+        ],
+        "cwd": "C:\\kybersand\\source",
+        "exit_code": 0,
+        "passed": true,
+        "elapsed_seconds": 0.417,
+        "log": "validation\\local\\20260908-201106\\test_rapier_drop_in.log"
+      },
+      {
+        "command": [
+          "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\kybersand\\source\\godot",
+          "--script",
+          "res://tests/test_rapier_manual_step.gd"
+        ],
+        "cwd": "C:\\kybersand\\source",
+        "exit_code": 0,
+        "passed": true,
+        "elapsed_seconds": 1.066,
+        "log": "validation\\local\\20260908-201106\\test_rapier_manual_step.log"
+      },
+      {
+        "command": [
+          "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\kybersand\\source\\godot",
+          "--script",
+          "res://tests/test_render_patch_handoff_regression.gd"
+        ],
+        "cwd": "C:\\kybersand\\source",
+        "exit_code": 0,
+        "passed": true,
+        "elapsed_seconds": 0.613,
+        "log": "validation\\local\\20260908-201106\\test_render_patch_handoff_regression.log"
+      },
+      {
+        "command": [
+          "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\kybersand\\source\\godot",
+          "--script",
+          "res://tests/test_web_demo_setup.gd"
+        ],
+        "cwd": "C:\\kybersand\\source",
+        "exit_code": 0,
+        "passed": true,
+        "elapsed_seconds": 0.605,
+        "log": "validation\\local\\20260908-201106\\test_web_demo_setup.log"
+      },
+      {
+        "command": [
+          "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\kybersand\\source\\godot",
+          "--script",
+          "res://tests/test_web_rapier.gd"
+        ],
+        "cwd": "C:\\kybersand\\source",
+        "exit_code": 0,
+        "passed": true,
+        "elapsed_seconds": 1.99,
+        "log": "validation\\local\\20260908-201106\\test_web_rapier.log"
+      },
+      {
+        "command": [
+          "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\kybersand\\source\\godot",
+          "--script",
+          "res://tests/test_web_worker_parity.gd"
+        ],
+        "cwd": "C:\\kybersand\\source",
+        "exit_code": 0,
+        "passed": true,
+        "elapsed_seconds": 16.973,
+        "log": "validation\\local\\20260908-201106\\test_web_worker_parity.log"
+      },
+      {
+        "command": [
+          "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "C:\\kybersand\\source\\godot",
+          "--script",
+          "res://tests/test_worker_benchmark.gd"
+        ],
+        "cwd": "C:\\kybersand\\source",
+        "exit_code": 0,
+        "passed": true,
+        "elapsed_seconds": 3.749,
+        "log": "validation\\local\\20260908-201106\\test_worker_benchmark.log"
+      }
+    ],
+    "limit": "Retained native DLL loaded without rebuilding extension; this is not source-to-DLL reproducibility proof or browser execution."
+  },
+  "exports": {
+    "web": {
+      "manifest_sha256": "5ce108be9fdca93c266d338c4845304cf5e6e7e0e3e39f85041294a041201363",
+      "build_info": {
+        "source_commit": "e2892c54d4bd91aac60971e81c748bd49fbe2adb",
+        "source_identity_kind": "snapshot-base-with-local-setup-changes",
+        "godot": "4.7.stable.official.5b4e0cb0f",
+        "godot_cpp": "101ae38034304346a46ea9ea84ae156d3e860496",
+        "emscripten": "4.0.20",
+        "profile": "compat",
+        "native_worker_threads": 1,
+        "auto_worker_policy": "logical<4:2; logical<12:4; otherwise:6",
+        "rapier": "0.35.2",
+        "rapier_sha256": "5ff6933670c1377c24dcbac30d67758a307165eacdcbd33b25bf01669577c4c2"
+      },
+      "checks": [
+        {
+          "path": "build-info.json",
+          "expected": "1513f026a85085ed711cef06030a93fde2eb265d5f99d94e0bbda4679c73683e",
+          "actual": "1513f026a85085ed711cef06030a93fde2eb265d5f99d94e0bbda4679c73683e",
+          "passed": true
+        },
+        {
+          "path": "godot_rapier.wasm",
+          "expected": "5ff6933670c1377c24dcbac30d67758a307165eacdcbd33b25bf01669577c4c2",
+          "actual": "5ff6933670c1377c24dcbac30d67758a307165eacdcbd33b25bf01669577c4c2",
+          "passed": true
+        },
+        {
+          "path": "index.apple-touch-icon.png",
+          "expected": "01d4f63e525941e06ce74f5187dad030d20a8d52a07ce365ae4e94af97a3b1f5",
+          "actual": "01d4f63e525941e06ce74f5187dad030d20a8d52a07ce365ae4e94af97a3b1f5",
+          "passed": true
+        },
+        {
+          "path": "index.audio.position.worklet.js",
+          "expected": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8",
+          "actual": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8",
+          "passed": true
+        },
+        {
+          "path": "index.audio.worklet.js",
+          "expected": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
+          "actual": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
+          "passed": true
+        },
+        {
+          "path": "index.html",
+          "expected": "07c4b8ce6bc412d7bf52dddf59191175b526b10375ad513f56377cf0c1d241b3",
+          "actual": "07c4b8ce6bc412d7bf52dddf59191175b526b10375ad513f56377cf0c1d241b3",
+          "passed": true
+        },
+        {
+          "path": "index.icon.png",
+          "expected": "ad3c35ad0facf487c618204bd98db543034fc95224eadc7f08c7a9ff38d5b3b5",
+          "actual": "ad3c35ad0facf487c618204bd98db543034fc95224eadc7f08c7a9ff38d5b3b5",
+          "passed": true
+        },
+        {
+          "path": "index.js",
+          "expected": "631bbecee5e5136b5f29ed7dedb31a5d022d65da4b639b6e52a48d0c5e3d3154",
+          "actual": "631bbecee5e5136b5f29ed7dedb31a5d022d65da4b639b6e52a48d0c5e3d3154",
+          "passed": true
+        },
+        {
+          "path": "index.pck",
+          "expected": "d16f251edefeed2daf8f69ce865a2edf19e8c7830de594dc9f467645d28087ef",
+          "actual": "d16f251edefeed2daf8f69ce865a2edf19e8c7830de594dc9f467645d28087ef",
+          "passed": true
+        },
+        {
+          "path": "index.png",
+          "expected": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e",
+          "actual": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e",
+          "passed": true
+        },
+        {
+          "path": "index.side.wasm",
+          "expected": "85473bead1cf62c408d034189fae423594c45fef403fc0707a72bb8e2b87a6d2",
+          "actual": "85473bead1cf62c408d034189fae423594c45fef403fc0707a72bb8e2b87a6d2",
+          "passed": true
+        },
+        {
+          "path": "index.wasm",
+          "expected": "d37e06f7126849a81fa099f1cf89f0d8ccbb87502b8c857492490dff66fad95a",
+          "actual": "d37e06f7126849a81fa099f1cf89f0d8ccbb87502b8c857492490dff66fad95a",
+          "passed": true
+        },
+        {
+          "path": "libcybersand_native.web.nothreads.wasm",
+          "expected": "4fdeaea58a44760c1584ad566a00047ab2059c65f38a445b47b82579f85b7dde",
+          "actual": "4fdeaea58a44760c1584ad566a00047ab2059c65f38a445b47b82579f85b7dde",
+          "passed": true
+        },
+        {
+          "path": "LICENSE_STATUS.md",
+          "expected": "3bfb7c5ddd1418ab38621d1e5b841c9e9c4845e9166a196143c8a71f3cd46b70",
+          "actual": "3bfb7c5ddd1418ab38621d1e5b841c9e9c4845e9166a196143c8a71f3cd46b70",
+          "passed": true
+        },
+        {
+          "path": "RAPIER_LICENSE.txt",
+          "expected": "b876a61b43cc648b56428d56a484784a88d4231809e4d7f4fd8dbdb6772400e8",
+          "actual": "b876a61b43cc648b56428d56a484784a88d4231809e4d7f4fd8dbdb6772400e8",
+          "passed": true
+        },
+        {
+          "path": "RAPIER_THIRDPARTY.txt",
+          "expected": "63405a03af6a0a85dace7cc08001b34f28e8792dd2b7fb4de09137a6b58392df",
+          "actual": "63405a03af6a0a85dace7cc08001b34f28e8792dd2b7fb4de09137a6b58392df",
+          "passed": true
+        },
+        {
+          "path": "serve_web.py",
+          "expected": "22c2e55cc248070b2f68ffceb0cf3d7401c6d4ef7d4202de20884d9adee97d4a",
+          "actual": "22c2e55cc248070b2f68ffceb0cf3d7401c6d4ef7d4202de20884d9adee97d4a",
+          "passed": true
+        },
+        {
+          "path": "THIRD_PARTY_NOTICES.md",
+          "expected": "daaef5a4e7ff79674f705a7b16739d4843a22e88efbe2c71ca9d3a42857c493f",
+          "actual": "daaef5a4e7ff79674f705a7b16739d4843a22e88efbe2c71ca9d3a42857c493f",
+          "passed": true
+        }
+      ]
+    },
+    "web-threaded": {
+      "manifest_sha256": "a5b0ea752c5d2475b27b6633109edc4407c286fac6d48372ec5fa19d7acb6fc0",
+      "build_info": {
+        "source_commit": "e2892c54d4bd91aac60971e81c748bd49fbe2adb",
+        "source_identity_kind": "snapshot-base-with-local-setup-changes",
+        "godot": "4.7.stable.official.5b4e0cb0f",
+        "godot_cpp": "101ae38034304346a46ea9ea84ae156d3e860496",
+        "emscripten": "4.0.20",
+        "profile": "threaded",
+        "native_worker_threads": "auto",
+        "auto_worker_policy": "logical<4:2; logical<12:4; otherwise:6",
+        "rapier": "0.35.2",
+        "rapier_sha256": "b4020962f6ff6c5f2c07436a94cdbf7b5e2096a5fc5832e4ff5526378ce88528"
+      },
+      "checks": [
+        {
+          "path": "build-info.json",
+          "expected": "5f5ca4ad73c1f670ae33234018dd831c3a75a0f3599f02510e0450b464c75b3b",
+          "actual": "5f5ca4ad73c1f670ae33234018dd831c3a75a0f3599f02510e0450b464c75b3b",
+          "passed": true
+        },
+        {
+          "path": "godot_rapier.wasm",
+          "expected": "b4020962f6ff6c5f2c07436a94cdbf7b5e2096a5fc5832e4ff5526378ce88528",
+          "actual": "b4020962f6ff6c5f2c07436a94cdbf7b5e2096a5fc5832e4ff5526378ce88528",
+          "passed": true
+        },
+        {
+          "path": "index.apple-touch-icon.png",
+          "expected": "01d4f63e525941e06ce74f5187dad030d20a8d52a07ce365ae4e94af97a3b1f5",
+          "actual": "01d4f63e525941e06ce74f5187dad030d20a8d52a07ce365ae4e94af97a3b1f5",
+          "passed": true
+        },
+        {
+          "path": "index.audio.position.worklet.js",
+          "expected": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8",
+          "actual": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8",
+          "passed": true
+        },
+        {
+          "path": "index.audio.worklet.js",
+          "expected": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
+          "actual": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
+          "passed": true
+        },
+        {
+          "path": "index.html",
+          "expected": "d263b1096a0560ea0be42a3d51263c5de3d3fdbdebda9d09e03b9d0e164ab872",
+          "actual": "d263b1096a0560ea0be42a3d51263c5de3d3fdbdebda9d09e03b9d0e164ab872",
+          "passed": true
+        },
+        {
+          "path": "index.icon.png",
+          "expected": "ad3c35ad0facf487c618204bd98db543034fc95224eadc7f08c7a9ff38d5b3b5",
+          "actual": "ad3c35ad0facf487c618204bd98db543034fc95224eadc7f08c7a9ff38d5b3b5",
+          "passed": true
+        },
+        {
+          "path": "index.js",
+          "expected": "878c9ae7fb3c27ce886faea8da0670dc1a97fb93930fac4b433a1bb56e662d3a",
+          "actual": "878c9ae7fb3c27ce886faea8da0670dc1a97fb93930fac4b433a1bb56e662d3a",
+          "passed": true
+        },
+        {
+          "path": "index.pck",
+          "expected": "6fe74a7fbe252960e2902f807d7686656e037a3bc92062e1d016d7b9c9fc9297",
+          "actual": "6fe74a7fbe252960e2902f807d7686656e037a3bc92062e1d016d7b9c9fc9297",
+          "passed": true
+        },
+        {
+          "path": "index.png",
+          "expected": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e",
+          "actual": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e",
+          "passed": true
+        },
+        {
+          "path": "index.side.wasm",
+          "expected": "c31b395d905c5b632780b19f597b8ea0f329d6f9f6ed979c60732fdbae731a7e",
+          "actual": "c31b395d905c5b632780b19f597b8ea0f329d6f9f6ed979c60732fdbae731a7e",
+          "passed": true
+        },
+        {
+          "path": "index.wasm",
+          "expected": "eb7ab9dcb2c2c484f4dca0acaad466b7fd8448fb86a0a552b5c3e5291952115f",
+          "actual": "eb7ab9dcb2c2c484f4dca0acaad466b7fd8448fb86a0a552b5c3e5291952115f",
+          "passed": true
+        },
+        {
+          "path": "libcybersand_native.web.threads.wasm",
+          "expected": "438677c5f932909d93c0e9f17b4ac923a2dbabb70172a4c2c60a761512708145",
+          "actual": "438677c5f932909d93c0e9f17b4ac923a2dbabb70172a4c2c60a761512708145",
+          "passed": true
+        },
+        {
+          "path": "LICENSE_STATUS.md",
+          "expected": "3bfb7c5ddd1418ab38621d1e5b841c9e9c4845e9166a196143c8a71f3cd46b70",
+          "actual": "3bfb7c5ddd1418ab38621d1e5b841c9e9c4845e9166a196143c8a71f3cd46b70",
+          "passed": true
+        },
+        {
+          "path": "RAPIER_LICENSE.txt",
+          "expected": "b876a61b43cc648b56428d56a484784a88d4231809e4d7f4fd8dbdb6772400e8",
+          "actual": "b876a61b43cc648b56428d56a484784a88d4231809e4d7f4fd8dbdb6772400e8",
+          "passed": true
+        },
+        {
+          "path": "RAPIER_THIRDPARTY.txt",
+          "expected": "63405a03af6a0a85dace7cc08001b34f28e8792dd2b7fb4de09137a6b58392df",
+          "actual": "63405a03af6a0a85dace7cc08001b34f28e8792dd2b7fb4de09137a6b58392df",
+          "passed": true
+        },
+        {
+          "path": "serve_web.py",
+          "expected": "22c2e55cc248070b2f68ffceb0cf3d7401c6d4ef7d4202de20884d9adee97d4a",
+          "actual": "22c2e55cc248070b2f68ffceb0cf3d7401c6d4ef7d4202de20884d9adee97d4a",
+          "passed": true
+        },
+        {
+          "path": "THIRD_PARTY_NOTICES.md",
+          "expected": "daaef5a4e7ff79674f705a7b16739d4843a22e88efbe2c71ca9d3a42857c493f",
+          "actual": "daaef5a4e7ff79674f705a7b16739d4843a22e88efbe2c71ca9d3a42857c493f",
+          "passed": true
+        }
+      ]
+    }
+  },
+  "raw_local_records": {
+    "validation/local/documentation-audit-20260908/identity-before.json": "3785536b9b6bb7886474ef5c0bb625418c081e49f25751f1d0d51fee4e2748a4",
+    "validation/local/documentation-audit-20260908/artifact-checks.json": "5ddc0c77e4f90817ec0c50e2e30bf57f25c96aec99b7a971fdc7e6a9e1097660",
+    "validation/local/20260908-201010/native-test.log": "0ee42651e409164dd3c66bead5be590e2c4d4668da1cb8824c1bb91f09f3b74b",
+    "validation/local/20260908-201106/godot-fixtures.json": "a39bc23d81586088022d077aace2609c28daa197eba110ecd272fe2d8afcae76"
+  },
+  "documentation_checks": {
+    "markdown_files": 70,
+    "links_checked": 792,
+    "missing_links": [],
+    "bad_anchors": [],
+    "unreachable_from_docs_index": [],
+    "non_markdown_changes": [],
+    "unexpected_additions": [],
+    "related_document_targets_checked": 163,
+    "frontmatter_metadata_errors": [],
+    "changed_existing_source_markdown_files": 56,
+    "historical_preservation": {
+      "historical_m11_records_byte_identical": {
+        "docs/audits/m11/checkpoint.json": true,
+        "docs/audits/m11/github-migration-validation.md": true,
+        "docs/audits/m11/m10-independent-audit-report.redacted.md": true,
+        "docs/audits/m11/m11-completion-report.md": true,
+        "docs/audits/m11/migration-source.json": true,
+        "docs/audits/m11/validation-summary.json": true
+      },
+      "setup_report_equal_to_retained_backup_after_banner_removal": true
+    },
+    "m11_consistency_exit_code": 1,
+    "m11_consistency_remaining_errors": [
+      "ERROR: BUILD_ID source hash changed: godot/native_extension/cyber_native_cell_world.hpp",
+      "ERROR: BUILD_ID source hash changed: godot/native_extension/cyber_native_cell_world.cpp",
+      "ERROR: BUILD_ID source hash changed: godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "ERROR: BUILD_ID source hash changed: godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "ERROR: BUILD_ID source hash changed: godot/scripts/main.gd",
+      "ERROR: BUILD_ID source hash changed: godot/scripts/rapier_physics_bridge.gd",
+      "ERROR: BUILD_ID source hash changed: godot/project.godot"
+    ]
+  }
+}

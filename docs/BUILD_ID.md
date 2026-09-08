@@ -1,7 +1,7 @@
 ---
 title: Build identity
 status: Current
-scope: Exact m11 checkpoint identifier, source hashes, audit remediations, validation results, GPU cost envelope, and known limits
+scope: Historical M11 checkpoint identity and unchanged source hash ledger; not the current local source identity
 keywords: [build ID, SHA-256, GPU flair, neighbour relief, dual-radius bloom, 1920x1080, debug stats, RG8, Windows x86_64]
 related-documents: [README.md, systems/themed-construction-materials.md, systems/material-appearance-and-rendering.md, reference/status-and-roadmap.md]
 last-reviewed: 2026-08-28
@@ -9,6 +9,13 @@ implementation-state: m11-audit-remediation-render-handoff-water-native-repro-20
 ---
 
 # Build identity
+
+**Historical record: 2026-08-28 M11 only.** All Current labels, platform gaps,
+results and hashes below refer to that checkpoint. They do not certify the
+2026-09-08 local snapshot or its restored/rebuilt binaries. See the
+[current documentation audit](audits/2026-09-08-documentation-audit.md) for
+actual identity, tests, backup coverage, and the seven retained hash mismatches.
+The historical hash table and test outcomes below are intentionally unchanged.
 
 ## At a glance
 

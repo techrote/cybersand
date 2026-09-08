@@ -1,0 +1,443 @@
+{
+  "date_utc": "2026-09-08T20:35:37.898470+00:00",
+  "scope": "Owner-authorized publication follow-up to audited documentation38f0ce4; original audit/evaluation records unchanged",
+  "documentation_structure": {
+    "status": "passed",
+    "documents": 47,
+    "navigation_link_documents": 8,
+    "canonical_claims": 81,
+    "local_links": 684,
+    "heading_anchors": 26,
+    "questions": 32,
+    "errors": [],
+    "warnings": [],
+    "limitations": [
+      "Does not verify source semantics or runtime claims",
+      "Does not fetch external URLs",
+      "Does not rewrite or reattest historical audits",
+      "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+    ]
+  },
+  "retrieval_summary": {
+    "questions": 32,
+    "canonical_hit_at_1": 23,
+    "canonical_hit_at_k": 32,
+    "mrr_at_k": 0.8385,
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+  },
+  "retrieval_method": {
+    "name": "heading-chunk BM25 lexical development baseline",
+    "k": 5,
+    "maximum_body_words": 420,
+    "overlap_words": 0,
+    "k1": 1.2,
+    "b": 0.75,
+    "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+    "query_expansion": false,
+    "stemming": false,
+    "reranker": false,
+    "embeddings": false,
+    "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"
+  },
+  "corpus_sha256": [
+    {
+      "path": "docs/MATERIAL_LAB.md",
+      "sha256": "9f937bdc52cb992d23104abdb276b942dfe4d06e4594920366ff91ed7d0da8f8",
+      "bytes": 8219
+    },
+    {
+      "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "sha256": "5f6aa35c571382265d388c097f8aaabaaf074a6c6e0741d112dc3ac322692b12",
+      "bytes": 5859
+    },
+    {
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "sha256": "09c72e4afd364b116b3601698bc4d493c80811a930721b863b6762945de14e21",
+      "bytes": 6773
+    },
+    {
+      "path": "docs/architecture/determinism-and-boundary-transfers.md",
+      "sha256": "4216559294286a1ce524538bbf0b0754645c3535eeb61e2d1fe7e47844b4a456",
+      "bytes": 6399
+    },
+    {
+      "path": "docs/architecture/item-authored-material-programs.md",
+      "sha256": "facc6f3209743cafff997bd775ab1b77114f05439bead78c17624e62c32ecd72",
+      "bytes": 5204
+    },
+    {
+      "path": "docs/architecture/module-boundaries.md",
+      "sha256": "6bf104f7779108e8b40eae7e95170eb0d4cd31639ecc6206833dff31519de94e",
+      "bytes": 6019
+    },
+    {
+      "path": "docs/architecture/overview.md",
+      "sha256": "47a6d4646dabf966232808c48c21ba3d5178b327644aeb9ebd1ed356f4ab7144",
+      "bytes": 5292
+    },
+    {
+      "path": "docs/architecture/principles-and-non-goals.md",
+      "sha256": "813facfd73522049df4d8c0228aff4853c4ebdfe892dc5542e60d0b0940c0692",
+      "bytes": 6548
+    },
+    {
+      "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+      "sha256": "f2ef02272c7b2094bc4290072f66f9f7bbe89b6a1c688260b99ccd4e053704f2",
+      "bytes": 5960
+    },
+    {
+      "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "sha256": "400f17e2f82018806026ebbbed58bd6a5884e213463377917c8676db475da740",
+      "bytes": 6520
+    },
+    {
+      "path": "docs/architecture/simulation-tick-and-threading.md",
+      "sha256": "761925b5d5bea82bf65185c577141907575894144a80c4452ed43423c8ea08c6",
+      "bytes": 6652
+    },
+    {
+      "path": "docs/decisions/ADR-001-native-simulation-core.md",
+      "sha256": "183256ad4f0bb86477ebb52917ef5f39dbb473befe42a2ca9c8af7a1388cd0bf",
+      "bytes": 3490
+    },
+    {
+      "path": "docs/decisions/ADR-002-double-buffered-tile-jobs.md",
+      "sha256": "5178f76a7f4cbbc8ffaf8a0ff12a98183222e0a1fc2672ded36dc801b44b12c9",
+      "bytes": 3815
+    },
+    {
+      "path": "docs/decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+      "sha256": "13bfd7d498bad774bf6816dd4d2160b05d04e9e7aa35125ffe1b8515cb09886b",
+      "bytes": 3777
+    },
+    {
+      "path": "docs/decisions/ADR-004-interest-region-and-reconfiguration.md",
+      "sha256": "9fe9e94ca8bfcc979382f86bbb68b1e9ef382c8c46a3198b18c96ef88ce4563d",
+      "bytes": 3992
+    },
+    {
+      "path": "docs/decisions/ADR-005-water-model.md",
+      "sha256": "48169ad5c9248bf3bb836f9102a6c44ca086ec33a4be16338aba67f4345fe3b7",
+      "bytes": 3832
+    },
+    {
+      "path": "docs/decisions/ADR-006-gpu-compute-deferral.md",
+      "sha256": "de55bb1adf6d8bdb3324c80558ccdbb71e422a4e494df09dccbfcb0bf909ca00",
+      "bytes": 3351
+    },
+    {
+      "path": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+      "sha256": "e74aaa3c6fab1c697000e5d1c9508345d42ec8c762fa3f566f30ad7c0ca7fa0d",
+      "bytes": 3576
+    },
+    {
+      "path": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+      "sha256": "98f4b10efa5eef0d708dbb0e49e6fa60c7274479e7714d7395bb8792835e456f",
+      "bytes": 4399
+    },
+    {
+      "path": "docs/decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+      "sha256": "28335075e147da433213d7521cdae49f5b3732e41d603ca83146f90f944a743c",
+      "bytes": 3882
+    },
+    {
+      "path": "docs/operations/configuration-and-capacity-budgets.md",
+      "sha256": "992b0099643b56528dcaf18476b7d99a277c1d01b5a765a493eee8e3f6da202c",
+      "bytes": 7012
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "sha256": "0b838415831a4be041f65320abf900748a87a131190da7d315363a13e6935be7",
+      "bytes": 3141
+    },
+    {
+      "path": "docs/operations/documentation-maintenance.md",
+      "sha256": "17a43395456328f57850f515cd95764b7112036fc18a04d404ed585d51a0e81d",
+      "bytes": 6317
+    },
+    {
+      "path": "docs/operations/github-development-and-release.md",
+      "sha256": "c667593f9388585acfdae284ea164491dfa3a9dfb9b08b187601a2323d5d1c33",
+      "bytes": 4102
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "sha256": "ed470566672cd7c036237379ed8241c895663b925ca94f3b44b73cc3480456de",
+      "bytes": 5794
+    },
+    {
+      "path": "docs/operations/profiling-observability-and-performance.md",
+      "sha256": "12a5bfb13f315424ac6710d831bbd449c406cd68af6bcc17099b9a3c8fd44639",
+      "bytes": 6848
+    },
+    {
+      "path": "docs/operations/rapier-2d-migration-runbook.md",
+      "sha256": "42ac74e51b946ebeaf71670a76e88c9957a64181283dccee30c3983b809ce8f6",
+      "bytes": 5159
+    },
+    {
+      "path": "docs/operations/source-checkpoint-and-recovery.md",
+      "sha256": "d4ccfb1c7108fcc9e54abab1230178e0ab12207a70b3ae569fa4b1911c41f9a7",
+      "bytes": 5184
+    },
+    {
+      "path": "docs/operations/testing-validation-and-replay.md",
+      "sha256": "023fb014cf30942a9cc53d969975956f0259a335c2ea6dc743150b0812fdd7ea",
+      "bytes": 5479
+    },
+    {
+      "path": "docs/operations/troubleshooting.md",
+      "sha256": "19147fe2bbf1b6a0a6c980dadace47c41baeb4c217943fa166ce40a804efac0f",
+      "bytes": 4979
+    },
+    {
+      "path": "docs/operations/web-threading.md",
+      "sha256": "47c5c6b5e10363f9d5a8bf18c643470e94bcbc70e92d15337310cfa341ec55c4",
+      "bytes": 6183
+    },
+    {
+      "path": "docs/reference/configuration-reference.md",
+      "sha256": "0148c4a570bdfe02c1d901fcd7393c9aae7c99c6c88c3689b35d9096a77e2be9",
+      "bytes": 11116
+    },
+    {
+      "path": "docs/reference/glossary.md",
+      "sha256": "123cb43131703c15362ff8f85ef5e343844db526c3107d90937e7c8288debdde",
+      "bytes": 6071
+    },
+    {
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "sha256": "8de3083b5360d2cf632fb63ac46c55fd37f0a375de6a974c45e47867b1401b04",
+      "bytes": 9629
+    },
+    {
+      "path": "docs/reference/invariants.md",
+      "sha256": "ce4d0a0438bf36ebee950595e9de095ccbb05b48b581e65f4bb8bf4474519ce8",
+      "bytes": 13582
+    },
+    {
+      "path": "docs/reference/level-saves-and-replay.md",
+      "sha256": "b81080d65249dfd7cadabd98f38ce0d4752b581be5f922928cb9c97403c969ad",
+      "bytes": 5178
+    },
+    {
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "sha256": "b3c0e4c1acfae2e32d5cee838a9079b04dd2ce65bbc5b282588ce5b922bdbe10",
+      "bytes": 4671
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "0a75c022fc209f2b200c44788cc15685bebc45334c2fd683351c7e13c4fc6c75",
+      "bytes": 7564
+    },
+    {
+      "path": "docs/reference/validation-evidence.md",
+      "sha256": "cd4586640992097e36ea7101b9c24ac345c47d5af1ed95385b4b2088442448d1",
+      "bytes": 6089
+    },
+    {
+      "path": "docs/research/sandspiel-performance-and-material-port.md",
+      "sha256": "239d4fc9ca44d86a0971659305c61decec2dcd7c14b5a3d17a0f79844fa61791",
+      "bytes": 7166
+    },
+    {
+      "path": "docs/systems/activity-dirty-regions-and-waking.md",
+      "sha256": "8227c69befeeb8d62f48ac393cf0dbb7fb4eab38b3af1e66f032b30118180509",
+      "bytes": 6010
+    },
+    {
+      "path": "docs/systems/material-appearance-and-rendering.md",
+      "sha256": "34f12211fb3698b70fc8c10d1b89d042229d5b32120d0dad532cb778c53448de",
+      "bytes": 6523
+    },
+    {
+      "path": "docs/systems/materials-and-rule-kernels.md",
+      "sha256": "9d504b8b36e0e3e3426162cfbda1cb9e97b3e1b6b46aea69f4284920662f33e5",
+      "bytes": 7576
+    },
+    {
+      "path": "docs/systems/smoke-heat-pressure-roadmap.md",
+      "sha256": "fe0dc36315ecac7fa9c8d9b943c1edbe99387362c9f31259ba3631851bff173d",
+      "bytes": 5477
+    },
+    {
+      "path": "docs/systems/themed-construction-materials.md",
+      "sha256": "b84dbef7fdb0fd9faf0a389b7be7f85a8d70aca9f677423de37a2d01e2857b8a",
+      "bytes": 9404
+    },
+    {
+      "path": "docs/systems/water-design.md",
+      "sha256": "25fbc5aa35912fed36789fde7e65751f76b664fb2d6d947cf856701f04075c32",
+      "bytes": 7735
+    },
+    {
+      "path": "docs/systems/world-storage-and-interest-region.md",
+      "sha256": "e6cb51dadceecad2b7417a8416b124632a73e8bbf7ad231c26649eb47761d856",
+      "bytes": 7058
+    }
+  ],
+  "fixture_sha256": "83f981b1992e62cc7627b44bb640b4f0f8ee01bfccb1dd64eebc27ec7f193094",
+  "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+  "manifest_sha256": "eb3c6bc9050d1f2d066e03496b19a9f53bc230cf6cbbfdd90ac6bed570c5ced1",
+  "review": {
+    "unchanged_question_contexts": 31,
+    "reviewed_changed_question": "Q01",
+    "changed_context_scope": "Published remote/source-workspace identity; two otherwise unchanged chunks exchanged rank3/4",
+    "expected_facts_preserved": true,
+    "sufficient_top_five_context": 32,
+    "limitations": "Retains original source-informed model assessment for unchanged contexts; only changed context independently inspected in this publication turn; not a new blind/held-out evaluation"
+  },
+  "m11_consistency": {
+    "exit": 1,
+    "errors": [
+      "ERROR: BUILD_ID source hash changed: godot/native_extension/cyber_native_cell_world.hpp",
+      "ERROR: BUILD_ID source hash changed: godot/native_extension/cyber_native_cell_world.cpp",
+      "ERROR: BUILD_ID source hash changed: godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "ERROR: BUILD_ID source hash changed: godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "ERROR: BUILD_ID source hash changed: godot/scripts/main.gd",
+      "ERROR: BUILD_ID source hash changed: godot/scripts/rapier_physics_bridge.gd",
+      "ERROR: BUILD_ID source hash changed: godot/project.godot",
+      "ERROR: broken documentation link: docs/audits/2026-09-08-github-milestone.md -> 2026-09-08-github-milestone-checks.json"
+    ]
+  },
+  "remote_lfs_verification": {
+    "date_utc": "2026-09-08T20:34:41.400811+00:00",
+    "repository": "techrote/cybersand",
+    "scope": "All current LFS objects queried remotely; four materialized Windows/Web payloads downloaded and hashed in memory; no runtime execution",
+    "objects": [
+      {
+        "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "oid": "402732d3b1625eace69e2130356137f0ebef14d9113d3d8d22716d9e4ea2bb17",
+        "size": 1726464,
+        "remote_download_available": true,
+        "download_hash_verified": true
+      },
+      {
+        "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "oid": "bf58b2bf4e6ffb639ce847e6f2eb920f89c69f98fe212eed27ba2aede2ddf677",
+        "size": 1099808,
+        "remote_download_available": true,
+        "download_hash_verified": null
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+        "oid": "b4020962f6ff6c5f2c07436a94cdbf7b5e2096a5fc5832e4ff5526378ce88528",
+        "size": 2754113,
+        "remote_download_available": true,
+        "download_hash_verified": true
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+        "oid": "d8d71fd6f953972e6b650c1bf53b667433fe5a2461f21d221104d42c45251b86",
+        "size": 10531096,
+        "remote_download_available": true,
+        "download_hash_verified": null
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+        "oid": "70d5dfb0dc60b3276047a17bb9824750fa527f1b46759024e23459e232343cd2",
+        "size": 8077888,
+        "remote_download_available": true,
+        "download_hash_verified": null
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+        "oid": "93709c0b597f801f2a476bf50f4234639cc6f902746a5a7dfbc04ae0c8322467",
+        "size": 11996416,
+        "remote_download_available": true,
+        "download_hash_verified": null
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+        "oid": "fb05e284467399144698b77412196604d136886a164fa881d13e385429607909",
+        "size": 10838824,
+        "remote_download_available": true,
+        "download_hash_verified": null
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+        "oid": "38feab99c6b53e30aa7664afced37c1e11956999d930456fb6df0da552371d54",
+        "size": 8836448,
+        "remote_download_available": true,
+        "download_hash_verified": null
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+        "oid": "164927dce3772601f75a63a7f587acc0d4e59755598ccb453f21c8dac212c55c",
+        "size": 9540432,
+        "remote_download_available": true,
+        "download_hash_verified": null
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+        "oid": "021a237af3bd99170a7b220369295e69d78f0c57ab6cc8fc93dc9a79be203358",
+        "size": 9872888,
+        "remote_download_available": true,
+        "download_hash_verified": null
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+        "oid": "f4e7041aef2a508739688ea67b83802765c2249629288e5ff986079d75aab7f5",
+        "size": 10217600,
+        "remote_download_available": true,
+        "download_hash_verified": null
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+        "oid": "9e10814c3ede242b0dc95737aecec4837b9468d170e82a29dea5013614e242bd",
+        "size": 12012020,
+        "remote_download_available": true,
+        "download_hash_verified": null
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "oid": "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831",
+        "size": 10781080,
+        "remote_download_available": true,
+        "download_hash_verified": null
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+        "oid": "7ad1dc7a59a2689f2248ad9f1961574851acae96d1a249b39f0ecd881528569b",
+        "size": 18692816,
+        "remote_download_available": true,
+        "download_hash_verified": null
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+        "oid": "b5de2d56a30cef7d7ef9a1afc7a0fa7e5f2c3e3c12fc31643b60a1729ee901c9",
+        "size": 8677376,
+        "remote_download_available": true,
+        "download_hash_verified": null
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+        "oid": "0e0de310bee74df67e1a5ff0532f51edd27338196c231c81817a938bee48a2ad",
+        "size": 8747008,
+        "remote_download_available": true,
+        "download_hash_verified": null
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "oid": "4e26ffa78ec2aaff434c4a70cd2ec85288b10ba5237912c35f204cb1e6ed2180",
+        "size": 10018816,
+        "remote_download_available": true,
+        "download_hash_verified": true
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm",
+        "oid": "5ff6933670c1377c24dcbac30d67758a307165eacdcbd33b25bf01669577c4c2",
+        "size": 2751606,
+        "remote_download_available": true,
+        "download_hash_verified": true
+      }
+    ]
+  },
+  "implementation_scope": "No executable simulation, dependency or workflow edits; publication-only documentation updates",
+  "issues": [
+    "https://github.com/techrote/cybersand/issues/1",
+    "https://github.com/techrote/cybersand/issues/2",
+    "https://github.com/techrote/cybersand/issues/3"
+  ],
+  "raw_local_evidence": "validation/local/github-milestone-20260908"
+}

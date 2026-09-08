@@ -187,6 +187,11 @@ var hard_surface_rebuild_cooldown: float = 0.0
 
 
 func _ready() -> void:
+	if OS.get_processor_count() < 4:
+		var warning: Label = Label.new()
+		warning.text = "4 physical CPU cores are the recommended minimum. Fewer than 4 logical threads reported."
+		warning.add_theme_color_override("font_color", Color(1.0, 0.75, 0.35))
+		$Layout.add_child(warning)
 	status_label.visible = debug_stats_visible
 	rigid_bodies = [test_rigid_body_1, test_rigid_body_2, test_rigid_body_3]
 	var body_sizes: PackedVector2Array = PackedVector2Array()

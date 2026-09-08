@@ -1,15 +1,16 @@
 ## Scope
 
-Describe the focused change and affected subsystem/ADR.
+Describe the concrete behavior change and affected canonical subsystem/ADR.
 
-## Validation
+## Validation and documentation
 
-- [ ] Relevant native/Godot regression tests pass.
-- [ ] `python3 tools/ci/check_m11_consistency.py` passes.
-- [ ] New or changed behavior has regression coverage.
-- [ ] Current/Approved/Planned/Deferred/Rejected claims remain evidence-backed.
-- [ ] No generated output, credentials, machine paths, or unpinned dependencies are included.
+- [ ] Relevant regression checks and exact tested source/artifact/platform identities are recorded.
+- [ ] [Documentation-update checklist](../AGENTS.md#documentation-obligations) completed, including the affected-document matrix, status/platform qualifiers, corpus routes and retrieval questions.
+- [ ] `tools/ci/check_docs.py`, retrieval evaluation and `git diff --check` results attached.
+- [ ] `tools/ci/check_m11_consistency.py` result attached; historical hash failures remain explicit and historical records unchanged.
+- [ ] Current behavior is distinguished from Approved/Planned/Deferred/Rejected requirements and level saves from exact replay.
+- [ ] Actual local-delta/checkpoint coverage is recorded; no generated output, secrets or unpinned dependencies are included.
 
-## Platform gaps
+## Remaining gaps
 
-List skipped, unavailable, inconclusive, or manually required checks explicitly.
+Name failed, skipped, unavailable or manual checks and unresolved decisions.

@@ -1,191 +1,96 @@
 ---
 title: Smoke, heat, and pressure roadmap
+document-kind: design
+canonical-for: [smoke-behavior, optional-heat-pressure-fields]
 status: Current
-scope: Current evidence, ordering constraints, optional-field ownership, validation needs, interaction seams, and GPU limits for future systems
-keywords: [smoke, heat, temperature, pressure, gas composition, optional field, GPU field]
-related-documents: [materials-and-rule-kernels.md, water-design.md, ../decisions/ADR-006-gpu-compute-deferral.md]
-last-reviewed: 2026-08-28
-implementation-state: Native discrete Smoke rises, exchanges through denser opted-in movable materials, carries a bounded lifetime, thins faster in crowded clouds, and cannot ignite; temperature storage exists without heat simulation, while pressure and composition are absent.
+scope: Implemented native and fallback Smoke, limited temperature use, and unimplemented heat/pressure/composition fields
+last-reviewed: 2026-09-08
+related-documents: [materials-and-rule-kernels.md, water-design.md, activity-dirty-regions-and-waking.md, ../decisions/ADR-006-gpu-compute-deferral.md]
 ---
 
 # Smoke, heat, and pressure roadmap
 
-## At a glance
+**Current:** Smoke is a discrete material with buoyancy and intentional
+non-conserved decay. Optional temperature storage exists and Rocket reads it,
+but there is no heat-conduction solver. General pressure and gas-composition
+fields are **Planned**. Local body-pressure impulses and liquid comparisons do
+not establish such fields.
 
-- Purpose: preserve extension seams without pretending future field solvers exist.
-- **Current**: Smoke is a discrete rising material that buoyantly exchanges through denser Water and Sand, slowly dissipates, and cannot become Fire.
-- **Current**: directional density motion and target-side exchange permission preserve an opt-out for future trapped gases, foams, gels, or load-bearing media.
-- **Current**: native Chunk stores temperature values, but no conduction or phase-change update exists.
-- **Planned**: smoke, heat, and pressure adopt the same WorldStorage, TileJob, transfer, activity, and snapshot boundaries.
-- **Approved design**: optional fields are allocated only where active/needed, not across the full stored world.
-- **Deferred / experimental**: suitable non-authoritative fields may later be GPU-resident.
-- Non-goal: choose final gas, heat, pressure, chemistry, or GPU algorithms here.
+These are source claims for the [secured checkpoint](../operations/source-checkpoint-and-recovery.md).
+Dated runs are in the [evidence ledger](../reference/validation-evidence.md).
 
-## Search anchors
+## Current native Smoke
 
-current smoke implementation, temperature field exists, pressure roadmap, gas composition, heat solver, GPU-resident field, future material interaction
+[MaterialRules](../../native/include/cybersand/material.hpp) names material ID 4
+`Smoke`, with `Gas` as an alias. In
+[World::update_rule_kernel, RuleKernel::Gas](../../native/src/world.cpp), Smoke
+attempts up, both up-diagonals, then lateral movement. An Empty target permits a
+move; a denser movable target permits an exchange only when its descriptor
+accepts density exchange. Wall and the Mite/Rocket agents opt out. Numeric
+density alone does not imply permeability.
 
-## Current evidence
+Smoke starts with `state_a = 240`. On its coordinate-staggered eight-tick lane,
+it loses one lifetime unit, or two when at least five of the eight neighbors
+are Smoke. At the final decay sample it becomes Empty. Movement changes the
+coordinate-dependent phase, so this is not a universal lifetime in seconds.
 
-| System | Status | Evidence | Limitation |
-|---|---|---|---|
-| Smoke material | **Current** | native/src/world.cpp and godot/scripts/cell_world.gd | Full discrete cell; upward density exchange, bounded lifetime, and crowd-sensitive thinning. Native state is exact; fallback culling is an approximate stateless hazard. |
-| Temperature storage | **Current** storage | World::Chunk temperatures in native/src/world.cpp | No conduction, source/sink, phase change, or active-field scheduler. |
-| Heat simulation | **Planned** | Legacy architecture prose only | No authoritative update. |
-| Pressure | **Planned** | No source symbol | No representation or solver. |
-| Gas composition | **Planned** | No source symbol | No representation or conservation tests. |
-| GPU compute | **Deferred / experimental** | No compute code; GL Compatibility renderer configured | Not authoritative for terrain/collision. |
+Trapped Smoke uses `keep_cell_active` between samples. The ignition helper
+excludes Smoke: ordinary heat-contact/Fire ignition does not turn it into Fire.
+The owner-approved visual intent is a lingering cloud with slow internal
+collapse, substantially slower than Foam, without an extra full-world age scan.
+Further artistic tuning is **Planned**.
 
-## Dependency order
+## Desktop fallback Smoke
 
-The following ordering is **Approved design** where it restates the water-first constraint:
+[CyberCellWorld](../../godot/scripts/cell_world.gd) lacks the native authoritative
+lifetime byte. Its hazard is disabled for the first 64 world ticks, then uses
+a slower coordinate/tick sample. This is not a 64-tick grace period for every
+newly painted Smoke cell. It approximates the appearance intent but does not preserve
+native decay timing or state equality. Web requires the native cellular adapter;
+“compatibility Web” does not mean this GDScript fallback.
 
-1. Define and validate ownership, buffers, tick phases, and replay coverage.
-2. Implement the deterministic single-thread fixed-point water reference.
-3. Validate tile/chunk transfers and multithread equivalence.
-4. Migrate Sand and current Smoke only through the shared MaterialRules/TileJob model.
-5. Introduce heat as an optional authoritative field with independent reference tests.
-6. Design pressure/composition only after conservation, cadence, wake, and interest-region behavior are specified.
-7. Add cross-system interactions one bounded rule family at a time.
+## Temperature is storage plus a limited input
 
-Exact phase boundaries and algorithms remain **Planned**.
+[World::ensure_temperature_field, temperature, set_temperature, and move_cell](../../native/src/world.cpp)
+manage an optional signed 16-bit array per chunk, initialized from
+`WorldConfig::ambient_temperature`. Ordinary movement carries stored temperature
+with cells. Explicit setters can alter values; the Rocket kernel can launch at
+a temperature greater than ambient + 400.
 
-## Common ownership rules
+No conduction stage evolves temperature between neighboring cells. Existing
+Lava/Ice/Steam/Molten Glass reactions use material identity and compact state;
+their names do not imply a conserved heat equation. Units, physically calibrated
+thresholds, and a general source/sink accounting model are undefined. Exact
+storage defaults belong to [configuration](../reference/configuration-reference.md).
 
-Future systems must not create competing world authorities:
+[Native fixtures](../../native/tests/test_world.cpp) cover optional storage and
+selected material reactions, Smoke density exchange, lifetime/culling, Fire
+exclusion, and conserved Water during selected exchanges. They do not validate
+a nonexistent field solver or a complete reaction matrix.
 
-- WorldStorage owns committed optional-field data.
-- SimulationCore owns authoritative update/commit semantics.
-- MaterialRules supplies immutable descriptors and compact kernels.
-- SimulationScheduler schedules field work at defined tick stages/cadences.
-- Each field declares phased-exclusive or active-only buffered update semantics; jobs obey that field's ownership and bounded-neighbourhood contract.
-- RenderBridge sees immutable derived snapshots only.
-- GameplayBridge receives explicit immutable results, not mutable field pointers.
+## Planned field work
 
-## Smoke
+| Field | Implemented boundary | Missing design |
+|---|---|---|
+| Heat | Optional temperature storage; Rocket threshold | Units, conduction, energy accounting, cadence, phase transitions |
+| Pressure | Local liquid/body coupling heuristics | General pressure storage, equation/update, room/breach semantics |
+| Gas composition | Discrete Smoke/Steam material occupants | Mixture representation, quantities, conservation, vacuum behavior |
+| Field-based Smoke | Current discrete Smoke reference | Whether to replace occupancy with an optional density/composition field |
 
-### Current
+**Approved:** future fields share native world authority, scheduler ownership,
+activity, bounded capacity, and immutable publication. Optional data should be
+allocated where required. Existing Water/Sand/Smoke already use World; they do
+not need a new port before this design work.
 
-Smoke occupies a full material cell. It first attempts upward and upward-diagonal
-movement. Empty destinations are ordinary moves; an opted-in denser movable
-destination is exchanged downward. The target-side permission is deliberately
-separate from density so a future gel or foam can remain movable while refusing
-gas passage. Static Wall and the movable Mite/Rocket agents are current opt-out
-examples.
+For each proposed field, define one stage and cadence, numeric representation,
+read/write reach, in-place or buffered ownership, conservation or explicit error
+bounds, wake/interest behavior, serialization/hash coverage, and failure behavior.
+Then add a reference fixture, edge/worker comparison, and current/2× load
+measurements. Production interaction ordering across fields is not approved.
 
-Native Smoke starts with lifetime 240 in `state_a`. On an eight-tick spatially
-staggered lane it loses one lifetime unit, or two when at least five of its eight
-neighbours are also Smoke. This slowly hollows dense accumulations in the style
-of Foam collapse while keeping ordinary trails substantially longer lived.
-Trapped Smoke explicitly keeps its activity block awake until the next lifetime
-sample. Ignition excludes Smoke, so neither direct hot contact nor a Fire cell
-can turn Smoke into additional Fire.
-
-The compatibility GDScript path has no spare authoritative age byte. It uses a
-64-tick newborn warm-up and a much slower spatial hazard instead of allocating a
-second 1024² age array. It preserves the visual intent, not exact native timing.
-
-Native tests cover single-pair Smoke/Water and Smoke/Sand exchange, conserved
-Water mass during exchange, nine-cell displacement, long lifetime, eventual
-culling, and Fire exclusion. The equivalent fallback displacement groups and
-the wide-Water leveling assertion pass in m11.
-
-### Planned questions
-
-- Should a future composition field replace the current intentionally non-conserved lifetime model?
-- Does it remain a material-grid occupant or use an optional density field?
-- What wake and sleep criteria apply?
-- How does it interact with liquid, heat, pressure, vacuum, and collision?
-- What representation supports visually dense smoke without permanent full-resolution activity?
-
-Pressure, composition, and field-based volumetric smoke remain unapproved. The
-current discrete lifetime model is the implemented reference, not the final gas solver.
-
-## Heat
-
-### Current
-
-Native storage has an int16 temperature array initialized from WorldConfig::ambient_temperature. Existing movement copies temperature with cells. No rule updates temperature.
-
-### Planned requirements
-
-- deterministic numeric representation;
-- explicit conserved/non-conserved source semantics;
-- active-only optional buffering;
-- bounded tile/chunk transfer or stencil behavior;
-- sleep/wake based on meaningful temperature change;
-- phase-change integration through MaterialRules;
-- replay-hash coverage;
-- no hidden full-world conduction scan.
-
-Numeric units, range, conduction model, cadence, and phase thresholds are undecided.
-
-## Pressure and gas composition
-
-Status: **Planned**.
-
-Pressure/composition must eventually support sealed rooms, breaches, airlocks, smoke, fire, and vacuum without requiring full-resolution active gas simulation everywhere.
-
-Possible coarse or hierarchical representations have been discussed, but none is approved. Any future design must specify:
-
-- authority and conservation;
-- relation to the existing material grid;
-- resolution and coordinate mapping;
-- tile/chunk boundary exchange;
-- room/volume summary interaction;
-- interest-region and sleeping behavior;
-- gameplay collision/query semantics;
-- replay and serialization;
-- rendering derivation.
-
-## Interaction ordering
-
-The relative order of liquid, smoke, heat, phase change, pressure, chemistry, and electricity can change results. No production interaction sequence is approved.
-
-Before adding a field, its ADR/specification must define:
-
-- tick stage;
-- read set and write set;
-- transfer type or local stencil;
-- conflict behavior;
-- conservation invariant;
-- wake/dirty effect;
-- serialization/versioning;
-- tests and profiling fixture.
-
-## GPU extension seam
-
-### Deferred / experimental
-
-GPU compute may later suit:
-
-- lighting or occlusion fields;
-- non-authoritative visual diffusion;
-- coarse derived previews;
-- other GPU-resident fields whose CPU readback is not required every tick.
-
-### Explicitly rejected for the current architecture
-
-- GPU-only authoritative terrain state;
-- Godot collision reading unsynchronized GPU state;
-- per-tick GPU readback required for core gameplay authority;
-- nondeterministic GPU results entering authoritative replay without an approved decision.
-
-## Required validation per future field
-
-- single-thread reference;
-- deterministic replay;
-- tile/chunk edge equivalence;
-- field-specific conservation or bounded-error invariant;
-- stable sleeping and wake propagation;
-- current and 2× interest-region fixtures;
-- worker utilization and stage timing;
-- memory and allocation observations;
-- serialization round trip once persistence exists;
-- bridge snapshots that never expose mutable state.
-
-## Related decisions
-
-- [ADR-001](../decisions/ADR-001-native-simulation-core.md)
-- [ADR-002](../decisions/ADR-002-double-buffered-tile-jobs.md)
-- [ADR-006](../decisions/ADR-006-gpu-compute-deferral.md)
+**Deferred:** GPU-resident derived fields may be benchmarked after their authority
+and synchronization are explicit. **Rejected for the current architecture:**
+GPU-only terrain/collision authority, unsynchronized gameplay reads, and routine
+GPU readback as a prerequisite for authoritative ticks. These dispositions are
+owned by [ADR-006](../decisions/ADR-006-gpu-compute-deferral.md), not a permanent
+ban on every GPU experiment.

@@ -1,127 +1,62 @@
 ---
-title: Private GitHub development and release
+title: Repository development and release
 status: Current
-scope: M11 import identity, repository layout, dependency pins, Linux and Windows builds, CI, release artifacts, and development conventions
-keywords: [GitHub, private repository, Git LFS, CI, build, release, dependency pin]
-related-documents: [../BUILD_ID.md, testing-validation-and-replay.md, ../../CONTRIBUTING.md, ../../third_party/native-toolchain.lock.json]
-last-reviewed: 2026-08-28
-implementation-state: The audited M11 source history is preserved; repository hygiene, LFS policy, dependency locks, consistency checks, and feasible GitHub Actions validation are Current.
+document-kind: guide
+scope: Local repository policy and unresolved remote CI and release prerequisites
+canonical-for: [repository-policy, ci-contradictions, release-prerequisites]
+last-reviewed: 2026-09-08
+related-documents: [source-checkpoint-and-recovery.md, local-build-and-validation.md, documentation-maintenance.md]
 ---
 
-# Private GitHub development and release
+# Repository development and release
 
-## Imported baseline
+## Current checkout and repository policy
 
-- Authoritative source commit: `05ea45fda7bdd7b0150eb86c4922c202e89e08f4`.
-- Render lifetime fix: parent commit `c644b235fbcb5e085802918c0d6cebec118b6405`.
-- Build ID: `m11-audit-remediation-render-handoff-water-native-repro-2026-08-28`.
-- Audited tag: `m11-audited` points to the authoritative source commit, before
-  repository-hosting metadata was added.
-- The focused historical commits are preserved. Migration does not squash or
-  rewrite them, so hashes in the M11 evidence remain valid.
+The active source now has upstream-derived history and a local checkpoint branch.
+Use [source checkpoint and recovery](source-checkpoint-and-recovery.md) for exact
+identities, companion workspace scope and dirty-state inspection. No push or
+publication was performed by the documentation rewrite itself. The subsequent
+owner-authorized [GitHub milestone](../audits/2026-09-08-github-milestone.md) verified
+that `techrote/cybersand` is private and published both local histories. Branch
+protection and current CI success are not established; intended historical
+integration branch names do not establish today's remote policy.
 
-## Repository layout and ownership
+Track source, tests, docs, locks, notices and required runtime libraries. Runtime
+binaries use [.gitattributes](../../.gitattributes) and Git LFS; a pointer is not a
+usable library. Fourteen other-platform pointers remain locally unresolved.
+Ignore generated imports beyond the three portable bootstrap records, builds,
+exports, tools, caches, logs and local configuration. See [.gitignore](../../.gitignore),
+[CONTRIBUTING](../../CONTRIBUTING.md) and [dependency provenance](../../third_party/README.md).
+Do not change historical release hashes to accept a local rebuild.
 
-| Path | Source-control policy |
-|---|---|
-| `native/` | Track all C/C++ source, headers, tests, benchmark, and provenance data. |
-| `godot/` | Track project source, scenes, shaders, assets, tests, UIDs, extension descriptors, and the three portable `.godot` bootstrap records. |
-| `godot/addons/godot-rapier2d/` | Track the exact v0.35.2 add-on, notices, and runtime binaries; binaries use Git LFS. |
-| `godot/addons/cybersand_native/` | Track descriptors, notices, and the audited Linux/Windows x86_64 runtime binaries; binaries use Git LFS. |
-| `docs/` | Track the RAG-optimized hierarchy, ADRs, current status, audit evidence, and operating procedures. |
-| `tools/`, `.github/` | Track build, verification, CI, and repository automation. |
-| `third_party/*.lock.json` | Track exact sources, revisions, hashes, licenses, runtime floors, and rebuild requirements. |
+## Unresolved CI contradictions
 
-Do not track editor imports beyond the three documented portable bootstrap
-files, native build directories, package environments, compiler caches, logs,
-profiles, crash dumps, archives, setup-cache contents, downloaded editors, or
-machine-specific configuration. `.gitignore` is the executable policy.
+**Current inspected configuration, not a remote execution result:**
 
-## Binary and external artifact policy
+| Conflict | Source evidence | Required next checkpoint |
+|---|---|---|
+| Web CI chooses Emscripten 4.0.11; builder requires 4.0.20 | [web-toolchain.yml](../../.github/workflows/web-toolchain.yml), [web-demo.yml](../../.github/workflows/web-demo.yml), [build_web.py](../../tools/build_web.py) | Align pinned toolchain and artifact producer/consumer, then execute CI |
+| Workflow passes `--native-tests` without separate `--native-cpp` | Same builder argument validation and Web workflow | Supply isolated native bindings; confirm intended host support |
+| `--compile-only --native-tests` does not run runtime fixtures/export | Builder returns after compilation before those stages | Choose explicit coverage and test that the workflow actually executes it |
+| Runtime lock says templates absent; local export uses exact retained templates | [runtime lock](../../third_party/godot-runtime.lock.json) and local setup report | Create current export provenance; preserve historical lock scope |
+| Wrapper export `source_commit` remains acquisition base | Companion `C:/kybersand/tools/dev.py::web_command`; builder's `--source-commit` | Bind builds to actual HEAD plus local changes and artifact hashes |
 
-Runtime libraries needed to open the checked-out Godot project are kept in the
-repository through Git LFS. This preserves drag-and-run behavior after
-`git lfs pull` without turning future Git commits into large binary deltas.
+These changes are **Planned**, outside the documentation rewrite. Workflow
+presence is not a passing CI run. The existing workflows configure useful native,
+sanitizer, extension and consistency checks, but their actual current outcomes
+must be read before a release claim.
 
-The Godot editor, export templates, godot-cpp source/static libraries, SCons
-wheel, LLVM-MinGW toolchain, compiler packages, and milestone ZIPs do not belong
-in Git. Existing M11 setup-cache v2 remains a private offline recovery artifact.
-For ordinary development, reconstruct those inputs from the URLs, versions, and
-SHA-256 values in `third_party/native-toolchain.lock.json`; `godot-cpp` is fixed
-to commit `101ae38034304346a46ea9ea84ae156d3e860496`.
+## Release gates
 
-Distributable game/editor bundles should be attached to a GitHub Release with a
-SHA-256 sidecar produced from a clean tagged checkout. Do not put export output
-or complete toolchains in source history. Export templates are currently absent
-and unpinned, so export CI must remain disabled until an exact template package
-is recorded.
+Use a clean, identified tagged source checkpoint, materialize required LFS objects,
+verify [exact build inputs](local-build-and-validation.md), build each supported
+artifact, and execute the appropriate native/browser/visual matrix. Record
+source-to-binary identity and SHA-256 sidecars. Cross-build format checks are
+separate from running Windows Godot; Linux M11 tests are historical evidence.
+List failed, timed-out, skipped and unavailable checks beside passes.
 
-## Exact dependencies
-
-| Dependency | Pin |
-|---|---|
-| Godot editor/runtime | `4.7.stable.official.5b4e0cb0f` |
-| Godot API | `4.7` |
-| godot-cpp | `101ae38034304346a46ea9ea84ae156d3e860496` |
-| Godot Rapier Physics 2D | official single-2D `v0.35.2`, release asset SHA-256 `73b46bfe2cfc40e3875f4f367478bbd2b1090f563eeef57f4fed3fc274aae1f0` |
-| SCons | `4.10.1`, wheel SHA-256 `bd9d1c52f908d874eba92a8c0c0a8dcf2ed9f3b88ab956d0fce1da479c4e7126` |
-| Linux compiler/linker | GCC/G++ 13.3.0, GNU binutils 2.42 |
-| Windows cross-toolchain | LLVM-MinGW 20260826, LLVM 23.1.0, UCRT; archive SHA-256 `cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65` |
-
-The Linux bundle requires GLIBC 2.34 because of Rapier2D. The CyberSand
-extension itself is capped at GLIBC 2.32, GLIBCXX 3.4.30, and CXXABI 1.3.9.
-
-## Build paths
-
-### Linux x86_64
-
-1. Obtain the exact godot-cpp commit and SCons 4.10.1, or restore them from
-   setup-cache v2.
-2. Set `GODOT_CPP_ROOT` and `SCONS_PYTHON`.
-3. Run `tools/build_pinned_godot_cpp.sh linux`.
-4. Run `tools/build_native_extension.sh`.
-5. Run `tools/check_linux_runtime_floor.sh` and the headless Godot suite.
-
-The release path refuses source, compiler, linker, static-library, or output
-hash drift. CI may set `CYBERSAND_ALLOW_TOOLCHAIN_DRIFT=1` only for a clearly
-labelled validation build, never to claim bit-identical M11 reproduction.
-
-### Windows x86_64 from Linux
-
-1. Restore or verify LLVM-MinGW 20260826 and set `LLVM_MINGW_ROOT`.
-2. Build the exact godot-cpp commit with
-   `tools/build_pinned_godot_cpp.sh windows`.
-3. Set `WINDOWS_CXX` and run `tools/build_native_extension_windows.sh`.
-4. Validate PE32+ architecture/imports on Linux.
-5. Launch the result with exact Godot 4.7 on Windows before describing it as
-   runtime-validated. Cross-build structure alone is not Windows runtime proof.
-
-## Continuous integration
-
-GitHub Actions covers native compile/tests and sanitizers, Linux and Windows
-x86_64 GDExtension validation builds, exact Godot headless regressions,
-documentation/status/provenance checks, Git LFS integrity, and tagged runtime
-artifact hashes. Each command is bounded with `timeout` and workflows have job
-timeouts. Interactive GPU quality, Windows Godot runtime, PowerShell behavior,
-exports, and LeakSanitizer on a compatible host remain outside the current
-hosted matrix.
-
-## Repository conventions
-
-- `main` is the protected integration branch; use focused topic branches.
-- Keep commits reviewable and pair behavior changes with tests and status docs.
-- Never change a **Current**, **Approved design**, **Planned**,
-  **Deferred / experimental**, or **Explicitly rejected** claim without checking
-  its source evidence and related ADRs.
-- Add a new ADR when changing authority, ownership, determinism, dependency
-  selection, or a previously rejected boundary.
-- Agents must inspect `docs/README.md`, `docs/BUILD_ID.md`, the relevant ADR,
-  and current tests before editing a subsystem.
-- Do not commit generated imports, test output, secrets, absolute paths, or a
-  downloaded dependency that is not covered by its license and provenance lock.
-- A release tag is annotated. Release notes list passed, failed, skipped,
-  timed-out, and untested platform checks without broad crash-free claims.
-
-The CyberSand project itself has no selected public license. Private development
-may continue, but public release or third-party distribution requires an owner
-licensing decision; see `LICENSE_STATUS.md`.
+Distribution additionally needs the owner's project licensing decision:
+[LICENSE_STATUS.md](../../LICENSE_STATUS.md) states no selected public license.
+Keep third-party notices and exact Rapier/godot-cpp provenance in every bundle.
+Use the [documentation checklist](documentation-maintenance.md) before tagging;
+publication itself requires an authorized release task.

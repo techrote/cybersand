@@ -1,0 +1,142 @@
+{
+  "version": 1,
+  "reviewed": "2026-09-08",
+  "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
+  "documents": [
+    "MATERIAL_LAB.md",
+    "architecture/chunk-tile-and-buffer-model.md",
+    "architecture/data-ownership-and-lifetimes.md",
+    "architecture/determinism-and-boundary-transfers.md",
+    "architecture/item-authored-material-programs.md",
+    "architecture/module-boundaries.md",
+    "architecture/overview.md",
+    "architecture/principles-and-non-goals.md",
+    "architecture/rendering-and-gameplay-bridges.md",
+    "architecture/rigid-body-and-cellular-coupling.md",
+    "architecture/simulation-tick-and-threading.md",
+    "decisions/ADR-001-native-simulation-core.md",
+    "decisions/ADR-002-double-buffered-tile-jobs.md",
+    "decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+    "decisions/ADR-004-interest-region-and-reconfiguration.md",
+    "decisions/ADR-005-water-model.md",
+    "decisions/ADR-006-gpu-compute-deferral.md",
+    "decisions/ADR-007-rigid-body-cellular-coupling.md",
+    "decisions/ADR-008-bounded-approximate-fidelity.md",
+    "decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+    "operations/configuration-and-capacity-budgets.md",
+    "operations/cybersand-codex-development-handover.md",
+    "operations/documentation-maintenance.md",
+    "operations/github-development-and-release.md",
+    "operations/local-build-and-validation.md",
+    "operations/profiling-observability-and-performance.md",
+    "operations/rapier-2d-migration-runbook.md",
+    "operations/source-checkpoint-and-recovery.md",
+    "operations/testing-validation-and-replay.md",
+    "operations/troubleshooting.md",
+    "operations/web-threading.md",
+    "reference/configuration-reference.md",
+    "reference/glossary.md",
+    "reference/interfaces-and-message-contracts.md",
+    "reference/invariants.md",
+    "reference/level-saves-and-replay.md",
+    "reference/product-intent-and-priorities.md",
+    "reference/status-and-roadmap.md",
+    "reference/validation-evidence.md",
+    "research/sandspiel-performance-and-material-port.md",
+    "systems/activity-dirty-regions-and-waking.md",
+    "systems/material-appearance-and-rendering.md",
+    "systems/materials-and-rule-kernels.md",
+    "systems/smoke-heat-pressure-roadmap.md",
+    "systems/themed-construction-materials.md",
+    "systems/water-design.md",
+    "systems/world-storage-and-interest-region.md"
+  ],
+  "navigation": [
+    "README.md",
+    "reference/retrieval-index.md",
+    "../README.md",
+    "../AGENTS.md",
+    "../CONTRIBUTING.md",
+    "../third_party/README.md",
+    "../godot/native_extension/README.md",
+    "../.github/pull_request_template.md"
+  ],
+  "excluded": [
+    {
+      "path": "ARCHITECTURE.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "audits/2026-09-08-documentation-audit.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "audits/2026-09-08-performance-history.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "audits/m11/github-migration-validation.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "audits/m11/m10-independent-audit-report.redacted.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "audits/m11/m11-completion-report.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "audits/m11/README.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "audits/pre-rag-rewrite-2026-09-08/README.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "BUILD_ID.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "LARGE_WORLD_PROOF.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "NEXT_MILESTONE.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "PERFORMANCE.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "STATUS.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "README.md",
+      "reason": "Current navigation, not an answer owner"
+    },
+    {
+      "path": "reference/retrieval-index.md",
+      "reason": "Current question routing, not repeated answer content"
+    },
+    {
+      "path": "audits/2026-09-08-foundation-diagnostics.md",
+      "reason": "Dated audit/evaluation record; retrieve explicitly, not as a current contract"
+    },
+    {
+      "path": "audits/2026-09-08-retrieval-evaluation.md",
+      "reason": "Dated audit/evaluation record; retrieve explicitly, not as a current contract"
+    },
+    {
+      "path": "audits/2026-09-08-structural-documentation-audit.md",
+      "reason": "Dated audit/evaluation record; retrieve explicitly, not as a current contract"
+    },
+    {
+      "path": "audits/2026-09-08-github-milestone.md",
+      "reason": "Dated publication/reconstruction record; not a default current contract"
+    }
+  ]
+}

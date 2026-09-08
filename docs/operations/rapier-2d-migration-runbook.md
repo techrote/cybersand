@@ -1,109 +1,86 @@
 ---
-title: Rapier2D migration runbook
+title: Rapier2D dependency and validation runbook
 status: Current
-scope: Pinned dependency acquisition, safe activation, staged coupling migration, diagnostics, acceptance gates, packaging, and rollback
-keywords: [Rapier2D, migration, install addon, activate physics server, preflight, manual stepping]
-related-documents: [../decisions/ADR-009-rapier-2d-rigid-body-backend.md, ../architecture/rigid-body-and-cellular-coupling.md, testing-validation-and-replay.md]
-last-reviewed: 2026-08-27
-implementation-state: Official Rapier2D v0.35.2 binaries are vendored and selected; drop-in and manual-step fixtures pass on Godot 4.7 Linux x86_64, while export-platform validation and high-count callback removal remain pending.
+document-kind: guide
+scope: Current pinned backend verification and change procedure; migration history and coupling semantics are linked separately
+canonical-for: [rapier-dependency-validation, rapier-packaging]
+last-reviewed: 2026-09-08
+related-documents: [../architecture/rigid-body-and-cellular-coupling.md, ../reference/validation-evidence.md, web-threading.md]
 ---
 
-# Rapier2D migration runbook
+# Rapier2D dependency and validation runbook
 
-## At a glance
+## Is Rapier already installed and selected?
 
-- Purpose: switch the rigid-body backend without conflating dependency, behavior, coupling, and optimization changes.
-- **Current**: `godot/third_party/rapier2d.lock.json` pins Godot 4.7.x, Rapier v0.35.2, the official asset size, and SHA-256.
-- **Current**: the official 2D single add-on is vendored and `project.godot` selects `Rapier2D` at 60 physics ticks per second.
-- **Current**: dependency, drop-in RigidBody2D, full-scene, and manual-step fixtures pass on Linux x86_64.
-- **Current**: one main-thread bridge owns manual stepping, direct server state, batch active transforms, and callback flushing.
-- **Current**: moving-body samples use bounded swept overlap reconciliation before the endpoint obstacle mask is published to cells.
-- **Planned**: package and validate every intended export architecture.
+**Current:** the official single-precision 2D **v0.35.2** add-on is vendored and
+[project.godot](../../godot/project.godot) selects `Rapier2D`. The bridge reads
+`physics/common/physics_ticks_per_second` with a default of 60; the project does
+not override that setting.
+The [lock](../../godot/third_party/rapier2d.lock.json) records the release archive
+SHA-256 `73b46bfe2cfc40e3875f4f367478bbd2b1090f563eeef57f4fed3fc274aae1f0`.
+Godot is pinned to `4.7.stable.official.5b4e0cb0f` by the build requirements.
 
-## Search anchors
+The main-thread [CyberRapierPhysicsBridge](../../godot/scripts/rapier_physics_bridge.gd)
+deactivates automatic space stepping, applies the newest accepted cell result,
+steps the space, reads direct server transforms and flushes callbacks. The
+desktop and Web owners have different timing; the exact order, rectangle sweep,
+terrain budget and remaining limitations belong to
+[rigid-body/cellular coupling](../architecture/rigid-body-and-cellular-coupling.md)
+and [tick/threading](../architecture/simulation-tick-and-threading.md).
+Do not rerun activation as if migration were still unimplemented.
 
-install Rapier2D, enable Rapier Physics, Rapier migration order, activate Rapier2D safely, Rapier preflight, manual stepping workflow
+## Verify dependency before diagnosing coupling
 
-## Prepared inputs
+Use exact Godot and the intended architecture's real library bytes. Run these
+scripts with `godot --headless --path godot --script res://tests/<name>.gd` from
+source, bounded to 180 seconds each, or use the workspace `dev.cmd godot-test`.
 
-| Input | Path | Purpose |
-|---|---|---|
-| Dependency lock | `godot/third_party/rapier2d.lock.json` | Version, source, expected addon/server, release metadata, and verified checksum |
-| Vendored add-on | `godot/addons/godot-rapier2d` | Official 2D binaries, GDExtension descriptor, license, and notices |
-| Guarded activation | `godot/tools/activate_rapier_2d.gd` | Select Rapier2D only after registration and version checks |
-| Backend preflight | `godot/tests/test_rapier_backend_preflight.gd` | Confirm registration, project selection, and Godot version after restart |
-| Drop-in fixture | `godot/tests/test_rapier_drop_in.gd` | Confirm an ordinary RigidBody2D/RectangleShape2D advances under automatic Rapier stepping |
-| Manual-step fixture | `godot/tests/test_rapier_manual_step.gd` | Confirm explicit stepping, packed samples, and pause ownership |
-| Behavioral fixture | `godot/main.tscn` | Three 8×14 bodies plus cellular mask/force observations |
-| Coupling contract | `godot/scripts/rigid_body_coupling.gd` | Backend-neutral packed body samples and results |
-| Step owner | `godot/scripts/rapier_physics_bridge.gd` | Main-thread RID ownership, force application, stepping, batch reads, and flush |
+| Runner | What it checks |
+|---|---|
+| [test_rapier_backend_preflight.gd](../../godot/tests/test_rapier_backend_preflight.gd) | Version, registered server class, vendored extension and selected backend |
+| [test_rapier_drop_in.gd](../../godot/tests/test_rapier_drop_in.gd) | Ordinary body integration with automatic stepping in an isolated fixture |
+| [test_rapier_manual_step.gd](../../godot/tests/test_rapier_manual_step.gd) | Explicit bridge stepping, packed samples and pause ownership |
+| [test_web_rapier.gd](../../godot/tests/test_web_rapier.gd) | Real Web scene under native Godot: three-body coupling, thin floor, pause/reset and level/body restoration |
 
-## Stage 1: acquire and activate — complete on Linux x86_64
+Missing `RapierPhysicsServer2D` indicates registration/version/architecture trouble.
+Wrong project selection needs activation/restart. A valid backend with material
+overlap needs a coupling fixture, not a dependency upgrade. Inspect direct server
+state when SceneTree transform timing differs. Native pool workers never call
+Rapier or Godot APIs.
 
-1. Install the pinned Godot 4.7.x editor/export templates.
-2. Download the official Rapier2D release asset for tag v0.35.2 from the upstream release page.
-3. Record the asset filename and SHA-256 in the lock manifest; retain the MIT license/notice.
-4. Extract only the Rapier2D `addons` content into `godot/addons` and verify all intended platform libraries exist.
-5. Open the project once so Godot imports the GDExtension without selecting it.
-6. Run `godot --headless --path godot --script res://tools/activate_rapier_2d.gd`.
-7. Restart Godot, then run `res://tests/test_rapier_backend_preflight.gd`.
+## Web packaging and browser fixture
 
-No Rapier-specific solver setting is changed in this stage. Rapier's default 2D
-length unit of 100 matches Godot's conventional 100 pixels per metre and the
-project's current pixel-space scale.
+Both default compatibility and optional threaded exports include Rapier and
+Physics Pit after a real manual-step/CCD capability probe. The
+[builder](../../tools/build_web.py) verifies selected WASM hashes before staging
+and after export; the lock is their canonical home. Exported files include
+`godot_rapier.wasm`, `RAPIER_LICENSE.txt` and `RAPIER_THIRDPARTY.txt`.
+`--cellular-only` remains an explicit diagnostic path.
 
-## Stage 2: drop-in baseline — focused fixture complete
+Build/serve the selected profile using [Web threading](web-threading.md), then
+open a fresh URL with `?test=1&rapier=1`. Read `rapier_test` in the opt-in
+`cybersand-test-state` DOM node or the `WEB_RAPIER_TEST` console record. The fixture
+temporarily owns the test scene and returns to Neon Works; normal play URLs do
+not run it. Native headless execution of this scene does not establish Web WASM
+execution. Capture browser version, export hashes, profile/worker count and console.
 
-Retain RigidBody2D nodes, automatic stepping, callbacks, current shapes, and the
-packed cellular bridge. Exercise body/body collision, falling onto cellular
-Wall, displacement through Water/Sand/Smoke/Paste/Slush, reset, sleep, and pause.
-Record physics-step time, query-flush time where available, worker snapshot age,
-contacts, displaced cells, and unresolved overlaps. Fix only backend
-compatibility defects in this stage.
+## Evidence and acceptance limits
 
-## Stage 3: explicit coupling ownership — current
+[Validation evidence](../reference/validation-evidence.md) records historical
+Linux M11, September Windows and retained Chromium results separately. The
+three-rectangle fixture allows two pixels of transient floor penetration and
+`1e-5` error for restored body values. It is not zero-penetration proof, generalized
+shape/high-count acceptance or exact Rapier replay. [CYSD1](../reference/level-saves-and-replay.md)
+omits Rapier caches and native continuation state. Linux binaries currently include
+unresolved LFS pointers despite historical Linux passes.
 
-Introduce one main-thread Rapier bridge that owns the space RID, body RID table,
-fixed delta, and coupling stage order. Disable automatic space stepping, apply
-cell-derived impulses before `space_step`, fetch active transforms directly,
-perform swept-mask reconciliation, and call `space_flush_queries` once. Keep all
-cellular mutation on its existing worker owner through packed commands/results.
+## Future backend changes
 
-The current main thread performs one Rapier step per Godot physics callback and
-consumes the newest unapplied cellular result. The cellular worker remains
-asynchronous, so its response may be one or more samples old under overload;
-sample serials prevent duplicate force application. A bounded swept rectangle
-mask covers skipped transforms for displacement, then is discarded in favour
-of the endpoint mask before cell movement and pressure sampling.
-
-Add Rapier substeps only when a motion/shape fixture demonstrates tunnelling.
-Enable CCD per fast body before raising any global substep bound.
-
-## Stage 4: scale path
-
-Active RIDs and transforms are already read in a batch and the shader renders
-the bridge's authoritative transform cache. The three low-count test nodes keep
-their state-sync callbacks. Disabling callbacks and moving high-count body
-classes to direct-server rendering remains **Planned** and must be measured.
-
-## Acceptance and rollback
-
-Linux activation and manual-step ownership are accepted for this source
-checkpoint. Export architectures are not yet accepted merely because their
-binaries are present. Rollback restores the pre-Rapier checkpoint as a whole;
-the production project does not carry a runtime Godot-physics fallback.
-
-Focused local validation:
-
-```sh
-godot --headless --path godot --script res://tests/test_rapier_backend_preflight.gd
-godot --headless --path godot --script res://tests/test_rapier_drop_in.gd
-godot --headless --path godot --script res://tests/test_rapier_manual_step.gd
-godot --headless --path godot --quit-after 180
-```
-
-## Related decisions
-
-- [ADR-009: Rapier2D backend](../decisions/ADR-009-rapier-2d-rigid-body-backend.md)
-- [Rigid-body and cellular coupling](../architecture/rigid-body-and-cellular-coupling.md)
-- [Testing and replay](testing-validation-and-replay.md)
+Preserve [ADR-009](../decisions/ADR-009-rapier-2d-rigid-body-backend.md): Rapier remains
+behind engine-owned interfaces. Establish a source checkpoint, update the lock and
+notices, test registration then isolated automatic/manual fixtures, test coupled
+behavior on each target, then measure performance. Preserve exclusive step ownership
+and roll back a failed backend change before layering unrelated solver work.
+Generalized shapes, high-count callback removal and unvalidated export architectures
+remain **Planned**. Original staged migration/results are retained in the
+[pre-rewrite historical record](../audits/pre-rag-rewrite-2026-09-08/README.md).
