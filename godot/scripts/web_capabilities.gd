@@ -9,6 +9,12 @@ const REQUIRED: Array[StringName] = [
 static func native_available() -> bool:
 	return ClassDB.class_exists(&"CyberNativeCellWorld") and ClassDB.class_exists(&"CyberDemoBridge")
 
+static func reported_logical_threads() -> int:
+	# Emscripten's no-thread C runtime reports 1 regardless of hardware.
+	if OS.has_feature("web"):
+		return maxi(1, int(JavaScriptBridge.eval("navigator.hardwareConcurrency || 1", true)))
+	return int(ClassDB.class_call_static(&"CyberNativeCellWorld", &"logical_processor_count"))
+
 static func rapier_probe() -> Dictionary:
 	if not ClassDB.class_exists(RAPIER_CLASS):
 		return {"ok": false, "reason": "Rapier extension unavailable"}
@@ -75,6 +81,6 @@ static func rapier_probe() -> Dictionary:
 
 static func status(world: Variant, rapier: bool) -> String:
 	var runtime: String = "WASM" if OS.has_feature("web") else "NATIVE"
-	return "CYBERSAND/%s · COMPAT · %d WORKER · %s" % [
-		runtime, int(world.get_worker_threads()), "RAPIER2D" if rapier else "RIGID PHYSICS OFF"
+	return "CYBERSAND/%s · %s · %d WORKERS · %s" % [
+		runtime, "THREADED" if OS.has_feature("threads") else "COMPAT", int(world.get_worker_threads()), "RAPIER2D" if rapier else "RIGID PHYSICS OFF"
 	]

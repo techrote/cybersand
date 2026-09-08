@@ -4,11 +4,19 @@ status: Current
 scope: Presentation-only visual-state projection, palette/program LUTs, procedural flair classes, deterministic variation, bounded animation, dirty render patches, temporal smoothing, and glow
 keywords: [material appearance, RG8, LUT atlas, flair, procedural texture, medieval, cyberpunk, HDR, glow]
 related-documents: [themed-construction-materials.md, ../architecture/rendering-and-gameplay-bridges.md, materials-and-rule-kernels.md, ../operations/profiling-observability-and-performance.md]
-last-reviewed: 2026-08-28
+last-reviewed: 2026-09-08
 implementation-state: Dirty RG8 material/condition patches drive a 64×256 palette, unchanged four-texel program rows, 42 bounded procedural flair classes, four-neighbour relief, temporal smoothing, and dual-radius HDR glow; authoritative cells remain four bytes.
 ---
 
 # Material appearance and rendering
+
+Source anchors: [appearance projection](../../native/include/cybersand/material_appearance.hpp),
+[native snapshot adapter](../../godot/native_extension/cyber_native_cell_world.cpp),
+[desktop worker](../../godot/scripts/simulation_worker.gd),
+[renderer](../../godot/scripts/main.gd), and
+[Web controller](../../godot/scripts/web_demo_controller.gd). The
+[2026-09-08 audit](../audits/2026-09-08-documentation-audit.md) records source
+identity and dated validation; m9 cost comparisons below remain historical.
 
 ## At a glance
 
@@ -18,9 +26,9 @@ implementation-state: Dirty RG8 material/condition patches drive a 64×256 palet
 - **Current**: a four-texel-per-material RGBA16F program LUT controls tint, response range, value, alpha, HDR emission, and one integer flair class in the previously reserved channel.
 - **Current**: 42 analytic flair classes cover construction finishes plus powders, Smoke, Steam, Foam, organics, Ice, reactive liquids, Mercury, charged Metal, and Cloner circuitry.
 - **Current**: four nearest-neighbour reads from an alias of the existing RG8 world texture derive directional solid bevels, liquid surface lips, and one-cell ambient contact shadow; no second world image or upload exists.
-- **Current**: atlas light/dark separation is 18% stronger than m6, with small material-limited hue variation compiled once at startup.
+- **Current**: atlas construction multiplies the authored `VALUE_VARIATION` by 1.18, with small material-limited hue variation compiled once at startup; this is a source constant, not a measured m6 visual comparison.
 - **Current**: Water coverage, condition colour, and emission are presentation-only and never feed back into physics, activity, or replay.
-- **Current**: native dirty rectangles are accumulated until the main thread acknowledges them, with a bounded full-refresh recovery path.
+- **Current**: native publication clears captured dirty state into immutable leases; the desktop worker separately retains copied unacknowledged patches, with bounded full-refresh recovery.
 - **Current**: Godot patches a persistent RG8 CPU image, then ping-pongs two textures for temporal interpolation.
 - **Current**: emissive materials feed one half-resolution thirteen-sample source and a thirteen-tap dual-radius additive composite; no per-cell `Light2D` nodes are created.
 - **Current**: liquid flow bands and wet/glass/smooth-metal/neon/LED animation read presentation time only and never affect replay, dirty state, collision, or sleeping.
@@ -124,6 +132,12 @@ cells. The worker retains and appends unacknowledged patches so a slower rendere
 cannot silently skip intermediate changes. If pending data exceeds the bounded
 limit, a complete RG8 recovery packet supersedes it.
 
+That retention/acknowledgement loop is the desktop `CyberSimulationWorker`
+handoff. Web performs `take_render_snapshot()` and validated patch consumption
+synchronously on Godot main, requesting a full refresh after rejection. The
+threaded Web profile does not introduce an asynchronous render consumer or
+permit rendering to read mutable World storage.
+
 Godot applies those patches to a persistent CPU `Image`. The current
 `ImageTexture` path then calls `update(image)`, so GPU transfer remains a full
 1024×1024 RG8 texture for each published changed frame. Therefore:
@@ -139,7 +153,9 @@ as GPU upload byte count until a renderer-specific subregion path is implemented
 
 Two RG8 textures are ping-ponged when a render snapshot arrives. The palette
 shader blends selected moving materials from the prior snapshot to the current
-snapshot. This changes presentation only; simulation and collision remain 60 Hz.
+snapshot. This changes presentation only; the cellular/character simulation
+target remains 60 ticks/s. Slow ticks and Web collider backlog can reduce actual
+progress, so independently configured cadence is not a guaranteed wall-clock rate.
 
 HDR output is enabled for the 2D canvas. A half-logical-resolution SubViewport
 samples emissive material programs with a fixed thirteen-tap two-radius

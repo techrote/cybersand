@@ -4,8 +4,8 @@ status: Current
 scope: Question-to-document and query-to-anchor map for human and agentic retrieval, safe ingestion routes, source evidence, and change preparation
 keywords: [RAG, retrieval index, question map, search anchor, agent context, safe change]
 related-documents: [../README.md, glossary.md, status-and-roadmap.md]
-last-reviewed: 2026-08-28
-implementation-state: Maps the m11 checkpoint, including the m9 material presentation baseline, render-patch lifetime fix, corrected fallback regressions, and pinned native rebuild inputs.
+last-reviewed: 2026-09-08
+implementation-state: Routes local source inspected 2026-09-08; runtime evidence and historical M11 identity are separate.
 ---
 
 # Retrieval index
@@ -13,6 +13,7 @@ implementation-state: Maps the m11 checkpoint, including the m9 material present
 ## At a glance
 
 - Purpose: answer a project question with the smallest useful document set.
+- Scope: the local snapshot has no Git HEAD; start with the [identity/evidence audit](../audits/2026-09-08-documentation-audit.md) when a result or source revision matters.
 - Start with one mapped document, then follow only its related links.
 - Consult status-and-roadmap before assuming a named module exists.
 - Consult source paths cited by a Current claim before editing code.
@@ -28,25 +29,25 @@ question to document, rapid context, RAG route, which file explains, safe agent 
 
 | Question/query | Primary document | Supporting document | Short answer |
 |---|---|---|---|
-| Which thread owns authoritative cell state? | [Data ownership](../architecture/data-ownership-and-lifetimes.md) | [Overview](../architecture/overview.md) | **Current**: CyberSimulationWorker owns the selected backend; bundled Linux/Windows x86_64 select native World, whose phased tick uses a persistent pool. CyberCellWorld is the unsupported-platform fallback. |
+| Which thread owns authoritative cell state? | [Data ownership](../architecture/data-ownership-and-lifetimes.md) | [Overview](../architecture/overview.md) | **Current**: desktop CyberSimulationWorker owns native cells on a Godot Thread; Web invokes native ticks synchronously on the main thread. Internal native workers call no Godot APIs. Desktop alone has the discrete fallback. |
 | Can Godot access simulation memory directly? | [Rendering and gameplay bridges](../architecture/rendering-and-gameplay-bridges.md) | [ADR-003](../decisions/ADR-003-godot-bridge-and-immutable-snapshots.md) | No. The **Current** Godot adapter consumes copied immutable dirty RG8 patches; mutable World memory never crosses the bridge. |
-| How are cross-tile transfers ordered? | [Determinism and transfers](../architecture/determinism-and-boundary-transfers.md) | [ADR-002](../decisions/ADR-002-double-buffered-tile-jobs.md) | Canonical deterministic order is required; the exact ordering tuple is not approved. |
+| How are cross-tile transfers ordered? | [Determinism and transfers](../architecture/determinism-and-boundary-transfers.md) | [ADR-002](../decisions/ADR-002-double-buffered-tile-jobs.md) | Current phased jobs write directly within exclusive radius-limited domains and merge job effects deterministically. Planned buffered transfer records still lack an approved sort tuple. |
 | What happens when capacity is exceeded? | [Configuration and capacity](../operations/configuration-and-capacity-budgets.md) | [ADR-004](../decisions/ADR-004-interest-region-and-reconfiguration.md) | Explosion enqueue rejects full/invalid input; snapshots retain dirty state and report pressure/exact requirements. General live resize remains Planned; never clip or allocate secretly. |
-| How do I change the interest-region size? | [World storage and interest region](../systems/world-storage-and-interest-region.md) | [Configuration reference](configuration-reference.md) | Native callers can reserve explicit regions before ticking; persistent dimensions and safe live reconfiguration remain Planned. |
+| How do I change the interest-region size? | [World storage and interest region](../systems/world-storage-and-interest-region.md) | [Configuration reference](configuration-reference.md) | Native callers can reserve regions before ticking. CYSD1 persists fixed 1024² levels; general persistent dimensions and safe live reconfiguration remain Planned. |
 | Why is GPU compute deferred? | [ADR-006](../decisions/ADR-006-gpu-compute-deferral.md) | [Smoke/heat/pressure roadmap](../systems/smoke-heat-pressure-roadmap.md) | Terrain/collision authority, readback, replay, and synchronization are not ready; non-authoritative GPU fields may be benchmarked later. |
 | How do I debug water shimmer? | [Water design](../systems/water-design.md) | [Troubleshooting](../operations/troubleshooting.md) | Determine whether state/hash changes. Fix authoritative flux/rest in the reference; adjust rendering only if state is stable. |
 | Where may material rules allocate memory? | [Materials and rule kernels](../systems/materials-and-rule-kernels.md) | [Principles](../architecture/principles-and-non-goals.md) | Not in hot kernels. Preparation/reconfiguration may allocate explicitly; exact allocator API is undecided. |
-| How is deterministic replay tested? | [Testing and replay](../operations/testing-validation-and-replay.md) | [Determinism](../architecture/determinism-and-boundary-transfers.md) | Repeated and one/four-worker phased fixtures compare exact state hashes; a stored/versioned replay format remains Planned. |
+| How is deterministic replay tested? | [Testing and replay](../operations/testing-validation-and-replay.md) | [Determinism](../architecture/determinism-and-boundary-transfers.md) | Exact hashes compare specified repeated/worker-parity cellular fixtures. The hash omits some external inputs; CYSD1 is level-only. Complete replay format and selectable strict mode remain Planned. |
 | Why is Sandspiel fast? | [Sandspiel performance study](../research/sandspiel-performance-and-material-port.md) | [Profiling and observability](../operations/profiling-observability-and-performance.md) | Compact native cells, bounded rules, aggressive release optimization, and packed texture input; its 300×300 dense serial world is not our scaling architecture. |
-| Are the Sandspiel materials playable? | [Sandspiel material port ledger](../research/sandspiel-performance-and-material-port.md) | [Material lab](../MATERIAL_LAB.md) | All valid catalogue IDs and the extended reaction-lab families have adapted executable native kernels in bundled Linux/Windows x86_64 builds; exact Sandspiel evolution is not claimed. |
+| Are the Sandspiel materials playable? | [Sandspiel material port ledger](../research/sandspiel-performance-and-material-port.md) | [Material lab](../MATERIAL_LAB.md) | Adapted kernels exist in native source, with local Windows/Web evidence and historical Linux results. Local Linux libraries remain pointers; exact Sandspiel evolution is not claimed. |
 | Can equipment define unique particle behavior visually? | [Item-authored material programs](../architecture/item-authored-material-programs.md) | [Materials and rule kernels](../systems/materials-and-rule-kernels.md) | **Planned**: an item-owned recipe graph compiles to a statically bounded native program; arbitrary per-cell JavaScript is rejected. |
 | How does physics drive material colour and glow? | [Material appearance and rendering](../systems/material-appearance-and-rendering.md) | [Rendering and gameplay bridges](../architecture/rendering-and-gameplay-bridges.md) | **Current**: RG8 dirty patches carry material plus a read-only condition projection; palette/program LUTs, stable coordinate variation, temporal smoothing, and bounded glow execute in presentation only. |
 | Which materials build a castle, village, factory, or alley? | [Themed construction materials](../systems/themed-construction-materials.md) | [Material lab](../MATERIAL_LAB.md) | IDs 38–80 provide 43 hard-surface construction materials; 41 are inert radius-zero solids, Oak/Thatch burn, and bounded GPU flair supplies architectural texture and neon/LED effects. |
 | How are explosions and collapsing terrain handled? | [Determinism and transfers](../architecture/determinism-and-boundary-transfers.md) | [Materials and rule kernels](../systems/materials-and-rule-kernels.md) | A bounded tick-boundary queue removes the core and tags eligible Wall as granular Stone; generalized fracture bodies remain Planned, while a separate rectangular RigidBody2D coupling proof is Current. |
 | Can cellular material pass through a rigid body while its transform changes? | [Rigid-body coupling](../architecture/rigid-body-and-cellular-coupling.md) | [ADR-007](../decisions/ADR-007-rigid-body-cellular-coupling.md) | The Current Godot proof rasterizes a separate start-of-sample obstacle mask; it does not erase/restore body pixels in the material grid. |
-| Which rigid-body backend is selected? | [ADR-009](../decisions/ADR-009-rapier-2d-rigid-body-backend.md) | [Rapier migration runbook](../operations/rapier-2d-migration-runbook.md) | Rapier2D v0.35.2 is the sole runtime backend. It is pinned, vendored, selected, manually stepped, and focused fixtures pass on Godot 4.7 Linux x86_64. |
-| How will Rapier and cellular physics share a tick? | [Rapier migration runbook](../operations/rapier-2d-migration-runbook.md) | [Rigid-body coupling](../architecture/rigid-body-and-cellular-coupling.md) | Establish a drop-in baseline, then explicitly apply cell impulses, step Rapier, fetch transforms in bulk, reconcile swept occupancy, flush once, and publish. |
-| How does pixel material push a rigid body? | [Rigid-body coupling](../architecture/rigid-body-and-cellular-coupling.md) | [Interfaces](interfaces-and-message-contracts.md) | Attempted impacts, density-derived boundary pressure, and displacement reaction accumulate capped packed impulses; Wall overlap returns positional correction. |
+| Which rigid-body backend is selected? | [ADR-009](../decisions/ADR-009-rapier-2d-rigid-body-backend.md) | [Rapier migration runbook](../operations/rapier-2d-migration-runbook.md) | Rapier2D v0.35.2 is pinned and manually stepped. Windows native and dated Chromium compat/threaded results exist; Linux evidence is historical and local Linux binaries remain pointers. |
+| How do Rapier and cellular physics share work now? | [Rapier migration runbook](../operations/rapier-2d-migration-runbook.md) | [Rigid-body coupling](../architecture/rigid-body-and-cellular-coupling.md) | Manual stepping is Current. Desktop asynchronously exchanges packed samples/results; Web sequentially applies results, steps Rapier, then ticks cells and waits for terrain rebuilds. Exact common lockstep remains unspecified. |
+| How does pixel material push a rigid body? | [Rigid-body coupling](../architecture/rigid-body-and-cellular-coupling.md) | [Interfaces](interfaces-and-message-contracts.md) | Attempted impacts, pressure, and displacement accumulate capped results. The Rapier adapter owns hard-terrain contacts and suppresses duplicate cellular Wall correction/support. |
 | What happens when a body overlaps pixels after movement? | [Rigid-body coupling](../architecture/rigid-body-and-cellular-coupling.md) | [ADR-007](../decisions/ADR-007-rigid-body-cellular-coupling.md) | Movable cells use a bounded ordered outward/tangent ejection search; unresolved cells remain and are counted, while particles remain Planned. |
 
 ## Architecture and ownership queries
@@ -62,13 +63,14 @@ question to document, rapid context, RAG route, which file explains, safe agent 
 | What crosses the Godot/native boundary? | [Interfaces and contracts](interfaces-and-message-contracts.md) |
 | What code is actually Current? | [Status and roadmap](status-and-roadmap.md) |
 | How is private GitHub development built and released? | [GitHub development and release](../operations/github-development-and-release.md) |
+| Which changes are committed/backed up, and which evidence applies now? | [Current identity/evidence audit](../audits/2026-09-08-documentation-audit.md) |
 | Which exact audited M11 evidence was imported? | [M11 audit evidence](../audits/m11/README.md) |
 
 ## Threading and performance queries
 
 | Likely query | Read |
 |---|---|
-| Why does the current build use one core? | [Troubleshooting](../operations/troubleshooting.md) |
+| Why can a run use only one core? | [Troubleshooting](../operations/troubleshooting.md) |
 | What is the approved tick sequence? | [Simulation tick and threading](../architecture/simulation-tick-and-threading.md) |
 | Which buffers are read/write per stage? | [Data ownership](../architecture/data-ownership-and-lifetimes.md) |
 | How is worker completion order isolated? | [Determinism and transfers](../architecture/determinism-and-boundary-transfers.md) |
@@ -77,6 +79,7 @@ question to document, rapid context, RAG route, which file explains, safe agent 
 | What does high-water mean? | [Glossary](glossary.md) |
 | Why not use per-cell locks? | [Principles](../architecture/principles-and-non-goals.md) |
 | Is the 2× target a permanent limit? | [ADR-004](../decisions/ADR-004-interest-region-and-reconfiguration.md) |
+| Which Web profiles, worker counts, and browser requirements exist? | [Web threading](../operations/web-threading.md) |
 | Can rendering run independently from cellular physics? | [Simulation tick and threading](../architecture/simulation-tick-and-threading.md) |
 | How does the proof avoid a wake-up frame spike? | [Profiling and observability](../operations/profiling-observability-and-performance.md) and [ADR-008](../decisions/ADR-008-bounded-approximate-fidelity.md) |
 | Why not merge visible cells into 2×2 voxels? | [ADR-008](../decisions/ADR-008-bounded-approximate-fidelity.md) |
@@ -114,7 +117,7 @@ question to document, rapid context, RAG route, which file explains, safe agent 
 | Why is full texture upload still expensive? | [Material appearance and rendering](../systems/material-appearance-and-rendering.md) and [Troubleshooting](../operations/troubleshooting.md) |
 | How long does a snapshot live? | [Interfaces and contracts](interfaces-and-message-contracts.md) |
 | What happens when all snapshot slots are leased? | [Rendering and gameplay bridges](../architecture/rendering-and-gameplay-bridges.md) |
-| Is world serialization implemented? | [Status and roadmap](status-and-roadmap.md) |
+| Are level saves exact replay checkpoints? | [Interfaces and contracts](interfaces-and-message-contracts.md) and [Testing and replay](../operations/testing-validation-and-replay.md) |
 
 ## Testing and change-safety queries
 
@@ -124,7 +127,7 @@ question to document, rapid context, RAG route, which file explains, safe agent 
 | What Water work remains after native Godot integration? | [ADR-005](../decisions/ADR-005-water-model.md) |
 | What remains after native multithreading? | [ADR-002](../decisions/ADR-002-double-buffered-tile-jobs.md) |
 | How do I test capacity expansion? | [Testing and replay](../operations/testing-validation-and-replay.md) |
-| What must every checkpoint document? | [Status and roadmap](status-and-roadmap.md) |
+| What must every checkpoint document? | [Documentation-update checklist](../../AGENTS.md#documentation-obligations) and [Status and roadmap](status-and-roadmap.md) |
 | Which invariants does this change touch? | [Invariants](invariants.md) |
 | Which decisions require an ADR to reverse? | [Decisions directory](../decisions/) |
 | What unresolved design choices remain? | [Status and roadmap](status-and-roadmap.md) |
@@ -172,7 +175,7 @@ question to document, rapid context, RAG route, which file explains, safe agent 
 
 ## Agent safety checklist
 
-- Do not turn an Approved design statement into a Current claim without source and validation.
+- Do not turn Approved intent into Current behavior without source inspection. Separately scope runtime validation by date, artifact, platform and fixture; missing evidence remains explicit.
 - Do not invent missing C++ signatures, serialized keys, metric names, numeric thresholds, or pressure policies.
 - Do not infer native fixed-point semantics from the separate discrete Godot Water model.
 - Do not refactor unrelated Godot gameplay/render code during backend checkpoints.

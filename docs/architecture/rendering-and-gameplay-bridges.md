@@ -4,16 +4,23 @@ status: Current
 scope: Current Godot data flow and rigid-body value bridge, immutable snapshot boundary, queued gameplay commands, immutable results, thread restrictions, and unresolved pressure behavior
 keywords: [RenderBridge, GameplayBridge, rigid body sample, immutable dirty snapshot, gameplay command, Godot main thread, mutable simulation memory]
 related-documents: [module-boundaries.md, data-ownership-and-lifetimes.md, rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md]
-last-reviewed: 2026-08-27
-implementation-state: Current bundled Linux and Windows x86_64 builds advance native World through a GDExtension; Godot consumes copied dirty RG8 render patches and packed rectangle body samples/results without accessing mutable simulation memory.
+last-reviewed: 2026-09-08
+implementation-state: Desktop native and Web advance World through a GDExtension; Godot consumes copied dirty RG8 render patches and packed rectangle body samples/results without accessing mutable simulation memory.
 ---
 
 # Rendering and gameplay bridges
 
+Evidence scope (2026-09-08): **Current** below describes inspected source in the
+reconstructed local snapshot, not a verified Git HEAD or an all-platform test pass.
+See the [documentation audit](../audits/2026-09-08-documentation-audit.md) for
+source identity and dated validation; [M11 audit records](../audits/m11/README.md)
+retain historical scope. **Approved design** means Approved direction; Planned,
+Deferred, and Rejected statements do not claim implementation.
+
 ## At a glance
 
 - Purpose: isolate Godot presentation and gameplay objects from native mutable state.
-- **Current**: a Godot worker consumes copied dirty RG8 material/condition patches and retains them until the main thread acknowledges publication.
+- **Current** desktop: a Godot pacing owner accumulates copied dirty RG8 patches until the main thread acknowledges publication. Web consumes copied packets synchronously on the main thread.
 - **Current**: Godot physics sends packed rectangle samples and consumes packed coupling results; no live Node or RID crosses to the worker.
 - **Current**: standalone native callers can publish deterministic dirty rectangles into preallocated two-byte material/condition slots and acquire immutable leases.
 - **Current**: snapshot backpressure/capacity outcomes retain dirty state and expose requirements/high-water counts.
@@ -28,7 +35,7 @@ implementation-state: Current bundled Linux and Windows x86_64 builds advance na
 
 Can Godot access simulation memory directly, immutable dirty snapshot, render upload, gameplay command queue, worker thread Godot access, bridge backpressure
 
-## Current Godot flow
+## Current desktop Godot flow
 
 Repository evidence:
 
@@ -41,7 +48,16 @@ Repository evidence:
 - material_palette.gdshader maps material ID and a read-only condition projection through palette/program LUTs; it composites the player plus three red body transforms without writing body pixels into the cell texture.
 - material_emission.gdshader and glow_composite.gdshader implement one bounded half-resolution HDR source plus a wider filtered additive composite rather than per-cell lights.
 
-This avoids direct main-thread reads while the worker mutates cells. It still:
+[Web controller](../../godot/scripts/web_demo_controller.gd) uses the same native
+patch adapter with synchronous main-thread ownership. It does not instantiate
+CyberSimulationWorker or its cross-thread render accumulation/ack protocol.
+The copied publication boundary still prevents mutable World exposure. See
+[threading](simulation-tick-and-threading.md) for pacing and failure differences.
+
+Desktop source: [worker](../../godot/scripts/simulation_worker.gd),
+[snapshot](../../godot/scripts/simulation_snapshot.gd),
+[main consumer](../../godot/scripts/main.gd). This avoids direct main-thread
+reads while the worker mutates cells. It still:
 
 - copies only accumulated dirty RG8 payloads in the native-to-GDScript bridge during ordinary changed revisions;
 - uploads the full finite RG8 texture after patching because the current `ImageTexture` path has no implemented subregion update;
@@ -52,7 +68,9 @@ This avoids direct main-thread reads while the worker mutates cells. It still:
 
 ## Current native publication
 
-`RenderSnapshotExchange`, the versioned C API, and the `godot-cpp` adapter provide
+[RenderSnapshotExchange](../../native/include/cybersand/render_snapshot.hpp),
+[versioned C API](../../native/include/cybersand/c_api.h), and the
+[native adapter](../../godot/native_extension/cyber_native_cell_world.cpp) provide
 the Current native publication layer:
 
 - query required dirty-chunk count without acknowledging/clearing it;
@@ -85,7 +103,9 @@ palette-update records, compression, or generalized native GameplayBridge yet.
 | Capacity reconfiguration transition | Configuration/control boundary | SimulationScheduler and WorldStorage | Tick boundary or loading transition | Controlled structural mutation while workers are drained | **Approved design** |
 | Rigid-body sample/result contract | Allowed Godot physics context and worker/native adapter | Cellular coupling stage, then body result consumer | Start-of-stage sample; immutable result after completion | Packed value data only | **Current** rectangle proof in native preferred path and GDScript fallback; generalized shapes **Planned** |
 
-These are documentation-level contract names. Exact C++ types, fields, ABI, and Godot binding methods are undecided.
+These are documentation-level target contract names. Current native/C lease
+layouts and adapter methods are defined in source; generalized gameplay and
+reconfiguration layouts remain undecided.
 
 ## RenderBridge
 
@@ -100,7 +120,7 @@ These are documentation-level contract names. Exact C++ types, fields, ABI, and 
 
 - Godot image/texture/shader resources on permitted Godot threads;
 - non-authoritative rendering metrics;
-- snapshot-consumption acknowledgement according to the future retention contract.
+- desktop snapshot-consumption acknowledgement under the Current render-serial protocol; generalized result retention remains Planned.
 
 ### Never reads or writes
 

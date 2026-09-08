@@ -2,6 +2,7 @@
 
 #include "cyber_native_cell_world.hpp"
 #include "cybersand/demo_snapshot.hpp"
+#include <godot_cpp/classes/ref.hpp>
 #include <godot_cpp/core/class_db.hpp>
 
 namespace godot {

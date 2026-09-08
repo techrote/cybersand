@@ -4,11 +4,18 @@ status: Planned
 scope: Visual material authoring, item-owned particle recipes, bounded compilation, runtime identity, validation, and staged delivery
 keywords: [visual scripting, item particles, material program, Sandspiel Studio, bounded IR, particle recipe]
 related-documents: [../MATERIAL_LAB.md, rendering-and-gameplay-bridges.md, ../systems/materials-and-rule-kernels.md, ../research/sandspiel-performance-and-material-port.md]
-last-reviewed: 2026-08-27
+last-reviewed: 2026-09-08
 implementation-state: Current native descriptors, pair reactions, compact state bytes, deterministic randomness, and bounded kernels provide the execution substrate; visual graph assets, a compiler, runtime program registry, and item editor are Planned.
 ---
 
 # Item-authored material programs
+
+Evidence scope (2026-09-08): **Current** below describes inspected source in the
+reconstructed local snapshot, not a verified Git HEAD or an all-platform test pass.
+See the [documentation audit](../audits/2026-09-08-documentation-audit.md) for
+source identity and dated validation; [M11 audit records](../audits/m11/README.md)
+retain historical scope. **Approved design** means Approved direction; Planned,
+Deferred, and Rejected statements do not claim implementation.
 
 ## At a glance
 
@@ -50,7 +57,7 @@ bounded rule representation that the native scheduler can validate and run.
    cost, and emitted-event bound.
 4. The content build compiles the graph to a versioned bounded intermediate
    representation and rejects programs outside engine limits.
-5. At session load, a registry maps each stable material GUID to a compact
+5. In the Planned authoring system, a registry maps each stable material GUID to a compact
    runtime ID. Save data and item assets retain the GUID, never a paint slot or
    transient numeric ID.
 6. When used, an item emits a tick-boundary command containing the registered
@@ -98,8 +105,10 @@ identity.
 
 ## Identity and capacity
 
-The current cell keeps a one-byte material ID, leaving at most 255 runtime
-values. The first authoring release should therefore build a fixed resident
+The current cell has a one-byte material ID: 256 representable values, with
+Empty using 0. The present valid catalogue is IDs 0–80 excluding 10 (80
+valid identities, 79 paintable). A future registry has at most 255 non-empty
+values before additional reservations; it is not yet implemented. The first authoring release should therefore build a fixed resident
 catalogue at session start and fail clearly if its capacity is exceeded. This
 is preferable to silently widening every cell or hiding a program index in an
 undocumented state byte.
@@ -108,6 +117,13 @@ If real game content proves that limit insufficient, a later experiment may
 allocate a variant/program plane only in chunks that contain custom particles.
 That experiment must measure memory traffic and define save, wake, snapshot,
 and streaming behavior before replacing the compact catalogue.
+
+Current CYSD1 saves use fixed numeric material IDs, not the proposed GUID
+registry. Source substrate: [material definitions](../../native/include/cybersand/material.hpp),
+[rule descriptors](../../native/include/cybersand/material_rules.hpp),
+[World kernels](../../native/src/world.cpp), and
+[demo save payload](../../native/include/cybersand/demo_snapshot.hpp).
+No graph compiler, registry or editor is evidenced in this snapshot.
 
 ## Safety and performance gates
 

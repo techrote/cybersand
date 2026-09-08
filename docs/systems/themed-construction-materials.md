@@ -4,11 +4,19 @@ status: Current
 scope: Stable IDs 38–80, medieval and industrial construction roles, collision/combustion behavior, procedural appearance classes, performance boundaries, and scene recipes
 keywords: [medieval village, castle, cyberpunk, chemical factory, alley, static solid, masonry, timber, neon, material ID, flair]
 related-documents: [materials-and-rule-kernels.md, material-appearance-and-rendering.md, ../MATERIAL_LAB.md]
-last-reviewed: 2026-08-28
+last-reviewed: 2026-09-08
 implementation-state: Forty-three themed construction materials are compiled into the byte catalogue at IDs 38–80; all are static hard surfaces, Oak Timber and Thatch reuse the bounded combustible kernel, and GPU flair classes add deterministic texture plus bounded presentation-only animation.
 ---
 
 # Themed construction material palette
+
+Current source: [compiled descriptors](../../native/include/cybersand/material.hpp),
+[hard-surface and combustible rules](../../native/src/world.cpp),
+[palette/program LUTs](../../godot/scripts/material_appearance_lut.gd), and
+[themed native fixtures](../../native/tests/test_world.cpp). Source identity and
+dated runtime evidence are scoped by the
+[2026-09-08 audit](../audits/2026-09-08-documentation-audit.md). The recipes below
+are authoring suggestions; named materials do not imply a full material-science model.
 
 ## At a glance
 
@@ -187,7 +195,8 @@ The current directional assumptions are deliberately simple:
 - The current chemical interactions were not broadened for every decorative
   alloy, glass, ceramic, or polymer. Visual identity must not be mistaken for a
   complete corrosion/material-science model.
-- Procedural flair cost has shader-compile and scene-smoke coverage, but manual
+- Procedural flair has historical shader-compile and scene-smoke coverage (see
+  the audit's evidence links), but representative manual
   GPU profiling on target hardware is still required before freezing quality
   presets.
 

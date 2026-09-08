@@ -4,11 +4,20 @@ status: Current
 scope: Manual controls, executable material families, representative interactions, and finite-fixture boundaries
 keywords: [material lab, Sandspiel, controls, medieval, castle, cyberpunk, factory, static solid, neon, 1024]
 related-documents: [research/sandspiel-performance-and-material-port.md, systems/materials-and-rule-kernels.md, systems/themed-construction-materials.md, systems/material-appearance-and-rendering.md]
-last-reviewed: 2026-08-28
+last-reviewed: 2026-09-08
 implementation-state: The 1024² finite native fixture exposes 79 paintable materials, including IDs 38–80 for themed construction; native Linux/Windows builds, grouped selection, GPU flair programs, and bounded rule kernels are Current.
 ---
 
 # 1024² material lab
+
+Scope: the desktop manual scene selected by [project.godot](../godot/project.godot),
+its [main.gd](../godot/scripts/main.gd) controller, and the
+[native adapter](../godot/native_extension/cyber_native_cell_world.cpp). Web uses
+a separate [controller](../godot/scripts/web_demo_controller.gd), five demo
+choices, quality/menu controls, and CYSD1 level saves; desktop shortcuts below
+are not a Web-control contract. See the
+[2026-09-08 audit](audits/2026-09-08-documentation-audit.md) for local source
+identity and dated runtime evidence.
 
 ## At a glance
 
@@ -19,11 +28,11 @@ implementation-state: The 1024² finite native fixture exposes 79 paintable mate
 - **Current**: 43 themed construction materials add castle/village and chemical-factory/alley vocabulary; 41 are inert radius-zero hard surfaces and Oak Timber/Thatch are combustible.
 - **Current**: representative density, combustion, phase, corrosion, growth, replication, and agent interactions execute in native bounded kernels.
 - **Current**: the 1920×1080 window aspect-fits every logical view and uses the same fitted rectangle for shader sampling and mouse-to-world mapping.
-- **Current**: reactive hard-surface changes publish offset-indexed native chunk geometry; Rapier applies at most 8 chunks or 0.75 ms per rendered frame.
-- **Current**: Fire motion remains 60 Hz, rendering defaults to interpolated 45 Hz snapshots with live 30/45/60 Hz comparison, and destructive ignition checks are distributed at 0.5 Hz per cell.
+- **Current**: reactive hard-surface changes publish offset-indexed native chunk geometry; Rapier processes at most 32 queued chunks per rendered frame with a 750 µs budget checked between chunks. One rebuild can exceed that time budget.
+- **Current**: eligible Fire motion targets 60 Hz, rendering defaults to interpolated 45 Hz snapshots with live 30/45/60 Hz comparison, and destructive ignition checks are distributed every 120 simulation ticks.
 - **Current**: material colour and condition response come from GPU palette/program LUTs; native dirty RG8 patches update a persistent CPU image and a half-resolution HDR glow pass is optional.
 - Sandspiel's MIT notice and provenance are retained; CyberSand Water deliberately uses its own conserved-mass solver.
-- Streaming, formal 1024² performance fixtures, and production tuning remain outside this checkpoint.
+- Streaming and production tuning remain Planned. Isolated benchmark/stress fixtures now exist; their dated coverage is in [Web threading](operations/web-threading.md), not a universal 1024² frame-time guarantee.
 
 ## Search anchors
 

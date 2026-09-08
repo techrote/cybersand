@@ -4,11 +4,18 @@ status: Current
 scope: Godot/native authority boundary, immutable dirty snapshots, queued commands/results, thread restrictions, and bridge pressure
 keywords: [ADR, RenderBridge, GameplayBridge, immutable snapshot, Godot thread, mutable memory]
 related-documents: [../architecture/rendering-and-gameplay-bridges.md, ADR-001-native-simulation-core.md, ADR-004-interest-region-and-reconfiguration.md]
-last-reviewed: 2026-08-27
+last-reviewed: 2026-09-08
 implementation-state: The native reusable immutable dirty-snapshot exchange, C lease API, and copied Godot dirty-RG8 adapter are Current; the generalized GameplayBridge remains Planned.
 ---
 
 # ADR-003: Godot bridge and immutable snapshots
+
+Evidence scope (2026-09-08): **Current** below describes inspected source in the
+reconstructed local snapshot, not a verified Git HEAD or an all-platform test pass.
+See the [documentation audit](../audits/2026-09-08-documentation-audit.md) for
+source identity and dated validation; [M11 audit records](../audits/m11/README.md)
+retain historical scope. **Approved design** means Approved direction; Planned,
+Deferred, and Rejected statements do not claim implementation.
 
 ## At a glance
 
@@ -103,7 +110,11 @@ consumer requires resynchronization.
 
 ### Run all simulation on the Godot main thread
 
-**Explicitly rejected** for production scale. It couples rendering frame time to physics.
+**Rejected** as the production-scale ownership target. **Current** Web uses
+synchronous main-thread ticks as a bounded compatibility/threaded adapter;
+separate publication cadence does not remove its render-blocking wait. Full
+asynchronous Web ownership remains Planned and the exception is explicit in
+[tick/threading](../architecture/simulation-tick-and-threading.md).
 
 ## Reversal/migration path
 
@@ -117,18 +128,20 @@ consumer requires resynchronization.
 
 - snapshot bytes remain unchanged throughout consumer lifetime;
 - Godot cannot obtain mutable authoritative storage;
-- snapshots correspond only to completed ticks;
+- snapshots correspond to serialized completed mutations/ticks (including initial/full-refresh state);
 - dirty state is not lost under capacity pressure;
 - commands apply only at permitted boundaries;
 - native workers make no prohibited Godot calls;
 - snapshot and upload bytes/high-water are observable;
 - presentation changes do not alter replay hashes.
 
-Current native validation covers stable outstanding leases including exchange
+The Current [native fixtures](../../native/tests/test_world.cpp) cover stable
+outstanding leases including exchange
 facade destruction, two-slot pressure
 and recovery, exact capacity requirements, dirty retention, deterministic patch
 order, high-water counters, C lease lifetime after exchange-handle destruction,
-and concurrent producer/consumer access under TSan. The focused Godot regression
+and concurrent producer/consumer access. TSan execution belongs to historical
+M11 evidence. The [focused Godot regression](../../godot/tests/test_native_render_bridge_regression.gd)
 checks a complete 2,097,152-byte RG8 recovery packet and an 18-byte one-patch
 Water edit; generalized gameplay command/result validation remains **Planned**.
 

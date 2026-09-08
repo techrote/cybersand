@@ -4,8 +4,8 @@ status: Current
 scope: Current counters and benchmarks, adaptive gameplay fidelity, required production observations, fixtures, interpretation, acceptance policy, and non-authoritative timing
 keywords: [tick time, active chunks, adaptive stride, rigid body contacts, worker utilization, transfer high-water, snapshot high-water, dirty upload bytes, allocation count, memory]
 related-documents: [configuration-and-capacity-budgets.md, testing-validation-and-replay.md, ../reference/status-and-roadmap.md]
-last-reviewed: 2026-08-28
-implementation-state: Native benchmark/telemetry remains as m8; m9 intentionally spends GPU headroom on four-neighbour relief and dual-radius glow without changing RG8 publication bytes, while target GPU timing and target-Windows collider verification remain planned.
+last-reviewed: 2026-09-08
+implementation-state: Native/Godot counters and local native/Web worker-reference fixtures exist. Historical hosted benchmarks and retained Windows/Chromium measurements are scoped below; representative GPU timing and production thresholds remain unverified.
 ---
 
 # Profiling, observability, and performance
@@ -13,6 +13,7 @@ implementation-state: Native benchmark/telemetry remains as m8; m9 intentionally
 ## At a glance
 
 - Purpose: reveal where time and memory go before enlarging the simulation window.
+- Scope: Current names refer to inspected source; every timing is limited to its dated fixture/platform. See [current source/validation audit](../audits/2026-09-08-documentation-audit.md), not the historical M11 identity, for this local snapshot.
 - **Current**: the native benchmark compares serial/phased backends, worker counts, dense/sparse fixtures, and preallocated/lazy storage.
 - **Current**: Godot displays FPS, worker/simulation/snapshot/upload timings, activity counts, and overruns.
 - **Current**: Godot reports eligible/run/deferred blocks, adaptive stride, and rigid-body contact/displacement/unresolved counts.
@@ -20,7 +21,7 @@ implementation-state: Native benchmark/telemetry remains as m8; m9 intentionally
 - **Current**: Godot reports copied dirty render patch count and KiB separately from total texture-update time.
 - **Current**: native TickStats exposes work, phase jobs, active/dirty chunks, and owned tick allocation events.
 - **Current**: snapshot publication exposes required dirty patches/bytes, patch/byte high-water, backpressure, and capacity-failure counts.
-- **Current**: the m8 dense eight-worker benchmark median was 5.91 ms/tick versus m7's 7.06 ms/tick in five interleaved hosted runs; contention was high, so this is directional evidence rather than a portable guarantee.
+- **Historical validation**: the m8 dense eight-worker benchmark median was 5.91 ms/tick versus m7's 7.06 ms/tick in five interleaved hosted runs; contention was high, so this is directional evidence rather than a portable guarantee.
 - **Planned**: expose per-stage time, per-worker utilization/barrier wait, and high-water reset intervals.
 - **Current**, source-accounted: m9 adds four common RG8 neighbour reads, increases the low-resolution emission kernel from 9 to 13 positions, and increases the additive composite from 1 to 13 filtered taps without another image or CPU payload.
 - **Planned**: visually inspect and GPU-profile the expanded effects on representative target hardware.
@@ -34,7 +35,7 @@ why FPS low, simulation stage timing, one core used, worker imbalance, high-wate
 
 ## Current native observations
 
-native/bench/benchmark.cpp accepts dimensions, ticks, chunk size, dense/sparse
+[native/bench/benchmark.cpp](../../native/bench/benchmark.cpp) accepts dimensions, ticks, chunk size, dense/sparse
 scenario, serial/phased backend, worker count, and preallocated/lazy allocation
 mode. It reports mean tick time, visited/moved cells, scheduled cores, per-phase
 jobs, resident cell bytes, tick allocations, committed deferred events, active
@@ -43,6 +44,20 @@ chunks, and both state/content hashes.
 native World::tick returns TickStats with aggregate behavior. It does not yet
 separate planning, domain preparation, job execution, barrier/merge, completion,
 or publication timing and does not expose per-worker utilization.
+
+The **Current** [worker_benchmark.gd](../../godot/scripts/worker_benchmark.gd)
+fixture also backs the Web Performance menu and local `dev.cmd benchmark` /
+`stress-test` commands. It compares 480²/960² Sand/Water level hashes and reports
+native tick mean/p95/max, with ten warmup and 120 measured ticks per benchmark
+case or 600 measured stress ticks. [Web threading](web-threading.md) owns the
+dated Windows/Chromium results and limits; this is not a full rendering/coupling
+stress benchmark or an exact scheduler/Rapier replay test. The retained 960²
+Auto Web stress mean was 21.23 ms, so those results do not establish a 60 FPS
+budget. Current Auto is a fixed 2/4/6 policy, not a benchmark-driven tuner.
+
+Historical performance sections below preserve earlier comparisons. Their
+primary context is the [M11 evidence index](../audits/m11/README.md); they are
+not measurements rerun against today's DLL or source snapshot.
 
 ### 2026-08-27 hosted-container observations
 
@@ -125,7 +140,9 @@ readout presents current data.
 
 ## Current Godot observations
 
-godot/scripts/main.gd and simulation_worker.gd expose or display current proof metrics including:
+[main.gd](../../godot/scripts/main.gd) and
+[simulation_worker.gd](../../godot/scripts/simulation_worker.gd) expose desktop
+proof metrics including:
 
 - rendered FPS;
 - total worker step time;
@@ -141,6 +158,8 @@ godot/scripts/main.gd and simulation_worker.gd expose or display current proof m
 - worker overruns.
 
 These are useful prototype evidence but are not a stable telemetry schema.
+Web uses a synchronous controller and reports native tick/upload timings rather
+than the desktop's asynchronous worker snapshot age; compare like measurements.
 
 ### Current wake-spike mitigation
 
@@ -153,8 +172,8 @@ places:
 
 Long lateral moves wake only source/destination neighbourhoods. These changes
 preserve the full material grid and avoid the topology cost of local 2×2 voxel
-grouping. They are **Current** and covered by the Godot 4.7 headless scene and
-focused regressions. Their target-hardware frame-time behavior remains
+grouping. They are **Current** fallback behavior with dated Godot coverage in
+[testing](testing-validation-and-replay.md). Their target-hardware frame-time behavior remains
 **Ambiguous** because this checkpoint did not run a user-facing GPU profile.
 
 The native `World::resident_cell_bytes()` and C API
@@ -284,7 +303,7 @@ Before each checkpoint:
 3. record required observations;
 4. set an explicit acceptance criterion based on measured baseline and target hardware;
 5. compare against the rollback checkpoint;
-6. preserve strict-mode replay where selected and all required conservation/collision invariants;
+6. preserve exact fixture comparisons and all required conservation/collision invariants; define separate strict-mode measurements when that Planned runtime mode exists;
 7. for gameplay approximation, record fidelity policy, snapshot age, visible artifacts, and rollback result.
 
 This documentation does not invent numerical thresholds.

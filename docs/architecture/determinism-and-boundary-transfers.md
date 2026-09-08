@@ -4,11 +4,18 @@ status: Current
 scope: Current strict deterministic behavior, phased ownership invariants, gameplay approximation boundary, buffered transfers, deferred events, replay state, random choices, and overflow
 keywords: [determinism, phased ownership, phase order, boundary transfer, deferred event, replay hash, worker completion]
 related-documents: [simulation-tick-and-threading.md, chunk-tile-and-buffer-model.md, ../operations/testing-validation-and-replay.md]
-last-reviewed: 2026-08-27
+last-reviewed: 2026-09-08
 implementation-state: Native phased ownership, deterministic random streams, job-local effects, sorted merge, worker-count replay, and a bounded tick-boundary explosion queue are Current; buffered transfers and generalized worker-produced deferred events remain unimplemented.
 ---
 
 # Determinism and boundary transfers
+
+Evidence scope (2026-09-08): **Current** below describes inspected source in the
+reconstructed local snapshot, not a verified Git HEAD or an all-platform test pass.
+See the [documentation audit](../audits/2026-09-08-documentation-audit.md) for
+source identity and dated validation; [M11 audit records](../audits/m11/README.md)
+retain historical scope. **Approved design** means Approved direction; Planned,
+Deferred, and Rejected statements do not claim implementation.
 
 ## At a glance
 
@@ -28,7 +35,7 @@ cross-tile ordering, cross-chunk seam, deterministic replay, state hash coverage
 
 ## Current determinism evidence
 
-native/src/world.cpp currently:
+[native/src/world.cpp](../../native/src/world.cpp) currently:
 
 - gathers active chunk coordinates;
 - sorts those coordinates before scanning;
@@ -40,9 +47,11 @@ native/src/world.cpp currently:
 - hashes queued explosion coordinates/radius/strength in enqueue order and commits them at the next tick boundary;
 - provides World::state_hash and World::content_hash.
 
-native/tests/test_world.cpp includes repeat-run determinism, core/chunk crossings,
-Water, complete-material, and explosion/collapse one/four-worker exact replay,
-geometry non-overlap, and TSan-clean worker execution.
+[Native fixtures](../../native/tests/test_world.cpp) include repeat-run
+determinism, core/chunk crossings, Water, complete-material and explosion
+one/four-worker hash comparisons, geometry checks and concurrent lease tests.
+TSan-clean execution is dated historical M11 evidence; the fixture source alone
+does not establish a sanitizer result for this local Windows/Web snapshot.
 
 Limitations:
 
@@ -52,7 +61,7 @@ Limitations:
 - only the external bounded ExplosionCommand event exists; worker-produced fracture/event schemas and buffered transfers do not;
 - state/content hash compatibility is not versioned for files or network replay.
 
-## Strict-mode deterministic requirements
+## Approved strict-mode deterministic requirements
 
 For identical initial state, configuration, material definitions, command stream, interest-region transitions, and tick count:
 
@@ -69,7 +78,9 @@ Wall-clock timings and per-worker utilization are not authoritative and may diff
 
 ## Gameplay approximation boundary
 
-Exact native replay remains **Current** and should not be weakened accidentally.
+Exact repeat-run and worker-count comparisons for fixed native fixtures are
+**Current**. A general strict/gameplay switch and exact checkpoint restoration
+are not implemented and must not be inferred from those comparisons.
 It is no longer a universal requirement for every production fidelity policy.
 Gameplay mode may use explicit temporal cadence, sparse broad probes, lower-rate
 slow rules, and lower-resolution optional/distant fields as described by
@@ -84,9 +95,9 @@ Approximation does not permit:
 - hidden capacity overflow;
 - systematic scan artifacts such as alternating empty rows.
 
-Approximation policies, seeds/rates, and fidelity tier must be observable. A
-strict run must remain available for regression localization even when gameplay
-acceptance allows statistically or visually equivalent outcomes.
+Approximation policies, seeds/rates, and fidelity tier must be observable. The Approved direction is to retain strict regression execution even when
+gameplay acceptance permits statistically or visually equivalent outcomes.
+Current WorldConfig has no switch that disables all staggered secondary lanes.
 
 ## Boundary ownership and deferred effects
 
@@ -153,7 +164,10 @@ Potential conflicts include:
 - phase/material conversion coinciding with movement;
 - a wake or dirty observation arriving through multiple paths.
 
-The approved architecture requires one deterministic policy for each conflict family. No priority table or numerical policy is currently approved, so implementations must not infer one from worker timing or current GDScript behavior.
+The approved architecture requires one deterministic policy for each conflict family. Current phased traversal, pairwise mass arithmetic, oriented reaction lookup,
+and explosion enqueue order already define limited conflict behavior in source.
+No generalized command/transfer conflict table is approved; new policies cannot
+be inferred from worker timing or the alternative GDScript solver.
 
 ## Conservation
 
@@ -170,7 +184,7 @@ integer transfer. Generalized reaction source/sink accounting remains **Planned*
 
 ## Replay state coverage
 
-An authoritative replay hash must include every value that can alter future authoritative state, including as applicable:
+The Approved complete-replay contract requires a hash to include every value that can alter future authoritative state, including as applicable:
 
 - committed material and optional-field state;
 - tick number;
@@ -188,7 +202,26 @@ material/optional-field content only.
 
 Snapshot serials, wall-clock metrics, render-only dithering, and worker utilization should not affect authoritative hashes.
 
-The exact hash algorithm and compatibility/version policy are **Planned**.
+The Current algorithm is the FNV-style byte mixer in `world.cpp::hash_byte`
+(seed `1469598103934665603`, multiplier `1099511628211`). A versioned
+compatibility policy and durable replay format are **Planned**.
+
+**Unresolved coverage:** `World::state_hash` does not include the simulation
+region, liquid-surface-adhesion flag, transient obstacle field, compiled rule
+identity, or external body/controller state. These values can affect subsequent
+execution. Worker-count omission is intentional for parity comparisons, but a
+matching hash does not prove complete future-state equivalence. Record these
+inputs separately when comparing fixtures; adding complete coverage is outside
+this documentation task.
+
+**Current level saves:** [CYSD1 payload](../../native/include/cybersand/demo_snapshot.hpp)
+stores material, state_a, state_b and temperature for 1024² cells. It reconstructs
+a fresh World and omits tick/epoch, activity/sleep, queues and transient
+obstacles. [Godot metadata](../../godot/scripts/demo_save_codec.gd) adds player,
+options and optional body state, but not Rapier internal solver state. Exported
+level-byte/hash equality proves those payloads match; it does not prove exact
+replay continuation, native/Web physics equivalence, or bit-identical Rapier.
+See the [serialization contract](../reference/interfaces-and-message-contracts.md#world-serialization-contract).
 
 ## Overflow and determinism
 

@@ -1,14 +1,24 @@
 ---
 title: Sandspiel performance study and material port ledger
 status: Current
-scope: Sandspiel source audit, portable performance techniques, rejected coupling, material inventory, Noita comparison, and reversible port sequence
+scope: Historical Sandspiel source study and benchmark record, current local adaptation ledger, rejected coupling, and deferred experiments
 keywords: [Sandspiel, Max Bittker, material port, compact cell, LTO, GPU fluid, Noita checkerboard, performance]
 related-documents: [../systems/materials-and-rule-kernels.md, ../systems/water-design.md, ../decisions/ADR-002-double-buffered-tile-jobs.md, ../../THIRD_PARTY_NOTICES.md]
-last-reviewed: 2026-08-27
+last-reviewed: 2026-09-08
 implementation-state: The complete attributed catalogue now has adapted executable native kernels on the phased worker backend; exact Sandspiel Water polarity and GPU wind/pressure remain excluded.
 ---
 
 # Sandspiel performance study and material port ledger
+
+The upstream study and 2026-08-27 hosted measurements below are historical
+records, not new external-source verification or current-machine benchmarks.
+Current CyberSand anchors are [material descriptors](../../native/include/cybersand/material.hpp),
+[kernel source](../../native/src/world.cpp), the
+[attribution ledger](../../native/data/material-packs/sandspiel-mit-reference.json),
+and [native fixtures](../../native/tests/test_world.cpp). See the
+[2026-09-08 audit](../audits/2026-09-08-documentation-audit.md) for local identity,
+dated validation, and evidence gaps. Later IDs 20–80 are described in the focused
+[materials document](../systems/materials-and-rule-kernels.md).
 
 ## At a glance
 
@@ -17,7 +27,7 @@ implementation-state: The complete attributed catalogue now has adapted executab
 - **Current**: a complete attributed interaction inventory exists at `native/data/material-packs/sandspiel-mit-reference.json`.
 - **Current**: native update stamps use one-byte epochs, the active-chunk list is reused, and release builds request LTO.
 - **Current**: Godot can shade all imported IDs and gives Water stable render-only tonal dithering.
-- **Current**: all valid catalogue IDs execute through deterministic compact RuleKernel families with radius-one or radius-two writes.
+- **Current**: active catalogue kernels use radius-one or radius-two writes; inert descriptors have no update kernel and radius zero.
 - **Current**: conserved Water, stable dither, 32×32 activity, and the Noita-style four-phase worker scheduler are implemented natively.
 - **Current**: event-driven collapse converts blast-adjacent static Wall into tagged granular Stone without scanning static terrain every tick.
 - **Current**: packed material/condition bytes are copied only for deterministic dirty rectangles into reusable immutable snapshot slots.
@@ -28,9 +38,9 @@ implementation-state: The complete attributed catalogue now has adapted executab
 
 why Sandspiel is fast, Sandspiel materials, copy lava oil fungus rocket, four byte cell, direct texture upload, GPU wind, Noita checkerboard, imported interaction status
 
-## Audited source
+## Historical upstream audit scope
 
-The audit pins Sandspiel commit `dc77827b36adc5c04ea063515de4173ce28dbf2c` and covers:
+The recorded study pins Sandspiel commit `dc77827b36adc5c04ea063515de4173ce28dbf2c` and reports coverage of:
 
 - `crate/src/lib.rs`;
 - `crate/src/species.rs`;
@@ -47,9 +57,9 @@ Primary references:
 
 - [Making Sandspiel](https://maxbittker.com/making-sandspiel/)
 - [Sandspiel repository](https://github.com/MaxBittker/sandspiel)
-- [Material rules](https://github.com/MaxBittker/sandspiel/blob/master/crate/src/species.rs)
-- [Native/WASM state and scan](https://github.com/MaxBittker/sandspiel/blob/master/crate/src/lib.rs)
-- [Release optimization](https://github.com/MaxBittker/sandspiel/blob/master/crate/Cargo.toml)
+- [Material rules at the recorded commit](https://github.com/MaxBittker/sandspiel/blob/dc77827b36adc5c04ea063515de4173ce28dbf2c/crate/src/species.rs)
+- [Native/WASM state and scan at the recorded commit](https://github.com/MaxBittker/sandspiel/blob/dc77827b36adc5c04ea063515de4173ce28dbf2c/crate/src/lib.rs)
+- [Release optimization at the recorded commit](https://github.com/MaxBittker/sandspiel/blob/dc77827b36adc5c04ea063515de4173ce28dbf2c/crate/Cargo.toml)
 
 ## Why Sandspiel is fast
 
@@ -111,6 +121,12 @@ Its smoothness demonstrates the value of native compact data and bulk rendering.
 | Packed dirty rendering | Two-byte material/condition snapshot patches | Immutable lease storage, never a mutable World view |
 | Event-driven collapse | Bounded explosion queue and granular Stone tag | Static Wall has no routine update rule |
 
+### Historical 2026-08-27 hosted benchmark record
+
+The retained record below does not identify the current local build or establish
+fresh sanitizer coverage. Consult the audit's evidence inventory before reusing
+the figures as a comparison; missing original raw evidence must remain a gap.
+
 The final density/leveling 2026-08-27 hosted run measured 512×512 dense phased
 ticks at 12.87 ms with one worker, 5.05 ms with four workers, and 3.74 ms with eight workers. Each
 phased run produced identical state/content hashes and zero World-owned tick
@@ -142,7 +158,11 @@ paste/slush behavior.
 
 ## Noita scheduler comparison
 
-The supplied Noita description divides the world into 64×64 dirty regions and processes a four-phase cross/checker pattern so threads can mutate enlarged areas without locks. That is a credible lower-copy alternative.
+The historical supplied Noita description used 64×64 dirty regions and a
+four-phase cross/checker pattern. Its exact primary source was not recorded
+here, so it is design context rather than verified upstream implementation
+evidence. CyberSand's own geometry, barriers, and write ownership are the
+inspectable contract.
 
 ADR-002 has now been implemented for the leading path:
 
@@ -217,7 +237,9 @@ Slot 10 remains invalid because the audited source leaves its former Sink value 
 
 ## Required validation source
 
-The repository includes passing source coverage for:
+The repository includes test/benchmark source for the following areas. The
+existence of a fixture is not a passing execution; current run evidence is in
+the audit, and historical numbers remain scoped above:
 
 - catalog completeness and reserved-ID validation;
 - native deterministic replay, one/four-worker parity, sleeping, edges, RGBA copy, and both C API versions;

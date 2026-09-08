@@ -4,11 +4,19 @@ status: Current
 scope: Current material catalogue, themed static solids, immutable descriptors, mutable per-cell state, compact kernels, allocation limits, interactions, and extension procedure
 keywords: [MaterialRules, static solid, medieval, cyberpunk, material descriptor, rule kernel, per-cell state, reaction]
 related-documents: [themed-construction-materials.md, material-appearance-and-rendering.md, ../architecture/module-boundaries.md, water-design.md]
-last-reviewed: 2026-08-28
+last-reviewed: 2026-09-08
 implementation-state: The byte catalogue contains the adapted reactive set plus 43 themed construction materials at IDs 38–80; 41 are inert zero-radius hard surfaces, Oak Timber/Thatch reuse the combustible kernel, and standalone RuleContext remains planned.
 ---
 
 # Materials and rule kernels
+
+Source anchors: [material descriptors](../../native/include/cybersand/material.hpp),
+[World kernels](../../native/src/world.cpp),
+[catalogue provenance](../../native/data/material-packs/sandspiel-mit-reference.json),
+and [native family fixtures](../../native/tests/test_world.cpp). The
+[2026-09-08 audit](../audits/2026-09-08-documentation-audit.md) identifies the
+local snapshot and dated runs. Current describes source behavior in that scope;
+fixture presence is not a new passing result or full pair-interaction proof.
 
 ## At a glance
 
@@ -56,7 +64,7 @@ uses the index to scale local pairwise transfer without increasing write radius.
 The serial GDScript reference maps the same scale to bounded multi-cell
 dispersion; yield remains a separate property.
 
-The current implementation remains reproducible and tested across worker counts,
+The current implementation has deterministic worker-parity fixtures,
 but gameplay semantics no longer promise that every secondary contact is sampled
 on every fixed tick. It still couples:
 
@@ -98,7 +106,7 @@ Examples by status:
 | Liquid fixed-point mass in Water `state_a` | **Current** |
 | Granular-collapse marker in Stone `state_b` | **Current** |
 | Pressure/composition fields | **Planned** |
-| Render-only dither phase/pattern | **Approved design** non-authoritative concept; representation undecided |
+| Render-only dither phase/pattern | **Current** stable coordinate/condition shader derivation; broader appearance-authoring schema remains Planned |
 
 ### Compact rule kernels
 
@@ -165,7 +173,7 @@ fixed tick does not present one large interaction burst:
 |---|---:|---|
 | Movement and density exchange | every tick | Contact and silhouette motion stay responsive |
 | Burn/charge/basic lifecycle | every 2 ticks | Short-lived contacts may be missed |
-| Pair chemistry, thermal checks, growth/capture | every 4 ticks | Reactions begin within a small bounded window |
+| Pair chemistry, thermal checks, growth/capture | every 4 ticks | Eligible persistent contacts are sampled; no guarantee that every brief contact reacts |
 | Smoke lifetime/crowding | every 8 ticks | Dissipation is gradual and spatially distributed |
 | Ambient Fire ignition | every 120 ticks | Existing low-frequency fire interaction remains distributed |
 
@@ -180,7 +188,7 @@ permitted media above. Static targets and the current movable Mite/Rocket agents
 decline the exchange even when their numeric density would otherwise allow it,
 demonstrating that movability and permeability are separate. FreeMass identifies
 conserved self-leveling Water; CellularYield retains heap-capable whole-cell
-liquid behavior for Oil, Acid, Lava, and future native paste/slush families.
+liquid behavior for Oil, Acid, Lava, and the Current native Paste/Slush families.
 The preferred native Godot proof has Current Paste/Slush at IDs 20/21 and a
 second representative family set at IDs 22–37: Steam, Salt, Brine, Sodium,
 Gunpowder, Coal, Metal, Rust, Cement, Concrete, Toxic Sludge, Mercury, Spark,
@@ -199,10 +207,12 @@ The Sandspiel JSON file does not approve that final format. It is a provenance-p
 ## Themed construction solids
 
 IDs 38–80 are a project-authored palette rather than an attributed Sandspiel
-port. All are `MaterialState::Solid`, immutable in identity, immovable, valid,
+port. All have immutable `MaterialState::Solid` descriptors, are immovable, valid,
 and exposed through the C API. `MaterialRules::is_hard_surface` includes the
 whole contiguous range so native character tests, hard-surface revisions,
 chunk geometry extraction, and Rapier terrain agree.
+This does not make cell identity immutable: Oak Timber/Thatch combustion and
+explicit editing can change the cell.
 
 The 41 inert descriptors use `RuleKernel::None`, initial state zero, and maximum
 write radius zero. They do not receive scheduled updates merely because they

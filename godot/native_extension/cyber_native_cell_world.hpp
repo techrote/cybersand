@@ -32,6 +32,9 @@ public:
     CyberNativeCellWorld();
     ~CyberNativeCellWorld() override;
 
+    [[nodiscard]] static std::int64_t auto_worker_threads(std::int64_t logical_threads);
+    [[nodiscard]] static std::int64_t logical_processor_count();
+
     void reset_demo_world();
     [[nodiscard]] bool simulation_tick();
     void emit_disc(std::int64_t centre_x, std::int64_t centre_y,

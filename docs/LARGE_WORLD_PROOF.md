@@ -4,11 +4,21 @@ status: Ambiguous
 scope: Historical description of the finite Godot camera/entity/activity prototype and proposed native replacements
 keywords: [legacy, large world proof, camera, panning, activity, LOD, entity]
 related-documents: [systems/world-storage-and-interest-region.md, systems/activity-dirty-regions-and-waking.md, reference/status-and-roadmap.md]
-last-reviewed: 2026-08-27
-implementation-state: Legacy finite-world document; the preferred Linux runtime now uses native phased authority and native transient rectangle occupancy, while adaptive cadence survives only in the fallback.
+last-reviewed: 2026-09-08
+implementation-state: Historical finite GDScript proof only; native phased authority, finite 1024² adapters, rectangle occupancy, and level saves supersede earlier replacement plans. Sparse streaming remains Planned.
 ---
 
 # Large-world and entity proof
+
+**Historical proof description.** The 960×544 world, 16×16 activity, six-cell
+Water budget, percentage-derived margins, and proposed replacements below are
+retained milestone history. They are not current implementation requirements or
+new validation results. Current native geometry is 128×128 storage, 32×32
+activity, and 64×64 phased cores; finite adapters use 1024² levels and pixel-margin
+presets. Consult [world storage](systems/world-storage-and-interest-region.md),
+[current roadmap](reference/status-and-roadmap.md), and the
+[2026-09-08 audit](audits/2026-09-08-documentation-audit.md). CYSD1 reconstructs
+finite levels; sparse streaming and exact replay saves remain Planned.
 
 ## At a glance
 
@@ -16,7 +26,7 @@ implementation-state: Legacy finite-world document; the preferred Linux runtime 
 - **Ambiguous**, historical: this proof separated a 320×180 view from a 960×544 finite world; the current material lab is 1024² with runtime view and margin presets.
 - **Current**: character, camera, interest filtering, and rectangle rigid-body coupling remain integrated through Godot; cellular authority is native on bundled Linux and Windows x86_64 builds.
 - **Current**, fallback only: adaptive activity cadence remains in GDScript.
-- Non-goal: this legacy proof is not evidence that serialization or streamed world loading exists.
+- Non-goal: this legacy proof is not evidence for current level serialization, sparse streamed loading, or exact replay continuation.
 
 ## Search anchors
 
@@ -33,7 +43,7 @@ This proof expands the runnable Godot reference from a 320×180 simulation to a
 960×544 world while retaining a 320×180 camera. It is an architectural test,
 not a commitment to a finite world or a GDScript production simulator.
 
-## Implemented separation
+## Historical implemented separation
 
 The proof has four independent layers:
 
@@ -193,7 +203,7 @@ constraint solving differ from millions of cells competing to write adjacent
 grid locations. Godot's `RenderingDevice` compute API is the relevant future
 integration point.
 
-## Next technical replacements
+## Historical proposed technical replacements
 
 1. Move 16×16 activity metadata into each native chunk.
 2. Replace the proof's full block-flag scan with a deduplicated active-block

@@ -4,29 +4,36 @@ status: Current
 scope: Current prototype activity behavior and adaptive cadence, approved tile sleep/wake semantics, consumer-specific dirty state, interest filtering, and diagnostics
 keywords: [active tile, sleeping, wake neighbor, dirty region, buried volume, quiet ticks, active growth]
 related-documents: [../architecture/chunk-tile-and-buffer-model.md, world-storage-and-interest-region.md, ../operations/troubleshooting.md]
-last-reviewed: 2026-08-27
-implementation-state: Native World has 32×32 activity blocks, local quiet/sleep state, cross-block wake, and per-chunk dirty rectangles; Godot retains separate 16×16 activity and now temporally distributes overload outside a full-rate 3×3 interest neighbourhood.
+last-reviewed: 2026-09-08
+implementation-state: Native World has 32×32 activity blocks, local quiet/sleep state, cross-block wake, and per-chunk dirty rectangles; the GDScript fallback alone uses 16×16 adaptive activity. Native secondary interactions already use fixed spatial cadence lanes.
 ---
 
 # Activity, dirty regions, and waking
 
+Current source anchors are [World activity and JobEffects](../../native/src/world.cpp),
+[WorldConfig](../../native/include/cybersand/world.hpp), and the
+[GDScript fallback](../../godot/scripts/cell_world.gd). Native fixtures are in
+[test_world.cpp](../../native/tests/test_world.cpp). Source review is distinct
+from a passing run; the [2026-09-08 audit](../audits/2026-09-08-documentation-audit.md)
+records the local identity and dated validation scope.
+
 ## At a glance
 
 - Purpose: avoid processing stable buried volumes while preserving correct wake propagation.
-- **Current**: Godot tracks 16×16 active blocks plus per-cell quiet and movable counts.
+- **Current**, GDScript fallback: 16×16 active blocks plus per-cell quiet and movable counts; this is not the native/Web activity geometry.
 - **Current**: native World uses 32×32 activity blocks independently of 64×64 scheduling cores and 128×128 chunks.
 - **Current**: each block has active, changed-this-tick, and quiet-tick state.
 - **Current**: crossings and writes wake affected local and edge-neighbor blocks.
 - **Current**: settled Water and buried stable material blocks stop scheduling.
 - **Current**: bounded explosion edits wake affected blocks, and failed snapshot publication preserves dirty state.
-- **Current**: the Godot proof derives an adaptive stride from eligible blocks, keeps the immediate interest neighbourhood full-rate, and preserves deferred wake flags.
-- **Planned**: field-specific cadence and a generalized delayed-rule wake contract.
+- **Current**, fallback only: adaptive stride derives from eligible blocks, keeps the immediate interest neighbourhood full-rate, and preserves deferred wake flags.
+- **Current**: native secondary interactions use 2/4/8/120-tick spatial lanes; primary eligible transport remains full-rate. **Planned**: optional-field scheduling and a generalized delayed-rule wake contract.
 
 ## Search anchors
 
 buried volumes frozen, nearby cells changed, wake boundary, active tile count, dirty versus active, water never sleeps, active-region explosion
 
-## Current Godot behavior
+## Current GDScript fallback behavior
 
 godot/scripts/cell_world.gd contains:
 
@@ -78,7 +85,7 @@ These concepts may share compact metadata only if ownership and acknowledgement 
 
 ## Sleep eligibility
 
-### Current requirements
+### Approved requirements for generalized sleep
 
 A tile or finer activity block may sleep only when:
 
@@ -89,7 +96,12 @@ A tile or finer activity block may sleep only when:
 - its required boundary layer remains able to detect incoming change;
 - sleeping does not change conservation or deterministic replay.
 
-### Ambiguous details
+These are constraints for future extensions, not evidence that generic transfer,
+streaming, or delayed-field queues already exist. Current native sleep is
+implemented by activity-block changes/keep-awake observations and
+`WorldConfig::sleep_after_quiet_ticks` (default 3); fallback cell sleep uses 8.
+
+### Unresolved production details
 
 - exact recent-tick timeout;
 - whether activity uses per-cell epochs, sub-tile masks, lists, or multiple levels;
@@ -147,12 +159,15 @@ This is temporal approximation, not loss of state or spatial cell merging.
 
 ## Dirty-state lifecycle
 
-1. Phased or buffered jobs produce local change observations.
-2. Deterministic merge resolves boundary changes.
-3. SimulationCore commits authoritative state.
-4. WorldStorage records simulation, render, and serialization dirty information as applicable.
-5. RenderSnapshotExchange copies each dirty chunk bound in sorted chunk order into an unleased preallocated slot.
-6. Dirty state is cleared only after all patch bytes are captured; Backpressure and CapacityExceeded leave it intact.
+1. **Current** phased jobs mutate cells within exclusive write domains and collect local `JobEffects` observations.
+2. The coordinator merges activity/dirty observations in deterministic job order after each completed phase; this is not a buffered cell-transfer commit.
+3. `RenderSnapshotExchange` copies dirty chunk bounds in sorted chunk order into an unleased preallocated slot.
+4. Dirty state is cleared only after all patch bytes are captured; `Backpressure` and `CapacityExceeded` leave it intact.
+
+**Planned**: buffered output/transfer commits and serialization-specific dirty
+acknowledgements. Desktop's copied snapshot retention and renderer acknowledgement
+are a separate layer; Web consumes synchronously. See
+[rendering bridges](../architecture/rendering-and-gameplay-bridges.md).
 
 Snapshot pressure must not cause dirty information to disappear.
 
@@ -169,7 +184,12 @@ Exact metric field names are not approved.
 
 The current Godot overlay also reports dormant, frozen, and deferred work counts. Those are **Current** prototype counters, not approved production metric names.
 
-## Validation
+## Validation requirements
+
+The list below is a regression checklist, not an assertion that every combination
+has a current passing run. Existing native test functions cover sleep, edge wake,
+conserved Water, capacity, and snapshot lease/pressure behavior; generalized
+streaming/transfer cases remain future acceptance work.
 
 - buried stable solid and water volumes eventually stop scheduling interior work;
 - a crossing wakes the correct neighbor across every tile and chunk edge;

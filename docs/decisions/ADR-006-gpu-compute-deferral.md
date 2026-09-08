@@ -4,18 +4,25 @@ status: Approved design
 scope: Deferral of GPU authority, acceptable future non-authoritative fields, synchronization constraints, experiment gate, and migration path
 keywords: [ADR, GPU compute, deferred, terrain authority, collision, readback, non-authoritative field]
 related-documents: [../systems/smoke-heat-pressure-roadmap.md, ADR-001-native-simulation-core.md, ADR-003-godot-bridge-and-immutable-snapshots.md]
-last-reviewed: 2026-08-26
+last-reviewed: 2026-09-08
 implementation-state: The decision to defer is approved; the project uses a rendering shader but contains no compute-shader simulation backend.
 ---
 
 # ADR-006: GPU compute deferral
+
+Evidence scope (2026-09-08): **Current** below describes inspected source in the
+reconstructed local snapshot, not a verified Git HEAD or an all-platform test pass.
+See the [documentation audit](../audits/2026-09-08-documentation-audit.md) for
+source identity and dated validation; [M11 audit records](../audits/m11/README.md)
+retain historical scope. **Approved design** means Approved direction; Planned,
+Deferred, and Rejected statements do not claim implementation.
 
 ## At a glance
 
 - Decision: do not make GPU compute authoritative for terrain or collision at this stage.
 - **Current**: the Godot project uses GL Compatibility rendering and a palette fragment shader.
 - **Deferred / experimental**: suitable GPU-resident non-authoritative fields may be benchmarked later.
-- CPU-native SimulationCore remains authoritative for current planned cell state.
+- Native World remains cellular authority where loaded; the desktop compatibility fallback is CPU GDScript.
 - Any GPU experiment must define synchronization, readback, determinism, and fallback.
 - **Explicitly rejected**: premature GPU authority that requires gameplay to read unsynchronized state.
 - Non-goal: prohibit GPU acceleration forever.
@@ -102,6 +109,11 @@ A future proposal can supersede this decision for a specific field if it:
 Migration should begin with non-authoritative derived output. Terrain authority requires a separate explicit decision.
 
 ## Validation
+
+Current source anchors: [project renderer](../../godot/project.godot),
+[presentation shader](../../godot/shaders/material_palette.gdshader), and
+[native authority](../../native/src/world.cpp). No compute-simulation backend
+was found in the inspected snapshot. This does not imply profiling on every GPU.
 
 For any future experiment:
 

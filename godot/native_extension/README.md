@@ -1,29 +1,67 @@
 # Cyber Sand native Godot bridge
 
+Status: **Current** implementation/build guide, reviewed 2026-09-08. Historical
+M11 rebuild recipes below identify earlier inputs; current source and retained
+binary/test identities are in the [documentation audit](../../docs/audits/2026-09-08-documentation-audit.md).
+This source directory is a reconstructed snapshot plus edits without Git history.
+
 This GDExtension exposes the native phased cellular core as
-`CyberNativeCellWorld`. The runnable Godot sandbox selects it when the matching
+`CyberNativeCellWorld`. The desktop Godot sandbox selects it when the matching
 platform library is present and retains `CyberCellWorld` as a functional
-fallback.
+fallback. Web requires its native WASM extension and does not substitute that
+fallback when native creation fails.
 
 The extension owns no scene-tree node or Rapier RID. Rigid-body transforms enter
 as packed value data, become a transient native occupancy field for the cellular
 tick, and return only bounded impulses and counters.
+
+On desktop, `CyberSimulationWorker` exclusively owns the adapter/World from a
+Godot Thread. On Web, `web_demo_controller.gd` calls the adapter synchronously on
+the Godot main thread. Native pool workers call no Godot APIs; their job
+parallelism does not transfer World ownership. Rapier is main-thread owned in
+both cases. See [threading](../../docs/architecture/simulation-tick-and-threading.md)
+and [coupling](../../docs/architecture/rigid-body-and-cellular-coupling.md).
+
+`CyberDemoBridge` adds fixed-size level construction/export/import. CYSD1 stores
+cell material/state/temperature and selected Web metadata, not scheduler or
+Rapier replay state. Export clears the transient obstacle mask, so the exclusive
+owner must rebuild coupling before the next tick; it is not a concurrent const
+read. See [demo_snapshot.hpp](../../native/include/cybersand/demo_snapshot.hpp)
+and [save/replay scope](../../docs/operations/testing-validation-and-replay.md).
 
 Linux builds are produced by `tools/build_native_extension.sh`. Windows x86_64
 builds are produced by `tools/build_native_extension_windows.sh`. Both require
 `GODOT_CPP_ROOT` to point to the exact Godot 4.7 `godot-cpp` revision
 `101ae38034304346a46ea9ea84ae156d3e860496`; the scripts reject an unknown or
 different revision. All cached input names, origins, sizes, licenses, and
-SHA-256 values are in `third_party/native-toolchain.lock.json`.
+historical SHA-256 values are in
+[native-toolchain.lock.json](../../third_party/native-toolchain.lock.json).
+The lock's M11 outputs do not identify today's locally rebuilt DLL.
 
-The m11 Windows binary uses LLVM-MinGW 20260826 (LLVM 23.1.0, UCRT). Set
+The historical M11 Windows binary used LLVM-MinGW 20260826 (LLVM 23.1.0, UCRT). Set
 `WINDOWS_CXX` and `GODOT_CPP_LIBRARY` to override the compiler or static-library
-paths. `MINGW_CXX` remains a compatibility alias. The shipped DLL imports only
-Windows UCRT/system DLLs.
+paths. `MINGW_CXX` remains a compatibility alias. Historical UCRT/system-import
+checks are not a substitute for checking a newly produced binary.
 
-## Offline pinned rebuild
+## Active Windows and Web workflow
 
-The setup-cache v2 contains these already-downloaded inputs:
+From `C:/kybersand`, use `dev.cmd native-bindings`, `native-build`, `native-test`
+and `godot-test`; Godot is installed in `C:/Godot47`. `dev.cmd web` builds the
+compatibility profile; `web --profile threaded` builds optional native job
+parallelism. The [Web builder](../../tools/build_web.py) checks Emscripten 4.0.20,
+Godot 4.7, SCons 4.10.1 and separate pinned Web godot-cpp bindings. Rapier v0.35.2
+is included by default. Local setup is `C:/kybersand/docs/LOCAL_DEVELOPMENT.md`.
+
+The explicit local drift override permits historical archive/output hash
+mismatches and bypasses some source-cleanliness/compiler checks; the exact
+godot-cpp revision requirement remains. This is not bit-identical M11 reproduction.
+Fresh 2026-09-08 Windows tests used the retained DLL without rebuilding it;
+the audit above records its hash and the limitation on source-to-binary proof.
+
+## Historical offline pinned rebuild recipe (Linux host)
+
+The historical setup-cache v2 inventory lists these inputs; availability must
+be verified before using this recipe:
 
 - `godot-cpp-101ae38034304346a46ea9ea84ae156d3e860496.tar.gz`;
 - `scons-4.10.1-py3-none-any.whl`; and
@@ -59,9 +97,10 @@ host does not inject `fmodf@GLIBC_2.38`. The resulting CyberSand extension has
 a glibc 2.32 symbol floor, while the complete project requires glibc 2.34 due
 to the official Rapier2D v0.35.2 library. It also requires a compatible
 libstdc++/C++ ABI providing `GLIBCXX_3.4.30` and `CXXABI_1.3.9`; the floor
-checker asserts all three symbol-version families. Windows execution still
-requires a real Windows Godot 4.7 validation pass; Linux can only provide
-PE/import checks.
+checker asserts all three symbol-version families. These are historical artifact
+floors/required checks, not an audit of the current local Linux LFS pointer.
+Linux PE/import checks alone cannot certify Windows execution; dated Windows
+runtime passes are now recorded separately in the current audit.
 
 The exact Linux host package identities are also recorded in the lock file:
 GCC/libstdc++ development packages `13.3.0-6ubuntu2~24.04`, binutils

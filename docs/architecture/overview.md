@@ -4,23 +4,31 @@ status: Approved design
 scope: Top-level module ownership, data flow, and separation of current prototype code from the approved backend
 keywords: [SimulationCore, SimulationScheduler, WorldStorage, TileJob, MaterialRules, RenderBridge, GameplayBridge, rigid body mask, fidelity]
 related-documents: [module-boundaries.md, data-ownership-and-lifetimes.md, rigid-body-and-cellular-coupling.md, ../reference/status-and-roadmap.md]
-last-reviewed: 2026-08-27
-implementation-state: Native World is the preferred Linux and Windows x86_64 Godot cellular authority through CyberNativeCellWorld; the bridge publishes dirty RG8 material/condition patches, while Rapier2D remains manually stepped through packed samples/results and a separate native transient obstacle field.
+last-reviewed: 2026-09-08
+implementation-state: Native World is the preferred desktop and required Web cellular authority through CyberNativeCellWorld; the bridge publishes dirty RG8 material/condition patches, while Rapier2D remains manually stepped through packed samples/results and a separate native transient obstacle field.
 ---
 
 # Architecture overview
 
+Evidence scope (2026-09-08): **Current** below describes inspected source in the
+reconstructed local snapshot, not a verified Git HEAD or an all-platform test pass.
+See the [documentation audit](../audits/2026-09-08-documentation-audit.md) for
+source identity and dated validation; [M11 audit records](../audits/m11/README.md)
+retain historical scope. **Approved design** means Approved direction; Planned,
+Deferred, and Rejected statements do not claim implementation.
+
 ## At a glance
 
 - Purpose: define the intended ownership boundaries without claiming they already exist.
-- **Current**: a dedicated Godot pacing thread invokes native World, whose four-phase scheduler uses a persistent worker pool; CyberCellWorld is the unsupported-platform fallback.
-- **Current**: Godot rendering repeats the newest immutable snapshot independently while excess non-local activity is temporally distributed.
-- **Current**: three RigidBody2D rectangles project a separate worker-owned collision mask and receive packed coupling observations.
+- **Current** desktop: a dedicated Godot pacing thread invokes native World; native phase jobs use a persistent pool. Desktop may select CyberCellWorld if the extension is absent.
+- **Current** Web: main-thread callbacks synchronously tick native World; compatibility is serial, threaded Auto uses 2/4/6 cellular workers. Missing native support is fatal.
+- **Current** desktop: rendering can repeat immutable snapshots independently; native secondary lanes stagger work. Web publication has separate cadence but shares the main-thread tick wait.
+- **Current**: three RigidBody2D rectangles project a separate simulation-owned collision mask and receive packed coupling observations.
 - **Current**: cybersand::World has sparse storage, four-phase scheduling, a persistent worker pool, executable compact rules, and a bulk `godot-cpp` adapter.
 - **Current**: World is authoritative for standalone native tests, benchmarks, and C API consumers.
 - **Current**: native render publication has bounded reusable leases and a Godot adapter that consumes dirty RG8 material/condition patches.
 - **Current**: the GPU derives material variation, bounded condition response, 42 material flair programs, neighbour relief, HDR emission, and dual-radius glow from immutable presentation data.
-- **Current**, platform partial: native binaries are bundled for Linux and Windows x86_64; Linux runtime fixtures pass and the Windows DLL is cross-built and PE-validated but not launched here.
+- **Current** source supports desktop native and Web. Windows/Chromium have dated local evidence; older Linux execution is historical and local LFS pointers are not executable binaries. See the audit for materialization and validation scope.
 - **Approved design**: Godot communicates only through RenderBridge and GameplayBridge.
 - **Current**: Rapier2D owns sandbox rigid-body physics and is explicitly stepped by the main-thread coupling bridge.
 - Non-goal: this document does not define final C++ signatures or serialized schemas.
@@ -51,11 +59,11 @@ The arrows identify permitted information flow, not implemented C++ APIs.
 
 | Area | Status | Repository evidence | What exists |
 |---|---|---|---|
-| Runnable simulation | **Current** | godot/native_extension and native/src/world.cpp | CyberNativeCellWorld owns native World for bundled Linux and Windows x86_64 builds; CyberCellWorld is an unsupported-architecture fallback. |
-| Worker boundary | **Current** | godot/scripts/simulation_worker.gd | CyberSimulationWorker owns the selected world and character on one pacing Thread; native World owns its internal workers. |
+| Runnable simulation | **Current** | godot/native_extension and native/src/world.cpp | CyberNativeCellWorld owns native World where loaded; desktop can select CyberCellWorld, while Web requires the native extension. |
+| Worker boundary | **Current** | godot/scripts/simulation_worker.gd | Desktop CyberSimulationWorker owns world/character on a pacing Thread; Web controller owns them synchronously on the main thread. World owns internal cellular workers. |
 | Godot rigid-body coupling | **Current** | rigid_body_coupling.gd, rapier_physics_bridge.gd, cell_world.gd, main.gd, and main.tscn | Three rectangles use direct Rapier state, bounded swept displacement, an endpoint mask, and packed impact/pressure/ejection/correction results. |
-| Rapier2D backend | **Current**, export validation partial | godot/addons/godot-rapier2d, third_party/rapier2d.lock.json, project.godot, and focused tests | Official v0.35.2 2D add-on is vendored and selected; Linux x86_64 preflight, automatic-step, manual-step, and scene smoke fixtures pass. |
-| Godot bounded fidelity | **Current** | simulation_worker.gd, native World, and material_palette.gdshader | Native activity sleeping/interest filtering keep material full-rate; renderer can temporally blend immutable snapshots. |
+| Rapier2D backend | **Current**, export validation partial | godot/addons/godot-rapier2d, third_party/rapier2d.lock.json, project.godot, and focused tests | Official v0.35.2 is pinned and selected; desktop/Web manual-step paths exist. Test results are platform/profile/date scoped in the Rapier runbook. |
+| Godot bounded fidelity | **Current** | simulation_worker.gd, native World, and material_palette.gdshader | Native sleeping/interest filtering preserve eligible transport cadence; secondary interactions use fixed staggered lanes. Renderer can blend immutable snapshots. |
 | Published frame state | **Current** | godot/scripts/simulation_snapshot.gd | Copied dirty RG8 patch arrays and character state are published by convention as immutable. |
 | Rendering | **Current** | godot/scripts/main.gd, material_appearance_lut.gd, and Godot shaders | Godot patches a persistent RG8 image from dirty native payloads, uploads the full backing texture, and derives palette variation, condition, 42 flair classes, neighbour relief, and HDR bloom on the GPU. |
 | Native simulation | **Current** | native/include/cybersand/world.hpp and native/src/world.cpp | World owns sparse chunks, 32×32 activity blocks, serial/phased backends, a persistent pool, conserved Water, and optional temperature storage. |
@@ -68,9 +76,10 @@ The arrows identify permitted information flow, not implemented C++ APIs.
 
 ### Current
 
-For bundled Linux and Windows x86_64 builds, CyberNativeCellWorld owns
-cybersand::World as the authoritative cellular state. CyberCellWorld is selected
-only when the native class is unavailable. The two solvers are alternatives,
+CyberNativeCellWorld owns cybersand::World as cellular authority wherever the
+extension loads, including both Web profiles. Desktop CyberSimulationWorker
+selects CyberCellWorld when the native class is unavailable; Web reports a fatal
+load error instead. The two solvers are alternatives,
 not synchronized copies, so fallback results and performance are not claimed to
 match the native runtime.
 
@@ -93,7 +102,7 @@ RenderBridge and GameplayBridge do not own simulation truth:
 
 | Concept | Status | Definition |
 |---|---|---|
-| storage chunk | **Current** native default | 128×128 allocation and metadata unit; serialization/streaming are not implemented. |
+| storage chunk | **Current** native default | 128×128 allocation/metadata unit; generalized persistence/streaming are Planned. CYSD1 already reconstructs a fixed 1024² level. |
 | activity block | **Current** native default | 32×32 work-elimination, sleep, and local wake unit. |
 | scheduling core | **Current** native default | 64×64 parity-colored core evaluated in four phased passes. |
 | owned write domain | **Current** | Core rectangle expanded by the configured maximum rule radius; same-phase overlap is rejected by geometry tests. |
@@ -130,6 +139,13 @@ retains dirty state and reports Backpressure or CapacityExceeded.
 - **Planned**: pressure/composition use optional active-chunk fields rather than permanent arrays for every stored cell.
 - **Deferred / experimental**: GPU compute may host suitable non-authoritative fields once synchronization cost and determinism are measured.
 - **Deferred / experimental**: alternative work topologies, including hexagonal grouping, require isolated benchmarks and cannot alter storage authority without an ADR.
+
+## Source anchors
+
+- [Native World/configuration](../../native/include/cybersand/world.hpp) and [execution](../../native/src/world.cpp).
+- [Desktop owner](../../godot/scripts/simulation_worker.gd) and [Web owner](../../godot/scripts/web_demo_controller.gd); [detailed schedule](simulation-tick-and-threading.md).
+- [Rapier bridge](../../godot/scripts/rapier_physics_bridge.gd) and [runbook/evidence](../operations/rapier-2d-migration-runbook.md).
+- [Native level payload](../../native/include/cybersand/demo_snapshot.hpp); [level versus replay contract](../reference/interfaces-and-message-contracts.md#world-serialization-contract).
 
 ## Related decisions
 

@@ -4,11 +4,18 @@ status: Current
 scope: Entity/material representation, start-of-stage collision mask, two-way observations, overlap reconciliation, and backend independence
 keywords: [ADR, rigid body, occupancy mask, two-way coupling, overlap, Rapier2D]
 related-documents: [../architecture/rigid-body-and-cellular-coupling.md, ADR-003-godot-bridge-and-immutable-snapshots.md, ../architecture/simulation-tick-and-threading.md]
-last-reviewed: 2026-08-28
-implementation-state: A rectangular asynchronous Rapier2D proof is Current, including manual stepping, separate endpoint occupancy, and bounded translation sweep; generalized shapes, selective substeps/CCD, torque, particles, and final capacity policy remain Planned.
+last-reviewed: 2026-09-08
+implementation-state: Rectangle coupling is Current with desktop asynchronous and Web synchronous ownership, manual Rapier stepping, separate endpoint occupancy, bounded sweep and per-body cast-shape CCD; generalized shapes, selective substep/CCD policy, torque and particles remain Planned.
 ---
 
 # ADR-007: Separate rigid-body occupancy coupling
+
+Evidence scope (2026-09-08): **Current** below describes inspected source in the
+reconstructed local snapshot, not a verified Git HEAD or an all-platform test pass.
+See the [documentation audit](../audits/2026-09-08-documentation-audit.md) for
+source identity and dated validation; [M11 audit records](../audits/m11/README.md)
+retain historical scope. **Approved design** means Approved direction; Planned,
+Deferred, and Rejected statements do not claim implementation.
 
 ## At a glance
 
@@ -50,7 +57,7 @@ enabled rigid-body backend.
 4. Cell impacts, boundary pressure, displacement, unresolved overlap, and later torque are accumulated as bounded observations keyed by stable body identity.
 5. After external rigid-body movement, an ordered reconciliation stage ejects, converts, defers, or reports overlapped material according to explicit capacity and material traits.
 6. Only packed immutable samples/results cross the engine boundary.
-7. Current rectangles use capped one-cell-spaced sweep samples for ordinary translation; selective CCD/substeps may be added when measured motion requires them, but work may not be unbounded.
+7. Current rectangles use a bounded sampled sweep and already enable cast-shape CCD in Rapier. A selective CCD/substep policy remains Planned; it must keep work bounded.
 
 The current rectangle proof is approximate. It establishes the ownership and
 message shape, not final numerical constants or production interfaces.
@@ -86,8 +93,8 @@ separate collision mask remains present.
 ### Generate a PhysicsServer collider for every active cell
 
 **Explicitly rejected**. Per-cell physics objects would multiply object,
-broadphase, synchronization, and lifecycle costs. Coarse static contours remain
-**Planned** for consumers that genuinely need them.
+broadphase, synchronization, and lifecycle costs. Merged hard-surface static rectangles are already **Current**; generalized
+contours remain **Planned**.
 
 ### One-way rigid-body-to-cell mask
 
@@ -108,6 +115,13 @@ must preserve stable body identity, material conservation rules, explicit
 overlap outcomes, and the no-worker-Godot-access boundary.
 
 ## Validation
+
+Current implementation: [native coupling](../../godot/native_extension/cyber_native_cell_world.cpp),
+[Rapier bridge](../../godot/scripts/rapier_physics_bridge.gd),
+[body configuration](../../godot/main.tscn). Native mask ownership is ascending
+body-ID order; fallback ownership follows input order.
+[The runbook](../operations/rapier-2d-migration-runbook.md) scopes dated
+Windows/Chromium evidence separately from historical Linux results.
 
 The rectangular proof should be manually checked for:
 

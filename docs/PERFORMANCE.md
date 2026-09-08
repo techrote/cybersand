@@ -4,11 +4,20 @@ status: Ambiguous
 scope: Historical prototype optimizations, reported measurements, reference-repository observations, and future directions
 keywords: [legacy performance, activity blocks, epoch mask, texture upload, reference repository]
 related-documents: [operations/profiling-observability-and-performance.md, operations/troubleshooting.md, reference/status-and-roadmap.md]
-last-reviewed: 2026-08-27
-implementation-state: Historical GDScript notes are retained below; bundled Linux and Windows x86_64 builds use the native phased GDExtension and dirty RG8 RenderBridge. The latest focused Linux ~30k-cell airborne-shower run measured 4.14 ms/tick.
+last-reviewed: 2026-09-08
+implementation-state: Historical performance/optimization record, including a prior hosted Linux 4.14 ms/tick observation; not a current-machine or current-revision measurement.
 ---
 
 # Godot sandbox performance pass
+
+**Historical performance record.** Timings and optimization narratives below
+belong to earlier GDScript/native checkpoints; "latest", "current", and "next"
+in those narratives are relative to their original run. They do not certify the
+2026-09-08 Windows/Web snapshot. The hosted 4.14 ms figure is preserved as reported,
+not adopted as a new baseline. Use [profiling guidance](operations/profiling-observability-and-performance.md),
+[current roadmap](reference/status-and-roadmap.md), and the
+[local evidence audit](audits/2026-09-08-documentation-audit.md). Current Web
+stepping is synchronous on Godot main even when native jobs use pthreads.
 
 ## At a glance
 
@@ -31,7 +40,7 @@ legacy performance pass, activity block optimization, texture upload, historical
 - [ADR-008](decisions/ADR-008-bounded-approximate-fidelity.md)
 - [Profiling specification](operations/profiling-observability-and-performance.md)
 
-## Current native result
+## Historical hosted native result
 
 `CyberSimulationWorker` remains the asynchronous fixed-rate owner, but its
 preferred world is `CyberNativeCellWorld`. The extension invokes the same
@@ -230,7 +239,7 @@ implements a Noita-inspired four-phase in-place scheduler and persistent worker
 pool. Active-only buffered transfers remain a fallback rather than the leading
 implementation. See [ADR-002](decisions/ADR-002-double-buffered-tile-jobs.md).
 
-The retained ownership requirements are:
+The historical buffered-candidate work list was:
 
 1. compute each chunk's interior in parallel;
 2. record cross-chunk transfers in per-job boundary buffers;
@@ -238,7 +247,7 @@ The retained ownership requirements are:
 4. exchange activity/wake flags;
 5. upload only dirty regions through the Godot bridge.
 
-The next integration milestone is the GDExtension bridge, not another GDScript
+The then-proposed next integration milestone was the GDExtension bridge, not another GDScript
 thread. Thread count is not itself the goal; bounded gameplay work, frame time,
 and predictable scaling are.
 

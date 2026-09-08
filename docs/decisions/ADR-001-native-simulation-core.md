@@ -4,16 +4,23 @@ status: Current
 scope: Authority placement, Godot dependency boundary, standalone validation, and migration from the split prototype
 keywords: [ADR, SimulationCore, native C++, authority, Godot bridge, dual simulation]
 related-documents: [../architecture/overview.md, ../architecture/module-boundaries.md, ADR-003-godot-bridge-and-immutable-snapshots.md]
-last-reviewed: 2026-08-28
-implementation-state: Native cybersand::World is the authoritative Godot cellular backend on bundled Linux and Windows x86_64 through CyberNativeCellWorld; the standalone SimulationCore class extraction and generalized GameplayBridge remain Approved design.
+last-reviewed: 2026-09-08
+implementation-state: Native cybersand::World is the desktop native and required Web cellular backend through CyberNativeCellWorld; the standalone SimulationCore class extraction and generalized GameplayBridge remain Approved design.
 ---
 
 # ADR-001: Native SimulationCore
 
+Evidence scope (2026-09-08): **Current** below describes inspected source in the
+reconstructed local snapshot, not a verified Git HEAD or an all-platform test pass.
+See the [documentation audit](../audits/2026-09-08-documentation-audit.md) for
+source identity and dated validation; [M11 audit records](../audits/m11/README.md)
+retain historical scope. **Approved design** means Approved direction; Planned,
+Deferred, and Rejected statements do not claim implementation.
+
 ## At a glance
 
 - Decision: authoritative pixel-physics state and rules belong in native C++ SimulationCore.
-- **Current**: CyberNativeCellWorld makes `cybersand::World` authoritative on bundled Linux and Windows x86_64; CyberCellWorld is an unsupported-platform fallback.
+- **Current**: CyberNativeCellWorld makes World authoritative where loaded; desktop may fall back to CyberCellWorld, while Web fails if native support is absent.
 - **Approved design**: SimulationCore has no Godot API dependency.
 - **Approved design**: Godot interacts through RenderBridge and GameplayBridge only.
 - Benefit: deterministic native tests and multicore scheduling do not depend on scene/runtime objects.
@@ -34,10 +41,10 @@ authority.
 ## Context
 
 The repository retains two implementations but selects only one authority per
-run. On bundled Linux and Windows x86_64, CyberSimulationWorker constructs
-CyberNativeCellWorld and advances native `cybersand::World`; the serial
-CyberCellWorld implementation is a compatibility fallback when that extension
-class is unavailable. Native World remains Godot-free and is also exercised by
+run. Desktop CyberSimulationWorker prefers CyberNativeCellWorld and advances
+native World; CyberCellWorld is its fallback when the extension class is absent.
+Both Web profiles require native World and synchronously own calls on the main
+thread, with no script fallback. See [tick/threading](../architecture/simulation-tick-and-threading.md). Native World remains Godot-free and is also exercised by
 standalone tests, benchmarks, and the C API.
 
 ## Decision
@@ -91,7 +98,10 @@ Exact interfaces and migration checkpoints remain to be specified in implementat
 
 ### Use the existing native World unchanged as SimulationCore
 
-**Explicitly rejected** without refactoring. World currently combines storage, rules, scheduling, dirty extraction, and RGBA conversion.
+**Current** as the implemented authority; **Rejected** as a claim that production
+module separation is complete. World currently combines storage, rules,
+scheduling, dirty extraction and RGBA conversion. Extraction remains Approved
+direction and is not a prerequisite for continuing the existing native core.
 
 ## Reversal/migration path
 
@@ -110,6 +120,13 @@ Migration should:
 Reversing after save formats depend on native state would require an explicit data migration ADR.
 
 ## Validation
+
+The list below is the required contract, not an all-platform pass claim. Source:
+[World](../../native/include/cybersand/world.hpp),
+[native fixtures](../../native/tests/test_world.cpp),
+[desktop selector](../../godot/scripts/simulation_worker.gd), and
+[Web owner](../../godot/scripts/web_demo_controller.gd). Exact fixture hashes
+are limited by [hash coverage](../architecture/determinism-and-boundary-transfers.md#replay-state-coverage).
 
 - SimulationCore native tests run without Godot.
 - Godot cannot access mutable authoritative memory.

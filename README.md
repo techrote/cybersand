@@ -1,11 +1,21 @@
 # Cyber Sand Engine
 
+**Scope: Current local source, inspected 2026-09-08; M11 validation remains historical.**
+This is a reconstructed `web-demo-m11` blob snapshot based on
+`e2892c54d4bd91aac60971e81c748bd49fbe2adb`, with local adapter/Web changes.
+The active source has no Git metadata; the retained outer repository has no
+commits. See the [2026-09-08 documentation audit](docs/audits/2026-09-08-documentation-audit.md) for identity, backup gaps,
+current checks, and unresolved configuration conflicts. Start development with
+[AGENTS.md](AGENTS.md), the [handover](docs/operations/cybersand-codex-development-handover.md),
+and the [focused documentation index](docs/README.md).
+
 An initial, legally distinct foundation for a large-scale cellular-physics game
 engine hosted by Godot 4. The eventual target is cyberpunk RPG and exploration
 games spanning underground, urban, vehicle-interior, orbital, and vacuum
 environments.
 
-This milestone contains:
+The inspected source implements the following; platform validation is scoped in
+the audit above:
 
 - A deterministic C++20 cellular simulation kernel.
 - A byte-sized native material catalogue covering the complete attributed
@@ -16,7 +26,7 @@ This milestone contains:
 - Sparse, signed-coordinate 128×128 chunks, 32×32 activity blocks, sleeping,
   dirty rectangles, explicit capacities, and interest-region preallocation.
 - A Noita-inspired four-phase 64×64 in-place scheduler backed by a persistent
-  native worker pool and deterministic one/multiworker replay.
+  native worker pool and exact one/multiworker cellular fixture comparisons.
 - Conserved 8-bit Water mass with stable rest and render-only dithering.
 - Directional density exchange plus lifetime-decaying Smoke that bubbles through
   opted-in denser media, thins faster in dense clouds, and cannot host Fire.
@@ -30,7 +40,8 @@ This milestone contains:
 - A preallocated native dirty-snapshot exchange with immutable consumer leases,
   deterministic patch order, retained dirty state under pressure, and C ABI access.
 - A backwards-compatible C ABI plus a `godot-cpp` GDExtension that makes native
-  World authoritative in bundled Linux and Windows x86_64 Godot builds.
+  World authoritative in local Windows x86_64 and Web runtimes; Linux
+  integration has historical evidence but unresolved local binaries.
 - Native regression tests and a benchmark harness.
 - A runnable Godot 4 material lab with a 1024×1024 world, independently
   adjustable shader viewport and simulation margins, native activity sleeping,
@@ -42,13 +53,16 @@ This milestone contains:
 - Three red 8×14 RigidBody2D test rectangles, pixel-derived Rapier static terrain,
   and a separate native transient obstacle field with bounded impact, pressure,
   swept displacement, and overlap results.
-- Frame-budgeted, 64×64 chunk-owned Rapier terrain colliders, selectable 30/45/60 Hz
-  interpolated texture publication, and distributed 0.5 Hz Fire checks keep
-  visual flame motion at 60 Hz without burst-rebuilding world collision.
+- Rapier terrain colliders use 64×64 packets and a soft consumption/rebuild
+  budget; preceding native packet extraction is outside that budget. Selectable
+  30/45/60 Hz publication and staggered Fire checks separate nominal visual
+  cadence from secondary interactions; these are not frame-time guarantees.
 - Vendored Godot Rapier Physics 2D v0.35.2, selected as the sole rigid-body
   backend and advanced by an explicit main-thread manual-step bridge.
-- A dedicated Godot simulation thread that owns cellular and character physics
-  and publishes immutable snapshots to the render thread.
+- On desktop, a dedicated Godot simulation thread owns cellular and character
+  stepping and publishes immutable snapshots to the main thread. Web instead
+  synchronously steps native cells in `_physics_process`; pthreads parallelize
+  work inside that tick.
 - A 64×256 palette atlas and unchanged four-texel material program whose
   reserved channel now selects bounded procedural masonry, grain, roofing,
   metal, wet-surface, glass, hazard, neon, and LED finishes on the GPU.
@@ -61,15 +75,21 @@ This milestone contains:
   liquid lips, and one-cell contact shadow without another world image/upload;
   a dual-radius HDR composite widens material glow entirely on the GPU.
 
-The included Linux and Windows x86_64 builds use the native phased solver.
-Other platforms retain the compact serial GDScript world as a compatibility
-fallback; they require a platform build of `CyberNativeCellWorld` for
-equivalent performance and Water behavior. See `docs/PERFORMANCE.md` for the
-hot-path design.
+Windows x86_64 and both local Web profiles use the native phased solver.
+The Linux libraries in this workspace are unresolved LFS pointers; historical
+Linux validation does not make them runnable here. Desktop can use the compact
+serial GDScript fallback when the native class is absent; Web requires the
+native extension and reports failure if unavailable. See
+[thread ownership](docs/architecture/simulation-tick-and-threading.md) and
+[Web profiles](docs/operations/web-threading.md).
 
 ## Build the native milestone
 
-Requirements: GNU Make and a C++20 compiler.
+Portable kernel requirements: GNU Make and a C++20 compiler. For this configured
+Windows workspace use `dev.cmd doctor`, `dev.cmd native-test`, and
+`dev.cmd godot-test` from the parent workspace; the current build procedure is
+`C:/kybersand/docs/LOCAL_DEVELOPMENT.md`. Commands below describe the source
+repository tooling, not a claim that every platform artifact is present.
 
 ```sh
 make test
@@ -83,7 +103,7 @@ the exact `godot-cpp` source archive and prebuilt Linux/Windows static libraries
 the SCons 4.10.1 wheel, and LLVM-MinGW 20260826. The tracked preparation script
 reconstructs those tools offline and refuses checksum or revision drift.
 
-To rebuild the included Linux GDExtension after building the pinned Godot 4.7
+To rebuild the Linux GDExtension from source after building the pinned Godot 4.7
 `godot-cpp` checkout:
 
 ```sh
@@ -100,8 +120,8 @@ tools/build_native_extension_windows.sh
 ```
 
 `tools/build_pinned_godot_cpp.sh` gives the exact static-library commands, and
-`tools/check_linux_runtime_floor.sh` verifies that the complete Linux bundle's
-minimum glibc remains 2.34. This floor is imposed by the bundled Rapier2D
+`tools/check_linux_runtime_floor.sh` verifies that a restored historical Linux bundle's
+minimum glibc is 2.34 at that checkpoint. This floor is imposed by the bundled Rapier2D
 library; the CyberSand extension itself is built so it does not import the
 newer `fmodf@GLIBC_2.38` symbol. The extension also requires a C++ runtime
 providing `GLIBCXX_3.4.30` and `CXXABI_1.3.9`. See
@@ -199,6 +219,11 @@ godot --headless --path godot --script res://tests/test_native_render_bridge_reg
 godot --headless --path godot --script res://tests/test_render_patch_handoff_regression.gd
 ```
 
+CYSD1 Web saves reconstruct 1024×1024 levels, player/options, and up to three
+Physics Pit body records. They omit scheduler state and Rapier internals; exact
+level-byte round trips do not establish future-trajectory replay. See
+[save and replay contracts](docs/reference/interfaces-and-message-contracts.md).
+
 ## Important boundaries
 
 - No Godot node, tile, or physics object is created per material cell.
@@ -212,10 +237,11 @@ godot --headless --path godot --script res://tests/test_render_patch_handoff_reg
 - Rapier2D is the sole runtime rigid-body backend. Explicit space stepping and
   batch active-transform extraction are current; generalized shapes, torque,
   and selective CCD/substeps remain planned.
-- Strict deterministic replay remains a validation mode. Gameplay may use
-  explicit bounded temporal/probabilistic fidelity policies to protect frame rate.
-- Full-resolution simulation is local; macro space travel and distant worlds
-  use a separate scale.
+- Exact repeated/worker-parity fixtures validate specified cellular scenarios.
+  A selectable strict runtime mode and complete serialized replay checkpoint
+  remain Planned; CYSD1 restores a level and selected metadata only.
+- Full-resolution simulation is local. Separate-scale macro space travel and
+  distant-world aggregation remain Planned.
 
 See `docs/ARCHITECTURE.md`, `docs/LARGE_WORLD_PROOF.md`, `docs/PERFORMANCE.md`,
 `docs/STATUS.md`, and `docs/NEXT_MILESTONE.md` for the working design, measured

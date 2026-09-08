@@ -4,8 +4,8 @@ status: Current
 scope: Current constants/configuration, required serializable values, initial reservations, safe expansion, diagnostics, validation, and unresolved schema
 keywords: [configuration, capacity budget, interest region, active chunk budget, preallocation, reconfiguration, serialization]
 related-documents: [../systems/world-storage-and-interest-region.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/configuration-reference.md]
-last-reviewed: 2026-08-27
-implementation-state: Native WorldConfig and versioned C ABI expose geometry, workers, chunk/work/event capacities, and explosion bounds; reusable snapshot capacities are explicit at exchange construction, while persistent serialization and safe live resize remain unimplemented.
+last-reviewed: 2026-09-08
+implementation-state: WorldConfig/C ABI construction and snapshot capacities are implemented; adapter Auto and CYSD1 level persistence exist. Full configuration/replay persistence and safe live resize remain unimplemented.
 ---
 
 # Configuration and capacity budgets
@@ -13,14 +13,16 @@ implementation-state: Native WorldConfig and versioned C ABI expose geometry, wo
 ## At a glance
 
 - Purpose: make simulation scale adjustable without redesigning module boundaries.
+- Source scope: inspected local snapshot plus edits; see [current audit](../audits/2026-09-08-documentation-audit.md). This document describes configuration ownership, not a production capacity or platform validation guarantee.
 - **Current**: native WorldConfig exposes chunk/activity/core geometry, rule radius, worker count, sleep, bounded work/event capacities, and explosion radius.
 - **Current**: `reserve_region` and `reserve_temperature_region` prepare chunk/field storage before ticking.
 - **Current**: maximum chunk, active chunk, and active-core exhaustion fail explicitly.
 - **Current**: TickStats reports chunk and temperature-field allocations made during a tick.
 - **Current**: the versioned C ABI exposes the complete native construction configuration.
 - **Current**: render snapshot slot, patch, and byte capacities are explicit when constructing a snapshot exchange.
-- **Planned**: persistent serialization and pause/drain/resize/publish live reconfiguration.
-- Unresolved: saved schema format/version, bridge pressure policy, and production capacity defaults.
+- **Current**: fixed-size CYSD1 level persistence and selected Web metadata; full configuration persistence remains **Planned**.
+- **Planned**: pause/drain/resize/publish live reconfiguration.
+- Unresolved: complete saved configuration/replay schema, generalized gameplay-queue pressure policy, and production capacity defaults. Native snapshot pressure outcomes already exist.
 
 ## Search anchors
 
@@ -37,7 +39,7 @@ change simulation size, capacity exceeded, current and 2x preallocation, active 
 | native/include/cybersand/world.hpp | WorldConfig::activity_block_size | 32 | Native work-elimination granularity | **Current** default |
 | native/include/cybersand/world.hpp | WorldConfig::scheduling_core_size | 64 | Native parity-phase job core | **Current** default |
 | native/include/cybersand/world.hpp | WorldConfig::maximum_rule_radius | 2 | Bounds prepared write domains | **Current** default and catalogue requirement |
-| native/include/cybersand/world.hpp | WorldConfig::worker_threads | 1 | Persistent native worker count | **Current** default; four workers benchmarked |
+| native/include/cybersand/world.hpp | WorldConfig::worker_threads | 1 | Low-level persistent native worker default | **Current**; Godot adapter can resolve a different count via Auto |
 | native/include/cybersand/world.hpp | WorldConfig::parallel_job_threshold | 8 | Avoids pool dispatch for undersubscribed phases | **Current** default |
 | native/include/cybersand/world.hpp | WorldConfig::active_core_capacity | 4096 | Bounds gathered scheduling-core candidates | **Current** default |
 | native/include/cybersand/world.hpp | WorldConfig::active_chunk_capacity | 4096 | Bounds active chunk scratch | **Current** default |
@@ -66,8 +68,14 @@ change simulation size, capacity exceeded, current and 2x preallocation, active 
 | godot/scripts/simulation_worker.gd | TICK_INTERVAL_USEC | 16667 | Godot worker tick interval | **Current** prototype constant |
 | godot/scripts/simulation_worker.gd | MAX_BACKLOG_TICKS | 3 | Caps current worker backlog | **Current** prototype behavior; not production overload policy |
 
-The versioned C ABI mirrors the native values, but current project.godot and a
-persistent world/configuration file do not store them.
+The [versioned C ABI](../../native/include/cybersand/c_api.h) mirrors native
+construction values. [project.godot](../../godot/project.godot) selects
+`cybersand/native_worker_threads=0` (Auto); the
+[adapter](../../godot/native_extension/cyber_native_cell_world.cpp) resolves
+2/4/6 workers at reported logical-thread thresholds 4 and 12 when constructing
+a world. Compatibility Web forces one worker; threaded Web retains Auto.
+The full WorldConfig is not persisted by CYSD1. Low-level defaults and adapter
+settings must not be presented as identical configuration layers.
 
 ## Approved serializable configuration concepts
 
@@ -85,7 +93,8 @@ The table deliberately gives concepts, not invented key names.
 | gameplay fidelity policy | **Approved design** | Bounded interest/cadence/sampling choices plus strict validation mode |
 | rigid-body coupling capacity | **Approved design** | Explicit bodies/shapes, sample/result, overlap, force, and substep/sweep reservations |
 
-Exact saved names, migration behavior, and persistent schema version are **Ambiguous**.
+Exact saved names, migration behavior, and a complete configuration schema version
+remain unresolved. CYSD1's existing level format does not decide them.
 
 ## Capacity is not a permanent maximum
 
@@ -153,7 +162,12 @@ Diagnostics must clearly report the exhausted capacity, requested versus availab
 
 **Planned**: a versioned configuration artifact must store every simulation-affecting value needed to reproduce or resume a world. Configuration migration must reject unknown unsafe changes rather than silently reinterpret data.
 
-No format such as Godot Resource, JSON, binary, or custom schema has been selected.
+No complete configuration/replay format has been selected. **Current**
+[CYSD1](../../godot/scripts/demo_save_codec.gd) is a versioned binary level
+container with JSON metadata; it saves selected demo/player/render options and
+Physics Pit body values. It omits scheduler activity, tick/epoch, pending events,
+the complete configuration and Rapier caches. See
+[level saves versus replay](testing-validation-and-replay.md#level-saves-are-not-exact-replay-checkpoints).
 
 ## Validation
 

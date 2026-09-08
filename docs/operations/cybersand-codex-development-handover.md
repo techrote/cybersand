@@ -1,10 +1,17 @@
-# CyberSand M11 — Codex Development Handover
+---
+title: CyberSand Codex Development Handover
+status: Current
+scope: Current local onboarding and owner intent with explicitly retained historical M11 identity and validation
+last-reviewed: 2026-09-08
+---
+
+# CyberSand — Codex Development Handover
 
 ```yaml
 document-status: Current
 document-purpose: Operational handover for continued human- and Codex-assisted development
-authoritative-baseline: Audited CyberSand M11
-last-reviewed: 2026-08-29
+authoritative-baseline: Local reconstructed web-demo-m11 source; historical audited M11 records are separate
+last-reviewed: 2026-09-08
 audience:
   - project owner
   - Codex development agents
@@ -13,13 +20,23 @@ audience:
 
 ## 1. How to use this document
 
+Local owner direction, 2026-09-08: develop in `C:/kybersand`; functional outputs
+belong in `C:/cybersand`. The optional threaded Web profile now uses the owner's
+2/4/6 Auto policy at logical-thread thresholds 4 and 12. The Web Performance menu
+and native CLI offer isolated benchmark/stress tests. See [Web threading](web-threading.md).
+The owner subsequently requested Rapier Web: both profiles now include the
+pinned v0.35.2 binaries and Physics Pit. Native/Chromium acceptance and remaining
+limits are in the [Rapier runbook](rapier-2d-migration-runbook.md).
+The original M11 evidence below remains historical; current local validation
+is recorded separately.
+
 Read this before asking a new Codex task to modify CyberSand. It complements the repository's RAG-optimised documentation; it does not replace `README.md`, `AGENTS.md`, `docs/`, `docs/decisions/`, build manifests, or validation records.
 
-This handover preserves decisions and preferences that emerged during conversational development and could otherwise be easy to lose. When it conflicts with executable source or a newer approved ADR, investigate rather than silently choosing one account. The audited M11 source is the implementation baseline.
+This handover preserves decisions and preferences that emerged during conversational development and could otherwise be easy to lose. When it conflicts with executable source or a newer approved ADR, investigate rather than silently choosing one account. The local M11-derived source is the implementation baseline; historical audited hashes are not its current identity.
 
 Claims in this document use these meanings:
 
-- **Current** — implemented or verified in audited M11.
+- **Current** — inspected in this local source; runtime claims additionally need dated platform/artifact evidence. M11 results below remain historical.
 - **Approved** — agreed direction; implementation may be partial.
 - **Planned** — desired next work, not a current guarantee.
 - **Deferred** — deliberately postponed.
@@ -28,17 +45,23 @@ Claims in this document use these meanings:
 
 ## 2. Authoritative baseline and identity
 
-Only the completed, re-audited M11 workspace is an acceptable development source. Never initialise work from the older M6 archive or copy M6 files over M11. Older milestone archives are historical evidence and rollback material only.
+Use the owner-designated active source. On 2026-09-08, `C:/kybersand/source`
+has no `.git`: it is a reconstructed `web-demo-m11` blob snapshot based on
+`e2892c54d4bd91aac60971e81c748bd49fbe2adb` plus local changes. The retained
+Documents workspace has an unborn Git repository, no remote/tag/commits, and
+is an incomplete backup of newer work. No current branch, ancestry, or commit
+coverage can be inferred. See the [documentation audit](../audits/2026-09-08-documentation-audit.md).
+Never copy older milestone files over this source to satisfy historical hashes.
 
 Known audited M11 identity:
 
 | Item | Value | Status |
 |---|---|---|
-| M11 source commit | `05ea45fda7bdd7b0150eb86c4922c202e89e08f4` | Current audited source identity |
+| M11 source commit | `05ea45fda7bdd7b0150eb86c4922c202e89e08f4` | Historical audited source identity |
 | Render-race-fix parent | `c644b235fbcb5e085802918c0d6cebec118b6405` | Historical identity |
 | Race-fix patch SHA-256 | `f46101539bfcd86b017c01a738377d647da85894ca81f4a68dec35032ea6e28a` | Provenance evidence |
 | Race-fix stable patch ID | `50aae8…` | Provenance evidence; consult the full manifest before exact comparison |
-| Compatibility ID | `cse-m11__setup-v2__godot-4.7.5b4e0cb0f__rapier2d-0.35.2__godotcpp-101ae380__gdapi-4.7` | Current |
+| Compatibility ID | `cse-m11__setup-v2__godot-4.7.5b4e0cb0f__rapier2d-0.35.2__godotcpp-101ae380__gdapi-4.7` | Historical M11 compatibility label |
 | Godot | `4.7.stable.official.5b4e0cb0f` | Exact pin |
 | `godot-cpp` | commit `101ae38034304346a46ea9ea84ae156d3e860496` | Exact pin |
 | Godot Rapier Physics 2D | `0.35.2` | Exact pin |
@@ -58,18 +81,18 @@ git show --no-patch --decorate --oneline
 git lfs ls-files
 ```
 
-Confirm the current branch, remote privacy, audited tag, Git LFS availability, and whether CI has advanced since this handover. Do not claim a remote commit, CI result, Windows runtime result, or clean-clone result without observing it.
+If Git metadata exists, inspect the current branch, remote, tag, and LFS state. If absent, record that explicitly and compare acquisition/backup manifests. Remote privacy and newer CI require separately observed remote evidence. Do not claim a remote commit, CI result, Windows runtime result, or clean-clone result without observing it.
 
 ## 3. First 30 minutes in a fresh Codex task
 
-1. Open the private `cybersand` repository as the task workspace and confirm it is M11-derived using the identities above.
-2. Read `AGENTS.md`, the root `README.md`, the documentation index, `docs/status-and-roadmap.md`, relevant files under `docs/decisions/`, and the validation/build instructions before editing.
+1. Open the owner-designated workspace and inspect actual identity and backup coverage; do not assume a private checkout exists.
+2. Read `AGENTS.md`, the root `README.md`, the documentation index, `docs/reference/status-and-roadmap.md`, relevant files under `docs/decisions/`, and the validation/build instructions before editing.
 3. Inspect `git status`; preserve unrelated owner changes. Never clean, reset, or replace a dirty tree merely to simplify the task.
-4. Fetch Git LFS objects if the checkout reports pointer files. The migration was prepared with 18 LFS-managed runtime binaries; verify the present count rather than assuming it is unchanged.
+4. Inspect runtime payloads before choosing a platform. Fourteen LFS pointers remain locally as of this audit; restore/build required platform inputs through an actual repository or verified archives before claiming that platform runnable.
 5. Identify the narrowest applicable tests before modifying code. Add an explicit timeout to any runtime or headless Godot command.
 6. State whether the request changes native simulation, the Godot adapter/presentation layer, the Rapier adapter, shaders, packaging, documentation, or more than one boundary.
 7. Preserve the current RAG hierarchy and status vocabulary. Update the relevant status/ADR material when behavior or architectural commitments change.
-8. Make a focused checkpoint commit after validation. Do not publish, tag, release, or change repository visibility unless the owner explicitly asks.
+8. Make a focused checkpoint commit only when an actual checkout is available and within task scope; record missing commit/backup coverage otherwise. Do not publish, tag, release, or change repository visibility unless the owner explicitly asks.
 
 ## 4. Product intent and definition of success
 
@@ -91,9 +114,9 @@ The owner is acting primarily as product architect and evaluator; Codex is expec
 
 ### 5.1 Native simulation owns simulation truth
 
-**Current.** The native C++ simulation is authoritative. Godot owns presentation, input, UI, and adapters. Worker threads must not call Godot APIs or manipulate scene-tree objects.
+**Current.** Native C++ owns authoritative cellular state. Godot owns presentation, input, UI, character control, and adapters; Rapier owns rigid-body state. Native pool workers must not call Godot APIs. The desktop GDScript owner Thread invokes its exclusive GDExtension/value APIs, but must not access live scene-tree/Rapier objects.
 
-The simulation advances on fixed ticks. Rendering and simulation are independently paced; render delta must not become simulation time. Worker completion does not transfer ownership casually: data crossing threads must have an explicit immutable lifetime or an explicit ownership handoff.
+The simulation advances on fixed ticks. Desktop simulation and rendering are independently paced; Web separates publication cadence but waits synchronously for ticks on the main thread; render delta must not become simulation time. Worker completion does not transfer ownership casually: data crossing threads must have an explicit immutable lifetime or an explicit ownership handoff.
 
 ### 5.2 Keep the reusable core independent
 
@@ -125,9 +148,9 @@ Do not reintroduce these without a new evidence-backed ADR:
 
 The owner does **not** require perfect runtime determinism. A stable, plausible illusion at 60 FPS is more valuable than calculating every possible interaction on every fixed tick. It is acceptable to miss or defer a bounded percentage of secondary interactions.
 
-At the same time, strict validation and replay must remain exact. Never use thread timing as a hidden random input. Approximation should be explicit, reversible, and derived from stable coordinate/material/tick hashes where randomness is needed.
+As an **Approved** requirement, strict validation and future replay must remain exact. **Current** exact comparisons cover specified cellular fixtures; no complete replay checkpoint or selectable strict runtime mode is implemented. Never use thread timing as a hidden random input. Approximation should be explicit, reversible, and derived from stable coordinate/material/tick hashes where randomness is needed.
 
-Use fidelity tiers:
+Approved fidelity direction (not a Current selectable policy):
 
 - local/high-interest occupancy and collision: full resolution and high cadence;
 - active material interactions: interest-weighted cadence and bounded budgets;
@@ -150,7 +173,12 @@ An approved direction is to extend the slower cadence already used for fire inte
 
 ## 7. Current simulation and rendering shape
 
-The preferred runtime owner is `CyberSimulationWorker`, which drives an asynchronous fixed-rate simulation and prefers `CyberNativeCellWorld`; a GDScript fallback remains important and is covered by regression checks.
+Desktop uses `CyberSimulationWorker` for asynchronous fixed-rate stepping and
+prefers `CyberNativeCellWorld`; the discrete fallback has regression coverage.
+Web uses synchronous `web_demo_controller.gd` callbacks and requires native
+cells. Pthreads parallelize a native tick, not the Web presentation owner.
+The [threading contract](../architecture/simulation-tick-and-threading.md) records
+different character/body ordering, terrain gating, and tick-failure handling.
 
 The 1024² lab uses dirty RG8 CPU image patches, but `ImageTexture.update()` still uploads the full 2,097,152-byte texture. Therefore the remaining render bridge bottleneck is not necessarily patch construction—it is the lack of a true GPU subregion update. When profiling, distinguish native step time, patch generation/copy time, and the eventual texture upload.
 
@@ -191,11 +219,17 @@ Do not “optimise” this by reusing a buffer whose lifetime is not provably ex
 
 Water's fast fronts, airborne spray, and capillary-like slope film are intentional features liked by the owner. Do not remove them simply because they look less viscous or more energetic than a conventional falling-sand implementation.
 
-Current Water behavior uses write-once destinations, a bottom-up vacancy rule with alternating rows, flow direction, up to 24 cells of contiguous lateral flow, and up to 256 cells of edge lookahead. Earlier short lateral budgets caused unrealistic piles. Viscosity, resting yield, and adhesion should remain separate concepts.
+Those long-range write-once/vacancy rules describe the **desktop fallback**
+Water model, not current native Water. Native Water uses conserved 8-bit
+pairwise mass and viscosity-scaled transfers. Preserve fast fronts and supported
+film as owner intent; see [Water design](../systems/water-design.md) for exact
+source semantics and fallback differences. Viscosity, yield, and adhesion remain separate concepts.
 
-The `C` comparison mode represents calm/coherent Water. The `T` comparison disables the unsupported lateral bridge/film behavior. If these controls change, update both on-screen help and material-lab documentation.
+The `C` comparison mode represents calm/coherent Water. The `T` comparison disables native surface adhesion (the fallback has different film rules). If these controls change, update both on-screen help and material-lab documentation.
 
-Smoke requirements from the design conversation:
+Smoke requirements from the design conversation (**Current** native bounded
+lifetime/crowd-collapse and Fire exclusion; further artistic tuning remains
+**Planned**; see [Smoke/heat/pressure](../systems/smoke-heat-pressure-roadmap.md)):
 
 - Smoke should not burn or host Fire.
 - Excessive Smoke should be culled with a slow, foam-like collapsing-bubble/dissipation effect.
@@ -236,7 +270,11 @@ Useful thematic interaction families include Smoke, Fire, Foam, Water, Oil, Lava
 
 Rigid bodies use a separate occupancy mask and a packed immutable bridge into the simulation, with bounded sweep and reconciliation. Keep that separation: a body is not just another mutable cell species.
 
-Known behavioral concerns include barrels or similar bodies feeling too bouncy, vibrating on hard surfaces, and occasionally crossing one-pixel floors. Planned improvements may include more general shapes and selective CCD/swept contact, but they must remain behind the engine-owned adapter contract.
+Historical owner concerns included bouncing, vibration and one-pixel-floor
+penetration. Bounded translation sweep and per-body cast-shape CCD are now
+Current; the 600-tick fixture permits about 1.32 px transient penetration.
+Generalized shapes, adaptive CCD/substeps and numerical acceptance beyond the
+rectangle fixture remain Planned. See the [coupling contract](../architecture/rigid-body-and-cellular-coupling.md).
 
 Do not solve penetration by making all interactions globally expensive. First preserve exact local collision topology; then use targeted continuous/swept checks, stable resting thresholds, contact damping, bounded reconciliation, and interest-aware cadence for secondary material/body chemistry.
 
@@ -255,7 +293,7 @@ Expected controls at the handover baseline include:
 | `B` | Simulation margin display/control |
 | `L` | Windowed interest versus whole-world simulation |
 | `C` | Calm/coherent Water comparison |
-| `T` | Unsupported lateral film/bridge comparison |
+| `T` | Native surface-adhesion comparison; fallback film behavior differs |
 | `K` | Temporal render/display snapshot cadence or smoothing; do not document it as a simulation-accuracy switch unless implementation changes |
 | `H` | Publication/render rate comparison (30/45/60 while simulation remains 60 Hz) |
 | `G` | Glow |
@@ -264,7 +302,10 @@ Expected controls at the handover baseline include:
 
 The output target was increased to 1920×1080. Verify project settings, presentation checks, aspect behavior, and input mapping together when touching window or viewport code.
 
-Materials were deliberately prioritised before world streaming. Streaming, world serialization, and broad world-scale systems are deferred until the material/interaction foundation is compelling and stable.
+Materials were deliberately prioritised before world streaming. General
+streaming/persistence beyond Current CYSD1 fixed-demo levels and broad
+world-scale systems remain Deferred until the material/interaction foundation
+is compelling and stable.
 
 ## 13. Profiling and observability expectations
 
@@ -278,7 +319,7 @@ Retain or improve metrics for:
 - dirty patch count and bytes;
 - bridge time, upload time, and rejected payload count;
 - rigid-body contacts, displacement, and unresolved contacts;
-- replay hash and strict-mode identity;
+- fixture hash/input identity; strict-mode identity once that Planned mode exists;
 - overruns and accumulated backlog.
 
 Interpret the profiler causally. A full scene may be cheap if interactions settle; fewer pixels can be expensive if many materials continuously react, wake neighbors, generate body contacts, or invalidate render regions. CPU process spikes plus negligible GPU use generally suggest simulation/scheduling/bridge work, main-thread waits, or buffer handling—not shader cost.
@@ -313,7 +354,11 @@ Environment limitations must remain explicit:
 - migration-era workflow presence is not proof that current GitHub Actions passed;
 - a local checkout is not proof of clean-clone reproducibility unless a clean reconstruction was actually tested.
 
-Replay is the engineering oracle. Runtime may use bounded approximations, but strict mode should keep hashes stable across supported worker counts and schedules.
+Exact comparisons are the engineering oracle for the declared fixture inputs.
+`World::state_hash` includes time but omits some external state; settled visual
+content is checked with `content_hash`. CYSD1 reconstructs levels and selected
+body metadata, not future trajectories or Rapier internals. Complete strict
+replay remains **Planned**; see [determinism](../architecture/determinism-and-boundary-transfers.md).
 
 ## 15. Change protocol for Codex
 
@@ -328,7 +373,7 @@ For each substantial change:
 7. Run bounded validation with timeouts and report limitations.
 8. Update the relevant RAG page and ADR/status claim.
 9. Review `git diff`, generated files, LFS pointers, and secrets before committing.
-10. Commit with a focused message; push only within the owner's requested scope.
+10. Commit only in a verified checkout within task scope; report uncommitted work and backup gaps. Push only within the owner's explicit requested scope.
 
 Do not perform destructive cleanup, rewrite validated implementation for aesthetics, silently update dependencies, or regenerate large assets unless the task requires it. Never commit credentials, tokens, cookies, crash dumps, machine paths, disposable caches, or private user data.
 
@@ -350,13 +395,11 @@ Preserve the existing RAG-oriented hierarchy, including `docs/decisions`. Do not
 
 When implementation changes, audit all affected **Current**, **Approved**, **Planned**, **Deferred**, and **Rejected** claims. Contradictory status labels are defects. Keep exact identifiers and search anchors near the concepts they describe: simulation ownership, render bridge, Water flow, approximation tiers, Rapier adapter, dependency pins, validation status, archive compatibility, and known limitations.
 
-This handover itself should live in the repository at a stable operations/onboarding path such as:
-
-```text
-docs/operations/codex-development-handover.md
-```
-
-Add it to the documentation index and `AGENTS.md` reading order, but retain this document's role as a bridge to—not a replacement for—the more focused RAG pages.
+The stable path is `docs/operations/cybersand-codex-development-handover.md`.
+Keep this page in onboarding routes. The canonical
+[documentation-update checklist](../../AGENTS.md#documentation-obligations)
+covers every implementation checkpoint; this handover preserves cross-cutting
+owner intent and points to focused contracts.
 
 ## 18. Autonomous decisions versus owner decisions
 
@@ -381,20 +424,22 @@ When uncertain, present concrete evidence and the smallest set of mutually exclu
 These are directions, not claims of completed implementation:
 
 - true GPU subregion texture uploads to eliminate full-texture RG8 updates;
-- shader-only liquid motion and material-specific highlights;
-- richer GPU-derived condition effects and static-solid palettes;
+- further shader-only liquid motion/highlight tuning (basic material-specific animation is Current);
+- further GPU-derived effects/palette tuning (construction palettes and 42 flair classes are Current);
 - broader budgeted inter-material and pixel↔body passes;
-- bounded slow Smoke collapse/dissipation without Fire hosting;
+- further Smoke appearance tuning (bounded native collapse and Fire exclusion are Current);
 - rigid-body resting stability and targeted one-pixel-floor CCD;
 - conserved distant aggregates after local material behavior is mature;
-- world streaming and serialization later.
+- general world streaming/configuration/replay persistence later (fixed-demo CYSD1 level saves are Current).
 
-GPU authority for terrain/material simulation, GPU wind/pressure authority, and broad spatial coarsening remain deferred. GPU-derived visual wind, heat haze, lighting, distant gas appearance, spray, and debris are much safer experimentation areas.
+GPU field experiments remain Deferred; current GPU terrain authority and broad
+local occupancy coarsening are Rejected under existing ADRs. Revisit only through
+an evidence-backed decision. GPU-derived visual wind, heat haze, lighting, distant gas appearance, spray, and debris are much safer experimentation areas.
 
 ## 20. Common traps
 
-- **Starting from an archive because it is convenient:** only the GitHub M11-derived repository is authoritative now.
-- **Calling runtime approximation nondeterministic and therefore untestable:** keep strict replay exact; make runtime sampling stable and explicit.
+- **Assuming a checkout or backup exists:** inspect the owner-designated source and compare actual commits/manifests before relying on a rollback point.
+- **Calling runtime approximation untestable:** preserve exact fixture comparisons and future strict-replay requirements; make runtime sampling stable and explicit.
 - **Treating a Godot process-time spike as GPU cost:** inspect simulation, bridge, upload, waits, and backlog independently.
 - **Reusing patch buffers too aggressively:** immutable payload lifetime is a crash-safety invariant.
 - **Making all materials run all reactions every tick:** use bounded cadence and passes for secondary effects.
@@ -406,15 +451,15 @@ GPU authority for terrain/material simulation, GPU wind/pressure authority, and 
 
 ## 21. Starter prompt for a new Codex task
 
-Use or adapt this prompt after opening the private repository:
+Use or adapt this prompt in the active workspace:
 
-> Work from the current private CyberSand repository only. Read `AGENTS.md`, the documentation index, `docs/operations/codex-development-handover.md`, the relevant RAG pages, and applicable ADRs before editing. Confirm the checkout descends from audited M11, report HEAD/tag/status/LFS state, and preserve unrelated changes. Treat native C++ as simulation authority, Godot as presentation/adapter code, Rapier as a replaceable backend, and immutable render-patch payload lifetime as a crash-safety invariant. Runtime may use explicit bounded approximation, while strict validation/replay remains exact. Implement the requested change narrowly, update focused tests and documentation status claims, run commands with timeouts, and report every untested platform or visual gap without implying it passed.
+> Work from the owner-designated CyberSand workspace. Read `AGENTS.md`, the documentation index, `docs/operations/cybersand-codex-development-handover.md`, the relevant RAG pages, and applicable ADRs before editing. Inspect actual Git metadata, report HEAD/tag/status/LFS or their absence, compare local changes and backups, and preserve unrelated changes. Treat native C++ as simulation authority, Godot as presentation/adapter code, Rapier as a replaceable backend, and immutable render-patch payload lifetime as a crash-safety invariant. Runtime may use explicit bounded approximation; exact fixture comparison is Current, while complete strict replay is a Planned requirement. Implement the requested change narrowly, update focused tests and documentation status claims, run commands with timeouts, and report every untested platform or visual gap without implying it passed.
 
 ## 22. Final handover checklist
 
 - [ ] Current checkout and remote are verified rather than assumed.
-- [ ] Audited M11 ancestry and dependency pins match.
-- [ ] LFS objects are materialised, not pointer text.
+- [ ] Actual source identity, ancestry evidence or its absence, local deltas, backup coverage, and dependency pins are recorded.
+- [ ] Required platform LFS objects are materialised; remaining pointers and platform gaps are listed.
 - [ ] Relevant RAG pages and ADRs were read.
 - [ ] Current/Approved/Planned/Deferred/Rejected are not conflated.
 - [ ] Native/Godot/Rapier ownership boundaries are preserved.
@@ -423,6 +468,5 @@ Use or adapt this prompt after opening the private repository:
 - [ ] Liked Water, Foam, Oil, and material-flair behavior is not accidentally removed.
 - [ ] New visual work prefers GPU derivation over CPU state and uploads.
 - [ ] Tests use timeouts and limitations are reported honestly.
-- [ ] Docs, provenance, licences, hashes, and dependency pins remain current.
+- [ ] Affected docs and evidence follow the canonical documentation-update checklist; historical hashes/results remain unchanged and correctly scoped.
 - [ ] No credentials, caches, logs, dumps, or machine-specific files are committed.
-

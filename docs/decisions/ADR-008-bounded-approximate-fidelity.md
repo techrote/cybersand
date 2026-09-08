@@ -4,20 +4,27 @@ status: Approved design
 scope: Gameplay fidelity tiers, temporal sampling, probabilistic rules, strict replay mode, render decoupling, and spatial coarsening limits
 keywords: [ADR, approximation, probabilistic simulation, temporal LOD, dynamic resolution, async rendering, frame budget]
 related-documents: [../operations/profiling-observability-and-performance.md, ../systems/activity-dirty-regions-and-waking.md, ../architecture/simulation-tick-and-threading.md]
-last-reviewed: 2026-08-28
-implementation-state: The preferred Godot runtime now uses full-rate native active cells, activity sleeping, interest filtering, and optional temporal snapshot interpolation; generalized secondary-field/distant-world fidelity controls remain Planned.
+last-reviewed: 2026-09-08
+implementation-state: Native eligible transport is full-rate with fixed staggered secondary lanes, sleeping and interest filtering. Desktop has asynchronous snapshots; Web synchronously waits for native ticks. General strict-mode and adaptive fidelity controls remain Planned.
 ---
 
 # ADR-008: Bounded approximate fidelity under load
+
+Evidence scope (2026-09-08): **Current** below describes inspected source in the
+reconstructed local snapshot, not a verified Git HEAD or an all-platform test pass.
+See the [documentation audit](../audits/2026-09-08-documentation-audit.md) for
+source identity and dated validation; [M11 audit records](../audits/m11/README.md)
+retain historical scope. **Approved design** means Approved direction; Planned,
+Deferred, and Rejected statements do not claim implementation.
 
 ## At a glance
 
 - Decision: 60 FPS gameplay and bounded simulation work take priority over universal bit-exact replay.
 - Decision: keep full-resolution material occupancy around gameplay interest while reducing update frequency elsewhere.
 - Decision: probabilistic and sampled rules use explicit rates and preferably stateless seeded choices.
-- Decision: strict replay remains a selectable validation/debug contract for the Current native solver.
-- **Current**: rendering and CyberSimulationWorker advance independently; that worker selects native World or the GDScript fallback once at startup.
-- **Current**: native active material runs at full cadence; quiet blocks sleep and scheduling cores outside the interest window are rejected.
+- Approved direction: retain strict validation/debug execution. Current native fixtures compare exact hashes; no general selectable strict-mode switch exists.
+- **Current** desktop: rendering and CyberSimulationWorker advance independently. Web uses synchronous main-thread native ticks and requires the extension.
+- **Current**: eligible native transport runs each tick; secondary lifecycle/chemistry/thermal/ignition uses fixed spatially staggered 2/4/8/120-tick lanes. Quiet blocks sleep; outside-interest cores are rejected.
 - **Current**: presentation may blend immutable snapshots, but authoritative collision and material interactions are not interpolated or delegated to Rapier fluids.
 - **Planned**: coarse secondary fields, distant macro-state, fidelity hysteresis, and backend-specific quality controls.
 - **Explicitly rejected**: visible checkerboard holes or naive 2×2 merging in the local gameplay material grid.
@@ -63,13 +70,15 @@ systematic empty scanlines.
 
 ## Current Godot policy
 
-The Linux x86_64 proof retains the exact material grid and executes eligible
-native activity at 60 Hz. A 128×128 storage chunk contains 32×32 activity
+The native runtime retains full-resolution material occupancy and advances
+fixed tick quanta at a nominal 60 Hz target. Eligible transport runs each tick;
+secondary lanes are part of the compiled deterministic policy, not an
+overload-triggered mode. A 128×128 storage chunk contains 32×32 activity
 blocks; 64×64 scheduling cores are dispatched in four non-overlapping parity
 phases. Quiet activity sleeps, and cores outside the camera plus configured
 margin remain unscheduled until the region returns.
 
-The `K` toggle controls only temporal blending between immutable R8 snapshots.
+The `K` toggle controls only temporal blending between immutable RG8 material/condition snapshots.
 It does not lower the cellular rate, merge visible cells, relax solid occupancy,
 or substitute Rapier/Salva fluids. The older GDScript fallback retains a bounded
 sparse ballistic mode, but it is not the production performance path.
@@ -98,8 +107,9 @@ replay further, but data races and completion-order ownership remain forbidden.
 
 ## Renderer and simulation rate
 
-The renderer may show the newest immutable snapshot repeatedly while cellular
-work continues asynchronously. Simulation still advances in fixed quanta; it
+The desktop renderer may show the newest immutable snapshot while cellular
+work continues asynchronously. Web has separate publication cadence, but its
+main-thread native tick waits and can block rendering. Simulation still advances in fixed quanta; it
 does not use render delta as material-rule time. Presentation may interpolate
 entities and shader fields, but must not invent authoritative collision.
 
@@ -155,11 +165,20 @@ render delta never becomes the material solver's time step.
 
 ## Reversal or migration
 
-Any approximation can be disabled in strict mode. If a policy causes gameplay
+Approved future policies should be independently reversible and define a
+strict comparison path. Current fixed secondary lanes have no global disable
+switch; do not claim that all approximations can presently be disabled. If a policy causes gameplay
 artifacts, retain the metrics and fixture, revert that policy independently,
 and choose a different tier or rule-specific approximation.
 
 ## Validation
+
+Current sources: [native temporal lanes](../../native/src/world.cpp),
+[desktop worker](../../godot/scripts/simulation_worker.gd),
+[Web owner](../../godot/scripts/web_demo_controller.gd), and
+[fallback](../../godot/scripts/cell_world.gd). The following are acceptance
+requirements, not evidence for an implemented general fidelity controller.
+See [replay/hash limits](../architecture/determinism-and-boundary-transfers.md#replay-state-coverage).
 
 - entering a large awake region does not create alternating empty scanlines;
 - the immediate interaction neighbourhood remains full cadence under load;

@@ -26,8 +26,17 @@ var last_hash: String = ""
 var test_enabled: bool = false
 var test_callback: JavaScriptObject
 var test_clock: float = 0.0
+var worker_probe: Dictionary = {}
+var rapier_test: Dictionary = {}
+var benchmark_running: bool = false
+var benchmark_cancelled: bool = false
+var benchmark_result: Dictionary = {}
+var logical_threads: int = 1
 
 func _ready() -> void:
+	if OS.has_feature("web") and OS.has_feature("threads") and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('test') === '1' && new URLSearchParams(location.search).get('parity') === '1'", true)):
+		worker_probe = await CyberWebWorkerProbe.run(get_tree())
+		print("WEB_WORKER_PARITY ", JSON.stringify(worker_probe))
 	$Layout/World.custom_minimum_size.y = 180
 	$Layout/Status.custom_minimum_size.y = 38
 	$Layout/Status.add_theme_font_size_override("font_size", 14)
@@ -38,9 +47,12 @@ func _ready() -> void:
 		body.freeze = true
 		body.collision_layer = 0
 		body.collision_mask = 0
-	ProjectSettings.set_setting("cybersand/native_worker_threads", 1)
+	# The staged export chooses a bounded pool; compatibility stays serial.
+	if OS.has_feature("web") and not OS.has_feature("threads"):
+		ProjectSettings.set_setting("cybersand/native_worker_threads", 1)
 	Engine.max_physics_steps_per_frame = 2
 	if CyberWebCapabilities.native_available():
+		logical_threads = CyberWebCapabilities.reported_logical_threads()
 		native_world = ClassDB.instantiate(&"CyberNativeCellWorld")
 		demo_bridge = ClassDB.instantiate(&"CyberDemoBridge")
 		var probe: Dictionary = CyberWebCapabilities.rapier_probe()
@@ -74,9 +86,15 @@ func _ready() -> void:
 	ready_to_play = true
 	select_demo(demo_id, false)
 	ui.capability.text = CyberWebCapabilities.status(native_world, rapier_available)
+	if OS.has_feature("threads"):
+		ui.capability.text += " · AUTO (%d logical threads)" % logical_threads
 	ui.message(rapier_reason if not rapier_available else "")
 	_init_browser_test()
 	print("WEB_DEMO_READY ", ui.capability.text)
+	if test_enabled and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('rapier') === '1'", true)):
+		rapier_test = await CyberWebRapierProbe.run(self)
+		print("WEB_RAPIER_TEST ", JSON.stringify(rapier_test))
+		_publish_test_state()
 
 func _exit_tree() -> void:
 	rapier_bridge.shutdown()
@@ -128,7 +146,7 @@ func _physics_process(_delta: float) -> void:
 	if paused:
 		return
 	if rapier_bridge.is_initialized():
-		if rapier_bridge.pending_hard_surface_chunk_count() > 0:
+		if rapier_bridge.pending_hard_surface_chunks() > 0:
 			return
 		rapier_bridge.apply_cellular_results(int(native_world.get_tick_index()), native_world.rigid_body_results())
 		rapier_bridge.step()
@@ -162,7 +180,7 @@ func _paint_pointer() -> void:
 		native_world.paint_disc(point.x, point.y, brush_radius, 0, 0)
 		paint_commands += 1
 	elif Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		native_world.emit_disc(point.x, point.y, brush_radius, selected_material_id, 1 if coherent_emission_enabled else 0)
+		native_world.emit_disc(point.x, point.y, brush_radius, selected_material_id, 1 if coherent_liquid_emission else 0)
 		paint_commands += 1
 
 func _publish_world() -> void:
@@ -178,7 +196,7 @@ func _publish_world() -> void:
 		last_render_was_full_refresh = bool(packet.get("full_refresh", false))
 	else:
 		force_publication = true
-		render_patch_rejection_count += 1
+		rejected_render_snapshot_count += 1
 
 func _sync_web_colliders() -> void:
 	if not rapier_bridge.is_initialized():
@@ -212,7 +230,7 @@ func _activate_physics(active: bool, saved_bodies: Array = []) -> void:
 		_activate_physics(false)
 		return
 	for i: int in range(3):
-		var position: Vector2 = Vector2([124, 244, 384][i], 90 - i * 15)
+		var position: Vector2 = Vector2([124, 244, 384][i], 90)
 		var rotation: float = 0.0
 		if i < saved_bodies.size():
 			position = Vector2(saved_bodies[i][0], saved_bodies[i][1])
@@ -269,13 +287,17 @@ func update_status() -> void:
 	if native_world == null:
 		return
 	$Layout/Title.text = "CYBERSAND / " + CyberDemoWorlds.title(demo_id).to_upper()
-	var text: String = "%s / %s / %s" % [material_name(selected_material_id), "PAUSED" if paused else "60 TPS target", "CALM" if coherent_emission_enabled else "SPRAY"]
+	var text: String = "%s / %s / %s" % [material_name(selected_material_id), "PAUSED" if paused else "60 TPS target", "CALM" if coherent_liquid_emission else "SPRAY"]
 	if debug_stats_visible:
 		text += "   |   tick %d / %.2f ms native / %.2f ms upload / %d active blocks / %d patches" % [int(native_world.get_tick_index()), float(native_world.get_simulation_time_ms()), upload_time_ms, int(native_world.get_active_blocks_last_tick()), last_render_patch_count]
 	status_label.text = text
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if not event is InputEventKey or not event.pressed or event.echo:
+		return
+	if benchmark_running:
+		if event.keycode == KEY_ESCAPE:
+			benchmark_cancelled = true
 		return
 	if event.keycode == KEY_ESCAPE:
 		if ui.open:
@@ -300,7 +322,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		KEY_F:
 			camera_follow_enabled = not camera_follow_enabled
 		KEY_C:
-			coherent_emission_enabled = not coherent_emission_enabled
+			coherent_liquid_emission = not coherent_liquid_emission
 		KEY_T:
 			liquid_surface_adhesion_enabled = not liquid_surface_adhesion_enabled
 			native_world.set_liquid_surface_adhesion_enabled(liquid_surface_adhesion_enabled)
@@ -321,7 +343,7 @@ func _metadata() -> Dictionary:
 		var pose: Transform2D = PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_TRANSFORM)
 		var velocity: Vector2 = PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
 		bodies.append([pose.origin.x, pose.origin.y, pose.get_rotation(), velocity.x, velocity.y, float(PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY)), bool(PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_SLEEPING))])
-	return {"demo": demo_id, "player": [player.position.x, player.position.y, player.velocity.x, player.velocity.y], "material": selected_material_id, "quality": quality, "coherent": coherent_emission_enabled, "adhesion": liquid_surface_adhesion_enabled, "glow": glow_enabled, "bodies": bodies}
+	return {"demo": demo_id, "player": [player.position.x, player.position.y, player.velocity.x, player.velocity.y], "material": selected_material_id, "quality": quality, "coherent": coherent_liquid_emission, "adhesion": liquid_surface_adhesion_enabled, "glow": glow_enabled, "bodies": bodies}
 
 func _encode_current() -> Dictionary:
 	var world: PackedByteArray = demo_bridge.export_level(native_world)
@@ -361,7 +383,7 @@ func _import_decoded(decoded: Dictionary) -> void:
 	player.grounded = false
 	character_position = player.position
 	selected_material_id = int(metadata.material)
-	coherent_emission_enabled = bool(metadata.coherent)
+	coherent_liquid_emission = bool(metadata.coherent)
 	liquid_surface_adhesion_enabled = bool(metadata.adhesion)
 	glow_enabled = bool(metadata.glow)
 	native_world.set_liquid_surface_adhesion_enabled(liquid_surface_adhesion_enabled)
@@ -416,7 +438,14 @@ func _init_browser_test() -> void:
 	test_enabled = bool(JavaScriptBridge.eval("new URLSearchParams(window.location.search).get('test') === '1'", true))
 	if not test_enabled:
 		return
+	# Exercise the side module's actual C++ catch path without changing the level.
+	var revision_before: int = int(native_world.get_revision())
+	var rejected: bool = not demo_bridge.import_level(native_world, PackedByteArray())
+	var exception_probe: bool = rejected and str(demo_bridge.get_last_error()) == "Wrong world payload length" and int(native_world.get_revision()) == revision_before
+	print("WEB_CPP_EXCEPTION_PROBE ", exception_probe)
 	JavaScriptBridge.eval("window.cybersandTest = {state: {}, invoke: null};", true)
+	# Mirror the existing opt-in diagnostics for read-only DOM test tools.
+	JavaScriptBridge.eval("const stateNode = document.createElement('script'); stateNode.id = 'cybersand-test-state'; stateNode.type = 'application/json'; document.body.appendChild(stateNode); console.log('WEB_TEST_BROWSER ' + navigator.userAgent);", true)
 	test_callback = JavaScriptBridge.create_callback(_test_command)
 	var window: JavaScriptObject = JavaScriptBridge.get_interface("window")
 	window.cybersandTest.invoke = test_callback
@@ -445,5 +474,44 @@ func _publish_test_state() -> void:
 	for i: int in range(rigid_bodies.size()):
 		var pose: Transform2D = rapier_bridge.body_transform(i)
 		body_positions.append([pose.origin.x, pose.origin.y])
-	var state: Dictionary = {"ready": ready_to_play, "demo": demo_id, "menu": ui.open, "tick": int(native_world.get_tick_index()), "moves": total_moves, "player": [player.position.x, player.position.y], "paused": paused, "paint_commands": paint_commands, "rapier": rapier_available, "rapier_reason": rapier_reason, "bodies": body_positions, "imports": imported_count, "error": last_save_error, "text": export_text, "hash": last_hash, "buttons": ui.test_rects(), "view": [content.position.x, content.position.y, content.size.x, content.size.y], "logical": [current_view_size.x, current_view_size.y], "camera": [camera_origin.x, camera_origin.y], "probe": int(native_world.material_at(420, 25)), "native_ms": float(native_world.get_simulation_time_ms()), "upload_ms": upload_time_ms, "render_rejections": render_patch_rejection_count, "local_slot": FileAccess.file_exists(CyberDemoSaveCodec.LOCAL_PATH)}
-	JavaScriptBridge.eval("window.cybersandTest.state = " + JSON.stringify(state) + ";", true)
+	var state: Dictionary = {"ready": ready_to_play, "demo": demo_id, "menu": ui.open, "tick": int(native_world.get_tick_index()), "moves": total_moves, "player": [player.position.x, player.position.y], "paused": paused, "paint_commands": paint_commands, "rapier": rapier_available, "rapier_reason": rapier_reason, "bodies": body_positions, "imports": imported_count, "error": last_save_error, "text": export_text, "hash": last_hash, "buttons": ui.test_rects(), "view": [content.position.x, content.position.y, content.size.x, content.size.y], "logical": [current_view_size.x, current_view_size.y], "camera": [camera_origin.x, camera_origin.y], "probe": int(native_world.material_at(420, 25)), "native_ms": float(native_world.get_simulation_time_ms()), "upload_ms": upload_time_ms, "render_rejections": rejected_render_snapshot_count, "local_slot": FileAccess.file_exists(CyberDemoSaveCodec.LOCAL_PATH)}
+	state["workers"] = int(native_world.get_worker_threads())
+	state["worker_probe"] = worker_probe
+	state["rapier_test"] = rapier_test
+	state["rapier_steps"] = rapier_bridge.manual_step_count()
+	state["collider_pending"] = rapier_bridge.pending_hard_surface_chunks()
+	state["collider_shapes"] = rapier_bridge.hard_surface_shape_count()
+	state["logical_threads"] = logical_threads
+	state["benchmark_running"] = benchmark_running
+	state["benchmark"] = benchmark_result
+	JavaScriptBridge.eval("window.cybersandTest.state = " + JSON.stringify(state) + "; document.getElementById('cybersand-test-state').textContent = JSON.stringify(window.cybersandTest.state);", true)
+
+func start_benchmark(stress: bool) -> void:
+	if benchmark_running or not ready_to_play:
+		return
+	ui.show_page("benchmark")
+	benchmark_running = true
+	benchmark_cancelled = false
+	ui.set_benchmark_busy(true)
+	ui.benchmark_text.text = "Starting reference test…"
+	benchmark_result = await CyberWorkerBenchmark.run(get_tree(), stress, int(native_world.get_worker_threads()), func(text: String) -> void: ui.benchmark_text.text = text, func() -> bool: return benchmark_cancelled)
+	benchmark_running = false
+	ui.set_benchmark_busy(false)
+	var lines: PackedStringArray = PackedStringArray()
+	lines.append("%s · %d reported logical threads" % ["Stress test" if stress else "Benchmark", logical_threads])
+	lines.append("Separate reference worlds; your game is unchanged.")
+	lines.append("Native tick: mean / p95 / max (ms)")
+	for row: Dictionary in benchmark_result.get("rows", []):
+		lines.append("%d workers · %d×%d · %.2f / %.2f / %.2f" % [row.workers, row.side, row.side, row.native_ms.mean, row.native_ms.p95, row.native_ms.max])
+		lines.append("  Test frame interval p95: %.2f ms · %d moves" % [row.frame_interval_ms.p95, row.moves])
+	lines.append("Completed" if benchmark_result.get("ok", false) else str(benchmark_result.get("error", "Level parity failed")))
+	if not stress and benchmark_result.get("parity") == true:
+		lines.append("Final level hashes match across worker counts.")
+	lines.append("Frame intervals describe this test, not gameplay FPS.")
+	ui.benchmark_text.text = "\n".join(lines)
+	if benchmark_result.get("ok", false):
+		var file: FileAccess = FileAccess.open("user://last_worker_benchmark.json", FileAccess.WRITE)
+		if file != null:
+			file.store_string(JSON.stringify(benchmark_result, "  "))
+			file.close()
+	print("WORKER_BENCHMARK ", JSON.stringify(benchmark_result))

@@ -4,21 +4,29 @@ status: Approved design
 scope: Current finite/sparse worlds, stored-loaded-active-rendered distinctions, camera-centred policy, margins, serialization, capacity, panning, and safe expansion
 keywords: [WorldStorage, interest region, camera window, 10 percent, 20 percent, storage chunk, active chunk budget, serialization]
 related-documents: [../architecture/chunk-tile-and-buffer-model.md, ../operations/configuration-and-capacity-budgets.md, ../decisions/ADR-004-interest-region-and-reconfiguration.md]
-last-reviewed: 2026-08-27
-implementation-state: Sparse native chunks, activity/work/event capacities, explicit region/optional-field reservation, and separately bounded immutable snapshot slots are Current; camera policy, streaming, serialization, and safe live expansion remain unimplemented.
+last-reviewed: 2026-09-08
+implementation-state: Sparse native chunks, bounded capacities, finite camera-interest filtering, and CYSD1 level reconstruction are Current; sparse streaming, exact replay persistence, and safe live capacity expansion remain Planned.
 ---
 
 # World storage and interest region
+
+Source review: 2026-09-08 local reconstructed snapshot, not a verified Git HEAD.
+See the [documentation audit](../audits/2026-09-08-documentation-audit.md) for
+identity and dated platform evidence. Current storage claims refer to
+[World](../../native/include/cybersand/world.hpp) and its
+[implementation](../../native/src/world.cpp); the finite adapter and level
+boundary are [CyberNativeCellWorld](../../godot/native_extension/cyber_native_cell_world.cpp)
+and [CyberDemoBridge](../../godot/native_extension/cyber_demo_bridge.hpp).
 
 ## At a glance
 
 - Purpose: allow world size and simulated area to grow independently.
 - **Current**: the material lab simulates inside a finite 1024×1024 world.
 - **Current**: render view and simulation margins are independently selectable at runtime.
-- **Current**, Linux and Windows x86_64: native World supports sparse signed-coordinate chunks, explicit capacity limits, region preallocation, and a Godot GDExtension adapter.
+- **Current** source: native World supports sparse signed-coordinate chunks, explicit capacity limits, region preallocation, and native/Web Godot adapters; a declared platform binary does not establish runtime validation.
 - **Approved design**: interest dimensions and active-chunk capacity are serializable configuration values, not permanent limits.
 - **Approved design**: exceeding reserved capacity triggers diagnosed safe reconfiguration at a tick/loading boundary.
-- **Planned**: WorldStorage serialization, loading, and migration.
+- **Current**: CYSD1 reconstructs the finite Web level. **Planned**: general WorldStorage persistence, streamed loading, schema migration, and exact replay checkpoints.
 
 ## Search anchors
 
@@ -26,7 +34,11 @@ change interest region size, visible simulation buffer, larger world panning, ac
 
 ## Current Godot world
 
-Repository evidence:
+Desktop source: [main.gd](../../godot/scripts/main.gd) and
+[cell_world.gd](../../godot/scripts/cell_world.gd). Web instead uses
+[web_demo_controller.gd](../../godot/scripts/web_demo_controller.gd), whose
+three quality choices pair 320×180, 480×270, and 640×360 with 30/45/60 Hz
+publication. Both remain finite 1024² adapters.
 
 - CyberCellWorld.WORLD_WIDTH is 1024.
 - CyberCellWorld.WORLD_HEIGHT is 1024.
@@ -34,7 +46,7 @@ Repository evidence:
 - `V` cycles 320×180, 480×270, 640×360, and 960×540 views.
 - `B` independently cycles 0×0, 32×36, 128×128, and 256×256 per-side margins.
 - set_simulation_window limits active processing.
-- the shader samples a camera-positioned portion of the full R8 world texture.
+- the shader samples a camera-positioned portion of the full RG8 native world texture (R8 for the GDScript fallback).
 
 These preset tables are compile-time GDScript constants selected at runtime.
 They are not serialized capacity configuration and do not implement arbitrary
@@ -54,7 +66,7 @@ cybersand::World uses:
 - bounded accepted explosion-event capacity and maximum radius;
 - explicit material and optional-temperature region reservation.
 
-It has no serializer, streaming/camera policy, or safe live resize protocol.
+World has no general sparse-world serializer, streaming manager, or safe live resize protocol.
 `CyberNativeCellWorld` forwards the finite proof's camera window to World, but
 `reserve_region` remains caller-directed preparation rather than a
 camera-following streaming manager.
@@ -131,9 +143,29 @@ The exact request API, pause behavior, and failure result are not approved.
 - whether multiple cameras or gameplay interest sources are supported;
 - render-region margin separate from simulation margin.
 
-## Serialization
+## Level reconstruction and planned WorldStorage serialization
 
-Status: **Planned**.
+**Current**, finite demo scope: [demo_snapshot.hpp](../../native/include/cybersand/demo_snapshot.hpp)
+copies material ID, `state_a`, `state_b`, and signed temperature into five bytes
+per cell. [demo_save_codec.gd](../../godot/scripts/demo_save_codec.gd) wraps that
+1024×1024 payload and validated JSON metadata in version-1 CYSD1 using DEFLATE,
+SHA-256, and Base64 for text export. The Web controller also records player,
+options, and optional Physics Pit body values. Native payload validation and
+candidate allocation precede replacement of the cellular world.
+
+Export requires exclusive World ownership: `copy_level()` temporarily clears
+the derived transient obstacle mask to sample stored-cell temperatures, and the
+caller must rebuild body occupancy before the next cellular tick. It is not a
+concurrent read-only World operation. Payload validation checks length and
+material IDs; a complete per-material state-byte validity schema is not defined.
+
+This is a level reconstruction: tick/epoch, activity/sleep history, queued
+explosions, and Rapier solver/contact state are not restored. Byte-identical
+level re-export is not proof of identical future simulation. Current fixture
+scope is in [test_web_demo_setup.gd](../../godot/tests/test_web_demo_setup.gd)
+and the [Rapier runbook](../operations/rapier-2d-migration-runbook.md).
+
+**Planned**, general persistence scope:
 
 WorldStorage must eventually serialize:
 
@@ -145,7 +177,8 @@ WorldStorage must eventually serialize:
 - pending authoritative state that survives a tick boundary;
 - format version and migration metadata.
 
-No file format, compression, version scheme, asynchronous I/O contract, or save migration implementation exists.
+CYSD1 does not implement this general sparse-world schema, asynchronous I/O,
+migration, safe live capacity resizing, or an exact replay continuation format.
 
 ## Large coordinates and presentation
 

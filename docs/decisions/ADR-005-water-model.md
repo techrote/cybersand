@@ -4,11 +4,18 @@ status: Current
 scope: Stable conserved liquid invariants, phased pairwise candidate, buffered flux fallback, shared-grid authority, rendering-only dithering, and benchmark gate
 keywords: [ADR, water, fixed-point mass, pairwise transfer, flux, conservation, phased in-place, stable rest]
 related-documents: [../systems/water-design.md, ADR-002-double-buffered-tile-jobs.md, ../operations/testing-validation-and-replay.md]
-last-reviewed: 2026-08-28
+last-reviewed: 2026-09-08
 implementation-state: Preferred Godot runtime uses native World's phased conserved 8-bit pairwise Water, normalized viscosity, coherent emission delay, optional adhesion, and stable render-only dithering; discrete Water remains only in the GDScript platform fallback.
 ---
 
 # ADR-005: Conserved fixed-point water semantics
+
+Evidence scope (2026-09-08): **Current** below describes inspected source in the
+reconstructed local snapshot, not a verified Git HEAD or an all-platform test pass.
+See the [documentation audit](../audits/2026-09-08-documentation-audit.md) for
+source identity and dated validation; [M11 audit records](../audits/m11/README.md)
+retain historical scope. **Approved design** means Approved direction; Planned,
+Deferred, and Rejected statements do not claim implementation.
 
 ## At a glance
 
@@ -27,9 +34,10 @@ in-place conserved water, pairwise fixed point transfer, buffered liquid fallbac
 ## Status
 
 **Current** for native phased Water and corrected discrete Godot leveling;
-**Planned** for generalized reaction accounting, serialization, and the
-optional buffered fallback. Native/Godot integration is **Current** on bundled
-Linux and Windows x86_64.
+**Planned** for generalized reaction accounting, sparse-world/replay persistence
+and the optional buffered fallback. Native integration also runs in both Web
+profiles. CYSD1 currently preserves the finite level's compact Water state; it
+does not preserve exact continuation.
 
 ## Context
 
@@ -72,7 +80,7 @@ phase-owned boundary writes.
 ### Retained candidate: buffered flux
 
 - Read one immutable liquid state, compute bounded flux, resolve conflicts deterministically, and commit a next liquid state.
-- Use this as a behavior comparison, rollback path, and option if pairwise order bias or phase restrictions fail acceptance.
+- If implemented, use it as a behavior comparison or alternative when pairwise bias fails acceptance; current rollback uses existing serial/one-worker paths.
 - Buffer only active liquid state; never double-buffer the entire stored world.
 
 ### Decision gate
@@ -90,7 +98,7 @@ Cross-backend byte-identical states are not required unless both intentionally i
 
 - Water can share the leading phased scheduler without forcing grid-wide copy traffic.
 - Conservation remains locally and globally testable.
-- Buffered flux remains available if pairwise traversal creates unacceptable artifacts.
+- Buffered flux remains a design candidate if pairwise traversal creates unacceptable artifacts; it has no implementation to select today.
 - Stable rest supports activity sleeping and dirty-work elimination.
 
 ### Negative
@@ -143,10 +151,16 @@ paste/slush descriptor whose intended behavior includes a stable slope.
   kernel write ownership; long serial dispersion is not a native radius claim.
 - Keep the phased native implementation behind the selectable backend; add buffered liquid only if required.
 - Do not migrate saves until representation and versioning are approved.
-- If the pairwise candidate fails behavior or performance acceptance, retain buffered liquid without reverting the broader phased cellular scheduler.
+- If pairwise behavior fails acceptance, a buffered liquid field may be implemented and tested independently of the broader phased scheduler.
 - If buffering fails cost acceptance, keep the validated one-worker pairwise semantics while scheduler work continues.
 
 ## Validation
+
+The criteria below are scoped by the actual fixture, not an exhaustive pass
+claim. Current sources: [Water execution](../../native/src/world.cpp),
+[native fixtures](../../native/tests/test_world.cpp),
+[fallback fixture](../../godot/tests/test_cell_world.gd), and
+[level payload](../../native/include/cybersand/demo_snapshot.hpp).
 
 - exact fixed-point conservation in every closed fixture;
 - stable settled hash over a specified observation window;

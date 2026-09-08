@@ -4,16 +4,23 @@ status: Approved design
 scope: Camera-centred simulation policy, serializable dimensions and capacities, initial reservations, expansion transition, diagnostics, and non-limits
 keywords: [ADR, interest region, capacity budget, active chunks, reconfiguration, 10 percent, 20 percent]
 related-documents: [../systems/world-storage-and-interest-region.md, ../operations/configuration-and-capacity-budgets.md, ADR-002-double-buffered-tile-jobs.md]
-last-reviewed: 2026-08-27
+last-reviewed: 2026-09-08
 implementation-state: Native construction/event capacities, explicit region reservation, allocation observations/failure, and snapshot slot/patch/byte capacities are Current; camera policy serialization and safe live reconfiguration are not implemented.
 ---
 
 # ADR-004: Interest region and safe reconfiguration
 
+Evidence scope (2026-09-08): **Current** below describes inspected source in the
+reconstructed local snapshot, not a verified Git HEAD or an all-platform test pass.
+See the [documentation audit](../audits/2026-09-08-documentation-audit.md) for
+source identity and dated validation; [M11 audit records](../audits/m11/README.md)
+retain historical scope. **Approved design** means Approved direction; Planned,
+Deferred, and Rejected statements do not claim implementation.
+
 ## At a glance
 
 - Decision: simulated interest size and capacity budgets are explicit, serializable, observable configuration.
-- Initial policy uses the visible region plus 10% horizontal and 20% vertical margins.
+- Approved initial policy describes 10% horizontal and 20% vertical margins; exact interpretation is unresolved. Current desktop presets and Web quality margins are explicit pixel pairs.
 - Initial buffers may reserve for the current and 2× target fixtures.
 - Reservations are not permanent world-size or simulated-area limits.
 - Larger requests trigger a diagnosed tick-boundary or loading reconfiguration.
@@ -32,8 +39,14 @@ Current Godot constants implement a finite camera proof. Native World and
 `cybersand_config_v2` now expose construction-time chunk/work capacities,
 event queue/radius, region reservation, resident bytes, and tick allocation
 events. RenderSnapshotExchange takes explicit slot/patch/byte capacities and
-reports exact requirements and high-water. No persistent schema or
-pause/drain/resize/publish transition exists.
+reports exact requirements and high-water. CYSD1 persists a finite level and selected UI options; no generalized capacity
+configuration schema or pause/drain/resize/publish transition exists.
+
+Current [desktop presets](../../godot/scripts/main.gd) independently select view
+and pixel margins. [Web quality profiles](../../godot/scripts/web_demo_controller.gd)
+select 320×180 with 16×18, 480×270 with 32×36, or 640×360 with 64×72
+per-side margins. These do not implement one universal 10%/20% formula.
+Do not silently reinterpret the Approved percentages as implemented policy.
 
 ## Context
 
@@ -111,6 +124,12 @@ Individual capacity changes are reversible by loading a previous compatible conf
 The architecture can later support larger reservations without changing chunk/tile semantics.
 
 ## Validation
+
+These are required future reconfiguration gates. Current capacity and reservation
+coverage lives in [native fixtures](../../native/tests/test_world.cpp);
+[WorldConfig](../../native/include/cybersand/world.hpp) is construction-time.
+CYSD1 [level reconstruction](../../native/include/cybersand/demo_snapshot.hpp)
+is not evidence for general live resize or exact replay.
 
 - current and 2× fixtures are driven by configuration;
 - exceeding capacity never clips or silently allocates;

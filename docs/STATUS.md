@@ -4,18 +4,27 @@ status: Ambiguous
 scope: Historical completion claims, limitations, reported checks, and benchmark observations for the shipped milestone
 keywords: [legacy status, milestone, current prototype, benchmark claim, limitation]
 related-documents: [reference/status-and-roadmap.md, operations/testing-validation-and-replay.md, systems/water-design.md]
-last-reviewed: 2026-08-27
-implementation-state: Legacy status report; source evidence remains authoritative and later Water, adaptive activity, and rigid-body work supersede several claims below.
+last-reviewed: 2026-09-08
+implementation-state: Historical 2026-08-26 completion/result record; not a current defect list, platform certification, or implementation baseline.
 ---
 
 # Milestone status — 2026-08-26
 
+**Historical record.** Completion, limitations, validation totals, and timings
+below describe the 2026-08-26 milestone and its later annotations. They have
+been retained rather than rewritten as new results. Their uses of "Current",
+"now", and "next" do not classify the present source. Follow
+[status and roadmap](reference/status-and-roadmap.md) for current behavior and
+the [2026-09-08 audit](audits/2026-09-08-documentation-audit.md) for actual local
+identity and dated evidence. Six-cell Water, 960×544 R8 publication, and deferred
+native integration/jobs are superseded; CYSD1 level saves now exist but exact
+replay checkpoints remain Planned.
+
 ## At a glance
 
 - Purpose: preserve what the milestone previously reported as complete or limited.
-- **Current**: native and Godot prototype components described here exist in source.
-- **Ambiguous**: reported validations and benchmarks were not re-run for this documentation set.
-- **Current** defect: water behavior observed later contradicts any claim of fully stable resting water.
+- Historical: the report's source features, validations, and benchmarks have different scope from the present native/Web implementation.
+- Historical Water defects were followed by native conserved-mass and fallback-leveling fixtures; use [Water design](systems/water-design.md) for their precise scope.
 - Use reference/status-and-roadmap.md for the audited current/approved distinction.
 
 ## Search anchors
@@ -28,7 +37,7 @@ legacy milestone status, prior benchmark, prior test claim, known limitations, w
 - [Testing specification](operations/testing-validation-and-replay.md)
 - [Audited status](reference/status-and-roadmap.md)
 
-## Completed
+## Historical completion claims
 
 - Deterministic C++20 cellular kernel.
 - Sparse signed-coordinate chunks.
@@ -100,7 +109,7 @@ The next optimization work should target:
 4. Compact update epochs and optional cell arrays.
 5. Profile-guided changes before SIMD or GPU experiments.
 
-## Known limitations
+## Historical limitations and later annotations
 
 - **Ambiguous** legacy limitation, superseded on bundled Linux and Windows x86_64 builds: the Godot
   coordination worker now advances native World, whose phased jobs use a

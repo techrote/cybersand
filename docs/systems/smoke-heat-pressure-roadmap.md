@@ -4,19 +4,26 @@ status: Current
 scope: Current evidence, ordering constraints, optional-field ownership, validation needs, interaction seams, and GPU limits for future systems
 keywords: [smoke, heat, temperature, pressure, gas composition, optional field, GPU field]
 related-documents: [materials-and-rule-kernels.md, water-design.md, ../decisions/ADR-006-gpu-compute-deferral.md]
-last-reviewed: 2026-08-28
+last-reviewed: 2026-09-08
 implementation-state: Native discrete Smoke rises, exchanges through denser opted-in movable materials, carries a bounded lifetime, thins faster in crowded clouds, and cannot ignite; temperature storage exists without heat simulation, while pressure and composition are absent.
 ---
 
 # Smoke, heat, and pressure roadmap
+
+Source review anchors: [native kernels and optional temperature](../../native/src/world.cpp),
+[Smoke/temperature fixtures](../../native/tests/test_world.cpp), and
+[fallback Smoke](../../godot/scripts/cell_world.gd). The
+[2026-09-08 audit](../audits/2026-09-08-documentation-audit.md) records current
+local identity and dated test evidence; historical M11 passes do not certify
+all later platform builds.
 
 ## At a glance
 
 - Purpose: preserve extension seams without pretending future field solvers exist.
 - **Current**: Smoke is a discrete rising material that buoyantly exchanges through denser Water and Sand, slowly dissipates, and cannot become Fire.
 - **Current**: directional density motion and target-side exchange permission preserve an opt-out for future trapped gases, foams, gels, or load-bearing media.
-- **Current**: native Chunk stores temperature values, but no conduction or phase-change update exists.
-- **Planned**: smoke, heat, and pressure adopt the same WorldStorage, TileJob, transfer, activity, and snapshot boundaries.
+- **Current**: native Chunk stores temperature values, but no heat-field evolution exists; compact-state/material-ID phase-change rules are separate Current behavior.
+- **Planned**: future smoke fields, heat, and pressure adopt shared storage, scheduling, activity, and snapshot boundaries; current discrete Smoke already uses World.
 - **Approved design**: optional fields are allocated only where active/needed, not across the full stored world.
 - **Deferred / experimental**: suitable non-authoritative fields may later be GPU-resident.
 - Non-goal: choose final gas, heat, pressure, chemistry, or GPU algorithms here.
@@ -30,15 +37,17 @@ current smoke implementation, temperature field exists, pressure roadmap, gas co
 | System | Status | Evidence | Limitation |
 |---|---|---|---|
 | Smoke material | **Current** | native/src/world.cpp and godot/scripts/cell_world.gd | Full discrete cell; upward density exchange, bounded lifetime, and crowd-sensitive thinning. Native state is exact; fallback culling is an approximate stateless hazard. |
-| Temperature storage | **Current** storage | World::Chunk temperatures in native/src/world.cpp | No conduction, source/sink, phase change, or active-field scheduler. |
+| Temperature storage | **Current** storage and limited rule input | World::Chunk temperatures and Rocket kernel in native/src/world.cpp | Moves with cells; explicit setters and Rocket threshold exist. No conduction or temperature-driven field evolution. |
 | Heat simulation | **Planned** | Legacy architecture prose only | No authoritative update. |
-| Pressure | **Planned** | No source symbol | No representation or solver. |
+| Pressure field | **Planned** | No general field in World storage | Local liquid comparisons and body boundary-pressure impulses exist; they are not a gas/pressure field solver. |
 | Gas composition | **Planned** | No source symbol | No representation or conservation tests. |
 | GPU compute | **Deferred / experimental** | No compute code; GL Compatibility renderer configured | Not authoritative for terrain/collision. |
 
 ## Dependency order
 
-The following ordering is **Approved design** where it restates the water-first constraint:
+The following retained ordering is **Approved design** where it restates the
+water-first constraint. Native phased Water, Sand, and discrete Smoke already
+share World; steps 2–4 are established source foundations, not new port requests:
 
 1. Define and validate ownership, buffers, tick phases, and replay coverage.
 2. Implement the deterministic single-thread fixed-point water reference.
@@ -88,7 +97,8 @@ second 1024² age array. It preserves the visual intent, not exact native timing
 Native tests cover single-pair Smoke/Water and Smoke/Sand exchange, conserved
 Water mass during exchange, nine-cell displacement, long lifetime, eventual
 culling, and Fire exclusion. The equivalent fallback displacement groups and
-the wide-Water leveling assertion pass in m11.
+the wide-Water leveling assertion were reported passing in historical M11.
+Current-platform executions must be attributed separately through the audit.
 
 ### Planned questions
 
@@ -105,7 +115,12 @@ current discrete lifetime model is the implemented reference, not the final gas 
 
 ### Current
 
-Native storage has an int16 temperature array initialized from WorldConfig::ambient_temperature. Existing movement copies temperature with cells. No rule updates temperature.
+Native storage has an optional int16 temperature array initialized from
+`WorldConfig::ambient_temperature`. Existing movement copies temperature with
+cells, and explicit setters can alter it. The Rocket kernel reads temperature
+above ambient + 400 as a launch trigger. No conduction or rule evolves the
+temperature field itself. Material-ID and compact-state "thermal" reactions
+(melting, boiling, cooling) already exist without a conserved heat solver.
 
 ### Planned requirements
 

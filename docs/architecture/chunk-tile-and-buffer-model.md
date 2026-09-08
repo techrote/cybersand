@@ -4,11 +4,18 @@ status: Approved design
 scope: Independent storage, activity, and scheduling geometry; phased ownership; retained active-only buffering; optional fields; and dirty/activity tracking
 keywords: [128x128 storage chunk, 32x32 activity block, 64x64 scheduling core, phased ownership, optional field, active-only buffer]
 related-documents: [data-ownership-and-lifetimes.md, determinism-and-boundary-transfers.md, ../systems/activity-dirty-regions-and-waking.md]
-last-reviewed: 2026-08-27
+last-reviewed: 2026-09-08
 implementation-state: Native World implements 128×128 chunks, 32×32 activity blocks, 64×64 four-phase scheduling cores, radius-two ownership, and optional temperature fields; the buffered comparison remains unimplemented.
 ---
 
 # Chunk, tile, and buffer model
+
+Evidence scope (2026-09-08): **Current** below describes inspected source in the
+reconstructed local snapshot, not a verified Git HEAD or an all-platform test pass.
+See the [documentation audit](../audits/2026-09-08-documentation-audit.md) for
+source identity and dated validation; [M11 audit records](../audits/m11/README.md)
+retain historical scope. **Approved design** means Approved direction; Planned,
+Deferred, and Rejected statements do not claim implementation.
 
 ## At a glance
 
@@ -19,7 +26,7 @@ implementation-state: Native World implements 128×128 chunks, 32×32 activity b
 - **Current**: every active kernel declares a write radius no greater than two cells.
 - **Current**: the hot Cell is four bytes; temperature is an optional per-chunk SoA.
 - **Planned**: active-only isolated output buffers remain a comparison/fallback and field-specific option.
-- **Current** Godot contrast: the runnable proof still uses 16×16 activity blocks in a finite flat world.
+- **Current** fallback contrast: CyberCellWorld uses 16×16 activity blocks in a finite flat world; desktop native and Web use native 32×32 activity blocks.
 
 ## Search anchors
 
@@ -30,7 +37,7 @@ storage chunk size, activity block size, scheduling core size, Noita phase geome
 | Level | Status | Size/purpose |
 |---|---|---|
 | World coordinates | **Current**; target is **Approved design** | Native ChunkCoord supports signed coordinates; production retains a sparse large-world coordinate model. |
-| storage chunk | **Current** native default | 128×128 cells; allocation, cell payload, optional fields, activity metadata, and dirty bounds. Streaming/serialization remain planned. |
+| storage chunk | **Current** native default | 128×128 cells; allocation, cell payload, optional fields, activity metadata, and dirty bounds. Generalized streaming/persistence remain Planned; the fixed 1024² CYSD1 level payload exists separately. |
 | activity block | **Current** native default | 32×32 cells for work elimination, sleep, wake, and changed-this-tick state. |
 | scheduling core | **Current** native default | 64×64 core assigned by global coordinate parity to one of four phases. |
 | owned write domain | **Current** | Core rectangle expanded by configured maximum rule radius; non-overlap is geometry-tested. |
@@ -47,9 +54,9 @@ scheduling cores, and radius-two writes. World::Chunk stores a four-byte Cell
 array and allocates temperature only on demand. World::tick can use the serial
 reference path or the four-phase persistent-worker path.
 
-### Godot
+### Godot fallback
 
-CyberCellWorld uses:
+Only CyberCellWorld uses:
 
 - WORLD_WIDTH 1024 and WORLD_HEIGHT 1024 in the current finite material lab;
 - ACTIVITY_BLOCK_SIZE 16;
@@ -57,7 +64,8 @@ CyberCellWorld uses:
 - per-cell updated_at and quiet_ticks;
 - block_movable_counts.
 
-These 16×16 blocks are Current activity regions, not the production 32×32 activity-block candidate.
+These 16×16 blocks belong to the alternative GDScript solver. Native 32×32
+activity blocks are already implemented, including both Web profiles.
 
 ## Scheduling and buffer policy
 
@@ -74,14 +82,14 @@ These 16×16 blocks are Current activity regions, not the production 32×32 acti
 - Only active regions and fields receive isolated next/output storage.
 - Inactive loaded chunks are not copied.
 - Cross-output effects are staged and deterministically resolved.
-- The backend remains a benchmark comparison, rollback path, and option for fields whose semantics require immutable-current evaluation.
+- If implemented, the candidate could supply a comparison or field-specific alternative. The reserved Buffered enum is not a runnable rollback path.
 
 Both candidates keep optional fields present only where their field policy requires them.
 
 ### Not yet specified
 
-- exact structure-of-arrays or array-of-structures layout;
-- bit widths beyond existing current prototypes;
+- final extraction of the Current four-byte Cell array and optional temperature SoA into a production storage module;
+- future bit widths beyond the Current layout;
 - allocator/pool implementation;
 - sparse optional-field representation;
 - active-next retention across consecutive ticks in the buffered candidate;
@@ -113,7 +121,8 @@ Each phased job has a non-overlapping write domain for its phase. Each buffered 
 - A job may emit local wake, activity, dirty, and profiling observations.
 - Observations become authoritative only in their designated merge/commit stage.
 
-No implementation representation or field list is approved.
+Current internal job effects and write-domain representation are inspectable in
+[World](../../native/src/world.cpp); the final public job view remains Planned.
 
 ## Transfers
 
@@ -127,7 +136,10 @@ The primary phased backend does not stage ordinary bounded cell movement. Transf
 
 See [Determinism and boundary transfers](determinism-and-boundary-transfers.md). The exact transfer schema and conflict rule remain undecided.
 
-Long-range explosions, structural collapse, rigid-body fracture, and generation use bounded deferred events under either backend; their schemas remain undecided.
+Current external ExplosionCommand has a bounded queue and exact schema in
+[World headers](../../native/include/cybersand/world.hpp). Generalized worker
+events, fracture and generation queues are Planned; they are not implemented
+by reserving the Buffered enum.
 
 ## Activity and dirty tracking
 
@@ -139,7 +151,9 @@ Activity and dirty state are different:
 - render dirty state means an immutable presentation update is needed;
 - serialization dirty state means persistent data must eventually be saved.
 
-The approved design keeps fine-grained tracking inside activity blocks. Exact bitsets, rectangles, epochs, or lists are implementation choices not yet approved.
+Current native tracking uses activity-block state, chunk dirty bounds and a
+one-byte update epoch in [World](../../native/src/world.cpp). A separate
+serialization-dirty pipeline is Planned.
 
 ## Optional fields and future systems
 
@@ -161,7 +175,9 @@ The approved design keeps fine-grained tracking inside activity blocks. Exact bi
 
 ## Capacity implications
 
-Capacity is not a permanent world-size limit:
+The Approved target treats reservations as expandable. Current World capacities
+are construction-time limits with explicit failures; live resize is not implemented:
+
 
 - interest region dimensions and active-chunk budget are serializable configuration concepts;
 - initial buffers may reserve for the current fixture and a 2× target fixture;

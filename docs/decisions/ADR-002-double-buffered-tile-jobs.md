@@ -4,11 +4,18 @@ status: Current
 scope: Primary Noita-style phased in-place prototype, buffered reference/fallback, spatial hierarchy, ownership, barriers, deterministic execution, and decision gate
 keywords: [ADR, phased in-place, checkerboard, Noita, double buffer, TileJob, worker pool, benchmark gate]
 related-documents: [../architecture/chunk-tile-and-buffer-model.md, ../architecture/determinism-and-boundary-transfers.md, ADR-005-water-model.md]
-last-reviewed: 2026-08-28
+last-reviewed: 2026-09-08
 implementation-state: The Noita-inspired four-phase backend, activity hierarchy, bounded write geometry, and persistent worker pool are Current; the buffered fallback remains unimplemented.
 ---
 
 # ADR-002: Benchmark-gated cellular scheduling backends
+
+Evidence scope (2026-09-08): **Current** below describes inspected source in the
+reconstructed local snapshot, not a verified Git HEAD or an all-platform test pass.
+See the [documentation audit](../audits/2026-09-08-documentation-audit.md) for
+source identity and dated validation; [M11 audit records](../audits/m11/README.md)
+retain historical scope. **Approved design** means Approved direction; Planned,
+Deferred, and Rejected statements do not claim implementation.
 
 ## At a glance
 
@@ -27,19 +34,32 @@ why checkerboard became primary, Noita four phase scheduler, 64 scheduling core,
 
 ## Status
 
+Owner-approved Auto policy, 2026-09-08: choose 2/4/6 workers at logical-processor
+thresholds 4 and 12. Selection occurs at world construction, with no live resizing
+or benchmark-driven retuning. Native and threaded Web share the adapter policy;
+no-thread Web is forced serial. Isolated benchmark/stress fixtures record timing
+and exported-level parity without modifying the player's simulation.
+
+Historical local Web addition, 2026-09-08: the initial opt-in profile fixed
+four workers before the subsequent Auto policy above using this existing phased scheduler. Chromium execution verifies 120
+matching exported-level hashes against one worker and 480 parallel phases in that dated fixture.
+This does not extend the claim to complete replay state or other browsers.
+Compatibility remains the default; see the
+[local profile guide](../operations/web-threading.md).
+
 **Current** for the phased native backend; **Planned** for the buffered fallback.
 
 World implements 32×32 activity blocks, 64×64 parity scheduling cores, four
 phase barriers, declared radius-two write domains, deterministic merge, and a
-persistent worker pool. Bundled Linux and Windows x86_64 Godot builds invoke
-this World through CyberNativeCellWorld; unsupported platforms use the serial
-GDScript fallback.
+persistent worker pool. Desktop native and both Web profiles invoke World
+through CyberNativeCellWorld. Only desktop may use the serial GDScript fallback;
+Web requires the native extension. Compatibility Web forces one worker.
 
 ## Context
 
 The earlier plan prioritized isolated next-state outputs because their concurrency semantics are straightforward. Evidence from the Noita developers changes the performance trade-off: four phases of spatially exclusive in-place work can avoid per-cell atomics while also avoiding the copy traffic and boundary records imposed by general double buffering. Sandspiel independently demonstrates the value of compact cells and direct bounded local mutation.
 
-The external examples do not prove that their exact layouts are optimal for this engine. The decision is therefore to promote phased in-place scheduling to the leading candidate while retaining an instrumented buffered implementation long enough to measure both on identical fixtures.
+The external examples do not prove that their exact layouts are optimal for this engine. The decision is therefore to promote phased in-place scheduling to the leading candidate while retaining a documented buffered candidate for later measurement if a field need justifies implementing it. No instrumented buffered implementation exists.
 
 ## Decision
 
@@ -65,7 +85,7 @@ The external examples do not prove that their exact layouts are optimal for this
 ### Retained backend: active-only buffered jobs
 
 - A buffered backend reads committed current state and writes isolated next regions.
-- It remains available as a correctness aid, performance comparison, rollback path, and possible implementation for fields that require snapshot-style updates.
+- If implemented, it can become a correctness aid, performance comparison and field-specific alternative. It is not currently a runnable rollback path.
 - Cross-output effects use bounded deterministic transfers.
 - It does not share a tick with in-place cell movement unless an explicit field boundary makes ownership unambiguous.
 
@@ -93,7 +113,7 @@ No single metric automatically wins. A materially faster backend that weakens re
 - Density swaps and local reactions map naturally to in-place cellular rules.
 - Exclusive phase ownership avoids per-cell locks and atomics.
 - Storage, activity, and scheduling sizes can be tuned independently.
-- Retaining the buffered path gives difficult fields an alternative and makes the decision reversible.
+- Retaining the buffered design gives difficult fields a future alternative; the executable rollback is SerialInPlace or one-worker PhasedInPlace.
 
 ### Negative
 
@@ -101,7 +121,7 @@ No single metric automatically wins. A materially faster backend that weakens re
 - Traversal order is observable simulation semantics.
 - Every rule must declare and obey a bounded access radius.
 - Proving write-domain exclusivity is more difficult than isolated output ownership.
-- Maintaining two backends during the decision window has a temporary engineering cost.
+- Implementing and maintaining the optional buffered candidate would add engineering cost.
 
 ### Risks
 
@@ -148,9 +168,17 @@ Keep these independently runnable checkpoints:
 4. Optional one-worker active-only buffered comparison only when justified.
 5. Production bridge selection recorded with target-hardware benchmark evidence.
 
-If phased ownership or performance fails, select the buffered backend without changing WorldStorage, MaterialRules descriptors, bridge contracts, or fixtures. Field-specific buffering remains possible even if phased cellular material movement wins.
+If phased ownership or performance fails, the existing serial or one-worker
+phased path is the runnable fallback. Buffered cannot be selected successfully
+until implemented and validated; its enum currently fails explicitly. Field-specific buffering remains possible even if phased cellular material movement wins.
 
 ## Validation
+
+Current implementation/fixture sources: [World](../../native/src/world.cpp),
+[geometry](../../native/src/scheduler_geometry.cpp), and
+[native tests](../../native/tests/test_world.cpp). Passing labels below refer to
+dated evidence in the audit, not a new run implied by this ADR. Remaining bullets
+are required acceptance criteria unless explicitly evidenced.
 
 - phase write domains are mechanically checked for non-overlap — **Current**, passing;
 - one/four-worker phased runs produce identical replay hashes in Water and complete-material fixtures — **Current**, passing;
@@ -159,7 +187,7 @@ If phased ownership or performance fails, select the buffered backend without ch
 - no cell is updated more than permitted by the specified phase semantics;
 - rule-radius violations fail visibly;
 - preallocated normal ticks report no World-owned chunk/temperature allocation — **Current**, passing;
-- ASan+UBSan and TSan suites pass; LeakSanitizer remains blocked by the hosted environment;
+- historical M11 ASan+UBSan and TSan runs passed; historical LeakSanitizer was inconclusive under hosted restrictions. This is not current Windows/Web sanitizer evidence;
 - both candidates report comparable timing, memory, work, and high-water observations — **Planned** if Buffered is implemented;
 - current and 2× fixtures produce a recorded decision-gate result.
 

@@ -4,17 +4,26 @@ status: Ambiguous
 scope: Historical native Godot integration work packages and performance gates
 keywords: [legacy plan, native integration, GDExtension, activity mask, chunk jobs]
 related-documents: [reference/status-and-roadmap.md, architecture/module-boundaries.md, decisions/ADR-002-double-buffered-tile-jobs.md]
-last-reviewed: 2026-08-28
-implementation-state: Historical plan; its Linux and Windows x86_64 GDExtension, native authority, emissions/queries, activity geometry, phased scheduler, and rectangle coupling items are now implemented, while generalized queues and dirty Godot uploads remain open.
+last-reviewed: 2026-09-08
+implementation-state: Historical work plan; native authority, phased scheduling, rectangle coupling, and dirty CPU image reconstruction are Current. General queues and true GPU subregion upload remain Planned.
 ---
 
 # Next milestone: native Godot integration
 
+**Historical plan — not the next foundational work order.** The original work
+packages and exit criteria below are preserved as planning history, not as
+current approvals or passing evidence. `CyberNativeCellWorld` now exists;
+phased in-place jobs are the leading backend, and active-only buffered transfers
+remain unimplemented. Follow the [current roadmap](reference/status-and-roadmap.md)
+and [2026-09-08 audit](audits/2026-09-08-documentation-audit.md) before selecting
+new work. A named historical rollback archive must be verified to exist before
+being used.
+
 ## At a glance
 
 - Purpose: retain the earlier native-integration plan for provenance.
-- **Current**: the historical GDExtension/native-authority milestone is implemented for bundled Linux and Windows x86_64 builds through `CyberNativeCellWorld`.
-- **Approved design**: backend-neutral fixtures and one-worker scheduler candidates now precede multicore integration.
+- **Current** source: native/Web adapters use `CyberNativeCellWorld`; platform test scope is recorded separately in the audit.
+- Historical ordering: reference fixtures preceded native multicore integration, which is already implemented.
 - **Approved design**: leading spatial sizes are 128×128 storage chunks, 32×32 activity blocks, and 64×64 scheduling cores.
 - Use status-and-roadmap for the current reversible checkpoint order.
 

@@ -4,11 +4,18 @@ status: Current
 scope: Exact current code/configuration values plus approved configuration concepts whose final keys, types, defaults, and serialization remain undecided
 keywords: [WorldConfig, WORLD_WIDTH, interest margin, tick interval, capacity keys, configuration status]
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, status-and-roadmap.md]
-last-reviewed: 2026-08-27
+last-reviewed: 2026-09-08
 implementation-state: Native World construction and snapshot capacities are Current; the Godot adapter has an automatic/override worker setting, full-rate native activity, rectangle coupling constants, and an active pinned Rapier2D backend.
 ---
 
 # Configuration reference
+
+Source reviewed against the local reconstructed snapshot on 2026-09-08; see the
+[audit](../audits/2026-09-08-documentation-audit.md) for source identity and
+validation scope. Constants below describe inspected source, not proof that a
+retained binary was built from it. The finite CYSD1 schema is documented in
+[world storage](../systems/world-storage-and-interest-region.md); it does not
+persist general `WorldConfig` or exact replay state.
 
 ## At a glance
 
@@ -28,19 +35,20 @@ current world size, current view size, chunk size, sleep ticks, water budget, ti
 
 ## Native Current configuration
 
-Source: native/include/cybersand/world.hpp.
+Source: [world.hpp](../../native/include/cybersand/world.hpp), with construction
+validation in [world.cpp](../../native/src/world.cpp).
 
 | Exact current member | Current default | Meaning in current native World | Production disposition |
 |---|---:|---|---|
 | WorldConfig::chunk_size | 128 | Width/height of current native chunks | 128×128 is **Approved design**, but current configurability and validation are not the production schema |
-| WorldConfig::sleep_after_quiet_ticks | 3 | Chunk quiet threshold | **Current** prototype value; final sleep policy undecided |
+| WorldConfig::sleep_after_quiet_ticks | 3 | Activity-block quiet threshold; chunk state follows active blocks | **Current** prototype value; final sleep policy undecided |
 | WorldConfig::ambient_temperature | 200 | Initial temperature value | **Current** storage value; units and heat model undecided |
 | WorldConfig::initial_chunk_reserve | 64 | Initial hash/scratch reservation hint | **Current** prototype preallocation only; not a maximum or serialized active-chunk budget |
 | WorldConfig::backend | PhasedInPlace | Selects serial, phased, or reserved buffered enum | Phased and serial are **Current**; buffered tick is **Planned** and fails explicitly |
 | WorldConfig::activity_block_size | 32 | Activity/sleep granularity | **Current** default |
 | WorldConfig::scheduling_core_size | 64 | Four-phase core edge | **Current** default |
 | WorldConfig::maximum_rule_radius | 2 | Prepared write-domain expansion | **Current**; active catalogue construction rejects smaller values |
-| WorldConfig::worker_threads | 1 | Persistent native workers | **Current**; 1 and 4 are validation fixtures, not an automatic hardware policy |
+| WorldConfig::worker_threads | 1 | Persistent native workers | Standalone default; adapter Auto policy is specified below |
 | WorldConfig::parallel_job_threshold | 8 | Minimum jobs in a phase before pool dispatch | **Current** prototype tuning value |
 | WorldConfig::active_core_capacity | 4096 | Bounds gathered core candidates and job results | **Current** explicit capacity |
 | WorldConfig::active_chunk_capacity | 4096 | Bounds active-chunk scratch | **Current** explicit capacity |
@@ -54,8 +62,12 @@ sandbox: maximum chunks 128, active-core capacity 1024, active-chunk capacity
 `WorldConfig` defaults.
 
 The exact project setting `cybersand/native_worker_threads` is **Current**. Zero
-selects `min(8, max(1, logical_processors - 2))`; a positive value requests a
-clamped explicit count. The live overlay reports the selected value.
+selects 2 workers for fewer than 4 reported logical processors, 4 for 4–11,
+and 6 for 12 or more (owner rule, 2026-09-08). A positive value requests a
+count clamped to 1 through `min(32, reported logical processors)`. No-thread Web forces one worker. The live Web menu
+reports the selected count and logical-processor input. Auto does not resize
+the running pool or infer physical cores. These exact rules are implemented in
+[CyberNativeCellWorld::create_world](../../godot/native_extension/cyber_native_cell_world.cpp).
 
 WorldConfig is passed at construction and mirrored by `cybersand_config_v2`
 ABI version 2.
@@ -68,7 +80,9 @@ are exposed to C callers and report exact requirements on failure.
 
 ## Godot Current simulation constants
 
-Source: godot/scripts/cell_world.gd.
+Source: [cell_world.gd](../../godot/scripts/cell_world.gd). These are fallback
+constants; native coupling has its own inspected values in
+[cyber_native_cell_world.hpp](../../godot/native_extension/cyber_native_cell_world.hpp).
 
 | Exact current name | Current value | Meaning | Production disposition |
 |---|---:|---|---|
@@ -102,7 +116,10 @@ Other material and movement constants exist in source but are not promoted here 
 
 ## Godot Current view and interest constants
 
-Source: godot/scripts/main.gd.
+Source: [main.gd](../../godot/scripts/main.gd) and
+[project.godot](../../godot/project.godot). This table describes desktop.
+Web's [controller](../../godot/scripts/web_demo_controller.gd) uses LOW/NORMAL/HIGH
+320×180/480×270/640×360 views with 30/45/60 Hz publication respectively.
 
 | Exact current name | Current value | Meaning | Production disposition |
 |---|---:|---|---|
@@ -110,6 +127,8 @@ Source: godot/scripts/main.gd.
 | display/window viewport and override | 1920×1080 | Default material-lab output/window size | Aspect-fits the independently selected logical view |
 | SIMULATION_MARGIN_PRESETS | 0×0; 32×36; 128×128; 256×256 | Per-side pixel margins, cycled independently with `B` | Material-lab fixtures; future serialized policy remains undecided |
 | TEST_RIGID_BODY_SIZE | 8×14 | Size of each red test rectangle, matching the character | Test-scene value only |
+| HARD_SURFACE_CHUNKS_PER_FRAME | 32 | Maximum queued chunk rebuilds considered per rendered frame | Shared inherited Web/desktop tuning |
+| HARD_SURFACE_FRAME_BUDGET_USEC | 750 | Collider processing time budget checked between chunk rebuilds | Not a preemptive bound on one rebuild |
 
 `CyberRigidBodyCoupling.MAX_BODIES` is 16 in the GDScript proof. The scene
 currently supplies three bodies. This is a prototype bound, not an approved
@@ -117,7 +136,12 @@ production body capacity.
 
 ## Godot Current worker constants
 
-Source: godot/scripts/simulation_worker.gd.
+Source: [simulation_worker.gd](../../godot/scripts/simulation_worker.gd).
+These pacing constants apply to the desktop coordination Thread. Web instead
+calls native ticks synchronously in `_physics_process`, requests at most two
+Godot physics steps per rendered frame, and pauses stepping while hard-surface
+collider updates remain pending. A threaded Web build parallelizes cellular
+jobs within that synchronous tick; it does not use the desktop pacing Thread.
 
 | Exact current name | Current value | Meaning | Production disposition |
 |---|---:|---|---|
@@ -126,19 +150,22 @@ Source: godot/scripts/simulation_worker.gd.
 
 ## Rapier2D migration lock
 
-Source: `godot/third_party/rapier2d.lock.json`.
+Source: [rapier2d.lock.json](../../godot/third_party/rapier2d.lock.json).
 
 | Exact lock field | Prepared value | Status |
 |---|---|---|
 | godot_version | `4.7.x` | **Current** migration constraint |
 | rapier_tag | `v0.35.2` | **Current** pinned source tag |
-| build | Official 2D single build: parallel SIMD and cross-platform deterministic | **Current**, vendored |
+| build | Official 2D single build: parallel SIMD and cross-platform deterministic | Lock description of upstream build; not a CyberSand cross-platform replay proof |
 | physics_engine_name | `Rapier2D` | **Current**, selected in project.godot |
 | release_asset_sha256 | `73b46bfe…aae1f0` | **Current**, exact downloaded asset hash |
 
 Rapier solver/CCD defaults are deliberately not copied into project configuration
-before the drop-in baseline. Their project-setting paths and tuned values must be
+as a general tuned production profile. Their project-setting paths and tuned values must be
 recorded from the installed version rather than inferred from display labels.
+The lock's `4.7.x` compatibility constraint is broader than the exact tested
+editor pin `4.7.stable.official.5b4e0cb0f`. Platform binaries, actual tests, and
+remaining limits are in the [Rapier runbook](../operations/rapier-2d-migration-runbook.md).
 
 ## Approved production configuration concepts
 
@@ -148,8 +175,8 @@ No exact serialized key names exist. The concepts below must receive names/types
 |---|---|---|
 | interest-region width | **Approved design** | Serializable and changeable |
 | interest-region height | **Approved design** | Serializable and changeable |
-| horizontal margin semantics/value | **Approved design** | Initially represents current 10% policy |
-| vertical margin semantics/value | **Approved design** | Initially represents current 20% policy |
+| horizontal margin semantics/value | **Approved design** | Proposed 10% policy; current view-independent pixel presets are above |
+| vertical margin semantics/value | **Approved design** | Proposed 20% policy; percentage interpretation remains unresolved |
 | active storage-chunk capacity | **Current** construction value; serialization is **Planned** | Bounded and observable, not stored-world size |
 | scheduling-core task capacity | **Current** construction value; serialization is **Planned** | Bounded, reusable, explicit failure |
 | transfer capacity | **Approved design** | Bounded, reusable, high-water observed |
@@ -162,7 +189,7 @@ No exact serialized key names exist. The concepts below must receive names/types
 - transfer capacity counts and production snapshot capacity defaults;
 - generalized liquid reaction/source/sink accounting;
 - buffered halo width;
-- production worker-count selection policy;
+- production workload-adaptive pool resizing beyond the Current 2/4/6 Auto policy;
 - canonical merge priorities;
 - queue behavior/timeouts;
 - snapshot retention count;
@@ -178,7 +205,7 @@ These omissions prevent prototype assumptions from becoming accidental API.
 - Current source constants may be changed only as implementation work with appropriate tests.
 - Production simulation-affecting configuration changes at a whole tick or loading transition.
 - Capacity growth follows safe reconfiguration.
-- Unknown/incompatible serialized values must fail explicitly once serialization exists.
+- Unknown/incompatible generalized configuration values must fail explicitly when that Planned schema exists; Current CYSD1 already validates its fixed level/metadata format.
 - Documentation status changes from Approved design to Current only after source and validation evidence exists.
 
 ## Related decisions

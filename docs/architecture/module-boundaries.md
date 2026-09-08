@@ -4,11 +4,18 @@ status: Approved design
 scope: Responsibilities, permitted dependencies, forbidden knowledge, and current analogues for each named module
 keywords: [SimulationCore, SimulationScheduler, WorldStorage, TileJob, MaterialRules, RenderBridge, GameplayBridge, rigid body coupling, dependencies]
 related-documents: [overview.md, data-ownership-and-lifetimes.md, rendering-and-gameplay-bridges.md, rigid-body-and-cellular-coupling.md]
-last-reviewed: 2026-08-28
+last-reviewed: 2026-09-08
 implementation-state: Native World combines SimulationCore, Scheduler, WorldStorage, job, and rule responsibilities; the godot-cpp adapter carries dirty RG8 render patches, emissions, queries, metrics, and packed rigid-body samples/results.
 ---
 
 # Module boundaries
+
+Evidence scope (2026-09-08): **Current** below describes inspected source in the
+reconstructed local snapshot, not a verified Git HEAD or an all-platform test pass.
+See the [documentation audit](../audits/2026-09-08-documentation-audit.md) for
+source identity and dated validation; [M11 audit records](../audits/m11/README.md)
+retain historical scope. **Approved design** means Approved direction; Planned,
+Deferred, and Rejected statements do not claim implementation.
 
 ## At a glance
 
@@ -90,9 +97,10 @@ conforming even though its core behavior now exists.
 
 World's phased backend now owns a persistent native worker pool, parity phases,
 barriers, bounded job results, and deterministic merge. CyberSimulationWorker
-owns wall-clock pacing and advances that World through CyberNativeCellWorld on
-bundled Linux and Windows x86_64; the backend boundary passes value data rather
-than exposing worker or storage ownership to Godot.
+owns desktop wall-clock pacing. Web instead synchronously advances World from
+main-thread physics callbacks; both adapters can use its native phase pool.
+The backend boundary passes value data, never native mutable storage views.
+See [platform ownership](simulation-tick-and-threading.md).
 
 ## WorldStorage
 
@@ -110,7 +118,10 @@ than exposing worker or storage ownership to Godot.
 World::chunks_ and World::Chunk provide sparse signed-coordinate 128×128 chunks,
 four-byte cells, optional temperature, 32×32 activity metadata, dirty bounds,
 explicit capacities, and region reservation. They do not provide a separate
-storage module, streaming/serialization, or safe live reconfiguration.
+storage module, generalized streaming/persistence, or safe live reconfiguration.
+The separate [demo payload](../../native/include/cybersand/demo_snapshot.hpp)
+already supports a fixed 1024² level reconstruction; it is not a World replay
+checkpoint or the proposed generalized storage module.
 
 ## TileJob
 
@@ -151,7 +162,8 @@ classification, and compact oriented pair-reaction queries.
 `native/include/cybersand/material.hpp` stores byte IDs, RuleKernel selection,
 initial compact state, maximum radius, density motion/acceptance, lateral flow
 mode, and normalized viscosity. Executable kernels are compiled into
-World's private dispatcher; Godot still duplicates only its small prototype.
+World's private dispatcher. The retained GDScript solver has its own alternate
+rule implementations; it is not bit-equivalent native behavior.
 
 The existing MaterialRules boundary is **Current** for immutable lookup, compact
 pair chemistry, and the compiled kernel catalogue. Separating execution behind
@@ -214,6 +226,11 @@ Smoke, heat, pressure, chemistry, electricity, vehicles, and GPU-coprocessed fie
 - RenderBridge receives derived immutable presentation data.
 - GameplayBridge receives only explicit immutable results.
 - Rigid-body transforms cross only as value samples; the coupling stage returns bounded observations through GameplayBridge or an equivalent approved data boundary.
+
+## Source anchors
+
+- [World/configuration](../../native/include/cybersand/world.hpp), [World execution](../../native/src/world.cpp), and [material descriptors](../../native/include/cybersand/material_rules.hpp).
+- [Native adapter](../../godot/native_extension/cyber_native_cell_world.cpp), [render exchange](../../native/src/render_snapshot.cpp), and [coupling layout](../../godot/scripts/rigid_body_coupling.gd).
 
 ## Related decisions
 

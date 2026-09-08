@@ -4,11 +4,16 @@ status: Current
 scope: Canonical project terminology, status labels, ownership words, spatial hierarchy, rigid-body coupling, fidelity, buffers, bridges, water, profiling, and deferred concepts
 keywords: [glossary, canonical terms, SimulationCore, rigid body mask, fidelity tier, storage chunk, worker tile, halo, transfer, immutable snapshot]
 related-documents: [../README.md, invariants.md, interfaces-and-message-contracts.md]
-last-reviewed: 2026-08-27
+last-reviewed: 2026-09-08
 implementation-state: Terms describe both inspected current code and approved design; each definition identifies which.
 ---
 
 # Glossary
+
+Definitions were reconciled with the local source on 2026-09-08. See the
+[audit](../audits/2026-09-08-documentation-audit.md) for identity and dated
+platform evidence. Module names describe responsibilities; they do not imply
+that every named module is already a separate implementation type.
 
 ## At a glance
 
@@ -28,12 +33,12 @@ term definition, authoritative, current buffer, next buffer, dirty, active, slee
 
 | Term | Status | Definition |
 |---|---|---|
-| SimulationCore | **Current**, partial | Native World is the preferred Linux cellular authority; the final production module split and persistence boundary remain Approved design. |
-| SimulationScheduler | **Approved design** | Fixed-timestep coordinator and owner of the persistent native worker pool, job stages, barriers, deterministic merge coordination, and overload observations. |
+| SimulationCore | **Current**, partial | Native World is cellular authority in native and Web adapter paths; production module extraction and complete replay persistence remain Approved/Planned. |
+| SimulationScheduler | **Current**, combined implementation; separate module **Approved** | World coordinates phased jobs, barriers, and a persistent native worker pool. Desktop and Web supply different wall-clock pacing owners. |
 | WorldStorage | **Approved design** | Owner of storage chunks, loaded/active/sleep metadata, optional fields, capacity enforcement, and future serialization. |
 | TileJob | **Approved design** | Temporary bounded work assignment. A phased job writes only its exclusive domain; a buffered job writes only isolated output and staged transfers. |
 | MaterialRules | **Current**, combined execution | Immutable material descriptors and compact kernel selection are public; executable dispatch remains private inside World. |
-| RenderBridge | **Current**, partial | Godot consumes copied native display bytes; native exchange/lease publication also exists, while dirty-patch texture upload remains Planned. It never receives mutable simulation memory. |
+| RenderBridge | **Current**, partial | Native immutable leases and copied dirty RG8 Godot patches exist. CPU image reconstruction is dirty; GPU `ImageTexture.update()` still submits the full image. True GPU subregion writes remain Planned. |
 | GameplayBridge | **Approved design** | Godot/native boundary that queues gameplay commands at tick boundaries and consumes immutable results. |
 
 ## Current prototype terms
@@ -41,10 +46,12 @@ term definition, authoritative, current buffer, next buffer, dirty, active, slee
 | Term | Status | Definition |
 |---|---|---|
 | cybersand::World | **Current** | Preferred cellular authority combining sparse chunks, phased workers, material rules, activity/dirty behavior, transient body occupancy, hashing, and display copying. |
-| CyberNativeCellWorld | **Current**, Linux and Windows x86_64 | GDExtension adapter that owns native World and presents the worker-facing world contract. Linux runtime fixtures pass; the Windows DLL has structural PE validation. |
+| CyberNativeCellWorld | **Current** source, native/Web adapter | GDExtension adapter owning World; desktop calls it from the coordination Thread and Web calls it synchronously from Godot main. Runtime proof is platform/build-specific; see the audit. |
 | CyberCellWorld | **Current**, fallback | Finite GDScript cell simulation used only when the native adapter is unavailable. |
-| CyberSimulationWorker | **Current** | One Godot coordination Thread that owns the selected cellular world and CyberSampledCharacter; native World dispatches phase jobs to its persistent C++ pool. |
-| CyberSimulationSnapshot | **Current** | GDScript snapshot object treated as immutable after publication; contains a copied full material byte array when changed. |
+| CyberSimulationWorker | **Current**, desktop | One Godot coordination Thread owns the selected cellular world and sampled character; native phase jobs use a separate C++ pool. Web's controller does not use this owner. |
+| CyberSimulationSnapshot | **Current**, desktop | Immutable-after-publication value object containing copied RG8 dirty patch payloads in the native path; the fallback may carry full R8 material bytes. |
+| Web controller | **Current** | `web_demo_controller.gd` owns cellular/character ticks and Rapier adapter calls on Godot main; threaded Web only parallelizes jobs within the synchronous native tick. |
+| CYSD1 level save | **Current**, finite Web demo | Versioned compressed 1024² material/state/temperature payload plus player/options/body metadata. Reconstruction is not an exact replay checkpoint. |
 | CyberCellWorld activity block | **Current** prototype | Current Godot work-elimination region is 16×16; it is not the production scheduling geometry. |
 | rigid-body coupling packet | **Current** prototype | Packed rectangle body sample/result layout shared by the worker and native adapter; it is not a stable public ABI. |
 | rigid-body occupancy mask | **Current** rectangle proof; generalized form **Approved design** | Separate stable collision view rasterized from latched body transforms. It never changes material identity merely to represent a body. |
@@ -62,7 +69,7 @@ term definition, authoritative, current buffer, next buffer, dirty, active, slee
 | transfer | **Approved design** | Staged effect crossing a buffered output boundary; ordinary phased local movement does not require one. |
 | stored world | **Approved design** | All persistent world content, including content not currently loaded. |
 | loaded chunk | **Approved design** | storage chunk whose committed data is resident in WorldStorage. |
-| interest region | **Current** concept; configurable form is **Approved design** | Camera-centred area eligible for simulation, initially visible area plus 10% horizontal and 20% vertical margins. |
+| interest region | **Current** concept; configurable form is **Approved design** | Camera-selected eligible simulation area with current pixel-margin presets. The proposed serialized 10%/20% policy remains distinct from those presets. |
 | rendered region | **Current** concept | Area sampled/presented by the camera; it need not match the interest region. |
 
 ## State and lifetime terms
@@ -90,8 +97,9 @@ term definition, authoritative, current buffer, next buffer, dirty, active, slee
 | stage barrier | **Current** native phased scope | Every parity phase completes before the next begins. |
 | canonical order | **Current** phased/explosion scope; generalized order **Planned** | Phase/scan/effect merge and accepted explosion order do not derive from worker timing. |
 | deterministic replay | **Current** tested scope | Re-running identical authoritative inputs/configuration produces identical authoritative state/hash across tested worker counts. |
-| replay hash | **Current**, unversioned | Digest covering cells, optional temperature, tick/epoch, activity/sleep, scheduling/capacity configuration, and queued explosions; stored compatibility format is Planned. |
-| overload policy | **Current** partial | Preferred native jobs remain full cadence inside the selected region; the fallback temporally distributes excess blocks. Production pressure thresholds remain unresolved. |
+| replay hash | **Current**, unversioned native fixture oracle | `World::state_hash()` covers cells, temperature, tick/epoch, activity/sleep, selected configuration, and queued explosions. It does not serialize them or cover the full Godot/Rapier/input state. |
+| content hash | **Current**, native fixture oracle | `World::content_hash()` covers non-empty/material/temperature cell content and selected storage settings while excluding tick, epoch, and sleep metadata; settled Water tests use this hash. |
+| overload policy | **Current** partial | Native primary transport stays full cadence inside the selected region; secondary rules use fixed spatial lanes, while fallback overload distributes excess blocks. Web ticks may wait for pending collider rebuilds. Production thresholds remain unresolved. |
 | fidelity tier | **Approved design** | Named scope in which local full-resolution interaction, temporally sampled surroundings, coarse optional fields, distant macro-state, or strict validation rules apply. |
 | adaptive block stride | **Current** fallback only | GDScript cadence derived from eligible block count; the preferred native runtime does not use it. |
 
@@ -133,6 +141,11 @@ term definition, authoritative, current buffer, next buffer, dirty, active, slee
 | material-specific thread | **Explicitly rejected** | Thread or scheduler lane owned by one material type. |
 
 ## Related decisions
+
+- [Native World/hash source](../../native/src/world.cpp)
+- [Desktop snapshot layout](../../godot/scripts/simulation_snapshot.gd)
+- [Web owner](../../godot/scripts/web_demo_controller.gd)
+- [Level persistence scope](../systems/world-storage-and-interest-region.md)
 
 - [Architecture overview](../architecture/overview.md)
 - [Invariants](invariants.md)

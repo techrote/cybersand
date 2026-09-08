@@ -9,6 +9,7 @@ var save_text: TextEdit
 var notice: Label
 var capability: Label
 var open: bool = true
+var benchmark_text: TextEdit
 
 func _label(parent: Node, text: String, font_size: int = 18) -> Label:
 	var label: Label = Label.new()
@@ -69,6 +70,9 @@ func setup(controller: Control) -> void:
 	_label(column, "CYBERSAND / WEB DEMO", 28)
 	capability = _label(column, "Native engine starting", 14)
 	capability.modulate = Color(0.48, 0.8, 0.83)
+	if host.logical_threads < 4:
+		var warning: Label = _label(column, "4 physical CPU cores are the recommended minimum.\nYour browser reports fewer than 4 logical threads; physical cores cannot be detected.", 14)
+		warning.modulate = Color(1.0, 0.75, 0.35)
 	column.add_child(HSeparator.new())
 
 	var home: VBoxContainer = _page(column, "home")
@@ -104,6 +108,32 @@ func setup(controller: Control) -> void:
 	home.add_child(other)
 	_button(other, "controls", "Controls", func() -> void: show_page("controls"))
 	_button(other, "about", "About", func() -> void: show_page("about"))
+	_button(other, "performance", "Performance", func() -> void: show_page("benchmark"))
+
+	var benchmark: VBoxContainer = _page(column, "benchmark")
+	_label(benchmark, "AUTO: <4 threads: 2 workers · 4–11: 4 workers · 12+: 6 workers", 15)
+	_label(benchmark, "Compatibility builds use one worker. Tests do not change Auto.", 14)
+	var run_row: HBoxContainer = HBoxContainer.new()
+	benchmark.add_child(run_row)
+	_button(run_row, "benchmark_run", "Benchmark", func() -> void: host.start_benchmark(false))
+	_button(run_row, "stress_run", "Stress test", func() -> void: host.start_benchmark(true))
+	_button(run_row, "benchmark_cancel", "Cancel", func() -> void: host.benchmark_cancelled = true)
+	benchmark_text = TextEdit.new()
+	benchmark_text.editable = false
+	benchmark_text.custom_minimum_size = Vector2(704, 250)
+	benchmark_text.add_theme_font_size_override("font_size", 14)
+	benchmark_text.text = "Benchmark: compare 1, 2, 4 and 6 workers on two workloads.\nStress test: 600 measured ticks on a dense 960×960 world.\n\nYour game stays paused and unchanged.\nResults show simulation time and test frame intervals.\nEach workload has a two-minute time limit. Cancel or press Esc to stop."
+	benchmark.add_child(benchmark_text)
+	_button(benchmark, "benchmark_copy", "Copy results", func() -> void:
+		if not host.benchmark_result.is_empty():
+			benchmark_text.text = JSON.stringify(host.benchmark_result, "  ")
+			benchmark_text.grab_focus()
+			benchmark_text.select_all()
+			if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):
+				DisplayServer.clipboard_set(benchmark_text.text)
+	)
+	_button(benchmark, "benchmark_back", "Back", func() -> void: show_page("home"))
+	set_benchmark_busy(false)
 
 	var save: VBoxContainer = _page(column, "save")
 	_label(save, "LOCAL SLOT", 14)
@@ -140,6 +170,8 @@ func setup(controller: Control) -> void:
 	show_page("home")
 
 func show_page(id: String) -> void:
+	if host != null and host.benchmark_running and id != "benchmark":
+		return
 	open = true
 	overlay.show()
 	for key: String in pages:
@@ -150,7 +182,7 @@ func show_page(id: String) -> void:
 		notice.text = ""
 
 func close_menu() -> void:
-	if host == null or not host.ready_to_play:
+	if host == null or not host.ready_to_play or host.benchmark_running:
 		return
 	open = false
 	overlay.hide()
@@ -176,3 +208,8 @@ func test_rects() -> Dictionary:
 			var rect: Rect2 = button.get_global_rect()
 			result[key] = [rect.position.x, rect.position.y, rect.size.x, rect.size.y]
 	return result
+
+func set_benchmark_busy(busy: bool) -> void:
+	for id: String in ["benchmark_run", "stress_run", "benchmark_copy", "benchmark_back"]:
+		buttons[id].disabled = busy
+	buttons["benchmark_cancel"].disabled = not busy

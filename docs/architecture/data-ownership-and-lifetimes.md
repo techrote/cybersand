@@ -4,16 +4,23 @@ status: Approved design
 scope: Current and approved owners, readers, writers, mutation phases, allocation policy, lifetime, and overflow behavior for buffers and queues
 keywords: [ownership, lifetime, buffer, queue, rigid body mask, current buffer, next buffer, halo, transfer, snapshot]
 related-documents: [module-boundaries.md, simulation-tick-and-threading.md, rigid-body-and-cellular-coupling.md, ../reference/invariants.md]
-last-reviewed: 2026-08-28
+last-reviewed: 2026-09-08
 implementation-state: Current tables describe inspected code; approved tables define constraints but leave unapproved schemas and pressure policies unresolved.
 ---
 
 # Data ownership and lifetimes
 
+Evidence scope (2026-09-08): **Current** below describes inspected source in the
+reconstructed local snapshot, not a verified Git HEAD or an all-platform test pass.
+See the [documentation audit](../audits/2026-09-08-documentation-audit.md) for
+source identity and dated validation; [M11 audit records](../audits/m11/README.md)
+retain historical scope. **Approved design** means Approved direction; Planned,
+Deferred, and Rejected statements do not claim implementation.
+
 ## At a glance
 
 - Purpose: make shared-state assumptions explicit before multithreading.
-- **Current**: the Godot worker exclusively advances the selected world—native on bundled Linux and Windows x86_64 builds, GDScript fallback on unsupported architectures—while the main thread receives copied snapshots.
+- **Current**: desktop uses an exclusive Godot pacing owner and copied snapshots; Web uses synchronous main-thread ownership. Native World is required on Web; only desktop selects the GDScript fallback.
 - **Current**: native World owns sparse chunks and coordinates serial or phase-exclusive writes through a persistent pool.
 - **Current**: RenderSnapshotExchange owns preallocated publication slots; leased bytes are immutable and independent of mutable World storage.
 - **Current**: Godot owns RigidBody2D nodes while the selected world owns only copied body samples, its transient obstacle mask, and packed coupling observations.
@@ -36,10 +43,10 @@ which job may write, authoritative cell owner, phase write domain, snapshot life
 | Activity blocks/job effects | Chunk / World::ParallelState | coordinator and owning job result | owning job then deterministic coordinator merge | World lifetime / one job pass | phase execution then barrier merge | fixed vectors/arrays bounded by active capacities and per-job touched-chunk limit |
 | Native dirty metadata | World::Chunk | dirty count/extraction and render caller | serial or merged job effects | Until capacity-safe extraction acknowledges it | authoritative writes then publication | extraction vector allocates outside tick; C API queries required count before clearing |
 | Native render snapshot slots | Shared exchange state retained by RenderSnapshotExchange/leases | concurrent lease holders through const spans/C pointers | single serialized producer only when a slot is unleased | Shared state survives the exchange facade; each payload remains through all leases | after authoritative work and before dirty acknowledgement | uniform preallocated patch/byte buffers; non-blocking pressure/capacity results retain dirty state |
-| Selected cellular world | CyberSimulationWorker through CyberNativeCellWorld or fallback CyberCellWorld | Worker simulation; snapshot copying | Worker simulation and emission/reset | Worker/world lifetime | Worker thread coordinates ticks; native phase jobs use exclusive domains | sparse bounded native chunks on Linux; fixed-size GDScript arrays in fallback |
+| Selected cellular world | Desktop CyberSimulationWorker; Web controller; adapter owns native World | Exclusive owner and dispatched native jobs | Owner handles tick/emission/reset; native jobs mutate exclusive domains | Owner/world lifetime | Desktop pacing Thread or synchronous Web main callback | Bounded native sparse storage; finite GDScript arrays only in desktop fallback |
 | Godot test RigidBody2D nodes | Godot scene/PhysicsServer2D | Main/physics callbacks and shader-parameter copy | PhysicsServer2D plus main-thread coupling application/reset | Scene lifetime | Allowed Godot physics/main context only | Three fixed test nodes; no per-cell objects |
 | Packed rigid-body input samples | CyberSimulationWorker input boundary | Worker after mutex latch | Godot physics callback under mutex replacement | Until replaced by a newer complete sample | Between worker steps | Dynamic packed array; current rectangle proof caps accepted body IDs at 16 |
-| Rigid-body occupancy mask | CyberNativeCellWorld preferred; CyberCellWorld fallback | Cellular rules and sampled character on worker | Worker rasterization stage only | Worker/world lifetime; contents rebuilt per sample | Before overlap/emission/character/cell work | Native transient body-ID field is separate from authoritative material; fallback uses one byte per finite proof cell |
+| Rigid-body occupancy mask | Native World owns transient field; CyberNativeCellWorld coordinates projection; CyberCellWorld owns fallback array | Cellular jobs and sampled character | Exclusive owner rebuilds and reconciles before native phase dispatch | World lifetime, rebuilt per accepted sample | Desktop pacing Thread or Web main-thread coupling stage | Separate body-ID field; never material identity |
 | Packed rigid-body coupling results | CyberSimulationSnapshot | Godot physics callback | Worker before immutable publication | Snapshot lifetime | After overlap/cellular observations | Current result is bounded by accepted body count; sample IDs prevent duplicate application |
 | Worker frame inputs | CyberSimulationWorker | Worker | Godot main thread under mutex | Replaced as input changes | Between worker steps | Dictionary-based; no bounded schema |
 | Worker material-emission queue | CyberSimulationWorker | Worker | Main thread under mutex; paint is one wrapper/producer | Until drained | Before simulation step | Dynamic Array; no reported capacity; commands contain material IDs, never UI slots |
@@ -51,9 +58,27 @@ which job may write, authoritative cell owner, phase write domain, snapshot life
 The GDScript snapshot wrapper remains writable as a language type, so the worker
 enforces immutability at publication: pending packed arrays are deep-copied into
 a cached generation before their references cross to the main thread. Merely
-retrieving a snapshot does not retire it. The main thread validates every patch,
+retrieving a snapshot does not retire it. For the desktop handoff, the main thread validates every patch,
 updates the texture, and only then acknowledges the render serial. Rejection
 leaves the pending payload unacknowledged and requests a complete refresh.
+
+Web uses copied native patch packets on the same main thread rather than the
+desktop mutex/acknowledgement handoff. Native phase workers still have no Godot
+object access. [Tick/threading](simulation-tick-and-threading.md) describes the
+different owner and character/body/cell order.
+
+CYSD1 export/import requires exclusive World ownership. Export temporarily
+clears the transient obstacle field to read stored-cell temperature; the owner
+must rebuild body occupancy before the next cellular tick. Import validates and
+constructs a candidate before swapping it into the adapter. These are finite
+level operations, not background I/O or exact replay checkpoints. Sources:
+[demo payload](../../native/include/cybersand/demo_snapshot.hpp),
+[bridge installation](../../godot/native_extension/cyber_demo_bridge.hpp).
+
+Source anchors: [World](../../native/include/cybersand/world.hpp),
+[native exchange](../../native/src/render_snapshot.cpp),
+[desktop publication](../../godot/scripts/simulation_worker.gd), and
+[Web controller](../../godot/scripts/web_demo_controller.gd).
 
 ## Approved authoritative buffers
 

@@ -4,11 +4,18 @@ status: Approved design
 scope: Current public surfaces and documentation-level contracts required between Godot, rigid bodies, scheduler, jobs, storage, transfers, publication, and reconfiguration
 keywords: [interface, contract, rigid body sample, gameplay command, gameplay result, immutable dirty snapshot, TileJob, transfer, reconfiguration]
 related-documents: [../architecture/module-boundaries.md, ../architecture/rendering-and-gameplay-bridges.md, ../architecture/rigid-body-and-cellular-coupling.md, invariants.md]
-last-reviewed: 2026-08-28
+last-reviewed: 2026-09-08
 implementation-state: Legacy and versioned native C APIs, reusable immutable render exchange/lease contracts, and a copied Godot dirty-RG8 adapter are Current surfaces; generalized GameplayBridge schemas remain Approved design or Planned.
 ---
 
 # Interfaces and message contracts
+
+Evidence scope (2026-09-08): **Current** below describes inspected source in the
+reconstructed local snapshot, not a verified Git HEAD or an all-platform test pass.
+See the [documentation audit](../audits/2026-09-08-documentation-audit.md) for
+source identity and dated validation; [M11 audit records](../audits/m11/README.md)
+retain historical scope. **Approved design** means Approved direction; Planned,
+Deferred, and Rejected statements do not claim implementation.
 
 ## At a glance
 
@@ -21,7 +28,7 @@ implementation-state: Legacy and versioned native C APIs, reusable immutable ren
 - Contract names here are documentation anchors, not implemented type names.
 - Every payload becomes immutable before crossing its ownership boundary.
 - Failure/pressure behavior must be explicit before implementation.
-- Exact field lists, numeric types, ABI, queue structures, and Godot methods remain undecided.
+- Current C ABI and private adapter layouts are defined in source; final generalized gameplay/job/reconfiguration layouts remain undecided.
 
 ## Search anchors
 
@@ -31,7 +38,7 @@ public interface exists, message schema, gameplay command contract, TileJob inpu
 
 ### Native C API
 
-native/include/cybersand/c_api.h exposes functions for:
+[native/include/cybersand/c_api.h](../../native/include/cybersand/c_api.h) exposes functions for:
 
 - world creation/destruction;
 - cell get/set;
@@ -56,12 +63,14 @@ publication contracts, but there is still no generalized GameplayBridge.
 
 ### Godot worker surface
 
-godot/scripts/simulation_worker.gd exposes GDScript methods for starting/stopping
+[godot/scripts/simulation_worker.gd](../../godot/scripts/simulation_worker.gd) exposes desktop GDScript methods for starting/stopping
 the worker, setting frame inputs, queueing simulation requests, resetting,
 obtaining a current snapshot, acknowledging a successfully uploaded render
 serial, and requesting a full render refresh. Retrieval alone never acknowledges
 or retires render data. Inputs and acknowledgement state use Godot containers
-and mutex protection.
+and mutex protection. The [Web controller](../../godot/scripts/web_demo_controller.gd)
+uses synchronous main-thread native calls and does not instantiate this worker
+queue/snapshot protocol.
 
 `cybersand_world_resident_cell_bytes` reports hot Cell, activity metadata, and
 optional temperature vector capacity. TickStats reports owned tick-time chunk
@@ -69,7 +78,7 @@ and temperature allocations. Neither is a process-wide memory profiler.
 
 ### Snapshot surface
 
-CyberSimulationSnapshot in simulation_snapshot.gd contains public data fields
+[CyberSimulationSnapshot](../../godot/scripts/simulation_snapshot.gd) contains public data fields
 and is treated as immutable after publication. Render fields carry serial,
 channel count, full-refresh flag, rectangle metadata, and copied patch bytes.
 The language/type does not enforce deep immutability, so the worker duplicates
@@ -87,7 +96,9 @@ slot ownership even if the exchange facade/handle is destroyed.
 
 ### Current GDScript rigid-body sample/result surface
 
-`CyberRigidBodyCoupling` defines a prototype-only packed layout. Each input
+[CyberRigidBodyCoupling](../../godot/scripts/rigid_body_coupling.gd) defines a
+prototype-only packed float32 layout (`INPUT_STRIDE = 11`, `RESULT_STRIDE = 9`,
+at most 16 accepted bodies). Each input
 contains body/sample identity, rectangle transform/size, velocity, angular
 velocity, and mass. Each result echoes body/sample identity with impulse,
 positional correction, contact count, displaced-cell count, and unresolved-cell
@@ -165,8 +176,10 @@ Exact coordinates, dimensions, margin representation, and multi-camera policy ar
 
 ## Rigid-body coupling contract
 
-Status: **Current** for the rectangular GDScript proof; generalized native form
-is **Approved design**.
+Status: **Current** for the native rectangle adapter and alternative GDScript
+proof; generalized shape/queue interfaces are **Approved design**. Native
+projection iterates accepted IDs in ascending order; fallback projection uses
+input order. See [coupling](../architecture/rigid-body-and-cellular-coupling.md).
 
 | Property | Requirement |
 |---|---|
@@ -214,21 +227,26 @@ Exact fields, categories, sort tuple, conflict priority, and arithmetic represen
 
 ## Immutable dirty snapshot contract
 
-Status: **Current** for the platform-neutral native publication layer;
-**Planned** for Godot consumption.
+Status: **Current** for native publication and copied Godot consumption.
+Direct Godot consumption of the C lease API is not implemented; the adapter
+copies native leases into Godot value arrays.
 
 | Property | Approved requirement |
 |---|---|
 | Producer | One serialized native coordinator after authoritative mutation/tick |
-| Consumer | Concurrent lease holders now; future Godot RenderBridge |
-| Data | Ordered world rectangles plus tightly packed material ID/`state_a` bytes |
+| Consumer | Concurrent native lease holders and the Current copied Godot adapter |
+| Data | Ordered world rectangles plus two-byte material ID/condition projection; condition is material-selected state_a, state_b or zero |
 | Lifetime | Stable until the final lease releases its slot |
 | Capacity | Explicit slot count and patch/byte capacity per slot; patch/byte high-water observed |
 | Dirty safety | Backpressure/capacity failure leaves World dirty bounds unacknowledged |
 | Failure | Non-blocking NoChanges/Published/Backpressure/CapacityExceeded result |
 
-Production defaults, Godot texture mapping, palette-change messages,
-compression, and optional coalescing beyond chunk dirty rectangles remain undecided.
+The Current finite Godot adapter selects three slots, 64 patches per slot,
+and 2,097,152 bytes per slot; these are prototype defaults in
+[create_world](../../godot/native_extension/cyber_native_cell_world.cpp).
+Godot maps material/condition to RG8 and uploads the full texture after CPU
+patching. General production defaults, palette messages, compression and
+coalescing beyond Current accumulation/full-refresh recovery remain Planned.
 
 ## Capacity reconfiguration transition
 
@@ -246,9 +264,26 @@ The state-machine names, synchronous/asynchronous API, and caller response are u
 
 ## World serialization contract
 
-Status: **Planned**.
+**Current, finite level scope:** [CYSD1 codec](../../godot/scripts/demo_save_codec.gd)
+encodes a 1024×1024 level with a 56-byte versioned header, bounded JSON metadata,
+DEFLATE world payload, SHA-256 integrity and Base64 text. Each native cell stores
+material/state_a/state_b/LE16 temperature (five bytes). Metadata stores the demo,
+player, selected material/options and up to three Physics Pit body records
+(position, rotation, velocity, angular velocity, sleeping).
 
-WorldStorage must eventually stage a versioned authoritative representation without exposing active mutable buffers to I/O. File format, compression, snapshot semantics, I/O threading, backpressure, migration, and durability are not specified.
+[CyberDemoBridge](../../godot/native_extension/cyber_demo_bridge.hpp) validates
+and reconstructs a fresh World before swapping it into the adapter. Calls
+require exclusive ownership at a safe boundary. Export is not const: it clears
+the transient obstacle projection while copying stored-cell temperatures, so
+the owner must rebuild body occupancy before the next cellular tick.
+
+**Planned:** generalized sparse-world persistence, streamed I/O/backpressure,
+migrations and exact replay checkpointing. CYSD1 omits tick/epoch, activity/sleep
+state, pending events, capacities, transient masks, scheduler/controller state
+and Rapier internal solver state. An exact re-export proves level payload
+restoration only. No durable exact-replay format or general strict-mode switch
+exists; [hash coverage limits](../architecture/determinism-and-boundary-transfers.md#replay-state-coverage)
+apply even when native fixture hashes match.
 
 ## Contract review checklist
 

@@ -4,17 +4,27 @@ status: Ambiguous
 scope: Historical milestone architecture notes retained for provenance
 keywords: [legacy architecture, current prototype, historical plan, cybersand World]
 related-documents: [README.md, architecture/overview.md, reference/status-and-roadmap.md]
-last-reviewed: 2026-08-27
-implementation-state: Legacy document; it mixes historical and intended behavior and is superseded by the status-labelled architecture set and Current native Linux runtime.
+last-reviewed: 2026-09-08
+implementation-state: Historical record only; earlier storage, serial-threading, bridge, and postponed-system claims below are superseded. Use the focused architecture and current local audit.
 ---
 
 # Architecture baseline
 
+**Historical reference — not an implementation specification.** The retained
+milestone prose below mixes early native, GDScript fallback, and proposed
+behavior. Words such as "current", "now", and "planned" in that record belong
+to its original milestone, not the 2026-09-08 local snapshot. In particular,
+16-bit IDs, 64-bit cell epochs, deferred native jobs, and a future-only native
+bridge are obsolete. Do not implement these historical alternatives from this
+document. Use [architecture overview](architecture/overview.md),
+[current status](reference/status-and-roadmap.md), and the
+[local identity/evidence audit](audits/2026-09-08-documentation-audit.md).
+
 ## At a glance
 
 - Purpose: preserve the architecture thinking shipped with the current milestone.
-- **Current**, superseding this history: native World drives bundled Linux and Windows x86_64 builds, with GDScript retained as an unsupported-architecture fallback.
-- **Ambiguous**: statements below may describe earlier standalone/fallback states rather than the preferred runtime.
+- **Current**, superseding this history: native World drives native/Web adapters with phased jobs; desktop fallback remains a separate reduced model.
+- Historical: source/binary platform availability and executable validation must be checked separately.
 - **Approved design**: use the lowercase architecture documents for production module boundaries.
 - Non-goal: this legacy file is not the authoritative target specification.
 
@@ -28,7 +38,7 @@ legacy architecture baseline, native library owns state claim, historical owners
 - [ADR-002](decisions/ADR-002-double-buffered-tile-jobs.md)
 - [Current status](reference/status-and-roadmap.md)
 
-## Ownership
+## Historical ownership record
 
 The native `cybersand` library owns cell state, chunk activity, deterministic
 updates, and bulk pixel extraction. Godot owns presentation, input, gameplay
@@ -51,7 +61,7 @@ sampling coordinates rather than moving the world array. This prevents the
 finite GDScript backing store from leaking loaded-buffer coordinates into future
 gameplay APIs.
 
-## Runtime thread ownership
+## Historical runtime thread ownership
 
 The runnable proof now gives one dedicated `Thread` exclusive ownership of
 `CyberCellWorld` and `CyberSampledCharacter`. The main thread never reads or
@@ -71,7 +81,7 @@ separates frame responsiveness from simulation throughput while preserving the
 deterministic in-place reference order. Native multicore chunk jobs still need
 staged boundary buffers before several workers can safely advance cells.
 
-## Current cell storage
+## Historical cell storage
 
 Each chunk currently stores structure-of-arrays fields:
 
@@ -82,7 +92,7 @@ Each chunk currently stores structure-of-arrays fields:
 The epoch array is intentionally straightforward for this milestone. It is a
 candidate for reduction to 16 or 32 bits once wraparound behaviour is tested.
 
-## Determinism
+## Historical determinism direction
 
 - Sparse chunks use hash-based storage, but every order-sensitive traversal is
   explicitly sorted.
@@ -142,7 +152,7 @@ to Godot. Generalized shapes, the native bridge, and character participation in
 that mask remain **Planned**. See
 [Rigid-body and cellular coupling](architecture/rigid-body-and-cellular-coupling.md).
 
-## Planned Godot bridge
+## Historical proposed Godot bridge
 
 The production bridge will be a thin `godot-cpp` GDExtension that wraps the
 native library. It will expose a `PixelWorld` RefCounted object and bulk methods:

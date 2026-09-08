@@ -14,6 +14,10 @@
   "release_asset_size_bytes": 48701845,
   "release_published_at": "2026-08-10T08:03:25Z",
   "release_asset_sha256": "73b46bfe2cfc40e3875f4f367478bbd2b1090f563eeef57f4fed3fc274aae1f0",
+  "web_libraries": {
+    "threaded": {"path": "bin/godot_rapier.wasm", "sha256": "b4020962f6ff6c5f2c07436a94cdbf7b5e2096a5fc5832e4ff5526378ce88528"},
+    "compat": {"path": "bin/wasm-nothreads/godot_rapier.wasm", "sha256": "5ff6933670c1377c24dcbac30d67758a307165eacdcbd33b25bf01669577c4c2"}
+  },
   "activation_status": "selected; Godot 4.7 Linux x86_64 runtime preflight passed 2026-08-27",
   "notes": [
     "The official v0.35.2 2D single release asset was downloaded, hashed, and vendored.",

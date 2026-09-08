@@ -4,11 +4,18 @@ status: Approved design
 scope: Hard rules, reasons, prohibited shortcuts, and deliberately postponed scope
 keywords: [technical debt, coupling, allocation, mutex, Godot threads, GPU authority, non-goals]
 related-documents: [overview.md, module-boundaries.md, ../reference/invariants.md]
-last-reviewed: 2026-08-27
-implementation-state: These rules govern future implementation; strict native replay and partial bounded-approximation behavior are Current, while production fidelity controls remain incomplete.
+last-reviewed: 2026-09-08
+implementation-state: These rules govern future implementation; native repeat-run/worker-parity fixtures and fixed secondary cadence are Current, while production fidelity controls remain incomplete.
 ---
 
 # Architectural principles and non-goals
+
+Evidence scope (2026-09-08): **Current** below describes inspected source in the
+reconstructed local snapshot, not a verified Git HEAD or an all-platform test pass.
+See the [documentation audit](../audits/2026-09-08-documentation-audit.md) for
+source identity and dated validation; [M11 audit records](../audits/m11/README.md)
+retain historical scope. **Approved design** means Approved direction; Planned,
+Deferred, and Rejected statements do not claim implementation.
 
 ## At a glance
 
@@ -34,7 +41,7 @@ no Godot API on workers, no per-cell mutex, no hot allocation, no full-world cop
 | Godot scene-tree, rendering, audio, and gameplay-object access stays off simulation workers. | **Approved design** | Godot object access has thread and lifetime constraints. | Races, invalid object access, and frame-dependent behavior. |
 | Simulation state changes only on fixed ticks. | **Approved design** | Decouples physics from render rate. | Variable-rate physics and replay divergence. |
 | Worker completion timing never decides write ownership or conflict resolution. | **Approved design** | Approximate gameplay may sample work, but thread races must not become a hidden rule. | Race-dependent corruption and irreproducible ownership. |
-| Strict validation mode preserves deterministic phase, job, transfer, and deferred-event results. | **Current**, native tested scope; broader mode **Approved design** | Exact replay remains a powerful regression oracle without constraining every gameplay approximation. | Losing the ability to localize solver regressions. |
+| Native fixtures compare deterministic phase/job/explosion results; a general strict-mode switch remains Approved. | **Current**, native tested scope; broader mode **Approved design** | Exact replay remains a powerful regression oracle without constraining every gameplay approximation. | Losing the ability to localize solver regressions. |
 | Gameplay fidelity may reduce distant/slow work through explicit bounded policies while preserving local collision and conservation invariants. | **Approved design** | Frame-rate stability is a gameplay requirement. | Single-digit FPS when large regions wake. |
 | Godot reads immutable snapshots only. | **Current** native publication and copied Godot adapter | Presentation must never race simulation writes. | Tearing, locks around the renderer, and undefined reads. |
 | Buffering, where selected, is restricted to active regions and required fields. | **Approved design** | World scale must not imply full-world copy cost. | Memory growth proportional to all stored cells. |
@@ -78,14 +85,18 @@ Status: **Explicitly rejected**. GPU compute is not presently the authority for 
 | Exception | Status | Evidence |
 |---|---|---|
 | CyberCellWorld mutates a finite cell array in place. | **Current** | godot/scripts/cell_world.gd |
-| The native World also updates chunks in place and can allocate chunks during movement. | **Current** | native/src/world.cpp, World::tick and ensure_chunk |
-| Simulation executes on one Godot worker, not a native pool. | **Current** | godot/scripts/simulation_worker.gd |
-| Changed Godot revisions duplicate and upload the whole finite cell array. | **Current** | simulation_worker.gd and main.gd |
+| Native World updates in place; lazy coordinator preparation may allocate chunks during a tick, while preallocated regions avoid tracked chunk/temperature allocations. | **Current** | native/src/world.cpp, World::tick and ensure_chunk |
+| Desktop has one Godot pacing owner plus an internal native phase pool; Web main-thread ownership waits for native completion. | **Current** | [Tick/threading](simulation-tick-and-threading.md) |
+| Ordinary native revisions copy dirty RG8 patches; Godot still uploads the full backing texture. Full-cell copying remains a fallback/recovery path. | **Current** | [Render bridge](rendering-and-gameplay-bridges.md) |
 | Material behavior is implemented through switches. | **Current** | native/src/world.cpp and cell_world.gd |
 | The GDScript proof temporally distributes excess active blocks and sparsely samples broad liquid pressure searches. | **Current** | godot/scripts/cell_world.gd |
 | The Godot renderer consumes immutable worker snapshots independently of worker tick completion. | **Current** | godot/scripts/simulation_worker.gd and main.gd |
 
-These are evidence about the prototype, not approved precedents for the production backend.
+These are inspected prototype boundaries and exceptions, not evidence that every
+Approved production constraint is enforced. Source: [World](../../native/src/world.cpp),
+[desktop worker](../../godot/scripts/simulation_worker.gd),
+[fallback](../../godot/scripts/cell_world.gd), and
+[renderer](../../godot/scripts/main.gd).
 
 ## Non-goals
 

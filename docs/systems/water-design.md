@@ -4,11 +4,19 @@ status: Current
 scope: Current discrete and fixed-point Water semantics, phased pairwise and buffered candidates, conversion constraints, stable rest, render-only dithering, tests, and diagnostics
 keywords: [water shimmer, static heap, fixed-point mass, pairwise transfer, buffered flux, conservation, phased water, dithered water]
 related-documents: [materials-and-rule-kernels.md, ../architecture/determinism-and-boundary-transfers.md, ../operations/troubleshooting.md]
-last-reviewed: 2026-08-27
+last-reviewed: 2026-09-08
 implementation-state: Preferred runnable Godot Water is the native conserved 8-bit mass solver with phased pairwise transfers, a 12-tick coherent-emission delay, optional supported-film adhesion, and stable render-only mass dithering; native Paste/Slush use viscous heap-capable whole-cell yield. The older discrete GDScript solver remains a platform fallback.
 ---
 
 # Water design
+
+Current implementation anchors: [World transfer rules](../../native/src/world.cpp),
+[descriptors](../../native/include/cybersand/material.hpp),
+[fallback rules](../../godot/scripts/cell_world.gd), and
+[native Water fixtures](../../native/tests/test_world.cpp). The
+[2026-09-08 audit](../audits/2026-09-08-documentation-audit.md) distinguishes this
+local source review from dated runtime evidence. Native semantics also apply
+to the Web adapter; a platform name alone is not a passing-test claim.
 
 ## At a glance
 
@@ -18,12 +26,12 @@ implementation-state: Preferred runnable Godot Water is the native conserved 8-b
 - **Current**: native Water stores mass from 1–255 in compact `state_a`; zero mass is Empty.
 - **Current**: exact pairwise transfers run under phased exclusive ownership.
 - **Current**: lateral transfer stops when adjacent mass differs by at most one unit.
-- **Current**: settled pools become hash-stable and sleep; a closed fixture conserves exact mass on every tick.
+- **Current**, fixture scope: settled pools become `content_hash()`-stable and sleep; a closed fixture checks exact mass each tick. `state_hash()` includes the advancing tick/epoch and is not a rest-stability oracle.
 - **Current**: native Paste and Slush exercise viscosity-gated heap-capable whole-cell yield; broader gels and trapped-fluid materials remain future uses.
 - **Current**: the Godot RG8 material/condition path uses stable coordinate/mass coverage dithering without mutating authority.
 - **Planned**: immutable-current active-only buffered flux remains a fallback only if future liquid/field needs justify it.
 - **Explicitly rejected**: starting with a general fluid solver or a separate competing liquid world.
-- Unresolved: generalized reaction mass accounting, serialization encoding, and whether a future field needs buffered flux.
+- Unresolved: generalized reaction mass accounting, full replay persistence, and whether a future field needs buffered flux. Finite CYSD1 level encoding exists.
 
 ## Search anchors
 
@@ -120,7 +128,7 @@ requirements for future reactions/serialization.
 - A closed pure-Water fixture neither creates nor destroys fixed-point liquid mass.
 - Cross-core and cross-chunk transfers count exactly once.
 - **Planned** interacting conversions identify and account for explicit sources/sinks rather than silently losing mass.
-- Sleep, wake, and replay do not change total mass; serialization remains to be proved when implemented.
+- Sleep/wake preserve mass in closed fixtures. CYSD1 preserves the encoded mass byte at level reconstruction; exact post-load replay continuation remains Planned.
 
 ### Bounded flow
 
@@ -133,7 +141,7 @@ requirements for future reactions/serialization.
 
 - Equivalent resting cells do not swap solely to create activity.
 - With no external command, topology change, or interacting field, settled authoritative water reaches a stable state.
-- After settling, replay hashes and authoritative dirty state remain unchanged for an explicit test observation window.
+- After settling, cell-content hashes remain unchanged for an explicit test observation window; tick/epoch replay hashes continue to advance. Render-only animation does not dirty authoritative state.
 - Dither animation or texture variation cannot wake water or modify mass.
 
 ### No static liquid heap
@@ -141,7 +149,7 @@ requirements for future reactions/serialization.
 - In a connected container under the minimal liquid model, water must not remain as a sand-like slope solely because a per-cell travel budget expired.
 - The reference fixture must demonstrate lateral leveling appropriate to its approved simplified physics.
 - The wide discrete reference fixture must reach a maximum occupied-column height difference of two cells within 360 ticks.
-- The Current native fixture bounds settled cross-container column-mass variation below 1/32 of a cell; tighter canonical remainder distribution may be evaluated later.
+- The Current native fixture permits at most 8/255 of a cell in settled cross-container column-mass variation; tighter canonical remainder distribution may be evaluated later.
 
 ## Minimal shared-grid representation
 
@@ -163,9 +171,10 @@ requirements for future reactions/serialization.
 - lateral rest tolerance: one integer unit;
 - execution: direct pairwise transfer in the phased backend.
 
-Serialization encoding and generalized source/sink reaction accounting remain
-**Planned**. These Current choices can be revised only with migration and fixture
-evidence.
+The finite demo payload encodes the mass byte as `state_a`; see
+[level reconstruction](world-storage-and-interest-region.md). General sparse
+world/replay serialization and source/sink reaction accounting remain **Planned**.
+These Current choices can be revised only with migration and fixture evidence.
 
 ## Conversion rules
 
@@ -181,8 +190,8 @@ The final reference must explicitly define:
 8. how conversions contribute to dirty and wake state.
 
 Direct `set`/paint creates a full 255-unit Water cell. Movement conversions are
-implemented. Exact mass-return commands, serialization, and generalized reaction
-accounting remain **Planned**.
+implemented. Exact mass-return commands, full replay persistence, and generalized
+reaction accounting remain **Planned**; finite level export/import is Current.
 
 ## Current phased pairwise sequence
 
@@ -191,7 +200,7 @@ accounting remain **Planned**.
 3. transfer an exact bounded integer amount directly between the pair;
 4. defer or postpone ownership-edge pairs using one documented policy;
 5. enforce conservation, capacity, material conversion, wake, and dirty invariants;
-6. produce a replay hash covering all future-affecting liquid state.
+6. compare `state_hash()` at matching ticks for native fixture parity. This is not a complete external-input or stored-replay contract.
 
 ## Planned buffered flux fallback
 
@@ -234,8 +243,9 @@ quiet-tick threshold. Visual dither never marks activity or dirty authority.
 `World::copy_rgba` hashes stable world coordinates to a byte threshold and emits
 Water color only when the threshold is below mass. Thus partial mass changes
 coverage, while unchanged authoritative state produces an unchanged image.
-The mass-aware path is **Current** in the bundled Linux and Windows x86_64 Godot adapter. Broader
-platform binaries and accessibility controls remain **Planned**.
+The mass-aware native Godot path uses RG8 condition bytes and the palette shader,
+including Web; `copy_rgba` is a separate native extraction API. Broader platform
+runtime validation and accessibility controls remain incomplete.
 
 ## Acceptance fixtures
 
@@ -247,7 +257,7 @@ platform binaries and accessibility controls remain **Planned**.
 - tile-edge crossing;
 - chunk-edge crossing;
 - repeated sleep/wake;
-- serialization round trip when serialization exists.
+- CYSD1 level round trip; future sparse-world/replay serialization round trips.
 
 Each fixture requires exact equality in fixed-point total mass unless the test explicitly models a source or sink.
 
@@ -261,7 +271,10 @@ Each fixture requires exact equality in fixed-point total mass unless the test e
 - mirrored fixtures reveal directional and phase-order bias;
 - the candidate comparison records behavioral differences rather than hiding them.
 
-The observation duration and geometry are test-fixture configuration decisions not yet frozen.
+The existing native settling fixture allows up to 2,000 ticks, requires 40 stable
+content-hash observations, then checks 40 more ticks and sleeping. These are
+Current fixture bounds, not production guarantees for every geometry or mixture.
+Additional acceptance cases above are requirements, not a claim all have run.
 
 ## Troubleshooting decision tree
 

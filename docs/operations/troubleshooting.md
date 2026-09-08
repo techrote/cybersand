@@ -4,8 +4,8 @@ status: Current
 scope: Symptom-to-subsystem routing, wake-up overload, scanline artifacts, rigid-body coupling, current and planned diagnostics, safe corrective actions, and escalation conditions
 keywords: [low FPS, wake spike, alternating lines, rigid body overlap, one core, water shimmer, water heap, boundary seam, dirty upload, capacity exhaustion]
 related-documents: [profiling-observability-and-performance.md, testing-validation-and-replay.md, ../architecture/rigid-body-and-cellular-coupling.md, ../systems/water-design.md]
-last-reviewed: 2026-08-28
-implementation-state: Current guidance distinguishes the preferred native phased runtime from the adaptive GDScript fallback; Rapier is manually stepped and focused Godot 4.7 Linux checks pass.
+last-reviewed: 2026-09-08
+implementation-state: Guidance distinguishes desktop asynchronous Godot ownership, synchronous Web ownership and the phased native solver from the GDScript fallback. Rapier manual-step evidence is platform/date scoped in the runbook.
 ---
 
 # Troubleshooting guide
@@ -13,7 +13,8 @@ implementation-state: Current guidance distinguishes the preferred native phased
 ## At a glance
 
 - Purpose: route a symptom to the likely subsystem before changing algorithms.
-- **Current**: the preferred Linux runtime coordinates on one Godot worker and dispatches cellular phase jobs through a persistent native pool.
+- Scope: use the [current audit](../audits/2026-09-08-documentation-audit.md) for local source and test identity; historical M11 or browser passes do not certify every current path.
+- **Current**: desktop coordinates on one Godot worker and dispatches cellular phase jobs through a persistent native pool; both Web profiles run the outer tick synchronously on Godot's main thread.
 - **Current**: preferred Water uses native conserved mass; directed discrete Water remains in the GDScript fallback.
 - **Current**: compact dirty patches cross the bridge, but each changed presentation still performs a full RG8 texture update.
 - **Current**, fallback only: adaptive block stride bounds wake-up work; preferred native jobs remain full cadence in the selected region.
@@ -41,12 +42,12 @@ FPS low, only one CPU core, water flickers, water piles like sand, seam at chunk
 | Water looks dithered but state is stable | Render-only presentation | snapshot/render output only | Adjust dither accessibility/pattern, not authoritative water |
 | Water forms a static heap | Flow mode, pressure look-ahead/flux, or premature sleep | Godot flow_budget/flow_direction and look-ahead; native column mass/activity | Confirm Water uses free-flow mode; retain finite budget/yield only for paste/slush |
 | Smoke remains below Water/Sand | Density direction or target permission | source/target descriptor traits, vertical delta, update epoch, wake state | Enable upward exchange on Smoke and acceptance on the intended medium; do not make Wall universally permeable |
-| Boundary seam | Halo, transfer, merge, or wake | edge fixture, transfer totals, neighbor activity | Fix shared boundary contract; never special-case world coordinates |
+| Boundary seam | Current phase write domains, lookup or wake; future buffered halos/transfer if implemented | edge fixture, material totals, neighbor activity | Fix shared boundary contract; never special-case world coordinates |
 | Replay differs by worker count | Job input, transfer ordering, hash coverage, race | first divergent tick/stage, transfers, state hash | Stop performance work; restore deterministic stage isolation |
 | Dirty uploads approach full region | False authoritative changes or coarse dirty bounds | dirty cells/tiles, native required snapshot bytes, future Godot upload bytes | Separate render animation from authority; inspect which chunk bounds coalesced under pressure |
 | Capacity exhausted | Task/transfer/snapshot/active-chunk reservation | use/capacity/high-water and request size | Enter explicit safe reconfiguration or approved failure path |
 | Material passes through a body | Missing/stale mask, high-speed unswept motion, or illegal direct cell read | body sample ID/age, occupancy mask, target read path | Restore start-of-stage mask reads; for high speed use bounded sweep/substeps rather than per-cell physics objects |
-| Body tunnels through thin Wall | Asynchronous unswept sample or stale correction | worker step age, body velocity, contact/correction counts | Reduce body speed for the proof; implement bounded swept/substep coupling before production |
+| Body tunnels through thin Wall | Stale desktop sample, sweep bound, rotation or correction limits | platform owner, sample age, body velocity, contact/correction counts | Reproduce within existing bounded sweep/CCD fixture, then extend targeted coverage; avoid assuming generalized collision correctness |
 | Body deletes or traps pixels | Ejection search exhausted or overlap ordering defect | displaced/unresolved counts and local empty capacity | Retain/report unresolved material; do not silently delete it; later route explicit overflow to particles |
 | Memory grows during stable run | Hidden allocation or retained storage/snapshots | allocation count, memory categories, chunk/snapshot lifetime | Find owner/lifetime leak; do not raise budget blindly |
 | Unsafe Godot thread warning/crash | Worker accessing scene/render/gameplay object | thread/context and call site | Move access behind RenderBridge or GameplayBridge on permitted thread |
@@ -91,6 +92,12 @@ native ticks, and publication. On bundled Linux and Windows x86_64 builds, Cyber
 which dispatches eligible phase jobs to a configured persistent C++ worker pool.
 If the HUD reports `GDScript/1 thread`, the fallback is active.
 
+Web uses [web_demo_controller.gd](../../godot/scripts/web_demo_controller.gd)
+instead of that Godot Thread. Compatibility forces one native worker; threaded
+Web resolves the fixed Auto policy (2/4/6) when constructing the world and waits
+for all native work before returning from the tick. An internally parallel tick
+can therefore still block Web presentation. See [Web threading](web-threading.md).
+
 ### Current native diagnosis
 
 The dense checkpoint exposed about 19 jobs per phase. In the final hosted run,
@@ -101,12 +108,13 @@ intentionally ran sequentially. Diagnose:
 
 - too few active tiles may limit available parallelism;
 - uneven water/smoke occupancy may imbalance jobs;
-- transfer merge may dominate serial time;
+- current planning/domain preparation or completion may dominate serial time; a separate buffered transfer merge remains unimplemented;
 - memory bandwidth may limit scaling;
 - false sharing may keep cores busy without useful throughput.
 
-One/four-worker deterministic equivalence and TSan currently pass; preserve them
-while tuning.
+One/four-worker equivalence has runnable regressions; TSan passing evidence is
+historical Linux M11. Preserve those tests while tuning and record current-platform
+results separately in [testing](testing-validation-and-replay.md).
 
 ## Water shimmer
 
@@ -131,7 +139,7 @@ preventing all lateral leveling, because that reproduces static heaps.
 
 ## Water heaps
 
-Current Water should not exhaust its lateral budget: Water uses the free-flow
+The GDScript fallback Water should not exhaust its lateral budget: it uses the free-flow
 sentinel, while finite travel is reserved for yielding liquids. If a heap
 appears, inspect:
 
@@ -176,7 +184,8 @@ For a body/material failure, inspect:
 - whether Wall produces correction while movable material produces bounded ejection/reaction;
 - whether symmetric pressure contacts should cancel or support the body.
 
-The Current proof is asynchronous. Translation up to 32 pixels is reconciled
+The desktop proof is asynchronous; Web performs Rapier/body sampling and the
+cellular tick synchronously in its Godot callback. Translation up to 32 pixels is reconciled
 through at most 24 intermediate rectangle intervals before the endpoint mask is
 installed. Larger jumps are teleports and rotational-only coverage remains
 approximate; use selective CCD or bounded substeps for demonstrated remaining
@@ -189,15 +198,21 @@ Separate dependency faults from coupling faults:
 - a valid backend with poor body/material behavior remains a coupling-order or mask/reconciliation problem;
 - SceneTree state can lag authoritative server state, so inspect direct server observations during manual-step work.
 
+The [Rapier runbook](rapier-2d-migration-runbook.md) records the existing three-body
+thin-floor fixture: about 1.32 pixels transient centre penetration was accepted
+within a two-pixel bound. A fixture pass is not zero-penetration, general-shape or
+high-count proof. CYSD1 restores level/body values, not Rapier contact caches or
+an exact replay checkpoint.
+
 ## Nondeterminism
 
 1. Find the first divergent tick.
 2. Compare latched inputs/configuration.
 3. Compare selected jobs and their read views.
-4. Compare produced transfers before merge.
-5. Compare canonical merge output.
-6. Compare commit and activity/wake state.
-7. Confirm the hash covers all future-affecting state.
+4. For Current PhasedInPlace, compare each parity phase, prepared write domain and deferred external events.
+5. Compare per-job effects and deterministic phase completion; buffered transfer/merge diagnostics apply only to that unimplemented candidate.
+6. Compare committed cells and activity/wake state.
+7. Check hash coverage explicitly: the current state hash omits adhesion and transient coupling state; level hashes omit more.
 8. Vary completion timing while keeping inputs unchanged.
 
 Do not fix divergence by sorting only final cells if earlier semantics remain timing-dependent.
@@ -245,8 +260,8 @@ Unsafe reactions include clipping the region, dropping transfers, silently alloc
 Current safe investigations:
 
 - correlate per-worker work with active cells/transfers, not just job count;
-- inspect whether 32×32 tiles are too coarse for uneven activity;
-- distinguish merge bottleneck from worker imbalance;
+- distinguish 32×32 activity blocks from 64×64 scheduling cores before changing granularity;
+- distinguish serial planning/completion from worker imbalance; buffered transfer merge is a future candidate;
 - avoid material-specific queues that become hidden scheduler coupling;
 - preserve deterministic job and merge semantics while testing work distribution.
 
@@ -260,7 +275,11 @@ Simulation workers must not touch:
 - audio objects;
 - Godot physics objects.
 
-RenderBridge and GameplayBridge perform allowed translation/consumption. If a diagnostic requires Godot data, copy it into an approved immutable command/snapshot contract at the boundary.
+The current Godot worker uses exclusively owned script/native adapter values;
+the native C++ pool must not call Godot APIs. Scene-tree, rendering and Rapier
+operations remain main-thread work. RenderBridge/GameplayBridge name architectural
+roles, not proof that a generalized public bridge/queue API already exists. If a
+diagnostic requires scene state, copy values across an explicit owned boundary.
 
 ## Escalation conditions
 
