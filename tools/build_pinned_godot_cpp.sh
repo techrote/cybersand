@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# M11 artifact equality is opt-in historical reproduction, separate from current
+# compiler/source pin checks. Drift overrides never bypass an explicit M11 check.
+
 project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 target="${1:-}"
 godot_cpp_root="${GODOT_CPP_ROOT:-}"
@@ -146,7 +149,7 @@ if [[ ! -f "$expected_output" ]]; then
     exit 3
 fi
 actual_output_sha="$(sha256sum "$expected_output" | awk '{print $1}')"
-if [[ "$actual_output_sha" != "$expected_output_sha" && "${CYBERSAND_ALLOW_TOOLCHAIN_DRIFT:-0}" != "1" ]]; then
+if [[ "$actual_output_sha" != "$expected_output_sha" && "${CYBERSAND_VERIFY_M11_OUTPUT:-0}" == "1" ]]; then
     echo "godot-cpp build product differs from the pinned m11 release artifact" >&2
     echo "expected: $expected_output_sha" >&2
     echo "actual:   $actual_output_sha" >&2

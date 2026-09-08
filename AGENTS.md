@@ -30,7 +30,8 @@ design from conflicting source, ADR or historical claims.
 - Preserve bounded work and explicit capacity outcomes. Avoid hidden tick-time
   allocation, per-cell locks, per-material threads and full-world sparse work.
   These are requirements, not proof that every prototype path already meets them;
-  inspect the roadmap's partial-failure, allocation and region-sleep gaps.
+  preserve the failed-world quarantine and region pause/re-entry contracts; inspect
+  the roadmap for remaining allocation and physics gaps.
 
 Keep changes focused and add meaningful regressions for changed behavior. During
 iteration run the relevant tests; before release complete the feasible intended
@@ -52,9 +53,11 @@ at every implementation checkpoint. In particular:
 4. Preserve historical records and failures; add dated evidence with command,
    timeout, tools, fixture/profile/workers, hashes and explicit gaps.
 5. Run `python tools/ci/check_docs.py`, `python tools/ci/check_m11_consistency.py`,
-   the retrieval evaluation and appropriate focused tests. The M11 checker still
-   reports historical source hashes: disclose remaining failures; never rewrite
-   history to make it green. Review `git diff --check` and unintended source changes.
+   `python tools/ci/check_repository.py`, the retrieval evaluation and appropriate
+   focused tests. M11 checks retained records against the audited historical Git
+   revision; `--compare-working-tree` explicitly reports current-versus-M11 drift.
+   Never rewrite historical hashes. Follow the [separate validation gates](docs/operations/current-and-historical-validation.md)
+   and review `git diff --check` and unintended source changes.
 
 Keep the focused RAG hierarchy. Canonical ownership and the explicit retrieval
 manifest prevent duplicate answers; do not replace the hierarchy with one large document.

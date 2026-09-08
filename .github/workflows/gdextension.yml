@@ -1,4 +1,4 @@
-name: GDExtension build validation
+name: GDExtension build and current Godot regression
 
 on:
   push:
@@ -14,6 +14,9 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
   LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
@@ -66,7 +69,6 @@ jobs:
           GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
           SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
           SCONS_JOBS: "2"
-          CYBERSAND_ALLOW_TOOLCHAIN_DRIFT: "1"
           CYBERSAND_REAL_CXX: /usr/bin/g++-13
           LINUX_CXX: /usr/bin/g++-13
           CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
@@ -82,7 +84,6 @@ jobs:
           GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
           SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
           SCONS_JOBS: "2"
-          CYBERSAND_ALLOW_TOOLCHAIN_DRIFT: "1"
           LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
           WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
           CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
@@ -96,3 +97,29 @@ jobs:
       - name: Hash validation output
         run: |
           find "$RUNNER_TEMP" -maxdepth 1 -type f \( -name 'libcybersand_native*.so' -o -name 'cybersand_native*.dll' \) -exec sha256sum {} +
+
+      - name: Run current Linux runtime regressions and ABI check
+        if: matrix.target == 'linux'
+        run: |
+          timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          test -n "$GODOT_BIN"
+          chmod +x "$GODOT_BIN"
+          test "$($GODOT_BIN --version)" = "$GODOT_VERSION"
+          cp "$RUNNER_TEMP/libcybersand_native.linux.x86_64.so" godot/addons/cybersand_native/bin/
+          timeout 1m tools/check_linux_runtime_floor.sh
+          timeout 30m python3 tools/ci/run_godot_regressions.py --godot "$GODOT_BIN" --output build/godot-regressions
+          git diff --exit-code -- . ':!godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so'
+
+      - name: Retain current Linux runtime evidence
+        if: always() && matrix.target == 'linux'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: linux-godot-${{ github.run_id }}
+          path: |
+            build/godot-regressions/
+            ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+          if-no-files-found: error
+          retention-days: 30

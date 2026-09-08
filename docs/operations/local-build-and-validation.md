@@ -60,8 +60,11 @@ load the installed DLL: running them alone does **not** rebuild that DLL.
 Record its hash and source identity with the result. The wrapper allows 240 s
 for import, 180 s per Godot runner, and rejects Godot error output even with exit 0.
 
-The local `CYBERSAND_ALLOW_TOOLCHAIN_DRIFT=1` override permits historical output
-hash differences and bypasses some native compiler/dirty-source checks. It still
+M11 output byte equality now requires `CYBERSAND_VERIFY_M11_OUTPUT=1`; current
+builds keep compiler/source pin checks and identify their own tested outputs. See
+[validation policies](current-and-historical-validation.md). The existing local
+`CYBERSAND_ALLOW_TOOLCHAIN_DRIFT=1` override bypasses some compiler/dirty-source
+checks. It still
 requires the exact godot-cpp revision. Inspect that checkout explicitly; a local
 validation build with this override is not bit-identical M11 reproduction.
 

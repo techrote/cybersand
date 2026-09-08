@@ -60,3 +60,5 @@ to [storage](../systems/world-storage-and-interest-region.md), [activity](../sys
 and [tick ownership](../architecture/simulation-tick-and-threading.md). Dated
 [combined evidence](../audits/2026-09-08-issue-2-interest-regions.md) remains outside
 the default corpus; C02 has updated facts, and C03/C04 are new supplementary queries.
+
+Current runtime/source gates and immutable M11 retention use [separate validation policies](../operations/current-and-historical-validation.md).

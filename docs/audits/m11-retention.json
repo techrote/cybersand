@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+  "retained_record_commit": "b462e6b775eb7d866cff56ec991f84517b472e7f",
+  "normalization": "UTF-8 text, CRLF normalized to LF; binary source hashes use exact Git blob bytes",
+  "purpose": "Preserve the retained M11 records and legacy routes; verify the 28 BUILD_ID source hashes against the actual audited Git commit, never against current implementation by default.",
+  "files": {
+    "docs/ARCHITECTURE.md": "0a969455d61b0ab30f5feff59cf59ac8337c358cc3cd4b6e0b779bc5033b86f0",
+    "docs/BUILD_ID.md": "7a89c254ade720d22b7daef5a23869221ed98e1fb2191dad3daa784ff16a3dad",
+    "docs/LARGE_WORLD_PROOF.md": "e4fd47d3c06f8f20ba1236bc247a53c3e072d9fc0264bbb04493508786c1fdf9",
+    "docs/NEXT_MILESTONE.md": "071c2be740e061cba13c2d9b6eff7c1fc047d2fc6dbb4f47f63d7fbd2f50b47f",
+    "docs/PERFORMANCE.md": "ade546c75863ca8a4cb8125993e98fb9316738a161ddc86a0204d64d4c19cc6b",
+    "docs/audits/m11/README.md": "78335d52b938b8631c4473536f23162300a4bf6448a5ce9ef9978ec0d0e2bc44",
+    "docs/audits/m11/checkpoint.json": "1f21b01e1c7870ed3c297dd51accebe1418f81459bc2ec56d161001b06deac9b",
+    "docs/audits/m11/github-migration-validation.md": "f7d34c98336b3c495e8ba15abdc39c260410c38297295130eb5e1f43418af877",
+    "docs/audits/m11/m10-independent-audit-report.redacted.md": "ac15871537c8ad9883d351fc7362cbbbcdb78ef1d6459df07d8bee27e09e8fc1",
+    "docs/audits/m11/m11-completion-report.md": "8589a61fe8a6f4ddace96e4a4ad7126c686d08654e485bc5c22d73f9fa5bc138",
+    "docs/audits/m11/migration-source.json": "e8a103414d3181efcd2b43ad7f9efa16ad38dcb144dcd3556710d5400be753ac",
+    "docs/audits/m11/validation-summary.json": "59235c6a3e18584182276847f5c2c63a5ce24830a9d99e9ae4aefeac8a1e9fe5",
+    "docs/audits/pre-rag-rewrite-2026-09-08/README.md": "a15816ada90dc5ba179cc2d6296ea3ff8431c019b7aafb0f89c7a6ea6ef92643",
+    "docs/audits/pre-rag-rewrite-2026-09-08/cybersand-codex-development-handover.md.txt": "e5a199fec7843f1840b9e70351dbd9217af13f260994fc008611f1d6bd35b80d",
+    "docs/audits/pre-rag-rewrite-2026-09-08/rapier-2d-migration-runbook.md.txt": "b9e5af876c757657f49bd027cbbd6395d6a6a55059465b4fe13e7d2ca9575f02",
+    "docs/audits/pre-rag-rewrite-2026-09-08/status-and-roadmap.md.txt": "950fbe6e91a411ed3ad6cfa750d98a2f1e3359dd4046d56a9ea99898dd623347",
+    "docs/audits/pre-rag-rewrite-2026-09-08/testing-validation-and-replay.md.txt": "2e41b11dc63c9e2bdbbe3362a5cc8ebdaf0dd084b85e22131d991851a1aab754"
+  },
+  "legacy_checker": {
+    "path": "docs/audits/legacy-checkers/check_m11_consistency.py.txt",
+    "sha256": "4563428591901d2beaff49045db49a003e3b3ce605996bb7b51543651f10d575"
+  }
+}

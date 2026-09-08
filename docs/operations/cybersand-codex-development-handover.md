@@ -55,3 +55,12 @@ checks and the tested source/runtime identities. Commit locally when authorized.
 Preserve existing historical audit records. The former long handover and checkpoint
 tables are retained in the [historical record](../audits/pre-rag-rewrite-2026-09-08/README.md),
 excluded from ordinary current retrieval.
+
+## Publication and legacy validation follow-up
+
+The owner authorized finalising issues #1/#2 in PR #6. Preserve their separate
+commits and contracts. [Current validation and M11 retention](current-and-historical-validation.md)
+now have independent gates; original historical hashes stay unchanged.
+[Publication evidence](../audits/2026-09-08-validation-reconciliation.md) records
+Linux native/sanitizer results and the rebuilt-runtime CI transition. Remaining
+Web CI/export identity work remains issue #3.

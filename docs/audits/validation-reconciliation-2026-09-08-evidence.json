@@ -1,0 +1,137 @@
+{
+  "date": "2026-09-08",
+  "source_before_reconciliation": "22a19357e014112b5467d539f01e7928e54a15b0",
+  "history_ref": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+  "strict_m11": {
+    "status": "failed",
+    "scope": "historical M11 integrity; no current runtime acceptance",
+    "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+    "records_checked": 18,
+    "source_hashes_checked": 28,
+    "compare_working_tree": true,
+    "working_tree_differences": [
+      "native/include/cybersand/world.hpp",
+      "native/src/world.cpp",
+      "native/tests/test_world.cpp",
+      "godot/native_extension/cyber_native_cell_world.hpp",
+      "godot/native_extension/cyber_native_cell_world.cpp",
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/scripts/simulation_worker.gd",
+      "godot/scripts/simulation_snapshot.gd",
+      "godot/scripts/main.gd",
+      "godot/scripts/rapier_physics_bridge.gd",
+      "godot/project.godot"
+    ],
+    "errors": []
+  },
+  "commands": {
+    "final-current-gate": {
+      "command": [
+        "C:/kybersand/.local/python/Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "tools/ci/check_repository.py"
+      ],
+      "cwd": "C:\\kybersand\\source",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 1.503,
+      "log": "validation\\local\\20260908-issues-1-2\\final-current-gate.log"
+    },
+    "final-m11-integrity": {
+      "command": [
+        "C:/kybersand/.local/python/Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "cwd": "C:\\kybersand\\source",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 1.559,
+      "log": "validation\\local\\20260908-issues-1-2\\final-m11-integrity.log"
+    },
+    "final-checker-regressions": {
+      "command": [
+        "C:/kybersand/.local/python/Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/ci",
+        "-p",
+        "test_validation_contracts.py"
+      ],
+      "cwd": "C:\\kybersand\\source",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 2.041,
+      "log": "validation\\local\\20260908-issues-1-2\\final-checker-regressions.log"
+    },
+    "final-retrieval-frozen": {
+      "command": [
+        "C:/kybersand/.local/python/Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:/kybersand/validation/local/20260908-issues-1-2/finalisation-frozen.json"
+      ],
+      "cwd": "C:\\kybersand\\source",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 0.314,
+      "log": "validation\\local\\20260908-issues-1-2\\final-retrieval-frozen.log"
+    },
+    "final-retrieval-challenges": {
+      "command": [
+        "C:/kybersand/.local/python/Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-challenges.json",
+        "--output",
+        "C:/kybersand/validation/local/20260908-issues-1-2/finalisation-challenges.json"
+      ],
+      "cwd": "C:\\kybersand\\source",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 0.264,
+      "log": "validation\\local\\20260908-issues-1-2\\final-retrieval-challenges.log"
+    }
+  },
+  "retrieval": {
+    "frozen": {
+      "fixture_sha256": "b65be8a80190703bb4550ac49b19a7eb8541652585c91acad2d4f40fc9dca5f2",
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "corpus_manifest_sha256": "b7a5914bf63fb0489e54fdc0a8de4fd8504e070d3cf999be06c328747c706743",
+      "document_count": 50,
+      "chunk_count": 288,
+      "summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 24,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.8542,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    "challenges": {
+      "fixture_sha256": "c08845b4604d816caddc03b1d08fd02fc77ececc066d86777d2898b87990da6b",
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "corpus_manifest_sha256": "b7a5914bf63fb0489e54fdc0a8de4fd8504e070d3cf999be06c328747c706743",
+      "document_count": 50,
+      "chunk_count": 288,
+      "summary": {
+        "questions": 6,
+        "canonical_hit_at_1": 5,
+        "canonical_hit_at_k": 6,
+        "mrr_at_k": 0.9167,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    }
+  }
+}

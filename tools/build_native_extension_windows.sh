@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# M11 artifact equality is opt-in historical reproduction, separate from current
+# compiler/source pin checks. Drift overrides never bypass an explicit M11 check.
+
 project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 godot_cpp_root="${GODOT_CPP_ROOT:-}"
 expected_revision="101ae38034304346a46ea9ea84ae156d3e860496"
@@ -29,7 +32,7 @@ if [[ ! -f "$godot_cpp_library" ]]; then
     exit 2
 fi
 actual_library_sha="$(sha256sum "$godot_cpp_library" | awk '{print $1}')"
-if [[ "$actual_library_sha" != "$expected_library_sha" && "${CYBERSAND_ALLOW_TOOLCHAIN_DRIFT:-0}" != "1" ]]; then
+if [[ "$actual_library_sha" != "$expected_library_sha" && "${CYBERSAND_VERIFY_M11_OUTPUT:-0}" == "1" ]]; then
     echo "Windows godot-cpp library differs from the pinned m11 build input" >&2
     echo "expected: $expected_library_sha" >&2
     echo "actual:   $actual_library_sha" >&2
@@ -111,7 +114,7 @@ fi
 env LC_ALL=C TZ=UTC SOURCE_DATE_EPOCH=0 "${command[@]}"
 
 actual_output_sha="$(sha256sum "$build_output" | awk '{print $1}')"
-if [[ "$actual_output_sha" != "$expected_output_sha" && "${CYBERSAND_ALLOW_TOOLCHAIN_DRIFT:-0}" != "1" ]]; then
+if [[ "$actual_output_sha" != "$expected_output_sha" && "${CYBERSAND_VERIFY_M11_OUTPUT:-0}" == "1" ]]; then
     echo "Windows extension differs from the pinned m11 release output" >&2
     echo "expected: $expected_output_sha" >&2
     echo "actual:   $actual_output_sha" >&2

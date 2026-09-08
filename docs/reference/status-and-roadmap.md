@@ -46,7 +46,7 @@ evidence defines each fix's platform acceptance.
 | F05 — replay and fidelity | Current hashes omit some future-affecting state; CYSD1 omits more; no selectable strict runtime policy | Specify complete input/configuration identity, fidelity policy and replay schema before promising continuation; [determinism](../architecture/determinism-and-boundary-transfers.md) |
 | F06 — bounded operations | Native lazy allocation and partial failure coexist with Approved prepared/no-allocation goals; desktop input Array is unbounded | Define command backpressure, setup/reconfiguration and allocation accounting; [capacity](../operations/configuration-and-capacity-budgets.md) |
 | F07 — body physics scope | Rectangle proof does not settle general shapes, sweep/CCD, force/torque units, sample-age policy or particle overflow | Name units and fixture tolerances, extend one bounded coupling case at a time; [coupling](../architecture/rigid-body-and-cellular-coupling.md) |
-| F08 — build/release identity | CI 4.0.11 versus builder 4.0.20; missing native binding argument; compile-only skips runtime; historical template lock and base-only export identity | Align and execute tooling in a separate implementation checkpoint; [CI contradictions](../operations/github-development-and-release.md#unresolved-ci-contradictions) |
+| F08 — build/release identity | CI 4.0.11 versus builder 4.0.20; missing native binding argument; compile-only skips runtime; historical template lock and base-only export identity | Current/M11 gate separation is implemented; remaining Web work stays in issue #3. [CI contradictions](../operations/github-development-and-release.md#unresolved-ci-contradictions) |
 
 ## Approved, Planned, Deferred and Rejected work
 
@@ -58,7 +58,8 @@ enforced; [invariants](invariants.md) identifies that gap.
 **Planned:** generalized bounded command/result queues; safe live reconfiguration;
 general world/configuration/replay persistence; field equations and units; production
 body-shape/CCD/force policy; GPU subregion writes; authored appearance schema/tooling;
-current platform/sanitizer and production performance acceptance.
+remaining platform/LeakSanitizer and production performance acceptance. Current
+Linux native ASan/UBSan/TSan results are in the validation ledger.
 
 **Deferred:** asynchronous Web simulation/render ownership, streamed generation,
 and GPU/coarse/hex experiments. Active-only buffering is a **Planned candidate**

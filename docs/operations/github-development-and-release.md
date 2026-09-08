@@ -18,7 +18,8 @@ identities, companion workspace scope and dirty-state inspection. No push or
 publication was performed by the documentation rewrite itself. The subsequent
 owner-authorized [GitHub milestone](../audits/2026-09-08-github-milestone.md) verified
 that `techrote/cybersand` is private and published both local histories. Branch
-protection and current CI success are not established; intended historical
+protection is not established; dated CI outcomes are recorded in the
+[publication reconciliation](../audits/2026-09-08-validation-reconciliation.md). Intended historical
 integration branch names do not establish today's remote policy.
 
 Track source, tests, docs, locks, notices and required runtime libraries. Runtime
@@ -41,10 +42,12 @@ Do not change historical release hashes to accept a local rebuild.
 | Runtime lock says templates absent; local export uses exact retained templates | [runtime lock](../../third_party/godot-runtime.lock.json) and local setup report | Create current export provenance; preserve historical lock scope |
 | Wrapper export `source_commit` remains acquisition base | Companion `C:/kybersand/tools/dev.py::web_command`; builder's `--source-commit` | Bind builds to actual HEAD plus local changes and artifact hashes |
 
-These changes are **Planned**, outside the documentation rewrite. Workflow
-presence is not a passing CI run. The existing workflows configure useful native,
-sanitizer, extension and consistency checks, but their actual current outcomes
-must be read before a release claim.
+These Web changes remain **Planned**, tracked by issue #3. Current source/runtime
+identity, retained historical integrity and fresh Linux Godot CI are now
+[separate validation gates](current-and-historical-validation.md). This resolves
+the M11/current gate conflict without changing historical hashes. Native and
+sanitizer execution is recorded in the [dated reconciliation](../audits/2026-09-08-validation-reconciliation.md);
+workflow presence alone is never a pass.
 
 ## Release gates
 

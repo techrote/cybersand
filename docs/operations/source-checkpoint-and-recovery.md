@@ -40,7 +40,8 @@ all-platform recovery while required LFS payloads remain unresolved.
 
 Use `git -C source ...` from the workspace when you mean source history.
 Both repositories now use the private `techrote/cybersand` GitHub repository:
-source history is published on `codex/rag-docs-foundation` and the independent
+source history is integrated into `main` (the original documentation branch was
+merged through PR #5), and the independent
 workspace history on `codex/workspace-docs`. The original rewrite made no remote
 changes; the owner subsequently authorized this publication. The
 [GitHub milestone record](../audits/2026-09-08-github-milestone.md) defines the
@@ -102,9 +103,12 @@ existing evidence from newly executed recovery tests.
 The coordinated investigation started from clean source `bfac0bc` and workspace
 `6a58311` on 2026-09-08, then created source branch `codex/issues-1-2`.
 [Issue #1 evidence](../audits/2026-09-08-issue-1-failed-ticks.md) identifies source
-deltas, commands and rebuilt artifacts. Local commits do not publish or close
-GitHub issues; this task has no push authorization. Generated runtime changes
-remain local and must be rebuilt/identified separately from source commits.
+deltas, commands and rebuilt artifacts. At that implementation checkpoint there
+was no push authorization. The owner subsequently authorized finalisation:
+[PR #6](https://github.com/techrote/cybersand/pull/6) publishes these commits and
+the validated Windows LFS runtime with source-input provenance. See the
+[publication reconciliation](../audits/2026-09-08-validation-reconciliation.md)
+for later validation and the companion workspace checkpoint record for final tags.
 
 Local issue #1 commit `0778845` plus browser fixture correction `061ad23` precede
 the issue #2 implementation. Its [combined evidence](../audits/2026-09-08-issue-2-interest-regions.md)

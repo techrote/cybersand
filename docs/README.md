@@ -72,3 +72,5 @@ a historical question; do not merge their claims into the current answer.
 
 The [coordinated issue #2 acceptance](audits/2026-09-08-issue-2-interest-regions.md)
 records pause/re-entry, independent causes and combined failure/recovery validation.
+
+Current runtime/source gates and immutable M11 retention use [separate validation policies](operations/current-and-historical-validation.md).

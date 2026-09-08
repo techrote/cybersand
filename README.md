@@ -13,7 +13,10 @@ Web export base fields are different identities. See
 Start with [AGENTS.md](AGENTS.md), the [handover](docs/operations/cybersand-codex-development-handover.md)
 and [focused documentation](docs/README.md). Use the
 [roadmap](docs/reference/status-and-roadmap.md) before foundational physics work:
-tick failure and interest re-entry have known gaps documented against source.
+failed ticks now quarantine the affected world, and phased interest re-entry
+resumes retained activity. Their separate acceptance and remaining gaps are recorded.
+[Current validation and retained M11 integrity](docs/operations/current-and-historical-validation.md)
+explain the independent source/runtime and historical checks.
 
 The active Windows workspace is `C:/kybersand`; from there:
 
