@@ -57,8 +57,10 @@ Python venv. SDK PIC C++ exception libraries are built when required; no global
 PATH change is needed. Keep native and Web godot-cpp checkouts at the exact revision
 in the source build guide; never share generated bindings between targets.
 
-The explicit local `CYBERSAND_ALLOW_TOOLCHAIN_DRIFT=1` accepts historical
-archive/output differences and bypasses some native compiler/dirty checks. Exact
+The explicit local `CYBERSAND_ALLOW_TOOLCHAIN_DRIFT=1` bypasses some native
+compiler/dirty and archive-provenance checks. Current native builds no longer
+require M11 output byte equality; opt into that historical check with
+`CYBERSAND_VERIFY_M11_OUTPUT=1`, which cannot be bypassed by the drift flag. Exact
 godot-cpp revision remains enforced. Inspect status yourself; this override is not
 a historical reproducible-release claim. Git safe-directory configuration is scoped
 by the wrapper to the two configured local bindings paths in child processes.
@@ -89,7 +91,8 @@ records unresolved CI and provenance contradictions.
 Godot needs normal user-data-directory access. Historical restricted runs crashed
 on log creation; this is not a requirement to run as Administrator. Missing runtime
 libraries must be materialized from Git LFS or rebuilt for the target; the local
-other-platform pointers do not establish Linux readiness.
+all 18 required payloads were materialized and verified during finalisation.
+Materialization establishes artifact identity, not platform runtime acceptance.
 
 ## Preview and browser checks
 
@@ -114,7 +117,8 @@ then Web compile/export. Neither is a cold bindings rebuild. For one, configure
 fresh pinned native/Web checkouts, rebuild their libraries and the extension,
 then test/export/browser-check the resulting artifacts.
 
-WSL/Linux/macOS were not executed in this task. Use their native Python/Godot/tools
+WSL/macOS were not executed locally. Linux native/sanitizer and rebuilt Godot
+CI outcomes are recorded in the source publication evidence. Use native Python/Godot/tools
 and separate target bindings; do not reuse a Windows venv or compiler library.
 The source build guide lists Linux commands and historical ABI requirements.
 Current source inspection is separate from [dated validation](../source/docs/reference/validation-evidence.md).

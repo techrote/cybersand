@@ -12,6 +12,7 @@ for the established Git checkpoints and inspect actual working status.
   for source changes; `.local` and generated outputs are ignored.
 - Use `dev.cmd` / `tools/dev.py`, exact pins and separate native/Web bindings.
   Keep local paths in ignored `.local`; never rewrite historical hashes to accept drift.
+  Use source current validation and M11 historical integrity as separate gates.
 - Godot needs ordinary access to its user-data directory. Past restricted startup
   crashes were environment failures, not solver evidence.
 - Follow source ownership and documentation synchronization requirements. Current

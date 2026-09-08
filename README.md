@@ -34,3 +34,11 @@ record the completed documentation work and remaining foundational issues.
 Both histories are now published to the private `techrote/cybersand` repository.
 Use the [GitHub milestone instructions](source/docs/audits/2026-09-08-github-milestone.md)
 to reconstruct the paired source/workspace checkout at this checkpoint.
+
+Issues #1/#2 and the validation-policy reconciliation are published through
+[PR #6](https://github.com/techrote/cybersand/pull/6).
+[Current and historical validation](source/docs/operations/current-and-historical-validation.md)
+separates rebuilt artifact acceptance from preserved M11 records. The current
+paired tags and source commit are recorded in [SOURCE-CHECKPOINT.json](SOURCE-CHECKPOINT.json).
+
+[Correctness publication receipt](docs/CORRECTNESS-CHECKPOINT-2026-09-08.md) records the final paired checkpoint and acceptance.
