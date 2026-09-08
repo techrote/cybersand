@@ -121,3 +121,18 @@ mismatches are recorded in the evidence JSON rather than rewritten.
 | Retrieval | Manifest/new ADR, index routes, Q06/C01 expected facts updated with query wording retained |
 | Evidence/history | Preserved original probes and audits, added red/green and integration evidence; no historical hash edits |
 | Checks | Documentation structure, lexical retrieval plus affected-answer review, historical M11 and diff checks in evidence JSON |
+
+## Browser follow-up, 2026-09-08
+
+The rebuilt compatibility browser probe passed with one worker. The first threaded
+probe stalled while synchronously replacing multiple Worlds; ordinary threaded
+startup still passed. Yielding a frame between probe replacements allows browser
+pthread teardown/reuse, as the existing worker-parity harness already does. The
+corrected threaded probe passed with six workers and no console errors/warnings.
+Production reset and worker-pool sizes were unchanged.
+
+The [browser evidence](issue-1-browser-2026-09-08-evidence.json) identifies both
+exports, commands, failed attempt, browser and successful real-owner observations.
+The Windows asynchronous probe also passed at one/four workers (1.838 seconds,
+30-second timeout). This supersedes this checkpoint's browser gap only for these
+Chromium profiles; other browser/platform and arbitrary failure-site gaps remain.

@@ -93,7 +93,7 @@ func _ready() -> void:
 	_init_browser_test()
 	print("WEB_DEMO_READY ", ui.capability.text)
 	if test_enabled and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('tickfault') === '1'", true)):
-		tick_failure_test = CyberTickFailureProbe.run(self)
+		tick_failure_test = await CyberTickFailureProbe.run(get_tree(), self)
 		print("WEB_TICK_FAILURE_TEST ", JSON.stringify(tick_failure_test))
 		_publish_test_state()
 	if test_enabled and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('rapier') === '1'", true)):

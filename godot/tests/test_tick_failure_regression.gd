@@ -8,7 +8,7 @@ func _init() -> void:
 func _run() -> void:
 	for workers: int in [1, 4]:
 		ProjectSettings.set_setting("cybersand/native_worker_threads", workers)
-		var result: Dictionary = CyberTickFailureProbe.run()
+		var result: Dictionary = await CyberTickFailureProbe.run(self)
 		failures.append_array(result.failures)
 		print("TICK_FAILURE_ADAPTER ", JSON.stringify(result))
 	await _desktop_owner()
@@ -17,7 +17,7 @@ func _run() -> void:
 	root.add_child(web)
 	web.set_process(false)
 	web.set_physics_process(false)
-	var web_result: Dictionary = CyberTickFailureProbe.run(web)
+	var web_result: Dictionary = await CyberTickFailureProbe.run(self, web)
 	failures.append_array(web_result.failures)
 	print("TICK_FAILURE_WEB_OWNER ", JSON.stringify(web_result))
 	web.queue_free()
