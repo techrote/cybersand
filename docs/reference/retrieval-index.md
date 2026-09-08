@@ -53,3 +53,9 @@ For the M11 August audit use [audits/m11](../audits/m11/README.md) and
 handover/roadmap/test tables are preserved in the
 [pre-rewrite record](../audits/pre-rag-rewrite-2026-09-08/README.md).
 Their statements do not supersede current source or later evidence.
+
+Issue #2 pause/re-entry, unchanged windows and failed-world region requests route
+to [storage](../systems/world-storage-and-interest-region.md), [activity](../systems/activity-dirty-regions-and-waking.md)
+and [tick ownership](../architecture/simulation-tick-and-threading.md). Dated
+[combined evidence](../audits/2026-09-08-issue-2-interest-regions.md) remains outside
+the default corpus; C02 has updated facts, and C03/C04 are new supplementary queries.

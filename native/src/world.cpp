@@ -879,7 +879,19 @@ void World::set_simulation_region(std::optional<RectI64> region) {
     if (region.has_value() && (region->width <= 0 || region->height <= 0)) {
         throw std::invalid_argument("simulation region dimensions must be positive");
     }
+    std::optional<CoreRange> selected;
+    if (region) {
+        if (region->x > std::numeric_limits<std::int64_t>::max() - (region->width - 1) ||
+            region->y > std::numeric_limits<std::int64_t>::max() - (region->height - 1)) {
+            throw std::overflow_error("simulation region endpoint overflow");
+        }
+        const auto first = scheduler_geometry_.core_for_cell(region->x, region->y);
+        const auto last = scheduler_geometry_.core_for_cell(
+            region->x + region->width - 1, region->y + region->height - 1);
+        selected = CoreRange{first.x, first.y, last.x, last.y};
+    }
     simulation_region_ = region;
+    selected_core_region_ = selected;
 }
 
 void World::set_liquid_surface_adhesion_enabled(bool enabled) noexcept {
@@ -1165,6 +1177,7 @@ void World::clear() {
     pending_explosions_.clear();
     tick_index_ = 0;
     completed_tick_index_ = 0;
+    applied_core_region_.reset();
     update_epoch_ = 0;
     tick_in_progress_ = false;
     tick_chunk_allocations_ = 0;
@@ -2174,11 +2187,28 @@ void World::begin_tick(TickStats& stats) {
     stats.tick = tick_index_;
 
     active_chunk_scratch_.clear();
+    const bool transition = config_.backend == SimulationBackend::PhasedInPlace &&
+                            selected_core_region_ != applied_core_region_;
+    // Reuse the existing metadata pass, with no cell scan or region-sized
+    // allocation. Coalesced/equivalent windows do not repeatedly wake blocks.
     for (auto& [coord, chunk] : chunks_) {
-        (void)coord;
         chunk->changed_this_tick = false;
-        for (auto& block : chunk->activity_blocks) block.changed_this_tick = false;
+        for (std::size_t index = 0; index < chunk->activity_blocks.size(); ++index) {
+            auto& block = chunk->activity_blocks[index];
+            block.changed_this_tick = false;
+            if (!transition) continue;
+            const auto bounds = block_core_range(coord, index);
+            const auto included = clip_core_range(bounds, selected_core_region_);
+            const auto previous = clip_core_range(included, applied_core_region_);
+            if (included.min_x <= included.max_x && included.min_y <= included.max_y &&
+                included != previous) {
+                block.active = true;
+                block.quiet_ticks = 0;
+                chunk->active = true;
+            }
+        }
     }
+    applied_core_region_ = selected_core_region_;
 
     // Gameplay events are committed only at a tick boundary. Applying them
     // after resetting change flags makes their edits visible to activity,
@@ -2198,15 +2228,39 @@ void World::begin_tick(TickStats& stats) {
     stats.active_chunks_before = active_chunk_scratch_.size();
 }
 
+World::CoreRange World::block_core_range(ChunkCoord coord, std::size_t index) const noexcept {
+    const auto blocks_per_axis = static_cast<std::size_t>(
+        (config_.chunk_size + config_.activity_block_size - 1) / config_.activity_block_size);
+    const auto x = static_cast<std::int32_t>(index % blocks_per_axis) * config_.activity_block_size;
+    const auto y = static_cast<std::int32_t>(index / blocks_per_axis) * config_.activity_block_size;
+    const auto first = scheduler_geometry_.core_for_cell(
+        coord.x * config_.chunk_size + x, coord.y * config_.chunk_size + y);
+    const auto last = scheduler_geometry_.core_for_cell(
+        coord.x * config_.chunk_size + std::min(x + config_.activity_block_size, config_.chunk_size) - 1,
+        coord.y * config_.chunk_size + std::min(y + config_.activity_block_size, config_.chunk_size) - 1);
+    return {first.x, first.y, last.x, last.y};
+}
+
+World::CoreRange World::clip_core_range(CoreRange block, std::optional<CoreRange> region) noexcept {
+    if (!region) return block;
+    return {std::max(block.min_x, region->min_x), std::max(block.min_y, region->min_y),
+            std::min(block.max_x, region->max_x), std::min(block.max_y, region->max_y)};
+}
+
 void World::finish_tick(TickStats& stats) {
     for (auto& [coord, chunk] : chunks_) {
-        (void)coord;
         bool any_active_block = false;
-        for (auto& block : chunk->activity_blocks) {
+        for (std::size_t index = 0; index < chunk->activity_blocks.size(); ++index) {
+            auto& block = chunk->activity_blocks[index];
             if (!block.active) continue;
+            // Quiet time belongs to simulated work. For custom single-worker
+            // geometry, retain a straddling block until all its cores are eligible.
+            const auto bounds = block_core_range(coord, index);
+            const bool age = config_.backend == SimulationBackend::SerialInPlace ||
+                             clip_core_range(bounds, selected_core_region_) == bounds;
             if (block.changed_this_tick) {
                 block.quiet_ticks = 0;
-            } else if (++block.quiet_ticks >= config_.sleep_after_quiet_ticks) {
+            } else if (age && ++block.quiet_ticks >= config_.sleep_after_quiet_ticks) {
                 block.active = false;
             }
             any_active_block = any_active_block || block.active;
@@ -2284,16 +2338,9 @@ void World::gather_active_cores() {
 
                 for (auto core_y = minimum_core.y; core_y <= maximum_core.y; ++core_y) {
                     for (auto core_x = minimum_core.x; core_x <= maximum_core.x; ++core_x) {
-                        if (simulation_region_.has_value()) {
-                            const auto core_rect = scheduler_geometry_.core_rect({core_x, core_y});
-                            const auto& region = *simulation_region_;
-                            const bool intersects =
-                                core_rect.x < region.x + region.width &&
-                                region.x < core_rect.x + core_rect.width &&
-                                core_rect.y < region.y + region.height &&
-                                region.y < core_rect.y + core_rect.height;
-                            if (!intersects) continue;
-                        }
+                        if (selected_core_region_ &&
+                            (core_x < selected_core_region_->min_x || core_x > selected_core_region_->max_x ||
+                             core_y < selected_core_region_->min_y || core_y > selected_core_region_->max_y)) continue;
                         if (active_core_scratch_.size() >= config_.active_core_capacity) {
                             throw std::runtime_error("active scheduling-core capacity exhausted");
                         }
@@ -2628,6 +2675,15 @@ std::uint64_t World::state_hash() const noexcept {
     hash_integer(hash, completed_tick_index_);
     hash_integer(hash, static_cast<std::uint8_t>(tick_failed_));
     hash_integer(hash, update_epoch_);
+    for (const auto& region : {selected_core_region_, applied_core_region_}) {
+        hash_integer(hash, static_cast<std::uint8_t>(region.has_value()));
+        if (region) {
+            hash_integer(hash, region->min_x);
+            hash_integer(hash, region->min_y);
+            hash_integer(hash, region->max_x);
+            hash_integer(hash, region->max_y);
+        }
+    }
     hash_integer(hash, config_.chunk_size);
     hash_integer(hash, static_cast<std::uint8_t>(config_.backend));
     hash_integer(hash, config_.sleep_after_quiet_ticks);

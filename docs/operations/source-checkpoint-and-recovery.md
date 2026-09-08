@@ -105,3 +105,8 @@ The coordinated investigation started from clean source `bfac0bc` and workspace
 deltas, commands and rebuilt artifacts. Local commits do not publish or close
 GitHub issues; this task has no push authorization. Generated runtime changes
 remain local and must be rebuilt/identified separately from source commits.
+
+Local issue #1 commit `0778845` plus browser fixture correction `061ad23` precede
+the issue #2 implementation. Its [combined evidence](../audits/2026-09-08-issue-2-interest-regions.md)
+records fingerprints and final acceptance. Read actual HEAD/status rather than
+assuming this dated text is the latest branch state.

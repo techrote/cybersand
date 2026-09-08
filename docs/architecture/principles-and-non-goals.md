@@ -46,8 +46,8 @@ inputs; data races are never an approximation technique.
 **Current:** native rules include fixed secondary cadence, activity sleeping
 and region filtering. They do not form a general adaptive fidelity controller.
 Desktop rendering is independent of the cellular owner; Web still waits for
-synchronous ticks. The current region re-entry wake defect and tick-failure
-asymmetry are documented limitations, not Approved degradation behavior.
+synchronous ticks. Explicit phased pause/re-entry and failed-world quarantine
+are defined contracts; neither silently skips accepted work or replays events.
 [ADR-008](../decisions/ADR-008-bounded-approximate-fidelity.md) owns fidelity intent;
 [threading](simulation-tick-and-threading.md) owns actual behavior.
 

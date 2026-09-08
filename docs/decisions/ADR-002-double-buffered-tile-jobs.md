@@ -64,7 +64,7 @@ ownership and canonical transfers before implementation.
 Maintain exact worker parity within the chosen phased semantics, shifted/edge
 fixtures and rule-radius checks. Historical sanitizer passes do not validate
 current Windows/Web artifacts. Region filtering also differs between serial
-and phased paths and has a current re-entry defect; the
-[interest contract](../systems/world-storage-and-interest-region.md) records
-that limitation. Any production selector must expose such differences rather
+and phased paths: phased pauses excluded work and wakes new coverage once;
+serial ignores interest. The [interest contract](../systems/world-storage-and-interest-region.md)
+records that intentional distinction. Any production selector must expose such differences rather
 than claim universal backend equivalence.

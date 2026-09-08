@@ -1,7 +1,7 @@
 {
   "version": 1,
   "frozen_date": "2026-09-08",
-  "purpose": "Supplementary source-discovered challenges added during the rewrite; reported separately from the frozen 32-question development set, without a before/after improvement claim.",
+  "purpose": "Supplementary source-discovered challenges added during the rewrite; reported separately from the frozen 32-question development set, without a before/after improvement claim. C03/C04 added for the coordinated implementation, reported separately from C01/C02.",
   "questions": [
     {
       "id": "C01",
@@ -30,14 +30,45 @@
         "systems/activity-dirty-regions-and-waking.md"
       ],
       "facts": [
-        "Phased native region filtering can exclude active blocks while quiet/sleep accounting continues, so excluded blocks can sleep.",
-        "Changing or clearing the simulation region does not wake those sleeping blocks; they may need a separate external wake to resume.",
-        "SerialInPlace does not apply the same region filter. Intended re-entry behavior requires an explicit implementation decision and regression coverage."
+        "Phased exclusion pauses ordinary rules and retains activity/quiet state; selected neighbor reach and explicit external writes/events remain possible.",
+        "At healthy tick entry newly included core coverage wakes resident blocks once, including sleepers; unchanged/equivalent/coalesced regions do not wake repeatedly. No elapsed-time catch-up.",
+        "SerialInPlace intentionally ignores the region; failed worlds cannot re-enter until clear/reset or validated replacement under the latest requested region."
       ],
       "sources": [
         "../native/src/world.cpp::World::set_simulation_region,World::tick_serial,World::tick_phased,World::finish_tick"
       ]
+    },
+    {
+      "id": "C03",
+      "query": "Can I shrink the camera window after a failed explosion tick and then resume the same world?",
+      "canonical": [
+        "architecture/simulation-tick-and-threading.md",
+        "systems/world-storage-and-interest-region.md"
+      ],
+      "facts": [
+        "No: shrinking only latches requested coverage; a failed world rejects ticks, activity transitions and gameplay mutations.",
+        "Explicit clear/reset or validated replacement abandons partial state/events and establishes fresh activity under the latest request. No rollback, retry or replay."
+      ],
+      "sources": [
+        "../native/src/world.cpp::World::tick,World::clear,World::set_simulation_region"
+      ]
+    },
+    {
+      "id": "C04",
+      "query": "Does panning by one pixel keep waking every settled cell or scanning the whole sparse world?",
+      "canonical": [
+        "systems/world-storage-and-interest-region.md",
+        "systems/activity-dirty-regions-and-waking.md"
+      ],
+      "facts": [
+        "Activity compares normalized core coverage at tick entry; equivalent/unchanged or coalesced windows do not repeatedly wake blocks.",
+        "Only newly included resident blocks wake; transition checks reuse existing metadata passes with no additional sparse-world scan, cell scan or allocation.",
+        "Selected core candidate capacity remains explicit and checked before deduplication; re-entry can fail under insufficient budget."
+      ],
+      "sources": [
+        "../native/src/world.cpp::World::begin_tick,World::gather_active_cores"
+      ]
     }
   ],
-  "expectations_reviewed": "2026-09-08: issue #1 changes expected facts, queries retained; metrics are not a frozen-answer improvement claim."
+  "expectations_reviewed": "2026-09-08: issues #1/#2 change expected facts, original query wording retained; lexical metrics are not frozen-answer improvement claims."
 }

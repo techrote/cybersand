@@ -70,6 +70,9 @@ static func run(tree: SceneTree, controller: Variant = null) -> Dictionary:
 		_check(not bridge.import_level(world, PackedByteArray()) and world.has_failed(), "invalid recovery revived world", failures)
 		world.set_simulation_window(Vector2i(384, 0), Vector2i(64, 64), 0, 0)
 		_check(not world.simulation_tick(), "region change revived failed world", failures)
+		# Choose the recovery region before candidate construction. A later expansion
+		# deliberately wakes resident blocks and can exceed this one-entry budget.
+		world.set_simulation_window(Vector2i.ZERO, Vector2i(320, 180), 0, 0)
 		_check(bridge.import_level(world, saved) and not world.has_failed(), "validated replacement recovery", failures)
 		await tree.process_frame
 		world.set_simulation_window(Vector2i.ZERO, Vector2i(320, 180), 0, 0)
@@ -93,3 +96,62 @@ static func run(tree: SceneTree, controller: Variant = null) -> Dictionary:
 static func _check(value: bool, label: String, failures: Array[String]) -> void:
 	if not value:
 		failures.append(label)
+
+# The same actual adapter path runs in Windows and both browser exports.
+static func run_regions(tree: SceneTree, controller: Variant = null) -> Dictionary:
+	var failures: Array[String] = []
+	var world: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
+	await tree.process_frame
+	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
+	_check(bridge.build_world(world, PackedInt32Array([800, 20, 1, 1, 2])), "region fixture", failures)
+	await tree.process_frame
+	var original_world: Variant = null
+	var was_processing: bool = false
+	var was_physics_processing: bool = false
+	var old_view: Vector2i = Vector2i.ZERO
+	var old_margin: Vector2i = Vector2i.ZERO
+	if controller != null:
+		was_processing = controller.is_processing()
+		was_physics_processing = controller.is_physics_processing()
+		controller.set_process(false)
+		controller.set_physics_process(false)
+		original_world = controller.native_world
+		controller.native_world = world
+		old_view = controller.current_view_size
+		old_margin = controller.simulation_margin
+		controller.current_view_size = Vector2i(64, 64)
+		controller.simulation_margin = Vector2i.ZERO
+		controller.camera_origin = Vector2.ZERO
+		controller.paused = false
+		controller.focused = true
+		controller.input_armed = false
+		controller.ui.close_menu()
+	world.set_simulation_window(Vector2i.ZERO, Vector2i(64, 64), 0, 0)
+	for i: int in range(8):
+		if controller == null:
+			_check(world.simulation_tick(), "excluded adapter tick", failures)
+		else:
+			controller._physics_process(1.0 / 60.0)
+		_check(world.material_at(800, 20) == 2, "excluded adapter Sand advanced", failures)
+	world.set_simulation_window(Vector2i(768, 0), Vector2i(64, 64), 0, 0)
+	if controller == null:
+		_check(world.simulation_tick(), "adapter re-entry tick", failures)
+	else:
+		controller.camera_origin = Vector2(768, 0)
+		controller._physics_process(1.0 / 60.0)
+	_check(world.get_tick_index() == 9 and world.material_at(800, 20) == 0 and world.material_at(800, 21) == 2,
+		"adapter/owner did not resume exactly one step", failures)
+	var workers: int = int(world.get_worker_threads())
+	if controller != null:
+		controller.native_world = original_world
+		controller.current_view_size = old_view
+		controller.simulation_margin = old_margin
+		controller.camera_origin = Vector2.ZERO
+		controller.paused = true
+		controller.ui.show_page("home")
+		controller.set_process(was_processing)
+		controller.set_physics_process(was_physics_processing)
+	world = null
+	bridge = null
+	await tree.process_frame
+	return {"ok": failures.is_empty(), "failures": failures, "workers": workers, "controller": controller != null, "excluded_ticks": 8, "resumed_steps": 1}

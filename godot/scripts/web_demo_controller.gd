@@ -29,6 +29,7 @@ var test_clock: float = 0.0
 var worker_probe: Dictionary = {}
 var rapier_test: Dictionary = {}
 var tick_failure_test: Dictionary = {}
+var interest_region_test: Dictionary = {}
 var benchmark_running: bool = false
 var benchmark_cancelled: bool = false
 var benchmark_result: Dictionary = {}
@@ -95,6 +96,8 @@ func _ready() -> void:
 	if test_enabled and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('tickfault') === '1'", true)):
 		tick_failure_test = await CyberTickFailureProbe.run(get_tree(), self)
 		print("WEB_TICK_FAILURE_TEST ", JSON.stringify(tick_failure_test))
+		interest_region_test = await CyberTickFailureProbe.run_regions(get_tree(), self)
+		print("WEB_INTEREST_REGION_TEST ", JSON.stringify(interest_region_test))
 		_publish_test_state()
 	if test_enabled and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('rapier') === '1'", true)):
 		rapier_test = await CyberWebRapierProbe.run(self)
@@ -497,6 +500,7 @@ func _publish_test_state() -> void:
 	state["worker_probe"] = worker_probe
 	state["rapier_test"] = rapier_test
 	state["tick_failure_test"] = tick_failure_test
+	state["interest_region_test"] = interest_region_test
 	state["rapier_steps"] = rapier_bridge.manual_step_count()
 	state["collider_pending"] = rapier_bridge.pending_hard_surface_chunks()
 	state["collider_shapes"] = rapier_bridge.hard_surface_shape_count()

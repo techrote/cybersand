@@ -66,7 +66,7 @@ Contract/source: [tick order and failures](../architecture/simulation-tick-and-t
 | THREAD-001 | Current: native jobs have no Godot/object access; historical sanitizer scope is separate from current source |
 | THREAD-002 | Current fixture scope: exact one/multiworker phased comparisons; no desktop/Web/Rapier equivalence implication |
 | THREAD-003 | Current: native workers persist across ticks; no per-material or per-tick pool construction |
-| TIME-002 | Current: a failed attempt is non-atomic and quarantined; completed identity/publication cannot advance, owners stop and require explicit clear/reset or validated replacement; no partial-world retry/event replay |
+| TIME-002 | Current: a failed attempt is non-atomic and quarantined; completed identity/publication cannot advance, owners stop and require explicit clear/reset or validated replacement; no partial-world retry/event replay; region requests cannot revive a failed world and recovery uses fresh activity under the latest region |
 
 ## Spatial, buffer, and transfer invariants
 
@@ -97,7 +97,7 @@ Source: [World `finish_tick`, `set_simulation_region`, `gather_active_cores`](..
 | ACT-002 | Current local scope: writes/crossings wake local and edge neighbors |
 | ACT-003 | Approved: sleeping groups must receive relevant boundary changes; broad buried-volume/interest acceptance is incomplete |
 | INT-001 | Approved/Ambiguous: proposed 10%/20% margin semantics unresolved; Current desktop/Web use explicit pixel pairs |
-| INT-002 | Approved: region exit/re-entry must preserve meaningful state/eligibility; Current phased exclusion ages blocks into sleep and does not wake on return; serial ignores the region |
+| INT-002 | Approved: region exit/re-entry must preserve meaningful state/eligibility; Current phased exclusion retains activity/quiet state; newly included resident blocks wake once at tick entry without catch-up; unchanged/equivalent coverage does not wake; serial ignores the region |
 
 The interest page links the focused defect probe. No recorded broad native
 suite pass overrides this failing behavior; it remains implementation work.

@@ -13,7 +13,7 @@ related-documents: [local-build-and-validation.md, ../reference/validation-evide
 ## Which tests should a simulation change run?
 
 **Current inventory:** [native/tests/test_world.cpp](../../native/tests/test_world.cpp)
-contains 42 native tests at the issue #1 checkpoint; [test_c_header.c](../../native/tests/test_c_header.c)
+contains 46 native tests at the coordinated issue #1/#2 checkpoint; [test_c_header.c](../../native/tests/test_c_header.c)
 checks C11 header inclusion. The Godot directory has 16 `test_*.gd` runners at that checkpoint.
 Counts identify this inspected source inventory, not a pass for a later revision.
 [Build instructions](local-build-and-validation.md) give commands and timeouts;
@@ -57,9 +57,9 @@ These are **Planned gates**, not executed pass lists:
 - Extend the Current partial-failure, owner-stop and reset fixtures to additional
   failure sites/platforms; rollback and retry of a partial World are Rejected.
   See [tick ownership](../architecture/simulation-tick-and-threading.md).
-- Test phased interest-region exit/re-entry and delayed material wake behavior.
-  Excluded blocks can age into sleep and fail to resume on region re-entry;
-  [storage contract](../systems/world-storage-and-interest-region.md) records the diagnostic.
+- Extend phased region regressions to future fields/materials and platform gaps.
+  Current leave/sleep/re-entry, unchanged/overlap/disjoint and failed-recovery
+  fixtures enforce the declared pause/wake contract; no catch-up is promised.
 - Exercise just below/at/above each work/storage/snapshot capacity and a 2x
   region; test safe reconfiguration success/failure once that interface exists.
 - Extend rectangle/thin-floor proof to intended shapes, high speeds, rotations,
@@ -89,3 +89,15 @@ desktop owner thread, and invokes the Web controller on Windows. The shared
 `?test=1&tickfault=1`; require `tick_failure_test.ok=true`. This opt-in test does not
 run on normal play URLs. Native tests additionally cover failure after an executed
 phase, C ABI results, conservation, repeat/parity and immutable lease retention.
+
+## Issue #2 and combined regressions
+
+The same runner now also tests actual adapter re-entry at one/four workers, a
+desktop owner leave/re-entry sequence after drained ownership handoff, and Web
+controller resume. Browser `?test=1&tickfault=1` requires both
+`tick_failure_test.ok` and `interest_region_test.ok`; frame yields between probe
+world replacements let threaded browser workers recycle. Native source fixtures
+cover negative/core/chunk boundaries, previously sleeping blocks, overlap/disjoint
+moves, unchanged/equivalent/coalesced regions, neighbor wake, custom straddling
+geometry, conserved Water/Sand, retained temperature, 1/4/4 state-hash equality,
+and event/no-event capacity failure during re-entry followed by clear.

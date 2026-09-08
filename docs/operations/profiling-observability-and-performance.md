@@ -84,7 +84,7 @@ fidelity mode exists.
 | Small dirty patch KiB but low FPS | Full GPU texture update, synchronization, palette/glow, or unrelated presentation work |
 | Large collider peak, small Rapier step | Separate geometry extraction, packet copy/validation, and indivisible collider rebuild |
 | High snapshot pressure/age | Consumer lag and retained dirty payload |
-| Material appears still after camera return | Check the [native re-entry defect](../systems/world-storage-and-interest-region.md#interest-filtering-and-re-entry) before celebrating sleep performance |
+| Material appears still after camera return | Check failure status and selected cores against the [pause/re-entry contract](../systems/world-storage-and-interest-region.md#interest-filtering-and-re-entry); retained offscreen activity is not selected work |
 | Active work never settles | Equivalent state changes, wake feedback, or genuine lifecycle work |
 | Persistent unresolved body pixels | Bounded ejection exhausted, stale samples, or dense surroundings |
 | Visually moving surface with stable content | Presentation-time shader motion; inspect authority before changing simulation |

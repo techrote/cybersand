@@ -74,7 +74,8 @@ not an equivalence guarantee; a common production order remains undecided.
 Source: [World `begin_tick`, `tick_phased`, `finish_tick`, `tick`](../../native/src/world.cpp).
 
 1. Increment tick and compact update epoch; clear all cell epochs at wrap.
-   Reset change observations and apply queued external explosions in enqueue
+   Reset change observations and apply phased interest transitions in the same
+   metadata pass, then apply queued external explosions in enqueue
    order before gathering active work. Event-written cells carry this epoch
    and begin ordinary material rules on the following tick.
 2. Gather eligible cores. For each of four phases, starting at `tick_index % 4`,
@@ -82,7 +83,8 @@ Source: [World `begin_tick`, `tick_phased`, `finish_tick`, `tick`](../../native/
 3. Execute same-phase exclusive jobs, using the persistent pool only when the
    configured job threshold is met. Wait for completion, then merge local
    effects in deterministic core order before the next phase.
-4. Finalize activity/sleep and statistics. Mark completed tick identity only on success. Render publication is an explicit
+4. Finalize activity/sleep only for fully eligible blocks (retaining excluded
+   activity), then statistics. Mark completed tick identity only on success. Render publication is an explicit
    caller operation after serialized mutation, outside `World::tick`; failed Worlds
    reject publication.
 
@@ -140,9 +142,9 @@ and complete replay. [Dated regression evidence](../audits/2026-09-08-issue-1-fa
 separates source tests, Windows owners and browser coverage.
 
 Eligible native transport runs each tick; fixed staggered secondary lanes,
-sleeping and interest rejection reduce work. Region rejection has a known
-re-entry wake defect; SerialInPlace ignores the region. The exact limitation
-and probe are in [interest-region behavior](../systems/world-storage-and-interest-region.md).
+sleeping and interest rejection reduce work. Phased rejection retains activity;
+newly included blocks wake once without catch-up. SerialInPlace ignores the
+region. Transition, capacity and failed-world semantics are in [interest-region behavior](../systems/world-storage-and-interest-region.md).
 No general strict/gameplay switch, fidelity hysteresis or command-pressure
 policy exists. **Approved:** future adaptation must preserve explicit ownership,
 local collision and conservation, and report its policy.

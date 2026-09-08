@@ -11,7 +11,11 @@ func _run() -> void:
 		var result: Dictionary = await CyberTickFailureProbe.run(self)
 		failures.append_array(result.failures)
 		print("TICK_FAILURE_ADAPTER ", JSON.stringify(result))
+		var regions: Dictionary = await CyberTickFailureProbe.run_regions(self)
+		failures.append_array(regions.failures)
+		print("INTEREST_REGION_ADAPTER ", JSON.stringify(regions))
 	await _desktop_owner()
+	await _desktop_regions()
 	ProjectSettings.set_setting("cybersand/native_worker_threads", 1)
 	var web: Node = load("res://web_main.tscn").instantiate()
 	root.add_child(web)
@@ -20,6 +24,9 @@ func _run() -> void:
 	var web_result: Dictionary = await CyberTickFailureProbe.run(self, web)
 	failures.append_array(web_result.failures)
 	print("TICK_FAILURE_WEB_OWNER ", JSON.stringify(web_result))
+	var regions: Dictionary = await CyberTickFailureProbe.run_regions(self, web)
+	failures.append_array(regions.failures)
+	print("INTEREST_REGION_WEB_OWNER ", JSON.stringify(regions))
 	web.queue_free()
 	await process_frame
 	for failure: String in failures:
@@ -65,3 +72,28 @@ func _desktop_owner() -> void:
 		if recovered.simulation_failed or recovered.tick_index != 0 or recovered.character_position != Vector2(60, 60):
 			failures.append("desktop reset did not publish fresh state")
 	worker.stop_worker()
+
+func _desktop_regions() -> void:
+	ProjectSettings.set_setting("cybersand/native_worker_threads", 4)
+	var worker: CyberSimulationWorker = CyberSimulationWorker.new()
+	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
+	bridge.build_world(worker._world, PackedInt32Array([800, 20, 1, 1, 2]))
+	worker.set_frame_state(0, false, false, Vector2i.ZERO, Vector2i.ZERO, Vector2i(64, 64), 0, 0, true, true, true)
+	worker.start_worker(Vector2(40, 40))
+	var deadline: int = Time.get_ticks_msec() + 5000
+	while worker.take_latest_snapshot(-1).tick_index < 8 and Time.get_ticks_msec() < deadline:
+		await process_frame
+	worker.stop_worker()
+	# Only inspect authoritative data after the exclusive owner has drained.
+	if worker._world.get_tick_index() < 8 or worker._world.material_at(800, 20) != 2:
+		failures.append("desktop excluded content advanced or tick timeout")
+	var before: int = worker._world.get_tick_index()
+	worker.set_frame_state(0, false, false, Vector2i.ZERO, Vector2i(768, 0), Vector2i(64, 64), 0, 0, true, true, true)
+	worker.start_worker(Vector2(40, 40))
+	deadline = Time.get_ticks_msec() + 5000
+	while worker.take_latest_snapshot(-1).tick_index <= before and Time.get_ticks_msec() < deadline:
+		await process_frame
+	worker.stop_worker()
+	if worker._world.has_failed() or worker._world.get_tick_index() <= before or worker._world.material_at(800, 20) != 0:
+		failures.append("desktop re-entry failed to resume")
+	print("INTEREST_REGION_DESKTOP_OWNER workers=4 passed=", failures.is_empty())

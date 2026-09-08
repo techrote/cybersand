@@ -178,7 +178,17 @@ private:
     SchedulerGeometry scheduler_geometry_;
     std::unique_ptr<ParallelState> parallel_;
     std::unique_ptr<TransientObstacleState> transient_obstacles_;
+    struct CoreRange {
+        std::int64_t min_x, min_y, max_x, max_y;
+        friend bool operator==(const CoreRange&, const CoreRange&) = default;
+    };
+    [[nodiscard]] CoreRange block_core_range(ChunkCoord coord, std::size_t index) const noexcept;
+    [[nodiscard]] static CoreRange clip_core_range(CoreRange block, std::optional<CoreRange> region) noexcept;
     std::optional<RectI64> simulation_region_;
+    // Requested coverage is latched immediately; applied coverage changes only
+    // at tick entry. Null means unbounded. Comparison uses whole selected cores.
+    std::optional<CoreRange> selected_core_region_;
+    std::optional<CoreRange> applied_core_region_;
     bool liquid_surface_adhesion_enabled_ = true;
     std::uint64_t tick_index_ = 0;
     std::uint64_t completed_tick_index_ = 0;

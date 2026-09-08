@@ -36,9 +36,10 @@ internal native pthreads. Rapier objects stay on the main thread. Follow
 The first foundational checkpoint should resolve the bounded correctness/ownership
 issues in the roadmap before broad physics additions. In particular, tick failure
 is not a transaction: issue #1 now quarantines failures until explicit reset or
-validated replacement, with no retry/rollback. Phased interest re-entry can still
-leave sleeping material frozen pending issue #2. See the current contracts. Preserve an exact reproducer,
-decide the intended policy and record its consequences for interfaces/invariants.
+validated replacement, with no retry/rollback. Issue #2 retains excluded phased
+activity and wakes newly included resident blocks once, without catch-up; serial
+keeps its distinct behavior. The [combined evidence](../audits/2026-09-08-issue-2-interest-regions.md)
+separates regressions and runtime artifacts from remaining platform gaps.
 
 Use [build/test instructions](local-build-and-validation.md) for commands and
 [validation evidence](../reference/validation-evidence.md) for actual dated passes.

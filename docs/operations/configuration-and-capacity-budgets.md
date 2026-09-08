@@ -109,9 +109,12 @@ state and pending commands, publish a complete valid state, then resume.
 The API, pause/rejection behavior, failure recovery, serialization keys/migration,
 and production memory/high-water thresholds remain open. Proposed 10%/20%
 margins have unresolved per-side/total semantics; current presets are explicit
-pixel pairs. Reconfiguration must also resolve the
-[interest re-entry defect](../systems/world-storage-and-interest-region.md#interest-filtering-and-re-entry)
-rather than treating larger bounds as a wake operation.
+pixel pairs. Current region changes follow the separate
+[pause/re-entry contract](../systems/world-storage-and-interest-region.md#interest-filtering-and-re-entry);
+waking new coverage can exhaust existing candidate capacity (counted before
+deduplication). That produces an explicit quarantined failure, not automatic
+capacity growth or retry. Offscreen retained activity still counts toward active
+chunk capacity. Region pause/resume does not implement live resize.
 
 CYSD1 stores a fixed level and selected metadata, not complete WorldConfig or
 replay state. Follow the [level-save contract](../reference/level-saves-and-replay.md).

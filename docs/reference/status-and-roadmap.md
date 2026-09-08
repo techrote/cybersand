@@ -40,7 +40,7 @@ evidence defines each fix's platform acceptance.
 | ID | Precise uncertainty or contradiction | Next bounded check/decision |
 |---|---|---|
 | F01 — failed ticks | Current fix: latch failed World, distinguish attempted/completed ticks, suppress partial publication, stop desktop/Web owners; explicit reset/validated replacement, no replay/rollback | Windows/native acceptance and browser limits: [issue #1 evidence](../audits/2026-09-08-issue-1-failed-ticks.md); [tick contract](../architecture/simulation-tick-and-threading.md) |
-| F02 — region re-entry | Phased jobs exclude cores outside the region while finish_tick ages all blocks; region changes do not wake sleeping blocks. Serial path ignores that region filter | Promote the recorded diagnostic into a regression and decide activation semantics for leave/re-entry; [storage](../systems/world-storage-and-interest-region.md) |
+| F02 — region re-entry | Current fix: phased exclusion retains activity/quiet state; new core coverage wakes resident blocks once without catch-up. Serial still ignores the region | Separate and combined acceptance: [issue #2 evidence](../audits/2026-09-08-issue-2-interest-regions.md); [storage](../systems/world-storage-and-interest-region.md). Future field/streaming semantics remain open |
 | F03 — tick ownership | Desktop moves character before cells with async Rapier samples; Web moves character after cells and gates on terrain backlog | Decide which ordering differences are acceptable before a common physics/replay contract; [threading](../architecture/simulation-tick-and-threading.md) |
 | F04 — delayed rules and sleep | Secondary interaction lanes differ by material, including specialized Ice cadence; waiting branches do not all keep cells active | Test eventual intended reactions across sleep/region transitions; preserve material-specific semantics; [materials](../systems/materials-and-rule-kernels.md) |
 | F05 — replay and fidelity | Current hashes omit some future-affecting state; CYSD1 omits more; no selectable strict runtime policy | Specify complete input/configuration identity, fidelity policy and replay schema before promising continuation; [determinism](../architecture/determinism-and-boundary-transfers.md) |
@@ -72,8 +72,9 @@ See [principles](../architecture/principles-and-non-goals.md) and the [ADRs](../
 
 ## Next implementation checkpoints
 
-1. Complete F02 activation policy/regressions alongside the implemented F01
-   failure boundary, then validate their interaction. Do not fold in a new solver or backend.
+1. Preserve the implemented F01 quarantine and F02 pause/re-entry contracts and
+   their combined regressions; extend the documented platform/failure-site gaps
+   before broader production acceptance. Do not fold in a new solver or backend.
 2. Freeze ordering, units, approximation and replay-input contracts needed by the
    first physics increment; record unresolved choices rather than guessing.
 3. Extend one bounded physical behavior, validate conservation/ownership/capacity

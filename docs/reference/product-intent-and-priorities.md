@@ -83,3 +83,11 @@ judgement. The selected bounded policy is stop until explicit reset or validated
 replacement, retaining partial state only for diagnosis. Rollback, automatic
 retry and partial-world continuation are Rejected for this fix; see
 [ADR-010](../decisions/ADR-010-failed-tick-quarantine.md).
+
+## Delegated issue #2 activation choice, 2026-09-08
+
+The owner also authorized engineering judgement for the separate region policy.
+Chosen and Current: excluded phased work pauses and retains activity; newly
+included resident blocks wake once, including sleepers, without catch-up. Serial
+keeps its documented filter difference. This approval does not authorize general
+field catch-up, automatic failure retry, rollback or state-preserving live resize.

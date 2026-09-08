@@ -13,8 +13,8 @@ related-documents: [world-storage-and-interest-region.md, materials-and-rule-ker
 **Current:** native World schedules potentially changing material through activity
 blocks and preserves render dirtiness until publication succeeds. Activity and
 render dirtiness are different state: a rule waiting for its next cadence can
-stay awake without creating a render patch. **Known limitation:** native interest
-re-entry does not automatically wake blocks that slept while excluded.
+stay awake without creating a render patch. Phased interest exclusion preserves
+pending activity; newly included blocks receive one eligibility wake at tick entry.
 
 This contract covers inspected source at the
 [secured checkpoint](../operations/source-checkpoint-and-recovery.md). Executed
@@ -27,7 +27,8 @@ checks and platform limits belong to the [evidence ledger](../reference/validati
 block is independent of the 64×64 scheduling core and 128×128 storage chunk;
 [configuration](../reference/configuration-reference.md) owns exact defaults.
 
-1. `begin_tick` resets change observations and applies accepted explosions at
+1. `begin_tick` resets change observations, wakes newly included phased blocks
+   in the same metadata pass, and applies accepted explosions at
    the tick boundary. Event-written cells receive the current epoch and start
    ordinary material updates on the following tick.
 2. `gather_active_cores` selects cores from active blocks for the phased backend.
@@ -35,9 +36,10 @@ block is independent of the 64×64 scheduling core and 128×128 storage chunk;
    every write to the exact camera rectangle.
 3. Each phase mutates its exclusive cell domains. Jobs collect bounded
    `JobEffects`; the coordinator merges them in deterministic job order.
-4. `finish_tick` resets quiet time for changed blocks and sleeps unchanged
-   active blocks at `sleep_after_quiet_ticks`. It computes chunk activity from
-   the remaining active blocks.
+4. `finish_tick` resets quiet time for changed blocks. Unchanged active blocks
+   age toward `sleep_after_quiet_ticks` only when their whole core coverage is
+   selected; excluded/straddling blocks retain quiet/activity state. Serial ages
+   all active blocks. Chunk activity includes retained offscreen work.
 
 This is in-place cell mutation with merged observations, not a buffered transfer
 commit. Delayed secondary rules use `keep_cell_active` to set activity/change
@@ -56,11 +58,12 @@ cell write.
 Explosion edits and transient-obstacle changes use explicit wake paths.
 Settled Water can become inactive; render dithering does not wake it.
 
-**Current defect:** excluded native blocks still accrue quiet ticks. Merely
-changing `World::set_simulation_region` does not reactivate them. The
-[fresh re-entry probe and backend distinction](world-storage-and-interest-region.md#interest-filtering-and-re-entry)
-are authoritative for this limitation. Do not interpret “sleeping” as proof that
-all paused work will resume after camera movement.
+**Current:** newly included cores wake their resident blocks once, including
+sleeping blocks. Existing overlap and unchanged/equivalent regions stay asleep.
+The [pause/resume contract and backend distinction](world-storage-and-interest-region.md#interest-filtering-and-re-entry)
+own retained state, coalescing, custom geometry, bounded work and failure/recovery.
+No catch-up is performed. Explicit writes and neighbor reach can still affect
+excluded cells; this is core scheduling, not an immutable per-cell freeze.
 
 ## Render-dirty lifecycle
 
@@ -98,12 +101,14 @@ fallback semantics do not describe native/Web geometry or native re-entry.
 delayed work, conservation, and interaction with interest filtering. Sleeping
 interiors should not require a periodic full-cell scan to discover outside change.
 
-**Planned:** correct deterministic native re-entry, define field catch-up and
-streaming wake semantics, and separate persistence dirtiness once storage
-serialization exists. The production policy and API remain undecided.
+**Current:** native re-entry follows the explicit pause/wake policy. **Planned:**
+future field/streaming time semantics and separate persistence dirtiness once
+storage serialization exists. No generalized field catch-up API is implemented.
 
 [Native fixtures](../../native/tests/test_world.cpp) cover quiet sleep, local edge
 wake, Water rest, capacity, and snapshot pressure. Their presence does not prove
 every field/boundary combination. Extend shifted/mirrored edge tests when rule
-reach changes, and retain the re-entry defect as an explicit failed expectation
-until implementation and regression evidence resolve it.
+reach changes. Issue #2 regressions cover exclusion, sleep, overlapping/disjoint
+re-entry, core/chunk boundaries, unchanged/coalesced regions, neighbors, retained
+temperature, conservation, worker parity and failed-world recovery. These are
+bounded fixtures, not every future field or material combination.

@@ -561,5 +561,5 @@
       ]
     }
   ],
-  "expectations_reviewed": "2026-09-08: issue #1 changes expected facts, queries retained; metrics are not a frozen-answer improvement claim."
+  "expectations_reviewed": "2026-09-08: issues #1/#2 change expected facts, original query wording retained; lexical metrics are not frozen-answer improvement claims."
 }

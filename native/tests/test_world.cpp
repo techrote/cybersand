@@ -1026,6 +1026,165 @@ void test_failed_tick_c_api() {
     cybersand_world_destroy(world);
 }
 
+// Issue #2: re-entry must resume movable content without a neighboring write.
+// Core-level selection deliberately permits a step beyond the exact rectangle.
+void test_interest_resume_boundaries() {
+    for (const std::uint32_t workers : {1U, 4U}) {
+        for (const auto point : {cybersand::ChunkCoord{400, 32}, {63, 63}, {127, 127},
+                                  {-1, -1}, {-65, -65}, {-129, -129}}) {
+            WorldConfig config{};
+            config.worker_threads = workers;
+            config.parallel_job_threshold = 1;
+            World world(config);
+            world.set(point.x, point.y, Material::Sand);
+            world.set_temperature(point.x, point.y, 777);
+            world.set_simulation_region(cybersand::RectI64{1024, 1024, 64, 64});
+            const auto content = world.content_hash();
+            for (int tick = 0; tick < 8; ++tick) {
+                require(world.tick().scheduled_cores == 0, "excluded core scheduled");
+                require(world.content_hash() == content, "excluded Sand advanced");
+            }
+            world.set_simulation_region(cybersand::RectI64{point.x, point.y, 1, 1});
+            const auto resumed = world.tick();
+            require(resumed.scheduled_cores > 0 && world.get(point.x, point.y) == Material::Empty &&
+                        world.get(point.x, point.y + 1) == Material::Sand &&
+                        world.temperature(point.x, point.y + 1) == 777,
+                    "region re-entry left Sand frozen or lost retained temperature");
+            require(count_material(world, Material::Sand, point.x - 2, point.y - 2,
+                                   point.x + 2, point.y + 10) == 1,
+                    "re-entry lost conserved Sand or performed elapsed-time catch-up");
+        }
+    }
+    WorldConfig serial_config{};
+    serial_config.backend = cybersand::SimulationBackend::SerialInPlace;
+    World serial(serial_config);
+    serial.set(400, 32, Material::Sand);
+    serial.set_simulation_region(cybersand::RectI64{0, 0, 64, 64});
+    (void)serial.tick();
+    require(serial.get(400, 33) == Material::Sand,
+            "SerialInPlace's deliberate whole-active-chunk semantics changed");
+}
+
+// Settled blocks are rechecked once, including newly selected portions of an
+// overlapping window. Unchanged/equivalent/coalesced windows stay asleep.
+void test_interest_sleep_transitions() {
+    for (const std::uint32_t workers : {1U, 4U}) {
+        WorldConfig config{};
+        config.worker_threads = workers;
+        config.parallel_job_threshold = 1;
+        World world(config);
+        for (const auto x : {20, 84, 148, 276}) world.set(x, 20, Material::Wall);
+        for (int i = 0; i < 4; ++i) (void)world.tick();
+        require(world.active_chunk_count() == 0, "fixture did not sleep");
+        world.set_simulation_region(cybersand::RectI64{0, 0, 128, 64});
+        require(world.tick().scheduled_cores == 0, "shrinking unbounded interest woke settled work");
+        world.set_simulation_region(cybersand::RectI64{64, 0, 128, 64});
+        auto stats = world.tick();
+        require(stats.scheduled_cores == 1, "overlap woke old cores or missed newly included core");
+        for (int i = 0; i < 4; ++i) (void)world.tick();
+        for (int i = 0; i < 6; ++i) {
+            world.set_simulation_region(cybersand::RectI64{65, 1, 126, 62});
+            require(world.tick().scheduled_cores == 0, "equivalent region repeatedly woke sleeping work");
+        }
+        world.set_simulation_region(cybersand::RectI64{256, 0, 64, 64});
+        world.set_simulation_region(cybersand::RectI64{64, 0, 128, 64});
+        require(world.tick().scheduled_cores == 0, "unobserved region excursion woke work");
+        world.set_simulation_region(cybersand::RectI64{256, 0, 64, 64});
+        require(world.tick().scheduled_cores == 1, "disjoint move missed sleeping resident core");
+        for (int i = 0; i < 4; ++i) (void)world.tick();
+        world.set(275, 20, Material::Wall);
+        require(world.tick().scheduled_cores == 1, "neighbor write no longer wakes sleeping core");
+        for (int i = 0; i < 4; ++i) (void)world.tick();
+        world.set_simulation_region(std::nullopt);
+        require(world.tick().scheduled_cores > 0, "removing region did not wake newly eligible blocks");
+    }
+    // A custom single-worker block may span several cores. Partial inclusion
+    // must never age away the unsimulated part of that shared activity record.
+    WorldConfig custom{};
+    custom.activity_block_size = 128;
+    World straddling(custom);
+    straddling.set(90, 20, Material::Sand);
+    straddling.set_simulation_region(cybersand::RectI64{0, 0, 64, 64});
+    for (int i = 0; i < 8; ++i) (void)straddling.tick();
+    require(straddling.active_chunk_count() > 0 && straddling.get(90, 20) == Material::Sand,
+            "partly excluded activity record lost pending work");
+    straddling.set_simulation_region(cybersand::RectI64{64, 0, 64, 64});
+    (void)straddling.tick();
+    require(straddling.get(90, 21) == Material::Sand, "straddling activity did not resume");
+}
+
+void test_interest_conservation_and_worker_determinism() {
+    std::vector<std::uint64_t> expected;
+    for (const std::uint32_t workers : {1U, 4U, 4U}) {
+        WorldConfig config{};
+        config.worker_threads = workers;
+        config.parallel_job_threshold = 1;
+        World world(config);
+        world.reserve_region({-128, -128, 640, 512});
+        world.reserve_temperature_region({-128, -128, 640, 512});
+        add_floor(world, 100, 0, 319);
+        for (const auto x : {20, 84, 148, 276}) {
+            world.set(x, 20, Material::Sand);
+            world.set(x + 4, 30, Material::Water);
+        }
+        std::vector<std::uint64_t> observed;
+        const auto water = total_liquid(world, 0, 0, 319, 100);
+        const cybersand::RectI64 regions[] = {{0, 0, 128, 128}, {64, 0, 128, 128},
+            {256, 0, 64, 128}, {0, 0, 128, 128}, {0, 0, 320, 128}};
+        for (const auto region : regions) {
+            world.set_simulation_region(region);
+            for (int tick = 0; tick < 8; ++tick) {
+                const auto stats = world.tick();
+                require(stats.chunk_allocations == 0 && stats.temperature_field_allocations == 0,
+                        "preallocated region transition allocated native storage");
+                require(total_liquid(world, 0, 0, 319, 100) == water &&
+                            count_material(world, Material::Sand, 0, 0, 319, 100) == 4,
+                        "interest transition lost conserved material");
+                observed.push_back(world.state_hash());
+            }
+        }
+        if (expected.empty()) expected = observed;
+        else require(observed == expected, "region transition changed across workers/repeated run");
+    }
+}
+
+void test_interest_failed_tick_recovery() {
+    for (const std::uint32_t workers : {1U, 4U}) {
+        for (const bool with_event : {false, true}) {
+            WorldConfig config{};
+            config.worker_threads = workers;
+            config.parallel_job_threshold = 1;
+            config.active_core_capacity = 1;
+            World world(config);
+            world.set(20, 20, Material::Wall);
+            world.set(400, 20, Material::Sand);
+            world.set_simulation_region(cybersand::RectI64{0, 0, 64, 64});
+            for (int i = 0; i < 5; ++i) (void)world.tick();
+            require(world.get(400, 20) == Material::Sand && world.active_chunk_count() > 0,
+                    "excluded pending activity lost before fault");
+            if (with_event) require(world.queue_explosion(20, 20, 1), "combined event rejected");
+            world.set_simulation_region(cybersand::RectI64{0, 0, 448, 64});
+            bool threw = false;
+            try { (void)world.tick(); } catch (const std::runtime_error&) { threw = true; }
+            require(threw && world.has_failed() && world.completed_tick_index() == 5,
+                    "re-entry capacity failure reported success");
+            require(world.get(20, 20) == (with_event ? Material::Fire : Material::Wall),
+                    "combined event ordering changed");
+            world.set_simulation_region(cybersand::RectI64{384, 0, 64, 64});
+            const auto frozen = world.state_hash();
+            try { (void)world.tick(); } catch (const std::logic_error&) {}
+            require(world.state_hash() == frozen && world.get(400, 20) == Material::Sand,
+                    "region change resumed partial world");
+            world.clear();
+            world.set(400, 20, Material::Sand);
+            const auto resumed = world.tick();
+            require(resumed.tick == 1 && resumed.deferred_events == 0 &&
+                        world.get(400, 21) == Material::Sand && world.get(20, 20) == Material::Empty,
+                    "clear lost latest region or replayed failed event");
+        }
+    }
+}
+
 void test_dirty_rectangles() {
     World world({16, 3, 200});
     world.set(2, 3, Material::Wall);
@@ -1519,6 +1678,10 @@ int main() {
         {"issue #1 failed tick stop/reset", test_failed_tick_stops_until_clear},
         {"issue #1 late failure and publication", test_failed_tick_after_executed_phase},
         {"issue #1 C API failure/recovery", test_failed_tick_c_api},
+        {"issue #2 interest resume boundaries", test_interest_resume_boundaries},
+        {"issue #2 sleeping region transitions", test_interest_sleep_transitions},
+        {"issue #2 conservation and worker determinism", test_interest_conservation_and_worker_determinism},
+        {"issues #1/#2 failed re-entry and recovery", test_interest_failed_tick_recovery},
         {"dirty rectangles", test_dirty_rectangles},
         {"immutable render snapshots", test_immutable_render_snapshot_exchange},
         {"concurrent render leases", test_render_snapshot_concurrent_leases},

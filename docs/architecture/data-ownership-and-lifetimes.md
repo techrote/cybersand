@@ -116,3 +116,9 @@ Main-thread Rapier stops on observed failure, without rewinding an earlier step.
 `clear()` or validated replacement abandons the failed world's events and state.
 Replacement candidates allocate/validate before ownership swap; see
 [failure contract](simulation-tick-and-threading.md#what-happens-when-a-tick-fails-or-overloads).
+
+Region setters are serialized owner operations that latch requested coverage,
+including while failed. Healthy tick entry applies transition wakes in the existing
+metadata pass; native pool jobs consume the resulting selection. No Godot or
+Rapier API is introduced in native workers. Failed ticks cannot apply a later
+region request; recovery abandons old activity before fresh setup.

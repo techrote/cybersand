@@ -64,9 +64,9 @@ native ticks. `K` changes presentation smoothing, not material accuracy.
 The [tick contract](../architecture/simulation-tick-and-threading.md) records
 that exception and actual failure/overrun behavior.
 
-Current region re-entry can leave movable cells asleep; this is a defect in the
-[interest contract](../systems/world-storage-and-interest-region.md), not an
-Approved approximation policy. Fixed secondary lanes also lack a universal
+Current phased region exclusion pauses ordinary work; re-entry wakes new
+coverage once without catch-up under the explicit
+[interest contract](../systems/world-storage-and-interest-region.md). Fixed secondary lanes also lack a universal
 disable switch; do not claim today's runtime can select fully strict execution.
 
 ## What evidence is needed for a new policy?

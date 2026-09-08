@@ -146,7 +146,9 @@ results must be immutable with explicit IDs, capacity and retention.
 
 Current native/Godot setters are documented in the
 [interest contract](../systems/world-storage-and-interest-region.md), including
-backend differences and re-entry defect. **Approved:** explicit requested bounds
+backend differences and the bounded pause/resume contract. Region requests latch
+requested core coverage; newly included resident blocks wake at tick entry, not
+in the setter. Failed-world requests cannot step or wake partial state. **Approved:** explicit requested bounds
 and diagnosed capacity. **Planned/Ambiguous:** serialized percentage semantics,
 multi-camera policy and live reconfiguration responses.
 

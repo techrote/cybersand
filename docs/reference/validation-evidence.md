@@ -19,6 +19,7 @@ certifies a later binary, another platform or complete replay.
 
 | Evidence ID/date | Executed check and outcome | Limits and record |
 |---|---|---|
+| E-F02, 2026-09-08 | 46 native regressions; rebuilt Windows adapter/owners and 16 Godot runners passed; paired Web exports exercised | [Issue #2 and combined record](../audits/2026-09-08-issue-2-interest-regions.md) identifies browser results, worker/profile and artifact scope; historical failures remain preserved |
 | E-F01, 2026-09-08 | 42 native regressions; rebuilt Windows adapter and desktop/Web owner checks; 16 Godot runners passed | [Issue #1 dated record](../audits/2026-09-08-issue-1-failed-ticks.md); browser and combined region acceptance recorded separately |
 | E-M11, 2026-08-28 | Historical audited M11: 34 passed, one inconclusive LeakSanitizer run | Linux-era audit; Windows format/import inspection was not runtime execution. [Retained records](../audits/m11/README.md) |
 | E-SETUP, 2026-09-07 | 39 native tests, 11 Godot fixture runners; Chromium compatibility demo/save checks | Before threaded/Rapier Web work. `C:/kybersand/LOCAL-DEV-SETUP-REPORT.md` retains original results |
