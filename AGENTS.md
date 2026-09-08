@@ -18,7 +18,9 @@ for the established Git checkpoints and inspect actual working status.
   Web threading is synchronous externally; Rapier stays main-thread owned.
 - Keep raw test logs in `validation/local`; add scoped evidence summaries to source
   documentation. Do not adopt historical totals as new results.
-- No push, PR, upload, deployment or remote mutation is authorized by this documentation task.
+- Remote mutation requires authorization in the active task. On 2026-09-08 the
+  owner authorized pushing the completed work and marking a correctness milestone.
+  This supersedes the earlier documentation-only task's no-push scope.
 
 The older Documents workspace is retained history, not the active development
 location. The user confirmed a USB backup and explicitly asked to stop looking

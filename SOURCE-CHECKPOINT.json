@@ -11,5 +11,11 @@
   "documentation_report": "source/docs/audits/2026-09-08-structural-documentation-audit.md",
   "retrieval_evaluation": "source/docs/audits/2026-09-08-retrieval-evaluation.md",
   "implementation_preserved": true,
-  "remote_mutation": "None; no push, publish or delivery"
+  "remote_mutation": "Owner authorized publication of both histories, checkpoint tags, documentation prerelease and tracked follow-up issues; no runtime deployment",
+  "milestone_source_checkpoint": "bfac0bcad85a19673a82126d45d688ddf4aed22a",
+  "source_milestone_tag": "docs-correctness-2026-09-08",
+  "workspace_milestone_tag": "workspace-docs-correctness-2026-09-08",
+  "workspace_remote": "https://github.com/techrote/cybersand.git",
+  "github_milestone": "https://github.com/techrote/cybersand/milestone/1",
+  "github_prerelease": "https://github.com/techrote/cybersand/releases/tag/docs-correctness-2026-09-08"
 }

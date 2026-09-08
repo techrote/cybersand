@@ -30,3 +30,7 @@ or publication was performed in the documentation rewrite.
 The [rewrite audit](source/docs/audits/2026-09-08-structural-documentation-audit.md)
 and [retrieval evaluation](source/docs/audits/2026-09-08-retrieval-evaluation.md)
 record the completed documentation work and remaining foundational issues.
+
+Both histories are now published to the private `techrote/cybersand` repository.
+Use the [GitHub milestone instructions](source/docs/audits/2026-09-08-github-milestone.md)
+to reconstruct the paired source/workspace checkout at this checkpoint.
