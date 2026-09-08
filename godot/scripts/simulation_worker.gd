@@ -24,6 +24,7 @@ var _character: CyberSampledCharacter = CyberSampledCharacter.new()
 
 var _running: bool = false
 var _paused: bool = false
+var _simulation_failed: bool = false # Exclusive worker state; main reads status under mutex.
 var _horizontal_input: float = 0.0
 var _jetpack_active: bool = false
 var _interest_center: Vector2i = Vector2i.ZERO
@@ -156,16 +157,20 @@ func queue_emit_disc(
 	radius: int,
 	material_id: int,
 	emission_flags: int = CyberCellWorld.EMISSION_FLAG_NONE
-) -> void:
+) -> bool:
 	# Material and emission flags share the fourth integer so the command stays a
 	# compact value type. UI/tool slots never enter this simulation-facing command.
 	var packed_flags: int = emission_flags << EMISSION_FLAGS_SHIFT
 	var packed_material: int = (material_id & EMISSION_MATERIAL_MASK) | packed_flags
 	var emission_command: Vector4i = Vector4i(world_x, world_y, radius, packed_material)
 	_mutex.lock()
+	if _published_snapshot != null and _published_snapshot.simulation_failed:
+		_mutex.unlock()
+		return false
 	if _pending_emissions.is_empty() or _pending_emissions.back() != emission_command:
 		_pending_emissions.append(emission_command)
 	_mutex.unlock()
+	return true
 
 
 func queue_paint(
@@ -273,26 +278,38 @@ func _worker_loop() -> void:
 		)
 
 		if local_reset_requested:
-			_world.reset_demo_world()
-			_character.reset(local_reset_spawn)
-		_world.prepare_rigid_body_coupling(local_rigid_body_states, not local_paused)
-		for emission_command: Vector4i in local_emissions:
-			_world.emit_disc(
-				emission_command.x,
-				emission_command.y,
-				emission_command.z,
-				emission_command.w & EMISSION_MATERIAL_MASK,
-				emission_command.w >> EMISSION_FLAGS_SHIFT
-			)
+			var recovered: bool = true
+			if _world.has_method(&"has_failed"):
+				recovered = bool(_world.reset_demo_world())
+			else:
+				_world.reset_demo_world()
+			if recovered:
+				_simulation_failed = false
+				_character.reset(local_reset_spawn)
+				# Publish the replacement before any attempted continuation.
+				local_paused = true
+		if not _simulation_failed:
+			_world.prepare_rigid_body_coupling(local_rigid_body_states, not local_paused)
+			for emission_command: Vector4i in local_emissions:
+				_world.emit_disc(
+					emission_command.x,
+					emission_command.y,
+					emission_command.z,
+					emission_command.w & EMISSION_MATERIAL_MASK,
+					emission_command.w >> EMISSION_FLAGS_SHIFT
+				)
 
-		if not local_paused:
-			_character.simulate(
-				FIXED_TIMESTEP,
-				local_horizontal_input,
-				local_jetpack_active,
-				_world
-			)
-			_world.simulation_tick()
+			if not local_paused:
+				_character.simulate(
+					FIXED_TIMESTEP,
+					local_horizontal_input,
+					local_jetpack_active,
+					_world
+				)
+				if _world.has_method(&"has_failed"):
+					_simulation_failed = not bool(_world.simulation_tick())
+				else:
+					_world.simulation_tick()
 
 		var worker_step_time_ms: float = float(Time.get_ticks_usec() - step_start_usec) / 1000.0
 		_publish_snapshot(
@@ -318,6 +335,9 @@ func _publish_snapshot(
 	render_snapshot_interval_usec: int,
 	force_render_full_refresh: bool = false
 ) -> void:
+	if _simulation_failed:
+		_publish_failure_snapshot()
+		return
 	var copy_start_usec: int = Time.get_ticks_usec()
 	var now_usec: int = Time.get_ticks_usec()
 	var acknowledged_render_serial: int = 0
@@ -443,6 +463,39 @@ func _publish_snapshot(
 	snapshot.paused = paused
 
 	_mutex.lock()
+	_published_snapshot = snapshot
+	_mutex.unlock()
+
+
+func has_failed() -> bool:
+	_mutex.lock()
+	var failed: bool = _published_snapshot != null and _published_snapshot.simulation_failed
+	_mutex.unlock()
+	return failed
+
+
+func _publish_failure_snapshot() -> void:
+	# Copy the last valid publication, never partial cells/character/body results.
+	# The previous snapshot and its packed payloads remain immutable.
+	var previous: CyberSimulationSnapshot = _published_snapshot
+	if previous != null and previous.simulation_failed:
+		return
+	var snapshot: CyberSimulationSnapshot = CyberSimulationSnapshot.new()
+	if previous != null:
+		for property: Dictionary in previous.get_property_list():
+			if int(property.usage) & PROPERTY_USAGE_SCRIPT_VARIABLE:
+				snapshot.set(property.name, previous.get(property.name))
+	_snapshot_serial += 1
+	snapshot.serial = _snapshot_serial
+	snapshot.published_usec = Time.get_ticks_usec()
+	snapshot.simulation_failed = true
+	snapshot.paused = true
+	snapshot.rigid_body_results = PackedFloat32Array()
+	snapshot.failed_tick_index = int(_world.get_attempted_tick_index())
+	snapshot.tick_failure_count = int(_world.get_tick_failure_count())
+	snapshot.last_tick_error = str(_world.get_last_tick_error())
+	_mutex.lock()
+	_pending_emissions.clear()
 	_published_snapshot = snapshot
 	_mutex.unlock()
 

@@ -17,21 +17,41 @@ jobs:
   consistency:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: workspace/source
     steps:
-      - name: Check out source and LFS runtime dependencies
+      - name: Check out pinned companion workspace documentation
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
+          ref: 6a58311982941b75f46e22109a0829e5acb83c7e
+          path: workspace
+      - name: Check out current source and complete audited history
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          path: workspace/source
           lfs: true
-
-      - name: Validate M11 identity, documentation, and dependency pins
+          fetch-depth: 0
+      - name: Validate current documentation, pins and runtime provenance
+        run: timeout 5m python3 tools/ci/check_repository.py --require-materialized
+      - name: Verify retained M11 records against their audited Git revision
         run: timeout 5m python3 tools/ci/check_m11_consistency.py
-
+      - name: Test validation failure contracts
+        run: timeout 2m python3 -m unittest discover -s tools/ci -p test_validation_contracts.py
+      - name: Evaluate current retrieval routes
+        run: |
+          mkdir -p build/retrieval
+          timeout 2m python3 tools/docs/retrieval_eval.py --output build/retrieval/frozen.json
+          timeout 2m python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-challenges.json --output build/retrieval/challenges.json
       - name: Validate Git LFS objects and whitespace
         run: |
           timeout 5m git lfs fsck
           git diff --check HEAD
-
-      - name: Verify runtime architecture and Linux ABI floor
-        run: |
-          timeout 2m tools/check_linux_runtime_floor.sh
-          file godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll | grep -q 'PE32+ executable (DLL).*x86-64'
+      - name: Retain retrieval evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: retrieval-${{ github.run_id }}
+          path: workspace/source/build/retrieval/
+          if-no-files-found: error
+          retention-days: 30

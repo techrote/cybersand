@@ -30,22 +30,23 @@ from inspected code. No documentation status is a blanket platform acceptance.
 | Bodies and character | Main-thread Rapier, rectangular masks/displacement, static terrain packets and sampled character; [coupling](../architecture/rigid-body-and-cellular-coupling.md) |
 | Rendering | Immutable native snapshots, copied dirty RG8 patches, full finite GPU texture update and derived material appearance; [bridges](../architecture/rendering-and-gameplay-bridges.md) |
 | Persistence | Fixed CYSD1 demo levels; complete resumed replay absent; [save contract](level-saves-and-replay.md) |
-| Runtime availability | Windows/native and Web payloads present; other-platform pointers remain; [build](../operations/local-build-and-validation.md) and [evidence](validation-evidence.md) |
+| Runtime availability | All 18 required LFS payloads materialized; current execution scope is platform-specific; [build](../operations/local-build-and-validation.md) and [evidence](validation-evidence.md) |
 
 ## Decisions and defects to resolve
 
-These issues are **Current observations/open decisions**, not approved fixes.
+Rows distinguish **Current fixes**, remaining defects and open decisions; dated
+evidence defines each fix's platform acceptance.
 
 | ID | Precise uncertainty or contradiction | Next bounded check/decision |
 |---|---|---|
-| F01 — failed ticks | `World::tick` can advance tick/epoch and apply events before throwing; no full rollback. Desktop ignores adapter false, Web pauses/reports | Reproduce capacity failure after queued events, choose stop/retry/transaction policy, synchronize owners; [tick contract](../architecture/simulation-tick-and-threading.md) |
-| F02 — region re-entry | Phased jobs exclude cores outside the region while finish_tick ages all blocks; region changes do not wake sleeping blocks. Serial path ignores that region filter | Promote the recorded diagnostic into a regression and decide activation semantics for leave/re-entry; [storage](../systems/world-storage-and-interest-region.md) |
+| F01 — failed ticks | Current fix: latch failed World, distinguish attempted/completed ticks, suppress partial publication, stop desktop/Web owners; explicit reset/validated replacement, no replay/rollback | Windows/native acceptance and browser limits: [issue #1 evidence](../audits/2026-09-08-issue-1-failed-ticks.md); [tick contract](../architecture/simulation-tick-and-threading.md) |
+| F02 — region re-entry | Current fix: phased exclusion retains activity/quiet state; new core coverage wakes resident blocks once without catch-up. Serial still ignores the region | Separate and combined acceptance: [issue #2 evidence](../audits/2026-09-08-issue-2-interest-regions.md); [storage](../systems/world-storage-and-interest-region.md). Future field/streaming semantics remain open |
 | F03 — tick ownership | Desktop moves character before cells with async Rapier samples; Web moves character after cells and gates on terrain backlog | Decide which ordering differences are acceptable before a common physics/replay contract; [threading](../architecture/simulation-tick-and-threading.md) |
 | F04 — delayed rules and sleep | Secondary interaction lanes differ by material, including specialized Ice cadence; waiting branches do not all keep cells active | Test eventual intended reactions across sleep/region transitions; preserve material-specific semantics; [materials](../systems/materials-and-rule-kernels.md) |
 | F05 — replay and fidelity | Current hashes omit some future-affecting state; CYSD1 omits more; no selectable strict runtime policy | Specify complete input/configuration identity, fidelity policy and replay schema before promising continuation; [determinism](../architecture/determinism-and-boundary-transfers.md) |
 | F06 — bounded operations | Native lazy allocation and partial failure coexist with Approved prepared/no-allocation goals; desktop input Array is unbounded | Define command backpressure, setup/reconfiguration and allocation accounting; [capacity](../operations/configuration-and-capacity-budgets.md) |
 | F07 — body physics scope | Rectangle proof does not settle general shapes, sweep/CCD, force/torque units, sample-age policy or particle overflow | Name units and fixture tolerances, extend one bounded coupling case at a time; [coupling](../architecture/rigid-body-and-cellular-coupling.md) |
-| F08 — build/release identity | CI 4.0.11 versus builder 4.0.20; missing native binding argument; compile-only skips runtime; historical template lock and base-only export identity | Align and execute tooling in a separate implementation checkpoint; [CI contradictions](../operations/github-development-and-release.md#unresolved-ci-contradictions) |
+| F08 — build/release identity | CI 4.0.11 versus builder 4.0.20; missing native binding argument; compile-only skips runtime; historical template lock and base-only export identity | Current/M11 gate separation is implemented; remaining Web work stays in issue #3. [CI contradictions](../operations/github-development-and-release.md#unresolved-ci-contradictions) |
 
 ## Approved, Planned, Deferred and Rejected work
 
@@ -57,7 +58,8 @@ enforced; [invariants](invariants.md) identifies that gap.
 **Planned:** generalized bounded command/result queues; safe live reconfiguration;
 general world/configuration/replay persistence; field equations and units; production
 body-shape/CCD/force policy; GPU subregion writes; authored appearance schema/tooling;
-current platform/sanitizer and production performance acceptance.
+remaining platform/LeakSanitizer and production performance acceptance. Current
+Linux native ASan/UBSan/TSan results are in the validation ledger.
 
 **Deferred:** asynchronous Web simulation/render ownership, streamed generation,
 and GPU/coarse/hex experiments. Active-only buffering is a **Planned candidate**
@@ -71,8 +73,15 @@ See [principles](../architecture/principles-and-non-goals.md) and the [ADRs](../
 
 ## Next implementation checkpoints
 
-1. Decide/reproduce F01 and F02, then implement focused failure/activation fixes with
-   exact regression evidence. Do not fold in a new solver or backend.
+The [physics characterisation and soliding plan](../operations/physics-characterisation-plan.md)
+is **Planned** work for powder exchange/player support, slow Mercury penetration,
+barrel embedding without creep, and eventual reversible macro objects. Begin
+with measured fixtures; soliding requires an explicit ownership decision before
+dynamic membership handoff. It does not supersede the Current F01/F02 contracts.
+
+1. Preserve the implemented F01 quarantine and F02 pause/re-entry contracts and
+   their combined regressions; extend the documented platform/failure-site gaps
+   before broader production acceptance. Do not fold in a new solver or backend.
 2. Freeze ordering, units, approximation and replay-input contracts needed by the
    first physics increment; record unresolved choices rather than guessing.
 3. Extend one bounded physical behavior, validate conservation/ownership/capacity

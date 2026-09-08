@@ -90,3 +90,13 @@ payload restoration; `test_web_rapier.gd` exercises body/lifecycle restoration.
 See the [validation ledger](validation-evidence.md) for the dated Windows and
 Chromium runs. Headless execution of a Web scene is Windows runtime evidence;
 it does not rerun the exported WASM in a browser.
+
+## Can a failed world be saved or recovered?
+
+**Current:** ordinary Godot level export rejects a quarantined World; it must not
+label partial tick state as a valid level. Raw serialized native reads remain
+diagnostic. A previously saved, validated level or explicit fresh level/reset can
+replace the failed World. Invalid replacement leaves the fault and partial state
+intact. Successful replacement clears pending events/failure/tick identity and
+uses the latest requested region; it does not resume the failed attempt or replay
+accepted events. See [failure policy](../decisions/ADR-010-failed-tick-quarantine.md).

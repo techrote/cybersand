@@ -35,9 +35,11 @@ internal native pthreads. Rapier objects stay on the main thread. Follow
 
 The first foundational checkpoint should resolve the bounded correctness/ownership
 issues in the roadmap before broad physics additions. In particular, tick failure
-is not a transaction and phased interest re-entry can leave sleeping material
-frozen. These observations are not approved fixes. Preserve an exact reproducer,
-decide the intended policy and record its consequences for interfaces/invariants.
+is not a transaction: issue #1 now quarantines failures until explicit reset or
+validated replacement, with no retry/rollback. Issue #2 retains excluded phased
+activity and wakes newly included resident blocks once, without catch-up; serial
+keeps its distinct behavior. The [combined evidence](../audits/2026-09-08-issue-2-interest-regions.md)
+separates regressions and runtime artifacts from remaining platform gaps.
 
 Use [build/test instructions](local-build-and-validation.md) for commands and
 [validation evidence](../reference/validation-evidence.md) for actual dated passes.
@@ -53,3 +55,12 @@ checks and the tested source/runtime identities. Commit locally when authorized.
 Preserve existing historical audit records. The former long handover and checkpoint
 tables are retained in the [historical record](../audits/pre-rag-rewrite-2026-09-08/README.md),
 excluded from ordinary current retrieval.
+
+## Publication and legacy validation follow-up
+
+The owner authorized finalising issues #1/#2 in PR #6. Preserve their separate
+commits and contracts. [Current validation and M11 retention](current-and-historical-validation.md)
+now have independent gates; original historical hashes stay unchanged.
+[Publication evidence](../audits/2026-09-08-validation-reconciliation.md) records
+Linux native/sanitizer results and the rebuilt-runtime CI transition. Remaining
+Web CI/export identity work remains issue #3.

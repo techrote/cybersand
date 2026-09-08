@@ -1,0 +1,199 @@
+{
+  "date": "2026-09-08",
+  "source_base": "0778845aadea02ad45add5ee2959ddc778cdc057",
+  "local_deltas": "Compatibility export before async-probe edit; threaded export adds frame yields in tick_failure_probe, web_demo_controller and runner. Issue 2 native test work was present but not linked into these runtimes. Build wrapper source-commit e2892c5 is a historical label, not this source identity.",
+  "browser": "in-app Chromium, Windows x64, Chrome/152.0.0.0",
+  "observations": {
+    "compatibility": {
+      "url": "http://127.0.0.1:8121/?test=1&tickfault=1",
+      "workers": 1,
+      "ok": true,
+      "failures": [],
+      "events": [
+        false,
+        true
+      ],
+      "controller": true,
+      "console_errors_warnings": []
+    },
+    "threaded_sync_probe": {
+      "result": "unresponsive tab; DOM read timed out at 3 seconds, log/close operations at 20 seconds; ordinary threaded startup passed separately",
+      "interpretation": "synchronous repeated World replacements starved pthread recycling in this probe; no production reset change required"
+    },
+    "threaded_async_probe": {
+      "url": "http://127.0.0.1:8122/?test=1&tickfault=1&probe=async",
+      "workers": 6,
+      "ok": true,
+      "failures": [],
+      "events": [
+        false,
+        true
+      ],
+      "controller": true,
+      "console_errors_warnings": []
+    }
+  },
+  "build_logs": [
+    "validation/local/20260908-222756/web.json",
+    "validation/local/20260908-223808/web.json"
+  ],
+  "windows_probe": "validation/local/20260908-issues-1-2/issue1-godot-async-probe.json",
+  "artifacts": {
+    "web": {
+      "build-info.json": {
+        "bytes": 503,
+        "sha256": "1513f026a85085ed711cef06030a93fde2eb265d5f99d94e0bbda4679c73683e"
+      },
+      "godot_rapier.wasm": {
+        "bytes": 2751606,
+        "sha256": "5ff6933670c1377c24dcbac30d67758a307165eacdcbd33b25bf01669577c4c2"
+      },
+      "index.apple-touch-icon.png": {
+        "bytes": 11944,
+        "sha256": "01d4f63e525941e06ce74f5187dad030d20a8d52a07ce365ae4e94af97a3b1f5"
+      },
+      "index.audio.position.worklet.js": {
+        "bytes": 2973,
+        "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
+      },
+      "index.audio.worklet.js": {
+        "bytes": 7298,
+        "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
+      },
+      "index.html": {
+        "bytes": 5517,
+        "sha256": "72e3e9ebd0bc97391682c145a1ca9e4ef82e048068639fa7f3846ba815d8c5b8"
+      },
+      "index.icon.png": {
+        "bytes": 5700,
+        "sha256": "ad3c35ad0facf487c618204bd98db543034fc95224eadc7f08c7a9ff38d5b3b5"
+      },
+      "index.js": {
+        "bytes": 2859484,
+        "sha256": "631bbecee5e5136b5f29ed7dedb31a5d022d65da4b639b6e52a48d0c5e3d3154"
+      },
+      "index.pck": {
+        "bytes": 327576,
+        "sha256": "aa3024d78519995c3a8d80002b64ba6a5714c7500db031b4352016bc18f87d28"
+      },
+      "index.png": {
+        "bytes": 21443,
+        "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
+      },
+      "index.side.wasm": {
+        "bytes": 44072184,
+        "sha256": "85473bead1cf62c408d034189fae423594c45fef403fc0707a72bb8e2b87a6d2"
+      },
+      "index.wasm": {
+        "bytes": 1508095,
+        "sha256": "d37e06f7126849a81fa099f1cf89f0d8ccbb87502b8c857492490dff66fad95a"
+      },
+      "libcybersand_native.web.nothreads.wasm": {
+        "bytes": 1877649,
+        "sha256": "4a894d3efb4cff970924121cf962dfc905f49c1f771bd4aeff928fdec2871c1b"
+      },
+      "LICENSE_STATUS.md": {
+        "bytes": 780,
+        "sha256": "3bfb7c5ddd1418ab38621d1e5b841c9e9c4845e9166a196143c8a71f3cd46b70"
+      },
+      "RAPIER_LICENSE.txt": {
+        "bytes": 1102,
+        "sha256": "b876a61b43cc648b56428d56a484784a88d4231809e4d7f4fd8dbdb6772400e8"
+      },
+      "RAPIER_THIRDPARTY.txt": {
+        "bytes": 15824,
+        "sha256": "63405a03af6a0a85dace7cc08001b34f28e8792dd2b7fb4de09137a6b58392df"
+      },
+      "serve_web.py": {
+        "bytes": 1979,
+        "sha256": "22c2e55cc248070b2f68ffceb0cf3d7401c6d4ef7d4202de20884d9adee97d4a"
+      },
+      "SHA256SUMS": {
+        "bytes": 1538,
+        "sha256": "64c268742525f209e22490c2fc874c22fd0a221ab63f677073d6ed61346307c0"
+      },
+      "THIRD_PARTY_NOTICES.md": {
+        "bytes": 4200,
+        "sha256": "daaef5a4e7ff79674f705a7b16739d4843a22e88efbe2c71ca9d3a42857c493f"
+      }
+    },
+    "web-threaded": {
+      "build-info.json": {
+        "bytes": 510,
+        "sha256": "5f5ca4ad73c1f670ae33234018dd831c3a75a0f3599f02510e0450b464c75b3b"
+      },
+      "godot_rapier.wasm": {
+        "bytes": 2754113,
+        "sha256": "b4020962f6ff6c5f2c07436a94cdbf7b5e2096a5fc5832e4ff5526378ce88528"
+      },
+      "index.apple-touch-icon.png": {
+        "bytes": 11944,
+        "sha256": "01d4f63e525941e06ce74f5187dad030d20a8d52a07ce365ae4e94af97a3b1f5"
+      },
+      "index.audio.position.worklet.js": {
+        "bytes": 2973,
+        "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
+      },
+      "index.audio.worklet.js": {
+        "bytes": 7298,
+        "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
+      },
+      "index.html": {
+        "bytes": 5515,
+        "sha256": "93d0fe20007872b939d73898ba51a7347975d7e11bfd68920ec7e4c5c0d55bbe"
+      },
+      "index.icon.png": {
+        "bytes": 5700,
+        "sha256": "ad3c35ad0facf487c618204bd98db543034fc95224eadc7f08c7a9ff38d5b3b5"
+      },
+      "index.js": {
+        "bytes": 2958897,
+        "sha256": "878c9ae7fb3c27ce886faea8da0670dc1a97fb93930fac4b433a1bb56e662d3a"
+      },
+      "index.pck": {
+        "bytes": 327880,
+        "sha256": "af073643758a0cff1dd699210b8e1d585934347eb3d5c1828888b0b5b4c6d014"
+      },
+      "index.png": {
+        "bytes": 21443,
+        "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
+      },
+      "index.side.wasm": {
+        "bytes": 43268615,
+        "sha256": "c31b395d905c5b632780b19f597b8ea0f329d6f9f6ed979c60732fdbae731a7e"
+      },
+      "index.wasm": {
+        "bytes": 1601069,
+        "sha256": "eb7ab9dcb2c2c484f4dca0acaad466b7fd8448fb86a0a552b5c3e5291952115f"
+      },
+      "libcybersand_native.web.threads.wasm": {
+        "bytes": 1880765,
+        "sha256": "d7995bf9231c00bcf59000b427fac02e59b04e0e7283b3cc9663a92752f5578f"
+      },
+      "LICENSE_STATUS.md": {
+        "bytes": 780,
+        "sha256": "3bfb7c5ddd1418ab38621d1e5b841c9e9c4845e9166a196143c8a71f3cd46b70"
+      },
+      "RAPIER_LICENSE.txt": {
+        "bytes": 1102,
+        "sha256": "b876a61b43cc648b56428d56a484784a88d4231809e4d7f4fd8dbdb6772400e8"
+      },
+      "RAPIER_THIRDPARTY.txt": {
+        "bytes": 15824,
+        "sha256": "63405a03af6a0a85dace7cc08001b34f28e8792dd2b7fb4de09137a6b58392df"
+      },
+      "serve_web.py": {
+        "bytes": 1979,
+        "sha256": "22c2e55cc248070b2f68ffceb0cf3d7401c6d4ef7d4202de20884d9adee97d4a"
+      },
+      "SHA256SUMS": {
+        "bytes": 1536,
+        "sha256": "23faa7c6a04a9f23f7e50c6603382c0212971c29f42d499b712bc2def7e4e136"
+      },
+      "THIRD_PARTY_NOTICES.md": {
+        "bytes": 4200,
+        "sha256": "daaef5a4e7ff79674f705a7b16739d4843a22e88efbe2c71ca9d3a42857c493f"
+      }
+    }
+  }
+}

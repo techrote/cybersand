@@ -31,7 +31,8 @@ Source: [CyberSimulationWorker `_worker_loop`](../../godot/scripts/simulation_wo
    unpaused. Apply material emissions even while paused.
 3. If unpaused, advance the sampled character by `1/60` second, then call the
    selected world's `simulation_tick`.
-4. Publish copied character/cellular results and eligible render updates.
+4. On success publish copied character/cellular results and eligible render updates.
+   On failure publish stopped status with the previous valid payload; see below.
 5. Advance the wall-clock deadline by `TICK_INTERVAL_USEC = 16667`. When lateness
    exceeds `MAX_BACKLOG_TICKS = 3` intervals, increment the overrun counter and
    reset the deadline to now. This discards wall-clock backlog, not World tick
@@ -73,7 +74,8 @@ not an equivalence guarantee; a common production order remains undecided.
 Source: [World `begin_tick`, `tick_phased`, `finish_tick`, `tick`](../../native/src/world.cpp).
 
 1. Increment tick and compact update epoch; clear all cell epochs at wrap.
-   Reset change observations and apply queued external explosions in enqueue
+   Reset change observations and apply phased interest transitions in the same
+   metadata pass, then apply queued external explosions in enqueue
    order before gathering active work. Event-written cells carry this epoch
    and begin ordinary material rules on the following tick.
 2. Gather eligible cores. For each of four phases, starting at `tick_index % 4`,
@@ -81,8 +83,10 @@ Source: [World `begin_tick`, `tick_phased`, `finish_tick`, `tick`](../../native/
 3. Execute same-phase exclusive jobs, using the persistent pool only when the
    configured job threshold is met. Wait for completion, then merge local
    effects in deterministic core order before the next phase.
-4. Finalize activity/sleep and statistics. Render publication is an explicit
-   caller operation after serialized mutation, outside `World::tick`.
+4. Finalize activity/sleep only for fully eligible blocks (retaining excluded
+   activity), then statistics. Mark completed tick identity only on success. Render publication is an explicit
+   caller operation after serialized mutation, outside `World::tick`; failed Worlds
+   reject publication.
 
 Geometry and write restrictions are defined in
 [chunk/tile model](chunk-tile-and-buffer-model.md); scan/random/merge semantics
@@ -91,22 +95,56 @@ and hash limits belong in [determinism](determinism-and-boundary-transfers.md).
 
 ## What happens when a tick fails or overloads?
 
-**Current:** native `tick` throws on reentrancy, unavailable capacity or an
-unsupported backend. Its exception cleanup clears `tick_in_progress_`; it does
-not roll back prior mutations. `begin_tick` can already have incremented time
-and committed explosions before a later capacity failure. A failed tick is
-therefore not a promised atomic no-op. A [dated source-built diagnostic](../audits/2026-09-08-foundation-diagnostics.md) confirms tick advancement, retained explosion mutations and drained events after planning failure.
+**Current, chosen for issue #1:** a thrown tick latches `World::has_failed()`.
+There is no transactional rollback. Tick/epoch, accepted explosion edits, dirty
+metadata, chunk preparation and even earlier completed phases may already have
+changed. `tick_index()` identifies the attempted tick; `completed_tick_index()`
+advances only after successful execution and activity finalization. No partial
+`TickStats` is returned as success. See [ADR-010](../decisions/ADR-010-failed-tick-quarantine.md).
 
-The [adapter `simulation_tick`](../../godot/native_extension/cyber_native_cell_world.cpp)
-catches errors and returns false with telemetry. Desktop currently ignores
-that return and continues publication/pacing; Web pauses as described above.
-**Unresolved:** production failure recovery, atomicity expectations and common
-controller behavior. Do not invent retry or rollback guarantees.
+Failure clears the in-progress guard after any dispatched phase has drained.
+Further ticks, gameplay writes, reservations and snapshot publication are rejected.
+Serialized reads remain diagnostic access to partial state, not a valid save or
+playable continuation. The last successful immutable lease remains usable.
+
+Accepted explosions apply in enqueue order at tick entry. A completed batch drains;
+if application itself throws, the retained batch may include applied or partial
+events. Neither batch is ever automatically replayed: the world cannot be retried.
+An explicit `clear()` discards cells, activity, pending events, masks and tick
+identity, retains construction options/latest requested region, and permits fresh
+setup. Destruction/reconstruction is the other native recovery path. No allocation
+failure, capacity change or camera move implicitly recovers a world.
+
+**Current desktop:** the exclusive GDScript owner checks native false, latches
+failure and publishes a fresh status wrapper around its previous valid publication.
+It withholds partial character, cell, terrain and body results, rejects new
+emissions and clears pending prototype emissions. The pacing thread stays alive
+to receive reset; main-thread Rapier stops when the failure status is observed.
+This is asynchronous notification, not rollback of Rapier or character work that
+preceded the fault. The fallback's void successful tick path is unchanged.
+
+**Current Web:** the synchronous owner pauses, opens the menu, reports restart/load
+recovery, and suppresses painting, ticks, terrain/render publication and further
+Rapier stepping while failed. Closing the menu or toggling pause cannot retry.
+Rapier's preceding step is not rolled back. Reset/restart or a validated saved-level
+replacement creates fresh activity and clears the fault; invalid import preserves it.
+
+The adapter returns `false` with first-error telemetry, zeroes unsuccessful tick
+statistics, exposes attempted/completed identity separately, and does not count
+rejected repeat calls as new failures. Its reset prepares a candidate before swap.
+Godot level export rejects failed state; CYSD1 replacement is level recovery, not
+exact replay. Region/configuration requests may be latched while failed, but cannot
+wake or advance that world. Fresh setup uses the latest requested region.
+
+**Rejected for this fix:** rollback, automatic retry, resuming partial state and
+silent event replay. **Planned separately:** state-preserving live capacity growth
+and complete replay. [Dated regression evidence](../audits/2026-09-08-issue-1-failed-ticks.md)
+separates source tests, Windows owners and browser coverage.
 
 Eligible native transport runs each tick; fixed staggered secondary lanes,
-sleeping and interest rejection reduce work. Region rejection has a known
-re-entry wake defect; SerialInPlace ignores the region. The exact limitation
-and probe are in [interest-region behavior](../systems/world-storage-and-interest-region.md).
+sleeping and interest rejection reduce work. Phased rejection retains activity;
+newly included blocks wake once without catch-up. SerialInPlace ignores the
+region. Transition, capacity and failed-world semantics are in [interest-region behavior](../systems/world-storage-and-interest-region.md).
 No general strict/gameplay switch, fidelity hysteresis or command-pressure
 policy exists. **Approved:** future adaptation must preserve explicit ownership,
 local collision and conservation, and report its policy.

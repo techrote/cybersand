@@ -23,11 +23,14 @@
     "decisions/ADR-007-rigid-body-cellular-coupling.md",
     "decisions/ADR-008-bounded-approximate-fidelity.md",
     "decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+    "decisions/ADR-010-failed-tick-quarantine.md",
     "operations/configuration-and-capacity-budgets.md",
+    "operations/current-and-historical-validation.md",
     "operations/cybersand-codex-development-handover.md",
     "operations/documentation-maintenance.md",
     "operations/github-development-and-release.md",
     "operations/local-build-and-validation.md",
+    "operations/physics-characterisation-plan.md",
     "operations/profiling-observability-and-performance.md",
     "operations/rapier-2d-migration-runbook.md",
     "operations/source-checkpoint-and-recovery.md",
@@ -137,6 +140,14 @@
     {
       "path": "audits/2026-09-08-github-milestone.md",
       "reason": "Dated publication/reconstruction record; not a default current contract"
+    },
+    {
+      "path": "audits/2026-09-08-issue-1-failed-ticks.md",
+      "reason": "Dated issue #1 evidence; use only with recorded source/artifact/platform scope"
+    },
+    {
+      "path": "audits/2026-09-08-validation-reconciliation.md",
+      "reason": "Dated publication/integrity evidence; not a current contract owner"
     }
   ]
 }

@@ -6,8 +6,8 @@ unrelated changes, and pair behavior changes with meaningful regressions and the
 [documentation-update checklist](AGENTS.md#documentation-obligations).
 
 Run current structural/retrieval checks and appropriate native/Godot/browser tests.
-Report historical consistency failures separately; [BUILD_ID](docs/BUILD_ID.md)
-retains M11 hashes. Do not weaken ownership, conservation or explicit capacity
+Use the [separate current and historical gates](docs/operations/current-and-historical-validation.md);
+[BUILD_ID](docs/BUILD_ID.md) retains M11 hashes verified against the audited revision. Do not weaken ownership, conservation or explicit capacity
 failure behavior to obtain a passing performance result.
 
 Required runtime libraries use Git LFS. Materialize and verify the intended

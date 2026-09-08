@@ -65,7 +65,9 @@ implement or validate a live resize protocol.
 
 **Current:** enqueueing too many explosions returns false; accepted events apply
 at tick entry. Running out of resident or active simulation capacity throws and
-may leave a partially advanced tick. Reserved space reduces allocation pressure;
+may leave a partially advanced tick. Such a World is latched failed: subsequent
+ticks, writes, reservation and publication are rejected until explicit clear or
+replacement. Accepted events are never automatically replayed. Reserved space reduces allocation pressure;
 lazy preparation may still allocate chunks or temperature fields. Adapter limits
 differ from standalone WorldConfig defaults, and live resizing is **Planned**.
 Avoiding hot tick allocation is an **Approved** requirement; the **Current**
@@ -80,7 +82,7 @@ The API-specific outcomes are:
 | Explosion queue full/invalid request | Enqueue returns false | Caller must inspect acceptance |
 | Snapshot slots unavailable | `Backpressure` | Dirty state retained |
 | Snapshot patch/byte capacity insufficient | `CapacityExceeded`, exact requirements | Dirty state retained |
-| Native Godot tick exception | Adapter reports false/error and failure count | Desktop and Web react differently |
+| Native Godot tick exception | Adapter reports false/error once and latches failure | Desktop/Web stop and retain last valid publication; reset/replacement required |
 | Generalized command/transfer queue | **Planned** | No complete shared queue-pressure contract |
 
 Sources: [World](../../native/src/world.cpp),
@@ -107,9 +109,12 @@ state and pending commands, publish a complete valid state, then resume.
 The API, pause/rejection behavior, failure recovery, serialization keys/migration,
 and production memory/high-water thresholds remain open. Proposed 10%/20%
 margins have unresolved per-side/total semantics; current presets are explicit
-pixel pairs. Reconfiguration must also resolve the
-[interest re-entry defect](../systems/world-storage-and-interest-region.md#interest-filtering-and-re-entry)
-rather than treating larger bounds as a wake operation.
+pixel pairs. Current region changes follow the separate
+[pause/re-entry contract](../systems/world-storage-and-interest-region.md#interest-filtering-and-re-entry);
+waking new coverage can exhaust existing candidate capacity (counted before
+deduplication). That produces an explicit quarantined failure, not automatic
+capacity growth or retry. Offscreen retained activity still counts toward active
+chunk capacity. Region pause/resume does not implement live resize.
 
 CYSD1 stores a fixed level and selected metadata, not complete WorldConfig or
 replay state. Follow the [level-save contract](../reference/level-saves-and-replay.md).

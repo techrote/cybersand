@@ -19,6 +19,9 @@ certifies a later binary, another platform or complete replay.
 
 | Evidence ID/date | Executed check and outcome | Limits and record |
 |---|---|---|
+| E-PUBLISH, 2026-09-08 | Pushed source passes Linux 46-test native, ASan/UBSan and TSan runs; rebuilt Linux Godot passes 16 runners plus profiles/import/scene; both extension builds pass | [Publication reconciliation](../audits/2026-09-08-validation-reconciliation.md) records exact revisions, workflows and limits, plus separate current/M11 gates |
+| E-F02, 2026-09-08 | 46 native regressions; rebuilt Windows adapter/owners and 16 Godot runners passed; paired Web exports exercised | [Issue #2 and combined record](../audits/2026-09-08-issue-2-interest-regions.md) identifies browser results, worker/profile and artifact scope; historical failures remain preserved |
+| E-F01, 2026-09-08 | 42 native regressions; rebuilt Windows adapter and desktop/Web owner checks; 16 Godot runners passed | [Issue #1 dated record](../audits/2026-09-08-issue-1-failed-ticks.md); browser and combined region acceptance recorded separately |
 | E-M11, 2026-08-28 | Historical audited M11: 34 passed, one inconclusive LeakSanitizer run | Linux-era audit; Windows format/import inspection was not runtime execution. [Retained records](../audits/m11/README.md) |
 | E-SETUP, 2026-09-07 | 39 native tests, 11 Godot fixture runners; Chromium compatibility demo/save checks | Before threaded/Rapier Web work. `C:/kybersand/LOCAL-DEV-SETUP-REPORT.md` retains original results |
 | E-RAPIER-WEB, 2026-09-08 | Windows/Chromium compatibility 1-worker and threaded 6-worker rectangle proof: 600 ticks, 308,087 contacts, 151 displaced cells; no recorded browser errors/warnings | Retained browser record lacks complete immutable source/export binding; not a fresh browser run at the current HEAD. `validation/local/rapier-web-20260908/browser-results.json` |
@@ -65,13 +68,18 @@ Nine groups inside `test_cell_world.gd` count as one runner, not nine extra file
 
 ## Which gates remain absent or failing?
 
-- No current Linux/macOS/WSL runtime run; required Linux payloads remain pointers.
-- No fresh Firefox/Safari or current-artifact browser acceptance.
-- No current ASan/UBSan/TSan/LeakSanitizer or clean cold-build attestation.
+- No macOS/WSL or Firefox/Safari runtime acceptance. All 18 required local LFS
+  payloads are now materialized; rebuilt platform execution has separate evidence.
+- Current Chromium compatibility/threaded acceptance is recorded by E-F02.
+- Linux ASan/UBSan and TSan passed in the publication run; LeakSanitizer was
+  disabled, and these do not attest to every platform or toolchain.
 - No full replay persistence, generalized shapes, exhaustive boundary matrix or
   transactional tick-failure guarantee.
-- The unchanged M11 consistency checker reports seven historical source/hash
-  mismatches. Preserve its record; run the separate current documentation check.
+- The issue #1 run of the unchanged M11 checker reports 12 historical source/hash
+  mismatches (the earlier audit reported seven). Those failures remain preserved;
+  the [reconciliation](../audits/2026-09-08-validation-reconciliation.md) verifies
+  all original hashes against M11 and separates current acceptance. Strict
+  current-versus-M11 comparison still reports differences; no hashes were rewritten.
 - Web CI arguments/toolchain and historical template-lock metadata conflict with
   the local builder; [build guide](../operations/local-build-and-validation.md)
   records those exact gaps.

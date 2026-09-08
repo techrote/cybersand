@@ -46,6 +46,18 @@ The native [Water contract](../systems/water-design.md),
 Current semantics. Preferences do not authorize weakening conservation,
 collision topology or lifetime safety.
 
+## Physics direction recorded 2026-09-08
+
+**Approved owner direction:** call the red test rectangles **barrels**. Improve
+solid/powder mutual exclusion and powder interaction with the player. Dense
+liquids should not freely cross settled powders; Mercury may retain much slower
+penetration. Barrels should embed on ordinary granular impacts by no more than
+roughly half their depth, then remain supported. Include eventual reversible
+**soliding** of rested, mostly contiguous same-material areas for Rapier macro
+motion and ballistics. Exact thresholds and representation changes are
+**Planned**, not current physics. The [characterisation plan](../operations/physics-characterisation-plan.md)
+owns experiments, candidate tuning and staged architecture decisions.
+
 ## Where is approximation acceptable?
 
 **Approved direction:** explicit bounded temporal/probabilistic work reduction
@@ -75,3 +87,19 @@ General streaming/distant aggregates and broad world-scale systems remain
 capture, generalized coupling and artist-facing bounded material-program tools
 remain **Planned** work. [Roadmap](status-and-roadmap.md) owns their implementation
 status and unresolved decisions.
+
+## Failure policy judgement, 2026-09-08
+
+For issue #1 the owner delegated the unresolved recovery choice to engineering
+judgement. The selected bounded policy is stop until explicit reset or validated
+replacement, retaining partial state only for diagnosis. Rollback, automatic
+retry and partial-world continuation are Rejected for this fix; see
+[ADR-010](../decisions/ADR-010-failed-tick-quarantine.md).
+
+## Delegated issue #2 activation choice, 2026-09-08
+
+The owner also authorized engineering judgement for the separate region policy.
+Chosen and Current: excluded phased work pauses and retains activity; newly
+included resident blocks wake once, including sleepers, without catch-up. Serial
+keeps its documented filter difference. This approval does not authorize general
+field catch-up, automatic failure retry, rollback or state-preserving live resize.

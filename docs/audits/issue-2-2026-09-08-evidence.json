@@ -1,0 +1,967 @@
+{
+  "date": "2026-09-08",
+  "issue": 2,
+  "related_issue": 1,
+  "source_base": "061ad23ab92a36a984446fa3a122b7278388a2e2",
+  "implementation_checkpoint": "The issue #2 commit containing this record, after 061ad23; commits are local only.",
+  "workspace": {
+    "root": "C:/kybersand",
+    "head": "6a58311982941b75f46e22109a0829e5acb83c7e",
+    "branch": "codex/workspace-docs",
+    "status": "",
+    "remotes": "origin\thttps://github.com/techrote/cybersand.git (fetch)\norigin\thttps://github.com/techrote/cybersand.git (push)",
+    "tags": "workspace-docs-correctness-2026-09-08"
+  },
+  "source_branch": "codex/issues-1-2",
+  "intake_source": "bfac0bcad85a19673a82126d45d688ddf4aed22a",
+  "precommit_identity_log": "validation/local/20260908-issues-1-2/issue2-final-precommit-identity.json",
+  "precommit_delta_sha256": "2fb64c054c84a4b5c6faeecb3f0ca87a043cc80b6a26460f01e158743cda2e7f",
+  "delta_scope": "Fingerprint captured before final evidence editing. Exact final compiled/tested inputs below; unchanged inputs are identified by source_base. Working-file bytes include local line endings.",
+  "source_local_delta_files": {
+    "godot/scripts/tick_failure_probe.gd": "277b1bda3219956bfc95a83531b67638b906c7e6622702f24312e4d7b6e2885d",
+    "godot/scripts/web_demo_controller.gd": "961b8cf9188ab09b056c9a5e8f96f6c818c9fdd03196ef865dfd20c5a1ee29e7",
+    "godot/tests/test_tick_failure_regression.gd": "0d51d0b9ef8d0e91f1e27f0fb4b9bb27ce8060fd4d17d894dd7856a1a90e7067",
+    "native/include/cybersand/world.hpp": "a3fda5238de48ebf01e8e32f012fe90f74aaa5da6eb336588f5fe7400e77dd7d",
+    "native/src/world.cpp": "e3e91582747077748a1c2411f0f5dc674de09c1a1f62372fff36ec116c297255",
+    "native/tests/test_world.cpp": "4e23309775af70b9d6046cc981ab3cc669d4113b0c50ad04c35b820140b835f0"
+  },
+  "runtime": {
+    "os": "Windows 11 x86_64",
+    "godot": "4.7.stable.official.5b4e0cb0f",
+    "compiler": "LLVM-MinGW 20260826/UCRT Clang 23.1.0",
+    "godot_cpp": "101ae38034304346a46ea9ea84ae156d3e860496",
+    "python": "3.12.14",
+    "scons": "4.10.1",
+    "emscripten": "4.0.20",
+    "local_toolchain_drift_override": true,
+    "build_profiles": {
+      "native_test": "Debug -O0 -g3; C11 header inclusion; Windows Clang 23.1.0",
+      "windows_extension": "-O3 -DNDEBUG; Godot 4.7 release adapter",
+      "web": "Emscripten 4.0.20; compatibility and threaded exports; same pinned Godot and separate clean godot-cpp 101ae380"
+    },
+    "export_source_label_limitation": "build-info source_commit e2892c54 is a historical wrapper label; actual source is 061ad23 plus the recorded implementation delta. No CI/toolchain identity redesign is claimed."
+  },
+  "artifacts": {
+    "native_dll": {
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "sha256": "fda49d0acb0a4786f9aeeb6cb4289fc2fd10ac8103512cc1663f98598a49049b"
+    },
+    "rapier_windows": {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "sha256": "4e26ffa78ec2aaff434c4a70cd2ec85288b10ba5237912c35f204cb1e6ed2180"
+    },
+    "web": {
+      "build-info.json": {
+        "bytes": 503,
+        "sha256": "1513f026a85085ed711cef06030a93fde2eb265d5f99d94e0bbda4679c73683e"
+      },
+      "godot_rapier.wasm": {
+        "bytes": 2751606,
+        "sha256": "5ff6933670c1377c24dcbac30d67758a307165eacdcbd33b25bf01669577c4c2"
+      },
+      "index.apple-touch-icon.png": {
+        "bytes": 11944,
+        "sha256": "01d4f63e525941e06ce74f5187dad030d20a8d52a07ce365ae4e94af97a3b1f5"
+      },
+      "index.audio.position.worklet.js": {
+        "bytes": 2973,
+        "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
+      },
+      "index.audio.worklet.js": {
+        "bytes": 7298,
+        "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
+      },
+      "index.html": {
+        "bytes": 5517,
+        "sha256": "dd3ec34cd29383693fe3ca8c1ebaa65a0e3e7a5427a5a2be377b34a352764ea0"
+      },
+      "index.icon.png": {
+        "bytes": 5700,
+        "sha256": "ad3c35ad0facf487c618204bd98db543034fc95224eadc7f08c7a9ff38d5b3b5"
+      },
+      "index.js": {
+        "bytes": 2859484,
+        "sha256": "631bbecee5e5136b5f29ed7dedb31a5d022d65da4b639b6e52a48d0c5e3d3154"
+      },
+      "index.pck": {
+        "bytes": 330808,
+        "sha256": "ac26ab7bb5da61e3259b94d65b649397dbcd45d4954b8e6d901bf5acb92011d5"
+      },
+      "index.png": {
+        "bytes": 21443,
+        "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
+      },
+      "index.side.wasm": {
+        "bytes": 44072184,
+        "sha256": "85473bead1cf62c408d034189fae423594c45fef403fc0707a72bb8e2b87a6d2"
+      },
+      "index.wasm": {
+        "bytes": 1508095,
+        "sha256": "d37e06f7126849a81fa099f1cf89f0d8ccbb87502b8c857492490dff66fad95a"
+      },
+      "libcybersand_native.web.nothreads.wasm": {
+        "bytes": 1878724,
+        "sha256": "6d6186f65f2ec61d84a831bf6246b540295ce9081054f4c247de18231957b762"
+      },
+      "LICENSE_STATUS.md": {
+        "bytes": 780,
+        "sha256": "3bfb7c5ddd1418ab38621d1e5b841c9e9c4845e9166a196143c8a71f3cd46b70"
+      },
+      "RAPIER_LICENSE.txt": {
+        "bytes": 1102,
+        "sha256": "b876a61b43cc648b56428d56a484784a88d4231809e4d7f4fd8dbdb6772400e8"
+      },
+      "RAPIER_THIRDPARTY.txt": {
+        "bytes": 15824,
+        "sha256": "63405a03af6a0a85dace7cc08001b34f28e8792dd2b7fb4de09137a6b58392df"
+      },
+      "serve_web.py": {
+        "bytes": 1979,
+        "sha256": "22c2e55cc248070b2f68ffceb0cf3d7401c6d4ef7d4202de20884d9adee97d4a"
+      },
+      "SHA256SUMS": {
+        "bytes": 1538,
+        "sha256": "c6e53250983ae4793a6e7839299ce52afb758703961471888edad249d04191bc"
+      },
+      "THIRD_PARTY_NOTICES.md": {
+        "bytes": 4200,
+        "sha256": "daaef5a4e7ff79674f705a7b16739d4843a22e88efbe2c71ca9d3a42857c493f"
+      }
+    },
+    "web-threaded": {
+      "build-info.json": {
+        "bytes": 510,
+        "sha256": "5f5ca4ad73c1f670ae33234018dd831c3a75a0f3599f02510e0450b464c75b3b"
+      },
+      "godot_rapier.wasm": {
+        "bytes": 2754113,
+        "sha256": "b4020962f6ff6c5f2c07436a94cdbf7b5e2096a5fc5832e4ff5526378ce88528"
+      },
+      "index.apple-touch-icon.png": {
+        "bytes": 11944,
+        "sha256": "01d4f63e525941e06ce74f5187dad030d20a8d52a07ce365ae4e94af97a3b1f5"
+      },
+      "index.audio.position.worklet.js": {
+        "bytes": 2973,
+        "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
+      },
+      "index.audio.worklet.js": {
+        "bytes": 7298,
+        "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
+      },
+      "index.html": {
+        "bytes": 5515,
+        "sha256": "c58144b1cdcbc5ff7b7c636f90fccafbc66d6985131f82077297282448f1183a"
+      },
+      "index.icon.png": {
+        "bytes": 5700,
+        "sha256": "ad3c35ad0facf487c618204bd98db543034fc95224eadc7f08c7a9ff38d5b3b5"
+      },
+      "index.js": {
+        "bytes": 2958897,
+        "sha256": "878c9ae7fb3c27ce886faea8da0670dc1a97fb93930fac4b433a1bb56e662d3a"
+      },
+      "index.pck": {
+        "bytes": 330808,
+        "sha256": "e2420af0ec8d1b7b70ce094a4fd5193a08f42ac9c275ad9ce749a7506d24c6ea"
+      },
+      "index.png": {
+        "bytes": 21443,
+        "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
+      },
+      "index.side.wasm": {
+        "bytes": 43268615,
+        "sha256": "c31b395d905c5b632780b19f597b8ea0f329d6f9f6ed979c60732fdbae731a7e"
+      },
+      "index.wasm": {
+        "bytes": 1601069,
+        "sha256": "eb7ab9dcb2c2c484f4dca0acaad466b7fd8448fb86a0a552b5c3e5291952115f"
+      },
+      "libcybersand_native.web.threads.wasm": {
+        "bytes": 1881856,
+        "sha256": "f25703efc555f3e7856ba3570617dd2875953374e8c4a6a0ec9a99c6c4b79f36"
+      },
+      "LICENSE_STATUS.md": {
+        "bytes": 780,
+        "sha256": "3bfb7c5ddd1418ab38621d1e5b841c9e9c4845e9166a196143c8a71f3cd46b70"
+      },
+      "RAPIER_LICENSE.txt": {
+        "bytes": 1102,
+        "sha256": "b876a61b43cc648b56428d56a484784a88d4231809e4d7f4fd8dbdb6772400e8"
+      },
+      "RAPIER_THIRDPARTY.txt": {
+        "bytes": 15824,
+        "sha256": "63405a03af6a0a85dace7cc08001b34f28e8792dd2b7fb4de09137a6b58392df"
+      },
+      "serve_web.py": {
+        "bytes": 1979,
+        "sha256": "22c2e55cc248070b2f68ffceb0cf3d7401c6d4ef7d4202de20884d9adee97d4a"
+      },
+      "SHA256SUMS": {
+        "bytes": 1536,
+        "sha256": "7b0c4c565f13f86f1c635f11dd3cd2d971f25d7f972394a24e6fc00de95ab4b7"
+      },
+      "THIRD_PARTY_NOTICES.md": {
+        "bytes": 4200,
+        "sha256": "daaef5a4e7ff79674f705a7b16739d4843a22e88efbe2c71ca9d3a42857c493f"
+      }
+    }
+  },
+  "checks": {
+    "web-manifest": {
+      "passed": true,
+      "entries": 18
+    },
+    "web-threaded-manifest": {
+      "passed": true,
+      "entries": 18
+    },
+    "issue2-red": {
+      "command": [
+        "C:\\kybersand\\.local\\llvm-mingw-20260826-ucrt-x86_64\\bin\\mingw32-make.EXE",
+        "test",
+        "CXX=clang++",
+        "CC=clang"
+      ],
+      "cwd": "C:\\kybersand\\source",
+      "exit_code": 2,
+      "passed": false,
+      "elapsed_seconds": 14.954,
+      "log": "validation\\local\\20260908-issues-1-2\\issue2-red.log",
+      "timeout_seconds": 120
+    },
+    "issue2-green-initial": {
+      "command": [
+        "C:\\kybersand\\.local\\llvm-mingw-20260826-ucrt-x86_64\\bin\\mingw32-make.EXE",
+        "test",
+        "CXX=clang++",
+        "CC=clang"
+      ],
+      "cwd": "C:\\kybersand\\source",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 17.715,
+      "log": "validation\\local\\20260908-issues-1-2\\issue2-green-initial.log",
+      "timeout_seconds": 120
+    },
+    "issue2-native-expanded": {
+      "command": [
+        "C:\\kybersand\\.local\\llvm-mingw-20260826-ucrt-x86_64\\bin\\mingw32-make.EXE",
+        "test",
+        "CXX=clang++",
+        "CC=clang"
+      ],
+      "cwd": "C:\\kybersand\\source",
+      "exit_code": 2,
+      "passed": false,
+      "elapsed_seconds": 20.167,
+      "log": "validation\\local\\20260908-issues-1-2\\issue2-native-expanded.log",
+      "timeout_seconds": 120
+    },
+    "issue2-native-final": {
+      "command": [
+        "C:\\kybersand\\.local\\llvm-mingw-20260826-ucrt-x86_64\\bin\\mingw32-make.EXE",
+        "test",
+        "CXX=clang++",
+        "CC=clang"
+      ],
+      "cwd": "C:\\kybersand\\source",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 22.049,
+      "log": "validation\\local\\20260908-issues-1-2\\issue2-native-final.log",
+      "timeout_seconds": 120
+    },
+    "issue2-native-reviewed": {
+      "command": [
+        "C:\\kybersand\\.local\\llvm-mingw-20260826-ucrt-x86_64\\bin\\mingw32-make.EXE",
+        "test",
+        "CXX=clang++",
+        "CC=clang"
+      ],
+      "cwd": "C:\\kybersand\\source",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 26.032,
+      "log": "validation\\local\\20260908-issues-1-2\\issue2-native-reviewed.log",
+      "timeout_seconds": 120
+    },
+    "issue12-godot-initial": {
+      "command": [
+        "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "godot",
+        "--script",
+        "res://tests/test_tick_failure_regression.gd"
+      ],
+      "cwd": "C:\\kybersand\\source",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 2.227,
+      "log": "validation\\local\\20260908-issues-1-2\\issue12-godot-initial.log",
+      "timeout_seconds": 40
+    },
+    "issue2-docs-final": {
+      "command": [
+        "C:/kybersand/.local/python/Scripts\\python.exe",
+        "tools/ci/check_docs.py"
+      ],
+      "cwd": "C:\\kybersand\\source",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 0.637,
+      "log": "validation\\local\\20260908-issues-1-2\\issue2-docs-final.log",
+      "timeout_seconds": 30
+    },
+    "issue2-retrieval-final": {
+      "command": [
+        "C:/kybersand/.local/python/Scripts\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:/kybersand/validation/local/20260908-issues-1-2/issue2-retrieval-final-results.json"
+      ],
+      "cwd": "C:\\kybersand\\source",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 0.369,
+      "log": "validation\\local\\20260908-issues-1-2\\issue2-retrieval-final.log",
+      "timeout_seconds": 30
+    },
+    "issue2-challenges-final": {
+      "command": [
+        "C:/kybersand/.local/python/Scripts\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-challenges.json",
+        "--output",
+        "C:/kybersand/validation/local/20260908-issues-1-2/issue2-challenges-final-results.json"
+      ],
+      "cwd": "C:\\kybersand\\source",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 0.298,
+      "log": "validation\\local\\20260908-issues-1-2\\issue2-challenges-final.log",
+      "timeout_seconds": 30
+    },
+    "issue2-m11": {
+      "command": [
+        "C:/kybersand/.local/python/Scripts\\python.exe",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "cwd": "C:\\kybersand\\source",
+      "exit_code": 1,
+      "passed": false,
+      "elapsed_seconds": 0.584,
+      "log": "validation\\local\\20260908-issues-1-2\\issue2-m11.log",
+      "timeout_seconds": 30
+    },
+    "issue2-diff": {
+      "command": [
+        "C:\\kybersand\\.local\\git\\cmd\\git.EXE",
+        "diff",
+        "--check"
+      ],
+      "cwd": "C:\\kybersand\\source",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 1.395,
+      "log": "validation\\local\\20260908-issues-1-2\\issue2-diff.log",
+      "timeout_seconds": 30
+    },
+    "native_build": {
+      "command": [
+        "C:\\kybersand\\.local\\git\\usr\\bin\\bash.exe",
+        "tools/build_native_extension_windows.sh"
+      ],
+      "cwd": "C:\\kybersand\\source",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 13.083,
+      "log": "validation\\local\\20260908-225505\\native-build.log",
+      "timeout_seconds": 3600
+    },
+    "compat_build": {
+      "command": [
+        "C:\\kybersand\\.local\\python\\Scripts\\python.exe",
+        "tools/build_web.py",
+        "--cpp",
+        "C:/kybersand/.local/godot-cpp-web",
+        "--godot",
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--templates",
+        "C:/kybersand/.local/web-templates",
+        "--source-commit",
+        "e2892c54d4bd91aac60971e81c748bd49fbe2adb",
+        "--profile",
+        "compat"
+      ],
+      "cwd": "C:\\kybersand\\source",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 48.39,
+      "log": "validation\\local\\20260908-225549\\web.log",
+      "timeout_seconds": 3600
+    },
+    "threaded_build": {
+      "command": [
+        "C:\\kybersand\\.local\\python\\Scripts\\python.exe",
+        "tools/build_web.py",
+        "--cpp",
+        "C:/kybersand/.local/godot-cpp-web",
+        "--godot",
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--templates",
+        "C:/kybersand/.local/web-templates",
+        "--source-commit",
+        "e2892c54d4bd91aac60971e81c748bd49fbe2adb",
+        "--profile",
+        "threaded"
+      ],
+      "cwd": "C:\\kybersand\\source",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 43.81,
+      "log": "validation\\local\\20260908-225652\\web.log",
+      "timeout_seconds": 3600
+    },
+    "godot_import": {
+      "command": [
+        "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--editor",
+        "--path",
+        "C:\\kybersand\\source\\godot",
+        "--import"
+      ],
+      "cwd": "C:\\kybersand\\source",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 6.354,
+      "log": "validation\\local\\20260908-225600\\godot-import.log",
+      "timeout_seconds": 240
+    },
+    "godot_suite": {
+      "passed": 16,
+      "total": 16,
+      "timeout_seconds_per_runner": 180,
+      "results": [
+        {
+          "command": [
+            "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:\\kybersand\\source\\godot",
+            "--script",
+            "res://tests/test_auto_worker_policy.gd"
+          ],
+          "cwd": "C:\\kybersand\\source",
+          "exit_code": 0,
+          "passed": true,
+          "elapsed_seconds": 0.361,
+          "log": "validation\\local\\20260908-225600\\test_auto_worker_policy.log"
+        },
+        {
+          "command": [
+            "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:\\kybersand\\source\\godot",
+            "--script",
+            "res://tests/test_cell_world.gd"
+          ],
+          "cwd": "C:\\kybersand\\source",
+          "exit_code": 0,
+          "passed": true,
+          "elapsed_seconds": 29.167,
+          "log": "validation\\local\\20260908-225600\\test_cell_world.log"
+        },
+        {
+          "command": [
+            "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:\\kybersand\\source\\godot",
+            "--script",
+            "res://tests/test_material_appearance_lut.gd"
+          ],
+          "cwd": "C:\\kybersand\\source",
+          "exit_code": 0,
+          "passed": true,
+          "elapsed_seconds": 1.468,
+          "log": "validation\\local\\20260908-225600\\test_material_appearance_lut.log"
+        },
+        {
+          "command": [
+            "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:\\kybersand\\source\\godot",
+            "--script",
+            "res://tests/test_native_edge_contact_regression.gd"
+          ],
+          "cwd": "C:\\kybersand\\source",
+          "exit_code": 0,
+          "passed": true,
+          "elapsed_seconds": 1.025,
+          "log": "validation\\local\\20260908-225600\\test_native_edge_contact_regression.log"
+        },
+        {
+          "command": [
+            "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:\\kybersand\\source\\godot",
+            "--script",
+            "res://tests/test_native_fire_presentation_regression.gd"
+          ],
+          "cwd": "C:\\kybersand\\source",
+          "exit_code": 0,
+          "passed": true,
+          "elapsed_seconds": 0.656,
+          "log": "validation\\local\\20260908-225600\\test_native_fire_presentation_regression.log"
+        },
+        {
+          "command": [
+            "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:\\kybersand\\source\\godot",
+            "--script",
+            "res://tests/test_native_render_bridge_regression.gd"
+          ],
+          "cwd": "C:\\kybersand\\source",
+          "exit_code": 0,
+          "passed": true,
+          "elapsed_seconds": 0.58,
+          "log": "validation\\local\\20260908-225600\\test_native_render_bridge_regression.log"
+        },
+        {
+          "command": [
+            "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:\\kybersand\\source\\godot",
+            "--script",
+            "res://tests/test_presentation_controls.gd"
+          ],
+          "cwd": "C:\\kybersand\\source",
+          "exit_code": 0,
+          "passed": true,
+          "elapsed_seconds": 0.723,
+          "log": "validation\\local\\20260908-225600\\test_presentation_controls.log"
+        },
+        {
+          "command": [
+            "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:\\kybersand\\source\\godot",
+            "--script",
+            "res://tests/test_rapier_backend_preflight.gd"
+          ],
+          "cwd": "C:\\kybersand\\source",
+          "exit_code": 0,
+          "passed": true,
+          "elapsed_seconds": 0.358,
+          "log": "validation\\local\\20260908-225600\\test_rapier_backend_preflight.log"
+        },
+        {
+          "command": [
+            "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:\\kybersand\\source\\godot",
+            "--script",
+            "res://tests/test_rapier_drop_in.gd"
+          ],
+          "cwd": "C:\\kybersand\\source",
+          "exit_code": 0,
+          "passed": true,
+          "elapsed_seconds": 0.535,
+          "log": "validation\\local\\20260908-225600\\test_rapier_drop_in.log"
+        },
+        {
+          "command": [
+            "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:\\kybersand\\source\\godot",
+            "--script",
+            "res://tests/test_rapier_manual_step.gd"
+          ],
+          "cwd": "C:\\kybersand\\source",
+          "exit_code": 0,
+          "passed": true,
+          "elapsed_seconds": 1.186,
+          "log": "validation\\local\\20260908-225600\\test_rapier_manual_step.log"
+        },
+        {
+          "command": [
+            "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:\\kybersand\\source\\godot",
+            "--script",
+            "res://tests/test_render_patch_handoff_regression.gd"
+          ],
+          "cwd": "C:\\kybersand\\source",
+          "exit_code": 0,
+          "passed": true,
+          "elapsed_seconds": 0.623,
+          "log": "validation\\local\\20260908-225600\\test_render_patch_handoff_regression.log"
+        },
+        {
+          "command": [
+            "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:\\kybersand\\source\\godot",
+            "--script",
+            "res://tests/test_tick_failure_regression.gd"
+          ],
+          "cwd": "C:\\kybersand\\source",
+          "exit_code": 0,
+          "passed": true,
+          "elapsed_seconds": 2.3,
+          "log": "validation\\local\\20260908-225600\\test_tick_failure_regression.log"
+        },
+        {
+          "command": [
+            "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:\\kybersand\\source\\godot",
+            "--script",
+            "res://tests/test_web_demo_setup.gd"
+          ],
+          "cwd": "C:\\kybersand\\source",
+          "exit_code": 0,
+          "passed": true,
+          "elapsed_seconds": 0.718,
+          "log": "validation\\local\\20260908-225600\\test_web_demo_setup.log"
+        },
+        {
+          "command": [
+            "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:\\kybersand\\source\\godot",
+            "--script",
+            "res://tests/test_web_rapier.gd"
+          ],
+          "cwd": "C:\\kybersand\\source",
+          "exit_code": 0,
+          "passed": true,
+          "elapsed_seconds": 2.386,
+          "log": "validation\\local\\20260908-225600\\test_web_rapier.log"
+        },
+        {
+          "command": [
+            "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:\\kybersand\\source\\godot",
+            "--script",
+            "res://tests/test_web_worker_parity.gd"
+          ],
+          "cwd": "C:\\kybersand\\source",
+          "exit_code": 0,
+          "passed": true,
+          "elapsed_seconds": 24.071,
+          "log": "validation\\local\\20260908-225600\\test_web_worker_parity.log"
+        },
+        {
+          "command": [
+            "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:\\kybersand\\source\\godot",
+            "--script",
+            "res://tests/test_worker_benchmark.gd"
+          ],
+          "cwd": "C:\\kybersand\\source",
+          "exit_code": 0,
+          "passed": true,
+          "elapsed_seconds": 5.119,
+          "log": "validation\\local\\20260908-225600\\test_worker_benchmark.log"
+        }
+      ]
+    },
+    "http": {
+      "compat": {
+        "passed": 9,
+        "total": 9,
+        "build_info_timeout_seconds": 30,
+        "payload_timeout_seconds": 60,
+        "command": "tools/dev.py::http_smoke via .local/issue2_final_evidence.py",
+        "payloads": [
+          {
+            "file": "index.html",
+            "bytes": 5517,
+            "sha256": "dd3ec34cd29383693fe3ca8c1ebaa65a0e3e7a5427a5a2be377b34a352764ea0"
+          },
+          {
+            "file": "index.js",
+            "bytes": 2859484,
+            "sha256": "631bbecee5e5136b5f29ed7dedb31a5d022d65da4b639b6e52a48d0c5e3d3154"
+          },
+          {
+            "file": "index.wasm",
+            "bytes": 1508095,
+            "sha256": "d37e06f7126849a81fa099f1cf89f0d8ccbb87502b8c857492490dff66fad95a"
+          },
+          {
+            "file": "index.side.wasm",
+            "bytes": 44072184,
+            "sha256": "85473bead1cf62c408d034189fae423594c45fef403fc0707a72bb8e2b87a6d2"
+          },
+          {
+            "file": "index.pck",
+            "bytes": 330808,
+            "sha256": "ac26ab7bb5da61e3259b94d65b649397dbcd45d4954b8e6d901bf5acb92011d5"
+          },
+          {
+            "file": "libcybersand_native.web.nothreads.wasm",
+            "bytes": 1878724,
+            "sha256": "6d6186f65f2ec61d84a831bf6246b540295ce9081054f4c247de18231957b762"
+          },
+          {
+            "file": "godot_rapier.wasm",
+            "bytes": 2751606,
+            "sha256": "5ff6933670c1377c24dcbac30d67758a307165eacdcbd33b25bf01669577c4c2"
+          },
+          {
+            "file": "RAPIER_LICENSE.txt",
+            "bytes": 1102,
+            "sha256": "b876a61b43cc648b56428d56a484784a88d4231809e4d7f4fd8dbdb6772400e8"
+          },
+          {
+            "file": "RAPIER_THIRDPARTY.txt",
+            "bytes": 15824,
+            "sha256": "63405a03af6a0a85dace7cc08001b34f28e8792dd2b7fb4de09137a6b58392df"
+          }
+        ]
+      },
+      "threaded": {
+        "passed": 9,
+        "total": 9,
+        "build_info_timeout_seconds": 30,
+        "payload_timeout_seconds": 60,
+        "command": "tools/dev.py::http_smoke via .local/issue2_final_evidence.py",
+        "payloads": [
+          {
+            "file": "index.html",
+            "bytes": 5515,
+            "sha256": "c58144b1cdcbc5ff7b7c636f90fccafbc66d6985131f82077297282448f1183a"
+          },
+          {
+            "file": "index.js",
+            "bytes": 2958897,
+            "sha256": "878c9ae7fb3c27ce886faea8da0670dc1a97fb93930fac4b433a1bb56e662d3a"
+          },
+          {
+            "file": "index.wasm",
+            "bytes": 1601069,
+            "sha256": "eb7ab9dcb2c2c484f4dca0acaad466b7fd8448fb86a0a552b5c3e5291952115f"
+          },
+          {
+            "file": "index.side.wasm",
+            "bytes": 43268615,
+            "sha256": "c31b395d905c5b632780b19f597b8ea0f329d6f9f6ed979c60732fdbae731a7e"
+          },
+          {
+            "file": "index.pck",
+            "bytes": 330808,
+            "sha256": "e2420af0ec8d1b7b70ce094a4fd5193a08f42ac9c275ad9ce749a7506d24c6ea"
+          },
+          {
+            "file": "libcybersand_native.web.threads.wasm",
+            "bytes": 1881856,
+            "sha256": "f25703efc555f3e7856ba3570617dd2875953374e8c4a6a0ec9a99c6c4b79f36"
+          },
+          {
+            "file": "godot_rapier.wasm",
+            "bytes": 2754113,
+            "sha256": "b4020962f6ff6c5f2c07436a94cdbf7b5e2096a5fc5832e4ff5526378ce88528"
+          },
+          {
+            "file": "RAPIER_LICENSE.txt",
+            "bytes": 1102,
+            "sha256": "b876a61b43cc648b56428d56a484784a88d4231809e4d7f4fd8dbdb6772400e8"
+          },
+          {
+            "file": "RAPIER_THIRDPARTY.txt",
+            "bytes": 15824,
+            "sha256": "63405a03af6a0a85dace7cc08001b34f28e8792dd2b7fb4de09137a6b58392df"
+          }
+        ]
+      }
+    },
+    "retrieval_summary": {
+      "issue2-retrieval": {
+        "questions": 32,
+        "canonical_hit_at_1": 23,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.8307,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "issue2-challenges": {
+        "questions": 4,
+        "canonical_hit_at_1": 4,
+        "canonical_hit_at_k": 4,
+        "mrr_at_k": 1.0,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "issue2-retrieval-final": {
+        "questions": 32,
+        "canonical_hit_at_1": 23,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.8307,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "issue2-challenges-final": {
+        "questions": 4,
+        "canonical_hit_at_1": 3,
+        "canonical_hit_at_k": 4,
+        "mrr_at_k": 0.875,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    "retrieval_manual_review": {
+      "queries": [
+        "Q02",
+        "Q06",
+        "Q19",
+        "Q20",
+        "C01",
+        "C02",
+        "C03",
+        "C04"
+      ],
+      "canonical_source_facts": "Reviewed against tick/activity/World/C ABI/adapter/owner code. Within-mode parity, deliberate Serial distinction, failed-region stop, no rollback/replay/catch-up and capacity qualifiers retained.",
+      "existing_challenges": "C01/C02 canonical rank 1; query wording retained, expected facts updated for changed implementation.",
+      "new_challenges": "C03/C04 added separately; final canonical ranks 2/1. Top-five C03 has explicit failed-region recovery. C04 returns activity lifecycle and wake behavior, but full candidate-capacity/no-extra-scan details require following its link to the canonical storage bounded-work section. A route hit is not complete answer sufficiency.",
+      "iterations": "Initial combined docs then split the long interest section for readability; both reports retained. Main 32-query result 23 hit@1, 32 hit@5, MRR .8307 versus issue #1 .8385; no improvement claim. Final supplementary 3/4 hit@1, 4/4 hit@5, MRR .875; not a held-out/embedding evaluation."
+    },
+    "historical_m11_mismatches": [
+      "BUILD_ID source hash changed: native/include/cybersand/world.hpp",
+      "BUILD_ID source hash changed: native/src/world.cpp",
+      "BUILD_ID source hash changed: native/tests/test_world.cpp",
+      "BUILD_ID source hash changed: godot/native_extension/cyber_native_cell_world.hpp",
+      "BUILD_ID source hash changed: godot/native_extension/cyber_native_cell_world.cpp",
+      "BUILD_ID source hash changed: godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "BUILD_ID source hash changed: godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "BUILD_ID source hash changed: godot/scripts/simulation_worker.gd",
+      "BUILD_ID source hash changed: godot/scripts/simulation_snapshot.gd",
+      "BUILD_ID source hash changed: godot/scripts/main.gd",
+      "BUILD_ID source hash changed: godot/scripts/rapier_physics_bridge.gd",
+      "BUILD_ID source hash changed: godot/project.godot"
+    ],
+    "issue2-docs-checkpoint": {
+      "command": [
+        "C:/kybersand/.local/python/Scripts\\python.exe",
+        "tools/ci/check_docs.py"
+      ],
+      "cwd": "C:\\kybersand\\source",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 0.396,
+      "log": "validation\\local\\20260908-issues-1-2\\issue2-docs-checkpoint.log",
+      "timeout_seconds": 30
+    },
+    "issue2-m11-checkpoint": {
+      "command": [
+        "C:/kybersand/.local/python/Scripts\\python.exe",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "cwd": "C:\\kybersand\\source",
+      "exit_code": 1,
+      "passed": false,
+      "elapsed_seconds": 0.404,
+      "log": "validation\\local\\20260908-issues-1-2\\issue2-m11-checkpoint.log",
+      "timeout_seconds": 30
+    }
+  },
+  "browser": {
+    "surface": "Codex in-app Chromium, Windows x64, Chrome/152.0.0.0",
+    "control": "CUA DOM diagnostic reads, page-local opt-in probes; no engine state fabricated",
+    "navigation_timeout_seconds": 30,
+    "DOM_timeout_seconds": 10,
+    "host_DOM_timeout_seconds": 3,
+    "compat": {
+      "url": "http://127.0.0.1:8121/?test=1&tickfault=1&probe=reviewed",
+      "workers": 1,
+      "tick_failure_test": {
+        "ok": true,
+        "events": [
+          false,
+          true
+        ],
+        "failures": [],
+        "controller": true
+      },
+      "interest_region_test": {
+        "ok": true,
+        "excluded_ticks": 8,
+        "resumed_steps": 1,
+        "failures": [],
+        "controller": true
+      },
+      "ready": true,
+      "console_errors_warnings": []
+    },
+    "threaded": {
+      "url": "http://127.0.0.1:8122/?test=1&tickfault=1&parity=1&probe=reviewed",
+      "workers": 6,
+      "tick_failure_test": {
+        "ok": true,
+        "events": [
+          false,
+          true
+        ],
+        "failures": [],
+        "controller": true
+      },
+      "interest_region_test": {
+        "ok": true,
+        "excluded_ticks": 8,
+        "resumed_steps": 1,
+        "failures": [],
+        "controller": true
+      },
+      "ready": true,
+      "console_errors_warnings": [],
+      "worker_parity": {
+        "passed": true,
+        "mode": "PhasedInPlace in both samples; serial probe key means one worker, not SerialInPlace",
+        "workers": [
+          1,
+          4
+        ],
+        "demos": [
+          "material_lab",
+          "waterworks",
+          "foundry",
+          "neon_works"
+        ],
+        "ticks_each": 120,
+        "all_per_tick_level_hashes_equal": true,
+        "moves_each": 98286,
+        "parallel_phases_four_workers": 480,
+        "first_hash": "31b9b7e5af5bab1a01b8d35db0675a29d17beaf0780d5d1d925ff3ccd3b3c3c2",
+        "last_hash": "3d14dfe918d5a2be9d0dd4114ee43d68fac662ac604d384c3a1a7d325f671f92"
+      }
+    }
+  },
+  "limits": [
+    "No current Linux/macOS/WSL, ASan/UBSan/TSan, Firefox/Safari or production visual/frame-pacing pass.",
+    "Native allocation counters establish zero owned chunk/temperature allocations only in the preallocated fixtures; existing metadata scans and epoch-wrap cell clears remain.",
+    "Serial multiworker is unsupported; no new cross-mode or desktop/Web/Rapier trajectory equivalence is claimed.",
+    "No rollback, automatic retry, catch-up, live capacity growth, complete replay, all-material cadence or arbitrary failure-site acceptance.",
+    "Initial threaded synchronous probe stalled; corrected by frame yields in the probe only. Its record and timeouts are preserved in issue #1 browser evidence.",
+    "Earlier exploratory issue #2 builds/tests precede the signedness-only cleanup and are superseded by the identified final rebuilds and reruns here.",
+    "A pre-existing unused-this lambda warning remains at world.cpp:1449; introduced signedness warnings were fixed.",
+    "No issue #3 task found at intake or final task-inventory check; no other agent/environment was altered."
+  ]
+}

@@ -103,3 +103,12 @@ for the affected controller. Fixture source alone is not execution evidence;
 use the [validation ledger](../reference/validation-evidence.md).
 [ADR-003](../decisions/ADR-003-godot-bridge-and-immutable-snapshots.md) records
 why mutable reads and renderer locks are Rejected.
+
+## Publication after a failed tick
+
+**Current:** `RenderSnapshotExchange::publish` throws for a failed World before
+touching slots or dirty state. Existing leases remain immutable. Godot
+`take_render_snapshot` returns `{failed: true, error: ...}` without payload;
+controllers retain their previous valid display and withhold partial terrain/body
+results. This is distinct from snapshot Backpressure/CapacityExceeded, which do
+not fail the World. Recovery is defined by the [tick contract](simulation-tick-and-threading.md).

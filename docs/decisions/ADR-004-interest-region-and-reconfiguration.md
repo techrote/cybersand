@@ -59,11 +59,20 @@ execution. These restrictions are production direction, not proof that every
 prototype path is compliant: lazy coordinator preparation can still allocate
 inside a tick, and current failure can follow partial progress.
 
-**Current defect:** region-excluded phased blocks can sleep without waking on
-re-entry; SerialInPlace ignores the region. The
-[interest contract and probe](../systems/world-storage-and-interest-region.md)
-record this separately from the Approved requirement to preserve correct
-wake/eligibility. Safe re-entry must not be inferred from a bounds setter.
+**Approved choice, Current (issue #2, 2026-09-08):** pause excluded phased work,
+retain its activity/quiet state, wake newly included resident blocks once at tick
+entry (including sleepers), and resume without elapsed-time catch-up. The owner
+authorized engineering judgement for this separate policy. Serial keeps its
+whole-active-chunk behavior and ignores the filter; no new cross-mode equality.
+The [interest contract](../systems/world-storage-and-interest-region.md) owns exact
+core selection, custom geometry, coalescing and bounded-work semantics.
+
+Rechecking sleeping blocks costs bounded work on real transitions and can expose
+capacity exhaustion; retaining only existing wake flags would be cheaper but could
+leave stale sleepers frozen. That alternative is **Rejected for this fix**, as are
+automatic catch-up, periodic full-cell wake scans and repeated unchanged-region
+wake. General field/streaming catch-up remains **Planned separately**. Failed
+Worlds accept only a latched region request; reset/replacement is still required.
 
 ## What evidence is needed to complete this decision?
 
@@ -73,3 +82,11 @@ larger and over-capacity configurations, plus region exit/re-entry and sleeping
 material. Current capacity fixtures are useful inputs, not proof of implemented
 live resize. See [validation](../reference/validation-evidence.md) and
 [ownership](../architecture/data-ownership-and-lifetimes.md).
+
+## Failed-world boundary
+
+**Current:** a region request can be retained while a World is failed but does
+not recover it. Explicit clear/reset or validated replacement is required;
+the latest region then applies to freshly established activity. This issue #1
+recovery policy ([ADR-010](ADR-010-failed-tick-quarantine.md)) does not implement
+the Planned state-preserving live resize protocol.

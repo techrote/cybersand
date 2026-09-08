@@ -49,11 +49,13 @@ by an actual test; repeat/worker-count fixtures alone do not prove every schedul
 
 **Current:** `ExplosionCommand` stores signed centre coordinates, bounded
 positive radius and byte collapse strength. Enqueue rejects invalid bounds or
-a full preallocated queue by returning false. Accepted events commit in enqueue
+a full preallocated queue or failed world by returning false. Accepted events commit in enqueue
 order during `begin_tick`, before active work gathering. The blast removes its
 core, writes Fire at an available centre and converts eligible Wall in the
 two-cell shell into granular Stone (`state_b = 1`). Event-written cells carry
-the current epoch and start ordinary material execution next tick.
+the current epoch and start ordinary material execution next successful tick.
+If that attempt fails, the World is quarantined and cannot replay events; explicit
+reset/replacement discards the failed state and any retained pending batch.
 
 **Planned:** buffered transfers and generalized worker-produced fracture,
 structural or long-range events. Their schema, canonical sort tuple and conflict
@@ -69,10 +71,11 @@ mixer in `world.cpp::hash_byte` (seed `1469598103934665603`, multiplier
 
 | Hash | Included | Intended comparison |
 |---|---|---|
-| `state_hash` | Tick/epoch; selected geometry, sleep/temperature/backend and capacity settings; ordered pending explosions; sorted chunk coordinates; chunk/block activity and quiet counts; cell material/state/epoch and resolved temperature | Same declared native fixture and scheduling state |
+| `state_hash` | Attempted/completed tick identity, failed latch and epoch; requested/applied core coverage; selected geometry, sleep/temperature/backend and capacity settings; ordered pending explosions; sorted chunk coordinates; chunk/block activity and quiet counts; cell material/state/epoch and resolved temperature | Same declared native fixture and scheduling state |
 | `content_hash` | Chunk size and ambient temperature; coordinates, material, compact state and temperature of non-empty/non-ambient cells | Settled content while time and scheduler bookkeeping advance |
 
-`state_hash` **omits** simulation region, liquid-surface-adhesion option,
+`state_hash` includes normalized requested/applied interest core coverage (not
+raw pixel bounds with identical coverage). It **omits** liquid-surface-adhesion option,
 transient obstacles/contact inputs, compiled rule identity and external
 body/controller state. Worker count is intentionally omitted for parity tests.
 A matching hash is therefore insufficient to prove that every future-affecting
@@ -86,11 +89,11 @@ requirements and CYSD1 level-byte comparison belong in
 
 ## Which boundaries still limit the guarantee?
 
-**Current known defect:** phased region exclusion can age movable blocks into
-sleep without waking them when the region returns; SerialInPlace ignores the
-region. See the [interest contract and probe](../systems/world-storage-and-interest-region.md).
-This behavior must be included in fixture inputs and cannot be hidden by a
-claim of interchangeable backend semantics.
+**Current:** phased exclusion retains activity and re-entry wakes newly included
+blocks once without catch-up; SerialInPlace ignores the region. The
+[interest contract](../systems/world-storage-and-interest-region.md) defines this
+intentional mode difference. Declared region sequences must match for within-mode
+worker/repeat comparisons; interchangeable backend semantics are not promised.
 
 A failed native tick also lacks transactional rollback; time/events can change
 before failure. The [failure contract](simulation-tick-and-threading.md)

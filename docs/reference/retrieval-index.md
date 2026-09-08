@@ -20,9 +20,10 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 |---|---|
 | Actual version, commits, local changes, recovery | [Source checkpoint](../operations/source-checkpoint-and-recovery.md) |
 | Who mutates cells; may a worker touch Godot? | [Ownership and lifetime](../architecture/data-ownership-and-lifetimes.md) |
-| Desktop/Web order, synchronous ticks, failure handling | [Tick and threading](../architecture/simulation-tick-and-threading.md) |
+| Desktop/Web order, synchronous ticks, failed-world reset/replacement | [Tick and threading](../architecture/simulation-tick-and-threading.md) |
 | Web compatibility/threaded Auto and hosting | [Web threading](../operations/web-threading.md) |
 | Body masks, displacement, terrain, Rapier scope | [Rigid-body/cellular coupling](../architecture/rigid-body-and-cellular-coupling.md) |
+| Powder/player collision, Mercury penetration, barrel sinking, reversible soliding | [Physics characterisation plan](../operations/physics-characterisation-plan.md) (source diagnosis and Planned experiments) |
 | Pinned Rapier acquisition and verification | [Rapier runbook](../operations/rapier-2d-migration-runbook.md) |
 | Native snapshots, dirty retention, GPU uploads | [Rendering/gameplay bridges](../architecture/rendering-and-gameplay-bridges.md) |
 | CYSD1 content, import/export ownership, exact resume | [Level saves and replay](level-saves-and-replay.md) |
@@ -53,3 +54,11 @@ For the M11 August audit use [audits/m11](../audits/m11/README.md) and
 handover/roadmap/test tables are preserved in the
 [pre-rewrite record](../audits/pre-rag-rewrite-2026-09-08/README.md).
 Their statements do not supersede current source or later evidence.
+
+Issue #2 pause/re-entry, unchanged windows and failed-world region requests route
+to [storage](../systems/world-storage-and-interest-region.md), [activity](../systems/activity-dirty-regions-and-waking.md)
+and [tick ownership](../architecture/simulation-tick-and-threading.md). Dated
+[combined evidence](../audits/2026-09-08-issue-2-interest-regions.md) remains outside
+the default corpus; C02 has updated facts, and C03/C04 are new supplementary queries.
+
+Current runtime/source gates and immutable M11 retention use [separate validation policies](../operations/current-and-historical-validation.md).

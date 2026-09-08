@@ -28,6 +28,8 @@ var test_callback: JavaScriptObject
 var test_clock: float = 0.0
 var worker_probe: Dictionary = {}
 var rapier_test: Dictionary = {}
+var tick_failure_test: Dictionary = {}
+var interest_region_test: Dictionary = {}
 var benchmark_running: bool = false
 var benchmark_cancelled: bool = false
 var benchmark_result: Dictionary = {}
@@ -91,6 +93,12 @@ func _ready() -> void:
 	ui.message(rapier_reason if not rapier_available else "")
 	_init_browser_test()
 	print("WEB_DEMO_READY ", ui.capability.text)
+	if test_enabled and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('tickfault') === '1'", true)):
+		tick_failure_test = await CyberTickFailureProbe.run(get_tree(), self)
+		print("WEB_TICK_FAILURE_TEST ", JSON.stringify(tick_failure_test))
+		interest_region_test = await CyberTickFailureProbe.run_regions(get_tree(), self)
+		print("WEB_INTEREST_REGION_TEST ", JSON.stringify(interest_region_test))
+		_publish_test_state()
 	if test_enabled and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('rapier') === '1'", true)):
 		rapier_test = await CyberWebRapierProbe.run(self)
 		print("WEB_RAPIER_TEST ", JSON.stringify(rapier_test))
@@ -141,6 +149,9 @@ func _physics_process(_delta: float) -> void:
 	if not ready_to_play or ui.open or not focused:
 		return
 	native_world.set_simulation_window(Vector2i(camera_origin.floor()), current_view_size, simulation_margin.x, simulation_margin.y)
+	if native_world.has_failed():
+		_report_tick_failure()
+		return
 	if input_armed:
 		_paint_pointer()
 	if paused:
@@ -154,15 +165,19 @@ func _physics_process(_delta: float) -> void:
 	else:
 		native_world.prepare_rigid_body_coupling(PackedFloat32Array(), false)
 	if not native_world.simulation_tick():
-		paused = true
-		ui.show_page("home")
-		ui.message("Simulation stopped: " + str(native_world.get_last_tick_error()))
+		_report_tick_failure()
 		return
 	total_moves += int(native_world.get_moves_last_tick())
 	var horizontal: float = get_horizontal_input() if input_armed else 0.0
 	var jetpack: bool = input_armed and Input.is_physical_key_pressed(KEY_SPACE)
 	player.simulate(1.0 / 60.0, horizontal, jetpack, native_world)
 	character_position = player.position
+
+func _report_tick_failure() -> void:
+	paused = true
+	input_armed = false
+	ui.show_page("home")
+	ui.message("Simulation stopped. Restart world or load a saved level. " + str(native_world.get_last_tick_error()))
 
 func _world_pointer() -> Vector2i:
 	var content: Rect2 = view_content_rect()
@@ -184,6 +199,8 @@ func _paint_pointer() -> void:
 		paint_commands += 1
 
 func _publish_world() -> void:
+	if native_world.has_failed():
+		return
 	var packet: Dictionary = native_world.take_render_snapshot(force_publication)
 	var rectangles: PackedInt32Array = packet.get("rectangles", PackedInt32Array())
 	var cells: PackedByteArray = packet.get("cells", PackedByteArray())
@@ -199,6 +216,8 @@ func _publish_world() -> void:
 		rejected_render_snapshot_count += 1
 
 func _sync_web_colliders() -> void:
+	if native_world.has_failed():
+		return
 	if not rapier_bridge.is_initialized():
 		return
 	var revision: int = int(native_world.get_hard_surface_revision())
@@ -288,6 +307,8 @@ func update_status() -> void:
 		return
 	$Layout/Title.text = "CYBERSAND / " + CyberDemoWorlds.title(demo_id).to_upper()
 	var text: String = "%s / %s / %s" % [material_name(selected_material_id), "PAUSED" if paused else "60 TPS target", "CALM" if coherent_liquid_emission else "SPRAY"]
+	if native_world.has_failed():
+		text = "STOPPED / Restart world or load a saved level / " + str(native_world.get_last_tick_error())
 	if debug_stats_visible:
 		text += "   |   tick %d / %.2f ms native / %.2f ms upload / %d active blocks / %d patches" % [int(native_world.get_tick_index()), float(native_world.get_simulation_time_ms()), upload_time_ms, int(native_world.get_active_blocks_last_tick()), last_render_patch_count]
 	status_label.text = text
@@ -478,6 +499,8 @@ func _publish_test_state() -> void:
 	state["workers"] = int(native_world.get_worker_threads())
 	state["worker_probe"] = worker_probe
 	state["rapier_test"] = rapier_test
+	state["tick_failure_test"] = tick_failure_test
+	state["interest_region_test"] = interest_region_test
 	state["rapier_steps"] = rapier_bridge.manual_step_count()
 	state["collider_pending"] = rapier_bridge.pending_hard_surface_chunks()
 	state["collider_shapes"] = rapier_bridge.hard_surface_shape_count()

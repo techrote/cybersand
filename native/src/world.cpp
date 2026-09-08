@@ -421,6 +421,7 @@ World::World(World&&) noexcept = default;
 World& World::operator=(World&&) noexcept = default;
 
 RenderPublishResult RenderSnapshotExchange::publish(World& world) {
+    world.require_healthy();
     auto& state = *state_;
     std::scoped_lock lock(state.mutex);
 
@@ -833,6 +834,7 @@ void World::keep_cell_active(std::int64_t x, std::int64_t y) noexcept {
 }
 
 void World::set(std::int64_t x, std::int64_t y, Material material) {
+    require_healthy();
     if (!valid_material(static_cast<std::uint16_t>(material))) {
         throw std::invalid_argument("invalid material identifier");
     }
@@ -865,6 +867,7 @@ void World::set(std::int64_t x, std::int64_t y, Material material) {
 bool World::set_cell_state(std::int64_t x, std::int64_t y, Material material,
                            std::uint8_t state_a_value,
                            std::uint8_t state_b_value) {
+    if (tick_failed_) return false;
     if (!valid_material(static_cast<std::uint16_t>(material))) {
         throw std::invalid_argument("invalid material identifier");
     }
@@ -876,18 +879,33 @@ void World::set_simulation_region(std::optional<RectI64> region) {
     if (region.has_value() && (region->width <= 0 || region->height <= 0)) {
         throw std::invalid_argument("simulation region dimensions must be positive");
     }
+    std::optional<CoreRange> selected;
+    if (region) {
+        if (region->x > std::numeric_limits<std::int64_t>::max() - (region->width - 1) ||
+            region->y > std::numeric_limits<std::int64_t>::max() - (region->height - 1)) {
+            throw std::overflow_error("simulation region endpoint overflow");
+        }
+        const auto first = scheduler_geometry_.core_for_cell(region->x, region->y);
+        const auto last = scheduler_geometry_.core_for_cell(
+            region->x + region->width - 1, region->y + region->height - 1);
+        selected = CoreRange{first.x, first.y, last.x, last.y};
+    }
     simulation_region_ = region;
+    selected_core_region_ = selected;
 }
 
 void World::set_liquid_surface_adhesion_enabled(bool enabled) noexcept {
     liquid_surface_adhesion_enabled_ = enabled;
 }
 
+std::optional<RectI64> World::simulation_region() const noexcept { return simulation_region_; }
+
 bool World::liquid_surface_adhesion_enabled() const noexcept {
     return liquid_surface_adhesion_enabled_;
 }
 
 void World::configure_transient_obstacles(RectI64 region) {
+    require_healthy();
     if (region.width <= 0 || region.height <= 0) {
         throw std::invalid_argument("transient obstacle dimensions must be positive");
     }
@@ -907,6 +925,7 @@ void World::configure_transient_obstacles(RectI64 region) {
 }
 
 void World::clear_transient_obstacles() {
+    require_healthy();
     auto& state = *transient_obstacles_;
     const auto width = state.region.width;
     if (width > 0) {
@@ -939,6 +958,7 @@ std::uint16_t World::transient_obstacle_at(std::int64_t x, std::int64_t y) const
 
 bool World::set_transient_obstacle(std::int64_t x, std::int64_t y,
                                    std::uint16_t body_id) {
+    if (tick_failed_) return false;
     auto& state = *transient_obstacles_;
     if (body_id == 0U || body_id > kMaximumTransientBodies ||
         state.region.width <= 0 || state.region.height <= 0 ||
@@ -961,6 +981,7 @@ bool World::set_transient_obstacle(std::int64_t x, std::int64_t y,
 
 bool World::relocate_stored_cell(std::int64_t from_x, std::int64_t from_y,
                                  std::int64_t to_x, std::int64_t to_y) {
+    if (tick_failed_) return false;
     if (stored_material(from_x, from_y) == Material::Empty ||
         stored_material(to_x, to_y) != Material::Empty ||
         transient_obstacle_at(to_x, to_y) != 0U) {
@@ -1001,6 +1022,7 @@ void World::record_transient_contact(std::uint16_t body_id, Material material,
 }
 
 void World::set_temperature(std::int64_t x, std::int64_t y, std::int16_t value) {
+    require_healthy();
     const auto target = address(x, y);
     if (value == config_.ambient_temperature) {
         auto* existing = find_chunk(target.chunk);
@@ -1021,6 +1043,7 @@ void World::set_temperature(std::int64_t x, std::int64_t y, std::int16_t value) 
 }
 
 void World::paint_disc(std::int64_t centre_x, std::int64_t centre_y, std::int32_t radius, Material material) {
+    require_healthy();
     if (radius < 0) {
         throw std::invalid_argument("radius must not be negative");
     }
@@ -1037,6 +1060,7 @@ void World::paint_disc(std::int64_t centre_x, std::int64_t centre_y, std::int32_
 }
 
 void World::reserve_region(RectI64 region) {
+    require_healthy();
     if (region.width <= 0 || region.height <= 0) {
         throw std::invalid_argument("reserve region dimensions must be positive");
     }
@@ -1075,6 +1099,7 @@ void World::reserve_region(RectI64 region) {
 }
 
 void World::reserve_temperature_region(RectI64 region) {
+    require_healthy();
     reserve_region(region);
     const auto minimum_address = address(region.x, region.y);
     const auto maximum_address =
@@ -1088,6 +1113,7 @@ void World::reserve_temperature_region(RectI64 region) {
 
 bool World::queue_explosion(std::int64_t x, std::int64_t y, std::int32_t radius,
                             std::uint8_t collapse_strength) {
+    if (tick_failed_) return false;
     if (radius <= 0 || radius > config_.maximum_explosion_radius ||
         pending_explosions_.size() >= config_.deferred_event_capacity) {
         return false;
@@ -1142,12 +1168,16 @@ void World::apply_pending_explosions(TickStats& stats) {
 }
 
 void World::clear() {
+    if (tick_in_progress_) throw std::logic_error("cannot clear during a world tick");
+    tick_failed_ = false;
     clear_transient_obstacles();
     chunks_.clear();
     active_chunk_scratch_.clear();
     active_core_scratch_.clear();
     pending_explosions_.clear();
     tick_index_ = 0;
+    completed_tick_index_ = 0;
+    applied_core_region_.reset();
     update_epoch_ = 0;
     tick_in_progress_ = false;
     tick_chunk_allocations_ = 0;
@@ -2157,11 +2187,28 @@ void World::begin_tick(TickStats& stats) {
     stats.tick = tick_index_;
 
     active_chunk_scratch_.clear();
+    const bool transition = config_.backend == SimulationBackend::PhasedInPlace &&
+                            selected_core_region_ != applied_core_region_;
+    // Reuse the existing metadata pass, with no cell scan or region-sized
+    // allocation. Coalesced/equivalent windows do not repeatedly wake blocks.
     for (auto& [coord, chunk] : chunks_) {
-        (void)coord;
         chunk->changed_this_tick = false;
-        for (auto& block : chunk->activity_blocks) block.changed_this_tick = false;
+        for (std::size_t index = 0; index < chunk->activity_blocks.size(); ++index) {
+            auto& block = chunk->activity_blocks[index];
+            block.changed_this_tick = false;
+            if (!transition) continue;
+            const auto bounds = block_core_range(coord, index);
+            const auto included = clip_core_range(bounds, selected_core_region_);
+            const auto previous = clip_core_range(included, applied_core_region_);
+            if (included.min_x <= included.max_x && included.min_y <= included.max_y &&
+                included != previous) {
+                block.active = true;
+                block.quiet_ticks = 0;
+                chunk->active = true;
+            }
+        }
     }
+    applied_core_region_ = selected_core_region_;
 
     // Gameplay events are committed only at a tick boundary. Applying them
     // after resetting change flags makes their edits visible to activity,
@@ -2181,15 +2228,39 @@ void World::begin_tick(TickStats& stats) {
     stats.active_chunks_before = active_chunk_scratch_.size();
 }
 
+World::CoreRange World::block_core_range(ChunkCoord coord, std::size_t index) const noexcept {
+    const auto blocks_per_axis = static_cast<std::size_t>(
+        (config_.chunk_size + config_.activity_block_size - 1) / config_.activity_block_size);
+    const auto x = static_cast<std::int32_t>(index % blocks_per_axis) * config_.activity_block_size;
+    const auto y = static_cast<std::int32_t>(index / blocks_per_axis) * config_.activity_block_size;
+    const auto first = scheduler_geometry_.core_for_cell(
+        coord.x * config_.chunk_size + x, coord.y * config_.chunk_size + y);
+    const auto last = scheduler_geometry_.core_for_cell(
+        coord.x * config_.chunk_size + std::min(x + config_.activity_block_size, config_.chunk_size) - 1,
+        coord.y * config_.chunk_size + std::min(y + config_.activity_block_size, config_.chunk_size) - 1);
+    return {first.x, first.y, last.x, last.y};
+}
+
+World::CoreRange World::clip_core_range(CoreRange block, std::optional<CoreRange> region) noexcept {
+    if (!region) return block;
+    return {std::max(block.min_x, region->min_x), std::max(block.min_y, region->min_y),
+            std::min(block.max_x, region->max_x), std::min(block.max_y, region->max_y)};
+}
+
 void World::finish_tick(TickStats& stats) {
     for (auto& [coord, chunk] : chunks_) {
-        (void)coord;
         bool any_active_block = false;
-        for (auto& block : chunk->activity_blocks) {
+        for (std::size_t index = 0; index < chunk->activity_blocks.size(); ++index) {
+            auto& block = chunk->activity_blocks[index];
             if (!block.active) continue;
+            // Quiet time belongs to simulated work. For custom single-worker
+            // geometry, retain a straddling block until all its cores are eligible.
+            const auto bounds = block_core_range(coord, index);
+            const bool age = config_.backend == SimulationBackend::SerialInPlace ||
+                             clip_core_range(bounds, selected_core_region_) == bounds;
             if (block.changed_this_tick) {
                 block.quiet_ticks = 0;
-            } else if (++block.quiet_ticks >= config_.sleep_after_quiet_ticks) {
+            } else if (age && ++block.quiet_ticks >= config_.sleep_after_quiet_ticks) {
                 block.active = false;
             }
             any_active_block = any_active_block || block.active;
@@ -2267,16 +2338,9 @@ void World::gather_active_cores() {
 
                 for (auto core_y = minimum_core.y; core_y <= maximum_core.y; ++core_y) {
                     for (auto core_x = minimum_core.x; core_x <= maximum_core.x; ++core_x) {
-                        if (simulation_region_.has_value()) {
-                            const auto core_rect = scheduler_geometry_.core_rect({core_x, core_y});
-                            const auto& region = *simulation_region_;
-                            const bool intersects =
-                                core_rect.x < region.x + region.width &&
-                                region.x < core_rect.x + core_rect.width &&
-                                core_rect.y < region.y + region.height &&
-                                region.y < core_rect.y + core_rect.height;
-                            if (!intersects) continue;
-                        }
+                        if (selected_core_region_ &&
+                            (core_x < selected_core_region_->min_x || core_x > selected_core_region_->max_x ||
+                             core_y < selected_core_region_->min_y || core_y > selected_core_region_->max_y)) continue;
                         if (active_core_scratch_.size() >= config_.active_core_capacity) {
                             throw std::runtime_error("active scheduling-core capacity exhausted");
                         }
@@ -2546,6 +2610,7 @@ TickStats World::tick_phased() {
 }
 
 TickStats World::tick() {
+    require_healthy();
     if (tick_in_progress_) throw std::logic_error("world tick is not reentrant");
     tick_in_progress_ = true;
     tick_chunk_allocations_ = 0;
@@ -2564,14 +2629,24 @@ TickStats World::tick() {
         }
         stats.chunk_allocations = tick_chunk_allocations_;
         stats.temperature_field_allocations = tick_temperature_field_allocations_;
+        completed_tick_index_ = tick_index_;
         tick_in_progress_ = false;
         return stats;
     } catch (...) {
+        // Partial cell/event/epoch/metadata progress is diagnostic only. Workers
+        // have drained at the phase barrier; never resume this in-place state.
+        tick_failed_ = true;
         tick_in_progress_ = false;
         throw;
     }
 }
 
+void World::require_healthy() const {
+    if (tick_failed_) throw std::logic_error("world is failed; clear or replace it before continuing");
+}
+
+bool World::has_failed() const noexcept { return tick_failed_; }
+std::uint64_t World::completed_tick_index() const noexcept { return completed_tick_index_; }
 std::uint64_t World::tick_index() const noexcept { return tick_index_; }
 std::size_t World::chunk_count() const noexcept { return chunks_.size(); }
 
@@ -2597,7 +2672,18 @@ std::size_t World::resident_cell_bytes() const noexcept {
 std::uint64_t World::state_hash() const noexcept {
     std::uint64_t hash = 1469598103934665603ULL;
     hash_integer(hash, tick_index_);
+    hash_integer(hash, completed_tick_index_);
+    hash_integer(hash, static_cast<std::uint8_t>(tick_failed_));
     hash_integer(hash, update_epoch_);
+    for (const auto& region : {selected_core_region_, applied_core_region_}) {
+        hash_integer(hash, static_cast<std::uint8_t>(region.has_value()));
+        if (region) {
+            hash_integer(hash, region->min_x);
+            hash_integer(hash, region->min_y);
+            hash_integer(hash, region->max_x);
+            hash_integer(hash, region->max_y);
+        }
+    }
     hash_integer(hash, config_.chunk_size);
     hash_integer(hash, static_cast<std::uint8_t>(config_.backend));
     hash_integer(hash, config_.sleep_after_quiet_ticks);
@@ -2700,6 +2786,7 @@ std::size_t World::dirty_chunk_count() const noexcept {
 }
 
 std::vector<DirtyChunk> World::take_dirty_chunks() {
+    require_healthy();
     std::vector<DirtyChunk> result;
     for (auto& [coord, chunk] : chunks_) {
         if (!chunk->dirty) continue;

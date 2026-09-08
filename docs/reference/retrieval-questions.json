@@ -96,8 +96,10 @@
         "architecture/simulation-tick-and-threading.md"
       ],
       "facts": [
-        "Web checks simulation_tick failure, pauses, opens the home UI and reports the error.",
-        "The desktop worker currently ignores that return value; common failure handling is unresolved."
+        "Failed ticks may advance attempted tick/epoch and mutate cells/events; there is no rollback.",
+        "World latches failure and rejects further ticks/gameplay writes/publication; completed tick identity does not advance.",
+        "Desktop publishes stopped status retaining its last valid payload; Web pauses/menu-reports and suppresses partial output; Rapier stays main-thread owned.",
+        "Explicit reset/clear or validated replacement is required; accepted events are never automatically replayed and invalid replacement retains the fault."
       ],
       "sources": [
         "../godot/scripts/web_demo_controller.gd::_physics_process",
@@ -526,19 +528,22 @@
       "id": "Q31",
       "query": "Why is the old consistency check red, and should I update its hashes to make the release pass?",
       "canonical": [
+        "operations/current-and-historical-validation.md",
         "operations/github-development-and-release.md",
         "operations/testing-validation-and-replay.md",
         "reference/validation-evidence.md"
       ],
       "facts": [
-        "Historical consistency mismatches identify local source/artifact drift and unresolved payload pointers; preserve failed evidence.",
-        "Do not rewrite historical release hashes to manufacture success; use separate current structural checks and evidence.",
-        "Known Web CI Emscripten/profile/template-lock contradictions require explicit resolution before release claims."
+        "The old check compares current files to M11; strict comparison still reports drift, including unresolved payload pointers. Preserve previous failures.",
+        "M11 integrity now checks all 28 original source hashes against the audited Git revision and 18 retained records. Never rewrite historical hashes.",
+        "Current checks independently validate documentation, dependency versions and source-bound runtime/LFS identity; identity does not prove execution.",
+        "Web CI/toolchain/template/export provenance contradictions remain separate issue #3 obligations."
       ],
       "sources": [
         "../tools/ci/check_m11_consistency.py",
         "../.github/workflows/web-demo.yml",
-        "audits/2026-09-08-documentation-audit.md"
+        "audits/2026-09-08-documentation-audit.md",
+        "../tools/ci/check_repository.py"
       ]
     },
     {
@@ -558,5 +563,6 @@
         "../AGENTS.md::Documentation obligations"
       ]
     }
-  ]
+  ],
+  "expectations_reviewed": "2026-09-08: original query wording retained; Q31 expected facts updated for explicit current/M11 gate separation. Metrics are not frozen-answer improvement claims."
 }

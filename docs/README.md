@@ -18,6 +18,7 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 | Understand the engine | [Architecture overview](architecture/overview.md), then its focused ownership/threading/coupling links |
 | Answer one technical question | [Retrieval index](reference/retrieval-index.md) |
 | Change a material | [Rule kernels](systems/materials-and-rule-kernels.md), [Water](systems/water-design.md), [material lab](MATERIAL_LAB.md) |
+| Investigate powder penetration, barrel sinking or soliding | [Physics characterisation plan](operations/physics-characterisation-plan.md) (Planned experiments) |
 | Build or validate | [Build guide](operations/local-build-and-validation.md), [test selection](operations/testing-validation-and-replay.md), [dated evidence](reference/validation-evidence.md) |
 | Understand intent | [Product priorities](reference/product-intent-and-priorities.md), [principles](architecture/principles-and-non-goals.md), [ADRs](decisions) |
 | Maintain these docs | [Documentation and retrieval contract](operations/documentation-maintenance.md) |
@@ -57,6 +58,8 @@ its detailed facts into multiple pages. Evaluate retrieval using the
 The [structural rewrite audit](audits/2026-09-08-structural-documentation-audit.md)
 and [retrieval evaluation](audits/2026-09-08-retrieval-evaluation.md) record this
 documentation checkpoint, its measured limits and recommended next work.
+The local [issue #1 implementation evidence](audits/2026-09-08-issue-1-failed-ticks.md)
+records the failed-tick policy and platform-scoped acceptance.
 The subsequent [GitHub milestone](audits/2026-09-08-github-milestone.md) records
 the paired source/workspace publication and open correctness follow-ups.
 
@@ -66,3 +69,8 @@ and [pre-rewrite handover/checkpoint records](audits/pre-rag-rewrite-2026-09-08/
 retain their original scope. Legacy milestone overview/status/performance files
 remain historical routes, not current contract owners. Consult them explicitly for
 a historical question; do not merge their claims into the current answer.
+
+The [coordinated issue #2 acceptance](audits/2026-09-08-issue-2-interest-regions.md)
+records pause/re-entry, independent causes and combined failure/recovery validation.
+
+Current runtime/source gates and immutable M11 retention use [separate validation policies](operations/current-and-historical-validation.md).

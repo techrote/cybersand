@@ -84,6 +84,7 @@ From the source root:
 
 ```text
 python tools/ci/check_docs.py
+python tools/ci/check_repository.py
 python tools/ci/check_m11_consistency.py
 python tools/docs/retrieval_eval.py --output <local-output.json>
 git diff --check
@@ -92,7 +93,9 @@ git diff --check
 [check_docs.py](../../tools/ci/check_docs.py) checks metadata, unique ownership,
 corpus coverage, local links/anchors and frozen question references. It cannot
 validate source semantics, external sites or runtime claims. The M11 checker
-also enforces historical hashes; report those failures separately and explicitly.
+verifies immutable records against the audited Git revision. Current provenance
+and explicit strict historical comparison are [separate gates](current-and-historical-validation.md);
+report integrity failures and current-file drift with their distinct scope.
 
 [retrieval_eval.py](../../tools/docs/retrieval_eval.py) evaluates deterministic
 heading chunks with BM25 against the [frozen questions](../reference/retrieval-questions.json).

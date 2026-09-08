@@ -88,6 +88,11 @@ consumer granularity, not an end-to-end frame-time guarantee. Source:
 
 ## What does the fixture prove, and what remains open?
 
+For the **Planned** investigation of barrel sinking into powders, half-depth
+embedding and reversible soliding, see the [characterisation plan](../operations/physics-characterisation-plan.md).
+The owner now calls the demo rectangles barrels; this does not change their
+Current rectangle geometry or internal scene identifiers.
+
 The dated 600-tick rectangle fixture permits two pixels and observed about 1.32 pixels of
 transient floor penetration; it is not a zero-penetration proof. Its exact
 platforms, artifact identity, inputs and tolerance are in the

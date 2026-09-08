@@ -103,3 +103,22 @@ are not implemented. Do not infer them from Current snapshot backpressure.
 
 Lifetime fixtures are linked in the [validation ledger](../reference/validation-evidence.md);
 the rationale remains [ADR-003](../decisions/ADR-003-godot-bridge-and-immutable-snapshots.md).
+
+## Failed-world ownership and recovery
+
+**Current:** failure quarantines the existing World under its same exclusive owner.
+Workers drain before exception propagation; no background retry is spawned.
+Raw serialized queries see partial diagnostic state. Successful snapshot leases
+retain their bytes; failure cannot publish new cell/terrain/body payloads.
+Desktop retains the last valid snapshot in a new failure-status wrapper and keeps
+its owner thread available for reset. Web gates directly on its adapter fault.
+Main-thread Rapier stops on observed failure, without rewinding an earlier step.
+`clear()` or validated replacement abandons the failed world's events and state.
+Replacement candidates allocate/validate before ownership swap; see
+[failure contract](simulation-tick-and-threading.md#what-happens-when-a-tick-fails-or-overloads).
+
+Region setters are serialized owner operations that latch requested coverage,
+including while failed. Healthy tick entry applies transition wakes in the existing
+metadata pass; native pool jobs consume the resulting selection. No Godot or
+Rapier API is introduced in native workers. Failed ticks cannot apply a later
+region request; recovery abandons old activity before fresh setup.

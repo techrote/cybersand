@@ -212,3 +212,22 @@ reservations, and body/shape/substep policy. Final numeric units, production
 memory/quality/acceptance thresholds, high-water reset conventions, automatic
 live resizing, and configuration migration remain undecided. Do not invent keys
 or confuse the existing fixed CYSD1 metadata with that future schema.
+
+## Diagnostic construction capacity
+
+**Current:** Godot `cybersand/native_active_core_capacity` defaults to 1024 and
+clamps to 1–1024 at adapter construction. It uses the same real core-candidate
+capacity check as production. The issue #1 regression uses one to force failure;
+changing this setting does not resize an existing World. Worker/profile pins and
+other adapter defaults are unchanged.
+
+## Interest request accounting
+
+Current native `set_simulation_region` rejects nonpositive sizes and inclusive
+endpoint overflow. Null selects all cores; finite bounds normalize to intersecting
+cores. Same-coverage requests are equivalent for activity. Region transitions
+reuse existing resident metadata passes, and retained excluded activity still
+counts toward active-chunk capacity. Candidate-core capacity is checked before
+deduplication; a re-entry wake may explicitly fail under a small construction
+budget. Failed regions cannot be retried by reducing the window. See the
+[interest contract](../systems/world-storage-and-interest-region.md).

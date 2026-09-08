@@ -12,14 +12,25 @@ jobs:
   hashes:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: workspace/source
     steps:
+      - name: Check out pinned companion workspace documentation
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 6a58311982941b75f46e22109a0829e5acb83c7e
+          path: workspace
       - name: Check out tagged source and LFS runtime dependencies
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
+          path: workspace/source
           lfs: true
+          fetch-depth: 0
 
       - name: Verify identity and LFS content
         run: |
+          timeout 5m python3 tools/ci/check_repository.py --require-materialized
           timeout 5m python3 tools/ci/check_m11_consistency.py
           timeout 5m git lfs fsck
 
@@ -30,7 +41,8 @@ jobs:
             -type f ! -name 'Info.plist' -print0 \
             | LC_ALL=C sort -z \
             | xargs -0 sha256sum > release-hashes/runtime-files.sha256
-          sha256sum docs/BUILD_ID.md third_party/*.lock.json > release-hashes/provenance-files.sha256
+          sha256sum third_party/*.lock.json godot/addons/cybersand_native/runtime-provenance*.json > release-hashes/provenance-files.sha256
+          sha256sum docs/BUILD_ID.md docs/audits/m11-retention.json > release-hashes/historical-records.sha256
           git rev-parse HEAD > release-hashes/git-commit.txt
           test -s release-hashes/runtime-files.sha256
 
@@ -38,6 +50,6 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: cyber-sand-engine-${{ github.ref_name }}-hashes
-          path: release-hashes/
+          path: workspace/source/release-hashes/
           if-no-files-found: error
           retention-days: 90
