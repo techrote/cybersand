@@ -153,3 +153,19 @@ After the Linux promotion documentation, structure and eight checker regressions
 still pass. Final frozen retrieval: 23/32 hit@1, 32/32 hit@5,
 MRR 0.8385; supplementary results remain 5/6, 6/6, MRR 0.9167. The
 earlier 24/32 measurement above remains scoped to its recorded corpus.
+
+## Merge and release-hash packaging follow-up
+
+PR #6 merged as `76640b06de50c9146aba74ee80ae406a5c1b08f2`, preserving the
+implementation commits, and issues #1/#2 closed as completed. Final promotion
+head `0c91f47` passed current/documentation CI run `34287504398` and native
+run `34287504377`. No native, adapter, owner or fixture source changed after
+the fully passing fresh-runtime run used to publish the Linux artifact.
+
+Manual release-hash run
+[34287717311](https://github.com/techrote/cybersand/actions/runs/34287717311)
+passed current identity, historical integrity, LFS and manifest generation, then
+failed artifact upload because `github.ref_name` contained `/` in the branch
+name. The follow-up uses the numeric workflow run ID for the artifact name,
+which works for branches and tags. Hash contents and historical records are
+unchanged. The failed run is retained; a new run verifies actual upload.
