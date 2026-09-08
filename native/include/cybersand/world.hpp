@@ -108,6 +108,7 @@ public:
     void reserve_region(RectI64 region);
     void reserve_temperature_region(RectI64 region);
     void set_simulation_region(std::optional<RectI64> region);
+    [[nodiscard]] std::optional<RectI64> simulation_region() const noexcept;
     void set_liquid_surface_adhesion_enabled(bool enabled) noexcept;
     [[nodiscard]] bool liquid_surface_adhesion_enabled() const noexcept;
 
@@ -131,6 +132,11 @@ public:
     void clear();
 
     [[nodiscard]] TickStats tick();
+    // tick_index identifies attempts; only completed_tick_index is successful.
+    // A thrown tick quarantines this World until clear() or replacement. No
+    // rollback, in-place retry, or replay of pending/partially applied events.
+    [[nodiscard]] bool has_failed() const noexcept;
+    [[nodiscard]] std::uint64_t completed_tick_index() const noexcept;
     [[nodiscard]] std::uint64_t tick_index() const noexcept;
     [[nodiscard]] std::size_t chunk_count() const noexcept;
     [[nodiscard]] std::size_t active_chunk_count() const noexcept;
@@ -175,8 +181,10 @@ private:
     std::optional<RectI64> simulation_region_;
     bool liquid_surface_adhesion_enabled_ = true;
     std::uint64_t tick_index_ = 0;
+    std::uint64_t completed_tick_index_ = 0;
     std::uint8_t update_epoch_ = 0;
     bool tick_in_progress_ = false;
+    bool tick_failed_ = false;
     std::uint64_t tick_chunk_allocations_ = 0;
     std::uint64_t tick_temperature_field_allocations_ = 0;
     std::uint64_t hard_surface_revision_ = 0;
@@ -214,6 +222,7 @@ private:
                                   std::int64_t delta_x, std::int64_t delta_y) noexcept;
     [[nodiscard]] std::int32_t deterministic_direction(std::int64_t x, std::int64_t y) const noexcept;
     void begin_tick(TickStats& stats);
+    void require_healthy() const;
     void finish_tick(TickStats& stats);
     [[nodiscard]] TickStats tick_serial();
     [[nodiscard]] TickStats tick_phased();

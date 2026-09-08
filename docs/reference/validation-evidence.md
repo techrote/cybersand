@@ -19,6 +19,7 @@ certifies a later binary, another platform or complete replay.
 
 | Evidence ID/date | Executed check and outcome | Limits and record |
 |---|---|---|
+| E-F01, 2026-09-08 | 42 native regressions; rebuilt Windows adapter and desktop/Web owner checks; 16 Godot runners passed | [Issue #1 dated record](../audits/2026-09-08-issue-1-failed-ticks.md); browser and combined region acceptance recorded separately |
 | E-M11, 2026-08-28 | Historical audited M11: 34 passed, one inconclusive LeakSanitizer run | Linux-era audit; Windows format/import inspection was not runtime execution. [Retained records](../audits/m11/README.md) |
 | E-SETUP, 2026-09-07 | 39 native tests, 11 Godot fixture runners; Chromium compatibility demo/save checks | Before threaded/Rapier Web work. `C:/kybersand/LOCAL-DEV-SETUP-REPORT.md` retains original results |
 | E-RAPIER-WEB, 2026-09-08 | Windows/Chromium compatibility 1-worker and threaded 6-worker rectangle proof: 600 ticks, 308,087 contacts, 151 displaced cells; no recorded browser errors/warnings | Retained browser record lacks complete immutable source/export binding; not a fresh browser run at the current HEAD. `validation/local/rapier-web-20260908/browser-results.json` |
@@ -70,8 +71,8 @@ Nine groups inside `test_cell_world.gd` count as one runner, not nine extra file
 - No current ASan/UBSan/TSan/LeakSanitizer or clean cold-build attestation.
 - No full replay persistence, generalized shapes, exhaustive boundary matrix or
   transactional tick-failure guarantee.
-- The unchanged M11 consistency checker reports seven historical source/hash
-  mismatches. Preserve its record; run the separate current documentation check.
+- The issue #1 run of the unchanged M11 checker reports 12 historical source/hash
+  mismatches (the earlier audit reported seven). Preserve its record; run the separate current documentation check.
 - Web CI arguments/toolchain and historical template-lock metadata conflict with
   the local builder; [build guide](../operations/local-build-and-validation.md)
   records those exact gaps.

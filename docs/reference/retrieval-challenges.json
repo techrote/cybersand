@@ -6,24 +6,38 @@
     {
       "id": "C01",
       "query": "If a tick reports failure after hitting capacity, is it safe to retry as though nothing changed?",
-      "canonical": ["architecture/simulation-tick-and-threading.md", "operations/configuration-and-capacity-budgets.md"],
-      "facts": [
-        "No transactional rollback guarantee exists for World::tick failure.",
-        "Tick/epoch advancement and queued explosion effects can occur before later preparation/capacity failure, leaving partial progress.",
-        "Web pauses on failure, while desktop ignores the return; a common retry/recovery contract remains unresolved."
+      "canonical": [
+        "architecture/simulation-tick-and-threading.md",
+        "operations/configuration-and-capacity-budgets.md"
       ],
-      "sources": ["../native/src/world.cpp::World::begin_tick,World::tick_phased,World::tick", "../godot/scripts/web_demo_controller.gd::_physics_process", "../godot/scripts/simulation_worker.gd::_worker_loop"]
+      "facts": [
+        "Failed ticks may advance attempted tick/epoch and mutate cells/events; there is no rollback.",
+        "World latches failure and rejects further ticks/gameplay writes/publication; completed tick identity does not advance.",
+        "Desktop publishes stopped status retaining its last valid payload; Web pauses/menu-reports and suppresses partial output; Rapier stays main-thread owned.",
+        "Explicit reset/clear or validated replacement is required; accepted events are never automatically replayed and invalid replacement retains the fault."
+      ],
+      "sources": [
+        "../native/src/world.cpp::World::begin_tick,World::tick_phased,World::tick",
+        "../godot/scripts/web_demo_controller.gd::_physics_process",
+        "../godot/scripts/simulation_worker.gd::_worker_loop"
+      ]
     },
     {
       "id": "C02",
       "query": "Will frozen offscreen sand resume automatically when the camera moves back, including the serial reference backend?",
-      "canonical": ["systems/world-storage-and-interest-region.md", "systems/activity-dirty-regions-and-waking.md"],
+      "canonical": [
+        "systems/world-storage-and-interest-region.md",
+        "systems/activity-dirty-regions-and-waking.md"
+      ],
       "facts": [
         "Phased native region filtering can exclude active blocks while quiet/sleep accounting continues, so excluded blocks can sleep.",
         "Changing or clearing the simulation region does not wake those sleeping blocks; they may need a separate external wake to resume.",
         "SerialInPlace does not apply the same region filter. Intended re-entry behavior requires an explicit implementation decision and regression coverage."
       ],
-      "sources": ["../native/src/world.cpp::World::set_simulation_region,World::tick_serial,World::tick_phased,World::finish_tick"]
+      "sources": [
+        "../native/src/world.cpp::World::set_simulation_region,World::tick_serial,World::tick_phased,World::finish_tick"
+      ]
     }
-  ]
+  ],
+  "expectations_reviewed": "2026-09-08: issue #1 changes expected facts, queries retained; metrics are not a frozen-answer improvement claim."
 }

@@ -234,6 +234,22 @@ int cybersand_world_tick_v2(cybersand_world* world, cybersand_tick_stats_v2* des
     }
 }
 
+int cybersand_world_has_failed(const cybersand_world* world) {
+    return world != nullptr && world->implementation.has_failed() ? 1 : 0;
+}
+
+uint64_t cybersand_world_completed_tick_index(const cybersand_world* world) {
+    return world == nullptr ? 0 : world->implementation.completed_tick_index();
+}
+
+int cybersand_world_clear(cybersand_world* world) {
+    if (world == nullptr) return 0;
+    try {
+        world->implementation.clear();
+        return 1;
+    } catch (...) { return 0; }
+}
+
 int cybersand_world_reserve_region(cybersand_world* world, int64_t x, int64_t y,
                                    int64_t width, int64_t height) {
     if (world == nullptr) return 0;

@@ -96,3 +96,12 @@ actual recovery exercise, restore into a separate directory, materialize the
 required LFS payloads, compare a manifest, and run tests against that restored
 project. The [validation ledger](../reference/validation-evidence.md) distinguishes
 existing evidence from newly executed recovery tests.
+
+## Local issues #1/#2 implementation branch
+
+The coordinated investigation started from clean source `bfac0bc` and workspace
+`6a58311` on 2026-09-08, then created source branch `codex/issues-1-2`.
+[Issue #1 evidence](../audits/2026-09-08-issue-1-failed-ticks.md) identifies source
+deltas, commands and rebuilt artifacts. Local commits do not publish or close
+GitHub issues; this task has no push authorization. Generated runtime changes
+remain local and must be rebuilt/identified separately from source commits.

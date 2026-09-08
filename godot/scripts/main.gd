@@ -307,6 +307,8 @@ func _process(delta: float) -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	if simulation_worker.has_failed():
+		return
 	if (
 		rapier_bridge.is_initialized()
 		and not paused
@@ -526,7 +528,7 @@ func pack_rigid_body_states() -> PackedFloat32Array:
 
 
 func apply_latest_rigid_body_results() -> void:
-	if latest_snapshot == null or not rapier_bridge.is_initialized():
+	if latest_snapshot == null or latest_snapshot.simulation_failed or not rapier_bridge.is_initialized():
 		return
 	rapier_bridge.apply_cellular_results(
 		latest_snapshot.serial,
@@ -540,6 +542,8 @@ func consume_worker_snapshot() -> void:
 		return
 	latest_snapshot = snapshot
 	consumed_snapshot_serial = snapshot.serial
+	if snapshot.simulation_failed:
+		paused = true
 	character_position = snapshot.character_position
 	if snapshot.render_snapshot_serial > last_uploaded_render_snapshot_serial:
 		record_render_payload(snapshot)
@@ -983,6 +987,11 @@ func update_shader_parameters() -> void:
 
 
 func update_status() -> void:
+	if latest_snapshot != null and latest_snapshot.simulation_failed:
+		status_label.visible = true
+		status_label.text = "Simulation stopped. Press R to reset. " + latest_snapshot.last_tick_error
+		return
+	status_label.visible = debug_stats_visible
 	if not debug_stats_visible:
 		return
 	if latest_snapshot == null:
@@ -1074,7 +1083,7 @@ func update_status() -> void:
 		"PAUSED" if paused else "RUNNING",
 	]
 	if latest_snapshot.tick_failure_count > 0:
-		status_label.text += " // TICK-FAULT %d: %s" % [
+		status_label.text += " // STOPPED — R to reset. Fault %d: %s" % [
 			latest_snapshot.tick_failure_count,
 			latest_snapshot.last_tick_error,
 		]

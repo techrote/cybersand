@@ -136,3 +136,11 @@ when evaluating GPU finish, glow, and temporal motion.
   publications. Patch KiB is not GPU transfer KiB.
 - Manual scenes are finite fixtures, not streaming worlds, production physics
   acceptance, calibrated material science, or universal 1024² frame-time proof.
+
+## Recovering from a simulation fault
+
+**Current:** a native tick fault stops that world and preserves the last valid
+display. Desktop shows the error even with F3 statistics hidden; press R to reset.
+Web opens the menu and offers Restart world or loading a valid saved level.
+Pause/unpause does not retry. Recovery discards the failed attempt and pending
+events; no rollback or exact continuation is promised.

@@ -96,8 +96,10 @@
         "architecture/simulation-tick-and-threading.md"
       ],
       "facts": [
-        "Web checks simulation_tick failure, pauses, opens the home UI and reports the error.",
-        "The desktop worker currently ignores that return value; common failure handling is unresolved."
+        "Failed ticks may advance attempted tick/epoch and mutate cells/events; there is no rollback.",
+        "World latches failure and rejects further ticks/gameplay writes/publication; completed tick identity does not advance.",
+        "Desktop publishes stopped status retaining its last valid payload; Web pauses/menu-reports and suppresses partial output; Rapier stays main-thread owned.",
+        "Explicit reset/clear or validated replacement is required; accepted events are never automatically replayed and invalid replacement retains the fault."
       ],
       "sources": [
         "../godot/scripts/web_demo_controller.gd::_physics_process",
@@ -558,5 +560,6 @@
         "../AGENTS.md::Documentation obligations"
       ]
     }
-  ]
+  ],
+  "expectations_reviewed": "2026-09-08: issue #1 changes expected facts, queries retained; metrics are not a frozen-answer improvement claim."
 }

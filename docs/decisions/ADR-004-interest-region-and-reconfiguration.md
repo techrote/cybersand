@@ -73,3 +73,11 @@ larger and over-capacity configurations, plus region exit/re-entry and sleeping
 material. Current capacity fixtures are useful inputs, not proof of implemented
 live resize. See [validation](../reference/validation-evidence.md) and
 [ownership](../architecture/data-ownership-and-lifetimes.md).
+
+## Failed-world boundary
+
+**Current:** a region request can be retained while a World is failed but does
+not recover it. Explicit clear/reset or validated replacement is required;
+the latest region then applies to freshly established activity. This issue #1
+recovery policy ([ADR-010](ADR-010-failed-tick-quarantine.md)) does not implement
+the Planned state-preserving live resize protocol.

@@ -212,3 +212,11 @@ reservations, and body/shape/substep policy. Final numeric units, production
 memory/quality/acceptance thresholds, high-water reset conventions, automatic
 live resizing, and configuration migration remain undecided. Do not invent keys
 or confuse the existing fixed CYSD1 metadata with that future schema.
+
+## Diagnostic construction capacity
+
+**Current:** Godot `cybersand/native_active_core_capacity` defaults to 1024 and
+clamps to 1–1024 at adapter construction. It uses the same real core-candidate
+capacity check as production. The issue #1 regression uses one to force failure;
+changing this setting does not resize an existing World. Worker/profile pins and
+other adapter defaults are unchanged.

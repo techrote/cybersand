@@ -69,3 +69,11 @@ fallback view. New queues require explicit schemas, capacities and retirement
 rules. GPU subregion updates require their own implementation and validation.
 These are obligations; only dated entries in the validation ledger establish
 which lifetime, pressure and platform fixtures actually ran.
+
+## Failed-tick publication decision
+
+**Current/Approved for issue #1:** failure status may be published, but partial
+tick cells, character and body results may not be reported as successful.
+Retain the last valid immutable display. Desktop receives asynchronous status;
+Web gates directly on its synchronous owner. [ADR-010](ADR-010-failed-tick-quarantine.md)
+defines reset/replacement, distinct from snapshot pressure recovery.

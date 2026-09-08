@@ -50,4 +50,6 @@ var snapshot_copy_time_ms: float = 0.0
 var worker_overruns: int = 0
 var tick_failure_count: int = 0
 var last_tick_error: String = ""
+var simulation_failed: bool = false
+var failed_tick_index: int = 0
 var paused: bool = false

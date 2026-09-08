@@ -65,7 +65,9 @@ implement or validate a live resize protocol.
 
 **Current:** enqueueing too many explosions returns false; accepted events apply
 at tick entry. Running out of resident or active simulation capacity throws and
-may leave a partially advanced tick. Reserved space reduces allocation pressure;
+may leave a partially advanced tick. Such a World is latched failed: subsequent
+ticks, writes, reservation and publication are rejected until explicit clear or
+replacement. Accepted events are never automatically replayed. Reserved space reduces allocation pressure;
 lazy preparation may still allocate chunks or temperature fields. Adapter limits
 differ from standalone WorldConfig defaults, and live resizing is **Planned**.
 Avoiding hot tick allocation is an **Approved** requirement; the **Current**
@@ -80,7 +82,7 @@ The API-specific outcomes are:
 | Explosion queue full/invalid request | Enqueue returns false | Caller must inspect acceptance |
 | Snapshot slots unavailable | `Backpressure` | Dirty state retained |
 | Snapshot patch/byte capacity insufficient | `CapacityExceeded`, exact requirements | Dirty state retained |
-| Native Godot tick exception | Adapter reports false/error and failure count | Desktop and Web react differently |
+| Native Godot tick exception | Adapter reports false/error once and latches failure | Desktop/Web stop and retain last valid publication; reset/replacement required |
 | Generalized command/transfer queue | **Planned** | No complete shared queue-pressure contract |
 
 Sources: [World](../../native/src/world.cpp),

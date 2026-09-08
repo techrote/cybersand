@@ -35,8 +35,10 @@ public:
     [[nodiscard]] static std::int64_t auto_worker_threads(std::int64_t logical_threads);
     [[nodiscard]] static std::int64_t logical_processor_count();
 
-    void reset_demo_world();
+    bool reset_demo_world();
     [[nodiscard]] bool simulation_tick();
+    [[nodiscard]] bool has_failed() const;
+    [[nodiscard]] std::int64_t get_attempted_tick_index() const;
     void emit_disc(std::int64_t centre_x, std::int64_t centre_y,
                    std::int64_t radius, std::int64_t material_id,
                    std::int64_t emission_flags = 0);

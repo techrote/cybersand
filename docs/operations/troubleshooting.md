@@ -23,7 +23,7 @@ changing behavior. A source diagnostic explains a defect; it does not approve a 
 | Web drawing stalls despite pthreads | The outer callback still waits for native work; [threading](../architecture/simulation-tick-and-threading.md) distinguishes desktop ownership |
 | One core dominates | Confirm backend/count, eligible jobs per phase, threshold and serial planning; [profiling](profiling-observability-and-performance.md) |
 | Simulation freezes after camera returns | Inspect region exclusion and sleeping blocks; changing region does not wake them automatically; [storage/re-entry defect](../systems/world-storage-and-interest-region.md) |
-| Native tick fails or appears to continue | Web pauses/reports; desktop ignores the false result; tick may have partially mutated state. Preserve evidence before retry; [tick failure](../architecture/simulation-tick-and-threading.md) |
+| Native tick fails or appears to continue | Both owners stop; World is quarantined and may contain partial mutations. Preserve diagnostics, then explicitly reset or replace; never retry the partial World; [tick failure](../architecture/simulation-tick-and-threading.md) |
 | Every other falling row is Empty | Inspect source/destination update stamps and bottom-up vacancies; [materials](../systems/materials-and-rule-kernels.md) |
 | Water changes while apparently settled | Compare exact mass, content hash and dirty/activity counts; full state hash advances with time; [Water](../systems/water-design.md) |
 | Stable cells look dithered or shimmer | Separate render animation from authority; [appearance](../systems/material-appearance-and-rendering.md) |

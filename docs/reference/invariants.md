@@ -66,7 +66,7 @@ Contract/source: [tick order and failures](../architecture/simulation-tick-and-t
 | THREAD-001 | Current: native jobs have no Godot/object access; historical sanitizer scope is separate from current source |
 | THREAD-002 | Current fixture scope: exact one/multiworker phased comparisons; no desktop/Web/Rapier equivalence implication |
 | THREAD-003 | Current: native workers persist across ticks; no per-material or per-tick pool construction |
-| TIME-002 | Current limitation: failed ticks need not be atomic; desktop ignores adapter false, Web pauses; production recovery is undecided |
+| TIME-002 | Current: a failed attempt is non-atomic and quarantined; completed identity/publication cannot advance, owners stop and require explicit clear/reset or validated replacement; no partial-world retry/event replay |
 
 ## Spatial, buffer, and transfer invariants
 
@@ -157,7 +157,7 @@ Source/tests: [WorldConfig](../../native/include/cybersand/world.hpp),
 | CAP-001 | Approved: explicit serializable/observable budgets; construction fields Current, general serialization Planned |
 | CAP-002 | Approved: reservations need not be permanent architectural limits; live growth remains Planned |
 | CAP-003 | Current native task/snapshot storage bounded/reused; transfer storage Planned, Godot emission queue dynamic |
-| CAP-004 | Current native capacity failures explicit; this does not imply whole-tick rollback or absence of partial event progress |
+| CAP-004 | Current: native capacity failures are explicit; partial progress is quarantined until reset/replacement, without rollback or automatic event replay |
 | CAP-005 | Approved, unimplemented live transition: structural growth only after affected jobs/views drain |
 
 ## Water invariants

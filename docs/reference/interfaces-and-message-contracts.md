@@ -46,7 +46,10 @@ calibration/conduction is not defined by this API.
 Checked set/tick/reservation/explosion/copy methods return 1/0; legacy set/tick
 surfaces provide weaker error reporting. `tick_v2` zeroes output after a caught
 exception, but **does not roll World back**. Null input/output also fails; no
-structured error reason is returned. Hash and resident-byte queries are
+structured C error reason is returned. Additive `has_failed`,
+`completed_tick_index` and `clear` queries/operation expose quarantine and explicit
+reset without changing v2 struct layout. Native `tick_index` remains attempted
+identity; `completed_tick_index` is the last successful tick. Hash and resident-byte queries are
 [scoped diagnostics](../architecture/determinism-and-boundary-transfers.md),
 not complete replay capture or process-memory accounting.
 
@@ -68,7 +71,10 @@ and [step order](../architecture/simulation-tick-and-threading.md).
 `queue_emit_disc`; consecutive identical pending emissions are coalesced.
 The only defined option is coherent-liquid emission. UI slots never cross this
 boundary. The dynamic queue has no production capacity, target-tick ID or
-acceptance result. Reset/frame inputs are separate latched fields.
+target-tick acceptance acknowledgement. `queue_emit_disc` now returns false
+when the published owner is failed (true only admits/coalesces a pending command,
+not a promise of application). Failure/reset clears pending emissions without
+replay. Reset/frame inputs are separate latched fields.
 
 **Approved:** future commands need bounded immutable value data, deterministic
 accepted ordering and explicit failure. **Planned:** the generalized schema,
@@ -172,3 +178,21 @@ contract owns CYSD1 fields, validation, exclusive export/import, omissions and
 future replay requirements. Level reconstruction is Current; general streamed
 persistence and exact replay are Planned. This stable route intentionally avoids
 a second copy of the format specification.
+
+## Failed-tick adapter status
+
+**Current:** native Godot `simulation_tick()` returns false on first failure and
+all later calls until recovery. `has_failed()` is independent of user pause;
+`get_tick_index()` reports completed identity, `get_attempted_tick_index()` reports
+the failed attempt. First error/count persist; repeat rejection does not increment
+the count. Tick statistics are zero on failure, and body results are empty.
+`reset_demo_world()` returns bool and swaps a prepared candidate on success.
+Validated `CyberDemoBridge` import/construction is another recovery path; invalid
+replacement preserves the fault. Explosion enqueue returns false with a bridge
+error while failed. Render packet failure has `failed` and `error` with no payload.
+
+`CyberSimulationSnapshot.simulation_failed` and `failed_tick_index` distinguish
+failure status from its retained last-valid `tick_index`/display payload. Desktop
+`CyberSimulationWorker.has_failed()` reads that status under its mutex. No caller
+may treat the failed attempted identity as a successful publication. See
+[tick/recovery semantics](../architecture/simulation-tick-and-threading.md).

@@ -75,3 +75,11 @@ General streaming/distant aggregates and broad world-scale systems remain
 capture, generalized coupling and artist-facing bounded material-program tools
 remain **Planned** work. [Roadmap](status-and-roadmap.md) owns their implementation
 status and unresolved decisions.
+
+## Failure policy judgement, 2026-09-08
+
+For issue #1 the owner delegated the unresolved recovery choice to engineering
+judgement. The selected bounded policy is stop until explicit reset or validated
+replacement, retaining partial state only for diagnosis. Rollback, automatic
+retry and partial-world continuation are Rejected for this fix; see
+[ADR-010](../decisions/ADR-010-failed-tick-quarantine.md).

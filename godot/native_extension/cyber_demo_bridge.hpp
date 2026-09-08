@@ -17,12 +17,7 @@ class CyberDemoBridge final : public RefCounted {
         auto exchange = std::make_unique<cybersand::RenderSnapshotExchange>(
             3, 64, std::size_t{cybersand::demo::kWidth} * cybersand::demo::kHeight * 2);
         candidate->set_liquid_surface_adhesion_enabled(adapter.liquid_surface_adhesion_enabled_);
-        // Keep the initial replacement asleep outside the current interest
-        // window. The controller updates that window before the next tick.
-        if (adapter.simulation_window_enabled_) {
-            candidate->set_simulation_region(cybersand::RectI64{
-                0, 0, cybersand::demo::kWidth, cybersand::demo::kHeight});
-        }
+        candidate->set_simulation_region(adapter.world_->simulation_region());
         // All fallible allocation and validation precede these no-throw swaps.
         adapter.world_.swap(candidate);
         adapter.render_exchange_.swap(exchange);
@@ -99,12 +94,21 @@ public:
 
     [[nodiscard]] bool queue_explosion(const Ref<CyberNativeCellWorld>& adapter,
         std::int64_t x, std::int64_t y, std::int64_t radius) {
+        error_ = String();
         if (adapter.is_null() || !adapter->world_ || x < 0 || y < 0 ||
             x >= cybersand::demo::kWidth || y >= cybersand::demo::kHeight || radius < 1 || radius > 64) {
             error_ = "Explosion outside supported bounds";
             return false;
         }
-        return adapter->world_->queue_explosion(x, y, static_cast<std::int32_t>(radius));
+        if (adapter->world_->has_failed()) {
+            error_ = "World failed; reset or replace it before accepting explosions";
+            return false;
+        }
+        if (!adapter->world_->queue_explosion(x, y, static_cast<std::int32_t>(radius))) {
+            error_ = "Explosion queue capacity exhausted";
+            return false;
+        }
+        return true;
     }
 
 protected:

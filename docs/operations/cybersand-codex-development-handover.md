@@ -35,8 +35,9 @@ internal native pthreads. Rapier objects stay on the main thread. Follow
 
 The first foundational checkpoint should resolve the bounded correctness/ownership
 issues in the roadmap before broad physics additions. In particular, tick failure
-is not a transaction and phased interest re-entry can leave sleeping material
-frozen. These observations are not approved fixes. Preserve an exact reproducer,
+is not a transaction: issue #1 now quarantines failures until explicit reset or
+validated replacement, with no retry/rollback. Phased interest re-entry can still
+leave sleeping material frozen pending issue #2. See the current contracts. Preserve an exact reproducer,
 decide the intended policy and record its consequences for interfaces/invariants.
 
 Use [build/test instructions](local-build-and-validation.md) for commands and

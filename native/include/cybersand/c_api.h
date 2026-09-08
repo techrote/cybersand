@@ -176,6 +176,11 @@ CYBERSAND_API int cybersand_world_set_v2(cybersand_world* world, int64_t x, int6
                                          uint16_t material);
 CYBERSAND_API int cybersand_world_tick_v2(cybersand_world* world,
                                           cybersand_tick_stats_v2* destination);
+/* Failed ticks may have mutated state. Further ticks/writes/publication are
+ * rejected until explicit clear or replacement; no automatic event replay. */
+CYBERSAND_API int cybersand_world_has_failed(const cybersand_world* world);
+CYBERSAND_API uint64_t cybersand_world_completed_tick_index(const cybersand_world* world);
+CYBERSAND_API int cybersand_world_clear(cybersand_world* world);
 CYBERSAND_API int cybersand_world_reserve_region(cybersand_world* world, int64_t x, int64_t y,
                                                   int64_t width, int64_t height);
 CYBERSAND_API int cybersand_world_reserve_temperature_region(cybersand_world* world, int64_t x,

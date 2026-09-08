@@ -57,6 +57,8 @@ its detailed facts into multiple pages. Evaluate retrieval using the
 The [structural rewrite audit](audits/2026-09-08-structural-documentation-audit.md)
 and [retrieval evaluation](audits/2026-09-08-retrieval-evaluation.md) record this
 documentation checkpoint, its measured limits and recommended next work.
+The local [issue #1 implementation evidence](audits/2026-09-08-issue-1-failed-ticks.md)
+records the failed-tick policy and platform-scoped acceptance.
 The subsequent [GitHub milestone](audits/2026-09-08-github-milestone.md) records
 the paired source/workspace publication and open correctness follow-ups.
 

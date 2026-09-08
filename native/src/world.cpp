@@ -421,6 +421,7 @@ World::World(World&&) noexcept = default;
 World& World::operator=(World&&) noexcept = default;
 
 RenderPublishResult RenderSnapshotExchange::publish(World& world) {
+    world.require_healthy();
     auto& state = *state_;
     std::scoped_lock lock(state.mutex);
 
@@ -833,6 +834,7 @@ void World::keep_cell_active(std::int64_t x, std::int64_t y) noexcept {
 }
 
 void World::set(std::int64_t x, std::int64_t y, Material material) {
+    require_healthy();
     if (!valid_material(static_cast<std::uint16_t>(material))) {
         throw std::invalid_argument("invalid material identifier");
     }
@@ -865,6 +867,7 @@ void World::set(std::int64_t x, std::int64_t y, Material material) {
 bool World::set_cell_state(std::int64_t x, std::int64_t y, Material material,
                            std::uint8_t state_a_value,
                            std::uint8_t state_b_value) {
+    if (tick_failed_) return false;
     if (!valid_material(static_cast<std::uint16_t>(material))) {
         throw std::invalid_argument("invalid material identifier");
     }
@@ -883,11 +886,14 @@ void World::set_liquid_surface_adhesion_enabled(bool enabled) noexcept {
     liquid_surface_adhesion_enabled_ = enabled;
 }
 
+std::optional<RectI64> World::simulation_region() const noexcept { return simulation_region_; }
+
 bool World::liquid_surface_adhesion_enabled() const noexcept {
     return liquid_surface_adhesion_enabled_;
 }
 
 void World::configure_transient_obstacles(RectI64 region) {
+    require_healthy();
     if (region.width <= 0 || region.height <= 0) {
         throw std::invalid_argument("transient obstacle dimensions must be positive");
     }
@@ -907,6 +913,7 @@ void World::configure_transient_obstacles(RectI64 region) {
 }
 
 void World::clear_transient_obstacles() {
+    require_healthy();
     auto& state = *transient_obstacles_;
     const auto width = state.region.width;
     if (width > 0) {
@@ -939,6 +946,7 @@ std::uint16_t World::transient_obstacle_at(std::int64_t x, std::int64_t y) const
 
 bool World::set_transient_obstacle(std::int64_t x, std::int64_t y,
                                    std::uint16_t body_id) {
+    if (tick_failed_) return false;
     auto& state = *transient_obstacles_;
     if (body_id == 0U || body_id > kMaximumTransientBodies ||
         state.region.width <= 0 || state.region.height <= 0 ||
@@ -961,6 +969,7 @@ bool World::set_transient_obstacle(std::int64_t x, std::int64_t y,
 
 bool World::relocate_stored_cell(std::int64_t from_x, std::int64_t from_y,
                                  std::int64_t to_x, std::int64_t to_y) {
+    if (tick_failed_) return false;
     if (stored_material(from_x, from_y) == Material::Empty ||
         stored_material(to_x, to_y) != Material::Empty ||
         transient_obstacle_at(to_x, to_y) != 0U) {
@@ -1001,6 +1010,7 @@ void World::record_transient_contact(std::uint16_t body_id, Material material,
 }
 
 void World::set_temperature(std::int64_t x, std::int64_t y, std::int16_t value) {
+    require_healthy();
     const auto target = address(x, y);
     if (value == config_.ambient_temperature) {
         auto* existing = find_chunk(target.chunk);
@@ -1021,6 +1031,7 @@ void World::set_temperature(std::int64_t x, std::int64_t y, std::int16_t value) 
 }
 
 void World::paint_disc(std::int64_t centre_x, std::int64_t centre_y, std::int32_t radius, Material material) {
+    require_healthy();
     if (radius < 0) {
         throw std::invalid_argument("radius must not be negative");
     }
@@ -1037,6 +1048,7 @@ void World::paint_disc(std::int64_t centre_x, std::int64_t centre_y, std::int32_
 }
 
 void World::reserve_region(RectI64 region) {
+    require_healthy();
     if (region.width <= 0 || region.height <= 0) {
         throw std::invalid_argument("reserve region dimensions must be positive");
     }
@@ -1075,6 +1087,7 @@ void World::reserve_region(RectI64 region) {
 }
 
 void World::reserve_temperature_region(RectI64 region) {
+    require_healthy();
     reserve_region(region);
     const auto minimum_address = address(region.x, region.y);
     const auto maximum_address =
@@ -1088,6 +1101,7 @@ void World::reserve_temperature_region(RectI64 region) {
 
 bool World::queue_explosion(std::int64_t x, std::int64_t y, std::int32_t radius,
                             std::uint8_t collapse_strength) {
+    if (tick_failed_) return false;
     if (radius <= 0 || radius > config_.maximum_explosion_radius ||
         pending_explosions_.size() >= config_.deferred_event_capacity) {
         return false;
@@ -1142,12 +1156,15 @@ void World::apply_pending_explosions(TickStats& stats) {
 }
 
 void World::clear() {
+    if (tick_in_progress_) throw std::logic_error("cannot clear during a world tick");
+    tick_failed_ = false;
     clear_transient_obstacles();
     chunks_.clear();
     active_chunk_scratch_.clear();
     active_core_scratch_.clear();
     pending_explosions_.clear();
     tick_index_ = 0;
+    completed_tick_index_ = 0;
     update_epoch_ = 0;
     tick_in_progress_ = false;
     tick_chunk_allocations_ = 0;
@@ -2546,6 +2563,7 @@ TickStats World::tick_phased() {
 }
 
 TickStats World::tick() {
+    require_healthy();
     if (tick_in_progress_) throw std::logic_error("world tick is not reentrant");
     tick_in_progress_ = true;
     tick_chunk_allocations_ = 0;
@@ -2564,14 +2582,24 @@ TickStats World::tick() {
         }
         stats.chunk_allocations = tick_chunk_allocations_;
         stats.temperature_field_allocations = tick_temperature_field_allocations_;
+        completed_tick_index_ = tick_index_;
         tick_in_progress_ = false;
         return stats;
     } catch (...) {
+        // Partial cell/event/epoch/metadata progress is diagnostic only. Workers
+        // have drained at the phase barrier; never resume this in-place state.
+        tick_failed_ = true;
         tick_in_progress_ = false;
         throw;
     }
 }
 
+void World::require_healthy() const {
+    if (tick_failed_) throw std::logic_error("world is failed; clear or replace it before continuing");
+}
+
+bool World::has_failed() const noexcept { return tick_failed_; }
+std::uint64_t World::completed_tick_index() const noexcept { return completed_tick_index_; }
 std::uint64_t World::tick_index() const noexcept { return tick_index_; }
 std::size_t World::chunk_count() const noexcept { return chunks_.size(); }
 
@@ -2597,6 +2625,8 @@ std::size_t World::resident_cell_bytes() const noexcept {
 std::uint64_t World::state_hash() const noexcept {
     std::uint64_t hash = 1469598103934665603ULL;
     hash_integer(hash, tick_index_);
+    hash_integer(hash, completed_tick_index_);
+    hash_integer(hash, static_cast<std::uint8_t>(tick_failed_));
     hash_integer(hash, update_epoch_);
     hash_integer(hash, config_.chunk_size);
     hash_integer(hash, static_cast<std::uint8_t>(config_.backend));
@@ -2700,6 +2730,7 @@ std::size_t World::dirty_chunk_count() const noexcept {
 }
 
 std::vector<DirtyChunk> World::take_dirty_chunks() {
+    require_healthy();
     std::vector<DirtyChunk> result;
     for (auto& [coord, chunk] : chunks_) {
         if (!chunk->dirty) continue;
