@@ -15,8 +15,10 @@ related-documents: [source-checkpoint-and-recovery.md, local-build-and-validatio
 The active source now has upstream-derived history and a local checkpoint branch.
 Use [source checkpoint and recovery](source-checkpoint-and-recovery.md) for exact
 identities, companion workspace scope and dirty-state inspection. No push or
-publication was performed by the documentation rewrite. Remote privacy, branch
-protection and current CI results have not been verified; intended historical
+publication was performed by the documentation rewrite itself. The subsequent
+owner-authorized [GitHub milestone](../audits/2026-09-08-github-milestone.md) verified
+that `techrote/cybersand` is private and published both local histories. Branch
+protection and current CI success are not established; intended historical
 integration branch names do not establish today's remote policy.
 
 Track source, tests, docs, locks, notices and required runtime libraries. Runtime

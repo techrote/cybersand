@@ -15,8 +15,9 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 Work in `C:/kybersand`, with executable source in `source/`. The companion workspace
 and source now have separate Git histories. Read [source identity](source-checkpoint-and-recovery.md)
 and inspect both relevant working trees before changing anything. Godot is in
-`C:/Godot47`; `C:/cybersand` is for functional deliverables. This task did not push
-or publish. User-confirmed USB backup is recorded; no further backup search is needed.
+`C:/Godot47`; `C:/cybersand` is for functional deliverables. The original rewrite
+was local; the owner subsequently authorized a [GitHub checkpoint](../audits/2026-09-08-github-milestone.md)
+of both histories. User-confirmed USB backup is recorded; no further backup search is needed.
 
 Read [AGENTS.md](../../AGENTS.md), the [documentation index](../README.md),
 [roadmap](../reference/status-and-roadmap.md), then the canonical subsystem and ADR

@@ -39,7 +39,12 @@ all-platform recovery while required LFS payloads remain unresolved.
 | `C:/Godot47` | Local Godot 4.7 installation; outside both repositories |
 
 Use `git -C source ...` from the workspace when you mean source history.
-The workspace repository has no remote. No push or publication was performed.
+Both repositories now use the private `techrote/cybersand` GitHub repository:
+source history is published on `codex/rag-docs-foundation` and the independent
+workspace history on `codex/workspace-docs`. The original rewrite made no remote
+changes; the owner subsequently authorized this publication. The
+[GitHub milestone record](../audits/2026-09-08-github-milestone.md) defines the
+paired checkpoint tags, reconstruction procedure and remaining correctness issues.
 
 ## Which earlier identity statements are historical?
 

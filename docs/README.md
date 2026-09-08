@@ -57,6 +57,8 @@ its detailed facts into multiple pages. Evaluate retrieval using the
 The [structural rewrite audit](audits/2026-09-08-structural-documentation-audit.md)
 and [retrieval evaluation](audits/2026-09-08-retrieval-evaluation.md) record this
 documentation checkpoint, its measured limits and recommended next work.
+The subsequent [GitHub milestone](audits/2026-09-08-github-milestone.md) records
+the paired source/workspace publication and open correctness follow-ups.
 
 [M11 audit records](audits/m11/README.md), [BUILD_ID](BUILD_ID.md),
 [first September documentation audit](audits/2026-09-08-documentation-audit.md),
