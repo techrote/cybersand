@@ -17,17 +17,18 @@ def digest(data):
 
 def verify_runtime(root, manifest):
     errors = []
+    platform = manifest.get("validated_platform", "runtime")
     for relative, expected in manifest["source_inputs"].items():
         path = root / relative
         if not path.is_file() or digest(path.read_bytes().replace(b"\r\n", b"\n")) != expected:
-            errors.append("published Windows runtime requires rebuild for source input: " + relative)
+            errors.append(platform + " requires rebuild for source input: " + relative)
     data = (root / manifest["artifact"]).read_bytes()
     if data.startswith(b"version https://git-lfs.github.com/spec/v1\n"):
         expected = f"oid sha256:{manifest['sha256']}\nsize {manifest['size']}\n".encode()
         if expected not in data:
-            errors.append("Windows LFS pointer differs from published runtime provenance")
+            errors.append(platform + " LFS pointer differs from published runtime provenance")
     elif digest(data) != manifest["sha256"] or len(data) != manifest["size"]:
-        errors.append("Windows runtime bytes differ from published provenance")
+        errors.append(platform + " bytes differ from published provenance")
     return errors
 
 def check(root, require_materialized=False):
@@ -46,7 +47,8 @@ def check(root, require_materialized=False):
             errors.append("current Rapier dependency differs from the approved pin")
         if not any(a.get("name") == "godot-cpp" and a.get("version") == GODOT_CPP for a in native["artifacts"]):
             errors.append("current godot-cpp dependency differs from the approved pin")
-        errors.extend(verify_runtime(root, load("godot/addons/cybersand_native/runtime-provenance.json")))
+        for manifest_name in ("runtime-provenance.json", "runtime-provenance.linux.json"):
+            errors.extend(verify_runtime(root, load("godot/addons/cybersand_native/" + manifest_name)))
         tracked = subprocess.check_output(["git", "-C", str(root), "ls-files", "godot/addons"], text=True).splitlines()
         for relative in tracked:
             if not (relative.endswith((".dll", ".so", ".dylib", ".wasm")) or ".framework/libgodot_rapier." in relative):
@@ -76,7 +78,7 @@ def check(root, require_materialized=False):
     return {"status": "failed" if errors else "passed", "scope": "current source/documentation and artifact identity",
             "documentation": docs, "materialized_runtime_files": materialized, "unmaterialized_runtime_files": pointers,
             "errors": errors, "limitations": ["Identity is not execution evidence; read the dated runtime acceptance report",
-            "Other-platform retained binaries are historical inputs, not current rebuilt solver acceptance",
+            "Retained vendor binaries and platform execution have separate dated provenance",
             "Historical M11 integrity is checked separately by check_m11_consistency.py"]}
 
 def main():

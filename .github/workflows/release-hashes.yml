@@ -41,7 +41,7 @@ jobs:
             -type f ! -name 'Info.plist' -print0 \
             | LC_ALL=C sort -z \
             | xargs -0 sha256sum > release-hashes/runtime-files.sha256
-          sha256sum third_party/*.lock.json godot/addons/cybersand_native/runtime-provenance.json > release-hashes/provenance-files.sha256
+          sha256sum third_party/*.lock.json godot/addons/cybersand_native/runtime-provenance*.json > release-hashes/provenance-files.sha256
           sha256sum docs/BUILD_ID.md docs/audits/m11-retention.json > release-hashes/historical-records.sha256
           git rev-parse HEAD > release-hashes/git-commit.txt
           test -s release-hashes/runtime-files.sha256

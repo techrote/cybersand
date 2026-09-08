@@ -24,7 +24,8 @@ integration branch names do not establish today's remote policy.
 
 Track source, tests, docs, locks, notices and required runtime libraries. Runtime
 binaries use [.gitattributes](../../.gitattributes) and Git LFS; a pointer is not a
-usable library. Fourteen other-platform pointers remain locally unresolved.
+usable library. Finalisation materialized and verified all 18 required local
+runtime payloads; their platform execution scope still requires dated evidence.
 Ignore generated imports beyond the three portable bootstrap records, builds,
 exports, tools, caches, logs and local configuration. See [.gitignore](../../.gitignore),
 [CONTRIBUTING](../../CONTRIBUTING.md) and [dependency provenance](../../third_party/README.md).

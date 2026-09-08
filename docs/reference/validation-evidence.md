@@ -19,7 +19,7 @@ certifies a later binary, another platform or complete replay.
 
 | Evidence ID/date | Executed check and outcome | Limits and record |
 |---|---|---|
-| E-PUBLISH, 2026-09-08 | Pushed source passes Linux 46-test native, ASan/UBSan and TSan runs; Linux/Windows cross-builds pass | [Publication reconciliation](../audits/2026-09-08-validation-reconciliation.md) records exact revisions, workflows and limits, plus separate current/M11 gates |
+| E-PUBLISH, 2026-09-08 | Pushed source passes Linux 46-test native, ASan/UBSan and TSan runs; rebuilt Linux Godot passes 16 runners plus profiles/import/scene; both extension builds pass | [Publication reconciliation](../audits/2026-09-08-validation-reconciliation.md) records exact revisions, workflows and limits, plus separate current/M11 gates |
 | E-F02, 2026-09-08 | 46 native regressions; rebuilt Windows adapter/owners and 16 Godot runners passed; paired Web exports exercised | [Issue #2 and combined record](../audits/2026-09-08-issue-2-interest-regions.md) identifies browser results, worker/profile and artifact scope; historical failures remain preserved |
 | E-F01, 2026-09-08 | 42 native regressions; rebuilt Windows adapter and desktop/Web owner checks; 16 Godot runners passed | [Issue #1 dated record](../audits/2026-09-08-issue-1-failed-ticks.md); browser and combined region acceptance recorded separately |
 | E-M11, 2026-08-28 | Historical audited M11: 34 passed, one inconclusive LeakSanitizer run | Linux-era audit; Windows format/import inspection was not runtime execution. [Retained records](../audits/m11/README.md) |
@@ -68,8 +68,8 @@ Nine groups inside `test_cell_world.gd` count as one runner, not nine extra file
 
 ## Which gates remain absent or failing?
 
-- No macOS/WSL or Firefox/Safari runtime acceptance. Local Linux payloads remain
-  pointers; Linux CI materialization and rebuilt execution have separate evidence.
+- No macOS/WSL or Firefox/Safari runtime acceptance. All 18 required local LFS
+  payloads are now materialized; rebuilt platform execution has separate evidence.
 - Current Chromium compatibility/threaded acceptance is recorded by E-F02.
 - Linux ASan/UBSan and TSan passed in the publication run; LeakSanitizer was
   disabled, and these do not attest to every platform or toolchain.

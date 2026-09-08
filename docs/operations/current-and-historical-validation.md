@@ -35,17 +35,17 @@ preserves the previous failures and explains their resolution.
 
 **Current:** [check_repository.py](../../tools/ci/check_repository.py) validates
 canonical documentation, approved dependency versions, required notices/bootstrap
-files, committed LFS identities and the published Windows runtime's source inputs.
+files, committed LFS identities and the published Windows/Linux runtime source inputs.
 [runtime-provenance.json](../../godot/addons/cybersand_native/runtime-provenance.json)
-binds that DLL's SHA-256/size to canonical source input hashes and dated execution
+and [Linux provenance](../../godot/addons/cybersand_native/runtime-provenance.linux.json)
+bind each library's SHA-256/size to canonical source input hashes and dated execution
 evidence. Changing an input requires a rebuilt, tested and explicitly recorded
 artifact. Identity alone never substitutes for execution.
 
 A local source checkout may validate LFS pointer identity while reporting missing
 payloads. CI and release hashing require `--require-materialized`; every required
-runtime object must match its committed SHA-256 and size. Other-platform retained
-libraries are historical inputs until rebuilt and tested. They are not certified
-by the Windows manifest or a successful LFS check.
+runtime object must match its committed SHA-256 and size. Vendor runtime libraries retain their dependency provenance. Other platforms
+are not certified by the Windows/Linux manifests or a successful LFS check.
 
 ```text
 python tools/ci/check_docs.py

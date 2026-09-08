@@ -80,8 +80,8 @@ records stay outside the default answer corpus.
 ## Remaining scope limits
 
 No macOS, Firefox or Safari runtime execution; no LeakSanitizer acceptance,
-full replay, universal failure-site or arbitrary-shape physics proof. Local Linux
-LFS payloads remain unresolved even when CI materializes or rebuilds them.
+full replay, universal failure-site or arbitrary-shape physics proof. All 18 local LFS payloads were subsequently materialized and verified; this
+does not establish all-platform execution.
 Web CI toolchain/arguments/export provenance remains the separate issue #3.
 Project public licensing remains undecided; this is private repository publication.
 
@@ -95,9 +95,61 @@ retained 12 differences with no historical-integrity errors. `git diff --check`
 passed; native solver/adapter sources and the tested Windows DLL did not change.
 
 [Machine-readable evidence](validation-reconciliation-2026-09-08-evidence.json)
-records command outputs and fixture identities. The frozen lexical set has 23/32
-hit@1, 32/32 hit@5, MRR 0.8307; supplementary C01-C06 has 5/6 hit@1, 6/6 hit@5,
+records command outputs and fixture identities. The frozen lexical set has 24/32
+hit@1, 32/32 hit@5, MRR 0.8542; supplementary C01-C06 has 5/6 hit@1, 6/6 hit@5,
 MRR 0.9167. Q31 now retrieves the correct historical/current distinction first.
 Original queries were preserved; Q31 expectations changed with the contract.
 The previously recorded C04 top-five bounded-capacity detail gap remains; follow
 the canonical storage link. Canonical hits alone do not establish complete answers.
+
+## Publication follow-up checks
+
+Documentation run [34286177617](https://github.com/techrote/cybersand/actions/runs/34286177617)
+passed every current/M11, checker, retrieval and LFS step for source `dda2fd5`
+(synthetic merge `8803cf3e270c2f6d68acc44278481efe6e875c38`). Native run
+[34286177604](https://github.com/techrote/cybersand/actions/runs/34286177604) also passed.
+
+`git lfs pull` materialized all 18 required runtime objects; `git lfs fsck` and
+`git fsck --full` passed (two unreferenced blobs reported, preserved). The current
+`--require-materialized` gate passed in 1.427 s with a 30 s limit. No local
+runtime pointers remain. All three native build scripts pass separate Bash
+syntax checks. A Windows builder dry run with drift disabled passes current
+compiler/source checks; explicit M11 output verification exits 3 for the
+different bindings archive even with drift enabled. These read-only probes
+used existing clean pinned bindings and made no environment or runtime changes.
+
+## Fresh Linux runtime acceptance and promotion
+
+[Run 34286177653](https://github.com/techrote/cybersand/actions/runs/34286177653)
+passed both extension jobs with the drift override removed: exact GCC13.3.0 /
+binutils2.42 or LLVM-MinGW23.1, SCons4.10.1 and clean pinned godot-cpp sources.
+The Linux job then passed all 16 Godot runners, both profiles, import and scene
+smoke (20 invocations). Limits: 240 s import, 180 s each fixture/scene, 1,200 s
+each profile, 30 minute aggregate runtime step. Godot error output fails even
+with exit zero. The full runtime stage completed within 83 seconds. Native
+profile: two workers, 60 ticks; the GDScript scheduler probe is diagnostic
+timing, not a performance or cross-mode equality acceptance gate. Linux scripts
+named Web tests still execute native Godot; Chromium evidence remains separate.
+
+Tested source merge `8803cf3e270c2f6d68acc44278481efe6e875c38` contains head
+`dda2fd5762e7bb472f125b1220a16e308ffa5111`; its native/adapter source inputs
+match the published Windows input set and the subsequent promotion commit.
+Linux runtime SHA-256
+`8f68fd2c7cb2b449173f5ee2c3ce267b6966ac8a9d8381fdacdd05dfc2d9c31a`,
+1,182,592 bytes. Artifact `10079917041` ZIP SHA-256
+`f08d82b1bb3ac8e48433871706106b221e446919f03c166c94a2494e837ec9f4`
+was downloaded, verified, and its ELF and identity record checked before promoting
+the exact tested library to Git LFS. The Linux provenance manifest records these
+identities; the current gate requires both Windows and Linux manifests. This
+replaces the default M11 Linux runtime without changing its historical hash.
+
+ABI acceptance: GLIBC2.34 bundle, CyberSand GLIBC2.32 / GLIBCXX3.4.30 /
+CXXABI1.3.9, Rapier GLIBC2.34. Current Windows cross-build SHA-256
+`9bcb4329d7f5d5e44f321df45444bf3deda95d7578d0083df4a09f5da8d55ac9`
+was format/import checked only; the published Windows DLL remains the separately
+Windows-tested `fda49d0...` artifact. No cross-build/runtime substitution was made.
+
+After the Linux promotion documentation, structure and eight checker regressions
+still pass. Final frozen retrieval: 23/32 hit@1, 32/32 hit@5,
+MRR 0.8385; supplementary results remain 5/6, 6/6, MRR 0.9167. The
+earlier 24/32 measurement above remains scoped to its recorded corpus.

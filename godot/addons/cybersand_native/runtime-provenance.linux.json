@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "status": "validated-development-runtime",
-  "source_commit": "b462e6b775eb7d866cff56ec991f84517b472e7f",
-  "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
-  "sha256": "fda49d0acb0a4786f9aeeb6cb4289fc2fd10ac8103512cc1663f98598a49049b",
-  "size": 1731072,
+  "source_commit": "dda2fd5762e7bb472f125b1220a16e308ffa5111",
+  "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+  "sha256": "8f68fd2c7cb2b449173f5ee2c3ce267b6966ac8a9d8381fdacdd05dfc2d9c31a",
+  "size": 1182592,
   "source_input_hash_kind": "SHA-256 of canonical Git blob bytes; CRLF working files normalize to LF",
   "source_inputs": {
     "godot/native_extension/cyber_demo_bridge.hpp": "a7a6df0053e1ec258074bb4b3175d472b196ed9e3e894cf51eaf86c92c197015",
@@ -26,9 +26,13 @@
     "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
     "native/src/world.cpp": "ad4ad5be10b75a6cab810c11d8e2d2e854a349fd982bd4aea90d724cbfe1da1f"
   },
-  "evidence": "docs/audits/issue-2-2026-09-08-evidence.json",
-  "validated_platform": "Windows x86_64 Godot 4.7",
-  "toolchain": "LLVM-MinGW 20260826 UCRT Clang 23.1.0; godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496",
-  "acceptance": "46 native tests and 16 Windows Godot runners; browser evidence covers separate WASM exports",
-  "other_platforms": "This manifest covers Windows only; runtime-provenance.linux.json covers Linux and the issue audits cover separately exported Web runtimes."
+  "evidence": "docs/audits/2026-09-08-validation-reconciliation.md",
+  "validated_platform": "Linux x86_64 Godot 4.7",
+  "toolchain": "Ubuntu 24.04, GCC/G++ 13.3.0, binutils 2.42, SCons 4.10.1; godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496; compiler/source checks enabled, drift override disabled",
+  "acceptance": "16 test_*.gd runners, two profiles, import and scene smoke; ABI floor GLIBC2.34 bundle, extension GLIBC2.32/GLIBCXX3.4.30/CXXABI1.3.9. Native profile uses two workers, 60 ticks.",
+  "other_platforms": "This manifest covers Linux only; Windows and Web have separate execution evidence.",
+  "tested_merge_commit": "8803cf3e270c2f6d68acc44278481efe6e875c38",
+  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/34286177653",
+  "artifact_id": 10079917041,
+  "artifact_zip_sha256": "f08d82b1bb3ac8e48433871706106b221e446919f03c166c94a2494e837ec9f4"
 }

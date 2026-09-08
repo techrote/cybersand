@@ -68,9 +68,9 @@ materialized runtime libraries, workspace helpers and retained evidence;
 generated builds/imports and `.local` toolchains are excluded.
 
 The Git checkpoint and `git fsck --full` cover source history. Required Windows
-runtime bytes were stored locally through Git LFS. Fourteen other-platform
-runtime files remain unresolved pointers. Do not call Linux or all-platform
-restoration complete merely because Git objects are healthy.
+runtime bytes were stored through Git LFS. Finalisation materialized and verified
+all 18 required runtime payloads, resolving the earlier fourteen missing objects.
+Git/LFS integrity does not itself prove platform runtime or full toolchain recovery.
 
 Toolchains, export templates and machine-local configuration are separate
 recovery inputs. Restore the exact pinned inputs described by

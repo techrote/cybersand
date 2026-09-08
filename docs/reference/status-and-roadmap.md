@@ -30,7 +30,7 @@ from inspected code. No documentation status is a blanket platform acceptance.
 | Bodies and character | Main-thread Rapier, rectangular masks/displacement, static terrain packets and sampled character; [coupling](../architecture/rigid-body-and-cellular-coupling.md) |
 | Rendering | Immutable native snapshots, copied dirty RG8 patches, full finite GPU texture update and derived material appearance; [bridges](../architecture/rendering-and-gameplay-bridges.md) |
 | Persistence | Fixed CYSD1 demo levels; complete resumed replay absent; [save contract](level-saves-and-replay.md) |
-| Runtime availability | Windows/native and Web payloads present; other-platform pointers remain; [build](../operations/local-build-and-validation.md) and [evidence](validation-evidence.md) |
+| Runtime availability | All 18 required LFS payloads materialized; current execution scope is platform-specific; [build](../operations/local-build-and-validation.md) and [evidence](validation-evidence.md) |
 
 ## Decisions and defects to resolve
 
