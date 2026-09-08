@@ -1,0 +1,10 @@
+# Captured with the connected Chromium tab's console log API.
+# Final clean export reload; no error/warn entries in this run.
+# Earlier failed-build diagnostics are described in LOCAL-DEV-SETUP-REPORT.md.
+2026-09-07T20:38:24.372Z [log] Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+2026-09-07T20:38:24.845Z [log] OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL
+2026-09-07T20:38:24.935Z [log] Build configuration: Emscripten 4.0.20, single-threaded, GDExtension support.
+2026-09-07T20:38:25.284Z [log] WEB_RAPIER_PROBE {"ok":false,"reason":"Rapier extension unavailable"}
+2026-09-07T20:38:25.449Z [log] WEB_CPP_EXCEPTION_PROBE true
+2026-09-07T20:38:25.453Z [log] WEB_TEST_BROWSER Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36
+2026-09-07T20:38:25.453Z [log] WEB_DEMO_READY CYBERSAND/WASM · COMPAT · 1 WORKER · RIGID PHYSICS OFF

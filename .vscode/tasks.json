@@ -1,0 +1,11 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {"label":"CyberSand: native tests","type":"shell","command":"python3 tools/dev.py native-test","windows":{"command":".\\dev.cmd native-test"},"options":{"cwd":"${workspaceFolder}"},"problemMatcher":[]},
+    {"label":"CyberSand: Godot fixtures","type":"shell","command":"python3 tools/dev.py godot-test","windows":{"command":".\\dev.cmd godot-test"},"options":{"cwd":"${workspaceFolder}"},"problemMatcher":[]},
+    {"label":"CyberSand: Web build + export","type":"shell","command":"python3 tools/dev.py web","windows":{"command":".\\dev.cmd web"},"options":{"cwd":"${workspaceFolder}"},"problemMatcher":[],"group":"build"},
+    {"label":"CyberSand: preview","type":"shell","command":"python3 preview.py --open","windows":{"command":".\\0Preview.cmd"},"options":{"cwd":"${workspaceFolder}"},"problemMatcher":[]},
+    {"label":"CyberSand: HTTP smoke","type":"shell","command":"python3 tools/dev.py http-smoke","windows":{"command":".\\dev.cmd http-smoke"},"options":{"cwd":"${workspaceFolder}"},"problemMatcher":[]},
+    {"label":"CyberSand: clean Web rebuild","type":"shell","command":"python3 tools/dev.py rebuild","windows":{"command":".\\dev.cmd rebuild"},"options":{"cwd":"${workspaceFolder}"},"problemMatcher":[]}
+  ]
+}

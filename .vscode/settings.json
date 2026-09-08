@@ -1,0 +1,12 @@
+{
+  "files.exclude": {
+    "**/__pycache__": true
+  },
+  "search.exclude": {
+    ".local": true,
+    "source/build": true,
+    "source/godot/.godot": true,
+    "validation/local": true
+  },
+  "godotTools.editorPath.godot4": "C:/Godot47/Godot_v4.7-stable_win64.exe"
+}

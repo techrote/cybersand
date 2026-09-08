@@ -1,0 +1,76 @@
+{
+  "base_commit": "e2892c54d4bd91aac60971e81c748bd49fbe2adb",
+  "original_files": 244,
+  "changes": [
+    {
+      "path": "AGENTS.md",
+      "original_sha256": "43fa542194b1440f13147d5963cb5f72a2108a24b2a072e017a18333d48effe7",
+      "current_sha256": "a5e376b67a54ee2bf874f9ea8b4e33cf619b12eae18781e3add14c1f5485d1a2"
+    },
+    {
+      "path": "docs/README.md",
+      "original_sha256": "1429cac9713c9c1165fc02c6c1482c3a153e05f9bf7f10cf315fd37fe48adf7f",
+      "current_sha256": "9e110401cffae852b3f1ac35f0535b7e021b792364b49b5f5c61662382c650ce"
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "original_sha256": "0728dcee32cd029390a313ae547183aa3317ed97d1f6eec790fbcb10dfe8c42e",
+      "current_sha256": "b5fe9390666f327c380d5b83e5b8962833dff7c5b00f4b04a1a8109d1b9bf2e2"
+    },
+    {
+      "path": "godot/.godot/global_script_class_cache.cfg",
+      "original_sha256": "ebcb38df17aaff14b690004d40303dd5146798253e68471c89edbf7faef8158a",
+      "current_sha256": "5b3b273de94fd94b35b319ce5180fbc24eea3c552671ea127e57ee28adf3d2dc"
+    },
+    {
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "original_sha256": "b0405d9d70c6340a83fd5255f2bc344c945cf908efc62b4f7786adb60b96a4f7",
+      "current_sha256": "635dd1d908d7c5ab4fa5766a1b7ececa0a7c6df4e76162c64d2950245f76b6ab"
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "original_sha256": "4f177a225dcca7607ae871a74fe60faf1aaad270b89359237c3cb6e8ebaa63f1",
+      "current_sha256": "4e26ffa78ec2aaff434c4a70cd2ec85288b10ba5237912c35f204cb1e6ed2180"
+    },
+    {
+      "path": "godot/native_extension/cyber_demo_bridge.hpp",
+      "original_sha256": "8650063f8fb2b14491badd3ed4cf5e91dc569255ce7881b119ee964362aeeaba",
+      "current_sha256": "5c10371f0c69046f196bba523bf1db1fb306254c6e0d663e6e9fc8fc85cd9cd9"
+    },
+    {
+      "path": "godot/scripts/rapier_physics_bridge.gd",
+      "original_sha256": "f35ff545d817c363913f6f4bc01e838f130abcce023ca143d8edd191b04194b9",
+      "current_sha256": "b2547b1c34da9c516a0ace409cfd890fc80b6b8e79f559a94b349b5ceb278e9e"
+    },
+    {
+      "path": "godot/scripts/web_demo_controller.gd",
+      "original_sha256": "3333226cd3b08afcf205879d596b2f88b86aa291b31ec98f3a67b94f46a92bbd",
+      "current_sha256": "41a8f73906cbd50afb2d5133431006016bfdb1b637dfcd293bf2905cb18b8cbf"
+    },
+    {
+      "path": "tools/build_web.py",
+      "original_sha256": "23ff55a10a1e6b33fbe19ba6ae53f3fa905e616634cae07eb7cef24ab5803d91",
+      "current_sha256": "317a52903cbf8617150e84405571cc797461bd408768d8512503506634e9d174"
+    }
+  ],
+  "remaining_lfs_pointers": [
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+    "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+  ],
+  "native_files": 18,
+  "native_files_unchanged": 18
+}

@@ -1,0 +1,1960 @@
+{
+  "repository": "https://github.com/techrote/cybersand",
+  "branch": "web-demo-m11",
+  "commit": "e2892c54d4bd91aac60971e81c748bd49fbe2adb",
+  "acquisition": "GitHub connector, exact base64 blobs; no Git history or LFS payloads",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "mode": "100644",
+      "size": 924,
+      "git_blob_sha1": "d64462fdfda29cfca8af26bdb5585401a7bdc347",
+      "sha256": "b2145b01096190b9fe0037b905e254ec9652dac584b21ee54d8cfc1403af481d",
+      "lfs_pointer": false
+    },
+    {
+      "path": ".github/pull_request_template.md",
+      "mode": "100644",
+      "size": 520,
+      "git_blob_sha1": "55f1e1861a19e866babf2688d1ce740107a4ca48",
+      "sha256": "e583bf8f67e39a6e0077df8a4cea3cfeb5bb8c784076fed45d8ee9d4edc78f43",
+      "lfs_pointer": false
+    },
+    {
+      "path": ".github/workflows/documentation.yml",
+      "mode": "100644",
+      "size": 996,
+      "git_blob_sha1": "d80e59804197c5d1d12817849b6a96799358c306",
+      "sha256": "b4b749c7f9bcabd903a002c7b0ef0f7f79030263af78004aebd4209357d4b641",
+      "lfs_pointer": false
+    },
+    {
+      "path": ".github/workflows/gdextension.yml",
+      "mode": "100644",
+      "size": 4275,
+      "git_blob_sha1": "25e294b9c4eaece9216a988d6632d7944040a22e",
+      "sha256": "27c98f86c40f7a329bef00314474ee752d533c1cf1635f8d7f8ace45ba1d7b2d",
+      "lfs_pointer": false
+    },
+    {
+      "path": ".github/workflows/godot-headless.yml",
+      "mode": "100644",
+      "size": 2432,
+      "git_blob_sha1": "d4c6e7948596ec9a4da139a76d00a38954d21226",
+      "sha256": "464c138e209041c391ee95b67d5c930a86d4d1c524f9229b1c04373d87da1d9c",
+      "lfs_pointer": false
+    },
+    {
+      "path": ".github/workflows/native.yml",
+      "mode": "100644",
+      "size": 1495,
+      "git_blob_sha1": "0b9f27a8a95f10f5bd67ddc9d9a40b965fb684bb",
+      "sha256": "0ad122dc02c10137e9d352d01f34fdcc8a68437c2178c429d73edcf4d92c7bf1",
+      "lfs_pointer": false
+    },
+    {
+      "path": ".github/workflows/release-hashes.yml",
+      "mode": "100644",
+      "size": 1371,
+      "git_blob_sha1": "861146098515e740b8767d31c3709c427472740e",
+      "sha256": "7e41327676a481cc39373e321c038437df590275b5a6a5497c43e8953daebe6f",
+      "lfs_pointer": false
+    },
+    {
+      "path": ".github/workflows/web-demo.yml",
+      "mode": "100644",
+      "size": 2994,
+      "git_blob_sha1": "0b70b940d7a9eac65c018b5894d9b8adb1d703c3",
+      "sha256": "cec44853b73f3b3b318504ff4553ecd30f479d17e8ccb25c78ccd2a34a275f56",
+      "lfs_pointer": false
+    },
+    {
+      "path": ".github/workflows/web-toolchain.yml",
+      "mode": "100644",
+      "size": 2771,
+      "git_blob_sha1": "cbcf39f1fec9955c92212af10eb4d62423e373b3",
+      "sha256": "c0828d70714615e60f8c95d1ed04d9b468fc142dcb0dcd245cfa4bd9979357da",
+      "lfs_pointer": false
+    },
+    {
+      "path": ".gitignore",
+      "mode": "100644",
+      "size": 1338,
+      "git_blob_sha1": "451464efe7dc6f5914d8c6e213ae46cf7fead555",
+      "sha256": "9d9e8f46e734165de615031d6ee2e673bbb898420317c84d9cea6edc8c05f695",
+      "lfs_pointer": false
+    },
+    {
+      "path": "AGENTS.md",
+      "mode": "100644",
+      "size": 3240,
+      "git_blob_sha1": "1a53353704366e63a4245d64e640224ae6e22ee2",
+      "sha256": "43fa542194b1440f13147d5963cb5f72a2108a24b2a072e017a18333d48effe7",
+      "lfs_pointer": false
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "mode": "100644",
+      "size": 1215,
+      "git_blob_sha1": "81a960bf4517c5d86d8ea240788fb7cf60af8b7a",
+      "sha256": "062c81ba7c5b030683f8484ce7799db786e3f71fcdd78f38c3abe1833c278732",
+      "lfs_pointer": false
+    },
+    {
+      "path": "LICENSE_STATUS.md",
+      "mode": "100644",
+      "size": 780,
+      "git_blob_sha1": "02990b16026b63b91a0c498afc5c57c1010d5a2e",
+      "sha256": "3bfb7c5ddd1418ab38621d1e5b841c9e9c4845e9166a196143c8a71f3cd46b70",
+      "lfs_pointer": false
+    },
+    {
+      "path": "Makefile",
+      "mode": "100644",
+      "size": 2466,
+      "git_blob_sha1": "a8d2ff6400d708d4d043d35c61f87486141ba68d",
+      "sha256": "e239f65dab382c025ecccf7c98978eb924fa9341242f9d8b6d8a63c78091544b",
+      "lfs_pointer": false
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "size": 12108,
+      "git_blob_sha1": "9a2e92b9c7b8e9bbadb7fb988dbee215c20c5ed2",
+      "sha256": "2f488aca4c1f84218cec86acc3c548f248d67b2e4e41c7a826cf313e446bfcea",
+      "lfs_pointer": false
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "mode": "100644",
+      "size": 4200,
+      "git_blob_sha1": "9272360f6337d4ed3952248ae3466403a447e039",
+      "sha256": "daaef5a4e7ff79674f705a7b16739d4843a22e88efbe2c71ca9d3a42857c493f",
+      "lfs_pointer": false
+    },
+    {
+      "path": "build_windows_msvc.bat",
+      "mode": "100644",
+      "size": 1138,
+      "git_blob_sha1": "d9ad1465461e9b5af69e251dfaa615784a84214e",
+      "sha256": "7bd460ea2a1ce1209b1a6c32054160e5b1f54fd38f83eb5ffa70c38bd50acb76",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "mode": "100644",
+      "size": 8242,
+      "git_blob_sha1": "19daeedb3a81662e9c8194f14216b5039c3e6587",
+      "sha256": "762ca19a11c4e05d7dc414df33be1874e807e0d36ae9cca80d49c73df62c6f96",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/BUILD_ID.md",
+      "mode": "100644",
+      "size": 13064,
+      "git_blob_sha1": "714604a2976b134088da79216469c7998e141ae6",
+      "sha256": "0b83472d3d43ad1efd1a8a9363f1bf9b94f3dd897362505945e4d8c7d6387930",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/LARGE_WORLD_PROOF.md",
+      "mode": "100644",
+      "size": 10665,
+      "git_blob_sha1": "574606400ade9915dd9e53a10ebbe0e2bf95826f",
+      "sha256": "5db332ff7efaf2b0cd529f878da1832e353787b5171e10f6068c0c78da59c15b",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/MATERIAL_LAB.md",
+      "mode": "100644",
+      "size": 10083,
+      "git_blob_sha1": "3170abcdc46f87a29534756a84a4827901e59f21",
+      "sha256": "6a79cadb88dc2ef961135aeffe43aa381c044aa852e0b80e8bdfc8b8ca276e3f",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/NEXT_MILESTONE.md",
+      "mode": "100644",
+      "size": 4270,
+      "git_blob_sha1": "e1b4c289a2bb02d3f1b66f9982bbea79784bda12",
+      "sha256": "bd7c6760683ae36ff86eb5474764269107a26f59ba574ade33719e041b5e2287",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/PERFORMANCE.md",
+      "mode": "100644",
+      "size": 14331,
+      "git_blob_sha1": "81df15ced710792b4dd7c9ec2430e46bfdcf5436",
+      "sha256": "1d872963d0a36a9b21abd0de334ef0d98875003bc7c9c07bbbda66ad583df240",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/README.md",
+      "mode": "100644",
+      "size": 12145,
+      "git_blob_sha1": "efe08e4451e5754292d9b08a6abdbc3db64334d4",
+      "sha256": "1429cac9713c9c1165fc02c6c1482c3a153e05f9bf7f10cf315fd37fe48adf7f",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/STATUS.md",
+      "mode": "100644",
+      "size": 6876,
+      "git_blob_sha1": "98652fe4c0f4e9f5407e69baba6e6c6efcb2af2b",
+      "sha256": "9dff76ef0b8dafba07f270af56e51a83aa5f525c2f5c8fe119cde65d1c4e3280",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "mode": "100644",
+      "size": 9542,
+      "git_blob_sha1": "d6e01d31f4074a0806dfe14fe7b8d65ad766f034",
+      "sha256": "e537368f0907f980a3e846bae1275be5f75120b56f995832675a35c57d0b5e6a",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "mode": "100644",
+      "size": 15651,
+      "git_blob_sha1": "055cb82135290251c3352d62e826471e710ebf49",
+      "sha256": "9c1f7aa1e10e4187efc71f5b903342a7840123e55166b4d6c31026d52fadad15",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/architecture/determinism-and-boundary-transfers.md",
+      "mode": "100644",
+      "size": 12114,
+      "git_blob_sha1": "7c77c0ee5c3470293f6d45bd385ea77f0808cfc7",
+      "sha256": "b155656aa85650f243987f6cbd910eef73a40e0f07f47c09db17e9d58ca4bd13",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/architecture/item-authored-material-programs.md",
+      "mode": "100644",
+      "size": 9268,
+      "git_blob_sha1": "f5fc194b2e371e724fedb558096024e4c7bba20a",
+      "sha256": "fb17e4dc2b3f11664b04280a5a03839773210afdbf5b3a339ed551d76800fba4",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/architecture/module-boundaries.md",
+      "mode": "100644",
+      "size": 11754,
+      "git_blob_sha1": "cbc819db1026ef036b72b5efaed5c7632c0d0341",
+      "sha256": "896e3dfd7ecac272f2ebcf8d4f4b18ac0c8d6ed1db3c8553b93e086908b63cf4",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/architecture/overview.md",
+      "mode": "100644",
+      "size": 11117,
+      "git_blob_sha1": "f15fcf39dda401c0c2f1639c6bda0a4f0f45aeaf",
+      "sha256": "ceafe9b7565fcefbc50ed62ff36f76f9707a0da8f9c53edeb376c45018f7bd1a",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/architecture/principles-and-non-goals.md",
+      "mode": "100644",
+      "size": 9147,
+      "git_blob_sha1": "cb86120bd024c0613818763cbc3f6bec48c31ea6",
+      "sha256": "1704a6aae81a04cdac287ae1ab26a472527808eff92b82ffa5e302df1a00d303",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+      "mode": "100644",
+      "size": 12451,
+      "git_blob_sha1": "8ac1669e8637e414ed3689b58143b6e75f7f665a",
+      "sha256": "c72477ee9fd2ea162f90397e73f81a5dde036ba3642980472e9b9e26ff5edd53",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "mode": "100644",
+      "size": 10452,
+      "git_blob_sha1": "47eb9b0c6e3d8baf28dff5980a9bd01c127c7c36",
+      "sha256": "7f2a650a7b01d5bdc9276bef97be78168be0acc303edbbeb78485bbf5737571a",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/architecture/simulation-tick-and-threading.md",
+      "mode": "100644",
+      "size": 13650,
+      "git_blob_sha1": "7c8ee02cc763ce9df75b8146cfc5939f1c56c6fa",
+      "sha256": "e31829637f8dc864d181ff0a6bbe4c0d01f6b4a9db2aac2e58f3ef1079dd17c0",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/audits/m11/README.md",
+      "mode": "100644",
+      "size": 2724,
+      "git_blob_sha1": "ee731c56a77e77ccb4447f428170eef4bcb9cdba",
+      "sha256": "891e4965bf4362f801f1c387ea8828eba9fbb67d749596564297665d5684603e",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/audits/m11/checkpoint.json",
+      "mode": "100644",
+      "size": 966,
+      "git_blob_sha1": "84091ae74f3e67041ebe5d79f60a256574e9435c",
+      "sha256": "1f21b01e1c7870ed3c297dd51accebe1418f81459bc2ec56d161001b06deac9b",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/audits/m11/github-migration-validation.md",
+      "mode": "100644",
+      "size": 3671,
+      "git_blob_sha1": "7e61a0500f24956d310b12f25c5427b18243d3d5",
+      "sha256": "f7d34c98336b3c495e8ba15abdc39c260410c38297295130eb5e1f43418af877",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/audits/m11/m10-independent-audit-report.redacted.md",
+      "mode": "100644",
+      "size": 18565,
+      "git_blob_sha1": "09fc628a13c21295509e9c5956860b46cb20cebe",
+      "sha256": "ac15871537c8ad9883d351fc7362cbbbcdb78ef1d6459df07d8bee27e09e8fc1",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/audits/m11/m11-completion-report.md",
+      "mode": "100644",
+      "size": 6411,
+      "git_blob_sha1": "75740fdfd3a3bbd1762091745b754287d95aab69",
+      "sha256": "8589a61fe8a6f4ddace96e4a4ad7126c686d08654e485bc5c22d73f9fa5bc138",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/audits/m11/migration-source.json",
+      "mode": "100644",
+      "size": 1654,
+      "git_blob_sha1": "54f750c4b3755d203f96df77d79dde9ca4cd381f",
+      "sha256": "e8a103414d3181efcd2b43ad7f9efa16ad38dcb144dcd3556710d5400be753ac",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/audits/m11/validation-summary.json",
+      "mode": "100644",
+      "size": 14217,
+      "git_blob_sha1": "99670d552e07815376d9038df23229768a7e9db7",
+      "sha256": "59235c6a3e18584182276847f5c2c63a5ce24830a9d99e9ae4aefeac8a1e9fe5",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/decisions/ADR-001-native-simulation-core.md",
+      "mode": "100644",
+      "size": 5955,
+      "git_blob_sha1": "2c7128ba018d60b911f2bdff90fb952e8ab093c0",
+      "sha256": "91137b1046adc7acd89847ba89962e4cc9160a7f430bfcc9ee992521836b3c97",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/decisions/ADR-002-double-buffered-tile-jobs.md",
+      "mode": "100644",
+      "size": 9181,
+      "git_blob_sha1": "06349b9427ec88dbeeb9f136bde7697f74bc7a64",
+      "sha256": "a317a10f71a1071457d345ab4f2d690180088026706a20e4a02bf55ceebfbd7c",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+      "mode": "100644",
+      "size": 6693,
+      "git_blob_sha1": "29b8a9eacd66681a14519d30bec527a96e600c73",
+      "sha256": "e0d33874e32289d83d3145c1b11fc2d4fd997d6e0252f6df7baf2202ad05a19c",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/decisions/ADR-004-interest-region-and-reconfiguration.md",
+      "mode": "100644",
+      "size": 6186,
+      "git_blob_sha1": "520816f46a4a9c4a4f59541bd2c7c0e0366c958b",
+      "sha256": "c28ec09edc520a4aa8442eec257352da4557a5b61a8058d435c42393e5398a2b",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/decisions/ADR-005-water-model.md",
+      "mode": "100644",
+      "size": 8713,
+      "git_blob_sha1": "7b250e87c4963acf1bb80a9ba5ee06efd016c9a8",
+      "sha256": "cc5997fceaf80ac8ef3d8b80c18ff1a50e217e015affcb93f65749943886e1c8",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/decisions/ADR-006-gpu-compute-deferral.md",
+      "mode": "100644",
+      "size": 5565,
+      "git_blob_sha1": "d0aacc11c6aba9c8f107df8513ef858fc8669aa9",
+      "sha256": "07a906f82dc26b4ca0d3f97a549baa11482905bccbca8c4fe883e280f8694263",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+      "mode": "100644",
+      "size": 6729,
+      "git_blob_sha1": "e8cbd5389c2367e4fa61d6d68a7d422f0081d99d",
+      "sha256": "cea4db4788d6fc93d7b4a105842edba3c24fb080c1d1e7d70039dcdf84d5c859",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+      "mode": "100644",
+      "size": 9429,
+      "git_blob_sha1": "09dd91d6ce004ebd7c56b14682bcd90cc6025bfa",
+      "sha256": "b082ee5c1b5ed0bfaa12fbb7ff0153514838ff7cd2d32803f091f34434f5e744",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+      "mode": "100644",
+      "size": 6594,
+      "git_blob_sha1": "786ccdc98e9f99664a103f4569179b3fa868b5ed",
+      "sha256": "810f55b2700001e455b73588ca4c3dba9c9f1decb3543847328d855e2ba2f496",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/operations/configuration-and-capacity-budgets.md",
+      "mode": "100644",
+      "size": 13209,
+      "git_blob_sha1": "0d5ccb7f81064793709e835151f0d81cd9cd1bd9",
+      "sha256": "a5dbbe47e3e9851083e73b34ed9c8a878b82cd4199d62135dcb8a2e52c7234dd",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "mode": "100644",
+      "size": 29376,
+      "git_blob_sha1": "37a83e164828494874e27eab004fc9c2c480037f",
+      "sha256": "0728dcee32cd029390a313ae547183aa3317ed97d1f6eec790fbcb10dfe8c42e",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/operations/github-development-and-release.md",
+      "mode": "100644",
+      "size": 6950,
+      "git_blob_sha1": "52bd6d764f9659373b5a9c1359e0cc9527f7cb10",
+      "sha256": "4d15bebd9a378b4355c0c0f8c6d94fd3f584b207a4c79f17e1f3aaaea87a3362",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/operations/profiling-observability-and-performance.md",
+      "mode": "100644",
+      "size": 16578,
+      "git_blob_sha1": "4de4a44058ac034e27931ed822b03c9c8edba563",
+      "sha256": "6c83468a28ff020811059c166c201c32a6a662280c23401147d03e3319f5b232",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/operations/rapier-2d-migration-runbook.md",
+      "mode": "100644",
+      "size": 6591,
+      "git_blob_sha1": "77a4ccc7129f8ec63bb201ed9f507948c538af15",
+      "sha256": "8f8e2357ffd0d568298341b9450a7b08f55c7e1d158cf7422640bd76517ba2ed",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/operations/testing-validation-and-replay.md",
+      "mode": "100644",
+      "size": 14029,
+      "git_blob_sha1": "6062ae68f821ea35d17e0e5c790c47a0eaeaa264",
+      "sha256": "496a624b89c228fd209888455803642eb47d30d17f633ce10a31310d763ad268",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/operations/troubleshooting.md",
+      "mode": "100644",
+      "size": 17084,
+      "git_blob_sha1": "308d0fb955d79b14971cd79eeecb6af6a338cdea",
+      "sha256": "8558c32565002ffc4e91b8dd70a284688599d892ce7d8e0424bf84da199e779d",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/reference/configuration-reference.md",
+      "mode": "100644",
+      "size": 13249,
+      "git_blob_sha1": "16e8f56025f780dbed93a33b5d5c156776ec6447",
+      "sha256": "d146402c058e5db58e6b852481d0ad276038fbb4718aef0618174ce09c052d6c",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/reference/glossary.md",
+      "mode": "100644",
+      "size": 12945,
+      "git_blob_sha1": "20891fc959d53c9caa6c208d13bbb720557018bd",
+      "sha256": "e467b458cc1cedd29939b33194fd03a4e29e21c07f09c306c6482fef93c11bd2",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "mode": "100644",
+      "size": 14155,
+      "git_blob_sha1": "4ddaf006c5c5dd23fa20225d78ec14b12c245235",
+      "sha256": "8099ed8a1af178dc66786c0667be811559fe740f8bf387a55c16a66b49964fb1",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/reference/invariants.md",
+      "mode": "100644",
+      "size": 17160,
+      "git_blob_sha1": "45cca6ad06b0a433bbffe059d17ca77c218e00f9",
+      "sha256": "ddc658b4b2b87415ced4dd75bad2bb907a28253cbccfee2e4e2d505892b63184",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/reference/retrieval-index.md",
+      "mode": "100644",
+      "size": 17260,
+      "git_blob_sha1": "f88b995add53e451ce739b44d1a8341b972edf30",
+      "sha256": "59fec44e085ee8a8353b6c3dcb8ac18538360708ab96fd64a0ddc582793a9483",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "mode": "100644",
+      "size": 17058,
+      "git_blob_sha1": "c89526d5f8fc06a8f11a04dd0fe0dc30ff3f2210",
+      "sha256": "022ebb126de901c42ec12e0da45a9678cfd5d9ee7aeeeb31d7f6d5b351cf8f66",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/research/sandspiel-performance-and-material-port.md",
+      "mode": "100644",
+      "size": 15794,
+      "git_blob_sha1": "b95cbdff844c8c3cd60a640084eb792d71687a61",
+      "sha256": "1cf81ca34783d0584e3ac9f8ab3b0a4cee63e02f63be8e98dd3bb79a89a34e77",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/systems/activity-dirty-regions-and-waking.md",
+      "mode": "100644",
+      "size": 9112,
+      "git_blob_sha1": "a73966f5219d1f54d3525d0bf265835e1ee4a1dd",
+      "sha256": "930b5d79159a22c1a7caf7f52362367adbd6630bd03890b6c0c7bf660af60b3e",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/systems/material-appearance-and-rendering.md",
+      "mode": "100644",
+      "size": 12067,
+      "git_blob_sha1": "7fd8e9ff3eb1cb77aa5be3c91add8076f971db66",
+      "sha256": "be1bfb93561186f724fbcbc816ad139ea927b9845ad5c14c6fa6546a8e7da293",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/systems/materials-and-rule-kernels.md",
+      "mode": "100644",
+      "size": 13113,
+      "git_blob_sha1": "aca797c5818b9b7e28c833ac897f8de510aa77c8",
+      "sha256": "72f2ebe0443a97327f7af1a1192983050c252321de74df48720fe6aa24c51512",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/systems/smoke-heat-pressure-roadmap.md",
+      "mode": "100644",
+      "size": 9161,
+      "git_blob_sha1": "ac386d20c57e784098a6de5fa5f0f4acbb6044e8",
+      "sha256": "881e473c9b10d53e2cf6f8beacc6517093466a53f5fff8ab0ee2ff59696c907a",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/systems/themed-construction-materials.md",
+      "mode": "100644",
+      "size": 12498,
+      "git_blob_sha1": "82d89ac3b51405abe0b9a41a50942d66d6a44b39",
+      "sha256": "6c07d786d24088394c5439427d962acbd9902acd9aa5476efc58e2044bbb5ad4",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/systems/water-design.md",
+      "mode": "100644",
+      "size": 16083,
+      "git_blob_sha1": "a9902c7bd2cc16355e277d4e97e374506d3aadc3",
+      "sha256": "692348d44c3263bc05cef30964582bddee80bc08ff8d85d22ef5ce1f61d9e8bf",
+      "lfs_pointer": false
+    },
+    {
+      "path": "docs/systems/world-storage-and-interest-region.md",
+      "mode": "100644",
+      "size": 8047,
+      "git_blob_sha1": "46bafaa504d3c55be5a1f2aaba2a17b8a35d2392",
+      "sha256": "1e1ab3f11a4cecadc7c069ba93d32c22963f4619307c7228853daaea7d800aa6",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/.godot/.gdignore",
+      "mode": "100644",
+      "size": 1,
+      "git_blob_sha1": "8b137891791fe96927ad78e64b0aad7bded08bdc",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/.godot/extension_list.cfg",
+      "mode": "100644",
+      "size": 114,
+      "git_blob_sha1": "a5ff3dff6fa5884bba623f60b16da47ef1f7f39c",
+      "sha256": "74559a1fa37f0cc3ec8cdd83901f0ff4a1c98deff995b88509ff252dca7c1f4a",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/.godot/global_script_class_cache.cfg",
+      "mode": "100644",
+      "size": 4269,
+      "git_blob_sha1": "bfc489987fe54f3251c103960d0911f625663d1e",
+      "sha256": "ebcb38df17aaff14b690004d40303dd5146798253e68471c89edbf7faef8158a",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/cybersand_native/LICENSE-godot-cpp.md",
+      "mode": "100644",
+      "size": 1093,
+      "git_blob_sha1": "eb446fe72ce5c705f70413394200f10f67a123cd",
+      "sha256": "26a5b210d90760156ce886267ce9df235787dcc6cebfd7ecd95ef5b6fdcc95bf",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "mode": "100755",
+      "size": 132,
+      "git_blob_sha1": "0e34649c2d6724f74cde933e476b303d63123fe7",
+      "sha256": "b0405d9d70c6340a83fd5255f2bc344c945cf908efc62b4f7786adb60b96a4f7",
+      "lfs_pointer": true
+    },
+    {
+      "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "mode": "100755",
+      "size": 132,
+      "git_blob_sha1": "b89fcffd34df2ed24d2b09e9f59ee83488d6ef86",
+      "sha256": "cc7ead496bc19af07d2b19d5cb4454805ac7469ab64bd1c3dfa25539dca7ae76",
+      "lfs_pointer": true
+    },
+    {
+      "path": "godot/addons/cybersand_native/cybersand_native.gdextension",
+      "mode": "100644",
+      "size": 899,
+      "git_blob_sha1": "7c1fe4a2fe94d0e6ef4b23df4c67ecdf2e6e3a71",
+      "sha256": "9f02ab03e73abbe65eed39c55dd6af9bd7c35953893165067e0dcafa570297c7",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/cybersand_native/cybersand_native.gdextension.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "61e862a17de2b41ef4b8d82d76a48e971a34f395",
+      "sha256": "544a97cab99ac9680c9d698ff821a96f64762d63e7fc61038197d1d1cae4a131",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/LICENSE",
+      "mode": "100644",
+      "size": 1102,
+      "git_blob_sha1": "556baa8c51b8ca4cfc2ba930418dd7ff7baff6e0",
+      "sha256": "b876a61b43cc648b56428d56a484784a88d4231809e4d7f4fd8dbdb6772400e8",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/Radial2D.svg",
+      "mode": "100644",
+      "size": 979,
+      "git_blob_sha1": "e7f0c49eb9b353c556f7ec2ef09e5537b54481cd",
+      "sha256": "12a17b6dccb88c9521d62261c26b8abeb9dbb3ae7d798d40b7c7dc8a156d1e44",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/Radial2D.svg.import",
+      "mode": "100644",
+      "size": 1074,
+      "git_blob_sha1": "1c37720ae6771b74fd47554112cbfaa12c4265b0",
+      "sha256": "144414e0a3068759478e69d7af908620b3a396fb075944cf258cb5051d313d82",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/THIRDPARTY.txt",
+      "mode": "100644",
+      "size": 15824,
+      "git_blob_sha1": "d115c877bb78eca9b5fadbbcf91caf5e83a4e451",
+      "sha256": "63405a03af6a0a85dace7cc08001b34f28e8792dd2b7fb4de09137a6b58392df",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "mode": "100644",
+      "size": 132,
+      "git_blob_sha1": "8521d30d28abefafbe9ec5243ccbe2b403111704",
+      "sha256": "cb52f9fbc2794684873e2ee1dfed5609cb92f42814b0f48f0d9b90b785f471b5",
+      "lfs_pointer": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "mode": "100644",
+      "size": 133,
+      "git_blob_sha1": "a0a20fe550888dc2a427558e70fe21a175ca6bcd",
+      "sha256": "d78f0ba90e2caa5306bc67d61d219260861af2360f1074cb0daf4e44fe21c885",
+      "lfs_pointer": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "mode": "100644",
+      "size": 132,
+      "git_blob_sha1": "1faaed64a7a180873fec171861f411e9ff246ca7",
+      "sha256": "326be41c0900d3374d57dfdc1fcf2a91aa4c467e0be9f0e104061a5ec33f560a",
+      "lfs_pointer": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "mode": "100644",
+      "size": 133,
+      "git_blob_sha1": "528aba92aeb84a78106242cb9e13bf5152f8b8b9",
+      "sha256": "8de544cde4144fe4667f329035551985d15dd7d3e780cf29e84384e896254bdf",
+      "lfs_pointer": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "mode": "100644",
+      "size": 133,
+      "git_blob_sha1": "3ad87ef502282befa51b9c6c6e6389b19733cd6d",
+      "sha256": "28f1ed89df31267b4748d3c957c0704fd3af5fb5bcb3159859e271a0fcc713aa",
+      "lfs_pointer": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/Info.plist",
+      "mode": "100644",
+      "size": 1260,
+      "git_blob_sha1": "18b336c28a2f85c2a7abff76d41500b6ccc887a4",
+      "sha256": "2755e4e197fbaef38a37d2549098ae8c32d93c7bf016aeff92df42492a7bf05c",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "mode": "100644",
+      "size": 132,
+      "git_blob_sha1": "bd08685589587cf05e207e0be27fa0db7d31b294",
+      "sha256": "94e241ff030ac1ce1b2a26a211c10f106055a8c397f5ae673ce7c473a3c2ef36",
+      "lfs_pointer": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/Info.plist",
+      "mode": "100644",
+      "size": 1262,
+      "git_blob_sha1": "747cf697837d48010bd53a6882cb751e68892ded",
+      "sha256": "687924fabd44e492e71d63d9cce731ad62a96b0f7d05467cfeca0da292df8f30",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "mode": "100644",
+      "size": 132,
+      "git_blob_sha1": "98edeedc965173a8b5a30444ae097dd302364913",
+      "sha256": "e82e4d2518d82b72533d3dc98d385287d208abc1f8c52ef6e0db54efa4ad4c16",
+      "lfs_pointer": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "mode": "100644",
+      "size": 132,
+      "git_blob_sha1": "079ef708e429f11448492440ea34065021f618c7",
+      "sha256": "f08574c12e40e262a157e659f4f334737c50b3c58d3b8c1f38c61157feac493e",
+      "lfs_pointer": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "mode": "100644",
+      "size": 133,
+      "git_blob_sha1": "de9eb0f36326aff1de5821fd1a7e1f44c301de3f",
+      "sha256": "3e9b09bc3de4249cfafc1eddcfd0dfaf5b78aa238a9aa0d3e38db00e8d9693c6",
+      "lfs_pointer": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "mode": "100644",
+      "size": 133,
+      "git_blob_sha1": "ee6a99ca9e78cde47d5c5093783ebc646461abf7",
+      "sha256": "8737b21d33d1d9e899dce80efd1565e87ec2f632f43da5225c196cb72731fd71",
+      "lfs_pointer": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "mode": "100644",
+      "size": 133,
+      "git_blob_sha1": "cd382b344cf43b972c6f2f59c1a3df00fabfd0d2",
+      "sha256": "213af5570a97d8ae3a5a083a010ef6af2d6d5959156328e0b425c41ca0408334",
+      "lfs_pointer": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/Resources/Info.plist",
+      "mode": "100644",
+      "size": 915,
+      "git_blob_sha1": "bde2089851673fd4ea29da3f6b3dc09e9ecb0988",
+      "sha256": "30c0d8215748efaa682c66dc174da326927ea0772ceead4d8f27e0b1a3758eeb",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/_CodeSignature/CodeResources",
+      "mode": "100644",
+      "size": 2442,
+      "git_blob_sha1": "1eaabd7aa771015944618c37c1b3f31b97816ee8",
+      "sha256": "83feafbce2d3c8fab6a4cf6805080ef9a8b46deabc130d93bec548466b9d8af9",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+      "mode": "100644",
+      "size": 133,
+      "git_blob_sha1": "dde7a23135daa841605e871ae7bd56a2ab6b97d8",
+      "sha256": "d5ab40f2d1d2b7c12c434717f6c42dceac5a8b6fc880c9eb26c70debe2b79d52",
+      "lfs_pointer": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "mode": "100644",
+      "size": 132,
+      "git_blob_sha1": "f8baa34bb8be55430725eaff5c861d5501ebe41d",
+      "sha256": "7dd3d952b06de319f78db4585609f4affea5af0d7bd1104bf8d3dba313d2d467",
+      "lfs_pointer": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "mode": "100644",
+      "size": 132,
+      "git_blob_sha1": "7eb2e76968c08cf090d185a10cc9d5b132513ed3",
+      "sha256": "a11f12d66dd7853c3ef04b452d9061dda6d8f9c141949374eb143b3af6cd751d",
+      "lfs_pointer": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "mode": "100644",
+      "size": 133,
+      "git_blob_sha1": "f6a43880035711466ffcf55847c5dfdfd1ab682f",
+      "sha256": "4f177a225dcca7607ae871a74fe60faf1aaad270b89359237c3cb6e8ebaa63f1",
+      "lfs_pointer": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm",
+      "mode": "100644",
+      "size": 132,
+      "git_blob_sha1": "17941e625d597c5212ca3de75a7eb1406aa1398b",
+      "sha256": "e6a2da56131e36d7d1b8364e61c0b4dfa0bc374e5dae4de2b63e61d03e7378ee",
+      "lfs_pointer": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/circle_mesh.tres",
+      "mode": "100644",
+      "size": 620,
+      "git_blob_sha1": "630e7ea21d42257d0e3834db7543036706402d9a",
+      "sha256": "b2170cd7d0a0d2606725b8a6d76b62244d90636280b5aecc81db76eddc0e824b",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_animatable_body_2d.gd",
+      "mode": "100644",
+      "size": 489,
+      "git_blob_sha1": "ec627d4b63a891d439ad950086ba239889364377",
+      "sha256": "af2773eb9e2c7a4f54e3c9016e5371b67e55a58e657032e4b92ba623bebd9658",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_animatable_body_2d.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "2839ce173c65aedd2a83fbac2662cb56d1ad7c31",
+      "sha256": "5466e0863e90b8934d093dc265b8d2848f713083c3bc99e7bebf475dd2526dd4",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_area_2d.gd",
+      "mode": "100644",
+      "size": 469,
+      "git_blob_sha1": "f452481b51e55c978585c655f922286ca4c3b3ca",
+      "sha256": "ffaa295c883a1a2ef023a8d59e2ba8a7245d70932c2c9a5cfb94654e2b30c816",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_area_2d.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "12bb5fa8f181d9391154c8b985ba5a9805980949",
+      "sha256": "c76fff9cc16f8e5b3019f9bb2b47ef21339a9331e8d232d36ac0e6c088c1d088",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_character_body_2d.gd",
+      "mode": "100644",
+      "size": 487,
+      "git_blob_sha1": "944f73d93f0e2a3f84e8e70c9ca986f54df7c83e",
+      "sha256": "7bf6ad292a12b4bb8571fcf10ae37e287e655c079ec3b2ea802c5da3588a9e91",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_character_body_2d.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "485a21b49a77369075d8ab356d83ba8f6c90627e",
+      "sha256": "4ff139b36e1e159a359bc2ed97a6f11254f92844f66f64db3f46eb39a697ce4f",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_damped_spring_joint_2d.gd",
+      "mode": "100644",
+      "size": 2870,
+      "git_blob_sha1": "ecab405131655cde4ffe0f1918e69b14bb28783f",
+      "sha256": "d5a1107bc03aa54f9455fe3fe73f6b5442548ec403a4bea2244495bdc09143b7",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_damped_spring_joint_2d.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "4496c90626465ba2eb80b58a9ec20d6f7d337c4f",
+      "sha256": "302d004271f86d6893342037a85b02f0d6f9c64f60e2e34416db299a17373a31",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_fixed_joint_2d.gd",
+      "mode": "100644",
+      "size": 1058,
+      "git_blob_sha1": "4db9fbf03f09acb74a3225df2b4b6bbea5fd749a",
+      "sha256": "64b92ee37dbc26ec1dc3dfad695a78b0d428c094acf7d2b0ae4f151abb198ea4",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_fixed_joint_2d.gd.uid",
+      "mode": "100644",
+      "size": 19,
+      "git_blob_sha1": "0969a6e80acb9a69fd9b34a715a97b197b2e7a1e",
+      "sha256": "57bc76134facdb154f6549f1c00f9bb1b40250a8049bf5a5fd013b8e59cfa04d",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_groove_joint_2d.gd",
+      "mode": "100644",
+      "size": 2654,
+      "git_blob_sha1": "8e170fabf49b8a287ca6dd0ce3f7237af69fcfa1",
+      "sha256": "6cb96f25dddb1d94f61f968f897bac26ccdbd44b3f541042d2a858563f70f107",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_groove_joint_2d.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "4a7110e13c218df1b834eb55028e13e2aa6a3b2e",
+      "sha256": "b3c0c6cfdde2f6360a5ee4b0152cfd724b8c3a1beb7ab0ea5f7543e6ff26e4f5",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_physical_bone_2d.gd",
+      "mode": "100644",
+      "size": 1619,
+      "git_blob_sha1": "e20e52540991d16157e12e649c10da87abc13d4e",
+      "sha256": "fa8d994cb7f2ef19b8201918de38da142abf075e8416d4dfaec67730f894dde2",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_physical_bone_2d.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "c5d41ed997d80fb0df6909f3a0fa27999960e6b5",
+      "sha256": "19c1f3f67cd3f5ba5bd380bf781b413e4f3ff604f03d48c87e37a7b689934d97",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_pin_joint_2d.gd",
+      "mode": "100644",
+      "size": 4395,
+      "git_blob_sha1": "6a029434cc1eb3a08bc0d8e441301298ba7c843c",
+      "sha256": "c372ec67f3a3bbfdafcd750ba54652cc7698c713e4d03fdfb1d66186c40c6208",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_pin_joint_2d.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "934e4e2258e0bae3e5dd58aedcfd38e9bfd56303",
+      "sha256": "1e905419af7cb7e35d3d4ce3a2e6ab82ec9bdc93e942f721e69455ab61717601",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_rigid_body_2d.gd",
+      "mode": "100644",
+      "size": 2191,
+      "git_blob_sha1": "4d015d2437c33669a45126038e46eff2e448d77b",
+      "sha256": "ca4fd7aece6633f81b11394d33aff9c68d948e52bbbe2f90323a3d51381be51e",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_rigid_body_2d.gd.uid",
+      "mode": "100644",
+      "size": 19,
+      "git_blob_sha1": "6ae67083663189b8de5e252f6a3c910975cafb86",
+      "sha256": "9cd91a4b665b2b38844311349f675a3be21da47918286c8376bd71ade4f49e82",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_rope_joint_2d.gd",
+      "mode": "100644",
+      "size": 1335,
+      "git_blob_sha1": "174d6ae6231eaa9bf736b2166776264f7ce86ad1",
+      "sha256": "229f1f324792763987661d241ec857807d2eff7f5ebf41a2faf1d37866771ea5",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_rope_joint_2d.gd.uid",
+      "mode": "100644",
+      "size": 19,
+      "git_blob_sha1": "cfb54c034c6f0e2cec7e9266b1dfebbee76bc389",
+      "sha256": "fc9f81c40271ed65146b7cdf491efc15626d8ded411dfff22c65083e1d5d1205",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_static_body_2d.gd",
+      "mode": "100644",
+      "size": 481,
+      "git_blob_sha1": "cd5239b2c8fddc49074cb69078e4f0e55d0d321f",
+      "sha256": "4ba255cec5693dca071c96bad04ca2200059ceac06cfba373c1158410a771919",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_static_body_2d.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "4af01677cc4f99d1e17b66c7668e608efb817986",
+      "sha256": "034d00c2ef24bec4cf355290a4f3b8f0f25367d2a3b1515ff78cf1a5b4c69400",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/faucet_2d.gd",
+      "mode": "100644",
+      "size": 853,
+      "git_blob_sha1": "6fd8653d231fff795b1d12ec6fef0b6cc964f55c",
+      "sha256": "0b04dd8506fa599aee6b29cf1e0641904f4c3ae36a0a7d5cdaec4f69e291cf15",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/faucet_2d.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "734fd1efd610421439935e682b54dced5002f8aa",
+      "sha256": "87867e90c85298bae03b41a3b8d90f55136bfcb602183c54c46b03c31e9af99c",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/fluid_2d_circle.gd",
+      "mode": "100644",
+      "size": 200,
+      "git_blob_sha1": "5c93e74fde62620a60561c8127fcffcb0aa8624e",
+      "sha256": "97b3a9a7fd1ca93ba9a70ba9b8b52552d64ee3855d6d79405d84533e7256bffb",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/fluid_2d_circle.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "4f873db18b57058a166ecf6210c05c364368abb1",
+      "sha256": "cc3b5bc443e9e23d46ae678a1c6869f04e000533b354110e0be2926fedf7fd03",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/fluid_2d_rectangle.gd",
+      "mode": "100644",
+      "size": 323,
+      "git_blob_sha1": "d1eb6a2972e68354004913ae7a14430acd78313a",
+      "sha256": "c0583cab00432f4a981e93cab0c0abda078fdafe16dfe0e8282871a6672bcf9d",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/fluid_2d_rectangle.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "71eea231053f8be4bce194c4f28fff7ee053b0c8",
+      "sha256": "471f01cbe5d05892d9044ea570878d310f2a02f920275e46386eba3cb1d301ac",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/fluid_2d_renderer.gd",
+      "mode": "100644",
+      "size": 881,
+      "git_blob_sha1": "dca76ddd208bbdf2e5cd6c369388949b4bf75664",
+      "sha256": "c45c520cf2e9d2600a2ddf93f0df7a66fd7283fb75e2edefc1df4e725e407fa1",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/fluid_2d_renderer.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "661433f9749750f7d50cf0e69c8b25d05913872e",
+      "sha256": "d8e00c503838cee859017af2d5a0b4b517ad3c684d015d1643c62f05897ea5c7",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/fluid_2d_shader_renderer.gd",
+      "mode": "100644",
+      "size": 2632,
+      "git_blob_sha1": "f2a4c0cffde0791a756886a0608b34d0e6a93c72",
+      "sha256": "889044a8b35d1382e2ec9efb699d1b964f38edca264c76a9ea2d9240b9a510c8",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/fluid_2d_shader_renderer.gd.uid",
+      "mode": "100644",
+      "size": 19,
+      "git_blob_sha1": "7f240a28d22cc573a3432e03d729a8abbf5f580b",
+      "sha256": "a962c2d69893f274c791bede48f72e38ac17acb9a92fa1d4b88362773987c5f0",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/godot-rapier2d.gdextension",
+      "mode": "100644",
+      "size": 2486,
+      "git_blob_sha1": "1667e5f100e375b04a81cdc27314f3db65b4995c",
+      "sha256": "2b8b2115e94ca5d1a1494b6052dbf65f0fff7b4acce752d4c8367350a820eb14",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/godot-rapier2d.gdextension.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "bdc0fd727214c4d2cf33ef301ae749bf7850e355",
+      "sha256": "83a0d4f06d78f6dfa55192684f49409bb5ebb2dc39f9f5b38f33540a86320877",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/icons/Fluid2D.svg",
+      "mode": "100644",
+      "size": 555,
+      "git_blob_sha1": "e55507f454b40a0612df366cb66e384c756cf16e",
+      "sha256": "1eafee1284c6a2f1c50ec8d5b4c181c64da1b07cf3a5edf48d3c6cd23ec30bc5",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/icons/Fluid2D.svg.import",
+      "mode": "100644",
+      "size": 1077,
+      "git_blob_sha1": "607cf6294bc948cefd91c5541d8e7aa5d2033bf4",
+      "sha256": "f4624fa6418203f7d3f58a65703d450cd80f6900750736b72cd2b1215bdf5e2e",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/icons/StateManager2D.svg",
+      "mode": "100644",
+      "size": 3381,
+      "git_blob_sha1": "45a744504955bb2f59ce66fc4f4bad56b2d16a2a",
+      "sha256": "48cbde17a3b8d7b99c564ef01db483320d5ffe7fd736c1dcd8ac5daef3c8f091",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/icons/StateManager2D.svg.import",
+      "mode": "100644",
+      "size": 1070,
+      "git_blob_sha1": "8fc2e4346e6c2c072e4bedc78d1fa6b2fa789558",
+      "sha256": "3b4d1ae5b01aad5f1b62aef26fe06c09d6766d579e9d43bae3859b6686e644a0",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/logo_square_2d.png",
+      "mode": "100644",
+      "size": 31025,
+      "git_blob_sha1": "3a0eb7f4547c6d6a1b28548876fbf79cab1224b0",
+      "sha256": "d3387239654b30b3e24ca3c42e9c320a11b130031df7ac65caee8d39341212f2",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/logo_square_2d.png.import",
+      "mode": "100644",
+      "size": 968,
+      "git_blob_sha1": "b791ec3b2586c1ca3eebd6f64b14dd15e2f78c59",
+      "sha256": "2f5527b8bea78ee1ca403de3de46844b375a8f1fff140994171a75ebd79dfd07",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/plugin.info.cfg",
+      "mode": "100644",
+      "size": 212,
+      "git_blob_sha1": "3d41557eae7c47dab456e78145cc27954e53c0c1",
+      "sha256": "68ce562424fbe41e1b540d7a6c3a188ccc5322ad17c1461f85b7b34d33ce66a2",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/water_shader.gdshader",
+      "mode": "100644",
+      "size": 631,
+      "git_blob_sha1": "ce31fd6085c7fc79cfeabec576fab44fb2b5541e",
+      "sha256": "ae74c3093dfc12580810a7f06c3ee7e4ac0f354cd4f2a8d73bef2c8431026fdc",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/water_shader.gdshader.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "fb186573d398e7aedb391f0c59ef23546c106126",
+      "sha256": "f5486a2df2e18beb3f7a74a4c06e4ff9f200dc6a738149e4aa16f130943fa270",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/water_shader.tres",
+      "mode": "100644",
+      "size": 432,
+      "git_blob_sha1": "1566b3c6f365e129808dd086be5276b8f75a21c0",
+      "sha256": "c9c96beff528fe906be8b44a69eaa60ec675fdbb75670cc2de5d2869a5c0f477",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/main.tscn",
+      "mode": "100644",
+      "size": 3428,
+      "git_blob_sha1": "a84dc853eaed93214223ded860798899e9c592e2",
+      "sha256": "0afbf458f7d7a5df9c906d28d0bcef714010fef9d7021c12b8783c654f302067",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/native_extension/README.md",
+      "mode": "100644",
+      "size": 3365,
+      "git_blob_sha1": "426d0d50289fcebe0587364607d64ac3476074d7",
+      "sha256": "4a381b3850e5c325994c90429681088e2bfb5864c4d4ca08ad86f1384ea5d392",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/native_extension/cyber_demo_bridge.hpp",
+      "mode": "100644",
+      "size": 5144,
+      "git_blob_sha1": "eff4ab70de4435cf1fc1d95da8c8a3b1fc0ee988",
+      "sha256": "8650063f8fb2b14491badd3ed4cf5e91dc569255ce7881b119ee964362aeeaba",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/native_extension/cyber_native_cell_world.cpp",
+      "mode": "100644",
+      "size": 52928,
+      "git_blob_sha1": "59dab354573fed74cde76e4a7758018000afe39d",
+      "sha256": "15b996ee0beb2418f27f3c3e40c6d37d901d81670c0dc7c5d0ead3ffb2614f5f",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/native_extension/cyber_native_cell_world.hpp",
+      "mode": "100644",
+      "size": 8000,
+      "git_blob_sha1": "4d94435a9f35a9679a82ca4c5f88c3053a65050e",
+      "sha256": "dbebfc9045edd732052acbf9a74707fd6fe57c33c52d42f1fbe6e8670e1d6823",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/native_extension/register_types.cpp",
+      "mode": "100644",
+      "size": 1121,
+      "git_blob_sha1": "ad07959178a4919079adcc27e871b943021bba22",
+      "sha256": "db08c4fe5267831aac9c33faffd68f2adea4c55f30711b7cdeaf3a3b02173dd2",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/project.godot",
+      "mode": "100644",
+      "size": 700,
+      "git_blob_sha1": "af6a51d4b9ef9d035184e00b1cdb6cc7f10603b9",
+      "sha256": "d6c35ab2fafb716f9030a0d108d7c6ea827549e615f9cbfd64b478363b01ad5e",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/scripts/cell_world.gd",
+      "mode": "100644",
+      "size": 68006,
+      "git_blob_sha1": "4eaf4893380c75e0fb1cd10a7c398e0680e07ff7",
+      "sha256": "ac7b4b67cc2cc2c134ecd28928c2ed79d6ad76a7703ff0fa1c65e1cc3edfa814",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/scripts/cell_world.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "3f3d3a5f9fc75666519fffcf2908938aaf3a4f97",
+      "sha256": "8eca83bb71d069bc9bc077b5acb683af0afba0bcbe8f86ca0d6b436456c36640",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/scripts/demo_save_codec.gd",
+      "mode": "100644",
+      "size": 6465,
+      "git_blob_sha1": "d9ed5498c6ffba0e2aed152df70881bc9e5637c6",
+      "sha256": "70e6d9e0da9ad174c5896f3edd859c022486cbd1a5462b9c39fd609ea66d64a8",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/scripts/demo_worlds.gd",
+      "mode": "100644",
+      "size": 5397,
+      "git_blob_sha1": "e10d7706385ab77452899ff994bc42aa465ef58f",
+      "sha256": "80756aa370ce0034f8f667544b16ca33a5f384ea984e13b18992bc0392a7b3ad",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/scripts/main.gd",
+      "mode": "100644",
+      "size": 42063,
+      "git_blob_sha1": "4873770d3c8f6229b4c0034709f7b1056ad41aa8",
+      "sha256": "c24e02c12ba8575985444d3e73726816ea84ffd5834c1a217fab29436429f281",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/scripts/main.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "ffe53db0743f4ab420fb123a289fa9bbaf584da0",
+      "sha256": "974ad3b909ef021d10f07762598458b98194b5edefc568c560f9af8e9d7f5570",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/scripts/material_appearance_lut.gd",
+      "mode": "100644",
+      "size": 15117,
+      "git_blob_sha1": "503e454ebd298d5c6373721658e0c8d4a2ebaa42",
+      "sha256": "93b6e43d03d13892b8f28256b76085b7ee9daa07582ea2f6a483f9b52b0d1fce",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/scripts/material_appearance_lut.gd.uid",
+      "mode": "100644",
+      "size": 19,
+      "git_blob_sha1": "86af03e5d5702121ec0f4bc34492eca2d4278f39",
+      "sha256": "8100acbcfda3150907ee6c023a5748530913af2c6f5faa85fe350e913557e723",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/scripts/rapier_physics_bridge.gd",
+      "mode": "100644",
+      "size": 26023,
+      "git_blob_sha1": "2eb4aa635ef341685e2fa451148c0d6c0b95f48c",
+      "sha256": "f35ff545d817c363913f6f4bc01e838f130abcce023ca143d8edd191b04194b9",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/scripts/rapier_physics_bridge.gd.uid",
+      "mode": "100644",
+      "size": 19,
+      "git_blob_sha1": "262c48386a704da5bd0f4503b14f89f444bef14f",
+      "sha256": "60767f4a0e6af0f1dded283c00da0b43dd77862aca103ab1b3c7e7d3c1720e92",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/scripts/rigid_body_coupling.gd",
+      "mode": "100644",
+      "size": 1832,
+      "git_blob_sha1": "209576fb7ca2acad5c3cb481cb57fcab52204b32",
+      "sha256": "4b1c0c35387d5726770e3520183452f8964eab780e287a7edc9714d767121be6",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/scripts/rigid_body_coupling.gd.uid",
+      "mode": "100644",
+      "size": 19,
+      "git_blob_sha1": "ed3426a10a0ac308081ff5f5e470d2b0fe5b33df",
+      "sha256": "32409ddb456ba48a664c158f79ac8dfd65a1f431a9ce9101bc593ca01ca9261f",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/scripts/sampled_character.gd",
+      "mode": "100644",
+      "size": 2654,
+      "git_blob_sha1": "6c81ee10bb3e157e093802a7aa6b2f13a98d27e6",
+      "sha256": "199d54afe278ccd240988b2dfb84831b4170e600e2229c8020ac09afabf7dbb7",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/scripts/sampled_character.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "b8b999d529804c3dd2beeea7f43b5159b4a6d0fa",
+      "sha256": "299c39b243c2b3548e56e7269c02e83bb683a88757e30b9af03af06afb8aa56a",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/scripts/simulation_snapshot.gd",
+      "mode": "100644",
+      "size": 2183,
+      "git_blob_sha1": "37942e544af710f65d547f89066dcd8babf0ef93",
+      "sha256": "b64e737273fe9361b07235eff80b1a242d1e04993925337eb1300770e99ad2a2",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/scripts/simulation_snapshot.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "c485b081aab461274ac816ced283cb325e59c306",
+      "sha256": "558f1c1285e050ef68e3eb9d088ed7a9e1dd1852646e51eb0d7ed36346226c44",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/scripts/simulation_worker.gd",
+      "mode": "100644",
+      "size": 18912,
+      "git_blob_sha1": "aaf7a9e2117a1d2b5454882b66cc548d19e34867",
+      "sha256": "37a7335d915f11575a01d9d87af169ccc80d642dd0e463b437b96f2fe10968f2",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/scripts/simulation_worker.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "a41e04c90cdd832a8552656634a8de01a71e46e0",
+      "sha256": "0d964b1727005d022c0a469f229341ce143b56c188c67b704d05f47f59d229bf",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/scripts/web_capabilities.gd",
+      "mode": "100644",
+      "size": 4449,
+      "git_blob_sha1": "6c9f9c8aa0b06accc14d374a1e77628812cdaf2a",
+      "sha256": "bbf4518486941e53481119a89a5d7858f0daaddfff9bb16c54e414b0b8512897",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/scripts/web_demo_controller.gd",
+      "mode": "100644",
+      "size": 19951,
+      "git_blob_sha1": "bca388e4c9680a611809bc01c199b662777d27ba",
+      "sha256": "3333226cd3b08afcf205879d596b2f88b86aa291b31ec98f3a67b94f46a92bbd",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/scripts/web_demo_menu.gd",
+      "mode": "100644",
+      "size": 7648,
+      "git_blob_sha1": "affc8508ea6979a87d99d5bea0bd2f360103aee0",
+      "sha256": "09502cdba623df7b6b7942c6aceb4a8be900734715660248d15d70c01db36ad9",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/shaders/glow_composite.gdshader",
+      "mode": "100644",
+      "size": 1266,
+      "git_blob_sha1": "9cbb5329bfaf590a94224508c546d43be4a9ce2c",
+      "sha256": "0685d7df435b76860facfde0bd604e9cfa2e1dbce8a86ae4063b7def67accccf",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/shaders/glow_composite.gdshader.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "0d4900bdd31cd14bc51a5437a68e806c68a21cbf",
+      "sha256": "2b52bfe41e7214f2fca3b034300916a43210e1bf6e8f052f63fbce799d063f60",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/shaders/material_emission.gdshader",
+      "mode": "100644",
+      "size": 4155,
+      "git_blob_sha1": "8409b7c0959b647239f9d9d25a3a3622197cb46a",
+      "sha256": "3b1148cdb99113bd172f1cb64e7d6c48ad86c33980739c571111aab479b15668",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/shaders/material_emission.gdshader.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "0a56772e9d7f09b116c4dd73546885b62738b099",
+      "sha256": "aa0df8191381e60b8613eb62ee449974d48a525aa7cff63b2c1c705f7b0409aa",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/shaders/material_palette.gdshader",
+      "mode": "100644",
+      "size": 27081,
+      "git_blob_sha1": "aaefe569e20f5a4a8b0632adbdcc26401cf1b9ac",
+      "sha256": "7a11b70e6b94fba4d3d377378c31debef3d26562b64b78066f5a9893e72053ea",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/shaders/material_palette.gdshader.uid",
+      "mode": "100644",
+      "size": 19,
+      "git_blob_sha1": "f25ee712f3c138b946932c8e55fd9e949f00bca2",
+      "sha256": "f5912b6e6d57f8f50d6d68fae91565110f54f1ff1f0340b39cb1be3c516bf952",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/profile_native_world.gd",
+      "mode": "100644",
+      "size": 1357,
+      "git_blob_sha1": "e9daf7db98c655ea022cf9d8ba109ffeb48c2ffc",
+      "sha256": "84157eb809acff6a10206c3ad86a8613b21392bd26507194fd025aa45080fa03",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/profile_native_world.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "7614ab1cccf495d77a0f4906d1a48479537a8c0a",
+      "sha256": "930d1c5ebff679c2dff49cbdf5732711fcfce8d82693a18c6c950032d28d7f6c",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/profile_scheduler.gd",
+      "mode": "100644",
+      "size": 2230,
+      "git_blob_sha1": "fa800d232de35891f5416eeb49f71cc043bc71ab",
+      "sha256": "67d57d60064b760e8b1d0416392fe0f82e822a4e7942a6f2eb847932b1d47468",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/profile_scheduler.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "bfa02337af7593c77cd0827ded7950e15a793553",
+      "sha256": "90083048bc541abf21b11da2ff14cf83bcc9ba45572bf2edc39314974720e80e",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/test_cell_world.gd",
+      "mode": "100644",
+      "size": 8889,
+      "git_blob_sha1": "9110ca0699be87cd6b9dc8af45e863c955a51c22",
+      "sha256": "a6b4a5782cc5924e88a78ef25352acb781d7f779058767051726cca600bf5218",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/test_cell_world.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "c45629b6d611c3bb07e07d09aa78b7e7191bf8cf",
+      "sha256": "972fda8d3a86315865f11d3eb830b6aa62087b13a3c6dcd257a2514b0fab3649",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/test_material_appearance_lut.gd",
+      "mode": "100644",
+      "size": 5269,
+      "git_blob_sha1": "5719b21f45fdb118589eeba13a745d90be33a0af",
+      "sha256": "9cd404a3f3350ac7b2586cd08d4b52c650c24f01bd2652fb3d84743060297bbe",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/test_material_appearance_lut.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "3038e14c985449a254c295dead2f3a9cafd3d458",
+      "sha256": "972ddfc6e891f404bee77b49cbbd98a8e5cf8edfb28df2b5993a359efc6701e0",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/test_native_edge_contact_regression.gd",
+      "mode": "100644",
+      "size": 2185,
+      "git_blob_sha1": "172e0f7cad89a136d3cc11e18309c44c42028060",
+      "sha256": "c949c20af4171275bbb28b05169fcb3c0a9d106461ad32e608a5323958ee1b25",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/test_native_edge_contact_regression.gd.uid",
+      "mode": "100644",
+      "size": 19,
+      "git_blob_sha1": "9d81e371655ca72419c71f7c2333b412dd0c024b",
+      "sha256": "d8fc134dfb819d521d7525920503ab8f1163a3559333af2e33324aa933f32eb5",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/test_native_fire_presentation_regression.gd",
+      "mode": "100644",
+      "size": 3414,
+      "git_blob_sha1": "359df65ea801192fccadb51c7fc25c2b82b90b96",
+      "sha256": "3ab404529cbec6326e1894e01d47922d9b04eb6ed6ef62e3963448fdf2f6c73f",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/test_native_fire_presentation_regression.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "70baa318d9e20be67c063e62195fb7940ad43882",
+      "sha256": "70d784c7c11435e075be634e29eef540f1a570f7bd7062cf59e6087750d4c90b",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/test_native_render_bridge_regression.gd",
+      "mode": "100644",
+      "size": 3007,
+      "git_blob_sha1": "9c31603acc19d2b090bc61b86adfe4fe5da08be6",
+      "sha256": "48244b821dfa5eee6014792954aa30ee0ea1c7dd557618d1c65d5c7190dfe317",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/test_native_render_bridge_regression.gd.uid",
+      "mode": "100644",
+      "size": 19,
+      "git_blob_sha1": "ded9ca6228668122ca64d8264ce4b228b248342c",
+      "sha256": "6fe77d7e159893d278bb2b2ac5101ba46f75efc66118325b57a0c07db986cebc",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/test_presentation_controls.gd",
+      "mode": "100644",
+      "size": 1531,
+      "git_blob_sha1": "4e17716af88350ad5dc2d27cdf19248cc4a0c808",
+      "sha256": "bf31bce110146e677529d1f4c2167ddc902752e8aed6a718cbe226c3c85e282e",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/test_presentation_controls.gd.uid",
+      "mode": "100644",
+      "size": 19,
+      "git_blob_sha1": "e5e7a58249d9b1829e5b0cf2ec55873e0a8cbfcf",
+      "sha256": "e5a4234e87455478be33c8a49428178ac9fc7e39cb91c1549f4dab89f5b750fe",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/test_rapier_backend_preflight.gd",
+      "mode": "100644",
+      "size": 1328,
+      "git_blob_sha1": "518e0b97f0d4cd4626e0826c477e22964f6a2993",
+      "sha256": "8ac6802a752e53f5de2c92b6fda5737cbe33888f3bbd9c484c2f13c08957b3bf",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/test_rapier_backend_preflight.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "b6ee0b516a92d75c75fe9ad5cfced5ef88f2a6f9",
+      "sha256": "f56ebba974badefee30e80b8525370a35fa6b9a0b051ef3037c6c65a83da865b",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/test_rapier_drop_in.gd",
+      "mode": "100644",
+      "size": 1268,
+      "git_blob_sha1": "a2b3c99e9a32dcca1e911cdbfca220cf64ab5b4f",
+      "sha256": "bad5092b26296be364caad3842d784869cc958412b316872094c8a78e23e41da",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/test_rapier_drop_in.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "70f2c267e83d85c44e10dbe52bb341e1e58390fd",
+      "sha256": "bbc176414c3ddb2b0ae0827bb71f036d142b825ecf158600c5a23f4ad1a0f401",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/test_rapier_manual_step.gd",
+      "mode": "100644",
+      "size": 3309,
+      "git_blob_sha1": "1b2b3497f0acff70aefc895bef168efe1887d3cf",
+      "sha256": "d05b0e2f2c477020019477da2a508311b9dd84ee32920d45e018063f558b27be",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/test_rapier_manual_step.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "6a9767766beac8c5c66cc4b16eabb5b1edc62a44",
+      "sha256": "b7283dab032031874f1a733e513d2f045cfee5da5eb791a79d9e47e255e0cf84",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/test_render_patch_handoff_regression.gd",
+      "mode": "100644",
+      "size": 4282,
+      "git_blob_sha1": "6330fd51e81a14b310ef30136b12439d056a31c6",
+      "sha256": "da665d9ab52942480707de53535d03d26342a0f387ef4ec492951f7482ea1922",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tests/test_render_patch_handoff_regression.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "554c7c3e867e6a16b1dff7b5f70053b48d742ac7",
+      "sha256": "2300016404e1669cd2f0093df34169f221c22d36ad39b6bc1313566e6cecc38e",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/third_party/rapier2d.lock.json",
+      "mode": "100644",
+      "size": 1268,
+      "git_blob_sha1": "625ac1059a87e84b7746059f5d09314338e38eb4",
+      "sha256": "bfc230bf700f4aab0930c1b24a361892d91d55d2730528c6df7748b1231550b3",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tools/activate_rapier_2d.gd",
+      "mode": "100644",
+      "size": 1426,
+      "git_blob_sha1": "a776a8614b99a2e6c20cfe669c443a3e8880cd5b",
+      "sha256": "226134b3ed08dd2ffcb67bb8bf7b933a5ada94970759008481374bbe8eaaf1b0",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/tools/activate_rapier_2d.gd.uid",
+      "mode": "100644",
+      "size": 20,
+      "git_blob_sha1": "fd869f9fbe1cde062eadf04b6d72235421afdf21",
+      "sha256": "0da2e876c74d31a090f357125f14a7d47ec6bc14087652dce11c3fa503f26fc3",
+      "lfs_pointer": false
+    },
+    {
+      "path": "godot/web_main.tscn",
+      "mode": "100644",
+      "size": 280,
+      "git_blob_sha1": "9abbb4d12700a5a3f71863f6663edd58e85f1031",
+      "sha256": "813c57a0bda7b4741ad1558a978ef6bb94943e3b01c370852358bc8218a6851f",
+      "lfs_pointer": false
+    },
+    {
+      "path": "native/bench/benchmark.cpp",
+      "mode": "100644",
+      "size": 7801,
+      "git_blob_sha1": "5f11a9e9563b4c473cd3279da56ed86976aa4644",
+      "sha256": "0ee4d0f6659181c0cf240d515413efeeca0fefc1306d937baf7652932395e3c1",
+      "lfs_pointer": false
+    },
+    {
+      "path": "native/data/material-packs/sandspiel-mit-reference.json",
+      "mode": "100644",
+      "size": 12752,
+      "git_blob_sha1": "9347ad1abb8f91f1340815ea678d20249ddce007",
+      "sha256": "c1416d7abe97592b17256ba93ee95a7258c33b6a4726bd35222db2453b8eb152",
+      "lfs_pointer": false
+    },
+    {
+      "path": "native/include/cybersand/c_api.h",
+      "mode": "100644",
+      "size": 10305,
+      "git_blob_sha1": "dbbd2ad1cd0399d5b4f580dab9f22373c94b6eec",
+      "sha256": "7a4fca0495e2dc549ba687de8591bac1ccd3d5b54c7b8a90fc10a4e9fdadb9ed",
+      "lfs_pointer": false
+    },
+    {
+      "path": "native/include/cybersand/demo_snapshot.hpp",
+      "mode": "100644",
+      "size": 5110,
+      "git_blob_sha1": "294da59d9a68378abd9f56bd96db860807b4d7b6",
+      "sha256": "1a46f7beef756e0a916be7229956ae295955d555be047e16203eca05860cd3cb",
+      "lfs_pointer": false
+    },
+    {
+      "path": "native/include/cybersand/material.hpp",
+      "mode": "100644",
+      "size": 18728,
+      "git_blob_sha1": "ffc80bd20637cac9e864e261f5408ff9bb11185b",
+      "sha256": "de1bbbccb812d49151c34831196a7e38d5ee97d2045c9b29c197b11553ed126a",
+      "lfs_pointer": false
+    },
+    {
+      "path": "native/include/cybersand/material_appearance.hpp",
+      "mode": "100644",
+      "size": 5271,
+      "git_blob_sha1": "42e427b6c0f4b3c7fd11e17e92b78b20e010d77d",
+      "sha256": "323078293cd572ac8cb1282cb57c4298644010d04d0504617637049d639351c7",
+      "lfs_pointer": false
+    },
+    {
+      "path": "native/include/cybersand/material_rules.hpp",
+      "mode": "100644",
+      "size": 1859,
+      "git_blob_sha1": "dae4b9f04f5c92caf6c39d54cdda5968b3ce7582",
+      "sha256": "4c9e74a00d732bf624c57936a0e03de47195929830d1ff5923107df18188beac",
+      "lfs_pointer": false
+    },
+    {
+      "path": "native/include/cybersand/render_snapshot.hpp",
+      "mode": "100644",
+      "size": 3358,
+      "git_blob_sha1": "761c0e92de51a7f2e275da748302a51972864e83",
+      "sha256": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+      "lfs_pointer": false
+    },
+    {
+      "path": "native/include/cybersand/scheduler_geometry.hpp",
+      "mode": "100644",
+      "size": 2208,
+      "git_blob_sha1": "e03a94ef0328ff71c4458d45ee08ed9514ef94c9",
+      "sha256": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+      "lfs_pointer": false
+    },
+    {
+      "path": "native/include/cybersand/world.hpp",
+      "mode": "100644",
+      "size": 10528,
+      "git_blob_sha1": "2efa59d9c197a9052a288792a60d0496e0bcc186",
+      "sha256": "17272a5f35547cea6ac7a976ebefc6219bfdc56eeb964035e5172011859c1b02",
+      "lfs_pointer": false
+    },
+    {
+      "path": "native/src/c_api.cpp",
+      "mode": "100644",
+      "size": 19283,
+      "git_blob_sha1": "9f48357af0b2bc0003597f016697077eb10a0d49",
+      "sha256": "bc308fd5beefe1adc5b306e914f9227bcf6c6e6318959150c604ce4070b4393f",
+      "lfs_pointer": false
+    },
+    {
+      "path": "native/src/material_rules.cpp",
+      "mode": "100644",
+      "size": 6320,
+      "git_blob_sha1": "1cd3cf545a178d748a26a4aef946060865a0846c",
+      "sha256": "193ba45b403c1b95cf505a9e4a0679637af117bdc002cad7f3169f7179f4b7c7",
+      "lfs_pointer": false
+    },
+    {
+      "path": "native/src/render_snapshot.cpp",
+      "mode": "100644",
+      "size": 4184,
+      "git_blob_sha1": "2bd77381dd1bf5412423b8a1a2148661fac8a46d",
+      "sha256": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+      "lfs_pointer": false
+    },
+    {
+      "path": "native/src/render_snapshot_internal.hpp",
+      "mode": "100644",
+      "size": 1549,
+      "git_blob_sha1": "43677d33d8040422c3bacbeef87cafc16121828b",
+      "sha256": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+      "lfs_pointer": false
+    },
+    {
+      "path": "native/src/scheduler_geometry.cpp",
+      "mode": "100644",
+      "size": 3363,
+      "git_blob_sha1": "97691f1119770d88e504fcbee91ba7e12788273a",
+      "sha256": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+      "lfs_pointer": false
+    },
+    {
+      "path": "native/src/world.cpp",
+      "mode": "100644",
+      "size": 128247,
+      "git_blob_sha1": "00d070d48db8f0b754cca151f170da8f3145e36e",
+      "sha256": "3c6212cfc2755b600f690f2cb8485f78a48198e17358f620af55299179f01634",
+      "lfs_pointer": false
+    },
+    {
+      "path": "native/tests/test_c_header.c",
+      "mode": "100644",
+      "size": 1970,
+      "git_blob_sha1": "6ab643cd3c17d9908b621383d9242a94278a46ae",
+      "sha256": "f4249d0afd70fb3fe961d3632a404825d42e9138f46aa306edb4285f3662777b",
+      "lfs_pointer": false
+    },
+    {
+      "path": "native/tests/test_world.cpp",
+      "mode": "100644",
+      "size": 64540,
+      "git_blob_sha1": "de17dc42aa5031e459b01e871ba63a21924f9dd6",
+      "sha256": "6bb3aba5d5d96c6846546d3ef37047d3bfc7d6de1b76befc7ecc55eef1e9c401",
+      "lfs_pointer": false
+    },
+    {
+      "path": "third_party/README.md",
+      "mode": "100644",
+      "size": 731,
+      "git_blob_sha1": "bb802e72d39108ebf4ff3ed40627315d815ed7f0",
+      "sha256": "3c1947f9180561f996b487fe41973e11b10e7d873ffa73e9428ace13931c409b",
+      "lfs_pointer": false
+    },
+    {
+      "path": "third_party/godot-runtime.lock.json",
+      "mode": "100644",
+      "size": 1517,
+      "git_blob_sha1": "747bd7c9cc213ec4b3f22006ed40e8909e0bce8f",
+      "sha256": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe",
+      "lfs_pointer": false
+    },
+    {
+      "path": "third_party/native-toolchain.lock.json",
+      "mode": "100644",
+      "size": 8627,
+      "git_blob_sha1": "26907e1dff6eee6de8438a35b3d1300537934554",
+      "sha256": "1d279b5fb4a09ae668c963dce794a3d7b7eac7d95aa88dc48fdf48189fc84414",
+      "lfs_pointer": false
+    },
+    {
+      "path": "tools/build_native_extension.sh",
+      "mode": "100755",
+      "size": 5349,
+      "git_blob_sha1": "cc1c0983f4543d890076eb6a85ce94b031444e62",
+      "sha256": "bbc81816f6e96129bf303cafe0f9526c18248fa9a5e8a0dc141372b1c9658fe7",
+      "lfs_pointer": false
+    },
+    {
+      "path": "tools/build_native_extension_windows.sh",
+      "mode": "100755",
+      "size": 5356,
+      "git_blob_sha1": "257a273b2b31740507e6fc6ef6db11646c0bb935",
+      "sha256": "fc1f1337e0f5705fb080d2797a6d96b05e40f00307377e6fc223676f47e7b5c7",
+      "lfs_pointer": false
+    },
+    {
+      "path": "tools/build_pinned_godot_cpp.sh",
+      "mode": "100755",
+      "size": 6647,
+      "git_blob_sha1": "f0a432d544d73f8127cea86a13ae1b0c0e0ceb86",
+      "sha256": "cc46672f4866139b16cea3f6c7d1dcc6b0b607501f439e83e71e42a97489f8c4",
+      "lfs_pointer": false
+    },
+    {
+      "path": "tools/build_web.py",
+      "mode": "100644",
+      "size": 9377,
+      "git_blob_sha1": "aefd788dfdd2ad1fd51bb58c1188b214c56e3b9f",
+      "sha256": "23ff55a10a1e6b33fbe19ba6ae53f3fa905e616634cae07eb7cef24ab5803d91",
+      "lfs_pointer": false
+    },
+    {
+      "path": "tools/check_linux_runtime_floor.sh",
+      "mode": "100755",
+      "size": 2172,
+      "git_blob_sha1": "34f167867d54deb45dde088606d58fd82b13add1",
+      "sha256": "12f372ffa2222c83f07367f4e93409eaf51dcde861ecf4c1f3c3f3da80a8d251",
+      "lfs_pointer": false
+    },
+    {
+      "path": "tools/ci/check_m11_consistency.py",
+      "mode": "100755",
+      "size": 7439,
+      "git_blob_sha1": "a19ce979b6af10aeb66024018cf91b233ca4a327",
+      "sha256": "4563428591901d2beaff49045db49a003e3b3ce605996bb7b51543651f10d575",
+      "lfs_pointer": false
+    },
+    {
+      "path": "tools/prepare_native_build_env.sh",
+      "mode": "100755",
+      "size": 3168,
+      "git_blob_sha1": "5cb05558cdbf58fe7af8ac6f97fe87dd18d7706d",
+      "sha256": "ad9faa94d24d0cd95c9274f7ce5c938a2876154a39a39078c1e116cdd44bb336",
+      "lfs_pointer": false
+    },
+    {
+      "path": "tools/requirements-build.txt",
+      "mode": "100644",
+      "size": 113,
+      "git_blob_sha1": "821fb1eea3b1029e16664f0babb61ae735e719fa",
+      "sha256": "6ef2d94fd9f11d4b4e95730c9c14468c739f51f22d175212b5019edd9dbe7409",
+      "lfs_pointer": false
+    },
+    {
+      "path": "tools/toolchains/g++",
+      "mode": "100755",
+      "size": 668,
+      "git_blob_sha1": "770c78de035f7a445db45bee27cd7463215d00df",
+      "sha256": "eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09",
+      "lfs_pointer": false
+    },
+    {
+      "path": "tools/verify_pinned_source_tree.py",
+      "mode": "100644",
+      "size": 3368,
+      "git_blob_sha1": "4bb67693722150fb8eb04118ce593632ee22556d",
+      "sha256": "a0524839c9a2857906013c9cef6327dfd3fd1878372da05ca16c34a497eaea97",
+      "lfs_pointer": false
+    },
+    {
+      "path": "tools/web/build_profile.json",
+      "mode": "100644",
+      "size": 65,
+      "git_blob_sha1": "4552ff3bef8a2346b8e8226462115045d0dacc4f",
+      "sha256": "27311a8e3932ad812390d26a1197539a4812560f4e1d812df51da07067f10a0c",
+      "lfs_pointer": false
+    },
+    {
+      "path": "tools/web/ci-trigger.txt",
+      "mode": "100644",
+      "size": 16,
+      "git_blob_sha1": "a7f78789743023449563a33a1b0d811a066a38fe",
+      "sha256": "0a9113d1dd3853308db799b025e71e09cba6da8c103ae9f6e5b3a1e2a6ec3aad",
+      "lfs_pointer": false
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "source_directory": "source",
+  "upstream": "https://github.com/techrote/cybersand.git",
+  "upstream_base": "e2892c54d4bd91aac60971e81c748bd49fbe2adb",
+  "pre_rag_rewrite_checkpoint": "126175cfc4dd1fb8659212f62b9b517bac54d8c2",
+  "source_branch": "codex/rag-docs-foundation",
+  "workspace_repository_scope": "Top-level documentation and development wrappers; source has separate Git history; generated outputs and .local excluded",
+  "backup": "User confirmed USB backup; not inspected by agent",
+  "created": "2026-09-08"
+}

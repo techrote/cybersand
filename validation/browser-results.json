@@ -1,0 +1,196 @@
+{
+  "date": "2026-09-07",
+  "method": "Interactive browser UI actions, screenshots, DOM diagnostics and captured console; not the unavailable M13 acceptance suite.",
+  "url": "http://127.0.0.1:8000/?test=1",
+  "browser": "Connected Codex in-app Chromium",
+  "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+  "godot": "4.7.stable.official.5b4e0cb0f",
+  "emscripten": "4.0.20",
+  "source_base": "e2892c54d4bd91aac60971e81c748bd49fbe2adb",
+  "side_module_sha256": "46f863d7c5e5ac178d8b44b047812fb8a8d2dc79755796139471585e28d01667",
+  "clean_build_log": "local/20260907-213553/rebuild.log",
+  "browser_request_log": "local/preview-final.log",
+  "viewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "final_clean_demo_samples": [
+    {
+      "demo": "Material Lab",
+      "tick": 12,
+      "moves": 4645,
+      "render_rejections": 0
+    },
+    {
+      "demo": "Waterworks",
+      "tick": 6,
+      "moves": 14629,
+      "render_rejections": 0
+    },
+    {
+      "demo": "Foundry",
+      "tick": 15,
+      "moves": 9097,
+      "render_rejections": 0
+    },
+    {
+      "demo": "Neon Works",
+      "tick": 9,
+      "moves": 7697,
+      "render_rejections": 0
+    }
+  ],
+  "checks": [
+    {
+      "name": "main_menu",
+      "status": "passed",
+      "observation": "Menu rendered; four principal demos available; Physics Pit disabled."
+    },
+    {
+      "name": "capability_status",
+      "status": "passed",
+      "observation": "CYBERSAND/WASM · COMPAT · 1 WORKER · RIGID PHYSICS OFF"
+    },
+    {
+      "name": "simulation_advances",
+      "status": "passed",
+      "observation": "Native ticks/moves increased and simulation motion was visible in all four demos."
+    },
+    {
+      "name": "rendering",
+      "status": "passed",
+      "observation": "Cyan player, liquid/fire/sand, intentional neon and textures visible; no observed missing shaders, fallback materials, placeholders or pathological spawn."
+    },
+    {
+      "name": "keyboard_selection_pause_menu",
+      "status": "passed",
+      "observation": "3 selected wall, P toggled pause and Escape opened menu."
+    },
+    {
+      "name": "paint",
+      "status": "passed",
+      "probe_cell": [
+        420,
+        25
+      ],
+      "before": 0,
+      "after": 1,
+      "paint_commands_after": 8,
+      "input": "LMB drag"
+    },
+    {
+      "name": "erase",
+      "status": "passed",
+      "probe_cell": [
+        420,
+        25
+      ],
+      "before": 1,
+      "after": 0,
+      "paint_commands_after": 10,
+      "input": "RMB clicks sampled across ticks"
+    },
+    {
+      "name": "character_movement",
+      "status": "passed",
+      "input": "Repeated D key presses",
+      "player_x_before": 24,
+      "player_x_after": 24.9527740478516
+    },
+    {
+      "name": "restart",
+      "status": "passed",
+      "observation": "Restart world reset current Neon Works tick to 9 and player to [24,223.15]."
+    },
+    {
+      "name": "quality",
+      "status": "passed",
+      "logical_view_sizes": {
+        "LOW": [
+          320,
+          180
+        ],
+        "NORMAL": [
+          480,
+          270
+        ],
+        "HIGH": [
+          640,
+          360
+        ]
+      }
+    },
+    {
+      "name": "base64_export",
+      "status": "passed",
+      "characters": 23040,
+      "decoded_bytes": 17278,
+      "prefix": "Q1lTRDEBAQAABAAE",
+      "cysd1_stored_payload_sha256": "2509ba37f0d3b2dddf66cfce3974ad9037524fec85e986477419e15287bcb2ac"
+    },
+    {
+      "name": "portable_roundtrip",
+      "status": "passed",
+      "observation": "Mutated paused Neon Works -> export -> Material Lab (probe 0) -> import retained field -> Neon Works (probe 1) -> export. Entire Base64 string exactly matched.",
+      "external_clipboard_used": false
+    },
+    {
+      "name": "malformed_rejection",
+      "status": "passed",
+      "input": "a",
+      "error": "Malformed Base64",
+      "observation": "Active Neon Works/probe and successful-import count unchanged; entire re-export matched saved Base64."
+    },
+    {
+      "name": "local_slot",
+      "status": "passed",
+      "observation": "Saved mutation -> switched world -> loaded slot. Complete export and player position matched saved state."
+    },
+    {
+      "name": "reload_persistence",
+      "status": "passed",
+      "observation": "Reload -> local slot still available -> load -> complete export matched. Same origin/port/profile only.",
+      "browser_restart_tested": false
+    },
+    {
+      "name": "cpp_exception_catch_in_wasm",
+      "status": "passed",
+      "console": "WEB_CPP_EXCEPTION_PROBE true",
+      "observation": "Empty native payload rejected by real C++ exception path; native revision unchanged."
+    },
+    {
+      "name": "actual_side_module_request",
+      "status": "passed",
+      "http_status": 200,
+      "file": "libcybersand_native.web.nothreads.wasm"
+    },
+    {
+      "name": "final_clean_console",
+      "status": "passed",
+      "errors": 0,
+      "warnings": 0,
+      "capture_start_utc": "2026-09-07T20:38:24.372Z",
+      "capture_end_utc": "2026-09-07T20:38:25.453Z"
+    },
+    {
+      "name": "external_clipboard_paste",
+      "status": "unverified",
+      "observation": "Browser automation clipboard/paste did not populate Godot canvas TextEdit; portable roundtrip used retained exported field."
+    },
+    {
+      "name": "held_jetpack_input",
+      "status": "unverified",
+      "observation": "Instantaneous Space taps did not establish held jetpack movement."
+    },
+    {
+      "name": "Firefox_Safari",
+      "status": "not_tested"
+    },
+    {
+      "name": "original_prebuilt_export",
+      "status": "blocked",
+      "reason": "Original M13 ZIP/static-web unavailable."
+    }
+  ],
+  "scope_note": "Input/save checks ran on the successful rebuilt output before final clean rebuild; side-module SHA-256 is identical after clean. All four demos and native exception probe were repeated on the final clean export."
+}

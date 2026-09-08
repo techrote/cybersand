@@ -1,0 +1,11 @@
+{
+  "GODOT_BIN": ".local/godot-4.7/Godot_v4.7-stable_win64_console.exe",
+  "GODOT_CPP_NATIVE": ".local/godot-cpp-native",
+  "GODOT_CPP_WEB": ".local/godot-cpp-web",
+  "EMSDK": ".local/emsdk",
+  "WEB_TEMPLATE_ROOT": ".local/web-templates",
+  "LLVM_MINGW_ROOT": ".local/llvm-mingw-20260826-ucrt-x86_64",
+  "GIT_ROOT": ".local/git",
+  "SCONS_JOBS": "6",
+  "CYBERSAND_ALLOW_TOOLCHAIN_DRIFT": "1"
+}

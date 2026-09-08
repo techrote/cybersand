@@ -1,0 +1,13 @@
+.local/
+build/
+validation/local/
+*.zip
+*.tpz
+*.tar.xz
+__pycache__/
+*.pyc
+
+# Source has its own upstream-derived Git history.
+/source/
+# Host shortcuts are local presentation, not portable workspace inputs.
+/*.lnk
