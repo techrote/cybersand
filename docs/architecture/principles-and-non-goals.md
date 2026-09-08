@@ -1,131 +1,109 @@
 ---
 title: Architectural principles and non-goals
+document-kind: design
+canonical-for: [architectural-constraints-and-rejected-shortcuts]
 status: Approved design
-scope: Hard rules, reasons, prohibited shortcuts, and deliberately postponed scope
-keywords: [technical debt, coupling, allocation, mutex, Godot threads, GPU authority, non-goals]
-related-documents: [overview.md, module-boundaries.md, ../reference/invariants.md]
+scope: Accepted architectural constraints, explicit current exceptions, deferred scope and rejected approaches
+keywords: [native authority, fixed tick, bounded work, approximation, rejected, GPU authority]
+related-documents: [module-boundaries.md, data-ownership-and-lifetimes.md, ../reference/invariants.md, ../reference/status-and-roadmap.md]
 last-reviewed: 2026-09-08
-implementation-state: These rules govern future implementation; native repeat-run/worker-parity fixtures and fixed secondary cadence are Current, while production fidelity controls remain incomplete.
 ---
 
 # Architectural principles and non-goals
 
-Evidence scope (2026-09-08): **Current** below describes inspected source in the
-reconstructed local snapshot, not a verified Git HEAD or an all-platform test pass.
-See the [documentation audit](../audits/2026-09-08-documentation-audit.md) for
-source identity and dated validation; [M11 audit records](../audits/m11/README.md)
-retain historical scope. **Approved design** means Approved direction; Planned,
-Deferred, and Rejected statements do not claim implementation.
+## Which constraints govern foundational work?
 
-## At a glance
+**Approved:** native C++ remains production cellular authority; Godot owns
+presentation, input and adapters; the rigid-body backend remains replaceable.
+The core must run without Godot. Fixed simulation quanta, explicit owners,
+bounded work/capacity and traceable evidence take priority over incidental
+prototype structure. [ADR-001](../decisions/ADR-001-native-simulation-core.md)
+and [module boundaries](module-boundaries.md) explain the authority decision.
 
-- Purpose: prevent performance work from creating hidden ownership or long-term coupling.
-- **Approved design**: native C++ owns authoritative simulation state.
-- **Approved design**: fixed simulation quanta, race-free ownership, bounded work/buffers, and explicit failure behavior are mandatory.
-- **Approved design**: bit-exact replay is a strict validation mode, not a universal gameplay-fidelity requirement.
-- **Explicitly rejected**: per-cell locks, one class or thread per material, full-world double buffers, and mutable render reads.
-- **Approved design**: phased in-place and buffered scheduler candidates remain isolated during their benchmark gate.
-- **Deferred / experimental**: GPU compute remains an isolated experiment.
-- Non-goal: perfect physical simulation of every visible pixel.
-- Non-goal: refactoring unrelated Godot gameplay while replacing the backend.
+No native pool worker may call Godot APIs. The desktop Godot pacing Thread may
+call its exclusively owned adapter/value methods, but may not access live
+scene-tree/Rapier objects. Rendering consumes immutable snapshots and never
+locks or borrows mutable cellular state. Resource enforcement belongs in
+[ownership](data-ownership-and-lifetimes.md), not an assumed universal
+thread-safety property of GDExtension.
 
-## Search anchors
+Worker timing must not decide mutation ownership or conflict order. Exact
+native fixture comparison is **Current** for declared inputs; complete replay
+and a selectable strict runtime policy remain **Planned**. A passing cellular
+hash does not establish Rapier trajectory equivalence or save continuation.
+See [hash coverage](determinism-and-boundary-transfers.md) and
+[level saves](../reference/level-saves-and-replay.md).
 
-no Godot API on workers, no per-cell mutex, no hot allocation, no full-world copy, no material subclasses, no premature GPU, technical debt rules
+## What approximation is acceptable?
 
-## Hard architectural rules
+**Approved:** protect interactive frame pacing through explicit bounded
+sampling/deferral of secondary or distant work, while preserving local
+occupancy, closed-boundary conservation and accepted authoritative commands.
+Perfect continuum physics or identical outcomes at every gameplay fidelity
+level are not requirements. Random-looking choices should have stable declared
+inputs; data races are never an approximation technique.
 
-| Rule | Status | Why it exists | Failure prevented |
-|---|---|---|---|
-| SimulationCore is native C++ and has no Godot API dependency. | **Approved design** | Keeps simulation independently testable and portable. | Scene/runtime coupling and untestable worker code. |
-| Godot scene-tree, rendering, audio, and gameplay-object access stays off simulation workers. | **Approved design** | Godot object access has thread and lifetime constraints. | Races, invalid object access, and frame-dependent behavior. |
-| Simulation state changes only on fixed ticks. | **Approved design** | Decouples physics from render rate. | Variable-rate physics and replay divergence. |
-| Worker completion timing never decides write ownership or conflict resolution. | **Approved design** | Approximate gameplay may sample work, but thread races must not become a hidden rule. | Race-dependent corruption and irreproducible ownership. |
-| Native fixtures compare deterministic phase/job/explosion results; a general strict-mode switch remains Approved. | **Current**, native tested scope; broader mode **Approved design** | Exact replay remains a powerful regression oracle without constraining every gameplay approximation. | Losing the ability to localize solver regressions. |
-| Gameplay fidelity may reduce distant/slow work through explicit bounded policies while preserving local collision and conservation invariants. | **Approved design** | Frame-rate stability is a gameplay requirement. | Single-digit FPS when large regions wake. |
-| Godot reads immutable snapshots only. | **Current** native publication and copied Godot adapter | Presentation must never race simulation writes. | Tearing, locks around the renderer, and undefined reads. |
-| Buffering, where selected, is restricted to active regions and required fields. | **Approved design** | World scale must not imply full-world copy cost. | Memory growth proportional to all stored cells. |
-| Hot-path task and snapshot buffers are bounded and reused; transfer buffers follow when implemented. | **Current** task/snapshot scope; transfer **Planned** | Makes latency and memory pressure observable. | Allocator stalls and unbounded memory growth. |
-| Capacity overflow is diagnosed explicitly. | **Approved design** | Requested scale must fail or reconfigure visibly. | Silent clipping, hidden allocation, or corrupted output. |
-| Material behavior uses descriptors and compact rule kernels. | **Approved design** | Keeps behavior data-oriented and schedulable. | Deep inheritance, virtual-call hot paths, and material-specific orchestration. |
-| Work is introduced through reversible checkpoints. | **Approved design** | Limits regression scope. | Large migrations with no valid rollback state. |
+**Current:** native rules include fixed secondary cadence, activity sleeping
+and region filtering. They do not form a general adaptive fidelity controller.
+Desktop rendering is independent of the cellular owner; Web still waits for
+synchronous ticks. The current region re-entry wake defect and tick-failure
+asymmetry are documented limitations, not Approved degradation behavior.
+[ADR-008](../decisions/ADR-008-bounded-approximate-fidelity.md) owns fidelity intent;
+[threading](simulation-tick-and-threading.md) owns actual behavior.
 
-## Explicitly rejected approaches
+## Can materials run on GPU compute or arbitrary JavaScript?
 
-### Per-cell mutexes
+**Current:** authoritative material rules execute in native CPU kernels.
+**Rejected at this stage:** GPU terrain authority and arbitrary JavaScript or
+other scripts in the per-cell hot loop. **Deferred:** GPU field experiments.
+**Planned:** a validated bounded material-program compiler; see
+[item-authored programs](item-authored-material-programs.md). Visual graphs
+would compile before play and obey the same radius/work bounds, rather than
+grant unrestricted scripting access.
 
-Status: **Explicitly rejected**. Lock storage and contention would dominate cell work. Phased exclusive ownership or buffered output isolation provides the synchronization boundary instead.
+## Which shortcuts are rejected?
 
-### One thread or class hierarchy per material
+| Rejected approach | Reason and permitted alternative |
+|---|---|
+| Per-cell locks or material-specific threads | Cell work is too small for those synchronization/lifecycle costs; use spatial ownership and a shared pool |
+| Expanding class hierarchy per material | Descriptors and compact kernels keep state and work inspectable |
+| Full-world double buffering as normal operation | Cost would scale with all stored cells; any future buffering is active/field-specific |
+| Mutable render reads or rendering locks around World | Consumer lifetime would race or block authoritative work; publish immutable copies |
+| Hidden tick-time growth or silent capacity clipping | Pressure must be explicit; production growth needs a drained transition |
+| Mixed in-place/next-buffer ownership of one field | Ownership must be unambiguous at every stage |
+| GPU terrain authority in this architecture | Collision/query/replay synchronization is not designed or validated |
+| Naive local 2×2 occupancy coarsening | It changes narrow gaps, films, silhouettes and collision topology |
+| A competing liquid world or per-cell PhysicsServer object | Shared material authority and bulk coupling avoid divergent state/object overhead |
 
-Status: **Explicitly rejected**. Materials share scheduler infrastructure. A new material may select descriptor data and a compact kernel family, but does not own a worker or an expanding inheritance tree.
+These rejections are scoped decisions. A later reversal requires evidence and
+an ADR; they do not forbid render-only GPU effects, explicit full-refresh
+recovery packets or separately owned future fields.
 
-### Full-world double buffering
+## Which Current exceptions must remain visible?
 
-Status: **Explicitly rejected**. Stored but inactive regions may be much larger than the interest region. Buffering the entire world would convert an activity-scaled design into a world-size-scaled design.
+World still combines several production responsibilities. Lazy coordinator
+preparation may allocate chunks/temperature during a tick; preallocation
+covers those measured allocation classes. The desktop emission queue and
+Godot render accumulation are dynamic arrays, not general bounded native
+queues. Godot still uploads the full RG8 texture after dirty CPU patching.
+The GDScript solver remains a desktop fallback with different semantics.
 
-### Mutable rendering reads
+Sources: [World](../../native/src/world.cpp),
+[worker](../../godot/scripts/simulation_worker.gd),
+[renderer](../../godot/scripts/main.gd), [fallback](../../godot/scripts/cell_world.gd).
+These exceptions require honest scope; they are not permission to extend them
+into new hidden ownership or allocation paths.
 
-Status: **Explicitly rejected**. RenderBridge may not expose pointers or references into mutable SimulationCore or WorldStorage memory.
+## What is deliberately outside the next foundation?
 
-### Hidden hot-path allocation
+**Deferred:** broad world streaming/macroscale aggregation until local material
+behavior is mature; fully asynchronous Web ownership; GPU/coarse-field/hexagonal
+experiments. **Planned:** general persistence/replay, production fidelity
+controls, typed bounded queues and wider physics coupling. Basic optional
+temperature storage and finite-demo level saves already exist; neither implies
+those larger systems.
 
-Status: **Explicitly rejected**. Buffer exhaustion must produce diagnostics and follow an approved failure or tick-boundary reconfiguration path. It must not silently allocate, clip, or drop authoritative work.
-
-### Unbounded mixed scheduler ownership
-
-Status: **Explicitly rejected**. The phased and buffered candidates may coexist only at an explicit backend or field boundary. One cell field cannot be mutated in place and through a next buffer in the same stage without a separately approved ownership contract.
-
-### Current GPU terrain authority
-
-Status: **Explicitly rejected**. GPU compute is not presently the authority for terrain, gameplay collision, or deterministic world state.
-
-## Current prototype exceptions
-
-| Exception | Status | Evidence |
-|---|---|---|
-| CyberCellWorld mutates a finite cell array in place. | **Current** | godot/scripts/cell_world.gd |
-| Native World updates in place; lazy coordinator preparation may allocate chunks during a tick, while preallocated regions avoid tracked chunk/temperature allocations. | **Current** | native/src/world.cpp, World::tick and ensure_chunk |
-| Desktop has one Godot pacing owner plus an internal native phase pool; Web main-thread ownership waits for native completion. | **Current** | [Tick/threading](simulation-tick-and-threading.md) |
-| Ordinary native revisions copy dirty RG8 patches; Godot still uploads the full backing texture. Full-cell copying remains a fallback/recovery path. | **Current** | [Render bridge](rendering-and-gameplay-bridges.md) |
-| Material behavior is implemented through switches. | **Current** | native/src/world.cpp and cell_world.gd |
-| The GDScript proof temporally distributes excess active blocks and sparsely samples broad liquid pressure searches. | **Current** | godot/scripts/cell_world.gd |
-| The Godot renderer consumes immutable worker snapshots independently of worker tick completion. | **Current** | godot/scripts/simulation_worker.gd and main.gd |
-
-These are inspected prototype boundaries and exceptions, not evidence that every
-Approved production constraint is enforced. Source: [World](../../native/src/world.cpp),
-[desktop worker](../../godot/scripts/simulation_worker.gd),
-[fallback](../../godot/scripts/cell_world.gd), and
-[renderer](../../godot/scripts/main.gd).
-
-## Non-goals
-
-- **Approved design**: perfect per-pixel physics is not required; conservation, stability, visual plausibility, and gameplay consistency take priority.
-- **Planned**: vehicles, computers, atmosphere, chemistry, and world-generation features should consume stable simulation interfaces rather than delay core architecture.
-- **Approved design**: temporal fidelity scaling and lower-resolution optional/distant fields may protect gameplay frame rate under explicit metrics and invariants.
-- **Explicitly rejected**: naive 2×2 or larger coarsening of the local visible material occupancy grid.
-- **Deferred / experimental**: hexagonal grouping may be evaluated as a work/coarse-field topology, but the approved storage hierarchy remains rectilinear 128×128 chunks and 32×32 tiles.
-- **Deferred / experimental**: a general fluid solver is not the first liquid implementation.
-- **Explicitly rejected**: unrelated gameplay or render refactors during backend checkpoints.
-
-## Review questions for every change
-
-1. Which module owns the modified data?
-2. Which stage may write it?
-3. Can a worker observe mutable state owned elsewhere?
-4. Does ownership or conflict resolution depend on thread timing?
-5. Can the hot path allocate?
-6. What happens when capacity is exceeded?
-7. Which metric exposes the cost?
-8. Which strict replay, conservation, collision, or visual-plausibility fixture detects regression?
-9. Which fidelity tier does the change affect, and is that policy observable?
-10. Can the checkpoint be rolled back without undoing unrelated work?
-
-## Related decisions
-
-- [ADR-001](../decisions/ADR-001-native-simulation-core.md)
-- [ADR-002](../decisions/ADR-002-double-buffered-tile-jobs.md)
-- [ADR-003](../decisions/ADR-003-godot-bridge-and-immutable-snapshots.md)
-- [ADR-006](../decisions/ADR-006-gpu-compute-deferral.md)
-- [ADR-007](../decisions/ADR-007-rigid-body-cellular-coupling.md)
-- [ADR-008](../decisions/ADR-008-bounded-approximate-fidelity.md)
+Every change should name its owner, writable stage, bounds, failure outcome,
+observable metric and detecting fixture. The [invariant register](../reference/invariants.md)
+provides stable review IDs; the [documentation checklist](../../AGENTS.md#documentation-obligations)
+keeps the authoritative contract, consumers and evidence synchronized.

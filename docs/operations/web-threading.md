@@ -1,183 +1,126 @@
 ---
-title: Web worker profile
+title: Web worker profiles and reference tests
+document-kind: runbook
+canonical-for: [web-worker-profiles, worker-reference-benchmark]
 status: Current
-scope: Current local Web worker profiles, synchronous ownership, build procedure and dated Windows/Chromium benchmark evidence
+scope: Compatibility/threaded Web build and hosting, fixed worker policy, synchronous ownership, and reference-test interpretation
 last-reviewed: 2026-09-08
+related-documents: [github-development-and-release.md, rapier-2d-migration-runbook.md, ../architecture/simulation-tick-and-threading.md, ../reference/configuration-reference.md, ../reference/validation-evidence.md]
 ---
 
-# Web worker profile
+# Web worker profiles and reference tests
 
-Status: **Current** local source profiles; retained Chromium acceptance was
-recorded on 2026-09-08. The [documentation audit](../audits/2026-09-08-documentation-audit.md)
-separates inspected source identity and fresh checks from these earlier runs.
-The workspace is a reconstructed snapshot plus local changes, not a source Git checkout.
+**Current:** compatibility Web uses one native cellular worker; optional threaded
+Web uses the existing phased pool. Both synchronously finish a cellular tick in
+Godot's `_physics_process`; Rapier stays on Godot main. Pthreads do not create
+desktop-style asynchronous simulation/render ownership. That extension is
+**Deferred**.
 
-Both Web profiles run the cellular tick synchronously in
-[web_demo_controller.gd](../../godot/scripts/web_demo_controller.gd)
-`_physics_process`. Threaded Web parallelizes jobs inside that call; it does not
-have desktop `CyberSimulationWorker`'s asynchronous Godot owner. Rapier remains
-main-thread owned in both profiles. Fully asynchronous Web ownership is **Deferred**.
+Source identity is in the [checkpoint](source-checkpoint-and-recovery.md), dated
+native/browser evidence in the [validation ledger](../reference/validation-evidence.md),
+and historical timing/failure records in the
+[performance archive](../audits/2026-09-08-performance-history.md).
 
-The optional threaded profile builds the existing C++ phased scheduler with
-pthreads and selects Auto workers using the owner's 2026-09-08 rules, implemented
-by [the native adapter](../../godot/native_extension/cyber_native_cell_world.cpp):
+## Current profiles
 
-| Reported logical threads | Auto workers |
-| --- | --- |
-| Fewer than 4 | 2 |
-| 4 through 11 | 4 |
-| 12 or more | 6 |
+[build_web.py](../../tools/build_web.py) stages the same native solver, assets,
+and Web controller with matching thread/no-thread Godot templates and Rapier
+WASM. [CyberNativeCellWorld::create_world](../../godot/native_extension/cyber_native_cell_world.cpp)
+resolves worker policy at world construction.
 
-This policy is shared by the native adapter and threaded Web. It is selected
-when `cybersand/native_worker_threads=0`, once when a world is created; it does
-not change worker count during play. Even a report of one logical thread selects
-two Auto workers as requested. No-thread Web always forces one worker.
-A low-thread warning recommends at least four physical CPU cores without
-claiming that the browser can detect physical cores.
-Web UI and reference reports read `navigator.hardwareConcurrency` directly:
-the no-thread Emscripten C runtime's fixed value of 1 is not a hardware report.
+| Profile | Cellular workers | Output | Ownership |
+|---|---|---|---|
+| Compatibility, default | Forced 1 | `source/build/web` | Synchronous Godot callback |
+| Threaded | Auto or explicit request | `source/build/web-threaded` | Same callback; phased jobs may run concurrently |
 
-Compatibility remains the default one-worker export.
-Both profiles use the same solver, assets, and Godot Web controller.
+Auto chooses 2/4/6 at reported logical-thread thresholds 4 and 12, including two
+when only one logical thread is reported. Exact settings, clamps, and the
+32-prewarmed-pthread/two-Godot-worker distinction belong to
+[configuration](../reference/configuration-reference.md#adapter-worker-policy).
+Prewarmed spare threads support overlapping current/replacement/test worlds;
+they are not all simulation workers.
+
+Web diagnostics use `navigator.hardwareConcurrency` for the browser's reported
+logical count; the no-thread C runtime's fixed 1 is not physical-core detection.
+Neither Auto nor the reference benchmark tunes a running pool from timings.
+
+## Build and preview
 
 From `C:/kybersand`:
 
 ```powershell
 .\dev.cmd web --profile threaded
 .local/python/Scripts/python.exe source/tools/serve_web.py --directory source/build/web-threaded --port 8002 --open
-# While the server runs:
-.\dev.cmd http-smoke --profile threaded --url http://127.0.0.1:8002/
-# After browser acceptance:
-.\Deliver-Web.ps1 -Profile threaded
 ```
 
-Delivery goes to `C:/cybersand/web-threaded`; the compatibility delivery remains
-`C:/cybersand/web`. `dev.cmd web` builds compatibility as before. Use
-`web-export --profile threaded` only when the matching C++ WASM is already fresh.
+While the preview server is running:
 
-The threaded Godot 4.7 dlink templates are extracted from the retained official
-export-template archive into `.local/web-templates`. Native and Web godot-cpp
-bindings remain separate. The current builder checks Godot 4.7, godot-cpp
-`101ae380…`, SCons 4.10.1 and Emscripten 4.0.20. Historical CI still requests
-4.0.11; see [build/CI drift](github-development-and-release.md).
+```powershell
+.\dev.cmd http-smoke --profile threaded --url http://127.0.0.1:8002/
+```
 
-The export prewarms an Emscripten pthread pool separately from Godot's two-worker
-pool. Spare capacity is needed while old and replacement native worlds coexist
-during transactional world construction/import; unused prewarmed workers do not
-represent additional simulation workers. See [build_web.py](../../tools/build_web.py) for the
-current bounded pool size.
+`dev.cmd web` builds compatibility. Use export-only only with a matching fresh
+side module; successful packaging does not prove source-to-binary freshness.
+The [build guide](github-development-and-release.md) owns exact dependency pins
+and unresolved CI/toolchain drift. Native/Web generated bindings stay separate.
 
-Auto and the live benchmark require room for the current world and temporary
-test/replacement pools; the current prewarmed pool is 32, with two Godot workers.
-The earlier four-worker validation below used 24 prewarmed pthreads.
+The supplied server sets COOP `same-origin`, COEP `require-corp`, appropriate
+WASM MIME and no-cache behavior. Threaded hosting needs a secure context
+(HTTPS or localhost) and cross-origin isolation. Serve the complete export,
+including worker JavaScript, PCK, WASM, notices and manifest. HTTP/checksum
+success is structural evidence; open the actual browser for execution.
 
-Hosting requires HTTPS (or localhost) and cross-origin isolation: COOP
-`same-origin` and COEP `require-corp`. The supplied preview server sets these.
-Deploy each complete export as a unit, including its worker JavaScript files,
-PCK, WASM modules, and checksums. No remote deployment is configured by this task.
+Local delivery is a separate explicit workflow after acceptance:
+`Deliver-Web.ps1 -Profile threaded` copies to `C:/cybersand/web-threaded`;
+compatibility uses `C:/cybersand/web`. Documenting this command does not execute
+delivery or remote publication.
 
-## Acceptance
+## Reference benchmark and parity checks
 
-### Auto and reference tests
+Open Web **Performance**:
 
-Open **Performance** in the Web menu. **Benchmark** compares supported counts
-from 1, 2, 4 and 6 on deterministic Sand/Water worlds of 480×480 and 960×960.
-It excludes ten warmup ticks, then measures 120 ticks per case, with deterministic
-emission to maintain activity. It compares final exported level hashes across
-worker counts. **Stress test** runs Auto for 600 measured ticks at 960×960.
+- **Benchmark:** supported actual worker counts from requested 1, 2, 4, 6;
+  deterministic 480×480 and 960×960 Sand/Water worlds; ten warmup ticks then
+  120 measured ticks per case with deterministic replenishment.
+- **Stress test:** Auto at 960×960, ten warmup then 600 measured ticks.
+- **Cancel/Escape:** checked between ticks, with a two-minute case limit.
+  A native tick already running must finish before cancellation.
 
-Both use separate worlds and keep the current game unchanged. Each case is
-limited to two minutes; Cancel or Escape stops between ticks. No new simulation
-rules or approximations are introduced. A native tick already in progress must
-finish before cancellation can take effect.
+[worker_benchmark.gd](../../godot/scripts/worker_benchmark.gd) uses temporary
+worlds, restores the process worker setting, and compares final exported-level
+hashes. Reports include requested/actual workers, mean/p95/max native time,
+test frame intervals, moves, parallel phases, and level hash. Frame intervals
+include test/UI scheduling, not normal gameplay rendering. Copy results selects
+JSON and attempts clipboard copy; the last successful report is stored at
+`user://last_worker_benchmark.json`.
 
-Results include actual worker count, mean/p95/max native tick time, test frame
-intervals, moves, parallel phases and final level hash. Frame intervals include
-test scheduling and the menu; they are not normal gameplay FPS or a rendering
-stress test. Results never retune Auto. **Copy results** selects the JSON report
-and attempts clipboard copy; Ctrl+C is available if the browser blocks it.
-The last successful report is saved locally as `user://last_worker_benchmark.json`.
-
-Native reference commands, after `native-build` and `godot-test`:
+Local commands use the same headless Godot fixture:
 
 ```powershell
 .\dev.cmd benchmark
 .\dev.cmd stress-test
 ```
 
-They use the same fixture under headless Godot and save reports and command logs
-under `validation/local/<timestamp>/`. Compare native tick timings between native
-and Web; headless frame intervals are not directly comparable to browser frames.
-Policy boundary tests cover logical counts 0, 1, 2, 3, 4, 5, 11, 12, 16, 20 and 64.
-Benchmark regression covers deterministic output, statistics, cancellation and
-restoration of the process's worker setting. Real low-core hardware remains a
-separate validation target.
+Logs/reports go to `validation/local/<timestamp>/`. Compare native tick timings
+with browser tick timings, not headless versus browser frame intervals.
 
-Retained Auto validation (2026-09-08): Windows reported 12 logical threads and selected
-six workers. All 14 Godot fixtures passed, including Auto boundaries and the
-benchmark regression; the expanded full-run regression passed separately after
-fixing a typed-array initialization error. Native and Chromium 152 reference
-benchmarks completed all eight cases with matching final level hashes across
-worker counts and platforms. The 600-tick stress runs also matched level hashes
-and move totals between native and Web. Browser Escape cancellation left the
-player's Neon Works world at its original tick 0; no console errors or warnings
-were observed in the successful run.
+The opt-in URL `?test=1&parity=1` additionally runs the one/four-worker
+four-demo probe: 30 ticks each, 120 exported-level hashes. It is also
+[test_web_worker_parity.gd](../../godot/tests/test_web_worker_parity.gd).
+Neither this nor the performance hash comparison proves complete replay state,
+Rapier trajectory equivalence, or all-platform equality.
 
-| Workload | Native mean tick | Web mean tick | Web p95 tick |
-| --- | --- | --- | --- |
-| 480×480, 4 workers | 4.79 ms | 6.15 ms | 11.02 ms |
-| 480×480, 6 workers | 3.82 ms | 4.73 ms | 6.48 ms |
-| 960×960, 4 workers | 17.88 ms | 18.16 ms | 20.29 ms |
-| 960×960, 6 workers | 14.17 ms | 14.61 ms | 17.00 ms |
-| 960×960, Auto stress, 600 ticks | 17.08 ms | 21.23 ms | 28.28 ms |
+## Acceptance and unresolved limits
 
-These are historical single-run reference measurements, not a promise of 60 FPS. The long
-stress case exceeds the 16.67 ms tick budget. Native reports are under
-`validation/local/20260908-150349/` and `20260908-150723/` in the workspace;
-the browser summary is `validation/local/auto-workers-20260908/browser-reference.json`.
-The native regression suite also passed 39/39. Both final exports passed six
-HTTP payload checks. That checkpoint's historical BUILD_ID check listed seven
-hash differences; the [current audit](../audits/2026-09-08-documentation-audit.md)
-records the separate fresh check. Historical locks are preserved.
+Use the [local validation procedure](local-build-and-validation.md) and the
+host guide at `C:/kybersand/docs/BROWSER_VALIDATION.md`, then verify
+both profiles: actual worker count, native exception rejection, render patches,
+input/menu/pause/reset, level import and replacement-world lifecycle. Physics
+Pit has separate [Rapier acceptance](rapier-2d-migration-runbook.md).
 
-### Earlier four-worker baseline
-
-Historical earlier local result (2026-09-08, Chromium 152 on Windows): four workers active,
-120/120 exported-level hashes identical to one worker, 98,286 moves in each run,
-480 parallel phases, no browser console errors/warnings, and the native C++
-exception rejection probe passes. Mean native tick time was 4.2365 ms for one
-worker and 2.9923 ms for four; this is one short fixture run, not a general FPS
-or cross-device performance guarantee. Native regressions passed 39/39 and
-Godot fixtures passed 12/12; the async parity fixture also passed separately.
-The threaded Foundry local save/load round trip reproduced the entire 17,712
-character CYSD1 export with no error and kept four workers. Material Lab,
-Waterworks, Foundry, and Neon Works ran interactively with no rejected render
-snapshots observed. Both profiles passed all six HTTP payload checks.
-
-At that earlier checkpoint, the historical consistency checker reported five BUILD_ID source
-hash differences, including the locally configured project.godot. Historical
-locks have not been rewritten; this is not an audited M11 release attestation.
-
-An initial pool of 12 prewarmed pthreads stalled the browser acceptance sequence.
-That earlier successful export used 24 to accommodate world replacement and runtime
-threads. The probe yields between ticks and worker-count runs. Keep this
-lifecycle fixture when changing pool sizing; the precise lower safe bound has
-not been established.
-
-`?test=1` exposes existing read-only DOM diagnostics including actual worker
-count. `?test=1&parity=1` additionally runs a startup acceptance fixture comparing
-one and four workers over 30 ticks in each of the four demos. The fixture compares
-120 SHA-256 hashes of exported level bytes, counts moves and parallel phases, and
-reports mean native tick time. This is level-state parity, not complete scheduler
-or RNG replay parity. The fixture yields between ticks for browser responsiveness.
-The same fixture runs as `test_web_worker_parity.gd` under `dev.cmd godot-test`.
-
-The Web controller still waits for each native tick before continuing its Godot
-frame. This enables parallel cellular jobs; it does not implement the desktop's
-fully asynchronous simulation/render owner. Both profiles now include Rapier2D;
-see the [Rapier runbook](rapier-2d-migration-runbook.md) for current Web acceptance.
-Emscripten labels dynamic linking with pthreads experimental; compatibility
-remains available for environments where the threaded profile cannot run.
-
-References: [Godot Web export](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_web.html)
-and [Emscripten dynamic linking](https://emscripten.org/docs/compiling/Dynamic-Linking.html).
+Historical tests exposed a stall with 12 prewarmed pthreads; a later four-worker
+export used 24, and current Auto exports use 32. The preserved record does not
+establish the minimum safe pool or robustness on every low-core device.
+Retest replacement, import, benchmark cancellation, and pool release whenever
+sizing changes. Browser/device coverage, complete replay, and production
+frame-time thresholds remain incomplete.

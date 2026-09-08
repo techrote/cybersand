@@ -1,258 +1,107 @@
 ---
 title: Determinism and boundary transfers
+document-kind: contract
+canonical-for: [native-determinism-and-hash-coverage]
 status: Current
-scope: Current strict deterministic behavior, phased ownership invariants, gameplay approximation boundary, buffered transfers, deferred events, replay state, random choices, and overflow
-keywords: [determinism, phased ownership, phase order, boundary transfer, deferred event, replay hash, worker completion]
-related-documents: [simulation-tick-and-threading.md, chunk-tile-and-buffer-model.md, ../operations/testing-validation-and-replay.md]
+scope: Native scheduling and hash semantics for declared fixture inputs; explicitly excludes complete replay guarantees
+keywords: [determinism, worker parity, state_hash, content_hash, explosion ordering, boundary transfers]
+related-documents: [simulation-tick-and-threading.md, chunk-tile-and-buffer-model.md, ../reference/level-saves-and-replay.md, ../reference/validation-evidence.md]
 last-reviewed: 2026-09-08
-implementation-state: Native phased ownership, deterministic random streams, job-local effects, sorted merge, worker-count replay, and a bounded tick-boundary explosion queue are Current; buffered transfers and generalized worker-produced deferred events remain unimplemented.
 ---
 
 # Determinism and boundary transfers
 
-Evidence scope (2026-09-08): **Current** below describes inspected source in the
-reconstructed local snapshot, not a verified Git HEAD or an all-platform test pass.
-See the [documentation audit](../audits/2026-09-08-documentation-audit.md) for
-source identity and dated validation; [M11 audit records](../audits/m11/README.md)
-retain historical scope. **Approved design** means Approved direction; Planned,
-Deferred, and Rejected statements do not claim implementation.
+## What does native worker parity guarantee?
 
-## At a glance
+**Current:** one-worker and multiworker PhasedInPlace runs use the same
+coordinate/tick-derived phase, scan, random and merge semantics. Exact fixture
+comparisons test that worker execution changes throughput without changing
+those specified results. They do not establish equivalence with SerialInPlace,
+the GDScript fallback, a different controller order or the coupled Rapier world.
+Executed cases and platforms belong in the
+[validation ledger](../reference/validation-evidence.md).
 
-- Purpose: ensure multicore execution changes performance, not world outcomes.
-- **Current**: native World has deterministic serial and four-phase in-place paths.
-- **Current**: phase membership, phase rotation, row scan, random streams, and job-effect merge are coordinate/tick derived.
-- **Current**: phased jobs directly mutate only geometrically exclusive write domains.
-- **Current**: ordinary radius-one/two movement and reactions do not use transfer records.
-- **Current**: state_hash includes scheduling-relevant cell/activity metadata; content_hash isolates settled content.
-- **Current**: queued explosions are hashed in enqueue order, commit before work gathering, and match across worker counts.
-- **Planned**: buffered transfers and generalized worker-produced deferred events require canonical schemas/order.
-- **Approved design**: strict replay remains a validation mode; gameplay fidelity may sample non-critical work without making thread timing an ownership input.
+Source: [World `tick_phased`, `scan_rect`, `deterministic_random`, `merge_job_effects`](../../native/src/world.cpp),
+[SchedulerGeometry](../../native/src/scheduler_geometry.cpp) and
+[native fixtures](../../native/tests/test_world.cpp).
 
-## Search anchors
+## Which ordering is part of simulation semantics?
 
-cross-tile ordering, cross-chunk seam, deterministic replay, state hash coverage, transfer conflict, random direction, single versus multithread
+- Global core-coordinate parity assigns four phases. First phase is
+  `tick_index % 4`; a barrier completes every phase before the next.
+- Rows scan bottom-up with deterministic alternating horizontal direction.
+  Job effects merge in sorted core order, not completion order.
+- `deterministic_random` hashes coordinates, tick and a rule stream identifier
+  into a byte. It has no mutable global random generator or wall-clock input.
+- Fixed secondary-interaction lanes are part of the compiled policy. They are
+  exercised by exact fixtures; no global switch disables all such sampling.
+- Ordinary bounded movement/reactions write directly inside exclusive domains.
+  Their in-place traversal and pairwise arithmetic resolve local competition.
+  Scheduler/storage edges do not create a general transfer queue.
 
-## Current determinism evidence
+See [geometry](chunk-tile-and-buffer-model.md) for domain enforcement and
+[step order](simulation-tick-and-threading.md) for controller differences.
+The atomic job distributor may assign different workers without changing these
+ordering inputs. General completion-order perturbation coverage must be named
+by an actual test; repeat/worker-count fixtures alone do not prove every schedule.
 
-[native/src/world.cpp](../../native/src/world.cpp) currently:
+## How are explosions and future transfers ordered?
 
-- gathers active chunk coordinates;
-- sorts those coordinates before scanning;
-- uses a tick-dependent deterministic_direction helper;
-- assigns 64×64 cores to four coordinate-parity phases;
-- executes each phase through a persistent pool when its job count reaches the configured threshold;
-- records job-local dirty/activity/non-empty effects and merges them by sorted core index after the barrier;
-- derives every rule random byte from world coordinates, tick, and stream ID;
-- hashes queued explosion coordinates/radius/strength in enqueue order and commits them at the next tick boundary;
-- provides World::state_hash and World::content_hash.
+**Current:** `ExplosionCommand` stores signed centre coordinates, bounded
+positive radius and byte collapse strength. Enqueue rejects invalid bounds or
+a full preallocated queue by returning false. Accepted events commit in enqueue
+order during `begin_tick`, before active work gathering. The blast removes its
+core, writes Fire at an available centre and converts eligible Wall in the
+two-cell shell into granular Stone (`state_b = 1`). Event-written cells carry
+the current epoch and start ordinary material execution next tick.
 
-[Native fixtures](../../native/tests/test_world.cpp) include repeat-run
-determinism, core/chunk crossings, Water, complete-material and explosion
-one/four-worker hash comparisons, geometry checks and concurrent lease tests.
-TSan-clean execution is dated historical M11 evidence; the fixture source alone
-does not establish a sanitizer result for this local Windows/Web snapshot.
-
-Limitations:
-
-- serial and phased traversal are separate semantics, so only behavioral totals—not byte-identical states—are compared across those backends;
-- no deliberate completion-delay injection exists beyond natural scheduling and TSan;
-- the every-direction/material mirrored boundary matrix is incomplete;
-- only the external bounded ExplosionCommand event exists; worker-produced fracture/event schemas and buffered transfers do not;
-- state/content hash compatibility is not versioned for files or network replay.
-
-## Approved strict-mode deterministic requirements
-
-For identical initial state, configuration, material definitions, command stream, interest-region transitions, and tick count:
-
-- job membership is identical;
-- each phased job has the same ownership, phase, scan semantics, and inputs;
-- buffered transfer or deferred-event production is identical where applicable;
-- merge and conflict outcomes are identical where applicable;
-- committed authoritative state is identical;
-- wake and sleep decisions are identical;
-- replay hashes are identical;
-- worker count and completion order do not change these results.
-
-Wall-clock timings and per-worker utilization are not authoritative and may differ.
-
-## Gameplay approximation boundary
-
-Exact repeat-run and worker-count comparisons for fixed native fixtures are
-**Current**. A general strict/gameplay switch and exact checkpoint restoration
-are not implemented and must not be inferred from those comparisons.
-It is no longer a universal requirement for every production fidelity policy.
-Gameplay mode may use explicit temporal cadence, sparse broad probes, lower-rate
-slow rules, and lower-resolution optional/distant fields as described by
-[ADR-008](../decisions/ADR-008-bounded-approximate-fidelity.md).
-
-Approximation does not permit:
-
-- worker completion order to claim a cell or resolve a conflict;
-- data races or concurrent writes outside the selected ownership model;
-- silent loss at a conserved or closed boundary;
-- cells passing through a known solid occupancy mask;
-- hidden capacity overflow;
-- systematic scan artifacts such as alternating empty rows.
-
-Approximation policies, seeds/rates, and fidelity tier must be observable. The Approved direction is to retain strict regression execution even when
-gameplay acceptance permits statistically or visually equivalent outcomes.
-Current WorldConfig has no switch that disables all staggered secondary lanes.
-
-## Boundary ownership and deferred effects
-
-Status: **Current** for bounded phased effects and external explosion commands;
-**Planned** for buffered transfers and generalized worker-produced/structural events.
-
-For the primary phased backend, an activity or storage boundary is not automatically a transfer boundary. A local operation executes directly only when all touched cells fall inside one job's current owned write domain. Otherwise it waits for an eligible phase or follows a future explicitly approved boundary policy.
-
-For the retained buffered backend, a transfer represents an effect outside an isolated output region. Its contract must support:
-
-- tile-edge and chunk-edge effects;
-- conserved quantities such as liquid mass;
-- material movement or state change where applicable;
-- deterministic identification of origin and destination;
-- validation against bounded capacity;
-- canonical merge and conflict resolution.
-
-Current explosion commands have signed centre coordinates, bounded positive radius,
-and byte collapse strength. Queue capacity and maximum radius are explicit.
-They commit in enqueue order before active work is gathered. The core is removed,
-the centre becomes Fire when its chunk exists, and eligible Wall in a two-cell
-shell becomes `state_b=1` granular Stone. Event-written cells carry the current
-update epoch and first run material rules on the following tick.
-
-Generalized worker-produced fracture, impulse, and structural events remain
-**Planned**; their fields, canonical sort order, and conflict rules are not
-inferred from the Current explosion queue.
-
-## Production sequence
-
-1. Increment the tick/epoch and reset per-tick change observations.
-2. Commit Current queued external explosions in enqueue order and gather the resulting active work.
-3. For the phased backend, execute phases 0–3 with non-overlapping ownership and a barrier after each.
-4. For the buffered backend, execute isolated outputs and merge their transfers canonically when implemented.
-5. Resolve future worker-produced long-range/structural events canonically when implemented.
-6. Finalize authoritative activity, sleep, dirty, conservation, and allocation observations.
-7. Publish immutable native render data through a separately invoked post-tick snapshot exchange.
-
-## Ordering rules
-
-### Current phased guarantees
-
-- Ordering is derived only from authoritative tick inputs, backend configuration, coordinates, rule semantics, and transfer/event contents.
-- Phased backend order includes phase and within-job scan order.
-- Worker identity, queue position after dispatch, completion timestamp, memory address, unordered-container iteration, and OS scheduling are not ordering inputs.
-- The same rule applies at a worker-tile boundary and a storage-chunk boundary.
-- Any pseudo-random choice is derived deterministically from stable authoritative inputs.
-
-### Current ordering and remaining ambiguity
-
-Phase is `(core_x parity, core_y parity)` and the first phase rotates by tick.
-Rows scan bottom-up and horizontal order alternates deterministically. JobEffects
-merge in sorted core order. Current external explosions retain enqueue order.
-Buffered transfer and generalized worker-produced event sort tuples remain
-**Ambiguous** because those systems are absent.
-
-## Conflict resolution
-
-Potential conflicts include:
-
-- several sources targeting one destination;
-- two conserved flows competing for limited destination capacity;
-- a gameplay command and material rule affecting related state;
-- phase/material conversion coinciding with movement;
-- a wake or dirty observation arriving through multiple paths.
-
-The approved architecture requires one deterministic policy for each conflict family. Current phased traversal, pairwise mass arithmetic, oriented reaction lookup,
-and explosion enqueue order already define limited conflict behavior in source.
-No generalized command/transfer conflict table is approved; new policies cannot
-be inferred from worker timing or the alternative GDScript solver.
-
-## Conservation
-
-For a closed liquid fixture:
-
-- total fixed-point liquid mass before and after a tick must match;
-- pairwise phased transfers or buffered edge transfers contribute exactly once;
-- rejected or clamped flux cannot disappear;
-- conversion between material-grid occupancy and liquid state must conserve mass;
-- serialization and interest-region sleep/wake cannot alter total mass.
-
-Current pure Water uses unsigned 8-bit mass, 255 capacity, and exact bounded
-integer transfer. Generalized reaction source/sink accounting remains **Planned**.
+**Planned:** buffered transfers and generalized worker-produced fracture,
+structural or long-range events. Their schema, canonical sort tuple and conflict
+rules are not approved by the existing explosion queue. The reserved Buffered
+backend cannot run. Accepted future transfers must have explicit conservation,
+capacity and conflict semantics; worker timing is not a permissible resolver.
 
 ## Replay state coverage
 
-The Approved complete-replay contract requires a hash to include every value that can alter future authoritative state, including as applicable:
+**Current:** `World::state_hash` and `World::content_hash` use the FNV-style byte
+mixer in `world.cpp::hash_byte` (seed `1469598103934665603`, multiplier
+`1099511628211`). The name is not a versioned durable compatibility promise.
 
-- committed material and optional-field state;
-- tick number;
-- material/rule definition identity;
-- configuration values that affect simulation;
-- activity, wake, and sleep state if they affect whether work runs;
-- deterministic random state or derivation inputs;
-- pending authoritative commands or deferred transfers if they survive a tick boundary.
+| Hash | Included | Intended comparison |
+|---|---|---|
+| `state_hash` | Tick/epoch; selected geometry, sleep/temperature/backend and capacity settings; ordered pending explosions; sorted chunk coordinates; chunk/block activity and quiet counts; cell material/state/epoch and resolved temperature | Same declared native fixture and scheduling state |
+| `content_hash` | Chunk size and ambient temperature; coordinates, material, compact state and temperature of non-empty/non-ambient cells | Settled content while time and scheduler bookkeeping advance |
 
-Current `state_hash` includes active/core/chunk/event capacities, the pending
-explosion queue, maximum explosion radius, and every command field in enqueue
-order. `content_hash` intentionally
-excludes pending events and scheduling metadata because it compares committed
-material/optional-field content only.
+`state_hash` **omits** simulation region, liquid-surface-adhesion option,
+transient obstacles/contact inputs, compiled rule identity and external
+body/controller state. Worker count is intentionally omitted for parity tests.
+A matching hash is therefore insufficient to prove that every future-affecting
+input matches. Record these omitted inputs independently.
 
-Snapshot serials, wall-clock metrics, render-only dithering, and worker utilization should not affect authoritative hashes.
+`content_hash` omits tick/epoch, activity, pending events and ordinary
+empty/ambient storage. It intentionally cannot detect a change in scheduling
+or pending behavior. Neither hash captures Rapier solver internals. Full replay
+requirements and CYSD1 level-byte comparison belong in
+[level saves versus replay](../reference/level-saves-and-replay.md).
 
-The Current algorithm is the FNV-style byte mixer in `world.cpp::hash_byte`
-(seed `1469598103934665603`, multiplier `1099511628211`). A versioned
-compatibility policy and durable replay format are **Planned**.
+## Which boundaries still limit the guarantee?
 
-**Unresolved coverage:** `World::state_hash` does not include the simulation
-region, liquid-surface-adhesion flag, transient obstacle field, compiled rule
-identity, or external body/controller state. These values can affect subsequent
-execution. Worker-count omission is intentional for parity comparisons, but a
-matching hash does not prove complete future-state equivalence. Record these
-inputs separately when comparing fixtures; adding complete coverage is outside
-this documentation task.
+**Current known defect:** phased region exclusion can age movable blocks into
+sleep without waking them when the region returns; SerialInPlace ignores the
+region. See the [interest contract and probe](../systems/world-storage-and-interest-region.md).
+This behavior must be included in fixture inputs and cannot be hidden by a
+claim of interchangeable backend semantics.
 
-**Current level saves:** [CYSD1 payload](../../native/include/cybersand/demo_snapshot.hpp)
-stores material, state_a, state_b and temperature for 1024² cells. It reconstructs
-a fresh World and omits tick/epoch, activity/sleep, queues and transient
-obstacles. [Godot metadata](../../godot/scripts/demo_save_codec.gd) adds player,
-options and optional body state, but not Rapier internal solver state. Exported
-level-byte/hash equality proves those payloads match; it does not prove exact
-replay continuation, native/Web physics equivalence, or bit-identical Rapier.
-See the [serialization contract](../reference/interfaces-and-message-contracts.md#world-serialization-contract).
+A failed native tick also lacks transactional rollback; time/events can change
+before failure. The [failure contract](simulation-tick-and-threading.md)
+describes the desktop/Web response. Deterministic failure reporting is not
+proof that the pre-tick state survives intact.
 
-## Overflow and determinism
-
-Capacity pressure is part of deterministic behavior:
-
-- no transfer or deferred event may be dropped silently;
-- no worker may allocate an unbounded fallback;
-- every overflow is asserted or reported with required and available capacity;
-- any approved recovery/reconfiguration occurs at a deterministic safe boundary;
-- replay records enough configuration/transition information to reproduce the outcome.
-
-Current external explosion enqueue rejects invalid radius/coordinate bounds and
-returns false when its preallocated queue is full; it never drops an accepted
-event. General tick/event overflow recovery remains **Planned**.
-
-## Required validation
-
-- same replay under one worker and multiple worker counts;
-- deliberately permuted worker completion timing with identical hash;
-- every direction across 32×32 activity boundaries;
-- every direction across 64×64 scheduling and 128×128 storage boundaries;
-- mechanical proof/checks that same-phase write domains do not overlap;
-- corner crossings;
-- liquid conservation at edges;
-- wake propagation across edges;
-- buffer capacity at, below, and beyond configured reservations;
-- hash-sensitivity tests proving scheduling-relevant state is covered.
-
-## Related decisions
-
-- [ADR-002](../decisions/ADR-002-double-buffered-tile-jobs.md)
-- [ADR-005](../decisions/ADR-005-water-model.md)
-- [Testing and replay](../operations/testing-validation-and-replay.md)
-- [ADR-008](../decisions/ADR-008-bounded-approximate-fidelity.md)
+**Approved:** exact comparison remains the engineering oracle for declared
+fixtures. **Planned:** complete hash/replay versioning, complete future-state
+coverage, selectable strict policy, general boundary-conflict schemas and the
+remaining mirrored/shifted boundary matrix. Closed pure-Water conservation is
+a separate invariant; generalized reaction source/sink accounting remains
+Planned. Rationale: [ADR-002](../decisions/ADR-002-double-buffered-tile-jobs.md),
+[ADR-005](../decisions/ADR-005-water-model.md),
+[ADR-008](../decisions/ADR-008-bounded-approximate-fidelity.md).

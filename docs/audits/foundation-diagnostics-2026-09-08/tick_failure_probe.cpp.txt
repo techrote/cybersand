@@ -1,0 +1,54 @@
+#include "cybersand/world.hpp"
+#include <exception>
+#include <iostream>
+
+void scenario(bool with_explosion) {
+    using namespace cybersand;
+    WorldConfig config{};
+    config.backend = SimulationBackend::PhasedInPlace;
+    config.worker_threads = 1;
+    config.active_core_capacity = 1;
+    config.deferred_event_capacity = 1;
+    World world(config);
+    world.set(20, 20, with_explosion ? Material::Wall : Material::Sand);
+    if (with_explosion) world.set(21, 20, Material::Wall);
+    world.set(160, 20, Material::Sand);
+    std::cout << "scenario=" << (with_explosion ? "queued_explosion" : "no_event") << '\n';
+    if (with_explosion) {
+        std::cout << "first_enqueue=" << world.queue_explosion(20, 20, 1, 0)
+                  << " second_enqueue_while_full=" << world.queue_explosion(20, 20, 1, 0)
+                  << '\n';
+    }
+    const auto before_tick = world.tick_index();
+    const auto before_content = world.content_hash();
+    const auto before_state = world.state_hash();
+    std::cout << "before_tick=" << before_tick << " center=" << static_cast<int>(world.get(20,20))
+              << " neighbor=" << static_cast<int>(world.get(21,20)) << '\n';
+    bool threw = false;
+    try {
+        (void)world.tick();
+    } catch (const std::exception& error) {
+        threw = true;
+        std::cout << "exception=" << error.what() << '\n';
+    }
+    std::cout << "threw=" << threw << " after_tick=" << world.tick_index()
+              << " center=" << static_cast<int>(world.get(20,20))
+              << " neighbor=" << static_cast<int>(world.get(21,20))
+              << " far_sand=" << static_cast<int>(world.get(160,20)) << '\n';
+    std::cout << "content_unchanged=" << (before_content == world.content_hash())
+              << " state_unchanged=" << (before_state == world.state_hash()) << '\n';
+    std::cout << std::hex << "before_content_hash=" << before_content
+              << " after_content_hash=" << world.content_hash()
+              << " before_state_hash=" << before_state
+              << " after_state_hash=" << world.state_hash() << std::dec << '\n';
+    if (with_explosion) {
+        std::cout << "enqueue_after_failure=" << world.queue_explosion(20, 20, 1, 0)
+                  << " (true shows the capacity-one original queue was drained)\n";
+    }
+}
+
+int main() {
+    scenario(false);
+    scenario(true);
+    return 0;
+}

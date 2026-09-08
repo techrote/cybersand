@@ -1,26 +1,19 @@
 # Contributing to CyberSand
 
-This source is M11-derived; inspect actual Git/backup identity before editing.
-The local snapshot currently has no Git metadata. Start with
-[AGENTS.md](AGENTS.md), the [documentation index](docs/README.md), the
-[current audit](docs/audits/2026-09-08-documentation-audit.md), and the governing ADR.
-[BUILD_ID](docs/BUILD_ID.md) retains historical M11 hashes.
+Read [AGENTS.md](AGENTS.md), the [source identity guide](docs/operations/source-checkpoint-and-recovery.md)
+and governing subsystem/ADR before editing. Work in a focused branch, preserve
+unrelated changes, and pair behavior changes with meaningful regressions and the
+[documentation-update checklist](AGENTS.md#documentation-obligations).
 
-Use a focused branch and keep generated output out of commits. Every behavioral
-change needs a regression test; every ownership, dependency, or status change
-needs the [documentation-update checklist](AGENTS.md#documentation-obligations). Run
-`python3 tools/ci/check_m11_consistency.py` and the smallest relevant tests
-during development, then the documented complete suite before release.
+Run current structural/retrieval checks and appropriate native/Godot/browser tests.
+Report historical consistency failures separately; [BUILD_ID](docs/BUILD_ID.md)
+retains M11 hashes. Do not weaken ownership, conservation or explicit capacity
+failure behavior to obtain a passing performance result.
 
-Do not weaken bounded work, immutable handoff, deterministic validation, or
-capacity failure behavior merely to make a performance fixture green. Native pool workers must not
-run Godot APIs or expose mutable storage; the desktop GDScript owner invokes
-its exclusive adapter/value APIs without live scene-tree or Rapier access.
+Required runtime libraries use Git LFS. Materialize and verify the intended
+platform's objects before claiming it can run. Keep generated output, secrets,
+local configuration, downloaded toolchains and logs out of source commits.
 
-Large runtime binaries are versioned with Git LFS. Install Git LFS before
-cloning or run `git lfs install && git lfs pull` before opening the Godot
-project. Never commit credentials, local editor state, build directories,
-downloaded toolchains, caches, logs, crash dumps, or export artifacts.
-
-The project has not selected a public license. Contributions and distribution
-outside the private repository require an explicit owner decision first.
+The project has no selected public license. See [license status](LICENSE_STATUS.md)
+and [release prerequisites](docs/operations/github-development-and-release.md)
+before external contributions or distribution.

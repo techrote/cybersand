@@ -1,0 +1,562 @@
+{
+  "version": 1,
+  "frozen_date": "2026-09-08",
+  "purpose": "Development set frozen before the structural rewrite; source-backed expected facts, not exact wording. No held-out or embedding-system claim.",
+  "questions": [
+    {
+      "id": "Q01",
+      "query": "Which exact local version do we have, and can I recover its uncommitted changes?",
+      "canonical": [
+        "operations/source-checkpoint-and-recovery.md",
+        "operations/cybersand-codex-development-handover.md"
+      ],
+      "facts": [
+        "Distinguish the actual inspected local checkpoint and dirty tree from the reconstructed upstream base and historical M11 source.",
+        "Name verified recovery coverage and limitations; a base hash or export identity does not prove current commit or backup coverage."
+      ],
+      "sources": [
+        "../../SOURCE-PROVENANCE.json",
+        "../AGENTS.md",
+        "audits/2026-09-08-documentation-audit.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "Q02",
+      "query": "Who is allowed to mutate the cells, and can a worker touch a Godot object?",
+      "canonical": [
+        "architecture/data-ownership-and-lifetimes.md"
+      ],
+      "facts": [
+        "Native World owns authoritative cellular state.",
+        "Desktop Godot worker exclusively calls its adapter/value APIs; internal native workers call no Godot APIs; live scene-tree and Rapier objects remain on the allowed Godot thread.",
+        "Web has synchronous main-thread ownership."
+      ],
+      "sources": [
+        "../godot/scripts/simulation_worker.gd::_worker_loop",
+        "../godot/scripts/web_demo_controller.gd::_physics_process",
+        "../native/include/cybersand/world.hpp::World"
+      ]
+    },
+    {
+      "id": "Q03",
+      "query": "Does enabling browser threads let drawing continue while the simulation tick is still running?",
+      "canonical": [
+        "architecture/simulation-tick-and-threading.md",
+        "operations/web-threading.md"
+      ],
+      "facts": [
+        "No: Web waits synchronously for each native cellular tick.",
+        "Pthreads parallelize native tick work; publication cadence is separate but asynchronous Web simulation/render ownership is unimplemented.",
+        "Desktop has an asynchronous Godot worker."
+      ],
+      "sources": [
+        "../godot/scripts/web_demo_controller.gd::_physics_process",
+        "../godot/scripts/simulation_worker.gd::_worker_loop"
+      ]
+    },
+    {
+      "id": "Q04",
+      "query": "What CPU counts does Auto choose in compatibility and threaded Web builds?",
+      "canonical": [
+        "operations/web-threading.md"
+      ],
+      "facts": [
+        "Compatibility forces one cellular worker.",
+        "Auto chooses 2 for logical thread count below 4, 4 for counts from 4 through 11, and 6 from 12 upward in the threaded profile.",
+        "Worker count does not imply concurrent Web presentation ownership."
+      ],
+      "sources": [
+        "../tools/build_web.py",
+        "../godot/native_extension/cyber_native_cell_world.cpp",
+        "../../docs/WEB_THREADING.md"
+      ]
+    },
+    {
+      "id": "Q05",
+      "query": "Are body physics, the player, and cellular updates ordered the same on desktop and Web?",
+      "canonical": [
+        "architecture/simulation-tick-and-threading.md"
+      ],
+      "facts": [
+        "No shared exact lockstep is established.",
+        "Desktop character update precedes cells in the asynchronous owner; main-thread Rapier exchanges samples/results.",
+        "Web applies previous results, steps Rapier, prepares the mask, ticks cells, then moves the character; pending terrain chunks gate Web advancement."
+      ],
+      "sources": [
+        "../godot/scripts/simulation_worker.gd::_worker_loop",
+        "../godot/scripts/web_demo_controller.gd::_physics_process",
+        "../godot/scripts/main.gd::_physics_process"
+      ]
+    },
+    {
+      "id": "Q06",
+      "query": "What happens to play when a native simulation tick fails?",
+      "canonical": [
+        "architecture/simulation-tick-and-threading.md"
+      ],
+      "facts": [
+        "Web checks simulation_tick failure, pauses, opens the home UI and reports the error.",
+        "The desktop worker currently ignores that return value; common failure handling is unresolved."
+      ],
+      "sources": [
+        "../godot/scripts/web_demo_controller.gd::_physics_process",
+        "../godot/scripts/simulation_worker.gd::_worker_loop"
+      ]
+    },
+    {
+      "id": "Q07",
+      "query": "Are we using Rapier or Godot physics, which version, and who advances it?",
+      "canonical": [
+        "operations/rapier-2d-migration-runbook.md",
+        "decisions/ADR-009-rapier-2d-rigid-body-backend.md"
+      ],
+      "facts": [
+        "Rapier2D 0.35.2 single precision is the selected backend.",
+        "The main Godot thread manually steps Rapier; workers receive values, not live physics objects.",
+        "Both Web profiles include Rapier by default; separate dated platform evidence is required."
+      ],
+      "sources": [
+        "../godot/project.godot",
+        "../godot/scripts/rapier_physics_bridge.gd",
+        "../godot/third_party/rapier2d.lock.json"
+      ]
+    },
+    {
+      "id": "Q08",
+      "query": "When a crate moves across sand, do we erase its old pixels and put them back?",
+      "canonical": [
+        "architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "facts": [
+        "No: the rectangle proof builds a separate sampled obstacle projection.",
+        "Movable overlap cells use bounded ordered ejection; unresolved cells remain and are counted.",
+        "General fracture and particle fallback are not Current."
+      ],
+      "sources": [
+        "../godot/scripts/rigid_body_coupling.gd",
+        "../godot/native_extension/cyber_native_cell_world.cpp"
+      ]
+    },
+    {
+      "id": "Q09",
+      "query": "What prevents terrain contacts and sand coupling from pushing a body twice?",
+      "canonical": [
+        "architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "facts": [
+        "Rapier owns hard-terrain contacts in the current adapter.",
+        "The Rapier path suppresses duplicate cellular Wall correction/support; capped cellular impact, pressure and displacement contributions remain.",
+        "Generalized backend-neutral coupling contracts are separate from this rectangle proof."
+      ],
+      "sources": [
+        "../godot/scripts/rigid_body_coupling.gd",
+        "../godot/scripts/rapier_physics_bridge.gd",
+        "../godot/native_extension/cyber_native_cell_world.cpp"
+      ]
+    },
+    {
+      "id": "Q10",
+      "query": "What exactly crosses the rigid body bridge, and how many bodies can it handle?",
+      "canonical": [
+        "reference/interfaces-and-message-contracts.md",
+        "architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "facts": [
+        "The prototype packed float32 input/result strides are 11 and 9, with at most 16 accepted bodies.",
+        "Values carry body/sample identity and numeric rectangle state/results; no Node, RID or live direct state crosses.",
+        "This is a prototype layout, not the approved generalized native ABI."
+      ],
+      "sources": [
+        "../godot/scripts/rigid_body_coupling.gd::MAX_BODIES,INPUT_STRIDE,RESULT_STRIDE"
+      ]
+    },
+    {
+      "id": "Q11",
+      "query": "If importing a level gives the exact same save string, will the next tick replay exactly too?",
+      "canonical": [
+        "reference/level-saves-and-replay.md",
+        "reference/interfaces-and-message-contracts.md",
+        "operations/testing-validation-and-replay.md"
+      ],
+      "facts": [
+        "No: CYSD1 reconstructs a finite level; identical re-export proves saved payload restoration only.",
+        "Tick/epoch, scheduler activity, complete configuration, pending commands and Rapier internal solver state are omitted.",
+        "A full durable exact-replay checkpoint and general strict mode remain Planned."
+      ],
+      "sources": [
+        "../godot/scripts/demo_save_codec.gd",
+        "../godot/native_extension/cyber_demo_bridge.hpp"
+      ]
+    },
+    {
+      "id": "Q12",
+      "query": "What is inside a CYSD1 file, and can it save an arbitrary sparse world?",
+      "canonical": [
+        "reference/level-saves-and-replay.md",
+        "reference/interfaces-and-message-contracts.md"
+      ],
+      "facts": [
+        "Current encoding is fixed at 1024 by 1024 with five native bytes per cell: material, state_a, state_b and LE16 temperature.",
+        "A 56-byte header, bounded JSON metadata, DEFLATE payload, SHA-256 integrity and Base64 text form the container.",
+        "General sparse-world persistence is Planned."
+      ],
+      "sources": [
+        "../godot/scripts/demo_save_codec.gd::HEADER_SIZE,WORLD_BYTES",
+        "../godot/native_extension/cyber_demo_bridge.hpp"
+      ]
+    },
+    {
+      "id": "Q13",
+      "query": "Can saving the level alter anything, and does a bad import damage the running world?",
+      "canonical": [
+        "reference/level-saves-and-replay.md",
+        "reference/interfaces-and-message-contracts.md"
+      ],
+      "facts": [
+        "Export requires exclusive safe-boundary ownership and clears the transient obstacle projection while copying stored-cell temperatures.",
+        "Coupling must rebuild before the next cellular tick.",
+        "Import validates and constructs a fresh World before swapping, preserving the old world on invalid input."
+      ],
+      "sources": [
+        "../godot/native_extension/cyber_demo_bridge.hpp::export_level,import_level",
+        "../godot/scripts/demo_save_codec.gd"
+      ]
+    },
+    {
+      "id": "Q14",
+      "query": "Do matching state hashes prove complete deterministic replay, including bodies and future inputs?",
+      "canonical": [
+        "architecture/determinism-and-boundary-transfers.md",
+        "operations/testing-validation-and-replay.md"
+      ],
+      "facts": [
+        "No: exact comparisons cover specified repeated or worker-parity cellular fixtures.",
+        "state_hash includes tick/epoch, selected config, cell/activity state and queued explosions but omits relevant external/controller/body state and some settings.",
+        "content_hash excludes scheduling/tick details and is the rest-stability check; neither is complete replay persistence."
+      ],
+      "sources": [
+        "../native/src/world.cpp::World::state_hash,World::content_hash",
+        "../native/tests/test_world.cpp"
+      ]
+    },
+    {
+      "id": "Q15",
+      "query": "Can the renderer read live cells or reuse a patch buffer before upload finishes?",
+      "canonical": [
+        "architecture/rendering-and-gameplay-bridges.md",
+        "architecture/data-ownership-and-lifetimes.md"
+      ],
+      "facts": [
+        "No: published patches have immutable snapshot or lease-owned lifetime, and the Godot adapter copies values.",
+        "Consumer validates metadata and bytes before Image construction/blit; acknowledgement follows successful consumption.",
+        "Malformed/rejected patches request a full refresh rather than reading mutable World storage."
+      ],
+      "sources": [
+        "../native/include/cybersand/render_snapshot.hpp",
+        "../godot/scripts/simulation_worker.gd",
+        "../godot/scripts/main.gd"
+      ]
+    },
+    {
+      "id": "Q16",
+      "query": "If all snapshot slots are still in use or a patch is too large, is dirty data lost?",
+      "canonical": [
+        "architecture/rendering-and-gameplay-bridges.md",
+        "operations/configuration-and-capacity-budgets.md"
+      ],
+      "facts": [
+        "No: native publish returns Backpressure or CapacityExceeded and preserves unacknowledged dirty state.",
+        "Required patch/byte counts and high-water observations are explicit; no mutable fallback or hidden growth.",
+        "Published slots stay immutable until the final lease releases."
+      ],
+      "sources": [
+        "../native/src/world.cpp::RenderSnapshotExchange::publish",
+        "../native/src/render_snapshot.cpp"
+      ]
+    },
+    {
+      "id": "Q17",
+      "query": "Dirty rectangles are small, so are we uploading only those pixels to the GPU?",
+      "canonical": [
+        "architecture/rendering-and-gameplay-bridges.md",
+        "systems/material-appearance-and-rendering.md"
+      ],
+      "facts": [
+        "Current RG8 CPU patches are sparse, but ImageTexture.update uploads the whole 1024-square two-byte texture (2,097,152 bytes).",
+        "True GPU subregion upload is not implemented; patch work and GPU upload cost must be measured separately."
+      ],
+      "sources": [
+        "../godot/scripts/main.gd::upload_texture_patches",
+        "../godot/scripts/web_demo_controller.gd"
+      ]
+    },
+    {
+      "id": "Q18",
+      "query": "Are simulation tiles double buffered, and how are writes into a neighboring tile made safe?",
+      "canonical": [
+        "architecture/chunk-tile-and-buffer-model.md",
+        "architecture/determinism-and-boundary-transfers.md"
+      ],
+      "facts": [
+        "Current default is phased in-place: 64-square scheduling cores, four parity phases, bounded radius-two ownership.",
+        "Workers write exclusively within their phase domains and effects merge deterministically.",
+        "A buffered backend enum/name does not mean the planned buffered algorithm or transfer sort tuple exists."
+      ],
+      "sources": [
+        "../native/include/cybersand/world.hpp::WorldConfig,SimulationBackend",
+        "../native/src/world.cpp::World::tick_phased"
+      ]
+    },
+    {
+      "id": "Q19",
+      "query": "Is the world really limited to 1024 pixels or twice the camera size?",
+      "canonical": [
+        "systems/world-storage-and-interest-region.md",
+        "operations/configuration-and-capacity-budgets.md"
+      ],
+      "facts": [
+        "Native World uses sparse chunks with signed coordinates and explicit capacities; 1024-square is the current demo/save adapter scope.",
+        "The interest region and storage capacity differ; the 2x validation target is not a permanent world-size limit.",
+        "General safe live capacity reconfiguration and sparse persistence remain Planned."
+      ],
+      "sources": [
+        "../native/include/cybersand/world.hpp::WorldConfig,ChunkCoord",
+        "../godot/native_extension/cyber_native_cell_world.cpp",
+        "../godot/scripts/demo_save_codec.gd"
+      ]
+    },
+    {
+      "id": "Q20",
+      "query": "What happens if I enqueue too many explosions or run out of reserved simulation space?",
+      "canonical": [
+        "operations/configuration-and-capacity-budgets.md",
+        "reference/configuration-reference.md"
+      ],
+      "facts": [
+        "Explosion enqueue rejects invalid/full input explicitly; effects are tick-boundary bounded work.",
+        "Capacity behavior is API-specific and must be reported. Avoiding hot tick allocation is an Approved target and Current only for preallocated fixture scope; lazy coordinator preparation may allocate chunks or temperature storage.",
+        "WorldConfig capacity defaults are not universal runtime adapter defaults; live resize is not already implemented."
+      ],
+      "sources": [
+        "../native/include/cybersand/world.hpp::WorldConfig",
+        "../native/src/world.cpp::World::queue_explosion",
+        "../native/include/cybersand/c_api.h"
+      ]
+    },
+    {
+      "id": "Q21",
+      "query": "Does native Water move twenty-four cells per update, and what does viscosity mean?",
+      "canonical": [
+        "systems/water-design.md"
+      ],
+      "facts": [
+        "The 24-cell travel rule belongs to the discrete GDScript fallback, not native Water.",
+        "Native Water stores 1-255 mass in state_a and performs conserved pairwise gravity/diagonal/lateral transfers.",
+        "Viscosity scales native lateral transfer rate independently of yield and adhesion; Water viscosity is zero."
+      ],
+      "sources": [
+        "../native/src/world.cpp::World::update_water,World::transfer_water",
+        "../native/include/cybersand/material.hpp",
+        "../godot/scripts/cell_world.gd"
+      ]
+    },
+    {
+      "id": "Q22",
+      "query": "How do calm water emission and the adhesion toggle differ?",
+      "canonical": [
+        "systems/water-design.md"
+      ],
+      "facts": [
+        "Calm/coherent emission uses an explicit command flag and a 12-tick state_b delay on lateral spread, not a new material.",
+        "The native adhesion toggle independently retains supported Water film at or below 48/255 when enabled.",
+        "Viscosity, yield and adhesion are distinct; fallback rules differ."
+      ],
+      "sources": [
+        "../native/src/world.cpp::World::update_water",
+        "../godot/native_extension/cyber_native_cell_world.cpp",
+        "../godot/scripts/main.gd"
+      ]
+    },
+    {
+      "id": "Q23",
+      "query": "How should I tell whether a shimmering pool is a fluid bug or just its shader?",
+      "canonical": [
+        "systems/water-design.md",
+        "operations/troubleshooting.md"
+      ],
+      "facts": [
+        "Inspect content changes/mass/dirty observations; state_hash advances with ticks and is not a stable-rest oracle.",
+        "Stable coordinate/mass dithering is presentation-only and must not wake or mutate cells.",
+        "Settling/conservation evidence applies to bounded named fixtures, not arbitrary mixtures."
+      ],
+      "sources": [
+        "../native/src/world.cpp::World::content_hash,World::copy_rgba",
+        "../native/tests/test_world.cpp",
+        "../godot/shaders"
+      ]
+    },
+    {
+      "id": "Q24",
+      "query": "Can we approximate interactions to keep frame times stable, and is strict mode available now?",
+      "canonical": [
+        "decisions/ADR-008-bounded-approximate-fidelity.md",
+        "architecture/principles-and-non-goals.md"
+      ],
+      "facts": [
+        "Bounded explicit approximation is Approved for runtime secondary work, preserving ownership, collision/occupancy and conservation constraints.",
+        "Exact fixture validation remains required.",
+        "A general selectable strict runtime mode and complete exact replay are Planned, not Current; local 2x2 occupancy coarsening is Rejected."
+      ],
+      "sources": [
+        "decisions/ADR-008-bounded-approximate-fidelity.md",
+        "../godot/scripts/simulation_worker.gd",
+        "../native/tests/test_world.cpp"
+      ]
+    },
+    {
+      "id": "Q25",
+      "query": "Can we move authoritative materials to GPU compute, or author their rules in arbitrary JavaScript?",
+      "canonical": [
+        "architecture/principles-and-non-goals.md",
+        "architecture/item-authored-material-programs.md",
+        "decisions/ADR-006-gpu-compute-deferral.md"
+      ],
+      "facts": [
+        "Authoritative local occupancy remains native CPU; GPU compute is Deferred pending ownership/readback/replay evidence.",
+        "An item-authored bounded native program is Planned; arbitrary per-cell JavaScript is Rejected.",
+        "Presentation-only GPU effects do not confer authority."
+      ],
+      "sources": [
+        "decisions/ADR-006-gpu-compute-deferral.md",
+        "architecture/item-authored-material-programs.md"
+      ]
+    },
+    {
+      "id": "Q26",
+      "query": "Do SimulationCore and GameplayBridge already exist as reusable implementation modules?",
+      "canonical": [
+        "architecture/module-boundaries.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "facts": [
+        "These are target semantic module names, not an assertion of implemented classes/APIs.",
+        "Current native World, C ABI, GDExtension, GDScript worker and rectangle proof are concrete surfaces.",
+        "Generalized interfaces need design review; map Approved/Planned names to actual source."
+      ],
+      "sources": [
+        "../native/include/cybersand/world.hpp",
+        "../native/include/cybersand/c_api.h",
+        "../godot/native_extension/cyber_native_cell_world.hpp"
+      ]
+    },
+    {
+      "id": "Q27",
+      "query": "What smoke, pressure and heat simulation actually runs today?",
+      "canonical": [
+        "systems/smoke-heat-pressure-roadmap.md"
+      ],
+      "facts": [
+        "Current native Smoke has bounded lifetime/crowd collapse and cannot burn or host Fire.",
+        "Current temperature storage/material reactions are not a complete generalized heat/pressure field solver.",
+        "Future fields and visual tuning must remain separately marked Planned or Deferred."
+      ],
+      "sources": [
+        "../native/src/world.cpp::World::update_cell",
+        "../native/include/cybersand/material.hpp",
+        "../native/include/cybersand/world.hpp"
+      ]
+    },
+    {
+      "id": "Q28",
+      "query": "Which exact tools should I build with, and can I share the native and Web bindings checkout?",
+      "canonical": [
+        "operations/github-development-and-release.md",
+        "operations/local-build-and-validation.md"
+      ],
+      "facts": [
+        "Use pinned Godot 4.7 official 5b4e0cb0f, godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496 and Emscripten 4.0.20; local Windows LLVM-MinGW and SCons pins are explicit.",
+        "Keep native and Web generated bindings separate.",
+        "Use local dev wrappers and distinguish local override from historical release provenance."
+      ],
+      "sources": [
+        "../../tools/dev.py",
+        "../tools/build_web.py",
+        "../tools/requirements-build.txt",
+        "../../docs/LOCAL_DEVELOPMENT.md"
+      ]
+    },
+    {
+      "id": "Q29",
+      "query": "If an export checksum passes or build-info names the base commit, is the browser build proven current?",
+      "canonical": [
+        "operations/github-development-and-release.md",
+        "operations/testing-validation-and-replay.md"
+      ],
+      "facts": [
+        "No: export-only structural validation/checksums do not prove fresh source-to-artifact build or browser execution.",
+        "source_commit records a snapshot base, not full local changes; retain current source and binary identities with dated evidence.",
+        "HTTP checks, headless fixtures, actual browser runtime and visual inspection are different validation scopes."
+      ],
+      "sources": [
+        "../tools/build_web.py",
+        "../../tools/dev.py",
+        "audits/2026-09-08-documentation-audit.md"
+      ]
+    },
+    {
+      "id": "Q30",
+      "query": "Do the old sanitizer results and current Windows fixtures prove Linux, Firefox and Safari work?",
+      "canonical": [
+        "reference/validation-evidence.md",
+        "operations/testing-validation-and-replay.md"
+      ],
+      "facts": [
+        "No: M11 sanitizer/results are historical with their recorded revision/platform scope; current Windows tests do not prove other platforms.",
+        "Dated Chromium compatibility/threaded evidence is separate; Firefox/Safari and current Linux are not established.",
+        "LFS pointer files are not usable runtime binaries and historical totals must not be relabelled as fresh passes."
+      ],
+      "sources": [
+        "audits/m11/README.md",
+        "audits/2026-09-08-documentation-audit.md",
+        "../../validation/browser-results.json"
+      ]
+    },
+    {
+      "id": "Q31",
+      "query": "Why is the old consistency check red, and should I update its hashes to make the release pass?",
+      "canonical": [
+        "operations/github-development-and-release.md",
+        "operations/testing-validation-and-replay.md",
+        "reference/validation-evidence.md"
+      ],
+      "facts": [
+        "Historical consistency mismatches identify local source/artifact drift and unresolved payload pointers; preserve failed evidence.",
+        "Do not rewrite historical release hashes to manufacture success; use separate current structural checks and evidence.",
+        "Known Web CI Emscripten/profile/template-lock contradictions require explicit resolution before release claims."
+      ],
+      "sources": [
+        "../tools/ci/check_m11_consistency.py",
+        "../.github/workflows/web-demo.yml",
+        "audits/2026-09-08-documentation-audit.md"
+      ]
+    },
+    {
+      "id": "Q32",
+      "query": "After changing physics ownership, which documentation and evidence must I update before a checkpoint?",
+      "canonical": [
+        "../AGENTS.md",
+        "operations/documentation-maintenance.md",
+        "reference/retrieval-index.md"
+      ],
+      "facts": [
+        "Map affected canonical contracts, ownership/lifetimes, invariants, configuration, ADR, roadmap, build/test guide and retrieval routes.",
+        "Record actual source/checkpoint identity and scoped validation; search aliases and reverse links for stale duplicate claims.",
+        "Keep historical records intact and run structural/link/retrieval checks plus relevant behavioral checks."
+      ],
+      "sources": [
+        "../AGENTS.md::Documentation obligations"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+#include "cybersand/world.hpp"
+#include <iostream>
+
+int main() {
+    using namespace cybersand;
+    WorldConfig config{};
+    config.backend = SimulationBackend::PhasedInPlace;
+    config.worker_threads = 1;
+    World phased(config);
+    phased.set(400, 32, Material::Sand);
+    phased.set_simulation_region(RectI64{0, 0, 64, 64});
+    for (int i = 0; i < 4; ++i) (void)phased.tick();
+    std::cout << "excluded_original=" << static_cast<int>(phased.get(400, 32))
+              << " active=" << phased.active_chunk_count() << '\n';
+    phased.set_simulation_region(RectI64{384, 0, 64, 64});
+    const auto reentry = phased.tick();
+    std::cout << "reentry_original=" << static_cast<int>(phased.get(400, 32))
+              << " below=" << static_cast<int>(phased.get(400, 33))
+              << " scheduled_cores=" << reentry.scheduled_cores << '\n';
+    phased.set(401, 32, Material::Sand);
+    (void)phased.tick();
+    std::cout << "after_neighbor_write_original="
+              << static_cast<int>(phased.get(400, 32))
+              << " below=" << static_cast<int>(phased.get(400, 33)) << '\n';
+    config.backend = SimulationBackend::SerialInPlace;
+    World serial(config);
+    serial.set(400, 32, Material::Sand);
+    serial.set_simulation_region(RectI64{0, 0, 64, 64});
+    (void)serial.tick();
+    std::cout << "serial_excluded_original=" << static_cast<int>(serial.get(400, 32))
+              << " below=" << static_cast<int>(serial.get(400, 33)) << '\n';
+    return 0;
+}

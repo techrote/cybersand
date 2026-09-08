@@ -1,29 +1,24 @@
 # Dependency locks and provenance
 
-Status: **Current** provenance map, reviewed 2026-09-08. Locks have different
-checkpoint/platform scopes; their existence does not certify the reconstructed
-local snapshot, a restored runtime, or an executed test. The
-[current audit](../docs/audits/2026-09-08-documentation-audit.md) records observed
-dependency/runtime hashes, LFS pointers and validation limits.
+**Current reference, reviewed 2026-09-08.** Each lock has a checkpoint/platform
+scope; its existence does not certify a current artifact or passing build.
+[Build instructions](../docs/operations/local-build-and-validation.md) own exact
+tool selection and [evidence](../docs/reference/validation-evidence.md) owns observed results.
 
-- [godot-runtime.lock.json](godot-runtime.lock.json) pins the historical M11 Linux editor and records its then-absent export templates. Exact Godot remains `4.7.stable.official.5b4e0cb0f`; local Windows tools are in `C:/Godot47`.
-- [native-toolchain.lock.json](native-toolchain.lock.json) pins godot-cpp `101ae38034304346a46ea9ea84ae156d3e860496`, SCons 4.10.1, the **Linux-host** LLVM-MinGW archive, host compiler packages, historical cached libraries/output hashes, and Linux ABI floors. The Windows-host LLVM-MinGW ZIP is a distinct archive; local DLL/static-library bytes differ from historical outputs.
-- [rapier2d.lock.json](../godot/third_party/rapier2d.lock.json) pins the official single-precision 2D v0.35.2 release asset and both Web WASM hashes. Its Linux activation note is historical; Windows/Chromium runs are scoped in the [runbook](../docs/operations/rapier-2d-migration-runbook.md).
-- [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md) and add-on-local license files preserve attribution.
+| Record | Scope |
+|---|---|
+| [godot-runtime.lock.json](godot-runtime.lock.json) | Historical M11 Linux editor; then-absent templates. Local Windows templates now exist, but current export lock reconciliation remains open |
+| [native-toolchain.lock.json](native-toolchain.lock.json) | Exact godot-cpp, SCons, Linux-host toolchain archive, compiler packages, historical library/output hashes and Linux ABI floors |
+| [Rapier lock](../godot/third_party/rapier2d.lock.json) | Official single-2D v0.35.2 release and profile-specific Web WASM hashes; historical Linux activation notes |
+| [Third-party notices](../THIRD_PARTY_NOTICES.md) | Attribution and redistribution notices, supplemented by add-on-local licenses |
 
-**Current local inputs:** the retained official Godot 4.7 export-template TPZ
-and its four dlink debug/release threaded/no-thread ZIP members are available.
-The TPZ SHA-256 is recorded in `C:/kybersand/LOCAL-DEV-SETUP-REPORT.md` and the
-current audit evidence. Thus the historical lock's `absent-and-unpinned` field
-is stale for local setup, but has not been replaced by a release export lock.
-The builder requires Emscripten **4.0.20** while checked-in Web CI still requests
-**4.0.11**; see [build/CI contradictions](../docs/operations/github-development-and-release.md).
-Reconcile these implementation/lock issues in a future checkpoint; historical
-hashes must not be rewritten to make a current build look like M11.
+The local Windows-host LLVM-MinGW ZIP is distinct from the lock's Linux-host
+cross-toolchain archive. Local DLL/static-library hashes differ from historical
+outputs. Do not overwrite old hashes to manufacture reproducibility.
+The [release guide](../docs/operations/github-development-and-release.md) records
+Web CI 4.0.11 versus builder4.0.20 and template/provenance gaps.
 
-Downloaded archives and package caches are not source-controlled. Verify every
-download before extraction. The private M11 setup-cache v2 was an optional
-historical recovery artifact; its present completeness has not been verified.
-Current offline development requires separate local tools/bindings/downloads
-and restored runtime objects, not just these lock files. See
-`C:/kybersand/docs/LOCAL_DEVELOPMENT.md`.
+Downloaded tools and caches are outside Git. Required runtime libraries use LFS;
+remaining pointers are not usable binaries. [Source identity](../docs/operations/source-checkpoint-and-recovery.md)
+records checkpoint/recovery scope. Verify exact payloads and retain notices before
+using or distributing rebuilt dependencies.

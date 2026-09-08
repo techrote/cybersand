@@ -1,192 +1,101 @@
 ---
 title: Chunk, tile, and buffer model
-status: Approved design
-scope: Independent storage, activity, and scheduling geometry; phased ownership; retained active-only buffering; optional fields; and dirty/activity tracking
-keywords: [128x128 storage chunk, 32x32 activity block, 64x64 scheduling core, phased ownership, optional field, active-only buffer]
+document-kind: contract
+canonical-for: [spatial-scheduling-geometry]
+status: Current
+scope: Native storage, activity, scheduling and write-domain geometry; explicit fallback and buffered distinctions
+keywords: [128x128 chunk, 32x32 activity, 64x64 core, radius two, four phases, Buffered]
 related-documents: [data-ownership-and-lifetimes.md, determinism-and-boundary-transfers.md, ../systems/activity-dirty-regions-and-waking.md]
 last-reviewed: 2026-09-08
-implementation-state: Native World implements 128×128 chunks, 32×32 activity blocks, 64×64 four-phase scheduling cores, radius-two ownership, and optional temperature fields; the buffered comparison remains unimplemented.
 ---
 
 # Chunk, tile, and buffer model
 
-Evidence scope (2026-09-08): **Current** below describes inspected source in the
-reconstructed local snapshot, not a verified Git HEAD or an all-platform test pass.
-See the [documentation audit](../audits/2026-09-08-documentation-audit.md) for
-source identity and dated validation; [M11 audit records](../audits/m11/README.md)
-retain historical scope. **Approved design** means Approved direction; Planned,
-Deferred, and Rejected statements do not claim implementation.
+## Why are there three different spatial sizes?
 
-## At a glance
+**Current native defaults:** storage allocation, activity elimination and
+parallel work use independent units. Sources:
+[WorldConfig/Chunk](../../native/include/cybersand/world.hpp),
+[SchedulerGeometry](../../native/include/cybersand/scheduler_geometry.hpp) and
+[World execution](../../native/src/world.cpp).
 
-- Purpose: separate persistent world storage from parallel work granularity.
-- **Current**: native World uses configurable chunks defaulting to 128×128.
-- **Current**: native 32×32 activity blocks control work elimination, sleep, and local wake.
-- **Current**: native 64×64 scheduling cores use four parity phases.
-- **Current**: every active kernel declares a write radius no greater than two cells.
-- **Current**: the hot Cell is four bytes; temperature is an optional per-chunk SoA.
-- **Planned**: active-only isolated output buffers remain a comparison/fallback and field-specific option.
-- **Current** fallback contrast: CyberCellWorld uses 16×16 activity blocks in a finite flat world; desktop native and Web use native 32×32 activity blocks.
-
-## Search anchors
-
-storage chunk size, activity block size, scheduling core size, Noita phase geometry, write ownership, double-buffer fallback, optional arrays
-
-## Spatial hierarchy
-
-| Level | Status | Size/purpose |
+| Unit | Default | Purpose |
 |---|---|---|
-| World coordinates | **Current**; target is **Approved design** | Native ChunkCoord supports signed coordinates; production retains a sparse large-world coordinate model. |
-| storage chunk | **Current** native default | 128×128 cells; allocation, cell payload, optional fields, activity metadata, and dirty bounds. Generalized streaming/persistence remain Planned; the fixed 1024² CYSD1 level payload exists separately. |
-| activity block | **Current** native default | 32×32 cells for work elimination, sleep, wake, and changed-this-tick state. |
-| scheduling core | **Current** native default | 64×64 core assigned by global coordinate parity to one of four phases. |
-| owned write domain | **Current** | Core rectangle expanded by configured maximum rule radius; non-overlap is geometry-tested. |
-| buffered output region | **Planned** retained candidate | Reserved comparison/fallback; no implementation exists. |
+| Storage chunk | 128×128 cells | Cell allocation, optional temperature, metadata and render dirty bounds |
+| Activity block | 32×32 cells | Local wake, quiet tracking and eligibility; 16 blocks per default chunk |
+| Scheduling core | 64×64 cells | Spatial job membership and one of four parity phases |
+| Write domain | Core expanded by maximum rule radius | All cells a job may mutate; current catalogue requires at most radius two |
+| Hard-terrain packet | 64×64 cells in the Godot demo | Rapier collider rebuild unit; separate from native scheduling |
 
-A storage chunk contains four 32×32 activity blocks along each axis and sixteen total. Scheduling cores may span activity or storage boundaries; storage layout must not create a physics seam. Final coordinate and ownership-mask types are undecided.
+Native coordinates are signed and sparse. The Godot adapter's 1024×1024 world
+is a finite demo choice, not a limit inherent in native ChunkCoord. The desktop
+GDScript fallback has its own finite arrays and **16×16** activity blocks.
+That fallback geometry does not describe either native Web profile.
 
-## Current repository model
+## How are writes into a neighboring tile made safe?
 
-### Native
+With the Current native defaults, each job scans a 64×64 core and may write
+within its core expanded by the catalogue maximum radius of two cells.
+`SchedulerGeometry::phase` uses global core-coordinate parity. Same-phase
+cores are separated enough that their expanded half-open write rectangles do
+not share cells; geometry rejects a radius greater than half a core. World
+also validates compatible chunk/core/activity alignment for its parallel path.
+See [geometry implementation](../../native/src/scheduler_geometry.cpp).
 
-WorldConfig defaults to 128-cell chunks, 32-cell activity blocks, 64-cell
-scheduling cores, and radius-two writes. World::Chunk stores a four-byte Cell
-array and allocates temperature only on demand. World::tick can use the serial
-reference path or the four-phase persistent-worker path.
+`World::scan_rect` visits cells inside the core; an operation may touch the
+expanded domain only within the enforced rule radius. Every affected cell must
+be owned. Out-of-domain attempts are rejected by the operation's checks; they
+are not automatically enqueued into a transfer system. Later visits may make
+them eligible. General deferred boundary policies remain **Planned**.
 
-### Godot fallback
+The coordinator prepares structural storage before phase dispatch. Jobs mutate
+cells in place and accumulate local effects; the barrier precedes deterministic
+metadata merge. No next-state cell array or ordinary movement-transfer record
+is needed for this backend. A storage or activity edge is not itself an extra
+physics rule. Boundary fixtures must verify that geometry changes do not
+introduce unintended seams; intended scan/phase order can still affect results.
 
-Only CyberCellWorld uses:
+## What is stored per cell and per chunk?
 
-- WORLD_WIDTH 1024 and WORLD_HEIGHT 1024 in the current finite material lab;
-- ACTIVITY_BLOCK_SIZE 16;
-- active_blocks and next_active_blocks;
-- per-cell updated_at and quiet_ticks;
-- block_movable_counts.
+**Current:** the hot cell is four bytes: material identity, `state_a`, `state_b`
+and the update epoch. Water uses `state_a` for 8-bit mass. Temperature is a
+separate optional signed-16-bit array, allocated for a chunk only when needed.
+Temperature storage exists; conduction is not implemented. Rule descriptors
+declare bounded behavior in [material definitions](../../native/include/cybersand/material.hpp).
 
-These 16×16 blocks belong to the alternative GDScript solver. Native 32×32
-activity blocks are already implemented, including both Web profiles.
+Activity and render dirtiness are distinct. Sleeping blocks eliminate rule
+scans; dirty chunk bounds track needed visual publication and remain until
+successful capture. The compact epoch prevents accidental repeated cell work
+and incurs a full loaded-cell epoch clear on wrap. Normal sparse work claims
+must account for that periodic exception. Detailed wake/sleep behavior belongs
+in [activity tracking](../systems/activity-dirty-regions-and-waking.md).
 
-## Scheduling and buffer policy
+## Are simulation tiles double buffered?
 
-### Current phased backend
+**Planned:** `SimulationBackend::Buffered` reserves a candidate name;
+`World::tick` currently throws if selected. It is not a runnable rollback.
+Executable alternatives are SerialInPlace and one-worker PhasedInPlace.
 
-- Committed cells are mutated in place only by a job that owns every touched cell in the current phase.
-- Four deterministic phases and intervening barriers provide the leading concurrency boundary.
-- Ordinary bounded local movement and reactions do not require a next buffer or transfer record.
-- Inactive loaded chunks and sleeping activity blocks are not scanned merely because they exist.
-- Rule access radius is finite and enforced.
+The retained design gives only active fields/regions isolated next/output
+storage, uses read-only neighborhood views, then resolves cross-output effects
+deterministically. Halo representation, transfer schema, conflict ordering and
+capacity-recovery behavior remain unspecified. It cannot share mutable ownership
+of a field with phased updates without a new explicit contract.
 
-### Retained buffered candidate
+**Rejected:** full-world double buffering as the ordinary model, per-cell locks,
+and a second competing liquid world. **Deferred:** alternative coarse-field or
+hexagonal work experiments; local occupancy coarsening remains Rejected.
+[ADR-002](../decisions/ADR-002-double-buffered-tile-jobs.md) explains the selection.
 
-- Only active regions and fields receive isolated next/output storage.
-- Inactive loaded chunks are not copied.
-- Cross-output effects are staged and deterministically resolved.
-- If implemented, the candidate could supply a comparison or field-specific alternative. The reserved Buffered enum is not a runnable rollback path.
+## Can these resources grow during play?
 
-Both candidates keep optional fields present only where their field policy requires them.
-
-### Not yet specified
-
-- final extraction of the Current four-byte Cell array and optional temperature SoA into a production storage module;
-- future bit widths beyond the Current layout;
-- allocator/pool implementation;
-- sparse optional-field representation;
-- active-next retention across consecutive ticks in the buffered candidate;
-- cache-line alignment and SIMD packing.
-
-These choices require measured comparison and must not change module ownership.
-
-## Ownership and neighbourhood rules
-
-Requirements:
-
-- A phased job receives a proven-exclusive write domain and cannot mutate outside it.
-- A buffered job receives an isolated output region and cannot write through read-only neighbouring state.
-- All data needed by active rule kernels must be available without unrestricted world pointers.
-- A chunk or tile boundary does not change rule meaning.
-- Structural storage changes cannot invalidate job views while a worker runs.
-- Every rule declares or belongs to an enforced maximum access radius.
-
-The current phase mask is `(core_x parity, core_y parity)`, the active catalogue
-requires a maximum radius of two, and the buffered halo remains **Ambiguous**.
-
-## Job write regions
-
-Each phased job has a non-overlapping write domain for its phase. Each buffered job has a non-overlapping next/output region.
-
-- In-place writes are legal only when every affected cell is phase-owned.
-- Buffered next-state writes are private to that job.
-- Out-of-domain local work waits for an eligible phase or uses a future approved deferred policy.
-- A job may emit local wake, activity, dirty, and profiling observations.
-- Observations become authoritative only in their designated merge/commit stage.
-
-Current internal job effects and write-domain representation are inspectable in
-[World](../../native/src/world.cpp); the final public job view remains Planned.
-
-## Transfers
-
-The primary phased backend does not stage ordinary bounded cell movement. Transfers remain relevant to the buffered comparison backend:
-
-- buffered jobs calculate effects locally;
-- cross-tile and cross-chunk effects are staged;
-- SimulationScheduler merges them after the worker barrier;
-- merge ordering is canonical and independent of completion order;
-- transfer capacity is bounded, observable, and reconfigurable.
-
-See [Determinism and boundary transfers](determinism-and-boundary-transfers.md). The exact transfer schema and conflict rule remain undecided.
-
-Current external ExplosionCommand has a bounded queue and exact schema in
-[World headers](../../native/include/cybersand/world.hpp). Generalized worker
-events, fracture and generation queues are Planned; they are not implemented
-by reserving the Buffered enum.
-
-## Activity and dirty tracking
-
-Activity and dirty state are different:
-
-- activity controls whether simulation work is scheduled;
-- wake state makes currently sleeping work eligible;
-- simulation dirty state means authoritative state changed;
-- render dirty state means an immutable presentation update is needed;
-- serialization dirty state means persistent data must eventually be saved.
-
-Current native tracking uses activity-block state, chunk dirty bounds and a
-one-byte update epoch in [World](../../native/src/world.cpp). A separate
-serialization-dirty pipeline is Planned.
-
-## Optional fields and future systems
-
-| Field/system | Status | Buffer expectation |
-|---|---|---|
-| Material ID | **Current**; authority concept is **Approved design** | Present for loaded committed cells; exact production representation undecided. |
-| Liquid mass/flux | **Current** | Water mass occupies `state_a`; pairwise phased transfers conserve its integer sum in closed fixtures. |
-| Temperature | **Current** optional storage; behavior is **Planned** | Per-chunk SoA is allocated on request; conduction is not implemented. |
-| Smoke state | **Current** | Compact Gas/Smoke kernel uses the same cell and scheduling model. |
-| Pressure/composition | **Planned** | Optional active fields; cadence and resolution undecided. |
-| GPU-resident derived fields | **Deferred / experimental** | Must not become terrain/collision authority initially. |
-
-## Alternative resolution and topology
-
-- **Deferred / experimental**: dynamically lower-resolution physics beneath full-resolution pixels may be benchmarked after authoritative semantics are stable.
-- **Deferred / experimental**: hexagonal grouping may be evaluated for coarse fields or work aggregation.
-- **Approved design**: neither experiment changes the initial 128×128 rectilinear storage hierarchy or the current leading 32×32 activity-block candidate.
-- **Explicitly rejected**: introducing a second competing world model solely for liquids or coarse fields.
-
-## Capacity implications
-
-The Approved target treats reservations as expandable. Current World capacities
-are construction-time limits with explicit failures; live resize is not implemented:
-
-
-- interest region dimensions and active-chunk budget are serializable configuration concepts;
-- initial buffers may reserve for the current fixture and a 2× target fixture;
-- a larger request triggers explicit safe reconfiguration;
-- high-water marks and memory observations determine practical expansion limits;
-- compile-time clipping and silent allocation are prohibited.
-
-## Related decisions
-
-- [ADR-002](../decisions/ADR-002-double-buffered-tile-jobs.md)
-- [ADR-004](../decisions/ADR-004-interest-region-and-reconfiguration.md)
-- [ADR-005](../decisions/ADR-005-water-model.md)
+**Current:** native construction capacities and reservation methods are
+explicit; lazy coordinator preparation may allocate during ticks. Preallocated
+regions avoid the tracked chunk/temperature allocation classes. Workers do not
+grow storage containers. **Approved:** a future drained transition can expand
+capacity. **Planned:** live resize and general persistence; **Deferred:** broad
+world streaming. Fixed-demo level saves provide none of these. Use
+[capacity budgets](../operations/configuration-and-capacity-budgets.md),
+[ownership](data-ownership-and-lifetimes.md) and the
+[validation ledger](../reference/validation-evidence.md) before claiming a
+particular region, allocation or boundary fixture is covered.

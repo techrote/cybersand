@@ -1,258 +1,115 @@
 ---
 title: Simulation tick and threading
-status: Approved design
-scope: Current loop and rigid-body bridge, four-phase in-place backend, retained buffered backend, worker restrictions, bounded approximate overload, deterministic coordination, and reconfiguration boundary
-keywords: [fixed timestep, worker pool, rigid body mask, phased in-place, four barriers, buffered backend, overload, temporal sampling]
-related-documents: [data-ownership-and-lifetimes.md, determinism-and-boundary-transfers.md, rigid-body-and-cellular-coupling.md, ../operations/profiling-observability-and-performance.md]
+document-kind: contract
+canonical-for: [simulation-step-order-and-threading]
+status: Current
+scope: Desktop, Web and native stage ordering, fixed quanta, failure behavior and permitted thread access
+keywords: [fixed tick, desktop worker, Web synchronous, Rapier order, character order, tick failure, backlog]
+related-documents: [data-ownership-and-lifetimes.md, determinism-and-boundary-transfers.md, rigid-body-and-cellular-coupling.md, ../operations/web-threading.md]
 last-reviewed: 2026-09-08
-implementation-state: Desktop uses an asynchronous Godot pacing owner and main-thread Rapier; Web synchronously owns ticks on the main thread. Native World dispatches eligible phases to persistent workers; compatibility Web is serial.
 ---
 
 # Simulation tick and threading
 
-Evidence scope (2026-09-08): **Current** below describes inspected source in the
-reconstructed local snapshot, not a verified Git HEAD or an all-platform test pass.
-See the [documentation audit](../audits/2026-09-08-documentation-audit.md) for
-source identity and dated validation; [M11 audit records](../audits/m11/README.md)
-retain historical scope. **Approved design** means Approved direction; Planned,
-Deferred, and Rejected statements do not claim implementation.
+## Who advances simulation on each platform?
 
-## At a glance
-
-- Purpose: define when data may change and where parallelism is allowed.
-- **Current**: Desktop CyberSimulationWorker advances the selected world at a nominal fixed interval on one Godot Thread while rendering consumes the newest immutable snapshot independently.
-- **Current**: packed RigidBody2D samples are rasterized into a separate worker obstacle mask before character and cellular work.
-- **Current**: the main thread manually steps Rapier2D once per Godot physics callback and reads active transforms in a batch before copying body state to the worker.
-- **Current**: desktop native and Web adapters call native World, which runs four deterministic parity phases through a persistent worker pool.
-- **Current**: a barrier separates every native in-place phase.
-- **Current**: worker completion order does not change tested authoritative state hashes.
-- **Current**: accepted explosion commands commit before active-work gathering, and immutable snapshots can be published after a completed tick.
-- **Planned**: active-only buffered jobs remain a comparison/fallback and field-specific backend.
-- **Current**: eligible native transport runs each tick; secondary interactions use fixed spatially staggered 2/4/8/120-tick lanes. Sleeping and interest rejection eliminate work; shader interpolation is presentation-only.
-- Unresolved: native/gameplay fidelity controls, queue pressure, and missed-deadline thresholds are not approved.
-
-## Search anchors
-
-fixed tick sequence, thread owns simulation, worker stage, barrier, overload policy, tick-boundary command, safe reconfiguration
+**Current:** desktop has a dedicated Godot pacing Thread. Web advances native
+cells synchronously from the main-thread `_physics_process`. Native World's
+persistent pool is a separate layer: it parallelizes eligible cellular jobs
+inside either owner's tick, without calling Godot APIs. Compatibility Web
+forces one cellular worker; threaded Web and native Auto select 2/4/6 at
+reported logical-processor thresholds 4 and 12. This is startup selection,
+not a live adaptive policy. See [Web profiles](../operations/web-threading.md).
 
 ## Current desktop worker loop
 
-Repository evidence: [desktop worker](../../godot/scripts/simulation_worker.gd),
-[native adapter](../../godot/native_extension/cyber_native_cell_world.cpp), and
-[Web controller](../../godot/scripts/web_demo_controller.gd).
+Source: [CyberSimulationWorker `_worker_loop`](../../godot/scripts/simulation_worker.gd).
 
-- CyberSimulationWorker owns one Thread and one Mutex.
-- TICK_INTERVAL_USEC is 16667.
-- MAX_BACKLOG_TICKS is 3.
-- Frame inputs and generic material-emission commands are copied or drained under the mutex; the prototype paint UI is one producer.
-- Character movement and the selected world's `simulation_tick` execute serially on the pacing owner; native `simulation_tick` internally dispatches phased cell jobs.
-- The native bridge rebuilds a separate rectangle occupancy field from packed body samples, reconciles moved-body overlaps, and publishes impulses without accessing live physics objects.
-- Native publication accumulates dirty RG8 patches and deep-copies each changed publication generation; full copies are explicit recovery or GDScript fallback paths.
-- Godot main.gd consumes the latest snapshot and uploads changed data.
+1. Latch frame state, copied body samples, reset and drained emissions under
+   the mutex; apply selected window and Water options on the exclusive owner.
+2. Reset if requested. Prepare body coupling, including overlap response when
+   unpaused. Apply material emissions even while paused.
+3. If unpaused, advance the sampled character by `1/60` second, then call the
+   selected world's `simulation_tick`.
+4. Publish copied character/cellular results and eligible render updates.
+5. Advance the wall-clock deadline by `TICK_INTERVAL_USEC = 16667`. When lateness
+   exceeds `MAX_BACKLOG_TICKS = 3` intervals, increment the overrun counter and
+   reset the deadline to now. This discards wall-clock backlog, not World tick
+   indices through an explicit skip operation.
 
-The desktop pacing thread is separate from native cellular workers: World can
-parallelize eligible phase jobs while the main thread renders. When lateness
-exceeds three tick intervals, the desktop loop increments its overrun counter
-and resets the next wall-clock deadline; it does not skip World tick indices.
-The desktop loop currently ignores the boolean returned by native
-`simulation_tick()` (its snapshot exposes failure telemetry), whereas the Web
-controller pauses and reports failure.
-That failure-policy difference remains unresolved for foundational work.
+The main thread renders the newest immutable snapshot while this work runs.
+Separately, its physics callback applies the newest unapplied cellular response,
+steps Rapier once, batch-reads transforms/flushes queries and sends copied body
+state to the worker. Body and cellular timelines may lag by multiple samples;
+serial checks prevent duplicate application. See
+[main `_physics_process`](../../godot/scripts/main.gd) and
+[Rapier `step`](../../godot/scripts/rapier_physics_bridge.gd).
 
-### Current Web owner
+<a id="current-web-owner"></a>
 
-`web_demo_controller.gd::_physics_process` owns native calls synchronously on
-Godot's main thread. Compatibility uses one cellular worker; threaded Web uses
-the same native phase pool and Auto 2/4/6 policy as the desktop adapter. The
-callback waits for native completion. Publication has a separate cadence but
-long ticks can block rendering; asynchronous desktop ownership is not present.
+## Current Web owner: body, player and cellular update order
 
-Web first checks menu/focus/pause and pending terrain colliders, applies the
-previous cellular result, steps Rapier, packs body samples and builds the mask,
-then ticks cells and advances the sampled character at 1/60 s. Desktop advances
-the character before its cellular tick. The two controller schedules are not
-claimed equivalent. Paused Web still permits painting before the pause guard.
-Web native-load failure is fatal; it does not select the GDScript fallback.
+Source: [web_demo_controller `_physics_process`](../../godot/scripts/web_demo_controller.gd).
 
-### Current Godot rigid-body stage
+1. Return when unavailable, the menu is open or focus is lost. Set the current
+   simulation window and allow armed painting before the pause guard.
+2. Return if paused. If Rapier is active, also return while hard-terrain packets
+   remain pending; this gates both solvers and the character.
+3. Apply preceding cellular results, step Rapier, pack body state and prepare
+   the native body mask. Without Rapier, prepare an empty mask.
+4. Complete one native cellular tick. On success advance the sampled character
+   by `1/60` second. On failure pause, open the menu and report the error.
 
-The runnable proof does not remove and restore rigid-body material pixels. A
-body is an independent Rapier-backed RigidBody2D. On each unpaused physics
-callback, the main-thread bridge applies the newest cellular response, calls
-Rapier `space_step`, batch-reads active transforms, flushes once, and copies
-authoritative body state to the worker. The worker reconciles a bounded swept
-rectangle for displacement, then retains only the newest endpoint in
-`rigid_body_occupancy`. Material and the sampled character read that mask as
-solid; impact, boundary pressure, correction, and diagnostics publish in the
-next immutable worker snapshot.
+Web's callback waits for all native jobs. `_process` consumes terrain work and
+publishes display data at a separate cadence; a slow cellular tick can still
+block rendering. **Deferred:** fully asynchronous Web ownership.
 
-This desktop stage remains intentionally asynchronous and a cellular result can be one
-or more body samples old under load. Sample serials prevent duplicate application;
-the bounded sweep covers ordinary skipped translations without blocking the
-render thread on the cellular worker.
+Desktop advances the character **before** cells; Web advances it **after**
+cells. Desktop does not share Web's pending-terrain gate. These schedules are
+not an equivalence guarantee; a common production order remains undecided.
 
 ## Current native scheduler
 
-Repository evidence: [World scheduler](../../native/src/world.cpp),
-[geometry](../../native/src/scheduler_geometry.cpp), and
-[regression fixtures](../../native/tests/test_world.cpp).
+Source: [World `begin_tick`, `tick_phased`, `finish_tick`, `tick`](../../native/src/world.cpp).
 
-- WorldConfig selects SerialInPlace or PhasedInPlace and a worker count.
-- The default hierarchy is 128×128 chunks, 32×32 activity blocks, and 64×64 scheduling cores.
-- Global core-coordinate parity assigns each core to one of four phases.
-- The first phase rotates by tick; a complete barrier separates passes.
-- Each worker scans bottom-up with deterministic alternating horizontal order.
-- Job-local dirty/activity/non-empty effects merge after the barrier in sorted core order.
-- No worker allocates chunks; the coordinator prepares the write domain before dispatch.
-- The coordinator applies accepted external explosions in enqueue order after resetting per-tick flags and before gathering active work.
-- Single/four-worker complete-material fixtures compare exact state hashes. Passing sanitizer runs belong to the dated historical M11 evidence, not an unexecuted current Windows/Web sanitizer run.
+1. Increment tick and compact update epoch; clear all cell epochs at wrap.
+   Reset change observations and apply queued external explosions in enqueue
+   order before gathering active work. Event-written cells carry this epoch
+   and begin ordinary material rules on the following tick.
+2. Gather eligible cores. For each of four phases, starting at `tick_index % 4`,
+   prepare write-domain storage and job-local results before dispatch.
+3. Execute same-phase exclusive jobs, using the persistent pool only when the
+   configured job threshold is met. Wait for completion, then merge local
+   effects in deterministic core order before the next phase.
+4. Finalize activity/sleep and statistics. Render publication is an explicit
+   caller operation after serialized mutation, outside `World::tick`.
 
-## Approved tick sequence
+Geometry and write restrictions are defined in
+[chunk/tile model](chunk-tile-and-buffer-model.md); scan/random/merge semantics
+and hash limits belong in [determinism](determinism-and-boundary-transfers.md).
+`SerialInPlace` is executable. `Buffered` throws as unimplemented.
 
-The sequence is a design contract. Exact function names and C++ signatures are undecided.
+## What happens when a tick fails or overloads?
 
-| Stage | Coordinator action | Reads | Writes | Required barrier |
-|---|---|---|---|---|
-| 1. Tick boundary | Establish the next fixed tick and latch eligible commands/configuration requests | Queued inputs and committed metadata | Tick-local input state | All prior tick work complete |
-| 2. Reconfiguration check | If approved and required, enter safe capacity/interest reconfiguration | Requested region, current capacities, memory observations | Bounded resources and configuration only while drained | No worker holds affected views |
-| 3. Activity and work planning | Select active work and construct deterministic jobs for the selected backend | Committed metadata, activity, interest region | Bounded task/deferred/buffer assignments | Plan complete before dispatch |
-| 4A. Phased cellular execution | For phases 0–3, dispatch non-overlapping in-place jobs and wait at a barrier after each phase | Authoritative cells, immutable MaterialRules, tick inputs | Phase-owned cells and local observations | Every job in a phase completes before the next |
-| 4B. Buffered execution | When selected for a backend or field, dispatch isolated-output jobs, then deterministically merge transfers | Immutable current state and neighbourhood views | Active next/output state, transfers, observations | Execution and merge complete before commit |
-| 5. Deferred event resolution | Apply bounded long-range or structural events in canonical order | Completed cell/field stages and deferred records | Authoritative structural state, wake/dirty observations | No worker retains invalidated views |
-| 6. Authoritative completion | Validate invariants and finalize activity, wake, dirty, and result state | Selected backend result | Committed metadata and immutable result staging | Tick state is whole before publication |
-| 7. Publication | Prepare immutable gameplay results and dirty render snapshots | Committed state and dirty metadata | Bounded publication storage only | Publication data frozen before exposure |
-| 8. Tick accounting | Record timing, counts, utilization, memory, high-water, overflow, and replay hash | Stage observations | Metrics only | None beyond completed tick |
+**Current:** native `tick` throws on reentrancy, unavailable capacity or an
+unsupported backend. Its exception cleanup clears `tick_in_progress_`; it does
+not roll back prior mutations. `begin_tick` can already have incremented time
+and committed explosions before a later capacity failure. A failed tick is
+therefore not a promised atomic no-op. A [dated source-built diagnostic](../audits/2026-09-08-foundation-diagnostics.md) confirms tick advancement, retained explosion mutations and drained events after planning failure.
 
-## Stage-specific write restrictions
+The [adapter `simulation_tick`](../../godot/native_extension/cyber_native_cell_world.cpp)
+catches errors and returns false with telemetry. Desktop currently ignores
+that return and continues publication/pacing; Web pauses as described above.
+**Unresolved:** production failure recovery, atomicity expectations and common
+controller behavior. Do not invent retry or rollback guarantees.
 
-Current `World::tick` implements a specialized part of stage 1: pending
-ExplosionCommands commit in enqueue order before active work is gathered.
-Their writes carry the new update epoch, so generated Fire/Stone begin ordinary
-material execution on the following tick. Current snapshot publication is an
-explicit post-tick caller operation rather than automatic work inside
-`World::tick`.
-
-- Phased jobs may write authoritative cells only inside their current exclusive write domain.
-- Two phased jobs in the same phase never have overlapping write domains.
-- Buffered jobs never write committed current state or another job's output.
-- Ordinary local movement is not forced through transfer storage in the phased backend.
-- Long-range and structural effects do not bypass deferred-event resolution.
-- Structural WorldStorage changes do not occur while worker views exist.
-- RenderBridge and GameplayBridge never run authoritative material rules.
-
-## Worker pool requirements
-
-### Current runnable native implementation
-
-- Workers persist across ticks; no thread-per-tick or thread-per-material creation.
-- Activity granularity is 32×32 and scheduling cores are 64×64 by default.
-- Jobs execute World methods through internal World/job-effect pointers with runtime write-domain checks; a type-enforced restricted RuleContext is Planned.
-- Jobs do not depend on Godot runtime objects.
-- Workers write metrics into bounded scheduler-provided observations or counters that do not alter simulation ordering.
-- Phase job counts are observable; per-worker utilization and barrier wait are still **Planned**.
-
-### Unresolved
-
-- Broader platform binaries and minimum-spec tuning. Current Auto chooses 2/4/6
-  workers at reported logical-processor thresholds 4 and 12, per owner direction
-  on 2026-09-08. This startup heuristic is not runtime adaptation or CPU affinity.
-- The Current pool distributes jobs using an atomic next-job index; whether to replace that scheduling policy after profiling is unresolved.
-- CPU-affinity or NUMA policy.
-
-These may be selected during implementation only with deterministic tests and documented capacity behavior.
-
-## Fixed-timestep requirements
-
-- Simulation ticks are independent of render frames.
-- A gameplay command is applied only at an identified tick boundary.
-- Interest-region and capacity changes are not applied halfway through a tick.
-- Replay uses the same command sequence, configuration, material definitions, initial state, and tick count.
-- Wall-clock timestamps do not influence authoritative rules.
-
-The current runnable sandbox uses 60 Hz pacing; a future serialized tick-rate policy remains a separate decision.
-
-## Overload policy
-
-### Current
-
-CyberSimulationWorker has a maximum backlog constant. The preferred native
-runtime keeps eligible local transport at full cadence and eliminates work by
-sleeping quiet 32×32 activity blocks and excluding scheduling cores outside the
-configured camera margin. Rendering may interpolate the two latest immutable
-snapshots, but that does not skip collision or material ticks. The older script
-world retains a serial sparse-flight fallback for unsupported native platforms.
-
-The native snapshot exchange has a narrower Current pressure rule: publication
-never blocks; it returns Backpressure when every slot is leased or
-CapacityExceeded when one snapshot cannot fit, and it leaves dirty state intact.
-This does not define command/backlog or live-reconfiguration policy.
-
-### Approved constraints
-
-An eventual policy must:
-
-- keep authoritative ticks whole;
-- report measured tick time and backlog;
-- never clip the interest region silently;
-- never allocate hidden capacity in the hot path;
-- never skip an authoritative transfer silently;
-- preserve race-free ownership and strict-mode replay for a fixed strict policy;
-- identify any gameplay approximation policy and fidelity tier explicitly;
-- distinguish temporary CPU overload from capacity exhaustion.
-
-### Ambiguous decisions
-
-The project has approved bounded temporal approximation in principle through
-ADR-008. Exact native thresholds, hysteresis, whether overloaded gameplay slows
-simulation wall-clock time, and command-pressure responses remain unresolved.
-Rendering must not pause merely because a worker misses its interval; it may
-repeat the newest immutable snapshot and expose its age.
-
-## Safe reconfiguration transition
-
-**Approved design**: capacity growth occurs only at a tick boundary or loading transition.
-
-Required transition properties:
-
-1. Requested interest region and derived capacity need are measured.
-2. Existing work completes or is prevented from starting.
-3. No worker retains a view into resources being replaced.
-4. New capacity is allocated explicitly.
-5. current/next and optional-field mappings are rebuilt consistently.
-6. diagnostics record old capacity, requested capacity, new capacity, time, and memory effect.
-7. simulation resumes on the next whole tick.
-
-The exact state names, API, and failure result are not yet approved.
-
-## Strict and gameplay consistency boundaries
-
-Parallel execution may change:
-
-- when a worker finishes;
-- per-worker busy/idle measurements;
-- wall-clock stage duration.
-
-Approved strict validation requirements must not change:
-
-- job membership and phase assignment for the same tick inputs;
-- selected backend semantics, phase order, scan order, and deterministic random inputs;
-- transfer/deferred-event contents and resolution where applicable;
-- committed authoritative state;
-- wake/dirty decisions derived from that state;
-- deterministic replay hash.
-
-No general strict/gameplay mode switch exists in WorldConfig. Existing exact
-fixtures exercise the compiled native policy, including its staggered secondary
-lanes; see [hash and replay limits](determinism-and-boundary-transfers.md#replay-state-coverage).
-
-An Approved future gameplay policy may change fine distant timing and stochastic choices according
-to an explicit fidelity policy. It still may not make memory races, worker
-completion order, silent loss, or known collision occupancy part of the result.
-
-## Related decisions
-
-- [ADR-002](../decisions/ADR-002-double-buffered-tile-jobs.md)
-- [ADR-004](../decisions/ADR-004-interest-region-and-reconfiguration.md)
-- [Testing and replay](../operations/testing-validation-and-replay.md)
-- [ADR-007](../decisions/ADR-007-rigid-body-cellular-coupling.md)
-- [ADR-008](../decisions/ADR-008-bounded-approximate-fidelity.md)
+Eligible native transport runs each tick; fixed staggered secondary lanes,
+sleeping and interest rejection reduce work. Region rejection has a known
+re-entry wake defect; SerialInPlace ignores the region. The exact limitation
+and probe are in [interest-region behavior](../systems/world-storage-and-interest-region.md).
+No general strict/gameplay switch, fidelity hysteresis or command-pressure
+policy exists. **Approved:** future adaptation must preserve explicit ownership,
+local collision and conservation, and report its policy.
+[ADR-008](../decisions/ADR-008-bounded-approximate-fidelity.md) records that intent.
+Actual platform execution evidence is in the
+[validation ledger](../reference/validation-evidence.md).
