@@ -127,3 +127,11 @@ The [2026-09-09 report](../audits/2026-09-09-physics-characterisation.md) record
 Windows/Web results and the unavailable Linux execution environment. Local
 rebuilt artifacts are measured inputs, not automatically updated published LFS
 runtime manifests; the current release gate remains separate from M11 integrity.
+
+Issue #10 uses the [current acceptance commands](physics-characterisation.md#how-do-i-reproduce-issue-10-acceptance)
+and [its own artifact audit](../audits/2026-09-09-issue-10-granular-policy.md).
+Both native Web modules were rebuilt before final script exports. The shared
+threaded probe must yield before replacing a newly constructed default world,
+after replacement and after teardown so browser pthread startup/recycling can
+finish before synchronous native joins. This fixture lifecycle requirement does
+not change production native ownership or introduce asynchronous Web simulation.

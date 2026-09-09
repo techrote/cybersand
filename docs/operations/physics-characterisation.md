@@ -2,7 +2,7 @@
 title: Reproducible physics characterisation
 status: Current
 document-kind: runbook
-scope: Opt-in measurement tools, fixture definitions, units and evidence limits for issue 9; production interaction and support changes remain future work
+scope: Opt-in physics measurement tooling, historical issue 9 baseline and current interaction regression routes
 canonical-for: [physics-measurement-tooling, physics-baseline-procedure]
 keywords: [powder, Mercury viscosity, barrel depth, masked source, contact impulse, diagnostic, fixture]
 last-reviewed: 2026-09-09
@@ -13,9 +13,11 @@ related-documents: [physics-characterisation-plan.md, ../architecture/rigid-body
 
 ## What is measured, and what remains a proposal?
 
-**Current:** issue #9 adds deterministic fresh-world fixtures, construction-only
-diagnostic variants and bounded counters. Production descriptor values, default
-coupling gains, player predicates and Rapier scene settings are unchanged. The
+**Current tooling:** issue #9 introduced deterministic fresh-world fixtures,
+construction-only diagnostic variants and bounded counters. That checkpoint left
+production behavior unchanged. Issue #10 subsequently implements the
+[granular/player policy](../systems/granular-interaction-policy.md); barrel gains
+and Rapier scene settings remain unchanged. The
 [dated report](../audits/2026-09-09-physics-characterisation.md) identifies actual
 source/artifact/platform results. The [plan](physics-characterisation-plan.md)
 still owns the proposed permeability, support and soliding investigations.
@@ -115,7 +117,7 @@ Keys encode `kind<<24 | source<<16 | target<<8 | direction`, with direction
 run a powder kernel with Wall as its visible material. Wall-labelled contact
 attempts can come from these masked grains. The dedicated native characterization
 records three downward attempts/raw y=4800 from one retained Sand grain. This is
-a baseline finding for #10/#11, not a production fix or ordinary hard-terrain
+a baseline finding for #11, not a production fix or ordinary hard-terrain
 collision. In coupled fixtures, a density decision can likewise use the proxy
 while the swap counter records the actual stored pair. Pure unmasked P1/P2 fixtures
 separate that effect from material density exchange.
@@ -148,7 +150,9 @@ gate only. Values are never written into shared material descriptors.
 
 The adapter's explicit `diagnostic_reset(options)` constructs an empty World and
 can select `workers`, `serial`, `telemetry`, `exchange_off`, `viscosity`,
-`displacement`, `boundary`, `contact`, `cap`, and `density_limit`. Defaults are the
+`displacement`, `boundary`, `contact`, `cap`, and `density_limit`. Issue #10 adds
+`support_cells` and `mercury_period` construction settings; see the
+[policy bounds](../systems/granular-interaction-policy.md). Defaults are the
 production values `.18/.19/.025/3/1.6`; gain bounds are 0..16, cap positive,
 density limit at least .05. Mercury accepts -1 or 0..255; workers 1..32 (compat Web
 requires one). A normal demo reset restores diagnostic options/gains to defaults.
@@ -157,12 +161,14 @@ density still has its own fixed 50..1600 clamp. It is not a global density chang
 
 ### Does Mercury viscosity slow measured downward penetration through packed Sand?
 
-**Measured, 2026-09-09:** viscosity 96/160/224/248 produces identical confined
+**Historical issue #9 measurement, 2026-09-09:** viscosity 96/160/224/248 produces identical confined
 vertical state hashes and 32-tick breakthrough through the 32-cell Sand bed.
 The one-cell-column control removes lateral-flow ambiguity. The exchange veto
 prevents that penetration, but is not an approved pair permeability rule.
 Use the [dated source/artifact evidence](../audits/2026-09-09-physics-characterisation.md)
-for seed budgets and platform scope; future source changes require fresh runs.
+for seed budgets and platform scope. **Current issue #10:** the independent
+30-tick lane gives 960-tick canonical breakthrough; see the
+[versioned policy](../systems/granular-interaction-policy.md) and its fresh evidence.
 
 ### Does a barrel stopped at the bottom prove half-depth granular support?
 
@@ -223,7 +229,8 @@ Rapier step, sample packing and overlap/pressure preparation (player stepping in
 P3); result application and snapshot analysis are outside this timing interval.
 Report p50/p95/max with that scope. These development runs can overlap other test
 processes; their timings are observations, not a production frame-time budget.
-No new torque, substep, permeability or persistent bearing model is implemented.
+No new torque, substep or persistent barrel bearing model is implemented.
+Current permeability and player settings belong to the versioned granular policy.
 
 [analyse.py](../../tools/physics/analyse.py) produces per-run CSVs and standard
 Matplotlib PNGs from raw data. Overlays show stored cells, the projected rectangle,
@@ -259,3 +266,26 @@ standalone/async/browser runs. The async CLI and trace allocator reject horizons
 outside 1..7,200 ticks and the CLI rejects seed counts outside 1..20. Construct
 the output directory before invoking Godot directly. Generator/default budgets
 remain distinct from production worker, terrain and gameplay queue capacities.
+
+## How do I reproduce issue #10 acceptance?
+
+Build the current DLL with `dev.cmd native-build`. Rebuild/run the native expanded
+matrix with `tools/physics/run.py native --group expanded --output <raw>/native-expanded`.
+Then run `tools/physics/issue10.py permeability --output <raw>/permeability`,
+`issue10.py pairs --output <raw>/pairs` and `issue10.py player --output <raw>/player`.
+The first two require the identified source-matched CLI from the expanded build;
+player requires the identified rebuilt adapter. New batch manifests identify each
+input snapshot. Keep `<raw>` below `C:/kybersand/validation/local/`.
+
+`test_interaction_policy.gd` covers both adapters. `test_interaction_async.gd`
+records the production desktop player owner; passing an output filename retains
+its fixed trace. Both Web profiles expose `?test=1&interaction=1`, executing the
+shared player/Mercury/Water/powder probe plus F01/F02 in the actual browser.
+Serve final exports with `serve.py` and retain each result in a separate output
+folder. `analyse_issue10.py <raw> <curated>` checks/reduces the complete named
+series; the [dated issue #10 evidence](../audits/2026-09-09-issue-10-granular-policy.md)
+records the exact scope, version decision, failures and publication limits.
+Use `--browser-suffix` and `--async-result` to select separately retained final
+reruns, rather than overwriting earlier browser or owner traces. Final acceptance
+also verifies invalid construction options preserve authority and ordinary demo
+reset restores the compiled support/permeability defaults.

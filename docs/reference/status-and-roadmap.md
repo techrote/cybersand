@@ -75,10 +75,11 @@ See [principles](../architecture/principles-and-non-goals.md) and the [ADRs](../
 
 **Current:** the [issue #9 measured baseline](../audits/2026-09-09-physics-characterisation.md)
 and [reproducible tooling](../operations/physics-characterisation.md) establish
-density-exchange, player-sampling and barrel-feedback evidence. Production fixes
-remain **Planned** in #10/#11: isolate retained-mask contact feedback, then choose
-pair permeability and material support policies. Raising Mercury viscosity or
-barrel impulse caps alone does not provide the intended behavior. The
+density-exchange, player-sampling and barrel-feedback evidence. Issue #10 now
+implements the [versioned player and exchange policy](../systems/granular-interaction-policy.md).
+Issue #11 retains **Planned** barrel work: masked-source feedback, barrier-aware
+ejection and persistent bearing. Raising barrel impulse caps alone does not
+provide the intended behavior. The
 [soliding plan](../operations/physics-characterisation-plan.md) still requires an
 explicit ownership decision before dynamic membership handoff. Current F01/F02
 contracts and the separate runtime publication gate remain applicable.
@@ -95,6 +96,10 @@ CI/provenance repair can be a separate bounded prerequisite for release-quality
 builds. The earlier M11 checkpoint sequence and reported rollback archives remain
 [historical records](../audits/pre-rag-rewrite-2026-09-08/README.md), not newly verified recovery points.
 
-## Issue #10 player checkpoint
+## Issue #10 player and exchange checkpoint
 
-**Current:** Material-aware player support, separate side resistance and bounded enclosure recovery are implemented. Exchange, parameter screening and affected Web execution are pending at this intermediate checkpoint. Barrel feedback/bearing/ejection stays in issue #11. See the [granular/player policy](../systems/granular-interaction-policy.md).
+**Current:** Material-aware player support, separate side resistance, bounded
+enclosure recovery, powder-pair exclusion and scheduled Mercury permeability are
+implemented. The [dated evidence](../audits/2026-09-09-issue-10-granular-policy.md)
+records parameter screening, native/fallback/desktop/Web execution and remaining
+publication/platform limits. Barrel feedback/bearing/ejection stays in issue #11.

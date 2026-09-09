@@ -75,4 +75,6 @@ records pause/re-entry, independent causes and combined failure/recovery validat
 
 Current runtime/source gates and immutable M11 retention use [separate validation policies](operations/current-and-historical-validation.md).
 
-Current sampled player support: [granular interaction policy](systems/granular-interaction-policy.md).
+Current player support and pair exchange: [granular interaction policy](systems/granular-interaction-policy.md),
+[ADR-011](decisions/ADR-011-granular-interaction-policy.md) and
+[dated issue #10 acceptance](audits/2026-09-09-issue-10-granular-policy.md).

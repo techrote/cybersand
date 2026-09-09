@@ -136,6 +136,13 @@ broad streamed loading/eviction until local material behavior is mature.
 
 ## Approved expansion and unresolved policy
 
+**Current granular interaction state:** a source block's pending Mercury deadline
+is retained while excluded. Due included blocks wake in the existing metadata
+pass; re-entry evaluates the current global lane without accumulated motion.
+Failed-world quarantine still blocks tick entry, and recovery discards old
+deadlines. See [activity](activity-dirty-regions-and-waking.md) and the
+[pair policy](granular-interaction-policy.md) for ownership and bounds.
+
 [ADR-004](../decisions/ADR-004-interest-region-and-reconfiguration.md) approves
 explicit serializable interest/capacity policy and a safe boundary for expansion.
 The proposed 10% horizontal/20% vertical margins have no frozen per-side-versus-total

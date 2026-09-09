@@ -1693,6 +1693,8 @@ void test_physics_diagnostics_observational() {
 
 void test_physics_diagnostic_controls() {
     cybersand::WorldConfig config;
+    // Keep the full-rate baseline as an explicit viscosity isolation control.
+    config.interaction_policy.mercury_exchange_period = 1;
     config.active_core_capacity = 1024;
     config.physics_diagnostics.enabled = true;
     auto viscous = config; viscous.physics_diagnostics.mercury_viscosity = 248;
@@ -1755,12 +1757,98 @@ void test_granular_player_support_policy() {
     require(!film.granular_support_at(64,100), "airborne Dust film is not a wall");
 }
 
+void test_powder_pair_and_void_policy() {
+    constexpr Material powders[] = {Material::Sand,Material::Stone,Material::Dust,
+        Material::Seed,Material::Salt,Material::Sodium,Material::Gunpowder,Material::Coal,Material::Rust};
+    for (auto top : powders) for(auto bottom : powders) {
+        if(top==bottom) continue;
+        World world;
+        for(int x=60;x<69;++x) for(int y=60;y<70;++y)
+            world.set(x,y,(x==60||x==68||y==69)?Material::Wall:y<64?top:bottom);
+        for(int tick=0;tick<60;++tick) (void)world.tick();
+        for(int x=61;x<68;++x) for(int y=60;y<69;++y)
+            require(world.get(x,y)==(y<64?top:bottom) ||
+                (top==Material::Seed && bottom==Material::Sand && y<64 && world.get(x,y)==Material::Plant),
+                "resting powder pair reordered: " +
+                std::to_string(static_cast<int>(top)) + "/" + std::to_string(static_cast<int>(bottom)) +
+                " at " + std::to_string(x) + "," + std::to_string(y) + " now " +
+                std::to_string(static_cast<int>(world.get(x,y))));
+        world.set(64,69,Material::Empty);
+        (void)world.tick();
+        if(bottom!=Material::Stone)
+            require(world.get(64,69)==bottom,"powder failed to collapse into a real void");
+    }
+}
+
+void test_mercury_lanes_wake_and_reentry() {
+    WorldConfig free_config; free_config.interaction_policy.mercury_exchange_period=60;
+    World free_fall(free_config); free_fall.set(64,64,Material::Mercury);
+    (void)free_fall.tick();
+    require(free_fall.get(64,65)==Material::Mercury,"permeability throttled genuine void fall");
+    WorldConfig brace_config; brace_config.interaction_policy.mercury_exchange_period=1;
+    World brace(brace_config);
+    for(int x=61;x<=67;++x) for(int y=61;y<=67;++y) brace.set(x,y,Material::Wall);
+    brace.set(64,63,Material::Mercury); brace.set(64,64,Material::Stone);
+    brace.set(63,63,Material::Stone); brace.set(65,63,Material::Stone);
+    (void)brace.tick();
+    require(brace.get(64,63)==Material::Mercury,"liquid displaced a braced Stone target");
+    require(brace.set_cell_state(64,64,Material::Stone,0,1),"granular Stone setup");
+    (void)brace.tick();
+    require(brace.get(64,64)==Material::Mercury,"granular Stone failed to yield to permitted exchange");
+    for(int dx=-1;dx<=1;++dx) for(int seam : {-65,-1,63,127}) {
+        World world;
+        for(int x=seam-2;x<=seam+2;++x) for(int y=seam-2;y<=seam+3;++y) world.set(x,y,Material::Wall);
+        world.set(seam,seam,Material::Mercury);
+        world.set(seam+dx,seam+1,Material::Sand);
+        for(int t=1;t<30;++t) {
+            (void)world.tick();
+            require(world.get(seam,seam)==Material::Mercury,"alternative attempts multiplied Mercury rate");
+        }
+        require(world.active_chunk_count()==0,"waiting exchange should let blocks sleep");
+        (void)world.tick();
+        require(world.get(seam+dx,seam+1)==Material::Mercury,"sleeping diagonal/seam exchange failed to wake");
+        require(world.get(seam,seam)==Material::Sand,"exchange lost displaced grain");
+    }
+    for(std::uint32_t period : {10U,30U,60U}) {
+        WorldConfig config; config.interaction_policy.mercury_exchange_period=period;
+        config.parallel_job_threshold=1;
+        World single(config); config.worker_threads=4; World parallel(config);
+        for(auto* world : {&single,&parallel}) {
+            for(int x=60;x<=100;++x) for(int y=62;y<=100;++y)
+                world->set(x,y,(x==60||x==100||y==100)?Material::Wall:Material::Sand);
+            for(int x=61;x<100;++x) world->set(x,62,Material::Mercury);
+        }
+        for(int t=1;t<=180;++t) {
+            auto a=single.tick();auto b=parallel.tick();
+            require(a.chunk_allocations==b.chunk_allocations,"worker allocation disparity");
+            require(single.state_hash()==parallel.state_hash(),"permeability worker parity");
+            const auto front=62+t/static_cast<int>(period);
+            require(single.get(80,front)==Material::Mercury,"configured lane did not make exactly bounded progress");
+        }
+    }
+    World paused;
+    for(int x=60;x<69;++x) for(int y=60;y<100;++y)
+        paused.set(x,y,(x==60||x==68||y==99)?Material::Wall:Material::Sand);
+    paused.set(64,60,Material::Mercury);
+    (void)paused.tick();
+    paused.set_simulation_region(cybersand::RectI64{768,768,64,64});
+    for(int t=2;t<=200;++t) (void)paused.tick();
+    require(paused.get(64,60)==Material::Mercury,"excluded region accrued motion");
+    paused.set_simulation_region(std::nullopt);
+    for(int t=201;t<210;++t) (void)paused.tick();
+    require(paused.get(64,60)==Material::Mercury,"reentry replayed missed lanes");
+    (void)paused.tick();
+    require(paused.get(64,61)==Material::Mercury,"reentry lost the pending exchange wake");
+}
+
 int main() {
     struct Test {
         const char* name;
         void (*function)();
     };
     const Test tests[] = {
+        {"powder pairs and void-driven rearrangement", test_powder_pair_and_void_policy},
+        {"Mercury lanes, sleeping wakes, seams and worker parity", test_mercury_lanes_wake_and_reentry},
         {"granular sampled support policy", test_granular_player_support_policy},
         {"physics diagnostic observer and worker parity", test_physics_diagnostics_observational},
         {"physics diagnostic isolated controls", test_physics_diagnostic_controls},

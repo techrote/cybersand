@@ -181,6 +181,7 @@ var flow_budget: PackedByteArray = PackedByteArray()
 var flow_direction: PackedByteArray = PackedByteArray()
 var active_blocks: PackedByteArray = PackedByteArray()
 var next_active_blocks: PackedByteArray = PackedByteArray()
+var exchange_wake_ticks: PackedInt64Array = PackedInt64Array()
 var block_movable_counts: PackedInt32Array = PackedInt32Array()
 var phase_core_slots: PackedInt32Array = PackedInt32Array()
 var job_moves: PackedInt32Array = PackedInt32Array()
@@ -239,6 +240,7 @@ func _init() -> void:
 	flow_direction.resize(cell_count)
 	active_blocks.resize(BLOCK_COUNT)
 	next_active_blocks.resize(BLOCK_COUNT)
+	exchange_wake_ticks.resize(BLOCK_COUNT)
 	block_movable_counts.resize(BLOCK_COUNT)
 	job_moves.resize(SCHEDULER_CORE_COUNT)
 	job_scanned.resize(SCHEDULER_CORE_COUNT)
@@ -266,6 +268,7 @@ func reset_demo_world() -> void:
 	flow_direction.fill(FLOW_DIRECTION_NONE)
 	active_blocks.fill(0)
 	next_active_blocks.fill(0)
+	exchange_wake_ticks.fill(0)
 	block_movable_counts.fill(0)
 	rigid_body_occupancy.fill(0)
 	rigid_body_occupied_indices.clear()
@@ -913,6 +916,20 @@ func simulation_tick() -> void:
 		update_epoch = 1
 
 	next_active_blocks.fill(0)
+	# Fixed one-deadline-per-block queue. Wake only included work; old deadlines
+	# trigger one reevaluation, never a backlog of missed permeability moves.
+	for block_id: int in range(BLOCK_COUNT):
+		if exchange_wake_ticks[block_id] == 0 or exchange_wake_ticks[block_id] > tick_index:
+			continue
+		var bx: int = block_id % BLOCK_COLUMNS
+		var by: int = block_id / BLOCK_COLUMNS
+		if simulation_window_enabled and not _block_intersects_simulation_window(bx,by):
+			continue
+		exchange_wake_ticks[block_id] = 0
+		active_blocks[block_id] = 1
+		for y: int in range(by * ACTIVITY_BLOCK_SIZE, mini(WORLD_HEIGHT,(by+1)*ACTIVITY_BLOCK_SIZE)):
+			for x: int in range(bx * ACTIVITY_BLOCK_SIZE, mini(WORLD_WIDTH,(bx+1)*ACTIVITY_BLOCK_SIZE)):
+				quiet_ticks[cell_index(x,y)] = 0
 	moves_last_tick = 0
 	scanned_last_tick = 0
 	dormant_cells_skipped_last_tick = 0
@@ -1108,11 +1125,15 @@ func _simulate_block(block_x: int, block_y: int, job_slot: int = -1) -> void:
 						sparse_flight_moves_last_tick += 1
 					continue
 
-			if cell_material == SAND:
+			if CyberInteractionPolicy.supports_load(cell_material):
+				# Fallback has no compact native Stone fracture state; intact bracing
+				# is mirrored, while explosion-created granular Stone stays native-only.
+				if cell_material == STONE and material_at(x-1,y-1) == STONE and material_at(x+1,y-1) == STONE:
+					continue
 				moved = try_move(x, y, x, y + 1, true, job_slot)
-				if not moved:
+				if not moved and cell_material != STONE:
 					moved = try_move(x, y, x + direction, y + 1, true, job_slot)
-				if not moved:
+				if not moved and cell_material != STONE:
 					moved = try_move(x, y, x - direction, y + 1, true, job_slot)
 			elif _is_cellular_liquid(cell_material):
 				var allow_diagonal_flow: bool = (
@@ -1212,6 +1233,15 @@ func try_move(
 		target_material,
 		target_y - y
 	)
+	if can_swap and ((source_material == MERCURY and CyberInteractionPolicy.supports_load(target_material)) or (target_material == MERCURY and CyberInteractionPolicy.supports_load(source_material))):
+		if tick_index % CyberInteractionPolicy.MERCURY_PERIOD != 0:
+			var block_id: int = block_index(x >> ACTIVITY_BLOCK_SHIFT,y >> ACTIVITY_BLOCK_SHIFT)
+			var due: int = tick_index + CyberInteractionPolicy.MERCURY_PERIOD - tick_index % CyberInteractionPolicy.MERCURY_PERIOD
+			if exchange_wake_ticks[block_id] == 0 or due < exchange_wake_ticks[block_id]:
+				exchange_wake_ticks[block_id] = due
+			can_swap = false
+	if can_swap and _is_cellular_liquid(source_material) and target_material == STONE and material_at(target_x-1,target_y-1) == STONE and material_at(target_x+1,target_y-1) == STONE:
+		can_swap = false
 	if target_material != EMPTY and not can_swap:
 		return false
 
@@ -1586,6 +1616,8 @@ func _try_liquid_lateral(
 
 func _initial_lateral_flow(material_id: int) -> int:
 	match material_id:
+		MERCURY:
+			return YIELDING_LIQUID_LATERAL_BUDGET
 		WATER:
 			return FREE_LIQUID_LATERAL_FLOW
 		SLUSH:
@@ -1610,6 +1642,8 @@ func _liquid_pressure_yield(material_id: int) -> int:
 
 func _liquid_viscosity(material_id: int) -> int:
 	match material_id:
+		MERCURY:
+			return 96
 		WATER:
 			return WATER_VISCOSITY
 		SLUSH:
@@ -1669,7 +1703,7 @@ func _coherent_liquid_can_use_diagonal(x: int, y: int, material_id: int) -> bool
 
 
 func _is_cellular_liquid(material_id: int) -> bool:
-	return material_id == WATER or material_id == SLUSH or material_id == PASTE
+	return material_id == WATER or material_id == SLUSH or material_id == PASTE or material_id == MERCURY
 
 
 func _liquid_has_surface_adhesion(material_id: int) -> bool:
@@ -1727,6 +1761,15 @@ func _material_density(material_id: int) -> int:
 			return 1000
 		SLUSH:
 			return 1100
+		STONE: return 2400
+		DUST: return 420
+		SEED: return 680
+		SALT: return 2160
+		SODIUM: return 970
+		GUNPOWDER: return 1700
+		COAL: return 1300
+		RUST: return 5250
+		MERCURY: return 13500
 		PASTE:
 			return 1300
 		SMOKE:
@@ -1738,6 +1781,8 @@ func _material_density(material_id: int) -> int:
 
 
 func _density_motion(material_id: int) -> int:
+	if CyberInteractionPolicy.supports_load(material_id) or material_id == MERCURY:
+		return DENSITY_MOTION_DOWN
 	match material_id:
 		SAND, WATER, SLUSH, PASTE:
 			return DENSITY_MOTION_DOWN
@@ -1751,7 +1796,8 @@ func _accepts_density_exchange(material_id: int) -> bool:
 	# This explicit target-side trait is what lets future gels, foams, trapped
 	# gases, and load-bearing granular materials opt out while remaining movable.
 	return (
-		material_id == SAND
+		CyberInteractionPolicy.supports_load(material_id)
+		or material_id == MERCURY
 		or material_id == WATER
 		or material_id == SMOKE
 		or material_id == SLUSH
@@ -1760,6 +1806,8 @@ func _accepts_density_exchange(material_id: int) -> bool:
 
 
 func _can_density_exchange(source_material: int, target_material: int, delta_y: int) -> bool:
+	if CyberInteractionPolicy.supports_load(source_material) and CyberInteractionPolicy.supports_load(target_material):
+		return false
 	if delta_y == 0 or not _accepts_density_exchange(target_material):
 		return false
 	var source_motion: int = _density_motion(source_material)
@@ -1915,7 +1963,8 @@ func _is_hard_surface_material(material_id: int) -> bool:
 
 func is_movable(material_id: int) -> bool:
 	return (
-		material_id == SAND
+		CyberInteractionPolicy.supports_load(material_id)
+		or material_id == MERCURY
 		or material_id == WATER
 		or material_id == SMOKE
 		or material_id == SLUSH

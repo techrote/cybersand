@@ -68,11 +68,12 @@ Web CI/export identity work remains issue #3.
 ## Physics measurement handoff, 2026-09-09
 
 Start with the [measured issue #9 report](../audits/2026-09-09-physics-characterisation.md)
-and [reproduction runbook](physics-characterisation.md). The source baseline is
-`ab4851e9e6a3ee182aba1a31a8f66d135e87df3a` plus the recorded local diagnostic
-delta on `codex/issue-9-physics-characterisation`. Density exchange, the Sand-only
-player predicate and masked-source barrel feedback have separate evidence.
-Production fixes remain #10/#11 work. The local source checkpoint includes
+and [reproduction runbook](physics-characterisation.md). That dated baseline used
+`ab4851e9e6a3ee182aba1a31a8f66d135e87df3a` plus a recorded diagnostic delta,
+subsequently committed as `10e8153` on `codex/issue-9-physics-characterisation`.
+Density exchange, the former Sand-only player predicate and masked-source barrel
+feedback have separate baseline evidence. Issue #10 changes the first two under
+its versioned policy; barrel work remains #11. The local source checkpoint includes
 fixtures, reduced data and plots; generated runtimes/raw logs remain in the
 active development workspace. Do not treat the old published DLL as containing
 the new diagnostic API or close the issue by reusing historical acceptance.
@@ -80,3 +81,9 @@ the new diagnostic API or close the issue by reusing historical acceptance.
 ## Issue #10 handoff
 
 **Current:** Issue #9 baseline is committed at 10e8153. Player and exchange are separate focused changes, with fresh DLL builds and preserved intake artifact. Barrel feedback/bearing/ejection belongs to #11. See the [granular/player policy](../systems/granular-interaction-policy.md).
+
+Continue from `codex/issue-10-player-and-exchange`; support commit `1fba848`
+precedes the exchange/evidence commit. Read the
+[acceptance audit](../audits/2026-09-09-issue-10-granular-policy.md) before reusing
+local artifacts. Runtime publication manifests remain historical and intentionally
+do not attest the new uncommitted DLL or local exports.

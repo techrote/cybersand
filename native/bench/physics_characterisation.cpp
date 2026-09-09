@@ -35,6 +35,7 @@ int main(int argc, char** argv) {
         if (std::stoi(argv[10])) config.backend = SimulationBackend::SerialInPlace;
         config.physics_diagnostics.disable_powder_exchange_targets = variant == "exchange_off";
         if (variant.starts_with("viscosity_")) config.physics_diagnostics.mercury_viscosity = static_cast<std::int16_t>(std::stoi(variant.substr(10)));
+        if (variant.starts_with("period_")) config.interaction_policy.mercury_exchange_period = static_cast<std::uint32_t>(std::stoi(variant.substr(7)));
         World world(config);
         const int left = 64 + seed * 3, surface = 96 + (seed * 7 % 20), floor = surface + depth;
         const int upper_height = 16;

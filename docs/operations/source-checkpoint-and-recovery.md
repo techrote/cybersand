@@ -129,3 +129,12 @@ and rebuild before invoking diagnostic APIs in a fresh checkout.
 ## Issue #10 intake
 
 **Current:** Issue #9 baseline is committed at 10e8153064f64272680696cce2b830791ecad2c3. The new branch is codex/issue-10-player-and-exchange. The sole intake delta was the diagnostic Windows DLL, copied to C:/kybersand/validation/local/2026-09-09-issue-10/intake/ with SHA-256 45f4ba78787a9e2d4daefb9b3ba24b1e476cb496343f63e77dd75a3e1c712eb7. Source/artifact manifests and source snapshots are in support-checkpoint/ in that same evidence directory. Fresh builds remain uncommitted. See the [granular/player policy](../systems/granular-interaction-policy.md).
+
+Support commit `1fba848bd2b624ec99974ffa896e34e01c39575e` is the first focused
+increment. The second commit contains exchange rules and their acceptance data.
+`runtime-final-reset/` retains the tested HEAD-plus-delta, tracked patch and new
+source snapshots; per-matrix manifests preserve earlier fixture inputs.
+The [dated audit](../audits/2026-09-09-issue-10-granular-policy.md) links curated
+identities and records the deliberately uncommitted rebuilt DLL. Rebuild from
+branch history before reusing runtime evidence; published manifests were not
+rewritten or treated as current-source attestations.

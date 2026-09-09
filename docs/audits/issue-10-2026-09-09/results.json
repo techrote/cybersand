@@ -1,0 +1,354 @@
+{
+  "ok": true,
+  "checks": 74509,
+  "errors": [],
+  "native_runs": 1070,
+  "player_runs": 257,
+  "native_ticks": 1963200,
+  "player_ticks": 462600,
+  "nonreactive_water_controls": 119,
+  "reactive_water_runs": 26,
+  "max_chunk_allocations": 0,
+  "max_cores": 6,
+  "max_histogram_used": 191,
+  "max_native_tick_us_p95": 1183.7,
+  "mercury_breakthrough_ticks": {
+    "1": 32,
+    "10": 320,
+    "30": 960,
+    "60": 1920
+  },
+  "browser_profiles": [
+    {
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+      "isolated": true,
+      "result": {
+        "ok": true,
+        "results": [
+          {
+            "cell_hash": "316ea7c5a43b6624",
+            "failures": [],
+            "fallback": false,
+            "fault": {
+              "controller": true,
+              "events": [
+                false,
+                true
+              ],
+              "failures": [],
+              "ok": true,
+              "workers": 1
+            },
+            "mercury_front": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32
+            ],
+            "ok": true,
+            "pairs": [
+              {
+                "bottom": 14,
+                "hash": "adecb4f4670b3adc",
+                "top": 2,
+                "water_mass": 0
+              },
+              {
+                "bottom": 2,
+                "hash": "e38a57adb432205c",
+                "top": 14,
+                "water_mass": 0
+              },
+              {
+                "bottom": 2,
+                "hash": "607145a24902d55c",
+                "top": 3,
+                "water_mass": 32640
+              },
+              {
+                "bottom": 3,
+                "hash": "1dd39400f0ae6020",
+                "top": 2,
+                "water_mass": 65280
+              },
+              {
+                "bottom": 14,
+                "hash": "946857576b5ffa20",
+                "top": 3,
+                "water_mass": 32640
+              },
+              {
+                "bottom": 3,
+                "hash": "4da2255db10bd75c",
+                "top": 14,
+                "water_mass": 65280
+              },
+              {
+                "bottom": 33,
+                "hash": "a70b6be6214386dc",
+                "top": 2,
+                "water_mass": 0
+              }
+            ],
+            "player": [
+              {
+                "after_excavation": 97.8833389282227,
+                "material": 2
+              },
+              {
+                "after_excavation": 97.8833389282227,
+                "material": 13
+              },
+              {
+                "after_excavation": 97.8833389282227,
+                "material": 14
+              },
+              {
+                "after_excavation": 97.8833389282227,
+                "material": 19
+              },
+              {
+                "after_excavation": 97.8833389282227,
+                "material": 23
+              },
+              {
+                "after_excavation": 97.8833389282227,
+                "material": 25
+              },
+              {
+                "after_excavation": 97.8833389282227,
+                "material": 26
+              },
+              {
+                "after_excavation": 97.8833389282227,
+                "material": 27
+              },
+              {
+                "after_excavation": 97.8833389282227,
+                "material": 29
+              }
+            ],
+            "policy_version": 1,
+            "regions": {
+              "controller": true,
+              "excluded_ticks": 8,
+              "failures": [],
+              "ok": true,
+              "resumed_steps": 1,
+              "workers": 1
+            },
+            "workers": 1
+          }
+        ]
+      }
+    },
+    {
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+      "isolated": true,
+      "result": {
+        "ok": true,
+        "results": [
+          {
+            "cell_hash": "316ea7c5a43b6624",
+            "failures": [],
+            "fallback": false,
+            "fault": {
+              "controller": true,
+              "events": [
+                false,
+                true
+              ],
+              "failures": [],
+              "ok": true,
+              "workers": 6
+            },
+            "mercury_front": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32
+            ],
+            "ok": true,
+            "pairs": [
+              {
+                "bottom": 14,
+                "hash": "adecb4f4670b3adc",
+                "top": 2,
+                "water_mass": 0
+              },
+              {
+                "bottom": 2,
+                "hash": "e38a57adb432205c",
+                "top": 14,
+                "water_mass": 0
+              },
+              {
+                "bottom": 2,
+                "hash": "607145a24902d55c",
+                "top": 3,
+                "water_mass": 32640
+              },
+              {
+                "bottom": 3,
+                "hash": "1dd39400f0ae6020",
+                "top": 2,
+                "water_mass": 65280
+              },
+              {
+                "bottom": 14,
+                "hash": "946857576b5ffa20",
+                "top": 3,
+                "water_mass": 32640
+              },
+              {
+                "bottom": 3,
+                "hash": "4da2255db10bd75c",
+                "top": 14,
+                "water_mass": 65280
+              },
+              {
+                "bottom": 33,
+                "hash": "a70b6be6214386dc",
+                "top": 2,
+                "water_mass": 0
+              }
+            ],
+            "player": [
+              {
+                "after_excavation": 97.8833389282227,
+                "material": 2
+              },
+              {
+                "after_excavation": 97.8833389282227,
+                "material": 13
+              },
+              {
+                "after_excavation": 97.8833389282227,
+                "material": 14
+              },
+              {
+                "after_excavation": 97.8833389282227,
+                "material": 19
+              },
+              {
+                "after_excavation": 97.8833389282227,
+                "material": 23
+              },
+              {
+                "after_excavation": 97.8833389282227,
+                "material": 25
+              },
+              {
+                "after_excavation": 97.8833389282227,
+                "material": 26
+              },
+              {
+                "after_excavation": 97.8833389282227,
+                "material": 27
+              },
+              {
+                "after_excavation": 97.8833389282227,
+                "material": 29
+              }
+            ],
+            "policy_version": 1,
+            "regions": {
+              "controller": true,
+              "excluded_ticks": 8,
+              "failures": [],
+              "ok": true,
+              "resumed_steps": 1,
+              "workers": 6
+            },
+            "workers": 4
+          }
+        ]
+      }
+    }
+  ],
+  "async_results": [
+    {
+      "completed_ticks": 240,
+      "material": 2,
+      "ok": true,
+      "overruns": 0,
+      "workers": 4
+    },
+    {
+      "completed_ticks": 240,
+      "material": 14,
+      "ok": true,
+      "overruns": 0,
+      "workers": 4
+    },
+    {
+      "completed_ticks": 240,
+      "material": 29,
+      "ok": true,
+      "overruns": 0,
+      "workers": 4
+    }
+  ],
+  "limits": [
+    "Water occupied-cell counts are not mass; reactive Water has explicit material conversion, not a Water-mass conservation claim.",
+    "Excavation/open geometry uses a finite observation ROI; escaped counts are not deletion evidence.",
+    "Native/Web hashes are compared within their platform/configuration, not across native-size_t and Wasm-size_t widths.",
+    "The moving-barrel player probe drives copied occupancy samples, not calibrated Rapier player pushing/carrying."
+  ]
+}

@@ -221,6 +221,9 @@ private:
     void apply_pending_explosions(TickStats& stats);
     void wake_cell_neighborhood(std::int64_t x, std::int64_t y);
     void keep_cell_active(std::int64_t x, std::int64_t y) noexcept;
+    void schedule_interaction_wake(std::int64_t x, std::int64_t y, std::uint64_t due) noexcept;
+    [[nodiscard]] bool exchange_permitted(Material source, Material target,
+        std::int64_t x, std::int64_t y, std::int64_t target_x, std::int64_t target_y);
     void mark_cell_dirty(Chunk& chunk, std::int32_t local_x, std::int32_t local_y);
     void move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_x,
                    std::int64_t to_y, bool swap, JobEffects* effects);

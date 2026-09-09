@@ -53,7 +53,7 @@ identity or completion timing.
 
 | Work lane | Current period | Scope |
 |---|---:|---|
-| Eligible transport/density motion | Each selected tick | Full rate for scheduled native work, not all stored cells |
+| Eligible transport/density motion | Each selected tick, except Mercury/powder permeability | Empty movement and native Water transfer remain full rate; [granular policy](granular-interaction-policy.md) owns pair exclusions and deadlines |
 | Selected burn/charge/lifecycle work | 2 ticks | Kernel-specific, not every lifetime; Fire/Foam have full-rate portions |
 | Pair chemistry, thermal/growth/capture checks | 4 ticks | Persistent contacts can react; brief contacts can be missed |
 | Smoke lifetime/crowding | 8 ticks | Coordinate-staggered decay |
@@ -137,7 +137,7 @@ not a runtime modding format or proof that every pair has been tested.
 
 ## Which penetration explanations have been measured?
 
-**Current:** the [dated physics baseline](../audits/2026-09-09-physics-characterisation.md)
+**Historical issue #9:** the [dated physics baseline](../audits/2026-09-09-physics-characterisation.md)
 reproduces ordered powder density exchange in packed layers and Mercury's rapid
 downward passage through Sand. Mercury viscosity 96/160/224/248 produces identical
 states in the confined vertical controls; the gate affects lateral movement.
@@ -148,11 +148,13 @@ The [bounded measurement API](../operations/physics-characterisation.md) records
 actual stored pairs for swaps and kernel-visible sources for contact attempts.
 Its immutable construction overrides leave the shared descriptor table and
 production defaults unchanged. A diagnostic target-wide exchange veto proves
-causality; pair permeability and support policy remain **Planned** for #10/#11.
+causality; issue #10 now implements the [versioned granular policy](granular-interaction-policy.md).
+Barrel bearing and feedback correction remain **Planned** for #11.
 
 ## Sampled player support
 
 **Current:** the [version 1 granular policy](granular-interaction-policy.md) separates
 material support capability from density and hard terrain. All nine powders can
 support the sampled player when locally packed and stable; side resistance uses
-a separate neighbourhood. This checkpoint does not yet change cell exchange.
+a separate neighbourhood. The separate exchange checkpoint rejects powder/powder density reordering and
+schedules Mercury/powder eligibility independently of viscosity.

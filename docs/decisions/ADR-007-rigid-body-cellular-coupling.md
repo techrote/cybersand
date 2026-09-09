@@ -72,7 +72,8 @@ Broader acceptance requires more than passing the existing three-body scene.
 add bounded observation and isolated parameter fixtures without changing this
 ownership decision. Repeated masked-source contacts, per-add saturation and
 missing persistent bearing must be considered before selecting a support model.
-**Planned:** #10/#11 may change interaction rules; dynamic aggregates still need
+**Current:** #10's [granular policy](../systems/granular-interaction-policy.md)
+changes player and pair rules. **Planned:** #11 owns barrel changes; dynamic aggregates still need
 the explicit exclusive-ownership ADR described by the characterisation plan.
 
 ## Issue #10 sampled support decision

@@ -223,6 +223,7 @@ struct World::Chunk {
     static_assert(sizeof(Cell) == 4, "hot cell layout must remain four bytes");
 
     struct ActivityBlock {
+        std::uint64_t next_interaction_tick = 0;
         std::uint32_t quiet_ticks = 0;
         bool active = false;
         bool changed_this_tick = false;
@@ -891,6 +892,17 @@ void World::keep_cell_active(std::int64_t x, std::int64_t y) noexcept {
     chunk->active = true;
 }
 
+void World::schedule_interaction_wake(std::int64_t x, std::int64_t y, std::uint64_t due) noexcept {
+    const auto a = address(x,y);
+    auto* chunk = find_chunk(a.chunk);
+    if (!chunk) return;
+    const auto index = static_cast<std::size_t>(a.local_y / config_.activity_block_size) *
+        static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
+        static_cast<std::size_t>(a.local_x / config_.activity_block_size);
+    auto& next = chunk->activity_blocks[index].next_interaction_tick;
+    if (next == 0 || due < next) next = due;
+}
+
 void World::set(std::int64_t x, std::int64_t y, Material material) {
     require_healthy();
     if (!valid_material(static_cast<std::uint16_t>(material))) {
@@ -1340,6 +1352,32 @@ void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_
     }
 }
 
+bool World::exchange_permitted(Material source, Material target, std::int64_t x,
+    std::int64_t y, std::int64_t target_x, std::int64_t target_y) {
+    const bool powder_source = MaterialRules::supports_granular_load(source);
+    const bool powder_target = MaterialRules::supports_granular_load(target);
+    if (!powder_source && !powder_target) return true; // gas/liquid behavior unchanged
+    const auto liquid = powder_source ? target : source;
+    if (MaterialRules::descriptor(liquid).state != MaterialState::Liquid) return true;
+    const auto braced_stone = [this](Material m, std::int64_t sx, std::int64_t sy) {
+        return m == Material::Stone && state_b(sx,sy) == 0 &&
+            get(sx-1,sy-1) == Material::Stone && get(sx+1,sy-1) == Material::Stone;
+    };
+    if (braced_stone(source,x,y) || braced_stone(target,target_x,target_y)) return false;
+    if (liquid == Material::Mercury) {
+        const auto period = config_.interaction_policy.mercury_exchange_period;
+        if (tick_index_ % period != 0) {
+            schedule_interaction_wake(x,y,tick_index_ + period - tick_index_ % period);
+            return false;
+        }
+    }
+    // All alternatives/initiators share a lane, and each endpoint may take part
+    // once on it. A displaced grain/liquid cannot be reused by another attempt.
+    const auto a = address(target_x,target_y);
+    const auto* chunk = find_chunk(a.chunk);
+    return chunk && chunk->cells[a.index].updated_epoch != update_epoch_;
+}
+
 bool World::try_move(Material material, std::int64_t x, std::int64_t y, std::int64_t target_x,
                      std::int64_t target_y, bool allow_swap, JobEffects* effects) {
     const auto obstacle = transient_obstacle_at(target_x, target_y);
@@ -1360,7 +1398,8 @@ bool World::try_move(Material material, std::int64_t x, std::int64_t y, std::int
     }
     if (allow_swap && !(config_.physics_diagnostics.disable_powder_exchange_targets &&
         MaterialRules::descriptor(target).state == MaterialState::Powder) &&
-        MaterialRules::can_density_exchange(material, target, target_y - y)) {
+        MaterialRules::can_density_exchange(material, target, target_y - y) &&
+        exchange_permitted(material,target,x,y,target_x,target_y)) {
         move_cell(x, y, target_x, target_y, true, effects);
         return true;
     }
@@ -2268,6 +2307,16 @@ void World::begin_tick(TickStats& stats) {
         for (std::size_t index = 0; index < chunk->activity_blocks.size(); ++index) {
             auto& block = chunk->activity_blocks[index];
             block.changed_this_tick = false;
+            if (block.next_interaction_tick != 0 && block.next_interaction_tick <= tick_index_) {
+                const auto included = clip_core_range(block_core_range(coord,index), selected_core_region_);
+                if (config_.backend == SimulationBackend::SerialInPlace ||
+                    (included.min_x <= included.max_x && included.min_y <= included.max_y)) {
+                    block.active = true;
+                    block.quiet_ticks = 0;
+                    chunk->active = true;
+                    block.next_interaction_tick = 0;
+                }
+            }
             if (!transition) continue;
             const auto bounds = block_core_range(coord, index);
             const auto included = clip_core_range(bounds, selected_core_region_);
@@ -2769,6 +2818,10 @@ std::uint64_t World::state_hash() const noexcept {
     hash_integer(hash, config_.scheduling_core_size);
     hash_integer(hash, config_.maximum_rule_radius);
     hash_integer(hash, config_.maximum_explosion_radius);
+    hash_integer(hash, InteractionPolicy::version);
+    hash_integer(hash, config_.interaction_policy.downward_support_cells);
+    hash_integer(hash, config_.interaction_policy.side_support_cells);
+    hash_integer(hash, config_.interaction_policy.mercury_exchange_period);
     hash_integer(hash, static_cast<std::uint64_t>(config_.active_core_capacity));
     hash_integer(hash, static_cast<std::uint64_t>(config_.active_chunk_capacity));
     hash_integer(hash, static_cast<std::uint64_t>(config_.maximum_chunk_count));
@@ -2798,6 +2851,7 @@ std::uint64_t World::state_hash() const noexcept {
         for (const auto& block : chunk->activity_blocks) {
             hash_integer(hash, static_cast<std::uint8_t>(block.active ? 1U : 0U));
             hash_integer(hash, block.quiet_ticks);
+            hash_integer(hash, block.next_interaction_tick);
         }
         for (std::size_t index = 0; index < chunk->cells.size(); ++index) {
             const auto& cell = chunk->cells[index];

@@ -23,11 +23,15 @@ and [evidence ledger](../reference/validation-evidence.md).
 ## What can be configured now?
 
 [WorldConfig](../../native/include/cybersand/world.hpp) is a construction-time
-value mirrored by versioned `cybersand_config_v2` in the
+value whose established fields are mirrored by versioned `cybersand_config_v2` in the
 [C ABI](../../native/include/cybersand/c_api.h). It controls geometry, workers,
 quiet thresholds, resident/active/planning capacities, and accepted explosions.
 Godot's finite adapter overrides several standalone defaults. Auto chooses
 workers when constructing a world; it does not resize a running pool.
+
+The compiled granular policy is a native construction value; the C ABI keeps
+its existing layout and uses policy defaults. Diagnostic adapter overrides build
+a fresh candidate before replacement. There is no live setting or save field.
 
 [RenderSnapshotExchange](../../native/include/cybersand/render_snapshot.hpp)
 has separate mandatory slot, patch-per-slot, and byte-per-slot capacities.
@@ -145,6 +149,14 @@ budgets. These measurements do not establish a production performance target.
 ## Sampled support query budget
 
 [Granular policy](../systems/granular-interaction-policy.md) bounds native queries
-to 32 by 32 boxes, at most 20 stable-material samples per contact and 128
+to 32 by 32 physical boxes (at most 33 by 33 raster cells at fractional origins),
+at most 20 stable-material samples per contact and 128
 enclosure candidates. Native queries allocate no storage; no worker read/write
 domain or Rapier shape is added.
+
+Delayed exchange adds one 64-bit deadline per native activity block, eight extra
+bytes in the tested layout. It reuses the existing metadata pass and exclusive
+block ownership; no queue or tick allocation is added. Fallback uses a fixed
+PackedInt64Array and resets quiet counters only inside due included 16 by 16
+blocks. This is bounded local waking, not a new whole-world cell scan. Existing
+World preparation/allocation and failed-tick limits still apply.

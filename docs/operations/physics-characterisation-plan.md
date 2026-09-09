@@ -5,7 +5,7 @@ document-kind: runbook
 scope: Proposed experiments for material penetration, player support, barrel settling and reversible aggregate physics; inspection is not runtime acceptance
 canonical-for: [physics-characterisation-plan, soliding-investigation]
 keywords: [powder, mercury, barrels, sinking, soliding, permeability, granular support]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-09
 related-documents: [../architecture/rigid-body-and-cellular-coupling.md, ../systems/materials-and-rule-kernels.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md]
 ---
 
@@ -21,22 +21,25 @@ penetration. Ordinary barrel impacts should embed by no more than roughly half
 their depth and then stop. Include eventual reversible **soliding** of rested,
 mostly contiguous same-material regions for Rapier macro motion and ballistics.
 
-**Current evidence here is source inspection only**, against source HEAD
+**Historical planning inspection, 2026-09-08**, against source HEAD
 `b462e6b` on `codex/issues-1-2` in `C:/kybersand/source`. At inspection the only
 source-tree delta was the installed Windows native DLL (LFS working-file hash
 prefix `fda49d0`, versus tracked `402732d`); the workspace repository was clean.
 This source commit is the existing recoverable baseline. The DLL has not been
 rebuilt or run for this plan. Retain Godot 4.7 and pinned Rapier v0.35.2.
-All experiments and candidate numbers below are **Planned**, not measured fixes
-or new runtime configuration keys. Implementation and deployment are separate
-checkpoints; no solver changes are part of this planning checkpoint.
+The experiments and candidate numbers below describe that **Planned** checkpoint,
+not measured fixes or runtime configuration keys at its date. The later
+[issue #9 baseline](../audits/2026-09-09-physics-characterisation.md) and
+[current issue #10 policy](../systems/granular-interaction-policy.md) supersede
+player/pair hypotheses and select versioned settings through ADR-011. Barrel
+bearing and soliding remain Planned. Implementation and deployment are separate.
 
-## What the code already explains
+## What the inspected baseline code explained
 
 Current contracts remain in [materials](../systems/materials-and-rule-kernels.md)
 and [coupling](../architecture/rigid-body-and-cellular-coupling.md).
 
-| Report | Current source mechanism | Hypothesis to test |
+| Report | Historical inspected mechanism | Hypothesis at that checkpoint |
 |---|---|---|
 | Solids flow through solids | `MaterialRules::can_density_exchange` tests vertical direction, target permission and relative density, without a powder/powder exclusion. Sand, Stone, Dust and other powders accept exchange. | Denser grains can reorder through a packed lighter bed with no void or yielding threshold. Separate this from actual hard-surface tunnelling, chemistry and Stone's brace/granular modes. |
 | Powders do not interact with player | Native `character_solid` and fallback `is_character_solid` accept hard surfaces or Sand specifically. Character movement samples the perimeter of its box. | Other powders are intentionally absent from that predicate, regardless of their density; also test initial enclosure because perimeter sampling is not full-volume recovery. |

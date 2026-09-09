@@ -199,11 +199,18 @@ cover observer toggles, phased worker parity, duplicate rejection, stored Water
 under occupancy masks and explicit telemetry overflow. Failed-world quarantine,
 interest-region pause/re-entry, conservation and exclusive ownership still apply.
 
-**Planned:** powder bearing, restricted pair exchange and roughly half-depth
-barrel support are future behavior. The [baseline](../audits/2026-09-09-physics-characterisation.md)
+**Current:** restricted powder exchange and sampled player support follow the
+[versioned policy](../systems/granular-interaction-policy.md). **Planned:** persistent
+powder bearing and roughly half-depth barrel support remain future behavior.
+The [baseline](../audits/2026-09-09-physics-characterisation.md)
 records failures of those proposed gates; it does not promote them to current
 invariants or treat deep hard-floor rest as granular support.
 
 ## Granular character boundary
 
 **Current:** Material-aware player support derives from local packing and last-tick stability. Unresolved enclosure is explicit, preserves cells and does not prove global connectivity. See the [granular/player policy](../systems/granular-interaction-policy.md).
+
+Powder/powder density swaps are forbidden, while real void motion remains valid.
+Mercury exchange cannot reuse a written destination or multiply its shared tick
+lane across alternate directions/initiators. A pending deadline survives sleep
+and exclusion without catch-up; explicit recovery abandons it with the world.

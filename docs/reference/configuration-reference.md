@@ -245,4 +245,10 @@ existing constants from diagnostic rule vetoes and future support models.
 
 ## Granular policy configuration
 
-**Current:** InteractionPolicy version 1 owns support thresholds. Diagnostic reset accepts support_cells from 1 through 9 for fresh fixture construction; normal reset restores defaults. No live/UI setting is added. See the [granular/player policy](../systems/granular-interaction-policy.md).
+**Current:** `InteractionPolicy` version 1 sets downward/side occupancy to 8/9 and
+9/9 samples and Mercury eligibility to every 30 ticks. Diagnostic reset accepts
+`support_cells` 1..9 and `mercury_period` 1..60 only during fresh construction;
+normal reset restores defaults. The C ABI and CYSD1 schema are unchanged and use
+compiled defaults. No live/UI setting is added. See the
+[granular policy](../systems/granular-interaction-policy.md) and
+[version decision](../decisions/ADR-011-granular-interaction-policy.md).

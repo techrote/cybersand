@@ -1,18 +1,18 @@
 {
   "version": 1,
   "frozen_date": "2026-09-08",
-  "purpose": "Supplementary source-discovered challenges added during the rewrite; reported separately from the frozen 32-question development set, without a before/after improvement claim. C03/C04 added for the coordinated implementation, reported separately from C01/C02. C05/C06 added for the physics characterisation plan; no runtime acceptance claim. C07-C10 are new measured-physics questions added 2026-09-09, separate from the frozen development set.",
+  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability.",
   "questions": [
     {
       "id": "C05",
       "query": "Why can powder pass through the player and Mercury pass through sand, and which tuning will help?",
       "canonical": [
-        "operations/physics-characterisation-plan.md"
+        "systems/granular-interaction-policy.md"
       ],
       "facts": [
-        "Current player predicates accept hard surfaces and Sand specifically; other powders are absent.",
-        "Density exchange uses target permission and relative density; Mercury viscosity gates lateral motion, not downward exchange.",
-        "Pair permeability and granular support are proposed model changes; no runtime correction has been validated by the plan."
+        "The issue #9 baseline used a hard-surface-or-Sand predicate; current version 1 supports nine explicit powders through stable local packing, with stricter side resistance.",
+        "Current powder/powder density swaps are forbidden; real void movement and density-eligible liquid exchange remain distinct.",
+        "Mercury's current independent 30-tick lane slows exchange, with delayed waking and no exclusion catch-up. Its viscosity still controls lateral motion."
       ],
       "sources": [
         "../native/src/material_rules.cpp",
@@ -111,9 +111,9 @@
         "systems/materials-and-rule-kernels.md"
       ],
       "facts": [
-        "The 96/160/224/248 viscosity variants have identical confined vertical state hashes and breakthrough times.",
-        "An isolated exchange veto prevents penetration, but is not an approved permeability fix.",
-        "The dated report scopes the actual source, artifacts and five/twenty seed budgets."
+        "In the historical issue #9 baseline, viscosity 96/160/224/248 gives identical confined vertical hashes and 32-tick breakthrough.",
+        "That baseline's isolated exchange veto is diagnostic only; current version 1 instead uses an independent 30-tick opportunity lane.",
+        "The dated reports separate source/artifact identities and screening budgets; period 30 gives 960-tick breakthrough in the current canonical bed."
       ],
       "sources": [
         "../native/src/world.cpp",
@@ -146,7 +146,7 @@
       "facts": [
         "Stored powder selects the update kernel, but masked lookup sees the Wall proxy; repeated attempted downward moves create contacts.",
         "Per-add and final saturation must be distinguished from accepted age-scaled impulses.",
-        "Cap increases alone did not establish support; fix candidate rules belong to #10/#11, not this diagnostic checkpoint."
+        "Cap increases alone did not establish support; masked-source feedback remains issue #11, outside the current player/exchange policy."
       ],
       "sources": [
         "../native/src/world.cpp",
@@ -169,7 +169,29 @@
         "../godot/native_extension/cyber_native_cell_world.cpp::find_ejection_target",
         "../godot/tests/test_physics_instrumentation.gd"
       ]
+    },
+    {
+      "id": "C11",
+      "query": "Which current powders support a player, how do side resistance and enclosed-spawn recovery work, and why do loose grains still fall?",
+      "canonical": ["systems/granular-interaction-policy.md"],
+      "facts": [
+        "Sand, Stone, Dust, Seed, Salt, Sodium, Gunpowder, Coal and Rust have explicit capability independent of density and hard identity.",
+        "Downward support needs 8/9 stable samples below the contact; side/head resistance additionally needs 9/9 centred samples.",
+        "Recovery tests at most 128 axis candidates within 32 cells, preserves cells, and explicitly blocks if no escape exists; it does not prove global connectivity or barrel bearing."
+      ],
+      "sources": ["../native/src/world.cpp::World::granular_support_at", "../godot/scripts/sampled_character.gd"]
+    },
+    {
+      "id": "C12",
+      "query": "How does the current Mercury permeability rate survive sleep and region exclusion without alternate attempts multiplying moves?",
+      "canonical": ["systems/granular-interaction-policy.md", "systems/activity-dirty-regions-and-waking.md"],
+      "facts": [
+        "Either liquid/powder initiator shares the global 30-tick lane; written destinations cannot be reused, while Empty motion bypasses the exchange gate.",
+        "Each source block stores its earliest due tick, woken by the existing healthy tick metadata pass; excluded blocks retain deadlines without catch-up.",
+        "Intact braced Stone is protected, other listed liquids keep explicit full-rate/Oil policies, and failed-world recovery discards deadlines with the old world."
+      ],
+      "sources": ["../native/src/world.cpp::World::exchange_permitted,World::begin_tick", "../native/include/cybersand/interaction_policy.hpp"]
     }
   ],
-  "expectations_reviewed": "2026-09-09: C01-C06 and frozen wording retained; C07-C10 added with measured evidence and explicit future-design limits."
+  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim."
 }

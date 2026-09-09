@@ -230,6 +230,7 @@ bool CyberNativeCellWorld::reset_demo_world() {
     try {
         auto config = world_->config();
         config.physics_diagnostics = {};
+        config.interaction_policy = {};
         auto candidate = std::make_unique<cybersand::World>(config);
         candidate->reserve_region({0, 0, kWorldWidth, kWorldHeight});
         candidate->configure_transient_obstacles({0, 0, kWorldWidth, kWorldHeight});
@@ -1194,6 +1195,9 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         const auto support_cells = static_cast<std::int64_t>(options.get("support_cells", 8));
         if (support_cells < 1 || support_cells > 9) return false;
         config.interaction_policy.downward_support_cells = static_cast<std::uint8_t>(support_cells);
+        const auto period = static_cast<std::int64_t>(options.get("mercury_period", 30));
+        if (period < 1 || period > 60) return false;
+        config.interaction_policy.mercury_exchange_period = static_cast<std::uint32_t>(period);
         auto candidate = std::make_unique<cybersand::World>(config);
         candidate->reserve_region({0, 0, kWorldWidth, kWorldHeight});
         candidate->configure_transient_obstacles({0, 0, kWorldWidth, kWorldHeight});

@@ -26,6 +26,7 @@ but must not touch live scene-tree or Rapier objects.
 | `World::chunks_` and chunk cell arrays | World coordinator creates/reserves chunks; serial work or phase-exclusive jobs mutate cells | Until World/chunk destruction; construction capacity bounds growth |
 | Optional temperatures | Chunk owns optional SoA; owner prepares it, permitted rules/movement use it | Allocated on demand or reservation; counted tick allocations |
 | Activity/dirty metadata and job effects | Job-local observations, then coordinator merge after the phase barrier | Persistent chunk metadata and reusable bounded scratch; dirty bounds survive unsuccessful publication |
+| Delayed pair deadline | A phase-exclusive source activity block stores its earliest due tick; coordinator wakes it at healthy tick entry | One scalar per block; excluded blocks retain it, clear/replacement discards it |
 | Native snapshot slots | One serialized producer writes only an unleased slot | Shared exchange state outlives its facade while leases exist; no-slot/capacity failure retains dirty state |
 | Desktop world and sampled character | Godot pacing Thread after startup handoff | Worker lifetime; stopped/joined before destruction |
 | Live body nodes, RIDs and physics state | Main-thread Rapier bridge and PhysicsServer2D | Scene/bridge lifetime; never passed to cellular workers |
@@ -103,6 +104,10 @@ are not implemented. Do not infer them from Current snapshot backpressure.
 
 Lifetime fixtures are linked in the [validation ledger](../reference/validation-evidence.md);
 the rationale remains [ADR-003](../decisions/ADR-003-godot-bridge-and-immutable-snapshots.md).
+
+Sampled [granular support queries](../systems/granular-interaction-policy.md) read
+current cells and copied body occupancy only under this exclusive owner, outside
+native jobs. Their bounded neighbourhood adds no job view, cache or Rapier object.
 
 ## Failed-world ownership and recovery
 

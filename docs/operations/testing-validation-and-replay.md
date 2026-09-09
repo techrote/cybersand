@@ -121,4 +121,13 @@ required. No trace here upgrades CYSD1 into full deterministic replay.
 
 ## Granular interaction regression
 
-**Current:** test_interaction_policy.gd runs the shared native/fallback player probe. Rebuild the adapter before execution. Native tests cover all nine powders, packing, last-tick motion and immediate excavation. See the [granular/player policy](../systems/granular-interaction-policy.md).
+**Current:** `test_interaction_policy.gd` runs the shared native/fallback player,
+Mercury and powder/Water pair probe. Rebuild the adapter before execution.
+`test_interaction_async.gd` exercises the production desktop owner for standing,
+walking and excavation. Native tests cover all nine powders, support/packing,
+all powder and liquid pair classes, alternate paths, deadlines, sleep/re-entry,
+failure recovery, conservation and worker parity. Both actual Web profiles run
+the shared probe plus F01/F02 via `?test=1&interaction=1`; the fixture yields at
+native world construction/replacement/teardown to service browser pthreads.
+Use the [dated issue #10 audit](../audits/2026-09-09-issue-10-granular-policy.md)
+for exact passes and retained limits; source presence alone is not acceptance.

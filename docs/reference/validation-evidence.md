@@ -92,10 +92,24 @@ make a later checkpoint look validated.
 
 ## Issue #10 player checkpoint, 2026-09-09
 
-**Current:** A fresh Windows adapter build passes 50 native tests and the shared Godot native/fallback probe for all nine powders, landing/walking, excavation, loose Dust, bounded enclosure and interior hard cells. Full matrix evidence follows at the exchange checkpoint. See the [granular/player policy](../systems/granular-interaction-policy.md).
+The intermediate support commit passed 50 native tests and the shared Godot
+native/fallback probe for all nine powders, landing/walking, excavation, loose
+Dust, bounded enclosure and interior hard cells. This dated support result is
+superseded for current acceptance by the exchange checkpoint below.
 
 Intermediate support validation: all 20 Godot runners pass (logs
 `C:/kybersand/validation/local/20260909-200717/`); docs and retained M11 checks
 pass. Repository publication identity reports 14 expected source/artifact drift
 errors; published runtime manifests stay unchanged. Raw checker/retrieval results
 are under `C:/kybersand/validation/local/2026-09-09-issue-10/support-*`.
+
+## Issue #10 exchange acceptance, 2026-09-09
+
+The [dated audit](../audits/2026-09-09-issue-10-granular-policy.md) records 52 native
+tests, 21 Godot runners, 1,070 native matrix runs, 257 sampled-player runs,
+production desktop owner checks and real compatibility/threaded Web execution.
+Version 1 selects the measured 30-fold Mercury slowdown and 8/9 downward packing.
+Exact within-platform worker/repeat comparison, explicit material/reaction
+accounting and retained Water regressions pass in that scope. Current published
+runtime provenance, Linux/sanitizers and issue #11 barrel behavior remain separate
+limits; the preserved historical manifests do not attest these new artifacts.
