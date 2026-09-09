@@ -34,8 +34,46 @@ var benchmark_running: bool = false
 var benchmark_cancelled: bool = false
 var benchmark_result: Dictionary = {}
 var logical_threads: int = 1
+var tower_single_step: bool = false
+var tower_schedule: Array = []
+var tower_inputs: Array = []
+
+func tower_reset() -> void:
+	tower_schedule.clear();tower_inputs.clear()
+	select_demo("experiment_tower")
+
+func tower_floor_select(index: int) -> void:
+	tower_floor = clampi(index,0,4)
+	paused = true
+	player.reset(CyberExperimentTower.landing(tower_floor))
+	character_position = player.position
+	camera_follow_enabled = false
+	camera_origin = Vector2(0,CyberExperimentTower.floor_y(tower_floor))
+	tower_context = {"status":"Baseline / recipe v1 / seed 0"}
+
+func tower_release(index: int) -> void:
+	var plugs: Array[Rect2i] = CyberExperimentTower.plugs(tower_floor)
+	if index < 0 or index >= plugs.size(): return
+	var plug: Rect2i = plugs[index]
+	for y: int in range(plug.position.y,plug.end.y):
+		for x: int in range(plug.position.x,plug.end.x): native_world.paint_disc(x,y,0,0,0)
+	force_publication = true
+
+func tower_command(command: Dictionary) -> void:
+	if command.has("step"):
+		paused = true
+		tower_single_step = true
+	if command.has("release"):
+		tower_release(int(command.release))
+		if command.get("adjacent",false): tower_release(int(command.release)+1)
+	if command.has("schedule"):
+		var tick: int = int(native_world.get_tick_index())
+		tower_schedule = [[tick+30,int(command.schedule),tower_floor],[tick+90,int(command.schedule)+1,tower_floor]]
+	if tower_inputs.size() < 256: tower_inputs.append({"tick":int(native_world.get_tick_index()),"command":command.duplicate(true)})
+	tower_context["inputs"] = tower_inputs.duplicate(true)
 
 func _ready() -> void:
+	setup_tower_panel()
 	if OS.has_feature("web") and OS.has_feature("threads") and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('test') === '1' && new URLSearchParams(location.search).get('parity') === '1'", true)):
 		worker_probe = await CyberWebWorkerProbe.run(get_tree())
 		print("WEB_WORKER_PARITY ", JSON.stringify(worker_probe))
@@ -148,6 +186,7 @@ func release_game_input() -> void:
 	input_armed = false
 
 func _process(delta: float) -> void:
+	tower_panel.refresh(tower_active,tower_floor,tower_context)
 	if not ready_to_play:
 		return
 	frame_time_ms = delta * 1000.0
@@ -183,8 +222,14 @@ func _physics_process(_delta: float) -> void:
 		return
 	if input_armed:
 		_paint_pointer()
-	if paused:
+	if paused and not tower_single_step:
 		return
+	tower_single_step = false
+	if tower_active:
+		for release: Array in tower_schedule.duplicate():
+			if int(release[2]) == tower_floor and int(native_world.get_tick_index())+1 >= int(release[0]):
+				tower_release(int(release[1]))
+				tower_schedule.erase(release)
 	if rapier_bridge.is_initialized():
 		if rapier_bridge.pending_hard_surface_chunks() > 0:
 			return
@@ -307,7 +352,9 @@ func select_demo(id: String, close: bool = true) -> void:
 	character_position = player.position
 	camera_origin = Vector2.ZERO
 	camera_follow_enabled = false
-	paused = false
+	paused = id == "experiment_tower"
+	tower_active = id == "experiment_tower"
+	if tower_active: tower_floor_select(tower_floor)
 	total_moves = 0
 	_activate_physics(id == "physics_pit")
 	native_world.set_liquid_surface_adhesion_enabled(liquid_surface_adhesion_enabled)
@@ -360,7 +407,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		return
 	match event.keycode:
 		KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6:
-			selected_material_id = [2, 3, 1, 4, 20, 21][int(event.keycode) - KEY_1]
+			selected_material_id = (CyberExperimentTower.QUICK[tower_floor] if tower_active else [2,3,1,4,20,21])[int(event.keycode)-KEY_1]
 		KEY_Q, KEY_E:
 			var direction: int = -1 if event.keycode == KEY_Q else 1
 			var index: int = PAINTABLE_MATERIAL_IDS.find(selected_material_id)

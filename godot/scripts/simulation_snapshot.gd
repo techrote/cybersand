@@ -5,6 +5,7 @@ extends RefCounted
 # published state, while the material byte array is replaced only when the
 # cellular revision changes.
 var serial: int = 0
+var lab_context: Dictionary = {} # Copied owner values; immutable after publication.
 var published_usec: int = 0
 var world_revision: int = -1
 var hard_surface_revision: int = -1

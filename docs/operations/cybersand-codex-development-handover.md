@@ -87,3 +87,8 @@ precedes the exchange/evidence commit. Read the
 [acceptance audit](../audits/2026-09-09-issue-10-granular-policy.md) before reusing
 local artifacts. Runtime publication manifests remain historical and intentionally
 do not attest the new uncommitted DLL or local exports.
+
+
+## Issue #13 experiment checkpoint
+
+Issue #13 develops on `codex/issue-13-experiment-tower` from verified `372bfb3`. Follow the [tower procedure](experiment-tower.md) and [dated audit](../audits/2026-09-09-issue-13-transport.md). Preserve the intentionally dirty DLL and rebuild before source-matched runtime evidence.

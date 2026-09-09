@@ -252,3 +252,8 @@ normal reset restores defaults. The C ABI and CYSD1 schema are unchanged and use
 compiled defaults. No live/UI setting is added. See the
 [granular policy](../systems/granular-interaction-policy.md) and
 [version decision](../decisions/ADR-011-granular-interaction-policy.md).
+
+
+## Issue #13 experiment checkpoint
+
+[Experiment Tower](../operations/experiment-tower.md) recipe v1 is 1024 by 1024, with five 198-cell floor pitches, a 4096-rectangle constructor bound, one pending lab command, two release deadlines and a 256-input observation bound. No new per-cell storage is added at this checkpoint.

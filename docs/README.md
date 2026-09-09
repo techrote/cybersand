@@ -78,3 +78,8 @@ Current runtime/source gates and immutable M11 retention use [separate validatio
 Current player support and pair exchange: [granular interaction policy](systems/granular-interaction-policy.md),
 [ADR-011](decisions/ADR-011-granular-interaction-policy.md) and
 [dated issue #10 acceptance](audits/2026-09-09-issue-10-granular-policy.md).
+
+
+## Issue #13 experiment checkpoint
+
+[Experiment Tower](operations/experiment-tower.md) provides the shared five-floor physics lab; [issue #13 evidence](audits/2026-09-09-issue-13-transport.md) separates its checkpoints and acceptance.

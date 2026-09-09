@@ -113,3 +113,8 @@ Exact within-platform worker/repeat comparison, explicit material/reaction
 accounting and retained Water regressions pass in that scope. Current published
 runtime provenance, Linux/sanitizers and issue #11 barrel behavior remain separate
 limits; the preserved historical manifests do not attest these new artifacts.
+
+
+## Issue #13 experiment checkpoint
+
+The [issue #13 audit](../audits/2026-09-09-issue-13-transport.md) records pre-change transport controls and the Experiment Tower checkpoint. Fresh native/Godot, real Web, visual and performance evidence are distinct gates.

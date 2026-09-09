@@ -55,7 +55,8 @@
     "systems/smoke-heat-pressure-roadmap.md",
     "systems/themed-construction-materials.md",
     "systems/water-design.md",
-    "systems/world-storage-and-interest-region.md"
+    "systems/world-storage-and-interest-region.md",
+    "operations/experiment-tower.md"
   ],
   "navigation": [
     "README.md",
@@ -159,6 +160,10 @@
     {
       "path": "audits/2026-09-09-issue-10-granular-policy.md",
       "reason": "Dated issue #10 acceptance and retained failures; retrieve with its source/artifact/platform scope"
+    },
+    {
+      "path": "audits/2026-09-09-issue-13-transport.md",
+      "reason": "Dated checkpoint evidence; not a current-answer contract"
     }
   ]
 }

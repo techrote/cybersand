@@ -218,3 +218,8 @@ configuration or advertised as a complete replay format.
 Both adapters expose `character_box_collides(origin, size, mode)` under the
 exclusive owner. `box_collides` is full-volume mode 0. The [player policy](../systems/granular-interaction-policy.md)
 owns modes and limits. Body messages and saves retain their existing schemas.
+
+
+## Issue #13 experiment checkpoint
+
+`CyberSimulationWorker.queue_lab(Dictionary)` is a developer-lab command boundary: reset/floor, single-step, release and a two-release schedule. `CyberSimulationSnapshot.lab_context` publishes copied status/input metadata. [Tower controls](../operations/experiment-tower.md) own semantics; this is separate from CYSD1 and the C ABI.

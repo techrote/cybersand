@@ -138,3 +138,8 @@ The [dated audit](../audits/2026-09-09-issue-10-granular-policy.md) links curate
 identities and records the deliberately uncommitted rebuilt DLL. Rebuild from
 branch history before reusing runtime evidence; published manifests were not
 rewritten or treated as current-source attestations.
+
+
+## Issue #13 experiment checkpoint
+
+Issue #13 starts at verified `372bfb3ac3cbbb8005b594cd0995ed5e71d6c530` on separate branch `codex/issue-13-experiment-tower`. Intake DLL bytes and dated source snapshots remain under `C:/kybersand/validation/local/2026-09-09-issue-13/`; see [its audit](../audits/2026-09-09-issue-13-transport.md).

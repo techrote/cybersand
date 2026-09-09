@@ -131,3 +131,8 @@ the shared probe plus F01/F02 via `?test=1&interaction=1`; the fixture yields at
 native world construction/replacement/teardown to service browser pthreads.
 Use the [dated issue #10 audit](../audits/2026-09-09-issue-10-granular-policy.md)
 for exact passes and retained limits; source presence alone is not acceptance.
+
+
+## Issue #13 experiment checkpoint
+
+`test_experiment_tower.gd` checks shared recipe construction, safe landings, plugs, invalid-replacement preservation, exact reset and desktop owner single-step. `tools/physics/issue13.py` rebuilds fresh references. See [tower procedure](experiment-tower.md) and [dated issue #13 results](../audits/2026-09-09-issue-13-transport.md).

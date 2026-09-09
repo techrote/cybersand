@@ -160,3 +160,8 @@ block ownership; no queue or tick allocation is added. Fallback uses a fixed
 PackedInt64Array and resets quiet counters only inside due included 16 by 16
 blocks. This is bounded local waking, not a new whole-world cell scan. Existing
 World preparation/allocation and failed-tick limits still apply.
+
+
+## Issue #13 experiment checkpoint
+
+The [tower](experiment-tower.md) reuses native validated recipe construction and whole-world installation. Commands are copied outside ticks; the latest pending control replaces the previous pending control. It does not add an unbounded command queue or global floor simulation pass.

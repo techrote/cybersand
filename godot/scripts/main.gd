@@ -129,6 +129,46 @@ const MATERIAL_GROUP_FIRST_IDS: Array[int] = [
 @onready var test_rigid_body_3: RigidBody2D = $RigidBodies/TestBody3
 
 var simulation_worker: CyberSimulationWorker = CyberSimulationWorker.new()
+var tower_panel: CyberTowerPanel
+var tower_active: bool = false
+var tower_floor: int = 0
+var tower_context: Dictionary = {}
+
+func setup_tower_panel() -> void:
+	tower_panel = CyberTowerPanel.new()
+	$Layout.add_child(tower_panel)
+	$Layout.move_child(tower_panel,1)
+	tower_panel.setup(self)
+
+func tower_command(command: Dictionary) -> void:
+	if command.has("step"): paused = true
+	simulation_worker.queue_lab(command)
+
+func tower_floor_select(index: int) -> void:
+	tower_floor = clampi(index,0,4)
+	paused = true
+	camera_follow_enabled = false
+	camera_origin = Vector2(0,CyberExperimentTower.floor_y(tower_floor))
+	tower_command({"floor":tower_floor})
+
+func tower_reset() -> void:
+	tower_active = true
+	paused = true
+	for body: RigidBody2D in rigid_bodies: body.freeze = true
+	rapier_bridge.shutdown()
+	rigid_bodies.clear()
+	tower_command({"reset":true,"floor":tower_floor})
+	camera_follow_enabled = false
+	camera_origin = Vector2(0,CyberExperimentTower.floor_y(tower_floor))
+
+func tower_tuning() -> void:
+	tower_context["status"] = "Baseline reference checkpoint / tuning follows"
+
+func tower_observation() -> void:
+	var report: Dictionary = {"recipe_version":CyberExperimentTower.VERSION,"seed":0,"floor":tower_floor,"context":tower_context,"platform":OS.get_name(),"utc":Time.get_datetime_string_from_system(true)}
+	var file: FileAccess = FileAccess.open("user://tower-observation.json",FileAccess.WRITE)
+	if file != null: file.store_string(JSON.stringify(report,"  "))
+	if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD): DisplayServer.clipboard_set(JSON.stringify(report,"  "))
 var latest_snapshot: CyberSimulationSnapshot
 var worker_start_error: Error = OK
 var consumed_snapshot_serial: int = -1
@@ -187,6 +227,11 @@ var hard_surface_rebuild_cooldown: float = 0.0
 
 
 func _ready() -> void:
+	setup_tower_panel()
+	var tower_button: Button = Button.new()
+	tower_button.text = "Experiment Tower / F9"
+	tower_button.pressed.connect(tower_reset)
+	$Layout.add_child(tower_button)
 	if OS.get_processor_count() < 4:
 		var warning: Label = Label.new()
 		warning.text = "4 physical CPU cores are the recommended minimum. Fewer than 4 logical threads reported."
@@ -279,6 +324,7 @@ func _exit_tree() -> void:
 
 
 func _process(delta: float) -> void:
+	tower_panel.refresh(tower_active,tower_floor,tower_context)
 	frame_time_ms = delta * 1000.0
 	maximum_frame_time_ms = maxf(maximum_frame_time_ms, frame_time_ms)
 	consume_worker_snapshot()
@@ -320,6 +366,16 @@ func _physics_process(_delta: float) -> void:
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F9:
+		tower_reset()
+		return
+	if tower_active and event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode >= KEY_1 and event.keycode <= KEY_6:
+			selected_material_id = CyberExperimentTower.QUICK[tower_floor][int(event.keycode)-KEY_1]
+			return
+		if event.keycode == KEY_R:
+			tower_reset()
+			return
 	if event is not InputEventKey:
 		return
 	var key_event: InputEventKey = event as InputEventKey
@@ -541,6 +597,7 @@ func consume_worker_snapshot() -> void:
 	if snapshot == null:
 		return
 	latest_snapshot = snapshot
+	tower_context = snapshot.lab_context
 	consumed_snapshot_serial = snapshot.serial
 	if snapshot.simulation_failed:
 		paused = true

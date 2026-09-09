@@ -41,6 +41,52 @@ var _rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 var _pending_emissions: Array[Vector4i] = []
 var _reset_requested: bool = false
 var _reset_spawn: Vector2 = Vector2(150.0, 145.0)
+var _lab_request: Dictionary = {} # One bounded pending control command; newest wins.
+var _lab_active: bool = false
+var _lab_floor: int = 0
+var _lab_status: String = ""
+var _lab_schedule: Array = [] # At most two floor-local release deadlines.
+var _lab_inputs: Array = [] # Bounded observation input history.
+
+func queue_lab(command: Dictionary) -> void:
+	_mutex.lock()
+	_lab_request = command.duplicate(true)
+	if command.has("step") or command.has("reset") or command.has("floor"): _paused = true
+	_mutex.unlock()
+
+func _lab_release(index: int) -> void:
+	var plugs: Array[Rect2i] = CyberExperimentTower.plugs(_lab_floor)
+	if index < 0 or index >= plugs.size(): return
+	var plug: Rect2i = plugs[index]
+	for y: int in range(plug.position.y,plug.end.y):
+		for x: int in range(plug.position.x,plug.end.x): _world.paint_disc(x,y,0,0,0)
+
+func _apply_lab(command: Dictionary) -> bool:
+	if command.is_empty(): return false
+	if command.has("reset"):
+		if not ClassDB.class_exists(&"CyberDemoBridge") or not _world.has_method(&"has_failed"):
+			_lab_status = "Experiment Tower requires the native backend"
+			return false
+		var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
+		if not bridge.build_world(_world,CyberExperimentTower.rectangles()):
+			_lab_status = str(bridge.get_last_error())
+			return false
+		_lab_active = true
+		_lab_schedule.clear();_lab_inputs.clear()
+		_simulation_failed = false
+		_lab_status = "Baseline / recipe v1 / seed 0"
+	if not _lab_active: return false
+	if command.has("floor"):
+		_lab_floor = clampi(int(command.floor),0,4)
+		_character.reset(CyberExperimentTower.landing(_lab_floor))
+	if command.has("release"):
+		_lab_release(int(command.release))
+		if command.get("adjacent",false): _lab_release(int(command.release)+1)
+	if command.has("schedule"):
+		var tick: int = int(_world.get_tick_index())
+		_lab_schedule = [[tick+30,int(command.schedule),_lab_floor],[tick+90,int(command.schedule)+1,_lab_floor]]
+	if _lab_inputs.size() < 256: _lab_inputs.append({"tick":int(_world.get_tick_index()),"command":command.duplicate(true)})
+	return command.has("reset")
 
 var _published_snapshot: CyberSimulationSnapshot
 var _snapshot_serial: int = 0
@@ -239,6 +285,7 @@ func _worker_loop() -> void:
 		var local_emissions: Array[Vector4i] = []
 		var local_reset_requested: bool = false
 		var local_reset_spawn: Vector2 = Vector2.ZERO
+		var local_lab: Dictionary = {}
 
 		_mutex.lock()
 		local_running = _running
@@ -260,12 +307,26 @@ func _worker_loop() -> void:
 		local_reset_requested = _reset_requested
 		local_reset_spawn = _reset_spawn
 		_reset_requested = false
+		local_lab = _lab_request
+		_lab_request = {}
 		_mutex.unlock()
 
 		if not local_running:
 			return
 
 		var step_start_usec: int = Time.get_ticks_usec()
+		if _apply_lab(local_lab):
+			local_reset_requested = false
+			local_paused = true
+			_last_render_snapshot_usec = -DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
+		if _lab_active:
+			local_rigid_body_states = PackedFloat32Array()
+			if local_lab.get("step",false): local_paused = false
+			if not local_paused:
+				for release: Array in _lab_schedule.duplicate():
+					if int(release[2]) == _lab_floor and int(_world.get_tick_index())+1 >= int(release[0]):
+						_lab_release(int(release[1]))
+						_lab_schedule.erase(release)
 		_world.simulation_window_enabled = local_window_enabled
 		_world.cadence_lod_enabled = local_cadence_enabled
 		_world.set_liquid_surface_adhesion_enabled(local_liquid_adhesion_enabled)
@@ -461,6 +522,7 @@ func _publish_snapshot(
 		snapshot.tick_failure_count = int(_world.get_tick_failure_count())
 		snapshot.last_tick_error = str(_world.get_last_tick_error())
 	snapshot.paused = paused
+	snapshot.lab_context = {"active":_lab_active,"floor":_lab_floor,"status":_lab_status,"inputs":_lab_inputs.duplicate(true),"input_limit":256}
 
 	_mutex.lock()
 	_published_snapshot = snapshot

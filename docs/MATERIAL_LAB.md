@@ -145,3 +145,8 @@ display. Desktop shows the error even with F3 statistics hidden; press R to rese
 Web opens the menu and offers Restart world or loading a valid saved level.
 Pause/unpause does not retry. Recovery discards the failed attempt and pending
 events; no rollback or exact continuation is promised.
+
+
+## Issue #13 experiment checkpoint
+
+Open the [Experiment Tower](operations/experiment-tower.md) with desktop F9 or its native Web demo menu entry. Its five floors start paused; the lab panel supplies floor selection, plugs, single-step and fresh resets.

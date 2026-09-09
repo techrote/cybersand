@@ -67,3 +67,8 @@ Current runtime/source gates and immutable M11 retention use [separate validatio
 ## Why can Dust support a player without stopping falling grains?
 
 **Current:** Use the granular/player policy for capability, packing, side resistance, enclosure and fallback limits. See the [granular/player policy](../systems/granular-interaction-policy.md).
+
+
+## Issue #13 experiment checkpoint
+
+For reproducible five-floor experiments and preserving Mercury while tuning Sand, use the [Experiment Tower](../operations/experiment-tower.md), then its [dated evidence](../audits/2026-09-09-issue-13-transport.md).

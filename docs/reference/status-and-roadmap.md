@@ -103,3 +103,8 @@ enclosure recovery, powder-pair exclusion and scheduled Mercury permeability are
 implemented. The [dated evidence](../audits/2026-09-09-issue-10-granular-policy.md)
 records parameter screening, native/fallback/desktop/Web execution and remaining
 publication/platform limits. Barrel feedback/bearing/ejection stays in issue #11.
+
+
+## Issue #13 experiment checkpoint
+
+**Current:** shared five-floor Experiment Tower and pre-change native references. **Planned next checkpoints:** validated editable profiles, optional motion-driven transport and measured horizontal sampling. [Issue #13 evidence](../audits/2026-09-09-issue-13-transport.md) records acceptance separately. Chemistry retuning, barrel #11 and soliding #12 remain separate.

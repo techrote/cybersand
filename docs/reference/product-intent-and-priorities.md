@@ -103,3 +103,8 @@ Chosen and Current: excluded phased work pauses and retains activity; newly
 included resident blocks wake once, including sleepers, without catch-up. Serial
 keeps its documented filter difference. This approval does not authorize general
 field catch-up, automatic failure retry, rollback or state-preserving live resize.
+
+
+## Issue #13 experiment checkpoint
+
+Owner feedback for issue #13: Mercury through Sand is especially satisfying and must survive indirect Sand changes. The earlier reduction in fire cadence made Wood smoulder while Oil and Coal felt good. The [chemistry observation floor](../operations/experiment-tower.md) records current behavior without retuning reactions/fire in this physics issue.
