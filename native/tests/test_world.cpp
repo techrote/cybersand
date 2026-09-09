@@ -1732,12 +1732,36 @@ void test_physics_masked_source_characterisation() {
     std::cout << "masked-Sand baseline: 3 downward contact attempts, raw y=4800; stored Sand retained\n";
 }
 
+void test_granular_player_support_policy() {
+    for (const auto& definition : cybersand::MaterialRules::descriptors()) {
+        const auto material = static_cast<Material>(&definition - cybersand::kMaterialDefinitions.data());
+        if (!cybersand::MaterialRules::supports_granular_load(material)) continue;
+        World world;
+        for (int x=48; x<80; ++x) {
+            world.set(x,104,Material::Wall);
+            for (int y=100; y<104; ++y) world.set(x,y,material);
+        }
+        (void)world.tick();
+        require(world.granular_support_at(64,100), "packed powder must bear sampled player");
+        require(!world.granular_support_at(64,100,true), "surface must permit a one-cell step");
+        require(world.granular_support_at(64,101,true), "packed interior must resist side approach");
+        for(int x=62;x<=66;++x) for(int y=101;y<=104;++y) world.set(x,y,Material::Empty);
+        require(!world.granular_support_at(64,100), "excavation must remove sampled support immediately");
+        (void)world.tick();
+        require(!world.granular_support_at(64,101), "falling grains must not bear sampled load");
+    }
+    World film;
+    for(int x=48;x<80;++x) film.set(x,100,Material::Dust);
+    require(!film.granular_support_at(64,100), "airborne Dust film is not a wall");
+}
+
 int main() {
     struct Test {
         const char* name;
         void (*function)();
     };
     const Test tests[] = {
+        {"granular sampled support policy", test_granular_player_support_policy},
         {"physics diagnostic observer and worker parity", test_physics_diagnostics_observational},
         {"physics diagnostic isolated controls", test_physics_diagnostic_controls},
         {"physics masked source characterisation", test_physics_masked_source_characterisation},

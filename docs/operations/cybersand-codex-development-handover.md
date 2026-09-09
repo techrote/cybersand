@@ -76,3 +76,7 @@ Production fixes remain #10/#11 work. The local source checkpoint includes
 fixtures, reduced data and plots; generated runtimes/raw logs remain in the
 active development workspace. Do not treat the old published DLL as containing
 the new diagnostic API or close the issue by reusing historical acceptance.
+
+## Issue #10 handoff
+
+**Current:** Issue #9 baseline is committed at 10e8153. Player and exchange are separate focused changes, with fresh DLL builds and preserved intake artifact. Barrel feedback/bearing/ejection belongs to #11. See the [granular/player policy](../systems/granular-interaction-policy.md).

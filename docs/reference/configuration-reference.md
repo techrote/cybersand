@@ -242,3 +242,7 @@ construction disables telemetry/overrides; `reset_demo_world` restores productio
 gains. No UI slider, material descriptor, gravity default or save field changed.
 The [dated results](../audits/2026-09-09-physics-characterisation.md) distinguish
 existing constants from diagnostic rule vetoes and future support models.
+
+## Granular policy configuration
+
+**Current:** InteractionPolicy version 1 owns support thresholds. Diagnostic reset accepts support_cells from 1 through 9 for fresh fixture construction; normal reset restores defaults. No live/UI setting is added. See the [granular/player policy](../systems/granular-interaction-policy.md).

@@ -352,6 +352,14 @@ struct World::TransientObstacleState {
 World::World(WorldConfig config)
     : config_(config),
       scheduler_geometry_(config.scheduling_core_size, config.maximum_rule_radius) {
+    if (config.interaction_policy.downward_support_cells < 1 ||
+        config.interaction_policy.downward_support_cells > 9 ||
+        config.interaction_policy.side_support_cells < 1 ||
+        config.interaction_policy.side_support_cells > 9 ||
+        config.interaction_policy.mercury_exchange_period < 1 ||
+        config.interaction_policy.mercury_exchange_period > 60) {
+        throw std::invalid_argument("interaction policy: support 1..9, Mercury period 1..60");
+    }
     if (config.physics_diagnostics.mercury_viscosity < -1 ||
         config.physics_diagnostics.mercury_viscosity > 255) {
         throw std::invalid_argument("diagnostic Mercury viscosity must be -1 or 0..255");
@@ -620,6 +628,30 @@ void World::ensure_temperature_field(Chunk& chunk) {
 Material World::get(std::int64_t x, std::int64_t y) const noexcept {
     if (transient_obstacle_at(x, y) != 0U) return Material::Wall;
     return stored_material(x, y);
+}
+
+bool World::granular_support_at(std::int64_t x, std::int64_t y, bool side) const noexcept {
+    const auto stable = [this](std::int64_t sx, std::int64_t sy) {
+        const auto material = get(sx, sy);
+        if (MaterialRules::is_hard_surface(material)) return true;
+        if (!MaterialRules::supports_granular_load(material)) return false;
+        const auto a = address(sx, sy);
+        const auto* chunk = find_chunk(a.chunk);
+        // A transported/newly transformed grain cannot immediately bear a
+        // sampled character. This reads the most recently completed tick.
+        return chunk && (tick_index_ == 0 ||
+            chunk->cells[a.index].updated_epoch != update_epoch_);
+    };
+    if (!MaterialRules::supports_granular_load(get(x, y)) || !stable(x, y)) return false;
+    int below = 0;
+    for (int dy = 0; dy <= 2; ++dy)
+        for (int dx = -1; dx <= 1; ++dx) below += stable(x + dx, y + dy);
+    if (below < config_.interaction_policy.downward_support_cells) return false;
+    if (!side) return true;
+    int around = 0;
+    for (int dy = -1; dy <= 1; ++dy)
+        for (int dx = -1; dx <= 1; ++dx) around += stable(x + dx, y + dy);
+    return around >= config_.interaction_policy.side_support_cells;
 }
 
 Material World::stored_material(std::int64_t x, std::int64_t y) const noexcept {

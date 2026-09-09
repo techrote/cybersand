@@ -82,6 +82,8 @@ void CyberNativeCellWorld::_bind_methods() {
                          &CyberNativeCellWorld::material_at);
     ClassDB::bind_method(D_METHOD("box_collides", "origin", "size"),
                          &CyberNativeCellWorld::box_collides);
+    ClassDB::bind_method(D_METHOD("character_box_collides", "origin", "size", "mode"),
+                         &CyberNativeCellWorld::character_box_collides);
     ClassDB::bind_method(D_METHOD("get_cells"), &CyberNativeCellWorld::get_cells);
     ClassDB::bind_method(D_METHOD("take_render_snapshot", "force_full"),
                          &CyberNativeCellWorld::take_render_snapshot,
@@ -696,21 +698,27 @@ std::int64_t CyberNativeCellWorld::material_at(std::int64_t x, std::int64_t y) c
 }
 
 bool CyberNativeCellWorld::box_collides(Vector2 origin, Vector2 size) const {
+    return character_box_collides(origin, size, 0);
+}
+
+bool CyberNativeCellWorld::character_box_collides(Vector2 origin, Vector2 size, std::int64_t mode) const {
+    // 0: enclosure/volume, 1: downward feet, 2: sides, 3: upward head.
+    // Bounded owner query; malformed/out-of-world queries fail closed.
+    if (!origin.is_finite() || !size.is_finite() || size.x <= 0 || size.y <= 0 ||
+        size.x > 32 || size.y > 32 || mode < 0 || mode > 3 ||
+        origin.x < 0 || origin.y < 0 || origin.x + size.x > kWorldWidth ||
+        origin.y + size.y > kWorldHeight || world_ == nullptr) return true;
     const auto first_x = static_cast<std::int32_t>(std::floor(origin.x + 0.001));
     const auto first_y = static_cast<std::int32_t>(std::floor(origin.y + 0.001));
     const auto last_x = static_cast<std::int32_t>(std::ceil(origin.x + size.x - 0.001)) - 1;
     const auto last_y = static_cast<std::int32_t>(std::ceil(origin.y + size.y - 0.001)) - 1;
-    for (auto x = first_x; x <= last_x; ++x) {
-        if (character_solid(static_cast<cybersand::Material>(material_at(x, first_y))) ||
-            character_solid(static_cast<cybersand::Material>(material_at(x, last_y)))) {
-            return true;
-        }
-    }
-    for (auto y = first_y + 1; y < last_y; ++y) {
-        if (character_solid(static_cast<cybersand::Material>(material_at(first_x, y))) ||
-            character_solid(static_cast<cybersand::Material>(material_at(last_x, y)))) {
-            return true;
-        }
+    for (auto y = first_y; y <= last_y; ++y) for (auto x = first_x; x <= last_x; ++x) {
+        const auto material = world_->get(x, y);
+        if (cybersand::MaterialRules::is_hard_surface(material)) return true;
+        if ((mode == 1 && y != last_y) ||
+            (mode == 2 && x != first_x && x != last_x) ||
+            (mode == 3 && y != first_y)) continue;
+        if (world_->granular_support_at(x, y, mode >= 2)) return true;
     }
     return false;
 }
@@ -1084,10 +1092,6 @@ bool CyberNativeCellWorld::in_bounds(std::int64_t x, std::int64_t y) {
     return x >= 0 && x < kWorldWidth && y >= 0 && y < kWorldHeight;
 }
 
-bool CyberNativeCellWorld::character_solid(cybersand::Material material) {
-    return cybersand::MaterialRules::is_hard_surface(material) ||
-           material == cybersand::Material::Sand;
-}
 
 std::int64_t CyberNativeCellWorld::get_revision() const { return revision_; }
 std::int64_t CyberNativeCellWorld::get_hard_surface_revision() const {
@@ -1187,6 +1191,9 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         const auto viscosity = static_cast<std::int64_t>(options.get("viscosity", -1));
         if (viscosity < -1 || viscosity > 255) return false;
         config.physics_diagnostics.mercury_viscosity = static_cast<std::int16_t>(viscosity);
+        const auto support_cells = static_cast<std::int64_t>(options.get("support_cells", 8));
+        if (support_cells < 1 || support_cells > 9) return false;
+        config.interaction_policy.downward_support_cells = static_cast<std::uint8_t>(support_cells);
         auto candidate = std::make_unique<cybersand::World>(config);
         candidate->reserve_region({0, 0, kWorldWidth, kWorldHeight});
         candidate->configure_transient_obstacles({0, 0, kWorldWidth, kWorldHeight});

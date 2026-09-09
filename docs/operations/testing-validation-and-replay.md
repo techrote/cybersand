@@ -118,3 +118,7 @@ matching-profile state/trajectory equality. See the
 [runbook](physics-characterisation.md) for experiment commands and bounds.
 Existing F01/F02, save, render ownership and meaningful conservation checks remain
 required. No trace here upgrades CYSD1 into full deterministic replay.
+
+## Granular interaction regression
+
+**Current:** test_interaction_policy.gd runs the shared native/fallback player probe. Rebuild the adapter before execution. Native tests cover all nine powders, packing, last-tick motion and immediate excavation. See the [granular/player policy](../systems/granular-interaction-policy.md).

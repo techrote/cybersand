@@ -203,3 +203,7 @@ interest-region pause/re-entry, conservation and exclusive ownership still apply
 barrel support are future behavior. The [baseline](../audits/2026-09-09-physics-characterisation.md)
 records failures of those proposed gates; it does not promote them to current
 invariants or treat deep hard-floor rest as granular support.
+
+## Granular character boundary
+
+**Current:** Material-aware player support derives from local packing and last-tick stability. Unresolved enclosure is explicit, preserves cells and does not prove global connectivity. See the [granular/player policy](../systems/granular-interaction-policy.md).

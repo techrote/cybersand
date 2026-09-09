@@ -125,3 +125,7 @@ Per-series manifests, a tracked-source patch and new source snapshots are under
 from the report. The completed local commit is recoverable from branch history.
 Published runtime manifests are preserved separately; inspect current Git status
 and rebuild before invoking diagnostic APIs in a fresh checkout.
+
+## Issue #10 intake
+
+**Current:** Issue #9 baseline is committed at 10e8153064f64272680696cce2b830791ecad2c3. The new branch is codex/issue-10-player-and-exchange. The sole intake delta was the diagnostic Windows DLL, copied to C:/kybersand/validation/local/2026-09-09-issue-10/intake/ with SHA-256 45f4ba78787a9e2d4daefb9b3ba24b1e476cb496343f63e77dd75a3e1c712eb7. Source/artifact manifests and source snapshots are in support-checkpoint/ in that same evidence directory. Fresh builds remain uncommitted. See the [granular/player policy](../systems/granular-interaction-policy.md).

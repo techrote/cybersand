@@ -94,3 +94,7 @@ contracts and the separate runtime publication gate remain applicable.
 CI/provenance repair can be a separate bounded prerequisite for release-quality
 builds. The earlier M11 checkpoint sequence and reported rollback archives remain
 [historical records](../audits/pre-rag-rewrite-2026-09-08/README.md), not newly verified recovery points.
+
+## Issue #10 player checkpoint
+
+**Current:** Material-aware player support, separate side resistance and bounded enclosure recovery are implemented. Exchange, parameter screening and affected Web execution are pending at this intermediate checkpoint. Barrel feedback/bearing/ejection stays in issue #11. See the [granular/player policy](../systems/granular-interaction-policy.md).

@@ -53,6 +53,7 @@ public:
 
     [[nodiscard]] std::int64_t material_at(std::int64_t x, std::int64_t y) const;
     [[nodiscard]] bool box_collides(Vector2 origin, Vector2 size) const;
+    [[nodiscard]] bool character_box_collides(Vector2 origin, Vector2 size, std::int64_t mode) const;
     [[nodiscard]] PackedByteArray get_cells() const;
     [[nodiscard]] Dictionary take_render_snapshot(bool force_full = false);
     [[nodiscard]] PackedInt32Array get_hard_surface_rectangles() const;
@@ -194,7 +195,6 @@ private:
     void record_impulse(std::uint16_t body_id, Vector2 impulse);
     [[nodiscard]] static std::int32_t symmetric_probe_offset(std::int32_t index);
     [[nodiscard]] static bool in_bounds(std::int64_t x, std::int64_t y);
-    [[nodiscard]] static bool character_solid(cybersand::Material material);
 };
 
 }  // namespace godot

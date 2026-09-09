@@ -1357,17 +1357,25 @@ func get_cells() -> PackedByteArray:
 
 
 func box_collides(origin: Vector2, size: Vector2) -> bool:
+	return character_box_collides(origin, size, 0)
+
+
+func character_box_collides(origin: Vector2, size: Vector2, mode: int) -> bool:
+	if not origin.is_finite() or not size.is_finite() or size.x <= 0 or size.y <= 0 or size.x > 32 or size.y > 32 or mode < 0 or mode > 3 or origin.x < 0 or origin.y < 0 or origin.x + size.x > WORLD_WIDTH or origin.y + size.y > WORLD_HEIGHT:
+		return true
 	var first_x: int = floori(origin.x + 0.001)
 	var first_y: int = floori(origin.y + 0.001)
 	var last_x: int = ceili(origin.x + size.x - 0.001) - 1
 	var last_y: int = ceili(origin.y + size.y - 0.001) - 1
 
-	for x: int in range(first_x, last_x + 1):
-		if is_character_solid(material_at(x, first_y)) or is_character_solid(material_at(x, last_y)):
-			return true
-	for y: int in range(first_y + 1, last_y):
-		if is_character_solid(material_at(first_x, y)) or is_character_solid(material_at(last_x, y)):
-			return true
+	for y: int in range(first_y, last_y + 1):
+		for x: int in range(first_x, last_x + 1):
+			if _is_hard_surface_material(material_at(x, y)):
+				return true
+			if (mode == 1 and y != last_y) or (mode == 2 and x != first_x and x != last_x) or (mode == 3 and y != first_y):
+				continue
+			if CyberInteractionPolicy.supports_at(self, x, y, mode >= 2):
+				return true
 	return false
 
 
@@ -1915,5 +1923,8 @@ func is_movable(material_id: int) -> bool:
 	)
 
 
+var downward_support_cells: int = CyberInteractionPolicy.DOWNWARD_CELLS
+
 func is_character_solid(material_id: int) -> bool:
-	return _is_hard_surface_material(material_id) or material_id == SAND
+	# Compatibility capability query. Powders require coordinates/packing.
+	return _is_hard_surface_material(material_id)

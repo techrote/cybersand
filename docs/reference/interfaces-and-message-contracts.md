@@ -212,3 +212,9 @@ These calls must use the existing serialized adapter owner.
 The ordinary body sample/result ABI, C header, immutable gameplay snapshots and
 CYSD1 format are unchanged. No diagnostic options are persisted as gameplay
 configuration or advertised as a complete replay format.
+
+## Directional player query
+
+Both adapters expose `character_box_collides(origin, size, mode)` under the
+exclusive owner. `box_collides` is full-volume mode 0. The [player policy](../systems/granular-interaction-policy.md)
+owns modes and limits. Body messages and saves retain their existing schemas.

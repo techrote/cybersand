@@ -141,3 +141,10 @@ Native tick and coupling timings, used slots, core/chunk high-water marks and
 overflow are retained in the [dated baseline](../audits/2026-09-09-physics-characterisation.md).
 Offline snapshots, retained traces and postprocessing costs are outside hot-loop
 budgets. These measurements do not establish a production performance target.
+
+## Sampled support query budget
+
+[Granular policy](../systems/granular-interaction-policy.md) bounds native queries
+to 32 by 32 boxes, at most 20 stable-material samples per contact and 128
+enclosure candidates. Native queries allocate no storage; no worker read/write
+domain or Rapier shape is added.

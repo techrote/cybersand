@@ -79,6 +79,7 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 		world.active_blocks.fill(0)
 		world.next_active_blocks.fill(0)
 		world.block_movable_counts.fill(0)
+		world.downward_support_cells = int(spec.get("support_cells", 8))
 	else:
 		world = ClassDB.instantiate(&"CyberNativeCellWorld")
 		if not world.diagnostic_reset(spec):

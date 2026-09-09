@@ -74,3 +74,5 @@ The [coordinated issue #2 acceptance](audits/2026-09-08-issue-2-interest-regions
 records pause/re-entry, independent causes and combined failure/recovery validation.
 
 Current runtime/source gates and immutable M11 retention use [separate validation policies](operations/current-and-historical-validation.md).
+
+Current sampled player support: [granular interaction policy](systems/granular-interaction-policy.md).

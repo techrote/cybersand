@@ -74,3 +74,7 @@ ownership decision. Repeated masked-source contacts, per-add saturation and
 missing persistent bearing must be considered before selecting a support model.
 **Planned:** #10/#11 may change interaction rules; dynamic aggregates still need
 the explicit exclusive-ownership ADR described by the characterisation plan.
+
+## Issue #10 sampled support decision
+
+**Current:** The character owner alone resolves material-aware sampled support. No Rapier proxy or body bearing impulse is added. See the [granular/player policy](../systems/granular-interaction-policy.md).

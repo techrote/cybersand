@@ -62,3 +62,7 @@ and [tick ownership](../architecture/simulation-tick-and-threading.md). Dated
 the default corpus; C02 has updated facts, and C03/C04 are new supplementary queries.
 
 Current runtime/source gates and immutable M11 retention use [separate validation policies](../operations/current-and-historical-validation.md).
+
+## Why can Dust support a player without stopping falling grains?
+
+**Current:** Use the granular/player policy for capability, packing, side resistance, enclosure and fallback limits. See the [granular/player policy](../systems/granular-interaction-policy.md).

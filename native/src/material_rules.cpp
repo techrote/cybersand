@@ -95,6 +95,18 @@ bool MaterialRules::is_hard_surface(Material material) noexcept {
     }
 }
 
+bool MaterialRules::supports_granular_load(Material material) noexcept {
+    // Explicit capability shared by player sampling and the pair policy. Seed
+    // is included while it remains a grain; germinated Plant is not a powder.
+    switch (material) {
+        case Material::Sand: case Material::Stone: case Material::Dust:
+        case Material::Seed: case Material::Salt: case Material::Sodium:
+        case Material::Gunpowder: case Material::Coal: case Material::Rust:
+            return true;
+        default: return false;
+    }
+}
+
 bool MaterialRules::has_pair_reactions(Material material) noexcept {
     switch (material) {
         case Material::Water:

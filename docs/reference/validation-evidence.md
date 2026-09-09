@@ -89,3 +89,13 @@ New results belong in a new evidence record with command, timeout, date,
 platform/profile, source identity, input/worker configuration, artifact hashes,
 exit status and explicit limits. Historical records are never rewritten to
 make a later checkpoint look validated.
+
+## Issue #10 player checkpoint, 2026-09-09
+
+**Current:** A fresh Windows adapter build passes 50 native tests and the shared Godot native/fallback probe for all nine powders, landing/walking, excavation, loose Dust, bounded enclosure and interior hard cells. Full matrix evidence follows at the exchange checkpoint. See the [granular/player policy](../systems/granular-interaction-policy.md).
+
+Intermediate support validation: all 20 Godot runners pass (logs
+`C:/kybersand/validation/local/20260909-200717/`); docs and retained M11 checks
+pass. Repository publication identity reports 14 expected source/artifact drift
+errors; published runtime manifests stay unchanged. Raw checker/retrieval results
+are under `C:/kybersand/validation/local/2026-09-09-issue-10/support-*`.

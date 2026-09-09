@@ -2,6 +2,7 @@
 
 #include "cybersand/material.hpp"
 #include "cybersand/physics_diagnostics.hpp"
+#include "cybersand/interaction_policy.hpp"
 #include "cybersand/scheduler_geometry.hpp"
 
 #include <array>
@@ -40,6 +41,7 @@ struct WorldConfig {
     std::size_t deferred_event_capacity = 1'024;
     std::int32_t maximum_explosion_radius = 64;
     PhysicsDiagnosticConfig physics_diagnostics{};
+    InteractionPolicy interaction_policy{};
 };
 
 struct ChunkCoord {
@@ -96,6 +98,10 @@ public:
     [[nodiscard]] SimulationBackend backend() const noexcept;
     [[nodiscard]] Material get(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] Material stored_material(std::int64_t x, std::int64_t y) const noexcept;
+    // Serialized external-owner query. Never called from a rule kernel: its
+    // bounded read neighbourhood extends beyond the kernel write domain.
+    [[nodiscard]] bool granular_support_at(std::int64_t x, std::int64_t y,
+                                           bool side = false) const noexcept;
     [[nodiscard]] std::uint8_t stored_state_a(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] std::uint8_t stored_state_b(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] std::uint8_t liquid_mass(std::int64_t x, std::int64_t y) const noexcept;

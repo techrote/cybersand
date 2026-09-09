@@ -134,3 +134,10 @@ a one-cell hard floor. All Water remains in the finite World, but some leaves
 the bed's measurement crop. A one-cell fixture proves this without a cellular
 tick or Rapier step. This is not density exchange or loss of Water mass; #11
 needs a bounded barrier-aware displacement policy.
+
+## Sampled player support is a separate owner
+
+**Current:** the [granular/player policy](../systems/granular-interaction-policy.md)
+adds material-aware packing queries, directional collision and bounded enclosure
+recovery. The sampled character alone resolves those contacts. Rapier barrel
+bearing, masked-source feedback and barrier-aware ejection remain issue #11.

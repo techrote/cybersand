@@ -149,3 +149,10 @@ actual stored pairs for swaps and kernel-visible sources for contact attempts.
 Its immutable construction overrides leave the shared descriptor table and
 production defaults unchanged. A diagnostic target-wide exchange veto proves
 causality; pair permeability and support policy remain **Planned** for #10/#11.
+
+## Sampled player support
+
+**Current:** the [version 1 granular policy](granular-interaction-policy.md) separates
+material support capability from density and hard terrain. All nine powders can
+support the sampled player when locally packed and stable; side resistance uses
+a separate neighbourhood. This checkpoint does not yet change cell exchange.
