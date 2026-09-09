@@ -1841,12 +1841,107 @@ void test_mercury_lanes_wake_and_reentry() {
     require(paused.get(64,61)==Material::Mercury,"reentry lost the pending exchange wake");
 }
 
+std::uint64_t transport_events(const World& world,cybersand::PhysicsEvent kind) {
+    std::uint64_t count=0;
+    for(const auto& e:world.physics_diagnostics()->entries)if((e.key>>24U)==static_cast<unsigned>(kind))count+=e.count;
+    return count;
+}
+
+WorldConfig transport_config(int mode,int workers=1) {
+    WorldConfig c;c.worker_threads=workers;c.parallel_job_threshold=1;
+    c.active_core_capacity=512;c.maximum_chunk_count=64;c.active_chunk_capacity=64;
+    c.physics_diagnostics.enabled=true;c.transport_policy.configured=true;
+    for(auto a: {2,13,14,19,23,25,26,27,29}) {
+        for(auto b: {2,13,14,19,23,25,26,27,29})
+            c.transport_policy.pairs[a*81+b].mixing=mode ? 96 : 0;
+        c.transport_policy.pairs[33*81+a].permeability=30;
+        c.transport_policy.pairs[a*81+33].permeability=30;
+    }
+    for(auto grain:{2,14,29}) {
+        auto& p=c.transport_policy.pairs[3*81+grain];p.carrying=mode ? 255 : 0;p.erosion=mode==2;
+    }
+    return c;
+}
+
+void test_flow_rest_films_and_barriers() {
+    for(int mode:{1,2})for(int shift:{-129,-65,-33,0,31,63,127}) {
+        World w(transport_config(mode));
+        w.reserve_region({shift-64,shift-64,256,256});
+        // Fully confined, resting layered powders plus a calm full Water layer.
+        for(int y=0;y<24;++y)for(int x=0;x<24;++x)
+            w.set(x+shift,y+shift,(x==0||x==23||y==0||y==23)?Material::Wall:
+                y<8?Material::Water:y<16?Material::Sand:Material::Dust);
+        const auto before=w.content_hash();
+        for(int tick=0;tick<180;++tick)(void)w.tick();
+        require(w.content_hash()==before,"optional motion reordered a resting packed bed/pool");
+        require(transport_events(w,cybersand::PhysicsEvent::PowderMix)==0,"rest mixed powders");
+        require(transport_events(w,cybersand::PhysicsEvent::GrainTransport)==0,"rest eroded grains");
+        // A supported low-fill film cannot create strong transport or pickup.
+        w.clear();w.reserve_region({shift-64,shift-64,256,256});
+        for(int x=0;x<24;++x) {
+            w.set(x+shift,shift+10,Material::Wall);
+            (void)w.set_cell_state(x+shift,shift+9,Material::Water,32,0);
+            w.set(x+shift,shift+11,Material::Sand);
+            w.set(x+shift,shift+12,Material::Wall);
+        }
+        for(int y=0;y<13;++y) {
+            w.set(shift,shift+y,Material::Wall);
+            w.set(shift+23,shift+y,Material::Wall);
+        }
+        const auto mass=total_liquid(w,shift-30,shift-30,shift+60,shift+60);
+        for(int tick=0;tick<90;++tick)(void)w.tick();
+        require(total_liquid(w,shift-30,shift-30,shift+60,shift+60)==mass,"film mass changed");
+        require(transport_events(w,cybersand::PhysicsEvent::GrainTransport)==0,"film bypassed hard separator");
+    }
+}
+
+void test_flow_conservation_state_and_workers() {
+    for(int mode:{1,2}) {
+        World one(transport_config(mode,1)),four(transport_config(mode,4));
+        for(auto* w:{&one,&four}) {
+            w->reserve_region({-192,-192,384,384});
+            w->reserve_temperature_region({-192,-192,384,384});
+            w->set_simulation_region(cybersand::RectI64{-132,-68,164,164});
+            for(int y=0;y<160;++y)for(int x=0;x<160;++x) {
+                if(x==0||x==159||y==0||y==159)w->set(x-130,y-66,Material::Wall);
+                if(x>=5&&x<40&&y>=5&&y<95)w->set(x-130,y-66,Material::Water);
+                if(x==40&&y>=5&&y<87)w->set(x-130,y-66,Material::Wall);
+                if(x>=3&&x<113&&y>=108+(x-3)/4&&y<159) {
+                    (void)w->set_cell_state(x-130,y-66,Material::Sand,17,23);
+                    w->set_temperature(x-130,y-66,315);
+                }
+            }
+        }
+        const auto water=total_liquid(one,-130,-66,29,93);
+        for(int tick=1;tick<=300;++tick) {
+            auto a=one.tick();auto b=four.tick();
+            require(a.chunk_allocations+a.temperature_field_allocations+b.chunk_allocations+b.temperature_field_allocations==0,"prepared flow allocated");
+            if(tick%30==0) {
+                require(one.state_hash()==four.state_hash(),"flow worker state mismatch");
+                require(total_liquid(one,-130,-66,29,93)==water,"flow lost Water mass");
+            }
+        }
+        if(mode==2)require(transport_events(one,cybersand::PhysicsEvent::GrainTransport)>0,"strong flow did not erode grains");
+        for(int y=-66;y<=93;++y)for(int x=-130;x<=29;++x)if(one.stored_material(x,y)==Material::Sand) {
+            require(one.stored_state_a(x,y)==17&&one.stored_state_b(x,y)==23,"pickup changed compact grain state");
+            require(one.temperature(x,y)==315,"pickup lost grain temperature");
+        }
+        require(one.physics_diagnostics()->overflow==0&&four.physics_diagnostics()->overflow==0,"flow telemetry overflow");
+        // Existing region exclusion contract: no flow debt accumulates offscreen.
+        const auto before=one.content_hash();one.set_simulation_region(cybersand::RectI64{768,768,64,64});
+        for(int tick=0;tick<60;++tick)(void)one.tick();
+        require(one.content_hash()==before,"excluded flow accumulated movement");
+    }
+}
+
 int main() {
     struct Test {
         const char* name;
         void (*function)();
     };
     const Test tests[] = {
+        {"flow resting packing, films, barriers and signed seams", test_flow_rest_films_and_barriers},
+        {"flow conserved state, temperature, workers and exclusion", test_flow_conservation_state_and_workers},
         {"powder pairs and void-driven rearrangement", test_powder_pair_and_void_policy},
         {"Mercury lanes, sleeping wakes, seams and worker parity", test_mercury_lanes_wake_and_reentry},
         {"granular sampled support policy", test_granular_player_support_policy},

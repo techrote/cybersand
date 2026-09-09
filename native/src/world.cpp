@@ -354,6 +354,10 @@ World::World(WorldConfig config)
     : config_(config),
       scheduler_geometry_(config.scheduling_core_size, config.maximum_rule_radius) {
     config.transport_policy.validate();
+    if(config.transport_policy.configured)for(const auto& p:config.transport_policy.pairs) {
+        flow_mixing_enabled_ = flow_mixing_enabled_ || p.mixing!=0;
+        flow_carrying_enabled_ = flow_carrying_enabled_ || p.carrying!=0;
+    }
     if (config.interaction_policy.downward_support_cells < 1 ||
         config.interaction_policy.downward_support_cells > 9 ||
         config.interaction_policy.side_support_cells < 1 ||
@@ -1265,7 +1269,7 @@ std::int32_t World::deterministic_direction(std::int64_t x, std::int64_t y) cons
 }
 
 void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_x, std::int64_t to_y,
-                      bool swap, JobEffects* effects) {
+                      bool swap, JobEffects* effects, PhysicsEvent swap_event) {
     const auto source_address = address(from_x, from_y);
     const auto destination_address = address(to_x, to_y);
     auto* source_pointer = effects == nullptr ? &ensure_chunk(source_address.chunk)
@@ -1321,7 +1325,7 @@ void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_
 
     destination.cells[destination_address.index] = source_cell;
     record_physics(!tick_in_progress_ ? PhysicsEvent::BodyDisplacement :
-                   swap ? PhysicsEvent::DensitySwap : PhysicsEvent::EmptyMove,
+                   swap ? swap_event : PhysicsEvent::EmptyMove,
                    source_material, destination_material, to_x - from_x, to_y - from_y, effects);
     destination.cells[destination_address.index].updated_epoch = update_epoch_;
     source.cells[source_address.index] =
@@ -1396,7 +1400,12 @@ bool World::try_move(Material material, std::int64_t x, std::int64_t y, std::int
             effects->overflow = true;
             return false;
         }
+        const auto moved_mass = material == Material::Water ? state_a(x,y) : 255;
         move_cell(x, y, target_x, target_y, false, effects);
+        // Only a completed physical move can supply disturbance. Epoch/activity
+        // changes from reactions or lifecycle writes never enter this hook.
+        if(get(target_x,target_y)==material && get(x,y)==Material::Empty)
+            mix_after_motion(material,x,y,target_x,target_y,moved_mass,effects);
         return true;
     }
     if (allow_swap && !(config_.physics_diagnostics.disable_powder_exchange_targets &&
@@ -1486,7 +1495,68 @@ std::uint16_t World::transfer_water(std::int64_t from_x, std::int64_t from_y,
         wake_cell_neighborhood(from_x, from_y);
         wake_cell_neighborhood(to_x, to_y);
     }
+    mix_after_motion(Material::Water,from_x,from_y,to_x,to_y,amount,effects);
     return amount;
+}
+
+void World::mix_after_motion(Material carrier, std::int64_t x, std::int64_t y,
+    std::int64_t to_x, std::int64_t to_y, std::uint16_t mass, JobEffects* effects) {
+    if(!config_.transport_policy.configured) return;
+    const bool powder = MaterialRules::supports_granular_load(carrier);
+    if(powder ? !flow_mixing_enabled_ : !flow_carrying_enabled_) return;
+    // Initial entrainment is lateral Water transport. Gravity and minor film
+    // equalization are not interpreted as strong shear. No stored disturbance.
+    if(!powder && (carrier!=Material::Water || to_y!=y || mass<64)) return;
+    if(powder && (to_y!=y+1 || to_x!=x)) return;
+    const auto grain_x = powder ? x+deterministic_direction(x,y) : x;
+    const auto grain_y = powder ? y : y+1;
+    const auto read = [&](std::int64_t rx,std::int64_t ry) {
+        // Every new read and write fits the calling cell's declared radius 2.
+        if(rx<x-2||rx>x+2||ry<y-2||ry>y+2) throw std::logic_error("flow read outside rule radius");
+        const auto m=get(rx,ry);
+        record_physics(PhysicsEvent::FlowProbe,carrier,m,rx-x,ry-y,effects);
+        return m;
+    };
+    const auto grain=read(grain_x,grain_y);
+    if(!MaterialRules::supports_granular_load(grain) || grain==carrier) return;
+    const auto& p=config_.transport_policy.pair(static_cast<std::uint8_t>(carrier),static_cast<std::uint8_t>(grain));
+    if((powder && p.mixing==0) || (!powder && p.carrying==0)) return;
+    if(transient_obstacle_at(x,y) || transient_obstacle_at(grain_x,grain_y) || transient_obstacle_at(to_x,to_y)) return;
+    if(read(to_x,to_y)!=carrier) return;
+    const auto a=address(grain_x,grain_y);const auto* chunk=find_chunk(a.chunk);
+    if(!chunk || chunk->cells[a.index].updated_epoch==update_epoch_) return;
+    // The route above the grain must be clear. This tests the intermediate
+    // cell of the diagonal carry, so a destination alone cannot bypass a wall.
+    const auto above=read(grain_x,grain_y-1);
+    if(powder) {
+        // A coflowing column can be exposed underneath while another grain
+        // still lies above it. A real downward void is evidence of looseness.
+        if(above!=Material::Empty && read(grain_x,grain_y+1)!=Material::Empty) return;
+    } else if(above!=Material::Empty && above!=Material::Water) return;
+    if(grain==Material::Stone && state_b(grain_x,grain_y)==0 &&
+        read(grain_x-1,grain_y-1)==Material::Stone && read(grain_x+1,grain_y-1)==Material::Stone) return;
+    unsigned packing=0;
+    for(int dy=-1;dy<=1;++dy)for(int dx=-1;dx<=1;++dx) {
+        if(dx==0&&dy==0)continue;
+        const auto m=read(grain_x+dx,grain_y+dy);
+        packing+=MaterialRules::supports_granular_load(m)||MaterialRules::is_hard_surface(m);
+    }
+    if(powder) {
+        // A falling/avalanching grain may interleave with an exposed loose
+        // unlike grain. No density sorting and no rearrangement at rest.
+        if(packing>5 || deterministic_random(x,y,211U)>=p.mixing) return;
+    } else {
+        if(packing>=4 && !p.erosion) return;
+        const unsigned disturbance=static_cast<unsigned>(mass)*p.carrying/255U;
+        if(disturbance<64U || disturbance<static_cast<unsigned>(p.pickup)+packing*p.packing) return;
+        // At most one pickup per source per four-tick lane, with no retained
+        // debt or wakeup: cessation of actual flow immediately removes pickup.
+        if(tick_index_%4U != (mix64(static_cast<std::uint64_t>(x)^std::rotl(static_cast<std::uint64_t>(y),23))%4U)) return;
+    }
+    // Whole identity, both compact bytes and optional temperature travel via
+    // the existing conservative swap. Water fill is never recreated or lost.
+    move_cell(grain_x,grain_y,to_x,to_y,true,effects,
+        powder ? PhysicsEvent::PowderMix : PhysicsEvent::GrainTransport);
 }
 
 bool World::update_water(std::int64_t x, std::int64_t y, JobEffects* effects) {

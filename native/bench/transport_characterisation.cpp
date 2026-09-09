@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <chrono>
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -10,7 +11,7 @@
 int main(int argc, char** argv) {
     using namespace cybersand;
     try {
-        if (argc != 5) throw std::invalid_argument("layout seed workers ticks");
+        if (argc != 5 && argc != 6) throw std::invalid_argument("layout seed workers ticks [resolved profile]");
         const std::string layout = argv[1];
         const int seed = std::stoi(argv[2]), workers = std::stoi(argv[3]), ticks = std::stoi(argv[4]);
         if (seed < 0 || seed > 4 || ticks < 1 || ticks > 7200) throw std::invalid_argument("bounds");
@@ -18,6 +19,12 @@ int main(int argc, char** argv) {
         c.worker_threads = workers; c.parallel_job_threshold = 1;
         c.active_core_capacity = 512; c.maximum_chunk_count = 64; c.active_chunk_capacity = 64;
         c.physics_diagnostics.enabled = true;
+        if(argc==6) {
+            std::ifstream file(argv[5]); std::vector<std::int32_t> values;
+            std::int32_t n=0;
+            while(file>>n) { values.push_back(n); if(values.size()>TransportPolicy::packed_size)throw std::invalid_argument("profile budget"); }
+            c.transport_policy=TransportPolicy::unpack(values);
+        }
         World w(c);
         const int ox = -130 + seed * 63, oy = -66 + seed * 31;
         w.reserve_region({ox-128,oy-128,512,512});

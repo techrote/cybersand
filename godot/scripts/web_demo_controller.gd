@@ -141,6 +141,15 @@ func _ready() -> void:
 	ui.message(rapier_reason if not rapier_available else "")
 	_init_browser_test()
 	print("WEB_DEMO_READY ", ui.capability.text)
+	if test_enabled and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('transport') === '1'",true)):
+		set_process(false);set_physics_process(false)
+		var result: Dictionary=await CyberTransportProbe.run(self,4 if OS.has_feature("threads") else 1)
+		result["fault"]=await CyberTickFailureProbe.run(get_tree(),self)
+		result["regions"]=await CyberTickFailureProbe.run_regions(get_tree(),self)
+		result.ok=result.ok and result.fault.ok and result.regions.ok
+		print("WEB_TRANSPORT ",JSON.stringify(result))
+		JavaScriptBridge.eval("var p=document.createElement('pre');p.id='cybersand-transport-result';p.textContent="+JSON.stringify(JSON.stringify(result))+";document.body.appendChild(p);fetch('/physics-results',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userAgent:navigator.userAgent,isolated:crossOriginIsolated,result:"+JSON.stringify(result)+"})});",true)
+		return
 	if test_enabled and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('interaction') === '1'", true)):
 		set_process(false)
 		set_physics_process(false)

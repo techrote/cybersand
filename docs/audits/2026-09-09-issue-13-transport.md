@@ -78,3 +78,40 @@ manifest hash is `3db510feb1576fe08970ac1e2217d71ccac197ed5622b8490d2d7f4e8f0247
 Presets resolve to Baseline `1b27b4e934dc7560e6901eb09e634ed604c0111dcf26d5dac6b10885a3e5e268`,
 Gentle `a4593c9c8632463d5b9100233809b530ef7043502bcd66444fa7930a422816e7`,
 Erosion `57d8ed905b2ad52c6f1372560c4fafb9dad5a03135ca987dee05f6167428e079`.
+
+## Shared motion checkpoint
+
+Profile commit: `af80634`. Optional powder mixing and Water grain pickup now use
+the [shared bounded policy](../systems/flow-transport-and-profiles.md). DLL build
+`transport-native-build.log` precedes `transport-godot.json`: nine native Godot
+cases pass exact species/Water conservation, all preset Mercury fronts through
+33 grains at 990 ticks, shared tower construction/landings/plugs and invalid
+replacement. The shared probe is release-safe for subsequent real Web execution.
+
+Native suite **54/54** passes (`transport-native-test-v3.log`, 69.566 seconds).
+New tests cover resting packed beds/pools, supported films and hard separators
+at seven signed seam positions, state-byte/temperature preservation during pickup,
+exact one/four-worker state checks, zero prepared allocations and exclusion.
+The resolved Baseline's 60 fresh controls exactly match every frozen pre-change
+sample (`transport-v3-baseline/`).
+
+Early implementation screens are retained. First surface-only powder candidates
+produced just six swaps and 297 versus 293 interface contacts in seed 0. The
+final coflow candidate uses the successful fall's vacated route and an exposed
+unlike neighbour: 1864 swaps and 492 interface contacts, preserving final counts
+and returning to zero late powder movement. It does not shuffle same-material
+Sand, helping preserve indirect Mercury references. `transport-smoke/` retains
+the earlier erosion screen (Gentle 4 versus Erosion 110 pickups in the packed
+slope; 15 versus 164 in the loose fixture), not a final tuning acceptance claim.
+
+Two failed native fixture expectations remain recorded: the first film fixture
+was open at its sides and its finite crop lost falling Water; adding sidewalls
+made conservation meaningful. The first 300-tick packed-slope expectation required
+Gentle to erode grains; that was incorrect for a profile excluding packed pickup.
+The positive packed-slope assertion now applies to Erosion, while the independent
+loose benchmark measures Gentle pickup. No reaction or fire cadence was changed.
+
+The full fixed-profile screen is retained separately in `transport-screen/`.
+At this checkpoint sampling values are authorable but not yet consumed, so its
+sampled-policy runs are controls, not evidence of reduced work or speedup. The
+next focused checkpoint implements and measures that approximation explicitly.

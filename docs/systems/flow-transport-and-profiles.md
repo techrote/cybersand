@@ -62,16 +62,47 @@ mixing 96 and Water→Sand/Dust/Rust carrying 255; Threshold erosion sets erosio
 for these pairs. These are initial opt-in experiment values, not calibrated shear
 or a replacement gameplay default.
 
-**Planned next checkpoint:** successful-motion hooks and horizontal sampling
-consume the experimental controls. At the infrastructure checkpoint only pair
-permeability is applied; profile round trips do not establish new physics.
+## How does actual motion drive mixing and erosion?
+
+**Current:** after a successful powder fall into Empty, `World::mix_after_motion`
+may exchange it with an unlike exposed neighbouring powder, using a real void
+above or below the candidate as loose-flow evidence and at most five occupied
+neighbours. The source must actually have fallen vertically; activity flags and
+update epochs cannot initiate mixing. The displaced candidate must not already
+have been written this tick. Density eligibility remains a separate path and
+still excludes every powder/powder pair. Identical powder grains are not shuffled.
+
+Lateral Water movement/transfer may pick up the grain below its source. At least
+64 successfully transported mass units are required, and effective disturbance
+is `mass * carrying / 255`. It must reach both 64 and `pickup + occupied * packing`.
+The eight-neighbour occupancy counts hard surfaces and support-capable grains.
+Gentle rejects occupancy at least four; erosion permits it above threshold. A
+coordinate-stable four-tick lane bounds pickup to at most one per source on that
+lane. There is no stored disturbance, delayed transport debt or probability that
+can gradually eat a resting bed. Once flow stops, pickup stops immediately.
+
+Both paths use the existing whole-cell conservative swap, preserving material,
+both state bytes and temperature, including Water fill. Each touched coordinate
+is within radius two of the original update; writes remain within radius one.
+The diagonal path includes the vacated/intermediate source, checks occupancy
+and body masks, and cannot bypass a wall by checking only its destination.
+Braced Stone remains excluded. The shared radius and job ownership are unchanged.
+
+Telemetry kinds 8 and 9 count powder mixing and grain transport separately from
+Empty movement, density swaps and conversions. Kind 11 counts new neighbour
+reads. Existing histogram bounds/overflow apply; disabled hooks make no new
+neighbour probes. No extra wake or per-cell motion field is introduced.
+Horizontal sampling and cadence consumption follow in the separate comparison
+checkpoint. See [dated results](../audits/2026-09-09-issue-13-transport.md); visual
+acceptance and production performance are not implied by native counters.
 
 ## What are the ownership and storage bounds?
 
 `TransportPair` is exactly six bytes: 6561 records, two 81-byte arrays and the
 configured flag form fixed construction configuration (about 39 KiB). No per-cell
-field, hot-loop allocation, material thread or new rule radius is added at this
-checkpoint. Godot authoring dictionaries are outside tick-time allocation claims.
+field, hot-loop allocation, material thread or enlarged rule radius is added.
+Two World booleans cache whether any mixing/carrying pair is enabled.
+Godot authoring dictionaries are outside tick-time allocation claims.
 Desktop handoff serials remain monotonic when a replacement native snapshot
 exchange restarts its own serials, preventing stale acknowledgements from
 discarding a fresh full-world image.

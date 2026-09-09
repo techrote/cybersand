@@ -183,6 +183,8 @@ private:
     };
 
     WorldConfig config_;
+    bool flow_mixing_enabled_ = false;
+    bool flow_carrying_enabled_ = false;
     std::unordered_map<ChunkCoord, std::unique_ptr<Chunk>, ChunkCoordHash> chunks_;
     std::vector<ChunkCoord> active_chunk_scratch_;
     std::vector<SchedulingCoreCoord> active_core_scratch_;
@@ -228,7 +230,10 @@ private:
         std::int64_t x, std::int64_t y, std::int64_t target_x, std::int64_t target_y);
     void mark_cell_dirty(Chunk& chunk, std::int32_t local_x, std::int32_t local_y);
     void move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_x,
-                   std::int64_t to_y, bool swap, JobEffects* effects);
+                   std::int64_t to_y, bool swap, JobEffects* effects,
+                   PhysicsEvent swap_event = PhysicsEvent::DensitySwap);
+    void mix_after_motion(Material carrier, std::int64_t x, std::int64_t y,
+        std::int64_t to_x, std::int64_t to_y, std::uint16_t mass, JobEffects* effects);
     [[nodiscard]] bool try_move(Material material, std::int64_t x, std::int64_t y, std::int64_t target_x,
                                 std::int64_t target_y, bool allow_swap, JobEffects* effects);
     [[nodiscard]] bool update_cell(std::int64_t x, std::int64_t y, JobEffects* effects = nullptr);

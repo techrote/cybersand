@@ -7,22 +7,28 @@ def main():
     p=argparse.ArgumentParser()
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--reference',type=Path)
+    p.add_argument('--profile',type=Path)
+    p.add_argument('--skip-build',action='store_true')
     a=p.parse_args();a.output.mkdir(parents=True,exist_ok=True)
     exe=ROOT/'build/transport_characterisation.exe'
     cxx=ROOT.parent/'.local/llvm-mingw-20260826-ucrt-x86_64/bin/clang++.exe'
     cmd=[str(cxx),'-std=c++20','-O3','-DNDEBUG','-pthread','-static','-Inative/include',
          *['native/src/'+s+'.cpp' for s in ['world','material_rules','scheduler_geometry','render_snapshot']],
          'native/bench/transport_characterisation.cpp','-o',str(exe)]
-    with (a.output/'build.log').open('w') as f:
-        f.write(json.dumps(cmd)+'\n');f.flush()
-        subprocess.run(cmd,cwd=ROOT,stdout=f,stderr=subprocess.STDOUT,check=True,timeout=300)
-    (a.output/'manifest.json').write_text(json.dumps(identity([exe]),indent=2))
+    if not a.skip_build:
+        with (a.output/'build.log').open('w') as f:
+            f.write(json.dumps(cmd)+'\n');f.flush()
+            subprocess.run(cmd,cwd=ROOT,stdout=f,stderr=subprocess.STDOUT,check=True,timeout=300)
+    manifest=identity([exe]+([a.profile] if a.profile else []))
+    manifest['invocation']={k:str(v) for k,v in vars(a).items()}
+    (a.output/'manifest.json').write_text(json.dumps(manifest,indent=2))
     references={};results={}
     for layout in ['packed','poured','powder','erosion','loose','film']:
         for seed in range(5):
             for workers in [1,4]:
                 key=f'{layout}-s{seed}-w{workers}'
                 cmd=[str(exe),layout,str(seed),str(workers),'1800']
+                if a.profile:cmd.append(str(a.profile.resolve()))
                 r=subprocess.run(cmd,cwd=ROOT,capture_output=True,text=True,timeout=180)
                 (a.output/(key+'.jsonl')).write_text(r.stdout)
                 (a.output/(key+'.execution.json')).write_text(json.dumps(dict(command=cmd,exit=r.returncode,stderr=r.stderr)))
