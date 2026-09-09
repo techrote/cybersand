@@ -275,3 +275,13 @@ Raw checker logs and retrieval JSON are retained under
 `C:/kybersand/validation/local/2026-09-08-physics-plan/`. This plan is a local,
 uncommitted documentation delta to the recoverable source baseline, not a new
 release or published checkpoint.
+
+## Measured follow-up, 2026-09-09
+
+The [issue #9 baseline report](../audits/2026-09-09-physics-characterisation.md)
+and [implemented measurement runbook](physics-characterisation.md) now supply
+fresh source/artifact-specific experiments. The planning checkpoint and its
+historical failures above remain unchanged. The baseline reproduces density
+exchange and restricted player sampling, rejects viscosity as a vertical Mercury
+control, and identifies retained-mask downward contact feedback as an additional
+barrel mechanism. Future half-depth support and soliding remain **Planned**.

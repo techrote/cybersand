@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-09
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md]
 ---
 
@@ -231,3 +231,14 @@ counts toward active-chunk capacity. Candidate-core capacity is checked before
 deduplication; a re-entry wake may explicitly fail under a small construction
 budget. Failed regions cannot be retried by reducing the window. See the
 [interest contract](../systems/world-storage-and-interest-region.md).
+
+## Which settings belong only to physics experiments?
+
+**Current:** [diagnostic_reset](../operations/physics-characterisation.md)
+accepts immutable per-fixture telemetry, traversal/worker, Mercury viscosity,
+powder-target exchange and coupling gain/cap options. The runbook owns their
+exact bounds and the fixture definitions own scene variants. Ordinary World
+construction disables telemetry/overrides; `reset_demo_world` restores production
+gains. No UI slider, material descriptor, gravity default or save field changed.
+The [dated results](../audits/2026-09-09-physics-characterisation.md) distinguish
+existing constants from diagnostic rule vetoes and future support models.

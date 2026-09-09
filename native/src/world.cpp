@@ -275,11 +275,13 @@ struct World::JobEffects {
     std::size_t chunk_count = 0;
     bool overflow = false;
     bool hard_surface_changed = false;
+    PhysicsJobHistogram* physics = nullptr;
 
     void reset() noexcept {
         chunk_count = 0;
         overflow = false;
         hard_surface_changed = false;
+        if (physics != nullptr) *physics = {};
     }
 
     void record(const Address& address_value, std::int64_t non_empty_delta = 0) noexcept {
@@ -314,14 +316,19 @@ struct World::ParallelState {
         JobEffects effects;
     };
 
-    ParallelState(std::uint32_t worker_count, std::size_t capacity)
+    ParallelState(std::uint32_t worker_count, std::size_t capacity, bool diagnostics)
         : results(capacity) {
+        if (diagnostics) {
+            physics.resize(capacity);
+            for (std::size_t i = 0; i < capacity; ++i) results[i].effects.physics = &physics[i];
+        }
         phase_job_indices.reserve(capacity);
         if (worker_count > 1) pool = std::make_unique<PersistentWorkerPool>(worker_count);
     }
 
     std::unique_ptr<PersistentWorkerPool> pool;
     std::vector<JobResult> results;
+    std::vector<PhysicsJobHistogram> physics;
     std::vector<std::size_t> phase_job_indices;
 };
 
@@ -345,6 +352,11 @@ struct World::TransientObstacleState {
 World::World(WorldConfig config)
     : config_(config),
       scheduler_geometry_(config.scheduling_core_size, config.maximum_rule_radius) {
+    if (config.physics_diagnostics.mercury_viscosity < -1 ||
+        config.physics_diagnostics.mercury_viscosity > 255) {
+        throw std::invalid_argument("diagnostic Mercury viscosity must be -1 or 0..255");
+    }
+    if (config.physics_diagnostics.enabled) physics_totals_ = std::make_unique<PhysicsTotals>();
     if (config_.chunk_size < 8 || config_.chunk_size > 1'024) {
         throw std::invalid_argument("chunk_size must be between 8 and 1024");
     }
@@ -411,7 +423,8 @@ World::World(WorldConfig config)
     }
     if (config_.backend == SimulationBackend::PhasedInPlace) {
         parallel_ = std::make_unique<ParallelState>(config_.worker_threads,
-                                                    config_.active_core_capacity);
+                                                    config_.active_core_capacity,
+                                                    config_.physics_diagnostics.enabled);
     }
     transient_obstacles_ = std::make_unique<TransientObstacleState>();
 }
@@ -419,6 +432,17 @@ World::World(WorldConfig config)
 World::~World() = default;
 World::World(World&&) noexcept = default;
 World& World::operator=(World&&) noexcept = default;
+
+const PhysicsTotals* World::physics_diagnostics() const noexcept { return physics_totals_.get(); }
+
+void World::record_physics(PhysicsEvent kind, Material source, Material target,
+    std::int64_t dx, std::int64_t dy, JobEffects* effects, std::uint64_t count) noexcept {
+    if (physics_totals_ == nullptr) return;
+    const auto key = physics_event_key(kind, static_cast<std::uint8_t>(source),
+                                     static_cast<std::uint8_t>(target), dx, dy);
+    if (effects != nullptr) effects->physics->add(key, count);
+    else physics_totals_->add(key, count);
+}
 
 RenderPublishResult RenderSnapshotExchange::publish(World& world) {
     world.require_healthy();
@@ -719,6 +743,8 @@ bool World::write_cell(std::int64_t x, std::int64_t y, Material material,
         return false;
     }
     const auto before = cell.material;
+    if (tick_in_progress_ && before != material)
+        record_physics(PhysicsEvent::Conversion, before, material, 0, 0, effects);
     const bool hard_surface_changed =
         MaterialRules::is_hard_surface(before) != MaterialRules::is_hard_surface(material);
     const auto delta = before == Material::Empty && material != Material::Empty
@@ -1168,6 +1194,7 @@ void World::apply_pending_explosions(TickStats& stats) {
 }
 
 void World::clear() {
+    if (physics_totals_ != nullptr) *physics_totals_ = {};
     if (tick_in_progress_) throw std::logic_error("cannot clear during a world tick");
     tick_failed_ = false;
     clear_transient_obstacles();
@@ -1248,6 +1275,9 @@ void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_
     }
 
     destination.cells[destination_address.index] = source_cell;
+    record_physics(!tick_in_progress_ ? PhysicsEvent::BodyDisplacement :
+                   swap ? PhysicsEvent::DensitySwap : PhysicsEvent::EmptyMove,
+                   source_material, destination_material, to_x - from_x, to_y - from_y, effects);
     destination.cells[destination_address.index].updated_epoch = update_epoch_;
     source.cells[source_address.index] =
         swap ? destination_cell : Chunk::Cell::for_material(Material::Empty);
@@ -1282,6 +1312,8 @@ bool World::try_move(Material material, std::int64_t x, std::int64_t y, std::int
                      std::int64_t target_y, bool allow_swap, JobEffects* effects) {
     const auto obstacle = transient_obstacle_at(target_x, target_y);
     if (obstacle != 0U) {
+        record_physics(PhysicsEvent::BodyContact, material, Material::Empty,
+                       target_x - x, target_y - y, effects);
         record_transient_contact(obstacle, material, target_x - x, target_y - y);
         return false;
     }
@@ -1294,11 +1326,14 @@ bool World::try_move(Material material, std::int64_t x, std::int64_t y, std::int
         move_cell(x, y, target_x, target_y, false, effects);
         return true;
     }
-    if (allow_swap &&
+    if (allow_swap && !(config_.physics_diagnostics.disable_powder_exchange_targets &&
+        MaterialRules::descriptor(target).state == MaterialState::Powder) &&
         MaterialRules::can_density_exchange(material, target, target_y - y)) {
         move_cell(x, y, target_x, target_y, true, effects);
         return true;
     }
+    record_physics(PhysicsEvent::RejectedMove, material, target,
+                   target_x - x, target_y - y, effects);
     return false;
 }
 
@@ -1343,6 +1378,8 @@ std::uint16_t World::transfer_water(std::int64_t from_x, std::int64_t from_y,
     if (amount == 0) return 0;
 
     const auto source_after = static_cast<std::uint16_t>(source_mass - amount);
+    record_physics(PhysicsEvent::WaterTransfer, Material::Water, destination_cell.material,
+                   to_x - from_x, to_y - from_y, effects, amount);
     const auto destination_after = static_cast<std::uint16_t>(destination_mass + amount);
     const bool source_becomes_empty = source_after == 0;
     const bool destination_was_empty = destination_cell.material == Material::Empty;
@@ -1504,7 +1541,10 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
             if (try_move(material, x, y, x, y + 1, true, effects)) return true;
             if (try_move(material, x, y, x + direction, y + 1, true, effects)) return true;
             if (try_move(material, x, y, x - direction, y + 1, true, effects)) return true;
-            const auto viscosity = MaterialRules::descriptor(material).viscosity_index;
+            const auto viscosity = material == Material::Mercury &&
+                config_.physics_diagnostics.mercury_viscosity >= 0
+                ? static_cast<std::uint8_t>(config_.physics_diagnostics.mercury_viscosity)
+                : MaterialRules::descriptor(material).viscosity_index;
             const auto mobility = static_cast<std::uint16_t>(256U - viscosity);
             if (deterministic_random(x, y, random_stream) >= mobility) return false;
             if (try_move(material, x, y, x + direction, y, false, effects)) return true;
@@ -2485,6 +2525,11 @@ void World::prepare_write_domain(CellRect core_rect) {
 void World::merge_job_effects(const JobEffects& effects) {
     if (effects.overflow) {
         throw std::runtime_error("per-job touched-chunk capacity exhausted");
+    }
+    if (effects.physics != nullptr) {
+        for (const auto& entry : effects.physics->entries)
+            if (entry.key != 0) physics_totals_->add(entry.key, entry.count);
+        physics_totals_->overflow += effects.physics->overflow;
     }
     if (effects.hard_surface_changed) ++hard_surface_revision_;
     for (std::size_t effect_index = 0; effect_index < effects.chunk_count; ++effect_index) {

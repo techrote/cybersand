@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cybersand/material.hpp"
+#include "cybersand/physics_diagnostics.hpp"
 #include "cybersand/scheduler_geometry.hpp"
 
 #include <array>
@@ -38,6 +39,7 @@ struct WorldConfig {
     std::size_t maximum_chunk_count = 4'096;
     std::size_t deferred_event_capacity = 1'024;
     std::int32_t maximum_explosion_radius = 64;
+    PhysicsDiagnosticConfig physics_diagnostics{};
 };
 
 struct ChunkCoord {
@@ -144,6 +146,8 @@ public:
     [[nodiscard]] std::uint64_t state_hash() const noexcept;
     [[nodiscard]] std::uint64_t content_hash() const noexcept;
     [[nodiscard]] std::uint64_t hard_surface_revision() const noexcept;
+    // Serialized owner query; nullptr when disabled. Never retain across reset.
+    [[nodiscard]] const PhysicsTotals* physics_diagnostics() const noexcept;
 
     [[nodiscard]] std::size_t dirty_chunk_count() const noexcept;
     [[nodiscard]] std::vector<DirtyChunk> take_dirty_chunks();
@@ -178,6 +182,10 @@ private:
     SchedulerGeometry scheduler_geometry_;
     std::unique_ptr<ParallelState> parallel_;
     std::unique_ptr<TransientObstacleState> transient_obstacles_;
+    std::unique_ptr<PhysicsTotals> physics_totals_;
+    void record_physics(PhysicsEvent kind, Material source, Material target,
+                        std::int64_t dx, std::int64_t dy, JobEffects* effects,
+                        std::uint64_t count = 1) noexcept;
     struct CoreRange {
         std::int64_t min_x, min_y, max_x, max_y;
         friend bool operator==(const CoreRange&, const CoreRange&) = default;

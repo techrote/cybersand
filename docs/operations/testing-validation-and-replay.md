@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Executable test selection and future gates; dated results and save format live in separate references
 canonical-for: [test-inventory, test-selection, future-validation-gates]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-09
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md, ../reference/level-saves-and-replay.md]
 ---
 
@@ -101,3 +101,20 @@ cover negative/core/chunk boundaries, previously sleeping blocks, overlap/disjoi
 moves, unchanged/equivalent/coalesced regions, neighbor wake, custom straddling
 geometry, conserved Water/Sand, retained temperature, 1/4/4 state-hash equality,
 and event/no-event capacity failure during re-entry followed by clear.
+
+## Which checks support the measured physics baseline?
+
+**Current, 2026-09-09:** the [dated issue #9 report](../audits/2026-09-09-physics-characterisation.md)
+records 49 native tests and 19 Godot runners on a freshly rebuilt Windows adapter.
+The earlier 46/16 totals above remain the dated #1/#2 checkpoint. New tests cover
+bounded observer/worker parity, viscosity isolation, masked-source contact,
+stored Water under a body mask, invalid diagnostic reset, duplicate application
+and hard-floor controls. The asynchronous smoke runner is only 120 ticks by
+default; the separate evidence series uses five seeds and 1,800 completed ticks.
+
+Run [tools/physics/verify.py](../../tools/physics/verify.py) on the complete raw
+series to check conservation controls, completed budgets, floor censoring and
+matching-profile state/trajectory equality. See the
+[runbook](physics-characterisation.md) for experiment commands and bounds.
+Existing F01/F02, save, render ownership and meaningful conservation checks remain
+required. No trace here upgrades CYSD1 into full deterministic replay.

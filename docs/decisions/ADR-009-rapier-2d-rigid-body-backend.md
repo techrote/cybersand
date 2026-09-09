@@ -6,7 +6,7 @@ status: Current
 scope: Accepted Rapier backend/version selection, manual owner and remaining platform/physics/replay work
 keywords: [ADR, Rapier2D, Godot Physics, version pin, manual stepping, Salva]
 related-documents: [../architecture/rigid-body-and-cellular-coupling.md, ../operations/rapier-2d-migration-runbook.md, ADR-007-rigid-body-cellular-coupling.md]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-09
 ---
 
 # ADR-009: Rapier2D rigid-body backend
@@ -71,3 +71,12 @@ and [validation ledger](../reference/validation-evidence.md) distinguish retaine
 Windows/Chromium results from historical Linux evidence, manifest checks and
 untested platforms. Selected body save fields omit Rapier solver internals;
 [level saves](../reference/level-saves-and-replay.md) are not exact trajectories.
+
+## 2026-09-09 measured scope
+
+**Current:** the [physics baseline](../audits/2026-09-09-physics-characterisation.md)
+uses pinned Rapier v0.35.2/Godot 4.7 in Windows manual-step and asynchronous
+fixtures, plus actual Web compatibility/threaded exports. It distinguishes hard
+contact from cellular feedback and publishes sample-age/cap observations.
+No backend pin, production tuning or ownership decision changes here. Reconstructed
+cell overlays and browser fixture execution are not gameplay visual acceptance.

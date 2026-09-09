@@ -93,6 +93,23 @@ func _ready() -> void:
 	ui.message(rapier_reason if not rapier_available else "")
 	_init_browser_test()
 	print("WEB_DEMO_READY ", ui.capability.text)
+	if test_enabled and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('physics') === '1'", true)):
+		set_process(false)
+		set_physics_process(false)
+		var workers: int = 4 if OS.has_feature("threads") else 1
+		var cases: Array = []
+		for seed: int in range(5):
+			for spec: Dictionary in [
+				{"id":"P1","mode":"cellular","material":14,"top":2},
+				{"id":"P2","mode":"cellular","material":2,"top":33},
+				{"id":"P3","mode":"player","material":14},
+				{"id":"P4","mode":"barrel","material":2},
+				{"id":"hard","mode":"barrel","material":0,"layout":"hard"}]:
+				cases.append(spec.merged({"seed":seed,"ticks":1800,"workers":workers}))
+		var result: Dictionary = await CyberPhysicsCharacterisation.run(self,cases)
+		print("WEB_PHYSICS_CHARACTERISATION ",JSON.stringify(result))
+		JavaScriptBridge.eval("window.cybersandPhysics = " + JSON.stringify(result) + "; var p=document.createElement('pre');p.id='cybersand-physics-result';p.textContent=JSON.stringify(window.cybersandPhysics);document.body.appendChild(p);fetch('/physics-results',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userAgent:navigator.userAgent,isolated:crossOriginIsolated,result:window.cybersandPhysics})}).then(r=>console.log('PHYSICS_EVIDENCE_SAVED',r.status));",true)
+		return
 	if test_enabled and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('tickfault') === '1'", true)):
 		tick_failure_test = await CyberTickFailureProbe.run(get_tree(), self)
 		print("WEB_TICK_FAILURE_TEST ", JSON.stringify(tick_failure_test))

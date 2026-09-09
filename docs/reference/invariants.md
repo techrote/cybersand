@@ -6,7 +6,7 @@ status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
 related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-09
 ---
 
 # Architectural and simulation invariants
@@ -190,3 +190,16 @@ Rationale: [principles](../architecture/principles-and-non-goals.md),
 | REJ-002 | Rejected: material-specific threads or growing per-material inheritance |
 | REJ-003 | Rejected: full-stored-world double buffering as normal operation |
 | REJ-004 | Rejected: unbounded mixed in-place/buffered ownership of one field/stage |
+
+## What must physics characterization preserve?
+
+**Current:** opt-in observation must preserve exact matching-configuration cell
+states and coupled trajectories. [Measurement checks](../operations/physics-characterisation.md)
+cover observer toggles, phased worker parity, duplicate rejection, stored Water
+under occupancy masks and explicit telemetry overflow. Failed-world quarantine,
+interest-region pause/re-entry, conservation and exclusive ownership still apply.
+
+**Planned:** powder bearing, restricted pair exchange and roughly half-depth
+barrel support are future behavior. The [baseline](../audits/2026-09-09-physics-characterisation.md)
+records failures of those proposed gates; it does not promote them to current
+invariants or treat deep hard-floor rest as granular support.

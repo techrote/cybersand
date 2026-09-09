@@ -1,30 +1,41 @@
 {
   "version": 1,
   "frozen_date": "2026-09-08",
-  "purpose": "Supplementary source-discovered challenges added during the rewrite; reported separately from the frozen 32-question development set, without a before/after improvement claim. C03/C04 added for the coordinated implementation, reported separately from C01/C02. C05/C06 added for the physics characterisation plan; no runtime acceptance claim.",
+  "purpose": "Supplementary source-discovered challenges added during the rewrite; reported separately from the frozen 32-question development set, without a before/after improvement claim. C03/C04 added for the coordinated implementation, reported separately from C01/C02. C05/C06 added for the physics characterisation plan; no runtime acceptance claim. C07-C10 are new measured-physics questions added 2026-09-09, separate from the frozen development set.",
   "questions": [
     {
       "id": "C05",
       "query": "Why can powder pass through the player and Mercury pass through sand, and which tuning will help?",
-      "canonical": ["operations/physics-characterisation-plan.md"],
+      "canonical": [
+        "operations/physics-characterisation-plan.md"
+      ],
       "facts": [
         "Current player predicates accept hard surfaces and Sand specifically; other powders are absent.",
         "Density exchange uses target permission and relative density; Mercury viscosity gates lateral motion, not downward exchange.",
         "Pair permeability and granular support are proposed model changes; no runtime correction has been validated by the plan."
       ],
-      "sources": ["../native/src/material_rules.cpp", "../native/src/world.cpp", "../godot/native_extension/cyber_native_cell_world.cpp"]
+      "sources": [
+        "../native/src/material_rules.cpp",
+        "../native/src/world.cpp",
+        "../godot/native_extension/cyber_native_cell_world.cpp"
+      ]
     },
     {
       "id": "C06",
       "query": "How will barrels stop sinking at half depth, and how can rested materials become reversible Rapier objects?",
-      "canonical": ["operations/physics-characterisation-plan.md"],
+      "canonical": [
+        "operations/physics-characterisation-plan.md"
+      ],
       "facts": [
         "Measure impact depth and long-term creep independently; capped pressure impulses do not establish static granular support.",
         "Soliding proceeds through diagnostics, stationary proxies and an explicit ownership ADR for dynamic aggregates.",
         "Promotion and demotion need bounded revision-checked handoffs, exclusive material ownership and conservation; erase/simulate/restore and per-cell physics objects remain rejected.",
         "These are Planned experiments and architecture candidates, not implemented support or ballistics."
       ],
-      "sources": ["../godot/native_extension/cyber_native_cell_world.cpp", "decisions/ADR-007-rigid-body-cellular-coupling.md"]
+      "sources": [
+        "../godot/native_extension/cyber_native_cell_world.cpp",
+        "decisions/ADR-007-rigid-body-cellular-coupling.md"
+      ]
     },
     {
       "id": "C01",
@@ -91,7 +102,74 @@
       "sources": [
         "../native/src/world.cpp::World::begin_tick,World::gather_active_cores"
       ]
+    },
+    {
+      "id": "C07",
+      "query": "Does raising Mercury viscosity slow downward penetration through packed Sand in the measured fixtures?",
+      "canonical": [
+        "operations/physics-characterisation.md",
+        "systems/materials-and-rule-kernels.md"
+      ],
+      "facts": [
+        "The 96/160/224/248 viscosity variants have identical confined vertical state hashes and breakthrough times.",
+        "An isolated exchange veto prevents penetration, but is not an approved permeability fix.",
+        "The dated report scopes the actual source, artifacts and five/twenty seed budgets."
+      ],
+      "sources": [
+        "../native/src/world.cpp",
+        "../tools/physics/run.py"
+      ]
+    },
+    {
+      "id": "C08",
+      "query": "Does a barrel that stops at the bottom of a deep bed prove stable half-depth granular support?",
+      "canonical": [
+        "operations/physics-characterisation.md",
+        "architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "facts": [
+        "Depth uses the pre-impact datum plus a separate local deformed surface.",
+        "Hard-floor contact censors late creep; floor rest is not granular bearing.",
+        "The contact-off candidate is diagnostic only and still exceeds the provisional impact envelope."
+      ],
+      "sources": [
+        "../godot/scripts/physics_characterisation.gd"
+      ]
+    },
+    {
+      "id": "C09",
+      "query": "Why can retained powder inside a barrel generate downward impulses, and is increasing the cap sufficient?",
+      "canonical": [
+        "architecture/rigid-body-and-cellular-coupling.md",
+        "operations/physics-characterisation.md"
+      ],
+      "facts": [
+        "Stored powder selects the update kernel, but masked lookup sees the Wall proxy; repeated attempted downward moves create contacts.",
+        "Per-add and final saturation must be distinguished from accepted age-scaled impulses.",
+        "Cap increases alone did not establish support; fix candidate rules belong to #10/#11, not this diagnostic checkpoint."
+      ],
+      "sources": [
+        "../native/src/world.cpp",
+        "../godot/native_extension/cyber_native_cell_world.cpp"
+      ]
+    },
+    {
+      "id": "C10",
+      "query": "Did the barrel destroy the Water missing from the measured bed, or move it through the hard floor?",
+      "canonical": [
+        "operations/physics-characterisation.md",
+        "architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "facts": [
+        "The five-seed full-world accounting control preserves 9,400,320 Water mass units; all cropped deficit is below the floor.",
+        "Body ejection checks the empty endpoint without an intervening barrier check; the minimal fixture reproduces this before any tick or Rapier step.",
+        "This is a separate displacement-path defect, not chemical conversion, density exchange, or destruction of Water."
+      ],
+      "sources": [
+        "../godot/native_extension/cyber_native_cell_world.cpp::find_ejection_target",
+        "../godot/tests/test_physics_instrumentation.gd"
+      ]
     }
   ],
-  "expectations_reviewed": "2026-09-08: issues #1/#2 change expected facts, original query wording retained; lexical metrics are not frozen-answer improvement claims."
+  "expectations_reviewed": "2026-09-09: C01-C06 and frozen wording retained; C07-C10 added with measured evidence and explicit future-design limits."
 }

@@ -6,7 +6,7 @@ status: Current
 scope: Current C ABI versions and private Godot packed layouts; proposed gameplay/job/reconfiguration contracts are not executable APIs
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-09
 ---
 
 # Interfaces and message contracts
@@ -198,3 +198,17 @@ failure status from its retained last-valid `tick_index`/display payload. Deskto
 `CyberSimulationWorker.has_failed()` reads that status under its mutex. No caller
 may treat the failed attempted identity as a successful publication. See
 [tick/recovery semantics](../architecture/simulation-tick-and-threading.md).
+
+## Which physics diagnostic interfaces are opt-in?
+
+**Current:** `CyberNativeCellWorld` exposes `diagnostic_reset(options)`,
+`diagnostic_fill_rect(origin,size,material,state_b=0)`,
+`diagnostic_snapshot(origin,size,include_histogram=false)` and
+`diagnostic_body_metrics()`. Their bounded schemas, units and valid options are
+owned by the [measurement runbook](../operations/physics-characterisation.md).
+Reset constructs a fresh empty fixture; invalid options preserve the old world.
+These calls must use the existing serialized adapter owner.
+
+The ordinary body sample/result ABI, C header, immutable gameplay snapshots and
+CYSD1 format are unchanged. No diagnostic options are persisted as gameplay
+configuration or advertised as a complete replay format.

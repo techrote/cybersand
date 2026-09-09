@@ -1,0 +1,52 @@
+[
+  {
+    "id": "water-s00",
+    "name": "barrel-Water-flat-global-accounting",
+    "mode": "barrel",
+    "layout": "flat",
+    "material": 3,
+    "seed": 0,
+    "ticks": 1800,
+    "conservation": true
+  },
+  {
+    "id": "water-s01",
+    "name": "barrel-Water-flat-global-accounting",
+    "mode": "barrel",
+    "layout": "flat",
+    "material": 3,
+    "seed": 1,
+    "ticks": 1800,
+    "conservation": true
+  },
+  {
+    "id": "water-s02",
+    "name": "barrel-Water-flat-global-accounting",
+    "mode": "barrel",
+    "layout": "flat",
+    "material": 3,
+    "seed": 2,
+    "ticks": 1800,
+    "conservation": true
+  },
+  {
+    "id": "water-s03",
+    "name": "barrel-Water-flat-global-accounting",
+    "mode": "barrel",
+    "layout": "flat",
+    "material": 3,
+    "seed": 3,
+    "ticks": 1800,
+    "conservation": true
+  },
+  {
+    "id": "water-s04",
+    "name": "barrel-Water-flat-global-accounting",
+    "mode": "barrel",
+    "layout": "flat",
+    "material": 3,
+    "seed": 4,
+    "ticks": 1800,
+    "conservation": true
+  }
+]

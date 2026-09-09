@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Actual local Git roots, preserved baseline, recovery boundaries and source-versus-artifact identity
 canonical-for: [source-identity, local-checkpoints, recovery-coverage]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-09
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md]
 ---
 
@@ -114,3 +114,14 @@ Local issue #1 commit `0778845` plus browser fixture correction `061ad23` preced
 the issue #2 implementation. Its [combined evidence](../audits/2026-09-08-issue-2-interest-regions.md)
 records fingerprints and final acceptance. Read actual HEAD/status rather than
 assuming this dated text is the latest branch state.
+
+## Physics characterization checkpoint, 2026-09-09
+
+The [issue #9 report](../audits/2026-09-09-physics-characterisation.md) starts from
+clean `main` at `ab4851e9e6a3ee182aba1a31a8f66d135e87df3a` and records the
+`codex/issue-9-physics-characterisation` delta and rebuilt artifact hashes.
+Per-series manifests, a tracked-source patch and new source snapshots are under
+`C:/kybersand/validation/local/2026-09-09-physics/`; curated manifests are linked
+from the report. The completed local commit is recoverable from branch history.
+Published runtime manifests are preserved separately; inspect current Git status
+and rebuild before invoking diagnostic APIs in a fresh checkout.

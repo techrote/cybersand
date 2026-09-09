@@ -1,0 +1,3192 @@
+[
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "P1",
+      "material": 14,
+      "mode": "cellular",
+      "seed": 0,
+      "ticks": 1800,
+      "top": 2,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "875a246750c044a8",
+    "completed_ticks": 1800,
+    "peak_depth": 0,
+    "final_depth": 0,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      4000,
+      19975
+    ],
+    "coupling_us": [
+      0,
+      5,
+      10
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "P2",
+      "material": 2,
+      "mode": "cellular",
+      "seed": 0,
+      "ticks": 1800,
+      "top": 33,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "4c392142ad775de0",
+    "completed_ticks": 1800,
+    "peak_depth": 0,
+    "final_depth": 0,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      3110,
+      9120
+    ],
+    "coupling_us": [
+      0,
+      5,
+      45
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "P3",
+      "material": 14,
+      "mode": "player",
+      "seed": 0,
+      "ticks": 1800,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "38c1e7985d5e3f0b",
+    "completed_ticks": 1800,
+    "peak_depth": 383.991394042969,
+    "final_depth": 383.991394042969,
+    "late_creep": null,
+    "floor_contact_tick": 305,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      15,
+      8855
+    ],
+    "coupling_us": [
+      10,
+      20,
+      295
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "P4",
+      "material": 2,
+      "mode": "barrel",
+      "seed": 0,
+      "ticks": 1800,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "67f6e3e6b3e8242",
+    "completed_ticks": 1800,
+    "peak_depth": 384.002147190076,
+    "final_depth": 384.001439800166,
+    "late_creep": null,
+    "floor_contact_tick": 155,
+    "max_sample_age": 0,
+    "intermediate_caps": 21820,
+    "final_caps": 294,
+    "unresolved": 133524,
+    "overflow": 0,
+    "tick_us": [
+      45,
+      1900,
+      10955
+    ],
+    "coupling_us": [
+      360,
+      675,
+      1865
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "hard",
+      "layout": "hard",
+      "material": 0,
+      "mode": "barrel",
+      "seed": 0,
+      "ticks": 1800,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "ecafc7285002e262",
+    "completed_ticks": 1800,
+    "peak_depth": 0.00045776381119822,
+    "final_depth": 0.00045776381119822,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      35,
+      65,
+      885
+    ],
+    "coupling_us": [
+      95,
+      180,
+      10200
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "P1",
+      "material": 14,
+      "mode": "cellular",
+      "seed": 1,
+      "ticks": 1800,
+      "top": 2,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "1fe9722eb6731d9e",
+    "completed_ticks": 1800,
+    "peak_depth": 0,
+    "final_depth": 0,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      3910,
+      12535
+    ],
+    "coupling_us": [
+      0,
+      5,
+      5
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "P2",
+      "material": 2,
+      "mode": "cellular",
+      "seed": 1,
+      "ticks": 1800,
+      "top": 33,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "501f9d6f72975ed6",
+    "completed_ticks": 1800,
+    "peak_depth": 0,
+    "final_depth": 0,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      3240,
+      9750
+    ],
+    "coupling_us": [
+      0,
+      5,
+      15
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "P3",
+      "material": 14,
+      "mode": "player",
+      "seed": 1,
+      "ticks": 1800,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "4d3ceac9db32f108",
+    "completed_ticks": 1800,
+    "peak_depth": 383.991516113281,
+    "final_depth": 383.991516113281,
+    "late_creep": null,
+    "floor_contact_tick": 305,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      15,
+      12135
+    ],
+    "coupling_us": [
+      5,
+      15,
+      80
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "P4",
+      "material": 2,
+      "mode": "barrel",
+      "seed": 1,
+      "ticks": 1800,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "db59508c8e9755d1",
+    "completed_ticks": 1800,
+    "peak_depth": 384.001748570653,
+    "final_depth": 384.001748046487,
+    "late_creep": null,
+    "floor_contact_tick": 156,
+    "max_sample_age": 0,
+    "intermediate_caps": 19185,
+    "final_caps": 1735,
+    "unresolved": 125252,
+    "overflow": 0,
+    "tick_us": [
+      850,
+      1310,
+      10975
+    ],
+    "coupling_us": [
+      325,
+      525,
+      1150
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "hard",
+      "layout": "hard",
+      "material": 0,
+      "mode": "barrel",
+      "seed": 1,
+      "ticks": 1800,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "25e11ce53053c06f",
+    "completed_ticks": 1800,
+    "peak_depth": 0.00045776381119822,
+    "final_depth": 0.00045776381119822,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      60,
+      75,
+      720
+    ],
+    "coupling_us": [
+      85,
+      120,
+      3370
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "P1",
+      "material": 14,
+      "mode": "cellular",
+      "seed": 2,
+      "ticks": 1800,
+      "top": 2,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "af759b8161b9e81a",
+    "completed_ticks": 1800,
+    "peak_depth": 0,
+    "final_depth": 0,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      3860,
+      12075
+    ],
+    "coupling_us": [
+      0,
+      5,
+      10
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "P2",
+      "material": 2,
+      "mode": "cellular",
+      "seed": 2,
+      "ticks": 1800,
+      "top": 33,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "2aa44f3add00ad30",
+    "completed_ticks": 1800,
+    "peak_depth": 0,
+    "final_depth": 0,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      3150,
+      9785
+    ],
+    "coupling_us": [
+      0,
+      5,
+      30
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "P3",
+      "material": 14,
+      "mode": "player",
+      "seed": 2,
+      "ticks": 1800,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "183d7b724bae3c58",
+    "completed_ticks": 1800,
+    "peak_depth": 383.991577148438,
+    "final_depth": 383.991577148438,
+    "late_creep": null,
+    "floor_contact_tick": 305,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      20,
+      11680
+    ],
+    "coupling_us": [
+      5,
+      20,
+      420
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "P4",
+      "material": 2,
+      "mode": "barrel",
+      "seed": 2,
+      "ticks": 1800,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "b6ba2d7d65af3d90",
+    "completed_ticks": 1800,
+    "peak_depth": 384.001934072835,
+    "final_depth": 384.001932523249,
+    "late_creep": null,
+    "floor_contact_tick": 158,
+    "max_sample_age": 0,
+    "intermediate_caps": 19106,
+    "final_caps": 1733,
+    "unresolved": 138522,
+    "overflow": 0,
+    "tick_us": [
+      715,
+      1265,
+      9275
+    ],
+    "coupling_us": [
+      285,
+      540,
+      1365
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "hard",
+      "layout": "hard",
+      "material": 0,
+      "mode": "barrel",
+      "seed": 2,
+      "ticks": 1800,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "c0b83e9c0192145c",
+    "completed_ticks": 1800,
+    "peak_depth": 0.00045776381119822,
+    "final_depth": 0.00045776381119822,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      25,
+      45,
+      615
+    ],
+    "coupling_us": [
+      55,
+      105,
+      635
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "P1",
+      "material": 14,
+      "mode": "cellular",
+      "seed": 3,
+      "ticks": 1800,
+      "top": 2,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "7f8986e56c0fa2bd",
+    "completed_ticks": 1800,
+    "peak_depth": 0,
+    "final_depth": 0,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      3775,
+      8350
+    ],
+    "coupling_us": [
+      0,
+      5,
+      10
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "P2",
+      "material": 2,
+      "mode": "cellular",
+      "seed": 3,
+      "ticks": 1800,
+      "top": 33,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "74427f4fecedfd31",
+    "completed_ticks": 1800,
+    "peak_depth": 0,
+    "final_depth": 0,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      3355,
+      9195
+    ],
+    "coupling_us": [
+      0,
+      5,
+      5
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "P3",
+      "material": 14,
+      "mode": "player",
+      "seed": 3,
+      "ticks": 1800,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "9365ce8dbbb7a481",
+    "completed_ticks": 1800,
+    "peak_depth": 383.991455078125,
+    "final_depth": 383.991455078125,
+    "late_creep": null,
+    "floor_contact_tick": 305,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      15,
+      11390
+    ],
+    "coupling_us": [
+      5,
+      15,
+      105
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "P4",
+      "material": 2,
+      "mode": "barrel",
+      "seed": 3,
+      "ticks": 1800,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "4a0b52da02ab5c2e",
+    "completed_ticks": 1800,
+    "peak_depth": 384.001743594097,
+    "final_depth": 384.001739157996,
+    "late_creep": null,
+    "floor_contact_tick": 154,
+    "max_sample_age": 0,
+    "intermediate_caps": 17227,
+    "final_caps": 1736,
+    "unresolved": 136697,
+    "overflow": 0,
+    "tick_us": [
+      830,
+      1665,
+      13285
+    ],
+    "coupling_us": [
+      355,
+      585,
+      1205
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "hard",
+      "layout": "hard",
+      "material": 0,
+      "mode": "barrel",
+      "seed": 3,
+      "ticks": 1800,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "84b77614be79cec7",
+    "completed_ticks": 1800,
+    "peak_depth": 0.00045776381119822,
+    "final_depth": 0.00045776381119822,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      45,
+      90,
+      1205
+    ],
+    "coupling_us": [
+      75,
+      135,
+      340
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "P1",
+      "material": 14,
+      "mode": "cellular",
+      "seed": 4,
+      "ticks": 1800,
+      "top": 2,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "e95d0d1e84f333f1",
+    "completed_ticks": 1800,
+    "peak_depth": 0,
+    "final_depth": 0,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      3990,
+      13090
+    ],
+    "coupling_us": [
+      0,
+      5,
+      25
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "P2",
+      "material": 2,
+      "mode": "cellular",
+      "seed": 4,
+      "ticks": 1800,
+      "top": 33,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "625f2f708330128f",
+    "completed_ticks": 1800,
+    "peak_depth": 0,
+    "final_depth": 0,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      3545,
+      12875
+    ],
+    "coupling_us": [
+      0,
+      5,
+      15
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "P3",
+      "material": 14,
+      "mode": "player",
+      "seed": 4,
+      "ticks": 1800,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "71a81a2b92510857",
+    "completed_ticks": 1800,
+    "peak_depth": 383.991516113281,
+    "final_depth": 383.991516113281,
+    "late_creep": null,
+    "floor_contact_tick": 305,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      15,
+      13275
+    ],
+    "coupling_us": [
+      5,
+      15,
+      55
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "P4",
+      "material": 2,
+      "mode": "barrel",
+      "seed": 4,
+      "ticks": 1800,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "5608ded207458dfa",
+    "completed_ticks": 1800,
+    "peak_depth": 384.001748592451,
+    "final_depth": 384.001743145531,
+    "late_creep": null,
+    "floor_contact_tick": 156,
+    "max_sample_age": 0,
+    "intermediate_caps": 19220,
+    "final_caps": 1735,
+    "unresolved": 125283,
+    "overflow": 0,
+    "tick_us": [
+      685,
+      1290,
+      7050
+    ],
+    "coupling_us": [
+      235,
+      500,
+      785
+    ]
+  },
+  {
+    "profile": "real-Web-compat",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "a421b21d63d917c864da2cbea379b5dd80d12ba6b0a5fd3609ace4c517096871",
+    "spec": {
+      "id": "hard",
+      "layout": "hard",
+      "material": 0,
+      "mode": "barrel",
+      "seed": 4,
+      "ticks": 1800,
+      "workers": 1
+    },
+    "ok": true,
+    "hash": "bb37dfb6db9d6730",
+    "completed_ticks": 1800,
+    "peak_depth": 0.00045776381119822,
+    "final_depth": 0.00045776381119822,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      40,
+      75,
+      665
+    ],
+    "coupling_us": [
+      65,
+      110,
+      460
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "P1",
+      "material": 14,
+      "mode": "cellular",
+      "seed": 0,
+      "ticks": 1800,
+      "top": 2,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "875a246750c044a8",
+    "completed_ticks": 1800,
+    "peak_depth": 0,
+    "final_depth": 0,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      3490,
+      11664
+    ],
+    "coupling_us": [
+      0,
+      6,
+      279
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "P2",
+      "material": 2,
+      "mode": "cellular",
+      "seed": 0,
+      "ticks": 1800,
+      "top": 33,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "4c392142ad775de0",
+    "completed_ticks": 1800,
+    "peak_depth": 0,
+    "final_depth": 0,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      2911,
+      4425
+    ],
+    "coupling_us": [
+      0,
+      6,
+      15
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "P3",
+      "material": 14,
+      "mode": "player",
+      "seed": 0,
+      "ticks": 1800,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "38c1e7985d5e3f0b",
+    "completed_ticks": 1800,
+    "peak_depth": 383.991394042969,
+    "final_depth": 383.991394042969,
+    "late_creep": null,
+    "floor_contact_tick": 305,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      16,
+      11486
+    ],
+    "coupling_us": [
+      6,
+      16,
+      320
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "P4",
+      "material": 2,
+      "mode": "barrel",
+      "seed": 0,
+      "ticks": 1800,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "67f6e3e6b3e8242",
+    "completed_ticks": 1800,
+    "peak_depth": 384.002147190076,
+    "final_depth": 384.001439800166,
+    "late_creep": null,
+    "floor_contact_tick": 155,
+    "max_sample_age": 0,
+    "intermediate_caps": 21820,
+    "final_caps": 294,
+    "unresolved": 133524,
+    "overflow": 0,
+    "tick_us": [
+      45,
+      1505,
+      3684
+    ],
+    "coupling_us": [
+      366,
+      435,
+      1274
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "hard",
+      "layout": "hard",
+      "material": 0,
+      "mode": "barrel",
+      "seed": 0,
+      "ticks": 1800,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "ecafc7285002e262",
+    "completed_ticks": 1800,
+    "peak_depth": 0.00045776381119822,
+    "final_depth": 0.00045776381119822,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      34,
+      45,
+      715
+    ],
+    "coupling_us": [
+      86,
+      116,
+      251
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "P1",
+      "material": 14,
+      "mode": "cellular",
+      "seed": 1,
+      "ticks": 1800,
+      "top": 2,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "1fe9722eb6731d9e",
+    "completed_ticks": 1800,
+    "peak_depth": 0,
+    "final_depth": 0,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      3591,
+      5415
+    ],
+    "coupling_us": [
+      0,
+      6,
+      20
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "P2",
+      "material": 2,
+      "mode": "cellular",
+      "seed": 1,
+      "ticks": 1800,
+      "top": 33,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "501f9d6f72975ed6",
+    "completed_ticks": 1800,
+    "peak_depth": 0,
+    "final_depth": 0,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      2775,
+      8385
+    ],
+    "coupling_us": [
+      0,
+      6,
+      11
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "P3",
+      "material": 14,
+      "mode": "player",
+      "seed": 1,
+      "ticks": 1800,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "4d3ceac9db32f108",
+    "completed_ticks": 1800,
+    "peak_depth": 383.991516113281,
+    "final_depth": 383.991516113281,
+    "late_creep": null,
+    "floor_contact_tick": 305,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      16,
+      6625
+    ],
+    "coupling_us": [
+      6,
+      15,
+      45
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "P4",
+      "material": 2,
+      "mode": "barrel",
+      "seed": 1,
+      "ticks": 1800,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "db59508c8e9755d1",
+    "completed_ticks": 1800,
+    "peak_depth": 384.001748570653,
+    "final_depth": 384.001748046487,
+    "late_creep": null,
+    "floor_contact_tick": 156,
+    "max_sample_age": 0,
+    "intermediate_caps": 19185,
+    "final_caps": 1735,
+    "unresolved": 125252,
+    "overflow": 0,
+    "tick_us": [
+      1050,
+      1204,
+      4516
+    ],
+    "coupling_us": [
+      344,
+      480,
+      706
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "hard",
+      "layout": "hard",
+      "material": 0,
+      "mode": "barrel",
+      "seed": 1,
+      "ticks": 1800,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "25e11ce53053c06f",
+    "completed_ticks": 1800,
+    "peak_depth": 0.00045776381119822,
+    "final_depth": 0.00045776381119822,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      51,
+      75,
+      1430
+    ],
+    "coupling_us": [
+      81,
+      115,
+      366
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "P1",
+      "material": 14,
+      "mode": "cellular",
+      "seed": 2,
+      "ticks": 1800,
+      "top": 2,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "af759b8161b9e81a",
+    "completed_ticks": 1800,
+    "peak_depth": 0,
+    "final_depth": 0,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      3371,
+      6339
+    ],
+    "coupling_us": [
+      0,
+      6,
+      14
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "P2",
+      "material": 2,
+      "mode": "cellular",
+      "seed": 2,
+      "ticks": 1800,
+      "top": 33,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "2aa44f3add00ad30",
+    "completed_ticks": 1800,
+    "peak_depth": 0,
+    "final_depth": 0,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      2791,
+      6961
+    ],
+    "coupling_us": [
+      0,
+      6,
+      14
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "P3",
+      "material": 14,
+      "mode": "player",
+      "seed": 2,
+      "ticks": 1800,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "183d7b724bae3c58",
+    "completed_ticks": 1800,
+    "peak_depth": 383.991577148438,
+    "final_depth": 383.991577148438,
+    "late_creep": null,
+    "floor_contact_tick": 305,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      16,
+      4014
+    ],
+    "coupling_us": [
+      6,
+      11,
+      51
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "P4",
+      "material": 2,
+      "mode": "barrel",
+      "seed": 2,
+      "ticks": 1800,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "b6ba2d7d65af3d90",
+    "completed_ticks": 1800,
+    "peak_depth": 384.001934072835,
+    "final_depth": 384.001932523249,
+    "late_creep": null,
+    "floor_contact_tick": 158,
+    "max_sample_age": 0,
+    "intermediate_caps": 19106,
+    "final_caps": 1733,
+    "unresolved": 138522,
+    "overflow": 0,
+    "tick_us": [
+      980,
+      1236,
+      3569
+    ],
+    "coupling_us": [
+      365,
+      525,
+      2060
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "hard",
+      "layout": "hard",
+      "material": 0,
+      "mode": "barrel",
+      "seed": 2,
+      "ticks": 1800,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "c0b83e9c0192145c",
+    "completed_ticks": 1800,
+    "peak_depth": 0.00045776381119822,
+    "final_depth": 0.00045776381119822,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      36,
+      50,
+      799
+    ],
+    "coupling_us": [
+      81,
+      115,
+      376
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "P1",
+      "material": 14,
+      "mode": "cellular",
+      "seed": 3,
+      "ticks": 1800,
+      "top": 2,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "7f8986e56c0fa2bd",
+    "completed_ticks": 1800,
+    "peak_depth": 0,
+    "final_depth": 0,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      3315,
+      15611
+    ],
+    "coupling_us": [
+      0,
+      6,
+      10
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "P2",
+      "material": 2,
+      "mode": "cellular",
+      "seed": 3,
+      "ticks": 1800,
+      "top": 33,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "74427f4fecedfd31",
+    "completed_ticks": 1800,
+    "peak_depth": 0,
+    "final_depth": 0,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      2795,
+      11825
+    ],
+    "coupling_us": [
+      0,
+      6,
+      20
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "P3",
+      "material": 14,
+      "mode": "player",
+      "seed": 3,
+      "ticks": 1800,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "9365ce8dbbb7a481",
+    "completed_ticks": 1800,
+    "peak_depth": 383.991455078125,
+    "final_depth": 383.991455078125,
+    "late_creep": null,
+    "floor_contact_tick": 305,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      16,
+      6720
+    ],
+    "coupling_us": [
+      6,
+      16,
+      59
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "P4",
+      "material": 2,
+      "mode": "barrel",
+      "seed": 3,
+      "ticks": 1800,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "4a0b52da02ab5c2e",
+    "completed_ticks": 1800,
+    "peak_depth": 384.001743594097,
+    "final_depth": 384.001739157996,
+    "late_creep": null,
+    "floor_contact_tick": 154,
+    "max_sample_age": 0,
+    "intermediate_caps": 17227,
+    "final_caps": 1736,
+    "unresolved": 136697,
+    "overflow": 0,
+    "tick_us": [
+      1025,
+      1425,
+      3235
+    ],
+    "coupling_us": [
+      401,
+      531,
+      669
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "hard",
+      "layout": "hard",
+      "material": 0,
+      "mode": "barrel",
+      "seed": 3,
+      "ticks": 1800,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "84b77614be79cec7",
+    "completed_ticks": 1800,
+    "peak_depth": 0.00045776381119822,
+    "final_depth": 0.00045776381119822,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      59,
+      79,
+      3881
+    ],
+    "coupling_us": [
+      85,
+      136,
+      395
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "P1",
+      "material": 14,
+      "mode": "cellular",
+      "seed": 4,
+      "ticks": 1800,
+      "top": 2,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "e95d0d1e84f333f1",
+    "completed_ticks": 1800,
+    "peak_depth": 0,
+    "final_depth": 0,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      3384,
+      67694
+    ],
+    "coupling_us": [
+      0,
+      6,
+      16
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "P2",
+      "material": 2,
+      "mode": "cellular",
+      "seed": 4,
+      "ticks": 1800,
+      "top": 33,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "625f2f708330128f",
+    "completed_ticks": 1800,
+    "peak_depth": 0,
+    "final_depth": 0,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      2659,
+      3930
+    ],
+    "coupling_us": [
+      0,
+      6,
+      10
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "P3",
+      "material": 14,
+      "mode": "player",
+      "seed": 4,
+      "ticks": 1800,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "71a81a2b92510857",
+    "completed_ticks": 1800,
+    "peak_depth": 383.991516113281,
+    "final_depth": 383.991516113281,
+    "late_creep": null,
+    "floor_contact_tick": 305,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      10,
+      16,
+      4106
+    ],
+    "coupling_us": [
+      6,
+      15,
+      54
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "P4",
+      "material": 2,
+      "mode": "barrel",
+      "seed": 4,
+      "ticks": 1800,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "5608ded207458dfa",
+    "completed_ticks": 1800,
+    "peak_depth": 384.001748592451,
+    "final_depth": 384.001743145531,
+    "late_creep": null,
+    "floor_contact_tick": 156,
+    "max_sample_age": 0,
+    "intermediate_caps": 19220,
+    "final_caps": 1735,
+    "unresolved": 125283,
+    "overflow": 0,
+    "tick_us": [
+      1091,
+      1230,
+      3350
+    ],
+    "coupling_us": [
+      320,
+      450,
+      650
+    ]
+  },
+  {
+    "profile": "real-Web-threaded",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "cross_origin_isolated": true,
+    "raw_sha256": "3425976542fc7f408e4b987c6a115b79f92a0af8a6a61f0e91111815eddc70f5",
+    "spec": {
+      "id": "hard",
+      "layout": "hard",
+      "material": 0,
+      "mode": "barrel",
+      "seed": 4,
+      "ticks": 1800,
+      "workers": 4
+    },
+    "ok": true,
+    "hash": "bb37dfb6db9d6730",
+    "completed_ticks": 1800,
+    "peak_depth": 0.00045776381119822,
+    "final_depth": 0.00045776381119822,
+    "late_creep": 0,
+    "floor_contact_tick": -1,
+    "max_sample_age": 0,
+    "intermediate_caps": 0,
+    "final_caps": 0,
+    "unresolved": 0,
+    "overflow": 0,
+    "tick_us": [
+      59,
+      69,
+      1335
+    ],
+    "coupling_us": [
+      81,
+      100,
+      271
+    ]
+  },
+  {
+    "profile": "desktop-asynchronous",
+    "raw_sha256": "09df81e3381260622e446c43b0f7107c7e65dad24e6803db7fe1c6d4b3a10425",
+    "hash": "a333750c4068d7b6",
+    "seed": 0,
+    "ok": true,
+    "completed_ticks": 1800,
+    "rapier_ticks": 1804,
+    "peak_depth": 384.001320899298,
+    "floor_contact_tick": 151,
+    "age_histogram": [
+      301,
+      1269,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "worker_overruns": 0,
+    "overflow": 0,
+    "worker_tick_ms": [
+      0.25,
+      0.928,
+      5.226
+    ],
+    "rows": [
+      {
+        "cell_tick": 56,
+        "depth": 27.6327056884766,
+        "rapier_tick": 60,
+        "rotation": 0.0,
+        "x": 142.751586914063,
+        "y": 212.632705688477
+      },
+      {
+        "cell_tick": 116,
+        "depth": 209.570861816406,
+        "rapier_tick": 120,
+        "rotation": 0.0,
+        "x": 137.894165039063,
+        "y": 394.570861816406
+      },
+      {
+        "cell_tick": 176,
+        "depth": 384.001132087297,
+        "rapier_tick": 180,
+        "rotation": 8.36368235468399e-06,
+        "x": 134.122009277344,
+        "y": 569.001098632813
+      },
+      {
+        "cell_tick": 235,
+        "depth": 384.001132285262,
+        "rapier_tick": 240,
+        "rotation": 2.36723917623749e-05,
+        "x": 134.122406005859,
+        "y": 569.001037597656
+      },
+      {
+        "cell_tick": 295,
+        "depth": 384.00113435023,
+        "rapier_tick": 300,
+        "rotation": 2.41886555158999e-05,
+        "x": 134.122375488281,
+        "y": 569.001037597656
+      },
+      {
+        "cell_tick": 355,
+        "depth": 384.001130212121,
+        "rapier_tick": 360,
+        "rotation": 2.31540852837497e-05,
+        "x": 134.122360229492,
+        "y": 569.001037597656
+      },
+      {
+        "cell_tick": 415,
+        "depth": 384.001098069206,
+        "rapier_tick": 420,
+        "rotation": 1.51180875036516e-05,
+        "x": 134.122619628906,
+        "y": 569.001037597656
+      },
+      {
+        "cell_tick": 476,
+        "depth": 384.001037621608,
+        "rapier_tick": 480,
+        "rotation": 1.52649809024297e-05,
+        "x": 134.12174987793,
+        "y": 569.0009765625
+      },
+      {
+        "cell_tick": 535,
+        "depth": 384.001133734303,
+        "rapier_tick": 540,
+        "rotation": 2.40346671489533e-05,
+        "x": 134.122360229492,
+        "y": 569.001037597656
+      },
+      {
+        "cell_tick": 596,
+        "depth": 384.001122578185,
+        "rapier_tick": 600,
+        "rotation": 2.12455270229839e-05,
+        "x": 134.122314453125,
+        "y": 569.001037597656
+      },
+      {
+        "cell_tick": 655,
+        "depth": 384.001128229429,
+        "rapier_tick": 660,
+        "rotation": 2.26583924813895e-05,
+        "x": 134.12239074707,
+        "y": 569.001037597656
+      },
+      {
+        "cell_tick": 715,
+        "depth": 384.001109833968,
+        "rapier_tick": 720,
+        "rotation": 1.80593633558601e-05,
+        "x": 134.122665405273,
+        "y": 569.001037597656
+      },
+      {
+        "cell_tick": 775,
+        "depth": 384.001105123199,
+        "rapier_tick": 780,
+        "rotation": 1.68816350196721e-05,
+        "x": 134.122604370117,
+        "y": 569.001037597656
+      },
+      {
+        "cell_tick": 835,
+        "depth": 384.001133101154,
+        "rapier_tick": 840,
+        "rotation": 2.38763732340885e-05,
+        "x": 134.122177124023,
+        "y": 569.001037597656
+      },
+      {
+        "cell_tick": 895,
+        "depth": 384.001134686904,
+        "rapier_tick": 900,
+        "rotation": 2.42728274315596e-05,
+        "x": 134.122131347656,
+        "y": 569.001037597656
+      },
+      {
+        "cell_tick": 955,
+        "depth": 384.001129715033,
+        "rapier_tick": 960,
+        "rotation": 2.30298082897207e-05,
+        "x": 134.122192382813,
+        "y": 569.001037597656
+      },
+      {
+        "cell_tick": 1015,
+        "depth": 384.00113685896,
+        "rapier_tick": 1020,
+        "rotation": 2.48158648901153e-05,
+        "x": 134.12223815918,
+        "y": 569.001037597656
+      },
+      {
+        "cell_tick": 1076,
+        "depth": 384.001241594198,
+        "rapier_tick": 1080,
+        "rotation": 2.04819243663223e-05,
+        "x": 134.122344970703,
+        "y": 569.001159667969
+      },
+      {
+        "cell_tick": 1136,
+        "depth": 384.00125876918,
+        "rapier_tick": 1140,
+        "rotation": 2.47758398472797e-05,
+        "x": 134.122344970703,
+        "y": 569.001159667969
+      },
+      {
+        "cell_tick": 1195,
+        "depth": 384.00112569636,
+        "rapier_tick": 1200,
+        "rotation": 2.20251004066085e-05,
+        "x": 134.122268676758,
+        "y": 569.001037597656
+      },
+      {
+        "cell_tick": 1255,
+        "depth": 384.001134006754,
+        "rapier_tick": 1260,
+        "rotation": 2.41027828451479e-05,
+        "x": 134.122283935547,
+        "y": 569.001037597656
+      },
+      {
+        "cell_tick": 1315,
+        "depth": 384.001133489092,
+        "rapier_tick": 1320,
+        "rotation": 2.39733617490856e-05,
+        "x": 134.12223815918,
+        "y": 569.001037597656
+      },
+      {
+        "cell_tick": 1375,
+        "depth": 384.001122383633,
+        "rapier_tick": 1380,
+        "rotation": 2.11968872463331e-05,
+        "x": 134.122268676758,
+        "y": 569.001037597656
+      },
+      {
+        "cell_tick": 1435,
+        "depth": 384.001130695123,
+        "rapier_tick": 1440,
+        "rotation": 2.32748407142935e-05,
+        "x": 134.122283935547,
+        "y": 569.001037597656
+      },
+      {
+        "cell_tick": 1494,
+        "depth": 384.001028020884,
+        "rapier_tick": 1500,
+        "rotation": 1.28647407109383e-05,
+        "x": 134.121795654297,
+        "y": 569.0009765625
+      },
+      {
+        "cell_tick": 1555,
+        "depth": 384.001134248073,
+        "rapier_tick": 1560,
+        "rotation": 2.41631150856847e-05,
+        "x": 134.122360229492,
+        "y": 569.001037597656
+      },
+      {
+        "cell_tick": 1615,
+        "depth": 384.001125881584,
+        "rapier_tick": 1620,
+        "rotation": 2.2071408238844e-05,
+        "x": 134.122406005859,
+        "y": 569.001037597656
+      },
+      {
+        "cell_tick": 1675,
+        "depth": 384.001131152093,
+        "rapier_tick": 1680,
+        "rotation": 2.33890878007514e-05,
+        "x": 134.122436523438,
+        "y": 569.001037597656
+      },
+      {
+        "cell_tick": 1735,
+        "depth": 384.001094566559,
+        "rapier_tick": 1740,
+        "rotation": 1.42424032674171e-05,
+        "x": 134.122634887695,
+        "y": 569.001037597656
+      },
+      {
+        "cell_tick": 1795,
+        "depth": 384.001096833752,
+        "rapier_tick": 1800,
+        "rotation": 1.48092158269719e-05,
+        "x": 134.122802734375,
+        "y": 569.001037597656
+      }
+    ]
+  },
+  {
+    "profile": "desktop-asynchronous",
+    "raw_sha256": "bc71ee040437190cebe04749d75697012b900422a5e94adf519e3075a1973e5a",
+    "hash": "2f28c68ee98dbe55",
+    "seed": 1,
+    "ok": true,
+    "completed_ticks": 1800,
+    "rapier_ticks": 1803,
+    "peak_depth": 384.001275164114,
+    "floor_contact_tick": 167,
+    "age_histogram": [
+      157,
+      1408,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "worker_overruns": 0,
+    "overflow": 0,
+    "worker_tick_ms": [
+      0.8265,
+      1.277,
+      7.947
+    ],
+    "rows": [
+      {
+        "cell_tick": 56,
+        "depth": 24.7271423339844,
+        "rapier_tick": 60,
+        "rotation": 0.0,
+        "x": 145.689208984375,
+        "y": 216.727142333984
+      },
+      {
+        "cell_tick": 116,
+        "depth": 175.590606689453,
+        "rapier_tick": 120,
+        "rotation": 0.0,
+        "x": 141.864013671875,
+        "y": 367.590606689453
+      },
+      {
+        "cell_tick": 176,
+        "depth": 384.001135094944,
+        "rapier_tick": 180,
+        "rotation": 2.43748418142786e-05,
+        "x": 142.459396362305,
+        "y": 576.001037597656
+      },
+      {
+        "cell_tick": 236,
+        "depth": 384.001138369469,
+        "rapier_tick": 240,
+        "rotation": 9.93425055639818e-06,
+        "x": 142.459365844727,
+        "y": 576.001098632813
+      },
+      {
+        "cell_tick": 295,
+        "depth": 384.001132543671,
+        "rapier_tick": 300,
+        "rotation": 8.4777775555267e-06,
+        "x": 142.459487915039,
+        "y": 576.001098632813
+      },
+      {
+        "cell_tick": 356,
+        "depth": 384.001144418267,
+        "rapier_tick": 360,
+        "rotation": 1.14464783109725e-05,
+        "x": 142.459671020508,
+        "y": 576.001098632813
+      },
+      {
+        "cell_tick": 416,
+        "depth": 384.001140993627,
+        "rapier_tick": 420,
+        "rotation": 1.05903018265963e-05,
+        "x": 142.459716796875,
+        "y": 576.001098632813
+      },
+      {
+        "cell_tick": 476,
+        "depth": 384.001074739725,
+        "rapier_tick": 480,
+        "rotation": 9.28559256863082e-06,
+        "x": 142.459899902344,
+        "y": 576.001037597656
+      },
+      {
+        "cell_tick": 536,
+        "depth": 384.001129281753,
+        "rapier_tick": 540,
+        "rotation": 7.66228640713962e-06,
+        "x": 142.459869384766,
+        "y": 576.001098632813
+      },
+      {
+        "cell_tick": 596,
+        "depth": 384.00113115804,
+        "rapier_tick": 600,
+        "rotation": 8.13136466604192e-06,
+        "x": 142.4599609375,
+        "y": 576.001098632813
+      },
+      {
+        "cell_tick": 656,
+        "depth": 384.001001229973,
+        "rapier_tick": 660,
+        "rotation": 6.16690158494748e-06,
+        "x": 142.459762573242,
+        "y": 576.0009765625
+      },
+      {
+        "cell_tick": 717,
+        "depth": 384.001205651722,
+        "rapier_tick": 720,
+        "rotation": 1.14960539576714e-05,
+        "x": 142.460220336914,
+        "y": 576.001159667969
+      },
+      {
+        "cell_tick": 776,
+        "depth": 384.001142312359,
+        "rapier_tick": 780,
+        "rotation": 1.09199909275048e-05,
+        "x": 142.460235595703,
+        "y": 576.001098632813
+      },
+      {
+        "cell_tick": 836,
+        "depth": 384.001086696033,
+        "rapier_tick": 840,
+        "rotation": 1.22747260320466e-05,
+        "x": 142.46044921875,
+        "y": 576.001037597656
+      },
+      {
+        "cell_tick": 897,
+        "depth": 384.001129630146,
+        "rapier_tick": 900,
+        "rotation": 7.74938598624431e-06,
+        "x": 142.460250854492,
+        "y": 576.001098632813
+      },
+      {
+        "cell_tick": 956,
+        "depth": 384.001144316857,
+        "rapier_tick": 960,
+        "rotation": 1.14211252366658e-05,
+        "x": 142.46028137207,
+        "y": 576.001098632813
+      },
+      {
+        "cell_tick": 1016,
+        "depth": 384.001130503362,
+        "rapier_tick": 1020,
+        "rotation": 7.96769290900556e-06,
+        "x": 142.460327148438,
+        "y": 576.001098632813
+      },
+      {
+        "cell_tick": 1076,
+        "depth": 384.001143124653,
+        "rapier_tick": 1080,
+        "rotation": 1.11230683614849e-05,
+        "x": 142.460327148438,
+        "y": 576.001098632813
+      },
+      {
+        "cell_tick": 1137,
+        "depth": 384.001211709082,
+        "rapier_tick": 1140,
+        "rotation": 1.30104263007524e-05,
+        "x": 142.460418701172,
+        "y": 576.001159667969
+      },
+      {
+        "cell_tick": 1196,
+        "depth": 384.00107085873,
+        "rapier_tick": 1200,
+        "rotation": 8.31532906886423e-06,
+        "x": 142.460632324219,
+        "y": 576.001037597656
+      },
+      {
+        "cell_tick": 1256,
+        "depth": 384.000992066149,
+        "rapier_tick": 1260,
+        "rotation": 3.87592535844306e-06,
+        "x": 142.460311889648,
+        "y": 576.0009765625
+      },
+      {
+        "cell_tick": 1316,
+        "depth": 384.001141106206,
+        "rapier_tick": 1320,
+        "rotation": 1.06184470496373e-05,
+        "x": 142.460662841797,
+        "y": 576.001098632813
+      },
+      {
+        "cell_tick": 1376,
+        "depth": 384.001142973483,
+        "rapier_tick": 1380,
+        "rotation": 1.10852752186474e-05,
+        "x": 142.460815429688,
+        "y": 576.001098632813
+      },
+      {
+        "cell_tick": 1436,
+        "depth": 384.001139550689,
+        "rapier_tick": 1440,
+        "rotation": 1.02295607575797e-05,
+        "x": 142.460968017578,
+        "y": 576.001098632813
+      },
+      {
+        "cell_tick": 1496,
+        "depth": 384.001141983077,
+        "rapier_tick": 1500,
+        "rotation": 1.08376689240686e-05,
+        "x": 142.461120605469,
+        "y": 576.001098632813
+      },
+      {
+        "cell_tick": 1556,
+        "depth": 384.001136083067,
+        "rapier_tick": 1560,
+        "rotation": 9.36264041229151e-06,
+        "x": 142.461196899414,
+        "y": 576.001098632813
+      },
+      {
+        "cell_tick": 1616,
+        "depth": 384.001139456078,
+        "rapier_tick": 1620,
+        "rotation": 1.02059075288707e-05,
+        "x": 142.461242675781,
+        "y": 576.001098632813
+      },
+      {
+        "cell_tick": 1676,
+        "depth": 384.001131474601,
+        "rapier_tick": 1680,
+        "rotation": 8.21050616650609e-06,
+        "x": 142.461349487305,
+        "y": 576.001098632813
+      },
+      {
+        "cell_tick": 1736,
+        "depth": 384.001133579857,
+        "rapier_tick": 1740,
+        "rotation": 8.73682802193798e-06,
+        "x": 142.461456298828,
+        "y": 576.001098632813
+      },
+      {
+        "cell_tick": 1797,
+        "depth": 384.001275164114,
+        "rapier_tick": 1800,
+        "rotation": 1.3615409443446e-05,
+        "x": 142.461608886719,
+        "y": 576.001220703125
+      }
+    ]
+  },
+  {
+    "profile": "desktop-asynchronous",
+    "raw_sha256": "90c871d68ad57320403d738677f03f6c73daec217cd9d5f44506cc7995bfcd16",
+    "hash": "6b9aeabc69030168",
+    "seed": 2,
+    "ok": true,
+    "completed_ticks": 1800,
+    "rapier_ticks": 1803,
+    "peak_depth": 384.001673529157,
+    "floor_contact_tick": 164,
+    "age_histogram": [
+      141,
+      1437,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "worker_overruns": 0,
+    "overflow": 0,
+    "worker_tick_ms": [
+      0.8,
+      1.672,
+      6.012
+    ],
+    "rows": [
+      {
+        "cell_tick": 55,
+        "depth": 24.5835113525391,
+        "rapier_tick": 60,
+        "rotation": 0.0,
+        "x": 148.616088867188,
+        "y": 223.583511352539
+      },
+      {
+        "cell_tick": 116,
+        "depth": 173.357452392578,
+        "rapier_tick": 120,
+        "rotation": 0.0,
+        "x": 143.844421386719,
+        "y": 372.357452392578
+      },
+      {
+        "cell_tick": 176,
+        "depth": 384.00118731942,
+        "rapier_tick": 180,
+        "rotation": -2.21720820263727e-05,
+        "x": 141.567489624023,
+        "y": 583.001098632813
+      },
+      {
+        "cell_tick": 236,
+        "depth": 384.001420575583,
+        "rapier_tick": 240,
+        "rotation": -9.5752504421398e-05,
+        "x": 141.560775756836,
+        "y": 583.001037597656
+      },
+      {
+        "cell_tick": 296,
+        "depth": 384.001522802983,
+        "rapier_tick": 300,
+        "rotation": -0.000121314209536649,
+        "x": 141.539474487305,
+        "y": 583.001037597656
+      },
+      {
+        "cell_tick": 355,
+        "depth": 384.00155880598,
+        "rapier_tick": 360,
+        "rotation": -0.000130316941067576,
+        "x": 141.511657714844,
+        "y": 583.001037597656
+      },
+      {
+        "cell_tick": 416,
+        "depth": 384.001256686621,
+        "rapier_tick": 420,
+        "rotation": 2.4255177777377e-05,
+        "x": 141.499771118164,
+        "y": 583.001159667969
+      },
+      {
+        "cell_tick": 476,
+        "depth": 384.001242350692,
+        "rapier_tick": 480,
+        "rotation": 3.59305995516479e-05,
+        "x": 141.499496459961,
+        "y": 583.001098632813
+      },
+      {
+        "cell_tick": 536,
+        "depth": 384.001191454335,
+        "rapier_tick": 540,
+        "rotation": 2.32058519031852e-05,
+        "x": 141.50129699707,
+        "y": 583.001098632813
+      },
+      {
+        "cell_tick": 596,
+        "depth": 384.000600165605,
+        "rapier_tick": 600,
+        "rotation": 2.79717733064899e-05,
+        "x": 141.498718261719,
+        "y": 583.00048828125
+      },
+      {
+        "cell_tick": 656,
+        "depth": 384.001260500854,
+        "rapier_tick": 660,
+        "rotation": 4.04684433306102e-05,
+        "x": 141.499145507813,
+        "y": 583.001098632813
+      },
+      {
+        "cell_tick": 716,
+        "depth": 384.00116973972,
+        "rapier_tick": 720,
+        "rotation": 3.30364709952846e-05,
+        "x": 141.499755859375,
+        "y": 583.001037597656
+      },
+      {
+        "cell_tick": 775,
+        "depth": 384.001253957093,
+        "rapier_tick": 780,
+        "rotation": 3.88323896913789e-05,
+        "x": 141.499084472656,
+        "y": 583.001098632813
+      },
+      {
+        "cell_tick": 836,
+        "depth": 384.001087535273,
+        "rapier_tick": 840,
+        "rotation": 2.77438666671515e-05,
+        "x": 141.497985839844,
+        "y": 583.0009765625
+      },
+      {
+        "cell_tick": 895,
+        "depth": 384.001242298891,
+        "rapier_tick": 900,
+        "rotation": 3.59176483470947e-05,
+        "x": 141.498886108398,
+        "y": 583.001098632813
+      },
+      {
+        "cell_tick": 956,
+        "depth": 384.00126070784,
+        "rapier_tick": 960,
+        "rotation": 4.05201935791411e-05,
+        "x": 141.498931884766,
+        "y": 583.001098632813
+      },
+      {
+        "cell_tick": 1016,
+        "depth": 384.001255168429,
+        "rapier_tick": 1020,
+        "rotation": 3.91352441511117e-05,
+        "x": 141.498764038086,
+        "y": 583.001098632813
+      },
+      {
+        "cell_tick": 1076,
+        "depth": 384.001337722633,
+        "rapier_tick": 1080,
+        "rotation": 4.45154000772163e-05,
+        "x": 141.499053955078,
+        "y": 583.001159667969
+      },
+      {
+        "cell_tick": 1135,
+        "depth": 384.001244320664,
+        "rapier_tick": 1140,
+        "rotation": 3.64231236744672e-05,
+        "x": 141.498733520508,
+        "y": 583.001098632813
+      },
+      {
+        "cell_tick": 1196,
+        "depth": 384.00125195554,
+        "rapier_tick": 1200,
+        "rotation": 3.83319675165694e-05,
+        "x": 141.498825073242,
+        "y": 583.001098632813
+      },
+      {
+        "cell_tick": 1256,
+        "depth": 384.001266864631,
+        "rapier_tick": 1260,
+        "rotation": 4.20595024479553e-05,
+        "x": 141.498687744141,
+        "y": 583.001098632813
+      },
+      {
+        "cell_tick": 1316,
+        "depth": 384.001257939722,
+        "rapier_tick": 1320,
+        "rotation": 3.98281154048163e-05,
+        "x": 141.49870300293,
+        "y": 583.001098632813
+      },
+      {
+        "cell_tick": 1376,
+        "depth": 384.001257033317,
+        "rapier_tick": 1380,
+        "rotation": 3.9601498428965e-05,
+        "x": 141.49870300293,
+        "y": 583.001098632813
+      },
+      {
+        "cell_tick": 1436,
+        "depth": 384.001086304611,
+        "rapier_tick": 1440,
+        "rotation": 2.74361864285311e-05,
+        "x": 141.497634887695,
+        "y": 583.0009765625
+      },
+      {
+        "cell_tick": 1496,
+        "depth": 384.001328524455,
+        "rapier_tick": 1500,
+        "rotation": 4.22156808781438e-05,
+        "x": 141.498886108398,
+        "y": 583.001159667969
+      },
+      {
+        "cell_tick": 1555,
+        "depth": 384.001070795377,
+        "rapier_tick": 1560,
+        "rotation": 2.35587049246533e-05,
+        "x": 141.49772644043,
+        "y": 583.0009765625
+      },
+      {
+        "cell_tick": 1616,
+        "depth": 384.001240047719,
+        "rapier_tick": 1620,
+        "rotation": 3.53548202838283e-05,
+        "x": 141.498519897461,
+        "y": 583.001098632813
+      },
+      {
+        "cell_tick": 1676,
+        "depth": 384.001250453868,
+        "rapier_tick": 1680,
+        "rotation": 3.79565244656987e-05,
+        "x": 141.498565673828,
+        "y": 583.001098632813
+      },
+      {
+        "cell_tick": 1735,
+        "depth": 384.001262322682,
+        "rapier_tick": 1740,
+        "rotation": 4.09239328291733e-05,
+        "x": 141.49853515625,
+        "y": 583.001098632813
+      },
+      {
+        "cell_tick": 1796,
+        "depth": 384.001251163328,
+        "rapier_tick": 1800,
+        "rotation": 3.81339013983961e-05,
+        "x": 141.498458862305,
+        "y": 583.001098632813
+      }
+    ]
+  },
+  {
+    "profile": "desktop-asynchronous",
+    "raw_sha256": "0864616fdae35bb2cbc5b478fbe1a2e351b260f5679227df73d6a1efc232fd68",
+    "hash": "8da0c4840be396c6",
+    "seed": 3,
+    "ok": true,
+    "completed_ticks": 1800,
+    "rapier_ticks": 1802,
+    "peak_depth": 384.001287238162,
+    "floor_contact_tick": 162,
+    "age_histogram": [
+      172,
+      1361,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "worker_overruns": 0,
+    "overflow": 0,
+    "worker_tick_ms": [
+      0.8045,
+      1.315,
+      8.183
+    ],
+    "rows": [
+      {
+        "cell_tick": 57,
+        "depth": 28.0552520751953,
+        "rapier_tick": 60,
+        "rotation": 0.0,
+        "x": 151.666076660156,
+        "y": 214.055252075195
+      },
+      {
+        "cell_tick": 117,
+        "depth": 192.787536621094,
+        "rapier_tick": 120,
+        "rotation": 0.0,
+        "x": 146.138061523438,
+        "y": 378.787536621094
+      },
+      {
+        "cell_tick": 177,
+        "depth": 384.001076942022,
+        "rapier_tick": 180,
+        "rotation": -9.8361761047272e-06,
+        "x": 143.560317993164,
+        "y": 570.001037597656
+      },
+      {
+        "cell_tick": 237,
+        "depth": 384.001146644835,
+        "rapier_tick": 240,
+        "rotation": -1.20031318147085e-05,
+        "x": 143.560211181641,
+        "y": 570.001098632813
+      },
+      {
+        "cell_tick": 297,
+        "depth": 384.001151067033,
+        "rapier_tick": 300,
+        "rotation": -1.31087053887313e-05,
+        "x": 143.559539794922,
+        "y": 570.001098632813
+      },
+      {
+        "cell_tick": 357,
+        "depth": 384.001162732744,
+        "rapier_tick": 360,
+        "rotation": -1.60252075147582e-05,
+        "x": 143.559097290039,
+        "y": 570.001098632813
+      },
+      {
+        "cell_tick": 417,
+        "depth": 384.001157463098,
+        "rapier_tick": 420,
+        "rotation": -1.47077607834945e-05,
+        "x": 143.559005737305,
+        "y": 570.001098632813
+      },
+      {
+        "cell_tick": 477,
+        "depth": 384.001157886279,
+        "rapier_tick": 480,
+        "rotation": -1.48135586641729e-05,
+        "x": 143.558792114258,
+        "y": 570.001098632813
+      },
+      {
+        "cell_tick": 537,
+        "depth": 384.001147691172,
+        "rapier_tick": 540,
+        "rotation": -1.22647215903271e-05,
+        "x": 143.558547973633,
+        "y": 570.001098632813
+      },
+      {
+        "cell_tick": 597,
+        "depth": 384.001148407286,
+        "rapier_tick": 600,
+        "rotation": -1.24437538033817e-05,
+        "x": 143.558502197266,
+        "y": 570.001098632813
+      },
+      {
+        "cell_tick": 656,
+        "depth": 384.001150992427,
+        "rapier_tick": 660,
+        "rotation": -1.30900534713874e-05,
+        "x": 143.557861328125,
+        "y": 570.001098632813
+      },
+      {
+        "cell_tick": 717,
+        "depth": 384.00099942184,
+        "rapier_tick": 720,
+        "rotation": -5.7148636187776e-06,
+        "x": 143.557815551758,
+        "y": 570.0009765625
+      },
+      {
+        "cell_tick": 777,
+        "depth": 384.001153981982,
+        "rapier_tick": 780,
+        "rotation": -1.38374598463997e-05,
+        "x": 143.556915283203,
+        "y": 570.001098632813
+      },
+      {
+        "cell_tick": 837,
+        "depth": 384.001151841362,
+        "rapier_tick": 840,
+        "rotation": -1.33022922454984e-05,
+        "x": 143.556701660156,
+        "y": 570.001098632813
+      },
+      {
+        "cell_tick": 896,
+        "depth": 384.001144006729,
+        "rapier_tick": 900,
+        "rotation": -1.13435917228344e-05,
+        "x": 143.556350708008,
+        "y": 570.001098632813
+      },
+      {
+        "cell_tick": 957,
+        "depth": 384.001140607587,
+        "rapier_tick": 960,
+        "rotation": -1.04937898868229e-05,
+        "x": 143.556381225586,
+        "y": 570.001098632813
+      },
+      {
+        "cell_tick": 1017,
+        "depth": 384.001163121946,
+        "rapier_tick": 1020,
+        "rotation": -1.61225107149221e-05,
+        "x": 143.555862426758,
+        "y": 570.001098632813
+      },
+      {
+        "cell_tick": 1076,
+        "depth": 384.000996712345,
+        "rapier_tick": 1080,
+        "rotation": -5.03748333358089e-06,
+        "x": 143.555862426758,
+        "y": 570.0009765625
+      },
+      {
+        "cell_tick": 1137,
+        "depth": 384.001000026583,
+        "rapier_tick": 1140,
+        "rotation": -5.86605074204272e-06,
+        "x": 143.555938720703,
+        "y": 570.0009765625
+      },
+      {
+        "cell_tick": 1197,
+        "depth": 384.001141826414,
+        "rapier_tick": 1200,
+        "rotation": -1.07985024442314e-05,
+        "x": 143.555206298828,
+        "y": 570.001098632813
+      },
+      {
+        "cell_tick": 1257,
+        "depth": 384.001147339016,
+        "rapier_tick": 1260,
+        "rotation": -1.21766806842061e-05,
+        "x": 143.554931640625,
+        "y": 570.001098632813
+      },
+      {
+        "cell_tick": 1316,
+        "depth": 384.001154927819,
+        "rapier_tick": 1320,
+        "rotation": -1.40739248308819e-05,
+        "x": 143.554870605469,
+        "y": 570.001098632813
+      },
+      {
+        "cell_tick": 1377,
+        "depth": 384.001151893588,
+        "rapier_tick": 1380,
+        "rotation": -1.3315348951437e-05,
+        "x": 143.554672241211,
+        "y": 570.001098632813
+      },
+      {
+        "cell_tick": 1436,
+        "depth": 384.001142165907,
+        "rapier_tick": 1440,
+        "rotation": -1.08833773992956e-05,
+        "x": 143.554183959961,
+        "y": 570.001098632813
+      },
+      {
+        "cell_tick": 1497,
+        "depth": 384.001076747437,
+        "rapier_tick": 1500,
+        "rotation": -9.78752905211877e-06,
+        "x": 143.553817749023,
+        "y": 570.001037597656
+      },
+      {
+        "cell_tick": 1557,
+        "depth": 384.001005716045,
+        "rapier_tick": 1560,
+        "rotation": -7.28843269826029e-06,
+        "x": 143.554092407227,
+        "y": 570.0009765625
+      },
+      {
+        "cell_tick": 1618,
+        "depth": 384.000996648319,
+        "rapier_tick": 1620,
+        "rotation": -5.02147668157704e-06,
+        "x": 143.554107666016,
+        "y": 570.0009765625
+      },
+      {
+        "cell_tick": 1677,
+        "depth": 384.001154112917,
+        "rapier_tick": 1680,
+        "rotation": -1.38701943797059e-05,
+        "x": 143.553573608398,
+        "y": 570.001098632813
+      },
+      {
+        "cell_tick": 1737,
+        "depth": 384.001153766222,
+        "rapier_tick": 1740,
+        "rotation": -1.37835186251323e-05,
+        "x": 143.553283691406,
+        "y": 570.001098632813
+      },
+      {
+        "cell_tick": 1797,
+        "depth": 384.001157638721,
+        "rapier_tick": 1800,
+        "rotation": -1.47516675497172e-05,
+        "x": 143.552749633789,
+        "y": 570.001098632813
+      }
+    ]
+  },
+  {
+    "profile": "desktop-asynchronous",
+    "raw_sha256": "9a2a97a5860b5b5dd6eca0af0352b98485910c1064e609995a8080210a631ffe",
+    "hash": "99b0550f2db7fe38",
+    "seed": 4,
+    "ok": true,
+    "completed_ticks": 1800,
+    "rapier_ticks": 1803,
+    "peak_depth": 384.001309734578,
+    "floor_contact_tick": 163,
+    "age_histogram": [
+      113,
+      1507,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "worker_overruns": 0,
+    "overflow": 0,
+    "worker_tick_ms": [
+      0.814,
+      1.335,
+      8.155
+    ],
+    "rows": [
+      {
+        "cell_tick": 56,
+        "depth": 29.7743988037109,
+        "rapier_tick": 60,
+        "rotation": 0.0,
+        "x": 155.150268554688,
+        "y": 222.774398803711
+      },
+      {
+        "cell_tick": 116,
+        "depth": 184.721618652344,
+        "rapier_tick": 120,
+        "rotation": 0.0,
+        "x": 150.488586425781,
+        "y": 377.721618652344
+      },
+      {
+        "cell_tick": 176,
+        "depth": 384.001180853438,
+        "rapier_tick": 180,
+        "rotation": -2.0555526134558e-05,
+        "x": 144.681350708008,
+        "y": 577.001098632813
+      },
+      {
+        "cell_tick": 237,
+        "depth": 384.001265437543,
+        "rapier_tick": 240,
+        "rotation": -2.64430054812692e-05,
+        "x": 144.681121826172,
+        "y": 577.001159667969
+      },
+      {
+        "cell_tick": 296,
+        "depth": 384.001189490844,
+        "rapier_tick": 300,
+        "rotation": -2.27149594138609e-05,
+        "x": 144.681060791016,
+        "y": 577.001098632813
+      },
+      {
+        "cell_tick": 356,
+        "depth": 384.001183252881,
+        "rapier_tick": 360,
+        "rotation": -2.1155408830964e-05,
+        "x": 144.680145263672,
+        "y": 577.001098632813
+      },
+      {
+        "cell_tick": 416,
+        "depth": 384.001261083997,
+        "rapier_tick": 420,
+        "rotation": -2.53545695159119e-05,
+        "x": 144.679641723633,
+        "y": 577.001159667969
+      },
+      {
+        "cell_tick": 475,
+        "depth": 384.001188802842,
+        "rapier_tick": 480,
+        "rotation": -2.25429521378828e-05,
+        "x": 144.679595947266,
+        "y": 577.001098632813
+      },
+      {
+        "cell_tick": 536,
+        "depth": 384.0010402814,
+        "rapier_tick": 540,
+        "rotation": -1.59299470396945e-05,
+        "x": 144.680236816406,
+        "y": 577.0009765625
+      },
+      {
+        "cell_tick": 596,
+        "depth": 384.001116005763,
+        "rapier_tick": 600,
+        "rotation": -1.96023629541742e-05,
+        "x": 144.679046630859,
+        "y": 577.001037597656
+      },
+      {
+        "cell_tick": 656,
+        "depth": 384.001184910479,
+        "rapier_tick": 660,
+        "rotation": -2.15698237298056e-05,
+        "x": 144.679260253906,
+        "y": 577.001098632813
+      },
+      {
+        "cell_tick": 715,
+        "depth": 384.00103107255,
+        "rapier_tick": 720,
+        "rotation": -1.36276748889941e-05,
+        "x": 144.67951965332,
+        "y": 577.0009765625
+      },
+      {
+        "cell_tick": 776,
+        "depth": 384.001110236279,
+        "rapier_tick": 780,
+        "rotation": -1.81599443749292e-05,
+        "x": 144.678237915039,
+        "y": 577.001037597656
+      },
+      {
+        "cell_tick": 836,
+        "depth": 384.001265606032,
+        "rapier_tick": 840,
+        "rotation": -2.64851296378765e-05,
+        "x": 144.678039550781,
+        "y": 577.001159667969
+      },
+      {
+        "cell_tick": 896,
+        "depth": 384.001191519845,
+        "rapier_tick": 900,
+        "rotation": -2.32222300837748e-05,
+        "x": 144.677856445313,
+        "y": 577.001098632813
+      },
+      {
+        "cell_tick": 955,
+        "depth": 384.001183941816,
+        "rapier_tick": 960,
+        "rotation": -2.13276489375858e-05,
+        "x": 144.677597045898,
+        "y": 577.001098632813
+      },
+      {
+        "cell_tick": 1015,
+        "depth": 384.001109533997,
+        "rapier_tick": 1020,
+        "rotation": -1.79843682417413e-05,
+        "x": 144.676818847656,
+        "y": 577.001037597656
+      },
+      {
+        "cell_tick": 1076,
+        "depth": 384.001193934222,
+        "rapier_tick": 1080,
+        "rotation": -2.38258489844156e-05,
+        "x": 144.677124023438,
+        "y": 577.001098632813
+      },
+      {
+        "cell_tick": 1136,
+        "depth": 384.001192349613,
+        "rapier_tick": 1140,
+        "rotation": -2.3429680368281e-05,
+        "x": 144.676696777344,
+        "y": 577.001098632813
+      },
+      {
+        "cell_tick": 1196,
+        "depth": 384.001195009767,
+        "rapier_tick": 1200,
+        "rotation": -2.4094746549963e-05,
+        "x": 144.67626953125,
+        "y": 577.001098632813
+      },
+      {
+        "cell_tick": 1255,
+        "depth": 384.00104514384,
+        "rapier_tick": 1260,
+        "rotation": -1.71455922099995e-05,
+        "x": 144.676620483398,
+        "y": 577.0009765625
+      },
+      {
+        "cell_tick": 1315,
+        "depth": 384.001029461014,
+        "rapier_tick": 1320,
+        "rotation": -1.32247814690345e-05,
+        "x": 144.676315307617,
+        "y": 577.0009765625
+      },
+      {
+        "cell_tick": 1376,
+        "depth": 384.00119286446,
+        "rapier_tick": 1380,
+        "rotation": -2.35583975154441e-05,
+        "x": 144.675521850586,
+        "y": 577.001098632813
+      },
+      {
+        "cell_tick": 1436,
+        "depth": 384.001182523363,
+        "rapier_tick": 1440,
+        "rotation": -2.09730224014493e-05,
+        "x": 144.675033569336,
+        "y": 577.001098632813
+      },
+      {
+        "cell_tick": 1496,
+        "depth": 384.00119628374,
+        "rapier_tick": 1500,
+        "rotation": -2.44132534135133e-05,
+        "x": 144.674682617188,
+        "y": 577.001098632813
+      },
+      {
+        "cell_tick": 1556,
+        "depth": 384.001117837429,
+        "rapier_tick": 1560,
+        "rotation": -2.00602953555062e-05,
+        "x": 144.673583984375,
+        "y": 577.001037597656
+      },
+      {
+        "cell_tick": 1616,
+        "depth": 384.001182044971,
+        "rapier_tick": 1620,
+        "rotation": -2.08534202101873e-05,
+        "x": 144.673461914063,
+        "y": 577.001098632813
+      },
+      {
+        "cell_tick": 1676,
+        "depth": 384.001186647475,
+        "rapier_tick": 1680,
+        "rotation": -2.20040892600082e-05,
+        "x": 144.672760009766,
+        "y": 577.001098632813
+      },
+      {
+        "cell_tick": 1736,
+        "depth": 384.001182842409,
+        "rapier_tick": 1740,
+        "rotation": -2.10527869057842e-05,
+        "x": 144.672348022461,
+        "y": 577.001098632813
+      },
+      {
+        "cell_tick": 1796,
+        "depth": 384.001191729101,
+        "rapier_tick": 1800,
+        "rotation": -2.32745460380102e-05,
+        "x": 144.671676635742,
+        "y": 577.001098632813
+      }
+    ]
+  }
+]

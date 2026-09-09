@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-09-08",
+  "reviewed": "2026-09-09",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -31,6 +31,7 @@
     "operations/github-development-and-release.md",
     "operations/local-build-and-validation.md",
     "operations/physics-characterisation-plan.md",
+    "operations/physics-characterisation.md",
     "operations/profiling-observability-and-performance.md",
     "operations/rapier-2d-migration-runbook.md",
     "operations/source-checkpoint-and-recovery.md",
@@ -148,6 +149,10 @@
     {
       "path": "audits/2026-09-08-validation-reconciliation.md",
       "reason": "Dated publication/integrity evidence; not a current contract owner"
+    },
+    {
+      "path": "audits/2026-09-09-physics-characterisation.md",
+      "reason": "Dated issue #9 measured evidence, explicitly routed with source/artifact/platform scope; not a default current contract"
     }
   ]
 }

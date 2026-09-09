@@ -1,0 +1,57 @@
+{
+  "desktop_async_command": [
+    "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+    "--headless",
+    "--path",
+    "C:/kybersand/source/godot",
+    "--script",
+    "res://tests/test_physics_async.gd",
+    "--",
+    "C:\\kybersand\\validation\\local\\2026-09-09-physics\\desktop-async-final",
+    "1800",
+    "5"
+  ],
+  "source_artifact_identity": "runtime-manifest.json",
+  "async_source_artifact_identity": "async-manifest.json",
+  "deadline_seconds_per_seed": 90,
+  "browser_urls": [
+    "http://127.0.0.1:8091/?test=1&physics=1",
+    "http://127.0.0.1:8092/?test=1&physics=1"
+  ],
+  "collector_commands": [
+    [
+      "python",
+      "tools/physics/serve.py",
+      "--directory",
+      "C:/kybersand/source/build/web",
+      "--port",
+      "8091",
+      "--output",
+      "C:\\kybersand\\validation\\local\\2026-09-09-physics\\browser-compat"
+    ],
+    [
+      "python",
+      "tools/physics/serve.py",
+      "--directory",
+      "C:/kybersand/source/build/web-threaded",
+      "--port",
+      "8092",
+      "--output",
+      "C:\\kybersand\\validation\\local\\2026-09-09-physics\\browser-threaded"
+    ]
+  ],
+  "host_load": "Concurrent deterministic offline fixture processes; timings are not production performance acceptance.",
+  "invalid_browser_attempt": {
+    "url": "http://127.0.0.1:8089/?test=1&physics=1",
+    "result": "invalid: release stripped assert-contained fixture writes; zero constructed walls; empty-world results excluded",
+    "correction": "explicit call outside assert, construction/completion/control checks, re-export and rerun both profiles"
+  },
+  "excluded_series": [
+    "godot-controls",
+    "godot-controls-v2",
+    "godot-controls-v3",
+    "godot-smoke",
+    "godot-smoke-v3",
+    "native-smoke"
+  ]
+}

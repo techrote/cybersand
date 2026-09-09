@@ -1,0 +1,11 @@
+{
+  "ok": true,
+  "checks": 9239,
+  "errors": [],
+  "native_runs": 1520,
+  "coupled_runs": 916,
+  "water_accounting_runs": 5,
+  "browser_runs": 50,
+  "async_runs": 5,
+  "completed_ticks": 8047080
+}

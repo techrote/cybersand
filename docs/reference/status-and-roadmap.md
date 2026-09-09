@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-09
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md]
 ---
 
@@ -73,11 +73,15 @@ See [principles](../architecture/principles-and-non-goals.md) and the [ADRs](../
 
 ## Next implementation checkpoints
 
-The [physics characterisation and soliding plan](../operations/physics-characterisation-plan.md)
-is **Planned** work for powder exchange/player support, slow Mercury penetration,
-barrel embedding without creep, and eventual reversible macro objects. Begin
-with measured fixtures; soliding requires an explicit ownership decision before
-dynamic membership handoff. It does not supersede the Current F01/F02 contracts.
+**Current:** the [issue #9 measured baseline](../audits/2026-09-09-physics-characterisation.md)
+and [reproducible tooling](../operations/physics-characterisation.md) establish
+density-exchange, player-sampling and barrel-feedback evidence. Production fixes
+remain **Planned** in #10/#11: isolate retained-mask contact feedback, then choose
+pair permeability and material support policies. Raising Mercury viscosity or
+barrel impulse caps alone does not provide the intended behavior. The
+[soliding plan](../operations/physics-characterisation-plan.md) still requires an
+explicit ownership decision before dynamic membership handoff. Current F01/F02
+contracts and the separate runtime publication gate remain applicable.
 
 1. Preserve the implemented F01 quarantine and F02 pause/re-entry contracts and
    their combined regressions; extend the documented platform/failure-site gaps

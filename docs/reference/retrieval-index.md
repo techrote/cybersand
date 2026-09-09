@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-09
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md]
 ---
 
@@ -23,7 +23,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Desktop/Web order, synchronous ticks, failed-world reset/replacement | [Tick and threading](../architecture/simulation-tick-and-threading.md) |
 | Web compatibility/threaded Auto and hosting | [Web threading](../operations/web-threading.md) |
 | Body masks, displacement, terrain, Rapier scope | [Rigid-body/cellular coupling](../architecture/rigid-body-and-cellular-coupling.md) |
-| Powder/player collision, Mercury penetration, barrel sinking, reversible soliding | [Physics characterisation plan](../operations/physics-characterisation-plan.md) (source diagnosis and Planned experiments) |
+| Powder/player collision, Mercury penetration, barrel sinking, reversible soliding | [Measured baseline tooling](../operations/physics-characterisation.md), [dated results](../audits/2026-09-09-physics-characterisation.md), [future soliding plan](../operations/physics-characterisation-plan.md) |
 | Pinned Rapier acquisition and verification | [Rapier runbook](../operations/rapier-2d-migration-runbook.md) |
 | Native snapshots, dirty retention, GPU uploads | [Rendering/gameplay bridges](../architecture/rendering-and-gameplay-bridges.md) |
 | CYSD1 content, import/export ownership, exact resume | [Level saves and replay](level-saves-and-replay.md) |

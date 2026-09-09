@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [material-runtime-model, material-kernel-cadence, reactive-material-families]
 status: Current
 scope: Native material identity, descriptors, mutable state, kernel execution, current interactions, and extension boundaries
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-09
 related-documents: [themed-construction-materials.md, material-appearance-and-rendering.md, water-design.md, smoke-heat-pressure-roadmap.md, ../research/sandspiel-performance-and-material-port.md]
 ---
 
@@ -134,3 +134,18 @@ capacity tests; update controls only if the UI changes. Follow the
 tables, a bounded rule context, broader reaction accounting and complete
 interaction coverage. The JSON attribution ledger is research/provenance input,
 not a runtime modding format or proof that every pair has been tested.
+
+## Which penetration explanations have been measured?
+
+**Current:** the [dated physics baseline](../audits/2026-09-09-physics-characterisation.md)
+reproduces ordered powder density exchange in packed layers and Mercury's rapid
+downward passage through Sand. Mercury viscosity 96/160/224/248 produces identical
+states in the confined vertical controls; the gate affects lateral movement.
+Oil's specialized path declines the otherwise density-eligible Dust exchange.
+Lava/Dust and Water/Salt require reaction accounting, not a transport-only label.
+
+The [bounded measurement API](../operations/physics-characterisation.md) records
+actual stored pairs for swaps and kernel-visible sources for contact attempts.
+Its immutable construction overrides leave the shared descriptor table and
+production defaults unchanged. A diagnostic target-wide exchange veto proves
+causality; pair permeability and support policy remain **Planned** for #10/#11.

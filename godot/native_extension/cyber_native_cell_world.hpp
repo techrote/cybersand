@@ -5,6 +5,7 @@
 
 #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/variant/dictionary.hpp>
+#include <godot_cpp/variant/array.hpp>
 #include <godot_cpp/variant/packed_byte_array.hpp>
 #include <godot_cpp/variant/packed_float32_array.hpp>
 #include <godot_cpp/variant/packed_int32_array.hpp>
@@ -89,6 +90,13 @@ public:
     [[nodiscard]] std::int64_t get_worker_threads() const;
     [[nodiscard]] String get_backend_name() const;
     [[nodiscard]] String get_last_tick_error() const;
+    // Isolated fresh-world experiment API. Called only by the exclusive owner.
+    bool diagnostic_reset(const Dictionary& options);
+    bool diagnostic_fill_rect(Vector2i origin, Vector2i size, std::int64_t material,
+                              std::int64_t state_b = 0);
+    [[nodiscard]] Dictionary diagnostic_snapshot(Vector2i origin, Vector2i size,
+                                                  bool include_histogram = false) const;
+    [[nodiscard]] Array diagnostic_body_metrics() const;
     [[nodiscard]] std::int64_t get_tick_failure_count() const;
 
 protected:
@@ -118,6 +126,20 @@ private:
         std::uint64_t displaced = 0;
         std::uint64_t unresolved = 0;
     };
+    struct BodyDiagnostic {
+        Vector2 displacement{};
+        Vector2 boundary{};
+        std::uint64_t intermediate_caps = 0;
+        std::array<std::uint64_t, 4 * 81> faces{};
+    };
+    std::unique_ptr<std::array<BodyDiagnostic, 17>> body_diagnostics_;
+    bool diagnostic_fixture_ = false;
+    double displacement_gain_ = 0.18;
+    double boundary_gain_ = 0.19;
+    double contact_gain_ = 0.025;
+    double impulse_cap_ = 3.0;
+    double density_limit_ = 1.6;
+    [[nodiscard]] double density_scale(cybersand::Material material, double minimum = 0.05) const;
 
     std::unique_ptr<cybersand::World> world_;
     std::unique_ptr<cybersand::RenderSnapshotExchange> render_exchange_;

@@ -1638,12 +1638,109 @@ void test_themed_combustibles_reuse_bounded_kernel() {
 
 }  // namespace
 
+void test_physics_diagnostics_observational() {
+    cybersand::WorldConfig base;
+    base.parallel_job_threshold = 1;
+    base.active_core_capacity = 1024;
+    auto observed = base;
+    observed.physics_diagnostics.enabled = true;
+    auto multi = observed;
+    multi.worker_threads = 4;
+    cybersand::World plain(base), diagnostic(observed), workers(multi);
+    for (auto* world : {&plain, &diagnostic, &workers}) {
+        world->reserve_region({-128, -128, 384, 384});
+        for (int x = 48; x < 145; ++x) {
+            world->set(x, 96, cybersand::Material::Wall);
+            for (int y = 48; y < 96; ++y)
+                world->set(x, y, y < 64 ? cybersand::Material::Sand : cybersand::Material::Dust);
+        }
+        world->set(70, 30, cybersand::Material::Water);
+        world->set(71, 30, cybersand::Material::Salt);
+    }
+    for (int tick = 0; tick < 240; ++tick) {
+        (void)plain.tick(); (void)diagnostic.tick(); (void)workers.tick();
+        require(plain.state_hash() == diagnostic.state_hash(), "telemetry changed cellular state");
+        require(plain.state_hash() == workers.state_hash(), "telemetry changed worker parity");
+        for (int y = 28; y <= 100; ++y) for (int x = 44; x <= 149; ++x) {
+            require(plain.stored_material(x,y) == workers.stored_material(x,y) &&
+                    plain.stored_state_a(x,y) == workers.stored_state_a(x,y) &&
+                    plain.stored_state_b(x,y) == workers.stored_state_b(x,y),
+                    "diagnostic exact cell/state comparison failed");
+        }
+    }
+    require(plain.physics_diagnostics() == nullptr, "default telemetry allocated");
+    const auto& one = *diagnostic.physics_diagnostics();
+    const auto& four = *workers.physics_diagnostics();
+    require(one.overflow == 0 && four.overflow == 0, "fixture histogram overflow");
+    bool swap = false, conversion = false;
+    for (const auto& entry : one.entries) {
+        if (!entry.key) continue;
+        bool found = false;
+        for (const auto& other : four.entries) if (entry.key == other.key) {
+            require(entry.count == other.count, "worker histogram mismatch"); found = true; break;
+        }
+        require(found, "worker histogram missing key");
+        swap |= (entry.key >> 24U) == static_cast<unsigned>(cybersand::PhysicsEvent::DensitySwap);
+        conversion |= (entry.key >> 24U) == static_cast<unsigned>(cybersand::PhysicsEvent::Conversion);
+    }
+    require(swap && conversion, "fixture did not exercise transport and chemistry");
+    diagnostic.clear();
+    require(diagnostic.physics_diagnostics()->used == 0, "clear retained diagnostic counters");
+    cybersand::PhysicsHistogram<2> bounded;
+    bounded.add(1); bounded.add(2); bounded.add(3);
+    require(bounded.used == 2 && bounded.overflow == 1, "telemetry overflow is not explicit");
+}
+
+void test_physics_diagnostic_controls() {
+    cybersand::WorldConfig config;
+    config.active_core_capacity = 1024;
+    config.physics_diagnostics.enabled = true;
+    auto viscous = config; viscous.physics_diagnostics.mercury_viscosity = 248;
+    auto off = config; off.physics_diagnostics.disable_powder_exchange_targets = true;
+    cybersand::World baseline(config), viscosity(viscous), blocked(off);
+    for (auto* world : {&baseline, &viscosity, &blocked}) {
+        for (int y = 0; y <= 64; ++y) {
+            world->set(0,y,cybersand::Material::Wall); world->set(2,y,cybersand::Material::Wall);
+            if (y >= 16) world->set(1,y,cybersand::Material::Sand);
+        }
+        world->set(1,64,cybersand::Material::Wall);
+        world->set(1,15,cybersand::Material::Mercury);
+    }
+    for (int tick = 0; tick < 120; ++tick) {
+        (void)baseline.tick(); (void)viscosity.tick(); (void)blocked.tick();
+        require(baseline.state_hash() == viscosity.state_hash(), "viscosity affected confined vertical penetration");
+    }
+    require(baseline.get(1,63) == cybersand::Material::Mercury, "Mercury did not penetrate packed Sand");
+    require(blocked.get(1,15) == cybersand::Material::Mercury, "target diagnostic switch did not isolate exchange");
+}
+
+void test_physics_masked_source_characterisation() {
+    // A measured baseline, not a desired rule: retained Sand selects a powder
+    // kernel, but get() returns the body's Wall proxy inside that kernel.
+    // Successors #10/#11 must update this fixture if they change that policy.
+    cybersand::WorldConfig config;
+    config.physics_diagnostics.enabled = true;
+    cybersand::World world(config);
+    world.set(100,100,cybersand::Material::Sand);
+    world.configure_transient_obstacles({96,96,16,16});
+    for (int y=99;y<=102;++y) for(int x=98;x<=102;++x)
+        require(world.set_transient_obstacle(x,y,1), "body fixture mask failed");
+    (void)world.tick();
+    require(world.stored_material(100,100)==cybersand::Material::Sand, "masked grain was lost");
+    require(world.transient_contact_count(1)==3, "masked source baseline contact opportunities changed");
+    require(world.transient_contact_impulse_y(1)==4800, "masked Wall proxy baseline weighting changed");
+    std::cout << "masked-Sand baseline: 3 downward contact attempts, raw y=4800; stored Sand retained\n";
+}
+
 int main() {
     struct Test {
         const char* name;
         void (*function)();
     };
     const Test tests[] = {
+        {"physics diagnostic observer and worker parity", test_physics_diagnostics_observational},
+        {"physics diagnostic isolated controls", test_physics_diagnostic_controls},
+        {"physics masked source characterisation", test_physics_masked_source_characterisation},
         {"negative coordinates", test_negative_coordinates},
         {"scheduler geometry", test_scheduler_geometry},
         {"sand fall", test_sand_falls_and_stops},

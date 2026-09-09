@@ -6,7 +6,7 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-09
 ---
 
 # Data ownership and lifetimes
@@ -122,3 +122,17 @@ including while failed. Healthy tick entry applies transition wakes in the exist
 metadata pass; native pool jobs consume the resulting selection. No Godot or
 Rapier API is introduced in native workers. Failed ticks cannot apply a later
 region request; recovery abandons old activity before fresh setup.
+
+## Who owns opt-in physics observations?
+
+**Current:** [physics diagnostics](../operations/physics-characterisation.md)
+allocate fixed per-job histograms when constructing the World. Each job writes
+its exclusive counter table; the coordinator merges after existing barriers.
+Counters cannot mutate authoritative cells or alter random streams. Adapter
+snapshots copy stored cells and aggregates at the serialized owner boundary;
+they expose no mutable World storage. Overflow drops observations, never work.
+
+The test-only asynchronous worker records a fixed trace from its exclusive
+adapter. The main thread reads that trace only after joining the worker, and
+continues to own Rapier. Diagnostic variants require fresh fixture construction;
+they are not live unsynchronized descriptor edits or representation handoffs.

@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-09
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md]
 ---
 
@@ -116,3 +116,14 @@ run the actual browser fixture. Checksums/HTTP checks prove packaging; native
 headless Godot proves native execution; only browser execution tests Web behavior.
 The [Web guide](web-threading.md) owns hosting requirements, and the
 [validation ledger](../reference/validation-evidence.md) owns dated outcomes.
+
+## How is the physics baseline rebuilt?
+
+Follow [physics characterization](physics-characterisation.md): rebuild the
+native CLI and adapter before running the deterministic P1–P4 matrices, then
+build/export both Web profiles and execute them in a real browser. Capture actual
+HEAD/local file hashes separately from legacy export acquisition labels.
+The [2026-09-09 report](../audits/2026-09-09-physics-characterisation.md) records
+Windows/Web results and the unavailable Linux execution environment. Local
+rebuilt artifacts are measured inputs, not automatically updated published LFS
+runtime manifests; the current release gate remains separate from M11 integrity.

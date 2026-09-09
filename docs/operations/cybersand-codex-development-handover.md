@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-09
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md]
 ---
 
@@ -64,3 +64,15 @@ now have independent gates; original historical hashes stay unchanged.
 [Publication evidence](../audits/2026-09-08-validation-reconciliation.md) records
 Linux native/sanitizer results and the rebuilt-runtime CI transition. Remaining
 Web CI/export identity work remains issue #3.
+
+## Physics measurement handoff, 2026-09-09
+
+Start with the [measured issue #9 report](../audits/2026-09-09-physics-characterisation.md)
+and [reproduction runbook](physics-characterisation.md). The source baseline is
+`ab4851e9e6a3ee182aba1a31a8f66d135e87df3a` plus the recorded local diagnostic
+delta on `codex/issue-9-physics-characterisation`. Density exchange, the Sand-only
+player predicate and masked-source barrel feedback have separate evidence.
+Production fixes remain #10/#11 work. The local source checkpoint includes
+fixtures, reduced data and plots; generated runtimes/raw logs remain in the
+active development workspace. Do not treat the old published DLL as containing
+the new diagnostic API or close the issue by reusing historical acceptance.
