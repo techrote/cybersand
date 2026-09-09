@@ -138,3 +138,12 @@ a general fluid solver. Active-only buffered flux is a retained **Planned**
 candidate only if measured bias or a future field justifies it; no buffered
 solver is selectable today. **Rejected:** a competing liquid world, equivalent
 swaps to animate rest, or finite travel history as free Water equilibrium.
+
+
+## Versioned transport profile checkpoint
+
+**Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
+owns schema, inheritance, units, immutable native tables and explicit owner restart.
+The tower can author profiles; experimental motion hooks follow separately.
+Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
+are unchanged. No unsynchronized live descriptor mutation is introduced.

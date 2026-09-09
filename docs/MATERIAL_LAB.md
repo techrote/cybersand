@@ -150,3 +150,7 @@ events; no rollback or exact continuation is promised.
 ## Issue #13 experiment checkpoint
 
 Open the [Experiment Tower](operations/experiment-tower.md) with desktop F9 or its native Web demo menu entry. Its five floors start paused; the lab panel supplies floor selection, plugs, single-step and fresh resets.
+
+
+The [transport profile editor](systems/flow-transport-and-profiles.md) shows effective
+settings/origins, saves editable user copies and applies through an explicit restart.

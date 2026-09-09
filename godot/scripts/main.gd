@@ -133,12 +133,17 @@ var tower_panel: CyberTowerPanel
 var tower_active: bool = false
 var tower_floor: int = 0
 var tower_context: Dictionary = {}
+var tower_profile_panel: CyberTransportProfilePanel
+var tower_profile: Dictionary = CyberTransportProfiles.preset(0)
 
 func setup_tower_panel() -> void:
 	tower_panel = CyberTowerPanel.new()
 	$Layout.add_child(tower_panel)
 	$Layout.move_child(tower_panel,1)
 	tower_panel.setup(self)
+	tower_profile_panel = CyberTransportProfilePanel.new()
+	add_child(tower_profile_panel)
+	tower_profile_panel.setup(self)
 
 func tower_command(command: Dictionary) -> void:
 	if command.has("step"): paused = true
@@ -153,16 +158,25 @@ func tower_floor_select(index: int) -> void:
 
 func tower_reset() -> void:
 	tower_active = true
+	current_view_size = Vector2i(480,270)
 	paused = true
 	for body: RigidBody2D in rigid_bodies: body.freeze = true
 	rapier_bridge.shutdown()
 	rigid_bodies.clear()
-	tower_command({"reset":true,"floor":tower_floor})
+	for i: int in range(3): world_shader.set_shader_parameter("rigid_body_data_%d" % i,Vector4(-1000,-1000,0,0))
+	$Layout/Title.text = "CYBERSAND / EXPERIMENT TOWER"
+	var resolved: Dictionary = CyberTransportProfiles.resolve(tower_profile)
+	tower_command({"reset":true,"floor":tower_floor,"profile":resolved})
 	camera_follow_enabled = false
 	camera_origin = Vector2(0,CyberExperimentTower.floor_y(tower_floor))
 
 func tower_tuning() -> void:
-	tower_context["status"] = "Baseline reference checkpoint / tuning follows"
+	paused = true
+	tower_profile_panel.popup_centered()
+
+func tower_apply_profile(resolved: Dictionary) -> void:
+	paused = true
+	tower_command({"reset":true,"floor":tower_floor,"profile":resolved})
 
 func tower_observation() -> void:
 	var report: Dictionary = {"recipe_version":CyberExperimentTower.VERSION,"seed":0,"floor":tower_floor,"context":tower_context,"platform":OS.get_name(),"utc":Time.get_datetime_string_from_system(true)}
@@ -366,6 +380,9 @@ func _physics_process(_delta: float) -> void:
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
+	if tower_profile_panel != null and tower_profile_panel.visible:
+		if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE: tower_profile_panel.hide()
+		return
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F9:
 		tower_reset()
 		return
@@ -598,6 +615,7 @@ func consume_worker_snapshot() -> void:
 		return
 	latest_snapshot = snapshot
 	tower_context = snapshot.lab_context
+	if tower_context.has("profile"): tower_profile = tower_context.profile
 	consumed_snapshot_serial = snapshot.serial
 	if snapshot.simulation_failed:
 		paused = true
@@ -708,6 +726,7 @@ func update_worker_frame_state() -> void:
 
 
 func handle_painting() -> void:
+	if tower_profile_panel != null and tower_profile_panel.visible: return
 	var mouse: Vector2 = world_view.get_local_mouse_position()
 	var content_rect: Rect2 = view_content_rect()
 	if content_rect.size.x <= 0.0 or content_rect.size.y <= 0.0:

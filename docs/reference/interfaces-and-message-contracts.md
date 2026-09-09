@@ -223,3 +223,12 @@ owns modes and limits. Body messages and saves retain their existing schemas.
 ## Issue #13 experiment checkpoint
 
 `CyberSimulationWorker.queue_lab(Dictionary)` is a developer-lab command boundary: reset/floor, single-step, release and a two-release schedule. `CyberSimulationSnapshot.lab_context` publishes copied status/input metadata. [Tower controls](../operations/experiment-tower.md) own semantics; this is separate from CYSD1 and the C ABI.
+
+
+## Versioned transport profile checkpoint
+
+**Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
+owns schema, inheritance, units, immutable native tables and explicit owner restart.
+The tower can author profiles; experimental motion hooks follow separately.
+Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
+are unchanged. No unsynchronized live descriptor mutation is introduced.

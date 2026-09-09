@@ -83,3 +83,7 @@ Current player support and pair exchange: [granular interaction policy](systems/
 ## Issue #13 experiment checkpoint
 
 [Experiment Tower](operations/experiment-tower.md) provides the shared five-floor physics lab; [issue #13 evidence](audits/2026-09-09-issue-13-transport.md) separates its checkpoints and acceptance.
+
+
+The [transport profile editor](systems/flow-transport-and-profiles.md) shows effective
+settings/origins, saves editable user copies and applies through an explicit restart.

@@ -165,3 +165,12 @@ World preparation/allocation and failed-tick limits still apply.
 ## Issue #13 experiment checkpoint
 
 The [tower](experiment-tower.md) reuses native validated recipe construction and whole-world installation. Commands are copied outside ticks; the latest pending control replaces the previous pending control. It does not add an unbounded command queue or global floor simulation pass.
+
+
+## Versioned transport profile checkpoint
+
+**Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
+owns schema, inheritance, units, immutable native tables and explicit owner restart.
+The tower can author profiles; experimental motion hooks follow separately.
+Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
+are unchanged. No unsynchronized live descriptor mutation is introduced.

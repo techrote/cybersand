@@ -56,7 +56,8 @@
     "systems/themed-construction-materials.md",
     "systems/water-design.md",
     "systems/world-storage-and-interest-region.md",
-    "operations/experiment-tower.md"
+    "operations/experiment-tower.md",
+    "systems/flow-transport-and-profiles.md"
   ],
   "navigation": [
     "README.md",

@@ -108,3 +108,12 @@ publication/platform limits. Barrel feedback/bearing/ejection stays in issue #11
 ## Issue #13 experiment checkpoint
 
 **Current:** shared five-floor Experiment Tower and pre-change native references. **Planned next checkpoints:** validated editable profiles, optional motion-driven transport and measured horizontal sampling. [Issue #13 evidence](../audits/2026-09-09-issue-13-transport.md) records acceptance separately. Chemistry retuning, barrel #11 and soliding #12 remain separate.
+
+
+## Versioned transport profile checkpoint
+
+**Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
+owns schema, inheritance, units, immutable native tables and explicit owner restart.
+The tower can author profiles; experimental motion hooks follow separately.
+Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
+are unchanged. No unsynchronized live descriptor mutation is introduced.

@@ -353,6 +353,7 @@ struct World::TransientObstacleState {
 World::World(WorldConfig config)
     : config_(config),
       scheduler_geometry_(config.scheduling_core_size, config.maximum_rule_radius) {
+    config.transport_policy.validate();
     if (config.interaction_policy.downward_support_cells < 1 ||
         config.interaction_policy.downward_support_cells > 9 ||
         config.interaction_policy.side_support_cells < 1 ||
@@ -1364,8 +1365,10 @@ bool World::exchange_permitted(Material source, Material target, std::int64_t x,
             get(sx-1,sy-1) == Material::Stone && get(sx+1,sy-1) == Material::Stone;
     };
     if (braced_stone(source,x,y) || braced_stone(target,target_x,target_y)) return false;
-    if (liquid == Material::Mercury) {
-        const auto period = config_.interaction_policy.mercury_exchange_period;
+    {
+        const auto period = config_.transport_policy.configured
+            ? config_.transport_policy.pair(static_cast<std::uint8_t>(source),static_cast<std::uint8_t>(target)).permeability
+            : liquid == Material::Mercury ? config_.interaction_policy.mercury_exchange_period : 1U;
         if (tick_index_ % period != 0) {
             schedule_interaction_wake(x,y,tick_index_ + period - tick_index_ % period);
             return false;
@@ -2822,6 +2825,17 @@ std::uint64_t World::state_hash() const noexcept {
     hash_integer(hash, config_.interaction_policy.downward_support_cells);
     hash_integer(hash, config_.interaction_policy.side_support_cells);
     hash_integer(hash, config_.interaction_policy.mercury_exchange_period);
+    hash_integer(hash, static_cast<std::uint8_t>(config_.transport_policy.configured));
+    if(config_.transport_policy.configured) {
+        hash_integer(hash,TransportPolicy::version);
+        for(auto n:config_.transport_policy.horizontal)hash_integer(hash,n);
+        for(auto n:config_.transport_policy.cadence)hash_integer(hash,n);
+        for(const auto& p:config_.transport_policy.pairs) {
+            hash_integer(hash,p.mixing);hash_integer(hash,p.carrying);
+            hash_integer(hash,p.pickup);hash_integer(hash,p.packing);
+            hash_integer(hash,p.erosion);hash_integer(hash,p.permeability);
+        }
+    }
     hash_integer(hash, static_cast<std::uint64_t>(config_.active_core_capacity));
     hash_integer(hash, static_cast<std::uint64_t>(config_.active_chunk_capacity));
     hash_integer(hash, static_cast<std::uint64_t>(config_.maximum_chunk_count));

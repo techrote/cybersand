@@ -3,6 +3,7 @@
 #include "cybersand/material.hpp"
 #include "cybersand/physics_diagnostics.hpp"
 #include "cybersand/interaction_policy.hpp"
+#include "cybersand/transport_policy.hpp"
 #include "cybersand/scheduler_geometry.hpp"
 
 #include <array>
@@ -42,6 +43,7 @@ struct WorldConfig {
     std::int32_t maximum_explosion_radius = 64;
     PhysicsDiagnosticConfig physics_diagnostics{};
     InteractionPolicy interaction_policy{};
+    TransportPolicy transport_policy{};
 };
 
 struct ChunkCoord {

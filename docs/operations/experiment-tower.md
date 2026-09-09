@@ -23,9 +23,11 @@ Floors contain flowing powders; Water/Sand slopes and settling; eleven liquids;
 packed, poured and excavated Mercury references; and separated chemistry.
 Amber bottom plugs can be erased or opened with the tube selector, singly or
 with their neighbour. Sequence releases use offsets 30 and 90 from the command
-tick. Fresh tower restores deterministic recipe version 1, seed 0 and selected
-floor. The first reference preset is Baseline. Tuning/transport are **Planned**
-in the next checkpoints of this issue, not established by the initial tower.
+tick. Navigation cancels pending releases without catch-up. Fresh tower restores
+recipe version 1, seed 0, selected floor and successfully applied profile.
+The [tuning panel](../systems/flow-transport-and-profiles.md) provides protected
+templates, editable copies, effective origins and Apply and restart. New
+motion-driven transport follows the profile checkpoint.
 
 Chemistry is deliberately unchanged. Materials may age before their release.
 The owner reports that an earlier reduced fire cadence made Wood smoulder while

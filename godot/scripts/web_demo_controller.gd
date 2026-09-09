@@ -42,14 +42,24 @@ func tower_reset() -> void:
 	tower_schedule.clear();tower_inputs.clear()
 	select_demo("experiment_tower")
 
+func tower_apply_profile(resolved: Dictionary) -> void:
+	if not demo_bridge.build_tuned_world(native_world,CyberExperimentTower.rectangles(),resolved.packed):
+		tower_context["status"] = "Rejected / "+str(demo_bridge.get_last_error())
+		return
+	tower_profile = resolved.profile.duplicate(true)
+	tower_context = {"profile":tower_profile.duplicate(true),"profile_hash":str(resolved.hash),"status":str(tower_profile.name)+" / profile v1 "+str(resolved.hash).left(12)}
+	tower_schedule.clear();tower_inputs.clear()
+	tower_floor_select(tower_floor)
+	force_publication = true
+
 func tower_floor_select(index: int) -> void:
+	tower_schedule.clear()
 	tower_floor = clampi(index,0,4)
 	paused = true
 	player.reset(CyberExperimentTower.landing(tower_floor))
 	character_position = player.position
 	camera_follow_enabled = false
 	camera_origin = Vector2(0,CyberExperimentTower.floor_y(tower_floor))
-	tower_context = {"status":"Baseline / recipe v1 / seed 0"}
 
 func tower_release(index: int) -> void:
 	var plugs: Array[Rect2i] = CyberExperimentTower.plugs(tower_floor)
@@ -262,6 +272,7 @@ func _world_pointer() -> Vector2i:
 	return Vector2i(point.floor())
 
 func _paint_pointer() -> void:
+	if tower_profile_panel.visible: return
 	var point: Vector2i = _world_pointer()
 	if point.x < 0 or point.y < 0 or point.x >= 1024 or point.y >= 1024:
 		return
@@ -344,7 +355,14 @@ func select_demo(id: String, close: bool = true) -> void:
 	if id == "physics_pit" and not rapier_available:
 		ui.message("Physics Pit is unavailable in this build.")
 		return
-	if not demo_bridge.build_world(native_world, CyberDemoWorlds.rectangles(id)):
+	var built: bool = false
+	if id == "experiment_tower":
+		var resolved: Dictionary = CyberTransportProfiles.resolve(tower_profile)
+		built = demo_bridge.build_tuned_world(native_world,CyberExperimentTower.rectangles(),resolved.packed)
+		if built: tower_context = {"profile":tower_profile.duplicate(true),"profile_hash":str(resolved.hash),"status":str(tower_profile.name)+" / profile v1 "+str(resolved.hash).left(12)}
+	else:
+		built = demo_bridge.build_world(native_world, CyberDemoWorlds.rectangles(id))
+	if not built:
 		ui.message(str(demo_bridge.get_last_error()))
 		return
 	demo_id = id
@@ -390,6 +408,9 @@ func update_status() -> void:
 	status_label.text = text
 
 func _unhandled_key_input(event: InputEvent) -> void:
+	if tower_profile_panel != null and tower_profile_panel.visible:
+		if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE: tower_profile_panel.hide()
+		return
 	if not event is InputEventKey or not event.pressed or event.echo:
 		return
 	if benchmark_running:

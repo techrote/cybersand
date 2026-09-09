@@ -51,3 +51,12 @@ and Stone state semantics. Main-thread Rapier ownership is unchanged.
 Any later tuning must version the policy decision and rerun affected fixtures.
 Issue #11 owns barrel feedback, barrier-aware ejection and bearing calibration.
 Dynamic aggregate membership still requires a separate ownership decision.
+
+
+## Versioned transport profile checkpoint
+
+**Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
+owns schema, inheritance, units, immutable native tables and explicit owner restart.
+The tower can author profiles; experimental motion hooks follow separately.
+Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
+are unchanged. No unsynchronized live descriptor mutation is introduced.

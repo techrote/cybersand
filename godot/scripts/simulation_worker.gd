@@ -47,6 +47,8 @@ var _lab_floor: int = 0
 var _lab_status: String = ""
 var _lab_schedule: Array = [] # At most two floor-local release deadlines.
 var _lab_inputs: Array = [] # Bounded observation input history.
+var _lab_profile: Dictionary = CyberTransportProfiles.preset(0)
+var _lab_profile_hash: String = ""
 
 func queue_lab(command: Dictionary) -> void:
 	_mutex.lock()
@@ -68,15 +70,22 @@ func _apply_lab(command: Dictionary) -> bool:
 			_lab_status = "Experiment Tower requires the native backend"
 			return false
 		var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
-		if not bridge.build_world(_world,CyberExperimentTower.rectangles()):
+		var resolved: Dictionary = command.profile if command.has("profile") else CyberTransportProfiles.resolve(_lab_profile)
+		if not resolved.get("ok",false):
+			_lab_status = "Profile rejected; running world preserved"
+			return false
+		if not bridge.build_tuned_world(_world,CyberExperimentTower.rectangles(),resolved.packed):
 			_lab_status = str(bridge.get_last_error())
 			return false
+		_lab_profile = resolved.profile.duplicate(true)
+		_lab_profile_hash = str(resolved.hash)
 		_lab_active = true
 		_lab_schedule.clear();_lab_inputs.clear()
 		_simulation_failed = false
-		_lab_status = "Baseline / recipe v1 / seed 0"
+		_lab_status = "%s / profile v1 %s / recipe v1 / seed 0" % [str(_lab_profile.name),_lab_profile_hash.left(12)]
 	if not _lab_active: return false
 	if command.has("floor"):
+		_lab_schedule.clear() # Navigation abandons scheduled inputs; no catch-up.
 		_lab_floor = clampi(int(command.floor),0,4)
 		_character.reset(CyberExperimentTower.landing(_lab_floor))
 	if command.has("release"):
@@ -85,7 +94,10 @@ func _apply_lab(command: Dictionary) -> bool:
 	if command.has("schedule"):
 		var tick: int = int(_world.get_tick_index())
 		_lab_schedule = [[tick+30,int(command.schedule),_lab_floor],[tick+90,int(command.schedule)+1,_lab_floor]]
-	if _lab_inputs.size() < 256: _lab_inputs.append({"tick":int(_world.get_tick_index()),"command":command.duplicate(true)})
+	if _lab_inputs.size() < 256:
+		var recorded: Dictionary = command.duplicate(true)
+		recorded.erase("profile")
+		_lab_inputs.append({"tick":int(_world.get_tick_index()),"command":recorded,"profile_hash":_lab_profile_hash})
 	return command.has("reset")
 
 var _published_snapshot: CyberSimulationSnapshot
@@ -522,7 +534,7 @@ func _publish_snapshot(
 		snapshot.tick_failure_count = int(_world.get_tick_failure_count())
 		snapshot.last_tick_error = str(_world.get_last_tick_error())
 	snapshot.paused = paused
-	snapshot.lab_context = {"active":_lab_active,"floor":_lab_floor,"status":_lab_status,"inputs":_lab_inputs.duplicate(true),"input_limit":256}
+	snapshot.lab_context = {"active":_lab_active,"floor":_lab_floor,"status":_lab_status,"inputs":_lab_inputs.duplicate(true),"input_limit":256,"profile":_lab_profile.duplicate(true),"profile_hash":_lab_profile_hash}
 
 	_mutex.lock()
 	_published_snapshot = snapshot
@@ -613,6 +625,8 @@ func _append_native_render_packet(packet: Dictionary) -> void:
 			)
 			_pending_render_patch_rectangles.append(packet_rectangles[metadata_offset + 5])
 
-	_pending_render_snapshot_serial = packet_serial
+	# Native exchange serials restart on validated World replacement. Desktop
+	# acknowledgements belong to the worker lifetime and must remain monotonic.
+	_pending_render_snapshot_serial = maxi(_pending_render_snapshot_serial+1,packet_serial)
 	_pending_render_channels = packet_channels
 	_pending_render_payload_generation += 1

@@ -40,6 +40,23 @@ class CyberDemoBridge final : public RefCounted {
 public:
     [[nodiscard]] String get_last_error() const { return error_; }
 
+    [[nodiscard]] bool build_tuned_world(const Ref<CyberNativeCellWorld>& adapter,
+        const PackedInt32Array& rectangles, const PackedInt32Array& profile) {
+        error_ = String();
+        if(adapter.is_null() || !adapter->world_) { error_="Native world unavailable"; return false; }
+        try {
+            auto config = adapter->world_->config();
+            config.transport_policy = cybersand::TransportPolicy::unpack(
+                {profile.ptr(),static_cast<std::size_t>(profile.size())});
+            config.physics_diagnostics = {}; config.physics_diagnostics.enabled = true;
+            config.interaction_policy = {};
+            auto candidate=cybersand::demo::construct(config,
+                {rectangles.ptr(),static_cast<std::size_t>(rectangles.size())});
+            install(*adapter.ptr(),std::move(candidate));
+            return true;
+        } catch(const std::exception& error) { error_=error.what(); return false; }
+    }
+
     [[nodiscard]] PackedByteArray export_level(const Ref<CyberNativeCellWorld>& adapter) {
         error_ = String();
         PackedByteArray bytes;
@@ -82,7 +99,9 @@ public:
             return false;
         }
         try {
-            auto candidate = cybersand::demo::construct(adapter->world_->config(),
+            auto config = adapter->world_->config();
+            config.transport_policy = {}; // Ordinary demos retain production Baseline.
+            auto candidate = cybersand::demo::construct(config,
                 {rectangles.ptr(), static_cast<std::size_t>(rectangles.size())});
             install(*adapter.ptr(), std::move(candidate));
             return true;
@@ -116,6 +135,7 @@ protected:
         ClassDB::bind_method(D_METHOD("export_level", "world"), &CyberDemoBridge::export_level);
         ClassDB::bind_method(D_METHOD("import_level", "world", "bytes"), &CyberDemoBridge::import_level);
         ClassDB::bind_method(D_METHOD("build_world", "world", "rectangles"), &CyberDemoBridge::build_world);
+        ClassDB::bind_method(D_METHOD("build_tuned_world", "world", "rectangles", "profile"), &CyberDemoBridge::build_tuned_world);
         ClassDB::bind_method(D_METHOD("queue_explosion", "world", "x", "y", "radius"), &CyberDemoBridge::queue_explosion);
         ClassDB::bind_method(D_METHOD("get_last_error"), &CyberDemoBridge::get_last_error);
     }

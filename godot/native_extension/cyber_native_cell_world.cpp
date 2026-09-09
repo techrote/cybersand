@@ -1198,6 +1198,12 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         const auto period = static_cast<std::int64_t>(options.get("mercury_period", 30));
         if (period < 1 || period > 60) return false;
         config.interaction_policy.mercury_exchange_period = static_cast<std::uint32_t>(period);
+        if(options.has("transport")) {
+            if(options["transport"].get_type()!=Variant::PACKED_INT32_ARRAY) return false;
+            const PackedInt32Array profile=options["transport"];
+            config.transport_policy=cybersand::TransportPolicy::unpack(
+                {profile.ptr(),static_cast<std::size_t>(profile.size())});
+        }
         auto candidate = std::make_unique<cybersand::World>(config);
         candidate->reserve_region({0, 0, kWorldWidth, kWorldHeight});
         candidate->configure_transient_obstacles({0, 0, kWorldWidth, kWorldHeight});

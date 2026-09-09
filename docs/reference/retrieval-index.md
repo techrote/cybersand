@@ -72,3 +72,12 @@ Current runtime/source gates and immutable M11 retention use [separate validatio
 ## Issue #13 experiment checkpoint
 
 For reproducible five-floor experiments and preserving Mercury while tuning Sand, use the [Experiment Tower](../operations/experiment-tower.md), then its [dated evidence](../audits/2026-09-09-issue-13-transport.md).
+
+
+## Versioned transport profile checkpoint
+
+**Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
+owns schema, inheritance, units, immutable native tables and explicit owner restart.
+The tower can author profiles; experimental motion hooks follow separately.
+Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
+are unchanged. No unsynchronized live descriptor mutation is introduced.

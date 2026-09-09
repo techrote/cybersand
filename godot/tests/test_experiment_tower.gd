@@ -38,6 +38,11 @@ func _run() -> void:
 	owner.stop_worker()
 	assert(snapshot.tick_index == 1)
 	assert(not snapshot.simulation_failed)
+	# Retained desktop acknowledgements must not discard a replacement whose
+	# new native snapshot exchange starts serial numbering from one again.
+	var previous_serial: int = snapshot.render_snapshot_serial
+	owner._append_native_render_packet({"serial":1,"channels":2,"full_refresh":true,"cells":PackedByteArray([1,0]),"rectangles":PackedInt32Array([0,0,1,1,0,2])})
+	assert(owner._pending_render_snapshot_serial>previous_serial)
 	# Load both real controllers; catches script inheritance/scene errors.
 	for path: String in ["res://main.tscn","res://web_main.tscn"]:
 		var scene: PackedScene = load(path)

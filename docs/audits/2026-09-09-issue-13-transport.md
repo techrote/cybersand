@@ -46,3 +46,35 @@ from #10. Frozen [baseline samples](issue-13-2026-09-09/baseline-references.json
 and [source/artifact manifest](issue-13-2026-09-09/baseline-manifest.json) are
 retained in source. The full Godot suite was started and remains in progress at
 this focused checkpoint; its later outcome will be recorded independently.
+
+## Profile infrastructure checkpoint
+
+Reference/tower commit: `f88423fe8ccacdfbac642b33513fee8680d0c3f3`. The completed
+first-checkpoint Godot suite passes **22/22**, including F01/F02, player async,
+Water/save/render and the new tower fixture (`tower-godot-test.log`).
+
+The next delta adds [versioned authoring](../systems/flow-transport-and-profiles.md),
+fixed native tables, validated replacement, lab profile retention and explicit
+pair permeability. The motion hooks follow in the next checkpoint. The DLL
+was rebuilt after adding the diagnostic profile input; `profile-checkpoint/`
+captures source delta, snapshots and artifact hashes. Profile tests pass all three
+preset round trips, effective origins/inheritance, symmetric overrides, field
+extremes/minima and malformed-profile/world-preservation checks. Tower owner
+and render handoff tests pass; the native suite remains **52/52**. The rebuilt
+60-control baseline exactly matches every frozen pre-change sample.
+
+The first native build rejected hashing a C++ bool through the integer template;
+an explicit byte cast fixed compilation. Its failed log is retained. Actual
+desktop inspection found native exchange serials restarting at replacement could
+leave old visuals displayed; worker publication serials now stay monotonic and
+the regression checks this. A second visual failure showed transparent tuning
+controls; `profile-ui-failed-transparent.png` retains it. The editor now uses an
+opaque centered panel; its final visual confirmation is pending.
+
+Profile-stage docs/history/checker tests/retrieval/diff gates pass. Repository
+publication identity still fails independently; its raw error list is retained
+in `profile-gates/repository.log`. No published hash was edited. The profile
+manifest hash is `3db510feb1576fe08970ac1e2217d71ccac197ed5622b8490d2d7f4e8f024774`.
+Presets resolve to Baseline `1b27b4e934dc7560e6901eb09e634ed604c0111dcf26d5dac6b10885a3e5e268`,
+Gentle `a4593c9c8632463d5b9100233809b530ef7043502bcd66444fa7930a422816e7`,
+Erosion `57d8ed905b2ad52c6f1372560c4fafb9dad5a03135ca987dee05f6167428e079`.

@@ -146,3 +146,12 @@ they are not live unsynchronized descriptor edits or representation handoffs.
 ## Issue #13 experiment checkpoint
 
 [Tower controls](../operations/experiment-tower.md) use a copied latest pending command on desktop. The existing exclusive worker constructs and installs the native candidate outside ticks. Web uses its synchronous owner. Copied lab context accompanies snapshots; no mutable tables are shared with jobs.
+
+
+## Versioned transport profile checkpoint
+
+**Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
+owns schema, inheritance, units, immutable native tables and explicit owner restart.
+The tower can author profiles; experimental motion hooks follow separately.
+Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
+are unchanged. No unsynchronized live descriptor mutation is introduced.

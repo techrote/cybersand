@@ -158,3 +158,12 @@ material support capability from density and hard terrain. All nine powders can
 support the sampled player when locally packed and stable; side resistance uses
 a separate neighbourhood. The separate exchange checkpoint rejects powder/powder density reordering and
 schedules Mercury/powder eligibility independently of viscosity.
+
+
+## Versioned transport profile checkpoint
+
+**Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
+owns schema, inheritance, units, immutable native tables and explicit owner restart.
+The tower can author profiles; experimental motion hooks follow separately.
+Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
+are unchanged. No unsynchronized live descriptor mutation is introduced.

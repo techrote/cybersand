@@ -121,3 +121,12 @@ Source: [policy](../../native/include/cybersand/interaction_policy.hpp),
 [adapter](../../godot/native_extension/cyber_native_cell_world.cpp),
 [character](../../godot/scripts/sampled_character.gd),
 [shared probe](../../godot/scripts/interaction_policy_probe.gd).
+
+
+## Versioned transport profile checkpoint
+
+**Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
+owns schema, inheritance, units, immutable native tables and explicit owner restart.
+The tower can author profiles; experimental motion hooks follow separately.
+Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
+are unchanged. No unsynchronized live descriptor mutation is introduced.
