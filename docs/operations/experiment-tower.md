@@ -68,6 +68,12 @@ Raw results belong under `C:/kybersand/validation/local`; the
 [dated audit](../audits/2026-09-09-issue-13-transport.md) owns acceptance and gaps.
 Native counters do not constitute visual approval of the poured Mercury feel.
 
+After the [September 10 Water leveling update](../audits/2026-09-10-water-leveling.md),
+historical #13 Water samples intentionally differ. Use `--layouts packed poured
+powder` with the frozen reference to check unchanged Mercury/powder behavior;
+do not rewrite that historical reference. `tools/physics/water_leveling.py`
+rebuilds and records the new closed-basin speed/conservation measurements.
+
 
 ## How should comparisons and observations be interpreted?
 

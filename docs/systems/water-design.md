@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [native-water-semantics, native-fallback-water-differences]
 status: Current
 scope: Native conserved Water, coherent emission and adhesion, rest/hash fixtures, fallback differences, and future reaction accounting
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-10
 related-documents: [materials-and-rule-kernels.md, material-appearance-and-rendering.md, ../reference/level-saves-and-replay.md, ../decisions/ADR-005-water-model.md]
 ---
 
@@ -33,18 +33,31 @@ descriptors.
 | `state_b` | Remaining coherent-emission lateral delay |
 | Viscosity | Dimensionless gameplay rate; Water uses 0, the fastest setting |
 | Lateral rest tolerance | No lateral transfer when source mass is at most target mass + 1 |
+| Lateral relaxation | Request three quarters of the positive mass difference, rounded down |
 
 Painting ordinary Water initializes a full 255-unit cell. Gravity attempts down,
 then both diagonals in deterministic order. It merges into Water or moves/swaps
 whole cell state into a permitted destination; directional density exchange lets
-Water move through lighter accepting media. Lateral equalization requests half
-the positive mass difference, scaled by viscosity. A transfer is capped by the
+Water move through lighter accepting media. Lateral equalization requests three
+quarters of the positive mass difference, scaled by viscosity. This crosses the
+pair midpoint but contracts its imbalance; the one-unit rest tolerance remains.
+A transfer is capped by the
 requested amount, source mass, and destination capacity. Zero remaining source
 mass converts the source to Empty.
 
 Water has no persistent native lateral direction or travel budget. Transfers
 stay inside the phase-owned bounded write domain and mark source/destination
 activity and render dirtiness. Viscosity does not expand the kernel radius.
+
+## Faster sideways flow and profile identity
+
+The [2026-09-10 owner-requested leveling change](../audits/2026-09-10-water-leveling.md)
+replaces half-difference requests. It speeds fronts and basin leveling without
+extra lateral candidates or a new field. This intentionally changes Water's
+historical #13 samples and can increase optional grain pickup, whose disturbance
+measure is actual transferred mass. Profile schema/values remain v1; source and
+artifact identity must accompany their hashes. Mercury and powder-only references
+remain exact. General gameplay still has optional mixing/carrying disabled.
 
 ## Coherent emission and surface adhesion
 

@@ -103,3 +103,9 @@ lateral Water mass transport drive bounded optional mixing and grain pickup;
 horizontal sampling and cadence are separate fixed experiments.
 Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
 are unchanged. No unsynchronized live descriptor mutation is introduced.
+
+The subsequent [Water leveling follow-up](../audits/2026-09-10-water-leveling.md)
+implements faster lateral relaxation on `codex/water-sideways-leveling`. Water
+traces and optional erosion strength change; Mercury/powder controls remain exact.
+Profile hashes alone do not identify this solver revision. Coal's purple residue
+is existing Dust; chemistry and fire cadence remain unchanged.

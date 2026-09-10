@@ -1,0 +1,64 @@
+{
+  "status": "failed",
+  "scope": "current source/documentation and artifact identity",
+  "documentation": {
+    "status": "passed",
+    "documents": 55,
+    "navigation_link_documents": 8,
+    "canonical_claims": 96,
+    "local_links": 897,
+    "heading_anchors": 28,
+    "questions": 32,
+    "errors": [],
+    "warnings": [],
+    "limitations": [
+      "Does not verify source semantics or runtime claims",
+      "Does not fetch external URLs",
+      "Does not rewrite or reattest historical audits",
+      "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+    ]
+  },
+  "materialized_runtime_files": [
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+    "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+  ],
+  "unmaterialized_runtime_files": [],
+  "errors": [
+    "Windows x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_demo_bridge.hpp",
+    "Windows x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp",
+    "Windows x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.hpp",
+    "Windows x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/material_rules.hpp",
+    "Windows x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/world.hpp",
+    "Windows x86_64 Godot 4.7 requires rebuild for source input: native/src/material_rules.cpp",
+    "Windows x86_64 Godot 4.7 requires rebuild for source input: native/src/world.cpp",
+    "Windows x86_64 Godot 4.7 bytes differ from published provenance",
+    "Linux x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_demo_bridge.hpp",
+    "Linux x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp",
+    "Linux x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.hpp",
+    "Linux x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/material_rules.hpp",
+    "Linux x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/world.hpp",
+    "Linux x86_64 Godot 4.7 requires rebuild for source input: native/src/material_rules.cpp",
+    "Linux x86_64 Godot 4.7 requires rebuild for source input: native/src/world.cpp",
+    "runtime differs from committed LFS identity: godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
+  ],
+  "limitations": [
+    "Identity is not execution evidence; read the dated runtime acceptance report",
+    "Retained vendor binaries and platform execution have separate dated provenance",
+    "Historical M11 integrity is checked separately by check_m11_consistency.py"
+  ]
+}

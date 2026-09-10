@@ -249,6 +249,35 @@ void test_conserved_water_levels_and_sleeps() {
     require(world.active_chunk_count() == 0, "settled water did not sleep");
 }
 
+void test_water_lateral_front_and_leveling_speed() {
+    for(int width:{48,96})for(bool mirror:{false,true})for(int workers:{1,4}) {
+        WorldConfig c;c.worker_threads=workers;c.parallel_job_threshold=1;
+        c.maximum_chunk_count=64;c.active_chunk_capacity=64;c.active_core_capacity=512;
+        World w(c);w.reserve_region({-193,-193,512,512});
+        auto put=[&](int x,int y,Material m){w.set(x-65,y-65,m);};
+        for(int x=0;x<=width+1;++x){put(x,0,Material::Wall);put(x,47,Material::Wall);}
+        for(int y=0;y<48;++y){put(0,y,Material::Wall);put(width+1,y,Material::Wall);}
+        for(int x=1;x<=12;++x)for(int y=15;y<=46;++y)put(mirror ? width+1-x:x,y,Material::Water);
+        for(int tick=1;tick<=600;++tick) {
+            const auto stats=w.tick();
+            require(stats.chunk_allocations==0&&stats.temperature_field_allocations==0,"leveling allocated prepared storage");
+            require(total_liquid(w,-64,-64,width-65,-19)==12U*32U*255U,"leveling lost mass");
+            if(tick==300&&width==96) {
+                const auto start=mirror ? 1 : 72;
+                require(total_liquid(w,start-65,-64,(mirror ? 25 : 96)-65,-19)>=128,"Water lateral front is too slow");
+            }
+        }
+        if(width==48) {
+            std::uint64_t low=std::numeric_limits<std::uint64_t>::max(),high=0;
+            for(int x=1;x<=width;++x) {
+                const auto mass=total_liquid(w,x-65,-64,x-65,-19);
+                low=std::min(low,mass);high=std::max(high,mass);
+            }
+            require(high-low<=255,"Water basin leveling is too slow");
+        }
+    }
+}
+
 void test_water_surface_column_mass_is_level() {
     WorldConfig config{};
     config.sleep_after_quiet_ticks = 3;
@@ -1964,6 +1993,7 @@ int main() {
         {"serial/phased behavioral parity", test_serial_and_phased_behavioral_parity},
         {"density swap", test_sand_sinks_through_water},
         {"conserved water", test_conserved_water_levels_and_sleeps},
+        {"Water lateral speed", test_water_lateral_front_and_leveling_speed},
         {"level water surface", test_water_surface_column_mass_is_level},
         {"water single/multiworker parity", test_water_single_multiworker_parity},
         {"water storage boundary", test_water_conserves_across_storage_boundaries},

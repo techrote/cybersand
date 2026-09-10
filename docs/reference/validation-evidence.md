@@ -123,3 +123,11 @@ actual desktop and both native Web runs, walkthrough captures and corrected
 sampling measurements. Native/Godot, real Web, visual and performance evidence
 are distinct gates. The failed sustained-input ledger and initial depth query
 remain recorded; publication provenance still fails independently.
+
+## Water leveling, 2026-09-10
+
+[The dated follow-up](../audits/2026-09-10-water-leveling.md) records 24 old/new
+closed-basin cases per implementation, 55 native tests, 24 isolated Godot fixtures,
+30 retained non-Water reference cases and 72 native/real-Web transport cases.
+Its retained editor-import failure is an environment result; the rebuilt isolated
+project passed. Faster leveling is fixture-specific, not universal instant flow.

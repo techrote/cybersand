@@ -43,6 +43,12 @@ packed 32-bit integer bytes (little endian on Windows/Wasm). It includes version
 source-major order. Native `state_hash` includes configuration; `content_hash`
 continues to describe cells independently of the selected profile.
 
+Source and runtime artifact identity are required alongside profile identity.
+The [2026-09-10 Water relaxation change](../audits/2026-09-10-water-leveling.md)
+keeps schema-1 values/hashes but increases lateral mass movement and optional
+erosion pickups. Earlier Water traces and sampling measurements retain their
+dated solver identity.
+
 ## What are the controls and units?
 
 | Setting | Range and meaning |

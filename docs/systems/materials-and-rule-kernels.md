@@ -91,6 +91,16 @@ Exact triggering and writes are in `update_rule_kernel` and
 Water alone uses `FreeMass`; `CellularYield` liquids retain whole-cell movement.
 Viscosity is dimensionless gameplay tuning, separate from yield and adhesion.
 
+## Why does burning Coal leave a purple layer?
+
+**Current:** Coal's burn countdown ends by converting the cell to **Dust (ID 14)**.
+Dust uses the pale-purple base color `(218, 198, 238, 255)`. It is the existing
+powder material reused as combustion residue, not a distinct Ash material.
+Fire/Smoke emissions happen during burning; the persistent purple residue is
+Dust. This explanation is source inspection, not a change to combustion cadence.
+See the Coal kernel in [world.cpp](../../native/src/world.cpp) and the
+[material descriptor](../../native/include/cybersand/material.hpp).
+
 ### Project reactive IDs
 
 | ID | Material | ID | Material | ID | Material |

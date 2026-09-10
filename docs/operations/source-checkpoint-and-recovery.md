@@ -153,3 +153,13 @@ label as a source revision. Its audit manifest records tested HEAD plus exact
 local file hashes; the final committed-identity capture remains under the raw
 evidence prefix. Rebuilt DLL bytes stay intentionally uncommitted; intake bytes
 are preserved separately and `C:/cybersand` is unchanged.
+
+## Water leveling follow-up
+
+The owner feedback branch `codex/water-sideways-leveling` starts from completed
+#13 checkpoint `4bead5501d902c424820814e7b5bcf1f9abea324`. Its **Speed up Water
+lateral leveling and document Coal residue** checkpoint changes Water relaxation;
+resolve the commit from branch history. [Dated evidence](../audits/2026-09-10-water-leveling.md)
+records source deltas, rebuilt desktop/both-Web identities and preserved intake
+DLLs under `C:/kybersand/validation/local/2026-09-10-water-leveling/`. Runtime DLLs
+remain deliberately uncommitted; published provenance remains historical.

@@ -1634,9 +1634,12 @@ bool World::update_water(std::int64_t x, std::int64_t y, JobEffects* effects) {
         if (target_material != Material::Empty && target_material != Material::Water) return;
         const auto target_mass = static_cast<std::uint16_t>(liquid_mass(target_x, target_y));
         if (source_mass <= target_mass + 1U) return;
+        // Move three quarters of the imbalance instead of stopping at the
+        // midpoint. Each isolated pair's imbalance still contracts; the
+        // existing tolerance prevents perpetual one-unit swapping at rest.
         const auto requested = MaterialRules::apply_lateral_viscosity(
             Material::Water,
-            static_cast<std::uint16_t>((source_mass - target_mass) / 2U));
+            static_cast<std::uint16_t>((source_mass - target_mass) * 3U / 4U));
         changed = transfer_water(x, y, target_x, target_y, requested, effects) != 0 || changed;
     };
     level_with(x + direction, y);

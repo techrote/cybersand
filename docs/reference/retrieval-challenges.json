@@ -236,7 +236,38 @@
         "../native/src/world.cpp::World::update_water,World::mix_after_motion",
         "../tools/physics/transport_matrix.py"
       ]
+    },
+    {
+      "id": "C15",
+      "query": "Why does burning Coal leave a purple layer, and is that ash or another material?",
+      "canonical": [
+        "systems/materials-and-rule-kernels.md"
+      ],
+      "facts": [
+        "Burned-out Coal converts to Dust (14), whose RGBA color is 218,198,238,255.",
+        "Dust is the current residue; there is no separate Ash material. No reaction or fire cadence was changed for the Water follow-up."
+      ],
+      "sources": [
+        "../native/src/world.cpp::World::update_rule_kernel",
+        "../native/include/cybersand/material.hpp"
+      ]
+    },
+    {
+      "id": "C16",
+      "query": "How was Water sideways flow made faster, and do the older transport profile hashes guarantee the same leveling?",
+      "canonical": [
+        "systems/water-design.md"
+      ],
+      "facts": [
+        "Water now requests three quarters of a lateral mass difference, with the same one-unit tolerance, two candidates, viscosity, film and coherence rules.",
+        "Water traces intentionally differ from the half-difference baseline, and optional grain pickup changes with actual flux.",
+        "Schema and resolved profile hashes remain unchanged; exact behavior requires source and artifact identity too."
+      ],
+      "sources": [
+        "../native/src/world.cpp::World::update_water",
+        "../native/bench/water_leveling.cpp"
+      ]
     }
   ],
-  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged."
+  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged."
 }

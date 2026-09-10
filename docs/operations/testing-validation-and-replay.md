@@ -147,6 +147,15 @@ runs the same probe plus actual controller failure/interest checks. Use
 from historical failures. Each case has a 180-second timeout. See the runbook
 for reuse/source-identity and depth sample-count qualifications.
 
+`tools/physics/water_leveling.py <raw-output>` rebuilds a fixed 24-case basin
+screen (two widths, three signed translations, mirrored releases, one/four
+workers). It records front arrival, column-mass spread, tick cost and exact mass.
+When an open Windows editor locks shadow DLLs, `tools/physics/isolated_godot.py
+<fresh-raw-output>` copies the project without its cache/tilde libraries and runs
+import plus all Godot fixtures there. Its manifest hashes the copied inputs;
+the original editor session and tilde libraries are left intact. Retain failed
+original imports separately. [Water follow-up](../audits/2026-09-10-water-leveling.md).
+
 
 ## Opt-in transport profiles
 

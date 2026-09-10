@@ -123,5 +123,8 @@ owns schema, inheritance, units, immutable native tables and explicit owner rest
 The Tower applies validated profiles through restart. Actual powder falls and
 lateral Water mass transport drive bounded optional mixing and grain pickup;
 horizontal sampling and cadence are separate fixed experiments.
+The [September 10 Water follow-up](../audits/2026-09-10-water-leveling.md) increases
+default lateral relaxation after owner feedback. Historical #13 Water traces are
+preserved; the new source identity owns its changed front/erosion behavior.
 Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
 are unchanged. No unsynchronized live descriptor mutation is introduced.

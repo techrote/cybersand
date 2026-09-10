@@ -146,7 +146,8 @@ Water/activity semantics; the Web compatibility profile still uses native cells.
 
 The threshold enables isolated-cell alternate-tick free flight, not the removed
 load-derived block stride. Current fallback reports stride one and zero deferred
-blocks; excluded blocks retain wake flags. Native Water's mass, 12-tick
+blocks; excluded blocks retain wake flags. Native Water's three-quarter lateral
+mass-difference relaxation, 12-tick
 coherence delay, 48-unit supported-film threshold and separate fallback mechanics
 belong to the [Water contract](../systems/water-design.md). Material cadence,
 including specialized Ice sampling, belongs to

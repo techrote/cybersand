@@ -1,0 +1,78 @@
+{
+  "platforms": {
+    "native_cases": 24,
+    "compat_cases": 24,
+    "threaded_cases": 24,
+    "web_exact": true,
+    "native_web_counts_events_profiles_equal": true,
+    "native_wasm_hash_note": "State hashes use platform size_t and are not compared across native/Wasm."
+  },
+  "basins": [
+    {
+      "variant": "baseline",
+      "width": 48,
+      "arrival_tick": 25.0,
+      "one_cell_level_tick": 1080.5,
+      "visited": 714316.0,
+      "blocks": 11328.0,
+      "allocations": 0.0,
+      "total_us": 481806.0,
+      "p50_us": 263.75,
+      "p95_us": 290.79999999999995,
+      "spread_300": 2097.5,
+      "spread_1800": 57.0
+    },
+    {
+      "variant": "baseline",
+      "width": 96,
+      "arrival_tick": 480.0,
+      "one_cell_level_tick": 0.0,
+      "visited": 730615.5,
+      "blocks": 18220.0,
+      "allocations": 0.0,
+      "total_us": 520440.5,
+      "p50_us": 284.55,
+      "p95_us": 304.65,
+      "spread_300": 3059.5,
+      "spread_1800": 1076.0
+    },
+    {
+      "variant": "three-quarter",
+      "width": 48,
+      "arrival_tick": 24.5,
+      "one_cell_level_tick": 562.0,
+      "visited": 406306.0,
+      "blocks": 6391.0,
+      "allocations": 0.0,
+      "total_us": 274259.5,
+      "p50_us": 256.65,
+      "p95_us": 279.70000000000005,
+      "spread_300": 856.5,
+      "spread_1800": 46.0
+    },
+    {
+      "variant": "three-quarter",
+      "width": 96,
+      "arrival_tick": 258.0,
+      "one_cell_level_tick": 0.0,
+      "visited": 726517.0,
+      "blocks": 17991.0,
+      "allocations": 0.0,
+      "total_us": 526413.0,
+      "p50_us": 284.55,
+      "p95_us": 334.8,
+      "spread_300": 2359.5,
+      "spread_1800": 425.0
+    }
+  ],
+  "preserved_shadow_dlls": {
+    "godot/addons/cybersand_native/bin/~cybersand_native.windows.x86_64.dll": {
+      "intake_sha256": "8eba58362aabf124842ee92d0660634d6a101610e2712dbff00960c228a25d25",
+      "present_at_finish": false
+    },
+    "godot/addons/godot-rapier2d/bin/~libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": {
+      "intake_sha256": "4e26ffa78ec2aaff434c4a70cd2ec85288b10ba5237912c35f204cb1e6ed2180",
+      "present_at_finish": false
+    }
+  }
+}

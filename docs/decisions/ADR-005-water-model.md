@@ -6,7 +6,7 @@ status: Current
 scope: Accepted Water invariants and phased implementation choice; buffered comparison and wider accounting remain unimplemented
 keywords: [ADR, Water, mass conservation, fixed point, stable rest, pairwise, buffered flux]
 related-documents: [../systems/water-design.md, ADR-002-double-buffered-tile-jobs.md, ../architecture/determinism-and-boundary-transfers.md]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-10
 ---
 
 # ADR-005: Conserved fixed-point water semantics
@@ -68,3 +68,15 @@ CYSD1 preserves compact Water level state but does not restore future tick
 behavior: use [level saves versus replay](../reference/level-saves-and-replay.md).
 Changing representation or identity requires versioned migration rather than
 silently reinterpreting existing saves.
+
+## Faster lateral relaxation, 2026-09-10
+
+**Current:** the owner requested faster sideways leveling after the #13 Tower
+walkthrough. Water now transfers three quarters rather than half of a lateral
+mass imbalance. It retains bounded adjacent reads/writes, exact integer mass,
+one-unit rest tolerance, gravity, 12-tick coherent emission and 48-unit adhesion.
+The [dated comparison](../audits/2026-09-10-water-leveling.md) measures fronts,
+leveling and cost independently of display pacing. No increased global tick rate,
+extra sampling pass, pressure field, chemistry cadence or save-format change is
+introduced. Optional transport strength follows the increased actual Water flux;
+this is a deliberate behavioral delta requiring its own source/artifact record.
