@@ -87,3 +87,7 @@ are unchanged. No unsynchronized live descriptor mutation is introduced.
 ## Which architecture experiments should run before changing Cell or liquid state?
 
 Use the [architecture programme](../operations/architecture-programme.md) for future experiment dependencies, decision gates, retained baselines and self-contained issue prompts. Its source ledger preserves four-conversation refinements. Current behavior still belongs to the linked subsystem and ADR contracts.
+
+## Is issue16 ready to select a Cell layout?
+
+No. The [cell layout registration](../operations/cell-layout-experiment.md) defines staged comparisons and the owner timing hold. The [preparation record](../audits/2026-09-10-issue-16-cell-layout.md) distinguishes source review and correctness from pending performance and G-L acceptance.

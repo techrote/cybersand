@@ -131,3 +131,7 @@ closed-basin cases per implementation, 55 native tests, 24 isolated Godot fixtur
 30 retained non-Water reference cases and 72 native/real-Web transport cases.
 Its retained editor-import failure is an environment result; the rebuilt isolated
 project passed. Faster leveling is fixture-specific, not universal instant flow.
+
+## Issue16 representation research
+
+The [September10 preparation record](../audits/2026-09-10-issue-16-cell-layout.md) owns isolated source/artifact identities, native correctness and remaining checks. No performance or desktop/Web candidate acceptance is implied; the owner requires a pause before timing and G-L is incomplete.

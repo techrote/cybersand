@@ -132,3 +132,7 @@ are unchanged. No unsynchronized live descriptor mutation is introduced.
 ## Architecture investigation after the Water checkpoint
 
 **Planned:** the [architecture programme](../operations/architecture-programme.md) isolates raw Cell layout/epoch cost, liquid characterization, precision, compact memory and fractional rendering before any policy migration. Sparse ballistic implementation requires admission evidence; coherent soliding reuses #12. No 4/8-byte winner, liquid unification or representation ladder is adopted. GitHub #11 is closed while this source still records its missing barrel work; support-dependent integration requires actual source/evidence reconciliation.
+
+## Issue16 preparation
+
+**Planned research:** [cell layout experiments](../operations/cell-layout-experiment.md) begin with original4 versus padded8 on an isolated branch. Preparation does not select a layout. Packing, epoch and optional-state stages remain pending; performance is held for an uncontended run and G-L stays open. See [dated preparation](../audits/2026-09-10-issue-16-cell-layout.md).

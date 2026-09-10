@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "scope": "New issue16 preparation development questions; frozen questions unchanged",
+  "questions": [
+    {
+      "id": "L01",
+      "query": "Is issue16 cell layout ready to choose a production width, and can timing run alongside issue15?",
+      "canonical": [
+        "operations/cell-layout-experiment.md"
+      ],
+      "facts": [
+        "G-L is open; preparation is not completion.",
+        "Owner must release the uncontended timing hold.",
+        "Later packing, epoch and sidecar stages remain pending."
+      ],
+      "sources": [
+        "operations/cell-layout-experiment.md"
+      ]
+    },
+    {
+      "id": "L02",
+      "query": "How are the first Cell layout comparison and its semantic parity measured?",
+      "canonical": [
+        "operations/cell-layout-experiment.md"
+      ],
+      "facts": [
+        "Original4 and padded8 retain byte fields, alignment1 and fixed geometry.",
+        "Exact semantic records and work/event counts, five paired translations, one/four workers.",
+        "Seven interleaved process pairs,120-tick warmup,1800 steady ticks."
+      ],
+      "sources": [
+        "operations/cell-layout-experiment.md"
+      ]
+    },
+    {
+      "id": "L03",
+      "query": "Does resident_cell_bytes report only hot Cell payload?",
+      "canonical": [
+        "operations/cell-layout-experiment.md",
+        "systems/world-storage-and-interest-region.md"
+      ],
+      "facts": [
+        "It includes temperature and activity capacities.",
+        "Report components and metadata/process gaps separately."
+      ],
+      "sources": [
+        "../native/src/world.cpp::resident_cell_bytes"
+      ]
+    }
+  ]
+}

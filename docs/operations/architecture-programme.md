@@ -393,3 +393,7 @@ change. Final issue readback, link/section/dependency checks and source-scope
 inspection complete this task. The [planning execution report](../audits/2026-09-10-architecture-programme.md)
 records created issues, exact remote/dependency readback, manual quality review
 and separate documentation/retrieval versus inherited publication-check outcomes.
+
+## Issue16 local execution checkpoint
+
+The [cell layout registration](cell-layout-experiment.md) and [dated preparation](../audits/2026-09-10-issue-16-cell-layout.md) track L. First-stage source preparation is isolated from the baseline; performance awaits the owner uncontended-run release. G-L remains open and all later stages keep their registered disposition.

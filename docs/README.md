@@ -91,3 +91,7 @@ settings/origins, saves editable user copies and applies through an explicit res
 ## Architecture experimental programme
 
 The [evidence-gated programme](operations/architecture-programme.md) coordinates Cell layout, liquid precision/history, fractional presentation and conditional sparse motion. It retains existing ADRs and reuses soliding issue #12; linked prompts are self-contained. This is Planned research, not a selected replacement architecture.
+
+## Cell layout research
+
+Issue16 uses the [staged registration](operations/cell-layout-experiment.md) and [preparation evidence](audits/2026-09-10-issue-16-cell-layout.md). Performance awaits an owner-arranged uncontended run; G-L is open.

@@ -1,0 +1,153 @@
+---
+title: Cell layout experiment registration and execution
+status: Planned
+document-kind: runbook
+scope: Issue 16 staged native representation research, preregistered before candidate code; no production migration
+canonical-for: [cell-layout-experiment]
+last-reviewed: 2026-09-10
+related-documents: [architecture-programme.md, architecture-programme-prompts/cell-layout.md, ../audits/2026-09-10-issue-16-cell-layout.md]
+---
+
+# Cell layout experiment
+
+## Status and boundaries
+
+**Planned experiment:** execute [issue 16's full charter](architecture-programme-prompts/cell-layout.md)
+in staged order. The owner requires a pause before **any performance measurements**
+to arrange an uncontended run alongside issue 15. Preparation and correctness
+checks are allowed. A preparation checkpoint is not issue completion or G-L acceptance.
+No merge, deployment, remote mutation, production layout choice or loaded DLL replacement.
+
+Editing/build root: `C:/kybersand/worktrees/issue-16-cell-layout`, branch
+`codex/issue-16-cell-layout`, base `b16408c28de67e3b30ebb1f0172e78d594296052`.
+The baseline checkout `C:/kybersand/source` is read-only. All generated files go
+in the experiment worktree's ignored `build/issue-16` and `validation/local/issue-16`.
+Use the configured pinned workspace Python/LLVM environment via `tools/dev.py`;
+its default source path must be overridden in the experiment driver, never invoke
+its build actions against the baseline. Native and Web bindings stay distinct.
+
+## Registered comparisons
+
+This registration precedes candidate implementation and measured results.
+Use fresh worlds and distinct executables. Low bits are listed first; encode
+semantic records with explicit little-endian integer bytes, never raw structs or
+compiler bitfields. All unused bits are zero and carry no behavior.
+
+| Stage | Control / candidate | Exact mapping and disposition |
+|---|---|---|
+| L1 | Original4 / padded8 | material:u8, a:u8, b:u8, epoch:u8 at byte offsets 0/1/2/3; candidate adds four unused bytes, alignment remains 1. First admitted implementation/timing stage. |
+| L2a | Original4 / packed8/16/8 | uint32: material[0:7], a[8:15], b[16:23], epoch[24:31]. Masks/shifts; keep all legacy values. Implement after L1 evidence is reviewed. |
+| L2b | Padded8 / packed16/40/8 | uint64: material[0:15], a[16:23], b[24:31], unused[32:55], epoch[56:63]. Only IDs 0..80; extraction cost is not catalogue expansion. Natural integer alignment must be reported as an access-layout confound; add an alignment-matched padded control if needed. |
+| L3 | packed8/16/8 / packed8/18/6 | uint32: material[0:7], a[8:15], b[16:23], unused[24:25], epoch[26:31]. Keep all legacy state precision; only epoch width changes. |
+| L4 | Original4 plus optional / inline neutral payload | Bounded chunk SoA and sparse indexed sidecars; neutral uint32 payload explicitly has no solver meaning. Separate absent, allocated/unread, accessed. Register concrete ownership and operation fixture before this code. |
+| L5 | Compatibility inventory | Inspection now; no new materials, profile widening, saves or render changes. |
+| L6 | Optional 64-square storage | Not admitted without profiling justification and a new registration. Keep activity32/core64/radius2; repeat both layouts if admitted. |
+
+Stages L2-L4 are mandatory remaining research, pending preceding stage evidence,
+not rejected/skipped. A failed equivalence gate rejects that candidate and records
+the failure; cost regressions trigger review, not automatic omission of other stages.
+G-L stays open until every intended stage has evidence or a supported gate disposition.
+
+## Primary metrics and rejection criteria
+
+Fixed geometry 128 storage / 32 activity / 64 scheduling / radius 2, phased solver,
+sleep 3, default Baseline transport, Mercury period 30, horizontal2/cadence1,
+current three-quarter Water relaxation, temperature200. Worker counts 1 and 4;
+keep parallel threshold8, capacities chunk/core/active-chunk4096, events1024.
+Initial reservation policy and external input schedule must match within each pair.
+
+Primary timing: p50/p95/p99/max/total tick nanoseconds and total ns / total visited
+cells (undefined when visits are zero). Nearest-rank quantiles, paired candidate /
+control ratios; retain each pair and median paired ratio, not pooled pseudo-replicates.
+Flag paired p95 regression >15% and extra epoch-clear excess >1ms for review.
+Never infer significance or an accepted production limit from those screens.
+
+Seven interleaved independent process pairs for every timing comparison, AB/BA
+alternating by pair index. First 120 measured ticks are separately reported as
+initial settling/warmup; next 1800 ticks are the steady window for L1/L2. Cold
+process/world construction is reported separately. Warmup is excluded from steady
+statistics, never discarded from raw evidence. L3 runs 2048 total ticks minimum
+and includes all clear events in a separate table, including warmup clears.
+Primary timing has physics observers and semantic traversal disabled. Identical
+observer-enabled runs establish work/event/semantic parity separately; seven
+off/on pairs per layout quantify instrumentation cost before using observed timings.
+
+No parallel builds, builds during timing, or concurrent experiment measurements.
+Per-process timeout 1800s, build timeout1200s; retain failures/timeouts/outliers.
+No automatic retry or expansion of samples. Register revised budgets before results.
+Hardware/OS/compiler/binary/input hashes and run order accompany raw evidence.
+Record power configuration and competing-process observations at release of the
+owner hold; absence of a process in one snapshot is not proof of an uncontended run.
+
+## Fixtures and budget
+
+L1/L2 timing: existing dense/sparse native benchmark initialization, extents512
+and1024, workers1/4, plus retained sleeping allocation extent4096 with the existing
+small active patch and a selected small region. No arbitrary new solver workload.
+This is ten scenario/extent/worker combinations, 140 processes per two-layout
+comparison, plus declared observer-neutrality pairs. Save final content/state and
+work records outside timed sections; whole-world exact correctness is a separate run.
+
+Behavior screen: five explicitly paired seed/translation settings
+`(0,0,0), (1,-129,-65), (2,127,63), (3,-257,129), (4,65,-129)`;
+seed changes only initial arrangement, not native RNG/policy. One/four workers,
+1800 ticks, repeated identical runs; 2048 ticks for wrap fixtures. Compare each
+setting to itself across layouts, never assume translations preserve trajectories.
+Use a compact closed Water/Sand basin and separate reactive catalogue fixture;
+run the existing full native regression suite for failure/region/temperature,
+movement, reactions, immutable snapshots, capacity and opt-in transport coverage.
+First-stage source preparation may run these correctness checks without collecting
+tick timings. Dense/sparse benchmark-sized A/B remains behind the owner hold.
+
+L3 must cover signed seams, sleeping and region-excluded resident cells, re-entry,
+movement and prewritten explosion destinations across every wrap. Clear timeline:
+8-bit ticks `256 + 255*k`; 6-bit `64 + 63*k`. Capture clear identity/duration/cell
+count and neighbor-tick excess (clear time minus median of up to two ordinary ticks
+on each side). Moves and swaps mark both endpoints; partial Water transfers mark
+both; event writes happen after clearing and suppress ordinary work until next tick.
+
+L4 densities0/1/5/15/50/100%, clustered/dispersed. Neutral payload slots belong to
+exactly one coordinate, move/swap with a transaction, split by an explicit synthetic
+rule, discard/reinitialize on reaction, return capacity on reclaim. Preflight
+destination allocation before source removal; saturation refuses the operation,
+never silently drops payload/material. Bound each chunk to16384 slots and sparse
+capacity to the registered density; count lookup index, occupancy/free-list,
+allocation count/peak/refusal and allocator overhead. Compare equivalent operation
+streams with an inline neutral payload control; this is not useful motion-state evidence.
+
+## Semantic and memory records
+
+The lossless oracle emits sorted signed coordinate records containing u16 material,
+u8 a, u8 b, i16 resolved temperature. It must retain nonzero empty-cell state and
+temperature, omit representation padding/epoch only, and compare exact bytes.
+Epoch is checked separately. Compare matching-tick state_hash only for identical
+schema/ABI; use content_hash for rest, never as a complete replay proof. Every-tick
+Water integer mass and nonreactive species totals are exact; chemistry changes
+are separate source/sink ledgers and open ROI escape is not world loss.
+Capture all TickStats work counters and diagnostic event entries/overflow; keep
+observer-off repeat checks. A digest is an index, not the lossless comparator.
+
+Memory: report actual sizeof/alignment/array stride and offsets, cell capacity
+bytes, temperature capacity bytes, activity bytes, chunk/vector/map/scratch/job
+metadata and process working-set/private/peak memory where available. Existing
+`resident_cell_bytes()` already includes temperature and activity vectors; label
+it as the legacy aggregate and never add it again to component totals. Allocator
+bookkeeping/fragmentation not directly observable must be a gap, not zero.
+Capture representative optimized scan/write/move/clear disassembly for control
+and candidate with identical flags. PMU/cache/bandwidth counters are optional
+hardware evidence; unavailable counters preclude cache-causality claims.
+
+## Run and review
+
+The first-stage driver is `tools/experiments/cell_layout.py`. `prepare` builds
+isolated original4/padded8 executables and runs correctness only; `plan` writes
+the ordered process manifest without execution. `measure` is a separate explicit
+action and requires the owner to release the uncontended-run hold in this task.
+Do not invoke it during preparation. It must refuse reused output paths, mismatched
+source/binary identities or failed prerequisites. Review L1 before implementing L2.
+
+The [dated checkpoint](../audits/2026-09-10-issue-16-cell-layout.md) owns actual
+executed checks, compatibility findings, gaps and G-L disposition. Retained #9,
+#10, #13 and Water evidence establish baseline facts only. No desktop/Web result
+is inferred from a native executable; adapter/render changes would require fresh
+desktop async and real compat/threaded Web coverage.

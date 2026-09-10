@@ -170,6 +170,9 @@ public:
 
 private:
     friend class RenderSnapshotExchange;
+#ifdef CYBERSAND_CELL_LAYOUT_EXPERIMENT
+    friend struct CellLayoutExperiment;
+#endif
 
     struct Chunk;
     struct Address;

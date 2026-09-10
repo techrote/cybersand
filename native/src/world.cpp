@@ -5,6 +5,12 @@
 #include "cybersand/render_snapshot.hpp"
 
 #include "render_snapshot_internal.hpp"
+#ifdef CYBERSAND_CELL_LAYOUT_EXPERIMENT
+#include "cybersand/cell_layout_experiment.hpp"
+#if CYBERSAND_CELL_LAYOUT_EXPERIMENT != 4 && CYBERSAND_CELL_LAYOUT_EXPERIMENT != 8
+#error "Issue 16 first stage supports only original4 and padded8"
+#endif
+#endif
 
 #include <algorithm>
 #include <array>
@@ -209,6 +215,9 @@ struct World::Chunk {
         std::uint8_t state_a = 0;
         std::uint8_t state_b = 0;
         std::uint8_t updated_epoch = 0;
+#if defined(CYBERSAND_CELL_LAYOUT_EXPERIMENT) && CYBERSAND_CELL_LAYOUT_EXPERIMENT == 8
+        std::uint8_t unused[4] = {};
+#endif
 
         [[nodiscard]] static constexpr Cell for_material(Material value) noexcept {
             const auto& definition = material_definition(value);
@@ -220,7 +229,14 @@ struct World::Chunk {
             };
         }
     };
+#ifdef CYBERSAND_CELL_LAYOUT_EXPERIMENT
+    static_assert(sizeof(Cell) == CYBERSAND_CELL_LAYOUT_EXPERIMENT);
+    static_assert(alignof(Cell) == 1);
+    static_assert(offsetof(Cell, material) == 0 && offsetof(Cell, state_a) == 1 &&
+                  offsetof(Cell, state_b) == 2 && offsetof(Cell, updated_epoch) == 3);
+#else
     static_assert(sizeof(Cell) == 4, "hot cell layout must remain four bytes");
+#endif
 
     struct ActivityBlock {
         std::uint64_t next_interaction_tick = 0;
@@ -3126,5 +3142,73 @@ void World::copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::
         }
     }
 }
+
+#ifdef CYBERSAND_CELL_LAYOUT_EXPERIMENT
+CellLayoutFootprint CellLayoutExperiment::footprint(const World& world) {
+    CellLayoutFootprint result{};
+    result.cell_size = sizeof(World::Chunk::Cell);
+    result.alignment = alignof(World::Chunk::Cell);
+    std::array<World::Chunk::Cell, 2> probe{};
+    result.stride = static_cast<std::size_t>(
+        reinterpret_cast<const char*>(&probe[1]) - reinterpret_cast<const char*>(&probe[0]));
+    result.map_buckets = world.chunks_.bucket_count() * sizeof(void*);
+    result.coordinator_vectors = world.active_chunk_scratch_.capacity() * sizeof(ChunkCoord) +
+        world.active_core_scratch_.capacity() * sizeof(SchedulingCoreCoord) +
+        world.pending_explosions_.capacity() * sizeof(World::ExplosionCommand);
+    if (world.parallel_) {
+        result.parallel_vectors = sizeof(World::ParallelState) +
+            world.parallel_->results.capacity() * sizeof(World::ParallelState::JobResult) +
+            world.parallel_->physics.capacity() * sizeof(PhysicsJobHistogram) +
+            world.parallel_->phase_job_indices.capacity() * sizeof(std::size_t);
+    }
+    for (const auto& [coord, chunk] : world.chunks_) {
+        (void)coord;
+        result.cells += chunk->cells.capacity() * sizeof(World::Chunk::Cell);
+        result.activity += chunk->activity_blocks.capacity() * sizeof(World::Chunk::ActivityBlock);
+        result.chunk_objects += sizeof(World::Chunk);
+        if (chunk->temperatures) {
+            result.temperatures += chunk->temperatures->capacity() * sizeof(std::int16_t);
+            result.chunk_objects += sizeof(std::vector<std::int16_t>);
+        }
+    }
+    return result;
+}
+
+std::vector<std::uint8_t> CellLayoutExperiment::semantic_records(const World& world) {
+    std::vector<ChunkCoord> coordinates;
+    for (const auto& [coord, chunk] : world.chunks_) {
+        (void)chunk;
+        coordinates.push_back(coord);
+    }
+    std::sort(coordinates.begin(), coordinates.end());
+    std::vector<std::uint8_t> bytes;
+    const auto append = [&bytes]<typename T>(T value) {
+        auto bits = static_cast<std::make_unsigned_t<T>>(value);
+        for (std::size_t i = 0; i < sizeof(T); ++i) {
+            bytes.push_back(static_cast<std::uint8_t>(bits & 255U));
+            bits = static_cast<std::make_unsigned_t<T>>(bits >> 8U);
+        }
+    };
+    // Canonical chunk-coordinate order followed by local row-major index.
+    // This is stable across variants at fixed geometry, including signed seams.
+    for (const auto coord : coordinates) {
+        const auto& chunk = *world.find_chunk(coord);
+        for (std::size_t i = 0; i < chunk.cells.size(); ++i) {
+            const auto& cell = chunk.cells[i];
+            const auto temp = chunk.temperatures ? (*chunk.temperatures)[i] : world.config_.ambient_temperature;
+            if (cell.material == Material::Empty && cell.state_a == 0 && cell.state_b == 0 &&
+                temp == world.config_.ambient_temperature) continue;
+            const auto size = world.config_.chunk_size;
+            append(static_cast<std::int64_t>(coord.x * size + static_cast<std::int64_t>(i % size)));
+            append(static_cast<std::int64_t>(coord.y * size + static_cast<std::int64_t>(i / size)));
+            append(static_cast<std::uint16_t>(cell.material));
+            append(cell.state_a);
+            append(cell.state_b);
+            append(temp);
+        }
+    }
+    return bytes;
+}
+#endif
 
 }  // namespace cybersand

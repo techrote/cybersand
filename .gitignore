@@ -35,6 +35,7 @@ compile_commands.json
 !/godot/addons/cybersand_native/bin/**
 
 # Test, profiling, packaging, and crash output
+/validation/local/
 Testing/
 coverage/
 *.gcda

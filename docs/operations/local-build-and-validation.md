@@ -135,3 +135,7 @@ threaded probe must yield before replacing a newly constructed default world,
 after replacement and after teardown so browser pthread startup/recycling can
 finish before synchronous native joins. This fixture lifecycle requirement does
 not change production native ownership or introduce asynchronous Web simulation.
+
+## Isolated issue16 preparation
+
+The [cell layout runbook](cell-layout-experiment.md) uses `tools/experiments/cell_layout.py` inside its dedicated worktree. It reuses the pinned workspace environment, overrides baseline paths, builds serially to issue-specific directories and separates correctness preparation from explicit timing. Do not use the shared wrapper build actions to overwrite the baseline DLL.
