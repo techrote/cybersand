@@ -11,7 +11,7 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 # Retrieval question index
 
 For the eleven native liquid paths, specialized mobility exceptions and the
-pending controlled sleep comparison, use the
+completed controlled sleep comparison, use the
 [liquid characterization registration](../operations/liquid-characterization.md)
 and [material kernel contract](../systems/materials-and-rule-kernels.md).
 

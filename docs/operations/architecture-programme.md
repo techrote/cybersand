@@ -281,11 +281,15 @@ before a Cell/liquid decision, and does not block C/L/P/V.
 
 ## I. Decision gates and conditional work
 
-**Issue15 preparation, 2026-09-10:** [registered liquid measurements](liquid-characterization.md)
-and the [source/evidence map](../audits/2026-09-10-issue-15-liquid-characterization.md)
-are isolated from planning commit b16408c. G-C remains pending; the owner requested
-a stop before performance so issue16 can be made idle. This is not a completed
-gate entry or permission to integrate a liquid candidate.
+**G-C completed locally, 2026-09-10:** [issue15 results](../audits/2026-09-10-issue-15-liquid-results.md)
+execute352 behavior and224 timed processes after the owner released the hold.
+Water trajectories are unchanged by quiet3 versus4096; whole-cell rest is
+scheduler-dependent. Retain separate liquids and production defaults. Admit the
+bounded P precision/threshold diagnostic for the wide-basin residual and film,
+conditional on independent G-L evidence; no bit budget is selected. M, render
+migration and generalized quantity/yield have no-go dispositions from C for lack
+of the named behavior/visual/quantity contracts. Timing tails and diagnostic
+overhead prevent production acceptance. This entry does not complete G-L or14.
 
 | Gate | Evidence required | Allowed next step / negative branch |
 |---|---|---|

@@ -104,8 +104,12 @@ additional kernel reactions retain their own ordering.
 
 The [issue15 registration](../operations/liquid-characterization.md) and
 [eleven-material evidence map](../audits/2026-09-10-issue-15-liquid-characterization.md)
-separate these source facts from retained measurements and the pending controlled
-sleep experiment. Descriptor similarity does not prove equivalent quantity,
+separate these source facts from retained measurements. The
+[completed quiet3/4096 comparison](../audits/2026-09-10-issue-15-liquid-results.md)
+finds different whole-cell trajectories for Brine/Paste/Slush/Mercury at every
+tested translation, while all tested Water trajectories match. This establishes
+scheduler-dependent rest in the bounded single-cell fixture, not a physical
+stress/yield law or an unwanted macroscopic heap. Descriptor similarity does not prove equivalent quantity,
 mobility, sleep or cost; no default change or liquid unification is approved.
 
 ## Why does burning Coal leave a purple layer?

@@ -145,6 +145,15 @@ difference at most two after 360 ticks; later dated executions are in the ledger
 
 ## Planned and deferred changes
 
+The [issue15 sleep comparison](../audits/2026-09-10-issue-15-liquid-results.md)
+measures identical Water content trajectories for quiet3 versus4096 in the
+registered48/96-wide basins, support release and48-unit film across five
+translations, workers1/4. The96-wide residual remains418..435 units at1800 ticks;
+it is not corrected by this longer quiet threshold. The48-wide basin settles at46
+units of spread and the film stays immutable. A bounded precision/threshold
+diagnostic is admitted conditionally on G-L; these results do not assign the
+residual to precision, change conservation, or select a new mass budget.
+
 **Planned:** explicit source/sink reaction accounting, mass-return commands,
 general replay capture, and complete mirrored/edge acceptance. **Deferred:**
 a general fluid solver. Active-only buffered flux is a retained **Planned**

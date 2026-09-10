@@ -63,8 +63,13 @@ Settled Water can become inactive; render dithering does not wake it.
 can keep later samples eligible; quiet blocks can instead sleep. This is distinct
 from Mercury's scheduled pair deadline below. The
 [issue15 paired quiet-threshold experiment](../operations/liquid-characterization.md)
-is registered to attribute the difference; source review alone does not establish
-an unwanted heap or justify changing production sleep.
+now measures different whole-cell trajectories under3 versus4096 in every
+Brine/Paste/Slush/Mercury translation. Water trajectories match in its basin,
+support and film fixtures. The long threshold also prolongs empty resident-block
+activity after re-entry, so additional scheduled cores are not evidence of useful
+material work. This does not establish an unwanted heap or justify changing
+production sleep; [dated results](../audits/2026-09-10-issue-15-liquid-results.md)
+own the measured scope and cost limits.
 
 **Current:** a denied slow Mercury pair records the earliest due tick in its
 source block. The existing `begin_tick` metadata pass wakes due included blocks

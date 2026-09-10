@@ -1,11 +1,11 @@
 ---
 title: Liquid characterization registration and reproduction
-status: Planned
+status: Current
 document-kind: runbook
-scope: Issue 15 observation-only experiment, registered before instrumentation; performance awaits an uncontended host
+scope: Registered and completed issue 15 research comparison; findings do not approve production changes
 canonical-for: [liquid-characterization-experiment]
 last-reviewed: 2026-09-10
-related-documents: [architecture-programme.md, ../systems/materials-and-rule-kernels.md, ../audits/2026-09-10-issue-15-liquid-characterization.md]
+related-documents: [architecture-programme.md, ../systems/materials-and-rule-kernels.md, ../audits/2026-09-10-issue-15-liquid-results.md]
 ---
 
 # Liquid characterization registration
@@ -15,8 +15,30 @@ Baseline is local planning commit `b16408c`, including solver commit `8f4ffb9`.
 Editing workspace: `C:/kybersand/worktrees/issue-15-liquid-characterization`,
 branch `codex/issue-15-liquid-characterization`. Build products and raw logs use
 `build/issue-15/` and `validation/local/issue-15/` inside this worktree.
-The owner requires a stop before performance measurements so issue #16 can be
-made idle. A preparation checkpoint is not completed G-C evidence.
+The owner initially required a stop before performance so issue16 could be made
+idle, then released that hold. Preparation903e40f and its dated audit are retained
+separately from the [completed results](../audits/2026-09-10-issue-15-liquid-results.md).
+The sample budget below was registered before the corresponding results.
+
+## Does keeping Water awake fix its residual leveling?
+
+**Measured Windows core, 2026-09-10:** no difference in the entire Water content
+trajectory for quiet3 versus4096 in both basins, support-release and film, across
+five translations and workers1/4. The96-wide basin still has418..435 units of
+column spread at1800 ticks and remains active; the48-wide basin settles at46.
+The48-unit supported film remains immutable despite extra visits. Longer wake
+therefore does not fix the residual in these fixtures. This does not prove that
+precision is its cause. Brine/Paste/Slush/Mercury whole-cell trajectories differ
+in every paired translation, establishing scheduler-dependent rest without a
+constitutive stress/yield model. Production defaults remain unchanged.
+
+The completed campaign has352 behavior processes and224 timed processes.
+Observed tail variability and costly post-re-entry scheduling prevent a universal
+performance or cost-neutrality claim. The dated report owns the full windowed
+timings,85 flagged pairs, exceptions and separate publication gate.
+G-C retains defaults and conditionally admits only the bounded P precision
+diagnostic after independent G-L evidence; it selects neither a bit budget nor
+liquid unification. The final dispositions below name the other no-go branches.
 
 ## Question and controlled variables
 
@@ -103,20 +125,22 @@ histogram overflow, timeout or unmatched control. Record every rejection.
 Capacity: maximum/reserved initial chunks64, active chunks64, active cores512,
 reserve a 512x512 region around each fixture. Existing histogram capacities256
 per job/8192 totals remain fixed. No new field, worker allocation or mutable
-snapshot interface. Full memory/PMU/GPU measurements remain gaps; resident Cell
-bytes are not process memory. No adapter/render changes require new platform
+snapshot interface. Full memory/PMU/GPU measurements remain gaps; the legacy
+`resident_cell_bytes()` query includes cell, optional-temperature and activity-block
+capacities, not process memory. No adapter/render changes require new platform
 builds at preparation; native diagnostics do not establish fresh Web acceptance.
 
 ## Conditional dispositions
 
-G-C remains **pending measurements**. P (precision): the retained 96-wide residual
-is a named candidate question, but it does not isolate precision from algorithm
-or sleep. M (memory): no admitted gain without a measured jet/spray deficit; this
-fixture budget does not establish one. V (presentation): frozen-state inspection
-is separable from simulation; no new visual acceptance is claimed here. General
-quantity/yield: no admission without explicit reaction units and an unwanted
-material-specific deficit. Retain separate liquid paths and production defaults.
-These are evidence-based holds, not rejection of all future research.
+**G-C completed:** retain separate liquid paths and production defaults. Admit P's
+bounded normalized precision/threshold diagnostic for the residual and film target,
+conditional on independent G-L evidence from issue16. No precision cause or bit
+budget is selected. M has no admitted jet/spray deficit; V has no new visual or
+render-cost evidence; generalized quantity/yield lacks reaction units and a named
+unwanted material behavior. Those implementation paths have explicit no-go
+dispositions from C. Frozen-state presentation research may still use the stable
+film/basin inputs under its own visual contract. No production migration is
+admitted. See the [complete per-material decisions](../audits/2026-09-10-issue-15-liquid-results.md).
 
 Reproduction commands and executed outcomes are recorded in the
 [dated preparation audit](../audits/2026-09-10-issue-15-liquid-characterization.md).

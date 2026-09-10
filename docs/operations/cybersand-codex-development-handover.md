@@ -12,13 +12,14 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## Start here for the next task
 
-Issue15 has a separate preparation worktree at
+Issue15 is completed locally in the separate research worktree at
 `C:/kybersand/worktrees/issue-15-liquid-characterization` on
 `codex/issue-15-liquid-characterization`, based on local b16408c. Follow its
-[registration](liquid-characterization.md) and [audit](../audits/2026-09-10-issue-15-liquid-characterization.md).
-The owner requires a pause before timing while issue16 may be active. Resume
-measurement only after an uncontended run is arranged; preserve the original
-source checkout's dirty DLL. Full issue15/G-C completion remains pending.
+[registration](liquid-characterization.md) and [completed audit](../audits/2026-09-10-issue-15-liquid-results.md).
+Preparation903e40f remains recoverable. The owner released the measurement hold;
+352 behavior and224 timed processes now support the G-C retain-defaults decision
+and conditional P diagnostic admission. Keep this experiment unmerged; the
+original source checkout's dirty DLL and all earlier evidence remain preserved.
 
 Work in `C:/kybersand`, with executable source in `source/`. The companion workspace
 and source now have separate Git histories. Read [source identity](source-checkpoint-and-recovery.md)

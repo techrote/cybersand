@@ -10,13 +10,15 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
-## Issue15 preparation, 2026-09-10
+## Issue15 liquid characterization, 2026-09-10
 
-The [liquid audit](../audits/2026-09-10-issue-15-liquid-characterization.md) records
-source review, retained evidence, isolated builds and preparation correctness
-checks from b16408c. The [registered screen](../operations/liquid-characterization.md)
-requires subsequent behavior/performance comparisons. No fresh timing, platform
-release or G-C acceptance is claimed at the owner-requested measurement hold.
+The [preparation audit](../audits/2026-09-10-issue-15-liquid-characterization.md)
+retains source review and84 clock-free controls/55 native tests. After the owner
+released the hold, the [completed results](../audits/2026-09-10-issue-15-liquid-results.md)
+add352 behavior and224 timed processes with exact quantity, worker/observer/repeat
+controls and112 timing pairs. G-C retains defaults and conditionally admits a
+bounded P diagnostic.85 pairs flag across timing windows; no production cost or
+new desktop/Web/Linux acceptance follows from these Windows core observations.
 
 ## What has actually passed?
 

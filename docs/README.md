@@ -90,8 +90,9 @@ settings/origins, saves editable user copies and applies through an explicit res
 
 ## Architecture experimental programme
 
-Issue15 [liquid characterization](operations/liquid-characterization.md) has an
-isolated source review and registered measurement plan; [preparation evidence](audits/2026-09-10-issue-15-liquid-characterization.md)
-keeps the owner-requested performance hold and G-C status explicit.
+Issue15 [liquid characterization](operations/liquid-characterization.md) has
+[completed measured results](audits/2026-09-10-issue-15-liquid-results.md) and a
+local G-C decision retaining separate liquids/defaults. Its earlier preparation
+and hold are retained as dated history; no production migration is approved.
 
 The [evidence-gated programme](operations/architecture-programme.md) coordinates Cell layout, liquid precision/history, fractional presentation and conditional sparse motion. It retains existing ADRs and reuses soliding issue #12; linked prompts are self-contained. This is Planned research, not a selected replacement architecture.

@@ -6,8 +6,15 @@
       "id": "AP06",
       "query": "Do all CellularYield liquids use viscosity mobility and can sleep stop their later attempts?",
       "canonical": ["systems/materials-and-rule-kernels.md", "operations/liquid-characterization.md"],
-      "facts": ["Oil, Acid and Lava bypass the generic mobility gate.", "Generic mobility failure returns before lateral cadence without scheduling a retry; controlled quiet3 versus4096 evidence is pending."],
+      "facts": ["Oil, Acid and Lava bypass the generic mobility gate.", "Generic mobility failure returns before lateral cadence without scheduling a retry; the completed quiet3 versus4096 screen measures scheduler-dependent whole-cell rest without changing defaults."],
       "sources": ["systems/materials-and-rule-kernels.md", "systems/activity-dirty-regions-and-waking.md"]
+    },
+    {
+      "id": "AP07",
+      "query": "Does keeping Water awake fix the wide basin residual and what does G-C admit next?",
+      "canonical": ["operations/liquid-characterization.md"],
+      "facts": ["Water content trajectories match quiet3 and4096 in all tested fixtures; wide-basin residual remains418..435 units at1800 ticks.", "G-C retains defaults and conditionally admits a bounded precision diagnostic after independent G-L evidence, not a selected bit budget or liquid unification."],
+      "sources": ["operations/liquid-characterization.md"]
     },
     {
       "id": "AP01",
