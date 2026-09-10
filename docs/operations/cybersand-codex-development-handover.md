@@ -12,6 +12,14 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## Start here for the next task
 
+Issue15 has a separate preparation worktree at
+`C:/kybersand/worktrees/issue-15-liquid-characterization` on
+`codex/issue-15-liquid-characterization`, based on local b16408c. Follow its
+[registration](liquid-characterization.md) and [audit](../audits/2026-09-10-issue-15-liquid-characterization.md).
+The owner requires a pause before timing while issue16 may be active. Resume
+measurement only after an uncontended run is arranged; preserve the original
+source checkout's dirty DLL. Full issue15/G-C completion remains pending.
+
 Work in `C:/kybersand`, with executable source in `source/`. The companion workspace
 and source now have separate Git histories. Read [source identity](source-checkpoint-and-recovery.md)
 and inspect both relevant working trees before changing anything. Godot is in

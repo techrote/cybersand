@@ -3,6 +3,13 @@
   "scope": "New architecture programme development questions, separate from frozen32 and existing challenges; not unseen evaluation",
   "questions": [
     {
+      "id": "AP06",
+      "query": "Do all CellularYield liquids use viscosity mobility and can sleep stop their later attempts?",
+      "canonical": ["systems/materials-and-rule-kernels.md", "operations/liquid-characterization.md"],
+      "facts": ["Oil, Acid and Lava bypass the generic mobility gate.", "Generic mobility failure returns before lateral cadence without scheduling a retry; controlled quiet3 versus4096 evidence is pending."],
+      "sources": ["systems/materials-and-rule-kernels.md", "systems/activity-dirty-regions-and-waking.md"]
+    },
+    {
       "id": "AP01",
       "query": "Does the architecture programme select eight-byte Cells or require liquid unification?",
       "canonical": [

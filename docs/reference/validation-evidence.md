@@ -10,6 +10,14 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## Issue15 preparation, 2026-09-10
+
+The [liquid audit](../audits/2026-09-10-issue-15-liquid-characterization.md) records
+source review, retained evidence, isolated builds and preparation correctness
+checks from b16408c. The [registered screen](../operations/liquid-characterization.md)
+requires subsequent behavior/performance comparisons. No fresh timing, platform
+release or G-C acceptance is claimed at the owner-requested measurement hold.
+
 ## What has actually passed?
 
 **Current evidence policy:** a result applies to its recorded source/artifact,

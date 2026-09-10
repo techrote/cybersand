@@ -31,6 +31,7 @@
     "operations/documentation-maintenance.md",
     "operations/github-development-and-release.md",
     "operations/local-build-and-validation.md",
+    "operations/liquid-characterization.md",
     "operations/physics-characterisation-plan.md",
     "operations/physics-characterisation.md",
     "operations/profiling-observability-and-performance.md",

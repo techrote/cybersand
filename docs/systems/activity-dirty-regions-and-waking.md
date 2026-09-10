@@ -58,6 +58,14 @@ cell write.
 Explosion edits and transient-obstacle changes use explicit wake paths.
 Settled Water can become inactive; render dithering does not wake it.
 
+**Current source:** the generic whole-cell liquid mobility failure returns before
+`lateral_due`, with no retry deadline. Activity shared with neighbors or reactions
+can keep later samples eligible; quiet blocks can instead sleep. This is distinct
+from Mercury's scheduled pair deadline below. The
+[issue15 paired quiet-threshold experiment](../operations/liquid-characterization.md)
+is registered to attribute the difference; source review alone does not establish
+an unwanted heap or justify changing production sleep.
+
 **Current:** a denied slow Mercury pair records the earliest due tick in its
 source block. The existing `begin_tick` metadata pass wakes due included blocks
 and clears their deadline. Sleeping blocks therefore progress without a periodic

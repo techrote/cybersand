@@ -281,6 +281,12 @@ before a Cell/liquid decision, and does not block C/L/P/V.
 
 ## I. Decision gates and conditional work
 
+**Issue15 preparation, 2026-09-10:** [registered liquid measurements](liquid-characterization.md)
+and the [source/evidence map](../audits/2026-09-10-issue-15-liquid-characterization.md)
+are isolated from planning commit b16408c. G-C remains pending; the owner requested
+a stop before performance so issue16 can be made idle. This is not a completed
+gate entry or permission to integrate a liquid candidate.
+
 | Gate | Evidence required | Allowed next step / negative branch |
 |---|---|---|
 | G-C | Extracted #9/#10/#13/current evidence, exact specialization map, missing sleep/film/flow answers, identified behavior target | Admit P/M/V. Retain separate liquids if no demonstrated need. Quantity/transport generalization or genuine yielding gets a narrowly chartered later issue only for a specific gap. |

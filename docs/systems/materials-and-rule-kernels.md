@@ -91,6 +91,23 @@ Exact triggering and writes are in `update_rule_kernel` and
 Water alone uses `FreeMass`; `CellularYield` liquids retain whole-cell movement.
 Viscosity is dimensionless gameplay tuning, separate from yield and adhesion.
 
+### Does every CellularYield descriptor execute the same mobility gate?
+
+**Current source:** no. Paste, Slush, Brine, Toxic Sludge and Mercury use the
+generic yielding helper, as do Cement/Molten Glass after their lifecycle work.
+It tries gravity first, then tests a deterministic byte against `256-viscosity`
+before lateral cadence and empty-space candidates. Failed mobility does not
+schedule a retry. Oil, Acid and Lava have specialized motion paths which bypass
+that mobility gate despite declaring CellularYield and viscosity values. Oil's
+source movement also declines swaps. Pair chemistry precedes kernel dispatch;
+additional kernel reactions retain their own ordering.
+
+The [issue15 registration](../operations/liquid-characterization.md) and
+[eleven-material evidence map](../audits/2026-09-10-issue-15-liquid-characterization.md)
+separate these source facts from retained measurements and the pending controlled
+sleep experiment. Descriptor similarity does not prove equivalent quantity,
+mobility, sleep or cost; no default change or liquid unification is approved.
+
 ## Why does burning Coal leave a purple layer?
 
 **Current:** Coal's burn countdown ends by converting the cell to **Dust (ID 14)**.

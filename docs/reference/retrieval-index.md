@@ -10,6 +10,11 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+For the eleven native liquid paths, specialized mobility exceptions and the
+pending controlled sleep comparison, use the
+[liquid characterization registration](../operations/liquid-characterization.md)
+and [material kernel contract](../systems/materials-and-rule-kernels.md).
+
 Use this navigation page to select focused documents. Default machine retrieval
 uses [retrieval-corpus.json](retrieval-corpus.json), not this index's repeated
 question wording. Each answer must preserve the target's status/platform/evidence

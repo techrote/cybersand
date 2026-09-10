@@ -1715,7 +1715,11 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
                 ? static_cast<std::uint8_t>(config_.physics_diagnostics.mercury_viscosity)
                 : MaterialRules::descriptor(material).viscosity_index;
             const auto mobility = static_cast<std::uint16_t>(256U - viscosity);
-            if (deterministic_random(x, y, random_stream) >= mobility) return false;
+            record_physics(PhysicsEvent::MobilityOpportunity,material,Material::Empty,0,0,effects);
+            if (deterministic_random(x, y, random_stream) >= mobility) {
+                record_physics(PhysicsEvent::MobilityFailure,material,Material::Empty,0,0,effects);
+                return false;
+            }
             if (!lateral_due(material,x,y)) return false;
             if (try_lateral(material,x,y,direction,false,effects)) return true;
             if (config_.transport_policy.configured &&
@@ -2484,6 +2488,7 @@ void World::finish_tick(TickStats& stats) {
                 block.quiet_ticks = 0;
             } else if (age && ++block.quiet_ticks >= config_.sleep_after_quiet_ticks) {
                 block.active = false;
+                record_physics(PhysicsEvent::BlockSleep,Material::Empty,Material::Empty,0,0,nullptr);
             }
             any_active_block = any_active_block || block.active;
             if (block.active) ++stats.active_blocks_after;

@@ -131,4 +131,10 @@ are unchanged. No unsynchronized live descriptor mutation is introduced.
 
 ## Architecture investigation after the Water checkpoint
 
+**Issue15 preparation:** the [liquid characterization registration](../operations/liquid-characterization.md)
+maps all eleven paths and isolates quiet3 versus4096. Its
+[dated audit](../audits/2026-09-10-issue-15-liquid-characterization.md) retains the
+Water source movement and specialized-kernel exceptions. Performance awaits an
+owner-arranged uncontended run; G-C and full issue completion remain pending.
+
 **Planned:** the [architecture programme](../operations/architecture-programme.md) isolates raw Cell layout/epoch cost, liquid characterization, precision, compact memory and fractional rendering before any policy migration. Sparse ballistic implementation requires admission evidence; coherent soliding reuses #12. No 4/8-byte winner, liquid unification or representation ladder is adopted. GitHub #11 is closed while this source still records its missing barrel work; support-dependent integration requires actual source/evidence reconciliation.

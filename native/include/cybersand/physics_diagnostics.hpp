@@ -17,7 +17,10 @@ struct PhysicsDiagnosticConfig {
 
 enum class PhysicsEvent : std::uint8_t {
     EmptyMove = 1, DensitySwap, Conversion, WaterTransfer, RejectedMove,
-    BodyDisplacement, BodyContact, PowderMix, GrainTransport, LateralProbe, FlowProbe
+    BodyDisplacement, BodyContact, PowderMix, GrainTransport, LateralProbe, FlowProbe,
+    // Issue 15: generic yielding gate samples and coordinator sleep transitions.
+    // Existing event numeric IDs remain unchanged. No random draws or cell writes.
+    MobilityOpportunity, MobilityFailure, BlockSleep
 };
 
 // Fixed open-addressing counters, not an event log. Overflow drops observations,
