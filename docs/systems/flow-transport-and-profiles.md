@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Versioned profile resolution, compact native tables and opt-in flow experiments
 canonical-for: [transport-tuning-profiles, motion-driven-grain-transport]
-last-reviewed: 2026-09-09
+last-reviewed: 2026-09-10
 related-documents: [granular-interaction-policy.md, water-design.md, ../operations/experiment-tower.md]
 ---
 
@@ -92,8 +92,17 @@ Telemetry kinds 8 and 9 count powder mixing and grain transport separately from
 Empty movement, density swaps and conversions. Kind 11 counts new neighbour
 reads. Existing histogram bounds/overflow apply; disabled hooks make no new
 neighbour probes. No extra wake or per-cell motion field is introduced.
-Horizontal sampling and cadence consumption follow in the separate comparison
-checkpoint. See [dated results](../audits/2026-09-09-issue-13-transport.md); visual
+Horizontal sampling caps the existing lateral candidates at one; the first
+direction uses the existing deterministic rule. Water and yielding liquids
+previously attempted up to two; Oil, Acid and Lava already attempt at most one,
+so setting two does not invent additional movement. Gravity and diagonal falling
+are unchanged. Cadence 1..60 gates only lateral movement using coordinate-stable
+phases and the existing earliest per-block wake deadline, without catch-up.
+This can wake quiet blocked liquid at later eligible times; it is not a guaranteed
+sleep or performance improvement. Chemistry/lifecycle cadence is untouched.
+Telemetry kind 10 counts eligible lateral candidate probes (target byte is a
+placeholder, not the encountered material); kind 4 counts Water mass units
+transferred, not transfer calls. Sampling never multiplies carrying strength. See [dated results](../audits/2026-09-09-issue-13-transport.md); visual
 acceptance and production performance are not implied by native counters.
 
 ## What are the ownership and storage bounds?

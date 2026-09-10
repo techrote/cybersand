@@ -1,7 +1,7 @@
 class_name CyberExperimentTower
 extends RefCounted
 
-const VERSION: int = 1
+const VERSION: int = 4
 const FLOORS: Array[String] = ["Flowing powders", "Water and erosion", "Liquid gallery", "Mercury references", "Chemistry observations"]
 const QUICK: Array = [[2,14,29,13,1,0], [3,2,14,29,1,0], [3,16,24,33,20,21], [33,2,1,0,3,13], [3,23,8,12,28,6]]
 
@@ -42,7 +42,7 @@ static func rectangles() -> PackedInt32Array:
 		var y: int = floor_y(f)
 		# Open vertical shaft at x=8..57, with safe landing shelves. Wall is
 		# deliberately inert: reactive contents cannot dissolve the separation.
-		CyberDemoWorlds._rect(out, 8, y+174, 50, 5, 1)
+		CyberDemoWorlds._rect(out, 8, y+174, 28, 5, 1) # x36..57 continuous jetpack passage
 		CyberDemoWorlds._rect(out, 58, y, 934, 5, 1)
 		CyberDemoWorlds._rect(out, 58, y+188, 934, 10, 1)
 		CyberDemoWorlds._rect(out, 58, y+115, 5, 73, 1)
@@ -55,7 +55,20 @@ static func rectangles() -> PackedInt32Array:
 			CyberDemoWorlds._tank(out,int(tube[0]),y+25,int(tube[2]),88,1,int(tube[1]),82)
 		for plug: Rect2i in plugs(f):
 			CyberDemoWorlds._rect(out,plug.position.x,plug.position.y,plug.size.x,plug.size.y,79)
+		# Acid can dissolve the visible amber material. An inert facing keeps
+		# release manual; the same three-row erase command removes both layers.
+		var floor_tubes: Array=tubes(f)
+		var floor_plugs: Array[Rect2i]=plugs(f)
+		for index: int in range(floor_tubes.size()):
+			if int(floor_tubes[index][1])==12:
+				var plug: Rect2i=floor_plugs[index]
+				CyberDemoWorlds._rect(out,plug.position.x,plug.position.y,plug.size.x,1,1)
 		if f == 0:
+			# Converge separated tube outlets into a shared falling stream. This
+			# makes actual-motion mixing visible before ordinary packing resumes.
+			for i: int in range(34):
+				CyberDemoWorlds._rect(out,90+i,y+119+i/2,1,3,1)
+				CyberDemoWorlds._rect(out,165-i,y+119+i/2,1,3,1)
 			for i: int in range(60):
 				CyberDemoWorlds._rect(out,380+i,y+140+i/3,1,3,1)
 			CyberDemoWorlds._rect(out,170,y+133,55,3,1) # baffle
@@ -69,6 +82,8 @@ static func rectangles() -> PackedInt32Array:
 			# Four-cell manually erasable mixing gates between otherwise isolated bays.
 			for x: int in walls:
 				if x < 853: CyberDemoWorlds._rect(out,x,y+176,4,12,79)
+			CyberDemoWorlds._rect(out,622,y+176,1,12,1) # Acid-facing gate walls
+			CyberDemoWorlds._rect(out,697,y+176,1,12,1)
 			CyberDemoWorlds._rect(out,90,y+145,30,3,1) # ledge / spray
 		if f == 3:
 			CyberDemoWorlds._rect(out,110,y+113,3,75,1)
@@ -79,4 +94,8 @@ static func rectangles() -> PackedInt32Array:
 			CyberDemoWorlds._rect(out,700,y+148,100,40,2)
 			CyberDemoWorlds._rect(out,719,y+148,12,40,0)
 			CyberDemoWorlds._rect(out,680,y+185,160,3,79)
+		if f == 4:
+			# Solid Metal does not drain from a tube. Put a separate target bed
+			# in Acid's catch pit so opening its plug actually initiates contact.
+			CyberDemoWorlds._rect(out,390,y+176,66,12,28)
 	return out

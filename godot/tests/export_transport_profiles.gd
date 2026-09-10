@@ -16,5 +16,22 @@ func _init() -> void:
 			file.store_string(" ".join(values))
 			file=FileAccess.open(args[0]+"/"+key+".json",FileAccess.WRITE)
 			file.store_string(JSON.stringify({"profile":p,"hash":resolved.hash},"  "))
-	print("Exported six immutable resolved comparison inputs")
+	for knob: String in ["mixing","carrying","pickup","packing","cadence","permeability"]:
+		for value: int in ({"mixing":[0,255],"carrying":[0,64],"pickup":[0,255],"packing":[0,32],"cadence":[4,60],"permeability":[1,60]}[knob]):
+			var p: Dictionary=CyberTransportProfiles.preset(2)
+			p.name="User copy / "+knob+" "+str(value)
+			if knob=="carrying":
+				for pair: Dictionary in p.pairs: pair["values"].carrying=value
+			elif knob=="permeability": p.materials["33"].permeability=value
+			else: p.families["liquid" if knob=="cadence" else "powder"][knob]=value
+			var r: Dictionary=CyberTransportProfiles.resolve(p)
+			if not r.ok: quit(1);return
+			var key: String=knob+"-"+str(value)
+			var file: FileAccess=FileAccess.open(args[0]+"/"+key+".ints",FileAccess.WRITE)
+			var values: PackedStringArray=[]
+			for n: int in r.packed: values.append(str(n))
+			file.store_string(" ".join(values))
+			file=FileAccess.open(args[0]+"/"+key+".json",FileAccess.WRITE)
+			file.store_string(JSON.stringify({"profile":p,"hash":r.hash},"  "))
+	print("Exported six immutable comparison inputs and twelve independent knob screens")
 	quit()

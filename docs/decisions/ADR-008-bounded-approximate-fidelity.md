@@ -79,10 +79,30 @@ motion or frame pacing. The [validation ledger](../reference/validation-evidence
 separates tested behavior from these future acceptance requirements.
 
 
-## Versioned transport profile checkpoint
+## Opt-in transport profiles
 
 **Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
 owns schema, inheritance, units, immutable native tables and explicit owner restart.
-The tower can author profiles; experimental motion hooks follow separately.
+The Tower applies validated profiles through restart. Actual powder falls and
+lateral Water mass transport drive bounded optional mixing and grain pickup;
+horizontal sampling and cadence are separate fixed experiments.
 Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
 are unchanged. No unsynchronized live descriptor mutation is introduced.
+
+
+## Issue #13 version decision, 2026-09-10
+
+Retain transport profile schema/presets v1 as opt-in starting values: powder
+mixing 96; Water carrying 255, pickup 64, packing 8; Gentle requires loose exposure,
+Threshold erosion allows exposed packed pickup. The moderate powder setting
+produced greater final coflow interleaving than the maximum despite fewer swaps.
+The controls are independently screenable; zero pickup/packing can meet the same
+fixed minimum threshold and are not evidence of independent physical units.
+
+Keep Baseline and all presets at horizontal 2/cadence 1. Sampled lateral search
+changes transport strength and geometry, including the poured Mercury scene when
+applied to all liquids. It is an explicit user-copy experiment, not a new default.
+The original period-30 permeability and powder/player support v1 remain unchanged.
+No flow field, new rule radius, chemistry cadence or barrel/aggregate policy is
+introduced. See the [dated screen](../audits/2026-09-09-issue-13-transport.md) for
+scope, shared-host timing, visual checks and outstanding owner taste assessment.

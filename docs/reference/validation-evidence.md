@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-09-09
+last-reviewed: 2026-09-10
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md]
 ---
 
@@ -117,4 +117,9 @@ limits; the preserved historical manifests do not attest these new artifacts.
 
 ## Issue #13 experiment checkpoint
 
-The [issue #13 audit](../audits/2026-09-09-issue-13-transport.md) records pre-change transport controls and the Experiment Tower checkpoint. Fresh native/Godot, real Web, visual and performance evidence are distinct gates.
+The [issue #13 audit](../audits/2026-09-09-issue-13-transport.md) records the four
+transport checkpoints, frozen Baseline/Mercury samples, profile/control screens,
+actual desktop and both native Web runs, walkthrough captures and corrected
+sampling measurements. Native/Godot, real Web, visual and performance evidence
+are distinct gates. The failed sustained-input ledger and initial depth query
+remain recorded; publication provenance still fails independently.

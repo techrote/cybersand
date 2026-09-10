@@ -1,0 +1,142 @@
+{
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\desktop-erosion-profile.png": {
+    "sha256": "ee53671d521121855dbc390621f855356e962f566d7cb2ac8ce0af69aa94e2ae",
+    "bytes": 91515,
+    "mtime_utc": "2026-09-09T23:14:02.348162+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\desktop-floor1-before.png": {
+    "sha256": "bbca6a34b922f83825ab86787d16cd5ed95613c717c74e869ded9dc75f6e6a79",
+    "bytes": 134385,
+    "mtime_utc": "2026-09-09T23:13:45.928905+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\desktop-powder-release.png": {
+    "sha256": "76d6090bf5bdc3752bcbb5a5e019cce400e7586160be35bd5f9a0d191b33cfc5",
+    "bytes": 135545,
+    "mtime_utc": "2026-09-09T23:15:10.438823+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\desktop-v2-acid-autorelease-failure.png": {
+    "sha256": "806a188df2d7868e6557e148870c71f5d2790feb19e8e8e872d48c73036f67b0",
+    "bytes": 149386,
+    "mtime_utc": "2026-09-09T23:25:16.650520+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\desktop-v2-floor2.png": {
+    "sha256": "cd3e17f095d2daf09d04892c3090b46ebd02c9fa08e9a4b861fb23721f12dca6",
+    "bytes": 139526,
+    "mtime_utc": "2026-09-09T23:20:06.846275+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\desktop-v2-floor3.png": {
+    "sha256": "94009eb0e1dac1e6fbdfa5bb92694678ad96303b76af225bb297c6d0792ed034",
+    "bytes": 135496,
+    "mtime_utc": "2026-09-09T23:21:37.815492+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\desktop-v2-floor4.png": {
+    "sha256": "bce1fec6b1de5c377c76bfd859f671c6f8b10dd0517820d29f048be5dc229b8f",
+    "bytes": 137458,
+    "mtime_utc": "2026-09-09T23:22:08.696204+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\desktop-v2-mercury-progress.png": {
+    "sha256": "e72e9394dacd6c7b4babea06761187d3ba872da1ec0b3f33029535c339818d33",
+    "bytes": 135658,
+    "mtime_utc": "2026-09-09T23:23:19.842756+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\desktop-v2-powder-rest.png": {
+    "sha256": "e7a9124db41b7a05e2db0e995d023dd44a56c0eacb8cf4509290d11432e3697f",
+    "bytes": 137017,
+    "mtime_utc": "2026-09-09T23:19:37.581767+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\desktop-v2-water-drained.png": {
+    "sha256": "8091ce048f0ed9cd3237856c68f8e77d6c1d6ede441747089ae07f4a3105e3ca",
+    "bytes": 146999,
+    "mtime_utc": "2026-09-09T23:21:17.861934+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\desktop-v3-floor1.png": {
+    "sha256": "bb0a65a2a777663557d751bfa4f645926690eaf7046c0de4216b9071d215ce0c",
+    "bytes": 135266,
+    "mtime_utc": "2026-09-09T23:28:28.210521+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\desktop-v3-floor5.png": {
+    "sha256": "7f2b0a1eb31732c543903eac7ce474461fdd2b4776d845f766b19aa2901c8a3e",
+    "bytes": 148999,
+    "mtime_utc": "2026-09-09T23:30:08.708803+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\desktop-v3-fuels-before.png": {
+    "sha256": "bb305c86e1de3981be337e0766c342e86ebadfd8c3c0b86c050632fab492f64e",
+    "bytes": 136118,
+    "mtime_utc": "2026-09-09T23:32:46.674126+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\desktop-v3-fuels-observation.png": {
+    "sha256": "ed829ba2ab426e18a58d3202c5e129e8916934f68925abd8f1eae6ff0dcb174b",
+    "bytes": 136019,
+    "mtime_utc": "2026-09-09T23:33:43.720304+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\desktop-v4-final.png": {
+    "sha256": "e7f244dc989a01836cbec031d51fbb55cf23862fa85beb42064f79a262025555",
+    "bytes": 135657,
+    "mtime_utc": "2026-09-09T23:55:22.393091+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\web-compat-acid-contained-after-release.png": {
+    "sha256": "20f3dcb7b3c561544ab506cb2d0b36871fcc8dbceada5482ef05be1de7be68e7",
+    "bytes": 115231,
+    "mtime_utc": "2026-09-09T23:35:47.339096+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\web-compat-applied-user-copy.png": {
+    "sha256": "da641dd78bbc51c669350e48168959d3a30cd6b58a858900e8e975ce00ec1f30",
+    "bytes": 112219,
+    "mtime_utc": "2026-09-09T23:34:54.996273+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\web-compat-invalid-profile.png": {
+    "sha256": "ddde1c97856915acafd0daed6aaccc833a706ffd5f77611e696673f4e35b59bf",
+    "bytes": 80056,
+    "mtime_utc": "2026-09-09T23:32:17.247504+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\web-compat-liquid-gallery.png": {
+    "sha256": "57ea0824ceb02238d3e4c9d7e5a6b0a469d7ebbde34d69e309bc038443e75507",
+    "bytes": 111970,
+    "mtime_utc": "2026-09-09T23:35:10.165180+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\web-compat-reactive-gallery.png": {
+    "sha256": "ca2a90d8976e55846699feb217347ca68d6d5f405b25ae97c3695fbc34197eb2",
+    "bytes": 114753,
+    "mtime_utc": "2026-09-09T23:35:21.097132+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\web-compat-v3-floor1.png": {
+    "sha256": "281bdcbeb57cb9e458332647c9923e70cc25b37e8b8c47e8c83e661dabd9f0f1",
+    "bytes": 112371,
+    "mtime_utc": "2026-09-09T23:30:53.479699+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\web-compat-v4-acid-metal-after.png": {
+    "sha256": "5579a112b5a3b95072b69f07c8b8ceb775806027a203e7d13d530370646da7d6",
+    "bytes": 120363,
+    "mtime_utc": "2026-09-09T23:57:50.484802+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\web-compat-v4-chemistry-after.png": {
+    "sha256": "0c87848263405450c102d2b717f8f97beef3e8915c17c4ba85c94ddd0098722f",
+    "bytes": 127405,
+    "mtime_utc": "2026-09-09T23:59:27.985923+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\web-compat-v4-chemistry-before.png": {
+    "sha256": "348473f929670941ea81527a97824c3a2e1ce8044ab84c195d6548057842ee2c",
+    "bytes": 126899,
+    "mtime_utc": "2026-09-09T23:55:59.924218+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\web-threaded-final-controls.png": {
+    "sha256": "623035238fe197a12488d2ad6255e57ed1613fcdceb31414e177ce2db1bbb21b",
+    "bytes": 83836,
+    "mtime_utc": "2026-09-09T23:50:13.540570+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\web-threaded-final-profile.png": {
+    "sha256": "7bd2b7cf997f69aad73c23b3578ae971b86d873fb08d5ad08cee3fe144bf459c",
+    "bytes": 69040,
+    "mtime_utc": "2026-09-09T23:43:22.978914+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\web-threaded-mercury-pour.png": {
+    "sha256": "e636f94ab955d5380ded53f701fced6c593c35bf70fe58726a2f4b7dc0c0dd49",
+    "bytes": 84451,
+    "mtime_utc": "2026-09-09T23:44:40.655009+00:00"
+  },
+  "C:\\kybersand\\validation\\local\\2026-09-09-issue-13\\walkthrough\\web-threaded-single-step.png": {
+    "sha256": "5678a5f739ddd0f096ed4bb0cd44a72255e9c7b9ff1e9e8a5c9fdc8c270a0e6d",
+    "bytes": 84390,
+    "mtime_utc": "2026-09-09T23:44:49.232476+00:00"
+  }
+}

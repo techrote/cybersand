@@ -42,7 +42,7 @@ func setup(controller: Control) -> void:
 	target.item_selected.connect(func(_i: int) -> void: refresh_effective())
 	var pair_row: HBoxContainer=HBoxContainer.new();box.add_child(pair_row)
 	pair_row.add_child(source)
-	var arrow: Label=Label.new();arrow.text="→";pair_row.add_child(arrow);pair_row.add_child(target)
+	var arrow: Label=Label.new();arrow.text="to";pair_row.add_child(arrow);pair_row.add_child(target)
 	scope=OptionButton.new()
 	for text: String in ["Family default","Material adjustment","Directed pair","Symmetric pair"]: scope.add_item(text)
 	scope.select(1);pair_row.add_child(scope)
@@ -55,6 +55,9 @@ func setup(controller: Control) -> void:
 	button(edit_row,"Set on user copy",edit_value)
 	effective_text=Label.new();effective_text.add_theme_font_size_override("font_size",14);box.add_child(effective_text)
 	editor=TextEdit.new();editor.custom_minimum_size=Vector2(890,175);editor.wrap_mode=TextEdit.LINE_WRAPPING_BOUNDARY;box.add_child(editor)
+	editor.text_changed.connect(func() -> void:
+		if status != null: status.text="JSON draft edited; Validate to refresh effective settings. Running profile unchanged."
+	)
 	var actions: HBoxContainer=HBoxContainer.new();box.add_child(actions)
 	button(actions,"Validate JSON",validate_editor)
 	button(actions,"Save user copy",save_copy)
@@ -81,12 +84,16 @@ func refresh_effective() -> void:
 	var data: Dictionary=CyberTransportProfiles.effective(draft,source.get_selected_id(),target.get_selected_id())
 	var lines: PackedStringArray=[]
 	for i: int in range(8): lines.append("%s = %d   [%s]" % [CyberTransportProfiles.FIELDS[i],int(data["values"][i]),str(data.origins[i])])
-	effective_text.text="Effective %s → %s\n%s\n%s" % [host.material_name(source.get_selected_id()),host.material_name(target.get_selected_id()),"\n".join(lines),CyberTransportProfiles.UNITS[field.selected]]
+	var applicability: String="Mixing: unlike powders after a fall. Carrying/resistance/erosion: Water to Sand/Dust/Rust.\nPermeability: density-eligible liquid/powder pairs. Sampling/cadence: source liquid lateral motion only."
+	effective_text.text="Effective validated draft: %s to %s\n%s\n%s" % [host.material_name(source.get_selected_id()),host.material_name(target.get_selected_id()),"\n".join(lines),CyberTransportProfiles.UNITS[field.selected]+"\n"+applicability]
 	value.min_value=CyberTransportProfiles.MINIMUM[field.selected]
 	value.max_value=CyberTransportProfiles.MAXIMUM[field.selected]
 	value.value=int(data["values"][field.selected])
 
 func edit_value() -> void:
+	var parsed: Dictionary=CyberTransportProfiles.parse(editor.text)
+	if not parsed.ok: status.text=str(parsed.error);return
+	draft=parsed.profile
 	var key: String=CyberTransportProfiles.FIELDS[field.selected]
 	var s: int=source.get_selected_id();var t: int=target.get_selected_id()
 	var id: int=t if key in ["pickup","packing"] else s

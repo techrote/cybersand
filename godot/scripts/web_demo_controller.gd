@@ -205,6 +205,7 @@ func release_game_input() -> void:
 	input_armed = false
 
 func _process(delta: float) -> void:
+	if native_world != null: tower_context["tick"]=int(native_world.get_tick_index());tower_context["paused"]=paused
 	tower_panel.refresh(tower_active,tower_floor,tower_context)
 	if not ready_to_play:
 		return
@@ -374,6 +375,7 @@ func select_demo(id: String, close: bool = true) -> void:
 	if not built:
 		ui.message(str(demo_bridge.get_last_error()))
 		return
+	tower_schedule.clear();tower_inputs.clear();tower_single_step=false
 	demo_id = id
 	player.reset(CyberDemoWorlds.spawn(id))
 	character_position = player.position

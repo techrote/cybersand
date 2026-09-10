@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-09-09
+last-reviewed: 2026-09-10
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md]
 ---
 
@@ -256,13 +256,15 @@ compiled defaults. No live/UI setting is added. See the
 
 ## Issue #13 experiment checkpoint
 
-[Experiment Tower](../operations/experiment-tower.md) recipe v1 is 1024 by 1024, with five 198-cell floor pitches, a 4096-rectangle constructor bound, one pending lab command, two release deadlines and a 256-input observation bound. No new per-cell storage is added at this checkpoint.
+[Experiment Tower](../operations/experiment-tower.md) recipe v4 is 1024 by 1024, with five 198-cell floor pitches, a 4096-rectangle constructor bound, one pending lab command, two release deadlines and a 256-input observation bound. No new per-cell storage is added.
 
 
-## Versioned transport profile checkpoint
+## Opt-in transport profiles
 
 **Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
 owns schema, inheritance, units, immutable native tables and explicit owner restart.
-The tower can author profiles; experimental motion hooks follow separately.
+The Tower applies validated profiles through restart. Actual powder falls and
+lateral Water mass transport drive bounded optional mixing and grain pickup;
+horizontal sampling and cadence are separate fixed experiments.
 Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
 are unchanged. No unsynchronized live descriptor mutation is introduced.

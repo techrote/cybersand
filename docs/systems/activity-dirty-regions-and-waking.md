@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [cell-activity-sleep-wake, simulation-render-dirty-state]
 status: Current
 scope: Native activity and dirty-state lifecycle; separate fallback behavior and future wake requirements
-last-reviewed: 2026-09-09
+last-reviewed: 2026-09-10
 related-documents: [world-storage-and-interest-region.md, materials-and-rule-kernels.md, ../architecture/chunk-tile-and-buffer-model.md, ../architecture/rendering-and-gameplay-bridges.md]
 ---
 
@@ -124,3 +124,14 @@ reach changes. Issue #2 regressions cover exclusion, sleep, overlapping/disjoint
 re-entry, core/chunk boundaries, unchanged/coalesced regions, neighbors, retained
 temperature, conservation, worker parity and failed-world recovery. These are
 bounded fixtures, not every future field or material combination.
+
+## How does optional lateral cadence wake work?
+
+**Current:** [transport profiles](flow-transport-and-profiles.md) gate lateral
+liquid attempts with coordinate-stable phases and the existing earliest
+per-block interaction deadline. Cadence 1 adds no delay; 2..60 can wake a blocked
+liquid again even when no transport results. There is no separate queue, elapsed
+excluded-work catch-up or motion inferred from wake flags. The new CLI resident
+active-block count includes excluded blocks; scheduled-core/visited-cell counters
+remain separate measures of tick work. Fixed-profile tests retain failed-world
+quarantine, exclusion and one-step re-entry under extreme sampling/cadence.

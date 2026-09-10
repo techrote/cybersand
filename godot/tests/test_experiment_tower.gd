@@ -10,11 +10,28 @@ func _run() -> void:
 	assert(recipe == CyberDemoWorlds.rectangles("experiment_tower"))
 	assert(bridge.build_world(world,recipe))
 	var original: PackedByteArray = bridge.export_level(world)
+	for y: int in range(20,980,8):
+		assert(not world.character_box_collides(Vector2(45,y),Vector2(8,14),0))
 	for f: int in range(5):
 		var spawn: Vector2 = CyberExperimentTower.landing(f)
 		assert(not world.character_box_collides(spawn,Vector2(8,14),0))
 		for plug: Rect2i in CyberExperimentTower.plugs(f):
-			assert(int(world.material_at(plug.position.x,plug.position.y)) == 79)
+			assert(int(world.material_at(plug.position.x,plug.end.y-1)) == 79)
+	# Closed Acid plugs survive actual chemistry, including adjacent-floor work.
+	world.set_simulation_window(Vector2i(350,796),Vector2i(160,200),0,0)
+	for tick: int in range(180): assert(world.simulation_tick())
+	assert(int(world.material_at(400,CyberExperimentTower.floor_y(4)+109))==12)
+	assert(int(world.material_at(400,CyberExperimentTower.floor_y(4)+110))==1)
+	var acid_plug: Rect2i=CyberExperimentTower.plugs(4)[4]
+	for y: int in range(acid_plug.position.y,acid_plug.end.y):
+		for x: int in range(acid_plug.position.x,acid_plug.end.x): world.paint_disc(x,y,0,0,0)
+	for tick: int in range(360): assert(world.simulation_tick())
+	var remaining_metal: int=0
+	for y: int in range(976,988):
+		for x: int in range(390,456):
+			if world.material_at(x,y)==28: remaining_metal+=1
+	assert(remaining_metal<66*12,"released Acid must contact the prepared Metal bed")
+	assert(bridge.build_world(world,recipe))
 	assert(not bridge.build_world(world,PackedInt32Array([1024,0,1,1,2])))
 	assert(bridge.export_level(world) == original)
 	world.paint_disc(93,118,0,0,0)

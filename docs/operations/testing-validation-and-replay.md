@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Executable test selection and future gates; dated results and save format live in separate references
 canonical-for: [test-inventory, test-selection, future-validation-gates]
-last-reviewed: 2026-09-09
+last-reviewed: 2026-09-10
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md, ../reference/level-saves-and-replay.md]
 ---
 
@@ -137,11 +137,23 @@ for exact passes and retained limits; source presence alone is not acceptance.
 
 `test_experiment_tower.gd` checks shared recipe construction, safe landings, plugs, invalid-replacement preservation, exact reset and desktop owner single-step. `tools/physics/issue13.py` rebuilds fresh references. See [tower procedure](experiment-tower.md) and [dated issue #13 results](../audits/2026-09-09-issue-13-transport.md).
 
+`test_transport_profiles.gd` validates versioned resolution, bounds, provenance,
+round-trip and rejected replacement. `test_transport_probe.gd` runs the shared
+24-case profile/sampling probe on native Godot; Web's `?test=1&transport=1`
+runs the same probe plus actual controller failure/interest checks. Use
+`tools/physics/serve.py` for the local write-once result collector.
+`transport_matrix.py`, `transport_knobs.py`, `transport_permeability.py` and
+`transport_report.py` retain fixed inputs and separate corrected measurements
+from historical failures. Each case has a 180-second timeout. See the runbook
+for reuse/source-identity and depth sample-count qualifications.
 
-## Versioned transport profile checkpoint
+
+## Opt-in transport profiles
 
 **Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
 owns schema, inheritance, units, immutable native tables and explicit owner restart.
-The tower can author profiles; experimental motion hooks follow separately.
+The Tower applies validated profiles through restart. Actual powder falls and
+lateral Water mass transport drive bounded optional mixing and grain pickup;
+horizontal sampling and cadence are separate fixed experiments.
 Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
 are unchanged. No unsynchronized live descriptor mutation is introduced.

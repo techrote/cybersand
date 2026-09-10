@@ -1559,6 +1559,25 @@ void World::mix_after_motion(Material carrier, std::int64_t x, std::int64_t y,
         powder ? PhysicsEvent::PowderMix : PhysicsEvent::GrainTransport);
 }
 
+bool World::lateral_due(Material material, std::int64_t x, std::int64_t y) noexcept {
+    const auto period = config_.transport_policy.configured
+        ? config_.transport_policy.cadence[static_cast<std::size_t>(material)] : 1U;
+    if (period == 1U) return true;
+    const auto phase = mix64(static_cast<std::uint64_t>(x) ^
+        std::rotl(static_cast<std::uint64_t>(y),23)) % period;
+    const auto remaining = (phase + period - tick_index_ % period) % period;
+    if (remaining == 0U) return true;
+    // One existing bounded block deadline, no catch-up and no new queue.
+    schedule_interaction_wake(x,y,tick_index_+remaining);
+    return false;
+}
+
+bool World::try_lateral(Material material, std::int64_t x, std::int64_t y,
+    std::int32_t direction, bool swap, JobEffects* effects) {
+    record_physics(PhysicsEvent::LateralProbe,material,Material::Empty,direction,0,effects);
+    return try_move(material,x,y,x+direction,y,swap,effects);
+}
+
 bool World::update_water(std::int64_t x, std::int64_t y, JobEffects* effects) {
     bool changed = false;
     const auto direction = deterministic_direction(x, y);
@@ -1605,10 +1624,12 @@ bool World::update_water(std::int64_t x, std::int64_t y, JobEffects* effects) {
         return changed;
     }
 
+    if (!lateral_due(Material::Water,x,y)) return changed;
     const auto level_with = [this, x, y, effects, &changed](
                                 std::int64_t target_x, std::int64_t target_y) {
         const auto source_mass = static_cast<std::uint16_t>(liquid_mass(x, y));
         if (source_mass == 0) return;
+        record_physics(PhysicsEvent::LateralProbe,Material::Water,Material::Empty,target_x-x,0,effects);
         const auto target_material = get(target_x, target_y);
         if (target_material != Material::Empty && target_material != Material::Water) return;
         const auto target_mass = static_cast<std::uint16_t>(liquid_mass(target_x, target_y));
@@ -1619,7 +1640,8 @@ bool World::update_water(std::int64_t x, std::int64_t y, JobEffects* effects) {
         changed = transfer_water(x, y, target_x, target_y, requested, effects) != 0 || changed;
     };
     level_with(x + direction, y);
-    level_with(x - direction, y);
+    if (!config_.transport_policy.configured || config_.transport_policy.horizontal[3] == 2)
+        level_with(x - direction, y);
     return changed;
 }
 
@@ -1691,8 +1713,11 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
                 : MaterialRules::descriptor(material).viscosity_index;
             const auto mobility = static_cast<std::uint16_t>(256U - viscosity);
             if (deterministic_random(x, y, random_stream) >= mobility) return false;
-            if (try_move(material, x, y, x + direction, y, false, effects)) return true;
-            return try_move(material, x, y, x - direction, y, false, effects);
+            if (!lateral_due(material,x,y)) return false;
+            if (try_lateral(material,x,y,direction,false,effects)) return true;
+            if (config_.transport_policy.configured &&
+                config_.transport_policy.horizontal[static_cast<std::size_t>(material)] == 1) return false;
+            return try_lateral(material,x,y,-direction,false,effects);
         };
 
     if (contact_chemistry_due && MaterialRules::has_pair_reactions(material)) {
@@ -2024,7 +2049,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
             if (try_move(material, x, y, x, y + 1, true, effects)) return true;
             if (try_move(material, x, y, x + direction, y + 1, true, effects)) return true;
             if (try_move(material, x, y, x - direction, y + 1, true, effects)) return true;
-            if (try_move(material, x, y, x + direction, y, true, effects)) return true;
+            if (lateral_due(material,x,y) && try_lateral(material,x,y,direction,true,effects)) return true;
             return changed;
         }
 
@@ -2044,7 +2069,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
         case RuleKernel::Acid: {
             if (try_move(material, x, y, x, y + 1, true, effects)) return true;
             if (try_move(material, x, y, x + direction, y + 1, true, effects)) return true;
-            if (try_move(material, x, y, x + direction, y, true, effects)) return true;
+            if (lateral_due(material,x,y) && try_lateral(material,x,y,direction,true,effects)) return true;
 
             if (!lifecycle_due) return false;
             const auto strength = state_a(x, y);
@@ -2120,7 +2145,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
             if (try_move(material, x, y, x, y + 1, false, effects)) return true;
             if (try_move(material, x, y, x + direction, y + 1, false, effects)) return true;
             if (try_move(material, x, y, x - direction, y + 1, false, effects)) return true;
-            if (try_move(material, x, y, x + direction, y, false, effects)) return true;
+            if (lateral_due(material,x,y) && try_lateral(material,x,y,direction,false,effects)) return true;
             return changed;
         }
 
@@ -2458,6 +2483,7 @@ void World::finish_tick(TickStats& stats) {
                 block.active = false;
             }
             any_active_block = any_active_block || block.active;
+            if (block.active) ++stats.active_blocks_after;
         }
         chunk->active = any_active_block;
         chunk->quiet_ticks = any_active_block ? 0 : config_.sleep_after_quiet_ticks;

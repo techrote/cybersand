@@ -911,11 +911,29 @@ void test_sleeping() {
 
 // Issue #1: promote the preserved capacity-after-explosion diagnostic into a
 // contract regression. The failed attempt is observable, but cannot be retried.
+WorldConfig transport_config(int mode,int workers=1) {
+    WorldConfig c;c.worker_threads=workers;c.parallel_job_threshold=1;
+    c.active_core_capacity=512;c.maximum_chunk_count=64;c.active_chunk_capacity=64;
+    c.physics_diagnostics.enabled=true;c.transport_policy.configured=true;
+    for(auto a: {2,13,14,19,23,25,26,27,29}) {
+        for(auto b: {2,13,14,19,23,25,26,27,29})
+            c.transport_policy.pairs[a*81+b].mixing=mode ? 96 : 0;
+        c.transport_policy.pairs[33*81+a].permeability=30;
+        c.transport_policy.pairs[a*81+33].permeability=30;
+    }
+    for(auto grain:{2,14,29}) {
+        auto& p=c.transport_policy.pairs[3*81+grain];p.carrying=mode ? 255 : 0;p.erosion=mode==2;
+    }
+    return c;
+}
+
+
 void test_failed_tick_stops_until_clear() {
     for (const auto backend : {cybersand::SimulationBackend::SerialInPlace,
                                cybersand::SimulationBackend::PhasedInPlace}) {
-        for (const bool with_event : {false, true}) {
-            WorldConfig config{};
+        for (const bool with_event : {false, true}) for (bool tuned : {false,true}) {
+            WorldConfig config=tuned ? transport_config(2,1) : WorldConfig{};
+            if(tuned) {config.transport_policy.horizontal[3]=1;config.transport_policy.cadence[3]=60;}
             config.backend = backend;
             config.active_core_capacity = 1;
             config.active_chunk_capacity = backend == cybersand::SimulationBackend::SerialInPlace ? 1 : 8;
@@ -1150,8 +1168,9 @@ void test_interest_conservation_and_worker_determinism() {
 
 void test_interest_failed_tick_recovery() {
     for (const std::uint32_t workers : {1U, 4U}) {
-        for (const bool with_event : {false, true}) {
-            WorldConfig config{};
+        for (const bool with_event : {false, true}) for (bool tuned : {false,true}) {
+            WorldConfig config=tuned ? transport_config(2,1) : WorldConfig{};
+            if(tuned) {config.transport_policy.horizontal[3]=1;config.transport_policy.cadence[3]=60;}
             config.worker_threads = workers;
             config.parallel_job_threshold = 1;
             config.active_core_capacity = 1;
@@ -1847,21 +1866,6 @@ std::uint64_t transport_events(const World& world,cybersand::PhysicsEvent kind) 
     return count;
 }
 
-WorldConfig transport_config(int mode,int workers=1) {
-    WorldConfig c;c.worker_threads=workers;c.parallel_job_threshold=1;
-    c.active_core_capacity=512;c.maximum_chunk_count=64;c.active_chunk_capacity=64;
-    c.physics_diagnostics.enabled=true;c.transport_policy.configured=true;
-    for(auto a: {2,13,14,19,23,25,26,27,29}) {
-        for(auto b: {2,13,14,19,23,25,26,27,29})
-            c.transport_policy.pairs[a*81+b].mixing=mode ? 96 : 0;
-        c.transport_policy.pairs[33*81+a].permeability=30;
-        c.transport_policy.pairs[a*81+33].permeability=30;
-    }
-    for(auto grain:{2,14,29}) {
-        auto& p=c.transport_policy.pairs[3*81+grain];p.carrying=mode ? 255 : 0;p.erosion=mode==2;
-    }
-    return c;
-}
 
 void test_flow_rest_films_and_barriers() {
     for(int mode:{1,2})for(int shift:{-129,-65,-33,0,31,63,127}) {
@@ -1896,8 +1900,11 @@ void test_flow_rest_films_and_barriers() {
 }
 
 void test_flow_conservation_state_and_workers() {
-    for(int mode:{1,2}) {
-        World one(transport_config(mode,1)),four(transport_config(mode,4));
+    for(int mode:{1,2}) for(int policy:{0,1,2}) {
+        auto a_config=transport_config(mode,1), b_config=transport_config(mode,4);
+        if(policy) { a_config.transport_policy.horizontal[3]=1;b_config.transport_policy.horizontal[3]=1; }
+        if(policy==2) { a_config.transport_policy.cadence[3]=60;b_config.transport_policy.cadence[3]=60; }
+        World one(a_config),four(b_config);
         for(auto* w:{&one,&four}) {
             w->reserve_region({-192,-192,384,384});
             w->reserve_temperature_region({-192,-192,384,384});
@@ -1921,7 +1928,7 @@ void test_flow_conservation_state_and_workers() {
                 require(total_liquid(one,-130,-66,29,93)==water,"flow lost Water mass");
             }
         }
-        if(mode==2)require(transport_events(one,cybersand::PhysicsEvent::GrainTransport)>0,"strong flow did not erode grains");
+        if(mode==2 && policy==0)require(transport_events(one,cybersand::PhysicsEvent::GrainTransport)>0,"strong flow did not erode grains");
         for(int y=-66;y<=93;++y)for(int x=-130;x<=29;++x)if(one.stored_material(x,y)==Material::Sand) {
             require(one.stored_state_a(x,y)==17&&one.stored_state_b(x,y)==23,"pickup changed compact grain state");
             require(one.temperature(x,y)==315,"pickup lost grain temperature");

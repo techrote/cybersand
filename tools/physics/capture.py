@@ -16,13 +16,13 @@ p.add_argument("output", type=Path)
 args = p.parse_args()
 out = args.output.resolve()
 out.mkdir(parents=True, exist_ok=True)
-paths = [ROOT / "build/physics_characterisation.exe", ROOT / "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+paths = [ROOT / "build/transport_sampling.exe", ROOT / "build/transport_characterisation.exe", ROOT / "build/physics_characterisation.exe", ROOT / "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
          ROOT / "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
          Path("C:/Godot47/Godot_v4.7-stable_win64_console.exe")]
 for profile in ("web", "web-threaded"):
     paths += [v for v in (ROOT / "build" / profile).glob("*") if v.is_file()]
 manifest = identity(paths)
-extra = ["godot/project.godot", "godot/scenes/main.tscn", "godot/third_party/rapier2d.lock.json",
+extra = ["godot/project.godot", "godot/main.tscn", "godot/web_main.tscn", "godot/third_party/rapier2d.lock.json",
          "tools/build_web.py", "godot/native_extension/SConstruct", "tools/build_native.py"]
 manifest["additional_inputs"] = {p: sha(ROOT / p) for p in extra if (ROOT / p).is_file()}
 manifest["python_freeze"] = subprocess.check_output([__import__("sys").executable, "-m", "pip", "freeze"], text=True)

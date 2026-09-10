@@ -6,7 +6,7 @@ status: Current
 scope: Current C ABI versions and private Godot packed layouts; proposed gameplay/job/reconfiguration contracts are not executable APIs
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md]
-last-reviewed: 2026-09-09
+last-reviewed: 2026-09-10
 ---
 
 # Interfaces and message contracts
@@ -225,10 +225,12 @@ owns modes and limits. Body messages and saves retain their existing schemas.
 `CyberSimulationWorker.queue_lab(Dictionary)` is a developer-lab command boundary: reset/floor, single-step, release and a two-release schedule. `CyberSimulationSnapshot.lab_context` publishes copied status/input metadata. [Tower controls](../operations/experiment-tower.md) own semantics; this is separate from CYSD1 and the C ABI.
 
 
-## Versioned transport profile checkpoint
+## Opt-in transport profiles
 
 **Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
 owns schema, inheritance, units, immutable native tables and explicit owner restart.
-The tower can author profiles; experimental motion hooks follow separately.
+The Tower applies validated profiles through restart. Actual powder falls and
+lateral Water mass transport drive bounded optional mixing and grain pickup;
+horizontal sampling and cadence are separate fixed experiments.
 Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
 are unchanged. No unsynchronized live descriptor mutation is introduced.

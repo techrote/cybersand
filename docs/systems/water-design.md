@@ -140,10 +140,12 @@ solver is selectable today. **Rejected:** a competing liquid world, equivalent
 swaps to animate rest, or finite travel history as free Water equilibrium.
 
 
-## Versioned transport profile checkpoint
+## Opt-in transport profiles
 
 **Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
 owns schema, inheritance, units, immutable native tables and explicit owner restart.
-The tower can author profiles; experimental motion hooks follow separately.
+The Tower applies validated profiles through restart. Actual powder falls and
+lateral Water mass transport drive bounded optional mixing and grain pickup;
+horizontal sampling and cadence are separate fixed experiments.
 Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
 are unchanged. No unsynchronized live descriptor mutation is introduced.

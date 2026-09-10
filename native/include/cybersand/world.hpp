@@ -71,6 +71,7 @@ struct TickStats {
     std::uint64_t moved_cells = 0;
     std::uint64_t active_chunks_before = 0;
     std::uint64_t active_chunks_after = 0;
+    std::uint64_t active_blocks_after = 0; // resident active 32-cell activity blocks, including excluded work
     std::uint64_t dirty_chunks = 0;
     std::uint64_t scheduled_cores = 0;
     std::array<std::uint64_t, SchedulerGeometry::kPhaseCount> phase_jobs{};
@@ -234,6 +235,9 @@ private:
                    PhysicsEvent swap_event = PhysicsEvent::DensitySwap);
     void mix_after_motion(Material carrier, std::int64_t x, std::int64_t y,
         std::int64_t to_x, std::int64_t to_y, std::uint16_t mass, JobEffects* effects);
+    [[nodiscard]] bool lateral_due(Material material, std::int64_t x, std::int64_t y) noexcept;
+    [[nodiscard]] bool try_lateral(Material material, std::int64_t x, std::int64_t y,
+        std::int32_t direction, bool swap, JobEffects* effects);
     [[nodiscard]] bool try_move(Material material, std::int64_t x, std::int64_t y, std::int64_t target_x,
                                 std::int64_t target_y, bool allow_swap, JobEffects* effects);
     [[nodiscard]] bool update_cell(std::int64_t x, std::int64_t y, JobEffects* effects = nullptr);

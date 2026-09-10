@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-09-09
+last-reviewed: 2026-09-10
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md]
 ---
 
@@ -107,13 +107,21 @@ publication/platform limits. Barrel feedback/bearing/ejection stays in issue #11
 
 ## Issue #13 experiment checkpoint
 
-**Current:** shared five-floor Experiment Tower and pre-change native references. **Planned next checkpoints:** validated editable profiles, optional motion-driven transport and measured horizontal sampling. [Issue #13 evidence](../audits/2026-09-09-issue-13-transport.md) records acceptance separately. Chemistry retuning, barrel #11 and soliding #12 remain separate.
+**Current:** shared five-floor Experiment Tower, frozen pre-change references,
+validated editable profiles, optional motion-driven transport and measured
+horizontal sampling. Desktop and both native Web profiles execute the lab.
+[Issue #13 evidence](../audits/2026-09-09-issue-13-transport.md) distinguishes
+regression results, measured transport changes, visual observations and remaining
+owner feel/performance limits. Baseline remains the gameplay default. Chemistry
+retuning, barrel #11 and soliding #12 remain separate.
 
 
-## Versioned transport profile checkpoint
+## Opt-in transport profiles
 
 **Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
 owns schema, inheritance, units, immutable native tables and explicit owner restart.
-The tower can author profiles; experimental motion hooks follow separately.
+The Tower applies validated profiles through restart. Actual powder falls and
+lateral Water mass transport drive bounded optional mixing and grain pickup;
+horizontal sampling and cadence are separate fixed experiments.
 Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
 are unchanged. No unsynchronized live descriptor mutation is introduced.

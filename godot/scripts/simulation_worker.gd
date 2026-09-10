@@ -82,7 +82,7 @@ func _apply_lab(command: Dictionary) -> bool:
 		_lab_active = true
 		_lab_schedule.clear();_lab_inputs.clear()
 		_simulation_failed = false
-		_lab_status = "%s / profile v1 %s / recipe v1 / seed 0" % [str(_lab_profile.name),_lab_profile_hash.left(12)]
+		_lab_status = "%s / profile v1 %s / recipe v%d / seed 0" % [str(_lab_profile.name),_lab_profile_hash.left(12),CyberExperimentTower.VERSION]
 	if not _lab_active: return false
 	if command.has("floor"):
 		_lab_schedule.clear() # Navigation abandons scheduled inputs; no catch-up.
@@ -534,7 +534,7 @@ func _publish_snapshot(
 		snapshot.tick_failure_count = int(_world.get_tick_failure_count())
 		snapshot.last_tick_error = str(_world.get_last_tick_error())
 	snapshot.paused = paused
-	snapshot.lab_context = {"active":_lab_active,"floor":_lab_floor,"status":_lab_status,"inputs":_lab_inputs.duplicate(true),"input_limit":256,"profile":_lab_profile.duplicate(true),"profile_hash":_lab_profile_hash}
+	snapshot.lab_context = {"tick":snapshot.tick_index,"paused":_paused,"visited_cells":snapshot.scanned_last_tick,"active_blocks":snapshot.active_blocks_last_tick,"moves":snapshot.moves_last_tick,"active":_lab_active,"floor":_lab_floor,"status":_lab_status,"inputs":_lab_inputs.duplicate(true),"input_limit":256,"profile":_lab_profile.duplicate(true),"profile_hash":_lab_profile_hash}
 
 	_mutex.lock()
 	_published_snapshot = snapshot

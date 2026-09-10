@@ -174,6 +174,13 @@ func tower_tuning() -> void:
 	paused = true
 	tower_profile_panel.popup_centered()
 
+func tower_focus_tube(index: int) -> void:
+	var tubes: Array=CyberExperimentTower.tubes(tower_floor)
+	if index < 0 or index >= tubes.size(): return
+	paused=true
+	camera_follow_enabled=false
+	camera_origin=Vector2(clampf(float(tubes[index][0])-100.0,0.0,1024.0-current_view_size.x),CyberExperimentTower.floor_y(tower_floor))
+
 func tower_apply_profile(resolved: Dictionary) -> void:
 	paused = true
 	tower_command({"reset":true,"floor":tower_floor,"profile":resolved})

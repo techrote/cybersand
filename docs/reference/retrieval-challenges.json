@@ -173,25 +173,70 @@
     {
       "id": "C11",
       "query": "Which current powders support a player, how do side resistance and enclosed-spawn recovery work, and why do loose grains still fall?",
-      "canonical": ["systems/granular-interaction-policy.md"],
+      "canonical": [
+        "systems/granular-interaction-policy.md"
+      ],
       "facts": [
         "Sand, Stone, Dust, Seed, Salt, Sodium, Gunpowder, Coal and Rust have explicit capability independent of density and hard identity.",
         "Downward support needs 8/9 stable samples below the contact; side/head resistance additionally needs 9/9 centred samples.",
         "Recovery tests at most 128 axis candidates within 32 cells, preserves cells, and explicitly blocks if no escape exists; it does not prove global connectivity or barrel bearing."
       ],
-      "sources": ["../native/src/world.cpp::World::granular_support_at", "../godot/scripts/sampled_character.gd"]
+      "sources": [
+        "../native/src/world.cpp::World::granular_support_at",
+        "../godot/scripts/sampled_character.gd"
+      ]
     },
     {
       "id": "C12",
       "query": "How does the current Mercury permeability rate survive sleep and region exclusion without alternate attempts multiplying moves?",
-      "canonical": ["systems/granular-interaction-policy.md", "systems/activity-dirty-regions-and-waking.md"],
+      "canonical": [
+        "systems/granular-interaction-policy.md",
+        "systems/activity-dirty-regions-and-waking.md"
+      ],
       "facts": [
         "Either liquid/powder initiator shares the global 30-tick lane; written destinations cannot be reused, while Empty motion bypasses the exchange gate.",
         "Each source block stores its earliest due tick, woken by the existing healthy tick metadata pass; excluded blocks retain deadlines without catch-up.",
         "Intact braced Stone is protected, other listed liquids keep explicit full-rate/Oil policies, and failed-world recovery discards deadlines with the old world."
       ],
-      "sources": ["../native/src/world.cpp::World::exchange_permitted,World::begin_tick", "../native/include/cybersand/interaction_policy.hpp"]
+      "sources": [
+        "../native/src/world.cpp::World::exchange_permitted,World::begin_tick",
+        "../native/include/cybersand/interaction_policy.hpp"
+      ]
+    },
+    {
+      "id": "C13",
+      "query": "How do I author, validate and restart an Experiment Tower tuning profile, and which owner installs it?",
+      "canonical": [
+        "systems/flow-transport-and-profiles.md",
+        "operations/experiment-tower.md"
+      ],
+      "facts": [
+        "Version 1 profiles resolve defaults, family, material and explicit directed or symmetric pairs before tick work.",
+        "Desktop exclusive worker or synchronous Web owner installs a validated replacement; rejected candidates preserve the running world.",
+        "Profiles and resolved hashes are separate from CYSD1; ordinary gameplay stays Baseline."
+      ],
+      "sources": [
+        "../godot/scripts/transport_profiles.gd",
+        "../godot/native_extension/cyber_demo_bridge.hpp"
+      ]
+    },
+    {
+      "id": "C14",
+      "query": "Does one horizontal sample preserve transport strength and improve total tick time, and can powder mixing be disabled separately?",
+      "canonical": [
+        "systems/flow-transport-and-profiles.md",
+        "operations/experiment-tower.md"
+      ],
+      "facts": [
+        "Sampling uses one existing deterministic candidate and does not compensate carrying strength.",
+        "Powder mixing is independent from Water carrying and only follows real powder movement.",
+        "Measure probes, transferred mass, active blocks, visited cells and total tick cost; reduced sampling is opt-in and no general speedup is claimed."
+      ],
+      "sources": [
+        "../native/src/world.cpp::World::update_water,World::mix_after_motion",
+        "../tools/physics/transport_matrix.py"
+      ]
     }
   ],
-  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim."
+  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged."
 }

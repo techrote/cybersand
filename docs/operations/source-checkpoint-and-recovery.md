@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Actual local Git roots, preserved baseline, recovery boundaries and source-versus-artifact identity
 canonical-for: [source-identity, local-checkpoints, recovery-coverage]
-last-reviewed: 2026-09-09
+last-reviewed: 2026-09-10
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md]
 ---
 
@@ -143,3 +143,13 @@ rewritten or treated as current-source attestations.
 ## Issue #13 experiment checkpoint
 
 Issue #13 starts at verified `372bfb3ac3cbbb8005b594cd0995ed5e71d6c530` on separate branch `codex/issue-13-experiment-tower`. Intake DLL bytes and dated source snapshots remain under `C:/kybersand/validation/local/2026-09-09-issue-13/`; see [its audit](../audits/2026-09-09-issue-13-transport.md).
+
+Focused local checkpoints are `f88423f` (references/tower), `af80634` (profiles),
+and `1290e0a` (shared motion). The subsequent **Measure lateral sampling and
+complete Experiment Tower validation (#13)** checkpoint contains the measured
+approximation, recipe-4 usability corrections and final evidence. Resolve its
+actual commit from branch history rather than treating a build's old acquisition
+label as a source revision. Its audit manifest records tested HEAD plus exact
+local file hashes; the final committed-identity capture remains under the raw
+evidence prefix. Rebuilt DLL bytes stay intentionally uncommitted; intake bytes
+are preserved separately and `C:/cybersand` is unchanged.

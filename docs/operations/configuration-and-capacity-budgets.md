@@ -4,7 +4,7 @@ document-kind: runbook
 canonical-for: [capacity-preparation-and-failure, safe-reconfiguration-requirements]
 status: Current
 scope: Existing construction/reservation and capacity outcomes; approved preparation discipline and unimplemented live resize
-last-reviewed: 2026-09-09
+last-reviewed: 2026-09-10
 related-documents: [../reference/configuration-reference.md, ../systems/world-storage-and-interest-region.md, ../architecture/data-ownership-and-lifetimes.md, profiling-observability-and-performance.md]
 ---
 
@@ -167,10 +167,12 @@ World preparation/allocation and failed-tick limits still apply.
 The [tower](experiment-tower.md) reuses native validated recipe construction and whole-world installation. Commands are copied outside ticks; the latest pending control replaces the previous pending control. It does not add an unbounded command queue or global floor simulation pass.
 
 
-## Versioned transport profile checkpoint
+## Opt-in transport profiles
 
 **Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
 owns schema, inheritance, units, immutable native tables and explicit owner restart.
-The tower can author profiles; experimental motion hooks follow separately.
+The Tower applies validated profiles through restart. Actual powder falls and
+lateral Water mass transport drive bounded optional mixing and grain pickup;
+horizontal sampling and cadence are separate fixed experiments.
 Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
 are unchanged. No unsynchronized live descriptor mutation is introduced.

@@ -4,7 +4,7 @@ status: Current
 document-kind: decision
 scope: Version 1 powder exchange, player packing and Mercury eligibility; excludes barrel bearing
 canonical-for: [decision-granular-interaction-policy]
-last-reviewed: 2026-09-09
+last-reviewed: 2026-09-10
 related-documents: [../systems/granular-interaction-policy.md, ADR-007-rigid-body-cellular-coupling.md, ../audits/2026-09-09-issue-10-granular-policy.md]
 ---
 
@@ -43,7 +43,8 @@ load path. Reacting Seed, moving grains and unsupported structures remain dynami
 ## Consequences and revision boundary
 
 Normal reset constructs the versioned defaults; diagnostic overrides require a
-fresh world. There is no live UI tuning or new level-save field. State hashes
+fresh world. The Tower now authors transport profiles with explicit restart;
+there is no unsynchronized table mutation or new level-save field. State hashes
 include this configuration and native pending deadlines, but full saved replay
 is still absent. Fallback deliberately retains its narrower Water, chemistry
 and Stone state semantics. Main-thread Rapier ownership is unchanged.
@@ -53,10 +54,30 @@ Issue #11 owns barrel feedback, barrier-aware ejection and bearing calibration.
 Dynamic aggregate membership still requires a separate ownership decision.
 
 
-## Versioned transport profile checkpoint
+## Opt-in transport profiles
 
 **Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
 owns schema, inheritance, units, immutable native tables and explicit owner restart.
-The tower can author profiles; experimental motion hooks follow separately.
+The Tower applies validated profiles through restart. Actual powder falls and
+lateral Water mass transport drive bounded optional mixing and grain pickup;
+horizontal sampling and cadence are separate fixed experiments.
 Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
 are unchanged. No unsynchronized live descriptor mutation is introduced.
+
+
+## Issue #13 version decision, 2026-09-10
+
+Retain transport profile schema/presets v1 as opt-in starting values: powder
+mixing 96; Water carrying 255, pickup 64, packing 8; Gentle requires loose exposure,
+Threshold erosion allows exposed packed pickup. The moderate powder setting
+produced greater final coflow interleaving than the maximum despite fewer swaps.
+The controls are independently screenable; zero pickup/packing can meet the same
+fixed minimum threshold and are not evidence of independent physical units.
+
+Keep Baseline and all presets at horizontal 2/cadence 1. Sampled lateral search
+changes transport strength and geometry, including the poured Mercury scene when
+applied to all liquids. It is an explicit user-copy experiment, not a new default.
+The original period-30 permeability and powder/player support v1 remain unchanged.
+No flow field, new rule radius, chemistry cadence or barrel/aggregate policy is
+introduced. See the [dated screen](../audits/2026-09-09-issue-13-transport.md) for
+scope, shared-host timing, visual checks and outstanding owner taste assessment.

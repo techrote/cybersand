@@ -11,6 +11,7 @@ var shown_floor: int = -1
 
 func button(row: Node, text: String, action: Callable) -> Button:
 	var b: Button = Button.new()
+	b.focus_mode = Control.FOCUS_NONE
 	b.text = text
 	b.pressed.connect(action)
 	row.add_child(b)
@@ -22,6 +23,7 @@ func setup(controller: Control) -> void:
 	var row: HBoxContainer = HBoxContainer.new()
 	add_child(row)
 	floor_picker = OptionButton.new()
+	floor_picker.focus_mode = Control.FOCUS_NONE
 	for i: int in range(5): floor_picker.add_item("%d / %s" % [i+1,CyberExperimentTower.FLOORS[i]])
 	floor_picker.item_selected.connect(func(i: int) -> void: host.tower_floor_select(i))
 	row.add_child(floor_picker)
@@ -32,6 +34,8 @@ func setup(controller: Control) -> void:
 	var release: HBoxContainer = HBoxContainer.new()
 	add_child(release)
 	tube_picker = OptionButton.new()
+	tube_picker.focus_mode = Control.FOCUS_NONE
+	tube_picker.item_selected.connect(func(i: int) -> void: host.tower_focus_tube(i))
 	release.add_child(tube_picker)
 	button(release,"Open plug",func() -> void: host.tower_command({"release":tube_picker.selected}))
 	button(release,"Open neighbours",func() -> void: host.tower_command({"release":tube_picker.selected,"adjacent":true}))
@@ -56,7 +60,7 @@ func refresh(active: bool, floor_index: int, context: Dictionary) -> void:
 		var index: int = 0
 		for tube: Array in CyberExperimentTower.tubes(floor_index):
 			var name_text: String = host.material_name(int(tube[1]))
-			tube_picker.add_item("%d / %s" % [index+1,name_text])
+			tube_picker.add_item("%d / %s" % [index+1,name_text+" / "+str(tube[3])])
 			var label: Label = Label.new()
 			label.text = name_text
 			label.tooltip_text = str(tube[3])
@@ -70,6 +74,8 @@ func refresh(active: bool, floor_index: int, context: Dictionary) -> void:
 			label_points.append(Vector2(int(tube[0]),CyberExperimentTower.floor_y(floor_index)+14))
 			index += 1
 	info.text = "Amber = erasable plug / arrows pan / A,D + Space navigate / 1–6 floor materials. %s" % str(context.get("status","Baseline · starts paused"))
+	var chosen: Array=CyberExperimentTower.tubes(floor_index)[tube_picker.selected]
+	info.text += "\n"+str(chosen[3] if str(chosen[3])!="" else CyberExperimentTower.tubes(floor_index)[maxi(0,tube_picker.selected-1)][3])+" / prepared contents below; amber mixing gates are manually erasable"
 	var content: Rect2 = host.view_content_rect()
 	for i: int in range(labels.size()):
 		var point: Vector2 = content.position+(label_points[i]-host.camera_origin)/Vector2(host.current_view_size)*content.size

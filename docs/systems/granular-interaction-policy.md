@@ -5,7 +5,7 @@ document-kind: contract
 scope: Version 1 material capability, sampled player support, pair exchange and deterministic permeability wakes
 canonical-for: [granular-support-policy, granular-pair-policy, sampled-player-collision]
 keywords: [powder, packing, player, Dust, Mercury, permeability, enclosure, side resistance]
-last-reviewed: 2026-09-09
+last-reviewed: 2026-09-10
 related-documents: [materials-and-rule-kernels.md, ../architecture/rigid-body-and-cellular-coupling.md, ../operations/physics-characterisation.md]
 ---
 
@@ -112,8 +112,8 @@ chemistry remain outside fallback parity. Gas displacement remains independent.
 [ADR-011](../decisions/ADR-011-granular-interaction-policy.md) selects version 1:
 8/9 downward samples, 9/9 side samples and period 30. Diagnostic fresh construction
 accepts `support_cells` 1..9 and `mercury_period` 1..60; invalid values preserve the
-current adapter world. Normal reset restores defaults; no gameplay slider or
-unsynchronized live change is introduced. The periods are ticks: 30 is 0.5 seconds
+current adapter world. Normal reset restores defaults; the Tower offers validated transport profiles through an explicit restart,
+while player-support samples remain construction-time diagnostic settings. The periods are ticks: 30 is 0.5 seconds
 at the fixture's 60 Hz, and a different caller tick rate changes elapsed-time speed.
 
 Source: [policy](../../native/include/cybersand/interaction_policy.hpp),
@@ -123,10 +123,12 @@ Source: [policy](../../native/include/cybersand/interaction_policy.hpp),
 [shared probe](../../godot/scripts/interaction_policy_probe.gd).
 
 
-## Versioned transport profile checkpoint
+## Opt-in transport profiles
 
 **Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
 owns schema, inheritance, units, immutable native tables and explicit owner restart.
-The tower can author profiles; experimental motion hooks follow separately.
+The Tower applies validated profiles through restart. Actual powder falls and
+lateral Water mass transport drive bounded optional mixing and grain pickup;
+horizontal sampling and cadence are separate fixed experiments.
 Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
 are unchanged. No unsynchronized live descriptor mutation is introduced.

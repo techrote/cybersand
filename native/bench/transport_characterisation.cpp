@@ -3,6 +3,7 @@
 #include <chrono>
 #include <iostream>
 #include <fstream>
+#include <numeric>
 #include <string>
 #include <vector>
 
@@ -43,9 +44,10 @@ int main(int argc, char** argv) {
         } else if(layout=="powder") {
             rect(55,5,20,70,Material::Sand);rect(75,5,20,70,Material::Dust);
             for(int i=0;i<45;++i) rect(40+i,110+i/3,1,3,Material::Wall);
-        } else if(layout=="erosion" || layout=="loose" || layout=="film") {
+        } else if(layout=="erosion" || layout=="loose" || layout=="film" || layout=="sparse" || layout=="sustained") {
             rect(5,5,35,90,Material::Water);rect(40,5,2,91,Material::Wall);
             for(int i=0;i<110;++i) rect(3+i,108+i/4,1,51-i/4,Material::Sand);
+            if(layout=="sparse") rect(5,5,35,80,Material::Empty);
             if(layout=="loose") for(int i=45;i<130;i+=2) rect(i,103,1,1,Material::Sand);
             if(layout=="film") {
                 rect(5,5,35,90,Material::Empty);
@@ -53,14 +55,23 @@ int main(int argc, char** argv) {
             }
         } else throw std::invalid_argument("layout");
         std::vector<double> times;
-        std::uint64_t visited=0, active=0, moves=0, allocations=0, late=0;
+        std::uint64_t visited=0, active=0, moves=0, allocations=0, late=0, chunks=0, blocks=0, injected=0;
         auto sample = [&](int tick) {
             std::array<std::uint64_t,81> counts{};
-            std::uint64_t water=0, contacts=0, deposited=0, eroded=0;
-            int front=0;
+            std::uint64_t water=0, contacts=0, deposited=0, eroded=0, eroded_initial=0;
+            int front=0, depth=0;
+            std::uint64_t interfaces=0;
             for(int y=0;y<160;++y) for(int x=0;x<160;++x) {
                 auto m=w.stored_material(ox+x,oy+y);++counts[static_cast<unsigned>(m)];
                 if(m==Material::Water)water+=w.stored_state_a(ox+x,oy+y);
+                if((m==Material::Sand || m==Material::Dust)) {
+                    for(auto [dx,dy]: {std::pair{1,0},std::pair{0,1}}) {
+                        auto other=w.stored_material(ox+x+dx,oy+y+dy);
+                        if((other==Material::Sand || other==Material::Dust) && other!=m)++interfaces;
+                    }
+                }
+                if((layout=="erosion"||layout=="loose"||layout=="sparse"||layout=="sustained") && x>=3 && x<113 && y<159 && y>=108+(x-3)/4 && m!=Material::Sand)
+                    depth=std::max(depth,y-(108+(x-3)/4)+1);
                 if(m==Material::Mercury)front=std::max(front,y-127+1);
                 if(m==Material::Sand) {
                     if(w.stored_material(ox+x+1,oy+y)==Material::Dust)++contacts;
@@ -68,27 +79,38 @@ int main(int argc, char** argv) {
                     if(x>115)++deposited;
                 }
                 if((layout=="erosion"||layout=="loose") && x>=3 && x<113 && y>=108+(x-3)/4 && m!=Material::Sand)++eroded;
+                if((layout=="erosion"||layout=="loose"||layout=="sparse"||layout=="sustained") && x>=3 && x<113 && y<159 && y>=108+(x-3)/4 && m!=Material::Sand)++eroded_initial;
             }
             std::cout<<"{\"tick\":"<<tick<<",\"content\":\""<<std::hex<<w.content_hash()<<std::dec
                 <<"\",\"water\":"<<water<<",\"interface_contacts\":"<<contacts<<",\"deposited\":"<<deposited
-                <<",\"eroded_sites\":"<<eroded<<",\"front\":"<<front<<",\"counts\":[";
+                <<",\"injected_water\":"<<injected<<",\"interface_edges\":"<<interfaces<<",\"erosion_depth\":"<<depth<<",\"eroded_sites\":"<<eroded<<",\"eroded_initial_sites\":"<<eroded_initial<<",\"front\":"<<front<<",\"counts\":[";
             for(int i=0;i<81;++i)std::cout<<(i?",":"")<<counts[i];
             std::cout<<"]}\n";
         };
         sample(0);
         for(int tick=1;tick<=ticks;++tick) {
             if(layout=="poured" && tick==300) rect(55,5,18,60,Material::Mercury);
-            if((layout=="erosion"||layout=="loose") && tick==30)rect(40,87,2,9,Material::Empty);
+            if((layout=="erosion"||layout=="loose"||layout=="sparse"||layout=="sustained") && tick==30)rect(40,87,2,9,Material::Empty);
+            if(layout=="sustained" && tick%120==0) {
+                for(int y=5;y<25;++y)for(int x=5;x<40;++x) {
+                    auto m=w.stored_material(ox+x,oy+y);
+                    if(m==Material::Empty||m==Material::Water) {
+                        const auto added=255-(m==Material::Water ? w.stored_state_a(ox+x,oy+y) : 0);
+                        if(added && !w.set_cell_state(ox+x,oy+y,Material::Water,255,0)) throw std::runtime_error("refill rejected");
+                        injected+=added;
+                    }
+                }
+            }
             const auto begin=std::chrono::steady_clock::now();auto stats=w.tick();
             times.push_back(std::chrono::duration<double,std::micro>(std::chrono::steady_clock::now()-begin).count());
-            visited+=stats.visited_cells;active+=stats.scheduled_cores;moves+=stats.moved_cells;
+            blocks+=stats.active_blocks_after;chunks+=stats.active_chunks_before;visited+=stats.visited_cells;active+=stats.scheduled_cores;moves+=stats.moved_cells;
             allocations+=stats.chunk_allocations+stats.temperature_field_allocations;
             if(tick>ticks-120)late+=stats.moved_cells;
             if(tick%60==0||tick==ticks)sample(tick);
         }
         std::sort(times.begin(),times.end());
         std::cout<<"{\"result\":true,\"visited\":"<<visited<<",\"active_cores_sum\":"<<active<<",\"moves\":"<<moves
-            <<",\"late_moves\":"<<late<<",\"allocations\":"<<allocations<<",\"p50_us\":"<<times[times.size()/2]
+            <<",\"active_blocks_sum\":"<<blocks<<",\"active_chunks_sum\":"<<chunks<<",\"total_us\":"<<std::accumulate(times.begin(),times.end(),0.0)<<",\"late_moves\":"<<late<<",\"allocations\":"<<allocations<<",\"p50_us\":"<<times[times.size()/2]
             <<",\"p95_us\":"<<times[times.size()*95/100]<<",\"max_us\":"<<times.back()<<",\"events\":[";
         bool first=true;for(auto& e:w.physics_diagnostics()->entries)if(e.key){std::cout<<(first?"":",")<<"["<<e.key<<","<<e.count<<"]";first=false;}
         std::cout<<"],\"overflow\":"<<w.physics_diagnostics()->overflow<<"}\n";
