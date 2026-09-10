@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-11
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md]
 ---
 
@@ -135,4 +135,4 @@ are unchanged. No unsynchronized live descriptor mutation is introduced.
 
 ## Issue16 preparation
 
-**Planned research:** [cell layout experiments](../operations/cell-layout-experiment.md) begin with original4 versus padded8 on an isolated branch. Preparation does not select a layout. Packing, epoch and optional-state stages remain pending; performance is held for an uncontended run and G-L stays open. See [dated preparation](../audits/2026-09-10-issue-16-cell-layout.md).
+**Current research checkpoint:** [cell layout experiments](../operations/cell-layout-experiment.md) completed L1's196-process original4/padded8 campaign on an isolated branch. Exact comparisons pass; sleeping p95/wrap-tail costs trigger review. Packing, epoch and optional-state stages remain pending and G-L stays open. No layout is selected. See [dated results](../audits/2026-09-10-issue-16-cell-layout.md#l1-results).

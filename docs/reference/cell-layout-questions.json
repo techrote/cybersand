@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scope": "New issue16 preparation development questions; frozen questions unchanged",
+  "scope": "Issue16 development questions with current stage facts; frozen questions unchanged",
   "questions": [
     {
       "id": "L01",
@@ -9,8 +9,8 @@
         "operations/cell-layout-experiment.md"
       ],
       "facts": [
-        "G-L is open; preparation is not completion.",
-        "Owner must release the uncontended timing hold.",
+        "G-L is open; completed L1 is not issue completion or layout selection.",
+        "Owner released the first L1 campaign; measurements must not overlap issue15 or builds.",
         "Later packing, epoch and sidecar stages remain pending."
       ],
       "sources": [

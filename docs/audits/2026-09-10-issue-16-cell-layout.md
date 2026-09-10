@@ -1,14 +1,14 @@
 ---
-title: Issue 16 source intake and preparation
+title: Issue 16 source intake and Cell layout evidence
 status: Current
 document-kind: evidence
-scope: Local source review and preparation checkpoint; performance held by owner and G-L incomplete
+scope: Local source review, preparation and first L1 campaign; remaining stages and G-L incomplete
 canonical-for: []
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-11
 related-documents: [../operations/cell-layout-experiment.md, ../operations/architecture-programme.md]
 ---
 
-# Issue 16 preparation checkpoint
+# Issue 16 Cell layout evidence
 
 ## Identity and outcome
 
@@ -20,8 +20,10 @@ SHA-256 `fc6cb4ee1096219f581bace3df04ee8138e996aaf4c1436f5b2c071ea62dd496`.
 It is not the experiment control. Baseline source includes current Water work;
 older remote main and published runtime manifests are not substitutes.
 
-**Owner hold:** stop before performance measurements while issue15 may run.
-This checkpoint prepares the first staged comparison; it does not close issue16.
+**Current checkpoint:** the owner released the first uncontended run after the
+preparation commit `b2d8faffa86e472875ba74f7c6b1488bbdd06f8a`. L1 completed on
+September10–11; [results below](#l1-results). The original preparation
+hold and its evidence are retained as history. This does not close issue16.
 The [registration](../operations/cell-layout-experiment.md) precedes candidate code.
 
 ## State range audit before accessors
@@ -77,15 +79,15 @@ endpoints; event writes follow the clear. These are source predictions, not timi
 
 ## Gate disposition and remaining work
 
-| Stage | Disposition at preparation |
+| Stage | Disposition after L1 review, September11 |
 |---|---|
-| L1 stride | Built and correctness-screened; ready for first uncontended timing run, held by owner. |
-| L2 packing/ID access | Registered; implementation and measurement pending L1 review. |
+| L1 stride | Completed196 processes; exact comparisons pass, sleeping p95/wrap-tail costs flagged. |
+| L2 packing/ID access | Admitted after L1 review; implementation and measurement remain pending. |
 | L3 epoch | Registered; implementation and2048-tick clear-tail measurement pending L2. |
 | L4 optional state | Registered neutral control; concrete sidecar implementation/crossover pending. |
 | L5 ID inventory | Source review recorded above; larger IDs have capacity headroom but no demonstrated demand. |
 | L6 storage geometry | Not admitted: no profiling evidence yet. |
-| G-L | OPEN; no winner, migration approval, negative timing result or completed issue claimed. |
+| G-L | OPEN; L1 negative/ambiguous cost evidence retained, no winner or migration approval; issue incomplete. |
 
 ## Documentation checkpoint map
 
@@ -192,7 +194,7 @@ in raw evidence. Native correctness is not desktop async, Web compatibility/thre
 sanitizer, PMU, new hardware or performance acceptance. No adapter/render behavior
 changed, so no new Godot/export package was installed or launched.
 
-## Ready-to-resume handoff
+## Preparation handoff before owner release
 
 Additional preparation screen registered before execution: one **untimed** tick
 for each dense/sparse512/1024 and sleeping4096 fixture at widths4/8 and workers1/4
@@ -228,3 +230,192 @@ initial-settling/steady summaries remain separate. Review paired statistics and
 observer cost before L2; fill the per-clear, sidecar/crossover and full G-L evidence
 in their registered later stages. This is a pause requested by the owner, not a
 negative result, a skipped mandatory stage or issue completion.
+
+## L1 results
+
+**Executed September10–11, 22:25–00:14 BST:** owner release was “Ready for the
+first uncontended run. Start.” The196-entry preregistered plan completed without
+failure, retry, sample exclusion or budget change. Measured source is preparation
+commit `b2d8faffa86e472875ba74f7c6b1488bbdd06f8a`; original/padded O3 binaries and
+compiler hashes remain those listed above. No measured source or binary changed
+during the campaign. All196 processes ran sequentially with1920 ticks each:
+120 initial-settling samples, then1800 samples in the declared steady window.
+This window does not assert physical equilibrium. Sparse/sleeping fixtures have
+four setup ticks, so their measured world ticks are5–1924 rather than1–1920.
+
+Host: Windows11 Pro10.0.26200, AMD Ryzen5 2600X,6 cores/12 logical processors,
+approximately31.9GiB visible RAM; existing Balanced power plan unchanged.
+Host/process/power snapshots and release text are retained. No competing experiment
+was observed at release; no builds, suites or evidence reduction overlapped timing.
+Occasional status/file reads and small analysis-helper edits occurred; background
+OS activity and clock/thermal variation were not eliminated or continuously measured.
+An owner-arranged desktop window is not proof of a noise-free or fixed-frequency host.
+
+Raw prefix: `validation/local/issue-16/timing-20260910-222504`. `plan.json`,
+`identity.json`, `run-context.json`, all196 command/exit/timeout records, logs,
+tick CSVs, exact binary records, `results.json`, `reduced.json`, `summary.md`,
+host/PMU queries and completion time are retained in this worktree. Native process
+timeout remained1800s. Reduction records hashes for raw records, CSVs, logs and
+execution files. Its helper was developed during the campaign after partial results;
+it uses the registered windows/metrics and all samples, without sample selection.
+
+```text
+C:/kybersand/.local/python/Scripts/python.exe tools/experiments/cell_layout.py measure --manifest validation/local/issue-16/prepare-20260910-212247/prepared.json --owner-released
+C:/kybersand/.local/python/Scripts/python.exe -m unittest discover -s tools/experiments -p test_cell_layout*.py
+C:/kybersand/.local/python/Scripts/python.exe tools/experiments/summarize_cell_layout.py validation/local/issue-16/timing-20260910-222504
+```
+
+### Exact comparisons and quantities
+
+All70 width pairs pass exact final semantic records and every-tick work equality;
+all28 observer pairs preserve the same state/work after excluding observer entries.
+Across repeats and workers, full records also match within each layout/observer
+setting. CSV tick/visited values agree with binary work records; phase-job sums
+agree with scheduled cores. There are no process failures or diagnostic overflows.
+The nine driver/reducer tests pass, including truncation/corruption, incomplete
+campaign refusal, nearest-rank quantiles, source-defined wrap offsets, dispatch
+threshold and CSV/work mismatch checks. The55+55 native tests and every-tick
+five-setting behavior/event/quantity checks remain the preparation results, not
+newly rerun suites. Timed runs contain final semantic/event frames and every-tick
+work; they do not provide every-tick large-world quantity/event ledgers.
+
+Final whole-world accounting passes in all196 processes. Quantities are integers:
+
+| Fixture | Sand initial = final | Water mass initial = final | Smoke initial → final |
+|---|---:|---:|---:|
+| dense512 | 70,578 | 7,713,240 | 10,082 → 4,992 |
+| dense1024 | 282,309 | 30,852,450 | 40,330 → 19,729 |
+| sparse512 | 4,411 | 481,950 | 630 → 298 |
+| sparse1024 | 4,412 | 481,950 | 630 → 312 |
+| sleeping4096 | 4,410 | 482,205 | 630 → 210 |
+
+Smoke lifecycle loss is recorded separately; it is not a Water/Sand conservation
+failure. Active worlds can grow beyond initial extents. Dense512/1024 allocate
+140/190 additional chunks during timing; sparse512/1024 allocate51/43, sleeping0.
+Final quantities cover the whole World, including cells outside the initial extent.
+No zero-mass stored Water was found. No new reaction/solver policy was introduced.
+
+### Timing and cost screens
+
+The table gives medians of seven **paired padded/control ratios**, with nearest-rank
+quantiles computed separately per process after warmup. These are descriptive
+results, not confidence intervals or accepted production limits. Absolute values,
+warmup/startup, p50/p95/p99/max/total, ns/visited and all individual ratios remain
+in `reduced.json`. `visited_cells` counts eligible updates after epoch/rule checks,
+not every memory slot scanned. Exact work makes its paired ratio equal to total's.
+
+| Fixture | Workers | p50 | p95 | p99 | Total | Pairs above15% p95 |
+|---|---:|---:|---:|---:|---:|---:|
+| dense512 | 1 | 1.0235 | 1.0223 | 1.0149 | 1.0205 | 0/7 |
+| dense512 | 4 | 1.0134 | 1.0087 | 1.0133 | 1.0146 | 0/7 |
+| dense1024 | 1 | 1.0233 | 1.0161 | 1.0067 | 1.0253 | 0/7 |
+| dense1024 | 4 | 0.9838 | 0.9960 | 0.9951 | 0.9851 | 0/7 |
+| sparse512 | 1 | 1.0212 | 1.0598 | 1.1109 | 1.0427 | 1/7 |
+| sparse512 | 4 | 1.0144 | 0.9981 | 1.0094 | 1.0072 | 0/7 |
+| sparse1024 | 1 | 1.0227 | 1.0979 | 1.0678 | 1.0457 | 1/7 |
+| sparse1024 | 4 | 1.0224 | 1.0096 | 1.0382 | 1.0269 | 0/7 |
+| sleeping4096 | 1 | 1.0156 | 1.1504 | 1.1256 | 1.0456 | 4/7 |
+| sleeping4096 | 4 | 1.0105 | 1.0031 | 1.0498 | 1.0250 | 1/7 |
+
+Sleeping/one-worker median p95 crosses the15% review screen narrowly, at15.04%;
+seven individual primary pairs cross it across four groups. The differing sleeping
+worker-series p95 results are ambiguous host/tail observations, not proof of worker
+benefit: the four-worker sleeping run never dispatches pool jobs. Retain all pairs.
+
+Observer off/on sparse1024 medians (on/off):
+
+| Cell bytes | Workers | p95 ratio | Total ratio | Pairs above15% p95 |
+|---|---:|---:|---:|---:|
+| 4 | 1 | 1.0284 | 1.0326 | 2/7 |
+| 4 | 4 | 1.1103 | 1.0775 | 1/7 |
+| 8 | 1 | 1.0660 | 1.0505 | 0/7 |
+| 8 | 4 | 1.0632 | 1.0608 | 0/7 |
+
+The observer is semantically neutral in checked records but has measurable cost;
+primary timings therefore use observer-off binaries/runs. Its measured overhead
+is representative of sparse1024 only. Do not subtract it from unrelated workloads.
+
+### Footprint, worker use and wrap tails
+
+Final cell capacity doubles exactly in all cases; temperature bytes are0 here,
+and measured activity/chunk/vector/map-bucket components match within width pairs.
+The total footprint still has the allocator/map-node/pool/stack gaps listed above.
+Process private/working-set/peak counters include the harness and final serialization.
+
+| Fixture | Cell MiB 4 / 8 | Private MiB 4 / 8, one-worker median | Descriptive total speedup 1→4 workers, 4 / 8 bytes |
+|---|---:|---:|---:|
+| dense512 | 11 / 22 | 16.36 / 27.57 | 2.43 / 2.47 |
+| dense1024 | 18.125 / 36.25 | 23.55 / 41.91 | 2.81 / 2.87 |
+| sparse512 | 5.4375 / 10.875 | 10.29 / 15.86 | 1.87 / 1.90 |
+| sparse1024 | 8.9375 / 17.875 | 13.82 / 22.96 | 1.95 / 1.98 |
+| sleeping4096 | 72.25 / 144.5 | 77.77 / 150.61 | 1.00 / 1.02 |
+
+Worker speedups are ratios of seven-run median totals from separate worker blocks,
+not interleaved worker comparisons. From exact phase-job records and the unchanged
+threshold8, four-worker pool dispatch counts across1920 ticks are7680 for each
+dense case,6766/6831 for sparse512/1024 and0 for sleeping. Source chooses dispatch
+exactly at that threshold; these counts are inferred from work, not added timers.
+
+For each source-defined8-bit wrap tick, calculate whole-tick duration minus the
+median of two ordinary neighboring ticks on each side, then candidate excess minus
+its paired control excess. These are **proxies**, not direct observations of clear
+calls/durations. Each case has49 comparisons (seven wraps times seven pairs).
+
+| Fixture | Workers | Median extra ms | Min / max extra ms | Above1ms |
+|---|---:|---:|---:|---:|
+| dense512 | 1 | 0.916 | -5.500 / 6.227 | 21/49 |
+| dense512 | 4 | 0.564 | -2.220 / 3.940 | 17/49 |
+| dense1024 | 1 | 2.701 | -33.117 / 25.960 | 30/49 |
+| dense1024 | 4 | 1.605 | -4.331 / 7.294 | 30/49 |
+| sparse512 | 1 | 0.221 | -1.867 / 2.225 | 4/49 |
+| sparse512 | 4 | 0.298 | -0.170 / 0.899 | 0/49 |
+| sparse1024 | 1 | 0.894 | -0.002 / 2.230 | 21/49 |
+| sparse1024 | 4 | 0.789 | -0.139 / 1.829 | 12/49 |
+| sleeping4096 | 1 | 9.107 | 4.887 / 14.004 | 49/49 |
+| sleeping4096 | 4 | 8.434 | 5.360 / 13.027 | 49/49 |
+
+Every sleeping comparison exceeds the1ms research screen. Dense proxy ranges also
+show why whole-tick tails cannot be assigned entirely to clearing; negative values
+are retained. Direct clear identity/duration and shortened-epoch behavior remain L3.
+
+### G-L review and remaining scope
+
+L1 equivalence passes for its checked scopes; memory growth and sleeping cost
+screens are negative evidence for a universal stride increase in these fixtures.
+Near-unity dense medians do not establish that8-byte cells are free. No candidate
+is selected for production. L2 is admitted for the registered packing comparisons;
+L3/L4 remain mandatory and G-L stays OPEN. L5's compatibility inventory remains
+source evidence. L6 is not admitted: these fixed-geometry results do not establish
+that halving storage dimensions helps, and no cache-causality profile was acquired.
+
+WPR read-only queries advertise PMU sources including cache misses, cycles and
+retired instructions; do not call the hardware counters unavailable. No PMC session
+or WPR recording was active, the session is not elevated, and this campaign acquired
+no PMU/cache/bandwidth trace. These remain explicit evidence gaps. There is no new
+desktop/Web, sanitizer, other-hardware, migration or deployment acceptance.
+
+The baseline remains at its original checkpoint with the same dirty DLL hash after
+the campaign. No shared runtime, branch, policy, dependency or historical M11 hash
+was changed.
+
+### L1 documentation checkpoint
+
+Byte-copy snapshot checks under `validation/local/issue-16/l1-review-checks` pass
+documentation links/claims and M11's28 historical source hashes/18 records.
+Repository validation retains exactly the same14 published source-input attestation
+failures as preparation, seven Windows and seven Linux; all18 required runtime
+files are materialized. This is not an all-green runtime release. The baseline's
+earlier16 failures remain retained and were not rewritten.
+
+Frozen retrieval remains23/32 hit@1,32/32 hit@5, MRR0.8385; challenges12/16,16/16,
+0.8562. Programme is3/5,5/5,0.7667 (previously0.8 MRR); layout questions2/3,3/3,
+0.8333. Query wording and frozen fixtures were not tuned. Layout expected facts
+were updated for the owner release and completed L1 stage. Context review finds
+the current stage, comparison methods and memory qualifiers; the footprint query
+still prefers the save page first and needs its second-ranked canonical context.
+
+`git diff --check` passes. The recoverable local results commit has subject
+**Record issue16 L1 stride results and cost review** on
+`codex/issue-16-cell-layout`; its exact ID is retained with the local campaign's
+post-commit identity. It adds the reducer and scoped evidence, without changing
+the measured native implementation or integrating the experiment.

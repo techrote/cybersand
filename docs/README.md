@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-11
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md]
 ---
 
@@ -94,4 +94,4 @@ The [evidence-gated programme](operations/architecture-programme.md) coordinates
 
 ## Cell layout research
 
-Issue16 uses the [staged registration](operations/cell-layout-experiment.md) and [preparation evidence](audits/2026-09-10-issue-16-cell-layout.md). Performance awaits an owner-arranged uncontended run; G-L is open.
+Issue16 uses the [staged registration](operations/cell-layout-experiment.md) and [source/L1 evidence](audits/2026-09-10-issue-16-cell-layout.md). The first196-process campaign passed exact comparisons and flagged sleeping-layout costs. Packing, epoch and sidecar stages remain; G-L is open.

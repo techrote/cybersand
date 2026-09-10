@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-11
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md]
 ---
 
@@ -134,4 +134,4 @@ project passed. Faster leveling is fixture-specific, not universal instant flow.
 
 ## Issue16 representation research
 
-The [September10 preparation record](../audits/2026-09-10-issue-16-cell-layout.md) owns isolated source/artifact identities, native correctness and remaining checks. No performance or desktop/Web candidate acceptance is implied; the owner requires a pause before timing and G-L is incomplete.
+The [September10–11 record](../audits/2026-09-10-issue-16-cell-layout.md) owns isolated source/artifact identities, native correctness and the completed196-process L1 campaign. Exact state/work and final Water/Sand accounting pass; sleeping p95 and wrap-tick proxies flag costs. Direct epoch, packing and sidecar evidence remain pending. No desktop/Web or production acceptance is implied; G-L is incomplete.

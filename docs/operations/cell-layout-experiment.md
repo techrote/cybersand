@@ -4,7 +4,7 @@ status: Planned
 document-kind: runbook
 scope: Issue 16 staged native representation research, preregistered before candidate code; no production migration
 canonical-for: [cell-layout-experiment]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-11
 related-documents: [architecture-programme.md, architecture-programme-prompts/cell-layout.md, ../audits/2026-09-10-issue-16-cell-layout.md]
 ---
 
@@ -12,10 +12,12 @@ related-documents: [architecture-programme.md, architecture-programme-prompts/ce
 
 ## Status and boundaries
 
-**Planned experiment:** execute [issue 16's full charter](architecture-programme-prompts/cell-layout.md)
-in staged order. The owner requires a pause before **any performance measurements**
-to arrange an uncontended run alongside issue 15. Preparation and correctness
-checks are allowed. A preparation checkpoint is not issue completion or G-L acceptance.
+**Current research checkpoint:** L1 completed its first owner-released campaign
+on September10–11; see the [dated results](../audits/2026-09-10-issue-16-cell-layout.md#l1-results).
+Execute [issue 16's full charter](architecture-programme-prompts/cell-layout.md)
+in staged order. The original owner timing hold was released with “Ready for the
+first uncontended run. Start.” Do not overlap measurements with issue15 or builds.
+L1 completion is not issue completion or G-L acceptance; L2–L4 remain mandatory.
 No merge, deployment, remote mutation, production layout choice or loaded DLL replacement.
 
 Editing/build root: `C:/kybersand/worktrees/issue-16-cell-layout`, branch
@@ -35,7 +37,7 @@ compiler bitfields. All unused bits are zero and carry no behavior.
 
 | Stage | Control / candidate | Exact mapping and disposition |
 |---|---|---|
-| L1 | Original4 / padded8 | material:u8, a:u8, b:u8, epoch:u8 at byte offsets 0/1/2/3; candidate adds four unused bytes, alignment remains 1. First admitted implementation/timing stage. |
+| L1 | Original4 / padded8 | material:u8, a:u8, b:u8, epoch:u8 at byte offsets 0/1/2/3; candidate adds four unused bytes, alignment remains 1. Completed: exact comparisons pass; sleeping p95 and wrap-tick excess trigger cost review. |
 | L2a | Original4 / packed8/16/8 | uint32: material[0:7], a[8:15], b[16:23], epoch[24:31]. Masks/shifts; keep all legacy values. Implement after L1 evidence is reviewed. |
 | L2b | Padded8 / packed16/40/8 | uint64: material[0:15], a[16:23], b[24:31], unused[32:55], epoch[56:63]. Only IDs 0..80; extraction cost is not catalogue expansion. Natural integer alignment must be reported as an access-layout confound; add an alignment-matched padded control if needed. |
 | L3 | packed8/16/8 / packed8/18/6 | uint32: material[0:7], a[8:15], b[16:23], unused[24:25], epoch[26:31]. Keep all legacy state precision; only epoch width changes. |
@@ -139,12 +141,26 @@ hardware evidence; unavailable counters preclude cache-causality claims.
 
 ## Run and review
 
+**L1 review, September11:** all196 registered processes completed,70 width pairs
+and28 observer pairs passed exact state/work comparisons, and final whole-world
+Water/Sand accounting passed. Dense median paired p95 ratios span0.9960–1.0223;
+sleeping4096/one-worker is1.1504 and crosses the15% research screen. Every sleeping
+paired wrap-tick excess exceeds1ms; medians9.11/8.43ms for workers1/4. These are
+source-scheduled whole-tick proxies, not directly observed clear durations.
+Cell storage doubles in every case; sleeping72.25 to144.5MiB. Observer cost is
+measurable, so primary timings retain observers off. No layout is selected.
+This supports proceeding to the registered packing comparison while retaining
+the negative cost screens for later direct epoch measurements. G-L remains open.
+
 The first-stage driver is `tools/experiments/cell_layout.py`. `prepare` builds
 isolated original4/padded8 executables and runs correctness only; `plan` writes
 the ordered process manifest without execution. `measure` is a separate explicit
 action and requires the owner to release the uncontended-run hold in this task.
 Do not invoke it during preparation. It must refuse reused output paths, mismatched
 source/binary identities or failed prerequisites. Review L1 before implementing L2.
+`tools/experiments/summarize_cell_layout.py` accepts only the complete196-process
+campaign, rechecks raw samples/records and produces the scoped timing, footprint,
+worker-dispatch and wrap-tick tables. It never runs or selects benchmark samples.
 
 The [dated checkpoint](../audits/2026-09-10-issue-16-cell-layout.md) owns actual
 executed checks, compatibility findings, gaps and G-L disposition. Retained #9,

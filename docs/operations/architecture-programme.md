@@ -4,7 +4,7 @@ status: Planned
 document-kind: design
 scope: Evidence gates for Cell representation, liquid state and transport, presentation, and conditional sparse motion; no production architecture selection
 canonical-for: [architecture-experimental-programme]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-11
 related-documents: [architecture-programme-source-ledger.md, physics-characterisation.md, physics-characterisation-plan.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md]
 ---
 
@@ -396,4 +396,4 @@ and separate documentation/retrieval versus inherited publication-check outcomes
 
 ## Issue16 local execution checkpoint
 
-The [cell layout registration](cell-layout-experiment.md) and [dated preparation](../audits/2026-09-10-issue-16-cell-layout.md) track L. First-stage source preparation is isolated from the baseline; performance awaits the owner uncontended-run release. G-L remains open and all later stages keep their registered disposition.
+The [cell layout registration](cell-layout-experiment.md) and [dated evidence](../audits/2026-09-10-issue-16-cell-layout.md) track L. L1 completed196 processes after owner release: exact comparisons pass, while sleeping p95 and wrap-tick excess flag padded-layout costs. L2 is admitted for research; packing, direct epoch and sidecar results remain required. G-L is open and no production layout is selected.
