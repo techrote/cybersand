@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "scope": "New architecture programme development questions, separate from frozen32 and existing challenges; not unseen evaluation",
+  "questions": [
+    {
+      "id": "AP01",
+      "query": "Does the architecture programme select eight-byte Cells or require liquid unification?",
+      "canonical": [
+        "operations/architecture-programme.md"
+      ],
+      "facts": [
+        "No width winner or liquid unification is adopted.",
+        "Representation cost precedes state precision and motion semantics."
+      ],
+      "sources": [
+        "operations/architecture-programme.md"
+      ]
+    },
+    {
+      "id": "AP02",
+      "query": "What evidence gates ballistic material and how does it relate to soliding issue 12?",
+      "canonical": [
+        "operations/architecture-programme.md"
+      ],
+      "facts": [
+        "G-B needs a named unmet high-speed requirement and reviewed singular-owner transfer charter.",
+        "No-go is valid. Existing #12 owns coherent research; near-rest reversal need not depend on ballistic motion."
+      ],
+      "sources": [
+        "operations/architecture-programme.md"
+      ]
+    },
+    {
+      "id": "AP03",
+      "query": "Can extra Cell bits store transient rigid-body occupancy or change exact Water conservation?",
+      "canonical": [
+        "operations/architecture-programme.md"
+      ],
+      "facts": [
+        "ADR-007 keeps derived occupancy separate.",
+        "ADR-005 remains accepted; bounded numerical drift needs measured necessity and explicit decision."
+      ],
+      "sources": [
+        "operations/architecture-programme.md"
+      ]
+    },
+    {
+      "id": "AP04",
+      "query": "Which current baseline should Cell experiments preserve, including epoch clearing and recent Water?",
+      "canonical": [
+        "operations/architecture-programme.md"
+      ],
+      "facts": [
+        "Local intake 8f4ffb9 uses three-quarter Water relaxation, not historical half.",
+        "Repeated epoch clears are255 ticks apart or63 for comparable6-bit zero-reserved design."
+      ],
+      "sources": [
+        "operations/architecture-programme.md"
+      ]
+    },
+    {
+      "id": "AP05",
+      "query": "Does closed issue 11 prove that barrel support is implemented for soliding?",
+      "canonical": [
+        "operations/architecture-programme.md"
+      ],
+      "facts": [
+        "Administrative closure conflicts with current source/evidence.",
+        "Support-dependent #12 integration requires source-matched evidence or explicit scope decision."
+      ],
+      "sources": [
+        "operations/architecture-programme.md"
+      ]
+    }
+  ]
+}

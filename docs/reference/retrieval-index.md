@@ -83,3 +83,7 @@ lateral Water mass transport drive bounded optional mixing and grain pickup;
 horizontal sampling and cadence are separate fixed experiments.
 Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
 are unchanged. No unsynchronized live descriptor mutation is introduced.
+
+## Which architecture experiments should run before changing Cell or liquid state?
+
+Use the [architecture programme](../operations/architecture-programme.md) for future experiment dependencies, decision gates, retained baselines and self-contained issue prompts. Its source ledger preserves four-conversation refinements. Current behavior still belongs to the linked subsystem and ADR contracts.

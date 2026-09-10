@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-09-09
+last-reviewed: 2026-09-10
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md]
 ---
 
@@ -87,3 +87,7 @@ Current player support and pair exchange: [granular interaction policy](systems/
 
 The [transport profile editor](systems/flow-transport-and-profiles.md) shows effective
 settings/origins, saves editable user copies and applies through an explicit restart.
+
+## Architecture experimental programme
+
+The [evidence-gated programme](operations/architecture-programme.md) coordinates Cell layout, liquid precision/history, fractional presentation and conditional sparse motion. It retains existing ADRs and reuses soliding issue #12; linked prompts are self-contained. This is Planned research, not a selected replacement architecture.

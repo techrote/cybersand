@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-09-09",
+  "reviewed": "2026-09-10",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -57,7 +57,8 @@
     "systems/water-design.md",
     "systems/world-storage-and-interest-region.md",
     "operations/experiment-tower.md",
-    "systems/flow-transport-and-profiles.md"
+    "systems/flow-transport-and-profiles.md",
+    "operations/architecture-programme.md"
   ],
   "navigation": [
     "README.md",
@@ -165,6 +166,42 @@
     {
       "path": "audits/2026-09-09-issue-13-transport.md",
       "reason": "Dated checkpoint evidence; not a current-answer contract"
+    },
+    {
+      "path": "operations/architecture-programme-source-ledger.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/cell-layout.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/compact-motion.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/decision-review.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/fractional-presentation.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/liquid-characterization.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/soliding-supplement.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/sparse-motion.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/state-precision.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
     }
   ]
 }
