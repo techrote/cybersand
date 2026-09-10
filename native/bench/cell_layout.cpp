@@ -124,7 +124,13 @@ int main(int argc,char** argv) {
         const auto startup_ns=timing ? nanos(Clock::now()-startup) : 0;
         const auto initial=quantities(world,x,y);
         const auto identity=CellLayoutExperiment::footprint(world);
-        require(identity.cell_size==CYBERSAND_CELL_LAYOUT_EXPERIMENT && identity.alignment==1 &&
+        constexpr std::size_t expected_alignment =
+#ifdef CYBERSAND_CELL_LAYOUT_ALIGNMENT
+            CYBERSAND_CELL_LAYOUT_ALIGNMENT;
+#else
+            1;
+#endif
+        require(identity.cell_size==CYBERSAND_CELL_LAYOUT_EXPERIMENT && identity.alignment==expected_alignment &&
                 identity.stride==identity.cell_size,"layout mismatch");
         require(world.resident_cell_bytes()==identity.cells+identity.temperatures+identity.activity,"aggregate mismatch");
         std::ofstream records(prefix+".records",std::ios::binary);

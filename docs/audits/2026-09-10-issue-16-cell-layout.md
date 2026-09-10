@@ -82,7 +82,7 @@ endpoints; event writes follow the clear. These are source predictions, not timi
 | Stage | Disposition after L1 review, September11 |
 |---|---|
 | L1 stride | Completed196 processes; exact comparisons pass, sleeping p95/wrap-tail costs flagged. |
-| L2 packing/ID access | Admitted after L1 review; implementation and measurement remain pending. |
+| L2 packing/ID access | Prepared and correctness-screened; matched-alignment timing remains pending. |
 | L3 epoch | Registered; implementation and2048-tick clear-tail measurement pending L2. |
 | L4 optional state | Registered neutral control; concrete sidecar implementation/crossover pending. |
 | L5 ID inventory | Source review recorded above; larger IDs have capacity headroom but no demonstrated demand. |
@@ -419,3 +419,92 @@ still prefers the save page first and needs its second-ranked canonical context.
 `codex/issue-16-cell-layout`; its exact ID is retained with the local campaign's
 post-commit identity. It adds the reducer and scoped evidence, without changing
 the measured native implementation or integrating the experiment.
+
+## L2 preparation, September11
+
+The owner explicitly continued the uncontended window for the remaining stages.
+The [L2 registration](../operations/cell-layout-experiment.md#l2-implementation-registration-september11)
+was retained before candidate code at `validation/local/issue-16/l2-registration`,
+SHA-256 `64c43aa911be21acad84270102e998105e513e60bdac1f5c21a4b3cadb4b7738`.
+It defines matched-alignment primary controls and representative comparisons
+against both retained L1 executables. No L2 timing result is claimed here.
+
+New modules are `native/include/cybersand/cell_layout_storage.hpp`,
+`native/tests/test_cell_layout_storage.cpp`, `tools/experiments/cell_packing.py`,
+its Python tests and `summarize_cell_packing.py`. World uses the same inline
+material/state/epoch accessors for all new variants. Default unselected builds
+remain byte fields, size4/alignment1; primary byte4/packed4 use size/stride/alignment4,
+byte8/packed8 size/stride/alignment8. Byte controls retain offsets0/1/2/3. Packed
+fields use the registered integer masks/shifts; no compiler bitfields, raw-struct
+serialization, epoch-width change, new material, solver change or shared DLL edit.
+
+Prepared artifacts are in `build/issue-16/prepare-l2-20260911-003219`, raw evidence
+in `validation/local/issue-16/prepare-l2-20260911-003219`. Source is results commit
+`ed7719199f0ef36335f3f1ad798ab58037501d83` plus the hashed candidate delta, recoverable
+in the local preparation commit **Prepare issue16 matched-alignment packing campaign**.
+Compiler/pins and warning/optimization flags are unchanged from L1; each executable
+has explicit width/alignment/packing defines in `prepared.json` and command records.
+
+| New O3/LTO executable | SHA-256 |
+|---|---|
+| byte4 | `57c675ae0252bb90ebb169e3c763a2407446979bbf61592d5be3f70884de9c96` |
+| packed4 | `b3b19ee0221fef67d20199747950a3aa2b207d5c176f7dc0078800363e13d60b` |
+| byte8 | `fea1bfac12ab68102020f119fe6c82e5543aff85456e579e7f512d337faff677` |
+| packed8 | `b31101df39d1266e085a6c0cc3ed9b797c394a885f905e46fa11c90b74cc54fe` |
+
+**Executed correctness:** the unselected build and four variants each pass55 native
+tests,275 total. Each variant passes26,214,400 storage mappings (80 accepted IDs,
+65,536 state-byte pairs and five epochs),104,857,600 total, including exact word
+mapping, unused-zero, copy and setter isolation. Invalid Rocket headings are never
+stepped by this storage-only check. All80 full1800-tick behavior processes match
+retained L1 exact streams across five settings, variants,1/4 workers and repeats;
+eight observer-off streams also preserve state/work. These contain every-tick
+closed Water/Sand checks and reactive event/state/temperature comparisons. All40
+one-tick dense/sparse/sleeping setup checks match retained L1 records and fit
+unchanged capacities. C11 header validation passes. Python plan/hold/reducer checks
+pass, with a regression for lossless comparison against compressed retained records.
+
+**Retained preparation failure:** after all builds/storage/behavior checks and the
+first successful native setup process, the new driver tried opening an uncompressed
+L1 setup record; the retained file is `.records.gz`. It exited with FileNotFoundError.
+The reader now compares gzip content in bounded blocks. Before finishing setup,
+recovery verified every native/benchmark input and binary hash plus all88 compressed
+behavior/observer records. Only the Python reader changed. The first completed
+setup process was reused and the39 remaining setup processes ran once. No build or
+behavior result was relabeled as newly rerun. Failure, driver before/after hashes,
+resume command/log and completed manifest are retained; this was a harness-path
+failure, not a layout mismatch or a performance sample. Five inherited/experiment
+conversion/capture warnings remain; no new storage compiler warnings or errors.
+
+**Generated-code findings:** actual LTO write/move/scan/clear extracts are retained
+for the old controls and four variants. The packed4 and packed8 clear loops contain
+SSE loads, masks and stores, with scalar tails at epoch offsets3 and7 respectively;
+aligned byte controls still use scalar byte stores. Identical O3/LTO flags generated
+this difference; no variant-specific optimizer tuning was applied. Shared accessors
+also change some control code generation, so the registered control-bridge screen
+remains necessary and is not assumed neutral.
+
+The packed8 `stored_material` assembly uses an8-bit load; its actual LTO `write_cell`
+loads a whole64-bit word but compares the low material byte and extracts state at
+bits16/24. There is no standalone retained LTO getter symbol. This confirms the
+registration's limit: the16-bit field is a carrier for legacy8-bit IDs, with its
+upper byte zero, not an end-to-end16-bit ID access-cost result. Full wider-ID
+interfaces/render/save/profile costs and demand remain L5's inventory and future
+migration questions, outside this legacy-value timing comparison.
+
+The next campaign has448 sequential processes:56 retained-control bridge processes,
+280 primary packing processes and112 observer processes, seven pairs per series.
+Both variants in each primary pair have equal size/stride/type alignment. The bridge
+covers dense512/workers4 and sleeping4096/workers1 only and combines accessor and
+alignment changes. All run lengths, metrics, thresholds and timeouts are registered;
+no sample tuning follows these code-generation observations. G-L remains open.
+
+L2 preparation documentation checks pass for docs and historical M11 using the
+byte-exact companion-path snapshot in `l2-preparation-checks`. Repository validation
+retains14 published-source attestation failures (seven each Windows/Linux), with
+all18 runtime files materialized; this is not fresh platform acceptance. Retrieval
+hit@1/hit@5/MRR is23/32,32/32,0.8385 frozen;12/16,16/16,0.8562 challenge;
+3/5,5/5,0.7667 programme;2/3,3/3,0.7778 layout. Layout MRR regresses from0.8333:
+the resident-byte question's canonical answer moves to rank3, still in the top5
+with correct temperature/activity scope. This limitation is retained without
+altering the frozen timing registration. Diff whitespace checks pass.

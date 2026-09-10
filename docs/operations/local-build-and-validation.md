@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-09-09
+last-reviewed: 2026-09-11
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md]
 ---
 
@@ -136,6 +136,13 @@ after replacement and after teardown so browser pthread startup/recycling can
 finish before synchronous native joins. This fixture lifecycle requirement does
 not change production native ownership or introduce asynchronous Web simulation.
 
-## Isolated issue16 preparation
+## Isolated issue16 experiments
 
 The [cell layout runbook](cell-layout-experiment.md) uses `tools/experiments/cell_layout.py` inside its dedicated worktree. It reuses the pinned workspace environment, overrides baseline paths, builds serially to issue-specific directories and separates correctness preparation from explicit timing. Do not use the shared wrapper build actions to overwrite the baseline DLL.
+
+The new L2 driver `tools/experiments/cell_packing.py` takes the retained L1
+`prepared.json` for `prepare`, then its own prepared manifest for `measure`.
+It builds matched-alignment byte/packed variants and preserves the old binaries
+for separate control comparisons. `--owner-released` is required for measurements;
+keep them separate from builds and other experiments. Scoped reducers are
+`summarize_cell_layout.py` and `summarize_cell_packing.py`; neither launches benchmarks.

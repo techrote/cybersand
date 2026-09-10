@@ -139,6 +139,44 @@ Capture representative optimized scan/write/move/clear disassembly for control
 and candidate with identical flags. PMU/cache/bandwidth counters are optional
 hardware evidence; unavailable counters preclude cache-causality claims.
 
+## L2 implementation registration, September11
+
+Registered after L1 review and before packing code: retain both L1 executables.
+Give every newly built cell the same inline material/state/epoch getter/setter
+interface. Controls preserve original byte offsets0/1/2/3 and sizes4/8. Primary
+comparisons use explicit alignment4 for both byte4 and packed8/16/8, alignment8
+for both byte8 and packed16/40/8. Thus type alignment matches within each primary
+pair; it differs from the alignment1 L1 controls and is not silently attributed
+to packing. Array stride remains4 or8. Default unselected builds remain4 bytes
+and alignment1. Inspect optimized access/clear/constructor code for all variants.
+
+The16-bit material field uses only current IDs; the public/internal `Material`
+enum and every adapter remain8-bit. Getters return the legacy enum. Its upper
+material bits remain zero and the compiler may narrow reads. Report that generated
+access explicitly: this measures a16/40/8 carrier with legacy values, not the cost
+of an end-to-end16-bit catalogue/API migration. Unused24 state bits stay zero.
+
+Build four primary variants: byte4-a4, packed4-a4, byte8-a8, packed8-a8. Full55-test
+native suites and the five-setting1800-tick,1/4-worker,two-repeat exact behavior
+screen run for each; compare against retained L1 semantic streams as well. Add a
+storage round-trip check over all accepted IDs, all65,536 a/b combinations and
+epochs0/1/63/64/255 without executing invalid Rocket headings. Verify mask
+non-overlap, exact mapping, unused bits and copy/set isolation. A C11 header check
+and benchmark setup/capacity checks remain required. No solver or epoch changes.
+
+Primary timing keeps the L1 ten cases,1920 ticks,120 warmup,seven AB/BA pairs for
+each of the two packing comparisons:280 processes. Observer off/on remains
+sparse1024 at1/4 workers, now for all four variants:112 processes. A separately
+labeled control-bridge screen compares each retained L1 binary with its rebuilt
+aligned byte control: dense512/workers4 and sleeping4096/workers1,seven AB/BA
+pairs each,56 processes. Total448 processes, sequential, with the existing timeouts
+and cost screens. This representative bridge measures combined accessor/alignment
+control changes; it is not a replacement for the primary packing contrasts or a
+full-workload proof of control neutrality. Any bridge regression is retained as a
+scope limitation and reviewed before interpreting primary results. No adaptive
+retry, sample removal or optimizer tuning. Record source/flags/binary identities
+and restore neither old raw Cell bytes nor a loaded runtime into new layouts.
+
 ## Run and review
 
 **L1 review, September11:** all196 registered processes completed,70 width pairs

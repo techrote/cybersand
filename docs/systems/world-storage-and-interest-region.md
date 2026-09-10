@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [world-storage, camera-interest-region]
 status: Current
 scope: Sparse native storage, finite adapters, bounded interest pause/resume, planned persistence/reconfiguration and deferred streaming
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-11
 related-documents: [activity-dirty-regions-and-waking.md, ../architecture/chunk-tile-and-buffer-model.md, ../reference/configuration-reference.md, ../reference/level-saves-and-replay.md, ../decisions/ADR-004-interest-region-and-reconfiguration.md]
 ---
 
@@ -160,4 +160,4 @@ the finite demo dimensions as the permanent world limit.
 
 ## Experimental Cell stride selection
 
-**Experimental branch only:** issue16 builds `world.cpp` with `CYBERSAND_CELL_LAYOUT_EXPERIMENT=4` or `8` for original bytes or four appended unused bytes. Default builds retain the four-byte assertion. [The registration](../operations/cell-layout-experiment.md) fixes geometry, semantics and external formats; no production migration is selected. `resident_cell_bytes()` includes cell, temperature and activity-vector capacities, not all World/process overhead.
+**Experimental branch only:** issue16 selects size4/8 with `CYBERSAND_CELL_LAYOUT_EXPERIMENT`, byte fields or integer masks/shifts with `CYBERSAND_CELL_LAYOUT_PACKED`, and matched type alignment with `CYBERSAND_CELL_LAYOUT_ALIGNMENT`. The new `cell_layout_storage.hpp` gives all variants identical legacy accessors. Default builds retain byte fields, size4/alignment1. [The registration](../operations/cell-layout-experiment.md) fixes geometry, semantics and external formats; no production migration is selected. The16/40/8 carrier still exposes only the legacy8-bit Material enum. `resident_cell_bytes()` includes cell, temperature and activity-vector capacities, not all World/process overhead.
