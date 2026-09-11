@@ -18,6 +18,9 @@
 namespace cybersand {
 
 class RenderSnapshotExchange;
+#ifdef CYBERSAND_CELL_EPOCH_OBSERVER
+struct EpochClearTrace;
+#endif
 
 enum class SimulationBackend : std::uint8_t {
     SerialInPlace = 0,
@@ -215,6 +218,9 @@ private:
     std::uint64_t tick_index_ = 0;
     std::uint64_t completed_tick_index_ = 0;
     std::uint8_t update_epoch_ = 0;
+#ifdef CYBERSAND_CELL_EPOCH_OBSERVER
+    std::unique_ptr<EpochClearTrace> epoch_trace_;
+#endif
     bool tick_in_progress_ = false;
     bool tick_failed_ = false;
     std::uint64_t tick_chunk_allocations_ = 0;

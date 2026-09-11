@@ -83,7 +83,7 @@ endpoints; event writes follow the clear. These are source predictions, not timi
 |---|---|
 | L1 stride | Completed196 processes; exact comparisons pass, sleeping p95/wrap-tail costs flagged. |
 | L2 packing/ID access | Completed448 processes; exact pairs pass, individual cost flags retained. |
-| L3 epoch | Admitted after L2 review; implementation and2048-tick direct clear measurement pending. |
+| L3 epoch | Prepared and correctness-screened;2048-tick direct clear measurements pending. |
 | L4 optional state | Registered neutral control; concrete sidecar implementation/crossover pending. |
 | L5 ID inventory | Source review recorded above; larger IDs have capacity headroom but no demonstrated demand. |
 | L6 storage geometry | Not admitted: no profiling evidence yet. |
@@ -584,3 +584,72 @@ from preparation are retained; all canonical answers remain in the top5. No fixt
 or evaluator was tuned. Thirteen driver/reducer tests passed before measurement.
 The L3 registration was retained before candidate code with SHA-256
 `49437950aac0321015872f7360d987a87005697ef4ea53f7d182bdcf6f01606c`.
+
+## L3 preparation, September11
+
+Source is `925799d` plus the hashed candidate delta, to be retained in local commit
+**Prepare issue16 epoch-width and clear-observer campaign**. Complete preparation:
+`validation/local/issue-16/prepare-l3-20260911-045006`; binaries share that suffix
+under `build/issue-16`. Toolchain, optimization and warning flags remain pinned.
+Default epochs stay8-bit; only packed32 admits6-bit epochs, with two unused state
+bits kept zero. Both candidates have size/stride/alignment4.
+
+The default and both candidate suites pass55 checks each,165 total. Focused tests
+pass26,214,400 storage mappings per candidate (52,428,800 total), all expected8/32
+clears through2048 ticks, sleeping/excluded/partial selection and recorder-capacity
+failure/quarantine/clear recovery.80 full2048-tick behavior/movement runs across
+five settings,1/4 workers and repeats pass; eight observer-off runs preserve state/
+work. Twenty setup/capacity trajectories match retained L1 records. The8-bit behavior
+prefix matches retained1800-tick records. Physics diagnostics and lossless state/
+temperature/work/event records remain correctness oracles, with hash omitted only
+across epoch schemas. Additional retained-record verification checks same-schema
+raw hashes and sorted per-chunk clear identities across repeats/workers.
+
+Each movement run explicitly accounts for1024 Foam injections,1008 reclaims,16 final
+Foam cells,30688 single-step moves (130 paused ticks) and40 event writes at the union
+of the wrap schedules. New Fire retains initial lifetime on the event tick. These
+are separate source/sink and event ledgers, not closed-Water conservation claims.
+Observer durations collected during correctness are not performance samples.
+
+The first preparation attempt (`prepare-l3-20260911-044403`) failed because the new
+negative test caught runtime_error for a quarantined retry; the existing contract
+correctly throws logic_error. Source-location diagnostics confirmed it. Only the
+expectation/diagnostic changed, with no World behavior fix; fresh preparation reran
+the registered checks. Failed logs and disposition remain retained. Nineteen build
+warnings remain: five inherited/previous conversion warnings and fourteen bounded0..15
+array-index signedness warnings in the correctness-only MotionCheck fixture. None
+is a truncating Cell conversion; both variants use identical flags and code.
+
+Generated assembly retains vector mask/store clear loops for both widths;6-bit
+advance has the expected AND63. Actual LTO disassembly is retained. This is code
+shape evidence, not hardware-cache attribution. Direct metadata collection occurs
+before its clock, and per-clear identities are serialized after ticks. The recorder
+has64 summaries and64×4096 chunk slots,8,390,728 heap bytes when enabled. A separately
+retained pinned-compiler sizeof probe reports World39,984 bytes with recorder support
+versus39,968 without, including WorldConfig39,640 bytes (do not add config twice).
+Thus support adds16 object bytes even when off; the enabled buffers are separate
+from hot cells and existing metadata estimates. Allocator/process gaps remain.
+
+| Optimized executable | SHA-256 |
+|---|---|
+| e8 | `2e4cf6730741db16c08795a23e35d947efc27c44966129474a5ab216f2159a39` |
+| e6 | `7c83089b179576957002028760a3e6e5fb8c882b67c5a2ecacf62a8d82859381` |
+
+L3 timing is not yet started at this checkpoint. The registered280 processes retain
+all samples and the existing review screens. Direct on-mode widths occupy separate
+observer blocks; primary epoch-width pairs have recorders off. This limits direct
+cross-width causal claims. No production layout, epoch width, merge or deployment
+is approved. L4 and the final G-L disposition remain outstanding.
+
+The additional verifier passes60 same-schema raw-hash/repeat/worker comparisons with
+exact sorted clear identities and eight observer hash/state/work comparisons. All20
+Python tests pass. The first L3 doc check passes docs/M11 and retains14 release
+attestation failures/18 materialized runtime files. Its retrieval scores were frozen
+23/32,32/32,0.8385; challenge12/16,16/16,0.8562; programme3/5,4/5,0.7000;
+layout2/3,3/3,0.8333. AP04's master-programme baseline fell outside top5 as new
+preparation pages outranked it. The master checkpoint now explicitly distinguishes
+the preserved current baseline from the prepared6-bit research variant; the fixed
+retrieval fixture/evaluator is unchanged and both results are retained.
+
+Final preparation doc checks (`l3-preparation-final`) again pass docs/M11 and retain
+the same14/18 release/materialization scope. Retrieval hit@1/hit@5/MRR: frozen 22/32,32/32,0.8229; challenges 12/16,16/16,0.8562; programme 3/5,5/5,0.75; layout 2/3,3/3,0.8333.

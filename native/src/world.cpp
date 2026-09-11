@@ -18,6 +18,7 @@
 #include <atomic>
 #include <bit>
 #include <condition_variable>
+#include <chrono>
 #include <limits>
 #include <mutex>
 #include <stdexcept>
@@ -1246,6 +1247,9 @@ void World::clear() {
     completed_tick_index_ = 0;
     applied_core_region_.reset();
     update_epoch_ = 0;
+#ifdef CYBERSAND_CELL_EPOCH_OBSERVER
+    if(epoch_trace_) { epoch_trace_->used=0;epoch_trace_->chunk_used=0; }
+#endif
     tick_in_progress_ = false;
     tick_chunk_allocations_ = 0;
     tick_temperature_field_allocations_ = 0;
@@ -2379,13 +2383,41 @@ bool World::update_cell(std::int64_t x, std::int64_t y, JobEffects* effects) {
 
 void World::begin_tick(TickStats& stats) {
     ++tick_index_;
-    update_epoch_ = static_cast<std::uint8_t>(update_epoch_ + 1U);
+    constexpr unsigned epoch_mask=(1U << CYBERSAND_CELL_LAYOUT_EPOCH_BITS)-1U;
+    update_epoch_ = static_cast<std::uint8_t>((update_epoch_ + 1U) & epoch_mask);
     if (update_epoch_ == 0) {
+#ifdef CYBERSAND_CELL_EPOCH_OBSERVER
+        EpochClearSample* sample=nullptr;
+        if(epoch_trace_) {
+            auto& trace=*epoch_trace_;
+            if(trace.used>=trace.samples.size() || chunks_.size()>trace.chunk_limit)
+                throw std::runtime_error("epoch clear observer capacity exhausted");
+            sample=&trace.samples[trace.used];
+            *sample={tick_index_,0,trace.chunk_used,chunks_.size()};
+            for(const auto& [coord,chunk]:chunks_) {
+                const auto x=coord.x*config_.chunk_size,y=coord.y*config_.chunk_size;
+                const auto first=scheduler_geometry_.core_for_cell(x,y);
+                const auto last=scheduler_geometry_.core_for_cell(x+config_.chunk_size-1,y+config_.chunk_size-1);
+                const CoreRange bounds{first.x,first.y,last.x,last.y};
+                const auto clipped=clip_core_range(bounds,selected_core_region_);
+                const auto selection=static_cast<std::uint8_t>(clipped.min_x>clipped.max_x || clipped.min_y>clipped.max_y ? 0 : clipped==bounds ? 2 : 1);
+                const auto active=static_cast<std::uint32_t>(std::count_if(chunk->activity_blocks.begin(),chunk->activity_blocks.end(),[](const auto& block){return block.active;}));
+                trace.chunks[trace.chunk_used++]={coord.x,coord.y,chunk->cells.size(),active,selection,chunk->active};
+            }
+        }
+        const auto start=sample ? std::chrono::steady_clock::now() : std::chrono::steady_clock::time_point{};
+#endif
         for (auto& [coord, chunk] : chunks_) {
             (void)coord;
             for (auto& cell : chunk->cells) cell.set_epoch(0);
         }
         update_epoch_ = 1;
+#ifdef CYBERSAND_CELL_EPOCH_OBSERVER
+        if(sample) {
+            sample->ns=static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now()-start).count());
+            ++epoch_trace_->used;
+        }
+#endif
     }
     stats.tick = tick_index_;
 
@@ -3119,6 +3151,25 @@ void World::copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::
 }
 
 #ifdef CYBERSAND_CELL_LAYOUT_EXPERIMENT
+#ifdef CYBERSAND_CELL_EPOCH_OBSERVER
+void CellLayoutExperiment::configure_epochs(World& world,std::size_t clears,std::size_t chunks) {
+    world.require_healthy();
+    if(world.tick_index_!=0 || clears>64 || chunks>world.config_.maximum_chunk_count)
+        throw std::invalid_argument("invalid epoch observer preparation");
+    auto trace=std::make_unique<EpochClearTrace>();
+    trace->samples.resize(clears);trace->chunks.resize(clears*chunks);trace->chunk_limit=chunks;
+    world.epoch_trace_=std::move(trace);
+}
+const EpochClearTrace* CellLayoutExperiment::epochs(const World& world) { return world.epoch_trace_.get(); }
+std::size_t CellLayoutExperiment::epoch_trace_bytes(const World& world) {
+    const auto* p=epochs(world);
+    return p ? sizeof(*p)+p->samples.capacity()*sizeof(EpochClearSample)+p->chunks.capacity()*sizeof(EpochClearChunk) : 0;
+}
+std::uint8_t CellLayoutExperiment::epoch_at(const World& world,std::int64_t x,std::int64_t y) {
+    const auto a=world.address(x,y);const auto* chunk=world.find_chunk(a.chunk);
+    return chunk ? chunk->cells[a.index].epoch_value() : 0;
+}
+#endif
 CellLayoutFootprint CellLayoutExperiment::footprint(const World& world) {
     CellLayoutFootprint result{};
     result.cell_size = sizeof(World::Chunk::Cell);

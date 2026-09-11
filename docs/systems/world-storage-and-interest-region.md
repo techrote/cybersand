@@ -161,3 +161,12 @@ the finite demo dimensions as the permanent world limit.
 ## Experimental Cell stride selection
 
 **Experimental branch only:** issue16 selects size4/8 with `CYBERSAND_CELL_LAYOUT_EXPERIMENT`, byte fields or integer masks/shifts with `CYBERSAND_CELL_LAYOUT_PACKED`, and matched type alignment with `CYBERSAND_CELL_LAYOUT_ALIGNMENT`. The new `cell_layout_storage.hpp` gives all variants identical legacy accessors. Default builds retain byte fields, size4/alignment1. [The registration](../operations/cell-layout-experiment.md) fixes geometry, semantics and external formats; no production migration is selected. The16/40/8 carrier still exposes only the legacy8-bit Material enum. `resident_cell_bytes()` includes cell, temperature and activity-vector capacities, not all World/process overhead.
+
+On the issue16 research branch, `CYBERSAND_CELL_LAYOUT_EPOCH_BITS=6` is accepted only
+with packed32 and leaves state bits24/25 unused; default epochs remain8-bit.
+`CYBERSAND_CELL_EPOCH_OBSERVER` adds an optional serialized-owner diagnostic recorder.
+It records every resident clear, including sleeping/excluded chunks, in preallocated
+bounded buffers. It exposes diagnostic copies, not mutable authoritative cells or
+snapshot views. Capacity failure quarantines the World. See the [registered epoch
+experiment](../operations/cell-layout-experiment.md#l3-registration-epoch-width-and-direct-clear-observation)
+for the limits and comparison scope; this is not a production selection.

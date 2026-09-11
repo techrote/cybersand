@@ -146,3 +146,13 @@ It builds matched-alignment byte/packed variants and preserves the old binaries
 for separate control comparisons. `--owner-released` is required for measurements;
 keep them separate from builds and other experiments. Scoped reducers are
 `summarize_cell_layout.py` and `summarize_cell_packing.py`; neither launches benchmarks.
+
+Issue16 epoch preparation uses `tools/experiments/cell_epoch.py prepare --manifest`
+with the retained L2 preparation manifest in the isolated worktree, followed by
+`tools/experiments/verify_cell_epoch_preparation.py` on that output directory.
+The separate `measure --manifest ... --owner-released` action runs the registered
+280-process campaign only after preparation checks and owner release. The full
+`tools/experiments/summarize_cell_epoch.py` reducer preserves all samples, checks
+complete resident clear records and separates direct duration from whole-tick
+proxies. Native builds, tests and all outputs remain issue-specific; no shared DLL
+or default workspace build action is used.
