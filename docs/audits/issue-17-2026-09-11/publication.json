@@ -1,0 +1,57 @@
+{
+  "evidence_commit": "5fdca7c655a81d9693247d5e33a6db4628abb0e9",
+  "branch": "codex/issue-17-state-precision",
+  "remote_ref_verified": true,
+  "gp_comment": "https://github.com/techrote/cybersand/issues/14#issuecomment-5633025806",
+  "gp_readback_confirmed": true,
+  "issues": [
+    {
+      "number": 14,
+      "state": "open",
+      "state_reason": null,
+      "updated_at": "2026-09-11T10:24:03Z",
+      "closed_at": null,
+      "url": "https://github.com/techrote/cybersand/issues/14",
+      "status_excerpt": "## Current staged gate status — 2026-09-11\n\n- **G-L: COMPLETE / evidence admitted.** [Staged G-L](https://github.com/techrote/cybersand/issues/14#issuecomment-5632025699).\n- **G-C: COMPLETE / evidence reviewed.** [Staged G-C](https://github.com/techrote/cybersand/issues/14#issuecomment-5632174763).\n- **G-P: COMPLETE / evidence reviewed.** [Staged G-P](https://github.com/techrote/cybersand/issues/14#issuecomment-5633025806). #17 is closed as completed; retain mass8 and exact Water-specific delay4 as a controlled experimental state budget.\n- Current4-byte Cell remains the baseline pending G-final, **not permanently selected by #16**. No production Cell layout or Water precision migration is authorized.\n- #18's precision prerequisite is satisfied, but implementation still requires a concrete measured motion target and its admission. #19 remains independent; #20 remains blocked by #18/G-M and its own admission.\n- **G-final remains OPEN.** These staged records are not final architecture or owner migration approval.\n\n[Current canonical programme](https://github.com/techrote/cybersand/blob/5fdca7c/docs/operations/architecture-programme.md#g-p-staged-decision-2026-09-11) · [Completed precision evidence](https://github.com/techrote/cybersand/blob/5fdca7c/docs/audits/2026-09-11-issue-17-state-precision.md). Original programme/prompt below is retained planning context; dated staged decisions govern current gate status.\n\nProgramme / stage"
+    },
+    {
+      "number": 17,
+      "state": "closed",
+      "state_reason": "completed",
+      "updated_at": "2026-09-11T10:22:56Z",
+      "closed_at": "2026-09-11T10:22:55Z",
+      "url": "https://github.com/techrote/cybersand/issues/17",
+      "status_excerpt": "## Completed P1 / P2 / P3 — 2026-09-11\n\n**#17/P is complete.** [G-P is recorded in #14](https://github.com/techrote/cybersand/issues/14#issuecomment-5633025806). [Complete evidence, precision/threshold/delay tables and validation](https://github.com/techrote/cybersand/blob/5fdca7c/docs/audits/2026-09-11-issue-17-state-precision.md) are published on the separate `codex/issue-17-state-precision` branch.\n\n**Retain mass8 as the reference; Water-only delay4 exactly preserves 0..12 semantics.** All1,328 behavior processes conserve exact per-arm integer quantity. Worker/repeat/delay comparisons and simultaneous-worker tests pass. All392 timing processes and36 extended controls are retained. Coarse arms preserve films but lose levelness/discharge and tiny initial inputs. Mass10 provides modest improvement with extra narrow/ledge work; P2 threshold effects remain separate.\n\nSource **f3fb9de**, registration **6ae3dd5**, implementation **8fff609**, concurrency/reducer **af17fcc**, completed evide"
+    },
+    {
+      "number": 18,
+      "state": "open",
+      "state_reason": null,
+      "updated_at": "2026-09-11T10:22:57Z",
+      "closed_at": null,
+      "url": "https://github.com/techrote/cybersand/issues/18",
+      "status_excerpt": "## Current gate status after G-P — 2026-09-11\n\n**P prerequisite satisfied; implementation remains held for motion-target admission.** [Completed G-P](https://github.com/techrote/cybersand/issues/14#issuecomment-5633025806) retains **mass8 plus Water-specific delay4** as a controlled experimental state budget. It does not authorize production migration or flow history. [Issue17 evidence](https://github.com/techrote/cybersand/blob/5fdca7c/docs/audits/2026-09-11-issue-17-state-precision.md) is complete and #17 is closed.\n\nCompleted G-C still establishes no measured unmet jet/spray target. This task must justify a concrete directional-persistence target or record a no-go; P completion alone does not admit implementation. G-L carriers remain evidence/tools, not production sidecar approval. Existing experimental scope below is retained; no #18 implementation occurred during #17.\n\nProgramme / staged decision record: #14. Workstream: M.\n\n## Purpose\n\nDetermine whether a minimal material-local d"
+    },
+    {
+      "number": 19,
+      "state": "open",
+      "state_reason": null,
+      "updated_at": "2026-09-11T09:09:31Z",
+      "closed_at": null,
+      "url": "https://github.com/techrote/cybersand/issues/19",
+      "status_excerpt": "## Current gate status — 2026-09-11\n\nC is complete; the formal #15 dependency is satisfied. [G-C](https://github.com/techrote/cybersand/issues/14#issuecomment-5632174763) supplies stable film/basin frozen-authority inputs. The existing presentation experiment remains justified to investigate orientation/coverage/cost. C establishes no visual defect, renderer benefit or production render admission. No production layout selection is required. This task remains open and was not implemented during reconciliation.\n\nProgramme / staged decision record: #14. Workstream: V.\n\n## Purpose\n\nCompare current appearance with oriented fractional coverage on identical authoritative frames, including directionally ambiguous cases.\n\n## Architecture question\n\nDoes local mass-gradient reconstruction improve visible surfaces and droplets enough to justify its rendering and snapshot cost?\n\n## Dependencies\n\nCompletion prerequisite satisfied: #15/G-C is completed.\n\nRequires C's mass/presentation case definition"
+    },
+    {
+      "number": 20,
+      "state": "open",
+      "state_reason": null,
+      "updated_at": "2026-09-10T19:50:58Z",
+      "closed_at": null,
+      "url": "https://github.com/techrote/cybersand/issues/20",
+      "status_excerpt": "Programme / staged decision record: #14. Workstream: B.\n\n## Purpose\n\nProduce either a justified no-go or one bounded proof that sparse event-driven motion plus safe reinsertion solves a named unmet high-speed requirement.\n\n## Architecture question\n\nDoes a sparse promoted representation justify its ownership, sweep, lifecycle and memory cost versus local history/current transport for a defined event?\n\n## Dependencies\n\nBlocked by: #18 (completion dependency).\n\nImplementation blocked by C/L/P/M evidence and G-B admission. Design/admission can inspect I's recovered proposal and existing #12. Do not require arbitrary generated bodies; use current rectangle values only.\n\nGate entries in #14 can be reviewed while that decision issue remains open; only its final decision waits for experiment completion.\n\n## Scope\n\nAdmission and reviewed transfer charter first. If admitted, one nonreactive material, one bounded event emitter, a fixed native pool, continuous/fixed-point positions and velocities,"
+    }
+  ],
+  "production_baseline": "f3fb9de2c6e62907b07b50c7036af389da67d4a5",
+  "retained_dll_sha256": "fc6cb4ee1096219f581bace3df04ee8138e996aaf4c1436f5b2c071ea62dd496",
+  "production_merge": false
+}

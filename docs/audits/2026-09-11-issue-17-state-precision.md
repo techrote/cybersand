@@ -722,3 +722,16 @@ Canonical hits alone are not answer correctness. No historical audit was rewritt
 
 Source baseline remains f3fb9de with only the original dirty DLL, whose SHA-256
 was rechecked unchanged. All experiment code/results remain on the separate branch.
+
+## Publication and gate readback
+
+Evidence checkpoint5fdca7c655a81d9693247d5e33a6db4628abb0e9 is published on
+codex/issue-17-state-precision; the remote ref was checked against local HEAD.
+[G-P is recorded in Issue14](https://github.com/techrote/cybersand/issues/14#issuecomment-5633025806).
+Issue17 closed as completed at2026-09-11T10:22:55Z. Issue14's current gate header
+and Issue18's prerequisite status were synchronized, retaining the original scope.
+[Readback](issue-17-2026-09-11/publication.json) confirms17 closed/completed and
+14/18/19/20 open. Issue18 still requires its motion target/admission,19 remains
+independent,20 blocked, G-final open. Neither a production merge nor any downstream
+feature implementation occurred. The final documentation-only checkpoint records
+this readback without changing any measured source/executable input.
