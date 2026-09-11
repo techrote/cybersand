@@ -47,7 +47,7 @@ Updated/added:
 - `docs/reference/status-and-roadmap.md`
   - records #19 as V + H-preparation, #18 as held pending a later human-selected target/no-go, #20 unchanged and G-final open.
 - `docs/reference/retrieval-corpus.json`
-  - adds the Water-feel programme addendum to current architecture-programme retrieval.
+  - adds the Water-feel programme addendum to current architecture-programme retrieval; final diff is one intentional added corpus entry.
 - `docs/reference/retrieval-index.md`
   - routes questions about #17 perceptual interpretation, #19 deliverables and #18's held state.
 - `docs/reference/architecture-programme-questions.json`
@@ -55,7 +55,13 @@ Updated/added:
 - `docs/reference/programme-gate-questions.json`
   - updates PG03 facts for expanded #19 and adds PG04 for the post-G-P precision/perception distinction.
 
-GitHub #19 was separately revised in-place to match this contract. #14/#18 receive dated issue-thread notes rather than historical evidence being silently rewritten.
+GitHub #19 was separately revised in-place to match this contract.
+
+Dated issue-thread notes were added rather than silently rewriting historical issue evidence:
+
+- #14 comment `5637574966`: records the post-G-P sequencing refinement, H gate and unchanged G-final status;
+- #18 comment `5637576255`: records that implementation remains held pending a human-selected target/no-go;
+- #19 comment `5637577364`: records repository synchronization and the H-ready/non-selection boundary.
 
 ## Deliberate non-changes
 
@@ -65,9 +71,23 @@ GitHub #19 was separately revised in-place to match this contract. #14/#18 recei
 - #18 implementation is not admitted by this synchronization.
 - #20 dependency is unchanged.
 - No production ABI/save/render/profile migration is performed.
+- The historical body of `architecture-programme.md` is not retrospectively rewritten; the dated Water-feel addendum is the later planning authority for the affected #19/#18 ordering, and roadmap/retrieval routes point to it.
 
-## Validation scope
+## Final repository readback
 
-Repository-side readback should verify the new branch contains the synchronized prompt, addendum, roadmap, Tower note and retrieval files and that #14/#18/#19 issue notes point at the same sequencing.
+A branch comparison of `codex/issue-17-state-precision` -> `codex/issue-19-water-feel-lab-sync` after housekeeping reports:
 
-The repository's local documentation/retrieval scripts cannot be truthfully reported as executed by this GitHub-only synchronization unless a later CI/local run records them. Any existing provenance/release failures remain inherited rather than repaired here.
+- branch status: ahead;
+- ahead by 10 commits, behind by 0 at the readback point;
+- nine changed files;
+- **every changed file is under `docs/`**;
+- no native, Godot, runtime, build, save or adapter source is changed;
+- retrieval-corpus semantic diff is reduced to the single intended Water-feel addendum entry.
+
+The branch therefore remains a documentation/planning synchronization only.
+
+## Validation scope and remaining check
+
+Repository-side readback verifies the new branch contains the synchronized prompt, addendum, roadmap, Tower note, retrieval routes/questions and this audit, and the relevant GitHub issue threads record the same sequencing.
+
+The repository's local documentation/retrieval scripts (`check_docs.py`, `check_m11_consistency.py`, `check_repository.py`, retrieval evaluation and `git diff --check`) were **not executed by this GitHub-only synchronization** and are not claimed as passed. They remain an explicit first validation step when the branch is checked out for #19 implementation or earlier if a local/CI validation environment is invoked. Existing provenance/release failures remain inherited rather than repaired here.
