@@ -110,3 +110,62 @@ helper failed on Windows default encoding after checks; explicit UTF-8 fixed
 display, with no evidence/checker alteration. Initial Git commit lacked author
 configuration; the successful commit used the repository's established Codex
 identity via command-scoped configuration, with no global configuration change.
+
+## Final GitHub state and validation
+
+G-C documentation commit `17f95c655914edeecf40d2e6ec9e6a7b4e6c9b94` was pushed
+before the [G-C staged comment](https://github.com/techrote/cybersand/issues/14#issuecomment-5632174763)
+and #14 status update. #15's [completion comment](https://github.com/techrote/cybersand/issues/15#issuecomment-5632175296)
+precedes closure as **completed**. #17's dependency text was corrected without
+changing its fixed-carrier scope; #18/#19 status notes distinguish prerequisites,
+research admission and production approval. #20 and #14 remain open.
+
+The actual [GitHub dependency API](https://docs.github.com/en/rest/issues/issue-dependencies)
+readback, retained in `final-dependencies.json` under the reconciliation prefix,
+confirms the following. Edges are preserved; completion resolves their blockers
+without deleting the programme's dependency history.
+
+| Issue | State | Unresolved blockers | Gate qualification |
+|---|---|---|---|
+| #15 C | Closed / completed | 0 | G-C recorded after acceptance review |
+| #16 L | Closed / completed | 0 | G-L recorded before closing L |
+| #17 P | Open | **0 of 2 prerequisites** | #15 and #16 both completed; **unblocked**, not started |
+| #19 V | Open | **0 of 1 prerequisite** | C completed; frozen-state research needs no production layout selection |
+| #18 M | Open | #17 | Also needs a justified named target/no-go review; C has no measured jet/spray deficit |
+| #20 B | Open | #18 | Still needs G-M and separate G-B admission/transfer charter |
+| #14 G-final | Open | #19 and #20 | C/L staged review does not close G-final |
+
+Git remote readback matches original research results4726f8d/cdb4c2a and
+reconciliation17f95c6; remote main staysab4851e. Research worktrees remain clean.
+All committed reconciliation paths are under `docs/`. The original dirty DLL
+still hashes to `fc6cb4ee1096219f581bace3df04ee8138e996aaf4c1436f5b2c071ea62dd496`;
+the companion workspace's untracked worktrees remain intact. No production source,
+runtime manifest, save, toolchain, historical evidence hash or deliverable changed.
+
+Checks use the pinned Python, source root and180-second per-command timeout.
+Full commands/exits/logs are retained in `gc-final/`; final publication-record
+checks are retained in `publication-final/` in the same reconciliation prefix.
+
+| Check | Result |
+|---|---|
+| `tools/ci/check_docs.py` | Pass:58 corpus documents,99 canonical claims; metadata/link/route checks |
+| `tools/ci/check_m11_consistency.py` | Pass:28 historical source hashes and18 retained records; no new runtime acceptance |
+| `tools/ci/check_repository.py` | **Fail, inherited:** exact same16 errors as intake;14 Windows/Linux source attestations plus dirty Windows bytes/provenance and committed-LFS mismatch. No task-introduced errors. |
+| Frozen32 retrieval | Pass execution;22/32 top1,32/32 top5,MRR0.8229 |
+| Existing16 challenge retrieval | Pass execution;12/16 top1,16/16 top5,MRR0.8490 |
+| Existing5 programme retrieval | Pass execution;3/5 top1,5/5 top5,MRR0.7500 |
+| New3 gate questions | Pass execution;1/3 top1,3/3 top5,MRR0.6111; separate new development set |
+| `git diff --check` | Pass; also inspect committed diff against intake, documentation-only |
+
+Manual expected-fact review finds both gate status and the pending-G-final
+qualification in PG01's contexts; PG02 preserves the unchanged Water trajectories
+and bounded whole-cell sleep attribution. PG03's first result is the issue index
+and is **not sufficient alone**; ranks4/5 contain the current admission decisions.
+AP04 still needs rank4 for the canonical baseline. No frozen query or evaluator
+was changed to improve ranking. These lexical development metrics do not prove
+unseen answer correctness; ranking regressions and scope limitations are retained.
+
+This successful reconciliation is not an all-green release. It selects no
+permanent production Cell width, migrates no layout, adopts no shortened epoch,
+widens no IDs, implements no production sidecar/history, unifies no liquid solvers,
+starts no #17 implementation and does not close G-final.
