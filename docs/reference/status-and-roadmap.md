@@ -132,3 +132,11 @@ are unchanged. No unsynchronized live descriptor mutation is introduced.
 ## Architecture investigation after the Water checkpoint
 
 **Planned:** the [architecture programme](../operations/architecture-programme.md) isolates raw Cell layout/epoch cost, liquid characterization, precision, compact memory and fractional rendering before any policy migration. Sparse ballistic implementation requires admission evidence; coherent soliding reuses #12. No 4/8-byte winner, liquid unification or representation ladder is adopted. GitHub #11 is closed while this source still records its missing barrel work; support-dependent integration requires actual source/evidence reconciliation.
+
+## Architecture gate reconciliation, 2026-09-11
+
+**Current programme state:** [G-L is complete / evidence admitted](../operations/architecture-programme.md#g-l-staged-decision-2026-09-11).
+#16 research is complete; the current 4-byte Cell remains the baseline pending
+G-final, not a permanent width selection. Experimental carriers remain on their
+research branch. #17 still requires #15/G-C; no precision implementation begins
+in this reconciliation. #14 remains open. See the [identity and scope audit](../audits/2026-09-11-programme-gate-reconciliation.md).

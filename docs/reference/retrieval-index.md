@@ -87,3 +87,10 @@ are unchanged. No unsynchronized live descriptor mutation is introduced.
 ## Which architecture experiments should run before changing Cell or liquid state?
 
 Use the [architecture programme](../operations/architecture-programme.md) for future experiment dependencies, decision gates, retained baselines and self-contained issue prompts. Its source ledger preserves four-conversation refinements. Current behavior still belongs to the linked subsystem and ADR contracts.
+
+## Architecture gate status
+
+For completed G-L evidence, baseline retention pending G-final and #17 prerequisites,
+read the [programme gate record](../operations/architecture-programme.md#g-l-staged-decision-2026-09-11).
+Use [Cell registration](../operations/cell-layout-experiment.md) for methods and
+the linked dated audit for measurements; completion does not select production width.

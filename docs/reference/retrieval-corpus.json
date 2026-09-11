@@ -58,7 +58,8 @@
     "systems/world-storage-and-interest-region.md",
     "operations/experiment-tower.md",
     "systems/flow-transport-and-profiles.md",
-    "operations/architecture-programme.md"
+    "operations/architecture-programme.md",
+    "operations/cell-layout-experiment.md"
   ],
   "navigation": [
     "README.md",

@@ -111,3 +111,13 @@ publication limitations still need claim-level evidence. #12's existing staged
 scope is reused rather than duplicated. No broad audit or physics test was run
 for this planning intake; targeted source reads resolved Water, epoch, liquid
 mobility, ownership and scheduling facts needed by the new experiments.
+
+## G-L reconciliation, 2026-09-11
+
+The [staged G-L record](architecture-programme.md#g-l-staged-decision-2026-09-11)
+admits completed #16 evidence at `4726f8d0fae72f959926a47ab37f7244e9399638`.
+The existing 4-byte layout is the baseline pending G-final, not a permanent
+selection. This later programme control decision does not rewrite the experiment's
+original no-production-selection conclusion. Experimental code stays on its branch.
+The [reconciliation audit](../audits/2026-09-11-programme-gate-reconciliation.md)
+records exact timing commits, reduction hashes and preserved DLL identity.

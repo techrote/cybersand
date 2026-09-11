@@ -131,3 +131,11 @@ closed-basin cases per implementation, 55 native tests, 24 isolated Godot fixtur
 30 retained non-Water reference cases and 72 native/real-Web transport cases.
 Its retained editor-import failure is an environment result; the rebuilt isolated
 project passed. Faster leveling is fixture-specific, not universal instant flow.
+
+## Programme gate reconciliation, 2026-09-11
+
+The [reconciliation audit](../audits/2026-09-11-programme-gate-reconciliation.md)
+verifies #16 result/timing source identities, retained binaries and reduction
+hashes without rerunning the campaign. Its 2324 timing processes are reused
+evidence, not new execution. Docs/M11 intake pass; repository validation retains
+16 publication/provenance/LFS failures. No current runtime release is claimed.

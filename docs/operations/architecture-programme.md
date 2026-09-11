@@ -393,3 +393,44 @@ change. Final issue readback, link/section/dependency checks and source-scope
 inspection complete this task. The [planning execution report](../audits/2026-09-10-architecture-programme.md)
 records created issues, exact remote/dependency readback, manual quality review
 and separate documentation/retrieval versus inherited publication-check outcomes.
+
+## G-L staged decision, 2026-09-11
+
+**G-L: COMPLETE / evidence admitted.** Recorded by Codex from verified result
+`4726f8d0fae72f959926a47ab37f7244e9399638`; this is a staged review under
+[#14](https://github.com/techrote/cybersand/issues/14), not invented owner approval
+or the final architecture decision. The [complete retained L evidence](../audits/2026-09-10-issue-16-cell-layout.md)
+and [registration](cell-layout-experiment.md) preserve positive, negative and
+ambiguous results, including rejected preparation and all cost flags.
+
+**Retain the current layout as the experimental/production baseline pending
+G-final. Retaining the current Cell as the baseline is a programme control
+decision pending G-final, not a permanent architectural selection by Issue #16.**
+
+- Current 4-byte Cell remains the baseline. L1 doubles Cell arrays at 8 bytes
+  (sleeping fixture 72.25 to 144.5 MiB), with workload-sensitive penalties;
+  sleeping one-worker median paired p95 rises 15.04%.
+- Packed controls establish valid experimental carriers, with modest or adverse
+  access costs and no universal production winner. Optional SoA/sparse carriers
+  remain evidence/tools for later real payloads and semantic features; their
+  density-dependent memory crossovers accompany active-access costs.
+- Shortened epoch is not selected: 32 versus 8 all-resident clears over 2048 ticks,
+  sleeping p99 3.81–3.99 times the 8-bit control. No epoch or scheduler change.
+- Wider IDs are deferred for lack of demonstrated demand: 175 byte codes remain;
+  ABI, rendering, profiles, saves and state-carried IDs require broader migration.
+- Generic 10/14/8-style state compression is not admitted as lossless current-state
+  equivalence. L6 geometry remains non-admitted; no locality evidence supports it,
+  clear cell count is unchanged, and the large reservation would exceed capacity.
+- No production migration, Cell width selection, sidecar API, storage geometry,
+  ID expansion or other architecture change is authorized.
+
+Limits remain one Windows host, pinned Clang/toolchain, no PMU/cache/bandwidth
+capture, no fresh Linux/Wasm/desktop/Web migration acceptance, incomplete
+allocator/OS allocation attribution, and L4's neutral four-byte payload instead
+of a real production feature. Strided placement and tiny-worker-batch noise also
+limit generalization. A negative result successfully completes the experiment.
+
+After #16 completion, #17's remaining formal prerequisite is #15/G-C. Its fixed
+experimental carrier isolates precision; production width remains outside P's
+authority. #14 stays open for G-final. [Reconciliation identities](../audits/2026-09-11-programme-gate-reconciliation.md)
+separate the documentation checkpoint from experimental source and raw evidence.
