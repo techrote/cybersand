@@ -5,71 +5,91 @@
     {
       "id": "AP01",
       "query": "Does the architecture programme select eight-byte Cells or require liquid unification?",
-      "canonical": [
-        "operations/architecture-programme.md"
-      ],
+      "canonical": ["operations/architecture-programme.md"],
       "facts": [
         "No width winner or liquid unification is adopted.",
         "Representation cost precedes state precision and motion semantics."
       ],
-      "sources": [
-        "operations/architecture-programme.md"
-      ]
+      "sources": ["operations/architecture-programme.md"]
     },
     {
       "id": "AP02",
       "query": "What evidence gates ballistic material and how does it relate to soliding issue 12?",
-      "canonical": [
-        "operations/architecture-programme.md"
-      ],
+      "canonical": ["operations/architecture-programme.md"],
       "facts": [
         "G-B needs a named unmet high-speed requirement and reviewed singular-owner transfer charter.",
         "No-go is valid. Existing #12 owns coherent research; near-rest reversal need not depend on ballistic motion."
       ],
-      "sources": [
-        "operations/architecture-programme.md"
-      ]
+      "sources": ["operations/architecture-programme.md"]
     },
     {
       "id": "AP03",
       "query": "Can extra Cell bits store transient rigid-body occupancy or change exact Water conservation?",
-      "canonical": [
-        "operations/architecture-programme.md"
-      ],
+      "canonical": ["operations/architecture-programme.md"],
       "facts": [
         "ADR-007 keeps derived occupancy separate.",
         "ADR-005 remains accepted; bounded numerical drift needs measured necessity and explicit decision."
       ],
-      "sources": [
-        "operations/architecture-programme.md"
-      ]
+      "sources": ["operations/architecture-programme.md"]
     },
     {
       "id": "AP04",
       "query": "Which current baseline should Cell experiments preserve, including epoch clearing and recent Water?",
-      "canonical": [
-        "operations/architecture-programme.md"
-      ],
+      "canonical": ["operations/architecture-programme.md"],
       "facts": [
         "Local intake 8f4ffb9 uses three-quarter Water relaxation, not historical half.",
         "Repeated epoch clears are255 ticks apart or63 for comparable6-bit zero-reserved design."
       ],
-      "sources": [
-        "operations/architecture-programme.md"
-      ]
+      "sources": ["operations/architecture-programme.md"]
     },
     {
       "id": "AP05",
       "query": "Does closed issue 11 prove that barrel support is implemented for soliding?",
-      "canonical": [
-        "operations/architecture-programme.md"
-      ],
+      "canonical": ["operations/architecture-programme.md"],
       "facts": [
         "Administrative closure conflicts with current source/evidence.",
         "Support-dependent #12 integration requires source-matched evidence or explicit scope decision."
       ],
+      "sources": ["operations/architecture-programme.md"]
+    },
+    {
+      "id": "AP06",
+      "query": "Does issue 17 prove that eight-bit Water mass is the perceptually correct minimum for gameplay?",
+      "canonical": ["operations/architecture-programme-water-feel-addendum.md"],
+      "facts": [
+        "No. Issue17 remains the quantitative oracle and mass8 reference, but numerical divergence is not automatic perceptual rejection.",
+        "Quantitative equivalence and perceptual adequacy are separate gates; hard correctness remains mandatory."
+      ],
       "sources": [
-        "operations/architecture-programme.md"
+        "operations/architecture-programme-water-feel-addendum.md",
+        "audits/2026-09-11-issue-17-state-precision.md"
+      ]
+    },
+    {
+      "id": "AP07",
+      "query": "What must issue 19 deliver before human Water-feel evaluation begins?",
+      "canonical": ["operations/architecture-programme-water-feel-addendum.md"],
+      "facts": [
+        "Issue19 now owns V1 four-level fractional presentation plus V2 Water Feel Lab/H-preparation.",
+        "It must provide deterministic scenarios, runtime mass3..8 and coherence0..12 policies without recompilation, Apply+Reset, A/B/blind support and correspondence with issue17 controls.",
+        "Issue19 completes H-ready and does not select the preferred Water state budget."
+      ],
+      "sources": [
+        "operations/architecture-programme-water-feel-addendum.md",
+        "operations/experiment-tower.md"
+      ]
+    },
+    {
+      "id": "AP08",
+      "query": "Why does compact-motion issue 18 remain held after precision gate G-P completed?",
+      "canonical": ["operations/architecture-programme-water-feel-addendum.md"],
+      "facts": [
+        "Precision completion supplies a state reference but not a demonstrated need for flow history.",
+        "The later human gate should name a perceptual directional-persistence deficit or support a no-go before issue18 implements history."
+      ],
+      "sources": [
+        "operations/architecture-programme-water-feel-addendum.md",
+        "operations/architecture-programme-prompts/compact-motion.md"
       ]
     }
   ]
