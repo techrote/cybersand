@@ -1,6 +1,6 @@
 ---
 title: Cell layout experiment registration and execution
-status: Planned
+status: Current
 document-kind: runbook
 scope: Issue 16 staged native representation research, preregistered before candidate code; no production migration
 canonical-for: [cell-layout-experiment]
@@ -12,13 +12,15 @@ related-documents: [architecture-programme.md, architecture-programme-prompts/ce
 
 ## Status and boundaries
 
-**Current research checkpoint:** L1 completed its first owner-released campaign
-on September10–11; see the [dated results](../audits/2026-09-10-issue-16-cell-layout.md#l1-results).
-Execute [issue 16's full charter](architecture-programme-prompts/cell-layout.md)
-in staged order. The original owner timing hold was released with “Ready for the
-first uncontended run. Start.” Do not overlap measurements with issue15 or builds.
-L1 completion is not issue completion or G-L acceptance; L2–L4 remain mandatory.
-No merge, deployment, remote mutation, production layout choice or loaded DLL replacement.
+**Current research checkpoint:** issue16's local research is complete. L1/L2/L3/L4
+finish196/448/280/1400 registered timing processes with exact scoped comparisons.
+L5 records compatibility limits; L6 has a supported non-admission. The
+[dated evidence and final G-L](../audits/2026-09-10-issue-16-cell-layout.md#l4-measured-results-and-final-g-l-september11)
+retain methods, failures, cost screens and uncertainties. G-L establishes experimental
+carriers; it selects no production layout, epoch width or larger-ID catalogue.
+The owner released the uncontended windows in the active task. No merge, deployment,
+remote mutation or loaded DLL replacement occurred. Stage registrations below
+remain the pre-code contracts and historical review sequence.
 
 Editing/build root: `C:/kybersand/worktrees/issue-16-cell-layout`, branch
 `codex/issue-16-cell-layout`, base `b16408c28de67e3b30ebb1f0172e78d594296052`.
@@ -45,10 +47,10 @@ compiler bitfields. All unused bits are zero and carry no behavior.
 | L5 | Compatibility inventory | Inspection now; no new materials, profile widening, saves or render changes. |
 | L6 | Optional 64-square storage | Not admitted without profiling justification and a new registration. Keep activity32/core64/radius2; repeat both layouts if admitted. |
 
-Stages L3-L4 are mandatory remaining research, pending preceding stage evidence,
-not rejected/skipped. A failed equivalence gate rejects that candidate and records
+Stages L3-L4 were mandatory and completed after their preceding evidence gates. A failed equivalence gate rejects that candidate and records
 the failure; cost regressions trigger review, not automatic omission of other stages.
-G-L stays open until every intended stage has evidence or a supported gate disposition.
+Every intended stage now has evidence or a supported gate disposition; G-L evidence
+is complete locally without production acceptance.
 
 ## Primary metrics and rejection criteria
 
@@ -99,7 +101,8 @@ Use a compact closed Water/Sand basin and separate reactive catalogue fixture;
 run the existing full native regression suite for failure/region/temperature,
 movement, reactions, immutable snapshots, capacity and opt-in transport coverage.
 First-stage source preparation may run these correctness checks without collecting
-tick timings. Dense/sparse benchmark-sized A/B remains behind the owner hold.
+tick timings. Dense/sparse benchmark A/B was initially held, then executed after
+the owner released the uncontended window.
 
 L3 must cover signed seams, sleeping and region-excluded resident cells, re-entry,
 movement and prewritten explosion destinations across every wrap. Clear timeline:
@@ -224,6 +227,26 @@ cost. Sparse/sleeping setup advances four ticks; use actual World tick numbers.
 Retain >15% paired p95 and >1ms extra clear/excess review screens.
 
 ## Run and review
+
+**Final L4 review, September11:** all1400 processes,700 interleaved pairs and full
+worker/repeat comparisons pass. Independent replay and metadata checks pass; no
+batch C++ new calls occur. Optional arrays save memory when absent, while active
+access often costs more. At100% initial density sparse arrays occupy4.0MiB versus
+2.5MiB inline, and one-worker p95 rises39–45%. The sparse/SoA capacity crossover
+lies between1–5% clustered and15–50% strided density for this neutral4-byte payload.
+The strided pattern is not uniform random, and active density evolves through
+explicit transactions. Tiny four-worker batches show substantial tail variability.
+No World solver-speed conclusion or sidecar integration is implied.
+
+**Final G-L disposition:** equivalent experimental carriers and separated epoch
+costs are established. L5 finds no demonstrated demand beyond byte-ID headroom;
+16/40/8 still executes legacy IDs, and generic10/14/8 is non-equivalent. L6 is not
+admitted: halving chunk edge does not reduce all-resident clear cell count; no
+PMC/locality evidence supports it, and the retained large reservation would require
+4624 chunks above the4096 cap. No production migration/epoch/ID/scheduler selection.
+The audit owns complete timing/memory tables, identities and explicit hardware,
+allocator, payload/distribution and platform gaps.
+
 
 **L3 review, September11:** all280 processes and70 epoch/14 bridge/56 observer
 pairs pass exact normalized state/work and final quantities. Six-bit epochs clear

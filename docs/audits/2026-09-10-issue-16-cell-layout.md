@@ -2,7 +2,7 @@
 title: Issue 16 source intake and Cell layout evidence
 status: Current
 document-kind: evidence
-scope: Local L1/L2/L3 representation evidence and L4 registration; G-L incomplete
+scope: Completed local L1–L5 representation evidence and supported L6 non-admission; no production migration
 canonical-for: []
 last-reviewed: 2026-09-11
 related-documents: [../operations/cell-layout-experiment.md, ../operations/architecture-programme.md]
@@ -20,11 +20,13 @@ SHA-256 `fc6cb4ee1096219f581bace3df04ee8138e996aaf4c1436f5b2c071ea62dd496`.
 It is not the experiment control. Baseline source includes current Water work;
 older remote main and published runtime manifests are not substitutes.
 
-**Current checkpoint:** the owner released the first uncontended run after the
-preparation commit `b2d8faffa86e472875ba74f7c6b1488bbdd06f8a`. L1 completed on
-September10–11; [results below](#l1-results). The original preparation
-hold and its evidence are retained as history. This does not close issue16.
-The [registration](../operations/cell-layout-experiment.md) precedes candidate code.
+**Current checkpoint:** issue16 research is complete locally. L1/L2/L3/L4 execute
+2324 registered timing processes in total; exact comparisons and scoped validation
+pass, with negative and ambiguous cost evidence retained. L5 records compatibility
+and demand limits; L6 is not admitted for the supported reasons below. G-L establishes
+experimental carriers, not a production layout/epoch/ID decision. No merge,
+deployment or remote issue mutation occurred. The original preparation hold and
+stage checkpoints remain historical evidence below.
 
 ## State range audit before accessors
 
@@ -77,17 +79,17 @@ cells**, including sleeping/excluded chunks, then sets epoch1. Clear ticks are
 and recur63, giving32 clears through2017. Moves/swaps and Water transfers mark both
 endpoints; event writes follow the clear. These are source predictions, not timings.
 
-## Gate disposition and remaining work
+## Gate disposition, September11
 
-| Stage | Disposition after L1 review, September11 |
+| Stage | Local research disposition after L4 review, September11 |
 |---|---|
 | L1 stride | Completed196 processes; exact comparisons pass, sleeping p95/wrap-tail costs flagged. |
 | L2 packing/ID access | Completed448 processes; exact pairs pass, individual cost flags retained. |
 | L3 epoch | Complete:280 processes; exact parity, sleeping tail penalty and direct clear cost retained. |
-| L4 optional state | Prepared:720 corrected runs,12 smoke runs and60 independent replays pass; timing pending. |
+| L4 optional state | Complete:1400 timing processes/700 exact pairs; allocation crossover and active-access costs retained. |
 | L5 ID inventory | Source review recorded above; larger IDs have capacity headroom but no demonstrated demand. |
-| L6 storage geometry | Not admitted: no profiling evidence yet. |
-| G-L | OPEN; L1 negative/ambiguous cost evidence retained, no winner or migration approval; issue incomplete. |
+| L6 storage geometry | Not admitted: direct clear cost follows resident cells; no geometry/locality evidence, and the retained large reservation exceeds4096 chunks at64-square storage. |
+| G-L | EVIDENCE COMPLETE: equivalent experimental carriers established; no production width, epoch, larger-ID or scheduler approval. |
 
 ## Documentation checkpoint map
 
@@ -827,3 +829,161 @@ execution progress. Questions and evaluator remain fixed; both checks are retain
 
 Final L4 preparation docs/M11 pass, with unchanged14 release errors and18 materialized
 runtime files. Retrieval hit@1/hit@5/MRR: frozen 23/32,32/32,0.8385; challenges 12/16,16/16,0.8594; programme 4/5,5/5,0.9; layout 2/3,3/3,0.8333.
+
+## L4 measured results and final G-L, September11
+
+Frozen timing commit `d71c9342ccf37b0fda7d34d5b083d243091f7fde`; campaign
+`validation/local/issue-16/timing-l4-20260911-074955`,07:49:55–07:58:06 BST.
+Prepared-file hashes are identical to the committed release source; release identity
+resolves the preparation manifest's earlier HEAD plus local delta. All1400 registered
+processes exit0, with no retries, failures or sample exclusions. Builds/tests/full
+reductions do not overlap the campaign. The pre-run process snapshot is empty for
+benchmark/build/Godot executables; Balanced power remains unchanged. The owner
+released this window for the remaining stages. No claim of zero OS/background noise.
+
+Full reduction passes700 interleaved pairs and exact records across all carriers,
+repeats and worker counts. Twenty-five independent1920-batch input replays verify
+work, complete state and explicit species/Water/tag ledgers. A separate checker
+verifies every one of1400 metadata records against independently computed initial
+occupancy/capacity/final occupancy and footprint. Binaries/compiler/source hashes
+and original checkout/DLL remain unchanged after timing. Reduced JSON SHA-256:
+`ed950977ba0aba06e39102fe6bd433fb3c9be650f0e49f5d43edc15b20fab648`.
+
+Six supplemental observer-off/on semantic checks run **after** timing at15% strided
+density,1800 batches, all carriers and1/4 workers. Their work and full final state
+match preparation exactly; clocks are excluded from the1400-process campaign.
+The common transaction/work-counter cost is included in timings, not subtracted.
+No separate estimate of an uninstrumented transaction kernel is claimed.
+
+### Active access cost
+
+Median of seven paired steady p95 candidate/inline ratios. Density is initial
+payload density; workloads and capacity refusals match exactly within every pair.
+Batch units are512 attempted transactions, including invalid/refused operations.
+
+|Initial density|Pattern|SoA1 worker|SoA4 workers|Sparse1 worker|Sparse4 workers|
+|---:|---|---:|---:|---:|---:|
+|0%|clustered|1.1886|0.8659|1.0833|1.2083|
+|0%|dispersed|1.1989|1.1304|1.0578|1.0345|
+|1%|clustered|1.1421|1.1068|1.0533|1.1467|
+|1%|dispersed|1.1751|0.8718|1.0909|0.8632|
+|5%|clustered|1.1022|1.1333|1.0267|0.9398|
+|5%|dispersed|1.1739|1.2375|1.1486|1.1429|
+|15%|clustered|1.1714|1.0400|1.1044|1.0779|
+|15%|dispersed|1.2527|1.2410|1.1685|1.2537|
+|50%|clustered|1.1348|1.2025|1.2184|1.4595|
+|50%|dispersed|1.2083|1.4578|1.2609|1.4157|
+|100%|clustered|1.2158|1.6286|1.3913|1.5256|
+|100%|dispersed|1.2614|1.2317|1.4477|1.4815|
+
+Of100 comparison series,27 median p95 ratios exceed the15% research screen;
+231 of700 individual pairs do. Twenty-six flagged medians are actively accessed
+cases; one is sparse allocated-unread/four-worker. These are research review flags,
+not production limits. All individual pairs/outliers remain in reduced.json and
+summary.md. No candidate is tuned or selected from these results.
+
+One-worker allocated-unread medians range0.9815–1.0000 for both sidecars. Absent
+one-worker ratios are0.9818 SoA and1.0000 sparse. Four-worker unread ratios vary
+0.7931–1.1304 SoA and0.7500–1.2069 sparse; absent ratios1.0000/1.1290. Tiny batches,
+barriers and host timing variability limit interpretation of apparent wins and tails.
+
+|Active carrier/workers|Median-pair p50 range|p99 range|max range|total range|
+|---|---|---|---|---|
+|soa/1|1.1678–1.2313|1.0850–1.2649|0.6871–1.6754|1.1265–1.2572|
+|soa/4|1.0179–1.7407|0.4973–2.2458|0.7422–2.6295|0.9422–1.6482|
+|sparse/1|1.0604–1.4510|1.0102–1.4205|0.7598–1.5889|1.0617–1.3864|
+|sparse/4|1.0000–1.5556|0.7742–2.2609|0.4249–3.8008|0.9268–1.5584|
+
+### Batch scale, worker scope and memory
+
+These descriptive medians pool the registered cases/replicates within each row.
+Worker blocks are not interleaved worker-count A/B trials; do not infer scheduler
+scaling in World. One/four workers execute the same eight exclusive chunk-pair
+streams. Pool/barrier cost is included. Absent/unread units are8192 legacy reads;
+active units are512 attempts. Startup and all120 warmup samples remain separate
+from1800 steady samples; full p50/p95/p99/max/total and process memory are retained.
+
+|Mode/carrier|Median p95 µs,1/4 workers|Mean ns/unit median,1/4 workers|
+|---|---|---|
+|absent/inline|5.400 /2.800|0.656 /0.303|
+|absent/soa|5.400 /3.200|0.648 /0.312|
+|absent/sparse|5.400 /3.300|0.652 /0.307|
+|unread/inline|5.400 /2.800|0.654 /0.305|
+|unread/soa|5.400 /2.700|0.650 /0.292|
+|unread/sparse|5.400 /2.700|0.651 /0.300|
+|active/inline|18.050 /8.050|30.432 /11.840|
+|active/soa|21.300 /9.100|35.781 /14.227|
+|active/sparse|20.400 /9.050|34.383 /14.070|
+
+The prepared footprint table above is verified unchanged during timing. At full
+initial density sparse arrays occupy4.0000MiB versus2.5000MiB inline/SoA, and sparse
+one-worker p95 rises39.1–44.8%. At zero absent density both sidecars save1MiB of
+resident arrays. Sparse/SoA capacity crossover lies between1–5% clustered and15–50%
+strided initial density. Metadata/address lookup/refusal work is included; these
+results apply only to this4-byte neutral tag and declared capacity policy.
+
+Across active runs, process private memory ranges3.672–3.863MiB for inline,
+2.613–3.863MiB for SoA, and2.625–5.355MiB sparse. Working set/peak counters and every
+per-chunk high-water/capacity value are retained, not treated as allocator-exact
+accounting. Median startup across active cases is2.754/3.986ms inline,2.596/3.871ms
+SoA,5.108/6.310ms sparse (workers1/4), including preparation and100 empty pool cycles.
+
+Active tag counts evolve through the declared source/sink transactions. For both
+patterns initial counts0/2621/13107/39321/131072/262144 end at
+0/2500/12484/37384/124552/249104. Initial100% therefore ends about95.0%; this is not
+a constant-density access curve. Initial placement is fixed strided dispersion,
+not uniform random scattering. No real material payload demand, World integration,
+liquid/physics improvement or full-world streaming bandwidth follows from this carrier.
+
+### Final gate and remaining uncertainties
+
+L1 establishes a width tax without added semantics, including a15.04% median
+sleeping/one-worker p95 flag and doubled Cell arrays. L2 establishes lossless packing
+controls with modest or adverse costs and no production winner. Its wide getter
+still returns the legacy8-bit enum, so it does not measure a real16-bit catalogue.
+L3 establishes safe shortened bookkeeping in the tested fixtures, but four times
+as many clears over2048 ticks and much worse sleeping tails. L4 establishes bounded,
+lossless neutral carriers with a distribution-dependent memory crossover and active
+access costs; it does not authorize a sidecar API in World. L5 finds175 unused byte
+IDs, no demonstrated larger-ID demand, and explicit ABI/profile/render/save/state-ID
+migration costs. Generic10/14/8 is non-equivalent for accepted byte states.
+
+**L6 not admitted:** direct measurements identify all-resident clearing cost, whose
+cell count is not reduced simply by halving storage edge. No PMC/locality evidence
+supports a64-square storage comparison. The retained4352-square large reservation
+would require68²=4624 storage chunks at64, above the fixed4096 cap, requiring a new
+capacity charter. This is a supported non-admission, not proof that64 could never
+help another workload. Keep storage/activity/core/radius128/32/64/2 unchanged.
+
+**G-L evidence is complete locally.** Valid equivalent experimental carriers can
+support later P/M questions. No production4-byte retention,8-byte migration, shorter
+epoch, larger-ID catalogue, extra velocity/history, lossful encoding or scheduler
+resize is approved. No merge, deployment, push or remote issue closure is performed.
+
+Remaining gaps: one Windows host and pinned compiler; no fresh Linux/Wasm/desktop
+or Web acceptance; no PMU trace/cache/bandwidth attribution (WPR advertises sources,
+but no elevated PMC capture was collected); allocator/OS allocation detail and common
+instrumentation cost; real sidecar payload/ownership integration; constant-density
+and uniform-random access; larger-ID execution beyond legacy values. Retained #9/#10/
+#13/Water evidence supplies baseline facts only. Correctness/footprint results are
+stronger than causal performance conclusions for tiny four-worker batches.
+
+
+### Final local validation and recoverability
+
+`validation/local/issue-16/final-results` passes check_docs and historical M11.
+Repository checking retains14 published-runtime source-attestation errors and18
+materialized runtime files; this is not an all-green release or a reason to replace
+the deliberately dirty DLL. Frozen retrieval hit@1/hit@5/MRR23/32,32/32,0.8385;
+challenge12/16,16/16,0.8594; programme4/5,5/5,0.9000; layout2/3,3/3,0.8333.
+Fixed questions/evaluator remain unchanged. Manual route review distinguishes
+completed experimental evidence from production approval and preserves baseline
+Cell, recent Water, ownership, pause/quarantine and issue11 caveats. Diff checks pass.
+
+The final results checkpoint is the local commit named **Complete issue16 Cell
+layout research and record G-L evidence** on `codex/issue-16-cell-layout`, following
+preparation `d71c9342ccf37b0fda7d34d5b083d243091f7fde`. Its resolved hash is returned
+to the owner and retained in local completion metadata. Source/build/evidence remain
+in this issue worktree. Original HEAD remains b16408c and its only dirty DLL retains
+SHA-256 `fc6cb4ee1096219f581bace3df04ee8138e996aaf4c1436f5b2c071ea62dd496`.
+No merge, deployment or remote mutation was performed.

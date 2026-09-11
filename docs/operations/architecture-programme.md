@@ -408,5 +408,8 @@ The [cell layout registration](cell-layout-experiment.md) and
 processes with exact comparisons and padded sleeping cost flags. L2 completes448
 packing/bridge/observer processes with exact comparisons and individual cost flags.
 L3 completes280 processes with exact comparisons and a sleeping tail penalty from
-more frequent clearing. L4's corrected correctness/replay screen passes; sidecar
-timing remains required. G-L is open and no production layout is selected.
+more frequent clearing. L4 completes1400 processes and700 exact pairs with a neutral
+sidecar allocation crossover and active-access costs. L5 records compatibility and
+ID-demand limits; L6 is not admitted on the documented profiling/capacity evidence.
+G-L evidence is complete locally; no production layout, epoch, ID or scheduler is
+selected. All cost flags, preparation failures and platform/hardware gaps are retained.
