@@ -135,3 +135,11 @@ threaded probe must yield before replacing a newly constructed default world,
 after replacement and after teardown so browser pthread startup/recycling can
 finish before synchronous native joins. This fixture lifecycle requirement does
 not change production native ownership or introduce asynchronous Web simulation.
+
+## Issue17 native precision research
+
+The separate codex/issue-17-state-precision worktree has an experimental native
+mass interface and fixed wide Cell. Use its [registered driver](state-precision-experiment.md)
+and [source/artifact evidence](../audits/2026-09-11-issue-17-state-precision.md),
+not the workspace default DLL builder. No experimental DLL, Web module, save
+migration or renderer was published. Core tests/timing do not certify those adapters.

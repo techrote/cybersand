@@ -115,6 +115,6 @@ is existing Dust; chemistry and fire cadence remain unchanged.
 Read [current G-C/G-L decisions](architecture-programme.md#g-c-staged-decision-2026-09-11)
 and [reconciliation identities](../audits/2026-09-11-programme-gate-reconciliation.md).
 Both research results are published on separate experiment branches; this active
-checkpoint changes documentation only. #17 is unblocked but not started; obtain
-its fixed experimental carrier from verified L evidence without inferring a
-production migration. The current4-byte baseline remains pending G-final.
+checkpoint changes documentation only. #17 subsequently completed P1/P2/P3; read the [G-P review](architecture-programme.md#g-p-staged-decision-2026-09-11)
+and [precision evidence](../audits/2026-09-11-issue-17-state-precision.md). Retain mass8
+and Water-specific delay4 as an experimental budget without inferring production migration. The current4-byte baseline remains pending G-final.

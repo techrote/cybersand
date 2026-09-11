@@ -12,10 +12,11 @@ related-documents: [../architecture-programme.md, ../architecture-programme-sour
 
 ## Identity and dependencies
 
-**Programme status, 2026-09-11:** C/G-C and L/G-L are complete; #17 is unblocked
-but not started. See the [staged review](../architecture-programme.md#g-c-staged-decision-2026-09-11).
-Use one controlled experimental carrier. No production Cell-width selection or
-migration follows from this prerequisite update; the experiment below is unchanged.
+**Programme status, 2026-09-11:** P1/P2/P3 completed on the separate experimental
+branch. [G-P](../architecture-programme.md#g-p-staged-decision-2026-09-11) retains
+mass8 and records Water-only delay4 equivalence. The original execution prompt
+below is retained; [completed evidence](../../audits/2026-09-11-issue-17-state-precision.md)
+contains outcomes and limits. No production migration or #18 implementation.
 
 Issue: [#17](https://github.com/techrote/cybersand/issues/17).
 Programme/workstream: P; [master programme](../architecture-programme.md).

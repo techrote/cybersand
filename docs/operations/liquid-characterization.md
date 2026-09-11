@@ -54,7 +54,8 @@ stable film/basin inputs let it investigate local coverage/orientation under its
 existing visual/cost contract. C proves neither a visual deficit nor a renderer
 benefit and authorizes no render migration. V does not require production layout
 selection. #18/M has no admitted measured jet/spray target; implementation remains
-held for #17/G-P and a concrete target/no-go review. #20/B still requires #18/G-M
+held for a concrete target/no-go review; [completed G-P](architecture-programme.md#g-p-staged-decision-2026-09-11)
+now satisfies its precision prerequisite. #20/B still requires #18/G-M
 and its separate admission/transfer gate. General liquid unification, universal
 FreeMass, new yield solvers, production velocity/history and Cell widening remain
 non-admitted. G-final stays open.

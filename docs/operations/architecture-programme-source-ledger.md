@@ -133,3 +133,13 @@ now that G-L is complete; V's frozen-state research remains independent. C does
 not admit M implementation without a target, generalized quantity/yield or any
 production migration. #18 still waits on P/G-P, #20 on M/G-M plus admission;
 #14/G-final stays open. Original C/L result records retain their dated scope.
+
+## G-P reconciliation, 2026-09-11
+
+[Completed Issue17](../audits/2026-09-11-issue-17-state-precision.md) executes the
+later tightened owner request on f3fb9de plus isolated experimental source. The
+[staged G-P](architecture-programme.md#g-p-staged-decision-2026-09-11) retains mass8,
+records Water-only delay4 equivalence, rejects interpreting coarse early stalls as
+an uncomplicated speedup, and preserves independent M/V/B/G-final admissions.
+The current4-byte production baseline remains pending G-final; no production
+migration or downstream feature implementation occurred.

@@ -145,3 +145,12 @@ native regressions. All576 raw output hashes and both executable/source manifest
 were verified, with no new physics execution. [Coverage and limits](../audits/2026-09-11-issue-15-coverage.md)
 support G-C completion and bounded P admission;85/112 cost flags remain evidence,
 not an all-green performance or migration claim.
+
+## Issue17 fixed-carrier state precision, 2026-09-11
+
+[Completed native Windows evidence](../audits/2026-09-11-issue-17-state-precision.md):
+1328 exact behavior processes,392 timed processes,36 extended per-tick controls,
+all eight same-phase concurrency configurations, and55 native tests each for
+unmodified source/fixed-carrier mass8. Delay4 is Water-specific semantically exact;
+G-P retains mass8 as reference. Shared-desktop cost limits and inherited provenance
+failures remain explicit. No fresh Web/Linux/Godot or production migration acceptance.

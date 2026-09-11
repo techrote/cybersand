@@ -22,6 +22,14 @@ all four complete conversations, later refinements, rejected alternatives and
 repository conflicts. It is the traceability record; this page owns the programme.
 Future implementers use the linked prompts without needing those conversations.
 
+## Current staged status, after G-P (2026-09-11)
+
+C/G-C, L/G-L and P/G-P are complete. [Issue17 evidence](../audits/2026-09-11-issue-17-state-precision.md)
+retains mass8 and proves Water-specific delay4 equivalence for controlled downstream
+budgets. Current4-byte production baseline remains pending G-final. M still needs
+a concrete measured motion-target admission; V independent; B blocked; G-final open.
+Earlier dated staged decisions below retain their original prerequisite context.
+
 ## A. Current relevant architecture and accepted decisions
 
 Intake is local `8f4ffb96e03dc50cb43ab9c84de17ccb44c03774` in
@@ -438,6 +446,9 @@ separate the documentation checkpoint from experimental source and raw evidence.
 
 ## G-C staged decision, 2026-09-11
 
+This records the C review before P execution. The later [G-P decision](#g-p-staged-decision-2026-09-11)
+completes #17 and satisfies M's precision prerequisite; its target admission remains required.
+
 **G-C: COMPLETE / evidence reviewed.** Recorded by Codex after G-L and #16
 reconciliation, from verified #15 result `cdb4c2a6df0248c76e7957fd09cae77655ec974f`.
 The [complete acceptance matrix](../audits/2026-09-11-issue-15-coverage.md) and
@@ -473,3 +484,42 @@ five translations/registered geometries, no new desktop/Web/Linux/sanitizer or
 migration acceptance, incomplete process/PMU/GPU and exact wake/write attribution,
 no heap-scale stress law or new chemistry units. These limit future admission;
 they do not invalidate successful characterization.
+
+## G-P staged decision, 2026-09-11
+
+**G-P: COMPLETE / evidence reviewed.** [Completed P1/P2/P3 evidence](../audits/2026-09-11-issue-17-state-precision.md)
+and [registration](state-precision-experiment.md) use one fixed8-byte 16/40/8-class
+carrier, epoch8 and unchanged local Water algorithm. All1328 behavior processes
+conserve exact per-arm integer quantity; worker/repeat and Water delay4/8 comparisons
+pass. Eight supplementary concurrent-worker configurations pass. All392 timing
+processes and36 extended verification processes are retained; no failed runtime or
+candidate rescue. Windows/native-only evidence, with shared-desktop timing limits.
+
+**Result: retain mass8 as the reference experimental quantity budget.** Coarse4/6
+retain films but lose meaningful levelness/discharge and erase1/255,2/255 inputs at
+initial quantization. Mass10 improves narrow levelness modestly and extends active
+work, while leaving the wide finite-horizon residual near mass8. Lower precision's
+apparent speed mostly reflects reduced work/early stalls; no Cell byte saving exists.
+P2 shows4/6 normalized-zero versus literal-one tolerance gives identical trajectories;
+10-bit literal-one improvements belong to threshold policy and add narrow/ledge work.
+
+Water coherent delay4 preserves every existing0..12 value, max merge, pre-decrement,
+creation/reset and movement semantic. **Mass8 + delay4 is a Water-specific12-bit
+semantic budget for subsequent controlled research**, not generic state compression.
+Other materials retain full-byte state. Delay4 has no demonstrated speed benefit
+inside this fixed carrier. The G-P result selects, at most, an experimental state
+budget for downstream controlled work. It does not select a production Cell layout
+or authorize production Water migration.
+
+| Work | Disposition after G-P |
+|---|---|
+| #17/P | Complete: all main mass, separate threshold and delay arms have reviewed accounting, behavior and cost results. |
+| #18/M | Precision prerequisite satisfied. Implementation still requires a concrete measured directional-persistence target and its own G-M admission; no target is invented by P. This is a controlled experimental budget for evaluating motion/history semantics, not a production Water precision migration. |
+| #19/V | Independent frozen-authority presentation work; useful P frozen states may be supplementary inputs only. |
+| #20/B | Still blocked by M/G-M and separate ballistic admission; no implementation. |
+| #12 | Independent near-rest/coherent-body design path remains unchanged. |
+| #14/G-final | Open; no final architecture selection or production approval. |
+
+No permanent width/epoch/ID selection, sidecar, velocity/history, scheduler change,
+liquid unification, relaxed conservation or production migration. No fresh
+Web/Linux/Godot/PMU/GPU, general reactive accounting or visual acceptance is inferred.

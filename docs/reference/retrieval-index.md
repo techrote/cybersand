@@ -104,3 +104,6 @@ and [G-C](../operations/architecture-programme.md#g-c-staged-decision-2026-09-11
 
 For mass4/6/8/10, normalized versus literal thresholds, and Water delay4/8, use
 the [preregistered experiment](../operations/state-precision-experiment.md).
+
+For the current recommendation, use [G-P](../operations/architecture-programme.md#g-p-staged-decision-2026-09-11)
+and the [measured precision tables](../audits/2026-09-11-issue-17-state-precision.md).

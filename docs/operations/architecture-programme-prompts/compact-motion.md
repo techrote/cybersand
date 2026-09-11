@@ -14,7 +14,7 @@ related-documents: [../architecture-programme.md, ../architecture-programme-sour
 
 Issue: [#18](https://github.com/techrote/cybersand/issues/18).
 Programme/workstream: M; [master programme](../architecture-programme.md).
-Dependencies: Blocked by C, L/G-L and P/G-P. Must register a concrete directional-persistence target; if no useful target is justified, close with no-go evidence.
+Dependencies: C/G-C, L/G-L and P/G-P are satisfied. G-P retains reference mass8 and Water-specific delay4 as an experimental state budget. Implementation still requires a concrete measured directional-persistence target and its own admission; if none is justified, record no-go evidence. No motion implementation occurred in P.
 
 GitHub completion dependencies: [#17](https://github.com/techrote/cybersand/issues/17)
 Staged gate decisions and the complete master mirror: [#14](https://github.com/techrote/cybersand/issues/14). A gate entry may be recorded before #14 closes; its final-completion dependency is not a circular prerequisite.

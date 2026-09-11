@@ -157,3 +157,12 @@ movement under insufficient capacity, multiple interest sources, and separate
 render margins. **Rejected:** silently clipping a requested production region
 to hide capacity failure, hidden hot allocation as expansion policy, or treating
 the finite demo dimensions as the permanent world limit.
+
+## Issue17 experimental carrier
+
+The [precision experiment](../operations/state-precision-experiment.md) reuses
+validated uint64 mask/shift storage with fixed size/stride/alignment8/8/8 and epoch8
+for every arm. Its dedicated branch uses spare40-bit state capacity for mass10;
+this does not change the current4-byte production baseline pending G-final.
+[G-P evidence](../audits/2026-09-11-issue-17-state-precision.md) selects no permanent
+Cell layout, sidecar, larger ID catalogue or storage/scheduler geometry.

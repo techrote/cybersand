@@ -9,7 +9,7 @@
         "operations/architecture-programme.md"
       ],
       "facts": [
-        "Both gates complete; fixed-carrier precision experiment only, not started.",
+        "C/G-C and L/G-L admitted the fixed-carrier P experiment; P/G-P is now complete and retains mass8 plus Water-only delay4 as a research budget, without production migration.",
         "Current4-byte baseline pending G-final is not permanently selected."
       ],
       "sources": [
@@ -38,7 +38,7 @@
         "operations/liquid-characterization.md"
       ],
       "facts": [
-        "M waits on G-P and named target; B waits on M/G-M and admission.",
+        "M has its G-P precision prerequisite satisfied but still requires a named measured target and admission; B waits on M/G-M and admission.",
         "V frozen-authority research has C prerequisite satisfied, not renderer migration."
       ],
       "sources": [
@@ -46,5 +46,6 @@
         "operations/liquid-characterization.md"
       ]
     }
-  ]
+  ],
+  "expectations_reviewed": "2026-09-11: query wording retained; current prerequisite facts updated after P completion, not a frozen wording improvement claim."
 }

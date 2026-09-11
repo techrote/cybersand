@@ -178,3 +178,15 @@ a native-only experimental build on codex/issue-17-state-precision. That branch
 uses a fixed wide carrier and uint16 native mass access for all precision arms.
 Production semantics described above remain the reference; compact adapters,
 render projection and saves are not precision-aware migration paths.
+
+## What did G-P learn about useful Water precision?
+
+[Completed precision evidence](../audits/2026-09-11-issue-17-state-precision.md)
+finds exact per-arm accounting, but mass4/6 lose levelness and ledge discharge;
+tiny requested1/255 and2/255 droplets vanish at initial quantization, not at runtime.
+Mass10 modestly improves narrow residuals and extends activity without resolving
+the wide finite-horizon residual. [G-P](../operations/architecture-programme.md#g-p-staged-decision-2026-09-11)
+retains mass8 as the reference, with exact Water-only delay4 as a research budget.
+Films survive all four precisions. Literal tolerance changes are reported separately.
+This is native experiment evidence; production Water, rendering and saves remain
+unchanged. No flow-history target or production migration is established.

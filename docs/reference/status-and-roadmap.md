@@ -138,14 +138,17 @@ are unchanged. No unsynchronized live descriptor mutation is introduced.
 **Current programme state:** [G-L is complete / evidence admitted](../operations/architecture-programme.md#g-l-staged-decision-2026-09-11).
 #16 research is complete; the current 4-byte Cell remains the baseline pending
 G-final, not a permanent width selection. Experimental carriers remain on their
-research branch. #15/G-C is also complete after acceptance review; #17 is now unblocked by both
-C and L, with no implementation begun. #19/V has its C prerequisite satisfied.
-#18/M still waits on #17/G-P and a named target; #20/B waits on M/G-M and its
+research branch. #15/G-C and #17/G-P are complete after evidence review.
+G-P retains mass8 and Water-only delay4 as a controlled research budget. #19/V
+remains independent with its C prerequisite satisfied. #18/M has its precision
+prerequisite satisfied but still requires a named measured target and admission;
+#20/B waits on M/G-M and its
 admission gate. #14 remains open. See the [identity and scope audit](../audits/2026-09-11-programme-gate-reconciliation.md).
 
-## Issue17 precision execution
+## Issue17 precision completion
 
-P is executing on a separate experimental branch under its
-[fixed-carrier registration](../operations/state-precision-experiment.md).
-No G-P result is claimed by preparation. M implementation still requires P and
-a concrete motion-target admission; V remains independent, B blocked, G-final open.
+[G-P is complete](../operations/architecture-programme.md#g-p-staged-decision-2026-09-11)
+with [exact fixed-carrier evidence](../audits/2026-09-11-issue-17-state-precision.md).
+Mass8 remains reference; Water delay4 is an exact research budget. #18's precision
+prerequisite is satisfied but its concrete motion target/admission remains required.
+#19 independent, #20 blocked, #14/G-final open. No production migration.

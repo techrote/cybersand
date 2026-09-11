@@ -108,3 +108,7 @@ and the distinction between sleep, mobility, cadence and Water rest.
 The [Issue17 registration](operations/state-precision-experiment.md) defines the isolated
 P1/P2/P3 native experiment. Its fixed8-byte carrier is research-only; production
 Water and Cell controls remain unchanged pending programme gates.
+
+[Completed precision results](audits/2026-09-11-issue-17-state-precision.md) and
+[staged G-P](operations/architecture-programme.md#g-p-staged-decision-2026-09-11)
+retain mass8, establish Water-only delay4, and keep downstream feature gates intact.

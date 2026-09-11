@@ -14,7 +14,7 @@ related-documents: [../architecture-programme.md, ../architecture-programme-sour
 
 Issue: [#19](https://github.com/techrote/cybersand/issues/19).
 Programme/workstream: V; [master programme](../architecture-programme.md).
-Dependencies: Blocked by C's mass/presentation case definitions. Independent of L/P/M production selection; optional history-assisted presentation may follow M evidence separately.
+Dependencies: Completed C supplies mass/presentation case definitions. V remains independent of L/P/M production selection; optional history-assisted presentation may follow M evidence separately. P completion does not change V's scope.
 
 GitHub completion dependencies: [#15](https://github.com/techrote/cybersand/issues/15)
 Staged gate decisions and the complete master mirror: [#14](https://github.com/techrote/cybersand/issues/14). A gate entry may be recorded before #14 closes; its final-completion dependency is not a circular prerequisite.

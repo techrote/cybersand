@@ -163,3 +163,12 @@ resolve the commit from branch history. [Dated evidence](../audits/2026-09-10-wa
 records source deltas, rebuilt desktop/both-Web identities and preserved intake
 DLLs under `C:/kybersand/validation/local/2026-09-10-water-leveling/`. Runtime DLLs
 remain deliberately uncommitted; published provenance remains historical.
+
+## Issue17 precision checkpoint, 2026-09-11
+
+Start f3fb9de, registration6ae3dd5, implementation8fff609 and focused validation
+supplement af17fcc are on codex/issue-17-state-precision in
+C:/kybersand/worktrees/issue-17-state-precision. [Evidence](../audits/2026-09-11-issue-17-state-precision.md)
+records exact compiler/executable/local-delta hashes and all retained samples.
+C:/kybersand/source remains at f3fb9de with its deliberately dirty DLL untouched.
+No experiment branch is merged into production. Raw data and toolchains stay local.

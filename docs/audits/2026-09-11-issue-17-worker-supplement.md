@@ -28,3 +28,10 @@ manifest; retain any failure. Existing native55 tests cover failure/region/owner
 contracts at reference mass8. This supplement extends concurrency coverage to every
 registered precision/threshold/delay configuration without asserting new platform
 or cross-ABI acceptance.
+
+## Executed result
+
+All eight configurations passed the registered test. Source/artifact identities
+and individual build/run logs are in validation/local/issue-17/workers-20260911-110341.
+Four simultaneous phase jobs were actually exercised; each1/4-worker repeated
+run conserved all four basins every tick. No runtime correction or rerun.
