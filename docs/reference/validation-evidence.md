@@ -139,3 +139,9 @@ verifies #16 result/timing source identities, retained binaries and reduction
 hashes without rerunning the campaign. Its 2324 timing processes are reused
 evidence, not new execution. Docs/M11 intake pass; repository validation retains
 16 publication/provenance/LFS failures. No current runtime release is claimed.
+
+Issue15 acceptance reuses its352 behavior/224 timing processes and55 unchanged-input
+native regressions. All576 raw output hashes and both executable/source manifests
+were verified, with no new physics execution. [Coverage and limits](../audits/2026-09-11-issue-15-coverage.md)
+support G-C completion and bounded P admission;85/112 cost flags remain evidence,
+not an all-green performance or migration claim.

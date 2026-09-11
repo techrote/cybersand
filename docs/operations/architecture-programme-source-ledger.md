@@ -121,3 +121,15 @@ selection. This later programme control decision does not rewrite the experiment
 original no-production-selection conclusion. Experimental code stays on its branch.
 The [reconciliation audit](../audits/2026-09-11-programme-gate-reconciliation.md)
 records exact timing commits, reduction hashes and preserved DLL identity.
+
+## G-C reconciliation, 2026-09-11
+
+Result `cdb4c2a6df0248c76e7957fd09cae77655ec974f` completes C after preparation
+903e40f; all576 raw outputs and both source/artifact manifests were reverified.
+The [coverage audit](../audits/2026-09-11-issue-15-coverage.md) classifies retained,
+focused, missing and ambiguous evidence. No new measurement or production change.
+[G-C](architecture-programme.md#g-c-staged-decision-2026-09-11) admits bounded P
+now that G-L is complete; V's frozen-state research remains independent. C does
+not admit M implementation without a target, generalized quantity/yield or any
+production migration. #18 still waits on P/G-P, #20 on M/G-M plus admission;
+#14/G-final stays open. Original C/L result records retain their dated scope.

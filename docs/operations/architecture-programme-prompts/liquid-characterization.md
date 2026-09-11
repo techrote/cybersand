@@ -12,6 +12,11 @@ related-documents: [../architecture-programme.md, ../architecture-programme-sour
 
 ## Identity and dependencies
 
+**Programme status, 2026-09-11:** research completed at `cdb4c2a`;
+[acceptance coverage](../../audits/2026-09-11-issue-15-coverage.md) supports
+[G-C completion](../architecture-programme.md#g-c-staged-decision-2026-09-11).
+No new measurement is required. The original experimental charter below is retained.
+
 Issue: [#15](https://github.com/techrote/cybersand/issues/15).
 Programme/workstream: C; [master programme](../architecture-programme.md).
 Dependencies: Ready after programme/source intake; reuse #9/#10/#13 and current Water follow-up. No dependency on a wider Cell.

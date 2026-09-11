@@ -109,3 +109,12 @@ implements faster lateral relaxation on `codex/water-sideways-leveling`. Water
 traces and optional erosion strength change; Mercury/powder controls remain exact.
 Profile hashes alone do not identify this solver revision. Coal's purple residue
 is existing Dust; chemistry and fire cadence remain unchanged.
+
+## Programme gate handoff, 2026-09-11
+
+Read [current G-C/G-L decisions](architecture-programme.md#g-c-staged-decision-2026-09-11)
+and [reconciliation identities](../audits/2026-09-11-programme-gate-reconciliation.md).
+Both research results are published on separate experiment branches; this active
+checkpoint changes documentation only. #17 is unblocked but not started; obtain
+its fixed experimental carrier from verified L evidence without inferring a
+production migration. The current4-byte baseline remains pending G-final.

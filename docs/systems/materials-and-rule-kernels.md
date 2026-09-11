@@ -179,3 +179,11 @@ lateral Water mass transport drive bounded optional mixing and grain pickup;
 horizontal sampling and cadence are separate fixed experiments.
 Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
 are unchanged. No unsynchronized live descriptor mutation is introduced.
+
+## Completed liquid specialization evidence
+
+The [eleven-liquid review](../audits/2026-09-11-issue-15-coverage.md#per-liquid-final-coverage)
+distinguishes generic mobility from Oil/Acid/Lava exceptions, lifecycle cadence,
+Water partial redistribution and exchange. [Controlled sleep evidence](../operations/liquid-characterization.md#does-keeping-water-awake-fix-residual-leveling-or-films)
+does not establish a stress/yield law or approve liquid unification. Production
+semantics are unchanged; observation counters remain on the research branch.

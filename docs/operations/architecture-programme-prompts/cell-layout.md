@@ -12,6 +12,11 @@ related-documents: [../architecture-programme.md, ../architecture-programme-sour
 
 ## Identity and dependencies
 
+**Programme status, 2026-09-11:** research completed at `4726f8d`; #16 closed
+as completed after [G-L reconciliation](../architecture-programme.md#g-l-staged-decision-2026-09-11).
+The current4-byte layout is the baseline pending G-final, not a permanent
+architectural selection. The original experimental charter below is retained.
+
 Issue: [#16](https://github.com/techrote/cybersand/issues/16).
 Programme/workstream: L; [master programme](../architecture-programme.md).
 Dependencies: Ready after source intake; C can run independently. L evidence is prerequisite to P and M.

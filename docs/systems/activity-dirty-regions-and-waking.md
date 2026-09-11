@@ -135,3 +135,11 @@ excluded-work catch-up or motion inferred from wake flags. The new CLI resident
 active-block count includes excluded blocks; scheduled-core/visited-cell counters
 remain separate measures of tick work. Fixed-profile tests retain failed-world
 quarantine, exclusion and one-step re-entry under extreme sampling/cadence.
+
+## Characterized sleep versus liquid mobility
+
+The [completed quiet3/4096 study](../operations/liquid-characterization.md#does-keeping-water-awake-fix-residual-leveling-or-films)
+separates scheduler-censored deterministic mobility from material cadence and
+stable Water rest. Four tested whole-cell trajectories differ, while all tested
+Water trajectories match. This scoped observation does not change default sleep,
+Mercury deadlines, pause/re-entry or production instrumentation.

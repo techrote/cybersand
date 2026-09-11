@@ -98,3 +98,7 @@ The [evidence-gated programme](operations/architecture-programme.md) coordinates
 [Cell research](operations/cell-layout-experiment.md) and the
 [reconciliation audit](audits/2026-09-11-programme-gate-reconciliation.md)
 distinguish evidence completion from production approval.
+
+[Completed liquid characterization](operations/liquid-characterization.md) and
+its [acceptance coverage](audits/2026-09-11-issue-15-coverage.md) explain the C gate
+and the distinction between sleep, mobility, cadence and Water rest.

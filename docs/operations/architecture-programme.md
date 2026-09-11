@@ -430,7 +430,46 @@ allocator/OS allocation attribution, and L4's neutral four-byte payload instead
 of a real production feature. Strided placement and tiny-worker-batch noise also
 limit generalization. A negative result successfully completes the experiment.
 
-After #16 completion, #17's remaining formal prerequisite is #15/G-C. Its fixed
+At this G-L-only checkpoint, #17's remaining formal prerequisite was #15/G-C;
+the subsequent G-C decision below resolves it. Its fixed
 experimental carrier isolates precision; production width remains outside P's
 authority. #14 stays open for G-final. [Reconciliation identities](../audits/2026-09-11-programme-gate-reconciliation.md)
 separate the documentation checkpoint from experimental source and raw evidence.
+
+## G-C staged decision, 2026-09-11
+
+**G-C: COMPLETE / evidence reviewed.** Recorded by Codex after G-L and #16
+reconciliation, from verified #15 result `cdb4c2a6df0248c76e7957fd09cae77655ec974f`.
+The [complete acceptance matrix](../audits/2026-09-11-issue-15-coverage.md) and
+[characterization summary](liquid-characterization.md) retain all11 liquids,
+source-matched #9/#10/#13/current Water reuse,352 behavior and224 timed processes.
+No new measurements are needed and no remaining gap blocks this scoped gate.
+
+**Findings:** current specialization explains Water quantity/adhesion/emission,
+Oil's protected motion, Mercury's separate permeability, and material reaction
+state/order. Controlled quiet3/4096 comparisons establish scheduler-dependent
+rest for Brine/Paste/Slush/Mercury in the support fixtures; failed deterministic
+mobility, material cadence and genuine stable Water rest remain distinct.
+Every tested Water trajectory is unchanged by the sleep threshold. The96-wide
+418..435-unit residual remains active at1800; narrow46-unit rest and48-unit film
+remain stable. This rules out that quiet threshold within the measured horizon,
+not finite-time relaxation, threshold effects or precision as competing causes.
+
+| Downstream work | Reviewed disposition and reason |
+|---|---|
+| #17/P | **Unblocked by C and L.** Admit the existing fixed-carrier normalized mass4/6/8/10 and separate delay4/8 diagnostic for residual, films, front/rest/work. Initial quantization, physical threshold normalization and longer-time completion stay distinct. No lower-precision win is expected or required; a negative result is valid. No Cell-width authority or implementation here. |
+| #18/M | **Implementation held.** C shows no measured unmet jet/spray target. Still waits on #17/G-P and a concrete directional-persistence target/no-go review; no automatic history admission when P closes. A later named deficit may justify bounded research. |
+| #19/V | **C prerequisite satisfied; independent research remains justified.** Stable film/basin authority supplies frozen cases for existing orientation/coverage/cost comparisons. C supplies no visual-benefit or renderer acceptance result. No production layout selection is required; no render migration is authorized. |
+| #20/B | **Still blocked by #18/G-M and G-B admission.** No ballistic implementation or admission follows from C/L completion. |
+| General liquid unification / quantity / yield | **Deferred / not admitted.** Reaction quantity units, desired material rest and a specific unwanted behavior are missing; distinct current semantics remain. No universal FreeMass or new general yield solver. |
+| G-final / #14 | **Open.** Staged C/L review is not final architecture or owner migration approval. |
+
+No production Cell widening, velocity/history, sidecar, solver/default change or
+instrumentation integration is authorized. The diagnostic4096 quiet threshold
+buys no Water improvement and incurs substantial scheduled work;85/112 timing
+pairs flag review. Preserve all tails and semantically neutral but cost-uncertain
+observer/source controls. Limits: one Windows core host/pinned compiler,
+five translations/registered geometries, no new desktop/Web/Linux/sanitizer or
+migration acceptance, incomplete process/PMU/GPU and exact wake/write attribution,
+no heap-scale stress law or new chemistry units. These limit future admission;
+they do not invalidate successful characterization.

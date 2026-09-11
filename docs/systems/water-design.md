@@ -162,3 +162,11 @@ lateral Water mass transport drive bounded optional mixing and grain pickup;
 horizontal sampling and cadence are separate fixed experiments.
 Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
 are unchanged. No unsynchronized live descriptor mutation is introduced.
+
+## What does G-C say about the remaining Water residual?
+
+[Completed characterization](../operations/liquid-characterization.md#does-keeping-water-awake-fix-residual-leveling-or-films)
+finds identical Water trajectories under quiet3/4096, with active96-wide residual
+and stable narrow basin/film. [G-C](../operations/architecture-programme.md#g-c-staged-decision-2026-09-11)
+admits a fixed-carrier precision diagnostic, not a precision cause, expected lower-bit
+winner or changed conservation/defaults. No P implementation is included here.

@@ -12,9 +12,14 @@ related-documents: [../architecture-programme.md, ../architecture-programme-sour
 
 ## Identity and dependencies
 
+**Programme status, 2026-09-11:** C/G-C and L/G-L are complete; #17 is unblocked
+but not started. See the [staged review](../architecture-programme.md#g-c-staged-decision-2026-09-11).
+Use one controlled experimental carrier. No production Cell-width selection or
+migration follows from this prerequisite update; the experiment below is unchanged.
+
 Issue: [#17](https://github.com/techrote/cybersand/issues/17).
 Programme/workstream: P; [master programme](../architecture-programme.md).
-Dependencies: Blocked by C evidence and G-L equivalent-layout evidence. Use reference 8-bit mass if another result remains ambiguous.
+Dependencies: Requires completed C evidence and G-L equivalent-layout evidence, now satisfied. Use reference 8-bit mass if another result remains ambiguous.
 
 GitHub completion dependencies: [#15](https://github.com/techrote/cybersand/issues/15), [#16](https://github.com/techrote/cybersand/issues/16)
 Staged gate decisions and the complete master mirror: [#14](https://github.com/techrote/cybersand/issues/14). A gate entry may be recorded before #14 closes; its final-completion dependency is not a circular prerequisite.

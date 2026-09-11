@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "scope": "New gate reconciliation questions; separate from frozen and prior programme sets, not unseen evaluation",
+  "questions": [
+    {
+      "id": "PG01",
+      "query": "Is Issue 17 unblocked after G-C and G-L, and may it select a production Cell width?",
+      "canonical": [
+        "operations/architecture-programme.md"
+      ],
+      "facts": [
+        "Both gates complete; fixed-carrier precision experiment only, not started.",
+        "Current4-byte baseline pending G-final is not permanently selected."
+      ],
+      "sources": [
+        "operations/architecture-programme.md"
+      ]
+    },
+    {
+      "id": "PG02",
+      "query": "Does keeping Water awake explain its residual leveling compared with whole-cell liquids?",
+      "canonical": [
+        "operations/liquid-characterization.md"
+      ],
+      "facts": [
+        "All tested Water trajectories match quiet3/4096; residual remains active.",
+        "Whole-cell differences show scheduler-dependent rest, not a stress law."
+      ],
+      "sources": [
+        "operations/liquid-characterization.md"
+      ]
+    },
+    {
+      "id": "PG03",
+      "query": "Are compact motion, fractional presentation and ballistic implementation now admitted?",
+      "canonical": [
+        "operations/architecture-programme.md",
+        "operations/liquid-characterization.md"
+      ],
+      "facts": [
+        "M waits on G-P and named target; B waits on M/G-M and admission.",
+        "V frozen-authority research has C prerequisite satisfied, not renderer migration."
+      ],
+      "sources": [
+        "operations/architecture-programme.md",
+        "operations/liquid-characterization.md"
+      ]
+    }
+  ]
+}

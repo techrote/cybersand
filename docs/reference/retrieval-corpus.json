@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-09-10",
+  "reviewed": "2026-09-11",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -59,7 +59,8 @@
     "operations/experiment-tower.md",
     "systems/flow-transport-and-profiles.md",
     "operations/architecture-programme.md",
-    "operations/cell-layout-experiment.md"
+    "operations/cell-layout-experiment.md",
+    "operations/liquid-characterization.md"
   ],
   "navigation": [
     "README.md",

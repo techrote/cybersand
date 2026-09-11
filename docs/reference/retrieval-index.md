@@ -94,3 +94,8 @@ For completed G-L evidence, baseline retention pending G-final and #17 prerequis
 read the [programme gate record](../operations/architecture-programme.md#g-l-staged-decision-2026-09-11).
 Use [Cell registration](../operations/cell-layout-experiment.md) for methods and
 the linked dated audit for measurements; completion does not select production width.
+
+For all11 native liquid mechanisms, controlled sleep versus mobility and why
+#17/P is unblocked, use [liquid characterization](../operations/liquid-characterization.md)
+and [G-C](../operations/architecture-programme.md#g-c-staged-decision-2026-09-11).
+#18 still needs G-P/target review; V research does not authorize render migration.

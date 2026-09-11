@@ -74,3 +74,39 @@ and 18 records; `check_repository.py` retains 16 published provenance/LFS errors
 Frozen, challenge and programme retrieval run separately; `git diff --check` passes.
 Raw commands/results are under the reconciliation prefix's `intake/` directory.
 Post-edit check outcomes and GitHub readback are recorded at their next checkpoint.
+
+## Completed C review and dependency outcome
+
+The [Issue15 matrix](2026-09-11-issue-15-coverage.md) verifies completed result
+`cdb4c2a6df0248c76e7957fd09cae77655ec974f`,352 behavior and224 timing processes,
+18 input hashes per executable and all576 raw outputs. Both research branches
+are published at their original result commits; their code remains isolated.
+No new physics measurements or production changes were needed. Missing broader
+model, visual, motion and platform evidence is explicitly classified and limits
+admission rather than being hidden as a passed measurement.
+
+G-C is COMPLETE / evidence reviewed. P remains justified by active residual/film
+precision and threshold sensitivity; no lower-bit win is inferred. C+L unblock
+#17, which is not started. #19 has C and may run frozen-authority presentation
+research without a production layout selection. #18 still waits on #17/G-P and a
+concrete target/no-go review; #20 still waits on #18/G-M and separate admission.
+G-final/#14 remains open. General liquid unification and production history,
+sidecar, widened IDs, shortened epoch, layout migration and permanent width
+selection are not authorized.
+
+## GitHub G-L checkpoint
+
+Documentation commit `0aa641bf4972192ad94dd7d60d6f5a6557bfe110` was pushed before
+the [G-L comment](https://github.com/techrote/cybersand/issues/14#issuecomment-5632025699)
+and #14 current-status update. #16's [completion comment](https://github.com/techrote/cybersand/issues/16#issuecomment-5632026260)
+precedes closure as completed. Readback confirms #16 closed/completed, #14 open,
+and #17 open with C as the only then-unresolved prerequisite. Original #17
+scope is preserved; its dependency status is updated after C closure.
+
+G-L documentation/M11 checks pass. Repository errors exactly match all16 intake
+errors. Frozen22/32 top1,32/32 top5,MRR0.8229; challenges12/16,16/16,0.8594;
+programme3/5,5/5,0.7500. First-hit/rank limitations are retained. A metadata display
+helper failed on Windows default encoding after checks; explicit UTF-8 fixed
+display, with no evidence/checker alteration. Initial Git commit lacked author
+configuration; the successful commit used the repository's established Codex
+identity via command-scoped configuration, with no global configuration change.
