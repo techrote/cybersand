@@ -75,38 +75,137 @@
     "../.github/pull_request_template.md"
   ],
   "excluded": [
-    {"path": "ARCHITECTURE.md", "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"},
-    {"path": "audits/2026-09-08-documentation-audit.md", "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"},
-    {"path": "audits/2026-09-08-performance-history.md", "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"},
-    {"path": "audits/m11/github-migration-validation.md", "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"},
-    {"path": "audits/m11/m10-independent-audit-report.redacted.md", "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"},
-    {"path": "audits/m11/m11-completion-report.md", "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"},
-    {"path": "audits/m11/README.md", "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"},
-    {"path": "audits/pre-rag-rewrite-2026-09-08/README.md", "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"},
-    {"path": "BUILD_ID.md", "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"},
-    {"path": "LARGE_WORLD_PROOF.md", "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"},
-    {"path": "NEXT_MILESTONE.md", "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"},
-    {"path": "PERFORMANCE.md", "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"},
-    {"path": "STATUS.md", "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"},
-    {"path": "README.md", "reason": "Current navigation, not an answer owner"},
-    {"path": "reference/retrieval-index.md", "reason": "Current question routing, not repeated answer content"},
-    {"path": "audits/2026-09-08-foundation-diagnostics.md", "reason": "Dated audit/evaluation record; retrieve explicitly, not as a current contract"},
-    {"path": "audits/2026-09-08-retrieval-evaluation.md", "reason": "Dated audit/evaluation record; retrieve explicitly, not as a current contract"},
-    {"path": "audits/2026-09-08-structural-documentation-audit.md", "reason": "Dated audit/evaluation record; retrieve explicitly, not as a current contract"},
-    {"path": "audits/2026-09-08-github-milestone.md", "reason": "Dated publication/reconstruction record; not a default current contract"},
-    {"path": "audits/2026-09-08-issue-1-failed-ticks.md", "reason": "Dated issue #1 evidence; use only with recorded source/artifact/platform scope"},
-    {"path": "audits/2026-09-08-validation-reconciliation.md", "reason": "Dated publication/integrity evidence; not a current contract owner"},
-    {"path": "audits/2026-09-09-physics-characterisation.md", "reason": "Dated issue #9 measured evidence, explicitly routed with source/artifact/platform scope; not a default current contract"},
-    {"path": "audits/2026-09-09-issue-10-granular-policy.md", "reason": "Dated issue #10 acceptance and retained failures; retrieve with its source/artifact/platform scope"},
-    {"path": "audits/2026-09-09-issue-13-transport.md", "reason": "Dated checkpoint evidence; not a current-answer contract"},
-    {"path": "operations/architecture-programme-source-ledger.md", "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"},
-    {"path": "operations/architecture-programme-prompts/cell-layout.md", "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"},
-    {"path": "operations/architecture-programme-prompts/compact-motion.md", "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"},
-    {"path": "operations/architecture-programme-prompts/decision-review.md", "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"},
-    {"path": "operations/architecture-programme-prompts/fractional-presentation.md", "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"},
-    {"path": "operations/architecture-programme-prompts/liquid-characterization.md", "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"},
-    {"path": "operations/architecture-programme-prompts/soliding-supplement.md", "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"},
-    {"path": "operations/architecture-programme-prompts/sparse-motion.md", "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"},
-    {"path": "operations/architecture-programme-prompts/state-precision.md", "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"}
+    {
+      "path": "ARCHITECTURE.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "audits/2026-09-08-documentation-audit.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "audits/2026-09-08-performance-history.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "audits/m11/github-migration-validation.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "audits/m11/m10-independent-audit-report.redacted.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "audits/m11/m11-completion-report.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "audits/m11/README.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "audits/pre-rag-rewrite-2026-09-08/README.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "BUILD_ID.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "LARGE_WORLD_PROOF.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "NEXT_MILESTONE.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "PERFORMANCE.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "STATUS.md",
+      "reason": "Retained historical record or legacy milestone route; use only for explicitly historical questions"
+    },
+    {
+      "path": "README.md",
+      "reason": "Current navigation, not an answer owner"
+    },
+    {
+      "path": "reference/retrieval-index.md",
+      "reason": "Current question routing, not repeated answer content"
+    },
+    {
+      "path": "audits/2026-09-08-foundation-diagnostics.md",
+      "reason": "Dated audit/evaluation record; retrieve explicitly, not as a current contract"
+    },
+    {
+      "path": "audits/2026-09-08-retrieval-evaluation.md",
+      "reason": "Dated audit/evaluation record; retrieve explicitly, not as a current contract"
+    },
+    {
+      "path": "audits/2026-09-08-structural-documentation-audit.md",
+      "reason": "Dated audit/evaluation record; retrieve explicitly, not as a current contract"
+    },
+    {
+      "path": "audits/2026-09-08-github-milestone.md",
+      "reason": "Dated publication/reconstruction record; not a default current contract"
+    },
+    {
+      "path": "audits/2026-09-08-issue-1-failed-ticks.md",
+      "reason": "Dated issue #1 evidence; use only with recorded source/artifact/platform scope"
+    },
+    {
+      "path": "audits/2026-09-08-validation-reconciliation.md",
+      "reason": "Dated publication/integrity evidence; not a current contract owner"
+    },
+    {
+      "path": "audits/2026-09-09-physics-characterisation.md",
+      "reason": "Dated issue #9 measured evidence, explicitly routed with source/artifact/platform scope; not a default current contract"
+    },
+    {
+      "path": "audits/2026-09-09-issue-10-granular-policy.md",
+      "reason": "Dated issue #10 acceptance and retained failures; retrieve with its source/artifact/platform scope"
+    },
+    {
+      "path": "audits/2026-09-09-issue-13-transport.md",
+      "reason": "Dated checkpoint evidence; not a current-answer contract"
+    },
+    {
+      "path": "operations/architecture-programme-source-ledger.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/cell-layout.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/compact-motion.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/decision-review.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/fractional-presentation.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/liquid-characterization.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/soliding-supplement.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/sparse-motion.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/state-precision.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    }
   ]
 }
