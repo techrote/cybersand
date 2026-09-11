@@ -90,4 +90,4 @@ Use the [architecture programme](../operations/architecture-programme.md) for fu
 
 ## Is issue16 ready to select a Cell layout?
 
-No. The [cell layout registration](../operations/cell-layout-experiment.md) defines staged comparisons and records the owner-released L1 campaign. The [evidence record](../audits/2026-09-10-issue-16-cell-layout.md) reports exact comparisons, timing/memory and sleeping cost flags. Packing, direct epoch and sidecar stages remain; G-L is open.
+No. The [cell layout registration](../operations/cell-layout-experiment.md) defines staged comparisons and records the owner-released L1/L2 campaigns. The [evidence record](../audits/2026-09-10-issue-16-cell-layout.md) reports exact comparisons, timing/memory and sleeping cost flags. Direct epoch and sidecar stages remain; G-L is open.

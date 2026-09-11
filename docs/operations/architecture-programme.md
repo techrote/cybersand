@@ -396,4 +396,4 @@ and separate documentation/retrieval versus inherited publication-check outcomes
 
 ## Issue16 local execution checkpoint
 
-The [cell layout registration](cell-layout-experiment.md) and [dated evidence](../audits/2026-09-10-issue-16-cell-layout.md) track L. L1 completed196 processes after owner release: exact comparisons pass, while sleeping p95 and wrap-tick excess flag padded-layout costs. L2 is admitted for research; packing, direct epoch and sidecar results remain required. G-L is open and no production layout is selected.
+The [cell layout registration](cell-layout-experiment.md) and [dated evidence](../audits/2026-09-10-issue-16-cell-layout.md) track L. L1 completed196 processes after owner release: exact comparisons pass, while sleeping p95 and wrap-tick excess flag padded-layout costs. L2 completed448 processes with exact packing/bridge/observer pairs and retained cost flags. L3 is admitted; direct epoch and sidecar results remain required. G-L is open and no production layout is selected.

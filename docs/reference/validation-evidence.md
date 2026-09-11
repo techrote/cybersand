@@ -134,4 +134,4 @@ project passed. Faster leveling is fixture-specific, not universal instant flow.
 
 ## Issue16 representation research
 
-The [September10–11 record](../audits/2026-09-10-issue-16-cell-layout.md) owns isolated source/artifact identities, native correctness and the completed196-process L1 campaign. Exact state/work and final Water/Sand accounting pass; sleeping p95 and wrap-tick proxies flag costs. Direct epoch, packing and sidecar evidence remain pending. No desktop/Web or production acceptance is implied; G-L is incomplete.
+The [September10–11 record](../audits/2026-09-10-issue-16-cell-layout.md) owns isolated source/artifact identities, native correctness and the completed196-process L1 and448-process L2 campaigns. Exact state/work and final Water/Sand accounting pass; sleeping p95 and wrap-tick proxies flag costs. Packing/bridge/observer pairs and worker/repeat checks pass; three individual packing pairs cross15%, with no primary median above it. Direct epoch and sidecar evidence remain pending. No desktop/Web or production acceptance is implied; G-L is incomplete.

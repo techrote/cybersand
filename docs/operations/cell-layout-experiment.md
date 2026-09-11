@@ -38,14 +38,14 @@ compiler bitfields. All unused bits are zero and carry no behavior.
 | Stage | Control / candidate | Exact mapping and disposition |
 |---|---|---|
 | L1 | Original4 / padded8 | material:u8, a:u8, b:u8, epoch:u8 at byte offsets 0/1/2/3; candidate adds four unused bytes, alignment remains 1. Completed: exact comparisons pass; sleeping p95 and wrap-tick excess trigger cost review. |
-| L2a | Original4 / packed8/16/8 | uint32: material[0:7], a[8:15], b[16:23], epoch[24:31]. Masks/shifts; keep all legacy values. Implement after L1 evidence is reviewed. |
+| L2a | Original4 / packed8/16/8 | uint32: material[0:7], a[8:15], b[16:23], epoch[24:31]. Masks/shifts; keep all legacy values. L2 completed; exact parity and costs are in the audit. |
 | L2b | Padded8 / packed16/40/8 | uint64: material[0:15], a[16:23], b[24:31], unused[32:55], epoch[56:63]. Only IDs 0..80; extraction cost is not catalogue expansion. Natural integer alignment must be reported as an access-layout confound; add an alignment-matched padded control if needed. |
 | L3 | packed8/16/8 / packed8/18/6 | uint32: material[0:7], a[8:15], b[16:23], unused[24:25], epoch[26:31]. Keep all legacy state precision; only epoch width changes. |
 | L4 | Original4 plus optional / inline neutral payload | Bounded chunk SoA and sparse indexed sidecars; neutral uint32 payload explicitly has no solver meaning. Separate absent, allocated/unread, accessed. Register concrete ownership and operation fixture before this code. |
 | L5 | Compatibility inventory | Inspection now; no new materials, profile widening, saves or render changes. |
 | L6 | Optional 64-square storage | Not admitted without profiling justification and a new registration. Keep activity32/core64/radius2; repeat both layouts if admitted. |
 
-Stages L2-L4 are mandatory remaining research, pending preceding stage evidence,
+Stages L3-L4 are mandatory remaining research, pending preceding stage evidence,
 not rejected/skipped. A failed equivalence gate rejects that candidate and records
 the failure; cost regressions trigger review, not automatic omission of other stages.
 G-L stays open until every intended stage has evidence or a supported gate disposition.
@@ -177,7 +177,60 @@ scope limitation and reviewed before interpreting primary results. No adaptive
 retry, sample removal or optimizer tuning. Record source/flags/binary identities
 and restore neither old raw Cell bytes nor a loaded runtime into new layouts.
 
+## L3 registration: epoch width and direct clear observation
+
+Registered after complete L2 review, before candidate code. Compare packed32 with
+8-bit epochs against6-bit epochs: material0:7,a8:15,b16:23,unused24:25,epoch26:31.
+The8-bit mapping remains0:7/8:15/16:23/24:31. Size/stride/alignment4; all legacy
+precision, geometry, solver order/profiles and capacities remain fixed. Advance
+modulo256/64, reserve zero, clear all resident cells then reset1. First clear256/64,
+then intervals255/63. Extra state bits stay zero; no production selection.
+
+Proposed new modules: native/bench/cell_epoch.cpp, native/tests/test_cell_epoch.cpp,
+tools/experiments/cell_epoch.py and corresponding reducer/tests. Storage and World
+research hooks gain the selected epoch width and optional owner-only recorder.
+Allocate64 clear summaries and4096 chunk identities per summary before ticks;
+preflight overflow before clearing and quarantine failure. No worker observer writes,
+tick allocation or mutable cell exposure. Record tick, direct duration, every resident
+chunk coordinate/cell count, activity and none/partial/full selected-core overlap.
+Metadata collection is outside the direct clear clock but inside whole-tick time;
+direct time encloses only the clear loop and epoch reset. Sort/serialize after ticks.
+Off mode has no observer clock calls. Count recorder allocation and test overflow.
+
+Correctness: default and both variants' full native suites; storage mapping/isolation
+including6-bit boundaries; original five seed/translations,1/4 workers,two repeats,
+2048 ticks with every-tick closed Water/Sand and lossless reactive/state/temperature/
+work records. Compare8-bit prefixes with retained1800-tick behavior. Omit raw
+state_hash only across epoch schemas; retain same-schema checks and observer-off
+neutrality. Add a2048-tick movement/event fixture with the same settings/workers/
+repeats:16 separated Foam columns cross64/128 seams; explicit32-tick reinjection/
+reclaim and exactly one upward move/lifetime decrement per eligible tick. Pause at
+samples60–129 and240–299, then re-enter without catch-up. An isolated event chamber
+receives explosions at the union of both wrap schedules; new Fire retains initial
+lifetime on the event tick. Keep reinjection and event ledgers separate. Test sleeping/
+excluded sentinel epoch resets and complete resident identity capture.
+
+Timing: unchanged ten dense/sparse/sleeping cases,2048 ticks,first120 warmup,seven
+AB/BA pairs,140 primary observer-off processes. Retained L2 packed4 versus rebuilt
+8-bit bridge: dense512/workers4 and sleeping4096/workers1,28 processes. Direct-recorder
+off/on pairs for sparse1024 and sleeping4096 at1/4 workers for both widths:112 processes.
+Total280 sequential processes,1800-second timeouts,no adaptive retries/removal.
+Physics diagnostics are off during primary/direct timing and covered in correctness.
+
+Recheck exact state/work across pairs/repeats/workers and final whole-world Water/
+Sand. Report settling, all tails, memory and worker dispatch; observed clear schedules/
+direct duration separately from ordinary-neighbor whole-tick excess and amortized
+cost. Sparse/sleeping setup advances four ticks; use actual World tick numbers.
+Retain >15% paired p95 and >1ms extra clear/excess review screens.
+
 ## Run and review
+
+**L2 review, September11:** all448 processes completed with140 packing,28 bridge and56
+observer pairs passing. No primary median p95 exceeds15%, but three individual pairs
+do; sparse one-worker costs reach11.86%. Bridge medians span0.9859–1.0076. Observer
+cost remains measurable. Packed sleeping wrap proxies improve roughly2–3ms; direct
+clear time remains unobserved. This admits L3 with those limits retained, not migration.
+The audit owns full identities, cost tables, quantity ledgers and unresolved gaps.
 
 **L1 review, September11:** all196 registered processes completed,70 width pairs
 and28 observer pairs passed exact state/work comparisons, and final whole-world

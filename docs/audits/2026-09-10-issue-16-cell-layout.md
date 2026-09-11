@@ -2,7 +2,7 @@
 title: Issue 16 source intake and Cell layout evidence
 status: Current
 document-kind: evidence
-scope: Local source review, preparation and first L1 campaign; remaining stages and G-L incomplete
+scope: Local L1/L2 representation evidence and L3 registration; remaining stages and G-L incomplete
 canonical-for: []
 last-reviewed: 2026-09-11
 related-documents: [../operations/cell-layout-experiment.md, ../operations/architecture-programme.md]
@@ -82,8 +82,8 @@ endpoints; event writes follow the clear. These are source predictions, not timi
 | Stage | Disposition after L1 review, September11 |
 |---|---|
 | L1 stride | Completed196 processes; exact comparisons pass, sleeping p95/wrap-tail costs flagged. |
-| L2 packing/ID access | Prepared and correctness-screened; matched-alignment timing remains pending. |
-| L3 epoch | Registered; implementation and2048-tick clear-tail measurement pending L2. |
+| L2 packing/ID access | Completed448 processes; exact pairs pass, individual cost flags retained. |
+| L3 epoch | Admitted after L2 review; implementation and2048-tick direct clear measurement pending. |
 | L4 optional state | Registered neutral control; concrete sidecar implementation/crossover pending. |
 | L5 ID inventory | Source review recorded above; larger IDs have capacity headroom but no demonstrated demand. |
 | L6 storage geometry | Not admitted: no profiling evidence yet. |
@@ -508,3 +508,79 @@ hit@1/hit@5/MRR is23/32,32/32,0.8385 frozen;12/16,16/16,0.8562 challenge;
 the resident-byte question's canonical answer moves to rank3, still in the top5
 with correct temperature/activity scope. This limitation is retained without
 altering the frozen timing registration. Diff whitespace checks pass.
+
+## L2 measured results, September11
+
+All448 registered processes completed00:58–04:31 BST in the owner-released window.
+Measured preparation commit: `b97c7c19c6c50fe13c6730d8c4e4004000732801`; evidence:
+`validation/local/issue-16/timing-l2-20260911-005825`. Full reduction passed140 packing,
+28 bridge and56 observer pairs, exact worker/repeat records, raw CSV/work consistency
+and final whole-world Water/Sand accounting. No timing failures, retries or discarded
+outliers. Frozen sources, six binaries, compiler and original dirty DLL were verified
+unchanged after timing (`post-measurement-identity.json`). Reduced SHA-256:
+`9eed000e629cf30c9ab033b400b1429e90f06dca3393d0ba8d06e0e52045346c`.
+
+| Carrier | Fixture | Extent | Workers | Median p95 ratio | Median total ratio | Individual >15% pairs |
+|---|---|---:|---:|---:|---:|---|
+| packing4 | dense | 512 | 1 | 1.0151 | 1.0190 | [] |
+| packing4 | dense | 512 | 4 | 1.0094 | 1.0109 | [] |
+| packing4 | dense | 1024 | 1 | 1.0171 | 1.0140 | [] |
+| packing4 | dense | 1024 | 4 | 1.0030 | 1.0046 | [] |
+| packing4 | sparse | 512 | 1 | 1.0450 | 1.0544 | [3] |
+| packing4 | sparse | 512 | 4 | 1.0229 | 1.0291 | [] |
+| packing4 | sparse | 1024 | 1 | 1.0824 | 1.0675 | [1] |
+| packing4 | sparse | 1024 | 4 | 1.0171 | 1.0353 | [] |
+| packing4 | sleeping | 4096 | 1 | 1.0290 | 1.0080 | [] |
+| packing4 | sleeping | 4096 | 4 | 0.9993 | 1.0093 | [] |
+| packing8 | dense | 512 | 1 | 1.0054 | 1.0040 | [] |
+| packing8 | dense | 512 | 4 | 0.9950 | 1.0068 | [] |
+| packing8 | dense | 1024 | 1 | 1.0070 | 1.0058 | [] |
+| packing8 | dense | 1024 | 4 | 1.0086 | 1.0089 | [] |
+| packing8 | sparse | 512 | 1 | 1.1186 | 1.0683 | [4] |
+| packing8 | sparse | 512 | 4 | 1.0230 | 1.0298 | [] |
+| packing8 | sparse | 1024 | 1 | 1.0583 | 1.0587 | [] |
+| packing8 | sparse | 1024 | 4 | 1.0306 | 1.0284 | [] |
+| packing8 | sleeping | 4096 | 1 | 1.0247 | 1.0102 | [] |
+| packing8 | sleeping | 4096 | 4 | 0.9877 | 1.0044 | [] |
+
+No primary median exceeds15%; three individual pairs do, as retained above. Dense
+packing cost is small here; sparse one-worker cost reaches11.86% median p95. The four
+representative bridge medians span0.9859–1.0076 with no individual15% flags. This
+supports matched primary interpretation, not universal control neutrality. Observer
+p95 on/off medians span1.0464–1.0964; primary timings remain observer-off.
+
+Cell capacities match within every primary pair.4-byte dense512/1024=11/18.125MiB,
+sparse512/1024=5.4375/8.9375MiB,sleeping4096=72.25MiB;8-byte equivalents double these.
+All component/metadata estimates and process memory remain in raw JSON. Allocator
+bookkeeping is still a gap and process peaks include harness storage.
+
+Sleeping paired wrap-neighbor proxy changes are−2.3287/−2.3069ms for packed4 at1/4
+workers and−2.97665/−2.8592ms for packed8. These are whole-tick proxies, not direct
+clear durations. Dense proxy outliers extend to−95.68385/+18.4977ms; ordinary work
+noise cannot be attributed to clearing. Individual >1ms flags remain in the reduction.
+Generated vector clear loops distinguish the carriers, without establishing cache
+causality. No PMU trace was collected; the advertised-counter/access gap remains.
+Sleeping dispatches no parallel phases; dense7680 and sparse6766/6831 dispatches are
+inferred from unchanged threshold8. Worker total ratios remain descriptive across
+separate case blocks, not interleaved worker-pair experiments.
+
+Final whole-world Sand/Water match their initial values in all448 runs; Smoke changes
+remain separate lifecycle ledgers. Timed semantic/events are final-only, with full
+every-tick work; every-tick quantity/reactive parity belongs to prepared correctness.
+No fresh desktop/Web acceptance or source-release attestation is claimed.
+
+**Disposition:** L2 passes semantic compatibility with these cost flags and limits.
+The16/40/8 carrier retains an8-bit enum and compiler-narrowed ID reads; it demonstrates
+neither wider-ID demand nor end-to-end16-bit access cost. Proceed to epoch isolation;
+L3/L4 remain mandatory and G-L stays open. A documentation helper initially failed
+to decode existing UTF-8 through the Windows default code page; no timing or source
+artifact changed. The corrected helper uses explicit UTF-8 mode.
+
+L2 result checkpoint checks (`l2-results-final`) pass docs and M11; repository retains
+14 source-release attestation failures and18 materialized runtime files. Retrieval
+hit@1/hit@5/MRR: frozen22/32,32/32,0.8229; challenge12/16,16/16,0.8562;
+programme3/5,5/5,0.7500; layout2/3,3/3,0.7778. Frozen/programme ranking regressions
+from preparation are retained; all canonical answers remain in the top5. No fixture
+or evaluator was tuned. Thirteen driver/reducer tests passed before measurement.
+The L3 registration was retained before candidate code with SHA-256
+`49437950aac0321015872f7360d987a87005697ef4ea53f7d182bdcf6f01606c`.
