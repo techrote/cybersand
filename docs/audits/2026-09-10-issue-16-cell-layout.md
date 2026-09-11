@@ -84,7 +84,7 @@ endpoints; event writes follow the clear. These are source predictions, not timi
 | L1 stride | Completed196 processes; exact comparisons pass, sleeping p95/wrap-tail costs flagged. |
 | L2 packing/ID access | Completed448 processes; exact pairs pass, individual cost flags retained. |
 | L3 epoch | Complete:280 processes; exact parity, sleeping tail penalty and direct clear cost retained. |
-| L4 optional state | Concrete neutral carrier registered before code; preparation/crossover pending. |
+| L4 optional state | Prepared:720 corrected runs,12 smoke runs and60 independent replays pass; timing pending. |
 | L5 ID inventory | Source review recorded above; larger IDs have capacity headroom but no demonstrated demand. |
 | L6 storage geometry | Not admitted: no profiling evidence yet. |
 | G-L | OPEN; L1 negative/ambiguous cost evidence retained, no winner or migration approval; issue incomplete. |
@@ -703,3 +703,127 @@ result at unchanged semantics, with no benefit from the unused extra two bits.
 No production width or epoch is selected. PMU/cache attribution, other hardware
 and fresh desktop/Web acceptance remain gaps. L4's concrete neutral-payload
 registration now precedes candidate code; G-L remains open until its result.
+
+L3's whole-tick neighbor proxy subtracts the eight-bit neighbor excess at the same
+World tick as each six-bit wrap, rather than pairing unrelated wrap indices. It
+includes all224 candidate wraps per fixture/worker. Counts over1ms for workers1/4:
+dense51237/77,dense1024125/130,sparse5120/5,sparse102412/32,sleeping224/224.
+Median proxies (ms,workers1/4) are0.481/0.671,1.056/1.563,0.189/0.344,
+0.606/0.693 and8.596/8.534 respectively. Dense extrema span−11.275 to13.584ms;
+these noisy whole-tick differences are retained, not relabelled direct clear costs.
+
+## L4 preparation and coverage review, September11
+
+Concrete registration preceded code, retained as
+`validation/local/issue-16/l4-registration/cell-layout-experiment.md`, SHA-256
+`f29583c4372443a33962acb95242d9fa77acf0d74c90c2b2b1bb9b34c2fe2e86`.
+The first720-run preparation (`prepare-l4-20260911-073030`) passes exact carrier/
+worker/repeat records but fails accepted-operation coverage: advancing endpoints
+on each operation leaves zero successful moves/splits/creates in long runs.
+Focused hand-expected operations pass, which does not cure that workload gap.
+No performance measurements were launched from it. Partial independent replay was
+deliberately stopped after coverage rejection; logs, exit and all720 records remain.
+
+The revised cycle was registered before its build, retained as
+`l4-registration/revised-cell-layout-experiment.md`, SHA-256
+`b4f7a5a6cd776adb5a02b1479717e8d21c2ea349e9e134b0315f47c92070d57c`.
+It performs a complete clear/reclaim/create/split/merge/move/swap/read cycle at
+one adjacent pair, then advances. Geometry, capacities, density, sample and timing
+budgets remain unchanged. Fresh preparation is `prepare-l4-20260911-073748`.
+The independent Python replay uses a flat tuple store and separately implemented
+transactions; it retains every-batch Sand/Water-cell/Fire source/sink ledgers as well
+as Water mass and neutral tags. Four offline replay processes may run concurrently
+before timing; they are excluded from the performance campaign.
+
+L3-result documentation checks pass docs/M11, with the same14 published source
+attestation failures and18 materialized runtime files. Retrieval hit@1/hit@5/MRR:
+frozen22/32,32/32,0.8229; challenge12/16,16/16,0.8594; programme3/5,5/5,0.7400;
+layout2/3,3/3,0.8333. No historical hashes or retrieval fixtures changed.
+
+Fresh L4 preparation completes720 accessed runs plus12 absent/unread smoke runs;
+all carrier/repeat/worker records match. All eight operation kinds succeed:
+move/swap/split/merge each113697–115200 accepted attempts per run; the other four
+each115200. Half the runs exercise capacity refusal, up to4509 total refused
+attempts per run. Refusals preserve endpoints and remain part of work comparisons.
+No C++ new calls occur inside any batch. Three native self-test executions cover
+seams, state/temperature transfer, high-bit tags, actual unprepared arrays,
+saturation/refusal, full-capacity moves and reclaimed slot reuse. All23 Python
+tests pass. These new standalone files do not change World or adapter behavior;
+the retained L3 native tests are not claimed as fresh L4 executions.
+
+| Revised optimized executable | SHA-256 |
+|---|---|
+| inline | `d354c9a259bec1589383283fc6db2b9887798c0e353e058bc850ea1c19bdb0ca` |
+| soa | `de82f289273543a4cf0f31a1c9a1c633e9268148abe3581975b68985ad581407` |
+| sparse | `acbfd12cc00e1ebdb6173dc9ab60fb0118cbefb71ae5fdf3f06b146095a20b40` |
+
+All three builds have zero warnings with the pinned Clang flags, and their LTO
+disassemblies are retained. Inline/SoA/sparse hot strides are8/4/4, all alignment4.
+Their sixteen Chunk objects occupy1024/1408/1792 bytes, already included in Fixture
+sizes5760/6144/6528; do not add them twice. Pool object160 and timing buffers506880
+bytes are separate (correctness buffers475200). Process counters include committed
+runtime/allocator/thread memory; allocator headers, stack residency, thread-library
+allocations and PMU/cache traffic are not individually attributed. Batch C++ new
+screening does not prove absence of arbitrary malloc or OS allocations.
+
+The rejected fixture source was recovered exactly from the revised source and its
+registered schedule, retained as `prepare-l4-20260911-073030/original-cell_sidecar.cpp`
+with SHA-256 `0bb3f010e0f8770936c8929198669826b11801969b4f6e2d1c427b662c6b1ec4`,
+matching the original source identity. The revised build manifest is retained
+unchanged as `prepared-build.json`; `validation-source-update.json` records only
+the later offline reducer change (periodic unread checksum and four-process replay).
+No benchmark, compiler, driver preparation function or native input changed in that
+validation update. Timing still requires completed independent replay and frozen
+source/executable identities.
+
+### Prepared optional-state footprint
+
+Observed resident arrays in MiB, including legacy cells and temperature; descriptor,
+worker/buffer and process memory are separate. These allocated capacities do not
+grow during batches. Density is initial global density, not final active density.
+
+|Initial density|Pattern|Prepared chunks|Inline|SoA|Sparse|
+|---:|---|---:|---:|---:|---:|
+|0%|clustered|0|2.5000|1.5000|1.5000|
+|0%|dispersed|0|2.5000|1.5000|1.5000|
+|1%|clustered|1|2.5000|1.5625|1.5517|
+|1%|dispersed|4|2.5000|1.7500|1.6469|
+|5%|clustered|1|2.5000|1.5625|1.6317|
+|5%|dispersed|4|2.5000|1.7500|1.7270|
+|15%|clustered|3|2.5000|1.6875|1.8942|
+|15%|dispersed|12|2.5000|2.2500|2.1809|
+|50%|clustered|8|2.5000|2.0000|2.7500|
+|50%|dispersed|16|2.5000|2.5000|3.0078|
+|100%|clustered|16|2.5000|2.5000|4.0000|
+|100%|dispersed|16|2.5000|2.5000|4.0000|
+
+Zero-density allocated-unread deliberately prepares all16 chunks with cap64:
+SoA2.5000MiB and sparse2.0078MiB versus inline2.5000MiB. Absent/accessed zero-density
+sidecars remain unallocated,1.5000MiB versus inline2.5000MiB. Sparse includes its
+per-cell indices and8-byte capacity slots. For this neutral4-byte payload, the
+observed sparse/SoA allocation crossover lies between1% and5% clustered density,
+and between15% and50% dispersed density. This depends on payload size, distribution
+and the declared64-slot headroom; it is not a universal crossover or speed result.
+
+
+The registered dispersed pattern is strided, not uniform random placement. At1%
+and5% it prepares four chunks, and at15% twelve; the exact per-chunk occupancies
+are retained. Uniform random scatter and other payload sizes are unmeasured.
+
+All60 independent input replays pass every-batch work and complete final state,
+including separate Sand/Water-cell/Fire sources/sinks, Water mass and tag ledgers.
+Twelve absent/unread smoke records also match exact replay. `verified.json` binds
+these results to the preparation, comparison and smoke manifests. The measure
+entry point refuses missing/mismatched verification, source, compiler or binaries.
+This completes L4 preparation; the registered1400-process campaign remains to run.
+
+
+The first L4 preparation documentation check passes docs/M11 with14/18 retained
+release/materialization scope. Retrieval scores: frozen22/32,32/32,0.8229;
+challenge12/16,16/16,0.8594; programme3/5,4/5,0.7000; layout2/3,3/3,0.7778.
+AP04's baseline owner fell outside top5. The programme checkpoint now gives the
+preserved Cell/epoch/recent-Water baseline its own clear explanation, separate from
+execution progress. Questions and evaluator remain fixed; both checks are retained.
+
+Final L4 preparation docs/M11 pass, with unchanged14 release errors and18 materialized
+runtime files. Retrieval hit@1/hit@5/MRR: frozen 23/32,32/32,0.8385; challenges 12/16,16/16,0.8594; programme 4/5,5/5,0.9; layout 2/3,3/3,0.8333.

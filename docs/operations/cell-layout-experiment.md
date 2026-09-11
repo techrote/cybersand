@@ -299,6 +299,21 @@ is mandatory. Serialize after timing and losslessly gzip each completed record
 outside process clocks before launching the next process. No concurrent builds,
 tests or full reduction. Freeze source/compiler/executable hashes before release.
 
+**L4 preparation coverage correction, before timing:** the first720 runs preserve
+exact state but the advancing endpoint per operation produces zero successful
+moves/splits/creates. This fails workload coverage; those records are retained as
+preparation evidence and cannot authorize timing. The revised registered cycle
+uses one adjacent endpoint pair for eight operations: clear source, reclaim
+destination, create source, split source, merge destination into source, move
+source, swap, read. Then advance endpoints using k=batch*8+cycle, x=(73*k+19*seed)
+mod255,y=(37*k+11*seed)mod128; the first cycle of each batch forces x127 for seams.
+All capacities, inputs, budgets and metrics remain fixed. Rerun the full720
+correctness matrix; require successful move/split/create work and explicit refusals
+where capacity limits apply. An independent Python replay adds per-batch Sand,
+Water-cell and Fire source/sink ledgers alongside Water mass and tag accounting.
+Add12 absent/unread zero-density smoke runs (three carriers,1/4 workers) before
+timing; their clocks are preparation diagnostics, never performance results.
+
 **L2 review, September11:** all448 processes completed with140 packing,28 bridge and56
 observer pairs passing. No primary median p95 exceeds15%, but three individual pairs
 do; sparse one-worker costs reach11.86%. Bridge medians span0.9859–1.0076. Observer

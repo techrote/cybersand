@@ -10,6 +10,13 @@ related-documents: [activity-dirty-regions-and-waking.md, ../architecture/chunk-
 
 # World storage and interest region
 
+The [issue16 registration](../operations/cell-layout-experiment.md) also defines a
+standalone neutral sidecar carrier. Its inline/SoA/sparse stores own all tags and
+indices within exclusive chunk pairs, prepare bounded capacity before workers run,
+and refuse transfers before mutation when a destination is full or unprepared.
+These synthetic transactions are not World material rules, storage integration or
+an approved optional-state API. World geometry and ownership remain as below.
+
 **Current:** native World supports sparse signed-coordinate storage and explicit
 capacity limits. Desktop and Web use finite 1024×1024 adapters. Camera-interest
 filtering in the phased backend pauses excluded work and wakes newly included

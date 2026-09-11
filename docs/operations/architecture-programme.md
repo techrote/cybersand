@@ -394,6 +394,19 @@ inspection complete this task. The [planning execution report](../audits/2026-09
 records created issues, exact remote/dependency readback, manual quality review
 and separate documentation/retrieval versus inherited publication-check outcomes.
 
-## Issue16 local execution checkpoint
+## Cell experiments: preserved baseline and local evidence
 
-The [cell layout registration](cell-layout-experiment.md) and [dated evidence](../audits/2026-09-10-issue-16-cell-layout.md) track L. L1 completed196 processes after owner release: exact comparisons pass, while sleeping p95 and wrap-tick excess flag padded-layout costs. L2 completed448 processes with exact packing/bridge/observer pairs and retained cost flags. L3 preparation passes the native, storage, movement and wrap-safety checks. Its baseline remains the four-byte Cell with8-bit material/state_a/state_b/epoch, optional temperature, and current Water mass1..255, delay12 and floor(3*imbalance/4) flux. The6-bit epoch is a selected research variant with unused extra bits; L3 now completes280 processes with exact comparisons and a sleeping tail penalty; sidecar results remain required. G-L is open and no production layout is selected.
+The current Cell experiment baseline is four bytes:8-bit material/state_a/state_b/
+epoch, with optional temperature. Preserve epoch clearing of all resident cells,
+including sleeping and region-excluded chunks: first at256, then every255 ticks.
+Preserve recent Water semantics: mass1..255, delay12 and floor(3*imbalance/4) lateral
+flux. Storage/activity/core/radius remain128/32/64/2. Six-bit epochs and optional
+neutral tags are isolated research variables, not changes to this current baseline.
+
+The [cell layout registration](cell-layout-experiment.md) and
+[dated evidence](../audits/2026-09-10-issue-16-cell-layout.md) track L. L1 completes196
+processes with exact comparisons and padded sleeping cost flags. L2 completes448
+packing/bridge/observer processes with exact comparisons and individual cost flags.
+L3 completes280 processes with exact comparisons and a sleeping tail penalty from
+more frequent clearing. L4's corrected correctness/replay screen passes; sidecar
+timing remains required. G-L is open and no production layout is selected.

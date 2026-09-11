@@ -10,6 +10,16 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+Issue16's isolated neutral-carrier driver is `tools/experiments/cell_sidecar.py`.
+Run `prepare` in its issue worktree; it creates unique `build/issue-16` and
+`validation/local/issue-16` directories. Then run
+`tools/experiments/summarize_cell_sidecar.py <preparation-directory> --preparation`
+for independent replay before the registered `measure --manifest <prepared-json>
+--owner-released` action. The owner has released the uncontended window in the
+active task. No measured campaign may overlap builds, tests or full reduction.
+The same reducer without `--preparation` audits a completed1400-process timing
+directory. These are synthetic batches, never World ticks or desktop/Web evidence.
+
 ## Which build inputs are required?
 
 **Current:** build scripts and locks select the following inputs. A pin is a
