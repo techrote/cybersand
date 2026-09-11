@@ -4,8 +4,8 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-09-10
-related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md]
+last-reviewed: 2026-09-11
+related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md]
 ---
 
 # Retrieval question index
@@ -46,6 +46,9 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | What to update at a physics checkpoint | [Documentation checklist](../operations/documentation-maintenance.md#documentation-update-checklist) |
 | Product intent and next priorities | [Owner intent](product-intent-and-priorities.md), [roadmap](status-and-roadmap.md) |
 | Meaning of a term or unexplained symptom | [Glossary](glossary.md), [troubleshooting](../operations/troubleshooting.md) |
+| Why #17 does not make mass8 the perceptual minimum | [Water-feel programme addendum](../operations/architecture-programme-water-feel-addendum.md), [#17 evidence](../audits/2026-09-11-issue-17-state-precision.md) |
+| What #19 now delivers and how the Water Feel Lab is configured | [#19 runbook](../operations/architecture-programme-prompts/fractional-presentation.md), [Experiment Tower](../operations/experiment-tower.md) |
+| Why #18 remains held after G-P | [Water-feel programme addendum](../operations/architecture-programme-water-feel-addendum.md), [compact-motion prompt](../operations/architecture-programme-prompts/compact-motion.md) |
 
 ## Retrieve historical results explicitly
 
@@ -68,11 +71,11 @@ Current runtime/source gates and immutable M11 retention use [separate validatio
 
 **Current:** Use the granular/player policy for capability, packing, side resistance, enclosure and fallback limits. See the [granular/player policy](../systems/granular-interaction-policy.md).
 
-
 ## Issue #13 experiment checkpoint
 
 For reproducible five-floor experiments and preserving Mercury while tuning Sand, use the [Experiment Tower](../operations/experiment-tower.md), then its [dated evidence](../audits/2026-09-09-issue-13-transport.md).
 
+The current Tower is also the planned base for #19's Water Feel Lab extension. The extension is not Current functionality until #19 implements and validates it.
 
 ## Opt-in transport profiles
 
@@ -86,24 +89,23 @@ are unchanged. No unsynchronized live descriptor mutation is introduced.
 
 ## Which architecture experiments should run before changing Cell or liquid state?
 
-Use the [architecture programme](../operations/architecture-programme.md) for future experiment dependencies, decision gates, retained baselines and self-contained issue prompts. Its source ledger preserves four-conversation refinements. Current behavior still belongs to the linked subsystem and ADR contracts.
+Use the [architecture programme](../operations/architecture-programme.md) for the original future experiment dependencies and completed staged gates. Then use the dated [Water-feel addendum](../operations/architecture-programme-water-feel-addendum.md) for the post-G-P refinement of #19/#18 ordering and evaluation authority. Current behavior still belongs to subsystem and ADR contracts.
 
 ## Architecture gate status
 
-For completed G-L evidence, baseline retention pending G-final and #17 prerequisites,
-read the [programme gate record](../operations/architecture-programme.md#g-l-staged-decision-2026-09-11).
-Use [Cell registration](../operations/cell-layout-experiment.md) for methods and
-the linked dated audit for measurements; completion does not select production width.
+G-L, G-C and G-P are complete. Current 4-byte Cell remains baseline pending G-final; mass8 remains the quantitative/reference Water control; current coherence 0..12 fits exactly in four semantic bits. None of those results selects production packing.
 
-For all11 native liquid mechanisms, controlled sleep versus mobility and why
-#17/P is unblocked, use [liquid characterization](../operations/liquid-characterization.md)
-and [G-C](../operations/architecture-programme.md#g-c-staged-decision-2026-09-11).
-#18 still needs G-P/target review; V research does not authorize render migration.
+Following owner clarification after G-P, #19 is expanded into **V plus H-preparation**: establish/verify the intended four-visible-level Water presentation and build a deterministic runtime-configurable Water Feel Lab. See the [post-G-P refinement](../operations/architecture-programme-water-feel-addendum.md) and [#19 runbook](../operations/architecture-programme-prompts/fractional-presentation.md).
+
+#19 completion means H-ready, not a human winner. The later H gate may supply a concrete motion/feel target for #18 or support a no-go. #20 remains downstream of #18/G-M; G-final remains open.
+
+For the pre-refinement identity/scope reconciliation, use the [dated reconciliation audit](../audits/2026-09-11-programme-gate-reconciliation.md).
 
 ## Water precision experiment
 
 For mass4/6/8/10, normalized versus literal thresholds, and Water delay4/8, use
 the [preregistered experiment](../operations/state-precision-experiment.md).
 
-For the current recommendation, use [G-P](../operations/architecture-programme.md#g-p-staged-decision-2026-09-11)
-and the [measured precision tables](../audits/2026-09-11-issue-17-state-precision.md).
+For the measured numerical recommendation, use [G-P](../operations/architecture-programme.md#g-p-staged-decision-2026-09-11) and the [precision evidence](../audits/2026-09-11-issue-17-state-precision.md).
+
+For the later interpretation that numerical divergence is not automatic gameplay rejection, and for planned mass3/5/7 plus shortened-coherence human-test preparation, use the [Water-feel addendum](../operations/architecture-programme-water-feel-addendum.md). This later planning refinement does not rewrite #17 evidence.
