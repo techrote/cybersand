@@ -47,6 +47,12 @@ def timing_run(rows):
       run_visits=f['visits'],last_active=f['last_active'],semantic=f['semantic'])
 def reduce_behavior(path):
     root=path.parent;m=json.loads(path.read_text());results=[];groups={};delay={}
+    expected={(a,f,p,w,r) for a in ('m4','m6','m8','m10','l4','l6','l10','d4')
+        for f in ('basin48','basin96','film','support','ledge','coherent','low','delay')
+        for p in range(5) for w in (1,4) for r in (0,1)}
+    actual=[(r['arm'],r['fixture'],r['position'],r['workers'],r['repeat']) for r in m['runs'] if 'arm' in r]
+    if set(actual)!=expected or len(actual)!=len(expected) or len(m['runs'])!=1328:
+        raise ValueError('missing or duplicate registered behavior process')
     for run in m['runs']:
         p=root/(run['name']+'.jsonl')
         if digest(p)!=run['sha256']:raise ValueError('raw identity mismatch')
@@ -62,7 +68,8 @@ def reduce_behavior(path):
             dkey=(run['fixture'],run['position'])
             if dkey in delay and delay[dkey]!=canonical:raise ValueError('delay equivalence')
             delay[dkey]=canonical
-        results.append({**run,**values})
+        semantic=hashlib.sha256(json.dumps([{k:v for k,v in row.items() if k!='events'} for row in rows[1:]],sort_keys=True,separators=(',',':')).encode()).hexdigest()
+        results.append({**run,**values,'trajectory_sha256':semantic})
     table=[]
     for arm in ('m4','m6','m8','m10','l4','l6','l10','d4'):
         for fixture in ('basin48','basin96','film','support','ledge','coherent','low','delay'):
@@ -71,9 +78,20 @@ def reduce_behavior(path):
             keys=['initial_error','final_spread','spread_600','spread_1200','occupied','tiny','discharge','front','arrival','level','last_change','last_active','visits','block_ticks','late_changed','successful_transfers','transferred_units','water_updates','lateral_requests','lateral_probes','zero_requests','block_wakes','block_sleeps']
             table.append(dict(arm=arm,fixture=fixture,rest_count=sum(r['rest_observed'] for r in rows),
                 metrics={k:dict(min=min(r[k] for r in rows),median=statistics.median(r[k] for r in rows),max=max(r[k] for r in rows)) for k in keys}))
-    return dict(processes=len(m['runs']),candidate_processes=len(results),exact=True,worker_repeat=True,delay_equivalent=True,table=table,runs=results)
+    lookup={(r['arm'],r['fixture'],r['position']):r for r in results if r['workers']==1 and r['repeat']==0}
+    policies=[]
+    for bits in (4,6,8,10):
+        for fixture in ('basin48','basin96','film','support','ledge','coherent','low','delay'):
+            a=[lookup[(f'm{bits}',fixture,i)] for i in range(5)]
+            b=[lookup[(f'l{bits}' if bits!=8 else 'm8',fixture,i)] for i in range(5)]
+            policies.append(dict(bits=bits,fixture=fixture,identical_trajectories=sum(x['trajectory_sha256']==y['trajectory_sha256'] for x,y in zip(a,b)),
+                normalized_spread=statistics.median(x['final_spread'] for x in a),literal_spread=statistics.median(x['final_spread'] for x in b),
+                normalized_visits=statistics.median(x['visits'] for x in a),literal_visits=statistics.median(x['visits'] for x in b)))
+    return dict(processes=len(m['runs']),candidate_processes=len(results),exact=True,worker_repeat=True,delay_equivalent=True,table=table,threshold_policies=policies,runs=results)
 def reduce_timing(path):
     root=path.parent;m=json.loads(path.read_text());runs=[];groups={}
+    if len(m['runs'])!=392 or len({r['name'] for r in m['runs']})!=392:
+        raise ValueError('missing or duplicate registered timing process')
     for r in m['runs']:
         p=root/(r['name']+'.jsonl')
         if digest(p)!=r['sha256']:raise ValueError('raw identity mismatch')
