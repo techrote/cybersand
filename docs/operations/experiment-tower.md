@@ -2,10 +2,10 @@
 title: Experiment Tower and transport comparisons
 status: Current
 document-kind: runbook
-scope: Shared five-floor recipe, exclusive owner controls and issue 13 transport evidence
+scope: Shared five-floor recipe, exclusive owner controls and issue 13 transport evidence; planned issue 19 Water Feel Lab extension is clearly separated
 canonical-for: [experiment-tower, transport-comparison-procedure]
-last-reviewed: 2026-09-10
-related-documents: [physics-characterisation.md, ../systems/granular-interaction-policy.md, ../audits/2026-09-09-issue-13-transport.md]
+last-reviewed: 2026-09-11
+related-documents: [physics-characterisation.md, architecture-programme-water-feel-addendum.md, architecture-programme-prompts/fractional-presentation.md, ../systems/granular-interaction-policy.md, ../audits/2026-09-09-issue-13-transport.md]
 ---
 
 # Experiment Tower
@@ -74,7 +74,6 @@ powder` with the frozen reference to check unchanged Mercury/powder behavior;
 do not rewrite that historical reference. `tools/physics/water_leveling.py`
 rebuilds and records the new closed-basin speed/conservation measurements.
 
-
 ## How should comparisons and observations be interpreted?
 
 The three profile v1 presets retain their initial values after screening. Mixing
@@ -115,3 +114,45 @@ It is not complete replay: arbitrary brush strokes, player input and OS scheduli
 are not all captured. Scheduled +30/+90 releases are tick-relative; changing floor
 cancels them. Current camera interest can include part of an adjacent floor, so
 its reagents may age. Fresh tower restores everything reproducibly.
+
+## Planned #19 Water Feel Lab extension
+
+**Planned, not Current:** issue #19 expands the Tower as the shared human-test
+apparatus rather than creating another laboratory application. The current five
+floors and #13 evidence above remain unchanged historical/current facts until the
+new work is implemented and validated.
+
+The #19 extension is specified by
+[`fractional-presentation.md`](architecture-programme-prompts/fractional-presentation.md)
+and the dated
+[Water-feel programme addendum](architecture-programme-water-feel-addendum.md).
+Its goal is to leave the Tower **H-ready**, not to select a preferred Water model.
+
+The planned lab adds deterministic Water scenarios covering broad/deep/shallow
+pools, connected levels, tiny-drip accumulation, channels/steps/U-vessels,
+constrictions, fast and slow releases, ledge sheets, thin streams, drizzle,
+vertical/horizontal/diagonal emission, excavation/refill, cavities/barriers,
+Water/Sand interaction, supported films/seams and long-tail settling. Existing
+Mercury references remain separate preservation controls.
+
+The same planned runtime Water experiment policy will be selectable without a
+rebuild through an in-game developer panel, versioned config/profile and launch
+configuration. Those surfaces resolve to one validated effective policy. Planned
+semantic candidates include Water mass precision 3..8 bits and coherent duration
+0..12 ticks; this is semantic emulation in a superset test representation, **not
+production Cell repacking**.
+
+Simulation-semantic changes use validated **Apply + Reset Experiment** at the
+exclusive owner boundary. The normal A/B path never requantizes an already-running
+world in place. Render-only presentation controls may switch live where safe.
+
+Human-test comparisons hold the intended four-visible-level Water presentation
+fixed unless the experiment explicitly studies rendering. Anonymous A/B/C labels,
+identical recipes/seeds/camera/player starts and hidden candidate mappings are
+planned so observations can be recorded before identities are revealed.
+
+Before novel 3/5/7-bit or shortened-coherence candidates are treated as valid
+human-test inputs, the runtime harness must reproduce relevant #17 mass4/6/8 and
+current mass8/coherence12 semantics and preserve the required hard invariants.
+Quantitative differences such as levelness or settling remain descriptive context;
+later human evaluation, not this runbook, decides whether they are desirable.
