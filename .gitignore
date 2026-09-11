@@ -92,3 +92,6 @@ desktop.ini
 *.pfx
 credentials*
 secrets*
+
+# Issue17 generated evidence stays local.
+/validation/local/

@@ -170,3 +170,11 @@ finds identical Water trajectories under quiet3/4096, with active96-wide residua
 and stable narrow basin/film. [G-C](../operations/architecture-programme.md#g-c-staged-decision-2026-09-11)
 admits a fixed-carrier precision diagnostic, not a precision cause, expected lower-bit
 winner or changed conservation/defaults. No P implementation is included here.
+
+## Isolated Issue17 experiment branch
+
+The [precision registration](../operations/state-precision-experiment.md) defines
+a native-only experimental build on codex/issue-17-state-precision. That branch
+uses a fixed wide carrier and uint16 native mass access for all precision arms.
+Production semantics described above remain the reference; compact adapters,
+render projection and saves are not precision-aware migration paths.

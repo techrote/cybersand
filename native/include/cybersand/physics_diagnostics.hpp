@@ -17,7 +17,7 @@ struct PhysicsDiagnosticConfig {
 
 enum class PhysicsEvent : std::uint8_t {
     EmptyMove = 1, DensitySwap, Conversion, WaterTransfer, RejectedMove,
-    BodyDisplacement, BodyContact, PowderMix, GrainTransport, LateralProbe, FlowProbe
+    BodyDisplacement, BodyContact, PowderMix, GrainTransport, LateralProbe, FlowProbe, TransferCount, WaterUpdate, LateralRequest, ZeroRequest, BlockWake, BlockSleep
 };
 
 // Fixed open-addressing counters, not an event log. Overflow drops observations,

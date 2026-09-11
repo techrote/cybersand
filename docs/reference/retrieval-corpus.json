@@ -60,7 +60,8 @@
     "systems/flow-transport-and-profiles.md",
     "operations/architecture-programme.md",
     "operations/cell-layout-experiment.md",
-    "operations/liquid-characterization.md"
+    "operations/liquid-characterization.md",
+    "operations/state-precision-experiment.md"
   ],
   "navigation": [
     "README.md",

@@ -85,7 +85,10 @@ struct DirtyChunk {
     RectI64 local_rect;
 };
 
+class PrecisionProbe;
+
 class World {
+    friend class PrecisionProbe;
 public:
     static constexpr std::uint16_t kMaximumTransientBodies = 16;
 
@@ -105,14 +108,14 @@ public:
     // bounded read neighbourhood extends beyond the kernel write domain.
     [[nodiscard]] bool granular_support_at(std::int64_t x, std::int64_t y,
                                            bool side = false) const noexcept;
-    [[nodiscard]] std::uint8_t stored_state_a(std::int64_t x, std::int64_t y) const noexcept;
+    [[nodiscard]] std::uint16_t stored_state_a(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] std::uint8_t stored_state_b(std::int64_t x, std::int64_t y) const noexcept;
-    [[nodiscard]] std::uint8_t liquid_mass(std::int64_t x, std::int64_t y) const noexcept;
+    [[nodiscard]] std::uint16_t liquid_mass(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] std::int16_t temperature(std::int64_t x, std::int64_t y) const noexcept;
 
     void set(std::int64_t x, std::int64_t y, Material material);
     [[nodiscard]] bool set_cell_state(std::int64_t x, std::int64_t y, Material material,
-                                      std::uint8_t state_a_value,
+                                      std::uint16_t state_a_value,
                                       std::uint8_t state_b_value);
     void set_temperature(std::int64_t x, std::int64_t y, std::int16_t temperature);
     void paint_disc(std::int64_t centre_x, std::int64_t centre_y, std::int32_t radius, Material material);
@@ -245,12 +248,12 @@ private:
     [[nodiscard]] std::uint16_t transfer_water(std::int64_t from_x, std::int64_t from_y,
                                                std::int64_t to_x, std::int64_t to_y,
                                                std::uint16_t requested, JobEffects* effects);
-    [[nodiscard]] std::uint8_t state_a(std::int64_t x, std::int64_t y) const noexcept;
+    [[nodiscard]] std::uint16_t state_a(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] std::uint8_t state_b(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] bool write_cell(std::int64_t x, std::int64_t y, Material material,
-                                  std::uint8_t state_a_value, std::uint8_t state_b_value,
+                                  std::uint16_t state_a_value, std::uint8_t state_b_value,
                                   JobEffects* effects);
-    [[nodiscard]] bool rule_is_active(Material material, std::uint8_t state_a_value,
+    [[nodiscard]] bool rule_is_active(Material material, std::uint16_t state_a_value,
                                       std::uint8_t state_b_value) const noexcept;
     [[nodiscard]] bool update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y,
                                           JobEffects* effects);

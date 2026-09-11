@@ -142,3 +142,10 @@ research branch. #15/G-C is also complete after acceptance review; #17 is now un
 C and L, with no implementation begun. #19/V has its C prerequisite satisfied.
 #18/M still waits on #17/G-P and a named target; #20/B waits on M/G-M and its
 admission gate. #14 remains open. See the [identity and scope audit](../audits/2026-09-11-programme-gate-reconciliation.md).
+
+## Issue17 precision execution
+
+P is executing on a separate experimental branch under its
+[fixed-carrier registration](../operations/state-precision-experiment.md).
+No G-P result is claimed by preparation. M implementation still requires P and
+a concrete motion-target admission; V remains independent, B blocked, G-final open.

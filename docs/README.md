@@ -102,3 +102,9 @@ distinguish evidence completion from production approval.
 [Completed liquid characterization](operations/liquid-characterization.md) and
 its [acceptance coverage](audits/2026-09-11-issue-15-coverage.md) explain the C gate
 and the distinction between sleep, mobility, cadence and Water rest.
+
+## Water precision research
+
+The [Issue17 registration](operations/state-precision-experiment.md) defines the isolated
+P1/P2/P3 native experiment. Its fixed8-byte carrier is research-only; production
+Water and Cell controls remain unchanged pending programme gates.

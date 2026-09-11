@@ -99,3 +99,8 @@ For all11 native liquid mechanisms, controlled sleep versus mobility and why
 #17/P is unblocked, use [liquid characterization](../operations/liquid-characterization.md)
 and [G-C](../operations/architecture-programme.md#g-c-staged-decision-2026-09-11).
 #18 still needs G-P/target review; V research does not authorize render migration.
+
+## Water precision experiment
+
+For mass4/6/8/10, normalized versus literal thresholds, and Water delay4/8, use
+the [preregistered experiment](../operations/state-precision-experiment.md).
