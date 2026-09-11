@@ -2,7 +2,7 @@
 title: Issue 16 source intake and Cell layout evidence
 status: Current
 document-kind: evidence
-scope: Local L1/L2 representation evidence and L3 registration; remaining stages and G-L incomplete
+scope: Local L1/L2/L3 representation evidence and L4 registration; G-L incomplete
 canonical-for: []
 last-reviewed: 2026-09-11
 related-documents: [../operations/cell-layout-experiment.md, ../operations/architecture-programme.md]
@@ -83,8 +83,8 @@ endpoints; event writes follow the clear. These are source predictions, not timi
 |---|---|
 | L1 stride | Completed196 processes; exact comparisons pass, sleeping p95/wrap-tail costs flagged. |
 | L2 packing/ID access | Completed448 processes; exact pairs pass, individual cost flags retained. |
-| L3 epoch | Prepared and correctness-screened;2048-tick direct clear measurements pending. |
-| L4 optional state | Registered neutral control; concrete sidecar implementation/crossover pending. |
+| L3 epoch | Complete:280 processes; exact parity, sleeping tail penalty and direct clear cost retained. |
+| L4 optional state | Concrete neutral carrier registered before code; preparation/crossover pending. |
 | L5 ID inventory | Source review recorded above; larger IDs have capacity headroom but no demonstrated demand. |
 | L6 storage geometry | Not admitted: no profiling evidence yet. |
 | G-L | OPEN; L1 negative/ambiguous cost evidence retained, no winner or migration approval; issue incomplete. |
@@ -653,3 +653,53 @@ retrieval fixture/evaluator is unchanged and both results are retained.
 
 Final preparation doc checks (`l3-preparation-final`) again pass docs/M11 and retain
 the same14/18 release/materialization scope. Retrieval hit@1/hit@5/MRR: frozen 22/32,32/32,0.8229; challenges 12/16,16/16,0.8562; programme 3/5,5/5,0.75; layout 2/3,3/3,0.8333.
+
+## L3 measured results, September11
+
+Frozen source `6e89398dbfc776d9b93bfc9f94a37e0f07c83ac8`; timing directory
+`validation/local/issue-16/timing-l3-20260911-052112`,05:21–07:13 BST. All280
+processes exit0, no retries or exclusions. Full reducer passes70 epoch,14 bridge,
+56 observer pairs, same-schema raw records, worker/repeat and final Water/Sand.
+Reduced JSON SHA-256:
+`0615608359b2d41b362ae191be90fa7b3d1553c2e1ad069f15dab7d447d39819`.
+All samples, direct chunk identities, commands/timeouts and frozen identities remain
+retained. Original checkout HEAD/dirty DLL hash remain unchanged.
+
+| Fixture | Workers | Median p95 six/eight | Median p99 | Median total |
+|---|---:|---:|---:|---:|
+| dense512 |1|1.0007|1.0174|0.9992|
+| dense512 |4|1.0202|1.0476|1.0131|
+| dense1024 |1|1.0007|0.9998|0.9989|
+| dense1024 |4|1.0050|1.0139|1.0001|
+| sparse512 |1|0.9905|0.9718|0.9945|
+| sparse512 |4|0.9986|0.9903|1.0010|
+| sparse1024 |1|0.9963|1.0181|1.0093|
+| sparse1024 |4|1.0304|1.0349|1.0038|
+| sleeping4096 |1|1.0068|3.9931|1.0567|
+| sleeping4096 |4|0.9916|3.8090|1.0485|
+
+No primary median p95 exceeds15%; sleeping one-worker pair5 does individually.
+Bridge p95 medians1.0116/0.9981 and observer medians0.9969–1.0324 have no individual
+15% flags. Direct observer-on widths occupy separate blocks, limiting direct
+cross-width causal comparisons. Primary epoch pairs have observers off.
+
+| Recorder | Workers | Clears over7 runs | Direct p50/p95/max ms |
+|---|---:|---:|---|
+| eight-bit sparse1024 |1|56|0.5672 /0.8423 /0.9104|
+| eight-bit sparse1024 |4|56|0.6907 /1.0681 /1.3176|
+| eight-bit sleeping4096 |1|56|8.3709 /8.8028 /8.8980|
+| eight-bit sleeping4096 |4|56|8.3476 /9.0699 /10.0437|
+| six-bit sparse1024 |1|224|0.5336 /0.8239 /1.4991|
+| six-bit sparse1024 |4|224|0.6479 /0.8958 /1.1093|
+| six-bit sleeping4096 |1|224|8.3816 /9.1622 /10.7900|
+| six-bit sleeping4096 |4|224|8.4052 /9.4697 /10.5031|
+
+The2048-tick run has8 versus32 clears, with8 versus31 in the1928-tick steady
+window; the first six-bit clear is retained in warmup. Long-run cadence is255/63,
+not exactly4. Whole-tick neighbor proxies remain distinct from direct duration.
+Sleeping clears still cost about8.4ms while their frequency increases. Sleeping
+p99 rises3.81–3.99x and total time4.85–5.67%. This is a sound negative shorter-epoch
+result at unchanged semantics, with no benefit from the unused extra two bits.
+No production width or epoch is selected. PMU/cache attribution, other hardware
+and fresh desktop/Web acceptance remain gaps. L4's concrete neutral-payload
+registration now precedes candidate code; G-L remains open until its result.

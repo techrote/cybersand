@@ -225,6 +225,80 @@ Retain >15% paired p95 and >1ms extra clear/excess review screens.
 
 ## Run and review
 
+**L3 review, September11:** all280 processes and70 epoch/14 bridge/56 observer
+pairs pass exact normalized state/work and final quantities. Six-bit epochs clear
+32 times versus8 over2048 ticks. Sleeping p95 is similar, but p99 rises3.81–3.99x
+and total time4.85–5.67%. Direct sleeping clears remain about8.4ms. Shorter epochs
+make the hitch more frequent; no width is selected. This admits the bounded L4
+neutral carrier below. Hardware-cache attribution remains unmeasured.
+
+## L4 concrete preregistration, September11
+
+New standalone modules `native/bench/cell_sidecar.cpp` and
+`tools/experiments/cell_sidecar.py` will compare a neutral uint32 tag, zero absent,
+with all32 nonzero bits preserved. This is a synthetic transaction carrier, not
+World physics or a solver-speed prediction. Existing World correctness evidence
+is retained, not relabelled as a fresh L4 run. No adapter/render change is admitted.
+
+Sixteen128-square chunks hold262144 legacy slots on a512-square grid. Legacy
+material/state_a/state_b/epoch remain byte4 with alignment4 and epoch0, plus a
+separate i16 temperature array. Inline control adds tag32 (stride8, alignment4).
+SoA uses optional u32[16384]. Sparse uses optional u16[16384] indices (65535 absent)
+and bounded8-byte slots containing value32/owner16/next-free16. Slot handles never
+escape their owner. Include descriptor/vector/free-head bytes and actual capacities,
+process working/private/peak memory and measurement buffers; allocator/PMC gaps
+remain explicit. All carriers enforce the same per-chunk logical capacity:
+min(16384,initial present+64), or0 for unprepared chunks. No measured growth.
+
+Density0/1/5/15/50/100% means floor(262144*density/100) tags. Clustered uses the first
+slots in chunk-major order; dispersed uses the bijection (rank*65537+131*seed)
+mod262144. Report per-chunk occupancy and allocated chunk count. Absent mode uses
+density0/unprepared arrays. Allocated-unread scans only legacy bytes; density0 in
+this mode deliberately prepares every chunk with cap64. Accessed mode performs
+transactions and reads absence at density0. Initial legacy states cycle current
+Water mass1..255/delay0..12, Sand17/23 and Fire48/0; temperature200..216. These are
+state carriers; synthetic reaction sources/sinks are not chemistry predictions.
+
+Eight pairs of horizontally adjacent chunks are exclusive worker domains. Each
+accessed batch attempts64 operations per pair, cycling move/swap/Water split/
+Water merge/reaction clear/reaction create/reclaim/read. Deterministic adjacent
+endpoints include chunk seams; writes stay distance1 within their pair. Moves and
+swaps transfer legacy, temperature and tag; split explicitly clones a tag, merge
+prefers the destination tag and accounts drops. Reactions/reclaim have explicit
+Water and tag source/sink ledgers. Creation tags follow the initial density mask.
+Preflight post-operation counts before mutation, erase both endpoints then assign
+replacements. Unprepared/full destination refusal preserves both records. No global
+free list, worker allocation, per-cell lock, external mutable view or rollback claim.
+
+Unread/absent batches perform8192 legacy reads over a cycling resident cursor;
+payload validation occurs after timing. Accessed batches attempt512 transactions.
+One/four workers execute identical pair streams, with three persistent child
+threads plus the caller and two barriers per batch. Report dispatch overhead rather
+than tuning batch size. All buffers are prepared first, followed by100 empty pool
+barrier cycles. Benchmark-only C++ new counters screen allocations during batches;
+this does not observe arbitrary malloc/OS allocations. Exceptions must join safely.
+
+Correctness:1800 batches, five existing seeds/translations,1/4 workers,two repeats,
+all12 accessed density/pattern cases and three carriers:720 processes. A flat
+reference is independently initialized from declared inputs, compares outcomes and
+touched endpoints every operation, and full state/free-list ownership every64 batches
+and at completion. Shared pure transaction semantics are a common-mode limitation;
+hand-expected focused checks cover successful operations, capacity refusal unchanged,
+unprepared/prepared seam moves, saturation, reclaim/reuse and high-bit tags. Check
+exact Water and neutral source/sink accounting every batch. Final lossless records
+encode all cells as little-endian x64/y64/material16/a8/b8/temp16/tag32; every batch
+retains32 u64 work/ledger fields. Compare repeats/workers/carriers byte-for-byte.
+
+Timing: seven interleaved AB/BA pairs for each SoA/sparse versus inline control,
+both unread/accessed modes,12 cases and1/4 workers:1344 processes. Add56 absent
+density0/clustered processes:1400 total,1920 batches each,120 warmup and1800 steady,
+1800-second process timeout. Retain all samples/failures; no adaptive retry/tuning.
+Primary p95 candidate/control, plus p50/p99/max/total and ns/read or ns/attempt,
+startup and memory. Flag >15% paired p95 for review. Exact work/final-state parity
+is mandatory. Serialize after timing and losslessly gzip each completed record
+outside process clocks before launching the next process. No concurrent builds,
+tests or full reduction. Freeze source/compiler/executable hashes before release.
+
 **L2 review, September11:** all448 processes completed with140 packing,28 bridge and56
 observer pairs passing. No primary median p95 exceeds15%, but three individual pairs
 do; sparse one-worker costs reach11.86%. Bridge medians span0.9859–1.0076. Observer
