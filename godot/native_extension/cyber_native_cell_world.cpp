@@ -1290,7 +1290,10 @@ bool CyberNativeCellWorld::water_experiment_fill_rect(
     const auto mass = static_cast<std::uint16_t>(
         (2U * static_cast<std::uint32_t>(normalized_mass) * policy.maximum() + 255U) /
         (2U * 255U));
-    if (mass == 0U) return false;
+    // A registered physical source can sit below a candidate lattice's first
+    // representable unit. It is a valid, observable zero-delta action, not a
+    // runtime failure or hidden accumulation channel.
+    if (mass == 0U) return true;
     bool changed = false;
     for (auto y = origin.y; y < origin.y + size.y; ++y) {
         for (auto x = origin.x; x < origin.x + size.x; ++x) {

@@ -121,6 +121,8 @@ func water_lab_apply_result(result: Dictionary, blind_label: String = "") -> voi
 		tower_context["status"]="Water Apply + Reset rejected; "+str(demo_bridge.get_last_error())
 		return
 	water_policy_resolved=result.duplicate(true)
+	water_policy_available=true
+	water_active_blind_label=blind_label
 	demo_id="experiment_tower"
 	tower_active=true
 	current_view_size=Vector2i(480,270)
@@ -172,6 +174,7 @@ func _update_water_web_context() -> void:
 func tower_reset() -> void:
 	tower_schedule.clear();tower_inputs.clear()
 	water_actions.clear();water_action_history.clear();water_observations.clear()
+	water_active_blind_label=""
 	select_demo("experiment_tower")
 
 func tower_apply_profile(resolved: Dictionary) -> void:

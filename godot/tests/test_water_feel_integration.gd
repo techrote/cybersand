@@ -55,9 +55,28 @@ func _run() -> void:
 			var scenario_policy: Dictionary=Profiles.resolve({},{},{"mass_bits":bits,
 				"coherence_ticks":coherence,"scenario_id":scenario_id,"seed":31})
 			var scenario_recipe: Dictionary=Scenarios.recipe(scenario_id,31)
-			_expect(bridge.build_water_feel_world(world,scenario_recipe.rectangles,
-				transport.packed,scenario_policy.semantic,scenario_recipe.partial_water_fills),
-				"scenario %s rejected mass%d/coherence%d" % [scenario_id,bits,coherence])
+			var built: bool=bridge.build_water_feel_world(world,scenario_recipe.rectangles,
+				transport.packed,scenario_policy.semantic,scenario_recipe.partial_water_fills)
+			_expect(built,"scenario %s rejected mass%d/coherence%d" % [scenario_id,bits,coherence])
+			if built:
+				for action: Dictionary in scenario_recipe.actions:
+					var action_ok: bool=true
+					if str(action.kind)=="fill":
+						var action_coherence: int=int((2*int(action.coherence)*coherence+12)/24)
+						action_ok=world.water_experiment_fill_rect(
+							Vector2i(int(action.x),int(action.y)),
+							Vector2i(int(action.width),int(action.height)),
+							int(action.normalized_mass),action_coherence)
+					elif str(action.kind)=="erase":
+						action_ok=world.water_experiment_erase_rect(
+							Vector2i(int(action.x),int(action.y)),
+							Vector2i(int(action.width),int(action.height)))
+					elif str(action.kind)=="sample":
+						action_ok=not world.water_experiment_observation(
+							Vector2i(int(action.x),int(action.y)),
+							Vector2i(int(action.width),int(action.height))).is_empty()
+					_expect(action_ok,"scenario %s action rejected mass%d/coherence%d" % [
+						scenario_id,bits,coherence])
 
 	var before_invalid: Dictionary=world.water_experiment_observation(Vector2i.ZERO,
 		Vector2i(CyberCellWorld.WORLD_WIDTH,CyberCellWorld.WORLD_HEIGHT))

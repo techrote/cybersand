@@ -8,6 +8,7 @@ var info: Label
 var labels: Array[Label] = []
 var label_points: Array[Vector2] = []
 var shown_floor: int = -1
+var water_save_button: Button
 
 func button(row: Node, text: String, action: Callable) -> Button:
 	var b: Button = Button.new()
@@ -33,7 +34,7 @@ func setup(controller: Control) -> void:
 	button(row,"Tuning",func() -> void: host.tower_tuning())
 	button(row,"Water Feel",func() -> void: host.water_lab_reset())
 	button(row,"Water policy",func() -> void: host.water_lab_open())
-	button(row,"Save Water policy",func() -> void: host.water_lab_save_profile())
+	water_save_button=button(row,"Save Water policy",func() -> void: host.water_lab_save_profile())
 	var release: HBoxContainer = HBoxContainer.new()
 	add_child(release)
 	tube_picker = OptionButton.new()
@@ -59,6 +60,7 @@ func refresh(active: bool, floor_index: int, context: Dictionary) -> void:
 	if context.get("water_active",false):
 		floor_picker.disabled=true
 		tube_picker.disabled=true
+		water_save_button.disabled=not str(context.get("water_blind_label","")).is_empty()
 		for label: Label in labels: label.visible=false
 		var policy: Dictionary=context.get("water_policy",{})
 		var accounting: Dictionary=context.get("water_accounting",{})
@@ -74,6 +76,7 @@ func refresh(active: bool, floor_index: int, context: Dictionary) -> void:
 		return
 	floor_picker.disabled=false
 	tube_picker.disabled=false
+	water_save_button.disabled=false
 	if shown_floor != floor_index:
 		shown_floor = floor_index
 		floor_picker.select(floor_index)
