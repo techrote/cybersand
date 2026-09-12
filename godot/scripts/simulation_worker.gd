@@ -73,6 +73,7 @@ func queue_lab(command: Dictionary) -> void:
 	_mutex.unlock()
 
 func _lab_release(index: int) -> void:
+	if _water_lab_active: return
 	var plugs: Array[Rect2i] = CyberExperimentTower.plugs(_lab_floor)
 	if index < 0 or index >= plugs.size(): return
 	var plug: Rect2i = plugs[index]
@@ -223,6 +224,9 @@ func _apply_lab(command: Dictionary) -> bool:
 				_water_policy_hash.left(12),_water_recipe_hash.left(12),
 				int(_water_policy.seed)]
 	if not _lab_active: return false
+	if _water_lab_active and (command.has("release") or command.has("schedule")):
+		_lab_status="Water Feel uses only registered scenario actions; Tower releases are disabled"
+		return false
 	if command.has("floor"):
 		_lab_schedule.clear() # Navigation abandons scheduled inputs; no catch-up.
 		_lab_floor = clampi(int(command.floor),0,4)
@@ -367,6 +371,10 @@ func queue_emit_disc(
 	if _published_snapshot != null and _published_snapshot.simulation_failed:
 		_mutex.unlock()
 		return false
+	if (_published_snapshot != null
+		and _published_snapshot.lab_context.get("water_active",false)):
+		_mutex.unlock()
+		return false
 	if _pending_emissions.is_empty() or _pending_emissions.back() != emission_command:
 		_pending_emissions.append(emission_command)
 	_mutex.unlock()
@@ -473,6 +481,8 @@ func _worker_loop() -> void:
 			local_reset_requested = false
 			local_paused = true
 			_last_render_snapshot_usec = -DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
+		if _water_lab_active:
+			local_emissions.clear()
 		if _lab_active:
 			if not (_water_lab_active and bool(_water_recipe.get("body_enabled",false))):
 				local_rigid_body_states = PackedFloat32Array()

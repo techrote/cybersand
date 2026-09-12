@@ -1341,6 +1341,40 @@ void test_immutable_render_snapshot_exchange() {
     require(surviving_lease.has_value() && surviving_lease->cells().size() == 2 &&
                 surviving_lease->cells()[0] == static_cast<std::uint8_t>(Material::Sand),
             "C++ lease did not retain immutable slot ownership after exchange destruction");
+
+    for (const auto bits : {std::uint8_t{3}, std::uint8_t{4}}) {
+        WorldConfig water_config{};
+        water_config.water_experiment_policy = WaterExperimentPolicy(bits, 12U);
+        World water_world(water_config);
+        cybersand::RenderSnapshotExchange water_exchange(2, 1, 8);
+        const auto& policy = water_world.config().water_experiment_policy;
+        require(water_world.set_cell_state(3, 4, Material::Water,
+                                           policy.maximum(), 0U),
+                "nondefault Water full-publication setup failed");
+        require(water_exchange.publish(water_world).status ==
+                    cybersand::RenderPublishStatus::Published,
+                "nondefault Water initial publication failed");
+        auto full_mass = water_exchange.acquire_latest();
+        require(full_mass.has_value() && full_mass->cells().size() == 2 &&
+                    full_mass->cells()[0] == static_cast<std::uint8_t>(Material::Water) &&
+                    full_mass->cells()[1] == 255U,
+                "nondefault Water initial publication was not normalized");
+        full_mass->reset();
+
+        const auto candidate_mass = static_cast<std::uint16_t>(
+            policy.maximum() / 2U);
+        require(water_world.set_cell_state(3, 4, Material::Water,
+                                           candidate_mass, 0U),
+                "nondefault Water dirty-patch mutation failed");
+        require(water_exchange.publish(water_world).status ==
+                    cybersand::RenderPublishStatus::Published,
+                "nondefault Water dirty-patch publication failed");
+        auto dirty_mass = water_exchange.acquire_latest(1U);
+        require(dirty_mass.has_value() && dirty_mass->cells().size() == 2 &&
+                    dirty_mass->cells()[0] == static_cast<std::uint8_t>(Material::Water) &&
+                    dirty_mass->cells()[1] == policy.normalized_mass(candidate_mass),
+                "nondefault Water dirty patch used the default mass lattice");
+    }
 }
 
 void test_render_snapshot_concurrent_leases() {

@@ -107,3 +107,64 @@ static func run(world: Object, bridge: Object, presentation: ShaderMaterial) -> 
 		"presentation_preserved": before_presentation == after_presentation,
 		"failures": failures,
 	}
+
+
+static func run_controller(host: Control, presentation: ShaderMaterial) -> Dictionary:
+	var result: Dictionary=run(host.native_world,host.demo_bridge,presentation)
+	var failures: Array=result.failures
+	var base: Dictionary=Profiles.resolve({},{},{"mass_bits":8,
+		"coherence_ticks":12,"scenario_id":"shallow-pool","seed":401})
+	host.water_lab_apply_result(base)
+	if not host.tower_context.get("water_active",false):
+		failures.append("controller Apply + Reset did not enter Water Feel")
+	var reset_before: Dictionary=host._water_observe_web()
+	host.water_lab_reset()
+	if host._water_observe_web()!=reset_before:
+		failures.append("controller deterministic reset changed initial state")
+	host.ui.close_menu()
+	var tick_before: int=int(host.native_world.get_tick_index())
+	host.tower_command({"step":true})
+	host._physics_process(1.0/60.0)
+	if int(host.native_world.get_tick_index())!=tick_before+1:
+		failures.append("controller pause + single-step was not exact")
+	host.water_lab_reset()
+	var blind_candidates: Array[int]=[3,5]
+	if not host.water_lab_prepare_blind(blind_candidates,402):
+		failures.append("controller blind preparation failed")
+	var mapping: Dictionary=host.water_blind_set.get("hidden_mapping",{}).duplicate(true)
+	var label: String=host.water_active_blind_label
+	var nested_candidates: Array[int]=[7,8]
+	if host.water_lab_prepare_blind(nested_candidates,403):
+		failures.append("controller accepted nested blind preparation")
+	var hidden_hash: String=str(host.water_policy_resolved.get("hash",""))
+	host.water_lab_apply_result(base)
+	if str(host.water_policy_resolved.get("hash",""))!=hidden_hash:
+		failures.append("controller accepted unblinded apply during blind")
+	if (host.queue_brush_mutation(200,200,0,CyberCellWorld.WALL)
+		or host.tower_command({"release":0}) or host.tower_command({"schedule":0})
+		or host.set_quality((host.quality+1)%3)
+		or host.set_liquid_surface_adhesion(not host.liquid_surface_adhesion_enabled)
+		or host.queue_explosion_mutation(200,200,20)
+		or bool(host._encode_current().get("ok",true))):
+		failures.append("controller accepted an ordinary Water-mode control")
+	if not host.water_lab_apply_blind(1):
+		failures.append("controller blind candidate switch failed")
+	var switched_label: String=host.water_active_blind_label
+	host.water_lab_reset()
+	if (host.water_blind_set.get("hidden_mapping",{})!=mapping
+		or host.water_active_blind_label!=switched_label
+		or switched_label==label):
+		failures.append("controller blind reset/candidate lifecycle changed mapping")
+	host.tower_observation()
+	host.select_demo("waterworks",false)
+	var ordinary_policy: Dictionary=host.native_world.get_water_experiment_policy()
+	if (not host.water_blind_set.is_empty()
+		or not host.water_active_blind_label.is_empty()
+		or int(ordinary_policy.get("mass_bits",-1))!=8
+		or int(ordinary_policy.get("coherence_ticks",-1))!=12):
+		failures.append("controller ordinary-demo exit retained blind/default policy state")
+	result["controller_lifecycle"]={"apply_reset":true,"single_step":true,
+		"blind_mapping_size":mapping.size(),"ordinary_exit":true}
+	result["failures"]=failures
+	result["ok"]=failures.is_empty()
+	return result

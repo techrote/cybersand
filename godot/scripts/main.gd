@@ -143,6 +143,7 @@ var water_blind_base: Dictionary = {}
 var water_blind_index: int = 0
 var water_active_blind_label: String = ""
 var pending_water_apply: Dictionary = {}
+var pending_water_exit: Dictionary = {}
 var water_policy_available: bool = true
 
 func setup_tower_panel() -> void:
@@ -175,6 +176,8 @@ func water_launch_arguments() -> PackedStringArray:
 	return OS.get_cmdline_user_args()
 
 func water_lab_open() -> void:
+	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty():
+		return
 	water_experiment_panel.popup_centered()
 
 func water_lab_reset() -> void:
@@ -183,14 +186,32 @@ func water_lab_reset() -> void:
 
 func water_lab_save_profile() -> bool:
 	if (not water_policy_available or not water_policy_resolved.get("ok",false)
+		or not water_blind_set.is_empty()
 		or not water_active_blind_label.is_empty()): return false
 	var file: FileAccess=FileAccess.open(WATER_POLICY_PATH,FileAccess.WRITE)
 	if file==null: return false
 	file.store_string(str(water_policy_resolved.canonical_json)+"\n")
 	return true
 
+func _water_blind_application_allowed(result: Dictionary, blind_label: String) -> bool:
+	var blind_active: bool=(
+		not water_blind_set.is_empty() or not water_active_blind_label.is_empty())
+	if not blind_active:
+		return blind_label.is_empty()
+	if (blind_label.is_empty() or not water_blind_set.get("ok",false)
+		or not blind_label in water_blind_set.get("hidden_mapping",{})):
+		return false
+	var hidden: Dictionary=water_blind_set.hidden_mapping[blind_label]
+	return str(hidden.get("hash",""))==str(result.get("hash",""))
+
+func water_controlled_run_active() -> bool:
+	return (tower_context.get("water_active",false)
+		or not pending_water_apply.is_empty()
+		or (not pending_water_exit.is_empty() and not water_blind_set.is_empty()))
+
 func water_lab_apply_result(result: Dictionary, blind_label: String = "") -> void:
 	if not result.get("ok",false): return
+	if not _water_blind_application_allowed(result,blind_label): return
 	var checked: Dictionary=CyberWaterExperimentProfiles.resolve({},{},result.policy)
 	if not checked.get("ok",false) or str(checked.hash)!=str(result.hash): return
 	var recipe: Dictionary=CyberWaterFeelScenarios.recipe(
@@ -214,6 +235,8 @@ func water_lab_prepare_blind(
 		blind_seed: int = -1
 	) -> bool:
 	if not water_policy_available: return false
+	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty():
+		return false
 	var candidates: Array=[]
 	var base: Dictionary=water_policy_resolved.policy.duplicate(true)
 	water_blind_base=water_policy_resolved.duplicate(true)
@@ -278,11 +301,17 @@ func _activate_water_body_scenario(active: bool) -> void:
 		if rapier_bridge.is_initialized():
 			rapier_bridge.reset_body(i,Vector2(160+i*52,176),0.0)
 
-func tower_command(command: Dictionary) -> void:
+func tower_command(command: Dictionary) -> bool:
+	if water_controlled_run_active() and (
+		command.has("release") or command.has("schedule")
+	):
+		return false
 	if command.has("step"): paused = true
 	simulation_worker.queue_lab(command)
+	return true
 
 func tower_floor_select(index: int) -> void:
+	if water_controlled_run_active(): return
 	tower_floor = clampi(index,0,4)
 	paused = true
 	camera_follow_enabled = false
@@ -290,8 +319,7 @@ func tower_floor_select(index: int) -> void:
 	tower_command({"floor":tower_floor})
 
 func tower_reset() -> void:
-	_water_end_blind_session()
-	water_active_blind_label=""
+	pending_water_exit={"kind":"fresh"}
 	pending_water_apply.clear()
 	tower_active = true
 	current_view_size = Vector2i(480,270)
@@ -311,6 +339,7 @@ func tower_tuning() -> void:
 	tower_profile_panel.popup_centered()
 
 func tower_focus_tube(index: int) -> void:
+	if water_controlled_run_active(): return
 	var tubes: Array=CyberExperimentTower.tubes(tower_floor)
 	if index < 0 or index >= tubes.size(): return
 	paused=true
@@ -318,6 +347,8 @@ func tower_focus_tube(index: int) -> void:
 	camera_origin=Vector2(clampf(float(tubes[index][0])-100.0,0.0,1024.0-current_view_size.x),CyberExperimentTower.floor_y(tower_floor))
 
 func tower_apply_profile(resolved: Dictionary) -> void:
+	pending_water_exit={"kind":"profile"}
+	pending_water_apply.clear()
 	paused = true
 	tower_command({"reset":true,"floor":tower_floor,"profile":resolved})
 
@@ -622,17 +653,17 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		KEY_C:
 			coherent_liquid_emission = not coherent_liquid_emission
 		KEY_T:
-			liquid_surface_adhesion_enabled = not liquid_surface_adhesion_enabled
+			set_liquid_surface_adhesion(not liquid_surface_adhesion_enabled)
 		KEY_R:
 			reset_world()
 		KEY_P:
 			paused = not paused
 		KEY_F:
-			camera_follow_enabled = not camera_follow_enabled
+			set_camera_follow(not camera_follow_enabled)
 		KEY_L:
-			simulation_window_enabled = not simulation_window_enabled
+			set_simulation_window(not simulation_window_enabled)
 		KEY_K:
-			cadence_lod_enabled = not cadence_lod_enabled
+			set_cadence_lod(not cadence_lod_enabled)
 		KEY_H:
 			cycle_render_snapshot_hz()
 		KEY_G:
@@ -679,19 +710,50 @@ func cycle_material_group(direction: int) -> void:
 	selected_material_id = MATERIAL_GROUP_FIRST_IDS[group_index]
 
 
-func cycle_view_size() -> void:
+func cycle_view_size() -> bool:
+	if water_controlled_run_active(): return false
 	var previous_centre: Vector2 = camera_origin + Vector2(current_view_size) * 0.5
 	view_size_index = (view_size_index + 1) % VIEW_SIZE_PRESETS.size()
 	current_view_size = VIEW_SIZE_PRESETS[view_size_index]
 	camera_origin = clamped_camera_origin(previous_centre - Vector2(current_view_size) * 0.5)
 	update_worker_frame_state()
 	update_shader_parameters()
+	return true
 
 
-func cycle_simulation_margin() -> void:
+func cycle_simulation_margin() -> bool:
+	if water_controlled_run_active(): return false
 	simulation_margin_index = (simulation_margin_index + 1) % SIMULATION_MARGIN_PRESETS.size()
 	simulation_margin = SIMULATION_MARGIN_PRESETS[simulation_margin_index]
 	update_worker_frame_state()
+	return true
+
+
+func set_liquid_surface_adhesion(enabled: bool) -> bool:
+	if water_controlled_run_active(): return false
+	liquid_surface_adhesion_enabled=enabled
+	update_worker_frame_state()
+	return true
+
+
+func set_camera_follow(enabled: bool) -> bool:
+	if water_controlled_run_active(): return false
+	camera_follow_enabled=enabled
+	return true
+
+
+func set_simulation_window(enabled: bool) -> bool:
+	if water_controlled_run_active(): return false
+	simulation_window_enabled=enabled
+	update_worker_frame_state()
+	return true
+
+
+func set_cadence_lod(enabled: bool) -> bool:
+	if water_controlled_run_active(): return false
+	cadence_lod_enabled=enabled
+	update_worker_frame_state()
+	return true
 
 
 func cycle_render_snapshot_hz() -> void:
@@ -722,6 +784,7 @@ func material_id_for_paint_slot(slot: int) -> int:
 
 
 func reset_world() -> void:
+	if water_controlled_run_active(): return
 	reset_test_rigid_bodies()
 	simulation_worker.queue_reset(CHARACTER_SPAWN)
 	character_position = CHARACTER_SPAWN
@@ -807,6 +870,13 @@ func consume_worker_snapshot() -> void:
 		return
 	latest_snapshot = snapshot
 	tower_context = snapshot.lab_context
+	if not pending_water_exit.is_empty():
+		if (not tower_context.get("water_active",false)
+			and tower_context.has("profile")):
+			_water_end_blind_session()
+			pending_water_exit.clear()
+		elif "rejected" in str(tower_context.get("status","")).to_lower():
+			pending_water_exit.clear()
 	if not pending_water_apply.is_empty():
 		if tower_context.get("water_active",false) and str(
 			tower_context.get("water_policy_hash",""))==str(pending_water_apply.hash):
@@ -889,6 +959,7 @@ func get_horizontal_input() -> float:
 
 
 func update_camera(delta: float) -> void:
+	if water_controlled_run_active(): return
 	var pan_input: Vector2 = Vector2(
 		(1.0 if Input.is_key_pressed(KEY_RIGHT) else 0.0) - (1.0 if Input.is_key_pressed(KEY_LEFT) else 0.0),
 		(1.0 if Input.is_key_pressed(KEY_DOWN) else 0.0) - (1.0 if Input.is_key_pressed(KEY_UP) else 0.0)
@@ -937,6 +1008,19 @@ func update_worker_frame_state() -> void:
 	)
 
 
+func queue_brush_mutation(
+		world_x: int,
+		world_y: int,
+		radius: int,
+		material_id: int,
+		emission_flags: int = CyberCellWorld.EMISSION_FLAG_NONE
+	) -> bool:
+	if water_controlled_run_active():
+		return false
+	return simulation_worker.queue_emit_disc(
+		world_x,world_y,radius,material_id,emission_flags)
+
+
 func handle_painting() -> void:
 	if tower_profile_panel != null and tower_profile_panel.visible: return
 	var mouse: Vector2 = world_view.get_local_mouse_position()
@@ -966,7 +1050,7 @@ func handle_painting() -> void:
 
 	var world_x: int = floori(camera_origin.x) + view_pixel.x
 	var world_y: int = floori(camera_origin.y) + view_pixel.y
-	simulation_worker.queue_paint(
+	queue_brush_mutation(
 		world_x,
 		world_y,
 		4,

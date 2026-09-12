@@ -543,7 +543,9 @@ RenderPublishResult RenderSnapshotExchange::publish(World& world) {
                     source_y * static_cast<std::size_t>(world.config_.chunk_size) + source_x];
                 output[column * 2U] = static_cast<std::uint8_t>(cell.material_value());
                 output[column * 2U + 1U] =
-                    project_visual_state(cell.material_value(), cell.state_a_value(), cell.state_b_value());
+                    project_visual_state(cell.material_value(), cell.state_a_value(),
+                                         cell.state_b_value(),
+                                         world.config_.water_experiment_policy);
             }
         }
         byte_offset += height * stride;

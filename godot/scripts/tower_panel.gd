@@ -9,6 +9,9 @@ var labels: Array[Label] = []
 var label_points: Array[Vector2] = []
 var shown_floor: int = -1
 var water_save_button: Button
+var release_buttons: Array[Button] = []
+var blind_button: Button
+var water_policy_button: Button
 
 func button(row: Node, text: String, action: Callable) -> Button:
 	var b: Button = Button.new()
@@ -33,7 +36,7 @@ func setup(controller: Control) -> void:
 	button(row,"Fresh tower",func() -> void: host.tower_reset())
 	button(row,"Tuning",func() -> void: host.tower_tuning())
 	button(row,"Water Feel",func() -> void: host.water_lab_reset())
-	button(row,"Water policy",func() -> void: host.water_lab_open())
+	water_policy_button=button(row,"Water policy",func() -> void: host.water_lab_open())
 	water_save_button=button(row,"Save Water policy",func() -> void: host.water_lab_save_profile())
 	var release: HBoxContainer = HBoxContainer.new()
 	add_child(release)
@@ -41,10 +44,10 @@ func setup(controller: Control) -> void:
 	tube_picker.focus_mode = Control.FOCUS_NONE
 	tube_picker.item_selected.connect(func(i: int) -> void: host.tower_focus_tube(i))
 	release.add_child(tube_picker)
-	button(release,"Open plug",func() -> void: host.tower_command({"release":tube_picker.selected}))
-	button(release,"Open neighbours",func() -> void: host.tower_command({"release":tube_picker.selected,"adjacent":true}))
-	button(release,"Sequence +30 / +90 ticks",func() -> void: host.tower_command({"schedule":tube_picker.selected}))
-	button(release,"Blind A/B/C",func() -> void: host.water_lab_prepare_blind())
+	release_buttons.append(button(release,"Open plug",func() -> void: host.tower_command({"release":tube_picker.selected})))
+	release_buttons.append(button(release,"Open neighbours",func() -> void: host.tower_command({"release":tube_picker.selected,"adjacent":true})))
+	release_buttons.append(button(release,"Sequence +30 / +90 ticks",func() -> void: host.tower_command({"schedule":tube_picker.selected})))
+	blind_button=button(release,"Blind A/B/C",func() -> void: host.water_lab_prepare_blind())
 	button(release,"Next blind",func() -> void: host.water_lab_apply_blind())
 	button(release,"Export observation",func() -> void: host.tower_observation())
 	info = Label.new()
@@ -60,7 +63,14 @@ func refresh(active: bool, floor_index: int, context: Dictionary) -> void:
 	if context.get("water_active",false):
 		floor_picker.disabled=true
 		tube_picker.disabled=true
-		water_save_button.disabled=not str(context.get("water_blind_label","")).is_empty()
+		var blind_active: bool=(not str(context.get("water_blind_label","")).is_empty()
+			or not host.water_blind_set.is_empty())
+		for release_button: Button in release_buttons:
+			release_button.disabled=true
+			release_button.tooltip_text="Water Feel uses only registered scenario actions"
+		blind_button.disabled=blind_active
+		water_policy_button.disabled=blind_active
+		water_save_button.disabled=blind_active
 		for label: Label in labels: label.visible=false
 		var policy: Dictionary=context.get("water_policy",{})
 		var accounting: Dictionary=context.get("water_accounting",{})
@@ -70,12 +80,17 @@ func refresh(active: bool, floor_index: int, context: Dictionary) -> void:
 			str(policy.get("seed","")),
 			str(context.get("water_recipe_hash","")).left(12),
 			str(policy.get("interface_mode","coverage"))]
-		info.text+="\nWater integer %s +%s -%s / pause, single-step, reset and export remain available" % [
+		info.text+="\nWater integer %s +%s -%s / Tower releases and brushes disabled; pause, single-step, reset and export remain available" % [
 			str(accounting.get("current",0)),str(accounting.get("explicit_source",0)),
 			str(accounting.get("explicit_sink",0))]
 		return
 	floor_picker.disabled=false
 	tube_picker.disabled=false
+	for release_button: Button in release_buttons:
+		release_button.disabled=false
+		release_button.tooltip_text=""
+	blind_button.disabled=false
+	water_policy_button.disabled=false
 	water_save_button.disabled=false
 	if shown_floor != floor_index:
 		shown_floor = floor_index

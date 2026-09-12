@@ -87,6 +87,47 @@ func _run() -> void:
 		Vector2i(CyberCellWorld.WORLD_WIDTH,CyberCellWorld.WORLD_HEIGHT))
 	_expect(before_invalid==after_invalid,"invalid application mutated the running World")
 
+	# Ordinary construction is an isolation boundary: a prior experimental
+	# lattice must not leak into a Fresh Tower/profile reset or another demo.
+	var non_default: Dictionary=Profiles.resolve({},{},{"mass_bits":3,
+		"coherence_ticks":7,"scenario_id":"shallow-pool","seed":1729})
+	_expect(bridge.build_water_feel_world(world,recipe.rectangles,transport.packed,
+		non_default.semantic,recipe.partial_water_fills),"non-default isolation setup failed")
+	_expect(bridge.build_tuned_world(world,CyberExperimentTower.rectangles(),transport.packed),
+		"ordinary tuned world did not rebuild after Water Feel")
+	var tuned_policy: Dictionary=world.get_water_experiment_policy()
+	_expect(int(tuned_policy.get("mass_bits",-1))==8
+		and int(tuned_policy.get("coherence_ticks",-1))==12,
+		"ordinary tuned world retained the experimental Water policy")
+	var clean_tuned: Object=ClassDB.instantiate(&"CyberNativeCellWorld")
+	_expect(bridge.build_tuned_world(clean_tuned,CyberExperimentTower.rectangles(),transport.packed),
+		"clean ordinary tuned-world control did not build")
+	var tuned_hash: String=str(world.water_experiment_observation(Vector2i.ZERO,
+		Vector2i(CyberCellWorld.WORLD_WIDTH,CyberCellWorld.WORLD_HEIGHT)).state_hash)
+	var clean_tuned_hash: String=str(clean_tuned.water_experiment_observation(Vector2i.ZERO,
+		Vector2i(CyberCellWorld.WORLD_WIDTH,CyberCellWorld.WORLD_HEIGHT)).state_hash)
+	_expect(tuned_hash==clean_tuned_hash,
+		"ordinary tuned-world state hash depended on the preceding Water policy")
+
+	_expect(bridge.build_water_feel_world(world,recipe.rectangles,transport.packed,
+		non_default.semantic,recipe.partial_water_fills),"ordinary-demo isolation setup failed")
+	var ordinary_rectangles: PackedInt32Array=CyberDemoWorlds.rectangles("waterworks")
+	_expect(bridge.build_world(world,ordinary_rectangles),
+		"ordinary demo did not rebuild after Water Feel")
+	var demo_policy: Dictionary=world.get_water_experiment_policy()
+	_expect(int(demo_policy.get("mass_bits",-1))==8
+		and int(demo_policy.get("coherence_ticks",-1))==12,
+		"ordinary demo retained the experimental Water policy")
+	var clean_demo: Object=ClassDB.instantiate(&"CyberNativeCellWorld")
+	_expect(bridge.build_world(clean_demo,ordinary_rectangles),
+		"clean ordinary-demo control did not build")
+	var demo_hash: String=str(world.water_experiment_observation(Vector2i.ZERO,
+		Vector2i(CyberCellWorld.WORLD_WIDTH,CyberCellWorld.WORLD_HEIGHT)).state_hash)
+	var clean_demo_hash: String=str(clean_demo.water_experiment_observation(Vector2i.ZERO,
+		Vector2i(CyberCellWorld.WORLD_WIDTH,CyberCellWorld.WORLD_HEIGHT)).state_hash)
+	_expect(demo_hash==clean_demo_hash,
+		"ordinary-demo state hash depended on the preceding Water policy")
+
 	var action_region:=Vector2i(8,8)
 	var before_action: Dictionary=world.water_experiment_observation(Vector2i(500,500),action_region)
 	_expect(world.water_experiment_fill_rect(Vector2i(500,500),action_region,128,7),

@@ -112,6 +112,7 @@ func _water_apply_due_web_actions() -> bool:
 
 func water_lab_apply_result(result: Dictionary, blind_label: String = "") -> void:
 	if not ready_to_play or not result.get("ok",false): return
+	if not _water_blind_application_allowed(result,blind_label): return
 	var checked: Dictionary=CyberWaterExperimentProfiles.resolve({},{},result.policy)
 	if not checked.get("ok",false) or str(checked.hash)!=str(result.hash): return
 	var recipe: Dictionary=CyberWaterFeelScenarios.recipe(
@@ -176,13 +177,13 @@ func _update_water_web_context() -> void:
 func tower_reset() -> void:
 	tower_schedule.clear();tower_inputs.clear()
 	water_actions.clear();water_action_history.clear();water_observations.clear()
-	_water_end_blind_session()
 	select_demo("experiment_tower")
 
 func tower_apply_profile(resolved: Dictionary) -> void:
 	if not demo_bridge.build_tuned_world(native_world,CyberExperimentTower.rectangles(),resolved.packed):
 		tower_context["status"] = "Rejected / "+str(demo_bridge.get_last_error())
 		return
+	_water_end_blind_session()
 	tower_profile = resolved.profile.duplicate(true)
 	tower_context = {"profile":tower_profile.duplicate(true),"profile_hash":str(resolved.hash),"status":str(tower_profile.name)+" / profile v1 "+str(resolved.hash).left(12)}
 	tower_schedule.clear();tower_inputs.clear()
@@ -190,6 +191,7 @@ func tower_apply_profile(resolved: Dictionary) -> void:
 	force_publication = true
 
 func tower_floor_select(index: int) -> void:
+	if water_controlled_run_active(): return
 	tower_schedule.clear()
 	tower_floor = clampi(index,0,4)
 	paused = true
@@ -199,6 +201,7 @@ func tower_floor_select(index: int) -> void:
 	camera_origin = Vector2(0,CyberExperimentTower.floor_y(tower_floor))
 
 func tower_release(index: int) -> void:
+	if tower_context.get("water_active",false): return
 	var plugs: Array[Rect2i] = CyberExperimentTower.plugs(tower_floor)
 	if index < 0 or index >= plugs.size(): return
 	var plug: Rect2i = plugs[index]
@@ -206,7 +209,11 @@ func tower_release(index: int) -> void:
 		for x: int in range(plug.position.x,plug.end.x): native_world.paint_disc(x,y,0,0,0)
 	force_publication = true
 
-func tower_command(command: Dictionary) -> void:
+func tower_command(command: Dictionary) -> bool:
+	if water_controlled_run_active() and (
+		command.has("release") or command.has("schedule")
+	):
+		return false
 	if command.has("step"):
 		paused = true
 		tower_single_step = true
@@ -218,6 +225,7 @@ func tower_command(command: Dictionary) -> void:
 		tower_schedule = [[tick+30,int(command.schedule),tower_floor],[tick+90,int(command.schedule)+1,tower_floor]]
 	if tower_inputs.size() < 256: tower_inputs.append({"tick":int(native_world.get_tick_index()),"command":command.duplicate(true)})
 	tower_context["inputs"] = tower_inputs.duplicate(true)
+	return true
 
 func _ready() -> void:
 	setup_tower_panel()
@@ -281,7 +289,7 @@ func _ready() -> void:
 	if test_enabled and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('water') === '1'", true)):
 		set_process(false)
 		set_physics_process(false)
-		var result: Dictionary = WaterFeelWebProbe.run(native_world, demo_bridge, world_shader)
+		var result: Dictionary = WaterFeelWebProbe.run_controller(self,world_shader)
 		result["runtime_identity"] = water_runtime_identity()
 		print("WEB_WATER_FEEL ", JSON.stringify(result))
 		JavaScriptBridge.eval("var p=document.createElement('pre');p.id='cybersand-water-result';p.textContent="+JSON.stringify(JSON.stringify(result))+";document.body.appendChild(p);fetch('/physics-results',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userAgent:navigator.userAgent,isolated:crossOriginIsolated,result:{ok:"+JSON.stringify(result.ok)+",results:["+JSON.stringify(result)+"]}})});", true)
@@ -429,17 +437,42 @@ func _world_pointer() -> Vector2i:
 	var point: Vector2 = camera_origin.floor() + (local - content.position) / content.size * Vector2(current_view_size)
 	return Vector2i(point.floor())
 
+func queue_brush_mutation(
+		world_x: int,
+		world_y: int,
+		radius: int,
+		material_id: int,
+		emission_flags: int = CyberCellWorld.EMISSION_FLAG_NONE
+	) -> bool:
+	if water_controlled_run_active():
+		return false
+	if material_id==CyberCellWorld.EMPTY:
+		native_world.paint_disc(world_x,world_y,radius,0,0)
+	else:
+		native_world.emit_disc(world_x,world_y,radius,material_id,emission_flags)
+	paint_commands+=1
+	return true
+
+func queue_explosion_mutation(world_x: int, world_y: int, radius: int) -> bool:
+	if water_controlled_run_active(): return false
+	return bool(demo_bridge.queue_explosion(native_world,world_x,world_y,radius))
+
+func set_liquid_surface_adhesion(enabled: bool) -> bool:
+	if water_controlled_run_active(): return false
+	liquid_surface_adhesion_enabled=enabled
+	native_world.set_liquid_surface_adhesion_enabled(enabled)
+	return true
+
 func _paint_pointer() -> void:
 	if tower_profile_panel.visible: return
 	var point: Vector2i = _world_pointer()
 	if point.x < 0 or point.y < 0 or point.x >= 1024 or point.y >= 1024:
 		return
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
-		native_world.paint_disc(point.x, point.y, brush_radius, 0, 0)
-		paint_commands += 1
+		queue_brush_mutation(point.x,point.y,brush_radius,CyberCellWorld.EMPTY)
 	elif Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		native_world.emit_disc(point.x, point.y, brush_radius, selected_material_id, 1 if coherent_liquid_emission else 0)
-		paint_commands += 1
+		queue_brush_mutation(point.x,point.y,brush_radius,selected_material_id,
+			1 if coherent_liquid_emission else 0)
 
 func _publish_world() -> void:
 	if native_world.has_failed():
@@ -523,6 +556,7 @@ func select_demo(id: String, close: bool = true) -> void:
 	if not built:
 		ui.message(str(demo_bridge.get_last_error()))
 		return
+	_water_end_blind_session()
 	tower_schedule.clear();tower_inputs.clear();tower_single_step=false
 	demo_id = id
 	player.reset(CyberDemoWorlds.spawn(id))
@@ -542,7 +576,8 @@ func select_demo(id: String, close: bool = true) -> void:
 	if close:
 		ui.close_menu()
 
-func set_quality(index: int) -> void:
+func set_quality(index: int) -> bool:
+	if water_controlled_run_active(): return false
 	quality = clampi(index, 0, 2)
 	var views: Array[Vector2i] = [Vector2i(320, 180), Vector2i(480, 270), Vector2i(640, 360)]
 	var margins: Array[Vector2i] = [Vector2i(16, 18), Vector2i(32, 36), Vector2i(64, 72)]
@@ -554,6 +589,7 @@ func set_quality(index: int) -> void:
 		native_world.set_simulation_window(Vector2i(camera_origin.floor()), current_view_size, simulation_margin.x, simulation_margin.y)
 	if ui != null and ui.notice != null:
 		ui.message("%s / %d×%d view / %d Hz publication" % [["LOW", "NORMAL", "HIGH"][quality], current_view_size.x, current_view_size.y, render_snapshot_hz])
+	return true
 
 func update_status() -> void:
 	if native_world == null:
@@ -597,12 +633,11 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		KEY_R:
 			select_demo(demo_id)
 		KEY_F:
-			camera_follow_enabled = not camera_follow_enabled
+			set_camera_follow(not camera_follow_enabled)
 		KEY_C:
 			coherent_liquid_emission = not coherent_liquid_emission
 		KEY_T:
-			liquid_surface_adhesion_enabled = not liquid_surface_adhesion_enabled
-			native_world.set_liquid_surface_adhesion_enabled(liquid_surface_adhesion_enabled)
+			set_liquid_surface_adhesion(not liquid_surface_adhesion_enabled)
 		KEY_G:
 			glow_enabled = not glow_enabled
 		KEY_F3:
@@ -610,7 +645,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		KEY_X:
 			var point: Vector2i = _world_pointer()
 			if point.x >= 0:
-				demo_bridge.queue_explosion(native_world, point.x, point.y, 20)
+				queue_explosion_mutation(point.x,point.y,20)
 	update_status()
 
 func _metadata() -> Dictionary:
@@ -623,6 +658,9 @@ func _metadata() -> Dictionary:
 	return {"demo": demo_id, "player": [player.position.x, player.position.y, player.velocity.x, player.velocity.y], "material": selected_material_id, "quality": quality, "coherent": coherent_liquid_emission, "adhesion": liquid_surface_adhesion_enabled, "glow": glow_enabled, "bodies": bodies}
 
 func _encode_current() -> Dictionary:
+	if water_controlled_run_active():
+		return {"ok":false,"error":"Level save is disabled during Water Feel",
+			"binary":PackedByteArray(),"text":""}
 	var world: PackedByteArray = demo_bridge.export_level(native_world)
 	return CyberDemoSaveCodec.encode(world, _metadata())
 
@@ -641,6 +679,10 @@ func import_save(text: String) -> void:
 	_import_decoded(CyberDemoSaveCodec.decode_text(text))
 
 func _import_decoded(decoded: Dictionary) -> void:
+	if water_controlled_run_active():
+		last_save_error="Level import is disabled during Water Feel"
+		ui.message(last_save_error)
+		return
 	if not decoded.ok:
 		last_save_error = str(decoded.error)
 		ui.message(last_save_error)

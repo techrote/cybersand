@@ -50,6 +50,7 @@ public:
                 {profile.ptr(),static_cast<std::size_t>(profile.size())});
             config.physics_diagnostics = {}; config.physics_diagnostics.enabled = true;
             config.interaction_policy = {};
+            config.water_experiment_policy = cybersand::WaterExperimentPolicy{};
             auto candidate=cybersand::demo::construct(config,
                 {rectangles.ptr(),static_cast<std::size_t>(rectangles.size())});
             install(*adapter.ptr(),std::move(candidate));
@@ -186,6 +187,7 @@ public:
         try {
             auto config = adapter->world_->config();
             config.transport_policy = {}; // Ordinary demos retain production Baseline.
+            config.water_experiment_policy = cybersand::WaterExperimentPolicy{};
             auto candidate = cybersand::demo::construct(config,
                 {rectangles.ptr(), static_cast<std::size_t>(rectangles.size())});
             install(*adapter.ptr(), std::move(candidate));
