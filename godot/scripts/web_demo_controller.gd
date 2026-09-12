@@ -284,7 +284,7 @@ func _ready() -> void:
 		var result: Dictionary = WaterFeelWebProbe.run(native_world, demo_bridge, world_shader)
 		result["runtime_identity"] = water_runtime_identity()
 		print("WEB_WATER_FEEL ", JSON.stringify(result))
-		JavaScriptBridge.eval("var p=document.createElement('pre');p.id='cybersand-water-result';p.textContent="+JSON.stringify(JSON.stringify(result))+";document.body.appendChild(p);fetch('/physics-results',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userAgent:navigator.userAgent,isolated:crossOriginIsolated,result:"+JSON.stringify(result)+"})});", true)
+		JavaScriptBridge.eval("var p=document.createElement('pre');p.id='cybersand-water-result';p.textContent="+JSON.stringify(JSON.stringify(result))+";document.body.appendChild(p);fetch('/physics-results',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userAgent:navigator.userAgent,isolated:crossOriginIsolated,result:{ok:"+JSON.stringify(result.ok)+",results:["+JSON.stringify(result)+"]}})});", true)
 		return
 	if test_enabled and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('transport') === '1'",true)):
 		set_process(false);set_physics_process(false)
