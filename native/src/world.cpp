@@ -338,6 +338,7 @@ struct World::TransientObstacleState {
 World::World(WorldConfig config)
     : config_(config),
       scheduler_geometry_(config.scheduling_core_size, config.maximum_rule_radius) {
+    config_.water_experiment_policy.validate();
     config.transport_policy.validate();
     if(config.transport_policy.configured)for(const auto& p:config.transport_policy.pairs) {
         flow_mixing_enabled_ = flow_mixing_enabled_ || p.mixing!=0;
@@ -750,6 +751,12 @@ bool World::rule_is_active(Material material, std::uint16_t state_a_value,
 bool World::write_cell(std::int64_t x, std::int64_t y, Material material,
                        std::uint16_t state_a_value, std::uint8_t state_b_value,
                        JobEffects* effects) {
+    if (material == Material::Water &&
+        (state_a_value == 0U ||
+         state_a_value > config_.water_experiment_policy.maximum() ||
+         state_b_value > config_.water_experiment_policy.coherence_ticks())) {
+        throw std::logic_error("internal Water state outside experiment policy");
+    }
     if (material != Material::Empty && transient_obstacle_at(x, y) != 0U) return false;
     const auto target = address(x, y);
     auto* chunk = find_chunk(target.chunk);
@@ -920,6 +927,9 @@ void World::set(std::int64_t x, std::int64_t y, Material material) {
         --chunk.non_empty_cell_count;
     }
     chunk.cells[target.index] = Chunk::Cell::for_material(material);
+    if (material == Material::Water) {
+        chunk.cells[target.index].set_state_a(config_.water_experiment_policy.maximum());
+    }
     chunk.cells[target.index].set_epoch(update_epoch_);
     chunk.changed_this_tick = true;
     mark_cell_dirty(chunk, target.local_x, target.local_y);
@@ -930,7 +940,9 @@ void World::set(std::int64_t x, std::int64_t y, Material material) {
 bool World::set_cell_state(std::int64_t x, std::int64_t y, Material material,
                            std::uint16_t state_a_value,
                            std::uint8_t state_b_value) {
-    if (material == Material::Water && (state_a_value > precision::maximum || state_b_value > 12))
+    if (material == Material::Water &&
+        (state_a_value > config_.water_experiment_policy.maximum() ||
+         state_b_value > config_.water_experiment_policy.coherence_ticks()))
         throw std::invalid_argument("experimental Water state out of domain");
     if (material != Material::Water && state_a_value > 255)
         throw std::invalid_argument("non-Water byte state out of domain");
@@ -939,6 +951,10 @@ bool World::set_cell_state(std::int64_t x, std::int64_t y, Material material,
         throw std::invalid_argument("invalid material identifier");
     }
     if (material != Material::Empty && transient_obstacle_at(x, y) != 0U) return false;
+    if (material == Material::Water && state_a_value == 0U) {
+        if (find_chunk(address(x, y).chunk) == nullptr) return false;
+        return write_cell(x, y, Material::Empty, 0U, 0U, nullptr);
+    }
     return write_cell(x, y, material, state_a_value, state_b_value, nullptr);
 }
 
@@ -1448,7 +1464,8 @@ std::uint16_t World::transfer_water(std::int64_t from_x, std::int64_t from_y,
         destination_cell.material_value() == Material::Water
             ? static_cast<std::uint16_t>(destination_cell.state_a_value())
             : std::uint16_t{0};
-    const auto capacity = static_cast<std::uint16_t>(precision::maximum - destination_mass);
+    const auto capacity = static_cast<std::uint16_t>(
+        config_.water_experiment_policy.maximum() - destination_mass);
     const auto amount = std::min({requested, source_mass, capacity});
     if (amount == 0) return 0;
 
@@ -1499,7 +1516,9 @@ void World::mix_after_motion(Material carrier, std::int64_t x, std::int64_t y,
     if(powder ? !flow_mixing_enabled_ : !flow_carrying_enabled_) return;
     // Initial entrainment is lateral Water transport. Gravity and minor film
     // equalization are not interpreted as strong shear. No stored disturbance.
-    if(!powder && (carrier!=Material::Water || to_y!=y || mass<64)) return;
+    const auto normalized_mass = carrier == Material::Water
+        ? config_.water_experiment_policy.normalized_mass(mass) : mass;
+    if(!powder && (carrier!=Material::Water || to_y!=y || normalized_mass<64)) return;
     if(powder && (to_y!=y+1 || to_x!=x)) return;
     const auto grain_x = powder ? x+deterministic_direction(x,y) : x;
     const auto grain_y = powder ? y : y+1;
@@ -1540,7 +1559,7 @@ void World::mix_after_motion(Material carrier, std::int64_t x, std::int64_t y,
         if(packing>5 || deterministic_random(x,y,211U)>=p.mixing) return;
     } else {
         if(packing>=4 && !p.erosion) return;
-        const unsigned disturbance=static_cast<unsigned>(mass)*p.carrying/255U;
+        const unsigned disturbance=static_cast<unsigned>(normalized_mass)*p.carrying/255U;
         if(disturbance<64U || disturbance<static_cast<unsigned>(p.pickup)+packing*p.packing) return;
         // At most one pickup per source per four-tick lane, with no retained
         // debt or wakeup: cessation of actual flow immediately removes pickup.
@@ -1589,7 +1608,8 @@ bool World::update_water(std::int64_t x, std::int64_t y, JobEffects* effects) {
                                       std::int64_t target_x, std::int64_t target_y) {
         if (liquid_mass(x, y) == 0U) return false;
         if (get(target_x, target_y) == Material::Water) {
-            const auto moved = transfer_water(x, y, target_x, target_y, precision::maximum, effects);
+            const auto moved = transfer_water(
+                x, y, target_x, target_y, config_.water_experiment_policy.maximum(), effects);
             changed = changed || moved != 0;
             return moved != 0;
         }
@@ -1613,7 +1633,8 @@ bool World::update_water(std::int64_t x, std::int64_t y, JobEffects* effects) {
     // Retain a small supported film when adhesion is enabled. Disabling the
     // toggle removes this threshold for active/dangerous liquids.
     const auto support = get(x, y + 1);
-    if (liquid_surface_adhesion_enabled_ && liquid_mass(x, y) <= precision::film &&
+    if (liquid_surface_adhesion_enabled_ &&
+        liquid_mass(x, y) <= config_.water_experiment_policy.film() &&
         support != Material::Empty && support != Material::Water) {
         return changed;
     }
@@ -1627,7 +1648,7 @@ bool World::update_water(std::int64_t x, std::int64_t y, JobEffects* effects) {
         const auto target_material = get(target_x, target_y);
         if (target_material != Material::Empty && target_material != Material::Water) return;
         const auto target_mass = static_cast<std::uint16_t>(liquid_mass(target_x, target_y));
-        if (source_mass <= target_mass + precision::tolerance) return;
+        if (source_mass <= target_mass + config_.water_experiment_policy.tolerance()) return;
         // Move three quarters of the imbalance instead of stopping at the
         // midpoint. Each isolated pair's imbalance still contracts; the
         // existing tolerance prevents perpetual one-unit swapping at rest.
@@ -1732,13 +1753,19 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
                 MaterialRules::descriptor(reaction->source_product);
             const auto& target_definition =
                 MaterialRules::descriptor(reaction->target_product);
+            const auto source_state_a = reaction->source_product == Material::Water
+                ? config_.water_experiment_policy.maximum()
+                : static_cast<std::uint16_t>(source_definition.initial_state_a);
+            const auto target_state_a = reaction->target_product == Material::Water
+                ? config_.water_experiment_policy.maximum()
+                : static_cast<std::uint16_t>(target_definition.initial_state_a);
             bool changed = write_cell(
                 target_x, target_y, reaction->target_product,
-                target_definition.initial_state_a, target_definition.initial_state_b,
+                target_state_a, target_definition.initial_state_b,
                 effects);
             changed = write_cell(
                           x, y, reaction->source_product,
-                          source_definition.initial_state_a,
+                          source_state_a,
                           source_definition.initial_state_b, effects) ||
                       changed;
             return changed;
@@ -1765,7 +1792,8 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
         case RuleKernel::Steam: {
             const auto lifetime = state_a(x, y);
             if (lifetime <= 1U) {
-                return write_cell(x, y, Material::Water, precision::maximum, 0, effects);
+                return write_cell(x, y, Material::Water,
+                                  config_.water_experiment_policy.maximum(), 0, effects);
             }
             bool changed = write_cell(x, y, Material::Steam,
                                       static_cast<std::uint8_t>(lifetime - 1U), 0,
@@ -2039,8 +2067,8 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
                 const auto [sample_x, sample_y] = neighbour(sample_index);
                 const auto sampled = get(sample_x, sample_y);
                 if (sampled == Material::Ice) {
-                    changed = write_cell(sample_x, sample_y, Material::Water, precision::maximum, 0,
-                                         effects);
+                    changed = write_cell(sample_x, sample_y, Material::Water,
+                                         config_.water_experiment_policy.maximum(), 0, effects);
                 } else {
                     changed = ignite(sample_x, sample_y, 64);
                 }
@@ -2057,7 +2085,8 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
             if (find_neighbour([](Material candidate, auto, auto) {
                     return is_hot(candidate);
                 })) {
-                return write_cell(x, y, Material::Water, precision::maximum, 0, effects);
+                return write_cell(x, y, Material::Water,
+                                  config_.water_experiment_policy.maximum(), 0, effects);
             }
             if (!temporal_lane_due(16U, 192U)) return false;
             const auto [target_x, target_y] = neighbour(deterministic_random(x, y, 30U));
@@ -2178,7 +2207,10 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
                 if (get(target_x, target_y) != Material::Empty) continue;
                 const auto cloned = static_cast<Material>(captured);
                 const auto& definition = MaterialRules::descriptor(cloned);
-                return write_cell(target_x, target_y, cloned, definition.initial_state_a,
+                const auto initial_state_a = cloned == Material::Water
+                    ? config_.water_experiment_policy.maximum()
+                    : static_cast<std::uint16_t>(definition.initial_state_a);
+                return write_cell(target_x, target_y, cloned, initial_state_a,
                                   definition.initial_state_b, effects);
             }
             return false;
@@ -2316,10 +2348,13 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
                 target == Material::Smoke) {
                 const auto payload_material = static_cast<Material>(payload);
                 const auto& payload_definition = MaterialRules::descriptor(payload_material);
+                const auto payload_state_a = payload_material == Material::Water
+                    ? config_.water_experiment_policy.maximum()
+                    : static_cast<std::uint16_t>(payload_definition.initial_state_a);
                 bool changed = write_cell(target_x, target_y, Material::Rocket, flight, payload,
                                           effects);
                 changed = write_cell(x, y, payload_material,
-                                     payload_definition.initial_state_a,
+                                     payload_state_a,
                                      payload_definition.initial_state_b, effects) ||
                           changed;
                 return changed;
@@ -2924,6 +2959,18 @@ std::uint64_t World::state_hash() const noexcept {
     hash_integer(hash, config_.interaction_policy.downward_support_cells);
     hash_integer(hash, config_.interaction_policy.side_support_cells);
     hash_integer(hash, config_.interaction_policy.mercury_exchange_period);
+    // Absence of the marker is the version-1 mass8/coherence12 default, which
+    // preserves existing fixture hashes. Every non-default semantic policy is
+    // explicit and cannot collide with that authoritative reference identity.
+    constexpr WaterExperimentPolicy default_water_policy{};
+    if (config_.water_experiment_policy != default_water_policy) {
+        hash_integer(hash, std::uint8_t{0x57U});
+        hash_integer(hash, config_.water_experiment_policy.version());
+        hash_integer(hash, config_.water_experiment_policy.mass_bits());
+        hash_integer(hash, config_.water_experiment_policy.coherence_ticks());
+        hash_integer(hash, static_cast<std::uint8_t>(
+            config_.water_experiment_policy.rest_policy()));
+    }
     hash_integer(hash, static_cast<std::uint8_t>(config_.transport_policy.configured));
     if(config_.transport_policy.configured) {
         hash_integer(hash,TransportPolicy::version);
@@ -3059,7 +3106,8 @@ void World::copy_render_cells(RectI64 region, std::span<std::uint8_t> destinatio
             const auto material = stored_material(world_x, world_y);
             output[offset] = static_cast<std::uint8_t>(material);
             output[offset + 1U] = project_visual_state(
-                material, stored_state_a(world_x, world_y), stored_state_b(world_x, world_y));
+                material, stored_state_a(world_x, world_y), stored_state_b(world_x, world_y),
+                config_.water_experiment_policy);
         }
     }
 }
@@ -3087,7 +3135,8 @@ void World::copy_material_cells(RectI64 region, std::span<std::uint8_t> destinat
                 const auto cell_index = first.index + static_cast<std::size_t>(offset);
                 auto material = chunk->cells[cell_index].material_value();
                 if (material == Material::Water) {
-                    const auto mass = chunk->cells[cell_index].state_a_value();
+                    const auto mass = config_.water_experiment_policy.normalized_mass(
+                        chunk->cells[cell_index].state_a_value());
                     const auto sample_x = world_x + offset;
                     const auto threshold = static_cast<std::uint8_t>(
                         mix64(static_cast<std::uint64_t>(sample_x) *
@@ -3113,7 +3162,8 @@ void World::copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::
             const auto world_y = region.y + row;
             auto material = stored_material(world_x, world_y);
             if (material == Material::Water) {
-                const auto mass = stored_state_a(world_x, world_y);
+                const auto mass = config_.water_experiment_policy.normalized_mass(
+                    stored_state_a(world_x, world_y));
                 const auto threshold = static_cast<std::uint8_t>(
                     mix64(static_cast<std::uint64_t>(world_x) * 0x9e3779b185ebca87ULL ^
                           std::rotl(static_cast<std::uint64_t>(world_y), 17)) &

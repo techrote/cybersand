@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cybersand/material.hpp"
+#include "cybersand/water_experiment_policy.hpp"
 
 #include <array>
 #include <cstddef>
@@ -104,12 +105,15 @@ inline constexpr std::array<VisualStateSource, kMaterialDefinitions.size()>
     }};
 
 [[nodiscard]] constexpr std::uint8_t project_visual_state(
-    Material material, std::uint8_t state_a, std::uint8_t state_b) noexcept {
+    Material material, std::uint16_t state_a, std::uint8_t state_b,
+    const WaterExperimentPolicy& water_policy = WaterExperimentPolicy{}) noexcept {
     const auto index = static_cast<std::size_t>(material);
     if (index >= kVisualStateSources.size()) return 0;
     switch (kVisualStateSources[index]) {
         case VisualStateSource::StateA:
-            return state_a;
+            return material == Material::Water
+                       ? water_policy.normalized_mass(state_a)
+                       : static_cast<std::uint8_t>(state_a);
         case VisualStateSource::StateB:
             return state_b;
         case VisualStateSource::Zero:

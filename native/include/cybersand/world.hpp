@@ -5,6 +5,7 @@
 #include "cybersand/interaction_policy.hpp"
 #include "cybersand/transport_policy.hpp"
 #include "cybersand/scheduler_geometry.hpp"
+#include "cybersand/water_experiment_policy.hpp"
 
 #include <array>
 #include <cstddef>
@@ -44,6 +45,7 @@ struct WorldConfig {
     PhysicsDiagnosticConfig physics_diagnostics{};
     InteractionPolicy interaction_policy{};
     TransportPolicy transport_policy{};
+    WaterExperimentPolicy water_experiment_policy{};
 };
 
 struct ChunkCoord {
