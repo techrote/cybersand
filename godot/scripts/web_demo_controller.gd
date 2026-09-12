@@ -37,9 +37,139 @@ var logical_threads: int = 1
 var tower_single_step: bool = false
 var tower_schedule: Array = []
 var tower_inputs: Array = []
+var water_actions: Array = []
+var water_action_index: int = 0
+var water_action_history: Array = []
+var water_observations: Array = []
+var water_initial_integer: int = 0
+var water_current_integer: int = 0
+var water_initial_requested_numerator_255: int = 0
+var water_initial_quantization_error_numerator_255: int = 0
+var water_explicit_source: int = 0
+var water_explicit_sink: int = 0
+
+func water_launch_arguments() -> PackedStringArray:
+	var result:=PackedStringArray()
+	if not OS.has_feature("web"): return result
+	var encoded: Variant=JavaScriptBridge.eval("JSON.stringify(Array.from(new URLSearchParams(location.search).entries()).filter(([k])=>['water-policy-version','water-mass-bits','water-coherence','water-rest-policy','water-render-levels','water-interface','experiment','seed'].includes(k)).map(([k,v])=>'--'+k+'='+v))",true)
+	var parsed: Variant=JSON.parse_string(str(encoded))
+	if parsed is Array:
+		for value: Variant in parsed: result.append(str(value))
+	return result
+
+func _water_observe_web(action: Dictionary = {}) -> Dictionary:
+	var origin:=Vector2i.ZERO
+	var size:=Vector2i(CyberCellWorld.WORLD_WIDTH,CyberCellWorld.WORLD_HEIGHT)
+	if not action.is_empty():
+		origin=Vector2i(int(action.x),int(action.y))
+		size=Vector2i(int(action.width),int(action.height))
+	return native_world.water_experiment_observation(origin,size)
+
+func _water_apply_web_action(action: Dictionary) -> bool:
+	var before: Dictionary=_water_observe_web(action)
+	var ok: bool=true
+	match str(action.kind):
+		"fill":
+			ok=bool(native_world.water_experiment_fill_rect(
+				Vector2i(int(action.x),int(action.y)),
+				Vector2i(int(action.width),int(action.height)),
+				int(action.normalized_mass),int(action.coherence)))
+		"erase":
+			ok=bool(native_world.water_experiment_erase_rect(
+				Vector2i(int(action.x),int(action.y)),
+				Vector2i(int(action.width),int(action.height))))
+		"sample":
+			water_observations.append({"action_index":water_action_index,
+				"region":action.duplicate(true),"observation":before.duplicate(true)})
+		_:
+			ok=false
+	if not ok:
+		paused=true
+		tower_context["status"]="Water action rejected; run paused"
+		return false
+	var after: Dictionary=_water_observe_web(action)
+	var before_mass: int=int(before.get("water_integer",0))
+	var after_mass: int=int(after.get("water_integer",before_mass))
+	if after_mass>before_mass: water_explicit_source+=after_mass-before_mass
+	if before_mass>after_mass: water_explicit_sink+=before_mass-after_mass
+	water_current_integer+=after_mass-before_mass
+	water_action_history.append({"tick":int(native_world.get_tick_index()),
+		"action":action.duplicate(true),"before_water_integer":before_mass,
+		"after_water_integer":after_mass})
+	return true
+
+func _water_apply_due_web_actions() -> bool:
+	while water_action_index<water_actions.size():
+		var action: Dictionary=water_actions[water_action_index]
+		if int(action.tick)>int(native_world.get_tick_index()): break
+		if not _water_apply_web_action(action): return false
+		water_action_index+=1
+	return true
+
+func water_lab_apply_result(result: Dictionary, blind_label: String = "") -> void:
+	if not ready_to_play or not result.get("ok",false): return
+	var checked: Dictionary=CyberWaterExperimentProfiles.resolve({},{},result.policy)
+	if not checked.get("ok",false) or str(checked.hash)!=str(result.hash): return
+	var recipe: Dictionary=CyberWaterFeelScenarios.recipe(
+		str(checked.policy.scenario_id),int(checked.policy.seed))
+	if recipe.is_empty(): return
+	var transport: Dictionary=CyberTransportProfiles.resolve(CyberTransportProfiles.preset(0))
+	if not demo_bridge.build_water_feel_world(native_world,recipe.rectangles,
+		transport.packed,checked.semantic,recipe.partial_water_fills):
+		tower_context["status"]="Water Apply + Reset rejected; "+str(demo_bridge.get_last_error())
+		return
+	water_policy_resolved=result.duplicate(true)
+	demo_id="experiment_tower"
+	tower_active=true
+	current_view_size=Vector2i(480,270)
+	paused=true
+	camera_follow_enabled=false
+	camera_origin=Vector2(recipe.camera_origin)
+	player.reset(Vector2(recipe.player_start))
+	character_position=player.position
+	water_actions=recipe.actions.duplicate(true)
+	water_action_index=0
+	water_action_history.clear();water_observations.clear()
+	water_explicit_source=0;water_explicit_sink=0
+	water_initial_integer=int(_water_observe_web().get("water_integer",0))
+	water_current_integer=water_initial_integer
+	water_initial_requested_numerator_255=0
+	for offset: int in range(0,recipe.partial_water_fills.size(),6):
+		water_initial_requested_numerator_255+=(
+			int(recipe.partial_water_fills[offset+2])*int(recipe.partial_water_fills[offset+3])
+			*int(recipe.partial_water_fills[offset+4])*int(checked.derived.maximum))
+	water_initial_quantization_error_numerator_255=(
+		water_initial_integer*255-water_initial_requested_numerator_255)
+	var status: String="Water Feel candidate %s / scenario %s / seed %d" % [blind_label,str(checked.policy.scenario_id),int(checked.policy.seed)] if not blind_label.is_empty() else "Water Feel unblinded / policy %s / recipe %s / seed %d" % [str(checked.hash).left(12),CyberWaterFeelScenarios.recipe_hash(recipe).left(12),int(checked.policy.seed)]
+	tower_context={"active":true,"water_active":true,"water_policy":checked.policy.duplicate(true),
+		"water_policy_hash":str(checked.hash),"water_policy_provenance":result.get("provenance",{}).duplicate(true),
+		"water_recipe_hash":CyberWaterFeelScenarios.recipe_hash(recipe),"water_blind_label":blind_label,
+		"status":status,"worker_count":int(native_world.get_worker_threads()),"backend":"web-main-thread"}
+	_activate_physics(bool(recipe.body_enabled))
+	force_publication=true
+	_publish_world();update_shader_parameters();update_status()
+
+func tower_observation() -> void:
+	if tower_context.get("water_active",false):
+		water_current_integer=int(_water_observe_web().get("water_integer",water_current_integer))
+		_update_water_web_context()
+	super.tower_observation()
+
+func _update_water_web_context() -> void:
+	if not tower_context.get("water_active",false): return
+	tower_context["tick"]=int(native_world.get_tick_index())
+	tower_context["paused"]=paused
+	tower_context["water_actions"]=water_action_history.duplicate(true)
+	tower_context["water_observations"]=water_observations.duplicate(true)
+	tower_context["water_accounting"]={"initial_integer":water_initial_integer,
+		"initial_requested_numerator_255":water_initial_requested_numerator_255,
+		"initial_quantization_error_numerator_255":water_initial_quantization_error_numerator_255,
+		"explicit_source":water_explicit_source,"explicit_sink":water_explicit_sink,
+		"outflow":0,"current":water_current_integer}
 
 func tower_reset() -> void:
 	tower_schedule.clear();tower_inputs.clear()
+	water_actions.clear();water_action_history.clear();water_observations.clear()
 	select_demo("experiment_tower")
 
 func tower_apply_profile(resolved: Dictionary) -> void:
@@ -206,6 +336,7 @@ func release_game_input() -> void:
 
 func _process(delta: float) -> void:
 	if native_world != null: tower_context["tick"]=int(native_world.get_tick_index());tower_context["paused"]=paused
+	if native_world != null: _update_water_web_context()
 	tower_panel.refresh(tower_active,tower_floor,tower_context)
 	if not ready_to_play:
 		return
@@ -245,6 +376,8 @@ func _physics_process(_delta: float) -> void:
 	if paused and not tower_single_step:
 		return
 	tower_single_step = false
+	if tower_context.get("water_active",false) and not _water_apply_due_web_actions():
+		return
 	if tower_active:
 		for release: Array in tower_schedule.duplicate():
 			if int(release[2]) == tower_floor and int(native_world.get_tick_index())+1 >= int(release[0]):
@@ -369,7 +502,7 @@ func select_demo(id: String, close: bool = true) -> void:
 	if id == "experiment_tower":
 		var resolved: Dictionary = CyberTransportProfiles.resolve(tower_profile)
 		built = demo_bridge.build_tuned_world(native_world,CyberExperimentTower.rectangles(),resolved.packed)
-		if built: tower_context = {"profile":tower_profile.duplicate(true),"profile_hash":str(resolved.hash),"status":str(tower_profile.name)+" / profile v1 "+str(resolved.hash).left(12)}
+		if built: tower_context = {"profile":tower_profile.duplicate(true),"profile_hash":str(resolved.hash),"status":str(tower_profile.name)+" / profile v1 "+str(resolved.hash).left(12),"water_active":false}
 	else:
 		built = demo_bridge.build_world(native_world, CyberDemoWorlds.rectangles(id))
 	if not built:

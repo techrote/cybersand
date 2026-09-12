@@ -59,6 +59,13 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("diagnostic_body_metrics"), &CyberNativeCellWorld::diagnostic_body_metrics);
     ClassDB::bind_method(D_METHOD("get_water_experiment_policy"),
                          &CyberNativeCellWorld::get_water_experiment_policy);
+    ClassDB::bind_method(D_METHOD("water_experiment_fill_rect", "origin", "size",
+                                  "normalized_mass", "coherence"),
+                         &CyberNativeCellWorld::water_experiment_fill_rect);
+    ClassDB::bind_method(D_METHOD("water_experiment_erase_rect", "origin", "size"),
+                         &CyberNativeCellWorld::water_experiment_erase_rect);
+    ClassDB::bind_method(D_METHOD("water_experiment_observation", "origin", "size"),
+                         &CyberNativeCellWorld::water_experiment_observation);
     ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("auto_worker_threads", "logical_threads"), &CyberNativeCellWorld::auto_worker_threads);
     ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("logical_processor_count"), &CyberNativeCellWorld::logical_processor_count);
     ClassDB::bind_method(D_METHOD("reset_demo_world"),
@@ -1264,6 +1271,81 @@ Dictionary CyberNativeCellWorld::get_water_experiment_policy() const {
     result["maximum"] = policy.maximum();
     result["film"] = policy.film();
     result["tolerance"] = policy.tolerance();
+    return result;
+}
+
+bool CyberNativeCellWorld::water_experiment_fill_rect(
+    Vector2i origin, Vector2i size, std::int64_t normalized_mass,
+    std::int64_t coherence) {
+    if (world_ == nullptr || world_->has_failed() || normalized_mass < 1 ||
+        normalized_mass > 255 || coherence < 0 ||
+        coherence > world_->config().water_experiment_policy.coherence_ticks() ||
+        size.x < 1 || size.y < 1 ||
+        !in_bounds(origin.x, origin.y) ||
+        !in_bounds(static_cast<std::int64_t>(origin.x) + size.x - 1,
+                   static_cast<std::int64_t>(origin.y) + size.y - 1)) {
+        return false;
+    }
+    const auto& policy = world_->config().water_experiment_policy;
+    const auto mass = static_cast<std::uint16_t>(
+        (2U * static_cast<std::uint32_t>(normalized_mass) * policy.maximum() + 255U) /
+        (2U * 255U));
+    if (mass == 0U) return false;
+    for (auto y = origin.y; y < origin.y + size.y; ++y) {
+        for (auto x = origin.x; x < origin.x + size.x; ++x) {
+            if (!world_->set_cell_state(x, y, cybersand::Material::Water, mass,
+                                        static_cast<std::uint8_t>(coherence))) {
+                return false;
+            }
+        }
+    }
+    ++revision_;
+    return true;
+}
+
+bool CyberNativeCellWorld::water_experiment_erase_rect(Vector2i origin, Vector2i size) {
+    if (world_ == nullptr || world_->has_failed() || size.x < 1 || size.y < 1 ||
+        !in_bounds(origin.x, origin.y) ||
+        !in_bounds(static_cast<std::int64_t>(origin.x) + size.x - 1,
+                   static_cast<std::int64_t>(origin.y) + size.y - 1)) {
+        return false;
+    }
+    for (auto y = origin.y; y < origin.y + size.y; ++y) {
+        for (auto x = origin.x; x < origin.x + size.x; ++x) {
+            if (!world_->set_cell_state(x, y, cybersand::Material::Empty, 0U, 0U)) {
+                return false;
+            }
+        }
+    }
+    ++revision_;
+    ++hard_surface_revision_;
+    return true;
+}
+
+Dictionary CyberNativeCellWorld::water_experiment_observation(
+    Vector2i origin, Vector2i size) const {
+    Dictionary result;
+    if (world_ == nullptr || size.x < 1 || size.y < 1 ||
+        !in_bounds(origin.x, origin.y) ||
+        !in_bounds(static_cast<std::int64_t>(origin.x) + size.x - 1,
+                   static_cast<std::int64_t>(origin.y) + size.y - 1)) {
+        return result;
+    }
+    std::uint64_t water_integer = 0;
+    std::uint64_t water_cells = 0;
+    for (auto y = origin.y; y < origin.y + size.y; ++y) {
+        for (auto x = origin.x; x < origin.x + size.x; ++x) {
+            if (world_->stored_material(x, y) == cybersand::Material::Water) {
+                water_integer += world_->stored_state_a(x, y);
+                ++water_cells;
+            }
+        }
+    }
+    result["tick"] = world_->tick_index();
+    result["water_integer"] = water_integer;
+    result["water_cells"] = water_cells;
+    result["content_hash"] = String::num_uint64(world_->content_hash(), 16);
+    result["state_hash"] = String::num_uint64(world_->state_hash(), 16);
     return result;
 }
 

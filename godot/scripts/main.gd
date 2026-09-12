@@ -25,6 +25,7 @@ const HARD_SURFACE_CHUNKS_PER_FRAME: int = 32
 const HARD_SURFACE_FRAME_BUDGET_USEC: int = 750
 const RENDER_PATCH_METADATA_STRIDE: int = 6
 const RENDER_SNAPSHOT_HZ_PRESETS: Array[int] = [30, 45, 60]
+const WATER_POLICY_PATH: String = "user://water-experiment-policy.json"
 # Prototype paint-tool slots are UI identifiers, not material IDs. Their
 # mappings may change without changing simulation or serialized material identity.
 const PAINT_SLOT_SAND: int = 1
@@ -135,6 +136,10 @@ var tower_floor: int = 0
 var tower_context: Dictionary = {}
 var tower_profile_panel: CyberTransportProfilePanel
 var tower_profile: Dictionary = CyberTransportProfiles.preset(0)
+var water_experiment_panel: CyberWaterExperimentPanel
+var water_policy_resolved: Dictionary = CyberWaterExperimentProfiles.resolve()
+var water_blind_set: Dictionary = {}
+var water_blind_index: int = 0
 
 func setup_tower_panel() -> void:
 	tower_panel = CyberTowerPanel.new()
@@ -144,6 +149,105 @@ func setup_tower_panel() -> void:
 	tower_profile_panel = CyberTransportProfilePanel.new()
 	add_child(tower_profile_panel)
 	tower_profile_panel.setup(self)
+	water_experiment_panel = CyberWaterExperimentPanel.new()
+	add_child(water_experiment_panel)
+	var profile_input: Variant = {}
+	if FileAccess.file_exists(WATER_POLICY_PATH):
+		profile_input = FileAccess.get_file_as_string(WATER_POLICY_PATH)
+	var launch_arguments: PackedStringArray=water_launch_arguments()
+	water_experiment_panel.setup(profile_input,launch_arguments)
+	water_experiment_panel.apply_requested.connect(water_lab_apply_result)
+	var startup: Dictionary=CyberWaterExperimentProfiles.resolve(
+		CyberWaterExperimentProfiles.parse_profile(profile_input).get("values",{})
+			if profile_input is String else profile_input,
+		launch_arguments,{})
+	if startup.get("ok",false): water_policy_resolved=startup
+
+func water_launch_arguments() -> PackedStringArray:
+	return OS.get_cmdline_user_args()
+
+func water_lab_open() -> void:
+	water_experiment_panel.popup_centered()
+
+func water_lab_reset() -> void:
+	water_lab_apply_result(water_policy_resolved)
+
+func water_lab_save_profile() -> bool:
+	if not water_policy_resolved.get("ok",false): return false
+	var file: FileAccess=FileAccess.open(WATER_POLICY_PATH,FileAccess.WRITE)
+	if file==null: return false
+	file.store_string(str(water_policy_resolved.canonical_json)+"\n")
+	return true
+
+func water_lab_apply_result(result: Dictionary, blind_label: String = "") -> void:
+	if not result.get("ok",false): return
+	var checked: Dictionary=CyberWaterExperimentProfiles.resolve({},{},result.policy)
+	if not checked.get("ok",false) or str(checked.hash)!=str(result.hash): return
+	var recipe: Dictionary=CyberWaterFeelScenarios.recipe(
+		str(checked.policy.scenario_id),int(checked.policy.seed))
+	if recipe.is_empty(): return
+	water_policy_resolved=result.duplicate(true)
+	tower_active=true
+	current_view_size=Vector2i(480,270)
+	paused=true
+	camera_follow_enabled=false
+	camera_origin=Vector2(recipe.camera_origin)
+	character_position=Vector2(recipe.player_start)
+	$Layout/Title.text="CYBERSAND / EXPERIMENT TOWER / WATER FEEL"
+	_activate_water_body_scenario(bool(recipe.body_enabled))
+	tower_command({
+		"water_reset":true,
+		"water_policy":checked.policy,
+		"water_policy_hash":checked.hash,
+		"water_policy_provenance":result.get("provenance",{}),
+		"blind_label":blind_label,
+	})
+
+func water_lab_prepare_blind(
+		mass_candidates: Array[int] = [3,5,8],
+		blind_seed: int = -1
+	) -> bool:
+	var candidates: Array=[]
+	var base: Dictionary=water_policy_resolved.policy.duplicate(true)
+	base.interface_mode="oriented"
+	for bits: int in mass_candidates:
+		var candidate: Dictionary=base.duplicate(true)
+		candidate.mass_bits=bits
+		candidates.append(candidate)
+	var seed_value: int=blind_seed if blind_seed>=0 else int(base.seed)+1009
+	water_blind_set=CyberWaterExperimentBlind.create(candidates,seed_value)
+	water_blind_index=0
+	if not water_blind_set.get("ok",false): return false
+	return water_lab_apply_blind(0)
+
+func water_lab_apply_blind(index: int = -1) -> bool:
+	if not water_blind_set.get("ok",false): return false
+	if index<0: index=(water_blind_index+1)%water_blind_set.labels.size()
+	if index<0 or index>=water_blind_set.labels.size(): return false
+	water_blind_index=index
+	var label: String=water_blind_set.labels[index]
+	var hidden: Dictionary=water_blind_set.hidden_mapping[label]
+	var resolved: Dictionary=CyberWaterExperimentProfiles.resolve({},{},hidden.policy)
+	if not resolved.get("ok",false) or str(resolved.hash)!=str(hidden.hash): return false
+	water_lab_apply_result(resolved,label)
+	return true
+
+func _activate_water_body_scenario(active: bool) -> void:
+	if not active:
+		for body: RigidBody2D in rigid_bodies: body.freeze=true
+		return
+	if rigid_bodies.is_empty():
+		rigid_bodies=[test_rigid_body_1,test_rigid_body_2,test_rigid_body_3]
+	var body_sizes:=PackedVector2Array()
+	body_sizes.resize(rigid_bodies.size())
+	body_sizes.fill(TEST_RIGID_BODY_SIZE)
+	if not rapier_bridge.is_initialized():
+		rapier_start_error=rapier_bridge.initialize(
+			get_viewport().world_2d.space,rigid_bodies,body_sizes)
+	for i: int in range(rigid_bodies.size()):
+		rigid_bodies[i].freeze=false
+		if rapier_bridge.is_initialized():
+			rapier_bridge.reset_body(i,Vector2(160+i*52,176),0.0)
 
 func tower_command(command: Dictionary) -> void:
 	if command.has("step"): paused = true
@@ -187,6 +291,28 @@ func tower_apply_profile(resolved: Dictionary) -> void:
 
 func tower_observation() -> void:
 	var report: Dictionary = {"recipe_version":CyberExperimentTower.VERSION,"seed":0,"floor":tower_floor,"context":tower_context,"platform":OS.get_name(),"utc":Time.get_datetime_string_from_system(true)}
+	if tower_context.get("water_active",false):
+		report["water_feel_version"]=CyberWaterFeelScenarios.VERSION
+		report["effective_policy"]=tower_context.get("water_policy",{}).duplicate(true)
+		report["effective_policy_hash"]=str(tower_context.get("water_policy_hash",""))
+		report["policy_provenance"]=tower_context.get("water_policy_provenance",{}).duplicate(true)
+		report["scenario_id"]=str(report.effective_policy.get("scenario_id",""))
+		report["seed"]=int(report.effective_policy.get("seed",0))
+		report["recipe_hash"]=str(tower_context.get("water_recipe_hash",""))
+		report["presentation_mode"]="four-level-"+str(report.effective_policy.get("interface_mode","coverage"))
+		report["worker_count"]=latest_snapshot.scheduler_thread_capacity_hint if latest_snapshot!=null else int(tower_context.get("worker_count",1))
+		report["backend"]=latest_snapshot.backend_name if latest_snapshot!=null else str(tower_context.get("backend","unknown"))
+		report["action_history"]=tower_context.get("water_actions",[]).duplicate(true)
+		report["observations"]=tower_context.get("water_observations",[]).duplicate(true)
+		report["water_accounting"]=tower_context.get("water_accounting",{}).duplicate(true)
+		report["blind_label"]=str(tower_context.get("water_blind_label",""))
+		if water_blind_set.get("ok",false):
+			var blind_export: Dictionary=CyberWaterExperimentBlind.export_metadata(
+				water_blind_set,{"scenario_id":report.scenario_id,"seed":report.seed,
+					"recipe_hash":report.recipe_hash,"platform":report.platform,
+					"worker_count":report.worker_count,"action_history":report.action_history})
+			if blind_export.get("ok",false):
+				report["blind"]=blind_export.metadata
 	var file: FileAccess = FileAccess.open("user://tower-observation.json",FileAccess.WRITE)
 	if file != null: file.store_string(JSON.stringify(report,"  "))
 	if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD): DisplayServer.clipboard_set(JSON.stringify(report,"  "))
@@ -1048,6 +1174,11 @@ func update_shader_parameters() -> void:
 		"condition_projection_enabled",
 		1.0 if render_channels == 2 else 0.0
 	)
+	var water_mode: int=0
+	if tower_context.get("water_active",false):
+		water_mode=2 if str(tower_context.get("water_policy",{}).get(
+			"interface_mode","coverage"))=="oriented" else 1
+	world_shader.set_shader_parameter("water_presentation_mode",water_mode)
 	for body_index: int in range(rigid_bodies.size()):
 		var body_transform: Transform2D
 		if rapier_bridge.is_initialized():

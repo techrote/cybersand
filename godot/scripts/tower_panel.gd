@@ -31,6 +31,9 @@ func setup(controller: Control) -> void:
 	button(row,"Single step",func() -> void: host.tower_command({"step":true}))
 	button(row,"Fresh tower",func() -> void: host.tower_reset())
 	button(row,"Tuning",func() -> void: host.tower_tuning())
+	button(row,"Water Feel",func() -> void: host.water_lab_reset())
+	button(row,"Water policy",func() -> void: host.water_lab_open())
+	button(row,"Save Water policy",func() -> void: host.water_lab_save_profile())
 	var release: HBoxContainer = HBoxContainer.new()
 	add_child(release)
 	tube_picker = OptionButton.new()
@@ -40,6 +43,8 @@ func setup(controller: Control) -> void:
 	button(release,"Open plug",func() -> void: host.tower_command({"release":tube_picker.selected}))
 	button(release,"Open neighbours",func() -> void: host.tower_command({"release":tube_picker.selected,"adjacent":true}))
 	button(release,"Sequence +30 / +90 ticks",func() -> void: host.tower_command({"schedule":tube_picker.selected}))
+	button(release,"Blind A/B/C",func() -> void: host.water_lab_prepare_blind())
+	button(release,"Next blind",func() -> void: host.water_lab_apply_blind())
 	button(release,"Export observation",func() -> void: host.tower_observation())
 	info = Label.new()
 	info.add_theme_font_size_override("font_size",14)
@@ -51,6 +56,24 @@ func refresh(active: bool, floor_index: int, context: Dictionary) -> void:
 	if not active:
 		for label: Label in labels: label.visible = false
 		return
+	if context.get("water_active",false):
+		floor_picker.disabled=true
+		tube_picker.disabled=true
+		for label: Label in labels: label.visible=false
+		var policy: Dictionary=context.get("water_policy",{})
+		var accounting: Dictionary=context.get("water_accounting",{})
+		info.text="%s\nScenario %s / seed %s / recipe %s / presentation four-level %s" % [
+			str(context.get("status","Water Feel Lab")),
+			str(policy.get("scenario_id","")),
+			str(policy.get("seed","")),
+			str(context.get("water_recipe_hash","")).left(12),
+			str(policy.get("interface_mode","coverage"))]
+		info.text+="\nWater integer %s +%s -%s / pause, single-step, reset and export remain available" % [
+			str(accounting.get("current",0)),str(accounting.get("explicit_source",0)),
+			str(accounting.get("explicit_sink",0))]
+		return
+	floor_picker.disabled=false
+	tube_picker.disabled=false
 	if shown_floor != floor_index:
 		shown_floor = floor_index
 		floor_picker.select(floor_index)

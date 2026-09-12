@@ -90,6 +90,12 @@ public:
     [[nodiscard]] String get_backend_name() const;
     [[nodiscard]] String get_last_tick_error() const;
     [[nodiscard]] Dictionary get_water_experiment_policy() const;
+    bool water_experiment_fill_rect(Vector2i origin, Vector2i size,
+                                    std::int64_t normalized_mass,
+                                    std::int64_t coherence);
+    bool water_experiment_erase_rect(Vector2i origin, Vector2i size);
+    [[nodiscard]] Dictionary water_experiment_observation(
+        Vector2i origin, Vector2i size) const;
     // Isolated fresh-world experiment API. Called only by the exclusive owner.
     bool diagnostic_reset(const Dictionary& options);
     bool diagnostic_fill_rect(Vector2i origin, Vector2i size, std::int64_t material,
