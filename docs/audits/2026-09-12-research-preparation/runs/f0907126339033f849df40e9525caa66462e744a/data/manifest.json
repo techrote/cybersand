@@ -1,0 +1,37 @@
+{
+  "base_source": "d39e31f03f2e39b0022d507b79fbee5c2439436d",
+  "engine_artifact": null,
+  "engine_tests_run": false,
+  "gpu": null,
+  "output_sha256": {
+    "blind-key.example.json": "15a508eead422e240d35dbbfc1d7dfb7ab6426fb9b6d428192dc2c295e69baa6",
+    "candidate-orders.json": "48f83d3b1a3030a325b82697ed5f43e13a5eb2820de0a170977d049862932947",
+    "coverage.csv": "e743bfa4b9eaa341a324bf82ab125f370ac1100d4a5e95043288aa3365af961d",
+    "interface-atlas.svg": "05b75de676c7f18df2c2ead3fd9ea263694edff8a7d3d28d011ef306a293152b",
+    "interface-lut.csv": "558b5ce7c72021b469a0cf3ae336e6c3a608c87be23b177b06a9171a4873413a",
+    "policy-vectors.json": "ff96526604097736ea36d2fc176abb250e746910038a5632da64df4ba5ebbaa4",
+    "projection.csv": "10abba28db8144f7db5a1c1dc07eb5dd89b3f74604a8fd6ae67e800dbfa55423",
+    "quantization.csv": "ab7ac89fddc8fa038d11af120673eaa5de7f80b2126c722d78b7ae0205f06a48",
+    "recipes.json": "c43d920e07024fb7b4c7ec115a828fc4f7c3dc629b6d4e1f672a1df993fc033a",
+    "sampling.csv": "6f51fd72930a39abe6660d1e7d23fb95d9c022fcf128d583e2dd4705f27ef5a8",
+    "scenario-coverage.json": "152d7f5e92b06e917922384efefc9f40590930c6c973db9719b3d839346f84fc",
+    "storage.csv": "811db56c25a64b41d60a0601d6f7668ba40bea7c16c86feea691293413e69c3f",
+    "summary.json": "b9c28dbaa03e8ee3160f7e81d5241b30849deea9e349eac8b2f7174bac35c23f",
+    "transfer-model-extended.json": "55d0649638f263f8ea0dd1e5cdab678b4bc40d0be12663f21d7ba2a557525752",
+    "transfer-model.json": "185a5c6db360c97ec3b721e5666bc4393bd3d8acb1f0c2531eeef82b2a01d5dd"
+  },
+  "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+  "python": "3.12.3",
+  "registration_commit": "aaa811ea6e0a76811999ee95eb93312b78bf7a74",
+  "schema": 1,
+  "source_identity_is_research_code_not_engine_build": true,
+  "source_sha256": {
+    "ci_runner.py": "7a016329a20dd7470eceba9ed90213e71bedd9bbce2fa042df4430e078b3d126",
+    "geometry.py": "bc75566d27e7054f9662f2adeb117a12deafa81d1fbae943830e3fa0ad412673",
+    "policy.py": "ff5dea2eb863786c2c35b409cc524b47833ca945012a5d82fd436a520621768e",
+    "precompute.py": "5aab0e05a548dfb4fa061855983c1a7f713ae93e944c72591bce30c956c57765",
+    "projection_oracle.cpp": "d525aa9fcd6604fbeb921f389b8a59766fa397a019cea6824906c8869cee776f",
+    "test_preparation.py": "4c072339503ef0a9ca824d4ca4c9185c93fcd1497a2a8a323aa13de5a5c7d6d4",
+    "transfer_model.py": "614675130a644fbfda210001d1cd4ebe08f5202402a246576021502df2ace284"
+  }
+}

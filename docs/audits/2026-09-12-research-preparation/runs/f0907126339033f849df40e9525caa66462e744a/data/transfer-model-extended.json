@@ -1,0 +1,26 @@
+[
+  {
+    "capacity": 1,
+    "claim": "no violation in enumerated bounded model; not engine proof or liveness",
+    "counterexample": null,
+    "depth_cut": false,
+    "depth_limit": 64,
+    "state_limit": 60000,
+    "state_limit_hit": false,
+    "states": 1368,
+    "transitions": 3768,
+    "variant": "safe"
+  },
+  {
+    "capacity": 2,
+    "claim": "no violation in enumerated bounded model; not engine proof or liveness",
+    "counterexample": null,
+    "depth_cut": false,
+    "depth_limit": 64,
+    "state_limit": 60000,
+    "state_limit_hit": false,
+    "states": 7200,
+    "transitions": 23640,
+    "variant": "safe"
+  }
+]

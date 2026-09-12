@@ -1,0 +1,100 @@
+{
+  "hidden_mapping": {
+    "coherence": {
+      "A": {
+        "policy": {
+          "coherence_ticks": 7,
+          "mass_bits": 8,
+          "rest_policy": "normalized",
+          "schema": 1
+        },
+        "semantic_sha256": "b4f1d0be6c2dd9a5663aa726a2280c4e5998d5bfa5af225835c2e99e1c037423"
+      },
+      "B": {
+        "policy": {
+          "coherence_ticks": 0,
+          "mass_bits": 8,
+          "rest_policy": "normalized",
+          "schema": 1
+        },
+        "semantic_sha256": "5d26a601e520a24003ae3452f728435c6a0a8b5d7c1f33bf3744a2d66fef8974"
+      },
+      "C": {
+        "policy": {
+          "coherence_ticks": 3,
+          "mass_bits": 8,
+          "rest_policy": "normalized",
+          "schema": 1
+        },
+        "semantic_sha256": "3272f1162800cf813d3321d42490a21a414da0cee32e64a8633d09a6f05d881b"
+      },
+      "D": {
+        "policy": {
+          "coherence_ticks": 12,
+          "mass_bits": 8,
+          "rest_policy": "normalized",
+          "schema": 1
+        },
+        "semantic_sha256": "da370fd4e2569fd9d858037881a6a55d76387e82097b06ec8a756a92745bc705"
+      }
+    },
+    "mass": {
+      "A": {
+        "policy": {
+          "coherence_ticks": 12,
+          "mass_bits": 4,
+          "rest_policy": "normalized",
+          "schema": 1
+        },
+        "semantic_sha256": "8967120c005531c3445f2698a3c9618cbdfb1759771813a4f1e0abe37471fb02"
+      },
+      "B": {
+        "policy": {
+          "coherence_ticks": 12,
+          "mass_bits": 5,
+          "rest_policy": "normalized",
+          "schema": 1
+        },
+        "semantic_sha256": "a8ab0857a162c83dde2d564f1d760260eb356800c9871f48a0e31346fdbe92ff"
+      },
+      "C": {
+        "policy": {
+          "coherence_ticks": 12,
+          "mass_bits": 6,
+          "rest_policy": "normalized",
+          "schema": 1
+        },
+        "semantic_sha256": "48b88954a05b16a2cbcdc48537db37db10be10a3d0ca9d038626192cf9fa66dc"
+      },
+      "D": {
+        "policy": {
+          "coherence_ticks": 12,
+          "mass_bits": 8,
+          "rest_policy": "normalized",
+          "schema": 1
+        },
+        "semantic_sha256": "da370fd4e2569fd9d858037881a6a55d76387e82097b06ec8a756a92745bc705"
+      },
+      "E": {
+        "policy": {
+          "coherence_ticks": 12,
+          "mass_bits": 7,
+          "rest_policy": "normalized",
+          "schema": 1
+        },
+        "semantic_sha256": "a1f7f7d63b4b457ef2e519cef2e77b941b01275b8e37ca59b7c010a1bc51cbdb"
+      },
+      "F": {
+        "policy": {
+          "coherence_ticks": 12,
+          "mass_bits": 3,
+          "rest_policy": "normalized",
+          "schema": 1
+        },
+        "semantic_sha256": "80256716c50d4144896dfa3c9476644c1257ded2ce24ea2114e3e9b156722966"
+      }
+    }
+  },
+  "seed": 20260912,
+  "warning": "Do not expose this mapping, policy hash or reveal-bearing logs in the blinded UI."
+}

@@ -1,0 +1,98 @@
+{
+  "coherence": {
+    "orders": [
+      [
+        "A",
+        "B",
+        "D",
+        "C"
+      ],
+      [
+        "B",
+        "C",
+        "A",
+        "D"
+      ],
+      [
+        "C",
+        "D",
+        "B",
+        "A"
+      ],
+      [
+        "D",
+        "A",
+        "C",
+        "B"
+      ]
+    ],
+    "presentation": {
+      "fill_levels": 4,
+      "interface_mode": "oriented",
+      "quantizer": "positive_nearest",
+      "schema": 1
+    },
+    "scenario_and_seed_fixed_within_block": true,
+    "status": "preparation example; not a conducted or authorized human study"
+  },
+  "mass": {
+    "orders": [
+      [
+        "A",
+        "B",
+        "F",
+        "C",
+        "E",
+        "D"
+      ],
+      [
+        "B",
+        "C",
+        "A",
+        "D",
+        "F",
+        "E"
+      ],
+      [
+        "C",
+        "D",
+        "B",
+        "E",
+        "A",
+        "F"
+      ],
+      [
+        "D",
+        "E",
+        "C",
+        "F",
+        "B",
+        "A"
+      ],
+      [
+        "E",
+        "F",
+        "D",
+        "A",
+        "C",
+        "B"
+      ],
+      [
+        "F",
+        "A",
+        "E",
+        "B",
+        "D",
+        "C"
+      ]
+    ],
+    "presentation": {
+      "fill_levels": 4,
+      "interface_mode": "oriented",
+      "quantizer": "positive_nearest",
+      "schema": 1
+    },
+    "scenario_and_seed_fixed_within_block": true,
+    "status": "preparation example; not a conducted or authorized human study"
+  }
+}

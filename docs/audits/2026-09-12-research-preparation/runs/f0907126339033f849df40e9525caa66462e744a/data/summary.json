@@ -1,0 +1,173 @@
+{
+  "apparatus": {
+    "coherence_orders": 4,
+    "distinct_semantic_candidates": 9,
+    "geometric_recipes": 5,
+    "human_observations": 0,
+    "mass_orders": 6,
+    "position_and_directed_adjacency_balanced_within_each_axis": true,
+    "warning": "not H-ready; fixtures are unexecuted interpreter-neutral geometry"
+  },
+  "arithmetic": {
+    "counts": {
+      "byte_normalized_inputs": 1536,
+      "countdown_cases": 91,
+      "delay_merge_cases": 819,
+      "halfway_inputs": 498,
+      "legal_policy_vectors": 156,
+      "local_pair_cases": 174720
+    },
+    "scope": "registered rational arithmetic and local pair operation, not World::tick",
+    "status": "all assertions passed"
+  },
+  "base_source": "d39e31f03f2e39b0022d507b79fbee5c2439436d",
+  "date": "2026-09-12",
+  "engine_execution": false,
+  "geometry": {
+    "lookup_rows": 64,
+    "max_geometric_error": 1.1102230246251565e-16,
+    "max_sample_error_by_grid": {
+      "1": 0.75,
+      "4": 0.125,
+      "8": 0.09375
+    },
+    "normal_count": 16,
+    "raster_cases": 576,
+    "scope": "double-precision square clipping and point samples; no shader, temporal sequence, GPU or native snapshot test"
+  },
+  "projection": {
+    "coverage_comparisons": 1512,
+    "coverage_mismatches": 0,
+    "roundtrip_failures": 0,
+    "scope": "proposed normalized display byte; never a material mutation or tested native bridge",
+    "states": 504
+  },
+  "registration_commit": "aaa811ea6e0a76811999ee95eb93312b78bf7a74",
+  "schema": 1,
+  "storage": {
+    "assumed_directory_entry_bytes_per_resident_block": 8,
+    "assumed_header_bytes_per_allocated_block": 32,
+    "assumed_payload_bytes_per_reserved_cell": 2,
+    "block_cells": 1024,
+    "excludes": [
+      "allocator overhead",
+      "sparse indices",
+      "queue storage",
+      "snapshots",
+      "history transfers",
+      "CPU work"
+    ],
+    "one_percent_iid_touched_fraction": 0.9999660812945981,
+    "resident_blocks": 1024,
+    "resident_cells": 1048576,
+    "scope": "analytic allocation footprint only; no lookup/cache/allocator/performance measurements"
+  },
+  "transfer_model": [
+    {
+      "capacity": 1,
+      "claim": "no violation in enumerated bounded model; not engine proof or liveness",
+      "counterexample": null,
+      "depth_cut": true,
+      "depth_limit": 10,
+      "state_limit": 60000,
+      "state_limit_hit": false,
+      "states": 1328,
+      "transitions": 3620,
+      "variant": "safe"
+    },
+    {
+      "capacity": 2,
+      "claim": "no violation in enumerated bounded model; not engine proof or liveness",
+      "counterexample": null,
+      "depth_cut": true,
+      "depth_limit": 10,
+      "state_limit": 60000,
+      "state_limit_hit": false,
+      "states": 4601,
+      "transitions": 14181,
+      "variant": "safe"
+    },
+    {
+      "capacity": 2,
+      "claim": "bounded abstract-model counterexample",
+      "counterexample": [
+        "0:prepare_promotion"
+      ],
+      "depth_limit": 10,
+      "state_limit": 60000,
+      "states": 4,
+      "transitions": 4,
+      "variant": "early_release"
+    },
+    {
+      "capacity": 2,
+      "claim": "bounded abstract-model counterexample",
+      "counterexample": [
+        "0:prepare_promotion",
+        "0:ack_promotion",
+        "0:commit_promotion"
+      ],
+      "depth_limit": 10,
+      "state_limit": 60000,
+      "states": 83,
+      "transitions": 136,
+      "variant": "duplicate_owner"
+    },
+    {
+      "capacity": 2,
+      "claim": "bounded abstract-model counterexample",
+      "counterexample": [
+        "0:change_destination",
+        "0:prepare_promotion",
+        "0:ack_promotion",
+        "0:commit_promotion",
+        "0:failed_return_drops_payload"
+      ],
+      "depth_limit": 10,
+      "state_limit": 60000,
+      "states": 448,
+      "transitions": 1016,
+      "variant": "drop_on_full"
+    },
+    {
+      "capacity": 2,
+      "claim": "bounded abstract-model counterexample",
+      "counterexample": [
+        "0:prepare_promotion",
+        "0:edit_revision",
+        "0:ack_promotion"
+      ],
+      "depth_limit": 10,
+      "state_limit": 60000,
+      "states": 78,
+      "transitions": 129,
+      "variant": "stale_ack"
+    }
+  ],
+  "transfer_model_extended": [
+    {
+      "capacity": 1,
+      "claim": "no violation in enumerated bounded model; not engine proof or liveness",
+      "counterexample": null,
+      "depth_cut": false,
+      "depth_limit": 64,
+      "state_limit": 60000,
+      "state_limit_hit": false,
+      "states": 1368,
+      "transitions": 3768,
+      "variant": "safe"
+    },
+    {
+      "capacity": 2,
+      "claim": "no violation in enumerated bounded model; not engine proof or liveness",
+      "counterexample": null,
+      "depth_cut": false,
+      "depth_limit": 64,
+      "state_limit": 60000,
+      "state_limit_hit": false,
+      "states": 7200,
+      "transitions": 23640,
+      "variant": "safe"
+    }
+  ]
+}

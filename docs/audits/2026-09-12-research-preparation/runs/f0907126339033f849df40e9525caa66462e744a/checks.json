@@ -1,0 +1,298 @@
+{
+  "all_attempted_checks_passed": false,
+  "binary_sha256": {
+    "build/tests": "7ba1ab679c2da53bda83323e956222b59773e4cdc0b855bb9e1b46e929219fdf",
+    "validation/local/research-preparation/f0907126339033f849df40e9525caa66462e744a/projection_oracle": "3c9e863e12f92bf900e31268f251d142557a389c894074781f308a9db8f44bbd"
+  },
+  "checks": [
+    {
+      "command": [
+        "g++-13",
+        "--version"
+      ],
+      "exit_code": 0,
+      "log_bytes": 249,
+      "log_sha256": "b240ade48d7a4743cb2e7940990dd5a8dbc15120543c7eadd9541435edd2efd2",
+      "name": "compiler",
+      "output_tail": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "required_for_preparation": false,
+      "status": "passed",
+      "timeout_seconds": 15
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/research/issue_preparation",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log_bytes": 2570,
+      "log_sha256": "2381335ff5c944b283ea5a5096473338d7e82e90d041b8bb11b1c6548dc1af92",
+      "name": "research-tests",
+      "output_tail": "test_all_geometry_recipes (test_preparation.ApparatusTests.test_all_geometry_recipes) ... ok\ntest_balanced_orders (test_preparation.ApparatusTests.test_balanced_orders) ... ok\ntest_recipe_repeat_and_oracle_initial_mass (test_preparation.ApparatusTests.test_recipe_repeat_and_oracle_initial_mass) ... ok\ntest_axis_closed_form (test_preparation.GeometryTests.test_axis_closed_form) ... ok\ntest_complement_and_rotation (test_preparation.GeometryTests.test_complement_and_rotation) ... ok\ntest_geometry_refusal (test_preparation.GeometryTests.test_geometry_refusal) ... ok\ntest_neighbor_mass_is_underdetermined (test_preparation.GeometryTests.test_neighbor_mass_is_underdetermined) ... ok\ntest_all_surfaces_resolve_identically (test_preparation.PolicyTests.test_all_surfaces_resolve_identically) ... ok\ntest_four_level_visibility_tradeoff (test_preparation.PolicyTests.test_four_level_visibility_tradeoff) ... ok\ntest_immutable_and_failed_proposal_leaves_reference (test_preparation.PolicyTests.test_immutable_and_failed_proposal_leaves_reference) ... ok\ntest_known_precision_thresholds (test_preparation.PolicyTests.test_known_precision_thresholds) ... ok\ntest_pair_zero_request_edge (test_preparation.PolicyTests.test_pair_zero_request_edge) ... ok\ntest_projection_endpoints_and_roundtrip (test_preparation.PolicyTests.test_projection_endpoints_and_roundtrip) ... ok\ntest_quantizer_refusals (test_preparation.PolicyTests.test_quantizer_refusals) ... ok\ntest_rounding_exact_halves (test_preparation.PolicyTests.test_rounding_exact_halves) ... ok\ntest_semantic_and_render_identity_separate (test_preparation.PolicyTests.test_semantic_and_render_identity_separate) ... ok\ntest_strict_refusal (test_preparation.PolicyTests.test_strict_refusal) ... ok\ntest_tiny_source_quantization_is_not_runtime_drift (test_preparation.PolicyTests.test_tiny_source_quantization_is_not_runtime_drift) ... ok\ntest_four_mutants_have_short_counterexamples (test_preparation.ProtocolTests.test_four_mutants_have_short_counterexamples) ... ok\ntest_full_destination_preserves_pool (test_preparation.ProtocolTests.test_full_destination_preserves_pool) ... ok\ntest_quarantine_has_no_automatic_retry (test_preparation.ProtocolTests.test_quarantine_has_no_automatic_retry) ... ok\ntest_reservation_has_no_second_material_owner (test_preparation.ProtocolTests.test_reservation_has_no_second_material_owner) ... ok\ntest_stale_commit_refused (test_preparation.ProtocolTests.test_stale_commit_refused) ... ok\n\n----------------------------------------------------------------------\nRan 23 tests in 0.159s\n\nOK\n",
+      "required_for_preparation": true,
+      "status": "passed",
+      "timeout_seconds": 60
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "tools/research/issue_preparation/precompute.py",
+        "--out",
+        "/home/runner/work/cybersand/cybersand/workspace/source/docs/audits/2026-09-12-research-preparation/runs/f0907126339033f849df40e9525caa66462e744a/data"
+      ],
+      "exit_code": 0,
+      "log_bytes": 4874,
+      "log_sha256": "b9c28dbaa03e8ee3160f7e81d5241b30849deea9e349eac8b2f7174bac35c23f",
+      "name": "precompute",
+      "output_tail": "1102230246251565e-16,\n    \"max_sample_error_by_grid\": {\n      \"1\": 0.75,\n      \"4\": 0.125,\n      \"8\": 0.09375\n    },\n    \"normal_count\": 16,\n    \"raster_cases\": 576,\n    \"scope\": \"double-precision square clipping and point samples; no shader, temporal sequence, GPU or native snapshot test\"\n  },\n  \"projection\": {\n    \"coverage_comparisons\": 1512,\n    \"coverage_mismatches\": 0,\n    \"roundtrip_failures\": 0,\n    \"scope\": \"proposed normalized display byte; never a material mutation or tested native bridge\",\n    \"states\": 504\n  },\n  \"registration_commit\": \"aaa811ea6e0a76811999ee95eb93312b78bf7a74\",\n  \"schema\": 1,\n  \"storage\": {\n    \"assumed_directory_entry_bytes_per_resident_block\": 8,\n    \"assumed_header_bytes_per_allocated_block\": 32,\n    \"assumed_payload_bytes_per_reserved_cell\": 2,\n    \"block_cells\": 1024,\n    \"excludes\": [\n      \"allocator overhead\",\n      \"sparse indices\",\n      \"queue storage\",\n      \"snapshots\",\n      \"history transfers\",\n      \"CPU work\"\n    ],\n    \"one_percent_iid_touched_fraction\": 0.9999660812945981,\n    \"resident_blocks\": 1024,\n    \"resident_cells\": 1048576,\n    \"scope\": \"analytic allocation footprint only; no lookup/cache/allocator/performance measurements\"\n  },\n  \"transfer_model\": [\n    {\n      \"capacity\": 1,\n      \"claim\": \"no violation in enumerated bounded model; not engine proof or liveness\",\n      \"counterexample\": null,\n      \"depth_cut\": true,\n      \"depth_limit\": 10,\n      \"state_limit\": 60000,\n      \"state_limit_hit\": false,\n      \"states\": 1328,\n      \"transitions\": 3620,\n      \"variant\": \"safe\"\n    },\n    {\n      \"capacity\": 2,\n      \"claim\": \"no violation in enumerated bounded model; not engine proof or liveness\",\n      \"counterexample\": null,\n      \"depth_cut\": true,\n      \"depth_limit\": 10,\n      \"state_limit\": 60000,\n      \"state_limit_hit\": false,\n      \"states\": 4601,\n      \"transitions\": 14181,\n      \"variant\": \"safe\"\n    },\n    {\n      \"capacity\": 2,\n      \"claim\": \"bounded abstract-model counterexample\",\n      \"counterexample\": [\n        \"0:prepare_promotion\"\n      ],\n      \"depth_limit\": 10,\n      \"state_limit\": 60000,\n      \"states\": 4,\n      \"transitions\": 4,\n      \"variant\": \"early_release\"\n    },\n    {\n      \"capacity\": 2,\n      \"claim\": \"bounded abstract-model counterexample\",\n      \"counterexample\": [\n        \"0:prepare_promotion\",\n        \"0:ack_promotion\",\n        \"0:commit_promotion\"\n      ],\n      \"depth_limit\": 10,\n      \"state_limit\": 60000,\n      \"states\": 83,\n      \"transitions\": 136,\n      \"variant\": \"duplicate_owner\"\n    },\n    {\n      \"capacity\": 2,\n      \"claim\": \"bounded abstract-model counterexample\",\n      \"counterexample\": [\n        \"0:change_destination\",\n        \"0:prepare_promotion\",\n        \"0:ack_promotion\",\n        \"0:commit_promotion\",\n        \"0:failed_return_drops_payload\"\n      ],\n      \"depth_limit\": 10,\n      \"state_limit\": 60000,\n      \"states\": 448,\n      \"transitions\": 1016,\n      \"variant\": \"drop_on_full\"\n    },\n    {\n      \"capacity\": 2,\n      \"claim\": \"bounded abstract-model counterexample\",\n      \"counterexample\": [\n        \"0:prepare_promotion\",\n        \"0:edit_revision\",\n        \"0:ack_promotion\"\n      ],\n      \"depth_limit\": 10,\n      \"state_limit\": 60000,\n      \"states\": 78,\n      \"transitions\": 129,\n      \"variant\": \"stale_ack\"\n    }\n  ],\n  \"transfer_model_extended\": [\n    {\n      \"capacity\": 1,\n      \"claim\": \"no violation in enumerated bounded model; not engine proof or liveness\",\n      \"counterexample\": null,\n      \"depth_cut\": false,\n      \"depth_limit\": 64,\n      \"state_limit\": 60000,\n      \"state_limit_hit\": false,\n      \"states\": 1368,\n      \"transitions\": 3768,\n      \"variant\": \"safe\"\n    },\n    {\n      \"capacity\": 2,\n      \"claim\": \"no violation in enumerated bounded model; not engine proof or liveness\",\n      \"counterexample\": null,\n      \"depth_cut\": false,\n      \"depth_limit\": 64,\n      \"state_limit\": 60000,\n      \"state_limit_hit\": false,\n      \"states\": 7200,\n      \"transitions\": 23640,\n      \"variant\": \"safe\"\n    }\n  ]\n}\n",
+      "required_for_preparation": true,
+      "status": "passed",
+      "timeout_seconds": 120
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "tools/research/issue_preparation/precompute.py",
+        "--out",
+        "/home/runner/work/cybersand/cybersand/workspace/source/validation/local/research-preparation/f0907126339033f849df40e9525caa66462e744a/repeat"
+      ],
+      "exit_code": 0,
+      "log_bytes": 4874,
+      "log_sha256": "b9c28dbaa03e8ee3160f7e81d5241b30849deea9e349eac8b2f7174bac35c23f",
+      "name": "precompute-repeat",
+      "output_tail": "1102230246251565e-16,\n    \"max_sample_error_by_grid\": {\n      \"1\": 0.75,\n      \"4\": 0.125,\n      \"8\": 0.09375\n    },\n    \"normal_count\": 16,\n    \"raster_cases\": 576,\n    \"scope\": \"double-precision square clipping and point samples; no shader, temporal sequence, GPU or native snapshot test\"\n  },\n  \"projection\": {\n    \"coverage_comparisons\": 1512,\n    \"coverage_mismatches\": 0,\n    \"roundtrip_failures\": 0,\n    \"scope\": \"proposed normalized display byte; never a material mutation or tested native bridge\",\n    \"states\": 504\n  },\n  \"registration_commit\": \"aaa811ea6e0a76811999ee95eb93312b78bf7a74\",\n  \"schema\": 1,\n  \"storage\": {\n    \"assumed_directory_entry_bytes_per_resident_block\": 8,\n    \"assumed_header_bytes_per_allocated_block\": 32,\n    \"assumed_payload_bytes_per_reserved_cell\": 2,\n    \"block_cells\": 1024,\n    \"excludes\": [\n      \"allocator overhead\",\n      \"sparse indices\",\n      \"queue storage\",\n      \"snapshots\",\n      \"history transfers\",\n      \"CPU work\"\n    ],\n    \"one_percent_iid_touched_fraction\": 0.9999660812945981,\n    \"resident_blocks\": 1024,\n    \"resident_cells\": 1048576,\n    \"scope\": \"analytic allocation footprint only; no lookup/cache/allocator/performance measurements\"\n  },\n  \"transfer_model\": [\n    {\n      \"capacity\": 1,\n      \"claim\": \"no violation in enumerated bounded model; not engine proof or liveness\",\n      \"counterexample\": null,\n      \"depth_cut\": true,\n      \"depth_limit\": 10,\n      \"state_limit\": 60000,\n      \"state_limit_hit\": false,\n      \"states\": 1328,\n      \"transitions\": 3620,\n      \"variant\": \"safe\"\n    },\n    {\n      \"capacity\": 2,\n      \"claim\": \"no violation in enumerated bounded model; not engine proof or liveness\",\n      \"counterexample\": null,\n      \"depth_cut\": true,\n      \"depth_limit\": 10,\n      \"state_limit\": 60000,\n      \"state_limit_hit\": false,\n      \"states\": 4601,\n      \"transitions\": 14181,\n      \"variant\": \"safe\"\n    },\n    {\n      \"capacity\": 2,\n      \"claim\": \"bounded abstract-model counterexample\",\n      \"counterexample\": [\n        \"0:prepare_promotion\"\n      ],\n      \"depth_limit\": 10,\n      \"state_limit\": 60000,\n      \"states\": 4,\n      \"transitions\": 4,\n      \"variant\": \"early_release\"\n    },\n    {\n      \"capacity\": 2,\n      \"claim\": \"bounded abstract-model counterexample\",\n      \"counterexample\": [\n        \"0:prepare_promotion\",\n        \"0:ack_promotion\",\n        \"0:commit_promotion\"\n      ],\n      \"depth_limit\": 10,\n      \"state_limit\": 60000,\n      \"states\": 83,\n      \"transitions\": 136,\n      \"variant\": \"duplicate_owner\"\n    },\n    {\n      \"capacity\": 2,\n      \"claim\": \"bounded abstract-model counterexample\",\n      \"counterexample\": [\n        \"0:change_destination\",\n        \"0:prepare_promotion\",\n        \"0:ack_promotion\",\n        \"0:commit_promotion\",\n        \"0:failed_return_drops_payload\"\n      ],\n      \"depth_limit\": 10,\n      \"state_limit\": 60000,\n      \"states\": 448,\n      \"transitions\": 1016,\n      \"variant\": \"drop_on_full\"\n    },\n    {\n      \"capacity\": 2,\n      \"claim\": \"bounded abstract-model counterexample\",\n      \"counterexample\": [\n        \"0:prepare_promotion\",\n        \"0:edit_revision\",\n        \"0:ack_promotion\"\n      ],\n      \"depth_limit\": 10,\n      \"state_limit\": 60000,\n      \"states\": 78,\n      \"transitions\": 129,\n      \"variant\": \"stale_ack\"\n    }\n  ],\n  \"transfer_model_extended\": [\n    {\n      \"capacity\": 1,\n      \"claim\": \"no violation in enumerated bounded model; not engine proof or liveness\",\n      \"counterexample\": null,\n      \"depth_cut\": false,\n      \"depth_limit\": 64,\n      \"state_limit\": 60000,\n      \"state_limit_hit\": false,\n      \"states\": 1368,\n      \"transitions\": 3768,\n      \"variant\": \"safe\"\n    },\n    {\n      \"capacity\": 2,\n      \"claim\": \"no violation in enumerated bounded model; not engine proof or liveness\",\n      \"counterexample\": null,\n      \"depth_cut\": false,\n      \"depth_limit\": 64,\n      \"state_limit\": 60000,\n      \"state_limit_hit\": false,\n      \"states\": 7200,\n      \"transitions\": 23640,\n      \"variant\": \"safe\"\n    }\n  ]\n}\n",
+      "required_for_preparation": true,
+      "status": "passed",
+      "timeout_seconds": 120
+    },
+    {
+      "exit_code": 0,
+      "files": 16,
+      "name": "byte-identical-repeat",
+      "required_for_preparation": true,
+      "status": "passed"
+    },
+    {
+      "command": [
+        "g++-13",
+        "-std=c++20",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "tools/research/issue_preparation/projection_oracle.cpp",
+        "-o",
+        "/home/runner/work/cybersand/cybersand/workspace/source/validation/local/research-preparation/f0907126339033f849df40e9525caa66462e744a/projection_oracle"
+      ],
+      "exit_code": 0,
+      "log_bytes": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "name": "projection-build",
+      "output_tail": "",
+      "required_for_preparation": true,
+      "status": "passed",
+      "timeout_seconds": 60
+    },
+    {
+      "command": [
+        "/home/runner/work/cybersand/cybersand/workspace/source/validation/local/research-preparation/f0907126339033f849df40e9525caa66462e744a/projection_oracle"
+      ],
+      "exit_code": 0,
+      "log_bytes": 155,
+      "log_sha256": "10abba28db8144f7db5a1c1dc07eb5dd89b3f74604a8fd6ae67e800dbfa55423",
+      "name": "projection-run",
+      "output_tail": "mass_bits,states,roundtrip_failures,coverage_mismatches,full_condition_byte\n3,8,0,0,255\n4,16,0,0,255\n5,32,0,0,255\n6,64,0,0,255\n7,128,0,0,255\n8,256,0,0,255\n",
+      "required_for_preparation": true,
+      "status": "passed",
+      "timeout_seconds": 15
+    },
+    {
+      "exit_code": 0,
+      "name": "cpp-python-projection-parity",
+      "required_for_preparation": true,
+      "status": "passed"
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "tools/ci/check_docs.py"
+      ],
+      "exit_code": 0,
+      "log_bytes": 467,
+      "log_sha256": "c6f894be1809720a1edc15a5ffa418a92a031eb6caee8bf49ba7164c9544ab1a",
+      "name": "documentation",
+      "output_tail": "{\n  \"status\": \"passed\",\n  \"documents\": 60,\n  \"navigation_link_documents\": 8,\n  \"canonical_claims\": 101,\n  \"local_links\": 977,\n  \"heading_anchors\": 45,\n  \"questions\": 32,\n  \"errors\": [],\n  \"warnings\": [],\n  \"limitations\": [\n    \"Does not verify source semantics or runtime claims\",\n    \"Does not fetch external URLs\",\n    \"Does not rewrite or reattest historical audits\",\n    \"Retrieval quality requires the separate lexical evaluation and expected-fact review\"\n  ]\n}\n",
+      "required_for_preparation": false,
+      "status": "passed",
+      "timeout_seconds": 120
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "exit_code": 0,
+      "log_bytes": 308,
+      "log_sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+      "name": "historical-m11",
+      "output_tail": "{\n  \"status\": \"passed\",\n  \"scope\": \"historical M11 integrity; no current runtime acceptance\",\n  \"historical_source_commit\": \"05ea45fda7bdd7b0150eb86c4922c202e89e08f4\",\n  \"records_checked\": 18,\n  \"source_hashes_checked\": 28,\n  \"compare_working_tree\": false,\n  \"working_tree_differences\": [],\n  \"errors\": []\n}\n",
+      "required_for_preparation": false,
+      "status": "passed",
+      "timeout_seconds": 120
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "tools/ci/check_repository.py",
+        "--require-materialized"
+      ],
+      "exit_code": 1,
+      "log_bytes": 4021,
+      "log_sha256": "dfe691203adb1ab72fafdb448c0ed8fb9b109ed3078c1410f49f753ec2dbde5c",
+      "name": "repository",
+      "output_tail": "\",\n  \"scope\": \"current source/documentation and artifact identity\",\n  \"documentation\": {\n    \"status\": \"passed\",\n    \"documents\": 60,\n    \"navigation_link_documents\": 8,\n    \"canonical_claims\": 101,\n    \"local_links\": 977,\n    \"heading_anchors\": 45,\n    \"questions\": 32,\n    \"errors\": [],\n    \"warnings\": [],\n    \"limitations\": [\n      \"Does not verify source semantics or runtime claims\",\n      \"Does not fetch external URLs\",\n      \"Does not rewrite or reattest historical audits\",\n      \"Retrieval quality requires the separate lexical evaluation and expected-fact review\"\n    ]\n  },\n  \"materialized_runtime_files\": [\n    \"godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll\",\n    \"godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so\",\n    \"godot/addons/godot-rapier2d/bin/godot_rapier.wasm\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm\"\n  ],\n  \"unmaterialized_runtime_files\": [],\n  \"errors\": [\n    \"Windows x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_demo_bridge.hpp\",\n    \"Windows x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp\",\n    \"Windows x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.hpp\",\n    \"Windows x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/material_rules.hpp\",\n    \"Windows x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/world.hpp\",\n    \"Windows x86_64 Godot 4.7 requires rebuild for source input: native/src/material_rules.cpp\",\n    \"Windows x86_64 Godot 4.7 requires rebuild for source input: native/src/world.cpp\",\n    \"Linux x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_demo_bridge.hpp\",\n    \"Linux x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp\",\n    \"Linux x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.hpp\",\n    \"Linux x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/material_rules.hpp\",\n    \"Linux x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/world.hpp\",\n    \"Linux x86_64 Godot 4.7 requires rebuild for source input: native/src/material_rules.cpp\",\n    \"Linux x86_64 Godot 4.7 requires rebuild for source input: native/src/world.cpp\"\n  ],\n  \"limitations\": [\n    \"Identity is not execution evidence; read the dated runtime acceptance report\",\n    \"Retained vendor binaries and platform execution have separate dated provenance\",\n    \"Historical M11 integrity is checked separately by check_m11_consistency.py\"\n  ]\n}\n",
+      "required_for_preparation": false,
+      "status": "failed",
+      "timeout_seconds": 180
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/ci",
+        "-p",
+        "test_validation_contracts.py"
+      ],
+      "exit_code": 0,
+      "log_bytes": 106,
+      "log_sha256": "b9e4e8bbeda64e99edd0bec05769968089194d8298443bfb09efd27e51cd5ea1",
+      "name": "validation-contracts",
+      "output_tail": "........\n----------------------------------------------------------------------\nRan 8 tests in 0.105s\n\nOK\n",
+      "required_for_preparation": false,
+      "status": "passed",
+      "timeout_seconds": 120
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "/home/runner/work/cybersand/cybersand/workspace/source/validation/local/research-preparation/f0907126339033f849df40e9525caa66462e744a/retrieval-frozen.json"
+      ],
+      "exit_code": 0,
+      "log_bytes": 4320,
+      "log_sha256": "9b5b21dcf94f656a61620c1435e0ec7539d15c1ba1806be77214d0127f6e927b",
+      "name": "retrieval-frozen",
+      "output_tail": "ckpoint and recovery > Water leveling follow-up\nQ02 rank=1 architecture/data-ownership-and-lifetimes.md :: Data ownership and lifetimes > Who may mutate each resource?\nQ03 rank=2 operations/troubleshooting.md :: Troubleshooting simulation and integration > Establish the failing path first\nQ04 rank=2 reference/configuration-reference.md :: Configuration reference > Adapter worker policy\nQ05 rank=1 architecture/simulation-tick-and-threading.md :: Simulation tick and threading > Current desktop worker loop\nQ06 rank=1 architecture/simulation-tick-and-threading.md :: Simulation tick and threading > What happens when a tick fails or overloads?\nQ07 rank=1 operations/rapier-2d-migration-runbook.md :: Rapier2D dependency and validation runbook > Web packaging and browser fixture\nQ08 rank=2 decisions/ADR-007-rigid-body-cellular-coupling.md :: ADR-007: Separate rigid-body occupancy coupling > Why not remove and restore body pixels?\nQ09 rank=1 architecture/rigid-body-and-cellular-coupling.md :: Rigid-body and cellular coupling > Who resolves hard terrain and thin floors?\nQ10 rank=1 architecture/rigid-body-and-cellular-coupling.md :: Rigid-body and cellular coupling > When a crate moves through sand, are its pixels erased and restored?\nQ11 rank=1 reference/level-saves-and-replay.md :: Level saves and exact replay > Does an identical save reproduce the next tick?\nQ12 rank=1 reference/level-saves-and-replay.md :: Level saves and exact replay > What is stored in CYSD1?\nQ13 rank=1 reference/level-saves-and-replay.md :: Level saves and exact replay > May saving run concurrently with a tick?\nQ14 rank=1 architecture/determinism-and-boundary-transfers.md :: Determinism and boundary transfers > Replay state coverage\nQ15 rank=2 systems/themed-construction-materials.md :: Themed construction material palette > Appearance boundaries\nQ16 rank=1 architecture/rendering-and-gameplay-bridges.md :: Rendering and gameplay bridges > What does native publication return under pressure?\nQ17 rank=3 operations/profiling-observability-and-performance.md :: Profiling, observability, and performance > Avoid common misreadings\nQ18 rank=1 architecture/chunk-tile-and-buffer-model.md :: Chunk, tile, and buffer model > Are simulation tiles double buffered?\nQ19 rank=1 systems/world-storage-and-interest-region.md :: World storage and interest region\nQ20 rank=1 operations/configuration-and-capacity-budgets.md :: Configuration and capacity budgets > Explosion queue rejection and exhausted simulation space\nQ21 rank=2 operations/physics-characterisation-plan.md :: Physics characterisation and soliding plan > Phase 1: freeze the baseline and build measurements\nQ22 rank=1 systems/water-design.md :: Water design > Coherent emission and surface adhesion\nQ23 rank=1 systems/water-design.md :: Water design > How should I diagnose a shimmering pool?\nQ24 rank=3 systems/materials-and-rule-kernels.md :: Materials and rule kernels > Kernel execution and cadence\nQ25 rank=1 architecture/principles-and-non-goals.md :: Architectural principles and non-goals > Can materials run on GPU compute or arbitrary JavaScript?\nQ26 rank=3 architecture/overview.md :: Architecture overview > Are the named production modules already separate classes?\nQ27 rank=1 systems/smoke-heat-pressure-roadmap.md :: Smoke, heat, and pressure roadmap\nQ28 rank=1 operations/local-build-and-validation.md :: Local build and validation > Windows development commands\nQ29 rank=3 operations/source-checkpoint-and-recovery.md :: Source checkpoint and recovery > Which earlier identity statements are historical?\nQ30 rank=2 operations/local-build-and-validation.md :: Local build and validation > Repository-native build and test commands\nQ31 rank=1 operations/current-and-historical-validation.md :: Current validation and retained M11 integrity > Why did the old consistency check report hash mismatches?\nQ32 rank=1 operations/documentation-maintenance.md :: Documentation maintenance and retrieval contract > Documentation-update checklist\n",
+      "required_for_preparation": false,
+      "status": "passed",
+      "timeout_seconds": 120
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-challenges.json",
+        "--output",
+        "/home/runner/work/cybersand/cybersand/workspace/source/validation/local/research-preparation/f0907126339033f849df40e9525caa66462e744a/retrieval-challenges.json"
+      ],
+      "exit_code": 0,
+      "log_bytes": 2530,
+      "log_sha256": "78683c892750deb17d791f9d07a15effb8c684b2eaab7dedcc6c344b8e929e77",
+      "name": "retrieval-challenges",
+      "output_tail": "{\n  \"documents\": 60,\n  \"chunks\": 446,\n  \"questions\": 16,\n  \"canonical_hit_at_1\": 12,\n  \"canonical_hit_at_k\": 16,\n  \"mrr_at_k\": 0.8646,\n  \"answer_sufficiency\": \"Requires separate human/model source review. Canonical hits are not answer correctness.\"\n}\nC05 rank=3 operations/physics-characterisation-plan.md :: Physics characterisation and soliding plan > What the inspected baseline code explained\nC06 rank=1 operations/physics-characterisation-plan.md :: Physics characterisation and soliding plan > Scope and evidence boundary\nC01 rank=1 architecture/simulation-tick-and-threading.md :: Simulation tick and threading > What happens when a tick fails or overloads?\nC02 rank=1 systems/world-storage-and-interest-region.md :: World storage and interest region > Interest filtering and re-entry\nC03 rank=1 systems/world-storage-and-interest-region.md :: World storage and interest region > Finite Godot adapters\nC04 rank=1 systems/activity-dirty-regions-and-waking.md :: Activity, dirty regions, and waking > Native activity lifecycle\nC07 rank=1 operations/physics-characterisation.md :: Reproducible physics characterisation > Which variants are isolated from production defaults? > Does Mercury viscosity slow measured downward penetration through packed Sand?\nC08 rank=1 operations/physics-characterisation.md :: Reproducible physics characterisation > Which variants are isolated from production defaults? > Does a barrel stopped at the bottom prove half-depth granular support?\nC09 rank=1 architecture/rigid-body-and-cellular-coupling.md :: Rigid-body and cellular coupling > What did the measured barrel baseline establish?\nC10 rank=1 architecture/rigid-body-and-cellular-coupling.md :: Rigid-body and cellular coupling > What did the measured barrel baseline establish?\nC11 rank=2 operations/physics-characterisation-plan.md :: Physics characterisation and soliding plan > Phase 2: isolate each behaviour\nC12 rank=2 operations/physics-characterisation-plan.md :: Physics characterisation and soliding plan > Phase 3: parameter experiments, then model changes\nC13 rank=1 operations/experiment-tower.md :: Experiment Tower > How do I open and reset the experiments?\nC14 rank=1 systems/flow-transport-and-profiles.md :: Transport profiles > How does actual motion drive mixing and erosion?\nC15 rank=1 systems/materials-and-rule-kernels.md :: Materials and rule kernels > Why does burning Coal leave a purple layer?\nC16 rank=2 operations/cybersand-codex-development-handover.md :: Development handover > Opt-in transport profiles\n",
+      "required_for_preparation": false,
+      "status": "passed",
+      "timeout_seconds": 120
+    },
+    {
+      "command": [
+        "make",
+        "c-header-check"
+      ],
+      "exit_code": 0,
+      "log_bytes": 116,
+      "log_sha256": "46dc34ba132af3d7ac806cde9b137da2b7f9bd96b3833caa6bd50f370616ea26",
+      "name": "c-header",
+      "output_tail": "mkdir -p build\ngcc-13 -std=c11 -Wall -Wextra -Wpedantic -Inative/include -fsyntax-only native/tests/test_c_header.c\n",
+      "required_for_preparation": false,
+      "status": "passed",
+      "timeout_seconds": 120
+    },
+    {
+      "command": [
+        "make",
+        "build/tests"
+      ],
+      "exit_code": 0,
+      "log_bytes": 2189,
+      "log_sha256": "810fe986db12fa4cf91b2ae1f8a00e86caf781d56847c2a3b6b1b9ce043d76c4",
+      "name": "native-build",
+      "output_tail": "g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O0 -g3 native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/render_snapshot.cpp native/src/c_api.cpp native/tests/test_world.cpp -o build/tests\nnative/src/world.cpp: In member function \u2018cybersand::RenderPublishResult cybersand::RenderSnapshotExchange::publish(cybersand::World&)\u2019:\nnative/src/world.cpp:545:83: warning: conversion from \u2018uint16_t\u2019 {aka \u2018short unsigned int\u2019} to \u2018uint8_t\u2019 {aka \u2018unsigned char\u2019} may change value [-Wconversion]\n  545 |                     project_visual_state(cell.material_value(), cell.state_a_value(), cell.state_b_value());\n      |                                                                 ~~~~~~~~~~~~~~~~~~^~\nnative/src/world.cpp: In member function \u2018bool cybersand::World::try_move(cybersand::Material, int64_t, int64_t, int64_t, int64_t, bool, JobEffects*)\u2019:\nnative/src/world.cpp:1400:61: warning: conversion from \u2018int\u2019 to \u2018uint16_t\u2019 {aka \u2018short unsigned int\u2019} may change value [-Wconversion]\n 1400 |             mix_after_motion(material,x,y,target_x,target_y,moved_mass,effects);\n      |                                                             ^~~~~~~~~~\nnative/src/world.cpp: In member function \u2018void cybersand::World::copy_render_cells(cybersand::RectI64, std::span<unsigned char>, std::size_t) const\u2019:\nnative/src/world.cpp:3062:41: warning: conversion from \u2018uint16_t\u2019 {aka \u2018short unsigned int\u2019} to \u2018uint8_t\u2019 {aka \u2018unsigned char\u2019} may change value [-Wconversion]\n 3062 |                 material, stored_state_a(world_x, world_y), stored_state_b(world_x, world_y));\n      |                           ~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~\nnative/src/c_api.cpp: In function \u2018uint8_t cybersand_world_liquid_mass(const cybersand_world*, int64_t, int64_t)\u2019:\nnative/src/c_api.cpp:286:29: warning: conversion from \u2018int\u2019 to \u2018uint8_t\u2019 {aka \u2018unsigned char\u2019} may change value [-Wconversion]\n  286 |     return world == nullptr ? 0 : world->implementation.liquid_mass(x, y);\n      |            ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n",
+      "required_for_preparation": false,
+      "status": "passed",
+      "timeout_seconds": 300
+    },
+    {
+      "command": [
+        "./build/tests"
+      ],
+      "exit_code": 0,
+      "log_bytes": 1987,
+      "log_sha256": "d8cf404f1cfd759438807d582cf172d8f32893a3458315c2496d74b4f051d83c",
+      "name": "native-tests",
+      "output_tail": "[pass] flow resting packing, films, barriers and signed seams\n[pass] flow conserved state, temperature, workers and exclusion\n[pass] powder pairs and void-driven rearrangement\n[pass] Mercury lanes, sleeping wakes, seams and worker parity\n[pass] granular sampled support policy\n[pass] physics diagnostic observer and worker parity\n[pass] physics diagnostic isolated controls\nmasked-Sand baseline: 3 downward contact attempts, raw y=4800; stored Sand retained\n[pass] physics masked source characterisation\n[pass] negative coordinates\n[pass] scheduler geometry\n[pass] sand fall\n[pass] cross chunk\n[pass] cross scheduler core\n[pass] activity sleep and wake\n[pass] serial/phased behavioral parity\n[pass] density swap\n[info] water settled after 209 ticks\n[pass] conserved water\n[pass] Water lateral speed\n[pass] level water surface\n[pass] water single/multiworker parity\n[pass] water storage boundary\n[pass] optional temperature movement\n[pass] preallocated hot path\n[pass] chunk capacity\n[pass] smoke\n[pass] smoke density displacement\n[pass] smoke lifecycle and fire exclusion\n[pass] fire and extinguishing\n[pass] hot material reactions\n[pass] acid and stone\n[pass] water/oil density\n[pass] cloner\n[pass] deferred explosion\n[pass] explosion worker parity\n[pass] growth and seed\n[pass] mite and rocket\n[pass] complete material worker parity\n[pass] determinism\n[pass] single/multiworker determinism\n[pass] sleeping\n[pass] issue #1 failed tick stop/reset\n[pass] issue #1 late failure and publication\n[pass] issue #1 C API failure/recovery\n[pass] issue #2 interest resume boundaries\n[pass] issue #2 sleeping region transitions\n[pass] issue #2 conservation and worker determinism\n[pass] issues #1/#2 failed re-entry and recovery\n[pass] dirty rectangles\n[pass] immutable render snapshots\n[pass] concurrent render leases\n[pass] C API and RGBA\n[pass] extended material families\n[pass] Sandspiel material catalog\n[pass] themed static material catalog\n[pass] themed combustible kernels\n55 tests passed\n",
+      "required_for_preparation": false,
+      "status": "passed",
+      "timeout_seconds": 300
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "d39e31f03f2e39b0022d507b79fbee5c2439436d",
+        "HEAD"
+      ],
+      "exit_code": 0,
+      "log_bytes": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "name": "whitespace",
+      "output_tail": "",
+      "required_for_preparation": false,
+      "status": "passed",
+      "timeout_seconds": 60
+    }
+  ],
+  "not_run": [
+    "Windows",
+    "Godot application",
+    "Web browser",
+    "target GPU",
+    "human Water preference",
+    "ASan",
+    "UBSan",
+    "TSan"
+  ],
+  "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+  "preparation_checks_passed": true,
+  "publication_is_not_architecture_acceptance": true,
+  "python": "3.12.3",
+  "repository": "techrote/cybersand",
+  "run_attempt": "1",
+  "run_id": "34688377205",
+  "schema": 1,
+  "source_commit": "f0907126339033f849df40e9525caa66462e744a"
+}
