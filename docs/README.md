@@ -4,8 +4,8 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-09-08
-related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md]
+last-reviewed: 2026-09-12
+related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/agent-orchestration.md]
 ---
 
 # CyberSand documentation
@@ -15,6 +15,7 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 | Need | Start here |
 |---|---|
 | Begin development | [Handover](operations/cybersand-codex-development-handover.md), [actual source identity](operations/source-checkpoint-and-recovery.md), [roadmap](reference/status-and-roadmap.md) |
+| Orchestrate subagents | [Agent orchestration and subagent efficiency](operations/agent-orchestration.md) |
 | Understand the engine | [Architecture overview](architecture/overview.md), then its focused ownership/threading/coupling links |
 | Answer one technical question | [Retrieval index](reference/retrieval-index.md) |
 | Change a material | [Rule kernels](systems/materials-and-rule-kernels.md), [Water](systems/water-design.md), [material lab](MATERIAL_LAB.md) |
@@ -41,7 +42,7 @@ and [source identity](operations/source-checkpoint-and-recovery.md) explain the 
 - `architecture/`: ownership, lifecycle, scheduler, determinism and coupling contracts.
 - `systems/`: storage, activity, materials, Water and appearance behavior.
 - `decisions/`: accepted choices, rationale, rejected alternatives and implementation gaps.
-- `operations/`: building, testing, profiling, troubleshooting and checkpoint procedures.
+- `operations/`: building, testing, profiling, troubleshooting, orchestration and checkpoint procedures.
 - `reference/`: API/defaults/invariants, saves, status, evidence, glossary and owner intent.
 - `research/`: attributed upstream behavior and adaptation scope.
 - `audits/`: immutable dated results and explicitly superseded historical records.
