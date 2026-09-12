@@ -29,3 +29,26 @@ GitHub source reads are pinned to the stated checkpoint. This environment cannot
 ## Publication
 
 Place reusable tools in `tools/research/issue_preparation/` and dated evidence in `docs/audits/2026-09-12-research-preparation/`. Add links here after those files exist. Keep research outside ordinary Current documentation answers.
+
+## Completed work and updated validation evidence
+
+The preceding registration is preserved from commit `aaa811ea6e0a76811999ee95eb93312b78bf7a74`. The [dated addendum](docs/audits/2026-09-12-research-preparation/registration-addendum.md) registered projection and extended finite-state checks before they ran. Results are collected in [PR #21](https://github.com/techrote/cybersand/pull/21); this is a research-only proposal against the published #19 planning branch, not a merge into older `main`.
+
+**Start with the [research overview](docs/audits/2026-09-12-research-preparation/README.md).** The following focused notes and executable references are complete:
+
+| Area | Evidence and next-use route |
+|---|---|
+| Water policy and apparatus | [Arithmetic, validated identities, five geometric recipes and reset obligations](docs/audits/2026-09-12-research-preparation/issue-19-policy-and-lab.md) |
+| Fractional presentation | [Quantizer trade-offs, normalized-byte oracle, interface geometry and raster limitations](docs/audits/2026-09-12-research-preparation/issue-19-presentation.md) |
+| Optional state | [Clustered/dispersed allocation estimates and the still-required motion admission](docs/audits/2026-09-12-research-preparation/issue-18-storage-and-admission.md) |
+| Representation handoff | [Finite ownership checks, four faulty-protocol traces and unmodeled obligations](docs/audits/2026-09-12-research-preparation/issues-12-20-ownership.md) |
+| Programme sequence | [Gates, evidence boundaries and the next #19 implementation slice](docs/audits/2026-09-12-research-preparation/issue-14-evidence-and-next-steps.md) |
+| Provenance and API audit | [Four observed conversion warnings and artifact-rebuild boundaries](docs/audits/2026-09-12-research-preparation/issue-3-provenance-and-api-audit.md) |
+| Research sources | [Pinned repository contracts and six primary-source research topics](docs/audits/2026-09-12-research-preparation/primary-sources.md) |
+| Executed validation | [Passes, failures, commands, artifact identities and platform limits](docs/audits/2026-09-12-research-preparation/validation.md) |
+
+The local full-checkout limitation was resolved through a branch-scoped hosted run, not by claiming access to the owner's machine. Tested research source `f0907126339033f849df40e9525caa66462e744a` passed 23 standalone research tests, two byte-identical precomputation runs, independent C++/Python parity, and the existing 55-test native suite. Documentation, historical M11 and both retrieval evaluations passed. The overall job correctly failed its runtime-provenance gate: 14 source-input mismatches require existing Windows/Linux Godot artifacts to be rebuilt. All 18 required LFS payloads were present.
+
+The [immutable generated run](docs/audits/2026-09-12-research-preparation/runs/f0907126339033f849df40e9525caa66462e744a/README.md) includes vectors, recipes, numerical tables, the synthetic atlas, state-graph results, source/data hashes and individual check outcomes. Evidence publication was committed as `45d1754096f873511fc7b2f09de3a4bae487d1e2`. The source for reproduction is [the standalone tool directory](tools/research/issue_preparation).
+
+No production native/Godot source, shader, saved-world format, dependency pin, retained runtime binary or runtime manifest was modified. No issue is closed or gate passed by this task. The actual Water Feel Lab, #17 whole-engine policy correspondence, desktop/Web rendering and human evaluation remain implementation/acceptance work, now supported by concrete preparation instead of assumed behavior.
