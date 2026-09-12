@@ -49,6 +49,15 @@ func _run() -> void:
 			_expect(first==second,"identical Apply + Reset was not bit-repeatable")
 			if bits==8 and coherence==12: correspondence_hash=str(first.state_hash)
 	_expect(not correspondence_hash.is_empty(),"default correspondence observation missing")
+	for scenario_id: String in Scenarios.ids():
+		for bits: int in [3,8]:
+			var coherence: int=0 if bits==3 else 12
+			var scenario_policy: Dictionary=Profiles.resolve({},{},{"mass_bits":bits,
+				"coherence_ticks":coherence,"scenario_id":scenario_id,"seed":31})
+			var scenario_recipe: Dictionary=Scenarios.recipe(scenario_id,31)
+			_expect(bridge.build_water_feel_world(world,scenario_recipe.rectangles,
+				transport.packed,scenario_policy.semantic,scenario_recipe.partial_water_fills),
+				"scenario %s rejected mass%d/coherence%d" % [scenario_id,bits,coherence])
 
 	var before_invalid: Dictionary=world.water_experiment_observation(Vector2i.ZERO,
 		Vector2i(CyberCellWorld.WORLD_WIDTH,CyberCellWorld.WORLD_HEIGHT))
@@ -118,5 +127,5 @@ func _run() -> void:
 	_expect(hash(retained)==retained_hash,"retained RG8 packet changed after presentation switch")
 
 	if failures==0:
-		print("WATER_FEEL_INTEGRATION: 24 policies/reset/invalid/actions/RG8/authority passed default_hash=",correspondence_hash)
+		print("WATER_FEEL_INTEGRATION: 24 policy cases + 70 scenario builds/reset/invalid/actions/RG8/authority passed default_hash=",correspondence_hash)
 	quit(failures)
