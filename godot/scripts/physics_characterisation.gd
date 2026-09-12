@@ -181,6 +181,10 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 	var raw_displacement: Vector2 = Vector2.ZERO
 	var raw_boundary: Vector2 = Vector2.ZERO
 	var raw_contact: Vector2 = Vector2.ZERO
+	var raw_bearing: Vector2 = Vector2.ZERO
+	var support_samples: int = 0
+	var pre_excavation: Dictionary = {}
+	var post_excavation: Dictionary = {}
 	var applied: Vector2 = Vector2.ZERO
 	var max_age: int = 0
 	var stale: int = 0
@@ -240,6 +244,9 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 				raw_displacement += Vector2(d[2],d[3])
 				raw_boundary += Vector2(d[4],d[5])
 				raw_contact += Vector2(d[6],d[7])
+				if d.size() >= 20:
+					raw_bearing += Vector2(d[17],d[18])
+					support_samples += int(d[19])
 				caps += int(d[12])
 				final_caps += int(d[13])
 				for i: int in range(324): face_totals[i] += int(d[16][i])
@@ -260,6 +267,12 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 				"displacement":[raw_displacement.x,raw_displacement.y],"boundary":[raw_boundary.x,raw_boundary.y],
 				"contact":[raw_contact.x,raw_contact.y],"applied":[applied.x,applied.y]}
 		peak_depth = maxf(peak_depth,final_depth)
+		if layout == "excavate" and tick == 599:
+			pre_excavation = {"tick":tick+1,"depth":final_depth,"y":center.y,"vy":velocity.y,
+				"support_samples":support_samples}
+		if layout == "excavate" and tick == 660:
+			post_excavation = {"tick":tick+1,"depth":final_depth,"y":center.y,"vy":velocity.y,
+				"support_samples_since":support_samples-int(pre_excavation.get("support_samples",support_samples))}
 		if tick == ticks-601: late_start = final_depth
 		if tick%60 == 0 or tick == ticks-1 or frames.has(tick):
 			last_sample = sample(world,crop_origin,crop_size,tick==ticks-1)
@@ -298,6 +311,8 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 				"impulse_x":impulse.x,"impulse_y":impulse.y,"caps":caps,"unresolved":unresolved,"displaced":displaced,
 				"raw_displacement":[raw_displacement.x,raw_displacement.y],"raw_boundary":[raw_boundary.x,raw_boundary.y],
 				"raw_contact":[raw_contact.x,raw_contact.y],"applied":[applied.x,applied.y],"max_age":max_age})
+			rows[-1]["raw_bearing"] = [raw_bearing.x, raw_bearing.y]
+			rows[-1]["support_samples"] = support_samples
 			if mode == "cellular":
 				var front: int = 0
 				for index: int in range(last_sample.cells.size()):
@@ -327,12 +342,26 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 		"max_overlap":max_overlap,"intermediate_caps":caps,"final_caps":final_caps,"displaced":displaced,"unresolved":unresolved,
 		"displacement_impulse":[raw_displacement.x,raw_displacement.y],"boundary_impulse":[raw_boundary.x,raw_boundary.y],
 		"contact_impulse":[raw_contact.x,raw_contact.y],"applied_impulse":[applied.x,applied.y],"max_sample_age":max_age,
+		"bearing_impulse":[raw_bearing.x,raw_bearing.y],"support_samples":support_samples,
+		"pre_excavation":pre_excavation,"post_excavation":post_excavation,
 		"stale":stale,"duplicates":duplicates,"faces":face_totals,"tick_us":quantiles(tick_times),"coupling_us":quantiles(coupling_times),
 		"rows":rows,"frames":frame_records}
 	report.ok = int(last_sample.completed_ticks) == ticks and not last_sample.get("failed",false)
 	if layout == "hard" and peak_depth > 2.0:
 		report.ok = false
 		report["error"] = "hard-floor control exceeded two-cell fixture tolerance"
+	if spec.get("issue11_p4",false) and (peak_depth > 8.0 or report.late_creep > 1.0 or
+		floor_contact_tick >= 0 or support_samples <= 0):
+		report.ok = false
+		report["error"] = "issue-11 P4 ordinary envelope failed"
+	if spec.get("issue11_p5",false) and (pre_excavation.is_empty() or post_excavation.is_empty() or
+		float(pre_excavation.get("depth",0.0)) > 8.0 or
+		int(pre_excavation.get("support_samples",0)) <= 0 or
+		int(post_excavation.get("support_samples_since",1)) != 0 or
+		float(post_excavation.get("depth",0.0))-float(pre_excavation.get("depth",0.0)) < 5.0 or
+		float(post_excavation.get("vy",0.0)) <= 0.0):
+		report.ok = false
+		report["error"] = "issue-11 P5 support-loss envelope failed"
 	if not output_dir.is_empty():
 		var path: String = output_dir.path_join(str(spec.get("id","fixture"))+".json")
 		var file: FileAccess = FileAccess.open(path,FileAccess.WRITE)

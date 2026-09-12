@@ -42,10 +42,8 @@ func _run() -> void:
 	if before.hash != after.hash:
 		push_error("Rejected diagnostic reset mutated authority")
 		failed = true
-	# Characterize a separate hard-surface bypass: displacement searches for an
-	# empty destination without checking the path through a one-cell floor.
-	# This is current evidence, not desired behavior; #11 must revise this check
-	# alongside an explicit ejection-path policy and conservation regression.
+	# A bounded ejection search may not relocate material through intervening hard
+	# terrain. With no reachable destination, the stored Water remains unresolved.
 	var ejection: Object = ClassDB.instantiate(&"CyberNativeCellWorld")
 	if not ejection.diagnostic_reset({}):
 		failed = true
@@ -53,8 +51,16 @@ func _run() -> void:
 	ejection.diagnostic_fill_rect(Vector2i(90,114),Vector2i(32,1),1)
 	ejection.prepare_rigid_body_coupling(states,true)
 	var below: Dictionary = ejection.diagnostic_snapshot(Vector2i(90,115),Vector2i(32,16))
-	if below.water_mass != 255 or ejection.get_rigid_body_displaced_last_tick() != 1:
-		push_error("Thin-floor displacement characterization changed")
+	var retained: Dictionary = ejection.diagnostic_snapshot(Vector2i(90,90),Vector2i(32,25))
+	var retained_source_index: int = (113 - 90) * 32 + (104 - 90)
+	if (
+		below.water_mass != 0
+		or retained.water_mass != 255
+		or retained.cells[retained_source_index] != 3
+		or ejection.get_rigid_body_displaced_last_tick() != 0
+		or ejection.get_rigid_body_unresolved_last_tick() != 1
+	):
+		push_error("Thin-floor ejection crossed a barrier or failed conservation")
 		failed = true
 	if not failed: print("Physics observer, worker, duplicate, hard-floor and stored-mass checks passed")
 	quit(1 if failed else 0)

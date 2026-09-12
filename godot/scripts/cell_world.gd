@@ -151,10 +151,13 @@ const BODY_DISPLACEMENT_REACTION_IMPULSE: float = 0.18
 # of the per-tick impulse needed to support a one-kilogram test body. Side
 # pressures cancel naturally; Sand is denser and Smoke is almost weightless.
 const BODY_BOUNDARY_PRESSURE_IMPULSE: float = 0.19
-# Matches the proof's 92 px/s² gravity at 60 Hz. It is distributed across the
-# contacted rectangle face and exists only to make cellular Wall a usable
-# prototype support plane without creating per-cell PhysicsServer colliders.
 const BODY_GRAVITY_SUPPORT_IMPULSE_PER_MASS: float = 92.0 / 60.0
+const BODY_GRANULAR_YIELD_VELOCITY_RESPONSE: float = 0.18
+const BODY_GRANULAR_IMPULSE_CAPACITY_PER_SAMPLE: float = 2.0
+const MAX_BODY_GRANULAR_BEARING_IMPULSE: float = 20.0
+const BODY_GRANULAR_SETTLE_VELOCITY: float = 4.0
+const MAX_BODY_GRANULAR_BEARING_CORRECTION: float = 0.5
+const BODY_GRANULAR_BEARING_CORRECTION_FRACTION: float = 0.99
 const MAX_BODY_IMPULSE_PER_TICK: float = 3.0
 const BODY_STATIC_CORRECTION_PADDING: float = 0.55
 const BODY_CARDINAL_DIRECTIONS: Array[Vector2i] = [
@@ -195,11 +198,13 @@ var rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 var rigid_body_state_offsets: PackedInt32Array = PackedInt32Array()
 var rigid_body_impulse_x: PackedFloat32Array = PackedFloat32Array()
 var rigid_body_impulse_y: PackedFloat32Array = PackedFloat32Array()
+var rigid_body_bearing_y: PackedFloat32Array = PackedFloat32Array()
 var rigid_body_correction_x: PackedFloat32Array = PackedFloat32Array()
 var rigid_body_correction_y: PackedFloat32Array = PackedFloat32Array()
 var rigid_body_contact_counts: PackedInt32Array = PackedInt32Array()
 var rigid_body_displaced_counts: PackedInt32Array = PackedInt32Array()
 var rigid_body_unresolved_counts: PackedInt32Array = PackedInt32Array()
+var rigid_body_support_counts: PackedInt32Array = PackedInt32Array()
 
 var tick_index: int = 0
 var update_epoch: int = 1
@@ -252,11 +257,13 @@ func _init() -> void:
 	rigid_body_state_offsets.resize(body_slot_count)
 	rigid_body_impulse_x.resize(body_slot_count)
 	rigid_body_impulse_y.resize(body_slot_count)
+	rigid_body_bearing_y.resize(body_slot_count)
 	rigid_body_correction_x.resize(body_slot_count)
 	rigid_body_correction_y.resize(body_slot_count)
 	rigid_body_contact_counts.resize(body_slot_count)
 	rigid_body_displaced_counts.resize(body_slot_count)
 	rigid_body_unresolved_counts.resize(body_slot_count)
+	rigid_body_support_counts.resize(body_slot_count)
 	reset_demo_world()
 
 
@@ -412,6 +419,7 @@ func prepare_rigid_body_coupling(
 
 	if resolve_overlaps:
 		_accumulate_rigid_body_boundary_pressure()
+		_accumulate_rigid_body_granular_bearing()
 
 	if rigid_body_displaced_last_tick > 0:
 		revision += 1
@@ -429,7 +437,13 @@ func rigid_body_results() -> PackedFloat32Array:
 			continue
 		results.append(float(body_id))
 		results.append(rigid_body_impulse_x[body_id])
-		results.append(rigid_body_impulse_y[body_id])
+		var impulse_y: float = rigid_body_impulse_y[body_id]
+		if rigid_body_bearing_y[body_id] < 0.0:
+			impulse_y = maxf(
+				impulse_y + rigid_body_bearing_y[body_id],
+				rigid_body_bearing_y[body_id]
+			)
+		results.append(impulse_y)
 		results.append(rigid_body_correction_x[body_id])
 		results.append(rigid_body_correction_y[body_id])
 		results.append(float(rigid_body_contact_counts[body_id]))
@@ -446,11 +460,13 @@ func rigid_body_results() -> PackedFloat32Array:
 func _reset_rigid_body_observations() -> void:
 	rigid_body_impulse_x.fill(0.0)
 	rigid_body_impulse_y.fill(0.0)
+	rigid_body_bearing_y.fill(0.0)
 	rigid_body_correction_x.fill(0.0)
 	rigid_body_correction_y.fill(0.0)
 	rigid_body_contact_counts.fill(0)
 	rigid_body_displaced_counts.fill(0)
 	rigid_body_unresolved_counts.fill(0)
+	rigid_body_support_counts.fill(0)
 	rigid_body_contacts_last_tick = 0
 	rigid_body_displaced_last_tick = 0
 	rigid_body_unresolved_last_tick = 0
@@ -745,8 +761,34 @@ func _find_body_ejection_target(
 				continue
 			if cells[candidate_index] != EMPTY:
 				continue
+			if not _body_ejection_path_reachable(
+				source_x,
+				source_y,
+				candidate_x,
+				candidate_y
+			):
+				continue
 			return Vector2i(candidate_x, candidate_y)
 	return Vector2i(-1, -1)
+
+
+func _body_ejection_path_reachable(
+	source_x: int,
+	source_y: int,
+	target_x: int,
+	target_y: int
+) -> bool:
+	var delta_x: int = target_x - source_x
+	var delta_y: int = target_y - source_y
+	var samples: int = maxi(absi(delta_x), absi(delta_y)) * 2
+	for sample_index: int in range(1, samples):
+		var x: int = source_x + floori(float(delta_x * sample_index) / float(samples) + 0.5)
+		var y: int = source_y + floori(float(delta_y * sample_index) / float(samples) + 0.5)
+		if not in_bounds(x, y):
+			return false
+		if _is_hard_surface_material(cells[cell_index(x, y)]):
+			return false
+	return true
 
 
 func _symmetric_probe_offset(probe_index: int) -> int:
@@ -834,40 +876,52 @@ func _accumulate_rigid_body_boundary_pressure() -> void:
 			)
 
 
-func _accumulate_rigid_body_wall_contact(body_id: int, direction: Vector2i) -> void:
-	var state_offset: int = rigid_body_state_offsets[body_id]
-	if state_offset < 0:
-		return
-	var direction_vector: Vector2 = Vector2(float(direction.x), float(direction.y))
-	var velocity: Vector2 = Vector2(
-		rigid_body_states[state_offset + CyberRigidBodyCoupling.INPUT_VELOCITY_X],
-		rigid_body_states[state_offset + CyberRigidBodyCoupling.INPUT_VELOCITY_Y]
-	)
-	var mass: float = maxf(
-		0.001,
-		rigid_body_states[state_offset + CyberRigidBodyCoupling.INPUT_MASS]
-	)
-	var face_span: float
-	if direction.x == 0:
-		face_span = maxf(
-			1.0,
-			rigid_body_states[state_offset + CyberRigidBodyCoupling.INPUT_SIZE_X]
+func _accumulate_rigid_body_granular_bearing() -> void:
+	for occupied_index: int in rigid_body_occupied_indices:
+		var body_id: int = rigid_body_occupancy[occupied_index]
+		if body_id <= 0 or body_id > CyberRigidBodyCoupling.MAX_BODIES:
+			continue
+		var x: int = occupied_index % WORLD_WIDTH
+		var y: int = floori(float(occupied_index) / float(WORLD_WIDTH))
+		if not in_bounds(x, y + 1):
+			continue
+		if rigid_body_occupancy[cell_index(x, y + 1)] != 0:
+			continue
+		if CyberInteractionPolicy.supports_at(self, x, y + 1, false, false):
+			rigid_body_support_counts[body_id] += 1
+
+	for body_id: int in range(1, CyberRigidBodyCoupling.MAX_BODIES + 1):
+		var samples: int = rigid_body_support_counts[body_id]
+		var state_offset: int = rigid_body_state_offsets[body_id]
+		if samples <= 0 or state_offset < 0:
+			continue
+		var velocity_y: float = rigid_body_states[
+			state_offset + CyberRigidBodyCoupling.INPUT_VELOCITY_Y
+		]
+		if velocity_y <= 0.0:
+			continue
+		var mass: float = maxf(
+			0.001,
+			rigid_body_states[state_offset + CyberRigidBodyCoupling.INPUT_MASS]
 		)
-	else:
-		face_span = maxf(
-			1.0,
-			rigid_body_states[state_offset + CyberRigidBodyCoupling.INPUT_SIZE_Y]
+		var gravity: float = BODY_GRAVITY_SUPPORT_IMPULSE_PER_MASS * mass
+		var arrest: float = velocity_y * mass
+		var yielding: float = gravity + maxf(
+			0.0,
+			velocity_y - BODY_GRAVITY_SUPPORT_IMPULSE_PER_MASS
+		) * mass * BODY_GRANULAR_YIELD_VELOCITY_RESPONSE
+		var capacity: float = minf(
+			MAX_BODY_GRANULAR_BEARING_IMPULSE,
+			float(samples) * BODY_GRANULAR_IMPULSE_CAPACITY_PER_SAMPLE
 		)
-	var impulse_magnitude: float = maxf(0.0, velocity.dot(direction_vector)) * mass
-	if direction.y > 0:
-		impulse_magnitude += BODY_GRAVITY_SUPPORT_IMPULSE_PER_MASS * mass
-	if impulse_magnitude <= 0.0:
-		return
-	_record_body_contact(body_id)
-	_record_body_impulse(
-		body_id,
-		-direction_vector * (impulse_magnitude / face_span)
-	)
+		rigid_body_bearing_y[body_id] = -minf(arrest, minf(yielding, capacity))
+		if velocity_y <= BODY_GRANULAR_SETTLE_VELOCITY:
+			rigid_body_correction_y[body_id] = -minf(
+				MAX_BODY_GRANULAR_BEARING_CORRECTION,
+				velocity_y / 60.0 * BODY_GRANULAR_BEARING_CORRECTION_FRACTION
+			)
+		rigid_body_contact_counts[body_id] += samples
+		rigid_body_contacts_last_tick += samples
 
 
 func _record_body_contact(body_id: int) -> void:
@@ -1380,6 +1434,12 @@ func material_at(x: int, y: int) -> int:
 	if rigid_body_occupancy[index] != 0:
 		return WALL
 	return cells[index]
+
+
+func stored_material_at(x: int, y: int) -> int:
+	if not in_bounds(x, y):
+		return WALL
+	return cells[cell_index(x, y)]
 
 
 func get_cells() -> PackedByteArray:

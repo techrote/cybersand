@@ -37,6 +37,13 @@ constexpr double kBodyDisplacementReactionImpulse = 0.18;
 constexpr double kBodyBoundaryPressureImpulse = 0.19;
 constexpr double kBodyPixelContactImpulse = 0.025;
 constexpr double kMaximumBodyImpulsePerTick = 3.0;
+constexpr double kGravityImpulsePerMassTick = 92.0 / 60.0;
+constexpr double kGranularYieldVelocityResponse = 0.18;
+constexpr double kGranularImpulseCapacityPerSample = 2.0;
+constexpr double kMaximumGranularBearingImpulse = 20.0;
+constexpr double kGranularSettleVelocity = 4.0;
+constexpr double kMaximumGranularBearingCorrection = 0.5;
+constexpr double kGranularBearingCorrectionFraction = 0.99;
 
 [[nodiscard]] Vector2 normalized_or_zero(Vector2 value) {
     const auto length = value.length();
@@ -393,7 +400,10 @@ void CyberNativeCellWorld::prepare_rigid_body_coupling(
     for (std::size_t body_id = 1; body_id < current_bodies_.size(); ++body_id) {
         if (current_bodies_[body_id].valid) rasterize_body(current_bodies_[body_id]);
     }
-    if (resolve_overlaps) accumulate_boundary_pressure();
+    if (resolve_overlaps) {
+        accumulate_boundary_pressure();
+        accumulate_granular_bearing();
+    }
     previous_bodies_ = current_bodies_;
 }
 
@@ -605,10 +615,31 @@ Vector2i CyberNativeCellWorld::find_ejection_target(std::int32_t source_x,
                 world_->stored_material(x, y) != cybersand::Material::Empty) {
                 continue;
             }
+            if (!ejection_path_reachable(source_x, source_y, x, y)) continue;
             return {x, y};
         }
     }
     return {-1, -1};
+}
+
+bool CyberNativeCellWorld::ejection_path_reachable(std::int32_t source_x,
+                                                    std::int32_t source_y,
+                                                    std::int32_t target_x,
+                                                    std::int32_t target_y) const {
+    const auto delta_x = target_x - source_x;
+    const auto delta_y = target_y - source_y;
+    const auto samples = std::max(std::abs(delta_x), std::abs(delta_y)) * 2;
+    for (std::int32_t sample = 1; sample < samples; ++sample) {
+        const auto x = source_x + static_cast<std::int32_t>(
+            std::floor(static_cast<double>(delta_x * sample) / samples + 0.5));
+        const auto y = source_y + static_cast<std::int32_t>(
+            std::floor(static_cast<double>(delta_y * sample) / samples + 0.5));
+        if (!in_bounds(x, y) || cybersand::MaterialRules::is_hard_surface(
+                world_->stored_material(x, y))) {
+            return false;
+        }
+    }
+    return true;
 }
 
 void CyberNativeCellWorld::accumulate_boundary_pressure() {
@@ -647,6 +678,58 @@ void CyberNativeCellWorld::accumulate_boundary_pressure() {
     }
 }
 
+void CyberNativeCellWorld::accumulate_granular_bearing() {
+    std::array<std::uint16_t, cybersand::World::kMaximumTransientBodies + 1U>
+        support_samples{};
+    for (const auto cell_index : raster_indices_) {
+        const auto x = cell_index % kWorldWidth;
+        const auto y = cell_index / kWorldWidth;
+        const auto body_id = world_->transient_obstacle_at(x, y);
+        if (body_id == 0U || body_id >= current_bodies_.size() ||
+            !in_bounds(x, y + 1) || world_->transient_obstacle_at(x, y + 1) != 0U) {
+            continue;
+        }
+        if (world_->granular_support_at(x, y + 1, false, false)) {
+            ++support_samples[body_id];
+        }
+    }
+
+    for (std::size_t body_id = 1; body_id < current_bodies_.size(); ++body_id) {
+        const auto samples = support_samples[body_id];
+        const auto& body = current_bodies_[body_id];
+        if (!body.valid || samples == 0U || body.velocity.y <= 0.0) continue;
+
+        const auto gravity = kGravityImpulsePerMassTick * body.mass;
+        const auto arrest = body.velocity.y * body.mass;
+        const auto yielding = gravity + std::max(
+            0.0, body.velocity.y - kGravityImpulsePerMassTick) *
+            body.mass * kGranularYieldVelocityResponse;
+        const auto capacity = std::min(
+            kMaximumGranularBearingImpulse,
+            static_cast<double>(samples) * kGranularImpulseCapacityPerSample);
+        const auto magnitude = std::min({arrest, yielding, capacity});
+        if (magnitude <= 0.0) continue;
+
+        auto& observation = observations_[body_id];
+        observation.bearing = {0.0, -magnitude};
+        observation.contacts += samples;
+        const auto& previous = previous_bodies_[body_id];
+        if (previous.valid && body.velocity.y <= kGranularSettleVelocity) {
+            const auto downward_travel = std::max(
+                static_cast<double>(0.0),
+                static_cast<double>(body.center.y - previous.center.y));
+            observation.correction.y = -std::min(
+                kMaximumGranularBearingCorrection,
+                downward_travel * kGranularBearingCorrectionFraction);
+        }
+        if (body_diagnostics_) {
+            auto& diagnostic = (*body_diagnostics_)[body_id];
+            diagnostic.bearing = observation.bearing;
+            diagnostic.support_samples = samples;
+        }
+    }
+}
+
 void CyberNativeCellWorld::record_impulse(std::uint16_t body_id, Vector2 impulse) {
     if (body_id == 0U || body_id >= observations_.size()) return;
     auto combined = observations_[body_id].impulse + impulse;
@@ -677,6 +760,13 @@ PackedFloat32Array CyberNativeCellWorld::rigid_body_results() const {
         if (observation.impulse.length() > impulse_cap_) {
             observation.impulse = observation.impulse.normalized() *
                                   impulse_cap_;
+        }
+        if (observation.bearing.y < 0.0) {
+            observation.impulse += observation.bearing;
+            // Boundary/contact response and bearing share the cellular owner.
+            // Do not stack upward terms beyond the local load/yield target.
+            observation.impulse.y = std::max(observation.impulse.y,
+                                             observation.bearing.y);
         }
         results.append(static_cast<float>(body_id));
         results.append(static_cast<float>(observation.impulse.x));
@@ -1298,18 +1388,27 @@ Array CyberNativeCellWorld::diagnostic_body_metrics() const {
         const auto& o = observations_[id];
         const Vector2 pixel{static_cast<double>(world_->transient_contact_impulse_x(static_cast<std::uint16_t>(id))) / 1000.0 * contact_gain_,
                             static_cast<double>(world_->transient_contact_impulse_y(static_cast<std::uint16_t>(id))) / 1000.0 * contact_gain_};
-        const auto pre_final = o.impulse + pixel;
+        auto pre_final = o.impulse + pixel;
+        if (pre_final.length() > impulse_cap_) {
+            pre_final = pre_final.normalized() * impulse_cap_;
+        }
+        if (o.bearing.y < 0.0) {
+            pre_final += o.bearing;
+            pre_final.y = std::max(pre_final.y, o.bearing.y);
+        }
         Array row;
         row.append(static_cast<std::int64_t>(id)); row.append(current_bodies_[id].sample_serial);
         for (const auto v : {d.displacement, d.boundary, pixel, o.impulse, pre_final}) {
             row.append(v.x); row.append(v.y);
         }
         row.append(static_cast<std::int64_t>(d.intermediate_caps));
-        row.append(pre_final.length() > impulse_cap_);
+        row.append((o.impulse + pixel).length() > impulse_cap_);
         row.append(static_cast<std::int64_t>(o.displaced)); row.append(static_cast<std::int64_t>(o.unresolved));
         Array faces;
         for (const auto count : d.faces) faces.append(static_cast<std::int64_t>(count));
         row.append(faces);
+        row.append(d.bearing.x); row.append(d.bearing.y);
+        row.append(static_cast<std::int64_t>(d.support_samples));
         result.append(row);
     }
     return result;

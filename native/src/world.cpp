@@ -636,9 +636,14 @@ Material World::get(std::int64_t x, std::int64_t y) const noexcept {
     return stored_material(x, y);
 }
 
-bool World::granular_support_at(std::int64_t x, std::int64_t y, bool side) const noexcept {
-    const auto stable = [this](std::int64_t sx, std::int64_t sy) {
-        const auto material = get(sx, sy);
+bool World::granular_support_at(std::int64_t x, std::int64_t y, bool side,
+                               bool include_transient_obstacles) const noexcept {
+    const auto material_at = [this, include_transient_obstacles](std::int64_t sx,
+                                                                 std::int64_t sy) {
+        return include_transient_obstacles ? get(sx, sy) : stored_material(sx, sy);
+    };
+    const auto stable = [this, &material_at](std::int64_t sx, std::int64_t sy) {
+        const auto material = material_at(sx, sy);
         if (MaterialRules::is_hard_surface(material)) return true;
         if (!MaterialRules::supports_granular_load(material)) return false;
         const auto a = address(sx, sy);
@@ -648,7 +653,7 @@ bool World::granular_support_at(std::int64_t x, std::int64_t y, bool side) const
         return chunk && (tick_index_ == 0 ||
             chunk->cells[a.index].updated_epoch != update_epoch_);
     };
-    if (!MaterialRules::supports_granular_load(get(x, y)) || !stable(x, y)) return false;
+    if (!MaterialRules::supports_granular_load(material_at(x, y)) || !stable(x, y)) return false;
     int below = 0;
     for (int dy = 0; dy <= 2; ++dy)
         for (int dx = -1; dx <= 1; ++dx) below += stable(x + dx, y + dy);
@@ -1648,9 +1653,10 @@ bool World::update_water(std::int64_t x, std::int64_t y, JobEffects* effects) {
     return changed;
 }
 
-bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y,
+bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
+                               std::int64_t x, std::int64_t y,
                                JobEffects* effects) {
-    const auto material = get(x, y);
+    const auto material = source_material;
     const auto direction = deterministic_direction(x, y);
     const auto neighbour = [this, x, y](std::size_t index) {
         const auto offset = kMooreNeighbours[index % kMooreNeighbours.size()];
@@ -2191,7 +2197,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
         case RuleKernel::Plant:
         case RuleKernel::Fungus: {
             if (state_b(x, y) != 0U) {
-                return update_rule_kernel(RuleKernel::Combustible, x, y, effects);
+                return update_rule_kernel(RuleKernel::Combustible, material, x, y, effects);
             }
             if (contact_chemistry_due && find_neighbour([](Material candidate, auto, auto) {
                     return is_hot(candidate);
@@ -2382,8 +2388,12 @@ bool World::update_cell(std::int64_t x, std::int64_t y, JobEffects* effects) {
     }
 
     const auto material = source_chunk->cells[source_address.index].material;
+    // A retained authoritative cell under a transient body mask is reconciled by
+    // the bounded body/cell overlap path. It must not run a cellular kernel using
+    // the body occupancy proxy as either its source identity or a contact target.
+    if (transient_obstacle_at(x, y) != 0U) return false;
     const auto& definition = MaterialRules::descriptor(material);
-    return update_rule_kernel(definition.kernel, x, y, effects);
+    return update_rule_kernel(definition.kernel, material, x, y, effects);
 }
 
 void World::begin_tick(TickStats& stats) {

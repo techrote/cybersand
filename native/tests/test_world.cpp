@@ -1765,9 +1765,8 @@ void test_physics_diagnostic_controls() {
 }
 
 void test_physics_masked_source_characterisation() {
-    // A measured baseline, not a desired rule: retained Sand selects a powder
-    // kernel, but get() returns the body's Wall proxy inside that kernel.
-    // Successors #10/#11 must update this fixture if they change that policy.
+    // Body occupancy remains available for collision, while the retained Sand
+    // stays authoritative and does not reinterpret the proxy as a cellular source.
     cybersand::WorldConfig config;
     config.physics_diagnostics.enabled = true;
     cybersand::World world(config);
@@ -1775,11 +1774,15 @@ void test_physics_masked_source_characterisation() {
     world.configure_transient_obstacles({96,96,16,16});
     for (int y=99;y<=102;++y) for(int x=98;x<=102;++x)
         require(world.set_transient_obstacle(x,y,1), "body fixture mask failed");
+    require(world.transient_obstacle_at(100,100)==1, "body occupancy was unavailable");
     (void)world.tick();
     require(world.stored_material(100,100)==cybersand::Material::Sand, "masked grain was lost");
-    require(world.transient_contact_count(1)==3, "masked source baseline contact opportunities changed");
-    require(world.transient_contact_impulse_y(1)==4800, "masked Wall proxy baseline weighting changed");
-    std::cout << "masked-Sand baseline: 3 downward contact attempts, raw y=4800; stored Sand retained\n";
+    require(world.transient_contact_count(1)==0, "masked source produced proxy-derived contacts");
+    require(world.transient_contact_impulse_y(1)==0, "masked source produced proxy-derived impulse");
+    int stored_sand = 0;
+    for (int y=96;y<112;++y) for(int x=96;x<112;++x)
+        stored_sand += world.stored_material(x,y)==cybersand::Material::Sand;
+    require(stored_sand==1, "masked source material was lost or duplicated");
 }
 
 void test_granular_player_support_policy() {
