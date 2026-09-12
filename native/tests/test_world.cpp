@@ -1987,14 +1987,14 @@ void test_water_experiment_policy_runtime() {
     for (std::uint8_t bits = 3; bits <= 8; ++bits) {
         const WaterExperimentPolicy policy(bits, 12);
         const auto maximum = static_cast<std::uint16_t>((1U << bits) - 1U);
-        const auto quantize = [maximum](std::uint32_t numerator) {
+        const auto quantize = [maximum](std::uint32_t numerator, std::uint32_t denominator) {
             return static_cast<std::uint16_t>(
-                (2U * numerator * maximum + 255U) / (2U * 255U));
+                (2U * numerator * maximum + denominator) / (2U * denominator));
         };
         require(policy.version() == 1U && policy.mass_bits() == bits,
                 "Water policy identity changed");
-        require(policy.maximum() == maximum && policy.film() == quantize(48U) &&
-                    policy.tolerance() == quantize(1U),
+        require(policy.maximum() == maximum && policy.film() == quantize(48U, 255U) &&
+                    policy.tolerance() == quantize(1U, 255U),
                 "Water policy derived lattice values are wrong");
         require(policy.normalized_mass(0U) == 0U &&
                     policy.normalized_mass(maximum) == 255U,
@@ -2025,7 +2025,7 @@ void test_water_experiment_policy_runtime() {
 
         std::array<std::uint8_t, 2> render{};
         for (const auto mass : {std::uint16_t{1},
-                                static_cast<std::uint16_t>(maximum / 2U),
+                                quantize(1U, 2U),
                                 static_cast<std::uint16_t>(maximum - 1U), maximum}) {
             require(world.set_cell_state(0, 0, Material::Water, mass, 0U),
                     "Water candidate mass setup was not applied");
@@ -2061,7 +2061,110 @@ void test_water_experiment_policy_runtime() {
         require(world.get(2, 0) == Material::Empty,
                 "zero Water is not represented as Empty");
     }
+}
 
+void test_water_experiment_odd_lattice_boundaries() {
+    for (const auto bits : {std::uint8_t{3}, std::uint8_t{5}, std::uint8_t{7}}) {
+        const WaterExperimentPolicy policy(bits, 12U);
+        const auto maximum = policy.maximum();
+        const auto quantize = [maximum](std::uint32_t numerator, std::uint32_t denominator) {
+            return static_cast<std::uint16_t>(
+                (2U * numerator * maximum + denominator) / (2U * denominator));
+        };
+        const auto first_nonzero = static_cast<std::uint32_t>(
+            (255U + 2U * maximum - 1U) / (2U * maximum));
+        require(quantize(first_nonzero - 1U, 255U) == 0U &&
+                    quantize(first_nonzero, 255U) == 1U,
+                "odd Water lattice low-quantity rounding boundary changed");
+        require(quantize(1U, 2U) == static_cast<std::uint16_t>((maximum + 1U) / 2U),
+                "odd Water lattice half is not nearest-half-up");
+
+        WorldConfig ledger_config{};
+        ledger_config.water_experiment_policy = policy;
+        World ledger(ledger_config);
+        const std::array<std::uint32_t, 3> physical_numerators{
+            first_nonzero - 1U, first_nonzero, 48U};
+        std::array<std::uint16_t, physical_numerators.size()> lattice_masses{};
+        std::uint64_t initial_integer_ledger = 0U;
+        std::int64_t initial_physical_error_numerator = 0;
+        for (std::size_t index = 0; index < physical_numerators.size(); ++index) {
+            const auto lattice_mass = quantize(physical_numerators[index], 255U);
+            lattice_masses[index] = lattice_mass;
+            initial_integer_ledger += lattice_mass;
+            initial_physical_error_numerator +=
+                static_cast<std::int64_t>(lattice_mass) * 255 -
+                static_cast<std::int64_t>(physical_numerators[index]) * maximum;
+            const auto x = static_cast<std::int64_t>(index * 3U);
+            (void)ledger.set_cell_state(x, 0, Material::Water, lattice_mass, 0U);
+            require(ledger.liquid_mass(x, 0) == lattice_mass,
+                    "initial physical quantity was not represented on the candidate lattice");
+        }
+        require(initial_physical_error_numerator != 0,
+                "initial physical quantization error control became vacuous");
+        require(total_liquid(ledger, 0, 0, 7, 0) == initial_integer_ledger,
+                "initial candidate integer ledger is wrong");
+        for (std::size_t index = 0; index < lattice_masses.size(); ++index) {
+            if (lattice_masses[index] == 0U) continue;
+            const auto x = static_cast<std::int64_t>(index * 3U);
+            require(cybersand::PrecisionProbe::transfer(
+                        ledger, x, 0, x + 1, 0, lattice_masses[index]) ==
+                        lattice_masses[index],
+                    "candidate low quantity did not transfer exactly");
+        }
+        const auto final_integer_ledger = total_liquid(ledger, 0, 0, 7, 0);
+        const auto runtime_integer_drift = static_cast<std::int64_t>(final_integer_ledger) -
+                                           static_cast<std::int64_t>(initial_integer_ledger);
+        require(runtime_integer_drift == 0,
+                "runtime integer drift was confused with initial physical quantization error");
+
+        const auto run_lateral = [bits](std::uint16_t source_mass,
+                                        std::uint16_t target_mass,
+                                        bool adhesion_enabled) {
+            WorldConfig config{};
+            config.water_experiment_policy = WaterExperimentPolicy(bits, 12U);
+            World world(config);
+            world.set_liquid_surface_adhesion_enabled(adhesion_enabled);
+            for (std::int64_t x = -1; x <= 2; ++x) world.set(x, 1, Material::Wall);
+            world.set(-1, 0, Material::Wall);
+            world.set(2, 0, Material::Wall);
+            require(world.set_cell_state(0, 0, Material::Water, source_mass, 0U),
+                    "lateral source setup failed");
+            if (target_mass != 0U) {
+                require(world.set_cell_state(1, 0, Material::Water, target_mass, 1U),
+                        "lateral target setup failed");
+            }
+            const auto before = world.liquid_mass(0, 0) + world.liquid_mass(1, 0);
+            (void)world.tick();
+            require(world.liquid_mass(0, 0) + world.liquid_mass(1, 0) == before,
+                    "lateral rounding boundary changed the integer ledger");
+            return std::pair{world.liquid_mass(0, 0), world.liquid_mass(1, 0)};
+        };
+
+        const auto retained_film = run_lateral(policy.film(), 0U, true);
+        require(retained_film.first == policy.film() && retained_film.second == 0U,
+                "supported Water film moved at the registered threshold");
+        const auto above_film_mass = static_cast<std::uint16_t>(policy.film() + 1U);
+        const auto above_film = run_lateral(above_film_mass, 0U, true);
+        const auto above_film_request = static_cast<std::uint16_t>(above_film_mass * 3U / 4U);
+        require(above_film.first == above_film_mass - above_film_request &&
+                    above_film.second == above_film_request,
+                "Water did not cross the registered film boundary with exact lateral rounding");
+
+        require(policy.tolerance() == 0U,
+                "odd Water lattice tolerance should quantize to zero");
+        require(run_lateral(1U, 1U, false) ==
+                    std::pair{std::uint16_t{1}, std::uint16_t{1}},
+                "equal odd-lattice Water moved across its tolerance boundary");
+        require(run_lateral(2U, 1U, false) ==
+                    std::pair{std::uint16_t{2}, std::uint16_t{1}},
+                "three-quarter lateral request no longer rounds one-unit imbalance to zero");
+        require(run_lateral(3U, 1U, false) ==
+                    std::pair{std::uint16_t{2}, std::uint16_t{2}},
+                "three-quarter lateral request no longer rounds two-unit imbalance to one");
+    }
+}
+
+void test_water_experiment_policy_validation_and_coherence() {
     for (const auto invalid_policy : {
              std::pair{std::uint8_t{2}, std::uint8_t{0}},
              std::pair{std::uint8_t{9}, std::uint8_t{0}},
@@ -2120,7 +2223,44 @@ void test_water_experiment_policy_runtime() {
             require(threw, "Water accepted coherence above the selected policy");
         }
     }
+}
 
+void test_water_experiment_coherence_propagation() {
+    for (std::uint8_t delay = 0; delay <= 12; ++delay) {
+        WorldConfig config{};
+        config.water_experiment_policy = WaterExperimentPolicy(8U, delay);
+        World falling(config);
+        require(falling.set_cell_state(0, 0, Material::Water, 255U, delay) &&
+                    falling.stored_state_b(0, 0) == delay,
+                "Water coherence creation did not retain the configured value");
+        (void)falling.tick();
+        require(falling.get(0, 0) == Material::Empty &&
+                    falling.liquid_mass(0, 1) == 255U &&
+                    falling.stored_state_b(0, 1) == (delay == 0U ? 0U : delay - 1U),
+                "Water coherence did not pre-decrement and travel with gravity movement");
+
+        WorldConfig merge_config{};
+        merge_config.water_experiment_policy = WaterExperimentPolicy(3U, delay);
+        World merge(merge_config);
+        for (std::uint8_t source = 0; source <= delay; ++source) {
+            for (std::uint8_t destination = 0; destination <= delay; ++destination) {
+                require(merge.set_cell_state(0, 0, Material::Water, 1U, source),
+                        "coherence merge source setup failed");
+                require(merge.set_cell_state(1, 0, Material::Water, 1U, destination),
+                        "coherence merge destination setup failed");
+                require(cybersand::PrecisionProbe::transfer(
+                            merge, 0, 0, 1, 0, 1U) == 1U,
+                        "coherence merge transfer failed");
+                require(merge.get(0, 0) == Material::Empty &&
+                            merge.liquid_mass(1, 0) == 2U &&
+                            merge.stored_state_b(1, 0) == std::max(source, destination),
+                        "Water coherence max-on-merge changed for a valid configured pair");
+            }
+        }
+    }
+}
+
+void test_water_experiment_policy_worker_parity() {
     for (std::uint8_t bits = 3; bits <= 8; ++bits) {
         WorldConfig one_config{};
         one_config.worker_threads = 1U;
@@ -2157,6 +2297,27 @@ void test_water_experiment_policy_runtime() {
     }
 }
 
+void test_water_experiment_default_state_hash_correspondence() {
+    World implicit_default;
+    WorldConfig explicit_config{};
+    explicit_config.water_experiment_policy = WaterExperimentPolicy(8U, 12U);
+    World explicit_default(explicit_config);
+    populate_water_fixture(implicit_default);
+    populate_water_fixture(explicit_default);
+    require(implicit_default.set_cell_state(10, 6, Material::Water, 128U, 12U) &&
+                explicit_default.set_cell_state(10, 6, Material::Water, 128U, 12U),
+            "default correspondence coherent fixture setup failed");
+    const auto initial_default_hash = implicit_default.state_hash();
+    require(initial_default_hash == explicit_default.state_hash(),
+            "implicit default and explicit mass8/coherence12 state hashes differ");
+    for (std::uint32_t tick = 0; tick < 24U; ++tick) {
+        (void)implicit_default.tick();
+        (void)explicit_default.tick();
+        require(implicit_default.state_hash() == explicit_default.state_hash(),
+                "implicit default and explicit mass8/coherence12 behavior diverged");
+    }
+}
+
 int main() {
     struct Test {
         const char* name;
@@ -2185,6 +2346,11 @@ int main() {
         {"water single/multiworker parity", test_water_single_multiworker_parity},
         {"water storage boundary", test_water_conserves_across_storage_boundaries},
         {"runtime Water experiment policy", test_water_experiment_policy_runtime},
+        {"odd-lattice Water boundaries and ledgers", test_water_experiment_odd_lattice_boundaries},
+        {"Water experiment validation and coherence", test_water_experiment_policy_validation_and_coherence},
+        {"Water coherence gravity and exhaustive merge", test_water_experiment_coherence_propagation},
+        {"Water experiment worker parity", test_water_experiment_policy_worker_parity},
+        {"default Water experiment state-hash correspondence", test_water_experiment_default_state_hash_correspondence},
         {"optional temperature movement", test_optional_temperature_moves_across_chunk},
         {"preallocated hot path", test_preallocated_tick_has_no_owned_allocations},
         {"chunk capacity", test_chunk_capacity_fails_explicitly},
