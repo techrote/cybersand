@@ -653,6 +653,7 @@ func _reconcile_rigid_body_overlap(
 	var target: Vector2i = _find_body_ejection_target(
 		source_x,
 		source_y,
+		body_id,
 		outward_normal,
 		penetration
 	)
@@ -735,6 +736,7 @@ func _body_overlap_geometry(state_offset: int, x: int, y: int) -> Vector3:
 func _find_body_ejection_target(
 	source_x: int,
 	source_y: int,
+	source_body_id: int,
 	outward_normal: Vector2,
 	penetration: float
 ) -> Vector2i:
@@ -765,7 +767,8 @@ func _find_body_ejection_target(
 				source_x,
 				source_y,
 				candidate_x,
-				candidate_y
+				candidate_y,
+				source_body_id
 			):
 				continue
 			return Vector2i(candidate_x, candidate_y)
@@ -776,7 +779,8 @@ func _body_ejection_path_reachable(
 	source_x: int,
 	source_y: int,
 	target_x: int,
-	target_y: int
+	target_y: int,
+	source_body_id: int
 ) -> bool:
 	var delta_x: int = target_x - source_x
 	var delta_y: int = target_y - source_y
@@ -785,6 +789,9 @@ func _body_ejection_path_reachable(
 		var x: int = source_x + floori(float(delta_x * sample_index) / float(samples) + 0.5)
 		var y: int = source_y + floori(float(delta_y * sample_index) / float(samples) + 0.5)
 		if not in_bounds(x, y):
+			return false
+		var obstacle: int = rigid_body_occupancy[cell_index(x, y)]
+		if obstacle != 0 and obstacle != source_body_id:
 			return false
 		if _is_hard_surface_material(cells[cell_index(x, y)]):
 			return false

@@ -194,12 +194,14 @@ private:
                                          double& penetration) const;
     [[nodiscard]] Vector2i find_ejection_target(std::int32_t source_x,
                                                 std::int32_t source_y,
+                                                std::uint16_t source_body_id,
                                                 Vector2 outward_normal,
                                                 double penetration) const;
     [[nodiscard]] bool ejection_path_reachable(std::int32_t source_x,
                                                 std::int32_t source_y,
                                                 std::int32_t target_x,
-                                                std::int32_t target_y) const;
+                                                std::int32_t target_y,
+                                                std::uint16_t source_body_id) const;
     void record_impulse(std::uint16_t body_id, Vector2 impulse);
     [[nodiscard]] static std::int32_t symmetric_probe_offset(std::int32_t index);
     [[nodiscard]] static bool in_bounds(std::int64_t x, std::int64_t y);

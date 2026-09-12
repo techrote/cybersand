@@ -648,6 +648,23 @@ bool World::granular_support_at(std::int64_t x, std::int64_t y, bool side,
         if (!MaterialRules::supports_granular_load(material)) return false;
         const auto a = address(sx, sy);
         const auto* chunk = find_chunk(a.chunk);
+        if (chunk && config_.backend == SimulationBackend::PhasedInPlace &&
+            selected_core_region_) {
+            const auto block_x = a.local_x / config_.activity_block_size;
+            const auto block_y = a.local_y / config_.activity_block_size;
+            const auto block_index = static_cast<std::size_t>(block_y) *
+                static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
+                static_cast<std::size_t>(block_x);
+            const auto core = scheduler_geometry_.core_for_cell(sx, sy);
+            const auto& region = *selected_core_region_;
+            // An active block outside the selected region is paused work, not a
+            // settled granular structure. Sleeping blocks remain eligible.
+            if (chunk->activity_blocks[block_index].active &&
+                (core.x < region.min_x || core.x > region.max_x ||
+                 core.y < region.min_y || core.y > region.max_y)) {
+                return false;
+            }
+        }
         // A transported/newly transformed grain cannot immediately bear a
         // sampled character. This reads the most recently completed tick.
         return chunk && (tick_index_ == 0 ||

@@ -62,5 +62,26 @@ func _run() -> void:
 	):
 		push_error("Thin-floor ejection crossed a barrier or failed conservation")
 		failed = true
+	# Another body's transient mask is also an intervening collision barrier. The
+	# source body's own mask remains traversable during bounded outward ejection.
+	var body_barrier: Object = ClassDB.instantiate(&"CyberNativeCellWorld")
+	if not body_barrier.diagnostic_reset({}):
+		failed = true
+	body_barrier.diagnostic_fill_rect(Vector2i(104,113),Vector2i.ONE,3)
+	var two_states: PackedFloat32Array = PackedFloat32Array([
+		1,104,107,0,8,14,0,0,0,1,1,
+		2,104,115,0,32,1,0,0,0,1,1,
+	])
+	body_barrier.prepare_rigid_body_coupling(two_states,true)
+	var body_blocked: Dictionary = body_barrier.diagnostic_snapshot(Vector2i(88,96),Vector2i(33,32))
+	var body_source_index: int = (113-96)*33+(104-88)
+	if (
+		body_blocked.water_mass != 255
+		or body_blocked.cells[body_source_index] != 3
+		or body_barrier.get_rigid_body_displaced_last_tick() != 0
+		or body_barrier.get_rigid_body_unresolved_last_tick() != 1
+	):
+		push_error("Ejection crossed another body or failed conservation")
+		failed = true
 	if not failed: print("Physics observer, worker, duplicate, hard-floor and stored-mass checks passed")
 	quit(1 if failed else 0)

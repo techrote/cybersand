@@ -125,6 +125,7 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 		return {"ok":false,"error":"fixture construction produced no walls","spec":spec}
 	var viewport: SubViewport
 	var body: RigidBody2D
+	var bodies: Array[RigidBody2D] = []
 	var bridge: CyberRapierPhysicsBridge
 	var body_size: Vector2 = Vector2(8,14) * float(spec.get("size",1.0))
 	var angle: float = float(spec.get("angle",0.0))
@@ -134,30 +135,46 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 		viewport.world_2d = World2D.new()
 		viewport.size = Vector2i(128,128)
 		host.add_child(viewport)
-		body = RigidBody2D.new()
-		body.mass = float(spec.get("mass",1.0))
-		body.gravity_scale = 0.094
-		body.linear_damp = 0.15 * float(spec.get("damping",1.0))
-		body.angular_damp = 0.35 * float(spec.get("damping",1.0))
-		body.continuous_cd = RigidBody2D.CCD_MODE_CAST_SHAPE
-		body.position = Vector2(left+width/2,surface-extent/2-float(spec.get("drop",1.0))*body_size.y)
-		body.rotation = angle
-		var shape: CollisionShape2D = CollisionShape2D.new()
-		var rectangle: RectangleShape2D = RectangleShape2D.new()
-		rectangle.size = body_size
-		shape.shape = rectangle
-		body.add_child(shape)
-		viewport.add_child(body)
+		var body_count: int = clampi(int(spec.get("body_count",1)),1,4)
+		var spacing: float = body_size.x + 4.0
+		for body_index: int in range(body_count):
+			var candidate: RigidBody2D = RigidBody2D.new()
+			candidate.mass = float(spec.get("mass",1.0))
+			candidate.gravity_scale = 0.094
+			candidate.linear_damp = 0.15 * float(spec.get("damping",1.0))
+			candidate.angular_damp = 0.35 * float(spec.get("damping",1.0))
+			candidate.continuous_cd = RigidBody2D.CCD_MODE_CAST_SHAPE
+			candidate.position = Vector2(
+				left+width/2+(float(body_index)-float(body_count-1)/2.0)*spacing,
+				surface-extent/2-float(spec.get("drop",1.0))*body_size.y
+			)
+			candidate.rotation = angle
+			var shape: CollisionShape2D = CollisionShape2D.new()
+			var rectangle: RectangleShape2D = RectangleShape2D.new()
+			rectangle.size = body_size
+			shape.shape = rectangle
+			candidate.add_child(shape)
+			viewport.add_child(candidate)
+			bodies.append(candidate)
+		body = bodies[0]
 		await host.get_tree().process_frame
 		bridge = CyberRapierPhysicsBridge.new()
-		var bodies: Array[RigidBody2D] = [body]
-		if bridge.initialize(viewport.world_2d.space,bodies,PackedVector2Array([body_size])) != OK:
+		var body_sizes: PackedVector2Array = PackedVector2Array()
+		for body_index: int in range(body_count):
+			body_sizes.append(body_size)
+		if bridge.initialize(viewport.world_2d.space,bodies,body_sizes) != OK:
 			viewport.queue_free()
 			return {"ok": false, "error": "Rapier initialize"}
 		bridge.enable_diagnostics()
-		PhysicsServer2D.body_set_param(body.get_rid(), PhysicsServer2D.BODY_PARAM_FRICTION,float(spec.get("friction",0.78)))
-		bridge.reset_body(0,Vector2(left+width/2,surface-extent/2-float(spec.get("drop",1.0))*body_size.y),angle)
-		PhysicsServer2D.body_set_state(body.get_rid(),PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY,Vector2(0,float(spec.get("speed",0.0))))
+		for body_index: int in range(body_count):
+			var candidate: RigidBody2D = bodies[body_index]
+			var start_position: Vector2 = Vector2(
+				left+width/2+(float(body_index)-float(body_count-1)/2.0)*spacing,
+				surface-extent/2-float(spec.get("drop",1.0))*body_size.y
+			)
+			PhysicsServer2D.body_set_param(candidate.get_rid(), PhysicsServer2D.BODY_PARAM_FRICTION,float(spec.get("friction",0.78)))
+			bridge.reset_body(body_index,start_position,angle)
+			PhysicsServer2D.body_set_state(candidate.get_rid(),PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY,Vector2(0,float(spec.get("speed",0.0))))
 		bridge.refresh_all_states()
 		var rectangles: PackedInt32Array = world.get_hard_surface_rectangles() if not fallback else PackedInt32Array([left-1,floor_y,width+2,1,left-1,0,1,floor_y,left+width,0,1,floor_y])
 		bridge.rebuild_hard_surface_colliders_from_rectangles(rectangles)

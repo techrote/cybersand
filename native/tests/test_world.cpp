@@ -1806,6 +1806,14 @@ void test_granular_player_support_policy() {
     World film;
     for(int x=48;x<80;++x) film.set(x,100,Material::Dust);
     require(!film.granular_support_at(64,100), "airborne Dust film is not a wall");
+
+    World excluded;
+    for(int y=100;y<=102;++y) for(int x=63;x<=65;++x)
+        excluded.set(x,y,Material::Sand);
+    excluded.set_simulation_region(cybersand::RectI64{400,400,32,32});
+    (void)excluded.tick();
+    require(!excluded.granular_support_at(64,100,false,false),
+            "paused active grains outside the interest region provided support");
 }
 
 void test_powder_pair_and_void_policy() {

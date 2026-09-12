@@ -545,7 +545,7 @@ void CyberNativeCellWorld::reconcile_overlap(std::int32_t cell_index,
         return;
     }
 
-    const auto target = find_ejection_target(x, y, outward, penetration);
+    const auto target = find_ejection_target(x, y, body_id, outward, penetration);
     if (target.x < 0 || !world_->relocate_stored_cell(x, y, target.x, target.y)) {
         ++observation.unresolved;
         const auto impulse = -outward * displacement_gain_;
@@ -597,6 +597,7 @@ Vector2 CyberNativeCellWorld::overlap_normal(const BodyState& body,
 
 Vector2i CyberNativeCellWorld::find_ejection_target(std::int32_t source_x,
                                                     std::int32_t source_y,
+                                                    std::uint16_t source_body_id,
                                                     Vector2 outward_normal,
                                                     double penetration) const {
     const Vector2 tangent{-outward_normal.y, outward_normal.x};
@@ -615,7 +616,8 @@ Vector2i CyberNativeCellWorld::find_ejection_target(std::int32_t source_x,
                 world_->stored_material(x, y) != cybersand::Material::Empty) {
                 continue;
             }
-            if (!ejection_path_reachable(source_x, source_y, x, y)) continue;
+            if (!ejection_path_reachable(source_x, source_y, x, y,
+                                         source_body_id)) continue;
             return {x, y};
         }
     }
@@ -625,7 +627,8 @@ Vector2i CyberNativeCellWorld::find_ejection_target(std::int32_t source_x,
 bool CyberNativeCellWorld::ejection_path_reachable(std::int32_t source_x,
                                                     std::int32_t source_y,
                                                     std::int32_t target_x,
-                                                    std::int32_t target_y) const {
+                                                    std::int32_t target_y,
+                                                    std::uint16_t source_body_id) const {
     const auto delta_x = target_x - source_x;
     const auto delta_y = target_y - source_y;
     const auto samples = std::max(std::abs(delta_x), std::abs(delta_y)) * 2;
@@ -634,8 +637,10 @@ bool CyberNativeCellWorld::ejection_path_reachable(std::int32_t source_x,
             std::floor(static_cast<double>(delta_x * sample) / samples + 0.5));
         const auto y = source_y + static_cast<std::int32_t>(
             std::floor(static_cast<double>(delta_y * sample) / samples + 0.5));
-        if (!in_bounds(x, y) || cybersand::MaterialRules::is_hard_surface(
-                world_->stored_material(x, y))) {
+        const auto obstacle = world_->transient_obstacle_at(x, y);
+        if (!in_bounds(x, y) ||
+            (obstacle != 0U && obstacle != source_body_id) ||
+            cybersand::MaterialRules::is_hard_surface(world_->stored_material(x, y))) {
             return false;
         }
     }

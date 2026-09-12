@@ -23,7 +23,17 @@ static func stable(world, x: int, y: int, include_transient_obstacles: bool = tr
 	)
 	if world._is_hard_surface_material(material):
 		return true
-	return supports_load(material) and (world.tick_index == 0 or world.updated_at[world.cell_index(x, y)] != world.update_epoch)
+	if not supports_load(material):
+		return false
+	var block_x: int = x >> world.ACTIVITY_BLOCK_SHIFT
+	var block_y: int = y >> world.ACTIVITY_BLOCK_SHIFT
+	if (
+		world.simulation_window_enabled
+		and world.active_blocks[world.block_index(block_x, block_y)] != 0
+		and not world._block_intersects_simulation_window(block_x, block_y)
+	):
+		return false
+	return world.tick_index == 0 or world.updated_at[world.cell_index(x, y)] != world.update_epoch
 
 static func supports_at(
 	world,
