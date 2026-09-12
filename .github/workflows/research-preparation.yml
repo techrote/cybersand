@@ -1,0 +1,81 @@
+name: Bounded issue research preparation
+
+# Deliberately restricted to one research branch; never runs on main or PR input.
+'on':
+  push:
+    branches: [codex/research-preparation-2026-09-12]
+    paths:
+      - tools/research/issue_preparation/**
+      - .github/workflows/research-preparation.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: registered-research-preparation
+  cancel-in-progress: false
+
+jobs:
+  reproduce:
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/research-preparation-2026-09-12'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      CC: gcc-13
+      CXX: g++-13
+    defaults:
+      run:
+        working-directory: workspace/source
+    steps:
+      - name: Companion workspace at existing documentation-workflow pin
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 6a58311982941b75f46e22109a0829e5acb83c7e
+          path: workspace
+          persist-credentials: false
+      - name: Exact research source and historical objects
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          path: workspace/source
+          fetch-depth: 0
+          lfs: true
+      - name: Collect bounded results without concealing failed checks
+        run: python3 tools/research/issue_preparation/ci_runner.py
+      - name: Commit only the new immutable research evidence directory
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = refs/heads/codex/research-preparation-2026-09-12
+          evidence="docs/audits/2026-09-12-research-preparation/runs/$GITHUB_SHA"
+          test -f "$evidence/checks.json"
+          git add -- "$evidence"
+          python3 - <<'PY'
+          import os, subprocess
+          prefix = 'docs/audits/2026-09-12-research-preparation/runs/' + os.environ['GITHUB_SHA'] + '/'
+          files = subprocess.check_output(['git', 'diff', '--cached', '--name-only', '-z']).decode().split('\0')
+          if not all(not p or p.startswith(prefix) for p in files):
+              raise SystemExit('Refusing out-of-scope staged paths')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m "research: retain reproducible preparation evidence for $GITHUB_SHA"
+          # Fast-forward only. Concurrent changes require explicit reconciliation.
+          git push origin HEAD:refs/heads/codex/research-preparation-2026-09-12
+      - name: Retain raw command logs separately from source
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: research-preparation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: workspace/source/validation/local/research-preparation/
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Report all attempted gate outcomes honestly
+        run: |
+          python3 - <<'PY'
+          import json, os
+          p = 'docs/audits/2026-09-12-research-preparation/runs/' + os.environ['GITHUB_SHA'] + '/checks.json'
+          r = json.load(open(p))
+          failed = [c['name'] for c in r['checks'] if c['exit_code']]
+          print('Failed checks:', ', '.join(failed) or 'none')
+          raise SystemExit(bool(failed))
+          PY
