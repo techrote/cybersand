@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-12
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md]
 ---
 
@@ -75,8 +75,13 @@ See [principles](../architecture/principles-and-non-goals.md) and the [ADRs](../
 
 **Current:** the [issue #9 measured baseline](../audits/2026-09-09-physics-characterisation.md)
 and [reproducible tooling](../operations/physics-characterisation.md) establish
-density-exchange, player-sampling and barrel-feedback evidence. Issue #10 now
-implements the [versioned player and exchange policy](../systems/granular-interaction-policy.md).
+reusable fixtures, bounded telemetry and historical density-exchange,
+player-sampling and barrel-feedback evidence. Results for behavior changed by #10
+and the later Water checkpoint are not current policy. The
+[2026-09-12 reconciliation](../audits/2026-09-12-issue-9-10-reconciliation.md)
+confirms that issue #10's [versioned player and exchange policy](../systems/granular-interaction-policy.md)
+is present and exercised at current source; persistent barrel bearing remains
+outside that policy.
 Issue #11 retains **Planned** barrel work: masked-source feedback, barrier-aware
 ejection and persistent bearing. Raising barrel impulse caps alone does not
 provide the intended behavior. The

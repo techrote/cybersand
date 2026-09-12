@@ -166,6 +166,10 @@
       "reason": "Dated issue #10 acceptance and retained failures; retrieve with its source/artifact/platform scope"
     },
     {
+      "path": "audits/2026-09-12-issue-9-10-reconciliation.md",
+      "reason": "Dated current-source reconciliation of #9/#10 prerequisites; retrieve explicitly with its platform and live-issue-access limits"
+    },
+    {
       "path": "audits/2026-09-09-issue-13-transport.md",
       "reason": "Dated checkpoint evidence; not a current-answer contract"
     },
