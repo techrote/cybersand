@@ -70,6 +70,37 @@ func _run() -> void:
 	var after_erase: Dictionary=world.water_experiment_observation(Vector2i(500,500),action_region)
 	_expect(int(after_erase.water_integer)==0,"sink did not remove its bounded Water")
 
+	var worker_policy: Dictionary=Profiles.resolve({},{},{"mass_bits":3,
+		"coherence_ticks":7,"scenario_id":"drips","seed":91})
+	var owner:=CyberSimulationWorker.new()
+	owner._world=world
+	owner.queue_lab({"water_reset":true,"water_policy":worker_policy.policy,
+		"water_policy_hash":worker_policy.hash,"water_policy_provenance":worker_policy.provenance})
+	_expect(owner.start_worker(Vector2(24,222))==OK,"desktop Water owner did not start")
+	var deadline: int=Time.get_ticks_msec()+15_000
+	var owner_snapshot: CyberSimulationSnapshot
+	while Time.get_ticks_msec()<deadline:
+		await process_frame
+		owner_snapshot=owner.take_latest_snapshot(-1)
+		if owner_snapshot!=null and owner_snapshot.lab_context.get("water_active",false): break
+	_expect(owner_snapshot!=null and owner_snapshot.lab_context.get("water_active",false),
+		"desktop owner did not apply Water reset: "+str(owner_snapshot.lab_context if owner_snapshot!=null else {}))
+	if owner_snapshot!=null:
+		_expect(str(owner_snapshot.lab_context.water_policy_hash)==str(worker_policy.hash),
+			"desktop owner published a different policy hash")
+		_expect(owner_snapshot.lab_context.water_accounting.has(
+			"initial_quantization_error_numerator_255"),"initial quantization error is absent")
+	owner.queue_lab({"step":true})
+	deadline=Time.get_ticks_msec()+15_000
+	while Time.get_ticks_msec()<deadline:
+		await process_frame
+		owner_snapshot=owner.take_latest_snapshot(-1)
+		if owner_snapshot!=null and owner_snapshot.tick_index>=1: break
+	owner.stop_worker()
+	_expect(owner_snapshot.tick_index==1,"desktop Water single-step was not exact: "+str(owner_snapshot.lab_context))
+	_expect(owner_snapshot.lab_context.water_actions.size()>=1,
+		"tick-zero deterministic Water action was not recorded")
+
 	# Presentation switches consume copied RG8 data only. They cannot reach the
 	# World and therefore leave both authoritative hashes unchanged, including
 	# while an older immutable packet remains retained by a delayed consumer.

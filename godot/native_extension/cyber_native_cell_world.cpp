@@ -1291,15 +1291,22 @@ bool CyberNativeCellWorld::water_experiment_fill_rect(
         (2U * static_cast<std::uint32_t>(normalized_mass) * policy.maximum() + 255U) /
         (2U * 255U));
     if (mass == 0U) return false;
+    bool changed = false;
     for (auto y = origin.y; y < origin.y + size.y; ++y) {
         for (auto x = origin.x; x < origin.x + size.x; ++x) {
+            if (world_->stored_material(x, y) == cybersand::Material::Water &&
+                world_->stored_state_a(x, y) == mass &&
+                world_->stored_state_b(x, y) == coherence) {
+                continue;
+            }
             if (!world_->set_cell_state(x, y, cybersand::Material::Water, mass,
                                         static_cast<std::uint8_t>(coherence))) {
                 return false;
             }
+            changed = true;
         }
     }
-    ++revision_;
+    if (changed) ++revision_;
     return true;
 }
 
@@ -1310,15 +1317,22 @@ bool CyberNativeCellWorld::water_experiment_erase_rect(Vector2i origin, Vector2i
                    static_cast<std::int64_t>(origin.y) + size.y - 1)) {
         return false;
     }
+    bool changed = false;
+    bool hard_surface_changed = false;
     for (auto y = origin.y; y < origin.y + size.y; ++y) {
         for (auto x = origin.x; x < origin.x + size.x; ++x) {
+            const auto previous = world_->stored_material(x, y);
+            if (previous == cybersand::Material::Empty) continue;
             if (!world_->set_cell_state(x, y, cybersand::Material::Empty, 0U, 0U)) {
                 return false;
             }
+            changed = true;
+            hard_surface_changed = hard_surface_changed ||
+                cybersand::MaterialRules::is_hard_surface(previous);
         }
     }
-    ++revision_;
-    ++hard_surface_revision_;
+    if (changed) ++revision_;
+    if (hard_surface_changed) ++hard_surface_revision_;
     return true;
 }
 

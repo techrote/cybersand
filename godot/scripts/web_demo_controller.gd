@@ -70,10 +70,12 @@ func _water_apply_web_action(action: Dictionary) -> bool:
 	var ok: bool=true
 	match str(action.kind):
 		"fill":
+			var coherence: int=int((2*int(action.coherence)
+				*int(tower_context.water_policy.coherence_ticks)+12)/24)
 			ok=bool(native_world.water_experiment_fill_rect(
 				Vector2i(int(action.x),int(action.y)),
 				Vector2i(int(action.width),int(action.height)),
-				int(action.normalized_mass),int(action.coherence)))
+				int(action.normalized_mass),coherence))
 		"erase":
 			ok=bool(native_world.water_experiment_erase_rect(
 				Vector2i(int(action.x),int(action.y)),

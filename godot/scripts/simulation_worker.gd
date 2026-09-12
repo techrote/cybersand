@@ -94,10 +94,12 @@ func _apply_water_action(action: Dictionary) -> bool:
 	var ok: bool=true
 	match str(action.kind):
 		"fill":
+			var coherence: int=int((2*int(action.coherence)
+				*int(_water_policy.coherence_ticks)+12)/24)
 			ok=bool(_world.water_experiment_fill_rect(
 				Vector2i(int(action.x),int(action.y)),
 				Vector2i(int(action.width),int(action.height)),
-				int(action.normalized_mass),int(action.coherence)))
+				int(action.normalized_mass),coherence))
 		"erase":
 			ok=bool(_world.water_experiment_erase_rect(
 				Vector2i(int(action.x),int(action.y)),
@@ -111,7 +113,10 @@ func _apply_water_action(action: Dictionary) -> bool:
 		_:
 			ok=false
 	if not ok:
-		_lab_status="Water action rejected; run paused"
+		_lab_status="Water action rejected (%s at %d,%d %dx%d); run paused" % [
+			str(action.get("kind","unknown")),int(action.get("x",-1)),
+			int(action.get("y",-1)),int(action.get("width",-1)),
+			int(action.get("height",-1))]
 		return false
 	var after: Dictionary=_water_observe(action)
 	var before_mass: int=int(before.get("water_integer",0))

@@ -89,7 +89,7 @@ public:
                     x > cybersand::demo::kWidth - width ||
                     y > cybersand::demo::kHeight - height ||
                     normalized_mass < 0 || normalized_mass > 255 ||
-                    coherence < 0 || coherence > policy[2]) {
+                    coherence < 0 || coherence > 12) {
                     throw std::invalid_argument("Invalid Water fill");
                 }
                 fill_area += static_cast<std::uint64_t>(width) *
@@ -118,6 +118,10 @@ public:
                     (2U * static_cast<std::uint32_t>(water_fills[i + 4]) *
                          water_policy.maximum() + 255U) /
                     (2U * 255U));
+                const auto coherence = static_cast<std::uint8_t>(
+                    (2U * static_cast<std::uint32_t>(water_fills[i + 5]) *
+                         water_policy.coherence_ticks() + 12U) /
+                    (2U * 12U));
                 for (auto y = water_fills[i + 1];
                      y < water_fills[i + 1] + water_fills[i + 3]; ++y) {
                     for (auto x = water_fills[i];
@@ -125,8 +129,7 @@ public:
                         if (!candidate->set_cell_state(
                                 x, y, mass == 0U ? cybersand::Material::Empty
                                                 : cybersand::Material::Water,
-                                mass, static_cast<std::uint8_t>(
-                                          mass == 0U ? 0 : water_fills[i + 5]))) {
+                                mass, mass == 0U ? 0U : coherence)) {
                             throw std::invalid_argument("Water fill could not be applied");
                         }
                     }
