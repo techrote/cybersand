@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
   "status": "validated-development-runtime",
-  "source_commit": "17ff83f6d1a698ebfb2cea59434588af63b0298a",
+  "source_commit": "3ef4923abb011c5451be0f2ba477d8a3bffb0ee3",
   "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
-  "sha256": "ac9ebaa3886ab0d5f083cf7923c003d27a0ce985585bf9b961ebe7b18811bf03",
+  "sha256": "ce0b252171a7931317068eda62ec1ec773632d760f85f0ebb594af44d197a138",
   "size": 1825792,
   "source_input_hash_kind": "SHA-256 of canonical Git blob bytes; CRLF working files normalize to LF",
   "source_inputs": {
-    "godot/native_extension/cyber_demo_bridge.hpp": "0388210405355070187bf664e7dab3a2a33f69ac5491ae2e464655a141a2fdbf",
+    "godot/native_extension/cyber_demo_bridge.hpp": "c742ee00ee4118f6b27e136758dd14cc325046823d9cc67b3d445ce5032797cf",
     "godot/native_extension/cyber_native_cell_world.cpp": "099fd43ce2e8ec4bfe948a6688e9b68782855304bdb02ebff017674a9355ebea",
     "godot/native_extension/cyber_native_cell_world.hpp": "e7639d61d152bc9b565c36de049d9205b4907be5cd51aef15ddeb6666837e491",
     "godot/native_extension/register_types.cpp": "db08c4fe5267831aac9c33faffd68f2adea4c55f30711b7cdeaf3a3b02173dd2",
@@ -24,7 +24,7 @@
     "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
     "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
     "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
-    "native/src/world.cpp": "f31fa95365c2ece63e5a06219c49f6fcbefb1787a63a086f3b5fa64cf6b55c3b"
+    "native/src/world.cpp": "d5a7105d9aada5bb98ebb21f584875a4b49795927be1bfa4b00516f9fdea6ba0"
   },
   "evidence": "docs/audits/2026-09-12-issue-19-water-feel-lab.md",
   "validated_platform": "Windows x86_64 Godot 4.7",
