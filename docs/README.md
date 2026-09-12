@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-12
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md]
 ---
 
@@ -87,6 +87,14 @@ Current player support and pair exchange: [granular interaction policy](systems/
 
 The [transport profile editor](systems/flow-transport-and-profiles.md) shows effective
 settings/origins, saves editable user copies and applies through an explicit restart.
+
+## Issue #19 Water Feel Lab
+
+The [Water Feel Lab runbook](operations/experiment-tower.md#current-19-water-feel-lab-extension)
+and [completion evidence](audits/2026-09-12-issue-19-water-feel-lab.md) describe
+the Current H-ready four-level presentation and deterministic runtime Water-policy
+apparatus. The later human H study has not run; no production precision, packing,
+#18/#20 admission or G-final decision follows from #19.
 
 ## Architecture experimental programme
 

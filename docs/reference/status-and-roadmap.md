@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-09-11
+last-reviewed: 2026-09-12
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md]
 ---
 
@@ -114,9 +114,22 @@ regression results, measured transport changes, visual observations and remainin
 owner feel/performance limits. Baseline remains the gameplay default. Chemistry
 retuning, barrel #11 and soliding #12 remain separate.
 
-The Tower is the planned base for #19's Water Feel Lab extension. That extension
-is **not Current** until implemented and validated; #13's existing evidence and
-recipes remain unchanged historical/current controls.
+The Tower is also the Current base for #19's Water Feel Lab extension. #13's
+existing evidence and recipes remain unchanged historical/current controls.
+
+## Issue #19 Water Feel Lab checkpoint
+
+**Current, 2026-09-12:** V1 four-level/oriented presentation and V2 H-preparation
+are complete. One normalized runtime policy covers semantic mass3..8,
+coherence0..12, presentation/interface mode, deterministic scenario/seed and
+provenance. The existing Tower now exposes 35 deterministic Water scenarios,
+transactional Apply + Reset and reconstructible blind/export controls. Native,
+full Windows Godot, actual GPU and real Chrome compatibility/threaded gates pass.
+See the [completion evidence](../audits/2026-09-12-issue-19-water-feel-lab.md).
+
+This checkpoint is **H-ready**, not an H result: mass8/coherence12 remain the
+production/reference control, no preferred candidate or production packing was
+selected, #18 remains held, #20 remains downstream and G-final remains open.
 
 ## Opt-in transport profiles
 
@@ -158,15 +171,15 @@ but do not by themselves determine gameplay desirability. The dated
 records the governing rule that **quantitative equivalence and perceptual adequacy
 are separate gates**.
 
-#19 is now expanded from presentation-only V into **V plus H-preparation**. Its
+#19 completed its expansion from presentation-only V into **V plus H-preparation**. Its
 [first-stage contract](../operations/architecture-programme-prompts/fractional-presentation.md)
-must establish the intended four-visible-level fractional presentation and leave
+established the intended four-visible-level fractional presentation and left
 a verified Water Feel Lab with deterministic scenarios, runtime semantic policies,
-A/B/blind support and #17 correspondence. Planned human-test semantic axes include
+A/B/blind support and #17 correspondence. Available later human-test semantic axes include
 mass3..8 and coherent duration0..12 without recompilation; this is semantic emulation
 in a superset experimental representation, not production repacking.
 
-#19 completion means **H-ready**, not that a preferred Water model has been selected.
+#19 completion is **H-ready**, not evidence that a preferred Water model has been selected.
 The later human-led H gate will use the real apparatus to classify candidates and,
 where applicable, name a perceptual motion deficit. #18/M remains held until such
 a concrete directional-persistence target is justified, or may complete by reasoned

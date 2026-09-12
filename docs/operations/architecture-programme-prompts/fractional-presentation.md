@@ -1,16 +1,23 @@
 ---
 title: Architecture experiment: fractional liquid presentation and Water Feel Lab
-status: Planned
+status: Current
 document-kind: runbook
 scope: Self-contained V plus H-preparation work item in the architecture experimental programme; presentation research and human-test infrastructure, not production approval or human preference selection
 canonical-for: []
-last-reviewed: 2026-09-11
+last-reviewed: 2026-09-12
 related-documents: [../architecture-programme.md, ../architecture-programme-source-ledger.md, ../experiment-tower.md, ../state-precision-experiment.md, ../../audits/2026-09-11-issue-17-state-precision.md]
 ---
 
 # Architecture experiment: fractional liquid presentation and Water Feel Lab
 
 ## Identity and dependencies
+
+**Execution status, 2026-09-12:** V1 and V2 are complete and H-ready. The frozen
+contract below is retained as the preregistered acceptance boundary. Exact source,
+artifacts, review findings and limitations are in the
+[completion record](../../audits/2026-09-12-issue-19-water-feel-lab.md). No human
+preference, production migration, #18 admission, #20 admission or G-final decision
+was made.
 
 Issue: [#19](https://github.com/techrote/cybersand/issues/19).
 Programme/workstream: V, expanded after G-P with H-preparation. Human preference/acceptance remains a later gate.

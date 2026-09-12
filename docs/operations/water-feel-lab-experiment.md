@@ -5,7 +5,7 @@ document-kind: runbook
 scope: Preregistered Issue 19 V1 presentation and V2 H-preparation experiments
 canonical-for: [water-feel-lab-experiment, water-presentation-experiment]
 last-reviewed: 2026-09-12
-related-documents: [architecture-programme.md, architecture-programme-water-feel-addendum.md, architecture-programme-prompts/fractional-presentation.md, experiment-tower.md, state-precision-experiment.md, ../systems/water-design.md, ../architecture/rendering-and-gameplay-bridges.md]
+related-documents: [architecture-programme.md, architecture-programme-water-feel-addendum.md, architecture-programme-prompts/fractional-presentation.md, experiment-tower.md, state-precision-experiment.md, ../systems/water-design.md, ../architecture/rendering-and-gameplay-bridges.md, ../audits/2026-09-12-issue-19-water-feel-lab.md]
 ---
 
 # Water Feel Lab experiment
@@ -26,6 +26,15 @@ coherence duration; four-level presentation; interface reconstruction;
 deterministic scenario identity; policy selection and provenance; transactional
 Apply + Reset; blind candidate identity; and observation/export metadata. V1
 changes presentation only. V2 semantic comparisons hold presentation fixed.
+
+## Current implementation outcome
+
+**Current, 2026-09-12:** the preregistration below was implemented without changing
+its experimental dimensions. V1 and V2 pass their available acceptance gates and
+the lab is H-ready. The [dated completion record](../audits/2026-09-12-issue-19-water-feel-lab.md)
+owns source/artifact identity, platform results, failures, independent review and
+the later-human-evaluation boundary. The frozen sections remain here so current
+behavior can be checked against the pre-code contract.
 
 ## Frozen normalized policy
 
@@ -195,4 +204,3 @@ validated opaque registered values. Neither may edit the other's registry,
 controllers, Tower panel, worker, bridge, build manifests, generated files or
 documentation. Master binds them in I2. Any discovered shared edit stops one
 path and forces serialization. At most two write-capable workers run at once.
-

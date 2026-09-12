@@ -1,0 +1,223 @@
+---
+title: Issue 19 Water Feel Lab completion
+status: Current
+document-kind: evidence
+scope: V1 fractional presentation and V2 deterministic Water Feel Lab implementation, validation, review and H-readiness boundary
+canonical-for: [issue-19-water-feel-lab-evidence]
+last-reviewed: 2026-09-12
+related-documents: [../operations/water-feel-lab-experiment.md, ../operations/experiment-tower.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/architecture-programme-prompts/fractional-presentation.md, ../systems/water-design.md, ../systems/material-appearance-and-rendering.md]
+---
+
+# Issue 19 Water Feel Lab completion
+
+## Outcome and legitimate boundary
+
+**Current, 2026-09-12:** both registered #19 stages are implemented and pass the
+available native, desktop, rendered-pixel and real-browser acceptance gates. V1
+provides a selectable four-level partial-fill experiment and oriented interface
+mode. V2 extends the existing Experiment Tower with 35 deterministic Water
+scenarios, one normalized runtime policy, transactional Apply + Reset, deterministic
+A/B/blind preparation and reconstructible observation export. The apparatus is
+**H-ready**.
+
+This result selects no preferred mass precision, coherence duration, Water state
+budget, Cell layout, packing, spare-state allocation, compact history or sparse
+ballistics. Production defaults remain mass8/coherence12 and the existing Cell
+carrier. No human preference study was performed. #18 remains open and unimplemented
+pending an H-derived directional-persistence target or H-backed no-go; #20 remains
+downstream; G-final remains open.
+
+## Source and artifact identity
+
+- Git root/worktree: `C:/kybersand/worktrees/issue-19-water-feel-lab` on
+  `codex/issue-19-water-feel-lab`.
+- Base: `d39e31f03f2e39b0022d507b79fbee5c2439436d`.
+- Validated source checkpoint: `17ff83f6d1a698ebfb2cea59434588af63b0298a`.
+  The later evidence/provenance commit changes documentation and retained binaries,
+  not the validated source inputs.
+- Windows GDExtension: SHA-256
+  `ac9ebaa3886ab0d5f083cf7923c003d27a0ce985585bf9b961ebe7b18811bf03`,
+  1,825,792 bytes; Godot 4.7, godot-cpp
+  `101ae38034304346a46ea9ea84ae156d3e860496`, LLVM-MinGW 20260826 UCRT,
+  Clang 23.1.0.
+- Web compatibility WASM: SHA-256
+  `a6989bca7e173f1f37747e878715aeb9f21a670ccb936856e4c2a7db2af21618`,
+  1,946,351 bytes, Emscripten 4.0.20.
+- Web threaded WASM: SHA-256
+  `c5f06491a83aa9938b8eddbb1801b857ef0291dac5bafef0b2022aecb1e44718`,
+  1,949,810 bytes, Emscripten 4.0.20.
+
+Raw local output is retained below
+`validation/local/issue-19/`; it is intentionally excluded from source control.
+The positive browser JSON and PNG captures are under
+`browser-compat-rebuilt/` and `browser-threaded/`. The first compatibility run
+is retained under `browser-compat/` as a negative stale-artifact result.
+
+## V1 result: derived four-level presentation
+
+The immutable RG8 Water condition byte remains normalized authoritative mass.
+`water_presentation_model.gd` and `material_palette.gdshader` derive four visible
+coverage levels and an optional local orientation from it. Synthetic tests cover
+top surfaces, undersides, vertical edges, diagonals, concave boundaries, isolated
+droplets, weak/ambiguous gradients, adjacent continuity, temporal stability and
+2x/4x scales. Ambiguous or unsupported orientations fall back to horizontal fill.
+
+The real OpenGL test on an NVIDIA GeForce GTX 1650 SUPER rendered exactly 2/4
+covered pixels at 2x and 8/16 at 4x, and passed the right-edge orientation case.
+The focused model has eight passing groups. Presentation mode switching preserved
+the authoritative state hash in the native/Godot and both browser probes. No
+production presentation mode was selected.
+
+Measured facts are deliberately narrow: coverage, orientation cases, the existing
+immutable RG8 handoff and full-texture upload behavior. Snapshot copy/upload byte
+semantics remain those of the current renderer. This work did not establish a GPU
+timing improvement, reduced upload cost or universal flicker result.
+
+## V2 result: normalized policy and deterministic lab
+
+The version-1 policy has these independent dimensions:
+
+| Dimension | Registered range/current control |
+|---|---|
+| semantic Water mass | integer bits 3..8; control 8 |
+| coherent emission | integer ticks 0..12; named 12, 7, 3, 0; control 12 |
+| presentation | legacy, four-level, oriented four-level |
+| interface mode | none or local gradient, presentation-only |
+| scenario | one of 35 registered recipe IDs |
+| identity | seed, recipe version/hash, canonical policy JSON/hash and provenance |
+
+Profile/config, launch arguments and the developer panel feed one resolver. The
+precedence is panel > launch > profile > default. Provenance validation requires
+the effective source to agree with a strictly ordered layer chain. Invalid input
+does not replace the current World and disables unsafe save/reset/blind actions.
+
+Semantic Apply is a fresh-world transaction at the exclusive owner boundary.
+Desktop commits policy only after worker acknowledgement; Web applies at its
+synchronous main-thread owner. Rejection preserves the previous World and pause
+state. Policy is never mutated under an executing worker. Presentation-only controls
+may switch without a semantic reset and cannot mutate simulation authority.
+
+Blind mapping uses deterministic seeded shuffling, anonymous labels and a
+reconstructible export. Fresh tower clears hidden mapping and restores the
+pre-blind base, while an in-run reset retains the label/mapping. A hidden policy
+cannot leak into a saved profile. Observation export records policy, provenance,
+scenario, seed, recipe/catalogue identity, presentation, bounded actions and
+source/artifact/platform/worker identity.
+
+## Scenario and H-ready candidate set
+
+The 35 deterministic recipes cover shallow/deep/connected pools; calm settling;
+tiny quantities, drips, trickles and residual pockets; narrow/broad channels,
+steps, stairs, U-vessels, constrictions and nozzles; irregular beds; fast dumps,
+slow releases, falls, ledge sheets, thin streams and shower/drizzle; vertical,
+horizontal and diagonal references; excavation/refill, support removal and cavity
+fill/drain; real voids/barriers; preserved Water/Sand and Mercury references;
+supported body/player interactions; films; storage/activity/core seams; and
+long-tail micro-motion. Non-body scenarios disable collision layers/masks, so a
+body cannot accidentally vary those arms.
+
+For later H comparisons, select any technically admitted mass3..8 and coherence
+0..12 pair, then hold the scenario, seed, release/action schedule, camera/player
+start, worker configuration and four-level presentation fixed. Record anonymous
+pre-reveal observations about weight, fluidity, readability, liveliness, settling,
+stream/puddle behavior, crawling/stickiness, chunkiness and game fit. The later H
+owner—not this issue—classifies preferred/acceptable/unacceptable outcomes.
+
+## #17 and current correspondence
+
+The native suite establishes exact closed integer conservation for every runtime
+mass arm, arithmetic and low-quantity boundaries for mass3/5/7, coherence creation/
+decrement/movement/merge behavior across 0..12, repeat and one/four-worker parity,
+and invalid-policy refusal. Initial physical quantization numerator/error is
+reported separately from runtime drift. Initial values that quantize to zero are
+skipped; a scheduled zero is an accepted no-op, not a source or sink.
+
+Mass4/6/8 use the same registered quantization and tolerance oracle as #17. The
+default mass8/coherence12 policy has exact current state-hash correspondence, and
+coherence12 remains unchanged in the wider experimental carrier. This establishes
+harness trust without repeating #17's full campaign and does not retract #17's
+mass8 numerical-reference conclusion.
+
+## Package DAG and execution
+
+The preregistered DAG is retained in
+[the experiment registration](../operations/water-feel-lab-experiment.md#implementation-package-dag).
+P0 froze the contract. A (xHigh) owned conservation-sensitive native policy/math;
+B (High) owned presentation-only shader/model work. Their RG8 normalized-mass
+interface was frozen and their write sets did not overlap, so they were eligible
+for one two-writer wave. The master serialized I1 integration. C (High) owned only
+scenario registry/recipe tests; D (xHigh) owned only resolver/blind/panel models;
+their opaque scenario-ID interface was frozen, so they were eligible for the
+second two-writer wave. I2 integration and E evidence/docs were serialized under
+the master. At no point were more than two write-capable workers allowed.
+
+Terra xHigh independently reviewed B/C and consequential integration. Terra Max
+reviewed A/D, owner-boundary integration and the integrated high-risk paths.
+Spark xHigh handled the accepted correctness-sensitive repairs; the master owned
+shared interfaces, integration and every disposition.
+
+## Independent review findings and dispositions
+
+Material findings were classified against the frozen contract:
+
+| Finding | Classification | Master disposition and repair |
+|---|---|---|
+| non-body scenarios left Godot collision layers/masks active | confirmed defect | accepted; disable them for non-body scenarios and restore layer/mask 1 for supported scenarios; regression added |
+| rejected asynchronous reset could leave a previously running lab paused | confirmed defect | accepted; restore prior pause state after rejection; regression added |
+| blind exit/re-entry could expose/save a hidden candidate | confirmed defect | accepted; Fresh tower restores the pre-blind base and clears mapping; lifecycle/save regressions added |
+| provenance accepted inconsistent effective source/layer claims | evidence-backed concern | accepted narrowly; vocabulary, monotonic ordering and final-layer/effective-source agreement are now validated; malformed seams rejected |
+| real Web execution was initially absent | evidence gap | closed with rebuilt compatibility/threaded exports executed in Chrome 152 |
+
+Other speculative concerns were checked against source/tests and not accepted
+without evidence. Consequential repairs were re-run through focused and integrated
+suites. The final stable diff received a final Terra Max read-only review; its
+conclusion and any last disposition are recorded in the closing GitHub report.
+
+## Validation matrix
+
+| Surface | Command/evidence | Result |
+|---|---|---|
+| Native Windows | fresh compile and `build/test_world_issue19_final.exe` | 61/61 passed |
+| Godot Windows | import plus every `godot/tests/test_*.gd` runner except the separately rendered GPU runner | 29/29 runners passed |
+| Focused policy | `test_water_experiment_profiles.gd` | canonical/surfaces/precedence/provenance/invalid/blind/panel passed; hash `2bfdaa148c4c6e0da9db40361f7e2fd66544e0d3cac68fa466fd7348ed37671a` |
+| Focused owner | `test_water_feel_controller.gd` | transactional rejection, collision isolation and blind lifecycle passed |
+| Integrated desktop | `test_water_feel_integration.gd` | 24 policy cases, 70 scenario builds/resets, invalid/actions/RG8/authority passed; default hash `7c40afe52c6e0e37` |
+| Scenario registry | `test_water_feel_scenarios.gd` | 35 recipes; seed-0 catalogue hash `c0d465a25dfd0bf26301c1f2466b327c8d9af914e6254d9defff07a9bf662014` |
+| Actual GPU | non-headless `test_water_presentation_render.gd` | OpenGL/NVIDIA: 2/4 and 8/16 coverage plus oriented right edge passed |
+| Real Web compatibility | `node tools/web/run_browser_probe.mjs ...` | Chrome 152, cross-origin isolated; 70 scenario cases, 110 actions, invalid/presentation preservation, zero failures, 1 worker |
+| Real Web threaded | same runner against threaded export | Chrome 152, isolated; same catalogue/default hash and passes, 6 workers |
+
+Both successful Web profiles report catalogue hash
+`c49c729891b2884932f183ef5b253f3b0b385f78664c5d9e76c85dd918538281`
+at seed 31 and default hash `2c1ae35dad232984`. Profile equality is exact.
+The first compatibility run used a stale WASM
+(`9ad8d7a15dea271b369324ce1a54c615e63e4a8627367e0e7152fcc394e53f55`)
+and correctly failed `shower-drizzle/fill mass3`; rebuilding from the recorded
+source produced the passing artifact above. The failure is preserved, not erased.
+
+## Limitations and gaps
+
+- The available Windows/NVIDIA GPU and Chrome profiles passed; no macOS, mobile,
+  alternate browser engine or representative GPU timing campaign was run.
+- UI automation was unavailable because the trusted computer-control process
+  exited. Actual Godot rendered pixels, instantiated desktop owner/controller
+  paths and real Chrome exports were executed instead; no manual human preference
+  or accessibility claim is made.
+- The local host lacks WSL/Linux, so Linux GDExtension runtime evidence must come
+  from the pinned Ubuntu CI job. A Linux pass may validate build/runtime parity;
+  it does not turn this experiment into a production migration.
+- Observation export is bounded experimental metadata, not a complete replay of
+  arbitrary brush/player/OS input.
+- Full-texture GPU upload cost is unchanged and no performance saving is inferred.
+
+## Implementation commits
+
+The source series from the preregistration through the validated browser harness is:
+
+`e4f2212`, `86ed176`, `7bd31e4`, `0009288`, `fad813f`, `2080a3a`,
+`dfa95b3`, `4150833`, `3d227f7`, `d9792e2`, `369b4a3`, `ef5e56d`,
+`d97a8c6`, `d15fc9d`, `5691b16`, `0fc265b`, `17ff83f`.
+
+The pull request and GitHub closing report identify the final documentation,
+retained-runtime and any CI-derived Linux provenance commits exactly.
+

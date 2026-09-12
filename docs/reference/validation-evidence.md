@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-12
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md]
 ---
 
@@ -154,3 +154,17 @@ all eight same-phase concurrency configurations, and55 native tests each for
 unmodified source/fixed-carrier mass8. Delay4 is Water-specific semantically exact;
 G-P retains mass8 as reference. Shared-desktop cost limits and inherited provenance
 failures remain explicit. No fresh Web/Linux/Godot or production migration acceptance.
+
+## Issue #19 Water Feel Lab, 2026-09-12
+
+The [dated completion record](../audits/2026-09-12-issue-19-water-feel-lab.md)
+records 61 native passes, 29 Windows Godot runners, actual OpenGL Water coverage/
+orientation pixels and real Chrome compatibility/threaded probes. Each browser
+profile built from the recorded source passed 70 scenario cases, 110 actions,
+invalid-policy preservation and presentation-authority preservation with matching
+catalogue/default hashes. A stale compatibility WASM failure is retained separately
+and was resolved by rebuilding, not by suppressing the case.
+
+This evidence establishes a technically safe, reproducible H-ready apparatus.
+It is not a human preference study, a production precision/packing selection,
+#18 admission, #20 admission, representative GPU performance result or G-final.

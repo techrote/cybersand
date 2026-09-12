@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Executable test selection and future gates; dated results and save format live in separate references
 canonical-for: [test-inventory, test-selection, future-validation-gates]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-12
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md, ../reference/level-saves-and-replay.md]
 ---
 
@@ -166,3 +166,21 @@ lateral Water mass transport drive bounded optional mixing and grain pickup;
 horizontal sampling and cadence are separate fixed experiments.
 Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
 are unchanged. No unsynchronized live descriptor mutation is introduced.
+
+## Issue #19 Water Feel Lab validation
+
+**Current:** native tests cover policy range/refusal, mass3..8 arithmetic,
+mass4/6/8 correspondence, coherence0..12, exact conservation, repeat/worker
+parity and unchanged mass8/coherence12 state hash. Godot runners cover normalized
+selection surfaces/provenance, all 35 recipes, deterministic reset/actions,
+owner-boundary transaction/rejection, blind lifecycle, RG8 authority and eight
+presentation-model groups. The rendered-pixel runner must execute non-headless
+because headless scene success is not visual evidence.
+
+Actual Web acceptance requires exported compatibility and threaded builds served
+with cross-origin isolation, then
+`node tools/web/run_browser_probe.mjs <url> <profile> <output-directory>`.
+The opt-in URL is `?test=1&water=1`; normal URLs do not run the probe. Require
+`ok=true`, 70 scenario cases, 110 actions, zero failures, invalid/presentation
+preservation, and equal catalogue/default hashes across profiles. See the
+[dated result](../audits/2026-09-12-issue-19-water-feel-lab.md).

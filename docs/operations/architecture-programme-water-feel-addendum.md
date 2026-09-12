@@ -1,11 +1,11 @@
 ---
 title: Architecture programme addendum — Water presentation, feel and semantic budgets
-status: Planned
+status: Current
 document-kind: design
 scope: Post-G-P refinement of #19/#18 ordering and evaluation authority; supplements rather than rewrites completed C/L/P evidence
 canonical-for: [architecture-experimental-programme-water-feel-refinement]
-last-reviewed: 2026-09-11
-related-documents: [architecture-programme.md, architecture-programme-prompts/fractional-presentation.md, state-precision-experiment.md, experiment-tower.md, ../audits/2026-09-11-issue-17-state-precision.md]
+last-reviewed: 2026-09-12
+related-documents: [architecture-programme.md, architecture-programme-prompts/fractional-presentation.md, water-feel-lab-experiment.md, state-precision-experiment.md, experiment-tower.md, ../audits/2026-09-11-issue-17-state-precision.md, ../audits/2026-09-12-issue-19-water-feel-lab.md]
 ---
 
 # Post-G-P Water feel refinement
@@ -13,6 +13,11 @@ related-documents: [architecture-programme.md, architecture-programme-prompts/fr
 ## Status and authority
 
 This dated addendum records an owner-led refinement after completed G-C, G-L and G-P. It **does not alter the measurements or scientific conclusions of #15–#17** and does not authorize a production migration.
+
+**Current checkpoint, 2026-09-12:** #19 V1/V2 are complete and the Water Feel
+Lab is H-ready under the [dated acceptance record](../audits/2026-09-12-issue-19-water-feel-lab.md).
+The later human H gate has not run. Accordingly #18 remains open and held, #20
+remains downstream and G-final remains open.
 
 Completed #17 remains the numerical precision oracle:
 
@@ -82,7 +87,8 @@ state budgets              |
 
 Its self-contained execution contract is `architecture-programme-prompts/fractional-presentation.md` (historical filename retained to avoid link churn).
 
-#19 completion means the laboratory is technically trustworthy and **H-ready**. It does not choose the preferred candidate.
+#19 completion has made the laboratory technically trustworthy and **H-ready**.
+It did not choose the preferred candidate.
 
 ## Runtime semantic-policy principle
 
@@ -101,7 +107,10 @@ The same effective policy must be selectable via in-game developer controls, ver
 
 ## Trust relationship to #17
 
-The runtime Feel Lab must reproduce relevant #17/reference behavior before its novel candidates are used for perceptual decisions. Shared mass4/6/8 fixtures, current mass8/coherence12 controls, exact per-lattice conservation and repeat/worker expectations form the correspondence gate.
+The runtime Feel Lab reproduces relevant #17/reference behavior before its novel
+candidates are offered for later perceptual decisions. Shared mass4/6/8 fixtures,
+current mass8/coherence12 controls, exact per-lattice conservation and repeat/
+worker expectations passed the correspondence gate.
 
 Mass3/5/7 and shortened coherence are new candidate semantics. They require focused arithmetic/conservation/boundary characterization sufficient to distinguish intended quantization from implementation errors, but not a repetition of #17's full performance campaign.
 

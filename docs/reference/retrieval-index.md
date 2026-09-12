@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-09-11
+last-reviewed: 2026-09-12
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md]
 ---
 
@@ -47,7 +47,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Product intent and next priorities | [Owner intent](product-intent-and-priorities.md), [roadmap](status-and-roadmap.md) |
 | Meaning of a term or unexplained symptom | [Glossary](glossary.md), [troubleshooting](../operations/troubleshooting.md) |
 | Why #17 does not make mass8 the perceptual minimum | [Water-feel programme addendum](../operations/architecture-programme-water-feel-addendum.md), [#17 evidence](../audits/2026-09-11-issue-17-state-precision.md) |
-| What #19 now delivers and how the Water Feel Lab is configured | [#19 runbook](../operations/architecture-programme-prompts/fractional-presentation.md), [Experiment Tower](../operations/experiment-tower.md) |
+| What #19 delivers and how the H-ready Water Feel Lab is configured | [Experiment Tower](../operations/experiment-tower.md), [policy registration](../operations/water-feel-lab-experiment.md), [completion evidence](../audits/2026-09-12-issue-19-water-feel-lab.md) |
 | Why #18 remains held after G-P | [Water-feel programme addendum](../operations/architecture-programme-water-feel-addendum.md), [compact-motion prompt](../operations/architecture-programme-prompts/compact-motion.md) |
 
 ## Retrieve historical results explicitly
@@ -75,7 +75,9 @@ Current runtime/source gates and immutable M11 retention use [separate validatio
 
 For reproducible five-floor experiments and preserving Mercury while tuning Sand, use the [Experiment Tower](../operations/experiment-tower.md), then its [dated evidence](../audits/2026-09-09-issue-13-transport.md).
 
-The current Tower is also the planned base for #19's Water Feel Lab extension. The extension is not Current functionality until #19 implements and validates it.
+The Current Tower includes #19's 35-scenario Water Feel Lab, normalized runtime
+policy, transactional Apply + Reset and blind/export controls. It is H-ready, not
+a human preference result.
 
 ## Opt-in transport profiles
 
@@ -95,7 +97,10 @@ Use the [architecture programme](../operations/architecture-programme.md) for th
 
 G-L, G-C and G-P are complete. Current 4-byte Cell remains baseline pending G-final; mass8 remains the quantitative/reference Water control; current coherence 0..12 fits exactly in four semantic bits. None of those results selects production packing.
 
-Following owner clarification after G-P, #19 is expanded into **V plus H-preparation**: establish/verify the intended four-visible-level Water presentation and build a deterministic runtime-configurable Water Feel Lab. See the [post-G-P refinement](../operations/architecture-programme-water-feel-addendum.md) and [#19 runbook](../operations/architecture-programme-prompts/fractional-presentation.md).
+Following owner clarification after G-P, #19 completed **V plus H-preparation**:
+the intended four-visible-level Water presentation and a deterministic
+runtime-configurable Water Feel Lab. See the [post-G-P refinement](../operations/architecture-programme-water-feel-addendum.md)
+and [completion evidence](../audits/2026-09-12-issue-19-water-feel-lab.md).
 
 #19 completion means H-ready, not a human winner. The later H gate may supply a concrete motion/feel target for #18 or support a no-go. #20 remains downstream of #18/G-M; G-final remains open.
 

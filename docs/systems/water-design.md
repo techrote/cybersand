@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [native-water-semantics, native-fallback-water-differences]
 status: Current
 scope: Native conserved Water, coherent emission and adhesion, rest/hash fixtures, fallback differences, and future reaction accounting
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-12
 related-documents: [materials-and-rule-kernels.md, material-appearance-and-rendering.md, ../reference/level-saves-and-replay.md, ../decisions/ADR-005-water-model.md]
 ---
 
@@ -190,3 +190,19 @@ retains mass8 as the reference, with exact Water-only delay4 as a research budge
 Films survive all four precisions. Literal tolerance changes are reported separately.
 This is native experiment evidence; production Water, rendering and saves remain
 unchanged. No flow-history target or production migration is established.
+
+## Current Water Feel Lab policy
+
+**Current, experiment-only, 2026-09-12:** issue #19 adds an immutable World-creation
+policy that emulates Water mass semantics from 3..8 bits and coherent emission
+from 0..12 ticks in the existing superset carrier. Production/default Water remains
+mass8/coherence12. The candidate setting is validated and applied only through a
+fresh-world transaction at the desktop worker or Web main-thread owner boundary;
+invalid application preserves the current World.
+
+The policy, scenario/seed and provenance are normalized once for profile/config,
+launch and panel selection. Four-level and oriented interface modes are derived
+presentation and do not change mass, collision, waking or state hashes. The
+[Water Feel Lab runbook](../operations/experiment-tower.md#current-19-water-feel-lab-extension)
+and [dated evidence](../audits/2026-09-12-issue-19-water-feel-lab.md) own candidate
+procedure and acceptance. This experiment neither repacks Cell nor allocates bits.

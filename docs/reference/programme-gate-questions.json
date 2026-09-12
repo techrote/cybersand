@@ -31,7 +31,7 @@
       ],
       "facts": [
         "M has its G-P precision prerequisite satisfied but still requires a named perceptual/measured directional-persistence target and admission; B waits on M/G-M and admission.",
-        "V is expanded into #19 V plus H-preparation: presentation and Water Feel Lab infrastructure are admitted research, but renderer migration, preferred Water semantics and production packing are not.",
+        "#19 completed V plus H-preparation and is H-ready; renderer migration, preferred Water semantics and production packing remain unselected.",
         "The later H gate may supply an M target or support a no-go."
       ],
       "sources": [
@@ -45,10 +45,10 @@
       "canonical": ["operations/architecture-programme-water-feel-addendum.md"],
       "facts": [
         "No. Issue17 remains the quantitative oracle, while perceptual adequacy is a separate later gate under fixed presentation and hard correctness invariants.",
-        "Issue19 prepares runtime mass3..8/coherence0..12 candidates and a deterministic blinded Water Feel Lab; it does not choose the winner."
+        "Issue19 provides runtime mass3..8/coherence0..12 candidates and a deterministic blinded Water Feel Lab; the later human gate has not run and no winner was chosen."
       ],
       "sources": ["operations/architecture-programme-water-feel-addendum.md"]
     }
   ],
-  "expectations_reviewed": "2026-09-11: original query wording retained where present; PG03 facts updated after the owner-led post-G-P refinement and PG04 added as an explicit new development question, not a frozen wording improvement claim."
+  "expectations_reviewed": "2026-09-12: original query wording retained where present; PG03/PG04 facts synchronized after issue #19 V1/V2 completion without treating the H-ready apparatus as a human result."
 }

@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [material-visual-projection, palette-program-appearance, render-upload-cost]
 status: Current
 scope: Native RG8 presentation, palette/program LUTs, shader flair, temporal smoothing, glow, and current GPU upload limitation
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-12
 related-documents: [themed-construction-materials.md, materials-and-rule-kernels.md, ../architecture/rendering-and-gameplay-bridges.md, ../architecture/item-authored-material-programs.md]
 ---
 
@@ -43,6 +43,17 @@ authoritative semantics exist.
 The desktop GDScript fallback publishes R8 material IDs without the native
 condition channel. Native Web uses RG8, including its single-worker compatibility
 profile.
+
+### Water Feel Lab presentation modes
+
+**Current, experiment-only:** issue #19 can derive four discrete Water coverage
+levels from the immutable normalized RG8 condition byte. An optional local 3x3
+gradient orients the partial fill for strong edges; weak, ambiguous and unsupported
+cases fall back to horizontal coverage. Synthetic positive/negative cases and an
+actual OpenGL pixel test establish the bounded behavior. Presentation switching
+preserves authoritative state and does not select a new production renderer.
+The [completion record](../audits/2026-09-12-issue-19-water-feel-lab.md#v1-result-derived-four-level-presentation)
+records exact evidence and unmeasured GPU-cost limits.
 
 ## Palette and bounded program
 

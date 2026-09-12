@@ -2,10 +2,10 @@
 title: Experiment Tower and transport comparisons
 status: Current
 document-kind: runbook
-scope: Shared five-floor recipe, exclusive owner controls and issue 13 transport evidence; planned issue 19 Water Feel Lab extension is clearly separated
+scope: Shared five-floor recipe, exclusive owner controls, issue 13 transport evidence and current issue 19 Water Feel Lab annex
 canonical-for: [experiment-tower, transport-comparison-procedure]
-last-reviewed: 2026-09-11
-related-documents: [physics-characterisation.md, architecture-programme-water-feel-addendum.md, architecture-programme-prompts/fractional-presentation.md, ../systems/granular-interaction-policy.md, ../audits/2026-09-09-issue-13-transport.md]
+last-reviewed: 2026-09-12
+related-documents: [physics-characterisation.md, water-feel-lab-experiment.md, architecture-programme-water-feel-addendum.md, architecture-programme-prompts/fractional-presentation.md, ../systems/granular-interaction-policy.md, ../audits/2026-09-09-issue-13-transport.md, ../audits/2026-09-12-issue-19-water-feel-lab.md]
 ---
 
 # Experiment Tower
@@ -115,30 +115,31 @@ are not all captured. Scheduled +30/+90 releases are tick-relative; changing flo
 cancels them. Current camera interest can include part of an adjacent floor, so
 its reagents may age. Fresh tower restores everything reproducibly.
 
-## Planned #19 Water Feel Lab extension
+## Current #19 Water Feel Lab extension
 
-**Planned, not Current:** issue #19 expands the Tower as the shared human-test
-apparatus rather than creating another laboratory application. The current five
-floors and #13 evidence above remain unchanged historical/current facts until the
-new work is implemented and validated.
+**Current, 2026-09-12:** issue #19 expands the Tower as the shared human-test
+apparatus rather than creating another laboratory application. The original five
+floors and #13 evidence above remain unchanged historical/current controls.
 
 The #19 extension is specified by
 [`fractional-presentation.md`](architecture-programme-prompts/fractional-presentation.md)
 and the dated
 [Water-feel programme addendum](architecture-programme-water-feel-addendum.md).
-Its goal is to leave the Tower **H-ready**, not to select a preferred Water model.
+The implementation and evidence leave the Tower **H-ready**; they do not select a
+preferred Water model.
 
-The planned lab adds deterministic Water scenarios covering broad/deep/shallow
+The lab adds 35 deterministic Water scenarios covering broad/deep/shallow
 pools, connected levels, tiny-drip accumulation, channels/steps/U-vessels,
 constrictions, fast and slow releases, ledge sheets, thin streams, drizzle,
 vertical/horizontal/diagonal emission, excavation/refill, cavities/barriers,
 Water/Sand interaction, supported films/seams and long-tail settling. Existing
 Mercury references remain separate preservation controls.
 
-The same planned runtime Water experiment policy will be selectable without a
+The same runtime Water experiment policy is selectable without a
 rebuild through an in-game developer panel, versioned config/profile and launch
-configuration. Those surfaces resolve to one validated effective policy. Planned
-semantic candidates include Water mass precision 3..8 bits and coherent duration
+configuration. Those surfaces resolve to one validated effective policy with
+panel > launch > profile > default precedence. Semantic candidates include Water
+mass precision 3..8 bits and coherent duration
 0..12 ticks; this is semantic emulation in a superset test representation, **not
 production Cell repacking**.
 
@@ -148,11 +149,13 @@ world in place. Render-only presentation controls may switch live where safe.
 
 Human-test comparisons hold the intended four-visible-level Water presentation
 fixed unless the experiment explicitly studies rendering. Anonymous A/B/C labels,
-identical recipes/seeds/camera/player starts and hidden candidate mappings are
-planned so observations can be recorded before identities are revealed.
+identical recipes/seeds/camera/player starts and deterministic hidden candidate
+mappings are implemented so observations can be recorded before identities are revealed.
 
 Before novel 3/5/7-bit or shortened-coherence candidates are treated as valid
 human-test inputs, the runtime harness must reproduce relevant #17 mass4/6/8 and
 current mass8/coherence12 semantics and preserve the required hard invariants.
 Quantitative differences such as levelness or settling remain descriptive context;
-later human evaluation, not this runbook, decides whether they are desirable.
+later human evaluation, not this runbook or issue #19, decides whether they are
+desirable. See the [dated acceptance record](../audits/2026-09-12-issue-19-water-feel-lab.md)
+for exact artifacts, failures, platform results and limitations.
