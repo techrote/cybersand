@@ -65,11 +65,13 @@
         "operations/architecture-programme.md"
       ],
       "facts": [
-        "Administrative closure conflicts with current source/evidence.",
-        "Support-dependent #12 integration requires source-matched evidence or explicit scope decision."
+        "The 2026-09-12 current-source reconciliation classifies issue11 as substantively unresolved despite administrative closure.",
+        "Persistent barrel bearing is absent; masked-source feedback and barrier-crossing ejection remain.",
+        "Support-dependent #12 integration requires a source-matched fix/evidence package or explicit narrower scope decision."
       ],
       "sources": [
-        "operations/architecture-programme.md"
+        "operations/architecture-programme.md",
+        "audits/2026-09-12-issue-11-reconciliation.md"
       ]
     }
   ]

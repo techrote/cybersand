@@ -162,6 +162,10 @@
       "reason": "Dated issue #9 measured evidence, explicitly routed with source/artifact/platform scope; not a default current contract"
     },
     {
+      "path": "audits/2026-09-12-issue-11-reconciliation.md",
+      "reason": "Dated current-source closure reconciliation and negative evidence; retrieve explicitly through the current coupling/programme routes"
+    },
+    {
       "path": "audits/2026-09-09-issue-10-granular-policy.md",
       "reason": "Dated issue #10 acceptance and retained failures; retrieve with its source/artifact/platform scope"
     },

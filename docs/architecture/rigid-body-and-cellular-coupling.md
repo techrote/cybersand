@@ -6,7 +6,7 @@ status: Current
 scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact; generalized physics and exact replay remain absent
 keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
 related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md]
-last-reviewed: 2026-09-09
+last-reviewed: 2026-09-12
 ---
 
 # Rigid-body and cellular coupling
@@ -141,3 +141,20 @@ needs a bounded barrier-aware displacement policy.
 adds material-aware packing queries, directional collision and bounded enclosure
 recovery. The sampled character alone resolves those contacts. Rapier barrel
 bearing, masked-source feedback and barrier-aware ejection remain issue #11.
+
+## What is the current issue #11 disposition?
+
+**Current, reconciled 2026-09-12:** [source inspection and focused Windows
+validation](../audits/2026-09-12-issue-11-reconciliation.md) confirm that issue #11
+is substantively unresolved despite its administrative completed closure. The
+barrel path still has transient displacement, boundary and movement-contact
+impulses only; it does not call the player's packing query or retain a granular
+bearing state. A source-matched ordinary Sand barrel reaches the deep floor at
+tick 155. The exact masked-source and barrier-crossing ejection characterizations
+also remain reproducible.
+
+Rapier still solely owns hard-terrain contact, the sampled character solely owns
+its local packing response, and cellular coupling solely owns movable-material
+displacement/impulses. This avoids current double-solving but does not satisfy the
+missing bearing requirement. Support-dependent issue #12 integration remains held;
+its diagnostics and ownership design may proceed without assuming barrel support.

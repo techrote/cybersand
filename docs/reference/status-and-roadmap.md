@@ -82,9 +82,11 @@ and the later Water checkpoint are not current policy. The
 confirms that issue #10's [versioned player and exchange policy](../systems/granular-interaction-policy.md)
 is present and exercised at current source; persistent barrel bearing remains
 outside that policy.
-Issue #11 retains **Planned** barrel work: masked-source feedback, barrier-aware
-ejection and persistent bearing. Raising barrel impulse caps alone does not
-provide the intended behavior. The
+The [2026-09-12 reconciliation](../audits/2026-09-12-issue-11-reconciliation.md)
+confirms that administratively closed issue #11 remains substantively unresolved:
+masked-source feedback, barrier-aware ejection and persistent bearing are still
+**Planned** barrel work. Raising barrel impulse caps alone does not provide the
+intended behavior. The
 [soliding plan](../operations/physics-characterisation-plan.md) still requires an
 explicit ownership decision before dynamic membership handoff. Current F01/F02
 contracts and the separate runtime publication gate remain applicable.

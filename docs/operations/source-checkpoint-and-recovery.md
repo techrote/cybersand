@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Actual local Git roots, preserved baseline, recovery boundaries and source-versus-artifact identity
 canonical-for: [source-identity, local-checkpoints, recovery-coverage]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-12
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md]
 ---
 
@@ -163,3 +163,14 @@ resolve the commit from branch history. [Dated evidence](../audits/2026-09-10-wa
 records source deltas, rebuilt desktop/both-Web identities and preserved intake
 DLLs under `C:/kybersand/validation/local/2026-09-10-water-leveling/`. Runtime DLLs
 remain deliberately uncommitted; published provenance remains historical.
+
+## Issue #11 reconciliation checkpoint
+
+The dedicated `codex/issue-11-reconciliation` worktree starts at
+`dfa95b3a787b7a3ed8dd65db5c263359f53f762c`, the newest local code-bearing
+descendant containing #9/#10/#13/#17 and synchronized programme work at intake.
+It does not edit the active #19 worktree. The
+[dated record](../audits/2026-09-12-issue-11-reconciliation.md) confirms no source
+implementation change: only a source-matched Windows DLL was rebuilt for focused
+negative validation, and that generated LFS path remains uncommitted. Issue #11
+is substantively unresolved despite its completed GitHub state.

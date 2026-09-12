@@ -4,7 +4,7 @@ status: Planned
 document-kind: design
 scope: Evidence gates for Cell representation, liquid state and transport, presentation, and conditional sparse motion; no production architecture selection
 canonical-for: [architecture-experimental-programme]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-12
 related-documents: [architecture-programme-source-ledger.md, physics-characterisation.md, physics-characterisation-plan.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md]
 ---
 
@@ -92,13 +92,14 @@ is never numerical approximation.
 
 ### Does closed issue #11 prove barrel support is ready for soliding?
 
-No. GitHub marks #11 closed, but the intake source and retained evidence still
-describe missing persistent barrel bearing, masked-source feedback and
-barrier-crossing ejection. Soliding issue #12 can begin bounded diagnostics and
-design; support-dependent integration requires a source-matched fix and evidence
-or an explicit scope decision. Administrative issue closure is not runtime
-acceptance. The programme records this conflict without reopening or replacing
-the owner's issue.
+No. The [2026-09-12 current-source reconciliation](../audits/2026-09-12-issue-11-reconciliation.md)
+classifies #11 as **substantively unresolved despite administrative closure**.
+Current source still lacks persistent barrel bearing and still reproduces
+masked-source feedback and barrier-crossing ejection. A source-matched ordinary
+Sand barrel reaches the deep floor at tick 155. Soliding issue #12 can begin
+bounded diagnostics and design; support-dependent integration requires a
+source-matched fix and evidence or an explicit narrower scope decision.
+Administrative closure is not runtime acceptance.
 
 ## C. Questions and bounded outcomes
 

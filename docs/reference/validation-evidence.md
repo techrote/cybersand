@@ -146,3 +146,19 @@ native regressions. All576 raw output hashes and both executable/source manifest
 were verified, with no new physics execution. [Coverage and limits](../audits/2026-09-11-issue-15-coverage.md)
 support G-C completion and bounded P admission;85/112 cost flags remain evidence,
 not an all-green performance or migration claim.
+
+## Issue #11 closure reconciliation, 2026-09-12
+
+The [dated reconciliation](../audits/2026-09-12-issue-11-reconciliation.md) binds
+focused Windows execution to source `dfa95b3` plus only the rebuilt DLL delta.
+The ordinary 8x14 mass-1 Sand barrel reaches the deep floor at tick 155 in the
+one-seed 180-tick run; the hard-floor control remains at zero reported peak depth.
+The current Godot instrumentation still reproduces endpoint-only ejection across
+a one-cell hard floor, and the 56-test native suite reproduces three downward
+masked-Sand contacts with raw `y=4800` while preserving F01/F02, seam,
+sleep/re-entry and worker regressions.
+
+This is decisive negative evidence, not broad #11 acceptance. No new long-duration,
+mass/orientation, desktop-async or Web campaign was run because current source has
+no persistent barrel bearing mechanism and fails the ordinary case before three
+seconds. Historical #9 coverage retains its original source/artifact scope.

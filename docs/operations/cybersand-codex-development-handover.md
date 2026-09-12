@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-12
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md]
 ---
 
@@ -118,3 +118,12 @@ Both research results are published on separate experiment branches; this active
 checkpoint changes documentation only. #17 is unblocked but not started; obtain
 its fixed experimental carrier from verified L evidence without inferring a
 production migration. The current4-byte baseline remains pending G-final.
+
+## Issue #11 reconciliation, 2026-09-12
+
+The [current-source audit](../audits/2026-09-12-issue-11-reconciliation.md)
+confirms that #11 is substantively unresolved despite administrative closure.
+There is no persistent granular barrel bearing; masked-source feedback and
+barrier-crossing ejection remain. #12 diagnostics and ownership design may proceed,
+but support-dependent integration and the one-barrel support/reversal proof remain
+held pending a focused fix/evidence package or an explicit narrower scope decision.
