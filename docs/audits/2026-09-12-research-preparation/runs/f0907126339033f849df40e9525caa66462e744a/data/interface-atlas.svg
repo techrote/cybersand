@@ -1,0 +1,212 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1050" height="540" viewBox="0 0 1050 540">
+<rect width="1050" height="540" fill="white"/>
+<text x="16" y="25" font-family="sans-serif" font-size="16">Synthetic half-plane coverage atlas — not a game screenshot</text>
+<text x="16" y="55" font-family="sans-serif" font-size="12">normal 0°</text>
+<rect x="16" y="67" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="16.00000,67.00000 26.00000,67.00000 26.00000,107.00000 16.00000,107.00000"/>
+<text x="64" y="93" font-family="sans-serif" font-size="12">1/4</text>
+<rect x="16" y="115" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="16.00000,115.00000 36.00000,115.00000 36.00000,155.00000 16.00000,155.00000"/>
+<text x="64" y="141" font-family="sans-serif" font-size="12">2/4</text>
+<rect x="16" y="163" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="16.00000,163.00000 46.00000,163.00000 46.00000,203.00000 16.00000,203.00000"/>
+<text x="64" y="189" font-family="sans-serif" font-size="12">3/4</text>
+<rect x="16" y="211" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="16.00000,211.00000 56.00000,211.00000 56.00000,251.00000 16.00000,251.00000"/>
+<text x="64" y="237" font-family="sans-serif" font-size="12">4/4</text>
+<text x="146" y="55" font-family="sans-serif" font-size="12">normal 22.5°</text>
+<rect x="146" y="67" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="146.00000,67.00000 164.28427,67.00000 147.71573,107.00000 146.00000,107.00000"/>
+<text x="194" y="93" font-family="sans-serif" font-size="12">1/4</text>
+<rect x="146" y="115" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="146.00000,115.00000 174.28427,115.00000 157.71573,155.00000 146.00000,155.00000"/>
+<text x="194" y="141" font-family="sans-serif" font-size="12">2/4</text>
+<rect x="146" y="163" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="146.00000,163.00000 184.28427,163.00000 167.71573,203.00000 146.00000,203.00000"/>
+<text x="194" y="189" font-family="sans-serif" font-size="12">3/4</text>
+<rect x="146" y="211" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="146.00000,211.00000 186.00000,211.00000 186.00000,251.00000 146.00000,251.00000"/>
+<text x="194" y="237" font-family="sans-serif" font-size="12">4/4</text>
+<text x="276" y="55" font-family="sans-serif" font-size="12">normal 45°</text>
+<rect x="276" y="67" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="276.00000,95.28427 276.00000,67.00000 304.28427,67.00000"/>
+<text x="324" y="93" font-family="sans-serif" font-size="12">1/4</text>
+<rect x="276" y="115" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="276.00000,115.00000 316.00000,115.00000 276.00000,155.00000 276.00000,155.00000"/>
+<text x="324" y="141" font-family="sans-serif" font-size="12">2/4</text>
+<rect x="276" y="163" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="276.00000,163.00000 316.00000,163.00000 316.00000,174.71573 287.71573,203.00000 276.00000,203.00000"/>
+<text x="324" y="189" font-family="sans-serif" font-size="12">3/4</text>
+<rect x="276" y="211" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="276.00000,211.00000 316.00000,211.00000 316.00000,251.00000 276.00000,251.00000"/>
+<text x="324" y="237" font-family="sans-serif" font-size="12">4/4</text>
+<text x="406" y="55" font-family="sans-serif" font-size="12">normal 67.5°</text>
+<rect x="406" y="67" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="406.00000,85.28427 406.00000,67.00000 446.00000,67.00000 446.00000,68.71573"/>
+<text x="454" y="93" font-family="sans-serif" font-size="12">1/4</text>
+<rect x="406" y="115" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="406.00000,143.28427 406.00000,115.00000 446.00000,115.00000 446.00000,126.71573"/>
+<text x="454" y="141" font-family="sans-serif" font-size="12">2/4</text>
+<rect x="406" y="163" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="406.00000,201.28427 406.00000,163.00000 446.00000,163.00000 446.00000,184.71573"/>
+<text x="454" y="189" font-family="sans-serif" font-size="12">3/4</text>
+<rect x="406" y="211" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="406.00000,211.00000 446.00000,211.00000 446.00000,251.00000 406.00000,251.00000"/>
+<text x="454" y="237" font-family="sans-serif" font-size="12">4/4</text>
+<text x="536" y="55" font-family="sans-serif" font-size="12">normal 90°</text>
+<rect x="536" y="67" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="536.00000,77.00000 536.00000,67.00000 576.00000,67.00000 576.00000,77.00000"/>
+<text x="584" y="93" font-family="sans-serif" font-size="12">1/4</text>
+<rect x="536" y="115" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="536.00000,135.00000 536.00000,115.00000 576.00000,115.00000 576.00000,135.00000"/>
+<text x="584" y="141" font-family="sans-serif" font-size="12">2/4</text>
+<rect x="536" y="163" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="536.00000,193.00000 536.00000,163.00000 576.00000,163.00000 576.00000,193.00000"/>
+<text x="584" y="189" font-family="sans-serif" font-size="12">3/4</text>
+<rect x="536" y="211" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="536.00000,211.00000 576.00000,211.00000 576.00000,251.00000 536.00000,251.00000"/>
+<text x="584" y="237" font-family="sans-serif" font-size="12">4/4</text>
+<text x="666" y="55" font-family="sans-serif" font-size="12">normal 112.5°</text>
+<rect x="666" y="67" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="666.00000,68.71573 666.00000,67.00000 706.00000,67.00000 706.00000,85.28427"/>
+<text x="714" y="93" font-family="sans-serif" font-size="12">1/4</text>
+<rect x="666" y="115" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="666.00000,126.71573 666.00000,115.00000 706.00000,115.00000 706.00000,143.28427"/>
+<text x="714" y="141" font-family="sans-serif" font-size="12">2/4</text>
+<rect x="666" y="163" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="666.00000,184.71573 666.00000,163.00000 706.00000,163.00000 706.00000,201.28427"/>
+<text x="714" y="189" font-family="sans-serif" font-size="12">3/4</text>
+<rect x="666" y="211" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="666.00000,211.00000 706.00000,211.00000 706.00000,251.00000 666.00000,251.00000"/>
+<text x="714" y="237" font-family="sans-serif" font-size="12">4/4</text>
+<text x="796" y="55" font-family="sans-serif" font-size="12">normal 135°</text>
+<rect x="796" y="67" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="807.71573,67.00000 836.00000,67.00000 836.00000,95.28427"/>
+<text x="844" y="93" font-family="sans-serif" font-size="12">1/4</text>
+<rect x="796" y="115" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="796.00000,115.00000 796.00000,115.00000 836.00000,115.00000 836.00000,155.00000"/>
+<text x="844" y="141" font-family="sans-serif" font-size="12">2/4</text>
+<rect x="796" y="163" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="796.00000,174.71573 796.00000,163.00000 836.00000,163.00000 836.00000,203.00000 824.28427,203.00000"/>
+<text x="844" y="189" font-family="sans-serif" font-size="12">3/4</text>
+<rect x="796" y="211" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="796.00000,211.00000 836.00000,211.00000 836.00000,251.00000 796.00000,251.00000"/>
+<text x="844" y="237" font-family="sans-serif" font-size="12">4/4</text>
+<text x="926" y="55" font-family="sans-serif" font-size="12">normal 157.5°</text>
+<rect x="926" y="67" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="947.71573,67.00000 966.00000,67.00000 966.00000,107.00000 964.28427,107.00000"/>
+<text x="974" y="93" font-family="sans-serif" font-size="12">1/4</text>
+<rect x="926" y="115" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="937.71573,115.00000 966.00000,115.00000 966.00000,155.00000 954.28427,155.00000"/>
+<text x="974" y="141" font-family="sans-serif" font-size="12">2/4</text>
+<rect x="926" y="163" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="927.71573,163.00000 966.00000,163.00000 966.00000,203.00000 944.28427,203.00000"/>
+<text x="974" y="189" font-family="sans-serif" font-size="12">3/4</text>
+<rect x="926" y="211" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="926.00000,211.00000 966.00000,211.00000 966.00000,251.00000 926.00000,251.00000"/>
+<text x="974" y="237" font-family="sans-serif" font-size="12">4/4</text>
+<text x="16" y="300" font-family="sans-serif" font-size="12">normal 180°</text>
+<rect x="16" y="312" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="46.00000,312.00000 56.00000,312.00000 56.00000,352.00000 46.00000,352.00000"/>
+<text x="64" y="338" font-family="sans-serif" font-size="12">1/4</text>
+<rect x="16" y="360" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="36.00000,360.00000 56.00000,360.00000 56.00000,400.00000 36.00000,400.00000"/>
+<text x="64" y="386" font-family="sans-serif" font-size="12">2/4</text>
+<rect x="16" y="408" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="26.00000,408.00000 56.00000,408.00000 56.00000,448.00000 26.00000,448.00000"/>
+<text x="64" y="434" font-family="sans-serif" font-size="12">3/4</text>
+<rect x="16" y="456" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="16.00000,456.00000 56.00000,456.00000 56.00000,496.00000 16.00000,496.00000"/>
+<text x="64" y="482" font-family="sans-serif" font-size="12">4/4</text>
+<text x="146" y="300" font-family="sans-serif" font-size="12">normal 202.5°</text>
+<rect x="146" y="312" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="184.28427,312.00000 186.00000,312.00000 186.00000,352.00000 167.71573,352.00000"/>
+<text x="194" y="338" font-family="sans-serif" font-size="12">1/4</text>
+<rect x="146" y="360" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="174.28427,360.00000 186.00000,360.00000 186.00000,400.00000 157.71573,400.00000"/>
+<text x="194" y="386" font-family="sans-serif" font-size="12">2/4</text>
+<rect x="146" y="408" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="164.28427,408.00000 186.00000,408.00000 186.00000,448.00000 147.71573,448.00000"/>
+<text x="194" y="434" font-family="sans-serif" font-size="12">3/4</text>
+<rect x="146" y="456" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="146.00000,456.00000 186.00000,456.00000 186.00000,496.00000 146.00000,496.00000"/>
+<text x="194" y="482" font-family="sans-serif" font-size="12">4/4</text>
+<text x="276" y="300" font-family="sans-serif" font-size="12">normal 225°</text>
+<rect x="276" y="312" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="316.00000,323.71573 316.00000,352.00000 287.71573,352.00000"/>
+<text x="324" y="338" font-family="sans-serif" font-size="12">1/4</text>
+<rect x="276" y="360" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="316.00000,360.00000 316.00000,360.00000 316.00000,400.00000 276.00000,400.00000"/>
+<text x="324" y="386" font-family="sans-serif" font-size="12">2/4</text>
+<rect x="276" y="408" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="276.00000,436.28427 304.28427,408.00000 316.00000,408.00000 316.00000,448.00000 276.00000,448.00000"/>
+<text x="324" y="434" font-family="sans-serif" font-size="12">3/4</text>
+<rect x="276" y="456" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="276.00000,456.00000 316.00000,456.00000 316.00000,496.00000 276.00000,496.00000"/>
+<text x="324" y="482" font-family="sans-serif" font-size="12">4/4</text>
+<text x="406" y="300" font-family="sans-serif" font-size="12">normal 247.5°</text>
+<rect x="406" y="312" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="406.00000,350.28427 446.00000,333.71573 446.00000,352.00000 406.00000,352.00000"/>
+<text x="454" y="338" font-family="sans-serif" font-size="12">1/4</text>
+<rect x="406" y="360" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="406.00000,388.28427 446.00000,371.71573 446.00000,400.00000 406.00000,400.00000"/>
+<text x="454" y="386" font-family="sans-serif" font-size="12">2/4</text>
+<rect x="406" y="408" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="406.00000,426.28427 446.00000,409.71573 446.00000,448.00000 406.00000,448.00000"/>
+<text x="454" y="434" font-family="sans-serif" font-size="12">3/4</text>
+<rect x="406" y="456" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="406.00000,456.00000 446.00000,456.00000 446.00000,496.00000 406.00000,496.00000"/>
+<text x="454" y="482" font-family="sans-serif" font-size="12">4/4</text>
+<text x="536" y="300" font-family="sans-serif" font-size="12">normal 270°</text>
+<rect x="536" y="312" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="536.00000,342.00000 576.00000,342.00000 576.00000,352.00000 536.00000,352.00000"/>
+<text x="584" y="338" font-family="sans-serif" font-size="12">1/4</text>
+<rect x="536" y="360" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="536.00000,380.00000 576.00000,380.00000 576.00000,400.00000 536.00000,400.00000"/>
+<text x="584" y="386" font-family="sans-serif" font-size="12">2/4</text>
+<rect x="536" y="408" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="536.00000,418.00000 576.00000,418.00000 576.00000,448.00000 536.00000,448.00000"/>
+<text x="584" y="434" font-family="sans-serif" font-size="12">3/4</text>
+<rect x="536" y="456" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="536.00000,456.00000 576.00000,456.00000 576.00000,496.00000 536.00000,496.00000"/>
+<text x="584" y="482" font-family="sans-serif" font-size="12">4/4</text>
+<text x="666" y="300" font-family="sans-serif" font-size="12">normal 292.5°</text>
+<rect x="666" y="312" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="666.00000,333.71573 706.00000,350.28427 706.00000,352.00000 666.00000,352.00000"/>
+<text x="714" y="338" font-family="sans-serif" font-size="12">1/4</text>
+<rect x="666" y="360" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="666.00000,371.71573 706.00000,388.28427 706.00000,400.00000 666.00000,400.00000"/>
+<text x="714" y="386" font-family="sans-serif" font-size="12">2/4</text>
+<rect x="666" y="408" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="666.00000,409.71573 706.00000,426.28427 706.00000,448.00000 666.00000,448.00000"/>
+<text x="714" y="434" font-family="sans-serif" font-size="12">3/4</text>
+<rect x="666" y="456" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="666.00000,456.00000 706.00000,456.00000 706.00000,496.00000 666.00000,496.00000"/>
+<text x="714" y="482" font-family="sans-serif" font-size="12">4/4</text>
+<text x="796" y="300" font-family="sans-serif" font-size="12">normal 315°</text>
+<rect x="796" y="312" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="796.00000,323.71573 824.28427,352.00000 796.00000,352.00000"/>
+<text x="844" y="338" font-family="sans-serif" font-size="12">1/4</text>
+<rect x="796" y="360" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="796.00000,360.00000 836.00000,400.00000 836.00000,400.00000 796.00000,400.00000"/>
+<text x="844" y="386" font-family="sans-serif" font-size="12">2/4</text>
+<rect x="796" y="408" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="796.00000,408.00000 807.71573,408.00000 836.00000,436.28427 836.00000,448.00000 796.00000,448.00000"/>
+<text x="844" y="434" font-family="sans-serif" font-size="12">3/4</text>
+<rect x="796" y="456" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="796.00000,456.00000 836.00000,456.00000 836.00000,496.00000 796.00000,496.00000"/>
+<text x="844" y="482" font-family="sans-serif" font-size="12">4/4</text>
+<text x="926" y="300" font-family="sans-serif" font-size="12">normal 337.5°</text>
+<rect x="926" y="312" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="926.00000,312.00000 927.71573,312.00000 944.28427,352.00000 926.00000,352.00000"/>
+<text x="974" y="338" font-family="sans-serif" font-size="12">1/4</text>
+<rect x="926" y="360" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="926.00000,360.00000 937.71573,360.00000 954.28427,400.00000 926.00000,400.00000"/>
+<text x="974" y="386" font-family="sans-serif" font-size="12">2/4</text>
+<rect x="926" y="408" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="926.00000,408.00000 947.71573,408.00000 964.28427,448.00000 926.00000,448.00000"/>
+<text x="974" y="434" font-family="sans-serif" font-size="12">3/4</text>
+<rect x="926" y="456" width="40" height="40" fill="none" stroke="black"/>
+<polygon points="926.00000,456.00000 966.00000,456.00000 966.00000,496.00000 926.00000,496.00000"/>
+<text x="974" y="482" font-family="sans-serif" font-size="12">4/4</text>
+</svg>

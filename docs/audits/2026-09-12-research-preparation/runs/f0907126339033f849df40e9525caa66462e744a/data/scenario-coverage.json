@@ -1,0 +1,123 @@
+{
+  "families": [
+    {
+      "family": "pooling",
+      "native_run": false,
+      "required_cases": [
+        "broad shallow",
+        "deep",
+        "wide calm",
+        "connected unequal levels"
+      ],
+      "walkthrough": false
+    },
+    {
+      "family": "small-quantity",
+      "native_run": false,
+      "required_cases": [
+        "isolated fractions",
+        "repeated tiny drips",
+        "low-flow trickle",
+        "residual pockets"
+      ],
+      "walkthrough": false
+    },
+    {
+      "family": "geometry",
+      "native_run": false,
+      "required_cases": [
+        "narrow/broad channel",
+        "stairs",
+        "U-vessel",
+        "nozzle",
+        "irregular slope"
+      ],
+      "walkthrough": false
+    },
+    {
+      "family": "release",
+      "native_run": false,
+      "required_cases": [
+        "reservoir dump",
+        "slow gate",
+        "fall",
+        "ledge sheet",
+        "thin stream",
+        "shower"
+      ],
+      "walkthrough": false
+    },
+    {
+      "family": "direction",
+      "native_run": false,
+      "required_cases": [
+        "vertical jet",
+        "horizontal emission",
+        "diagonal emission"
+      ],
+      "walkthrough": false
+    },
+    {
+      "family": "terrain",
+      "native_run": false,
+      "required_cases": [
+        "excavate/refill",
+        "remove support",
+        "cavity drain",
+        "real void",
+        "thin barrier"
+      ],
+      "walkthrough": false
+    },
+    {
+      "family": "material",
+      "native_run": false,
+      "required_cases": [
+        "Water/Sand Baseline",
+        "deposition",
+        "separate Mercury reference"
+      ],
+      "walkthrough": false
+    },
+    {
+      "family": "player-body",
+      "native_run": false,
+      "required_cases": [
+        "source-supported player disturbance",
+        "body displacement only after prerequisite check"
+      ],
+      "walkthrough": false
+    },
+    {
+      "family": "boundary",
+      "native_run": false,
+      "required_cases": [
+        "supported film",
+        "underside",
+        "side",
+        "droplet across positive and negative seams"
+      ],
+      "walkthrough": false
+    },
+    {
+      "family": "long-tail",
+      "native_run": false,
+      "required_cases": [
+        "rest",
+        "micro-motion",
+        "crawl/stick",
+        "abrupt stop",
+        "repeat reset"
+      ],
+      "walkthrough": false
+    }
+  ],
+  "geometric_recipes_available": [
+    "basin48",
+    "supported-film",
+    "support-removal",
+    "ledge",
+    "tiny-inputs"
+  ],
+  "status": "implementation checklist, not completed scenes"
+}

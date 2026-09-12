@@ -1,0 +1,7 @@
+mass_bits,states,roundtrip_failures,coverage_mismatches,full_condition_byte
+3,8,0,0,255
+4,16,0,0,255
+5,32,0,0,255
+6,64,0,0,255
+7,128,0,0,255
+8,256,0,0,255

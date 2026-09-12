@@ -1,0 +1,82 @@
+[
+  {
+    "capacity": 1,
+    "claim": "no violation in enumerated bounded model; not engine proof or liveness",
+    "counterexample": null,
+    "depth_cut": true,
+    "depth_limit": 10,
+    "state_limit": 60000,
+    "state_limit_hit": false,
+    "states": 1328,
+    "transitions": 3620,
+    "variant": "safe"
+  },
+  {
+    "capacity": 2,
+    "claim": "no violation in enumerated bounded model; not engine proof or liveness",
+    "counterexample": null,
+    "depth_cut": true,
+    "depth_limit": 10,
+    "state_limit": 60000,
+    "state_limit_hit": false,
+    "states": 4601,
+    "transitions": 14181,
+    "variant": "safe"
+  },
+  {
+    "capacity": 2,
+    "claim": "bounded abstract-model counterexample",
+    "counterexample": [
+      "0:prepare_promotion"
+    ],
+    "depth_limit": 10,
+    "state_limit": 60000,
+    "states": 4,
+    "transitions": 4,
+    "variant": "early_release"
+  },
+  {
+    "capacity": 2,
+    "claim": "bounded abstract-model counterexample",
+    "counterexample": [
+      "0:prepare_promotion",
+      "0:ack_promotion",
+      "0:commit_promotion"
+    ],
+    "depth_limit": 10,
+    "state_limit": 60000,
+    "states": 83,
+    "transitions": 136,
+    "variant": "duplicate_owner"
+  },
+  {
+    "capacity": 2,
+    "claim": "bounded abstract-model counterexample",
+    "counterexample": [
+      "0:change_destination",
+      "0:prepare_promotion",
+      "0:ack_promotion",
+      "0:commit_promotion",
+      "0:failed_return_drops_payload"
+    ],
+    "depth_limit": 10,
+    "state_limit": 60000,
+    "states": 448,
+    "transitions": 1016,
+    "variant": "drop_on_full"
+  },
+  {
+    "capacity": 2,
+    "claim": "bounded abstract-model counterexample",
+    "counterexample": [
+      "0:prepare_promotion",
+      "0:edit_revision",
+      "0:ack_promotion"
+    ],
+    "depth_limit": 10,
+    "state_limit": 60000,
+    "states": 78,
+    "transitions": 129,
+    "variant": "stale_ack"
+  }
+]
