@@ -190,6 +190,12 @@ func _run() -> void:
 	var corrupted_provenance: Dictionary=blind.duplicate(true)
 	corrupted_provenance.hidden_mapping.A.source="bogus"
 	assert(not CyberWaterExperimentBlind.export_metadata(corrupted_provenance).ok)
+	var forged_order: Dictionary=profile_result.duplicate(true)
+	forged_order.source="profile"
+	forged_order.provenance.effective_source="profile"
+	forged_order.provenance.applied_layers=["profile","launch"]
+	forged_order.provenance.field_origins.scenario_id="launch"
+	assert(not CyberWaterExperimentBlind.create([forged_order,launch_result],17).ok)
 
 	var emitted: Array[Dictionary] = []
 	var developer_panel: CyberWaterExperimentPanel = CyberWaterExperimentPanel.new()

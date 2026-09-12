@@ -46,6 +46,22 @@ func _run() -> void:
 	for body: RigidBody2D in [controller.test_rigid_body_1,
 		controller.test_rigid_body_2,controller.test_rigid_body_3]:
 		_expect(body.freeze,"ordinary Water scenario left a body active")
+		_expect(body.collision_layer==0 and body.collision_mask==0,
+			"ordinary Water scenario retained Godot collision participation")
+
+	controller.paused=false
+	var previous_hash: String=str(controller.tower_context.water_policy_hash)
+	controller.pending_water_apply={"hash":"forced-invalid","previous_paused":false}
+	controller.paused=true
+	controller.tower_command({"water_reset":true,"water_policy":{"mass_bits":2},
+		"water_policy_hash":"forced-invalid"})
+	var rejection_deadline: int=Time.get_ticks_msec()+15_000
+	while Time.get_ticks_msec()<rejection_deadline and not controller.pending_water_apply.is_empty():
+		await process_frame
+	_expect(controller.pending_water_apply.is_empty(),"rejected Water reset remained pending")
+	_expect(not controller.paused,"rejected Water reset did not restore prior pause state")
+	_expect(str(controller.tower_context.water_policy_hash)==previous_hash,
+		"rejected Water reset changed the prior policy")
 
 	var blind_candidates: Array[int]=[3,5]
 	_expect(controller.water_lab_prepare_blind(blind_candidates,773),"blind run did not start")
@@ -61,11 +77,17 @@ func _run() -> void:
 	_expect(controller.water_active_blind_label==label,"blind reset changed/revealed its label")
 	_expect(str(controller.tower_context.water_blind_label)==label,
 		"worker metadata lost the blind label on reset")
+	controller.tower_reset()
+	_expect(controller.water_blind_set.is_empty(),"Fresh tower retained blind mapping")
+	_expect(controller.water_active_blind_label.is_empty(),"Fresh tower retained blind label")
+	_expect(str(controller.water_policy_resolved.hash)==previous_hash,
+		"Fresh tower retained the hidden candidate instead of the pre-blind policy")
+	_expect(controller.water_lab_save_profile(),"Fresh tower could not save the restored unblinded policy")
 
 	controller.simulation_worker.stop_worker()
 	controller.rapier_bridge.shutdown()
 	controller.queue_free()
 	await process_frame
 	if failures==0:
-		print("WATER_FEEL_CONTROLLER: transactional acknowledgement/body isolation/blind save+reset passed")
+		print("WATER_FEEL_CONTROLLER: transactional rejection/body collision isolation/blind lifecycle passed")
 	quit(failures)

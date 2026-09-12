@@ -1,5 +1,7 @@
 extends "res://scripts/main.gd"
 
+const WaterFeelWebProbe = preload("res://scripts/water_feel_web_probe.gd")
+
 # Web compatibility owner. The original desktop scene/worker remains intact.
 # Every native call here runs on Godot's main thread; cellular ticks remain
 # fixed at 60 Hz and render publication has its own bounded cadence.
@@ -174,7 +176,7 @@ func _update_water_web_context() -> void:
 func tower_reset() -> void:
 	tower_schedule.clear();tower_inputs.clear()
 	water_actions.clear();water_action_history.clear();water_observations.clear()
-	water_active_blind_label=""
+	_water_end_blind_session()
 	select_demo("experiment_tower")
 
 func tower_apply_profile(resolved: Dictionary) -> void:
@@ -276,6 +278,14 @@ func _ready() -> void:
 	ui.message(rapier_reason if not rapier_available else "")
 	_init_browser_test()
 	print("WEB_DEMO_READY ", ui.capability.text)
+	if test_enabled and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('water') === '1'", true)):
+		set_process(false)
+		set_physics_process(false)
+		var result: Dictionary = WaterFeelWebProbe.run(native_world, demo_bridge, world_shader)
+		result["runtime_identity"] = water_runtime_identity()
+		print("WEB_WATER_FEEL ", JSON.stringify(result))
+		JavaScriptBridge.eval("var p=document.createElement('pre');p.id='cybersand-water-result';p.textContent="+JSON.stringify(JSON.stringify(result))+";document.body.appendChild(p);fetch('/physics-results',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userAgent:navigator.userAgent,isolated:crossOriginIsolated,result:"+JSON.stringify(result)+"})});", true)
+		return
 	if test_enabled and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('transport') === '1'",true)):
 		set_process(false);set_physics_process(false)
 		var result: Dictionary=await CyberTransportProbe.run(self,4 if OS.has_feature("threads") else 1)

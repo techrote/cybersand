@@ -139,6 +139,7 @@ var tower_profile: Dictionary = CyberTransportProfiles.preset(0)
 var water_experiment_panel: CyberWaterExperimentPanel
 var water_policy_resolved: Dictionary = CyberWaterExperimentProfiles.resolve()
 var water_blind_set: Dictionary = {}
+var water_blind_base: Dictionary = {}
 var water_blind_index: int = 0
 var water_active_blind_label: String = ""
 var pending_water_apply: Dictionary = {}
@@ -195,9 +196,11 @@ func water_lab_apply_result(result: Dictionary, blind_label: String = "") -> voi
 	var recipe: Dictionary=CyberWaterFeelScenarios.recipe(
 		str(checked.policy.scenario_id),int(checked.policy.seed))
 	if recipe.is_empty(): return
+	var previous_paused: bool=paused
 	paused=true
 	pending_water_apply={"result":result.duplicate(true),"recipe":recipe.duplicate(true),
-		"blind_label":blind_label,"hash":str(checked.hash)}
+		"blind_label":blind_label,"hash":str(checked.hash),
+		"previous_paused":previous_paused}
 	tower_command({
 		"water_reset":true,
 		"water_policy":checked.policy,
@@ -213,6 +216,7 @@ func water_lab_prepare_blind(
 	if not water_policy_available: return false
 	var candidates: Array=[]
 	var base: Dictionary=water_policy_resolved.policy.duplicate(true)
+	water_blind_base=water_policy_resolved.duplicate(true)
 	base.interface_mode="oriented"
 	for bits: int in mass_candidates:
 		var candidate: Dictionary=base.duplicate(true)
@@ -252,6 +256,8 @@ func _activate_water_body_scenario(active: bool) -> void:
 	if not active:
 		for body: RigidBody2D in [test_rigid_body_1,test_rigid_body_2,test_rigid_body_3]:
 			body.freeze=true
+			body.collision_layer=0
+			body.collision_mask=0
 		rapier_bridge.shutdown()
 		rigid_bodies.clear()
 		for i: int in range(3):
@@ -267,6 +273,8 @@ func _activate_water_body_scenario(active: bool) -> void:
 			get_viewport().world_2d.space,rigid_bodies,body_sizes)
 	for i: int in range(rigid_bodies.size()):
 		rigid_bodies[i].freeze=false
+		rigid_bodies[i].collision_layer=1
+		rigid_bodies[i].collision_mask=1
 		if rapier_bridge.is_initialized():
 			rapier_bridge.reset_body(i,Vector2(160+i*52,176),0.0)
 
@@ -282,6 +290,7 @@ func tower_floor_select(index: int) -> void:
 	tower_command({"floor":tower_floor})
 
 func tower_reset() -> void:
+	_water_end_blind_session()
 	water_active_blind_label=""
 	pending_water_apply.clear()
 	tower_active = true
@@ -315,6 +324,7 @@ func tower_apply_profile(resolved: Dictionary) -> void:
 func tower_observation() -> void:
 	var report: Dictionary = {"recipe_version":CyberExperimentTower.VERSION,"seed":0,"floor":tower_floor,"context":tower_context,"platform":OS.get_name(),"utc":Time.get_datetime_string_from_system(true)}
 	if tower_context.get("water_active",false):
+		report["runtime_identity"]=water_runtime_identity()
 		report["water_feel_version"]=CyberWaterFeelScenarios.VERSION
 		report["effective_policy"]=tower_context.get("water_policy",{}).duplicate(true)
 		report["effective_policy_hash"]=str(tower_context.get("water_policy_hash",""))
@@ -339,6 +349,32 @@ func tower_observation() -> void:
 	var file: FileAccess = FileAccess.open("user://tower-observation.json",FileAccess.WRITE)
 	if file != null: file.store_string(JSON.stringify(report,"  "))
 	if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD): DisplayServer.clipboard_set(JSON.stringify(report,"  "))
+
+func _water_end_blind_session() -> void:
+	if not water_active_blind_label.is_empty() and water_blind_base.get("ok",false):
+		water_policy_resolved=water_blind_base.duplicate(true)
+		water_policy_available=true
+	water_blind_base.clear()
+	water_blind_set.clear()
+	water_blind_index=0
+	water_active_blind_label=""
+
+func water_runtime_identity() -> Dictionary:
+	var path: String=(
+		"res://addons/cybersand_native/runtime-provenance.web.json"
+		if OS.has_feature("web")
+		else "res://addons/cybersand_native/runtime-provenance.json")
+	var result: Dictionary={"platform":OS.get_name(),
+		"godot":Engine.get_version_info().get("string","unknown"),"manifest":path}
+	if not FileAccess.file_exists(path):
+		result["status"]="manifest-unavailable"
+		return result
+	var parsed: Variant=JSON.parse_string(FileAccess.get_file_as_string(path))
+	if not parsed is Dictionary:
+		result["status"]="manifest-invalid"
+		return result
+	result.merge(parsed,true)
+	return result
 var latest_snapshot: CyberSimulationSnapshot
 var worker_start_error: Error = OK
 var consumed_snapshot_serial: int = -1
@@ -787,7 +823,9 @@ func consume_worker_snapshot() -> void:
 			$Layout/Title.text="CYBERSAND / EXPERIMENT TOWER / WATER FEEL"
 			_activate_water_body_scenario(bool(recipe.body_enabled))
 			pending_water_apply.clear()
-		elif "rejected" in str(tower_context.get("status","")).to_lower():
+		elif ("rejected" in str(tower_context.get("status","")).to_lower()
+			or "requires" in str(tower_context.get("status","")).to_lower()):
+			paused=bool(pending_water_apply.get("previous_paused",true))
 			pending_water_apply.clear()
 	if tower_context.has("profile"): tower_profile = tower_context.profile
 	consumed_snapshot_serial = snapshot.serial

@@ -27,10 +27,15 @@ static func _valid_provenance(source: Variant, provenance: Variant) -> bool:
 	if not origins is Dictionary or not layers is Array:
 		return false
 	var seen: Dictionary = {}
+	var previous_index: int = 0
 	for layer: Variant in layers:
 		if (not layer is String or not layer in Profiles.SOURCES
 			or layer == "default" or seen.has(layer)):
 			return false
+		var layer_index: int = Profiles.SOURCES.find(layer)
+		if layer_index <= previous_index:
+			return false
+		previous_index = layer_index
 		seen[layer] = true
 	for key: String in Contract.POLICY_KEYS:
 		var origin: Variant = origins.get(key, "")
@@ -38,7 +43,8 @@ static func _valid_provenance(source: Variant, provenance: Variant) -> bool:
 			return false
 		if origin != "default" and not seen.has(origin):
 			return false
-	return (source == "default" and layers.is_empty()) or seen.has(source)
+	return ((source == "default" and layers.is_empty())
+		or (not layers.is_empty() and layers.back() == source))
 
 
 static func create(candidates: Array, blind_seed: int) -> Dictionary:
