@@ -28,8 +28,6 @@ public:
     static constexpr std::int32_t kWorldHeight = 1024;
     static constexpr std::int32_t kInputStride = 11;
     static constexpr std::int32_t kResultStride = 9;
-    static constexpr std::int32_t kCoherentWaterDelayTicks = 12;
-
     CyberNativeCellWorld();
     ~CyberNativeCellWorld() override;
 
@@ -91,6 +89,7 @@ public:
     [[nodiscard]] std::int64_t get_worker_threads() const;
     [[nodiscard]] String get_backend_name() const;
     [[nodiscard]] String get_last_tick_error() const;
+    [[nodiscard]] Dictionary get_water_experiment_policy() const;
     // Isolated fresh-world experiment API. Called only by the exclusive owner.
     bool diagnostic_reset(const Dictionary& options);
     bool diagnostic_fill_rect(Vector2i origin, Vector2i size, std::int64_t material,

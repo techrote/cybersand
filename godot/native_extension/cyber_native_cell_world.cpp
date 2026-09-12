@@ -57,6 +57,8 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("diagnostic_fill_rect", "origin", "size", "material", "state_b"), &CyberNativeCellWorld::diagnostic_fill_rect, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("diagnostic_snapshot", "origin", "size", "include_histogram"), &CyberNativeCellWorld::diagnostic_snapshot, DEFVAL(false));
     ClassDB::bind_method(D_METHOD("diagnostic_body_metrics"), &CyberNativeCellWorld::diagnostic_body_metrics);
+    ClassDB::bind_method(D_METHOD("get_water_experiment_policy"),
+                         &CyberNativeCellWorld::get_water_experiment_policy);
     ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("auto_worker_threads", "logical_threads"), &CyberNativeCellWorld::auto_worker_threads);
     ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("logical_processor_count"), &CyberNativeCellWorld::logical_processor_count);
     ClassDB::bind_method(D_METHOD("reset_demo_world"),
@@ -348,11 +350,15 @@ void CyberNativeCellWorld::emit_disc(std::int64_t centre_x, std::int64_t centre_
             const auto y = centre_y + offset_y;
             if (!in_bounds(x, y)) continue;
             const auto before = world_->stored_material(x, y);
+            auto state_a = static_cast<std::uint16_t>(definition.initial_state_a);
             auto state_b = definition.initial_state_b;
-            if (material == cybersand::Material::Water && (emission_flags & 1) != 0) {
-                state_b = static_cast<std::uint8_t>(kCoherentWaterDelayTicks);
+            if (material == cybersand::Material::Water) {
+                state_a = world_->config().water_experiment_policy.maximum();
             }
-            if (!world_->set_cell_state(x, y, material, definition.initial_state_a, state_b)) {
+            if (material == cybersand::Material::Water && (emission_flags & 1) != 0) {
+                state_b = world_->config().water_experiment_policy.coherence_ticks();
+            }
+            if (!world_->set_cell_state(x, y, material, state_a, state_b)) {
                 continue;
             }
             changed = true;
@@ -1236,12 +1242,29 @@ bool CyberNativeCellWorld::diagnostic_fill_rect(Vector2i origin, Vector2i size,
         !in_bounds(origin.x, origin.y) || !in_bounds(static_cast<std::int64_t>(origin.x) + size.x - 1,
                                                    static_cast<std::int64_t>(origin.y) + size.y - 1)) return false;
     const auto value = static_cast<cybersand::Material>(material);
+    const auto state_a = value == cybersand::Material::Water
+        ? world_->config().water_experiment_policy.maximum()
+        : static_cast<std::uint16_t>(cybersand::MaterialRules::descriptor(value).initial_state_a);
     for (auto y = origin.y; y < origin.y + size.y; ++y)
         for (auto x = origin.x; x < origin.x + size.x; ++x)
-            (void)world_->set_cell_state(x, y, value, cybersand::MaterialRules::descriptor(value).initial_state_a,
+            (void)world_->set_cell_state(x, y, value, state_a,
                                        static_cast<std::uint8_t>(state_b));
     ++revision_;
     return true;
+}
+
+Dictionary CyberNativeCellWorld::get_water_experiment_policy() const {
+    Dictionary result;
+    if (world_ == nullptr) return result;
+    const auto& policy = world_->config().water_experiment_policy;
+    result["version"] = policy.version();
+    result["mass_bits"] = policy.mass_bits();
+    result["coherence_ticks"] = policy.coherence_ticks();
+    result["rest_policy"] = static_cast<std::uint8_t>(policy.rest_policy());
+    result["maximum"] = policy.maximum();
+    result["film"] = policy.film();
+    result["tolerance"] = policy.tolerance();
+    return result;
 }
 
 Dictionary CyberNativeCellWorld::diagnostic_snapshot(Vector2i origin, Vector2i size, bool include_histogram) const {
