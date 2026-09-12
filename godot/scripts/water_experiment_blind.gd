@@ -2,6 +2,7 @@ class_name CyberWaterExperimentBlind
 extends RefCounted
 
 const Profiles = preload("res://scripts/water_experiment_profiles.gd")
+const Contract = preload("res://scripts/water_experiment_contract.gd")
 const VERSION: int = 1
 const MAX_CANDIDATES: int = 26
 
@@ -14,6 +15,30 @@ static func _next(state: int) -> int:
 	# Local 31-bit LCG: deterministic, bounded, and independent of both the
 	# simulation recipe seed and Godot's global random-number state.
 	return (state * 1_103_515_245 + 12_345) & 0x7fff_ffff
+
+
+static func _valid_provenance(source: Variant, provenance: Variant) -> bool:
+	if not source is String or not source in Profiles.SOURCES or not provenance is Dictionary:
+		return false
+	if provenance.get("effective_source", "") != source:
+		return false
+	var origins: Variant = provenance.get("field_origins", {})
+	var layers: Variant = provenance.get("applied_layers", [])
+	if not origins is Dictionary or not layers is Array:
+		return false
+	var seen: Dictionary = {}
+	for layer: Variant in layers:
+		if (not layer is String or not layer in Profiles.SOURCES
+			or layer == "default" or seen.has(layer)):
+			return false
+		seen[layer] = true
+	for key: String in Contract.POLICY_KEYS:
+		var origin: Variant = origins.get(key, "")
+		if not origin is String or not origin in Profiles.SOURCES:
+			return false
+		if origin != "default" and not seen.has(origin):
+			return false
+	return (source == "default" and layers.is_empty()) or seen.has(source)
 
 
 static func create(candidates: Array, blind_seed: int) -> Dictionary:
@@ -29,7 +54,13 @@ static func create(candidates: Array, blind_seed: int) -> Dictionary:
 			resolved = Profiles.resolve({}, {}, candidate.policy)
 			if resolved.ok and candidate.has("hash") and candidate.hash != resolved.hash:
 				return _failure("blind candidate hash does not match its effective policy")
-			if resolved.ok and candidate.has("source") and candidate.has("provenance"):
+			var has_source: bool=candidate.has("source")
+			var has_provenance: bool=candidate.has("provenance")
+			if has_source != has_provenance:
+				return _failure("blind candidate provenance is incomplete")
+			if has_source and not _valid_provenance(candidate.source,candidate.provenance):
+				return _failure("blind candidate provenance is invalid")
+			if resolved.ok and has_source:
 				resolved.source = candidate.source
 				resolved.provenance = candidate.provenance.duplicate(true)
 		else:
@@ -100,8 +131,11 @@ static func export_metadata(blind_set: Dictionary, context: Dictionary = {}) -> 
 		if not label is String or not blind_set.hidden_mapping.has(label):
 			return _failure("blind mapping is incomplete")
 		var hidden: Variant = blind_set.hidden_mapping[label]
-		if not hidden is Dictionary or not hidden.has("policy") or not hidden.has("hash"):
+		if (not hidden is Dictionary or not hidden.has("policy") or not hidden.has("hash")
+			or not hidden.has("source") or not hidden.has("provenance")):
 			return _failure("blind candidate metadata is incomplete")
+		if not _valid_provenance(hidden.source,hidden.provenance):
+			return _failure("blind candidate provenance does not reconstruct")
 		var resolved: Dictionary = Profiles.resolve({}, {}, hidden.policy)
 		if (
 			not resolved.ok

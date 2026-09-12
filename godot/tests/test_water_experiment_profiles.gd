@@ -181,6 +181,15 @@ func _run() -> void:
 	var corrupted: Dictionary = blind.duplicate(true)
 	corrupted.hidden_mapping.A.hash = "bad"
 	assert(not CyberWaterExperimentBlind.export_metadata(corrupted).ok)
+	var bogus_source: Dictionary=profile_result.duplicate(true)
+	bogus_source.source="bogus"
+	assert(not CyberWaterExperimentBlind.create([bogus_source,launch_result],17).ok)
+	var bogus_origin: Dictionary=profile_result.duplicate(true)
+	bogus_origin.provenance.field_origins.mass_bits="bogus"
+	assert(not CyberWaterExperimentBlind.create([bogus_origin,launch_result],17).ok)
+	var corrupted_provenance: Dictionary=blind.duplicate(true)
+	corrupted_provenance.hidden_mapping.A.source="bogus"
+	assert(not CyberWaterExperimentBlind.export_metadata(corrupted_provenance).ok)
 
 	var emitted: Array[Dictionary] = []
 	var developer_panel: CyberWaterExperimentPanel = CyberWaterExperimentPanel.new()
