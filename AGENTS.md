@@ -2,9 +2,10 @@
 
 Before changes, read the [handover](docs/operations/cybersand-codex-development-handover.md),
 [README](README.md), [documentation index](docs/README.md), [roadmap](docs/reference/status-and-roadmap.md),
-and relevant subsystem/ADRs. Inspect actual Git root, HEAD, branch, status, tags,
-remotes, dependency pins and required LFS state. The companion workspace repository
-is separate from this source repository; [identity](docs/operations/source-checkpoint-and-recovery.md)
+and relevant subsystem/ADRs. For any task using subagents, also read the
+[agent orchestration guide](docs/operations/agent-orchestration.md). Inspect actual Git root,
+HEAD, branch, status, tags, remotes, dependency pins and required LFS state. The companion
+workspace repository is separate from this source repository; [identity](docs/operations/source-checkpoint-and-recovery.md)
 explains the established checkpoints. Preserve unrelated work.
 
 Source defines Current behavior; Approved requirements may be partly implemented.
@@ -39,6 +40,29 @@ platform matrix. Do not commit generated imports beyond the three portable Godot
 bootstrap files, native build output, toolchains, environments, caches, archives,
 logs, crash dumps, credentials or machine-local configuration. Required runtime
 libraries use Git LFS; preserve dependency versions, hashes, licenses and provenance.
+
+## Multi-agent discipline
+
+Subagents are optional tools, not mandatory stages. Every spawn must justify its cold-start
+context/tool cost with genuine parallelism, specialist implementation, model-family review,
+independent architecture reasoning or useful context isolation.
+
+- Prefer the parent for small or serial work.
+- Give children compact task-specific handoffs instead of making each child reconstruct the
+  full programme.
+- Prefer continuing an existing suitable child for repair/re-review over respawning and
+  reloading the same context.
+- Batch related stable diffs for independent review where that does not hide attribution.
+- Use at most two concurrent write-capable children by default, and only with proven disjoint
+  write sets and frozen interfaces.
+- A reviewer must inspect a stable input; do not certify a moving diff.
+- Never use Low reasoning effort for CyberSand orchestration.
+- Do not automatically enable Fast/priority serving for Luna, Terra, Sol or Astra.
+- Terra review is non-authoritative; consequential findings require Sol/Astra or the assigned
+  strong parent to adjudicate them from primary evidence.
+
+The detailed rules, model roles, compact-handoff format, reviewer batching and master
+step-down gate are canonical in the [agent orchestration guide](docs/operations/agent-orchestration.md).
 
 ## Documentation obligations
 
