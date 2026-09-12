@@ -19,7 +19,7 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 | Understand the engine | [Architecture overview](architecture/overview.md), then its focused ownership/threading/coupling links |
 | Answer one technical question | [Retrieval index](reference/retrieval-index.md) |
 | Change a material | [Rule kernels](systems/materials-and-rule-kernels.md), [Water](systems/water-design.md), [material lab](MATERIAL_LAB.md) |
-| Investigate powder penetration, barrel sinking or soliding | [Physics characterisation plan](operations/physics-characterisation-plan.md) (Planned experiments) |
+| Investigate powder penetration, barrel sinking or soliding | [Physics characterisation plan](operations/physics-characterisation-plan.md) (Planned experiments); for multi-agent issue #12 execution also use the [parsimonious orchestration overlay](operations/issue12-agent-orchestration.md) |
 | Build or validate | [Build guide](operations/local-build-and-validation.md), [test selection](operations/testing-validation-and-replay.md), [dated evidence](reference/validation-evidence.md) |
 | Understand intent | [Product priorities](reference/product-intent-and-priorities.md), [principles](architecture/principles-and-non-goals.md), [ADRs](decisions) |
 | Maintain these docs | [Documentation and retrieval contract](operations/documentation-maintenance.md) |
