@@ -216,9 +216,19 @@ source produced the passing artifact above. The failure is preserved, not erased
   `tools/dev.py`, `docs/LOCAL_DEVELOPMENT.md` and
   `validation/browser-results.json` (some are referenced by multiple questions).
   #19 does not invent those historical files.
-- The current repository check additionally requires a Linux GDExtension rebuild
-  for eight changed source inputs. The Windows runtime and both Web artifacts are
-  source-matched; Linux is not inferred from them.
+- Pull request CI rebuilt the Linux GDExtension from issue source with the pinned
+  Ubuntu 24.04/G++ 13/Godot 4.7 toolchain. Run 34726713968 passed the ABI floor
+  and all 34 Godot invocations, including the #19 controller, policy, scenario and
+  integration suites. The actual-pixel presentation oracle now exits explicitly
+  under a headless DisplayServer instead of waiting for a frame that cannot be
+  submitted; the retained Windows/NVIDIA GPU run remains the pixel oracle.
+- The CI-produced Linux object is materialized at
+  godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+  (SHA-256 f44360702d942386bf515a201cf72018bed1568e14061cf0e586d2e30c351492,
+  1,301,488 bytes). Its provenance records workflow run 34726713968, artifact
+  10308325733, artifact ZIP SHA-256
+  b651e65001bf63c965f7a070492b172300de9ca7dec2a079b40294ed0f637fdb
+  and tested merge commit 1bf5a987e0bd48ead2828c5d7b6392d12a32b2ef.
 
 ## Limitations and gaps
 
@@ -228,9 +238,8 @@ source produced the passing artifact above. The failure is preserved, not erased
   exited. Actual Godot rendered pixels, instantiated desktop owner/controller
   paths and real Chrome exports were executed instead; no manual human preference
   or accessibility claim is made.
-- The local host lacks WSL/Linux, so Linux GDExtension runtime evidence must come
-  from the pinned Ubuntu CI job. A Linux pass may validate build/runtime parity;
-  it does not turn this experiment into a production migration.
+- Linux validation comes from the pinned Ubuntu CI job rather than the local host;
+  this validates build/runtime parity but is not a production migration.
 - Observation export is bounded experimental metadata, not a complete replay of
   arbitrary brush/player/OS input.
 - Full-texture GPU upload cost is unchanged and no performance saving is inferred.
@@ -242,7 +251,7 @@ The source series from the preregistration through the validated browser harness
 `e4f2212`, `86ed176`, `7bd31e4`, `0009288`, `fad813f`, `2080a3a`,
 `dfa95b3`, `4150833`, `3d227f7`, `d9792e2`, `369b4a3`, `ef5e56d`,
 `d97a8c6`, `d15fc9d`, `5691b16`, `0fc265b`, `17ff83f`,
-`d0cb399`, `3ef4923`.
+`d0cb399`, `3ef4923`, `8ba0853`, `b66fce4`.
 
-The pull request and GitHub closing report identify the final documentation,
-retained-runtime and any CI-derived Linux provenance commits exactly.
+The pull request and GitHub closing report identify the final CI-derived Linux
+runtime/provenance integration commit exactly.
