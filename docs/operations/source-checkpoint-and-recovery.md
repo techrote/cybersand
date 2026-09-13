@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Actual local Git roots, preserved baseline, recovery boundaries and source-versus-artifact identity
 canonical-for: [source-identity, local-checkpoints, recovery-coverage]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-13
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md]
 ---
 
@@ -172,3 +172,28 @@ C:/kybersand/worktrees/issue-17-state-precision. [Evidence](../audits/2026-09-11
 records exact compiler/executable/local-delta hashes and all retained samples.
 C:/kybersand/source remains at f3fb9de with its deliberately dirty DLL untouched.
 No experiment branch is merged into production. Raw data and toolchains stay local.
+
+## Issue #11 reconciliation checkpoint
+
+The dedicated `codex/issue-11-reconciliation` worktree starts at
+`dfa95b3a787b7a3ed8dd65db5c263359f53f762c`, the newest local code-bearing
+descendant containing #9/#10/#13/#17 and synchronized programme work at intake.
+It does not edit the active #19 worktree. The
+[dated record](../audits/2026-09-12-issue-11-reconciliation.md) confirms no source
+implementation change: only a source-matched Windows DLL was rebuilt for focused
+negative validation, and that generated LFS path remains uncommitted. Issue #11
+is substantively unresolved despite its completed GitHub state.
+
+## Issue #11 focused repair checkpoint
+
+The isolated `C:/kybersand/worktrees/issue-11-repair` worktree uses branch
+`codex/issue-11-repair`. Intake selected integrated #9/#10 source
+`dad1230fdd7e3dbe02b6a78b56107a0005201930`, then applied the retained #11
+reconciliation as `76ac3f7b137001c59862fa573fb113dbe349f5fe` before implementation.
+The repair code and exact-source evidence are at
+`f8720d331e653ff40c12149dc1b7164724accd9f`; the rebuilt Windows DLL SHA-256 is
+`85b0c1e730dd930ac765361afc2eee3ffa35d2f5012936b113f3394a92e4f21a` and remains
+intentionally uncommitted. Intake bytes and source/artifact manifests remain under
+`C:/kybersand/validation/local/2026-09-12-issue-11-repair/`. See the
+[dated repair evidence](../audits/2026-09-13-issue-11-repair.md). Historical #9,
+#10 and pre-repair #11 records are not rewritten by this checkpoint.

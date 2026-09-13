@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-13
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md]
 ---
 
@@ -118,3 +118,21 @@ Both research results are published on separate experiment branches; this active
 checkpoint changes documentation only. #17 subsequently completed P1/P2/P3; read the [G-P review](architecture-programme.md#g-p-staged-decision-2026-09-11)
 and [precision evidence](../audits/2026-09-11-issue-17-state-precision.md). Retain mass8
 and Water-specific delay4 as an experimental budget without inferring production migration. The current4-byte baseline remains pending G-final.
+
+## Issue #11 reconciliation, 2026-09-12
+
+The [current-source audit](../audits/2026-09-12-issue-11-reconciliation.md)
+confirms that #11 is substantively unresolved despite administrative closure.
+There is no persistent granular barrel bearing; masked-source feedback and
+barrier-crossing ejection remain. #12 diagnostics and ownership design may proceed,
+but support-dependent integration and the one-barrel support/reversal proof remain
+held pending a focused fix/evidence package or an explicit narrower scope decision.
+
+## Issue #11 repair handoff, 2026-09-13
+
+The [current repair evidence](../audits/2026-09-13-issue-11-repair.md) supersedes
+that disposition without rewriting the negative run. Masked material authority,
+bounded barrier/body-aware ejection and persistent ordinary rectangle bearing now
+pass current-source P4/P5, desktop and real-Web checks. **#11 support prerequisite
+is satisfied within the documented ordinary rectangle/load envelope.** #12 still
+owns soliding, membership transfer and its separate ownership gates.

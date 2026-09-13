@@ -5,7 +5,7 @@ document-kind: runbook
 scope: Opt-in physics measurement tooling, historical issue 9 baseline and current interaction regression routes
 canonical-for: [physics-measurement-tooling, physics-baseline-procedure]
 keywords: [powder, Mercury viscosity, barrel depth, masked source, contact impulse, diagnostic, fixture]
-last-reviewed: 2026-09-09
+last-reviewed: 2026-09-13
 related-documents: [physics-characterisation-plan.md, ../architecture/rigid-body-and-cellular-coupling.md, ../systems/materials-and-rule-kernels.md, ../audits/2026-09-09-physics-characterisation.md]
 ---
 
@@ -16,16 +16,18 @@ related-documents: [physics-characterisation-plan.md, ../architecture/rigid-body
 **Current tooling:** issue #9 introduced deterministic fresh-world fixtures,
 construction-only diagnostic variants and bounded counters. That checkpoint left
 production behavior unchanged. Issue #10 subsequently implements the
-[granular/player policy](../systems/granular-interaction-policy.md); barrel gains
-and Rapier scene settings remain unchanged. The
+[granular/player policy](../systems/granular-interaction-policy.md). Issue #11 now
+uses that policy for bounded ordinary rectangle bearing while Rapier scene settings
+remain unchanged. The
 [dated report](../audits/2026-09-09-physics-characterisation.md) identifies actual
 source/artifact/platform results. The [plan](physics-characterisation-plan.md)
-still owns the proposed permeability, support and soliding investigations.
+still owns proposed soliding and broader physics investigations.
 
-**Approved future behavior:** ordinary barrels should embed roughly half their
-depth and find stable support. The `0.5H + 1 cell`/one-cell late-creep numbers are
-provisional test envelopes, not implemented constraints. A floor-supported body
-does not demonstrate granular equilibrium.
+**Current within the issue #11 ordinary envelope:** 8x14 mass-1 barrels embed and
+establish persistent yielding bearing within `0.5H + 1 cell` and at most one cell
+late descent. Excavation removes that bearing. These are measured acceptance
+limits, not hard simulation clamps; floor-supported rest still does not prove
+granular equilibrium.
 
 ## How do I reproduce a run?
 
@@ -112,15 +114,18 @@ Keys encode `kind<<24 | source<<16 | target<<8 | direction`, with direction
 | 6 | Whole stored-cell relocation outside tick, used by body displacement |
 | 7 | Body-contact attempt, with the kernel-visible source material; target 0 is a sentinel for body occupancy, not an Empty-cell movement |
 
-**Current source nuance:** `update_cell` dispatches from the stored cell, while
-`update_rule_kernel` reads `get()`. A retained grain underneath a body can therefore
+**Historical issue #9 source nuance:** `update_cell` dispatched from the stored
+cell, while `update_rule_kernel` read `get()`. A retained grain underneath a body could
 run a powder kernel with Wall as its visible material. Wall-labelled contact
 attempts can come from these masked grains. The dedicated native characterization
 records three downward attempts/raw y=4800 from one retained Sand grain. This is
 a baseline finding for #11, not a production fix or ordinary hard-terrain
 collision. In coupled fixtures, a density decision can likewise use the proxy
 while the swap counter records the actual stored pair. Pure unmasked P1/P2 fixtures
-separate that effect from material density exchange.
+separate that effect from material density exchange. **Current issue #11:** rule
+dispatch carries the authoritative stored source material explicitly and defers a
+masked source to bounded overlap reconciliation; the regression retains the Sand
+and occupancy mask without proxy-derived contact.
 
 Per-material counts and Water mass are scanned outside ticks in a bounded ROI.
 Water uses `stored_state_a`, including unresolved body overlap; ordinary
@@ -129,15 +134,16 @@ Rule conversions are accounted separately; chemical consumption/production is
 not claimed to conserve the Water material. Closed pure Water controls must
 conserve stored mass exactly, even if the occupied-cell count changes.
 
-**Measured accounting limit:** the barrel can eject Water across a thin hard
+**Historical issue #9 accounting limit:** the barrel could eject Water across a thin hard
 floor, outside the crop. Set `conservation=true` on a native fixture to scan four
 bounded 512×512 quadrants before/after the run and report global Water mass plus
 Water below the floor. The five-seed control conserves global mass exactly and
 matches the ordinary fixture's state/trajectory; the cropped deficit is below
 the floor. `find_ejection_target` validates the empty endpoint without a path
 barrier test. This is body displacement, distinct from liquid density exchange
-and Rapier body tunnelling. The thin-floor diagnostic regression preserves this
-observation for successor correction; see the dated report.
+and Rapier body tunnelling. **Current issue #11:** bounded half-cell path checks
+reject intervening hard terrain and other body masks; unavailable routes retain
+the complete source payload and report unresolved overlap.
 
 ## Which variants are isolated from production defaults?
 
@@ -193,6 +199,8 @@ histogram. These APIs require the ordinary exclusive World owner.
 displacement x/y, boundary x/y, pixel-contact x/y, accumulated capped x/y,
 pre-final-cap x/y, intermediate-cap count, final-cap flag, displaced count,
 unresolved count and 324 boundary-contact bins (world-axis N/E/S/W × 81 materials).
+Issue #11 appends raw bearing x/y and accepted support-sample count to that
+diagnostic row.
 The ordinary nine-float result ABI is unchanged. Bridge `enable_diagnostics()`
 allocates six application values per body: age, accepted impulse x/y, duplicate,
 stale and received flags. Arrays reset per application; the fixture aggregates
@@ -220,8 +228,8 @@ isolation headers and accepts one result of at most 8 MiB into the named output
 directory. Open `?test=1&physics=1` in an actual browser: five seeds each of P1,
 P2, player/Dust, barrel/Sand and hard-floor control. The DOM exposes completion;
 the optional local collector preserves full results and browser identity.
-`ok` means execution/construction/control checks completed, not that sinking
-meets the future gameplay envelope. The probe leaves the menu visible and does
+`ok` means execution/construction/control checks completed; issue #11 fixture
+assertions separately enforce its documented ordinary envelope. The probe leaves the menu visible and does
 not constitute gameplay visual acceptance.
 
 Tick times include the native adapter call. Coupling timings cover pre-tick
@@ -229,8 +237,9 @@ Rapier step, sample packing and overlap/pressure preparation (player stepping in
 P3); result application and snapshot analysis are outside this timing interval.
 Report p50/p95/max with that scope. These development runs can overlap other test
 processes; their timings are observations, not a production frame-time budget.
-No new torque, substep or persistent barrel bearing model is implemented.
-Current permeability and player settings belong to the versioned granular policy.
+No new torque or substep model is implemented. Current permeability and player
+settings, and the support predicate consumed by rectangle bearing, belong to the
+versioned granular policy.
 
 [analyse.py](../../tools/physics/analyse.py) produces per-run CSVs and standard
 Matplotlib PNGs from raw data. Overlays show stored cells, the projected rectangle,

@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-13
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md]
 ---
 
@@ -243,6 +243,24 @@ construction disables telemetry/overrides; `reset_demo_world` restores productio
 gains. No UI slider, material descriptor, gravity default or save field changed.
 The [dated results](../audits/2026-09-09-physics-characterisation.md) distinguish
 existing constants from diagnostic rule vetoes and future support models.
+
+## Ordinary rectangle granular-bearing constants
+
+**Current:** the cellular coupling uses fixed simulation-space values; they are
+not live settings or saved schema.
+
+| Constant | Value | Meaning |
+|---|---:|---|
+| gravity impulse per mass per tick | `92 / 60` | ordinary 60 Hz load estimate |
+| velocity yield response | `0.18` | bounded impact/settling response |
+| impulse capacity per accepted support sample | `2.0` | local packing capacity |
+| maximum bearing impulse | `20` | global per-body/tick cap |
+| settle vertical speed | `4` | correction eligibility threshold |
+| maximum bearing correction | `0.5` cell | same-tick downward correction cap |
+| correction fraction | `0.99` | maximum fraction of observed downward travel undone |
+
+These constants do not create a fixed-height clamp. The correction is available
+only from current accepted support samples and disappears with the real bed.
 
 ## Granular policy configuration
 
