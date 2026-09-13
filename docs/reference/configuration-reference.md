@@ -4,11 +4,35 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-13
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md]
 ---
 
 # Configuration reference
+
+## Soliding experimental bounds
+
+These are opt-in diagnostic limits, not production cohesion policy.
+
+| Resource or screen | Bound |
+|---|---|
+| Observer patch / witness halo | 32x32 cells maximum / 2 cells each side |
+| Components / members per component / exact row rectangles | 16 / 256 / 64; refuse saturation, never admit a truncated subset |
+| A screening values | 30/120/300 observed ticks; occupancy .8/.9/.98; minimum area 16/64/256 |
+| Cohesive diagnostic allowlist | Authored Wall and RedBrick; loose powders never qualify |
+| Stationary refinement | 120 ticks, area 16, no packing requirement; exact hole-preserving geometry |
+| Dynamic admission | Exactly one 8x8 or 8x14 Wall rectangle, 300 rest ticks, complete occupancy 1 |
+| Native aggregate storage | One slot, one pending proposal, fixed 224 payload and destination entries |
+| Dynamic world / mask scratch | Preallocated 128x128 fixture / 1024 cell-centre entries |
+| Mass / inertia | Per-cell mass 1/112; rectangle m*(w*w+h*h)/12 |
+| Reversal | Speed <=.05 cell/s, angular speed <=.005 rad/s; quarter-turn error <=.001 rad; grid alignment <=.01 cell |
+
+World activity witnesses add a saturating 64-bit revision per activity block and a
+world-wide mask revision. Unrelated mask changes conservatively reset the observer.
+Current measured storage/costs and platform qualifiers are in the
+[dated record](../audits/2026-09-13-issue-12-soliding.md); the inherited eight-byte
+experimental Cell carrier is unchanged by this work.
+
 
 **Current:** the following values are inspected source/configuration at the
 [secured checkpoint](../operations/source-checkpoint-and-recovery.md). They are
@@ -243,6 +267,24 @@ construction disables telemetry/overrides; `reset_demo_world` restores productio
 gains. No UI slider, material descriptor, gravity default or save field changed.
 The [dated results](../audits/2026-09-09-physics-characterisation.md) distinguish
 existing constants from diagnostic rule vetoes and future support models.
+
+## Ordinary rectangle granular-bearing constants
+
+**Current:** the cellular coupling uses fixed simulation-space values; they are
+not live settings or saved schema.
+
+| Constant | Value | Meaning |
+|---|---:|---|
+| gravity impulse per mass per tick | `92 / 60` | ordinary 60 Hz load estimate |
+| velocity yield response | `0.18` | bounded impact/settling response |
+| impulse capacity per accepted support sample | `2.0` | local packing capacity |
+| maximum bearing impulse | `20` | global per-body/tick cap |
+| settle vertical speed | `4` | correction eligibility threshold |
+| maximum bearing correction | `0.5` cell | same-tick downward correction cap |
+| correction fraction | `0.99` | maximum fraction of observed downward travel undone |
+
+These constants do not create a fixed-height clamp. The correction is available
+only from current accepted support samples and disappears with the real bed.
 
 ## Granular policy configuration
 

@@ -10,6 +10,17 @@ related-documents: [interfaces-and-message-contracts.md, ../architecture/determi
 
 # Level saves and exact replay
 
+## Soliding persistence boundary
+
+The isolated [ADR-012 Session](../decisions/ADR-012-bounded-soliding-ownership.md)
+has no aggregate save schema. Its persistence admission query refuses while pending,
+Aggregate, excluded or quarantined. It exposes no CYSD1 import/export method and
+cannot be passed to the ordinary adapter export path. Thus no payload is silently
+omitted or mask cleared by a save. Cells-only export integration is still Deferred;
+whole-experiment teardown explicitly abandons the diagnostic world. Reversal is
+payload conservation, not exact serialized continuation or replay.
+
+
 ## Does an identical save reproduce the next tick?
 
 **Current: no such guarantee.** CYSD1 restores a fixed demo level and selected

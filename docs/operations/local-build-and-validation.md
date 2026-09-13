@@ -10,6 +10,23 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## Focused issue 12 validation
+
+`make test` includes the ordinary native suite, `test_soliding.cpp` (130 cases at
+1800 ticks) and `test_soliding_session.cpp` (transition/fault/quarter-turn tuples).
+Separate sanitizer and TSan targets include both soliding executables; availability
+and actual executions must be reported per platform.
+
+With a freshly built native extension, run Godot headless scripts
+`res://tests/test_soliding.gd`, `test_soliding_async.gd` and
+`test_soliding_dynamic.gd`. Real browser exports expose opt-in `?test=1&soliding=1`
+and `?test=1&soliding_dynamic=1`; `tools/web/run_browser_probe.mjs --element-id`
+selects their result element. The dynamic probe remains main-thread/manual even
+when internal native threads are enabled. The fallback has no soliding Session.
+`native/bench/soliding_benchmark.cpp` supports baseline/off/on paired measurements;
+see [recorded commands and limits](../audits/2026-09-13-issue-12-soliding.md).
+
+
 ## Which build inputs are required?
 
 **Current:** build scripts and locks select the following inputs. A pin is a

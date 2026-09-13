@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Self-contained V plus H-preparation work item in the architecture experimental programme; presentation research and human-test infrastructure, not production approval or human preference selection
 canonical-for: []
-last-reviewed: 2026-09-12
+last-reviewed: 2026-09-13
 related-documents: [../architecture-programme.md, ../architecture-programme-source-ledger.md, ../experiment-tower.md, ../state-precision-experiment.md, ../../audits/2026-09-11-issue-17-state-precision.md]
 ---
 
@@ -55,6 +55,8 @@ The intended Water renderer exposes only a small number of partial-fill levels. 
 Work in `C:/kybersand/source`; read `C:/kybersand/AGENTS.md`, source `AGENTS.md` and their required focused docs before changes. Use a separate `codex/` worktree/branch. Preserve the deliberately dirty Windows DLL and unrelated work; keep raw logs/builds under `C:/kybersand` rather than functional deliverables.
 
 Current production Water uses 8-bit fractional mass, a 12-tick coherent-emission countdown in Water state_b, exact closed-operation integer conservation, local three-quarter lateral redistribution, one-unit tolerance and the existing supported-film policy. Material authority remains native; transient rigid-body occupancy remains outside persistent Cell state; immutable render handoffs, failed-world quarantine and paused interest-region semantics remain protected. #10/#13 granular/player/Mercury/transport policies remain distinct controls.
+
+Geometry is independently 128x128 storage,32x32 activity,64x64 scheduling core, maximum write radius2 (68x68 expanded domain). Native liquid operations are local; do not copy fallback long-range Water. Desktop pacing is asynchronous against main-thread Rapier; native Web waits synchronously, with optional internal workers. Fallback and serial have different semantics. Current rectangles lack general pixel membership. #11 now satisfies the support prerequisite only within its documented ordinary rectangle/load envelope; preserve high-energy/general-shape limits.
 
 Completed #17 used a fixed wider experimental carrier and compile-time precision arms to isolate science. Those compile-time controls are evidence, not a requirement for the Feel Lab. V2 may emulate lower semantic precision in a superset runtime storage lane; it does not physically repack the production Cell or reinterpret old saves.
 

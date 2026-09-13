@@ -1,0 +1,785 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-13",
+  "scope": "Isolated bounded near-rest prototype; no production admission",
+  "source": {
+    "initial_remote_main": "3b1747a493d6ffb01661dcf4111f1b32ae89dbac",
+    "accepted_issue11": "d5f0de687283ec366ed4ff33160a274e2a35ddc6",
+    "integration": "f32faa93cbaaef08f7eb8cf9d5e445e9113db73c",
+    "implementation": "185c48a4d048075540d6aabfe25ea17f143a4f67",
+    "branch": "codex/issue-12-soliding",
+    "evidence_commit": "The Git commit containing the finalized version of this file; no implementation delta after the implementation commit."
+  },
+  "raw_evidence_root": "C:/kybersand/validation/local/2026-09-13-issue-12",
+  "machine": {
+    "os": "Windows",
+    "cpu": "AMD Ryzen 5 2600X Six-Core Processor",
+    "logical_processors": 12
+  },
+  "tools": {
+    "godot": "4.7.stable.official.5b4e0cb0f",
+    "llvm_mingw": "20260826",
+    "rapier": "0.35.2",
+    "emscripten": "4.0.20",
+    "web_godot_cpp": "101ae38034304346a46ea9ea84ae156d3e860496"
+  },
+  "artifacts": [
+    {
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "sha256": "a2474d857dff9af3d313cedb7bd39f6c0870aca2fb4ac537131fd9ad896e1762",
+      "bytes": 1923584
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "sha256": "4e26ffa78ec2aaff434c4a70cd2ec85288b10ba5237912c35f204cb1e6ed2180",
+      "bytes": 10018816
+    },
+    {
+      "path": "build/web/build-info.json",
+      "sha256": "105e6c48ec099f66cad6606053b2d41520228b58298f3eb0e5d01414c5f0d150",
+      "bytes": 1153
+    },
+    {
+      "path": "build/web/godot_rapier.wasm",
+      "sha256": "5ff6933670c1377c24dcbac30d67758a307165eacdcbd33b25bf01669577c4c2",
+      "bytes": 2751606
+    },
+    {
+      "path": "build/web/index.pck",
+      "sha256": "b18d8cbe140aff5c1757d22a6525ff77ac9b15d8eee3c3e95953978e209f0e82",
+      "bytes": 566472
+    },
+    {
+      "path": "build/web/index.side.wasm",
+      "sha256": "85473bead1cf62c408d034189fae423594c45fef403fc0707a72bb8e2b87a6d2",
+      "bytes": 44072184
+    },
+    {
+      "path": "build/web/index.wasm",
+      "sha256": "d37e06f7126849a81fa099f1cf89f0d8ccbb87502b8c857492490dff66fad95a",
+      "bytes": 1508095
+    },
+    {
+      "path": "build/web/libcybersand_native.web.nothreads.wasm",
+      "sha256": "b66c06d21f7c44d3eeb8261d61a262599d5251d7238aaa26764338878c8d43e4",
+      "bytes": 2009996
+    },
+    {
+      "path": "build/web-threaded/build-info.json",
+      "sha256": "f484df39051fb77eb2092772249d5f6985eb17eeec9c923b95ac0da2e0eef364",
+      "bytes": 1167
+    },
+    {
+      "path": "build/web-threaded/godot_rapier.wasm",
+      "sha256": "b4020962f6ff6c5f2c07436a94cdbf7b5e2096a5fc5832e4ff5526378ce88528",
+      "bytes": 2754113
+    },
+    {
+      "path": "build/web-threaded/index.pck",
+      "sha256": "e7ce414d989ca21763520568057d3e61303e88420f9ec1fc766034463daaf4c4",
+      "bytes": 566488
+    },
+    {
+      "path": "build/web-threaded/index.side.wasm",
+      "sha256": "c31b395d905c5b632780b19f597b8ea0f329d6f9f6ed979c60732fdbae731a7e",
+      "bytes": 43268615
+    },
+    {
+      "path": "build/web-threaded/index.wasm",
+      "sha256": "eb7ab9dcb2c2c484f4dca0acaad466b7fd8448fb86a0a552b5c3e5291952115f",
+      "bytes": 1601069
+    },
+    {
+      "path": "build/web-threaded/libcybersand_native.web.threads.wasm",
+      "sha256": "c592d30888d926955b36bf607f8ed1877389af5f4c02ce3502aff3937ab7d8b7",
+      "bytes": 2014139
+    }
+  ],
+  "native_desktop": {
+    "issue11-core": {
+      "command": [
+        "C:\\kybersand\\.local\\python\\Scripts\\python.exe",
+        "tools/physics/run.py",
+        "godot",
+        "--group",
+        "issue11-core",
+        "--seeds",
+        "1",
+        "--ticks",
+        "1800",
+        "--output",
+        "C:\\kybersand\\validation\\local\\2026-09-13-issue-12\\final-native\\issue11-core"
+      ],
+      "cwd": "C:\\kybersand\\worktrees\\issue-12-soliding",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 7.995,
+      "log": "validation\\local\\2026-09-13-issue-12\\final-native\\issue11-core.log"
+    },
+    "make-test": {
+      "command": [
+        "C:\\kybersand\\.local\\llvm-mingw-20260826-ucrt-x86_64\\bin\\mingw32-make.EXE",
+        "test",
+        "CXX=clang++",
+        "CC=clang"
+      ],
+      "cwd": "C:\\kybersand\\worktrees\\issue-12-soliding",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 194.919,
+      "log": "validation\\local\\2026-09-13-issue-12\\final-native\\make-test.log"
+    },
+    "test_cell_world": {
+      "command": [
+        "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\kybersand\\worktrees\\issue-12-soliding\\godot",
+        "--script",
+        "res://tests/test_cell_world.gd"
+      ],
+      "cwd": "C:\\kybersand\\worktrees\\issue-12-soliding",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 34.805,
+      "log": "validation\\local\\2026-09-13-issue-12\\final-native\\test_cell_world.log"
+    },
+    "test_interaction_async": {
+      "command": [
+        "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\kybersand\\worktrees\\issue-12-soliding\\godot",
+        "--script",
+        "res://tests/test_interaction_async.gd"
+      ],
+      "cwd": "C:\\kybersand\\worktrees\\issue-12-soliding",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 12.812,
+      "log": "validation\\local\\2026-09-13-issue-12\\final-native\\test_interaction_async.log"
+    },
+    "test_interaction_policy": {
+      "command": [
+        "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\kybersand\\worktrees\\issue-12-soliding\\godot",
+        "--script",
+        "res://tests/test_interaction_policy.gd"
+      ],
+      "cwd": "C:\\kybersand\\worktrees\\issue-12-soliding",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 118.645,
+      "log": "validation\\local\\2026-09-13-issue-12\\final-native\\test_interaction_policy.log"
+    },
+    "test_soliding": {
+      "command": [
+        "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\kybersand\\worktrees\\issue-12-soliding\\godot",
+        "--script",
+        "res://tests/test_soliding.gd"
+      ],
+      "cwd": "C:\\kybersand\\worktrees\\issue-12-soliding",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 0.603,
+      "log": "validation\\local\\2026-09-13-issue-12\\final-native\\test_soliding.log"
+    },
+    "test_soliding_async": {
+      "command": [
+        "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\kybersand\\worktrees\\issue-12-soliding\\godot",
+        "--script",
+        "res://tests/test_soliding_async.gd"
+      ],
+      "cwd": "C:\\kybersand\\worktrees\\issue-12-soliding",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 12.626,
+      "log": "validation\\local\\2026-09-13-issue-12\\final-native\\test_soliding_async.log"
+    },
+    "test_tick_failure_regression": {
+      "command": [
+        "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\kybersand\\worktrees\\issue-12-soliding\\godot",
+        "--script",
+        "res://tests/test_tick_failure_regression.gd"
+      ],
+      "cwd": "C:\\kybersand\\worktrees\\issue-12-soliding",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 2.553,
+      "log": "validation\\local\\2026-09-13-issue-12\\final-native\\test_tick_failure_regression.log"
+    },
+    "test_water_experiment_profiles": {
+      "command": [
+        "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\kybersand\\worktrees\\issue-12-soliding\\godot",
+        "--script",
+        "res://tests/test_water_experiment_profiles.gd"
+      ],
+      "cwd": "C:\\kybersand\\worktrees\\issue-12-soliding",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 0.419,
+      "log": "validation\\local\\2026-09-13-issue-12\\final-native\\test_water_experiment_profiles.log"
+    },
+    "test_water_feel_controller": {
+      "command": [
+        "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\kybersand\\worktrees\\issue-12-soliding\\godot",
+        "--script",
+        "res://tests/test_water_feel_controller.gd"
+      ],
+      "cwd": "C:\\kybersand\\worktrees\\issue-12-soliding",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 4.215,
+      "log": "validation\\local\\2026-09-13-issue-12\\final-native\\test_water_feel_controller.log"
+    },
+    "test_water_feel_integration": {
+      "command": [
+        "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\kybersand\\worktrees\\issue-12-soliding\\godot",
+        "--script",
+        "res://tests/test_water_feel_integration.gd"
+      ],
+      "cwd": "C:\\kybersand\\worktrees\\issue-12-soliding",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 4.121,
+      "log": "validation\\local\\2026-09-13-issue-12\\final-native\\test_water_feel_integration.log"
+    },
+    "dynamic_final": {
+      "command": [
+        "C:/Godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\kybersand\\worktrees\\issue-12-soliding\\godot",
+        "--script",
+        "res://tests/test_soliding_dynamic.gd"
+      ],
+      "cwd": "C:\\kybersand\\worktrees\\issue-12-soliding",
+      "exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 3.973,
+      "log": "validation\\local\\2026-09-13-issue-12\\stage-e-godot-final\\test.log",
+      "rapier_cycles": 16,
+      "fault_checks": 32,
+      "workers": [
+        1,
+        4
+      ]
+    }
+  },
+  "web": {
+    "compat-stationary": {
+      "passed": true,
+      "isolated": true,
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+      "raw_result": "browser-final/compat-stationary/result.json",
+      "raw_sha256": "15ae79291b4f12e8c41ef0f0527410436fec0a5bb8a063798f5d4db99c0e8d2f",
+      "summary": {
+        "additional_support_solver": false,
+        "identity": 645,
+        "invalidation_latency_steps": 0,
+        "invalidation_revision": 4,
+        "landed_y": 51.0007858276367,
+        "material_authority": "cells",
+        "ok": true,
+        "released_y": 62.4225730895996,
+        "revision": 3,
+        "workers": 1
+      }
+    },
+    "compat-dynamic": {
+      "passed": true,
+      "isolated": true,
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+      "raw_result": "browser-final/compat-dynamic/result.json",
+      "raw_sha256": "82b2a5dde3a395762ef071c9d5744ebddab14b41e1ca11ec8f454e2cacdb2bd7",
+      "cycles": 8,
+      "fault_checks": 16,
+      "workers": [
+        1
+      ],
+      "fixtures": [
+        {
+          "height": 8,
+          "members": 64,
+          "session_in_object_bytes": 115888,
+          "mass": 0.571428571428571,
+          "inertia": 6.09523809523809,
+          "conserved_all": true
+        },
+        {
+          "height": 14,
+          "members": 112,
+          "session_in_object_bytes": 115888,
+          "mass": 1,
+          "inertia": 21.6666666666667,
+          "conserved_all": true
+        }
+      ]
+    },
+    "compat-physics": {
+      "passed": true,
+      "isolated": true,
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+      "raw_result": "browser-final/compat-physics/result.json",
+      "raw_sha256": "c4b4f7699031ceda9ef1a00724003a66d33e637a4e639f35ff5d51a079663b79",
+      "accepted_issue11_core_cases": 4
+    },
+    "compat-water": {
+      "passed": true,
+      "isolated": true,
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+      "raw_result": "browser-final/compat-water/result.json",
+      "raw_sha256": "ea610f146a1d95182a82c768a38dadf0f7d01c6b0fcf96a027447dd9bdc7d6c4",
+      "summary": {
+        "action_cases": 110,
+        "catalogue_hash": "c49c729891b2884932f183ef5b253f3b0b385f78664c5d9e76c85dd918538281",
+        "controller_lifecycle": {
+          "apply_reset": true,
+          "blind_mapping_size": 2,
+          "ordinary_exit": true,
+          "single_step": true
+        },
+        "default_state_hash": "2c1ae35dad232984",
+        "failures": [],
+        "invalid_preserved": true,
+        "ok": true,
+        "presentation_preserved": true,
+        "profile": "compat",
+        "runtime_identity": {
+          "artifact": "libcybersand_native.web.nothreads.wasm",
+          "emscripten": "4.0.20",
+          "godot": "4.7.stable.official.5b4e0cb0f",
+          "godot_cpp": "101ae38034304346a46ea9ea84ae156d3e860496",
+          "manifest": "res://addons/cybersand_native/runtime-provenance.web.json",
+          "native_worker_threads": 1,
+          "platform": "Web",
+          "profile": "compat",
+          "schema_version": 1,
+          "sha256": "b66c06d21f7c44d3eeb8261d61a262599d5251d7238aaa26764338878c8d43e4",
+          "size": 2009996,
+          "source_commit": "185c48a4d048075540d6aabfe25ea17f143a4f67",
+          "source_identity_kind": "snapshot-base-with-local-setup-changes",
+          "status": "issue-19-browser-validated-export",
+          "validated_platform": "Godot Web compat"
+        },
+        "scenario_cases": 70,
+        "worker_count": 1
+      }
+    },
+    "threaded-stationary": {
+      "passed": true,
+      "isolated": true,
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+      "raw_result": "browser-final/threaded-stationary/result.json",
+      "raw_sha256": "c1f61f92a04903d7b7782664f5680d29c4e9f73384bc09cb72fbb1d6ff9351eb",
+      "summary": {
+        "additional_support_solver": false,
+        "identity": 645,
+        "invalidation_latency_steps": 0,
+        "invalidation_revision": 4,
+        "landed_y": 51.0007858276367,
+        "material_authority": "cells",
+        "ok": true,
+        "released_y": 62.4225730895996,
+        "revision": 3,
+        "workers": 4
+      }
+    },
+    "threaded-dynamic": {
+      "passed": true,
+      "isolated": true,
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+      "raw_result": "browser-final/threaded-dynamic/result.json",
+      "raw_sha256": "3be0d4707f838c00569c8184cfddca125d7934001f1d00375fcedab020ad938a",
+      "cycles": 8,
+      "fault_checks": 16,
+      "workers": [
+        4
+      ],
+      "fixtures": [
+        {
+          "height": 8,
+          "members": 64,
+          "session_in_object_bytes": 115888,
+          "mass": 0.571428571428571,
+          "inertia": 6.09523809523809,
+          "conserved_all": true
+        },
+        {
+          "height": 14,
+          "members": 112,
+          "session_in_object_bytes": 115888,
+          "mass": 1,
+          "inertia": 21.6666666666667,
+          "conserved_all": true
+        }
+      ]
+    },
+    "threaded-physics": {
+      "passed": true,
+      "isolated": true,
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+      "raw_result": "browser-final/threaded-physics/result.json",
+      "raw_sha256": "082e2ebbfe96aedab41a812a4d4ea7e672e2d8054d5cf12f461234fc047096e9",
+      "accepted_issue11_core_cases": 4
+    },
+    "threaded-water": {
+      "passed": true,
+      "isolated": true,
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+      "raw_result": "browser-final/threaded-water/result.json",
+      "raw_sha256": "592fabf504301fd77f2879784517fec69b46d1c67684e47dd7e017b46ad1cb47",
+      "summary": {
+        "action_cases": 110,
+        "catalogue_hash": "c49c729891b2884932f183ef5b253f3b0b385f78664c5d9e76c85dd918538281",
+        "controller_lifecycle": {
+          "apply_reset": true,
+          "blind_mapping_size": 2,
+          "ordinary_exit": true,
+          "single_step": true
+        },
+        "default_state_hash": "2c1ae35dad232984",
+        "failures": [],
+        "invalid_preserved": true,
+        "ok": true,
+        "presentation_preserved": true,
+        "profile": "threaded",
+        "runtime_identity": {
+          "artifact": "libcybersand_native.web.threads.wasm",
+          "emscripten": "4.0.20",
+          "godot": "4.7.stable.official.5b4e0cb0f",
+          "godot_cpp": "101ae38034304346a46ea9ea84ae156d3e860496",
+          "manifest": "res://addons/cybersand_native/runtime-provenance.web.json",
+          "native_worker_threads": "auto",
+          "platform": "Web",
+          "profile": "threaded",
+          "schema_version": 1,
+          "sha256": "c592d30888d926955b36bf607f8ed1877389af5f4c02ce3502aff3937ab7d8b7",
+          "size": 2014139,
+          "source_commit": "185c48a4d048075540d6aabfe25ea17f143a4f67",
+          "source_identity_kind": "snapshot-base-with-local-setup-changes",
+          "status": "issue-19-browser-validated-export",
+          "validated_platform": "Godot Web threaded"
+        },
+        "scenario_cases": 70,
+        "worker_count": 6
+      }
+    }
+  },
+  "counts": {
+    "ordinary_native_tests": 61,
+    "candidate_matrix_cases": 130,
+    "candidate_matrix_ticks": 234000,
+    "native_session_repeated_cycles": 16,
+    "final_real_rapier_cycles_windows_and_web": 32,
+    "final_browser_probes": 8
+  },
+  "performance": {
+    "warmup": 120,
+    "samples_per_run": 1800,
+    "rows": [
+      {
+        "active": false,
+        "binary": "baseline",
+        "runs": 7,
+        "p50_us_median": 0.1,
+        "p95_us_median": 0.2,
+        "max_us_median": 2.6,
+        "scan_p50_us_median": 0,
+        "scan_p95_us_median": 0.1,
+        "instrumented_new_median": 0,
+        "max_us_all_runs": 6.7,
+        "temperature_allocations_all_runs": 0,
+        "content_hashes_exact_decimal_strings": [
+          "2834453908761928379"
+        ]
+      },
+      {
+        "active": false,
+        "binary": "off",
+        "runs": 7,
+        "p50_us_median": 0.1,
+        "p95_us_median": 0.2,
+        "max_us_median": 2.7,
+        "scan_p50_us_median": 0,
+        "scan_p95_us_median": 0.1,
+        "instrumented_new_median": 0,
+        "max_us_all_runs": 4.7,
+        "temperature_allocations_all_runs": 0,
+        "content_hashes_exact_decimal_strings": [
+          "2834453908761928379"
+        ]
+      },
+      {
+        "active": false,
+        "binary": "on",
+        "runs": 7,
+        "p50_us_median": 55.1,
+        "p95_us_median": 57.1,
+        "max_us_median": 117.3,
+        "scan_p50_us_median": 55,
+        "scan_p95_us_median": 56.9,
+        "instrumented_new_median": 0,
+        "commit_us_median": 11,
+        "commit_instrumented_new_median": 0,
+        "max_us_all_runs": 637.7,
+        "temperature_allocations_all_runs": 0,
+        "content_hashes_exact_decimal_strings": [
+          "2834453908761928379"
+        ]
+      },
+      {
+        "active": true,
+        "binary": "baseline",
+        "runs": 7,
+        "p50_us_median": 71.5,
+        "p95_us_median": 73.8,
+        "max_us_median": 145.8,
+        "scan_p50_us_median": 0,
+        "scan_p95_us_median": 0.1,
+        "instrumented_new_median": 0,
+        "max_us_all_runs": 834.7,
+        "temperature_allocations_all_runs": 0,
+        "content_hashes_exact_decimal_strings": [
+          "15483857254863659054"
+        ]
+      },
+      {
+        "active": true,
+        "binary": "off",
+        "runs": 7,
+        "p50_us_median": 71,
+        "p95_us_median": 73.3,
+        "max_us_median": 101.5,
+        "scan_p50_us_median": 0,
+        "scan_p95_us_median": 0.1,
+        "instrumented_new_median": 0,
+        "max_us_all_runs": 135.9,
+        "temperature_allocations_all_runs": 0,
+        "content_hashes_exact_decimal_strings": [
+          "15483857254863659054"
+        ]
+      },
+      {
+        "active": true,
+        "binary": "on",
+        "runs": 7,
+        "p50_us_median": 130.3,
+        "p95_us_median": 135.8,
+        "max_us_median": 256.7,
+        "scan_p50_us_median": 59.3,
+        "scan_p95_us_median": 61.9,
+        "instrumented_new_median": 0,
+        "commit_us_median": 10.9,
+        "commit_instrumented_new_median": 0,
+        "max_us_all_runs": 712.1,
+        "temperature_allocations_all_runs": 0,
+        "content_hashes_exact_decimal_strings": [
+          "15483857254863659054"
+        ]
+      }
+    ],
+    "limitations": [
+      "One Windows machine; rotated process order; no production frame budget",
+      "Ordinary C++ new/new[] instrumentation only; excludes malloc/aligned/Godot/Rapier allocators"
+    ],
+    "conditions": "No competing build/correctness job during timed runs; OS background noise uncontrolled. One machine only."
+  },
+  "capacity": {
+    "observer_bytes_windows": 60872,
+    "candidate_bytes_windows": 1592,
+    "session_bytes_windows": 116008,
+    "session_excludes": "World heap and Rapier resources",
+    "patch_side_max": 32,
+    "halo": 2,
+    "witness_cells_max": 1296,
+    "components_max": 16,
+    "members_per_component_max": 256,
+    "row_shapes_max": 64,
+    "dynamic_slots": 1,
+    "payload_and_destination_entries_each": 224,
+    "mask_entries": 1024,
+    "region_side": 128,
+    "activity_revision_bytes_per_block": 8,
+    "inherited_cell_bytes": 8
+  },
+  "review": {
+    "integration_and_ab": "Terra xHigh final delta: no remaining blockers; mask ABA and test target repairs accepted",
+    "ownership": "Fresh Sol High: ten obligations and four policy forks adjudicated by Astra before admission",
+    "dynamic": "Fresh Terra Max final delta PASS: no remaining required implementation defect",
+    "source_manifests": {
+      "dynamic-review-r2-sha.json": {
+        "native/include/cybersand/soliding_session.hpp": "582a4fea9bbbefcca4cbed16ee5424d24d43302f7ee4903a0d064c6e54bc6f69",
+        "native/src/world.cpp": "ced6af91a27844b634b353d5ab1c736f72d7267518c22a9edf91c876c211a570",
+        "godot/native_extension/cyber_soliding_session.hpp": "78e7ae3bdb80e013a3a5c4eb94e79feac96fc8a006d4c24810d1675c3efe0a89",
+        "godot/scripts/soliding_dynamic_probe.gd": "8834151e1baa2fd7bb2a39789fb0de4797444050c8298177c4159c6fa7846015",
+        "native/tests/test_soliding_session.cpp": "0c0ccaea743f5315a01efb1a6acb1d5f17852cfb05957beabc940f8a544c746a",
+        "docs/decisions/ADR-012-bounded-soliding-ownership.md": "0fdf9a444e0e1dbe3d557cff979cc61627509f77d8dccd480bebbeb2b1e9e15d"
+      },
+      "dynamic-review-r3-sha.json": {
+        "godot/scripts/soliding_dynamic_probe.gd": "d7a15a1f794e5cf61ebf2bca5f319c849b705d0161f4cc25167a18a59a18a984",
+        "godot/scripts/web_demo_controller.gd": "bf3aee4e6c57795ba7b7fc8790529df2748f5ffe16afedeaa29a4653f466831d",
+        "godot/tests/test_soliding_dynamic.gd": "2a8352ec2205901211ba7d22ec0fac350cf9348195e82d5119bccace295f4357"
+      }
+    }
+  },
+  "checks": {
+    "docs": {
+      "status": "failed",
+      "documents": 63,
+      "navigation_link_documents": 8,
+      "canonical_claims": 105,
+      "local_links": 1046,
+      "heading_anchors": 48,
+      "questions": 32,
+      "errors": [
+        "Q01: missing expected-fact source ../../SOURCE-PROVENANCE.json",
+        "Q04: missing expected-fact source ../../docs/WEB_THREADING.md",
+        "Q28: missing expected-fact source ../../tools/dev.py",
+        "Q28: missing expected-fact source ../../docs/LOCAL_DEVELOPMENT.md",
+        "Q29: missing expected-fact source ../../tools/dev.py",
+        "Q30: missing expected-fact source ../../validation/browser-results.json"
+      ],
+      "warnings": [],
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ]
+    },
+    "m11": {
+      "status": "passed",
+      "scope": "historical M11 integrity; no current runtime acceptance",
+      "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+      "records_checked": 18,
+      "source_hashes_checked": 28,
+      "compare_working_tree": false,
+      "working_tree_differences": [],
+      "errors": []
+    },
+    "repository": {
+      "status": "failed",
+      "error_count": 18,
+      "disposition": "Six inherited external-workspace paths and unpublished Windows/Linux source/runtime/LFS provenance. Historical attestations retained.",
+      "errors": [
+        "Q01: missing expected-fact source ../../SOURCE-PROVENANCE.json",
+        "Q04: missing expected-fact source ../../docs/WEB_THREADING.md",
+        "Q28: missing expected-fact source ../../tools/dev.py",
+        "Q28: missing expected-fact source ../../docs/LOCAL_DEVELOPMENT.md",
+        "Q29: missing expected-fact source ../../tools/dev.py",
+        "Q30: missing expected-fact source ../../validation/browser-results.json",
+        "Windows x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp",
+        "Windows x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.hpp",
+        "Windows x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/register_types.cpp",
+        "Windows x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/world.hpp",
+        "Windows x86_64 Godot 4.7 requires rebuild for source input: native/src/world.cpp",
+        "Windows x86_64 Godot 4.7 bytes differ from published provenance",
+        "Linux x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp",
+        "Linux x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.hpp",
+        "Linux x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/register_types.cpp",
+        "Linux x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/world.hpp",
+        "Linux x86_64 Godot 4.7 requires rebuild for source input: native/src/world.cpp",
+        "runtime differs from committed LFS identity: godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
+      ]
+    },
+    "retrieval": {
+      "created_utc": "2026-09-13T02:45:25.564978+00:00",
+      "corpus_root": "C:\\kybersand\\worktrees\\issue-12-soliding",
+      "method": {
+        "name": "heading-chunk BM25 lexical development baseline",
+        "k": 5,
+        "maximum_body_words": 420,
+        "overlap_words": 0,
+        "k1": 1.2,
+        "b": 0.75,
+        "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+        "query_expansion": false,
+        "stemming": false,
+        "reranker": false,
+        "embeddings": false,
+        "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"
+      },
+      "fixture_sha256": "b65be8a80190703bb4550ac49b19a7eb8541652585c91acad2d4f40fc9dca5f2",
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "corpus_manifest_sha256": "cd763a8bcceb493b2c80bbe2f24f4025b53a2d9c98afebe1a52d9f9e7ed0e96b",
+      "document_count": 63,
+      "chunk_count": 495,
+      "summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 22,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.8229,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    "programme-retrieval": {
+      "created_utc": "2026-09-13T02:45:25.538522+00:00",
+      "corpus_root": "C:\\kybersand\\worktrees\\issue-12-soliding",
+      "method": {
+        "name": "heading-chunk BM25 lexical development baseline",
+        "k": 5,
+        "maximum_body_words": 420,
+        "overlap_words": 0,
+        "k1": 1.2,
+        "b": 0.75,
+        "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+        "query_expansion": false,
+        "stemming": false,
+        "reranker": false,
+        "embeddings": false,
+        "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"
+      },
+      "fixture_sha256": "21273ac4dd690a1a6ee8141746c39e6e54151b3d04ae2cdb42205dc9702bcd4c",
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "corpus_manifest_sha256": "cd763a8bcceb493b2c80bbe2f24f4025b53a2d9c98afebe1a52d9f9e7ed0e96b",
+      "document_count": 63,
+      "chunk_count": 495,
+      "summary": {
+        "questions": 9,
+        "canonical_hit_at_1": 7,
+        "canonical_hit_at_k": 9,
+        "mrr_at_k": 0.8611,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    "raw_directory": "docs-evidence-final"
+  },
+  "limitations": [
+    "No dynamic production/desktop asynchronous handoff; isolated main-thread manual space only. Stationary desktop asynchronous owner tested.",
+    "Near-rest quarter-turn reversal only; no generic per-cell velocity, energetic reversal or swept CCD claim.",
+    "No automatic powder cohesion, arbitrary geometry, structural integrity, fracture, reactive payload or save continuation.",
+    "No fresh Linux/ASan/UBSan/TSan execution; Windows/Web runtime bytes retained locally, not published.",
+    "Web build provenance retains generic snapshot-base-with-local-setup-changes and issue-19-browser-validated-export labels; source_commit and exact artifact hashes above identify this issue-12 execution.",
+    "Web JSON numbers are not evidence of exact 64-bit payload digests: native exact comparisons produce conserved flags; performance hashes serialized above as decimal strings."
+  ],
+  "publication": {
+    "remote_mutations": 0,
+    "comment_attempts_rejected_by_auto_review": 2,
+    "issue12": "Open pending publication/review and explicit narrower-scope acceptance",
+    "issue8": "Open",
+    "issue18_and_20": "Unchanged",
+    "human_H": "Unperformed",
+    "GR": "Only bounded isolated near-rest proof demonstrated; no G-final admission"
+  }
+}

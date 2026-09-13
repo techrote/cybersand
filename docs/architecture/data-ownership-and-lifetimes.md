@@ -6,10 +6,26 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-13
 ---
 
 # Data ownership and lifetimes
+
+## Experimental soliding owner (issue 12)
+
+The opt-in `soliding::Observer` copies bounded values under the existing exclusive
+World owner. It owns no material. Stationary proxy geometry replaces one collision
+partition while cells retain authority. See [ADR-012](../decisions/ADR-012-bounded-soliding-ownership.md).
+
+The isolated `soliding::Session` exclusively owns its private World and fixed
+payload slot. Only its main-thread diagnostic coordinator invokes it; Rapier RIDs
+stay on that thread in an inactive manually stepped space. Before commit cells
+own; after promotion the native slot owns; after reversal cells own again. Disabled
+geometry/reservations and endpoint masks own nothing. Production desktop worker
+handoff for dynamic aggregates is Deferred. There is no material owner in Godot.
+Session quarantine retains the last committed owner and requires whole-experiment
+teardown; ordinary World quarantine remains a separate underlying condition.
+
 
 ## Who may mutate each resource?
 
@@ -108,6 +124,9 @@ the rationale remains [ADR-003](../decisions/ADR-003-godot-bridge-and-immutable-
 Sampled [granular support queries](../systems/granular-interaction-policy.md) read
 current cells and copied body occupancy only under this exclusive owner, outside
 native jobs. Their bounded neighbourhood adds no job view, cache or Rapier object.
+Rectangle bearing consumes those current queries during coupling preparation and
+stores only that sample's bounded result. It has no persistent support cache;
+Rapier remains the body owner and native cells remain material authority.
 
 ## Failed-world ownership and recovery
 

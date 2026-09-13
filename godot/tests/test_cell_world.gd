@@ -21,9 +21,11 @@ func _run() -> void:
 	_test_wide_water_mound_levels_quickly()
 	_test_rigid_body_mask_blocks_material()
 	_test_rigid_body_sweep_displaces_without_leaving_a_phantom_mask()
+	_test_excluded_active_grains_do_not_support()
+	_test_ejection_does_not_cross_another_body()
 	_test_vertical_chain_does_not_form_empty_scanlines()
 	if _failures == 0:
-		print("9 Godot interaction tests passed")
+		print("11 Godot interaction tests passed")
 	quit(_failures)
 
 
@@ -274,6 +276,40 @@ func _test_vertical_chain_does_not_form_empty_scanlines() -> void:
 			world.material_at(140, y) == CyberCellWorld.SAND,
 			"Bottom-up Sand chain left an alternating empty scanline at y=%d" % y
 		)
+
+
+func _test_excluded_active_grains_do_not_support() -> void:
+	var world: CyberCellWorld = _fresh_world()
+	for y: int in range(100, 103):
+		for x: int in range(63, 66):
+			world.set_cell(x, y, CyberCellWorld.SAND)
+	world.set_simulation_window(Vector2i(400, 400), Vector2i(32, 32), 0, 0)
+	world.simulation_tick()
+	_expect(
+		not CyberInteractionPolicy.supports_at(world, 64, 100, false, false),
+		"paused active grains outside the interest window provided support"
+	)
+
+
+func _test_ejection_does_not_cross_another_body() -> void:
+	var world: CyberCellWorld = _fresh_world()
+	world.set_cell(104, 113, CyberCellWorld.WATER)
+	var states: PackedFloat32Array = PackedFloat32Array([
+		1, 104, 107, 0, 8, 14, 0, 0, 0, 1, 1,
+		2, 104, 115, 0, 32, 1, 0, 0, 0, 1, 1,
+	])
+	world.prepare_rigid_body_coupling(states, true)
+	var water_count: int = 0
+	for y: int in range(96, 128):
+		for x: int in range(88, 121):
+			water_count += int(world.cells[world.cell_index(x, y)] == CyberCellWorld.WATER)
+	_expect(world.cells[world.cell_index(104, 113)] == CyberCellWorld.WATER,
+		"ejection crossed another body's transient mask")
+	_expect(water_count == 1, "blocked ejection lost or duplicated its payload")
+	_expect(world.rigid_body_displaced_last_tick == 0,
+		"blocked ejection reported a displacement")
+	_expect(world.rigid_body_unresolved_last_tick == 1,
+		"blocked ejection did not report one unresolved overlap")
 
 
 func _expect(condition: bool, message: String) -> void:

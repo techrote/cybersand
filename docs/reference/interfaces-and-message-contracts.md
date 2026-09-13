@@ -6,10 +6,29 @@ status: Current
 scope: Current C ABI versions and private Godot packed layouts; proposed gameplay/job/reconfiguration contracts are not executable APIs
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-13
 ---
 
 # Interfaces and message contracts
+
+## Isolated soliding diagnostic interface
+
+`CyberNativeCellWorld::diagnostic_soliding_configure(origin,size)` registers one
+bounded observation patch; `diagnostic_soliding_snapshot()` returns copied candidate
+IDs/revisions, metrics and rectangles under its existing exclusive owner. These
+are diagnostics, not automatic promotion messages or mutable membership leases.
+
+`CyberSolidingSession` is a separate opt-in RefCounted owner with a private native
+Session. PackedInt64Array tokens carry exact incarnation/transition/packed patch-and-candidate witness,
+candidate revision, direction, payload digest and topology epoch; ordinary float
+body samples cannot acknowledge a transition. PackedFloat64Array motion samples
+contain x,y,angle,vx,vy,omega from a direct frozen PhysicsServer query. Exact phase
+and token gate prepare/acknowledge/commit/finalize/cancel. The wrapper is main-thread guarded and single-use; fixture edit requests refuse.
+Invalid input refuses;
+postcommit topology failure quarantines. No asynchronous queue or production
+snapshot cache participates. See [ADR-012](../decisions/ADR-012-bounded-soliding-ownership.md)
+for the accepted protocol and [ownership](../architecture/data-ownership-and-lifetimes.md).
+
 
 ## Current public surfaces
 
@@ -212,6 +231,12 @@ These calls must use the existing serialized adapter owner.
 The ordinary body sample/result ABI, C header, immutable gameplay snapshots and
 CYSD1 format are unchanged. No diagnostic options are persisted as gameplay
 configuration or advertised as a complete replay format.
+
+The 11-float input and nine-float result rows remain unchanged by issue #11.
+Bearing is combined into the existing central impulse/correction result under the
+cellular owner. Opt-in `diagnostic_body_metrics()` appends raw bearing x/y and
+accepted support-sample count so tests can distinguish bearing from legacy contact;
+this is diagnostic schema, not a new body ownership channel.
 
 ## Directional player query
 

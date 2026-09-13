@@ -6,10 +6,20 @@ status: Current
 scope: Accepted independent body representation and value-data coupling; rectangle proof is not generalized physics
 keywords: [ADR, body mask, remove restore pixels, two-way coupling, overlap, rigid body]
 related-documents: [../architecture/rigid-body-and-cellular-coupling.md, ADR-003-godot-bridge-and-immutable-snapshots.md, ADR-009-rapier-2d-rigid-body-backend.md]
-last-reviewed: 2026-09-09
+last-reviewed: 2026-09-13
 ---
 
 # ADR-007: Separate rigid-body occupancy coupling
+
+## Scoped experimental exception, 2026-09-13
+
+[ADR-012](ADR-012-bounded-soliding-ownership.md) accepts a one-slot isolated near-rest
+ownership transfer experiment. A native Session owns material after promotion;
+Godot/Rapier never does. This exception does not change the ordinary gameplay rule
+below or introduce erase/simulate/restore each tick. Only the isolated diagnostic
+coordinator performs the rare fenced handoff. Production dynamic integration,
+automatic cohesion and energetic reversal remain Deferred.
+
 
 ## Decision and implementation status
 
@@ -73,9 +83,25 @@ add bounded observation and isolated parameter fixtures without changing this
 ownership decision. Repeated masked-source contacts, per-add saturation and
 missing persistent bearing must be considered before selecting a support model.
 **Current:** #10's [granular policy](../systems/granular-interaction-policy.md)
-changes player and pair rules. **Planned:** #11 owns barrel changes; dynamic aggregates still need
-the explicit exclusive-ownership ADR described by the characterisation plan.
+changes player and pair rules. The 2026-09-13 #11 repair resolves masked-source
+feedback, barrier-aware bounded ejection and ordinary rectangle bearing through
+this existing cellular coupling owner. It adds no granular Rapier collider and
+does not generalize dynamic aggregate ownership; aggregates still need the
+explicit exclusive-ownership ADR described by the characterisation plan.
 
 ## Issue #10 sampled support decision
 
-**Current:** The character owner alone resolves material-aware sampled support. No Rapier proxy or body bearing impulse is added. See the [granular/player policy](../systems/granular-interaction-policy.md).
+**Current:** The character owner alone resolves material-aware sampled support.
+That #10 decision itself adds no Rapier proxy or body-bearing impulse. See the
+[granular/player policy](../systems/granular-interaction-policy.md); the separate
+#11 rectangle consumer is recorded below.
+
+## Issue #11 ordinary rectangle bearing decision
+
+**Current within the documented ordinary envelope:** downward exposed rectangle
+raster cells sample authoritative stored material through the #10 packing query.
+The cellular coupling owner emits one capped central bearing impulse and a
+same-tick settled correction; Rapier applies that result to its body. No support
+height or per-body support history is stored. Missing, stale or region-paused
+active samples produce no bearing. Excavation therefore releases the body without
+collider invalidation. See the [dated repair evidence](../audits/2026-09-13-issue-11-repair.md).

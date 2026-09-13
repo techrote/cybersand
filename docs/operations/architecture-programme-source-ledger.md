@@ -10,6 +10,31 @@ related-documents: [architecture-programme.md, ../decisions/ADR-005-water-model.
 
 # Source synthesis and epistemic ledger
 
+## Issue 12 execution qualification, 2026-09-13
+
+The local combined baseline is `f32faa93cbaaef08f7eb8cf9d5e445e9113db73c`.
+[ADR-012](../decisions/ADR-012-bounded-soliding-ownership.md) now freezes a one-slot
+isolated manual-step near-rest owner; older OPEN topology rows below describe
+the programme intake and remain unresolved for general production integration.
+The [dated execution record](../audits/2026-09-13-issue-12-soliding.md) supplies
+candidate, transition, reversal, review and platform evidence. This is no
+production Cell migration, H decision or #18/#20 admission.
+
+
+## Integrated source qualification, 2026-09-13
+
+**Current source:** merged #19 uses the eight-byte `detail::PrecisionStorage`
+carrier (`World::Chunk::Cell`), with default mass8/coherence12 semantics. Older
+four-byte baseline statements describe the programme reference or dated intake,
+not the physical storage in this checkout. This inherited experimental carrier
+is not a G-final production-layout choice and is not a new #12 packing migration.
+
+**Current #11:** source `d5f0de687283ec366ed4ff33160a274e2a35ddc6` repairs
+masked-source authority, barrier/body-aware ejection and ordinary rectangle bearing.
+The #11 support prerequisite is satisfied within the documented ordinary
+rectangle/load envelope. Earlier intake defect/issue-state claims below are
+historical and are superseded by the [repair evidence](../audits/2026-09-13-issue-11-repair.md).
+
 This is the working source synthesis for the [master programme](architecture-programme.md).
 Repository source establishes Current behavior; retained dated runs establish only
 their measured scope; ADRs establish decisions. Conversations establish what was

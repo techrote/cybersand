@@ -83,6 +83,29 @@ def godot_cases(group):
     cases=[]
     def add(material="Sand",mode="barrel",layout="flat",**kw):
         cases.append(dict(material=MATERIALS.get(material,0),mode=mode,layout=layout,name=f"{mode}-{material}-{layout}") | kw)
+    if group == "issue11-core":
+        add(drop=1, visual=True, issue11_p4=True, name="p4-sand-one-height")
+        add(drop=4, visual=True, issue11_p4=True, name="p4-sand-four-height")
+        add(layout="excavate", drop=1, visual=True, issue11_p5=True, name="p5-sand-excavation")
+        add("Empty", layout="hard", drop=1, visual=True, name="hard-floor-control")
+    if group == "issue11-envelope":
+        for mass in (0.5, 1.0, 2.0): add(mass=mass, name=f"mass-{mass:g}")
+        for angle, label in ((0.7853981633974483,"angle-45"),(1.5707963267948966,"angle-sideways")):
+            add(angle=angle, name=label)
+        for size in (0.5, 2.0): add(size=size, name=f"size-{size:g}")
+        add(layout="slope", name="slope")
+        add("Dust", name="powder-dust")
+        add("Salt", name="powder-salt")
+        add("Water", name="liquid-water-control")
+        add("Empty", layout="hard", name="hard-floor-control")
+        add(layout="mixed", name="mixed-seams")
+        add(layout="reentry", name="interest-reentry")
+        add(delay=1, name="sample-delay-1")
+        add(delay=2, name="sample-delay-2")
+        add(delay=4, name="sample-delay-4")
+        add(body_count=3, name="three-barrels")
+        add(drop=8, name="stress-drop-eight")
+        add(layout="film", name="stress-thin-bed")
     if group in ("smoke","screen","expanded","controls"):
         for powder in POWDERS:
             add(powder,"player")
@@ -128,7 +151,7 @@ def godot_cases(group):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("engine",choices=["native","godot"])
-    p.add_argument("--group",choices=["smoke","screen","expanded","controls","finalists"],default="smoke")
+    p.add_argument("--group",choices=["smoke","screen","expanded","controls","finalists","issue11-core","issue11-envelope"],default="smoke")
     p.add_argument("--output",type=Path,required=True)
     p.add_argument("--seeds",type=int,default=5)
     p.add_argument("--ticks",type=int,default=1800)

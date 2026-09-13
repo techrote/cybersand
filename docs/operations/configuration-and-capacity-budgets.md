@@ -4,11 +4,28 @@ document-kind: runbook
 canonical-for: [capacity-preparation-and-failure, safe-reconfiguration-requirements]
 status: Current
 scope: Existing construction/reservation and capacity outcomes; approved preparation discipline and unimplemented live resize
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-13
 related-documents: [../reference/configuration-reference.md, ../systems/world-storage-and-interest-region.md, ../architecture/data-ownership-and-lifetimes.md, profiling-observability-and-performance.md]
 ---
 
 # Configuration and capacity budgets
+
+## Soliding preparation and refusal
+
+The opt-in observer preallocates fixed witness/member/shape arrays. A patch-edge
+component is incomplete; component/member/shape saturation refuses admission.
+The isolated native Session reserves its entire finite region and temperature
+fields before transitions. Native commit rechecks resident storage and uses a
+private bounded `noexcept` writer. Main-thread shape/RID preparation precedes ACK;
+postcommit topology failure retains the committed material owner and the fence.
+
+Reversal requires every exact destination to be canonical Empty, including ambient
+temperature. Blocked, hot, excluded or over-envelope placements retain the aggregate;
+there is no truncation or heat overwrite. Generation exhaustion refuses further
+transactions. See [exact bounds](../reference/configuration-reference.md) and
+[ADR-012](../decisions/ADR-012-bounded-soliding-ownership.md). Ordinary scheduler,
+event, snapshot and failed-tick capacity contracts remain independently applicable.
+
 
 **Current:** native World construction, region/temperature reservation, event
 capacity, and snapshot slot/patch/byte limits exist. **Planned:** general saved
@@ -137,7 +154,7 @@ Do not promote design requirements to Current on source presence alone.
 histogram slots per scheduled-core scratch slot and 8,192 merged slots, allocated
 only on opt-in World construction. Counter overflow is explicit and drops
 observations. Body metrics use the existing 16-body bound, with fixed scalar and
-4-by-81 face/material counters. Copied cell observations are limited to 512 by
+4-by-81 face/material counters and fixed bearing/support scalars. Copied cell observations are limited to 512 by
 768 cells; fixture runs are bounded to 7,200 ticks and 512 cases per invocation.
 Rapier application observations use six scalars per body.
 
@@ -153,6 +170,11 @@ to 32 by 32 physical boxes (at most 33 by 33 raster cells at fractional origins)
 at most 20 stable-material samples per contact and 128
 enclosure candidates. Native queries allocate no storage; no worker read/write
 domain or Rapier shape is added.
+
+Ordinary rectangle bearing scans only exposed downward cells in the existing
+bounded body raster, for at most 16 bodies. Every candidate uses the fixed #10
+neighbourhood query. Native and fallback paths reuse fixed storage and add no
+hot-loop allocation, connected-component scan or growing body history.
 
 Delayed exchange adds one 64-bit deadline per native activity block, eight extra
 bytes in the tested layout. It reuses the existing metadata pass and exclusive

@@ -125,6 +125,7 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 		return {"ok":false,"error":"fixture construction produced no walls","spec":spec}
 	var viewport: SubViewport
 	var body: RigidBody2D
+	var bodies: Array[RigidBody2D] = []
 	var bridge: CyberRapierPhysicsBridge
 	var body_size: Vector2 = Vector2(8,14) * float(spec.get("size",1.0))
 	var angle: float = float(spec.get("angle",0.0))
@@ -134,30 +135,46 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 		viewport.world_2d = World2D.new()
 		viewport.size = Vector2i(128,128)
 		host.add_child(viewport)
-		body = RigidBody2D.new()
-		body.mass = float(spec.get("mass",1.0))
-		body.gravity_scale = 0.094
-		body.linear_damp = 0.15 * float(spec.get("damping",1.0))
-		body.angular_damp = 0.35 * float(spec.get("damping",1.0))
-		body.continuous_cd = RigidBody2D.CCD_MODE_CAST_SHAPE
-		body.position = Vector2(left+width/2,surface-extent/2-float(spec.get("drop",1.0))*body_size.y)
-		body.rotation = angle
-		var shape: CollisionShape2D = CollisionShape2D.new()
-		var rectangle: RectangleShape2D = RectangleShape2D.new()
-		rectangle.size = body_size
-		shape.shape = rectangle
-		body.add_child(shape)
-		viewport.add_child(body)
+		var body_count: int = clampi(int(spec.get("body_count",1)),1,4)
+		var spacing: float = body_size.x + 4.0
+		for body_index: int in range(body_count):
+			var candidate: RigidBody2D = RigidBody2D.new()
+			candidate.mass = float(spec.get("mass",1.0))
+			candidate.gravity_scale = 0.094
+			candidate.linear_damp = 0.15 * float(spec.get("damping",1.0))
+			candidate.angular_damp = 0.35 * float(spec.get("damping",1.0))
+			candidate.continuous_cd = RigidBody2D.CCD_MODE_CAST_SHAPE
+			candidate.position = Vector2(
+				left+width/2+(float(body_index)-float(body_count-1)/2.0)*spacing,
+				surface-extent/2-float(spec.get("drop",1.0))*body_size.y
+			)
+			candidate.rotation = angle
+			var shape: CollisionShape2D = CollisionShape2D.new()
+			var rectangle: RectangleShape2D = RectangleShape2D.new()
+			rectangle.size = body_size
+			shape.shape = rectangle
+			candidate.add_child(shape)
+			viewport.add_child(candidate)
+			bodies.append(candidate)
+		body = bodies[0]
 		await host.get_tree().process_frame
 		bridge = CyberRapierPhysicsBridge.new()
-		var bodies: Array[RigidBody2D] = [body]
-		if bridge.initialize(viewport.world_2d.space,bodies,PackedVector2Array([body_size])) != OK:
+		var body_sizes: PackedVector2Array = PackedVector2Array()
+		for body_index: int in range(body_count):
+			body_sizes.append(body_size)
+		if bridge.initialize(viewport.world_2d.space,bodies,body_sizes) != OK:
 			viewport.queue_free()
 			return {"ok": false, "error": "Rapier initialize"}
 		bridge.enable_diagnostics()
-		PhysicsServer2D.body_set_param(body.get_rid(), PhysicsServer2D.BODY_PARAM_FRICTION,float(spec.get("friction",0.78)))
-		bridge.reset_body(0,Vector2(left+width/2,surface-extent/2-float(spec.get("drop",1.0))*body_size.y),angle)
-		PhysicsServer2D.body_set_state(body.get_rid(),PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY,Vector2(0,float(spec.get("speed",0.0))))
+		for body_index: int in range(body_count):
+			var candidate: RigidBody2D = bodies[body_index]
+			var start_position: Vector2 = Vector2(
+				left+width/2+(float(body_index)-float(body_count-1)/2.0)*spacing,
+				surface-extent/2-float(spec.get("drop",1.0))*body_size.y
+			)
+			PhysicsServer2D.body_set_param(candidate.get_rid(), PhysicsServer2D.BODY_PARAM_FRICTION,float(spec.get("friction",0.78)))
+			bridge.reset_body(body_index,start_position,angle)
+			PhysicsServer2D.body_set_state(candidate.get_rid(),PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY,Vector2(0,float(spec.get("speed",0.0))))
 		bridge.refresh_all_states()
 		var rectangles: PackedInt32Array = world.get_hard_surface_rectangles() if not fallback else PackedInt32Array([left-1,floor_y,width+2,1,left-1,0,1,floor_y,left+width,0,1,floor_y])
 		bridge.rebuild_hard_surface_colliders_from_rectangles(rectangles)
@@ -181,6 +198,10 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 	var raw_displacement: Vector2 = Vector2.ZERO
 	var raw_boundary: Vector2 = Vector2.ZERO
 	var raw_contact: Vector2 = Vector2.ZERO
+	var raw_bearing: Vector2 = Vector2.ZERO
+	var support_samples: int = 0
+	var pre_excavation: Dictionary = {}
+	var post_excavation: Dictionary = {}
 	var applied: Vector2 = Vector2.ZERO
 	var max_age: int = 0
 	var stale: int = 0
@@ -240,6 +261,9 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 				raw_displacement += Vector2(d[2],d[3])
 				raw_boundary += Vector2(d[4],d[5])
 				raw_contact += Vector2(d[6],d[7])
+				if d.size() >= 20:
+					raw_bearing += Vector2(d[17],d[18])
+					support_samples += int(d[19])
 				caps += int(d[12])
 				final_caps += int(d[13])
 				for i: int in range(324): face_totals[i] += int(d[16][i])
@@ -260,6 +284,12 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 				"displacement":[raw_displacement.x,raw_displacement.y],"boundary":[raw_boundary.x,raw_boundary.y],
 				"contact":[raw_contact.x,raw_contact.y],"applied":[applied.x,applied.y]}
 		peak_depth = maxf(peak_depth,final_depth)
+		if layout == "excavate" and tick == 599:
+			pre_excavation = {"tick":tick+1,"depth":final_depth,"y":center.y,"vy":velocity.y,
+				"support_samples":support_samples}
+		if layout == "excavate" and tick == 660:
+			post_excavation = {"tick":tick+1,"depth":final_depth,"y":center.y,"vy":velocity.y,
+				"support_samples_since":support_samples-int(pre_excavation.get("support_samples",support_samples))}
 		if tick == ticks-601: late_start = final_depth
 		if tick%60 == 0 or tick == ticks-1 or frames.has(tick):
 			last_sample = sample(world,crop_origin,crop_size,tick==ticks-1)
@@ -298,6 +328,8 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 				"impulse_x":impulse.x,"impulse_y":impulse.y,"caps":caps,"unresolved":unresolved,"displaced":displaced,
 				"raw_displacement":[raw_displacement.x,raw_displacement.y],"raw_boundary":[raw_boundary.x,raw_boundary.y],
 				"raw_contact":[raw_contact.x,raw_contact.y],"applied":[applied.x,applied.y],"max_age":max_age})
+			rows[-1]["raw_bearing"] = [raw_bearing.x, raw_bearing.y]
+			rows[-1]["support_samples"] = support_samples
 			if mode == "cellular":
 				var front: int = 0
 				for index: int in range(last_sample.cells.size()):
@@ -327,12 +359,26 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 		"max_overlap":max_overlap,"intermediate_caps":caps,"final_caps":final_caps,"displaced":displaced,"unresolved":unresolved,
 		"displacement_impulse":[raw_displacement.x,raw_displacement.y],"boundary_impulse":[raw_boundary.x,raw_boundary.y],
 		"contact_impulse":[raw_contact.x,raw_contact.y],"applied_impulse":[applied.x,applied.y],"max_sample_age":max_age,
+		"bearing_impulse":[raw_bearing.x,raw_bearing.y],"support_samples":support_samples,
+		"pre_excavation":pre_excavation,"post_excavation":post_excavation,
 		"stale":stale,"duplicates":duplicates,"faces":face_totals,"tick_us":quantiles(tick_times),"coupling_us":quantiles(coupling_times),
 		"rows":rows,"frames":frame_records}
 	report.ok = int(last_sample.completed_ticks) == ticks and not last_sample.get("failed",false)
 	if layout == "hard" and peak_depth > 2.0:
 		report.ok = false
 		report["error"] = "hard-floor control exceeded two-cell fixture tolerance"
+	if spec.get("issue11_p4",false) and (peak_depth > 8.0 or report.late_creep > 1.0 or
+		floor_contact_tick >= 0 or support_samples <= 0):
+		report.ok = false
+		report["error"] = "issue-11 P4 ordinary envelope failed"
+	if spec.get("issue11_p5",false) and (pre_excavation.is_empty() or post_excavation.is_empty() or
+		float(pre_excavation.get("depth",0.0)) > 8.0 or
+		int(pre_excavation.get("support_samples",0)) <= 0 or
+		int(post_excavation.get("support_samples_since",1)) != 0 or
+		float(post_excavation.get("depth",0.0))-float(pre_excavation.get("depth",0.0)) < 5.0 or
+		float(post_excavation.get("vy",0.0)) <= 0.0):
+		report.ok = false
+		report["error"] = "issue-11 P5 support-loss envelope failed"
 	if not output_dir.is_empty():
 		var path: String = output_dir.path_join(str(spec.get("id","fixture"))+".json")
 		var file: FileAccess = FileAccess.open(path,FileAccess.WRITE)

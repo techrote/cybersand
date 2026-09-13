@@ -4,11 +4,40 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-09-12
+last-reviewed: 2026-09-13
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md]
 ---
 
 # Status and foundational roadmap
+
+## Issue 12 bounded soliding checkpoint
+
+**Current experimental source:** bounded candidate diagnostics, cells-authoritative
+stationary geometry and a separate one-slot native/Rapier Session exist. **Approved
+design:** [ADR-012](../decisions/ADR-012-bounded-soliding-ownership.md) admits only an
+isolated near-rest 8x8/8x14 Wall proof, after independent ownership challenge.
+[The dated record](../audits/2026-09-13-issue-12-soliding.md) distinguishes source,
+executed tests, review findings, publication and closure disposition.
+
+Dynamic production/asynchronous integration, automatic cohesion, structural
+collapse, general contours and energetic reversal remain Deferred. #14/G-R may
+consume this narrow proof; G-final remains open, #19 is H-ready with H unperformed,
+and #18/#20 are unchanged.
+
+
+## Integrated source qualification, 2026-09-13
+
+**Current source:** merged #19 uses the eight-byte `detail::PrecisionStorage`
+carrier (`World::Chunk::Cell`), with default mass8/coherence12 semantics. Older
+four-byte baseline statements describe the programme reference or dated intake,
+not the physical storage in this checkout. This inherited experimental carrier
+is not a G-final production-layout choice and is not a new #12 packing migration.
+
+**Current #11:** source `d5f0de687283ec366ed4ff33160a274e2a35ddc6` repairs
+masked-source authority, barrier/body-aware ejection and ordinary rectangle bearing.
+The #11 support prerequisite is satisfied within the documented ordinary
+rectangle/load envelope. Earlier intake defect/issue-state claims below are
+historical and are superseded by the [repair evidence](../audits/2026-09-13-issue-11-repair.md).
 
 ## Is the foundation ready to extend?
 
@@ -75,11 +104,19 @@ See [principles](../architecture/principles-and-non-goals.md) and the [ADRs](../
 
 **Current:** the [issue #9 measured baseline](../audits/2026-09-09-physics-characterisation.md)
 and [reproducible tooling](../operations/physics-characterisation.md) establish
-density-exchange, player-sampling and barrel-feedback evidence. Issue #10 now
-implements the [versioned player and exchange policy](../systems/granular-interaction-policy.md).
-Issue #11 retains **Planned** barrel work: masked-source feedback, barrier-aware
-ejection and persistent bearing. Raising barrel impulse caps alone does not
-provide the intended behavior. The
+reusable fixtures, bounded telemetry and historical density-exchange,
+player-sampling and barrel-feedback evidence. Results for behavior changed by #10
+and the later Water checkpoint are not current policy. The
+[2026-09-12 reconciliation](../audits/2026-09-12-issue-9-10-reconciliation.md)
+confirms that issue #10's [versioned player and exchange policy](../systems/granular-interaction-policy.md)
+is present and exercised at current source; persistent barrel bearing remains
+outside that policy.
+The [2026-09-12 reconciliation](../audits/2026-09-12-issue-11-reconciliation.md)
+retains the pre-repair failure. The [2026-09-13 repair](../audits/2026-09-13-issue-11-repair.md)
+supersedes its current disposition: masked sources retain material authority,
+bounded ejection cannot cross hard terrain or other bodies, and ordinary
+rectangles establish persistent cellular bearing that disappears with the bed.
+The accepted envelope is deliberately not a general-shape/high-energy result. The
 [soliding plan](../operations/physics-characterisation-plan.md) still requires an
 explicit ownership decision before dynamic membership handoff. Current F01/F02
 contracts and the separate runtime publication gate remain applicable.
@@ -102,7 +139,8 @@ builds. The earlier M11 checkpoint sequence and reported rollback archives remai
 enclosure recovery, powder-pair exclusion and scheduled Mercury permeability are
 implemented. The [dated evidence](../audits/2026-09-09-issue-10-granular-policy.md)
 records parameter screening, native/fallback/desktop/Web execution and remaining
-publication/platform limits. Barrel feedback/bearing/ejection stays in issue #11.
+publication/platform limits. Rectangle feedback/bearing/ejection now has separate
+issue #11 evidence and does not change the #10 policy version.
 
 ## Issue #13 experiment checkpoint
 
@@ -112,7 +150,7 @@ horizontal sampling. Desktop and both native Web profiles execute the lab.
 [Issue #13 evidence](../audits/2026-09-09-issue-13-transport.md) distinguishes
 regression results, measured transport changes, visual observations and remaining
 owner feel/performance limits. Baseline remains the gameplay default. Chemistry
-retuning, barrel #11 and soliding #12 remain separate.
+retuning, accepted ordinary barrel #11 behavior and soliding #12 remain separate scopes.
 
 The Tower is also the Current base for #19's Water Feel Lab extension. #13's
 existing evidence and recipes remain unchanged historical/current controls.
@@ -152,8 +190,7 @@ isolate raw Cell layout/epoch cost, liquid characterization, quantitative precis
 presentation, human-test preparation and conditional compact motion before any
 policy migration. Sparse ballistic implementation still requires admission evidence;
 coherent soliding reuses #12. No 4/8-byte winner, liquid unification or representation
-ladder is adopted. GitHub #11 is closed while this source still records its missing
-barrel work; support-dependent integration requires actual source/evidence reconciliation.
+ladder is adopted. The #11 support prerequisite is satisfied only within the documented ordinary rectangle/load envelope; #12 retains its own ownership and promotion gates.
 
 ## Architecture gate reconciliation, 2026-09-11
 

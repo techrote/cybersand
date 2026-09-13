@@ -4,11 +4,21 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-09-12
+last-reviewed: 2026-09-13
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md]
 ---
 
 # Validation evidence ledger
+
+## E-SOLIDING: bounded issue 12 execution, 2026-09-13
+
+The [dated record](../audits/2026-09-13-issue-12-soliding.md) identifies the combined
+main/#11 baseline, candidate matrix, stationary/near-rest transition fixtures,
+independent Sol/Terra dispositions, actual native/desktop/Web runs and remaining
+publication/Linux gaps. [ADR-012](../decisions/ADR-012-bounded-soliding-ownership.md)
+is design admission; only the recorded tested artifacts establish runtime evidence.
+No production soliding, generic momentum or exact replay is claimed.
+
 
 ## What has actually passed?
 
@@ -19,6 +29,7 @@ certifies a later binary, another platform or complete replay.
 
 | Evidence ID/date | Executed check and outcome | Limits and record |
 |---|---|---|
+| E-RECON-9-10, 2026-09-12 | Current `fc4d15d` inspection plus fresh Windows Clang build: 55/55 tests pass, including support/excavation, powder-pair exclusion/void fall, Mercury cadence/sleep/re-entry/worker parity, exact accounting, F01/F02 and the #9 masked-source baseline | [Current reconciliation](../audits/2026-09-12-issue-9-10-reconciliation.md). One focused native suite, not a new Godot/Web/Linux/sanitizer campaign; later unchanged-path evidence retains its own source/platform scope. |
 | E-PHYS, 2026-09-09 | Fresh Windows adapter: 49 native tests, 19 Godot runners; deterministic P1–P4 matrices, five-seed desktop async and 25 fixtures per real Web profile | [Issue #9 measured report](../audits/2026-09-09-physics-characterisation.md) separates symptoms, controls, long creep, hashes and gaps. Local diagnostic artifacts do not update published Linux/Windows runtime provenance. |
 | E-PUBLISH, 2026-09-08 | Pushed source passes Linux 46-test native, ASan/UBSan and TSan runs; rebuilt Linux Godot passes 16 runners plus profiles/import/scene; both extension builds pass | [Publication reconciliation](../audits/2026-09-08-validation-reconciliation.md) records exact revisions, workflows and limits, plus separate current/M11 gates |
 | E-F02, 2026-09-08 | 46 native regressions; rebuilt Windows adapter/owners and 16 Godot runners passed; paired Web exports exercised | [Issue #2 and combined record](../audits/2026-09-08-issue-2-interest-regions.md) identifies browser results, worker/profile and artifact scope; historical failures remain preserved |
@@ -168,3 +179,39 @@ and was resolved by rebuilding, not by suppressing the case.
 This evidence establishes a technically safe, reproducible H-ready apparatus.
 It is not a human preference study, a production precision/packing selection,
 #18 admission, #20 admission, representative GPU performance result or G-final.
+
+## Issue #11 closure reconciliation, 2026-09-12
+
+The [dated reconciliation](../audits/2026-09-12-issue-11-reconciliation.md) binds
+focused Windows execution to source `dfa95b3` plus only the rebuilt DLL delta.
+The ordinary 8x14 mass-1 Sand barrel reaches the deep floor at tick 155 in the
+one-seed 180-tick run; the hard-floor control remains at zero reported peak depth.
+The current Godot instrumentation still reproduces endpoint-only ejection across
+a one-cell hard floor, and the 56-test native suite reproduces three downward
+masked-Sand contacts with raw `y=4800` while preserving F01/F02, seam,
+sleep/re-entry and worker regressions.
+
+This is decisive negative evidence, not broad #11 acceptance. No new long-duration,
+mass/orientation, desktop-async or Web campaign was run because current source has
+no persistent barrel bearing mechanism and fails the ordinary case before three
+seconds. Historical #9 coverage retains its original source/artifact scope.
+
+## Issue #11 focused repair, 2026-09-13
+
+The [dated repair record](../audits/2026-09-13-issue-11-repair.md) supersedes only
+the disposition above, not its historical observations. At source `f8720d3`, a
+fresh Windows extension (`85b0c1e730dd930ac765361afc2eee3ffa35d2f5012936b113f3394a92e4f21a`)
+passed 55/55 native tests and focused Godot/native/fallback regressions.
+
+Three-seed 30-second P4 runs kept the ordinary 8x14 mass-1 Sand barrel within the
+`0.5H + 1` envelope: one-height peak/final `3.75/0` cells with zero late creep;
+four-height peak `6.65`, final `0.47..1.49`, worst last-ten-second descent `0.03`.
+The 120-second finalist remained within the same gate. P5 accumulated real support,
+then had zero support samples after excavation and resumed downward motion before
+re-bearing on collapsed material. Hard-floor and Water controls remained distinct.
+
+Exact-source desktop async and both real-browser Web profiles passed their focused
+series; compat/threaded browsers each completed 25/25 cases. Conservation and
+fixed-capacity checks passed. Eight-height impact, sustained publication delay,
+thin unsupported beds, crowded/general shapes and broad CCD/torque/fracture remain
+outside the accepted envelope.

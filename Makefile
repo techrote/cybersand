@@ -11,7 +11,7 @@ CORE_HEADERS := $(wildcard native/include/cybersand/*.hpp native/include/cybersa
 TEST_SOURCES := native/tests/test_world.cpp
 BENCH_SOURCES := native/bench/benchmark.cpp
 
-.PHONY: all test c-header-check benchmark shared debug sanitize thread-sanitize clean
+.PHONY: all test soliding-test c-header-check benchmark shared debug sanitize thread-sanitize clean
 
 all: test benchmark shared
 
@@ -33,8 +33,16 @@ $(BUILD_DIR)/tests_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) $(TEST_SOURCES) | 
 $(BUILD_DIR)/tests_tsan: $(CORE_SOURCES) $(CORE_HEADERS) $(TEST_SOURCES) | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=thread $(CORE_SOURCES) $(TEST_SOURCES) -o $@
 
-test: c-header-check $(BUILD_DIR)/tests
+$(BUILD_DIR)/soliding_tests: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_soliding.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g $(CORE_SOURCES) native/tests/test_soliding.cpp -o $@
+
+soliding-test: $(BUILD_DIR)/soliding_tests
+	./$(BUILD_DIR)/soliding_tests 1800
+
+test: c-header-check $(BUILD_DIR)/tests $(BUILD_DIR)/soliding_tests $(BUILD_DIR)/soliding_session_tests
 	./$(BUILD_DIR)/tests
+	./$(BUILD_DIR)/soliding_session_tests
+	./$(BUILD_DIR)/soliding_tests 1800
 
 c-header-check: | $(BUILD_DIR)
 	$(CC) -std=c11 -Wall -Wextra -Wpedantic -I$(INCLUDE_DIR) -fsyntax-only native/tests/test_c_header.c
@@ -46,11 +54,30 @@ shared: $(BUILD_DIR)/libcybersand.so
 
 debug: $(BUILD_DIR)/tests
 
-sanitize: $(BUILD_DIR)/tests_sanitized
-	ASAN_OPTIONS=detect_leaks=1:strict_string_checks=1 ./$(BUILD_DIR)/tests_sanitized
+$(BUILD_DIR)/soliding_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_soliding.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_soliding.cpp -o $@
 
-thread-sanitize: $(BUILD_DIR)/tests_tsan
+$(BUILD_DIR)/soliding_tsan: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_soliding.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=thread $(CORE_SOURCES) native/tests/test_soliding.cpp -o $@
+
+sanitize: $(BUILD_DIR)/tests_sanitized $(BUILD_DIR)/soliding_sanitized $(BUILD_DIR)/soliding_session_sanitized
+	ASAN_OPTIONS=detect_leaks=1:strict_string_checks=1 ./$(BUILD_DIR)/tests_sanitized
+	ASAN_OPTIONS=detect_leaks=1:strict_string_checks=1 ./$(BUILD_DIR)/soliding_sanitized 360
+	ASAN_OPTIONS=detect_leaks=1:strict_string_checks=1 ./$(BUILD_DIR)/soliding_session_sanitized
+
+thread-sanitize: $(BUILD_DIR)/tests_tsan $(BUILD_DIR)/soliding_tsan $(BUILD_DIR)/soliding_session_tsan
 	TSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/tests_tsan
+	TSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/soliding_tsan 360
+	TSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/soliding_session_tsan
 
 clean:
 	rm -f $(BUILD_DIR)/tests $(BUILD_DIR)/tests_sanitized $(BUILD_DIR)/tests_tsan $(BUILD_DIR)/benchmark $(BUILD_DIR)/libcybersand.so
+
+$(BUILD_DIR)/soliding_session_tests: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_soliding_session.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g $(CORE_SOURCES) native/tests/test_soliding_session.cpp -o $@
+
+$(BUILD_DIR)/soliding_session_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_soliding_session.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_soliding_session.cpp -o $@
+
+$(BUILD_DIR)/soliding_session_tsan: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_soliding_session.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=thread $(CORE_SOURCES) native/tests/test_soliding_session.cpp -o $@

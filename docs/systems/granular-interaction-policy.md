@@ -5,7 +5,7 @@ document-kind: contract
 scope: Version 1 material capability, sampled player support, pair exchange and deterministic permeability wakes
 canonical-for: [granular-support-policy, granular-pair-policy, sampled-player-collision]
 keywords: [powder, packing, player, Dust, Mercury, permeability, enclosure, side resistance]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-13
 related-documents: [materials-and-rule-kernels.md, ../architecture/rigid-body-and-cellular-coupling.md, ../operations/physics-characterisation.md]
 ---
 
@@ -16,8 +16,10 @@ related-documents: [materials-and-rule-kernels.md, ../architecture/rigid-body-an
 **Current:** `MaterialRules::supports_granular_load` explicitly includes Sand,
 Stone, Dust, Seed, Salt, Sodium, Gunpowder, Coal and Rust. Density and hard-surface
 identity are independent. The native owner queries `World::granular_support_at`;
-the interpreted owner mirrors it in `CyberInteractionPolicy`. No Rapier collider,
-body bearing force or material ownership transfer is introduced.
+the interpreted owner mirrors it in `CyberInteractionPolicy`. This policy does
+not itself add a Rapier collider, force or ownership transfer. The rectangle
+coupling now consumes the same predicate to produce bounded cellular bearing;
+native cells remain the material owner and main-thread Rapier remains the body owner.
 
 `InteractionPolicy` version 1 is immutable construction configuration. Downward
 support counts a 3 by 3 neighbourhood at x-1..x+1, y..y+2, including the contact
@@ -33,7 +35,9 @@ Side/upward resistance additionally requires all nine samples in the centred
 do not become invisible walls. Hard terrain and the current body mask always
 block. Excavation removes support on the next owner query, without cached
 colliders or a sleep prerequisite. The bounded probe does not certify arbitrary
-granular load paths or supply barrel bearing; those remain issue #11.
+granular load paths. Issue #11's ordinary rectangle repair uses it only as a
+local load-bearing sample, with separate bounded impulse/correction and immediate
+loss when samples disappear.
 
 ## How does the sampled character move and recover?
 

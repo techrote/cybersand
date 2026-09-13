@@ -4,7 +4,7 @@ status: Current
 document-kind: decision
 scope: Version 1 powder exchange, player packing and Mercury eligibility; excludes barrel bearing
 canonical-for: [decision-granular-interaction-policy]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-13
 related-documents: [../systems/granular-interaction-policy.md, ADR-007-rigid-body-cellular-coupling.md, ../audits/2026-09-09-issue-10-granular-policy.md]
 ---
 
@@ -50,7 +50,9 @@ is still absent. Fallback deliberately retains its narrower Water, chemistry
 and Stone state semantics. Main-thread Rapier ownership is unchanged.
 
 Any later tuning must version the policy decision and rerun affected fixtures.
-Issue #11 owns barrel feedback, barrier-aware ejection and bearing calibration.
+Issue #11 now consumes this unchanged policy for ordinary rectangle bearing while
+retaining separate bounded feedback/ejection mechanics. This does not expand the
+policy into a global load-path proof or general-shape solver.
 Dynamic aggregate membership still requires a separate ownership decision.
 
 

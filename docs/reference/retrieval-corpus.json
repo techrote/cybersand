@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-09-12",
+  "reviewed": "2026-09-13",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -63,7 +63,9 @@
     "operations/architecture-programme-water-feel-addendum.md",
     "operations/cell-layout-experiment.md",
     "operations/liquid-characterization.md",
-    "operations/state-precision-experiment.md"
+    "operations/state-precision-experiment.md",
+    "operations/soliding-experiment.md",
+    "decisions/ADR-012-bounded-soliding-ownership.md"
   ],
   "navigation": [
     "README.md",
@@ -165,8 +167,16 @@
       "reason": "Dated issue #9 measured evidence, explicitly routed with source/artifact/platform scope; not a default current contract"
     },
     {
+      "path": "audits/2026-09-12-issue-11-reconciliation.md",
+      "reason": "Dated current-source closure reconciliation and negative evidence; retrieve explicitly through the current coupling/programme routes"
+    },
+    {
       "path": "audits/2026-09-09-issue-10-granular-policy.md",
       "reason": "Dated issue #10 acceptance and retained failures; retrieve with its source/artifact/platform scope"
+    },
+    {
+      "path": "audits/2026-09-12-issue-9-10-reconciliation.md",
+      "reason": "Dated current-source reconciliation of #9/#10 prerequisites; retrieve explicitly with its platform and live-issue-access limits"
     },
     {
       "path": "audits/2026-09-09-issue-13-transport.md",
