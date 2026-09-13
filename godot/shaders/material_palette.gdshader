@@ -30,6 +30,9 @@ uniform sampler2D material_lut : source_color, filter_nearest, repeat_disable;
 uniform sampler2D material_program_lut : filter_nearest, repeat_disable;
 uniform vec2 material_lut_size = vec2(64.0, 256.0);
 uniform float condition_projection_enabled = 0.0;
+// 0 preserves the reference stable dither, 1 selects fixed four-level
+// coverage, and 2 adds deterministic local interface orientation.
+uniform float water_presentation_mode : hint_range(0.0, 2.0, 1.0) = 0.0;
 uniform float snapshot_blend : hint_range(0.0, 1.0, 0.01) = 1.0;
 
 float cheap_hash(vec2 value) {
@@ -632,15 +635,154 @@ float stable_coverage_hash(vec2 pixel) {
 	return cheap_hash(pixel + vec2(41.31, 17.17));
 }
 
-int displayed_material_id(int material_id, float condition, vec2 world_pixel) {
-	if (
-		material_id == 3
-		&& condition_projection_enabled > 0.5
-		&& stable_coverage_hash(world_pixel) >= condition
-	) {
-		return 0;
+int water_coverage_samples(int condition_byte) {
+	if (condition_byte <= 0) return 0;
+	return min(4, (condition_byte * 4 + 254) / 255);
+}
+
+int water_coverage_mask(int samples) {
+	if (samples <= 0) return 0;
+	if (samples == 1) return 1;
+	if (samples == 2) return 3;
+	if (samples == 3) return 7;
+	return 15;
+}
+
+int water_subcell_index(int x, int y) {
+	if (y == 0) return x == 1 ? 3 : 2;
+	return x == 1 ? 1 : 0;
+}
+
+int water_add_ordered_sample(int mask, int sample_count, int rank, int subcell) {
+	if (rank >= sample_count) return mask;
+	if (subcell == 0) return mask + 1;
+	if (subcell == 1) return mask + 2;
+	if (subcell == 2) return mask + 4;
+	return mask + 8;
+}
+
+int sampled_water_condition_byte(vec2 pixel, bool previous_snapshot) {
+	vec2 clamped_pixel = clamp(floor(pixel), vec2(0.0), world_size_px - vec2(1.0));
+	vec2 world_uv = (clamped_pixel + vec2(0.5)) / world_size_px;
+	vec2 cell_sample;
+	if (previous_snapshot) {
+		cell_sample = texture(previous_world_texture, world_uv).rg;
+	} else {
+		cell_sample = texture(current_world_texture, world_uv).rg;
 	}
-	return material_id;
+	int material_id = int(floor(cell_sample.r * 255.0 + 0.5));
+	if (material_id != 3) return 0;
+	return int(floor(cell_sample.g * 255.0 + 0.5));
+}
+
+int water_oriented_mask(
+	int condition_byte,
+	vec2 world_pixel,
+	bool previous_snapshot
+) {
+	int samples = water_coverage_samples(condition_byte);
+	if (samples == 0) return 0;
+
+	int gradient_x = sampled_water_condition_byte(
+		world_pixel + vec2(1.0, 0.0), previous_snapshot
+	) - sampled_water_condition_byte(
+		world_pixel + vec2(-1.0, 0.0), previous_snapshot
+	);
+	int gradient_y = sampled_water_condition_byte(
+		world_pixel + vec2(0.0, 1.0), previous_snapshot
+	) - sampled_water_condition_byte(
+		world_pixel + vec2(0.0, -1.0), previous_snapshot
+	);
+	int magnitude_x = abs(gradient_x);
+	int magnitude_y = abs(gradient_y);
+	int magnitude = max(magnitude_x, magnitude_y);
+
+	// Weak, symmetric, isolated and equal-diagonal gradients use the fixed
+	// coverage masks. Thresholds are exact normalized-byte comparisons.
+	if (magnitude <= 2 || abs(magnitude_x - magnitude_y) < 1) {
+		return water_coverage_mask(samples);
+	}
+
+	int fuller_x = gradient_x > 0 ? 1 : 0;
+	int fuller_y = gradient_y > 0 ? 1 : 0;
+	int first;
+	int second;
+	int third;
+	int fourth;
+
+	if (min(magnitude_x, magnitude_y) > 2) {
+		first = water_subcell_index(fuller_x, fuller_y);
+		if (magnitude_x > magnitude_y) {
+			second = water_subcell_index(fuller_x, 1 - fuller_y);
+			third = water_subcell_index(1 - fuller_x, fuller_y);
+		} else {
+			second = water_subcell_index(1 - fuller_x, fuller_y);
+			third = water_subcell_index(fuller_x, 1 - fuller_y);
+		}
+		fourth = water_subcell_index(1 - fuller_x, 1 - fuller_y);
+	} else {
+		// Axial gradients contain tied scores. Alternate each tied pair by
+		// world-cell parity so the choice is stable across frames and scales.
+		bool odd_cell = int(mod(abs(world_pixel.x + world_pixel.y), 2.0)) == 1;
+		if (magnitude_x > magnitude_y) {
+			int full_bottom = water_subcell_index(fuller_x, 1);
+			int full_top = water_subcell_index(fuller_x, 0);
+			int empty_bottom = water_subcell_index(1 - fuller_x, 1);
+			int empty_top = water_subcell_index(1 - fuller_x, 0);
+			first = odd_cell ? full_top : full_bottom;
+			second = odd_cell ? full_bottom : full_top;
+			third = odd_cell ? empty_top : empty_bottom;
+			fourth = odd_cell ? empty_bottom : empty_top;
+		} else {
+			int full_left = water_subcell_index(0, fuller_y);
+			int full_right = water_subcell_index(1, fuller_y);
+			int empty_left = water_subcell_index(0, 1 - fuller_y);
+			int empty_right = water_subcell_index(1, 1 - fuller_y);
+			first = odd_cell ? full_right : full_left;
+			second = odd_cell ? full_left : full_right;
+			third = odd_cell ? empty_right : empty_left;
+			fourth = odd_cell ? empty_left : empty_right;
+		}
+	}
+
+	int mask = 0;
+	mask = water_add_ordered_sample(mask, samples, 0, first);
+	mask = water_add_ordered_sample(mask, samples, 1, second);
+	mask = water_add_ordered_sample(mask, samples, 2, third);
+	return water_add_ordered_sample(mask, samples, 3, fourth);
+}
+
+bool water_mask_contains(int mask, int subcell) {
+	if (subcell == 0) return mask % 2 == 1;
+	if (subcell == 1) return (mask / 2) % 2 == 1;
+	if (subcell == 2) return (mask / 4) % 2 == 1;
+	return (mask / 8) % 2 == 1;
+}
+
+int displayed_material_id(
+	int material_id,
+	float condition,
+	vec2 world_pixel,
+	vec2 cell_fraction,
+	bool previous_snapshot
+) {
+	if (material_id != 3 || condition_projection_enabled <= 0.5) {
+		return material_id;
+	}
+	if (water_presentation_mode < 0.5) {
+		return stable_coverage_hash(world_pixel) >= condition ? 0 : material_id;
+	}
+
+	int condition_byte = int(floor(condition * 255.0 + 0.5));
+	int samples = water_coverage_samples(condition_byte);
+	int mask = water_coverage_mask(samples);
+	if (water_presentation_mode >= 1.5) {
+		mask = water_oriented_mask(condition_byte, world_pixel, previous_snapshot);
+	}
+	int subcell_x = cell_fraction.x >= 0.5 ? 1 : 0;
+	int subcell_y = cell_fraction.y >= 0.5 ? 1 : 0;
+	int subcell = water_subcell_index(subcell_x, subcell_y);
+	return water_mask_contains(mask, subcell) ? material_id : 0;
 }
 
 vec4 material_colour(int material_id, float condition, vec2 world_pixel) {
@@ -680,8 +822,10 @@ void fragment() {
 		vec2(0.0),
 		vec2(0.999999)
 	);
-	vec2 view_pixel = floor(fitted_uv * view_size_px);
+	vec2 continuous_view_pixel = fitted_uv * view_size_px;
+	vec2 view_pixel = floor(continuous_view_pixel);
 	vec2 world_pixel = camera_origin_px + view_pixel;
+	vec2 cell_fraction = fract(camera_origin_px + continuous_view_pixel);
 	vec2 world_uv = (world_pixel + vec2(0.5)) / world_size_px;
 	vec2 cell_sample = texture(TEXTURE, world_uv).rg;
 	vec2 previous_cell_sample = texture(previous_world_texture, world_uv).rg;
@@ -689,11 +833,19 @@ void fragment() {
 	int previous_stored_material_id = int(floor(previous_cell_sample.r * 255.0 + 0.5));
 	float condition = cell_sample.g;
 	float previous_condition = previous_cell_sample.g;
-	int material_id = displayed_material_id(stored_material_id, condition, world_pixel);
+	int material_id = displayed_material_id(
+		stored_material_id,
+		condition,
+		world_pixel,
+		cell_fraction,
+		false
+	);
 	int previous_material_id = displayed_material_id(
 		previous_stored_material_id,
 		previous_condition,
-		world_pixel
+		world_pixel,
+		cell_fraction,
+		true
 	);
 	vec4 colour = material_colour(material_id, condition, world_pixel);
 	if (

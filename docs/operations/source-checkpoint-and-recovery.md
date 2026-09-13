@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Actual local Git roots, preserved baseline, recovery boundaries and source-versus-artifact identity
 canonical-for: [source-identity, local-checkpoints, recovery-coverage]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-10
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md]
 ---
 
@@ -114,3 +114,61 @@ Local issue #1 commit `0778845` plus browser fixture correction `061ad23` preced
 the issue #2 implementation. Its [combined evidence](../audits/2026-09-08-issue-2-interest-regions.md)
 records fingerprints and final acceptance. Read actual HEAD/status rather than
 assuming this dated text is the latest branch state.
+
+## Physics characterization checkpoint, 2026-09-09
+
+The [issue #9 report](../audits/2026-09-09-physics-characterisation.md) starts from
+clean `main` at `ab4851e9e6a3ee182aba1a31a8f66d135e87df3a` and records the
+`codex/issue-9-physics-characterisation` delta and rebuilt artifact hashes.
+Per-series manifests, a tracked-source patch and new source snapshots are under
+`C:/kybersand/validation/local/2026-09-09-physics/`; curated manifests are linked
+from the report. The completed local commit is recoverable from branch history.
+Published runtime manifests are preserved separately; inspect current Git status
+and rebuild before invoking diagnostic APIs in a fresh checkout.
+
+## Issue #10 intake
+
+**Current:** Issue #9 baseline is committed at 10e8153064f64272680696cce2b830791ecad2c3. The new branch is codex/issue-10-player-and-exchange. The sole intake delta was the diagnostic Windows DLL, copied to C:/kybersand/validation/local/2026-09-09-issue-10/intake/ with SHA-256 45f4ba78787a9e2d4daefb9b3ba24b1e476cb496343f63e77dd75a3e1c712eb7. Source/artifact manifests and source snapshots are in support-checkpoint/ in that same evidence directory. Fresh builds remain uncommitted. See the [granular/player policy](../systems/granular-interaction-policy.md).
+
+Support commit `1fba848bd2b624ec99974ffa896e34e01c39575e` is the first focused
+increment. The second commit contains exchange rules and their acceptance data.
+`runtime-final-reset/` retains the tested HEAD-plus-delta, tracked patch and new
+source snapshots; per-matrix manifests preserve earlier fixture inputs.
+The [dated audit](../audits/2026-09-09-issue-10-granular-policy.md) links curated
+identities and records the deliberately uncommitted rebuilt DLL. Rebuild from
+branch history before reusing runtime evidence; published manifests were not
+rewritten or treated as current-source attestations.
+
+
+## Issue #13 experiment checkpoint
+
+Issue #13 starts at verified `372bfb3ac3cbbb8005b594cd0995ed5e71d6c530` on separate branch `codex/issue-13-experiment-tower`. Intake DLL bytes and dated source snapshots remain under `C:/kybersand/validation/local/2026-09-09-issue-13/`; see [its audit](../audits/2026-09-09-issue-13-transport.md).
+
+Focused local checkpoints are `f88423f` (references/tower), `af80634` (profiles),
+and `1290e0a` (shared motion). The subsequent **Measure lateral sampling and
+complete Experiment Tower validation (#13)** checkpoint contains the measured
+approximation, recipe-4 usability corrections and final evidence. Resolve its
+actual commit from branch history rather than treating a build's old acquisition
+label as a source revision. Its audit manifest records tested HEAD plus exact
+local file hashes; the final committed-identity capture remains under the raw
+evidence prefix. Rebuilt DLL bytes stay intentionally uncommitted; intake bytes
+are preserved separately and `C:/cybersand` is unchanged.
+
+## Water leveling follow-up
+
+The owner feedback branch `codex/water-sideways-leveling` starts from completed
+#13 checkpoint `4bead5501d902c424820814e7b5bcf1f9abea324`. Its **Speed up Water
+lateral leveling and document Coal residue** checkpoint changes Water relaxation;
+resolve the commit from branch history. [Dated evidence](../audits/2026-09-10-water-leveling.md)
+records source deltas, rebuilt desktop/both-Web identities and preserved intake
+DLLs under `C:/kybersand/validation/local/2026-09-10-water-leveling/`. Runtime DLLs
+remain deliberately uncommitted; published provenance remains historical.
+
+## Issue17 precision checkpoint, 2026-09-11
+
+Start f3fb9de, registration6ae3dd5, implementation8fff609 and focused validation
+supplement af17fcc are on codex/issue-17-state-precision in
+C:/kybersand/worktrees/issue-17-state-precision. [Evidence](../audits/2026-09-11-issue-17-state-precision.md)
+records exact compiler/executable/local-delta hashes and all retained samples.
+C:/kybersand/source remains at f3fb9de with its deliberately dirty DLL untouched.
+No experiment branch is merged into production. Raw data and toolchains stay local.

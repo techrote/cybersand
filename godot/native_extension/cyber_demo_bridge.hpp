@@ -40,6 +40,109 @@ class CyberDemoBridge final : public RefCounted {
 public:
     [[nodiscard]] String get_last_error() const { return error_; }
 
+    [[nodiscard]] bool build_tuned_world(const Ref<CyberNativeCellWorld>& adapter,
+        const PackedInt32Array& rectangles, const PackedInt32Array& profile) {
+        error_ = String();
+        if(adapter.is_null() || !adapter->world_) { error_="Native world unavailable"; return false; }
+        try {
+            auto config = adapter->world_->config();
+            config.transport_policy = cybersand::TransportPolicy::unpack(
+                {profile.ptr(),static_cast<std::size_t>(profile.size())});
+            config.physics_diagnostics = {}; config.physics_diagnostics.enabled = true;
+            config.interaction_policy = {};
+            config.water_experiment_policy = cybersand::WaterExperimentPolicy{};
+            auto candidate=cybersand::demo::construct(config,
+                {rectangles.ptr(),static_cast<std::size_t>(rectangles.size())});
+            install(*adapter.ptr(),std::move(candidate));
+            return true;
+        } catch(const std::exception& error) { error_=error.what(); return false; }
+    }
+
+    [[nodiscard]] bool build_water_feel_world(
+        const Ref<CyberNativeCellWorld>& adapter,
+        const PackedInt32Array& rectangles,
+        const PackedInt32Array& profile,
+        const PackedInt32Array& policy,
+        const PackedInt32Array& water_fills) {
+        error_ = String();
+        if (adapter.is_null() || !adapter->world_) {
+            error_ = "Native world unavailable";
+            return false;
+        }
+        try {
+            if (policy.size() != 4 || policy[0] != 1 || policy[1] < 3 || policy[1] > 8 ||
+                policy[2] < 0 || policy[2] > 12 || policy[3] != 0) {
+                throw std::invalid_argument("Invalid Water experiment policy");
+            }
+            if (water_fills.size() % 6 != 0 ||
+                water_fills.size() / 6 >
+                    static_cast<std::int64_t>(cybersand::demo::kMaximumRectangles)) {
+                throw std::invalid_argument("Invalid Water fill count");
+            }
+            std::uint64_t fill_area = 0;
+            for (std::int64_t i = 0; i < water_fills.size(); i += 6) {
+                const auto x = water_fills[i], y = water_fills[i + 1];
+                const auto width = water_fills[i + 2], height = water_fills[i + 3];
+                const auto normalized_mass = water_fills[i + 4];
+                const auto coherence = water_fills[i + 5];
+                if (x < 0 || y < 0 || width <= 0 || height <= 0 ||
+                    width > cybersand::demo::kWidth || height > cybersand::demo::kHeight ||
+                    x > cybersand::demo::kWidth - width ||
+                    y > cybersand::demo::kHeight - height ||
+                    normalized_mass < 0 || normalized_mass > 255 ||
+                    coherence < 0 || coherence > 12) {
+                    throw std::invalid_argument("Invalid Water fill");
+                }
+                fill_area += static_cast<std::uint64_t>(width) *
+                             static_cast<std::uint64_t>(height);
+                if (fill_area > static_cast<std::uint64_t>(cybersand::demo::kWidth) *
+                                    cybersand::demo::kHeight) {
+                    throw std::invalid_argument("Water fill budget exceeded");
+                }
+            }
+
+            auto config = adapter->world_->config();
+            config.transport_policy = cybersand::TransportPolicy::unpack(
+                {profile.ptr(), static_cast<std::size_t>(profile.size())});
+            config.physics_diagnostics = {};
+            config.physics_diagnostics.enabled = true;
+            config.interaction_policy = {};
+            config.water_experiment_policy = cybersand::WaterExperimentPolicy(
+                static_cast<std::uint8_t>(policy[1]),
+                static_cast<std::uint8_t>(policy[2]),
+                cybersand::WaterRestPolicy::CurrentNormalizedV1);
+            auto candidate = cybersand::demo::construct(
+                config, {rectangles.ptr(), static_cast<std::size_t>(rectangles.size())});
+            const auto& water_policy = candidate->config().water_experiment_policy;
+            for (std::int64_t i = 0; i < water_fills.size(); i += 6) {
+                const auto mass = static_cast<std::uint16_t>(
+                    (2U * static_cast<std::uint32_t>(water_fills[i + 4]) *
+                         water_policy.maximum() + 255U) /
+                    (2U * 255U));
+                const auto coherence = static_cast<std::uint8_t>(
+                    (2U * static_cast<std::uint32_t>(water_fills[i + 5]) *
+                         water_policy.coherence_ticks() + 12U) /
+                    (2U * 12U));
+                if (mass == 0U) continue;
+                for (auto y = water_fills[i + 1];
+                     y < water_fills[i + 1] + water_fills[i + 3]; ++y) {
+                    for (auto x = water_fills[i];
+                         x < water_fills[i] + water_fills[i + 2]; ++x) {
+                        if (!candidate->set_cell_state(
+                                x, y, cybersand::Material::Water, mass, coherence)) {
+                            throw std::invalid_argument("Water fill could not be applied");
+                        }
+                    }
+                }
+            }
+            install(*adapter.ptr(), std::move(candidate));
+            return true;
+        } catch (const std::exception& error) {
+            error_ = error.what();
+            return false;
+        }
+    }
+
     [[nodiscard]] PackedByteArray export_level(const Ref<CyberNativeCellWorld>& adapter) {
         error_ = String();
         PackedByteArray bytes;
@@ -82,7 +185,10 @@ public:
             return false;
         }
         try {
-            auto candidate = cybersand::demo::construct(adapter->world_->config(),
+            auto config = adapter->world_->config();
+            config.transport_policy = {}; // Ordinary demos retain production Baseline.
+            config.water_experiment_policy = cybersand::WaterExperimentPolicy{};
+            auto candidate = cybersand::demo::construct(config,
                 {rectangles.ptr(), static_cast<std::size_t>(rectangles.size())});
             install(*adapter.ptr(), std::move(candidate));
             return true;
@@ -116,6 +222,10 @@ protected:
         ClassDB::bind_method(D_METHOD("export_level", "world"), &CyberDemoBridge::export_level);
         ClassDB::bind_method(D_METHOD("import_level", "world", "bytes"), &CyberDemoBridge::import_level);
         ClassDB::bind_method(D_METHOD("build_world", "world", "rectangles"), &CyberDemoBridge::build_world);
+        ClassDB::bind_method(D_METHOD("build_tuned_world", "world", "rectangles", "profile"), &CyberDemoBridge::build_tuned_world);
+        ClassDB::bind_method(D_METHOD("build_water_feel_world", "world", "rectangles",
+                                     "profile", "policy", "water_fills"),
+                             &CyberDemoBridge::build_water_feel_world);
         ClassDB::bind_method(D_METHOD("queue_explosion", "world", "x", "y", "radius"), &CyberDemoBridge::queue_explosion);
         ClassDB::bind_method(D_METHOD("get_last_error"), &CyberDemoBridge::get_last_error);
     }

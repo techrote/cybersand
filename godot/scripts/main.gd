@@ -25,6 +25,7 @@ const HARD_SURFACE_CHUNKS_PER_FRAME: int = 32
 const HARD_SURFACE_FRAME_BUDGET_USEC: int = 750
 const RENDER_PATCH_METADATA_STRIDE: int = 6
 const RENDER_SNAPSHOT_HZ_PRESETS: Array[int] = [30, 45, 60]
+const WATER_POLICY_PATH: String = "user://water-experiment-policy.json"
 # Prototype paint-tool slots are UI identifiers, not material IDs. Their
 # mappings may change without changing simulation or serialized material identity.
 const PAINT_SLOT_SAND: int = 1
@@ -129,6 +130,282 @@ const MATERIAL_GROUP_FIRST_IDS: Array[int] = [
 @onready var test_rigid_body_3: RigidBody2D = $RigidBodies/TestBody3
 
 var simulation_worker: CyberSimulationWorker = CyberSimulationWorker.new()
+var tower_panel: CyberTowerPanel
+var tower_active: bool = false
+var tower_floor: int = 0
+var tower_context: Dictionary = {}
+var tower_profile_panel: CyberTransportProfilePanel
+var tower_profile: Dictionary = CyberTransportProfiles.preset(0)
+var water_experiment_panel: CyberWaterExperimentPanel
+var water_policy_resolved: Dictionary = CyberWaterExperimentProfiles.resolve()
+var water_blind_set: Dictionary = {}
+var water_blind_base: Dictionary = {}
+var water_blind_index: int = 0
+var water_active_blind_label: String = ""
+var pending_water_apply: Dictionary = {}
+var pending_water_exit: Dictionary = {}
+var water_policy_available: bool = true
+
+func setup_tower_panel() -> void:
+	tower_panel = CyberTowerPanel.new()
+	$Layout.add_child(tower_panel)
+	$Layout.move_child(tower_panel,1)
+	tower_panel.setup(self)
+	tower_profile_panel = CyberTransportProfilePanel.new()
+	add_child(tower_profile_panel)
+	tower_profile_panel.setup(self)
+	water_experiment_panel = CyberWaterExperimentPanel.new()
+	add_child(water_experiment_panel)
+	var profile_input: Variant = {}
+	if FileAccess.file_exists(WATER_POLICY_PATH):
+		profile_input = FileAccess.get_file_as_string(WATER_POLICY_PATH)
+	var launch_arguments: PackedStringArray=water_launch_arguments()
+	water_experiment_panel.setup(profile_input,launch_arguments)
+	water_experiment_panel.apply_requested.connect(water_lab_apply_result)
+	var startup: Dictionary
+	if profile_input is String:
+		var parsed_profile: Dictionary=CyberWaterExperimentProfiles.parse_profile(profile_input)
+		startup=(CyberWaterExperimentProfiles.resolve(parsed_profile.values,
+			launch_arguments,{}) if parsed_profile.get("ok",false) else parsed_profile)
+	else:
+		startup=CyberWaterExperimentProfiles.resolve(profile_input,launch_arguments,{})
+	water_policy_available=bool(startup.get("ok",false))
+	if water_policy_available: water_policy_resolved=startup
+
+func water_launch_arguments() -> PackedStringArray:
+	return OS.get_cmdline_user_args()
+
+func water_lab_open() -> void:
+	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty():
+		return
+	water_experiment_panel.popup_centered()
+
+func water_lab_reset() -> void:
+	if not water_policy_available: return
+	water_lab_apply_result(water_policy_resolved,water_active_blind_label)
+
+func water_lab_save_profile() -> bool:
+	if (not water_policy_available or not water_policy_resolved.get("ok",false)
+		or not water_blind_set.is_empty()
+		or not water_active_blind_label.is_empty()): return false
+	var file: FileAccess=FileAccess.open(WATER_POLICY_PATH,FileAccess.WRITE)
+	if file==null: return false
+	file.store_string(str(water_policy_resolved.canonical_json)+"\n")
+	return true
+
+func _water_blind_application_allowed(result: Dictionary, blind_label: String) -> bool:
+	var blind_active: bool=(
+		not water_blind_set.is_empty() or not water_active_blind_label.is_empty())
+	if not blind_active:
+		return blind_label.is_empty()
+	if (blind_label.is_empty() or not water_blind_set.get("ok",false)
+		or not blind_label in water_blind_set.get("hidden_mapping",{})):
+		return false
+	var hidden: Dictionary=water_blind_set.hidden_mapping[blind_label]
+	return str(hidden.get("hash",""))==str(result.get("hash",""))
+
+func water_controlled_run_active() -> bool:
+	return (tower_context.get("water_active",false)
+		or not pending_water_apply.is_empty()
+		or (not pending_water_exit.is_empty() and not water_blind_set.is_empty()))
+
+func water_lab_apply_result(result: Dictionary, blind_label: String = "") -> void:
+	if not result.get("ok",false): return
+	if not _water_blind_application_allowed(result,blind_label): return
+	var checked: Dictionary=CyberWaterExperimentProfiles.resolve({},{},result.policy)
+	if not checked.get("ok",false) or str(checked.hash)!=str(result.hash): return
+	var recipe: Dictionary=CyberWaterFeelScenarios.recipe(
+		str(checked.policy.scenario_id),int(checked.policy.seed))
+	if recipe.is_empty(): return
+	var previous_paused: bool=paused
+	paused=true
+	pending_water_apply={"result":result.duplicate(true),"recipe":recipe.duplicate(true),
+		"blind_label":blind_label,"hash":str(checked.hash),
+		"previous_paused":previous_paused}
+	tower_command({
+		"water_reset":true,
+		"water_policy":checked.policy,
+		"water_policy_hash":checked.hash,
+		"water_policy_provenance":result.get("provenance",{}),
+		"blind_label":blind_label,
+	})
+
+func water_lab_prepare_blind(
+		mass_candidates: Array[int] = [3,5,8],
+		blind_seed: int = -1
+	) -> bool:
+	if not water_policy_available: return false
+	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty():
+		return false
+	var candidates: Array=[]
+	var base: Dictionary=water_policy_resolved.policy.duplicate(true)
+	water_blind_base=water_policy_resolved.duplicate(true)
+	base.interface_mode="oriented"
+	for bits: int in mass_candidates:
+		var candidate: Dictionary=base.duplicate(true)
+		candidate.mass_bits=bits
+		var candidate_resolved: Dictionary=CyberWaterExperimentProfiles.resolve({},{},candidate)
+		var provenance: Dictionary=water_policy_resolved.get("provenance",{}).duplicate(true)
+		var origins: Dictionary=provenance.get("field_origins",{}).duplicate(true)
+		origins["mass_bits"]="panel"
+		origins["interface_mode"]="panel"
+		var layers: Array=provenance.get("applied_layers",[]).duplicate()
+		if not "panel" in layers: layers.append("panel")
+		candidate_resolved.source="panel"
+		candidate_resolved.provenance={"effective_source":"panel",
+			"field_origins":origins,"applied_layers":layers}
+		candidates.append(candidate_resolved)
+	var seed_value: int=blind_seed if blind_seed>=0 else int(base.seed)+1009
+	water_blind_set=CyberWaterExperimentBlind.create(candidates,seed_value)
+	water_blind_index=0
+	if not water_blind_set.get("ok",false): return false
+	return water_lab_apply_blind(0)
+
+func water_lab_apply_blind(index: int = -1) -> bool:
+	if not water_blind_set.get("ok",false): return false
+	if index<0: index=(water_blind_index+1)%water_blind_set.labels.size()
+	if index<0 or index>=water_blind_set.labels.size(): return false
+	water_blind_index=index
+	var label: String=water_blind_set.labels[index]
+	var hidden: Dictionary=water_blind_set.hidden_mapping[label]
+	var resolved: Dictionary=CyberWaterExperimentProfiles.resolve({},{},hidden.policy)
+	if not resolved.get("ok",false) or str(resolved.hash)!=str(hidden.hash): return false
+	resolved.source=hidden.source
+	resolved.provenance=hidden.provenance.duplicate(true)
+	water_lab_apply_result(resolved,label)
+	return true
+
+func _activate_water_body_scenario(active: bool) -> void:
+	if not active:
+		for body: RigidBody2D in [test_rigid_body_1,test_rigid_body_2,test_rigid_body_3]:
+			body.freeze=true
+			body.collision_layer=0
+			body.collision_mask=0
+		rapier_bridge.shutdown()
+		rigid_bodies.clear()
+		for i: int in range(3):
+			world_shader.set_shader_parameter("rigid_body_data_%d" % i,Vector4(-1000,-1000,0,0))
+		return
+	if rigid_bodies.is_empty():
+		rigid_bodies=[test_rigid_body_1,test_rigid_body_2,test_rigid_body_3]
+	var body_sizes:=PackedVector2Array()
+	body_sizes.resize(rigid_bodies.size())
+	body_sizes.fill(TEST_RIGID_BODY_SIZE)
+	if not rapier_bridge.is_initialized():
+		rapier_start_error=rapier_bridge.initialize(
+			get_viewport().world_2d.space,rigid_bodies,body_sizes)
+	for i: int in range(rigid_bodies.size()):
+		rigid_bodies[i].freeze=false
+		rigid_bodies[i].collision_layer=1
+		rigid_bodies[i].collision_mask=1
+		if rapier_bridge.is_initialized():
+			rapier_bridge.reset_body(i,Vector2(160+i*52,176),0.0)
+
+func tower_command(command: Dictionary) -> bool:
+	if water_controlled_run_active() and (
+		command.has("release") or command.has("schedule")
+	):
+		return false
+	if command.has("step"): paused = true
+	simulation_worker.queue_lab(command)
+	return true
+
+func tower_floor_select(index: int) -> void:
+	if water_controlled_run_active(): return
+	tower_floor = clampi(index,0,4)
+	paused = true
+	camera_follow_enabled = false
+	camera_origin = Vector2(0,CyberExperimentTower.floor_y(tower_floor))
+	tower_command({"floor":tower_floor})
+
+func tower_reset() -> void:
+	pending_water_exit={"kind":"fresh"}
+	pending_water_apply.clear()
+	tower_active = true
+	current_view_size = Vector2i(480,270)
+	paused = true
+	for body: RigidBody2D in rigid_bodies: body.freeze = true
+	rapier_bridge.shutdown()
+	rigid_bodies.clear()
+	for i: int in range(3): world_shader.set_shader_parameter("rigid_body_data_%d" % i,Vector4(-1000,-1000,0,0))
+	$Layout/Title.text = "CYBERSAND / EXPERIMENT TOWER"
+	var resolved: Dictionary = CyberTransportProfiles.resolve(tower_profile)
+	tower_command({"reset":true,"floor":tower_floor,"profile":resolved})
+	camera_follow_enabled = false
+	camera_origin = Vector2(0,CyberExperimentTower.floor_y(tower_floor))
+
+func tower_tuning() -> void:
+	paused = true
+	tower_profile_panel.popup_centered()
+
+func tower_focus_tube(index: int) -> void:
+	if water_controlled_run_active(): return
+	var tubes: Array=CyberExperimentTower.tubes(tower_floor)
+	if index < 0 or index >= tubes.size(): return
+	paused=true
+	camera_follow_enabled=false
+	camera_origin=Vector2(clampf(float(tubes[index][0])-100.0,0.0,1024.0-current_view_size.x),CyberExperimentTower.floor_y(tower_floor))
+
+func tower_apply_profile(resolved: Dictionary) -> void:
+	pending_water_exit={"kind":"profile"}
+	pending_water_apply.clear()
+	paused = true
+	tower_command({"reset":true,"floor":tower_floor,"profile":resolved})
+
+func tower_observation() -> void:
+	var report: Dictionary = {"recipe_version":CyberExperimentTower.VERSION,"seed":0,"floor":tower_floor,"context":tower_context,"platform":OS.get_name(),"utc":Time.get_datetime_string_from_system(true)}
+	if tower_context.get("water_active",false):
+		report["runtime_identity"]=water_runtime_identity()
+		report["water_feel_version"]=CyberWaterFeelScenarios.VERSION
+		report["effective_policy"]=tower_context.get("water_policy",{}).duplicate(true)
+		report["effective_policy_hash"]=str(tower_context.get("water_policy_hash",""))
+		report["policy_provenance"]=tower_context.get("water_policy_provenance",{}).duplicate(true)
+		report["scenario_id"]=str(report.effective_policy.get("scenario_id",""))
+		report["seed"]=int(report.effective_policy.get("seed",0))
+		report["recipe_hash"]=str(tower_context.get("water_recipe_hash",""))
+		report["presentation_mode"]="four-level-"+str(report.effective_policy.get("interface_mode","coverage"))
+		report["worker_count"]=latest_snapshot.scheduler_thread_capacity_hint if latest_snapshot!=null else int(tower_context.get("worker_count",1))
+		report["backend"]=latest_snapshot.backend_name if latest_snapshot!=null else str(tower_context.get("backend","unknown"))
+		report["action_history"]=tower_context.get("water_actions",[]).duplicate(true)
+		report["observations"]=tower_context.get("water_observations",[]).duplicate(true)
+		report["water_accounting"]=tower_context.get("water_accounting",{}).duplicate(true)
+		report["blind_label"]=str(tower_context.get("water_blind_label",""))
+		if water_blind_set.get("ok",false):
+			var blind_export: Dictionary=CyberWaterExperimentBlind.export_metadata(
+				water_blind_set,{"scenario_id":report.scenario_id,"seed":report.seed,
+					"recipe_hash":report.recipe_hash,"platform":report.platform,
+					"worker_count":report.worker_count,"action_history":report.action_history})
+			if blind_export.get("ok",false):
+				report["blind"]=blind_export.metadata
+	var file: FileAccess = FileAccess.open("user://tower-observation.json",FileAccess.WRITE)
+	if file != null: file.store_string(JSON.stringify(report,"  "))
+	if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD): DisplayServer.clipboard_set(JSON.stringify(report,"  "))
+
+func _water_end_blind_session() -> void:
+	if not water_active_blind_label.is_empty() and water_blind_base.get("ok",false):
+		water_policy_resolved=water_blind_base.duplicate(true)
+		water_policy_available=true
+	water_blind_base.clear()
+	water_blind_set.clear()
+	water_blind_index=0
+	water_active_blind_label=""
+
+func water_runtime_identity() -> Dictionary:
+	var path: String=(
+		"res://addons/cybersand_native/runtime-provenance.web.json"
+		if OS.has_feature("web")
+		else "res://addons/cybersand_native/runtime-provenance.json")
+	var result: Dictionary={"platform":OS.get_name(),
+		"godot":Engine.get_version_info().get("string","unknown"),"manifest":path}
+	if not FileAccess.file_exists(path):
+		result["status"]="manifest-unavailable"
+		return result
+	var parsed: Variant=JSON.parse_string(FileAccess.get_file_as_string(path))
+	if not parsed is Dictionary:
+		result["status"]="manifest-invalid"
+		return result
+	result.merge(parsed,true)
+	return result
 var latest_snapshot: CyberSimulationSnapshot
 var worker_start_error: Error = OK
 var consumed_snapshot_serial: int = -1
@@ -187,6 +464,11 @@ var hard_surface_rebuild_cooldown: float = 0.0
 
 
 func _ready() -> void:
+	setup_tower_panel()
+	var tower_button: Button = Button.new()
+	tower_button.text = "Experiment Tower / F9"
+	tower_button.pressed.connect(tower_reset)
+	$Layout.add_child(tower_button)
 	if OS.get_processor_count() < 4:
 		var warning: Label = Label.new()
 		warning.text = "4 physical CPU cores are the recommended minimum. Fewer than 4 logical threads reported."
@@ -279,6 +561,7 @@ func _exit_tree() -> void:
 
 
 func _process(delta: float) -> void:
+	tower_panel.refresh(tower_active,tower_floor,tower_context)
 	frame_time_ms = delta * 1000.0
 	maximum_frame_time_ms = maxf(maximum_frame_time_ms, frame_time_ms)
 	consume_worker_snapshot()
@@ -320,6 +603,19 @@ func _physics_process(_delta: float) -> void:
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
+	if tower_profile_panel != null and tower_profile_panel.visible:
+		if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE: tower_profile_panel.hide()
+		return
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F9:
+		tower_reset()
+		return
+	if tower_active and event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode >= KEY_1 and event.keycode <= KEY_6:
+			selected_material_id = CyberExperimentTower.QUICK[tower_floor][int(event.keycode)-KEY_1]
+			return
+		if event.keycode == KEY_R:
+			tower_reset()
+			return
 	if event is not InputEventKey:
 		return
 	var key_event: InputEventKey = event as InputEventKey
@@ -357,17 +653,17 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		KEY_C:
 			coherent_liquid_emission = not coherent_liquid_emission
 		KEY_T:
-			liquid_surface_adhesion_enabled = not liquid_surface_adhesion_enabled
+			set_liquid_surface_adhesion(not liquid_surface_adhesion_enabled)
 		KEY_R:
 			reset_world()
 		KEY_P:
 			paused = not paused
 		KEY_F:
-			camera_follow_enabled = not camera_follow_enabled
+			set_camera_follow(not camera_follow_enabled)
 		KEY_L:
-			simulation_window_enabled = not simulation_window_enabled
+			set_simulation_window(not simulation_window_enabled)
 		KEY_K:
-			cadence_lod_enabled = not cadence_lod_enabled
+			set_cadence_lod(not cadence_lod_enabled)
 		KEY_H:
 			cycle_render_snapshot_hz()
 		KEY_G:
@@ -414,19 +710,50 @@ func cycle_material_group(direction: int) -> void:
 	selected_material_id = MATERIAL_GROUP_FIRST_IDS[group_index]
 
 
-func cycle_view_size() -> void:
+func cycle_view_size() -> bool:
+	if water_controlled_run_active(): return false
 	var previous_centre: Vector2 = camera_origin + Vector2(current_view_size) * 0.5
 	view_size_index = (view_size_index + 1) % VIEW_SIZE_PRESETS.size()
 	current_view_size = VIEW_SIZE_PRESETS[view_size_index]
 	camera_origin = clamped_camera_origin(previous_centre - Vector2(current_view_size) * 0.5)
 	update_worker_frame_state()
 	update_shader_parameters()
+	return true
 
 
-func cycle_simulation_margin() -> void:
+func cycle_simulation_margin() -> bool:
+	if water_controlled_run_active(): return false
 	simulation_margin_index = (simulation_margin_index + 1) % SIMULATION_MARGIN_PRESETS.size()
 	simulation_margin = SIMULATION_MARGIN_PRESETS[simulation_margin_index]
 	update_worker_frame_state()
+	return true
+
+
+func set_liquid_surface_adhesion(enabled: bool) -> bool:
+	if water_controlled_run_active(): return false
+	liquid_surface_adhesion_enabled=enabled
+	update_worker_frame_state()
+	return true
+
+
+func set_camera_follow(enabled: bool) -> bool:
+	if water_controlled_run_active(): return false
+	camera_follow_enabled=enabled
+	return true
+
+
+func set_simulation_window(enabled: bool) -> bool:
+	if water_controlled_run_active(): return false
+	simulation_window_enabled=enabled
+	update_worker_frame_state()
+	return true
+
+
+func set_cadence_lod(enabled: bool) -> bool:
+	if water_controlled_run_active(): return false
+	cadence_lod_enabled=enabled
+	update_worker_frame_state()
+	return true
 
 
 func cycle_render_snapshot_hz() -> void:
@@ -457,6 +784,7 @@ func material_id_for_paint_slot(slot: int) -> int:
 
 
 func reset_world() -> void:
+	if water_controlled_run_active(): return
 	reset_test_rigid_bodies()
 	simulation_worker.queue_reset(CHARACTER_SPAWN)
 	character_position = CHARACTER_SPAWN
@@ -541,6 +869,35 @@ func consume_worker_snapshot() -> void:
 	if snapshot == null:
 		return
 	latest_snapshot = snapshot
+	tower_context = snapshot.lab_context
+	if not pending_water_exit.is_empty():
+		if (not tower_context.get("water_active",false)
+			and tower_context.has("profile")):
+			_water_end_blind_session()
+			pending_water_exit.clear()
+		elif "rejected" in str(tower_context.get("status","")).to_lower():
+			pending_water_exit.clear()
+	if not pending_water_apply.is_empty():
+		if tower_context.get("water_active",false) and str(
+			tower_context.get("water_policy_hash",""))==str(pending_water_apply.hash):
+			var applied: Dictionary=pending_water_apply
+			var recipe: Dictionary=applied.recipe
+			water_policy_resolved=applied.result.duplicate(true)
+			water_policy_available=true
+			water_active_blind_label=str(applied.blind_label)
+			tower_active=true
+			current_view_size=Vector2i(480,270)
+			camera_follow_enabled=false
+			camera_origin=Vector2(recipe.camera_origin)
+			character_position=Vector2(recipe.player_start)
+			$Layout/Title.text="CYBERSAND / EXPERIMENT TOWER / WATER FEEL"
+			_activate_water_body_scenario(bool(recipe.body_enabled))
+			pending_water_apply.clear()
+		elif ("rejected" in str(tower_context.get("status","")).to_lower()
+			or "requires" in str(tower_context.get("status","")).to_lower()):
+			paused=bool(pending_water_apply.get("previous_paused",true))
+			pending_water_apply.clear()
+	if tower_context.has("profile"): tower_profile = tower_context.profile
 	consumed_snapshot_serial = snapshot.serial
 	if snapshot.simulation_failed:
 		paused = true
@@ -602,6 +959,7 @@ func get_horizontal_input() -> float:
 
 
 func update_camera(delta: float) -> void:
+	if water_controlled_run_active(): return
 	var pan_input: Vector2 = Vector2(
 		(1.0 if Input.is_key_pressed(KEY_RIGHT) else 0.0) - (1.0 if Input.is_key_pressed(KEY_LEFT) else 0.0),
 		(1.0 if Input.is_key_pressed(KEY_DOWN) else 0.0) - (1.0 if Input.is_key_pressed(KEY_UP) else 0.0)
@@ -650,7 +1008,21 @@ func update_worker_frame_state() -> void:
 	)
 
 
+func queue_brush_mutation(
+		world_x: int,
+		world_y: int,
+		radius: int,
+		material_id: int,
+		emission_flags: int = CyberCellWorld.EMISSION_FLAG_NONE
+	) -> bool:
+	if water_controlled_run_active():
+		return false
+	return simulation_worker.queue_emit_disc(
+		world_x,world_y,radius,material_id,emission_flags)
+
+
 func handle_painting() -> void:
+	if tower_profile_panel != null and tower_profile_panel.visible: return
 	var mouse: Vector2 = world_view.get_local_mouse_position()
 	var content_rect: Rect2 = view_content_rect()
 	if content_rect.size.x <= 0.0 or content_rect.size.y <= 0.0:
@@ -678,7 +1050,7 @@ func handle_painting() -> void:
 
 	var world_x: int = floori(camera_origin.x) + view_pixel.x
 	var world_y: int = floori(camera_origin.y) + view_pixel.y
-	simulation_worker.queue_paint(
+	queue_brush_mutation(
 		world_x,
 		world_y,
 		4,
@@ -965,6 +1337,11 @@ func update_shader_parameters() -> void:
 		"condition_projection_enabled",
 		1.0 if render_channels == 2 else 0.0
 	)
+	var water_mode: int=0
+	if tower_context.get("water_active",false):
+		water_mode=2 if str(tower_context.get("water_policy",{}).get(
+			"interface_mode","coverage"))=="oriented" else 1
+	world_shader.set_shader_parameter("water_presentation_mode",water_mode)
 	for body_index: int in range(rigid_bodies.size()):
 		var body_transform: Transform2D
 		if rapier_bridge.is_initialized():

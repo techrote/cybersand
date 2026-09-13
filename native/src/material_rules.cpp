@@ -58,6 +58,13 @@ bool MaterialRules::can_density_exchange(Material source, Material target,
     if (vertical_delta == 0) return false;
     const auto& source_definition = descriptor(source);
     const auto& target_definition = descriptor(target);
+    // Grains rearrange by moving into real voids, never by swapping two
+    // powders solely because their descriptor densities differ.
+    if (source_definition.state == MaterialState::Powder &&
+        target_definition.state == MaterialState::Powder) return false;
+    // Preserve Oil's specialized no-powder-penetration path as explicit policy.
+    // Heavier powders may still settle through Oil in the opposite layer order.
+    if (source == Material::Oil && target_definition.state == MaterialState::Powder) return false;
     if (!source_definition.valid || !target_definition.valid ||
         !target_definition.current_rule_available ||
         !target_definition.accepts_density_exchange) {
@@ -92,6 +99,18 @@ bool MaterialRules::is_hard_surface(Material material) noexcept {
             return true;
         default:
             return false;
+    }
+}
+
+bool MaterialRules::supports_granular_load(Material material) noexcept {
+    // Explicit capability shared by player sampling and the pair policy. Seed
+    // is included while it remains a grain; germinated Plant is not a powder.
+    switch (material) {
+        case Material::Sand: case Material::Stone: case Material::Dust:
+        case Material::Seed: case Material::Salt: case Material::Sodium:
+        case Material::Gunpowder: case Material::Coal: case Material::Rust:
+            return true;
+        default: return false;
     }
 }
 

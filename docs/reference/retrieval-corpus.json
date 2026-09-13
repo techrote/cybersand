@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-09-08",
+  "reviewed": "2026-09-12",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -24,6 +24,7 @@
     "decisions/ADR-008-bounded-approximate-fidelity.md",
     "decisions/ADR-009-rapier-2d-rigid-body-backend.md",
     "decisions/ADR-010-failed-tick-quarantine.md",
+    "decisions/ADR-011-granular-interaction-policy.md",
     "operations/configuration-and-capacity-budgets.md",
     "operations/current-and-historical-validation.md",
     "operations/cybersand-codex-development-handover.md",
@@ -31,6 +32,7 @@
     "operations/github-development-and-release.md",
     "operations/local-build-and-validation.md",
     "operations/physics-characterisation-plan.md",
+    "operations/physics-characterisation.md",
     "operations/profiling-observability-and-performance.md",
     "operations/rapier-2d-migration-runbook.md",
     "operations/source-checkpoint-and-recovery.md",
@@ -47,12 +49,21 @@
     "reference/validation-evidence.md",
     "research/sandspiel-performance-and-material-port.md",
     "systems/activity-dirty-regions-and-waking.md",
+    "systems/granular-interaction-policy.md",
     "systems/material-appearance-and-rendering.md",
     "systems/materials-and-rule-kernels.md",
     "systems/smoke-heat-pressure-roadmap.md",
     "systems/themed-construction-materials.md",
     "systems/water-design.md",
-    "systems/world-storage-and-interest-region.md"
+    "systems/world-storage-and-interest-region.md",
+    "operations/experiment-tower.md",
+    "operations/water-feel-lab-experiment.md",
+    "systems/flow-transport-and-profiles.md",
+    "operations/architecture-programme.md",
+    "operations/architecture-programme-water-feel-addendum.md",
+    "operations/cell-layout-experiment.md",
+    "operations/liquid-characterization.md",
+    "operations/state-precision-experiment.md"
   ],
   "navigation": [
     "README.md",
@@ -148,6 +159,54 @@
     {
       "path": "audits/2026-09-08-validation-reconciliation.md",
       "reason": "Dated publication/integrity evidence; not a current contract owner"
+    },
+    {
+      "path": "audits/2026-09-09-physics-characterisation.md",
+      "reason": "Dated issue #9 measured evidence, explicitly routed with source/artifact/platform scope; not a default current contract"
+    },
+    {
+      "path": "audits/2026-09-09-issue-10-granular-policy.md",
+      "reason": "Dated issue #10 acceptance and retained failures; retrieve with its source/artifact/platform scope"
+    },
+    {
+      "path": "audits/2026-09-09-issue-13-transport.md",
+      "reason": "Dated checkpoint evidence; not a current-answer contract"
+    },
+    {
+      "path": "operations/architecture-programme-source-ledger.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/cell-layout.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/compact-motion.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/decision-review.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/fractional-presentation.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/liquid-characterization.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/soliding-supplement.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/sparse-motion.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "operations/architecture-programme-prompts/state-precision.md",
+      "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
     }
   ]
 }

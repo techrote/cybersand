@@ -1,0 +1,71 @@
+{
+  "docs": {
+    "command": [
+      "C:\\kybersand\\.local\\python\\Scripts\\python.exe",
+      "tools/ci/check_docs.py"
+    ],
+    "exit": 0,
+    "timeout_seconds": 180
+  },
+  "history": {
+    "command": [
+      "C:\\kybersand\\.local\\python\\Scripts\\python.exe",
+      "tools/ci/check_m11_consistency.py"
+    ],
+    "exit": 0,
+    "timeout_seconds": 180
+  },
+  "repository": {
+    "command": [
+      "C:\\kybersand\\.local\\python\\Scripts\\python.exe",
+      "tools/ci/check_repository.py"
+    ],
+    "exit": 1,
+    "timeout_seconds": 180
+  },
+  "checker-tests": {
+    "command": [
+      "C:\\kybersand\\.local\\python\\Scripts\\python.exe",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/ci",
+      "-p",
+      "test_validation_contracts.py"
+    ],
+    "exit": 0,
+    "timeout_seconds": 180
+  },
+  "retrieval": {
+    "command": [
+      "C:\\kybersand\\.local\\python\\Scripts\\python.exe",
+      "tools/docs/retrieval_eval.py",
+      "--output",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\gates-final\\retrieval.json"
+    ],
+    "exit": 0,
+    "timeout_seconds": 180
+  },
+  "challenges": {
+    "command": [
+      "C:\\kybersand\\.local\\python\\Scripts\\python.exe",
+      "tools/docs/retrieval_eval.py",
+      "--queries",
+      "docs/reference/retrieval-challenges.json",
+      "--output",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\gates-final\\challenges.json"
+    ],
+    "exit": 0,
+    "timeout_seconds": 180
+  },
+  "diff": {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit": 0,
+    "timeout_seconds": 180
+  }
+}

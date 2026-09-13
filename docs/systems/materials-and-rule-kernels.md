@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [material-runtime-model, material-kernel-cadence, reactive-material-families]
 status: Current
 scope: Native material identity, descriptors, mutable state, kernel execution, current interactions, and extension boundaries
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-10
 related-documents: [themed-construction-materials.md, material-appearance-and-rendering.md, water-design.md, smoke-heat-pressure-roadmap.md, ../research/sandspiel-performance-and-material-port.md]
 ---
 
@@ -53,7 +53,7 @@ identity or completion timing.
 
 | Work lane | Current period | Scope |
 |---|---:|---|
-| Eligible transport/density motion | Each selected tick | Full rate for scheduled native work, not all stored cells |
+| Eligible transport/density motion | Each selected tick, except Mercury/powder permeability | Empty movement and native Water transfer remain full rate; [granular policy](granular-interaction-policy.md) owns pair exclusions and deadlines |
 | Selected burn/charge/lifecycle work | 2 ticks | Kernel-specific, not every lifetime; Fire/Foam have full-rate portions |
 | Pair chemistry, thermal/growth/capture checks | 4 ticks | Persistent contacts can react; brief contacts can be missed |
 | Smoke lifetime/crowding | 8 ticks | Coordinate-staggered decay |
@@ -90,6 +90,16 @@ Exact triggering and writes are in `update_rule_kernel` and
 
 Water alone uses `FreeMass`; `CellularYield` liquids retain whole-cell movement.
 Viscosity is dimensionless gameplay tuning, separate from yield and adhesion.
+
+## Why does burning Coal leave a purple layer?
+
+**Current:** Coal's burn countdown ends by converting the cell to **Dust (ID 14)**.
+Dust uses the pale-purple base color `(218, 198, 238, 255)`. It is the existing
+powder material reused as combustion residue, not a distinct Ash material.
+Fire/Smoke emissions happen during burning; the persistent purple residue is
+Dust. This explanation is source inspection, not a change to combustion cadence.
+See the Coal kernel in [world.cpp](../../native/src/world.cpp) and the
+[material descriptor](../../native/include/cybersand/material.hpp).
 
 ### Project reactive IDs
 
@@ -134,3 +144,46 @@ capacity tests; update controls only if the UI changes. Follow the
 tables, a bounded rule context, broader reaction accounting and complete
 interaction coverage. The JSON attribution ledger is research/provenance input,
 not a runtime modding format or proof that every pair has been tested.
+
+## Which penetration explanations have been measured?
+
+**Historical issue #9:** the [dated physics baseline](../audits/2026-09-09-physics-characterisation.md)
+reproduces ordered powder density exchange in packed layers and Mercury's rapid
+downward passage through Sand. Mercury viscosity 96/160/224/248 produces identical
+states in the confined vertical controls; the gate affects lateral movement.
+Oil's specialized path declines the otherwise density-eligible Dust exchange.
+Lava/Dust and Water/Salt require reaction accounting, not a transport-only label.
+
+The [bounded measurement API](../operations/physics-characterisation.md) records
+actual stored pairs for swaps and kernel-visible sources for contact attempts.
+Its immutable construction overrides leave the shared descriptor table and
+production defaults unchanged. A diagnostic target-wide exchange veto proves
+causality; issue #10 now implements the [versioned granular policy](granular-interaction-policy.md).
+Barrel bearing and feedback correction remain **Planned** for #11.
+
+## Sampled player support
+
+**Current:** the [version 1 granular policy](granular-interaction-policy.md) separates
+material support capability from density and hard terrain. All nine powders can
+support the sampled player when locally packed and stable; side resistance uses
+a separate neighbourhood. The separate exchange checkpoint rejects powder/powder density reordering and
+schedules Mercury/powder eligibility independently of viscosity.
+
+
+## Opt-in transport profiles
+
+**Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
+owns schema, inheritance, units, immutable native tables and explicit owner restart.
+The Tower applies validated profiles through restart. Actual powder falls and
+lateral Water mass transport drive bounded optional mixing and grain pickup;
+horizontal sampling and cadence are separate fixed experiments.
+Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
+are unchanged. No unsynchronized live descriptor mutation is introduced.
+
+## Completed liquid specialization evidence
+
+The [eleven-liquid review](../audits/2026-09-11-issue-15-coverage.md#per-liquid-final-coverage)
+distinguishes generic mobility from Oil/Acid/Lava exceptions, lifecycle cadence,
+Water partial redistribution and exchange. [Controlled sleep evidence](../operations/liquid-characterization.md#does-keeping-water-awake-fix-residual-leveling-or-films)
+does not establish a stress/yield law or approve liquid unification. Production
+semantics are unchanged; observation counters remain on the research branch.

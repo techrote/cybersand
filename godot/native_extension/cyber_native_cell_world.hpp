@@ -5,6 +5,7 @@
 
 #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/variant/dictionary.hpp>
+#include <godot_cpp/variant/array.hpp>
 #include <godot_cpp/variant/packed_byte_array.hpp>
 #include <godot_cpp/variant/packed_float32_array.hpp>
 #include <godot_cpp/variant/packed_int32_array.hpp>
@@ -27,8 +28,6 @@ public:
     static constexpr std::int32_t kWorldHeight = 1024;
     static constexpr std::int32_t kInputStride = 11;
     static constexpr std::int32_t kResultStride = 9;
-    static constexpr std::int32_t kCoherentWaterDelayTicks = 12;
-
     CyberNativeCellWorld();
     ~CyberNativeCellWorld() override;
 
@@ -52,6 +51,7 @@ public:
 
     [[nodiscard]] std::int64_t material_at(std::int64_t x, std::int64_t y) const;
     [[nodiscard]] bool box_collides(Vector2 origin, Vector2 size) const;
+    [[nodiscard]] bool character_box_collides(Vector2 origin, Vector2 size, std::int64_t mode) const;
     [[nodiscard]] PackedByteArray get_cells() const;
     [[nodiscard]] Dictionary take_render_snapshot(bool force_full = false);
     [[nodiscard]] PackedInt32Array get_hard_surface_rectangles() const;
@@ -89,6 +89,20 @@ public:
     [[nodiscard]] std::int64_t get_worker_threads() const;
     [[nodiscard]] String get_backend_name() const;
     [[nodiscard]] String get_last_tick_error() const;
+    [[nodiscard]] Dictionary get_water_experiment_policy() const;
+    bool water_experiment_fill_rect(Vector2i origin, Vector2i size,
+                                    std::int64_t normalized_mass,
+                                    std::int64_t coherence);
+    bool water_experiment_erase_rect(Vector2i origin, Vector2i size);
+    [[nodiscard]] Dictionary water_experiment_observation(
+        Vector2i origin, Vector2i size) const;
+    // Isolated fresh-world experiment API. Called only by the exclusive owner.
+    bool diagnostic_reset(const Dictionary& options);
+    bool diagnostic_fill_rect(Vector2i origin, Vector2i size, std::int64_t material,
+                              std::int64_t state_b = 0);
+    [[nodiscard]] Dictionary diagnostic_snapshot(Vector2i origin, Vector2i size,
+                                                  bool include_histogram = false) const;
+    [[nodiscard]] Array diagnostic_body_metrics() const;
     [[nodiscard]] std::int64_t get_tick_failure_count() const;
 
 protected:
@@ -118,6 +132,20 @@ private:
         std::uint64_t displaced = 0;
         std::uint64_t unresolved = 0;
     };
+    struct BodyDiagnostic {
+        Vector2 displacement{};
+        Vector2 boundary{};
+        std::uint64_t intermediate_caps = 0;
+        std::array<std::uint64_t, 4 * 81> faces{};
+    };
+    std::unique_ptr<std::array<BodyDiagnostic, 17>> body_diagnostics_;
+    bool diagnostic_fixture_ = false;
+    double displacement_gain_ = 0.18;
+    double boundary_gain_ = 0.19;
+    double contact_gain_ = 0.025;
+    double impulse_cap_ = 3.0;
+    double density_limit_ = 1.6;
+    [[nodiscard]] double density_scale(cybersand::Material material, double minimum = 0.05) const;
 
     std::unique_ptr<cybersand::World> world_;
     std::unique_ptr<cybersand::RenderSnapshotExchange> render_exchange_;
@@ -172,7 +200,6 @@ private:
     void record_impulse(std::uint16_t body_id, Vector2 impulse);
     [[nodiscard]] static std::int32_t symmetric_probe_offset(std::int32_t index);
     [[nodiscard]] static bool in_bounds(std::int64_t x, std::int64_t y);
-    [[nodiscard]] static bool character_solid(cybersand::Material material);
 };
 
 }  // namespace godot

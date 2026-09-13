@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [native-water-semantics, native-fallback-water-differences]
 status: Current
 scope: Native conserved Water, coherent emission and adhesion, rest/hash fixtures, fallback differences, and future reaction accounting
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-12
 related-documents: [materials-and-rule-kernels.md, material-appearance-and-rendering.md, ../reference/level-saves-and-replay.md, ../decisions/ADR-005-water-model.md]
 ---
 
@@ -33,18 +33,31 @@ descriptors.
 | `state_b` | Remaining coherent-emission lateral delay |
 | Viscosity | Dimensionless gameplay rate; Water uses 0, the fastest setting |
 | Lateral rest tolerance | No lateral transfer when source mass is at most target mass + 1 |
+| Lateral relaxation | Request three quarters of the positive mass difference, rounded down |
 
 Painting ordinary Water initializes a full 255-unit cell. Gravity attempts down,
 then both diagonals in deterministic order. It merges into Water or moves/swaps
 whole cell state into a permitted destination; directional density exchange lets
-Water move through lighter accepting media. Lateral equalization requests half
-the positive mass difference, scaled by viscosity. A transfer is capped by the
+Water move through lighter accepting media. Lateral equalization requests three
+quarters of the positive mass difference, scaled by viscosity. This crosses the
+pair midpoint but contracts its imbalance; the one-unit rest tolerance remains.
+A transfer is capped by the
 requested amount, source mass, and destination capacity. Zero remaining source
 mass converts the source to Empty.
 
 Water has no persistent native lateral direction or travel budget. Transfers
 stay inside the phase-owned bounded write domain and mark source/destination
 activity and render dirtiness. Viscosity does not expand the kernel radius.
+
+## Faster sideways flow and profile identity
+
+The [2026-09-10 owner-requested leveling change](../audits/2026-09-10-water-leveling.md)
+replaces half-difference requests. It speeds fronts and basin leveling without
+extra lateral candidates or a new field. This intentionally changes Water's
+historical #13 samples and can increase optional grain pickup, whose disturbance
+measure is actual transferred mass. Profile schema/values remain v1; source and
+artifact identity must accompany their hashes. Mercury and powder-only references
+remain exact. General gameplay still has optional mixing/carrying disabled.
 
 ## Coherent emission and surface adhesion
 
@@ -138,3 +151,58 @@ a general fluid solver. Active-only buffered flux is a retained **Planned**
 candidate only if measured bias or a future field justifies it; no buffered
 solver is selectable today. **Rejected:** a competing liquid world, equivalent
 swaps to animate rest, or finite travel history as free Water equilibrium.
+
+
+## Opt-in transport profiles
+
+**Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
+owns schema, inheritance, units, immutable native tables and explicit owner restart.
+The Tower applies validated profiles through restart. Actual powder falls and
+lateral Water mass transport drive bounded optional mixing and grain pickup;
+horizontal sampling and cadence are separate fixed experiments.
+Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
+are unchanged. No unsynchronized live descriptor mutation is introduced.
+
+## What does G-C say about the remaining Water residual?
+
+[Completed characterization](../operations/liquid-characterization.md#does-keeping-water-awake-fix-residual-leveling-or-films)
+finds identical Water trajectories under quiet3/4096, with active96-wide residual
+and stable narrow basin/film. [G-C](../operations/architecture-programme.md#g-c-staged-decision-2026-09-11)
+admits a fixed-carrier precision diagnostic, not a precision cause, expected lower-bit
+winner or changed conservation/defaults. No P implementation is included here.
+
+## Isolated Issue17 experiment branch
+
+The [precision registration](../operations/state-precision-experiment.md) defines
+a native-only experimental build on codex/issue-17-state-precision. That branch
+uses a fixed wide carrier and uint16 native mass access for all precision arms.
+Production semantics described above remain the reference; compact adapters,
+render projection and saves are not precision-aware migration paths.
+
+## What did G-P learn about useful Water precision?
+
+[Completed precision evidence](../audits/2026-09-11-issue-17-state-precision.md)
+finds exact per-arm accounting, but mass4/6 lose levelness and ledge discharge;
+tiny requested1/255 and2/255 droplets vanish at initial quantization, not at runtime.
+Mass10 modestly improves narrow residuals and extends activity without resolving
+the wide finite-horizon residual. [G-P](../operations/architecture-programme.md#g-p-staged-decision-2026-09-11)
+retains mass8 as the reference, with exact Water-only delay4 as a research budget.
+Films survive all four precisions. Literal tolerance changes are reported separately.
+This is native experiment evidence; production Water, rendering and saves remain
+unchanged. No flow-history target or production migration is established.
+
+## Current Water Feel Lab policy
+
+**Current, experiment-only, 2026-09-12:** issue #19 adds an immutable World-creation
+policy that emulates Water mass semantics from 3..8 bits and coherent emission
+from 0..12 ticks in the existing superset carrier. Production/default Water remains
+mass8/coherence12. The candidate setting is validated and applied only through a
+fresh-world transaction at the desktop worker or Web main-thread owner boundary;
+invalid application preserves the current World.
+
+The policy, scenario/seed and provenance are normalized once for profile/config,
+launch and panel selection. Four-level and oriented interface modes are derived
+presentation and do not change mass, collision, waking or state hashes. The
+[Water Feel Lab runbook](../operations/experiment-tower.md#current-19-water-feel-lab-extension)
+and [dated evidence](../audits/2026-09-12-issue-19-water-feel-lab.md) own candidate
+procedure and acceptance. This experiment neither repacks Cell nor allocates bits.

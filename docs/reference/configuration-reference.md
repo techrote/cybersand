@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-10
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md]
 ---
 
@@ -146,7 +146,8 @@ Water/activity semantics; the Web compatibility profile still uses native cells.
 
 The threshold enables isolated-cell alternate-tick free flight, not the removed
 load-derived block stride. Current fallback reports stride one and zero deferred
-blocks; excluded blocks retain wake flags. Native Water's mass, 12-tick
+blocks; excluded blocks retain wake flags. Native Water's three-quarter lateral
+mass-difference relaxation, 12-tick
 coherence delay, 48-unit supported-film threshold and separate fallback mechanics
 belong to the [Water contract](../systems/water-design.md). Material cadence,
 including specialized Ice sampling, belongs to
@@ -231,3 +232,40 @@ counts toward active-chunk capacity. Candidate-core capacity is checked before
 deduplication; a re-entry wake may explicitly fail under a small construction
 budget. Failed regions cannot be retried by reducing the window. See the
 [interest contract](../systems/world-storage-and-interest-region.md).
+
+## Which settings belong only to physics experiments?
+
+**Current:** [diagnostic_reset](../operations/physics-characterisation.md)
+accepts immutable per-fixture telemetry, traversal/worker, Mercury viscosity,
+powder-target exchange and coupling gain/cap options. The runbook owns their
+exact bounds and the fixture definitions own scene variants. Ordinary World
+construction disables telemetry/overrides; `reset_demo_world` restores production
+gains. No UI slider, material descriptor, gravity default or save field changed.
+The [dated results](../audits/2026-09-09-physics-characterisation.md) distinguish
+existing constants from diagnostic rule vetoes and future support models.
+
+## Granular policy configuration
+
+**Current:** `InteractionPolicy` version 1 sets downward/side occupancy to 8/9 and
+9/9 samples and Mercury eligibility to every 30 ticks. Diagnostic reset accepts
+`support_cells` 1..9 and `mercury_period` 1..60 only during fresh construction;
+normal reset restores defaults. The C ABI and CYSD1 schema are unchanged and use
+compiled defaults. No live/UI setting is added. See the
+[granular policy](../systems/granular-interaction-policy.md) and
+[version decision](../decisions/ADR-011-granular-interaction-policy.md).
+
+
+## Issue #13 experiment checkpoint
+
+[Experiment Tower](../operations/experiment-tower.md) recipe v4 is 1024 by 1024, with five 198-cell floor pitches, a 4096-rectangle constructor bound, one pending lab command, two release deadlines and a 256-input observation bound. No new per-cell storage is added.
+
+
+## Opt-in transport profiles
+
+**Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
+owns schema, inheritance, units, immutable native tables and explicit owner restart.
+The Tower applies validated profiles through restart. Actual powder falls and
+lateral Water mass transport drive bounded optional mixing and grain pickup;
+horizontal sampling and cadence are separate fixed experiments.
+Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
+are unchanged. No unsynchronized live descriptor mutation is introduced.

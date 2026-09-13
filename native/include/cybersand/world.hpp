@@ -1,7 +1,11 @@
 #pragma once
 
 #include "cybersand/material.hpp"
+#include "cybersand/physics_diagnostics.hpp"
+#include "cybersand/interaction_policy.hpp"
+#include "cybersand/transport_policy.hpp"
 #include "cybersand/scheduler_geometry.hpp"
+#include "cybersand/water_experiment_policy.hpp"
 
 #include <array>
 #include <cstddef>
@@ -38,6 +42,10 @@ struct WorldConfig {
     std::size_t maximum_chunk_count = 4'096;
     std::size_t deferred_event_capacity = 1'024;
     std::int32_t maximum_explosion_radius = 64;
+    PhysicsDiagnosticConfig physics_diagnostics{};
+    InteractionPolicy interaction_policy{};
+    TransportPolicy transport_policy{};
+    WaterExperimentPolicy water_experiment_policy{};
 };
 
 struct ChunkCoord {
@@ -65,6 +73,7 @@ struct TickStats {
     std::uint64_t moved_cells = 0;
     std::uint64_t active_chunks_before = 0;
     std::uint64_t active_chunks_after = 0;
+    std::uint64_t active_blocks_after = 0; // resident active 32-cell activity blocks, including excluded work
     std::uint64_t dirty_chunks = 0;
     std::uint64_t scheduled_cores = 0;
     std::array<std::uint64_t, SchedulerGeometry::kPhaseCount> phase_jobs{};
@@ -78,7 +87,10 @@ struct DirtyChunk {
     RectI64 local_rect;
 };
 
+class PrecisionProbe;
+
 class World {
+    friend class PrecisionProbe;
 public:
     static constexpr std::uint16_t kMaximumTransientBodies = 16;
 
@@ -94,14 +106,18 @@ public:
     [[nodiscard]] SimulationBackend backend() const noexcept;
     [[nodiscard]] Material get(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] Material stored_material(std::int64_t x, std::int64_t y) const noexcept;
-    [[nodiscard]] std::uint8_t stored_state_a(std::int64_t x, std::int64_t y) const noexcept;
+    // Serialized external-owner query. Never called from a rule kernel: its
+    // bounded read neighbourhood extends beyond the kernel write domain.
+    [[nodiscard]] bool granular_support_at(std::int64_t x, std::int64_t y,
+                                           bool side = false) const noexcept;
+    [[nodiscard]] std::uint16_t stored_state_a(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] std::uint8_t stored_state_b(std::int64_t x, std::int64_t y) const noexcept;
-    [[nodiscard]] std::uint8_t liquid_mass(std::int64_t x, std::int64_t y) const noexcept;
+    [[nodiscard]] std::uint16_t liquid_mass(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] std::int16_t temperature(std::int64_t x, std::int64_t y) const noexcept;
 
     void set(std::int64_t x, std::int64_t y, Material material);
     [[nodiscard]] bool set_cell_state(std::int64_t x, std::int64_t y, Material material,
-                                      std::uint8_t state_a_value,
+                                      std::uint16_t state_a_value,
                                       std::uint8_t state_b_value);
     void set_temperature(std::int64_t x, std::int64_t y, std::int16_t temperature);
     void paint_disc(std::int64_t centre_x, std::int64_t centre_y, std::int32_t radius, Material material);
@@ -144,6 +160,8 @@ public:
     [[nodiscard]] std::uint64_t state_hash() const noexcept;
     [[nodiscard]] std::uint64_t content_hash() const noexcept;
     [[nodiscard]] std::uint64_t hard_surface_revision() const noexcept;
+    // Serialized owner query; nullptr when disabled. Never retain across reset.
+    [[nodiscard]] const PhysicsTotals* physics_diagnostics() const noexcept;
 
     [[nodiscard]] std::size_t dirty_chunk_count() const noexcept;
     [[nodiscard]] std::vector<DirtyChunk> take_dirty_chunks();
@@ -171,6 +189,8 @@ private:
     };
 
     WorldConfig config_;
+    bool flow_mixing_enabled_ = false;
+    bool flow_carrying_enabled_ = false;
     std::unordered_map<ChunkCoord, std::unique_ptr<Chunk>, ChunkCoordHash> chunks_;
     std::vector<ChunkCoord> active_chunk_scratch_;
     std::vector<SchedulingCoreCoord> active_core_scratch_;
@@ -178,6 +198,10 @@ private:
     SchedulerGeometry scheduler_geometry_;
     std::unique_ptr<ParallelState> parallel_;
     std::unique_ptr<TransientObstacleState> transient_obstacles_;
+    std::unique_ptr<PhysicsTotals> physics_totals_;
+    void record_physics(PhysicsEvent kind, Material source, Material target,
+                        std::int64_t dx, std::int64_t dy, JobEffects* effects,
+                        std::uint64_t count = 1) noexcept;
     struct CoreRange {
         std::int64_t min_x, min_y, max_x, max_y;
         friend bool operator==(const CoreRange&, const CoreRange&) = default;
@@ -207,9 +231,18 @@ private:
     void apply_pending_explosions(TickStats& stats);
     void wake_cell_neighborhood(std::int64_t x, std::int64_t y);
     void keep_cell_active(std::int64_t x, std::int64_t y) noexcept;
+    void schedule_interaction_wake(std::int64_t x, std::int64_t y, std::uint64_t due) noexcept;
+    [[nodiscard]] bool exchange_permitted(Material source, Material target,
+        std::int64_t x, std::int64_t y, std::int64_t target_x, std::int64_t target_y);
     void mark_cell_dirty(Chunk& chunk, std::int32_t local_x, std::int32_t local_y);
     void move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_x,
-                   std::int64_t to_y, bool swap, JobEffects* effects);
+                   std::int64_t to_y, bool swap, JobEffects* effects,
+                   PhysicsEvent swap_event = PhysicsEvent::DensitySwap);
+    void mix_after_motion(Material carrier, std::int64_t x, std::int64_t y,
+        std::int64_t to_x, std::int64_t to_y, std::uint16_t mass, JobEffects* effects);
+    [[nodiscard]] bool lateral_due(Material material, std::int64_t x, std::int64_t y) noexcept;
+    [[nodiscard]] bool try_lateral(Material material, std::int64_t x, std::int64_t y,
+        std::int32_t direction, bool swap, JobEffects* effects);
     [[nodiscard]] bool try_move(Material material, std::int64_t x, std::int64_t y, std::int64_t target_x,
                                 std::int64_t target_y, bool allow_swap, JobEffects* effects);
     [[nodiscard]] bool update_cell(std::int64_t x, std::int64_t y, JobEffects* effects = nullptr);
@@ -217,12 +250,12 @@ private:
     [[nodiscard]] std::uint16_t transfer_water(std::int64_t from_x, std::int64_t from_y,
                                                std::int64_t to_x, std::int64_t to_y,
                                                std::uint16_t requested, JobEffects* effects);
-    [[nodiscard]] std::uint8_t state_a(std::int64_t x, std::int64_t y) const noexcept;
+    [[nodiscard]] std::uint16_t state_a(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] std::uint8_t state_b(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] bool write_cell(std::int64_t x, std::int64_t y, Material material,
-                                  std::uint8_t state_a_value, std::uint8_t state_b_value,
+                                  std::uint16_t state_a_value, std::uint8_t state_b_value,
                                   JobEffects* effects);
-    [[nodiscard]] bool rule_is_active(Material material, std::uint8_t state_a_value,
+    [[nodiscard]] bool rule_is_active(Material material, std::uint16_t state_a_value,
                                       std::uint8_t state_b_value) const noexcept;
     [[nodiscard]] bool update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y,
                                           JobEffects* effects);

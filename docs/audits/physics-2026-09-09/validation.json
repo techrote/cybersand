@@ -1,0 +1,174 @@
+{
+  "date": "2026-09-09",
+  "native_tests": {
+    "passed": 49,
+    "log": {
+      "path": "C:\\kybersand\\validation\\local\\2026-09-09-physics\\native-tests-final.log",
+      "sha256": "3f94ecae61ed6ec05e9430d0226d5f4d62f480527c3038b71b98c67ac25709f1"
+    }
+  },
+  "godot_tests": {
+    "passed": 19,
+    "log": {
+      "path": "C:\\kybersand\\validation\\local\\2026-09-09-physics\\godot-tests-checkpoint.log",
+      "sha256": "500eb89823b3af68040c8bac6151840d0044917d6a0dc6f1c31d3908a5ad42e8"
+    },
+    "updated_instrumentation_test": {
+      "path": "C:\\kybersand\\validation\\local\\2026-09-09-physics\\physics-instrumentation-final.log",
+      "sha256": "ea28c0204cf6d7be07e57d42ba4642ed3ae5b115f1d8011f557aeb798ccf578f"
+    }
+  },
+  "evidence": {
+    "ok": true,
+    "checks": 9239,
+    "errors": [],
+    "native_runs": 1520,
+    "coupled_runs": 916,
+    "water_accounting_runs": 5,
+    "browser_runs": 50,
+    "async_runs": 5,
+    "completed_ticks": 8047080
+  },
+  "documentation": {
+    "status": "passed",
+    "documents": 51,
+    "navigation_link_documents": 8,
+    "canonical_claims": 88,
+    "local_links": 791,
+    "heading_anchors": 27,
+    "questions": 32,
+    "errors": [],
+    "warnings": [],
+    "limitations": [
+      "Does not verify source semantics or runtime claims",
+      "Does not fetch external URLs",
+      "Does not rewrite or reattest historical audits",
+      "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+    ]
+  },
+  "historical_m11": {
+    "status": "passed",
+    "scope": "historical M11 integrity; no current runtime acceptance",
+    "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+    "records_checked": 18,
+    "source_hashes_checked": 28,
+    "compare_working_tree": false,
+    "working_tree_differences": [],
+    "errors": []
+  },
+  "published_repository_identity": {
+    "status": "failed",
+    "scope": "current source/documentation and artifact identity",
+    "documentation": {
+      "status": "passed",
+      "documents": 51,
+      "navigation_link_documents": 8,
+      "canonical_claims": 88,
+      "local_links": 787,
+      "heading_anchors": 27,
+      "questions": 32,
+      "errors": [],
+      "warnings": [],
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ]
+    },
+    "materialized_runtime_files": [
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+    ],
+    "unmaterialized_runtime_files": [],
+    "errors": [
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp",
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.hpp",
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/world.hpp",
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: native/src/world.cpp",
+      "Windows x86_64 Godot 4.7 bytes differ from published provenance",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.hpp",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/world.hpp",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: native/src/world.cpp",
+      "runtime differs from committed LFS identity: godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
+    ],
+    "limitations": [
+      "Identity is not execution evidence; read the dated runtime acceptance report",
+      "Retained vendor binaries and platform execution have separate dated provenance",
+      "Historical M11 integrity is checked separately by check_m11_consistency.py"
+    ]
+  },
+  "checker_contract_tests": {
+    "passed": 8,
+    "log": {
+      "path": "C:\\kybersand\\validation\\local\\2026-09-09-physics\\validation-contracts.log",
+      "sha256": "b481402d86c0cb436c92dfd179d237ddb168d7187b0f039ea8ff862a50cedf58"
+    }
+  },
+  "async_capacity_rejection": {
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:/kybersand/source/godot",
+      "--script",
+      "res://tests/test_physics_async.gd",
+      "--",
+      "C:\\kybersand\\validation\\local\\2026-09-09-physics",
+      "7201",
+      "1"
+    ],
+    "exit": 1,
+    "ok": true,
+    "stdout": "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)\nGodot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\n\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m\n",
+    "stderr": "ERROR: asynchronous fixture requires 1..7200 ticks and 1..20 seeds\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/test_physics_async.gd:13)\n"
+  },
+  "diff_check": {
+    "passed": true,
+    "log": {
+      "path": "C:\\kybersand\\validation\\local\\2026-09-09-physics\\diff-check-final.log",
+      "sha256": "22d7c86ef22c3daacf1cd2f4877dadb45606db9b1dfdb68d59dec1af546663d0"
+    }
+  },
+  "retrieval": {
+    "frozen": {
+      "top_one": 23,
+      "top_five": 32,
+      "questions": 32,
+      "record": {
+        "path": "C:\\kybersand\\validation\\local\\2026-09-09-physics\\retrieval-frozen-final.json",
+        "sha256": "92ba2c4a746f56b2cde08210efc0e1fbcafbb3ce8653ac302d1613dd51fb7155"
+      }
+    },
+    "supplementary": {
+      "top_one": 9,
+      "top_five": 10,
+      "questions": 10,
+      "record": {
+        "path": "C:\\kybersand\\validation\\local\\2026-09-09-physics\\retrieval-challenges-final.json",
+        "sha256": "5f93d0f5b08b3b45aad94b0b6e59aa70aedd8ed8c83301e6d562021e832f10fc"
+      }
+    }
+  },
+  "limitations": [
+    "Published runtime identity gate intentionally remains failing; stale provenance was not rewritten.",
+    "No current Linux or sanitizer execution; WSL not installed.",
+    "No gameplay visual acceptance; plots are reconstructed evidence."
+  ]
+}

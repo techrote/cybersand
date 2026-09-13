@@ -41,6 +41,210 @@ var _rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 var _pending_emissions: Array[Vector4i] = []
 var _reset_requested: bool = false
 var _reset_spawn: Vector2 = Vector2(150.0, 145.0)
+var _lab_request: Dictionary = {} # One bounded pending control command; newest wins.
+var _lab_active: bool = false
+var _lab_floor: int = 0
+var _lab_status: String = ""
+var _lab_schedule: Array = [] # At most two floor-local release deadlines.
+var _lab_inputs: Array = [] # Bounded observation input history.
+var _lab_profile: Dictionary = CyberTransportProfiles.preset(0)
+var _lab_profile_hash: String = ""
+var _water_lab_active: bool = false
+var _water_policy: Dictionary = {}
+var _water_policy_hash: String = ""
+var _water_policy_provenance: Dictionary = {}
+var _water_recipe: Dictionary = {}
+var _water_recipe_hash: String = ""
+var _water_blind_label: String = ""
+var _water_action_index: int = 0
+var _water_action_history: Array = []
+var _water_observations: Array = []
+var _water_initial_integer: int = 0
+var _water_initial_requested_numerator_255: int = 0
+var _water_initial_quantization_error_numerator_255: int = 0
+var _water_current_integer: int = 0
+var _water_explicit_source: int = 0
+var _water_explicit_sink: int = 0
+
+func queue_lab(command: Dictionary) -> void:
+	_mutex.lock()
+	_lab_request = command.duplicate(true)
+	if command.has("step") or command.has("reset") or command.has("water_reset") or command.has("floor"): _paused = true
+	_mutex.unlock()
+
+func _lab_release(index: int) -> void:
+	if _water_lab_active: return
+	var plugs: Array[Rect2i] = CyberExperimentTower.plugs(_lab_floor)
+	if index < 0 or index >= plugs.size(): return
+	var plug: Rect2i = plugs[index]
+	for y: int in range(plug.position.y,plug.end.y):
+		for x: int in range(plug.position.x,plug.end.x): _world.paint_disc(x,y,0,0,0)
+
+func _water_observe(action: Dictionary = {}) -> Dictionary:
+	if not _world.has_method(&"water_experiment_observation"):
+		return {}
+	var origin: Vector2i=Vector2i.ZERO
+	var size: Vector2i=Vector2i(CyberCellWorld.WORLD_WIDTH,CyberCellWorld.WORLD_HEIGHT)
+	if not action.is_empty():
+		origin=Vector2i(int(action.x),int(action.y))
+		size=Vector2i(int(action.width),int(action.height))
+	return _world.water_experiment_observation(origin,size)
+
+func _apply_water_action(action: Dictionary) -> bool:
+	var before: Dictionary=_water_observe(action)
+	var ok: bool=true
+	match str(action.kind):
+		"fill":
+			var coherence: int=int((2*int(action.coherence)
+				*int(_water_policy.coherence_ticks)+12)/24)
+			ok=bool(_world.water_experiment_fill_rect(
+				Vector2i(int(action.x),int(action.y)),
+				Vector2i(int(action.width),int(action.height)),
+				int(action.normalized_mass),coherence))
+		"erase":
+			ok=bool(_world.water_experiment_erase_rect(
+				Vector2i(int(action.x),int(action.y)),
+				Vector2i(int(action.width),int(action.height))))
+		"sample":
+			_water_observations.append({
+				"action_index":_water_action_index,
+				"region":action.duplicate(true),
+				"observation":before.duplicate(true),
+			})
+		_:
+			ok=false
+	if not ok:
+		_lab_status="Water action rejected (%s at %d,%d %dx%d); run paused" % [
+			str(action.get("kind","unknown")),int(action.get("x",-1)),
+			int(action.get("y",-1)),int(action.get("width",-1)),
+			int(action.get("height",-1))]
+		return false
+	var after: Dictionary=_water_observe(action)
+	var before_mass: int=int(before.get("water_integer",0))
+	var after_mass: int=int(after.get("water_integer",before_mass))
+	if after_mass>before_mass: _water_explicit_source+=after_mass-before_mass
+	if before_mass>after_mass: _water_explicit_sink+=before_mass-after_mass
+	_water_current_integer+=after_mass-before_mass
+	_water_action_history.append({
+		"tick":int(_world.get_tick_index()),
+		"action":action.duplicate(true),
+		"before_water_integer":before_mass,
+		"after_water_integer":after_mass,
+	})
+	return true
+
+func _apply_due_water_actions() -> bool:
+	var actions: Array=_water_recipe.get("actions",[])
+	while _water_action_index<actions.size():
+		var action: Dictionary=actions[_water_action_index]
+		if int(action.tick)>int(_world.get_tick_index()): break
+		if not _apply_water_action(action): return false
+		_water_action_index+=1
+	return true
+
+func _apply_lab(command: Dictionary) -> bool:
+	if command.is_empty(): return false
+	if command.has("reset"):
+		if not ClassDB.class_exists(&"CyberDemoBridge") or not _world.has_method(&"has_failed"):
+			_lab_status = "Experiment Tower requires the native backend"
+			return false
+		var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
+		var resolved: Dictionary = command.profile if command.has("profile") else CyberTransportProfiles.resolve(_lab_profile)
+		if not resolved.get("ok",false):
+			_lab_status = "Profile rejected; running world preserved"
+			return false
+		if not bridge.build_tuned_world(_world,CyberExperimentTower.rectangles(),resolved.packed):
+			_lab_status = str(bridge.get_last_error())
+			return false
+		_lab_profile = resolved.profile.duplicate(true)
+		_lab_profile_hash = str(resolved.hash)
+		_lab_active = true
+		_lab_schedule.clear();_lab_inputs.clear()
+		_simulation_failed = false
+		_lab_status = "%s / profile v1 %s / recipe v%d / seed 0" % [str(_lab_profile.name),_lab_profile_hash.left(12),CyberExperimentTower.VERSION]
+		_water_lab_active=false
+	if command.has("water_reset"):
+		if not ClassDB.class_exists(&"CyberDemoBridge") or not _world.has_method(&"get_water_experiment_policy"):
+			_lab_status="Water Feel Lab requires the current native backend"
+			return false
+		var resolved: Dictionary=CyberWaterExperimentProfiles.resolve(
+			{},{},command.get("water_policy",{}))
+		if not resolved.get("ok",false) or (
+			command.has("water_policy_hash") and str(command.water_policy_hash)!=str(resolved.hash)
+		):
+			_lab_status="Water policy rejected; running world preserved"
+			return false
+		var recipe: Dictionary=CyberWaterFeelScenarios.recipe(
+			str(resolved.policy.scenario_id),int(resolved.policy.seed))
+		if recipe.is_empty():
+			_lab_status="Water scenario rejected; running world preserved"
+			return false
+		var profile_result: Dictionary=CyberTransportProfiles.resolve(
+			CyberTransportProfiles.preset(0))
+		var bridge: Variant=ClassDB.instantiate(&"CyberDemoBridge")
+		if not bridge.build_water_feel_world(
+			_world,recipe.rectangles,profile_result.packed,resolved.semantic,
+			recipe.partial_water_fills):
+			_lab_status="Water Apply + Reset rejected; "+str(bridge.get_last_error())
+			return false
+		_lab_profile=profile_result.profile.duplicate(true)
+		_lab_profile_hash=str(profile_result.hash)
+		_lab_active=true
+		_water_lab_active=true
+		_water_policy=resolved.policy.duplicate(true)
+		_water_policy_hash=str(resolved.hash)
+		_water_policy_provenance=command.get("water_policy_provenance",{}).duplicate(true)
+		_water_recipe=recipe.duplicate(true)
+		_water_recipe_hash=CyberWaterFeelScenarios.recipe_hash(recipe)
+		_water_blind_label=str(command.get("blind_label",""))
+		_water_action_index=0
+		_water_action_history.clear()
+		_water_observations.clear()
+		_water_explicit_source=0
+		_water_explicit_sink=0
+		_water_initial_integer=int(_water_observe().get("water_integer",0))
+		_water_current_integer=_water_initial_integer
+		_water_initial_requested_numerator_255=0
+		for offset: int in range(0,recipe.partial_water_fills.size(),6):
+			_water_initial_requested_numerator_255+=(
+				int(recipe.partial_water_fills[offset+2])
+				*int(recipe.partial_water_fills[offset+3])
+				*int(recipe.partial_water_fills[offset+4])
+				*int(resolved.derived.maximum))
+		_water_initial_quantization_error_numerator_255=(
+			_water_initial_integer*255-_water_initial_requested_numerator_255)
+		_lab_schedule.clear();_lab_inputs.clear()
+		_simulation_failed=false
+		_character.reset(Vector2(recipe.player_start))
+		if _water_blind_label!="":
+			_lab_status="Water Feel candidate %s / scenario %s / seed %d" % [
+				_water_blind_label,str(_water_policy.scenario_id),int(_water_policy.seed)]
+		else:
+			_lab_status="Water Feel unblinded / policy %s / recipe %s / seed %d" % [
+				_water_policy_hash.left(12),_water_recipe_hash.left(12),
+				int(_water_policy.seed)]
+	if not _lab_active: return false
+	if _water_lab_active and (command.has("release") or command.has("schedule")):
+		_lab_status="Water Feel uses only registered scenario actions; Tower releases are disabled"
+		return false
+	if command.has("floor"):
+		_lab_schedule.clear() # Navigation abandons scheduled inputs; no catch-up.
+		_lab_floor = clampi(int(command.floor),0,4)
+		_character.reset(CyberExperimentTower.landing(_lab_floor))
+	if command.has("release"):
+		_lab_release(int(command.release))
+		if command.get("adjacent",false): _lab_release(int(command.release)+1)
+	if command.has("schedule"):
+		var tick: int = int(_world.get_tick_index())
+		_lab_schedule = [[tick+30,int(command.schedule),_lab_floor],[tick+90,int(command.schedule)+1,_lab_floor]]
+	if _lab_inputs.size() < 256:
+		var recorded: Dictionary = command.duplicate(true)
+		recorded.erase("profile")
+		recorded.erase("water_policy")
+		recorded.erase("water_policy_hash")
+		recorded.erase("water_policy_provenance")
+		_lab_inputs.append({"tick":int(_world.get_tick_index()),"command":recorded,"profile_hash":_lab_profile_hash})
+	return command.has("reset") or command.has("water_reset")
 
 var _published_snapshot: CyberSimulationSnapshot
 var _snapshot_serial: int = 0
@@ -167,6 +371,10 @@ func queue_emit_disc(
 	if _published_snapshot != null and _published_snapshot.simulation_failed:
 		_mutex.unlock()
 		return false
+	if (_published_snapshot != null
+		and _published_snapshot.lab_context.get("water_active",false)):
+		_mutex.unlock()
+		return false
 	if _pending_emissions.is_empty() or _pending_emissions.back() != emission_command:
 		_pending_emissions.append(emission_command)
 	_mutex.unlock()
@@ -239,6 +447,7 @@ func _worker_loop() -> void:
 		var local_emissions: Array[Vector4i] = []
 		var local_reset_requested: bool = false
 		var local_reset_spawn: Vector2 = Vector2.ZERO
+		var local_lab: Dictionary = {}
 
 		_mutex.lock()
 		local_running = _running
@@ -260,12 +469,34 @@ func _worker_loop() -> void:
 		local_reset_requested = _reset_requested
 		local_reset_spawn = _reset_spawn
 		_reset_requested = false
+		local_lab = _lab_request
+		_lab_request = {}
 		_mutex.unlock()
 
 		if not local_running:
 			return
 
 		var step_start_usec: int = Time.get_ticks_usec()
+		if _apply_lab(local_lab):
+			local_reset_requested = false
+			local_paused = true
+			_last_render_snapshot_usec = -DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
+		if _water_lab_active:
+			local_emissions.clear()
+		if _lab_active:
+			if not (_water_lab_active and bool(_water_recipe.get("body_enabled",false))):
+				local_rigid_body_states = PackedFloat32Array()
+			if local_lab.get("step",false): local_paused = false
+			if not local_paused:
+				if _water_lab_active and not _apply_due_water_actions():
+					local_paused=true
+					_mutex.lock()
+					_paused=true
+					_mutex.unlock()
+				for release: Array in _lab_schedule.duplicate():
+					if int(release[2]) == _lab_floor and int(_world.get_tick_index())+1 >= int(release[0]):
+						_lab_release(int(release[1]))
+						_lab_schedule.erase(release)
 		_world.simulation_window_enabled = local_window_enabled
 		_world.cadence_lod_enabled = local_cadence_enabled
 		_world.set_liquid_surface_adhesion_enabled(local_liquid_adhesion_enabled)
@@ -461,6 +692,37 @@ func _publish_snapshot(
 		snapshot.tick_failure_count = int(_world.get_tick_failure_count())
 		snapshot.last_tick_error = str(_world.get_last_tick_error())
 	snapshot.paused = paused
+	snapshot.lab_context = {
+		"tick":snapshot.tick_index,
+		"paused":paused,
+		"visited_cells":snapshot.scanned_last_tick,
+		"active_blocks":snapshot.active_blocks_last_tick,
+		"moves":snapshot.moves_last_tick,
+		"active":_lab_active,
+		"floor":_lab_floor,
+		"status":_lab_status,
+		"inputs":_lab_inputs.duplicate(true),
+		"input_limit":256,
+		"profile":_lab_profile.duplicate(true),
+		"profile_hash":_lab_profile_hash,
+		"water_active":_water_lab_active,
+		"water_policy":_water_policy.duplicate(true),
+		"water_policy_hash":_water_policy_hash,
+		"water_policy_provenance":_water_policy_provenance.duplicate(true),
+		"water_recipe_hash":_water_recipe_hash,
+		"water_blind_label":_water_blind_label,
+		"water_actions":_water_action_history.duplicate(true),
+		"water_observations":_water_observations.duplicate(true),
+		"water_accounting":{
+			"initial_integer":_water_initial_integer,
+			"initial_requested_numerator_255":_water_initial_requested_numerator_255,
+			"initial_quantization_error_numerator_255":_water_initial_quantization_error_numerator_255,
+			"explicit_source":_water_explicit_source,
+			"explicit_sink":_water_explicit_sink,
+			"outflow":0,
+			"current":_water_current_integer if _water_lab_active else 0,
+		},
+	}
 
 	_mutex.lock()
 	_published_snapshot = snapshot
@@ -551,6 +813,8 @@ func _append_native_render_packet(packet: Dictionary) -> void:
 			)
 			_pending_render_patch_rectangles.append(packet_rectangles[metadata_offset + 5])
 
-	_pending_render_snapshot_serial = packet_serial
+	# Native exchange serials restart on validated World replacement. Desktop
+	# acknowledgements belong to the worker lifetime and must remain monotonic.
+	_pending_render_snapshot_serial = maxi(_pending_render_snapshot_serial+1,packet_serial)
 	_pending_render_channels = packet_channels
 	_pending_render_payload_generation += 1

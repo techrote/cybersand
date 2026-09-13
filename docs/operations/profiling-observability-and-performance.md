@@ -4,7 +4,7 @@ document-kind: runbook
 canonical-for: [performance-measurement, metric-interpretation]
 status: Current
 scope: Current native/Godot observations, benchmark procedure, metric boundaries, and unimplemented production telemetry
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-09
 related-documents: [configuration-and-capacity-budgets.md, web-threading.md, testing-validation-and-replay.md, ../reference/validation-evidence.md, ../audits/2026-09-08-performance-history.md]
 ---
 
@@ -106,3 +106,12 @@ fixture identity. Preserve exact fixture/conservation/collision comparisons
 under any bounded gameplay approximation. A full mixed-material rendering/
 coupling load and target-hardware GPU inspection remain distinct from the
 isolated worker reference test.
+
+## Where are interaction-specific measurements?
+
+Use the opt-in [physics measurement runbook](physics-characterisation.md) and
+[dated baseline](../audits/2026-09-09-physics-characterisation.md) for bounded
+ordered material counters, Water mass, body impulses, sample ages and depth plots.
+Tick and pre-tick coupling p50/p95/max have explicitly different scopes; snapshots
+and result application are outside the latter interval. Concurrent development
+workload and instrumented timings are not production frame-time acceptance.

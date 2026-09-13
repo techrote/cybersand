@@ -1,0 +1,133 @@
+{
+  "docs": {
+    "status": "passed",
+    "documents": 53,
+    "navigation_link_documents": 8,
+    "canonical_claims": 92,
+    "local_links": 841,
+    "heading_anchors": 28,
+    "questions": 32,
+    "errors": [],
+    "warnings": [],
+    "limitations": [
+      "Does not verify source semantics or runtime claims",
+      "Does not fetch external URLs",
+      "Does not rewrite or reattest historical audits",
+      "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+    ]
+  },
+  "m11": {
+    "status": "passed",
+    "scope": "historical M11 integrity; no current runtime acceptance",
+    "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+    "records_checked": 18,
+    "source_hashes_checked": 28,
+    "compare_working_tree": false,
+    "working_tree_differences": [],
+    "errors": []
+  },
+  "publication_identity": {
+    "status": "failed",
+    "scope": "current source/documentation and artifact identity",
+    "documentation": {
+      "status": "passed",
+      "documents": 53,
+      "navigation_link_documents": 8,
+      "canonical_claims": 92,
+      "local_links": 841,
+      "heading_anchors": 28,
+      "questions": 32,
+      "errors": [],
+      "warnings": [],
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ]
+    },
+    "materialized_runtime_files": [
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+    ],
+    "unmaterialized_runtime_files": [],
+    "errors": [
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp",
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.hpp",
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/material_rules.hpp",
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/world.hpp",
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: native/src/material_rules.cpp",
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: native/src/world.cpp",
+      "Windows x86_64 Godot 4.7 bytes differ from published provenance",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.hpp",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/material_rules.hpp",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/world.hpp",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: native/src/material_rules.cpp",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: native/src/world.cpp",
+      "runtime differs from committed LFS identity: godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
+    ],
+    "limitations": [
+      "Identity is not execution evidence; read the dated runtime acceptance report",
+      "Retained vendor binaries and platform execution have separate dated provenance",
+      "Historical M11 integrity is checked separately by check_m11_consistency.py"
+    ]
+  },
+  "checker_contract_tests": 8,
+  "native_tests": 52,
+  "godot_runners": 21,
+  "matrix_native_input_comparison": {
+    "native-expanded": {
+      "native_runtime_inputs_compared": 17,
+      "differences": []
+    },
+    "permeability": {
+      "native_runtime_inputs_compared": 17,
+      "differences": []
+    },
+    "pairs": {
+      "native_runtime_inputs_compared": 17,
+      "differences": []
+    },
+    "player": {
+      "native_runtime_inputs_compared": 17,
+      "differences": []
+    }
+  },
+  "frozen_retrieval": {
+    "questions": 32,
+    "canonical_hit_at_1": 23,
+    "canonical_hit_at_k": 32,
+    "mrr_at_k": 0.8385,
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+  },
+  "supplementary_retrieval": {
+    "questions": 12,
+    "canonical_hit_at_1": 9,
+    "canonical_hit_at_k": 12,
+    "mrr_at_k": 0.8611,
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+  },
+  "raw_log_sha256": {
+    "final-native-suite.log": "0f66ed6041ef6f8ebfec1dd761bde59da40316f43bba4222c6dcb08c7526d0e5",
+    "godot-suite-reset-corrected.log": "105e2008c0dd45085fc206271303faff3e51b731c1054672deedb4028fa6375a",
+    "final-validation-contracts.log": "165295b5408e74ca7afa9692d5e5e02ae0c49a64596876e2557243bd6007f1a6",
+    "analysis-final-reset.log": "6ec8ab6b91a0903701d0bc7b9d4719e47ca7e79dce16f1e2aae98a870907e305"
+  },
+  "manual_retrieval_review": "Canonical pages match inspected implementation. C05 and C11 top-five chunks require following the linked canonical page for complete player/recovery details; historical Planned chunks can outrank Current. C07 explicitly distinguishes the old 32-tick baseline and current 960-tick behavior. Route hits alone are not answer correctness."
+}

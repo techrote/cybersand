@@ -1,0 +1,599 @@
+{
+  "docs-direct": {
+    "status": "failed",
+    "documents": 59,
+    "navigation_link_documents": 8,
+    "canonical_claims": 100,
+    "local_links": 964,
+    "heading_anchors": 46,
+    "questions": 32,
+    "errors": [
+      "Q01: missing expected-fact source ../../SOURCE-PROVENANCE.json",
+      "Q04: missing expected-fact source ../../docs/WEB_THREADING.md",
+      "Q28: missing expected-fact source ../../tools/dev.py",
+      "Q28: missing expected-fact source ../../docs/LOCAL_DEVELOPMENT.md",
+      "Q29: missing expected-fact source ../../tools/dev.py",
+      "Q30: missing expected-fact source ../../validation/browser-results.json"
+    ],
+    "warnings": [],
+    "limitations": [
+      "Does not verify source semantics or runtime claims",
+      "Does not fetch external URLs",
+      "Does not rewrite or reattest historical audits",
+      "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+    ]
+  },
+  "docs-final": {
+    "status": "passed",
+    "documents": 59,
+    "navigation_link_documents": 8,
+    "canonical_claims": 100,
+    "local_links": 966,
+    "heading_anchors": 48,
+    "questions": 32,
+    "errors": [],
+    "warnings": [],
+    "limitations": [
+      "Does not verify source semantics or runtime claims",
+      "Does not fetch external URLs",
+      "Does not rewrite or reattest historical audits",
+      "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+    ]
+  },
+  "m11": {
+    "status": "passed",
+    "scope": "historical M11 integrity; no current runtime acceptance",
+    "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+    "records_checked": 18,
+    "source_hashes_checked": 28,
+    "compare_working_tree": false,
+    "working_tree_differences": [],
+    "errors": []
+  },
+  "repository": {
+    "status": "failed",
+    "scope": "current source/documentation and artifact identity",
+    "documentation": {
+      "status": "passed",
+      "documents": 59,
+      "navigation_link_documents": 8,
+      "canonical_claims": 100,
+      "local_links": 964,
+      "heading_anchors": 46,
+      "questions": 32,
+      "errors": [],
+      "warnings": [],
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ]
+    },
+    "materialized_runtime_files": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+    ],
+    "unmaterialized_runtime_files": [],
+    "errors": [
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_demo_bridge.hpp",
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp",
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.hpp",
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/material_rules.hpp",
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/world.hpp",
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: native/src/material_rules.cpp",
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: native/src/world.cpp",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_demo_bridge.hpp",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.hpp",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/material_rules.hpp",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/world.hpp",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: native/src/material_rules.cpp",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: native/src/world.cpp"
+    ],
+    "limitations": [
+      "Identity is not execution evidence; read the dated runtime acceptance report",
+      "Retained vendor binaries and platform execution have separate dated provenance",
+      "Historical M11 integrity is checked separately by check_m11_consistency.py"
+    ]
+  },
+  "repository-baseline": {
+    "status": "failed",
+    "scope": "current source/documentation and artifact identity",
+    "documentation": {
+      "status": "passed",
+      "documents": 58,
+      "navigation_link_documents": 8,
+      "canonical_claims": 99,
+      "local_links": 942,
+      "heading_anchors": 41,
+      "questions": 32,
+      "errors": [],
+      "warnings": [],
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ]
+    },
+    "materialized_runtime_files": [
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+    ],
+    "unmaterialized_runtime_files": [],
+    "errors": [
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_demo_bridge.hpp",
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp",
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.hpp",
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/material_rules.hpp",
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/world.hpp",
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: native/src/material_rules.cpp",
+      "Windows x86_64 Godot 4.7 requires rebuild for source input: native/src/world.cpp",
+      "Windows x86_64 Godot 4.7 bytes differ from published provenance",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_demo_bridge.hpp",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.hpp",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/material_rules.hpp",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: native/include/cybersand/world.hpp",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: native/src/material_rules.cpp",
+      "Linux x86_64 Godot 4.7 requires rebuild for source input: native/src/world.cpp",
+      "runtime differs from committed LFS identity: godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
+    ],
+    "limitations": [
+      "Identity is not execution evidence; read the dated runtime acceptance report",
+      "Retained vendor binaries and platform execution have separate dated provenance",
+      "Historical M11 integrity is checked separately by check_m11_consistency.py"
+    ]
+  },
+  "retrieval": {
+    "retrieval-final-challenges": {
+      "summary": {
+        "questions": 16,
+        "canonical_hit_at_1": 12,
+        "canonical_hit_at_k": 16,
+        "mrr_at_k": 0.8594,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "fixture_sha256": "5292140ee514d070cb921cb9bf0fe4807e08c5fca1eb2c71d446bdff9ba92ec1",
+      "ranks": [
+        {
+          "id": "C05",
+          "rank": 4,
+          "first_path": "operations/physics-characterisation-plan.md",
+          "first_heading": "Physics characterisation and soliding plan > What the inspected baseline code explained"
+        },
+        {
+          "id": "C06",
+          "rank": 1,
+          "first_path": "operations/physics-characterisation-plan.md",
+          "first_heading": "Physics characterisation and soliding plan > Scope and evidence boundary"
+        },
+        {
+          "id": "C01",
+          "rank": 1,
+          "first_path": "architecture/simulation-tick-and-threading.md",
+          "first_heading": "Simulation tick and threading > What happens when a tick fails or overloads?"
+        },
+        {
+          "id": "C02",
+          "rank": 1,
+          "first_path": "systems/world-storage-and-interest-region.md",
+          "first_heading": "World storage and interest region > Interest filtering and re-entry"
+        },
+        {
+          "id": "C03",
+          "rank": 1,
+          "first_path": "systems/world-storage-and-interest-region.md",
+          "first_heading": "World storage and interest region > Finite Godot adapters"
+        },
+        {
+          "id": "C04",
+          "rank": 1,
+          "first_path": "systems/activity-dirty-regions-and-waking.md",
+          "first_heading": "Activity, dirty regions, and waking > Native activity lifecycle"
+        },
+        {
+          "id": "C07",
+          "rank": 1,
+          "first_path": "operations/physics-characterisation.md",
+          "first_heading": "Reproducible physics characterisation > Which variants are isolated from production defaults? > Does Mercury viscosity slow measured downward penetration through packed Sand?"
+        },
+        {
+          "id": "C08",
+          "rank": 1,
+          "first_path": "operations/physics-characterisation.md",
+          "first_heading": "Reproducible physics characterisation > Which variants are isolated from production defaults? > Does a barrel stopped at the bottom prove half-depth granular support?"
+        },
+        {
+          "id": "C09",
+          "rank": 1,
+          "first_path": "architecture/rigid-body-and-cellular-coupling.md",
+          "first_heading": "Rigid-body and cellular coupling > What did the measured barrel baseline establish?"
+        },
+        {
+          "id": "C10",
+          "rank": 1,
+          "first_path": "architecture/rigid-body-and-cellular-coupling.md",
+          "first_heading": "Rigid-body and cellular coupling > What did the measured barrel baseline establish?"
+        },
+        {
+          "id": "C11",
+          "rank": 2,
+          "first_path": "operations/physics-characterisation-plan.md",
+          "first_heading": "Physics characterisation and soliding plan > Phase 2: isolate each behaviour"
+        },
+        {
+          "id": "C12",
+          "rank": 2,
+          "first_path": "operations/physics-characterisation-plan.md",
+          "first_heading": "Physics characterisation and soliding plan > Phase 3: parameter experiments, then model changes"
+        },
+        {
+          "id": "C13",
+          "rank": 1,
+          "first_path": "operations/experiment-tower.md",
+          "first_heading": "Experiment Tower > How do I open and reset the experiments?"
+        },
+        {
+          "id": "C14",
+          "rank": 1,
+          "first_path": "systems/flow-transport-and-profiles.md",
+          "first_heading": "Transport profiles > How does actual motion drive mixing and erosion?"
+        },
+        {
+          "id": "C15",
+          "rank": 1,
+          "first_path": "systems/materials-and-rule-kernels.md",
+          "first_heading": "Materials and rule kernels > Why does burning Coal leave a purple layer?"
+        },
+        {
+          "id": "C16",
+          "rank": 2,
+          "first_path": "operations/cybersand-codex-development-handover.md",
+          "first_heading": "Development handover > Opt-in transport profiles"
+        }
+      ]
+    },
+    "retrieval-final-frozen": {
+      "summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 22,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.8229,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "fixture_sha256": "b65be8a80190703bb4550ac49b19a7eb8541652585c91acad2d4f40fc9dca5f2",
+      "ranks": [
+        {
+          "id": "Q01",
+          "rank": 1,
+          "first_path": "operations/source-checkpoint-and-recovery.md",
+          "first_heading": "Source checkpoint and recovery > Water leveling follow-up"
+        },
+        {
+          "id": "Q02",
+          "rank": 1,
+          "first_path": "architecture/data-ownership-and-lifetimes.md",
+          "first_heading": "Data ownership and lifetimes > Who may mutate each resource?"
+        },
+        {
+          "id": "Q03",
+          "rank": 2,
+          "first_path": "operations/troubleshooting.md",
+          "first_heading": "Troubleshooting simulation and integration > Establish the failing path first"
+        },
+        {
+          "id": "Q04",
+          "rank": 2,
+          "first_path": "reference/configuration-reference.md",
+          "first_heading": "Configuration reference > Adapter worker policy"
+        },
+        {
+          "id": "Q05",
+          "rank": 1,
+          "first_path": "architecture/simulation-tick-and-threading.md",
+          "first_heading": "Simulation tick and threading > Current desktop worker loop"
+        },
+        {
+          "id": "Q06",
+          "rank": 1,
+          "first_path": "architecture/simulation-tick-and-threading.md",
+          "first_heading": "Simulation tick and threading > What happens when a tick fails or overloads?"
+        },
+        {
+          "id": "Q07",
+          "rank": 1,
+          "first_path": "operations/rapier-2d-migration-runbook.md",
+          "first_heading": "Rapier2D dependency and validation runbook > Web packaging and browser fixture"
+        },
+        {
+          "id": "Q08",
+          "rank": 2,
+          "first_path": "decisions/ADR-007-rigid-body-cellular-coupling.md",
+          "first_heading": "ADR-007: Separate rigid-body occupancy coupling > Why not remove and restore body pixels?"
+        },
+        {
+          "id": "Q09",
+          "rank": 1,
+          "first_path": "architecture/rigid-body-and-cellular-coupling.md",
+          "first_heading": "Rigid-body and cellular coupling > Who resolves hard terrain and thin floors?"
+        },
+        {
+          "id": "Q10",
+          "rank": 1,
+          "first_path": "architecture/rigid-body-and-cellular-coupling.md",
+          "first_heading": "Rigid-body and cellular coupling > When a crate moves through sand, are its pixels erased and restored?"
+        },
+        {
+          "id": "Q11",
+          "rank": 1,
+          "first_path": "reference/level-saves-and-replay.md",
+          "first_heading": "Level saves and exact replay > Does an identical save reproduce the next tick?"
+        },
+        {
+          "id": "Q12",
+          "rank": 1,
+          "first_path": "reference/level-saves-and-replay.md",
+          "first_heading": "Level saves and exact replay > What is stored in CYSD1?"
+        },
+        {
+          "id": "Q13",
+          "rank": 1,
+          "first_path": "reference/level-saves-and-replay.md",
+          "first_heading": "Level saves and exact replay > May saving run concurrently with a tick?"
+        },
+        {
+          "id": "Q14",
+          "rank": 1,
+          "first_path": "architecture/determinism-and-boundary-transfers.md",
+          "first_heading": "Determinism and boundary transfers > Replay state coverage"
+        },
+        {
+          "id": "Q15",
+          "rank": 2,
+          "first_path": "systems/themed-construction-materials.md",
+          "first_heading": "Themed construction material palette > Appearance boundaries"
+        },
+        {
+          "id": "Q16",
+          "rank": 1,
+          "first_path": "architecture/rendering-and-gameplay-bridges.md",
+          "first_heading": "Rendering and gameplay bridges > What does native publication return under pressure?"
+        },
+        {
+          "id": "Q17",
+          "rank": 3,
+          "first_path": "operations/profiling-observability-and-performance.md",
+          "first_heading": "Profiling, observability, and performance > Avoid common misreadings"
+        },
+        {
+          "id": "Q18",
+          "rank": 1,
+          "first_path": "architecture/chunk-tile-and-buffer-model.md",
+          "first_heading": "Chunk, tile, and buffer model > Are simulation tiles double buffered?"
+        },
+        {
+          "id": "Q19",
+          "rank": 1,
+          "first_path": "systems/world-storage-and-interest-region.md",
+          "first_heading": "World storage and interest region"
+        },
+        {
+          "id": "Q20",
+          "rank": 1,
+          "first_path": "operations/configuration-and-capacity-budgets.md",
+          "first_heading": "Configuration and capacity budgets > Explosion queue rejection and exhausted simulation space"
+        },
+        {
+          "id": "Q21",
+          "rank": 2,
+          "first_path": "operations/physics-characterisation-plan.md",
+          "first_heading": "Physics characterisation and soliding plan > Phase 1: freeze the baseline and build measurements"
+        },
+        {
+          "id": "Q22",
+          "rank": 1,
+          "first_path": "systems/water-design.md",
+          "first_heading": "Water design > Coherent emission and surface adhesion"
+        },
+        {
+          "id": "Q23",
+          "rank": 1,
+          "first_path": "systems/water-design.md",
+          "first_heading": "Water design > How should I diagnose a shimmering pool?"
+        },
+        {
+          "id": "Q24",
+          "rank": 3,
+          "first_path": "systems/materials-and-rule-kernels.md",
+          "first_heading": "Materials and rule kernels > Kernel execution and cadence"
+        },
+        {
+          "id": "Q25",
+          "rank": 1,
+          "first_path": "architecture/principles-and-non-goals.md",
+          "first_heading": "Architectural principles and non-goals > Can materials run on GPU compute or arbitrary JavaScript?"
+        },
+        {
+          "id": "Q26",
+          "rank": 3,
+          "first_path": "architecture/overview.md",
+          "first_heading": "Architecture overview > Are the named production modules already separate classes?"
+        },
+        {
+          "id": "Q27",
+          "rank": 1,
+          "first_path": "systems/smoke-heat-pressure-roadmap.md",
+          "first_heading": "Smoke, heat, and pressure roadmap"
+        },
+        {
+          "id": "Q28",
+          "rank": 1,
+          "first_path": "operations/local-build-and-validation.md",
+          "first_heading": "Local build and validation > Windows development commands"
+        },
+        {
+          "id": "Q29",
+          "rank": 3,
+          "first_path": "operations/source-checkpoint-and-recovery.md",
+          "first_heading": "Source checkpoint and recovery > Which earlier identity statements are historical?"
+        },
+        {
+          "id": "Q30",
+          "rank": 2,
+          "first_path": "operations/local-build-and-validation.md",
+          "first_heading": "Local build and validation > Repository-native build and test commands"
+        },
+        {
+          "id": "Q31",
+          "rank": 1,
+          "first_path": "operations/current-and-historical-validation.md",
+          "first_heading": "Current validation and retained M11 integrity > Why did the old consistency check report hash mismatches?"
+        },
+        {
+          "id": "Q32",
+          "rank": 1,
+          "first_path": "operations/documentation-maintenance.md",
+          "first_heading": "Documentation maintenance and retrieval contract > Documentation-update checklist"
+        }
+      ]
+    },
+    "retrieval-final-gates": {
+      "summary": {
+        "questions": 3,
+        "canonical_hit_at_1": 2,
+        "canonical_hit_at_k": 3,
+        "mrr_at_k": 0.7778,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "fixture_sha256": "583b44df5dd9e11cc28db19950bfb71afd74d043f3a4c2e599e6a89283b4a853",
+      "ranks": [
+        {
+          "id": "PG01",
+          "rank": 1,
+          "first_path": "operations/architecture-programme.md",
+          "first_heading": "CyberSand architecture experimental programme > G-C staged decision, 2026-09-11"
+        },
+        {
+          "id": "PG02",
+          "rank": 3,
+          "first_path": "systems/activity-dirty-regions-and-waking.md",
+          "first_heading": "Activity, dirty regions, and waking > Characterized sleep versus liquid mobility"
+        },
+        {
+          "id": "PG03",
+          "rank": 1,
+          "first_path": "operations/architecture-programme.md",
+          "first_heading": "CyberSand architecture experimental programme > Issue and prompt index"
+        }
+      ]
+    },
+    "retrieval-final-precision": {
+      "summary": {
+        "questions": 3,
+        "canonical_hit_at_1": 3,
+        "canonical_hit_at_k": 3,
+        "mrr_at_k": 1.0,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "fixture_sha256": "0595fb2c216822e001d8c4400a2bf5efe3440203d41477f578b5fcd751f18cc3",
+      "ranks": [
+        {
+          "id": "P01",
+          "rank": 1,
+          "first_path": "operations/architecture-programme.md",
+          "first_heading": "CyberSand architecture experimental programme > G-P staged decision, 2026-09-11"
+        },
+        {
+          "id": "P02",
+          "rank": 1,
+          "first_path": "operations/state-precision-experiment.md",
+          "first_heading": "Water state precision experiment > Mathematical contract"
+        },
+        {
+          "id": "P03",
+          "rank": 1,
+          "first_path": "operations/architecture-programme.md",
+          "first_heading": "CyberSand architecture experimental programme > G-P staged decision, 2026-09-11"
+        }
+      ]
+    },
+    "retrieval-final-programme": {
+      "summary": {
+        "questions": 5,
+        "canonical_hit_at_1": 4,
+        "canonical_hit_at_k": 5,
+        "mrr_at_k": 0.84,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "fixture_sha256": "63723424a405c648b5007efa7981fd399e92388b8e125014409716eb64049799",
+      "ranks": [
+        {
+          "id": "AP01",
+          "rank": 1,
+          "first_path": "operations/architecture-programme.md",
+          "first_heading": "CyberSand architecture experimental programme > G-P staged decision, 2026-09-11"
+        },
+        {
+          "id": "AP02",
+          "rank": 1,
+          "first_path": "operations/architecture-programme.md",
+          "first_heading": "CyberSand architecture experimental programme > Issue and prompt index"
+        },
+        {
+          "id": "AP03",
+          "rank": 1,
+          "first_path": "operations/architecture-programme.md",
+          "first_heading": "CyberSand architecture experimental programme > B. Decision ledger and authority rules > May extra Cell bits hold occupancy or relax exact Water conservation?"
+        },
+        {
+          "id": "AP04",
+          "rank": 5,
+          "first_path": "operations/state-precision-experiment.md",
+          "first_heading": "Water state precision experiment > Mathematical contract"
+        },
+        {
+          "id": "AP05",
+          "rank": 1,
+          "first_path": "operations/architecture-programme.md",
+          "first_heading": "CyberSand architecture experimental programme > B. Decision ledger and authority rules > Does closed issue #11 prove barrel support is ready for soliding?"
+        }
+      ]
+    }
+  },
+  "precision_python_tests": 4,
+  "checker_regressions": 8,
+  "documentation_recovery": "Explicit UTF8 resumed documentation edits; failed generated audit bytes preserved locally. No scientific harness, source semantics, binary or measurement change."
+}

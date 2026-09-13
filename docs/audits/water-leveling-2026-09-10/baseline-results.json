@@ -1,0 +1,1634 @@
+[
+  {
+    "width": 48,
+    "shift": -65,
+    "mirror": 0,
+    "workers": 1,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "d20495ed7a516b3"
+      },
+      {
+        "tick": 60,
+        "front": 43,
+        "column_spread": 4518,
+        "mass": 97920,
+        "content": "33cbbe75ac3f34ea"
+      },
+      {
+        "tick": 120,
+        "front": 48,
+        "column_spread": 3621,
+        "mass": 97920,
+        "content": "52b80c0b63b3246d"
+      },
+      {
+        "tick": 300,
+        "front": 48,
+        "column_spread": 2123,
+        "mass": 97920,
+        "content": "613bb2fa6192f468"
+      },
+      {
+        "tick": 600,
+        "front": 48,
+        "column_spread": 920,
+        "mass": 97920,
+        "content": "be8b89a2f2ac13f8"
+      },
+      {
+        "tick": 1200,
+        "front": 48,
+        "column_spread": 193,
+        "mass": 97920,
+        "content": "1231714af00ff62f"
+      },
+      {
+        "tick": 1800,
+        "front": 48,
+        "column_spread": 57,
+        "mass": 97920,
+        "content": "2388ba1f916e8865"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 25,
+      "one_cell_level_tick": 1084,
+      "visited": 714289,
+      "blocks": 11328,
+      "allocations": 0,
+      "total_us": 484576,
+      "p50_us": 263.6,
+      "p95_us": 295.7
+    }
+  },
+  {
+    "width": 48,
+    "shift": -65,
+    "mirror": 0,
+    "workers": 4,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "d20495ed7a516b3"
+      },
+      {
+        "tick": 60,
+        "front": 43,
+        "column_spread": 4518,
+        "mass": 97920,
+        "content": "33cbbe75ac3f34ea"
+      },
+      {
+        "tick": 120,
+        "front": 48,
+        "column_spread": 3621,
+        "mass": 97920,
+        "content": "52b80c0b63b3246d"
+      },
+      {
+        "tick": 300,
+        "front": 48,
+        "column_spread": 2123,
+        "mass": 97920,
+        "content": "613bb2fa6192f468"
+      },
+      {
+        "tick": 600,
+        "front": 48,
+        "column_spread": 920,
+        "mass": 97920,
+        "content": "be8b89a2f2ac13f8"
+      },
+      {
+        "tick": 1200,
+        "front": 48,
+        "column_spread": 193,
+        "mass": 97920,
+        "content": "1231714af00ff62f"
+      },
+      {
+        "tick": 1800,
+        "front": 48,
+        "column_spread": 57,
+        "mass": 97920,
+        "content": "2388ba1f916e8865"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 25,
+      "one_cell_level_tick": 1084,
+      "visited": 714289,
+      "blocks": 11328,
+      "allocations": 0,
+      "total_us": 532835,
+      "p50_us": 286.2,
+      "p95_us": 343.9
+    }
+  },
+  {
+    "width": 48,
+    "shift": -65,
+    "mirror": 1,
+    "workers": 1,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "29e58faa0ead6333"
+      },
+      {
+        "tick": 60,
+        "front": 43,
+        "column_spread": 4438,
+        "mass": 97920,
+        "content": "8db9c8db8e981288"
+      },
+      {
+        "tick": 120,
+        "front": 48,
+        "column_spread": 3552,
+        "mass": 97920,
+        "content": "c20a918863651b68"
+      },
+      {
+        "tick": 300,
+        "front": 48,
+        "column_spread": 2076,
+        "mass": 97920,
+        "content": "c7fa9df0eb2d7c5c"
+      },
+      {
+        "tick": 600,
+        "front": 48,
+        "column_spread": 903,
+        "mass": 97920,
+        "content": "85a399283e722eed"
+      },
+      {
+        "tick": 1200,
+        "front": 48,
+        "column_spread": 189,
+        "mass": 97920,
+        "content": "d744c780b3664131"
+      },
+      {
+        "tick": 1800,
+        "front": 48,
+        "column_spread": 57,
+        "mass": 97920,
+        "content": "10ab9116fae3df97"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 26,
+      "one_cell_level_tick": 1075,
+      "visited": 714371,
+      "blocks": 11301,
+      "allocations": 0,
+      "total_us": 484209,
+      "p50_us": 263.9,
+      "p95_us": 292.2
+    }
+  },
+  {
+    "width": 48,
+    "shift": -65,
+    "mirror": 1,
+    "workers": 4,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "29e58faa0ead6333"
+      },
+      {
+        "tick": 60,
+        "front": 43,
+        "column_spread": 4438,
+        "mass": 97920,
+        "content": "8db9c8db8e981288"
+      },
+      {
+        "tick": 120,
+        "front": 48,
+        "column_spread": 3552,
+        "mass": 97920,
+        "content": "c20a918863651b68"
+      },
+      {
+        "tick": 300,
+        "front": 48,
+        "column_spread": 2076,
+        "mass": 97920,
+        "content": "c7fa9df0eb2d7c5c"
+      },
+      {
+        "tick": 600,
+        "front": 48,
+        "column_spread": 903,
+        "mass": 97920,
+        "content": "85a399283e722eed"
+      },
+      {
+        "tick": 1200,
+        "front": 48,
+        "column_spread": 189,
+        "mass": 97920,
+        "content": "d744c780b3664131"
+      },
+      {
+        "tick": 1800,
+        "front": 48,
+        "column_spread": 57,
+        "mass": 97920,
+        "content": "10ab9116fae3df97"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 26,
+      "one_cell_level_tick": 1075,
+      "visited": 714371,
+      "blocks": 11301,
+      "allocations": 0,
+      "total_us": 541672,
+      "p50_us": 287.7,
+      "p95_us": 350.1
+    }
+  },
+  {
+    "width": 48,
+    "shift": 0,
+    "mirror": 0,
+    "workers": 1,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "f04670b3ec983c13"
+      },
+      {
+        "tick": 60,
+        "front": 44,
+        "column_spread": 4438,
+        "mass": 97920,
+        "content": "32f1868bc0f9be25"
+      },
+      {
+        "tick": 120,
+        "front": 48,
+        "column_spread": 3553,
+        "mass": 97920,
+        "content": "734174e442ab97c9"
+      },
+      {
+        "tick": 300,
+        "front": 48,
+        "column_spread": 2077,
+        "mass": 97920,
+        "content": "49b4346a6497169"
+      },
+      {
+        "tick": 600,
+        "front": 48,
+        "column_spread": 904,
+        "mass": 97920,
+        "content": "b149cbdabea9d134"
+      },
+      {
+        "tick": 1200,
+        "front": 48,
+        "column_spread": 189,
+        "mass": 97920,
+        "content": "e9988183fb304277"
+      },
+      {
+        "tick": 1800,
+        "front": 48,
+        "column_spread": 57,
+        "mass": 97920,
+        "content": "92d3485e177e54ef"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 25,
+      "one_cell_level_tick": 1077,
+      "visited": 714332,
+      "blocks": 16143,
+      "allocations": 0,
+      "total_us": 358112,
+      "p50_us": 197.2,
+      "p95_us": 203.5
+    }
+  },
+  {
+    "width": 48,
+    "shift": 0,
+    "mirror": 0,
+    "workers": 4,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "f04670b3ec983c13"
+      },
+      {
+        "tick": 60,
+        "front": 44,
+        "column_spread": 4438,
+        "mass": 97920,
+        "content": "32f1868bc0f9be25"
+      },
+      {
+        "tick": 120,
+        "front": 48,
+        "column_spread": 3553,
+        "mass": 97920,
+        "content": "734174e442ab97c9"
+      },
+      {
+        "tick": 300,
+        "front": 48,
+        "column_spread": 2077,
+        "mass": 97920,
+        "content": "49b4346a6497169"
+      },
+      {
+        "tick": 600,
+        "front": 48,
+        "column_spread": 904,
+        "mass": 97920,
+        "content": "b149cbdabea9d134"
+      },
+      {
+        "tick": 1200,
+        "front": 48,
+        "column_spread": 189,
+        "mass": 97920,
+        "content": "e9988183fb304277"
+      },
+      {
+        "tick": 1800,
+        "front": 48,
+        "column_spread": 57,
+        "mass": 97920,
+        "content": "92d3485e177e54ef"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 25,
+      "one_cell_level_tick": 1077,
+      "visited": 714332,
+      "blocks": 16143,
+      "allocations": 0,
+      "total_us": 446857,
+      "p50_us": 241.3,
+      "p95_us": 288.7
+    }
+  },
+  {
+    "width": 48,
+    "shift": 0,
+    "mirror": 1,
+    "workers": 1,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "e3c95be3ebbafc13"
+      },
+      {
+        "tick": 60,
+        "front": 43,
+        "column_spread": 4519,
+        "mass": 97920,
+        "content": "6db7f7618d1f5131"
+      },
+      {
+        "tick": 120,
+        "front": 48,
+        "column_spread": 3625,
+        "mass": 97920,
+        "content": "266ee565f9840429"
+      },
+      {
+        "tick": 300,
+        "front": 48,
+        "column_spread": 2119,
+        "mass": 97920,
+        "content": "b10e4d657d36db83"
+      },
+      {
+        "tick": 600,
+        "front": 48,
+        "column_spread": 919,
+        "mass": 97920,
+        "content": "7367bedd770e68f5"
+      },
+      {
+        "tick": 1200,
+        "front": 48,
+        "column_spread": 193,
+        "mass": 97920,
+        "content": "2e0bad2d075c084a"
+      },
+      {
+        "tick": 1800,
+        "front": 48,
+        "column_spread": 57,
+        "mass": 97920,
+        "content": "a9ba9912872428ed"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 25,
+      "one_cell_level_tick": 1084,
+      "visited": 714300,
+      "blocks": 16200,
+      "allocations": 0,
+      "total_us": 355402,
+      "p50_us": 195.8,
+      "p95_us": 203.4
+    }
+  },
+  {
+    "width": 48,
+    "shift": 0,
+    "mirror": 1,
+    "workers": 4,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "e3c95be3ebbafc13"
+      },
+      {
+        "tick": 60,
+        "front": 43,
+        "column_spread": 4519,
+        "mass": 97920,
+        "content": "6db7f7618d1f5131"
+      },
+      {
+        "tick": 120,
+        "front": 48,
+        "column_spread": 3625,
+        "mass": 97920,
+        "content": "266ee565f9840429"
+      },
+      {
+        "tick": 300,
+        "front": 48,
+        "column_spread": 2119,
+        "mass": 97920,
+        "content": "b10e4d657d36db83"
+      },
+      {
+        "tick": 600,
+        "front": 48,
+        "column_spread": 919,
+        "mass": 97920,
+        "content": "7367bedd770e68f5"
+      },
+      {
+        "tick": 1200,
+        "front": 48,
+        "column_spread": 193,
+        "mass": 97920,
+        "content": "2e0bad2d075c084a"
+      },
+      {
+        "tick": 1800,
+        "front": 48,
+        "column_spread": 57,
+        "mass": 97920,
+        "content": "a9ba9912872428ed"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 25,
+      "one_cell_level_tick": 1084,
+      "visited": 714300,
+      "blocks": 16200,
+      "allocations": 0,
+      "total_us": 446363,
+      "p50_us": 241.8,
+      "p95_us": 286
+    }
+  },
+  {
+    "width": 48,
+    "shift": 63,
+    "mirror": 0,
+    "workers": 1,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "10f8e2f3b83a4c13"
+      },
+      {
+        "tick": 60,
+        "front": 43,
+        "column_spread": 4506,
+        "mass": 97920,
+        "content": "23bc3e4ebdbba0c8"
+      },
+      {
+        "tick": 120,
+        "front": 48,
+        "column_spread": 3624,
+        "mass": 97920,
+        "content": "7d8b58e30d813b46"
+      },
+      {
+        "tick": 300,
+        "front": 48,
+        "column_spread": 2118,
+        "mass": 97920,
+        "content": "213a3df6f7cf67fc"
+      },
+      {
+        "tick": 600,
+        "front": 48,
+        "column_spread": 919,
+        "mass": 97920,
+        "content": "534628fbd9014c64"
+      },
+      {
+        "tick": 1200,
+        "front": 48,
+        "column_spread": 192,
+        "mass": 97920,
+        "content": "ec9e4689a4785077"
+      },
+      {
+        "tick": 1800,
+        "front": 48,
+        "column_spread": 57,
+        "mass": 97920,
+        "content": "d1d483adc2a6e945"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 25,
+      "one_cell_level_tick": 1084,
+      "visited": 714271,
+      "blocks": 11328,
+      "allocations": 0,
+      "total_us": 479403,
+      "p50_us": 264.1,
+      "p95_us": 289.4
+    }
+  },
+  {
+    "width": 48,
+    "shift": 63,
+    "mirror": 0,
+    "workers": 4,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "10f8e2f3b83a4c13"
+      },
+      {
+        "tick": 60,
+        "front": 43,
+        "column_spread": 4506,
+        "mass": 97920,
+        "content": "23bc3e4ebdbba0c8"
+      },
+      {
+        "tick": 120,
+        "front": 48,
+        "column_spread": 3624,
+        "mass": 97920,
+        "content": "7d8b58e30d813b46"
+      },
+      {
+        "tick": 300,
+        "front": 48,
+        "column_spread": 2118,
+        "mass": 97920,
+        "content": "213a3df6f7cf67fc"
+      },
+      {
+        "tick": 600,
+        "front": 48,
+        "column_spread": 919,
+        "mass": 97920,
+        "content": "534628fbd9014c64"
+      },
+      {
+        "tick": 1200,
+        "front": 48,
+        "column_spread": 192,
+        "mass": 97920,
+        "content": "ec9e4689a4785077"
+      },
+      {
+        "tick": 1800,
+        "front": 48,
+        "column_spread": 57,
+        "mass": 97920,
+        "content": "d1d483adc2a6e945"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 25,
+      "one_cell_level_tick": 1084,
+      "visited": 714271,
+      "blocks": 11328,
+      "allocations": 0,
+      "total_us": 546362,
+      "p50_us": 289.6,
+      "p95_us": 355.8
+    }
+  },
+  {
+    "width": 48,
+    "shift": 63,
+    "mirror": 1,
+    "workers": 1,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "32199f5593b8b653"
+      },
+      {
+        "tick": 60,
+        "front": 44,
+        "column_spread": 4445,
+        "mass": 97920,
+        "content": "6828e8ada02567ea"
+      },
+      {
+        "tick": 120,
+        "front": 48,
+        "column_spread": 3552,
+        "mass": 97920,
+        "content": "298b73f44c48de55"
+      },
+      {
+        "tick": 300,
+        "front": 48,
+        "column_spread": 2075,
+        "mass": 97920,
+        "content": "9636be8456ee18a0"
+      },
+      {
+        "tick": 600,
+        "front": 48,
+        "column_spread": 900,
+        "mass": 97920,
+        "content": "2b471fc9d35ab932"
+      },
+      {
+        "tick": 1200,
+        "front": 48,
+        "column_spread": 189,
+        "mass": 97920,
+        "content": "c8b879fed3de8f1f"
+      },
+      {
+        "tick": 1800,
+        "front": 48,
+        "column_spread": 57,
+        "mass": 97920,
+        "content": "5f3ee6547642ca37"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 26,
+      "one_cell_level_tick": 1077,
+      "visited": 714342,
+      "blocks": 11301,
+      "allocations": 0,
+      "total_us": 490004,
+      "p50_us": 265.2,
+      "p95_us": 318.8
+    }
+  },
+  {
+    "width": 48,
+    "shift": 63,
+    "mirror": 1,
+    "workers": 4,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "32199f5593b8b653"
+      },
+      {
+        "tick": 60,
+        "front": 44,
+        "column_spread": 4445,
+        "mass": 97920,
+        "content": "6828e8ada02567ea"
+      },
+      {
+        "tick": 120,
+        "front": 48,
+        "column_spread": 3552,
+        "mass": 97920,
+        "content": "298b73f44c48de55"
+      },
+      {
+        "tick": 300,
+        "front": 48,
+        "column_spread": 2075,
+        "mass": 97920,
+        "content": "9636be8456ee18a0"
+      },
+      {
+        "tick": 600,
+        "front": 48,
+        "column_spread": 900,
+        "mass": 97920,
+        "content": "2b471fc9d35ab932"
+      },
+      {
+        "tick": 1200,
+        "front": 48,
+        "column_spread": 189,
+        "mass": 97920,
+        "content": "c8b879fed3de8f1f"
+      },
+      {
+        "tick": 1800,
+        "front": 48,
+        "column_spread": 57,
+        "mass": 97920,
+        "content": "5f3ee6547642ca37"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 26,
+      "one_cell_level_tick": 1077,
+      "visited": 714342,
+      "blocks": 11301,
+      "allocations": 0,
+      "total_us": 535208,
+      "p50_us": 286.5,
+      "p95_us": 348.4
+    }
+  },
+  {
+    "width": 96,
+    "shift": -65,
+    "mirror": 0,
+    "workers": 1,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "5fbdf7510feb1813"
+      },
+      {
+        "tick": 60,
+        "front": 43,
+        "column_spread": 4518,
+        "mass": 97920,
+        "content": "7d41d09ec1eee3d2"
+      },
+      {
+        "tick": 120,
+        "front": 49,
+        "column_spread": 3915,
+        "mass": 97920,
+        "content": "216faa33950e379f"
+      },
+      {
+        "tick": 300,
+        "front": 62,
+        "column_spread": 3063,
+        "mass": 97920,
+        "content": "10499fb1bdab24e4"
+      },
+      {
+        "tick": 600,
+        "front": 76,
+        "column_spread": 2423,
+        "mass": 97920,
+        "content": "895a8554e9156038"
+      },
+      {
+        "tick": 1200,
+        "front": 96,
+        "column_spread": 1598,
+        "mass": 97920,
+        "content": "9a5341a71c8b1e2b"
+      },
+      {
+        "tick": 1800,
+        "front": 96,
+        "column_spread": 1070,
+        "mass": 97920,
+        "content": "1be7d0d8ad422d5d"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 475,
+      "one_cell_level_tick": 0,
+      "visited": 730659,
+      "blocks": 18222,
+      "allocations": 0,
+      "total_us": 534890,
+      "p50_us": 298.3,
+      "p95_us": 312.2
+    }
+  },
+  {
+    "width": 96,
+    "shift": -65,
+    "mirror": 0,
+    "workers": 4,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "5fbdf7510feb1813"
+      },
+      {
+        "tick": 60,
+        "front": 43,
+        "column_spread": 4518,
+        "mass": 97920,
+        "content": "7d41d09ec1eee3d2"
+      },
+      {
+        "tick": 120,
+        "front": 49,
+        "column_spread": 3915,
+        "mass": 97920,
+        "content": "216faa33950e379f"
+      },
+      {
+        "tick": 300,
+        "front": 62,
+        "column_spread": 3063,
+        "mass": 97920,
+        "content": "10499fb1bdab24e4"
+      },
+      {
+        "tick": 600,
+        "front": 76,
+        "column_spread": 2423,
+        "mass": 97920,
+        "content": "895a8554e9156038"
+      },
+      {
+        "tick": 1200,
+        "front": 96,
+        "column_spread": 1598,
+        "mass": 97920,
+        "content": "9a5341a71c8b1e2b"
+      },
+      {
+        "tick": 1800,
+        "front": 96,
+        "column_spread": 1070,
+        "mass": 97920,
+        "content": "1be7d0d8ad422d5d"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 475,
+      "one_cell_level_tick": 0,
+      "visited": 730659,
+      "blocks": 18222,
+      "allocations": 0,
+      "total_us": 575814,
+      "p50_us": 314.4,
+      "p95_us": 362.2
+    }
+  },
+  {
+    "width": 96,
+    "shift": -65,
+    "mirror": 1,
+    "workers": 1,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "3fc7bd22620d2313"
+      },
+      {
+        "tick": 60,
+        "front": 43,
+        "column_spread": 4439,
+        "mass": 97920,
+        "content": "d5490fe6c8d270c1"
+      },
+      {
+        "tick": 120,
+        "front": 48,
+        "column_spread": 3868,
+        "mass": 97920,
+        "content": "63c12e7f9a853908"
+      },
+      {
+        "tick": 300,
+        "front": 61,
+        "column_spread": 3057,
+        "mass": 97920,
+        "content": "e369895b42ac3bb3"
+      },
+      {
+        "tick": 600,
+        "front": 77,
+        "column_spread": 2432,
+        "mass": 97920,
+        "content": "65d850f6ee927a8c"
+      },
+      {
+        "tick": 1200,
+        "front": 96,
+        "column_spread": 1623,
+        "mass": 97920,
+        "content": "9d4beac58bc72f5"
+      },
+      {
+        "tick": 1800,
+        "front": 96,
+        "column_spread": 1095,
+        "mass": 97920,
+        "content": "f8baa6bafd356f26"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 482,
+      "one_cell_level_tick": 0,
+      "visited": 730585,
+      "blocks": 18037,
+      "allocations": 0,
+      "total_us": 638274,
+      "p50_us": 349.8,
+      "p95_us": 385.6
+    }
+  },
+  {
+    "width": 96,
+    "shift": -65,
+    "mirror": 1,
+    "workers": 4,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "3fc7bd22620d2313"
+      },
+      {
+        "tick": 60,
+        "front": 43,
+        "column_spread": 4439,
+        "mass": 97920,
+        "content": "d5490fe6c8d270c1"
+      },
+      {
+        "tick": 120,
+        "front": 48,
+        "column_spread": 3868,
+        "mass": 97920,
+        "content": "63c12e7f9a853908"
+      },
+      {
+        "tick": 300,
+        "front": 61,
+        "column_spread": 3057,
+        "mass": 97920,
+        "content": "e369895b42ac3bb3"
+      },
+      {
+        "tick": 600,
+        "front": 77,
+        "column_spread": 2432,
+        "mass": 97920,
+        "content": "65d850f6ee927a8c"
+      },
+      {
+        "tick": 1200,
+        "front": 96,
+        "column_spread": 1623,
+        "mass": 97920,
+        "content": "9d4beac58bc72f5"
+      },
+      {
+        "tick": 1800,
+        "front": 96,
+        "column_spread": 1095,
+        "mass": 97920,
+        "content": "f8baa6bafd356f26"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 482,
+      "one_cell_level_tick": 0,
+      "visited": 730585,
+      "blocks": 18037,
+      "allocations": 0,
+      "total_us": 678077,
+      "p50_us": 368.7,
+      "p95_us": 438.9
+    }
+  },
+  {
+    "width": 96,
+    "shift": 0,
+    "mirror": 0,
+    "workers": 1,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "311c9bec2a97ba73"
+      },
+      {
+        "tick": 60,
+        "front": 44,
+        "column_spread": 4438,
+        "mass": 97920,
+        "content": "f815cbea54a9e205"
+      },
+      {
+        "tick": 120,
+        "front": 50,
+        "column_spread": 3860,
+        "mass": 97920,
+        "content": "a0923c985ddfa4dd"
+      },
+      {
+        "tick": 300,
+        "front": 63,
+        "column_spread": 3043,
+        "mass": 97920,
+        "content": "7adba2a9272e3940"
+      },
+      {
+        "tick": 600,
+        "front": 77,
+        "column_spread": 2411,
+        "mass": 97920,
+        "content": "f8859dea833177ff"
+      },
+      {
+        "tick": 1200,
+        "front": 96,
+        "column_spread": 1595,
+        "mass": 97920,
+        "content": "160cf91309ff84e7"
+      },
+      {
+        "tick": 1800,
+        "front": 96,
+        "column_spread": 1070,
+        "mass": 97920,
+        "content": "6022a98301175ff8"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 478,
+      "one_cell_level_tick": 0,
+      "visited": 730630,
+      "blocks": 20933,
+      "allocations": 0,
+      "total_us": 367069,
+      "p50_us": 203.1,
+      "p95_us": 208.4
+    }
+  },
+  {
+    "width": 96,
+    "shift": 0,
+    "mirror": 0,
+    "workers": 4,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "311c9bec2a97ba73"
+      },
+      {
+        "tick": 60,
+        "front": 44,
+        "column_spread": 4438,
+        "mass": 97920,
+        "content": "f815cbea54a9e205"
+      },
+      {
+        "tick": 120,
+        "front": 50,
+        "column_spread": 3860,
+        "mass": 97920,
+        "content": "a0923c985ddfa4dd"
+      },
+      {
+        "tick": 300,
+        "front": 63,
+        "column_spread": 3043,
+        "mass": 97920,
+        "content": "7adba2a9272e3940"
+      },
+      {
+        "tick": 600,
+        "front": 77,
+        "column_spread": 2411,
+        "mass": 97920,
+        "content": "f8859dea833177ff"
+      },
+      {
+        "tick": 1200,
+        "front": 96,
+        "column_spread": 1595,
+        "mass": 97920,
+        "content": "160cf91309ff84e7"
+      },
+      {
+        "tick": 1800,
+        "front": 96,
+        "column_spread": 1070,
+        "mass": 97920,
+        "content": "6022a98301175ff8"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 478,
+      "one_cell_level_tick": 0,
+      "visited": 730630,
+      "blocks": 20933,
+      "allocations": 0,
+      "total_us": 461901,
+      "p50_us": 249.4,
+      "p95_us": 297.5
+    }
+  },
+  {
+    "width": 96,
+    "shift": 0,
+    "mirror": 1,
+    "workers": 1,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "e8987a0a60e19f3"
+      },
+      {
+        "tick": 60,
+        "front": 43,
+        "column_spread": 4522,
+        "mass": 97920,
+        "content": "b255b5b57158298d"
+      },
+      {
+        "tick": 120,
+        "front": 49,
+        "column_spread": 3924,
+        "mass": 97920,
+        "content": "e15cfa56827dc0a1"
+      },
+      {
+        "tick": 300,
+        "front": 61,
+        "column_spread": 3071,
+        "mass": 97920,
+        "content": "732815195ddde079"
+      },
+      {
+        "tick": 600,
+        "front": 76,
+        "column_spread": 2432,
+        "mass": 97920,
+        "content": "1efe60fbbf83aa89"
+      },
+      {
+        "tick": 1200,
+        "front": 96,
+        "column_spread": 1607,
+        "mass": 97920,
+        "content": "670c62e83eaba6f2"
+      },
+      {
+        "tick": 1800,
+        "front": 96,
+        "column_spread": 1081,
+        "mass": 97920,
+        "content": "e8e02b41af852e69"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 483,
+      "one_cell_level_tick": 0,
+      "visited": 730513,
+      "blocks": 21541,
+      "allocations": 0,
+      "total_us": 366404,
+      "p50_us": 202.5,
+      "p95_us": 207.6
+    }
+  },
+  {
+    "width": 96,
+    "shift": 0,
+    "mirror": 1,
+    "workers": 4,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "e8987a0a60e19f3"
+      },
+      {
+        "tick": 60,
+        "front": 43,
+        "column_spread": 4522,
+        "mass": 97920,
+        "content": "b255b5b57158298d"
+      },
+      {
+        "tick": 120,
+        "front": 49,
+        "column_spread": 3924,
+        "mass": 97920,
+        "content": "e15cfa56827dc0a1"
+      },
+      {
+        "tick": 300,
+        "front": 61,
+        "column_spread": 3071,
+        "mass": 97920,
+        "content": "732815195ddde079"
+      },
+      {
+        "tick": 600,
+        "front": 76,
+        "column_spread": 2432,
+        "mass": 97920,
+        "content": "1efe60fbbf83aa89"
+      },
+      {
+        "tick": 1200,
+        "front": 96,
+        "column_spread": 1607,
+        "mass": 97920,
+        "content": "670c62e83eaba6f2"
+      },
+      {
+        "tick": 1800,
+        "front": 96,
+        "column_spread": 1081,
+        "mass": 97920,
+        "content": "e8e02b41af852e69"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 483,
+      "one_cell_level_tick": 0,
+      "visited": 730513,
+      "blocks": 21541,
+      "allocations": 0,
+      "total_us": 465600,
+      "p50_us": 249.7,
+      "p95_us": 308.8
+    }
+  },
+  {
+    "width": 96,
+    "shift": 63,
+    "mirror": 0,
+    "workers": 1,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "6c0d8ee731960933"
+      },
+      {
+        "tick": 60,
+        "front": 43,
+        "column_spread": 4506,
+        "mass": 97920,
+        "content": "ca3a1c4b5317de88"
+      },
+      {
+        "tick": 120,
+        "front": 49,
+        "column_spread": 3912,
+        "mass": 97920,
+        "content": "9963fa7ad7c3b653"
+      },
+      {
+        "tick": 300,
+        "front": 62,
+        "column_spread": 3062,
+        "mass": 97920,
+        "content": "9b3f40e504cf9db4"
+      },
+      {
+        "tick": 600,
+        "front": 76,
+        "column_spread": 2424,
+        "mass": 97920,
+        "content": "d5ee6fabc27013d9"
+      },
+      {
+        "tick": 1200,
+        "front": 96,
+        "column_spread": 1602,
+        "mass": 97920,
+        "content": "7e6e4965116d12c0"
+      },
+      {
+        "tick": 1800,
+        "front": 96,
+        "column_spread": 1071,
+        "mass": 97920,
+        "content": "fd6678e83d9c9556"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 477,
+      "one_cell_level_tick": 0,
+      "visited": 730601,
+      "blocks": 18218,
+      "allocations": 0,
+      "total_us": 523084,
+      "p50_us": 283.6,
+      "p95_us": 340.6
+    }
+  },
+  {
+    "width": 96,
+    "shift": 63,
+    "mirror": 0,
+    "workers": 4,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "6c0d8ee731960933"
+      },
+      {
+        "tick": 60,
+        "front": 43,
+        "column_spread": 4506,
+        "mass": 97920,
+        "content": "ca3a1c4b5317de88"
+      },
+      {
+        "tick": 120,
+        "front": 49,
+        "column_spread": 3912,
+        "mass": 97920,
+        "content": "9963fa7ad7c3b653"
+      },
+      {
+        "tick": 300,
+        "front": 62,
+        "column_spread": 3062,
+        "mass": 97920,
+        "content": "9b3f40e504cf9db4"
+      },
+      {
+        "tick": 600,
+        "front": 76,
+        "column_spread": 2424,
+        "mass": 97920,
+        "content": "d5ee6fabc27013d9"
+      },
+      {
+        "tick": 1200,
+        "front": 96,
+        "column_spread": 1602,
+        "mass": 97920,
+        "content": "7e6e4965116d12c0"
+      },
+      {
+        "tick": 1800,
+        "front": 96,
+        "column_spread": 1071,
+        "mass": 97920,
+        "content": "fd6678e83d9c9556"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 477,
+      "one_cell_level_tick": 0,
+      "visited": 730601,
+      "blocks": 18218,
+      "allocations": 0,
+      "total_us": 558989,
+      "p50_us": 301.3,
+      "p95_us": 353.5
+    }
+  },
+  {
+    "width": 96,
+    "shift": 63,
+    "mirror": 1,
+    "workers": 1,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "adc334d4d0333133"
+      },
+      {
+        "tick": 60,
+        "front": 43,
+        "column_spread": 4425,
+        "mass": 97920,
+        "content": "3a1932a87e650c57"
+      },
+      {
+        "tick": 120,
+        "front": 49,
+        "column_spread": 3859,
+        "mass": 97920,
+        "content": "6fd5164c3f87b24a"
+      },
+      {
+        "tick": 300,
+        "front": 62,
+        "column_spread": 3053,
+        "mass": 97920,
+        "content": "5a8e56b1bcae340c"
+      },
+      {
+        "tick": 600,
+        "front": 77,
+        "column_spread": 2430,
+        "mass": 97920,
+        "content": "e365848605d98fd4"
+      },
+      {
+        "tick": 1200,
+        "front": 96,
+        "column_spread": 1620,
+        "mass": 97920,
+        "content": "1ce978f9f25bfbb9"
+      },
+      {
+        "tick": 1800,
+        "front": 96,
+        "column_spread": 1090,
+        "mass": 97920,
+        "content": "3e636ba7b50d9e30"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 482,
+      "one_cell_level_tick": 0,
+      "visited": 730634,
+      "blocks": 18039,
+      "allocations": 0,
+      "total_us": 517797,
+      "p50_us": 285.5,
+      "p95_us": 297.1
+    }
+  },
+  {
+    "width": 96,
+    "shift": 63,
+    "mirror": 1,
+    "workers": 4,
+    "samples": [
+      {
+        "tick": 0,
+        "front": 12,
+        "column_spread": 8160,
+        "mass": 97920,
+        "content": "adc334d4d0333133"
+      },
+      {
+        "tick": 60,
+        "front": 43,
+        "column_spread": 4425,
+        "mass": 97920,
+        "content": "3a1932a87e650c57"
+      },
+      {
+        "tick": 120,
+        "front": 49,
+        "column_spread": 3859,
+        "mass": 97920,
+        "content": "6fd5164c3f87b24a"
+      },
+      {
+        "tick": 300,
+        "front": 62,
+        "column_spread": 3053,
+        "mass": 97920,
+        "content": "5a8e56b1bcae340c"
+      },
+      {
+        "tick": 600,
+        "front": 77,
+        "column_spread": 2430,
+        "mass": 97920,
+        "content": "e365848605d98fd4"
+      },
+      {
+        "tick": 1200,
+        "front": 96,
+        "column_spread": 1620,
+        "mass": 97920,
+        "content": "1ce978f9f25bfbb9"
+      },
+      {
+        "tick": 1800,
+        "front": 96,
+        "column_spread": 1090,
+        "mass": 97920,
+        "content": "3e636ba7b50d9e30"
+      }
+    ],
+    "work": {
+      "result": true,
+      "arrival_tick": 482,
+      "one_cell_level_tick": 0,
+      "visited": 730634,
+      "blocks": 18039,
+      "allocations": 0,
+      "total_us": 557502,
+      "p50_us": 301.2,
+      "p95_us": 351.9
+    }
+  }
+]

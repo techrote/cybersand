@@ -1,0 +1,26 @@
+{
+  "description": "Issue17 questions kept separate from frozen retrieval sets",
+  "questions": [
+    {
+      "id": "P01",
+      "query": "What mass precision and coherent delay state budget does G-P recommend, and does it authorize production migration?",
+      "canonical": ["operations/architecture-programme.md"],
+      "facts": ["G-P is an experimental state-budget decision only; production Cell layout and Water migration require separate authority.", "Issue18 still needs a concrete motion target; Issue19 is independent, Issue20 blocked and G-final open."],
+      "sources": ["operations/architecture-programme.md"]
+    },
+    {
+      "id": "P02",
+      "query": "How does the Water precision experiment separate initial quantization, runtime conservation and normalized versus literal thresholds?",
+      "canonical": ["operations/state-precision-experiment.md"],
+      "facts": ["Use each arm's exact integer lattice for conservation, separately report initial normalized error.", "P1 uses normalized film and tolerance; P2 fixes normalized film and compares tolerance against literal one unit."],
+      "sources": ["operations/state-precision-experiment.md"]
+    },
+    {
+      "id": "P03",
+      "query": "Does fewer Water mass bits save cell bandwidth or does apparent speed come from active work and early stalling?",
+      "canonical": ["operations/state-precision-experiment.md", "operations/architecture-programme.md"],
+      "facts": ["All arms use the same eight-byte carrier; there is no byte bandwidth saving.", "Total active work and ns per visited cell are separate; early stalls and film or front losses qualify performance."],
+      "sources": ["operations/state-precision-experiment.md"]
+    }
+  ]
+}

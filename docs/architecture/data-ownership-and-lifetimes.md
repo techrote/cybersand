@@ -6,7 +6,7 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-10
 ---
 
 # Data ownership and lifetimes
@@ -26,6 +26,7 @@ but must not touch live scene-tree or Rapier objects.
 | `World::chunks_` and chunk cell arrays | World coordinator creates/reserves chunks; serial work or phase-exclusive jobs mutate cells | Until World/chunk destruction; construction capacity bounds growth |
 | Optional temperatures | Chunk owns optional SoA; owner prepares it, permitted rules/movement use it | Allocated on demand or reservation; counted tick allocations |
 | Activity/dirty metadata and job effects | Job-local observations, then coordinator merge after the phase barrier | Persistent chunk metadata and reusable bounded scratch; dirty bounds survive unsuccessful publication |
+| Delayed pair deadline | A phase-exclusive source activity block stores its earliest due tick; coordinator wakes it at healthy tick entry | One scalar per block; excluded blocks retain it, clear/replacement discards it |
 | Native snapshot slots | One serialized producer writes only an unleased slot | Shared exchange state outlives its facade while leases exist; no-slot/capacity failure retains dirty state |
 | Desktop world and sampled character | Godot pacing Thread after startup handoff | Worker lifetime; stopped/joined before destruction |
 | Live body nodes, RIDs and physics state | Main-thread Rapier bridge and PhysicsServer2D | Scene/bridge lifetime; never passed to cellular workers |
@@ -104,6 +105,10 @@ are not implemented. Do not infer them from Current snapshot backpressure.
 Lifetime fixtures are linked in the [validation ledger](../reference/validation-evidence.md);
 the rationale remains [ADR-003](../decisions/ADR-003-godot-bridge-and-immutable-snapshots.md).
 
+Sampled [granular support queries](../systems/granular-interaction-policy.md) read
+current cells and copied body occupancy only under this exclusive owner, outside
+native jobs. Their bounded neighbourhood adds no job view, cache or Rapier object.
+
 ## Failed-world ownership and recovery
 
 **Current:** failure quarantines the existing World under its same exclusive owner.
@@ -122,3 +127,33 @@ including while failed. Healthy tick entry applies transition wakes in the exist
 metadata pass; native pool jobs consume the resulting selection. No Godot or
 Rapier API is introduced in native workers. Failed ticks cannot apply a later
 region request; recovery abandons old activity before fresh setup.
+
+## Who owns opt-in physics observations?
+
+**Current:** [physics diagnostics](../operations/physics-characterisation.md)
+allocate fixed per-job histograms when constructing the World. Each job writes
+its exclusive counter table; the coordinator merges after existing barriers.
+Counters cannot mutate authoritative cells or alter random streams. Adapter
+snapshots copy stored cells and aggregates at the serialized owner boundary;
+they expose no mutable World storage. Overflow drops observations, never work.
+
+The test-only asynchronous worker records a fixed trace from its exclusive
+adapter. The main thread reads that trace only after joining the worker, and
+continues to own Rapier. Diagnostic variants require fresh fixture construction;
+they are not live unsynchronized descriptor edits or representation handoffs.
+
+
+## Issue #13 experiment checkpoint
+
+[Tower controls](../operations/experiment-tower.md) use a copied latest pending command on desktop. The existing exclusive worker constructs and installs the native candidate outside ticks. Web uses its synchronous owner. Copied lab context accompanies snapshots; no mutable tables are shared with jobs.
+
+
+## Opt-in transport profiles
+
+**Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
+owns schema, inheritance, units, immutable native tables and explicit owner restart.
+The Tower applies validated profiles through restart. Actual powder falls and
+lateral Water mass transport drive bounded optional mixing and grain pickup;
+horizontal sampling and cadence are separate fixed experiments.
+Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
+are unchanged. No unsynchronized live descriptor mutation is introduced.

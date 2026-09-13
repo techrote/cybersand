@@ -1,0 +1,73 @@
+{
+  "captured": "2026-09-09",
+  "method": "Read #cybersand-test-state from actual browser DOM via CUA; selected fields transcribed",
+  "browser": "Chrome/152.0.0.0 on Windows x86_64",
+  "compat": {
+    "url": "http://127.0.0.1:8091/?test=1&tickfault=1&rapier=1",
+    "workers": 1,
+    "tick_failure": {
+      "ok": true,
+      "controller": true,
+      "events": [
+        false,
+        true
+      ],
+      "failures": []
+    },
+    "interest_region": {
+      "ok": true,
+      "controller": true,
+      "excluded_ticks": 8,
+      "resumed_steps": 1,
+      "failures": []
+    },
+    "rapier": {
+      "ok": true,
+      "ticks": 600,
+      "contacts": 308087,
+      "displaced": 151,
+      "maximum_floor_y": 160.317276000977,
+      "failures": []
+    }
+  },
+  "threaded": {
+    "url": "http://127.0.0.1:8092/?test=1&tickfault=1&rapier=1&parity=1",
+    "workers": 6,
+    "tick_failure": {
+      "ok": true,
+      "controller": true,
+      "events": [
+        false,
+        true
+      ],
+      "failures": []
+    },
+    "interest_region": {
+      "ok": true,
+      "controller": true,
+      "excluded_ticks": 8,
+      "resumed_steps": 1,
+      "failures": []
+    },
+    "rapier": {
+      "ok": true,
+      "ticks": 600,
+      "contacts": 308087,
+      "displaced": 151,
+      "maximum_floor_y": 160.317276000977,
+      "failures": []
+    },
+    "parity": {
+      "passed": true,
+      "one_workers": 1,
+      "four_workers": 4,
+      "ticks": 120,
+      "hashes_equal": true,
+      "last_hash": "3d14dfe918d5a2be9d0dd4114ee43d68fac662ac604d384c3a1a7d325f671f92",
+      "moves": 98286,
+      "parallel_phases": 480,
+      "one_mean_ms": 4.21512533333333,
+      "four_mean_ms": 2.8050944
+    }
+  }
+}

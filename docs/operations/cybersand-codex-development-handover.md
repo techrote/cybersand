@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-10
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md]
 ---
 
@@ -64,3 +64,57 @@ now have independent gates; original historical hashes stay unchanged.
 [Publication evidence](../audits/2026-09-08-validation-reconciliation.md) records
 Linux native/sanitizer results and the rebuilt-runtime CI transition. Remaining
 Web CI/export identity work remains issue #3.
+
+## Physics measurement handoff, 2026-09-09
+
+Start with the [measured issue #9 report](../audits/2026-09-09-physics-characterisation.md)
+and [reproduction runbook](physics-characterisation.md). That dated baseline used
+`ab4851e9e6a3ee182aba1a31a8f66d135e87df3a` plus a recorded diagnostic delta,
+subsequently committed as `10e8153` on `codex/issue-9-physics-characterisation`.
+Density exchange, the former Sand-only player predicate and masked-source barrel
+feedback have separate baseline evidence. Issue #10 changes the first two under
+its versioned policy; barrel work remains #11. The local source checkpoint includes
+fixtures, reduced data and plots; generated runtimes/raw logs remain in the
+active development workspace. Do not treat the old published DLL as containing
+the new diagnostic API or close the issue by reusing historical acceptance.
+
+## Issue #10 handoff
+
+**Current:** Issue #9 baseline is committed at 10e8153. Player and exchange are separate focused changes, with fresh DLL builds and preserved intake artifact. Barrel feedback/bearing/ejection belongs to #11. See the [granular/player policy](../systems/granular-interaction-policy.md).
+
+Continue from `codex/issue-10-player-and-exchange`; support commit `1fba848`
+precedes the exchange/evidence commit. Read the
+[acceptance audit](../audits/2026-09-09-issue-10-granular-policy.md) before reusing
+local artifacts. Runtime publication manifests remain historical and intentionally
+do not attest the new uncommitted DLL or local exports.
+
+
+## Issue #13 experiment checkpoint
+
+Issue #13 develops on `codex/issue-13-experiment-tower` from verified `372bfb3`. Follow the [tower procedure](experiment-tower.md) and [dated audit](../audits/2026-09-09-issue-13-transport.md). Preserve the intentionally dirty DLL and rebuild before source-matched runtime evidence.
+
+
+## Opt-in transport profiles
+
+**Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
+owns schema, inheritance, units, immutable native tables and explicit owner restart.
+The Tower applies validated profiles through restart. Actual powder falls and
+lateral Water mass transport drive bounded optional mixing and grain pickup;
+horizontal sampling and cadence are separate fixed experiments.
+Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
+are unchanged. No unsynchronized live descriptor mutation is introduced.
+
+The subsequent [Water leveling follow-up](../audits/2026-09-10-water-leveling.md)
+implements faster lateral relaxation on `codex/water-sideways-leveling`. Water
+traces and optional erosion strength change; Mercury/powder controls remain exact.
+Profile hashes alone do not identify this solver revision. Coal's purple residue
+is existing Dust; chemistry and fire cadence remain unchanged.
+
+## Programme gate handoff, 2026-09-11
+
+Read [current G-C/G-L decisions](architecture-programme.md#g-c-staged-decision-2026-09-11)
+and [reconciliation identities](../audits/2026-09-11-programme-gate-reconciliation.md).
+Both research results are published on separate experiment branches; this active
+checkpoint changes documentation only. #17 subsequently completed P1/P2/P3; read the [G-P review](architecture-programme.md#g-p-staged-decision-2026-09-11)
+and [precision evidence](../audits/2026-09-11-issue-17-state-precision.md). Retain mass8
+and Water-specific delay4 as an experimental budget without inferring production migration. The current4-byte baseline remains pending G-final.

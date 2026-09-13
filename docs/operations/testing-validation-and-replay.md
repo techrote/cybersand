@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Executable test selection and future gates; dated results and save format live in separate references
 canonical-for: [test-inventory, test-selection, future-validation-gates]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-12
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md, ../reference/level-saves-and-replay.md]
 ---
 
@@ -101,3 +101,86 @@ cover negative/core/chunk boundaries, previously sleeping blocks, overlap/disjoi
 moves, unchanged/equivalent/coalesced regions, neighbor wake, custom straddling
 geometry, conserved Water/Sand, retained temperature, 1/4/4 state-hash equality,
 and event/no-event capacity failure during re-entry followed by clear.
+
+## Which checks support the measured physics baseline?
+
+**Current, 2026-09-09:** the [dated issue #9 report](../audits/2026-09-09-physics-characterisation.md)
+records 49 native tests and 19 Godot runners on a freshly rebuilt Windows adapter.
+The earlier 46/16 totals above remain the dated #1/#2 checkpoint. New tests cover
+bounded observer/worker parity, viscosity isolation, masked-source contact,
+stored Water under a body mask, invalid diagnostic reset, duplicate application
+and hard-floor controls. The asynchronous smoke runner is only 120 ticks by
+default; the separate evidence series uses five seeds and 1,800 completed ticks.
+
+Run [tools/physics/verify.py](../../tools/physics/verify.py) on the complete raw
+series to check conservation controls, completed budgets, floor censoring and
+matching-profile state/trajectory equality. See the
+[runbook](physics-characterisation.md) for experiment commands and bounds.
+Existing F01/F02, save, render ownership and meaningful conservation checks remain
+required. No trace here upgrades CYSD1 into full deterministic replay.
+
+## Granular interaction regression
+
+**Current:** `test_interaction_policy.gd` runs the shared native/fallback player,
+Mercury and powder/Water pair probe. Rebuild the adapter before execution.
+`test_interaction_async.gd` exercises the production desktop owner for standing,
+walking and excavation. Native tests cover all nine powders, support/packing,
+all powder and liquid pair classes, alternate paths, deadlines, sleep/re-entry,
+failure recovery, conservation and worker parity. Both actual Web profiles run
+the shared probe plus F01/F02 via `?test=1&interaction=1`; the fixture yields at
+native world construction/replacement/teardown to service browser pthreads.
+Use the [dated issue #10 audit](../audits/2026-09-09-issue-10-granular-policy.md)
+for exact passes and retained limits; source presence alone is not acceptance.
+
+
+## Issue #13 experiment checkpoint
+
+`test_experiment_tower.gd` checks shared recipe construction, safe landings, plugs, invalid-replacement preservation, exact reset and desktop owner single-step. `tools/physics/issue13.py` rebuilds fresh references. See [tower procedure](experiment-tower.md) and [dated issue #13 results](../audits/2026-09-09-issue-13-transport.md).
+
+`test_transport_profiles.gd` validates versioned resolution, bounds, provenance,
+round-trip and rejected replacement. `test_transport_probe.gd` runs the shared
+24-case profile/sampling probe on native Godot; Web's `?test=1&transport=1`
+runs the same probe plus actual controller failure/interest checks. Use
+`tools/physics/serve.py` for the local write-once result collector.
+`transport_matrix.py`, `transport_knobs.py`, `transport_permeability.py` and
+`transport_report.py` retain fixed inputs and separate corrected measurements
+from historical failures. Each case has a 180-second timeout. See the runbook
+for reuse/source-identity and depth sample-count qualifications.
+
+`tools/physics/water_leveling.py <raw-output>` rebuilds a fixed 24-case basin
+screen (two widths, three signed translations, mirrored releases, one/four
+workers). It records front arrival, column-mass spread, tick cost and exact mass.
+When an open Windows editor locks shadow DLLs, `tools/physics/isolated_godot.py
+<fresh-raw-output>` copies the project without its cache/tilde libraries and runs
+import plus all Godot fixtures there. Its manifest hashes the copied inputs;
+the original editor session and tilde libraries are left intact. Retain failed
+original imports separately. [Water follow-up](../audits/2026-09-10-water-leveling.md).
+
+
+## Opt-in transport profiles
+
+**Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
+owns schema, inheritance, units, immutable native tables and explicit owner restart.
+The Tower applies validated profiles through restart. Actual powder falls and
+lateral Water mass transport drive bounded optional mixing and grain pickup;
+horizontal sampling and cadence are separate fixed experiments.
+Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
+are unchanged. No unsynchronized live descriptor mutation is introduced.
+
+## Issue #19 Water Feel Lab validation
+
+**Current:** native tests cover policy range/refusal, mass3..8 arithmetic,
+mass4/6/8 correspondence, coherence0..12, exact conservation, repeat/worker
+parity and unchanged mass8/coherence12 state hash. Godot runners cover normalized
+selection surfaces/provenance, all 35 recipes, deterministic reset/actions,
+owner-boundary transaction/rejection, blind lifecycle, RG8 authority and eight
+presentation-model groups. The rendered-pixel runner must execute non-headless
+because headless scene success is not visual evidence.
+
+Actual Web acceptance requires exported compatibility and threaded builds served
+with cross-origin isolation, then
+`node tools/web/run_browser_probe.mjs <url> <profile> <output-directory>`.
+The opt-in URL is `?test=1&water=1`; normal URLs do not run the probe. Require
+`ok=true`, 70 scenario cases, 110 actions, zero failures, invalid/presentation
+preservation, and equal catalogue/default hashes across profiles. See the
+[dated result](../audits/2026-09-12-issue-19-water-feel-lab.md).

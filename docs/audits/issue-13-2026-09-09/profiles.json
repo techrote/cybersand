@@ -1,0 +1,936 @@
+{
+  "0-0": {
+    "hash": "1b27b4e934dc7560e6901eb09e634ed604c0111dcf26d5dac6b10885a3e5e268",
+    "profile": {
+      "families": {
+        "liquid": {
+          "cadence": 1,
+          "carrying": 0,
+          "erosion": 0,
+          "horizontal": 2,
+          "permeability": 1
+        },
+        "powder": {
+          "mixing": 0,
+          "packing": 8,
+          "pickup": 64
+        }
+      },
+      "materials": {
+        "33": {
+          "permeability": 30
+        }
+      },
+      "name": "Baseline",
+      "pairs": [],
+      "version": 1
+    }
+  },
+  "0-1": {
+    "hash": "63ec9773c4f17cefeaf327b440c94925ac5013f510f0ddbb18c6fdf77a65c5dc",
+    "profile": {
+      "families": {
+        "liquid": {
+          "cadence": 1,
+          "carrying": 0,
+          "erosion": 0,
+          "horizontal": 1,
+          "permeability": 1
+        },
+        "powder": {
+          "mixing": 0,
+          "packing": 8,
+          "pickup": 64
+        }
+      },
+      "materials": {
+        "33": {
+          "permeability": 30
+        }
+      },
+      "name": "Baseline sampled",
+      "pairs": [],
+      "version": 1
+    }
+  },
+  "1-0": {
+    "hash": "a4593c9c8632463d5b9100233809b530ef7043502bcd66444fa7930a422816e7",
+    "profile": {
+      "families": {
+        "liquid": {
+          "cadence": 1,
+          "carrying": 0,
+          "erosion": 0,
+          "horizontal": 2,
+          "permeability": 1
+        },
+        "powder": {
+          "mixing": 96,
+          "packing": 8,
+          "pickup": 64
+        }
+      },
+      "materials": {
+        "33": {
+          "permeability": 30
+        }
+      },
+      "name": "Gentle transport",
+      "pairs": [
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 2,
+          "values": {
+            "carrying": 255,
+            "erosion": 0
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 14,
+          "values": {
+            "carrying": 255,
+            "erosion": 0
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 29,
+          "values": {
+            "carrying": 255,
+            "erosion": 0
+          }
+        }
+      ],
+      "version": 1
+    }
+  },
+  "1-1": {
+    "hash": "7e27444b96476d93c38c89b18dfe58adb373050479a8d9cefb61fb514b41d4aa",
+    "profile": {
+      "families": {
+        "liquid": {
+          "cadence": 1,
+          "carrying": 0,
+          "erosion": 0,
+          "horizontal": 1,
+          "permeability": 1
+        },
+        "powder": {
+          "mixing": 96,
+          "packing": 8,
+          "pickup": 64
+        }
+      },
+      "materials": {
+        "33": {
+          "permeability": 30
+        }
+      },
+      "name": "Gentle transport sampled",
+      "pairs": [
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 2,
+          "values": {
+            "carrying": 255,
+            "erosion": 0
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 14,
+          "values": {
+            "carrying": 255,
+            "erosion": 0
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 29,
+          "values": {
+            "carrying": 255,
+            "erosion": 0
+          }
+        }
+      ],
+      "version": 1
+    }
+  },
+  "2-0": {
+    "hash": "57d8ed905b2ad52c6f1372560c4fafb9dad5a03135ca987dee05f6167428e079",
+    "profile": {
+      "families": {
+        "liquid": {
+          "cadence": 1,
+          "carrying": 0,
+          "erosion": 0,
+          "horizontal": 2,
+          "permeability": 1
+        },
+        "powder": {
+          "mixing": 96,
+          "packing": 8,
+          "pickup": 64
+        }
+      },
+      "materials": {
+        "33": {
+          "permeability": 30
+        }
+      },
+      "name": "Threshold erosion",
+      "pairs": [
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 2,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 14,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 29,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        }
+      ],
+      "version": 1
+    }
+  },
+  "2-1": {
+    "hash": "7c5a95fcdce31c36de80aa1286d8db8badd7c20e9ff69fb79efd7c568ca903d2",
+    "profile": {
+      "families": {
+        "liquid": {
+          "cadence": 1,
+          "carrying": 0,
+          "erosion": 0,
+          "horizontal": 1,
+          "permeability": 1
+        },
+        "powder": {
+          "mixing": 96,
+          "packing": 8,
+          "pickup": 64
+        }
+      },
+      "materials": {
+        "33": {
+          "permeability": 30
+        }
+      },
+      "name": "Threshold erosion sampled",
+      "pairs": [
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 2,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 14,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 29,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        }
+      ],
+      "version": 1
+    }
+  },
+  "cadence-4": {
+    "hash": "7fba7e910d810f945629346833372c153b28b86db24ddcb0980eade3f9686a34",
+    "profile": {
+      "families": {
+        "liquid": {
+          "cadence": 4,
+          "carrying": 0,
+          "erosion": 0,
+          "horizontal": 2,
+          "permeability": 1
+        },
+        "powder": {
+          "mixing": 96,
+          "packing": 8,
+          "pickup": 64
+        }
+      },
+      "materials": {
+        "33": {
+          "permeability": 30
+        }
+      },
+      "name": "User copy / cadence 4",
+      "pairs": [
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 2,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 14,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 29,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        }
+      ],
+      "version": 1
+    }
+  },
+  "cadence-60": {
+    "hash": "bcd4ec114c18bb6c8af63bc29a6b4cdacb031be2608c651597258b9fa94657bf",
+    "profile": {
+      "families": {
+        "liquid": {
+          "cadence": 60,
+          "carrying": 0,
+          "erosion": 0,
+          "horizontal": 2,
+          "permeability": 1
+        },
+        "powder": {
+          "mixing": 96,
+          "packing": 8,
+          "pickup": 64
+        }
+      },
+      "materials": {
+        "33": {
+          "permeability": 30
+        }
+      },
+      "name": "User copy / cadence 60",
+      "pairs": [
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 2,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 14,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 29,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        }
+      ],
+      "version": 1
+    }
+  },
+  "carrying-0": {
+    "hash": "b3aa47ac3f0bb7a9d433e8fb8c8a093cc7c63fd9386bd340d794050a77f67ee8",
+    "profile": {
+      "families": {
+        "liquid": {
+          "cadence": 1,
+          "carrying": 0,
+          "erosion": 0,
+          "horizontal": 2,
+          "permeability": 1
+        },
+        "powder": {
+          "mixing": 96,
+          "packing": 8,
+          "pickup": 64
+        }
+      },
+      "materials": {
+        "33": {
+          "permeability": 30
+        }
+      },
+      "name": "User copy / carrying 0",
+      "pairs": [
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 2,
+          "values": {
+            "carrying": 0,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 14,
+          "values": {
+            "carrying": 0,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 29,
+          "values": {
+            "carrying": 0,
+            "erosion": 1
+          }
+        }
+      ],
+      "version": 1
+    }
+  },
+  "carrying-64": {
+    "hash": "4f9bd8c3d891f9775b1ea29db257862a2b1496cc8eccb9d775bcbb69df796443",
+    "profile": {
+      "families": {
+        "liquid": {
+          "cadence": 1,
+          "carrying": 0,
+          "erosion": 0,
+          "horizontal": 2,
+          "permeability": 1
+        },
+        "powder": {
+          "mixing": 96,
+          "packing": 8,
+          "pickup": 64
+        }
+      },
+      "materials": {
+        "33": {
+          "permeability": 30
+        }
+      },
+      "name": "User copy / carrying 64",
+      "pairs": [
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 2,
+          "values": {
+            "carrying": 64,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 14,
+          "values": {
+            "carrying": 64,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 29,
+          "values": {
+            "carrying": 64,
+            "erosion": 1
+          }
+        }
+      ],
+      "version": 1
+    }
+  },
+  "mixing-0": {
+    "hash": "2d237aa3cceff1a3f973b238cb5242542324791abeb12588d0448dd96205c221",
+    "profile": {
+      "families": {
+        "liquid": {
+          "cadence": 1,
+          "carrying": 0,
+          "erosion": 0,
+          "horizontal": 2,
+          "permeability": 1
+        },
+        "powder": {
+          "mixing": 0,
+          "packing": 8,
+          "pickup": 64
+        }
+      },
+      "materials": {
+        "33": {
+          "permeability": 30
+        }
+      },
+      "name": "User copy / mixing 0",
+      "pairs": [
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 2,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 14,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 29,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        }
+      ],
+      "version": 1
+    }
+  },
+  "mixing-255": {
+    "hash": "3025000e219f510cd1611fc9e4be4408845cb8e8a7baab196f6e07e6b118bd73",
+    "profile": {
+      "families": {
+        "liquid": {
+          "cadence": 1,
+          "carrying": 0,
+          "erosion": 0,
+          "horizontal": 2,
+          "permeability": 1
+        },
+        "powder": {
+          "mixing": 255,
+          "packing": 8,
+          "pickup": 64
+        }
+      },
+      "materials": {
+        "33": {
+          "permeability": 30
+        }
+      },
+      "name": "User copy / mixing 255",
+      "pairs": [
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 2,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 14,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 29,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        }
+      ],
+      "version": 1
+    }
+  },
+  "packing-0": {
+    "hash": "0b1a04f45554c6365ebe6678c2f2a2eea4a12d4cce8249e6a5d9cf3836f014bd",
+    "profile": {
+      "families": {
+        "liquid": {
+          "cadence": 1,
+          "carrying": 0,
+          "erosion": 0,
+          "horizontal": 2,
+          "permeability": 1
+        },
+        "powder": {
+          "mixing": 96,
+          "packing": 0,
+          "pickup": 64
+        }
+      },
+      "materials": {
+        "33": {
+          "permeability": 30
+        }
+      },
+      "name": "User copy / packing 0",
+      "pairs": [
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 2,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 14,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 29,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        }
+      ],
+      "version": 1
+    }
+  },
+  "packing-32": {
+    "hash": "d800f3e0ef1d8a90fe15f0e7d8d5233a5106547f58ddb5e907c9d161b4505ee8",
+    "profile": {
+      "families": {
+        "liquid": {
+          "cadence": 1,
+          "carrying": 0,
+          "erosion": 0,
+          "horizontal": 2,
+          "permeability": 1
+        },
+        "powder": {
+          "mixing": 96,
+          "packing": 32,
+          "pickup": 64
+        }
+      },
+      "materials": {
+        "33": {
+          "permeability": 30
+        }
+      },
+      "name": "User copy / packing 32",
+      "pairs": [
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 2,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 14,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 29,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        }
+      ],
+      "version": 1
+    }
+  },
+  "permeability-1": {
+    "hash": "bc0ee4c8f492fdef85447bb9c2106694493a71c4c411cfa74590b6601b285fde",
+    "profile": {
+      "families": {
+        "liquid": {
+          "cadence": 1,
+          "carrying": 0,
+          "erosion": 0,
+          "horizontal": 2,
+          "permeability": 1
+        },
+        "powder": {
+          "mixing": 96,
+          "packing": 8,
+          "pickup": 64
+        }
+      },
+      "materials": {
+        "33": {
+          "permeability": 1
+        }
+      },
+      "name": "User copy / permeability 1",
+      "pairs": [
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 2,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 14,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 29,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        }
+      ],
+      "version": 1
+    }
+  },
+  "permeability-60": {
+    "hash": "aeeec391ac6fab657b3df248a73d1a4a4eebc6d09a50961d7eee1b412a8068b6",
+    "profile": {
+      "families": {
+        "liquid": {
+          "cadence": 1,
+          "carrying": 0,
+          "erosion": 0,
+          "horizontal": 2,
+          "permeability": 1
+        },
+        "powder": {
+          "mixing": 96,
+          "packing": 8,
+          "pickup": 64
+        }
+      },
+      "materials": {
+        "33": {
+          "permeability": 60
+        }
+      },
+      "name": "User copy / permeability 60",
+      "pairs": [
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 2,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 14,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 29,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        }
+      ],
+      "version": 1
+    }
+  },
+  "pickup-0": {
+    "hash": "c08dee6f0d77436b66fe717b232fb04193b31d79c012303e9912c18438dcbc69",
+    "profile": {
+      "families": {
+        "liquid": {
+          "cadence": 1,
+          "carrying": 0,
+          "erosion": 0,
+          "horizontal": 2,
+          "permeability": 1
+        },
+        "powder": {
+          "mixing": 96,
+          "packing": 8,
+          "pickup": 0
+        }
+      },
+      "materials": {
+        "33": {
+          "permeability": 30
+        }
+      },
+      "name": "User copy / pickup 0",
+      "pairs": [
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 2,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 14,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 29,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        }
+      ],
+      "version": 1
+    }
+  },
+  "pickup-255": {
+    "hash": "8d9797ca41869633c1444a0db29b046225da948e474293acfcc1a42b749299e8",
+    "profile": {
+      "families": {
+        "liquid": {
+          "cadence": 1,
+          "carrying": 0,
+          "erosion": 0,
+          "horizontal": 2,
+          "permeability": 1
+        },
+        "powder": {
+          "mixing": 96,
+          "packing": 8,
+          "pickup": 255
+        }
+      },
+      "materials": {
+        "33": {
+          "permeability": 30
+        }
+      },
+      "name": "User copy / pickup 255",
+      "pairs": [
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 2,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 14,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        },
+        {
+          "direction": "directed",
+          "source": 3,
+          "target": 29,
+          "values": {
+            "carrying": 255,
+            "erosion": 1
+          }
+        }
+      ],
+      "version": 1
+    }
+  }
+}

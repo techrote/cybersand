@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-12
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md]
 ---
 
@@ -19,6 +19,7 @@ certifies a later binary, another platform or complete replay.
 
 | Evidence ID/date | Executed check and outcome | Limits and record |
 |---|---|---|
+| E-PHYS, 2026-09-09 | Fresh Windows adapter: 49 native tests, 19 Godot runners; deterministic P1–P4 matrices, five-seed desktop async and 25 fixtures per real Web profile | [Issue #9 measured report](../audits/2026-09-09-physics-characterisation.md) separates symptoms, controls, long creep, hashes and gaps. Local diagnostic artifacts do not update published Linux/Windows runtime provenance. |
 | E-PUBLISH, 2026-09-08 | Pushed source passes Linux 46-test native, ASan/UBSan and TSan runs; rebuilt Linux Godot passes 16 runners plus profiles/import/scene; both extension builds pass | [Publication reconciliation](../audits/2026-09-08-validation-reconciliation.md) records exact revisions, workflows and limits, plus separate current/M11 gates |
 | E-F02, 2026-09-08 | 46 native regressions; rebuilt Windows adapter/owners and 16 Godot runners passed; paired Web exports exercised | [Issue #2 and combined record](../audits/2026-09-08-issue-2-interest-regions.md) identifies browser results, worker/profile and artifact scope; historical failures remain preserved |
 | E-F01, 2026-09-08 | 42 native regressions; rebuilt Windows adapter and desktop/Web owner checks; 16 Godot runners passed | [Issue #1 dated record](../audits/2026-09-08-issue-1-failed-ticks.md); browser and combined region acceptance recorded separately |
@@ -88,3 +89,82 @@ New results belong in a new evidence record with command, timeout, date,
 platform/profile, source identity, input/worker configuration, artifact hashes,
 exit status and explicit limits. Historical records are never rewritten to
 make a later checkpoint look validated.
+
+## Issue #10 player checkpoint, 2026-09-09
+
+The intermediate support commit passed 50 native tests and the shared Godot
+native/fallback probe for all nine powders, landing/walking, excavation, loose
+Dust, bounded enclosure and interior hard cells. This dated support result is
+superseded for current acceptance by the exchange checkpoint below.
+
+Intermediate support validation: all 20 Godot runners pass (logs
+`C:/kybersand/validation/local/20260909-200717/`); docs and retained M11 checks
+pass. Repository publication identity reports 14 expected source/artifact drift
+errors; published runtime manifests stay unchanged. Raw checker/retrieval results
+are under `C:/kybersand/validation/local/2026-09-09-issue-10/support-*`.
+
+## Issue #10 exchange acceptance, 2026-09-09
+
+The [dated audit](../audits/2026-09-09-issue-10-granular-policy.md) records 52 native
+tests, 21 Godot runners, 1,070 native matrix runs, 257 sampled-player runs,
+production desktop owner checks and real compatibility/threaded Web execution.
+Version 1 selects the measured 30-fold Mercury slowdown and 8/9 downward packing.
+Exact within-platform worker/repeat comparison, explicit material/reaction
+accounting and retained Water regressions pass in that scope. Current published
+runtime provenance, Linux/sanitizers and issue #11 barrel behavior remain separate
+limits; the preserved historical manifests do not attest these new artifacts.
+
+
+## Issue #13 experiment checkpoint
+
+The [issue #13 audit](../audits/2026-09-09-issue-13-transport.md) records the four
+transport checkpoints, frozen Baseline/Mercury samples, profile/control screens,
+actual desktop and both native Web runs, walkthrough captures and corrected
+sampling measurements. Native/Godot, real Web, visual and performance evidence
+are distinct gates. The failed sustained-input ledger and initial depth query
+remain recorded; publication provenance still fails independently.
+
+## Water leveling, 2026-09-10
+
+[The dated follow-up](../audits/2026-09-10-water-leveling.md) records 24 old/new
+closed-basin cases per implementation, 55 native tests, 24 isolated Godot fixtures,
+30 retained non-Water reference cases and 72 native/real-Web transport cases.
+Its retained editor-import failure is an environment result; the rebuilt isolated
+project passed. Faster leveling is fixture-specific, not universal instant flow.
+
+## Programme gate reconciliation, 2026-09-11
+
+The [reconciliation audit](../audits/2026-09-11-programme-gate-reconciliation.md)
+verifies #16 result/timing source identities, retained binaries and reduction
+hashes without rerunning the campaign. Its 2324 timing processes are reused
+evidence, not new execution. Docs/M11 intake pass; repository validation retains
+16 publication/provenance/LFS failures. No current runtime release is claimed.
+
+Issue15 acceptance reuses its352 behavior/224 timing processes and55 unchanged-input
+native regressions. All576 raw output hashes and both executable/source manifests
+were verified, with no new physics execution. [Coverage and limits](../audits/2026-09-11-issue-15-coverage.md)
+support G-C completion and bounded P admission;85/112 cost flags remain evidence,
+not an all-green performance or migration claim.
+
+## Issue17 fixed-carrier state precision, 2026-09-11
+
+[Completed native Windows evidence](../audits/2026-09-11-issue-17-state-precision.md):
+1328 exact behavior processes,392 timed processes,36 extended per-tick controls,
+all eight same-phase concurrency configurations, and55 native tests each for
+unmodified source/fixed-carrier mass8. Delay4 is Water-specific semantically exact;
+G-P retains mass8 as reference. Shared-desktop cost limits and inherited provenance
+failures remain explicit. No fresh Web/Linux/Godot or production migration acceptance.
+
+## Issue #19 Water Feel Lab, 2026-09-12
+
+The [dated completion record](../audits/2026-09-12-issue-19-water-feel-lab.md)
+records 61 native passes, 29 Windows Godot runners, actual OpenGL Water coverage/
+orientation pixels and real Chrome compatibility/threaded probes. Each browser
+profile built from the recorded source passed 70 scenario cases, 110 actions,
+invalid-policy preservation and presentation-authority preservation with matching
+catalogue/default hashes. A stale compatibility WASM failure is retained separately
+and was resolved by rebuilding, not by suppressing the case.
+
+This evidence establishes a technically safe, reproducible H-ready apparatus.
+It is not a human preference study, a production precision/packing selection,
+#18 admission, #20 admission, representative GPU performance result or G-final.

@@ -1,4 +1,5 @@
 #include "cybersand/world.hpp"
+#include "cybersand/precision_storage.hpp"
 
 #include "cybersand/material_rules.hpp"
 #include "cybersand/material_appearance.hpp"
@@ -204,25 +205,10 @@ private:
 }  // namespace
 
 struct World::Chunk {
-    struct Cell {
-        Material material = Material::Empty;
-        std::uint8_t state_a = 0;
-        std::uint8_t state_b = 0;
-        std::uint8_t updated_epoch = 0;
-
-        [[nodiscard]] static constexpr Cell for_material(Material value) noexcept {
-            const auto& definition = material_definition(value);
-            return {
-                value,
-                definition.initial_state_a,
-                definition.initial_state_b,
-                0,
-            };
-        }
-    };
-    static_assert(sizeof(Cell) == 4, "hot cell layout must remain four bytes");
+    using Cell = detail::PrecisionStorage;
 
     struct ActivityBlock {
+        std::uint64_t next_interaction_tick = 0;
         std::uint32_t quiet_ticks = 0;
         bool active = false;
         bool changed_this_tick = false;
@@ -275,11 +261,13 @@ struct World::JobEffects {
     std::size_t chunk_count = 0;
     bool overflow = false;
     bool hard_surface_changed = false;
+    PhysicsJobHistogram* physics = nullptr;
 
     void reset() noexcept {
         chunk_count = 0;
         overflow = false;
         hard_surface_changed = false;
+        if (physics != nullptr) *physics = {};
     }
 
     void record(const Address& address_value, std::int64_t non_empty_delta = 0) noexcept {
@@ -314,14 +302,19 @@ struct World::ParallelState {
         JobEffects effects;
     };
 
-    ParallelState(std::uint32_t worker_count, std::size_t capacity)
+    ParallelState(std::uint32_t worker_count, std::size_t capacity, bool diagnostics)
         : results(capacity) {
+        if (diagnostics) {
+            physics.resize(capacity);
+            for (std::size_t i = 0; i < capacity; ++i) results[i].effects.physics = &physics[i];
+        }
         phase_job_indices.reserve(capacity);
         if (worker_count > 1) pool = std::make_unique<PersistentWorkerPool>(worker_count);
     }
 
     std::unique_ptr<PersistentWorkerPool> pool;
     std::vector<JobResult> results;
+    std::vector<PhysicsJobHistogram> physics;
     std::vector<std::size_t> phase_job_indices;
 };
 
@@ -345,6 +338,25 @@ struct World::TransientObstacleState {
 World::World(WorldConfig config)
     : config_(config),
       scheduler_geometry_(config.scheduling_core_size, config.maximum_rule_radius) {
+    config_.water_experiment_policy.validate();
+    config.transport_policy.validate();
+    if(config.transport_policy.configured)for(const auto& p:config.transport_policy.pairs) {
+        flow_mixing_enabled_ = flow_mixing_enabled_ || p.mixing!=0;
+        flow_carrying_enabled_ = flow_carrying_enabled_ || p.carrying!=0;
+    }
+    if (config.interaction_policy.downward_support_cells < 1 ||
+        config.interaction_policy.downward_support_cells > 9 ||
+        config.interaction_policy.side_support_cells < 1 ||
+        config.interaction_policy.side_support_cells > 9 ||
+        config.interaction_policy.mercury_exchange_period < 1 ||
+        config.interaction_policy.mercury_exchange_period > 60) {
+        throw std::invalid_argument("interaction policy: support 1..9, Mercury period 1..60");
+    }
+    if (config.physics_diagnostics.mercury_viscosity < -1 ||
+        config.physics_diagnostics.mercury_viscosity > 255) {
+        throw std::invalid_argument("diagnostic Mercury viscosity must be -1 or 0..255");
+    }
+    if (config.physics_diagnostics.enabled) physics_totals_ = std::make_unique<PhysicsTotals>();
     if (config_.chunk_size < 8 || config_.chunk_size > 1'024) {
         throw std::invalid_argument("chunk_size must be between 8 and 1024");
     }
@@ -411,7 +423,8 @@ World::World(WorldConfig config)
     }
     if (config_.backend == SimulationBackend::PhasedInPlace) {
         parallel_ = std::make_unique<ParallelState>(config_.worker_threads,
-                                                    config_.active_core_capacity);
+                                                    config_.active_core_capacity,
+                                                    config_.physics_diagnostics.enabled);
     }
     transient_obstacles_ = std::make_unique<TransientObstacleState>();
 }
@@ -419,6 +432,17 @@ World::World(WorldConfig config)
 World::~World() = default;
 World::World(World&&) noexcept = default;
 World& World::operator=(World&&) noexcept = default;
+
+const PhysicsTotals* World::physics_diagnostics() const noexcept { return physics_totals_.get(); }
+
+void World::record_physics(PhysicsEvent kind, Material source, Material target,
+    std::int64_t dx, std::int64_t dy, JobEffects* effects, std::uint64_t count) noexcept {
+    if (physics_totals_ == nullptr) return;
+    const auto key = physics_event_key(kind, static_cast<std::uint8_t>(source),
+                                     static_cast<std::uint8_t>(target), dx, dy);
+    if (effects != nullptr) effects->physics->add(key, count);
+    else physics_totals_->add(key, count);
+}
 
 RenderPublishResult RenderSnapshotExchange::publish(World& world) {
     world.require_healthy();
@@ -517,9 +541,11 @@ RenderPublishResult RenderSnapshotExchange::publish(World& world) {
                 const auto source_x = static_cast<std::size_t>(chunk->dirty_min_x) + column;
                 const auto& cell = chunk->cells[
                     source_y * static_cast<std::size_t>(world.config_.chunk_size) + source_x];
-                output[column * 2U] = static_cast<std::uint8_t>(cell.material);
+                output[column * 2U] = static_cast<std::uint8_t>(cell.material_value());
                 output[column * 2U + 1U] =
-                    project_visual_state(cell.material, cell.state_a, cell.state_b);
+                    project_visual_state(cell.material_value(), cell.state_a_value(),
+                                         cell.state_b_value(),
+                                         world.config_.water_experiment_policy);
             }
         }
         byte_offset += height * stride;
@@ -598,31 +624,55 @@ Material World::get(std::int64_t x, std::int64_t y) const noexcept {
     return stored_material(x, y);
 }
 
+bool World::granular_support_at(std::int64_t x, std::int64_t y, bool side) const noexcept {
+    const auto stable = [this](std::int64_t sx, std::int64_t sy) {
+        const auto material = get(sx, sy);
+        if (MaterialRules::is_hard_surface(material)) return true;
+        if (!MaterialRules::supports_granular_load(material)) return false;
+        const auto a = address(sx, sy);
+        const auto* chunk = find_chunk(a.chunk);
+        // A transported/newly transformed grain cannot immediately bear a
+        // sampled character. This reads the most recently completed tick.
+        return chunk && (tick_index_ == 0 ||
+            chunk->cells[a.index].epoch_value() != update_epoch_);
+    };
+    if (!MaterialRules::supports_granular_load(get(x, y)) || !stable(x, y)) return false;
+    int below = 0;
+    for (int dy = 0; dy <= 2; ++dy)
+        for (int dx = -1; dx <= 1; ++dx) below += stable(x + dx, y + dy);
+    if (below < config_.interaction_policy.downward_support_cells) return false;
+    if (!side) return true;
+    int around = 0;
+    for (int dy = -1; dy <= 1; ++dy)
+        for (int dx = -1; dx <= 1; ++dx) around += stable(x + dx, y + dy);
+    return around >= config_.interaction_policy.side_support_cells;
+}
+
 Material World::stored_material(std::int64_t x, std::int64_t y) const noexcept {
     const auto target = address(x, y);
     const auto* chunk = find_chunk(target.chunk);
-    return chunk == nullptr ? Material::Empty : chunk->cells[target.index].material;
+    return chunk == nullptr ? Material::Empty : chunk->cells[target.index].material_value();
 }
 
-std::uint8_t World::stored_state_a(std::int64_t x, std::int64_t y) const noexcept {
+std::uint16_t World::stored_state_a(std::int64_t x, std::int64_t y) const noexcept {
     const auto target = address(x, y);
     const auto* chunk = find_chunk(target.chunk);
-    return chunk == nullptr ? 0 : chunk->cells[target.index].state_a;
+    return chunk == nullptr ? 0 : chunk->cells[target.index].state_a_value();
 }
 
 std::uint8_t World::stored_state_b(std::int64_t x, std::int64_t y) const noexcept {
     const auto target = address(x, y);
     const auto* chunk = find_chunk(target.chunk);
-    return chunk == nullptr ? 0 : chunk->cells[target.index].state_b;
+    return chunk == nullptr ? 0 : chunk->cells[target.index].state_b_value();
 }
 
-std::uint8_t World::liquid_mass(std::int64_t x, std::int64_t y) const noexcept {
+std::uint16_t World::liquid_mass(std::int64_t x, std::int64_t y) const noexcept {
     if (transient_obstacle_at(x, y) != 0U) return 0;
     const auto target = address(x, y);
     const auto* chunk = find_chunk(target.chunk);
     if (chunk == nullptr) return 0;
     const auto& cell = chunk->cells[target.index];
-    return cell.material == Material::Water ? cell.state_a : 0;
+    return cell.material_value() == Material::Water ? cell.state_a_value() : 0;
 }
 
 std::int16_t World::temperature(std::int64_t x, std::int64_t y) const noexcept {
@@ -634,18 +684,18 @@ std::int16_t World::temperature(std::int64_t x, std::int64_t y) const noexcept {
                : (*chunk->temperatures)[target.index];
 }
 
-std::uint8_t World::state_a(std::int64_t x, std::int64_t y) const noexcept {
+std::uint16_t World::state_a(std::int64_t x, std::int64_t y) const noexcept {
     if (transient_obstacle_at(x, y) != 0U) return 0;
     const auto target = address(x, y);
     const auto* chunk = find_chunk(target.chunk);
-    return chunk == nullptr ? 0 : chunk->cells[target.index].state_a;
+    return chunk == nullptr ? 0 : chunk->cells[target.index].state_a_value();
 }
 
 std::uint8_t World::state_b(std::int64_t x, std::int64_t y) const noexcept {
     if (transient_obstacle_at(x, y) != 0U) return 0;
     const auto target = address(x, y);
     const auto* chunk = find_chunk(target.chunk);
-    return chunk == nullptr ? 0 : chunk->cells[target.index].state_b;
+    return chunk == nullptr ? 0 : chunk->cells[target.index].state_b_value();
 }
 
 std::uint8_t World::deterministic_random(std::int64_t x, std::int64_t y,
@@ -658,7 +708,7 @@ std::uint8_t World::deterministic_random(std::int64_t x, std::int64_t y,
         0xffU);
 }
 
-bool World::rule_is_active(Material material, std::uint8_t state_a_value,
+bool World::rule_is_active(Material material, std::uint16_t state_a_value,
                            std::uint8_t state_b_value) const noexcept {
     const auto& definition = MaterialRules::descriptor(material);
     if (!definition.current_rule_available) return false;
@@ -701,8 +751,14 @@ bool World::rule_is_active(Material material, std::uint8_t state_a_value,
 }
 
 bool World::write_cell(std::int64_t x, std::int64_t y, Material material,
-                       std::uint8_t state_a_value, std::uint8_t state_b_value,
+                       std::uint16_t state_a_value, std::uint8_t state_b_value,
                        JobEffects* effects) {
+    if (material == Material::Water &&
+        (state_a_value == 0U ||
+         state_a_value > config_.water_experiment_policy.maximum() ||
+         state_b_value > config_.water_experiment_policy.coherence_ticks())) {
+        throw std::logic_error("internal Water state outside experiment policy");
+    }
     if (material != Material::Empty && transient_obstacle_at(x, y) != 0U) return false;
     const auto target = address(x, y);
     auto* chunk = find_chunk(target.chunk);
@@ -714,11 +770,13 @@ bool World::write_cell(std::int64_t x, std::int64_t y, Material material,
         chunk = &ensure_chunk(target.chunk);
     }
     auto& cell = chunk->cells[target.index];
-    if (cell.material == material && cell.state_a == state_a_value &&
-        cell.state_b == state_b_value) {
+    if (cell.material_value() == material && cell.state_a_value() == state_a_value &&
+        cell.state_b_value() == state_b_value) {
         return false;
     }
-    const auto before = cell.material;
+    const auto before = cell.material_value();
+    if (tick_in_progress_ && before != material)
+        record_physics(PhysicsEvent::Conversion, before, material, 0, 0, effects);
     const bool hard_surface_changed =
         MaterialRules::is_hard_surface(before) != MaterialRules::is_hard_surface(material);
     const auto delta = before == Material::Empty && material != Material::Empty
@@ -727,9 +785,9 @@ bool World::write_cell(std::int64_t x, std::int64_t y, Material material,
                            ? std::int64_t{-1}
                            : std::int64_t{0};
     cell = Chunk::Cell::for_material(material);
-    cell.state_a = state_a_value;
-    cell.state_b = state_b_value;
-    cell.updated_epoch = update_epoch_;
+    cell.set_state_a(state_a_value);
+    cell.set_state_b(state_b_value);
+    cell.set_epoch(update_epoch_);
 
     if (effects != nullptr) {
         effects->record(target, delta);
@@ -754,6 +812,7 @@ void World::mark_cell_dirty(Chunk& chunk, std::int32_t local_x, std::int32_t loc
             static_cast<std::size_t>(chunk.activity_blocks_per_axis) +
         static_cast<std::size_t>(block_x);
     auto& block = chunk.activity_blocks[block_index];
+    if (!block.active) record_physics(PhysicsEvent::BlockWake, Material::Empty, Material::Empty, 0, 0, nullptr);
     block.active = true;
     block.changed_this_tick = true;
     block.quiet_ticks = 0;
@@ -806,6 +865,7 @@ void World::wake_cell_neighborhood(std::int64_t x, std::int64_t y) {
                     static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
                 static_cast<std::size_t>(neighbour_block_x);
             auto& block = chunk->activity_blocks[block_index];
+            if (!block.active) record_physics(PhysicsEvent::BlockWake, Material::Empty, Material::Empty, 0, 0, nullptr);
             block.active = true;
             block.quiet_ticks = 0;
             chunk->active = true;
@@ -827,10 +887,22 @@ void World::keep_cell_active(std::int64_t x, std::int64_t y) noexcept {
     // Temporal fidelity lanes may intentionally perform no authoritative write
     // for several ticks. Keep their source block scheduled without creating a
     // dirty render patch or pretending the cell changed.
+    if (!block.active) record_physics(PhysicsEvent::BlockWake, Material::Empty, Material::Empty, 0, 0, nullptr);
     block.active = true;
     block.changed_this_tick = true;
     block.quiet_ticks = 0;
     chunk->active = true;
+}
+
+void World::schedule_interaction_wake(std::int64_t x, std::int64_t y, std::uint64_t due) noexcept {
+    const auto a = address(x,y);
+    auto* chunk = find_chunk(a.chunk);
+    if (!chunk) return;
+    const auto index = static_cast<std::size_t>(a.local_y / config_.activity_block_size) *
+        static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
+        static_cast<std::size_t>(a.local_x / config_.activity_block_size);
+    auto& next = chunk->activity_blocks[index].next_interaction_tick;
+    if (next == 0 || due < next) next = due;
 }
 
 void World::set(std::int64_t x, std::int64_t y, Material material) {
@@ -844,10 +916,10 @@ void World::set(std::int64_t x, std::int64_t y, Material material) {
         return;
     }
     auto& chunk = ensure_chunk(target.chunk);
-    if (chunk.cells[target.index].material == material) {
+    if (chunk.cells[target.index].material_value() == material) {
         return;
     }
-    const auto previous_material = chunk.cells[target.index].material;
+    const auto previous_material = chunk.cells[target.index].material_value();
     const bool hard_surface_changed =
         MaterialRules::is_hard_surface(previous_material) !=
         MaterialRules::is_hard_surface(material);
@@ -857,7 +929,10 @@ void World::set(std::int64_t x, std::int64_t y, Material material) {
         --chunk.non_empty_cell_count;
     }
     chunk.cells[target.index] = Chunk::Cell::for_material(material);
-    chunk.cells[target.index].updated_epoch = update_epoch_;
+    if (material == Material::Water) {
+        chunk.cells[target.index].set_state_a(config_.water_experiment_policy.maximum());
+    }
+    chunk.cells[target.index].set_epoch(update_epoch_);
     chunk.changed_this_tick = true;
     mark_cell_dirty(chunk, target.local_x, target.local_y);
     wake_cell_neighborhood(x, y);
@@ -865,13 +940,23 @@ void World::set(std::int64_t x, std::int64_t y, Material material) {
 }
 
 bool World::set_cell_state(std::int64_t x, std::int64_t y, Material material,
-                           std::uint8_t state_a_value,
+                           std::uint16_t state_a_value,
                            std::uint8_t state_b_value) {
+    if (material == Material::Water &&
+        (state_a_value > config_.water_experiment_policy.maximum() ||
+         state_b_value > config_.water_experiment_policy.coherence_ticks()))
+        throw std::invalid_argument("experimental Water state out of domain");
+    if (material != Material::Water && state_a_value > 255)
+        throw std::invalid_argument("non-Water byte state out of domain");
     if (tick_failed_) return false;
     if (!valid_material(static_cast<std::uint16_t>(material))) {
         throw std::invalid_argument("invalid material identifier");
     }
     if (material != Material::Empty && transient_obstacle_at(x, y) != 0U) return false;
+    if (material == Material::Water && state_a_value == 0U) {
+        if (find_chunk(address(x, y).chunk) == nullptr) return false;
+        return write_cell(x, y, Material::Empty, 0U, 0U, nullptr);
+    }
     return write_cell(x, y, material, state_a_value, state_b_value, nullptr);
 }
 
@@ -1168,6 +1253,7 @@ void World::apply_pending_explosions(TickStats& stats) {
 }
 
 void World::clear() {
+    if (physics_totals_ != nullptr) *physics_totals_ = {};
     if (tick_in_progress_) throw std::logic_error("cannot clear during a world tick");
     tick_failed_ = false;
     clear_transient_obstacles();
@@ -1193,7 +1279,7 @@ std::int32_t World::deterministic_direction(std::int64_t x, std::int64_t y) cons
 }
 
 void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_x, std::int64_t to_y,
-                      bool swap, JobEffects* effects) {
+                      bool swap, JobEffects* effects, PhysicsEvent swap_event) {
     const auto source_address = address(from_x, from_y);
     const auto destination_address = address(to_x, to_y);
     auto* source_pointer = effects == nullptr ? &ensure_chunk(source_address.chunk)
@@ -1208,8 +1294,8 @@ void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_
 
     const auto source_cell = source.cells[source_address.index];
     const auto destination_cell = destination.cells[destination_address.index];
-    const auto source_material = source_cell.material;
-    const auto destination_material = destination_cell.material;
+    const auto source_material = source_cell.material_value();
+    const auto destination_material = destination_cell.material_value();
     const auto source_temperature =
         source.temperatures == nullptr ? config_.ambient_temperature
                                        : (*source.temperatures)[source_address.index];
@@ -1248,10 +1334,13 @@ void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_
     }
 
     destination.cells[destination_address.index] = source_cell;
-    destination.cells[destination_address.index].updated_epoch = update_epoch_;
+    record_physics(!tick_in_progress_ ? PhysicsEvent::BodyDisplacement :
+                   swap ? swap_event : PhysicsEvent::EmptyMove,
+                   source_material, destination_material, to_x - from_x, to_y - from_y, effects);
+    destination.cells[destination_address.index].set_epoch(update_epoch_);
     source.cells[source_address.index] =
         swap ? destination_cell : Chunk::Cell::for_material(Material::Empty);
-    source.cells[source_address.index].updated_epoch = update_epoch_;
+    source.cells[source_address.index].set_epoch(update_epoch_);
 
     const auto write_temperature = [this](Chunk& chunk, std::size_t index, std::int16_t value) {
         if (chunk.temperatures == nullptr && value != config_.ambient_temperature) {
@@ -1278,10 +1367,40 @@ void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_
     }
 }
 
+bool World::exchange_permitted(Material source, Material target, std::int64_t x,
+    std::int64_t y, std::int64_t target_x, std::int64_t target_y) {
+    const bool powder_source = MaterialRules::supports_granular_load(source);
+    const bool powder_target = MaterialRules::supports_granular_load(target);
+    if (!powder_source && !powder_target) return true; // gas/liquid behavior unchanged
+    const auto liquid = powder_source ? target : source;
+    if (MaterialRules::descriptor(liquid).state != MaterialState::Liquid) return true;
+    const auto braced_stone = [this](Material m, std::int64_t sx, std::int64_t sy) {
+        return m == Material::Stone && state_b(sx,sy) == 0 &&
+            get(sx-1,sy-1) == Material::Stone && get(sx+1,sy-1) == Material::Stone;
+    };
+    if (braced_stone(source,x,y) || braced_stone(target,target_x,target_y)) return false;
+    {
+        const auto period = config_.transport_policy.configured
+            ? config_.transport_policy.pair(static_cast<std::uint8_t>(source),static_cast<std::uint8_t>(target)).permeability
+            : liquid == Material::Mercury ? config_.interaction_policy.mercury_exchange_period : 1U;
+        if (tick_index_ % period != 0) {
+            schedule_interaction_wake(x,y,tick_index_ + period - tick_index_ % period);
+            return false;
+        }
+    }
+    // All alternatives/initiators share a lane, and each endpoint may take part
+    // once on it. A displaced grain/liquid cannot be reused by another attempt.
+    const auto a = address(target_x,target_y);
+    const auto* chunk = find_chunk(a.chunk);
+    return chunk && chunk->cells[a.index].epoch_value() != update_epoch_;
+}
+
 bool World::try_move(Material material, std::int64_t x, std::int64_t y, std::int64_t target_x,
                      std::int64_t target_y, bool allow_swap, JobEffects* effects) {
     const auto obstacle = transient_obstacle_at(target_x, target_y);
     if (obstacle != 0U) {
+        record_physics(PhysicsEvent::BodyContact, material, Material::Empty,
+                       target_x - x, target_y - y, effects);
         record_transient_contact(obstacle, material, target_x - x, target_y - y);
         return false;
     }
@@ -1291,14 +1410,23 @@ bool World::try_move(Material material, std::int64_t x, std::int64_t y, std::int
             effects->overflow = true;
             return false;
         }
+        const auto moved_mass = material == Material::Water ? state_a(x,y) : 255;
         move_cell(x, y, target_x, target_y, false, effects);
+        // Only a completed physical move can supply disturbance. Epoch/activity
+        // changes from reactions or lifecycle writes never enter this hook.
+        if(get(target_x,target_y)==material && get(x,y)==Material::Empty)
+            mix_after_motion(material,x,y,target_x,target_y,moved_mass,effects);
         return true;
     }
-    if (allow_swap &&
-        MaterialRules::can_density_exchange(material, target, target_y - y)) {
+    if (allow_swap && !(config_.physics_diagnostics.disable_powder_exchange_targets &&
+        MaterialRules::descriptor(target).state == MaterialState::Powder) &&
+        MaterialRules::can_density_exchange(material, target, target_y - y) &&
+        exchange_permitted(material,target,x,y,target_x,target_y)) {
         move_cell(x, y, target_x, target_y, true, effects);
         return true;
     }
+    record_physics(PhysicsEvent::RejectedMove, material, target,
+                   target_x - x, target_y - y, effects);
     return false;
 }
 
@@ -1314,7 +1442,7 @@ std::uint16_t World::transfer_water(std::int64_t from_x, std::int64_t from_y,
     const auto source_address = address(from_x, from_y);
     const auto destination_address = address(to_x, to_y);
     auto* source = find_chunk(source_address.chunk);
-    if (source == nullptr || source->cells[source_address.index].material != Material::Water) return 0;
+    if (source == nullptr || source->cells[source_address.index].material_value() != Material::Water) return 0;
 
     auto* destination = find_chunk(destination_address.chunk);
     if (destination == nullptr) {
@@ -1327,36 +1455,40 @@ std::uint16_t World::transfer_water(std::int64_t from_x, std::int64_t from_y,
 
     auto& source_cell = source->cells[source_address.index];
     auto& destination_cell = destination->cells[destination_address.index];
-    if (destination_cell.material != Material::Empty &&
-        destination_cell.material != Material::Water) {
+    if (destination_cell.material_value() != Material::Empty &&
+        destination_cell.material_value() != Material::Water) {
         return 0;
     }
 
-    const auto source_mass = static_cast<std::uint16_t>(source_cell.state_a);
-    const auto source_coherence = source_cell.state_b;
+    const auto source_mass = static_cast<std::uint16_t>(source_cell.state_a_value());
+    const auto source_coherence = source_cell.state_b_value();
     const auto destination_mass =
-        destination_cell.material == Material::Water
-            ? static_cast<std::uint16_t>(destination_cell.state_a)
+        destination_cell.material_value() == Material::Water
+            ? static_cast<std::uint16_t>(destination_cell.state_a_value())
             : std::uint16_t{0};
-    const auto capacity = static_cast<std::uint16_t>(255U - destination_mass);
+    const auto capacity = static_cast<std::uint16_t>(
+        config_.water_experiment_policy.maximum() - destination_mass);
     const auto amount = std::min({requested, source_mass, capacity});
     if (amount == 0) return 0;
 
+    record_physics(PhysicsEvent::TransferCount, Material::Water, Material::Empty, to_x-from_x, to_y-from_y, effects);
     const auto source_after = static_cast<std::uint16_t>(source_mass - amount);
+    record_physics(PhysicsEvent::WaterTransfer, Material::Water, destination_cell.material_value(),
+                   to_x - from_x, to_y - from_y, effects, amount);
     const auto destination_after = static_cast<std::uint16_t>(destination_mass + amount);
     const bool source_becomes_empty = source_after == 0;
-    const bool destination_was_empty = destination_cell.material == Material::Empty;
+    const bool destination_was_empty = destination_cell.material_value() == Material::Empty;
 
     if (destination_was_empty) destination_cell = Chunk::Cell::for_material(Material::Water);
-    destination_cell.state_a = static_cast<std::uint8_t>(destination_after);
-    destination_cell.state_b = std::max(destination_cell.state_b, source_coherence);
-    destination_cell.updated_epoch = update_epoch_;
+    destination_cell.set_state_a(destination_after);
+    destination_cell.set_state_b(std::max(destination_cell.state_b_value(), source_coherence));
+    destination_cell.set_epoch(update_epoch_);
     if (source_becomes_empty) {
         source_cell = Chunk::Cell::for_material(Material::Empty);
     } else {
-        source_cell.state_a = static_cast<std::uint8_t>(source_after);
+        source_cell.set_state_a(source_after);
     }
-    source_cell.updated_epoch = update_epoch_;
+    source_cell.set_epoch(update_epoch_);
 
     const auto source_delta = source_becomes_empty ? std::int64_t{-1} : std::int64_t{0};
     const auto destination_delta = destination_was_empty ? std::int64_t{1} : std::int64_t{0};
@@ -1375,10 +1507,93 @@ std::uint16_t World::transfer_water(std::int64_t from_x, std::int64_t from_y,
         wake_cell_neighborhood(from_x, from_y);
         wake_cell_neighborhood(to_x, to_y);
     }
+    mix_after_motion(Material::Water,from_x,from_y,to_x,to_y,amount,effects);
     return amount;
 }
 
+void World::mix_after_motion(Material carrier, std::int64_t x, std::int64_t y,
+    std::int64_t to_x, std::int64_t to_y, std::uint16_t mass, JobEffects* effects) {
+    if(!config_.transport_policy.configured) return;
+    const bool powder = MaterialRules::supports_granular_load(carrier);
+    if(powder ? !flow_mixing_enabled_ : !flow_carrying_enabled_) return;
+    // Initial entrainment is lateral Water transport. Gravity and minor film
+    // equalization are not interpreted as strong shear. No stored disturbance.
+    const auto normalized_mass = carrier == Material::Water
+        ? config_.water_experiment_policy.normalized_mass(mass) : mass;
+    if(!powder && (carrier!=Material::Water || to_y!=y || normalized_mass<64)) return;
+    if(powder && (to_y!=y+1 || to_x!=x)) return;
+    const auto grain_x = powder ? x+deterministic_direction(x,y) : x;
+    const auto grain_y = powder ? y : y+1;
+    const auto read = [&](std::int64_t rx,std::int64_t ry) {
+        // Every new read and write fits the calling cell's declared radius 2.
+        if(rx<x-2||rx>x+2||ry<y-2||ry>y+2) throw std::logic_error("flow read outside rule radius");
+        const auto m=get(rx,ry);
+        record_physics(PhysicsEvent::FlowProbe,carrier,m,rx-x,ry-y,effects);
+        return m;
+    };
+    const auto grain=read(grain_x,grain_y);
+    if(!MaterialRules::supports_granular_load(grain) || grain==carrier) return;
+    const auto& p=config_.transport_policy.pair(static_cast<std::uint8_t>(carrier),static_cast<std::uint8_t>(grain));
+    if((powder && p.mixing==0) || (!powder && p.carrying==0)) return;
+    if(transient_obstacle_at(x,y) || transient_obstacle_at(grain_x,grain_y) || transient_obstacle_at(to_x,to_y)) return;
+    if(read(to_x,to_y)!=carrier) return;
+    const auto a=address(grain_x,grain_y);const auto* chunk=find_chunk(a.chunk);
+    if(!chunk || chunk->cells[a.index].epoch_value()==update_epoch_) return;
+    // The route above the grain must be clear. This tests the intermediate
+    // cell of the diagonal carry, so a destination alone cannot bypass a wall.
+    const auto above=read(grain_x,grain_y-1);
+    if(powder) {
+        // A coflowing column can be exposed underneath while another grain
+        // still lies above it. A real downward void is evidence of looseness.
+        if(above!=Material::Empty && read(grain_x,grain_y+1)!=Material::Empty) return;
+    } else if(above!=Material::Empty && above!=Material::Water) return;
+    if(grain==Material::Stone && state_b(grain_x,grain_y)==0 &&
+        read(grain_x-1,grain_y-1)==Material::Stone && read(grain_x+1,grain_y-1)==Material::Stone) return;
+    unsigned packing=0;
+    for(int dy=-1;dy<=1;++dy)for(int dx=-1;dx<=1;++dx) {
+        if(dx==0&&dy==0)continue;
+        const auto m=read(grain_x+dx,grain_y+dy);
+        packing+=MaterialRules::supports_granular_load(m)||MaterialRules::is_hard_surface(m);
+    }
+    if(powder) {
+        // A falling/avalanching grain may interleave with an exposed loose
+        // unlike grain. No density sorting and no rearrangement at rest.
+        if(packing>5 || deterministic_random(x,y,211U)>=p.mixing) return;
+    } else {
+        if(packing>=4 && !p.erosion) return;
+        const unsigned disturbance=static_cast<unsigned>(normalized_mass)*p.carrying/255U;
+        if(disturbance<64U || disturbance<static_cast<unsigned>(p.pickup)+packing*p.packing) return;
+        // At most one pickup per source per four-tick lane, with no retained
+        // debt or wakeup: cessation of actual flow immediately removes pickup.
+        if(tick_index_%4U != (mix64(static_cast<std::uint64_t>(x)^std::rotl(static_cast<std::uint64_t>(y),23))%4U)) return;
+    }
+    // Whole identity, both compact bytes and optional temperature travel via
+    // the existing conservative swap. Water fill is never recreated or lost.
+    move_cell(grain_x,grain_y,to_x,to_y,true,effects,
+        powder ? PhysicsEvent::PowderMix : PhysicsEvent::GrainTransport);
+}
+
+bool World::lateral_due(Material material, std::int64_t x, std::int64_t y) noexcept {
+    const auto period = config_.transport_policy.configured
+        ? config_.transport_policy.cadence[static_cast<std::size_t>(material)] : 1U;
+    if (period == 1U) return true;
+    const auto phase = mix64(static_cast<std::uint64_t>(x) ^
+        std::rotl(static_cast<std::uint64_t>(y),23)) % period;
+    const auto remaining = (phase + period - tick_index_ % period) % period;
+    if (remaining == 0U) return true;
+    // One existing bounded block deadline, no catch-up and no new queue.
+    schedule_interaction_wake(x,y,tick_index_+remaining);
+    return false;
+}
+
+bool World::try_lateral(Material material, std::int64_t x, std::int64_t y,
+    std::int32_t direction, bool swap, JobEffects* effects) {
+    record_physics(PhysicsEvent::LateralProbe,material,Material::Empty,direction,0,effects);
+    return try_move(material,x,y,x+direction,y,swap,effects);
+}
+
 bool World::update_water(std::int64_t x, std::int64_t y, JobEffects* effects) {
+    record_physics(PhysicsEvent::WaterUpdate, Material::Water, Material::Empty, 0, 0, effects);
     bool changed = false;
     const auto direction = deterministic_direction(x, y);
     const auto coherence_delay = state_b(x, y);
@@ -1395,7 +1610,8 @@ bool World::update_water(std::int64_t x, std::int64_t y, JobEffects* effects) {
                                       std::int64_t target_x, std::int64_t target_y) {
         if (liquid_mass(x, y) == 0U) return false;
         if (get(target_x, target_y) == Material::Water) {
-            const auto moved = transfer_water(x, y, target_x, target_y, 255, effects);
+            const auto moved = transfer_water(
+                x, y, target_x, target_y, config_.water_experiment_policy.maximum(), effects);
             changed = changed || moved != 0;
             return moved != 0;
         }
@@ -1419,26 +1635,35 @@ bool World::update_water(std::int64_t x, std::int64_t y, JobEffects* effects) {
     // Retain a small supported film when adhesion is enabled. Disabling the
     // toggle removes this threshold for active/dangerous liquids.
     const auto support = get(x, y + 1);
-    if (liquid_surface_adhesion_enabled_ && liquid_mass(x, y) <= 48U &&
+    if (liquid_surface_adhesion_enabled_ &&
+        liquid_mass(x, y) <= config_.water_experiment_policy.film() &&
         support != Material::Empty && support != Material::Water) {
         return changed;
     }
 
+    if (!lateral_due(Material::Water,x,y)) return changed;
     const auto level_with = [this, x, y, effects, &changed](
                                 std::int64_t target_x, std::int64_t target_y) {
         const auto source_mass = static_cast<std::uint16_t>(liquid_mass(x, y));
         if (source_mass == 0) return;
+        record_physics(PhysicsEvent::LateralProbe,Material::Water,Material::Empty,target_x-x,0,effects);
         const auto target_material = get(target_x, target_y);
         if (target_material != Material::Empty && target_material != Material::Water) return;
         const auto target_mass = static_cast<std::uint16_t>(liquid_mass(target_x, target_y));
-        if (source_mass <= target_mass + 1U) return;
+        if (source_mass <= target_mass + config_.water_experiment_policy.tolerance()) return;
+        // Move three quarters of the imbalance instead of stopping at the
+        // midpoint. Each isolated pair's imbalance still contracts; the
+        // existing tolerance prevents perpetual one-unit swapping at rest.
         const auto requested = MaterialRules::apply_lateral_viscosity(
             Material::Water,
-            static_cast<std::uint16_t>((source_mass - target_mass) / 2U));
+            static_cast<std::uint16_t>((source_mass - target_mass) * 3U / 4U));
+        record_physics(PhysicsEvent::LateralRequest, Material::Water, Material::Empty, target_x-x, 0, effects);
+        if (!requested) record_physics(PhysicsEvent::ZeroRequest, Material::Water, Material::Empty, target_x-x, 0, effects);
         changed = transfer_water(x, y, target_x, target_y, requested, effects) != 0 || changed;
     };
     level_with(x + direction, y);
-    level_with(x - direction, y);
+    if (!config_.transport_policy.configured || config_.transport_policy.horizontal[3] == 2)
+        level_with(x - direction, y);
     return changed;
 }
 
@@ -1504,11 +1729,17 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
             if (try_move(material, x, y, x, y + 1, true, effects)) return true;
             if (try_move(material, x, y, x + direction, y + 1, true, effects)) return true;
             if (try_move(material, x, y, x - direction, y + 1, true, effects)) return true;
-            const auto viscosity = MaterialRules::descriptor(material).viscosity_index;
+            const auto viscosity = material == Material::Mercury &&
+                config_.physics_diagnostics.mercury_viscosity >= 0
+                ? static_cast<std::uint8_t>(config_.physics_diagnostics.mercury_viscosity)
+                : MaterialRules::descriptor(material).viscosity_index;
             const auto mobility = static_cast<std::uint16_t>(256U - viscosity);
             if (deterministic_random(x, y, random_stream) >= mobility) return false;
-            if (try_move(material, x, y, x + direction, y, false, effects)) return true;
-            return try_move(material, x, y, x - direction, y, false, effects);
+            if (!lateral_due(material,x,y)) return false;
+            if (try_lateral(material,x,y,direction,false,effects)) return true;
+            if (config_.transport_policy.configured &&
+                config_.transport_policy.horizontal[static_cast<std::size_t>(material)] == 1) return false;
+            return try_lateral(material,x,y,-direction,false,effects);
         };
 
     if (contact_chemistry_due && MaterialRules::has_pair_reactions(material)) {
@@ -1524,13 +1755,19 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
                 MaterialRules::descriptor(reaction->source_product);
             const auto& target_definition =
                 MaterialRules::descriptor(reaction->target_product);
+            const auto source_state_a = reaction->source_product == Material::Water
+                ? config_.water_experiment_policy.maximum()
+                : static_cast<std::uint16_t>(source_definition.initial_state_a);
+            const auto target_state_a = reaction->target_product == Material::Water
+                ? config_.water_experiment_policy.maximum()
+                : static_cast<std::uint16_t>(target_definition.initial_state_a);
             bool changed = write_cell(
                 target_x, target_y, reaction->target_product,
-                target_definition.initial_state_a, target_definition.initial_state_b,
+                target_state_a, target_definition.initial_state_b,
                 effects);
             changed = write_cell(
                           x, y, reaction->source_product,
-                          source_definition.initial_state_a,
+                          source_state_a,
                           source_definition.initial_state_b, effects) ||
                       changed;
             return changed;
@@ -1557,7 +1794,8 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
         case RuleKernel::Steam: {
             const auto lifetime = state_a(x, y);
             if (lifetime <= 1U) {
-                return write_cell(x, y, Material::Water, 255, 0, effects);
+                return write_cell(x, y, Material::Water,
+                                  config_.water_experiment_policy.maximum(), 0, effects);
             }
             bool changed = write_cell(x, y, Material::Steam,
                                       static_cast<std::uint8_t>(lifetime - 1U), 0,
@@ -1831,8 +2069,8 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
                 const auto [sample_x, sample_y] = neighbour(sample_index);
                 const auto sampled = get(sample_x, sample_y);
                 if (sampled == Material::Ice) {
-                    changed = write_cell(sample_x, sample_y, Material::Water, 255, 0,
-                                         effects);
+                    changed = write_cell(sample_x, sample_y, Material::Water,
+                                         config_.water_experiment_policy.maximum(), 0, effects);
                 } else {
                     changed = ignite(sample_x, sample_y, 64);
                 }
@@ -1840,7 +2078,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
             if (try_move(material, x, y, x, y + 1, true, effects)) return true;
             if (try_move(material, x, y, x + direction, y + 1, true, effects)) return true;
             if (try_move(material, x, y, x - direction, y + 1, true, effects)) return true;
-            if (try_move(material, x, y, x + direction, y, true, effects)) return true;
+            if (lateral_due(material,x,y) && try_lateral(material,x,y,direction,true,effects)) return true;
             return changed;
         }
 
@@ -1849,7 +2087,8 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
             if (find_neighbour([](Material candidate, auto, auto) {
                     return is_hot(candidate);
                 })) {
-                return write_cell(x, y, Material::Water, 255, 0, effects);
+                return write_cell(x, y, Material::Water,
+                                  config_.water_experiment_policy.maximum(), 0, effects);
             }
             if (!temporal_lane_due(16U, 192U)) return false;
             const auto [target_x, target_y] = neighbour(deterministic_random(x, y, 30U));
@@ -1860,7 +2099,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
         case RuleKernel::Acid: {
             if (try_move(material, x, y, x, y + 1, true, effects)) return true;
             if (try_move(material, x, y, x + direction, y + 1, true, effects)) return true;
-            if (try_move(material, x, y, x + direction, y, true, effects)) return true;
+            if (lateral_due(material,x,y) && try_lateral(material,x,y,direction,true,effects)) return true;
 
             if (!lifecycle_due) return false;
             const auto strength = state_a(x, y);
@@ -1936,7 +2175,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
             if (try_move(material, x, y, x, y + 1, false, effects)) return true;
             if (try_move(material, x, y, x + direction, y + 1, false, effects)) return true;
             if (try_move(material, x, y, x - direction, y + 1, false, effects)) return true;
-            if (try_move(material, x, y, x + direction, y, false, effects)) return true;
+            if (lateral_due(material,x,y) && try_lateral(material,x,y,direction,false,effects)) return true;
             return changed;
         }
 
@@ -1970,7 +2209,10 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
                 if (get(target_x, target_y) != Material::Empty) continue;
                 const auto cloned = static_cast<Material>(captured);
                 const auto& definition = MaterialRules::descriptor(cloned);
-                return write_cell(target_x, target_y, cloned, definition.initial_state_a,
+                const auto initial_state_a = cloned == Material::Water
+                    ? config_.water_experiment_policy.maximum()
+                    : static_cast<std::uint16_t>(definition.initial_state_a);
+                return write_cell(target_x, target_y, cloned, initial_state_a,
                                   definition.initial_state_b, effects);
             }
             return false;
@@ -2108,10 +2350,13 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
                 target == Material::Smoke) {
                 const auto payload_material = static_cast<Material>(payload);
                 const auto& payload_definition = MaterialRules::descriptor(payload_material);
+                const auto payload_state_a = payload_material == Material::Water
+                    ? config_.water_experiment_policy.maximum()
+                    : static_cast<std::uint16_t>(payload_definition.initial_state_a);
                 bool changed = write_cell(target_x, target_y, Material::Rocket, flight, payload,
                                           effects);
                 changed = write_cell(x, y, payload_material,
-                                     payload_definition.initial_state_a,
+                                     payload_state_a,
                                      payload_definition.initial_state_b, effects) ||
                           changed;
                 return changed;
@@ -2165,11 +2410,11 @@ bool World::update_cell(std::int64_t x, std::int64_t y, JobEffects* effects) {
     const auto source_address = address(x, y);
     auto* source_chunk = find_chunk(source_address.chunk);
     if (source_chunk == nullptr ||
-        source_chunk->cells[source_address.index].updated_epoch == update_epoch_) {
+        source_chunk->cells[source_address.index].epoch_value() == update_epoch_) {
         return false;
     }
 
-    const auto material = source_chunk->cells[source_address.index].material;
+    const auto material = source_chunk->cells[source_address.index].material_value();
     const auto& definition = MaterialRules::descriptor(material);
     return update_rule_kernel(definition.kernel, x, y, effects);
 }
@@ -2180,7 +2425,7 @@ void World::begin_tick(TickStats& stats) {
     if (update_epoch_ == 0) {
         for (auto& [coord, chunk] : chunks_) {
             (void)coord;
-            for (auto& cell : chunk->cells) cell.updated_epoch = 0;
+            for (auto& cell : chunk->cells) cell.set_epoch(0);
         }
         update_epoch_ = 1;
     }
@@ -2196,12 +2441,24 @@ void World::begin_tick(TickStats& stats) {
         for (std::size_t index = 0; index < chunk->activity_blocks.size(); ++index) {
             auto& block = chunk->activity_blocks[index];
             block.changed_this_tick = false;
+            if (block.next_interaction_tick != 0 && block.next_interaction_tick <= tick_index_) {
+                const auto included = clip_core_range(block_core_range(coord,index), selected_core_region_);
+                if (config_.backend == SimulationBackend::SerialInPlace ||
+                    (included.min_x <= included.max_x && included.min_y <= included.max_y)) {
+                    if (!block.active) record_physics(PhysicsEvent::BlockWake, Material::Empty, Material::Empty, 0, 0, nullptr);
+                    block.active = true;
+                    block.quiet_ticks = 0;
+                    chunk->active = true;
+                    block.next_interaction_tick = 0;
+                }
+            }
             if (!transition) continue;
             const auto bounds = block_core_range(coord, index);
             const auto included = clip_core_range(bounds, selected_core_region_);
             const auto previous = clip_core_range(included, applied_core_region_);
             if (included.min_x <= included.max_x && included.min_y <= included.max_y &&
                 included != previous) {
+                if (!block.active) record_physics(PhysicsEvent::BlockWake, Material::Empty, Material::Empty, 0, 0, nullptr);
                 block.active = true;
                 block.quiet_ticks = 0;
                 chunk->active = true;
@@ -2261,9 +2518,11 @@ void World::finish_tick(TickStats& stats) {
             if (block.changed_this_tick) {
                 block.quiet_ticks = 0;
             } else if (age && ++block.quiet_ticks >= config_.sleep_after_quiet_ticks) {
+                record_physics(PhysicsEvent::BlockSleep, Material::Empty, Material::Empty, 0, 0, nullptr);
                 block.active = false;
             }
             any_active_block = any_active_block || block.active;
+            if (block.active) ++stats.active_blocks_after;
         }
         chunk->active = any_active_block;
         chunk->quiet_ticks = any_active_block ? 0 : config_.sleep_after_quiet_ticks;
@@ -2292,8 +2551,8 @@ TickStats World::tick_serial() {
                 const auto index = static_cast<std::size_t>(local_y) * static_cast<std::size_t>(config_.chunk_size) +
                                    static_cast<std::size_t>(local_x);
                 const auto& cell = chunk->cells[index];
-                if (cell.updated_epoch == update_epoch_ ||
-                    !rule_is_active(cell.material, cell.state_a, cell.state_b)) {
+                if (cell.epoch_value() == update_epoch_ ||
+                    !rule_is_active(cell.material_value(), cell.state_a_value(), cell.state_b_value())) {
                     continue;
                 }
                 ++stats.visited_cells;
@@ -2375,8 +2634,8 @@ void World::scan_rect(CellRect rect, TickStats& stats, JobEffects* effects) {
                     static_cast<std::size_t>(local_y) * static_cast<std::size_t>(config_.chunk_size) +
                     static_cast<std::size_t>(local_x);
                 const auto& cell = chunk->cells[index];
-                if (cell.updated_epoch == update_epoch_ ||
-                    !rule_is_active(cell.material, cell.state_a, cell.state_b)) {
+                if (cell.epoch_value() == update_epoch_ ||
+                    !rule_is_active(cell.material_value(), cell.state_a_value(), cell.state_b_value())) {
                     continue;
                 }
                 ++stats.visited_cells;
@@ -2396,8 +2655,8 @@ void World::scan_rect(CellRect rect, TickStats& stats, JobEffects* effects) {
             auto* chunk = find_chunk(source.chunk);
             if (chunk == nullptr || !chunk->active) continue;
             const auto& cell = chunk->cells[source.index];
-            if (cell.updated_epoch == update_epoch_ ||
-                !rule_is_active(cell.material, cell.state_a, cell.state_b)) {
+            if (cell.epoch_value() == update_epoch_ ||
+                !rule_is_active(cell.material_value(), cell.state_a_value(), cell.state_b_value())) {
                 continue;
             }
             ++stats.visited_cells;
@@ -2486,6 +2745,11 @@ void World::merge_job_effects(const JobEffects& effects) {
     if (effects.overflow) {
         throw std::runtime_error("per-job touched-chunk capacity exhausted");
     }
+    if (effects.physics != nullptr) {
+        for (const auto& entry : effects.physics->entries)
+            if (entry.key != 0) physics_totals_->add(entry.key, entry.count);
+        physics_totals_->overflow += effects.physics->overflow;
+    }
     if (effects.hard_surface_changed) ++hard_surface_revision_;
     for (std::size_t effect_index = 0; effect_index < effects.chunk_count; ++effect_index) {
         const auto& effect = effects.chunks[effect_index];
@@ -2526,6 +2790,7 @@ void World::merge_job_effects(const JobEffects& effects) {
                         static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
                     static_cast<std::size_t>(block_x);
                 auto& block = chunk->activity_blocks[block_index];
+                if (!block.active) record_physics(PhysicsEvent::BlockWake, Material::Empty, Material::Empty, 0, 0, nullptr);
                 block.active = true;
                 block.changed_this_tick = true;
                 block.quiet_ticks = 0;
@@ -2692,6 +2957,33 @@ std::uint64_t World::state_hash() const noexcept {
     hash_integer(hash, config_.scheduling_core_size);
     hash_integer(hash, config_.maximum_rule_radius);
     hash_integer(hash, config_.maximum_explosion_radius);
+    hash_integer(hash, InteractionPolicy::version);
+    hash_integer(hash, config_.interaction_policy.downward_support_cells);
+    hash_integer(hash, config_.interaction_policy.side_support_cells);
+    hash_integer(hash, config_.interaction_policy.mercury_exchange_period);
+    // Absence of the marker is the version-1 mass8/coherence12 default, which
+    // preserves existing fixture hashes. Every non-default semantic policy is
+    // explicit and cannot collide with that authoritative reference identity.
+    constexpr WaterExperimentPolicy default_water_policy{};
+    if (config_.water_experiment_policy != default_water_policy) {
+        hash_integer(hash, std::uint8_t{0x57U});
+        hash_integer(hash, config_.water_experiment_policy.version());
+        hash_integer(hash, config_.water_experiment_policy.mass_bits());
+        hash_integer(hash, config_.water_experiment_policy.coherence_ticks());
+        hash_integer(hash, static_cast<std::uint8_t>(
+            config_.water_experiment_policy.rest_policy()));
+    }
+    hash_integer(hash, static_cast<std::uint8_t>(config_.transport_policy.configured));
+    if(config_.transport_policy.configured) {
+        hash_integer(hash,TransportPolicy::version);
+        for(auto n:config_.transport_policy.horizontal)hash_integer(hash,n);
+        for(auto n:config_.transport_policy.cadence)hash_integer(hash,n);
+        for(const auto& p:config_.transport_policy.pairs) {
+            hash_integer(hash,p.mixing);hash_integer(hash,p.carrying);
+            hash_integer(hash,p.pickup);hash_integer(hash,p.packing);
+            hash_integer(hash,p.erosion);hash_integer(hash,p.permeability);
+        }
+    }
     hash_integer(hash, static_cast<std::uint64_t>(config_.active_core_capacity));
     hash_integer(hash, static_cast<std::uint64_t>(config_.active_chunk_capacity));
     hash_integer(hash, static_cast<std::uint64_t>(config_.maximum_chunk_count));
@@ -2721,13 +3013,14 @@ std::uint64_t World::state_hash() const noexcept {
         for (const auto& block : chunk->activity_blocks) {
             hash_integer(hash, static_cast<std::uint8_t>(block.active ? 1U : 0U));
             hash_integer(hash, block.quiet_ticks);
+            hash_integer(hash, block.next_interaction_tick);
         }
         for (std::size_t index = 0; index < chunk->cells.size(); ++index) {
             const auto& cell = chunk->cells[index];
-            hash_integer(hash, static_cast<std::uint16_t>(cell.material));
-            hash_integer(hash, cell.state_a);
-            hash_integer(hash, cell.state_b);
-            hash_integer(hash, cell.updated_epoch);
+            hash_integer(hash, static_cast<std::uint16_t>(cell.material_value()));
+            hash_integer(hash, cell.state_a_value());
+            hash_integer(hash, cell.state_b_value());
+            hash_integer(hash, cell.epoch_value());
             hash_integer(hash, chunk->temperatures == nullptr
                                    ? config_.ambient_temperature
                                    : (*chunk->temperatures)[index]);
@@ -2755,7 +3048,7 @@ std::uint64_t World::content_hash() const noexcept {
             const auto temperature_value =
                 chunk->temperatures == nullptr ? config_.ambient_temperature
                                                : (*chunk->temperatures)[index];
-            if (cell.material == Material::Empty &&
+            if (cell.material_value() == Material::Empty &&
                 temperature_value == config_.ambient_temperature) {
                 continue;
             }
@@ -2765,9 +3058,9 @@ std::uint64_t World::content_hash() const noexcept {
                 static_cast<std::int64_t>(index / static_cast<std::size_t>(config_.chunk_size));
             hash_integer(hash, coord.x * config_.chunk_size + local_x);
             hash_integer(hash, coord.y * config_.chunk_size + local_y);
-            hash_integer(hash, static_cast<std::uint16_t>(cell.material));
-            hash_integer(hash, cell.state_a);
-            hash_integer(hash, cell.state_b);
+            hash_integer(hash, static_cast<std::uint16_t>(cell.material_value()));
+            hash_integer(hash, cell.state_a_value());
+            hash_integer(hash, cell.state_b_value());
             hash_integer(hash, temperature_value);
         }
     }
@@ -2815,7 +3108,8 @@ void World::copy_render_cells(RectI64 region, std::span<std::uint8_t> destinatio
             const auto material = stored_material(world_x, world_y);
             output[offset] = static_cast<std::uint8_t>(material);
             output[offset + 1U] = project_visual_state(
-                material, stored_state_a(world_x, world_y), stored_state_b(world_x, world_y));
+                material, stored_state_a(world_x, world_y), stored_state_b(world_x, world_y),
+                config_.water_experiment_policy);
         }
     }
 }
@@ -2841,9 +3135,10 @@ void World::copy_material_cells(RectI64 region, std::span<std::uint8_t> destinat
                     continue;
                 }
                 const auto cell_index = first.index + static_cast<std::size_t>(offset);
-                auto material = chunk->cells[cell_index].material;
+                auto material = chunk->cells[cell_index].material_value();
                 if (material == Material::Water) {
-                    const auto mass = chunk->cells[cell_index].state_a;
+                    const auto mass = config_.water_experiment_policy.normalized_mass(
+                        chunk->cells[cell_index].state_a_value());
                     const auto sample_x = world_x + offset;
                     const auto threshold = static_cast<std::uint8_t>(
                         mix64(static_cast<std::uint64_t>(sample_x) *
@@ -2869,7 +3164,8 @@ void World::copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::
             const auto world_y = region.y + row;
             auto material = stored_material(world_x, world_y);
             if (material == Material::Water) {
-                const auto mass = stored_state_a(world_x, world_y);
+                const auto mass = config_.water_experiment_policy.normalized_mass(
+                    stored_state_a(world_x, world_y));
                 const auto threshold = static_cast<std::uint8_t>(
                     mix64(static_cast<std::uint64_t>(world_x) * 0x9e3779b185ebca87ULL ^
                           std::rotl(static_cast<std::uint64_t>(world_y), 17)) &
@@ -2882,5 +3178,6 @@ void World::copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::
         }
     }
 }
+
 
 }  // namespace cybersand

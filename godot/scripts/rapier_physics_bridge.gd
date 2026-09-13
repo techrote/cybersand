@@ -47,6 +47,14 @@ var _last_results_applied: int = 0
 var _last_stale_results_rejected: int = 0
 var _hard_surface_shape_count: int = 0
 var _last_hard_surface_build_time_ms: float = 0.0
+var diagnostic_applications: PackedFloat64Array = PackedFloat64Array()
+
+
+# Opt-in fixed storage: age, accepted x/y, duplicate, stale, received per body.
+# Reset each apply call; callers copy/aggregate at their serialized boundary.
+func enable_diagnostics() -> void:
+	diagnostic_applications.resize(_body_rids.size() * 6)
+	diagnostic_applications.fill(0.0)
 
 
 func initialize(
@@ -143,7 +151,11 @@ func apply_cellular_results(
 ) -> int:
 	_last_results_applied = 0
 	_last_stale_results_rejected = 0
+	if not diagnostic_applications.is_empty():
+		diagnostic_applications.fill(0.0)
 	if not _initialized or snapshot_serial == _last_result_snapshot_serial:
+		if _initialized and not diagnostic_applications.is_empty():
+			diagnostic_applications[3] = 1.0
 		return 0
 	_last_result_snapshot_serial = snapshot_serial
 
@@ -159,10 +171,17 @@ func apply_cellular_results(
 			results[offset + CyberRigidBodyCoupling.RESULT_SAMPLE_SERIAL]
 		)
 		if _applied_sample_serials[body_index] == result_sample_serial:
+			if not diagnostic_applications.is_empty():
+				diagnostic_applications[body_index * 6 + 3] = 1.0
 			continue
 		_applied_sample_serials[body_index] = result_sample_serial
 		var sample_age: int = _sample_age(result_sample_serial)
+		if not diagnostic_applications.is_empty():
+			diagnostic_applications[body_index * 6] = sample_age
+			diagnostic_applications[body_index * 6 + 5] = 1.0
 		if sample_age > MAX_CELLULAR_RESULT_AGE_TICKS:
+			if not diagnostic_applications.is_empty():
+				diagnostic_applications[body_index * 6 + 4] = 1.0
 			_last_stale_results_rejected += 1
 			continue
 
@@ -210,6 +229,9 @@ func apply_cellular_results(
 		var impulse_age_scale: float = 1.0 / (1.0 + float(sample_age) * 0.25)
 		impulse *= impulse_age_scale
 		if impulse.length_squared() > MOTION_EPSILON_SQUARED:
+			if not diagnostic_applications.is_empty():
+				diagnostic_applications[body_index * 6 + 1] = impulse.x
+				diagnostic_applications[body_index * 6 + 2] = impulse.y
 			PhysicsServer2D.body_apply_central_impulse(body_rid, impulse)
 		if (
 			correction.length_squared() > MOTION_EPSILON_SQUARED

@@ -139,6 +139,27 @@ def verify_rapier(threaded: bool) -> dict:
         raise RuntimeError(f"Restore the pinned Rapier v0.35.2 release binary: {path}")
     return artifact
 
+def write_runtime_identity(stage: Path, library: Path, args: argparse.Namespace) -> dict:
+    data = library.read_bytes()
+    identity = {
+        "schema_version": 1,
+        "status": "issue-19-browser-validated-export",
+        "source_commit": args.source_commit or output(["git", "-C", str(ROOT), "rev-parse", "HEAD"]),
+        "source_identity_kind": "snapshot-base-with-local-setup-changes" if args.source_commit else "git-checkout",
+        "artifact": library.name,
+        "sha256": hashlib.sha256(data).hexdigest(),
+        "size": len(data),
+        "validated_platform": "Godot Web " + args.profile,
+        "profile": args.profile,
+        "godot": GODOT_VERSION,
+        "godot_cpp": CPP_REV,
+        "emscripten": "4.0.20",
+        "native_worker_threads": "auto" if args.profile == "threaded" else 1,
+    }
+    destination = stage / "addons/cybersand_native/runtime-provenance.web.json"
+    destination.write_text(json.dumps(identity, indent=2) + "\n", encoding="utf-8")
+    return identity
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cpp", type=Path, default=os.environ.get("GODOT_CPP_ROOT"))
@@ -184,6 +205,7 @@ def main() -> None:
     if args.templates is None:
         parser.error("Set WEB_TEMPLATE_ROOT or --templates to extracted Godot 4.7 Web templates")
     stage = stage_project(library, native_library, args.cellular_only, threaded)
+    web_runtime_identity = write_runtime_identity(stage, library, args)
     output_dir = ROOT / "build" / ("web-threaded" if threaded else "web")
     output_dir.mkdir(parents=True, exist_ok=True)
     preset = (ROOT / "godot/export_presets.cfg").read_text()
@@ -229,7 +251,8 @@ def main() -> None:
                 "native_worker_threads": "auto" if threaded else 1,
                 "auto_worker_policy": "logical<4:2; logical<12:4; otherwise:6",
                 "rapier": "disabled" if args.cellular_only else "0.35.2",
-                "rapier_sha256": None if args.cellular_only else artifact["sha256"]}
+                "rapier_sha256": None if args.cellular_only else artifact["sha256"],
+                "water_runtime": web_runtime_identity}
     (output_dir / "build-info.json").write_text(json.dumps(identity, indent=2) + "\n")
     (output_dir / "SHA256SUMS").write_text("".join(
         f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.name}\n"

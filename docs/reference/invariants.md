@@ -6,7 +6,7 @@ status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
 related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-10
 ---
 
 # Architectural and simulation invariants
@@ -190,3 +190,33 @@ Rationale: [principles](../architecture/principles-and-non-goals.md),
 | REJ-002 | Rejected: material-specific threads or growing per-material inheritance |
 | REJ-003 | Rejected: full-stored-world double buffering as normal operation |
 | REJ-004 | Rejected: unbounded mixed in-place/buffered ownership of one field/stage |
+
+## What must physics characterization preserve?
+
+**Current:** opt-in observation must preserve exact matching-configuration cell
+states and coupled trajectories. [Measurement checks](../operations/physics-characterisation.md)
+cover observer toggles, phased worker parity, duplicate rejection, stored Water
+under occupancy masks and explicit telemetry overflow. Failed-world quarantine,
+interest-region pause/re-entry, conservation and exclusive ownership still apply.
+
+**Current:** restricted powder exchange and sampled player support follow the
+[versioned policy](../systems/granular-interaction-policy.md). **Planned:** persistent
+powder bearing and roughly half-depth barrel support remain future behavior.
+The [baseline](../audits/2026-09-09-physics-characterisation.md)
+records failures of those proposed gates; it does not promote them to current
+invariants or treat deep hard-floor rest as granular support.
+
+## Granular character boundary
+
+**Current:** Material-aware player support derives from local packing and last-tick stability. Unresolved enclosure is explicit, preserves cells and does not prove global connectivity. See the [granular/player policy](../systems/granular-interaction-policy.md).
+
+Powder/powder density swaps are forbidden, while real void motion remains valid.
+Optional [flow transport](../systems/flow-transport-and-profiles.md) is a distinct
+conservative path: actual successful motion must precede mixing/pickup; resting
+activity or state changes cannot stand in for flow. It preserves the existing
+radius-two reads, radius-one writes, body/path exclusions and whole-cell state.
+Profile tables are validated before exclusive-owner replacement, never mutated
+inside a tick. Reduced sampling cannot weaken collision or conservation checks.
+Mercury exchange cannot reuse a written destination or multiply its shared tick
+lane across alternate directions/initiators. A pending deadline survives sleep
+and exclusion without catch-up; explicit recovery abandons it with the world.

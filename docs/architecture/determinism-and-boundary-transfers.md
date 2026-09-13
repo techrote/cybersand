@@ -6,7 +6,7 @@ status: Current
 scope: Native scheduling and hash semantics for declared fixture inputs; explicitly excludes complete replay guarantees
 keywords: [determinism, worker parity, state_hash, content_hash, explosion ordering, boundary transfers]
 related-documents: [simulation-tick-and-threading.md, chunk-tile-and-buffer-model.md, ../reference/level-saves-and-replay.md, ../reference/validation-evidence.md]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-09
 ---
 
 # Determinism and boundary transfers
@@ -75,7 +75,15 @@ mixer in `world.cpp::hash_byte` (seed `1469598103934665603`, multiplier
 | `content_hash` | Chunk size and ambient temperature; coordinates, material, compact state and temperature of non-empty/non-ambient cells | Settled content while time and scheduler bookkeeping advance |
 
 `state_hash` includes normalized requested/applied interest core coverage (not
-raw pixel bounds with identical coverage). It **omits** liquid-surface-adhesion option,
+raw pixel bounds with identical coverage), granular policy version/settings and
+pending pair deadlines. Mercury opportunities share the global tick modulo lane;
+excluded ticks create no accumulated movement debt. See the
+[pair policy](../systems/granular-interaction-policy.md).
+
+The existing integer mixer uses native integer widths, including `size_t`. Windows
+and Wasm hashes are therefore not a cross-platform byte-identity oracle; compare
+worker counts within the declared platform and compare explicit observed values
+across those platforms. `state_hash` **omits** liquid-surface-adhesion option,
 transient obstacles/contact inputs, compiled rule identity and external
 body/controller state. Worker count is intentionally omitted for parity tests.
 A matching hash is therefore insufficient to prove that every future-affecting

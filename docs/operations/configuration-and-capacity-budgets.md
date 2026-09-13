@@ -4,7 +4,7 @@ document-kind: runbook
 canonical-for: [capacity-preparation-and-failure, safe-reconfiguration-requirements]
 status: Current
 scope: Existing construction/reservation and capacity outcomes; approved preparation discipline and unimplemented live resize
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-10
 related-documents: [../reference/configuration-reference.md, ../systems/world-storage-and-interest-region.md, ../architecture/data-ownership-and-lifetimes.md, profiling-observability-and-performance.md]
 ---
 
@@ -23,11 +23,15 @@ and [evidence ledger](../reference/validation-evidence.md).
 ## What can be configured now?
 
 [WorldConfig](../../native/include/cybersand/world.hpp) is a construction-time
-value mirrored by versioned `cybersand_config_v2` in the
+value whose established fields are mirrored by versioned `cybersand_config_v2` in the
 [C ABI](../../native/include/cybersand/c_api.h). It controls geometry, workers,
 quiet thresholds, resident/active/planning capacities, and accepted explosions.
 Godot's finite adapter overrides several standalone defaults. Auto chooses
 workers when constructing a world; it does not resize a running pool.
+
+The compiled granular policy is a native construction value; the C ABI keeps
+its existing layout and uses policy defaults. Diagnostic adapter overrides build
+a fresh candidate before replacement. There is no live setting or save field.
 
 [RenderSnapshotExchange](../../native/include/cybersand/render_snapshot.hpp)
 has separate mandatory slot, patch-per-slot, and byte-per-slot capacities.
@@ -126,3 +130,49 @@ A live-resize change needs near-capacity and over-capacity fixtures, current and
 unacknowledged dirtiness, no invalid worker/lease views, and measured allocation/
 memory consequences. Declare whether “2×” means each dimension or total area.
 Do not promote design requirements to Current on source presence alone.
+
+## How are physics diagnostics bounded?
+
+**Current:** the [measurement runbook](physics-characterisation.md) defines 256
+histogram slots per scheduled-core scratch slot and 8,192 merged slots, allocated
+only on opt-in World construction. Counter overflow is explicit and drops
+observations. Body metrics use the existing 16-body bound, with fixed scalar and
+4-by-81 face/material counters. Copied cell observations are limited to 512 by
+768 cells; fixture runs are bounded to 7,200 ticks and 512 cases per invocation.
+Rapier application observations use six scalars per body.
+
+Native tick and coupling timings, used slots, core/chunk high-water marks and
+overflow are retained in the [dated baseline](../audits/2026-09-09-physics-characterisation.md).
+Offline snapshots, retained traces and postprocessing costs are outside hot-loop
+budgets. These measurements do not establish a production performance target.
+
+## Sampled support query budget
+
+[Granular policy](../systems/granular-interaction-policy.md) bounds native queries
+to 32 by 32 physical boxes (at most 33 by 33 raster cells at fractional origins),
+at most 20 stable-material samples per contact and 128
+enclosure candidates. Native queries allocate no storage; no worker read/write
+domain or Rapier shape is added.
+
+Delayed exchange adds one 64-bit deadline per native activity block, eight extra
+bytes in the tested layout. It reuses the existing metadata pass and exclusive
+block ownership; no queue or tick allocation is added. Fallback uses a fixed
+PackedInt64Array and resets quiet counters only inside due included 16 by 16
+blocks. This is bounded local waking, not a new whole-world cell scan. Existing
+World preparation/allocation and failed-tick limits still apply.
+
+
+## Issue #13 experiment checkpoint
+
+The [tower](experiment-tower.md) reuses native validated recipe construction and whole-world installation. Commands are copied outside ticks; the latest pending control replaces the previous pending control. It does not add an unbounded command queue or global floor simulation pass.
+
+
+## Opt-in transport profiles
+
+**Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
+owns schema, inheritance, units, immutable native tables and explicit owner restart.
+The Tower applies validated profiles through restart. Actual powder falls and
+lateral Water mass transport drive bounded optional mixing and grain pickup;
+horizontal sampling and cadence are separate fixed experiments.
+Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
+are unchanged. No unsynchronized live descriptor mutation is introduced.

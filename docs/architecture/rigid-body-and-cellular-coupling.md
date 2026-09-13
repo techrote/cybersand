@@ -6,7 +6,7 @@ status: Current
 scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact; generalized physics and exact replay remain absent
 keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
 related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-09
 ---
 
 # Rigid-body and cellular coupling
@@ -109,3 +109,35 @@ bounded gameplay approximation, not exact continuum mechanics or a guarantee
 for every fast/thin/rotating shape. Rationale lives in
 [ADR-007](../decisions/ADR-007-rigid-body-cellular-coupling.md) and
 [ADR-009](../decisions/ADR-009-rapier-2d-rigid-body-backend.md).
+
+## What did the measured barrel baseline establish?
+
+**Current, 2026-09-09 measured scope:** the [issue #9 report](../audits/2026-09-09-physics-characterisation.md)
+separates stored-cell displacement, boundary pressure, transient contact and
+Rapier hard-floor collision. Packed Sand does not stop an ordinary barrel before
+the deep hard floor. Contact feedback from retained masked grains can point
+downward: dispatch uses stored material, while kernel lookup sees the Wall proxy.
+This source path has a native characterization fixture; it is a measured defect
+hypothesis for successor implementation, not a new support contract.
+
+`record_impulse` clamps after each displacement/boundary addition; the final
+combined result is capped again after pixel contact. Opposing terms therefore
+cannot be assessed from a single final cap count. Diagnostic construction options
+and the unchanged nine-float result are described by the
+[measurement runbook](../operations/physics-characterisation.md). Raw impulses
+are not calibrated force or buoyancy. Disabling contact experimentally does not
+meet the half-depth impact target and does not implement static bearing.
+
+The global Water accounting control also reproduces a separate ejection-path
+defect: `find_ejection_target` checks the endpoint, allowing displacement across
+a one-cell hard floor. All Water remains in the finite World, but some leaves
+the bed's measurement crop. A one-cell fixture proves this without a cellular
+tick or Rapier step. This is not density exchange or loss of Water mass; #11
+needs a bounded barrier-aware displacement policy.
+
+## Sampled player support is a separate owner
+
+**Current:** the [granular/player policy](../systems/granular-interaction-policy.md)
+adds material-aware packing queries, directional collision and bounded enclosure
+recovery. The sampled character alone resolves those contacts. Rapier barrel
+bearing, masked-source feedback and barrier-aware ejection remain issue #11.

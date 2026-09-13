@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-12
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md]
 ---
 
@@ -18,7 +18,7 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 | Understand the engine | [Architecture overview](architecture/overview.md), then its focused ownership/threading/coupling links |
 | Answer one technical question | [Retrieval index](reference/retrieval-index.md) |
 | Change a material | [Rule kernels](systems/materials-and-rule-kernels.md), [Water](systems/water-design.md), [material lab](MATERIAL_LAB.md) |
-| Investigate powder penetration, barrel sinking or soliding | [Physics characterisation plan](operations/physics-characterisation-plan.md) (Planned experiments) |
+| Investigate powder penetration, barrel sinking or soliding | [Measured baseline tooling](operations/physics-characterisation.md), [dated results](audits/2026-09-09-physics-characterisation.md), [future soliding plan](operations/physics-characterisation-plan.md) |
 | Build or validate | [Build guide](operations/local-build-and-validation.md), [test selection](operations/testing-validation-and-replay.md), [dated evidence](reference/validation-evidence.md) |
 | Understand intent | [Product priorities](reference/product-intent-and-priorities.md), [principles](architecture/principles-and-non-goals.md), [ADRs](decisions) |
 | Maintain these docs | [Documentation and retrieval contract](operations/documentation-maintenance.md) |
@@ -74,3 +74,49 @@ The [coordinated issue #2 acceptance](audits/2026-09-08-issue-2-interest-regions
 records pause/re-entry, independent causes and combined failure/recovery validation.
 
 Current runtime/source gates and immutable M11 retention use [separate validation policies](operations/current-and-historical-validation.md).
+
+Current player support and pair exchange: [granular interaction policy](systems/granular-interaction-policy.md),
+[ADR-011](decisions/ADR-011-granular-interaction-policy.md) and
+[dated issue #10 acceptance](audits/2026-09-09-issue-10-granular-policy.md).
+
+
+## Issue #13 experiment checkpoint
+
+[Experiment Tower](operations/experiment-tower.md) provides the shared five-floor physics lab; [issue #13 evidence](audits/2026-09-09-issue-13-transport.md) separates its checkpoints and acceptance.
+
+
+The [transport profile editor](systems/flow-transport-and-profiles.md) shows effective
+settings/origins, saves editable user copies and applies through an explicit restart.
+
+## Issue #19 Water Feel Lab
+
+The [Water Feel Lab runbook](operations/experiment-tower.md#current-19-water-feel-lab-extension)
+and [completion evidence](audits/2026-09-12-issue-19-water-feel-lab.md) describe
+the Current H-ready four-level presentation and deterministic runtime Water-policy
+apparatus. The later human H study has not run; no production precision, packing,
+#18/#20 admission or G-final decision follows from #19.
+
+## Architecture experimental programme
+
+The [evidence-gated programme](operations/architecture-programme.md) coordinates Cell layout, liquid precision/history, fractional presentation and conditional sparse motion. It retains existing ADRs and reuses soliding issue #12; linked prompts are self-contained. This is Planned research, not a selected replacement architecture.
+
+## Completed architecture research
+
+[Programme staged gates](operations/architecture-programme.md#g-l-staged-decision-2026-09-11),
+[Cell research](operations/cell-layout-experiment.md) and the
+[reconciliation audit](audits/2026-09-11-programme-gate-reconciliation.md)
+distinguish evidence completion from production approval.
+
+[Completed liquid characterization](operations/liquid-characterization.md) and
+its [acceptance coverage](audits/2026-09-11-issue-15-coverage.md) explain the C gate
+and the distinction between sleep, mobility, cadence and Water rest.
+
+## Water precision research
+
+The [Issue17 registration](operations/state-precision-experiment.md) defines the isolated
+P1/P2/P3 native experiment. Its fixed8-byte carrier is research-only; production
+Water and Cell controls remain unchanged pending programme gates.
+
+[Completed precision results](audits/2026-09-11-issue-17-state-precision.md) and
+[staged G-P](operations/architecture-programme.md#g-p-staged-decision-2026-09-11)
+retain mass8, establish Water-only delay4, and keep downstream feature gates intact.

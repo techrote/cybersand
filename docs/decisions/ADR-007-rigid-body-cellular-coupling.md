@@ -6,7 +6,7 @@ status: Current
 scope: Accepted independent body representation and value-data coupling; rectangle proof is not generalized physics
 keywords: [ADR, body mask, remove restore pixels, two-way coupling, overlap, rigid body]
 related-documents: [../architecture/rigid-body-and-cellular-coupling.md, ADR-003-godot-bridge-and-immutable-snapshots.md, ADR-009-rapier-2d-rigid-body-backend.md]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-09
 ---
 
 # ADR-007: Separate rigid-body occupancy coupling
@@ -65,3 +65,17 @@ floors, displacement, stale/duplicate samples and observable unresolved overlap
 for the affected platform. The [evidence ledger](../reference/validation-evidence.md)
 scopes executed fixtures; exact level restoration is not exact coupled replay.
 Broader acceptance requires more than passing the existing three-body scene.
+
+## 2026-09-09 diagnostic checkpoint
+
+**Current:** [issue #9 measurements](../audits/2026-09-09-physics-characterisation.md)
+add bounded observation and isolated parameter fixtures without changing this
+ownership decision. Repeated masked-source contacts, per-add saturation and
+missing persistent bearing must be considered before selecting a support model.
+**Current:** #10's [granular policy](../systems/granular-interaction-policy.md)
+changes player and pair rules. **Planned:** #11 owns barrel changes; dynamic aggregates still need
+the explicit exclusive-ownership ADR described by the characterisation plan.
+
+## Issue #10 sampled support decision
+
+**Current:** The character owner alone resolves material-aware sampled support. No Rapier proxy or body bearing impulse is added. See the [granular/player policy](../systems/granular-interaction-policy.md).

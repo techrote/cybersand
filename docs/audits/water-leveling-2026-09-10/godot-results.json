@@ -1,0 +1,352 @@
+[
+  {
+    "name": "import",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--editor",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--import"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_auto_worker_policy",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_auto_worker_policy.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_cell_world",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_cell_world.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_experiment_tower",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_experiment_tower.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_interaction_async",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_interaction_async.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_interaction_policy",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_interaction_policy.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_material_appearance_lut",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_material_appearance_lut.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_native_edge_contact_regression",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_native_edge_contact_regression.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_native_fire_presentation_regression",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_native_fire_presentation_regression.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_native_render_bridge_regression",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_native_render_bridge_regression.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_physics_async",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_physics_async.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_physics_characterisation",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_physics_characterisation.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_physics_instrumentation",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_physics_instrumentation.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_presentation_controls",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_presentation_controls.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_rapier_backend_preflight",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_rapier_backend_preflight.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_rapier_drop_in",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_rapier_drop_in.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_rapier_manual_step",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_rapier_manual_step.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_render_patch_handoff_regression",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_render_patch_handoff_regression.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_tick_failure_regression",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_tick_failure_regression.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_transport_probe",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_transport_probe.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_transport_profiles",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_transport_profiles.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_web_demo_setup",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_web_demo_setup.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_web_rapier",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_web_rapier.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_web_worker_parity",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_web_worker_parity.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  },
+  {
+    "name": "test_worker_benchmark",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--path",
+      "C:\\kybersand\\validation\\local\\2026-09-10-water-leveling\\isolated-godot\\godot",
+      "--script",
+      "res://tests/test_worker_benchmark.gd"
+    ],
+    "exit": 0,
+    "passed": true,
+    "timeout_seconds": 240
+  }
+]

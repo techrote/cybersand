@@ -28,6 +28,7 @@ public:
                                                    std::int64_t vertical_delta) noexcept;
     [[nodiscard]] static bool is_free_leveling_liquid(Material material) noexcept;
     [[nodiscard]] static bool is_hard_surface(Material material) noexcept;
+    [[nodiscard]] static bool supports_granular_load(Material material) noexcept;
     [[nodiscard]] static bool has_pair_reactions(Material material) noexcept;
     [[nodiscard]] static std::optional<PairReactionResult> pair_reaction(
         Material source, Material target, std::uint8_t probability_roll) noexcept;

@@ -1,30 +1,41 @@
 {
   "version": 1,
   "frozen_date": "2026-09-08",
-  "purpose": "Supplementary source-discovered challenges added during the rewrite; reported separately from the frozen 32-question development set, without a before/after improvement claim. C03/C04 added for the coordinated implementation, reported separately from C01/C02. C05/C06 added for the physics characterisation plan; no runtime acceptance claim.",
+  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability.",
   "questions": [
     {
       "id": "C05",
       "query": "Why can powder pass through the player and Mercury pass through sand, and which tuning will help?",
-      "canonical": ["operations/physics-characterisation-plan.md"],
-      "facts": [
-        "Current player predicates accept hard surfaces and Sand specifically; other powders are absent.",
-        "Density exchange uses target permission and relative density; Mercury viscosity gates lateral motion, not downward exchange.",
-        "Pair permeability and granular support are proposed model changes; no runtime correction has been validated by the plan."
+      "canonical": [
+        "systems/granular-interaction-policy.md"
       ],
-      "sources": ["../native/src/material_rules.cpp", "../native/src/world.cpp", "../godot/native_extension/cyber_native_cell_world.cpp"]
+      "facts": [
+        "The issue #9 baseline used a hard-surface-or-Sand predicate; current version 1 supports nine explicit powders through stable local packing, with stricter side resistance.",
+        "Current powder/powder density swaps are forbidden; real void movement and density-eligible liquid exchange remain distinct.",
+        "Mercury's current independent 30-tick lane slows exchange, with delayed waking and no exclusion catch-up. Its viscosity still controls lateral motion."
+      ],
+      "sources": [
+        "../native/src/material_rules.cpp",
+        "../native/src/world.cpp",
+        "../godot/native_extension/cyber_native_cell_world.cpp"
+      ]
     },
     {
       "id": "C06",
       "query": "How will barrels stop sinking at half depth, and how can rested materials become reversible Rapier objects?",
-      "canonical": ["operations/physics-characterisation-plan.md"],
+      "canonical": [
+        "operations/physics-characterisation-plan.md"
+      ],
       "facts": [
         "Measure impact depth and long-term creep independently; capped pressure impulses do not establish static granular support.",
         "Soliding proceeds through diagnostics, stationary proxies and an explicit ownership ADR for dynamic aggregates.",
         "Promotion and demotion need bounded revision-checked handoffs, exclusive material ownership and conservation; erase/simulate/restore and per-cell physics objects remain rejected.",
         "These are Planned experiments and architecture candidates, not implemented support or ballistics."
       ],
-      "sources": ["../godot/native_extension/cyber_native_cell_world.cpp", "decisions/ADR-007-rigid-body-cellular-coupling.md"]
+      "sources": [
+        "../godot/native_extension/cyber_native_cell_world.cpp",
+        "decisions/ADR-007-rigid-body-cellular-coupling.md"
+      ]
     },
     {
       "id": "C01",
@@ -91,7 +102,172 @@
       "sources": [
         "../native/src/world.cpp::World::begin_tick,World::gather_active_cores"
       ]
+    },
+    {
+      "id": "C07",
+      "query": "Does raising Mercury viscosity slow downward penetration through packed Sand in the measured fixtures?",
+      "canonical": [
+        "operations/physics-characterisation.md",
+        "systems/materials-and-rule-kernels.md"
+      ],
+      "facts": [
+        "In the historical issue #9 baseline, viscosity 96/160/224/248 gives identical confined vertical hashes and 32-tick breakthrough.",
+        "That baseline's isolated exchange veto is diagnostic only; current version 1 instead uses an independent 30-tick opportunity lane.",
+        "The dated reports separate source/artifact identities and screening budgets; period 30 gives 960-tick breakthrough in the current canonical bed."
+      ],
+      "sources": [
+        "../native/src/world.cpp",
+        "../tools/physics/run.py"
+      ]
+    },
+    {
+      "id": "C08",
+      "query": "Does a barrel that stops at the bottom of a deep bed prove stable half-depth granular support?",
+      "canonical": [
+        "operations/physics-characterisation.md",
+        "architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "facts": [
+        "Depth uses the pre-impact datum plus a separate local deformed surface.",
+        "Hard-floor contact censors late creep; floor rest is not granular bearing.",
+        "The contact-off candidate is diagnostic only and still exceeds the provisional impact envelope."
+      ],
+      "sources": [
+        "../godot/scripts/physics_characterisation.gd"
+      ]
+    },
+    {
+      "id": "C09",
+      "query": "Why can retained powder inside a barrel generate downward impulses, and is increasing the cap sufficient?",
+      "canonical": [
+        "architecture/rigid-body-and-cellular-coupling.md",
+        "operations/physics-characterisation.md"
+      ],
+      "facts": [
+        "Stored powder selects the update kernel, but masked lookup sees the Wall proxy; repeated attempted downward moves create contacts.",
+        "Per-add and final saturation must be distinguished from accepted age-scaled impulses.",
+        "Cap increases alone did not establish support; masked-source feedback remains issue #11, outside the current player/exchange policy."
+      ],
+      "sources": [
+        "../native/src/world.cpp",
+        "../godot/native_extension/cyber_native_cell_world.cpp"
+      ]
+    },
+    {
+      "id": "C10",
+      "query": "Did the barrel destroy the Water missing from the measured bed, or move it through the hard floor?",
+      "canonical": [
+        "operations/physics-characterisation.md",
+        "architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "facts": [
+        "The five-seed full-world accounting control preserves 9,400,320 Water mass units; all cropped deficit is below the floor.",
+        "Body ejection checks the empty endpoint without an intervening barrier check; the minimal fixture reproduces this before any tick or Rapier step.",
+        "This is a separate displacement-path defect, not chemical conversion, density exchange, or destruction of Water."
+      ],
+      "sources": [
+        "../godot/native_extension/cyber_native_cell_world.cpp::find_ejection_target",
+        "../godot/tests/test_physics_instrumentation.gd"
+      ]
+    },
+    {
+      "id": "C11",
+      "query": "Which current powders support a player, how do side resistance and enclosed-spawn recovery work, and why do loose grains still fall?",
+      "canonical": [
+        "systems/granular-interaction-policy.md"
+      ],
+      "facts": [
+        "Sand, Stone, Dust, Seed, Salt, Sodium, Gunpowder, Coal and Rust have explicit capability independent of density and hard identity.",
+        "Downward support needs 8/9 stable samples below the contact; side/head resistance additionally needs 9/9 centred samples.",
+        "Recovery tests at most 128 axis candidates within 32 cells, preserves cells, and explicitly blocks if no escape exists; it does not prove global connectivity or barrel bearing."
+      ],
+      "sources": [
+        "../native/src/world.cpp::World::granular_support_at",
+        "../godot/scripts/sampled_character.gd"
+      ]
+    },
+    {
+      "id": "C12",
+      "query": "How does the current Mercury permeability rate survive sleep and region exclusion without alternate attempts multiplying moves?",
+      "canonical": [
+        "systems/granular-interaction-policy.md",
+        "systems/activity-dirty-regions-and-waking.md"
+      ],
+      "facts": [
+        "Either liquid/powder initiator shares the global 30-tick lane; written destinations cannot be reused, while Empty motion bypasses the exchange gate.",
+        "Each source block stores its earliest due tick, woken by the existing healthy tick metadata pass; excluded blocks retain deadlines without catch-up.",
+        "Intact braced Stone is protected, other listed liquids keep explicit full-rate/Oil policies, and failed-world recovery discards deadlines with the old world."
+      ],
+      "sources": [
+        "../native/src/world.cpp::World::exchange_permitted,World::begin_tick",
+        "../native/include/cybersand/interaction_policy.hpp"
+      ]
+    },
+    {
+      "id": "C13",
+      "query": "How do I author, validate and restart an Experiment Tower tuning profile, and which owner installs it?",
+      "canonical": [
+        "systems/flow-transport-and-profiles.md",
+        "operations/experiment-tower.md"
+      ],
+      "facts": [
+        "Version 1 profiles resolve defaults, family, material and explicit directed or symmetric pairs before tick work.",
+        "Desktop exclusive worker or synchronous Web owner installs a validated replacement; rejected candidates preserve the running world.",
+        "Profiles and resolved hashes are separate from CYSD1; ordinary gameplay stays Baseline."
+      ],
+      "sources": [
+        "../godot/scripts/transport_profiles.gd",
+        "../godot/native_extension/cyber_demo_bridge.hpp"
+      ]
+    },
+    {
+      "id": "C14",
+      "query": "Does one horizontal sample preserve transport strength and improve total tick time, and can powder mixing be disabled separately?",
+      "canonical": [
+        "systems/flow-transport-and-profiles.md",
+        "operations/experiment-tower.md"
+      ],
+      "facts": [
+        "Sampling uses one existing deterministic candidate and does not compensate carrying strength.",
+        "Powder mixing is independent from Water carrying and only follows real powder movement.",
+        "Measure probes, transferred mass, active blocks, visited cells and total tick cost; reduced sampling is opt-in and no general speedup is claimed."
+      ],
+      "sources": [
+        "../native/src/world.cpp::World::update_water,World::mix_after_motion",
+        "../tools/physics/transport_matrix.py"
+      ]
+    },
+    {
+      "id": "C15",
+      "query": "Why does burning Coal leave a purple layer, and is that ash or another material?",
+      "canonical": [
+        "systems/materials-and-rule-kernels.md"
+      ],
+      "facts": [
+        "Burned-out Coal converts to Dust (14), whose RGBA color is 218,198,238,255.",
+        "Dust is the current residue; there is no separate Ash material. No reaction or fire cadence was changed for the Water follow-up."
+      ],
+      "sources": [
+        "../native/src/world.cpp::World::update_rule_kernel",
+        "../native/include/cybersand/material.hpp"
+      ]
+    },
+    {
+      "id": "C16",
+      "query": "How was Water sideways flow made faster, and do the older transport profile hashes guarantee the same leveling?",
+      "canonical": [
+        "systems/water-design.md"
+      ],
+      "facts": [
+        "Water now requests three quarters of a lateral mass difference, with the same one-unit tolerance, two candidates, viscosity, film and coherence rules.",
+        "Water traces intentionally differ from the half-difference baseline, and optional grain pickup changes with actual flux.",
+        "Schema and resolved profile hashes remain unchanged; exact behavior requires source and artifact identity too."
+      ],
+      "sources": [
+        "../native/src/world.cpp::World::update_water",
+        "../native/bench/water_leveling.cpp"
+      ]
     }
   ],
-  "expectations_reviewed": "2026-09-08: issues #1/#2 change expected facts, original query wording retained; lexical metrics are not frozen-answer improvement claims."
+  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged."
 }

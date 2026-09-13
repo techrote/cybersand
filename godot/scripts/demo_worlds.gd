@@ -3,14 +3,15 @@ extends RefCounted
 
 # Construction commands only: x, y, width, height, material ID. The native
 # adapter assigns the material's real initial state and runs the M11 solver.
-const IDS: Array[String] = ["material_lab", "waterworks", "foundry", "neon_works", "physics_pit"]
-const TITLES: Array[String] = ["Material Lab", "Waterworks", "Foundry", "Neon Works", "Physics Pit"]
+const IDS: Array[String] = ["material_lab", "waterworks", "foundry", "neon_works", "physics_pit", "experiment_tower"]
+const TITLES: Array[String] = ["Material Lab", "Waterworks", "Foundry", "Neon Works", "Physics Pit", "Experiment Tower"]
 const DESCRIPTIONS: Array[String] = [
 	"79 materials. Paint, erase, and mix them.",
 	"Reservoirs, slope films, viscosity, and rising gas.",
 	"Combustion, molten materials, and blast-driven collapse.",
 	"Industrial surfaces, glass, wet metal, and emissive finishes.",
 	"Rapier rectangles, thin terrain, and cellular coupling.",
+	"Five floors of reproducible physics and chemistry observations. Starts paused.",
 ]
 
 static func valid_id(id: String) -> bool:
@@ -21,6 +22,8 @@ static func title(id: String) -> String:
 	return TITLES[index] if index >= 0 else "Unknown demo"
 
 static func spawn(_id: String) -> Vector2:
+	if _id == "experiment_tower":
+		return CyberExperimentTower.landing(0)
 	return Vector2(24, 222)
 
 static func _rect(out: PackedInt32Array, x: int, y: int, w: int, h: int, material: int) -> void:
@@ -34,6 +37,8 @@ static func _tank(out: PackedInt32Array, x: int, y: int, w: int, h: int, shell: 
 		_rect(out, x + 3, y + h - 3 - depth, w - 6, depth, liquid)
 
 static func rectangles(id: String) -> PackedInt32Array:
+	if id == "experiment_tower":
+		return CyberExperimentTower.rectangles()
 	var out: PackedInt32Array = PackedInt32Array()
 	if not valid_id(id):
 		return out

@@ -136,6 +136,13 @@ broad streamed loading/eviction until local material behavior is mature.
 
 ## Approved expansion and unresolved policy
 
+**Current granular interaction state:** a source block's pending Mercury deadline
+is retained while excluded. Due included blocks wake in the existing metadata
+pass; re-entry evaluates the current global lane without accumulated motion.
+Failed-world quarantine still blocks tick entry, and recovery discards old
+deadlines. See [activity](activity-dirty-regions-and-waking.md) and the
+[pair policy](granular-interaction-policy.md) for ownership and bounds.
+
 [ADR-004](../decisions/ADR-004-interest-region-and-reconfiguration.md) approves
 explicit serializable interest/capacity policy and a safe boundary for expansion.
 The proposed 10% horizontal/20% vertical margins have no frozen per-side-versus-total
@@ -150,3 +157,12 @@ movement under insufficient capacity, multiple interest sources, and separate
 render margins. **Rejected:** silently clipping a requested production region
 to hide capacity failure, hidden hot allocation as expansion policy, or treating
 the finite demo dimensions as the permanent world limit.
+
+## Issue17 experimental carrier
+
+The [precision experiment](../operations/state-precision-experiment.md) reuses
+validated uint64 mask/shift storage with fixed size/stride/alignment8/8/8 and epoch8
+for every arm. Its dedicated branch uses spare40-bit state capacity for mass10;
+this does not change the current4-byte production baseline pending G-final.
+[G-P evidence](../audits/2026-09-11-issue-17-state-precision.md) selects no permanent
+Cell layout, sidecar, larger ID catalogue or storage/scheduler geometry.

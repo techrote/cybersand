@@ -4,8 +4,8 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-09-08
-related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md]
+last-reviewed: 2026-09-12
+related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md]
 ---
 
 # Status and foundational roadmap
@@ -73,11 +73,16 @@ See [principles](../architecture/principles-and-non-goals.md) and the [ADRs](../
 
 ## Next implementation checkpoints
 
-The [physics characterisation and soliding plan](../operations/physics-characterisation-plan.md)
-is **Planned** work for powder exchange/player support, slow Mercury penetration,
-barrel embedding without creep, and eventual reversible macro objects. Begin
-with measured fixtures; soliding requires an explicit ownership decision before
-dynamic membership handoff. It does not supersede the Current F01/F02 contracts.
+**Current:** the [issue #9 measured baseline](../audits/2026-09-09-physics-characterisation.md)
+and [reproducible tooling](../operations/physics-characterisation.md) establish
+density-exchange, player-sampling and barrel-feedback evidence. Issue #10 now
+implements the [versioned player and exchange policy](../systems/granular-interaction-policy.md).
+Issue #11 retains **Planned** barrel work: masked-source feedback, barrier-aware
+ejection and persistent bearing. Raising barrel impulse caps alone does not
+provide the intended behavior. The
+[soliding plan](../operations/physics-characterisation-plan.md) still requires an
+explicit ownership decision before dynamic membership handoff. Current F01/F02
+contracts and the separate runtime publication gate remain applicable.
 
 1. Preserve the implemented F01 quarantine and F02 pause/re-entry contracts and
    their combined regressions; extend the documented platform/failure-site gaps
@@ -90,3 +95,106 @@ dynamic membership handoff. It does not supersede the Current F01/F02 contracts.
 CI/provenance repair can be a separate bounded prerequisite for release-quality
 builds. The earlier M11 checkpoint sequence and reported rollback archives remain
 [historical records](../audits/pre-rag-rewrite-2026-09-08/README.md), not newly verified recovery points.
+
+## Issue #10 player and exchange checkpoint
+
+**Current:** Material-aware player support, separate side resistance, bounded
+enclosure recovery, powder-pair exclusion and scheduled Mercury permeability are
+implemented. The [dated evidence](../audits/2026-09-09-issue-10-granular-policy.md)
+records parameter screening, native/fallback/desktop/Web execution and remaining
+publication/platform limits. Barrel feedback/bearing/ejection stays in issue #11.
+
+## Issue #13 experiment checkpoint
+
+**Current:** shared five-floor Experiment Tower, frozen pre-change references,
+validated editable profiles, optional motion-driven transport and measured
+horizontal sampling. Desktop and both native Web profiles execute the lab.
+[Issue #13 evidence](../audits/2026-09-09-issue-13-transport.md) distinguishes
+regression results, measured transport changes, visual observations and remaining
+owner feel/performance limits. Baseline remains the gameplay default. Chemistry
+retuning, barrel #11 and soliding #12 remain separate.
+
+The Tower is also the Current base for #19's Water Feel Lab extension. #13's
+existing evidence and recipes remain unchanged historical/current controls.
+
+## Issue #19 Water Feel Lab checkpoint
+
+**Current, 2026-09-12:** V1 four-level/oriented presentation and V2 H-preparation
+are complete. One normalized runtime policy covers semantic mass3..8,
+coherence0..12, presentation/interface mode, deterministic scenario/seed and
+provenance. The existing Tower now exposes 35 deterministic Water scenarios,
+transactional Apply + Reset and reconstructible blind/export controls. Native,
+full Windows Godot, actual GPU and real Chrome compatibility/threaded gates pass.
+See the [completion evidence](../audits/2026-09-12-issue-19-water-feel-lab.md).
+
+This checkpoint is **H-ready**, not an H result: mass8/coherence12 remain the
+production/reference control, no preferred candidate or production packing was
+selected, #18 remains held, #20 remains downstream and G-final remains open.
+
+## Opt-in transport profiles
+
+**Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
+owns schema, inheritance, units, immutable native tables and explicit owner restart.
+The Tower applies validated profiles through restart. Actual powder falls and
+lateral Water mass transport drive bounded optional mixing and grain pickup;
+horizontal sampling and cadence are separate fixed experiments.
+The [September 10 Water follow-up](../audits/2026-09-10-water-leveling.md) increases
+default lateral relaxation after owner feedback. Historical #13 Water traces are
+preserved; the new source identity owns its changed front/erosion behavior.
+Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
+are unchanged. No unsynchronized live descriptor mutation is introduced.
+
+## Architecture investigation after the Water checkpoint
+
+**Planned:** the [architecture programme](../operations/architecture-programme.md)
+and its dated [Water-feel addendum](../operations/architecture-programme-water-feel-addendum.md)
+isolate raw Cell layout/epoch cost, liquid characterization, quantitative precision,
+presentation, human-test preparation and conditional compact motion before any
+policy migration. Sparse ballistic implementation still requires admission evidence;
+coherent soliding reuses #12. No 4/8-byte winner, liquid unification or representation
+ladder is adopted. GitHub #11 is closed while this source still records its missing
+barrel work; support-dependent integration requires actual source/evidence reconciliation.
+
+## Architecture gate reconciliation, 2026-09-11
+
+**Current programme state:** G-L, G-C and G-P are complete. #16 research is complete;
+the current 4-byte Cell remains the baseline pending G-final, not a permanent width
+selection. #17 retains mass8 as the numerical/reference Water control and proves
+existing Water coherence 0..12 fits exactly in four semantic bits. No production
+Water precision or Cell layout migration is authorized.
+
+Following G-P, owner intent clarified the role of precision work: lower Water
+precision primarily exists to investigate flexible material-state budgets, while
+performance is secondary. Quantitative differences therefore describe what changes
+but do not by themselves determine gameplay desirability. The dated
+[post-G-P Water-feel refinement](../operations/architecture-programme-water-feel-addendum.md)
+records the governing rule that **quantitative equivalence and perceptual adequacy
+are separate gates**.
+
+#19 completed its expansion from presentation-only V into **V plus H-preparation**. Its
+[first-stage contract](../operations/architecture-programme-prompts/fractional-presentation.md)
+established the intended four-visible-level fractional presentation and left
+a verified Water Feel Lab with deterministic scenarios, runtime semantic policies,
+A/B/blind support and #17 correspondence. Available later human-test semantic axes include
+mass3..8 and coherent duration0..12 without recompilation; this is semantic emulation
+in a superset experimental representation, not production repacking.
+
+#19 completion is **H-ready**, not evidence that a preferred Water model has been selected.
+The later human-led H gate will use the real apparatus to classify candidates and,
+where applicable, name a perceptual motion deficit. #18/M remains held until such
+a concrete directional-persistence target is justified, or may complete by reasoned
+no-go. #20/B remains dependent on #18/G-M and its own admission. #14/G-final remains open.
+
+See the earlier [identity and scope audit](../audits/2026-09-11-programme-gate-reconciliation.md)
+for the pre-refinement reconciliation; the Water-feel addendum is the later dated
+planning authority for the affected #19/#18 ordering.
+
+## Issue17 precision completion
+
+[G-P is complete](../operations/architecture-programme.md#g-p-staged-decision-2026-09-11)
+with [exact fixed-carrier evidence](../audits/2026-09-11-issue-17-state-precision.md).
+Mass8 remains the numerical reference; Water delay4 is an exact storage budget for
+current 0..12 coherence semantics. That result is **not retracted** by the later
+Water-feel refinement. Instead, #19/H-preparation uses it as the quantitative oracle
+against which runtime mass4/6/8 controls are checked before novel mass3/5/7 and
+shortened-coherence candidates are offered for human testing. No production migration.

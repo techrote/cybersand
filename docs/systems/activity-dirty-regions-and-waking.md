@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [cell-activity-sleep-wake, simulation-render-dirty-state]
 status: Current
 scope: Native activity and dirty-state lifecycle; separate fallback behavior and future wake requirements
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-10
 related-documents: [world-storage-and-interest-region.md, materials-and-rule-kernels.md, ../architecture/chunk-tile-and-buffer-model.md, ../architecture/rendering-and-gameplay-bridges.md]
 ---
 
@@ -23,7 +23,7 @@ checks and platform limits belong to the [evidence ledger](../reference/validati
 ## Native activity lifecycle
 
 [World](../../native/src/world.cpp) owns `Chunk::ActivityBlock` metadata:
-`active`, `changed_this_tick`, and `quiet_ticks`. The default 32×32 activity
+`active`, `changed_this_tick`, `quiet_ticks`, and `next_interaction_tick`. The default 32×32 activity
 block is independent of the 64×64 scheduling core and 128×128 storage chunk;
 [configuration](../reference/configuration-reference.md) owns exact defaults.
 
@@ -57,6 +57,14 @@ cell write.
 
 Explosion edits and transient-obstacle changes use explicit wake paths.
 Settled Water can become inactive; render dithering does not wake it.
+
+**Current:** a denied slow Mercury pair records the earliest due tick in its
+source block. The existing `begin_tick` metadata pass wakes due included blocks
+and clears their deadline. Sleeping blocks therefore progress without a periodic
+cell scan. Excluded deadlines remain pending; re-entry evaluates only the current
+modulo lane, with no missed-move catch-up. Clear/replacement discards these
+deadlines and failed-world quarantine prevents their processing. The
+[versioned pair policy](granular-interaction-policy.md) owns rate and endpoint rules.
 
 **Current:** newly included cores wake their resident blocks once, including
 sleeping blocks. Existing overlap and unchanged/equivalent regions stay asleep.
@@ -95,6 +103,10 @@ sparse free flight advances isolated eligible cells two positions on alternate
 ticks above its active-block threshold; it is not broad block deferral. These
 fallback semantics do not describe native/Web geometry or native re-entry.
 
+Fallback stores one deadline per fixed block. A due included block is woken and
+its per-cell quiet counters reset within that block; excluded blocks retain the
+deadline. This bounded local cell reset differs from native block-only quiet state.
+
 ## Approved requirements and open work
 
 **Approved:** new fields/events must declare wake reach, quiet eligibility,
@@ -112,3 +124,22 @@ reach changes. Issue #2 regressions cover exclusion, sleep, overlapping/disjoint
 re-entry, core/chunk boundaries, unchanged/coalesced regions, neighbors, retained
 temperature, conservation, worker parity and failed-world recovery. These are
 bounded fixtures, not every future field or material combination.
+
+## How does optional lateral cadence wake work?
+
+**Current:** [transport profiles](flow-transport-and-profiles.md) gate lateral
+liquid attempts with coordinate-stable phases and the existing earliest
+per-block interaction deadline. Cadence 1 adds no delay; 2..60 can wake a blocked
+liquid again even when no transport results. There is no separate queue, elapsed
+excluded-work catch-up or motion inferred from wake flags. The new CLI resident
+active-block count includes excluded blocks; scheduled-core/visited-cell counters
+remain separate measures of tick work. Fixed-profile tests retain failed-world
+quarantine, exclusion and one-step re-entry under extreme sampling/cadence.
+
+## Characterized sleep versus liquid mobility
+
+The [completed quiet3/4096 study](../operations/liquid-characterization.md#does-keeping-water-awake-fix-residual-leveling-or-films)
+separates scheduler-censored deterministic mobility from material cadence and
+stable Water rest. Four tested whole-cell trajectories differ, while all tested
+Water trajectories match. This scoped observation does not change default sleep,
+Mercury deadlines, pause/re-entry or production instrumentation.

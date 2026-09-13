@@ -14,13 +14,26 @@
 #include <stdexcept>
 #include <string_view>
 #include <thread>
+#include <utility>
 #include <vector>
+
+namespace cybersand {
+class PrecisionProbe {
+public:
+    static std::uint16_t transfer(World& world, std::int64_t from_x, std::int64_t from_y,
+                                  std::int64_t to_x, std::int64_t to_y,
+                                  std::uint16_t requested) {
+        return world.transfer_water(from_x, from_y, to_x, to_y, requested, nullptr);
+    }
+};
+}  // namespace cybersand
 
 namespace {
 
 using cybersand::Material;
 using cybersand::World;
 using cybersand::WorldConfig;
+using cybersand::WaterExperimentPolicy;
 
 void require(bool condition, std::string_view message) {
     if (!condition) throw std::runtime_error(std::string(message));
@@ -247,6 +260,35 @@ void test_conserved_water_levels_and_sleeps() {
     }
     require(world.content_hash() == settled_hash, "settled water continued changing");
     require(world.active_chunk_count() == 0, "settled water did not sleep");
+}
+
+void test_water_lateral_front_and_leveling_speed() {
+    for(int width:{48,96})for(bool mirror:{false,true})for(int workers:{1,4}) {
+        WorldConfig c;c.worker_threads=workers;c.parallel_job_threshold=1;
+        c.maximum_chunk_count=64;c.active_chunk_capacity=64;c.active_core_capacity=512;
+        World w(c);w.reserve_region({-193,-193,512,512});
+        auto put=[&](int x,int y,Material m){w.set(x-65,y-65,m);};
+        for(int x=0;x<=width+1;++x){put(x,0,Material::Wall);put(x,47,Material::Wall);}
+        for(int y=0;y<48;++y){put(0,y,Material::Wall);put(width+1,y,Material::Wall);}
+        for(int x=1;x<=12;++x)for(int y=15;y<=46;++y)put(mirror ? width+1-x:x,y,Material::Water);
+        for(int tick=1;tick<=600;++tick) {
+            const auto stats=w.tick();
+            require(stats.chunk_allocations==0&&stats.temperature_field_allocations==0,"leveling allocated prepared storage");
+            require(total_liquid(w,-64,-64,width-65,-19)==12U*32U*255U,"leveling lost mass");
+            if(tick==300&&width==96) {
+                const auto start=mirror ? 1 : 72;
+                require(total_liquid(w,start-65,-64,(mirror ? 25 : 96)-65,-19)>=128,"Water lateral front is too slow");
+            }
+        }
+        if(width==48) {
+            std::uint64_t low=std::numeric_limits<std::uint64_t>::max(),high=0;
+            for(int x=1;x<=width;++x) {
+                const auto mass=total_liquid(w,x-65,-64,x-65,-19);
+                low=std::min(low,mass);high=std::max(high,mass);
+            }
+            require(high-low<=255,"Water basin leveling is too slow");
+        }
+    }
 }
 
 void test_water_surface_column_mass_is_level() {
@@ -911,11 +953,29 @@ void test_sleeping() {
 
 // Issue #1: promote the preserved capacity-after-explosion diagnostic into a
 // contract regression. The failed attempt is observable, but cannot be retried.
+WorldConfig transport_config(int mode,int workers=1) {
+    WorldConfig c;c.worker_threads=workers;c.parallel_job_threshold=1;
+    c.active_core_capacity=512;c.maximum_chunk_count=64;c.active_chunk_capacity=64;
+    c.physics_diagnostics.enabled=true;c.transport_policy.configured=true;
+    for(auto a: {2,13,14,19,23,25,26,27,29}) {
+        for(auto b: {2,13,14,19,23,25,26,27,29})
+            c.transport_policy.pairs[a*81+b].mixing=mode ? 96 : 0;
+        c.transport_policy.pairs[33*81+a].permeability=30;
+        c.transport_policy.pairs[a*81+33].permeability=30;
+    }
+    for(auto grain:{2,14,29}) {
+        auto& p=c.transport_policy.pairs[3*81+grain];p.carrying=mode ? 255 : 0;p.erosion=mode==2;
+    }
+    return c;
+}
+
+
 void test_failed_tick_stops_until_clear() {
     for (const auto backend : {cybersand::SimulationBackend::SerialInPlace,
                                cybersand::SimulationBackend::PhasedInPlace}) {
-        for (const bool with_event : {false, true}) {
-            WorldConfig config{};
+        for (const bool with_event : {false, true}) for (bool tuned : {false,true}) {
+            WorldConfig config=tuned ? transport_config(2,1) : WorldConfig{};
+            if(tuned) {config.transport_policy.horizontal[3]=1;config.transport_policy.cadence[3]=60;}
             config.backend = backend;
             config.active_core_capacity = 1;
             config.active_chunk_capacity = backend == cybersand::SimulationBackend::SerialInPlace ? 1 : 8;
@@ -1150,8 +1210,9 @@ void test_interest_conservation_and_worker_determinism() {
 
 void test_interest_failed_tick_recovery() {
     for (const std::uint32_t workers : {1U, 4U}) {
-        for (const bool with_event : {false, true}) {
-            WorldConfig config{};
+        for (const bool with_event : {false, true}) for (bool tuned : {false,true}) {
+            WorldConfig config=tuned ? transport_config(2,1) : WorldConfig{};
+            if(tuned) {config.transport_policy.horizontal[3]=1;config.transport_policy.cadence[3]=60;}
             config.worker_threads = workers;
             config.parallel_job_threshold = 1;
             config.active_core_capacity = 1;
@@ -1280,6 +1341,40 @@ void test_immutable_render_snapshot_exchange() {
     require(surviving_lease.has_value() && surviving_lease->cells().size() == 2 &&
                 surviving_lease->cells()[0] == static_cast<std::uint8_t>(Material::Sand),
             "C++ lease did not retain immutable slot ownership after exchange destruction");
+
+    for (const auto bits : {std::uint8_t{3}, std::uint8_t{4}}) {
+        WorldConfig water_config{};
+        water_config.water_experiment_policy = WaterExperimentPolicy(bits, 12U);
+        World water_world(water_config);
+        cybersand::RenderSnapshotExchange water_exchange(2, 1, 8);
+        const auto& policy = water_world.config().water_experiment_policy;
+        require(water_world.set_cell_state(3, 4, Material::Water,
+                                           policy.maximum(), 0U),
+                "nondefault Water full-publication setup failed");
+        require(water_exchange.publish(water_world).status ==
+                    cybersand::RenderPublishStatus::Published,
+                "nondefault Water initial publication failed");
+        auto full_mass = water_exchange.acquire_latest();
+        require(full_mass.has_value() && full_mass->cells().size() == 2 &&
+                    full_mass->cells()[0] == static_cast<std::uint8_t>(Material::Water) &&
+                    full_mass->cells()[1] == 255U,
+                "nondefault Water initial publication was not normalized");
+        full_mass->reset();
+
+        const auto candidate_mass = static_cast<std::uint16_t>(
+            policy.maximum() / 2U);
+        require(water_world.set_cell_state(3, 4, Material::Water,
+                                           candidate_mass, 0U),
+                "nondefault Water dirty-patch mutation failed");
+        require(water_exchange.publish(water_world).status ==
+                    cybersand::RenderPublishStatus::Published,
+                "nondefault Water dirty-patch publication failed");
+        auto dirty_mass = water_exchange.acquire_latest(1U);
+        require(dirty_mass.has_value() && dirty_mass->cells().size() == 2 &&
+                    dirty_mass->cells()[0] == static_cast<std::uint8_t>(Material::Water) &&
+                    dirty_mass->cells()[1] == policy.normalized_mass(candidate_mass),
+                "nondefault Water dirty patch used the default mass lattice");
+    }
 }
 
 void test_render_snapshot_concurrent_leases() {
@@ -1638,12 +1733,639 @@ void test_themed_combustibles_reuse_bounded_kernel() {
 
 }  // namespace
 
+void test_physics_diagnostics_observational() {
+    cybersand::WorldConfig base;
+    base.parallel_job_threshold = 1;
+    base.active_core_capacity = 1024;
+    auto observed = base;
+    observed.physics_diagnostics.enabled = true;
+    auto multi = observed;
+    multi.worker_threads = 4;
+    cybersand::World plain(base), diagnostic(observed), workers(multi);
+    for (auto* world : {&plain, &diagnostic, &workers}) {
+        world->reserve_region({-128, -128, 384, 384});
+        for (int x = 48; x < 145; ++x) {
+            world->set(x, 96, cybersand::Material::Wall);
+            for (int y = 48; y < 96; ++y)
+                world->set(x, y, y < 64 ? cybersand::Material::Sand : cybersand::Material::Dust);
+        }
+        world->set(70, 30, cybersand::Material::Water);
+        world->set(71, 30, cybersand::Material::Salt);
+    }
+    for (int tick = 0; tick < 240; ++tick) {
+        (void)plain.tick(); (void)diagnostic.tick(); (void)workers.tick();
+        require(plain.state_hash() == diagnostic.state_hash(), "telemetry changed cellular state");
+        require(plain.state_hash() == workers.state_hash(), "telemetry changed worker parity");
+        for (int y = 28; y <= 100; ++y) for (int x = 44; x <= 149; ++x) {
+            require(plain.stored_material(x,y) == workers.stored_material(x,y) &&
+                    plain.stored_state_a(x,y) == workers.stored_state_a(x,y) &&
+                    plain.stored_state_b(x,y) == workers.stored_state_b(x,y),
+                    "diagnostic exact cell/state comparison failed");
+        }
+    }
+    require(plain.physics_diagnostics() == nullptr, "default telemetry allocated");
+    const auto& one = *diagnostic.physics_diagnostics();
+    const auto& four = *workers.physics_diagnostics();
+    require(one.overflow == 0 && four.overflow == 0, "fixture histogram overflow");
+    bool swap = false, conversion = false;
+    for (const auto& entry : one.entries) {
+        if (!entry.key) continue;
+        bool found = false;
+        for (const auto& other : four.entries) if (entry.key == other.key) {
+            require(entry.count == other.count, "worker histogram mismatch"); found = true; break;
+        }
+        require(found, "worker histogram missing key");
+        swap |= (entry.key >> 24U) == static_cast<unsigned>(cybersand::PhysicsEvent::DensitySwap);
+        conversion |= (entry.key >> 24U) == static_cast<unsigned>(cybersand::PhysicsEvent::Conversion);
+    }
+    require(swap && conversion, "fixture did not exercise transport and chemistry");
+    diagnostic.clear();
+    require(diagnostic.physics_diagnostics()->used == 0, "clear retained diagnostic counters");
+    cybersand::PhysicsHistogram<2> bounded;
+    bounded.add(1); bounded.add(2); bounded.add(3);
+    require(bounded.used == 2 && bounded.overflow == 1, "telemetry overflow is not explicit");
+}
+
+void test_physics_diagnostic_controls() {
+    cybersand::WorldConfig config;
+    // Keep the full-rate baseline as an explicit viscosity isolation control.
+    config.interaction_policy.mercury_exchange_period = 1;
+    config.active_core_capacity = 1024;
+    config.physics_diagnostics.enabled = true;
+    auto viscous = config; viscous.physics_diagnostics.mercury_viscosity = 248;
+    auto off = config; off.physics_diagnostics.disable_powder_exchange_targets = true;
+    cybersand::World baseline(config), viscosity(viscous), blocked(off);
+    for (auto* world : {&baseline, &viscosity, &blocked}) {
+        for (int y = 0; y <= 64; ++y) {
+            world->set(0,y,cybersand::Material::Wall); world->set(2,y,cybersand::Material::Wall);
+            if (y >= 16) world->set(1,y,cybersand::Material::Sand);
+        }
+        world->set(1,64,cybersand::Material::Wall);
+        world->set(1,15,cybersand::Material::Mercury);
+    }
+    for (int tick = 0; tick < 120; ++tick) {
+        (void)baseline.tick(); (void)viscosity.tick(); (void)blocked.tick();
+        require(baseline.state_hash() == viscosity.state_hash(), "viscosity affected confined vertical penetration");
+    }
+    require(baseline.get(1,63) == cybersand::Material::Mercury, "Mercury did not penetrate packed Sand");
+    require(blocked.get(1,15) == cybersand::Material::Mercury, "target diagnostic switch did not isolate exchange");
+}
+
+void test_physics_masked_source_characterisation() {
+    // A measured baseline, not a desired rule: retained Sand selects a powder
+    // kernel, but get() returns the body's Wall proxy inside that kernel.
+    // Successors #10/#11 must update this fixture if they change that policy.
+    cybersand::WorldConfig config;
+    config.physics_diagnostics.enabled = true;
+    cybersand::World world(config);
+    world.set(100,100,cybersand::Material::Sand);
+    world.configure_transient_obstacles({96,96,16,16});
+    for (int y=99;y<=102;++y) for(int x=98;x<=102;++x)
+        require(world.set_transient_obstacle(x,y,1), "body fixture mask failed");
+    (void)world.tick();
+    require(world.stored_material(100,100)==cybersand::Material::Sand, "masked grain was lost");
+    require(world.transient_contact_count(1)==3, "masked source baseline contact opportunities changed");
+    require(world.transient_contact_impulse_y(1)==4800, "masked Wall proxy baseline weighting changed");
+    std::cout << "masked-Sand baseline: 3 downward contact attempts, raw y=4800; stored Sand retained\n";
+}
+
+void test_granular_player_support_policy() {
+    for (const auto& definition : cybersand::MaterialRules::descriptors()) {
+        const auto material = static_cast<Material>(&definition - cybersand::kMaterialDefinitions.data());
+        if (!cybersand::MaterialRules::supports_granular_load(material)) continue;
+        World world;
+        for (int x=48; x<80; ++x) {
+            world.set(x,104,Material::Wall);
+            for (int y=100; y<104; ++y) world.set(x,y,material);
+        }
+        (void)world.tick();
+        require(world.granular_support_at(64,100), "packed powder must bear sampled player");
+        require(!world.granular_support_at(64,100,true), "surface must permit a one-cell step");
+        require(world.granular_support_at(64,101,true), "packed interior must resist side approach");
+        for(int x=62;x<=66;++x) for(int y=101;y<=104;++y) world.set(x,y,Material::Empty);
+        require(!world.granular_support_at(64,100), "excavation must remove sampled support immediately");
+        (void)world.tick();
+        require(!world.granular_support_at(64,101), "falling grains must not bear sampled load");
+    }
+    World film;
+    for(int x=48;x<80;++x) film.set(x,100,Material::Dust);
+    require(!film.granular_support_at(64,100), "airborne Dust film is not a wall");
+}
+
+void test_powder_pair_and_void_policy() {
+    constexpr Material powders[] = {Material::Sand,Material::Stone,Material::Dust,
+        Material::Seed,Material::Salt,Material::Sodium,Material::Gunpowder,Material::Coal,Material::Rust};
+    for (auto top : powders) for(auto bottom : powders) {
+        if(top==bottom) continue;
+        World world;
+        for(int x=60;x<69;++x) for(int y=60;y<70;++y)
+            world.set(x,y,(x==60||x==68||y==69)?Material::Wall:y<64?top:bottom);
+        for(int tick=0;tick<60;++tick) (void)world.tick();
+        for(int x=61;x<68;++x) for(int y=60;y<69;++y)
+            require(world.get(x,y)==(y<64?top:bottom) ||
+                (top==Material::Seed && bottom==Material::Sand && y<64 && world.get(x,y)==Material::Plant),
+                "resting powder pair reordered: " +
+                std::to_string(static_cast<int>(top)) + "/" + std::to_string(static_cast<int>(bottom)) +
+                " at " + std::to_string(x) + "," + std::to_string(y) + " now " +
+                std::to_string(static_cast<int>(world.get(x,y))));
+        world.set(64,69,Material::Empty);
+        (void)world.tick();
+        if(bottom!=Material::Stone)
+            require(world.get(64,69)==bottom,"powder failed to collapse into a real void");
+    }
+}
+
+void test_mercury_lanes_wake_and_reentry() {
+    WorldConfig free_config; free_config.interaction_policy.mercury_exchange_period=60;
+    World free_fall(free_config); free_fall.set(64,64,Material::Mercury);
+    (void)free_fall.tick();
+    require(free_fall.get(64,65)==Material::Mercury,"permeability throttled genuine void fall");
+    WorldConfig brace_config; brace_config.interaction_policy.mercury_exchange_period=1;
+    World brace(brace_config);
+    for(int x=61;x<=67;++x) for(int y=61;y<=67;++y) brace.set(x,y,Material::Wall);
+    brace.set(64,63,Material::Mercury); brace.set(64,64,Material::Stone);
+    brace.set(63,63,Material::Stone); brace.set(65,63,Material::Stone);
+    (void)brace.tick();
+    require(brace.get(64,63)==Material::Mercury,"liquid displaced a braced Stone target");
+    require(brace.set_cell_state(64,64,Material::Stone,0,1),"granular Stone setup");
+    (void)brace.tick();
+    require(brace.get(64,64)==Material::Mercury,"granular Stone failed to yield to permitted exchange");
+    for(int dx=-1;dx<=1;++dx) for(int seam : {-65,-1,63,127}) {
+        World world;
+        for(int x=seam-2;x<=seam+2;++x) for(int y=seam-2;y<=seam+3;++y) world.set(x,y,Material::Wall);
+        world.set(seam,seam,Material::Mercury);
+        world.set(seam+dx,seam+1,Material::Sand);
+        for(int t=1;t<30;++t) {
+            (void)world.tick();
+            require(world.get(seam,seam)==Material::Mercury,"alternative attempts multiplied Mercury rate");
+        }
+        require(world.active_chunk_count()==0,"waiting exchange should let blocks sleep");
+        (void)world.tick();
+        require(world.get(seam+dx,seam+1)==Material::Mercury,"sleeping diagonal/seam exchange failed to wake");
+        require(world.get(seam,seam)==Material::Sand,"exchange lost displaced grain");
+    }
+    for(std::uint32_t period : {10U,30U,60U}) {
+        WorldConfig config; config.interaction_policy.mercury_exchange_period=period;
+        config.parallel_job_threshold=1;
+        World single(config); config.worker_threads=4; World parallel(config);
+        for(auto* world : {&single,&parallel}) {
+            for(int x=60;x<=100;++x) for(int y=62;y<=100;++y)
+                world->set(x,y,(x==60||x==100||y==100)?Material::Wall:Material::Sand);
+            for(int x=61;x<100;++x) world->set(x,62,Material::Mercury);
+        }
+        for(int t=1;t<=180;++t) {
+            auto a=single.tick();auto b=parallel.tick();
+            require(a.chunk_allocations==b.chunk_allocations,"worker allocation disparity");
+            require(single.state_hash()==parallel.state_hash(),"permeability worker parity");
+            const auto front=62+t/static_cast<int>(period);
+            require(single.get(80,front)==Material::Mercury,"configured lane did not make exactly bounded progress");
+        }
+    }
+    World paused;
+    for(int x=60;x<69;++x) for(int y=60;y<100;++y)
+        paused.set(x,y,(x==60||x==68||y==99)?Material::Wall:Material::Sand);
+    paused.set(64,60,Material::Mercury);
+    (void)paused.tick();
+    paused.set_simulation_region(cybersand::RectI64{768,768,64,64});
+    for(int t=2;t<=200;++t) (void)paused.tick();
+    require(paused.get(64,60)==Material::Mercury,"excluded region accrued motion");
+    paused.set_simulation_region(std::nullopt);
+    for(int t=201;t<210;++t) (void)paused.tick();
+    require(paused.get(64,60)==Material::Mercury,"reentry replayed missed lanes");
+    (void)paused.tick();
+    require(paused.get(64,61)==Material::Mercury,"reentry lost the pending exchange wake");
+}
+
+std::uint64_t transport_events(const World& world,cybersand::PhysicsEvent kind) {
+    std::uint64_t count=0;
+    for(const auto& e:world.physics_diagnostics()->entries)if((e.key>>24U)==static_cast<unsigned>(kind))count+=e.count;
+    return count;
+}
+
+
+void test_flow_rest_films_and_barriers() {
+    for(int mode:{1,2})for(int shift:{-129,-65,-33,0,31,63,127}) {
+        World w(transport_config(mode));
+        w.reserve_region({shift-64,shift-64,256,256});
+        // Fully confined, resting layered powders plus a calm full Water layer.
+        for(int y=0;y<24;++y)for(int x=0;x<24;++x)
+            w.set(x+shift,y+shift,(x==0||x==23||y==0||y==23)?Material::Wall:
+                y<8?Material::Water:y<16?Material::Sand:Material::Dust);
+        const auto before=w.content_hash();
+        for(int tick=0;tick<180;++tick)(void)w.tick();
+        require(w.content_hash()==before,"optional motion reordered a resting packed bed/pool");
+        require(transport_events(w,cybersand::PhysicsEvent::PowderMix)==0,"rest mixed powders");
+        require(transport_events(w,cybersand::PhysicsEvent::GrainTransport)==0,"rest eroded grains");
+        // A supported low-fill film cannot create strong transport or pickup.
+        w.clear();w.reserve_region({shift-64,shift-64,256,256});
+        for(int x=0;x<24;++x) {
+            w.set(x+shift,shift+10,Material::Wall);
+            (void)w.set_cell_state(x+shift,shift+9,Material::Water,32,0);
+            w.set(x+shift,shift+11,Material::Sand);
+            w.set(x+shift,shift+12,Material::Wall);
+        }
+        for(int y=0;y<13;++y) {
+            w.set(shift,shift+y,Material::Wall);
+            w.set(shift+23,shift+y,Material::Wall);
+        }
+        const auto mass=total_liquid(w,shift-30,shift-30,shift+60,shift+60);
+        for(int tick=0;tick<90;++tick)(void)w.tick();
+        require(total_liquid(w,shift-30,shift-30,shift+60,shift+60)==mass,"film mass changed");
+        require(transport_events(w,cybersand::PhysicsEvent::GrainTransport)==0,"film bypassed hard separator");
+    }
+}
+
+void test_flow_conservation_state_and_workers() {
+    for(int mode:{1,2}) for(int policy:{0,1,2}) {
+        auto a_config=transport_config(mode,1), b_config=transport_config(mode,4);
+        if(policy) { a_config.transport_policy.horizontal[3]=1;b_config.transport_policy.horizontal[3]=1; }
+        if(policy==2) { a_config.transport_policy.cadence[3]=60;b_config.transport_policy.cadence[3]=60; }
+        World one(a_config),four(b_config);
+        for(auto* w:{&one,&four}) {
+            w->reserve_region({-192,-192,384,384});
+            w->reserve_temperature_region({-192,-192,384,384});
+            w->set_simulation_region(cybersand::RectI64{-132,-68,164,164});
+            for(int y=0;y<160;++y)for(int x=0;x<160;++x) {
+                if(x==0||x==159||y==0||y==159)w->set(x-130,y-66,Material::Wall);
+                if(x>=5&&x<40&&y>=5&&y<95)w->set(x-130,y-66,Material::Water);
+                if(x==40&&y>=5&&y<87)w->set(x-130,y-66,Material::Wall);
+                if(x>=3&&x<113&&y>=108+(x-3)/4&&y<159) {
+                    (void)w->set_cell_state(x-130,y-66,Material::Sand,17,23);
+                    w->set_temperature(x-130,y-66,315);
+                }
+            }
+        }
+        const auto water=total_liquid(one,-130,-66,29,93);
+        for(int tick=1;tick<=300;++tick) {
+            auto a=one.tick();auto b=four.tick();
+            require(a.chunk_allocations+a.temperature_field_allocations+b.chunk_allocations+b.temperature_field_allocations==0,"prepared flow allocated");
+            if(tick%30==0) {
+                require(one.state_hash()==four.state_hash(),"flow worker state mismatch");
+                require(total_liquid(one,-130,-66,29,93)==water,"flow lost Water mass");
+            }
+        }
+        if(mode==2 && policy==0)require(transport_events(one,cybersand::PhysicsEvent::GrainTransport)>0,"strong flow did not erode grains");
+        for(int y=-66;y<=93;++y)for(int x=-130;x<=29;++x)if(one.stored_material(x,y)==Material::Sand) {
+            require(one.stored_state_a(x,y)==17&&one.stored_state_b(x,y)==23,"pickup changed compact grain state");
+            require(one.temperature(x,y)==315,"pickup lost grain temperature");
+        }
+        require(one.physics_diagnostics()->overflow==0&&four.physics_diagnostics()->overflow==0,"flow telemetry overflow");
+        // Existing region exclusion contract: no flow debt accumulates offscreen.
+        const auto before=one.content_hash();one.set_simulation_region(cybersand::RectI64{768,768,64,64});
+        for(int tick=0;tick<60;++tick)(void)one.tick();
+        require(one.content_hash()==before,"excluded flow accumulated movement");
+    }
+}
+
+void test_water_experiment_policy_runtime() {
+    for (std::uint8_t bits = 3; bits <= 8; ++bits) {
+        const WaterExperimentPolicy policy(bits, 12);
+        const auto maximum = static_cast<std::uint16_t>((1U << bits) - 1U);
+        const auto quantize = [maximum](std::uint32_t numerator, std::uint32_t denominator) {
+            return static_cast<std::uint16_t>(
+                (2U * numerator * maximum + denominator) / (2U * denominator));
+        };
+        require(policy.version() == 1U && policy.mass_bits() == bits,
+                "Water policy identity changed");
+        require(policy.maximum() == maximum && policy.film() == quantize(48U, 255U) &&
+                    policy.tolerance() == quantize(1U, 255U),
+                "Water policy derived lattice values are wrong");
+        require(policy.normalized_mass(0U) == 0U &&
+                    policy.normalized_mass(maximum) == 255U,
+                "Water RG8 endpoints are not normalized");
+        for (std::uint16_t mass = 0; mass <= maximum; ++mass) {
+            const auto expected = static_cast<std::uint8_t>(
+                (2U * mass * 255U + maximum) / (2U * maximum));
+            require(policy.normalized_mass(mass) == expected,
+                    "Water RG8 nearest-half-up projection changed");
+        }
+
+        WorldConfig config{};
+        config.water_experiment_policy = policy;
+        World world(config);
+        world.set(0, 0, Material::Water);
+        require(world.liquid_mass(0, 0) == maximum &&
+                    world.stored_state_b(0, 0) == 0U,
+                "Water set did not use candidate maximum with legacy calm state");
+
+        bool threw = false;
+        try {
+            (void)world.set_cell_state(0, 0, Material::Water,
+                                       static_cast<std::uint16_t>(maximum + 1U), 0U);
+        } catch (const std::invalid_argument&) {
+            threw = true;
+        }
+        require(threw, "Water accepted mass above candidate maximum");
+
+        std::array<std::uint8_t, 2> render{};
+        for (const auto mass : {std::uint16_t{1},
+                                quantize(1U, 2U),
+                                static_cast<std::uint16_t>(maximum - 1U), maximum}) {
+            require(world.set_cell_state(0, 0, Material::Water, mass, 0U),
+                    "Water candidate mass setup was not applied");
+            world.copy_render_cells({0, 0, 1, 1}, render, 2U);
+            require(render[0] == static_cast<std::uint8_t>(Material::Water) &&
+                        render[1] == policy.normalized_mass(mass),
+                    "World RG8 Water condition is not normalized");
+        }
+
+        require(world.set_cell_state(0, 0, Material::Water, maximum, 12U),
+                "Water source setup failed");
+        require(world.set_cell_state(1, 0, Material::Water,
+                                     static_cast<std::uint16_t>(maximum - 1U), 7U),
+                "Water destination setup failed");
+        const auto before = world.liquid_mass(0, 0) + world.liquid_mass(1, 0);
+        require(cybersand::PrecisionProbe::transfer(
+                    world, 0, 0, 1, 0, maximum) == 1U,
+                "Water transfer ignored candidate capacity");
+        require(world.liquid_mass(0, 0) == maximum - 1U &&
+                    world.liquid_mass(1, 0) == maximum &&
+                    world.stored_state_b(1, 0) == 12U &&
+                    world.liquid_mass(0, 0) + world.liquid_mass(1, 0) == before,
+                "Water capacity, max merge, or integer accounting changed");
+        require(cybersand::PrecisionProbe::transfer(
+                    world, 1, 0, 2, 0, maximum) == maximum,
+                "Water repeated transfer did not move the full candidate cell");
+        require(world.get(1, 0) == Material::Empty &&
+                    world.liquid_mass(2, 0) == maximum &&
+                    world.stored_state_b(2, 0) == 12U,
+                "Water repeated transfer lost mass or coherence");
+        require(world.set_cell_state(2, 0, Material::Water, 0U, 0U),
+                "zero Water did not canonicalize an occupied cell");
+        require(world.get(2, 0) == Material::Empty,
+                "zero Water is not represented as Empty");
+    }
+}
+
+void test_water_experiment_odd_lattice_boundaries() {
+    for (const auto bits : {std::uint8_t{3}, std::uint8_t{5}, std::uint8_t{7}}) {
+        const WaterExperimentPolicy policy(bits, 12U);
+        const auto maximum = policy.maximum();
+        const auto quantize = [maximum](std::uint32_t numerator, std::uint32_t denominator) {
+            return static_cast<std::uint16_t>(
+                (2U * numerator * maximum + denominator) / (2U * denominator));
+        };
+        const auto first_nonzero = static_cast<std::uint32_t>(
+            (255U + 2U * maximum - 1U) / (2U * maximum));
+        require(quantize(first_nonzero - 1U, 255U) == 0U &&
+                    quantize(first_nonzero, 255U) == 1U,
+                "odd Water lattice low-quantity rounding boundary changed");
+        require(quantize(1U, 2U) == static_cast<std::uint16_t>((maximum + 1U) / 2U),
+                "odd Water lattice half is not nearest-half-up");
+
+        WorldConfig ledger_config{};
+        ledger_config.water_experiment_policy = policy;
+        World ledger(ledger_config);
+        const std::array<std::uint32_t, 3> physical_numerators{
+            first_nonzero - 1U, first_nonzero, 48U};
+        std::array<std::uint16_t, physical_numerators.size()> lattice_masses{};
+        std::uint64_t initial_integer_ledger = 0U;
+        std::int64_t initial_physical_error_numerator = 0;
+        for (std::size_t index = 0; index < physical_numerators.size(); ++index) {
+            const auto lattice_mass = quantize(physical_numerators[index], 255U);
+            lattice_masses[index] = lattice_mass;
+            initial_integer_ledger += lattice_mass;
+            initial_physical_error_numerator +=
+                static_cast<std::int64_t>(lattice_mass) * 255 -
+                static_cast<std::int64_t>(physical_numerators[index]) * maximum;
+            const auto x = static_cast<std::int64_t>(index * 3U);
+            (void)ledger.set_cell_state(x, 0, Material::Water, lattice_mass, 0U);
+            require(ledger.liquid_mass(x, 0) == lattice_mass,
+                    "initial physical quantity was not represented on the candidate lattice");
+        }
+        require(initial_physical_error_numerator != 0,
+                "initial physical quantization error control became vacuous");
+        require(total_liquid(ledger, 0, 0, 7, 0) == initial_integer_ledger,
+                "initial candidate integer ledger is wrong");
+        for (std::size_t index = 0; index < lattice_masses.size(); ++index) {
+            if (lattice_masses[index] == 0U) continue;
+            const auto x = static_cast<std::int64_t>(index * 3U);
+            require(cybersand::PrecisionProbe::transfer(
+                        ledger, x, 0, x + 1, 0, lattice_masses[index]) ==
+                        lattice_masses[index],
+                    "candidate low quantity did not transfer exactly");
+        }
+        const auto final_integer_ledger = total_liquid(ledger, 0, 0, 7, 0);
+        const auto runtime_integer_drift = static_cast<std::int64_t>(final_integer_ledger) -
+                                           static_cast<std::int64_t>(initial_integer_ledger);
+        require(runtime_integer_drift == 0,
+                "runtime integer drift was confused with initial physical quantization error");
+
+        const auto run_lateral = [bits](std::uint16_t source_mass,
+                                        std::uint16_t target_mass,
+                                        bool adhesion_enabled) {
+            WorldConfig config{};
+            config.water_experiment_policy = WaterExperimentPolicy(bits, 12U);
+            World world(config);
+            world.set_liquid_surface_adhesion_enabled(adhesion_enabled);
+            for (std::int64_t x = -1; x <= 2; ++x) world.set(x, 1, Material::Wall);
+            world.set(-1, 0, Material::Wall);
+            world.set(2, 0, Material::Wall);
+            require(world.set_cell_state(0, 0, Material::Water, source_mass, 0U),
+                    "lateral source setup failed");
+            if (target_mass != 0U) {
+                require(world.set_cell_state(1, 0, Material::Water, target_mass, 1U),
+                        "lateral target setup failed");
+            }
+            const auto before = world.liquid_mass(0, 0) + world.liquid_mass(1, 0);
+            (void)world.tick();
+            require(world.liquid_mass(0, 0) + world.liquid_mass(1, 0) == before,
+                    "lateral rounding boundary changed the integer ledger");
+            return std::pair{world.liquid_mass(0, 0), world.liquid_mass(1, 0)};
+        };
+
+        const auto retained_film = run_lateral(policy.film(), 0U, true);
+        require(retained_film.first == policy.film() && retained_film.second == 0U,
+                "supported Water film moved at the registered threshold");
+        const auto above_film_mass = static_cast<std::uint16_t>(policy.film() + 1U);
+        const auto above_film = run_lateral(above_film_mass, 0U, true);
+        const auto above_film_request = static_cast<std::uint16_t>(above_film_mass * 3U / 4U);
+        require(above_film.first == above_film_mass - above_film_request &&
+                    above_film.second == above_film_request,
+                "Water did not cross the registered film boundary with exact lateral rounding");
+
+        require(policy.tolerance() == 0U,
+                "odd Water lattice tolerance should quantize to zero");
+        require(run_lateral(1U, 1U, false) ==
+                    std::pair{std::uint16_t{1}, std::uint16_t{1}},
+                "equal odd-lattice Water moved across its tolerance boundary");
+        require(run_lateral(2U, 1U, false) ==
+                    std::pair{std::uint16_t{2}, std::uint16_t{1}},
+                "three-quarter lateral request no longer rounds one-unit imbalance to zero");
+        require(run_lateral(3U, 1U, false) ==
+                    std::pair{std::uint16_t{2}, std::uint16_t{2}},
+                "three-quarter lateral request no longer rounds two-unit imbalance to one");
+    }
+}
+
+void test_water_experiment_policy_validation_and_coherence() {
+    for (const auto invalid_policy : {
+             std::pair{std::uint8_t{2}, std::uint8_t{0}},
+             std::pair{std::uint8_t{9}, std::uint8_t{0}},
+             std::pair{std::uint8_t{8}, std::uint8_t{13}}}) {
+        bool threw = false;
+        try {
+            (void)WaterExperimentPolicy(invalid_policy.first, invalid_policy.second);
+        } catch (const std::invalid_argument&) {
+            threw = true;
+        }
+        require(threw, "invalid Water experiment policy was accepted");
+    }
+    bool rest_threw = false;
+    try {
+        (void)WaterExperimentPolicy(
+            8U, 12U, static_cast<cybersand::WaterRestPolicy>(1U));
+    } catch (const std::invalid_argument&) {
+        rest_threw = true;
+    }
+    require(rest_threw, "unregistered Water rest policy was accepted");
+
+    WorldConfig mass_identity{};
+    mass_identity.water_experiment_policy = WaterExperimentPolicy(3U, 12U);
+    WorldConfig coherence_identity = mass_identity;
+    coherence_identity.water_experiment_policy = WaterExperimentPolicy(3U, 7U);
+    require(World(mass_identity).state_hash() != World(coherence_identity).state_hash(),
+            "authoritative Water policy is absent from state identity");
+
+    for (std::uint8_t delay = 0; delay <= 12; ++delay) {
+        WorldConfig config{};
+        config.water_experiment_policy = WaterExperimentPolicy(8U, delay);
+        World world(config);
+        world.set_liquid_surface_adhesion_enabled(false);
+        for (std::int64_t x = -2; x <= 2; ++x) world.set(x, 1, Material::Wall);
+        world.set(-2, 0, Material::Wall);
+        world.set(2, 0, Material::Wall);
+        require(world.set_cell_state(0, 0, Material::Water, 255U, delay),
+                "coherent Water setup failed");
+        for (std::uint8_t tick = 1; tick <= delay; ++tick) {
+            (void)world.tick();
+            require(world.liquid_mass(0, 0) == 255U &&
+                        world.stored_state_b(0, 0) == delay - tick,
+                    "Water coherence no longer uses pre-decrement suppression");
+        }
+        (void)world.tick();
+        require(world.liquid_mass(0, 0) < 255U,
+                "Water did not resume lateral flow after coherence expiry");
+        if (delay < 12U) {
+            bool threw = false;
+            try {
+                (void)world.set_cell_state(0, 0, Material::Water, 1U,
+                                           static_cast<std::uint8_t>(delay + 1U));
+            } catch (const std::invalid_argument&) {
+                threw = true;
+            }
+            require(threw, "Water accepted coherence above the selected policy");
+        }
+    }
+}
+
+void test_water_experiment_coherence_propagation() {
+    for (std::uint8_t delay = 0; delay <= 12; ++delay) {
+        WorldConfig config{};
+        config.water_experiment_policy = WaterExperimentPolicy(8U, delay);
+        World falling(config);
+        require(falling.set_cell_state(0, 0, Material::Water, 255U, delay) &&
+                    falling.stored_state_b(0, 0) == delay,
+                "Water coherence creation did not retain the configured value");
+        (void)falling.tick();
+        require(falling.get(0, 0) == Material::Empty &&
+                    falling.liquid_mass(0, 1) == 255U &&
+                    falling.stored_state_b(0, 1) == (delay == 0U ? 0U : delay - 1U),
+                "Water coherence did not pre-decrement and travel with gravity movement");
+
+        WorldConfig merge_config{};
+        merge_config.water_experiment_policy = WaterExperimentPolicy(3U, delay);
+        World merge(merge_config);
+        for (std::uint8_t source = 0; source <= delay; ++source) {
+            for (std::uint8_t destination = 0; destination <= delay; ++destination) {
+                require(merge.set_cell_state(0, 0, Material::Water, 1U, source),
+                        "coherence merge source setup failed");
+                require(merge.set_cell_state(1, 0, Material::Water, 1U, destination),
+                        "coherence merge destination setup failed");
+                require(cybersand::PrecisionProbe::transfer(
+                            merge, 0, 0, 1, 0, 1U) == 1U,
+                        "coherence merge transfer failed");
+                require(merge.get(0, 0) == Material::Empty &&
+                            merge.liquid_mass(1, 0) == 2U &&
+                            merge.stored_state_b(1, 0) == std::max(source, destination),
+                        "Water coherence max-on-merge changed for a valid configured pair");
+            }
+        }
+    }
+}
+
+void test_water_experiment_policy_worker_parity() {
+    for (std::uint8_t bits = 3; bits <= 8; ++bits) {
+        WorldConfig one_config{};
+        one_config.worker_threads = 1U;
+        one_config.parallel_job_threshold = 1U;
+        one_config.water_experiment_policy = WaterExperimentPolicy(bits, 12U);
+        WorldConfig four_config = one_config;
+        four_config.worker_threads = 4U;
+        World one(one_config);
+        World four(four_config);
+        for (auto* world : {&one, &four}) {
+            world->reserve_region({0, 0, 128, 128});
+            world->set_simulation_region(cybersand::RectI64{0, 0, 64, 64});
+            for (std::int64_t x = 0; x <= 24; ++x) world->set(x, 24, Material::Wall);
+            for (std::int64_t y = 0; y <= 24; ++y) {
+                world->set(0, y, Material::Wall);
+                world->set(24, y, Material::Wall);
+            }
+            for (std::int64_t y = 8; y < 16; ++y) {
+                for (std::int64_t x = 3; x < 10; ++x) {
+                    world->set(x, y, Material::Water);
+                }
+            }
+        }
+        const auto expected_mass = total_liquid(one, 0, 0, 63, 63);
+        for (std::uint32_t tick = 0; tick < 60U; ++tick) {
+            (void)one.tick();
+            (void)four.tick();
+            require(one.state_hash() == four.state_hash(),
+                    "Water candidate differs across worker counts");
+            require(total_liquid(one, 0, 0, 63, 63) == expected_mass &&
+                        total_liquid(four, 0, 0, 63, 63) == expected_mass,
+                    "Water candidate lost integer mass");
+        }
+    }
+}
+
+void test_water_experiment_default_state_hash_correspondence() {
+    World implicit_default;
+    WorldConfig explicit_config{};
+    explicit_config.water_experiment_policy = WaterExperimentPolicy(8U, 12U);
+    World explicit_default(explicit_config);
+    populate_water_fixture(implicit_default);
+    populate_water_fixture(explicit_default);
+    require(implicit_default.set_cell_state(10, 6, Material::Water, 128U, 12U) &&
+                explicit_default.set_cell_state(10, 6, Material::Water, 128U, 12U),
+            "default correspondence coherent fixture setup failed");
+    const auto initial_default_hash = implicit_default.state_hash();
+    require(initial_default_hash == explicit_default.state_hash(),
+            "implicit default and explicit mass8/coherence12 state hashes differ");
+    for (std::uint32_t tick = 0; tick < 24U; ++tick) {
+        (void)implicit_default.tick();
+        (void)explicit_default.tick();
+        require(implicit_default.state_hash() == explicit_default.state_hash(),
+                "implicit default and explicit mass8/coherence12 behavior diverged");
+    }
+}
+
 int main() {
     struct Test {
         const char* name;
         void (*function)();
     };
     const Test tests[] = {
+        {"flow resting packing, films, barriers and signed seams", test_flow_rest_films_and_barriers},
+        {"flow conserved state, temperature, workers and exclusion", test_flow_conservation_state_and_workers},
+        {"powder pairs and void-driven rearrangement", test_powder_pair_and_void_policy},
+        {"Mercury lanes, sleeping wakes, seams and worker parity", test_mercury_lanes_wake_and_reentry},
+        {"granular sampled support policy", test_granular_player_support_policy},
+        {"physics diagnostic observer and worker parity", test_physics_diagnostics_observational},
+        {"physics diagnostic isolated controls", test_physics_diagnostic_controls},
+        {"physics masked source characterisation", test_physics_masked_source_characterisation},
         {"negative coordinates", test_negative_coordinates},
         {"scheduler geometry", test_scheduler_geometry},
         {"sand fall", test_sand_falls_and_stops},
@@ -1653,9 +2375,16 @@ int main() {
         {"serial/phased behavioral parity", test_serial_and_phased_behavioral_parity},
         {"density swap", test_sand_sinks_through_water},
         {"conserved water", test_conserved_water_levels_and_sleeps},
+        {"Water lateral speed", test_water_lateral_front_and_leveling_speed},
         {"level water surface", test_water_surface_column_mass_is_level},
         {"water single/multiworker parity", test_water_single_multiworker_parity},
         {"water storage boundary", test_water_conserves_across_storage_boundaries},
+        {"runtime Water experiment policy", test_water_experiment_policy_runtime},
+        {"odd-lattice Water boundaries and ledgers", test_water_experiment_odd_lattice_boundaries},
+        {"Water experiment validation and coherence", test_water_experiment_policy_validation_and_coherence},
+        {"Water coherence gravity and exhaustive merge", test_water_experiment_coherence_propagation},
+        {"Water experiment worker parity", test_water_experiment_policy_worker_parity},
+        {"default Water experiment state-hash correspondence", test_water_experiment_default_state_hash_correspondence},
         {"optional temperature movement", test_optional_temperature_moves_across_chunk},
         {"preallocated hot path", test_preallocated_tick_has_no_owned_allocations},
         {"chunk capacity", test_chunk_capacity_fails_explicitly},
