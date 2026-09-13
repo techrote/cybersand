@@ -1,11 +1,25 @@
 extends SceneTree
 
+class FakeHost:
+	extends Control
+	var water_blind_set: Dictionary={}
+	var latest_snapshot: Variant=null
+	var camera_origin: Vector2=Vector2.ZERO
+	var current_view_size: Vector2i=Vector2i(480,270)
+	var paused: bool=true
+
 var _failures: int = 0
 
 func _init() -> void:
 	call_deferred("_run")
 
 func _run() -> void:
+	_test_recorder_files()
+	_test_panel_blind_redaction()
+	if _failures==0: print("H-gate capture tests passed")
+	quit(_failures)
+
+func _test_recorder_files() -> void:
 	var recorder: CyberHGateRecorder=CyberHGateRecorder.new()
 	var started: Dictionary=recorder.start_session({"source_commit":"test"},{"purpose":"H recorder test"})
 	_expect(started.get("ok",false),"session did not start")
@@ -29,8 +43,28 @@ func _run() -> void:
 	_expect(FileAccess.file_exists(recorder.session_root+"/reveal/candidate-mapping.json"),"reveal mapping missing")
 	var timeline: String=FileAccess.get_file_as_string(recorder.timeline_path)
 	_expect("session-start" in timeline and "run-start" in timeline and "capture" in timeline and "blind-reveal" in timeline,"timeline breadcrumbs incomplete")
-	if _failures==0: print("H-gate recorder tests passed")
-	quit(_failures)
+
+func _test_panel_blind_redaction() -> void:
+	var base: Dictionary=CyberWaterExperimentProfiles.resolve()
+	var low: Dictionary=base.policy.duplicate(true);low.mass_bits=3
+	var high: Dictionary=base.policy.duplicate(true);high.mass_bits=8
+	var blind: Dictionary=CyberWaterExperimentBlind.create([
+		CyberWaterExperimentProfiles.resolve({},{},low),
+		CyberWaterExperimentProfiles.resolve({},{},high),
+	],1234)
+	_expect(blind.get("ok",false),"blind fixture did not construct")
+	if not blind.get("ok",false): return
+	var label: String=str(blind.labels[0])
+	var fake: FakeHost=FakeHost.new();fake.water_blind_set=blind
+	var panel: CyberTowerPanel=CyberTowerPanel.new();panel.host=fake
+	var hidden: Dictionary=blind.hidden_mapping[label]
+	var safe: Dictionary=panel._safe_h_metadata({"water_blind_label":label,"water_policy":hidden.policy,"tick":42,"paused":true,"water_recipe_hash":"recipe","water_accounting":{},"water_actions":[]})
+	var serialized: String=JSON.stringify(safe)
+	_expect(not "hidden_mapping" in serialized,"panel safe metadata leaked hidden mapping")
+	_expect(not "mass_bits" in serialized,"panel safe metadata leaked blind mass precision")
+	_expect(str(safe.get("blind_label",""))==label,"panel safe metadata lost blind label")
+	_expect(safe.get("blind_record",{}).get("revealed",true)==false,"panel visible blind record was marked revealed")
+	panel.free();fake.free()
 
 func _expect(condition: bool,message: String) -> void:
 	if condition:return
