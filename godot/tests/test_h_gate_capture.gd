@@ -3,10 +3,29 @@ extends SceneTree
 class FakeHost:
 	extends Control
 	var water_blind_set: Dictionary={}
+	var water_active_blind_label: String=""
+	var water_blind_index: int=0
+	var pending_water_apply: Dictionary={}
+	var tower_context: Dictionary={}
 	var latest_snapshot: Variant=null
 	var camera_origin: Vector2=Vector2.ZERO
 	var current_view_size: Vector2i=Vector2i(480,270)
 	var paused: bool=true
+	var applied_blind_indices: Array[int]=[]
+
+	func water_runtime_identity() -> Dictionary:
+		return {"source_commit":"test"}
+
+	func water_lab_apply_blind(index: int=-1) -> bool:
+		if not water_blind_set.get("ok",false):return false
+		var labels: Array=water_blind_set.get("labels",[])
+		if labels.is_empty():return false
+		if index<0:index=(water_blind_index+1)%labels.size()
+		if index<0 or index>=labels.size():return false
+		water_blind_index=index
+		water_active_blind_label=str(labels[index])
+		applied_blind_indices.append(index)
+		return true
 
 var _failures: int = 0
 
@@ -16,6 +35,7 @@ func _init() -> void:
 func _run() -> void:
 	_test_recorder_files()
 	_test_panel_blind_redaction()
+	_test_panel_review_memory_navigation_and_focus()
 	if _failures==0: print("H-gate capture tests passed")
 	quit(_failures)
 
@@ -82,6 +102,38 @@ func _test_panel_blind_redaction() -> void:
 	_expect(str(safe.get("blind_label",""))==label,"panel safe metadata lost blind label")
 	_expect(safe.get("blind_record",{}).get("revealed",true)==false,"panel visible blind record was marked revealed")
 	panel.free();fake.free()
+
+func _test_panel_review_memory_navigation_and_focus() -> void:
+	var fake: FakeHost=FakeHost.new()
+	fake.name="FakeHost"
+	var layout: VBoxContainer=VBoxContainer.new();layout.name="Layout";fake.add_child(layout)
+	root.add_child(fake)
+	var panel: CyberTowerPanel=CyberTowerPanel.new();fake.add_child(panel);panel.setup(fake)
+	fake.water_blind_set={"ok":true,"labels":["A","B","C"]}
+	fake.water_active_blind_label="A";fake.water_blind_index=0
+	panel.h_rank.select(2);panel.h_judgement.select(3);panel.h_note.text="fine edge breakup"
+	panel._store_current_review()
+	panel._clear_h_form()
+	_expect(panel._restore_candidate_review("A"),"stored candidate review was not found")
+	_expect(panel.h_rank.get_item_id(panel.h_rank.selected)==2,"candidate rank was not restored")
+	_expect(panel.h_judgement.get_item_text(panel.h_judgement.selected)=="Acceptable","candidate judgement was not restored")
+	_expect(panel.h_note.text=="fine edge breakup","candidate note was not restored")
+	panel._toggle_h_note_edit()
+	_expect(panel.h_note.editable and panel.h_note.focus_mode==Control.FOCUS_ALL,"explicit note editing did not acquire keyboard focus")
+	panel._finish_h_note_edit()
+	_expect(not panel.h_note.editable and panel.h_note.focus_mode==Control.FOCUS_NONE,"note field retained gameplay keyboard focus after editing")
+	panel._next_blind()
+	_expect(fake.applied_blind_indices.back()==1 and fake.water_active_blind_label=="B","Next blind did not apply candidate B")
+	panel.h_pending_run_start=false
+	panel._previous_blind()
+	_expect(fake.applied_blind_indices.back()==0 and fake.water_active_blind_label=="A","Previous blind did not return to candidate A")
+	panel.h_pending_run_start=false
+	panel._replay_blind()
+	_expect(fake.applied_blind_indices.back()==0 and fake.water_active_blind_label=="A","Replay blind did not reapply candidate A")
+	panel._clear_h_form()
+	_expect(panel._restore_candidate_review("A"),"candidate review was lost after back/forward replay")
+	_expect(panel.h_note.text=="fine edge breakup","re-audition did not repopulate the prior comment")
+	fake.free()
 
 func _expect(condition: bool,message: String) -> void:
 	if condition:return
