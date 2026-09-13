@@ -24,6 +24,15 @@ func _test_recorder_files() -> void:
 	var started: Dictionary=recorder.start_session({"source_commit":"test"},{"purpose":"H recorder test"})
 	_expect(started.get("ok",false),"session did not start")
 	_expect(not recorder.session_id.is_empty(),"session id missing")
+	var session_value: Variant=JSON.parse_string(FileAccess.get_file_as_string(recorder.session_root+"/session.json"))
+	_expect(session_value is Dictionary,"session metadata did not parse")
+	if session_value is Dictionary:
+		var apparatus: Dictionary=session_value.get("apparatus_identity",{})
+		var apparatus_files: Dictionary=apparatus.get("files",{})
+		_expect(apparatus_files.size()==CyberHGateRecorder.APPARATUS_FILES.size(),"apparatus fingerprint set incomplete")
+		for path: String in CyberHGateRecorder.APPARATUS_FILES:
+			_expect(str(apparatus_files.get(path,"missing"))!="missing","apparatus source missing from fingerprint: "+path)
+			_expect(str(apparatus_files.get(path,"")).length()==64,"apparatus source fingerprint was not SHA-256: "+path)
 	var run_id: String=recorder.begin_run({"scenario_id":"shallow-pool","blind_label":"A"})
 	_expect(run_id=="R001","first run id was not R001")
 	var sealed: Dictionary=recorder.seal_blind_mapping({"labels":["A","B"],"hidden_mapping":{"A":{"policy":{"mass_bits":5}},"B":{"policy":{"mass_bits":8}}}})
