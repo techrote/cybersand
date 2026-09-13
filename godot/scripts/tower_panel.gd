@@ -79,7 +79,7 @@ func _safe_h_metadata(context: Dictionary) -> Dictionary:
 	if label.is_empty():metadata["effective_policy"]=policy.duplicate(true);metadata["effective_policy_hash"]=str(context.get("water_policy_hash",""))
 	else:
 		var blind_set: Dictionary=host.water_blind_set if not host.water_blind_set.is_empty() else h_retained_blind_set
-		var visible: Dictionary=CyberWaterExperimentBlind.visible_record(blind_set,label,{"scenario_id":metadata.scenario_id,"seed":metadata.seed,"recipe_hash":metadata.recipe_hash,"blind_protocol":CyberWaterExperimentBlind.VERSION,"varied_field":"mass_bits"})
+		var visible: Dictionary=CyberWaterExperimentBlind.visible_record(blind_set,label,{"scenario_id":metadata.scenario_id,"seed":metadata.seed,"recipe_hash":metadata.recipe_hash,"blind_protocol":CyberWaterExperimentBlind.VERSION,"candidate_family":"water-precision-blind"})
 		if visible.get("ok",false):metadata["blind_record"]=visible
 	return metadata
 
