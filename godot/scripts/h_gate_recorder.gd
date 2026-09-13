@@ -3,6 +3,14 @@ extends RefCounted
 
 const SCHEMA_VERSION: int = 1
 const ROOT: String = "user://h-gate"
+const APPARATUS_FILES: Array[String] = [
+	"res://scripts/h_gate_recorder.gd",
+	"res://scripts/tower_panel.gd",
+	"res://scripts/main.gd",
+	"res://scripts/water_experiment_blind.gd",
+	"res://scripts/water_experiment_profiles.gd",
+	"res://scripts/water_feel_scenarios.gd",
+]
 
 var session_id: String = ""
 var session_root: String = ""
@@ -28,6 +36,11 @@ func _append_jsonl(path: String,value: Dictionary) -> bool:
 	if f==null:f=FileAccess.open(path,FileAccess.WRITE)
 	if f==null:return false
 	f.seek_end();f.store_line(JSON.stringify(value));return true
+func _apparatus_identity() -> Dictionary:
+	var files: Dictionary={}
+	for path: String in APPARATUS_FILES:
+		files[path]=FileAccess.get_sha256(path) if FileAccess.file_exists(path) else "missing"
+	return {"schema_version":SCHEMA_VERSION,"files":files}
 
 func start_session(runtime_identity: Dictionary,context: Dictionary={}) -> Dictionary:
 	if not session_id.is_empty():return {"ok":true,"session_id":session_id,"root":session_root}
@@ -37,7 +50,7 @@ func start_session(runtime_identity: Dictionary,context: Dictionary={}) -> Dicti
 	session_root="%s/%s"%[ROOT,session_id]
 	if not _ensure_dir(session_root+"/observations") or not _ensure_dir(session_root+"/reveal"):return {"ok":false,"error":"could not create H-gate session directory"}
 	timeline_path=session_root+"/timeline.jsonl"
-	var session: Dictionary={"schema_version":SCHEMA_VERSION,"session_id":session_id,"started_utc":Time.get_datetime_string_from_system(true),"platform":OS.get_name(),"godot":Engine.get_version_info().get("string","unknown"),"runtime_identity":runtime_identity.duplicate(true),"context":context.duplicate(true)}
+	var session: Dictionary={"schema_version":SCHEMA_VERSION,"session_id":session_id,"started_utc":Time.get_datetime_string_from_system(true),"platform":OS.get_name(),"godot":Engine.get_version_info().get("string","unknown"),"runtime_identity":runtime_identity.duplicate(true),"apparatus_identity":_apparatus_identity(),"context":context.duplicate(true)}
 	if not _write_json(session_root+"/session.json",session):return {"ok":false,"error":"could not write H-gate session metadata"}
 	record_event("session-start",{"context":context.duplicate(true)});last_feedback="Started %s"%session_id
 	return {"ok":true,"session_id":session_id,"root":session_root}
