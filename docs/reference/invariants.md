@@ -6,7 +6,7 @@ status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
 related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-13
 ---
 
 # Architectural and simulation invariants
@@ -200,11 +200,13 @@ under occupancy masks and explicit telemetry overflow. Failed-world quarantine,
 interest-region pause/re-entry, conservation and exclusive ownership still apply.
 
 **Current:** restricted powder exchange and sampled player support follow the
-[versioned policy](../systems/granular-interaction-policy.md). **Planned:** persistent
-powder bearing and roughly half-depth barrel support remain future behavior.
-The [baseline](../audits/2026-09-09-physics-characterisation.md)
-records failures of those proposed gates; it does not promote them to current
-invariants or treat deep hard-floor rest as granular support.
+[versioned policy](../systems/granular-interaction-policy.md). Ordinary rectangle
+bearing now consumes actual stable packed material under the same policy, remains
+bounded and single-owned by cellular coupling, and disappears when that material
+is removed. The [historical baseline](../audits/2026-09-09-physics-characterisation.md)
+records the pre-repair failure; the [current repair evidence](../audits/2026-09-13-issue-11-repair.md)
+establishes only its documented rectangle/load envelope. Deep hard-floor rest is
+still not granular support.
 
 ## Granular character boundary
 

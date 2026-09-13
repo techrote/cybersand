@@ -6,7 +6,7 @@ status: Current
 scope: Current C ABI versions and private Godot packed layouts; proposed gameplay/job/reconfiguration contracts are not executable APIs
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-13
 ---
 
 # Interfaces and message contracts
@@ -212,6 +212,12 @@ These calls must use the existing serialized adapter owner.
 The ordinary body sample/result ABI, C header, immutable gameplay snapshots and
 CYSD1 format are unchanged. No diagnostic options are persisted as gameplay
 configuration or advertised as a complete replay format.
+
+The 11-float input and nine-float result rows remain unchanged by issue #11.
+Bearing is combined into the existing central impulse/correction result under the
+cellular owner. Opt-in `diagnostic_body_metrics()` appends raw bearing x/y and
+accepted support-sample count so tests can distinguish bearing from legacy contact;
+this is diagnostic schema, not a new body ownership channel.
 
 ## Directional player query
 

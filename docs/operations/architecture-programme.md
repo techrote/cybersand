@@ -4,7 +4,7 @@ status: Planned
 document-kind: design
 scope: Evidence gates for Cell representation, liquid state and transport, presentation, and conditional sparse motion; no production architecture selection
 canonical-for: [architecture-experimental-programme]
-last-reviewed: 2026-09-12
+last-reviewed: 2026-09-13
 related-documents: [architecture-programme-source-ledger.md, physics-characterisation.md, physics-characterisation-plan.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md]
 ---
 
@@ -34,7 +34,7 @@ not silently certified by GitHub issue closure or a profile hash.
 |---|---|
 | CURRENT / VALIDATED within dated fixtures | Native `World::Chunk::Cell` is 4 bytes: 8-bit material, state_a, state_b, updated_epoch. Material state is typed by each material's behavior; temperature is optional persistent chunk SoA state. |
 | ACCEPTED / ADR-001/003/007/009 | Native owns material; Rapier owns independent bodies on the main thread. Packed values cross owner boundaries. Separate transient body-ID occupancy is stable during cellular work. Retained immutable render payloads never expose mutable cells. |
-| CURRENT with known limitations | Rectangle coupling accepts at most 16 bodies, bounded sweep/ejection, capped central impulses and stale-sample handling. Failed ejection retains material and reports overlap. #9 documents masked-source feedback and barrier-crossing ejection; this programme does not assume #11 fixed them. |
+| CURRENT with known limitations | Rectangle coupling accepts at most 16 bodies, bounded sweep/ejection, capped central impulses and stale-sample handling. Failed ejection retains material and reports overlap. The #11 repair preserves masked material authority, rejects hard-terrain/body-crossing ejection, and supplies bounded ordinary bearing; general-shape/high-energy scope remains open. |
 | ACCEPTED / ADR-002/004/010 | Phased in-place four-phase worker execution; excluded regions pause without catch-up. A failed World is quarantined until reset/replacement; no global transaction/automatic retry. Buffered is not executable rollback. |
 | ACCEPTED / ADR-005; CURRENT POLICY | FreeMass Water has exact closed-operation integer conservation and stable equilibrium. Current lateral request is floor(3*imbalance/4), with one-unit tolerance, gravity first, 12-tick coherent delay and supported film at mass <=48/255. |
 | CURRENT | Water alone has fractional quantity. Other liquids use whole-cell paths, generally CellularYield; Oil has specialized movement. A mobility roll and scheduler sleep are not an explicit stress/yield model. No generic persistent cellular vx/vy exists. |
@@ -90,16 +90,15 @@ with an exact control, explicit error ledger and later architecture decision.
 No experiment silently amends either ADR; shared or missing material ownership
 is never numerical approximation.
 
-### Does closed issue #11 prove barrel support is ready for soliding?
+### What does issue #11 prove for the soliding support gate?
 
-No. The [2026-09-12 current-source reconciliation](../audits/2026-09-12-issue-11-reconciliation.md)
-classifies #11 as **substantively unresolved despite administrative closure**.
-Current source still lacks persistent barrel bearing and still reproduces
-masked-source feedback and barrier-crossing ejection. A source-matched ordinary
-Sand barrel reaches the deep floor at tick 155. Soliding issue #12 can begin
-bounded diagnostics and design; support-dependent integration requires a
-source-matched fix and evidence or an explicit narrower scope decision.
-Administrative closure is not runtime acceptance.
+The [2026-09-13 current-source repair](../audits/2026-09-13-issue-11-repair.md)
+supersedes the earlier negative disposition while preserving its historical facts.
+**#11 support prerequisite is satisfied within the documented ordinary
+rectangle/load envelope.** This admits only that support-dependent prerequisite
+for #12; it does not approve soliding, promotion/reversal ownership, general
+shapes, high-energy impacts or structural behavior. Issue state alone is not
+runtime acceptance.
 
 ## C. Questions and bounded outcomes
 
@@ -115,9 +114,9 @@ Administrative closure is not runtime acceptance.
 
 Existing **#12** remains the coherent-body/soliding research owner. This programme
 provides a self-contained execution supplement, not a duplicate aggregate issue.
-Its diagnostics/design can proceed from existing #9 evidence. Support integration
-still requires verified support evidence, including resolution of the closed-#11
-conflict. Dynamic membership requires an explicit reviewed ownership ADR first.
+Its diagnostics/design can proceed from existing #9 evidence. The #11 support
+prerequisite is satisfied within the documented ordinary rectangle/load envelope.
+Dynamic membership still requires an explicit reviewed ownership ADR first.
 A near-rest restricted prototype does not need B if it can state its momentum
 limits honestly; energetic reversal must wait for a selected motion representation.
 
@@ -269,7 +268,7 @@ Current source + retained ADR/#9/#10/#13/Water evidence
  Existing coherent-body research:
  retained evidence -> #12 candidate/design stage -> ownership ADR gate
                      -> conditional near-rest prototype
- support integration requires verified support evidence (#11 conflict resolved)
+ support prerequisite satisfied only for the #11 ordinary rectangle/load envelope
  energetic reversal requires selected M/B transfer capability, not a ladder
 ```
 

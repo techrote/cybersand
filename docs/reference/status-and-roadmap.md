@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-09-12
+last-reviewed: 2026-09-13
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md]
 ---
 
@@ -83,10 +83,11 @@ confirms that issue #10's [versioned player and exchange policy](../systems/gran
 is present and exercised at current source; persistent barrel bearing remains
 outside that policy.
 The [2026-09-12 reconciliation](../audits/2026-09-12-issue-11-reconciliation.md)
-confirms that administratively closed issue #11 remains substantively unresolved:
-masked-source feedback, barrier-aware ejection and persistent bearing are still
-**Planned** barrel work. Raising barrel impulse caps alone does not provide the
-intended behavior. The
+retains the pre-repair failure. The [2026-09-13 repair](../audits/2026-09-13-issue-11-repair.md)
+supersedes its current disposition: masked sources retain material authority,
+bounded ejection cannot cross hard terrain or other bodies, and ordinary
+rectangles establish persistent cellular bearing that disappears with the bed.
+The accepted envelope is deliberately not a general-shape/high-energy result. The
 [soliding plan](../operations/physics-characterisation-plan.md) still requires an
 explicit ownership decision before dynamic membership handoff. Current F01/F02
 contracts and the separate runtime publication gate remain applicable.
@@ -109,7 +110,8 @@ builds. The earlier M11 checkpoint sequence and reported rollback archives remai
 enclosure recovery, powder-pair exclusion and scheduled Mercury permeability are
 implemented. The [dated evidence](../audits/2026-09-09-issue-10-granular-policy.md)
 records parameter screening, native/fallback/desktop/Web execution and remaining
-publication/platform limits. Barrel feedback/bearing/ejection stays in issue #11.
+publication/platform limits. Rectangle feedback/bearing/ejection now has separate
+issue #11 evidence and does not change the #10 policy version.
 
 
 ## Issue #13 experiment checkpoint
@@ -120,7 +122,7 @@ horizontal sampling. Desktop and both native Web profiles execute the lab.
 [Issue #13 evidence](../audits/2026-09-09-issue-13-transport.md) distinguishes
 regression results, measured transport changes, visual observations and remaining
 owner feel/performance limits. Baseline remains the gameplay default. Chemistry
-retuning, barrel #11 and soliding #12 remain separate.
+retuning, accepted ordinary barrel #11 behavior and soliding #12 remain separate scopes.
 
 
 ## Opt-in transport profiles
@@ -138,7 +140,7 @@ are unchanged. No unsynchronized live descriptor mutation is introduced.
 
 ## Architecture investigation after the Water checkpoint
 
-**Planned:** the [architecture programme](../operations/architecture-programme.md) isolates raw Cell layout/epoch cost, liquid characterization, precision, compact memory and fractional rendering before any policy migration. Sparse ballistic implementation requires admission evidence; coherent soliding reuses #12. No 4/8-byte winner, liquid unification or representation ladder is adopted. GitHub #11 is closed while this source still records its missing barrel work; support-dependent integration requires actual source/evidence reconciliation.
+**Planned:** the [architecture programme](../operations/architecture-programme.md) isolates raw Cell layout/epoch cost, liquid characterization, precision, compact memory and fractional rendering before any policy migration. Sparse ballistic implementation requires admission evidence; coherent soliding reuses #12. No 4/8-byte winner, liquid unification or representation ladder is adopted. The #11 support prerequisite is satisfied only within the documented ordinary rectangle/load envelope; #12 retains its own ownership and promotion gates.
 
 ## Architecture gate reconciliation, 2026-09-11
 

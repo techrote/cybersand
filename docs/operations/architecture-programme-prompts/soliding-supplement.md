@@ -4,7 +4,7 @@ status: Planned
 document-kind: runbook
 scope: Self-contained R work item in the architecture experimental programme; gated research, not production approval
 canonical-for: []
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-13
 related-documents: [../architecture-programme.md, ../architecture-programme-source-ledger.md]
 ---
 
@@ -14,7 +14,7 @@ related-documents: [../architecture-programme.md, ../architecture-programme-sour
 
 Issue: Existing [#12](https://github.com/techrote/cybersand/issues/12).
 Programme/workstream: R; [master programme](../architecture-programme.md).
-Dependencies: Existing #12 under #8. Candidate/design stage uses #9 findings; support integration requires #10 policy and actual support evidence (#11 is closed but lacks a source-matched fix at programme intake). Dynamic implementation requires a reviewed ownership ADR. M/B only block energetic reversal that needs their capability.
+Dependencies: Existing #12 under #8. Candidate/design stage uses #9 findings and #10 policy. **#11 support prerequisite is satisfied within the documented ordinary rectangle/load envelope.** Dynamic implementation still requires a reviewed ownership ADR. M/B only block energetic reversal that needs their capability.
 
 GitHub completion dependencies: None for the initial admitted stage.
 Staged gate decisions and the complete master mirror: [#14](https://github.com/techrote/cybersand/issues/14). A gate entry may be recorded before #14 closes; its final-completion dependency is not a circular prerequisite.
@@ -37,7 +37,7 @@ CURRENT: native cells are material 8/state_a 8/state_b 8/epoch 8; no generic vx/
 
 ACCEPTED: ADR-001 native material authority; ADR-002 phased exclusive write domains; ADR-003 immutable snapshots; ADR-004 paused excluded regions/no catch-up; ADR-005 exact closed Water mass and stable equilibrium; ADR-007 independent main-thread Rapier body state and separate transient occupancy; ADR-008 explicit bounded approximation; ADR-009 pinned Rapier; ADR-010 quarantine failed ticks; ADR-011 versioned granular policy. Do not silently invalidate these. In particular no occupancy in persistent Cell, worker Godot/Rapier calls, silent material deletion, mutable snapshot views or global rollback claims. A discussion of relaxed numerical conservation is an OPEN proposal, not an amended ADR. #13's no-velocity restriction was ISSUE-SCOPED; this prompt's non-goals likewise do not create permanent policy.
 
-Geometry is independently 128x128 storage,32x32 activity,64x64 scheduling core, maximum write radius2 (68x68 expanded domain). Native liquid operations are local; do not copy fallback long-range Water. Desktop pacing is asynchronous against main-thread Rapier; native Web waits synchronously, with optional internal workers. Fallback and serial have different semantics. Current rectangles lack general pixel membership. #11 is administratively closed but the intake source/evidence still documents missing bearing and barrier-aware ejection; preserve that unresolved distinction.
+Geometry is independently 128x128 storage,32x32 activity,64x64 scheduling core, maximum write radius2 (68x68 expanded domain). Native liquid operations are local; do not copy fallback long-range Water. Desktop pacing is asynchronous against main-thread Rapier; native Web waits synchronously, with optional internal workers. Fallback and serial have different semantics. Current rectangles lack general pixel membership. #11 now supplies only the documented ordinary rectangle/load support prerequisite; preserve its high-energy/general-shape limits.
 
 ## Hypothesis / question
 
@@ -58,7 +58,7 @@ These are inspected existing files/symbols; proposed new modules must be named a
 
 ## Experimental or implementation strategy
 
-1. Re-read #12 and the known #11 closure/source mismatch. Begin bounded candidate diagnostics without assuming barrel support works; require actual evidence or explicit scope decision before support integration.
+1. Re-read #12 and the current #11 repair evidence. Treat the ordinary rectangle/load support prerequisite as satisfied only in that measured scope; do not generalize it to soliding ownership or aggregate mechanics.
 2. Use face-connected membership, actual mutation/rest evidence, material eligibility and bounded dirty ROI. Sleep/offscreen exclusion does not earn rest or cohesion. Screen existing proposed rest 0.5/2/5s, occupancy 0.8/0.9/0.98 and area 16/64/256 only as necessary; never automatically glue loose powder.
 3. Stationary proxy retains native cells as the only material authority; excavation/reaction/support change invalidates it. Name one owner of each support/contact mode so colliders and impulses cannot double solve.
 4. Before dynamics, review ADR describing native exact material/state membership, Rapier transform/velocity/collision proxy and separate transient occupancy. Use a small existing-capacity proof; registry>16, buckets and arbitrary contour decomposition need evidence, not automatic implementation. Document generation handles if slots are reused.
@@ -95,7 +95,7 @@ Reuse [#9](../../audits/2026-09-09-physics-characterisation.md), [#10](../../aud
 
 ## Acceptance criteria
 
-Existing #12 acceptance remains authoritative; this supplement requires stage admissions, no false rest/cohesion, singular material authority, no stale-terrain self-collision/hole at commit, conserved payload through repeated/saturated/refused reversal and bounded deterministic outcomes. Missing support evidence holds integration instead of treating #11 closed as passed. Negative feasibility or narrower stationary-only outcome is recorded for explicit scope review.
+Existing #12 acceptance remains authoritative; this supplement requires stage admissions, no false rest/cohesion, singular material authority, no stale-terrain self-collision/hole at commit, conserved payload through repeated/saturated/refused reversal and bounded deterministic outcomes. #11 satisfies only the ordinary rectangle/load support prerequisite; all aggregate ownership and reversal gates remain. Negative feasibility or narrower stationary-only outcome is recorded for explicit scope review.
 
 A sound negative result is successful completion. Do not optimise the experiment to make the proposed candidate win. Report positive, negative and ambiguous evidence. No-go at a conditional admission gate must state the supporting evidence, not merely skip work. All intended stages must have a result or explicit gate disposition; no production integration is silently included.
 

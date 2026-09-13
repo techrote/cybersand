@@ -6,7 +6,7 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-13
 ---
 
 # Data ownership and lifetimes
@@ -108,6 +108,9 @@ the rationale remains [ADR-003](../decisions/ADR-003-godot-bridge-and-immutable-
 Sampled [granular support queries](../systems/granular-interaction-policy.md) read
 current cells and copied body occupancy only under this exclusive owner, outside
 native jobs. Their bounded neighbourhood adds no job view, cache or Rapier object.
+Rectangle bearing consumes those current queries during coupling preparation and
+stores only that sample's bounded result. It has no persistent support cache;
+Rapier remains the body owner and native cells remain material authority.
 
 ## Failed-world ownership and recovery
 

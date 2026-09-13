@@ -3,10 +3,10 @@ title: Rigid-body and cellular coupling
 document-kind: contract
 canonical-for: [rigid-body-cellular-coupling]
 status: Current
-scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact; generalized physics and exact replay remain absent
-keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
+scope: Rectangle occupancy, bounded displacement/ejection, granular bearing and Rapier hard contact; generalized physics and exact replay remain absent
+keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap, granular bearing]
 related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md]
-last-reviewed: 2026-09-12
+last-reviewed: 2026-09-13
 ---
 
 # Rigid-body and cellular coupling
@@ -39,8 +39,9 @@ Source: [native `prepare_rigid_body_coupling`, `parse_body_states`, `rasterize_b
    current accepted transform. The first mask writer wins where bodies overlap.
 3. When overlap response is enabled, reconcile movable material against the
    temporary sweep. Then clear it and rebuild only endpoint occupancy.
-4. Accumulate endpoint boundary pressure and cellular movement contacts. Publish
-   bounded observations keyed by body/sample identity.
+4. Accumulate endpoint boundary pressure, cellular movement contacts and current
+   local granular bearing. Publish bounded observations keyed by body/sample
+   identity.
 
 The GDScript fallback projects input order; arbitrary sample reordering is not
 claimed equivalent. Body/body collision remains Rapier's responsibility.
@@ -59,9 +60,12 @@ unit contract. Packed fields are documented in
 | Translation sweep | More than 32 pixels between samples is treated as a teleport: endpoint only |
 | Sweep sampling | Approximately one-cell spacing, capped at 24 intervals/25 samples; interpolates centre, shortest rotation and size |
 | Endpoint overlap | Search outward from nearest face and along its tangent, at most eight cells |
+| Ejection reachability | Half-cell samples may cross neither stored hard terrain nor another body's mask; the source body's mask is traversable |
 | Swept-only overlap | Prefer ejection in body-travel direction; rotational response remains approximate |
 | No valid destination | Retain the cell and report unresolved overlap plus reaction; no particle fallback or silent deletion |
 | Native impulse | Contact/displacement/density pressure terms; combined magnitude capped at 3 per body/tick |
+| Granular bearing | Exposed downward raster cells; #10 packing query over stored material; `92/60` gravity impulse/mass/tick, `0.18` yield response, `2.0` capacity/sample, cap `20` |
+| Settled correction | At velocity at most `4 px/s`, undo at most `0.5` cell and `0.99` of the current sampled downward travel; never a world-height clamp |
 | Stale results | Reject age above eight body samples; suppress correction above one; scale impulse by `1/(1+0.25*age)` |
 
 Ejection transfers the compact cell state including Water mass. Pure closed
@@ -88,8 +92,9 @@ consumer granularity, not an end-to-end frame-time guarantee. Source:
 
 ## What does the fixture prove, and what remains open?
 
-For the **Planned** investigation of barrel sinking into powders, half-depth
-embedding and reversible soliding, see the [characterisation plan](../operations/physics-characterisation-plan.md).
+For the accepted ordinary barrel envelope and separate **Planned** reversible
+soliding work, see the [current evidence](../audits/2026-09-13-issue-11-repair.md)
+and [characterisation plan](../operations/physics-characterisation-plan.md).
 The owner now calls the demo rectangles barrels; this does not change their
 Current rectangle geometry or internal scene identifiers.
 
@@ -112,13 +117,14 @@ for every fast/thin/rotating shape. Rationale lives in
 
 ## What did the measured barrel baseline establish?
 
-**Current, 2026-09-09 measured scope:** the [issue #9 report](../audits/2026-09-09-physics-characterisation.md)
+**Historical measured baseline, 2026-09-09:** the [issue #9 report](../audits/2026-09-09-physics-characterisation.md)
 separates stored-cell displacement, boundary pressure, transient contact and
 Rapier hard-floor collision. Packed Sand does not stop an ordinary barrel before
 the deep hard floor. Contact feedback from retained masked grains can point
 downward: dispatch uses stored material, while kernel lookup sees the Wall proxy.
-This source path has a native characterization fixture; it is a measured defect
-hypothesis for successor implementation, not a new support contract.
+That source path remains retained characterization. Current source now defers a
+masked authoritative cell to overlap reconciliation and never substitutes the
+body's Wall proxy for the stored source material.
 
 `record_impulse` clamps after each displacement/boundary addition; the final
 combined result is capped again after pixel contact. Opposing terms therefore
@@ -128,33 +134,33 @@ and the unchanged nine-float result are described by the
 are not calibrated force or buoyancy. Disabling contact experimentally does not
 meet the half-depth impact target and does not implement static bearing.
 
-The global Water accounting control also reproduces a separate ejection-path
-defect: `find_ejection_target` checks the endpoint, allowing displacement across
-a one-cell hard floor. All Water remains in the finite World, but some leaves
-the bed's measurement crop. A one-cell fixture proves this without a cellular
-tick or Rapier step. This is not density exchange or loss of Water mass; #11
-needs a bounded barrier-aware displacement policy.
+The historical Water control exposed endpoint-only ejection across a hard floor.
+Current source additionally checks the bounded path against stored hard terrain
+and other body masks. Failure retains the complete source cell and reports an
+unresolved overlap; native and fallback regressions cover both barrier classes.
 
 ## Sampled player support is a separate owner
 
-**Current:** the [granular/player policy](../systems/granular-interaction-policy.md)
-adds material-aware packing queries, directional collision and bounded enclosure
-recovery. The sampled character alone resolves those contacts. Rapier barrel
-bearing, masked-source feedback and barrier-aware ejection remain issue #11.
+**Current:** the [granular policy](../systems/granular-interaction-policy.md)
+defines shared material capability and local packing/stability. The sampled
+character owns its collision response. Rectangle bearing separately consumes
+the same current stored-material predicate and returns a central cellular
+impulse/correction to main-thread Rapier. Neither path creates a Rapier granular
+collider or a second material owner.
 
 ## What is the current issue #11 disposition?
 
-**Current, reconciled 2026-09-12:** [source inspection and focused Windows
-validation](../audits/2026-09-12-issue-11-reconciliation.md) confirm that issue #11
-is substantively unresolved despite its administrative completed closure. The
-barrel path still has transient displacement, boundary and movement-contact
-impulses only; it does not call the player's packing query or retain a granular
-bearing state. A source-matched ordinary Sand barrel reaches the deep floor at
-tick 155. The exact masked-source and barrier-crossing ejection characterizations
-also remain reproducible.
+**Current, repaired 2026-09-13:** the [focused repair evidence](../audits/2026-09-13-issue-11-repair.md)
+supersedes the negative disposition in the dated September 12 reconciliation.
+Three-seed 30-second P4 runs peak at `3.75` cells for one-height and `6.65`
+for four-height drops, with worst final-ten-second descent `0.03` cell. The
+120-second finalist remains bounded. P5 excavation removes all sampled bearing
+immediately and the body falls more than 41 cells by tick 661 before later
+re-bearing on real collapsed material.
 
-Rapier still solely owns hard-terrain contact, the sampled character solely owns
-its local packing response, and cellular coupling solely owns movable-material
-displacement/impulses. This avoids current double-solving but does not satisfy the
-missing bearing requirement. Support-dependent issue #12 integration remains held;
-its diagnostics and ownership design may proceed without assuming barrel support.
+The accepted scope is rectangular bodies, deep supported material, mass
+`0.5..2`, the tested sizes/orientations/powders, and current or one-sample-old
+coupling without sustained publication gaps. Eight-height impact, two-or-more
+sample delay, thin beds, crowded/general shapes and general torque/CCD/fracture
+remain explicit limits. The narrow #12 statement is: #11's support prerequisite
+is satisfied within the documented ordinary rectangle/load envelope.

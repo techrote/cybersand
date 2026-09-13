@@ -60,18 +60,18 @@
     },
     {
       "id": "AP05",
-      "query": "Does closed issue 11 prove that barrel support is implemented for soliding?",
+      "query": "What does issue 11 prove for the soliding support prerequisite?",
       "canonical": [
         "operations/architecture-programme.md"
       ],
       "facts": [
-        "The 2026-09-12 current-source reconciliation classifies issue11 as substantively unresolved despite administrative closure.",
-        "Persistent barrel bearing is absent; masked-source feedback and barrier-crossing ejection remain.",
-        "Support-dependent #12 integration requires a source-matched fix/evidence package or explicit narrower scope decision."
+        "The 2026-09-13 current-source repair supersedes the earlier negative disposition without rewriting its observations.",
+        "Masked-source authority, barrier-aware ejection and persistent ordinary rectangle bearing are repaired and evidenced.",
+        "The #11 support prerequisite is satisfied only within the documented ordinary rectangle/load envelope; #12 ownership and promotion gates remain."
       ],
       "sources": [
         "operations/architecture-programme.md",
-        "audits/2026-09-12-issue-11-reconciliation.md"
+        "audits/2026-09-13-issue-11-repair.md"
       ]
     }
   ]

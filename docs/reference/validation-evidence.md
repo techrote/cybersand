@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-09-12
+last-reviewed: 2026-09-13
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md]
 ---
 
@@ -162,3 +162,23 @@ This is decisive negative evidence, not broad #11 acceptance. No new long-durati
 mass/orientation, desktop-async or Web campaign was run because current source has
 no persistent barrel bearing mechanism and fails the ordinary case before three
 seconds. Historical #9 coverage retains its original source/artifact scope.
+
+## Issue #11 focused repair, 2026-09-13
+
+The [dated repair record](../audits/2026-09-13-issue-11-repair.md) supersedes only
+the disposition above, not its historical observations. At source `f8720d3`, a
+fresh Windows extension (`85b0c1e730dd930ac765361afc2eee3ffa35d2f5012936b113f3394a92e4f21a`)
+passed 55/55 native tests and focused Godot/native/fallback regressions.
+
+Three-seed 30-second P4 runs kept the ordinary 8x14 mass-1 Sand barrel within the
+`0.5H + 1` envelope: one-height peak/final `3.75/0` cells with zero late creep;
+four-height peak `6.65`, final `0.47..1.49`, worst last-ten-second descent `0.03`.
+The 120-second finalist remained within the same gate. P5 accumulated real support,
+then had zero support samples after excavation and resumed downward motion before
+re-bearing on collapsed material. Hard-floor and Water controls remained distinct.
+
+Exact-source desktop async and both real-browser Web profiles passed their focused
+series; compat/threaded browsers each completed 25/25 cases. Conservation and
+fixed-capacity checks passed. Eight-height impact, sustained publication delay,
+thin unsupported beds, crowded/general shapes and broad CCD/torque/fracture remain
+outside the accepted envelope.

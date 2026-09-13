@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-09-12
+last-reviewed: 2026-09-13
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md]
 ---
 
@@ -24,7 +24,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Web compatibility/threaded Auto and hosting | [Web threading](../operations/web-threading.md) |
 | Body masks, displacement, terrain, Rapier scope | [Rigid-body/cellular coupling](../architecture/rigid-body-and-cellular-coupling.md) |
 | Current powder/player collision and Mercury penetration | [Granular policy](../systems/granular-interaction-policy.md), [version decision](../decisions/ADR-011-granular-interaction-policy.md), [current #9/#10 reconciliation](../audits/2026-09-12-issue-9-10-reconciliation.md), [issue #10 evidence](../audits/2026-09-09-issue-10-granular-policy.md) |
-| Barrel support, issue #11 closure and reversible soliding | [Current coupling](../architecture/rigid-body-and-cellular-coupling.md), [current #9/#10 reconciliation](../audits/2026-09-12-issue-9-10-reconciliation.md), [issue #11 reconciliation](../audits/2026-09-12-issue-11-reconciliation.md), [issue #9 results](../audits/2026-09-09-physics-characterisation.md), [future soliding plan](../operations/physics-characterisation-plan.md) |
+| Barrel support, issue #11 closure and reversible soliding | [Current coupling](../architecture/rigid-body-and-cellular-coupling.md), [issue #11 repair](../audits/2026-09-13-issue-11-repair.md), [pre-repair reconciliation](../audits/2026-09-12-issue-11-reconciliation.md), [issue #9 results](../audits/2026-09-09-physics-characterisation.md), [future soliding plan](../operations/physics-characterisation-plan.md) |
 | Pinned Rapier acquisition and verification | [Rapier runbook](../operations/rapier-2d-migration-runbook.md) |
 | Native snapshots, dirty retention, GPU uploads | [Rendering/gameplay bridges](../architecture/rendering-and-gameplay-bridges.md) |
 | CYSD1 content, import/export ownership, exact resume | [Level saves and replay](level-saves-and-replay.md) |
@@ -68,12 +68,14 @@ Current runtime/source gates and immutable M11 retention use [separate validatio
 
 **Current:** Use the granular/player policy for capability, packing, side resistance, enclosure and fallback limits. See the [granular/player policy](../systems/granular-interaction-policy.md).
 
-## Does closed issue #11 prove persistent barrel support?
+## What does issue #11 now prove about persistent barrel support?
 
-**Current:** No. Use the [coupling contract](../architecture/rigid-body-and-cellular-coupling.md)
-for the present owner paths and the [2026-09-12 reconciliation](../audits/2026-09-12-issue-11-reconciliation.md)
-for source identity, focused negative evidence, acceptance matrix and the precise
-#12 hold.
+**Current:** Source-matched repair evidence proves persistent, yielding bearing
+and excavation release for the documented ordinary rectangle/load envelope. It
+does not prove general shapes or high-energy support. Use the [coupling contract](../architecture/rigid-body-and-cellular-coupling.md)
+and [2026-09-13 repair](../audits/2026-09-13-issue-11-repair.md); retain the
+[2026-09-12 reconciliation](../audits/2026-09-12-issue-11-reconciliation.md) as
+the pre-repair negative record. Issue state alone is never the evidence.
 
 ## Issue #13 experiment checkpoint
 
