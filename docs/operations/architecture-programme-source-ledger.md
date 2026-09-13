@@ -10,6 +10,17 @@ related-documents: [architecture-programme.md, ../decisions/ADR-005-water-model.
 
 # Source synthesis and epistemic ledger
 
+## Issue 12 execution qualification, 2026-09-13
+
+The local combined baseline is `f32faa93cbaaef08f7eb8cf9d5e445e9113db73c`.
+[ADR-012](../decisions/ADR-012-bounded-soliding-ownership.md) now freezes a one-slot
+isolated manual-step near-rest owner; older OPEN topology rows below describe
+the programme intake and remain unresolved for general production integration.
+The [dated execution record](../audits/2026-09-13-issue-12-soliding.md) supplies
+candidate, transition, reversal, review and platform evidence. This is no
+production Cell migration, H decision or #18/#20 admission.
+
+
 ## Integrated source qualification, 2026-09-13
 
 **Current source:** merged #19 uses the eight-byte `detail::PrecisionStorage`

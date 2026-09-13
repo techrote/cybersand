@@ -2,6 +2,7 @@
 
 #include "cybersand/render_snapshot.hpp"
 #include "cybersand/world.hpp"
+#include "cybersand/soliding.hpp"
 
 #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/variant/dictionary.hpp>
@@ -97,6 +98,8 @@ public:
     [[nodiscard]] Dictionary water_experiment_observation(
         Vector2i origin, Vector2i size) const;
     // Isolated fresh-world experiment API. Called only by the exclusive owner.
+    bool diagnostic_soliding_configure(Vector2i origin, Vector2i size);
+    [[nodiscard]] Dictionary diagnostic_soliding_snapshot();
     bool diagnostic_reset(const Dictionary& options);
     bool diagnostic_fill_rect(Vector2i origin, Vector2i size, std::int64_t material,
                               std::int64_t state_b = 0);
@@ -151,6 +154,7 @@ private:
     [[nodiscard]] double density_scale(cybersand::Material material, double minimum = 0.05) const;
 
     std::unique_ptr<cybersand::World> world_;
+    std::unique_ptr<cybersand::soliding::Observer> soliding_observer_;
     std::unique_ptr<cybersand::RenderSnapshotExchange> render_exchange_;
     cybersand::TickStats last_stats_{};
     std::array<BodyState, cybersand::World::kMaximumTransientBodies + 1U> current_bodies_{};

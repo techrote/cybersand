@@ -87,10 +87,22 @@ struct DirtyChunk {
     RectI64 local_rect;
 };
 
+// Serialized diagnostic witness; revisions are conservative activity-block changes,
+// not per-cell identity, replay state or a substitute for payload preflight.
+struct CellObservation {
+    std::uint64_t revision = 0;
+    bool active = false;
+    bool changed = false;
+    bool included = false;
+};
+
+namespace soliding { class Session; struct SessionTestAccess; struct PayloadCell; }
 class PrecisionProbe;
 
 class World {
     friend class PrecisionProbe;
+    friend class soliding::Session;
+    friend struct soliding::SessionTestAccess;
 public:
     static constexpr std::uint16_t kMaximumTransientBodies = 16;
 
@@ -105,6 +117,9 @@ public:
     [[nodiscard]] const WorldConfig& config() const noexcept;
     [[nodiscard]] SimulationBackend backend() const noexcept;
     [[nodiscard]] Material get(std::int64_t x, std::int64_t y) const noexcept;
+    [[nodiscard]] CellObservation observation_at(std::int64_t x, std::int64_t y) const noexcept;
+    [[nodiscard]] std::uint64_t observation_mask_revision() const noexcept { return observation_mask_revision_; }
+    [[nodiscard]] std::uint64_t observation_generation() const noexcept { return observation_generation_; }
     [[nodiscard]] Material stored_material(std::int64_t x, std::int64_t y) const noexcept;
     // Serialized external-owner query. Never called from a rule kernel: its
     // bounded read neighbourhood extends beyond the kernel write domain.
@@ -176,6 +191,8 @@ public:
 
 private:
     friend class RenderSnapshotExchange;
+    [[nodiscard]] soliding::PayloadCell soliding_read(std::int64_t x, std::int64_t y) const noexcept;
+    void soliding_write(std::span<const soliding::PayloadCell> values) noexcept;
 
     struct Chunk;
     struct Address;
@@ -190,6 +207,8 @@ private:
     };
 
     WorldConfig config_;
+    std::uint64_t observation_generation_ = 1;
+    std::uint64_t observation_mask_revision_ = 0;
     bool flow_mixing_enabled_ = false;
     bool flow_carrying_enabled_ = false;
     std::unordered_map<ChunkCoord, std::unique_ptr<Chunk>, ChunkCoordHash> chunks_;

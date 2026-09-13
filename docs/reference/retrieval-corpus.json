@@ -64,7 +64,8 @@
     "operations/cell-layout-experiment.md",
     "operations/liquid-characterization.md",
     "operations/state-precision-experiment.md",
-    "operations/soliding-experiment.md"
+    "operations/soliding-experiment.md",
+    "decisions/ADR-012-bounded-soliding-ownership.md"
   ],
   "navigation": [
     "README.md",

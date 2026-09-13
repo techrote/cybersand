@@ -10,6 +10,22 @@ related-documents: [architecture-programme-source-ledger.md, physics-characteris
 
 # CyberSand architecture experimental programme
 
+## Issue 12 / G-R scoped admission, 2026-09-13
+
+The combined source baseline is `f32faa93cbaaef08f7eb8cf9d5e445e9113db73c`, merging
+current main/#19 and accepted #11. The #11 support prerequisite remains satisfied
+only in its documented ordinary rectangle/load envelope. Registered candidate and
+stationary evidence supports [ADR-012](../decisions/ADR-012-bounded-soliding-ownership.md).
+After an independent Sol challenge, Astra admits one isolated manual-step near-rest
+Wall aggregate, with native payload authority and a symmetric topology fence.
+
+For #14, **G-R admits only this bounded proof** and consumes its dated ownership,
+conservation, capacity and negative results. It does not adopt a production
+representation ladder, satisfy G-final, admit #18/#20, or imply human H occurred.
+Dynamic asynchronous/gameplay integration remains Deferred. Final tested results
+and any remaining review/platform gaps are in [issue 12 evidence](../audits/2026-09-13-issue-12-soliding.md).
+
+
 ## Integrated source qualification, 2026-09-13
 
 **Current source:** merged #19 uses the eight-byte `detail::PrecisionStorage`

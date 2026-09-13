@@ -84,3 +84,40 @@ Fallback remains distinct. Preserve #11 stored material/ejection/bearing and
 #19 runtime Water policy in the combined baseline. Dynamic stages remain
 unadmitted pending evidence and reviewed ownership design. All results, narrower
 outcomes and final G-R implications will be recorded in dated evidence.
+
+## Stage A disposition and Stage B registration, 2026-09-13
+
+Astra admits Stage B after130 native cases (13 families,5 translations,workers1/4,
+1800 ticks) and the focused lifecycle fixture pass. All three authored rectangles
+qualify; both powder controls have zero eligible candidates. Exact geometry covers
+holes/seams and two diagonal components without bridging. Capacity cases refuse.
+A low occupancy screen can admit the narrow neck, so occupancy/rest are explicitly
+insufficient for dynamic cohesion. Stage B uses exact hard-cell geometry only;
+its separately registered packing threshold0 accepts rings for geometry validation,
+with120 rest ticks,minimum16 cells and the same capacity/support/material limits.
+It does not claim neck strength. Dynamic admission must independently reject necks.
+
+Stationary testing replaces the existing hard-terrain partition in an isolated
+manual-step fixture; it never stacks a proxy atop the old collider. Invalidated
+proxy geometry immediately falls back to freshly extracted current hard cells
+before Rapier steps. This preserves existing static Wall semantics on support loss;
+it does not invent unsupported Wall collapse. Excavation of Wall removes real
+contact. The #11 powder support-loss control keeps its existing cellular solver.
+
+### Independent A/B review repair
+
+A monotonic saturating mask-change witness catches add/remove or reconfiguration
+between observations, including a mask in an unallocated halo. It conservatively
+invalidates this opt-in observer for any changed body mask, including distant
+ones; this is an explicit false-negative/cost limitation, not rest evidence.
+Mask changes do not dirty material or change solver activity for this witness.
+
+## Ownership and dynamic disposition
+
+After the fresh Sol challenge, Astra admitted the isolated one-slot near-rest
+proof under [ADR-012](../decisions/ADR-012-bounded-soliding-ownership.md), before
+dynamic code. Parent implementation and independent Terra Max review/repairs
+produced repeated8x8/8x14 Wall promotion, real Rapier motion/contact and exact
+quarter-turn reversal. Loose powders, holes, seams/necks and energetic reversal
+remain outside dynamic admission. The [dated record](../audits/2026-09-13-issue-12-soliding.md)
+contains source/platform/review/capacity/performance outcomes and publication limits.

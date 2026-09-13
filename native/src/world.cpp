@@ -208,6 +208,7 @@ struct World::Chunk {
     using Cell = detail::PrecisionStorage;
 
     struct ActivityBlock {
+        std::uint64_t observation_revision = 0;
         std::uint64_t next_interaction_tick = 0;
         std::uint32_t quiet_ticks = 0;
         bool active = false;
@@ -670,6 +671,30 @@ bool World::granular_support_at(std::int64_t x, std::int64_t y, bool side,
     return around >= config_.interaction_policy.side_support_cells;
 }
 
+CellObservation World::observation_at(std::int64_t x, std::int64_t y) const noexcept {
+    CellObservation result;
+    if (tick_failed_ || observation_generation_ == UINT64_MAX) return result;
+    const auto core = scheduler_geometry_.core_for_cell(x, y);
+    const auto contains = [&core](const std::optional<CoreRange>& r) {
+        return !r || (core.x >= r->min_x && core.x <= r->max_x &&
+                      core.y >= r->min_y && core.y <= r->max_y);
+    };
+    // Even serial diagnostic observation refuses offscreen rest credit.
+    result.included = contains(selected_core_region_) && contains(applied_core_region_);
+    const auto a = address(x, y);
+    const auto* chunk = find_chunk(a.chunk);
+    if (!chunk) return result;
+    const auto i = static_cast<std::size_t>(a.local_y / config_.activity_block_size) *
+        static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
+        static_cast<std::size_t>(a.local_x / config_.activity_block_size);
+    const auto& b = chunk->activity_blocks[i];
+    result.revision = b.observation_revision;
+    result.active = b.active;
+    result.changed = b.changed_this_tick;
+    if (result.revision == UINT64_MAX) result.included = false;
+    return result;
+}
+
 Material World::stored_material(std::int64_t x, std::int64_t y) const noexcept {
     const auto target = address(x, y);
     const auto* chunk = find_chunk(target.chunk);
@@ -837,6 +862,7 @@ void World::mark_cell_dirty(Chunk& chunk, std::int32_t local_x, std::int32_t loc
     if (!block.active) record_physics(PhysicsEvent::BlockWake, Material::Empty, Material::Empty, 0, 0, nullptr);
     block.active = true;
     block.changed_this_tick = true;
+    if (block.observation_revision != UINT64_MAX) ++block.observation_revision;
     block.quiet_ticks = 0;
     chunk.active = true;
 
@@ -912,6 +938,7 @@ void World::keep_cell_active(std::int64_t x, std::int64_t y) noexcept {
     if (!block.active) record_physics(PhysicsEvent::BlockWake, Material::Empty, Material::Empty, 0, 0, nullptr);
     block.active = true;
     block.changed_this_tick = true;
+    if (block.observation_revision != UINT64_MAX) ++block.observation_revision;
     block.quiet_ticks = 0;
     chunk->active = true;
 }
@@ -1035,6 +1062,7 @@ void World::clear_transient_obstacles() {
     require_healthy();
     auto& state = *transient_obstacles_;
     const auto width = state.region.width;
+    if (!state.occupied_indices.empty() && observation_mask_revision_ != UINT64_MAX) ++observation_mask_revision_;
     if (width > 0) {
         for (const auto index : state.occupied_indices) {
             if (index >= state.body_ids.size()) continue;
@@ -1081,6 +1109,7 @@ bool World::set_transient_obstacle(std::int64_t x, std::int64_t y,
     auto& slot = state.body_ids[index];
     if (slot != 0U) return false;
     slot = body_id;
+    if (observation_mask_revision_ != UINT64_MAX) ++observation_mask_revision_;
     state.occupied_indices.push_back(index);
     wake_cell_neighborhood(x, y);
     return true;
@@ -1275,6 +1304,7 @@ void World::apply_pending_explosions(TickStats& stats) {
 }
 
 void World::clear() {
+    if (observation_generation_ != UINT64_MAX) ++observation_generation_;
     if (physics_totals_ != nullptr) *physics_totals_ = {};
     if (tick_in_progress_) throw std::logic_error("cannot clear during a world tick");
     tick_failed_ = false;
@@ -2820,6 +2850,7 @@ void World::merge_job_effects(const JobEffects& effects) {
                 if (!block.active) record_physics(PhysicsEvent::BlockWake, Material::Empty, Material::Empty, 0, 0, nullptr);
                 block.active = true;
                 block.changed_this_tick = true;
+                if (block.observation_revision != UINT64_MAX) ++block.observation_revision;
                 block.quiet_ticks = 0;
                 chunk->active = true;
 
@@ -3208,3 +3239,220 @@ void World::copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::
 
 
 }  // namespace cybersand
+
+// The isolated transition owner is compiled with World so the commit can operate
+// on preflighted resident storage without public setter allocation paths.
+#include "cybersand/soliding_session.hpp"
+#include <atomic>
+#include <cmath>
+
+namespace cybersand {
+soliding::PayloadCell World::soliding_read(std::int64_t x,std::int64_t y) const noexcept {
+    const auto at=address(x,y); const auto* chunk=find_chunk(at.chunk);
+    if(!chunk) return {x,y,Material::Empty,0,0,config_.ambient_temperature};
+    const auto& c=chunk->cells[at.index];
+    return {x,y,c.material_value(),c.state_a_value(),c.state_b_value(),
+            chunk->temperatures?(*chunk->temperatures)[at.index]:config_.ambient_temperature};
+}
+void World::soliding_write(std::span<const soliding::PayloadCell> values) noexcept {
+    // Caller owns World exclusively, has reserved every chunk/temperature field,
+    // checked capacity, and holds both solvers behind the transition fence.
+    for(const auto& v:values){
+        const auto at=address(v.x,v.y); auto& chunk=*find_chunk(at.chunk);
+        auto& cell=chunk.cells[at.index]; const auto before=cell.material_value();
+        if(before==Material::Empty&&v.material!=Material::Empty)++chunk.non_empty_cell_count;
+        if(before!=Material::Empty&&v.material==Material::Empty)--chunk.non_empty_cell_count;
+        cell=Chunk::Cell::for_material(v.material);cell.set_state_a(v.a);cell.set_state_b(v.b);cell.set_epoch(update_epoch_);
+        (*chunk.temperatures)[at.index]=v.temperature;
+        chunk.changed_this_tick=true;mark_cell_dirty(chunk,at.local_x,at.local_y);
+        wake_cell_neighborhood(v.x,v.y);
+        if(MaterialRules::is_hard_surface(before)!=MaterialRules::is_hard_surface(v.material))++hard_surface_revision_;
+    }
+}
+}
+namespace cybersand::soliding {
+namespace {
+std::atomic<std::uint64_t> next_incarnation{1};
+constexpr std::uint64_t token_limit=static_cast<std::uint64_t>(INT64_MAX);
+std::uint64_t incarnation() noexcept {
+    auto n=next_incarnation.load();
+    while(n<token_limit){if(next_incarnation.compare_exchange_weak(n,n+1))return n;}
+    return 0;
+}
+WorldConfig session_config(unsigned workers){WorldConfig c;c.worker_threads=workers;c.maximum_chunk_count=16;c.initial_chunk_reserve=1;return c;}
+std::uint64_t digest(std::span<const PayloadCell> values) noexcept {
+    std::uint64_t h=1469598103934665603ULL;
+    for(const auto& v:values)for(auto value:{static_cast<unsigned>(v.material),static_cast<unsigned>(v.a),static_cast<unsigned>(v.b),static_cast<unsigned>(static_cast<std::uint16_t>(v.temperature))}){h^=value;h*=1099511628211ULL;}
+    return h&token_limit;
+}
+bool finite_motion(const Motion& m) noexcept {return std::isfinite(m.x)&&std::isfinite(m.y)&&std::isfinite(m.angle)&&std::isfinite(m.vx)&&std::isfinite(m.vy)&&std::isfinite(m.omega);}
+constexpr double quarter=1.57079632679489661923;
+}
+Session::Session(unsigned width,unsigned height,unsigned workers):world_(session_config(workers)),observer_({32,68,32,32}) {
+    if(!((width==8&&height==8)||(width==8&&height==14)))throw std::invalid_argument("only 8x8 and 8x14 Wall fixtures admitted");
+    incarnation_=incarnation(); if(!incarnation_)throw std::overflow_error("soliding incarnation exhausted");
+    world_.reserve_region({0,0,128,128});world_.reserve_temperature_region({0,0,128,128});
+    world_.configure_transient_obstacles({0,0,128,128});world_.set_simulation_region(RectI64{0,0,128,128});
+    rectangle_={36,96-static_cast<int>(height),width,height};count_=width*height;
+    for(int y=96;y<98;++y)for(int x=16;x<112;++x)world_.set(x,y,Material::GraniteBlock);
+    for(int y=0;y<static_cast<int>(height);++y)for(int x=0;x<static_cast<int>(width);++x){
+        (void)world_.set_cell_state(36+x,rectangle_.y+y,Material::Wall,7,3);
+        world_.set_temperature(36+x,rectangle_.y+y,350);
+    }
+    observer_.observe(world_);
+}
+const Candidate* Session::source_candidate()const noexcept {
+    const auto patch=observer_.patch();
+    for(const auto& c:observer_.candidates()){
+        if(c.material!=Material::Wall||!c.eligible(300,1.,16)||c.area!=count_||c.shape_count!=1)continue;
+        if(patch.x+c.min_x!=rectangle_.x||patch.y+c.min_y!=rectangle_.y||
+           c.max_x-c.min_x+1!=rectangle_.width||c.max_y-c.min_y+1!=rectangle_.height)continue;
+        return &c;
+    }
+    return nullptr;
+}
+bool Session::tick(){
+    if(excluded_||world_.has_failed()||(phase_!=Phase::Cells&&phase_!=Phase::Aggregate)||(phase_==Phase::Aggregate&&!mask_ready_))return false;
+    try{(void)world_.tick();}catch(...){quarantine();return false;}
+    if(phase_==Phase::Cells)observer_.observe(world_);
+    mask_ready_=false;return true;
+}
+bool Session::edit(int x,int y,Material material,std::int16_t temperature){
+    if(!persistence_allowed()||x<2||y<2||x>=126||y>=126||!valid_material(static_cast<std::uint16_t>(material)))return false;
+    world_.set(x,y,material);world_.set_temperature(x,y,temperature);observer_.observe(world_);return true;
+}
+bool Session::advance_token(unsigned direction)noexcept {
+    if(generation_>=token_limit||topology_>=token_limit)return false;
+    std::uint64_t identity=token_[2],revision=token_[3];
+    if(direction==0){const auto* candidate=source_candidate();if(!candidate)return false;
+        identity=(std::uint64_t{1}<<32)|candidate->id;revision=candidate->revision;}
+    ++generation_;++topology_;
+    token_={incarnation_,generation_,identity,revision,direction,digest({payload_.data(),count_}),topology_};return true;
+}
+bool Session::prepare_promotion(){
+    if(!persistence_allowed()||!eligible())return false;
+    // Reject every same-material face connection outside the selected rectangle.
+    for(int y=0;y<rectangle_.height;++y)if(world_.stored_material(rectangle_.x-1,rectangle_.y+y)==Material::Wall||world_.stored_material(rectangle_.x+rectangle_.width,rectangle_.y+y)==Material::Wall)return false;
+    for(int x=0;x<rectangle_.width;++x)if(world_.stored_material(rectangle_.x+x,rectangle_.y-1)==Material::Wall||world_.stored_material(rectangle_.x+x,rectangle_.y+rectangle_.height)==Material::Wall)return false;
+    unsigned n=0;
+    for(int y=0;y<rectangle_.height;++y)for(int x=0;x<rectangle_.width;++x){
+        const auto value=world_.soliding_read(rectangle_.x+x,rectangle_.y+y);
+        if(value.material!=Material::Wall||world_.transient_obstacle_at(value.x,value.y)||!world_.observation_at(value.x,value.y).included)return false;
+        payload_[n]=value;writes_[n]={value.x,value.y,Material::Empty,0,0,world_.config().ambient_temperature};++n;
+    }
+    if(n!=count_||!advance_token(0))return false;
+    phase_=Phase::PromotionPrepared;return true;
+}
+bool Session::source_matches()const noexcept {
+    for(unsigned i=0;i<count_;++i)if(!(world_.soliding_read(payload_[i].x,payload_[i].y)==payload_[i]))return false;
+    return true;
+}
+bool Session::near_rest(const Motion& m)const noexcept {
+    return finite_motion(m)&&std::hypot(m.vx,m.vy)<=.05&&std::abs(m.omega)<=.005&&std::abs(m.x)<126&&std::abs(m.y)<126&&std::abs(m.angle)<1000;
+}
+bool Session::observe_motion(const Motion& m,std::uint64_t serial)noexcept {
+    if(phase_!=Phase::Aggregate||excluded_)return false;
+    const bool consecutive=motion_serial_!=token_limit&&serial==motion_serial_+1;
+    if(!consecutive||!near_rest(m))motion_rest_=0;
+    else if(motion_rest_<300)++motion_rest_;
+    motion_=m;motion_serial_=serial;return finite_motion(m);
+}
+bool Session::prepare_reversal(const Motion& frozen){
+    if(phase_!=Phase::Aggregate||excluded_||world_.has_failed()||motion_rest_<300||!near_rest(frozen))return false;
+    if(frozen.x!=motion_.x||frozen.y!=motion_.y||frozen.angle!=motion_.angle||frozen.vx!=motion_.vx||frozen.vy!=motion_.vy||frozen.omega!=motion_.omega)return false;
+    const auto turns=static_cast<int>(std::round(frozen.angle/quarter));const int q=((turns%4)+4)%4;
+    const double angle_delta=frozen.angle-turns*quarter;
+    const int w=static_cast<int>(rectangle_.width),h=static_cast<int>(rectangle_.height),rw=q%2?h:w,rh=q%2?w:h;
+    const double left=frozen.x-rw*.5,top=frozen.y-rh*.5;
+    const int lx=static_cast<int>(std::round(left)),ly=static_cast<int>(std::round(top));
+    if(std::abs(angle_delta)>.001||std::abs(left-lx)>.01||std::abs(top-ly)>.01||lx<2||ly<2||lx+rw>126||ly+rh>126)return false;
+    for(unsigned n=0;n<count_;++n){
+        const int i=static_cast<int>(n)%w,j=static_cast<int>(n)/w;
+        const int dx=q==0?i:q==1?h-1-j:q==2?w-1-i:j;
+        const int dy=q==0?j:q==1?i:q==2?h-1-j:w-1-i;
+        const auto dst=world_.soliding_read(lx+dx,ly+dy);
+        if(dst.material!=Material::Empty||dst.a||dst.b||dst.temperature!=world_.config().ambient_temperature||!world_.observation_at(dst.x,dst.y).included)return false;
+        const auto body=world_.transient_obstacle_at(dst.x,dst.y);if(body!=0&&body!=1)return false;
+        writes_[n]=payload_[n];writes_[n].x=dst.x;writes_[n].y=dst.y;
+        for(unsigned k=0;k<n;++k)if(writes_[k].x==dst.x&&writes_[k].y==dst.y)return false;
+    }
+    if(!advance_token(1))return false;
+    measurements_.rectangle={lx,ly,rw,rh};measurements_.snap_x=lx-left;measurements_.snap_y=ly-top;measurements_.snap_angle=-angle_delta;
+    const double radius=std::hypot(w,h)*.5,mass=count_/112.,inertia=mass*(w*w+h*h)/12.;
+    measurements_.speed_bound=std::hypot(frozen.vx,frozen.vy)+std::abs(frozen.omega)*radius;
+    measurements_.discarded_energy=.5*mass*(frozen.vx*frozen.vx+frozen.vy*frozen.vy)+.5*inertia*frozen.omega*frozen.omega;
+    phase_=Phase::ReversalPrepared;return true;
+}
+bool Session::acknowledge(const Token& t)noexcept {
+    if(!valid_token(t)||excluded_||world_.has_failed())return false;
+    if(phase_==Phase::PromotionPrepared){phase_=Phase::PromotionAcknowledged;return true;}
+    if(phase_==Phase::ReversalPrepared){phase_=Phase::ReversalAcknowledged;return true;}return false;
+}
+bool Session::commit(const Token& t)noexcept {
+    if(!valid_token(t)||excluded_||world_.has_failed()||world_.hard_surface_revision()>UINT64_MAX-count_)return false;
+    const bool promotion=phase_==Phase::PromotionAcknowledged;
+    if(!promotion&&phase_!=Phase::ReversalAcknowledged)return false;
+    if(promotion&&!source_matches())return false;
+    for(unsigned n=0;n<count_;++n){
+        const auto& v=writes_[n];const auto at=world_.address(v.x,v.y);const auto* chunk=world_.find_chunk(at.chunk);
+        if(!chunk||!chunk->temperatures||!world_.observation_at(v.x,v.y).included)return false;
+        if(!promotion){const auto dst=world_.soliding_read(v.x,v.y);if(dst.material!=Material::Empty||dst.a||dst.b||dst.temperature!=world_.config().ambient_temperature)return false;}
+    }
+    world_.clear_transient_obstacles();world_.soliding_write({writes_.data(),count_});
+    // Logical commit point under the exclusive no-step fence.
+    slot_owns_=promotion;phase_=promotion?Phase::PromotionCommitted:Phase::ReversalCommitted;
+    mask_ready_=false;motion_rest_=0;motion_serial_=0;
+    if(!promotion)rectangle_=measurements_.rectangle;
+    return true;
+}
+bool Session::finalize(const Token& t,bool verified)noexcept {
+    if(!valid_token(t)||(phase_!=Phase::PromotionCommitted&&phase_!=Phase::ReversalCommitted))return false;
+    if(!verified||world_.has_failed()||(phase_==Phase::PromotionCommitted&&!mask_ready_)){quarantine();return false;}
+    phase_=slot_owns_?Phase::Aggregate:Phase::Cells;
+    if(!slot_owns_)observer_=Observer({rectangle_.x-4,rectangle_.y-4,32,32});
+    return true;
+}
+bool Session::cancel(const Token& t)noexcept {
+    if(!valid_token(t))return false;
+    if(phase_==Phase::PromotionPrepared||phase_==Phase::PromotionAcknowledged){phase_=Phase::Cells;return true;}
+    if(phase_==Phase::ReversalPrepared||phase_==Phase::ReversalAcknowledged){phase_=Phase::Aggregate;return true;}return false;
+}
+MaskResult Session::occupancy(const Motion& m)noexcept {
+    MaskResult result;mask_ready_=false;
+    if(excluded_||!slot_owns_||(phase_!=Phase::Aggregate&&phase_!=Phase::PromotionCommitted)||!finite_motion(m)||std::abs(m.x)>128||std::abs(m.y)>128||std::abs(m.angle)>1000)return result;
+    const double c=std::cos(m.angle),s=std::sin(m.angle),hw=rectangle_.width*.5,hh=rectangle_.height*.5;
+    const double ex=std::abs(c)*hw+std::abs(s)*hh,ey=std::abs(s)*hw+std::abs(c)*hh;
+    const int left=static_cast<int>(std::floor(m.x-ex)),right=static_cast<int>(std::ceil(m.x+ex));
+    const int top=static_cast<int>(std::floor(m.y-ey)),bottom=static_cast<int>(std::ceil(m.y+ey));
+    if(left<2||top<2||right>126||bottom>126)return result;
+    for(int y=top-2;y<bottom+2;++y)for(int x=left-2;x<right+2;++x)
+        if(!world_.observation_at(x,y).included)return result;
+    for(int y=top;y<bottom;++y)for(int x=left;x<right;++x){
+        const double dx=x+.5-m.x,dy=y+.5-m.y;
+        if(std::abs(c*dx+s*dy)>=hw||std::abs(-s*dx+c*dy)>=hh)continue;
+        if(result.required==mask_cells_.size())return result;
+        mask_cells_[result.required++]={static_cast<std::int16_t>(x),static_cast<std::int16_t>(y)};
+        const auto body=world_.transient_obstacle_at(x,y);
+        if(world_.soliding_read(x,y).material!=Material::Empty||(body!=0&&body!=1)||!world_.observation_at(x,y).included)++result.conflicts;
+    }
+    if(result.conflicts||result.required==0)return result;
+    world_.clear_transient_obstacles();
+    for(unsigned n=0;n<result.required;++n)if(world_.set_transient_obstacle(mask_cells_[n].x,mask_cells_[n].y,1))++result.written;
+    result.complete=result.written==result.required;mask_ready_=result.complete;
+    if(!result.complete)quarantine();return result;
+}
+bool Session::set_excluded(bool value)noexcept {
+    if(phase_!=Phase::Cells&&phase_!=Phase::Aggregate)return false;
+    excluded_=value;motion_rest_=0;motion_serial_=0;mask_ready_=false;
+    if(!slot_owns_)observer_=Observer({rectangle_.x-4,rectangle_.y-4,32,32});return true;
+}
+SessionStatus Session::status()const noexcept {
+    auto out=measurements_;out.phase=phase_;out.members=count_;out.slot_members=slot_owns_?count_:0;
+    out.failed=world_.has_failed()||phase_==Phase::Quarantine;out.excluded=excluded_;out.motion_rest=motion_rest_;out.rectangle=rectangle_;
+    for(const auto& c:observer_.candidates())if(c.material==Material::Wall)out.rest=c.rest_ticks;
+    for(int y=0;y<128;++y)for(int x=0;x<128;++x)if(world_.stored_material(x,y)==Material::Wall)++out.cell_members;
+    if(slot_owns_)out.payload_hash=digest({payload_.data(),count_});
+    else{std::array<PayloadCell,224> current{};unsigned n=0;for(int y=0;y<rectangle_.height;++y)for(int x=0;x<rectangle_.width;++x)current[n++]=world_.soliding_read(rectangle_.x+x,rectangle_.y+y);out.payload_hash=digest({current.data(),count_});}
+    return out;
+}
+} // namespace cybersand::soliding

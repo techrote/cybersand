@@ -10,6 +10,17 @@ related-documents: [local-build-and-validation.md, ../reference/validation-evide
 
 # Source checkpoint and recovery
 
+## Issue 12 dedicated integration checkpoint
+
+Initial remote main `3b1747a493d6ffb01661dcf4111f1b32ae89dbac` and accepted #11
+`d5f0de687283ec366ed4ff33160a274e2a35ddc6` were semantically merged as
+`f32faa93cbaaef08f7eb8cf9d5e445e9113db73c` on `codex/issue-12-soliding` in
+`C:/kybersand/worktrees/issue-12-soliding`. Main and other worktrees were preserved.
+The implementation/evidence commit identities and local runtime hashes are in the
+[dated #12 record](../audits/2026-09-13-issue-12-soliding.md). Diagnostic artifacts
+remain outside source commits; no published-runtime provenance is reattested.
+
+
 ## Which version is the working source?
 
 **Current:** the active source is a real Git checkout. On 2026-09-08, upstream

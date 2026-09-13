@@ -11,6 +11,16 @@ last-reviewed: 2026-09-13
 
 # ADR-007: Separate rigid-body occupancy coupling
 
+## Scoped experimental exception, 2026-09-13
+
+[ADR-012](ADR-012-bounded-soliding-ownership.md) accepts a one-slot isolated near-rest
+ownership transfer experiment. A native Session owns material after promotion;
+Godot/Rapier never does. This exception does not change the ordinary gameplay rule
+below or introduce erase/simulate/restore each tick. Only the isolated diagnostic
+coordinator performs the rare fenced handoff. Production dynamic integration,
+automatic cohesion and energetic reversal remain Deferred.
+
+
 ## Decision and implementation status
 
 **Approved and Current for rectangles:** independent rigid bodies project a

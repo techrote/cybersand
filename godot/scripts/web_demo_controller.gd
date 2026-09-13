@@ -286,6 +286,30 @@ func _ready() -> void:
 	ui.message(rapier_reason if not rapier_available else "")
 	_init_browser_test()
 	print("WEB_DEMO_READY ", ui.capability.text)
+	if test_enabled and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('soliding_dynamic') === '1'", true)):
+		set_process(false)
+		set_physics_process(false)
+		if not rapier_available:
+			var refused: Dictionary = {"ok":false,"error":"Rapier admission: "+rapier_reason}
+			JavaScriptBridge.eval("var p=document.createElement('pre');p.id='cybersand-soliding-dynamic-result';p.textContent="+JSON.stringify(JSON.stringify(refused))+";document.body.appendChild(p);",true)
+			return
+		var results: Array = []
+		var passed: bool = true
+		for height: int in [8,14]:
+			var result: Dictionary = await preload("res://scripts/soliding_dynamic_probe.gd").run(self,4 if OS.has_feature("threads") else 1,height)
+			results.append(result)
+			passed = result.ok and passed
+		var packet: Dictionary = {"ok":passed,"results":results}
+		print("WEB_SOLIDING_DYNAMIC ",JSON.stringify(packet))
+		JavaScriptBridge.eval("var p=document.createElement('pre');p.id='cybersand-soliding-dynamic-result';p.textContent="+JSON.stringify(JSON.stringify(packet))+";document.body.appendChild(p);",true)
+		return
+	if test_enabled and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('soliding') === '1'", true)):
+		set_process(false)
+		set_physics_process(false)
+		var result: Dictionary = await preload("res://scripts/soliding_probe.gd").run(self,4 if OS.has_feature("threads") else 1)
+		print("WEB_SOLIDING ",JSON.stringify(result))
+		JavaScriptBridge.eval("var p=document.createElement('pre');p.id='cybersand-soliding-result';p.textContent="+JSON.stringify(JSON.stringify(result))+";document.body.appendChild(p);",true)
+		return
 	if test_enabled and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('water') === '1'", true)):
 		set_process(false)
 		set_physics_process(false)
@@ -328,6 +352,14 @@ func _ready() -> void:
 				{"id":"P4","mode":"barrel","material":2},
 				{"id":"hard","mode":"barrel","material":0,"layout":"hard"}]:
 				cases.append(spec.merged({"seed":seed,"ticks":1800,"workers":workers}))
+		if bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('issue11') === '1'",true)):
+			cases.clear()
+			for spec: Dictionary in [
+				{"material":2,"mode":"barrel","layout":"flat","drop":1,"issue11_p4":true,"name":"p4-sand-one-height"},
+				{"material":2,"mode":"barrel","layout":"flat","drop":4,"issue11_p4":true,"name":"p4-sand-four-height"},
+				{"material":2,"mode":"barrel","layout":"excavate","drop":1,"issue11_p5":true,"name":"p5-sand-excavation"},
+				{"material":0,"mode":"barrel","layout":"hard","drop":1,"name":"hard-floor-control"}]:
+				cases.append(spec.merged({"seed":0,"ticks":1800,"workers":workers}))
 		var result: Dictionary = await CyberPhysicsCharacterisation.run(self,cases)
 		print("WEB_PHYSICS_CHARACTERISATION ",JSON.stringify(result))
 		JavaScriptBridge.eval("window.cybersandPhysics = " + JSON.stringify(result) + "; var p=document.createElement('pre');p.id='cybersand-physics-result';p.textContent=JSON.stringify(window.cybersandPhysics);document.body.appendChild(p);fetch('/physics-results',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userAgent:navigator.userAgent,isolated:crossOriginIsolated,result:window.cybersandPhysics})}).then(r=>console.log('PHYSICS_EVIDENCE_SAVED',r.status));",true)

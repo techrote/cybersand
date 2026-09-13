@@ -10,6 +10,16 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## E-SOLIDING: bounded issue 12 execution, 2026-09-13
+
+The [dated record](../audits/2026-09-13-issue-12-soliding.md) identifies the combined
+main/#11 baseline, candidate matrix, stationary/near-rest transition fixtures,
+independent Sol/Terra dispositions, actual native/desktop/Web runs and remaining
+publication/Linux gaps. [ADR-012](../decisions/ADR-012-bounded-soliding-ownership.md)
+is design admission; only the recorded tested artifacts establish runtime evidence.
+No production soliding, generic momentum or exact replay is claimed.
+
+
 ## What has actually passed?
 
 **Current evidence policy:** a result applies to its recorded source/artifact,

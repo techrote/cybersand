@@ -10,6 +10,21 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Issue 12 bounded soliding checkpoint
+
+**Current experimental source:** bounded candidate diagnostics, cells-authoritative
+stationary geometry and a separate one-slot native/Rapier Session exist. **Approved
+design:** [ADR-012](../decisions/ADR-012-bounded-soliding-ownership.md) admits only an
+isolated near-rest 8x8/8x14 Wall proof, after independent ownership challenge.
+[The dated record](../audits/2026-09-13-issue-12-soliding.md) distinguishes source,
+executed tests, review findings, publication and closure disposition.
+
+Dynamic production/asynchronous integration, automatic cohesion, structural
+collapse, general contours and energetic reversal remain Deferred. #14/G-R may
+consume this narrow proof; G-final remains open, #19 is H-ready with H unperformed,
+and #18/#20 are unchanged.
+
+
 ## Integrated source qualification, 2026-09-13
 
 **Current source:** merged #19 uses the eight-byte `detail::PrecisionStorage`

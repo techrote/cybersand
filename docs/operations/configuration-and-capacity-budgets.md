@@ -10,6 +10,23 @@ related-documents: [../reference/configuration-reference.md, ../systems/world-st
 
 # Configuration and capacity budgets
 
+## Soliding preparation and refusal
+
+The opt-in observer preallocates fixed witness/member/shape arrays. A patch-edge
+component is incomplete; component/member/shape saturation refuses admission.
+The isolated native Session reserves its entire finite region and temperature
+fields before transitions. Native commit rechecks resident storage and uses a
+private bounded `noexcept` writer. Main-thread shape/RID preparation precedes ACK;
+postcommit topology failure retains the committed material owner and the fence.
+
+Reversal requires every exact destination to be canonical Empty, including ambient
+temperature. Blocked, hot, excluded or over-envelope placements retain the aggregate;
+there is no truncation or heat overwrite. Generation exhaustion refuses further
+transactions. See [exact bounds](../reference/configuration-reference.md) and
+[ADR-012](../decisions/ADR-012-bounded-soliding-ownership.md). Ordinary scheduler,
+event, snapshot and failed-tick capacity contracts remain independently applicable.
+
+
 **Current:** native World construction, region/temperature reservation, event
 capacity, and snapshot slot/patch/byte limits exist. **Planned:** general saved
 configuration and safe live pause/drain/resize/publish. Explicit capacity failure

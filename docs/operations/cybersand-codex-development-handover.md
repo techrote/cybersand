@@ -10,6 +10,21 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Issue 12 working checkpoint
+
+Continue issue 12 in its dedicated `codex/issue-12-soliding` worktree, not main.
+The integration baseline is `f32faa93cbaaef08f7eb8cf9d5e445e9113db73c`, preserving
+current main/#19 plus accepted #11. Start with the [experiment](soliding-experiment.md),
+[accepted scoped ownership ADR](../decisions/ADR-012-bounded-soliding-ownership.md)
+and [dated execution record](../audits/2026-09-13-issue-12-soliding.md).
+
+Raw evidence stays under `C:/kybersand/validation/local/2026-09-13-issue-12`.
+Diagnostic DLL/Web exports are source-matched local artifacts, not updated
+published-runtime provenance. Keep historical #11/#19 audits unchanged. The new
+dynamic Session is isolated/main-thread owned; production worker integration is
+Deferred. Remote publication and issue closure require their own explicit boundary.
+
+
 ## Start here for the next task
 
 Work in `C:/kybersand`, with executable source in `source/`. The companion workspace

@@ -11,6 +11,22 @@ last-reviewed: 2026-09-13
 
 # Data ownership and lifetimes
 
+## Experimental soliding owner (issue 12)
+
+The opt-in `soliding::Observer` copies bounded values under the existing exclusive
+World owner. It owns no material. Stationary proxy geometry replaces one collision
+partition while cells retain authority. See [ADR-012](../decisions/ADR-012-bounded-soliding-ownership.md).
+
+The isolated `soliding::Session` exclusively owns its private World and fixed
+payload slot. Only its main-thread diagnostic coordinator invokes it; Rapier RIDs
+stay on that thread in an inactive manually stepped space. Before commit cells
+own; after promotion the native slot owns; after reversal cells own again. Disabled
+geometry/reservations and endpoint masks own nothing. Production desktop worker
+handoff for dynamic aggregates is Deferred. There is no material owner in Godot.
+Session quarantine retains the last committed owner and requires whole-experiment
+teardown; ordinary World quarantine remains a separate underlying condition.
+
+
 ## Who may mutate each resource?
 
 **Current:** each selected cellular world has one external owner. On desktop

@@ -60,6 +60,8 @@ CyberNativeCellWorld::CyberNativeCellWorld() {
 CyberNativeCellWorld::~CyberNativeCellWorld() = default;
 
 void CyberNativeCellWorld::_bind_methods() {
+    ClassDB::bind_method(D_METHOD("diagnostic_soliding_configure", "origin", "size"), &CyberNativeCellWorld::diagnostic_soliding_configure);
+    ClassDB::bind_method(D_METHOD("diagnostic_soliding_snapshot"), &CyberNativeCellWorld::diagnostic_soliding_snapshot);
     ClassDB::bind_method(D_METHOD("diagnostic_reset", "options"), &CyberNativeCellWorld::diagnostic_reset);
     ClassDB::bind_method(D_METHOD("diagnostic_fill_rect", "origin", "size", "material", "state_b"), &CyberNativeCellWorld::diagnostic_fill_rect, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("diagnostic_snapshot", "origin", "size", "include_histogram"), &CyberNativeCellWorld::diagnostic_snapshot, DEFVAL(false));
@@ -296,6 +298,7 @@ bool CyberNativeCellWorld::reset_demo_world() {
 
         candidate->set_simulation_region(world_->simulation_region());
         world_.swap(candidate);
+        soliding_observer_.reset();
         diagnostic_fixture_ = false;
         body_diagnostics_.reset();
         displacement_gain_ = kBodyDisplacementReactionImpulse;
@@ -1318,6 +1321,7 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         auto diagnostics = config.physics_diagnostics.enabled
             ? std::make_unique<std::array<BodyDiagnostic, 17>>() : nullptr;
         world_.swap(candidate);
+        soliding_observer_.reset();
         body_diagnostics_ = std::move(diagnostics);
         diagnostic_fixture_ = true;
         worker_threads_ = config.worker_threads;
@@ -1550,3 +1554,42 @@ std::int64_t CyberNativeCellWorld::get_tick_failure_count() const {
 }
 
 }  // namespace godot
+
+namespace godot {
+bool CyberNativeCellWorld::diagnostic_soliding_configure(Vector2i origin, Vector2i size) {
+    if (!world_ || world_->has_failed() || !diagnostic_fixture_) return false;
+    try {
+        auto observer = std::make_unique<cybersand::soliding::Observer>(cybersand::RectI64{origin.x,origin.y,size.x,size.y});
+        observer->observe(*world_); soliding_observer_ = std::move(observer); return true;
+    } catch (const std::exception&) { return false; }
+}
+Dictionary CyberNativeCellWorld::diagnostic_soliding_snapshot() {
+    Dictionary result; result["ok"] = false;
+    if (!world_ || !soliding_observer_) return result;
+    soliding_observer_->observe(*world_);
+    result["ok"] = !world_->has_failed(); result["failed"] = world_->has_failed();
+    result["tick"] = static_cast<int64_t>(world_->completed_tick_index());
+    Array candidates;
+    const auto patch = soliding_observer_->patch();
+    for (const auto& c: soliding_observer_->candidates()) {
+        Dictionary row; row["id"]=c.id; row["revision"]=static_cast<int64_t>(c.revision);
+        row["material"]=static_cast<int>(c.material); row["area"]=c.area;
+        row["rest_ticks"]=c.rest_ticks; row["occupancy"]=c.occupancy();
+        row["supported"]=c.supported; row["exposed"]=c.exposed;
+        row["eligible"]=c.eligible(); row["stationary"]=c.eligible(120,0.,16);
+        row["clipped"]=c.clipped; row["capacity"]=c.capacity;
+        PackedInt32Array rectangles;
+        if(!c.capacity)for(std::size_t j=0;j<c.shape_count;++j) {
+            const auto r=c.shapes[j]; rectangles.append(static_cast<int32_t>(patch.x+r.x));
+            rectangles.append(static_cast<int32_t>(patch.y+r.y));rectangles.append(r.w);rectangles.append(r.h);
+        }
+        row["rectangles"]=rectangles;candidates.append(row);
+    }
+    result["candidates"]=candidates;
+    const auto& m=soliding_observer_->metrics();
+    result["rebuilds"]=static_cast<int64_t>(m.rebuilds);result["witness_cells"]=static_cast<int64_t>(m.witness_cells);
+    result["geometry_cells"]=static_cast<int64_t>(m.geometry_cells);result["invalidations"]=static_cast<int64_t>(m.invalidations);
+    result["observer_bytes"]=static_cast<int64_t>(sizeof(cybersand::soliding::Observer));
+    return result;
+}
+} // namespace godot

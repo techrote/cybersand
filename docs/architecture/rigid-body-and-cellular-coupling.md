@@ -11,6 +11,23 @@ last-reviewed: 2026-09-13
 
 # Rigid-body and cellular coupling
 
+## Experimental bounded soliding
+
+[ADR-012](../decisions/ADR-012-bounded-soliding-ownership.md) is the narrowly accepted
+exception to ordinary bodies keeping material in the grid. `soliding_probe.gd`
+uses exact row rectangles in one isolated static partition: excavation/support
+loss invalidates before the next allowed Rapier step, with cells still owning.
+It does not infer a structural collapse or add a bearing solver.
+
+`soliding_dynamic_probe.gd` coordinates one private native Session and one exact
+8x8 or 8x14 Wall rectangle. Both solvers are fenced through prepare/ACK/commit and
+symmetric topology finalization. Rapier alone supplies this aggregate's hard-floor
+contact; ordinary #11 cellular bearing is not also applied. Endpoint rectangle
+cell-centre masks must be complete and conflict-free before a cell tick. No swept
+occupancy, arbitrary shapes, crowding, fracture or gameplay integration is claimed.
+Dated results and exclusions live in [issue 12 evidence](../audits/2026-09-13-issue-12-soliding.md).
+
+
 ## When a crate moves through sand, are its pixels erased and restored?
 
 **Current:** native World owns cellular materials; Rapier2D owns independent

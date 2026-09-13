@@ -10,6 +10,17 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## Soliding diagnostics and reversible ownership
+
+For candidate rest, false cohesion and exact stationary geometry, use the
+[registered experiment](../operations/soliding-experiment.md). For material owner,
+prepare/acknowledge/commit, temperature, stale identity, topology fence, reversal
+and quarantine, use [ADR-012](../decisions/ADR-012-bounded-soliding-ownership.md).
+For actual source/platform/review outcomes and issue closure, use the
+[dated issue 12 record](../audits/2026-09-13-issue-12-soliding.md). G-R is a scoped
+proof admission; #19 H and #18/#20/G-final are separate gates.
+
+
 ## Integrated source qualification, 2026-09-13
 
 **Current source:** merged #19 uses the eight-byte `detail::PrecisionStorage`
