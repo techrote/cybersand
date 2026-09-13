@@ -26,6 +26,7 @@ var h_reveal_dialog: ConfirmationDialog
 var h_run_key: String = ""
 var h_retained_blind_set: Dictionary = {}
 var h_blind_revealed: bool = false
+var h_blind_sealed: bool = false
 var h_pending_run_start: bool = false
 
 func button(row: Node, text: String, action: Callable) -> Button:
@@ -104,8 +105,14 @@ func _water_reset() -> void:
 func _start_blind() -> void:
 	if not h_retained_blind_set.is_empty() and not h_blind_revealed:h_feedback.text="Reveal the previous blind set before starting another; mapping retained in memory";return
 	if not _ensure_h_session():return
-	h_blind_revealed=false;h_retained_blind_set.clear();h_pending_run_start=true;h_recorder.record_event("blind-set-request",{})
-	if not host.water_lab_prepare_blind():h_pending_run_start=false;h_feedback.text="Blind set was not started; existing controlled run may still be active"
+	h_blind_revealed=false;h_blind_sealed=false;h_retained_blind_set.clear();h_pending_run_start=true;h_recorder.record_event("blind-set-request",{})
+	if not host.water_lab_prepare_blind():h_pending_run_start=false;h_feedback.text="Blind set was not started; existing controlled run may still be active";return
+	h_retained_blind_set=host.water_blind_set.duplicate(true)
+	var exported: Dictionary=CyberWaterExperimentBlind.export_metadata(h_retained_blind_set,{"h_session_id":h_recorder.session_id,"varied_field":"mass_bits"})
+	if not exported.get("ok",false):h_feedback.text="Blind set exists but recovery metadata failed; reveal/restart before formal capture";return
+	var sealed: Dictionary=h_recorder.seal_blind_mapping(exported.metadata);h_blind_sealed=bool(sealed.get("ok",false))
+	if h_blind_sealed:h_feedback.text="Blind mapping sealed for crash recovery — applying candidate A"
+	else:h_feedback.text="Blind recovery key failed; reveal/restart before formal capture"
 func _next_blind() -> void:
 	if h_blind_revealed:h_feedback.text="Blind set already revealed; start a new blind set for further blind judgements";return
 	if not host.pending_water_apply.is_empty():h_feedback.text="Candidate is still applying; wait for ready feedback before advancing";return
@@ -117,10 +124,12 @@ func _capture_h() -> void:
 	if not host.tower_context.get("water_active",false):h_feedback.text="Capture requires an active Water Feel run";return
 	if not host.pending_water_apply.is_empty():h_feedback.text="Candidate/reset is still applying; capture is blocked until acknowledged";return
 	if not _ensure_h_session():return
-	var metadata: Dictionary=_safe_h_metadata(host.tower_context);metadata["blind_compromised"]=h_blind_revealed and bool(metadata.blind)
+	var metadata: Dictionary=_safe_h_metadata(host.tower_context)
+	if bool(metadata.blind) and not h_blind_sealed:h_feedback.text="Blind recovery mapping is not safely preserved; reveal/restart before formal capture";return
+	metadata["blind_compromised"]=h_blind_revealed and bool(metadata.blind)
 	var rank: int=h_rank.get_item_id(h_rank.selected);var judgement: String="" if h_judgement.selected<=0 else h_judgement.get_item_text(h_judgement.selected)
 	var result: Dictionary=h_recorder.capture(metadata,host.get_viewport().get_texture().get_image(),rank,judgement,h_note.text.strip_edges())
-	if result.get("ok",false):h_feedback.text=str(result.feedback)+" — breadcrumb copied";h_rank.select(0);h_judgement.select(0);h_note.clear()
+	if result.get("ok",false):h_feedback.text=str(result.feedback)+" — "+str(result.screenshot)+" — breadcrumb copied";h_rank.select(0);h_judgement.select(0);h_note.clear()
 	else:h_feedback.text="H capture error: "+str(result.get("error","unknown error"))
 
 func _request_reveal() -> void:
@@ -138,7 +147,7 @@ func _reveal_confirmed() -> void:
 	h_blind_revealed=true;h_retained_blind_set=blind_set.duplicate(true);var parts: Array[String]=[]
 	for label: String in blind_set.labels:
 		var policy: Dictionary=blind_set.hidden_mapping[label].policy;parts.append("%s=mass%d/coh%d"%[label,int(policy.mass_bits),int(policy.coherence_ticks)])
-	var summary: String="Reveal: "+", ".join(parts);h_feedback.text=summary+" — mapping saved"
+	var summary: String="Reveal: "+", ".join(parts);h_feedback.text=summary+" — mapping saved; use Fresh tower before a new blind set"
 	if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):DisplayServer.clipboard_set(summary)
 func _open_h_folder() -> void:
 	if h_recorder.session_root.is_empty():h_feedback.text="No H session folder yet — start Water Feel or capture first";return
@@ -154,7 +163,7 @@ func refresh(active: bool,floor_index: int,context: Dictionary) -> void:
 		floor_picker.disabled=true;tube_picker.disabled=true
 		var blind_active: bool=(not str(context.get("water_blind_label","")).is_empty() or not host.water_blind_set.is_empty());var applying: bool=not host.pending_water_apply.is_empty()
 		for release_button: Button in release_buttons:release_button.disabled=true;release_button.tooltip_text="Water Feel uses only registered scenario actions"
-		blind_button.disabled=blind_active or applying;next_blind_button.disabled=not blind_active or h_blind_revealed or applying;h_reveal_button.disabled=(not blind_active and h_retained_blind_set.is_empty()) or applying;water_policy_button.disabled=blind_active or applying;water_save_button.disabled=blind_active or applying;h_capture_button.disabled=applying
+		blind_button.disabled=blind_active or applying;next_blind_button.disabled=not blind_active or h_blind_revealed or applying;h_reveal_button.disabled=(not blind_active and h_retained_blind_set.is_empty()) or applying;water_policy_button.disabled=blind_active or applying;water_save_button.disabled=blind_active or applying;h_capture_button.disabled=applying or (blind_active and not h_blind_sealed)
 		for label: Label in labels:label.visible=false
 		var policy: Dictionary=context.get("water_policy",{});var accounting: Dictionary=context.get("water_accounting",{})
 		info.text="%s\nScenario %s / seed %s / recipe %s / presentation four-level %s"%[str(context.get("status","Water Feel Lab")),str(policy.get("scenario_id","")),str(policy.get("seed","")),str(context.get("water_recipe_hash","")).left(12),str(policy.get("interface_mode","coverage"))]
