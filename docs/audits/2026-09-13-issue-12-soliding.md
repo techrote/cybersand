@@ -17,8 +17,11 @@ related-documents: [2026-09-13-issue-12-integration.md, ../operations/soliding-e
 - Merge base: `f3fb9de2c6e62907b07b50c7036af389da67d4a5`.
 - Combined #12 integration baseline: `f32faa93cbaaef08f7eb8cf9d5e445e9113db73c`.
 - Branch/worktree: `codex/issue-12-soliding`, `C:/kybersand/worktrees/issue-12-soliding`.
-- Implementation commit: the checkpoint containing this initial record; its exact
-  identity and final Web/artifact ledger are recorded at the next evidence commit.
+- Implementation commit: `185c48a4d048075540d6aabfe25ea17f143a4f67`.
+- Final evidence: the documentation-only checkpoint containing this finalized record;
+  implementation bytes remain those of the implementation commit.
+- [Curated evidence and artifact hashes](issue-12-2026-09-13/evidence.json) identify
+  all 14 tested Windows/Web artifacts, final probes, metrics and review manifests.
 
 [Integration evidence](2026-09-13-issue-12-integration.md) records the 11 semantic
 conflicts (nine documentation/JSON, two native source): retain #19's uint16 state
@@ -75,8 +78,8 @@ ID and restores current hard-cell geometry. Excavating the Wall removes the last
 collider before another step and the body falls to y=62.4225731. Invalidation
 latency is zero permitted Rapier steps. No duplicate static partition is installed.
 
-The desktop asynchronous exclusive owner passes workers 1/4, reaching rest327,
-then support-loss invalidation and excavation removal at tick360. Ordinary player
+The desktop asynchronous exclusive owner passes workers 1/4, reaching rest 327,
+then support-loss invalidation and excavation removal at tick 360. Ordinary player
 support remains native/cell-authoritative; final shared player-policy and desktop
 asynchronous interaction regressions pass separately. Production stationary-proxy
 routing is not enabled; this is an isolated correctness prototype.
@@ -114,28 +117,28 @@ prepares disabled static geometry before ACK, requires all destinations canonica
 Empty, restores exact tuples once, retires dynamic collision/mask, then finalizes.
 
 Both 8x8 and 8x14 Wall cases pass four repeated promote/move/90-degree/reverse cycles
-with workers1/4: 16 real Rapier cycles in the final Windows probe. Every run verifies
+with workers 1/4: 16 real Rapier cycles in the final Windows probe. Every run verifies
 backend class/selection/manual-step behavior before allocation. Each isolated body
 must actually fall >2 cells with positive velocity and contact the expected floor.
-Observed peak downward speed is56.49..60.80 cell/s, final centre y89.0002747 or
+Observed peak downward speed is 56.49–60.80 cell/s, final centre y=89.0002747 or
 92.0002747. Every cycle preserves member count and state/temperature hash. The
-asymmetric rectangle alternates8x14 and14x8, exposing rotation mapping errors.
+asymmetric rectangle alternates 8x14 and 14x8, exposing rotation mapping errors.
 
 ## Reversal, conservation, failure and capacity
 
-Promotion starts at zero velocity after300 healthy observed rest ticks. Reversal
-requires300 stepped near-rest observations, speed<=.05 cell/s, angular speed<=.005
+Promotion starts at zero velocity after 300 healthy observed rest ticks. Reversal
+requires 300 stepped near-rest observations, speed<=.05 cell/s, angular speed<=.005
 rad/s, quarter-turn error<=.001rad and centre-grid error<=.01cell. Actual Rapier
 reversals have zero residual velocity/energy and snap y=-.0002746582 cell; angle
-correction is about-4.37e-8rad. Native tests exercise a nonzero bounded residual
+correction is about -4.37e-8 rad. Native tests exercise a nonzero bounded residual
 and record its speed bound/energy. No generic cell velocity or energetic reversal.
 
 Native tests preserve varied compact state and nonambient temperature at every
 exact rotated destination, and verify source becomes `(Empty,0,0,ambient)`.
-Blocked/full/hot Empty destinations retain all112 members; unrelated material is
+Blocked/full/hot Empty destinations retain all 112 members; unrelated material is
 never overwritten. Quarter-turn mapping is a bijection; no per-member rounding,
-truncation or overflow pool. One native slot/proposal,224 payload/destination entries,
-one dynamic rectangle and1024 mask entries are fixed; the finite region is128x128.
+truncation or overflow pool. One native slot/proposal, 224 payload/destination entries,
+one dynamic rectangle and 1024 mask entries are fixed; the finite region is 128x128.
 Oversize admission and nonwrapping generation exhaustion refuse intact.
 
 Faults cover stale/duplicate ACK and commit, cancellation in both directions,
@@ -143,7 +146,7 @@ new-incarnation/reset ABA, failed-world flags before prepare/after prepare/after
 postcommit topology quarantine with either final material owner, excluded re-entry,
 out-of-region mask deferral, exact source candidate binding, and canonical heat.
 Existing F01 regressions additionally execute actual failed ticks. The dynamic
-Godot probe now runs32 injected checks: invalid resource and false commit in both
+Godot probe now runs 32 injected checks: invalid resource and false commit in both
 directions, plus rejected re-entry masks permitting zero Rapier steps. Backend
 nonselection and off-thread calls are explicit negative tests.
 
@@ -184,21 +187,36 @@ searched for; available issue12 agent profiles and repository contracts were use
 ## Validation, commands and platform boundaries
 
 Raw evidence root: `C:/kybersand/validation/local/2026-09-13-issue-12`.
-Pinned Windows Clang/LLVM-MinGW20260826, Godot4.7 stable5b4e0cb0f and Rapier0.35.2.
+Pinned Windows Clang/LLVM-MinGW 20260826, Godot 4.7 stable 5b4e0cb0f and Rapier 0.35.2.
 Use the workspace `tools/dev.py` native environment and separate pinned Web bindings.
 
 | Check | Recorded execution |
 |---|---|
-| Combined baseline |61 native cases; fresh DLL, F01/F02/interaction/manual-Rapier/Water checks and4 #11 core cases |
+| Combined baseline |61 native cases; fresh DLL, F01/F02/interaction/manual-Rapier/Water checks and 4 #11 core cases |
 | Final `make test` |61 ordinary tests,130 candidate cases/234000 ticks, native transition/fault suite;194.919s; timeout1200s |
-| Final Windows dynamic | `res://tests/test_soliding_dynamic.gd`;16cycles,32fault checks, backend/thread negatives; timeout240s |
-| Stationary/desktop owner | `test_soliding.gd`, `test_soliding_async.gd`; workers1/4 pass |
+| Final Windows dynamic | `res://tests/test_soliding_dynamic.gd` ; 16 cycles, 32 fault checks, backend/thread negatives; timeout240s |
+| Stationary/desktop owner | `test_soliding.gd`, `test_soliding_async.gd`; workers 1/4 pass |
 | Failure/region/player | `test_tick_failure_regression.gd`, `test_interaction_policy.gd`, `test_interaction_async.gd`; native/fallback and exclusive owners pass |
 | #11 ordinary envelope | `tools/physics/run.py godot --group issue11-core --seeds 1 --ticks 1800`;4/4, including one/four-height bearing, excavation and hard floor |
-| #19 preservation | Water integration24policies/70scenario cases, controller lifecycle, profile/bindings/default-state preservation pass; H remains unperformed |
+| #19 preservation | Water integration 24 policies/70 scenario cases, controller lifecycle, profile/bindings/default-state preservation pass; H remains unperformed |
 | Fallback |11 Godot interaction cases plus shared policy pass; no fallback soliding Session or byte-parity claim |
-| Web | Final source-commit-labelled compatibility/threaded builds and real Chrome matrix pending at this checkpoint; preliminary local-delta runs are not final acceptance |
+| Web | Compatibility and threaded builds at `185c48a4`; all eight real Chrome probes pass: stationary, dynamic, four accepted #11 core cases and Water per profile. Each dynamic profile passes eight cycles and 16 fault checks; each Water profile passes 70 scenarios/110 actions with workers 1/4 respectively |
 | Linux/sanitizers | Targets include both new suites; not executed in this Windows run, no fresh Linux/runtime publication claim |
+
+Final Web exports use Godot 4.7, Emscripten 4.0.20 and separately pinned godot-cpp
+`101ae38034304346a46ea9ea84ae156d3e860496`. Chrome 152 on Windows ran fresh isolated
+profiles; native workers are one in compatibility and four in threaded. Windows
+and both Web profiles total 32 real Rapier cycles and 64 injected handoff/mask
+checks. Exact native tuple comparisons establish conservation; browser JSON's
+floating-point serialization of 64-bit numeric hashes is not a digest attestation.
+Build metadata retains generic export labels from the workspace tool; the explicit
+source commit and SHA-256 artifact ledger establish the tested identity.
+
+Earlier failed iterations remain in raw evidence, including a wasm32 Variant
+conversion compile failure and a preliminary browser port collision. These were
+repaired; none is counted as a final passing execution. No source changes followed
+the final platform matrix. Generated imports are removed; the tested local DLL
+remains an intentional uncommitted build artifact.
 
 Performance is a separate native O3 microbenchmark, not timing inferred from the
 correctness loop. Seven rotated baseline/off/on process triplets per idle/active
@@ -207,47 +225,53 @@ extracted from f32faa93; current off/on use final native source. No competing bu
 or correctness job was running. OS background noise remains uncontrolled.
 
 Median per-run p50/p95 microseconds: baseline idle .1/.2, current observer-off
-.1/.2, observer-on55.1/57.1; active baseline71.5/73.8, off71.0/73.3, on130.3/135.8.
-Observer-only median cost is55.0us idle and59.3us active. The off path shows no
-measurable regression here; active observation adds about85% to this tiny fixture's
+.1/.2, observer-on 55.1/57.1; active baseline 71.5/73.8, off 71.0/73.3, on 130.3/135.8.
+Observer-only median cost is 55.0 us idle and 59.3 us active. The off path shows no
+measurable regression here; active observation adds about 85% to this tiny fixture's
 p95, so automatic production use is not admitted. Median native promotion commit
-is10.9..11.0us. Instrumented ordinary C++ new/new[] count is zero during measured
+is 10.9–11.0 us. Instrumented ordinary C++ new/new[] count is zero during measured
 ticks/observation/commit; this excludes malloc/aligned/Godot/Rapier allocation paths.
 
-Observer in-object storage is60872bytes; Session is116008bytes including its fixed
+Observer in-object storage is 60872 bytes; Session is 116008 bytes including its fixed
 arrays and World object, excluding World heap/Rapier resources. Candidate arrays
 are bounded, not a total-process peak-memory claim. Activity metadata adds eight
-bytes/block (128bytes per default128-square chunk), with no new Cell layout.
-Raw per-run max, churn, geometry work and phase timings remain available; final
-curated artifact ledger follows at the evidence checkpoint. No production budget
-or broad hardware claim is made.
+bytes/block (128 bytes per default 128-square chunk), with no new Cell layout.
+Maximum observed tick times across all seven runs (baseline/off/on) are
+6.7/4.7/637.7 us idle and 834.7/135.9/712.1 us active; these are maxima, not the
+median per-run maxima in the summary. Churn, geometry work and phase timings remain
+in the raw evidence. The curated ledger records all six metric rows. The CPU was
+an AMD Ryzen 5 2600X (12 logical processors). No production budget or broad hardware
+claim is made. Web Session in-object storage is 115888 bytes, reflecting wasm32.
 
 ## Documentation, programme and publication disposition
 
 Canonical ownership, coupling, interfaces, capacity/configuration, invariants,
 persistence, ADR007/012, programme/G-R, roadmap, build/tests, source recovery,
 validation ledger, retrieval routes and handover were synchronized. Historical
-#11/#19/M11 hashes were retained. Checks: M11 passes18records/28hashes; current docs
+#11/#19/M11 hashes were retained. Checks: M11 passes 18 records/28 hashes; current docs
 have only the six inherited external-workspace fixture paths unresolved in this
 nested worktree. Repository check additionally reports unpublished Windows/Linux
-source/runtime/LFS provenance differences (18errors total). No hashes were rewritten
-to turn those publication gates green. Retrieval routes hit32/32 and9/9 programme
-questions in top5, including new AP09 at rank2; route hit is not answer sufficiency.
+source/runtime/LFS provenance differences (18 errors total). No hashes were rewritten
+to turn those publication gates green. Retrieval routes hit 32/32 and 9/9 programme
+questions in top 5, including new AP09 at rank 2; route hit is not answer sufficiency.
 
 **G-R/#14:** admitted and demonstrated only the isolated near-rest island/barrel-
 scale proof. #14 may consume these bounded results and exclusions. This does not
-adopt a representation ladder, satisfy G-final, select H preferences, admit#18/#20,
+adopt a representation ladder, satisfy G-final, select H preferences, admit #18/#20,
 or expand #11 beyond its documented ordinary rectangle/load envelope.
 
 **#12 closure:** keep open at this checkpoint. The implemented result is a proposed
 narrower prototype disposition: no production stationary/dynamic controller wiring,
 automatic cohesion, structural collapse, split/merge/fracture, reactive payload,
-energetic reversal or save continuation. Final Web evidence, published source/PR
-review and explicit reconciliation of that scope against the issue checklist
-remain before closure. #8 stays open; #18/#20 are unchanged and #19H is unperformed.
+energetic reversal or save continuation. All locally admitted stages are complete,
+including final Web evidence. Published source/PR review and explicit owner
+acceptance of this narrower scope against the issue checklist remain before
+closure; Linux and published-runtime provenance gaps remain visible release gates. #8 stays open; #18/#20 are unchanged and #19 H is unperformed.
 
 No source push, PR, merge, issue closure or remote-branch mutation occurred. The
-initial authorized stage-comment attempt was rejected by automatic approval
-review as an unverified-destination/detail-sharing risk; no comment was posted.
-The exact remote issue was subsequently fetched and matched the user's request.
-Publication remains a separate final authorization boundary after local work.
+two authorized stage-comment attempts were rejected by automatic approval review
+as insufficiently authorized destination/detail sharing. The second followed a
+live fetch matching `techrote/cybersand` issue #12 to the user's request. No comment
+was posted, and no alternative route was used. An exact local issue note and draft
+PR body are prepared under the raw evidence root for review. Publication remains
+the final authorization boundary required by the user's publication-safety clause.
