@@ -7,6 +7,7 @@ const H_VIEW_PRESETS: Array[Vector2i] = [
 	Vector2i(640,360),
 	Vector2i(960,540),
 ]
+const H_CAMERA_PAN_SPEED: float = 150.0
 
 var host: Variant
 var floor_picker: OptionButton
@@ -42,6 +43,8 @@ var h_blind_revealed: bool = false
 var h_blind_sealed: bool = false
 var h_pending_run_start: bool = false
 var h_preferred_view_size: Vector2i = Vector2i.ZERO
+var h_view_focus: Vector2 = Vector2.ZERO
+var h_view_focus_valid: bool = false
 var h_restore_pause_after_apply: bool = false
 var h_restore_pause_value: bool = true
 
@@ -57,6 +60,8 @@ func setup(controller: Control) -> void:
 	host = controller
 	name = "ExperimentControls"
 	h_preferred_view_size=host.current_view_size
+	h_view_focus=host.camera_origin+Vector2(host.current_view_size)*0.5
+	h_view_focus_valid=true
 	var row: HBoxContainer = HBoxContainer.new();add_child(row)
 	floor_picker = OptionButton.new();floor_picker.focus_mode = Control.FOCUS_NONE
 	for i: int in range(5): floor_picker.add_item("%d / %s" % [i+1,CyberExperimentTower.FLOORS[i]])
@@ -102,6 +107,18 @@ func _input(event: InputEvent) -> void:
 		_repeat_test();get_viewport().set_input_as_handled()
 	elif key.keycode==KEY_V:
 		_cycle_h_view();get_viewport().set_input_as_handled()
+
+func _process(delta: float) -> void:
+	if not visible or host==null:return
+	if h_note!=null and h_note.editable:return
+	if not bool(host.tower_context.get("water_active",false)):return
+	if not host.pending_water_apply.is_empty():return
+	var pan_input: Vector2=Vector2(
+		(1.0 if Input.is_key_pressed(KEY_RIGHT) else 0.0)-(1.0 if Input.is_key_pressed(KEY_LEFT) else 0.0),
+		(1.0 if Input.is_key_pressed(KEY_DOWN) else 0.0)-(1.0 if Input.is_key_pressed(KEY_UP) else 0.0)
+	)
+	if pan_input.length_squared()<=0.0:return
+	_pan_h_camera(pan_input.normalized()*H_CAMERA_PAN_SPEED*delta)
 
 func _neutralize_root_tower_focus() -> void:
 	if host==null or not host.has_node("Layout"):return
@@ -171,32 +188,53 @@ func _refresh_h_view_label() -> void:
 	var size: Vector2i=host.current_view_size
 	h_view_menu.text="View %dx%d (V)"%[size.x,size.y]
 
-func _apply_h_view_size(size: Vector2i,record_event: bool=true) -> void:
-	if host==null or not size in H_VIEW_PRESETS:return
-	var previous_centre: Vector2=host.camera_origin+Vector2(host.current_view_size)*0.5
-	host.view_size_index=H_VIEW_PRESETS.find(size)
-	host.current_view_size=size
-	var desired_origin: Vector2=previous_centre-Vector2(size)*0.5
+func _ensure_h_view_focus() -> void:
+	if h_view_focus_valid or host==null:return
+	h_view_focus=host.camera_origin+Vector2(host.current_view_size)*0.5
+	h_view_focus_valid=true
+
+func _apply_h_camera_focus() -> void:
+	if host==null:return
+	_ensure_h_view_focus()
+	var desired_origin: Vector2=h_view_focus-Vector2(host.current_view_size)*0.5
 	host.camera_origin=host.clamped_camera_origin(desired_origin) if host.has_method("clamped_camera_origin") else desired_origin
 	if host.has_method("update_worker_frame_state"):host.update_worker_frame_state()
 	if host.has_method("update_shader_parameters"):host.update_shader_parameters()
+
+func _pan_h_camera(delta_world: Vector2) -> void:
+	if host==null or delta_world==Vector2.ZERO:return
+	_ensure_h_view_focus()
+	h_view_focus+=delta_world
+	_apply_h_camera_focus()
+
+func _apply_h_view_size(size: Vector2i,record_event: bool=true) -> void:
+	if host==null or not size in H_VIEW_PRESETS:return
+	_ensure_h_view_focus()
+	host.view_size_index=H_VIEW_PRESETS.find(size)
+	host.current_view_size=size
+	_apply_h_camera_focus()
 	h_preferred_view_size=size;_refresh_h_view_label()
-	if record_event and _ensure_h_session():h_recorder.record_event("view-change",{"width":size.x,"height":size.y,"blind_label":_current_blind_label()})
+	if record_event and _ensure_h_session():h_recorder.record_event("view-change",{"width":size.x,"height":size.y,"blind_label":_current_blind_label(),"camera_focus":{"x":h_view_focus.x,"y":h_view_focus.y}})
 
 func _select_h_view(index: int) -> void:
 	_finish_h_note_edit()
 	if not host.pending_water_apply.is_empty():h_feedback.text="Candidate/reset is still applying; wait before changing view";return
 	if index<0 or index>=H_VIEW_PRESETS.size():return
 	_apply_h_view_size(H_VIEW_PRESETS[index])
-	h_feedback.text="View set to %dx%d — retained across replay/candidate changes"%[host.current_view_size.x,host.current_view_size.y]
+	h_feedback.text="View set to %dx%d — camera focus retained across sizes and repeats"%[host.current_view_size.x,host.current_view_size.y]
 
 func _cycle_h_view() -> void:
 	var current: int=H_VIEW_PRESETS.find(host.current_view_size)
 	_select_h_view((current+1)%H_VIEW_PRESETS.size() if current>=0 else 0)
 
 func _restore_h_view_after_apply() -> void:
-	if h_preferred_view_size==Vector2i.ZERO or host.current_view_size==h_preferred_view_size:return
-	_apply_h_view_size(h_preferred_view_size,false)
+	if h_preferred_view_size==Vector2i.ZERO:return
+	if not h_view_focus_valid:
+		h_view_focus=host.camera_origin+Vector2(host.current_view_size)*0.5
+		h_view_focus_valid=true
+	host.view_size_index=H_VIEW_PRESETS.find(h_preferred_view_size)
+	host.current_view_size=h_preferred_view_size
+	_apply_h_camera_focus();_refresh_h_view_label()
 
 func _select_h_phase(index: int) -> void:
 	_finish_h_note_edit();_store_current_review()
@@ -206,6 +244,7 @@ func _select_h_phase(index: int) -> void:
 	if index<0 or index>=phase_ids.size():return
 	var scenario_id: String=phase_ids[index]
 	var policy: Dictionary=host.water_policy_resolved.policy.duplicate(true);policy.scenario_id=scenario_id
+	h_view_focus_valid=false
 	host.water_experiment_panel.set_draft(policy)
 	if not host.water_experiment_panel.submit_draft():h_feedback.text="Test phase could not be applied";return
 	h_pending_run_start=true
@@ -253,6 +292,7 @@ func _single_step() -> void:
 	host.tower_command({"step":true})
 func _water_reset() -> void:
 	_finish_h_note_edit()
+	h_view_focus_valid=false
 	if _ensure_h_session():h_recorder.record_event("water-reset-request",{})
 	h_pending_run_start=true;host.water_lab_reset()
 func _repeat_test() -> void:
@@ -265,8 +305,8 @@ func _start_blind() -> void:
 	_finish_h_note_edit()
 	if not h_retained_blind_set.is_empty() and not h_blind_revealed:h_feedback.text="Reveal the previous blind set before starting another; mapping retained in memory";return
 	if not _ensure_h_session():return
-	h_preferred_view_size=host.current_view_size
-	h_blind_revealed=false;h_blind_sealed=false;h_retained_blind_set.clear();h_candidate_reviews.clear();_clear_h_form();h_pending_run_start=true;_queue_pause_restore();h_recorder.record_event("blind-set-request",{"view":{"width":host.current_view_size.x,"height":host.current_view_size.y}})
+	_ensure_h_view_focus();h_preferred_view_size=host.current_view_size
+	h_blind_revealed=false;h_blind_sealed=false;h_retained_blind_set.clear();h_candidate_reviews.clear();_clear_h_form();h_pending_run_start=true;_queue_pause_restore();h_recorder.record_event("blind-set-request",{"view":{"width":host.current_view_size.x,"height":host.current_view_size.y},"camera_focus":{"x":h_view_focus.x,"y":h_view_focus.y}})
 	if not host.water_lab_prepare_blind():h_pending_run_start=false;h_restore_pause_after_apply=false;h_feedback.text="Blind set was not started; existing controlled run may still be active";return
 	h_retained_blind_set=host.water_blind_set.duplicate(true)
 	var exported: Dictionary=CyberWaterExperimentBlind.export_metadata(h_retained_blind_set,{"h_session_id":h_recorder.session_id,"varied_field":"mass_bits"})
@@ -363,7 +403,7 @@ func refresh(active: bool,floor_index: int,context: Dictionary) -> void:
 		var policy: Dictionary=context.get("water_policy",{});var accounting: Dictionary=context.get("water_accounting",{})
 		h_phase_menu.text="Phase: "+str(policy.get("scenario_id",""));_refresh_h_view_label()
 		info.text="%s\nScenario %s / seed %s / recipe %s / presentation four-level %s"%[str(context.get("status","Water Feel Lab")),str(policy.get("scenario_id","")),str(policy.get("seed","")),str(context.get("water_recipe_hash","")).left(12),str(policy.get("interface_mode","coverage"))]
-		info.text+="\nWater integer %s +%s -%s / H audition: Previous / Replay(R) / Next; V changes view and selected view persists across repeats"%[str(accounting.get("current",0)),str(accounting.get("explicit_source",0)),str(accounting.get("explicit_sink",0))]
+		info.text+="\nWater integer %s +%s -%s / H audition: arrows pan; Previous / Replay(R) / Next; V changes view without focus drift"%[str(accounting.get("current",0)),str(accounting.get("explicit_source",0)),str(accounting.get("explicit_sink",0))]
 		if applying:h_feedback.text="Applying candidate/reset — capture and navigation locked until worker acknowledgement"
 		return
 	floor_picker.disabled=false;tube_picker.disabled=false;h_capture_button.disabled=true;previous_blind_button.disabled=true;replay_blind_button.disabled=true;next_blind_button.disabled=true;h_view_menu.disabled=false;h_phase_menu.disabled=not host.water_blind_set.is_empty()
