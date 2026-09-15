@@ -31,7 +31,10 @@ class FakeHost:
 		return true
 
 	func clamped_camera_origin(value: Vector2) -> Vector2:
-		return value
+		return Vector2(
+			clampf(value.x,0.0,1024.0-float(current_view_size.x)),
+			clampf(value.y,0.0,1024.0-float(current_view_size.y))
+		)
 
 	func update_worker_frame_state() -> void:
 		worker_frame_updates+=1
@@ -134,10 +137,22 @@ func _test_panel_review_memory_navigation_focus_view_and_repeat() -> void:
 	_expect(panel.h_note.editable and panel.h_note.focus_mode==Control.FOCUS_ALL,"explicit note editing did not acquire keyboard focus")
 	panel._finish_h_note_edit()
 	_expect(not panel.h_note.editable and panel.h_note.focus_mode==Control.FOCUS_NONE,"note field retained gameplay keyboard focus after editing")
+
+	# A full small->large->small view cycle must return to the exact same
+	# camera origin even though the large view clamps against world bounds.
+	fake.current_view_size=Vector2i(320,180);fake.view_size_index=0;fake.camera_origin=Vector2(12,18)
+	panel.h_view_focus=Vector2(172,108);panel.h_view_focus_valid=true
+	for view_index: int in [1,2,3,0]:panel._select_h_view(view_index)
+	_expect(fake.current_view_size==Vector2i(320,180),"H view cycle did not return to the starting size")
+	_expect(fake.camera_origin.is_equal_approx(Vector2(12,18)),"H view cycle drifted the retained camera focus")
+	var before_pan: Vector2=fake.camera_origin
+	panel._pan_h_camera(Vector2(25,15))
+	_expect(fake.camera_origin.is_equal_approx(before_pan+Vector2(25,15)),"H-test camera pan did not move the viewport")
+	_expect(fake.worker_frame_updates>0 and fake.shader_updates>0,"H view/pan did not update worker/shader presentation")
+
 	panel._select_h_view(2)
 	_expect(fake.current_view_size==Vector2i(640,360),"H view selector did not change view during testing")
 	_expect(panel.h_preferred_view_size==Vector2i(640,360),"H view selection was not retained for replay")
-	_expect(fake.worker_frame_updates>0 and fake.shader_updates>0,"H view selection did not update worker/shader presentation")
 	panel._next_blind()
 	_expect(fake.applied_blind_indices.back()==1 and fake.water_active_blind_label=="B","Next blind did not apply candidate B")
 	panel.h_pending_run_start=false
