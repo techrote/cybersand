@@ -10,8 +10,11 @@ class FakeHost:
 	var latest_snapshot: Variant=null
 	var camera_origin: Vector2=Vector2.ZERO
 	var current_view_size: Vector2i=Vector2i(480,270)
+	var view_size_index: int=1
 	var paused: bool=true
 	var applied_blind_indices: Array[int]=[]
+	var worker_frame_updates: int=0
+	var shader_updates: int=0
 
 	func water_runtime_identity() -> Dictionary:
 		return {"source_commit":"test"}
@@ -27,6 +30,15 @@ class FakeHost:
 		applied_blind_indices.append(index)
 		return true
 
+	func clamped_camera_origin(value: Vector2) -> Vector2:
+		return value
+
+	func update_worker_frame_state() -> void:
+		worker_frame_updates+=1
+
+	func update_shader_parameters() -> void:
+		shader_updates+=1
+
 var _failures: int = 0
 
 func _init() -> void:
@@ -35,7 +47,7 @@ func _init() -> void:
 func _run() -> void:
 	_test_recorder_files()
 	_test_panel_blind_redaction()
-	_test_panel_review_memory_navigation_and_focus()
+	_test_panel_review_memory_navigation_focus_view_and_repeat()
 	if _failures==0: print("H-gate capture tests passed")
 	quit(_failures)
 
@@ -103,7 +115,7 @@ func _test_panel_blind_redaction() -> void:
 	_expect(safe.get("blind_record",{}).get("revealed",true)==false,"panel visible blind record was marked revealed")
 	panel.free();fake.free()
 
-func _test_panel_review_memory_navigation_and_focus() -> void:
+func _test_panel_review_memory_navigation_focus_view_and_repeat() -> void:
 	var fake: FakeHost=FakeHost.new()
 	fake.name="FakeHost"
 	var layout: VBoxContainer=VBoxContainer.new();layout.name="Layout";fake.add_child(layout)
@@ -122,14 +134,20 @@ func _test_panel_review_memory_navigation_and_focus() -> void:
 	_expect(panel.h_note.editable and panel.h_note.focus_mode==Control.FOCUS_ALL,"explicit note editing did not acquire keyboard focus")
 	panel._finish_h_note_edit()
 	_expect(not panel.h_note.editable and panel.h_note.focus_mode==Control.FOCUS_NONE,"note field retained gameplay keyboard focus after editing")
+	panel._select_h_view(2)
+	_expect(fake.current_view_size==Vector2i(640,360),"H view selector did not change view during testing")
+	_expect(panel.h_preferred_view_size==Vector2i(640,360),"H view selection was not retained for replay")
+	_expect(fake.worker_frame_updates>0 and fake.shader_updates>0,"H view selection did not update worker/shader presentation")
 	panel._next_blind()
 	_expect(fake.applied_blind_indices.back()==1 and fake.water_active_blind_label=="B","Next blind did not apply candidate B")
 	panel.h_pending_run_start=false
 	panel._previous_blind()
 	_expect(fake.applied_blind_indices.back()==0 and fake.water_active_blind_label=="A","Previous blind did not return to candidate A")
 	panel.h_pending_run_start=false
+	fake.paused=false
 	panel._replay_blind()
 	_expect(fake.applied_blind_indices.back()==0 and fake.water_active_blind_label=="A","Replay blind did not reapply candidate A")
+	_expect(panel.h_restore_pause_after_apply and not panel.h_restore_pause_value,"Replay did not preserve the pre-repeat playing state")
 	panel._clear_h_form()
 	_expect(panel._restore_candidate_review("A"),"candidate review was lost after back/forward replay")
 	_expect(panel.h_note.text=="fine edge breakup","re-audition did not repopulate the prior comment")
