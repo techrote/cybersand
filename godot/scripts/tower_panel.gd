@@ -1,6 +1,13 @@
 class_name CyberTowerPanel
 extends VBoxContainer
 
+const H_VIEW_PRESETS: Array[Vector2i] = [
+	Vector2i(320,180),
+	Vector2i(480,270),
+	Vector2i(640,360),
+	Vector2i(960,540),
+]
+
 var host: Variant
 var floor_picker: OptionButton
 var tube_picker: OptionButton
@@ -15,6 +22,8 @@ var previous_blind_button: Button
 var replay_blind_button: Button
 var next_blind_button: Button
 var water_policy_button: Button
+var h_view_menu: MenuButton
+var h_phase_menu: MenuButton
 
 var h_recorder: CyberHGateRecorder = CyberHGateRecorder.new()
 var h_rank: OptionButton
@@ -32,6 +41,9 @@ var h_candidate_reviews: Dictionary = {}
 var h_blind_revealed: bool = false
 var h_blind_sealed: bool = false
 var h_pending_run_start: bool = false
+var h_preferred_view_size: Vector2i = Vector2i.ZERO
+var h_restore_pause_after_apply: bool = false
+var h_restore_pause_value: bool = true
 
 func button(row: Node, text: String, action: Callable) -> Button:
 	var b: Button = Button.new()
@@ -44,6 +56,7 @@ func button(row: Node, text: String, action: Callable) -> Button:
 func setup(controller: Control) -> void:
 	host = controller
 	name = "ExperimentControls"
+	h_preferred_view_size=host.current_view_size
 	var row: HBoxContainer = HBoxContainer.new();add_child(row)
 	floor_picker = OptionButton.new();floor_picker.focus_mode = Control.FOCUS_NONE
 	for i: int in range(5): floor_picker.add_item("%d / %s" % [i+1,CyberExperimentTower.FLOORS[i]])
@@ -53,7 +66,19 @@ func setup(controller: Control) -> void:
 	var release: HBoxContainer = HBoxContainer.new();add_child(release)
 	tube_picker = OptionButton.new();tube_picker.focus_mode = Control.FOCUS_NONE;tube_picker.item_selected.connect(func(i: int) -> void: host.tower_focus_tube(i));release.add_child(tube_picker)
 	release_buttons.append(button(release,"Open plug",func() -> void: host.tower_command({"release":tube_picker.selected})));release_buttons.append(button(release,"Open neighbours",func() -> void: host.tower_command({"release":tube_picker.selected,"adjacent":true})));release_buttons.append(button(release,"Sequence +30 / +90 ticks",func() -> void: host.tower_command({"schedule":tube_picker.selected})))
-	blind_button=button(release,"Blind A/B/C",_start_blind);previous_blind_button=button(release,"Previous blind",_previous_blind);replay_blind_button=button(release,"Replay blind",_replay_blind);next_blind_button=button(release,"Next blind",_next_blind)
+	var audition: HBoxContainer=HBoxContainer.new();audition.custom_minimum_size.y=36;add_child(audition)
+	var audition_label: Label=Label.new();audition_label.text="H audition:";audition.add_child(audition_label)
+	blind_button=button(audition,"Blind A/B/C",_start_blind);previous_blind_button=button(audition,"Previous",_previous_blind);replay_blind_button=button(audition,"Replay / Repeat (R)",_replay_blind);next_blind_button=button(audition,"Next",_next_blind)
+	h_view_menu=MenuButton.new();h_view_menu.focus_mode=Control.FOCUS_NONE;audition.add_child(h_view_menu)
+	var view_popup: PopupMenu=h_view_menu.get_popup()
+	for index: int in range(H_VIEW_PRESETS.size()):
+		var size: Vector2i=H_VIEW_PRESETS[index];view_popup.add_item("%dx%d"%[size.x,size.y],index)
+	view_popup.id_pressed.connect(_select_h_view)
+	_refresh_h_view_label()
+	h_phase_menu=MenuButton.new();h_phase_menu.focus_mode=Control.FOCUS_NONE;h_phase_menu.text="Test phase";audition.add_child(h_phase_menu)
+	var phase_popup: PopupMenu=h_phase_menu.get_popup();var phase_ids: Array[String]=CyberWaterFeelScenarios.ids()
+	for index: int in range(phase_ids.size()):phase_popup.add_item(phase_ids[index],index)
+	phase_popup.id_pressed.connect(_select_h_phase)
 	var h_row: HBoxContainer = HBoxContainer.new();add_child(h_row)
 	h_rank=OptionButton.new();h_rank.focus_mode=Control.FOCUS_NONE;h_rank.add_item("Rank —",0);h_rank.add_item("Rank 1",1);h_rank.add_item("Rank 2",2);h_rank.add_item("Rank 3",3);h_row.add_child(h_rank)
 	h_judgement=OptionButton.new();h_judgement.focus_mode=Control.FOCUS_NONE
@@ -66,6 +91,17 @@ func setup(controller: Control) -> void:
 	h_reveal_dialog=ConfirmationDialog.new();h_reveal_dialog.title="Reveal blind candidates?";h_reveal_dialog.dialog_text="Finish your qualitative judgements first. Revealing candidate settings cannot be undone for this H session.";h_reveal_dialog.confirmed.connect(_reveal_confirmed);add_child(h_reveal_dialog)
 	info=Label.new();info.add_theme_font_size_override("font_size",14);add_child(info);visible=false
 	call_deferred("_neutralize_root_tower_focus")
+
+func _input(event: InputEvent) -> void:
+	if not visible or host==null or not event is InputEventKey:return
+	var key: InputEventKey=event as InputEventKey
+	if not key.pressed or key.echo:return
+	if h_note!=null and h_note.editable:return
+	if not bool(host.tower_context.get("water_active",false)):return
+	if key.keycode==KEY_R:
+		_repeat_test();get_viewport().set_input_as_handled()
+	elif key.keycode==KEY_V:
+		_cycle_h_view();get_viewport().set_input_as_handled()
 
 func _neutralize_root_tower_focus() -> void:
 	if host==null or not host.has_node("Layout"):return
@@ -130,9 +166,56 @@ func _finish_h_note_edit(store_review: bool=true) -> void:
 func _on_h_note_focus_exited() -> void:
 	if h_note!=null and h_note.editable:_finish_h_note_edit()
 
+func _refresh_h_view_label() -> void:
+	if h_view_menu==null or host==null:return
+	var size: Vector2i=host.current_view_size
+	h_view_menu.text="View %dx%d (V)"%[size.x,size.y]
+
+func _apply_h_view_size(size: Vector2i,record_event: bool=true) -> void:
+	if host==null or not size in H_VIEW_PRESETS:return
+	var previous_centre: Vector2=host.camera_origin+Vector2(host.current_view_size)*0.5
+	host.view_size_index=H_VIEW_PRESETS.find(size)
+	host.current_view_size=size
+	var desired_origin: Vector2=previous_centre-Vector2(size)*0.5
+	host.camera_origin=host.clamped_camera_origin(desired_origin) if host.has_method("clamped_camera_origin") else desired_origin
+	if host.has_method("update_worker_frame_state"):host.update_worker_frame_state()
+	if host.has_method("update_shader_parameters"):host.update_shader_parameters()
+	h_preferred_view_size=size;_refresh_h_view_label()
+	if record_event and _ensure_h_session():h_recorder.record_event("view-change",{"width":size.x,"height":size.y,"blind_label":_current_blind_label()})
+
+func _select_h_view(index: int) -> void:
+	_finish_h_note_edit()
+	if not host.pending_water_apply.is_empty():h_feedback.text="Candidate/reset is still applying; wait before changing view";return
+	if index<0 or index>=H_VIEW_PRESETS.size():return
+	_apply_h_view_size(H_VIEW_PRESETS[index])
+	h_feedback.text="View set to %dx%d — retained across replay/candidate changes"%[host.current_view_size.x,host.current_view_size.y]
+
+func _cycle_h_view() -> void:
+	var current: int=H_VIEW_PRESETS.find(host.current_view_size)
+	_select_h_view((current+1)%H_VIEW_PRESETS.size() if current>=0 else 0)
+
+func _restore_h_view_after_apply() -> void:
+	if h_preferred_view_size==Vector2i.ZERO or host.current_view_size==h_preferred_view_size:return
+	_apply_h_view_size(h_preferred_view_size,false)
+
+func _select_h_phase(index: int) -> void:
+	_finish_h_note_edit();_store_current_review()
+	if not host.water_blind_set.is_empty() or not host.water_active_blind_label.is_empty():h_feedback.text="Finish/reveal the blind set and use Fresh tower before changing test phase";return
+	if not host.pending_water_apply.is_empty():h_feedback.text="Candidate/reset is still applying; wait before changing phase";return
+	var phase_ids: Array[String]=CyberWaterFeelScenarios.ids()
+	if index<0 or index>=phase_ids.size():return
+	var scenario_id: String=phase_ids[index]
+	var policy: Dictionary=host.water_policy_resolved.policy.duplicate(true);policy.scenario_id=scenario_id
+	host.water_experiment_panel.set_draft(policy)
+	if not host.water_experiment_panel.submit_draft():h_feedback.text="Test phase could not be applied";return
+	h_pending_run_start=true
+	if _ensure_h_session():h_recorder.record_event("phase-select",{"scenario_id":scenario_id})
+	h_phase_menu.text="Phase: "+scenario_id
+	h_feedback.text="Applying test phase "+scenario_id
+
 func _safe_h_metadata(context: Dictionary) -> Dictionary:
 	var label: String=str(context.get("water_blind_label",""));var policy: Dictionary=context.get("water_policy",{})
-	var metadata: Dictionary={"scenario_id":str(policy.get("scenario_id","")),"seed":int(policy.get("seed",0)),"blind_label":label,"blind":not label.is_empty(),"tick":int(context.get("tick",0)),"paused":bool(context.get("paused",host.paused)),"recipe_hash":str(context.get("water_recipe_hash","")),"presentation_mode":"four-level-"+str(policy.get("interface_mode","coverage")),"platform":OS.get_name(),"backend":str(host.latest_snapshot.backend_name) if host.latest_snapshot!=null else "unknown","worker_count":int(host.latest_snapshot.scheduler_thread_capacity_hint) if host.latest_snapshot!=null else 0,"camera":{"x":float(host.camera_origin.x),"y":float(host.camera_origin.y)},"view":{"width":int(host.current_view_size.x),"height":int(host.current_view_size.y)},"water_accounting":context.get("water_accounting",{}).duplicate(true),"action_history":context.get("water_actions",[]).duplicate(true)}
+	var metadata: Dictionary={"scenario_id":str(policy.get("scenario_id","")),"seed":int(policy.get("seed",0)),"blind_label":label,"blind":not label.is_empty(),"tick":int(context.get("tick",0)),"paused":bool(host.paused),"recipe_hash":str(context.get("water_recipe_hash","")),"presentation_mode":"four-level-"+str(policy.get("interface_mode","coverage")),"platform":OS.get_name(),"backend":str(host.latest_snapshot.backend_name) if host.latest_snapshot!=null else "unknown","worker_count":int(host.latest_snapshot.scheduler_thread_capacity_hint) if host.latest_snapshot!=null else 0,"camera":{"x":float(host.camera_origin.x),"y":float(host.camera_origin.y)},"view":{"width":int(host.current_view_size.x),"height":int(host.current_view_size.y)},"water_accounting":context.get("water_accounting",{}).duplicate(true),"action_history":context.get("water_actions",[]).duplicate(true)}
 	if label.is_empty():metadata["effective_policy"]=policy.duplicate(true);metadata["effective_policy_hash"]=str(context.get("water_policy_hash",""))
 	else:
 		var blind_set: Dictionary=_active_blind_set()
@@ -147,10 +230,18 @@ func _watch_h_run(context: Dictionary) -> void:
 	var run_key: String="%s|%s|%s"%[str(context.get("water_recipe_hash","")),str(context.get("water_blind_label","")),str(context.get("water_policy_hash",""))]
 	if run_key==h_run_key and not h_pending_run_start:return
 	if not _ensure_h_session():return
+	if h_restore_pause_after_apply:
+		host.paused=h_restore_pause_value;h_restore_pause_after_apply=false
+		if host.has_method("update_worker_frame_state"):host.update_worker_frame_state()
+	_restore_h_view_after_apply()
 	h_run_key=run_key;h_pending_run_start=false
-	var safe: Dictionary=_safe_h_metadata(context);h_recorder.begin_run(safe);h_recorder.record_event("candidate-applied",{"scenario_id":safe.scenario_id,"blind_label":safe.blind_label,"tick":safe.tick})
+	var safe: Dictionary=_safe_h_metadata(context);h_recorder.begin_run(safe);h_recorder.record_event("candidate-applied",{"scenario_id":safe.scenario_id,"blind_label":safe.blind_label,"tick":safe.tick,"paused":host.paused,"view":safe.view})
 	var restored: bool=_restore_candidate_review(str(safe.blind_label))
+	h_phase_menu.text="Phase: "+str(safe.scenario_id);_refresh_h_view_label()
 	h_feedback.text="%s / %s / %s — ready to observe%s"%[h_recorder.current_run_id,safe.scenario_id,("candidate "+safe.blind_label) if not str(safe.blind_label).is_empty() else "unblinded"," — prior review restored" if restored else ""]
+
+func _queue_pause_restore() -> void:
+	h_restore_pause_after_apply=true;h_restore_pause_value=bool(host.paused)
 
 func _toggle_pause() -> void:
 	_finish_h_note_edit()
@@ -164,12 +255,19 @@ func _water_reset() -> void:
 	_finish_h_note_edit()
 	if _ensure_h_session():h_recorder.record_event("water-reset-request",{})
 	h_pending_run_start=true;host.water_lab_reset()
+func _repeat_test() -> void:
+	_finish_h_note_edit();_store_current_review();_queue_pause_restore()
+	var current: int=_blind_index()
+	if current>=0 and not h_blind_revealed:_apply_blind_index(current,"repeat-test-request",false);return
+	if _ensure_h_session():h_recorder.record_event("repeat-test-request",{"blind_label":"","paused":h_restore_pause_value})
+	h_pending_run_start=true;host.water_lab_reset()
 func _start_blind() -> void:
 	_finish_h_note_edit()
 	if not h_retained_blind_set.is_empty() and not h_blind_revealed:h_feedback.text="Reveal the previous blind set before starting another; mapping retained in memory";return
 	if not _ensure_h_session():return
-	h_blind_revealed=false;h_blind_sealed=false;h_retained_blind_set.clear();h_candidate_reviews.clear();_clear_h_form();h_pending_run_start=true;h_recorder.record_event("blind-set-request",{})
-	if not host.water_lab_prepare_blind():h_pending_run_start=false;h_feedback.text="Blind set was not started; existing controlled run may still be active";return
+	h_preferred_view_size=host.current_view_size
+	h_blind_revealed=false;h_blind_sealed=false;h_retained_blind_set.clear();h_candidate_reviews.clear();_clear_h_form();h_pending_run_start=true;_queue_pause_restore();h_recorder.record_event("blind-set-request",{"view":{"width":host.current_view_size.x,"height":host.current_view_size.y}})
+	if not host.water_lab_prepare_blind():h_pending_run_start=false;h_restore_pause_after_apply=false;h_feedback.text="Blind set was not started; existing controlled run may still be active";return
 	h_retained_blind_set=host.water_blind_set.duplicate(true)
 	var exported: Dictionary=CyberWaterExperimentBlind.export_metadata(h_retained_blind_set,{"h_session_id":h_recorder.session_id,"varied_field":"mass_bits"})
 	if not exported.get("ok",false):h_feedback.text="Blind set exists but recovery metadata failed; reveal/restart before formal capture";return
@@ -185,17 +283,18 @@ func _blind_index() -> int:
 	if index>=0:return index
 	return clampi(int(host.water_blind_index),0,blind_labels.size()-1)
 
-func _apply_blind_index(index: int,event_name: String) -> void:
+func _apply_blind_index(index: int,event_name: String,queue_pause_restore: bool=true) -> void:
 	if h_blind_revealed:h_feedback.text="Blind set already revealed; start a new blind set for further blind judgements";return
 	if not host.pending_water_apply.is_empty():h_feedback.text="Candidate is still applying; wait for ready feedback before navigating";return
 	var blind_set: Dictionary=_active_blind_set();var blind_labels: Array=blind_set.get("labels",[])
 	if blind_labels.is_empty():h_feedback.text="No active blind set to navigate";return
 	if index<0 or index>=blind_labels.size():h_feedback.text="Blind candidate index is out of range";return
 	_store_current_review();_finish_h_note_edit(false)
+	if queue_pause_restore:_queue_pause_restore()
 	var from_label: String=_current_blind_label();var target_label: String=str(blind_labels[index])
-	if _ensure_h_session():h_recorder.record_event(event_name,{"from":from_label,"to":target_label})
+	if _ensure_h_session():h_recorder.record_event(event_name,{"from":from_label,"to":target_label,"paused":h_restore_pause_value if h_restore_pause_after_apply else bool(host.paused)})
 	h_pending_run_start=true
-	if not host.water_lab_apply_blind(index):h_pending_run_start=false;h_feedback.text="Blind candidate could not be applied";return
+	if not host.water_lab_apply_blind(index):h_pending_run_start=false;h_restore_pause_after_apply=false;h_feedback.text="Blind candidate could not be applied";return
 	h_feedback.text="Applying candidate %s — capture and navigation locked until worker acknowledgement"%target_label
 
 func _previous_blind() -> void:
@@ -259,16 +358,17 @@ func refresh(active: bool,floor_index: int,context: Dictionary) -> void:
 		floor_picker.disabled=true;tube_picker.disabled=true
 		var blind_active: bool=(not str(context.get("water_blind_label","")).is_empty() or not host.water_blind_set.is_empty());var applying: bool=not host.pending_water_apply.is_empty();var navigation_disabled: bool=not blind_active or h_blind_revealed or applying
 		for release_button: Button in release_buttons:release_button.disabled=true;release_button.tooltip_text="Water Feel uses only registered scenario actions"
-		blind_button.disabled=blind_active or applying;previous_blind_button.disabled=navigation_disabled;replay_blind_button.disabled=navigation_disabled;next_blind_button.disabled=navigation_disabled;h_reveal_button.disabled=(not blind_active and h_retained_blind_set.is_empty()) or applying;water_policy_button.disabled=blind_active or applying;water_save_button.disabled=blind_active or applying;h_capture_button.disabled=applying or (blind_active and not h_blind_sealed)
+		blind_button.disabled=blind_active or applying;previous_blind_button.disabled=navigation_disabled;replay_blind_button.disabled=navigation_disabled;next_blind_button.disabled=navigation_disabled;h_reveal_button.disabled=(not blind_active and h_retained_blind_set.is_empty()) or applying;water_policy_button.disabled=blind_active or applying;water_save_button.disabled=blind_active or applying;h_capture_button.disabled=applying or (blind_active and not h_blind_sealed);h_view_menu.disabled=applying;h_phase_menu.disabled=blind_active or applying
 		for label: Label in labels:label.visible=false
 		var policy: Dictionary=context.get("water_policy",{});var accounting: Dictionary=context.get("water_accounting",{})
+		h_phase_menu.text="Phase: "+str(policy.get("scenario_id",""));_refresh_h_view_label()
 		info.text="%s\nScenario %s / seed %s / recipe %s / presentation four-level %s"%[str(context.get("status","Water Feel Lab")),str(policy.get("scenario_id","")),str(policy.get("seed","")),str(context.get("water_recipe_hash","")).left(12),str(policy.get("interface_mode","coverage"))]
-		info.text+="\nWater integer %s +%s -%s / H capture records screenshot + safe metadata; Previous / Replay / Next are repeatable blind auditions"%[str(accounting.get("current",0)),str(accounting.get("explicit_source",0)),str(accounting.get("explicit_sink",0))]
+		info.text+="\nWater integer %s +%s -%s / H audition: Previous / Replay(R) / Next; V changes view and selected view persists across repeats"%[str(accounting.get("current",0)),str(accounting.get("explicit_source",0)),str(accounting.get("explicit_sink",0))]
 		if applying:h_feedback.text="Applying candidate/reset — capture and navigation locked until worker acknowledgement"
 		return
-	floor_picker.disabled=false;tube_picker.disabled=false;h_capture_button.disabled=true;previous_blind_button.disabled=true;replay_blind_button.disabled=true;next_blind_button.disabled=true
+	floor_picker.disabled=false;tube_picker.disabled=false;h_capture_button.disabled=true;previous_blind_button.disabled=true;replay_blind_button.disabled=true;next_blind_button.disabled=true;h_view_menu.disabled=false;h_phase_menu.disabled=not host.water_blind_set.is_empty()
 	for release_button: Button in release_buttons:release_button.disabled=false;release_button.tooltip_text=""
-	blind_button.disabled=false;water_policy_button.disabled=false;water_save_button.disabled=false
+	blind_button.disabled=false;water_policy_button.disabled=false;water_save_button.disabled=false;_refresh_h_view_label()
 	if shown_floor!=floor_index:
 		shown_floor=floor_index;floor_picker.select(floor_index);tube_picker.clear()
 		for label: Label in labels:label.queue_free()
