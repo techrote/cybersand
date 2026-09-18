@@ -48,7 +48,8 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Meaning of a term or unexplained symptom | [Glossary](glossary.md), [troubleshooting](../operations/troubleshooting.md) |
 | Why #17 does not make mass8 the perceptual minimum | [Water-feel programme addendum](../operations/architecture-programme-water-feel-addendum.md), [#17 evidence](../audits/2026-09-11-issue-17-state-precision.md) |
 | What #19 delivers and how the H-ready Water Feel Lab is configured | [Experiment Tower](../operations/experiment-tower.md), [policy registration](../operations/water-feel-lab-experiment.md), [completion evidence](../audits/2026-09-12-issue-19-water-feel-lab.md) |
-| Why #18 remains held after G-P | [Water-feel programme addendum](../operations/architecture-programme-water-feel-addendum.md), [compact-motion prompt](../operations/architecture-programme-prompts/compact-motion.md) |\n| How reusable MicroScenarios fit the roadmap, chemistry testing and showcase sequence | [MicroScenarios programme](../operations/microscenarios-programme.md), [roadmap](status-and-roadmap.md) |
+| Why #18 remains held after G-P | [Water-feel programme addendum](../operations/architecture-programme-water-feel-addendum.md), [compact-motion prompt](../operations/architecture-programme-prompts/compact-motion.md) |
+| How reusable MicroScenarios fit the roadmap, chemistry testing and showcase sequence | [MicroScenarios programme](../operations/microscenarios-programme.md), [roadmap](status-and-roadmap.md) |
 
 ## Retrieve historical results explicitly
 
