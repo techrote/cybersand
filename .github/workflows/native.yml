@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   native:
-    runs-on: ubuntu-24.04
+    runs-on: avrea-ubuntu-26.04-8-vcpu
     timeout-minutes: 35
     env:
       CC: gcc-13
