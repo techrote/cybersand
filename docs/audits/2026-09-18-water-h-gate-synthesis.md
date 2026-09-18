@@ -26,7 +26,7 @@ The leading mechanism hypothesis is therefore a missing or inadequate **depth/he
 
 This is a **#26 problem first**. It does not yet prove that #18 compact directional history is useful. #18 remains open and held.
 
-A second independent conclusion is that current presentation is also insufficient. Four-level oriented reconstruction exposes real quantization and can amplify surface instability. Rendering is expected to help with surface smoothness, contact shape, temporal continuity and controlled breakup, but it must not conceal wrong authoritative discharge, leveling, quantity or settling.
+A second independent conclusion is that current presentation is also insufficient. Four-level oriented reconstruction exposes real quantization and may amplify some visible surface instability. Rendering is expected to help with surface smoothness, contact shape, temporal continuity and controlled breakup, but it must not conceal wrong authoritative discharge, leveling, quantity or settling.
 
 A third conclusion is now strong enough to constrain later state-budget work: **3-bit Water is strongly disfavored if tiny droplets matter to gameplay**. In `long-tail-settling`, the registered 8/12/16 normalized droplets quantize to zero at 3-bit and disappear from authoritative state. No shader can recover Water that does not exist.
 
