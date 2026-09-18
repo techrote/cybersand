@@ -23,6 +23,18 @@ var sequence_frame_index: int = 0
 var current_sequence_id: String = ""
 var current_sequence_root: String = ""
 var current_sequence_frames_path: String = ""
+var sequence_started_usec: int = 0
+var sequence_first_tick: int = -1
+var sequence_last_tick: int = -1
+var sequence_first_render_serial: int = -1
+var sequence_last_render_serial: int = -1
+var sequence_missed_render_snapshots: int = 0
+var sequence_max_render_serial_step: int = 0
+var sequence_max_tick_step: int = 0
+var sequence_total_readback_ms: float = 0.0
+var sequence_max_readback_ms: float = 0.0
+var sequence_total_write_ms: float = 0.0
+var sequence_max_write_ms: float = 0.0
 var current_run_id: String = ""
 var last_feedback: String = ""
 
@@ -97,6 +109,12 @@ func start_frame_sequence(metadata: Dictionary) -> Dictionary:
 	if session_id.is_empty():return {"ok":false,"error":"H-gate session has not started"}
 	if not current_sequence_id.is_empty():return {"ok":false,"error":"frame sequence is already active"}
 	sequence_index+=1;sequence_frame_index=0
+	sequence_started_usec=Time.get_ticks_usec()
+	sequence_first_tick=-1;sequence_last_tick=-1
+	sequence_first_render_serial=-1;sequence_last_render_serial=-1
+	sequence_missed_render_snapshots=0;sequence_max_render_serial_step=0;sequence_max_tick_step=0
+	sequence_total_readback_ms=0.0;sequence_max_readback_ms=0.0
+	sequence_total_write_ms=0.0;sequence_max_write_ms=0.0
 	current_sequence_id="S%03d"%sequence_index
 	var scenario: String=str(metadata.get("scenario_id","unknown"))
 	var label: String=str(metadata.get("blind_label",""))
@@ -116,11 +134,26 @@ func capture_frame_sequence_frame(frame: Image,metadata: Dictionary) -> Dictiona
 	if current_sequence_id.is_empty():return {"ok":false,"error":"no frame sequence is active"}
 	if frame==null or frame.is_empty():return {"ok":false,"error":"frame image was unavailable"}
 	sequence_frame_index+=1
-	var frame_name: String="F%06d-t%08d.png"%[sequence_frame_index,int(metadata.get("tick",0))]
+	var tick: int=int(metadata.get("tick",0))
+	var render_serial: int=int(metadata.get("render_snapshot_serial",0))
+	var readback_ms: float=float(metadata.get("readback_ms",0.0))
+	if sequence_first_tick<0:sequence_first_tick=tick
+	if sequence_first_render_serial<0:sequence_first_render_serial=render_serial
+	if sequence_last_tick>=0:sequence_max_tick_step=maxi(sequence_max_tick_step,tick-sequence_last_tick)
+	if sequence_last_render_serial>=0:
+		var serial_step: int=render_serial-sequence_last_render_serial
+		sequence_max_render_serial_step=maxi(sequence_max_render_serial_step,serial_step)
+		if serial_step>1:sequence_missed_render_snapshots+=serial_step-1
+	sequence_last_tick=tick;sequence_last_render_serial=render_serial
+	sequence_total_readback_ms+=readback_ms;sequence_max_readback_ms=maxf(sequence_max_readback_ms,readback_ms)
+	var frame_name: String="F%06d-t%08d.png"%[sequence_frame_index,tick]
 	var frame_path: String=current_sequence_root+"/"+frame_name
+	var write_start_usec: int=Time.get_ticks_usec()
 	if frame.save_png(frame_path)!=OK:return {"ok":false,"error":"could not save frame-sequence PNG"}
+	var write_ms: float=float(Time.get_ticks_usec()-write_start_usec)/1000.0
+	sequence_total_write_ms+=write_ms;sequence_max_write_ms=maxf(sequence_max_write_ms,write_ms)
 	var sha: String=FileAccess.get_sha256(frame_path)
-	var row: Dictionary={"schema_version":SCHEMA_VERSION,"session_id":session_id,"run_id":current_run_id,"sequence_id":current_sequence_id,"frame_index":sequence_frame_index,"utc":Time.get_datetime_string_from_system(true),"tick":int(metadata.get("tick",0)),"render_snapshot_serial":int(metadata.get("render_snapshot_serial",0)),"frame":frame_name,"sha256":sha,"camera":metadata.get("camera",{}).duplicate(true),"view":metadata.get("view",{}).duplicate(true)}
+	var row: Dictionary={"schema_version":SCHEMA_VERSION,"session_id":session_id,"run_id":current_run_id,"sequence_id":current_sequence_id,"frame_index":sequence_frame_index,"utc":Time.get_datetime_string_from_system(true),"tick":tick,"render_snapshot_serial":render_serial,"frame":frame_name,"sha256":sha,"readback_ms":readback_ms,"png_write_ms":write_ms,"camera":metadata.get("camera",{}).duplicate(true),"view":metadata.get("view",{}).duplicate(true)}
 	if not _append_jsonl(current_sequence_frames_path,row):return {"ok":false,"error":"could not append frame-sequence metadata"}
 	return {"ok":true,"frame_index":sequence_frame_index,"frame":frame_name,"sha256":sha}
 
@@ -128,11 +161,26 @@ func finish_frame_sequence(reason: String="user") -> Dictionary:
 	if current_sequence_id.is_empty():return {"ok":false,"error":"no frame sequence is active"}
 	var sequence_id: String=current_sequence_id
 	var root: String=current_sequence_root
-	var summary: Dictionary={"schema_version":SCHEMA_VERSION,"session_id":session_id,"run_id":current_run_id,"sequence_id":sequence_id,"finished_utc":Time.get_datetime_string_from_system(true),"frame_count":sequence_frame_index,"reason":reason}
+	var wall_duration_sec: float=float(Time.get_ticks_usec()-sequence_started_usec)/1000000.0 if sequence_started_usec>0 else 0.0
+	var summary: Dictionary={
+		"schema_version":SCHEMA_VERSION,"session_id":session_id,"run_id":current_run_id,
+		"sequence_id":sequence_id,"finished_utc":Time.get_datetime_string_from_system(true),
+		"frame_count":sequence_frame_index,"reason":reason,"wall_duration_sec":wall_duration_sec,
+		"first_tick":sequence_first_tick,"last_tick":sequence_last_tick,
+		"simulation_tick_span":maxi(0,sequence_last_tick-sequence_first_tick) if sequence_first_tick>=0 and sequence_last_tick>=0 else 0,
+		"first_render_snapshot_serial":sequence_first_render_serial,"last_render_snapshot_serial":sequence_last_render_serial,
+		"missed_render_snapshots_estimate":sequence_missed_render_snapshots,
+		"max_render_snapshot_serial_step":sequence_max_render_serial_step,
+		"max_tick_step":sequence_max_tick_step,
+		"average_readback_ms":sequence_total_readback_ms/float(sequence_frame_index) if sequence_frame_index>0 else 0.0,
+		"max_readback_ms":sequence_max_readback_ms,
+		"average_png_write_ms":sequence_total_write_ms/float(sequence_frame_index) if sequence_frame_index>0 else 0.0,
+		"max_png_write_ms":sequence_max_write_ms,
+	}
 	_write_json(root+"/finished.json",summary)
 	record_event("frame-sequence-finish",{"sequence_id":sequence_id,"frame_count":sequence_frame_index,"reason":reason,"relative_path":root.trim_prefix(session_root+"/")})
 	current_sequence_id="";current_sequence_root="";current_sequence_frames_path="";sequence_frame_index=0
-	return {"ok":true,"sequence_id":sequence_id,"root":root,"frame_count":int(summary.frame_count)}
+	return {"ok":true,"sequence_id":sequence_id,"root":root,"frame_count":int(summary.frame_count),"wall_duration_sec":wall_duration_sec,"missed_render_snapshots_estimate":sequence_missed_render_snapshots,"max_tick_step":sequence_max_tick_step}
 
 func reveal(metadata: Dictionary) -> Dictionary:
 	if session_id.is_empty():return {"ok":false,"error":"H-gate session has not started"}
