@@ -2,7 +2,7 @@
 title: Water H-gate synthesis — bulk flow, precision and presentation
 status: Current
 document-kind: evidence
-scope: Human Water Feel evidence from shallow-pool, irregular-bed, corrected steps, constriction, connected-pools and fast-dump; programme disposition for #18/#26
+scope: Human Water Feel evidence from shallow-pool, irregular-bed, corrected steps, constriction, connected-pools, fast-dump and u-vessel; programme disposition for #18/#26
 canonical-for: [water-h-gate-2026-09-18]
 last-reviewed: 2026-09-18
 related-documents: [2026-09-12-issue-19-water-feel-lab.md, ../operations/water-feel-lab-experiment.md, ../operations/architecture-programme-water-feel-addendum.md, ../systems/water-design.md, ../systems/material-appearance-and-rendering.md]
@@ -62,6 +62,23 @@ hundreds of MiB; their names, sizes and SHA-256 identities are retained in
 | constriction | Reveal A=3, B=5, C=8. mass3 Marginal/rank1; mass5 Reject/rank2; mass8 Reject/rank3. Persistent free-surface wedge is roughly 42–43 degrees in representative sequence frames. | Clean evidence that more bits do not monotonically improve feel while bulk flow is wrong. Strong granular-like slump defect. |
 | connected-pools | Reveal A=3, B=5, C=8. mass3 Reject/rank3; mass5 Marginal/rank2; mass8 Marginal/rank1. All arms retain multi-degree free-surface slopes long after connection; B/C still about 3.4 degrees around tick 4200 in the retained analysis. | Cleanest equilibrium/leveling evidence: higher precision does not solve the leveling defect. |
 | fast-dump | Reveal A=3, B=5, C=8. Formal archive contains B Marginal/rank2 and C Reject/rank3; no canonical A observation capture, so do not invent a complete ranking. Owner annotations identify impossible wall-gap/contact loss, unacceptable mid-surface terraces, and occasional “tumbling” edge randomness; a supplied mockup shows the desired smoother coherent draining profile. | Structural evidence, not a complete formal rank set. The tumbling instability is potentially useful inspiration, not accepted behavior. |
+| u-vessel | Reveal A=3, B=5, C=8. mass3 Marginal/rank2: multiple tiny lumps; mass5 Marginal/rank2: serrated areas; mass8 Acceptable/rank1: only four tiny raised lumps at the left edge. | Useful settled-surface/quantization evidence, **not** a hydrostatic head test: the registered recipe is a single uniformly filled U-shaped tank and never creates unequal communicating columns. |
+
+## U-vessel fixture correction
+
+The manual `u-vessel` run exposed a scenario-design limitation in the #19 catalogue.
+The registered recipe builds two outer walls plus a bottom and fills the entire
+interior uniformly. It does **not** create two unequal communicating columns or an
+initial head difference. Therefore this run cannot validate or falsify the
+head-pressure hypothesis.
+
+It is still valid evidence for settled free-surface quality: mass8 was the only
+Acceptable arm, while mass3 and mass5 retained more visible lumps/serration.
+The short motion sequences add little dynamic evidence because the fixture has no
+meaningful equalization transient.
+
+Do not ask the H tester to repeat this fixture for head-response evidence. #26 should
+instead add an automated true unequal-head U-tube/communicating-column fixture.
 
 ## Cross-scenario interpretation
 
@@ -142,9 +159,10 @@ Water path. Minimum useful fixtures:
 
 1. shallow / medium / deep reservoirs with identical outlets;
 2. communicating pools with a fixed initial level difference;
-3. constriction/nozzle;
-4. fast dump;
-5. one shallow/ledge control where current Water already looks relatively good.
+3. a true unequal-head U-tube / communicating-column fixture (not the current uniformly filled `u-vessel` recipe);
+4. constriction/nozzle;
+5. fast dump;
+6. one shallow/ledge control where current Water already looks relatively good.
 
 Primary metrics should include:
 
