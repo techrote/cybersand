@@ -58,6 +58,13 @@
       "scenario": "long-tail-settling",
       "bytes": 1461360,
       "sha256": "aa8845dc69d2ceeff963ec57bf2bce4a11e0fbc48a0ca5fc176bbf7e87ce075e"
+    },
+    {
+      "file": "H-20260918-220750-070555-direction-horiztonal.zip",
+      "session_id": "H-20260918-220750-070555",
+      "scenario": "direction-horizontal",
+      "bytes": 11917847,
+      "sha256": "e42545e056fbc79203e2ae13edfab566da9404f80a732a890b139b2fde9be1c3"
     }
   ],
   "formal_observations": [
@@ -298,6 +305,33 @@
         "B/C: occasional tumbling/random edge breakup is interesting but currently glitch-like; study as inspiration rather than preserve the bug.",
         "Owner mockup target: continuous contact, smoother draining curvature, stronger coherent outflow and fewer terraces/gaps."
       ]
+    },
+    {
+      "scenario": "direction-horizontal",
+      "mapping_status": "Human-readable candidate-mapping.json absent from supplied archive; keep A/B/C label-blind until reveal.",
+      "observations": [
+        {
+          "label": "C",
+          "rank": 1,
+          "judgement": "Good",
+          "tick": 674,
+          "note": "similar to b but slightly faster sideways flow maybe"
+        },
+        {
+          "label": "A",
+          "rank": 3,
+          "judgement": "Reject",
+          "tick": 33,
+          "note": "way too much height differential remains, doesn't really flow"
+        },
+        {
+          "label": "B",
+          "rank": 2,
+          "judgement": "Good",
+          "tick": 37,
+          "note": "seems fine, can't tell if this or C is faster at first. Later on C continues to flow but B does not, that's the main reason C wins"
+        }
+      ]
     }
   ],
   "quantitative_sequence_notes": {
@@ -455,6 +489,32 @@
           "frames": 163,
           "stale_pre_reset_tick": 1315,
           "post_reset_tick_end": 264
+        }
+      }
+    },
+    "direction-horizontal": {
+      "interpretation_boundary": "This existing lab recipe is a horizontally extended Water strip plus a same-row fill event at tick 45; it is useful for lateral persistence/leveling feel but is not a controlled injected-velocity oracle.",
+      "sequences": {
+        "S001-C": {
+          "frames": 1800,
+          "tick_start": 6,
+          "tick_end": 4106,
+          "render_serial_start": 5560,
+          "render_serial_end": 8269
+        },
+        "S002-A": {
+          "frames": 110,
+          "tick_start": 4,
+          "tick_end": 197,
+          "render_serial_start": 8719,
+          "render_serial_end": 9105
+        },
+        "S003-B": {
+          "frames": 654,
+          "tick_start": 38,
+          "tick_end": 1540,
+          "render_serial_start": 9217,
+          "render_serial_end": 10190
         }
       }
     }
