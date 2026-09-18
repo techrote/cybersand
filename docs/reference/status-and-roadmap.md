@@ -4,8 +4,8 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-09-12
-related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md]
+last-reviewed: 2026-09-18
+related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md]
 ---
 
 # Status and foundational roadmap
@@ -198,3 +198,29 @@ current 0..12 coherence semantics. That result is **not retracted** by the later
 Water-feel refinement. Instead, #19/H-preparation uses it as the quantitative oracle
 against which runtime mass4/6/8 controls are checked before novel mass3/5/7 and
 shortened-coherence candidates are offered for human testing. No production migration.
+
+
+## MicroScenarios programme
+
+**Planned, 2026-09-18:** [MicroScenarios](../operations/microscenarios-programme.md)
+formalize the reusable scenario apparatus already demonstrated by #13 Experiment
+Tower and #19 Water Feel Lab. Tracking issue #30 owns the staged roadmap.
+
+The insertion is deliberately non-disruptive: finish #18 under its existing
+contract, resolve #24 Tower input hygiene, then #27 extracts an apparatus-only
+deterministic scenario harness. #20 retains its independent G-B admission and may
+consume the generic fixture machinery; #26 may adopt the harness where doing so
+does not invalidate source-matched evidence. #14/G-final remains the architecture
+decision gate.
+
+After G-final, #28 proves the framework with **Materials Laboratory**,
+**Flood-Control Puzzle** and **Simulation Stress Test**. #29 then uses generated
+MicroScenario fixtures as the chemistry interaction-test substrate, with sparse
+directed/symmetric interaction ownership, versioned tuning passes and retained
+source/sink evidence rather than a mutable dense pair matrix.
+
+Later showcase concepts remain staged roadmap items rather than prematurely
+created issues: Destructible Shooting Range, Mining / Excavation Toy,
+Sewer / Drainage Sandbox, Environmental Puzzle Room, Breach-and-Extract,
+Utility-Tunnel Incident and Industrial Accident. Scenario scripts must not
+replace or smuggle in material physics.
