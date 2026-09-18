@@ -2,7 +2,7 @@
 title: Water H-gate synthesis — bulk flow, precision and presentation
 status: Current
 document-kind: evidence
-scope: Human Water Feel evidence from shallow-pool, irregular-bed, corrected steps, constriction, connected-pools, fast-dump and u-vessel; programme disposition for #18/#26
+scope: Human Water Feel evidence from shallow-pool, irregular-bed, corrected steps, constriction, connected-pools, fast-dump, u-vessel and long-tail-settling; programme disposition for #18/#26
 canonical-for: [water-h-gate-2026-09-18]
 last-reviewed: 2026-09-18
 related-documents: [2026-09-12-issue-19-water-feel-lab.md, ../operations/water-feel-lab-experiment.md, ../operations/architecture-programme-water-feel-addendum.md, ../systems/water-design.md, ../systems/material-appearance-and-rendering.md]
@@ -63,6 +63,7 @@ hundreds of MiB; their names, sizes and SHA-256 identities are retained in
 | connected-pools | Reveal A=3, B=5, C=8. mass3 Reject/rank3; mass5 Marginal/rank2; mass8 Marginal/rank1. All arms retain multi-degree free-surface slopes long after connection; B/C still about 3.4 degrees around tick 4200 in the retained analysis. | Cleanest equilibrium/leveling evidence: higher precision does not solve the leveling defect. |
 | fast-dump | Reveal A=3, B=5, C=8. Formal archive contains B Marginal/rank2 and C Reject/rank3; no canonical A observation capture, so do not invent a complete ranking. Owner annotations identify impossible wall-gap/contact loss, unacceptable mid-surface terraces, and occasional “tumbling” edge randomness; a supplied mockup shows the desired smoother coherent draining profile. | Structural evidence, not a complete formal rank set. The tumbling instability is potentially useful inspiration, not accepted behavior. |
 | u-vessel | Reveal A=3, B=5, C=8. mass3 Marginal/rank2: multiple tiny lumps; mass5 Marginal/rank2: serrated areas; mass8 Acceptable/rank1: only four tiny raised lumps at the left edge. | Useful settled-surface/quantization evidence, **not** a hydrostatic head test: the registered recipe is a single uniformly filled U-shaped tank and never creates unequal communicating columns. |
+| long-tail-settling | Reveal A=3, B=5, C=8. mass3 Anomaly/rank3: the three leftmost droplets are missing completely; mass5 Marginal/rank2: all droplets survive but some puddles look odd; mass8 Good/rank1: larger droplets combine into a convincing puddle. | Strong tiny-quantity representability evidence. The recipe’s first droplets are normalized masses 8/12/16, which quantize to zero at 3-bit under the registered half-up rule. This is authoritative mass loss at initial quantization, not a rendering defect. |
 
 ## U-vessel fixture correction
 
@@ -113,6 +114,32 @@ These should be tested separately before combining them. The second mechanism
 should not be described as literal surface tension: its purpose is faster bounded
 level equalization, while physical surface tension resists surface-area creation.
 
+### 3. Tiny-quantity representability creates a real lower-bound constraint
+
+The long-tail-settling run adds a stronger precision result than the earlier surface
+judgements. Its twelve 6x6 source droplets use normalized masses
+`8, 12, 16, ... 52`. Under the registered half-up physical quantization:
+
+- mass3 (`max=7`) maps normalized 8/12/16 to zero, so the three leftmost
+  droplets do not exist in authoritative state;
+- mass5 retains all droplets but still introduces about 4.0% negative initial
+  physical quantization error across the registered source set;
+- mass8 is exact for this fixture.
+
+The observer independently reported exactly the expected mass3 symptom:
+“3 leftmost drops are missing completely”.
+
+This is not something later surface reconstruction can repair without inventing
+Water that does not exist authoritatively. Therefore mass3 is now **strongly
+disfavored if these tiny quantities are gameplay-relevant**. This does not by
+itself select 5, 6 or 8 bits, and it does not make rendering reconstruction
+unimportant; it establishes a hard distinction between visual quantization and
+authoritative representability.
+
+The retained motion segments are short and not balanced to the registered
+1800-tick long-tail sample, so do not cite this run as a complete long-tail
+settling comparison. Its strongest legitimate result is tiny-quantity precision.
+
 ### 3. Do not select the mass-bit budget yet
 
 The evidence is not monotonic:
@@ -125,11 +152,14 @@ The evidence is not monotonic:
 That reversal is strong evidence that current flow semantics interact with
 quantization strongly enough to confound a final bit-budget decision.
 
-Keep 8-bit as the numerical/control oracle. Treat 3-bit as a weak candidate because
-it repeatedly exposes visible quantization and behavioral deficits, but do not turn
-that into a final architecture ban. Retest a practical set such as 4/5/6/8 after
-bulk-flow and presentation improvements. If 5 or 6 becomes perceptually equivalent
-after those fixes, reclaimed state bits remain valuable for later Water semantics.
+Keep 8-bit as the numerical/control oracle. Treat 3-bit as strongly disfavored because
+it now has both visible quality failures and a demonstrated tiny-quantity representability
+hole. Do not turn that into a universal architecture ban without deciding whether those
+small quantities are gameplay-relevant. Retest a practical set such as 4/5/6/8 after
+bulk-flow and presentation improvements; note that 4-bit also has a known threshold risk
+for the very smallest registered droplet and should remain an explicit risk arm rather
+than an assumed safe minimum. If 5 or 6 becomes perceptually equivalent after those
+fixes, reclaimed state bits remain valuable for later Water semantics.
 
 ### 4. Presentation precision is independent from simulation precision
 
