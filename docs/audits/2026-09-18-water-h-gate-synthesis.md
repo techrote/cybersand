@@ -1,339 +1,398 @@
 ---
-title: Water H-gate synthesis — bulk flow, precision and presentation
+title: Water H-gate synthesis — bulk flow, precision, surface stability and presentation
 status: Current
 document-kind: evidence
-scope: Human Water Feel evidence from shallow-pool, irregular-bed, corrected steps, constriction, connected-pools, fast-dump, u-vessel, long-tail-settling, direction-horizontal, calm-settling, direction-diagonal and ledge-sheet; programme disposition for #18/#26
+scope: Human Water Feel evidence through 2026-09-18 across twelve registered scenarios; programme disposition for #14/#18/#26 and post-H measurement charter
 canonical-for: [water-h-gate-2026-09-18]
 last-reviewed: 2026-09-18
-related-documents: [2026-09-12-issue-19-water-feel-lab.md, ../operations/water-feel-lab-experiment.md, ../operations/architecture-programme-water-feel-addendum.md, ../systems/water-design.md, ../systems/material-appearance-and-rendering.md]
+related-documents: [2026-09-12-issue-19-water-feel-lab.md, ../operations/water-feel-lab-experiment.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/architecture-programme.md, ../systems/water-design.md, ../systems/material-appearance-and-rendering.md, ../reference/validation-evidence.md]
 ---
 
 # Water H-gate synthesis — 2026-09-18
 
-## Executive conclusion
+## Executive disposition
 
-The H work has produced a stable programme-level conclusion even though it has **not**
-selected a production Water bit budget.
+The Water H campaign has produced enough evidence to stop broad baseline manual testing and move back to engineering.
 
-The dominant perceptual defect is no longer best described as mass precision. Deep
-or spatially extended Water redistributes laterally too weakly/slowly. It can retain
-free-surface slopes, cliffs and terraces for thousands of ticks, drain with a
-granular-like angle of repose, detach visually from walls, and form locally stable
-steps that do not read as liquid. The same implementation can look substantially
-more convincing when the Water becomes shallow, especially in thin edge dribbles.
+The main conclusion is **not** “choose a mass precision”. The dominant current Water-feel defect is a bulk transport/leveling problem:
 
-The leading mechanism hypothesis is therefore a missing or inadequate **head/depth
-dependent lateral drive / bounded leveling mechanism**. Current Water gravity and
-same-row local mass equalization do not explicitly increase lateral drive because a
-cell sits underneath a deeper Water column. A separate bounded horizontal
-leveling-horizon hypothesis is also justified by the communicating-pools evidence.
+- deep or spatially extended Water redistributes laterally too weakly or too slowly;
+- broad bodies can retain steep free-surface slopes, cliffs and terrace steps for far too long;
+- communicating pools remain visibly non-level;
+- constricted releases can behave like a granular slump with an approximately 42–43° free-surface wedge;
+- shallow Water, thin dribbles and edge breakup can look substantially more convincing than the same solver in deep volumes.
 
-This is a #26 problem first. It is **not yet evidence that #18 compact directional
-history is required**. #18 remains open and must not be closed or treated as
-admitted implementation merely because H found poor bulk flow.
+The leading mechanism hypothesis is therefore a missing or inadequate **depth/head-dependent lateral drive and/or bounded larger-scale leveling mechanism**. Current Water performs gravity and local same-row equalization, but has no explicit term that makes a lower cell push laterally harder merely because a deep Water column sits above it.
 
-Presentation remains a separate problem. Four-level oriented reconstruction is not
-sufficient by itself, and every tested mass width still needs stronger rendering
-reconstruction to become visually acceptable. Rendering can hide quantization and
-reconstruct a smoother interface after bulk motion is credible; it cannot repair
-incorrect discharge, leveling or mass transport.
+This is a **#26 problem first**. It does not yet prove that #18 compact directional history is useful. #18 remains open and held.
 
-## Evidence boundary and provenance
+A second independent conclusion is that current presentation is also insufficient. Four-level oriented reconstruction exposes real quantization and can amplify surface instability. Rendering is expected to help with surface smoothness, contact shape, temporal continuity and controlled breakup, but it must not conceal wrong authoritative discharge, leveling, quantity or settling.
 
-All formal semantic arms used coherence 12, four-level oriented presentation and
-seed 0 unless noted. The authoritative Windows development runtime in the retained
-sessions is the validated #19 runtime, source checkpoint
-`3ef4923abb011c5451be0f2ba477d8a3bffb0ee3`, DLL SHA-256
-`ce0b252171a7931317068eda62ec1ec773632d760f85f0ebb594af44d197a138`.
+A third conclusion is now strong enough to constrain later state-budget work: **3-bit Water is strongly disfavored if tiny droplets matter to gameplay**. In `long-tail-settling`, the registered 8/12/16 normalized droplets quantize to zero at 3-bit and disappear from authoritative state. No shader can recover Water that does not exist.
 
-The corrected-steps and later sessions share the same H-apparatus fingerprints.
-The H capture work itself is still in draft PR #25 and is not a production
-migration. Raw ZIPs are intentionally not committed here because they total
-hundreds of MiB; their names, sizes and SHA-256 identities are retained in
-`2026-09-18-water-h-gate-evidence.json`.
+No production Water mass width, Cell layout, flow-memory field, sparse ballistic path or production renderer is selected by this report.
 
-## Human results by scenario
+## Programme state after H
 
-| Scenario | Blind result / useful observation | Disposition |
+| Work | Disposition |
+|---|---|
+| #19 Water Feel Lab | H-ready apparatus successfully used; manual H evidence now exists. #19's original completion remains unchanged. |
+| #26 Water leveling | **Priority next engineering work.** Characterize and compare bounded head/leveling candidates. |
+| #18 compact motion/history | **Remain open, held.** Re-test directional references after #26; admit history only if a residual directional-persistence target remains. |
+| Water mass precision | mass8 remains numerical/control oracle. No production selection. mass3 strongly disfavored for tiny-quantity representability; 5/6/8 remain serious later candidates; 4 remains an explicit threshold-risk arm. |
+| Water presentation | Required later layer. Must be measured separately from authoritative surface behavior. |
+| #20 sparse ballistic motion | No new admission from H. Existing dependency remains. |
+| #14 G-final | Still open. H materially changes the evidence set but does not complete the architecture decision. |
+
+## Evidence identity and integrity
+
+### Runtime and apparatus
+
+Formal semantic comparisons used coherence 12, seed 0 and four-level oriented presentation unless explicitly noted.
+
+The retained Windows H sessions report the validated #19 runtime lineage:
+- source checkpoint: `3ef4923abb011c5451be0f2ba477d8a3bffb0ee3`;
+- Windows DLL SHA-256: `ce0b252171a7931317068eda62ec1ec773632d760f85f0ebb594af44d197a138`;
+- Godot 4.7 official runtime.
+
+Two H-apparatus fingerprint groups exist:
+1. the earlier shallow-pool session uses the first recorder/panel apparatus;
+2. corrected `steps` and every later retained session use one common later apparatus fingerprint, including the corrected `steps` recipe and later capture UX.
+
+The machine-readable companion file, `2026-09-18-water-h-gate-evidence.json`, retains raw archive filename, byte size, SHA-256, reveal mapping, canonical observations, sequence notes and explicit evidence limitations.
+
+### Raw archive inventory
+
+Eleven unique H session archives are retained in the evidence index, totalling about 735 MB decimal (~701 MiB). A second uploaded `direction-diagonal` ZIP is byte-identical and is recorded as an alias, not a second experiment.
+
+Raw PNG sequence archives are not committed to Git history. Their exact identities are retained by size and SHA-256 so a later local copy can be verified against this report.
+
+### Excluded, partial and qualified evidence
+
+The following distinctions are mandatory:
+
+- the original stale/pre-#19 H attempt is invalid H evidence;
+- the pre-fix `steps` fixture faced uphill and is excluded; only corrected downhill `steps` is used;
+- the early `irregular-bed` pilot is incomplete/contaminated; a later qualitative subset is retained but lacks its reveal mapping, so it is not used for mass-bit ranking;
+- `fast-dump` has formal B/C captures but no canonical A formal observation; do not invent a complete rank;
+- the current `u-vessel` recipe is uniformly filled and is **not** a differential-head U-tube; its run is calm-surface evidence only;
+- one constriction C sequence was recovered by a later reblind after reveal. Its policy mapping is identical, but its camera framing differs, so it is supplemental, not part of the original blinded judgement set;
+- frame-sequence PNG output does not capture every 60 Hz render publication. Use simulation tick/serial metadata for timing and geometry, not frame index as a literal 60 fps video clock.
+
+## Human evidence matrix
+
+| Scenario | Revealed result / observation | Main inference |
 |---|---|---|
-| shallow-pool | mass3 Marginal/rank3; mass5 Marginal/rank2; mass8 Marginal/rank2. 3-bit: irregular blunt sawblade; 5-bit: missing/speckled surface; 8-bit: coarse regular sawtooth. | Precision affects surface quality, but no arm is visually satisfactory. |
-| irregular-bed | Formal observations describe all arms as close; best notes say “nice flow, bit slow”; worst says “kinda sluggish but barely different”. The supplied observation subset does not retain the reveal mapping, so do not use it for a bit-budget ranking. | First strong shared-sluggishness signal; led directly to #26. |
-| corrected steps | Reveal A=3, B=5, C=8. mass3 Reject/rank3; mass5 Marginal/rank2; mass8 Acceptable/rank1. Owner: shallow Water and rapid edge dribbles look convincing; deeper Water feels slow/stuck/hesitant. | Strong depth dependence. 8-bit best here, but shared deep-flow defect dominates. |
-| constriction | Reveal A=3, B=5, C=8. mass3 Marginal/rank1; mass5 Reject/rank2; mass8 Reject/rank3. Persistent free-surface wedge is roughly 42–43 degrees in representative sequence frames. | Clean evidence that more bits do not monotonically improve feel while bulk flow is wrong. Strong granular-like slump defect. |
-| connected-pools | Reveal A=3, B=5, C=8. mass3 Reject/rank3; mass5 Marginal/rank2; mass8 Marginal/rank1. All arms retain multi-degree free-surface slopes long after connection; B/C still about 3.4 degrees around tick 4200 in the retained analysis. | Cleanest equilibrium/leveling evidence: higher precision does not solve the leveling defect. |
-| fast-dump | Reveal A=3, B=5, C=8. Formal archive contains B Marginal/rank2 and C Reject/rank3; no canonical A observation capture, so do not invent a complete ranking. Owner annotations identify impossible wall-gap/contact loss, unacceptable mid-surface terraces, and occasional “tumbling” edge randomness; a supplied mockup shows the desired smoother coherent draining profile. | Structural evidence, not a complete formal rank set. The tumbling instability is potentially useful inspiration, not accepted behavior. |
-| u-vessel | Reveal A=3, B=5, C=8. mass3 Marginal/rank2: multiple tiny lumps; mass5 Marginal/rank2: serrated areas; mass8 Acceptable/rank1: only four tiny raised lumps at the left edge. | Useful settled-surface/quantization evidence, **not** a hydrostatic head test: the registered recipe is a single uniformly filled U-shaped tank and never creates unequal communicating columns. |
-| long-tail-settling | Reveal A=3, B=5, C=8. mass3 Anomaly/rank3: the three leftmost droplets are missing completely; mass5 Marginal/rank2: all droplets survive but some puddles look odd; mass8 Good/rank1: larger droplets combine into a convincing puddle. | Strong tiny-quantity representability evidence. The recipe’s first droplets are normalized masses 8/12/16, which quantize to zero at 3-bit under the registered half-up rule. This is authoritative mass loss at initial quantization, not a rendering defect. |
-| direction-horizontal | Reveal A=3, B=5, C=8. mass3 Reject/rank3: excessive height differential remains and it “doesn’t really flow”; mass5 Good/rank2; mass8 Good/rank1, with the observer noting C continues sideways flow after B has largely stopped. | Strong precision-dependent lateral-leveling evidence and useful #18-adjacent context. Existing fixture is still a horizontal strip plus same-row fill, not a clean injected-velocity/history oracle, so it does not by itself admit compact flow memory. |
-| calm-settling | Reveal A=3, B=5, C=8. mass3 Reject/rank3: unacceptable surface lump; mass5 Acceptable/rank2: residual “hill nipple”, does not fully level; mass8 Good/rank1: acceptable final state, but observer wants it reached 2–4× faster and still dislikes the “ripple nipple”. | Strongest manual equilibrium-speed result: mass8 can get near an acceptable shape, but the time-to-flat target is materially too slow. |
-| direction-diagonal | Reveal A=3, B=5, C=8. mass3 Reject/rank3: waterslump; mass5 Acceptable/rank2: calmer terraces but edge drips cease quickly; mass8 Good/rank2: livelier but flickering “hillnipple” and terrace edges. | Confirms slump/terrace artifacts are not limited to purely horizontal geometry. Useful anisotropy/edge-stability evidence, but not a new architecture problem by itself. |
-| ledge-sheet | Reveal A=3, B=5, C=8. mass3 Reject/rank3: waterslump; mass5 Acceptable/rank2: smoother hill/terraces but slow dribble; mass8 Good/rank1: better flow and interesting multi-phase puddle-front breakup, with an undesirable vertical-line/block phase. | Positive shallow-flow control: preserve lively dribble/front breakup while fixing deep-water leveling and terrace artifacts. |
+| `shallow-pool` | 3-bit Marginal/rank3; 5-bit Marginal/rank2; 8-bit Marginal/rank2. 3-bit has irregular blunt sawblade surface; 5-bit missing/speckled surface; 8-bit coarse regular sawtooth. | Precision affects visible surface quality, but none is a production-quality appearance. |
+| `irregular-bed` | Label-blind retained subset: Acceptable/Acceptable/Marginal; all described as close and somewhat slow. | First strong shared-sluggishness signal. Do not use for bit ranking without reveal. |
+| corrected `steps` | A=3 Reject/rank3; B=5 Marginal/rank2; C=8 Acceptable/rank1. Owner: shallow Water and rapid edge dribbles can look convincing; deeper Water feels slow/stuck/hesitant. | Strong evidence that local depth changes perceived realism and that useful shallow-flow character already exists. |
+| `constriction` | A=3 Marginal/rank1; B=5 Reject/rank2; C=8 Reject/rank3. All retain a broad granular-like wedge; representative later slope ~42–43°. | Bulk defect dominates enough to reverse precision preference. Strong head/pressure-style deficit signal. |
+| `connected-pools` | A=3 Reject/rank3; B=5 Marginal/rank2; C=8 Marginal/rank1. Multi-degree free-surface slope remains long after connection; B/C ~3.4° around tick 4200 in retained analysis. | Cleanest communicating-level/equilibrium evidence. Higher precision does not solve leveling. |
+| `fast-dump` | B=5 Marginal/rank2; C=8 Reject/rank3; no canonical A formal capture. Owner annotations identify an impossible wall-adjacent gap, unacceptable middle terraces, interesting but glitch-like tumbling randomness, and a smoother desired mockup. | Structural defect vocabulary: contact gap, terrace, slump, breakup. Useful “tumbling” character may be reproduced later under control, not preserved as a bug. |
+| `u-vessel` | A=3 Marginal/rank2; B=5 Marginal/rank2; C=8 Acceptable/rank1. 8-bit has only four tiny raised lumps; lower precision shows more lumps/serration. | Calm-surface/quantization evidence only. Current fixture does not test differential head. |
+| `long-tail-settling` | A=3 Anomaly/rank3; B=5 Marginal/rank2; C=8 Good/rank1. The three smallest leftmost droplets are missing entirely at 3-bit. | Direct authoritative representability boundary. Rendering cannot repair quantities quantized to zero. |
+| `direction-horizontal` | A=3 Reject/rank3; B=5 Good/rank2; C=8 Good/rank1. Observer says 8-bit continues lateral flow after 5-bit has largely stopped. | Precision-dependent lateral equalization/persistence evidence, but not a clean stored-velocity/history oracle. |
+| `calm-settling` | A=3 Reject/rank3; B=5 Acceptable/rank2; C=8 Good/rank1. 8-bit reaches an acceptable final state but is judged **2–4× too slow**; “ripple/hill nipple” remains. | Strongest H target for time-to-flat/slope-decay, plus explicit surface-defect metric. |
+| `direction-diagonal` | A=3 Reject/rank3; B=5 Acceptable/rank2; C=8 Good/rank2. 3-bit waterslump; 5-bit calmer terraces but edge drips die quickly; 8-bit lively but flickering hillnipple/terrace edges. | Confirms slump/terrace/shimmer family beyond purely horizontal geometry. |
+| `ledge-sheet` | A=3 Reject/rank3; B=5 Acceptable/rank2; C=8 Good/rank1. 8-bit has better dribble/front motion and several interesting front phases, but vertical-line/block artifacts remain undesirable. | Positive shallow-flow control. Preserve useful liveliness while fixing deep-water and surface-stability defects. |
 
-## U-vessel fixture correction
+## Cross-scenario conclusions
 
-The manual `u-vessel` run exposed a scenario-design limitation in the #19 catalogue.
-The registered recipe builds two outer walls plus a bottom and fills the entire
-interior uniformly. It does **not** create two unequal communicating columns or an
-initial head difference. Therefore this run cannot validate or falsify the
-head-pressure hypothesis.
-
-It is still valid evidence for settled free-surface quality: mass8 was the only
-Acceptable arm, while mass3 and mass5 retained more visible lumps/serration.
-The short motion sequences add little dynamic evidence because the fixture has no
-meaningful equalization transient.
-
-Do not ask the H tester to repeat this fixture for head-response evidence. #26 should
-instead add an automated true unequal-head U-tube/communicating-column fixture.
-
-## Cross-scenario interpretation
-
-### 1. Calm settling turns the qualitative complaint into a speed target
-
-The calm-settling run is especially useful because mass8 eventually reaches a
-human-acceptable final state while still being judged **2–4× too slow to get
-there**. That means #26 should not optimize only final equilibrium error. It needs
-an explicit **time-to-flat / slope-decay** target as well.
-
-The same run also separates presentation from simulation cleanly:
-
-- mass3 forms a large unacceptable lump;
-- mass5 is calmer but does not fully level;
-- mass8 gets closest to the desired equilibrium;
-- even the preferred mass8 surface retains a small “ripple/hill nipple” that may
-  be suitable for later shader treatment if bulk motion is already correct.
-
-This supports a bounded semantic acceleration of deep/extended Water rather than a
-global “make all Water more mobile” change.
-
-### 1. The primary defect is bulk lateral relaxation / leveling
+### A. Bulk lateral relaxation / leveling is the dominant simulation defect
 
 The repeated symptoms are mutually consistent:
 
-- deep bodies retain steep slopes instead of rapidly flattening;
-- communicating pools fail to level convincingly;
-- constricted discharge resembles granular slumping;
-- deep Water can feel hesitant while shallow edge dribbles feel lively;
-- stable terraces or middle steps appear in a free surface;
-- wall-adjacent gaps/contact loss can appear in high-flow geometry.
+- deep bodies keep excessive height differential;
+- connected bodies level too slowly;
+- deep releases form broad persistent slopes;
+- constricted Water resembles a granular heap;
+- slopes/terraces can become quasi-stable rather than liquid-like;
+- shallow Water is much more convincing than deep Water.
 
-The best current hypothesis is that local lateral transfer lacks enough information
-about hydrostatic head or the larger-scale surface-level difference. This does not
-imply a Navier-Stokes solver or a global pressure field. A bounded gameplay
-approximation may be sufficient.
+The current leading hypothesis is not “Water needs full pressure physics”. It is narrower: local pairwise equalization lacks enough information about **column head and/or a nearby lower surface potential** to generate convincing bulk redistribution.
 
-### 2. Two bounded candidate families are justified
+That justifies two bounded candidate families under #26:
 
-After automated baseline characterization, #26 should compare at least:
+1. **Head-scaled local drive**  
+   A bounded local depth/head proxy increases lateral request strength and/or cadence where a deeper Water body should push outward more strongly.
 
-1. **Head-scaled local drive.** A bounded local proxy for Water above/depth/head
-   increases lateral redistribution strength or cadence where a deep body should
-   push outward more strongly.
-2. **Bounded leveling horizon.** A limited horizontal surface/leveling lookahead
-   or relaxation horizon allows extended Water to respond to a nearby lower
-   potential instead of relying only on adjacent same-row mass imbalance.
+2. **Bounded leveling horizon**  
+   A limited horizontal lookahead/relaxation horizon lets Water respond to a nearby lower free-surface potential rather than only immediate same-row mass difference.
 
-These should be tested separately before combining them. The second mechanism
-should not be described as literal surface tension: its purpose is faster bounded
-level equalization, while physical surface tension resists surface-area creation.
+Test these separately before combining them. Neither candidate implies a global pressure field, Navier–Stokes solver, unbounded search or persistent velocity state.
 
-### 3. Tiny-quantity representability creates a real lower-bound constraint
+### B. Calm-settling supplies an explicit speed target
 
-The long-tail-settling run adds a stronger precision result than the earlier surface
-judgements. Its twelve 6x6 source droplets use normalized masses
-`8, 12, 16, ... 52`. Under the registered half-up physical quantization:
+The 8-bit `calm-settling` arm reaches a human-acceptable final state but is explicitly judged **2–4× too slow** to reach it.
 
-- mass3 (`max=7`) maps normalized 8/12/16 to zero, so the three leftmost
-  droplets do not exist in authoritative state;
-- mass5 retains all droplets but still introduces about 4.0% negative initial
-  physical quantization error across the registered source set;
-- mass8 is exact for this fixture.
+Therefore #26 must measure:
+- final equilibrium error;
+- **and time-to-flat / slope-decay rate**.
 
-The observer independently reported exactly the expected mass3 symptom:
-“3 leftmost drops are missing completely”.
+A candidate that reaches the same final surface but only marginally faster has not addressed the owner-observed deficit. Conversely, “make Water globally 4× faster” is not the requirement: shallow/ledge behavior is already comparatively good and must be preserved.
 
-This is not something later surface reconstruction can repair without inventing
-Water that does not exist authoritatively. Therefore mass3 is now **strongly
-disfavored if these tiny quantities are gameplay-relevant**. This does not by
-itself select 5, 6 or 8 bits, and it does not make rendering reconstruction
-unimportant; it establishes a hard distinction between visual quantization and
-authoritative representability.
+The 2–4× observation is an H target band, not yet a hard benchmark threshold. Freeze the baseline measurement definition first, then preregister candidate thresholds before semantic candidate code.
 
-The retained motion segments are short and not balanced to the registered
-1800-tick long-tail sample, so do not cite this run as a complete long-tail
-settling comparison. Its strongest legitimate result is tiny-quantity precision.
+### C. Surface-state defects are first-class acceptance metrics
 
-### 3. Do not select the mass-bit budget yet
+The H campaign repeatedly identified two named defects:
 
-The evidence is not monotonic:
+- **hillnipple** — a localized surface mound/peak or ripple-like protrusion that persists or flickers unnaturally;
+- **terrace / terrace shimmer** — discrete surface shelves/steps whose edges persist, flicker, move in/out, or visibly switch state.
 
-- 8-bit is preferred in corrected steps and connected-pools;
-- 3-bit is clearly poor in several surface-quality tests;
-- 3-bit nevertheless ranked best in constriction while all arms retained the
-  common bulk-flow defect.
+Fast-dump also adds:
+- **wall-contact gap** — an empty/visually detached slit where the main Water body should remain in contact with a wall/outlet boundary.
 
-That reversal is strong evidence that current flow semantics interact with
-quantization strongly enough to confound a final bit-budget decision.
+These must not be relegated to “shader polish”. Measure them at two layers.
 
-Keep 8-bit as the numerical/control oracle. Treat 3-bit as strongly disfavored because
-it now has both visible quality failures and a demonstrated tiny-quantity representability
-hole. Do not turn that into a universal architecture ban without deciding whether those
-small quantities are gameplay-relevant. Retest a practical set such as 4/5/6/8 after
-bulk-flow and presentation improvements; note that 4-bit also has a known threshold risk
-for the very smallest registered droplet and should remain an explicit risk arm rather
-than an assumed safe minimum. If 5 or 6 becomes perceptually equivalent after those
-fixes, reclaimed state bits remain valuable for later Water semantics.
+#### Authoritative surface metrics
 
-### 4. Preserve useful shallow-flow breakup while rejecting the glitches
+Derived from Water mass/state before presentation:
+- **hill amplitude**: maximum positive local surface deviation above a frozen low-pass/local-equilibrium baseline;
+- **hill width** and **hill lifetime**;
+- **terrace severity**: count, horizontal extent and vertical step magnitude of persistent surface shelves in a registered ROI;
+- **authoritative shimmer/turnover**: rate at which the authoritative surface contour changes terrace/hill classification over simulated time;
+- **contact-gap extent/lifetime** where fixture geometry requires continuous contact.
 
-The ledge-sheet and diagonal runs provide a useful positive-control vocabulary for
-later visual work. The owner explicitly distinguished several front/edge motifs:
+If these are bad in authority, the simulation candidate must improve them. A shader must not hide a persistent authoritative mound, terrace or contact gap and then claim the physics is fixed.
 
-- “serpentine trail”;
-- “splashy flat”;
-- “splashy creep”;
-- small local humps or active front breakup.
+#### Rendered surface metrics
 
-Those can read as lively Water. By contrast, the owner rejects:
+Computed from rendered pixels for the same tick-indexed authoritative frames:
+- rendered hill amplitude/width;
+- rendered terrace severity;
+- rendered contour turnover / shimmer rate;
+- rendered contact gap;
+- temporal flicker at unchanged or minimally changed authority.
 
-- persistent “hillnipple” shapes;
-- terrace edges that flicker in and out;
+This creates a diagnostic matrix:
+
+| Authority | Render | Interpretation |
+|---|---|---|
+| bad | bad | simulation defect visible as expected |
+| good | bad | renderer/reconstruction defect |
+| bad | superficially good | renderer is concealing an authoritative defect; simulation still fails |
+| good | good | pass candidate |
+
+The exact contour extraction, smoothing window, ROI and thresholds must be frozen in #26 registration before comparing semantic candidates.
+
+### D. Preserve useful shallow-flow liveliness
+
+The owner explicitly identified several current shallow/front motifs as potentially desirable:
+
+- rapid over-edge dribble;
+- serpentine trail;
+- splashy flat front;
+- splashy creep;
+- small active local breakup;
+- some tumbling/asymmetric front motion.
+
+By contrast the following are rejected:
+
+- broad waterslump;
+- persistent hillnipples;
+- terrace edges that shimmer/flicker in and out;
 - vertical-line / vertical-block phases;
-- broad waterslump.
+- impossible wall-contact gaps.
 
-The implementation should therefore preserve the **statistical/lively character**
-of shallow edge flow without preserving the exact current bugs. If a later shader
-or bounded surface rule recreates the useful breakup motifs, it should do so from
-stable authoritative state rather than depending on accidental solver artifacts.
+This means #26 is not allowed to “solve” the problem by making all Water maximally smooth, inert or uniformly fast. The later H regression must preserve the useful statistical/lively character of thin flows.
 
-### 4. Presentation precision is independent from simulation precision
+If the later renderer recreates good breakup motifs, it should do so from stable authoritative state using bounded presentation logic, not by depending on accidental solver instability.
 
-No tested mass width produces an acceptable raw/free-surface appearance everywhere.
-The later rendering pass should therefore be allowed to reconstruct a smoother
-continuous interface from authoritative state:
+### E. Precision matters, but the bulk defect currently confounds preference
 
-- sub-cell/partial coverage;
-- local surface reconstruction and normals;
-- temporal interpolation;
+Precision preference is not monotonic while flow is wrong:
+
+- 8-bit is preferred in corrected steps, connected-pools, u-vessel, long-tail, horizontal, calm and ledge cases;
+- 3-bit is visibly poor in many surface and flow cases;
+- 3-bit nevertheless ranked best in constriction, where every arm retained the dominant granular-like bulk defect.
+
+Therefore do not choose a production width from aggregate H ranks today.
+
+Keep mass8 as numerical/control oracle. After #26 and presentation work, retest a practical set such as **4/5/6/8**:
+- 3-bit is now strongly disfavored if tiny droplets are gameplay-relevant;
+- 4-bit remains an explicit threshold-risk arm because very small quantities are near its representability boundary;
+- 5/6 are the most interesting potential reclaimed-bit candidates;
+- 8 remains the exact/reference control.
+
+### F. Tiny-quantity representability is not a rendering problem
+
+`long-tail-settling` uses twelve 6×6 droplets with normalized masses `8, 12, 16, ... 52`.
+
+Under the registered half-up quantizer:
+- 3-bit (`max=7`) maps normalized 8/12/16 to zero;
+- 5-bit retains all registered droplets but introduces approximately -4.0% initial physical quantization error across the set;
+- 8-bit is exact.
+
+The observer independently reported the exact 3-bit symptom: “3 leftmost drops are missing completely”.
+
+This is a hard distinction between:
+- **visual quantization**, which a renderer can often reconstruct acceptably;
+- **authoritative representability**, which a renderer must not fabricate.
+
+### G. Directional references do not yet admit #18
+
+`direction-horizontal` and `direction-diagonal` show real precision-dependent differences in lateral motion and settling. They are useful pre-#26 baselines.
+
+They do **not** cleanly isolate remembered momentum:
+- horizontal is a horizontally extended strip plus same-row fill event;
+- diagonal is a diagonal arrangement of Water blocks;
+- neither injects a controlled persistent velocity/history variable.
+
+Thus the observed differences can still arise from #26 leveling semantics and quantization.
+
+After a #26 candidate passes its bulk/surface screens:
+1. repeat horizontal and diagonal references;
+2. add a true controlled directional-injection fixture if needed;
+3. only if useful motion still decays too quickly should #18 register a concrete history target.
+
+#18 remains open and unimplemented.
+
+## #26 measurement charter
+
+Before semantic candidate code, freeze the baseline implementation, source/artifact identity, ROIs, measurement definitions, run lengths, seeds/translations and rejection thresholds.
+
+### Required automated fixtures
+
+1. **Head-response family:** shallow / medium / deep reservoirs with identical outlets.
+2. **Communicating pools:** fixed initial level difference.
+3. **True unequal-head U-tube:** replace the current uniformly filled `u-vessel` as the hydrostatic/communicating-column probe.
+4. **Constriction/nozzle:** strong transient pressure/head release.
+5. **Fast dump:** large transient collapse and wall/outlet contact.
+6. **Calm settling:** time-to-flat and surface stability.
+7. **Ledge sheet / shallow dribble:** positive control whose lively behavior should not be destroyed.
+
+### Bulk metrics
+
+- early discharge as a function of initial head/depth;
+- lateral COM displacement and range;
+- free-surface slope versus tick;
+- slope half-life;
+- communicating-pool level difference and half-life;
+- time-to-flat / time-to-registered equilibrium;
+- cliff lifetime;
+- total Water quantity / explicit source-sink ledger;
+- active blocks, visits/transfers and wake work;
+- p50/p95/p99/max tick cost and total run cost.
+
+### Surface metrics — authoritative and rendered separately
+
+- hill amplitude, width and lifetime;
+- terrace count, extent and vertical severity;
+- terrace/hill contour turnover (“shimmer”) per simulated second;
+- wall-contact gap area/extent and lifetime;
+- rendered-only temporal flicker where authoritative contour is unchanged;
+- correlation between authoritative defect and rendered defect.
+
+### Candidate acceptance requirements
+
+A candidate is not accepted merely because one metric improves.
+
+It must:
+- materially improve head/depth response and time-to-flat in the registered deep/extended fixtures;
+- reduce authoritative persistent hill/terrace/contact defects;
+- not replace sluggishness with crawling, oscillation, perpetual micro-motion or excessive over-fluidity;
+- preserve exact closed Water integer mass;
+- preserve deterministic expected worker behavior;
+- preserve bounded writes/work and scheduler/activity contracts;
+- preserve protected granular/material policies and failure/region contracts;
+- keep shallow/ledge positive-control behavior acceptably lively;
+- report work and performance cost honestly.
+
+### Candidate sequence
+
+1. Baseline characterization only.
+2. Head-scaled local-drive candidate.
+3. Bounded leveling-horizon candidate with the same baseline.
+4. Only if both isolated candidates justify it, one registered combined arm.
+5. Small H regression on `calm-settling`, `connected-pools`, `constriction`, and `ledge-sheet`.
+6. Then repeat directional references for the #18 admission/no-go decision.
+
+## Presentation / renderer disposition
+
+No current mass arm has a universally acceptable raw Water surface.
+
+A later rendering pass may legitimately add:
+- smoother derived free-surface reconstruction;
+- sub-cell coverage;
+- local normals/curvature;
+- contact-aware boundary reconstruction;
+- temporal interpolation/hysteresis;
 - thin-film continuity and droplet shaping;
-- contact-aware treatment at walls/outlets;
-- optional cosmetic local breakup/ripple cues.
+- bounded cosmetic ripple/breakup cues.
 
-The fast-dump “tumbling” glitch is worth preserving as a reference for the kind of
-local asymmetric breakup that can make flow lively, but the bug itself must not be
-made normative. First identify its cause; then, if desirable, reproduce the useful
-visual characteristic under a controlled bounded rule or presentation effect.
+But presentation must be evaluated against the two-layer surface metrics above.
 
-Rendering must not be used to conceal incorrect mass transport. Bulk discharge,
-leveling, conservation and settling remain authoritative simulation questions.
+Rendering may fix:
+- pixel-level sawtooth/serration;
+- presentation-only threshold flicker;
+- visually harsh terrace boundaries when authoritative mass is already smooth enough;
+- benign small hill/ripple appearance;
+- aesthetically useful front breakup.
 
-## #26 next engineering campaign
+Rendering may **not** be used as evidence that these authoritative defects are solved:
+- incorrect discharge;
+- slow level equalization;
+- persistent authoritative hill/terrace states;
+- contact gaps caused by real occupancy/mass state;
+- quantities lost to initial quantization.
 
-Before changing semantics, register automated controls using the current source-matched
-Water path. Minimum useful fixtures:
+## H apparatus and recording limitations
 
-1. shallow / medium / deep reservoirs with identical outlets;
-2. communicating pools with a fixed initial level difference;
-3. a true unequal-head U-tube / communicating-column fixture (not the current uniformly filled `u-vessel` recipe);
-4. constriction/nozzle;
-5. fast dump;
-6. one shallow/ledge control where current Water already looks relatively good.
+The frame-sequence recorder is useful as tick-indexed supplemental evidence, not as literal 60 fps video.
 
-Primary metrics should include:
+Early `steps` recording reduced simulation progress to roughly 56 Hz and saved only about 21–22 PNG/s. Later sessions generally kept simulation close to 60 ticks/s while still saving fewer visual frames because synchronous readback/PNG work skipped intermediate render publications.
 
-- early discharge versus head;
-- lateral COM/range;
-- free-surface slope decay;
-- level-difference half-life;
-- cliff/terrace lifetime;
-- time to stable equilibrium;
-- exact Water quantity;
-- work/visits and p50/p95/p99 tick cost.
+Therefore:
+- human feel judgement comes from normal-speed audition, not recorded playback;
+- use tick/serial metadata for motion timing;
+- sequence frame count is not elapsed simulation frames;
+- do not infer a complete 60 Hz visual trace;
+- duplicated or stale pre-reset frames at reset boundaries are provenance artifacts and are explicitly identified in the evidence index.
 
-Candidate changes must preserve exact closed Water mass, deterministic expected
-worker behavior, stable equilibrium, bounded writes/work, scheduler/activity
-contracts and protected granular/material policies. Reject candidates that merely
-replace sluggishness with crawling, oscillation or excessive over-fluidity.
+The recording apparatus should be optimized separately if full-rate visual evidence becomes necessary; this does not block #26 automated native/authoritative metrics.
 
-After a bounded candidate passes the automated screen, re-run a small H set rather
-than repeating the full campaign. The preferred small regression set is now:
-`calm-settling` for time-to-flat, `connected-pools` for level equalization,
-`constriction` for head-driven discharge, and `ledge-sheet` as the shallow positive
-control.
+## Recommended minimal future H regression
 
-## Direction-horizontal result and #18 boundary
+Broad baseline H testing is complete enough for engineering.
 
-The revealed direction-horizontal ordering is mass8 > mass5 >> mass3. The observer
-could not reliably separate mass5 from mass8 early, but later reported that the
-mass8 arm continued to move sideways after mass5 had largely stopped. mass3 retained
-too much height difference and was judged not to flow convincingly.
+After an automated candidate passes #26 screens, use only:
 
-This matters, but it is not yet the requested clean #18 target. The registered
-fixture begins as a horizontally extended Water strip and applies a same-row fill
-event; it does not inject a controlled horizontal velocity/history state. Therefore
-the result can be explained by precision-dependent lateral equalization and the
-known #26 leveling deficit without proving that Water needs remembered direction.
+1. `calm-settling` — time-to-flat plus hillnipple/shimmer;
+2. `connected-pools` — communicating-level equalization;
+3. `constriction` — deep/head-driven discharge and slump;
+4. `ledge-sheet` — preservation of good shallow dribble/front breakup.
 
-Use this as the pre-#26 baseline. After a head/leveling candidate passes #26,
-repeat the horizontal/diagonal motion references. Only a residual directional
-persistence failure after leveling is repaired should admit the compact-history
-experiment.
+Repeat `direction-horizontal` and `direction-diagonal` only after #26 to decide #18 admission/no-go.
 
 ## #18 disposition — explicitly remain open
 
 **Do not close #18.**
 
-The H campaign has established a concrete unmet Water-motion problem, but the
-strongest evidence currently points to **head/leveling response**, which is distinct
-from #18's question of persistent directional memory.
+The H campaign found a real Water-motion deficit, but the strongest evidence points to head/leveling and surface-stability behavior rather than stored directional memory.
 
-#18 should remain open while #26 characterizes and, if possible, repairs the
-head/leveling deficit. Then:
+#18 should remain open while #26 characterizes and, if possible, repairs that deficit.
 
-- if horizontal/diagonal injection still loses useful directional motion after the
-  #26 correction, register that residual as #18's concrete target and run the
-  compact-history experiment;
-- if the apparent directional-persistence deficit disappears once bulk leveling is
-  corrected, record an H-backed #18 no-go rather than implementing history merely
-  because state bits are available.
+After #26:
+- if a clean directional-injection test still shows useful motion dying too quickly, register that residual as #18's concrete benefit target and run the compact-history experiment;
+- if the apparent directional deficit disappears or becomes irrelevant after leveling is repaired, complete #18 by an H-backed no-go.
 
 No #18 implementation is admitted by this report.
 
-## H apparatus / recording limitations
+## G-final / architecture conclusion
 
-The frame-sequence recorder is useful as tick-indexed supplemental evidence, not as
-a literal 60-fps video oracle. Early steps capture reduced simulation throughput to
-about 56 Hz and saved only about 21–22 PNG/s. Later constriction,
-connected-pools and fast-dump sessions kept simulation near 60 ticks/s while saving
-roughly 23–25 PNG/s; many intermediate render-snapshot serials were therefore not
-written as images.
+The H gate has served its purpose: it prevented a premature state-budget choice and exposed the higher-priority behavior problem.
 
-Consequently:
+Current programme decision:
 
-- use simulation tick/serial metadata when comparing motion;
-- make subjective feel judgements during normal-speed unrecorded/replayed runs;
-- treat recorded sequences as supplemental geometry/time evidence;
-- do not infer 60 captured visual frames per second from the 60 Hz target.
+1. retain mass8 as numerical/control reference;
+2. select no production Water mass width yet;
+3. strongly disfavor mass3 where tiny Water quantities matter;
+4. move engineering priority to #26 automated head/leveling/surface characterization;
+5. treat hillnipple, terrace severity, terrace shimmer and wall-contact gaps as first-class two-layer metrics;
+6. preserve lively shallow/edge behavior as a positive-control requirement;
+7. keep #18 open/held until the residual directional-memory question is isolated after #26;
+8. keep rendering reconstruction as a required later layer, but never as a substitute for correct authoritative bulk flow;
+9. keep G-final open until the admitted #26/#18 consequences and other programme dependencies are reconciled.
 
-The constriction archive also contains a later reblind used only to recover C
-imagery after reveal. Its mapping is identical to the canonical blind set, but its
-camera framing differs; that recovered C sequence is supplemental and must not be
-misrepresented as part of the original blind judgement set.
-
-## Programme conclusion
-
-The H gate has done its job: it prevented a premature state-budget decision and
-identified the larger problem that must be solved first.
-
-The current decision is:
-
-1. **retain mass8 as numerical/control reference; select no production mass width;**
-2. **move engineering attention to #26 head/leveling characterization;**
-3. **keep #18 open but held until the residual directional-memory question is
-   isolated after #26;**
-4. **treat presentation reconstruction as a required later layer, not a substitute
-   for correct bulk motion;**
-5. **use only a small focused H recheck after bounded semantic candidates pass
-   automated evidence gates.**
-
-This is a synthesis/report checkpoint, not a closure of #18, #26 or the architecture
-programme.
+This report is an evidence and programme checkpoint, not a production migration or issue closure.
