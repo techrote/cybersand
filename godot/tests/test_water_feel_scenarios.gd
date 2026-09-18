@@ -3,7 +3,7 @@ extends SceneTree
 const Contract = preload("res://scripts/water_experiment_contract.gd")
 const Scenarios = preload("res://scripts/water_feel_scenarios.gd")
 const EXPECTED_CATALOGUE_HASH: String = \
-	"c0d465a25dfd0bf26301c1f2466b327c8d9af914e6254d9defff07a9bf662014"
+	"36fca816b62774809b5c744b9f121afed32e01ce1691a98e3fbf64687536d96c"
 
 var _failures: int = 0
 
