@@ -11,6 +11,7 @@ class FakeHost:
 	var camera_origin: Vector2=Vector2.ZERO
 	var current_view_size: Vector2i=Vector2i(480,270)
 	var view_size_index: int=1
+	var render_snapshot_hz: int=60
 	var paused: bool=true
 	var applied_blind_indices: Array[int]=[]
 	var worker_frame_updates: int=0
@@ -128,6 +129,7 @@ func _test_panel_blind_redaction() -> void:
 	_expect(not "hidden_mapping" in serialized,"panel safe metadata leaked hidden mapping")
 	_expect(not "mass_bits" in serialized,"panel safe metadata leaked blind mass precision")
 	_expect(str(safe.get("blind_label",""))==label,"panel safe metadata lost blind label")
+	_expect(int(safe.get("render_snapshot_hz",0))==60,"panel safe metadata lost render snapshot rate")
 	_expect(safe.get("blind_record",{}).get("revealed",true)==false,"panel visible blind record was marked revealed")
 	panel.free();fake.free()
 
