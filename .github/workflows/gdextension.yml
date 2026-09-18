@@ -24,7 +24,7 @@ env:
 jobs:
   build:
     name: ${{ matrix.target }} x86_64
-    runs-on: avrea-ubuntu-24.04-8-vcpu
+    runs-on: ${{ format('avrea-ubuntu-24.04-{0}-vcpu', vars.GDEXT_AVREA_VCPU) }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -68,7 +68,7 @@ jobs:
         env:
           GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
           SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
-          SCONS_JOBS: "8"
+          SCONS_JOBS: ${{ vars.GDEXT_AVREA_VCPU }}
           CYBERSAND_REAL_CXX: /usr/bin/g++-13
           LINUX_CXX: /usr/bin/g++-13
           CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
@@ -83,7 +83,7 @@ jobs:
         env:
           GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
           SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
-          SCONS_JOBS: "8"
+          SCONS_JOBS: ${{ vars.GDEXT_AVREA_VCPU }}
           LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
           WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
           CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
