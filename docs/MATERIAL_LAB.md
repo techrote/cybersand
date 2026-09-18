@@ -4,8 +4,8 @@ document-kind: runbook
 canonical-for: [material-lab-controls, manual-material-recipes]
 status: Current
 scope: Desktop and Web manual controls, repeatable interaction observations, construction recipes, and finite-demo limits
-last-reviewed: 2026-09-08
-related-documents: [systems/materials-and-rule-kernels.md, systems/themed-construction-materials.md, systems/water-design.md, reference/configuration-reference.md, reference/level-saves-and-replay.md]
+last-reviewed: 2026-09-18
+related-documents: [systems/materials-and-rule-kernels.md, systems/themed-construction-materials.md, systems/water-design.md, reference/configuration-reference.md, reference/level-saves-and-replay.md, operations/microscenarios-programme.md]
 ---
 
 # 1024² material lab
@@ -154,3 +154,19 @@ Open the [Experiment Tower](operations/experiment-tower.md) with desktop F9 or i
 
 The [transport profile editor](systems/flow-transport-and-profiles.md) shows effective
 settings/origins, saves editable user copies and applies through an explicit restart.
+
+
+## Planned MicroScenario Materials Laboratory
+
+The current 1024² lab remains the manual Current runbook. The planned
+[MicroScenarios programme](operations/microscenarios-programme.md) does not
+replace its evidence.
+
+After #14/G-final and #27, issue #28 will add a reference **Materials Laboratory**
+MicroScenario with reproducible experiment definitions, quick reset, inspection
+and compact export. Issue #29 will use the same definitions for generated
+chemistry fixtures, allowing one experiment to run headlessly, in batch coverage
+and interactively without maintaining separate test scenes.
+
+Future chemistry passes must retain versioned baseline/evidence and explicit
+source/sink accounting; the planned lab does not itself authorize reaction tuning.
