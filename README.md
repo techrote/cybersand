@@ -15,6 +15,10 @@ and [focused documentation](docs/README.md). Use the
 [roadmap](docs/reference/status-and-roadmap.md) before foundational physics work:
 failed ticks now quarantine the affected world, and phased interest re-entry
 resumes retained activity. Their separate acceptance and remaining gaps are recorded.
+For current MicroScenarios/intermaterial-interaction sequencing, do **not**
+infer order from GitHub issue numbers; use the
+[canonical programme graph](docs/operations/microscenarios-programme.md).
+
 [Current validation and retained M11 integrity](docs/operations/current-and-historical-validation.md)
 explain the independent source/runtime and historical checks.
 
