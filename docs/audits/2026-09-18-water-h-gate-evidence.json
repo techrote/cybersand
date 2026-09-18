@@ -888,5 +888,119 @@
     "calm_settling": "Mass8 can reach an acceptable calm final state, but current leveling speed is still perceived 2–4x too slow. This materially strengthens #26's leveling-speed target and suggests measuring time-to-flat, not only final error.",
     "direction_diagonal": "Diagonal initialization reproduces slump, hillnipple and terrace-edge artifacts. Useful as anisotropy/edge-stability evidence; no separate diagonal-only architecture is justified yet.",
     "ledge_sheet": "Shallow-flow positive control confirms useful lively edge/dribble/front behavior exists and must be preserved while #26 accelerates deep-water leveling. Treat serpentine/splashy/front-speckle motifs as references; reject persistent vertical-block artifacts."
+  },
+  "review": {
+    "reviewed_utc": "2026-09-18",
+    "unique_session_archives": 11,
+    "unique_archive_bytes": 735221041,
+    "duplicate_aliases": {
+      "H-20260918-223125-104747.zip": "byte-identical alias of H-20260918-223125-104747-directional-diagonal.zip"
+    },
+    "formal_revealed_scenarios": [
+      "shallow-pool",
+      "steps",
+      "constriction",
+      "connected-pools",
+      "fast-dump",
+      "u-vessel",
+      "long-tail-settling",
+      "direction-horizontal",
+      "calm-settling",
+      "direction-diagonal",
+      "ledge-sheet"
+    ],
+    "qualitative_only_scenarios": [
+      "irregular-bed"
+    ],
+    "excluded_evidence": [
+      "stale/pre-#19 H attempt",
+      "pre-fix uphill steps fixture",
+      "early contaminated irregular-bed pilot"
+    ],
+    "apparatus_fingerprint_groups": [
+      {
+        "scope": [
+          "H-20260913-190825-510946.zip"
+        ],
+        "files": {
+          "res://scripts/h_gate_recorder.gd": "1f1947a1f51aac8afa2497dcb4b92cbd867b7d8efaa6e3932193b073c02842df",
+          "res://scripts/main.gd": "6934ad8b563f6628ca48e6f0c8cdc454c3c1e8bf95fab99489d195958ce686f1",
+          "res://scripts/tower_panel.gd": "3f911d8189fcdaf26b35b3e422bb31914f9052354d68efb30032529b6d381c50",
+          "res://scripts/water_experiment_blind.gd": "25dab75373382c09d11afeda4e3b9ab027e491c4f83f6d4b526f5f824a11ae85",
+          "res://scripts/water_experiment_profiles.gd": "172cd621c16561fce17f3a16e80a060007348201c2b901922531cd620dabaca5",
+          "res://scripts/water_feel_scenarios.gd": "3eed68b0cf4a986c516f7b7962b91ad71e1059998ca794c0563026322b8628f7"
+        }
+      },
+      {
+        "scope": [
+          "corrected steps and all later H archives through ledge-sheet"
+        ],
+        "files": {
+          "res://scripts/h_gate_recorder.gd": "6ff99581b2ec3d86aa3133d416305c85c7b30d99e8c7531d08b5e3bb228da6b0",
+          "res://scripts/main.gd": "5a0b527b53ba0a40e79e512e0674133c3b6a0af265081b45b56493bff272c85a",
+          "res://scripts/tower_panel.gd": "5c3e3f095845149f8d9033d528539065dbb929fe0fda4a790a0686acbd014a0e",
+          "res://scripts/water_experiment_blind.gd": "25dab75373382c09d11afeda4e3b9ab027e491c4f83f6d4b526f5f824a11ae85",
+          "res://scripts/water_experiment_profiles.gd": "172cd621c16561fce17f3a16e80a060007348201c2b901922531cd620dabaca5",
+          "res://scripts/water_feel_scenarios.gd": "ffaac991360ecd2d2a1d4dceb06fd620f294bc304817a609e10c6e8245e6ec9e"
+        }
+      }
+    ]
+  },
+  "metric_charter": {
+    "bulk": [
+      "early discharge versus initial head/depth",
+      "lateral center-of-mass displacement and range",
+      "free-surface slope versus tick and slope half-life",
+      "communicating-pool level difference and half-life",
+      "time-to-flat / time-to-registered equilibrium",
+      "cliff lifetime",
+      "exact Water quantity and explicit source/sink accounting",
+      "active blocks, visits/transfers, wake work and p50/p95/p99/max tick cost"
+    ],
+    "surface_authoritative": [
+      "hill amplitude, width and lifetime",
+      "terrace count, horizontal extent and vertical step severity",
+      "terrace/hill contour turnover (shimmer) per simulated second",
+      "wall-contact gap extent/area and lifetime"
+    ],
+    "surface_rendered": [
+      "rendered hill amplitude/width",
+      "rendered terrace severity",
+      "rendered contour turnover / shimmer",
+      "rendered wall-contact gap",
+      "temporal flicker when authoritative contour is unchanged or minimally changed"
+    ],
+    "diagnostic_rule": {
+      "bad_authority_bad_render": "simulation defect visible as expected",
+      "good_authority_bad_render": "renderer/reconstruction defect",
+      "bad_authority_good_render": "renderer conceals authoritative defect; simulation still fails",
+      "good_authority_good_render": "candidate passes this surface dimension"
+    }
+  },
+  "next_engineering": {
+    "issue_26_fixtures": [
+      "shallow/medium/deep identical-outlet head-response family",
+      "communicating pools with fixed initial level difference",
+      "true unequal-head U-tube / communicating-column fixture",
+      "constriction/nozzle",
+      "fast dump",
+      "calm settling",
+      "ledge-sheet shallow positive control"
+    ],
+    "candidate_order": [
+      "baseline characterization",
+      "head-scaled local drive",
+      "bounded leveling horizon",
+      "combined arm only if isolated candidates justify it",
+      "focused H regression",
+      "repeat directional references for #18 admission/no-go"
+    ],
+    "focused_h_regression": [
+      "calm-settling",
+      "connected-pools",
+      "constriction",
+      "ledge-sheet"
+    ],
+    "issue_18": "Remain open and held until post-#26 directional references isolate a residual directional-memory target or support no-go."
   }
 }
