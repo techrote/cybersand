@@ -4,8 +4,8 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-09-10
-related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md]
+last-reviewed: 2026-09-18
+related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md]
 ---
 
 # Development handover
@@ -24,6 +24,24 @@ Read [AGENTS.md](../../AGENTS.md), the [documentation index](../README.md),
 for the requested change. Use the [retrieval index](../reference/retrieval-index.md)
 for a focused question. The [owner-intent reference](../reference/product-intent-and-priorities.md)
 preserves product goals, liked material behavior and deliberate deferrals.
+
+## Current execution-order rule
+
+**Do not execute GitHub issues numerically.** For #24/#27-#30 and their links to
+#18/#20/#26/#14, read the
+[MicroScenarios and intermaterial-interactions programme](microscenarios-programme.md)
+before choosing the next task. #27 may proceed once its launcher/input hygiene is
+present; it no longer waits for #18 or G-final. #28 exploratory scenarios may
+begin on a stable-enough #27 host and are explicitly provisional until affected
+physics/architecture changes are revalidated. #29/INT-000 may inventory/design
+early; implementation waits for the stable fixture contract plus the #28
+Materials Laboratory readiness checkpoint, not for all of #28 or a global
+physics freeze.
+
+The [architecture programme](architecture-programme.md) remains authoritative for
+#14/#18/#20 scientific gates. MicroScenarios may supply apparatus/fixtures but
+cannot satisfy or weaken those gates merely by existing. If issue text and these
+canonical documents disagree, fix the planning contradiction before implementation.
 
 ## Foundational work boundary
 
