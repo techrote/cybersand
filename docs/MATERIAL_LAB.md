@@ -162,11 +162,16 @@ The current 1024² lab remains the manual Current runbook. The planned
 [MicroScenarios programme](operations/microscenarios-programme.md) does not
 replace its evidence.
 
-After #14/G-final and #27, issue #28 will add a reference **Materials Laboratory**
-MicroScenario with reproducible experiment definitions, quick reset, inspection
-and compact export. Issue #29 will use the same definitions for generated
-chemistry fixtures, allowing one experiment to run headlessly, in batch coverage
-and interactively without maintaining separate test scenes.
+Issue #28 may build an **exploratory/provisional Materials Laboratory** once
+#27 provides a stable-enough common host; it does not have to wait for
+#14/G-final. A readiness checkpoint inside #28 requires one generic generated
+interaction definition to run both headlessly and interactively with the same
+setup/identity/observation contract. That checkpoint, not completion of Flood
+Control or Simulation Stress Test, unblocks #29/INT-000 implementation.
 
-Future chemistry passes must retain versioned baseline/evidence and explicit
-source/sink accounting; the planned lab does not itself authorize reaction tuning.
+INT-000 covers non-kinetic intermaterial interactions rather than chemistry
+alone. Its accepted passes preserve versioned baseline/evidence, source/sink or
+conversion accounting where applicable, and the exact kinetic/contact profile
+that determined how materials met. If later physics changes that contact regime,
+affected fixtures are re-screened instead of overwriting prior evidence.
+
