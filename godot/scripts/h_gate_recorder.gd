@@ -18,6 +18,11 @@ var timeline_path: String = ""
 var observation_index: int = 0
 var run_index: int = 0
 var blind_set_index: int = 0
+var sequence_index: int = 0
+var sequence_frame_index: int = 0
+var current_sequence_id: String = ""
+var current_sequence_root: String = ""
+var current_sequence_frames_path: String = ""
 var current_run_id: String = ""
 var last_feedback: String = ""
 
@@ -87,6 +92,47 @@ func capture(metadata: Dictionary,screenshot: Image,rank: int,judgement: String,
 	last_feedback="Captured %s — %s — %s — tick %s"%[oid,scenario,("candidate "+label) if not label.is_empty() else "unblinded",str(metadata.get("tick","?"))]
 	if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):DisplayServer.clipboard_set(crumb)
 	return {"ok":true,"observation_id":oid,"root":folder,"screenshot":screenshot_name,"breadcrumb":crumb,"feedback":last_feedback}
+
+func start_frame_sequence(metadata: Dictionary) -> Dictionary:
+	if session_id.is_empty():return {"ok":false,"error":"H-gate session has not started"}
+	if not current_sequence_id.is_empty():return {"ok":false,"error":"frame sequence is already active"}
+	sequence_index+=1;sequence_frame_index=0
+	current_sequence_id="S%03d"%sequence_index
+	var scenario: String=str(metadata.get("scenario_id","unknown"))
+	var label: String=str(metadata.get("blind_label",""))
+	var suffix: String=scenario+(("-"+label) if not label.is_empty() else "")
+	current_sequence_root="%s/sequences/%s-%s"%[session_root,current_sequence_id,suffix]
+	if not _ensure_dir(current_sequence_root):current_sequence_id="";current_sequence_root="";return {"ok":false,"error":"could not create frame-sequence directory"}
+	current_sequence_frames_path=current_sequence_root+"/frames.jsonl"
+	var header: Dictionary=metadata.duplicate(true)
+	header.merge({"schema_version":SCHEMA_VERSION,"session_id":session_id,"run_id":current_run_id,"sequence_id":current_sequence_id,"started_utc":Time.get_datetime_string_from_system(true),"capture_mode":"distinct-render-frame-png","frame_images":"cropped-world-view-resampled-nearest-to-logical-view"},true)
+	if not _write_json(current_sequence_root+"/sequence.json",header):
+		current_sequence_id="";current_sequence_root="";current_sequence_frames_path=""
+		return {"ok":false,"error":"could not write frame-sequence metadata"}
+	record_event("frame-sequence-start",{"sequence_id":current_sequence_id,"scenario_id":scenario,"blind_label":label,"relative_path":current_sequence_root.trim_prefix(session_root+"/")})
+	return {"ok":true,"sequence_id":current_sequence_id,"root":current_sequence_root}
+
+func capture_frame_sequence_frame(frame: Image,metadata: Dictionary) -> Dictionary:
+	if current_sequence_id.is_empty():return {"ok":false,"error":"no frame sequence is active"}
+	if frame==null or frame.is_empty():return {"ok":false,"error":"frame image was unavailable"}
+	sequence_frame_index+=1
+	var frame_name: String="F%06d-t%08d.png"%[sequence_frame_index,int(metadata.get("tick",0))]
+	var frame_path: String=current_sequence_root+"/"+frame_name
+	if frame.save_png(frame_path)!=OK:return {"ok":false,"error":"could not save frame-sequence PNG"}
+	var sha: String=FileAccess.get_sha256(frame_path)
+	var row: Dictionary={"schema_version":SCHEMA_VERSION,"session_id":session_id,"run_id":current_run_id,"sequence_id":current_sequence_id,"frame_index":sequence_frame_index,"utc":Time.get_datetime_string_from_system(true),"tick":int(metadata.get("tick",0)),"render_snapshot_serial":int(metadata.get("render_snapshot_serial",0)),"frame":frame_name,"sha256":sha,"camera":metadata.get("camera",{}).duplicate(true),"view":metadata.get("view",{}).duplicate(true)}
+	if not _append_jsonl(current_sequence_frames_path,row):return {"ok":false,"error":"could not append frame-sequence metadata"}
+	return {"ok":true,"frame_index":sequence_frame_index,"frame":frame_name,"sha256":sha}
+
+func finish_frame_sequence(reason: String="user") -> Dictionary:
+	if current_sequence_id.is_empty():return {"ok":false,"error":"no frame sequence is active"}
+	var sequence_id: String=current_sequence_id
+	var root: String=current_sequence_root
+	var summary: Dictionary={"schema_version":SCHEMA_VERSION,"session_id":session_id,"run_id":current_run_id,"sequence_id":sequence_id,"finished_utc":Time.get_datetime_string_from_system(true),"frame_count":sequence_frame_index,"reason":reason}
+	_write_json(root+"/finished.json",summary)
+	record_event("frame-sequence-finish",{"sequence_id":sequence_id,"frame_count":sequence_frame_index,"reason":reason,"relative_path":root.trim_prefix(session_root+"/")})
+	current_sequence_id="";current_sequence_root="";current_sequence_frames_path="";sequence_frame_index=0
+	return {"ok":true,"sequence_id":sequence_id,"root":root,"frame_count":int(summary.frame_count)}
 
 func reveal(metadata: Dictionary) -> Dictionary:
 	if session_id.is_empty():return {"ok":false,"error":"H-gate session has not started"}
