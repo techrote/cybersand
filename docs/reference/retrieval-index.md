@@ -49,7 +49,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Why #17 does not make mass8 the perceptual minimum | [Water-feel programme addendum](../operations/architecture-programme-water-feel-addendum.md), [#17 evidence](../audits/2026-09-11-issue-17-state-precision.md) |
 | What #19 delivers and how the H-ready Water Feel Lab is configured | [Experiment Tower](../operations/experiment-tower.md), [policy registration](../operations/water-feel-lab-experiment.md), [completion evidence](../audits/2026-09-12-issue-19-water-feel-lab.md) |
 | Why #18 remains held after G-P | [Water-feel programme addendum](../operations/architecture-programme-water-feel-addendum.md), [compact-motion prompt](../operations/architecture-programme-prompts/compact-motion.md) |
-| How reusable MicroScenarios fit the roadmap, chemistry testing and showcase sequence | [MicroScenarios programme](../operations/microscenarios-programme.md), [roadmap](status-and-roadmap.md) |
+| What is the actual #24/#27-#30 development order, and may MicroScenarios run before G-final? | [Canonical MicroScenarios/interactions programme](../operations/microscenarios-programme.md), [roadmap](status-and-roadmap.md) |\n| How do we tune many non-kinetic material interactions without a destructive N² matrix? | [Canonical MicroScenarios/interactions programme](../operations/microscenarios-programme.md), [transport-profile precedent](../systems/flow-transport-and-profiles.md) |
 
 ## Retrieve historical results explicitly
 
@@ -117,10 +117,14 @@ For the measured numerical recommendation, use [G-P](../operations/architecture-
 For the later interpretation that numerical divergence is not automatic gameplay rejection, and for planned mass3/5/7 plus shortened-coherence human-test preparation, use the [Water-feel addendum](../operations/architecture-programme-water-feel-addendum.md). This later planning refinement does not rewrite #17 evidence.
 
 
-## MicroScenarios programme
+## MicroScenarios and intermaterial interactions
 
-For the staged extraction of reusable scenario apparatus from #13/#19, the
-post-G-final reference pack, generated chemistry fixtures and later showcase
-order, use the [MicroScenarios programme](../operations/microscenarios-programme.md).
-It is Planned apparatus/content work and does not supersede the architecture
-programme or Current material contracts.
+For the actual dependency graph, the rule that issue numbers are not sequence,
+the exploratory-before-G-final policy, anomaly capture/reduction/triage workflow,
+and INT-000 sparse/versioned interaction model, retrieve the
+[canonical programme](../operations/microscenarios-programme.md).
+
+The architecture programme remains the separate authority for #14/#18/#20
+scientific gates. MicroScenarios can provide apparatus and later retained
+fixtures; their existence is not architecture admission evidence.
+
