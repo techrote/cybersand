@@ -4,8 +4,8 @@ document-kind: runbook
 canonical-for: [material-lab-controls, manual-material-recipes]
 status: Current
 scope: Desktop and Web manual controls, repeatable interaction observations, construction recipes, and finite-demo limits
-last-reviewed: 2026-09-08
-related-documents: [systems/materials-and-rule-kernels.md, systems/themed-construction-materials.md, systems/water-design.md, reference/configuration-reference.md, reference/level-saves-and-replay.md]
+last-reviewed: 2026-09-18
+related-documents: [systems/materials-and-rule-kernels.md, systems/themed-construction-materials.md, systems/water-design.md, reference/configuration-reference.md, reference/level-saves-and-replay.md, operations/microscenarios-programme.md]
 ---
 
 # 1024² material lab
@@ -154,3 +154,24 @@ Open the [Experiment Tower](operations/experiment-tower.md) with desktop F9 or i
 
 The [transport profile editor](systems/flow-transport-and-profiles.md) shows effective
 settings/origins, saves editable user copies and applies through an explicit restart.
+
+
+## Planned MicroScenario Materials Laboratory
+
+The current 1024² lab remains the manual Current runbook. The planned
+[MicroScenarios programme](operations/microscenarios-programme.md) does not
+replace its evidence.
+
+Issue #28 may build an **exploratory/provisional Materials Laboratory** once
+#27 provides a stable-enough common host; it does not have to wait for
+#14/G-final. A readiness checkpoint inside #28 requires one generic generated
+interaction definition to run both headlessly and interactively with the same
+setup/identity/observation contract. That checkpoint, not completion of Flood
+Control or Simulation Stress Test, unblocks #29/INT-000 implementation.
+
+INT-000 covers non-kinetic intermaterial interactions rather than chemistry
+alone. Its accepted passes preserve versioned baseline/evidence, source/sink or
+conversion accounting where applicable, and the exact kinetic/contact profile
+that determined how materials met. If later physics changes that contact regime,
+affected fixtures are re-screened instead of overwriting prior evidence.
+

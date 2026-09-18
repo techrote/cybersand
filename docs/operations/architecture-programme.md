@@ -4,8 +4,8 @@ status: Planned
 document-kind: design
 scope: Evidence gates for Cell representation, liquid state and transport, presentation, and conditional sparse motion; no production architecture selection
 canonical-for: [architecture-experimental-programme]
-last-reviewed: 2026-09-10
-related-documents: [architecture-programme-source-ledger.md, physics-characterisation.md, physics-characterisation-plan.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md]
+last-reviewed: 2026-09-18
+related-documents: [architecture-programme-source-ledger.md, physics-characterisation.md, physics-characterisation-plan.md, microscenarios-programme.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md]
 ---
 
 # CyberSand architecture experimental programme
@@ -29,6 +29,20 @@ retains mass8 and proves Water-specific delay4 equivalence for controlled downst
 budgets. Current4-byte production baseline remains pending G-final. M still needs
 a concrete measured motion-target admission; V independent; B blocked; G-final open.
 Earlier dated staged decisions below retain their original prerequisite context.
+
+## Parallel MicroScenarios apparatus lane
+
+The [MicroScenarios/intermaterial-interactions programme](microscenarios-programme.md)
+owns the programme-level order of #24/#27-#30. It may proceed in parallel with
+this architecture research: #27 does not wait for #18 or G-final, and #28 may
+build explicitly provisional exploratory scenarios before G-final.
+
+This does **not** alter any scientific gate here. #18 retains its registered
+admission/acceptance; #20 still depends on #18/G-M and its own G-B admission;
+#14/G-final retains this programme's evidence requirements. Scenario apparatus
+may later express fixtures but is never post-hoc admission evidence. If relevant
+architecture changes land, affected provisional scenario/interaction evidence is
+revalidated against its pinned source/profile identity.
 
 ## A. Current relevant architecture and accepted decisions
 

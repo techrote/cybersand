@@ -4,8 +4,8 @@ status: Current
 document-kind: guide
 scope: Required documentation synchronization, canonical ownership, retrieval corpus and evidence workflow
 canonical-for: [documentation-update-checklist, rag-schema, retrieval-policy]
-last-reviewed: 2026-09-08
-related-documents: [../reference/retrieval-index.md, ../reference/validation-evidence.md, source-checkpoint-and-recovery.md]
+last-reviewed: 2026-09-18
+related-documents: [../reference/retrieval-index.md, ../reference/validation-evidence.md, source-checkpoint-and-recovery.md, microscenarios-programme.md]
 ---
 
 # Documentation maintenance and retrieval contract
@@ -57,10 +57,13 @@ Apply this at every implementation checkpoint, including tuning-only changes.
 4. **Reconcile statuses and uncertainty.** Distinguish code from Approved intent.
    Record partial enforcement, failures, missing tests and decisions precisely.
    An observed defect must not become a promised invariant by omission.
-5. **Synchronize routes.** Update the manifest, retrieval question destinations,
-   documentation/retrieval indexes and roadmap. Update the handover for operational
-   changes and owner-intent reference for new preferences. Preserve old anchors
-   that still have useful incoming links or update every caller.
+5. **Synchronize routes and execution order.** Update the manifest, retrieval
+   question destinations, documentation/retrieval indexes and roadmap. Update the
+   handover for operational changes and owner-intent reference for new preferences.
+   When a dependency/order/scope decision changes, update its canonical programme
+   graph and all affected GitHub issue mirrors/comments in the same checkpoint;
+   issue numbers and creation dates are never an ordering authority. Preserve old
+   anchors that still have useful incoming links or update every caller.
 6. **Record evidence separately.** Include date, command, timeout, OS/architecture,
    tool/dependency versions, fixture/configuration/profile/worker count, source
    revision plus dirty-file identity, artifact hashes and actual outcome. Identify

@@ -4,8 +4,8 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-09-12
-related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md]
+last-reviewed: 2026-09-18
+related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md]
 ---
 
 # CyberSand documentation
@@ -14,7 +14,7 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 | Need | Start here |
 |---|---|
-| Begin development | [Handover](operations/cybersand-codex-development-handover.md), [actual source identity](operations/source-checkpoint-and-recovery.md), [roadmap](reference/status-and-roadmap.md) |
+| Begin development | [Handover](operations/cybersand-codex-development-handover.md), [actual source identity](operations/source-checkpoint-and-recovery.md), [roadmap](reference/status-and-roadmap.md) |\n| Choose current MicroScenarios / interaction work order | [Canonical programme graph](operations/microscenarios-programme.md), then the target issue and its named dependencies; issue numbers are not sequence |
 | Understand the engine | [Architecture overview](architecture/overview.md), then its focused ownership/threading/coupling links |
 | Answer one technical question | [Retrieval index](reference/retrieval-index.md) |
 | Change a material | [Rule kernels](systems/materials-and-rule-kernels.md), [Water](systems/water-design.md), [material lab](MATERIAL_LAB.md) |
@@ -120,3 +120,23 @@ Water and Cell controls remain unchanged pending programme gates.
 [Completed precision results](audits/2026-09-11-issue-17-state-precision.md) and
 [staged G-P](operations/architecture-programme.md#g-p-staged-decision-2026-09-11)
 retain mass8, establish Water-only delay4, and keep downstream feature gates intact.
+
+
+## MicroScenarios and intermaterial interactions
+
+The [canonical programme](operations/microscenarios-programme.md) owns the
+programme-level dependency graph for #24/#27-#30 and their links to
+#18/#20/#26/#14. **Issue numbers are identifiers, not execution order.**
+
+MicroScenarios are now an active exploratory apparatus rather than a purely
+post-G-final showcase phase. #27 can proceed once the Tower/launcher hygiene is
+present, independently of #18 completion; #28 may build provisional exploratory
+worlds on the common host before G-final and revalidate them after relevant
+architecture/physics changes.
+
+#29 is **INT-000**, covering versioned non-kinetic intermaterial interactions
+rather than chemistry alone. Its authoring model is sparse/layered with generated
+fixtures and retained tuning-pass provenance. Kinetic/contact anomalies discovered
+in MicroScenarios are captured/reduced and routed to their real physics owner
+instead of being hidden in interaction rules.
+

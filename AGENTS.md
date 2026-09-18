@@ -7,6 +7,18 @@ remotes, dependency pins and required LFS state. The companion workspace reposit
 is separate from this source repository; [identity](docs/operations/source-checkpoint-and-recovery.md)
 explains the established checkpoints. Preserve unrelated work.
 
+## Development-order safety
+
+GitHub issue numbers are identifiers, **not a serial execution order**. Before
+selecting work in or adjacent to #24/#27-#30, read the canonical
+[MicroScenarios and intermaterial-interactions programme](docs/operations/microscenarios-programme.md)
+as well as the roadmap. It owns that programme's dependency graph; the
+[architecture programme](docs/operations/architecture-programme.md) separately
+owns the scientific gates/semantics of #14/#18/#20. Do not reconstruct order from
+issue numbers, creation dates or stale issue comments. If an issue mirror conflicts
+with either canonical programme, reconcile the planning documents and issue text
+before changing implementation.
+
 Source defines Current behavior; Approved requirements may be partly implemented.
 Use Current, Approved, Planned, Deferred and Rejected claim by claim. Frontmatter
 `Approved design` is the checker-compatible alias; `Ambiguous` means unresolved.

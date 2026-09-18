@@ -4,8 +4,8 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-09-12
-related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md]
+last-reviewed: 2026-09-18
+related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md]
 ---
 
 # Status and foundational roadmap
@@ -198,3 +198,42 @@ current 0..12 coherence semantics. That result is **not retracted** by the later
 Water-feel refinement. Instead, #19/H-preparation uses it as the quantitative oracle
 against which runtime mass4/6/8 controls are checked before novel mass3/5/7 and
 shortened-coherence candidates are offered for human testing. No production migration.
+
+
+## MicroScenarios and intermaterial-interaction programme
+
+**Planned/active apparatus, revised 2026-09-18:** the
+[canonical programme graph](../operations/microscenarios-programme.md) is the
+ordering authority for #24/#27-#30. GitHub issue numbers are identifiers, not a
+serial path.
+
+#27/MS-000 no longer waits for #18 or G-final. Once the #24 launcher/input fix is
+present (including as an isolated prerequisite on the working branch), #27 may
+extract the deterministic common scenario host from #13/#19. It remains
+apparatus-only and cannot alter #18 compact-motion admission, #20 G-B admission,
+#26 Water evidence or #14 architecture semantics.
+
+#28/MS-001 may then build **exploratory/provisional** Materials Laboratory,
+Flood-Control Puzzle and Simulation Stress Test scenarios before G-final. Their
+purpose includes organically discovering unknown edge cases. The Materials
+Laboratory has an explicit readiness checkpoint that can unblock #29 while the
+other two scenarios continue; all affected provisional scenarios are versioned
+and revalidated after relevant physics/architecture changes rather than being
+silently relabelled as accepted evidence.
+
+#29 is **INT-000: intermaterial interactions**, not a chemistry-only campaign. It
+covers non-kinetic material/material semantics such as reaction, combustion,
+thermal/phase consequences, dissolution/corrosion, curing, electrical and other
+state conversions/products. Kinetic movement/support/bridging/erosion/collision
+remain owned by existing physics systems. INT-000 planning/inventory may begin
+early; implementation uses the stable #27 fixture contract plus the #28 Materials
+Laboratory readiness checkpoint. Each accepted tuning pass pins the relevant
+source/contact/transport baseline and retains prior evidence, so later physics
+changes trigger targeted re-screening rather than a destructive global retune.
+
+The discovery workflow is: explore a scenario -> capture an anomaly with exact
+identities -> reduce it -> triage ownership -> bounded fix/tuning -> retained
+regression -> return to the larger world. #30 tracks this programme; it is not
+itself an execution prerequisite. #18/#20/#14 retain their independent gates in
+the architecture programme.
+

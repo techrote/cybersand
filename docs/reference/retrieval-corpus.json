@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-09-12",
+  "reviewed": "2026-09-18",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -57,6 +57,7 @@
     "systems/water-design.md",
     "systems/world-storage-and-interest-region.md",
     "operations/experiment-tower.md",
+    "operations/microscenarios-programme.md",
     "operations/water-feel-lab-experiment.md",
     "systems/flow-transport-and-profiles.md",
     "operations/architecture-programme.md",
@@ -207,6 +208,10 @@
     {
       "path": "operations/architecture-programme-prompts/state-precision.md",
       "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "audits/2026-09-18-microscenarios-interactions-programme.md",
+      "reason": "Dated planning/RAG reconciliation record; retrieve explicitly for the 2026-09-18 MicroScenarios sequencing decision, not as a default Current runtime contract"
     }
   ]
 }
