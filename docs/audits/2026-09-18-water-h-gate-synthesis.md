@@ -2,7 +2,7 @@
 title: Water H-gate synthesis — bulk flow, precision and presentation
 status: Current
 document-kind: evidence
-scope: Human Water Feel evidence from shallow-pool, irregular-bed, corrected steps, constriction, connected-pools, fast-dump, u-vessel and long-tail-settling; programme disposition for #18/#26
+scope: Human Water Feel evidence from shallow-pool, irregular-bed, corrected steps, constriction, connected-pools, fast-dump, u-vessel, long-tail-settling and direction-horizontal; programme disposition for #18/#26
 canonical-for: [water-h-gate-2026-09-18]
 last-reviewed: 2026-09-18
 related-documents: [2026-09-12-issue-19-water-feel-lab.md, ../operations/water-feel-lab-experiment.md, ../operations/architecture-programme-water-feel-addendum.md, ../systems/water-design.md, ../systems/material-appearance-and-rendering.md]
@@ -64,6 +64,7 @@ hundreds of MiB; their names, sizes and SHA-256 identities are retained in
 | fast-dump | Reveal A=3, B=5, C=8. Formal archive contains B Marginal/rank2 and C Reject/rank3; no canonical A observation capture, so do not invent a complete ranking. Owner annotations identify impossible wall-gap/contact loss, unacceptable mid-surface terraces, and occasional “tumbling” edge randomness; a supplied mockup shows the desired smoother coherent draining profile. | Structural evidence, not a complete formal rank set. The tumbling instability is potentially useful inspiration, not accepted behavior. |
 | u-vessel | Reveal A=3, B=5, C=8. mass3 Marginal/rank2: multiple tiny lumps; mass5 Marginal/rank2: serrated areas; mass8 Acceptable/rank1: only four tiny raised lumps at the left edge. | Useful settled-surface/quantization evidence, **not** a hydrostatic head test: the registered recipe is a single uniformly filled U-shaped tank and never creates unequal communicating columns. |
 | long-tail-settling | Reveal A=3, B=5, C=8. mass3 Anomaly/rank3: the three leftmost droplets are missing completely; mass5 Marginal/rank2: all droplets survive but some puddles look odd; mass8 Good/rank1: larger droplets combine into a convincing puddle. | Strong tiny-quantity representability evidence. The recipe’s first droplets are normalized masses 8/12/16, which quantize to zero at 3-bit under the registered half-up rule. This is authoritative mass loss at initial quantization, not a rendering defect. |
+| direction-horizontal | Current archive is still label-blind: C Good/rank1, B Good/rank2, A Reject/rank3. C was perceived to continue sideways flow longer; A retained excessive height differential and “doesn’t really flow”. | Useful #18-adjacent evidence, but do not bind labels to mass widths before reveal. Existing fixture is a horizontal strip plus same-row fill, not a true injected-velocity oracle. |
 
 ## U-vessel fixture correction
 
