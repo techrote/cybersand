@@ -64,7 +64,7 @@ hundreds of MiB; their names, sizes and SHA-256 identities are retained in
 | fast-dump | Reveal A=3, B=5, C=8. Formal archive contains B Marginal/rank2 and C Reject/rank3; no canonical A observation capture, so do not invent a complete ranking. Owner annotations identify impossible wall-gap/contact loss, unacceptable mid-surface terraces, and occasional “tumbling” edge randomness; a supplied mockup shows the desired smoother coherent draining profile. | Structural evidence, not a complete formal rank set. The tumbling instability is potentially useful inspiration, not accepted behavior. |
 | u-vessel | Reveal A=3, B=5, C=8. mass3 Marginal/rank2: multiple tiny lumps; mass5 Marginal/rank2: serrated areas; mass8 Acceptable/rank1: only four tiny raised lumps at the left edge. | Useful settled-surface/quantization evidence, **not** a hydrostatic head test: the registered recipe is a single uniformly filled U-shaped tank and never creates unequal communicating columns. |
 | long-tail-settling | Reveal A=3, B=5, C=8. mass3 Anomaly/rank3: the three leftmost droplets are missing completely; mass5 Marginal/rank2: all droplets survive but some puddles look odd; mass8 Good/rank1: larger droplets combine into a convincing puddle. | Strong tiny-quantity representability evidence. The recipe’s first droplets are normalized masses 8/12/16, which quantize to zero at 3-bit under the registered half-up rule. This is authoritative mass loss at initial quantization, not a rendering defect. |
-| direction-horizontal | Current archive is still label-blind: C Good/rank1, B Good/rank2, A Reject/rank3. C was perceived to continue sideways flow longer; A retained excessive height differential and “doesn’t really flow”. | Useful #18-adjacent evidence, but do not bind labels to mass widths before reveal. Existing fixture is a horizontal strip plus same-row fill, not a true injected-velocity oracle. |
+| direction-horizontal | Reveal A=3, B=5, C=8. mass3 Reject/rank3: excessive height differential remains and it “doesn’t really flow”; mass5 Good/rank2; mass8 Good/rank1, with the observer noting C continues sideways flow after B has largely stopped. | Strong precision-dependent lateral-leveling evidence and useful #18-adjacent context. Existing fixture is still a horizontal strip plus same-row fill, not a clean injected-velocity/history oracle, so it does not by itself admit compact flow memory. |
 
 ## U-vessel fixture correction
 
@@ -213,6 +213,24 @@ replace sluggishness with crawling, oscillation or excessive over-fluidity.
 
 After a bounded candidate passes the automated screen, re-run a small H set rather
 than repeating the full campaign.
+
+## Direction-horizontal result and #18 boundary
+
+The revealed direction-horizontal ordering is mass8 > mass5 >> mass3. The observer
+could not reliably separate mass5 from mass8 early, but later reported that the
+mass8 arm continued to move sideways after mass5 had largely stopped. mass3 retained
+too much height difference and was judged not to flow convincingly.
+
+This matters, but it is not yet the requested clean #18 target. The registered
+fixture begins as a horizontally extended Water strip and applies a same-row fill
+event; it does not inject a controlled horizontal velocity/history state. Therefore
+the result can be explained by precision-dependent lateral equalization and the
+known #26 leveling deficit without proving that Water needs remembered direction.
+
+Use this as the pre-#26 baseline. After a head/leveling candidate passes #26,
+repeat the horizontal/diagonal motion references. Only a residual directional
+persistence failure after leveling is repaired should admit the compact-history
+experiment.
 
 ## #18 disposition — explicitly remain open
 
