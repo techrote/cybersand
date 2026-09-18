@@ -4,8 +4,8 @@ status: Current
 document-kind: design
 scope: Post-G-P refinement of #19/#18 ordering and evaluation authority; supplements rather than rewrites completed C/L/P evidence
 canonical-for: [architecture-experimental-programme-water-feel-refinement]
-last-reviewed: 2026-09-12
-related-documents: [architecture-programme.md, architecture-programme-prompts/fractional-presentation.md, water-feel-lab-experiment.md, state-precision-experiment.md, experiment-tower.md, ../audits/2026-09-11-issue-17-state-precision.md, ../audits/2026-09-12-issue-19-water-feel-lab.md]
+last-reviewed: 2026-09-18
+related-documents: [architecture-programme.md, architecture-programme-prompts/fractional-presentation.md, water-feel-lab-experiment.md, state-precision-experiment.md, experiment-tower.md, ../audits/2026-09-11-issue-17-state-precision.md, ../audits/2026-09-12-issue-19-water-feel-lab.md, ../audits/2026-09-18-water-h-gate-synthesis.md]
 ---
 
 # Post-G-P Water feel refinement
@@ -14,10 +14,24 @@ related-documents: [architecture-programme.md, architecture-programme-prompts/fr
 
 This dated addendum records an owner-led refinement after completed G-C, G-L and G-P. It **does not alter the measurements or scientific conclusions of #15–#17** and does not authorize a production migration.
 
-**Current checkpoint, 2026-09-12:** #19 V1/V2 are complete and the Water Feel
-Lab is H-ready under the [dated acceptance record](../audits/2026-09-12-issue-19-water-feel-lab.md).
-The later human H gate has not run. Accordingly #18 remains open and held, #20
-remains downstream and G-final remains open.
+**Current checkpoint, 2026-09-18:** #19 V1/V2 are complete and the Water Feel
+Lab has now been used for the human H campaign. The
+[H synthesis](../audits/2026-09-18-water-h-gate-synthesis.md) is the current
+programme-level Water-feel evidence record.
+
+H does **not** select a production mass width. It finds a higher-priority bulk
+Water defect: deep/extended Water levels and redistributes too slowly, with
+persistent slopes, terraces and local surface humps. #26 owns the next bounded
+head/leveling characterization. mass8 remains the numerical/control oracle;
+mass3 is strongly disfavored where tiny droplets matter because registered small
+quantities can quantize to zero. Presentation reconstruction remains a separate
+later layer.
+
+#18 remains open and held. The horizontal/diagonal H references show
+precision-dependent lateral behavior, but they do not cleanly isolate remembered
+direction from the #26 leveling deficit. Re-run those references after #26 before
+admitting compact history or recording an H-backed no-go. #20 remains downstream
+and G-final remains open.
 
 Completed #17 remains the numerical precision oracle:
 
@@ -42,6 +56,26 @@ The intended partial-fill renderer exposes a small number of visible fill levels
 
 #17's lower-precision differences are now interpreted as a map of behavioral changes that later human testing must judge, not as automatic perceptual rejection.
 
+## Post-H authority split
+
+The H campaign sharpens the authority layers rather than collapsing them:
+
+- **bulk simulation authority:** discharge, level equalization, time-to-flat,
+  exact Water quantity and persistent authoritative surface defects belong to
+  simulation/#26;
+- **surface simulation authority:** hillnipple amplitude/lifetime, terrace
+  severity/shimmer and wall-contact gaps must be measured from authoritative
+  mass/state before presentation;
+- **presentation authority:** rendered contour reconstruction, temporal flicker,
+  contact shaping and cosmetic breakup are evaluated separately against the same
+  tick-indexed authoritative frames;
+- **human authority:** the owner judges material feel and positive-control
+  liveliness after hard invariants and descriptive metrics are visible.
+
+A shader may repair a presentation-only defect. It cannot be credited with fixing
+a persistent authoritative mound, terrace, contact gap, incorrect discharge or
+Water quantity that quantized to zero.
+
 ## Revised sequencing
 
 Current programme ordering for the affected work is:
@@ -56,15 +90,21 @@ completed C/L/P evidence (#15/#16/#17)
 #19 V2: build verified Water Feel Lab + runtime semantic policies
                  |
                  v
-later H gate: blinded human-led material-feel assessment
+H gate: blinded human-led material-feel assessment — COMPLETE for baseline characterization
                  |
         +--------+--------+
         |                 |
         v                 v
-accepted candidate   named unmet perceptual/motion target
+no mass-width choice  named bulk head/leveling target (#26)
 state budgets              |
         |                  v
-        +------------> #18 M admission or no-go
+        +------------> #26 bounded leveling work
+                           |
+                           v
+                    repeat direction refs
+                           |
+                           v
+                    #18 M admission or no-go
                            |
                            v
                     #20 B only if a distinct
@@ -130,11 +170,24 @@ Human judgments should use blinded A/B/C labels where practical and identical de
 
 ## Implications for #18
 
-#18 should consume a **named perceptual deficit**, not technical novelty alone. For example, a later H result might establish that an otherwise preferred low-state candidate loses horizontal emission coherence too rapidly. #18 can then measure whether compact material-local history fixes that specific problem at acceptable cost.
+The H campaign has now run, but its strongest result is **not** a clean
+directional-memory target. The dominant problem is slow head/leveling response
+tracked by #26. Horizontal and diagonal references show precision-dependent
+lateral persistence, yet their fixtures can still be explained by local
+equalization/quantization rather than remembered momentum.
 
-If H establishes no worthwhile motion deficit, #18 should record no-go rather than implementing history by programme momentum.
+Therefore #18 remains open and held:
 
-Any bits apparently freed by a human-selected semantic budget are only **available candidate capacity**. They are not allocated to direction/strength/age until #18 proves those semantics useful.
+1. characterize and, if justified, repair #26 first;
+2. repeat horizontal/diagonal references and add a true controlled directional
+   injection fixture if necessary;
+3. admit compact material-local history only if a residual useful
+   directional-persistence deficit remains;
+4. otherwise record an H-backed no-go.
+
+Any bits apparently freed by a later accepted semantic budget are only
+**available candidate capacity**. They are not allocated to direction/strength/age
+until #18 proves those semantics useful.
 
 ## Implications for G-final
 
