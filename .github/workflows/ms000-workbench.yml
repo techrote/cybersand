@@ -6,24 +6,28 @@ on:
 permissions:
   contents: read
 jobs:
-  source:
+  toolkit:
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          fetch-depth: 0
+          lfs: true
           persist-credentials: false
-      - name: Export source history without credentials or LFS binaries
+      - name: Collect exact pinned Godot and retained Linux runtime
         run: |
-          git bundle create "$RUNNER_TEMP/ms000-source.bundle" HEAD
-          git bundle verify "$RUNNER_TEMP/ms000-source.bundle"
-          sha256sum "$RUNNER_TEMP/ms000-source.bundle" > "$RUNNER_TEMP/ms000-source.sha256"
+          mkdir -p "$RUNNER_TEMP/toolkit/engine" "$RUNNER_TEMP/toolkit/project"
+          curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          echo '0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  '"$RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/toolkit/engine"
+          find godot/addons -type f -name '*.so' -exec cp --parents '{}' "$RUNNER_TEMP/toolkit/project/" \;
+          git rev-parse HEAD > "$RUNNER_TEMP/toolkit/source.txt"
+          cd "$RUNNER_TEMP/toolkit"
+          find engine project -type f -exec sha256sum '{}' \; > SHA256SUMS
+          tar -czf "$RUNNER_TEMP/ms000-toolkit.tar.gz" engine project source.txt SHA256SUMS
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: ms000-source-${{ github.sha }}
-          path: |
-            ${{ runner.temp }}/ms000-source.bundle
-            ${{ runner.temp }}/ms000-source.sha256
+          name: ms000-toolkit-${{ github.sha }}
+          path: ${{ runner.temp }}/ms000-toolkit.tar.gz
           if-no-files-found: error
           retention-days: 3
