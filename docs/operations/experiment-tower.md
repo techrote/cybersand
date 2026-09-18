@@ -166,10 +166,18 @@ for exact artifacts, failures, platform results and limitations.
 Issue #27/MS-000 will generalize this Tower and the Water Feel Lab into the
 [MicroScenarios framework](microscenarios-programme.md). The extraction is an
 apparatus refactor: existing Tower recipes, ownership, reset behavior, profile
-application, Water blind/export controls and chemistry-is-unchanged boundary
-remain authoritative controls.
+application, Water blind/export controls and chemistry-is-unchanged historical
+boundaries remain authoritative controls.
 
-The known root Tower Space/focus defect remains owned by #24 and should be
-resolved before the common launcher is considered complete. #27 must demonstrate
-observer-off neutrality and source-matched behavior rather than using the
-refactor to change physics.
+#27 no longer waits for #18 or #14/G-final. The practical prerequisite is that the
+#24 root Tower Space/focus defect is resolved in the working base (or taken as an
+isolated prerequisite immediately before the extraction) so the common launcher
+does not inherit a known movement/reset conflict. #18/#20 architecture gates
+remain independent and cannot be satisfied by scenario refactoring.
+
+The common host is intentionally useful while physics remains imperfect. Larger
+exploratory scenarios may expose unknown edge cases; capture/reduce them to
+versioned fixtures, triage them to kinetic/contact, intermaterial, state/phase or
+cross-system ownership, then retain regressions after bounded fixes. #27 itself
+must still demonstrate observer-off neutrality and source-matched behavior.
+
