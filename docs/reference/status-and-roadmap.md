@@ -200,27 +200,40 @@ against which runtime mass4/6/8 controls are checked before novel mass3/5/7 and
 shortened-coherence candidates are offered for human testing. No production migration.
 
 
-## MicroScenarios programme
+## MicroScenarios and intermaterial-interaction programme
 
-**Planned, 2026-09-18:** [MicroScenarios](../operations/microscenarios-programme.md)
-formalize the reusable scenario apparatus already demonstrated by #13 Experiment
-Tower and #19 Water Feel Lab. Tracking issue #30 owns the staged roadmap.
+**Planned/active apparatus, revised 2026-09-18:** the
+[canonical programme graph](../operations/microscenarios-programme.md) is the
+ordering authority for #24/#27-#30. GitHub issue numbers are identifiers, not a
+serial path.
 
-The insertion is deliberately non-disruptive: finish #18 under its existing
-contract, resolve #24 Tower input hygiene, then #27 extracts an apparatus-only
-deterministic scenario harness. #20 retains its independent G-B admission and may
-consume the generic fixture machinery; #26 may adopt the harness where doing so
-does not invalidate source-matched evidence. #14/G-final remains the architecture
-decision gate.
+#27/MS-000 no longer waits for #18 or G-final. Once the #24 launcher/input fix is
+present (including as an isolated prerequisite on the working branch), #27 may
+extract the deterministic common scenario host from #13/#19. It remains
+apparatus-only and cannot alter #18 compact-motion admission, #20 G-B admission,
+#26 Water evidence or #14 architecture semantics.
 
-After G-final, #28 proves the framework with **Materials Laboratory**,
-**Flood-Control Puzzle** and **Simulation Stress Test**. #29 then uses generated
-MicroScenario fixtures as the chemistry interaction-test substrate, with sparse
-directed/symmetric interaction ownership, versioned tuning passes and retained
-source/sink evidence rather than a mutable dense pair matrix.
+#28/MS-001 may then build **exploratory/provisional** Materials Laboratory,
+Flood-Control Puzzle and Simulation Stress Test scenarios before G-final. Their
+purpose includes organically discovering unknown edge cases. The Materials
+Laboratory has an explicit readiness checkpoint that can unblock #29 while the
+other two scenarios continue; all affected provisional scenarios are versioned
+and revalidated after relevant physics/architecture changes rather than being
+silently relabelled as accepted evidence.
 
-Later showcase concepts remain staged roadmap items rather than prematurely
-created issues: Destructible Shooting Range, Mining / Excavation Toy,
-Sewer / Drainage Sandbox, Environmental Puzzle Room, Breach-and-Extract,
-Utility-Tunnel Incident and Industrial Accident. Scenario scripts must not
-replace or smuggle in material physics.
+#29 is **INT-000: intermaterial interactions**, not a chemistry-only campaign. It
+covers non-kinetic material/material semantics such as reaction, combustion,
+thermal/phase consequences, dissolution/corrosion, curing, electrical and other
+state conversions/products. Kinetic movement/support/bridging/erosion/collision
+remain owned by existing physics systems. INT-000 planning/inventory may begin
+early; implementation uses the stable #27 fixture contract plus the #28 Materials
+Laboratory readiness checkpoint. Each accepted tuning pass pins the relevant
+source/contact/transport baseline and retains prior evidence, so later physics
+changes trigger targeted re-screening rather than a destructive global retune.
+
+The discovery workflow is: explore a scenario -> capture an anomaly with exact
+identities -> reduce it -> triage ownership -> bounded fix/tuning -> retained
+regression -> return to the larger world. #30 tracks this programme; it is not
+itself an execution prerequisite. #18/#20/#14 retain their independent gates in
+the architecture programme.
+
