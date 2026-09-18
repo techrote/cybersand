@@ -44,6 +44,13 @@
       "scenario": "fast-dump",
       "bytes": 185335246,
       "sha256": "b6304682e8318207f503f82ffd25573e448fbfd6e30085c15162bd51f08fb924"
+    },
+    {
+      "file": "H-20260918-215639-312864.zip",
+      "session_id": "H-20260918-215639-312864",
+      "scenario": "u-vessel",
+      "bytes": 2355974,
+      "sha256": "fc34e5ec6c7ecf500253cd4bd1fff882fa775d224f73607d73120f16fdbae121"
     }
   ],
   "formal_observations": [
@@ -186,6 +193,36 @@
       "judgement": "Reject",
       "tick": 471,
       "note": ""
+    },
+    {
+      "scenario": "u-vessel",
+      "label": "A",
+      "mass_bits": 3,
+      "coherence_ticks": 12,
+      "rank": 2,
+      "judgement": "Marginal",
+      "tick": 482,
+      "note": "four sets of four to six tiny lumps, spread relatively evenly"
+    },
+    {
+      "scenario": "u-vessel",
+      "label": "B",
+      "mass_bits": 5,
+      "coherence_ticks": 12,
+      "rank": 2,
+      "judgement": "Marginal",
+      "tick": 25,
+      "note": "a few \"serrated\" areas"
+    },
+    {
+      "scenario": "u-vessel",
+      "label": "C",
+      "mass_bits": 8,
+      "coherence_ticks": 12,
+      "rank": 1,
+      "judgement": "Acceptable",
+      "tick": 25,
+      "note": "four tiny raised lumps at left edge"
     }
   ],
   "qualitative_only": [
@@ -322,6 +359,26 @@
         "approx_sim_hz": 59.99,
         "estimated_missing_render_serials": 1114
       }
+    },
+    "u-vessel": {
+      "fixture_limitation": "The registered recipe is a single U-shaped tank filled uniformly from x112..365 at y202..247. It does not create unequal communicating columns or a hydrostatic head difference, so this H run is a settled-surface stability/quantization test rather than the intended differential-head leveling test.",
+      "sequences": {
+        "S002-A": {
+          "frames": 8,
+          "recorded_reset_boundary": true,
+          "tick_after_reset_end": 11
+        },
+        "S003-B": {
+          "frames": 11,
+          "recorded_reset_boundary": true,
+          "tick_after_reset_end": 20
+        },
+        "S004-C": {
+          "frames": 38,
+          "recorded_reset_boundary": true,
+          "tick_after_reset_end": 89
+        }
+      }
     }
   },
   "reveal_mappings": {
@@ -394,12 +451,27 @@
         "mass_bits": 8,
         "coherence_ticks": 12
       }
+    },
+    "u-vessel": {
+      "A": {
+        "mass_bits": 3,
+        "coherence_ticks": 12
+      },
+      "B": {
+        "mass_bits": 5,
+        "coherence_ticks": 12
+      },
+      "C": {
+        "mass_bits": 8,
+        "coherence_ticks": 12
+      }
     }
   },
   "programme_disposition": {
     "mass_bits": "No production selection. Retain mass8 as numerical/control oracle; retest practical widths after bulk-flow and presentation repairs.",
     "issue_26": "Proceed with automated head/depth response and bounded leveling characterization before semantic candidate integration.",
     "issue_18": "Remain open. Do not close or admit compact directional history until the residual directional-memory deficit is isolated after #26.",
-    "presentation": "Required later layer; may hide visual quantization but must not substitute for correct authoritative bulk flow."
+    "presentation": "Required later layer; may hide visual quantization but must not substitute for correct authoritative bulk flow.",
+    "u_vessel_fixture": "Do not use the current u-vessel H recipe as evidence for communicating-column/head equalization. Replace/add an automated unequal-head U-tube fixture under #26; retain this run as settled-surface evidence."
   }
 }
