@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-09-18
+last-reviewed: 2026-09-19
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md]
 ---
 
@@ -237,3 +237,12 @@ regression -> return to the larger world. #30 tracks this programme; it is not
 itself an execution prerequisite. #18/#20/#14 retain their independent gates in
 the architecture programme.
 
+## MS-000 common harness checkpoint
+
+**Current implementation, 2026-09-19:** the [MicroScenario contract](../operations/micro-scenario-harness.md)
+extracts setup/events/observations under the existing owners, with common
+Play/Inspect/Benchmark controls and a standalone Water proving fixture. #24's
+launcher no-focus prerequisite is included. See the [dated evidence and platform
+gaps](../audits/2026-09-19-ms000-harness.md), not historical #19 results, for current
+acceptance scope. #28 exploratory authoring is enabled on this contract;
+#29 still requires Materials Laboratory readiness. Scientific gates are unchanged.

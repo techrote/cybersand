@@ -234,3 +234,13 @@ lateral Water mass transport drive bounded optional mixing and grain pickup;
 horizontal sampling and cadence are separate fixed experiments.
 Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
 are unchanged. No unsynchronized live descriptor mutation is introduced.
+
+## MS-000 scenario-owner interface
+
+The [MicroScenario contract](../operations/micro-scenario-harness.md) owns the
+validated JSON schema and bounded `reset`, due-event, summary and capture API.
+Desktop `micro_reset` / `micro_capture` requests use the existing owner mailbox
+and request-ID acknowledgements in immutable `lab_context` snapshots; Web invokes
+the same host on its main-thread owner. Failed-world acknowledgements contain only
+diagnostic metadata, retaining the prior valid physical publication. No native ABI,
+cell layout, script callback or mutable World pointer is added to the public scenario data.

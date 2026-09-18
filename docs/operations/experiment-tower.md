@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Shared five-floor recipe, exclusive owner controls, issue 13 transport evidence and current issue 19 Water Feel Lab annex
 canonical-for: [experiment-tower, transport-comparison-procedure]
-last-reviewed: 2026-09-18
+last-reviewed: 2026-09-19
 related-documents: [physics-characterisation.md, water-feel-lab-experiment.md, architecture-programme-water-feel-addendum.md, architecture-programme-prompts/fractional-presentation.md, microscenarios-programme.md, ../systems/granular-interaction-policy.md, ../audits/2026-09-09-issue-13-transport.md, ../audits/2026-09-12-issue-19-water-feel-lab.md]
 ---
 
@@ -181,3 +181,11 @@ versioned fixtures, triage them to kinetic/contact, intermaterial, state/phase o
 cross-system ownership, then retain regressions after bounded fixes. #27 itself
 must still demonstrate observer-off neutrality and source-matched behavior.
 
+## Shared MicroScenario host
+
+**Current, 2026-09-19:** Tower and Water setup/event handling now use the
+[MS-000 host](micro-scenario-harness.md). The original recipe versions, Water
+catalogue hash, floor/release controls, transactional Water apply and blind/reveal
+workflow remain their compatibility contracts. New schema hashes are separate
+metadata. The extra communicating-reservoir fixture is not a replacement for a
+registered #19/#26 experiment. See [extraction evidence](../audits/2026-09-19-ms000-harness.md).

@@ -157,3 +157,12 @@ lateral Water mass transport drive bounded optional mixing and grain pickup;
 horizontal sampling and cadence are separate fixed experiments.
 Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
 are unchanged. No unsynchronized live descriptor mutation is introduced.
+
+## MicroScenario apparatus ownership
+
+The [MS-000 host](../operations/micro-scenario-harness.md) is an owner-local
+RefCounted helper, not another owner or worker pool. The UI submits copied,
+validated definitions; the native bridge builds and swaps candidates at the
+existing boundary. Scene bodies stay in the main-thread Rapier bridge. Snapshot
+copies expose summaries/captures, not live host dictionaries. Diagnostic capture
+while quarantined never publishes partial physical results or retries a failed tick.

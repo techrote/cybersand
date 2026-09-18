@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "base_commit": "781a2d7cb5d5a66bf1cff8fc6654e0ab708e419c",
+  "local_prerequisite_commit": "b64fd4f",
+  "platform": "Linux x86_64 Godot 4.7 native",
+  "files": {
+    "godot/scenarios/communicating-reservoirs-v1.json": "a1a2db4b4062b4855b8b38863e43c7180accf8b9debd3c819ef03dab02936a4a",
+    "godot/scripts/main.gd": "ec484b02260472bd3a26a2315ebf00181fba9edf472a2603cbb78ce349d8403f",
+    "godot/scripts/micro_scenario_catalogue.gd": "981ba82a0b8535bf3e201ab2a0e74e1e45ea529113e90ec5913b87eba4592bf1",
+    "godot/scripts/micro_scenario_contract.gd": "669c31ef9b6a81b1442aa9f5ba1c0a924071a9b68b514d695fb332ec605fa04a",
+    "godot/scripts/micro_scenario_host.gd": "04b4d0bf2e63d1ac18de095fd97e7e2a12e642dbfaa9e988ee94b22435a58154",
+    "godot/scripts/micro_scenario_panel.gd": "1f922ce32ea699b3069c1f63724f9f52ac27bcfc638b60b52bc2a03bd8957252",
+    "godot/scripts/simulation_worker.gd": "0d62ee071baed8566b485171ad386147a9272487c4b692084af90af2bce18487",
+    "godot/scripts/web_demo_controller.gd": "0ba125e24ed5a10bb67c2026cdecded60d924f3ca6ba639de2ee483655042fe7",
+    "godot/tests/test_micro_scenario_contract.gd": "df93a679a0aeeb75ad17d04d4ab0a8511f438bc5f6c2de6f8985c199d399c12e",
+    "godot/tests/test_micro_scenario_controllers.gd": "dc8951de109daf9f91ac7bb5818ba6bd1584f697fbc77e141c0584998d7047e4",
+    "godot/tests/test_micro_scenario_runtime.gd": "14879591a32b396f4829d00e8c0ea599d71c7fe1702a0258571acadf96243073",
+    "godot/tests/test_tower_launcher.gd": "d2eafab92465f758c53bc0032a7303b9402dfaf378038024798c2318170395b5",
+    "godot/tools/micro_scenario_benchmark.gd": "3fe4f5eacaf62c09a1293cc0212888a7f07147078a5bf985ab96970c07659c83"
+  }
+}

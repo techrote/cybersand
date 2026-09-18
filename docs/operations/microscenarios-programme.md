@@ -4,7 +4,7 @@ status: Planned
 document-kind: design
 scope: Canonical development-order graph for reusable exploratory MicroScenarios, anomaly triage, non-kinetic intermaterial-interaction authoring/tuning, and staged showcase work
 canonical-for: [microscenarios-programme, microscenarios-development-order, intermaterial-interaction-programme]
-last-reviewed: 2026-09-18
+last-reviewed: 2026-09-19
 related-documents: [experiment-tower.md, architecture-programme.md, ../reference/status-and-roadmap.md, ../reference/product-intent-and-priorities.md, ../MATERIAL_LAB.md, ../systems/flow-transport-and-profiles.md]
 ---
 
@@ -472,3 +472,17 @@ work.
 
 None of those completions by itself approves a Cell layout, motion
 representation, reaction retune, kinetic-physics change or replay contract.
+
+## MS-000 implementation checkpoint, 2026-09-19
+
+**Current implementation:** [MS-000 contract and runbook](micro-scenario-harness.md)
+provides the bounded host, common launcher and declarative fixture path. It adapts
+Tower plus all 35 Water recipes without changing their legacy hashes and adds a
+separate communicating-reservoir apparatus. The #24 focus fix is included as an
+isolated prerequisite. [Evidence](../audits/2026-09-19-ms000-harness.md) scopes the
+Linux native/owner tests and records remaining browser/Windows coverage.
+
+#28 may use this contract for exploratory content; accepted interaction evidence
+still requires its named baseline. #29 implementation still needs the #28 Materials
+Laboratory readiness checkpoint. This checkpoint does not admit #20, finish #26,
+close #18, select a Water policy or satisfy G-final. No dependency edge changes.

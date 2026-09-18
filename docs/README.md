@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-09-18
+last-reviewed: 2026-09-19
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md]
 ---
 
@@ -14,7 +14,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 | Need | Start here |
 |---|---|
-| Begin development | [Handover](operations/cybersand-codex-development-handover.md), [actual source identity](operations/source-checkpoint-and-recovery.md), [roadmap](reference/status-and-roadmap.md) |\n| Choose current MicroScenarios / interaction work order | [Canonical programme graph](operations/microscenarios-programme.md), then the target issue and its named dependencies; issue numbers are not sequence |
+| Begin development | [Handover](operations/cybersand-codex-development-handover.md), [actual source identity](operations/source-checkpoint-and-recovery.md), [roadmap](reference/status-and-roadmap.md) |
+| Choose current MicroScenarios / interaction work order | [Canonical programme graph](operations/microscenarios-programme.md), then the target issue and its named dependencies; issue numbers are not sequence |
 | Understand the engine | [Architecture overview](architecture/overview.md), then its focused ownership/threading/coupling links |
 | Answer one technical question | [Retrieval index](reference/retrieval-index.md) |
 | Change a material | [Rule kernels](systems/materials-and-rule-kernels.md), [Water](systems/water-design.md), [material lab](MATERIAL_LAB.md) |
@@ -140,3 +141,9 @@ fixtures and retained tuning-pass provenance. Kinetic/contact anomalies discover
 in MicroScenarios are captured/reduced and routed to their real physics owner
 instead of being hidden in interaction rules.
 
+## Run, inspect or reduce a MicroScenario
+
+Use the [MS-000 contract and launcher/headless runbook](operations/micro-scenario-harness.md)
+for the same declarative fixture in Play, Inspect and Benchmark, bounded events,
+JSON capture/reduction and source identity limits. Use the
+[programme graph](operations/microscenarios-programme.md) for admission and order.

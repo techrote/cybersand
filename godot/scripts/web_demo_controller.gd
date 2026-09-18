@@ -39,6 +39,7 @@ var logical_threads: int = 1
 var tower_single_step: bool = false
 var tower_schedule: Array = []
 var tower_inputs: Array = []
+var micro_web_host: CyberMicroScenarioHost = CyberMicroScenarioHost.new()
 var water_actions: Array = []
 var water_action_index: int = 0
 var water_action_history: Array = []
@@ -50,6 +51,39 @@ var water_initial_quantization_error_numerator_255: int = 0
 var water_explicit_source: int = 0
 var water_explicit_sink: int = 0
 
+func micro_apply_definition(raw: Variant, selected_mode: String = "inspect") -> bool:
+	if not ready_to_play or micro_blind_active(): return false
+	if not micro_web_host.reset(native_world, raw, selected_mode, selected_mode != "play"):
+		micro_notice = "Rejected; previous world retained: " + micro_web_host.last_error
+		return false
+	var definition: Dictionary = micro_web_host.definition()
+	micro_accept_definition(definition, selected_mode)
+	_activate_physics(bool(definition.body_enabled))
+	if definition.player_start != null:
+		player.reset(Vector2(definition.player_start[0], definition.player_start[1]))
+		character_position = player.position
+	tower_schedule.clear(); tower_inputs.clear(); tower_single_step = false
+	water_actions.clear(); water_action_history.clear(); water_observations.clear()
+	tower_context = {"micro_active": true, "micro": micro_web_host.summary(), "water_active": false}
+	native_world.simulation_window_enabled = false
+	native_world.cadence_lod_enabled = false
+	native_world.set_liquid_surface_adhesion_enabled(true)
+	force_publication = true
+	_publish_world()
+	return true
+
+func micro_capture_observation() -> bool:
+	if not ready_to_play or micro_blind_active() or (not micro_active and not tower_active): return false
+	paused = true
+	micro_store_capture(micro_web_host.capture(native_world, {
+		"owner": "web-main-thread-cells-before-character",
+		"view_origin": [int(camera_origin.x), int(camera_origin.y)],
+		"view_size": [current_view_size.x, current_view_size.y],
+		"margins": [simulation_margin.x, simulation_margin.y],
+		"domain": "whole-world" if micro_active else "legacy-owner-view-and-interest",
+		"rapier_active": rapier_bridge.is_initialized()}))
+	return true
+
 func water_launch_arguments() -> PackedStringArray:
 	var result:=PackedStringArray()
 	if not OS.has_feature("web"): return result
@@ -60,55 +94,20 @@ func water_launch_arguments() -> PackedStringArray:
 	return result
 
 func _water_observe_web(action: Dictionary = {}) -> Dictionary:
-	var origin:=Vector2i.ZERO
-	var size:=Vector2i(CyberCellWorld.WORLD_WIDTH,CyberCellWorld.WORLD_HEIGHT)
-	if not action.is_empty():
-		origin=Vector2i(int(action.x),int(action.y))
-		size=Vector2i(int(action.width),int(action.height))
-	return native_world.water_experiment_observation(origin,size)
-
-func _water_apply_web_action(action: Dictionary) -> bool:
-	var before: Dictionary=_water_observe_web(action)
-	var ok: bool=true
-	match str(action.kind):
-		"fill":
-			var coherence: int=int((2*int(action.coherence)
-				*int(tower_context.water_policy.coherence_ticks)+12)/24)
-			ok=bool(native_world.water_experiment_fill_rect(
-				Vector2i(int(action.x),int(action.y)),
-				Vector2i(int(action.width),int(action.height)),
-				int(action.normalized_mass),coherence))
-		"erase":
-			ok=bool(native_world.water_experiment_erase_rect(
-				Vector2i(int(action.x),int(action.y)),
-				Vector2i(int(action.width),int(action.height))))
-		"sample":
-			water_observations.append({"action_index":water_action_index,
-				"region":action.duplicate(true),"observation":before.duplicate(true)})
-		_:
-			ok=false
-	if not ok:
-		paused=true
-		tower_context["status"]="Water action rejected; run paused"
-		return false
-	var after: Dictionary=_water_observe_web(action)
-	var before_mass: int=int(before.get("water_integer",0))
-	var after_mass: int=int(after.get("water_integer",before_mass))
-	if after_mass>before_mass: water_explicit_source+=after_mass-before_mass
-	if before_mass>after_mass: water_explicit_sink+=before_mass-after_mass
-	water_current_integer+=after_mass-before_mass
-	water_action_history.append({"tick":int(native_world.get_tick_index()),
-		"action":action.duplicate(true),"before_water_integer":before_mass,
-		"after_water_integer":after_mass})
-	return true
+	return CyberMicroScenarioHost.observe(native_world, action)
 
 func _water_apply_due_web_actions() -> bool:
-	while water_action_index<water_actions.size():
-		var action: Dictionary=water_actions[water_action_index]
-		if int(action.tick)>int(native_world.get_tick_index()): break
-		if not _water_apply_web_action(action): return false
-		water_action_index+=1
-	return true
+	var ok: bool = micro_web_host.apply_due(native_world)
+	water_action_index = micro_web_host.event_index
+	water_action_history = micro_web_host.history.duplicate(true)
+	water_observations = micro_web_host.observations.duplicate(true)
+	water_explicit_source = micro_web_host.explicit_source
+	water_explicit_sink = micro_web_host.explicit_sink
+	water_current_integer = micro_web_host.current_integer
+	if not ok:
+		paused = true
+		tower_context["status"] = "Water action rejected; " + micro_web_host.last_error
+	return ok
 
 func water_lab_apply_result(result: Dictionary, blind_label: String = "") -> void:
 	if not ready_to_play or not result.get("ok",false): return
@@ -119,10 +118,16 @@ func water_lab_apply_result(result: Dictionary, blind_label: String = "") -> voi
 		str(checked.policy.scenario_id),int(checked.policy.seed))
 	if recipe.is_empty(): return
 	var transport: Dictionary=CyberTransportProfiles.resolve(CyberTransportProfiles.preset(0))
-	if not demo_bridge.build_water_feel_world(native_world,recipe.rectangles,
-		transport.packed,checked.semantic,recipe.partial_water_fills):
-		tower_context["status"]="Water Apply + Reset rejected; "+str(demo_bridge.get_last_error())
+	if not micro_web_host.reset(native_world, CyberMicroScenarioCatalogue.water(checked.policy),
+		micro_selected_mode, micro_selected_observers):
+		tower_context["status"]="Water Apply + Reset rejected; "+micro_web_host.last_error
 		return
+	if micro_active:
+		native_world.simulation_window_enabled = simulation_window_enabled
+		native_world.cadence_lod_enabled = cadence_lod_enabled
+		native_world.set_liquid_surface_adhesion_enabled(liquid_surface_adhesion_enabled)
+	micro_active = false
+	micro_current_definition = micro_web_host.definition()
 	water_policy_resolved=result.duplicate(true)
 	water_policy_available=true
 	water_active_blind_label=blind_label
@@ -138,15 +143,10 @@ func water_lab_apply_result(result: Dictionary, blind_label: String = "") -> voi
 	water_action_index=0
 	water_action_history.clear();water_observations.clear()
 	water_explicit_source=0;water_explicit_sink=0
-	water_initial_integer=int(_water_observe_web().get("water_integer",0))
-	water_current_integer=water_initial_integer
-	water_initial_requested_numerator_255=0
-	for offset: int in range(0,recipe.partial_water_fills.size(),6):
-		water_initial_requested_numerator_255+=(
-			int(recipe.partial_water_fills[offset+2])*int(recipe.partial_water_fills[offset+3])
-			*int(recipe.partial_water_fills[offset+4])*int(checked.derived.maximum))
-	water_initial_quantization_error_numerator_255=(
-		water_initial_integer*255-water_initial_requested_numerator_255)
+	water_initial_integer = micro_web_host.initial_integer
+	water_current_integer = micro_web_host.current_integer
+	water_initial_requested_numerator_255 = micro_web_host.initial_requested_numerator_255
+	water_initial_quantization_error_numerator_255 = micro_web_host.initial_quantization_error_numerator_255
 	var status: String="Water Feel candidate %s / scenario %s / seed %d" % [blind_label,str(checked.policy.scenario_id),int(checked.policy.seed)] if not blind_label.is_empty() else "Water Feel unblinded / policy %s / recipe %s / seed %d" % [str(checked.hash).left(12),CyberWaterFeelScenarios.recipe_hash(recipe).left(12),int(checked.policy.seed)]
 	tower_context={"active":true,"water_active":true,"water_policy":checked.policy.duplicate(true),
 		"water_policy_hash":str(checked.hash),"water_policy_provenance":result.get("provenance",{}).duplicate(true),
@@ -180,10 +180,17 @@ func tower_reset() -> void:
 	select_demo("experiment_tower")
 
 func tower_apply_profile(resolved: Dictionary) -> void:
-	if not demo_bridge.build_tuned_world(native_world,CyberExperimentTower.rectangles(),resolved.packed):
-		tower_context["status"] = "Rejected / "+str(demo_bridge.get_last_error())
+	if not micro_web_host.reset(native_world, CyberMicroScenarioCatalogue.tower(resolved.profile),
+		micro_selected_mode, micro_selected_observers):
+		tower_context["status"] = "Rejected / " + micro_web_host.last_error
 		return
 	_water_end_blind_session()
+	if micro_active:
+		native_world.simulation_window_enabled = simulation_window_enabled
+		native_world.cadence_lod_enabled = cadence_lod_enabled
+		native_world.set_liquid_surface_adhesion_enabled(liquid_surface_adhesion_enabled)
+	micro_active = false
+	micro_current_definition = micro_web_host.definition()
 	tower_profile = resolved.profile.duplicate(true)
 	tower_context = {"profile":tower_profile.duplicate(true),"profile_hash":str(resolved.hash),"status":str(tower_profile.name)+" / profile v1 "+str(resolved.hash).left(12)}
 	tower_schedule.clear();tower_inputs.clear()
@@ -210,6 +217,7 @@ func tower_release(index: int) -> void:
 	force_publication = true
 
 func tower_command(command: Dictionary) -> bool:
+	if micro_active and (command.has("floor") or command.has("release") or command.has("schedule")): return false
 	if water_controlled_run_active() and (
 		command.has("release") or command.has("schedule")
 	):
@@ -358,13 +366,16 @@ func release_game_input() -> void:
 	input_armed = false
 
 func _process(delta: float) -> void:
+	if ready_to_play:
+		tower_context["micro"] = micro_web_host.summary()
+	micro_refresh_ui()
 	if native_world != null: tower_context["tick"]=int(native_world.get_tick_index());tower_context["paused"]=paused
 	if native_world != null: _update_water_web_context()
 	tower_panel.refresh(tower_active,tower_floor,tower_context)
 	if not ready_to_play:
 		return
 	frame_time_ms = delta * 1000.0
-	if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) and not Input.is_physical_key_pressed(KEY_A) and not Input.is_physical_key_pressed(KEY_D) and not Input.is_physical_key_pressed(KEY_SPACE):
+	if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) and not Input.is_physical_key_pressed(KEY_A) and not Input.is_physical_key_pressed(KEY_D) and not (Input.is_physical_key_pressed(KEY_SPACE) and not (micro_panel != null and micro_panel.text_entry_active())):
 		input_armed = focused and not ui.open
 	if not ui.open and focused:
 		update_camera(delta)
@@ -387,9 +398,15 @@ func _process(delta: float) -> void:
 			test_clock = 0
 			_publish_test_state()
 
+	micro_refresh_ui()
+
 func _physics_process(_delta: float) -> void:
 	if not ready_to_play or ui.open or not focused:
 		return
+	if micro_active:
+		native_world.simulation_window_enabled = false
+		native_world.cadence_lod_enabled = false
+		native_world.set_liquid_surface_adhesion_enabled(true)
 	native_world.set_simulation_window(Vector2i(camera_origin.floor()), current_view_size, simulation_margin.x, simulation_margin.y)
 	if native_world.has_failed():
 		_report_tick_failure()
@@ -400,6 +417,10 @@ func _physics_process(_delta: float) -> void:
 		return
 	tower_single_step = false
 	if tower_context.get("water_active",false) and not _water_apply_due_web_actions():
+		return
+	if micro_active and not micro_web_host.apply_due(native_world):
+		paused = true
+		micro_notice = micro_web_host.last_error
 		return
 	if tower_active:
 		for release: Array in tower_schedule.duplicate():
@@ -419,8 +440,10 @@ func _physics_process(_delta: float) -> void:
 		return
 	total_moves += int(native_world.get_moves_last_tick())
 	var horizontal: float = get_horizontal_input() if input_armed else 0.0
-	var jetpack: bool = input_armed and Input.is_physical_key_pressed(KEY_SPACE)
-	player.simulate(1.0 / 60.0, horizontal, jetpack, native_world)
+	var jetpack: bool = input_armed and (Input.is_physical_key_pressed(KEY_SPACE) and not (micro_panel != null and micro_panel.text_entry_active()))
+	if micro_active and not "jetpack" in micro_current_definition.tools: jetpack = false
+	if not micro_active or micro_current_definition.player_start != null:
+		player.simulate(1.0 / 60.0, horizontal, jetpack, native_world)
 	character_position = player.position
 
 func _report_tick_failure() -> void:
@@ -444,6 +467,7 @@ func queue_brush_mutation(
 		material_id: int,
 		emission_flags: int = CyberCellWorld.EMISSION_FLAG_NONE
 	) -> bool:
+	if micro_active and not ("erase" if material_id == 0 else "paint") in micro_current_definition.tools: return false
 	if water_controlled_run_active():
 		return false
 	if material_id==CyberCellWorld.EMPTY:
@@ -454,7 +478,7 @@ func queue_brush_mutation(
 	return true
 
 func queue_explosion_mutation(world_x: int, world_y: int, radius: int) -> bool:
-	if water_controlled_run_active(): return false
+	if micro_active or water_controlled_run_active(): return false
 	return bool(demo_bridge.queue_explosion(native_world,world_x,world_y,radius))
 
 func set_liquid_surface_adhesion(enabled: bool) -> bool:
@@ -464,6 +488,7 @@ func set_liquid_surface_adhesion(enabled: bool) -> bool:
 	return true
 
 func _paint_pointer() -> void:
+	if micro_panel != null and micro_panel.editor.visible: return
 	if tower_profile_panel.visible: return
 	var point: Vector2i = _world_pointer()
 	if point.x < 0 or point.y < 0 or point.x >= 1024 or point.y >= 1024:
@@ -549,7 +574,8 @@ func select_demo(id: String, close: bool = true) -> void:
 	var built: bool = false
 	if id == "experiment_tower":
 		var resolved: Dictionary = CyberTransportProfiles.resolve(tower_profile)
-		built = demo_bridge.build_tuned_world(native_world,CyberExperimentTower.rectangles(),resolved.packed)
+		built = micro_web_host.reset(native_world, CyberMicroScenarioCatalogue.tower(resolved.profile),
+			micro_selected_mode, micro_selected_observers)
 		if built: tower_context = {"profile":tower_profile.duplicate(true),"profile_hash":str(resolved.hash),"status":str(tower_profile.name)+" / profile v1 "+str(resolved.hash).left(12),"water_active":false}
 	else:
 		built = demo_bridge.build_world(native_world, CyberDemoWorlds.rectangles(id))
@@ -557,6 +583,13 @@ func select_demo(id: String, close: bool = true) -> void:
 		ui.message(str(demo_bridge.get_last_error()))
 		return
 	_water_end_blind_session()
+	if micro_active:
+		native_world.simulation_window_enabled = simulation_window_enabled
+		native_world.cadence_lod_enabled = cadence_lod_enabled
+		native_world.set_liquid_surface_adhesion_enabled(liquid_surface_adhesion_enabled)
+	micro_active = false
+	if id != "experiment_tower": micro_web_host = CyberMicroScenarioHost.new()
+	micro_current_definition = micro_web_host.definition()
 	tower_schedule.clear();tower_inputs.clear();tower_single_step=false
 	demo_id = id
 	player.reset(CyberDemoWorlds.spawn(id))
@@ -594,7 +627,7 @@ func set_quality(index: int) -> bool:
 func update_status() -> void:
 	if native_world == null:
 		return
-	$Layout/Title.text = "CYBERSAND / " + CyberDemoWorlds.title(demo_id).to_upper()
+	$Layout/Title.text = "CYBERSAND / MICROSCENARIO / " + str(micro_current_definition.id) if micro_active else "CYBERSAND / " + CyberDemoWorlds.title(demo_id).to_upper()
 	var text: String = "%s / %s / %s" % [material_name(selected_material_id), "PAUSED" if paused else "60 TPS target", "CALM" if coherent_liquid_emission else "SPRAY"]
 	if native_world.has_failed():
 		text = "STOPPED / Restart world or load a saved level / " + str(native_world.get_last_tick_error())
@@ -603,6 +636,14 @@ func update_status() -> void:
 	status_label.text = text
 
 func _unhandled_key_input(event: InputEvent) -> void:
+	if micro_panel != null and micro_panel.editor.visible:
+		if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE: micro_panel.editor.hide()
+		return
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_F4:
+			micro_toggle_hud(); return
+		if micro_active and event.keycode == KEY_R:
+			micro_reset_current(); return
 	if tower_profile_panel != null and tower_profile_panel.visible:
 		if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE: tower_profile_panel.hide()
 		return
@@ -658,6 +699,9 @@ func _metadata() -> Dictionary:
 	return {"demo": demo_id, "player": [player.position.x, player.position.y, player.velocity.x, player.velocity.y], "material": selected_material_id, "quality": quality, "coherent": coherent_liquid_emission, "adhesion": liquid_surface_adhesion_enabled, "glow": glow_enabled, "bodies": bodies}
 
 func _encode_current() -> Dictionary:
+	if micro_active:
+		return {"ok": false, "error": "MicroScenario timelines are not CYSD1 saves; use Capture observation / Definition JSON",
+			"binary": PackedByteArray(), "text": ""}
 	if water_controlled_run_active():
 		return {"ok":false,"error":"Level save is disabled during Water Feel",
 			"binary":PackedByteArray(),"text":""}
@@ -696,6 +740,16 @@ func _import_decoded(decoded: Dictionary) -> void:
 		last_save_error = str(demo_bridge.get_last_error())
 		ui.message(last_save_error)
 		return
+	if micro_active:
+		native_world.simulation_window_enabled = simulation_window_enabled
+		native_world.cadence_lod_enabled = cadence_lod_enabled
+		native_world.set_liquid_surface_adhesion_enabled(liquid_surface_adhesion_enabled)
+	micro_active = false
+	micro_web_host = CyberMicroScenarioHost.new()
+	micro_current_definition.clear()
+	tower_schedule.clear(); tower_inputs.clear(); tower_single_step = false
+	tower_context.clear()
+	tower_active = false # Imported CYSD1 is a level, not an apparatus timeline.
 	demo_id = str(metadata.demo)
 	player.position = Vector2(metadata.player[0], metadata.player[1])
 	player.velocity = Vector2(metadata.player[2], metadata.player[3])

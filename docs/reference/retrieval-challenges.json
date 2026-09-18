@@ -1,7 +1,7 @@
 {
   "version": 1,
   "frozen_date": "2026-09-08",
-  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability.",
+  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. MS000-C1/C2 are new 2026-09-19 implementation challenges, separate from the frozen development set.",
   "questions": [
     {
       "id": "C05",
@@ -266,6 +266,38 @@
       "sources": [
         "../native/src/world.cpp::World::update_water",
         "../native/bench/water_leveling.cpp"
+      ]
+    },
+    {
+      "id": "MS000-C1",
+      "query": "How do I run the same MicroScenario fixture in Play Inspect and headless Benchmark without changing material physics?",
+      "canonical": [
+        "operations/micro-scenario-harness.md"
+      ],
+      "facts": [
+        "Schema 1 normalizes bounded declarative recipes; the existing native owners use one host.",
+        "Generic fixtures use a whole-world domain; legacy owner ordering and view settings remain distinct.",
+        "Finite events and conditions do not allow arbitrary per-tick script callbacks."
+      ],
+      "sources": [
+        "../godot/scripts/micro_scenario_host.gd",
+        "../godot/tools/micro_scenario_benchmark.gd"
+      ]
+    },
+    {
+      "id": "MS000-C2",
+      "query": "Can a MicroScenario capture exactly replay an anomaly, and what identifies the world and profile it observed?",
+      "canonical": [
+        "operations/micro-scenario-harness.md"
+      ],
+      "facts": [
+        "Captures include definition/version/seed, effective profiles, owner config, source files and actual available native artifact identity.",
+        "Live inputs and complete future-affecting state are not serialized; this is not replay or a continuation save.",
+        "Failed worlds export diagnostic metadata, not partial physical results."
+      ],
+      "sources": [
+        "../godot/scripts/micro_scenario_host.gd",
+        "../godot/scripts/simulation_worker.gd"
       ]
     }
   ],

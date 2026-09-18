@@ -168,3 +168,11 @@ and was resolved by rebuilding, not by suppressing the case.
 This evidence establishes a technically safe, reproducible H-ready apparatus.
 It is not a human preference study, a production precision/packing selection,
 #18 admission, #20 admission, representative GPU performance result or G-final.
+
+## MS-000 extraction, 2026-09-19
+
+The [extraction audit](../audits/2026-09-19-ms000-harness.md) records source-matched
+Linux native tests, legacy setup/recipe parity, mode/observer/worker parity,
+desktop and synchronous Web-controller tests, and separate remaining real-browser,
+Windows and visual coverage. These owner tests do not inherit historical #19
+cross-platform acceptance or supply a new H-study result.

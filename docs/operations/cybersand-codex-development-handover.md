@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-09-18
+last-reviewed: 2026-09-19
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md]
 ---
 
@@ -136,3 +136,10 @@ Both research results are published on separate experiment branches; this active
 checkpoint changes documentation only. #17 subsequently completed P1/P2/P3; read the [G-P review](architecture-programme.md#g-p-staged-decision-2026-09-11)
 and [precision evidence](../audits/2026-09-11-issue-17-state-precision.md). Retain mass8
 and Water-specific delay4 as an experimental budget without inferring production migration. The current4-byte baseline remains pending G-final.
+
+## MS-000 handoff
+
+Use the implemented [fixture/host contract](micro-scenario-harness.md) and its
+[2026-09-19 evidence](../audits/2026-09-19-ms000-harness.md) for #28 authoring.
+The #24 focus fix is included. No scientific admission or numeric issue-order rule
+changes; #29 still waits for the Materials Laboratory readiness checkpoint.

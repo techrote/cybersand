@@ -146,6 +146,106 @@ var pending_water_apply: Dictionary = {}
 var pending_water_exit: Dictionary = {}
 var water_policy_available: bool = true
 
+var micro_panel: CyberMicroScenarioPanel
+var micro_active: bool = false
+var micro_current_definition: Dictionary = {}
+var micro_selected_mode: String = "inspect"
+var micro_selected_observers: bool = true
+var micro_notice: String = "MicroScenarios / provisional apparatus; F4 hides HUD"
+var micro_hud_hidden: bool = false
+var micro_request_id: int = 0
+var pending_micro_apply: Dictionary = {}
+var pending_micro_capture: int = 0
+
+func micro_blind_active() -> bool:
+	return not water_blind_set.is_empty() or not water_active_blind_label.is_empty()
+
+func micro_launch(id: String, selected_mode: String, seed: int) -> bool:
+	if micro_blind_active() or not pending_micro_apply.is_empty() or not pending_water_apply.is_empty(): return false
+	if not selected_mode in CyberMicroScenarioContract.MODES: return false
+	var definition: Dictionary = CyberMicroScenarioCatalogue.definition(id, seed)
+	if definition.is_empty():
+		micro_notice = "Invalid selection/seed (Tower uses fixed seed 0)"; return false
+	micro_selected_mode = selected_mode
+	micro_selected_observers = selected_mode != "play"
+	if id == "experiment-tower":
+		micro_current_definition = definition
+		tower_reset()
+		return true
+	if id.begins_with("water/"):
+		micro_current_definition = definition
+		water_lab_apply_result(CyberWaterExperimentProfiles.resolve({}, {}, definition.water_policy))
+		return true
+	return micro_apply_definition(definition, selected_mode)
+
+func micro_apply_definition(raw: Variant, selected_mode: String = "inspect") -> bool:
+	if micro_blind_active() or not pending_water_apply.is_empty() or not pending_micro_apply.is_empty():
+		micro_notice = "Finish the pending apply/blind session first"; return false
+	var checked: Dictionary = CyberMicroScenarioContract.validate(raw)
+	if not checked.get("ok", false) or not selected_mode in CyberMicroScenarioContract.MODES:
+		micro_notice = str(checked.get("error", "Invalid mode")); return false
+	micro_request_id += 1
+	pending_micro_apply = {"request_id": micro_request_id, "definition": checked.definition,
+		"previous_paused": paused, "mode": selected_mode}
+	paused = true
+	simulation_worker.queue_lab({"micro_reset": checked.definition, "request_id": micro_request_id,
+		"micro_mode": selected_mode, "micro_observers": selected_mode != "play"})
+	micro_notice = "Applying validated definition at owner boundary"
+	return true
+
+func micro_reset_current() -> void:
+	if micro_active and not micro_current_definition.is_empty():
+		micro_apply_definition(micro_current_definition, micro_selected_mode)
+	elif tower_context.get("water_active", false): water_lab_reset()
+	elif tower_active: tower_reset()
+
+func micro_capture_observation() -> bool:
+	if micro_blind_active() or not pending_micro_apply.is_empty() or not pending_water_apply.is_empty(): return false
+	if not micro_active and not tower_active: return false
+	paused = true
+	micro_request_id += 1
+	pending_micro_capture = micro_request_id
+	simulation_worker.queue_lab({"micro_capture": micro_request_id})
+	return true
+
+func micro_store_capture(report: Dictionary) -> void:
+	var file: FileAccess = FileAccess.open("user://micro-observation.json", FileAccess.WRITE)
+	var encoded: String = JSON.stringify(report, "  ")
+	if file != null:
+		file.store_string(encoded + "\n")
+		micro_notice = "Observation + recipe saved to user://micro-observation.json (not replay)"
+	else: micro_notice = "Observation file write failed"
+	if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD): DisplayServer.clipboard_set(encoded)
+
+func micro_accept_definition(definition: Dictionary, selected_mode: String) -> void:
+	micro_current_definition = definition.duplicate(true)
+	micro_selected_mode = selected_mode
+	micro_selected_observers = selected_mode != "play"
+	micro_active = true
+	tower_active = false
+	current_view_size = Vector2i(480, 270)
+	camera_follow_enabled = false
+	camera_origin = Vector2(definition.camera_origin[0], definition.camera_origin[1])
+	paused = true
+	$Layout/Title.text = "CYBERSAND / MICROSCENARIO / " + str(definition.id)
+	_activate_water_body_scenario(bool(definition.body_enabled))
+	micro_notice = "Loaded %s / schema 1 / recipe %s / seed %s / %s" % [
+		definition.id, definition.recipe_version, definition.seed, definition.maturity]
+
+func micro_toggle_hud() -> void:
+	micro_hud_hidden = not micro_hud_hidden
+	for child: Node in $Layout.get_children():
+		if child is Control and child != world_view: child.visible = not micro_hud_hidden
+	status_label.visible = not micro_hud_hidden and debug_stats_visible
+
+func micro_refresh_ui() -> void:
+	if micro_panel == null: return
+	micro_panel.refresh()
+	if micro_hud_hidden:
+		for child: Node in $Layout.get_children():
+			if child is Control and child != world_view: child.visible = false
+		for label: Label in tower_panel.labels: label.visible = false
+
 func setup_tower_panel() -> void:
 	tower_panel = CyberTowerPanel.new()
 	$Layout.add_child(tower_panel)
@@ -171,6 +271,10 @@ func setup_tower_panel() -> void:
 		startup=CyberWaterExperimentProfiles.resolve(profile_input,launch_arguments,{})
 	water_policy_available=bool(startup.get("ok",false))
 	if water_policy_available: water_policy_resolved=startup
+	micro_panel = CyberMicroScenarioPanel.new()
+	$Layout.add_child(micro_panel)
+	$Layout.move_child(micro_panel, 1)
+	micro_panel.setup(self)
 
 func water_launch_arguments() -> PackedStringArray:
 	return OS.get_cmdline_user_args()
@@ -210,6 +314,7 @@ func water_controlled_run_active() -> bool:
 		or (not pending_water_exit.is_empty() and not water_blind_set.is_empty()))
 
 func water_lab_apply_result(result: Dictionary, blind_label: String = "") -> void:
+	if not pending_micro_apply.is_empty(): return
 	if not result.get("ok",false): return
 	if not _water_blind_application_allowed(result,blind_label): return
 	var checked: Dictionary=CyberWaterExperimentProfiles.resolve({},{},result.policy)
@@ -302,16 +407,23 @@ func _activate_water_body_scenario(active: bool) -> void:
 			rapier_bridge.reset_body(i,Vector2(160+i*52,176),0.0)
 
 func tower_command(command: Dictionary) -> bool:
+	if not pending_micro_apply.is_empty(): return false
 	if water_controlled_run_active() and (
 		command.has("release") or command.has("schedule")
 	):
 		return false
 	if command.has("step"): paused = true
-	simulation_worker.queue_lab(command)
+	if micro_active and not command.has("reset") and (command.has("floor") or command.has("release") or command.has("schedule")):
+		return false
+	var request: Dictionary = command.duplicate(true)
+	if command.has("reset") or command.has("water_reset"):
+		request["micro_mode"] = micro_selected_mode
+		request["micro_observers"] = micro_selected_observers
+	simulation_worker.queue_lab(request)
 	return true
 
 func tower_floor_select(index: int) -> void:
-	if water_controlled_run_active(): return
+	if micro_active or water_controlled_run_active(): return
 	tower_floor = clampi(index,0,4)
 	paused = true
 	camera_follow_enabled = false
@@ -319,6 +431,8 @@ func tower_floor_select(index: int) -> void:
 	tower_command({"floor":tower_floor})
 
 func tower_reset() -> void:
+	pending_micro_apply.clear()
+	pending_micro_capture = 0
 	pending_water_exit={"kind":"fresh"}
 	pending_water_apply.clear()
 	tower_active = true
@@ -339,7 +453,7 @@ func tower_tuning() -> void:
 	tower_profile_panel.popup_centered()
 
 func tower_focus_tube(index: int) -> void:
-	if water_controlled_run_active(): return
+	if micro_active or water_controlled_run_active(): return
 	var tubes: Array=CyberExperimentTower.tubes(tower_floor)
 	if index < 0 or index >= tubes.size(): return
 	paused=true
@@ -347,6 +461,8 @@ func tower_focus_tube(index: int) -> void:
 	camera_origin=Vector2(clampf(float(tubes[index][0])-100.0,0.0,1024.0-current_view_size.x),CyberExperimentTower.floor_y(tower_floor))
 
 func tower_apply_profile(resolved: Dictionary) -> void:
+	pending_micro_apply.clear()
+	pending_micro_capture = 0
 	pending_water_exit={"kind":"profile"}
 	pending_water_apply.clear()
 	paused = true
@@ -394,7 +510,8 @@ func water_runtime_identity() -> Dictionary:
 	var path: String=(
 		"res://addons/cybersand_native/runtime-provenance.web.json"
 		if OS.has_feature("web")
-		else "res://addons/cybersand_native/runtime-provenance.json")
+		else ("res://addons/cybersand_native/runtime-provenance.linux.json" if OS.get_name() == "Linux"
+			else "res://addons/cybersand_native/runtime-provenance.json"))
 	var result: Dictionary={"platform":OS.get_name(),
 		"godot":Engine.get_version_info().get("string","unknown"),"manifest":path}
 	if not FileAccess.file_exists(path):
@@ -588,6 +705,7 @@ func _process(delta: float) -> void:
 		update_status()
 		maximum_frame_time_ms = frame_time_ms
 		maximum_collider_time_ms = 0.0
+	micro_refresh_ui()
 
 
 func _physics_process(_delta: float) -> void:
@@ -604,6 +722,14 @@ func _physics_process(_delta: float) -> void:
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
+	if micro_panel != null and micro_panel.editor.visible:
+		if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE: micro_panel.editor.hide()
+		return
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_F4:
+			micro_toggle_hud(); return
+		if micro_active and event.keycode == KEY_R:
+			micro_reset_current(); return
 	if tower_profile_panel != null and tower_profile_panel.visible:
 		if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE: tower_profile_panel.hide()
 		return
@@ -871,10 +997,27 @@ func consume_worker_snapshot() -> void:
 		return
 	latest_snapshot = snapshot
 	tower_context = snapshot.lab_context
+	if not pending_micro_apply.is_empty():
+		var response: Dictionary = tower_context.get("micro_result", {})
+		if int(response.get("request_id", -1)) == int(pending_micro_apply.request_id):
+			if response.get("ok", false):
+				micro_accept_definition(pending_micro_apply.definition, str(pending_micro_apply.mode))
+			else:
+				paused = bool(pending_micro_apply.previous_paused)
+				micro_notice = "Rejected; previous world retained: " + str(response.get("error", ""))
+			pending_micro_apply.clear()
+	if pending_micro_capture != 0:
+		var capture: Dictionary = tower_context.get("micro_capture", {})
+		if int(capture.get("request_id", 0)) == pending_micro_capture:
+			micro_store_capture(capture)
+			pending_micro_capture = 0
+	if not bool(tower_context.get("micro_active", false)) and pending_micro_apply.is_empty():
+		micro_active = false
 	if not pending_water_exit.is_empty():
 		if (not tower_context.get("water_active",false)
 			and tower_context.has("profile")):
 			_water_end_blind_session()
+			micro_current_definition = CyberMicroScenarioCatalogue.tower(tower_context.profile)
 			pending_water_exit.clear()
 		elif "rejected" in str(tower_context.get("status","")).to_lower():
 			pending_water_exit.clear()
@@ -883,6 +1026,7 @@ func consume_worker_snapshot() -> void:
 			tower_context.get("water_policy_hash",""))==str(pending_water_apply.hash):
 			var applied: Dictionary=pending_water_apply
 			var recipe: Dictionary=applied.recipe
+			micro_current_definition = CyberMicroScenarioCatalogue.water(applied.result.policy)
 			water_policy_resolved=applied.result.duplicate(true)
 			water_policy_available=true
 			water_active_blind_label=str(applied.blind_label)
@@ -954,6 +1098,7 @@ func sync_hard_surface_colliders() -> void:
 
 
 func get_horizontal_input() -> float:
+	if micro_panel != null and micro_panel.text_entry_active(): return 0.0
 	var move_left: float = 1.0 if Input.is_key_pressed(KEY_A) else 0.0
 	var move_right: float = 1.0 if Input.is_key_pressed(KEY_D) else 0.0
 	return move_right - move_left
@@ -996,7 +1141,8 @@ func update_worker_frame_state() -> void:
 	)
 	simulation_worker.set_frame_state(
 		get_horizontal_input(),
-		Input.is_key_pressed(KEY_SPACE),
+		Input.is_key_pressed(KEY_SPACE) and not (micro_panel != null and micro_panel.text_entry_active())
+			and (not micro_active or "jetpack" in micro_current_definition.get("tools", [])),
 		paused,
 		interest,
 		view_origin,
@@ -1016,6 +1162,10 @@ func queue_brush_mutation(
 		material_id: int,
 		emission_flags: int = CyberCellWorld.EMISSION_FLAG_NONE
 	) -> bool:
+	if not pending_micro_apply.is_empty(): return false
+	if micro_active:
+		var tools: Array = micro_current_definition.get("tools", [])
+		if not ("erase" if material_id == 0 else "paint") in tools: return false
 	if water_controlled_run_active():
 		return false
 	return simulation_worker.queue_emit_disc(
@@ -1023,6 +1173,7 @@ func queue_brush_mutation(
 
 
 func handle_painting() -> void:
+	if micro_panel != null and micro_panel.editor.visible: return
 	if tower_profile_panel != null and tower_profile_panel.visible: return
 	var mouse: Vector2 = world_view.get_local_mouse_position()
 	var content_rect: Rect2 = view_content_rect()
@@ -1323,7 +1474,8 @@ func update_shader_parameters() -> void:
 		"camera_origin_px",
 		Vector2(floori(camera_origin.x), floori(camera_origin.y))
 	)
-	world_shader.set_shader_parameter("player_origin_px", character_position)
+	world_shader.set_shader_parameter("player_origin_px", Vector2(-10000, -10000)
+		if micro_active and micro_current_definition.get("player_start") == null else character_position)
 	world_shader.set_shader_parameter("player_size_px", CyberSampledCharacter.BODY_SIZE)
 	var snapshot_blend: float = 1.0
 	if cadence_lod_enabled:

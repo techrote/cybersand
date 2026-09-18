@@ -1,0 +1,154 @@
+{
+  "body_enabled": false,
+  "camera_origin": [
+    16,
+    32
+  ],
+  "conditions": [
+    {
+      "comparison": "ge",
+      "event_index": 2,
+      "id": "right-column-retains-water",
+      "metric": "water_integer",
+      "outcome": "success",
+      "value": 1
+    }
+  ],
+  "events": [
+    {
+      "coherence": 0,
+      "height": 20,
+      "kind": "erase",
+      "material": 0,
+      "normalized_mass": 0,
+      "tick": 30,
+      "width": 4,
+      "x": 248,
+      "y": 232
+    },
+    {
+      "coherence": 0,
+      "height": 188,
+      "kind": "sample",
+      "material": 0,
+      "normalized_mass": 0,
+      "tick": 120,
+      "width": 164,
+      "x": 84,
+      "y": 64
+    },
+    {
+      "coherence": 0,
+      "height": 188,
+      "kind": "sample",
+      "material": 0,
+      "normalized_mass": 0,
+      "tick": 120,
+      "width": 164,
+      "x": 252,
+      "y": 64
+    }
+  ],
+  "id": "communicating-reservoirs",
+  "legacy": {},
+  "maturity": "exploratory",
+  "partial_water_fills": [
+    84,
+    120,
+    164,
+    132,
+    255,
+    0,
+    252,
+    220,
+    164,
+    32,
+    255,
+    0
+  ],
+  "player_start": null,
+  "recipe_version": 1,
+  "rectangles": [
+    0,
+    0,
+    1024,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1024,
+    1,
+    1023,
+    0,
+    1,
+    1024,
+    1,
+    0,
+    1023,
+    1024,
+    1,
+    1,
+    80,
+    64,
+    4,
+    192,
+    1,
+    80,
+    252,
+    340,
+    4,
+    1,
+    416,
+    64,
+    4,
+    192,
+    1,
+    248,
+    64,
+    4,
+    188,
+    1
+  ],
+  "schema_version": 1,
+  "seed": 0,
+  "seed_scope": "recipe-identity",
+  "tools": [
+    "paint",
+    "erase"
+  ],
+  "transport": {
+    "families": {
+      "liquid": {
+        "cadence": 1,
+        "carrying": 0,
+        "erosion": 0,
+        "horizontal": 2,
+        "permeability": 1
+      },
+      "powder": {
+        "mixing": 0,
+        "packing": 8,
+        "pickup": 64
+      }
+    },
+    "materials": {
+      "33": {
+        "permeability": 30
+      }
+    },
+    "name": "Baseline",
+    "pairs": [],
+    "version": 1
+  },
+  "water_policy": {
+    "coherence_ticks": 12,
+    "interface_mode": "coverage",
+    "mass_bits": 8,
+    "render_fill_levels": 4,
+    "rest_policy": "current-normalized-v1",
+    "scenario_id": "shallow-pool",
+    "seed": 0,
+    "version": 1
+  }
+}
