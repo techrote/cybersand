@@ -34,6 +34,7 @@ var h_note: LineEdit
 var h_note_edit_button: Button
 var h_capture_button: Button
 var h_sequence_button: Button
+var h_sequence_arm_button: Button
 var h_reveal_button: Button
 var h_open_button: Button
 var h_feedback: Label
@@ -52,6 +53,7 @@ var h_restore_pause_value: bool = true
 var h_sequence_active: bool = false
 var h_sequence_last_render_serial: int = -1
 var h_sequence_run_key: String = ""
+var h_sequence_arm_next_replay: bool = false
 
 func button(row: Node, text: String, action: Callable) -> Button:
 	var b: Button = Button.new()
@@ -100,6 +102,7 @@ func setup(controller: Control) -> void:
 	var sequence_row: HBoxContainer=HBoxContainer.new();add_child(sequence_row)
 	var sequence_label: Label=Label.new();sequence_label.text="Motion evidence:";sequence_row.add_child(sequence_label)
 	h_sequence_button=button(sequence_row,"Start frame sequence",_toggle_frame_sequence)
+	h_sequence_arm_button=button(sequence_row,"Arm next replay",_toggle_arm_next_replay)
 	var sequence_help: Label=Label.new();sequence_help.text="Every distinct rendered world frame → PNG sequence (max %d frames)"%H_SEQUENCE_MAX_FRAMES;sequence_row.add_child(sequence_help)
 	h_feedback=Label.new();h_feedback.text="H capture idle — append-only; blind settings remain hidden until reveal";h_feedback.add_theme_font_size_override("font_size",13);add_child(h_feedback)
 	h_reveal_dialog=ConfirmationDialog.new();h_reveal_dialog.title="Reveal blind candidates?";h_reveal_dialog.dialog_text="Finish your qualitative judgements first. Revealing candidate settings cannot be undone for this H session.";h_reveal_dialog.confirmed.connect(_reveal_confirmed);add_child(h_reveal_dialog)
@@ -247,6 +250,7 @@ func _restore_h_view_after_apply() -> void:
 	_apply_h_camera_focus();_refresh_h_view_label()
 
 func _select_h_phase(index: int) -> void:
+	_cancel_arm_next_replay("phase-change")
 	_stop_frame_sequence("phase-change")
 	_finish_h_note_edit();_store_current_review()
 	if not host.water_blind_set.is_empty() or not host.water_active_blind_label.is_empty():h_feedback.text="Finish/reveal the blind set and use Fresh tower before changing test phase";return
@@ -280,14 +284,28 @@ func _watch_h_run(context: Dictionary) -> void:
 	var run_key: String="%s|%s|%s"%[str(context.get("water_recipe_hash","")),str(context.get("water_blind_label","")),str(context.get("water_policy_hash",""))]
 	if run_key==h_run_key and not h_pending_run_start:return
 	if not _ensure_h_session():return
-	if h_restore_pause_after_apply:
-		host.paused=h_restore_pause_value;h_restore_pause_after_apply=false
+	var restore_pause_pending: bool=h_restore_pause_after_apply
+	var restore_pause_value: bool=h_restore_pause_value
+	if restore_pause_pending:
+		# Armed replay must start recording while the freshly reset run is still paused,
+		# then resume. This prevents the first simulation ticks escaping before capture.
+		host.paused=true if h_sequence_arm_next_replay else restore_pause_value
+		h_restore_pause_after_apply=false
 		if host.has_method("update_worker_frame_state"):host.update_worker_frame_state()
 	_restore_h_view_after_apply()
 	h_run_key=run_key;h_pending_run_start=false
 	var safe: Dictionary=_safe_h_metadata(context);h_recorder.begin_run(safe);h_recorder.record_event("candidate-applied",{"scenario_id":safe.scenario_id,"blind_label":safe.blind_label,"tick":safe.tick,"paused":host.paused,"view":safe.view})
 	var restored: bool=_restore_candidate_review(str(safe.blind_label))
 	h_phase_menu.text="Phase: "+str(safe.scenario_id);_refresh_h_view_label()
+	if h_sequence_arm_next_replay:
+		h_sequence_arm_next_replay=false
+		if h_sequence_arm_button!=null:h_sequence_arm_button.text="Arm next replay"
+		_start_frame_sequence()
+		if restore_pause_pending:
+			host.paused=restore_pause_value
+			if host.has_method("update_worker_frame_state"):host.update_worker_frame_state()
+		if h_sequence_active:h_feedback.text="Recording from first post-reset frame — %s"%h_recorder.current_sequence_id
+		return
 	h_feedback.text="%s / %s / %s — ready to observe%s"%[h_recorder.current_run_id,safe.scenario_id,("candidate "+safe.blind_label) if not str(safe.blind_label).is_empty() else "unblinded"," — prior review restored" if restored else ""]
 
 func _queue_pause_restore() -> void:
@@ -302,6 +320,7 @@ func _single_step() -> void:
 	if _ensure_h_session():h_recorder.record_event("single-step-request",{"tick":int(host.tower_context.get("tick",0))})
 	host.tower_command({"step":true})
 func _water_reset() -> void:
+	_cancel_arm_next_replay("water-reset")
 	_stop_frame_sequence("water-reset")
 	_finish_h_note_edit()
 	h_view_focus_valid=false
@@ -315,6 +334,7 @@ func _repeat_test() -> void:
 	if _ensure_h_session():h_recorder.record_event("repeat-test-request",{"blind_label":"","paused":h_restore_pause_value})
 	h_pending_run_start=true;host.water_lab_reset()
 func _start_blind() -> void:
+	_cancel_arm_next_replay("blind-set-start")
 	_stop_frame_sequence("blind-set-start")
 	_finish_h_note_edit()
 	if not h_retained_blind_set.is_empty() and not h_blind_revealed:h_feedback.text="Reveal the previous blind set before starting another; mapping retained in memory";return
@@ -338,6 +358,7 @@ func _blind_index() -> int:
 	return clampi(int(host.water_blind_index),0,blind_labels.size()-1)
 
 func _apply_blind_index(index: int,event_name: String,queue_pause_restore: bool=true) -> void:
+	if event_name!="replay-blind-request" and event_name!="repeat-test-request":_cancel_arm_next_replay("candidate-navigation")
 	_stop_frame_sequence("candidate-navigation")
 	if h_blind_revealed:h_feedback.text="Blind set already revealed; start a new blind set for further blind judgements";return
 	if not host.pending_water_apply.is_empty():h_feedback.text="Candidate is still applying; wait for ready feedback before navigating";return
@@ -384,6 +405,9 @@ func _sequence_world_image() -> Image:
 
 func _start_frame_sequence() -> void:
 	_finish_h_note_edit();_store_current_review()
+	if h_sequence_arm_next_replay:
+		h_sequence_arm_next_replay=false
+		if h_sequence_arm_button!=null:h_sequence_arm_button.text="Arm next replay"
 	if h_sequence_active:return
 	if not host.tower_context.get("water_active",false):h_feedback.text="Frame sequence requires an active Water Feel run";return
 	if not host.pending_water_apply.is_empty():h_feedback.text="Candidate/reset is still applying; wait before recording";return
@@ -402,23 +426,41 @@ func _stop_frame_sequence(reason: String="user") -> void:
 	var result: Dictionary=h_recorder.finish_frame_sequence(reason)
 	h_sequence_active=false;h_sequence_last_render_serial=-1;h_sequence_run_key=""
 	if h_sequence_button!=null:h_sequence_button.text="Start frame sequence"
-	if result.get("ok",false):h_feedback.text="Saved %s — %d frames — %s"%[str(result.sequence_id),int(result.frame_count),reason]
+	if result.get("ok",false):h_feedback.text="Saved %s — %d frames / %.1fs wall / estimated missed snapshots %d — %s"%[str(result.sequence_id),int(result.frame_count),float(result.get("wall_duration_sec",0.0)),int(result.get("missed_render_snapshots_estimate",0)),reason]
 	else:h_feedback.text="Frame sequence finish error: "+str(result.get("error","unknown error"))
 
 func _toggle_frame_sequence() -> void:
 	if h_sequence_active:_stop_frame_sequence("user-stop")
 	else:_start_frame_sequence()
 
+func _toggle_arm_next_replay() -> void:
+	if h_sequence_active:
+		h_feedback.text="Stop the active frame sequence before arming a replay"
+		return
+	h_sequence_arm_next_replay=not h_sequence_arm_next_replay
+	if h_sequence_arm_button!=null:h_sequence_arm_button.text="Armed: next replay" if h_sequence_arm_next_replay else "Arm next replay"
+	if _ensure_h_session():h_recorder.record_event("frame-sequence-arm" if h_sequence_arm_next_replay else "frame-sequence-disarm",{"blind_label":_current_blind_label()})
+	h_feedback.text="Armed — press R / Replay; recording will begin before the reset run is resumed" if h_sequence_arm_next_replay else "Frame-sequence replay arm cancelled"
+
+func _cancel_arm_next_replay(reason: String) -> void:
+	if not h_sequence_arm_next_replay:return
+	h_sequence_arm_next_replay=false
+	if h_sequence_arm_button!=null:h_sequence_arm_button.text="Arm next replay"
+	if _ensure_h_session():h_recorder.record_event("frame-sequence-disarm",{"reason":reason,"blind_label":_current_blind_label()})
+
 func _capture_sequence_frame_if_due() -> void:
 	if not h_sequence_active or host.latest_snapshot==null:return
 	if h_sequence_run_key!=h_run_key:_stop_frame_sequence("run-changed");return
 	var serial: int=int(host.latest_snapshot.render_snapshot_serial)
 	if serial<=0 or serial==h_sequence_last_render_serial:return
+	var readback_start_usec: int=Time.get_ticks_usec()
 	var frame: Image=_sequence_world_image()
+	var readback_ms: float=float(Time.get_ticks_usec()-readback_start_usec)/1000.0
 	if frame==null or frame.is_empty():_stop_frame_sequence("frame-unavailable");return
 	var metadata: Dictionary={
 		"tick":int(host.tower_context.get("tick",0)),
 		"render_snapshot_serial":serial,
+		"readback_ms":readback_ms,
 		"camera":{"x":float(host.camera_origin.x),"y":float(host.camera_origin.y)},
 		"view":{"width":int(host.current_view_size.x),"height":int(host.current_view_size.y)},
 	}
@@ -441,6 +483,7 @@ func _capture_h() -> void:
 	else:h_feedback.text="H capture error: "+str(result.get("error","unknown error"))
 
 func _request_reveal() -> void:
+	_cancel_arm_next_replay("blind-reveal")
 	_stop_frame_sequence("blind-reveal")
 	_finish_h_note_edit();_store_current_review()
 	var blind_set: Dictionary=_active_blind_set()
@@ -477,7 +520,7 @@ func refresh(active: bool,floor_index: int,context: Dictionary) -> void:
 		floor_picker.disabled=true;tube_picker.disabled=true
 		var blind_active: bool=(not str(context.get("water_blind_label","")).is_empty() or not host.water_blind_set.is_empty());var applying: bool=not host.pending_water_apply.is_empty();var navigation_disabled: bool=not blind_active or h_blind_revealed or applying
 		for release_button: Button in release_buttons:release_button.disabled=true;release_button.tooltip_text="Water Feel uses only registered scenario actions"
-		blind_button.disabled=blind_active or applying;previous_blind_button.disabled=navigation_disabled;replay_blind_button.disabled=navigation_disabled;next_blind_button.disabled=navigation_disabled;h_reveal_button.disabled=(not blind_active and h_retained_blind_set.is_empty()) or applying;water_policy_button.disabled=blind_active or applying;water_save_button.disabled=blind_active or applying;h_capture_button.disabled=applying or (blind_active and not h_blind_sealed);h_sequence_button.disabled=applying;h_view_menu.disabled=applying;h_phase_menu.disabled=blind_active or applying
+		blind_button.disabled=blind_active or applying;previous_blind_button.disabled=navigation_disabled;replay_blind_button.disabled=navigation_disabled;next_blind_button.disabled=navigation_disabled;h_reveal_button.disabled=(not blind_active and h_retained_blind_set.is_empty()) or applying;water_policy_button.disabled=blind_active or applying;water_save_button.disabled=blind_active or applying;h_capture_button.disabled=applying or (blind_active and not h_blind_sealed);h_sequence_button.disabled=applying;h_sequence_arm_button.disabled=applying or not blind_active;h_view_menu.disabled=applying;h_phase_menu.disabled=blind_active or applying
 		for label: Label in labels:label.visible=false
 		var policy: Dictionary=context.get("water_policy",{});var accounting: Dictionary=context.get("water_accounting",{})
 		h_phase_menu.text="Phase: "+str(policy.get("scenario_id",""));_refresh_h_view_label()
@@ -485,7 +528,7 @@ func refresh(active: bool,floor_index: int,context: Dictionary) -> void:
 		info.text+="\nWater integer %s +%s -%s / H audition: arrows pan; Previous / Replay(R) / Next; V changes view without focus drift"%[str(accounting.get("current",0)),str(accounting.get("explicit_source",0)),str(accounting.get("explicit_sink",0))]
 		if applying:h_feedback.text="Applying candidate/reset — capture and navigation locked until worker acknowledgement"
 		return
-	floor_picker.disabled=false;tube_picker.disabled=false;h_capture_button.disabled=true;h_sequence_button.disabled=true;previous_blind_button.disabled=true;replay_blind_button.disabled=true;next_blind_button.disabled=true;h_view_menu.disabled=false;h_phase_menu.disabled=not host.water_blind_set.is_empty()
+	floor_picker.disabled=false;tube_picker.disabled=false;h_capture_button.disabled=true;h_sequence_button.disabled=true;h_sequence_arm_button.disabled=true;previous_blind_button.disabled=true;replay_blind_button.disabled=true;next_blind_button.disabled=true;h_view_menu.disabled=false;h_phase_menu.disabled=not host.water_blind_set.is_empty()
 	for release_button: Button in release_buttons:release_button.disabled=false;release_button.tooltip_text=""
 	blind_button.disabled=false;water_policy_button.disabled=false;water_save_button.disabled=false;_refresh_h_view_label()
 	if shown_floor!=floor_index:
