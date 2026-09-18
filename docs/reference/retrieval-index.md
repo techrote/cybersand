@@ -4,8 +4,8 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-09-12
-related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md]
+last-reviewed: 2026-09-18
+related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md]
 ---
 
 # Retrieval question index
@@ -48,7 +48,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Meaning of a term or unexplained symptom | [Glossary](glossary.md), [troubleshooting](../operations/troubleshooting.md) |
 | Why #17 does not make mass8 the perceptual minimum | [Water-feel programme addendum](../operations/architecture-programme-water-feel-addendum.md), [#17 evidence](../audits/2026-09-11-issue-17-state-precision.md) |
 | What #19 delivers and how the H-ready Water Feel Lab is configured | [Experiment Tower](../operations/experiment-tower.md), [policy registration](../operations/water-feel-lab-experiment.md), [completion evidence](../audits/2026-09-12-issue-19-water-feel-lab.md) |
-| Why #18 remains held after G-P | [Water-feel programme addendum](../operations/architecture-programme-water-feel-addendum.md), [compact-motion prompt](../operations/architecture-programme-prompts/compact-motion.md) |
+| Why #18 remains held after G-P | [Water-feel programme addendum](../operations/architecture-programme-water-feel-addendum.md), [compact-motion prompt](../operations/architecture-programme-prompts/compact-motion.md) |\n| How reusable MicroScenarios fit the roadmap, chemistry testing and showcase sequence | [MicroScenarios programme](../operations/microscenarios-programme.md), [roadmap](status-and-roadmap.md) |
 
 ## Retrieve historical results explicitly
 
@@ -114,3 +114,12 @@ the [preregistered experiment](../operations/state-precision-experiment.md).
 For the measured numerical recommendation, use [G-P](../operations/architecture-programme.md#g-p-staged-decision-2026-09-11) and the [precision evidence](../audits/2026-09-11-issue-17-state-precision.md).
 
 For the later interpretation that numerical divergence is not automatic gameplay rejection, and for planned mass3/5/7 plus shortened-coherence human-test preparation, use the [Water-feel addendum](../operations/architecture-programme-water-feel-addendum.md). This later planning refinement does not rewrite #17 evidence.
+
+
+## MicroScenarios programme
+
+For the staged extraction of reusable scenario apparatus from #13/#19, the
+post-G-final reference pack, generated chemistry fixtures and later showcase
+order, use the [MicroScenarios programme](../operations/microscenarios-programme.md).
+It is Planned apparatus/content work and does not supersede the architecture
+programme or Current material contracts.
