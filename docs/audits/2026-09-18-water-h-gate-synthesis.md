@@ -2,7 +2,7 @@
 title: Water H-gate synthesis — bulk flow, precision and presentation
 status: Current
 document-kind: evidence
-scope: Human Water Feel evidence from shallow-pool, irregular-bed, corrected steps, constriction, connected-pools, fast-dump, u-vessel, long-tail-settling and direction-horizontal; programme disposition for #18/#26
+scope: Human Water Feel evidence from shallow-pool, irregular-bed, corrected steps, constriction, connected-pools, fast-dump, u-vessel, long-tail-settling, direction-horizontal, calm-settling, direction-diagonal and ledge-sheet; programme disposition for #18/#26
 canonical-for: [water-h-gate-2026-09-18]
 last-reviewed: 2026-09-18
 related-documents: [2026-09-12-issue-19-water-feel-lab.md, ../operations/water-feel-lab-experiment.md, ../operations/architecture-programme-water-feel-addendum.md, ../systems/water-design.md, ../systems/material-appearance-and-rendering.md]
@@ -65,6 +65,9 @@ hundreds of MiB; their names, sizes and SHA-256 identities are retained in
 | u-vessel | Reveal A=3, B=5, C=8. mass3 Marginal/rank2: multiple tiny lumps; mass5 Marginal/rank2: serrated areas; mass8 Acceptable/rank1: only four tiny raised lumps at the left edge. | Useful settled-surface/quantization evidence, **not** a hydrostatic head test: the registered recipe is a single uniformly filled U-shaped tank and never creates unequal communicating columns. |
 | long-tail-settling | Reveal A=3, B=5, C=8. mass3 Anomaly/rank3: the three leftmost droplets are missing completely; mass5 Marginal/rank2: all droplets survive but some puddles look odd; mass8 Good/rank1: larger droplets combine into a convincing puddle. | Strong tiny-quantity representability evidence. The recipe’s first droplets are normalized masses 8/12/16, which quantize to zero at 3-bit under the registered half-up rule. This is authoritative mass loss at initial quantization, not a rendering defect. |
 | direction-horizontal | Reveal A=3, B=5, C=8. mass3 Reject/rank3: excessive height differential remains and it “doesn’t really flow”; mass5 Good/rank2; mass8 Good/rank1, with the observer noting C continues sideways flow after B has largely stopped. | Strong precision-dependent lateral-leveling evidence and useful #18-adjacent context. Existing fixture is still a horizontal strip plus same-row fill, not a clean injected-velocity/history oracle, so it does not by itself admit compact flow memory. |
+| calm-settling | Reveal A=3, B=5, C=8. mass3 Reject/rank3: unacceptable surface lump; mass5 Acceptable/rank2: residual “hill nipple”, does not fully level; mass8 Good/rank1: acceptable final state, but observer wants it reached 2–4× faster and still dislikes the “ripple nipple”. | Strongest manual equilibrium-speed result: mass8 can get near an acceptable shape, but the time-to-flat target is materially too slow. |
+| direction-diagonal | Reveal A=3, B=5, C=8. mass3 Reject/rank3: waterslump; mass5 Acceptable/rank2: calmer terraces but edge drips cease quickly; mass8 Good/rank2: livelier but flickering “hillnipple” and terrace edges. | Confirms slump/terrace artifacts are not limited to purely horizontal geometry. Useful anisotropy/edge-stability evidence, but not a new architecture problem by itself. |
+| ledge-sheet | Reveal A=3, B=5, C=8. mass3 Reject/rank3: waterslump; mass5 Acceptable/rank2: smoother hill/terraces but slow dribble; mass8 Good/rank1: better flow and interesting multi-phase puddle-front breakup, with an undesirable vertical-line/block phase. | Positive shallow-flow control: preserve lively dribble/front breakup while fixing deep-water leveling and terrace artifacts. |
 
 ## U-vessel fixture correction
 
@@ -83,6 +86,24 @@ Do not ask the H tester to repeat this fixture for head-response evidence. #26 s
 instead add an automated true unequal-head U-tube/communicating-column fixture.
 
 ## Cross-scenario interpretation
+
+### 1. Calm settling turns the qualitative complaint into a speed target
+
+The calm-settling run is especially useful because mass8 eventually reaches a
+human-acceptable final state while still being judged **2–4× too slow to get
+there**. That means #26 should not optimize only final equilibrium error. It needs
+an explicit **time-to-flat / slope-decay** target as well.
+
+The same run also separates presentation from simulation cleanly:
+
+- mass3 forms a large unacceptable lump;
+- mass5 is calmer but does not fully level;
+- mass8 gets closest to the desired equilibrium;
+- even the preferred mass8 surface retains a small “ripple/hill nipple” that may
+  be suitable for later shader treatment if bulk motion is already correct.
+
+This supports a bounded semantic acceleration of deep/extended Water rather than a
+global “make all Water more mobile” change.
 
 ### 1. The primary defect is bulk lateral relaxation / leveling
 
@@ -162,6 +183,28 @@ for the very smallest registered droplet and should remain an explicit risk arm 
 than an assumed safe minimum. If 5 or 6 becomes perceptually equivalent after those
 fixes, reclaimed state bits remain valuable for later Water semantics.
 
+### 4. Preserve useful shallow-flow breakup while rejecting the glitches
+
+The ledge-sheet and diagonal runs provide a useful positive-control vocabulary for
+later visual work. The owner explicitly distinguished several front/edge motifs:
+
+- “serpentine trail”;
+- “splashy flat”;
+- “splashy creep”;
+- small local humps or active front breakup.
+
+Those can read as lively Water. By contrast, the owner rejects:
+
+- persistent “hillnipple” shapes;
+- terrace edges that flicker in and out;
+- vertical-line / vertical-block phases;
+- broad waterslump.
+
+The implementation should therefore preserve the **statistical/lively character**
+of shallow edge flow without preserving the exact current bugs. If a later shader
+or bounded surface rule recreates the useful breakup motifs, it should do so from
+stable authoritative state rather than depending on accidental solver artifacts.
+
 ### 4. Presentation precision is independent from simulation precision
 
 No tested mass width produces an acceptable raw/free-surface appearance everywhere.
@@ -212,7 +255,10 @@ contracts and protected granular/material policies. Reject candidates that merel
 replace sluggishness with crawling, oscillation or excessive over-fluidity.
 
 After a bounded candidate passes the automated screen, re-run a small H set rather
-than repeating the full campaign.
+than repeating the full campaign. The preferred small regression set is now:
+`calm-settling` for time-to-flat, `connected-pools` for level equalization,
+`constriction` for head-driven discharge, and `ledge-sheet` as the shallow positive
+control.
 
 ## Direction-horizontal result and #18 boundary
 
