@@ -1,0 +1,405 @@
+{
+  "schema_version": 1,
+  "report_date": "2026-09-18",
+  "scope": "Water H-gate human evidence and retained raw-archive identities",
+  "authoritative_runtime": {
+    "platform": "Windows",
+    "godot": "4.7-stable (official)",
+    "source_commit": "3ef4923abb011c5451be0f2ba477d8a3bffb0ee3",
+    "dll_sha256": "ce0b252171a7931317068eda62ec1ec773632d760f85f0ebb594af44d197a138",
+    "issue19_audit": "docs/audits/2026-09-12-issue-19-water-feel-lab.md"
+  },
+  "raw_archives": [
+    {
+      "file": "H-20260913-190825-510946.zip",
+      "session_id": "H-20260913-190825-510946",
+      "scenario": "shallow-pool",
+      "bytes": 458792,
+      "sha256": "0b82031d3aa59cdd0131ed80cae0919f5f5098ec5e04b136a5482a2c37dd7355"
+    },
+    {
+      "file": "H-20260918-183258-795865.zip",
+      "session_id": "H-20260918-183258-795865",
+      "scenario": "steps",
+      "bytes": 179402805,
+      "sha256": "f56486a7aeab9eab2f28ac9879183c5831fd49fc743c68a9398081341ef1ce1d"
+    },
+    {
+      "file": "H-20260918-183258-795865CONSTRICTION.zip",
+      "session_id": "H-20260918-183258-795865",
+      "scenario": "constriction",
+      "bytes": 189278669,
+      "sha256": "a9fa3e99960fef783494c384b4a26b4ea2496d1e67d8cd187c23e6069737a9bc"
+    },
+    {
+      "file": "H-20260918-204011-087713-connected-pools.zip",
+      "session_id": "H-20260918-204011-087713",
+      "scenario": "connected-pools",
+      "bytes": 84294932,
+      "sha256": "019d2f21da6aa99b1a2ae8c33753e40e06acca6df01d94a47e41709ff35ba537"
+    },
+    {
+      "file": "H-20260918-210259-941339.zip",
+      "session_id": "H-20260918-210259-941339",
+      "scenario": "fast-dump",
+      "bytes": 185335246,
+      "sha256": "b6304682e8318207f503f82ffd25573e448fbfd6e30085c15162bd51f08fb924"
+    }
+  ],
+  "formal_observations": [
+    {
+      "scenario": "shallow-pool",
+      "label": "A",
+      "mass_bits": 3,
+      "coherence_ticks": 12,
+      "rank": 3,
+      "judgement": "Marginal",
+      "tick": 3180,
+      "note": "iregular blunt sawblade surface"
+    },
+    {
+      "scenario": "shallow-pool",
+      "label": "B",
+      "mass_bits": 5,
+      "coherence_ticks": 12,
+      "rank": 2,
+      "judgement": "Marginal",
+      "tick": 2346,
+      "note": "small speckled sections of surface missing"
+    },
+    {
+      "scenario": "shallow-pool",
+      "label": "C",
+      "mass_bits": 8,
+      "coherence_ticks": 12,
+      "rank": 2,
+      "judgement": "Marginal",
+      "tick": 1973,
+      "note": "coarse but regularish sawtooth surface"
+    },
+    {
+      "scenario": "steps",
+      "label": "A",
+      "mass_bits": 3,
+      "coherence_ticks": 12,
+      "rank": 3,
+      "judgement": "Reject",
+      "tick": 1857,
+      "note": "too slow to spread even when shallow"
+    },
+    {
+      "scenario": "steps",
+      "label": "B",
+      "mass_bits": 5,
+      "coherence_ticks": 12,
+      "rank": 2,
+      "judgement": "Marginal",
+      "tick": 2574,
+      "note": "very similar to C, same minor glitches more noticable tho"
+    },
+    {
+      "scenario": "steps",
+      "label": "C",
+      "mass_bits": 8,
+      "coherence_ticks": 12,
+      "rank": 1,
+      "judgement": "Acceptable",
+      "tick": 6025,
+      "note": "When local water depth is less than step height it looks quite convincing. When deeper, feels too slow/stuck/hesitant. I really like the \"over edge dribble\" of small streams in this one too, it feels like rapid dripping water."
+    },
+    {
+      "scenario": "constriction",
+      "label": "A",
+      "mass_bits": 3,
+      "coherence_ticks": 12,
+      "rank": 1,
+      "judgement": "Marginal",
+      "tick": 1611,
+      "note": "best of the three but slump slope too high"
+    },
+    {
+      "scenario": "constriction",
+      "label": "B",
+      "mass_bits": 5,
+      "coherence_ticks": 12,
+      "rank": 2,
+      "judgement": "Reject",
+      "tick": 2705,
+      "note": "maybe equivlanent to C, maybe slightly better, hard to tell"
+    },
+    {
+      "scenario": "constriction",
+      "label": "C",
+      "mass_bits": 8,
+      "coherence_ticks": 12,
+      "rank": 3,
+      "judgement": "Reject",
+      "tick": 3387,
+      "note": "worst of three, main problem is \"emptying column on left side\" and central step appearing once water is not touching upper wall restriction"
+    },
+    {
+      "scenario": "connected-pools",
+      "label": "A",
+      "mass_bits": 3,
+      "coherence_ticks": 12,
+      "rank": 3,
+      "judgement": "Reject",
+      "tick": 2573,
+      "note": "surface almost too smooth, and when flow slows it actually stops at a ~10 deg angle, looks awful"
+    },
+    {
+      "scenario": "connected-pools",
+      "label": "B",
+      "mass_bits": 5,
+      "coherence_ticks": 12,
+      "rank": 2,
+      "judgement": "Marginal",
+      "tick": 33,
+      "note": "a bit slow, similar to C"
+    },
+    {
+      "scenario": "connected-pools",
+      "label": "C",
+      "mass_bits": 8,
+      "coherence_ticks": 12,
+      "rank": 1,
+      "judgement": "Marginal",
+      "tick": 35,
+      "note": "seems fine, too slow to flatten. Maybe not just pressure needs to be considered, but also potential horizontal span. This would allow for \"surface tension\" to be emulated without needing to bring it in as a whole new calculation"
+    },
+    {
+      "scenario": "fast-dump",
+      "label": "B",
+      "mass_bits": 5,
+      "coherence_ticks": 12,
+      "rank": 2,
+      "judgement": "Marginal",
+      "tick": 4756,
+      "note": ""
+    },
+    {
+      "scenario": "fast-dump",
+      "label": "C",
+      "mass_bits": 8,
+      "coherence_ticks": 12,
+      "rank": 3,
+      "judgement": "Reject",
+      "tick": 471,
+      "note": ""
+    }
+  ],
+  "qualitative_only": [
+    {
+      "scenario": "irregular-bed",
+      "mapping_status": "Reveal mapping absent from supplied observation subset; do not bind labels to mass widths in the canonical report.",
+      "observations": [
+        {
+          "label": "B",
+          "rank": 1,
+          "judgement": "Acceptable",
+          "tick": 1583,
+          "note": "nice flow, bit slow"
+        },
+        {
+          "label": "A",
+          "rank": 3,
+          "judgement": "Marginal",
+          "tick": 1565,
+          "note": "kinda sluggish but barely different to other two"
+        },
+        {
+          "label": "C",
+          "rank": 2,
+          "judgement": "Acceptable",
+          "tick": 169,
+          "note": "nice flow, abit slow"
+        }
+      ]
+    },
+    {
+      "scenario": "fast-dump",
+      "owner_annotations": [
+        "A: red-circled wall-adjacent gap should not occur.",
+        "B: a small hump above the supporting edge is acceptable; a middle terrace/step is not.",
+        "B/C: occasional tumbling/random edge breakup is interesting but currently glitch-like; study as inspiration rather than preserve the bug.",
+        "Owner mockup target: continuous contact, smoother draining curvature, stronger coherent outflow and fewer terraces/gaps."
+      ]
+    }
+  ],
+  "quantitative_sequence_notes": {
+    "steps": {
+      "S001-C": {
+        "frames": 1800,
+        "tick_start": 1,
+        "tick_end": 4583,
+        "approx_sim_hz": 56.57,
+        "estimated_missing_render_serials": 1967
+      },
+      "S002-A": {
+        "frames": 1800,
+        "tick_start": 1,
+        "tick_end": 4833,
+        "approx_sim_hz": 56.19,
+        "estimated_missing_render_serials": 2147
+      },
+      "S003-B": {
+        "frames": 1800,
+        "tick_start": 152,
+        "tick_end": 4529,
+        "contains_reset_boundary": true,
+        "approx_longest_segment_sim_hz": 55.9,
+        "estimated_missing_render_serials": 1935
+      }
+    },
+    "constriction": {
+      "surface_slope_finding": "Representative free-surface wedge approximately 42–43 degrees in later sequence frames across candidates.",
+      "S004-A": {
+        "frames": 1800,
+        "tick_start": 4,
+        "tick_end": 4348,
+        "approx_sim_hz": 59.51,
+        "estimated_missing_render_serials": 971
+      },
+      "S005-B": {
+        "frames": 1800,
+        "tick_start": 4,
+        "tick_end": 4708,
+        "approx_sim_hz": 60.31,
+        "estimated_missing_render_serials": 1196
+      },
+      "S006-C": {
+        "frames": 1800,
+        "tick_start": 4,
+        "tick_end": 4437,
+        "approx_sim_hz": 60.73,
+        "estimated_missing_render_serials": 1020,
+        "provenance": "supplemental reblind after reveal; identical policy mapping, changed camera framing"
+      }
+    },
+    "connected-pools": {
+      "surface_slope_finding": "All candidates retain a non-horizontal free surface; B/C approximately 3.4 degrees around tick 4200 in retained analysis.",
+      "S001-A": {
+        "frames": 783,
+        "tick_start": 3,
+        "tick_end": 1875,
+        "approx_sim_hz": 60.39,
+        "estimated_missing_render_serials": 381
+      },
+      "S002-B": {
+        "frames": 1800,
+        "tick_start": 3,
+        "tick_end": 4317,
+        "approx_sim_hz": 59.92,
+        "estimated_missing_render_serials": 932
+      },
+      "S003-C": {
+        "frames": 1800,
+        "tick_start": 2,
+        "tick_end": 4308,
+        "approx_sim_hz": 59.81,
+        "estimated_missing_render_serials": 974
+      }
+    },
+    "fast-dump": {
+      "S001-A": {
+        "frames": 1800,
+        "tick_start": 0,
+        "tick_end": 4636,
+        "approx_sim_hz": 60.21,
+        "estimated_missing_render_serials": 1152
+      },
+      "S002-B": {
+        "frames": 1800,
+        "tick_start": 3,
+        "tick_end": 4553,
+        "approx_sim_hz": 59.87,
+        "estimated_missing_render_serials": 1072
+      },
+      "S003-C": {
+        "frames": 1800,
+        "tick_start": 0,
+        "tick_end": 4619,
+        "approx_sim_hz": 59.99,
+        "estimated_missing_render_serials": 1114
+      }
+    }
+  },
+  "reveal_mappings": {
+    "shallow-pool": {
+      "A": {
+        "mass_bits": 3,
+        "coherence_ticks": 12
+      },
+      "B": {
+        "mass_bits": 5,
+        "coherence_ticks": 12
+      },
+      "C": {
+        "mass_bits": 8,
+        "coherence_ticks": 12
+      }
+    },
+    "steps": {
+      "A": {
+        "mass_bits": 3,
+        "coherence_ticks": 12
+      },
+      "B": {
+        "mass_bits": 5,
+        "coherence_ticks": 12
+      },
+      "C": {
+        "mass_bits": 8,
+        "coherence_ticks": 12
+      }
+    },
+    "constriction": {
+      "A": {
+        "mass_bits": 3,
+        "coherence_ticks": 12
+      },
+      "B": {
+        "mass_bits": 5,
+        "coherence_ticks": 12
+      },
+      "C": {
+        "mass_bits": 8,
+        "coherence_ticks": 12
+      }
+    },
+    "connected-pools": {
+      "A": {
+        "mass_bits": 3,
+        "coherence_ticks": 12
+      },
+      "B": {
+        "mass_bits": 5,
+        "coherence_ticks": 12
+      },
+      "C": {
+        "mass_bits": 8,
+        "coherence_ticks": 12
+      }
+    },
+    "fast-dump": {
+      "A": {
+        "mass_bits": 3,
+        "coherence_ticks": 12
+      },
+      "B": {
+        "mass_bits": 5,
+        "coherence_ticks": 12
+      },
+      "C": {
+        "mass_bits": 8,
+        "coherence_ticks": 12
+      }
+    }
+  },
+  "programme_disposition": {
+    "mass_bits": "No production selection. Retain mass8 as numerical/control oracle; retest practical widths after bulk-flow and presentation repairs.",
+    "issue_26": "Proceed with automated head/depth response and bounded leveling characterization before semantic candidate integration.",
+    "issue_18": "Remain open. Do not close or admit compact directional history until the residual directional-memory deficit is isolated after #26.",
+    "presentation": "Required later layer; may hide visual quantization but must not substitute for correct authoritative bulk flow."
+  }
+}
