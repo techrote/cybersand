@@ -466,6 +466,7 @@ var hard_surface_rebuild_cooldown: float = 0.0
 func _ready() -> void:
 	setup_tower_panel()
 	var tower_button: Button = Button.new()
+	tower_button.focus_mode = Control.FOCUS_NONE
 	tower_button.text = "Experiment Tower / F9"
 	tower_button.pressed.connect(tower_reset)
 	$Layout.add_child(tower_button)
