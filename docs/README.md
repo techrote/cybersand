@@ -4,8 +4,8 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-09-12
-related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md]
+last-reviewed: 2026-09-18
+related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md]
 ---
 
 # CyberSand documentation
@@ -120,3 +120,14 @@ Water and Cell controls remain unchanged pending programme gates.
 [Completed precision results](audits/2026-09-11-issue-17-state-precision.md) and
 [staged G-P](operations/architecture-programme.md#g-p-staged-decision-2026-09-11)
 retain mass8, establish Water-only delay4, and keep downstream feature gates intact.
+
+
+## MicroScenarios programme
+
+The [MicroScenarios programme](operations/microscenarios-programme.md) plans a
+common deterministic scenario layer extracted from the Experiment Tower/Water
+Feel Lab apparatus. #27 is apparatus-only and follows #18/#24; #28 is the
+post-G-final reference pack; #29 establishes generated/versioned chemistry
+interaction fixtures. Tracking issue #30 records the dependency path and later
+showcase catalogue. This plan does not alter current physics or completed
+architecture evidence.
