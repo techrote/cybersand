@@ -51,6 +51,13 @@
       "scenario": "u-vessel",
       "bytes": 2355974,
       "sha256": "fc34e5ec6c7ecf500253cd4bd1fff882fa775d224f73607d73120f16fdbae121"
+    },
+    {
+      "file": "H-20260918-220208-974037-long-tail-settling.zip",
+      "session_id": "H-20260918-220208-974037",
+      "scenario": "long-tail-settling",
+      "bytes": 1461360,
+      "sha256": "aa8845dc69d2ceeff963ec57bf2bce4a11e0fbc48a0ca5fc176bbf7e87ce075e"
     }
   ],
   "formal_observations": [
@@ -223,6 +230,36 @@
       "judgement": "Acceptable",
       "tick": 25,
       "note": "four tiny raised lumps at left edge"
+    },
+    {
+      "scenario": "long-tail-settling",
+      "label": "A",
+      "mass_bits": 3,
+      "coherence_ticks": 12,
+      "rank": 3,
+      "judgement": "Anomaly",
+      "tick": 99,
+      "note": "3 leftmost drops are missing completely"
+    },
+    {
+      "scenario": "long-tail-settling",
+      "label": "B",
+      "mass_bits": 5,
+      "coherence_ticks": 12,
+      "rank": 2,
+      "judgement": "Marginal",
+      "tick": 47,
+      "note": "fine I guess, right hand puddles look a lil odd though."
+    },
+    {
+      "scenario": "long-tail-settling",
+      "label": "C",
+      "mass_bits": 8,
+      "coherence_ticks": 12,
+      "rank": 1,
+      "judgement": "Good",
+      "tick": 43,
+      "note": "larger \"drops\" combined into a nice puddle"
     }
   ],
   "qualitative_only": [
@@ -379,6 +416,47 @@
           "tick_after_reset_end": 89
         }
       }
+    },
+    "long-tail-settling": {
+      "fixture_note": "The recipe uses twelve 6x6 droplets with normalized masses 8,12,16,...,52. Under the registered half-up physical quantization, mass3 (max 7) maps 8/12/16 to zero; those first three leftmost droplets therefore do not exist authoritatively. mass5 retains all droplets; mass8 is exact.",
+      "initial_quantization": {
+        "mass3": {
+          "requested_numerator_255": 90720,
+          "error_numerator_255": -8100,
+          "error_percent": -8.9285714286,
+          "initial_integer": 324
+        },
+        "mass5": {
+          "requested_numerator_255": 401760,
+          "error_numerator_255": -16200,
+          "error_percent": -4.0322580645,
+          "initial_integer": 1512
+        },
+        "mass8": {
+          "requested_numerator_255": 3304800,
+          "error_numerator_255": 0,
+          "error_percent": 0,
+          "initial_integer": 12960
+        }
+      },
+      "sequence_limitation": "The retained post-reset motion segments are short (A ~109 ticks, B ~128, C ~264). C has a stale pre-reset frame at tick 1315. The formal screenshots are at ticks 99/47/43. This run is strong tiny-quantity/quantization evidence, but not a balanced long-tail settling comparison out to the registered 1800-tick sample.",
+      "sequences": {
+        "S001-A": {
+          "frames": 66,
+          "stale_pre_reset_tick": 195,
+          "post_reset_tick_end": 109
+        },
+        "S002-B": {
+          "frames": 77,
+          "stale_pre_reset_tick": 197,
+          "post_reset_tick_end": 128
+        },
+        "S004-C": {
+          "frames": 163,
+          "stale_pre_reset_tick": 1315,
+          "post_reset_tick_end": 264
+        }
+      }
     }
   },
   "reveal_mappings": {
@@ -465,6 +543,20 @@
         "mass_bits": 8,
         "coherence_ticks": 12
       }
+    },
+    "long-tail-settling": {
+      "A": {
+        "mass_bits": 3,
+        "coherence_ticks": 12
+      },
+      "B": {
+        "mass_bits": 5,
+        "coherence_ticks": 12
+      },
+      "C": {
+        "mass_bits": 8,
+        "coherence_ticks": 12
+      }
     }
   },
   "programme_disposition": {
@@ -472,6 +564,7 @@
     "issue_26": "Proceed with automated head/depth response and bounded leveling characterization before semantic candidate integration.",
     "issue_18": "Remain open. Do not close or admit compact directional history until the residual directional-memory deficit is isolated after #26.",
     "presentation": "Required later layer; may hide visual quantization but must not substitute for correct authoritative bulk flow.",
-    "u_vessel_fixture": "Do not use the current u-vessel H recipe as evidence for communicating-column/head equalization. Replace/add an automated unequal-head U-tube fixture under #26; retain this run as settled-surface evidence."
+    "u_vessel_fixture": "Do not use the current u-vessel H recipe as evidence for communicating-column/head equalization. Replace/add an automated unequal-head U-tube fixture under #26; retain this run as settled-surface evidence.",
+    "tiny_quantity_precision": "Long-tail-settling supplies direct representability evidence: mass3 discards the three smallest registered droplets at initial quantization. Rendering cannot restore authoritative Water that quantized to zero. Treat mass3 as strongly disfavored if these tiny quantities are gameplay-relevant; retain 5/6/8 (and 4 only as an explicit risk arm) for later post-#26 retesting."
   }
 }
