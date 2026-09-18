@@ -1,0 +1,1006 @@
+{
+  "schema_version": 1,
+  "report_date": "2026-09-18",
+  "scope": "Water H-gate human evidence and retained raw-archive identities",
+  "authoritative_runtime": {
+    "platform": "Windows",
+    "godot": "4.7-stable (official)",
+    "source_commit": "3ef4923abb011c5451be0f2ba477d8a3bffb0ee3",
+    "dll_sha256": "ce0b252171a7931317068eda62ec1ec773632d760f85f0ebb594af44d197a138",
+    "issue19_audit": "docs/audits/2026-09-12-issue-19-water-feel-lab.md"
+  },
+  "raw_archives": [
+    {
+      "file": "H-20260913-190825-510946.zip",
+      "session_id": "H-20260913-190825-510946",
+      "scenario": "shallow-pool",
+      "bytes": 458792,
+      "sha256": "0b82031d3aa59cdd0131ed80cae0919f5f5098ec5e04b136a5482a2c37dd7355"
+    },
+    {
+      "file": "H-20260918-183258-795865.zip",
+      "session_id": "H-20260918-183258-795865",
+      "scenario": "steps",
+      "bytes": 179402805,
+      "sha256": "f56486a7aeab9eab2f28ac9879183c5831fd49fc743c68a9398081341ef1ce1d"
+    },
+    {
+      "file": "H-20260918-183258-795865CONSTRICTION.zip",
+      "session_id": "H-20260918-183258-795865",
+      "scenario": "constriction",
+      "bytes": 189278669,
+      "sha256": "a9fa3e99960fef783494c384b4a26b4ea2496d1e67d8cd187c23e6069737a9bc"
+    },
+    {
+      "file": "H-20260918-204011-087713-connected-pools.zip",
+      "session_id": "H-20260918-204011-087713",
+      "scenario": "connected-pools",
+      "bytes": 84294932,
+      "sha256": "019d2f21da6aa99b1a2ae8c33753e40e06acca6df01d94a47e41709ff35ba537"
+    },
+    {
+      "file": "H-20260918-210259-941339.zip",
+      "session_id": "H-20260918-210259-941339",
+      "scenario": "fast-dump",
+      "bytes": 185335246,
+      "sha256": "b6304682e8318207f503f82ffd25573e448fbfd6e30085c15162bd51f08fb924"
+    },
+    {
+      "file": "H-20260918-215639-312864.zip",
+      "session_id": "H-20260918-215639-312864",
+      "scenario": "u-vessel",
+      "bytes": 2355974,
+      "sha256": "fc34e5ec6c7ecf500253cd4bd1fff882fa775d224f73607d73120f16fdbae121"
+    },
+    {
+      "file": "H-20260918-220208-974037-long-tail-settling.zip",
+      "session_id": "H-20260918-220208-974037",
+      "scenario": "long-tail-settling",
+      "bytes": 1461360,
+      "sha256": "aa8845dc69d2ceeff963ec57bf2bce4a11e0fbc48a0ca5fc176bbf7e87ce075e"
+    },
+    {
+      "file": "H-20260918-220750-070555-direction-horiztonal.zip",
+      "session_id": "H-20260918-220750-070555",
+      "scenario": "direction-horizontal",
+      "bytes": 11917847,
+      "sha256": "e42545e056fbc79203e2ae13edfab566da9404f80a732a890b139b2fde9be1c3"
+    },
+    {
+      "file": "H-20260918-222245-506656-calm-settling.zip",
+      "session_id": "H-20260918-222245-506656",
+      "scenario": "calm-settling",
+      "bytes": 49190707,
+      "sha256": "934541e6867d76d67587742293ee4effbd9fc4ac6dc46795ddfb98a723230a59"
+    },
+    {
+      "file": "H-20260918-223125-104747-directional-diagonal.zip",
+      "aliases": [
+        "H-20260918-223125-104747.zip"
+      ],
+      "session_id": "H-20260918-223125-104747",
+      "scenario": "direction-diagonal",
+      "bytes": 9951191,
+      "sha256": "d8af83693739ed1da9e96ab2417c852cccd4c4fef45f833a217598db1de755df",
+      "note": "Both uploaded ZIP names are byte-identical; retain one canonical archive identity."
+    },
+    {
+      "file": "H-20260918-224454-814899-ledge-sheet.zip",
+      "session_id": "H-20260918-224454-814899",
+      "scenario": "ledge-sheet",
+      "bytes": 21573518,
+      "sha256": "e88c6fcf6430abc41a7e8ec5968d15183982ec7136c9ade957b025ff0accb09b"
+    }
+  ],
+  "formal_observations": [
+    {
+      "scenario": "shallow-pool",
+      "label": "A",
+      "mass_bits": 3,
+      "coherence_ticks": 12,
+      "rank": 3,
+      "judgement": "Marginal",
+      "tick": 3180,
+      "note": "iregular blunt sawblade surface"
+    },
+    {
+      "scenario": "shallow-pool",
+      "label": "B",
+      "mass_bits": 5,
+      "coherence_ticks": 12,
+      "rank": 2,
+      "judgement": "Marginal",
+      "tick": 2346,
+      "note": "small speckled sections of surface missing"
+    },
+    {
+      "scenario": "shallow-pool",
+      "label": "C",
+      "mass_bits": 8,
+      "coherence_ticks": 12,
+      "rank": 2,
+      "judgement": "Marginal",
+      "tick": 1973,
+      "note": "coarse but regularish sawtooth surface"
+    },
+    {
+      "scenario": "steps",
+      "label": "A",
+      "mass_bits": 3,
+      "coherence_ticks": 12,
+      "rank": 3,
+      "judgement": "Reject",
+      "tick": 1857,
+      "note": "too slow to spread even when shallow"
+    },
+    {
+      "scenario": "steps",
+      "label": "B",
+      "mass_bits": 5,
+      "coherence_ticks": 12,
+      "rank": 2,
+      "judgement": "Marginal",
+      "tick": 2574,
+      "note": "very similar to C, same minor glitches more noticable tho"
+    },
+    {
+      "scenario": "steps",
+      "label": "C",
+      "mass_bits": 8,
+      "coherence_ticks": 12,
+      "rank": 1,
+      "judgement": "Acceptable",
+      "tick": 6025,
+      "note": "When local water depth is less than step height it looks quite convincing. When deeper, feels too slow/stuck/hesitant. I really like the \"over edge dribble\" of small streams in this one too, it feels like rapid dripping water."
+    },
+    {
+      "scenario": "constriction",
+      "label": "A",
+      "mass_bits": 3,
+      "coherence_ticks": 12,
+      "rank": 1,
+      "judgement": "Marginal",
+      "tick": 1611,
+      "note": "best of the three but slump slope too high"
+    },
+    {
+      "scenario": "constriction",
+      "label": "B",
+      "mass_bits": 5,
+      "coherence_ticks": 12,
+      "rank": 2,
+      "judgement": "Reject",
+      "tick": 2705,
+      "note": "maybe equivlanent to C, maybe slightly better, hard to tell"
+    },
+    {
+      "scenario": "constriction",
+      "label": "C",
+      "mass_bits": 8,
+      "coherence_ticks": 12,
+      "rank": 3,
+      "judgement": "Reject",
+      "tick": 3387,
+      "note": "worst of three, main problem is \"emptying column on left side\" and central step appearing once water is not touching upper wall restriction"
+    },
+    {
+      "scenario": "connected-pools",
+      "label": "A",
+      "mass_bits": 3,
+      "coherence_ticks": 12,
+      "rank": 3,
+      "judgement": "Reject",
+      "tick": 2573,
+      "note": "surface almost too smooth, and when flow slows it actually stops at a ~10 deg angle, looks awful"
+    },
+    {
+      "scenario": "connected-pools",
+      "label": "B",
+      "mass_bits": 5,
+      "coherence_ticks": 12,
+      "rank": 2,
+      "judgement": "Marginal",
+      "tick": 33,
+      "note": "a bit slow, similar to C"
+    },
+    {
+      "scenario": "connected-pools",
+      "label": "C",
+      "mass_bits": 8,
+      "coherence_ticks": 12,
+      "rank": 1,
+      "judgement": "Marginal",
+      "tick": 35,
+      "note": "seems fine, too slow to flatten. Maybe not just pressure needs to be considered, but also potential horizontal span. This would allow for \"surface tension\" to be emulated without needing to bring it in as a whole new calculation"
+    },
+    {
+      "scenario": "fast-dump",
+      "label": "B",
+      "mass_bits": 5,
+      "coherence_ticks": 12,
+      "rank": 2,
+      "judgement": "Marginal",
+      "tick": 4756,
+      "note": ""
+    },
+    {
+      "scenario": "fast-dump",
+      "label": "C",
+      "mass_bits": 8,
+      "coherence_ticks": 12,
+      "rank": 3,
+      "judgement": "Reject",
+      "tick": 471,
+      "note": ""
+    },
+    {
+      "scenario": "u-vessel",
+      "label": "A",
+      "mass_bits": 3,
+      "coherence_ticks": 12,
+      "rank": 2,
+      "judgement": "Marginal",
+      "tick": 482,
+      "note": "four sets of four to six tiny lumps, spread relatively evenly"
+    },
+    {
+      "scenario": "u-vessel",
+      "label": "B",
+      "mass_bits": 5,
+      "coherence_ticks": 12,
+      "rank": 2,
+      "judgement": "Marginal",
+      "tick": 25,
+      "note": "a few \"serrated\" areas"
+    },
+    {
+      "scenario": "u-vessel",
+      "label": "C",
+      "mass_bits": 8,
+      "coherence_ticks": 12,
+      "rank": 1,
+      "judgement": "Acceptable",
+      "tick": 25,
+      "note": "four tiny raised lumps at left edge"
+    },
+    {
+      "scenario": "long-tail-settling",
+      "label": "A",
+      "mass_bits": 3,
+      "coherence_ticks": 12,
+      "rank": 3,
+      "judgement": "Anomaly",
+      "tick": 99,
+      "note": "3 leftmost drops are missing completely"
+    },
+    {
+      "scenario": "long-tail-settling",
+      "label": "B",
+      "mass_bits": 5,
+      "coherence_ticks": 12,
+      "rank": 2,
+      "judgement": "Marginal",
+      "tick": 47,
+      "note": "fine I guess, right hand puddles look a lil odd though."
+    },
+    {
+      "scenario": "long-tail-settling",
+      "label": "C",
+      "mass_bits": 8,
+      "coherence_ticks": 12,
+      "rank": 1,
+      "judgement": "Good",
+      "tick": 43,
+      "note": "larger \"drops\" combined into a nice puddle"
+    },
+    {
+      "scenario": "direction-horizontal",
+      "label": "A",
+      "mass_bits": 3,
+      "coherence_ticks": 12,
+      "rank": 3,
+      "judgement": "Reject",
+      "tick": 33,
+      "note": "way too much height differential remains, doesn't really flow"
+    },
+    {
+      "scenario": "direction-horizontal",
+      "label": "B",
+      "mass_bits": 5,
+      "coherence_ticks": 12,
+      "rank": 2,
+      "judgement": "Good",
+      "tick": 37,
+      "note": "seems fine, can't tell if this or C is faster at first. Later on C continues to flow but B does not, that's the main reason C wins"
+    },
+    {
+      "scenario": "direction-horizontal",
+      "label": "C",
+      "mass_bits": 8,
+      "coherence_ticks": 12,
+      "rank": 1,
+      "judgement": "Good",
+      "tick": 674,
+      "note": "similar to b but slightly faster sideways flow maybe"
+    },
+    {
+      "scenario": "calm-settling",
+      "label": "A",
+      "mass_bits": 3,
+      "coherence_ticks": 12,
+      "rank": 3,
+      "judgement": "Reject",
+      "tick": 40,
+      "note": "lump on the water, not ok"
+    },
+    {
+      "scenario": "calm-settling",
+      "label": "B",
+      "mass_bits": 5,
+      "coherence_ticks": 12,
+      "rank": 2,
+      "judgement": "Acceptable",
+      "tick": 29,
+      "note": "\"hill nipple\" not as annoying as C, but doesn't fully level."
+    },
+    {
+      "scenario": "calm-settling",
+      "label": "C",
+      "mass_bits": 8,
+      "coherence_ticks": 12,
+      "rank": 1,
+      "judgement": "Good",
+      "tick": 671,
+      "note": "acceptable final state, but needs to get there 2x - 4x faster and \"ripple nipple\" on the top of the \"hill\" looks weird and annoying, maybe we can GPU shader that into a feature rather than bug"
+    },
+    {
+      "scenario": "direction-diagonal",
+      "label": "A",
+      "mass_bits": 3,
+      "coherence_ticks": 12,
+      "rank": 3,
+      "judgement": "Reject",
+      "tick": 599,
+      "note": "waterslump again, bad"
+    },
+    {
+      "scenario": "direction-diagonal",
+      "label": "B",
+      "mass_bits": 5,
+      "coherence_ticks": 12,
+      "rank": 2,
+      "judgement": "Acceptable",
+      "tick": 51,
+      "note": "better hillnipple than C, terrace edges much calmer, but edge drips quickly cease"
+    },
+    {
+      "scenario": "direction-diagonal",
+      "label": "C",
+      "mass_bits": 8,
+      "coherence_ticks": 12,
+      "rank": 2,
+      "judgement": "Good",
+      "tick": 33,
+      "note": "annoying flickering hillnipple again and edges of \"terraces\" flicker and move in and out"
+    },
+    {
+      "scenario": "ledge-sheet",
+      "label": "A",
+      "mass_bits": 3,
+      "coherence_ticks": 12,
+      "rank": 3,
+      "judgement": "Reject",
+      "tick": 74,
+      "note": "waterslump bad"
+    },
+    {
+      "scenario": "ledge-sheet",
+      "label": "B",
+      "mass_bits": 5,
+      "coherence_ticks": 12,
+      "rank": 2,
+      "judgement": "Acceptable",
+      "tick": 25,
+      "note": "smoothly mooving hillnipple and teraces, slow dribble flow"
+    },
+    {
+      "scenario": "ledge-sheet",
+      "label": "C",
+      "mass_bits": 8,
+      "coherence_ticks": 12,
+      "rank": 1,
+      "judgement": "Good",
+      "tick": 40,
+      "note": "more active hillnipple and terraces, better flow, interesting \"puddlefront behaviour, towards the end of screenshots, seems to be 4 \"phases\": full water, serpentine flow, verti lines and front speckles. verti line looks bad, others are interesting."
+    }
+  ],
+  "qualitative_only": [
+    {
+      "scenario": "irregular-bed",
+      "mapping_status": "Reveal mapping absent from supplied observation subset; do not bind labels to mass widths in the canonical report.",
+      "observations": [
+        {
+          "label": "B",
+          "rank": 1,
+          "judgement": "Acceptable",
+          "tick": 1583,
+          "note": "nice flow, bit slow"
+        },
+        {
+          "label": "A",
+          "rank": 3,
+          "judgement": "Marginal",
+          "tick": 1565,
+          "note": "kinda sluggish but barely different to other two"
+        },
+        {
+          "label": "C",
+          "rank": 2,
+          "judgement": "Acceptable",
+          "tick": 169,
+          "note": "nice flow, abit slow"
+        }
+      ]
+    },
+    {
+      "scenario": "fast-dump",
+      "owner_annotations": [
+        "A: red-circled wall-adjacent gap should not occur.",
+        "B: a small hump above the supporting edge is acceptable; a middle terrace/step is not.",
+        "B/C: occasional tumbling/random edge breakup is interesting but currently glitch-like; study as inspiration rather than preserve the bug.",
+        "Owner mockup target: continuous contact, smoother draining curvature, stronger coherent outflow and fewer terraces/gaps."
+      ]
+    }
+  ],
+  "quantitative_sequence_notes": {
+    "steps": {
+      "S001-C": {
+        "frames": 1800,
+        "tick_start": 1,
+        "tick_end": 4583,
+        "approx_sim_hz": 56.57,
+        "estimated_missing_render_serials": 1967
+      },
+      "S002-A": {
+        "frames": 1800,
+        "tick_start": 1,
+        "tick_end": 4833,
+        "approx_sim_hz": 56.19,
+        "estimated_missing_render_serials": 2147
+      },
+      "S003-B": {
+        "frames": 1800,
+        "tick_start": 152,
+        "tick_end": 4529,
+        "contains_reset_boundary": true,
+        "approx_longest_segment_sim_hz": 55.9,
+        "estimated_missing_render_serials": 1935
+      }
+    },
+    "constriction": {
+      "surface_slope_finding": "Representative free-surface wedge approximately 42–43 degrees in later sequence frames across candidates.",
+      "S004-A": {
+        "frames": 1800,
+        "tick_start": 4,
+        "tick_end": 4348,
+        "approx_sim_hz": 59.51,
+        "estimated_missing_render_serials": 971
+      },
+      "S005-B": {
+        "frames": 1800,
+        "tick_start": 4,
+        "tick_end": 4708,
+        "approx_sim_hz": 60.31,
+        "estimated_missing_render_serials": 1196
+      },
+      "S006-C": {
+        "frames": 1800,
+        "tick_start": 4,
+        "tick_end": 4437,
+        "approx_sim_hz": 60.73,
+        "estimated_missing_render_serials": 1020,
+        "provenance": "supplemental reblind after reveal; identical policy mapping, changed camera framing"
+      }
+    },
+    "connected-pools": {
+      "surface_slope_finding": "All candidates retain a non-horizontal free surface; B/C approximately 3.4 degrees around tick 4200 in retained analysis.",
+      "S001-A": {
+        "frames": 783,
+        "tick_start": 3,
+        "tick_end": 1875,
+        "approx_sim_hz": 60.39,
+        "estimated_missing_render_serials": 381
+      },
+      "S002-B": {
+        "frames": 1800,
+        "tick_start": 3,
+        "tick_end": 4317,
+        "approx_sim_hz": 59.92,
+        "estimated_missing_render_serials": 932
+      },
+      "S003-C": {
+        "frames": 1800,
+        "tick_start": 2,
+        "tick_end": 4308,
+        "approx_sim_hz": 59.81,
+        "estimated_missing_render_serials": 974
+      }
+    },
+    "fast-dump": {
+      "S001-A": {
+        "frames": 1800,
+        "tick_start": 0,
+        "tick_end": 4636,
+        "approx_sim_hz": 60.21,
+        "estimated_missing_render_serials": 1152
+      },
+      "S002-B": {
+        "frames": 1800,
+        "tick_start": 3,
+        "tick_end": 4553,
+        "approx_sim_hz": 59.87,
+        "estimated_missing_render_serials": 1072
+      },
+      "S003-C": {
+        "frames": 1800,
+        "tick_start": 0,
+        "tick_end": 4619,
+        "approx_sim_hz": 59.99,
+        "estimated_missing_render_serials": 1114
+      }
+    },
+    "u-vessel": {
+      "fixture_limitation": "The registered recipe is a single U-shaped tank filled uniformly from x112..365 at y202..247. It does not create unequal communicating columns or a hydrostatic head difference, so this H run is a settled-surface stability/quantization test rather than the intended differential-head leveling test.",
+      "sequences": {
+        "S002-A": {
+          "frames": 8,
+          "recorded_reset_boundary": true,
+          "tick_after_reset_end": 11
+        },
+        "S003-B": {
+          "frames": 11,
+          "recorded_reset_boundary": true,
+          "tick_after_reset_end": 20
+        },
+        "S004-C": {
+          "frames": 38,
+          "recorded_reset_boundary": true,
+          "tick_after_reset_end": 89
+        }
+      }
+    },
+    "long-tail-settling": {
+      "fixture_note": "The recipe uses twelve 6x6 droplets with normalized masses 8,12,16,...,52. Under the registered half-up physical quantization, mass3 (max 7) maps 8/12/16 to zero; those first three leftmost droplets therefore do not exist authoritatively. mass5 retains all droplets; mass8 is exact.",
+      "initial_quantization": {
+        "mass3": {
+          "requested_numerator_255": 90720,
+          "error_numerator_255": -8100,
+          "error_percent": -8.9285714286,
+          "initial_integer": 324
+        },
+        "mass5": {
+          "requested_numerator_255": 401760,
+          "error_numerator_255": -16200,
+          "error_percent": -4.0322580645,
+          "initial_integer": 1512
+        },
+        "mass8": {
+          "requested_numerator_255": 3304800,
+          "error_numerator_255": 0,
+          "error_percent": 0,
+          "initial_integer": 12960
+        }
+      },
+      "sequence_limitation": "The retained post-reset motion segments are short (A ~109 ticks, B ~128, C ~264). C has a stale pre-reset frame at tick 1315. The formal screenshots are at ticks 99/47/43. This run is strong tiny-quantity/quantization evidence, but not a balanced long-tail settling comparison out to the registered 1800-tick sample.",
+      "sequences": {
+        "S001-A": {
+          "frames": 66,
+          "stale_pre_reset_tick": 195,
+          "post_reset_tick_end": 109
+        },
+        "S002-B": {
+          "frames": 77,
+          "stale_pre_reset_tick": 197,
+          "post_reset_tick_end": 128
+        },
+        "S004-C": {
+          "frames": 163,
+          "stale_pre_reset_tick": 1315,
+          "post_reset_tick_end": 264
+        }
+      }
+    },
+    "direction-horizontal": {
+      "interpretation_boundary": "This existing lab recipe is a horizontally extended Water strip plus a same-row fill event at tick 45; it is useful for lateral persistence/leveling feel but is not a controlled injected-velocity oracle.",
+      "sequences": {
+        "S001-C": {
+          "frames": 1800,
+          "tick_start": 6,
+          "tick_end": 4106,
+          "render_serial_start": 5560,
+          "render_serial_end": 8269
+        },
+        "S002-A": {
+          "frames": 110,
+          "tick_start": 4,
+          "tick_end": 197,
+          "render_serial_start": 8719,
+          "render_serial_end": 9105
+        },
+        "S003-B": {
+          "frames": 654,
+          "tick_start": 38,
+          "tick_end": 1540,
+          "render_serial_start": 9217,
+          "render_serial_end": 10190
+        }
+      }
+    },
+    "calm-settling": {
+      "interpretation": "Strong equilibrium/rest evidence. mass8 reaches the most acceptable final state but the observer explicitly wants leveling 2–4x faster. mass5 retains a residual hill; mass3 forms an unacceptable lump.",
+      "sequences": {
+        "S001-A": {
+          "frames": 43,
+          "reset_boundary": true,
+          "post_reset_frames": 42,
+          "post_reset_tick_start": 1,
+          "post_reset_tick_end": 79,
+          "approx_post_reset_sim_hz": 39
+        },
+        "S002-B": {
+          "frames": 417,
+          "tick_start": 1,
+          "tick_end": 801,
+          "approx_sim_hz": 42.11
+        },
+        "S003-C": {
+          "frames": 1800,
+          "tick_start": 4,
+          "tick_end": 4636,
+          "approx_sim_hz": 57.9
+        }
+      }
+    },
+    "direction-diagonal": {
+      "interpretation": "Confirms the same slump/terrace family under diagonal initialization. mass8 is visually lively but has flickering hillnipple/terrace boundaries; mass5 calms terraces but edge drips die sooner; mass3 again collapses into poor slump behavior.",
+      "sequences": {
+        "S001-B": {
+          "frames": 450,
+          "tick_start": 6,
+          "tick_end": 788,
+          "approx_sim_hz": 43.44
+        },
+        "S002-C": {
+          "frames": 1800,
+          "tick_start": 14,
+          "tick_end": 4040,
+          "approx_sim_hz": 58.35
+        },
+        "S003-A": {
+          "frames": 110,
+          "tick_start": 6,
+          "tick_end": 191,
+          "approx_sim_hz": 37
+        }
+      },
+      "owner_annotation": "Blind C screenshot marks a central 'hillnipple' and multiple 'terrace edges'."
+    },
+    "ledge-sheet": {
+      "interpretation": "Positive shallow-flow control, but not defect-free. mass8 has the best flow and interesting front breakup phases; persistent hill/terrace structure and vertical-line phase remain undesirable. mass3 again slumps badly.",
+      "sequences": {
+        "S001-A": {
+          "frames": 123,
+          "tick_start": 2,
+          "tick_end": 267,
+          "approx_sim_hz": 53
+        },
+        "S002-B": {
+          "frames": 782,
+          "reset_boundary": true,
+          "post_reset_frames": 781,
+          "post_reset_tick_start": 0,
+          "post_reset_tick_end": 1818,
+          "approx_post_reset_sim_hz": 60.6
+        },
+        "S003-C": {
+          "frames": 1800,
+          "tick_start": 0,
+          "tick_end": 4185,
+          "approx_sim_hz": 59.79
+        }
+      },
+      "owner_annotation": {
+        "labels": [
+          "full water",
+          "serpentine trail",
+          "verti blocks",
+          "splashy flat",
+          "splashy creep"
+        ],
+        "interpretation": "The owner likes several breakup/front motifs as possible visual/behavioral ingredients, but explicitly dislikes the vertical-block/vertical-line phase. Preserve useful motifs as references, not as proof the current glitch is correct."
+      }
+    }
+  },
+  "reveal_mappings": {
+    "shallow-pool": {
+      "A": {
+        "mass_bits": 3,
+        "coherence_ticks": 12
+      },
+      "B": {
+        "mass_bits": 5,
+        "coherence_ticks": 12
+      },
+      "C": {
+        "mass_bits": 8,
+        "coherence_ticks": 12
+      }
+    },
+    "steps": {
+      "A": {
+        "mass_bits": 3,
+        "coherence_ticks": 12
+      },
+      "B": {
+        "mass_bits": 5,
+        "coherence_ticks": 12
+      },
+      "C": {
+        "mass_bits": 8,
+        "coherence_ticks": 12
+      }
+    },
+    "constriction": {
+      "A": {
+        "mass_bits": 3,
+        "coherence_ticks": 12
+      },
+      "B": {
+        "mass_bits": 5,
+        "coherence_ticks": 12
+      },
+      "C": {
+        "mass_bits": 8,
+        "coherence_ticks": 12
+      }
+    },
+    "connected-pools": {
+      "A": {
+        "mass_bits": 3,
+        "coherence_ticks": 12
+      },
+      "B": {
+        "mass_bits": 5,
+        "coherence_ticks": 12
+      },
+      "C": {
+        "mass_bits": 8,
+        "coherence_ticks": 12
+      }
+    },
+    "fast-dump": {
+      "A": {
+        "mass_bits": 3,
+        "coherence_ticks": 12
+      },
+      "B": {
+        "mass_bits": 5,
+        "coherence_ticks": 12
+      },
+      "C": {
+        "mass_bits": 8,
+        "coherence_ticks": 12
+      }
+    },
+    "u-vessel": {
+      "A": {
+        "mass_bits": 3,
+        "coherence_ticks": 12
+      },
+      "B": {
+        "mass_bits": 5,
+        "coherence_ticks": 12
+      },
+      "C": {
+        "mass_bits": 8,
+        "coherence_ticks": 12
+      }
+    },
+    "long-tail-settling": {
+      "A": {
+        "mass_bits": 3,
+        "coherence_ticks": 12
+      },
+      "B": {
+        "mass_bits": 5,
+        "coherence_ticks": 12
+      },
+      "C": {
+        "mass_bits": 8,
+        "coherence_ticks": 12
+      }
+    },
+    "direction-horizontal": {
+      "A": {
+        "mass_bits": 3,
+        "coherence_ticks": 12
+      },
+      "B": {
+        "mass_bits": 5,
+        "coherence_ticks": 12
+      },
+      "C": {
+        "mass_bits": 8,
+        "coherence_ticks": 12
+      }
+    },
+    "calm-settling": {
+      "A": {
+        "mass_bits": 3,
+        "coherence_ticks": 12
+      },
+      "B": {
+        "mass_bits": 5,
+        "coherence_ticks": 12
+      },
+      "C": {
+        "mass_bits": 8,
+        "coherence_ticks": 12
+      }
+    },
+    "direction-diagonal": {
+      "A": {
+        "mass_bits": 3,
+        "coherence_ticks": 12
+      },
+      "B": {
+        "mass_bits": 5,
+        "coherence_ticks": 12
+      },
+      "C": {
+        "mass_bits": 8,
+        "coherence_ticks": 12
+      }
+    },
+    "ledge-sheet": {
+      "A": {
+        "mass_bits": 3,
+        "coherence_ticks": 12
+      },
+      "B": {
+        "mass_bits": 5,
+        "coherence_ticks": 12
+      },
+      "C": {
+        "mass_bits": 8,
+        "coherence_ticks": 12
+      }
+    }
+  },
+  "programme_disposition": {
+    "mass_bits": "No production selection. Retain mass8 as numerical/control oracle; retest practical widths after bulk-flow and presentation repairs.",
+    "issue_26": "Proceed with automated head/depth response and bounded leveling characterization before semantic candidate integration.",
+    "issue_18": "Remain open. Do not close or admit compact directional history until the residual directional-memory deficit is isolated after #26.",
+    "presentation": "Required later layer; may hide visual quantization but must not substitute for correct authoritative bulk flow.",
+    "u_vessel_fixture": "Do not use the current u-vessel H recipe as evidence for communicating-column/head equalization. Replace/add an automated unequal-head U-tube fixture under #26; retain this run as settled-surface evidence.",
+    "tiny_quantity_precision": "Long-tail-settling supplies direct representability evidence: mass3 discards the three smallest registered droplets at initial quantization. Rendering cannot restore authoritative Water that quantized to zero. Treat mass3 as strongly disfavored if these tiny quantities are gameplay-relevant; retain 5/6/8 (and 4 only as an explicit risk arm) for later post-#26 retesting.",
+    "direction_horizontal": "Revealed result: mass8 Good/rank1, mass5 Good/rank2, mass3 Reject/rank3. C was perceived to sustain lateral flow longer than B; A retained excessive height differential. This is useful evidence of precision-dependent lateral leveling persistence, but the existing fixture is a same-row strip/fill experiment rather than a clean injected-velocity history oracle, so it does not by itself admit #18 compact motion history.",
+    "calm_settling": "Mass8 can reach an acceptable calm final state, but current leveling speed is still perceived 2–4x too slow. This materially strengthens #26's leveling-speed target and suggests measuring time-to-flat, not only final error.",
+    "direction_diagonal": "Diagonal initialization reproduces slump, hillnipple and terrace-edge artifacts. Useful as anisotropy/edge-stability evidence; no separate diagonal-only architecture is justified yet.",
+    "ledge_sheet": "Shallow-flow positive control confirms useful lively edge/dribble/front behavior exists and must be preserved while #26 accelerates deep-water leveling. Treat serpentine/splashy/front-speckle motifs as references; reject persistent vertical-block artifacts."
+  },
+  "review": {
+    "reviewed_utc": "2026-09-18",
+    "unique_session_archives": 11,
+    "unique_archive_bytes": 735221041,
+    "duplicate_aliases": {
+      "H-20260918-223125-104747.zip": "byte-identical alias of H-20260918-223125-104747-directional-diagonal.zip"
+    },
+    "formal_revealed_scenarios": [
+      "shallow-pool",
+      "steps",
+      "constriction",
+      "connected-pools",
+      "fast-dump",
+      "u-vessel",
+      "long-tail-settling",
+      "direction-horizontal",
+      "calm-settling",
+      "direction-diagonal",
+      "ledge-sheet"
+    ],
+    "qualitative_only_scenarios": [
+      "irregular-bed"
+    ],
+    "excluded_evidence": [
+      "stale/pre-#19 H attempt",
+      "pre-fix uphill steps fixture",
+      "early contaminated irregular-bed pilot"
+    ],
+    "apparatus_fingerprint_groups": [
+      {
+        "scope": [
+          "H-20260913-190825-510946.zip"
+        ],
+        "files": {
+          "res://scripts/h_gate_recorder.gd": "1f1947a1f51aac8afa2497dcb4b92cbd867b7d8efaa6e3932193b073c02842df",
+          "res://scripts/main.gd": "6934ad8b563f6628ca48e6f0c8cdc454c3c1e8bf95fab99489d195958ce686f1",
+          "res://scripts/tower_panel.gd": "3f911d8189fcdaf26b35b3e422bb31914f9052354d68efb30032529b6d381c50",
+          "res://scripts/water_experiment_blind.gd": "25dab75373382c09d11afeda4e3b9ab027e491c4f83f6d4b526f5f824a11ae85",
+          "res://scripts/water_experiment_profiles.gd": "172cd621c16561fce17f3a16e80a060007348201c2b901922531cd620dabaca5",
+          "res://scripts/water_feel_scenarios.gd": "3eed68b0cf4a986c516f7b7962b91ad71e1059998ca794c0563026322b8628f7"
+        }
+      },
+      {
+        "scope": [
+          "corrected steps and all later H archives through ledge-sheet"
+        ],
+        "files": {
+          "res://scripts/h_gate_recorder.gd": "6ff99581b2ec3d86aa3133d416305c85c7b30d99e8c7531d08b5e3bb228da6b0",
+          "res://scripts/main.gd": "5a0b527b53ba0a40e79e512e0674133c3b6a0af265081b45b56493bff272c85a",
+          "res://scripts/tower_panel.gd": "5c3e3f095845149f8d9033d528539065dbb929fe0fda4a790a0686acbd014a0e",
+          "res://scripts/water_experiment_blind.gd": "25dab75373382c09d11afeda4e3b9ab027e491c4f83f6d4b526f5f824a11ae85",
+          "res://scripts/water_experiment_profiles.gd": "172cd621c16561fce17f3a16e80a060007348201c2b901922531cd620dabaca5",
+          "res://scripts/water_feel_scenarios.gd": "ffaac991360ecd2d2a1d4dceb06fd620f294bc304817a609e10c6e8245e6ec9e"
+        }
+      }
+    ]
+  },
+  "metric_charter": {
+    "bulk": [
+      "early discharge versus initial head/depth",
+      "lateral center-of-mass displacement and range",
+      "free-surface slope versus tick and slope half-life",
+      "communicating-pool level difference and half-life",
+      "time-to-flat / time-to-registered equilibrium",
+      "cliff lifetime",
+      "exact Water quantity and explicit source/sink accounting",
+      "active blocks, visits/transfers, wake work and p50/p95/p99/max tick cost"
+    ],
+    "surface_authoritative": [
+      "hill amplitude, width and lifetime",
+      "terrace count, horizontal extent and vertical step severity",
+      "terrace/hill contour turnover (shimmer) per simulated second",
+      "wall-contact gap extent/area and lifetime"
+    ],
+    "surface_rendered": [
+      "rendered hill amplitude/width",
+      "rendered terrace severity",
+      "rendered contour turnover / shimmer",
+      "rendered wall-contact gap",
+      "temporal flicker when authoritative contour is unchanged or minimally changed"
+    ],
+    "diagnostic_rule": {
+      "bad_authority_bad_render": "simulation defect visible as expected",
+      "good_authority_bad_render": "renderer/reconstruction defect",
+      "bad_authority_good_render": "renderer conceals authoritative defect; simulation still fails",
+      "good_authority_good_render": "candidate passes this surface dimension"
+    }
+  },
+  "next_engineering": {
+    "issue_26_fixtures": [
+      "shallow/medium/deep identical-outlet head-response family",
+      "communicating pools with fixed initial level difference",
+      "true unequal-head U-tube / communicating-column fixture",
+      "constriction/nozzle",
+      "fast dump",
+      "calm settling",
+      "ledge-sheet shallow positive control"
+    ],
+    "candidate_order": [
+      "baseline characterization",
+      "head-scaled local drive",
+      "bounded leveling horizon",
+      "combined arm only if isolated candidates justify it",
+      "focused H regression",
+      "repeat directional references for #18 admission/no-go"
+    ],
+    "focused_h_regression": [
+      "calm-settling",
+      "connected-pools",
+      "constriction",
+      "ledge-sheet"
+    ],
+    "issue_18": "Remain open and held until post-#26 directional references isolate a residual directional-memory target or support no-go."
+  }
+}

@@ -4,8 +4,8 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-09-12
-related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md]
+last-reviewed: 2026-09-18
+related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../audits/2026-09-18-water-h-gate-synthesis.md]
 ---
 
 # Validation evidence ledger
@@ -154,6 +154,34 @@ all eight same-phase concurrency configurations, and55 native tests each for
 unmodified source/fixed-carrier mass8. Delay4 is Water-specific semantically exact;
 G-P retains mass8 as reference. Shared-desktop cost limits and inherited provenance
 failures remain explicit. No fresh Web/Linux/Godot or production migration acceptance.
+
+## Water H gate, 2026-09-18
+
+The [comprehensive H synthesis](../audits/2026-09-18-water-h-gate-synthesis.md)
+and its machine-readable evidence index record the owner-led blind Water Feel
+campaign across shallow/irregular pools, corrected steps, constriction,
+connected-pools, fast-dump, u-vessel, long-tail settling, horizontal/diagonal
+references, calm-settling and ledge-sheet.
+
+This is **human perceptual evidence**, not a fresh production-runtime validation
+campaign. It is bound to the recorded #19 runtime/artifact and H-apparatus
+fingerprints. Eleven unique H archives (~735 MB decimal) are indexed by exact
+filename, byte size and SHA-256 rather than committed as hundreds of MiB of PNG
+frames.
+
+Legitimate conclusions include:
+- deep/extended Water levels too slowly and can retain slopes/terraces;
+- mass8 calm-settling can reach an acceptable final state but is judged 2–4× too
+  slow;
+- mass3 loses the smallest registered long-tail droplets at initial quantization;
+- hillnipple, terrace severity/shimmer and wall-contact gap are now explicit
+  two-layer authoritative/rendered metrics;
+- shallow ledge/dribble behavior supplies a positive control to preserve.
+
+This evidence does not select a production mass width, approve a renderer,
+admit #18 compact history, admit #20 ballistics, or complete G-final. Frame
+sequences are tick-indexed supplemental evidence and do not contain every 60 Hz
+render publication.
 
 ## Issue #19 Water Feel Lab, 2026-09-12
 

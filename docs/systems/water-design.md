@@ -4,8 +4,8 @@ document-kind: contract
 canonical-for: [native-water-semantics, native-fallback-water-differences]
 status: Current
 scope: Native conserved Water, coherent emission and adhesion, rest/hash fixtures, fallback differences, and future reaction accounting
-last-reviewed: 2026-09-12
-related-documents: [materials-and-rule-kernels.md, material-appearance-and-rendering.md, ../reference/level-saves-and-replay.md, ../decisions/ADR-005-water-model.md]
+last-reviewed: 2026-09-18
+related-documents: [materials-and-rule-kernels.md, material-appearance-and-rendering.md, ../reference/level-saves-and-replay.md, ../decisions/ADR-005-water-model.md, ../audits/2026-09-18-water-h-gate-synthesis.md]
 ---
 
 # Water design
@@ -206,3 +206,57 @@ presentation and do not change mass, collision, waking or state hashes. The
 [Water Feel Lab runbook](../operations/experiment-tower.md#current-19-water-feel-lab-extension)
 and [dated evidence](../audits/2026-09-12-issue-19-water-feel-lab.md) own candidate
 procedure and acceptance. This experiment neither repacks Cell nor allocates bits.
+
+## What did the 2026-09-18 H gate learn?
+
+The [H synthesis](../audits/2026-09-18-water-h-gate-synthesis.md) records the
+current human Water-feel evidence. It does **not** change Current production
+semantics and does not select a production mass width.
+
+The dominant observed defect is slow/weak bulk lateral redistribution in deep or
+spatially extended Water. Registered scenarios show persistent slopes, terraces,
+granular-like slump and slow communicating-level equalization, while shallow
+dribbles and edge flow can look substantially more convincing. The leading
+bounded research questions are now:
+
+- whether a local depth/head proxy should increase lateral drive; and
+- whether a bounded horizontal leveling horizon can improve level equalization
+  without introducing persistent velocity or an unbounded pressure solve.
+
+Issue #26 owns that characterization. Current `World::update_water` remains the
+control.
+
+The H gate also establishes a precision boundary: in
+`long-tail-settling`, the smallest registered normalized droplets 8/12/16
+quantize to zero at mass3. That is initial authoritative representability loss,
+not a rendering artifact. mass8 remains the numerical/control oracle; no final
+production mass width is selected.
+
+### Surface-state metrics after H
+
+Two repeated defect classes are now first-class diagnostics:
+
+- **hillnipple:** localized surface mound/peak amplitude, width and lifetime;
+- **terrace / terrace shimmer:** persistent surface shelves plus temporal contour
+  turnover/flicker.
+
+Fast-dump also identifies **wall-contact gap** extent/lifetime.
+
+Measure these first from authoritative Water mass/state and separately from
+rendered pixels. If authority is stable/good while pixels shimmer, fix the
+renderer. If the authoritative contour itself contains a persistent mound,
+terrace or contact gap, presentation cannot be credited with solving it.
+
+The calm-settling mass8 arm reaches a human-acceptable final state but was judged
+roughly **2–4× too slow** to get there. Therefore #26 must measure time-to-flat
+and slope decay as well as final levelness.
+
+### Positive-control behavior to preserve
+
+Do not solve deep-water leveling by making all Water uniformly fast, smooth or
+inert. H identified useful shallow-flow character including rapid edge dribble,
+serpentine/splashy fronts and small local breakup. `ledge-sheet` is the main
+positive control for preserving that liveliness while bulk Water is improved.
+
+#18 compact history remains open but unadmitted. Repeat directional references
+after #26 before deciding whether any residual stored-direction problem remains.

@@ -5,7 +5,7 @@ document-kind: design
 scope: Evidence gates for Cell representation, liquid state and transport, presentation, and conditional sparse motion; no production architecture selection
 canonical-for: [architecture-experimental-programme]
 last-reviewed: 2026-09-18
-related-documents: [architecture-programme-source-ledger.md, physics-characterisation.md, physics-characterisation-plan.md, microscenarios-programme.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md]
+related-documents: [architecture-programme-source-ledger.md, physics-characterisation.md, physics-characterisation-plan.md, microscenarios-programme.md, ../audits/2026-09-18-water-h-gate-synthesis.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md]
 ---
 
 # CyberSand architecture experimental programme
@@ -22,13 +22,52 @@ all four complete conversations, later refinements, rejected alternatives and
 repository conflicts. It is the traceability record; this page owns the programme.
 Future implementers use the linked prompts without needing those conversations.
 
-## Current staged status, after G-P (2026-09-11)
+## Current staged status, after H (2026-09-18)
 
-C/G-C, L/G-L and P/G-P are complete. [Issue17 evidence](../audits/2026-09-11-issue-17-state-precision.md)
-retains mass8 and proves Water-specific delay4 equivalence for controlled downstream
-budgets. Current4-byte production baseline remains pending G-final. M still needs
-a concrete measured motion-target admission; V independent; B blocked; G-final open.
-Earlier dated staged decisions below retain their original prerequisite context.
+C/G-C, L/G-L, P/G-P and V/#19 are complete in their registered scopes.
+[Issue17 evidence](../audits/2026-09-11-issue-17-state-precision.md) retains mass8
+as the numerical/reference quantity and proves Water-specific delay4 equivalence.
+The [Water H synthesis](../audits/2026-09-18-water-h-gate-synthesis.md) now adds
+owner-led perceptual evidence.
+
+H does **not** select a production mass width. It identifies a higher-priority
+bulk Water problem: deep/extended Water levels and redistributes too slowly, with
+persistent slopes, terraces, surface humps and occasional wall-contact gaps.
+Issue #26 owns the next bounded head/leveling characterization. mass3 is strongly
+disfavored where tiny droplets are gameplay-relevant because registered small
+quantities can quantize to zero; mass8 remains the control.
+
+M/#18 still needs a clean residual directional-persistence target. Horizontal and
+diagonal H references show precision-dependent lateral behavior, but they do not
+separate stored-direction need from the #26 leveling deficit. Current execution
+order is therefore #26 characterization/candidate work, then repeat direction
+references, then #18 G-M admission or H-backed no-go. #18 remains open and
+unimplemented. B/#20 remains downstream and G-final remains open.
+
+The current 4-byte production Cell baseline remains pending G-final. Earlier dated
+staged decisions below retain their original prerequisite context.
+
+## Post-H Water measurement boundary
+
+The H evidence establishes four separate decision layers that G-final must not
+collapse:
+
+1. **bulk Water semantics** — discharge, level equalization, time-to-flat and
+   authoritative surface shape;
+2. **state precision** — quantity representability and quantization effects;
+3. **presentation** — rendered reconstruction/flicker on the same authoritative
+   frames;
+4. **optional motion history** — only if a residual directional-memory deficit
+   survives #26.
+
+For #26 and any later G-final comparison, hillnipple amplitude/lifetime, terrace
+severity, terrace shimmer and wall-contact gaps are first-class metrics. Measure
+them from authoritative Water state and rendered pixels separately. A visually
+smoothed shader output does not cure a bad authoritative surface.
+
+The `ledge-sheet` H result is a positive control: rapid dribble, serpentine/
+splashy fronts and small active breakup are useful character that a bulk-leveling
+fix should preserve rather than wash out.
 
 ## Parallel MicroScenarios apparatus lane
 

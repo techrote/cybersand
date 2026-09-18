@@ -4,8 +4,8 @@ document-kind: contract
 canonical-for: [material-visual-projection, palette-program-appearance, render-upload-cost]
 status: Current
 scope: Native RG8 presentation, palette/program LUTs, shader flair, temporal smoothing, glow, and current GPU upload limitation
-last-reviewed: 2026-09-12
-related-documents: [themed-construction-materials.md, materials-and-rule-kernels.md, ../architecture/rendering-and-gameplay-bridges.md, ../architecture/item-authored-material-programs.md]
+last-reviewed: 2026-09-18
+related-documents: [themed-construction-materials.md, materials-and-rule-kernels.md, ../architecture/rendering-and-gameplay-bridges.md, ../architecture/item-authored-material-programs.md, ../audits/2026-09-18-water-h-gate-synthesis.md]
 ---
 
 # Material appearance and rendering
@@ -54,6 +54,35 @@ actual OpenGL pixel test establish the bounded behavior. Presentation switching
 preserves authoritative state and does not select a new production renderer.
 The [completion record](../audits/2026-09-12-issue-19-water-feel-lab.md#v1-result-derived-four-level-presentation)
 records exact evidence and unmeasured GPU-cost limits.
+
+### Post-H Water surface acceptance
+
+The [2026-09-18 H synthesis](../audits/2026-09-18-water-h-gate-synthesis.md)
+establishes that four-level oriented presentation is useful apparatus but not a
+sufficient final Water surface treatment.
+
+Renderer work must distinguish presentation-only defects from authoritative
+surface defects. The same tick-indexed frames should expose two metric layers:
+
+- **authoritative:** hillnipple amplitude/width/lifetime, terrace count/extent/
+  severity, terrace/hill contour turnover (“shimmer”), and wall-contact-gap
+  extent/lifetime derived from Water mass/state;
+- **rendered:** the same visible contour measures plus temporal flicker when
+  authoritative state is unchanged or minimally changed.
+
+A renderer may legitimately smooth sawtooth/serration, apply temporal
+interpolation/hysteresis, reconstruct local normals/curvature, improve contact
+shape, maintain thin-film continuity and add bounded cosmetic breakup. It must
+not be credited with fixing incorrect discharge, slow leveling, persistent
+authoritative terraces/humps, real contact gaps, or Water quantities that
+quantized to zero.
+
+H also identifies visual motifs worth preserving or recreating under control:
+rapid edge dribble, serpentine/splashy fronts, “splashy creep” and small active
+breakup. Rejected motifs include persistent hillnipples, terrace-edge shimmer,
+vertical-line/block phases, broad waterslump and impossible wall gaps. These are
+acceptance references, not permission to preserve the current glitches.
+
 
 ## Palette and bounded program
 
