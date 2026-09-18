@@ -90,31 +90,30 @@ completed C/L/P evidence (#15/#16/#17)
 #19 V2: build verified Water Feel Lab + runtime semantic policies
                  |
                  v
-H gate: blinded human-led material-feel assessment — COMPLETE for baseline characterization
+H gate: blinded human-led material-feel assessment — COMPLETE baseline
                  |
-        +--------+--------+
-        |                 |
-        v                 v
-no mass-width choice  named bulk head/leveling target (#26)
-state budgets              |
-        |                  v
-        +------------> #26 bounded leveling work
-                           |
-                           v
-                    repeat direction refs
-                           |
-                           v
-                    #18 M admission or no-go
-                           |
-                           v
-                    #20 B only if a distinct
-                    high-speed need remains
-                           |
-                           v
-                        G-final
+        +--------+------------------+
+        |                           |
+        v                           v
+mass budget deferred        #26 bulk head/leveling target
+        |                           |
+        |                           v
+        |                    bounded leveling work
+        |                           |
+        |                           v
+        |                    repeat direction refs
+        |                           |
+        +----------------------> #18 M admission or no-go
+                                    |
+                                    v
+                             #20 B only if a distinct
+                             high-speed need remains
+                                    |
+                                    v
+                                 G-final
 ```
 
-#18 remains technically unimplemented and held for a concrete directional-persistence target. #19/H-preparation may make such a target observable and reproducible; the later H gate decides whether it is actually worth solving. If no meaningful deficit is perceived, #18 may complete by a reasoned no-go rather than inventing a motion requirement.
+#18 remains technically unimplemented and held for a concrete residual directional-persistence target. H has now run; its strongest current result is #26 head/leveling, not clean motion-history admission. Repeat the direction references after #26. If no meaningful residual directional deficit remains, #18 may complete by a reasoned H-backed no-go rather than inventing a motion requirement.
 
 #20's dependency remains unchanged.
 
