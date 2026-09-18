@@ -4,8 +4,8 @@ status: Current
 document-kind: runbook
 scope: Shared five-floor recipe, exclusive owner controls, issue 13 transport evidence and current issue 19 Water Feel Lab annex
 canonical-for: [experiment-tower, transport-comparison-procedure]
-last-reviewed: 2026-09-12
-related-documents: [physics-characterisation.md, water-feel-lab-experiment.md, architecture-programme-water-feel-addendum.md, architecture-programme-prompts/fractional-presentation.md, ../systems/granular-interaction-policy.md, ../audits/2026-09-09-issue-13-transport.md, ../audits/2026-09-12-issue-19-water-feel-lab.md]
+last-reviewed: 2026-09-18
+related-documents: [physics-characterisation.md, water-feel-lab-experiment.md, architecture-programme-water-feel-addendum.md, architecture-programme-prompts/fractional-presentation.md, microscenarios-programme.md, ../systems/granular-interaction-policy.md, ../audits/2026-09-09-issue-13-transport.md, ../audits/2026-09-12-issue-19-water-feel-lab.md]
 ---
 
 # Experiment Tower
@@ -159,3 +159,17 @@ Quantitative differences such as levelness or settling remain descriptive contex
 later human evaluation, not this runbook or issue #19, decides whether they are
 desirable. See the [dated acceptance record](../audits/2026-09-12-issue-19-water-feel-lab.md)
 for exact artifacts, failures, platform results and limitations.
+
+
+## Planned MicroScenarios extraction
+
+Issue #27/MS-000 will generalize this Tower and the Water Feel Lab into the
+[MicroScenarios framework](microscenarios-programme.md). The extraction is an
+apparatus refactor: existing Tower recipes, ownership, reset behavior, profile
+application, Water blind/export controls and chemistry-is-unchanged boundary
+remain authoritative controls.
+
+The known root Tower Space/focus defect remains owned by #24 and should be
+resolved before the common launcher is considered complete. #27 must demonstrate
+observer-off neutrality and source-matched behavior rather than using the
+refactor to change physics.
