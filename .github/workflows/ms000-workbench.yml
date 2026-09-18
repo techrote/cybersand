@@ -1,0 +1,29 @@
+name: MS-000 isolated source workbench
+on:
+  push:
+    branches: [codex/issue-27-microscenarios-harness]
+    paths: [.github/workflows/ms000-workbench.yml]
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Export source history without credentials or LFS binaries
+        run: |
+          git bundle create "$RUNNER_TEMP/ms000-source.bundle" HEAD
+          git bundle verify "$RUNNER_TEMP/ms000-source.bundle"
+          sha256sum "$RUNNER_TEMP/ms000-source.bundle" > "$RUNNER_TEMP/ms000-source.sha256"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ms000-source-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/ms000-source.bundle
+            ${{ runner.temp }}/ms000-source.sha256
+          if-no-files-found: error
+          retention-days: 3
