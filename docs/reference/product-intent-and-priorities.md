@@ -4,8 +4,8 @@ status: Current
 document-kind: reference
 scope: Approved owner direction and deliberately preserved behavior; not current implementation or performance evidence
 canonical-for: [owner-intent, product-priorities, preserved-material-feel]
-last-reviewed: 2026-09-08
-related-documents: [status-and-roadmap.md, ../decisions/ADR-008-bounded-approximate-fidelity.md]
+last-reviewed: 2026-09-18
+related-documents: [status-and-roadmap.md, ../decisions/ADR-008-bounded-approximate-fidelity.md, ../operations/microscenarios-programme.md]
 ---
 
 # Product intent and priorities
@@ -57,6 +57,27 @@ roughly half their depth, then remain supported. Include eventual reversible
 motion and ballistics. Exact thresholds and representation changes are
 **Planned**, not current physics. The [characterisation plan](../operations/physics-characterisation-plan.md)
 owns experiments, candidate tuning and staged architecture decisions.
+
+## Exploratory MicroScenario workflow, 2026-09-18
+
+**Approved owner direction:** use interesting playable MicroScenario worlds as an
+active development instrument rather than postponing them until all material
+physics is mature. Organic exploration is expected to reveal otherwise
+mind-numbing or unanticipated edge cases across dozens of materials—for example,
+unexpected product/support/permeability behavior or weak applications of
+bridging/bracing.
+
+Capture the observed anomaly first, reduce it to a reproducible fixture, then
+triage it to the subsystem that actually owns the behavior. Scenario code must
+not hide kinetic/contact defects inside bespoke interaction scripts. Rework of
+provisional scenarios is acceptable when later architecture or physics changes;
+retain old versioned evidence rather than rewriting it.
+
+Intermaterial-interaction work means material/material semantics **other than
+kinetic/material-motion physics**. Use sparse generalized rules plus explicit
+exceptions and versioned tuning passes rather than manually authoring every N²
+pair. The [canonical programme](../operations/microscenarios-programme.md) owns
+the resulting development graph and evidence workflow.
 
 ## Where is approximation acceptable?
 
