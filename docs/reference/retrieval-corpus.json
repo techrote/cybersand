@@ -208,6 +208,10 @@
     {
       "path": "operations/architecture-programme-prompts/state-precision.md",
       "reason": "Dated source synthesis or issue execution prompt; retrieve explicitly through the architecture programme, not as Current runtime policy"
+    },
+    {
+      "path": "audits/2026-09-18-microscenarios-interactions-programme.md",
+      "reason": "Dated planning/RAG reconciliation record; retrieve explicitly for the 2026-09-18 MicroScenarios sequencing decision, not as a default Current runtime contract"
     }
   ]
 }
