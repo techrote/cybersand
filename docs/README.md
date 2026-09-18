@@ -14,7 +14,7 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 | Need | Start here |
 |---|---|
-| Begin development | [Handover](operations/cybersand-codex-development-handover.md), [actual source identity](operations/source-checkpoint-and-recovery.md), [roadmap](reference/status-and-roadmap.md) |
+| Begin development | [Handover](operations/cybersand-codex-development-handover.md), [actual source identity](operations/source-checkpoint-and-recovery.md), [roadmap](reference/status-and-roadmap.md) |\n| Choose current MicroScenarios / interaction work order | [Canonical programme graph](operations/microscenarios-programme.md), then the target issue and its named dependencies; issue numbers are not sequence |
 | Understand the engine | [Architecture overview](architecture/overview.md), then its focused ownership/threading/coupling links |
 | Answer one technical question | [Retrieval index](reference/retrieval-index.md) |
 | Change a material | [Rule kernels](systems/materials-and-rule-kernels.md), [Water](systems/water-design.md), [material lab](MATERIAL_LAB.md) |
@@ -122,12 +122,21 @@ Water and Cell controls remain unchanged pending programme gates.
 retain mass8, establish Water-only delay4, and keep downstream feature gates intact.
 
 
-## MicroScenarios programme
+## MicroScenarios and intermaterial interactions
 
-The [MicroScenarios programme](operations/microscenarios-programme.md) plans a
-common deterministic scenario layer extracted from the Experiment Tower/Water
-Feel Lab apparatus. #27 is apparatus-only and follows #18/#24; #28 is the
-post-G-final reference pack; #29 establishes generated/versioned chemistry
-interaction fixtures. Tracking issue #30 records the dependency path and later
-showcase catalogue. This plan does not alter current physics or completed
-architecture evidence.
+The [canonical programme](operations/microscenarios-programme.md) owns the
+programme-level dependency graph for #24/#27-#30 and their links to
+#18/#20/#26/#14. **Issue numbers are identifiers, not execution order.**
+
+MicroScenarios are now an active exploratory apparatus rather than a purely
+post-G-final showcase phase. #27 can proceed once the Tower/launcher hygiene is
+present, independently of #18 completion; #28 may build provisional exploratory
+worlds on the common host before G-final and revalidate them after relevant
+architecture/physics changes.
+
+#29 is **INT-000**, covering versioned non-kinetic intermaterial interactions
+rather than chemistry alone. Its authoring model is sparse/layered with generated
+fixtures and retained tuning-pass provenance. Kinetic/contact anomalies discovered
+in MicroScenarios are captured/reduced and routed to their real physics owner
+instead of being hidden in interaction rules.
+
