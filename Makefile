@@ -11,7 +11,7 @@ CORE_HEADERS := $(wildcard native/include/cybersand/*.hpp native/include/cybersa
 TEST_SOURCES := native/tests/test_world.cpp
 BENCH_SOURCES := native/bench/benchmark.cpp
 
-.PHONY: all soliding-test soliding-sanitize soliding-benchmark-smoke test c-header-check benchmark shared debug sanitize thread-sanitize clean
+.PHONY: all soliding-test soliding-sanitize soliding-benchmark-smoke soliding-stage3-cost-smoke test c-header-check benchmark shared debug sanitize thread-sanitize clean
 
 all: test benchmark shared
 
@@ -50,6 +50,12 @@ $(BUILD_DIR)/settled_discovery: native/bench/settled_discovery.cpp native/includ
 
 soliding-benchmark-smoke: $(BUILD_DIR)/settled_discovery
 	./$(BUILD_DIR)/settled_discovery 128 64 16 2
+
+$(BUILD_DIR)/stage3_cost: $(CORE_SOURCES) $(CORE_HEADERS) native/bench/stage3_cost.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(RELEASE_FLAGS) $(CORE_SOURCES) native/bench/stage3_cost.cpp -o $@
+
+soliding-stage3-cost-smoke: $(BUILD_DIR)/stage3_cost
+	./$(BUILD_DIR)/stage3_cost connectivity bridge 64 1 2 2 -32 0
 
 soliding-test: $(BUILD_DIR)/test_soliding_lifecycle $(BUILD_DIR)/test_settled_discovery $(BUILD_DIR)/test_settled_regions $(BUILD_DIR)/test_settled_world_discovery
 	./$(BUILD_DIR)/test_soliding_lifecycle
@@ -95,4 +101,4 @@ thread-sanitize: $(BUILD_DIR)/tests_tsan
 	TSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/tests_tsan
 
 clean:
-	rm -f $(BUILD_DIR)/settled_discovery $(BUILD_DIR)/test_soliding_lifecycle_sanitized $(BUILD_DIR)/test_settled_discovery_sanitized $(BUILD_DIR)/test_settled_regions_sanitized $(BUILD_DIR)/test_settled_world_discovery_sanitized $(BUILD_DIR)/test_soliding_lifecycle $(BUILD_DIR)/test_settled_discovery $(BUILD_DIR)/test_settled_regions $(BUILD_DIR)/test_settled_world_discovery $(BUILD_DIR)/tests $(BUILD_DIR)/tests_sanitized $(BUILD_DIR)/tests_tsan $(BUILD_DIR)/benchmark $(BUILD_DIR)/libcybersand.so
+	rm -f $(BUILD_DIR)/settled_discovery $(BUILD_DIR)/stage3_cost $(BUILD_DIR)/test_soliding_lifecycle_sanitized $(BUILD_DIR)/test_settled_discovery_sanitized $(BUILD_DIR)/test_settled_regions_sanitized $(BUILD_DIR)/test_settled_world_discovery_sanitized $(BUILD_DIR)/test_soliding_lifecycle $(BUILD_DIR)/test_settled_discovery $(BUILD_DIR)/test_settled_regions $(BUILD_DIR)/test_settled_world_discovery $(BUILD_DIR)/tests $(BUILD_DIR)/tests_sanitized $(BUILD_DIR)/tests_tsan $(BUILD_DIR)/benchmark $(BUILD_DIR)/libcybersand.so

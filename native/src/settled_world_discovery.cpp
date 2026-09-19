@@ -151,7 +151,8 @@ DiscoveryOutcome SettledWorldDiscoveryCoordinator::register_tile(
             if (outcome == DiscoveryOutcome::Accepted && state.regions != nullptr) {
                 const auto summary = state.journal.snapshot(record.handle);
                 if (summary.has_value()) {
-                    (void)state.regions->invalidate(record.key, summary->revision);
+                    (void)state.regions->invalidate_known(
+                        record.handle.slot, record.key, summary->revision);
                     record.region_payload_revision = 0;
                 }
             }
@@ -203,7 +204,8 @@ DiscoveryOutcome SettledWorldDiscoveryCoordinator::dirty(
         if (state.regions != nullptr) {
             const auto summary = state.journal.snapshot(state.records[*record].handle);
             if (summary.has_value()) {
-                (void)state.regions->invalidate(key, summary->revision);
+                (void)state.regions->invalidate_known(
+                    state.records[*record].handle.slot, key, summary->revision);
                 state.records[*record].region_payload_revision = 0;
             }
         }
@@ -227,7 +229,8 @@ DiscoveryOutcome SettledWorldDiscoveryCoordinator::observe(
         if (state.regions != nullptr) {
             const auto summary = state.journal.snapshot(record.handle);
             if (summary.has_value()) {
-                (void)state.regions->invalidate(key, summary->revision);
+                (void)state.regions->invalidate_known(
+                    record.handle.slot, key, summary->revision);
                 record.region_payload_revision = 0;
             }
         }

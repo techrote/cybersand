@@ -139,6 +139,9 @@ void unknown_registration_retires_faces_without_consuming_payload() {
     drain(regions);
     require(regions.region_count() == 1 && snapshots(regions, 4)[0].area == 2,
             "completed unknown neighbor rebuilds one exact region");
+    require(regions.invalidate_known(0, right, 2) == RegionOutcome::Invalid &&
+            regions.snapshot(snapshots(regions, 4)[0].handle).has_value(),
+            "slot fast path rejects a mismatched key without retiring publication");
 }
 
 void cross_tile_seams_and_unknown_boundary() {

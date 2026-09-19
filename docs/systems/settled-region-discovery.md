@@ -104,6 +104,15 @@ local components per tile. Its fixed per-tile/component/frontier layout is delib
 fail-closed but large; it has not passed the large-world memory/cost gate. Independent
 verification and the full producer+journal+connectivity cost model remain before
 Stage 3 can exit.
+
+The connectivity engine retains append-only resident tile slots, fixed boundary-cell
+neighbor maps and key-validated owner slot invalidation. Those structures keep local
+invalidation and traversal lookup bounded by resident/facing coverage rather than the
+compiled maximum for every edited cell. The 4096-tile compiled connectivity object is
+still approximately 67.7 MB on the pinned Windows compiler, before World cells,
+journal storage and allocator/process overhead; this negative fixed-memory cost is an
+input to the pending formal campaign, not an accepted scaling result.
+
 It must quantify cell/block/chunk inspections, queue/scratch high water/refusal,
 latency distribution, churn/false invalidation, region count/area, CPU and memory
 per tracked area, and local edit wake/rebuild amplification on large worlds.
