@@ -88,8 +88,12 @@ The three contracts are separate:
   `ExplosionCommand`, radius `R` has exact maximum cell-effect reach
   `E = R + 2`. Execution visits the Euclidean disc of that radius: cells at
   distance at most `R` may be cleared, Wall cells in the outer two-cell annulus
-  may become granular Stone, and the centre may become Fire. The event itself
-  performs no temperature write. Actual cell writes also mark their activity
+  may become granular Stone, and the centre may become Fire. A
+  `collapse_strength = 0` instance cannot write the outer annulus, and target
+  contents/random selection can make any instance sparser; `E` is the
+  source-proven maximum event-kind reach used by the conservative observer
+  contract, not a claim that every cell changes. The event itself performs no
+  temperature write. Actual cell writes also mark their activity
   block active and can wake an immediately adjacent activity block at a block
   face/corner; those execution-time activity signals remain a separate producer
   contract and do not redefine `E`.
