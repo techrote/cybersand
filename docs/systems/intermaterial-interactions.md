@@ -1,7 +1,7 @@
 ---
 title: Intermaterial interaction substrate
 status: Current
-document-kind: system
+document-kind: contract
 scope: Versioned sparse authoring, resolution, provenance, coverage and migration contract for non-kinetic intermaterial semantics
 canonical-for: [intermaterial-interactions, interaction-schema, interaction-provenance, interaction-coverage]
 last-reviewed: 2026-09-19
