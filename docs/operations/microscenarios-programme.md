@@ -4,7 +4,7 @@ status: Planned
 document-kind: design
 scope: Canonical development-order graph for reusable exploratory MicroScenarios, anomaly triage, non-kinetic intermaterial-interaction authoring/tuning, and staged showcase work
 canonical-for: [microscenarios-programme, microscenarios-development-order, intermaterial-interaction-programme]
-last-reviewed: 2026-09-18
+last-reviewed: 2026-09-19
 related-documents: [experiment-tower.md, architecture-programme.md, ../reference/status-and-roadmap.md, ../reference/product-intent-and-priorities.md, ../MATERIAL_LAB.md, ../systems/flow-transport-and-profiles.md]
 ---
 
@@ -472,3 +472,19 @@ work.
 
 None of those completions by itself approves a Cell layout, motion
 representation, reaction retune, kinetic-physics change or replay contract.
+
+## MS-000 source checkpoint, 2026-09-19
+
+**Current in this source checkpoint:** the [version-1 contract and shared host](microscenarios.md)
+wrap existing Tower and 35 Water Feel recipes, with a shared catalogue/launcher,
+bounded events/observations, objective status, JSON import/reset, truthful capture
+and a native-only headless runner. New unequal-head Water and Sand-release fixtures
+are exploratory proving consumers, not registered physics experiments. The isolated
+#24 focus correction is carried with automated input coverage; issue closure and
+main-branch merge remain separate from this source record.
+
+[Dated validation](../audits/2026-09-19-issue-27-microscenarios.md) identifies actual
+platform scope and pending checks. #28 can build on this fixture API once its source
+checkpoint is accepted; the Materials Laboratory readiness gate is not asserted by
+this harness. #18/#20/#26 scientific controls and #14/G-final are unchanged. Do not
+infer those decisions from the presence of a reusable apparatus or from issue numbers.

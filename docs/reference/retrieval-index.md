@@ -18,6 +18,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 
 | Question family | Canonical route |
 |---|---|
+| How do Play/Inspect/Benchmark share a definition, and is a scenario capture replay? | [MicroScenario contract](../operations/microscenarios.md) |
 | Actual version, commits, local changes, recovery | [Source checkpoint](../operations/source-checkpoint-and-recovery.md) |
 | Who mutates cells; may a worker touch Godot? | [Ownership and lifetime](../architecture/data-ownership-and-lifetimes.md) |
 | Desktop/Web order, synchronous ticks, failed-world reset/replacement | [Tick and threading](../architecture/simulation-tick-and-threading.md) |
@@ -49,7 +50,8 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Why #17 does not make mass8 the perceptual minimum | [Water-feel programme addendum](../operations/architecture-programme-water-feel-addendum.md), [#17 evidence](../audits/2026-09-11-issue-17-state-precision.md) |
 | What #19 delivers and how the H-ready Water Feel Lab is configured | [Experiment Tower](../operations/experiment-tower.md), [policy registration](../operations/water-feel-lab-experiment.md), [completion evidence](../audits/2026-09-12-issue-19-water-feel-lab.md) |
 | Why #18 remains held after G-P | [Water-feel programme addendum](../operations/architecture-programme-water-feel-addendum.md), [compact-motion prompt](../operations/architecture-programme-prompts/compact-motion.md) |
-| What is the actual #24/#27-#30 development order, and may MicroScenarios run before G-final? | [Canonical MicroScenarios/interactions programme](../operations/microscenarios-programme.md), [roadmap](status-and-roadmap.md) |\n| How do we tune many non-kinetic material interactions without a destructive N² matrix? | [Canonical MicroScenarios/interactions programme](../operations/microscenarios-programme.md), [transport-profile precedent](../systems/flow-transport-and-profiles.md) |
+| What is the actual #24/#27-#30 development order, and may MicroScenarios run before G-final? | [Canonical MicroScenarios/interactions programme](../operations/microscenarios-programme.md), [roadmap](status-and-roadmap.md) |
+| How do we tune many non-kinetic material interactions without a destructive N² matrix? | [Canonical MicroScenarios/interactions programme](../operations/microscenarios-programme.md), [transport-profile precedent](../systems/flow-transport-and-profiles.md) |
 
 ## Retrieve historical results explicitly
 

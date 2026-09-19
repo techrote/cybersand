@@ -1,0 +1,322 @@
+{
+  "schema_version": 1,
+  "scope": "MS-000 apparatus implementation; not physics acceptance",
+  "intake_commit": "781a2d7cb5d5a66bf1cff8fc6654e0ab708e419c",
+  "isolated_focus_prerequisite": "b148cc2d799e6c333df466a6ddb0c35f060314a0",
+  "publication_branch": "codex/issue-27-ms000-validated",
+  "source_files": {
+    "godot/scripts/main.gd": "c369685efd860418a340992d252d606a4f21be0cc1784008215286d5edd4f6db",
+    "godot/scripts/microscenario_catalogue.gd": "efb3dbd33fdefd328fda14b6454917cdb57fcc9ba6c43eb0a607c1b2d1a67036",
+    "godot/scripts/microscenario_contract.gd": "0095fbd761268b501d242b2459018b59973140c5a9bb9a450c1abde828413979",
+    "godot/scripts/microscenario_host.gd": "cd692f53c10c9822666004a342148b051f762a101962edf09eb1c20ff461da29",
+    "godot/scripts/microscenario_identity.gd": "19c8fad9157d4f39a211da97242bd4b762812298f3ea318e3563a9e9e9f57d02",
+    "godot/scripts/microscenario_panel.gd": "9ad613203b1f9e430525b4a75be3d044d95894dcaf57c2315329ceeb54d3e802",
+    "godot/scripts/simulation_worker.gd": "01ae540b20b46d60df4e71fd62e75ea7f356eb62de9edcd1bf7b7915b5378a36",
+    "godot/scripts/web_demo_controller.gd": "eb799a5407ed7166c327c0f89f473a2382b2783ebc7bd5a457610e0034bff127",
+    "godot/tests/run_microscenario.gd": "1912d0471370d9ede2d5aac529ec6e4ccc751e14a8cb01aeecf3da472125be11",
+    "godot/tests/test_microscenario_controllers.gd": "052f51581e4ae0739f6b2210af7651e5ef169659d8c00921a2c46cd20b5d8859",
+    "godot/tests/test_microscenarios.gd": "78ce5b3c774fed8987cdf3e562d7e0594bfb646d61c9a25b0f839cbda5e58c05"
+  },
+  "native_artifact": {
+    "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "sha256": "f44360702d942386bf515a201cf72018bed1568e14061cf0e586d2e30c351492",
+    "rebuilt": false,
+    "scope": "intake LFS artifact; native source unchanged"
+  },
+  "godot_version": "4.7.stable.official.5b4e0cb0f",
+  "platform": "Linux x86_64",
+  "godot_invocations": {
+    "import": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 3.73,
+      "diagnostic_errors": 0
+    },
+    "test_auto_worker_policy": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 0.31,
+      "diagnostic_errors": 0
+    },
+    "test_cell_world": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 16.19,
+      "diagnostic_errors": 0
+    },
+    "test_experiment_tower": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 1.52,
+      "diagnostic_errors": 0
+    },
+    "test_interaction_async": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 12.56,
+      "diagnostic_errors": 0
+    },
+    "test_interaction_policy": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 63.9,
+      "diagnostic_errors": 0
+    },
+    "test_material_appearance_lut": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 1.12,
+      "diagnostic_errors": 0
+    },
+    "test_microscenario_controllers": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 3.08,
+      "diagnostic_errors": 0
+    },
+    "test_microscenarios": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 84.36,
+      "diagnostic_errors": 0
+    },
+    "test_native_edge_contact_regression": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 0.77,
+      "diagnostic_errors": 0
+    },
+    "test_native_fire_presentation_regression": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 0.37,
+      "diagnostic_errors": 0
+    },
+    "test_native_render_bridge_regression": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 0.27,
+      "diagnostic_errors": 0
+    },
+    "test_physics_async": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 2.42,
+      "diagnostic_errors": 0
+    },
+    "test_physics_characterisation": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 0.37,
+      "diagnostic_errors": 0
+    },
+    "test_physics_instrumentation": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 1.52,
+      "diagnostic_errors": 0
+    },
+    "test_presentation_controls": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 0.57,
+      "diagnostic_errors": 0
+    },
+    "test_rapier_backend_preflight": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 0.21,
+      "diagnostic_errors": 0
+    },
+    "test_rapier_drop_in": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 0.37,
+      "diagnostic_errors": 0
+    },
+    "test_rapier_manual_step": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 1.02,
+      "diagnostic_errors": 0
+    },
+    "test_render_patch_handoff_regression": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 0.47,
+      "diagnostic_errors": 0
+    },
+    "test_tick_failure_regression": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 2.12,
+      "diagnostic_errors": 0
+    },
+    "test_transport_probe": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 21.66,
+      "diagnostic_errors": 0
+    },
+    "test_transport_profiles": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 1.22,
+      "diagnostic_errors": 0
+    },
+    "test_water_experiment_profiles": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 0.26,
+      "diagnostic_errors": 0
+    },
+    "test_water_feel_controller": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 4.28,
+      "diagnostic_errors": 0
+    },
+    "test_water_feel_integration": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 3.92,
+      "diagnostic_errors": 0
+    },
+    "test_water_feel_scenarios": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 0.27,
+      "diagnostic_errors": 0
+    },
+    "test_water_presentation_model": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 0.26,
+      "diagnostic_errors": 0
+    },
+    "test_water_presentation_render": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 0.21,
+      "diagnostic_errors": 0
+    },
+    "test_web_demo_setup": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 0.47,
+      "diagnostic_errors": 0
+    },
+    "test_web_rapier": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 1.97,
+      "diagnostic_errors": 0
+    },
+    "test_web_worker_parity": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 19.0,
+      "diagnostic_errors": 0
+    },
+    "test_worker_benchmark": {
+      "exit": 0,
+      "timeout": false,
+      "seconds": 5.45,
+      "diagnostic_errors": 0
+    }
+  },
+  "assertions": {
+    "test_microscenarios": 6471,
+    "test_microscenario_controllers": 52
+  },
+  "headless_skip": "test_water_presentation_render: no frame submission",
+  "software_opengl_render": "passed actual-pixel Water coverage/orientation test separately on llvmpipe; not hardware GPU acceptance",
+  "native_test_count": 61,
+  "logs": {
+    "final/import.log": "4ddb9e2835b3e7a72abf792bfaad9d2a8de46c1920cc65e893f0461add0a5191",
+    "final/test_auto_worker_policy.log": "16bd2f85e8f630c5ea1c98fe7b1a7f5ce0db89827c3a36fbbafa44d5ade8a655",
+    "final/test_cell_world.log": "e091cbf55097c9df34ed0709eb2fc7f92dffc43f6e8ebab6803bb88cde96d364",
+    "final/test_experiment_tower.log": "263b0c2f4cc267726b3f793e16480c371ab8c7ebfe0452acc1b890e759c61270",
+    "final/test_interaction_async.log": "1301aec133ec0dbc7ea664cce871b3d9b8ea30abb45a0e9e83469a75cb5131f4",
+    "final/test_interaction_policy.log": "de8ef498680e506b18feeb1f2c080958547d7cd84086526710fb1c066708beee",
+    "final/test_material_appearance_lut.log": "da36043da815057af94f92dd382d19774e4756cad58632bd3594f1d5569acab7",
+    "final/test_microscenario_controllers.log": "d8c181ba3e7f665593d3bb0470e78d3b9353b7ffef653b6790fb173e995cf67c",
+    "final/test_microscenarios.log": "af9344d6b534c9edd10eff5a790d3f5437ff978c87b04fce456c4a4a8dad228a",
+    "final/test_native_edge_contact_regression.log": "793ed1df6d531439acafc89abd6f0d3ab73a79dd17b862046ec147a5053120eb",
+    "final/test_native_fire_presentation_regression.log": "9e628a007ab38f6bc51454a91b108a9205226cab29656d44f568e0962c88abe6",
+    "final/test_native_render_bridge_regression.log": "93c5f3c878c9174b33e7831f6188be2f48df75e4b998a62504d8439f3a3e5824",
+    "final/test_physics_async.log": "8ec2d9fab48ae1839080280738bbaab5d68a850b51d17772d6b2487ec40a83dd",
+    "final/test_physics_characterisation.log": "e50bbf0fd5cc960ee55f7433cac51b551f79228459c7792dd3e9613e989c0a09",
+    "final/test_physics_instrumentation.log": "6e57a9648b6b345e226820626b6c89a75bca72f4ef04aace3ee676273993b647",
+    "final/test_presentation_controls.log": "c017ec0377ab0d6538af8e9882bd1949fe6b82fd8fd86a2a4827ba870b3aa148",
+    "final/test_rapier_backend_preflight.log": "e6e828287ea793c5b0be6ab1d1504c13112781420007d3785b5dc72baaeabe50",
+    "final/test_rapier_drop_in.log": "53b89d54888115b51e58f38f4bfab1cab1f5588f9069e284f61f2d8184de5cad",
+    "final/test_rapier_manual_step.log": "7b1b7279d4f1a50bf26c74f4738ec6b47297b8f5bbce9d81e66d6b199c796304",
+    "final/test_render_patch_handoff_regression.log": "435de6041b1d1364d2f1aedb1d9c69311d226cbd45edba0ff6bdb6f4be86f7d1",
+    "final/test_tick_failure_regression.log": "11fbf101bddea7730974c78c9176359845aee04c3de759524f6edc8c25c80a44",
+    "final/test_transport_probe.log": "ebcf9a6450c7f19f43d8d34231c3400e887e92f4294887d23ae8f3ed471d6268",
+    "final/test_transport_profiles.log": "f2c1bffa2235ee112bf166ddecb99e802a1ca386eb2005993bd99768629929d5",
+    "final/test_water_experiment_profiles.log": "50b17213c61b35cacbb672bd9504cb27808629b21b1931873085178552e25e2e",
+    "final/test_water_feel_controller.log": "fb422a98b6d638598cd03e35011f5126f7b1db3c5cce8ba189708ee05c1abfcb",
+    "final/test_water_feel_integration.log": "674ae3f5a097db8f7bc9258580f9bb4eac08bd6727d7a2445f243eaee077e78c",
+    "final/test_water_feel_scenarios.log": "499ea0f065cef8012284fb3c0899f6d233975e3ad59287933e6512b01f4542ce",
+    "final/test_water_presentation_model.log": "f777444f82024f6a0f1c837330955d850d59af5fb83de5d235d2388f9ab17061",
+    "final/test_water_presentation_render.log": "a870166f2b6e7b690370f35ce07842a2f8c1656d4232114c56ac9b6a6ae3c889",
+    "final/test_web_demo_setup.log": "9be1877d85fefa7dd85beaa0dd53adb77cf3e988d046ab1cbcb5282ebb9678af",
+    "final/test_web_rapier.log": "f95e9f2170401233b7e0720a59bb6464fc55a9a8ee494b2277bc4d4ebba3f2a7",
+    "final/test_web_worker_parity.log": "2ebeea59ae33b2bf9d789f0953c0b416628a3da3ebb06a58bf1b1c1c9f6c0ad3",
+    "final/test_worker_benchmark.log": "c8c35bf130eeb2be2211e7c28c8891f98e9c56870135b130382f346d3e2f1a30"
+  },
+  "additional_log_hashes": {
+    "native-test.log": "4e4362f42d93ffa2742f1e8d7b1a3fe4c6a63e060cd09e23062ec4a7ff6b5e6d",
+    "opengl-water-render.log": "50f90548647d8b8a8b151bf1b52b8c47bd4dae0781ce51b1526ba03a1010dc93",
+    "validation-contracts.log": "e26f0a6d67b11e2ca61159c0cffcb6e1a2e9da889d2c485c5cb6125256af2e15",
+    "m11-baseline.log": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d"
+  },
+  "cli_comparison": {
+    "ticks": 120,
+    "scenario": "fixtures/unequal-head",
+    "workers": [
+      1,
+      4
+    ],
+    "modes": [
+      "Benchmark",
+      "Play"
+    ],
+    "observers": [
+      "on",
+      "off"
+    ],
+    "definition_hash": "2883701d1464fa90ebf3c012144f76f68140dc4c9bc8f351cf981ef1a01ac26e",
+    "content_hash": "8b412006301ee75a",
+    "water_integer": 4553280,
+    "scope": "same JSON definition; raw state hashes not equated across worker config"
+  },
+  "gaps": [
+    "Actual Windows runtime/input validation",
+    "Actual native Web compatibility/threaded browser exports",
+    "Hardware GPU and registered performance campaign",
+    "Full replay and complete organic live-input capture",
+    "Cross-implementation reconciliation with concurrently updated harness branch"
+  ],
+  "documentation": {
+    "check_docs": "passed",
+    "check_repository": "passed; 9 materialized and 9 unmaterialized runtime payloads",
+    "companion_revision": "6a58311982941b75f46e22109a0829e5acb83c7e",
+    "frozen_retrieval": {
+      "questions": 32,
+      "canonical_hit_at_1": 21,
+      "canonical_hit_at_k": 32,
+      "mrr_at_k": 0.8073,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "challenge_retrieval": {
+      "questions": 19,
+      "canonical_hit_at_1": 14,
+      "canonical_hit_at_k": 19,
+      "mrr_at_k": 0.8596,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    }
+  }
+}

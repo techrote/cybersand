@@ -176,3 +176,16 @@ lateral Water mass transport drive bounded optional mixing and grain pickup;
 horizontal sampling and cadence are separate fixed experiments.
 Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
 are unchanged. No unsynchronized live descriptor mutation is introduced.
+
+## MicroScenario setup and observation budgets
+
+**Current MS-000:** scenario setup is admitted only at fresh replacement, not in
+native worker kernels. `CyberMicroScenarioContract` enforces finite recipe,
+JSON, event and observation budgets before replacement. The [MicroScenario contract](microscenarios.md#versioned-definition-and-validation)
+lists exact limits and timing semantics. Retained optional timing samples are
+capped; overflow is reported as truncation, not silently presented as a full trace.
+
+These are apparatus budgets, not larger native World capacities. Existing native
+allocation, failed-world quarantine and general input-queue limitations remain.
+Fixed fixture execution rejects live cadence/adhesion overrides; owner-policy
+legacy scenarios still require their actual owner settings in comparisons.

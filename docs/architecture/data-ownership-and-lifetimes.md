@@ -157,3 +157,17 @@ lateral Water mass transport drive bounded optional mixing and grain pickup;
 horizontal sampling and cadence are separate fixed experiments.
 Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
 are unchanged. No unsynchronized live descriptor mutation is introduced.
+
+## MicroScenario owner-local values
+
+**Current MS-000:** `CyberMicroScenarioHost` is a RefCounted value/lifecycle helper
+owned by the same exclusive GDScript owner as its native World. Desktop never
+passes the host or World to the main thread; synchronous Web keeps both on the
+main thread. Existing native pool and Rapier restrictions are unchanged.
+
+Definitions are validated and copied before candidate replacement. Desktop
+`scenario_capture` creates a separate record at the owner boundary, recursively
+freezes its dictionary/array values once, and publishes it under a monotonic capture
+serial. Old retained captures survive reset without mutation. The main thread
+serializes that record, not mutable World storage. Capacity, failure and reset
+semantics live in the [MicroScenario contract](../operations/microscenarios.md).

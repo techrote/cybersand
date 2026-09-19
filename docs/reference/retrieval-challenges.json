@@ -267,7 +267,58 @@
         "../native/src/world.cpp::World::update_water",
         "../native/bench/water_leveling.cpp"
       ]
+    },
+    {
+      "id": "MS01",
+      "query": "How can one MicroScenario definition run in Play Inspect Benchmark and load from JSON without separate physics scripts?",
+      "canonical": [
+        "operations/microscenarios.md"
+      ],
+      "facts": [
+        "Schema 1 validates bounded declarative data before native candidate replacement.",
+        "Existing desktop and synchronous owners share the same host; native-only headless runner refuses live character/body definitions.",
+        "New fixtures are exploratory apparatus, not #26 acceptance or #20 admission."
+      ],
+      "sources": [
+        "../godot/scripts/microscenario_contract.gd",
+        "../godot/scripts/microscenario_host.gd",
+        "../godot/tests/run_microscenario.gd"
+      ]
+    },
+    {
+      "id": "MS02",
+      "query": "Does a MicroScenario capture with source hashes restore the exact simulation and all user inputs?",
+      "canonical": [
+        "operations/microscenarios.md",
+        "reference/level-saves-and-replay.md"
+      ],
+      "facts": [
+        "Capture is a definition plus observations, explicitly not complete replay or a restorable runtime snapshot.",
+        "Unknown revision/artifact identities stay unavailable; old publication identity is not substituted.",
+        "Scheduled Water edit deltas do not fabricate reactions, user-input or outflow accounting."
+      ],
+      "sources": [
+        "../godot/scripts/microscenario_identity.gd",
+        "../godot/scripts/microscenario_host.gd"
+      ]
+    },
+    {
+      "id": "MS03",
+      "query": "What happens when a MicroScenario reset is rejected or an owner misses a scheduled event boundary?",
+      "canonical": [
+        "operations/microscenarios.md",
+        "architecture/data-ownership-and-lifetimes.md"
+      ],
+      "facts": [
+        "Rejected candidate preserves the previous World and host cursor.",
+        "Missed boundaries latch a fault, with no catch-up or automatic retry; native quarantine remains.",
+        "Captures crossing the desktop owner boundary are recursively frozen and retained safely."
+      ],
+      "sources": [
+        "../godot/scripts/microscenario_host.gd",
+        "../godot/scripts/simulation_worker.gd"
+      ]
     }
   ],
-  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged."
+  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged."
 }

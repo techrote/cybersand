@@ -14,7 +14,9 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 | Need | Start here |
 |---|---|
-| Begin development | [Handover](operations/cybersand-codex-development-handover.md), [actual source identity](operations/source-checkpoint-and-recovery.md), [roadmap](reference/status-and-roadmap.md) |\n| Choose current MicroScenarios / interaction work order | [Canonical programme graph](operations/microscenarios-programme.md), then the target issue and its named dependencies; issue numbers are not sequence |
+| Author, load or benchmark a MicroScenario | [Current shared contract and host](operations/microscenarios.md), [checkpoint evidence](audits/2026-09-19-issue-27-microscenarios.md) |
+| Begin development | [Handover](operations/cybersand-codex-development-handover.md), [actual source identity](operations/source-checkpoint-and-recovery.md), [roadmap](reference/status-and-roadmap.md) |
+| Choose current MicroScenarios / interaction work order | [Canonical programme graph](operations/microscenarios-programme.md), then the target issue and its named dependencies; issue numbers are not sequence |
 | Understand the engine | [Architecture overview](architecture/overview.md), then its focused ownership/threading/coupling links |
 | Answer one technical question | [Retrieval index](reference/retrieval-index.md) |
 | Change a material | [Rule kernels](systems/materials-and-rule-kernels.md), [Water](systems/water-design.md), [material lab](MATERIAL_LAB.md) |

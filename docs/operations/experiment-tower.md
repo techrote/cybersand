@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Shared five-floor recipe, exclusive owner controls, issue 13 transport evidence and current issue 19 Water Feel Lab annex
 canonical-for: [experiment-tower, transport-comparison-procedure]
-last-reviewed: 2026-09-18
+last-reviewed: 2026-09-19
 related-documents: [physics-characterisation.md, water-feel-lab-experiment.md, architecture-programme-water-feel-addendum.md, architecture-programme-prompts/fractional-presentation.md, microscenarios-programme.md, ../systems/granular-interaction-policy.md, ../audits/2026-09-09-issue-13-transport.md, ../audits/2026-09-12-issue-19-water-feel-lab.md]
 ---
 
@@ -181,3 +181,16 @@ versioned fixtures, triage them to kinetic/contact, intermaterial, state/phase o
 cross-system ownership, then retain regressions after bounded fixes. #27 itself
 must still demonstrate observer-off neutrality and source-matched behavior.
 
+## Shared MicroScenario host, MS-000
+
+**Current source:** the [MicroScenarios contract](microscenarios.md) is now the common
+setup/event/capture layer beneath both existing controllers. Tower v4 rectangles
+and Water Feel v1 recipes remain unchanged; original recipe hashes are kept separate
+from the new canonical definition hash. Old profile, floor/release, transactional
+Water Apply + Reset and blind export workflows remain the compatibility interfaces.
+New catalogue controls do not reopen any physics acceptance or retune chemistry.
+
+The root Tower button includes #24's focus-neutral correction. Generic fixture R
+and Fresh reset retain the active definition, while choosing Tower explicitly still
+enters Tower. F8 hides/restores the common HUD. [Checkpoint evidence](../audits/2026-09-19-issue-27-microscenarios.md)
+records the source-matched comparisons and platform limits.

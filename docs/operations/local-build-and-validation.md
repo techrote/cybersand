@@ -143,3 +143,15 @@ mass interface and fixed wide Cell. Use its [registered driver](state-precision-
 and [source/artifact evidence](../audits/2026-09-11-issue-17-state-precision.md),
 not the workspace default DLL builder. No experimental DLL, Web module, save
 migration or renderer was published. Core tests/timing do not certify those adapters.
+
+## MicroScenario harness checks
+
+The new `test_microscenarios.gd` and `test_microscenario_controllers.gd` are included
+by the existing `tools/ci/run_godot_regressions.py` test discovery. Run them against
+the pinned runtime, together with existing Tower, Water, failed-tick/region and
+immutable render-handoff regressions when changing the harness.
+
+The [MicroScenario runbook](microscenarios.md#headless-runs-from-the-same-definition)
+describes the bounded native-only JSON runner. Its result is not a Windows or
+browser run merely because it exercises the synchronous controller on Linux.
+Use actual platform artifacts and retain their identities for platform acceptance.
