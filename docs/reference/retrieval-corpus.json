@@ -34,6 +34,7 @@
     "operations/physics-characterisation-plan.md",
     "operations/physics-characterisation.md",
     "operations/profiling-observability-and-performance.md",
+    "operations/microscenario-reference-pack.md",
     "operations/rapier-2d-migration-runbook.md",
     "operations/source-checkpoint-and-recovery.md",
     "operations/testing-validation-and-replay.md",
@@ -66,17 +67,12 @@
     "operations/liquid-characterization.md",
     "operations/state-precision-experiment.md",
     "operations/microscenarios.md",
-    "operations/microscenario-reference-pack.md",
     "operations/soliding-programme.md",
     "architecture/soliding-lifecycle.md",
     "systems/settled-region-discovery.md",
     "operations/soliding-measurement.md",
     "operations/soliding-macro-fracture-fixture.md",
-    "operations/soliding-stage3-freeze.md",
-    "operations/soliding-stage3-spark-connectivity.md",
-    "operations/soliding-stage3-spark-verification.md",
-    "operations/soliding-stage3-spark-producer.md",
-    "operations/soliding-stage3-spark-measurement.md"
+    "operations/soliding-stage3-freeze.md"
   ],
   "navigation": [
     "README.md",
@@ -224,7 +220,6 @@
     {
       "path": "audits/2026-09-18-microscenarios-interactions-programme.md",
       "reason": "Dated planning/RAG reconciliation record; retrieve explicitly for the 2026-09-18 MicroScenarios sequencing decision, not as a default Current runtime contract"
-
     },
     {
       "path": "operations/soliding-stage3-spark-connectivity.md",
@@ -243,13 +238,24 @@
       "reason": "Issue execution packet; retrieve explicitly through the canonical Stage-3 freeze, not as a default Current runtime contract"
     },
     {
+      "path": "operations/soliding-stage3b-astra-review.md",
+      "reason": "Issue architecture-review packet; retrieve explicitly through the soliding programme and Stage-3A exit review, not as implemented Current behavior"
+    },
+    {
+      "path": "audits/issue-12-2026-09-19/luna-stage3-draft-review.md",
+      "reason": "Dated rejected-draft review; retrieve explicitly for the interrupted substitute-worker record, not as a default Current contract"
+    },
+    {
       "path": "audits/2026-09-19-issue-26-registration.md",
       "reason": "Dated issue #26 preregistration and frozen experiment contract; retrieve explicitly with the issue #26 evidence, not as a default Current runtime contract"
     },
     {
       "path": "audits/2026-09-19-issue-26-water-leveling.md",
       "reason": "Dated issue #26 characterization/candidate evidence; current conclusions are mirrored into Water/roadmap/architecture contracts and this audit is retrieved explicitly for measurements"
-
+    },
+    {
+      "path": "audits/2026-09-19-issue-26-post-merge-review.md",
+      "reason": "Dated independent review of #26 evidence/apparatus and the #49 corrective gate; retrieve explicitly when interpreting #26 or executing #45"
     }
   ]
 }

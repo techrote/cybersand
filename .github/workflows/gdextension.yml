@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: gdextension-${{ github.ref }}
@@ -22,24 +23,93 @@ env:
   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
 
 jobs:
-  build:
-    name: ${{ matrix.target }} x86_64
-    runs-on: ${{ format('avrea-ubuntu-24.04-{0}-vcpu', vars.GDEXT_AVREA_VCPU || '16') }}
-    timeout-minutes: 60
-    strategy:
-      fail-fast: false
-      matrix:
-        target: [linux, windows]
+  linux-build:
+    name: linux build x86_64
+    runs-on: ${{ format('avrea-ubuntu-24.04-{0}-vcpu', vars.GDEXT_LINUX_VCPU || '4') }}
+    timeout-minutes: 30
     steps:
       - name: Check out source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Fetch Linux Rapier runtime only
-        if: matrix.target == 'linux'
         run: |
           git lfs install --local
           git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
           echo "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+
+      - name: Validate shard planner
+        run: |
+          python3 -m py_compile tools/ci/run_godot_regressions.py tools/ci/test_godot_regression_sharding.py
+          python3 tools/ci/test_godot_regression_sharding.py
+
+      - name: Install pinned SCons
+        run: |
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+
+      - name: Check out exact godot-cpp source
+        run: |
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+
+      - name: Build Linux godot-cpp and CyberSand extension
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: ${{ vars.GDEXT_LINUX_SCONS_JOBS || vars.GDEXT_LINUX_VCPU || '4' }}
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          timeout 35m tools/build_pinned_godot_cpp.sh linux
+          timeout 20m tools/build_native_extension.sh
+          file "$CYBERSAND_NATIVE_OUTPUT" | tee "$RUNNER_TEMP/linux-file.txt"
+          grep -q 'ELF 64-bit.*x86-64' "$RUNNER_TEMP/linux-file.txt"
+
+      - name: Validate and stage exact Linux runtime
+        env:
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          timeout 1m tools/check_linux_runtime_floor.sh
+          mkdir -p build/linux-runtime
+          cp "$CYBERSAND_NATIVE_OUTPUT" build/linux-runtime/libcybersand_native.linux.x86_64.so
+          cp godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so build/linux-runtime/
+          git rev-parse HEAD > build/linux-runtime/source-sha.txt
+          {
+            echo "godot_cpp_commit=$GODOT_CPP_COMMIT"
+            echo "scons=4.10.1"
+            gcc-13 --version | head -n 1
+            g++-13 --version | head -n 1
+            ld --version | head -n 1
+          } > build/linux-runtime/toolchain.txt
+          (
+            cd build/linux-runtime
+            sha256sum libcybersand_native.linux.x86_64.so libgodot_rapier.linux.x86_64-unknown-linux-gnu.so > runtime.sha256
+            sha256sum --check --strict runtime.sha256
+          )
+          git diff --exit-code -- .             ':!godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so'             ':!godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'
+
+      - name: Publish Linux runtime for isolated regression shards
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: linux-runtime-${{ github.run_id }}
+          path: build/linux-runtime/
+          if-no-files-found: error
+          retention-days: 1
+
+  windows-build:
+    name: windows x86_64
+    runs-on: ${{ format('avrea-ubuntu-24.04-{0}-vcpu', vars.GDEXT_WINDOWS_VCPU || '4') }}
+    timeout-minutes: 30
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Install pinned SCons
         run: |
@@ -57,7 +127,6 @@ jobs:
           test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
 
       - name: Prepare exact LLVM-MinGW
-        if: matrix.target == 'windows'
         run: |
           timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
           echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
@@ -68,27 +137,11 @@ jobs:
             ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
           fi
 
-      - name: Build Linux godot-cpp and CyberSand extension
-        if: matrix.target == 'linux'
-        env:
-          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
-          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
-          SCONS_JOBS: ${{ vars.GDEXT_AVREA_VCPU || '16' }}
-          CYBERSAND_REAL_CXX: /usr/bin/g++-13
-          LINUX_CXX: /usr/bin/g++-13
-          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
-        run: |
-          timeout 35m tools/build_pinned_godot_cpp.sh linux
-          timeout 20m tools/build_native_extension.sh
-          file "$CYBERSAND_NATIVE_OUTPUT" | tee "$RUNNER_TEMP/linux-file.txt"
-          grep -q 'ELF 64-bit.*x86-64' "$RUNNER_TEMP/linux-file.txt"
-
       - name: Build Windows godot-cpp and CyberSand extension
-        if: matrix.target == 'windows'
         env:
           GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
           SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
-          SCONS_JOBS: ${{ vars.GDEXT_AVREA_VCPU || '16' }}
+          SCONS_JOBS: ${{ vars.GDEXT_WINDOWS_SCONS_JOBS || vars.GDEXT_WINDOWS_VCPU || '4' }}
           LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
           WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
           CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
@@ -98,13 +151,36 @@ jobs:
           file "$CYBERSAND_NATIVE_OUTPUT" | tee "$RUNNER_TEMP/windows-file.txt"
           grep -q 'PE32+ executable (DLL).*x86-64' "$RUNNER_TEMP/windows-file.txt"
           "$LLVM_MINGW_ROOT/bin/llvm-objdump" -p "$CYBERSAND_NATIVE_OUTPUT" > "$RUNNER_TEMP/windows-imports.txt"
+          sha256sum "$CYBERSAND_NATIVE_OUTPUT"
 
-      - name: Hash validation output
+  linux-regression:
+    name: linux regression shard ${{ matrix.shard }}
+    needs: linux-build
+    runs-on: ${{ format('avrea-ubuntu-24.04-{0}-vcpu', vars.GDEXT_SHARD_VCPU || '2') }}
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Restore exact Linux runtime
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: linux-runtime-${{ github.run_id }}
+          path: build/linux-runtime
+
+      - name: Verify and install runtime artifact
         run: |
-          find "$RUNNER_TEMP" -maxdepth 1 -type f \( -name 'libcybersand_native*.so' -o -name 'cybersand_native*.dll' \) -exec sha256sum {} +
+          test "$(cat build/linux-runtime/source-sha.txt)" = "$(git rev-parse HEAD)"
+          (cd build/linux-runtime && sha256sum --check --strict runtime.sha256)
+          cp build/linux-runtime/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/
+          cp build/linux-runtime/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so godot/addons/godot-rapier2d/bin/
+          timeout 1m tools/check_linux_runtime_floor.sh
 
-      - name: Run current Linux runtime regressions and ABI check
-        if: matrix.target == 'linux'
+      - name: Prepare exact Godot runtime
         run: |
           timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
           echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
@@ -112,19 +188,175 @@ jobs:
           GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
           test -n "$GODOT_BIN"
           chmod +x "$GODOT_BIN"
-          test "$($GODOT_BIN --version)" = "$GODOT_VERSION"
-          cp "$RUNNER_TEMP/libcybersand_native.linux.x86_64.so" godot/addons/cybersand_native/bin/
-          timeout 1m tools/check_linux_runtime_floor.sh
-          timeout 30m python3 tools/ci/run_godot_regressions.py --godot "$GODOT_BIN" --output build/godot-regressions
-          git diff --exit-code -- . ':!godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so'
+          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
 
-      - name: Retain current Linux runtime evidence
-        if: always() && matrix.target == 'linux'
+      - name: Run isolated regression shard
+        run: |
+          timeout 30m python3 tools/ci/run_godot_regressions.py             --godot "$GODOT_BIN"             --output "build/godot-regressions/shard-${{ matrix.shard }}"             --shard-count 4             --shard-index "${{ matrix.shard }}"
+          git diff --exit-code -- .             ':!godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so'             ':!godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'
+
+      - name: Retain shard evidence
+        if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: linux-godot-${{ github.run_id }}
+          name: linux-godot-shard-${{ matrix.shard }}-${{ github.run_id }}
           path: |
-            build/godot-regressions/
-            ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+            build/godot-regressions/shard-${{ matrix.shard }}/
+            build/linux-runtime/source-sha.txt
+            build/linux-runtime/runtime.sha256
+          if-no-files-found: warn
+          retention-days: 30
+
+  linux-serial-equivalence:
+    name: linux serial equivalence
+    if: github.event_name == 'pull_request' && vars.GDEXT_SERIAL_EQUIVALENCE == '1'
+    needs: linux-build
+    runs-on: ${{ format('avrea-ubuntu-24.04-{0}-vcpu', vars.GDEXT_SERIAL_VCPU || '4') }}
+    timeout-minutes: 35
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Restore exact Linux runtime
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: linux-runtime-${{ github.run_id }}
+          path: build/linux-runtime
+
+      - name: Verify and install runtime artifact
+        run: |
+          test "$(cat build/linux-runtime/source-sha.txt)" = "$(git rev-parse HEAD)"
+          (cd build/linux-runtime && sha256sum --check --strict runtime.sha256)
+          cp build/linux-runtime/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/
+          cp build/linux-runtime/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so godot/addons/godot-rapier2d/bin/
+          timeout 1m tools/check_linux_runtime_floor.sh
+
+      - name: Prepare exact Godot runtime
+        run: |
+          timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          test -n "$GODOT_BIN"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+
+      - name: Run legacy-equivalent serial suite
+        run: |
+          timeout 30m python3 tools/ci/run_godot_regressions.py             --godot "$GODOT_BIN"             --output build/godot-regressions/serial
+          git diff --exit-code -- .             ':!godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so'             ':!godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'
+
+      - name: Retain serial equivalence evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: linux-godot-serial-${{ github.run_id }}
+          path: |
+            build/godot-regressions/serial/
+            build/linux-runtime/source-sha.txt
+            build/linux-runtime/runtime.sha256
+          if-no-files-found: warn
+          retention-days: 30
+
+  linux-regression-gate:
+    name: linux x86_64
+    if: always()
+    needs: [linux-regression, linux-serial-equivalence]
+    runs-on: ${{ format('avrea-ubuntu-24.04-{0}-vcpu', vars.GDEXT_GATE_VCPU || '1') }}
+    timeout-minutes: 10
+    steps:
+      - name: Require all sharded regressions
+        run: |
+          test "${{ needs.linux-regression.result }}" = "success"
+
+      - name: Require serial equivalence lane during PR migration
+        if: github.event_name == 'pull_request' && vars.GDEXT_SERIAL_EQUIVALENCE == '1'
+        run: |
+          test "${{ needs.linux-serial-equivalence.result }}" = "success"
+
+      - name: Download sharded evidence
+        if: github.event_name == 'pull_request' && vars.GDEXT_SERIAL_EQUIVALENCE == '1'
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: linux-godot-shard-*-${{ github.run_id }}
+          path: build/sharded
+
+      - name: Download serial evidence
+        if: github.event_name == 'pull_request' && vars.GDEXT_SERIAL_EQUIVALENCE == '1'
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: linux-godot-serial-${{ github.run_id }}
+          path: build/serial
+
+      - name: Prove serial and sharded coverage equivalence
+        if: github.event_name == 'pull_request' && vars.GDEXT_SERIAL_EQUIVALENCE == '1'
+        run: |
+          python3 - <<'PY'
+          from collections import Counter
+          import json
+          from pathlib import Path
+
+          shard_files = sorted(Path("build/sharded").glob("**/timings.json"))
+          serial_files = sorted(Path("build/serial").glob("**/timings.json"))
+          if len(shard_files) != 4:
+              raise SystemExit(f"Expected four shard timing files, found {len(shard_files)}: {shard_files}")
+          if len(serial_files) != 1:
+              raise SystemExit(f"Expected one serial timing file, found {len(serial_files)}: {serial_files}")
+
+          def load(path):
+              return json.loads(path.read_text(encoding="utf-8"))
+
+          serial = load(serial_files[0])
+          serial_cases = [r["name"] for r in serial["results"] if r["role"] == "case"]
+          if any(r["status"] != "passed" for r in serial["results"]):
+              raise SystemExit("Serial equivalence suite contains a non-passing result")
+
+          sharded_cases = []
+          identities = []
+          for path in shard_files:
+              payload = load(path)
+              if any(r["status"] != "passed" for r in payload["results"]):
+                  raise SystemExit(f"Shard contains a non-passing result: {path}")
+              sharded_cases.extend(r["name"] for r in payload["results"] if r["role"] == "case")
+              identities.append(payload["identity"])
+
+          if Counter(sharded_cases) != Counter(serial_cases):
+              raise SystemExit(
+                  "Sharded suite coverage differs from serial suite: "
+                  f"serial={sorted(serial_cases)} sharded={sorted(sharded_cases)}"
+              )
+          duplicates = sorted(name for name, count in Counter(sharded_cases).items() if count != 1)
+          if duplicates:
+              raise SystemExit(f"Sharded cases were not executed exactly once: {duplicates}")
+
+          serial_identity = serial["identity"]
+          for identity in identities:
+              for key in ("source_sha", "godot_version", "cybersand_runtime", "rapier_runtime"):
+                  if identity[key] != serial_identity[key]:
+                      raise SystemExit(f"Identity mismatch for {key}: {identity[key]} != {serial_identity[key]}")
+
+          summary = {
+              "source_sha": serial_identity["source_sha"],
+              "case_count": len(serial_cases),
+              "shard_count": 4,
+              "serial_cases": serial_cases,
+              "sharded_cases": sharded_cases,
+              "result": "equivalent",
+          }
+          Path("build/equivalence.json").write_text(
+              json.dumps(summary, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          print(f"Equivalent coverage: {len(serial_cases)} unique suite cases across four shards")
+          PY
+
+      - name: Retain equivalence proof
+        if: github.event_name == 'pull_request' && vars.GDEXT_SERIAL_EQUIVALENCE == '1'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: linux-godot-equivalence-${{ github.run_id }}
+          path: build/equivalence.json
           if-no-files-found: error
           retention-days: 30

@@ -37,6 +37,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Local wake, conservative phase wake, dirty/sleep | [Activity](../systems/activity-dirty-regions-and-waking.md) |
 | Material IDs, adapted rules, staggered cadence | [Material kernels](../systems/materials-and-rule-kernels.md) |
 | Native Water versus discrete fallback, viscosity/rest | [Water design](../systems/water-design.md) |
+| What survives #26 review, what must #49 repair, and when may #45 proceed? | [Water design](../systems/water-design.md), [#26 post-merge review](../audits/2026-09-19-issue-26-post-merge-review.md), [architecture programme](../operations/architecture-programme.md) |
 | Why can deep connected Water keep unequal levels, what did #26 reject, and what comes next? | [Water design](../systems/water-design.md), [architecture programme](../operations/architecture-programme.md), [#26 evidence](../audits/2026-09-19-issue-26-water-leveling.md) |
 | Heat/pressure/wind and Smoke limits | [Field roadmap](../systems/smoke-heat-pressure-roadmap.md) |
 | Appearance LUTs, glow, authoring intent | [Appearance](../systems/material-appearance-and-rendering.md), [authored programs](../architecture/item-authored-material-programs.md) |
@@ -107,10 +108,11 @@ runtime-configurable Water Feel Lab. See the [post-G-P refinement](../operations
 and [completion evidence](../audits/2026-09-12-issue-19-water-feel-lab.md).
 
 #19 supplied the H-ready apparatus. Later H evidence and #26 identify a bulk
-head/leveling defect first; both #26 bounded local candidates were rejected and #45
-owns the next head-transmission experiment. #18 remains held until that bulk confound
-is resolved and directional references can be interpreted cleanly. #20 remains
-downstream of #18/G-M; G-final remains open.
+head/leveling defect first; both #26 bounded local candidates remain rejected.
+Post-merge review requires #49 to repair/version the successor apparatus before #45
+implementation/acceptance. #18 remains held through #49 -> #45 until the bulk
+confound is resolved and directional references can be interpreted cleanly. #20
+remains downstream of #18/G-M; G-final remains open.
 
 For the pre-refinement identity/scope reconciliation, use the [dated reconciliation audit](../audits/2026-09-11-programme-gate-reconciliation.md).
 
@@ -151,6 +153,8 @@ separate; the programme graph owns admission.
 - Current programme/dependencies and Phase 0 disposition: [soliding programme](../operations/soliding-programme.md).
 - Owners, lifecycle, eligibility and nonwrapping identities: [soliding lifecycle](../architecture/soliding-lifecycle.md).
 - Dirty/activity discovery, complete summaries and refusal: [discovery substrate](../systems/settled-region-discovery.md).
+- Passed Stage-3A bounded-reference evidence and open Stage-3B locality/scalability gate: [Stage-3 review](../audits/issue-12-2026-09-19/stage3-exit-review.md).
+- Next read-only Stage-3B locality/scalability analysis and parent decision boundary: [Astra architecture-review packet](../operations/soliding-stage3b-astra-review.md).
 - Ordinary Current sleep control and measurement gaps: [measurement contract](../operations/soliding-measurement.md).
 
 - Blocked falling/torque/coherent-child motion fixture: [macro-fracture preregistration](../operations/soliding-macro-fracture-fixture.md).

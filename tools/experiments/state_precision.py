@@ -14,7 +14,7 @@ import time
 ROOT=Path(__file__).resolve().parents[2]
 OUT=ROOT/'validation/local/issue-17'
 BUILD=ROOT/'build/issue-17'
-CORE=[f'native/src/{n}.cpp' for n in ('world','material_rules','scheduler_geometry','render_snapshot','c_api')]
+CORE=[f'native/src/{n}.cpp' for n in ('world','material_rules','scheduler_geometry','settled_world_discovery','render_snapshot','c_api')]
 ARMS={'m4':(4,0,8),'m6':(6,0,8),'m8':(8,0,8),'m10':(10,0,8),
       'l4':(4,1,8),'l6':(6,1,8),'l10':(10,1,8),'d4':(8,0,4)}
 FIXTURES=['basin48','basin96','film','support','ledge','coherent','low','delay']

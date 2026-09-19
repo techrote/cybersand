@@ -152,6 +152,22 @@ open/held until that bulk confound is resolved; #20 remains downstream and G-fin
 remains open. MicroScenario/INT-000 work continues independently and only affected
 Water-dependent provisional evidence needs later revalidation.
 
+## Issue #26 post-merge review and #49 correction
+
+The [post-merge review](../audits/2026-09-19-issue-26-post-merge-review.md)
+preserves #26 Outcome B for its two exact rejected local candidates, while
+qualifying apparatus v1 for future acceptance use.
+
+Confirmed apparatus limitations include dry-column false-pass equilibrium,
+success-valued zero for unreached thresholds, non-revoked sustained passage,
+a historical three-compartment fixture mislabeled as a clean U-tube, mixed
+active/sleep p95 interpretation and evidence-runner durability gaps.
+
+[#49](https://github.com/techrote/cybersand/issues/49) is now the required bounded
+correction before #45 implementation/acceptance. #45 must use versioned corrected
+metrics/fixtures and fresh Current-Water baselines. Production Water is unchanged;
+#18 remains held behind `#49 -> #45`.
+
 ## Opt-in transport profiles
 
 **Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
@@ -302,9 +318,17 @@ sleep precedes performance claims; region discovery precedes acceleration.
 Dynamic handoff, torque-driven rotation, coherent-child fracture and persistence
 remain later unpassed gates, not implied by a standalone contract model.
 
-[Successor evidence](../audits/2026-09-19-issue-12-foundation.md) now includes the
-reviewed standalone lifecycle, bounded read-only journal and measured Current
-sleep control. Production discovery/acceleration/dynamics remain unimplemented.
-Source `de332ea` actually uses the 8-byte superset carrier after #19 integration;
+[Successor evidence](../audits/2026-09-19-issue-12-foundation.md) includes the
+reviewed standalone lifecycle, bounded journal and measured Current sleep control.
+The parent-owned [Stage-3 review](../audits/issue-12-2026-09-19/stage3-exit-review.md)
+classifies the integrated producer/connectivity implementation as the passed Stage-3A
+bounded correctness/reference checkpoint at `82e65f3`, with exact-head CI,
+provenance and final parent review complete. Stage 3B locality/scalability remains open: measured fixed memory,
+full tracked-tile signal refresh and whole-region sparse-edit rebuilds prevent full
+Stage-3 admission. PR #47 merged the bounded reference as `fc299c1`; the next step is
+the read-only [Stage-3B Astra architecture review](../operations/soliding-stage3b-astra-review.md),
+which stops before implementation and parent admission. Stage 4 is blocked; production
+dynamics, fracture and persistence remain unimplemented. Source `de332ea` actually uses
+the 8-byte superset carrier after #19 integration;
 the [storage contract](../architecture/chunk-tile-and-buffer-model.md) supersedes
 earlier four-byte physical-size statements for this source without selecting G-final.

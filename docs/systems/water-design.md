@@ -83,6 +83,24 @@ bounded head/pressure-transmission architecture experiment. It is distinct from 
 material-local directional history. #18 remains held until the bulk-head confound is
 resolved.
 
+## Post-#26 apparatus qualification
+
+**Current Water semantics remain unchanged.** The #26 negative result is valid for
+the two exact radius-2 candidates tested, but the retained v1 experiment apparatus
+has post-merge review limitations documented in
+[the #26 review](../audits/2026-09-19-issue-26-post-merge-review.md).
+
+In particular, v1 settling/equilibrium metrics can ignore dry expected columns,
+unreached thresholds use a success-valued numeric zero, the historical fixture
+named `unequal-head-u-tube` is actually a three-compartment communicating
+geometry, and whole-run p95 mixes active and sleeping phases.
+
+[#49](https://github.com/techrote/cybersand/issues/49) must repair/version those
+metrics, add a clean two-limb communicating-head fixture and fresh Current-Water
+control baseline, and harden evidence output before #45 may freeze thresholds or
+accept/reject a successor mechanism. Preserve all original #26 artifacts as
+historical evidence.
+
 ## Coherent emission and surface adhesion
 
 Coherent/calm emission is a command flag on Water, not a second material ID.

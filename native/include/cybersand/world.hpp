@@ -5,6 +5,7 @@
 #include "cybersand/interaction_policy.hpp"
 #include "cybersand/transport_policy.hpp"
 #include "cybersand/scheduler_geometry.hpp"
+#include "cybersand/settled_world_discovery.hpp"
 #include "cybersand/water_experiment_policy.hpp"
 
 #include <array>
@@ -42,6 +43,11 @@ struct WorldConfig {
     std::size_t maximum_chunk_count = 4'096;
     std::size_t deferred_event_capacity = 1'024;
     std::int32_t maximum_explosion_radius = 64;
+    bool settled_discovery_enabled = false;
+    std::size_t settled_discovery_tile_capacity = 4'096;
+    std::size_t settled_discovery_tick_budget = 0;
+    bool settled_region_connectivity_enabled = false;
+    std::size_t settled_region_tick_budget = 0;
     PhysicsDiagnosticConfig physics_diagnostics{};
     InteractionPolicy interaction_policy{};
     TransportPolicy transport_policy{};
@@ -163,6 +169,28 @@ public:
     // Serialized owner query; nullptr when disabled. Never retain across reset.
     [[nodiscard]] const PhysicsTotals* physics_diagnostics() const noexcept;
 
+    // Opt-in Stage-3 read-only observations. These never authorize simulation
+    // skipping and expose immutable values rather than live World storage.
+    [[nodiscard]] bool settled_discovery_enabled() const noexcept;
+    [[nodiscard]] std::uint64_t settled_discovery_incarnation() const noexcept;
+    [[nodiscard]] std::size_t settled_discovery_tile_count() const noexcept;
+    [[nodiscard]] std::size_t settled_discovery_pending() const noexcept;
+    [[nodiscard]] std::optional<soliding::WorldDiscoveryTileSnapshot>
+        settled_discovery_tile(std::size_t index) const noexcept;
+    [[nodiscard]] soliding::WorldDiscoveryMetrics settled_discovery_producer_metrics() const noexcept;
+    [[nodiscard]] soliding::DiscoveryMetrics settled_discovery_journal_metrics() const noexcept;
+    [[nodiscard]] soliding::DiscoveryHalt settled_discovery_halted() const noexcept;
+    [[nodiscard]] bool settled_discovery_capacity_blocked() const noexcept;
+    [[nodiscard]] std::size_t settled_discovery_storage_bytes() const noexcept;
+    std::size_t advance_settled_discovery(std::size_t budget);
+    std::size_t advance_settled_regions(std::size_t budget) noexcept;
+    [[nodiscard]] std::size_t settled_region_count() const noexcept;
+    [[nodiscard]] std::optional<soliding::SettledRegionSnapshot>
+        settled_region(std::size_t slot) const noexcept;
+    [[nodiscard]] soliding::SettledRegionMetrics settled_region_metrics() const noexcept;
+    [[nodiscard]] soliding::RegionRefusal settled_region_refusal() const noexcept;
+    [[nodiscard]] std::size_t settled_region_storage_bytes() const noexcept;
+
     [[nodiscard]] std::size_t dirty_chunk_count() const noexcept;
     [[nodiscard]] std::vector<DirtyChunk> take_dirty_chunks();
     void copy_render_cells(RectI64 region, std::span<std::uint8_t> destination,
@@ -199,6 +227,7 @@ private:
     std::unique_ptr<ParallelState> parallel_;
     std::unique_ptr<TransientObstacleState> transient_obstacles_;
     std::unique_ptr<PhysicsTotals> physics_totals_;
+    std::unique_ptr<soliding::SettledWorldDiscoveryCoordinator> settled_discovery_;
     void record_physics(PhysicsEvent kind, Material source, Material target,
                         std::int64_t dx, std::int64_t dy, JobEffects* effects,
                         std::uint64_t count = 1) noexcept;
@@ -273,6 +302,27 @@ private:
     void scan_rect(CellRect rect, TickStats& stats, JobEffects* effects = nullptr);
     void prepare_write_domain(CellRect rect);
     void merge_job_effects(const JobEffects& effects);
+    void initialize_settled_discovery();
+    void register_discovery_chunk(ChunkCoord coord, const Chunk& chunk) noexcept;
+    [[nodiscard]] soliding::DiscoveryTileKey discovery_tile_key(
+        const Address& address) const noexcept;
+    [[nodiscard]] soliding::DiscoverySignals discovery_signals(
+        ChunkCoord coord, std::size_t activity_index,
+        soliding::DiscoveryBounds bounds) const noexcept;
+    void dirty_discovery_cell(std::int64_t x, std::int64_t y,
+                              soliding::ProducerReason reason) noexcept;
+    void dirty_discovery_rect(ChunkCoord coord, std::int32_t minimum_x,
+                              std::int32_t minimum_y, std::int32_t maximum_x,
+                              std::int32_t maximum_y,
+                              soliding::ProducerReason reason) noexcept;
+    void refresh_discovery_signals(soliding::ProducerReason reason) noexcept;
+    void fence_discovery(soliding::ProducerReason reason) noexcept;
+    void observe_discovery_mask_cell(std::int64_t x, std::int64_t y) noexcept;
+    void dirty_discovery_world_rect(RectI64 region,
+                                    soliding::ProducerReason reason) noexcept;
+    void observe_discovery_event(RectI64 region) noexcept;
+    [[nodiscard]] static soliding::DiscoveryCell read_discovery_cell(
+        const void* context, std::int64_t x, std::int64_t y);
 };
 
 }  // namespace cybersand

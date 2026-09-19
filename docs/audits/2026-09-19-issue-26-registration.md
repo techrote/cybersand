@@ -29,6 +29,22 @@ historical H record.
 #18 compact directional history remains held. #20 sparse ballistic transfer and
 #14/G-final are outside this work item.
 
+## Post-completion status
+
+This document is the immutable preregistration for apparatus v1 and the historical
+#26 experiment. Post-merge review did not invalidate the two candidate rejections,
+but found defects that make v1 unsuitable for future successor acceptance without
+correction.
+
+See [the post-merge review](2026-09-19-issue-26-post-merge-review.md) and
+[#49](https://github.com/techrote/cybersand/issues/49).
+
+Where this registration says `not-reached` should be censored, note that the
+implemented v1 reducer instead used numeric zero; where it specifies empty columns
+are excluded only when permitted, the implemented surface extractor excluded all
+dry columns. Those are implementation deviations retained as historical findings,
+not silently corrected in this registration.
+
 ## Experimental question
 
 Can a bounded no-history Water mechanism materially improve deep/extended lateral

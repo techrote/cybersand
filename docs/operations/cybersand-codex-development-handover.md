@@ -162,12 +162,23 @@ Use the [successor evidence and next prerequisites](../audits/2026-09-19-issue-1
 for #12 continuation. The ordinary-sleep control is frozen independently; do not
 relabel synthetic journal service epochs as simulated World ticks.
 
-For the remaining Stage 3 work, follow the frozen
-[producer/connectivity execution contract](soliding-stage3-freeze.md). The linked
-Spark packets intentionally split World witness integration from cross-tile region
-construction; independent verification and measurement follow only after parent
-integration. Stage 3 remains cells-owned discovery and cannot be used to admit
-stationary acceleration or Rapier dynamics.
+The frozen [producer/connectivity execution contract](soliding-stage3-freeze.md)
+was implemented on `codex/issue-12-stage3-integration`; the parent-owned
+[Stage-3 exit review](../audits/issue-12-2026-09-19/stage3-exit-review.md) maps every
+checklist item to source, tests or an explicit safe refusal. Its corrected
+[276-process cost record](../audits/issue-12-2026-09-19/stage3-cost-results.md)
+retains material fixed memory and large-region rebuild costs rather than claiming
+a win. Publication checkpoint `82e65f3` passed exact-head native/sanitizer,
+Windows/Linux build, sharded Linux Godot, documentation/provenance, retrieval and
+runtime-identity gates. The bounded correctness/observability reference therefore
+passes **Stage 3A**; PR #47 merged as `fc299c1` and its exact head is on `main`.
+The locality/scalability objective is **Stage 3B open**: the current implementation still performs
+full tracked-tile signal refresh, global mapping/seed work, compiled-maximum storage
+and whole-region rediscovery. Use the read-only
+[Stage-3B Astra architecture-review packet](soliding-stage3b-astra-review.md) next;
+it requires confirmed model identity and stops at a parent architecture decision
+before implementation. Stage 4 is not admitted. Stage 3 remains cells-owned
+discovery and cannot be used to admit stationary acceleration or Rapier dynamics.
 
 ## Issue #26 / Water bulk-head handoff, 2026-09-19
 
@@ -183,3 +194,17 @@ separate from #18 directional history; #18 stays held until #45 supplies an acce
 bulk baseline or a documented no-go. #20 and G-final remain downstream under the
 architecture programme. #28/#29 may continue in parallel, with targeted
 revalidation only after a later accepted Water semantic change.
+
+## Issue #49 Water apparatus correction handoff, 2026-09-19
+
+Use [the post-merge #26 review](../audits/2026-09-19-issue-26-post-merge-review.md)
+before any successor Water experiment. #26 remains closed and its two local
+candidate rejections remain valid, but the v1 harness is historical evidence rather
+than the acceptance oracle for #45.
+
+[#49](https://github.com/techrote/cybersand/issues/49) must first version/fix the
+settling and censoring metrics, add the clean two-limb communicating-head fixture,
+separate active/sleep performance accounting and harden evidence output. Preserve
+all original #26 archives and generate new baselines for changed metrics/fixtures.
+
+Required order is `#49 -> #45 -> #18`. #28/#29 remain independently runnable.

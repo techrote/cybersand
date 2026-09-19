@@ -57,6 +57,18 @@ roadmap and issue bodies so an autonomous agent cannot safely infer another orde
   accepted interaction result names the exact kinetic/contact baseline it used;
   later relevant physics changes trigger targeted revalidation.
 
+## Water apparatus correction boundary
+
+#26 remains complete as a valid negative experiment for its exact candidates, but
+post-merge review found that its retained Water harness cannot be used unchanged
+as a successor acceptance oracle. [#49](https://github.com/techrote/cybersand/issues/49)
+is the bounded corrective prerequisite for #45 implementation/acceptance.
+
+This does not block exploratory #28/#29 work. It only prevents Water-dependent
+architecture evidence from treating apparatus-v1 metrics/fixture labels as final
+acceptance. After any later accepted Water semantic change, revalidate only affected
+provisional scenarios/interactions.
+
 ## Current dependency graph
 
 The intended graph is:
@@ -103,8 +115,9 @@ waited to exist.
 | #24 | Now / its own issue | #18, #27 | Keep it a focused input/launcher fix |
 | #27 MS-000 | Once the working base contains the #24 fix, or the fix is taken as an isolated prerequisite in the same branch | #18 completion, #14/G-final | Apparatus only; no new physics semantics |
 | #18 | Under its existing admission | #27/#28 | Preserve registered experiment contract |
-| #26 | **Complete Outcome B** (2026-09-19) | #27 | Retain source-matched negative evidence; no local Water candidate selected |
-| #45 Water head transmission | After #26 Outcome B; under its own architecture/admission contract | #27/#28/#29 | Keep bulk scalar/head transmission distinct from #18 directional history |
+| #26 | **Complete Outcome B** (2026-09-19) | #27 | Retain source-matched negative evidence; apparatus v1 is historical/qualified |
+| #49 Water apparatus correction | After #26 review; before #45 implementation/acceptance | #27/#28/#29 | Version metrics/fixtures/evidence; preserve old results |
+| #45 Water head transmission | After #49 merges; under its own architecture/admission contract | #27/#28/#29 | Keep bulk scalar/head transmission distinct from #18 directional history |
 | #20 | Design/admission per its own issue; implementation only after its own gates | #28/#29 | Still blocked by #18/G-M plus G-B admission |
 | #28 MS-001 | When enough of #27 is stable to host real scenarios | #14/G-final | Pre-G-final scenario results are provisional/versioned |
 | #29 INT-000 planning/inventory | Now | #14/G-final | No broad retune merely because inventory exists |
