@@ -18,6 +18,13 @@ production semantics.
 
 The implementation branch was created from actual `main`
 `910717aac101363ec2b1b89e4041a22bc9a97b97`, after PR #55 / issue #29 merged.
+Before review-ready completion it is merge-reconciled with authoritative `main`
+`800edbcab726954f0e0e8d4933944bbd2b0f67ff`, which includes PR #75's
+canonical worker-parity runner allocation, PR #72 / issue #58 lifecycle/reset/
+replacement-failure semantics, and PR #73 / issue #57's frozen event
+effect-footprint contract. This reconciliation occurs before candidate execution
+or inspection of any Stage-3B candidate result.
+
 The merged interaction/MicroScenario work therefore no longer has an active branch
 ownership conflict, but #69 still does not depend on or edit its workbench,
 retrieval-corpus, material-rule or MicroScenario surfaces. MS-001 remains
@@ -43,6 +50,34 @@ Frozen schema identities:
 
 The apparatus source commit is itself an input to every generated plan. #70 must
 freeze the exact apparatus source before execution.
+
+## Current-main semantic reconciliation
+
+The 168-fixture inventory, 6,488-record default final matrix, arm set, workers
+`1/4`, primitive budgets `1,8,64,256,1024`, repeat counts, deterministic
+ordering, result/provenance schemas and reducer/reporting contract remain
+unchanged by reconciliation.
+
+Two already-registered fixture protocols require pre-results clarification so
+their SHA-bound contracts cannot be interpreted using superseded semantics:
+
+- `failure.allocation-failure-observer-replacement` now binds issue #58's
+  retire-first reset ordering: the old observer is retired before destructive
+  reset/replacement construction; replacement construction failure leaves
+  discovery unavailable but does not mark the World failed; a later successful
+  clear constructs a fresh observer incarnation and cannot revive a stale handle.
+- `aba.event-dependency-halo-fanout` now binds issue #57's additive geometry.
+  With registered `R=2` and `maximum_rule_radius=1`, the event effect reach is
+  `R+2=4` and the pending observation half-extent is
+  `P=(R+2)+maximum_rule_radius=5`.
+
+Those are protocol/oracle clarifications only. #58 remains the lifecycle
+implementation authority and #63 remains the owner of the sparse event/coverage
+producer change. No candidate semantics are implemented here, no acceptance
+threshold is added, and no fixture is selected, dropped or reordered using
+candidate results. Existing provenance fields remain sufficient because the
+canonical protocol SHA is already carried in each run row and authoritative
+mutation schedule provenance; no schema version change is needed.
 
 ## Fixture inventory
 

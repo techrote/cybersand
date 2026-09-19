@@ -125,7 +125,8 @@ def fixture_catalogue():
               parameters={"capacity_class":c,"boundary":b},expected_outcomes=["success","refused","not-applicable"]))
     for n in ("allocation-failure-construction","allocation-failure-observer-replacement","capacity-failure-staging",
               "failure-after-partial-preparation","source-capture-failure","failed-world-quarantine"):
-        out.append(fixture(f"failure.{n}","capacity-failure",n,expected_outcomes=["refused","source-failure","failed-world"]))
+        outcomes=["refused"] if n=="allocation-failure-observer-replacement" else ["refused","source-failure","failed-world"]
+        out.append(fixture(f"failure.{n}","capacity-failure",n,expected_outcomes=outcomes))
     for n in ("forward-reverse-registration","successful-free-slot-order","allocation-order","equal-deadline-ties",
               "translated-signed-geometry","adversarial-hash-keys","scarce-publication-capacity-competition"):
         out.append(fixture(f"determinism.{n}","determinism-permutation",n,parameters={"workers":[1,4],"canonical_output_required":True},
@@ -200,7 +201,7 @@ ABA_OPERATIONS={
  "inclusion-requested-applied-ABA":[{"step":1,"op":"request-inclusion","rect":[0,0,32,32],"included":False},{"step":2,"op":"apply-inclusion"},{"step":3,"op":"request-inclusion","rect":[0,0,32,32],"included":True},{"step":4,"op":"apply-inclusion"}],
  "same-barrier-restore":[{"step":1,"op":"worker-write","at":[16,16],"tuple":FIELD_TARGETS["state_b"],"barrier":1},{"step":2,"op":"worker-write","at":[16,16],"tuple":BASE_TUPLE,"barrier":1}],
  "worker-effect-rectangle-fanout":[{"step":1,"op":"worker-effect-rect","rect":[8,8,16,16]}],
- "event-dependency-halo-fanout":[{"step":1,"op":"queue-event","id":"E1","center":[16,16],"radius":2,"dependency_halo":1}],
+ "event-dependency-halo-fanout":[{"step":1,"op":"queue-event","id":"E1","center":[16,16],"radius":2,"maximum_rule_radius":1,"effect_footprint_extra":2,"pending_observation_half_extent":5}],
 }
 
 def fixture_protocol(item):
@@ -244,8 +245,12 @@ def fixture_protocol(item):
         return {**base,"setup":{"generator":"single-ready-domain","key":"A","rect":[0,0,32,32],"tuple":BASE_TUPLE},
           "operations":DEADLINE_OPERATIONS[suffix],"assertions":[item["invariant"]]}
     if family=="aba-fanout":
+        assertions=[item["invariant"]]
+        if suffix=="event-dependency-halo-fanout":
+            assertions += ["event effect reach is radius + 2",
+              "pending observation half-extent is (radius + 2) + maximum_rule_radius"]
         return {**base,"setup":{"generator":"uniform-square","side":64,"tuple":BASE_TUPLE},
-          "operations":ABA_OPERATIONS[suffix],"assertions":[item["invariant"]]}
+          "operations":ABA_OPERATIONS[suffix],"assertions":assertions}
     if family=="progress-churn-fairness":
         cadence={"churn-every-1-service-call":1,"churn-every-2-service-calls":2,"churn-every-8-service-calls":8}.get(suffix)
         ops=[{"step":1,"op":"configure-localities","churning":[0,0],"stable_near":[64,0],"stable_far":[1024,1024],"rounds":64}]
@@ -275,6 +280,17 @@ def fixture_protocol(item):
           "source-capture-failure":{"phase":"source-capture","read_ordinal":1},
           "failed-world-quarantine":{"phase":"world","failure":"quarantine"},
         }
+        if fault=="allocation-failure-observer-replacement":
+            return {**base,"setup":{"generator":"fault-injection-control","tuple":BASE_TUPLE},
+              "operations":[{"step":1,"op":"establish-live-observation"},
+                {"step":2,"op":"inject-fault",**fault_ops[fault]},
+                {"step":3,"op":"clear-authority-and-replace-observer"},
+                {"step":4,"op":"attempt-observation"},
+                {"step":5,"op":"clear-authority-and-replace-observer","fault_injection":"none"},
+                {"step":6,"op":"attempt-observation"}],
+              "assertions":["retire the old observer before destructive reset and replacement construction",
+                "replacement construction failure leaves discovery unavailable and World not failed",
+                "later successful clear constructs a fresh observer incarnation; no stale handle revives"]}
         return {**base,"setup":{"generator":"fault-injection-control","tuple":BASE_TUPLE},
           "operations":[{"step":1,"op":"inject-fault",**fault_ops[fault]},{"step":2,"op":"attempt-observation"}],
           "assertions":["failure/refusal is explicit and partial publication is forbidden"]}

@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <iostream>
 #include <limits>
+#include <new>
 #include <optional>
 #include <stdexcept>
 #include <utility>
@@ -380,6 +381,102 @@ void seed_fixture(World& world) {
     world.set_temperature(2, 0, 500);
 }
 
+CYBERSAND_TEST_NOINLINE void reset_replacement_failure_retires_before_authority_loss() {
+    auto config = tracked_config();
+    World world(config);
+    world.reserve_region({0, 0, 8, 8});
+    service(world);
+    const auto original = tile_at(world, 0, 0);
+    const auto original_handle = original.summary.handle;
+    const auto original_incarnation = world.settled_discovery_incarnation();
+    require(original_handle.incarnation == original_incarnation &&
+            original.summary.classification != DiscoveryClass::Invalid,
+            "pre-reset observation is live and belongs to the current incarnation");
+
+    world.clear();
+    const auto replacement_incarnation = world.settled_discovery_incarnation();
+    require(world.settled_discovery_enabled() &&
+            replacement_incarnation != 0 &&
+            replacement_incarnation > original_incarnation &&
+            world.settled_discovery_tile_count() == 0 &&
+            !world.settled_discovery_tile(original_handle.slot).has_value(),
+            "clear retires the old observer before exposing an empty replacement");
+
+    world.reserve_region({0, 0, 8, 8});
+    service(world);
+    auto replacement = tile_at(world, 0, 0);
+    require(replacement.summary.handle.slot == original_handle.slot &&
+            replacement.summary.handle != original_handle &&
+            replacement.summary.handle.incarnation == replacement_incarnation,
+            "slot reuse cannot make a pre-reset discovery handle current again");
+
+    auto prior_incarnation = replacement_incarnation;
+    auto stale_handle = replacement.summary.handle;
+    for (int cycle = 0; cycle < 8; ++cycle) {
+        world.clear();
+        const auto current_incarnation = world.settled_discovery_incarnation();
+        require(current_incarnation > prior_incarnation &&
+                !world.settled_discovery_tile(stale_handle.slot).has_value(),
+                "repeated clear advances incarnation before any slot can be reused");
+        world.reserve_region({0, 0, 8, 8});
+        service(world);
+        replacement = tile_at(world, 0, 0);
+        require(replacement.summary.handle.incarnation == current_incarnation &&
+                replacement.summary.handle != stale_handle,
+                "repeated replacement never revives the prior object/slot identity");
+        stale_handle = replacement.summary.handle;
+        prior_incarnation = current_incarnation;
+    }
+
+    world.set(3, 3, Material::Stone);
+    service(world);
+    const auto pre_fault = tile_at(world, 3, 3);
+    const auto pre_fault_incarnation = world.settled_discovery_incarnation();
+
+    testing::fail_next_settled_world_discovery_construction();
+    bool allocation_failed = false;
+    try {
+        world.clear();
+    } catch (const std::bad_alloc&) {
+        allocation_failed = true;
+    }
+    require(allocation_failed &&
+            !world.has_failed() &&
+            !world.settled_discovery_enabled() &&
+            world.settled_discovery_incarnation() == 0 &&
+            world.settled_discovery_tile_count() == 0 &&
+            world.settled_discovery_pending() == 0 &&
+            world.settled_discovery_halted() == DiscoveryHalt::None &&
+            world.settled_region_refusal() == RegionRefusal::None &&
+            world.advance_settled_discovery(100) == 0 &&
+            !world.settled_discovery_tile(pre_fault.summary.handle.slot).has_value(),
+            "post-reset replacement allocation failure leaves discovery explicitly unavailable");
+    require(world.chunk_count() == 0 && world.get(3, 3) == Material::Empty,
+            "allocation failure occurs after the existing authoritative clear contract");
+
+    auto disabled = config;
+    disabled.settled_discovery_enabled = false;
+    World control(disabled);
+    seed_fixture(world);
+    seed_fixture(control);
+    for (int tick = 0; tick < 16; ++tick) {
+        const auto unavailable_stats = world.tick();
+        const auto control_stats = control.tick();
+        require(unavailable_stats.visited_cells == control_stats.visited_cells &&
+                unavailable_stats.moved_cells == control_stats.moved_cells &&
+                world.content_hash() == control.content_hash(),
+                "discovery-unavailable World remains authoritative-simulation neutral");
+    }
+    require(!world.settled_discovery_enabled() && !world.has_failed(),
+            "normal discovery unavailability is distinct from failed-World quarantine");
+
+    world.clear();
+    require(world.settled_discovery_enabled() &&
+            world.settled_discovery_incarnation() > pre_fault_incarnation &&
+            world.settled_discovery_tile_count() == 0,
+            "later successful reset constructs a fresh incarnation without resurrecting the failed one");
+}
+
 CYBERSAND_TEST_NOINLINE void disabled_neutrality_and_worker_parity() {
     auto tracked = tracked_config();
     tracked.maximum_chunk_count = 64;
@@ -579,6 +676,7 @@ int main() {
         no_write_activity_deadline_and_epoch_wrap();
         custom_geometry_signed_endpoints_and_policy_fence();
         inclusion_reset_move_and_failure_quarantine();
+        reset_replacement_failure_retires_before_authority_loss();
         disabled_neutrality_and_worker_parity();
         integrated_region_publication_split_merge_and_refusal();
         integrated_new_tile_registration_retires_facing_region();

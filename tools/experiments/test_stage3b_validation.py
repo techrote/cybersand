@@ -33,6 +33,17 @@ class Stage3BValidationTests(unittest.TestCase):
         self.assertEqual(historical["every_iterations"], 16)
         self.assertEqual(v.BASE_TUPLE["temperature"], 200)
         self.assertIn("x==32", by_id["historical.ring"]["protocol"]["setup"]["solid_predicate"])
+        halo = by_id["aba.event-dependency-halo-fanout"]["protocol"]
+        halo_op = halo["operations"][0]
+        self.assertEqual(halo_op["maximum_rule_radius"], 1)
+        self.assertEqual(halo_op["effect_footprint_extra"], 2)
+        self.assertEqual(halo_op["pending_observation_half_extent"], 5)
+        self.assertIn("pending observation half-extent is (radius + 2) + maximum_rule_radius", halo["assertions"])
+        replacement = by_id["failure.allocation-failure-observer-replacement"]
+        self.assertEqual(replacement["expected_outcomes"], ["refused"])
+        replacement_protocol = replacement["protocol"]
+        self.assertIn("replacement construction failure leaves discovery unavailable and World not failed", replacement_protocol["assertions"])
+        self.assertIn("later successful clear constructs a fresh observer incarnation; no stale handle revives", replacement_protocol["assertions"])
 
     def test_final_plan_freezes_workers_budgets_repeats_and_explicit_unavailability(self):
         plan = self.final_plan()

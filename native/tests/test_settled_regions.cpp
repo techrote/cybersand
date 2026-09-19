@@ -461,6 +461,38 @@ void unknown_middle_component_capacity_and_new_match() {
             "matching update republishes one merged region");
 }
 
+void generation_exhaustion_never_revalidates_old_handle() {
+    using Regions = SettledRegions<1, 1, 1, 1, 1, 2, 1, 2>;
+    const std::array<DiscoveryCell, 1> one{sand};
+    Regions regions(29);
+    const auto tile_key = key(0, 0, 29);
+
+    require(put(regions, tile_key, {0, 0, 1, 1}, 1, one) == RegionOutcome::Accepted,
+            "generation fixture accepted");
+    drain(regions);
+    const auto first = snapshots(regions, 1);
+    require(first.size() == 1 && first[0].handle.generation == 1,
+            "first and only usable generation publishes");
+    const auto stale = first[0].handle;
+
+    require(put(regions, tile_key, {0, 0, 1, 1}, 2, one) == RegionOutcome::Accepted &&
+            !regions.snapshot(stale).has_value() && regions.region_count() == 0,
+            "revision replacement immediately retires the old generation");
+    drain(regions);
+    require(regions.region_count() == 0 &&
+            regions.last_refusal() == RegionRefusal::GenerationExhausted &&
+            !regions.snapshot(stale).has_value(),
+            "generation exhaustion refuses publication instead of wrapping a stale handle");
+
+    require(put(regions, tile_key, {0, 0, 1, 1}, 3, one) == RegionOutcome::Accepted,
+            "post-exhaustion input can still be observed without identity reuse");
+    drain(regions);
+    require(regions.region_count() == 0 &&
+            regions.last_refusal() == RegionRefusal::GenerationExhausted &&
+            !regions.snapshot(stale).has_value(),
+            "slot/object reuse cannot make an exhausted old handle current again");
+}
+
 void local_churn_does_not_cancel_inflight_remote_region() {
     using Regions = SettledRegions<2, 1, 1, 2, 4, 4>;
     const std::array<DiscoveryCell, 1> one{sand};
@@ -498,6 +530,7 @@ int main() {
         multi_tile_ring_and_many_tile_solid();
         exact_key_seams_and_local_shapes();
         unknown_middle_component_capacity_and_new_match();
+        generation_exhaustion_never_revalidates_old_handle();
         local_churn_does_not_cancel_inflight_remote_region();
         std::cout << "settled region tests passed\n";
         return 0;

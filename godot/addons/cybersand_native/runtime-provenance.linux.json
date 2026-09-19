@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "status": "validated-development-runtime",
-  "source_commit": "46ab58e3da2cc373a54e1ee234397e079c081a95",
-  "source_tree": "c212c99e12a5f10811235c4ba6936f23978f6f14",
+  "source_commit": "204ae8e1ebdc1f6e782a3278804d0ac92ef871ce",
+  "source_tree": "8be7f2baac37a355c89cebc76526c57e35d807a0",
   "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
-  "sha256": "a6fb563aaac1f77d2de9a5d4101a85959017ca0eaa0a155c66fa63d55d3dbc4e",
-  "size": 1451752,
+  "sha256": "4c7803d7412ba9008b6de3d2ae4f8fef698e184956f5e9c1e308f5946475045b",
+  "size": 1456488,
   "source_input_hash_kind": "SHA-256 of canonical Git blob bytes; CRLF working files normalize to LF",
   "source_inputs": {
     "godot/native_extension/cyber_demo_bridge.hpp": "92d1ada53f684ca92832f245399078d4f43fdba0b4c6c5e41ba99f265cf759a5",
@@ -26,7 +26,7 @@
     "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
     "native/include/cybersand/settled_discovery.hpp": "9b6b902e5fcafccb52890b9d9328da9913aa530e43a5584d6a432deb564e2195",
     "native/include/cybersand/settled_regions.hpp": "f1f3e09a186295d95e50c929e9c6b52ba35666df908a70c78bed7d2f0c48cc5d",
-    "native/include/cybersand/settled_world_discovery.hpp": "210e62895367d1e56c967218c196de8d4aa7f260559d20f068f9bf4734006931",
+    "native/include/cybersand/settled_world_discovery.hpp": "46ece0301c677e36bc94fd1f7786e3059ea4e381e423f7bf158d74cad818c797",
     "native/include/cybersand/transport_policy.hpp": "9204d1e7b112e260097ba3924c8653cde45568d5886d33b9bb53fdfa8019e348",
     "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
     "native/include/cybersand/world.hpp": "e487d4e9d48819ee8cacffc6da00c8aff043b43b5cfa2cd9d13b1b316aa86aec",
@@ -35,13 +35,13 @@
     "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
     "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
     "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
-    "native/src/settled_world_discovery.cpp": "34a6e9022dd273f41022c2672d5910426d0628a541f25bd2e2a861e38c2bb983",
-    "native/src/world.cpp": "9950d1b83800e3128c0b0ee799d2d2492ef9f25d13a80c237524abe4167e032e"
+    "native/src/settled_world_discovery.cpp": "657267510dbf431fcdcb811a1ff36bfc17a992727e7d7ad0143e72bff777be8e",
+    "native/src/world.cpp": "66372cb8dbc0b03ca17782acd82354b816f2b0ed5a30b678a53faefd4fa5d085"
   },
-  "evidence": "docs/audits/2026-09-19-issue-29-int000.md",
+  "evidence": "docs/audits/issue-12-2026-09-19/stage3b-parent-decision.md",
   "validated_platform": "Linux x86_64 Godot 4.7",
-  "toolchain": "Ubuntu 24.04, GCC/G++ 13.3.0, binutils 2.42, SCons 4.10.1; godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496; INT-000 sparse resolver/provenance source",
-  "acceptance": "Exact INT-000-source Linux x86_64 GDExtension build passed in Actions run 35460970810; inspect_interaction_profile/inspect_interaction symbols verified. Exact-head Godot acceptance is rerun after publication.",
+  "toolchain": "Ubuntu 24.04, GCC/G++ 13.3.0, binutils 2.42, SCons 4.10.1; godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496; Stage-3B #58 lifecycle source",
+  "acceptance": "Exact #58-source Linux x86_64 GDExtension build and ABI-floor validation passed in Actions run 35463292615. Exact-head Godot acceptance is rerun after publication.",
   "other_platforms": "Windows cross-build is from the same exact native source but is not Windows execution. Browser/WebAssembly execution and hardware-GPU/target-PC performance remain unavailable and are not claimed.",
-  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/35460970810"
+  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/35463292615"
 }
