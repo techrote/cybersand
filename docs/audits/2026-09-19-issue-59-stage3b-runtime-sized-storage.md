@@ -163,16 +163,59 @@ material behavior, Water behavior or Stage-4 work is included.
 PR #75's worker-parity routing is inherited from `main`; #59 does not alter the
 parity test or shard placement. #69's 6,488-record final campaign is not executed.
 
+## Runtime publication evidence
+
+The source-matched publication froze source commit
+`531faf6db8f8990c646003905a3cc2af68028485` and tree
+`86387b4675b44c4aace442444efa8bc9fd77115e`.
+
+Actions run `35470393189` re-ran the focused #59 runtime-storage/parity matrix
+before any runtime build, then built both platforms from that exact source. The
+Linux step copied the just-built extension into the checked-out runtime location
+before running the repository ABI-floor checker, so the floor evidence is attached
+to the new #59 binary rather than the predecessor binary.
+
+Retained artifact:
+
+- name:
+  `issue59-source-matched-runtimes-531faf6db8f8990c646003905a3cc2af68028485`;
+- artifact ID: `10592282990`;
+- archive digest:
+  `sha256:150c51a9570a9c2f430a4a3ca20ce2f7b377bca61cabe667bcaccbf362cf5c58`;
+- retained archive size: 1,124,643 bytes.
+
+Published runtime identities:
+
+- Linux x86_64:
+  `20e6e8ea2bb5924511d44a6777ed55a13601f4d47bdbc00319d930575add2d61`,
+  1,461,888 bytes;
+- Windows x86_64 cross-build:
+  `e9c13e46f13764c09b313d1f4ee8257b857947f4f9b3d5e222e0c83d1a64ed7c`,
+  1,967,104 bytes.
+
+The publisher regenerated both provenance manifests from canonical Git blob
+bytes, verified every tracked input and artifact hash, published both LFS objects
+in commit `45fa3e922dc92d6c17bcd1cf2e249c17bc24c512`, then deleted its one-shot
+workflow.
+
+After publication, the retained Stage-3 benchmark was mechanically updated from
+the obsolete static `Journal::storage_bytes()` call to the new instance
+`journal->storage_bytes()` API. That benchmark file is not a tracked native
+runtime source input, so commit `321eedf4976346b12ba63a91f7510c3dde23b575`
+does not invalidate the published runtime provenance or require another runtime
+build.
+
 ## Validation record
 
 Focused source validation workflow:
 Actions run `35470123883` at source checkpoint
 `16b9f0cfc0b0e3f1d8e6bea24179fdc8d897db07`.
 
-The runtime-sized storage/parity matrix passed before broader validation. The
-same focused run also executes the pre-existing settled-region boundary suite and
-#58 World lifecycle/reset/recovery suite.
+The runtime-sized storage/parity matrix passed there before broader validation,
+along with the pre-existing settled-region boundary suite and #58 World
+lifecycle/reset/recovery suite. The same #59 matrix passed again at exact runtime
+publication source `531faf6db8f8990c646003905a3cc2af68028485`.
 
-Final source-matched runtime identities, exact final PR head, normal repository
-workflow run IDs and merge result are recorded here only after they exist; G2 is
-not treated as closed before that evidence is complete.
+Normal pull-request documentation/provenance, native/sanitizer/benchmark and
+GDExtension/Godot gates still have to pass against the final PR head. G2 remains
+open until exact-head validation and merge.
