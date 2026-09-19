@@ -47,8 +47,8 @@ MEASUREMENTS={
  "reclamation":("nodes_retired","bytes_retired","cleanup_primitives","cleanup_ms","oldest_retained_generation",
   "reclamation_caused_deferral"),
  "end_to_end":("mutation_to_retirement_ms","dirty_to_local_observation_ms","dirty_to_global_observation_ms",
-  "service_call_latency_ms","service_call_latency_p50_ms","service_call_latency_p95_ms","service_call_latency_p99_ms",
-  "service_call_latency_max_ms","owner_tick_plus_observer_ms","owner_tick_plus_observer_p50_ms",
+  "service_call_latency_ms","service_call_latency_sample_count","service_call_latency_p50_ms","service_call_latency_p95_ms","service_call_latency_p99_ms",
+  "service_call_latency_max_ms","owner_tick_plus_observer_ms","owner_tick_plus_observer_sample_count","owner_tick_plus_observer_p50_ms",
   "owner_tick_plus_observer_p95_ms","owner_tick_plus_observer_p99_ms","owner_tick_plus_observer_max_ms",
   "throughput_per_second","total_ms"),
  "memory":("requested_capacity_bytes","layout_derived_bytes","allocator_committed_bytes","live_bytes",
@@ -280,6 +280,12 @@ def validate_result(v,row):
             if p.get(f) in (None,""): raise ValueError(f"executed result missing provenance identity: {f}")
     if state in {"correctness-failure","refused","timeout","source-failure","failed-world","not-applicable"} and not v["failure"].get("kind"):
         raise ValueError("failure/refusal/timeout must retain explicit failure kind")
+    for prefix in ("service_call_latency","owner_tick_plus_observer"):
+        sample_count=ms["end_to_end"][prefix+"_sample_count"]
+        if ms["end_to_end"][prefix+"_p95_ms"] is not None and (not isinstance(sample_count,int) or sample_count<20):
+            raise ValueError(prefix+" p95 requires at least 20 samples")
+        if ms["end_to_end"][prefix+"_p99_ms"] is not None and (not isinstance(sample_count,int) or sample_count<100):
+            raise ValueError(prefix+" p99 requires at least 100 samples")
     if state=="not-applicable" and "not-applicable" not in row.get("fixture_expected_outcomes",[]): raise ValueError("fixture does not permit not-applicable")
     if state=="unavailable" and row["arm_availability"]=="available": raise ValueError("available arm silently unavailable")
     if state=="success" and row["arm_availability"]=="unavailable": raise ValueError("unavailable arm reported success")
