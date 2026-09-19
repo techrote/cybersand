@@ -112,7 +112,7 @@ intervening change is CI routing only.
 | #58 | Harden observer lifecycle/reset/allocation failure | #56 | G1 closed on main by PR #72: safe lifecycle/failure foundation |
 | #59 | Runtime-size Stage-3A-equivalent storage | #58 | Remove compile-max small-world allocation without semantic change |
 | #60 | Canonical bounded spatial indexing | #59 | Bounded deterministic registration/lookup; merged by PR #78 |
-| #61 | Sparse mutation and worker witness core | #60, #58 | Change-driven payload witnesses; implementation in validation |
+| #61 | Sparse mutation and worker witness core | #60, #58 | Change-driven payload witnesses implemented; merge closes the payload slice |
 | #62 | Indexed activity/deadline sparse state | #61 | Remove observer deadline/activity resident polling |
 | #63 | Sparse mask/event/inclusion/coverage witnesses | #62, #57 | Complete non-payload producer coverage |
 | #64 | Exact local graph/face/reverse retirement indexes | #60, #59 | Local incidence and dependency invalidation |
@@ -296,9 +296,10 @@ identified reference series when it cannot share the matched authority.
    G-P4 is closed. #69 preregistration is complete; #70 remains gated on #68 and
    the frozen candidate/source-runtime identity.
 3. #59 / PR #76 and #60 / PR #78 are complete; G2 and G3 are closed.
-4. #61 is the current serialized World-producer package. After #61 lands, #62 is
-   dependency-ready; #63 remains blocked on both #62 and #57. #64 remains the
-   separate graph lane and is not absorbed into the World-producer work.
+4. The serialized World-producer lane remains #61 -> #62 -> #63. #61 closes the
+   payload-witness slice; #62 becomes dependency-ready with #61 on `main`.
+   #63 remains blocked on both #62 and #57. #64 remains the separate graph lane
+   and is not absorbed into the World-producer work.
 5. Join at #65.
 6. Only then #66 -> #67 -> #68.
 7. Freeze one coherent candidate and execute #70.
