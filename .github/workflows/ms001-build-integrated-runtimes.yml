@@ -1,0 +1,117 @@
+name: MS001 build integrated runtimes
+
+on:
+  push:
+    branches: [codex/issue-28-ms001]
+    paths: [.github/workflows/ms001-build-integrated-runtimes.yml]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ms001-build-integrated-runtimes
+  cancel-in-progress: false
+
+env:
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+
+jobs:
+  build:
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/issue-28-ms001'
+    runs-on: avrea-ubuntu-24.04-8-vcpu
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify integrated source
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 13a26b78b1ef4d6eafa5f2fc649c79976a2eb6ac HEAD
+          git merge-base --is-ancestor 59974b45704ae1b4bc80f44c7d41c98b02aff488 HEAD
+          git rev-parse HEAD > "$RUNNER_TEMP/source-sha.txt"
+          git rev-parse HEAD^{tree} > "$RUNNER_TEMP/source-tree.txt"
+
+      - name: Install pinned SCons
+        run: |
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+
+      - name: Check out exact godot-cpp
+        run: |
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+
+      - name: Build Linux x86_64
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: "8"
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          timeout 35m tools/build_pinned_godot_cpp.sh linux
+          timeout 20m tools/build_native_extension.sh
+          file "$CYBERSAND_NATIVE_OUTPUT" | grep 'ELF 64-bit.*x86-64'
+          nm -C "$CYBERSAND_NATIVE_OUTPUT" | grep -q 'SettledWorldDiscoveryCoordinator'
+          strings "$CYBERSAND_NATIVE_OUTPUT" | grep -q 'inspect_cell'
+          strings "$CYBERSAND_NATIVE_OUTPUT" | grep -q 'inspect_statistics'
+
+      - name: Prepare LLVM-MinGW
+        run: |
+          timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          if test ! -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; then
+            ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+          fi
+
+      - name: Build Windows x86_64
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: "8"
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
+        run: |
+          timeout 35m tools/build_pinned_godot_cpp.sh windows
+          timeout 20m tools/build_native_extension_windows.sh
+          file "$CYBERSAND_NATIVE_OUTPUT" | grep 'PE32+ executable (DLL).*x86-64'
+          "$LLVM_MINGW_ROOT/bin/llvm-nm" -C "$CYBERSAND_NATIVE_OUTPUT" | grep -q 'SettledWorldDiscoveryCoordinator'
+          strings "$CYBERSAND_NATIVE_OUTPUT" | grep -q 'inspect_cell'
+          strings "$CYBERSAND_NATIVE_OUTPUT" | grep -q 'inspect_statistics'
+
+      - name: Retain exact integrated runtimes
+        run: |
+          set -euo pipefail
+          mkdir "$RUNNER_TEMP/ms001-runtimes"
+          cp "$RUNNER_TEMP/libcybersand_native.linux.x86_64.so" "$RUNNER_TEMP/ms001-runtimes/"
+          cp "$RUNNER_TEMP/cybersand_native.windows.x86_64.dll" "$RUNNER_TEMP/ms001-runtimes/"
+          cp "$RUNNER_TEMP/source-sha.txt" "$RUNNER_TEMP/source-tree.txt" "$RUNNER_TEMP/ms001-runtimes/"
+          {
+            echo "godot_cpp=$GODOT_CPP_COMMIT"
+            gcc-13 --version | head -n 1
+            g++-13 --version | head -n 1
+            ld --version | head -n 1
+            "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-g++" --version | head -n 1
+          } > "$RUNNER_TEMP/ms001-runtimes/toolchain.txt"
+          (cd "$RUNNER_TEMP/ms001-runtimes" && sha256sum libcybersand_native.linux.x86_64.so cybersand_native.windows.x86_64.dll source-sha.txt source-tree.txt toolchain.txt > SHA256SUMS)
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ms001-integrated-runtimes-${{ github.sha }}
+          path: ${{ runner.temp }}/ms001-runtimes/
+          if-no-files-found: error
+          retention-days: 3
