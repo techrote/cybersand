@@ -111,8 +111,18 @@ func _interaction_provenance_tests() -> void:
 	var profile: Dictionary = bridge.inspect_interaction_profile()
 	expect(profile.get("schema_id","") == "cybersand.interactions" and int(profile.get("schema_version",0)) == 1,
 		"INT-000 native schema identity is missing")
-	expect(profile.get("pair_rules",[]).size() == 14 and profile.get("channels",[]).size() == 7,
+	expect(profile.get("pair_rules",[]).size() == 14 and profile.get("channels",[]).size() == 7
+		and profile.get("specialized_rules",[]).size() == 19 and profile.get("layer_kinds",[]).size() == 5,
 		"INT-000 profile catalogue is incomplete")
+	expect(profile.get("authored_layers",[]).is_empty(),
+		"Current profile unexpectedly gained authored default/adjustment/modifier semantics")
+	var validation: Dictionary = profile.get("catalogue_validation",{})
+	expect(validation.get("ok",false) and int(validation.get("duplicate_rule_ids",-1)) == 0
+		and int(validation.get("conflicting_pair_overrides",-1)) == 0
+		and int(validation.get("invalid_family_memberships",-1)) == 0
+		and int(validation.get("unresolved_layer_conflicts",-1)) == 0
+		and int(validation.get("invalid_supersession_links",-1)) == 0,
+		"INT-000 catalogue conflict validation is not clean")
 	var salt: Dictionary = bridge.inspect_interaction(3,23,255)
 	expect(salt.get("matched",false) and salt.get("selected",false)
 		and int(salt.get("source_product",-1)) == 24 and int(salt.get("target_product",-1)) == 24,
@@ -121,7 +131,7 @@ func _interaction_provenance_tests() -> void:
 	expect(acid_reverse.get("selected",false) and int(acid_reverse.get("source_product",-1)) == 29
 		and int(acid_reverse.get("target_product",-1)) == 4 and acid_reverse.get("reversed",false),
 		"role-preserving reverse provenance changed")
-	var themed: Dictionary = bridge.inspect_interaction(53,33,0)
+	var themed: Dictionary = bridge.inspect_interaction(53,34,0)
 	expect(not themed.get("matched",true) and not "int.family.conductive-base-metal" in themed.get("source_families",[]),
 		"themed metal inherited base-Metal electrical semantics")
 
@@ -151,6 +161,23 @@ func _interaction_provenance_tests() -> void:
 				"interaction_inspection":report.get("interaction_inspection",[])}
 			if expected.is_empty(): expected = semantic
 			expect(semantic == expected, "one/four-worker INT fixture evidence diverged: " + fixture)
+
+	# Deterministic repeat of the first generated interaction fixture under the same
+	# seed/worker/runtime identity. This is intentionally bounded rather than repeating
+	# every mechanism and extending the regression shard unnecessarily.
+	var repeat_definition: Dictionary = Catalogue.definition("materials/salt-water",3)
+	var first_repeat: Dictionary = {}
+	for repeat_index: int in range(2):
+		var repeat_world: Variant = new_world(1)
+		var repeat_host: CyberMicroScenarioHost = Host.new()
+		expect(repeat_host.install(repeat_world,repeat_definition,"Inspect",true), repeat_host.last_error)
+		for tick: int in range(int(repeat_definition.presentation.duration_ticks)):
+			expect(repeat_host.advance(), repeat_host.last_error)
+		var repeat_report: Dictionary = repeat_host.capture({"source_revision":"test-only"})
+		var repeat_semantic: Dictionary = {"observations":repeat_report.get("observations",[]),
+			"interaction_inspection":repeat_report.get("interaction_inspection",[])}
+		if repeat_index == 0: first_repeat = repeat_semantic
+		else: expect(repeat_semantic == first_repeat, "deterministic repeated INT fixture diverged")
 
 
 func _schema_rejections() -> void:
