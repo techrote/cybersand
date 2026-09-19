@@ -179,12 +179,14 @@ final candidate exists.
 - The default generated final plan has 6,488 run records. This is a deliberately
   bounded matrix rather than a wasteful Cartesian duplication of semantically
   meaningless Current/historical fixed-budget cases.
-- Result schema v1 retains explicit success, correctness/performance failure,
-  refusal, timeout, source failure, failed-world, unavailable and not-applicable
-  states plus exact source/compiler/runtime/hardware/order provenance.
-- Reducer schema v1 preserves terminal states, flags missing/insufficient samples,
-  summarizes declared metric populations directly and encodes no candidate winner
-  or universal percentage-speedup threshold.
+- Result schema v1 retains explicit success, correctness failure, refusal, timeout,
+  source failure, failed-world, unavailable and not-applicable states plus exact
+  source/compiler/runtime/hardware/order provenance. Slow performance remains a
+  measurement, not a threshold-derived failure state.
+- Reducer schema v1 preserves terminal states, high-water/refusal evidence and an
+  exact provenance index; flags missing/insufficient samples; summarizes declared
+  numeric metric populations directly; and encodes no candidate winner or universal
+  percentage-speedup threshold.
 
 #70 must freeze one authoritative simulation/material baseline, exact source/runtime
 identity for every available arm, final capacities, compiler/artifact identity,
