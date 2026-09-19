@@ -357,3 +357,29 @@ performance review flag, not an automatic semantic rejection.
 The values above were derived only from the frozen baseline and the pre-existing H
 target before candidate results existed. They must not be loosened after seeing a
 candidate.
+
+
+## Bounded-horizon arm registration — before implementation
+
+The second isolated candidate is a **radius-2 same-row lookahead**, not a pressure
+field and not a persistent flow/history carrier.
+
+For each otherwise eligible Water lateral update:
+
+- the existing adjacent baseline target remains the only write destination;
+- the candidate may inspect the next cell in the same direction, exactly two
+  cells from the source, which is within the already declared maximum rule radius;
+- both the adjacent target and lookahead cell must be Empty/Water, so the probe
+  cannot see through or jump a hard barrier;
+- when the lookahead Water mass is lower than the source by more than the existing
+  tolerance, the requested adjacent transfer may be strengthened from the same
+  bounded imbalance formula;
+- no direct radius-2 write, upward transfer, recursive push, new state, new queue,
+  column scan, pressure prepass or unbounded search is admitted;
+- baseline semantics, candidate thresholds and all fixture geometry remain frozen.
+
+This arm answers a deliberately narrow question: is the main deficit substantially
+a one-cell spatial-horizon problem? If it cannot materially improve the registered
+deep/communicating cases, that negative result argues against continuing to tune
+pure same-row local equalization and for an explicitly scoped larger head/pressure
+carrier question instead.
