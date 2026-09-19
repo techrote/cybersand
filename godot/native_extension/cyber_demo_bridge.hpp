@@ -17,6 +17,7 @@ class CyberDemoBridge final : public RefCounted {
     String error_;
 
     static String interaction_string(std::string_view value) {
+        if (value.empty()) return String();
         return String(value.data());
     }
 
