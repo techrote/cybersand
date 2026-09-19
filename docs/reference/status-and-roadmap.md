@@ -259,15 +259,22 @@ other two scenarios continue; all affected provisional scenarios are versioned
 and revalidated after relevant physics/architecture changes rather than being
 silently relabelled as accepted evidence.
 
-#29 is **INT-000: intermaterial interactions**, not a chemistry-only campaign. It
-covers non-kinetic material/material semantics such as reaction, combustion,
-thermal/phase consequences, dissolution/corrosion, curing, electrical and other
-state conversions/products. Kinetic movement/support/bridging/erosion/collision
-remain owned by existing physics systems. INT-000 planning/inventory may begin
-early; implementation uses the stable #27 fixture contract plus the #28 Materials
-Laboratory readiness checkpoint. Each accepted tuning pass pins the relevant
-source/contact/transport baseline and retains prior evidence, so later physics
-changes trigger targeted re-screening rather than a destructive global retune.
+#29 is **INT-000: intermaterial interactions**, not a chemistry-only campaign.
+**Current in PR #55 / `codex/issue-29-int000`:** the landed #27/#28 apparatus has
+been consumed by the versioned sparse interaction substrate. The compact 14-rule
+pair boundary now resolves through stable IDs/channels with a literal frozen
+pre-migration oracle; layered family/material/pair/context authoring, conflict
+validation, specialized-kernel provenance, coverage/revalidation records,
+generated schema-2 fixtures and batch comparison tooling are implemented in the
+source checkpoint. Specialized neighbourhood/lifecycle mechanisms remain
+authoritative in their existing `world.cpp` kernels where migration would
+unnecessarily entangle kinetic ownership.
+
+No broad interaction tuning is selected by this infrastructure checkpoint.
+Kinetic movement/support/bridging/erosion/collision remain owned by existing
+physics systems. Each later accepted tuning pass must pin the relevant
+source/runtime/contact/transport baseline and retain prior evidence so later
+physics changes trigger targeted re-screening rather than destructive retuning.
 
 The discovery workflow is: explore a scenario -> capture an anomaly with exact
 identities -> reduce it -> triage ownership -> bounded fix/tuning -> retained
@@ -307,10 +314,34 @@ post-merge review that retained the implementation while correcting Flood
 endpoint wording, the Stress uniqueness regression and stale compact definition
 hashes. Actual Windows/browser/target-GPU execution remains unavailable.
 
-The explicit Lab readiness prerequisite for #29 is satisfied. #29 still requires
-a fresh reconciliation of its historical preflight against the landed schema-2
-contract before implementation; MS-001 does not start #29 automatically and does
-not waive #18/#20/#26/#14 gates.
+The explicit Lab readiness prerequisite for #29 is satisfied and has been consumed
+by PR #55 after a fresh reconciliation of the historical preflight against the
+landed schema-2 contract. #29 completion remains conditional on PR #55's
+source-matched runtime/provenance publication, exact-head native/Godot/documentation
+gates and final acceptance review; MS-001 does not waive #18/#20/#26/#14 gates.
+
+## INT-000 implementation checkpoint, 2026-09-19
+
+**Current source candidate / final acceptance pending:** PR #55 is the sole #29
+implementation owner. It preserves existing compact pair behavior while migrating
+that bounded authority behind the versioned sparse resolver, exposes read-only
+effective provenance through the existing schema-2 Materials Laboratory path, and
+adds generated mechanism fixtures plus batch coverage/pass comparison tooling.
+
+The interaction schema defines seven independent channels and explicit precedence
+for channel default < family default < material adjustment < pair override <
+context modifier. Current behavior authors no implicit defaults/adjustments/
+modifiers; tests cover ordered, symmetric and unordered-role-preserving pair
+semantics plus equal-precedence conflict detection. Captures retain rolling
+source/runtime/transport/Water/execution/worker baseline identity for targeted
+revalidation. Coverage gaps remain explicit rather than being converted into a
+dense fabricated matrix.
+
+This checkpoint does **not** migrate specialized movement-entangled `world.cpp`
+kernels, select new material tuning, alter Water/granular/soliding/ballistic
+semantics or satisfy independent architecture gates. Final status is not upgraded
+from candidate until exact-head current checks and final diff/acceptance review
+complete.
 
 ## Issue #12 successor programme, 2026-09-19
 
