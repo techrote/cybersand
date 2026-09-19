@@ -1,4 +1,5 @@
 #include "cybersand/settled_world_discovery.hpp"
+#include "cybersand/bounded_ordered_index.hpp"
 
 #include <atomic>
 #include <limits>
@@ -17,24 +18,6 @@ void add(std::uint64_t& value, std::uint64_t amount = 1) noexcept {
     value += amount > room ? room : amount;
 }
 
-std::uint64_t hash_key(const DiscoveryTileKey& key) noexcept {
-    std::uint64_t hash = 1469598103934665603ULL;
-    const auto mix = [&hash](std::uint64_t value) {
-        for (std::size_t i = 0; i < sizeof(value); ++i) {
-            hash ^= static_cast<std::uint8_t>(value >> (i * 8U));
-            hash *= 1099511628211ULL;
-        }
-    };
-    mix(key.world_incarnation);
-    mix(static_cast<std::uint64_t>(key.chunk_y));
-    mix(static_cast<std::uint64_t>(key.chunk_x));
-    mix(static_cast<std::uint64_t>(key.activity_y));
-    mix(static_cast<std::uint64_t>(key.activity_x));
-    mix(static_cast<std::uint64_t>(key.subtile_y));
-    mix(static_cast<std::uint64_t>(key.subtile_x));
-    return hash;
-}
-
 std::size_t checked_scale(std::size_t capacity, std::size_t factor, const char* message) {
     if (factor == 0 || capacity > std::numeric_limits<std::size_t>::max() / factor)
         throw std::invalid_argument(message);
@@ -47,19 +30,6 @@ std::size_t checked_world_capacity(std::size_t capacity, bool regions_enabled) {
     if (regions_enabled && capacity > kMaximumIntegratedRegionTiles)
         throw std::invalid_argument("integrated region tile capacity exceeds compiled maximum");
     return capacity;
-}
-
-std::size_t index_size_for(std::size_t capacity) {
-    (void)checked_world_capacity(capacity, false);
-    const auto required = checked_scale(capacity, 2U,
-        "settled discovery key index capacity overflows size_t");
-    std::size_t result = 1;
-    while (result < required) {
-        if (result > std::numeric_limits<std::size_t>::max() / 2U)
-            throw std::invalid_argument("settled discovery key index capacity overflows size_t");
-        result *= 2U;
-    }
-    return result;
 }
 
 } // namespace
@@ -76,6 +46,7 @@ struct SettledWorldDiscoveryCoordinator::Impl {
                                    kMaximumIntegratedRegionTiles * 64,
                                    kMaximumIntegratedRegionTiles,
                                    kMaximumIntegratedRegionTiles * 32>;
+    using KeyIndex = BoundedOrderedIndex<DiscoveryTileKey, std::size_t, DiscoveryTileKeyLess>;
     struct Record {
         DiscoveryTileKey key{};
         DiscoveryBounds bounds{};
@@ -84,16 +55,11 @@ struct SettledWorldDiscoveryCoordinator::Impl {
         std::uint64_t region_payload_revision{};
         std::int16_t ambient_temperature{};
     };
-    struct IndexEntry {
-        DiscoveryTileKey key{};
-        std::size_t record{};
-        bool occupied{};
-    };
 
     Impl(std::uint64_t identity, std::size_t configured_capacity, bool enable_regions)
         : journal(identity, checked_world_capacity(configured_capacity, enable_regions)),
           tile_capacity(configured_capacity), incarnation(identity),
-          index(index_size_for(configured_capacity)) {
+          index(configured_capacity) {
         if (identity == 0) throw std::invalid_argument("settled discovery incarnation must be nonzero");
         records.reserve(tile_capacity);
         if (enable_regions) {
@@ -107,32 +73,60 @@ struct SettledWorldDiscoveryCoordinator::Impl {
     }
 
     std::optional<std::size_t> find_record(DiscoveryTileKey key) const noexcept {
-        const auto mask = index.size() - 1U;
-        auto slot = static_cast<std::size_t>(hash_key(key)) & mask;
-        for (std::size_t probe = 0; probe < index.size(); ++probe) {
-            add(metrics.index_probes);
-            const auto& entry = index[slot];
-            if (!entry.occupied) return std::nullopt;
-            if (entry.key == key) return entry.record;
-            slot = (slot + 1U) & mask;
-        }
-        return std::nullopt;
+        std::size_t probes = 0;
+        const auto record = index.find(key, &probes);
+        add(metrics.index_probes, probes);
+        return record;
     }
 
     bool insert_index(DiscoveryTileKey key, std::size_t record) noexcept {
-        const auto mask = index.size() - 1U;
-        auto slot = static_cast<std::size_t>(hash_key(key)) & mask;
-        for (std::size_t probe = 0; probe < index.size(); ++probe) {
-            add(metrics.index_probes);
-            auto& entry = index[slot];
-            if (!entry.occupied) {
-                entry = {key, record, true};
-                return true;
+        std::size_t probes = 0;
+        const auto outcome = index.insert(key, record, &probes);
+        add(metrics.index_probes, probes);
+        return outcome == KeyIndex::InsertResult::Inserted;
+    }
+
+    [[nodiscard]] bool valid_owner(WorldDiscoveryTileHandle handle) const noexcept {
+        return handle.world_incarnation == incarnation && handle.slot < records.size();
+    }
+
+    DiscoveryOutcome dirty_record(std::size_t record_index, ProducerReason reason,
+                                  std::uint64_t tick) noexcept {
+        auto& record = records[record_index];
+        const auto outcome = journal.dirty(record.handle, tick);
+        if (outcome == DiscoveryOutcome::Accepted) {
+            add(metrics.invalidated_tiles[static_cast<std::size_t>(reason)]);
+            if (regions != nullptr) {
+                const auto summary = journal.snapshot(record.handle);
+                if (summary.has_value()) {
+                    (void)regions->invalidate_known(
+                        record.handle.slot, record.key, summary->revision);
+                    record.region_payload_revision = 0;
+                }
             }
-            if (entry.key == key) return false;
-            slot = (slot + 1U) & mask;
         }
-        return false;
+        return outcome;
+    }
+
+    DiscoveryOutcome observe_record(std::size_t record_index, DiscoverySignals signals,
+                                    ProducerReason reason, std::uint64_t tick) noexcept {
+        auto& record = records[record_index];
+        const auto outcome = journal.observe(record.handle, signals, tick);
+        if (outcome == DiscoveryOutcome::Accepted) {
+            record.signals = signals;
+            add(metrics.invalidated_tiles[static_cast<std::size_t>(reason)]);
+            if (regions != nullptr) {
+                const auto summary = journal.snapshot(record.handle);
+                if (summary.has_value()) {
+                    (void)regions->invalidate_known(
+                        record.handle.slot, record.key, summary->revision);
+                    record.region_payload_revision = 0;
+                }
+            }
+        } else if (outcome == DiscoveryOutcome::Unchanged) {
+            record.signals = signals;
+        }
+        return outcome;
     }
 
     void block_capacity() noexcept {
@@ -146,7 +140,7 @@ struct SettledWorldDiscoveryCoordinator::Impl {
     std::size_t tile_capacity{};
     std::uint64_t incarnation{};
     std::vector<Record> records;
-    std::vector<IndexEntry> index;
+    KeyIndex index;
     std::unique_ptr<Regions> regions;
     std::array<DiscoveryCell, 1024> region_scratch{};
     mutable WorldDiscoveryMetrics metrics{};
@@ -233,20 +227,16 @@ DiscoveryOutcome SettledWorldDiscoveryCoordinator::dirty(
     auto& state = *impl_;
     add(state.metrics.notifications[static_cast<std::size_t>(reason)]);
     const auto record = state.find_record(key);
-    if (!record.has_value()) return DiscoveryOutcome::Stale;
-    const auto outcome = state.journal.dirty(state.records[*record].handle, tick);
-    if (outcome == DiscoveryOutcome::Accepted) {
-        add(state.metrics.invalidated_tiles[static_cast<std::size_t>(reason)]);
-        if (state.regions != nullptr) {
-            const auto summary = state.journal.snapshot(state.records[*record].handle);
-            if (summary.has_value()) {
-                (void)state.regions->invalidate_known(
-                    state.records[*record].handle.slot, key, summary->revision);
-                state.records[*record].region_payload_revision = 0;
-            }
-        }
-    }
-    return outcome;
+    return record.has_value() ? state.dirty_record(*record, reason, tick)
+                              : DiscoveryOutcome::Stale;
+}
+
+DiscoveryOutcome SettledWorldDiscoveryCoordinator::dirty(
+    WorldDiscoveryTileHandle handle, ProducerReason reason, std::uint64_t tick) noexcept {
+    auto& state = *impl_;
+    add(state.metrics.notifications[static_cast<std::size_t>(reason)]);
+    return state.valid_owner(handle) ? state.dirty_record(handle.slot, reason, tick)
+                                     : DiscoveryOutcome::Stale;
 }
 
 DiscoveryOutcome SettledWorldDiscoveryCoordinator::observe(
@@ -255,25 +245,20 @@ DiscoveryOutcome SettledWorldDiscoveryCoordinator::observe(
     auto& state = *impl_;
     add(state.metrics.notifications[static_cast<std::size_t>(reason)]);
     add(state.metrics.signal_observations);
-    const auto record_index = state.find_record(key);
-    if (!record_index.has_value()) return DiscoveryOutcome::Stale;
-    auto& record = state.records[*record_index];
-    const auto outcome = state.journal.observe(record.handle, signals, tick);
-    if (outcome == DiscoveryOutcome::Accepted) {
-        record.signals = signals;
-        add(state.metrics.invalidated_tiles[static_cast<std::size_t>(reason)]);
-        if (state.regions != nullptr) {
-            const auto summary = state.journal.snapshot(record.handle);
-            if (summary.has_value()) {
-                (void)state.regions->invalidate_known(
-                    record.handle.slot, key, summary->revision);
-                record.region_payload_revision = 0;
-            }
-        }
-    } else if (outcome == DiscoveryOutcome::Unchanged) {
-        record.signals = signals;
-    }
-    return outcome;
+    const auto record = state.find_record(key);
+    return record.has_value() ? state.observe_record(*record, signals, reason, tick)
+                              : DiscoveryOutcome::Stale;
+}
+
+DiscoveryOutcome SettledWorldDiscoveryCoordinator::observe(
+    WorldDiscoveryTileHandle handle, DiscoverySignals signals, ProducerReason reason,
+    std::uint64_t tick) noexcept {
+    auto& state = *impl_;
+    add(state.metrics.notifications[static_cast<std::size_t>(reason)]);
+    add(state.metrics.signal_observations);
+    return state.valid_owner(handle)
+        ? state.observe_record(handle.slot, signals, reason, tick)
+        : DiscoveryOutcome::Stale;
 }
 
 std::size_t SettledWorldDiscoveryCoordinator::advance(
@@ -336,9 +321,15 @@ void SettledWorldDiscoveryCoordinator::note_global_fence() noexcept {
 
 std::optional<WorldDiscoveryTileSnapshot> SettledWorldDiscoveryCoordinator::tile(
     std::size_t index) const noexcept {
+    const auto handle = handle_at(index);
+    return handle.has_value() ? tile(*handle) : std::nullopt;
+}
+
+std::optional<WorldDiscoveryTileSnapshot> SettledWorldDiscoveryCoordinator::tile(
+    WorldDiscoveryTileHandle handle) const noexcept {
     const auto& state = *impl_;
-    if (index >= state.records.size()) return std::nullopt;
-    const auto& record = state.records[index];
+    if (!state.valid_owner(handle)) return std::nullopt;
+    const auto& record = state.records[handle.slot];
     const auto summary = state.journal.snapshot(record.handle);
     if (!summary.has_value()) return std::nullopt;
     return WorldDiscoveryTileSnapshot{record.key, record.signals, *summary};
@@ -346,6 +337,23 @@ std::optional<WorldDiscoveryTileSnapshot> SettledWorldDiscoveryCoordinator::tile
 
 std::optional<std::size_t> SettledWorldDiscoveryCoordinator::find(
     DiscoveryTileKey key) const noexcept { return impl_->find_record(key); }
+
+std::optional<WorldDiscoveryTileHandle> SettledWorldDiscoveryCoordinator::find_handle(
+    DiscoveryTileKey key) const noexcept {
+    const auto record = impl_->find_record(key);
+    if (!record.has_value() || *record > std::numeric_limits<std::uint32_t>::max())
+        return std::nullopt;
+    return WorldDiscoveryTileHandle{
+        impl_->incarnation, static_cast<std::uint32_t>(*record)};
+}
+
+std::optional<WorldDiscoveryTileHandle> SettledWorldDiscoveryCoordinator::handle_at(
+    std::size_t index) const noexcept {
+    if (index >= impl_->records.size() || index > std::numeric_limits<std::uint32_t>::max())
+        return std::nullopt;
+    return WorldDiscoveryTileHandle{
+        impl_->incarnation, static_cast<std::uint32_t>(index)};
+}
 std::size_t SettledWorldDiscoveryCoordinator::size() const noexcept { return impl_->records.size(); }
 std::size_t SettledWorldDiscoveryCoordinator::capacity() const noexcept { return impl_->tile_capacity; }
 std::size_t SettledWorldDiscoveryCoordinator::pending() const noexcept { return impl_->journal.pending(); }
@@ -358,7 +366,7 @@ std::size_t SettledWorldDiscoveryCoordinator::storage_bytes() const noexcept {
     const auto& state = *impl_;
     return sizeof(Impl) + (state.journal.storage_bytes() - sizeof(Impl::Journal)) +
            state.records.capacity() * sizeof(Impl::Record) +
-           state.index.capacity() * sizeof(Impl::IndexEntry);
+           (state.index.storage_bytes() - sizeof(Impl::KeyIndex));
 }
 WorldDiscoveryStorageLayout SettledWorldDiscoveryCoordinator::storage_layout() const noexcept {
     const auto& state = *impl_;
@@ -366,10 +374,10 @@ WorldDiscoveryStorageLayout SettledWorldDiscoveryCoordinator::storage_layout() c
     out.effective_tile_capacity = state.tile_capacity;
     out.journal_capacity = state.journal.slot_capacity();
     out.owner_record_capacity = state.records.capacity();
-    out.key_index_capacity = state.index.size();
+    out.key_index_capacity = state.index.capacity();
     out.journal_storage_bytes = state.journal.storage_bytes();
     out.owner_record_storage_bytes = state.records.capacity() * sizeof(Impl::Record);
-    out.key_index_storage_bytes = state.index.capacity() * sizeof(Impl::IndexEntry);
+    out.key_index_storage_bytes = state.index.storage_bytes() - sizeof(Impl::KeyIndex);
     out.regions_enabled = state.regions != nullptr;
     if (state.regions != nullptr) {
         out.region_tile_capacity = state.regions->tile_capacity();
