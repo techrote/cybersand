@@ -4,6 +4,7 @@
 #include "cyber_observation_values.hpp"
 #include "cybersand/demo_snapshot.hpp"
 #include "cybersand/interaction_rules.hpp"
+#include "cybersand/material_rules.hpp"
 #include <godot_cpp/classes/ref.hpp>
 #include <godot_cpp/core/class_db.hpp>
 
