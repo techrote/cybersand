@@ -1,0 +1,120 @@
+name: MS001 temporary platform validation inputs
+on:
+  push:
+    branches: [codex/issue-28-ms001]
+    paths: [.github/workflows/ms001-platform-kit.yml]
+permissions:
+  contents: read
+concurrency:
+  group: ms001-platform-kit
+  cancel-in-progress: false
+jobs:
+  windows:
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/issue-28-ms001'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Build pinned Windows adapter
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin 101ae38034304346a46ea9ea84ae156d3e860496
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          timeout 10m curl --fail --location --retry 3 -o "$RUNNER_TEMP/llvm-mingw.tar.xz" https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+          echo "cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/llvm-mingw" "$RUNNER_TEMP/ms001-windows"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          if test ! -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; then ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; fi
+          export GODOT_CPP_ROOT="$RUNNER_TEMP/godot-cpp" SCONS_PYTHON="$RUNNER_TEMP/scons/bin/python" SCONS_JOBS=2
+          export LLVM_MINGW_ROOT="$RUNNER_TEMP/llvm-mingw" WINDOWS_CXX="$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-g++"
+          export CYBERSAND_NATIVE_OUTPUT="$RUNNER_TEMP/ms001-windows/cybersand_native.windows.x86_64.dll"
+          timeout 25m tools/build_pinned_godot_cpp.sh windows
+          timeout 10m tools/build_native_extension_windows.sh
+          "$LLVM_MINGW_ROOT/bin/llvm-objdump" -p "$CYBERSAND_NATIVE_OUTPUT" > "$RUNNER_TEMP/ms001-windows/imports.txt"
+          {
+            printf 'source=%s\ngodot_cpp=101ae38034304346a46ea9ea84ae156d3e860496\nexecution=not-yet-tested-on-Windows\n' "$GITHUB_SHA"
+            "$WINDOWS_CXX" --version
+            file "$CYBERSAND_NATIVE_OUTPUT"
+          } > "$RUNNER_TEMP/ms001-windows/identity.txt"
+          (cd "$RUNNER_TEMP/ms001-windows" && sha256sum cybersand_native.windows.x86_64.dll identity.txt imports.txt > SHA256SUMS)
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ms001-windows-inputs-${{ github.sha }}
+          path: ${{ runner.temp }}/ms001-windows/
+          if-no-files-found: error
+          retention-days: 7
+  web:
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/issue-28-ms001'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Prepare exact Emscripten 4.0.20 and Web side modules
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          mkdir "$RUNNER_TEMP/emsdk" "$RUNNER_TEMP/godot-cpp" "$RUNNER_TEMP/ms001-web"
+          git -C "$RUNNER_TEMP/emsdk" init
+          git -C "$RUNNER_TEMP/emsdk" remote add origin https://github.com/emscripten-core/emsdk.git
+          timeout 10m git -C "$RUNNER_TEMP/emsdk" fetch --depth=1 origin e4fe26ef59168ff44f4c23c466e497bf60b3411e
+          git -C "$RUNNER_TEMP/emsdk" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/emsdk" rev-parse HEAD)" = e4fe26ef59168ff44f4c23c466e497bf60b3411e
+          (cd "$RUNNER_TEMP/emsdk" && timeout 15m ./emsdk install 4.0.20 && ./emsdk activate 4.0.20)
+          source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin 101ae38034304346a46ea9ea84ae156d3e860496
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          export GODOT_CPP_ROOT="$RUNNER_TEMP/godot-cpp" SCONS_JOBS=2
+          timeout 15m "$RUNNER_TEMP/scons/bin/python" tools/build_web.py --compile-only --profile compat
+          timeout 15m "$RUNNER_TEMP/scons/bin/python" tools/build_web.py --compile-only --profile threaded
+          cp build/web-libs/*.wasm "$RUNNER_TEMP/ms001-web/"
+          {
+            printf 'source=%s\nemsdk=e4fe26ef59168ff44f4c23c466e497bf60b3411e\ngodot_cpp=101ae38034304346a46ea9ea84ae156d3e860496\nexecution=not-yet-browser-tested\n' "$GITHUB_SHA"
+            emcc --version
+          } > "$RUNNER_TEMP/ms001-web/identity.txt"
+      - name: Verify official templates and retain relocatable inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=https://github.com/godotengine/godot-builds/releases/download/4.7-stable
+          timeout 10m curl --fail --location --retry 3 "$base/SHA512-SUMS.txt" -o "$RUNNER_TEMP/ms001-web/SHA512-SUMS.txt"
+          timeout 15m curl --fail --location --retry 3 "$base/Godot_v4.7-stable_export_templates.tpz" -o "$RUNNER_TEMP/Godot_v4.7-stable_export_templates.tpz"
+          (cd "$RUNNER_TEMP" && grep ' Godot_v4.7-stable_export_templates.tpz$' ms001-web/SHA512-SUMS.txt | sha512sum --check --strict)
+          python3 - <<'PY'
+          import hashlib, os, pathlib, zipfile
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])
+          archive = root/'Godot_v4.7-stable_export_templates.tpz'
+          output = root/'ms001-web'/'web-templates'
+          output.mkdir()
+          with zipfile.ZipFile(archive) as bundle:
+              for name in bundle.namelist():
+                  base = pathlib.Path(name).name
+                  if base.startswith('web_dlink_') and base.endswith('.zip'):
+                      (output/base).write_bytes(bundle.read(name))
+          assert len(list(output.glob('*.zip'))) == 4
+          with (root/'ms001-web'/'identity.txt').open('a') as report:
+              report.write('official_template_sha256=' + hashlib.sha256(archive.read_bytes()).hexdigest() + '\n')
+              report.write('official_template_size=' + str(archive.stat().st_size) + '\n')
+          PY
+          tar --exclude='emsdk/downloads' --exclude='emsdk/zips' --exclude='*.o' -czf "$RUNNER_TEMP/ms001-web/development-inputs.tar.gz" -C "$RUNNER_TEMP" emsdk godot-cpp
+          (cd "$RUNNER_TEMP/ms001-web" && find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS)
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ms001-web-inputs-${{ github.sha }}
+          path: ${{ runner.temp }}/ms001-web/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
