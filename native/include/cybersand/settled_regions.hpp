@@ -716,11 +716,31 @@ private:
         }
         return true;
     }
-    bool rebuild_adjacencies(std::size_t slot) noexcept {
-        for (std::size_t other = 0; other < tile_count_; ++other)
-            if (other != slot && face_neighbours(tiles_[slot].bounds, tiles_[other].bounds) &&
-                !compare_face(slot, other)) return false;
+    [[nodiscard]] bool slots_face_linked(
+        std::size_t left, std::size_t right) const noexcept {
+        if (left == right) return true;
+        for (const auto neighbour : tiles_[left].neighbours)
+            if (neighbour != region_detail::invalid_index &&
+                static_cast<std::size_t>(neighbour) == right) return true;
+        return false;
+    }
+    template<class Function>
+    bool for_each_facing(std::size_t slot, Function&& function) noexcept {
+        const auto& neighbours = tiles_[slot].neighbours;
+        for (std::size_t i = 0; i < neighbours.size(); ++i) {
+            const auto raw = neighbours[i];
+            if (raw == region_detail::invalid_index) continue;
+            bool duplicate = false;
+            for (std::size_t earlier = 0; earlier < i; ++earlier)
+                if (neighbours[earlier] == raw) { duplicate = true; break; }
+            if (!duplicate && !function(static_cast<std::size_t>(raw))) return false;
+        }
         return true;
+    }
+    bool rebuild_adjacencies(std::size_t slot) noexcept {
+        return for_each_facing(slot, [this, slot](std::size_t other) {
+            return compare_face(slot, other);
+        });
     }
     bool assigned(const Component& component) const noexcept {
         const auto handle = component.assigned_region;
@@ -872,10 +892,13 @@ private:
     bool build_related(std::size_t slot) const noexcept {
         for (std::size_t i = 0; i < build_.seen_count; ++i) {
             const auto member_slot = build_.seen[i].tile;
-            if (member_slot == slot || face_neighbours(tiles_[member_slot].bounds, tiles_[slot].bounds)) return true;
+            if (slots_face_linked(member_slot, slot)) return true;
         }
+        // Reverse dependency incidence is deliberately owned by #64. Retain the
+        // dependency bitmap scan here, but use the bounded face map instead of
+        // rediscovering geometry from resident rectangles.
         for (std::size_t i = 0; i < tile_count_; ++i)
-            if (build_.dependencies[i] && (i == slot || face_neighbours(tiles_[i].bounds, tiles_[slot].bounds))) return true;
+            if (build_.dependencies[i] && slots_face_linked(i, slot)) return true;
         return false;
     }
     void cancel_related_build(std::size_t slot) noexcept {
@@ -966,13 +989,16 @@ private:
     }
     void retire_for_tile_and_faces(std::size_t slot) noexcept {
         if (published_region_count_ == 0) return;
-        for (std::size_t tile_index = 0; tile_index < tile_count_; ++tile_index) {
-            if (tile_index != slot &&
-                !face_neighbours(tiles_[tile_index].bounds, tiles_[slot].bounds)) continue;
-            if (tile_index != slot) saturating_add(metrics_.facing_invalidation_fanout);
+        const auto retire_tile = [this](std::size_t tile_index) {
             for (std::size_t component = 0; component < tiles_[tile_index].component_count; ++component)
                 retire_handle(tiles_[tile_index].components[component].assigned_region);
-        }
+            return true;
+        };
+        (void)retire_tile(slot);
+        (void)for_each_facing(slot, [this, &retire_tile](std::size_t other) {
+            saturating_add(metrics_.facing_invalidation_fanout);
+            return retire_tile(other);
+        });
     }
     void retire_all_regions() noexcept {
         for (auto& region : regions_) if (region.valid) {
@@ -982,14 +1008,15 @@ private:
     }
     void clear_deferred_for_tile_and_faces(std::size_t slot) noexcept {
         if (deferred_component_count_ == 0) return;
-        for (std::size_t tile_index = 0; tile_index < tile_count_; ++tile_index) {
-            if (tile_index != slot &&
-                !face_neighbours(tiles_[tile_index].bounds, tiles_[slot].bounds)) continue;
+        const auto clear_tile = [this](std::size_t tile_index) {
             for (auto& component : tiles_[tile_index].components) if (component.deferred) {
                 component.deferred = false;
                 --deferred_component_count_;
             }
-        }
+            return true;
+        };
+        (void)clear_tile(slot);
+        (void)for_each_facing(slot, clear_tile);
     }
 
     static std::size_t checked_capacity(std::size_t value, std::size_t maximum,
