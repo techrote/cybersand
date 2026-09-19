@@ -45,6 +45,12 @@ jobs:
       - name: Smoke-test isolated discovery characterization
         run: timeout 2m make soliding-benchmark-smoke
 
+      - name: Validate Stage-3B preregistration apparatus
+        run: timeout 3m make soliding-stage3b-validation-apparatus-test
+
+      - name: Smoke-test retained Stage-3 benchmark lineage
+        run: timeout 3m make soliding-stage3-cost-smoke
+
       - name: Compile and run ASan plus UBSan
         run: |
           timeout 15m make build/tests_sanitized
