@@ -131,6 +131,10 @@ void fill_fixture(World& world, const std::string& fixture, int side, int ox, in
             world.set(ox + x, oy + side - 1, Material::Wall);
             world.set(ox + x, oy + side / 2, Material::Wall);
         }
+        for (int y = 0; y < side; ++y) {
+            world.set(ox, oy + y, Material::Wall);
+            world.set(ox + side - 1, oy + y, Material::Wall);
+        }
         for (int y = side / 4; y < side / 2; ++y)
             for (int x = 1; x + 1 < side; ++x) world.set(ox + x, oy + y, Material::Sand);
         return;
@@ -234,17 +238,19 @@ int main(int argc, char** argv) {
             initial_journal_ms = drain_journal(world, journal_work);
         if (arm == Arm::Connectivity)
             initial_region_ms = drain_regions(world, region_work);
+        const auto initial_content_hash = world.content_hash();
 
         std::vector<double> tick_times, edit_times, journal_times, region_times;
-        std::uint64_t external_edits = 0;
+        std::uint64_t external_edits = 0, measured_moved_cells = 0;
         for (int i = 0; i < ticks; ++i) {
             const auto edit_start = Clock::now();
             const auto edits = apply_edit(world, fixture, i, side, ox, oy);
             external_edits += edits;
             edit_times.push_back(edits == 0 ? 0.0 : elapsed(edit_start));
             const auto tick_start = Clock::now();
-            (void)world.tick();
+            const auto stats = world.tick();
             tick_times.push_back(elapsed(tick_start));
+            measured_moved_cells += stats.moved_cells;
             if (arm == Arm::Journal || arm == Arm::Connectivity)
                 journal_times.push_back(drain_journal(world, journal_work));
             if (arm == Arm::Connectivity)
@@ -259,8 +265,14 @@ int main(int argc, char** argv) {
             region_area += region->area;
             region_area_max = std::max(region_area_max, region->area);
         }
+        const auto final_content_hash = world.content_hash();
+        const auto stationary = fixture == "wall" || fixture == "redbrick" ||
+                                fixture == "ring" || fixture == "granular-rest";
         const auto valid = !world.has_failed() && !world.settled_discovery_capacity_blocked() &&
-            (arm != Arm::Connectivity || world.settled_region_refusal() != cybersand::soliding::RegionRefusal::SourceFailure);
+            (arm != Arm::Connectivity ||
+             world.settled_region_refusal() != cybersand::soliding::RegionRefusal::SourceFailure) &&
+            (!stationary || (measured_moved_cells == 0 && initial_content_hash == final_content_hash)) &&
+            (fixture != "granular-release" || measured_moved_cells != 0);
 
         std::cout << std::setprecision(10)
                   << "{\"schema\":\"soliding-stage3-cost-v1\",\"arm\":\"" << arm_name(arm)
@@ -275,6 +287,7 @@ int main(int argc, char** argv) {
         std::cout << ",\"journal_timing\":"; timing_json(journal_times);
         std::cout << ",\"region_timing\":"; timing_json(region_times);
         std::cout << ",\"external_edits\":" << external_edits
+                  << ",\"measured_moved_cells\":" << measured_moved_cells
                   << ",\"resident_chunks\":" << world.chunk_count()
                   << ",\"resident_cell_bytes\":" << world.resident_cell_bytes()
                   << ",\"discovery_storage_bytes\":" << world.settled_discovery_storage_bytes()
@@ -338,7 +351,8 @@ int main(int argc, char** argv) {
                   << ",\"region_area\":" << region_area << ",\"region_area_max\":" << region_area_max
                   << ",\"last_refusal\":" << static_cast<int>(world.settled_region_refusal()) << '}';
         }
-        std::cout << ",\"final_content_hash\":\"" << world.content_hash()
+        std::cout << ",\"initial_content_hash\":\"" << initial_content_hash
+                  << "\",\"final_content_hash\":\"" << final_content_hash
                   << "\",\"final_state_hash\":\"" << world.state_hash()
                   << "\",\"valid\":" << (valid ? "true" : "false") << "}\n";
         return valid ? 0 : 2;
