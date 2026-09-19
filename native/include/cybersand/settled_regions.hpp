@@ -420,54 +420,151 @@ private:
         if (direction == region_detail::south) return 64U + static_cast<std::size_t>(x - bounds.x);
         return 96U + static_cast<std::size_t>(y - bounds.y);
     }
+    [[nodiscard]] std::optional<std::size_t> row_covering(
+        std::int64_t y, std::int64_t x) const noexcept {
+        std::size_t probes = 0;
+        const RowKey query{y, x};
+        const auto at_or_after = row_index_.lower_bound(query, &probes);
+        if (at_or_after.has_value() && at_or_after->key.y == y &&
+            at_or_after->key.x == x) {
+            saturating_add(metrics_.tile_lookup_probes, probes);
+            return static_cast<std::size_t>(at_or_after->value.tile);
+        }
+        const auto before = row_index_.predecessor(query, &probes);
+        saturating_add(metrics_.tile_lookup_probes, probes);
+        if (before.has_value() && before->key.y == y &&
+            before->value.max_x >= x)
+            return static_cast<std::size_t>(before->value.tile);
+        return std::nullopt;
+    }
+
+    [[nodiscard]] bool row_overlaps(
+        std::int64_t y, std::int64_t first_x, std::int64_t last_x) const noexcept {
+        std::size_t probes = 0;
+        const RowKey query{y, first_x};
+        const auto at_or_after = row_index_.lower_bound(query, &probes);
+        if (at_or_after.has_value() && at_or_after->key.y == y &&
+            at_or_after->key.x <= last_x) {
+            saturating_add(metrics_.tile_lookup_probes, probes);
+            return true;
+        }
+        const auto before = row_index_.predecessor(query, &probes);
+        saturating_add(metrics_.tile_lookup_probes, probes);
+        return before.has_value() && before->key.y == y &&
+               before->value.max_x >= first_x;
+    }
+
+    [[nodiscard]] bool overlaps_bounds(const DiscoveryBounds& bounds) const noexcept {
+        const auto last_x = max_x(bounds);
+        const auto last_y = max_y(bounds);
+        for (auto y = bounds.y;; ++y) {
+            if (row_overlaps(y, bounds.x, last_x)) return true;
+            if (y == last_y) break;
+        }
+        return false;
+    }
+
+    [[nodiscard]] std::optional<std::size_t> containing_tile_impl(
+        const DiscoveryBounds& bounds) const noexcept {
+        const auto slot = row_covering(bounds.y, bounds.x);
+        if (!slot.has_value() || *slot >= tile_count_) return std::nullopt;
+        const auto& outer = tiles_[*slot].bounds;
+        return outer.x <= bounds.x && outer.y <= bounds.y &&
+               max_x(outer) >= max_x(bounds) && max_y(outer) >= max_y(bounds)
+            ? slot : std::nullopt;
+    }
+
+    bool index_tile(std::size_t slot) noexcept {
+        const auto& tile = tiles_[slot];
+        if (tile_index_.size() == tile_index_.capacity() ||
+            row_index_.capacity() - row_index_.size() < tile.bounds.height)
+            return false;
+        std::size_t probes = 0;
+        const auto keyed = tile_index_.insert(tile.key, slot, &probes);
+        saturating_add(metrics_.tile_lookup_probes, probes);
+        if (keyed != TileIndex::InsertResult::Inserted) return false;
+
+        const auto last_x = max_x(tile.bounds);
+        const auto last_y = max_y(tile.bounds);
+        for (auto y = tile.bounds.y;; ++y) {
+            probes = 0;
+            const auto row = row_index_.insert(
+                RowKey{y, tile.bounds.x},
+                RowValue{last_x, static_cast<std::uint16_t>(slot)}, &probes);
+            saturating_add(metrics_.tile_lookup_probes, probes);
+            if (row != RowIndex::InsertResult::Inserted) return false;
+            if (y == last_y) break;
+        }
+        return true;
+    }
+
     void link_faces(std::size_t slot) noexcept {
-        const auto connect = [this](std::size_t from, std::uint8_t from_direction,
-                                    std::size_t to, std::uint8_t to_direction,
-                                    std::int64_t first, std::int64_t last, bool horizontal) {
-            for (auto coordinate = first;; ++coordinate) {
-                const auto fx = horizontal ? coordinate : tiles_[from].bounds.x;
-                const auto fy = horizontal ? tiles_[from].bounds.y : coordinate;
-                const auto tx = horizontal ? coordinate : tiles_[to].bounds.x;
-                const auto ty = horizontal ? tiles_[to].bounds.y : coordinate;
-                tiles_[from].neighbours[boundary_index(tiles_[from].bounds, from_direction, fx, fy)] =
-                    static_cast<std::uint16_t>(to);
-                tiles_[to].neighbours[boundary_index(tiles_[to].bounds, to_direction, tx, ty)] =
-                    static_cast<std::uint16_t>(from);
-                if (coordinate == last) break;
-            }
+        auto& tile = tiles_[slot];
+        tile.neighbours.fill(region_detail::invalid_index);
+        const auto& bounds = tile.bounds;
+        const auto last_x = max_x(bounds);
+        const auto last_y = max_y(bounds);
+
+        const auto connect = [this, slot](std::uint8_t from_direction,
+                                          std::int64_t from_x, std::int64_t from_y,
+                                          std::size_t other, std::uint8_t to_direction,
+                                          std::int64_t to_x, std::int64_t to_y) {
+            const auto from_index =
+                boundary_index(tiles_[slot].bounds, from_direction, from_x, from_y);
+            const auto to_index =
+                boundary_index(tiles_[other].bounds, to_direction, to_x, to_y);
+            tiles_[slot].neighbours[from_index] = static_cast<std::uint16_t>(other);
+            tiles_[other].neighbours[to_index] = static_cast<std::uint16_t>(slot);
         };
-        for (std::size_t other = 0; other < tile_count_; ++other) {
-            if (other == slot) continue;
-            saturating_add(metrics_.tile_lookup_probes);
-            const auto& a = tiles_[slot].bounds;
-            const auto& b = tiles_[other].bounds;
-            if (max_x(a) != std::numeric_limits<std::int64_t>::max() && max_x(a) + 1 == b.x &&
-                a.y <= max_y(b) && b.y <= max_y(a)) {
-                connect(slot, region_detail::east, other, region_detail::west,
-                        std::max(a.y, b.y), std::min(max_y(a), max_y(b)), false);
-            } else if (max_x(b) != std::numeric_limits<std::int64_t>::max() && max_x(b) + 1 == a.x &&
-                       a.y <= max_y(b) && b.y <= max_y(a)) {
-                connect(slot, region_detail::west, other, region_detail::east,
-                        std::max(a.y, b.y), std::min(max_y(a), max_y(b)), false);
-            } else if (max_y(a) != std::numeric_limits<std::int64_t>::max() && max_y(a) + 1 == b.y &&
-                       a.x <= max_x(b) && b.x <= max_x(a)) {
-                connect(slot, region_detail::south, other, region_detail::north,
-                        std::max(a.x, b.x), std::min(max_x(a), max_x(b)), true);
-            } else if (max_y(b) != std::numeric_limits<std::int64_t>::max() && max_y(b) + 1 == a.y &&
-                       a.x <= max_x(b) && b.x <= max_x(a)) {
-                connect(slot, region_detail::north, other, region_detail::south,
-                        std::max(a.x, b.x), std::min(max_x(a), max_x(b)), true);
+
+        if (bounds.y != std::numeric_limits<std::int64_t>::min()) {
+            const auto outside_y = bounds.y - 1;
+            for (auto x = bounds.x;; ++x) {
+                if (const auto other = row_covering(outside_y, x); other.has_value())
+                    connect(region_detail::north, x, bounds.y, *other,
+                            region_detail::south, x, max_y(tiles_[*other].bounds));
+                if (x == last_x) break;
+            }
+        }
+        if (last_x != std::numeric_limits<std::int64_t>::max()) {
+            const auto outside_x = last_x + 1;
+            for (auto y = bounds.y;; ++y) {
+                if (const auto other = row_covering(y, outside_x); other.has_value())
+                    connect(region_detail::east, last_x, y, *other,
+                            region_detail::west, tiles_[*other].bounds.x, y);
+                if (y == last_y) break;
+            }
+        }
+        if (last_y != std::numeric_limits<std::int64_t>::max()) {
+            const auto outside_y = last_y + 1;
+            for (auto x = bounds.x;; ++x) {
+                if (const auto other = row_covering(outside_y, x); other.has_value())
+                    connect(region_detail::south, x, last_y, *other,
+                            region_detail::north, x, tiles_[*other].bounds.y);
+                if (x == last_x) break;
+            }
+        }
+        if (bounds.x != std::numeric_limits<std::int64_t>::min()) {
+            const auto outside_x = bounds.x - 1;
+            for (auto y = bounds.y;; ++y) {
+                if (const auto other = row_covering(y, outside_x); other.has_value())
+                    connect(region_detail::west, bounds.x, y, *other,
+                            region_detail::east, max_x(tiles_[*other].bounds), y);
+                if (y == last_y) break;
             }
         }
     }
+
     bool valid_input(const RegionTileInput& input) const noexcept {
         const auto area = static_cast<std::uint64_t>(input.bounds.width) * input.bounds.height;
         return input.revision != 0 && valid_bounds(input.bounds) && area <= MaximumTileCells &&
                input.cells.size() == area && (input.sealed_edges & 0xf0U) == 0;
     }
     std::size_t find_tile(RegionTileKey key) const noexcept {
-        for (std::size_t i = 0; i < tile_count_; ++i) if (tiles_[i].key == key) return i;
-        return tile_capacity_;
+        std::size_t probes = 0;
+        const auto slot = tile_index_.find(key, &probes);
+        saturating_add(metrics_.tile_lookup_probes, probes);
+        return slot.has_value() ? *slot : tile_capacity_;
     }
     std::size_t first_free_tile() const noexcept {
         return tile_count_ < tile_capacity_ ? tile_count_ : tile_capacity_;
@@ -910,7 +1007,7 @@ private:
     Build build_;
     std::unique_ptr<bool[]> member_tiles_scratch_;
     std::unique_ptr<std::size_t[]> dependency_slots_scratch_;
-    SettledRegionMetrics metrics_{};
+    mutable SettledRegionMetrics metrics_{};
     RegionRefusal last_refusal_{RegionRefusal::None};
     std::size_t tile_count_{}, adjacency_count_{}, published_region_count_{}, deferred_component_count_{};
     bool halted_{}, coverage_capacity_exhausted_{}, work_possible_{};
