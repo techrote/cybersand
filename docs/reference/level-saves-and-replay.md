@@ -100,3 +100,14 @@ replace the failed World. Invalid replacement leaves the fault and partial state
 intact. Successful replacement clears pending events/failure/tick identity and
 uses the latest requested region; it does not resume the failed attempt or replay
 accepted events. See [failure policy](../decisions/ADR-010-failed-tick-quarantine.md).
+
+## MicroScenario observations are not replay saves
+
+**Current MS-000:** JSON captures retain a versioned setup definition, bounded
+scheduled actions/observations, profile and artifact identities, and completed tick.
+They explicitly say `replay_complete=false`: neither that JSON nor current native
+hashes contain a complete resumed input/world/owner state. Loading the definition
+creates a fresh world; it does not resume the captured tick. Organic user actions
+and reaction/outflow ledgers are not fabricated. Generic controlled scenarios
+refuse ordinary CYSD1 level import/export while active. See the
+[capture contract](../operations/microscenarios.md#capture-provenance-and-limits).

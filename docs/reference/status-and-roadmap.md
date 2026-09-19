@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-09-18
+last-reviewed: 2026-09-19
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md]
 ---
 
@@ -237,3 +237,16 @@ regression -> return to the larger world. #30 tracks this programme; it is not
 itself an execution prerequisite. #18/#20/#14 retain their independent gates in
 the architecture programme.
 
+## MS-000 common MicroScenarios checkpoint
+
+**Current source, 2026-09-19:** [MS-000](../operations/microscenarios.md) extracts one
+validated, bounded scenario host for the existing Tower/Water owners and a
+native-only runner. Play/Inspect/Benchmark share definitions, while legacy blind,
+reset and physics-order contracts remain distinct where they were distinct before.
+Two exploratory generic fixtures exercise Water quantity and non-Water material
+observations. Captures identify source/runtime/profile state but are not replay saves.
+
+This is apparatus, not a solver/interaction migration. The [programme graph](../operations/microscenarios-programme.md)
+still controls #28/#29 readiness and keeps architecture gates separate. Read the
+[checkpoint evidence](../audits/2026-09-19-issue-27-microscenarios.md) before claiming
+Windows, GPU or native Web runtime acceptance for this version.

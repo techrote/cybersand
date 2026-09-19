@@ -146,6 +146,111 @@ var pending_water_apply: Dictionary = {}
 var pending_water_exit: Dictionary = {}
 var water_policy_available: bool = true
 
+var microscenario_panel: CyberMicroScenarioPanel
+var microscenario_mode: String = "Inspect"
+var microscenario_error: String = ""
+var microscenario_hud_hidden: bool = false
+var pending_microscenario_apply: Dictionary = {}
+var microscenario_capture_seen: int = 0
+var microscenario_definition: Dictionary = {}
+
+func microscenario_launch(scenario_id: String, mode: String = "Inspect", seed: int = 0) -> bool:
+	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty(): return false
+	if not mode in CyberMicroScenarioContract.MODES: return false
+	var definition: Dictionary = CyberMicroScenarioCatalogue.definition(scenario_id, seed)
+	var checked: Dictionary = CyberMicroScenarioContract.validate(definition)
+	if not checked.get("ok", false):
+		microscenario_error = str(checked.get("error", "Unknown scenario"))
+		return false
+	microscenario_mode = mode
+	microscenario_error = ""
+	if scenario_id == "experiment-tower":
+		tower_reset()
+		return true
+	if scenario_id.begins_with("water/"):
+		# Keep #19 policy, transactional reset and blind/reveal ownership intact.
+		var policy: Dictionary = water_policy_resolved.get("policy", {}).duplicate(true)
+		policy["scenario_id"] = scenario_id.trim_prefix("water/")
+		policy["seed"] = seed
+		var resolved: Dictionary = CyberWaterExperimentProfiles.resolve({}, {}, policy)
+		if not resolved.get("ok", false): return false
+		water_lab_apply_result(resolved)
+		return true
+	return microscenario_apply_definition(checked.definition, mode)
+
+func microscenario_apply_definition(definition: Dictionary, mode: String = "Inspect") -> bool:
+	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty(): return false
+	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty(): return false
+	var checked: Dictionary = CyberMicroScenarioContract.validate(definition)
+	if not checked.get("ok", false) or not mode in CyberMicroScenarioContract.MODES:
+		microscenario_error = str(checked.get("error", "Invalid mode"))
+		return false
+	pending_microscenario_apply = {"hash":checked.hash, "definition":checked.definition,
+		"previous_paused":paused}
+	microscenario_mode = mode
+	paused = true
+	tower_command({"scenario_reset":checked.definition, "scenario_mode":mode})
+	return true
+
+func _microscenario_installed(definition: Dictionary) -> void:
+	microscenario_definition = definition.duplicate(true)
+	tower_active = true
+	paused = true
+	current_view_size = Vector2i(480, 270)
+	camera_follow_enabled = false
+	camera_origin = Vector2(definition.camera_origin[0], definition.camera_origin[1])
+	character_position = Vector2(definition.player_start[0], definition.player_start[1])
+	_activate_water_body_scenario(bool(definition.body_enabled))
+	$Layout/Title.text = "CYBERSAND / MICROSCENARIO / " + str(definition.id)
+
+func microscenario_reset() -> void:
+	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty(): return
+	if tower_context.get("micro_active", false):
+		microscenario_apply_definition(microscenario_definition, microscenario_mode)
+	elif water_controlled_run_active():
+		water_lab_reset()
+	else:
+		tower_reset()
+
+func microscenario_capture() -> void:
+	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty(): return
+	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty(): return
+	tower_command({"scenario_capture":true, "identity":CyberMicroScenarioIdentity.current()})
+
+func _write_microscenario_capture(report: Dictionary) -> void:
+	var file := FileAccess.open("user://microscenario-observation.json", FileAccess.WRITE)
+	if file == null:
+		microscenario_error = "Could not write MicroScenario capture"
+		return
+	var text: String = JSON.stringify(report, "  ")
+	file.store_string(text + "\n")
+	if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD): DisplayServer.clipboard_set(text)
+
+func microscenario_toggle_hud() -> void:
+	microscenario_hud_hidden = not microscenario_hud_hidden
+	_refresh_microscenario_controls()
+
+func _refresh_microscenario_controls() -> void:
+	if microscenario_panel == null: return
+	microscenario_panel.refresh(tower_context)
+	microscenario_panel.visible = not microscenario_hud_hidden
+	for path: String in ["Layout/Title", "Layout/Help"]:
+		get_node(path).visible = not microscenario_hud_hidden
+	status_label.visible = debug_stats_visible and not microscenario_hud_hidden
+	if microscenario_hud_hidden or tower_context.get("micro_active", false) or (
+		tower_context.get("microscenario", {}).get("mode", "Inspect") == "Play"):
+		tower_panel.visible = false
+		for label: Label in tower_panel.labels: label.visible = false
+	var launcher: Node = get_node_or_null("Layout/ExperimentTowerLauncher")
+	if launcher != null: launcher.visible = not microscenario_hud_hidden
+
+func _microscenario_execution_locked() -> bool:
+	return tower_context.get("micro_active", false) and tower_context.get("microscenario", {}).get("execution_policy", "owner") == "fixed"
+
+func _microscenario_tool_allowed(material_id: int) -> bool:
+	if not tower_context.get("micro_active", false): return true
+	return ("erase" if material_id == 0 else "paint") in tower_context.get("microscenario", {}).get("tools", [])
+
 func setup_tower_panel() -> void:
 	tower_panel = CyberTowerPanel.new()
 	$Layout.add_child(tower_panel)
@@ -154,6 +259,10 @@ func setup_tower_panel() -> void:
 	tower_profile_panel = CyberTransportProfilePanel.new()
 	add_child(tower_profile_panel)
 	tower_profile_panel.setup(self)
+	microscenario_panel = CyberMicroScenarioPanel.new()
+	$Layout.add_child(microscenario_panel)
+	$Layout.move_child(microscenario_panel, 1)
+	microscenario_panel.setup(self)
 	water_experiment_panel = CyberWaterExperimentPanel.new()
 	add_child(water_experiment_panel)
 	var profile_input: Variant = {}
@@ -218,6 +327,7 @@ func water_lab_apply_result(result: Dictionary, blind_label: String = "") -> voi
 		str(checked.policy.scenario_id),int(checked.policy.seed))
 	if recipe.is_empty(): return
 	var previous_paused: bool=paused
+	pending_microscenario_apply.clear()
 	paused=true
 	pending_water_apply={"result":result.duplicate(true),"recipe":recipe.duplicate(true),
 		"blind_label":blind_label,"hash":str(checked.hash),
@@ -306,12 +416,17 @@ func tower_command(command: Dictionary) -> bool:
 		command.has("release") or command.has("schedule")
 	):
 		return false
+	if (tower_context.get("micro_active", false) and not command.has("reset")
+		and (command.has("release") or command.has("schedule") or command.has("floor"))): return false
+	if not pending_microscenario_apply.is_empty() and not command.has("scenario_reset"): return false
 	if command.has("step"): paused = true
-	simulation_worker.queue_lab(command)
+	var request: Dictionary = command.duplicate(true)
+	request["scenario_mode"] = microscenario_mode
+	simulation_worker.queue_lab(request)
 	return true
 
 func tower_floor_select(index: int) -> void:
-	if water_controlled_run_active(): return
+	if water_controlled_run_active() or tower_context.get("micro_active", false): return
 	tower_floor = clampi(index,0,4)
 	paused = true
 	camera_follow_enabled = false
@@ -319,6 +434,7 @@ func tower_floor_select(index: int) -> void:
 	tower_command({"floor":tower_floor})
 
 func tower_reset() -> void:
+	pending_microscenario_apply.clear()
 	pending_water_exit={"kind":"fresh"}
 	pending_water_apply.clear()
 	tower_active = true
@@ -347,6 +463,7 @@ func tower_focus_tube(index: int) -> void:
 	camera_origin=Vector2(clampf(float(tubes[index][0])-100.0,0.0,1024.0-current_view_size.x),CyberExperimentTower.floor_y(tower_floor))
 
 func tower_apply_profile(resolved: Dictionary) -> void:
+	pending_microscenario_apply.clear()
 	pending_water_exit={"kind":"profile"}
 	pending_water_apply.clear()
 	paused = true
@@ -466,7 +583,9 @@ var hard_surface_rebuild_cooldown: float = 0.0
 func _ready() -> void:
 	setup_tower_panel()
 	var tower_button: Button = Button.new()
+	tower_button.name = "ExperimentTowerLauncher"
 	tower_button.text = "Experiment Tower / F9"
+	tower_button.focus_mode = Control.FOCUS_NONE
 	tower_button.pressed.connect(tower_reset)
 	$Layout.add_child(tower_button)
 	if OS.get_processor_count() < 4:
@@ -562,6 +681,7 @@ func _exit_tree() -> void:
 
 func _process(delta: float) -> void:
 	tower_panel.refresh(tower_active,tower_floor,tower_context)
+	_refresh_microscenario_controls()
 	frame_time_ms = delta * 1000.0
 	maximum_frame_time_ms = maxf(maximum_frame_time_ms, frame_time_ms)
 	consume_worker_snapshot()
@@ -603,6 +723,10 @@ func _physics_process(_delta: float) -> void:
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F8:
+		microscenario_toggle_hud()
+		get_viewport().set_input_as_handled()
+		return
 	if tower_profile_panel != null and tower_profile_panel.visible:
 		if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE: tower_profile_panel.hide()
 		return
@@ -614,7 +738,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			selected_material_id = CyberExperimentTower.QUICK[tower_floor][int(event.keycode)-KEY_1]
 			return
 		if event.keycode == KEY_R:
-			tower_reset()
+			if tower_context.get("micro_active", false): microscenario_reset()
+			else: tower_reset()
 			return
 	if event is not InputEventKey:
 		return
@@ -730,6 +855,7 @@ func cycle_simulation_margin() -> bool:
 
 
 func set_liquid_surface_adhesion(enabled: bool) -> bool:
+	if _microscenario_execution_locked(): return false
 	if water_controlled_run_active(): return false
 	liquid_surface_adhesion_enabled=enabled
 	update_worker_frame_state()
@@ -743,6 +869,7 @@ func set_camera_follow(enabled: bool) -> bool:
 
 
 func set_simulation_window(enabled: bool) -> bool:
+	if _microscenario_execution_locked(): return false
 	if water_controlled_run_active(): return false
 	simulation_window_enabled=enabled
 	update_worker_frame_state()
@@ -750,6 +877,7 @@ func set_simulation_window(enabled: bool) -> bool:
 
 
 func set_cadence_lod(enabled: bool) -> bool:
+	if _microscenario_execution_locked(): return false
 	if water_controlled_run_active(): return false
 	cadence_lod_enabled=enabled
 	update_worker_frame_state()
@@ -870,6 +998,18 @@ func consume_worker_snapshot() -> void:
 		return
 	latest_snapshot = snapshot
 	tower_context = snapshot.lab_context
+	if not pending_microscenario_apply.is_empty():
+		if tower_context.get("micro_active", false) and str(tower_context.get("microscenario", {}).get("definition_hash", "")) == str(pending_microscenario_apply.hash):
+			_microscenario_installed(pending_microscenario_apply.definition)
+			pending_microscenario_apply.clear()
+		elif str(tower_context.get("status", "")).begins_with("MicroScenario rejected"):
+			paused = bool(pending_microscenario_apply.previous_paused)
+			microscenario_error = str(tower_context.status)
+			pending_microscenario_apply.clear()
+	var capture_serial: int = int(tower_context.get("micro_capture_serial", 0))
+	if capture_serial > microscenario_capture_seen and not tower_context.get("micro_capture", {}).is_empty():
+		microscenario_capture_seen = capture_serial
+		_write_microscenario_capture(tower_context.micro_capture)
 	if not pending_water_exit.is_empty():
 		if (not tower_context.get("water_active",false)
 			and tower_context.has("profile")):
@@ -1015,7 +1155,7 @@ func queue_brush_mutation(
 		material_id: int,
 		emission_flags: int = CyberCellWorld.EMISSION_FLAG_NONE
 	) -> bool:
-	if water_controlled_run_active():
+	if water_controlled_run_active() or not _microscenario_tool_allowed(material_id):
 		return false
 	return simulation_worker.queue_emit_disc(
 		world_x,world_y,radius,material_id,emission_flags)
@@ -1322,7 +1462,9 @@ func update_shader_parameters() -> void:
 		"camera_origin_px",
 		Vector2(floori(camera_origin.x), floori(camera_origin.y))
 	)
-	world_shader.set_shader_parameter("player_origin_px", character_position)
+	world_shader.set_shader_parameter("player_origin_px",
+		Vector2(-1000,-1000) if tower_context.get("micro_active", false)
+		and not tower_context.get("microscenario", {}).get("player_enabled", true) else character_position)
 	world_shader.set_shader_parameter("player_size_px", CyberSampledCharacter.BODY_SIZE)
 	var snapshot_blend: float = 1.0
 	if cadence_lod_enabled:

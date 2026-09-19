@@ -168,3 +168,12 @@ and was resolved by rebuilding, not by suppressing the case.
 This evidence establishes a technically safe, reproducible H-ready apparatus.
 It is not a human preference study, a production precision/packing selection,
 #18 admission, #20 admission, representative GPU performance result or G-final.
+
+## 2026-09-19 MS-000 harness extraction
+
+The [MS-000 checkpoint](../audits/2026-09-19-issue-27-microscenarios.md) records the
+pinned Linux native/Godot tests, source-matched legacy recipe comparison, mode and
+observer/worker parity, owner lifecycle, input focus, JSON runner and separate
+historical/documentation checks. No native simulation source changed. Linux tests
+of a synchronous Web controller are not real Wasm/browser or GPU execution;
+Windows and real Web coverage remain explicitly separate.

@@ -234,3 +234,20 @@ lateral Water mass transport drive bounded optional mixing and grain pickup;
 horizontal sampling and cadence are separate fixed experiments.
 Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
 are unchanged. No unsynchronized live descriptor mutation is introduced.
+
+## MicroScenario control and capture messages
+
+**Current MS-000:** desktop reuses the existing bounded one-pending-lab-command
+slot. `scenario_reset` carries a complete validated definition; `scenario_mode`
+is Play/Inspect/Benchmark. `scenario_capture` requests an owner-boundary record
+and `identity` carries main-thread file fingerprints. No arbitrary callback or
+live World reference crosses this interface. The UI prevents step/capture from
+replacing a pending generic reset, and waits for the matching definition hash
+before acknowledging it. The legacy lab slot otherwise retains its documented
+newest-command behavior; this is not a general queue redesign.
+
+The immutable lab context adds `micro_active`, `microscenario`,
+`micro_capture_serial` and `micro_capture`. The synchronous Web controller invokes
+the same owner-local host directly. Existing #19 keys are compatibility projections
+of the host's action ledger. Full schema, units, capacities and export limitations:
+[MicroScenarios](../operations/microscenarios.md).

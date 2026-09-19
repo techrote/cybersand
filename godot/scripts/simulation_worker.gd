@@ -4,6 +4,8 @@ extends RefCounted
 # This worker owns every mutable simulation object. The main thread sends only
 # small commands and receives immutable snapshots, so rendering never reads a
 # PackedByteArray while the cellular solver is modifying it.
+const MicroCatalogue = preload("res://scripts/microscenario_catalogue.gd")
+const MicroHost = preload("res://scripts/microscenario_host.gd")
 const SIMULATION_HZ: float = 60.0
 const FIXED_TIMESTEP: float = 1.0 / SIMULATION_HZ
 const TICK_INTERVAL_USEC: int = 16667
@@ -49,6 +51,10 @@ var _lab_schedule: Array = [] # At most two floor-local release deadlines.
 var _lab_inputs: Array = [] # Bounded observation input history.
 var _lab_profile: Dictionary = CyberTransportProfiles.preset(0)
 var _lab_profile_hash: String = ""
+var _scenario_host: CyberMicroScenarioHost = MicroHost.new()
+var _micro_active: bool = false
+var _micro_capture: Dictionary = {}
+var _micro_capture_serial: int = 0
 var _water_lab_active: bool = false
 var _water_policy: Dictionary = {}
 var _water_policy_hash: String = ""
@@ -69,11 +75,11 @@ var _water_explicit_sink: int = 0
 func queue_lab(command: Dictionary) -> void:
 	_mutex.lock()
 	_lab_request = command.duplicate(true)
-	if command.has("step") or command.has("reset") or command.has("water_reset") or command.has("floor"): _paused = true
+	if command.has("step") or command.has("reset") or command.has("water_reset") or command.has("scenario_reset") or command.has("floor"): _paused = true
 	_mutex.unlock()
 
 func _lab_release(index: int) -> void:
-	if _water_lab_active: return
+	if _water_lab_active or _micro_active: return
 	var plugs: Array[Rect2i] = CyberExperimentTower.plugs(_lab_floor)
 	if index < 0 or index >= plugs.size(): return
 	var plug: Rect2i = plugs[index]
@@ -90,57 +96,20 @@ func _water_observe(action: Dictionary = {}) -> Dictionary:
 		size=Vector2i(int(action.width),int(action.height))
 	return _world.water_experiment_observation(origin,size)
 
-func _apply_water_action(action: Dictionary) -> bool:
-	var before: Dictionary=_water_observe(action)
-	var ok: bool=true
-	match str(action.kind):
-		"fill":
-			var coherence: int=int((2*int(action.coherence)
-				*int(_water_policy.coherence_ticks)+12)/24)
-			ok=bool(_world.water_experiment_fill_rect(
-				Vector2i(int(action.x),int(action.y)),
-				Vector2i(int(action.width),int(action.height)),
-				int(action.normalized_mass),coherence))
-		"erase":
-			ok=bool(_world.water_experiment_erase_rect(
-				Vector2i(int(action.x),int(action.y)),
-				Vector2i(int(action.width),int(action.height))))
-		"sample":
-			_water_observations.append({
-				"action_index":_water_action_index,
-				"region":action.duplicate(true),
-				"observation":before.duplicate(true),
-			})
-		_:
-			ok=false
-	if not ok:
-		_lab_status="Water action rejected (%s at %d,%d %dx%d); run paused" % [
-			str(action.get("kind","unknown")),int(action.get("x",-1)),
-			int(action.get("y",-1)),int(action.get("width",-1)),
-			int(action.get("height",-1))]
-		return false
-	var after: Dictionary=_water_observe(action)
-	var before_mass: int=int(before.get("water_integer",0))
-	var after_mass: int=int(after.get("water_integer",before_mass))
-	if after_mass>before_mass: _water_explicit_source+=after_mass-before_mass
-	if before_mass>after_mass: _water_explicit_sink+=before_mass-after_mass
-	_water_current_integer+=after_mass-before_mass
-	_water_action_history.append({
-		"tick":int(_world.get_tick_index()),
-		"action":action.duplicate(true),
-		"before_water_integer":before_mass,
-		"after_water_integer":after_mass,
-	})
-	return true
+func _sync_micro_water_state() -> void:
+	var state: Dictionary = _scenario_host.legacy_water_state()
+	_water_action_index = int(state.action_index)
+	_water_action_history = state.actions
+	_water_observations = state.observations
+	_water_explicit_source = int(state.explicit_source)
+	_water_explicit_sink = int(state.explicit_sink)
+	_water_current_integer = int(state.current)
 
 func _apply_due_water_actions() -> bool:
-	var actions: Array=_water_recipe.get("actions",[])
-	while _water_action_index<actions.size():
-		var action: Dictionary=actions[_water_action_index]
-		if int(action.tick)>int(_world.get_tick_index()): break
-		if not _apply_water_action(action): return false
-		_water_action_index+=1
-	return true
+	var ok: bool = _scenario_host.before_tick()
+	if _water_lab_active: _sync_micro_water_state()
+	if not ok: _lab_status = _scenario_host.last_error
+	return ok
 
 func _apply_lab(command: Dictionary) -> bool:
 	if command.is_empty(): return false
@@ -148,13 +117,12 @@ func _apply_lab(command: Dictionary) -> bool:
 		if not ClassDB.class_exists(&"CyberDemoBridge") or not _world.has_method(&"has_failed"):
 			_lab_status = "Experiment Tower requires the native backend"
 			return false
-		var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
 		var resolved: Dictionary = command.profile if command.has("profile") else CyberTransportProfiles.resolve(_lab_profile)
 		if not resolved.get("ok",false):
 			_lab_status = "Profile rejected; running world preserved"
 			return false
-		if not bridge.build_tuned_world(_world,CyberExperimentTower.rectangles(),resolved.packed):
-			_lab_status = str(bridge.get_last_error())
+		if not _scenario_host.install(_world, MicroCatalogue.tower(resolved.profile), str(command.get("scenario_mode", "Inspect"))):
+			_lab_status = _scenario_host.last_error
 			return false
 		_lab_profile = resolved.profile.duplicate(true)
 		_lab_profile_hash = str(resolved.hash)
@@ -163,6 +131,8 @@ func _apply_lab(command: Dictionary) -> bool:
 		_simulation_failed = false
 		_lab_status = "%s / profile v1 %s / recipe v%d / seed 0" % [str(_lab_profile.name),_lab_profile_hash.left(12),CyberExperimentTower.VERSION]
 		_water_lab_active=false
+		_micro_active=false
+		_micro_capture={}
 	if command.has("water_reset"):
 		if not ClassDB.class_exists(&"CyberDemoBridge") or not _world.has_method(&"get_water_experiment_policy"):
 			_lab_status="Water Feel Lab requires the current native backend"
@@ -181,16 +151,15 @@ func _apply_lab(command: Dictionary) -> bool:
 			return false
 		var profile_result: Dictionary=CyberTransportProfiles.resolve(
 			CyberTransportProfiles.preset(0))
-		var bridge: Variant=ClassDB.instantiate(&"CyberDemoBridge")
-		if not bridge.build_water_feel_world(
-			_world,recipe.rectangles,profile_result.packed,resolved.semantic,
-			recipe.partial_water_fills):
-			_lab_status="Water Apply + Reset rejected; "+str(bridge.get_last_error())
+		if not _scenario_host.install(_world, MicroCatalogue.water(resolved), str(command.get("scenario_mode", "Inspect"))):
+			_lab_status="Water Apply + Reset rejected; "+_scenario_host.last_error
 			return false
 		_lab_profile=profile_result.profile.duplicate(true)
 		_lab_profile_hash=str(profile_result.hash)
 		_lab_active=true
 		_water_lab_active=true
+		_micro_active=false
+		_micro_capture={}
 		_water_policy=resolved.policy.duplicate(true)
 		_water_policy_hash=str(resolved.hash)
 		_water_policy_provenance=command.get("water_policy_provenance",{}).duplicate(true)
@@ -223,8 +192,30 @@ func _apply_lab(command: Dictionary) -> bool:
 			_lab_status="Water Feel unblinded / policy %s / recipe %s / seed %d" % [
 				_water_policy_hash.left(12),_water_recipe_hash.left(12),
 				int(_water_policy.seed)]
+	if command.has("scenario_reset"):
+		if not _scenario_host.install(_world, command.scenario_reset, str(command.get("scenario_mode", "Inspect"))):
+			_lab_status = "MicroScenario rejected; " + _scenario_host.last_error
+			return false
+		var definition: Dictionary = _scenario_host.definition()
+		var transport: Dictionary = CyberTransportProfiles.resolve(definition.transport_profile)
+		_lab_profile = transport.profile.duplicate(true)
+		_lab_profile_hash = str(transport.hash)
+		_lab_active = true
+		_micro_active = true
+		_water_lab_active = false
+		_water_recipe.clear()
+		_lab_schedule.clear()
+		_lab_inputs.clear()
+		_micro_capture = {}
+		_simulation_failed = false
+		_character.reset(Vector2(definition.player_start[0], definition.player_start[1]))
+		_lab_status = "MicroScenario " + str(definition.id)
 	if not _lab_active: return false
-	if _water_lab_active and (command.has("release") or command.has("schedule")):
+	if command.has("scenario_capture") and _scenario_host.active():
+		_micro_capture = _scenario_host.capture(command.get("identity", {}))
+		_freeze_capture(_micro_capture)
+		_micro_capture_serial += 1
+	if (_water_lab_active or _micro_active) and (command.has("release") or command.has("schedule") or command.has("floor")):
 		_lab_status="Water Feel uses only registered scenario actions; Tower releases are disabled"
 		return false
 	if command.has("floor"):
@@ -240,11 +231,23 @@ func _apply_lab(command: Dictionary) -> bool:
 	if _lab_inputs.size() < 256:
 		var recorded: Dictionary = command.duplicate(true)
 		recorded.erase("profile")
+		recorded.erase("scenario_reset")
+		recorded.erase("identity")
 		recorded.erase("water_policy")
 		recorded.erase("water_policy_hash")
 		recorded.erase("water_policy_provenance")
 		_lab_inputs.append({"tick":int(_world.get_tick_index()),"command":recorded,"profile_hash":_lab_profile_hash})
-	return command.has("reset") or command.has("water_reset")
+	return command.has("reset") or command.has("water_reset") or command.has("scenario_reset")
+
+static func _freeze_capture(value: Variant) -> void:
+	# One retained record may appear in several snapshots. Freeze nested values
+	# once instead of copying a potentially large definition every frame.
+	if value is Dictionary:
+		for nested: Variant in value.values(): _freeze_capture(nested)
+		value.make_read_only()
+	elif value is Array:
+		for nested: Variant in value: _freeze_capture(nested)
+		value.make_read_only()
 
 var _published_snapshot: CyberSimulationSnapshot
 var _snapshot_serial: int = 0
@@ -483,12 +486,16 @@ func _worker_loop() -> void:
 			_last_render_snapshot_usec = -DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 		if _water_lab_active:
 			local_emissions.clear()
+		if _micro_active:
+			for i: int in range(local_emissions.size() - 1, -1, -1):
+				var tool: String = "erase" if (local_emissions[i].w & EMISSION_MATERIAL_MASK) == 0 else "paint"
+				if not _scenario_host.allows_tool(tool): local_emissions.remove_at(i)
 		if _lab_active:
-			if not (_water_lab_active and bool(_water_recipe.get("body_enabled",false))):
+			if not ((_water_lab_active and bool(_water_recipe.get("body_enabled",false))) or (_micro_active and _scenario_host.body_enabled())):
 				local_rigid_body_states = PackedFloat32Array()
 			if local_lab.get("step",false): local_paused = false
 			if not local_paused:
-				if _water_lab_active and not _apply_due_water_actions():
+				if _scenario_host.active() and not _apply_due_water_actions():
 					local_paused=true
 					_mutex.lock()
 					_paused=true
@@ -497,6 +504,9 @@ func _worker_loop() -> void:
 					if int(release[2]) == _lab_floor and int(_world.get_tick_index())+1 >= int(release[0]):
 						_lab_release(int(release[1]))
 						_lab_schedule.erase(release)
+		if _micro_active and _scenario_host.fixed_execution():
+			local_cadence_enabled = _scenario_host.cadence_enabled()
+			local_liquid_adhesion_enabled = _scenario_host.adhesion_enabled()
 		_world.simulation_window_enabled = local_window_enabled
 		_world.cadence_lod_enabled = local_cadence_enabled
 		_world.set_liquid_surface_adhesion_enabled(local_liquid_adhesion_enabled)
@@ -508,6 +518,8 @@ func _worker_loop() -> void:
 			local_vertical_buffer
 		)
 
+		if _micro_active: _scenario_host.apply_interest()
+
 		if local_reset_requested:
 			var recovered: bool = true
 			if _world.has_method(&"has_failed"):
@@ -515,6 +527,11 @@ func _worker_loop() -> void:
 			else:
 				_world.reset_demo_world()
 			if recovered:
+				_scenario_host.clear()
+				_lab_active = false
+				_micro_active = false
+				_water_lab_active = false
+				_micro_capture = {}
 				_simulation_failed = false
 				_character.reset(local_reset_spawn)
 				# Publish the replacement before any attempted continuation.
@@ -531,16 +548,23 @@ func _worker_loop() -> void:
 				)
 
 			if not local_paused:
-				_character.simulate(
-					FIXED_TIMESTEP,
-					local_horizontal_input,
-					local_jetpack_active,
-					_world
-				)
+				if not _micro_active or _scenario_host.player_enabled():
+					_character.simulate(
+						FIXED_TIMESTEP,
+						local_horizontal_input,
+						local_jetpack_active,
+						_world
+					)
 				if _world.has_method(&"has_failed"):
 					_simulation_failed = not bool(_world.simulation_tick())
 				else:
 					_world.simulation_tick()
+				if _lab_active and _scenario_host.active() and not _scenario_host.after_tick():
+					_lab_status = _scenario_host.last_error
+					local_paused = true
+					_mutex.lock()
+					_paused = true
+					_mutex.unlock()
 
 		var worker_step_time_ms: float = float(Time.get_ticks_usec() - step_start_usec) / 1000.0
 		_publish_snapshot(
@@ -705,6 +729,10 @@ func _publish_snapshot(
 		"input_limit":256,
 		"profile":_lab_profile.duplicate(true),
 		"profile_hash":_lab_profile_hash,
+		"micro_active":_micro_active,
+		"microscenario":_scenario_host.summary() if _lab_active else {},
+		"micro_capture_serial":_micro_capture_serial,
+		"micro_capture":_micro_capture, # Immutable one-slot result; replaced, never mutated.
 		"water_active":_water_lab_active,
 		"water_policy":_water_policy.duplicate(true),
 		"water_policy_hash":_water_policy_hash,
