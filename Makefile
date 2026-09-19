@@ -61,8 +61,8 @@ soliding-stage3-cost-smoke: $(BUILD_DIR)/stage3_cost
 
 soliding-stage3b-validation-apparatus-test: | $(BUILD_DIR)
 	python3 tools/experiments/test_stage3b_validation.py
-	python3 tools/experiments/stage3b_validation.py synthetic-smoke --apparatus-source-commit=$(git rev-parse HEAD) --output $(BUILD_DIR)/stage3b-validation-synthetic-smoke.json
-	python3 tools/experiments/stage3b_validation.py generate-plan --apparatus-source-commit=$(git rev-parse HEAD) --profile smoke --output $(BUILD_DIR)/stage3b-validation-plan-smoke.json
+	python3 tools/experiments/stage3b_validation.py synthetic-smoke --apparatus-source-commit=$$(git rev-parse HEAD) --output $(BUILD_DIR)/stage3b-validation-synthetic-smoke.json
+	python3 tools/experiments/stage3b_validation.py generate-plan --apparatus-source-commit=$$(git rev-parse HEAD) --profile smoke --output $(BUILD_DIR)/stage3b-validation-plan-smoke.json
 	python3 tools/experiments/stage3b_validation.py validate-plan $(BUILD_DIR)/stage3b-validation-plan-smoke.json
 
 soliding-test: $(BUILD_DIR)/test_soliding_lifecycle $(BUILD_DIR)/test_settled_discovery $(BUILD_DIR)/test_settled_regions $(BUILD_DIR)/test_settled_world_discovery
