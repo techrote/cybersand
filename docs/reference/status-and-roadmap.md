@@ -231,6 +231,14 @@ Laboratory readiness checkpoint. Each accepted tuning pass pins the relevant
 source/contact/transport baseline and retains prior evidence, so later physics
 changes trigger targeted re-screening rather than a destructive global retune.
 
+**Current #29 preflight, 2026-09-19:** the
+[bounded INT-000 preflight audit](../audits/2026-09-19-issue-29-preflight.md)
+source-inventories the compact pair table, specialized neighbourhood/lifecycle
+semantics, explicit kinetic exclusions, candidate sparse schema, coverage/provenance
+model and generated fixture families. It makes no runtime change or tuning claim.
+The #28 Materials Laboratory readiness checkpoint is still unestablished, so
+INT-000 implementation remains explicitly gated.
+
 The discovery workflow is: explore a scenario -> capture an anomaly with exact
 identities -> reduce it -> triage ownership -> bounded fix/tuning -> retained
 regression -> return to the larger world. #30 tracks this programme; it is not
