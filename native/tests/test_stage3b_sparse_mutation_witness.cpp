@@ -44,6 +44,11 @@ DiscoverySignals quiet_signal_reader(
     return signals;
 }
 
+DiscoverySignals throwing_signal_reader(
+    const void*, DiscoveryTileKey, DiscoveryBounds, DiscoverySignals) {
+    throw std::runtime_error("injected sparse signal source failure");
+}
+
 WorldConfig tracked_config(std::uint32_t workers = 1) {
     WorldConfig config{};
     config.chunk_size = 8;
@@ -127,6 +132,33 @@ void batched_same_barrier_restore_preserves_revision() {
     while (coordinator.pending() != 0)
         require(coordinator.advance(2, 16, nullptr, &empty_cell) != 0,
                 "journal scan drains after sparse payload service");
+}
+
+void sparse_signal_source_failure_quarantines_observation() {
+    constexpr std::uint64_t incarnation = 61002;
+    SettledWorldDiscoveryCoordinator coordinator(incarnation, 2, false);
+    const DiscoveryTileKey key{incarnation, 0, 0, 0, 0, 0, 0};
+    require(coordinator.register_tile(key, {0, 0, 1, 1}, 20, quiet_signals(), 1) ==
+                DiscoveryOutcome::Accepted,
+            "source-failure tile registration accepted");
+    while (coordinator.pending() != 0)
+        require(coordinator.advance(1, 16, nullptr, &empty_cell) != 0,
+                "source-failure initial scan drains");
+    const auto handle = coordinator.find_handle(key);
+    require(handle.has_value(), "source-failure handle available");
+    require(coordinator.notify_payload(*handle, ProducerReason::DirectMutation, 2) ==
+                DiscoveryOutcome::Accepted,
+            "source-failure payload witness accepted");
+    bool threw = false;
+    try {
+        (void)coordinator.advance(
+            2, 1, nullptr, &empty_cell, &throwing_signal_reader);
+    } catch (const std::runtime_error&) {
+        threw = true;
+    }
+    require(threw && coordinator.halted() == DiscoveryHalt::SourceFailure &&
+            !coordinator.tile(*handle).has_value(),
+            "deferred signal source failure preserves #58 fail-closed semantics");
 }
 
 void direct_aba_exact_tuple_heat_and_locality() {
@@ -274,6 +306,7 @@ void report_saturation_fences_observation_only() {
 int main() {
     try {
         batched_same_barrier_restore_preserves_revision();
+        sparse_signal_source_failure_quarantines_observation();
         direct_aba_exact_tuple_heat_and_locality();
         movement_and_water_endpoints();
         worker_one_four_parity();
