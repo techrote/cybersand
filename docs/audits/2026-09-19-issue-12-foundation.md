@@ -21,6 +21,12 @@ is the successor review surface. No World/material/Godot runtime source or publi
 binary is changed by this checkpoint. The frozen control compiles original native
 blobs from `de332ea` plus its separately hashed benchmark harness.
 
+**Current-main follow-up:** main advanced to `9c46bf4cb66572cabca404e5fa19c89d750c0344`
+while final validation ran. Its six-file CI-runner update was merged into the
+successor branch without conflict. Native/material/Godot source is unchanged by
+that main update; frozen `de332ea` controls and all prior checkpoint identities
+remain exact. Required checks must run on the combined head with the new runners.
+
 Phase 0 remains at `0b96ce2a2fd5f68560575d4c4db8b0ea2f3b3758` in its original
 branch/worktree. #26/#27 identities recorded in the
 [programme](../operations/soliding-programme.md#parallel-work-and-protected-baselines)

@@ -20,11 +20,13 @@ material, not the endpoint. This page supersedes the old
 [bounded supplement](architecture-programme-prompts/soliding-supplement.md) for
 current scope and order, without rewriting its dated evidence or the #14 intake.
 
-**Current successor baseline:** `de332ea` (main including MS-000); successor branch
+**Intake native baseline:** `de332ea` (main including MS-000); successor branch
 `codex/issue-12-incremental-foundation`, separate worktree under `C:/kybersand/worktrees/`.
 The [Phase 0 audit](../audits/2026-09-19-issue-12-phase0-reuse.md) owns the precise
 reuse/adapt/historical/obsolete map. Original `0b96ce2` remains a recoverable
 control. No Phase 0 runtime is integrated merely by documenting the lifecycle.
+Main's later CI-only update `9c46bf4` is integrated in the successor branch; it
+does not change the frozen native control or reinterpret concurrent experiments.
 
 The representation ladder is active cells -> ordinary sleep -> tracked summary
 -> measured stationary acceleration -> admitted coherent dynamic aggregate.
