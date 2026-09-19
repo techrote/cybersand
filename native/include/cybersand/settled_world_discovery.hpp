@@ -36,6 +36,14 @@ struct WorldDiscoveryMetrics {
     std::uint64_t global_fences{};
     std::uint64_t mapped_tiles{};
     std::uint64_t capacity_halts{};
+    std::uint64_t payload_mutations{};
+    std::uint64_t payload_work_enqueued{};
+    std::uint64_t payload_work_coalesced{};
+    std::uint64_t payload_work_serviced{};
+    std::uint64_t payload_queue_high_water{};
+    std::uint64_t worker_report_records{};
+    std::uint64_t worker_report_overflows{};
+    std::uint64_t observation_fences{};
 };
 
 struct WorldDiscoveryTileHandle {
@@ -58,6 +66,8 @@ struct WorldDiscoveryStorageLayout {
     std::size_t journal_storage_bytes{};
     std::size_t owner_record_storage_bytes{};
     std::size_t key_index_storage_bytes{};
+    std::size_t payload_queue_capacity{};
+    std::size_t payload_queue_storage_bytes{};
     std::size_t region_tile_capacity{};
     std::size_t region_edge_capacity{};
     std::size_t region_frontier_capacity{};
@@ -84,6 +94,8 @@ void fail_next_settled_world_discovery_construction() noexcept;
 class SettledWorldDiscoveryCoordinator final {
 public:
     using ReadCellFunction = DiscoveryCell (*)(const void*, std::int64_t, std::int64_t);
+    using ReadSignalsFunction = DiscoverySignals (*)(
+        const void*, DiscoveryTileKey, DiscoveryBounds, DiscoverySignals);
 
     SettledWorldDiscoveryCoordinator(std::uint64_t incarnation, std::size_t tile_capacity,
                                      bool regions_enabled = false);
@@ -100,15 +112,26 @@ public:
                            std::uint64_t tick) noexcept;
     DiscoveryOutcome dirty(WorldDiscoveryTileHandle handle, ProducerReason reason,
                            std::uint64_t tick) noexcept;
+    DiscoveryOutcome notify_payload(DiscoveryTileKey key, ProducerReason reason,
+                                    std::uint64_t tick,
+                                    std::uint64_t mutation_count = 1) noexcept;
+    DiscoveryOutcome notify_payload(WorldDiscoveryTileHandle handle, ProducerReason reason,
+                                    std::uint64_t tick,
+                                    std::uint64_t mutation_count = 1) noexcept;
     DiscoveryOutcome observe(DiscoveryTileKey key, DiscoverySignals signals,
                              ProducerReason reason, std::uint64_t tick) noexcept;
     DiscoveryOutcome observe(WorldDiscoveryTileHandle handle, DiscoverySignals signals,
                              ProducerReason reason, std::uint64_t tick) noexcept;
     std::size_t advance(std::uint64_t tick, std::size_t budget,
                         const void* context, ReadCellFunction read);
+    std::size_t advance(std::uint64_t tick, std::size_t budget,
+                        const void* context, ReadCellFunction read,
+                        ReadSignalsFunction read_signals);
     std::size_t advance_regions(std::size_t budget) noexcept;
     void fail() noexcept;
     void note_global_fence() noexcept;
+    void note_worker_report_records(std::size_t records) noexcept;
+    void fence_lost_payload_report() noexcept;
 
     [[nodiscard]] std::optional<WorldDiscoveryTileSnapshot> tile(std::size_t index) const noexcept;
     [[nodiscard]] std::optional<WorldDiscoveryTileSnapshot> tile(
@@ -121,6 +144,7 @@ public:
     [[nodiscard]] std::size_t size() const noexcept;
     [[nodiscard]] std::size_t capacity() const noexcept;
     [[nodiscard]] std::size_t pending() const noexcept;
+    [[nodiscard]] std::size_t pending_payload_work() const noexcept;
     [[nodiscard]] std::uint64_t incarnation() const noexcept;
     [[nodiscard]] bool capacity_blocked() const noexcept;
     [[nodiscard]] DiscoveryHalt halted() const noexcept;
