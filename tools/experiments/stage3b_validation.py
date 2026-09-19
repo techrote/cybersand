@@ -136,7 +136,174 @@ def fixture_catalogue():
         for v in (64,256,1024,4096):
             out.append(fixture(f"memory.{a}.{v}","memory",f"{a}={v}",parameters={"sweep_axis":a,"value":v,"other_axes":"baseline"},
               expected_outcomes=["success","not-applicable"]))
-    return out
+    return attach_protocols(out)
+
+BASE_TUPLE={"material":"Wall","state_a":0,"state_b":0,"temperature":20,"occupied":False}
+EMPTY_TUPLE={"material":"Empty","state_a":0,"state_b":0,"temperature":20,"occupied":False}
+ONE_CELL_COORDS={"tile-interior":[16,16],"tile-face":[31,16],"tile-corner":[31,31],
+                 "chunk-activity-boundary":[32,16]}
+FIELD_TARGETS={
+ "material":{**BASE_TUPLE,"material":"RedBrick"},
+ "state_a":{**BASE_TUPLE,"state_a":1},
+ "state_b":{**BASE_TUPLE,"state_b":1},
+ "temperature":{**BASE_TUPLE,"temperature":21},
+ "occupied_material":{**BASE_TUPLE,"occupied":True},
+ "canonical_empty":EMPTY_TUPLE,
+ "noncanonical_empty":{**EMPTY_TUPLE,"state_a":1},
+ "negative_temperature":{**BASE_TUPLE,"temperature":-40},
+}
+TOPOLOGY_PROTOCOLS={
+ "large-solid-connected-region":{"generator":"solid-rect","params":{"rect":[0,0,128,128]},"mutations":[]},
+ "ring":{"generator":"rect-ring","params":{"outer":[0,0,65,65],"thickness":1},"mutations":[]},
+ "comb-maze":{"generator":"comb","params":{"origin":[0,0],"width":96,"height":64,"spine_y":32,"tooth_stride":4,"tooth_length":31,"alternating":True},"mutations":[]},
+ "holes":{"generator":"solid-rect-with-holes","params":{"rect":[0,0,96,96],"holes":[[24,24,8,8],[64,24,8,8],[24,64,8,8],[64,64,8,8]]},"mutations":[]},
+ "checkerboard-component-pressure":{"generator":"checkerboard","params":{"rect":[0,0,32,32],"solid_on_even_parity":True},"mutations":[]},
+ "one-cell-bridge-add":{"generator":"two-lobes-gap","params":{"left":[0,0,32,32],"right":[33,0,32,32]},"mutations":[{"step":1,"op":"set-tuple","at":[32,16],"tuple":BASE_TUPLE}]},
+ "one-cell-bridge-remove":{"generator":"two-lobes-one-cell-neck","params":{"left":[0,0,32,32],"right":[33,0,32,32],"neck":[32,16]},"mutations":[{"step":1,"op":"set-tuple","at":[32,16],"tuple":EMPTY_TUPLE}]},
+ "alternate-path-nonsplit":{"generator":"rect-ring","params":{"outer":[0,0,65,65],"thickness":1},"mutations":[{"step":1,"op":"set-tuple","at":[32,0],"tuple":EMPTY_TUPLE}]},
+ "genuine-large-split":{"generator":"two-lobes-one-cell-neck","params":{"left":[0,0,64,64],"right":[65,0,64,64],"neck":[64,32]},"mutations":[{"step":1,"op":"set-tuple","at":[64,32],"tuple":EMPTY_TUPLE}]},
+ "many-child-split":{"generator":"four-arms-one-cell-hub","params":{"hub":[32,32],"arm_length":31,"arm_width":1},"mutations":[{"step":1,"op":"set-tuple","at":[32,32],"tuple":EMPTY_TUPLE}]},
+ "topology-preserving-interior-hole":{"generator":"solid-rect","params":{"rect":[0,0,64,64]},"mutations":[{"step":1,"op":"set-tuple","at":[32,32],"tuple":EMPTY_TUPLE}]},
+ "changed-port-partition":{"generator":"port-partition-bridge","params":{"tile":[0,0,32,32],"ports":["west","east","north"],"bridge":[16,16]},"mutations":[{"step":1,"op":"set-tuple","at":[16,16],"tuple":EMPTY_TUPLE}]},
+}
+COVERAGE_OPERATIONS={
+ "absent-location":[{"step":1,"op":"query","at":[0,0]}],
+ "absent-to-resident-registration":[{"step":1,"op":"query","at":[0,0]},{"step":2,"op":"register-resident","rect":[0,0,32,32]}],
+ "registered-unknown":[{"step":1,"op":"register-unknown","key":"A","rect":[0,0,32,32],"revision":1}],
+ "unknown-to-ready-matching":[{"step":1,"op":"register-unknown","key":"A","rect":[0,0,32,32],"revision":1},{"step":2,"op":"publish-ready","key":"A","tuple":BASE_TUPLE,"revision":1}],
+ "unknown-to-ready-nonmatching":[{"step":1,"op":"register-unknown","key":"A","rect":[0,0,32,32],"revision":1},{"step":2,"op":"publish-ready","key":"A","tuple":FIELD_TARGETS["state_a"],"revision":1}],
+ "unknown-to-canonical-empty":[{"step":1,"op":"register-unknown","key":"A","rect":[0,0,32,32],"revision":1},{"step":2,"op":"publish-ready","key":"A","tuple":EMPTY_TUPLE,"revision":1}],
+ "resident-untracked":[{"step":1,"op":"register-resident-untracked","rect":[0,0,32,32]}],
+ "excluded":[{"step":1,"op":"exclude","rect":[0,0,32,32]}],
+ "re-entry":[{"step":1,"op":"exclude","rect":[0,0,32,32]},{"step":2,"op":"reenter","rect":[0,0,32,32]}],
+ "capacity-refused":[{"step":1,"op":"fill-capacity","class":"coverage","count":64},{"step":2,"op":"register-resident","rect":[2048,0,32,32]}],
+ "failed-read-world":[{"step":1,"op":"inject-source-read-failure","at":[0,0]},{"step":2,"op":"capture","rect":[0,0,32,32]}],
+ "new-facing-coverage-before-payload-ready":[{"step":1,"op":"publish-ready","key":"A","tuple":BASE_TUPLE,"revision":1},{"step":2,"op":"register-unknown","key":"B","rect":[32,0,32,32],"revision":1},{"step":3,"op":"observe-before-ready","key":"B"}],
+}
+DEADLINE_OPERATIONS={
+ "future-deadline-insertion":[{"step":1,"op":"set-deadline","key":"A","tick":100},{"step":2,"op":"service-at-tick","tick":99},{"step":3,"op":"service-at-tick","tick":100}],
+ "earlier-replacement":[{"step":1,"op":"set-deadline","key":"A","tick":100},{"step":2,"op":"set-deadline","key":"A","tick":50},{"step":3,"op":"service-at-tick","tick":50}],
+ "cancellation":[{"step":1,"op":"set-deadline","key":"A","tick":100},{"step":2,"op":"cancel-deadline","key":"A"}],
+ "consumption":[{"step":1,"op":"set-deadline","key":"A","tick":10},{"step":2,"op":"service-at-tick","tick":10},{"step":3,"op":"consume-deadline","key":"A"}],
+ "equal-deadline-ordering":[{"step":1,"op":"set-deadline","key":"B","tick":100},{"step":2,"op":"set-deadline","key":"A","tick":100},{"step":3,"op":"service-at-tick","tick":100}],
+ "excluded-overdue-deadline":[{"step":1,"op":"set-deadline","key":"A","tick":10},{"step":2,"op":"exclude","key":"A"},{"step":3,"op":"service-at-tick","tick":11}],
+ "re-entry":[{"step":1,"op":"set-deadline","key":"A","tick":10},{"step":2,"op":"exclude","key":"A"},{"step":3,"op":"reenter","key":"A"},{"step":4,"op":"service-at-tick","tick":11}],
+ "no-write-keep-active":[{"step":1,"op":"signal-keep-active","key":"A","writes":0},{"step":2,"op":"owner-tick","count":8}],
+ "sleep-wake-transition":[{"step":1,"op":"owner-tick-until-sleep","key":"A"},{"step":2,"op":"wake","key":"A"},{"step":3,"op":"owner-tick","count":1}],
+ "many-deadline-changes-no-payload-writes":[{"step":1,"op":"replace-deadline-sequence","key":"A","ticks":[128,96,112,64,80,48,32,16],"payload_writes":0}],
+}
+ABA_OPERATIONS={
+ "direct-tuple-A-B-A":[{"step":1,"op":"set-tuple","at":[16,16],"tuple":FIELD_TARGETS["state_a"]},{"step":2,"op":"set-tuple","at":[16,16],"tuple":BASE_TUPLE}],
+ "mask-set-clear":[{"step":1,"op":"mask-set","rect":[12,12,8,8]},{"step":2,"op":"mask-clear","rect":[12,12,8,8]}],
+ "mask-reconfiguration":[{"step":1,"op":"mask-set","rect":[12,12,8,8]},{"step":2,"op":"mask-set","rect":[16,12,8,8]}],
+ "overlapping-event-acceptance-drain":[{"step":1,"op":"queue-event","id":"E1","center":[16,16],"radius":2},{"step":2,"op":"queue-event","id":"E2","center":[17,16],"radius":2},{"step":3,"op":"drain-events"}],
+ "inclusion-requested-applied-ABA":[{"step":1,"op":"request-inclusion","rect":[0,0,32,32],"included":False},{"step":2,"op":"apply-inclusion"},{"step":3,"op":"request-inclusion","rect":[0,0,32,32],"included":True},{"step":4,"op":"apply-inclusion"}],
+ "same-barrier-restore":[{"step":1,"op":"worker-write","at":[16,16],"tuple":FIELD_TARGETS["state_b"],"barrier":1},{"step":2,"op":"worker-write","at":[16,16],"tuple":BASE_TUPLE,"barrier":1}],
+ "worker-effect-rectangle-fanout":[{"step":1,"op":"worker-effect-rect","rect":[8,8,16,16]}],
+ "event-dependency-halo-fanout":[{"step":1,"op":"queue-event","id":"E1","center":[16,16],"radius":2,"dependency_halo":1}],
+}
+
+def fixture_protocol(item):
+    family=item["family"]; fid=item["id"]; suffix=fid.split(".",1)[1] if "." in fid else fid
+    base={"schema":"cybersand.stage3b.fixture-protocol/v1","coordinate_model":{"origin":[0,0],"tile_size":32,"chunk_size":32},
+          "service_checkpoints":["after-setup","after-each-operation","final"]}
+    if family=="quiet-initial-population":
+        if suffix.startswith("initial-"):
+            setup={"generator":"uniform-square","side":int(suffix.rsplit("-",1)[1]),"tuple":BASE_TUPLE}
+        elif suffix=="sparse-represented-coverage":
+            setup={"generator":"uniform-authority-sparse-coverage","authority_side":2048,"tile_size":32,
+                   "represented_tile_coords":[[0,0],[63,0],[0,63],[63,63],[32,32]],"tuple":BASE_TUPLE}
+        else:
+            setup={"generator":"large-capacity-small-coverage","configured_tile_capacity":4096,
+                   "represented_tile_rect":[0,0,8,8],"tuple":BASE_TUPLE}
+        return {**base,"setup":setup,"operations":[],"assertions":["separate cold/startup phases from steady quiet drain"]}
+    if family=="genuine-one-cell-edit":
+        _,field,position=fid.split(".",2)
+        return {**base,"setup":{"generator":"uniform-square","side":64,"tuple":BASE_TUPLE},
+          "operations":[{"step":1,"op":"set-tuple","at":ONE_CELL_COORDS[position],"tuple":FIELD_TARGETS[field],"authoritative_cells_changed":1}],
+          "assertions":["exactly one authoritative cell changes"]}
+    if family=="retained-historical-control":
+        protocols={
+          "local-edit-8x8":{"setup":{"generator":"uniform-square","side":64,"tuple":BASE_TUPLE},"operations":[{"step":1,"op":"set-rect","rect":[28,28,8,8],"tuple":EMPTY_TUPLE},{"step":2,"op":"set-rect","rect":[28,28,8,8],"tuple":BASE_TUPLE}]},
+          "bridge-whole-column":{"setup":{"generator":"uniform-square","side":64,"tuple":BASE_TUPLE},"operations":[{"step":1,"op":"set-column","x":32,"y0":0,"length":64,"tuple":EMPTY_TUPLE},{"step":2,"op":"set-column","x":32,"y0":0,"length":64,"tuple":BASE_TUPLE}]},
+          "churn":{"setup":{"generator":"uniform-square","side":64,"tuple":BASE_TUPLE},"operations":[{"step":1,"op":"toggle-rect","rect":[16,16,32,32],"repetitions":64}]},
+          "ring":{"setup":{"generator":"rect-ring","outer":[0,0,64,64],"thickness":1},"operations":[]},
+          "mask":{"setup":{"generator":"uniform-square","side":64,"tuple":BASE_TUPLE},"operations":[{"step":1,"op":"mask-set","rect":[28,28,8,8]},{"step":2,"op":"mask-clear","rect":[28,28,8,8]}]},
+          "pending-event":{"setup":{"generator":"uniform-square","side":64,"tuple":BASE_TUPLE},"operations":[{"step":1,"op":"queue-event","center":[32,32],"radius":2},{"step":2,"op":"drain-events"}]},
+          "exclusion":{"setup":{"generator":"uniform-square","side":64,"tuple":BASE_TUPLE},"operations":[{"step":1,"op":"set-simulation-region","rect":[128,0,64,64]},{"step":2,"op":"clear-simulation-region"}]},
+        }
+        return {**base,**protocols[suffix],"assertions":["retain historical meaning exactly"]}
+    if family=="connectivity-topology":
+        p=TOPOLOGY_PROTOCOLS[suffix]
+        return {**base,"setup":{"generator":p["generator"],**p["params"]},"operations":p["mutations"],
+          "assertions":["classify update as "+item["topology_class"]]}
+    if family=="coverage-absence-registration":
+        return {**base,"setup":{"generator":"coverage-control","rect":[0,0,64,64],"tuple":BASE_TUPLE},
+          "operations":COVERAGE_OPERATIONS[suffix],"assertions":[item["invariant"]]}
+    if family=="activity-deadline-no-write":
+        return {**base,"setup":{"generator":"single-ready-domain","key":"A","rect":[0,0,32,32],"tuple":BASE_TUPLE},
+          "operations":DEADLINE_OPERATIONS[suffix],"assertions":[item["invariant"]]}
+    if family=="aba-fanout":
+        return {**base,"setup":{"generator":"uniform-square","side":64,"tuple":BASE_TUPLE},
+          "operations":ABA_OPERATIONS[suffix],"assertions":[item["invariant"]]}
+    if family=="progress-churn-fairness":
+        cadence={"churn-every-1-service-call":1,"churn-every-2-service-calls":2,"churn-every-8-service-calls":8}.get(suffix)
+        ops=[{"step":1,"op":"configure-localities","churning":[0,0],"stable_near":[64,0],"stable_far":[1024,1024],"rounds":64}]
+        if cadence: ops.append({"step":2,"op":"churn","at":[0,0],"every_service_calls":cadence,"rounds":64})
+        elif suffix=="continuous-local-churn": ops.append({"step":2,"op":"churn","at":[0,0],"every_service_calls":1,"rounds":64})
+        elif suffix=="independent-pending-domains": ops.append({"step":2,"op":"queue-domains","coords":[[0,0],[64,0],[0,64],[1024,1024]]})
+        elif suffix=="continuous-lower-coordinate-arrival": ops.append({"step":2,"op":"inject-lower-coordinate-work","start":[0,0],"delta":[-32,0],"rounds":64})
+        elif suffix=="stale-work-before-validation": ops += [{"step":2,"op":"advance-to-validation-minus-one","at":[1024,1024]},{"step":3,"op":"mutate","at":[1024,1024]}]
+        elif suffix=="recovery-after-churn-stops": ops += [{"step":2,"op":"churn","at":[0,0],"every_service_calls":1,"rounds":32},{"step":3,"op":"stop-churn-and-drain"}]
+        elif suffix=="cleanup-reclamation-near-capacity": ops.append({"step":2,"op":"retire-and-replace","domain_count":63,"configured_capacity":64})
+        else: ops.append({"step":2,"op":"service-unmodified-control","target":suffix,"rounds":64})
+        return {**base,"setup":{"generator":"three-locality-fairness-control","tuple":BASE_TUPLE},"operations":ops,
+          "assertions":["record remote job age and completion/refusal outcome"]}
+    if family=="capacity-failure":
+        if fid.startswith("capacity."):
+            _,klass,boundary=fid.split(".",2); limit=64
+            count=limit if boundary=="exact-cap" else limit+1
+            return {**base,"setup":{"generator":"capacity-boundary","capacity_class":klass,"limit":limit},
+              "operations":[{"step":1,"op":"populate-capacity-class","class":klass,"count":count}],
+              "assertions":["one-past-cap refusal is explicit and never a missing result"]}
+        fault=suffix
+        fault_ops={
+          "allocation-failure-construction":{"phase":"construction","allocation_ordinal":1},
+          "allocation-failure-observer-replacement":{"phase":"observer-replacement","allocation_ordinal":1},
+          "capacity-failure-staging":{"phase":"staging","capacity_ordinal":1},
+          "failure-after-partial-preparation":{"phase":"publication-preparation","after_successful_primitives":3},
+          "source-capture-failure":{"phase":"source-capture","read_ordinal":1},
+          "failed-world-quarantine":{"phase":"world","failure":"quarantine"},
+        }
+        return {**base,"setup":{"generator":"fault-injection-control","tuple":BASE_TUPLE},
+          "operations":[{"step":1,"op":"inject-fault",**fault_ops[fault]},{"step":2,"op":"attempt-observation"}],
+          "assertions":["failure/refusal is explicit and partial publication is forbidden"]}
+    if family=="determinism-permutation":
+        variants={
+          "forward-reverse-registration":[["A","B","C"],["C","B","A"]],
+          "successful-free-slot-order":[["alloc-A","alloc-B","free-A","alloc-C"],["alloc-B","alloc-A","free-B","alloc-C"]],
+          "allocation-order":[["A","B","C"],["B","C","A"]],
+          "equal-deadline-ties":[["A@100","B@100","C@100"],["C@100","A@100","B@100"]],
+          "translated-signed-geometry":[["origin",0,0],["origin",-257,1]],
+          "adversarial-hash-keys":[["key",0,0],["key",65536,0],["key",131072,0]],
+          "scarce-publication-capacity-competition":[["capacity",2,"candidates","A","B","C"],["capacity",2,"candidates","C","B","A"]],
+        }
+        return {**base,"setup":{"generator":"determinism-control","tuple":BASE_TUPLE},
+          "operations":[{"step":1,"op":"run-permutations","variants":variants[suffix]}],
+          "assertions":["canonical admission/output must be permutation-independent"]}
+    if family=="memory":
+        axis=item["parameters"]["sweep_axis"]; value=item["parameters"]["value"]
+        return {**base,"setup":{"generator":"memory-axis-control","axis":axis,"value":value,"other_axes":"baseline"},
+          "operations":[{"step":1,"op":"populate-axis","axis":axis,"value":value},{"step":2,"op":"drain-and-record-memory"}],
+          "assertions":["requested/layout/committed/live/staged/retired/scratch/RSS remain distinct"]}
+    raise ValueError("fixture family lacks frozen protocol: "+family)
+
+def attach_protocols(fixtures):
+    for item in fixtures:
+        protocol=fixture_protocol(item)
+        item["protocol"]=protocol
+        item["protocol_sha256"]=hashlib.sha256(json.dumps(protocol,sort_keys=True,separators=(",",":")).encode()).hexdigest()
+    return fixtures
 
 def validate_fixtures(fs):
     ids=[f["id"] for f in fs]
@@ -149,6 +316,10 @@ def validate_fixtures(fs):
     for f in fs:
         if f["family"]=="genuine-one-cell-edit" and (f.get("intended_changed_cell_count")!=1 or f["mutation"]["authoritative_cells_changed"]!=1):
             raise ValueError("one-cell fixture drift")
+    for f in fs:
+        protocol=f.get("protocol"); expected=f.get("protocol_sha256")
+        actual=hashlib.sha256(json.dumps(protocol,sort_keys=True,separators=(",",":")).encode()).hexdigest() if protocol else None
+        if not protocol or expected!=actual: raise ValueError("fixture protocol identity drift: "+f["id"])
     by={f["id"]:f for f in fs}
     if by["historical.local-edit-8x8"]["retained_meaning"]!="8x8 patch edit": raise ValueError("historical local-edit drift")
     if by["historical.bridge-whole-column"]["retained_meaning"]!="whole-column change": raise ValueError("historical bridge drift")
@@ -213,7 +384,7 @@ def build_plan(apparatus_source_commit,profile="final",arm_manifest=None,executi
                 runs.append({"run_id":f"{profile}-n{n:06d}","order_index":n,"order_key":okey(f["id"],w,svc["id"]),
                   "repeat_index":r,"cell_repeat_count":reps,"campaign_role":role(f),"arm_position":pos,"arm_id":a,
                   "arm_availability":av,"run_state":"scheduled" if av=="available" else av,"fixture_id":f["id"],
-                  "fixture_version":1,"fixture_expected_outcomes":f["expected_outcomes"],"worker_count":w,"service_mode":svc["id"],"primitive_budget":svc["budget"],"seed":0})
+                  "fixture_version":1,"fixture_protocol_sha256":f["protocol_sha256"],"fixture_expected_outcomes":f["expected_outcomes"],"worker_count":w,"service_mode":svc["id"],"primitive_budget":svc["budget"],"seed":0})
     auth=execution_authority or {}
     return {"schema":PLAN_SCHEMA,"version":1,"contract_version":CONTRACT_VERSION,"profile":profile,
       "apparatus_source_commit":apparatus_source_commit,
@@ -249,7 +420,7 @@ def result_template(row,state=None):
     state=state or ("unavailable" if row["arm_availability"]!="available" else "success")
     prov={f:None for f in PROVENANCE_FIELDS}
     prov.update({"contract_version":CONTRACT_VERSION,"worker_count":row["worker_count"],"fixture_id":row["fixture_id"],
-      "fixture_version":1,"seed":0,"authoritative_mutation_schedule":{"fixture_id":row["fixture_id"],"fixture_version":1},
+      "fixture_version":1,"seed":0,"authoritative_mutation_schedule":{"fixture_id":row["fixture_id"],"fixture_version":1,"protocol_sha256":row["fixture_protocol_sha256"]},
       "observer_service_schedule":{"mode":row["service_mode"],"primitive_budget":row["primitive_budget"],
        "current_control_is_noop":row["arm_id"]=="current-discovery-disabled"},"arm_id":row["arm_id"],
       "run_order":row["order_index"],"repeat_index":row["repeat_index"]})
@@ -267,6 +438,7 @@ def validate_result(v,row):
     for k,e in {"worker_count":row["worker_count"],"fixture_id":row["fixture_id"],"arm_id":row["arm_id"],
                 "run_order":row["order_index"],"repeat_index":row["repeat_index"]}.items():
         if p.get(k)!=e: raise ValueError(f"wrong provenance identity: {k}")
+    if p.get("authoritative_mutation_schedule",{}).get("protocol_sha256")!=row.get("fixture_protocol_sha256"): raise ValueError("fixture protocol provenance mismatch")
     ms=v.get("measurements",{})
     for g,keys in MEASUREMENTS.items():
         if g not in ms or set(keys)-set(ms[g]): raise ValueError(f"missing measurement group/metrics: {g}")
