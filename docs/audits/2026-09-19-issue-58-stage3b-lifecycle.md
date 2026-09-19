@@ -128,6 +128,48 @@ behavior, Water tuning, or Stage-4 work is included.
 No newly discovered defect was absorbed from those later packages. Their planned
 work remains deferred to their owning issues.
 
+## Independent worker-parity CI routing defect
+
+Exact-head GDExtension validation initially exposed one failure in
+`test_web_worker_parity`. Investigation proved that this was not a #58 semantic
+or determinism regression.
+
+The exact failing #58 run `35463708883`, shard-2 job `105953462439`, reported
+both the nominal one-worker and four-worker samples as `workers=1`, with zero
+parallel phases. Their move counts were identical at 120,283 and all 120 exported
+level hashes were byte-for-byte equal; there was no hash divergence.
+
+The same failure independently reproduces on landed base
+`910717aac101363ec2b1b89e4041a22bc9a97b97` in run `35462990569`, shard-2
+job `105950805298`: both samples are one worker, zero parallel phases, equal
+moves and all hashes equal. It therefore predates and is independent of #58.
+
+The transition is CI routing. At last-green source `35d0300`, run
+`35452666646`, shard-2 job `105922839649` used the prior 2-vCPU regression
+runner. The same parity test executed one worker versus two workers, observed 480
+parallel phases, retained identical 120-hash sequences and equal move counts, and
+passed. Commit `8e48ea732702e7a0b3a0f8d13136ff78f7472279` changed all Godot
+regression shards to a 1-vCPU default. Its run `35462379884`, shard-2 job
+`105949728031`, immediately reproduced the one-worker/one-worker refusal with
+otherwise identical results.
+
+This is expected from the current native adapter: requested
+`cybersand/native_worker_threads` is intentionally clamped to
+`std::thread::hardware_concurrency()`. A 1-vCPU runner therefore cannot satisfy
+the parity test's independent requirement that the second arm actually execute
+with more than one native worker.
+
+The CI correction is deliberately narrow: regression shard 2, which owns
+`test_web_worker_parity`, uses
+`GDEXT_PARITY_SHARD_RUNNER` with a 2-vCPU Avrea default; shards 0/1/3 retain the
+1-vCPU default. No simulation scheduler, material behavior, Water behavior or
+parity assertion changed.
+
+Focused run `35464828124` at head
+`f04c2840562fe1c0be93b9a256e4576fb1219519` then passed the unchanged parity
+test: one worker versus two workers, 480 parallel phases in the parallel arm,
+120,283 moves in each arm and all 120 hashes identical.
+
 ## Final validation checkpoint
 
 This documentation checkpoint intentionally changes no tracked native runtime input.
