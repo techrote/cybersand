@@ -2475,6 +2475,36 @@ void test_int000_sparse_schema_shadow_equivalence() {
     require(conflict.matched && conflict.conflict,
             "INT equal-precedence matching layers did not report conflict");
 
+    constexpr std::array<cybersand::PairInteractionRule, 2> direction_rules{{
+        {"test.ordered", cybersand::interaction_channel_bit(cybersand::InteractionChannel::Electrical),
+         cybersand::InteractionTriggerKind::PairContact, cybersand::InteractionMatchKind::Ordered,
+         Material::Water, Material::Salt, Material::Brine, Material::Salt, 255U,
+         "ordered test", 0U, 1U, "", "test.pass"},
+        {"test.symmetric", cybersand::interaction_channel_bit(cybersand::InteractionChannel::Combustion),
+         cybersand::InteractionTriggerKind::PairContact, cybersand::InteractionMatchKind::Symmetric,
+         Material::Fire, Material::Oil, Material::Smoke, Material::Smoke, 255U,
+         "symmetric test", 0U, 1U, "", "test.pass"},
+    }};
+    const auto ordered_forward = InteractionRules::resolve_pair_from(
+        direction_rules, Material::Water, Material::Salt, 0U);
+    const auto ordered_reverse = InteractionRules::resolve_pair_from(
+        direction_rules, Material::Salt, Material::Water, 0U);
+    require(ordered_forward.selected &&
+                ordered_forward.source_product == Material::Brine &&
+                ordered_forward.target_product == Material::Salt &&
+                !ordered_reverse.matched,
+            "INT ordered pair semantics are not explicit/testable");
+    const auto symmetric_forward = InteractionRules::resolve_pair_from(
+        direction_rules, Material::Fire, Material::Oil, 0U);
+    const auto symmetric_reverse = InteractionRules::resolve_pair_from(
+        direction_rules, Material::Oil, Material::Fire, 0U);
+    require(symmetric_forward.selected && symmetric_reverse.selected &&
+                symmetric_forward.source_product == Material::Smoke &&
+                symmetric_forward.target_product == Material::Smoke &&
+                symmetric_reverse.source_product == Material::Smoke &&
+                symmetric_reverse.target_product == Material::Smoke,
+            "INT symmetric pair semantics are not orientation-independent");
+
     for (std::size_t index = 0; index < frozen_current.size(); ++index) {
         const auto& expected = frozen_current[index];
         const auto& rule = InteractionRules::pair_rules()[index];
