@@ -1,0 +1,111 @@
+name: Sengi historical 8-vCPU Linux build benchmark
+
+run-name: Sengi 8-vCPU Linux build trial ${{ github.run_number }}
+
+on:
+  push:
+    branches:
+      - ci/sengi-benchmark-run
+    paths:
+      - .github/workflows/sengi-build-benchmark.yml
+
+permissions:
+  contents: read
+
+env:
+  BENCH_TRIAL: "1"
+  HISTORICAL_SHA: ed4b9abe542a5de0d498a62d3de7f157fe40d129
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+
+jobs:
+  linux-build:
+    name: historical Linux build x86_64
+    runs-on: sengi-standard-8-ubuntu-2404
+    timeout-minutes: 30
+    steps:
+      - name: Check out exact historical PR merge source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.HISTORICAL_SHA }}
+
+      - name: Record runner identity
+        run: |
+          echo "benchmark_trial=$BENCH_TRIAL"
+          echo "source=$HISTORICAL_SHA"
+          echo "nproc=$(nproc)"
+          uname -a
+          lscpu
+
+      - name: Fetch Linux Rapier runtime only
+        run: |
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+
+      - name: Validate shard planner
+        run: |
+          python3 -m py_compile tools/ci/run_godot_regressions.py tools/ci/test_godot_regression_sharding.py
+          python3 tools/ci/test_godot_regression_sharding.py
+
+      - name: Install pinned SCons
+        run: |
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+
+      - name: Check out exact godot-cpp source
+        run: |
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+
+      - name: Build Linux godot-cpp and CyberSand extension
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: "8"
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          timeout 35m tools/build_pinned_godot_cpp.sh linux
+          timeout 20m tools/build_native_extension.sh
+          file "$CYBERSAND_NATIVE_OUTPUT" | tee "$RUNNER_TEMP/linux-file.txt"
+          grep -q 'ELF 64-bit.*x86-64' "$RUNNER_TEMP/linux-file.txt"
+
+      - name: Validate and stage exact Linux runtime
+        env:
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          timeout 1m tools/check_linux_runtime_floor.sh
+          mkdir -p build/linux-runtime
+          cp "$CYBERSAND_NATIVE_OUTPUT" build/linux-runtime/libcybersand_native.linux.x86_64.so
+          cp godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so build/linux-runtime/
+          git rev-parse HEAD > build/linux-runtime/source-sha.txt
+          {
+            echo "godot_cpp_commit=$GODOT_CPP_COMMIT"
+            echo "scons=4.10.1"
+            gcc-13 --version | head -n 1
+            g++-13 --version | head -n 1
+            ld --version | head -n 1
+          } > build/linux-runtime/toolchain.txt
+          (
+            cd build/linux-runtime
+            sha256sum libcybersand_native.linux.x86_64.so libgodot_rapier.linux.x86_64-unknown-linux-gnu.so > runtime.sha256
+            sha256sum --check --strict runtime.sha256
+          )
+          git diff --exit-code -- . \
+            ':!godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so' \
+            ':!godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'
+
+      - name: Publish benchmark runtime
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sengi-8vcpu-linux-build-${{ github.run_id }}
+          path: build/linux-runtime/
+          if-no-files-found: error
+          retention-days: 1
