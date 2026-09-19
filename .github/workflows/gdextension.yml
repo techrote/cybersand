@@ -105,7 +105,8 @@ jobs:
 
   windows-build:
     name: windows x86_64
-    runs-on: ${{ vars.GDEXT_WINDOWS_RUNNER || 'avrea-ubuntu-24.04-4-vcpu' }}
+    # Keep Windows independent of the Sengi 8-vCPU pool; 2 vCPU is sufficient off the Linux regression critical path.
+    runs-on: ${{ vars.GDEXT_WINDOWS_RUNNER || 'avrea-ubuntu-24.04-2-vcpu' }}
     timeout-minutes: 30
     steps:
       - name: Check out source
@@ -141,7 +142,7 @@ jobs:
         env:
           GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
           SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
-          SCONS_JOBS: ${{ vars.GDEXT_WINDOWS_SCONS_JOBS || '4' }}
+          SCONS_JOBS: ${{ vars.GDEXT_WINDOWS_SCONS_JOBS || '2' }}
           LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
           WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
           CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
@@ -156,7 +157,8 @@ jobs:
   linux-regression:
     name: linux regression shard ${{ matrix.shard }}
     needs: linux-build
-    runs-on: ${{ vars.GDEXT_SHARD_RUNNER || 'avrea-ubuntu-24.04-2-vcpu' }}
+    # The Godot shards are runtime/I/O dominated; measured 1-vCPU throughput is comparable while the runner rate is halved.
+    runs-on: ${{ vars.GDEXT_SHARD_RUNNER || 'avrea-ubuntu-24.04-1-vcpu' }}
     timeout-minutes: 35
     strategy:
       fail-fast: false
