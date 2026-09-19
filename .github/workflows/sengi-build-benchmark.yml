@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 env:
-  BENCH_TRIAL: "1"
+  BENCH_TRIAL: "2"
   HISTORICAL_SHA: ed4b9abe542a5de0d498a62d3de7f157fe40d129
   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
 
