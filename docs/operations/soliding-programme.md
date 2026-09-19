@@ -107,10 +107,11 @@ zero loose debris is correct where no loose-material policy has been admitted.
 [Successor checkpoint evidence](../audits/2026-09-19-issue-12-foundation.md) records
 the foundation; the [Stage-3 exit review](../audits/issue-12-2026-09-19/stage3-exit-review.md)
 records the integrated World producer/connectivity checklist and corrected gate
-disposition. Stage 3A is a candidate bounded correctness/reference checkpoint;
+disposition. Stage 3A passes as the bounded correctness/reference checkpoint at
+publication commit `82e65f3`;
 Stage 3B locality/scalability is open. Both remain read-only, cells-owned observation.
 
 The [Stage 3 execution freeze](soliding-stage3-freeze.md) remains the historical and
-architectural correctness contract. After repaired exact-head CI and a Stage-3A
-merge, prepare the bounded Stage-3B architecture review; do not implement Stage 4.
+architectural correctness contract. After the verified Stage-3A merge, prepare the
+bounded Stage-3B Astra architecture review; do not implement Stage 4.
 No Stage-3 cost result selects a representation or threshold.

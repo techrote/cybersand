@@ -12,21 +12,25 @@ related-documents: [../../operations/soliding-stage3-freeze.md, ../../operations
 
 ## Decision and exact boundary
 
-**Corrected parent decision: the integrated implementation is a Stage 3A bounded
-correctness/observability candidate; the complete Stage-3 programme gate has not
-passed. Stage 3B locality/scalability remains open.** The reviewed implementation/
+**Corrected parent decision: the integrated implementation passes as the Stage 3A
+bounded correctness/observability reference; the complete Stage-3 programme gate
+has not passed. Stage 3B locality/scalability remains open.** The reviewed implementation/
 evidence lineage is PR #43 head
 `90903355f5880e8f141ee6caea34840ad8b4990c` merged as `1bb2d9d`, PR #46 merged
 as `5001f7f`, and the integration commits `64413f7` through `c35c8d1` on
-`codex/issue-12-stage3-integration`. The last measured runtime source is
+`codex/issue-12-stage3-integration`. Current main `34d5924` was reconciled by
+merge commit `8070ac3`; `7f681ec` repaired the build/checklist boundary and
+`82e65f3` published source-matched Windows/Linux runtimes and corrected platform-
+specific Godot evidence identity. The last measured runtime source is
 `2919106d9a8b3b91bab442fbb0e34bdee1b35afc`; `933ad5a` adds the retained cost
 record and an exact-under-occupancy regression, and `c35c8d1` adds direct Water
 transfer endpoint evidence without changing runtime source. `4e0d58c` is the
 docs-only parent admission checkpoint validated below.
 
-The Stage 3A candidate disposition remains subject to repaired exact-head native,
-sharded GDExtension/Godot, documentation/provenance and artifact-identity CI plus
-final review. It admits only opt-in, read-only observation. It does not admit a
+Publication checkpoint `82e65f3` passed exact-head native, sharded GDExtension/
+Godot, documentation/provenance and artifact-identity CI, and the supervising
+parent completed final source review. Stage 3A admits only opt-in, read-only
+observation. It does not admit a
 scheduler skip, stationary proxy, compact/frozen representation, cohesion,
 material ownership transfer, Rapier body, fracture behavior or performance win.
 Stage 4 is not admitted. Stage 3B must first resolve or explicitly disposition the
@@ -74,11 +78,11 @@ complete result. Rows 25-26 provide the evidence that keeps Stage 3B open.
 | 21 | PASS | **Unknown/blocked/capacity boundaries.** `unknown_middle_component_capacity_and_new_match`, integrated mask/noncanonical-Empty tests and producer tile saturation all prevent false globally complete regions. Refusal remains visible as `UnknownBoundary`, `NoncanonicalEmpty`, `ComponentCapacity`, `FrontierCapacity`, `RegionCapacity`, `TileCapacity` or `SourceFailure`. |
 | 22 | PASS | **Disabled neutrality/counters.** `disabled_neutrality_and_worker_parity` compares enabled/disabled World visited cells, moved cells and content hash for 24 ticks. The 276-process campaign also requires identical authoritative hashes across Current/producer/journal/connectivity cohorts. |
 | 23 | PASS | **Workers1/4 deterministic state and discovery.** Focused World tests compare tile witnesses and normalized region digests; all measured workers1/4 cohorts match authoritative content hashes. Region digest intentionally excludes world incarnation while handles retain it. |
-| 24 | PASS with platform limit | **Sanitizers/failure paths.** All four Stage-3 focused suites passed under ASan/UBSan with the pinned Clang toolchain, including the final occupancy and Water endpoint regressions. Failure-after-partial-work, source throw, producer failure, revision exhaustion, capacity refusal and mutation-during-traversal paths pass. TSan is not feasible for the pinned `x86_64-w64-windows-gnu` target: Clang 23.1.0 reports `unsupported option '-fsanitize=thread'`; this is retained as an explicit platform gap, not relabeled as a pass. Workers1/4 parity and deterministic barrier ownership provide the available concurrency evidence. |
+| 24 | PASS | **Sanitizers/failure paths.** All four Stage-3 focused suites passed under ASan/UBSan with the pinned Windows Clang toolchain, including the final occupancy and Water endpoint regressions. Failure-after-partial-work, source throw, producer failure, revision exhaustion, capacity refusal and mutation-during-traversal paths pass. Windows LLVM-MinGW still reports `unsupported option '-fsanitize=thread'`, but exact-head Linux CI run `35443102417` compiled and passed the full native suite under TSan as well as ASan/UBSan. Workers1/4 parity and deterministic barrier ownership remain additional concurrency evidence. |
 | 25 | PASS evidence / Stage 3B open | **Whole-system cost.** [`stage3-cost-results.md`](stage3-cost-results.md) retains 276/276 preregistered sequential processes with separate Current, producer, journal/feed and connectivity timing, peak RSS, setup, ordinary/epoch-clear and complete-service p95. Current discovery fields are JSON `null`, never fabricated zero. The evidence establishes bounded cost, not acceptable scalability. |
 | 26 | PASS evidence / Stage 3B open | **Large-world/churn/fanout/wake amplification.** The same evidence covers 512/1024/2048 quiet worlds, 2048 sparse edit, bridge, churn, mask, event, exclusion/re-entry, granular controls and a translated negative ring. It retains the 39.3214 ms 2048 sparse-edit complete p95 versus Current 0.0754 ms, 1,351,685 connectivity work units, publication/invalidation counts, refusals, fixed storage and setup costs. Whole-region rediscovery is bounded but not change-proportional; this negative result prevents full Stage-3 admission. |
 | 27 | PASS | **No Stage-4/Rapier claim.** Public Stage-3 interfaces expose immutable observations and metrics only. Cells remain authoritative; no scheduler skip, body creation, ownership transfer, cohesion or fracture code is introduced. The measured result explicitly rejects a zero-cost or speedup interpretation. |
-| 28 | PENDING exact-head gate | **Docs/evidence/retrieval/identity synchronization.** The canonical discovery page links the corrected cost record; the programme, roadmap, handover and documentation index now separate Stage 3A from Stage 3B and hold Stage 4. Raw local outputs remain uncommitted under the dated validation directory with compiler/executable/plan/result hashes. Earlier docs-only head `4e0d58c` passed companion-aware docs/M11/retrieval, but current-main reconciliation and runtime publication require fresh exact-head checks. The old four-item Windows/Linux runtime-rebuild report is a blocker to repair, not an accepted final artifact gap. |
+| 28 | PASS | **Docs/evidence/retrieval/identity synchronization.** The programme, roadmap, handover, discovery page and indexes separate Stage 3A from Stage 3B and hold Stage 4. Publication checkpoint `82e65f3` replaced both tracked LFS runtimes and expanded each manifest to the compiler-derived 27-file dependency set. Windows DLL SHA-256 is `184fdc47ad71b9434343cef03d99b08e039b79299c53a369798d7a8235047b86`; CI-built/tested Linux SO SHA-256 is `36f2c42d74b369c10c9ac5635e6a39b70869819961cb16746c882f6e5293e5a3`. Exact-head consistency run `35443102412`, native run `35443102417` and GDExtension/Godot run `35443102422` passed. Raw local outputs remain uncommitted under the dated validation directory. |
 
 ## Validation retained for the candidate
 
@@ -87,13 +91,20 @@ complete result. Rows 25-26 provide the evidence that keeps Stage 3B open.
 - Focused ASan/UBSan: all four suites pass; the final integrated suite includes
   direct ABA, occupancy exact tuple and direct Water-transfer endpoint witnesses.
 - Full native suite: 61/61 passed after producer/connectivity integration and again
-  after bounded lookup/scalability corrections; it is rerun on the final PR head.
-- Registered measurement runner tests: 4/4 pass. Corrected smoke: 7/7. Corrected
+  after bounded lookup/scalability corrections; exact-head native CI also passed
+  behavioral/integration, Stage-3 contracts, ASan/UBSan, TSan, shared-library and
+  benchmark gates in run `35443102417`.
+- Windows Godot 4.7 import plus 35/35 unique cases passed with the corrected evidence
+  runner recording the actually loaded DLL and Windows Rapier hashes. Linux run
+  `35443102422` passed the ABI floor, four isolated shards and aggregate gate.
+- Registered measurement runner tests: 4/4 pass. Sharding/identity runner tests:
+  5/5 pass. Corrected exact-head smoke: 7/7. Corrected
   preregistered campaign: 276/276, no retry, drop, malformed record or cohort mismatch.
-- Companion-aware docs and M11 checks pass on `4e0d58c`; retrieval finds canonical
-  routes for 32/32 questions at k. Repository policy retains exactly four expected
-  Windows/Linux runtime-rebuild requirements for changed `world.hpp`/`world.cpp`;
-  this source-change report does not rewrite retained binaries or provenance.
+- Exact-head companion-aware documentation/provenance, M11 integrity, evidence
+  failure contracts, retrieval and LFS materialization passed in run `35443102412`.
+- The repaired `7f681ec` cost artifact differs in full PE hash from the measured
+  artifact, but its `.text`, `.rdata`, `.data` and `.pdata` sections are byte-identical;
+  [`stage3-cost-results.md`](stage3-cost-results.md) records all hashes and the 7/7 smoke.
 
 ## Negative and ambiguous evidence retained
 
@@ -105,8 +116,8 @@ complete result. Rows 25-26 provide the evidence that keeps Stage 3B open.
   scaling. Stage 4 must measure alternatives rather than hide this result.
 - All paired complete-p95 comparisons cross the programme's relative review trigger;
   tiny Current denominators are presented with absolute costs rather than a claimed win.
-- TSan is unavailable for this Windows LLVM-MinGW target. No unsupported run or
-  workers1/4 parity test is presented as equivalent to TSan.
+- TSan remains unavailable for the pinned Windows LLVM-MinGW target; Linux exact-head
+  TSan passed. The platform distinction is retained rather than treating one as the other.
 - No independently model-attested stronger subagent review was available. Parent
   admission does not manufacture one; exact-head automated checks and source review
   remain mandatory before merge.

@@ -101,8 +101,9 @@ complete-only publication, generation handles, holes, split/merge invalidation a
 explicit capacity refusal in focused and integrated fixtures. Connectivity remains
 separately opt-in and is compiled for at most 4096 tracked tiles with at most 32
 local components per tile. Its fixed per-tile/component/frontier layout is deliberately
-fail-closed but large. Focused/integrated correctness evidence makes this a Stage-3A
-candidate, subject to repaired exact-head CI and runtime provenance. It has not passed
+fail-closed but large. Focused/integrated correctness evidence plus exact-head
+publication checkpoint `82e65f3` make this the passed Stage-3A bounded reference.
+It has not passed
 the Stage-3B large-world locality/memory/cost gate.
 
 The connectivity engine retains append-only resident tile slots, fixed boundary-cell
@@ -130,7 +131,8 @@ admission claim.
 
 The parent-owned [Stage-3 review](../audits/issue-12-2026-09-19/stage3-exit-review.md)
 maps every frozen checklist item to the integrated source, focused regressions and
-capacity/refusal behavior. It classifies the reference as a Stage-3A candidate and
+capacity/refusal behavior. It classifies the reference as the passed Stage-3A bounded
+checkpoint and
 keeps Stage 3B open. Stage 4 is not admitted.
 
 ## Bounded work, fairness and metrics

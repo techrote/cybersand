@@ -168,11 +168,15 @@ was implemented on `codex/issue-12-stage3-integration`; the parent-owned
 checklist item to source, tests or an explicit safe refusal. Its corrected
 [276-process cost record](../audits/issue-12-2026-09-19/stage3-cost-results.md)
 retains material fixed memory and large-region rebuild costs rather than claiming
-a win. The bounded correctness/observability reference is a **Stage 3A candidate**
-subject to repaired exact-head CI, runtime provenance and final review. The locality/
-scalability objective is **Stage 3B open**: the current implementation still performs
+a win. Publication checkpoint `82e65f3` passed exact-head native/sanitizer,
+Windows/Linux build, sharded Linux Godot, documentation/provenance, retrieval and
+runtime-identity gates. The bounded correctness/observability reference therefore
+passes **Stage 3A**; PR #47 still requires merge verification before successor work.
+The locality/scalability objective is **Stage 3B open**: the current implementation still performs
 full tracked-tile signal refresh, global mapping/seed work, compiled-maximum storage
-and whole-region rediscovery. Stage 4 is not admitted. Stage 3 remains cells-owned
+and whole-region rediscovery. After the verified Stage-3A merge, prepare the
+Stage-3B Astra architecture-review packet before implementation. Stage 4 is not
+admitted. Stage 3 remains cells-owned
 discovery and cannot be used to admit stationary acceleration or Rapier dynamics.
 
 ## Issue #26 / Water bulk-head handoff, 2026-09-19

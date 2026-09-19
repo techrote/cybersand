@@ -31,6 +31,26 @@ its candidate p95 omitted journal/region service and did not separate epoch clea
 All 276 processes passed, but accepting those timings would undercount discovery.
 The corrected `2919106` campaign below was prepared and rerun from scratch.
 
+### Post-campaign exact-head qualification
+
+The repaired integration source at `7f681ec47fcc29f09a5736377e60c3ece5441074`
+differs from the measured `2919106` runtime inputs only in four whitespace-only
+statement-layout corrections in `settled_regions.hpp`; the harness, driver and
+measurement contracts are unchanged. A fresh immutable artifact produced executable
+SHA-256 `6c66f5a8dbe3759a61aed314cb63e3ff37255e1ceccca017ed28eabceef3ffce`,
+which differs from the measured executable because the PE timestamp and path-bearing
+metadata differ. Direct section extraction proves identical semantic payloads for
+both executables: `.text` `f50e4749ecc923c3327ff56569373914263d5b04e16c1a643c9ccaac7bb09fad`,
+`.rdata` `faa1b5251762b52ae235669062a87c92a84a3787bfd4eeaa34f6f7d49bd22984`,
+`.data` `3d3b3a01678b4e3a7b28ad15bbbfdef660b0c12da8a534390a95c0ee01789e1b`
+and `.pdata` `0ad3162f2a1b134a6f45c57a845154a10c8d2ea79eb80dee6df3c76e8329f7ad`.
+The fresh artifact also passed the separate seven-case smoke 7/7. Raw qualification
+outputs are retained under `stage3-cost-artifact-7f681ec`,
+`stage3-cost-binary-compare` and `stage3-cost-smoke-7f681ec` in the dated local
+evidence root. Therefore the 276-process timing record remains applicable to the
+runtime semantics; the smoke timings are not pooled with it and no new performance
+claim is made.
+
 ## Exact identities
 
 | Input | Identity |
@@ -137,7 +157,9 @@ continues. These refusals are accepted safety outcomes, not missing results.
   hashes matched, and no partial region was used to hide lag.
 
 This campaign satisfies the whole-system CPU/memory/latency and large-world churn/
-fanout measurement items for Stage 3. It rejects any claim that read-only discovery
-is free or already an acceleration. It does not choose a Stage-4 representation or
-threshold. Stage-4 bake-off must compare alternatives against Current ordinary sleep
-and must account for these producer, feed, rebuild and fixed-memory costs.
+fanout measurement items for the bounded Stage 3A reference. It rejects any claim
+that read-only discovery is free or already an acceleration. It does not choose a
+Stage-4 representation or threshold. Stage 3B must first resolve or explicitly
+disposition the observed locality/scalability failures; only then may a Stage-4
+bake-off compare alternatives against Current ordinary sleep while accounting for
+these producer, feed, rebuild and fixed-memory costs.
