@@ -353,6 +353,55 @@ wall gap. Authority and render are interpreted separately:
 The issue #26 branch may add measurement/export plumbing required to obtain these
 numbers, but it does not broaden into a renderer rewrite.
 
+## WL26-v2 surface-defect eligibility correction
+
+The first retained WL26-v1 baseline exposed one reduction-scope defect before
+candidate semantics existed: whole-run hill and terrace-edge maxima can classify
+the intended initial settling mound, moving dump front, or ledge lip as a
+`hillnipple`/shimmer defect. The v1 artifact and audit remain evidence; they are
+not overwritten.
+
+WL26-v2 changes **only surface-defect eligibility and shimmer classification**.
+Fixture geometry, Water semantics, bulk metrics, thresholds, placements, worker
+matrix and run budgets remain identical.
+
+The registered authoritative surface-defect rules are now:
+
+- default: use the existing surface-defect ROI from tick 0;
+- CS: use x=1..126, but begin defect scoring at the first tick that starts 60
+  consecutive ticks with full leveling-ROI depth span <=4 cells. The onset is
+  derived independently for every arm/control, never copied from baseline;
+- FD: begin hill/terrace scoring when the terminal contact column x=126 first
+  becomes wet; morphology uses x=36..123 so the intentional gate release and
+  terminal-wall contact geometry do not define a false local mound. Wall-contact
+  gap remains measured independently at x=126 from first contact;
+- LS: morphology uses x=68..123, excluding the intentional ledge lip and terminal
+  wall. Scoring begins at the first tick starting 60 consecutive ticks in which
+  every column of that ROI is wet. Liveliness/discharge/component metrics retain
+  their original full fixture and full-run definitions;
+- if a registered state-derived surface window is never reached, the corresponding
+  defect metric is explicitly censored rather than scored from an ineligible
+  macro state.
+
+Quarter-cell terrace runs retain the frozen nearest-half-up classification. For
+shimmer, an edge is counted only when it separates contiguous quantized runs and
+at least one adjacent run is a registered terrace (extent >=3 columns). For each
+pair of eligible ticks define authoritative contour motion
+
+`L1(t) = sum_x abs(Q_x(t)-Q_x(t-1))/M`
+
+over the morphology ROI. Retain:
+
+- qualified terrace-edge turnover per simulated second;
+- qualified turnover divided by `max(1, sum L1)` over the window;
+- a low-motion subset containing only transitions with `L1 <= 1`
+  cell-equivalent.
+
+Full-run raw maxima/turnover remain diagnostic output, but candidate surface
+acceptance uses the WL26-v2 registered-window values. This correction is frozen
+before candidate A exists. The corrected baseline must be retained and reviewed
+before Water semantics change.
+
 ## Candidate hypotheses
 
 ### A — head-scaled local drive
