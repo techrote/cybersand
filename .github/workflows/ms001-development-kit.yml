@@ -1,0 +1,48 @@
+name: MS001 temporary pinned adapter development inputs
+on:
+  push:
+    branches: [codex/issue-28-ms001]
+    paths: [.github/workflows/ms001-development-kit.yml]
+permissions:
+  contents: read
+concurrency:
+  group: ms001-development-kit
+  cancel-in-progress: false
+jobs:
+  prepare:
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/issue-28-ms001'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Acquire and build exact godot-cpp
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin 101ae38034304346a46ea9ea84ae156d3e860496
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = 101ae38034304346a46ea9ea84ae156d3e860496
+          GODOT_CPP_ROOT="$RUNNER_TEMP/godot-cpp" SCONS_PYTHON="$RUNNER_TEMP/scons/bin/python" SCONS_JOBS=2 CYBERSAND_REAL_CXX=/usr/bin/g++-13 timeout 30m tools/build_pinned_godot_cpp.sh linux
+          test -z "$(git -C "$RUNNER_TEMP/godot-cpp" status --porcelain --untracked-files=no)"
+          mkdir "$RUNNER_TEMP/ms001-kit"
+          tar --exclude='*.o' -czf "$RUNNER_TEMP/ms001-kit/godot-cpp.tar.gz" -C "$RUNNER_TEMP" godot-cpp
+          {
+            printf 'source=%s\ngodot_cpp=101ae38034304346a46ea9ea84ae156d3e860496\n' "$GITHUB_SHA"
+            /usr/bin/g++-13 --version
+            ld --version
+            sha256sum "$RUNNER_TEMP/godot-cpp/bin/libgodot-cpp.linux.template_debug.x86_64.a"
+          } > "$RUNNER_TEMP/ms001-kit/identity.txt"
+          (cd "$RUNNER_TEMP/ms001-kit" && sha256sum godot-cpp.tar.gz identity.txt > SHA256SUMS)
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ms001-pinned-adapter-inputs-${{ github.sha }}
+          path: ${{ runner.temp }}/ms001-kit/
+          if-no-files-found: error
+          retention-days: 3
