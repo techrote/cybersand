@@ -323,6 +323,9 @@ private:
     void observe_discovery_event(RectI64 region) noexcept;
     [[nodiscard]] static soliding::DiscoveryCell read_discovery_cell(
         const void* context, std::int64_t x, std::int64_t y);
+    [[nodiscard]] static soliding::DiscoverySignals read_discovery_signals(
+        const void* context, soliding::DiscoveryTileKey key,
+        soliding::DiscoveryBounds bounds, soliding::DiscoverySignals previous);
 };
 
 }  // namespace cybersand
