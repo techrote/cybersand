@@ -15,7 +15,7 @@ permissions:
   actions: read
 
 env:
-  HISTORICAL_SHA: 7335d815b3f1a7787ee45f7692a86d334d8bf707
+  HISTORICAL_SHA: ed4b9abe542a5de0d498a62d3de7f157fe40d129
   HISTORICAL_RUN_ID: 35434827192
   GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
   GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
@@ -28,7 +28,7 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      - name: Check out exact historical source
+      - name: Check out exact historical PR merge source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           ref: ${{ env.HISTORICAL_SHA }}
