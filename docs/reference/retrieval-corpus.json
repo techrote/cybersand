@@ -70,7 +70,8 @@
     "architecture/soliding-lifecycle.md",
     "systems/settled-region-discovery.md",
     "operations/soliding-measurement.md",
-    "operations/soliding-macro-fracture-fixture.md"
+    "operations/soliding-macro-fracture-fixture.md",
+    "operations/soliding-stage3-freeze.md"
   ],
   "navigation": [
     "README.md",
@@ -218,6 +219,22 @@
     {
       "path": "audits/2026-09-18-microscenarios-interactions-programme.md",
       "reason": "Dated planning/RAG reconciliation record; retrieve explicitly for the 2026-09-18 MicroScenarios sequencing decision, not as a default Current runtime contract"
+    },
+    {
+      "path": "operations/soliding-stage3-spark-connectivity.md",
+      "reason": "Issue execution packet; retrieve explicitly through the canonical Stage-3 freeze, not as a default Current runtime contract"
+    },
+    {
+      "path": "operations/soliding-stage3-spark-measurement.md",
+      "reason": "Issue execution packet; retrieve explicitly through the canonical Stage-3 freeze, not as a default Current runtime contract"
+    },
+    {
+      "path": "operations/soliding-stage3-spark-producer.md",
+      "reason": "Issue execution packet; retrieve explicitly through the canonical Stage-3 freeze, not as a default Current runtime contract"
+    },
+    {
+      "path": "operations/soliding-stage3-spark-verification.md",
+      "reason": "Issue execution packet; retrieve explicitly through the canonical Stage-3 freeze, not as a default Current runtime contract"
     }
   ]
 }
