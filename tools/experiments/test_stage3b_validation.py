@@ -24,6 +24,11 @@ class Stage3BValidationTests(unittest.TestCase):
         self.assertTrue(all(item["intended_changed_cell_count"] == 1 for item in one_cell))
         self.assertEqual(by_id["topology.one-cell-bridge-add"]["intended_changed_cell_count"], 1)
         self.assertEqual(by_id["topology.one-cell-bridge-remove"]["intended_changed_cell_count"], 1)
+        self.assertTrue(all(len(item["protocol_sha256"]) == 64 for item in fixtures))
+        one = by_id["one-cell.material.tile-face"]
+        self.assertEqual(one["protocol"]["operations"][0]["at"], [31, 16])
+        self.assertEqual(one["protocol"]["operations"][0]["authoritative_cells_changed"], 1)
+        self.assertEqual(by_id["historical.local-edit-8x8"]["protocol"]["operations"][0]["rect"], [28, 28, 8, 8])
 
     def test_final_plan_freezes_workers_budgets_repeats_and_explicit_unavailability(self):
         plan = self.final_plan()
@@ -36,6 +41,8 @@ class Stage3BValidationTests(unittest.TestCase):
         self.assertEqual(arms["stage3b-candidate"]["availability"], "unavailable")
         self.assertEqual(len(plan["runs"]), 6488)
         self.assertTrue(any(row["run_state"] == "unavailable" for row in plan["runs"]))
+        fixture_hashes = {item["id"]: item["protocol_sha256"] for item in plan["fixture_catalogue"]["fixtures"]}
+        self.assertTrue(all(row["fixture_protocol_sha256"] == fixture_hashes[row["fixture_id"]] for row in plan["runs"]))
 
     def test_plan_generation_is_deterministic(self):
         a = self.final_plan()
@@ -69,6 +76,10 @@ class Stage3BValidationTests(unittest.TestCase):
             "raw_result_identity": "raw",
         })
         v.validate_result(success, row)
+        wrong_protocol = copy.deepcopy(success)
+        wrong_protocol["provenance"]["authoritative_mutation_schedule"]["protocol_sha256"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "fixture protocol provenance mismatch"):
+            v.validate_result(wrong_protocol, row)
         unsupported = copy.deepcopy(success)
         unsupported["measurements"]["end_to_end"]["service_call_latency_sample_count"] = 5
         unsupported["measurements"]["end_to_end"]["service_call_latency_p95_ms"] = 1.0
