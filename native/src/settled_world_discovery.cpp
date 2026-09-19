@@ -387,6 +387,8 @@ WorldDiscoveryStorageLayout SettledWorldDiscoveryCoordinator::storage_layout() c
         out.region_member_capacity = state.regions->frontier_capacity();
         out.region_dependency_capacity = state.regions->tile_capacity();
         out.region_revision_capacity = state.regions->tile_capacity();
+        out.region_key_index_capacity = state.regions->key_index_capacity();
+        out.region_row_interval_capacity = state.regions->row_interval_capacity();
         out.region_tile_cell_capacity = Impl::Regions::maximum_tile_cells();
         out.region_components_per_tile = Impl::Regions::components_per_tile();
         out.region_boundary_slots_per_tile = Impl::Regions::boundary_slots_per_tile();
