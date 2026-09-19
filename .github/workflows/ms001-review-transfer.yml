@@ -1,0 +1,48 @@
+name: MS001 temporary review source transfer
+
+on:
+  push:
+    branches: [codex/issue-28-ms001]
+    paths: [.github/workflows/ms001-review-transfer.yml]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ms001-review-transfer
+  cancel-in-progress: false
+
+jobs:
+  transfer:
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/issue-28-ms001'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          lfs: true
+          persist-credentials: false
+      - name: Verify and bundle exact review head
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test -z "$(git status --porcelain)"
+          git fsck --full
+          git lfs fsck
+          mkdir "$RUNNER_TEMP/ms001-review"
+          git bundle create "$RUNNER_TEMP/ms001-review/source.bundle" HEAD refs/remotes/origin/main
+          tar -czf "$RUNNER_TEMP/ms001-review/lfs-objects.tar.gz" -C .git/lfs objects
+          {
+            printf 'source=%s\n' "$GITHUB_SHA"
+            git status --short --branch
+            git lfs ls-files --long
+          } > "$RUNNER_TEMP/ms001-review/identity.txt"
+          (cd "$RUNNER_TEMP/ms001-review" && sha256sum source.bundle lfs-objects.tar.gz identity.txt > SHA256SUMS)
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ms001-review-source-${{ github.sha }}
+          path: ${{ runner.temp }}/ms001-review/
+          if-no-files-found: error
+          retention-days: 2
