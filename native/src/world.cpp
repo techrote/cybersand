@@ -1642,8 +1642,7 @@ bool World::update_water(std::int64_t x, std::int64_t y, JobEffects* effects) {
     }
 
     if (!lateral_due(Material::Water,x,y)) return changed;
-    const auto leveling_experiment = config_.physics_diagnostics.water_leveling_experiment;
-    const auto level_with = [this, x, y, effects, &changed, leveling_experiment](
+    const auto level_with = [this, x, y, effects, &changed](
                                 std::int64_t target_x, std::int64_t target_y) {
         const auto source_mass = static_cast<std::uint16_t>(liquid_mass(x, y));
         if (source_mass == 0) return;
@@ -1651,54 +1650,13 @@ bool World::update_water(std::int64_t x, std::int64_t y, JobEffects* effects) {
         const auto target_material = get(target_x, target_y);
         if (target_material != Material::Empty && target_material != Material::Water) return;
         const auto target_mass = static_cast<std::uint16_t>(liquid_mass(target_x, target_y));
-        const auto tolerance = config_.water_experiment_policy.tolerance();
-        std::uint32_t raw_request = 0;
-        if (source_mass > target_mass + tolerance) {
-            // Baseline: move three quarters of the local same-row imbalance.
-            raw_request = static_cast<std::uint32_t>(source_mass - target_mass) * 3U / 4U;
-        }
-        if (leveling_experiment == WaterLevelingExperiment::HeadScaledLocal) {
-            // Issue #26 isolated candidate: within the existing radius-two read
-            // domain, include up to two Water cells above each lateral endpoint
-            // as a bounded local column-head proxy. Writes remain adjacent and
-            // transfer_water still owns capacity/conservation semantics.
-            const auto local_head = [this](std::int64_t head_x, std::int64_t head_y) {
-                std::uint32_t head = 0;
-                for (std::int64_t dy = 0; dy <= 2; ++dy)
-                    head += liquid_mass(head_x, head_y - dy);
-                return head;
-            };
-            const auto source_head = local_head(x, y);
-            const auto target_head = local_head(target_x, target_y);
-            if (source_head > target_head + tolerance) {
-                const auto head_request = (source_head - target_head + 1U) / 2U;
-                raw_request = std::max(raw_request, std::min<std::uint32_t>(
-                    config_.water_experiment_policy.maximum(), head_request));
-            }
-        }
-        if (leveling_experiment == WaterLevelingExperiment::BoundedHorizon) {
-            // Issue #26 isolated candidate: inspect one additional same-row cell
-            // in the transfer direction, within the existing radius-two read
-            // contract. A hard barrier at either adjacent or lookahead position
-            // rejects the boost. The actual write remains the adjacent transfer.
-            const auto step = target_x - x;
-            const auto probe_x = target_x + step;
-            record_physics(PhysicsEvent::LateralProbe, Material::Water,
-                           Material::Empty, probe_x - x, 0, effects);
-            const auto probe_material = get(probe_x, target_y);
-            if (probe_material == Material::Empty || probe_material == Material::Water) {
-                const auto probe_mass = static_cast<std::uint16_t>(
-                    liquid_mass(probe_x, target_y));
-                if (source_mass > probe_mass + tolerance) {
-                    const auto horizon_request =
-                        static_cast<std::uint32_t>(source_mass - probe_mass) * 3U / 4U;
-                    raw_request = std::max(raw_request, horizon_request);
-                }
-            }
-        }
-        if (raw_request == 0U) return;
+        if (source_mass <= target_mass + config_.water_experiment_policy.tolerance()) return;
+        // Move three quarters of the imbalance instead of stopping at the
+        // midpoint. Each isolated pair's imbalance still contracts; the
+        // existing tolerance prevents perpetual one-unit swapping at rest.
         const auto requested = MaterialRules::apply_lateral_viscosity(
-            Material::Water, static_cast<std::uint16_t>(raw_request));
+            Material::Water,
+            static_cast<std::uint16_t>((source_mass - target_mass) * 3U / 4U));
         record_physics(PhysicsEvent::LateralRequest, Material::Water, Material::Empty, target_x-x, 0, effects);
         if (!requested) record_physics(PhysicsEvent::ZeroRequest, Material::Water, Material::Empty, target_x-x, 0, effects);
         changed = transfer_water(x, y, target_x, target_y, requested, effects) != 0 || changed;
