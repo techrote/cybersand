@@ -138,15 +138,15 @@ def fixture_catalogue():
               expected_outcomes=["success","not-applicable"]))
     return attach_protocols(out)
 
-BASE_TUPLE={"material":"Wall","state_a":0,"state_b":0,"temperature":20,"occupied":False}
-EMPTY_TUPLE={"material":"Empty","state_a":0,"state_b":0,"temperature":20,"occupied":False}
+BASE_TUPLE={"material":"Wall","state_a":0,"state_b":0,"temperature":200,"occupied":False}
+EMPTY_TUPLE={"material":"Empty","state_a":0,"state_b":0,"temperature":200,"occupied":False}
 ONE_CELL_COORDS={"tile-interior":[16,16],"tile-face":[31,16],"tile-corner":[31,31],
                  "chunk-activity-boundary":[32,16]}
 FIELD_TARGETS={
  "material":{**BASE_TUPLE,"material":"RedBrick"},
  "state_a":{**BASE_TUPLE,"state_a":1},
  "state_b":{**BASE_TUPLE,"state_b":1},
- "temperature":{**BASE_TUPLE,"temperature":21},
+ "temperature":{**BASE_TUPLE,"temperature":210},
  "occupied_material":{**BASE_TUPLE,"occupied":True},
  "canonical_empty":EMPTY_TUPLE,
  "noncanonical_empty":{**EMPTY_TUPLE,"state_a":1},
@@ -224,13 +224,13 @@ def fixture_protocol(item):
           "assertions":["exactly one authoritative cell changes"]}
     if family=="retained-historical-control":
         protocols={
-          "local-edit-8x8":{"setup":{"generator":"uniform-square","side":64,"tuple":BASE_TUPLE},"operations":[{"step":1,"op":"set-rect","rect":[28,28,8,8],"tuple":EMPTY_TUPLE},{"step":2,"op":"set-rect","rect":[28,28,8,8],"tuple":BASE_TUPLE}]},
-          "bridge-whole-column":{"setup":{"generator":"uniform-square","side":64,"tuple":BASE_TUPLE},"operations":[{"step":1,"op":"set-column","x":32,"y0":0,"length":64,"tuple":EMPTY_TUPLE},{"step":2,"op":"set-column","x":32,"y0":0,"length":64,"tuple":BASE_TUPLE}]},
-          "churn":{"setup":{"generator":"uniform-square","side":64,"tuple":BASE_TUPLE},"operations":[{"step":1,"op":"toggle-rect","rect":[16,16,32,32],"repetitions":64}]},
-          "ring":{"setup":{"generator":"rect-ring","outer":[0,0,64,64],"thickness":1},"operations":[]},
-          "mask":{"setup":{"generator":"uniform-square","side":64,"tuple":BASE_TUPLE},"operations":[{"step":1,"op":"mask-set","rect":[28,28,8,8]},{"step":2,"op":"mask-clear","rect":[28,28,8,8]}]},
-          "pending-event":{"setup":{"generator":"uniform-square","side":64,"tuple":BASE_TUPLE},"operations":[{"step":1,"op":"queue-event","center":[32,32],"radius":2},{"step":2,"op":"drain-events"}]},
-          "exclusion":{"setup":{"generator":"uniform-square","side":64,"tuple":BASE_TUPLE},"operations":[{"step":1,"op":"set-simulation-region","rect":[128,0,64,64]},{"step":2,"op":"clear-simulation-region"}]},
+          "local-edit-8x8":{"setup":{"generator":"uniform-square","side":64,"tuple":BASE_TUPLE},"operations":[{"step":1,"op":"toggle-rect","rect":[28,28,8,8],"iterations":64,"every_iterations":16,"first_tuple":EMPTY_TUPLE,"second_tuple":BASE_TUPLE}]},
+          "bridge-whole-column":{"setup":{"generator":"uniform-square","side":64,"tuple":BASE_TUPLE},"operations":[{"step":1,"op":"toggle-column","x":32,"y0":0,"length":64,"iterations":64,"every_iterations":1,"first_tuple":EMPTY_TUPLE,"second_tuple":BASE_TUPLE}]},
+          "churn":{"setup":{"generator":"uniform-square","side":64,"tuple":BASE_TUPLE},"operations":[{"step":1,"op":"toggle-rect","rect":[16,16,32,32],"iterations":64,"every_iterations":1,"first_tuple":EMPTY_TUPLE,"second_tuple":BASE_TUPLE}]},
+          "ring":{"setup":{"generator":"predicate-square","side":64,"tuple":BASE_TUPLE,"solid_predicate":"x==0 || y==0 || x==63 || y==63 || x==32 || y==32"},"operations":[]},
+          "mask":{"setup":{"generator":"uniform-square","side":64,"tuple":BASE_TUPLE},"operations":[{"step":1,"op":"toggle-transient-obstacle-mask","rect":[28,28,8,8],"body_id":1,"iterations":64,"set_on_even_iterations":True}]},
+          "pending-event":{"setup":{"generator":"uniform-square","side":64,"tuple":BASE_TUPLE},"operations":[{"step":1,"op":"queue-explosion","center":[32,32],"radius":2,"collapse_strength":0,"iterations":64,"every_iterations":8}]},
+          "exclusion":{"setup":{"generator":"uniform-square","side":64,"tuple":BASE_TUPLE},"operations":[{"step":1,"op":"toggle-simulation-region","excluded_rect":[128,0,64,64],"iterations":64,"exclude_on_even_iterations":True}]},
         }
         return {**base,**protocols[suffix],"assertions":["retain historical meaning exactly"]}
     if family=="connectivity-topology":
