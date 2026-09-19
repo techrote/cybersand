@@ -6,7 +6,9 @@ COMMON_FLAGS := -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -I$(IN
 RELEASE_FLAGS := -O3 -DNDEBUG -flto
 DEBUG_FLAGS := -O0 -g3
 
-CORE_SOURCES := native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/render_snapshot.cpp native/src/settled_world_discovery.cpp native/src/c_api.cpp
+SIMULATION_SOURCES := native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp
+BRIDGE_SOURCES := native/src/render_snapshot.cpp native/src/c_api.cpp
+CORE_SOURCES := $(SIMULATION_SOURCES) $(BRIDGE_SOURCES)
 CORE_HEADERS := $(wildcard native/include/cybersand/*.hpp native/include/cybersand/*.h native/src/*.hpp)
 TEST_SOURCES := native/tests/test_world.cpp
 BENCH_SOURCES := native/bench/benchmark.cpp
@@ -21,8 +23,8 @@ $(BUILD_DIR):
 $(BUILD_DIR)/tests: $(CORE_SOURCES) $(CORE_HEADERS) $(TEST_SOURCES) | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(CORE_SOURCES) $(TEST_SOURCES) -o $@
 
-$(BUILD_DIR)/benchmark: native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp $(CORE_HEADERS) $(BENCH_SOURCES) | $(BUILD_DIR)
-	$(CXX) $(COMMON_FLAGS) $(RELEASE_FLAGS) native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp $(BENCH_SOURCES) -o $@
+$(BUILD_DIR)/benchmark: $(SIMULATION_SOURCES) $(CORE_HEADERS) $(BENCH_SOURCES) | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(RELEASE_FLAGS) $(SIMULATION_SOURCES) $(BENCH_SOURCES) -o $@
 
 $(BUILD_DIR)/libcybersand.so: $(CORE_SOURCES) $(CORE_HEADERS) | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) $(RELEASE_FLAGS) -DCYBERSAND_BUILD_SHARED -fPIC -shared $(CORE_SOURCES) -o $@

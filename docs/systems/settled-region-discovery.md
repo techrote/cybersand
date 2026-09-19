@@ -92,7 +92,7 @@ nonwrapping incarnation; a World move transfers the observer and leaves no dupli
 identity. A block-local unhealthy signal is not used as a substitute for failed-World
 quarantine.
 
-## What remains before Stage 3 can exit?
+## Stage 3A candidate and open Stage 3B gate
 
 The [bounded connectivity layer](../../native/include/cybersand/settled_regions.hpp)
 now receives exact complete tile revisions from the World journal and proves
@@ -101,9 +101,9 @@ complete-only publication, generation handles, holes, split/merge invalidation a
 explicit capacity refusal in focused and integrated fixtures. Connectivity remains
 separately opt-in and is compiled for at most 4096 tracked tiles with at most 32
 local components per tile. Its fixed per-tile/component/frontier layout is deliberately
-fail-closed but large; it has not passed the large-world memory/cost gate. Independent
-verification and the full producer+journal+connectivity cost model remain before
-Stage 3 can exit.
+fail-closed but large. Focused/integrated correctness evidence makes this a Stage-3A
+candidate, subject to repaired exact-head CI and runtime provenance. It has not passed
+the Stage-3B large-world locality/memory/cost gate.
 
 The connectivity engine retains append-only resident tile slots, fixed boundary-cell
 neighbor maps and key-validated owner slot invalidation. Those structures keep local
@@ -111,7 +111,7 @@ invalidation and traversal lookup bounded by resident/facing coverage rather tha
 compiled maximum for every edited cell. The 4096-tile compiled connectivity object is
 still approximately 67.7 MB on the pinned Windows compiler, before World cells,
 journal storage and allocator/process overhead; this negative fixed-memory cost is an
-input to the pending formal campaign, not an accepted scaling result.
+retained negative scaling evidence, not an accepted capacity design.
 
 It must quantify cell/block/chunk inspections, queue/scratch high water/refusal,
 latency distribution, churn/false invalidation, region count/area, CPU and memory
@@ -128,10 +128,10 @@ material fixed memory, producer metadata overhead and expensive large-region reb
 under sparse edits. These are cost-model results, not an acceleration or Stage-4
 admission claim.
 
-The parent-owned [Stage-3 exit review](../audits/issue-12-2026-09-19/stage3-exit-review.md)
+The parent-owned [Stage-3 review](../audits/issue-12-2026-09-19/stage3-exit-review.md)
 maps every frozen checklist item to the integrated source, focused regressions and
-capacity/refusal behavior. It admits read-only discovery only; exact-head CI/merge
-remains the repository gate before Stage 4 begins.
+capacity/refusal behavior. It classifies the reference as a Stage-3A candidate and
+keeps Stage 3B open. Stage 4 is not admitted.
 
 ## Bounded work, fairness and metrics
 
@@ -159,8 +159,9 @@ Connectivity separately records extraction, components, boundary comparisons,
 adjacency, seed probes, traversal/validation/publication work, refusal/high-water,
 region area/count, invalidation fanout and latency. `settled_region_storage_bytes()`
 reports the fixed compiled connectivity object; it is not a resident-set measurement.
-No large-world distribution or real-hook CPU cost is inferred from these counters.
-Those remain required for Stage 3 completion.
+No large-world distribution or real-hook CPU cost is inferred from these counters;
+the registered campaign supplies those costs and its negative results define the
+open Stage-3B work.
 
 The [journal tests](../../native/tests/test_settled_discovery.cpp) exercise budgets,
 partial publication, ABA, exact state/temperature boundaries, exclusion, pending events,
@@ -172,8 +173,8 @@ no-write activity/deadlines, epoch wrap, capacity isolation, disabled controls a
 workers1/4 parity. Integrated fixtures additionally cover exact two-tile publication,
 split/merge generations, blocked-mask unknown boundaries, noncanonical Empty refusal,
 producer-capacity/failure quarantine and new-facing-tile invalidation. They establish
-this checkpoint's named paths, not independent verification, desktop/Web acceptance
-or Stage-3 exit.
+this checkpoint's named paths. They support the Stage-3A candidate but do not supply
+Stage-3B locality/scalability or current desktop/Web runtime acceptance.
 
 ## Synthetic journal cost preregistration (2026-09-19)
 

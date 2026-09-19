@@ -1,19 +1,21 @@
 ---
-title: Issue 12 Stage 3 exit review, 2026-09-19
+title: Issue 12 Stage 3A candidate review and Stage 3B hold, 2026-09-19
 status: Current
 document-kind: evidence
-scope: Parent-owned admission review for read-only World settled-region discovery; no stationary acceleration or ownership transfer
+scope: Parent-owned correctness/reference review and explicit locality/scalability hold for read-only World settled-region discovery
 canonical-for: []
 last-reviewed: 2026-09-19
 related-documents: [../../operations/soliding-stage3-freeze.md, ../../operations/soliding-programme.md, ../../operations/soliding-measurement.md, ../../systems/settled-region-discovery.md, stage3-cost-results.md, producer-hook-review.md]
 ---
 
-# Issue 12 Stage 3 exit review
+# Issue 12 Stage 3A candidate review and Stage 3B hold
 
 ## Decision and exact boundary
 
-**Parent decision: the integrated candidate passes the frozen Stage-3 technical
-exit gate.** The admitted implementation/evidence lineage is PR #43 head
+**Corrected parent decision: the integrated implementation is a Stage 3A bounded
+correctness/observability candidate; the complete Stage-3 programme gate has not
+passed. Stage 3B locality/scalability remains open.** The reviewed implementation/
+evidence lineage is PR #43 head
 `90903355f5880e8f141ee6caea34840ad8b4990c` merged as `1bb2d9d`, PR #46 merged
 as `5001f7f`, and the integration commits `64413f7` through `c35c8d1` on
 `codex/issue-12-stage3-integration`. The last measured runtime source is
@@ -22,13 +24,13 @@ record and an exact-under-occupancy regression, and `c35c8d1` adds direct Water
 transfer endpoint evidence without changing runtime source. `4e0d58c` is the
 docs-only parent admission checkpoint validated below.
 
-This decision admits only opt-in, read-only observation. It does not admit a
+The Stage 3A candidate disposition remains subject to repaired exact-head native,
+sharded GDExtension/Godot, documentation/provenance and artifact-identity CI plus
+final review. It admits only opt-in, read-only observation. It does not admit a
 scheduler skip, stationary proxy, compact/frozen representation, cohesion,
 material ownership transfer, Rapier body, fracture behavior or performance win.
-Repository integration remains subject to the exact pull-request head passing its
-required checks. Stage 4 must start from the merged exact candidate, preserve
-Current ordinary sleep as a real measured arm and preregister alternatives before
-choosing any threshold.
+Stage 4 is not admitted. Stage 3B must first resolve or explicitly disposition the
+change-proportionality, fixed-capacity memory and sparse-edit rebuild objectives.
 
 The requested independent stronger verifier was started only after an explicit
 `gpt-6-astra` selection, but the worker could not observe or attest that exact
@@ -42,9 +44,10 @@ were performed by the supervising parent.
 
 The rows below preserve the order and meaning of the authoritative
 [Stage-3 freeze](../../operations/soliding-stage3-freeze.md#stage-3-exit-checklist).
-`PASS` means the claimed property has source plus focused evidence. A safe refusal
-is identified where the contract permits unusable/unknown coverage instead of a
-false complete result.
+`PASS` means the bounded reference property has source plus focused evidence; it
+does not convert the measured reference into a scalable design. A safe refusal is
+identified where the contract permits unusable/unknown coverage instead of a false
+complete result. Rows 25-26 provide the evidence that keeps Stage 3B open.
 
 | # | Result | Frozen item and concrete evidence |
 |---:|---|---|
@@ -72,10 +75,10 @@ false complete result.
 | 22 | PASS | **Disabled neutrality/counters.** `disabled_neutrality_and_worker_parity` compares enabled/disabled World visited cells, moved cells and content hash for 24 ticks. The 276-process campaign also requires identical authoritative hashes across Current/producer/journal/connectivity cohorts. |
 | 23 | PASS | **Workers1/4 deterministic state and discovery.** Focused World tests compare tile witnesses and normalized region digests; all measured workers1/4 cohorts match authoritative content hashes. Region digest intentionally excludes world incarnation while handles retain it. |
 | 24 | PASS with platform limit | **Sanitizers/failure paths.** All four Stage-3 focused suites passed under ASan/UBSan with the pinned Clang toolchain, including the final occupancy and Water endpoint regressions. Failure-after-partial-work, source throw, producer failure, revision exhaustion, capacity refusal and mutation-during-traversal paths pass. TSan is not feasible for the pinned `x86_64-w64-windows-gnu` target: Clang 23.1.0 reports `unsupported option '-fsanitize=thread'`; this is retained as an explicit platform gap, not relabeled as a pass. Workers1/4 parity and deterministic barrier ownership provide the available concurrency evidence. |
-| 25 | PASS | **Whole-system cost.** [`stage3-cost-results.md`](stage3-cost-results.md) retains 276/276 preregistered sequential processes with separate Current, producer, journal/feed and connectivity timing, peak RSS, setup, ordinary/epoch-clear and complete-service p95. Current discovery fields are JSON `null`, never fabricated zero. |
-| 26 | PASS | **Large-world/churn/fanout/wake amplification.** The same evidence covers 512/1024/2048 quiet worlds, 2048 sparse edit, bridge, churn, mask, event, exclusion/re-entry, granular controls and a translated negative ring. It retains the 39.3 ms 2048 sparse-edit complete p95, 1,351,685 connectivity work units, publication/invalidation counts, refusals, fixed storage and setup costs. Whole-region rediscovery is accepted as bounded Stage-3 cost, not local scaling or a win. |
+| 25 | PASS evidence / Stage 3B open | **Whole-system cost.** [`stage3-cost-results.md`](stage3-cost-results.md) retains 276/276 preregistered sequential processes with separate Current, producer, journal/feed and connectivity timing, peak RSS, setup, ordinary/epoch-clear and complete-service p95. Current discovery fields are JSON `null`, never fabricated zero. The evidence establishes bounded cost, not acceptable scalability. |
+| 26 | PASS evidence / Stage 3B open | **Large-world/churn/fanout/wake amplification.** The same evidence covers 512/1024/2048 quiet worlds, 2048 sparse edit, bridge, churn, mask, event, exclusion/re-entry, granular controls and a translated negative ring. It retains the 39.3214 ms 2048 sparse-edit complete p95 versus Current 0.0754 ms, 1,351,685 connectivity work units, publication/invalidation counts, refusals, fixed storage and setup costs. Whole-region rediscovery is bounded but not change-proportional; this negative result prevents full Stage-3 admission. |
 | 27 | PASS | **No Stage-4/Rapier claim.** Public Stage-3 interfaces expose immutable observations and metrics only. Cells remain authoritative; no scheduler skip, body creation, ownership transfer, cohesion or fracture code is introduced. The measured result explicitly rejects a zero-cost or speedup interpretation. |
-| 28 | PASS with retained artifact gap | **Docs/evidence/retrieval/identity synchronization.** The canonical discovery page links the corrected cost record; the programme, roadmap, handover and documentation index link this exit review and identify Stage 4 as next only after exact-head CI/merge. Raw local outputs remain uncommitted under the dated validation directory with compiler/executable/plan/result hashes. On docs-only head `4e0d58c`, companion-aware documentation passed 69 documents/116 canonical claims/1,103 local links/32 questions; M11 passed 18 records/28 hashes; retrieval hit the canonical route at k for 32/32 questions (MRR 0.8385). Repository policy retained exactly four expected Windows/Linux runtime-rebuild requirements for changed `world.hpp`/`world.cpp`; no binary or historical provenance was rewritten. |
+| 28 | PENDING exact-head gate | **Docs/evidence/retrieval/identity synchronization.** The canonical discovery page links the corrected cost record; the programme, roadmap, handover and documentation index now separate Stage 3A from Stage 3B and hold Stage 4. Raw local outputs remain uncommitted under the dated validation directory with compiler/executable/plan/result hashes. Earlier docs-only head `4e0d58c` passed companion-aware docs/M11/retrieval, but current-main reconciliation and runtime publication require fresh exact-head checks. The old four-item Windows/Linux runtime-rebuild report is a blocker to repair, not an accepted final artifact gap. |
 
 ## Validation retained for the candidate
 
@@ -108,13 +111,13 @@ false complete result.
   admission does not manufacture one; exact-head automated checks and source review
   remain mandatory before merge.
 
-## Next dependency-ready work
+## Stage 3B blockers and next dependency-ready work
 
-After this exact Stage-3 candidate is green and merged, open an isolated Stage-4
-stationary-acceleration bake-off. Preregister and compare at least Current ordinary
-sleep, summary/skip metadata, a derived stationary proxy and any justified compact/
-frozen or boundary-band representation. Measure producer, journal/feed, rebuild,
-memory and actual saved simulation work together. Derive break-even behavior from
-area, boundary activity, quiet duration and churn; do not choose thresholds by
-intuition. Rapier aggregates, macro-dynamics and fracture remain later first-class
-goals, not the next implementation step.
+After a green Stage-3A merge, stop implementation and commission the bounded
+Stage-3B architecture review packet. It must address sparse/change-driven producer
+signals; canonical keyed/spatial tile-neighbor lookup; capacity-sized storage;
+reverse tile/component/region dependencies; incremental merge/split handling;
+bounded deferred reconstruction for genuinely large splits; and the complete local/
+subregion candidates a later Stage 4 would consume. Stage 4 remains blocked until
+Stage 3B has an evidence-backed disposition. Rapier aggregates, macro-dynamics and
+fracture remain later first-class goals, not the next implementation step.

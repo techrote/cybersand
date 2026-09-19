@@ -487,8 +487,10 @@ private:
                 if (component.area == 1) {
                     component.min_x = component.max_x = wx; component.min_y = component.max_y = wy;
                 } else {
-                    if (wx < component.min_x) component.min_x = wx; if (wx > component.max_x) component.max_x = wx;
-                    if (wy < component.min_y) component.min_y = wy; if (wy > component.max_y) component.max_y = wy;
+                    if (wx < component.min_x) component.min_x = wx;
+                    if (wx > component.max_x) component.max_x = wx;
+                    if (wy < component.min_y) component.min_y = wy;
+                    if (wy > component.max_y) component.max_y = wy;
                 }
                 constexpr std::array<std::int8_t, 4> dx{0, 1, 0, -1}, dy{-1, 0, 1, 0};
                 for (std::size_t direction = 0; direction < 4; ++direction) {
@@ -542,7 +544,8 @@ private:
             for (auto y = lo;; ++y) {
                 const auto ai = static_cast<std::size_t>(y - a.bounds.y) * a.bounds.width + a.bounds.width - 1U;
                 const auto bi = static_cast<std::size_t>(y - b.bounds.y) * b.bounds.width;
-                if (!compare(ai, bi)) return false; if (y == hi) break;
+                if (!compare(ai, bi)) return false;
+                if (y == hi) break;
             }
         } else if (max_x(b.bounds) != std::numeric_limits<std::int64_t>::max() && max_x(b.bounds) + 1 == a.bounds.x) {
             return compare_face(right_slot, left_slot);
@@ -552,7 +555,8 @@ private:
             for (auto x = lo;; ++x) {
                 const auto ai = (a.bounds.height - 1U) * a.bounds.width + static_cast<std::size_t>(x - a.bounds.x);
                 const auto bi = static_cast<std::size_t>(x - b.bounds.x);
-                if (!compare(ai, bi)) return false; if (x == hi) break;
+                if (!compare(ai, bi)) return false;
+                if (x == hi) break;
             }
         } else if (max_y(b.bounds) != std::numeric_limits<std::int64_t>::max() && max_y(b.bounds) + 1 == a.bounds.y) {
             return compare_face(right_slot, left_slot);
