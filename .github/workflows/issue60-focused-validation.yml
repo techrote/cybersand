@@ -1,0 +1,35 @@
+name: Issue 60 focused validation
+
+on:
+  push:
+    branches: [codex/issue-60-stage3b-bounded-spatial-index]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: issue60-focused-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  focused:
+    runs-on: sengi-standard-4-ubuntu-2404
+    timeout-minutes: 15
+    env:
+      CC: gcc-13
+      CXX: g++-13
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Compile and run issue 60 bounded-index tests
+        run: timeout 6m make soliding-stage3b-spatial-index-test
+
+      - name: Re-run runtime-sizing contract
+        run: timeout 6m make soliding-stage3b-runtime-storage-test
+
+      - name: Re-run settled-region and World observer regressions
+        run: |
+          timeout 6m make build/test_settled_regions build/test_settled_world_discovery
+          timeout 3m ./build/test_settled_regions
+          timeout 3m ./build/test_settled_world_discovery
