@@ -488,3 +488,22 @@ platform scope and pending checks. #28 can build on this fixture API once its so
 checkpoint is accepted; the Materials Laboratory readiness gate is not asserted by
 this harness. #18/#20/#26 scientific controls and #14/G-final are unchanged. Do not
 infer those decisions from the presence of a reusable apparatus or from issue numbers.
+
+
+## INT-000 bounded preflight checkpoint, 2026-09-19
+
+**Current planning evidence only:** the
+[issue #29 preflight audit](../audits/2026-09-19-issue-29-preflight.md) inventories
+the source-backed interaction surface on `main`
+`de332eaf8f4e70b25b097bed0c2e2a7b2aac0173`, separates compact pair reactions
+from source-driven neighbourhood/lifecycle semantics and kinetic exclusions, and
+records the candidate sparse schema, coverage/provenance model, fixture families
+and post-gate implementation touchpoints.
+
+The implementation gate remains **closed** at this checkpoint. #27's stable
+fixture contract is present, but #28's active execution record explicitly says
+Materials Laboratory readiness has not yet been established. The preflight makes
+no runtime/framework change, does not retune any material and does not create
+executable #29 fixtures. A later #29 agent must first verify source-identified #28
+readiness evidence, reconcile the preflight against the landed generated-fixture
+contract, and only then begin implementation.
