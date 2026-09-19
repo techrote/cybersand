@@ -304,9 +304,11 @@ int main(int argc, char** argv) {
             if (s.quantity != initial_quantity)
                 throw std::runtime_error("Water conservation failure");
             std::cout << "{\"tick\":" << tick
-                      << ",\"quantity\":" << s.quantity
-                      << ",\"content\":\"" << std::hex << world.content_hash() << std::dec << "\""
-                      << ",\"occupied\":" << s.occupied
+                      << ",\"quantity\":" << s.quantity;
+            if (mode != "trace" || is_checkpoint(tick)) {
+                std::cout << ",\"content\":\"" << std::hex << world.content_hash() << std::dec << "\"";
+            }
+            std::cout << ",\"occupied\":" << s.occupied
                       << ",\"partial\":" << s.partial
                       << ",\"com_x_num\":" << s.com_x_num
                       << ",\"min_wet_x\":" << s.min_wet_x
@@ -325,7 +327,10 @@ int main(int argc, char** argv) {
                           << ",\"scheduled_cores\":" << stats->scheduled_cores;
             }
             if (tick_us >= 0.0) std::cout << ",\"tick_us\":" << std::fixed << std::setprecision(3) << tick_us;
-            if (observer) { std::cout << ",\"events\":"; print_events(event_totals(world)); }
+            if (observer && (mode != "trace" || is_checkpoint(tick))) {
+                std::cout << ",\"events\":";
+                print_events(event_totals(world));
+            }
             if (full) { std::cout << ",\"columns\":"; print_u64_array(s.columns); }
             std::cout << "}\n";
         };
