@@ -149,6 +149,8 @@ instead of being hidden in interaction rules.
 
 The [current #12 programme](operations/soliding-programme.md) supersedes the bounded
 Phase 0 endpoint. Read its [reuse audit](audits/2026-09-19-issue-12-phase0-reuse.md),
-[lifecycle](architecture/soliding-lifecycle.md), [incremental discovery](systems/settled-region-discovery.md)
-and [ordinary-sleep control](operations/soliding-measurement.md). Macro-dynamics and
-coherent-child fracture remain first-class staged goals.
+[lifecycle](architecture/soliding-lifecycle.md), [incremental discovery](systems/settled-region-discovery.md),
+[ordinary-sleep control](operations/soliding-measurement.md) and current
+[Stage 3 execution freeze](operations/soliding-stage3-freeze.md). Macro-dynamics and
+coherent-child fracture remain first-class staged goals; the Stage 3 freeze keeps
+producer/connectivity delegation read-only with respect to material authority.
