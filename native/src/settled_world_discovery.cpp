@@ -35,13 +35,30 @@ std::uint64_t hash_key(const DiscoveryTileKey& key) noexcept {
     return hash;
 }
 
+std::size_t checked_scale(std::size_t capacity, std::size_t factor, const char* message) {
+    if (factor == 0 || capacity > std::numeric_limits<std::size_t>::max() / factor)
+        throw std::invalid_argument(message);
+    return capacity * factor;
+}
+
+std::size_t checked_world_capacity(std::size_t capacity, bool regions_enabled) {
+    if (capacity == 0 || capacity > kMaximumWorldDiscoveryTiles)
+        throw std::invalid_argument("settled discovery tile capacity is unsupported");
+    if (regions_enabled && capacity > kMaximumIntegratedRegionTiles)
+        throw std::invalid_argument("integrated region tile capacity exceeds compiled maximum");
+    return capacity;
+}
+
 std::size_t index_size_for(std::size_t capacity) {
-    if (capacity > kMaximumWorldDiscoveryTiles) {
-        throw std::invalid_argument("settled discovery tile capacity exceeds compiled maximum");
-    }
-    if (capacity == 0) throw std::invalid_argument("settled discovery tile capacity must be positive");
+    (void)checked_world_capacity(capacity, false);
+    const auto required = checked_scale(capacity, 2U,
+        "settled discovery key index capacity overflows size_t");
     std::size_t result = 1;
-    while (result < capacity * 2U) result *= 2U;
+    while (result < required) {
+        if (result > std::numeric_limits<std::size_t>::max() / 2U)
+            throw std::invalid_argument("settled discovery key index capacity overflows size_t");
+        result *= 2U;
+    }
     return result;
 }
 
@@ -74,13 +91,19 @@ struct SettledWorldDiscoveryCoordinator::Impl {
     };
 
     Impl(std::uint64_t identity, std::size_t configured_capacity, bool enable_regions)
-        : journal(identity), tile_capacity(configured_capacity), incarnation(identity),
+        : journal(identity, checked_world_capacity(configured_capacity, enable_regions)),
+          tile_capacity(configured_capacity), incarnation(identity),
           index(index_size_for(configured_capacity)) {
         if (identity == 0) throw std::invalid_argument("settled discovery incarnation must be nonzero");
-        if (enable_regions && configured_capacity > kMaximumIntegratedRegionTiles)
-            throw std::invalid_argument("integrated region tile capacity exceeds compiled maximum");
         records.reserve(tile_capacity);
-        if (enable_regions) regions = std::make_unique<Regions>(identity);
+        if (enable_regions) {
+            const auto edge_capacity = checked_scale(tile_capacity, 64U,
+                "settled region edge capacity overflows size_t");
+            const auto frontier_capacity = checked_scale(tile_capacity, 32U,
+                "settled region frontier capacity overflows size_t");
+            regions = std::make_unique<Regions>(identity, tile_capacity,
+                                                edge_capacity, frontier_capacity);
+        }
     }
 
     std::optional<std::size_t> find_record(DiscoveryTileKey key) const noexcept {
@@ -333,8 +356,36 @@ WorldDiscoveryMetrics SettledWorldDiscoveryCoordinator::producer_metrics() const
 DiscoveryMetrics SettledWorldDiscoveryCoordinator::journal_metrics() const noexcept { return impl_->journal.metrics(); }
 std::size_t SettledWorldDiscoveryCoordinator::storage_bytes() const noexcept {
     const auto& state = *impl_;
-    return sizeof(Impl) + state.records.capacity() * sizeof(Impl::Record) +
+    return sizeof(Impl) + (state.journal.storage_bytes() - sizeof(Impl::Journal)) +
+           state.records.capacity() * sizeof(Impl::Record) +
            state.index.capacity() * sizeof(Impl::IndexEntry);
+}
+WorldDiscoveryStorageLayout SettledWorldDiscoveryCoordinator::storage_layout() const noexcept {
+    const auto& state = *impl_;
+    WorldDiscoveryStorageLayout out{};
+    out.effective_tile_capacity = state.tile_capacity;
+    out.journal_capacity = state.journal.slot_capacity();
+    out.owner_record_capacity = state.records.capacity();
+    out.key_index_capacity = state.index.capacity();
+    out.journal_storage_bytes = state.journal.storage_bytes();
+    out.owner_record_storage_bytes = state.records.capacity() * sizeof(Impl::Record);
+    out.key_index_storage_bytes = state.index.capacity() * sizeof(Impl::IndexEntry);
+    out.regions_enabled = state.regions != nullptr;
+    if (state.regions != nullptr) {
+        out.region_tile_capacity = state.regions->tile_capacity();
+        out.region_edge_capacity = state.regions->adjacency_capacity();
+        out.region_frontier_capacity = state.regions->frontier_capacity();
+        out.region_seen_capacity = state.regions->frontier_capacity();
+        out.region_member_capacity = state.regions->frontier_capacity();
+        out.region_dependency_capacity = state.regions->tile_capacity();
+        out.region_revision_capacity = state.regions->tile_capacity();
+        out.region_tile_cell_capacity = Impl::Regions::maximum_tile_cells();
+        out.region_components_per_tile = Impl::Regions::components_per_tile();
+        out.region_boundary_slots_per_tile = Impl::Regions::boundary_slots_per_tile();
+        out.publication_capacity = Impl::Regions::publication_capacity();
+        out.region_storage_bytes = state.regions->storage_bytes();
+    }
+    return out;
 }
 bool SettledWorldDiscoveryCoordinator::regions_enabled() const noexcept {
     return impl_->regions != nullptr;
@@ -353,7 +404,7 @@ RegionRefusal SettledWorldDiscoveryCoordinator::region_refusal() const noexcept 
     return impl_->regions == nullptr ? RegionRefusal::None : impl_->regions->last_refusal();
 }
 std::size_t SettledWorldDiscoveryCoordinator::region_storage_bytes() const noexcept {
-    return impl_->regions == nullptr ? 0 : sizeof(Impl::Regions);
+    return impl_->regions == nullptr ? 0 : impl_->regions->storage_bytes();
 }
 
 } // namespace cybersand::soliding
