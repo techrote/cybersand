@@ -7,8 +7,10 @@
 #include <cstddef>
 #include <cstdint>
 #include <limits>
+#include <memory>
 #include <optional>
 #include <span>
+#include <stdexcept>
 #include <type_traits>
 
 // Stage-3 read-only connectivity over copied, complete tile revisions.
@@ -115,7 +117,10 @@ class SettledRegions final {
     static_assert(ComponentsPerTile > 0 && ComponentsPerTile <= region_detail::invalid_index);
     static_assert(AdjacencyCapacity > 0 && RegionCapacity > 0 && FrontierCapacity > 0);
 public:
-    explicit SettledRegions(std::uint64_t incarnation) noexcept : incarnation_(incarnation) {}
+    explicit SettledRegions(std::uint64_t incarnation,
+                            std::size_t tile_capacity = TileCapacity,
+                            std::size_t adjacency_capacity = AdjacencyCapacity,
+                            std::size_t frontier_capacity = FrontierCapacity);
     SettledRegions(const SettledRegions&) = delete;
     SettledRegions& operator=(const SettledRegions&) = delete;
 
@@ -127,8 +132,8 @@ public:
             static_cast<std::uint64_t>(bounds.width) * bounds.height > MaximumTileCells)
             return remember(RegionOutcome::Invalid, RegionRefusal::InvalidInput);
         auto slot = find_tile(key);
-        if (slot == TileCapacity) {
-            if (tile_count_ == TileCapacity) {
+        if (slot == tile_capacity_) {
+            if (tile_count_ == tile_capacity_) {
                 block_capacity(RegionRefusal::TileCapacity);
                 return remember(RegionOutcome::Capacity, RegionRefusal::TileCapacity);
             }
@@ -166,8 +171,8 @@ public:
         if (!valid_input(input) || incarnation_ == 0 || input.key.world_incarnation != incarnation_)
             return remember(RegionOutcome::Invalid, RegionRefusal::InvalidInput);
         auto slot = find_tile(input.key);
-        if (slot == TileCapacity) {
-            if (tile_count_ == TileCapacity) {
+        if (slot == tile_capacity_) {
+            if (tile_count_ == tile_capacity_) {
                 block_capacity(RegionRefusal::TileCapacity);
                 return remember(RegionOutcome::Capacity, RegionRefusal::TileCapacity);
             }
@@ -207,7 +212,7 @@ public:
     RegionOutcome invalidate(RegionTileKey key, std::uint64_t next_revision) noexcept {
         if (unavailable()) return RegionOutcome::Refused;
         const auto slot = find_tile(key);
-        if (slot == TileCapacity) return RegionOutcome::Stale;
+        if (slot == tile_capacity_) return RegionOutcome::Stale;
         return invalidate_known(slot, key, next_revision);
     }
 
@@ -292,6 +297,21 @@ public:
     [[nodiscard]] RegionRefusal last_refusal() const noexcept { return last_refusal_; }
     [[nodiscard]] SettledRegionMetrics metrics() const noexcept { return metrics_; }
     [[nodiscard]] std::size_t adjacency_count() const noexcept { return adjacency_count_; }
+    [[nodiscard]] std::size_t tile_capacity() const noexcept { return tile_capacity_; }
+    [[nodiscard]] std::size_t adjacency_capacity() const noexcept { return adjacency_capacity_; }
+    [[nodiscard]] std::size_t frontier_capacity() const noexcept { return frontier_capacity_; }
+    [[nodiscard]] static constexpr std::size_t publication_capacity() noexcept { return RegionCapacity; }
+    [[nodiscard]] static constexpr std::size_t maximum_tile_cells() noexcept { return MaximumTileCells; }
+    [[nodiscard]] static constexpr std::size_t components_per_tile() noexcept { return ComponentsPerTile; }
+    [[nodiscard]] static constexpr std::size_t boundary_slots_per_tile() noexcept { return 128; }
+    [[nodiscard]] std::size_t storage_bytes() const noexcept {
+        return sizeof(SettledRegions) +
+               tile_capacity_ * sizeof(Tile) +
+               adjacency_capacity_ * sizeof(Adjacency) +
+               frontier_capacity_ * 3U * sizeof(ComponentRef) +
+               tile_capacity_ * (sizeof(bool) + sizeof(std::uint64_t)) +
+               tile_capacity_ * (sizeof(bool) + sizeof(std::size_t));
+    }
 
 private:
     struct ComponentRef { std::uint16_t tile{}, component{}; bool operator==(const ComponentRef&) const = default; };
@@ -321,14 +341,20 @@ private:
     struct Region { SettledRegionSnapshot snapshot{}; std::uint64_t generation{}; bool valid{}; };
     enum class Phase : std::uint8_t { Idle, Seeking, Traversing, Validating };
     struct Build {
+        Build(std::size_t frontier_capacity, std::size_t tile_capacity)
+            : frontier(std::make_unique<ComponentRef[]>(frontier_capacity)),
+              seen(std::make_unique<ComponentRef[]>(frontier_capacity)),
+              members(std::make_unique<ComponentRef[]>(frontier_capacity)),
+              dependencies(std::make_unique<bool[]>(tile_capacity)),
+              revisions(std::make_unique<std::uint64_t[]>(tile_capacity)) {}
         Phase phase{Phase::Idle};
         std::size_t seek_flat{}, frontier_count{}, seen_count{}, member_count{}, validation_cursor{};
         ComponentRef best{}, seed{};
         bool seed_found{};
         RegionRefusal failure{RegionRefusal::None};
-        std::array<ComponentRef, FrontierCapacity> frontier{}, seen{}, members{};
-        std::array<bool, TileCapacity> dependencies{};
-        std::array<std::uint64_t, TileCapacity> revisions{};
+        std::unique_ptr<ComponentRef[]> frontier, seen, members;
+        std::unique_ptr<bool[]> dependencies;
+        std::unique_ptr<std::uint64_t[]> revisions;
         std::uint64_t started_work{};
     };
 
@@ -417,10 +443,10 @@ private:
     }
     std::size_t find_tile(RegionTileKey key) const noexcept {
         for (std::size_t i = 0; i < tile_count_; ++i) if (tiles_[i].key == key) return i;
-        return TileCapacity;
+        return tile_capacity_;
     }
     std::size_t first_free_tile() const noexcept {
-        return tile_count_ < TileCapacity ? tile_count_ : TileCapacity;
+        return tile_count_ < tile_capacity_ ? tile_count_ : tile_capacity_;
     }
     bool same_payload(const Tile& tile, const RegionTileInput& input) const noexcept {
         if (tile.ambient_temperature != input.ambient_temperature || tile.signals != input.signals ||
@@ -524,7 +550,7 @@ private:
     }
     bool add_adjacency(ComponentRef a, ComponentRef b) noexcept {
         if (adjacency_exists(a, b)) return true;
-        if (adjacency_count_ == AdjacencyCapacity) { saturating_add(metrics_.adjacency_refusals); return false; }
+        if (adjacency_count_ == adjacency_capacity_) { saturating_add(metrics_.adjacency_refusals); return false; }
         adjacencies_[adjacency_count_++] = {a, b}; saturating_add(metrics_.adjacency_edges); return true;
     }
     bool compare_face(std::size_t left_slot, std::size_t right_slot) noexcept {
@@ -596,8 +622,8 @@ private:
         build_.seed = {};
         build_.seed_found = false;
         build_.failure = RegionRefusal::None;
-        build_.dependencies.fill(false);
-        build_.revisions.fill(0);
+        std::fill_n(build_.dependencies.get(), tile_capacity_, false);
+        std::fill_n(build_.revisions.get(), tile_capacity_, 0);
         build_.started_work = 0;
     }
     void begin_seek() noexcept {
@@ -628,7 +654,7 @@ private:
     bool push(ComponentRef ref) noexcept {
         auto& component = tiles_[ref.tile].components[ref.component];
         if (component.in_build) return true;
-        if (build_.frontier_count == FrontierCapacity || build_.seen_count == FrontierCapacity) {
+        if (build_.frontier_count == frontier_capacity_ || build_.seen_count == frontier_capacity_) {
             build_.failure = RegionRefusal::FrontierCapacity; return false;
         }
         component.in_build = true;
@@ -753,8 +779,9 @@ private:
         out.key = tiles_[build_.seed.tile].components[build_.seed.component].key;
         out.complete = true; out.publication_serial = ++publication_serial_;
         std::uint64_t members = 1469598103934665603ULL;
-        std::array<bool, TileCapacity> member_tiles{};
-        std::array<std::size_t, TileCapacity> dependency_slots{};
+        std::fill_n(member_tiles_scratch_.get(), tile_capacity_, false);
+        auto* member_tiles = member_tiles_scratch_.get();
+        auto* dependency_slots = dependency_slots_scratch_.get();
         std::size_t dependency_count = 0;
         for (std::size_t i = 0; i < build_.member_count; ++i) {
             const auto ref = build_.members[i]; auto& component = tiles_[ref.tile].components[ref.component];
@@ -838,15 +865,45 @@ private:
         }
     }
 
+    static std::size_t checked_capacity(std::size_t value, std::size_t maximum,
+                                        const char* message) {
+        if (value == 0 || value > maximum) throw std::invalid_argument(message);
+        return value;
+    }
+
     std::uint64_t incarnation_{}, publication_serial_{};
-    std::array<Tile, TileCapacity> tiles_{};
-    std::array<Adjacency, AdjacencyCapacity> adjacencies_{};
+    std::size_t tile_capacity_{}, adjacency_capacity_{}, frontier_capacity_{};
+    std::unique_ptr<Tile[]> tiles_;
+    std::unique_ptr<Adjacency[]> adjacencies_;
     std::array<Region, RegionCapacity> regions_{};
-    Build build_{};
+    Build build_;
+    std::unique_ptr<bool[]> member_tiles_scratch_;
+    std::unique_ptr<std::size_t[]> dependency_slots_scratch_;
     SettledRegionMetrics metrics_{};
     RegionRefusal last_refusal_{RegionRefusal::None};
     std::size_t tile_count_{}, adjacency_count_{}, published_region_count_{}, deferred_component_count_{};
     bool halted_{}, coverage_capacity_exhausted_{}, work_possible_{};
 };
+
+template<std::size_t TileCapacity, std::size_t MaximumTileCells,
+         std::size_t ComponentsPerTile, std::size_t AdjacencyCapacity,
+         std::size_t RegionCapacity, std::size_t FrontierCapacity,
+         std::uint64_t GenerationLimit, std::uint64_t PublicationLimit>
+SettledRegions<TileCapacity, MaximumTileCells, ComponentsPerTile, AdjacencyCapacity,
+               RegionCapacity, FrontierCapacity, GenerationLimit, PublicationLimit>::SettledRegions(
+    std::uint64_t incarnation, std::size_t tile_capacity,
+    std::size_t adjacency_capacity, std::size_t frontier_capacity)
+    : incarnation_(incarnation),
+      tile_capacity_(checked_capacity(tile_capacity, TileCapacity,
+          "settled region runtime tile capacity is unsupported")),
+      adjacency_capacity_(checked_capacity(adjacency_capacity, AdjacencyCapacity,
+          "settled region runtime adjacency capacity is unsupported")),
+      frontier_capacity_(checked_capacity(frontier_capacity, FrontierCapacity,
+          "settled region runtime frontier capacity is unsupported")),
+      tiles_(std::make_unique<Tile[]>(tile_capacity_)),
+      adjacencies_(std::make_unique<Adjacency[]>(adjacency_capacity_)),
+      build_(frontier_capacity_, tile_capacity_),
+      member_tiles_scratch_(std::make_unique<bool[]>(tile_capacity_)),
+      dependency_slots_scratch_(std::make_unique<std::size_t[]>(tile_capacity_)) {}
 
 } // namespace cybersand::soliding
