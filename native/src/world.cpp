@@ -413,6 +413,12 @@ World::World(WorldConfig config)
          config_.settled_discovery_tile_capacity > soliding::kMaximumWorldDiscoveryTiles)) {
         throw std::invalid_argument("settled discovery tile capacity is unsupported");
     }
+    if (config_.settled_region_connectivity_enabled &&
+        (!config_.settled_discovery_enabled ||
+         config_.settled_discovery_tile_capacity > soliding::kMaximumIntegratedRegionTiles)) {
+        throw std::invalid_argument(
+            "settled region connectivity requires discovery with at most 4096 tiles");
+    }
     for (const auto& definition : MaterialRules::descriptors()) {
         if (definition.current_rule_available &&
             definition.maximum_write_radius >
@@ -457,7 +463,8 @@ void World::initialize_settled_discovery() {
         return;
     }
     settled_discovery_ = std::make_unique<soliding::SettledWorldDiscoveryCoordinator>(
-        allocate_discovery_incarnation(), config_.settled_discovery_tile_capacity);
+        allocate_discovery_incarnation(), config_.settled_discovery_tile_capacity,
+        config_.settled_region_connectivity_enabled);
 }
 
 soliding::DiscoveryTileKey World::discovery_tile_key(const Address& target) const noexcept {
@@ -556,7 +563,7 @@ void World::register_discovery_chunk(ChunkCoord coord, const Chunk& chunk) noexc
                                 break;
                             }
                     const auto outcome = settled_discovery_->register_tile(
-                        key, bounds, signals, tick_index_);
+                        key, bounds, config_.ambient_temperature, signals, tick_index_);
                     if (outcome == soliding::DiscoveryOutcome::Capacity ||
                         outcome == soliding::DiscoveryOutcome::Halted) return;
                 }
@@ -618,6 +625,27 @@ std::size_t World::settled_discovery_storage_bytes() const noexcept {
 std::size_t World::advance_settled_discovery(std::size_t budget) {
     if (settled_discovery_ == nullptr) return 0;
     return settled_discovery_->advance(tick_index_, budget, this, &World::read_discovery_cell);
+}
+std::size_t World::advance_settled_regions(std::size_t budget) noexcept {
+    return settled_discovery_ == nullptr ? 0 : settled_discovery_->advance_regions(budget);
+}
+std::size_t World::settled_region_count() const noexcept {
+    return settled_discovery_ == nullptr ? 0 : settled_discovery_->region_count();
+}
+std::optional<soliding::SettledRegionSnapshot> World::settled_region(
+    std::size_t slot) const noexcept {
+    return settled_discovery_ == nullptr ? std::nullopt : settled_discovery_->region(slot);
+}
+soliding::SettledRegionMetrics World::settled_region_metrics() const noexcept {
+    return settled_discovery_ == nullptr ? soliding::SettledRegionMetrics{}
+                                         : settled_discovery_->region_metrics();
+}
+soliding::RegionRefusal World::settled_region_refusal() const noexcept {
+    return settled_discovery_ == nullptr ? soliding::RegionRefusal::None
+                                         : settled_discovery_->region_refusal();
+}
+std::size_t World::settled_region_storage_bytes() const noexcept {
+    return settled_discovery_ == nullptr ? 0 : settled_discovery_->region_storage_bytes();
 }
 
 void World::dirty_discovery_cell(std::int64_t x, std::int64_t y,
@@ -3284,6 +3312,8 @@ TickStats World::tick() {
         tick_in_progress_ = false;
         if (settled_discovery_ != nullptr && config_.settled_discovery_tick_budget != 0)
             (void)advance_settled_discovery(config_.settled_discovery_tick_budget);
+        if (settled_discovery_ != nullptr && config_.settled_region_tick_budget != 0)
+            (void)advance_settled_regions(config_.settled_region_tick_budget);
         return stats;
     } catch (...) {
         // Partial cell/event/epoch/metadata progress is diagnostic only. Workers

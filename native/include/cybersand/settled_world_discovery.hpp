@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cybersand/settled_discovery.hpp"
+#include "cybersand/settled_regions.hpp"
 
 #include <array>
 #include <cstddef>
@@ -11,6 +12,7 @@
 namespace cybersand::soliding {
 
 inline constexpr std::size_t kMaximumWorldDiscoveryTiles = 16'384;
+inline constexpr std::size_t kMaximumIntegratedRegionTiles = 4'096;
 
 enum class ProducerReason : std::uint8_t {
     DirectMutation,
@@ -46,7 +48,8 @@ class SettledWorldDiscoveryCoordinator final {
 public:
     using ReadCellFunction = DiscoveryCell (*)(const void*, std::int64_t, std::int64_t);
 
-    SettledWorldDiscoveryCoordinator(std::uint64_t incarnation, std::size_t tile_capacity);
+    SettledWorldDiscoveryCoordinator(std::uint64_t incarnation, std::size_t tile_capacity,
+                                     bool regions_enabled = false);
     ~SettledWorldDiscoveryCoordinator();
     SettledWorldDiscoveryCoordinator(const SettledWorldDiscoveryCoordinator&) = delete;
     SettledWorldDiscoveryCoordinator& operator=(const SettledWorldDiscoveryCoordinator&) = delete;
@@ -54,6 +57,7 @@ public:
     SettledWorldDiscoveryCoordinator& operator=(SettledWorldDiscoveryCoordinator&&) noexcept;
 
     DiscoveryOutcome register_tile(DiscoveryTileKey key, DiscoveryBounds bounds,
+                                   std::int16_t ambient_temperature,
                                    DiscoverySignals signals, std::uint64_t tick) noexcept;
     DiscoveryOutcome dirty(DiscoveryTileKey key, ProducerReason reason,
                            std::uint64_t tick) noexcept;
@@ -61,6 +65,7 @@ public:
                              ProducerReason reason, std::uint64_t tick) noexcept;
     std::size_t advance(std::uint64_t tick, std::size_t budget,
                         const void* context, ReadCellFunction read);
+    std::size_t advance_regions(std::size_t budget) noexcept;
     void fail() noexcept;
     void note_global_fence() noexcept;
 
@@ -75,6 +80,12 @@ public:
     [[nodiscard]] WorldDiscoveryMetrics producer_metrics() const noexcept;
     [[nodiscard]] DiscoveryMetrics journal_metrics() const noexcept;
     [[nodiscard]] std::size_t storage_bytes() const noexcept;
+    [[nodiscard]] bool regions_enabled() const noexcept;
+    [[nodiscard]] std::size_t region_count() const noexcept;
+    [[nodiscard]] std::optional<SettledRegionSnapshot> region(std::size_t slot) const noexcept;
+    [[nodiscard]] SettledRegionMetrics region_metrics() const noexcept;
+    [[nodiscard]] RegionRefusal region_refusal() const noexcept;
+    [[nodiscard]] std::size_t region_storage_bytes() const noexcept;
 
 private:
     struct Impl;

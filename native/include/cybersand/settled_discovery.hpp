@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <limits>
 #include <optional>
+#include <utility>
 
 // Stage 3 substrate only: the serialized producer supplies complete invalidation
 // and activity signals. This is NOT wired into World and cannot authorize skips,
@@ -145,6 +146,13 @@ public:
     // Calls may span ticks. No partially scanned tile is publicly classified.
     template<class ReadCell>
     std::size_t advance(std::uint64_t tick, std::size_t budget, ReadCell&& read) {
+        return advance_with_publication(tick, budget, std::forward<ReadCell>(read),
+            [](const DiscoverySummary&) noexcept {});
+    }
+
+    template<class ReadCell, class Publish>
+    std::size_t advance_with_publication(std::uint64_t tick, std::size_t budget,
+                                         ReadCell&& read, Publish&& publish) {
         if (!clock(tick)) return 0;
         std::size_t used = 0;
         try {
@@ -159,6 +167,7 @@ public:
                         record.summary.classified_tick = tick;
                         increment(metrics_.blocked);
                         publication(record, tick);
+                        publish(record.summary);
                         pop(record);
                         continue;
                     }
@@ -194,6 +203,7 @@ public:
                     : record.first.material == 0 ? DiscoveryClass::Empty : DiscoveryClass::Uniform;
                 record.summary.classified_tick = tick;
                 publication(record, tick);
+                publish(record.summary);
                 if (record.mixed) increment(metrics_.mixed);
                 if (record.saw_occupied) increment(metrics_.blocked);
                 pop(record);

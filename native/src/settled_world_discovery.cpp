@@ -45,11 +45,17 @@ std::size_t index_size_for(std::size_t capacity) {
 
 struct SettledWorldDiscoveryCoordinator::Impl {
     using Journal = SettledDiscovery<kMaximumWorldDiscoveryTiles, 1024>;
+    using Regions = SettledRegions<kMaximumIntegratedRegionTiles, 1024, 32,
+                                   kMaximumIntegratedRegionTiles * 64,
+                                   kMaximumIntegratedRegionTiles,
+                                   kMaximumIntegratedRegionTiles * 32>;
     struct Record {
         DiscoveryTileKey key{};
         DiscoveryBounds bounds{};
         DiscoverySignals signals{};
         DiscoveryHandle handle{};
+        std::uint64_t region_payload_revision{};
+        std::int16_t ambient_temperature{};
     };
     struct IndexEntry {
         DiscoveryTileKey key{};
@@ -57,11 +63,14 @@ struct SettledWorldDiscoveryCoordinator::Impl {
         bool occupied{};
     };
 
-    Impl(std::uint64_t identity, std::size_t configured_capacity)
+    Impl(std::uint64_t identity, std::size_t configured_capacity, bool enable_regions)
         : journal(identity), tile_capacity(configured_capacity), incarnation(identity),
           index(index_size_for(configured_capacity)) {
         if (identity == 0) throw std::invalid_argument("settled discovery incarnation must be nonzero");
+        if (enable_regions && configured_capacity > kMaximumIntegratedRegionTiles)
+            throw std::invalid_argument("integrated region tile capacity exceeds compiled maximum");
         records.reserve(tile_capacity);
+        if (enable_regions) regions = std::make_unique<Regions>(identity);
     }
 
     std::optional<std::size_t> find_record(DiscoveryTileKey key) const noexcept {
@@ -97,6 +106,7 @@ struct SettledWorldDiscoveryCoordinator::Impl {
         if (!capacity_blocked) add(metrics.capacity_halts);
         capacity_blocked = true;
         journal.fail();
+        if (regions != nullptr) regions->fail(RegionRefusal::TileCapacity);
     }
 
     Journal journal;
@@ -104,13 +114,15 @@ struct SettledWorldDiscoveryCoordinator::Impl {
     std::uint64_t incarnation{};
     std::vector<Record> records;
     std::vector<IndexEntry> index;
+    std::unique_ptr<Regions> regions;
+    std::array<DiscoveryCell, 1024> region_scratch{};
     mutable WorldDiscoveryMetrics metrics{};
     bool capacity_blocked{};
 };
 
 SettledWorldDiscoveryCoordinator::SettledWorldDiscoveryCoordinator(
-    std::uint64_t incarnation, std::size_t tile_capacity)
-    : impl_(std::make_unique<Impl>(incarnation, tile_capacity)) {}
+    std::uint64_t incarnation, std::size_t tile_capacity, bool regions_enabled)
+    : impl_(std::make_unique<Impl>(incarnation, tile_capacity, regions_enabled)) {}
 
 SettledWorldDiscoveryCoordinator::~SettledWorldDiscoveryCoordinator() = default;
 SettledWorldDiscoveryCoordinator::SettledWorldDiscoveryCoordinator(
@@ -119,8 +131,8 @@ SettledWorldDiscoveryCoordinator& SettledWorldDiscoveryCoordinator::operator=(
     SettledWorldDiscoveryCoordinator&&) noexcept = default;
 
 DiscoveryOutcome SettledWorldDiscoveryCoordinator::register_tile(
-    DiscoveryTileKey key, DiscoveryBounds bounds, DiscoverySignals signals,
-    std::uint64_t tick) noexcept {
+    DiscoveryTileKey key, DiscoveryBounds bounds, std::int16_t ambient_temperature,
+    DiscoverySignals signals, std::uint64_t tick) noexcept {
     auto& state = *impl_;
     add(state.metrics.notifications[static_cast<std::size_t>(ProducerReason::Registration)]);
     add(state.metrics.registration_work);
@@ -134,8 +146,16 @@ DiscoveryOutcome SettledWorldDiscoveryCoordinator::register_tile(
             return DiscoveryOutcome::Invalid;
         }
         const auto outcome = state.journal.observe(record.handle, signals, tick);
-        if (outcome == DiscoveryOutcome::Accepted || outcome == DiscoveryOutcome::Unchanged)
+        if (outcome == DiscoveryOutcome::Accepted || outcome == DiscoveryOutcome::Unchanged) {
             record.signals = signals;
+            if (outcome == DiscoveryOutcome::Accepted && state.regions != nullptr) {
+                const auto summary = state.journal.snapshot(record.handle);
+                if (summary.has_value()) {
+                    (void)state.regions->invalidate(record.key, summary->revision);
+                    record.region_payload_revision = 0;
+                }
+            }
+        }
         return outcome;
     }
     if (state.records.size() == state.tile_capacity) {
@@ -153,10 +173,19 @@ DiscoveryOutcome SettledWorldDiscoveryCoordinator::register_tile(
         return outcome;
     }
     const auto record = state.records.size();
-    state.records.push_back({key, bounds, signals, handle});
+    state.records.push_back({key, bounds, signals, handle, 0, ambient_temperature});
     if (!state.insert_index(key, record)) {
         state.journal.fail();
+        if (state.regions != nullptr) state.regions->fail();
         return DiscoveryOutcome::Invalid;
+    }
+    if (state.regions != nullptr) {
+        const auto region_outcome = state.regions->register_unknown(key, bounds, 1);
+        if (region_outcome != RegionOutcome::Accepted) {
+            state.journal.fail();
+            state.regions->fail();
+            return DiscoveryOutcome::Invalid;
+        }
     }
     add(state.metrics.mapped_tiles);
     return DiscoveryOutcome::Accepted;
@@ -171,6 +200,13 @@ DiscoveryOutcome SettledWorldDiscoveryCoordinator::dirty(
     const auto outcome = state.journal.dirty(state.records[*record].handle, tick);
     if (outcome == DiscoveryOutcome::Accepted) {
         add(state.metrics.invalidated_tiles[static_cast<std::size_t>(reason)]);
+        if (state.regions != nullptr) {
+            const auto summary = state.journal.snapshot(state.records[*record].handle);
+            if (summary.has_value()) {
+                (void)state.regions->invalidate(key, summary->revision);
+                state.records[*record].region_payload_revision = 0;
+            }
+        }
     }
     return outcome;
 }
@@ -188,6 +224,13 @@ DiscoveryOutcome SettledWorldDiscoveryCoordinator::observe(
     if (outcome == DiscoveryOutcome::Accepted) {
         record.signals = signals;
         add(state.metrics.invalidated_tiles[static_cast<std::size_t>(reason)]);
+        if (state.regions != nullptr) {
+            const auto summary = state.journal.snapshot(record.handle);
+            if (summary.has_value()) {
+                (void)state.regions->invalidate(key, summary->revision);
+                record.region_payload_revision = 0;
+            }
+        }
     } else if (outcome == DiscoveryOutcome::Unchanged) {
         record.signals = signals;
     }
@@ -198,11 +241,56 @@ std::size_t SettledWorldDiscoveryCoordinator::advance(
     std::uint64_t tick, std::size_t budget, const void* context,
     ReadCellFunction read) {
     if (read == nullptr) throw std::invalid_argument("settled discovery read callback is null");
-    return impl_->journal.advance(tick, budget,
-        [context, read](std::int64_t x, std::int64_t y) { return read(context, x, y); });
+    auto& state = *impl_;
+    try {
+        return state.journal.advance_with_publication(tick, budget,
+            [context, read](std::int64_t x, std::int64_t y) { return read(context, x, y); },
+            [&state, context, read](const DiscoverySummary& summary) {
+                if (state.regions == nullptr || summary.handle.slot >= state.records.size()) return;
+                auto& record = state.records[summary.handle.slot];
+                if (summary.classification == DiscoveryClass::Invalid ||
+                    summary.classification == DiscoveryClass::Blocked ||
+                    !record.signals.inspectable() ||
+                    record.region_payload_revision == summary.revision) return;
+                const auto area = static_cast<std::size_t>(record.bounds.width) * record.bounds.height;
+                for (std::uint32_t y = 0; y < record.bounds.height; ++y)
+                    for (std::uint32_t x = 0; x < record.bounds.width; ++x) {
+                        const auto index = static_cast<std::size_t>(y) * record.bounds.width + x;
+                        state.region_scratch[index] = read(context,
+                            record.bounds.x + static_cast<std::int64_t>(x),
+                            record.bounds.y + static_cast<std::int64_t>(y));
+                    }
+                const RegionTileInput input{
+                    record.key,
+                    record.bounds,
+                    summary.revision,
+                    record.ambient_temperature,
+                    record.signals,
+                    std::span<const DiscoveryCell>{state.region_scratch.data(), area},
+                    0x0f,
+                };
+                const auto outcome = state.regions->upsert(input);
+                if (outcome == RegionOutcome::Invalid || outcome == RegionOutcome::Stale) {
+                    state.journal.fail();
+                    state.regions->fail();
+                    return;
+                }
+                record.region_payload_revision = summary.revision;
+            });
+    } catch (...) {
+        if (state.regions != nullptr) state.regions->fail(RegionRefusal::SourceFailure);
+        throw;
+    }
 }
 
-void SettledWorldDiscoveryCoordinator::fail() noexcept { impl_->journal.fail(); }
+std::size_t SettledWorldDiscoveryCoordinator::advance_regions(std::size_t budget) noexcept {
+    return impl_->regions == nullptr ? 0 : impl_->regions->advance(budget);
+}
+
+void SettledWorldDiscoveryCoordinator::fail() noexcept {
+    impl_->journal.fail();
+    if (impl_->regions != nullptr) impl_->regions->fail(RegionRefusal::SourceFailure);
+}
 void SettledWorldDiscoveryCoordinator::note_global_fence() noexcept {
     add(impl_->metrics.global_fences);
 }
@@ -231,6 +319,25 @@ std::size_t SettledWorldDiscoveryCoordinator::storage_bytes() const noexcept {
     const auto& state = *impl_;
     return sizeof(Impl) + state.records.capacity() * sizeof(Impl::Record) +
            state.index.capacity() * sizeof(Impl::IndexEntry);
+}
+bool SettledWorldDiscoveryCoordinator::regions_enabled() const noexcept {
+    return impl_->regions != nullptr;
+}
+std::size_t SettledWorldDiscoveryCoordinator::region_count() const noexcept {
+    return impl_->regions == nullptr ? 0 : impl_->regions->region_count();
+}
+std::optional<SettledRegionSnapshot> SettledWorldDiscoveryCoordinator::region(
+    std::size_t slot) const noexcept {
+    return impl_->regions == nullptr ? std::nullopt : impl_->regions->region_at(slot);
+}
+SettledRegionMetrics SettledWorldDiscoveryCoordinator::region_metrics() const noexcept {
+    return impl_->regions == nullptr ? SettledRegionMetrics{} : impl_->regions->metrics();
+}
+RegionRefusal SettledWorldDiscoveryCoordinator::region_refusal() const noexcept {
+    return impl_->regions == nullptr ? RegionRefusal::None : impl_->regions->last_refusal();
+}
+std::size_t SettledWorldDiscoveryCoordinator::region_storage_bytes() const noexcept {
+    return impl_->regions == nullptr ? 0 : sizeof(Impl::Regions);
 }
 
 } // namespace cybersand::soliding

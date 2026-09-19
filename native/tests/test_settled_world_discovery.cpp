@@ -50,6 +50,17 @@ void service(World& world, std::size_t limit = 1'000'000) {
     require(work < limit, "World discovery service terminates");
 }
 
+void service_regions(World& world, std::size_t limit = 1'000'000) {
+    std::size_t work = 0;
+    while (work < limit) {
+        const auto used = world.advance_settled_regions(8192);
+        require(used <= 8192, "World region traversal respects service budget");
+        work += used;
+        if (used == 0) break;
+    }
+    require(work < limit, "World region service terminates");
+}
+
 WorldDiscoveryTileSnapshot tile_at(const World& world, std::int64_t x, std::int64_t y) {
     for (std::size_t index = 0; index < world.settled_discovery_tile_count(); ++index) {
         const auto tile = world.settled_discovery_tile(index);
@@ -115,12 +126,16 @@ CYBERSAND_TEST_NOINLINE void canonical_geometry_registration_and_capacity() {
 
     config = tracked_config();
     config.settled_discovery_tile_capacity = 1;
+    config.settled_region_connectivity_enabled = true;
     World constrained(config);
     constrained.reserve_region({0, 0, 16, 8});
     require(constrained.chunk_count() == 2 && constrained.settled_discovery_capacity_blocked(),
             "tracking capacity refusal leaves authoritative chunk reservation intact");
     require(constrained.settled_discovery_tile(0) == std::nullopt,
             "capacity-unrepresentable coverage exposes no stale usable snapshot");
+    require(constrained.settled_region_count() == 0 &&
+            constrained.settled_region_refusal() == RegionRefusal::TileCapacity,
+            "producer capacity refusal quarantines connectivity without partial publication");
 }
 
 CYBERSAND_TEST_NOINLINE void movement_mask_event_and_far_locality() {
@@ -275,6 +290,7 @@ CYBERSAND_TEST_NOINLINE void inclusion_reset_move_and_failure_quarantine() {
             "clear retires the old incarnation and reconstructs empty tracking");
 
     config.active_core_capacity = 1;
+    config.settled_region_connectivity_enabled = true;
     World failed(config);
     failed.set(0, 0, Material::Sand);
     failed.set(16, 0, Material::Sand);
@@ -283,8 +299,10 @@ CYBERSAND_TEST_NOINLINE void inclusion_reset_move_and_failure_quarantine() {
     require(threw && failed.has_failed() &&
             failed.settled_discovery_halted() == DiscoveryHalt::ProducerFailure &&
             !failed.settled_discovery_tile(0).has_value() &&
-            failed.advance_settled_discovery(100) == 0,
-            "failed tick immediately quarantines every discovery snapshot");
+            failed.advance_settled_discovery(100) == 0 &&
+            failed.settled_region_count() == 0 &&
+            failed.settled_region_refusal() == RegionRefusal::SourceFailure,
+            "failed tick immediately quarantines discovery and connectivity snapshots");
 }
 
 void seed_fixture(World& world) {
@@ -339,6 +357,149 @@ CYBERSAND_TEST_NOINLINE void disabled_neutrality_and_worker_parity() {
                 "workers1/4 produce equivalent tile witnesses");
     }
 }
+
+CYBERSAND_TEST_NOINLINE void integrated_region_publication_split_merge_and_refusal() {
+    auto config = tracked_config();
+    config.settled_region_connectivity_enabled = true;
+    World world(config);
+    world.reserve_region({0, 0, 16, 8});
+    for (std::int64_t y = 0; y < 8; ++y)
+        for (std::int64_t x = 0; x < 16; ++x) world.set(x, y, Material::Wall);
+    (void)world.tick();
+    service(world);
+    service_regions(world);
+    require(world.settled_region_storage_bytes() != 0,
+            "opt-in World reports explicit connectivity storage");
+    require(world.settled_region_count() == 1,
+            "adjacent complete World tiles publish one region");
+    const auto joined = world.settled_region(0);
+    require(joined.has_value() && joined->complete && joined->area == 128 &&
+            joined->tile_count == 2 && joined->component_count == 2,
+            "World publication contains the exact two-tile component");
+    const auto old_handle = joined->handle;
+
+    for (std::int64_t y = 0; y < 8; ++y) world.set(7, y, Material::Empty);
+    require(!world.settled_region(0).has_value() && world.settled_region_count() == 0,
+            "first bridge mutation retires the old region before rescanning");
+    (void)world.tick();
+    service(world);
+    service_regions(world);
+    require(!world.settled_region(0).has_value() ||
+            world.settled_region(0)->handle != old_handle,
+            "retired region handle cannot alias a replacement generation");
+    require(world.settled_region_count() == 2,
+            "removed bridge column republishes two complete islands");
+    std::uint64_t split_area = 0;
+    for (std::size_t slot = 0; slot < 64; ++slot) {
+        const auto region = world.settled_region(slot);
+        if (region.has_value()) split_area += region->area;
+    }
+    require(split_area == 120, "split regions preserve the exact remaining solid area");
+
+    for (std::int64_t y = 0; y < 8; ++y) world.set(7, y, Material::Wall);
+    (void)world.tick();
+    service(world);
+    service_regions(world);
+    require(world.settled_region_count() == 1,
+            "restored bridge republishes one merged region");
+    std::optional<SettledRegionSnapshot> merged;
+    for (std::size_t slot = 0; slot < 64 && !merged.has_value(); ++slot)
+        merged = world.settled_region(slot);
+    require(merged.has_value() && merged->area == 128 && merged->tile_count == 2,
+            "merged World region recovers exact area and tile membership");
+
+    world.configure_transient_obstacles({0, 0, 8, 8});
+    require(world.set_transient_obstacle(1, 1, 1), "integrated mask fixture accepted");
+    require(world.settled_region_count() == 0,
+            "mask add retires the connected publication immediately");
+    (void)world.tick();
+    service(world);
+    service_regions(world);
+    require(world.settled_region_count() == 0 &&
+            world.settled_region_refusal() == RegionRefusal::UnknownBoundary,
+            "blocked tile prevents its facing neighbor from publishing complete");
+    world.clear_transient_obstacles();
+    (void)world.tick();
+    service(world);
+    service_regions(world);
+    require(world.settled_region_count() == 1,
+            "mask removal requires fresh payloads before merged republication");
+
+    world.set_temperature(0, 0, 21);
+    require(world.settled_region_count() == 0,
+            "hot Empty candidate mutation retires prior publication immediately");
+    world.set(0, 0, Material::Empty);
+    (void)world.tick();
+    service(world);
+    require(world.settled_region_refusal() == RegionRefusal::NoncanonicalEmpty,
+            "noncanonical Empty tile is explicitly refused at ingestion");
+    service_regions(world);
+    require(world.settled_region_count() == 0 &&
+            world.settled_region_refusal() == RegionRefusal::UnknownBoundary,
+            "neighboring coverage remains incomplete after a refused tile");
+}
+
+CYBERSAND_TEST_NOINLINE void integrated_new_tile_registration_retires_facing_region() {
+    auto config = tracked_config();
+    config.settled_region_connectivity_enabled = true;
+    World world(config);
+    world.reserve_region({0, 0, 8, 8});
+    for (std::int64_t y = 0; y < 8; ++y)
+        for (std::int64_t x = 0; x < 8; ++x) world.set(x, y, Material::Wall);
+    (void)world.tick();
+    service(world);
+    service_regions(world);
+    require(world.settled_region_count() == 1,
+            "single sealed World tile publishes a complete region");
+
+    world.reserve_region({8, 0, 8, 8});
+    require(world.settled_region_count() == 0,
+            "new unknown facing tile retires the old sealed-edge publication immediately");
+    (void)world.tick();
+    service(world);
+    service_regions(world);
+    require(world.settled_region_count() == 1,
+            "old material republishes only after the new Empty neighbor is witnessed");
+    std::optional<SettledRegionSnapshot> region;
+    for (std::size_t slot = 0; slot < 64 && !region.has_value(); ++slot)
+        region = world.settled_region(slot);
+    require(region.has_value() && region->area == 64 && region->tile_count == 1 &&
+            region->dependency_tile_count == 2,
+            "republished region depends on the witnessed facing Empty tile");
+}
+
+CYBERSAND_TEST_NOINLINE void integrated_region_worker_parity() {
+    auto single_config = tracked_config(1);
+    auto parallel_config = tracked_config(4);
+    single_config.settled_region_connectivity_enabled = true;
+    parallel_config.settled_region_connectivity_enabled = true;
+    World single(single_config), parallel(parallel_config);
+    for (auto* world : {&single, &parallel}) {
+        world->reserve_region({-8, 0, 16, 8});
+        for (std::int64_t y = 0; y < 8; ++y)
+            for (std::int64_t x = -8; x < 8; ++x) world->set(x, y, Material::Wall);
+        (void)world->tick();
+        service(*world);
+        service_regions(*world);
+    }
+    require(single.content_hash() == parallel.content_hash() &&
+            single.settled_region_count() == 1 && parallel.settled_region_count() == 1,
+            "workers1/4 integrated fixtures reach the same complete topology");
+    std::optional<SettledRegionSnapshot> a, b;
+    for (std::size_t slot = 0; slot < 64; ++slot) {
+        if (!a.has_value()) a = single.settled_region(slot);
+        if (!b.has_value()) b = parallel.settled_region(slot);
+    }
+    require(a.has_value() && b.has_value() && a->key == b->key &&
+            a->min_x == b->min_x && a->min_y == b->min_y &&
+            a->max_x == b->max_x && a->max_y == b->max_y &&
+            a->area == b->area && a->tile_count == b->tile_count &&
+            a->component_count == b->component_count &&
+            a->dependency_tile_count == b->dependency_tile_count &&
+            a->member_digest == b->member_digest &&
+            a->dependency_digest == b->dependency_digest,
+            "workers1/4 publish equivalent normalized region summaries and digests");
+}
 } // namespace
 
 int main() {
@@ -350,6 +511,9 @@ int main() {
         custom_geometry_signed_endpoints_and_policy_fence();
         inclusion_reset_move_and_failure_quarantine();
         disabled_neutrality_and_worker_parity();
+        integrated_region_publication_split_merge_and_refusal();
+        integrated_new_tile_registration_retires_facing_region();
+        integrated_region_worker_parity();
         std::cout << "settled World discovery tests passed\n";
         return 0;
     } catch (const std::exception& error) {

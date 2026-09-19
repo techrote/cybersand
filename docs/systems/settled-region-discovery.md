@@ -21,6 +21,15 @@ A uniform tile is not a face-connected region and not a cohesion certificate.
 Mixed states, holes and material boundaries must be explicit refusals of the
 uniform-summary classification, never silently filled or averaged.
 
+**Current opt-in connectivity:** when `settled_region_connectivity_enabled` is
+explicitly enabled, each completed journal publication is copied into the bounded
+[`SettledRegions`](../../native/include/cybersand/settled_regions.hpp) engine under
+the serialized World owner. Region publication remains read-only: it neither skips
+simulation work nor transfers cell/material ownership. New tile registration and
+every accepted tile invalidation first register unknown coverage and retire both
+the old tile's regions and facing-neighbor completeness. Blocked, refused and
+capacity-unavailable tiles therefore cannot be crossed by a complete publication.
+
 The Stage 2 lifecycle received an independent review and focused transition tests
 before this substrate was written. **Current:** fixed template-bounded records
 and a deduplicated FIFO have equal capacity; no hot allocation, periodic scan or
@@ -70,7 +79,8 @@ dropped invalidations may never leave an apparently valid summary.
 Current block identity is caller-supplied unique incarnation plus a never-reused
 slot. The substrate refuses revision exhaustion; it does not allocate/check a
 global incarnation or slot generation. Production region generation allocation
-and explicit exhaustion remain the lifecycle contract for future integration. Registration/queue capacity
+is now implemented by the opt-in connectivity engine and refuses generation or
+publication-serial exhaustion. Registration/queue capacity
 outcomes preserve cell authority. No hot resize or hidden unbounded overflow
 list. If observation integrity is lost, disable consumption of summaries and
 report the reason until explicit observer/world reconstruction. **Current substrate:** explicit producer failure, source-read exception, backwards
@@ -84,13 +94,16 @@ quarantine.
 
 ## What remains before Stage 3 can exit?
 
-The standalone [bounded connectivity layer](../../native/include/cybersand/settled_regions.hpp)
-now proves four-neighbor exact-key local components, revision-bound face adjacency,
-resumable complete-only publication, generation handles, holes, split/merge
-invalidation and explicit capacity refusal in focused fixtures. It is not yet fed
-by the World journal, and its fixed per-tile descriptor layout has not passed the
-large-world memory/cost gate. That integration/scaling work, independent verification
-and the full producer+connectivity cost model remain before Stage 3 can exit.
+The [bounded connectivity layer](../../native/include/cybersand/settled_regions.hpp)
+now receives exact complete tile revisions from the World journal and proves
+four-neighbor exact-key local components, revision-bound face adjacency, resumable
+complete-only publication, generation handles, holes, split/merge invalidation and
+explicit capacity refusal in focused and integrated fixtures. Connectivity remains
+separately opt-in and is compiled for at most 4096 tracked tiles with at most 32
+local components per tile. Its fixed per-tile/component/frontier layout is deliberately
+fail-closed but large; it has not passed the large-world memory/cost gate. Independent
+verification and the full producer+journal+connectivity cost model remain before
+Stage 3 can exit.
 It must quantify cell/block/chunk inspections, queue/scratch high water/refusal,
 latency distribution, churn/false invalidation, region count/area, CPU and memory
 per tracked area, and local edit wake/rebuild amplification on large worlds.
@@ -117,13 +130,17 @@ outstanding dirty tick survives restarts. Queue high-water counts distinct regis
 blocks and cannot exceed slot capacity. Full registration refuses only the new block;
 there is no existing-summary eviction or lost invalidation.
 
-Metrics distinguish signal observations, inspected cells, started blocks, budget work,
+Journal metrics distinguish signal observations, inspected cells, started blocks, budget work,
 invalidations, restarts, all completed classifications (including Blocked), mixed/blocked
 counts, registration refusals, queue high-water and first-dirty-to-classified maximum/
 total tick latency. Counters saturate; identity/revision counters refuse exhaustion.
 `storage_bytes()` includes the fixed records/queue, not a World or native heap estimate.
-No connected-region/chunk distribution or real-hook CPU cost is inferred from these
-metrics. Those remain required for Stage 3 completion.
+Connectivity separately records extraction, components, boundary comparisons,
+adjacency, seed probes, traversal/validation/publication work, refusal/high-water,
+region area/count, invalidation fanout and latency. `settled_region_storage_bytes()`
+reports the fixed compiled connectivity object; it is not a resident-set measurement.
+No large-world distribution or real-hook CPU cost is inferred from these counters.
+Those remain required for Stage 3 completion.
 
 The [journal tests](../../native/tests/test_settled_discovery.cpp) exercise budgets,
 partial publication, ABA, exact state/temperature boundaries, exclusion, pending events,
@@ -132,8 +149,11 @@ The [World producer tests](../../native/tests/test_settled_world_discovery.cpp)
 exercise direct tuple/heat ABA, render independence, source/destination movement,
 mask/event/inclusion/policy/reset/failure witnesses, canonical/custom/signed geometry,
 no-write activity/deadlines, epoch wrap, capacity isolation, disabled controls and
-workers1/4 parity. They establish this checkpoint's named hooks, not independent
-verification, connected-region integration, desktop/Web acceptance or Stage-3 exit.
+workers1/4 parity. Integrated fixtures additionally cover exact two-tile publication,
+split/merge generations, blocked-mask unknown boundaries, noncanonical Empty refusal,
+producer-capacity/failure quarantine and new-facing-tile invalidation. They establish
+this checkpoint's named paths, not independent verification, desktop/Web acceptance
+or Stage-3 exit.
 
 ## Synthetic journal cost preregistration (2026-09-19)
 

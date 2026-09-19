@@ -46,6 +46,8 @@ struct WorldConfig {
     bool settled_discovery_enabled = false;
     std::size_t settled_discovery_tile_capacity = 4'096;
     std::size_t settled_discovery_tick_budget = 0;
+    bool settled_region_connectivity_enabled = false;
+    std::size_t settled_region_tick_budget = 0;
     PhysicsDiagnosticConfig physics_diagnostics{};
     InteractionPolicy interaction_policy{};
     TransportPolicy transport_policy{};
@@ -181,6 +183,13 @@ public:
     [[nodiscard]] bool settled_discovery_capacity_blocked() const noexcept;
     [[nodiscard]] std::size_t settled_discovery_storage_bytes() const noexcept;
     std::size_t advance_settled_discovery(std::size_t budget);
+    std::size_t advance_settled_regions(std::size_t budget) noexcept;
+    [[nodiscard]] std::size_t settled_region_count() const noexcept;
+    [[nodiscard]] std::optional<soliding::SettledRegionSnapshot>
+        settled_region(std::size_t slot) const noexcept;
+    [[nodiscard]] soliding::SettledRegionMetrics settled_region_metrics() const noexcept;
+    [[nodiscard]] soliding::RegionRefusal settled_region_refusal() const noexcept;
+    [[nodiscard]] std::size_t settled_region_storage_bytes() const noexcept;
 
     [[nodiscard]] std::size_t dirty_chunk_count() const noexcept;
     [[nodiscard]] std::vector<DirtyChunk> take_dirty_chunks();

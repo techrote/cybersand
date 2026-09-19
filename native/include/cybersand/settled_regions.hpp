@@ -93,7 +93,9 @@ inline bool less(const RegionTileKey& a, const RegionTileKey& b) noexcept {
 }
 inline std::uint64_t tile_hash(const RegionTileKey& key, std::uint64_t revision) noexcept {
     std::uint64_t hash = 1469598103934665603ULL;
-    hash_value(hash, key.world_incarnation); hash_value(hash, key.chunk_y); hash_value(hash, key.chunk_x);
+    // The region handle carries observer identity. Keep the dependency digest
+    // comparable across repeat and workers1/4 Worlds with identical geometry.
+    hash_value(hash, key.chunk_y); hash_value(hash, key.chunk_x);
     hash_value(hash, key.activity_y); hash_value(hash, key.activity_x); hash_value(hash, key.subtile_y);
     hash_value(hash, key.subtile_x); hash_value(hash, revision); return hash;
 }
@@ -115,6 +117,45 @@ public:
     explicit SettledRegions(std::uint64_t incarnation) noexcept : incarnation_(incarnation) {}
     SettledRegions(const SettledRegions&) = delete;
     SettledRegions& operator=(const SettledRegions&) = delete;
+
+    RegionOutcome register_unknown(RegionTileKey key, DiscoveryBounds bounds,
+                                   std::uint64_t revision) noexcept {
+        if (unavailable()) return RegionOutcome::Refused;
+        if (incarnation_ == 0 || key.world_incarnation != incarnation_ || revision == 0 ||
+            !valid_bounds(bounds) ||
+            static_cast<std::uint64_t>(bounds.width) * bounds.height > MaximumTileCells)
+            return remember(RegionOutcome::Invalid, RegionRefusal::InvalidInput);
+        auto slot = find_tile(key);
+        if (slot == TileCapacity) {
+            if (tile_count_ == TileCapacity) {
+                block_capacity(RegionRefusal::TileCapacity);
+                return remember(RegionOutcome::Capacity, RegionRefusal::TileCapacity);
+            }
+            for (const auto& tile : tiles_) if (tile.used && overlaps(tile.bounds, bounds))
+                return remember(RegionOutcome::Invalid, RegionRefusal::InvalidInput);
+            slot = first_free_tile();
+            tiles_[slot].used = true;
+            tiles_[slot].key = key;
+            tiles_[slot].bounds = bounds;
+            ++tile_count_;
+        } else {
+            if (tiles_[slot].bounds != bounds)
+                return remember(RegionOutcome::Invalid, RegionRefusal::InvalidInput);
+            if (revision < tiles_[slot].revision) return RegionOutcome::Stale;
+        }
+        retire_for_tile_and_faces(slot);
+        cancel_related_build(slot);
+        clear_deferred_for_tile_and_faces(slot);
+        remove_adjacencies(slot);
+        auto& tile = tiles_[slot];
+        tile.revision = revision;
+        tile.has_payload = false;
+        tile.ready = false;
+        tile.component_count = 0;
+        tile.refusal = RegionRefusal::SignalIncomplete;
+        work_possible_ = true;
+        return remember(RegionOutcome::Accepted, RegionRefusal::None);
+    }
 
     RegionOutcome upsert(const RegionTileInput& input) noexcept {
         if (unavailable()) return RegionOutcome::Refused;
@@ -141,6 +182,7 @@ public:
             }
         }
         retire_for_tile_and_faces(slot); cancel_related_build(slot); clear_deferred_for_tile_and_faces(slot);
+        work_possible_ = true;
         remove_adjacencies(slot);
         copy_input(tiles_[slot], input);
         const auto outcome = extract(slot);
@@ -162,19 +204,20 @@ public:
         remove_adjacencies(slot);
         auto& tile = tiles_[slot]; tile.revision = next_revision; tile.has_payload = false;
         tile.ready = false; tile.component_count = 0; tile.refusal = RegionRefusal::SignalIncomplete;
+        work_possible_ = true;
         return remember(RegionOutcome::Accepted, RegionRefusal::None);
     }
 
     // One unit is one seed probe, component visit, dependency validation, or publication.
     // Local <=32x32 extraction and face rebuilding are separately bounded and counted.
     std::size_t advance(std::size_t budget) noexcept {
-        if (unavailable() || incarnation_ == 0) return 0;
+        if (unavailable() || incarnation_ == 0 || !work_possible_) return 0;
         std::size_t used = 0;
         while (used < budget) {
             if (build_.phase == Phase::Idle) begin_seek();
             if (build_.phase == Phase::Seeking) {
                 if (!seek_one()) {
-                    if (!build_.seed_found) { build_ = Build{}; break; }
+                    if (!build_.seed_found) { reset_build(); work_possible_ = false; break; }
                     begin_traversal(); continue;
                 }
                 consume(used); continue;
@@ -470,11 +513,26 @@ private:
         if (region_detail::less(tiles_[b.tile].key, tiles_[a.tile].key)) return false;
         return a.component < b.component;
     }
+    void reset_build() noexcept {
+        build_.phase = Phase::Idle;
+        build_.seek_flat = 0;
+        build_.frontier_count = 0;
+        build_.seen_count = 0;
+        build_.member_count = 0;
+        build_.validation_cursor = 0;
+        build_.best = {};
+        build_.seed = {};
+        build_.seed_found = false;
+        build_.failure = RegionRefusal::None;
+        build_.dependencies.fill(false);
+        build_.revisions.fill(0);
+        build_.started_work = 0;
+    }
     void begin_seek() noexcept {
-        build_ = Build{}; build_.phase = Phase::Seeking; build_.started_work = metrics_.work_units;
+        reset_build(); build_.phase = Phase::Seeking; build_.started_work = metrics_.work_units;
     }
     bool seek_one() noexcept {
-        const auto total = TileCapacity * ComponentsPerTile;
+        const auto total = tile_count_ * ComponentsPerTile;
         if (build_.seek_flat == total) return false;
         const auto flat = build_.seek_flat++;
         const auto tile_index = flat / ComponentsPerTile, component_index = flat % ComponentsPerTile;
@@ -586,11 +644,11 @@ private:
         if (reason == RegionRefusal::FrontierCapacity) saturating_add(metrics_.frontier_refusals);
         if (reason == RegionRefusal::RegionCapacity || reason == RegionRefusal::GenerationExhausted)
             saturating_add(metrics_.region_refusals);
-        build_ = Build{};
+        reset_build();
     }
     void cancel_build(bool restarted) noexcept {
         if (build_.phase == Phase::Idle) return;
-        clear_build_marks(); build_ = Build{};
+        clear_build_marks(); reset_build();
         if (restarted) saturating_add(metrics_.builds_restarted);
     }
     bool build_related(std::size_t slot) const noexcept {
@@ -674,7 +732,7 @@ private:
         saturating_add(metrics_.latency_total_units, latency);
         if (latency > metrics_.latency_max_units) metrics_.latency_max_units = latency;
         const auto count = region_count(); if (count > metrics_.region_high_water) metrics_.region_high_water = count;
-        build_ = Build{};
+        reset_build();
     }
     void retire_handle(SettledRegionHandle handle) noexcept {
         if (handle.world_incarnation != incarnation_ || handle.slot >= RegionCapacity) return;
@@ -713,7 +771,7 @@ private:
     SettledRegionMetrics metrics_{};
     RegionRefusal last_refusal_{RegionRefusal::None};
     std::size_t tile_count_{}, adjacency_count_{};
-    bool halted_{}, coverage_capacity_exhausted_{};
+    bool halted_{}, coverage_capacity_exhausted_{}, work_possible_{};
 };
 
 } // namespace cybersand::soliding

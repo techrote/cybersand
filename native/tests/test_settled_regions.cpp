@@ -121,6 +121,26 @@ void refusal_and_revision_guards() {
             "pending event blocks connectivity input");
 }
 
+void unknown_registration_retires_faces_without_consuming_payload() {
+    using Regions = SettledRegions<2, 1, 1, 2, 4, 4>;
+    const std::array<DiscoveryCell, 1> one{sand};
+    Regions regions(29);
+    const auto left = key(0, 0, 29), right = key(1, 0, 29);
+    require(put(regions, left, {0, 0, 1, 1}, 1, one) == RegionOutcome::Accepted,
+            "known left payload accepted");
+    drain(regions);
+    const auto old = snapshots(regions, 4)[0].handle;
+    require(regions.register_unknown(right, {1, 0, 1, 1}, 1) == RegionOutcome::Accepted,
+            "new unknown neighbor registered without payload");
+    require(!regions.snapshot(old).has_value(),
+            "unknown neighbor registration immediately retires facing completeness");
+    require(put(regions, right, {1, 0, 1, 1}, 1, one) == RegionOutcome::Accepted,
+            "same revision may later receive its first complete payload");
+    drain(regions);
+    require(regions.region_count() == 1 && snapshots(regions, 4)[0].area == 2,
+            "completed unknown neighbor rebuilds one exact region");
+}
+
 void cross_tile_seams_and_unknown_boundary() {
     using Regions = SettledRegions<4, 4, 4, 16, 8, 32>;
     const std::array<DiscoveryCell, 4> solid{sand, sand, sand, sand};
@@ -463,6 +483,7 @@ int main() {
     try {
         single_tile_holes_and_exact_keys();
         refusal_and_revision_guards();
+        unknown_registration_retires_faces_without_consuming_payload();
         cross_tile_seams_and_unknown_boundary();
         deterministic_insertion_and_publication();
         bridge_and_split_retire_old_handles();
