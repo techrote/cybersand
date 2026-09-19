@@ -637,6 +637,24 @@ soliding::DiscoveryCell World::read_discovery_cell(
     };
 }
 
+soliding::DiscoverySignals World::read_discovery_signals(
+    const void* context, soliding::DiscoveryTileKey key,
+    soliding::DiscoveryBounds bounds, soliding::DiscoverySignals previous) {
+    const auto& world = *static_cast<const World*>(context);
+    const ChunkCoord coord{key.chunk_x, key.chunk_y};
+    const auto* chunk = world.find_chunk(coord);
+    if (chunk == nullptr) return {};
+    const auto activity_index =
+        static_cast<std::size_t>(key.activity_y) *
+            static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
+        static_cast<std::size_t>(key.activity_x);
+    auto signals = world.discovery_signals(coord, activity_index, bounds);
+    // #63 owns mask/event/inclusion producer indexing. Sparse payload service
+    // preserves the already-observed mask bit while refreshing this tile only.
+    signals.occupied = previous.occupied;
+    return signals;
+}
+
 bool World::settled_discovery_enabled() const noexcept { return settled_discovery_ != nullptr; }
 std::uint64_t World::settled_discovery_incarnation() const noexcept {
     return settled_discovery_ == nullptr ? 0 : settled_discovery_->incarnation();
@@ -671,7 +689,9 @@ std::size_t World::settled_discovery_storage_bytes() const noexcept {
 }
 std::size_t World::advance_settled_discovery(std::size_t budget) {
     if (settled_discovery_ == nullptr) return 0;
-    return settled_discovery_->advance(tick_index_, budget, this, &World::read_discovery_cell);
+    return settled_discovery_->advance(
+        tick_index_, budget, this, &World::read_discovery_cell,
+        &World::read_discovery_signals);
 }
 std::size_t World::advance_settled_regions(std::size_t budget) noexcept {
     return settled_discovery_ == nullptr ? 0 : settled_discovery_->advance_regions(budget);
@@ -699,20 +719,10 @@ void World::dirty_discovery_cell(std::int64_t x, std::int64_t y,
                                  soliding::ProducerReason reason) noexcept {
     if (settled_discovery_ == nullptr) return;
     const auto target = address(x, y);
-    const auto* chunk = find_chunk(target.chunk);
-    if (chunk == nullptr) return;
-    const auto key = discovery_tile_key(target);
-    const auto handle = settled_discovery_->find_handle(key);
+    if (find_chunk(target.chunk) == nullptr) return;
+    const auto handle = settled_discovery_->find_handle(discovery_tile_key(target));
     if (!handle.has_value()) return;
-    const auto snapshot = settled_discovery_->tile(*handle);
-    if (!snapshot.has_value()) return;
-    (void)settled_discovery_->dirty(*handle, reason, tick_index_);
-    const auto activity_index = static_cast<std::size_t>(key.activity_y) *
-        static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
-        static_cast<std::size_t>(key.activity_x);
-    auto signals = discovery_signals(target.chunk, activity_index, snapshot->summary.bounds);
-    signals.occupied = snapshot->signals.occupied;
-    (void)settled_discovery_->observe(*handle, signals, reason, tick_index_);
+    (void)settled_discovery_->notify_payload(*handle, reason, tick_index_);
 }
 
 void World::dirty_discovery_rect(ChunkCoord coord, std::int32_t minimum_x,
@@ -1233,6 +1243,8 @@ bool World::write_cell(std::int64_t x, std::int64_t y, Material material,
 
     if (effects != nullptr) {
         effects->record(target, delta);
+        if (settled_discovery_ != nullptr)
+            effects->record_discovery_mutation(target, config_.activity_block_size);
         effects->hard_surface_changed =
             effects->hard_surface_changed || hard_surface_changed;
     } else {
@@ -1818,6 +1830,10 @@ void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_
     if (effects != nullptr) {
         effects->record(source_address, source_delta);
         effects->record(destination_address, destination_delta);
+        if (settled_discovery_ != nullptr) {
+            effects->record_discovery_mutation(source_address, config_.activity_block_size);
+            effects->record_discovery_mutation(destination_address, config_.activity_block_size);
+        }
         effects->hard_surface_changed =
             effects->hard_surface_changed || hard_surface_changed;
     } else {
@@ -1961,6 +1977,10 @@ std::uint16_t World::transfer_water(std::int64_t from_x, std::int64_t from_y,
     if (effects != nullptr) {
         effects->record(source_address, source_delta);
         effects->record(destination_address, destination_delta);
+        if (settled_discovery_ != nullptr) {
+            effects->record_discovery_mutation(source_address, config_.activity_block_size);
+            effects->record_discovery_mutation(destination_address, config_.activity_block_size);
+        }
     } else {
         source->non_empty_cell_count = static_cast<std::size_t>(
             static_cast<std::int64_t>(source->non_empty_cell_count) + source_delta);
@@ -3279,9 +3299,29 @@ void World::merge_job_effects(const JobEffects& effects) {
                 wake_cell_neighborhood(world_origin_x + local_right, world_origin_y + local_bottom);
             }
         }
-        dirty_discovery_rect(effect.chunk, effect.minimum_x, effect.minimum_y,
-            effect.maximum_x, effect.maximum_y,
-            soliding::ProducerReason::WorkerMutation);
+    }
+    if (settled_discovery_ == nullptr) return;
+    settled_discovery_->note_worker_report_records(effects.discovery_mutation_count);
+    if (effects.discovery_mutation_overflow) {
+        // Authoritative writes already happened. Lost observation detail fences
+        // discovery only; World remains healthy and is never rolled back.
+        settled_discovery_->fence_lost_payload_report();
+        return;
+    }
+    if (settled_discovery_->halted() != soliding::DiscoveryHalt::None) return;
+    for (std::size_t index = 0; index < effects.discovery_mutation_count; ++index) {
+        const auto& report = effects.discovery_mutations[index];
+        const soliding::DiscoveryTileKey key{
+            settled_discovery_->incarnation(),
+            report.chunk.y, report.chunk.x,
+            report.activity_y, report.activity_x,
+            report.subtile_y, report.subtile_x,
+        };
+        const auto handle = settled_discovery_->find_handle(key);
+        if (!handle.has_value()) continue;
+        (void)settled_discovery_->notify_payload(
+            *handle, soliding::ProducerReason::WorkerMutation, tick_index_,
+            report.mutation_count);
     }
 }
 
