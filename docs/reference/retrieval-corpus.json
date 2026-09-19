@@ -213,6 +213,14 @@
     {
       "path": "audits/2026-09-18-microscenarios-interactions-programme.md",
       "reason": "Dated planning/RAG reconciliation record; retrieve explicitly for the 2026-09-18 MicroScenarios sequencing decision, not as a default Current runtime contract"
+    },
+    {
+      "path": "audits/2026-09-19-issue-26-registration.md",
+      "reason": "Dated issue #26 preregistration and frozen experiment contract; retrieve explicitly with the issue #26 evidence, not as a default Current runtime contract"
+    },
+    {
+      "path": "audits/2026-09-19-issue-26-water-leveling.md",
+      "reason": "Dated issue #26 characterization/candidate evidence; current conclusions are mirrored into Water/roadmap/architecture contracts and this audit is retrieved explicitly for measurements"
     }
   ]
 }
