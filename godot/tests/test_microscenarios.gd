@@ -127,6 +127,11 @@ func _interaction_provenance_tests() -> void:
 	expect(salt.get("matched",false) and salt.get("selected",false)
 		and int(salt.get("source_product",-1)) == 24 and int(salt.get("target_product",-1)) == 24,
 		"Water/Salt provenance does not expose the effective compact rule")
+	expect(salt.get("tuning_pass_id","") == "int.pass.current-oracle"
+		and salt.get("tuning_pass_disposition","") == "characterized-baseline"
+		and salt.get("tuning_pass_changed_rules","missing") == "none"
+		and not salt.get("revalidation_tags",[]).is_empty(),
+		"effective rule did not expose selected-pass changes/revalidation provenance")
 	var acid_reverse: Dictionary = bridge.inspect_interaction(28,12,96)
 	expect(acid_reverse.get("selected",false) and int(acid_reverse.get("source_product",-1)) == 29
 		and int(acid_reverse.get("target_product",-1)) == 4 and acid_reverse.get("reversed",false),
@@ -157,6 +162,11 @@ func _interaction_provenance_tests() -> void:
 			expect(report.get("outcome","") == "complete", "generated fixture did not complete: " + fixture)
 			expect(report.get("interaction_profile_full",{}).get("pair_rules",[]).size() == 14,
 				"capture lost full INT profile: " + fixture)
+			var baseline: Dictionary = report.get("kinetic_contact_baseline",{})
+			expect(baseline.get("transport_hash","") == report.get("transport_hash","")
+				and baseline.get("source_runtime_identity",{}).get("source_revision","") == "test-only"
+				and int(baseline.get("worker_count",0)) == workers,
+				"capture lost rolling kinetic/contact baseline identity: " + fixture)
 			var semantic: Dictionary = {"observations":report.get("observations",[]),
 				"interaction_inspection":report.get("interaction_inspection",[])}
 			if expected.is_empty(): expected = semantic
