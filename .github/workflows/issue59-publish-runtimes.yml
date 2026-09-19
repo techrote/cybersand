@@ -31,6 +31,9 @@ jobs:
           lfs: true
           persist-credentials: true
 
+      - name: Reconfirm focused runtime-storage source
+        run: timeout 8m make soliding-stage3b-runtime-storage-test
+
       - name: Pin exact publication source
         shell: bash
         run: |
