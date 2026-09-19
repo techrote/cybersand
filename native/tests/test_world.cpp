@@ -2494,6 +2494,24 @@ void test_int000_sparse_schema_shadow_equivalence() {
                 ordered_forward.target_product == Material::Salt &&
                 !ordered_reverse.matched,
             "INT ordered pair semantics are not explicit/testable");
+    constexpr cybersand::PairInteractionRule reverse_ordered{
+        "test.reverse-ordered",
+        cybersand::interaction_channel_bit(cybersand::InteractionChannel::Electrical),
+        cybersand::InteractionTriggerKind::PairContact,
+        cybersand::InteractionMatchKind::Ordered,
+        Material::Salt, Material::Water, Material::Salt, Material::Brine, 255U,
+        "reverse ordered test", 0U, 1U, "", "test.pass"};
+    require(!InteractionRules::pair_rules_conflict(direction_rules[0], reverse_ordered),
+            "opposite ordered pair directions were incorrectly treated as a conflict");
+    constexpr cybersand::PairInteractionRule overlapping_unordered{
+        "test.overlap-unordered",
+        cybersand::interaction_channel_bit(cybersand::InteractionChannel::Electrical),
+        cybersand::InteractionTriggerKind::PairContact,
+        cybersand::InteractionMatchKind::UnorderedRolePreserving,
+        Material::Water, Material::Salt, Material::Brine, Material::Brine, 255U,
+        "overlap test", 0U, 1U, "", "test.pass"};
+    require(InteractionRules::pair_rules_conflict(direction_rules[0], overlapping_unordered),
+            "overlapping ordered/unordered pair domains were not reported as a conflict");
     const auto symmetric_forward = InteractionRules::resolve_pair_from(
         direction_rules, Material::Fire, Material::Oil, 0U);
     const auto symmetric_reverse = InteractionRules::resolve_pair_from(
