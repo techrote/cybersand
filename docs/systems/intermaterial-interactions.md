@@ -53,15 +53,24 @@ Current compact rules use **unordered matching with role-preserving effects**.
 Reversing source/target therefore reverses role-specific products; it does not make
 the effects symmetric.
 
-The Current resolver order is intentionally simple: explicit sparse pair match,
-stored probability boundary, then role-preserving products plus stable
-rule/channel provenance. Specialized neighbourhood/lifecycle entries are
-represented in the same profile catalogue but remain authoritative in their
-existing world.cpp kernels unless a later bounded migration proves exact separation
-from movement/contact code. This is an explicit limitation, not a second authority.
+The production Current pair resolver remains intentionally simple: explicit sparse
+pair match, stored probability boundary, then role-specific products plus stable
+rule/channel provenance. The authoring/compiler substrate additionally defines five
+independent layer classes with fixed precedence: channel default < family default <
+material adjustment < pair override < context modifier. Current behavior deliberately
+authors **zero** implicit layer defaults/adjustments/modifiers; this proves the
+infrastructure without fabricating semantics.
 
-Future family defaults, material adjustments or context modifiers require explicit
-precedence/conflict tests before becoming authoritative.
+Ordered, symmetric and unordered-role-preserving pair matching are all explicit
+schema choices and are covered by synthetic native regressions. Equal-precedence
+matching layers are a validation conflict rather than "last write wins". Catalogue
+validation also rejects duplicate rule identities, pair-override conflicts, invalid
+family references and self-supersession.
+
+Specialized neighbourhood/lifecycle entries are represented in the same profile
+catalogue but remain authoritative in their existing world.cpp kernels unless a
+later bounded migration proves exact separation from movement/contact code. This is
+an explicit limitation, not a second authority.
 
 ## Explicit semantic families
 
@@ -118,9 +127,15 @@ rather than meaningless Cartesian entries.
 
 ## Provenance and revalidation
 
-Stable rule IDs carry channel membership, accounting notes and subsystem
-revalidation tags. Dated evidence additionally pins source/runtime/material
-catalogue/MicroScenario/transport/Water/platform/worker identities.
+Stable rule IDs carry channel membership, version/supersession fields, selected
+tuning-pass identity, accounting notes and subsystem revalidation tags. Native
+inspection exposes the selected pass parent/disposition/change declaration and a
+stable provenance chain.
+
+Every schema-2 capture also records a rolling kinetic/contact baseline containing
+source/runtime identity, transport hash, effective Water semantics/policy, fixed
+execution/interest settings and worker count. That record is diagnostic provenance
+only: INT-000 does not thereby own Water, granular, scheduler or ballistic physics.
 
 A later Water, granular-contact, scheduler, thermal, biological or ballistic
 change can identify affected evidence for re-screening. Old evidence remains under
@@ -133,14 +148,24 @@ not add scenario-specific physics callbacks.
 
 Generated fixtures use complete definitions and therefore run unchanged through
 the native-only runner, Materials Laboratory, fresh-reset A/B comparison and batch
-evidence tooling. The first proof family uses Water+Salt -> Brine plus a Water+Sand
-non-interaction control, followed by representative Current thermal, combustion,
-corrosion, electrical and cure/state fixtures.
+evidence tooling. The proof set covers Water+Salt -> Brine, Water+Sand
+non-interaction, Lava+Water, Fire+Gunpowder, Acid+Metal, Spark+Metal and
+Cement+Water/air-context cure without adding scenario-specific material logic.
+
+`tools/interactions/batch.py` retains the full stable-ID interaction catalogue,
+rolling contact baseline, exact observations/source-sink ledger and semantic native
+summary for one/four-worker runs. It fails the batch on worker-semantic drift,
+reports coverage gaps explicitly, and compares two retained manifests at both
+evidence level and stable rule/layer/pass field level. A changed catalogue entry
+names the exact added/removed rule or changed parameter field; a difference is
+evidence for review, not an automatic tuning verdict.
 
 ## Change discipline
 
 Before switching additional production authority: characterize Current; represent
 it; prove shadow equivalence; resolve every mismatch as migration defect; switch
 one bounded semantic boundary; retain reference regressions; then update evidence
-and retrieval routes. Broad material retuning is outside INT-000, and world.cpp
-must not be rewritten merely for architectural uniformity.
+and retrieval routes. Every later accepted pass must preserve its parent evidence,
+stable changed-rule/parameter identities and affected revalidation tags. Broad
+material retuning is outside INT-000, and world.cpp must not be rewritten merely
+for architectural uniformity.
