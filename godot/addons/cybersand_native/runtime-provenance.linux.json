@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "status": "validated-development-runtime",
-  "source_commit": "6ccb45ac2f496168b78056d0213d7d0b44607f78",
-  "source_tree": "4fc07b9f750b444e6b7aed20f0b2ec22e95aa843",
+  "source_commit": "a73a840f1b3e2522cf955bcef6ac338d00ce410f",
+  "source_tree": "2da901ae555e4b64ff0a587b8f1106c63e6b5de4",
   "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
-  "sha256": "0e82f8f37dda4f786f43d36107ad86d6d747a399277c4420354ea426cb69514b",
+  "sha256": "eb8c929e5b8881bc9fd1437f4ada567ce145fe3419bf91a90c260844b5427371",
   "size": 1471696,
   "source_input_hash_kind": "SHA-256 of canonical Git blob bytes; CRLF working files normalize to LF",
   "source_inputs": {
@@ -26,7 +26,7 @@
     "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
     "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
     "native/include/cybersand/settled_discovery.hpp": "62cb2dec25c51cf851a0d1cd4ba8b8eb6021abe9d14549e8a24974987cb9d7a0",
-    "native/include/cybersand/settled_regions.hpp": "5340796dcc8624853111c373e4c7418179f6c4ede853386bbf555de50876de94",
+    "native/include/cybersand/settled_regions.hpp": "23a8dafe314d6246fc714eedce92757dd5e0befa0ff3697974fc7c2a37d51bed",
     "native/include/cybersand/settled_world_discovery.hpp": "ccf5e96ab00fab7d7498f6b56756250d5e2c230a8432afa92a670de4491d3279",
     "native/include/cybersand/transport_policy.hpp": "9204d1e7b112e260097ba3924c8653cde45568d5886d33b9bb53fdfa8019e348",
     "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
@@ -41,8 +41,8 @@
   },
   "evidence": "docs/audits/2026-09-19-issue-60-stage3b-bounded-spatial-index.md",
   "validated_platform": "Linux x86_64 Godot 4.7",
-  "toolchain": "Ubuntu 24.04, GCC/G++ 13.3.0, binutils 2.42, SCons 4.10.1; godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496; Stage-3B #60 bounded spatial-index source",
-  "acceptance": "Exact #60-source Linux x86_64 GDExtension build and ABI-floor validation passed in Actions run 35472664769. Exact-head Godot acceptance is rerun after publication.",
+  "toolchain": "Ubuntu 24.04, GCC/G++ 13.3.0, binutils 2.42, SCons 4.10.1; godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496; repaired Stage-3B #60 bounded spatial-index source",
+  "acceptance": "Exact repaired #60-source Linux x86_64 GDExtension build and ABI-floor validation passed in Actions run 35474019678.",
   "other_platforms": "Windows cross-build is from the same exact native source but is not Windows execution. Browser/WebAssembly execution and hardware-GPU/target-PC performance remain unavailable and are not claimed.",
-  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/35472664769"
+  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/35474019678"
 }
