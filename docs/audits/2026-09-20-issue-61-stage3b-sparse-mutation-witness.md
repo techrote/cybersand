@@ -1,6 +1,6 @@
 ---
 title: Issue 61 Stage 3B sparse mutation and worker witness audit
-status: Implementation validation in progress
+status: Review-ready implementation
 document-kind: audit
 scope: Change-driven material/payload mutation witnesses and deterministic native worker reduction
 canonical-for: []
@@ -124,13 +124,32 @@ The #61 focused suite covers:
 - workers 1/4 authoritative and witness parity;
 - native report saturation and observation-only fencing;
 - discovery-disabled authoritative neutrality in the saturation fixture;
-- runtime storage accounting for the fixed `T` payload queue.
+- runtime storage accounting for the fixed `T` payload queue;
+- deferred signal-source exception quarantine preserving #58 `SourceFailure`
+  semantics.
 
-Focused sanitizer validation is required before source-matched runtime
-publication. After source freeze, Linux and Windows GDExtension runtimes are
-rebuilt once from the exact native source and provenance is regenerated. Final
-acceptance is the normal exact-head Documentation, Native, and
-GDExtension/Godot gate set.
+## Focused and source-matched runtime validation
+
+Focused Actions run `35476335629` passed after the saturation fixture was
+isolated from an unrelated test-only active-core cap. It covered the #61
+adversarial suite, runtime-sized storage regression, existing settled-World
+discovery regression, structural removal of the coarse worker rectangle path,
+and ASan/UBSan.
+
+Final native source was then frozen at
+`e75c5fd52a14a01185795b78651f82960d97f9c6`. One source-matched publication,
+Actions run `35476457792`, reran the exact-source focused suite and sanitizer
+before any runtime build, then passed:
+
+- Linux x86_64 GDExtension build and ABI/runtime-floor validation;
+- Windows x86_64 pinned LLVM-MinGW cross-build;
+- exact binary/source-input provenance regeneration and verification;
+- LFS publication from the same source identity.
+
+The resulting publication head is
+`208de4ffb68595bd6733e857bf11c91b85be84ed`. Windows execution is unavailable
+and is not claimed; the final PR head still requires the normal exact-head
+Documentation, Native, and GDExtension/Godot gates.
 
 ## Locality claim
 
