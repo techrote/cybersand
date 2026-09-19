@@ -1,5 +1,8 @@
 name: INT000 publish integrated runtimes
 
+# One-shot source-matched publication trigger after the Materials Lab regression repair.
+# This workflow deletes itself in the publication commit so it cannot become permanent CI.
+
 on:
   push:
     branches: [codex/issue-29-int000]
@@ -199,7 +202,12 @@ jobs:
               assert len(data)==m['size']
           PY
           git lfs install --local
-          git add             godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll             godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so             godot/addons/cybersand_native/runtime-provenance.json             godot/addons/cybersand_native/runtime-provenance.linux.json             docs/audits/2026-09-19-issue-29-int000.md
+          git add \
+            godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll \
+            godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so \
+            godot/addons/cybersand_native/runtime-provenance.json \
+            godot/addons/cybersand_native/runtime-provenance.linux.json \
+            docs/audits/2026-09-19-issue-29-int000.md
           git rm -f .github/workflows/int000-publish-runtimes.yml
           git diff --cached --check
           git config user.name techrote
