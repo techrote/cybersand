@@ -160,9 +160,11 @@ func details() -> Dictionary:
 	var materials: Array = []
 	for id: int in current.get("material_ids",[]): materials.append({"id":id,"ui_name":host.material_name(id)})
 	return {"scenario":current.duplicate(true), "material_identities":materials,
+		"interaction_profile":current.get("interaction_profile",{}).duplicate(true),
+		"interaction_inspection":current.get("interaction_inspection",[]).duplicate(true),
 		"viewer_runtime_identity":runtime_identity.duplicate(true),
 		"capture":retained_capture.duplicate(true),
-		"notes":"All declared probes are listed above; missing results are pending, not zero. Cell state and temperature are raw engine fields. Capture requests an immutable owner-boundary report; this panel never reads the worker World."}
+		"notes":"Interaction inspection is read-only native provenance for materials present in this complete definition. A probability roll of zero exposes the candidate rule; it is not an executed-tick claim. Specialized entries identify their current world.cpp authority and are not evaluated by the inspector. Declared probes remain authoritative observations; missing results are pending, not zero. Cell state and temperature are raw engine fields. Capture requests an immutable owner-boundary report; this panel never reads the worker World."}
 
 func open_details() -> void:
 	if blocked() or not visible: return

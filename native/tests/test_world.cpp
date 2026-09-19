@@ -1,4 +1,5 @@
 #include "cybersand/c_api.h"
+#include "cybersand/interaction_rules.hpp"
 #include "cybersand/material_appearance.hpp"
 #include "cybersand/material_rules.hpp"
 #include "cybersand/render_snapshot.hpp"
@@ -2352,12 +2353,278 @@ void test_water_experiment_default_state_hash_correspondence() {
     }
 }
 
+
+void test_int000_sparse_schema_shadow_equivalence() {
+    using cybersand::InteractionRules;
+    struct FrozenPairRule {
+        Material first;
+        Material second;
+        Material first_product;
+        Material second_product;
+        std::uint8_t probability;
+    };
+    constexpr std::array<FrozenPairRule, 14> frozen_current{{
+        {Material::Lava, Material::Water, Material::Stone, Material::Steam, 255U},
+        {Material::Fire, Material::Water, Material::Smoke, Material::Steam, 255U},
+        {Material::Water, Material::Salt, Material::Brine, Material::Brine, 255U},
+        {Material::Water, Material::Sodium, Material::Steam, Material::Fire, 255U},
+        {Material::Brine, Material::Sodium, Material::Steam, Material::Fire, 255U},
+        {Material::Water, Material::ToxicSludge, Material::Water, Material::Water, 255U},
+        {Material::Steam, Material::Ice, Material::Water, Material::Ice, 32U},
+        {Material::Water, Material::MoltenGlass, Material::Steam, Material::Glass, 255U},
+        {Material::Lava, Material::Glass, Material::Lava, Material::MoltenGlass, 255U},
+        {Material::Acid, Material::Metal, Material::Smoke, Material::Rust, 96U},
+        {Material::Fire, Material::Gunpowder, Material::Fire, Material::Fire, 255U},
+        {Material::Spark, Material::Gunpowder, Material::Empty, Material::Fire, 255U},
+        {Material::Spark, Material::Oil, Material::Empty, Material::Fire, 255U},
+        {Material::Fire, Material::Brine, Material::Steam, Material::Salt, 64U},
+    }};
+
+    const auto frozen_resolve = [&frozen_current](
+        Material source, Material target, std::uint8_t roll)
+        -> std::optional<cybersand::PairReactionResult> {
+        for (const auto& rule : frozen_current) {
+            if (roll > rule.probability) continue;
+            if (source == rule.first && target == rule.second) {
+                return cybersand::PairReactionResult{rule.first_product, rule.second_product};
+            }
+            if (source == rule.second && target == rule.first) {
+                return cybersand::PairReactionResult{rule.second_product, rule.first_product};
+            }
+        }
+        return std::nullopt;
+    };
+
+    require(cybersand::kInteractionSchemaId == "cybersand.interactions",
+            "INT schema identity changed");
+    require(cybersand::kInteractionSchemaVersion == 1U,
+            "INT schema version changed");
+    require(cybersand::kInteractionProfileId == "int.current-behaviour" &&
+                cybersand::kInteractionProfileVersion == 1U,
+            "INT current profile identity changed");
+    require(InteractionRules::channels().size() == 7U,
+            "INT channel catalogue is incomplete");
+    require(InteractionRules::pair_rules().size() == frozen_current.size(),
+            "INT compact Current rule inventory changed");
+    require(InteractionRules::specialized_rules().size() == 19U,
+            "INT specialized Current inventory is incomplete");
+    require(InteractionRules::layer_kinds().size() == 5U &&
+                InteractionRules::authored_layers().empty(),
+            "INT Current layering contract changed");
+    const auto catalogue_validation = InteractionRules::validate_catalogue();
+    require(catalogue_validation.ok &&
+                catalogue_validation.duplicate_rule_ids == 0U &&
+                catalogue_validation.conflicting_pair_overrides == 0U &&
+                catalogue_validation.invalid_family_memberships == 0U &&
+                catalogue_validation.unresolved_layer_conflicts == 0U &&
+                catalogue_validation.invalid_supersession_links == 0U,
+            "INT Current catalogue has unresolved conflicts");
+    require(InteractionRules::layer_precedence(cybersand::InteractionLayerKind::ChannelDefault) <
+                InteractionRules::layer_precedence(cybersand::InteractionLayerKind::FamilyDefault) &&
+                InteractionRules::layer_precedence(cybersand::InteractionLayerKind::FamilyDefault) <
+                InteractionRules::layer_precedence(cybersand::InteractionLayerKind::MaterialAdjustment) &&
+                InteractionRules::layer_precedence(cybersand::InteractionLayerKind::MaterialAdjustment) <
+                InteractionRules::layer_precedence(cybersand::InteractionLayerKind::PairOverride) &&
+                InteractionRules::layer_precedence(cybersand::InteractionLayerKind::PairOverride) <
+                InteractionRules::layer_precedence(cybersand::InteractionLayerKind::ContextModifier),
+            "INT layer precedence changed");
+    constexpr std::array<cybersand::InteractionLayerDefinition, 3> synthetic_layers{{
+        {"test.family", 1U, "", cybersand::InteractionChannel::Electrical,
+         cybersand::InteractionLayerKind::FamilyDefault,
+         {cybersand::InteractionParticipantRole::Either,
+          "int.family.conductive-base-metal", false, Material::Empty, ""},
+         "test.family.effect", "test.pass"},
+        {"test.material", 1U, "", cybersand::InteractionChannel::Electrical,
+         cybersand::InteractionLayerKind::MaterialAdjustment,
+         {cybersand::InteractionParticipantRole::Source,
+          "", true, Material::Metal, ""},
+         "test.material.effect", "test.pass"},
+        {"test.context", 1U, "", cybersand::InteractionChannel::Electrical,
+         cybersand::InteractionLayerKind::ContextModifier,
+         {cybersand::InteractionParticipantRole::Either,
+          "", false, Material::Empty, "wet"},
+         "test.context.effect", "test.pass"},
+    }};
+    const auto material_layer = InteractionRules::compile_layer_from(
+        synthetic_layers, cybersand::InteractionChannel::Electrical,
+        Material::Metal, Material::Water);
+    require(material_layer.matched && !material_layer.conflict &&
+                material_layer.layer_index == 1U,
+            "INT material adjustment did not override family default");
+    const auto context_layer = InteractionRules::compile_layer_from(
+        synthetic_layers, cybersand::InteractionChannel::Electrical,
+        Material::Metal, Material::Water, "wet");
+    require(context_layer.matched && !context_layer.conflict &&
+                context_layer.layer_index == 2U,
+            "INT context modifier did not override lower-precedence layers");
+    constexpr std::array<cybersand::InteractionLayerDefinition, 2> conflicting_layers{{
+        {"test.conflict-a", 1U, "", cybersand::InteractionChannel::Combustion,
+         cybersand::InteractionLayerKind::FamilyDefault,
+         {cybersand::InteractionParticipantRole::Either,
+          "int.family.combustible-kernel", false, Material::Empty, ""},
+         "test.a", "test.pass"},
+        {"test.conflict-b", 1U, "", cybersand::InteractionChannel::Combustion,
+         cybersand::InteractionLayerKind::FamilyDefault,
+         {cybersand::InteractionParticipantRole::Either,
+          "int.family.combustible-kernel", false, Material::Empty, ""},
+         "test.b", "test.pass"},
+    }};
+    const auto conflict = InteractionRules::compile_layer_from(
+        conflicting_layers, cybersand::InteractionChannel::Combustion,
+        Material::Wood, Material::Fire);
+    require(conflict.matched && conflict.conflict,
+            "INT equal-precedence matching layers did not report conflict");
+
+    constexpr std::array<cybersand::PairInteractionRule, 2> direction_rules{{
+        {"test.ordered", cybersand::interaction_channel_bit(cybersand::InteractionChannel::Electrical),
+         cybersand::InteractionTriggerKind::PairContact, cybersand::InteractionMatchKind::Ordered,
+         Material::Water, Material::Salt, Material::Brine, Material::Salt, 255U,
+         "ordered test", 0U, 1U, "", "test.pass"},
+        {"test.symmetric", cybersand::interaction_channel_bit(cybersand::InteractionChannel::Combustion),
+         cybersand::InteractionTriggerKind::PairContact, cybersand::InteractionMatchKind::Symmetric,
+         Material::Fire, Material::Oil, Material::Smoke, Material::Smoke, 255U,
+         "symmetric test", 0U, 1U, "", "test.pass"},
+    }};
+    const auto ordered_forward = InteractionRules::resolve_pair_from(
+        direction_rules, Material::Water, Material::Salt, 0U);
+    const auto ordered_reverse = InteractionRules::resolve_pair_from(
+        direction_rules, Material::Salt, Material::Water, 0U);
+    require(ordered_forward.selected &&
+                ordered_forward.source_product == Material::Brine &&
+                ordered_forward.target_product == Material::Salt &&
+                !ordered_reverse.matched,
+            "INT ordered pair semantics are not explicit/testable");
+    constexpr cybersand::PairInteractionRule reverse_ordered{
+        "test.reverse-ordered",
+        cybersand::interaction_channel_bit(cybersand::InteractionChannel::Electrical),
+        cybersand::InteractionTriggerKind::PairContact,
+        cybersand::InteractionMatchKind::Ordered,
+        Material::Salt, Material::Water, Material::Salt, Material::Brine, 255U,
+        "reverse ordered test", 0U, 1U, "", "test.pass"};
+    require(!InteractionRules::pair_rules_conflict(direction_rules[0], reverse_ordered),
+            "opposite ordered pair directions were incorrectly treated as a conflict");
+    constexpr cybersand::PairInteractionRule overlapping_unordered{
+        "test.overlap-unordered",
+        cybersand::interaction_channel_bit(cybersand::InteractionChannel::Electrical),
+        cybersand::InteractionTriggerKind::PairContact,
+        cybersand::InteractionMatchKind::UnorderedRolePreserving,
+        Material::Water, Material::Salt, Material::Brine, Material::Brine, 255U,
+        "overlap test", 0U, 1U, "", "test.pass"};
+    require(InteractionRules::pair_rules_conflict(direction_rules[0], overlapping_unordered),
+            "overlapping ordered/unordered pair domains were not reported as a conflict");
+    const auto symmetric_forward = InteractionRules::resolve_pair_from(
+        direction_rules, Material::Fire, Material::Oil, 0U);
+    const auto symmetric_reverse = InteractionRules::resolve_pair_from(
+        direction_rules, Material::Oil, Material::Fire, 0U);
+    require(symmetric_forward.selected && symmetric_reverse.selected &&
+                symmetric_forward.source_product == Material::Smoke &&
+                symmetric_forward.target_product == Material::Smoke &&
+                symmetric_reverse.source_product == Material::Smoke &&
+                symmetric_reverse.target_product == Material::Smoke,
+            "INT symmetric pair semantics are not orientation-independent");
+
+    for (std::size_t index = 0; index < frozen_current.size(); ++index) {
+        const auto& expected = frozen_current[index];
+        const auto& rule = InteractionRules::pair_rules()[index];
+        require(!rule.id.empty() && rule.channels != 0U,
+                "INT compact rule lacks stable identity/channel");
+        require(rule.trigger == cybersand::InteractionTriggerKind::PairContact,
+                "INT compact rule changed trigger class");
+        require(rule.match == cybersand::InteractionMatchKind::UnorderedRolePreserving,
+                "INT compact rule lost role-preserving unordered matching");
+        require(rule.first == expected.first && rule.second == expected.second &&
+                    rule.first_product == expected.first_product &&
+                    rule.second_product == expected.second_product &&
+                    rule.probability == expected.probability,
+                "INT authored compact rule differs from frozen pre-migration Current");
+        for (std::size_t right = index + 1U; right < InteractionRules::pair_rules().size(); ++right) {
+            require(rule.id != InteractionRules::pair_rules()[right].id,
+                    "INT compact rule IDs are not unique");
+        }
+    }
+
+    constexpr std::array<std::uint8_t, 12> rolls{
+        0U, 31U, 32U, 33U, 63U, 64U, 65U, 95U, 96U, 97U, 254U, 255U};
+    for (std::uint16_t source_id = 0; source_id < cybersand::kMaterialDefinitions.size(); ++source_id) {
+        const auto source = static_cast<Material>(source_id);
+        bool frozen_has_pair = false;
+        for (const auto& rule : frozen_current) {
+            frozen_has_pair = frozen_has_pair || rule.first == source || rule.second == source;
+        }
+        require(cybersand::MaterialRules::has_pair_reactions(source) == frozen_has_pair &&
+                    InteractionRules::has_pair_rule(source) == frozen_has_pair,
+                "INT migrated pair-participant inventory differs from frozen Current");
+        for (std::uint16_t target_id = 0; target_id < cybersand::kMaterialDefinitions.size(); ++target_id) {
+            const auto target = static_cast<Material>(target_id);
+            for (const auto roll : rolls) {
+                const auto expected = frozen_resolve(source, target, roll);
+                const auto public_api = cybersand::MaterialRules::pair_reaction(source, target, roll);
+                const auto resolved = InteractionRules::resolve_pair(source, target, roll);
+                require(expected.has_value() == resolved.selected &&
+                            expected.has_value() == public_api.has_value(),
+                        "INT compact resolver selection differs from frozen Current");
+                if (!expected.has_value()) continue;
+                require(resolved.matched &&
+                            expected->source_product == resolved.source_product &&
+                            expected->target_product == resolved.target_product &&
+                            expected->source_product == public_api->source_product &&
+                            expected->target_product == public_api->target_product,
+                        "INT compact resolver products/roles differ from frozen Current");
+            }
+        }
+    }
+
+    const auto salt_forward =
+        InteractionRules::resolve_pair(Material::Water, Material::Salt, 255U);
+    const auto salt_reverse =
+        InteractionRules::resolve_pair(Material::Salt, Material::Water, 255U);
+    require(salt_forward.selected && salt_reverse.selected &&
+                salt_forward.source_product == Material::Brine &&
+                salt_forward.target_product == Material::Brine &&
+                salt_reverse.source_product == Material::Brine &&
+                salt_reverse.target_product == Material::Brine,
+            "Water/Salt role-preserving unordered resolution changed");
+
+    const auto acid_forward =
+        InteractionRules::resolve_pair(Material::Acid, Material::Metal, 96U);
+    const auto acid_reverse =
+        InteractionRules::resolve_pair(Material::Metal, Material::Acid, 96U);
+    require(acid_forward.selected && acid_reverse.selected &&
+                acid_forward.source_product == Material::Smoke &&
+                acid_forward.target_product == Material::Rust &&
+                acid_reverse.source_product == Material::Rust &&
+                acid_reverse.target_product == Material::Smoke,
+            "Acid/Metal reverse roles were collapsed into symmetric effects");
+    require(!InteractionRules::resolve_pair(Material::Acid, Material::Metal, 97U).selected,
+            "Acid/Metal probability boundary changed");
+
+    require(!InteractionRules::match_pair(Material::Water, Material::Sand).matched,
+            "Water/Sand transport control gained an INT conversion rule");
+    require(InteractionRules::in_family("int.family.conductive-base-metal", Material::Metal),
+            "base Metal lost explicit conductive membership");
+    for (const auto themed : {Material::WroughtIron, Material::Bronze, Material::Copper,
+                              Material::SteelPlate, Material::CopperPipe}) {
+        require(!InteractionRules::in_family("int.family.conductive-base-metal", themed),
+                "themed metal inherited base Metal INT semantics");
+    }
+    require(InteractionRules::in_family("int.family.reactive-base-glass", Material::Glass),
+            "base Glass lost explicit reactive membership");
+    for (const auto themed : {Material::StainedGlass, Material::ChemicalGlass, Material::DarkGlass}) {
+        require(!InteractionRules::in_family("int.family.reactive-base-glass", themed),
+                "themed glass inherited base Glass INT semantics");
+    }
+    require(InteractionRules::coverage().size() >= 7U &&
+                InteractionRules::tuning_passes().size() == 1U,
+            "INT coverage/pass metadata is incomplete");
+}
+
 int main() {
     struct Test {
         const char* name;
         void (*function)();
     };
     const Test tests[] = {
+        {"INT-000 sparse schema shadow equivalence", test_int000_sparse_schema_shadow_equivalence},
         {"flow resting packing, films, barriers and signed seams", test_flow_rest_films_and_barriers},
         {"flow conserved state, temperature, workers and exclusion", test_flow_conservation_state_and_workers},
         {"powder pairs and void-driven rearrangement", test_powder_pair_and_void_policy},

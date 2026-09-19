@@ -10,6 +10,8 @@ var _inspection_bridge: Variant
 var _telemetry: CyberMicroScenarioTelemetry
 var _before_elapsed_us: int = 0
 var _material_ids: Array[int] = []
+var _interaction_profile: Dictionary = {}
+var _interaction_inspection: Array = []
 var last_error: String = ""
 var _world: Variant
 var _definition: Dictionary = {}
@@ -51,7 +53,9 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 	var candidate: Dictionary = checked.definition
 	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
 	if int(candidate.schema_version) == 2 and (not bridge.has_method(&"inspect_cell")
-		or not bridge.has_method(&"inspect_statistics")):
+		or not bridge.has_method(&"inspect_statistics")
+		or not bridge.has_method(&"inspect_interaction_profile")
+		or not bridge.has_method(&"inspect_interaction")):
 		last_error = "Schema 2 requires the rebuilt native observation adapter; prior world preserved"
 		return false
 	if not bridge.build_water_feel_world(world, PackedInt32Array(candidate.rectangles),
@@ -72,6 +76,13 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 	for event: Dictionary in candidate.events:
 		if not int(event.material) in _material_ids: _material_ids.append(int(event.material))
 	_material_ids.sort()
+	_interaction_profile = _inspection_bridge.inspect_interaction_profile() if _inspection_bridge != null else {}
+	_interaction_inspection.clear()
+	if _inspection_bridge != null:
+		for left: int in range(_material_ids.size()):
+			for right: int in range(left, _material_ids.size()):
+				_interaction_inspection.append(_inspection_bridge.inspect_interaction(
+					_material_ids[left], _material_ids[right], 0))
 	_definition = candidate.duplicate(true)
 	_definition_hash = str(checked.hash)
 	_transport_hash = str(checked.transport.hash)
@@ -112,6 +123,8 @@ func clear() -> void:
 	_inspection_bridge = null
 	_telemetry = null
 	_material_ids.clear()
+	_interaction_profile.clear()
+	_interaction_inspection.clear()
 	_definition.clear()
 	_history.clear()
 	_samples.clear()
@@ -302,6 +315,26 @@ func summary() -> Dictionary:
 		"source_recipe":_definition.source_recipe, "source_recipe_hash":_definition.source_recipe_hash,
 		"transport_hash":_transport_hash, "water_semantics":_definition.water_semantics.duplicate(),
 		"material_ids":_material_ids.duplicate(), "declared_observations":_definition.observations.duplicate(true),
+		"interaction_profile":{"schema_id":_interaction_profile.get("schema_id","unavailable"),
+			"schema_version":_interaction_profile.get("schema_version",0),
+			"profile_id":_interaction_profile.get("profile_id","unavailable"),
+			"profile_version":_interaction_profile.get("profile_version",0),
+			"channels":_interaction_profile.get("channels",[]).duplicate(true),
+			"layer_kinds":_interaction_profile.get("layer_kinds",[]).duplicate(true),
+			"authored_layers":_interaction_profile.get("authored_layers",[]).duplicate(true),
+			"catalogue_validation":_interaction_profile.get("catalogue_validation",{}).duplicate(true),
+			"coverage":_interaction_profile.get("coverage",[]).duplicate(true),
+			"tuning_passes":_interaction_profile.get("tuning_passes",[]).duplicate(true),
+			"specialized_rule_count":_interaction_profile.get("specialized_rule_count",0),
+			"specialized_authority":_interaction_profile.get("specialized_authority","unavailable"),
+			"specialized_migration_state":_interaction_profile.get("specialized_migration_state","unavailable")},
+		"interaction_inspection":_interaction_inspection.duplicate(true),
+		"kinetic_contact_baseline":{"transport_hash":_transport_hash,
+			"water_semantics":_definition.water_semantics.duplicate(),
+			"execution":_definition.execution.duplicate(true),
+			"interest":_definition.interest.duplicate(true),
+			"worker_count":int(_world.get_worker_threads()),
+			"scope":"read-only baseline identity; kinetic/contact physics remains owned outside INT-000"},
 		"recipe_version":_definition.recipe_version, "seed":_definition.seed,
 		"definition_hash":_definition_hash, "maturity":_definition.maturity,
 		"execution_policy":_definition.execution.policy, "interest_policy":_definition.interest.policy,
@@ -325,6 +358,16 @@ func capture(identity: Dictionary = {}) -> Dictionary:
 		timing["max_ms"] = sorted.back()
 	var report: Dictionary = summary()
 	report.merge({"definition":definition(), "runtime_identity":identity.duplicate(true),
+		"interaction_profile_full":_interaction_profile.duplicate(true),
+		"interaction_inspection":_interaction_inspection.duplicate(true),
+		"kinetic_contact_baseline":{"source_runtime_identity":identity.duplicate(true),
+			"transport_hash":_transport_hash,
+			"water_semantics":_definition.water_semantics.duplicate(),
+			"effective_water_policy":_world.get_water_experiment_policy(),
+			"execution":_definition.execution.duplicate(true),
+			"interest":_definition.interest.duplicate(true),
+			"worker_count":int(_world.get_worker_threads()),
+			"scope":"identity/provenance only; INT-000 does not own contact motion"},
 		"platform":OS.get_name(), "godot":Engine.get_version_info().get("string", "unknown"),
 		"backend":str(_world.get_backend_name()), "worker_count":int(_world.get_worker_threads()),
 		"completed_tick":int(_world.get_tick_index()), "native":native,

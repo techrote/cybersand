@@ -303,7 +303,7 @@ Do not make humans maintain a dense N×N table. With 64 materials there are 4096
 ordered pairs; with 256 there are 65536. A dense resolved runtime lookup may be
 perfectly reasonable if measurement favors it; **dense manual authoring is not**.
 
-INT-000 should extend the useful #13 profile precedent:
+INT-000's current PR #55 implementation extends the useful #13 profile precedent:
 
 ```text
 intrinsic material properties/state
@@ -415,11 +415,14 @@ A fixture definition should run:
 - in batch coverage campaigns;
 - under human visual/feel review where appropriate.
 
-The planned Interaction Workbench should expose the **effective** interaction
-matrix/coverage without making that matrix the authored source of truth. A cell
-should be able to show resolved channel values, rule origin/provenance, explicit
-overrides, conflicts, relevant tests and what changed in the selected tuning
-pass.
+The PR #55 Interaction Workbench exposes the **effective** interaction
+profile/coverage without making a dense matrix the authored source of truth.
+Read-only native inspection reports resolved compact-pair channel values,
+rule/version/pass provenance, directionality, revalidation tags, represented
+specialized-kernel authority and catalogue conflicts. Schema-2 captures retain the
+rolling kinetic/contact baseline, while batch manifests expose coverage gaps and
+stable-ID pass differences. The workbench cannot mutate authoritative interaction
+semantics.
 
 Where applicable, retain exact starting/ending quantities, conversions/products,
 source/sink/outflow ledgers, Water/fractional quantity accounting,
@@ -505,6 +508,33 @@ this harness. #18/#20 scientific controls and #14/G-final remain separate. #26 h
 with a negative local-candidate disposition and #45 owns its bulk-head successor.
 Do not infer any of those decisions from reusable apparatus or issue numbers.
 
+## INT-000 implementation checkpoint, 2026-09-19
+
+PR #55 / `codex/issue-29-int000` is the single implementation lane. It begins
+from current main rather than the historical PR #42 branch and has completed the
+bounded semantic migration required for the infrastructure checkpoint:
+
+- sparse schema/profile/pass identities and seven independent channels;
+- explicit family/default/material/pair/context layer model with deterministic
+  precedence and conflict validation, while Current authors no implicit layer
+  semantics;
+- stable compact-pair rule IDs with ordered/symmetric/unordered-role-preserving
+  semantics and frozen-oracle migration regression;
+- specialized current `world.cpp` mechanisms represented with stable provenance
+  while their execution remains in place;
+- coverage/evidence statuses plus targeted subsystem revalidation tags;
+- read-only effective provenance in the shared schema-2 host/workbench;
+- mechanism-led generated fixtures usable by the same headless and interactive
+  definitions;
+- batch worker-parity, coverage-gap and stable-ID pass-comparison output;
+- rolling source/runtime/contact/transport/Water/execution identity retained with
+  each evidence capture.
+
+The implementation deliberately does not retune materials or absorb kinetic,
+Water, granular, soliding, collision/ballistic or Rapier ownership. Final #29
+acceptance is still gated on source-matched runtime publication, exact-head
+repository/native/Godot/retrieval validation and the final PR diff review.
+
 ## MS-001 merged checkpoint, 2026-09-19
 
 The selected MS-000 implementation landed through PR #40
@@ -520,11 +550,11 @@ merge. A bounded post-merge review retained the implementation and runtime
 integration, correcting only Flood endpoint wording, an ineffective Stress
 uniqueness assertion and stale compact definition hashes.
 
-The Lab readiness prerequisite for #29 is therefore satisfied. #29 remains a
-separate programme: reconcile its historical preflight against the landed
-schema-2 contract before implementation, preserve existing semantics first, and
-defer actual interaction tuning to later bounded passes. MS-001 completion does
-not waive #18/#20/#26/#14 architecture or physics gates. Actual Windows
-execution, browser/WebAssembly execution and hardware-GPU/target-PC performance
-remain explicitly unavailable rather than inferred from cross-build/Linux UI
-evidence.
+The Lab readiness prerequisite for #29 is therefore satisfied. PR #55 consumed
+that prerequisite after reconciling the historical #42 preflight against the
+landed schema-2 contract and is the sole INT-000 implementation owner. Its
+infrastructure checkpoint preserves existing semantics first and defers actual
+interaction tuning to later bounded passes. MS-001 completion and INT-000
+infrastructure do not waive #18/#20/#26/#14 architecture or physics gates. Actual
+Windows execution, browser/WebAssembly execution and hardware-GPU/target-PC
+performance remain explicitly unavailable unless separately recorded.

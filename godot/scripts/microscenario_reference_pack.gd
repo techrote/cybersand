@@ -6,7 +6,7 @@ extends RefCounted
 const Contract = preload("res://scripts/microscenario_contract.gd")
 const VERSION: int = 1
 const BASELINE: String = "de332eaf8f4e70b25b097bed0c2e2a7b2aac0173 / Baseline transport / Water8-coherence12 / exploratory"
-const MATERIAL_IDS: Array[String] = ["materials/contact-lab", "materials/salt-water", "materials/salt-water-dose-small", "materials/lava-water"]
+const MATERIAL_IDS: Array[String] = ["materials/contact-lab", "materials/salt-water", "materials/salt-water-dose-small", "materials/lava-water", "materials/sand-water-control", "materials/fire-gunpowder", "materials/acid-metal", "materials/spark-metal", "materials/cement-water"]
 const FLOOD_ID: String = "ms001/flood-control"
 const STRESS_PREFIX: String = "ms001/stress/"
 const STRESS_PROFILES: Array[String] = ["water-flow", "granular-collapse", "gas-column", "mixed"]
@@ -23,6 +23,11 @@ static func definition(id: String, seed: int = 0) -> Dictionary:
 		"materials/salt-water": return interaction_fixture("salt-water", seed, 32)
 		"materials/salt-water-dose-small": return interaction_fixture("salt-water", seed, 16)
 		"materials/lava-water": return interaction_fixture("lava-water", seed, 32)
+		"materials/sand-water-control": return interaction_fixture("sand-water", seed, 32)
+		"materials/fire-gunpowder": return mechanism_fixture("fire-gunpowder", seed)
+		"materials/acid-metal": return mechanism_fixture("acid-metal", seed)
+		"materials/spark-metal": return mechanism_fixture("spark-metal", seed)
+		"materials/cement-water": return mechanism_fixture("cement-water", seed)
 		FLOOD_ID: return flood_control(seed)
 	if id.begins_with(STRESS_PREFIX): return simulation_stress(id.trim_prefix(STRESS_PREFIX), seed)
 	return {}
@@ -93,11 +98,11 @@ static func laboratory(seed: int = 0) -> Dictionary:
 static func interaction_fixture(pair: String = "salt-water", seed: int = 0, dose: int = 32) -> Dictionary:
 	# Deliberately generated complete data, not an INT-000 implementation. This
 	# function returns independent values; GUI paste and CLI --definition use them unchanged.
-	if not pair in ["salt-water", "lava-water"] or not dose in [16,32]: return {}
-	var material: int = 23 if pair == "salt-water" else 8
-	var product: int = 24 if pair == "salt-water" else 13
-	var id: String = "materials/" + pair
-	if dose == 16: id += "-dose-small"
+	if not pair in ["salt-water", "lava-water", "sand-water"] or not dose in [16,32]: return {}
+	var material: int = 23 if pair == "salt-water" else (8 if pair == "lava-water" else 2)
+	var product: int = 24 if pair == "salt-water" else (13 if pair == "lava-water" else 2)
+	var id: String = "materials/sand-water-control" if pair == "sand-water" else "materials/" + pair
+	if dose == 16 and pair != "sand-water": id += "-dose-small"
 	var out: Dictionary = base(id, seed, "Materials Laboratory / " + pair, "%s/dose-%d/v1" % [pair,dose], 120,
 		"Generated controlled interaction fixture. The complete definition fixes the dose, reservoir, shelf release at tick 12, observations and current engine profiles. Use the normal-dose and small-dose Salt presets as a fresh-reset A/B example, not a tuning verdict. No player/body owner or live brush is omitted by the headless run. The unused bays remain empty inspection space; edit a complete JSON definition to reuse them.")
 	_bay(out,176,material,dose,seed)
@@ -112,6 +117,67 @@ static func interaction_fixture(pair: String = "salt-water", seed: int = 0, dose
 		observe("reservoir-state",120,"cell_state",[182,238,1,1],product)]
 	out.conditions = [{"observation":"product-final","comparison":"ge","value":1,"outcome":"complete"},
 		{"observation":"product-final","comparison":"eq","value":0,"outcome":"fail"}]
+	return finish(out)
+
+
+static func mechanism_fixture(mechanism: String, seed: int = 0) -> Dictionary:
+	# Mechanism-led generated definitions. They use only ordinary material setup
+	# and declared observations; no fixture-specific physics or callbacks.
+	if not mechanism in ["fire-gunpowder", "acid-metal", "spark-metal", "cement-water"]: return {}
+	var duration: int = 240 if mechanism == "cement-water" else 120
+	var out: Dictionary = base("materials/" + mechanism, seed,
+		"Materials Laboratory / " + mechanism, mechanism + "/bounded-v1", duration,
+		"Generated INT-000 mechanism fixture using ordinary material setup and the shared schema-2 host. Read native interaction provenance in Identities / all results. Declared observations are evidence, not a tuning verdict.")
+	var shift: int = seed % 5
+	out.camera_origin = [152,48]
+	out.interest = {"policy":"fixed", "region":[152,48,176,216]}
+	out.rectangles = [176,64,4,184,1, 304,64,4,184,1, 176,244,132,4,1, 176,64,132,4,1]
+	match mechanism:
+		"fire-gunpowder":
+			out.rectangles.append_array([220+shift,184,40,12,26, 220+shift,180,40,4,6])
+			out.presentation.regions = [region("contact","FIRE + GUNPOWDER / COMBUSTION",[180,68,124,176])]
+			out.observations = [observe("gunpowder-initial",0,"material_cells",[180,68,124,176],26),
+				observe("fire-8",8,"material_cells",[180,68,124,176],6),
+				observe("gunpowder-final",duration,"material_cells",[180,68,124,176],26)]
+		"acid-metal":
+			out.rectangles.append_array([220+shift,184,40,8,28, 220+shift,168,40,16,12])
+			out.presentation.regions = [region("contact","ACID + METAL / CORROSION",[180,68,124,176])]
+			out.observations = [observe("metal-initial",0,"material_cells",[180,68,124,176],28),
+				observe("rust-60",60,"material_cells",[180,68,124,176],29),
+				observe("rust-final",duration,"material_cells",[180,68,124,176],29)]
+		"spark-metal":
+			out.rectangles.append_array([220+shift,184,40,8,28, 220+shift,180,40,4,34])
+			out.presentation.regions = [region("contact","SPARK + METAL / ELECTRICAL",[180,68,124,176])]
+			out.observations = [observe("metal-charge",1,"cell_state",[224+shift,184,1,1],28),
+				observe("spark-4",4,"material_cells",[180,68,124,176],34),
+				observe("metal-final",duration,"material_cells",[180,68,124,176],28)]
+		"cement-water":
+			out.rectangles.append_array([216+shift,180,48,24,30])
+			out.partial_water_fills = [216+shift,156,48,24,255,0]
+			out.presentation.regions = [region("contact","CEMENT + WATER / CURE",[180,68,124,176])]
+			out.observations = [observe("cement-initial",0,"material_cells",[180,68,124,176],30),
+				observe("concrete-120",120,"material_cells",[180,68,124,176],31),
+				observe("concrete-final",duration,"material_cells",[180,68,124,176],31)]
+	out.observations.append(observe("end",duration,"tick",[0,0,1,1]))
+	match mechanism:
+		"fire-gunpowder":
+			out.conditions = [
+				{"observation":"gunpowder-final","comparison":"le","value":479,"outcome":"complete"},
+				{"observation":"gunpowder-final","comparison":"ge","value":480,"outcome":"fail"}]
+		"acid-metal":
+			out.conditions = [
+				{"observation":"rust-60","comparison":"ge","value":1,"outcome":"complete"},
+				{"observation":"rust-60","comparison":"eq","value":0,"outcome":"fail"}]
+		"spark-metal":
+			out.conditions = [
+				{"observation":"spark-4","comparison":"le","value":159,"outcome":"complete"},
+				{"observation":"spark-4","comparison":"ge","value":160,"outcome":"fail"}]
+		"cement-water":
+			out.conditions = [
+				{"observation":"concrete-120","comparison":"ge","value":1,"outcome":"complete"},
+				{"observation":"concrete-120","comparison":"eq","value":0,"outcome":"fail"}]
+	out.conditions.append({"observation":"end","comparison":"eq","value":duration,"outcome":"complete"})
+	out.source_recipe = "INT-000 generated mechanism fixture v1 / " + mechanism
 	return finish(out)
 
 

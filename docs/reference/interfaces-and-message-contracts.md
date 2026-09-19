@@ -267,8 +267,28 @@ is unavailable: the underlying occupancy-aware query's ambient fallback is not
 represented as the hidden cell's temperature. There is no new heat solver or
 per-cell awake flag. Statistics export existing completed-tick counters and
 actual configured limits; missing utilization/queue/allocation counters remain
-explicitly unavailable. See the [MS-001 execution ledger](../audits/2026-09-19-issue-28-ms001.md)
-for source/artifact identity and the separate readiness disposition.
+explicitly unavailable.
+
+INT-000 extends the same serialized read-only bridge with
+`inspect_interaction_profile()` and
+`inspect_interaction(source_id, target_id, probability_roll)`. The profile result
+owns copied schema/profile/channel/layer/family/rule/coverage/tuning-pass data plus
+catalogue conflict-validation status. Pair inspection reports match kind,
+orientation, selected products/probability, stable rule/version/supersession,
+selected-pass parent/disposition/change declaration, revalidation tags and
+provenance chain. It also reports represented specialized world-kernel authority
+without claiming those mechanisms executed for the queried pair. These calls do not
+mutate the World or constitute a second material authority.
+
+Schema-2 host summaries/captures additionally preserve a read-only
+`kinetic_contact_baseline`: source/runtime identity, transport hash, Water
+semantics/effective policy, execution/interest settings and worker count. It is
+provenance for targeted revalidation, not ownership transfer to INT-000.
+
+See the [MS-001 execution ledger](../audits/2026-09-19-issue-28-ms001.md)
+for the original observation adapter and the
+[INT-000 contract](../systems/intermaterial-interactions.md) for interaction
+provenance/coverage semantics.
 
 ## Soliding model and discovery values
 

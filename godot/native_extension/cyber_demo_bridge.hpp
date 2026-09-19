@@ -3,6 +3,8 @@
 #include "cyber_native_cell_world.hpp"
 #include "cyber_observation_values.hpp"
 #include "cybersand/demo_snapshot.hpp"
+#include "cybersand/interaction_rules.hpp"
+#include "cybersand/material_rules.hpp"
 #include <godot_cpp/classes/ref.hpp>
 #include <godot_cpp/core/class_db.hpp>
 
@@ -13,6 +15,67 @@ namespace godot {
 class CyberDemoBridge final : public RefCounted {
     GDCLASS(CyberDemoBridge, RefCounted)
     String error_;
+
+    static String interaction_string(std::string_view value) {
+        if (value.empty()) return String();
+        return String(value.data());
+    }
+
+    static Array interaction_channels(std::uint32_t mask) {
+        Array result;
+        for (const auto& channel : cybersand::InteractionRules::channels()) {
+            if ((mask & cybersand::interaction_channel_bit(channel.channel)) != 0U) {
+                result.push_back(interaction_string(channel.id));
+            }
+        }
+        return result;
+    }
+
+    static Array interaction_revalidation_tags(std::uint32_t mask) {
+        Array result;
+        for (std::uint8_t raw = 0U;
+             raw <= static_cast<std::uint8_t>(cybersand::InteractionRevalidationTag::BallisticContact);
+             ++raw) {
+            const auto tag = static_cast<cybersand::InteractionRevalidationTag>(raw);
+            if ((mask & cybersand::interaction_revalidation_bit(tag)) != 0U) {
+                result.push_back(interaction_string(cybersand::interaction_revalidation_tag_id(tag)));
+            }
+        }
+        return result;
+    }
+
+    static Array interaction_families(cybersand::Material material) {
+        Array result;
+        for (const auto& membership : cybersand::InteractionRules::semantic_family_memberships()) {
+            if (membership.material == material) result.push_back(interaction_string(membership.family_id));
+        }
+        return result;
+    }
+
+    static Array specialized_interactions(cybersand::Material material) {
+        Array result;
+        const auto kernel = cybersand::MaterialRules::descriptor(material).kernel;
+        for (const auto& rule : cybersand::InteractionRules::specialized_rules()) {
+            if (rule.material != material &&
+                (rule.kernel == cybersand::RuleKernel::None || rule.kernel != kernel)) {
+                continue;
+            }
+            Dictionary item;
+            item["rule_id"] = interaction_string(rule.id);
+            item["channels"] = interaction_channels(rule.channels);
+            item["trigger"] = interaction_string(cybersand::interaction_trigger_id(rule.trigger));
+            item["authority"] = interaction_string(rule.authority_path);
+            item["represented_semantics"] = interaction_string(rule.represented_semantics);
+            item["version"] = static_cast<std::int64_t>(rule.version);
+            item["supersedes"] = interaction_string(rule.supersedes);
+            item["tuning_pass_id"] = interaction_string(rule.tuning_pass_id);
+            item["revalidation_tags"] = interaction_revalidation_tags(rule.revalidation_tags);
+            item["authority_state"] = "current-world-kernel";
+            item["evaluated"] = false;
+            result.push_back(item);
+        }
+        return result;
+    }
 
     static void install(CyberNativeCellWorld& adapter, std::unique_ptr<cybersand::World> candidate) {
         auto exchange = std::make_unique<cybersand::RenderSnapshotExchange>(
@@ -39,6 +102,282 @@ class CyberDemoBridge final : public RefCounted {
     }
 
 public:
+    [[nodiscard]] Dictionary inspect_interaction_profile() const {
+        Dictionary out;
+        out["schema_id"] = interaction_string(cybersand::kInteractionSchemaId);
+        out["schema_version"] = static_cast<std::int64_t>(cybersand::kInteractionSchemaVersion);
+        out["profile_id"] = interaction_string(cybersand::kInteractionProfileId);
+        out["profile_version"] = static_cast<std::int64_t>(cybersand::kInteractionProfileVersion);
+
+        Array channels;
+        for (const auto& channel : cybersand::InteractionRules::channels()) {
+            Dictionary item;
+            item["id"] = interaction_string(channel.id);
+            channels.push_back(item);
+        }
+        out["channels"] = channels;
+
+        Array layer_kinds;
+        for (const auto& kind : cybersand::InteractionRules::layer_kinds()) {
+            Dictionary item;
+            item["id"] = interaction_string(kind.id);
+            item["precedence"] = static_cast<std::int64_t>(kind.precedence);
+            layer_kinds.push_back(item);
+        }
+        out["layer_kinds"] = layer_kinds;
+
+        Array authored_layers;
+        for (const auto& layer : cybersand::InteractionRules::authored_layers()) {
+            Dictionary item;
+            item["id"] = interaction_string(layer.id);
+            item["version"] = static_cast<std::int64_t>(layer.version);
+            item["supersedes"] = interaction_string(layer.supersedes);
+            item["channel"] = interaction_string(cybersand::interaction_channel_id(layer.channel));
+            item["kind"] = interaction_string(cybersand::interaction_layer_kind_id(layer.kind));
+            item["precedence"] =
+                static_cast<std::int64_t>(cybersand::InteractionRules::layer_precedence(layer.kind));
+            item["participant_role"] =
+                interaction_string(cybersand::interaction_participant_role_id(layer.selector.role));
+            item["family_id"] = interaction_string(layer.selector.family_id);
+            item["has_material"] = layer.selector.has_material;
+            if (layer.selector.has_material) {
+                item["material"] = static_cast<std::int64_t>(layer.selector.material);
+            }
+            item["context_id"] = interaction_string(layer.selector.context_id);
+            item["effect_ref"] = interaction_string(layer.effect_ref);
+            item["tuning_pass_id"] = interaction_string(layer.tuning_pass_id);
+            authored_layers.push_back(item);
+        }
+        out["authored_layers"] = authored_layers;
+
+        const auto validation = cybersand::InteractionRules::validate_catalogue();
+        Dictionary validation_result;
+        validation_result["ok"] = validation.ok;
+        validation_result["duplicate_rule_ids"] =
+            static_cast<std::int64_t>(validation.duplicate_rule_ids);
+        validation_result["conflicting_pair_overrides"] =
+            static_cast<std::int64_t>(validation.conflicting_pair_overrides);
+        validation_result["invalid_family_memberships"] =
+            static_cast<std::int64_t>(validation.invalid_family_memberships);
+        validation_result["unresolved_layer_conflicts"] =
+            static_cast<std::int64_t>(validation.unresolved_layer_conflicts);
+        validation_result["invalid_supersession_links"] =
+            static_cast<std::int64_t>(validation.invalid_supersession_links);
+        out["catalogue_validation"] = validation_result;
+
+        Array families;
+        for (const auto& family : cybersand::InteractionRules::semantic_families()) {
+            Dictionary item;
+            item["id"] = interaction_string(family.id);
+            item["version"] = static_cast<std::int64_t>(family.version);
+            item["purpose"] = interaction_string(family.purpose);
+            families.push_back(item);
+        }
+        out["families"] = families;
+
+        Array pair_rules;
+        for (const auto& rule : cybersand::InteractionRules::pair_rules()) {
+            Dictionary item;
+            item["rule_id"] = interaction_string(rule.id);
+            item["channels"] = interaction_channels(rule.channels);
+            item["trigger"] = interaction_string(cybersand::interaction_trigger_id(rule.trigger));
+            item["match"] = interaction_string(cybersand::interaction_match_id(rule.match));
+            item["first"] = static_cast<std::int64_t>(rule.first);
+            item["second"] = static_cast<std::int64_t>(rule.second);
+            item["first_product"] = static_cast<std::int64_t>(rule.first_product);
+            item["second_product"] = static_cast<std::int64_t>(rule.second_product);
+            item["probability_threshold"] = static_cast<std::int64_t>(rule.probability);
+            item["accounting"] = interaction_string(rule.accounting);
+            item["version"] = static_cast<std::int64_t>(rule.version);
+            item["supersedes"] = interaction_string(rule.supersedes);
+            item["tuning_pass_id"] = interaction_string(rule.tuning_pass_id);
+            item["revalidation_tags"] = interaction_revalidation_tags(rule.revalidation_tags);
+            pair_rules.push_back(item);
+        }
+        out["pair_rules"] = pair_rules;
+
+        Array coverage;
+        for (const auto& entry : cybersand::InteractionRules::coverage()) {
+            Dictionary item;
+            item["subject_id"] = interaction_string(entry.subject_id);
+            item["channel_id"] = interaction_string(entry.channel_id);
+            item["authored_status"] =
+                interaction_string(cybersand::interaction_authored_status_id(entry.authored_status));
+            item["evidence_status"] =
+                interaction_string(cybersand::interaction_evidence_status_id(entry.evidence_status));
+            item["effective_rule_id"] = interaction_string(entry.effective_rule_id);
+            item["limitation"] = interaction_string(entry.limitation);
+            coverage.push_back(item);
+        }
+        out["coverage"] = coverage;
+
+        Array passes;
+        for (const auto& pass : cybersand::InteractionRules::tuning_passes()) {
+            Dictionary item;
+            item["id"] = interaction_string(pass.id);
+            item["version"] = static_cast<std::int64_t>(pass.version);
+            item["parent"] = interaction_string(pass.parent);
+            item["disposition"] = interaction_string(pass.disposition);
+            item["changed_rules"] = interaction_string(pass.changed_rules);
+            passes.push_back(item);
+        }
+        out["tuning_passes"] = passes;
+        Array specialized_rules;
+        for (const auto& rule : cybersand::InteractionRules::specialized_rules()) {
+            Dictionary item;
+            item["rule_id"] = interaction_string(rule.id);
+            item["version"] = static_cast<std::int64_t>(rule.version);
+            item["supersedes"] = interaction_string(rule.supersedes);
+            item["channels"] = interaction_channels(rule.channels);
+            item["trigger"] = interaction_string(cybersand::interaction_trigger_id(rule.trigger));
+            item["material"] = static_cast<std::int64_t>(rule.material);
+            item["authority"] = interaction_string(rule.authority_path);
+            item["represented_semantics"] = interaction_string(rule.represented_semantics);
+            item["tuning_pass_id"] = interaction_string(rule.tuning_pass_id);
+            item["revalidation_tags"] = interaction_revalidation_tags(rule.revalidation_tags);
+            specialized_rules.push_back(item);
+        }
+        out["specialized_rules"] = specialized_rules;
+        out["specialized_rule_count"] =
+            static_cast<std::int64_t>(cybersand::InteractionRules::specialized_rules().size());
+        out["specialized_authority"] = "native/src/world.cpp";
+        out["specialized_migration_state"] =
+            "represented-provenance-visible; current world kernels remain authoritative";
+        return out;
+    }
+
+    [[nodiscard]] Dictionary inspect_interaction(std::int64_t source_id,
+                                                 std::int64_t target_id,
+                                                 std::int64_t probability_roll) const {
+        if (source_id < 0 || target_id < 0 || probability_roll < 0 ||
+            source_id >= static_cast<std::int64_t>(cybersand::kMaterialDefinitions.size()) ||
+            target_id >= static_cast<std::int64_t>(cybersand::kMaterialDefinitions.size()) ||
+            probability_roll > 255 ||
+            !cybersand::valid_material(static_cast<std::uint16_t>(source_id)) ||
+            !cybersand::valid_material(static_cast<std::uint16_t>(target_id))) {
+            return cyber_observation::rejected("Invalid interaction inspection input");
+        }
+
+        const auto source = static_cast<cybersand::Material>(source_id);
+        const auto target = static_cast<cybersand::Material>(target_id);
+        const auto resolved = cybersand::InteractionRules::resolve_pair(
+            source, target, static_cast<std::uint8_t>(probability_roll));
+
+        Dictionary out;
+        out["ok"] = true;
+        out["schema_id"] = interaction_string(cybersand::kInteractionSchemaId);
+        out["schema_version"] = static_cast<std::int64_t>(cybersand::kInteractionSchemaVersion);
+        out["profile_id"] = interaction_string(cybersand::kInteractionProfileId);
+        out["profile_version"] = static_cast<std::int64_t>(cybersand::kInteractionProfileVersion);
+        out["source"] = source_id;
+        out["target"] = target_id;
+        out["probability_roll"] = probability_roll;
+        out["source_families"] = interaction_families(source);
+        out["target_families"] = interaction_families(target);
+        out["source_specialized"] = specialized_interactions(source);
+        out["target_specialized"] = specialized_interactions(target);
+        out["matched"] = resolved.matched;
+        out["selected"] = resolved.selected;
+
+        const cybersand::PairInteractionRule* compact_rule =
+            resolved.matched ? &cybersand::InteractionRules::pair_rules()[resolved.rule_index] : nullptr;
+        Array channel_resolution;
+        for (const auto& channel : cybersand::InteractionRules::channels()) {
+            Dictionary item;
+            item["channel"] = interaction_string(channel.id);
+            const bool pair_applies =
+                compact_rule != nullptr &&
+                (compact_rule->channels &
+                 cybersand::interaction_channel_bit(channel.channel)) != 0U;
+            item["pair_rule_applies"] = pair_applies;
+            item["pair_rule_selected"] = pair_applies && resolved.selected;
+            if (pair_applies) {
+                item["pair_rule_id"] = interaction_string(compact_rule->id);
+                item["pair_match"] =
+                    interaction_string(cybersand::interaction_match_id(compact_rule->match));
+            }
+
+            const auto layer = cybersand::InteractionRules::compile_layer(
+                channel.channel, source, target);
+            item["authored_layer_matched"] = layer.matched;
+            bool conflict = layer.conflict;
+            if (layer.matched) {
+                const auto& authored =
+                    cybersand::InteractionRules::authored_layers()[layer.layer_index];
+                item["authored_layer_id"] = interaction_string(authored.id);
+                item["authored_layer_kind"] =
+                    interaction_string(cybersand::interaction_layer_kind_id(authored.kind));
+                item["authored_layer_effect_ref"] = interaction_string(authored.effect_ref);
+                item["authored_layer_precedence"] =
+                    static_cast<std::int64_t>(layer.precedence);
+                if (pair_applies &&
+                    layer.precedence ==
+                        cybersand::InteractionRules::layer_precedence(
+                            cybersand::InteractionLayerKind::PairOverride)) {
+                    conflict = true;
+                }
+            }
+            item["conflict"] = conflict;
+
+            String effective_origin = "none";
+            if (conflict) {
+                effective_origin = "conflict";
+            } else if (layer.matched &&
+                       (!pair_applies ||
+                        layer.precedence >
+                            cybersand::InteractionRules::layer_precedence(
+                                cybersand::InteractionLayerKind::PairOverride))) {
+                effective_origin = interaction_string(
+                    cybersand::InteractionRules::authored_layers()[layer.layer_index].id);
+            } else if (pair_applies) {
+                effective_origin = interaction_string(compact_rule->id);
+            } else if (layer.matched) {
+                effective_origin = interaction_string(
+                    cybersand::InteractionRules::authored_layers()[layer.layer_index].id);
+            }
+            item["effective_origin"] = effective_origin;
+            channel_resolution.push_back(item);
+        }
+        out["channel_resolution"] = channel_resolution;
+
+        if (!resolved.matched) {
+            out["authored_status"] = "no-compact-pair-rule";
+            out["note"] =
+                "No compact INT pair rule; specialized or kinetic mechanisms may still apply.";
+            return out;
+        }
+
+        const auto& rule = cybersand::InteractionRules::pair_rules()[resolved.rule_index];
+        out["rule_id"] = interaction_string(rule.id);
+        out["channels"] = interaction_channels(rule.channels);
+        out["trigger"] = interaction_string(cybersand::interaction_trigger_id(rule.trigger));
+        out["match"] = interaction_string(cybersand::interaction_match_id(rule.match));
+        out["reversed"] = resolved.reversed;
+        out["probability_threshold"] = static_cast<std::int64_t>(rule.probability);
+        out["source_product"] = static_cast<std::int64_t>(resolved.source_product);
+        out["target_product"] = static_cast<std::int64_t>(resolved.target_product);
+        out["accounting"] = interaction_string(rule.accounting);
+        out["version"] = static_cast<std::int64_t>(rule.version);
+        out["supersedes"] = interaction_string(rule.supersedes);
+        out["tuning_pass_id"] = interaction_string(rule.tuning_pass_id);
+        for (const auto& pass : cybersand::InteractionRules::tuning_passes()) {
+            if (pass.id != rule.tuning_pass_id) continue;
+            out["tuning_pass_parent"] = interaction_string(pass.parent);
+            out["tuning_pass_disposition"] = interaction_string(pass.disposition);
+            out["tuning_pass_changed_rules"] = interaction_string(pass.changed_rules);
+            break;
+        }
+        out["revalidation_tags"] = interaction_revalidation_tags(rule.revalidation_tags);
+        out["authority"] = "InteractionRules via MaterialRules::pair_reaction";
+        Array provenance_chain;
+        provenance_chain.push_back(interaction_string(cybersand::kInteractionProfileId));
+        provenance_chain.push_back(interaction_string(rule.tuning_pass_id));
+        provenance_chain.push_back(interaction_string(rule.id));
+        out["provenance_chain"] = provenance_chain;
+        out["provenance"] = "explicit sparse pair override / current-behaviour profile";
+        return out;
+    }
+
     [[nodiscard]] Dictionary inspect_cell(const Ref<CyberNativeCellWorld>& adapter, Vector2i point) const {
         if (adapter.is_null() || !adapter->world_) return cyber_observation::rejected("Native world unavailable");
         return cyber_observation::cell(*adapter->world_, point);
@@ -232,6 +571,9 @@ protected:
     static void _bind_methods() {
         ClassDB::bind_method(D_METHOD("inspect_cell", "world", "point"), &CyberDemoBridge::inspect_cell);
         ClassDB::bind_method(D_METHOD("inspect_statistics", "world"), &CyberDemoBridge::inspect_statistics);
+        ClassDB::bind_method(D_METHOD("inspect_interaction_profile"), &CyberDemoBridge::inspect_interaction_profile);
+        ClassDB::bind_method(D_METHOD("inspect_interaction", "source_id", "target_id", "probability_roll"),
+                             &CyberDemoBridge::inspect_interaction);
         ClassDB::bind_method(D_METHOD("export_level", "world"), &CyberDemoBridge::export_level);
         ClassDB::bind_method(D_METHOD("import_level", "world", "bytes"), &CyberDemoBridge::import_level);
         ClassDB::bind_method(D_METHOD("build_world", "world", "rectangles"), &CyberDemoBridge::build_world);

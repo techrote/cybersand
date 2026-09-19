@@ -53,6 +53,7 @@
     "systems/granular-interaction-policy.md",
     "systems/material-appearance-and-rendering.md",
     "systems/materials-and-rule-kernels.md",
+    "systems/intermaterial-interactions.md",
     "systems/smoke-heat-pressure-roadmap.md",
     "systems/themed-construction-materials.md",
     "systems/water-design.md",
@@ -257,6 +258,10 @@
     {
       "path": "audits/2026-09-19-issue-26-post-merge-review.md",
       "reason": "Dated independent review of #26 evidence/apparatus and the #49 corrective gate; retrieve explicitly when interpreting #26 or executing #45"
+    },
+    {
+      "path": "audits/2026-09-19-issue-29-int000.md",
+      "reason": "Dated issue #29 implementation/equivalence evidence; retrieve explicitly with its source/runtime/check scope, not as a default Current contract"
     }
   ]
 }
