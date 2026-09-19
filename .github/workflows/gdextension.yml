@@ -157,9 +157,9 @@ jobs:
   linux-regression:
     name: linux regression shard ${{ matrix.shard }}
     needs: linux-build
-    # Most Godot shards are runtime/I/O dominated and fit 1 vCPU. Shard 2 contains
-    # test_web_worker_parity, whose acceptance contract requires a real >1-worker
-    # native run; CyberNativeCellWorld correctly clamps workers to hardware_concurrency().
+    # Most Godot shards are runtime/I/O dominated and stay on 1 vCPU. Shard 2 contains
+    # test_web_worker_parity, which must have >=2 logical CPUs so its parallel arm
+    # actually executes parallel phases instead of collapsing to workers=1.
     runs-on: ${{ matrix.shard == 2 && (vars.GDEXT_PARITY_SHARD_RUNNER || 'avrea-ubuntu-24.04-2-vcpu') || (vars.GDEXT_SHARD_RUNNER || 'avrea-ubuntu-24.04-1-vcpu') }}
     timeout-minutes: 35
     strategy:

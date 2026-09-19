@@ -52,6 +52,21 @@ class ShardingTests(unittest.TestCase):
         )
         self.assertEqual(first_totals, second_totals)
 
+    def test_worker_parity_case_stays_on_two_vcpu_shard(self):
+        cases = subject.discover_cases()
+        shards, _ = subject.build_shard_plan(cases, 4)
+        parity_shards = [
+            index
+            for index, shard in enumerate(shards)
+            if any(case.name == "test_web_worker_parity" for case in shard)
+        ]
+        self.assertEqual(
+            parity_shards,
+            [2],
+            "gdextension.yml routes only shard 2 to the >=2-vCPU parity runner; "
+            "update the workflow and this assertion together if shard planning moves the parity case",
+        )
+
     def test_unknown_case_weight_is_conservative(self):
         self.assertEqual(subject._weight("brand_new_test"), subject.DEFAULT_UNKNOWN_WEIGHT_SECONDS)
 

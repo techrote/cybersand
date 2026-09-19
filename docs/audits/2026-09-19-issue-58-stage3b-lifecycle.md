@@ -12,10 +12,13 @@ related-documents: [issue-12-2026-09-19/stage3b-parent-decision.md, ../operation
 
 Implementation branch: `codex/issue-58-stage3b-lifecycle`.
 
-Reconciled production base: `910717aac101363ec2b1b89e4041a22bc9a97b97`,
-the merge of PR #55 / issue #29 into the Stage-3B production base. The #58 branch
-was rebased/squashed onto that actual main after #29 landed rather than preserving
-its earlier CI-only base.
+Initial reconciled production base: `910717aac101363ec2b1b89e4041a22bc9a97b97`,
+the merge of PR #55 / issue #29 into the Stage-3B production base. Final #58
+integration then merges current `main` `210da4978ba020a177da99236b18cd4de10d5fc1`,
+which includes PR #75's canonical worker-parity runner repair. This merge-based
+reconciliation deliberately preserves the published runtime source commit
+`204ae8e1ebdc1f6e782a3278804d0ac92ef871ce` and source tree
+`8be7f2baac37a355c89cebc76526c57e35d807a0` in branch ancestry.
 
 The controlling Stage-3B parent decision and production plan remain authoritative.
 Stage 3A remains the bounded correctness/reference implementation and Stage 4
@@ -170,13 +173,26 @@ Focused run `35464828124` at head
 test: one worker versus two workers, 480 parallel phases in the parallel arm,
 120,283 moves in each arm and all 120 hashes identical.
 
+## Final integration reconciliation
+
+After #58's original exact-head acceptance passed, PR #75 merged the repository-wide
+worker-parity runner repair to `main` as
+`210da4978ba020a177da99236b18cd4de10d5fc1`. Final #58 integration therefore
+merges that `main` head instead of rebasing or retaining an independent workflow
+delta. The resulting branch uses PR #75's canonical `gdextension.yml` routing and
+its shard-planner regression test; #58 owns no separate worker-parity CI policy.
+
+This reconciliation changes no tracked native runtime input. The published Linux
+and Windows runtimes therefore remain source-matched to
+`204ae8e1ebdc1f6e782a3278804d0ac92ef871ce` /
+`8be7f2baac37a355c89cebc76526c57e35d807a0`, and no runtime rebuild or
+republish is required solely for this merge.
+
 ## Final validation checkpoint
 
-This documentation checkpoint intentionally changes no tracked native runtime input.
-It exists to trigger the normal human-authored exact-head pull-request workflows
-after the Actions-authored runtime publication commit.
-
-Final acceptance still requires the resulting exact-head documentation/provenance,
-native behavioral/determinism, ASan/UBSan, TSan where enabled by the normal gate,
-and GDExtension/Godot regression jobs to pass. Their run identities and final head
-are recorded in the issue/PR checkpoint after completion.
+Final acceptance requires the reconciled exact head to pass the normal
+documentation/provenance, native behavioral/determinism, ASan/UBSan, TSan where
+enabled by the normal gate, and GDExtension/Godot regression jobs. The
+GDExtension workflow also executes PR #75's shard-planner unit test, so no separate
+focused parity workflow is required. Final run identities and the exact head are
+recorded in the issue/PR checkpoint after completion.
