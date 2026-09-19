@@ -267,3 +267,93 @@ after candidate results are visible.
 
 A sound negative result completes the relevant arm successfully. Historical H and
 2026-09-10 Water evidence are never rewritten as if they were run on this source.
+
+
+## Baseline addendum — frozen 2026-09-19
+
+The baseline-only campaign ran successfully before any #26 semantic candidate was
+introduced.
+
+Identity and retained evidence:
+
+- branch head: \`332fac20f726f67c487f7b25b001ced5c8259e0f\`;
+- current-main base: \`de332eaf8f4e70b25b097bed0c2e2a7b2aac0173\`;
+- Actions checkout/merge head recorded by the runner:
+  \`bf3b6d53a0f534df5edd66d264c6f3bf1a4378e3\`;
+- source-set SHA-256:
+  \`7762db47cbbce9e890d50e218e656953dfc18e1ef43127f2cf5b90ae1c4d13d4\`;
+- workflow run: \`35412803078\`;
+- artifact ID: \`10574760981\`;
+- artifact ZIP SHA-256:
+  \`0466c6057b45dcdeb28e87a81682307fc2d8e23fc5932b747ab1dea2343a77c7\`;
+- raw \`results.json\` SHA-256:
+  \`9a2871f983d99daedadc19bc5e1f355caa739bc670eb72e16a2c3344c2f0a0e5\`;
+- \`summary.json\` SHA-256:
+  \`0fac3399154a6ebac692fe33e48eb2e604083baca6663783d011591ba5f98a4f\`;
+- machine-readable frozen thresholds:
+  \`issue-26-2026-09-19/baseline-reference.json\`.
+
+All 108 cases passed exact sampled closed-Water accounting, exact authoritative
+1/4-worker sample parity and zero post-setup owned allocations.
+
+### Baseline findings
+
+The baseline makes the missing head response concrete rather than merely visual:
+
+| Fixture | Registered baseline result |
+|---|---:|
+| head-shallow receive mass @300 | 21,104 median |
+| head-medium receive mass @300 | 27,223 median |
+| head-deep receive mass @300 | 27,223 median |
+| communicating-pools final level difference | 16.000 cells median |
+| unequal-head U-tube final level difference | 24.000 cells median |
+| constriction receive mass @300 | 15,454.5 median |
+| calm-settling sustained half-life | 480 ticks |
+| calm-settling sustained <=1-cell spread | 2,670 ticks |
+| fast-dump final surface spread | 3.392 cells median |
+| ledge-sheet receive mass @300 | 9,453.5 median |
+
+The medium and deep outlet fixtures producing the same early discharge is direct
+evidence that greater column depth stops contributing useful drive once the local
+outlet state is otherwise similar. More importantly, both communicating fixtures
+perform only a tiny initial rearrangement and then become quiescent while retaining
+approximately 16- and 24-cell surface-height differences for the full 4,800-tick
+horizon. This is a simulation-state failure, not a presentation artifact.
+
+Calm settling does eventually become flat under the registered metric, but requires
+a median 2,670 ticks for a sustained <=1-cell spread, consistent with the H report
+that the final mass8 state is acceptable but arrives much too slowly.
+
+### Frozen automated survival screen
+
+These are **pre-candidate** engineering screens. Passing them does not replace the
+required focused H review.
+
+Hard requirements for every arm:
+
+- sampled closed-Water accounting remains exact;
+- 1/4-worker authoritative traces remain exact;
+- post-setup owned allocations remain zero;
+- no unregistered semantic/presentation/profile change is introduced.
+
+An isolated candidate must:
+
+1. reduce calm-settling sustained half-life to <=360 ticks;
+2. reduce calm-settling sustained <=1-cell time to <=1,980 ticks;
+3. pass at least two additional primary benefit gates:
+   - head-deep receive mass @300 >=34,029 **and** deep/medium ratio >=1.10;
+   - communicating-pools final level difference <=12.000 cells;
+   - unequal-head U-tube final level difference <=18.000 cells;
+   - constriction receive mass @300 >=19,319;
+4. preserve the ledge-sheet control:
+   - receive mass @300 between 6,617 and 14,180;
+   - surface-classification turnover >=8 sample transitions;
+5. keep fast-dump final spread <=3.731 cells and maximum registered wall-gap count
+   <=1.
+
+A median p95 tick-cost ratio above 1.15 versus the frozen control is a mandatory
+performance review flag, not an automatic semantic rejection.
+
+The values above were derived only from the frozen baseline and the pre-existing H
+target before candidate results existed. They must not be loosened after seeing a
+candidate.
