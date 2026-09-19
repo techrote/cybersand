@@ -195,6 +195,19 @@ current Stage-3B work.
 
 None of these gates admits Stage 4.
 
+### Issue #59 implementation checkpoint
+
+Issue #59 is the active separately dispatched package on
+`codex/issue-59-stage3b-runtime-sized-storage`, based on authoritative `main`
+`3d5504836578eb9d47e11b677767bfbe8039fccb`. Its implementation is bounded to
+Stage-3A-equivalent backing conversion: journal `T`, edges `64T`,
+frontier/seen/members `32T`, effective-capacity key/index storage, with
+`C=1024`, `K=32`, `B=128` and publication `P=4096` unchanged.
+
+G2 remains open until the exact source-matched runtime publication, final normal
+repository validation and merge of #59. #60 must not begin from the in-flight
+branch.
+
 ## Required ordering principles
 
 - correctness/failure hardening before optimization;
@@ -283,8 +296,9 @@ identified reference series when it cannot share the matched authority.
 1. #56 authority/routing is complete.
 2. #58 / PR #72 is complete and G1 is closed; #57 / PR #73 is complete and
    G-P4 is closed. #69 remains an independent preregistration lane.
-3. #59 may proceed from the completed #58 prerequisite when separately dispatched,
-   then #59 -> #60. This #57 reconciliation does not start it.
+3. #59 is now the separately dispatched active package from completed #58. Complete
+   its source-matched runtime publication, exact-head validation and merge before
+   starting #60.
 4. After #60, run #61-#63 as the serialized World-producer lane while #64 runs as
    the parallel graph lane. #63 remains blocked on both #62 and #57.
 5. Join at #65.
