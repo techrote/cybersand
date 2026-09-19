@@ -130,3 +130,12 @@ The architecture programme remains the separate authority for #14/#18/#20
 scientific gates. MicroScenarios can provide apparatus and later retained
 fixtures; their existence is not architecture admission evidence.
 
+
+## Soliding, settled-region acceleration and coherent fracture
+
+- Current programme/dependencies and Phase 0 disposition: [soliding programme](../operations/soliding-programme.md).
+- Owners, lifecycle, eligibility and nonwrapping identities: [soliding lifecycle](../architecture/soliding-lifecycle.md).
+- Dirty/activity discovery, complete summaries and refusal: [discovery substrate](../systems/settled-region-discovery.md).
+- Ordinary Current sleep control and measurement gaps: [measurement contract](../operations/soliding-measurement.md).
+
+- Blocked falling/torque/coherent-child motion fixture: [macro-fracture preregistration](../operations/soliding-macro-fracture-fixture.md).

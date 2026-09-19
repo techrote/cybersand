@@ -157,9 +157,10 @@ barrel work; support-dependent integration requires actual source/evidence recon
 
 ## Architecture gate reconciliation, 2026-09-11
 
-**Current programme state:** G-L, G-C and G-P are complete. #16 research is complete;
-the current 4-byte Cell remains the baseline pending G-final, not a permanent width
-selection. #17 retains mass8 as the numerical/reference Water control and proves
+**Dated 2026-09-11 programme state:** G-L, G-C and G-P are complete. #16 research is complete;
+that checkpoint retained its 4-byte Cell baseline pending G-final, not a permanent
+width selection. The source-qualified 2026-09-19 storage correction below governs
+current physical-size accounting. #17 retains mass8 as the numerical/reference Water control and proves
 existing Water coherence 0..12 fits exactly in four semantic bits. No production
 Water precision or Cell layout migration is authorized.
 
@@ -250,3 +251,22 @@ This is apparatus, not a solver/interaction migration. The [programme graph](../
 still controls #28/#29 readiness and keeps architecture gates separate. Read the
 [checkpoint evidence](../audits/2026-09-19-issue-27-microscenarios.md) before claiming
 Windows, GPU or native Web runtime acceptance for this version.
+
+## Issue #12 successor programme, 2026-09-19
+
+**Approved direction / Planned implementation:** #12 now owns scalable reversible
+soliding for large-world acceleration and Rapier macro-dynamics/fracture. The
+[canonical stage gates](../operations/soliding-programme.md) supersede the earlier
+bounded-prototype scope. PR #23 remains Phase 0 evidence at `0b96ce2`; it does not
+close #12. The successor starts at `de332ea` in an isolated worktree, preserving
+#26/#27 source identities. Lifecycle tests precede discovery; measured Current
+sleep precedes performance claims; region discovery precedes acceleration.
+Dynamic handoff, torque-driven rotation, coherent-child fracture and persistence
+remain later unpassed gates, not implied by a standalone contract model.
+
+[Successor evidence](../audits/2026-09-19-issue-12-foundation.md) now includes the
+reviewed standalone lifecycle, bounded read-only journal and measured Current
+sleep control. Production discovery/acceleration/dynamics remain unimplemented.
+Source `de332ea` actually uses the 8-byte superset carrier after #19 integration;
+the [storage contract](../architecture/chunk-tile-and-buffer-model.md) supersedes
+earlier four-byte physical-size statements for this source without selecting G-final.

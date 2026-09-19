@@ -318,7 +318,51 @@
         "../godot/scripts/microscenario_host.gd",
         "../godot/scripts/simulation_worker.gd"
       ]
+    },
+    {
+      "id": "SOL01",
+      "query": "Does the PR 23 one-island prototype complete scalable soliding and fracture issue 12?",
+      "canonical": [
+        "operations/soliding-programme.md"
+      ],
+      "facts": [
+        "PR23 is retained Phase0 evidence; current-main successor begins from de332ea and preserves independent #26/#27 baselines.",
+        "Acceleration and Rapier macro-dynamics with coherent-child fracture are co-equal goals; later stages require genuine exit evidence."
+      ],
+      "sources": [
+        "operations/soliding-programme.md"
+      ]
+    },
+    {
+      "id": "SOL02",
+      "query": "Does sleeping settled Sand qualify for rigid Rapier cohesion and can a fractured slab lose all rotation?",
+      "canonical": [
+        "architecture/soliding-lifecycle.md",
+        "operations/soliding-programme.md"
+      ],
+      "facts": [
+        "Summary, stationary acceleration and dynamic cohesion are separate eligibility axes; rest never glues loose granular material.",
+        "Coherent children inherit parent translation and rotational point velocity; loose cellular motion loss must be explicit and measured."
+      ],
+      "sources": [
+        "architecture/soliding-lifecycle.md"
+      ]
+    },
+    {
+      "id": "SOL03",
+      "query": "Can incremental settled block summaries prove connected world-scale discovery or a speedup over ordinary sleep?",
+      "canonical": [
+        "systems/settled-region-discovery.md",
+        "operations/soliding-measurement.md"
+      ],
+      "facts": [
+        "Block summaries are not connected regions; seams, holes, mixed states and complete bounded components remain Stage3 requirements.",
+        "Measure source-matched Current ordinary sleep and retain observer overhead, epoch work, failed results and missing metrics."
+      ],
+      "sources": [
+        "systems/settled-region-discovery.md"
+      ]
     }
   ],
-  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged."
+  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue12 scope/ownership/discovery questions; frozen32 unchanged."
 }

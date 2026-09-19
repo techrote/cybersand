@@ -177,3 +177,10 @@ observer/worker parity, owner lifecycle, input focus, JSON runner and separate
 historical/documentation checks. No native simulation source changed. Linux tests
 of a synchronous Web controller are not real Wasm/browser or GPU execution;
 Windows and real Web coverage remain explicitly separate.
+
+## Issue 12 successor foundation, 2026-09-19
+
+[Foundation evidence](../audits/2026-09-19-issue-12-foundation.md) records the
+current-main reuse audit, reviewed standalone lifecycle/discovery tests, immutable
+ordinary-sleep controls and remaining World/connected-region/runtime gates.
+Neither model tests nor Current-only timings certify acceleration or Rapier fracture.

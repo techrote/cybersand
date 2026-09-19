@@ -171,3 +171,11 @@ freezes its dictionary/array values once, and publishes it under a monotonic cap
 serial. Old retained captures survive reset without mutation. The main thread
 serializes that record, not mutable World storage. Capacity, failure and reset
 semantics live in the [MicroScenario contract](../operations/microscenarios.md).
+
+## Standalone soliding successor contracts
+
+The [soliding lifecycle](soliding-lifecycle.md) defines reviewed future owner
+transitions and tests a synthetic bounded ledger. The [discovery substrate](../systems/settled-region-discovery.md)
+owns copied observations only. Neither is connected to World/Godot/Rapier or
+changes Current owners. Production hooks, barriers, queues and payload transitions
+remain separately gated; the source reader must stay serialized and read-only.
