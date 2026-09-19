@@ -65,7 +65,8 @@
     "operations/architecture-programme-water-feel-addendum.md",
     "operations/cell-layout-experiment.md",
     "operations/liquid-characterization.md",
-    "operations/state-precision-experiment.md"
+    "operations/state-precision-experiment.md",
+    "audits/2026-09-19-water-leveling-baseline-v1.md"
   ],
   "navigation": [
     "README.md",
