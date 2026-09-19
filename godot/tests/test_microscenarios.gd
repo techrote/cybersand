@@ -36,6 +36,7 @@ func _run() -> void:
 		var copy: Dictionary = Contract.validate(value.duplicate(true))
 		expect(copy.hash == checked.hash, "same definition produced a different hash")
 	_schema_rejections()
+	_interaction_provenance_tests()
 	var control: Variant = new_world()
 	var migrated: Variant = new_world()
 	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
@@ -101,6 +102,56 @@ func _run() -> void:
 	_native_failure_test()
 	print("MICROSCENARIOS: %d assertions; %d failures" % [assertions, failures])
 	quit(1 if failures else 0)
+
+
+func _interaction_provenance_tests() -> void:
+	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
+	expect(bridge.has_method(&"inspect_interaction_profile") and bridge.has_method(&"inspect_interaction"),
+		"INT-000 native provenance methods are unavailable")
+	var profile: Dictionary = bridge.inspect_interaction_profile()
+	expect(profile.get("schema_id","") == "cybersand.interactions" and int(profile.get("schema_version",0)) == 1,
+		"INT-000 native schema identity is missing")
+	expect(profile.get("pair_rules",[]).size() == 14 and profile.get("channels",[]).size() == 7,
+		"INT-000 profile catalogue is incomplete")
+	var salt: Dictionary = bridge.inspect_interaction(3,23,255)
+	expect(salt.get("matched",false) and salt.get("selected",false)
+		and int(salt.get("source_product",-1)) == 24 and int(salt.get("target_product",-1)) == 24,
+		"Water/Salt provenance does not expose the effective compact rule")
+	var acid_reverse: Dictionary = bridge.inspect_interaction(28,12,96)
+	expect(acid_reverse.get("selected",false) and int(acid_reverse.get("source_product",-1)) == 29
+		and int(acid_reverse.get("target_product",-1)) == 4 and acid_reverse.get("reversed",false),
+		"role-preserving reverse provenance changed")
+	var themed: Dictionary = bridge.inspect_interaction(53,33,0)
+	expect(not themed.get("matched",true) and not "int.family.conductive-base-metal" in themed.get("source_families",[]),
+		"themed metal inherited base-Metal electrical semantics")
+
+	var fixtures: Array[String] = ["materials/salt-water", "materials/sand-water-control",
+		"materials/lava-water", "materials/fire-gunpowder", "materials/acid-metal",
+		"materials/spark-metal", "materials/cement-water"]
+	for fixture: String in fixtures:
+		var expected: Dictionary = {}
+		for workers: int in [1,4]:
+			var world: Variant = new_world(workers)
+			var host: CyberMicroScenarioHost = Host.new()
+			var definition: Dictionary = Catalogue.definition(fixture, 3)
+			expect(Contract.validate(definition).get("ok",false), "invalid generated INT fixture: " + fixture)
+			expect(host.install(world,definition,"Inspect",true), host.last_error)
+			var summary: Dictionary = host.summary()
+			expect(summary.get("interaction_profile",{}).get("schema_id","") == "cybersand.interactions",
+				"generated fixture lacks native INT profile: " + fixture)
+			expect(not summary.get("interaction_inspection",[]).is_empty(),
+				"generated fixture lacks bounded INT provenance inspection: " + fixture)
+			var duration: int = int(definition.presentation.duration_ticks)
+			for tick: int in range(duration): expect(host.advance(), fixture + ": " + host.last_error)
+			var report: Dictionary = host.capture({"source_revision":"test-only"})
+			expect(report.get("outcome","") == "complete", "generated fixture did not complete: " + fixture)
+			expect(report.get("interaction_profile_full",{}).get("pair_rules",[]).size() == 14,
+				"capture lost full INT profile: " + fixture)
+			var semantic: Dictionary = {"observations":report.get("observations",[]),
+				"interaction_inspection":report.get("interaction_inspection",[])}
+			if expected.is_empty(): expected = semantic
+			expect(semantic == expected, "one/four-worker INT fixture evidence diverged: " + fixture)
+
 
 func _schema_rejections() -> void:
 	var invalid: Dictionary = Catalogue.unequal_head()
