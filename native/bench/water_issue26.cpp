@@ -307,7 +307,7 @@ SurfaceStats surface_stats(MassAt&& mass_at, int x0, int x1, std::uint16_t maxim
         const auto a = surface[static_cast<std::size_t>(i - 1)];
         const auto b = surface[static_cast<std::size_t>(i)];
         if (a < 0 || b < 0) continue;
-        const auto step = std::llabs(a - b);
+        const auto step = static_cast<std::int64_t>(std::llabs(a - b));
         if (step >= kTerraceThresholdMilli) {
             ++out.terrace_count;
             out.max_terrace_step_milli = std::max(out.max_terrace_step_milli, step);
