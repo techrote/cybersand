@@ -10,6 +10,35 @@ related-documents: [2026-09-19-issue-26-registration.md, issue-26-2026-09-19/bas
 
 # Issue #26 Water head/leveling — 2026-09-19
 
+## Post-merge review qualification
+
+The independent [post-merge review](2026-09-19-issue-26-post-merge-review.md)
+preserves this audit as historical evidence for the exact #26 experiment, but
+qualifies several apparatus-v1 interpretations.
+
+The two local candidate rejections remain valid because they fail independent
+registered bulk/head benefit gates. Do not use apparatus v1 as the acceptance
+oracle for #45.
+
+Review corrections:
+
+- settling/equilibrium v1 excludes dry columns, can encode an unreached threshold
+  as numeric zero, and latches a sustained pass without later revocation;
+- the historical fixture called `unequal-head-u-tube` is actually a
+  three-compartment unequal-head communicating geometry, not a clean two-limb
+  U-tube;
+- whole-run p95 pools active/startup and sleeping ticks; the horizon arm genuinely
+  does more useless work but the dramatic p95 ratio is not an active-tick ratio;
+- hill/terrace/contact values are sampled proxies and do not by themselves
+  establish the declared lifetime/rendered acceptance dimensions;
+- the evidence runner requires overwrite/failure-retention hardening;
+- final PR #41 validation cross-built Windows and performed actual runtime/ABI
+  regression on Linux; it did not execute fresh Windows Godot runtime validation.
+
+[#49](https://github.com/techrote/cybersand/issues/49) owns the correction. New
+metrics or fixture geometry require new version identities and fresh Current-Water
+controls; do not rewrite the result tables below.
+
 ## Disposition
 
 Issue #26 completes through its declared **Outcome B**:
