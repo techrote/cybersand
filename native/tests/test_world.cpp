@@ -2356,6 +2356,44 @@ void test_water_experiment_default_state_hash_correspondence() {
 
 void test_int000_sparse_schema_shadow_equivalence() {
     using cybersand::InteractionRules;
+    struct FrozenPairRule {
+        Material first;
+        Material second;
+        Material first_product;
+        Material second_product;
+        std::uint8_t probability;
+    };
+    constexpr std::array<FrozenPairRule, 14> frozen_current{{
+        {Material::Lava, Material::Water, Material::Stone, Material::Steam, 255U},
+        {Material::Fire, Material::Water, Material::Smoke, Material::Steam, 255U},
+        {Material::Water, Material::Salt, Material::Brine, Material::Brine, 255U},
+        {Material::Water, Material::Sodium, Material::Steam, Material::Fire, 255U},
+        {Material::Brine, Material::Sodium, Material::Steam, Material::Fire, 255U},
+        {Material::Water, Material::ToxicSludge, Material::Water, Material::Water, 255U},
+        {Material::Steam, Material::Ice, Material::Water, Material::Ice, 32U},
+        {Material::Water, Material::MoltenGlass, Material::Steam, Material::Glass, 255U},
+        {Material::Lava, Material::Glass, Material::Lava, Material::MoltenGlass, 255U},
+        {Material::Acid, Material::Metal, Material::Smoke, Material::Rust, 96U},
+        {Material::Fire, Material::Gunpowder, Material::Fire, Material::Fire, 255U},
+        {Material::Spark, Material::Gunpowder, Material::Empty, Material::Fire, 255U},
+        {Material::Spark, Material::Oil, Material::Empty, Material::Fire, 255U},
+        {Material::Fire, Material::Brine, Material::Steam, Material::Salt, 64U},
+    }};
+
+    const auto frozen_resolve = [&frozen_current](
+        Material source, Material target, std::uint8_t roll)
+        -> std::optional<cybersand::PairReactionResult> {
+        for (const auto& rule : frozen_current) {
+            if (roll > rule.probability) continue;
+            if (source == rule.first && target == rule.second) {
+                return cybersand::PairReactionResult{rule.first_product, rule.second_product};
+            }
+            if (source == rule.second && target == rule.first) {
+                return cybersand::PairReactionResult{rule.second_product, rule.first_product};
+            }
+        }
+        return std::nullopt;
+    };
 
     require(cybersand::kInteractionSchemaId == "cybersand.interactions",
             "INT schema identity changed");
@@ -2366,20 +2404,26 @@ void test_int000_sparse_schema_shadow_equivalence() {
             "INT current profile identity changed");
     require(InteractionRules::channels().size() == 7U,
             "INT channel catalogue is incomplete");
-    require(InteractionRules::pair_rules().size() == 14U,
-            "INT compact current rule inventory changed");
+    require(InteractionRules::pair_rules().size() == frozen_current.size(),
+            "INT compact Current rule inventory changed");
     require(InteractionRules::specialized_rules().size() >= 18U,
             "INT specialized Current inventory is incomplete");
 
-    for (std::size_t left = 0; left < InteractionRules::pair_rules().size(); ++left) {
-        const auto& rule = InteractionRules::pair_rules()[left];
+    for (std::size_t index = 0; index < frozen_current.size(); ++index) {
+        const auto& expected = frozen_current[index];
+        const auto& rule = InteractionRules::pair_rules()[index];
         require(!rule.id.empty() && rule.channels != 0U,
                 "INT compact rule lacks stable identity/channel");
         require(rule.trigger == cybersand::InteractionTriggerKind::PairContact,
                 "INT compact rule changed trigger class");
         require(rule.match == cybersand::InteractionMatchKind::UnorderedRolePreserving,
                 "INT compact rule lost role-preserving unordered matching");
-        for (std::size_t right = left + 1U; right < InteractionRules::pair_rules().size(); ++right) {
+        require(rule.first == expected.first && rule.second == expected.second &&
+                    rule.first_product == expected.first_product &&
+                    rule.second_product == expected.second_product &&
+                    rule.probability == expected.probability,
+                "INT authored compact rule differs from frozen pre-migration Current");
+        for (std::size_t right = index + 1U; right < InteractionRules::pair_rules().size(); ++right) {
             require(rule.id != InteractionRules::pair_rules()[right].id,
                     "INT compact rule IDs are not unique");
         }
@@ -2389,21 +2433,29 @@ void test_int000_sparse_schema_shadow_equivalence() {
         0U, 31U, 32U, 33U, 63U, 64U, 65U, 95U, 96U, 97U, 254U, 255U};
     for (std::uint16_t source_id = 0; source_id < cybersand::kMaterialDefinitions.size(); ++source_id) {
         const auto source = static_cast<Material>(source_id);
-        require(cybersand::MaterialRules::has_pair_reactions(source) ==
-                    InteractionRules::has_pair_rule(source),
-                "INT shadow pair-participant inventory differs from Current");
+        bool frozen_has_pair = false;
+        for (const auto& rule : frozen_current) {
+            frozen_has_pair = frozen_has_pair || rule.first == source || rule.second == source;
+        }
+        require(cybersand::MaterialRules::has_pair_reactions(source) == frozen_has_pair &&
+                    InteractionRules::has_pair_rule(source) == frozen_has_pair,
+                "INT migrated pair-participant inventory differs from frozen Current");
         for (std::uint16_t target_id = 0; target_id < cybersand::kMaterialDefinitions.size(); ++target_id) {
             const auto target = static_cast<Material>(target_id);
             for (const auto roll : rolls) {
-                const auto current = cybersand::MaterialRules::pair_reaction(source, target, roll);
-                const auto shadow = InteractionRules::resolve_pair(source, target, roll);
-                require(current.has_value() == shadow.selected,
-                        "INT shadow compact resolver selection differs from Current");
-                if (!current.has_value()) continue;
-                require(shadow.matched &&
-                            current->source_product == shadow.source_product &&
-                            current->target_product == shadow.target_product,
-                        "INT shadow compact resolver products/roles differ from Current");
+                const auto expected = frozen_resolve(source, target, roll);
+                const auto public_api = cybersand::MaterialRules::pair_reaction(source, target, roll);
+                const auto resolved = InteractionRules::resolve_pair(source, target, roll);
+                require(expected.has_value() == resolved.selected &&
+                            expected.has_value() == public_api.has_value(),
+                        "INT compact resolver selection differs from frozen Current");
+                if (!expected.has_value()) continue;
+                require(resolved.matched &&
+                            expected->source_product == resolved.source_product &&
+                            expected->target_product == resolved.target_product &&
+                            expected->source_product == public_api->source_product &&
+                            expected->target_product == public_api->target_product,
+                        "INT compact resolver products/roles differ from frozen Current");
             }
         }
     }
