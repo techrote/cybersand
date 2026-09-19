@@ -265,7 +265,7 @@ struct SemanticFamilyMembership {
     Material material;
 };
 
-inline constexpr std::array<SemanticFamilyMembership, 15> kSemanticFamilyMemberships{{
+inline constexpr std::array<SemanticFamilyMembership, 16> kSemanticFamilyMemberships{{
     {"int.family.combustible-kernel", Material::Wood},
     {"int.family.combustible-kernel", Material::OakTimber},
     {"int.family.combustible-kernel", Material::Thatch},
@@ -281,6 +281,7 @@ inline constexpr std::array<SemanticFamilyMembership, 15> kSemanticFamilyMembers
     {"int.family.biological-growth", Material::Seed},
     {"int.family.special-agent", Material::Cloner},
     {"int.family.special-agent", Material::Mite},
+    {"int.family.special-agent", Material::Rocket},
 }};
 
 struct SpecializedInteractionRule {
