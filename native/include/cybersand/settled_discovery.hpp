@@ -245,6 +245,7 @@ public:
         return records_[handle.slot].summary; // immutable value; never live World bytes
     }
     void fail() noexcept { if (halt_ == DiscoveryHalt::None) halt_ = DiscoveryHalt::ProducerFailure; }
+    void source_fail() noexcept { if (halt_ == DiscoveryHalt::None) halt_ = DiscoveryHalt::SourceFailure; }
     [[nodiscard]] DiscoveryHalt halted() const noexcept { return halt_; }
     [[nodiscard]] DiscoveryMetrics metrics() const noexcept { return metrics_; }
     [[nodiscard]] std::size_t pending() const noexcept { return queued_; }
