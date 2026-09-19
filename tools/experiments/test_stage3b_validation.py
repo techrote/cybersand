@@ -15,6 +15,7 @@ class Stage3BValidationTests(unittest.TestCase):
         fixtures = v.fixture_catalogue()
         v.validate_fixtures(fixtures)
         self.assertEqual(len(fixtures), 168)
+        self.assertIn("not-applicable", {x["id"]: x for x in fixtures}["one-cell.negative_temperature.tile-interior"]["expected_outcomes"])
         by_id = {item["id"]: item for item in fixtures}
         self.assertEqual(by_id["historical.local-edit-8x8"]["retained_meaning"], "8x8 patch edit")
         self.assertEqual(by_id["historical.bridge-whole-column"]["retained_meaning"], "whole-column change")
@@ -99,6 +100,10 @@ class Stage3BValidationTests(unittest.TestCase):
         self.assertEqual(len(report["provenance_index"]), len(results))
         self.assertIn("successful_numeric_metrics", report["summaries"][0])
         self.assertEqual(report["summary_statistics_policy"]["p95_min_samples"], 20)
+        before = copy.deepcopy(results)
+        rerun = v.reduce_results(plan, results)
+        self.assertEqual(results, before)
+        self.assertEqual(rerun["state_counts"], report["state_counts"])
         self.assertTrue(all(item["state"] in v.RESULT_STATES for item in results))
 
 
