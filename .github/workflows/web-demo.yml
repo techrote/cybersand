@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ${{ format('avrea-ubuntu-24.04-{0}-vcpu', vars.WEB_DEMO_VCPU || '1') }}
+    runs-on: ${{ vars.WEB_DEMO_RUNNER || 'sengi-standard-2-ubuntu-2404' }}
     timeout-minutes: 40
     steps:
       - name: Check out source
@@ -59,7 +59,7 @@ jobs:
         env:
           GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
           WEB_TEMPLATE_ROOT: ${{ runner.temp }}/web-templates
-          SCONS_JOBS: ${{ vars.WEB_DEMO_SCONS_JOBS || vars.WEB_DEMO_VCPU || '1' }}
+          SCONS_JOBS: ${{ vars.WEB_DEMO_SCONS_JOBS || '2' }}
         run: |
           source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
           "$RUNNER_TEMP/web-python/bin/python" tools/build_web.py --compile-only --native-tests

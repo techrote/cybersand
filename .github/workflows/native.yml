@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   native:
-    runs-on: ${{ format('avrea-ubuntu-24.04-{0}-vcpu', vars.NATIVE_VCPU || '4') }}
+    runs-on: ${{ vars.NATIVE_RUNNER || 'sengi-standard-4-ubuntu-2404' }}
     timeout-minutes: 35
     env:
       CC: gcc-13
