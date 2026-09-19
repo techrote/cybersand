@@ -150,7 +150,8 @@ jobs:
           git config user.name techrote
           git config user.email 261801702+techrote@users.noreply.github.com
           git commit -m 'build(stage3b): publish issue 58 source-matched runtimes'
-          python3 tools/ci/check_repository.py --require-materialized
+          # The full repository checker needs the pinned companion workspace checkout used by documentation.yml.
+          # Runtime/source hashes were verified above; exact-head documentation CI performs the full repository check.
           git lfs fsck
           git status --porcelain=v1
           git push origin HEAD:codex/issue-58-stage3b-lifecycle
