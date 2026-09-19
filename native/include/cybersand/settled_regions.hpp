@@ -132,14 +132,17 @@ public:
                 block_capacity(RegionRefusal::TileCapacity);
                 return remember(RegionOutcome::Capacity, RegionRefusal::TileCapacity);
             }
-            for (std::size_t i = 0; i < tile_count_; ++i)
-                if (overlaps(tiles_[i].bounds, bounds))
-                    return remember(RegionOutcome::Invalid, RegionRefusal::InvalidInput);
+            if (overlaps_bounds(bounds))
+                return remember(RegionOutcome::Invalid, RegionRefusal::InvalidInput);
             slot = first_free_tile();
             tiles_[slot].used = true;
             tiles_[slot].key = key;
             tiles_[slot].bounds = bounds;
             tiles_[slot].neighbours.fill(region_detail::invalid_index);
+            if (!index_tile(slot)) {
+                block_capacity(RegionRefusal::SpatialIndexCapacity);
+                return remember(RegionOutcome::Capacity, RegionRefusal::SpatialIndexCapacity);
+            }
             ++tile_count_;
             link_faces(slot);
         } else {
@@ -171,12 +174,15 @@ public:
                 block_capacity(RegionRefusal::TileCapacity);
                 return remember(RegionOutcome::Capacity, RegionRefusal::TileCapacity);
             }
-            for (std::size_t i = 0; i < tile_count_; ++i)
-                if (overlaps(tiles_[i].bounds, input.bounds))
-                    return remember(RegionOutcome::Invalid, RegionRefusal::InvalidInput);
+            if (overlaps_bounds(input.bounds))
+                return remember(RegionOutcome::Invalid, RegionRefusal::InvalidInput);
             slot = first_free_tile();
             tiles_[slot].used = true; tiles_[slot].key = input.key; tiles_[slot].bounds = input.bounds;
             tiles_[slot].neighbours.fill(region_detail::invalid_index);
+            if (!index_tile(slot)) {
+                block_capacity(RegionRefusal::SpatialIndexCapacity);
+                return remember(RegionOutcome::Capacity, RegionRefusal::SpatialIndexCapacity);
+            }
             ++tile_count_;
             link_faces(slot);
         } else {
