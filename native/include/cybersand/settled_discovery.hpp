@@ -20,6 +20,19 @@ struct DiscoveryTileKey {
     bool operator==(const DiscoveryTileKey&) const = default;
 };
 
+struct DiscoveryTileKeyLess {
+    bool operator()(const DiscoveryTileKey& a, const DiscoveryTileKey& b) const noexcept {
+        if (a.world_incarnation != b.world_incarnation)
+            return a.world_incarnation < b.world_incarnation;
+        if (a.chunk_y != b.chunk_y) return a.chunk_y < b.chunk_y;
+        if (a.chunk_x != b.chunk_x) return a.chunk_x < b.chunk_x;
+        if (a.activity_y != b.activity_y) return a.activity_y < b.activity_y;
+        if (a.activity_x != b.activity_x) return a.activity_x < b.activity_x;
+        if (a.subtile_y != b.subtile_y) return a.subtile_y < b.subtile_y;
+        return a.subtile_x < b.subtile_x;
+    }
+};
+
 struct DiscoveryCell {
     std::uint8_t material{};
     std::uint16_t state_a{};
