@@ -723,18 +723,16 @@ public:
         return result;
     }
 
-    [[nodiscard]] static constexpr PairInteractionMatch match_pair(
+    [[nodiscard]] static constexpr PairInteractionMatch match_pair_from(
+        std::span<const PairInteractionRule> rules,
         Material source, Material target) noexcept {
-        for (std::size_t index = 0; index < kPairInteractionRules.size(); ++index) {
-            const auto& rule = kPairInteractionRules[index];
+        for (std::size_t index = 0; index < rules.size(); ++index) {
+            const auto& rule = rules[index];
             if (source == rule.first && target == rule.second) {
                 return {true, index, false};
             }
-            if (rule.match == InteractionMatchKind::UnorderedRolePreserving &&
-                source == rule.second && target == rule.first) {
-                return {true, index, true};
-            }
-            if (rule.match == InteractionMatchKind::Symmetric &&
+            if ((rule.match == InteractionMatchKind::UnorderedRolePreserving ||
+                 rule.match == InteractionMatchKind::Symmetric) &&
                 source == rule.second && target == rule.first) {
                 return {true, index, true};
             }
@@ -742,20 +740,34 @@ public:
         return {};
     }
 
-    [[nodiscard]] static constexpr ResolvedPairInteraction resolve_pair(
+    [[nodiscard]] static constexpr PairInteractionMatch match_pair(
+        Material source, Material target) noexcept {
+        return match_pair_from(kPairInteractionRules, source, target);
+    }
+
+    [[nodiscard]] static constexpr ResolvedPairInteraction resolve_pair_from(
+        std::span<const PairInteractionRule> rules,
         Material source, Material target, std::uint8_t probability_roll) noexcept {
-        const auto match = match_pair(source, target);
+        const auto match = match_pair_from(rules, source, target);
         if (!match.matched) return {};
-        const auto& rule = kPairInteractionRules[match.rule_index];
+        const auto& rule = rules[match.rule_index];
         const bool selected = probability_roll <= rule.probability;
+        const bool symmetric = rule.match == InteractionMatchKind::Symmetric;
         return {
             true,
             selected,
             match.rule_index,
             match.reversed,
-            match.reversed ? rule.second_product : rule.first_product,
-            match.reversed ? rule.first_product : rule.second_product,
+            symmetric ? rule.first_product :
+                (match.reversed ? rule.second_product : rule.first_product),
+            symmetric ? rule.second_product :
+                (match.reversed ? rule.first_product : rule.second_product),
         };
+    }
+
+    [[nodiscard]] static constexpr ResolvedPairInteraction resolve_pair(
+        Material source, Material target, std::uint8_t probability_roll) noexcept {
+        return resolve_pair_from(kPairInteractionRules, source, target, probability_roll);
     }
 
     [[nodiscard]] static constexpr bool has_pair_rule(Material material) noexcept {
