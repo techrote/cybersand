@@ -44,6 +44,9 @@ jobs:
       - name: Run soliding contract regressions
         run: timeout 5m make soliding-test
 
+      - name: Smoke-test isolated discovery characterization
+        run: timeout 2m make soliding-benchmark-smoke
+
       - name: Compile and run ASan plus UBSan
         run: |
           timeout 15m make build/tests_sanitized

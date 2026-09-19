@@ -84,6 +84,10 @@ void aba_and_exact_classification() {
     require(tracker.dirty(handle, 4) == DiscoveryOutcome::Accepted, "empty source invalidation");
     source = {};
     require(tracker.advance(4, 6, read) == 6 && snapshot(tracker, handle).classification == DiscoveryClass::Empty, "complete empty classification");
+    require(tracker.dirty(handle, 5) == DiscoveryOutcome::Accepted, "empty hidden tuple invalidation");
+    source = {0, 7, 9, -273, false};
+    require(tracker.advance(5, 6, read) == 6, "empty state and thermal scan");
+    require(snapshot(tracker, handle).classification == DiscoveryClass::Empty && snapshot(tracker, handle).uniform == source, "empty classification retains nondefault state and heat");
 }
 void signal_gates_and_capacity() {
     constexpr std::array gates{&DiscoverySignals::witness_complete, &DiscoverySignals::healthy,

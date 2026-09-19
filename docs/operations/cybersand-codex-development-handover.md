@@ -135,7 +135,9 @@ and [reconciliation identities](../audits/2026-09-11-programme-gate-reconciliati
 Both research results are published on separate experiment branches; this active
 checkpoint changes documentation only. #17 subsequently completed P1/P2/P3; read the [G-P review](architecture-programme.md#g-p-staged-decision-2026-09-11)
 and [precision evidence](../audits/2026-09-11-issue-17-state-precision.md). Retain mass8
-and Water-specific delay4 as an experimental budget without inferring production migration. The current4-byte baseline remains pending G-final.
+and Water-specific delay4 as an experimental budget without inferring production migration.
+That dated checkpoint retained its 4-byte baseline pending G-final. For later source
+physical-size accounting, use the [source-qualified storage contract](../architecture/chunk-tile-and-buffer-model.md#what-is-stored-per-cell-and-per-chunk).
 
 ## MS-000 handover, 2026-09-19
 
@@ -155,3 +157,7 @@ Do not reset/rebase the Phase 0 control or #26/#27 experiments. Current-main
 ordinary sleep is the performance control; full #12 scope includes acceleration,
 macro momentum/torque/rotation and coherent-child fracture. A model or block
 summary does not satisfy production ownership or connected-region gates.
+
+Use the [successor evidence and next prerequisites](../audits/2026-09-19-issue-12-foundation.md)
+for #12 continuation. The ordinary-sleep control is frozen independently; do not
+relabel synthetic journal service epochs as simulated World ticks.

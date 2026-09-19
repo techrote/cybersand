@@ -42,7 +42,7 @@ Exact compiler, input and executable SHA-256 values accompany every prepared art
 | Host | Local Ryzen 5 2600X, 6 cores / 12 logical processors; record actual OS, CPU, memory and power plan |
 | Backend / workers | Phased, 1 and 4 native workers; ordinary quiet3 |
 | Geometry | Current 128 storage / 32 activity / 64 scheduling / radius2 |
-| Resident area | Dense 512Ã‚Â², 1024Ã‚Â² and 2048Ã‚Â² fixtures, plus one reserved 128-cell halo on all sides |
+| Resident area | Dense 512^2, 1024^2 and 2048^2 fixtures, plus one reserved 128-cell halo on all sides |
 | Repetitions | 7 separate processes per fixture/size/worker tuple; sequential, no overlapping build or benchmark |
 | Startup / warmup | 120 initial-settling ticks plus 120 further warmup ticks, both retained separately from measured ticks |
 | Measurement | 2048 ticks per process, including at least eight epoch-clear opportunities |
@@ -67,7 +67,7 @@ labelled outside the registered timing campaign.
 |---|---|---|
 | `wall` | Solid Wall square | No measured movement or content change |
 | `redbrick` | Solid RedBrick square | No measured movement or content change |
-| `local-edit` | Solid Wall; centered 8Ãƒâ€”8 patch alternates Empty/Wall every 32 measured ticks | Exact edit ledger; local scheduler wake and return-to-sleep work is retained |
+| `local-edit` | Solid Wall; centered 8x8 patch alternates Empty/Wall every 32 measured ticks | Exact edit ledger; local scheduler wake and return-to-sleep work is retained |
 | `granular-rest` | Closed Wall basin, shelf 32 cells above floor; lower-half Sand rests on shelf | No measured movement or content change; rest never supplies rigid eligibility |
 | `granular-release` | Same Sand basin; remove centered 32-cell shelf segment at first measured tick | Sand moves under Current rules and remains contained/conserved; no body or cohesion exists |
 
@@ -96,8 +96,9 @@ and deferred events. Report p50/p95/p99/max/total using nearest-rank quantiles p
 process. Report process distributions, not merely pooled medians; the driver preserves
 per-process values and gives median process p95/p99 and worst maximum as conveniences.
 
-**Current instrumentation limit:** `visited_cells` counts rule scanning. It does not
-count the resident metadata passes in `begin_tick`/`finish_tick`, active-core gathering,
+**Current instrumentation limit:** `visited_cells` counts cells passed to `update_cell` after
+epoch and rule-eligibility filters. It excludes scanned addresses rejected by
+those filters, and does not count the resident metadata passes in `begin_tick`/`finish_tick`, active-core gathering,
 or epoch-byte clearing. Zero visited cells is not zero work. The current compact epoch
 first clears at tick 256, then every 255 ticks; these samples are explicitly tagged and
 remain in all primary timing statistics. Separate ordinary/epoch summaries explain the
@@ -173,7 +174,7 @@ threaded browser gates. No broader acceptance follows from this control alone.
 The [read-only reducer](../../tools/experiments/summarize_soliding_baseline.py)
 verifies frozen input/executable and raw stdout/stderr hashes before reporting
 per-process distributions, ordinary versus epoch timing, memory per fixture area,
-rule/scheduler work and edit-window wake amplification. Its outputs are separate
+eligible-rule/scheduler work and edit-window wake amplification. Its outputs are separate
 files; it refuses overwrite and never edits raw attempts. Failed results remain
 included and produce a nonzero reducer exit, even if other configurations pass.
 
@@ -182,10 +183,17 @@ C:/kybersand/.local/python/Scripts/python.exe tools/experiments/summarize_solidi
 ```
 
 Bytes per fixture cell include the reserved halo. Edit-window visit ratios count
-Current scheduler scans, not future discovery rebuilds. Sleep latency is the tick
+eligible rule updates, not all scanned addresses or future discovery rebuilds.
+Scheduled cores separately expose wake work even if no rule is eligible. Sleep latency is the tick
 index offset from the edit to the first observed zero active-block count; zero
 means the edit tick itself. An edit window that ends before sleeping is explicitly
 right-censored. All raw tails remain in the p95/p99/max summaries, and process p95
 ranges remain visible without an assumed significance/noise model. Interpret a
 quiet area with zero rule visits and nonzero time as an investigation lead for
 existing metadata/epoch work; finer causal attribution still needs profiling.
+
+The reducer also checks retained preregistration against every exact process command,
+case identity and attempt count. Missing, duplicated, unregistered or reused outputs
+are failures. Run `python -m unittest discover -s tools/experiments -p
+test_soliding_baseline_reduction.py`; its corruption fixtures use temporary synthetic
+evidence and never modify measured campaigns.

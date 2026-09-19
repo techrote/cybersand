@@ -220,3 +220,15 @@ inside a tick. Reduced sampling cannot weaken collision or conservation checks.
 Mercury exchange cannot reuse a written destination or multiply its shared tick
 lane across alternate directions/initiators. A pending deadline survives sleep
 and exclusion without catch-up; explicit recovery abandons it with the world.
+
+## Soliding successor invariants
+
+The [lifecycle contract](../architecture/soliding-lifecycle.md) owns the detailed
+state/eligibility table; the standalone model tests logical transitions only.
+
+| ID | Scope and requirement |
+|---|---|
+| SOL-001 | Approved: exactly one cells/region/aggregate material owner; precommit refusal preserves it and postcommit failure quarantines the committed owner |
+| SOL-002 | Approved: summary and stationary eligibility never manufacture dynamic granular cohesion |
+| SOL-003 | Current standalone journal: bounded complete tile publication, ABA revision, explicit capacity/failure and starvation protection; real producer completeness remains Planned |
+| SOL-004 | Approved future fracture: partition exact membership into coherent children and only genuinely loose cells; account inherited momentum/rotation and any motion loss |

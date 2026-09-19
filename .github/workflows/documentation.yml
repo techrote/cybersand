@@ -38,6 +38,8 @@ jobs:
         run: timeout 5m python3 tools/ci/check_m11_consistency.py
       - name: Test validation failure contracts
         run: timeout 2m python3 -m unittest discover -s tools/ci -p test_validation_contracts.py
+      - name: Test soliding evidence integrity contracts
+        run: timeout 2m python3 -m unittest discover -s tools/experiments -p test_soliding_baseline_reduction.py
       - name: Evaluate current retrieval routes
         run: |
           mkdir -p build/retrieval

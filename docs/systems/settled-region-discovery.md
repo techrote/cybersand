@@ -35,6 +35,11 @@ resident metadata passes may feed changes, but their added inspections/time must
 be measured rather than described as free. A missing mutation witness makes the
 producer unsafe: this standalone API cannot detect notifications a caller omits.
 No runtime promotion may consume it before the complete producer audit/tests.
+There is no rest-age or observation-gap detector in this journal: a producer must
+clear `witness_complete` on gaps; unchanged flags across elapsed time prove nothing.
+Registration rejects exact duplicate bounds but permits overlaps. A World producer
+must register canonical nonoverlapping tiles before reporting region area/counts,
+or supply separately admitted overlap accounting.
 
 ## Mutation and activity contract
 
@@ -116,3 +121,67 @@ occupancy, capacity, failure, coordinates, fairness and copied-snapshot lifetime
 Paired World fixtures test that an explicitly signalled read-only observer leaves
 content/state and tick-work identical with one/four workers. They do not prove
 production mutation-hook completeness or desktop/Web runtime integration.
+
+## Synthetic journal cost preregistration (2026-09-19)
+
+**Planned measurement, frozen before execution:** the standalone
+[`settled_discovery.cpp`](../../native/bench/settled_discovery.cpp) cost decomposition
+uses contiguous synthetic `DiscoveryCell` arrays, with explicitly supplied constant
+inspectable signals. These are artificial input contracts, not observations of a
+World, material stability or scheduler sleep. The reader only indexes immutable
+source tuples during each service call; notified ABA edits occur between calls.
+
+The matrix is sides **128, 512, 2048** cells, complete nonoverlapping **32x32** tiles,
+fixed **4096** journal slots in every case, budgets **64, 1024, 8192** work units per
+service epoch, and **7 sequential repeats**. A service epoch is one invocation of
+`advance()`, not a simulation tick, frame, or duration of earned rest. Report actual
+`sizeof(DiscoveryCell)`, fixed journal bytes and bytes per registered source cell.
+The partially occupied registry intentionally exposes fixed-capacity memory cost.
+
+Each run separately times source initialization, journal allocation/initialization
+and all registration (including the current linear duplicate-bounds lookup, hence
+quadratic total registration). It then records these fixed phases:
+
+1. Initial full classification: drain the initial queue under the chosen budget.
+2. Idle: **100000** service calls with no dirty notifications.
+3. Local ABA: **128** repetitions of mutating and restoring one source tuple in the
+   centre tile, notifying both changes, then draining that tile completely.
+4. Churn/fairness: enqueue every tile, repeatedly notify centre-tile ABA before
+   service, for `ceil(tile_count * 1026 / budget) + 4096` service epochs. Confirm
+   every unaffected tile eventually publishes; preserve incomplete churning work.
+5. Recovery: stop edits and drain the remaining queue under the same budget.
+
+Report phase elapsed time and producer-call time separately, service epochs,
+inspected cells, started blocks, work units, publications, invalidations, restarts,
+first-dirty-to-classified total latency, lifetime maximum latency/queue high-water,
+and pending queue counts. Producer timing includes clock sampling overhead and
+source mutation/restore. Idle timing includes the harness service call. An explicit
+extra registration at full4096 capacity must refuse; smaller cases do not pretend
+to measure a full-registry refusal. Source tuples must finish exact, and initial
+classification/idle/local work totals have deterministic analytical checks.
+
+The driver [`run_settled_discovery.py`](../../tools/experiments/run_settled_discovery.py)
+freezes copied source/header/driver inputs, tool and binary hashes, Git HEAD/local
+status, hardware and this protocol before compilation/runs. It writes the complete
+run plan before the first timed case, runs only sequential children, retains every
+stdout/stderr/timeout/failure with hashes, and summarizes raw successful values
+without dropping negative or ambiguous arms. Smoke overrides are labeled separately.
+
+**Interpretation limits:** this measures the journal and synthetic array reader,
+not real World hash lookups, native mutation hooks, activity/metadata passes,
+component/connectivity work, collision rebuilds, Rapier or rendering. `advance()`
+work excludes producer calls and registration. Low idle cost or bounded synthetic
+latency cannot establish net savings versus Current sleep, a promotion threshold,
+or Stage 3 completion. Churn overhead and fixed-capacity memory inefficiency are
+results to retain, not reasons to enlarge fixtures until they disappear.
+
+`Empty` means uniform material ID zero; it retains the exact state/temperature
+tuple and does not authorize dropping hidden state or thermal storage. Direct
+tuple tests cover this because Current content hashes alone omit some Empty state.
+
+**Measured standalone outcome:** the [63-process journal cost record](../audits/issue-12-2026-09-19/journal-cost-results.md)
+verifies initial/idle/local work and fair progress under repeated ABA notifications.
+At 2048-square area it records roughly 29 ms initial synthetic scanning and a 491672-byte
+fixed journal. Registration scaling, repeated churn work and incomplete churning
+classification remain explicit negative results. The measured array reader excludes
+real World producer/lookup/connectivity costs and does not satisfy the Stage 3 exit.

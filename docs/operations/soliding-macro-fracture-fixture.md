@@ -36,7 +36,7 @@ near-rest admission supplies zero/known initial velocity, not guessed history.
 
 | ID | Recipe and stimulus | Primary observable |
 |---|---|---|
-| MD-01 | 8x14 coherent near-rest rectangle above a flat supported floor; remove admitted support after promotion | Gravity creates nonzero downward COM velocity; contact stops/deflects it without lost payload |
+| MD-01 | 8x14 coherent near-rest rectangle on a removable pedestal above a separate catch-floor; remove the pedestal support after promotion | Gravity creates nonzero downward COM velocity; contact stops/deflects it without lost payload |
 | MD-02 | 8x14 admitted body; one declared off-centre impulse at a known body-local point, plus centre-impulse control | Off-centre impulse produces the declared angular-velocity change; centred isolated control adds no angular velocity; existing free spin continues |
 | FR-02 | 16x12 rectangle in free flight after MD-02-like impulse; authored vertical topology partition at x=8 into two 8x12 coherent children | Both children remain bodies, exact partition, inherited translational and rotational point velocities |
 | FR-03 | 24x12 rectangle; authored partitions at x=8 and x=16 into three 8x12 coherent children | Three distinct generation-bearing children, conserved payload, no whole-body cell demotion |
@@ -52,6 +52,10 @@ arm requires evidence that those members are genuinely loose under existing or
 separately admitted material/state semantics. Do not infer looseness from fragment
 size or arbitrary visual effect. Preserve exact tuples and explicitly account any
 admitted reaction/source/sink event. #29 remains the semantics owner.
+
+Split coordinates are parent-local membership coordinates. Transform child COMs
+and impulse points into the declared world frame, including its axis and angular-sign
+conventions, before applying the rigid point-velocity expression.
 
 Register frame/event indices, initial placement, free-flight clearance, initial
 orientation, impulse point/vector, selected step size and repeat schedule in the

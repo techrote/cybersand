@@ -155,3 +155,14 @@ The [MicroScenario runbook](microscenarios.md#headless-runs-from-the-same-defini
 describes the bounded native-only JSON runner. Its result is not a Windows or
 browser run merely because it exercises the synchronous controller on Linux.
 Use actual platform artifacts and retain their identities for platform acceptance.
+
+## Soliding successor validation
+
+`make soliding-test` and `make soliding-sanitize` compile the standalone lifecycle
+and discovery suites. They change no installed native runtime artifact. See the
+[control measurement procedure](soliding-measurement.md) for immutable-source
+benchmark compilation; builds/tests must stop during registered local timing.
+
+`make soliding-benchmark-smoke` compiles the isolated journal characterization
+with warnings as errors and exercises its bounded-work/fairness assertions on a
+small fixture. CI timings are not performance acceptance measurements.

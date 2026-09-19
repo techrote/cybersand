@@ -116,8 +116,10 @@ and the distinction between sleep, mobility, cadence and Water rest.
 ## Water precision research
 
 The [Issue17 registration](operations/state-precision-experiment.md) defines the isolated
-P1/P2/P3 native experiment. Its fixed8-byte carrier is research-only; production
-Water and Cell controls remain unchanged pending programme gates.
+P1/P2/P3 native experiment. That dated experiment did not migrate its production
+control. For current physical storage after later integration, use the
+[source-qualified storage contract](architecture/chunk-tile-and-buffer-model.md#what-is-stored-per-cell-and-per-chunk);
+this does not reinterpret #17 or select G-final.
 
 [Completed precision results](audits/2026-09-11-issue-17-state-precision.md) and
 [staged G-P](operations/architecture-programme.md#g-p-staged-decision-2026-09-11)

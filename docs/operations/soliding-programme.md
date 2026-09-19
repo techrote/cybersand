@@ -99,3 +99,6 @@ The blocked [macro-dynamics/fracture fixture preregistration](soliding-macro-fra
 retains falling, off-centre impulse, free rotation and two/three coherent-child
 partitions. It explicitly requires admitted units and real owner integration;
 zero loose debris is correct where no loose-material policy has been admitted.
+
+[Successor checkpoint evidence](../audits/2026-09-19-issue-12-foundation.md) records
+completed scope and the next bounded producer/connectivity work; Stage 3 is partial.

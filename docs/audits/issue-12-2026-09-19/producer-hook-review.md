@@ -84,6 +84,9 @@ reports ambient beneath a mask. Exact DiscoveryCell sampling must use
 `stored_material`, stored states and a stored-temperature owner read, or enforce
 fully unoccupied coverage for the whole scan. No mutable World reference may
 escape. A mixed/blocked snapshot's `uniform` field is not a full payload.
+`content_hash()` skips ambient Empty cells even if their stored state is nonzero;
+exact hidden-state/heat tests therefore need direct tuple comparisons or an
+appropriately scoped state hash, not content-hash equality alone.
 World supports wide signed coordinates, but its helper arithmetic is not a proof
 for arbitrary INT64 endpoints plus a halo: separately preflight registration,
 chunk origins, source reads and halo expansion; test near both ends before

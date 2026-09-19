@@ -251,3 +251,12 @@ The immutable lab context adds `micro_active`, `microscenario`,
 the same owner-local host directly. Existing #19 keys are compatibility projections
 of the host's action ledger. Full schema, units, capacities and export limitations:
 [MicroScenarios](../operations/microscenarios.md).
+
+## Soliding model and discovery values
+
+**Current standalone modules only:** [lifecycle](../architecture/soliding-lifecycle.md)
+uses incarnation/slot/generation handles and immutable transaction tokens;
+[discovery](../systems/settled-region-discovery.md) returns complete copied tile
+classifications under an independent revision witness. Neither adds a C API,
+GDExtension method, worker message or live runtime admission. Real World producer
+witnesses and cross-owner queues remain Planned.
