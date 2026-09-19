@@ -99,14 +99,21 @@ For a fixture-defined column ROI, exact column quantity is
 
 `Q_x(t) = sum_y mass(x,y,t)`.
 
+Two ROI roles are distinct. A **leveling ROI** includes every registered basin
+column, with a dry column contributing `Q_x=0`; this prevents an initially
+compact rectangular mound from being misclassified as flat merely because all
+currently wet columns have the same depth. A **surface-defect ROI** follows only
+the currently wet contour and is used for hill/terrace morphology.
+
 For a flat-bed ROI whose registered bed datum is `b_x`, authoritative
 cell-equivalent free-surface elevation is
 
 `H_x(t) = b_x - Q_x(t)/M`
 
-with screen y increasing downwards. Reducers retain integer `Q_x`; division is
-only for reporting. Fixtures with non-flat geometry define separate same-datum
-surface ROIs rather than pretending a wall/ledge is a continuous bed.
+with screen y increasing downwards. In a leveling ROI this formula also defines
+the dry-column zero-depth datum `H_x=b_x`. Reducers retain integer `Q_x`;
+division is only for reporting. Fixtures with non-flat geometry define separate
+same-datum surface ROIs rather than pretending a wall/ledge is a continuous bed.
 
 A column is wet when `Q_x>0`. Lateral range is rightmost wet x minus leftmost
 wet x. Exact lateral centre-of-mass numerator is
@@ -136,12 +143,15 @@ quantity-conserving mean implied by the registered geometry.
 
 ### Time-to-flat and equilibrium
 
-A flat-bed ROI is *registered flat* when all of these hold for 120 consecutive
-ticks:
+A flat-bed leveling ROI is *registered flat* when all of these hold for 120
+consecutive ticks:
 
-1. max-min `Q_x <= M` across wet columns;
-2. maximum 9-column local absolute slope <= 1/16 cell per column;
-3. no registered cliff exceeds one cell-equivalent between adjacent columns;
+1. max-min `Q_x <= M` across every registered leveling column, including dry
+   columns as zero quantity;
+2. maximum 9-column local absolute slope over the leveling ROI <= 1/16 cell per
+   column;
+3. no leveling edge, including a wet/dry edge inside that ROI, exceeds one
+   cell-equivalent between adjacent columns;
 4. total Water quantity equals initial quantity exactly.
 
 Time-to-flat is the first tick of that 120-tick window. A communicating fixture
@@ -155,9 +165,11 @@ winner.
 
 ### Cliff lifetime
 
-A cliff exists at edge x/x+1 when both columns are wet and
-`abs(Q_x-Q_(x+1)) > M`. Lifetime is the longest consecutive run of that edge
-condition. Report maximum and total edge-ticks.
+Two cliff ledgers are retained. An **internal surface cliff** exists at edge
+x/x+1 when both columns are wet and `abs(Q_x-Q_(x+1)) > M`. A **leveling
+cliff** applies the same threshold to every adjacent pair in the registered
+leveling ROI, including a wet/dry boundary. Lifetime is the longest consecutive
+run of each edge condition. Report maxima and total edge-ticks separately.
 
 ### Hillnipple
 
@@ -175,8 +187,9 @@ the clipped support rule rather than a fixed centered smoothing window.
 
 ### Terraces and shimmer
 
-Quantize only for terrace classification, never for Water accounting:
-`T_x = round(4*H_x)/4`, quarter-cell bins.
+Quantize only wet surface-defect columns for terrace classification, never for
+Water accounting. Quarter-cell classification is deterministic nearest-half-up:
+`T_x = floor(4*H_x + 1/2)/4`.
 
 A terrace is a maximal contiguous run of at least three wet columns with equal
 `T_x`. Record count, total horizontal extent, largest extent and the largest
@@ -270,8 +283,10 @@ gap, terraces, work and quantity.
 Extent x=0..127, floor y=88, side walls x=0/127. Fill block x=40..79,y=40..87
 (40x48 full cells). No later inputs.
 
-This is the primary convergence fixture. Measure time-to-flat, local/global slope,
-cliffs, hillnipple, terraces/shimmer, activity tail and work. Canonical P0 is run
+This is the primary convergence fixture. Its leveling ROI is x=1..126; its
+surface-defect ROI is the wet subset of x=1..126. Measure time-to-flat,
+local/global leveling slope, internal/leveling cliffs, hillnipple,
+terraces/shimmer, activity tail and work. Canonical P0 is run
 to 7,200 ticks if 1,800 ticks censor the registered equilibrium measurement.
 
 ### LS — ledge sheet positive control
