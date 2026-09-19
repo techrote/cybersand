@@ -231,10 +231,10 @@ void report_saturation_fences_observation_only() {
     observed_config.chunk_size = 16;
     observed_config.activity_block_size = 1;
     observed_config.scheduling_core_size = 16;
-    observed_config.maximum_chunk_count = 32;
-    observed_config.active_chunk_capacity = 32;
-    observed_config.active_core_capacity = 64;
-    observed_config.settled_discovery_tile_capacity = 512;
+    observed_config.maximum_chunk_count = 64;
+    observed_config.active_chunk_capacity = 64;
+    observed_config.active_core_capacity = 4'096;
+    observed_config.settled_discovery_tile_capacity = 4'096;
     auto control_config = observed_config;
     control_config.settled_discovery_enabled = false;
 
