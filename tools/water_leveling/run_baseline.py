@@ -281,7 +281,9 @@ def main() -> int:
             f"trace {fixture}: horizon={attempts[-1]['horizon']} "
             f"flat={summary['time_to_flat_tick']} "
             f"arm_half={summary['arm_level_half_life_tick']} "
-            f"local_half={summary['primary_local_slope_half_life_tick']}",
+            f"local_half={summary['primary_local_slope_half_life_tick']} "
+            f"surface_start={summary['registered_surface_start_tick']} "
+            f"registered_hill={summary['registered_surface_max_hill_amplitude_cells']}",
             flush=True,
         )
     write_json(out / "canonical.json", canonical)
@@ -296,7 +298,7 @@ def main() -> int:
     write_json(out / "timing.json", timing)
 
     result = {
-        "schema": "cybersand-water-leveling-baseline-v1",
+        "schema": "cybersand-water-leveling-baseline-v2",
         "status": "passed",
         "source": identity,
         "canonical": canonical,
@@ -321,6 +323,12 @@ def main() -> int:
                 "primary_local_slope_half_life_tick": data["summary"]["primary_local_slope_half_life_tick"],
                 "max_hill_amplitude_cells": data["summary"]["max_hill_amplitude_cells"],
                 "severe_terrace_lifetime_ticks": data["summary"]["severe_terrace_lifetime_ticks"],
+                "registered_surface_start_tick": data["summary"]["registered_surface_start_tick"],
+                "registered_surface_max_hill_amplitude_cells": data["summary"]["registered_surface_max_hill_amplitude_cells"],
+                "registered_surface_severe_terrace_lifetime_ticks": data["summary"]["registered_surface_severe_terrace_lifetime_ticks"],
+                "registered_surface_turnover_per_motion_cell_equivalent": data["summary"]["registered_surface_turnover_per_motion_cell_equivalent"],
+                "registered_surface_low_motion_edge_turnover": data["summary"]["registered_surface_low_motion_edge_turnover"],
+                "registered_surface_low_motion_transition_count": data["summary"]["registered_surface_low_motion_transition_count"],
                 "max_wall_gap_area_cells": data["summary"]["max_wall_gap_area_cells"],
             }
             for fixture, data in canonical.items()
