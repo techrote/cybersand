@@ -123,8 +123,9 @@ results remain retained.
 ## Result and measurement contract
 
 Every planned execution has an explicit state. Supported terminal states include
-success, correctness failure, performance failure, refusal, timeout, source failure,
-failed-world quarantine, unavailable and not-applicable. A refusal or timeout is a
+success, correctness failure, refusal, timeout, source failure, failed-world
+quarantine, unavailable and not-applicable. Slow performance remains a measured
+outcome on a successful run; there is no threshold-derived performance-failure state. A refusal or timeout is a
 result, never a blank row.
 
 Every executed result carries source commit and dirty status; relevant source/input
@@ -137,7 +138,8 @@ Metric groups are preregistered for producer/signal tracking, deadlines/activity
 exact extraction, indexes, retirement/dependency, merge/local fast paths,
 reconstruction, publication, reclamation, end-to-end latency/throughput and memory.
 Configured/requested, layout-derived, allocator/committed, live, staged, retired,
-scratch high-water and process RSS remain distinct.
+scratch high-water and process RSS remain distinct. A configured-memory reduction
+is never reclassified as an algorithmic performance improvement.
 
 Correctness comparison names material, `state_a`, `state_b`, temperature,
 occupancy, masks, events, inclusion, completed ticks, failure/quarantine and
@@ -150,11 +152,16 @@ are separate fields.
 The reducer:
 
 - never rewrites raw result records;
-- separates correctness and performance terminal states;
+- separates correctness failures from performance measurements;
 - retains unavailable/refused/failed/timeout outcomes;
 - flags missing available runs and insufficient successful samples;
-- reports declared p50/p95/p99/max only from a single recorded metric population;
+- summarizes every declared numeric metric from successful records while retaining
+  partial high-water/refusal evidence from all terminal records;
+- reports p50 for non-empty process populations, p95 only from at least 20 samples
+  and p99 only from at least 100; per-run distributions may carry their own declared
+  statistics;
 - never adds separately reported percentiles;
+- emits an exact per-record provenance index;
 - contains no candidate winner, universal percentage-speedup threshold or Stage-3B
   admission decision.
 
