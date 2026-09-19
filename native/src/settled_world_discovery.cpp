@@ -402,6 +402,7 @@ std::size_t SettledWorldDiscoveryCoordinator::advance(
             });
         return used;
     } catch (...) {
+        state.journal.source_fail();
         if (state.regions != nullptr) state.regions->fail(RegionRefusal::SourceFailure);
         throw;
     }
