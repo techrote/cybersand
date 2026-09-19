@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cyber_native_cell_world.hpp"
+#include "cyber_observation_values.hpp"
 #include "cybersand/demo_snapshot.hpp"
 #include <godot_cpp/classes/ref.hpp>
 #include <godot_cpp/core/class_db.hpp>
@@ -38,6 +39,16 @@ class CyberDemoBridge final : public RefCounted {
     }
 
 public:
+    [[nodiscard]] Dictionary inspect_cell(const Ref<CyberNativeCellWorld>& adapter, Vector2i point) const {
+        if (adapter.is_null() || !adapter->world_) return cyber_observation::rejected("Native world unavailable");
+        return cyber_observation::cell(*adapter->world_, point);
+    }
+
+    [[nodiscard]] Dictionary inspect_statistics(const Ref<CyberNativeCellWorld>& adapter) const {
+        if (adapter.is_null() || !adapter->world_) return cyber_observation::rejected("Native world unavailable");
+        return cyber_observation::statistics(*adapter->world_, adapter->last_stats_);
+    }
+
     [[nodiscard]] String get_last_error() const { return error_; }
 
     [[nodiscard]] bool build_tuned_world(const Ref<CyberNativeCellWorld>& adapter,
@@ -219,6 +230,8 @@ public:
 
 protected:
     static void _bind_methods() {
+        ClassDB::bind_method(D_METHOD("inspect_cell", "world", "point"), &CyberDemoBridge::inspect_cell);
+        ClassDB::bind_method(D_METHOD("inspect_statistics", "world"), &CyberDemoBridge::inspect_statistics);
         ClassDB::bind_method(D_METHOD("export_level", "world"), &CyberDemoBridge::export_level);
         ClassDB::bind_method(D_METHOD("import_level", "world", "bytes"), &CyberDemoBridge::import_level);
         ClassDB::bind_method(D_METHOD("build_world", "world", "rectangles"), &CyberDemoBridge::build_world);

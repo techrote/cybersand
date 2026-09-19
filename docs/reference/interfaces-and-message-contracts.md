@@ -251,3 +251,21 @@ The immutable lab context adds `micro_active`, `microscenario`,
 the same owner-local host directly. Existing #19 keys are compatibility projections
 of the host's action ledger. Full schema, units, capacities and export limitations:
 [MicroScenarios](../operations/microscenarios.md).
+
+### Read-only native MicroScenario inspection
+
+The MS-001 adapter preparation adds `CyberDemoBridge.inspect_cell(world, point)`
+and `inspect_statistics(world)`. Call these only from the same serialized external
+owner that may call `simulation_tick`; they are not concurrent-reader APIs.
+Results own their dictionaries/arrays and contain no live World storage. Point
+queries are one cell inside the finite 1024-square demo. Quarantined or absent
+owners are rejected, with no retry, reset or partial-tick success publication.
+
+Cell inspection returns stored material/state and raw temperature availability,
+plus body-mask identity and chunk/activity-block coordinates. A masked temperature
+is unavailable: the underlying occupancy-aware query's ambient fallback is not
+represented as the hidden cell's temperature. There is no new heat solver or
+per-cell awake flag. Statistics export existing completed-tick counters and
+actual configured limits; missing utilization/queue/allocation counters remain
+explicitly unavailable. See the [MS-001 execution ledger](../audits/2026-09-19-issue-28-ms001.md)
+for source/artifact identity and the separate readiness disposition.
