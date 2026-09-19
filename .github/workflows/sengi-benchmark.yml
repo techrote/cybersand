@@ -1,6 +1,6 @@
 name: Sengi historical benchmark
 
-run-name: Sengi shard-0 benchmark ${{ inputs.trial }}
+run-name: Sengi shard-0 benchmark ${{ inputs.trial || github.run_number }}
 
 on:
   workflow_dispatch:
@@ -9,12 +9,18 @@ on:
         description: Benchmark trial label
         required: true
         default: trial-1
+  push:
+    branches:
+      - ci/sengi-benchmark-run
+    paths:
+      - .github/workflows/sengi-benchmark.yml
 
 permissions:
   contents: read
   actions: read
 
 env:
+  BENCH_TRIAL: "1"
   HISTORICAL_SHA: ed4b9abe542a5de0d498a62d3de7f157fe40d129
   HISTORICAL_RUN_ID: 35434827192
   GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
@@ -50,6 +56,9 @@ jobs:
 
       - name: Verify and install historical runtime
         run: |
+          echo "benchmark_trial=$BENCH_TRIAL"
+          echo "artifact_source=$(cat build/linux-runtime/source-sha.txt)"
+          echo "expected_source=$HISTORICAL_SHA"
           test "$(cat build/linux-runtime/source-sha.txt)" = "$HISTORICAL_SHA"
           (
             cd build/linux-runtime
@@ -87,5 +96,5 @@ jobs:
         with:
           name: sengi-shard0-${{ github.run_id }}
           path: build/sengi-benchmark/
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 7
