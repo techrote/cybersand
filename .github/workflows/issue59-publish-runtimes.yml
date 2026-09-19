@@ -66,8 +66,8 @@ jobs:
           timeout 35m tools/build_pinned_godot_cpp.sh linux
           timeout 20m tools/build_native_extension.sh
           file "$CYBERSAND_NATIVE_OUTPUT" | grep 'ELF 64-bit.*x86-64'
-          timeout 1m tools/check_linux_runtime_floor.sh "$CYBERSAND_NATIVE_OUTPUT" || timeout 1m tools/check_linux_runtime_floor.sh
           cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          timeout 1m tools/check_linux_runtime_floor.sh
 
       - name: Prepare LLVM-MinGW
         run: |
