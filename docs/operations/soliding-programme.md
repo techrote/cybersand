@@ -103,10 +103,12 @@ partitions. It explicitly requires admitted units and real owner integration;
 zero loose debris is correct where no loose-material policy has been admitted.
 
 [Successor checkpoint evidence](../audits/2026-09-19-issue-12-foundation.md) records
-completed scope and the next bounded producer/connectivity work; Stage 3 is partial.
+the foundation; the [Stage-3 exit review](../audits/issue-12-2026-09-19/stage3-exit-review.md)
+records the integrated World producer/connectivity admission and every frozen
+checklist disposition. Stage 3 is accepted only for the exact reviewed candidate
+and remains read-only, cells-owned observation.
 
-The [Stage 3 execution freeze](soliding-stage3-freeze.md) is the current implementation
-contract for the remaining producer and cross-tile connectivity work. Its four
-Spark packets separate World producer integration, bounded connectivity, independent
-verification and integrated measurement so delegated workers cannot silently choose
-architecture or enter Stage 4.
+The [Stage 3 execution freeze](soliding-stage3-freeze.md) remains the historical and
+architectural execution contract. After exact-head CI and merge, Stage 4 is the next
+dependency-ready work: preregister the stationary-acceleration bake-off against
+Current ordinary sleep. No Stage-3 cost result selects a representation or threshold.

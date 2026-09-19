@@ -128,6 +128,11 @@ material fixed memory, producer metadata overhead and expensive large-region reb
 under sparse edits. These are cost-model results, not an acceleration or Stage-4
 admission claim.
 
+The parent-owned [Stage-3 exit review](../audits/issue-12-2026-09-19/stage3-exit-review.md)
+maps every frozen checklist item to the integrated source, focused regressions and
+capacity/refusal behavior. It admits read-only discovery only; exact-head CI/merge
+remains the repository gate before Stage 4 begins.
+
 ## Bounded work, fairness and metrics
 
 **Current:** one budget unit covers starting/dequeuing a block, reading one cell,

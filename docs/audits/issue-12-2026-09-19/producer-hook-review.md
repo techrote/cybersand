@@ -10,13 +10,18 @@ related-documents: [../../systems/settled-region-discovery.md, ../../architectur
 
 # Current-World producer completeness review
 
-**Inspection, not integration acceptance.** Reviewed current-main `de332eaf8f4e70b25b097bed0c2e2a7b2aac0173`:
+**Historical inspection, not by itself integration acceptance.** Reviewed current-main `de332eaf8f4e70b25b097bed0c2e2a7b2aac0173`:
 `native/src/world.cpp` Git blob `7df2777b3fa9a18c939f76eb9516a32ccbb60154`,
 `native/include/cybersand/world.hpp` blob `602e17b97e45aef591d600f5616ff4a352071ab7`.
 No runtime source was changed by this review. The isolated `SettledDiscovery`
 journal is a viable consumer, but current World does not supply its required
 complete invalidations/signals. A passing journal test is not evidence that an
 unwired World produces those signals.
+
+The later integrated implementation is assessed separately by the
+[Stage-3 exit review](stage3-exit-review.md). This source audit remains the retained
+matrix used for that review; its original baseline statements are not rewritten as
+if production integration existed at `de332ea`.
 
 ## Hook matrix
 
