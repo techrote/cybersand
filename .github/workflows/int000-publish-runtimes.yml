@@ -1,6 +1,6 @@
 name: INT000 publish integrated runtimes
 
-# One-shot source-matched publication trigger for frozen post-audit INT-000 source.
+# One-shot source-matched publication trigger for final bridge-reviewed INT-000 source.
 # This workflow deletes itself in the publication commit so it cannot become permanent CI.
 
 on:
