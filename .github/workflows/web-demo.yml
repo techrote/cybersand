@@ -60,7 +60,7 @@ jobs:
         env:
           GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
           WEB_TEMPLATE_ROOT: ${{ runner.temp }}/web-templates
-          SCONS_JOBS: "2"
+          SCONS_JOBS: "8"
         run: |
           source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
           "$RUNNER_TEMP/web-python/bin/python" tools/build_web.py --compile-only --native-tests
