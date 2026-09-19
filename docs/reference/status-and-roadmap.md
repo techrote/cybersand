@@ -291,20 +291,26 @@ Windows, GPU or native Web runtime acceptance for this version.
 
 ## MS-001 reference-pack checkpoint
 
-**Current source, exploratory 2026-09-19:** PR #44 / `codex/issue-28-ms001` implements
-the schema-2 [reference pack](../operations/microscenario-reference-pack.md): Materials
-Laboratory with complete generated interaction fixtures/fresh-reset A/B, a Flood-Control
-Puzzle with a wet untreated control and three distinct geometry-only successful
+**Merged exploratory checkpoint, 2026-09-19:** PR #44 landed the schema-2
+[reference pack](../operations/microscenario-reference-pack.md) at merge
+`c1edf907cce1693fa45f89e9f1f573f05483c1e4`: Materials Laboratory with
+complete generated interaction fixtures/fresh-reset A/B, a Flood-Control Puzzle
+with a wet untreated control and three distinct geometry-only successful
 witnesses, and four finite Water/granular/gas/mixed Simulation Stress profiles.
 Schema-1 Tower/Water definitions retain their hashes and existing blind controls.
-No material rules, profiles, capacities or physics defaults change.
+No material rules, profiles, capacities or physics defaults changed.
 
-The [execution ledger](../audits/2026-09-19-issue-28-ms001.md) separates Linux
-headless/controller/graphical evidence, pinned runtime provenance and unavailable
-actual Windows/browser/target-GPU execution. The explicit Lab readiness checkpoint
-can unblock #29 on its named consumable revision; it neither starts #29 here nor
-waives #18/#20/#26/#14 gates. #28 closure still requires the final integrated PR
-revision to pass repository/CI delivery gates and land on main.
+The accepted PR head `95aa2a0cb7b68445ed4a23ad16481c947e5a4695` passed
+documentation/provenance, native and Godot CI before merge. The
+[execution ledger](../audits/2026-09-19-issue-28-ms001.md) records a bounded
+post-merge review that retained the implementation while correcting Flood
+endpoint wording, the Stress uniqueness regression and stale compact definition
+hashes. Actual Windows/browser/target-GPU execution remains unavailable.
+
+The explicit Lab readiness prerequisite for #29 is satisfied. #29 still requires
+a fresh reconciliation of its historical preflight against the landed schema-2
+contract before implementation; MS-001 does not start #29 automatically and does
+not waive #18/#20/#26/#14 gates.
 
 ## Issue #12 successor programme, 2026-09-19
 
