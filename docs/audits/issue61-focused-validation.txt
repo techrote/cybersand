@@ -1,0 +1,87 @@
+PASS
+source=6c106240e7b9b39fbb7de8ab1319eececd3cd33f
+--- tail ---
++ timeout 8m make soliding-stage3b-sparse-mutation-witness-test
+mkdir -p build
+g++ -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O0 -g3 native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/src/c_api.cpp native/tests/test_stage3b_sparse_mutation_witness.cpp -o build/test_stage3b_sparse_mutation_witness
+native/src/world.cpp: In member function ‘bool cybersand::World::try_move(cybersand::Material, int64_t, int64_t, int64_t, int64_t, bool, JobEffects*)’:
+native/src/world.cpp:1851:61: warning: conversion from ‘int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+ 1851 |             mix_after_motion(material,x,y,target_x,target_y,moved_mass,effects);
+      |                                                             ^~~~~~~~~~
+native/src/c_api.cpp: In function ‘uint8_t cybersand_world_liquid_mass(const cybersand_world*, int64_t, int64_t)’:
+native/src/c_api.cpp:286:29: warning: conversion from ‘int’ to ‘uint8_t’ {aka ‘unsigned char’} may change value [-Wconversion]
+  286 |     return world == nullptr ? 0 : world->implementation.liquid_mass(x, y);
+      |            ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./build/test_stage3b_sparse_mutation_witness
+Stage-3B sparse mutation/witness test failure: active scheduling-core capacity exhausted
+make: *** [Makefile:66: soliding-stage3b-sparse-mutation-witness-test] Error 1
++ timeout 8m make soliding-stage3b-runtime-storage-test
+g++ -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O0 -g3 native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/src/c_api.cpp native/tests/test_stage3b_runtime_storage.cpp -o build/test_stage3b_runtime_storage
+native/src/world.cpp: In member function ‘bool cybersand::World::try_move(cybersand::Material, int64_t, int64_t, int64_t, int64_t, bool, JobEffects*)’:
+native/src/world.cpp:1851:61: warning: conversion from ‘int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+ 1851 |             mix_after_motion(material,x,y,target_x,target_y,moved_mass,effects);
+      |                                                             ^~~~~~~~~~
+native/src/c_api.cpp: In function ‘uint8_t cybersand_world_liquid_mass(const cybersand_world*, int64_t, int64_t)’:
+native/src/c_api.cpp:286:29: warning: conversion from ‘int’ to ‘uint8_t’ {aka ‘unsigned char’} may change value [-Wconversion]
+  286 |     return world == nullptr ? 0 : world->implementation.liquid_mass(x, y);
+      |            ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./build/test_stage3b_runtime_storage
+Stage-3B runtime-sized storage tests passed
++ timeout 8m make build/test_settled_world_discovery
+g++ -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O0 -g3 native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/src/c_api.cpp native/tests/test_settled_world_discovery.cpp -o build/test_settled_world_discovery
+native/src/world.cpp: In member function ‘bool cybersand::World::try_move(cybersand::Material, int64_t, int64_t, int64_t, int64_t, bool, JobEffects*)’:
+native/src/world.cpp:1851:61: warning: conversion from ‘int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+ 1851 |             mix_after_motion(material,x,y,target_x,target_y,moved_mass,effects);
+      |                                                             ^~~~~~~~~~
+native/src/c_api.cpp: In function ‘uint8_t cybersand_world_liquid_mass(const cybersand_world*, int64_t, int64_t)’:
+native/src/c_api.cpp:286:29: warning: conversion from ‘int’ to ‘uint8_t’ {aka ‘unsigned char’} may change value [-Wconversion]
+  286 |     return world == nullptr ? 0 : world->implementation.liquid_mass(x, y);
+      |            ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ timeout 4m ./build/test_settled_world_discovery
+settled World discovery tests passed
++ export ASAN_OPTIONS=detect_leaks=1:strict_string_checks=1
++ ASAN_OPTIONS=detect_leaks=1:strict_string_checks=1
++ timeout 12m make build/test_stage3b_sparse_mutation_witness_sanitized
+g++ -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/src/c_api.cpp native/tests/test_stage3b_sparse_mutation_witness.cpp -o build/test_stage3b_sparse_mutation_witness_sanitized
+In file included from native/include/cybersand/world.hpp:9,
+                 from native/src/world.cpp:1:
+native/include/cybersand/water_experiment_policy.hpp: In static member function ‘static constexpr uint16_t cybersand::WaterExperimentPolicy::quantize_ratio(uint32_t, uint32_t, uint32_t)’:
+native/include/cybersand/water_experiment_policy.hpp:62:24: warning: conversion from ‘unsigned int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+   62 |         return d == 0U ? 0U : static_cast<std::uint16_t>((2U*n*maximum+d)/(2U*d));
+      |                ~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+native/src/world.cpp: In member function ‘bool cybersand::World::try_move(cybersand::Material, int64_t, int64_t, int64_t, int64_t, bool, JobEffects*)’:
+native/src/world.cpp:1851:61: warning: conversion from ‘int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+ 1851 |             mix_after_motion(material,x,y,target_x,target_y,moved_mass,effects);
+      |                                                             ^~~~~~~~~~
+In file included from native/include/cybersand/world.hpp:9,
+                 from native/include/cybersand/render_snapshot.hpp:3,
+                 from native/src/render_snapshot.cpp:1:
+native/include/cybersand/water_experiment_policy.hpp: In static member function ‘static constexpr uint16_t cybersand::WaterExperimentPolicy::quantize_ratio(uint32_t, uint32_t, uint32_t)’:
+native/include/cybersand/water_experiment_policy.hpp:62:24: warning: conversion from ‘unsigned int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+   62 |         return d == 0U ? 0U : static_cast<std::uint16_t>((2U*n*maximum+d)/(2U*d));
+      |                ~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from native/include/cybersand/world.hpp:9,
+                 from native/include/cybersand/render_snapshot.hpp:3,
+                 from native/src/c_api.cpp:5:
+native/include/cybersand/water_experiment_policy.hpp: In static member function ‘static constexpr uint16_t cybersand::WaterExperimentPolicy::quantize_ratio(uint32_t, uint32_t, uint32_t)’:
+native/include/cybersand/water_experiment_policy.hpp:62:24: warning: conversion from ‘unsigned int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+   62 |         return d == 0U ? 0U : static_cast<std::uint16_t>((2U*n*maximum+d)/(2U*d));
+      |                ~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+native/src/c_api.cpp: In function ‘uint8_t cybersand_world_liquid_mass(const cybersand_world*, int64_t, int64_t)’:
+native/src/c_api.cpp:286:29: warning: conversion from ‘int’ to ‘uint8_t’ {aka ‘unsigned char’} may change value [-Wconversion]
+  286 |     return world == nullptr ? 0 : world->implementation.liquid_mass(x, y);
+      |            ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from native/include/cybersand/world.hpp:9,
+                 from native/tests/test_stage3b_sparse_mutation_witness.cpp:1:
+native/include/cybersand/water_experiment_policy.hpp: In static member function ‘static constexpr uint16_t cybersand::WaterExperimentPolicy::quantize_ratio(uint32_t, uint32_t, uint32_t)’:
+native/include/cybersand/water_experiment_policy.hpp:62:24: warning: conversion from ‘unsigned int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+   62 |         return d == 0U ? 0U : static_cast<std::uint16_t>((2U*n*maximum+d)/(2U*d));
+      |                ~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ timeout 6m ./build/test_stage3b_sparse_mutation_witness_sanitized
+Stage-3B sparse mutation/witness test failure: active scheduling-core capacity exhausted
++ grep -R dirty_discovery_rect native/src/world.cpp native/include/cybersand/world.hpp
++ grep -q record_discovery_mutation native/src/world.cpp
++ grep -q notify_payload native/src/world.cpp
++ grep -q fence_lost_payload_report native/src/world.cpp
+++ git merge-base HEAD origin/main
++ git diff --check e87ac54459a3a62350fa7aa3da6ce979c30a18b8 HEAD
