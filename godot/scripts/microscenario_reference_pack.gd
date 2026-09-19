@@ -120,7 +120,7 @@ static func flood_control(seed: int = 0) -> Dictionary:
 	# zone after the finite reservoir release; successful witness definitions below
 	# change ordinary material geometry, never an objective flag or solver setting.
 	var out: Dictionary = base(FLOOD_ID, seed, "Flood-Control Puzzle", "protected-zone/v1", 180,
-		"A finite upstream reservoir opens at tick 20. Keep the marked generator zone dry through tick 180 using ordinary barriers, berms or diversion geometry. Paint/erase is available for exploration. The objective reads only Water quantity in the protected zone; no solution branch changes physics. F8 hides the HUD for a clean view.")
+		"A finite upstream reservoir opens at tick 20. Ensure the marked generator zone is dry at tick 180 using ordinary barriers, berms or diversion geometry. Paint/erase is available for exploration. The objective reads only Water quantity in the protected zone at tick 180; no solution branch changes physics. F8 hides the HUD for a clean view.")
 	var shift: int = seed % 3
 	out.tools = ["paint", "erase"]
 	out.camera_origin = [24,48]
