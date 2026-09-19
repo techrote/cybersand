@@ -1,6 +1,6 @@
 name: INT000 publish integrated runtimes
 
-# One-shot source-matched publication trigger for final bridge-reviewed INT-000 source; superseded publisher runs are cancelled.
+# One-shot source-matched publication trigger for final bridge-reviewed INT-000 source; superseded runs cancel and generated audit text is whitespace-clean.
 # This workflow deletes itself in the publication commit so it cannot become permanent CI.
 
 on:
@@ -230,7 +230,7 @@ jobs:
           if heading in audit:
               audit=audit.split(heading)[0].rstrip()
           audit += f'''\n\n{heading}\n\nLinux and Windows x86_64 GDExtensions were rebuilt from exact publication source `{source}` / tree `{tree}` in Actions run `{run}`.\n\n- Linux x86_64 SHA-256: `{linux_sha}`.\n- Windows x86_64 SHA-256: `{windows_sha}`.\n- Both builds expose `inspect_interaction_profile` and `inspect_interaction`.\n- The exact same source/runtime ran the seven-fixture INT-000 batch at one and four workers; worker-semantic parity passed, coverage gaps were emitted, and the retained manifest self-comparison reported no catalogue/evidence differences. Artifact: `int000-batch-{source}`.\n- Windows remains cross-build evidence only. Actual Windows, browser/WebAssembly and target-GPU execution remain unavailable and are not claimed.\n\nThe runtime source-input ledger now includes the new interaction schema header. Final acceptance still requires the subsequently published PR head to pass repository/provenance, native, Godot and retrieval/documentation gates.\n'''
-          audit_path.write_text(audit+'\n')
+          audit_path.write_text(audit.rstrip()+'\n')
           PY
 
       - name: Verify and publish LFS runtimes
