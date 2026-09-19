@@ -308,7 +308,10 @@ classifies the integrated producer/connectivity implementation as the passed Sta
 bounded correctness/reference checkpoint at `82e65f3`, with exact-head CI,
 provenance and final parent review complete. Stage 3B locality/scalability remains open: measured fixed memory,
 full tracked-tile signal refresh and whole-region sparse-edit rebuilds prevent full
-Stage-3 admission. Stage 4 is blocked; production dynamics, fracture and persistence
-remain unimplemented. Source `de332ea` actually uses the 8-byte superset carrier after #19 integration;
+Stage-3 admission. PR #47 merged the bounded reference as `fc299c1`; the next step is
+the read-only [Stage-3B Astra architecture review](../operations/soliding-stage3b-astra-review.md),
+which stops before implementation and parent admission. Stage 4 is blocked; production
+dynamics, fracture and persistence remain unimplemented. Source `de332ea` actually uses
+the 8-byte superset carrier after #19 integration;
 the [storage contract](../architecture/chunk-tile-and-buffer-model.md) supersedes
 earlier four-byte physical-size statements for this source without selecting G-final.

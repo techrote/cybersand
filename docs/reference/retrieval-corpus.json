@@ -237,6 +237,10 @@
       "reason": "Issue execution packet; retrieve explicitly through the canonical Stage-3 freeze, not as a default Current runtime contract"
     },
     {
+      "path": "operations/soliding-stage3b-astra-review.md",
+      "reason": "Issue architecture-review packet; retrieve explicitly through the soliding programme and Stage-3A exit review, not as implemented Current behavior"
+    },
+    {
       "path": "audits/issue-12-2026-09-19/luna-stage3-draft-review.md",
       "reason": "Dated rejected-draft review; retrieve explicitly for the interrupted substitute-worker record, not as a default Current contract"
     },

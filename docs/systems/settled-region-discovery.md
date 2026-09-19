@@ -132,8 +132,9 @@ admission claim.
 The parent-owned [Stage-3 review](../audits/issue-12-2026-09-19/stage3-exit-review.md)
 maps every frozen checklist item to the integrated source, focused regressions and
 capacity/refusal behavior. It classifies the reference as the passed Stage-3A bounded
-checkpoint and
-keeps Stage 3B open. Stage 4 is not admitted.
+checkpoint and keeps Stage 3B open. The next bounded step is the read-only
+[Stage-3B Astra architecture review](../operations/soliding-stage3b-astra-review.md),
+not a locality implementation or Stage-4 bake-off. Stage 4 is not admitted.
 
 ## Bounded work, fairness and metrics
 

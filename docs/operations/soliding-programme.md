@@ -112,6 +112,8 @@ publication commit `82e65f3`;
 Stage 3B locality/scalability is open. Both remain read-only, cells-owned observation.
 
 The [Stage 3 execution freeze](soliding-stage3-freeze.md) remains the historical and
-architectural correctness contract. After the verified Stage-3A merge, prepare the
-bounded Stage-3B Astra architecture review; do not implement Stage 4.
+architectural correctness contract. PR #47 merged the Stage-3A reference at `fc299c1`.
+The next step is the bounded, read-only
+[Stage-3B Astra architecture review](soliding-stage3b-astra-review.md); do not begin
+Stage-3B implementation or Stage 4 from this checkpoint.
 No Stage-3 cost result selects a representation or threshold.

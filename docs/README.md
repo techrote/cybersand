@@ -154,6 +154,8 @@ Phase 0 endpoint. Read its [reuse audit](audits/2026-09-19-issue-12-phase0-reuse
 [Stage 3 execution freeze](operations/soliding-stage3-freeze.md). The
 [Stage-3 review](audits/issue-12-2026-09-19/stage3-exit-review.md) records the exact
 passed Stage-3A bounded reference, frozen correctness checklist, retained negative cost
-evidence and the open Stage-3B locality/scalability gate. Stage 4 is not admitted.
+evidence and the open Stage-3B locality/scalability gate. The next bounded step is the
+[read-only Astra architecture review packet](operations/soliding-stage3b-astra-review.md),
+not implementation or Stage 4. Stage 4 is not admitted.
 Macro-dynamics and coherent-child fracture remain first-class later goals; discovery
 stays read-only with respect to material authority.
