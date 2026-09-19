@@ -366,7 +366,7 @@ WorldDiscoveryStorageLayout SettledWorldDiscoveryCoordinator::storage_layout() c
     out.effective_tile_capacity = state.tile_capacity;
     out.journal_capacity = state.journal.slot_capacity();
     out.owner_record_capacity = state.records.capacity();
-    out.key_index_capacity = state.index.capacity();
+    out.key_index_capacity = state.index.size();
     out.journal_storage_bytes = state.journal.storage_bytes();
     out.owner_record_storage_bytes = state.records.capacity() * sizeof(Impl::Record);
     out.key_index_storage_bytes = state.index.capacity() * sizeof(Impl::IndexEntry);
