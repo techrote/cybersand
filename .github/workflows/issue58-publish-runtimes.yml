@@ -22,7 +22,7 @@ env:
 jobs:
   build-publish:
     if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/issue-58-stage3b-lifecycle'
-    runs-on: sengi-standard-4-ubuntu-2404
+    runs-on: avrea-ubuntu-24.04-8-vcpu
     timeout-minutes: 55
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -58,7 +58,7 @@ jobs:
         env:
           GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
           SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
-          SCONS_JOBS: "4"
+          SCONS_JOBS: "8"
           CYBERSAND_REAL_CXX: /usr/bin/g++-13
           LINUX_CXX: /usr/bin/g++-13
           CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
