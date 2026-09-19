@@ -152,6 +152,22 @@ open/held until that bulk confound is resolved; #20 remains downstream and G-fin
 remains open. MicroScenario/INT-000 work continues independently and only affected
 Water-dependent provisional evidence needs later revalidation.
 
+## Issue #26 post-merge review and #49 correction
+
+The [post-merge review](../audits/2026-09-19-issue-26-post-merge-review.md)
+preserves #26 Outcome B for its two exact rejected local candidates, while
+qualifying apparatus v1 for future acceptance use.
+
+Confirmed apparatus limitations include dry-column false-pass equilibrium,
+success-valued zero for unreached thresholds, non-revoked sustained passage,
+a historical three-compartment fixture mislabeled as a clean U-tube, mixed
+active/sleep p95 interpretation and evidence-runner durability gaps.
+
+[#49](https://github.com/techrote/cybersand/issues/49) is now the required bounded
+correction before #45 implementation/acceptance. #45 must use versioned corrected
+metrics/fixtures and fresh Current-Water baselines. Production Water is unchanged;
+#18 remains held behind `#49 -> #45`.
+
 ## Opt-in transport profiles
 
 **Current:** the [profile contract](../systems/flow-transport-and-profiles.md)

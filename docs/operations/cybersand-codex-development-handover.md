@@ -183,3 +183,17 @@ separate from #18 directional history; #18 stays held until #45 supplies an acce
 bulk baseline or a documented no-go. #20 and G-final remain downstream under the
 architecture programme. #28/#29 may continue in parallel, with targeted
 revalidation only after a later accepted Water semantic change.
+
+## Issue #49 Water apparatus correction handoff, 2026-09-19
+
+Use [the post-merge #26 review](../audits/2026-09-19-issue-26-post-merge-review.md)
+before any successor Water experiment. #26 remains closed and its two local
+candidate rejections remain valid, but the v1 harness is historical evidence rather
+than the acceptance oracle for #45.
+
+[#49](https://github.com/techrote/cybersand/issues/49) must first version/fix the
+settling and censoring metrics, add the clean two-limb communicating-head fixture,
+separate active/sleep performance accounting and harden evidence output. Preserve
+all original #26 archives and generate new baselines for changed metrics/fixtures.
+
+Required order is `#49 -> #45 -> #18`. #28/#29 remain independently runnable.

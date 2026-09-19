@@ -43,6 +43,22 @@ Current architecture ordering for the affected path is therefore:
 #12 coherent soliding and the MicroScenarios/#28/#29 lane remain independently
 parallel under their own ownership/dependency rules.
 
+## Post-#26 apparatus correction gate — 2026-09-19
+
+Independent post-merge review preserves #26 Outcome B for its two exact rejected
+local candidates, but its retained apparatus v1 is not sufficient to govern
+successor acceptance. [#49](https://github.com/techrote/cybersand/issues/49) owns
+the bounded metric/fixture/evidence repair.
+
+No #45 implementation or numeric candidate acceptance may begin until #49 merges
+with a versioned corrected apparatus and fresh successor control baseline.
+
+Affected architecture order:
+
+`#49 -> #45 bulk-head disposition -> directional-reference reassessment -> #18 G-M admission/no-go -> #20/G-B if justified -> G-final`.
+
+This correction changes no production Water semantics and does not reopen #26.
+
 ## Current staged status, after G-P (2026-09-11)
 
 C/G-C, L/G-L and P/G-P are complete. [Issue17 evidence](../audits/2026-09-11-issue-17-state-precision.md)

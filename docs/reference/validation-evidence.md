@@ -150,6 +150,27 @@ semantic change is selected. GitHub-hosted timing is descriptive; several candid
 p95 regressions are retained, including pathological persistent work in the horizon
 communicating-pools case. Raw Actions artifacts/hashes are listed in the audit.
 
+## Issue #26 post-merge validation qualification, 2026-09-19
+
+Independent review confirms the retained #26 archives support the exact candidate
+rejections, mass checks and expected worker-parity claims in their measured scope.
+It also identifies apparatus limitations that prevent successor acceptance use
+without correction.
+
+The v1 equilibrium reducer can ignore dry expected columns and encode censored
+thresholds as zero; the named U-tube fixture is a three-compartment communicating
+geometry; whole-run p95 mixes active/sleep proportions; surface-defect values are
+sampled proxies; and the runner is not yet durable against overwrite/all failed
+attempts.
+
+Final PR #41 CI performed native validation, a Windows x86_64 cross-build, and a
+Linux x86_64 Godot runtime/ABI regression. Do not cite it as fresh Windows runtime
+execution.
+
+[#49](https://github.com/techrote/cybersand/issues/49) is the required correction
+before #45 can use successor metrics/fixtures. See the
+[post-merge review](../audits/2026-09-19-issue-26-post-merge-review.md).
+
 ## Programme gate reconciliation, 2026-09-11
 
 The [reconciliation audit](../audits/2026-09-11-programme-gate-reconciliation.md)
