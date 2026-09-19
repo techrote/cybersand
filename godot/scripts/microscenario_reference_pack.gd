@@ -6,9 +6,16 @@ extends RefCounted
 const Contract = preload("res://scripts/microscenario_contract.gd")
 const VERSION: int = 1
 const BASELINE: String = "de332eaf8f4e70b25b097bed0c2e2a7b2aac0173 / Baseline transport / Water8-coherence12 / exploratory"
+const MATERIAL_IDS: Array[String] = ["materials/contact-lab", "materials/salt-water", "materials/salt-water-dose-small", "materials/lava-water"]
+const FLOOD_ID: String = "ms001/flood-control"
+const STRESS_PREFIX: String = "ms001/stress/"
+const STRESS_PROFILES: Array[String] = ["water-flow", "granular-collapse", "gas-column", "mixed"]
 
 static func ids() -> Array[String]:
-	return ["materials/contact-lab", "materials/salt-water", "materials/salt-water-dose-small", "materials/lava-water"]
+	var out: Array[String] = MATERIAL_IDS.duplicate()
+	out.append(FLOOD_ID)
+	for profile: String in STRESS_PROFILES: out.append(STRESS_PREFIX + profile)
+	return out
 
 static func definition(id: String, seed: int = 0) -> Dictionary:
 	match id:
@@ -16,6 +23,8 @@ static func definition(id: String, seed: int = 0) -> Dictionary:
 		"materials/salt-water": return interaction_fixture("salt-water", seed, 32)
 		"materials/salt-water-dose-small": return interaction_fixture("salt-water", seed, 16)
 		"materials/lava-water": return interaction_fixture("lava-water", seed, 32)
+		FLOOD_ID: return flood_control(seed)
+	if id.begins_with(STRESS_PREFIX): return simulation_stress(id.trim_prefix(STRESS_PREFIX), seed)
 	return {}
 
 static func base(id: String, seed: int, title: String, profile: String, duration: int, instructions: String) -> Dictionary:
@@ -103,4 +112,100 @@ static func interaction_fixture(pair: String = "salt-water", seed: int = 0, dose
 		observe("reservoir-state",120,"cell_state",[182,238,1,1],product)]
 	out.conditions = [{"observation":"product-final","comparison":"ge","value":1,"outcome":"complete"},
 		{"observation":"product-final","comparison":"eq","value":0,"outcome":"fail"}]
+	return finish(out)
+
+
+static func flood_control(seed: int = 0) -> Dictionary:
+	# Compact hydraulic puzzle. The objective is only observed Water in the protected
+	# zone after the finite reservoir release; successful witness definitions below
+	# change ordinary material geometry, never an objective flag or solver setting.
+	var out: Dictionary = base(FLOOD_ID, seed, "Flood-Control Puzzle", "protected-zone/v1", 180,
+		"A finite upstream reservoir opens at tick 20. Keep the marked generator zone dry through tick 180 using ordinary barriers, berms or diversion geometry. Paint/erase is available for exploration. The objective reads only Water quantity in the protected zone; no solution branch changes physics. F8 hides the HUD for a clean view.")
+	var shift: int = seed % 3
+	out.tools = ["paint", "erase"]
+	out.camera_origin = [24,48]
+	out.interest = {"policy":"fixed", "region":[24,48,568,304]}
+	out.rectangles = [
+		32,64,4,280,1, 588,64,4,280,1, 32,340,560,4,1,
+		48,244,160,4,1, 204+shift,112,4,136,1,
+		208,244,364,4,1, 268,216,92,28,1,
+		360,200,4,44,1]
+	out.partial_water_fills = [64,144,124,96,255,0]
+	out.events = [erase(20,204+shift,216,4,28)]
+	out.presentation.regions = [
+		region("reservoir","UPSTREAM RESERVOIR",[48,112,160,136]),
+		region("protected","KEEP GENERATOR DRY",[244,176,52,68]),
+		region("channel","FLOOD CHANNEL",[208,176,164,68])]
+	out.observations = [
+		observe("initial-reservoir",0,"water_integer",[48,112,160,136],3),
+		observe("protected-water",180,"water_integer",[244,176,52,68],3),
+		observe("end",180,"tick",[0,0,1,1])]
+	out.conditions = [
+		{"observation":"protected-water","comparison":"eq","value":0,"outcome":"complete"},
+		{"observation":"protected-water","comparison":"ge","value":1,"outcome":"fail"}]
+	out.source_recipe = "MS-001 flood-control puzzle v1 / untreated control"
+	return finish(out)
+
+static func flood_control_witness(approach: String, seed: int = 0) -> Dictionary:
+	# Acceptance witnesses are complete ordinary-geometry definitions evaluated by
+	# the exact same objective as the untreated puzzle. They are not selectable
+	# solution flags and introduce no scenario-specific host behavior.
+	var out: Dictionary = flood_control(seed)
+	if out.is_empty(): return out
+	match approach:
+		"containment":
+			# Reinforce the reservoir aperture before its scheduled gate removal.
+			out.rectangles.append_array([196 + seed % 3,188,12,56,1])
+		"berm":
+			# Freestanding upstream barrier across the main channel.
+			out.rectangles.append_array([236,140,8,104,1])
+		"diversion":
+			# Deflector plus a bounded side sump diverts the release below the target.
+			out.rectangles.append_array([228,244,24,4,0, 252,140,8,104,1,
+				220,244,4,88,1, 252,244,4,88,1, 220,328,36,4,1])
+		_:
+			return {}
+	out.id = "%s/witness-%s" % [FLOOD_ID,approach]
+	out.source_recipe = "MS-001 flood-control puzzle v1 / witness " + approach
+	return finish(out)
+
+static func simulation_stress(profile: String, seed: int = 0) -> Dictionary:
+	if not profile in STRESS_PROFILES: return {}
+	var out: Dictionary = base(STRESS_PREFIX + profile, seed, "Simulation Stress Test / " + profile,
+		profile + "/bounded-v1", 180,
+		"Deterministic bounded workload using existing setup/events only. Benchmark exposes native tick, host-observer and available work counters separately. This is a workload comparison, not target-PC acceptance; unavailable counters remain unavailable.")
+	var shift: int = seed % 5
+	out.camera_origin = [24,48]
+	out.interest = {"policy":"fixed", "region":[24,48,616,360]}
+	out.rectangles = [32,64,4,336,1, 636,64,4,336,1, 32,396,608,4,1]
+	match profile:
+		"water-flow":
+			out.presentation.regions = [region("source","SUSTAINED WATER SOURCE",[48,72,156,96]), region("basin","FLOW BASIN",[40,168,588,212])]
+			out.rectangles.append_array([48,164,156,4,1])
+			out.partial_water_fills = [56+shift,88,136,72,255,0]
+			for tick: int in [0,12,24,36,48,60,72,84,96,108,120,132,144,156]:
+				out.events.append(fill(tick,72+shift,72,72,8))
+			out.observations = [observe("water-final",180,"water_integer",[40,72,588,316],3)]
+		"granular-collapse":
+			out.presentation.regions = [region("mass","GRANULAR MASS",[88,104,445,128]), region("runout","COLLAPSE / RUNOUT",[48,232,560,148])]
+			out.rectangles.append_array([88+shift,104,440,128,2, 72,232,472,6,1])
+			out.events = [erase(12,72,232,472,6)]
+			out.observations = [observe("sand-final",180,"material_cells",[48,88,560,300],2)]
+		"gas-column":
+			out.presentation.regions = [region("column","LONG-LIVED SMOKE COLUMN",[96,72,477,284])]
+			out.rectangles.append_array([56,88,560,4,1, 96+shift,284,472,72,4])
+			out.observations = [observe("smoke-final",180,"material_cells",[48,72,576,316],4)]
+		"mixed":
+			out.presentation.regions = [region("granular","SAND",[96,88,230,140]), region("water","WATER INPUT",[280,72,88,176]), region("gas","SMOKE",[356,260,228,100])]
+			out.rectangles.append_array([72,220,500,6,1, 100+shift,96,220,76,2, 360,284,220,72,4])
+			out.partial_water_fills = [96,228,184,104,255,0]
+			out.events = [erase(10,72,220,500,6)]
+			for tick: int in [30,60,90,120,150]: out.events.append(fill(tick,300,80,48,8))
+			out.observations = [
+				observe("mixed-water",180,"water_integer",[48,72,576,104],3),
+				observe("mixed-sand",180,"material_cells",[48,176,576,104],2),
+				observe("mixed-smoke",180,"material_cells",[48,72,576,316],4)]
+	out.observations.append(observe("end",180,"tick",[0,0,1,1]))
+	out.conditions = [{"observation":"end","comparison":"eq","value":180,"outcome":"complete"}]
+	out.source_recipe = "MS-001 bounded Simulation Stress Test v1 / " + profile
 	return finish(out)

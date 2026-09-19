@@ -57,8 +57,15 @@ introduce unintended seams; intended scan/phase order can still affect results.
 
 ## What is stored per cell and per chunk?
 
-**Current:** the hot cell is four bytes: material identity, `state_a`, `state_b`
-and the update epoch. Water uses `state_a` for 8-bit mass. Temperature is a
+**Current source at `de332ea`, checked 2026-09-19:** `World::Chunk::Cell` aliases
+[`detail::PrecisionStorage`](../../native/include/cybersand/precision_storage.hpp),
+whose enforced physical size/alignment is **8/8 bytes**. It retains material identity,
+material-local state and epoch through explicit masks/accessors. Default Water still
+uses mass8/coherence12. Earlier four-byte prose and the stale World source comment
+refer to a prior baseline; do not apply those storage costs to this source. This
+source-scoped correction does not select a final production layout or reinterpret
+#16/#17/#26 experimental controls. The [ordinary-sleep measurement](../operations/soliding-measurement.md)
+records the actual carrier in its frozen artifact. Temperature is a
 separate optional signed-16-bit array, allocated for a chunk only when needed.
 Temperature storage exists; conduction is not implemented. Rule descriptors
 declare bounded behavior in [material definitions](../../native/include/cybersand/material.hpp).

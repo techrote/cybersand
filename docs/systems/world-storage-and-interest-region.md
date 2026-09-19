@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [world-storage, camera-interest-region]
 status: Current
 scope: Sparse native storage, finite adapters, bounded interest pause/resume, planned persistence/reconfiguration and deferred streaming
-last-reviewed: 2026-09-08
+last-reviewed: 2026-09-19
 related-documents: [activity-dirty-regions-and-waking.md, ../architecture/chunk-tile-and-buffer-model.md, ../reference/configuration-reference.md, ../reference/level-saves-and-replay.md, ../decisions/ADR-004-interest-region-and-reconfiguration.md]
 ---
 
@@ -163,6 +163,9 @@ the finite demo dimensions as the permanent world limit.
 The [precision experiment](../operations/state-precision-experiment.md) reuses
 validated uint64 mask/shift storage with fixed size/stride/alignment8/8/8 and epoch8
 for every arm. Its dedicated branch uses spare40-bit state capacity for mass10;
-this does not change the current4-byte production baseline pending G-final.
+that dated experiment did not change its 4-byte production control. Later Current
+source `de332ea` uses physical 8-byte `PrecisionStorage`; the
+[source-qualified storage contract](../architecture/chunk-tile-and-buffer-model.md#what-is-stored-per-cell-and-per-chunk)
+governs that accounting without selecting G-final or changing historical controls.
 [G-P evidence](../audits/2026-09-11-issue-17-state-precision.md) selects no permanent
 Cell layout, sidecar, larger ID catalogue or storage/scheduler geometry.

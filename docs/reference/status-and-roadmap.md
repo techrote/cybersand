@@ -131,6 +131,27 @@ This checkpoint is **H-ready**, not an H result: mass8/coherence12 remain the
 production/reference control, no preferred candidate or production packing was
 selected, #18 remains held, #20 remains downstream and G-final remains open.
 
+## Issue #26 Water head/leveling disposition
+
+**Complete experimental Outcome B, 2026-09-19:** the
+[dated #26 evidence](../audits/2026-09-19-issue-26-water-leveling.md) confirms that
+Current Water has a real deep/extended head-transmission deficit rather than only a
+presentation or mass-precision problem. A 108-case frozen control preserves exact
+mass, 1/4-worker authoritative parity and zero post-setup allocations. Medium and
+deep identical outlets produce the same early discharge; communicating pools and a
+true unequal-head U-tube can quiesce with roughly 16- and 24-cell level differences.
+
+The preregistered radius-2 head-scaled-local and same-row-horizon arms were both
+rejected. Neither reached the automated survival gate, so no combined arm or owner
+H audition was warranted and **no Water semantic change is selected**. The retained
+characterization apparatus is reusable.
+
+[Issue #45](https://github.com/techrote/cybersand/issues/45) is the bounded successor
+for transmitting head/pressure through saturated connected Water. #18 remains
+open/held until that bulk confound is resolved; #20 remains downstream and G-final
+remains open. MicroScenario/INT-000 work continues independently and only affected
+Water-dependent provisional evidence needs later revalidation.
+
 ## Opt-in transport profiles
 
 **Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
@@ -157,9 +178,10 @@ barrel work; support-dependent integration requires actual source/evidence recon
 
 ## Architecture gate reconciliation, 2026-09-11
 
-**Current programme state:** G-L, G-C and G-P are complete. #16 research is complete;
-the current 4-byte Cell remains the baseline pending G-final, not a permanent width
-selection. #17 retains mass8 as the numerical/reference Water control and proves
+**Dated 2026-09-11 programme state:** G-L, G-C and G-P are complete. #16 research is complete;
+that checkpoint retained its 4-byte Cell baseline pending G-final, not a permanent
+width selection. The source-qualified 2026-09-19 storage correction below governs
+current physical-size accounting. #17 retains mass8 as the numerical/reference Water control and proves
 existing Water coherence 0..12 fits exactly in four semantic bits. No production
 Water precision or Cell layout migration is authorized.
 
@@ -251,19 +273,38 @@ still controls #28/#29 readiness and keeps architecture gates separate. Read the
 [checkpoint evidence](../audits/2026-09-19-issue-27-microscenarios.md) before claiming
 Windows, GPU or native Web runtime acceptance for this version.
 
-## MS-001 Materials Laboratory checkpoint
+## MS-001 reference-pack checkpoint
 
 **Current source, exploratory 2026-09-19:** PR #44 / `codex/issue-28-ms001` implements
-schema-2 [Materials Laboratory](../operations/microscenario-reference-pack.md),
-complete generated interaction fixtures, bounded read-only native field/work
-inspection, full result/identity display and fresh-reset A/B in the shared host/UI.
+the schema-2 [reference pack](../operations/microscenario-reference-pack.md): Materials
+Laboratory with complete generated interaction fixtures/fresh-reset A/B, a Flood-Control
+Puzzle with a wet untreated control and three distinct geometry-only successful
+witnesses, and four finite Water/granular/gas/mixed Simulation Stress profiles.
 Schema-1 Tower/Water definitions retain their hashes and existing blind controls.
 No material rules, profiles, capacities or physics defaults change.
 
-The [execution ledger](../audits/2026-09-19-issue-28-ms001.md) separates local Linux
-headless/controller/graphical evidence from pinned current-head CI, runtime artifact
-publication and actual Windows/browser execution. Source readiness is not a claim
-that stale bundled binaries implement the new adapter. #28 remains open until
-Flood Control, Simulation Stress Test and applicable acceptance are complete.
-The explicit Lab readiness checkpoint can unblock #29 on its named consumable
-revision; it neither starts #29 here nor waives #18/#20/#26/#14 gates.
+The [execution ledger](../audits/2026-09-19-issue-28-ms001.md) separates Linux
+headless/controller/graphical evidence, pinned runtime provenance and unavailable
+actual Windows/browser/target-GPU execution. The explicit Lab readiness checkpoint
+can unblock #29 on its named consumable revision; it neither starts #29 here nor
+waives #18/#20/#26/#14 gates. #28 closure still requires the final integrated PR
+revision to pass repository/CI delivery gates and land on main.
+
+## Issue #12 successor programme, 2026-09-19
+
+**Approved direction / Planned implementation:** #12 now owns scalable reversible
+soliding for large-world acceleration and Rapier macro-dynamics/fracture. The
+[canonical stage gates](../operations/soliding-programme.md) supersede the earlier
+bounded-prototype scope. PR #23 remains Phase 0 evidence at `0b96ce2`; it does not
+close #12. The successor starts at `de332ea` in an isolated worktree, preserving
+#26/#27 source identities. Lifecycle tests precede discovery; measured Current
+sleep precedes performance claims; region discovery precedes acceleration.
+Dynamic handoff, torque-driven rotation, coherent-child fracture and persistence
+remain later unpassed gates, not implied by a standalone contract model.
+
+[Successor evidence](../audits/2026-09-19-issue-12-foundation.md) now includes the
+reviewed standalone lifecycle, bounded read-only journal and measured Current
+sleep control. Production discovery/acceleration/dynamics remain unimplemented.
+Source `de332ea` actually uses the 8-byte superset carrier after #19 integration;
+the [storage contract](../architecture/chunk-tile-and-buffer-model.md) supersedes
+earlier four-byte physical-size statements for this source without selecting G-final.

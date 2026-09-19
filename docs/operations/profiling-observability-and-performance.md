@@ -125,4 +125,6 @@ quarantined partial-tick results are not exported as successful measurements.
 Queue occupancy/high-water, all heap allocations, per-worker utilization and
 per-cell sleeping state remain unavailable. Phase-job counts are not utilization.
 None of these measurements substitutes for renderer, Rapier or whole-frame timing,
-or certifies a contended hosted runner as the user's target PC.
+or certifies a contended hosted runner as the user's target PC. The MS-001 Stress
+profiles use these counters only as comparable bounded workload telemetry: observer-off
+runs omit optional work/timing records and must retain identical authoritative outcomes.

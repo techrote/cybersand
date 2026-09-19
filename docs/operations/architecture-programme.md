@@ -4,7 +4,7 @@ status: Planned
 document-kind: design
 scope: Evidence gates for Cell representation, liquid state and transport, presentation, and conditional sparse motion; no production architecture selection
 canonical-for: [architecture-experimental-programme]
-last-reviewed: 2026-09-18
+last-reviewed: 2026-09-19
 related-documents: [architecture-programme-source-ledger.md, physics-characterisation.md, physics-characterisation-plan.md, microscenarios-programme.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md]
 ---
 
@@ -21,6 +21,27 @@ The [source synthesis and ledger](architecture-programme-source-ledger.md) recor
 all four complete conversations, later refinements, rejected alternatives and
 repository conflicts. It is the traceability record; this page owns the programme.
 Future implementers use the linked prompts without needing those conversations.
+
+## Post-H bulk Water disposition — 2026-09-19
+
+The Water H handoff and [issue #26 characterization](../audits/2026-09-19-issue-26-water-leveling.md)
+materially refine M/B ordering without selecting a production representation.
+#26 completes by its documented Outcome B: Current pairwise Water cannot transmit
+useful head through saturated connected passages, and both admitted radius-2
+no-state local candidates were rejected against frozen automated gates.
+
+No #18 compact-history implementation is admitted from this result. Directional
+H references remain confounded by the unresolved bulk-head defect. The new bounded
+successor is [#45](https://github.com/techrote/cybersand/issues/45), which must first
+admit and test an explicit scalar/derived head-pressure transmission architecture
+without silently becoming a global pressure solver or directional velocity field.
+
+Current architecture ordering for the affected path is therefore:
+
+`#45 bounded bulk-head disposition -> repeat/interpret directional references -> #18 G-M admission or no-go -> #20/G-B if still justified -> G-final`.
+
+#12 coherent soliding and the MicroScenarios/#28/#29 lane remain independently
+parallel under their own ownership/dependency rules.
 
 ## Current staged status, after G-P (2026-09-11)
 
@@ -537,3 +558,14 @@ or authorize production Water migration.
 No permanent width/epoch/ID selection, sidecar, velocity/history, scheduler change,
 liquid unification, relaxed conservation or production migration. No fresh
 Web/Linux/Godot/PMU/GPU, general reactive accounting or visual acceptance is inferred.
+
+## G-R scope refinement, 2026-09-19
+
+The live [#12 programme](soliding-programme.md) now owns scalable reversible
+representations for both large-world acceleration and macro-dynamics/fracture.
+This later owner direction supersedes earlier bounded-R endpoint/non-goal wording
+in this document and its [supplement](architecture-programme-prompts/soliding-supplement.md).
+Retain dated intake/evidence as history. PR #23 is Phase 0, not programme completion;
+#12 completion is not a blanket new G-final prerequisite. #18/#20 do not block
+stationary acceleration or coherent-child fracture. All ownership, conservation,
+capacity and performance admission gates still apply.

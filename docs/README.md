@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-09-18
+last-reviewed: 2026-09-19
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md]
 ---
 
@@ -14,7 +14,7 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 | Need | Start here |
 |---|---|
-| Explore Materials Laboratory or compare generated definitions | [Reference pack and controls](operations/microscenario-reference-pack.md), [MS-001 evidence](audits/2026-09-19-issue-28-ms001.md) |
+| Explore the MS-001 Materials Lab / Flood / Stress pack or compare generated definitions | [Reference pack and controls](operations/microscenario-reference-pack.md), [MS-001 evidence](audits/2026-09-19-issue-28-ms001.md) |
 | Author, load or benchmark a MicroScenario | [Current shared contract and host](operations/microscenarios.md), [checkpoint evidence](audits/2026-09-19-issue-27-microscenarios.md) |
 | Begin development | [Handover](operations/cybersand-codex-development-handover.md), [actual source identity](operations/source-checkpoint-and-recovery.md), [roadmap](reference/status-and-roadmap.md) |
 | Choose current MicroScenarios / interaction work order | [Canonical programme graph](operations/microscenarios-programme.md), then the target issue and its named dependencies; issue numbers are not sequence |
@@ -117,8 +117,10 @@ and the distinction between sleep, mobility, cadence and Water rest.
 ## Water precision research
 
 The [Issue17 registration](operations/state-precision-experiment.md) defines the isolated
-P1/P2/P3 native experiment. Its fixed8-byte carrier is research-only; production
-Water and Cell controls remain unchanged pending programme gates.
+P1/P2/P3 native experiment. That dated experiment did not migrate its production
+control. For current physical storage after later integration, use the
+[source-qualified storage contract](architecture/chunk-tile-and-buffer-model.md#what-is-stored-per-cell-and-per-chunk);
+this does not reinterpret #17 or select G-final.
 
 [Completed precision results](audits/2026-09-11-issue-17-state-precision.md) and
 [staged G-P](operations/architecture-programme.md#g-p-staged-decision-2026-09-11)
@@ -143,3 +145,13 @@ fixtures and retained tuning-pass provenance. Kinetic/contact anomalies discover
 in MicroScenarios are captured/reduced and routed to their real physics owner
 instead of being hidden in interaction rules.
 
+
+## Scalable reversible soliding
+
+The [current #12 programme](operations/soliding-programme.md) supersedes the bounded
+Phase 0 endpoint. Read its [reuse audit](audits/2026-09-19-issue-12-phase0-reuse.md),
+[lifecycle](architecture/soliding-lifecycle.md), [incremental discovery](systems/settled-region-discovery.md),
+[ordinary-sleep control](operations/soliding-measurement.md) and current
+[Stage 3 execution freeze](operations/soliding-stage3-freeze.md). Macro-dynamics and
+coherent-child fracture remain first-class staged goals; the Stage 3 freeze keeps
+producer/connectivity delegation read-only with respect to material authority.

@@ -182,3 +182,13 @@ Rapier scene objects stay main-thread owned. A/B stores copied complete definiti
 then uses the existing acknowledged fresh-reset transaction. Rejected definitions
 or stale adapters preserve the previous world and schedule. A bounded GUI run waits
 for each single-step acknowledgement; timeout cancels without retry or catch-up.
+Opening the definition modal or any successful owner reset cancels further scheduled
+steps, including same-definition resets; at most one already-admitted step may finish.
+
+## Standalone soliding successor contracts
+
+The [soliding lifecycle](soliding-lifecycle.md) defines reviewed future owner
+transitions and tests a synthetic bounded ledger. The [discovery substrate](../systems/settled-region-discovery.md)
+owns copied observations only. Neither is connected to World/Godot/Rapier or
+changes Current owners. Production hooks, barriers, queues and payload transitions
+remain separately gated; the source reader must stay serialized and read-only.

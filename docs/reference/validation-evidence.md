@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-09-12
+last-reviewed: 2026-09-19
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md]
 ---
 
@@ -132,6 +132,24 @@ closed-basin cases per implementation, 55 native tests, 24 isolated Godot fixtur
 Its retained editor-import failure is an environment result; the rebuilt isolated
 project passed. Faster leveling is fixture-specific, not universal instant flow.
 
+## Issue #26 Water head/leveling characterization, 2026-09-19
+
+The [dated #26 audit](../audits/2026-09-19-issue-26-water-leveling.md) records a
+frozen 108-case Linux control plus two independent 108-case candidate campaigns;
+each candidate-bearing source also reran the complete control before its candidate.
+The matrix spans nine fixtures, three signed translations, mirrored/unmirrored
+geometry and 1/4 workers. All retained arms preserve exact sampled closed-Water
+quantity, exact expected authoritative worker parity and zero post-setup owned
+allocations.
+
+The control exposes identical medium/deep outlet discharge and quiescent 16/24-cell
+communicating-head errors. Head-scaled-local and bounded same-row-horizon candidates
+are both rejected against thresholds frozen before their code. No candidate reached
+the pre-H survival gate, so no new owner visual acceptance is claimed and no Water
+semantic change is selected. GitHub-hosted timing is descriptive; several candidate
+p95 regressions are retained, including pathological persistent work in the horizon
+communicating-pools case. Raw Actions artifacts/hashes are listed in the audit.
+
 ## Programme gate reconciliation, 2026-09-11
 
 The [reconciliation audit](../audits/2026-09-11-programme-gate-reconciliation.md)
@@ -177,3 +195,23 @@ observer/worker parity, owner lifecycle, input focus, JSON runner and separate
 historical/documentation checks. No native simulation source changed. Linux tests
 of a synchronous Web controller are not real Wasm/browser or GPU execution;
 Windows and real Web coverage remain explicitly separate.
+
+## Issue 12 successor foundation, 2026-09-19
+
+[Foundation evidence](../audits/2026-09-19-issue-12-foundation.md) records the
+current-main reuse audit, reviewed standalone lifecycle/discovery tests, immutable
+ordinary-sleep controls and remaining World/connected-region/runtime gates.
+Neither model tests nor Current-only timings certify acceleration or Rapier fracture.
+
+
+## 2026-09-19 MS-001 reference-pack acceptance
+
+The [issue #28 execution ledger](../audits/2026-09-19-issue-28-ms001.md) and
+[compact pack evidence](../audits/ms001-2026-09-19/pack-acceptance.json) retain the
+Materials Laboratory readiness checkpoint, Flood-Control untreated failure plus
+three geometry-only successful witnesses, and four bounded Simulation Stress profiles.
+Focused deterministic regressions cover mode/worker/observer parity, unchanged caps,
+fresh-reset/modal-run lifecycle and truthful telemetry availability. Linux X11/Mesa
+software rendering is UI evidence only. The retained Windows native library is a
+pinned cross-build, not Windows execution; actual browser/WebAssembly and target-GPU
+performance remain separate unavailable coverage unless a later dated run records them.

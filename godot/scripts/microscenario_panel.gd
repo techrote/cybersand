@@ -130,6 +130,7 @@ func refresh(context: Dictionary) -> void:
 func _open_definition() -> void:
 	if (not host.water_blind_set.is_empty() or not host.water_active_blind_label.is_empty()
 		or not host.pending_water_apply.is_empty() or not host.pending_microscenario_apply.is_empty()): return
+	workbench.cancel_declared_window()
 	host.paused = true
 	var definition: Dictionary = host.microscenario_definition.duplicate(true)
 	if not context_is_generic():

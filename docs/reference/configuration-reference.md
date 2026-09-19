@@ -269,3 +269,12 @@ lateral Water mass transport drive bounded optional mixing and grain pickup;
 horizontal sampling and cadence are separate fixed experiments.
 Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
 are unchanged. No unsynchronized live descriptor mutation is introduced.
+
+## Soliding successor experiment capacities
+
+**Current standalone tooling:** [lifecycle model](../architecture/soliding-lifecycle.md)
+and [discovery journal](../systems/settled-region-discovery.md) use explicit template
+capacities. The journal defaults to at most 1024 cells per registered block; a
+producer must refuse or deliberately tile larger custom World geometry. There is
+no WorldConfig flag or gameplay control for either module. These test capacities
+are not selected production thresholds; ordinary runtime remains unchanged.

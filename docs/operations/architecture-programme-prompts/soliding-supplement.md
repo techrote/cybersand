@@ -110,3 +110,11 @@ Record dated source HEAD/local delta and artifact/tool/profile/worker/input iden
 G-R admits only the next verified #12 stage. Energetic fracture, torque, registry expansion, general destruction and production soliding remain separate conditional work.
 
 This issue establishes evidence for the programme gate. It does not approve migration merely because a candidate passes its screen.
+
+## Superseding programme scope, 2026-09-19
+
+The live [#12 programme](../soliding-programme.md) supersedes this dated bounded
+execution supplement as the current scope/order authority. Its no-full-fracture
+and deferred-torque restrictions describe Phase 0, not permanent #12 non-goals.
+Preserve the old experiment controls and evidence; use the current-main reuse
+audit, lifecycle gate and ordinary-sleep control before successor optimization.

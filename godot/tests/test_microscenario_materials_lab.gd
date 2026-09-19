@@ -72,7 +72,7 @@ func run() -> void:
 					expect(report.observations.is_empty() and not report.work_statistics.available and report.timing.count == 0,"Observers-off retained optional work")
 				expect(host.install(world,parsed.definition,mode,observers),"Fresh reset rejected complete generated input")
 				expect(observation(world) == initial and host.summary().events_applied == 0,"Fresh reset did not reproduce complete initial state")
-	for id: String in Pack.ids():
+	for id: String in Pack.MATERIAL_IDS:
 		var source: Dictionary = Pack.definition(id,2)
 		var world: Variant = world_for(1)
 		var host: CyberMicroScenarioHost = Host.new()

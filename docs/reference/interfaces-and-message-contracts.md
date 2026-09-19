@@ -269,3 +269,12 @@ per-cell awake flag. Statistics export existing completed-tick counters and
 actual configured limits; missing utilization/queue/allocation counters remain
 explicitly unavailable. See the [MS-001 execution ledger](../audits/2026-09-19-issue-28-ms001.md)
 for source/artifact identity and the separate readiness disposition.
+
+## Soliding model and discovery values
+
+**Current standalone modules only:** [lifecycle](../architecture/soliding-lifecycle.md)
+uses incarnation/slot/generation handles and immutable transaction tokens;
+[discovery](../systems/settled-region-discovery.md) returns complete copied tile
+classifications under an independent revision witness. Neither adds a C API,
+GDExtension method, worker message or live runtime admission. Real World producer
+witnesses and cross-owner queues remain Planned.

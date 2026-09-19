@@ -135,7 +135,9 @@ and [reconciliation identities](../audits/2026-09-11-programme-gate-reconciliati
 Both research results are published on separate experiment branches; this active
 checkpoint changes documentation only. #17 subsequently completed P1/P2/P3; read the [G-P review](architecture-programme.md#g-p-staged-decision-2026-09-11)
 and [precision evidence](../audits/2026-09-11-issue-17-state-precision.md). Retain mass8
-and Water-specific delay4 as an experimental budget without inferring production migration. The current4-byte baseline remains pending G-final.
+and Water-specific delay4 as an experimental budget without inferring production migration.
+That dated checkpoint retained its 4-byte baseline pending G-final. For later source
+physical-size accounting, use the [source-qualified storage contract](../architecture/chunk-tile-and-buffer-model.md#what-is-stored-per-cell-and-per-chunk).
 
 ## MS-000 handover, 2026-09-19
 
@@ -145,3 +147,39 @@ not build a second per-scenario simulation loop or assume the capture is replay.
 The [dated evidence](../audits/2026-09-19-issue-27-microscenarios.md) scopes regression
 results and remaining platform/merge gates. #28's Materials Laboratory readiness
 and #18/#20/#14 scientific gates still require their own evidence.
+
+## Issue #12 successor handoff, 2026-09-19
+
+Use [soliding programme gates](soliding-programme.md), then the precise
+[Phase 0 reuse map](../audits/2026-09-19-issue-12-phase0-reuse.md) before any port.
+The dedicated successor is `codex/issue-12-incremental-foundation` from `de332ea`.
+Do not reset/rebase the Phase 0 control or #26/#27 experiments. Current-main
+ordinary sleep is the performance control; full #12 scope includes acceleration,
+macro momentum/torque/rotation and coherent-child fracture. A model or block
+summary does not satisfy production ownership or connected-region gates.
+
+Use the [successor evidence and next prerequisites](../audits/2026-09-19-issue-12-foundation.md)
+for #12 continuation. The ordinary-sleep control is frozen independently; do not
+relabel synthetic journal service epochs as simulated World ticks.
+
+For the remaining Stage 3 work, follow the frozen
+[producer/connectivity execution contract](soliding-stage3-freeze.md). The linked
+Spark packets intentionally split World witness integration from cross-tile region
+construction; independent verification and measurement follow only after parent
+integration. Stage 3 remains cells-owned discovery and cannot be used to admit
+stationary acceleration or Rapier dynamics.
+
+## Issue #26 / Water bulk-head handoff, 2026-09-19
+
+[Issue #26 evidence](../audits/2026-09-19-issue-26-water-leveling.md) is the current
+source-backed answer for deep/extended Water leveling. The retained harness proves
+that Current local three-quarter equalization can leave communicating pools/U-tubes
+quiescent with large unequal heads. Both admitted small local no-state fixes were
+rejected; do not resurrect or combine them without a new registration.
+
+Current production Water remains unchanged. [#45](https://github.com/techrote/cybersand/issues/45)
+owns the next bounded head/pressure-transmission architecture question. Keep it
+separate from #18 directional history; #18 stays held until #45 supplies an accepted
+bulk baseline or a documented no-go. #20 and G-final remain downstream under the
+architecture programme. #28/#29 may continue in parallel, with targeted
+revalidation only after a later accepted Water semantic change.

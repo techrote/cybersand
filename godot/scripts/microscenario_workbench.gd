@@ -205,6 +205,9 @@ func _refresh_comparison() -> void:
 	if compare_text == null: return
 	compare_text.text = "Store a baseline as A and a candidate as B. Fresh reset A/B uses the complete stored definition, never live worker mutation. Resume each to the same completed tick, pause and capture. Matching runtime/tick/seed alone does not prove that manual brush inputs matched.\n\n" + JSON.stringify(comparison.summary(),"  ")
 
+func cancel_declared_window() -> void:
+	_cancel_run()
+
 func _cancel_run() -> void:
 	_run_target = -1
 	_awaiting_tick = -1

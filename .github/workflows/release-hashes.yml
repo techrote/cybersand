@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   hashes:
-    runs-on: ubuntu-24.04
+    runs-on: avrea-ubuntu-24.04-2-vcpu
     timeout-minutes: 15
     defaults:
       run:

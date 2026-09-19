@@ -184,3 +184,13 @@ The opt-in URL is `?test=1&water=1`; normal URLs do not run the probe. Require
 `ok=true`, 70 scenario cases, 110 actions, zero failures, invalid/presentation
 preservation, and equal catalogue/default hashes across profiles. See the
 [dated result](../audits/2026-09-12-issue-19-water-feel-lab.md).
+
+## Issue 12 standalone contract checks
+
+Run `make soliding-test` for the lifecycle model and discovery journal;
+`make soliding-sanitize` adds ASan/UBSan builds. Native CI runs both, using its
+explicit leak-detection setting. They supplement the existing World suite and do
+not validate real Rapier handoff or platform adapters. On Windows use the pinned
+LLVM-MinGW runtime directory on PATH; a missing runtime DLL is an environment
+launch failure, not a passed test. The [measurement contract](soliding-measurement.md)
+separately pins the ordinary-sleep control and retains failed attempts.

@@ -132,6 +132,7 @@ func microscenario_apply_definition(definition: Dictionary, mode: String = "Insp
 	if not micro_host.install(native_world, definition, mode):
 		microscenario_error = micro_host.last_error
 		return false
+	if microscenario_panel != null: microscenario_panel.workbench.cancel_declared_window()
 	var installed: Dictionary = micro_host.definition()
 	microscenario_definition = installed.duplicate(true)
 	microscenario_mode = mode

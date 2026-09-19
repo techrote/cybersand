@@ -30,7 +30,7 @@ The [programme](microscenarios-programme.md) still owns ordering. #27 does not
 admit #18 compact motion, #20 sparse ballistics, #29 interaction tuning or
 #14/G-final. No #20-style ballistic event is implemented while its admission is
 held. The host is useful to exploratory #28 authoring; the separately evidenced
-[MS-001 Materials Laboratory](microscenario-reference-pack.md) owns the #28 readiness checkpoint.
+[MS-001 reference pack](microscenario-reference-pack.md) owns the #28 Materials Laboratory readiness checkpoint plus the exploratory Flood-Control and Simulation Stress scenarios.
 
 [Validation](../audits/2026-09-19-issue-27-microscenarios.md) distinguishes Linux
 native execution, both existing controller code paths, automated GUI input and
@@ -260,9 +260,11 @@ Blind sessions disable these definition/capture routes exactly as before.
 
 **Run declared window** sends one existing single-step command at a time and waits
 for its owner acknowledgement, stopping at the declared completed tick. It is
-bounded by 3600; pause changes, reset/hash changes, quarantine or missing owner
-acknowledgement cancel it without retry/catch-up. This is neither a recurring
-native event nor another physics loop. F8 hides labels, dialogs and HUD. Generic
+bounded by 3600; pause changes, any accepted reset (including the same definition),
+quarantine, opening the definition editor, or missing owner acknowledgement cancels
+it without retry/catch-up. At most one already-admitted step may complete while a
+modal opens. This is neither a recurring native event nor another physics loop.
+F8 hides labels, dialogs, help and optional telemetry across later status refreshes. Generic
 controls show only admitted tools; material selection and radius use the existing
 brush command path. Full controls and generated definitions are in the
 [reference pack](microscenario-reference-pack.md).

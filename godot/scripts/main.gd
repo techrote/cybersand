@@ -187,6 +187,7 @@ func microscenario_apply_definition(definition: Dictionary, mode: String = "Insp
 	if not checked.get("ok", false) or not mode in CyberMicroScenarioContract.MODES:
 		microscenario_error = str(checked.get("error", "Invalid mode"))
 		return false
+	if microscenario_panel != null: microscenario_panel.workbench.cancel_declared_window()
 	pending_microscenario_apply = {"hash":checked.hash, "definition":checked.definition,
 		"previous_paused":paused}
 	microscenario_mode = mode
@@ -1529,11 +1530,11 @@ func update_shader_parameters() -> void:
 
 func update_status() -> void:
 	if latest_snapshot != null and latest_snapshot.simulation_failed:
-		status_label.visible = true
+		status_label.visible = not microscenario_hud_hidden
 		status_label.text = "Simulation stopped. Press R to reset. " + latest_snapshot.last_tick_error
 		return
-	status_label.visible = debug_stats_visible
-	if not debug_stats_visible:
+	status_label.visible = debug_stats_visible and not microscenario_hud_hidden
+	if not debug_stats_visible or microscenario_hud_hidden:
 		return
 	if latest_snapshot == null:
 		status_label.text = "Simulation worker did not publish an initial snapshot."
