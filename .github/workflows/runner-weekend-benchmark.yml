@@ -16,7 +16,6 @@ permissions:
 
 env:
   BENCHMARK_END_UTC: '2026-09-21T05:00:00Z'
-  BENCHMARK_DIR: ${{ runner.temp }}/cybersand-runner-benchmark
   HISTORICAL_SHA: ed4b9abe542a5de0d498a62d3de7f157fe40d129
   HISTORICAL_RUN_ID: '35434827192'
   GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
@@ -52,6 +51,8 @@ jobs:
           SCONS_JOBS: ${{ matrix.scons_jobs }}
         run: |
           set -euo pipefail
+          export BENCHMARK_DIR="$RUNNER_TEMP/cybersand-runner-benchmark"
+          echo "BENCHMARK_DIR=$BENCHMARK_DIR" >> "$GITHUB_ENV"
           mkdir -p "$BENCHMARK_DIR"
           python3 - <<'PY'
           import json
@@ -363,7 +364,7 @@ jobs:
         with:
           name: runner-benchmark-${{ matrix.workload }}-${{ matrix.provider }}-${{ matrix.scons_jobs }}-${{ github.run_id }}
           path: |
-            ${{ env.BENCHMARK_DIR }}/
+            ${{ runner.temp }}/cybersand-runner-benchmark/
             workspace/source/build/retrieval/
             build/runner-weekend-benchmark/
           if-no-files-found: warn
