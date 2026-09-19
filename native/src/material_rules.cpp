@@ -1,40 +1,10 @@
 #include "cybersand/material_rules.hpp"
+#include "cybersand/interaction_rules.hpp"
 
 #include <algorithm>
 #include <array>
 
 namespace cybersand {
-namespace {
-
-struct PairReactionDefinition {
-    Material first;
-    Material second;
-    Material first_product;
-    Material second_product;
-    std::uint8_t probability;
-};
-
-// Compact, orientation-independent reaction data. Movement and longer state
-// machines remain specialized kernels; adjacency chemistry stays inspectable
-// and does not grow the hot loop into a material-by-material switch.
-inline constexpr std::array<PairReactionDefinition, 14> kPairReactions{{
-    {Material::Lava, Material::Water, Material::Stone, Material::Steam, 255},
-    {Material::Fire, Material::Water, Material::Smoke, Material::Steam, 255},
-    {Material::Water, Material::Salt, Material::Brine, Material::Brine, 255},
-    {Material::Water, Material::Sodium, Material::Steam, Material::Fire, 255},
-    {Material::Brine, Material::Sodium, Material::Steam, Material::Fire, 255},
-    {Material::Water, Material::ToxicSludge, Material::Water, Material::Water, 255},
-    {Material::Steam, Material::Ice, Material::Water, Material::Ice, 32},
-    {Material::Water, Material::MoltenGlass, Material::Steam, Material::Glass, 255},
-    {Material::Lava, Material::Glass, Material::Lava, Material::MoltenGlass, 255},
-    {Material::Acid, Material::Metal, Material::Smoke, Material::Rust, 96},
-    {Material::Fire, Material::Gunpowder, Material::Fire, Material::Fire, 255},
-    {Material::Spark, Material::Gunpowder, Material::Empty, Material::Fire, 255},
-    {Material::Spark, Material::Oil, Material::Empty, Material::Fire, 255},
-    {Material::Fire, Material::Brine, Material::Steam, Material::Salt, 64},
-}};
-
-}  // namespace
 
 std::span<const MaterialDefinition> MaterialRules::descriptors() noexcept {
     return kMaterialDefinitions;
@@ -115,41 +85,14 @@ bool MaterialRules::supports_granular_load(Material material) noexcept {
 }
 
 bool MaterialRules::has_pair_reactions(Material material) noexcept {
-    switch (material) {
-        case Material::Water:
-        case Material::Fire:
-        case Material::Lava:
-        case Material::Salt:
-        case Material::Brine:
-        case Material::Sodium:
-        case Material::Ice:
-        case Material::Acid:
-        case Material::Oil:
-        case Material::Metal:
-        case Material::Gunpowder:
-        case Material::ToxicSludge:
-        case Material::Spark:
-        case Material::Glass:
-        case Material::MoltenGlass:
-            return true;
-        default:
-            return false;
-    }
+    return InteractionRules::has_pair_rule(material);
 }
 
 std::optional<PairReactionResult> MaterialRules::pair_reaction(
     Material source, Material target, std::uint8_t probability_roll) noexcept {
-    if (!has_pair_reactions(source) || !has_pair_reactions(target)) return std::nullopt;
-    for (const auto& reaction : kPairReactions) {
-        if (probability_roll > reaction.probability) continue;
-        if (source == reaction.first && target == reaction.second) {
-            return PairReactionResult{reaction.first_product, reaction.second_product};
-        }
-        if (source == reaction.second && target == reaction.first) {
-            return PairReactionResult{reaction.second_product, reaction.first_product};
-        }
-    }
-    return std::nullopt;
+    const auto resolved = InteractionRules::resolve_pair(source, target, probability_roll);
+    if (!resolved.selected) return std::nullopt;
+    return PairReactionResult{resolved.source_product, resolved.target_product};
 }
 
 std::uint8_t MaterialRules::discrete_lateral_flow_rate(
