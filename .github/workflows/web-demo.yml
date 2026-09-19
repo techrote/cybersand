@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: avrea-ubuntu-24.04-2-vcpu
     timeout-minutes: 40
     steps:
       - name: Check out source and pinned LFS dependencies
