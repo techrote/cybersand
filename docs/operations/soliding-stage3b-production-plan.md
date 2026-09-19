@@ -162,10 +162,12 @@ final candidate exists.
   Stage-3A-equivalent, optional sparse-producer/indexed-graph intermediates and the
   complete Stage-3B candidate. Missing arms are marked unavailable rather than
   silently dropped.
-- The fixture catalogue has 168 versioned logical fixtures. Historical
-  `local-edit` remains an 8x8 patch and historical `bridge` remains a whole
-  column; separate genuine one-cell tuple and topology fixtures carry an exact
-  one-cell mutation contract.
+- The fixture catalogue has 168 versioned logical fixtures. Each carries a
+  canonical declarative fixture-protocol hash binding exact geometry/generator
+  parameters and operation schedule into every run/result provenance record.
+  Historical `local-edit` remains an 8x8 patch and historical `bridge` remains
+  a whole column; separate genuine one-cell tuple and topology fixtures carry an
+  exact one-cell mutation contract.
 - Workers are exactly 1 and 4. Drain-to-completion and fixed primitive budgets
   `1, 8, 64, 256, 1024` are registered. A whole-region loop is never counted as
   one primitive and the new primitive count is not equated to Stage-3A abstract
