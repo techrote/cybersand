@@ -24,17 +24,22 @@ env:
 jobs:
   build:
     name: ${{ matrix.target }} x86_64
-    runs-on: ubuntu-24.04
+    runs-on: ${{ format('avrea-ubuntu-24.04-{0}-vcpu', vars.GDEXT_AVREA_VCPU || '16') }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
         target: [linux, windows]
     steps:
-      - name: Check out source and LFS runtime dependencies
+      - name: Check out source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with:
-          lfs: true
+
+      - name: Fetch Linux Rapier runtime only
+        if: matrix.target == 'linux'
+        run: |
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
 
       - name: Install pinned SCons
         run: |
@@ -68,7 +73,7 @@ jobs:
         env:
           GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
           SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
-          SCONS_JOBS: "2"
+          SCONS_JOBS: ${{ vars.GDEXT_AVREA_VCPU || '16' }}
           CYBERSAND_REAL_CXX: /usr/bin/g++-13
           LINUX_CXX: /usr/bin/g++-13
           CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
@@ -83,7 +88,7 @@ jobs:
         env:
           GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
           SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
-          SCONS_JOBS: "2"
+          SCONS_JOBS: ${{ vars.GDEXT_AVREA_VCPU || '16' }}
           LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
           WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
           CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
