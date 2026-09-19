@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   hashes:
-    runs-on: ${{ vars.RELEASE_HASHES_RUNNER || 'sengi-standard-2-ubuntu-2404' }}
+    runs-on: ${{ vars.RELEASE_HASHES_RUNNER || 'avrea-ubuntu-24.04-1-vcpu' }}
     timeout-minutes: 15
     defaults:
       run:
