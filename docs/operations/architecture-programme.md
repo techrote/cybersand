@@ -537,3 +537,14 @@ or authorize production Water migration.
 No permanent width/epoch/ID selection, sidecar, velocity/history, scheduler change,
 liquid unification, relaxed conservation or production migration. No fresh
 Web/Linux/Godot/PMU/GPU, general reactive accounting or visual acceptance is inferred.
+
+## G-R scope refinement, 2026-09-19
+
+The live [#12 programme](soliding-programme.md) now owns scalable reversible
+representations for both large-world acceleration and macro-dynamics/fracture.
+This later owner direction supersedes earlier bounded-R endpoint/non-goal wording
+in this document and its [supplement](architecture-programme-prompts/soliding-supplement.md).
+Retain dated intake/evidence as history. PR #23 is Phase 0, not programme completion;
+#12 completion is not a blanket new G-final prerequisite. #18/#20 do not block
+stationary acceleration or coherent-child fracture. All ownership, conservation,
+capacity and performance admission gates still apply.

@@ -145,3 +145,13 @@ not build a second per-scenario simulation loop or assume the capture is replay.
 The [dated evidence](../audits/2026-09-19-issue-27-microscenarios.md) scopes regression
 results and remaining platform/merge gates. #28's Materials Laboratory readiness
 and #18/#20/#14 scientific gates still require their own evidence.
+
+## Issue #12 successor handoff, 2026-09-19
+
+Use [soliding programme gates](soliding-programme.md), then the precise
+[Phase 0 reuse map](../audits/2026-09-19-issue-12-phase0-reuse.md) before any port.
+The dedicated successor is `codex/issue-12-incremental-foundation` from `de332ea`.
+Do not reset/rebase the Phase 0 control or #26/#27 experiments. Current-main
+ordinary sleep is the performance control; full #12 scope includes acceleration,
+macro momentum/torque/rotation and coherent-child fracture. A model or block
+summary does not satisfy production ownership or connected-region gates.

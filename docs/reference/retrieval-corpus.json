@@ -65,7 +65,12 @@
     "operations/cell-layout-experiment.md",
     "operations/liquid-characterization.md",
     "operations/state-precision-experiment.md",
-    "operations/microscenarios.md"
+    "operations/microscenarios.md",
+    "operations/soliding-programme.md",
+    "architecture/soliding-lifecycle.md",
+    "systems/settled-region-discovery.md",
+    "operations/soliding-measurement.md",
+    "operations/soliding-macro-fracture-fixture.md"
   ],
   "navigation": [
     "README.md",

@@ -41,10 +41,16 @@ jobs:
       - name: Run native behavioral and integration suite
         run: timeout 15m ./build/tests
 
+      - name: Run soliding contract regressions
+        run: timeout 5m make soliding-test
+
       - name: Compile and run ASan plus UBSan
         run: |
           timeout 15m make build/tests_sanitized
           timeout 15m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 ./build/tests_sanitized
+
+      - name: Sanitize soliding contract regressions
+        run: timeout 10m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 make soliding-sanitize
 
       - name: Compile and run TSan
         run: |

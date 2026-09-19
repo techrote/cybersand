@@ -250,3 +250,15 @@ This is apparatus, not a solver/interaction migration. The [programme graph](../
 still controls #28/#29 readiness and keeps architecture gates separate. Read the
 [checkpoint evidence](../audits/2026-09-19-issue-27-microscenarios.md) before claiming
 Windows, GPU or native Web runtime acceptance for this version.
+
+## Issue #12 successor programme, 2026-09-19
+
+**Approved direction / Planned implementation:** #12 now owns scalable reversible
+soliding for large-world acceleration and Rapier macro-dynamics/fracture. The
+[canonical stage gates](../operations/soliding-programme.md) supersede the earlier
+bounded-prototype scope. PR #23 remains Phase 0 evidence at `0b96ce2`; it does not
+close #12. The successor starts at `de332ea` in an isolated worktree, preserving
+#26/#27 source identities. Lifecycle tests precede discovery; measured Current
+sleep precedes performance claims; region discovery precedes acceleration.
+Dynamic handoff, torque-driven rotation, coherent-child fracture and persistence
+remain later unpassed gates, not implied by a standalone contract model.

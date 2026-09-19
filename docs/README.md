@@ -142,3 +142,11 @@ fixtures and retained tuning-pass provenance. Kinetic/contact anomalies discover
 in MicroScenarios are captured/reduced and routed to their real physics owner
 instead of being hidden in interaction rules.
 
+
+## Scalable reversible soliding
+
+The [current #12 programme](operations/soliding-programme.md) supersedes the bounded
+Phase 0 endpoint. Read its [reuse audit](audits/2026-09-19-issue-12-phase0-reuse.md),
+[lifecycle](architecture/soliding-lifecycle.md), [incremental discovery](systems/settled-region-discovery.md)
+and [ordinary-sleep control](operations/soliding-measurement.md). Macro-dynamics and
+coherent-child fracture remain first-class staged goals.
