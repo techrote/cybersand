@@ -40,9 +40,16 @@ physics is retuned to make these worlds pass.
 | `materials/salt-water` | Generated single-bay Salt/Water fixture, 384 Salt cells, existing shelf release at tick 12, 120-tick observations |
 | `materials/salt-water-dose-small` | Same controlled apparatus with 192 Salt cells; an explicit complete-definition A/B example, not a tuning verdict |
 | `materials/lava-water` | Generated Lava/Water contact with the existing Stone/Steam conversion; 120-tick observations |
+| `materials/sand-water-control` | Generated Sand/Water non-interaction control; transport may move materials, but no INT conversion rule is expected |
+| `materials/fire-gunpowder` | Existing Fire/Gunpowder combustion path; bounded material-count observations |
+| `materials/acid-metal` | Existing Acid/Metal corrosion path; Rust observations without changing corrosion policy |
+| `materials/spark-metal` | Existing Spark/base-Metal electrical interaction; declared cell-state/material observations |
+| `materials/cement-water` | Existing Cement cure under Water/air context; Concrete observations over a 240-tick horizon |
 
-All are recipe version 1, maturity `exploratory`, against the named de332eaf
-contact baseline, Baseline transport and Water mass8/coherence12. The declared
+All are recipe version 1, maturity `exploratory`, against the named current
+source/contact identity retained in each capture, Baseline transport and declared
+Water semantics. The original MS-001 fixtures retain their historical recipe
+identity; the INT-000 additions add no material-rule tuning. The declared
 seed moves the initial dose within its bay deterministically. It does not introduce
 a global RNG or an INT-000 profile. Ordinary setup rectangles provide reproducible
 material doses; finite existing erase events remove shelves. There is no generic
@@ -135,7 +142,10 @@ restores the controller's original help and all existing Tower/Water workflows.
 **Identities / all results** shows scenario/schema/recipe/seed, canonical definition
 and ancestral hashes, declared material IDs/catalogue identity, source/runtime,
 transport/Water policies, instructions, all declared observations and every retained
-result. Pending observations are not displayed as zero. `cell_state` is a declared
+result. Under INT-000 it also exposes the native interaction schema/profile,
+independent channels, layer precedence, catalogue validation, coverage/tuning-pass
+records, effective pair provenance and represented specialized world-kernel
+authority. The view is read-only and cannot mutate interaction semantics. Pending observations are not displayed as zero. `cell_state` is a declared
 single-cell probe into existing fields; chunk/block coordinates are not a per-cell
 sleep claim. Full stored values remain visible even when the compact HUD abbreviates
 a compound observation.
@@ -153,6 +163,14 @@ GUI capture atomically writes `user://microscenario-observation.json` and copies
 to the clipboard where supported. Capture is a definition plus observations, **not
 a save/replay** of all runtime state or organic input. Existing controlled-scenario
 CYSD1 save restrictions remain.
+
+For INT-000 batch evidence, use the same catalogue definitions through
+`tools/interactions/batch.py`. The run command executes the declared proof set at
+the requested one/four-worker identities, rejects worker-semantic drift and writes a
+manifest containing the full interaction catalogue, rolling kinetic/contact
+baseline, source/sink ledger, coverage summary and explicit coverage gaps. The
+compare command reports both observation differences and stable-ID rule/layer/pass
+field changes; it never fabricates outcomes for untested pairs.
 
 ## Accounting, telemetry and anomaly triage
 
