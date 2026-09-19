@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   consistency:
-    runs-on: ${{ format('avrea-ubuntu-24.04-{0}-vcpu', vars.DOCS_VCPU || '1') }}
+    runs-on: ${{ vars.DOCS_RUNNER || 'sengi-standard-2-ubuntu-2404' }}
     timeout-minutes: 15
     defaults:
       run:
