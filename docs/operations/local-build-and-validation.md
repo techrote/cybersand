@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-09-09
+last-reviewed: 2026-09-19
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md]
 ---
 
@@ -90,6 +90,35 @@ Windows cross-builds use `build_pinned_godot_cpp.sh windows` and
 [build_native_extension_windows.sh](../../tools/build_native_extension_windows.sh)
 with `LLVM_MINGW_ROOT`/`WINDOWS_CXX`. PE/import inspection alone cannot prove a
 Windows runtime launch.
+
+## Linux GDExtension CI sharding
+
+**Current CI migration checkpoint:** the Linux GDExtension workflow builds the pinned
+Linux runtime once on an Avrea 4-vCPU runner by default, verifies its ABI/runtime floor and
+publishes that exact extension plus the pinned Rapier Linux runtime as a short-lived
+artifact. Four isolated Avrea 2-vCPU jobs then restore the same source/runtime
+identity and run deterministic subsets of the Godot regression suite. Each shard
+performs its own clean headless import before its assigned cases.
+
+The local/default invocation remains serial and unchanged in scope:
+
+```sh
+python3 tools/ci/run_godot_regressions.py --godot <godot> --output build/godot-regressions
+```
+
+CI uses `--shard-count 4 --shard-index 0..3`. The runner still discovers every
+`godot/tests/test_*.gd` automatically and explicitly includes
+`profile_native_world.gd`, `profile_scheduler.gd` and scene startup. Approximate
+historical timings only influence deterministic scheduling; they are not test
+thresholds. Unknown/new tests receive a conservative default weight and must appear
+exactly once in the union of shards.
+
+The initial migration PR proved exact serial/sharded coverage equivalence on the
+same source/runtime/Godot identity. That serial lane is now opt-in only via
+`GDEXT_SERIAL_EQUIVALENCE=1`; ordinary PRs use the sharded gate. Runner sizes are
+cost-first defaults and may be overridden with repository variables without editing
+the workflow. Build SCons concurrency inherits the corresponding vCPU variable
+unless a dedicated `*_SCONS_JOBS` override is set.
 
 ## Web compile, export and execution are different checks
 

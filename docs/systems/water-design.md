@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [native-water-semantics, native-fallback-water-differences]
 status: Current
 scope: Native conserved Water, coherent emission and adhesion, rest/hash fixtures, fallback differences, and future reaction accounting
-last-reviewed: 2026-09-12
+last-reviewed: 2026-09-19
 related-documents: [materials-and-rule-kernels.md, material-appearance-and-rendering.md, ../reference/level-saves-and-replay.md, ../decisions/ADR-005-water-model.md]
 ---
 
@@ -58,6 +58,48 @@ historical #13 samples and can increase optional grain pickup, whose disturbance
 measure is actual transferred mass. Profile schema/values remain v1; source and
 artifact identity must accompany their hashes. Mercury and powder-only references
 remain exact. General gameplay still has optional mixing/carrying disabled.
+
+## Deep-head limitation after issue #26
+
+**Current Water semantics are unchanged by #26.** The
+[2026-09-19 characterization](../audits/2026-09-19-issue-26-water-leveling.md)
+adds true communicating-head controls and demonstrates a limitation that the older
+flat-basin speed check did not exercise. With the Current solver, medium and deep
+identical outlets have the same early discharge once their local outlet cells are
+full; communicating pools can sleep with about a 16-cell level difference, and a
+true unequal-head U-tube can sleep with about a 24-cell difference.
+
+Two source-matched bounded candidates were rejected against thresholds frozen
+before their implementation: a radius-2 head-scaled local drive and a radius-2
+same-row lookahead. Both preserve exact mass and expected worker parity but fail the
+registered bulk/head screens; the lookahead can keep bad communicating Water active
+at very high cost without reducing the head difference. Rejected candidate
+semantics are not retained in Current source.
+
+The result narrows the missing mechanism: adjacent transfer strength cannot transmit
+head through a saturated connected passage where there is no immediate destination
+capacity. [Issue #45](https://github.com/techrote/cybersand/issues/45) owns the next
+bounded head/pressure-transmission architecture experiment. It is distinct from #18
+material-local directional history. #18 remains held until the bulk-head confound is
+resolved.
+
+## Post-#26 apparatus qualification
+
+**Current Water semantics remain unchanged.** The #26 negative result is valid for
+the two exact radius-2 candidates tested, but the retained v1 experiment apparatus
+has post-merge review limitations documented in
+[the #26 review](../audits/2026-09-19-issue-26-post-merge-review.md).
+
+In particular, v1 settling/equilibrium metrics can ignore dry expected columns,
+unreached thresholds use a success-valued numeric zero, the historical fixture
+named `unequal-head-u-tube` is actually a three-compartment communicating
+geometry, and whole-run p95 mixes active and sleeping phases.
+
+[#49](https://github.com/techrote/cybersand/issues/49) must repair/version those
+metrics, add a clean two-limb communicating-head fixture and fresh Current-Water
+control baseline, and harden evidence output before #45 may freeze thresholds or
+accept/reject a successor mechanism. Preserve all original #26 artifacts as
+historical evidence.
 
 ## Coherent emission and surface adhesion
 

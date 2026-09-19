@@ -26,6 +26,18 @@ Runtime results need dated source/artifact/platform evidence. Investigate and
 record contradictions before changing implementation; do not silently choose a
 design from conflicting source, ADR or historical claims.
 
+## Water successor safety
+
+Issue #26 remains closed as a valid negative experiment for its two exact tested
+local candidates, but its retained apparatus v1 is historical/qualified evidence.
+Before any #45 Water head-transmission implementation or acceptance work, read the
+[post-merge #26 review](docs/audits/2026-09-19-issue-26-post-merge-review.md) and
+complete [#49](https://github.com/techrote/cybersand/issues/49).
+
+Required affected order is `#49 -> #45 -> directional-reference reassessment -> #18`.
+Do not freeze #45 numeric thresholds from apparatus-v1 settling/U-tube metrics,
+rewrite old #26 artifacts, or start #18 compact history while that gate is open.
+
 ## Architectural constraints
 
 - Native C++ owns authoritative cells; Godot owns presentation/input/UI/adapters.

@@ -131,6 +131,43 @@ This checkpoint is **H-ready**, not an H result: mass8/coherence12 remain the
 production/reference control, no preferred candidate or production packing was
 selected, #18 remains held, #20 remains downstream and G-final remains open.
 
+## Issue #26 Water head/leveling disposition
+
+**Complete experimental Outcome B, 2026-09-19:** the
+[dated #26 evidence](../audits/2026-09-19-issue-26-water-leveling.md) confirms that
+Current Water has a real deep/extended head-transmission deficit rather than only a
+presentation or mass-precision problem. A 108-case frozen control preserves exact
+mass, 1/4-worker authoritative parity and zero post-setup allocations. Medium and
+deep identical outlets produce the same early discharge; communicating pools and a
+true unequal-head U-tube can quiesce with roughly 16- and 24-cell level differences.
+
+The preregistered radius-2 head-scaled-local and same-row-horizon arms were both
+rejected. Neither reached the automated survival gate, so no combined arm or owner
+H audition was warranted and **no Water semantic change is selected**. The retained
+characterization apparatus is reusable.
+
+[Issue #45](https://github.com/techrote/cybersand/issues/45) is the bounded successor
+for transmitting head/pressure through saturated connected Water. #18 remains
+open/held until that bulk confound is resolved; #20 remains downstream and G-final
+remains open. MicroScenario/INT-000 work continues independently and only affected
+Water-dependent provisional evidence needs later revalidation.
+
+## Issue #26 post-merge review and #49 correction
+
+The [post-merge review](../audits/2026-09-19-issue-26-post-merge-review.md)
+preserves #26 Outcome B for its two exact rejected local candidates, while
+qualifying apparatus v1 for future acceptance use.
+
+Confirmed apparatus limitations include dry-column false-pass equilibrium,
+success-valued zero for unreached thresholds, non-revoked sustained passage,
+a historical three-compartment fixture mislabeled as a clean U-tube, mixed
+active/sleep p95 interpretation and evidence-runner durability gaps.
+
+[#49](https://github.com/techrote/cybersand/issues/49) is now the required bounded
+correction before #45 implementation/acceptance. #45 must use versioned corrected
+metrics/fixtures and fresh Current-Water baselines. Production Water is unchanged;
+#18 remains held behind `#49 -> #45`.
+
 ## Opt-in transport profiles
 
 **Current:** the [profile contract](../systems/flow-transport-and-profiles.md)

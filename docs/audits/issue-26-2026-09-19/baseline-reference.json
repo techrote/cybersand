@@ -1,0 +1,109 @@
+{
+  "schema": 1,
+  "issue": 26,
+  "phase": "baseline-frozen",
+  "branch_head": "332fac20f726f67c487f7b25b001ced5c8259e0f",
+  "actions_checkout_head": "bf3b6d53a0f534df5edd66d264c6f3bf1a4378e3",
+  "base_main": "de332eaf8f4e70b25b097bed0c2e2a7b2aac0173",
+  "source_sha256": "7762db47cbbce9e890d50e218e656953dfc18e1ef43127f2cf5b90ae1c4d13d4",
+  "artifact": {
+    "workflow_run": 35412803078,
+    "artifact_id": 10574760981,
+    "zip_sha256": "0466c6057b45dcdeb28e87a81682307fc2d8e23fc5932b747ab1dea2343a77c7",
+    "results_sha256": "9a2871f983d99daedadc19bc5e1f355caa739bc670eb72e16a2c3344c2f0a0e5",
+    "summary_sha256": "0fac3399154a6ebac692fe33e48eb2e604083baca6663783d011591ba5f98a4f"
+  },
+  "run_invariants": {
+    "cases": 108,
+    "authoritative_worker_parity": true,
+    "mass_conservation": true,
+    "post_setup_allocations_zero": true
+  },
+  "baseline_medians": {
+    "head-shallow": {
+      "receive300": 21104,
+      "final_spread_milli": 280,
+      "p95_us": 230.3635
+    },
+    "head-medium": {
+      "receive300": 27223,
+      "final_spread_milli": 706,
+      "p95_us": 423.6085
+    },
+    "head-deep": {
+      "receive300": 27223,
+      "final_spread_milli": 690.5,
+      "p95_us": 757.1765
+    },
+    "communicating-pools": {
+      "final_level_difference_milli": 16000,
+      "final_spread_milli": 22000,
+      "p95_us": 1.172
+    },
+    "unequal-head-u-tube": {
+      "final_level_difference_milli": 24000,
+      "final_spread_milli": 32758.5,
+      "p95_us": 0.882
+    },
+    "constriction": {
+      "receive300": 15454.5,
+      "final_spread_milli": 455,
+      "p95_us": 943.4905
+    },
+    "fast-dump": {
+      "receive300": 122864.5,
+      "final_spread_milli": 3392,
+      "max_wall_gap_cells": 1,
+      "p95_us": 813.6625
+    },
+    "calm-settling": {
+      "sustained_half_life_tick": 480,
+      "sustained_one_cell_tick": 2670,
+      "final_spread_milli": 396,
+      "final_hill_milli": 5.5,
+      "p95_us": 937.624
+    },
+    "ledge-sheet": {
+      "receive300": 9453.5,
+      "surface_turnover_samples": 15.5,
+      "final_spread_milli": 27296,
+      "p95_us": 210.7695
+    }
+  },
+  "candidate_survival_gates": {
+    "calm_settling": {
+      "sustained_half_life_tick_max": 360,
+      "sustained_one_cell_tick_max": 1980
+    },
+    "deep_head": {
+      "receive300_min": 34029,
+      "deep_over_medium_receive300_ratio_min": 1.1
+    },
+    "communicating_pools": {
+      "final_level_difference_milli_max": 12000
+    },
+    "unequal_head_u_tube": {
+      "final_level_difference_milli_max": 18000
+    },
+    "constriction": {
+      "receive300_min": 19319
+    },
+    "fast_dump": {
+      "final_spread_milli_max": 3731,
+      "max_wall_gap_cells_max": 1
+    },
+    "ledge_sheet_positive_control": {
+      "receive300_min": 6617,
+      "receive300_max": 14180,
+      "surface_turnover_samples_min": 8
+    },
+    "p95_review_ratio": 1.15,
+    "required_primary_benefit_count": 2,
+    "notes": [
+      "Hard invariants (mass, worker parity, zero post-setup allocations) are mandatory.",
+      "The calm-settling speed gates are mandatory for an isolated arm to survive to focused H.",
+      "At least two additional primary benefit gates among deep head, communicating pools, U-tube and constriction must pass.",
+      "Performance above the p95 review ratio triggers review; it is not an automatic physics rejection."
+    ]
+  }
+}
