@@ -118,8 +118,10 @@ jobs:
                     "flat", s["time_to_flat_tick"],
                     "arm_half", s["arm_level_half_life_tick"],
                     "local_half", s["primary_local_slope_half_life_tick"],
-                    "hill", round(s["max_hill_amplitude_cells"], 4),
-                    "terrace_life", s["severe_terrace_lifetime_ticks"],
+                    "surface_start", s["registered_surface_start_tick"],
+                    "registered_hill", None if s["registered_surface_max_hill_amplitude_cells"] is None else round(s["registered_surface_max_hill_amplitude_cells"], 4),
+                    "registered_terrace_life", s["registered_surface_severe_terrace_lifetime_ticks"],
+                    "registered_low_motion_turnover", s["registered_surface_low_motion_edge_turnover"],
                     "gap", s["max_wall_gap_area_cells"])
           PY
           fi
