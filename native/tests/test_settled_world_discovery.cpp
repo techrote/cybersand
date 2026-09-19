@@ -7,6 +7,20 @@
 #include <stdexcept>
 #include <utility>
 
+namespace cybersand {
+class PrecisionProbe {
+public:
+    static std::uint16_t transfer(World& world, std::int64_t from_x, std::int64_t from_y,
+                                  std::int64_t to_x, std::int64_t to_y,
+                                  std::uint16_t requested) {
+        return world.transfer_water(from_x, from_y, to_x, to_y, requested, nullptr);
+    }
+    static std::uint8_t coherence(const World& world, std::int64_t x, std::int64_t y) {
+        return world.state_b(x, y);
+    }
+};
+} // namespace cybersand
+
 namespace {
 using namespace cybersand;
 using namespace cybersand::soliding;
@@ -211,6 +225,28 @@ CYBERSAND_TEST_NOINLINE void occupancy_preserves_exact_underlying_tuple() {
     require(after.summary.classification == DiscoveryClass::Uniform &&
             after.summary.uniform == DiscoveryCell{1, 17, 3, 222, false},
             "mask removal reobserves exact material/state/temperature beneath occupancy");
+}
+
+CYBERSAND_TEST_NOINLINE void water_transfer_witnesses_both_endpoints() {
+    World world(tracked_config());
+    require(world.set_cell_state(0, 0, Material::Water, 200, 7),
+            "Water source tuple accepted");
+    require(world.set_cell_state(8, 0, Material::Water, 100, 3),
+            "Water destination tuple accepted");
+    const auto source_before = tile_at(world, 0, 0);
+    const auto destination_before = tile_at(world, 8, 0);
+
+    require(PrecisionProbe::transfer(world, 0, 0, 8, 0, 50) == 50,
+            "direct Water quantity transfer accepted");
+    const auto source_dirty = tile_at(world, 0, 0);
+    const auto destination_dirty = tile_at(world, 8, 0);
+    require(source_dirty.summary.revision > source_before.summary.revision &&
+            destination_dirty.summary.revision > destination_before.summary.revision,
+            "Water transfer witnesses both source and destination tuples");
+    require(world.liquid_mass(0, 0) == 150 && world.liquid_mass(8, 0) == 150 &&
+            PrecisionProbe::coherence(world, 0, 0) == 7 &&
+            PrecisionProbe::coherence(world, 8, 0) == 7,
+            "Water transfer retains exact mass and max coherence authority");
 }
 
 CYBERSAND_TEST_NOINLINE void no_write_activity_deadline_and_epoch_wrap() {
@@ -539,6 +575,7 @@ int main() {
         canonical_geometry_registration_and_capacity();
         movement_mask_event_and_far_locality();
         occupancy_preserves_exact_underlying_tuple();
+        water_transfer_witnesses_both_endpoints();
         no_write_activity_deadline_and_epoch_wrap();
         custom_geometry_signed_endpoints_and_policy_fence();
         inclusion_reset_move_and_failure_quarantine();
