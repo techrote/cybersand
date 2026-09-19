@@ -94,9 +94,9 @@ Windows runtime launch.
 ## Linux GDExtension CI sharding
 
 **Current CI migration checkpoint:** the Linux GDExtension workflow builds the pinned
-Linux runtime once on an Avrea 8-vCPU runner, verifies its ABI/runtime floor and
+Linux runtime once on an Avrea 4-vCPU runner by default, verifies its ABI/runtime floor and
 publishes that exact extension plus the pinned Rapier Linux runtime as a short-lived
-artifact. Four isolated Avrea 4-vCPU jobs then restore the same source/runtime
+artifact. Four isolated Avrea 2-vCPU jobs then restore the same source/runtime
 identity and run deterministic subsets of the Godot regression suite. Each shard
 performs its own clean headless import before its assigned cases.
 
@@ -113,11 +113,12 @@ historical timings only influence deterministic scheduling; they are not test
 thresholds. Unknown/new tests receive a conservative default weight and must appear
 exactly once in the union of shards.
 
-During the initial migration PR, the same restored runtime also runs the complete
-serial suite and an aggregate gate compares source/runtime/Godot identities plus
-exact non-import case coverage. The temporary serial equivalence lane is removed
-only after clean equivalence evidence is retained; no fixture, timeout, profile or
-assertion is weakened by sharding.
+The initial migration PR proved exact serial/sharded coverage equivalence on the
+same source/runtime/Godot identity. That serial lane is now opt-in only via
+`GDEXT_SERIAL_EQUIVALENCE=1`; ordinary PRs use the sharded gate. Runner sizes are
+cost-first defaults and may be overridden with repository variables without editing
+the workflow. Build SCons concurrency inherits the corresponding vCPU variable
+unless a dedicated `*_SCONS_JOBS` override is set.
 
 ## Web compile, export and execution are different checks
 

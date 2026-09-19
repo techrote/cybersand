@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-09-12
+last-reviewed: 2026-09-19
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md]
 ---
 
@@ -131,6 +131,45 @@ closed-basin cases per implementation, 55 native tests, 24 isolated Godot fixtur
 30 retained non-Water reference cases and 72 native/real-Web transport cases.
 Its retained editor-import failure is an environment result; the rebuilt isolated
 project passed. Faster leveling is fixture-specific, not universal instant flow.
+
+## Issue #26 Water head/leveling characterization, 2026-09-19
+
+The [dated #26 audit](../audits/2026-09-19-issue-26-water-leveling.md) records a
+frozen 108-case Linux control plus two independent 108-case candidate campaigns;
+each candidate-bearing source also reran the complete control before its candidate.
+The matrix spans nine fixtures, three signed translations, mirrored/unmirrored
+geometry and 1/4 workers. All retained arms preserve exact sampled closed-Water
+quantity, exact expected authoritative worker parity and zero post-setup owned
+allocations.
+
+The control exposes identical medium/deep outlet discharge and quiescent 16/24-cell
+communicating-head errors. Head-scaled-local and bounded same-row-horizon candidates
+are both rejected against thresholds frozen before their code. No candidate reached
+the pre-H survival gate, so no new owner visual acceptance is claimed and no Water
+semantic change is selected. GitHub-hosted timing is descriptive; several candidate
+p95 regressions are retained, including pathological persistent work in the horizon
+communicating-pools case. Raw Actions artifacts/hashes are listed in the audit.
+
+## Issue #26 post-merge validation qualification, 2026-09-19
+
+Independent review confirms the retained #26 archives support the exact candidate
+rejections, mass checks and expected worker-parity claims in their measured scope.
+It also identifies apparatus limitations that prevent successor acceptance use
+without correction.
+
+The v1 equilibrium reducer can ignore dry expected columns and encode censored
+thresholds as zero; the named U-tube fixture is a three-compartment communicating
+geometry; whole-run p95 mixes active/sleep proportions; surface-defect values are
+sampled proxies; and the runner is not yet durable against overwrite/all failed
+attempts.
+
+Final PR #41 CI performed native validation, a Windows x86_64 cross-build, and a
+Linux x86_64 Godot runtime/ABI regression. Do not cite it as fresh Windows runtime
+execution.
+
+[#49](https://github.com/techrote/cybersand/issues/49) is the required correction
+before #45 can use successor metrics/fixtures. See the
+[post-merge review](../audits/2026-09-19-issue-26-post-merge-review.md).
 
 ## Programme gate reconciliation, 2026-09-11
 

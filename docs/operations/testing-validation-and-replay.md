@@ -48,9 +48,10 @@ evidence.
 
 The deterministic planner records the complete assignment and per-case timings.
 Approximate weights are scheduling hints from dated CI evidence, not acceptance
-limits. The initial migration checkpoint also executes the unsharded suite against
-the same source and runtime artifact and automatically compares exact case coverage
-before serial execution can be retired.
+limits. The initial migration checkpoint executed the unsharded suite against the same
+source/runtime artifact and proved exact case coverage equivalence. The serial lane
+is retained as an explicit opt-in diagnostic, while ordinary PR validation uses the
+four isolated shards.
 
 ## What does equality establish?
 

@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   consistency:
-    runs-on: avrea-ubuntu-24.04-2-vcpu
+    runs-on: ${{ format('avrea-ubuntu-24.04-{0}-vcpu', vars.DOCS_VCPU || '1') }}
     timeout-minutes: 15
     defaults:
       run:

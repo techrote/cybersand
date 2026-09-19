@@ -235,6 +235,18 @@
     {
       "path": "operations/soliding-stage3-spark-verification.md",
       "reason": "Issue execution packet; retrieve explicitly through the canonical Stage-3 freeze, not as a default Current runtime contract"
+    },
+    {
+      "path": "audits/2026-09-19-issue-26-registration.md",
+      "reason": "Dated issue #26 preregistration and frozen experiment contract; retrieve explicitly with the issue #26 evidence, not as a default Current runtime contract"
+    },
+    {
+      "path": "audits/2026-09-19-issue-26-water-leveling.md",
+      "reason": "Dated issue #26 characterization/candidate evidence; current conclusions are mirrored into Water/roadmap/architecture contracts and this audit is retrieved explicitly for measurements"
+    },
+    {
+      "path": "audits/2026-09-19-issue-26-post-merge-review.md",
+      "reason": "Dated independent review of #26 evidence/apparatus and the #49 corrective gate; retrieve explicitly when interpreting #26 or executing #45"
     }
   ]
 }

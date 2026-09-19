@@ -168,3 +168,32 @@ Spark packets intentionally split World witness integration from cross-tile regi
 construction; independent verification and measurement follow only after parent
 integration. Stage 3 remains cells-owned discovery and cannot be used to admit
 stationary acceleration or Rapier dynamics.
+
+## Issue #26 / Water bulk-head handoff, 2026-09-19
+
+[Issue #26 evidence](../audits/2026-09-19-issue-26-water-leveling.md) is the current
+source-backed answer for deep/extended Water leveling. The retained harness proves
+that Current local three-quarter equalization can leave communicating pools/U-tubes
+quiescent with large unequal heads. Both admitted small local no-state fixes were
+rejected; do not resurrect or combine them without a new registration.
+
+Current production Water remains unchanged. [#45](https://github.com/techrote/cybersand/issues/45)
+owns the next bounded head/pressure-transmission architecture question. Keep it
+separate from #18 directional history; #18 stays held until #45 supplies an accepted
+bulk baseline or a documented no-go. #20 and G-final remain downstream under the
+architecture programme. #28/#29 may continue in parallel, with targeted
+revalidation only after a later accepted Water semantic change.
+
+## Issue #49 Water apparatus correction handoff, 2026-09-19
+
+Use [the post-merge #26 review](../audits/2026-09-19-issue-26-post-merge-review.md)
+before any successor Water experiment. #26 remains closed and its two local
+candidate rejections remain valid, but the v1 harness is historical evidence rather
+than the acceptance oracle for #45.
+
+[#49](https://github.com/techrote/cybersand/issues/49) must first version/fix the
+settling and censoring metrics, add the clean two-limb communicating-head fixture,
+separate active/sleep performance accounting and harden evidence output. Preserve
+all original #26 archives and generate new baselines for changed metrics/fixtures.
+
+Required order is `#49 -> #45 -> #18`. #28/#29 remain independently runnable.
