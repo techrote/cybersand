@@ -4,7 +4,9 @@
 #include <cstddef>
 #include <cstdint>
 #include <limits>
+#include <memory>
 #include <optional>
+#include <stdexcept>
 #include <utility>
 
 // Stage 3 substrate only: the serialized producer supplies complete invalidation
@@ -65,17 +67,18 @@ struct DiscoveryMetrics {
     std::uint64_t queue_high_water{}, latency_max_ticks{}, latency_total_ticks{};
 };
 
-// One deduplicated queue entry per registered slot: queue capacity == Slots.
-// There is no overflow list, allocation, slot reuse or hot resize. Registration
-// is a bounded setup operation; unregister/reset requires a new unique incarnation.
-// Saturation refuses new blocks and leaves existing observations/cells intact.
+// One deduplicated queue entry per registered slot. The compile-time Slots value is
+// the supported maximum; the constructor chooses the effective runtime slot capacity.
+// Backing storage is allocated once at construction and is never hot-resized. There is
+// no overflow list or slot reuse; reset requires a new unique incarnation. Saturation
+// refuses new blocks and leaves existing observations/cells intact.
 template<std::size_t Slots, std::uint32_t MaximumBlockCells = 1024,
          std::uint64_t RevisionLimit = std::numeric_limits<std::uint64_t>::max()>
 class SettledDiscovery {
     static_assert(Slots > 0 && Slots <= std::numeric_limits<std::uint32_t>::max());
     static_assert(MaximumBlockCells > 0 && RevisionLimit > 0);
 public:
-    explicit SettledDiscovery(std::uint64_t unique_incarnation) noexcept : incarnation_(unique_incarnation) {}
+    explicit SettledDiscovery(std::uint64_t unique_incarnation, std::size_t slots = Slots);
     SettledDiscovery(const SettledDiscovery&) = delete;
     SettledDiscovery& operator=(const SettledDiscovery&) = delete;
     SettledDiscovery(SettledDiscovery&&) = delete;
@@ -106,7 +109,7 @@ private:
         if (check_duplicate_bounds)
             for (std::size_t i = 0; i < count_; ++i)
                 if (records_[i].summary.bounds == bounds) return DiscoveryOutcome::Invalid;
-        if (count_ == Slots) { increment(metrics_.refusals); return DiscoveryOutcome::Capacity; }
+        if (count_ == slot_capacity_) { increment(metrics_.refusals); return DiscoveryOutcome::Capacity; }
         if (!clock(tick)) return DiscoveryOutcome::Halted;
         const auto index = count_++;
         auto& record = records_[index];
@@ -225,7 +228,10 @@ public:
     [[nodiscard]] DiscoveryMetrics metrics() const noexcept { return metrics_; }
     [[nodiscard]] std::size_t pending() const noexcept { return queued_; }
     [[nodiscard]] std::size_t size() const noexcept { return count_; }
-    [[nodiscard]] static constexpr std::size_t storage_bytes() noexcept { return sizeof(SettledDiscovery); }
+    [[nodiscard]] std::size_t slot_capacity() const noexcept { return slot_capacity_; }
+    [[nodiscard]] std::size_t storage_bytes() const noexcept {
+        return sizeof(SettledDiscovery) + slot_capacity_ * (sizeof(Record) + sizeof(std::size_t));
+    }
 
 private:
     struct Record {
@@ -260,13 +266,13 @@ private:
         auto& record = records_[index];
         if (record.queued) return;
         record.queued = true;
-        queue_[(head_ + queued_) % Slots] = index;
+        queue_[(head_ + queued_) % slot_capacity_] = index;
         ++queued_;
         if (queued_ > metrics_.queue_high_water) metrics_.queue_high_water = queued_;
     }
     void pop(Record& record) noexcept {
         record.queued = record.scanning = false;
-        head_ = (head_ + 1) % Slots;
+        head_ = (head_ + 1) % slot_capacity_;
         --queued_;
     }
     DiscoveryOutcome invalidate(Record& record, std::uint64_t tick) noexcept {
@@ -281,8 +287,8 @@ private:
             // A repeatedly changed head must not starve quiet blocks behind it.
             // Rotation is constant work charged to invalidation, never a scan.
             if (queued_ > 1 && queue_[head_] == record.summary.handle.slot) {
-                queue_[(head_ + queued_) % Slots] = queue_[head_];
-                head_ = (head_ + 1) % Slots;
+                queue_[(head_ + queued_) % slot_capacity_] = queue_[head_];
+                head_ = (head_ + 1) % slot_capacity_;
             }
         }
         // Preserve the first outstanding dirty tick, so churn cannot hide latency.
@@ -292,11 +298,26 @@ private:
         enqueue(record.summary.handle.slot);
         return DiscoveryOutcome::Accepted;
     }
+    static std::size_t checked_slot_capacity(std::size_t slots) {
+        if (slots == 0 || slots > Slots)
+            throw std::invalid_argument("settled discovery runtime slot capacity is unsupported");
+        return slots;
+    }
+
     std::uint64_t incarnation_{}, clock_{};
     DiscoveryHalt halt_{DiscoveryHalt::None};
-    std::size_t count_{}, head_{}, queued_{};
+    std::size_t slot_capacity_{}, count_{}, head_{}, queued_{};
     DiscoveryMetrics metrics_{};
-    std::array<Record, Slots> records_{};
-    std::array<std::size_t, Slots> queue_{};
+    std::unique_ptr<Record[]> records_;
+    std::unique_ptr<std::size_t[]> queue_;
 };
+
+template<std::size_t Slots, std::uint32_t MaximumBlockCells, std::uint64_t RevisionLimit>
+SettledDiscovery<Slots, MaximumBlockCells, RevisionLimit>::SettledDiscovery(
+    std::uint64_t unique_incarnation, std::size_t slots)
+    : incarnation_(unique_incarnation),
+      slot_capacity_(checked_slot_capacity(slots)),
+      records_(std::make_unique<Record[]>(slot_capacity_)),
+      queue_(std::make_unique<std::size_t[]>(slot_capacity_)) {}
+
 } // namespace cybersand::soliding
