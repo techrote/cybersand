@@ -193,6 +193,7 @@ int main(int argc, char** argv) {
             fill_rect(40, 63, 32, 55);
         }
 
+        bool wall_contact_seen = false;
         auto scan = [&](bool components) {
             Scan s;
             s.columns.assign(static_cast<std::size_t>(fixture.max_x + 1), 0U);
@@ -238,7 +239,8 @@ int main(int argc, char** argv) {
                     }
                     if (world.liquid_mass(tr.x(126), tr.y(y)) != 0U) contact = true;
                 }
-                if (contact && top <= 87) {
+                wall_contact_seen = wall_contact_seen || contact;
+                if (wall_contact_seen && top <= 87) {
                     std::uint64_t run = 0;
                     for (int y = top; y <= 87; ++y) {
                         if (world.liquid_mass(tr.x(126), tr.y(y)) == 0U &&
