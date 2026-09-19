@@ -31,19 +31,27 @@ the old tile's regions and facing-neighbor completeness. Blocked, refused and
 capacity-unavailable tiles therefore cannot be crossed by a complete publication.
 
 The Stage 2 lifecycle received an independent review and focused transition tests
-before this substrate was written. **Current:** fixed template-bounded records
-and a deduplicated FIFO have equal capacity; no hot allocation, periodic scan or
-overflow list exists. Registration is setup work and rejects zero/oversized/overflowing
-bounds, duplicate bounds and full capacity. Handles contain an externally unique
-nonzero incarnation plus slot; there is no slot reuse or live reset. New registry
+before this substrate was written. **Current:** #59 sizes journal and connectivity
+backing from the effective runtime tile capacity rather than the compiled maximum:
+journal/owner/key storage are `T`, region edge storage is `64T`, and
+frontier/seen/member storage is `32T`; `C=1024`, `K=32`, `B=128` and
+publication `P=4096` remain frozen. #60 adds construction-time bounded ordered
+key/spatial indexes without hot resizing or per-operation allocation. Registration
+rejects zero/oversized/overflowing bounds, duplicate/overlapping geometry where
+required, and full capacity. Handles contain an externally unique nonzero
+incarnation plus never-reused slot; there is no live reset. New registry
 construction requires a fresh incarnation. This is a block observation ID, not
 production region identity. Copy/move cloning is forbidden.
 
 **Current producer integration:** chunk creation registers canonical nonoverlapping
-subtiles through a preallocated logical-key index, avoiding the public journal's
-quadratic duplicate-bound scan. Direct tuple edits notify synchronously; phased
-worker rectangles notify only during deterministic barrier reduction; the final
-resident metadata pass supplies activity/deadline signals. Local mask occupancy,
+subtiles through an array-backed height-bounded ordered index over canonical tile
+keys. Resolved owners carry incarnation-qualified direct handles, so follow-on
+tile/dirty/observe operations do not repeat key lookup. The generic connectivity
+adapter separately uses a bounded `32T` row-interval ordered index for arbitrary
+rectangle overlap/containment and checked face mapping; canonical registration and
+face discovery no longer scan unrelated resident tiles. Direct tuple edits notify
+synchronously; phased worker rectangles notify only during deterministic barrier
+reduction; the final resident metadata pass supplies activity/deadline signals. Local mask occupancy,
 accepted pending events, requested/applied inclusion, live adhesion-policy fences,
 clear/move identity and failed-tick quarantine have source-matched tests. Their
 added inspections/time are real and remain to be measured. A missing mutation
@@ -69,9 +77,11 @@ A resumable scan retains its starting revision and scratch only. Relevant edits
 invalidate any old summary immediately; no partial result is publicly eligible.
 Complete results publish only after the same revision and activity/exclusion
 conditions survive final validation. Each scan/start/dequeue/finalization in `advance` consumes its declared budget.
-Dirty/signal notifications perform constant work outside that budget, and setup
-registration checks duplicates in O(registered slots). Producer event volume,
-registration and metadata feed cost must be measured separately. Work saturation may lag safely;
+Dirty/signal notifications perform constant work outside that budget once the
+owner handle is known. Canonical key registration/lookup is height-bounded ordered
+work; generic rectangle registration performs at most 32 row-interval queries plus
+bounded face mapping. Producer event volume, registration and metadata feed cost
+must be measured separately. Work saturation may lag safely;
 dropped invalidations may never leave an apparently valid summary.
 
 ## Capacity, identity and failure
@@ -106,13 +116,16 @@ publication checkpoint `82e65f3` make this the passed Stage-3A bounded reference
 It has not passed
 the Stage-3B large-world locality/memory/cost gate.
 
-The connectivity engine retains append-only resident tile slots, fixed boundary-cell
-neighbor maps and key-validated owner slot invalidation. Those structures keep local
-invalidation and traversal lookup bounded by resident/facing coverage rather than the
-compiled maximum for every edited cell. The 4096-tile compiled connectivity object is
-still approximately 67.7 MB on the pinned Windows compiler, before World cells,
-journal storage and allocator/process overhead; this negative fixed-memory cost is an
-retained negative scaling evidence, not an accepted capacity design.
+The connectivity engine retains append-only resident tile slots and fixed
+boundary-cell neighbor maps. #59 removed the compile-maximum small-world backing:
+effective-capacity storage now scales with `T` while the frozen per-tile and
+publication limits above remain explicit. #60 replaces normal-path resident
+registration/key/face scans with height-bounded canonical key lookup, a bounded
+row-interval geometry index, direct owner handles and checked boundary mapping.
+Reverse dependency incidence is intentionally not claimed here; #64 owns that
+remaining graph-index work. The earlier ~67.7 MB compile-max measurement is
+retained only as historical Stage-3A negative scaling evidence, not as a
+description of the current implementation.
 
 It must quantify cell/block/chunk inspections, queue/scratch high water/refusal,
 latency distribution, churn/false invalidation, region count/area, CPU and memory
