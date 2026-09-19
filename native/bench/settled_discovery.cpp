@@ -127,7 +127,7 @@ int main(int argc, char** argv) {
             << ",\"budget\":" << budget << ",\"slots\":4096,\"block_cells\":1024,\"blocks\":" << count
             << ",\"idle_epochs\":" << idle_epochs << ",\"local_rounds\":" << local_rounds << ",\"churn_epochs\":" << churn_epochs
             << ",\"cell_bytes\":" << sizeof(DiscoveryCell) << ",\"source_bytes\":" << source.size() * sizeof(DiscoveryCell)
-            << ",\"journal_bytes\":" << Journal::storage_bytes() << ",\"journal_bytes_per_tracked_cell\":" << static_cast<double>(Journal::storage_bytes()) / static_cast<double>(area)
+            << ",\"journal_bytes\":" << journal->storage_bytes() << ",\"journal_bytes_per_tracked_cell\":" << static_cast<double>(journal->storage_bytes()) / static_cast<double>(area)
             << ",\"source_init_ms\":" << source_init_ms << ",\"journal_init_ms\":" << journal_init_ms
             << ",\"registration_ms\":" << registration_ms << ",\"fair_unaffected_blocks\":" << fair_blocks
             << ",\"capacity_probe\":" << (capacity_probe ? "true" : "false") << ",\"registration_refusals\":" << journal->metrics().refusals
