@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cybersand/settled_discovery.hpp"
+#include "cybersand/bounded_ordered_index.hpp"
 
 #include <algorithm>
 #include <array>
@@ -31,7 +32,7 @@ struct RegionTileInput {
 enum class RegionOutcome : std::uint8_t { Accepted, Unchanged, Stale, Invalid, Capacity, Refused };
 enum class RegionRefusal : std::uint8_t {
     None, InvalidInput, SignalIncomplete, Occupied, NoncanonicalEmpty,
-    TileCapacity, ComponentCapacity, AdjacencyCapacity, FrontierCapacity, RegionCapacity,
+    TileCapacity, SpatialIndexCapacity, ComponentCapacity, AdjacencyCapacity, FrontierCapacity, RegionCapacity,
     UnknownBoundary, RevisionChanged, SourceFailure, GenerationExhausted
 };
 struct RegionComponentKey {
@@ -86,13 +87,7 @@ inline bool less(const RegionComponentKey& a, const RegionComponentKey& b) noexc
     return a.temperature < b.temperature;
 }
 inline bool less(const RegionTileKey& a, const RegionTileKey& b) noexcept {
-    if (a.world_incarnation != b.world_incarnation) return a.world_incarnation < b.world_incarnation;
-    if (a.chunk_y != b.chunk_y) return a.chunk_y < b.chunk_y;
-    if (a.chunk_x != b.chunk_x) return a.chunk_x < b.chunk_x;
-    if (a.activity_y != b.activity_y) return a.activity_y < b.activity_y;
-    if (a.activity_x != b.activity_x) return a.activity_x < b.activity_x;
-    if (a.subtile_y != b.subtile_y) return a.subtile_y < b.subtile_y;
-    return a.subtile_x < b.subtile_x;
+    return DiscoveryTileKeyLess{}(a, b);
 }
 inline std::uint64_t tile_hash(const RegionTileKey& key, std::uint64_t revision) noexcept {
     std::uint64_t hash = 1469598103934665603ULL;
