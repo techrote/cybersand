@@ -299,7 +299,8 @@ private:
     DiscoveryOutcome invalidate(Record& record, std::uint64_t tick,
                                 std::uint64_t mutation_count = 1) noexcept {
         if (mutation_count == 0) return DiscoveryOutcome::Unchanged;
-        if (record.summary.revision > RevisionLimit - mutation_count) {
+        if (mutation_count > RevisionLimit ||
+            record.summary.revision > RevisionLimit - mutation_count) {
             halt_ = DiscoveryHalt::RevisionExhausted;
             return DiscoveryOutcome::Halted;
         }
