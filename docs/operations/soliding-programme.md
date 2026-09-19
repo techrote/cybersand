@@ -5,7 +5,7 @@ document-kind: design
 scope: Issue 12 stage dependencies, acceleration and macro-dynamics objectives, and current-main successor admission
 canonical-for: [scalable-soliding-programme]
 last-reviewed: 2026-09-19
-related-documents: [architecture-programme.md, ../architecture/soliding-lifecycle.md, soliding-measurement.md, ../audits/2026-09-19-issue-12-phase0-reuse.md]
+related-documents: [architecture-programme.md, ../architecture/soliding-lifecycle.md, soliding-measurement.md, soliding-stage3-freeze.md, ../audits/2026-09-19-issue-12-phase0-reuse.md]
 ---
 
 # Scalable reversible soliding programme
@@ -104,3 +104,9 @@ zero loose debris is correct where no loose-material policy has been admitted.
 
 [Successor checkpoint evidence](../audits/2026-09-19-issue-12-foundation.md) records
 completed scope and the next bounded producer/connectivity work; Stage 3 is partial.
+
+The [Stage 3 execution freeze](soliding-stage3-freeze.md) is the current implementation
+contract for the remaining producer and cross-tile connectivity work. Its four
+Spark packets separate World producer integration, bounded connectivity, independent
+verification and integrated measurement so delegated workers cannot silently choose
+architecture or enter Stage 4.
