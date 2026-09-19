@@ -203,6 +203,10 @@ def run(args):
                        'offset': list(key[4]), 'successful_repeats': len(selected),
                        'setup_ms': spread([value['setup_ms'] for value in selected]),
                        'tick_p95_ms': spread([value['tick_timing']['p95_ms'] for value in selected]),
+                       'ordinary_tick_p95_ms': spread([value['ordinary_tick_timing']['p95_ms'] for value in selected]),
+                       'epoch_clear_ms': spread([value['epoch_clear_timing']['p95_ms']
+                                                for value in selected if value['epoch_clear_timing'] is not None]),
+                       'complete_p95_ms': spread([value['complete_timing']['p95_ms'] for value in selected]),
                        'initial_journal_ms': spread([value['initial_journal_ms'] for value in selected]),
                        'initial_region_ms': spread([value['initial_region_ms'] for value in selected]),
                        'peak_rss_bytes': spread([value['peak_rss_bytes'] for value in selected])})

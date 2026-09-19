@@ -38,6 +38,8 @@ double elapsed(Clock::time_point start) {
     return std::chrono::duration<double, std::milli>(Clock::now() - start).count();
 }
 
+bool epoch_clear(std::uint64_t tick) { return tick > 1 && (tick - 1) % 255 == 0; }
+
 Arm arm_from(std::string_view text) {
     if (text == "current") return Arm::Current;
     if (text == "producer") return Arm::Producer;
@@ -240,21 +242,31 @@ int main(int argc, char** argv) {
             initial_region_ms = drain_regions(world, region_work);
         const auto initial_content_hash = world.content_hash();
 
-        std::vector<double> tick_times, edit_times, journal_times, region_times;
+        std::vector<double> tick_times, ordinary_tick_times, epoch_tick_times,
+                            complete_times, edit_times, journal_times, region_times;
         std::uint64_t external_edits = 0, measured_moved_cells = 0;
         for (int i = 0; i < ticks; ++i) {
             const auto edit_start = Clock::now();
             const auto edits = apply_edit(world, fixture, i, side, ox, oy);
             external_edits += edits;
-            edit_times.push_back(edits == 0 ? 0.0 : elapsed(edit_start));
+            const auto edit_ms = edits == 0 ? 0.0 : elapsed(edit_start);
+            edit_times.push_back(edit_ms);
             const auto tick_start = Clock::now();
             const auto stats = world.tick();
-            tick_times.push_back(elapsed(tick_start));
+            const auto tick_ms = elapsed(tick_start);
+            tick_times.push_back(tick_ms);
+            (epoch_clear(stats.tick) ? epoch_tick_times : ordinary_tick_times).push_back(tick_ms);
             measured_moved_cells += stats.moved_cells;
-            if (arm == Arm::Journal || arm == Arm::Connectivity)
-                journal_times.push_back(drain_journal(world, journal_work));
-            if (arm == Arm::Connectivity)
-                region_times.push_back(drain_regions(world, region_work));
+            double journal_ms = 0, region_ms = 0;
+            if (arm == Arm::Journal || arm == Arm::Connectivity) {
+                journal_ms = drain_journal(world, journal_work);
+                journal_times.push_back(journal_ms);
+            }
+            if (arm == Arm::Connectivity) {
+                region_ms = drain_regions(world, region_work);
+                region_times.push_back(region_ms);
+            }
+            complete_times.push_back(edit_ms + tick_ms + journal_ms + region_ms);
         }
 
         const auto producer = world.settled_discovery_producer_metrics();
@@ -283,6 +295,9 @@ int main(int argc, char** argv) {
                   << ",\"initial_region_ms\":" << initial_region_ms << ",\"settle_timing\":";
         timing_json(settle_ticks);
         std::cout << ",\"tick_timing\":"; timing_json(tick_times);
+        std::cout << ",\"ordinary_tick_timing\":"; timing_json(ordinary_tick_times);
+        std::cout << ",\"epoch_clear_timing\":"; timing_json(epoch_tick_times);
+        std::cout << ",\"complete_timing\":"; timing_json(complete_times);
         std::cout << ",\"edit_timing\":"; timing_json(edit_times);
         std::cout << ",\"journal_timing\":"; timing_json(journal_times);
         std::cout << ",\"region_timing\":"; timing_json(region_times);
