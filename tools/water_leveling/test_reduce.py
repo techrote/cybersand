@@ -79,6 +79,56 @@ class WaterLevelingReducerTests(unittest.TestCase):
         self.assertFalse(metric["flat_conditions"])
         self.assertGreater(metric["local_leveling_slope"], 0.0)
 
+    def test_cs_surface_phase_waits_for_sixty_stable_span_ticks(self):
+        rows = []
+        for tick in range(70):
+            columns = [10 * wl.MASS_MAX] * 128
+            if tick < 5:
+                columns[1] = 15 * wl.MASS_MAX
+            rows.append({"tick": tick, "columns": columns})
+        self.assertEqual(wl.surface_phase_start("cs", rows), 5)
+
+    def test_fd_surface_phase_starts_on_terminal_contact(self):
+        rows = []
+        for tick in range(6):
+            columns = [0] * 128
+            if tick >= 4:
+                columns[126] = wl.MASS_MAX
+            rows.append({"tick": tick, "columns": columns})
+        self.assertEqual(wl.surface_phase_start("fd", rows), 4)
+
+    def test_ls_surface_phase_requires_sixty_fully_wet_ticks(self):
+        rows = []
+        for tick in range(66):
+            columns = [0] * 128
+            if tick >= 3:
+                for x in range(68, 124):
+                    columns[x] = wl.MASS_MAX
+            rows.append({"tick": tick, "columns": columns})
+        self.assertEqual(wl.surface_phase_start("ls", rows), 3)
+
+    def test_qualified_terrace_edges_ignore_short_run_pair(self):
+        columns = [0] * 12
+        columns[2:4] = [10 * wl.MASS_MAX] * 2
+        columns[4:6] = [11 * wl.MASS_MAX] * 2
+        count, _, _, _, _, edges = wl.terrace_metrics(columns, [(2, 5)], 30)
+        self.assertEqual(count, 0)
+        self.assertEqual(edges, set())
+
+        columns[2:5] = [10 * wl.MASS_MAX] * 3
+        columns[5:7] = [11 * wl.MASS_MAX] * 2
+        count, _, _, _, _, edges = wl.terrace_metrics(columns, [(2, 6)], 30)
+        self.assertEqual(count, 1)
+        self.assertEqual(edges, {4})
+
+    def test_surface_l1_is_cell_equivalent_quantity_motion(self):
+        before = [0, wl.MASS_MAX, 2 * wl.MASS_MAX, 0]
+        after = [0, 2 * wl.MASS_MAX, wl.MASS_MAX, 0]
+        self.assertAlmostEqual(
+            wl.surface_l1_cell_equivalents(before, after, [(1, 2)]),
+            2.0,
+        )
+
     def test_equal_communicating_arms_meet_registered_difference(self):
         columns = [0] * 128
         for x in range(8, 56):
