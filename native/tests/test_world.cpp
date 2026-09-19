@@ -1,4 +1,5 @@
 #include "cybersand/c_api.h"
+#include "cybersand/interaction_rules.hpp"
 #include "cybersand/material_appearance.hpp"
 #include "cybersand/material_rules.hpp"
 #include "cybersand/render_snapshot.hpp"
@@ -2352,12 +2353,112 @@ void test_water_experiment_default_state_hash_correspondence() {
     }
 }
 
+
+void test_int000_sparse_schema_shadow_equivalence() {
+    using cybersand::InteractionRules;
+
+    require(cybersand::kInteractionSchemaId == "cybersand.interactions",
+            "INT schema identity changed");
+    require(cybersand::kInteractionSchemaVersion == 1U,
+            "INT schema version changed");
+    require(cybersand::kInteractionProfileId == "int.current-behaviour" &&
+                cybersand::kInteractionProfileVersion == 1U,
+            "INT current profile identity changed");
+    require(InteractionRules::channels().size() == 7U,
+            "INT channel catalogue is incomplete");
+    require(InteractionRules::pair_rules().size() == 14U,
+            "INT compact current rule inventory changed");
+    require(InteractionRules::specialized_rules().size() >= 18U,
+            "INT specialized Current inventory is incomplete");
+
+    for (std::size_t left = 0; left < InteractionRules::pair_rules().size(); ++left) {
+        const auto& rule = InteractionRules::pair_rules()[left];
+        require(!rule.id.empty() && rule.channels != 0U,
+                "INT compact rule lacks stable identity/channel");
+        require(rule.trigger == cybersand::InteractionTriggerKind::PairContact,
+                "INT compact rule changed trigger class");
+        require(rule.match == cybersand::InteractionMatchKind::UnorderedRolePreserving,
+                "INT compact rule lost role-preserving unordered matching");
+        for (std::size_t right = left + 1U; right < InteractionRules::pair_rules().size(); ++right) {
+            require(rule.id != InteractionRules::pair_rules()[right].id,
+                    "INT compact rule IDs are not unique");
+        }
+    }
+
+    constexpr std::array<std::uint8_t, 12> rolls{
+        0U, 31U, 32U, 33U, 63U, 64U, 65U, 95U, 96U, 97U, 254U, 255U};
+    for (std::uint16_t source_id = 0; source_id < cybersand::kMaterialDefinitions.size(); ++source_id) {
+        const auto source = static_cast<Material>(source_id);
+        require(cybersand::MaterialRules::has_pair_reactions(source) ==
+                    InteractionRules::has_pair_rule(source),
+                "INT shadow pair-participant inventory differs from Current");
+        for (std::uint16_t target_id = 0; target_id < cybersand::kMaterialDefinitions.size(); ++target_id) {
+            const auto target = static_cast<Material>(target_id);
+            for (const auto roll : rolls) {
+                const auto current = cybersand::MaterialRules::pair_reaction(source, target, roll);
+                const auto shadow = InteractionRules::resolve_pair(source, target, roll);
+                require(current.has_value() == shadow.selected,
+                        "INT shadow compact resolver selection differs from Current");
+                if (!current.has_value()) continue;
+                require(shadow.matched &&
+                            current->source_product == shadow.source_product &&
+                            current->target_product == shadow.target_product,
+                        "INT shadow compact resolver products/roles differ from Current");
+            }
+        }
+    }
+
+    const auto salt_forward =
+        InteractionRules::resolve_pair(Material::Water, Material::Salt, 255U);
+    const auto salt_reverse =
+        InteractionRules::resolve_pair(Material::Salt, Material::Water, 255U);
+    require(salt_forward.selected && salt_reverse.selected &&
+                salt_forward.source_product == Material::Brine &&
+                salt_forward.target_product == Material::Brine &&
+                salt_reverse.source_product == Material::Brine &&
+                salt_reverse.target_product == Material::Brine,
+            "Water/Salt role-preserving unordered resolution changed");
+
+    const auto acid_forward =
+        InteractionRules::resolve_pair(Material::Acid, Material::Metal, 96U);
+    const auto acid_reverse =
+        InteractionRules::resolve_pair(Material::Metal, Material::Acid, 96U);
+    require(acid_forward.selected && acid_reverse.selected &&
+                acid_forward.source_product == Material::Smoke &&
+                acid_forward.target_product == Material::Rust &&
+                acid_reverse.source_product == Material::Rust &&
+                acid_reverse.target_product == Material::Smoke,
+            "Acid/Metal reverse roles were collapsed into symmetric effects");
+    require(!InteractionRules::resolve_pair(Material::Acid, Material::Metal, 97U).selected,
+            "Acid/Metal probability boundary changed");
+
+    require(!InteractionRules::match_pair(Material::Water, Material::Sand).matched,
+            "Water/Sand transport control gained an INT conversion rule");
+    require(InteractionRules::in_family("int.family.conductive-base-metal", Material::Metal),
+            "base Metal lost explicit conductive membership");
+    for (const auto themed : {Material::WroughtIron, Material::Bronze, Material::Copper,
+                              Material::SteelPlate, Material::CopperPipe}) {
+        require(!InteractionRules::in_family("int.family.conductive-base-metal", themed),
+                "themed metal inherited base Metal INT semantics");
+    }
+    require(InteractionRules::in_family("int.family.reactive-base-glass", Material::Glass),
+            "base Glass lost explicit reactive membership");
+    for (const auto themed : {Material::StainedGlass, Material::ChemicalGlass, Material::DarkGlass}) {
+        require(!InteractionRules::in_family("int.family.reactive-base-glass", themed),
+                "themed glass inherited base Glass INT semantics");
+    }
+    require(InteractionRules::coverage().size() >= 7U &&
+                InteractionRules::tuning_passes().size() == 1U,
+            "INT coverage/pass metadata is incomplete");
+}
+
 int main() {
     struct Test {
         const char* name;
         void (*function)();
     };
     const Test tests[] = {
+        {"INT-000 sparse schema shadow equivalence", test_int000_sparse_schema_shadow_equivalence},
         {"flow resting packing, films, barriers and signed seams", test_flow_rest_films_and_barriers},
         {"flow conserved state, temperature, workers and exclusion", test_flow_conservation_state_and_workers},
         {"powder pairs and void-driven rearrangement", test_powder_pair_and_void_policy},
