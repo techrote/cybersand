@@ -2406,8 +2406,74 @@ void test_int000_sparse_schema_shadow_equivalence() {
             "INT channel catalogue is incomplete");
     require(InteractionRules::pair_rules().size() == frozen_current.size(),
             "INT compact Current rule inventory changed");
-    require(InteractionRules::specialized_rules().size() >= 18U,
+    require(InteractionRules::specialized_rules().size() == 19U,
             "INT specialized Current inventory is incomplete");
+    require(InteractionRules::layer_kinds().size() == 5U &&
+                InteractionRules::authored_layers().empty(),
+            "INT Current layering contract changed");
+    const auto catalogue_validation = InteractionRules::validate_catalogue();
+    require(catalogue_validation.ok &&
+                catalogue_validation.duplicate_rule_ids == 0U &&
+                catalogue_validation.conflicting_pair_overrides == 0U &&
+                catalogue_validation.invalid_family_memberships == 0U &&
+                catalogue_validation.unresolved_layer_conflicts == 0U &&
+                catalogue_validation.invalid_supersession_links == 0U,
+            "INT Current catalogue has unresolved conflicts");
+    require(InteractionRules::layer_precedence(cybersand::InteractionLayerKind::ChannelDefault) <
+                InteractionRules::layer_precedence(cybersand::InteractionLayerKind::FamilyDefault) &&
+                InteractionRules::layer_precedence(cybersand::InteractionLayerKind::FamilyDefault) <
+                InteractionRules::layer_precedence(cybersand::InteractionLayerKind::MaterialAdjustment) &&
+                InteractionRules::layer_precedence(cybersand::InteractionLayerKind::MaterialAdjustment) <
+                InteractionRules::layer_precedence(cybersand::InteractionLayerKind::PairOverride) &&
+                InteractionRules::layer_precedence(cybersand::InteractionLayerKind::PairOverride) <
+                InteractionRules::layer_precedence(cybersand::InteractionLayerKind::ContextModifier),
+            "INT layer precedence changed");
+    constexpr std::array<cybersand::InteractionLayerDefinition, 3> synthetic_layers{{
+        {"test.family", 1U, "", cybersand::InteractionChannel::Electrical,
+         cybersand::InteractionLayerKind::FamilyDefault,
+         {cybersand::InteractionParticipantRole::Either,
+          "int.family.conductive-base-metal", false, Material::Empty, ""},
+         "test.family.effect", "test.pass"},
+        {"test.material", 1U, "", cybersand::InteractionChannel::Electrical,
+         cybersand::InteractionLayerKind::MaterialAdjustment,
+         {cybersand::InteractionParticipantRole::Source,
+          "", true, Material::Metal, ""},
+         "test.material.effect", "test.pass"},
+        {"test.context", 1U, "", cybersand::InteractionChannel::Electrical,
+         cybersand::InteractionLayerKind::ContextModifier,
+         {cybersand::InteractionParticipantRole::Either,
+          "", false, Material::Empty, "wet"},
+         "test.context.effect", "test.pass"},
+    }};
+    const auto material_layer = InteractionRules::compile_layer_from(
+        synthetic_layers, cybersand::InteractionChannel::Electrical,
+        Material::Metal, Material::Water);
+    require(material_layer.matched && !material_layer.conflict &&
+                material_layer.layer_index == 1U,
+            "INT material adjustment did not override family default");
+    const auto context_layer = InteractionRules::compile_layer_from(
+        synthetic_layers, cybersand::InteractionChannel::Electrical,
+        Material::Metal, Material::Water, "wet");
+    require(context_layer.matched && !context_layer.conflict &&
+                context_layer.layer_index == 2U,
+            "INT context modifier did not override lower-precedence layers");
+    constexpr std::array<cybersand::InteractionLayerDefinition, 2> conflicting_layers{{
+        {"test.conflict-a", 1U, "", cybersand::InteractionChannel::Combustion,
+         cybersand::InteractionLayerKind::FamilyDefault,
+         {cybersand::InteractionParticipantRole::Either,
+          "int.family.combustible-kernel", false, Material::Empty, ""},
+         "test.a", "test.pass"},
+        {"test.conflict-b", 1U, "", cybersand::InteractionChannel::Combustion,
+         cybersand::InteractionLayerKind::FamilyDefault,
+         {cybersand::InteractionParticipantRole::Either,
+          "int.family.combustible-kernel", false, Material::Empty, ""},
+         "test.b", "test.pass"},
+    }};
+    const auto conflict = InteractionRules::compile_layer_from(
+        conflicting_layers, cybersand::InteractionChannel::Combustion,
+        Material::Wood, Material::Fire);
+    require(conflict.matched && conflict.conflict,
+            "INT equal-precedence matching layers did not report conflict");
 
     for (std::size_t index = 0; index < frozen_current.size(); ++index) {
         const auto& expected = frozen_current[index];
