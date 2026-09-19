@@ -52,6 +52,11 @@ Cover the complete producer matrix. Prefer one central direct-mutation hook plus
 post-barrier JobEffects invalidation rather than duplicating logic across every
 kernel.
 
+Payload writes dirty only the canonical tile(s) containing actual changed cells;
+the connectivity layer owns facing-neighbor region invalidation. Add
+`maximum_rule_radius` halo fanout only for an explicitly wider semantic such as
+pending-event or occupancy/contact conservatism, and measure that fanout separately.
+
 Workers may write only their existing job-local effects. The serialized owner feeds
 discovery after barriers.
 
