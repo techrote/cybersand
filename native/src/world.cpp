@@ -267,17 +267,32 @@ struct World::JobEffects {
         std::int32_t maximum_y = 0;
         std::int64_t non_empty_delta = 0;
     };
+    struct DiscoveryMutationReport {
+        ChunkCoord chunk{};
+        std::int32_t activity_y = 0;
+        std::int32_t activity_x = 0;
+        std::int32_t subtile_y = 0;
+        std::int32_t subtile_x = 0;
+        std::uint64_t mutation_count = 0;
+    };
 
     static constexpr std::size_t kMaximumTouchedChunks = 16;
+    static constexpr std::size_t kMaximumDiscoveryMutationReports = 64;
     std::array<ChunkEffect, kMaximumTouchedChunks> chunks{};
+    std::array<DiscoveryMutationReport, kMaximumDiscoveryMutationReports>
+        discovery_mutations{};
     std::size_t chunk_count = 0;
+    std::size_t discovery_mutation_count = 0;
     bool overflow = false;
+    bool discovery_mutation_overflow = false;
     bool hard_surface_changed = false;
     PhysicsJobHistogram* physics = nullptr;
 
     void reset() noexcept {
         chunk_count = 0;
+        discovery_mutation_count = 0;
         overflow = false;
+        discovery_mutation_overflow = false;
         hard_surface_changed = false;
         if (physics != nullptr) *physics = {};
     }
@@ -305,6 +320,38 @@ struct World::JobEffects {
             address_value.local_y,
             non_empty_delta,
         };
+    }
+
+    void record_discovery_mutation(const Address& address_value,
+                                   std::int32_t activity_block_size) noexcept {
+        const auto activity_x = address_value.local_x / activity_block_size;
+        const auto activity_y = address_value.local_y / activity_block_size;
+        const auto within_x =
+            address_value.local_x - activity_x * activity_block_size;
+        const auto within_y =
+            address_value.local_y - activity_y * activity_block_size;
+        const auto subtile_x = within_x / 32;
+        const auto subtile_y = within_y / 32;
+        for (std::size_t index = 0; index < discovery_mutation_count; ++index) {
+            auto& report = discovery_mutations[index];
+            if (report.chunk != address_value.chunk ||
+                report.activity_y != activity_y ||
+                report.activity_x != activity_x ||
+                report.subtile_y != subtile_y ||
+                report.subtile_x != subtile_x) continue;
+            if (report.mutation_count == std::numeric_limits<std::uint64_t>::max()) {
+                discovery_mutation_overflow = true;
+                return;
+            }
+            ++report.mutation_count;
+            return;
+        }
+        if (discovery_mutation_count == discovery_mutations.size()) {
+            discovery_mutation_overflow = true;
+            return;
+        }
+        discovery_mutations[discovery_mutation_count++] = {
+            address_value.chunk, activity_y, activity_x, subtile_y, subtile_x, 1};
     }
 };
 
