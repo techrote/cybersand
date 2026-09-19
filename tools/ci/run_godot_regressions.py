@@ -8,6 +8,7 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
+import sys
 import time
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -35,6 +36,20 @@ CASE_WEIGHTS_SECONDS = {
     "test_web_rapier": 1.5,
     "profile_native_world": 1.0,
 }
+
+
+def runtime_paths(platform: str = sys.platform) -> tuple[Path, Path]:
+    if platform == "win32":
+        return (
+            ROOT / "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+            ROOT / "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        )
+    if platform.startswith("linux"):
+        return (
+            ROOT / "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+            ROOT / "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        )
+    raise RuntimeError(f"Unsupported Godot regression host platform: {platform}")
 
 
 @dataclass(frozen=True)
@@ -190,8 +205,7 @@ def main() -> int:
         parser.error("--shard-index must be in [0, shard-count)")
 
     args.output.mkdir(parents=True, exist_ok=True)
-    runtime = ROOT / "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so"
-    rapier = ROOT / "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so"
+    runtime, rapier = runtime_paths()
     if not runtime.is_file():
         raise RuntimeError(f"Missing CyberSand runtime: {runtime}")
     if not rapier.is_file():
