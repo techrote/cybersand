@@ -14,6 +14,7 @@ class Stage3BValidationTests(unittest.TestCase):
     def test_fixture_catalogue_preserves_historical_meanings_and_true_one_cell_edits(self):
         fixtures = v.fixture_catalogue()
         v.validate_fixtures(fixtures)
+        self.assertEqual(len(fixtures), 168)
         by_id = {item["id"]: item for item in fixtures}
         self.assertEqual(by_id["historical.local-edit-8x8"]["retained_meaning"], "8x8 patch edit")
         self.assertEqual(by_id["historical.bridge-whole-column"]["retained_meaning"], "whole-column change")
@@ -32,7 +33,7 @@ class Stage3BValidationTests(unittest.TestCase):
         self.assertEqual(plan["repeat_policy"]["fixed_budget_cells"], 5)
         arms = {arm["id"]: arm for arm in plan["arms"]}
         self.assertEqual(arms["stage3b-candidate"]["availability"], "unavailable")
-        self.assertGreater(len(plan["runs"]), 1000)
+        self.assertEqual(len(plan["runs"]), 6488)
         self.assertTrue(any(row["run_state"] == "unavailable" for row in plan["runs"]))
 
     def test_plan_generation_is_deterministic(self):
@@ -95,6 +96,9 @@ class Stage3BValidationTests(unittest.TestCase):
         self.assertGreater(report["state_counts"]["success"], 0)
         self.assertGreater(report["state_counts"]["unavailable"], 0)
         self.assertEqual(report["missing_available_run_ids"], [])
+        self.assertEqual(len(report["provenance_index"]), len(results))
+        self.assertIn("successful_numeric_metrics", report["summaries"][0])
+        self.assertEqual(report["summary_statistics_policy"]["p95_min_samples"], 20)
         self.assertTrue(all(item["state"] in v.RESULT_STATES for item in results))
 
 
