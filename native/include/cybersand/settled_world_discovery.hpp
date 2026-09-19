@@ -38,6 +38,12 @@ struct WorldDiscoveryMetrics {
     std::uint64_t capacity_halts{};
 };
 
+struct WorldDiscoveryTileHandle {
+    std::uint64_t world_incarnation{};
+    std::uint32_t slot{};
+    bool operator==(const WorldDiscoveryTileHandle&) const = default;
+};
+
 struct WorldDiscoveryTileSnapshot {
     DiscoveryTileKey key{};
     DiscoverySignals signals{};
@@ -59,6 +65,8 @@ struct WorldDiscoveryStorageLayout {
     std::size_t region_member_capacity{};
     std::size_t region_dependency_capacity{};
     std::size_t region_revision_capacity{};
+    std::size_t region_key_index_capacity{};
+    std::size_t region_row_interval_capacity{};
     std::size_t region_tile_cell_capacity{};
     std::size_t region_components_per_tile{};
     std::size_t region_boundary_slots_per_tile{};
@@ -90,7 +98,11 @@ public:
                                    DiscoverySignals signals, std::uint64_t tick) noexcept;
     DiscoveryOutcome dirty(DiscoveryTileKey key, ProducerReason reason,
                            std::uint64_t tick) noexcept;
+    DiscoveryOutcome dirty(WorldDiscoveryTileHandle handle, ProducerReason reason,
+                           std::uint64_t tick) noexcept;
     DiscoveryOutcome observe(DiscoveryTileKey key, DiscoverySignals signals,
+                             ProducerReason reason, std::uint64_t tick) noexcept;
+    DiscoveryOutcome observe(WorldDiscoveryTileHandle handle, DiscoverySignals signals,
                              ProducerReason reason, std::uint64_t tick) noexcept;
     std::size_t advance(std::uint64_t tick, std::size_t budget,
                         const void* context, ReadCellFunction read);
@@ -99,7 +111,13 @@ public:
     void note_global_fence() noexcept;
 
     [[nodiscard]] std::optional<WorldDiscoveryTileSnapshot> tile(std::size_t index) const noexcept;
+    [[nodiscard]] std::optional<WorldDiscoveryTileSnapshot> tile(
+        WorldDiscoveryTileHandle handle) const noexcept;
     [[nodiscard]] std::optional<std::size_t> find(DiscoveryTileKey key) const noexcept;
+    [[nodiscard]] std::optional<WorldDiscoveryTileHandle> find_handle(
+        DiscoveryTileKey key) const noexcept;
+    [[nodiscard]] std::optional<WorldDiscoveryTileHandle> handle_at(
+        std::size_t index) const noexcept;
     [[nodiscard]] std::size_t size() const noexcept;
     [[nodiscard]] std::size_t capacity() const noexcept;
     [[nodiscard]] std::size_t pending() const noexcept;
