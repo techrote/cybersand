@@ -46,7 +46,15 @@ freeze the exact apparatus source before execution.
 
 ## Fixture inventory
 
-The catalogue contains 168 logical fixtures:
+The catalogue contains 168 logical fixtures. Each fixture also carries
+`cybersand.stage3b.fixture-protocol/v1`: canonical coordinates/generator
+parameters, an ordered operation schedule, service checkpoints and assertions.
+The canonicalized protocol is SHA-256 hashed; every generated run row carries that
+hash and every result must echo it in authoritative-mutation provenance. #70 may
+write an adapter for a frozen candidate interface, but it may not choose new
+geometry or mutation schedules after seeing candidate behavior.
+
+The catalogue inventory is:
 
 | Family | Count | Key contract |
 |---|---:|---|
@@ -64,7 +72,12 @@ The catalogue contains 168 logical fixtures:
 
 The historical labels are deliberately not recycled for the genuine one-cell
 fixtures. True one-cell topology fixtures also carry an explicit one-cell mutation
-contract.
+contract. The canonical coordinate model uses 32-cell tile/chunk boundaries;
+one-cell positions are frozen at interior `[16,16]`, face `[31,16]`, corner
+`[31,31]` and boundary-sensitive `[32,16]`. Topology generators, deadline
+ticks, ABA sequences, capacity limits/fault ordinals, determinism permutations and
+memory-axis operations are all recorded in the fixture protocol rather than left
+to #70.
 
 ## Arms and source identity
 
