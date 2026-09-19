@@ -34,13 +34,13 @@ jobs:
           test "$branch_parent" = "$GITHUB_SHA"
           git fetch --no-tags origin main:refs/remotes/origin/main
           main="$(git rev-parse refs/remotes/origin/main)"
-          test "$main" = 5001f7f8665cf4e3bc67b3617796127c908ac368
+          test "$main" = 25558ceaf34b4c2813c6559976be3f46bf1af7a0
           test -z "$(git status --porcelain)"
 
-          gh api repos/techrote/cybersand/git/blobs/7e1573d5a718d7d0674fba4a484fcc585bb1acd8 --jq .content             | tr -d '\n' | base64 -d > "$RUNNER_TEMP/final.patch.gz"
-          echo "5682b1255b10c0149b1d33f8ee8fc497afb16759476b30759f4c586535db0a5f  $RUNNER_TEMP/final.patch.gz"             | sha256sum --check --strict
+          gh api repos/techrote/cybersand/git/blobs/279ece9765d6c577992cdfbf905b847783fcc7ef --jq .content             | tr -d '\n' | base64 -d > "$RUNNER_TEMP/final.patch.gz"
+          echo "05acd5755db40bb586586cdf92e4c8d6c5e099e3aa86b5178ad001b5225ab2f6  $RUNNER_TEMP/final.patch.gz"             | sha256sum --check --strict
           gzip -dc "$RUNNER_TEMP/final.patch.gz" > "$RUNNER_TEMP/final.patch"
-          echo "8473df598b91094b1b92936d221f68089ac0ad88b1621892a3746883cd5c4bf8  $RUNNER_TEMP/final.patch"             | sha256sum --check --strict
+          echo "48216236f030c6cd72cd47f3e47729a5e82f16681ecb319a02ba80959dc861c7  $RUNNER_TEMP/final.patch"             | sha256sum --check --strict
 
           mkdir "$RUNNER_TEMP/linux" "$RUNNER_TEMP/windows"
           gh run download 35414442819 -R techrote/cybersand -n linux-godot-35414442819 -D "$RUNNER_TEMP/linux"
@@ -60,7 +60,7 @@ jobs:
           git add godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so                   godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll
           git diff --cached --check
           tree="$(git write-tree)"
-          test "$tree" = 423fd8356890bb7d7b0a728690ef93843390ce45
+          test "$tree" = ea9366aacc6f8941527c42508cb4ebea096231e1
 
           git config user.name techrote
           git config user.email 261801702+techrote@users.noreply.github.com
