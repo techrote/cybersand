@@ -458,10 +458,10 @@ World::World(World&&) noexcept = default;
 World& World::operator=(World&&) noexcept = default;
 
 void World::initialize_settled_discovery() {
-    if (!config_.settled_discovery_enabled) {
-        settled_discovery_.reset();
-        return;
-    }
+    // Replacement is retire-first: construction below may allocate or exhaust the
+    // global incarnation space, so no old coordinator may survive such a failure.
+    settled_discovery_.reset();
+    if (!config_.settled_discovery_enabled) return;
     settled_discovery_ = std::make_unique<soliding::SettledWorldDiscoveryCoordinator>(
         allocate_discovery_incarnation(), config_.settled_discovery_tile_capacity,
         config_.settled_region_connectivity_enabled);
@@ -1660,6 +1660,11 @@ void World::apply_pending_explosions(TickStats& stats) {
 void World::clear() {
     if (physics_totals_ != nullptr) *physics_totals_ = {};
     if (tick_in_progress_) throw std::logic_error("cannot clear during a world tick");
+
+    // Retire every observation before destructive World reset begins. reset() is
+    // allocation-free; if replacement construction later throws, discovery stays
+    // unavailable rather than exposing the old incarnation over cleared authority.
+    settled_discovery_.reset();
     tick_failed_ = false;
     clear_transient_obstacles();
     chunks_.clear();

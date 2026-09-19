@@ -44,6 +44,12 @@ struct WorldDiscoveryTileSnapshot {
     DiscoverySummary summary{};
 };
 
+// Narrow deterministic fault-injection seam for lifecycle ordering tests.
+// It only affects the next coordinator construction and never simulation state.
+namespace testing {
+void fail_next_settled_world_discovery_construction() noexcept;
+}
+
 class SettledWorldDiscoveryCoordinator final {
 public:
     using ReadCellFunction = DiscoveryCell (*)(const void*, std::int64_t, std::int64_t);
