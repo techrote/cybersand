@@ -18,13 +18,12 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: avrea-ubuntu-24.04-2-vcpu
     timeout-minutes: 40
     steps:
-      - name: Check out source and pinned LFS dependencies
+      - name: Check out source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          lfs: true
           fetch-depth: 0
       - name: Read source identity and run native baseline
         run: |
@@ -60,7 +59,7 @@ jobs:
         env:
           GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
           WEB_TEMPLATE_ROOT: ${{ runner.temp }}/web-templates
-          SCONS_JOBS: "2"
+          SCONS_JOBS: "8"
         run: |
           source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
           "$RUNNER_TEMP/web-python/bin/python" tools/build_web.py --compile-only --native-tests
