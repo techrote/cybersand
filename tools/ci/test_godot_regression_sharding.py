@@ -14,6 +14,18 @@ def fake(name: str, weight: float) -> subject.Case:
 
 
 class ShardingTests(unittest.TestCase):
+    def test_runtime_identity_follows_host_platform(self):
+        windows_runtime, windows_rapier = subject.runtime_paths("win32")
+        self.assertEqual(windows_runtime.name, "cybersand_native.windows.x86_64.dll")
+        self.assertEqual(windows_rapier.name, "libgodot_rapier.windows.x86_64-pc-windows-msvc.dll")
+
+        linux_runtime, linux_rapier = subject.runtime_paths("linux")
+        self.assertEqual(linux_runtime.name, "libcybersand_native.linux.x86_64.so")
+        self.assertEqual(linux_rapier.name, "libgodot_rapier.linux.x86_64-unknown-linux-gnu.so")
+
+        with self.assertRaises(RuntimeError):
+            subject.runtime_paths("darwin")
+
     def test_four_way_plan_has_exact_coverage(self):
         cases = [
             fake("a", 54),

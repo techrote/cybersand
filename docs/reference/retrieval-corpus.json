@@ -237,6 +237,10 @@
       "reason": "Issue execution packet; retrieve explicitly through the canonical Stage-3 freeze, not as a default Current runtime contract"
     },
     {
+      "path": "audits/issue-12-2026-09-19/luna-stage3-draft-review.md",
+      "reason": "Dated rejected-draft review; retrieve explicitly for the interrupted substitute-worker record, not as a default Current contract"
+    },
+    {
       "path": "audits/2026-09-19-issue-26-registration.md",
       "reason": "Dated issue #26 preregistration and frozen experiment contract; retrieve explicitly with the issue #26 evidence, not as a default Current runtime contract"
     },

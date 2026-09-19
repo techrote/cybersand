@@ -7,7 +7,7 @@ p=argparse.ArgumentParser();p.add_argument('output',type=Path);a=p.parse_args();
 exe=a.output.resolve()/'water_leveling.exe'
 cxx=ROOT.parent/'.local/llvm-mingw-20260826-ucrt-x86_64/bin/clang++.exe'
 cmd=[str(cxx),'-std=c++20','-O3','-DNDEBUG','-pthread','-static','-Inative/include',
-     *['native/src/'+s+'.cpp' for s in ['world','material_rules','scheduler_geometry','render_snapshot']],
+     *['native/src/'+s+'.cpp' for s in ['world','material_rules','scheduler_geometry','settled_world_discovery','render_snapshot']],
      'native/bench/water_leveling.cpp','-o',str(exe)]
 with (a.output/'build.log').open('w') as f:
     f.write(json.dumps(cmd)+'\n');f.flush();subprocess.run(cmd,cwd=ROOT,stdout=f,stderr=subprocess.STDOUT,check=True,timeout=300)

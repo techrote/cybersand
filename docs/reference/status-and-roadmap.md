@@ -301,9 +301,14 @@ sleep precedes performance claims; region discovery precedes acceleration.
 Dynamic handoff, torque-driven rotation, coherent-child fracture and persistence
 remain later unpassed gates, not implied by a standalone contract model.
 
-[Successor evidence](../audits/2026-09-19-issue-12-foundation.md) now includes the
-reviewed standalone lifecycle, bounded read-only journal and measured Current
-sleep control. Production discovery/acceleration/dynamics remain unimplemented.
-Source `de332ea` actually uses the 8-byte superset carrier after #19 integration;
+[Successor evidence](../audits/2026-09-19-issue-12-foundation.md) includes the
+reviewed standalone lifecycle, bounded journal and measured Current sleep control.
+The parent-owned [Stage-3 review](../audits/issue-12-2026-09-19/stage3-exit-review.md)
+classifies the integrated producer/connectivity implementation as the passed Stage-3A
+bounded correctness/reference checkpoint at `82e65f3`, with exact-head CI,
+provenance and final parent review complete. Stage 3B locality/scalability remains open: measured fixed memory,
+full tracked-tile signal refresh and whole-region sparse-edit rebuilds prevent full
+Stage-3 admission. Stage 4 is blocked; production dynamics, fracture and persistence
+remain unimplemented. Source `de332ea` actually uses the 8-byte superset carrier after #19 integration;
 the [storage contract](../architecture/chunk-tile-and-buffer-model.md) supersedes
 earlier four-byte physical-size statements for this source without selecting G-final.

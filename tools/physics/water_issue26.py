@@ -44,6 +44,7 @@ cmd = [
     "native/src/world.cpp",
     "native/src/material_rules.cpp",
     "native/src/scheduler_geometry.cpp",
+    "native/src/settled_world_discovery.cpp",
     "native/src/render_snapshot.cpp",
     "native/bench/water_issue26.cpp",
     "-o",

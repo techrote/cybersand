@@ -141,6 +141,54 @@ the retained programme research screen. These are review triggers, not permissio
 change physics or accepted product performance limits. Negative/ambiguous results may
 reject a tier while leaving other dependency-ready work open.
 
+### Integrated Stage-3 campaign preregistration (2026-09-19)
+
+The source-controlled [`stage3_cost.cpp`](../../native/bench/stage3_cost.cpp) harness
+and [`run_stage3_cost.py`](../../tools/experiments/run_stage3_cost.py) runner freeze
+the first whole-system producer/journal/connectivity campaign. The four decomposition
+arms are `current`, `producer`, `journal` and `connectivity`. Current serializes all
+discovery metric groups as JSON `null`, never invented zero discovery cost. Candidate
+tick, journal drain and connectivity drain timings are separate; setup includes World
+construction, reservation, fixture writes, producer registration and invalidations.
+
+The registered profile contains **92 cases per repeat**, with three repeats and the
+complete case order reversed on alternate repeats:
+
+- Wall and RedBrick at sides 512/1024/2048, workers 1/4, all four arms, two settle
+  ticks and 256 measured ticks.
+- Local edit, ring/hole, bridge split/merge, mask churn, pending event, exclusion/
+  re-entry and churn-negative fixtures at side 512, workers 1/4, Current and complete
+  connectivity, two settle ticks and 128 measured ticks.
+- Granular rest and granular release at side 512, workers 1/4, Current/connectivity,
+  256 settle ticks and 128 measured ticks.
+- Sparse local edit at side 2048 and translated ring at `(-257,1)`, workers 1/4,
+  Current/connectivity, with 64 measured ticks.
+
+Every child runs sequentially with its own stdout, stderr, execution metadata and
+hash. Preparation freezes the exact Git source tree, harness, compiler/hash/version,
+contracts and executable; execution rechecks them before writing the immutable plan.
+The plan records before/after hardware, power-plan and possible-contender snapshots
+plus the operator's uncontended note. Missing, failed, malformed, identity-mismatched,
+counter-fabricated or cross-arm content-divergent attempts remain failures. The runner
+refuses existing output directories. Its corruption tests are:
+
+```powershell
+python -m unittest tools/experiments/test_stage3_cost_runner.py
+```
+
+After committing the exact candidate and stopping builds, prepare and run with new
+output directories under the local issue-12 evidence root:
+
+```powershell
+python tools/experiments/run_stage3_cost.py prepare --source-ref <candidate-commit> --out <artifact-dir>
+python tools/experiments/run_stage3_cost.py run --artifact <artifact-dir>/artifact.json --out <run-dir> --profile registered --repeats 3 --timeout 300 --uncontended-note "Owner checked no concurrent build, Godot or benchmark; Ryzen 2600X reserved for this campaign"
+```
+
+The seven-case smoke profile validates plumbing only and is never timing acceptance.
+Peak RSS is process-level; `discovery_storage_bytes` and `region_storage_bytes` are
+structure accounting. Neither includes every allocator/OS cost. Region refusal and
+lag remain results, not permission to discard a case or enlarge a limit post hoc.
+
 ## Reproduction and interpretation
 
 Run from the dedicated issue #12 worktree using the workspace Python. Evidence and

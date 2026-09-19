@@ -14,7 +14,7 @@ def main():
     exe=ROOT/'build/transport_sampling.exe'
     cxx=ROOT.parent/'.local/llvm-mingw-20260826-ucrt-x86_64/bin/clang++.exe'
     cmd=[str(cxx),'-std=c++20','-O3','-DNDEBUG','-pthread','-static','-Inative/include',
-         *['native/src/'+s+'.cpp' for s in ['world','material_rules','scheduler_geometry','render_snapshot']],
+         *['native/src/'+s+'.cpp' for s in ['world','material_rules','scheduler_geometry','settled_world_discovery','render_snapshot']],
          'native/bench/transport_characterisation.cpp','-o',str(exe)]
     if not a.skip_build:
         with (a.output/'build.log').open('w') as f:

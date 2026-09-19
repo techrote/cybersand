@@ -162,12 +162,22 @@ Use the [successor evidence and next prerequisites](../audits/2026-09-19-issue-1
 for #12 continuation. The ordinary-sleep control is frozen independently; do not
 relabel synthetic journal service epochs as simulated World ticks.
 
-For the remaining Stage 3 work, follow the frozen
-[producer/connectivity execution contract](soliding-stage3-freeze.md). The linked
-Spark packets intentionally split World witness integration from cross-tile region
-construction; independent verification and measurement follow only after parent
-integration. Stage 3 remains cells-owned discovery and cannot be used to admit
-stationary acceleration or Rapier dynamics.
+The frozen [producer/connectivity execution contract](soliding-stage3-freeze.md)
+was implemented on `codex/issue-12-stage3-integration`; the parent-owned
+[Stage-3 exit review](../audits/issue-12-2026-09-19/stage3-exit-review.md) maps every
+checklist item to source, tests or an explicit safe refusal. Its corrected
+[276-process cost record](../audits/issue-12-2026-09-19/stage3-cost-results.md)
+retains material fixed memory and large-region rebuild costs rather than claiming
+a win. Publication checkpoint `82e65f3` passed exact-head native/sanitizer,
+Windows/Linux build, sharded Linux Godot, documentation/provenance, retrieval and
+runtime-identity gates. The bounded correctness/observability reference therefore
+passes **Stage 3A**; PR #47 still requires merge verification before successor work.
+The locality/scalability objective is **Stage 3B open**: the current implementation still performs
+full tracked-tile signal refresh, global mapping/seed work, compiled-maximum storage
+and whole-region rediscovery. After the verified Stage-3A merge, prepare the
+Stage-3B Astra architecture-review packet before implementation. Stage 4 is not
+admitted. Stage 3 remains cells-owned
+discovery and cannot be used to admit stationary acceleration or Rapier dynamics.
 
 ## Issue #26 / Water bulk-head handoff, 2026-09-19
 

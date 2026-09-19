@@ -40,7 +40,8 @@ Stone stationary opportunities remain independent of dynamic admission.
 |---|---|---|
 | 1. Reconciliation | Audit all PR #23 changes against pinned current main, retain historical evidence and blockers | Compatible reusable primitives, or explicit retained Phase 0 control while a successor replaces them |
 | 2. Lifecycle | Reviewed owners, stable nonwrapping IDs, eligibility tiers, fenced transactions, split/merge and failure invariants | Reviewed state table and passing focused transition tests |
-| 3. Discovery | Dirty/activity-driven bounded queues and incremental summaries; preserve material semantics | Large-world coverage including seams/components, complete publication, measured amortized cost; no intuition-based size threshold |
+| 3A. Discovery reference | Bounded read-only producer, journal and complete-region observation; preserve material semantics | Correctness/refusal/determinism evidence plus source-matched runtime/provenance; merge is a reference checkpoint, not scalability admission |
+| 3B. Discovery locality/scalability | Replace whole-capacity/global scans and fixed-maximum storage where evidence requires; preserve 3A invariants | Change-proportional producer and lookup costs, capacity-sized memory, bounded split reconstruction and an explicit local/subregion consumer contract |
 | 4. Stationary bake-off | Compare Current sleep, summary/skip, derived proxy and justified compact/boundary representations | Reproducible saving and break-even curves, or explicit evidence-backed rejection of that tier |
 | 5. Eligibility | Use material/state authority, preserve support loss/avalanche and wake paths | Useful Sand/Stone stationary behavior without invented rigidity |
 | 6. Production dynamics | Admitted coherence plus registry/queue/shape/body/destination capacity and worker/main-thread protocol | Multiple translating/rotating aggregates, exact payload ownership, declared mass/inertia/units, real desktop/Web evidence |
@@ -51,8 +52,9 @@ Stone stationary opportunities remain independent of dynamic admission.
 Stages are not collapsed to maximize apparent progress. A standalone transition
 model tests a contract; it is not a production worker/Rapier ownership kernel.
 The first discovery increment may publish complete block summaries while leaving
-cross-block connected-region discovery open. Such an increment cannot satisfy
-Stage 3 or admit acceleration on its own.
+cross-block connected-region discovery open. The integrated reference now covers
+connected regions, but its negative scaling evidence keeps Stage 3B open. Neither
+the Stage-3A reference nor boundedness alone admits acceleration.
 
 ## Parallel work and protected baselines
 
@@ -103,10 +105,13 @@ partitions. It explicitly requires admitted units and real owner integration;
 zero loose debris is correct where no loose-material policy has been admitted.
 
 [Successor checkpoint evidence](../audits/2026-09-19-issue-12-foundation.md) records
-completed scope and the next bounded producer/connectivity work; Stage 3 is partial.
+the foundation; the [Stage-3 exit review](../audits/issue-12-2026-09-19/stage3-exit-review.md)
+records the integrated World producer/connectivity checklist and corrected gate
+disposition. Stage 3A passes as the bounded correctness/reference checkpoint at
+publication commit `82e65f3`;
+Stage 3B locality/scalability is open. Both remain read-only, cells-owned observation.
 
-The [Stage 3 execution freeze](soliding-stage3-freeze.md) is the current implementation
-contract for the remaining producer and cross-tile connectivity work. Its four
-Spark packets separate World producer integration, bounded connectivity, independent
-verification and integrated measurement so delegated workers cannot silently choose
-architecture or enter Stage 4.
+The [Stage 3 execution freeze](soliding-stage3-freeze.md) remains the historical and
+architectural correctness contract. After the verified Stage-3A merge, prepare the
+bounded Stage-3B Astra architecture review; do not implement Stage 4.
+No Stage-3 cost result selects a representation or threshold.
