@@ -297,6 +297,13 @@ public:
         out["version"] = static_cast<std::int64_t>(rule.version);
         out["supersedes"] = interaction_string(rule.supersedes);
         out["tuning_pass_id"] = interaction_string(rule.tuning_pass_id);
+        for (const auto& pass : cybersand::InteractionRules::tuning_passes()) {
+            if (pass.id != rule.tuning_pass_id) continue;
+            out["tuning_pass_parent"] = interaction_string(pass.parent);
+            out["tuning_pass_disposition"] = interaction_string(pass.disposition);
+            out["tuning_pass_changed_rules"] = interaction_string(pass.changed_rules);
+            break;
+        }
         out["revalidation_tags"] = interaction_revalidation_tags(rule.revalidation_tags);
         out["authority"] = "InteractionRules via MaterialRules::pair_reaction";
         Array provenance_chain;
