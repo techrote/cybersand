@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Executable test selection and future gates; dated results and save format live in separate references
 canonical-for: [test-inventory, test-selection, future-validation-gates]
-last-reviewed: 2026-09-12
+last-reviewed: 2026-09-19
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md, ../reference/level-saves-and-replay.md]
 ---
 
@@ -35,6 +35,23 @@ inventory. No test name promises all combinations of materials, geometry or
 platforms. Run the smallest relevant fixture while iterating, then the applicable
 suite for the checkpoint. A source-backed correction may need a focused diagnostic
 when an existing regression does not exercise the suspected path.
+
+## CI execution sharding
+
+Linux hosted GDExtension validation may execute the current Godot suite as four
+isolated shards after a single verified runtime build. Sharding is an execution
+schedule only: automatic `test_*.gd` discovery, both explicit profile probes and
+scene startup remain in the suite, every non-import case must occur exactly once
+across the four shards, and every shard performs its own import preflight. A failed
+shard fails the aggregate Linux gate while the remaining shards continue to retain
+evidence.
+
+The deterministic planner records the complete assignment and per-case timings.
+Approximate weights are scheduling hints from dated CI evidence, not acceptance
+limits. The initial migration checkpoint executed the unsharded suite against the same
+source/runtime artifact and proved exact case coverage equivalence. The serial lane
+is retained as an explicit opt-in diagnostic, while ordinary PR validation uses the
+four isolated shards.
 
 ## What does equality establish?
 

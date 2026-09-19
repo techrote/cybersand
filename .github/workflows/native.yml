@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   native:
-    runs-on: avrea-ubuntu-24.04-8-vcpu
+    runs-on: ${{ format('avrea-ubuntu-24.04-{0}-vcpu', vars.NATIVE_VCPU || '4') }}
     timeout-minutes: 35
     env:
       CC: gcc-13
