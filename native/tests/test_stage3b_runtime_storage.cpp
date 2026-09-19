@@ -206,8 +206,11 @@ WorldDiscoveryStorageLayout layout_case() {
     require(layout.region_dependency_capacity == Capacity &&
             layout.region_revision_capacity == Capacity,
             "dependency/revision backing follows effective T");
-    require(layout.key_index_capacity == Capacity * 2U,
-            "canonical key index follows effective capacity");
+    require(layout.key_index_capacity == Capacity,
+            "bounded canonical key index is exactly T");
+    require(layout.region_key_index_capacity == Capacity &&
+            layout.region_row_interval_capacity == Capacity * 32U,
+            "region key and row-interval indexes are exactly T and 32T");
     require(layout.region_tile_cell_capacity == 1024 &&
             layout.region_components_per_tile == 32 &&
             layout.region_boundary_slots_per_tile == 128,

@@ -655,17 +655,17 @@ void World::dirty_discovery_cell(std::int64_t x, std::int64_t y,
     const auto* chunk = find_chunk(target.chunk);
     if (chunk == nullptr) return;
     const auto key = discovery_tile_key(target);
-    const auto record_index = settled_discovery_->find(key);
-    if (!record_index.has_value()) return;
-    const auto snapshot = settled_discovery_->tile(*record_index);
+    const auto handle = settled_discovery_->find_handle(key);
+    if (!handle.has_value()) return;
+    const auto snapshot = settled_discovery_->tile(*handle);
     if (!snapshot.has_value()) return;
-    (void)settled_discovery_->dirty(key, reason, tick_index_);
+    (void)settled_discovery_->dirty(*handle, reason, tick_index_);
     const auto activity_index = static_cast<std::size_t>(key.activity_y) *
         static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
         static_cast<std::size_t>(key.activity_x);
     auto signals = discovery_signals(target.chunk, activity_index, snapshot->summary.bounds);
     signals.occupied = snapshot->signals.occupied;
-    (void)settled_discovery_->observe(key, signals, reason, tick_index_);
+    (void)settled_discovery_->observe(*handle, signals, reason, tick_index_);
 }
 
 void World::dirty_discovery_rect(ChunkCoord coord, std::int32_t minimum_x,
@@ -703,14 +703,14 @@ void World::dirty_discovery_rect(ChunkCoord coord, std::int32_t minimum_x,
                         settled_discovery_->incarnation(), coord.y, coord.x,
                         activity_y, activity_x, subtile_y, subtile_x,
                     };
-                    const auto record_index = settled_discovery_->find(key);
-                    if (!record_index.has_value()) continue;
-                    const auto snapshot = settled_discovery_->tile(*record_index);
+                    const auto handle = settled_discovery_->find_handle(key);
+                    if (!handle.has_value()) continue;
+                    const auto snapshot = settled_discovery_->tile(*handle);
                     if (!snapshot.has_value()) continue;
-                    (void)settled_discovery_->dirty(key, reason, tick_index_);
+                    (void)settled_discovery_->dirty(*handle, reason, tick_index_);
                     auto signals = discovery_signals(coord, activity_index, snapshot->summary.bounds);
                     signals.occupied = snapshot->signals.occupied;
-                    (void)settled_discovery_->observe(key, signals, reason, tick_index_);
+                    (void)settled_discovery_->observe(*handle, signals, reason, tick_index_);
                 }
             }
         }
@@ -721,7 +721,9 @@ void World::refresh_discovery_signals(soliding::ProducerReason reason) noexcept 
     if (settled_discovery_ == nullptr) return;
     const auto count = settled_discovery_->size();
     for (std::size_t index = 0; index < count; ++index) {
-        const auto current = settled_discovery_->tile(index);
+        const auto handle = settled_discovery_->handle_at(index);
+        if (!handle.has_value()) return;
+        const auto current = settled_discovery_->tile(*handle);
         if (!current.has_value()) return;
         const ChunkCoord coord{current->key.chunk_x, current->key.chunk_y};
         const auto* chunk = find_chunk(coord);
@@ -731,7 +733,7 @@ void World::refresh_discovery_signals(soliding::ProducerReason reason) noexcept 
             static_cast<std::size_t>(current->key.activity_x);
         auto signals = discovery_signals(coord, activity_index, current->summary.bounds);
         signals.occupied = current->signals.occupied;
-        (void)settled_discovery_->observe(current->key, signals, reason, tick_index_);
+        (void)settled_discovery_->observe(*handle, signals, reason, tick_index_);
     }
 }
 
@@ -740,9 +742,9 @@ void World::fence_discovery(soliding::ProducerReason reason) noexcept {
     settled_discovery_->note_global_fence();
     const auto count = settled_discovery_->size();
     for (std::size_t index = 0; index < count; ++index) {
-        const auto current = settled_discovery_->tile(index);
-        if (!current.has_value()) return;
-        (void)settled_discovery_->dirty(current->key, reason, tick_index_);
+        const auto handle = settled_discovery_->handle_at(index);
+        if (!handle.has_value()) return;
+        (void)settled_discovery_->dirty(*handle, reason, tick_index_);
     }
     refresh_discovery_signals(reason);
 }
@@ -753,9 +755,9 @@ void World::observe_discovery_mask_cell(std::int64_t x, std::int64_t y) noexcept
     const auto* chunk = find_chunk(target.chunk);
     if (chunk == nullptr) return;
     const auto key = discovery_tile_key(target);
-    const auto index = settled_discovery_->find(key);
-    if (!index.has_value()) return;
-    const auto current = settled_discovery_->tile(*index);
+    const auto handle = settled_discovery_->find_handle(key);
+    if (!handle.has_value()) return;
+    const auto current = settled_discovery_->tile(*handle);
     if (!current.has_value()) return;
     const auto activity_index = static_cast<std::size_t>(key.activity_y) *
         static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
@@ -769,7 +771,7 @@ void World::observe_discovery_mask_cell(std::int64_t x, std::int64_t y) noexcept
                 signals.occupied = true;
                 break;
             }
-    (void)settled_discovery_->observe(key, signals,
+    (void)settled_discovery_->observe(*handle, signals,
         soliding::ProducerReason::TransientMask, tick_index_);
 }
 
@@ -785,14 +787,16 @@ void World::dirty_discovery_world_rect(RectI64 region,
     const auto maximum_y = region.y + (region.height - 1);
     const auto count = settled_discovery_->size();
     for (std::size_t index = 0; index < count; ++index) {
-        const auto current = settled_discovery_->tile(index);
+        const auto handle = settled_discovery_->handle_at(index);
+        if (!handle.has_value()) return;
+        const auto current = settled_discovery_->tile(*handle);
         if (!current.has_value()) return;
         const auto& bounds = current->summary.bounds;
         const auto tile_maximum_x = bounds.x + static_cast<std::int64_t>(bounds.width - 1U);
         const auto tile_maximum_y = bounds.y + static_cast<std::int64_t>(bounds.height - 1U);
         if (maximum_x < bounds.x || tile_maximum_x < region.x ||
             maximum_y < bounds.y || tile_maximum_y < region.y) continue;
-        (void)settled_discovery_->dirty(current->key, reason, tick_index_);
+        (void)settled_discovery_->dirty(*handle, reason, tick_index_);
     }
 }
 
@@ -802,7 +806,9 @@ void World::observe_discovery_event(RectI64 region) noexcept {
     const auto maximum_y = region.y + (region.height - 1);
     const auto count = settled_discovery_->size();
     for (std::size_t index = 0; index < count; ++index) {
-        const auto current = settled_discovery_->tile(index);
+        const auto handle = settled_discovery_->handle_at(index);
+        if (!handle.has_value()) return;
+        const auto current = settled_discovery_->tile(*handle);
         if (!current.has_value()) return;
         const auto& bounds = current->summary.bounds;
         const auto tile_maximum_x = bounds.x + static_cast<std::int64_t>(bounds.width - 1U);
@@ -817,7 +823,7 @@ void World::observe_discovery_event(RectI64 region) noexcept {
             static_cast<std::size_t>(current->key.activity_x);
         auto signals = discovery_signals(coord, activity_index, bounds);
         signals.occupied = current->signals.occupied;
-        (void)settled_discovery_->observe(current->key, signals,
+        (void)settled_discovery_->observe(*handle, signals,
             soliding::ProducerReason::PendingEvent, tick_index_);
     }
 }
