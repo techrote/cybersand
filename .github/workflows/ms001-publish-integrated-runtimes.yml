@@ -1,0 +1,186 @@
+name: MS001 publish integrated runtimes
+
+on:
+  push:
+    branches: [codex/issue-28-ms001]
+    paths: [.github/workflows/ms001-publish-integrated-runtimes.yml]
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: ms001-publish-integrated-runtimes
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/issue-28-ms001'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      ARTIFACT_SOURCE: fd6720df4403de29eb510907903084f848c2b50d
+      ARTIFACT_TREE: dffb56f91e94399cb2ad24d5359dd550ac503a76
+      BUILD_RUN: "35446887090"
+      ARTIFACT_NAME: ms001-integrated-runtimes-fd6720df4403de29eb510907903084f848c2b50d
+      LINUX_SHA: 42f3d8da5988b1ce414d14a6132a621c60b5265375abe0e24e4f860ff64ae245
+      WINDOWS_SHA: cbba322590cd43c54dcc2b8cbdb2c8c8d1ffabe4ac67331d01a7f3b538a78dba
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          lfs: true
+          persist-credentials: true
+
+      - name: Verify source equivalence and retrieve exact build artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor "$ARTIFACT_SOURCE" HEAD
+          git diff --exit-code "$ARTIFACT_SOURCE" HEAD -- \
+            godot/native_extension native/include native/src \
+            tools/build_native_extension.sh tools/build_native_extension_windows.sh
+          mkdir "$RUNNER_TEMP/ms001-runtime"
+          gh run download "$BUILD_RUN" -R techrote/cybersand -n "$ARTIFACT_NAME" -D "$RUNNER_TEMP/ms001-runtime"
+          (cd "$RUNNER_TEMP/ms001-runtime" && sha256sum --check --strict SHA256SUMS)
+          test "$(cat "$RUNNER_TEMP/ms001-runtime/source-sha.txt")" = "$ARTIFACT_SOURCE"
+          test "$(cat "$RUNNER_TEMP/ms001-runtime/source-tree.txt")" = "$ARTIFACT_TREE"
+          echo "$LINUX_SHA  $RUNNER_TEMP/ms001-runtime/libcybersand_native.linux.x86_64.so" | sha256sum --check --strict
+          echo "$WINDOWS_SHA  $RUNNER_TEMP/ms001-runtime/cybersand_native.windows.x86_64.dll" | sha256sum --check --strict
+
+      - name: Install exact runtime bytes and regenerate provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp "$RUNNER_TEMP/ms001-runtime/libcybersand_native.linux.x86_64.so" godot/addons/cybersand_native/bin/
+          cp "$RUNNER_TEMP/ms001-runtime/cybersand_native.windows.x86_64.dll" godot/addons/cybersand_native/bin/
+          timeout 1m tools/check_linux_runtime_floor.sh
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          root=pathlib.Path('.')
+          source=os.environ['ARTIFACT_SOURCE']
+          tree=os.environ['ARTIFACT_TREE']
+          run=int(os.environ['BUILD_RUN'])
+          linux_sha=os.environ['LINUX_SHA']
+          windows_sha=os.environ['WINDOWS_SHA']
+          main='13a26b78b1ef4d6eafa5f2fc649c79976a2eb6ac'
+          def git_json(ref,path):
+              return json.loads(subprocess.check_output(['git','show',f'{ref}:{path}']))
+          win_path='godot/addons/cybersand_native/runtime-provenance.json'
+          lin_path='godot/addons/cybersand_native/runtime-provenance.linux.json'
+          win=git_json(main,win_path)
+          lin=git_json(main,lin_path)
+          inputs=set(win['source_inputs']) | set(lin['source_inputs'])
+          inputs.add('godot/native_extension/cyber_observation_values.hpp')
+          source_inputs={}
+          for rel in sorted(inputs):
+              data=(root/rel).read_bytes().replace(b'\r\n',b'\n')
+              source_inputs[rel]=hashlib.sha256(data).hexdigest()
+          assert len(source_inputs)==28
+          for rel in ['native/include/cybersand/settled_world_discovery.hpp','native/src/settled_world_discovery.cpp','godot/native_extension/cyber_observation_values.hpp']:
+              assert rel in source_inputs
+          linux=root/'godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so'
+          windows=root/'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll'
+          assert hashlib.sha256(linux.read_bytes()).hexdigest()==linux_sha
+          assert hashlib.sha256(windows.read_bytes()).hexdigest()==windows_sha
+          common='docs/audits/2026-09-19-issue-28-ms001.md'
+          win.update({
+              'schema_version':1,
+              'status':'validated-build-runtime',
+              'source_commit':source,
+              'source_tree':tree,
+              'artifact':'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll',
+              'sha256':windows_sha,
+              'size':windows.stat().st_size,
+              'source_input_hash_kind':'SHA-256 of canonical Git blob bytes; CRLF working files normalize to LF',
+              'source_inputs':source_inputs,
+              'evidence':common,
+              'validated_platform':'Windows x86_64 Godot 4.7 (pinned cross-build; execution unavailable)',
+              'toolchain':'LLVM-MinGW 20260826 UCRT Clang 23.1.0; godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496; integrated #12 Stage-3 + #28 observation adapter source',
+              'acceptance':'Exact integrated-source Windows x86_64 GDExtension cross-build passed in Actions run 35446887090; PE32+ x86-64 plus SettledWorldDiscoveryCoordinator and inspect_cell/inspect_statistics symbols verified. Actual Windows execution is unavailable and not claimed.',
+              'validation_output':'Actions run 35446887090 / artifact ms001-integrated-runtimes-fd6720df4403de29eb510907903084f848c2b50d',
+              'other_platforms':'Linux runtime was rebuilt from the same exact source commit. Browser/WebAssembly execution and hardware-GPU/target-PC performance remain unavailable and are not claimed.'
+          })
+          for k in ['equivalent_branch_head','tested_merge_commit','artifact_id','workflow_run']:
+              win.pop(k,None)
+          lin.update({
+              'schema_version':1,
+              'status':'validated-development-runtime',
+              'source_commit':source,
+              'source_tree':tree,
+              'artifact':'godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so',
+              'sha256':linux_sha,
+              'size':linux.stat().st_size,
+              'source_input_hash_kind':'SHA-256 of canonical Git blob bytes; CRLF working files normalize to LF',
+              'source_inputs':source_inputs,
+              'evidence':common,
+              'validated_platform':'Linux x86_64 Godot 4.7',
+              'toolchain':'Ubuntu 24.04, GCC/G++ 13.3.0, binutils 2.42, SCons 4.10.1; godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496; integrated #12 Stage-3 + #28 observation adapter source',
+              'acceptance':'Exact integrated-source Linux x86_64 GDExtension build and ABI-floor validation passed in Actions run 35446887090; SettledWorldDiscoveryCoordinator and inspect_cell/inspect_statistics symbols verified. Exact-head four-shard Godot acceptance is rerun after publication.',
+              'other_platforms':'Windows cross-build is from the same exact source commit but is not Windows execution. Browser/WebAssembly execution and hardware-GPU/target-PC performance remain unavailable and are not claimed.',
+              'workflow_run':'https://github.com/techrote/cybersand/actions/runs/35446887090',
+              'artifact_id':10585600308
+          })
+          for k in ['equivalent_branch_head','tested_merge_commit']:
+              lin.pop(k,None)
+          pathlib.Path(win_path).write_text(json.dumps(win,indent=2)+'\n')
+          pathlib.Path(lin_path).write_text(json.dumps(lin,indent=2)+'\n')
+          pack_path=pathlib.Path('docs/audits/ms001-2026-09-19/pack-acceptance.json')
+          pack=json.loads(pack_path.read_text())
+          pack['integration_base']=main
+          pack['implementation_checkpoint']=source
+          pack['status']='integrated runtimes published; final exact-head acceptance pending'
+          runtime=pack['runtime']
+          runtime['linux_native_sha256']=linux_sha
+          runtime['windows_native_sha256']=windows_sha
+          runtime['integrated_runtime_build_run']=run
+          runtime['integrated_runtime_artifact']=10585600308
+          for k in ['linux_ci_run','linux_ci_artifact','windows_build_run','windows_build_artifact']:
+              runtime.pop(k,None)
+          pack_path.write_text(json.dumps(pack,indent=2)+'\n')
+          audit_path=pathlib.Path('docs/audits/2026-09-19-issue-28-ms001.md')
+          audit=audit_path.read_text().rstrip()
+          heading='## Final integration runtime refresh'
+          if heading in audit:
+              audit=audit.split(heading)[0].rstrip()
+          audit += f'''\n\n{heading}\n\nCurrent main `{main}` was merged into PR #44 without a native-source conflict. Linux and Windows x86_64 GDExtensions were rebuilt from the same exact integrated source `{source}` / tree `{tree}` in Actions run `{run}`. The complete source-input ledger contains 28 inputs: current-main Stage-3 runtime inputs plus `godot/native_extension/cyber_observation_values.hpp`.\n\n- Linux x86_64 SHA-256: `{linux_sha}`.\n- Windows x86_64 SHA-256: `{windows_sha}`.\n- Both builds verify `SettledWorldDiscoveryCoordinator` and the `inspect_cell` / `inspect_statistics` observation-adapter symbols.\n- Windows remains pinned cross-build evidence only; actual Windows execution is unavailable. Browser/WebAssembly execution and hardware-GPU/target-PC performance also remain unavailable and are not claimed.\n\nFinal acceptance requires the exact published head to pass repository/provenance, native/sanitizer, documentation/retrieval and current four-shard Godot CI.\n'''
+          audit_path.write_text(audit)
+          PY
+
+      - name: Verify provenance, commit LFS objects and remove temporary files
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib,json,pathlib
+          root=pathlib.Path('.')
+          for name in ['runtime-provenance.json','runtime-provenance.linux.json']:
+              m=json.loads((root/'godot/addons/cybersand_native'/name).read_text())
+              assert len(m['source_inputs'])==28
+              for rel,expected in m['source_inputs'].items():
+                  actual=hashlib.sha256((root/rel).read_bytes().replace(b'\r\n',b'\n')).hexdigest()
+                  assert actual==expected,(name,rel)
+              data=(root/m['artifact']).read_bytes()
+              assert hashlib.sha256(data).hexdigest()==m['sha256']
+              assert len(data)==m['size']
+          PY
+          git lfs install --local
+          git add \
+            godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll \
+            godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so \
+            godot/addons/cybersand_native/runtime-provenance.json \
+            godot/addons/cybersand_native/runtime-provenance.linux.json \
+            docs/audits/2026-09-19-issue-28-ms001.md \
+            docs/audits/ms001-2026-09-19/pack-acceptance.json
+          git rm -f \
+            .github/ms001-final-ci-retrigger.txt \
+            .github/workflows/ms001-build-integrated-runtimes.yml \
+            .github/workflows/ms001-publish-integrated-runtimes.yml
+          git diff --cached --check
+          git config user.name techrote
+          git config user.email 261801702+techrote@users.noreply.github.com
+          git commit -m 'build(ms001): publish integrated native runtimes and provenance'
+          git lfs fsck
+          git push origin HEAD:codex/issue-28-ms001
