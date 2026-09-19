@@ -1,0 +1,65 @@
+name: Issue 58 focused web worker parity
+
+on:
+  push:
+    branches: [codex/issue-58-stage3b-lifecycle]
+    paths: [.github/workflows/issue58-focused-worker-parity.yml]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: issue58-focused-worker-parity
+  cancel-in-progress: true
+
+env:
+  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+
+jobs:
+  parity:
+    runs-on: avrea-ubuntu-24.04-2-vcpu
+    timeout-minutes: 15
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Restore exact retained CyberSand runtime
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: issue58-source-matched-runtimes-204ae8e1ebdc1f6e782a3278804d0ac92ef871ce
+          path: build/issue58-runtimes
+          github-token: ${{ github.token }}
+          repository: techrote/cybersand
+          run-id: 35463292615
+
+      - name: Verify and install runtimes
+        run: |
+          set -euo pipefail
+          test "$(cat build/issue58-runtimes/source-sha.txt)" = "204ae8e1ebdc1f6e782a3278804d0ac92ef871ce"
+          (cd build/issue58-runtimes && sha256sum --check --strict SHA256SUMS)
+          cp build/issue58-runtimes/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+          timeout 1m tools/check_linux_runtime_floor.sh
+
+      - name: Prepare exact Godot runtime
+        run: |
+          timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          test -n "$GODOT_BIN"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+
+      - name: Run focused worker parity
+        run: |
+          set -o pipefail
+          timeout 5m "$GODOT_BIN" --headless --path godot --script res://tests/test_web_worker_parity.gd 2>&1 | tee build/issue58-worker-parity.log
+          grep -q '"passed":true' build/issue58-worker-parity.log
+          grep -Eq '"parallel":\{[^}]*"parallel_phases":[1-9][0-9]*' build/issue58-worker-parity.log
