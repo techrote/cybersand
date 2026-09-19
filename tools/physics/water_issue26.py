@@ -49,17 +49,20 @@ cmd = [
     "-o",
     str(exe),
 ]
-with (a.output / "build.log").open("w", encoding="utf-8") as log:
-    log.write(json.dumps(cmd) + "\n")
-    log.flush()
-    subprocess.run(
-        cmd,
-        cwd=ROOT,
-        stdout=log,
-        stderr=subprocess.STDOUT,
-        check=True,
-        timeout=300,
-    )
+built = subprocess.run(
+    cmd,
+    cwd=ROOT,
+    capture_output=True,
+    text=True,
+    timeout=300,
+)
+(a.output / "build.log").write_text(
+    json.dumps(cmd) + "\n" + built.stdout + built.stderr,
+    encoding="utf-8",
+)
+if built.returncode != 0:
+    print((a.output / "build.log").read_text(encoding="utf-8"), flush=True)
+    built.check_returncode()
 
 (a.output / "manifest.json").write_text(
     json.dumps(identity([exe]), indent=2), encoding="utf-8"
