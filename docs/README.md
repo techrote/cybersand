@@ -18,6 +18,7 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 | Author, load or benchmark a MicroScenario | [Current shared contract and host](operations/microscenarios.md), [checkpoint evidence](audits/2026-09-19-issue-27-microscenarios.md) |
 | Begin development | [Handover](operations/cybersand-codex-development-handover.md), [actual source identity](operations/source-checkpoint-and-recovery.md), [roadmap](reference/status-and-roadmap.md) |
 | Choose current MicroScenarios / interaction work order | [Canonical programme graph](operations/microscenarios-programme.md), then the target issue and its named dependencies; issue numbers are not sequence |
+| Inspect current intermaterial rule/provenance/coverage semantics | [Interaction substrate](systems/intermaterial-interactions.md), [#29 implementation evidence](audits/2026-09-19-issue-29-int000.md) |
 | Understand the engine | [Architecture overview](architecture/overview.md), then its focused ownership/threading/coupling links |
 | Answer one technical question | [Retrieval index](reference/retrieval-index.md) |
 | Change a material | [Rule kernels](systems/materials-and-rule-kernels.md), [Water](systems/water-design.md), [material lab](MATERIAL_LAB.md) |
@@ -139,11 +140,7 @@ present, independently of #18 completion; #28 may build provisional exploratory
 worlds on the common host before G-final and revalidate them after relevant
 architecture/physics changes.
 
-#29 is **INT-000**, covering versioned non-kinetic intermaterial interactions
-rather than chemistry alone. Its authoring model is sparse/layered with generated
-fixtures and retained tuning-pass provenance. Kinetic/contact anomalies discovered
-in MicroScenarios are captured/reduced and routed to their real physics owner
-instead of being hidden in interaction rules.
+#29 is **INT-000**, covering versioned non-kinetic intermaterial interactions rather than chemistry alone. The [current interaction substrate](systems/intermaterial-interactions.md) owns the implemented sparse schema, stable rule/channel/family IDs, native provenance/coverage model and behavior-preserving compact-pair migration. Generated schema-2 fixtures use the same Materials Laboratory/headless/A-B contract, while specialized world.cpp mechanisms remain explicitly represented but current-authoritative where kinetic separation is not clean. Kinetic/contact anomalies are captured/reduced and routed to their real physics owner instead of being hidden in interaction rules.
 
 
 ## Scalable reversible soliding
