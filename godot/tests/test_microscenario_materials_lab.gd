@@ -89,7 +89,15 @@ func run() -> void:
 		var retained: Dictionary = report.duplicate(true)
 		var before: Dictionary = observation(world)
 		var invalid: Dictionary = source.duplicate(true)
-		invalid.events[0].width = 1025
+		# Older Lab presets all carried a scheduled shelf release; INT-000 mechanism
+		# fixtures may legitimately have no events. Corrupt whichever bounded setup
+		# surface is present so every preset still proves transactional rejection.
+		if not invalid.events.is_empty():
+			invalid.events[0].width = 1025
+		else:
+			invalid.rectangles[0] = -1
+		expect(not Contract.validate(invalid).get("ok",false),
+			"Materials Lab rejection probe did not construct an invalid definition: " + id)
 		expect(not host.install(world,invalid),"Invalid generated replacement accepted")
 		expect(observation(world) == before,"Rejected replacement changed authority")
 		expect(host.install(world,source),"Valid recovery reset rejected")
