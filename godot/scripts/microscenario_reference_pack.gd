@@ -134,10 +134,10 @@ static func mechanism_fixture(mechanism: String, seed: int = 0) -> Dictionary:
 	out.rectangles = [176,64,4,184,1, 304,64,4,184,1, 176,244,132,4,1, 176,64,132,4,1]
 	match mechanism:
 		"fire-gunpowder":
-			out.rectangles.append_array([220+shift,184,40,12,26, 220+shift,180,40,4,7])
+			out.rectangles.append_array([220+shift,184,40,12,26, 220+shift,180,40,4,6])
 			out.presentation.regions = [region("contact","FIRE + GUNPOWDER / COMBUSTION",[180,68,124,176])]
 			out.observations = [observe("gunpowder-initial",0,"material_cells",[180,68,124,176],26),
-				observe("fire-8",8,"material_cells",[180,68,124,176],7),
+				observe("fire-8",8,"material_cells",[180,68,124,176],6),
 				observe("gunpowder-final",duration,"material_cells",[180,68,124,176],26)]
 		"acid-metal":
 			out.rectangles.append_array([220+shift,184,40,8,28, 220+shift,168,40,16,12])
@@ -146,10 +146,10 @@ static func mechanism_fixture(mechanism: String, seed: int = 0) -> Dictionary:
 				observe("rust-60",60,"material_cells",[180,68,124,176],29),
 				observe("rust-final",duration,"material_cells",[180,68,124,176],29)]
 		"spark-metal":
-			out.rectangles.append_array([220+shift,184,40,8,28, 220+shift,180,40,4,33])
+			out.rectangles.append_array([220+shift,184,40,8,28, 220+shift,180,40,4,34])
 			out.presentation.regions = [region("contact","SPARK + METAL / ELECTRICAL",[180,68,124,176])]
 			out.observations = [observe("metal-charge",1,"cell_state",[224+shift,184,1,1],28),
-				observe("spark-4",4,"material_cells",[180,68,124,176],33),
+				observe("spark-4",4,"material_cells",[180,68,124,176],34),
 				observe("metal-final",duration,"material_cells",[180,68,124,176],28)]
 		"cement-water":
 			out.rectangles.append_array([216+shift,180,48,24,30])
