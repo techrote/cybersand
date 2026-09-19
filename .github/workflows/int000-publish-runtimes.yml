@@ -1,6 +1,6 @@
 name: INT000 publish integrated runtimes
 
-# One-shot source-matched publication trigger for final bridge-reviewed INT-000 source.
+# One-shot source-matched publication trigger for final bridge-reviewed INT-000 source; superseded publisher runs are cancelled.
 # This workflow deletes itself in the publication commit so it cannot become permanent CI.
 
 on:
@@ -13,7 +13,7 @@ permissions:
 
 concurrency:
   group: int000-publish-runtimes
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 env:
   GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
