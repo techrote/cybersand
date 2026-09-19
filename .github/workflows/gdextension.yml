@@ -156,7 +156,7 @@ jobs:
   linux-regression:
     name: linux regression shard ${{ matrix.shard }}
     needs: linux-build
-    runs-on: ${{ vars.GDEXT_SHARD_RUNNER || 'sengi-standard-2-ubuntu-2404' }}
+    runs-on: ${{ vars.GDEXT_SHARD_RUNNER || 'avrea-ubuntu-24.04-2-vcpu' }}
     timeout-minutes: 35
     strategy:
       fail-fast: false
@@ -264,7 +264,7 @@ jobs:
     name: linux x86_64
     if: always()
     needs: [linux-regression, linux-serial-equivalence]
-    runs-on: ${{ vars.GDEXT_GATE_RUNNER || 'sengi-standard-2-ubuntu-2404' }}
+    runs-on: ${{ vars.GDEXT_GATE_RUNNER || 'avrea-ubuntu-24.04-1-vcpu' }}
     timeout-minutes: 10
     steps:
       - name: Require all sharded regressions
