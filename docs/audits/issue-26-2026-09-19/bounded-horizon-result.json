@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "issue": 26,
+  "arm": "bounded-radius-2-horizon",
+  "disposition": "reject",
+  "candidate_commit": "56702574547c826a78c208502a2ad7371d501fc9",
+  "workflow_run": 35413559622,
+  "artifact": {
+    "id": 10575795070,
+    "zip_sha256": "d3b55e2318c85b875adbe4a68d4b879356e1730872f68080a3786ab147e9809c",
+    "horizon_results_sha256": "6c70cfb6bd65595d186a5896b61c0949f51a59a5a7243f15676d9886c081247e",
+    "horizon_summary_sha256": "a936bb4c2792616c36b632f3179a387f56764830b7f17b4bbfde957a6b2919dc",
+    "baseline_rerun_results_sha256": "a9a61235ec088a3d092eb237569e8929b692d6ba7dcf533824eb8fb07f858cbd",
+    "baseline_rerun_summary_sha256": "5a02baebd64092c71dce4ed8c4337528d711dfff715611966d28874b136844cd"
+  },
+  "control_integrity": {
+    "frozen_baseline_authoritative_samples_equal": true,
+    "frozen_baseline_deterministic_work_equal": true,
+    "note": "Timing excluded from exact equality because it is host noise."
+  },
+  "hard_invariants": {
+    "cases": 108,
+    "mass_conservation": true,
+    "worker_parity": true,
+    "post_setup_allocations_zero": true
+  },
+  "comparison": {
+    "calm_settling": {
+      "control_half_life": 480,
+      "candidate_half_life": 480,
+      "half_life_pass": false,
+      "control_one_cell": 2670,
+      "candidate_one_cell": 2220,
+      "one_cell_pass": false,
+      "candidate_final_spread_milli": 192,
+      "control_surface_turnover": 10,
+      "candidate_surface_turnover": 22.5,
+      "half_life_gate_max": 360,
+      "one_cell_gate_max": 1980
+    },
+    "head_deep": {
+      "control_receive300": 27223,
+      "candidate_receive300": 28978,
+      "gate_min": 34029,
+      "pass": false,
+      "candidate_deep_medium_ratio": 1,
+      "ratio_gate_min": 1.1,
+      "ratio_pass": false
+    },
+    "communicating_pools": {
+      "control_final_level_difference_milli": 16000,
+      "candidate": 16000,
+      "gate_max": 12000,
+      "pass": false,
+      "candidate_final_spread_milli": 21981
+    },
+    "unequal_head_u_tube": {
+      "control_final_level_difference_milli": 24000,
+      "candidate": 24000,
+      "gate_max": 18000,
+      "pass": false,
+      "candidate_final_spread_milli": 32708
+    },
+    "constriction": {
+      "control_receive300": 15454.5,
+      "candidate": 17178,
+      "gate_min": 19319,
+      "pass": false
+    },
+    "fast_dump": {
+      "control_final_spread_milli": 3392,
+      "candidate": 2566,
+      "gate_max": 3731,
+      "pass": true,
+      "wall_gap_candidate": 1,
+      "wall_gap_gate_max": 1,
+      "control_surface_turnover": 15,
+      "candidate_surface_turnover": 25.5
+    },
+    "ledge_sheet": {
+      "control_receive300": 9453.5,
+      "candidate": 10150.5,
+      "gate_min": 6617,
+      "gate_max": 14180,
+      "turnover_candidate": 20,
+      "turnover_min": 8,
+      "pass": true
+    }
+  },
+  "performance_review": {
+    "p95_ratio": {
+      "calm_settling": 1.2496365696,
+      "communicating_pools": 600.9114696904,
+      "constriction": 1.1531053544,
+      "fast_dump": 1.1340276586,
+      "head_deep": 1.2735281191,
+      "head_medium": 1.1501771861,
+      "head_shallow": 1.0451760027,
+      "ledge_sheet": 1.1970850427,
+      "unequal_head_u_tube": 1.19558063
+    },
+    "review_ratio": 1.15,
+    "flag": true,
+    "note": "The communicating fixture stays active instead of sleeping, producing an extreme p95/work cost increase while failing to reduce its 16-cell head difference."
+  },
+  "reason": [
+    "Both mandatory calm-settling speed gates missed.",
+    "No additional primary benefit gate passed: deep-head, communicating-pools, unequal-head U-tube and constriction all missed.",
+    "Communicating-pools and U-tube retained exactly the 16- and 24-cell final level differences.",
+    "The candidate increased terrace/classification turnover in several fixtures rather than simply stabilizing the surface.",
+    "Multiple p95 timing ratios exceeded the 1.15 review threshold; communicating pools showed pathological persistent work while making no useful progress.",
+    "Positive controls and hard invariants were preserved, so this is a valid negative result."
+  ],
+  "programme_consequence": "Do not run a combined local-drive+horizon arm. Both isolated local/no-state candidates failed their preregistered survival screens. The next question must explicitly address transmission of head/pressure through a deep connected body rather than continuing to tune same-row local equalization."
+}

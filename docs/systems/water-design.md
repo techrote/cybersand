@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [native-water-semantics, native-fallback-water-differences]
 status: Current
 scope: Native conserved Water, coherent emission and adhesion, rest/hash fixtures, fallback differences, and future reaction accounting
-last-reviewed: 2026-09-12
+last-reviewed: 2026-09-19
 related-documents: [materials-and-rule-kernels.md, material-appearance-and-rendering.md, ../reference/level-saves-and-replay.md, ../decisions/ADR-005-water-model.md]
 ---
 
@@ -58,6 +58,30 @@ historical #13 samples and can increase optional grain pickup, whose disturbance
 measure is actual transferred mass. Profile schema/values remain v1; source and
 artifact identity must accompany their hashes. Mercury and powder-only references
 remain exact. General gameplay still has optional mixing/carrying disabled.
+
+## Deep-head limitation after issue #26
+
+**Current Water semantics are unchanged by #26.** The
+[2026-09-19 characterization](../audits/2026-09-19-issue-26-water-leveling.md)
+adds true communicating-head controls and demonstrates a limitation that the older
+flat-basin speed check did not exercise. With the Current solver, medium and deep
+identical outlets have the same early discharge once their local outlet cells are
+full; communicating pools can sleep with about a 16-cell level difference, and a
+true unequal-head U-tube can sleep with about a 24-cell difference.
+
+Two source-matched bounded candidates were rejected against thresholds frozen
+before their implementation: a radius-2 head-scaled local drive and a radius-2
+same-row lookahead. Both preserve exact mass and expected worker parity but fail the
+registered bulk/head screens; the lookahead can keep bad communicating Water active
+at very high cost without reducing the head difference. Rejected candidate
+semantics are not retained in Current source.
+
+The result narrows the missing mechanism: adjacent transfer strength cannot transmit
+head through a saturated connected passage where there is no immediate destination
+capacity. [Issue #45](https://github.com/techrote/cybersand/issues/45) owns the next
+bounded head/pressure-transmission architecture experiment. It is distinct from #18
+material-local directional history. #18 remains held until the bulk-head confound is
+resolved.
 
 ## Coherent emission and surface adhesion
 
