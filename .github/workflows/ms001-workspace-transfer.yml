@@ -1,65 +1,65 @@
-name: MS001 temporary verified workspace transfer
-
+name: MS001 temporary verified checkpoint transfer
 on:
   push:
     branches: [codex/issue-28-ms001]
     paths: [.github/workflows/ms001-workspace-transfer.yml]
-
 permissions:
-  contents: read
-
+  contents: write
 concurrency:
   group: ms001-workspace-transfer
   cancel-in-progress: false
-
 jobs:
   transfer:
     if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/issue-28-ms001'
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 10
     steps:
-      - name: Read exact companion workspace
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: 6a58311982941b75f46e22109a0829e5acb83c7e
-          path: companion
-          fetch-depth: 0
-          persist-credentials: false
-      - name: Read source history and materialize required runtimes
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with:
-          path: source
           fetch-depth: 0
           lfs: true
-          persist-credentials: false
-      - name: Assemble bounded source and pinned Linux runtime package
+      - name: Apply exact locally tested source delta
+        env:
+          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p "$RUNNER_TEMP/ms001-transfer"
-          out="$RUNNER_TEMP/ms001-transfer"
-          test "$(git -C source rev-parse HEAD)" = "$GITHUB_SHA"
-          git -C source merge-base --is-ancestor de332eaf8f4e70b25b097bed0c2e2a7b2aac0173 HEAD
-          test "$(git -C companion rev-parse HEAD)" = 6a58311982941b75f46e22109a0829e5acb83c7e
-          test -z "$(git -C source status --porcelain)"
-          git -C source fsck --full
-          git -C source lfs fsck
-          git -C source bundle create "$out/source.bundle" HEAD refs/remotes/origin/main
-          git -C companion bundle create "$out/companion.bundle" HEAD
-          tar -czf "$out/lfs-objects.tar.gz" -C source/.git/lfs objects
-          cp "$(command -v git-lfs)" "$out/git-lfs"
-          timeout 8m curl --fail --location --retry 3 --output "$out/godot.zip" 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
-          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $out/godot.zip" | sha256sum --check --strict
-          {
-            printf 'source=%s\nbase=de332eaf8f4e70b25b097bed0c2e2a7b2aac0173\ncompanion=6a58311982941b75f46e22109a0829e5acb83c7e\n' "$GITHUB_SHA"
-            git -C source lfs ls-files --long
-            git -C source status --short --branch
-          } > "$out/identity.txt"
-          (cd "$out" && sha256sum source.bundle companion.bundle lfs-objects.tar.gz git-lfs godot.zip identity.txt > SHA256SUMS)
-      - name: Transfer source and runtime for isolated local execution
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test -z "$(git status --porcelain)"
+          git merge-base --is-ancestor de332eaf8f4e70b25b097bed0c2e2a7b2aac0173 HEAD
+          gh api repos/techrote/cybersand/git/blobs/43157c769c6b413b3960c780aea3b7e796e38726 > "$RUNNER_TEMP/blob.json"
+          python3 - <<'PY'
+          import base64, hashlib, json, os, pathlib
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])
+          blob = json.loads((root/'blob.json').read_text())
+          assert blob['encoding'] == 'base64'
+          patch = base64.b64decode(blob['content'])
+          assert hashlib.sha256(patch).hexdigest() == '32638659022fde12ef41a374e780efe20f93d5e11e2dad01b520c64abc727661'
+          (root/'checkpoint.patch').write_bytes(patch)
+          PY
+          git apply --check "$RUNNER_TEMP/checkpoint.patch"
+          git apply --index "$RUNNER_TEMP/checkpoint.patch"
+          python3 - <<'PY'
+          import subprocess
+          expected = {'godot/native_extension/cyber_demo_bridge.hpp','godot/native_extension/cyber_observation_values.hpp','godot/tests/test_microscenario_native_observation.gd','docs/audits/2026-09-19-issue-28-ms001.md','docs/reference/interfaces-and-message-contracts.md'}
+          actual = set(subprocess.check_output(['git','diff','--cached','--name-only'],text=True).splitlines())
+          assert actual == expected, (actual,expected)
+          PY
+          git diff --cached --check
+          git config user.name 'techrote'
+          git config user.email '261801702+techrote@users.noreply.github.com'
+          git commit -m 'feat(ms001): add bounded read-only native observation adapter'
+          test "$(git ls-remote origin refs/heads/codex/issue-28-ms001 | cut -f1)" = "$GITHUB_SHA"
+          git push origin HEAD:refs/heads/codex/issue-28-ms001
+          test -z "$(git status --porcelain)"
+          mkdir "$RUNNER_TEMP/ms001-checkpoint"
+          git bundle create "$RUNNER_TEMP/ms001-checkpoint/source.bundle" HEAD refs/remotes/origin/main
+          git rev-parse HEAD > "$RUNNER_TEMP/ms001-checkpoint/source-revision.txt"
+          (cd "$RUNNER_TEMP/ms001-checkpoint" && sha256sum source.bundle source-revision.txt > SHA256SUMS)
+          rm -f "$RUNNER_TEMP/blob.json" "$RUNNER_TEMP/checkpoint.patch"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: ms001-verified-workspace-${{ github.sha }}
-          path: ${{ runner.temp }}/ms001-transfer/
+          name: ms001-native-checkpoint-${{ github.sha }}
+          path: ${{ runner.temp }}/ms001-checkpoint/
           if-no-files-found: error
           retention-days: 3
