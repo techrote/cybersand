@@ -146,10 +146,12 @@ var pending_water_apply: Dictionary = {}
 var pending_water_exit: Dictionary = {}
 var water_policy_available: bool = true
 
+var microscenario_brush_radius: int = 4
 var microscenario_panel: CyberMicroScenarioPanel
 var microscenario_mode: String = "Inspect"
 var microscenario_error: String = ""
 var microscenario_hud_hidden: bool = false
+var _microscenario_saved_help: String = ""
 var pending_microscenario_apply: Dictionary = {}
 var microscenario_capture_seen: int = 0
 var microscenario_definition: Dictionary = {}
@@ -185,6 +187,7 @@ func microscenario_apply_definition(definition: Dictionary, mode: String = "Insp
 	if not checked.get("ok", false) or not mode in CyberMicroScenarioContract.MODES:
 		microscenario_error = str(checked.get("error", "Invalid mode"))
 		return false
+	if microscenario_panel != null: microscenario_panel.workbench.cancel_declared_window()
 	pending_microscenario_apply = {"hash":checked.hash, "definition":checked.definition,
 		"previous_paused":paused}
 	microscenario_mode = mode
@@ -218,12 +221,20 @@ func microscenario_capture() -> void:
 	tower_command({"scenario_capture":true, "identity":CyberMicroScenarioIdentity.current()})
 
 func _write_microscenario_capture(report: Dictionary) -> void:
-	var file := FileAccess.open("user://microscenario-observation.json", FileAccess.WRITE)
+	var target: String = "user://microscenario-observation.json"
+	var file := FileAccess.open(target + ".tmp", FileAccess.WRITE)
 	if file == null:
 		microscenario_error = "Could not write MicroScenario capture"
 		return
 	var text: String = JSON.stringify(report, "  ")
 	file.store_string(text + "\n")
+	file.flush()
+	var error: Error = file.get_error()
+	file.close()
+	if error != OK or DirAccess.rename_absolute(ProjectSettings.globalize_path(target + ".tmp"), ProjectSettings.globalize_path(target)) != OK:
+		microscenario_error = "Could not complete MicroScenario capture write"
+		return
+	if microscenario_panel != null: microscenario_panel.workbench.accept_capture(report)
 	if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD): DisplayServer.clipboard_set(text)
 
 func microscenario_toggle_hud() -> void:
@@ -234,6 +245,17 @@ func _refresh_microscenario_controls() -> void:
 	if microscenario_panel == null: return
 	microscenario_panel.refresh(tower_context)
 	microscenario_panel.visible = not microscenario_hud_hidden
+	var help: Label = $Layout/Help
+	if tower_context.get("micro_active",false):
+		if _microscenario_saved_help.is_empty(): _microscenario_saved_help = help.text
+		var declared: Dictionary = tower_context.get("microscenario",{})
+		help.text = "P pause/resume · R fresh reset · Arrow keys pan · F8 clean view · Run declared window for a bounded comparison"
+		if "paint" in declared.get("tools",[]): help.text += " · LMB paint · 1–6 / Q,E / picker select material"
+		if "erase" in declared.get("tools",[]): help.text += " · RMB erase"
+		if declared.get("player_enabled",false): help.text += " · A/D move · Space jetpack"
+	elif not _microscenario_saved_help.is_empty():
+		help.text = _microscenario_saved_help
+		_microscenario_saved_help = ""
 	for path: String in ["Layout/Title", "Layout/Help"]:
 		get_node(path).visible = not microscenario_hud_hidden
 	status_label.visible = debug_stats_visible and not microscenario_hud_hidden
@@ -734,7 +756,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		tower_reset()
 		return
 	if tower_active and event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode >= KEY_1 and event.keycode <= KEY_6:
+		if event.keycode >= KEY_1 and event.keycode <= KEY_6 and not tower_context.get("micro_active",false):
 			selected_material_id = CyberExperimentTower.QUICK[tower_floor][int(event.keycode)-KEY_1]
 			return
 		if event.keycode == KEY_R:
@@ -1162,6 +1184,7 @@ func queue_brush_mutation(
 
 
 func handle_painting() -> void:
+	if microscenario_panel != null and microscenario_panel.modal_open(): return
 	if tower_profile_panel != null and tower_profile_panel.visible: return
 	var mouse: Vector2 = world_view.get_local_mouse_position()
 	var content_rect: Rect2 = view_content_rect()
@@ -1193,7 +1216,7 @@ func handle_painting() -> void:
 	queue_brush_mutation(
 		world_x,
 		world_y,
-		4,
+		microscenario_brush_radius if tower_context.get("micro_active",false) else 4,
 		emitted_material_id,
 		emission_flags
 	)
@@ -1507,11 +1530,11 @@ func update_shader_parameters() -> void:
 
 func update_status() -> void:
 	if latest_snapshot != null and latest_snapshot.simulation_failed:
-		status_label.visible = true
+		status_label.visible = not microscenario_hud_hidden
 		status_label.text = "Simulation stopped. Press R to reset. " + latest_snapshot.last_tick_error
 		return
-	status_label.visible = debug_stats_visible
-	if not debug_stats_visible:
+	status_label.visible = debug_stats_visible and not microscenario_hud_hidden
+	if not debug_stats_visible or microscenario_hud_hidden:
 		return
 	if latest_snapshot == null:
 		status_label.text = "Simulation worker did not publish an initial snapshot."
@@ -1559,7 +1582,8 @@ func update_status() -> void:
 			maximum_collider_time_ms,
 			rapier_bridge.pending_hard_surface_chunks(),
 		]
-	status_label.text = "FPS %d | frame %.2f ms peak %.2f | render %d Hz %s %s | step %.2f ms | upload %.2f ms | %s\n%s | tick %d age %.1f ms | bridge %d patches %.1f KiB%s | cells %d + %d dormant | moved %d (%d ballistic) | blocks %d/%d + %d frozen | sched %d jobs/%d phases cap~%d\n%s | %s | %s %s | bodies %d contact + %d displaced + %d unresolved | player %.0f,%.0f | camera %.0f,%.0f %s | %s | overruns %d | %s" % [
+	var player_text: String = "disabled" if tower_context.get("micro_active",false) and not tower_context.get("microscenario",{}).get("player_enabled",false) else "%.0f,%.0f" % [character_position.x,character_position.y]
+	status_label.text = "FPS %d | frame %.2f ms peak %.2f | render %d Hz %s %s | step %.2f ms | upload %.2f ms | %s\n%s | tick %d age %.1f ms | bridge %d patches %.1f KiB%s | cells %d + %d dormant | moved %d (%d ballistic) | blocks %d/%d + %d frozen | sched %d jobs/%d phases cap~%d\n%s | %s | %s %s | bodies %d contact + %d displaced + %d unresolved | player %s | camera %.0f,%.0f %s | %s | overruns %d | %s" % [
 		int(Engine.get_frames_per_second()),
 		frame_time_ms,
 		maximum_frame_time_ms,
@@ -1592,8 +1616,7 @@ func update_status() -> void:
 		latest_snapshot.rigid_body_contacts_last_tick,
 		latest_snapshot.rigid_body_displaced_last_tick,
 		latest_snapshot.rigid_body_unresolved_last_tick,
-		character_position.x,
-		character_position.y,
+		player_text,
 		camera_origin.x,
 		camera_origin.y,
 		follow_text,

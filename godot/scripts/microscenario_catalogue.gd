@@ -4,12 +4,14 @@ extends RefCounted
 const Contract = preload("res://scripts/microscenario_contract.gd")
 const Water = preload("res://scripts/water_feel_scenarios.gd")
 const Tower = preload("res://scripts/experiment_tower.gd")
+const ReferencePack = preload("res://scripts/microscenario_reference_pack.gd")
 
 static func ids() -> Array[String]:
 	var result: Array[String] = ["experiment-tower"]
 	for water_id: String in Water.ids(): result.append("water/" + water_id)
 	result.append("fixtures/unequal-head")
 	result.append("fixtures/sand-release")
+	result.append_array(ReferencePack.ids())
 	return result
 
 static func tower(profile: Dictionary = {}) -> Dictionary:
@@ -52,7 +54,7 @@ static func definition(scenario_id: String, seed: int = 0) -> Dictionary:
 			"scenario_id":scenario_id.trim_prefix("water/"), "seed":seed}))
 	if scenario_id == "fixtures/unequal-head": return unequal_head(seed)
 	if scenario_id == "fixtures/sand-release": return sand_release(seed)
-	return {}
+	return ReferencePack.definition(scenario_id, seed)
 
 static func unequal_head(seed: int = 0) -> Dictionary:
 	# New reduced #26-style apparatus, NOT a registered #26 candidate or result.

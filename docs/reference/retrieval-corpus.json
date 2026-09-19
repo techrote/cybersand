@@ -34,6 +34,7 @@
     "operations/physics-characterisation-plan.md",
     "operations/physics-characterisation.md",
     "operations/profiling-observability-and-performance.md",
+    "operations/microscenario-reference-pack.md",
     "operations/rapier-2d-migration-runbook.md",
     "operations/source-checkpoint-and-recovery.md",
     "operations/testing-validation-and-replay.md",

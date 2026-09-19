@@ -320,6 +320,41 @@
       ]
     },
     {
+      "id": "MS04",
+      "query": "What exactly does MS-001 ship, what unblocks INT-000, and which platform claims remain separate?",
+      "canonical": [
+        "operations/microscenario-reference-pack.md",
+        "operations/microscenarios-programme.md"
+      ],
+      "facts": [
+        "Materials Laboratory readiness is the specific checkpoint that can unblock issue 29; Flood Control and Stress are not additional prerequisites for INT-000.",
+        "MS-001 also contains a Flood-Control world-state puzzle and bounded Water/granular/gas/mixed Stress profiles on the same schema/host.",
+        "Exploratory source/functional completion, merged readiness and actual Windows/browser/target-GPU acceptance are distinct."
+      ],
+      "sources": [
+        "../godot/scripts/microscenario_reference_pack.gd",
+        "../godot/scripts/microscenario_workbench.gd"
+      ]
+    },
+    {
+      "id": "MS05",
+      "query": "How do I compare generated material definitions without changing a live worker and inspect temperature and scheduler work?",
+      "canonical": [
+        "operations/microscenario-reference-pack.md",
+        "operations/microscenarios.md"
+      ],
+      "facts": [
+        "A/B stores complete validated definitions and every load uses a fresh acknowledged reset.",
+        "One-cell probes report existing stored fields; masked temperature and per-cell sleep are not fabricated.",
+        "Native tick, host observer and whole-frame costs are distinct; unavailable counters remain explicit."
+      ],
+      "sources": [
+        "../godot/scripts/microscenario_comparison.gd",
+        "../godot/native_extension/cyber_observation_values.hpp",
+        "../godot/scripts/microscenario_telemetry.gd"
+      ]
+    },
+    {
       "id": "SOL01",
       "query": "Does the PR 23 one-island prototype complete scalable soliding and fracture issue 12?",
       "canonical": [
@@ -362,7 +397,25 @@
       "sources": [
         "systems/settled-region-discovery.md"
       ]
+    },
+    {
+      "id": "MS06",
+      "query": "How does the MS-001 Flood-Control puzzle prove multiple solutions and what does Simulation Stress Test actually measure?",
+      "canonical": [
+        "operations/microscenario-reference-pack.md",
+        "operations/microscenarios.md"
+      ],
+      "facts": [
+        "The untreated Flood definition wets the protected region while containment, berm and diversion definitions preserve the identical world-state objective and keep it dry using ordinary geometry only.",
+        "Stress uses finite existing setup/fill/erase operations under unchanged event and observation caps for Water, granular, gas and mixed workloads.",
+        "Available native work counters are reported with observer neutrality; unavailable queue, heap and per-worker-utilization counters are not invented."
+      ],
+      "sources": [
+        "../godot/scripts/microscenario_reference_pack.gd",
+        "../godot/tests/test_microscenario_flood_control.gd",
+        "../godot/tests/test_microscenario_stress.gd"
+      ]
     }
   ],
-  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue12 scope/ownership/discovery questions; frozen32 unchanged."
+  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source."
 }

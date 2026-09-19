@@ -6,7 +6,9 @@ extends RefCounted
 const SOURCES: Array[String] = [
 	"scripts/microscenario_contract.gd", "scripts/microscenario_catalogue.gd",
 	"scripts/microscenario_host.gd", "scripts/microscenario_panel.gd",
-	"scripts/microscenario_identity.gd", "scripts/cell_world.gd",
+	"scripts/microscenario_identity.gd", "scripts/microscenario_reference_pack.gd",
+	"scripts/microscenario_telemetry.gd", "scripts/microscenario_workbench.gd",
+	"scripts/microscenario_comparison.gd", "scripts/cell_world.gd",
 	"scripts/material_appearance_lut.gd", "scripts/sampled_character.gd",
 	"scripts/simulation_worker.gd", "scripts/main.gd", "scripts/web_demo_controller.gd",
 	"scripts/experiment_tower.gd", "scripts/water_feel_scenarios.gd",

@@ -132,6 +132,7 @@ func microscenario_apply_definition(definition: Dictionary, mode: String = "Insp
 	if not micro_host.install(native_world, definition, mode):
 		microscenario_error = micro_host.last_error
 		return false
+	if microscenario_panel != null: microscenario_panel.workbench.cancel_declared_window()
 	var installed: Dictionary = micro_host.definition()
 	microscenario_definition = installed.duplicate(true)
 	microscenario_mode = mode
@@ -483,14 +484,16 @@ func set_liquid_surface_adhesion(enabled: bool) -> bool:
 	return true
 
 func _paint_pointer() -> void:
+	if microscenario_panel != null and microscenario_panel.modal_open(): return
 	if tower_profile_panel.visible: return
+	var radius: int = microscenario_brush_radius if tower_context.get("micro_active",false) else brush_radius
 	var point: Vector2i = _world_pointer()
 	if point.x < 0 or point.y < 0 or point.x >= 1024 or point.y >= 1024:
 		return
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
-		queue_brush_mutation(point.x,point.y,brush_radius,CyberCellWorld.EMPTY)
+		queue_brush_mutation(point.x,point.y,radius,CyberCellWorld.EMPTY)
 	elif Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		queue_brush_mutation(point.x,point.y,brush_radius,selected_material_id,
+		queue_brush_mutation(point.x,point.y,radius,selected_material_id,
 			1 if coherent_liquid_emission else 0)
 
 func _publish_world() -> void:
@@ -650,7 +653,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		return
 	match event.keycode:
 		KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6:
-			selected_material_id = (CyberExperimentTower.QUICK[tower_floor] if tower_active else [2,3,1,4,20,21])[int(event.keycode)-KEY_1]
+			selected_material_id = (CyberExperimentTower.QUICK[tower_floor] if tower_active and not tower_context.get("micro_active",false) else [2,3,1,4,20,21])[int(event.keycode)-KEY_1]
 		KEY_Q, KEY_E:
 			var direction: int = -1 if event.keycode == KEY_Q else 1
 			var index: int = PAINTABLE_MATERIAL_IDS.find(selected_material_id)

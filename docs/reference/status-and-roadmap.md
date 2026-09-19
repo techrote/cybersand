@@ -289,6 +289,23 @@ still controls #28/#29 readiness and keeps architecture gates separate. Read the
 [checkpoint evidence](../audits/2026-09-19-issue-27-microscenarios.md) before claiming
 Windows, GPU or native Web runtime acceptance for this version.
 
+## MS-001 reference-pack checkpoint
+
+**Current source, exploratory 2026-09-19:** PR #44 / `codex/issue-28-ms001` implements
+the schema-2 [reference pack](../operations/microscenario-reference-pack.md): Materials
+Laboratory with complete generated interaction fixtures/fresh-reset A/B, a Flood-Control
+Puzzle with a wet untreated control and three distinct geometry-only successful
+witnesses, and four finite Water/granular/gas/mixed Simulation Stress profiles.
+Schema-1 Tower/Water definitions retain their hashes and existing blind controls.
+No material rules, profiles, capacities or physics defaults change.
+
+The [execution ledger](../audits/2026-09-19-issue-28-ms001.md) separates Linux
+headless/controller/graphical evidence, pinned runtime provenance and unavailable
+actual Windows/browser/target-GPU execution. The explicit Lab readiness checkpoint
+can unblock #29 on its named consumable revision; it neither starts #29 here nor
+waives #18/#20/#26/#14 gates. #28 closure still requires the final integrated PR
+revision to pass repository/CI delivery gates and land on main.
+
 ## Issue #12 successor programme, 2026-09-19
 
 **Approved direction / Planned implementation:** #12 now owns scalable reversible

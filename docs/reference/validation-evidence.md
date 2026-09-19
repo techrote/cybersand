@@ -223,3 +223,16 @@ Windows and real Web coverage remain explicitly separate.
 current-main reuse audit, reviewed standalone lifecycle/discovery tests, immutable
 ordinary-sleep controls and remaining World/connected-region/runtime gates.
 Neither model tests nor Current-only timings certify acceleration or Rapier fracture.
+
+
+## 2026-09-19 MS-001 reference-pack acceptance
+
+The [issue #28 execution ledger](../audits/2026-09-19-issue-28-ms001.md) and
+[compact pack evidence](../audits/ms001-2026-09-19/pack-acceptance.json) retain the
+Materials Laboratory readiness checkpoint, Flood-Control untreated failure plus
+three geometry-only successful witnesses, and four bounded Simulation Stress profiles.
+Focused deterministic regressions cover mode/worker/observer parity, unchanged caps,
+fresh-reset/modal-run lifecycle and truthful telemetry availability. Linux X11/Mesa
+software rendering is UI evidence only. The retained Windows native library is a
+pinned cross-build, not Windows execution; actual browser/WebAssembly and target-GPU
+performance remain separate unavailable coverage unless a later dated run records them.

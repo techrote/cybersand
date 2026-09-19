@@ -138,6 +138,16 @@ scientific gates. MicroScenarios can provide apparatus and later retained
 fixtures; their existence is not architecture admission evidence.
 
 
+## MS-001 reference pack and readiness
+
+Route generated interaction definitions, full observation inspection, fresh-reset
+A/B, Flood-Control world-state objectives/solution witnesses, named bounded Stress
+profiles and #29 Lab-readiness questions to the [reference-pack runbook](../operations/microscenario-reference-pack.md),
+then the [shared schema/host](../operations/microscenarios.md). The
+[dated execution ledger](../audits/2026-09-19-issue-28-ms001.md) owns platform/run
+claims. Exploratory source acceptance, merged readiness and platform acceptance are
+separate; the programme graph owns admission.
+
 ## Soliding, settled-region acceleration and coherent fracture
 
 - Current programme/dependencies and Phase 0 disposition: [soliding programme](../operations/soliding-programme.md).

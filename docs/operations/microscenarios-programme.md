@@ -504,3 +504,15 @@ checkpoint is accepted; the Materials Laboratory readiness gate is not asserted 
 this harness. #18/#20 scientific controls and #14/G-final remain separate. #26 has since completed
 with a negative local-candidate disposition and #45 owns its bulk-head successor.
 Do not infer any of those decisions from reusable apparatus or issue numbers.
+
+## MS-001 implementation checkpoint, 2026-09-19
+
+The selected MS-000 implementation landed through PR #40 (`de332eaf8f4e70b25b097bed0c2e2a7b2aac0173`).
+MS-001 proceeds only on `codex/issue-28-ms001` / PR #44. The
+[reference pack and controls](microscenario-reference-pack.md) and
+[execution/readiness ledger](../audits/2026-09-19-issue-28-ms001.md) now cover the
+implemented Materials Laboratory, Flood-Control Puzzle and four named Simulation
+Stress profiles. The Lab readiness checkpoint remains the exact prerequisite that
+can be consumed by #29; completing the other two scenarios does not transfer #29
+scope into #28 or change any architecture admission gate. Final PR merge/platform
+acceptance remains distinct from exploratory source/functional completion.

@@ -1,16 +1,17 @@
 {
   "schema_version": 1,
-  "status": "validated-development-runtime",
-  "source_commit": "7f681ec47fcc29f09a5736377e60c3ece5441074",
-  "source_tree": "8d213c1fe3f45768025d29894dfe61985da8d798",
+  "status": "validated-build-runtime",
+  "source_commit": "fd6720df4403de29eb510907903084f848c2b50d",
+  "source_tree": "dffb56f91e94399cb2ad24d5359dd550ac503a76",
   "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
-  "sha256": "184fdc47ad71b9434343cef03d99b08e039b79299c53a369798d7a8235047b86",
-  "size": 1887232,
+  "sha256": "cbba322590cd43c54dcc2b8cbdb2c8c8d1ffabe4ac67331d01a7f3b538a78dba",
+  "size": 1910272,
   "source_input_hash_kind": "SHA-256 of canonical Git blob bytes; CRLF working files normalize to LF",
   "source_inputs": {
-    "godot/native_extension/cyber_demo_bridge.hpp": "c742ee00ee4118f6b27e136758dd14cc325046823d9cc67b3d445ce5032797cf",
+    "godot/native_extension/cyber_demo_bridge.hpp": "a4c70bc9cda9cb941df3e58529338dc8687be4e6977b27beb10b30d7592e88e7",
     "godot/native_extension/cyber_native_cell_world.cpp": "099fd43ce2e8ec4bfe948a6688e9b68782855304bdb02ebff017674a9355ebea",
     "godot/native_extension/cyber_native_cell_world.hpp": "e7639d61d152bc9b565c36de049d9205b4907be5cd51aef15ddeb6666837e491",
+    "godot/native_extension/cyber_observation_values.hpp": "8b76a566de1118e2ee0c4d9b6a4c3d4d8d988c4953743f8bcf0fc786f61705e5",
     "godot/native_extension/register_types.cpp": "db08c4fe5267831aac9c33faffd68f2adea4c55f30711b7cdeaf3a3b02173dd2",
     "native/include/cybersand/c_api.h": "d39b153e42111e2b5696c04832f64d1d69f401799236372ca8b690c7d0e1d429",
     "native/include/cybersand/demo_snapshot.hpp": "1a46f7beef756e0a916be7229956ae295955d555be047e16203eca05860cd3cb",
@@ -36,10 +37,10 @@
     "native/src/settled_world_discovery.cpp": "34a6e9022dd273f41022c2672d5910426d0628a541f25bd2e2a861e38c2bb983",
     "native/src/world.cpp": "9950d1b83800e3128c0b0ee799d2d2492ef9f25d13a80c237524abe4167e032e"
   },
-  "evidence": "docs/audits/issue-12-2026-09-19/stage3-exit-review.md",
-  "validated_platform": "Windows x86_64 Godot 4.7",
-  "toolchain": "LLVM-MinGW 20260826 UCRT Clang 23.1.0; godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496; local static library SHA-256 bf4ac16823c53cd74ad7ea8c95227deb77b885df30be021e8f3117cd18ea218a",
-  "acceptance": "Exact-head import plus 35/35 isolated Godot 4.7 cases passed locally on Windows; native CI run 35442021429 and exact-tree Windows cross-build job 105894358577 passed. Headless Water pixels remain a documented skip and rely on retained GPU evidence.",
-  "validation_output": "C:/kybersand/validation/local/issue-12-2026-09-19/windows-godot-7f681ec-identity-fixed",
-  "other_platforms": "This manifest covers Windows only; runtime-provenance.linux.json covers Linux and the issue audits cover separately exported Web runtimes."
+  "evidence": "docs/audits/2026-09-19-issue-28-ms001.md",
+  "validated_platform": "Windows x86_64 Godot 4.7 (pinned cross-build; execution unavailable)",
+  "toolchain": "LLVM-MinGW 20260826 UCRT Clang 23.1.0; godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496; integrated #12 Stage-3 + #28 observation adapter source",
+  "acceptance": "Exact integrated-source Windows x86_64 GDExtension cross-build passed in Actions run 35446887090; PE32+ x86-64 plus SettledWorldDiscoveryCoordinator and inspect_cell/inspect_statistics symbols verified. Actual Windows execution is unavailable and not claimed.",
+  "validation_output": "Actions run 35446887090 / artifact ms001-integrated-runtimes-fd6720df4403de29eb510907903084f848c2b50d",
+  "other_platforms": "Linux runtime was rebuilt from the same exact source commit. Browser/WebAssembly execution and hardware-GPU/target-PC performance remain unavailable and are not claimed."
 }
