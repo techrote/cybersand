@@ -1,12 +1,16 @@
 #include "cybersand/settled_world_discovery.hpp"
 
+#include <atomic>
 #include <limits>
+#include <new>
 #include <stdexcept>
 #include <utility>
 #include <vector>
 
 namespace cybersand::soliding {
 namespace {
+
+std::atomic<bool> fail_next_coordinator_construction{false};
 
 void add(std::uint64_t& value, std::uint64_t amount = 1) noexcept {
     const auto room = std::numeric_limits<std::uint64_t>::max() - value;
@@ -42,6 +46,12 @@ std::size_t index_size_for(std::size_t capacity) {
 }
 
 } // namespace
+
+namespace testing {
+void fail_next_settled_world_discovery_construction() noexcept {
+    fail_next_coordinator_construction.store(true, std::memory_order_release);
+}
+} // namespace testing
 
 struct SettledWorldDiscoveryCoordinator::Impl {
     using Journal = SettledDiscovery<kMaximumWorldDiscoveryTiles, 1024>;
@@ -121,8 +131,11 @@ struct SettledWorldDiscoveryCoordinator::Impl {
 };
 
 SettledWorldDiscoveryCoordinator::SettledWorldDiscoveryCoordinator(
-    std::uint64_t incarnation, std::size_t tile_capacity, bool regions_enabled)
-    : impl_(std::make_unique<Impl>(incarnation, tile_capacity, regions_enabled)) {}
+    std::uint64_t incarnation, std::size_t tile_capacity, bool regions_enabled) {
+    if (fail_next_coordinator_construction.exchange(false, std::memory_order_acq_rel))
+        throw std::bad_alloc{};
+    impl_ = std::make_unique<Impl>(incarnation, tile_capacity, regions_enabled);
+}
 
 SettledWorldDiscoveryCoordinator::~SettledWorldDiscoveryCoordinator() = default;
 SettledWorldDiscoveryCoordinator::SettledWorldDiscoveryCoordinator(
