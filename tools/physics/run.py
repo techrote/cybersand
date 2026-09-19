@@ -143,7 +143,7 @@ def main():
     if a.engine=="native" and not a.skip_build:
         exe.parent.mkdir(exist_ok=True)
         cmd=[a.cxx,"-std=c++20","-O3","-DNDEBUG","-pthread","-static","-Inative/include",
-             "native/src/world.cpp","native/src/material_rules.cpp","native/src/scheduler_geometry.cpp","native/src/render_snapshot.cpp",
+             "native/src/world.cpp","native/src/material_rules.cpp","native/src/scheduler_geometry.cpp","native/src/render_snapshot.cpp","native/src/settled_world_discovery.cpp",
              "native/bench/physics_characterisation.cpp","-o",str(exe)]
         with (out/"build.log").open("w") as log:
             log.write(json.dumps(cmd)+"\n");log.flush()

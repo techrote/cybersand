@@ -6,7 +6,7 @@ COMMON_FLAGS := -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -I$(IN
 RELEASE_FLAGS := -O3 -DNDEBUG -flto
 DEBUG_FLAGS := -O0 -g3
 
-CORE_SOURCES := native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/render_snapshot.cpp native/src/c_api.cpp
+CORE_SOURCES := native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/render_snapshot.cpp native/src/settled_world_discovery.cpp native/src/c_api.cpp
 CORE_HEADERS := $(wildcard native/include/cybersand/*.hpp native/include/cybersand/*.h native/src/*.hpp)
 TEST_SOURCES := native/tests/test_world.cpp
 BENCH_SOURCES := native/bench/benchmark.cpp
@@ -42,16 +42,20 @@ $(BUILD_DIR)/test_settled_discovery: $(CORE_SOURCES) $(CORE_HEADERS) native/test
 $(BUILD_DIR)/test_settled_regions: native/tests/test_settled_regions.cpp native/include/cybersand/settled_regions.hpp native/include/cybersand/settled_discovery.hpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) native/tests/test_settled_regions.cpp -o $@
 
+$(BUILD_DIR)/test_settled_world_discovery: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_settled_world_discovery.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(CORE_SOURCES) native/tests/test_settled_world_discovery.cpp -o $@
+
 $(BUILD_DIR)/settled_discovery: native/bench/settled_discovery.cpp native/include/cybersand/settled_discovery.hpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O3 -DNDEBUG -Werror native/bench/settled_discovery.cpp -o $@
 
 soliding-benchmark-smoke: $(BUILD_DIR)/settled_discovery
 	./$(BUILD_DIR)/settled_discovery 128 64 16 2
 
-soliding-test: $(BUILD_DIR)/test_soliding_lifecycle $(BUILD_DIR)/test_settled_discovery $(BUILD_DIR)/test_settled_regions
+soliding-test: $(BUILD_DIR)/test_soliding_lifecycle $(BUILD_DIR)/test_settled_discovery $(BUILD_DIR)/test_settled_regions $(BUILD_DIR)/test_settled_world_discovery
 	./$(BUILD_DIR)/test_soliding_lifecycle
 	./$(BUILD_DIR)/test_settled_discovery
 	./$(BUILD_DIR)/test_settled_regions
+	./$(BUILD_DIR)/test_settled_world_discovery
 
 $(BUILD_DIR)/test_soliding_lifecycle_sanitized: native/tests/test_soliding_lifecycle.cpp native/include/cybersand/soliding_lifecycle.hpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined native/tests/test_soliding_lifecycle.cpp -o $@
@@ -62,10 +66,14 @@ $(BUILD_DIR)/test_settled_discovery_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) n
 $(BUILD_DIR)/test_settled_regions_sanitized: native/tests/test_settled_regions.cpp native/include/cybersand/settled_regions.hpp native/include/cybersand/settled_discovery.hpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined native/tests/test_settled_regions.cpp -o $@
 
-soliding-sanitize: $(BUILD_DIR)/test_soliding_lifecycle_sanitized $(BUILD_DIR)/test_settled_discovery_sanitized $(BUILD_DIR)/test_settled_regions_sanitized
+$(BUILD_DIR)/test_settled_world_discovery_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_settled_world_discovery.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_settled_world_discovery.cpp -o $@
+
+soliding-sanitize: $(BUILD_DIR)/test_soliding_lifecycle_sanitized $(BUILD_DIR)/test_settled_discovery_sanitized $(BUILD_DIR)/test_settled_regions_sanitized $(BUILD_DIR)/test_settled_world_discovery_sanitized
 	./$(BUILD_DIR)/test_soliding_lifecycle_sanitized
 	./$(BUILD_DIR)/test_settled_discovery_sanitized
 	./$(BUILD_DIR)/test_settled_regions_sanitized
+	./$(BUILD_DIR)/test_settled_world_discovery_sanitized
 
 test: c-header-check $(BUILD_DIR)/tests soliding-test
 	./$(BUILD_DIR)/tests
@@ -87,4 +95,4 @@ thread-sanitize: $(BUILD_DIR)/tests_tsan
 	TSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/tests_tsan
 
 clean:
-	rm -f $(BUILD_DIR)/settled_discovery $(BUILD_DIR)/test_soliding_lifecycle_sanitized $(BUILD_DIR)/test_settled_discovery_sanitized $(BUILD_DIR)/test_settled_regions_sanitized $(BUILD_DIR)/test_soliding_lifecycle $(BUILD_DIR)/test_settled_discovery $(BUILD_DIR)/test_settled_regions $(BUILD_DIR)/tests $(BUILD_DIR)/tests_sanitized $(BUILD_DIR)/tests_tsan $(BUILD_DIR)/benchmark $(BUILD_DIR)/libcybersand.so
+	rm -f $(BUILD_DIR)/settled_discovery $(BUILD_DIR)/test_soliding_lifecycle_sanitized $(BUILD_DIR)/test_settled_discovery_sanitized $(BUILD_DIR)/test_settled_regions_sanitized $(BUILD_DIR)/test_settled_world_discovery_sanitized $(BUILD_DIR)/test_soliding_lifecycle $(BUILD_DIR)/test_settled_discovery $(BUILD_DIR)/test_settled_regions $(BUILD_DIR)/test_settled_world_discovery $(BUILD_DIR)/tests $(BUILD_DIR)/tests_sanitized $(BUILD_DIR)/tests_tsan $(BUILD_DIR)/benchmark $(BUILD_DIR)/libcybersand.so

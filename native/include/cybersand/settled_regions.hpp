@@ -14,11 +14,7 @@
 // Cells remain the sole material owner.
 namespace cybersand::soliding {
 
-struct RegionTileKey {
-    std::uint64_t world_incarnation{};
-    std::int64_t chunk_y{}, chunk_x{}, activity_y{}, activity_x{}, subtile_y{}, subtile_x{};
-    bool operator==(const RegionTileKey&) const = default;
-};
+using RegionTileKey = DiscoveryTileKey;
 struct RegionTileInput {
     RegionTileKey key{};
     DiscoveryBounds bounds{};

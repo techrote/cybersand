@@ -11,6 +11,12 @@
 // cohesion, colliders or transfers. It owns observations, never material.
 namespace cybersand::soliding {
 
+struct DiscoveryTileKey {
+    std::uint64_t world_incarnation{};
+    std::int64_t chunk_y{}, chunk_x{}, activity_y{}, activity_x{}, subtile_y{}, subtile_x{};
+    bool operator==(const DiscoveryTileKey&) const = default;
+};
+
 struct DiscoveryCell {
     std::uint8_t material{};
     std::uint16_t state_a{};
@@ -76,14 +82,29 @@ public:
 
     DiscoveryOutcome register_block(DiscoveryBounds bounds, DiscoverySignals signals,
                                     std::uint64_t tick, DiscoveryHandle& output) noexcept {
+        return register_block_impl(bounds, signals, tick, output, true);
+    }
+
+    // Canonical producers may bypass the O(N) duplicate-bounds guard only after
+    // proving uniqueness through their bounded logical-key index.
+    DiscoveryOutcome register_unique_block(DiscoveryBounds bounds, DiscoverySignals signals,
+                                           std::uint64_t tick, DiscoveryHandle& output) noexcept {
+        return register_block_impl(bounds, signals, tick, output, false);
+    }
+
+private:
+    DiscoveryOutcome register_block_impl(DiscoveryBounds bounds, DiscoverySignals signals,
+                                         std::uint64_t tick, DiscoveryHandle& output,
+                                         bool check_duplicate_bounds) noexcept {
         if (halt_ != DiscoveryHalt::None) return DiscoveryOutcome::Halted;
         const auto area = static_cast<std::uint64_t>(bounds.width) * bounds.height;
         if (incarnation_ == 0 || area == 0 || area > MaximumBlockCells ||
             bounds.x > std::numeric_limits<std::int64_t>::max() - (bounds.width - 1) ||
             bounds.y > std::numeric_limits<std::int64_t>::max() - (bounds.height - 1))
             return DiscoveryOutcome::Invalid;
-        for (std::size_t i = 0; i < count_; ++i)
-            if (records_[i].summary.bounds == bounds) return DiscoveryOutcome::Invalid;
+        if (check_duplicate_bounds)
+            for (std::size_t i = 0; i < count_; ++i)
+                if (records_[i].summary.bounds == bounds) return DiscoveryOutcome::Invalid;
         if (count_ == Slots) { increment(metrics_.refusals); return DiscoveryOutcome::Capacity; }
         if (!clock(tick)) return DiscoveryOutcome::Halted;
         const auto index = count_++;
@@ -97,6 +118,8 @@ public:
         enqueue(index);
         return DiscoveryOutcome::Accepted;
     }
+
+public:
 
     // Must be called for every relevant mutation, even change-and-restore, plus
     // affected halo dependents. Render publication cannot acknowledge this journal.

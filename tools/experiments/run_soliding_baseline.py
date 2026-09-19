@@ -20,7 +20,8 @@ import time
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CXX = Path('C:/kybersand/.local/llvm-mingw-20260826-ucrt-x86_64/bin/clang++.exe')
-CORE = ['native/src/world.cpp', 'native/src/material_rules.cpp', 'native/src/scheduler_geometry.cpp']
+CORE = ['native/src/world.cpp', 'native/src/material_rules.cpp', 'native/src/scheduler_geometry.cpp',
+        'native/src/settled_world_discovery.cpp']
 FIXTURES = ['wall', 'redbrick', 'local-edit', 'granular-rest', 'granular-release']
 
 
