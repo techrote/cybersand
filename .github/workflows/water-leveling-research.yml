@@ -5,9 +5,12 @@ on:
     paths:
       - '.github/workflows/water-leveling-research.yml'
       - 'tools/water_leveling/**'
+      - 'native/bench/water_leveling_characterisation.cpp'
       - 'native/tests/water_leveling*'
       - 'docs/operations/water-leveling-experiment.md'
       - 'docs/audits/2026-09-19-water-leveling*'
+      - 'docs/reference/retrieval-corpus.json'
+      - 'docs/reference/retrieval-index.md'
 
 permissions:
   contents: read
@@ -50,3 +53,79 @@ jobs:
           path: ${{ runner.temp }}/water-leveling-source/
           if-no-files-found: error
           retention-days: 7
+
+
+  baseline-characterisation:
+    if: github.head_ref == 'codex/issue-26-water-leveling'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      CXX: g++-13
+    steps:
+      - name: Check out exact PR source without retained credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+
+      - name: Record toolchain
+        run: |
+          set -eu
+          g++-13 --version
+          python3 --version
+          git rev-parse HEAD HEAD^{tree}
+
+      - name: Test frozen metric reducer
+        run: python3 tools/water_leveling/test_reduce.py
+
+      - name: Build measurement-only native harness
+        run: |
+          set -eu
+          mkdir -p build/water-leveling
+          g++-13 -std=c++20 -O3 -DNDEBUG -Wall -Wextra -Wpedantic -Wconversion -Wshadow -pthread \
+            -Inative/include \
+            native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp \
+            native/src/render_snapshot.cpp native/src/c_api.cpp \
+            native/bench/water_leveling_characterisation.cpp \
+            -o build/water-leveling/water-leveling-characterisation
+
+      - name: Run retained baseline campaign
+        run: |
+          set -eu
+          timeout 25m python3 tools/water_leveling/run_baseline.py \
+            --exe build/water-leveling/water-leveling-characterisation \
+            --output build/water-leveling/baseline
+
+      - name: Print compact retained baseline summary
+        if: always()
+        run: |
+          if test -f build/water-leveling/baseline/baseline-summary.json; then
+            python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("build/water-leveling/baseline/baseline-summary.json")
+          d=json.loads(p.read_text())
+          print("status", d["status"], "head", d["source"]["head"])
+          for fixture, data in d["canonical"].items():
+              s=data["summary"]
+              print(fixture,
+                    "horizon", data["selected_horizon"],
+                    "flat", s["time_to_flat_tick"],
+                    "arm_half", s["arm_level_half_life_tick"],
+                    "local_half", s["primary_local_slope_half_life_tick"],
+                    "hill", round(s["max_hill_amplitude_cells"], 4),
+                    "terrace_life", s["severe_terrace_lifetime_ticks"],
+                    "gap", s["max_wall_gap_area_cells"])
+          PY
+          fi
+
+      - name: Retain raw and reduced baseline evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: water-leveling-baseline-${{ github.run_id }}
+          path: build/water-leveling/baseline/
+          if-no-files-found: error
+          retention-days: 14
