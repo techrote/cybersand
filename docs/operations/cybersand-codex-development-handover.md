@@ -171,12 +171,13 @@ retains material fixed memory and large-region rebuild costs rather than claimin
 a win. Publication checkpoint `82e65f3` passed exact-head native/sanitizer,
 Windows/Linux build, sharded Linux Godot, documentation/provenance, retrieval and
 runtime-identity gates. The bounded correctness/observability reference therefore
-passes **Stage 3A**; PR #47 still requires merge verification before successor work.
+passes **Stage 3A**; PR #47 merged as `fc299c1` and its exact head is on `main`.
 The locality/scalability objective is **Stage 3B open**: the current implementation still performs
 full tracked-tile signal refresh, global mapping/seed work, compiled-maximum storage
-and whole-region rediscovery. After the verified Stage-3A merge, prepare the
-Stage-3B Astra architecture-review packet before implementation. Stage 4 is not
-admitted. Stage 3 remains cells-owned
+and whole-region rediscovery. Use the read-only
+[Stage-3B Astra architecture-review packet](soliding-stage3b-astra-review.md) next;
+it requires confirmed model identity and stops at a parent architecture decision
+before implementation. Stage 4 is not admitted. Stage 3 remains cells-owned
 discovery and cannot be used to admit stationary acceleration or Rapier dynamics.
 
 ## Issue #26 / Water bulk-head handoff, 2026-09-19
