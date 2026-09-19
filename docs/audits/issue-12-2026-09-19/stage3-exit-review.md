@@ -1,5 +1,5 @@
 ---
-title: Issue 12 Stage 3A candidate review and Stage 3B hold, 2026-09-19
+title: Issue 12 Stage 3A bounded-reference review and Stage 3B hold, 2026-09-19
 status: Current
 document-kind: evidence
 scope: Parent-owned correctness/reference review and explicit locality/scalability hold for read-only World settled-region discovery
@@ -8,7 +8,7 @@ last-reviewed: 2026-09-19
 related-documents: [../../operations/soliding-stage3-freeze.md, ../../operations/soliding-programme.md, ../../operations/soliding-measurement.md, ../../systems/settled-region-discovery.md, stage3-cost-results.md, producer-hook-review.md]
 ---
 
-# Issue 12 Stage 3A candidate review and Stage 3B hold
+# Issue 12 Stage 3A bounded-reference review and Stage 3B hold
 
 ## Decision and exact boundary
 

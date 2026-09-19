@@ -92,7 +92,7 @@ nonwrapping incarnation; a World move transfers the observer and leaves no dupli
 identity. A block-local unhealthy signal is not used as a substitute for failed-World
 quarantine.
 
-## Stage 3A candidate and open Stage 3B gate
+## Passed Stage 3A reference and open Stage 3B gate
 
 The [bounded connectivity layer](../../native/include/cybersand/settled_regions.hpp)
 now receives exact complete tile revisions from the World journal and proves
@@ -175,7 +175,7 @@ no-write activity/deadlines, epoch wrap, capacity isolation, disabled controls a
 workers1/4 parity. Integrated fixtures additionally cover exact two-tile publication,
 split/merge generations, blocked-mask unknown boundaries, noncanonical Empty refusal,
 producer-capacity/failure quarantine and new-facing-tile invalidation. They establish
-this checkpoint's named paths. They support the Stage-3A candidate but do not supply
+this checkpoint's named paths. They support the passed Stage-3A bounded reference but do not supply
 Stage-3B locality/scalability or current desktop/Web runtime acceptance.
 
 ## Synthetic journal cost preregistration (2026-09-19)
