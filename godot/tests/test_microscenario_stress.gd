@@ -56,6 +56,9 @@ func run() -> void:
 			"Observer-off Stress run retained optional telemetry: " + profile)
 
 	expect(seen_hashes.size() == Pack.STRESS_PROFILES.size(),"Stress profile results missing")
-	expect(seen_hashes.values().duplicate().size() == Pack.STRESS_PROFILES.size(),"Named Stress profiles collapsed to duplicate final worlds")
+	var unique_hashes: Dictionary = {}
+	for content_hash: String in seen_hashes.values():
+		unique_hashes[content_hash] = true
+	expect(unique_hashes.size() == Pack.STRESS_PROFILES.size(),"Named Stress profiles collapsed to duplicate final worlds")
 	print("MICROSCENARIO_STRESS: %d assertions; %d failures" % [assertions,failures])
 	quit(1 if failures else 0)

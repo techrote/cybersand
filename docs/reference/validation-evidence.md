@@ -230,9 +230,19 @@ Neither model tests nor Current-only timings certify acceleration or Rapier frac
 The [issue #28 execution ledger](../audits/2026-09-19-issue-28-ms001.md) and
 [compact pack evidence](../audits/ms001-2026-09-19/pack-acceptance.json) retain the
 Materials Laboratory readiness checkpoint, Flood-Control untreated failure plus
-three geometry-only successful witnesses, and four bounded Simulation Stress profiles.
-Focused deterministic regressions cover mode/worker/observer parity, unchanged caps,
-fresh-reset/modal-run lifecycle and truthful telemetry availability. Linux X11/Mesa
-software rendering is UI evidence only. The retained Windows native library is a
-pinned cross-build, not Windows execution; actual browser/WebAssembly and target-GPU
-performance remain separate unavailable coverage unless a later dated run records them.
+three geometry-only successful witnesses, and four bounded Simulation Stress
+profiles. PR #44 exact head
+`95aa2a0cb7b68445ed4a23ad16481c947e5a4695` passed documentation/provenance
+run `35447451359`, native run `35447451354` and GDExtension/Godot run
+`35447451361` before merge as
+`c1edf907cce1693fa45f89e9f1f573f05483c1e4`.
+
+Focused deterministic regressions cover mode/worker/observer parity, unchanged
+caps, fresh-reset/modal-run lifecycle and truthful telemetry availability. A
+bounded post-merge review found no implementation/runtime reason to reopen MS-001;
+it corrected a Flood endpoint wording mismatch, made the Stress distinct-world
+assertion effective and reconciled stale compact Stress definition hashes. Linux
+X11/Mesa software rendering is UI evidence only. The retained Windows native
+library is a pinned cross-build, not Windows execution; actual
+browser/WebAssembly and target-GPU performance remain separate unavailable
+coverage unless a later dated run records them.
