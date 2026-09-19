@@ -46,19 +46,32 @@ production region identity. Copy/move cloning is forbidden.
 **Current producer integration:** chunk creation registers canonical nonoverlapping
 subtiles through an array-backed height-bounded ordered index over canonical tile
 keys. Resolved owners carry incarnation-qualified direct handles, so follow-on
-tile/dirty/observe operations do not repeat key lookup. The generic connectivity
-adapter separately uses a bounded `32T` row-interval ordered index for arbitrary
-rectangle overlap/containment and checked face mapping; canonical registration and
-face discovery no longer scan unrelated resident tiles. Direct tuple edits notify
-synchronously; phased worker rectangles notify only during deterministic barrier
-reduction; the final resident metadata pass supplies activity/deadline signals. Local mask occupancy,
-accepted pending events, requested/applied inclusion, live adhesion-policy fences,
-clear/move identity and failed-tick quarantine have source-matched tests. Their
-added inspections/time are real and remain to be measured. A missing mutation
-witness still makes the producer unsafe: the journal cannot detect an omitted hook.
-No runtime promotion may consume it before the complete producer audit/tests.
-There is no rest-age or observation-gap detector in this journal: a producer must
-clear `witness_complete` on gaps; unchanged flags across elapsed time prove nothing.
+operations do not repeat key lookup. The generic connectivity adapter separately
+uses a bounded `32T` row-interval ordered index for arbitrary rectangle
+overlap/containment and checked face mapping; canonical registration and face
+discovery no longer scan unrelated resident tiles.
+
+Issue #61 makes payload mutation delivery change-driven. Direct material/state/
+temperature mutations resolve only their canonical owner and immediately advance its
+independent journal revision. Native worker jobs write only fixed local report records;
+the serialized owner reduces those reports in deterministic barrier order, preserves
+the exact number of writes represented by a coalesced report, invalidates source and
+destination endpoints for movement and Water transfer, and queues at most one deferred
+payload service entry per affected tile. That deferred queue is fixed at `T`, allocated
+with the coordinator, and performs local signal refresh before a tile may resume
+journal scanning. Ordinary direct/worker payload invalidation therefore has no
+discovery-wide resident scan and no hot allocation. If a worker cannot represent every
+payload report, observation is fail-closed by a producer fence while authoritative
+World state remains valid.
+
+The final resident metadata pass still supplies activity/deadline signals and is owned
+by #62. Local mask/event/inclusion producer sparsification remains #63; reverse graph
+incidence remains #64. Local mask occupancy, accepted pending events,
+requested/applied inclusion, live adhesion-policy fences, clear/move identity and
+failed-tick quarantine retain their existing semantics. A missing mutation witness
+still makes the producer unsafe: the journal cannot detect an omitted hook. There is no
+rest-age or observation-gap detector in this journal: a producer must clear
+`witness_complete` on gaps; unchanged flags across elapsed time prove nothing.
 Public registration still rejects exact duplicate bounds but permits overlaps.
 The World-only unique-registration path is admitted because its canonical key index
 and deterministic chunk/activity/subtile enumeration prove uniqueness first.
@@ -67,9 +80,10 @@ and deterministic chunk/activity/subtile enumeration prove uniqueness first.
 
 Use an independent nonwrapping block revision, not render dirty rectangles that
 publication can clear. Direct material/state/temperature edits and deterministic
-post-barrier job effects invalidate summaries. Change-and-restore must still
-change the witness. Conservative effect rectangles may cause false invalidation;
-measure that cost. Active, pending-deadline, occupied, excluded and failed-world
+post-barrier worker reports invalidate summaries. Change-and-restore still advances
+the witness even when deferred tile service coalesces repeated writes; movement and
+Water report both endpoints. Worker report loss is never treated as "no change": it
+fences observation. Active, pending-deadline, occupied, excluded and failed-world
 states cannot gain discovery rest. Re-entry must revalidate through ordinary
 activity. No sleeping flag alone authorizes representation replacement.
 
@@ -77,12 +91,15 @@ A resumable scan retains its starting revision and scratch only. Relevant edits
 invalidate any old summary immediately; no partial result is publicly eligible.
 Complete results publish only after the same revision and activity/exclusion
 conditions survive final validation. Each scan/start/dequeue/finalization in `advance` consumes its declared budget.
-Dirty/signal notifications perform constant work outside that budget once the
-owner handle is known. Canonical key registration/lookup is height-bounded ordered
-work; generic rectangle registration performs at most 32 row-interval queries plus
-bounded face mapping. Producer event volume, registration and metadata feed cost
-must be measured separately. Work saturation may lag safely;
-dropped invalidations may never leave an apparently valid summary.
+Immediate payload invalidation performs bounded owner lookup plus constant journal
+work outside the service budget. Repeated mutations to the same tile may coalesce only
+their deferred service entry; their nonwrapping revision increments are retained.
+Deferred payload signal refresh consumes explicit service units before journal scan
+work. Canonical key registration/lookup is height-bounded ordered work; generic
+rectangle registration performs at most 32 row-interval queries plus bounded face
+mapping. Producer event volume, registration and metadata feed cost must be measured
+separately. Work saturation may lag safely; dropped invalidations may never leave an
+apparently valid summary.
 
 ## Capacity, identity and failure
 
