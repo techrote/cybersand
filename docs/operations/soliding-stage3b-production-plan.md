@@ -5,7 +5,7 @@ document-kind: runbook
 scope: Dependency, ownership, gate and validation routing for Stage-3B locality/scalability implementation
 canonical-for: [soliding-stage3b-production-plan]
 last-reviewed: 2026-09-19
-related-documents: [../audits/issue-12-2026-09-19/stage3b-parent-decision.md, soliding-stage3-freeze.md, soliding-stage3b-astra-review.md, soliding-programme.md]
+related-documents: [../audits/issue-12-2026-09-19/stage3b-parent-decision.md, ../audits/2026-09-19-issue-69-stage3b-validation.md, soliding-stage3-freeze.md, soliding-stage3b-astra-review.md, soliding-programme.md]
 ---
 
 # Issue 12 Stage 3B production implementation plan
@@ -19,12 +19,12 @@ read-only architecture reviews.
 Issue #12 remains the programme parent. Stage 3A remains the untouched
 correctness/control reference. Stage 4 remains blocked.
 
-Issue #29 / PR #55 may continue independently. At this checkpoint it owns
-interaction schema/material-rules, `native/tests/test_world.cpp` and
-MicroScenario/workbench surfaces, but not `native/src/world.cpp` or settled
-discovery internals. Recheck that state before central World producer work and
-again before the final campaign. Stage 3B observes authoritative interaction
-mutations; it does not duplicate INT-000 semantics.
+The decomposition checkpoint above originally observed issue #29 / PR #55 as
+independently active. **Reconciled 2026-09-19:** PR #55 has since merged into
+`main` at `910717aac101363ec2b1b89e4041a22bc9a97b97`. Stage 3B continues
+to observe authoritative interaction mutations without duplicating INT-000
+semantics. The #69 evidence lane deliberately remains independent of the merged
+MicroScenario/workbench and interaction-rule surfaces.
 
 ## Work packages
 
@@ -88,10 +88,12 @@ before #65.
 
 ### Evidence lane
 
-Issue #69 may proceed after #56 without candidate semantic changes. Avoid the
-MicroScenario/workbench files currently owned by #29. The final campaign may use
-MS-001 only as supplemental integration evidence after exact source/runtime
-identity is fixed.
+Issue #69 proceeds after #56 without candidate semantic changes. Its executable
+preregistration contract is `tools/experiments/stage3b_validation.py`; the dated
+[issue #69 evidence record](../audits/2026-09-19-issue-69-stage3b-validation.md)
+records the fixture/schema inventory and qualification boundary. The final
+campaign may use MS-001 only as supplemental integration evidence after exact
+source/runtime identity is fixed.
 
 ### Historical branches
 
@@ -149,6 +151,46 @@ No numerical acceleration percentage is preregistered. The exit review must
 address safety, producer locality, index locality, memory reconciliation, bounded
 deletion/service, unrelated remote progress, publication honesty/locality and
 evidence quality.
+
+
+## Issue #69 registered campaign contract
+
+The candidate-independent #69 apparatus freezes the experiment shape before the
+final candidate exists.
+
+- Arms are explicit for Current/discovery-off, untouched Stage 3A, runtime-sized
+  Stage-3A-equivalent, optional sparse-producer/indexed-graph intermediates and the
+  complete Stage-3B candidate. Missing arms are marked unavailable rather than
+  silently dropped.
+- The fixture catalogue has 168 versioned logical fixtures. Historical
+  `local-edit` remains an 8x8 patch and historical `bridge` remains a whole
+  column; separate genuine one-cell tuple and topology fixtures carry an exact
+  one-cell mutation contract.
+- Workers are exactly 1 and 4. Drain-to-completion and fixed primitive budgets
+  `1, 8, 64, 256, 1024` are registered. A whole-region loop is never counted as
+  one primitive and the new primitive count is not equated to Stage-3A abstract
+  work units.
+- Paired drain cells and interruption-sensitive fixed-budget cells use five
+  sequential process repeats. Correctness-only drain qualifications are single
+  deterministic processes unless a pre-results amendment is registered.
+- A fixed SHA-256 cell shuffle and balanced normal/reversed arm order are recorded.
+  Final benchmark processes are sequential/uncontended and warm-up/qualification
+  output remains separate.
+- The default generated final plan has 6,488 run records. This is a deliberately
+  bounded matrix rather than a wasteful Cartesian duplication of semantically
+  meaningless Current/historical fixed-budget cases.
+- Result schema v1 retains explicit success, correctness/performance failure,
+  refusal, timeout, source failure, failed-world, unavailable and not-applicable
+  states plus exact source/compiler/runtime/hardware/order provenance.
+- Reducer schema v1 preserves terminal states, flags missing/insufficient samples,
+  summarizes declared metric populations directly and encodes no candidate winner
+  or universal percentage-speedup threshold.
+
+#70 must freeze one authoritative simulation/material baseline, exact source/runtime
+identity for every available arm, final capacities, compiler/artifact identity,
+target host/OS/power mode and any interface-driven pre-results amendment before
+executing the registered plan. Untouched historical Stage 3A remains a separately
+identified reference series when it cannot share the matched authority.
 
 ## Immediate execution order
 
