@@ -74,8 +74,10 @@ retain conservative observer-wide quarantine.
 
 ### P4 — Event effect footprint / dependency halo
 
-Issue #57 resolves this gate from source inspected at current `main`
-`910717aac101363ec2b1b89e4041a22bc9a97b97`. The authoritative paths are
+Issue #57 resolves this gate from source originally inspected at
+`910717aac101363ec2b1b89e4041a22bc9a97b97` and narrowly revalidated after
+reconciliation against current `main`
+`17f01f729b41da0e0a635a279b6e72684422cdd4`. The authoritative paths are
 `World::queue_explosion`, `World::apply_pending_explosions`,
 `World::discovery_signals` and `World::observe_discovery_event` in
 `native/src/world.cpp`, with configuration/rule reach established by
@@ -188,8 +190,10 @@ extend those observer obligations rather than duplicate their physics assertions
 
 Approve retire-before-reset discovery semantics. An old observation may not remain
 current after its underlying World authority has been cleared/replaced. Replacement
-allocation failure leaves discovery explicitly unavailable/refused under the
-documented World failure boundary; it does not resurrect stale generations.
+construction failure after authoritative clear leaves discovery explicitly
+unavailable while the cleared World remains usable and not failed; it does not
+resurrect stale generations. Existing failed-tick quarantine remains a separate
+failure boundary.
 
 ### P6 — Local observations
 
@@ -228,7 +232,13 @@ architecture-review head through the #57 inspected source head `910717a`, the
 Stage-3 World event/discovery implementation likewise remained unchanged. The
 intervening changes established Stage-3B planning/CI authority and merged
 #29/INT-000; that merge changed interaction/material-rule and `test_world` surfaces,
-but not the World event/discovery source audited for this decision.
+but not the World event/discovery source audited for this decision. Final #57
+reconciliation then revalidated the same event/halo facts against current `main`
+`17f01f729b41da0e0a635a279b6e72684422cdd4`. PR #75 changed only canonical
+worker-parity CI routing. #58 / PR #72 changed discovery retirement/reset ordering,
+settled-discovery lifecycle internals/tests and source-matched runtimes; it did not
+change explosion acceptance/execution, event effect reach, dependency-halo
+semantics or the Stage-3A event observation formula.
 
 ## Implementation authority
 
@@ -236,9 +246,12 @@ The active production routing document is
 [soliding-stage3b-production-plan.md](../operations/soliding-stage3b-production-plan.md).
 Issues #56-#70 are its bounded work packages.
 
-The first implementation source package is #58 after #56 records this authority.
-Issue #57 and validation preregistration #69 may proceed in parallel. Central
-World producer work remains serialized within #61-#63.
+#58 / PR #72 is merged on `main` as
+`17f01f729b41da0e0a635a279b6e72684422cdd4`, closing G1 lifecycle safety.
+Issue #57 resolves G-P4 in this document without production source changes;
+validation preregistration #69 remains an independent lane. Central World producer
+work remains serialized within #61-#63, and #63 retains the event/coverage
+implementation after its separate #62 prerequisite.
 
 ## Later admission
 
