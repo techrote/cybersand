@@ -65,6 +65,34 @@ enum class InteractionAuthority : std::uint8_t {
     CurrentWorldKernel,
 };
 
+enum class InteractionLayerKind : std::uint8_t {
+    ChannelDefault,
+    FamilyDefault,
+    MaterialAdjustment,
+    PairOverride,
+    ContextModifier,
+};
+
+enum class InteractionParticipantRole : std::uint8_t {
+    Either,
+    Source,
+    Target,
+};
+
+struct InteractionLayerKindDefinition {
+    InteractionLayerKind kind;
+    std::string_view id;
+    std::uint16_t precedence;
+};
+
+inline constexpr std::array<InteractionLayerKindDefinition, 5> kInteractionLayerKinds{{
+    {InteractionLayerKind::ChannelDefault, "channel_default", 100U},
+    {InteractionLayerKind::FamilyDefault, "family_default", 200U},
+    {InteractionLayerKind::MaterialAdjustment, "material_adjustment", 300U},
+    {InteractionLayerKind::PairOverride, "pair_override", 400U},
+    {InteractionLayerKind::ContextModifier, "context_modifier", 500U},
+}};
+
 enum class InteractionAuthoredStatus : std::uint8_t {
     InheritedDefault,
     ExplicitNonInteracting,
@@ -110,6 +138,9 @@ struct PairInteractionRule {
     std::uint8_t probability;
     std::string_view accounting;
     std::uint32_t revalidation_tags;
+    std::uint32_t version = 1U;
+    std::string_view supersedes{};
+    std::string_view tuning_pass_id = "int.pass.current-oracle";
 };
 
 inline constexpr std::array<PairInteractionRule, 14> kPairInteractionRules{{
@@ -265,6 +296,46 @@ struct SemanticFamilyMembership {
     Material material;
 };
 
+struct InteractionLayerSelector {
+    InteractionParticipantRole role = InteractionParticipantRole::Either;
+    std::string_view family_id{};
+    bool has_material = false;
+    Material material = Material::Empty;
+    std::string_view context_id{};
+};
+
+struct InteractionLayerDefinition {
+    std::string_view id;
+    std::uint32_t version;
+    std::string_view supersedes;
+    InteractionChannel channel;
+    InteractionLayerKind kind;
+    InteractionLayerSelector selector;
+    std::string_view effect_ref;
+    std::string_view tuning_pass_id;
+};
+
+// Current behaviour has no implicit authored defaults/adjustments/modifiers.
+// Keeping this sparse table empty is intentional: the schema/compiler can
+// express later bounded layers without silently inventing Current semantics.
+inline constexpr std::array<InteractionLayerDefinition, 0> kInteractionLayerDefinitions{};
+
+struct CompiledInteractionLayer {
+    bool matched = false;
+    bool conflict = false;
+    std::size_t layer_index = 0U;
+    std::uint16_t precedence = 0U;
+};
+
+struct InteractionCatalogueValidation {
+    bool ok = true;
+    std::size_t duplicate_rule_ids = 0U;
+    std::size_t conflicting_pair_overrides = 0U;
+    std::size_t invalid_family_memberships = 0U;
+    std::size_t unresolved_layer_conflicts = 0U;
+    std::size_t invalid_supersession_links = 0U;
+};
+
 inline constexpr std::array<SemanticFamilyMembership, 16> kSemanticFamilyMemberships{{
     {"int.family.combustible-kernel", Material::Wood},
     {"int.family.combustible-kernel", Material::OakTimber},
@@ -293,6 +364,9 @@ struct SpecializedInteractionRule {
     std::string_view authority_path;
     std::string_view represented_semantics;
     std::uint32_t revalidation_tags;
+    std::uint32_t version = 1U;
+    std::string_view supersedes{};
+    std::string_view tuning_pass_id = "int.pass.current-oracle";
 };
 
 inline constexpr std::array<SpecializedInteractionRule, 19> kSpecializedInteractionRules{{
@@ -467,6 +541,16 @@ public:
         return kPairInteractionRules;
     }
 
+    [[nodiscard]] static constexpr std::span<const InteractionLayerKindDefinition>
+    layer_kinds() noexcept {
+        return kInteractionLayerKinds;
+    }
+
+    [[nodiscard]] static constexpr std::span<const InteractionLayerDefinition>
+    authored_layers() noexcept {
+        return kInteractionLayerDefinitions;
+    }
+
     [[nodiscard]] static constexpr std::span<const SpecializedInteractionRule>
     specialized_rules() noexcept {
         return kSpecializedInteractionRules;
@@ -497,6 +581,136 @@ public:
             if (membership.family_id == family_id && membership.material == material) return true;
         }
         return false;
+    }
+
+    [[nodiscard]] static constexpr std::uint16_t layer_precedence(
+        InteractionLayerKind kind) noexcept {
+        for (const auto& definition : kInteractionLayerKinds) {
+            if (definition.kind == kind) return definition.precedence;
+        }
+        return 0U;
+    }
+
+    [[nodiscard]] static constexpr bool selector_matches(
+        const InteractionLayerSelector& selector,
+        Material source,
+        Material target,
+        std::string_view context_id) noexcept {
+        const auto role_matches = [&](Material candidate) constexpr {
+            if (selector.has_material && selector.material != candidate) return false;
+            if (!selector.family_id.empty() && !in_family(selector.family_id, candidate)) return false;
+            return true;
+        };
+        bool participant_match = false;
+        switch (selector.role) {
+            case InteractionParticipantRole::Source:
+                participant_match = role_matches(source);
+                break;
+            case InteractionParticipantRole::Target:
+                participant_match = role_matches(target);
+                break;
+            case InteractionParticipantRole::Either:
+                participant_match = role_matches(source) || role_matches(target);
+                break;
+        }
+        if (!participant_match) return false;
+        return selector.context_id.empty() || selector.context_id == context_id;
+    }
+
+    [[nodiscard]] static constexpr CompiledInteractionLayer compile_layer(
+        InteractionChannel channel,
+        Material source,
+        Material target,
+        std::string_view context_id = {}) noexcept {
+        CompiledInteractionLayer result{};
+        for (std::size_t index = 0; index < kInteractionLayerDefinitions.size(); ++index) {
+            const auto& layer = kInteractionLayerDefinitions[index];
+            if (layer.channel != channel ||
+                !selector_matches(layer.selector, source, target, context_id)) {
+                continue;
+            }
+            const auto precedence = layer_precedence(layer.kind);
+            if (!result.matched || precedence > result.precedence) {
+                result = {true, false, index, precedence};
+            } else if (precedence == result.precedence) {
+                result.conflict = true;
+            }
+        }
+        return result;
+    }
+
+    [[nodiscard]] static constexpr InteractionCatalogueValidation validate_catalogue() noexcept {
+        InteractionCatalogueValidation result{};
+
+        for (std::size_t left = 0; left < kPairInteractionRules.size(); ++left) {
+            const auto& a = kPairInteractionRules[left];
+            if (!a.supersedes.empty() && a.supersedes == a.id) {
+                ++result.invalid_supersession_links;
+            }
+            for (std::size_t right = left + 1U; right < kPairInteractionRules.size(); ++right) {
+                const auto& b = kPairInteractionRules[right];
+                if (a.id == b.id) ++result.duplicate_rule_ids;
+                const bool same_pair =
+                    (a.first == b.first && a.second == b.second) ||
+                    (a.first == b.second && a.second == b.first);
+                if (same_pair) ++result.conflicting_pair_overrides;
+            }
+        }
+        for (std::size_t left = 0; left < kSpecializedInteractionRules.size(); ++left) {
+            const auto& a = kSpecializedInteractionRules[left];
+            if (!a.supersedes.empty() && a.supersedes == a.id) {
+                ++result.invalid_supersession_links;
+            }
+            for (const auto& pair : kPairInteractionRules) {
+                if (a.id == pair.id) ++result.duplicate_rule_ids;
+            }
+            for (std::size_t right = left + 1U; right < kSpecializedInteractionRules.size(); ++right) {
+                if (a.id == kSpecializedInteractionRules[right].id) ++result.duplicate_rule_ids;
+            }
+        }
+        for (const auto& membership : kSemanticFamilyMemberships) {
+            bool found = false;
+            for (const auto& family : kSemanticFamilies) {
+                found = found || membership.family_id == family.id;
+            }
+            if (!found) ++result.invalid_family_memberships;
+        }
+        for (std::size_t left = 0; left < kInteractionLayerDefinitions.size(); ++left) {
+            const auto& a = kInteractionLayerDefinitions[left];
+            if (!a.supersedes.empty() && a.supersedes == a.id) {
+                ++result.invalid_supersession_links;
+            }
+            if (!a.selector.family_id.empty()) {
+                bool found = false;
+                for (const auto& family : kSemanticFamilies) {
+                    found = found || a.selector.family_id == family.id;
+                }
+                if (!found) ++result.invalid_family_memberships;
+            }
+            for (std::size_t right = left + 1U; right < kInteractionLayerDefinitions.size(); ++right) {
+                const auto& b = kInteractionLayerDefinitions[right];
+                if (a.id == b.id) ++result.duplicate_rule_ids;
+                const bool same_selector =
+                    a.channel == b.channel &&
+                    a.kind == b.kind &&
+                    a.selector.role == b.selector.role &&
+                    a.selector.family_id == b.selector.family_id &&
+                    a.selector.has_material == b.selector.has_material &&
+                    (!a.selector.has_material || a.selector.material == b.selector.material) &&
+                    a.selector.context_id == b.selector.context_id;
+                if (same_selector &&
+                    layer_precedence(a.kind) == layer_precedence(b.kind)) {
+                    ++result.unresolved_layer_conflicts;
+                }
+            }
+        }
+
+        result.ok = result.duplicate_rule_ids == 0U &&
+                    result.conflicting_pair_overrides == 0U &&
+                    result.invalid_family_memberships == 0U &&
+                    result.unresolved_layer_conflicts == 0U &&
+                    result.invalid_supersession_links == 0U;
+        return result;
     }
 
     [[nodiscard]] static constexpr PairInteractionMatch match_pair(
@@ -599,6 +813,17 @@ public:
 }
 
 static_assert(kPairInteractionRules.size() == 14U);
+static_assert(kSpecializedInteractionRules.size() == 19U);
+static_assert(kInteractionLayerKinds.size() == 5U);
+static_assert(InteractionRules::layer_precedence(InteractionLayerKind::ChannelDefault) <
+              InteractionRules::layer_precedence(InteractionLayerKind::FamilyDefault));
+static_assert(InteractionRules::layer_precedence(InteractionLayerKind::FamilyDefault) <
+              InteractionRules::layer_precedence(InteractionLayerKind::MaterialAdjustment));
+static_assert(InteractionRules::layer_precedence(InteractionLayerKind::MaterialAdjustment) <
+              InteractionRules::layer_precedence(InteractionLayerKind::PairOverride));
+static_assert(InteractionRules::layer_precedence(InteractionLayerKind::PairOverride) <
+              InteractionRules::layer_precedence(InteractionLayerKind::ContextModifier));
+static_assert(InteractionRules::validate_catalogue().ok);
 static_assert(InteractionRules::in_family("int.family.conductive-base-metal", Material::Metal));
 static_assert(!InteractionRules::in_family("int.family.conductive-base-metal", Material::WroughtIron));
 static_assert(!InteractionRules::in_family("int.family.conductive-base-metal", Material::Copper));
