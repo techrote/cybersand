@@ -159,7 +159,24 @@ static func mechanism_fixture(mechanism: String, seed: int = 0) -> Dictionary:
 				observe("concrete-120",120,"material_cells",[180,68,124,176],31),
 				observe("concrete-final",duration,"material_cells",[180,68,124,176],31)]
 	out.observations.append(observe("end",duration,"tick",[0,0,1,1]))
-	out.conditions = [{"observation":"end","comparison":"eq","value":duration,"outcome":"complete"}]
+	match mechanism:
+		"fire-gunpowder":
+			out.conditions = [
+				{"observation":"gunpowder-final","comparison":"le","value":479,"outcome":"complete"},
+				{"observation":"gunpowder-final","comparison":"ge","value":480,"outcome":"fail"}]
+		"acid-metal":
+			out.conditions = [
+				{"observation":"rust-60","comparison":"ge","value":1,"outcome":"complete"},
+				{"observation":"rust-60","comparison":"eq","value":0,"outcome":"fail"}]
+		"spark-metal":
+			out.conditions = [
+				{"observation":"spark-4","comparison":"le","value":159,"outcome":"complete"},
+				{"observation":"spark-4","comparison":"ge","value":160,"outcome":"fail"}]
+		"cement-water":
+			out.conditions = [
+				{"observation":"concrete-120","comparison":"ge","value":1,"outcome":"complete"},
+				{"observation":"concrete-120","comparison":"eq","value":0,"outcome":"fail"}]
+	out.conditions.append({"observation":"end","comparison":"eq","value":duration,"outcome":"complete"})
 	out.source_recipe = "INT-000 generated mechanism fixture v1 / " + mechanism
 	return finish(out)
 
