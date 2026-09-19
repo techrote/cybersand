@@ -764,6 +764,37 @@ public:
     return "unknown";
 }
 
+[[nodiscard]] constexpr std::string_view interaction_layer_kind_id(
+    InteractionLayerKind kind) noexcept {
+    for (const auto& definition : kInteractionLayerKinds) {
+        if (definition.kind == kind) return definition.id;
+    }
+    return "unknown";
+}
+
+[[nodiscard]] constexpr std::string_view interaction_participant_role_id(
+    InteractionParticipantRole role) noexcept {
+    switch (role) {
+        case InteractionParticipantRole::Either: return "either";
+        case InteractionParticipantRole::Source: return "source";
+        case InteractionParticipantRole::Target: return "target";
+    }
+    return "unknown";
+}
+
+[[nodiscard]] constexpr std::string_view interaction_revalidation_tag_id(
+    InteractionRevalidationTag tag) noexcept {
+    switch (tag) {
+        case InteractionRevalidationTag::WaterContact: return "water_contact";
+        case InteractionRevalidationTag::GranularContact: return "granular_contact";
+        case InteractionRevalidationTag::SchedulerContact: return "scheduler_contact";
+        case InteractionRevalidationTag::ThermalCadence: return "thermal_cadence";
+        case InteractionRevalidationTag::BiologicalContact: return "biological_contact";
+        case InteractionRevalidationTag::BallisticContact: return "ballistic_contact";
+    }
+    return "unknown";
+}
+
 [[nodiscard]] constexpr std::string_view interaction_trigger_id(
     InteractionTriggerKind trigger) noexcept {
     switch (trigger) {
