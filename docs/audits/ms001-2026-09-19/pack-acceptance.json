@@ -3,9 +3,9 @@
   "date": "2026-09-19",
   "issue": 28,
   "pr": 44,
-  "integration_base": "5001f7f8665cf4e3bc67b3617796127c908ac368",
-  "implementation_checkpoint": "5e638b284763f01ddab51f256d5e15517a6f4085",
-  "status": "pre-publication integrated acceptance evidence",
+  "integration_base": "13a26b78b1ef4d6eafa5f2fc649c79976a2eb6ac",
+  "implementation_checkpoint": "fd6720df4403de29eb510907903084f848c2b50d",
+  "status": "integrated runtimes published; final exact-head acceptance pending",
   "source_hashes": {
     "godot/scripts/microscenario_reference_pack.gd": "baa32a8d5913399633a92a9ed3bc304e6b8e1ca972b4352bd8f1c99494a7b277",
     "godot/scripts/microscenario_workbench.gd": "d19bb3aa1071cbe236dfb1a468227cf76d155615046bd9e1aeb32e5db059e3b3",
@@ -103,15 +103,13 @@
   },
   "runtime": {
     "godot": "4.7.stable.official.5b4e0cb0f",
-    "linux_native_sha256": "17b3053d9f1f7d9ee1324bd00d54421df2518c6d239f4b5b8d33b4f06651fe79",
-    "linux_ci_run": 35414442819,
-    "linux_ci_artifact": 10575133085,
-    "windows_native_sha256": "f1030f9c9d89ee392715f21cfbcd41cabded623bbd2df81ada337e9ce5b494b0",
-    "windows_build_run": 35413451506,
-    "windows_build_artifact": 10575336645,
+    "linux_native_sha256": "42f3d8da5988b1ce414d14a6132a621c60b5265375abe0e24e4f860ff64ae245",
+    "windows_native_sha256": "cbba322590cd43c54dcc2b8cbdb2c8c8d1ffabe4ac67331d01a7f3b538a78dba",
     "windows_execution": "unavailable",
     "browser_wasm_execution": "unavailable",
-    "target_gpu_performance": "unavailable"
+    "target_gpu_performance": "unavailable",
+    "integrated_runtime_build_run": 35446887090,
+    "integrated_runtime_artifact": 10585600308
   },
   "limitations": [
     "Scenario results are exploratory/versioned, not production physics acceptance.",
