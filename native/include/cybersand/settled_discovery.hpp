@@ -9,9 +9,9 @@
 #include <stdexcept>
 #include <utility>
 
-// Stage 3 substrate only: the serialized producer supplies complete invalidation
-// and activity signals. This is NOT wired into World and cannot authorize skips,
-// cohesion, colliders or transfers. It owns observations, never material.
+// Stage 3 observation substrate: the serialized World producer supplies complete
+// invalidation and activity signals. It cannot authorize simulation skips, cohesion,
+// colliders or transfers. It owns observations, never material.
 namespace cybersand::soliding {
 
 struct DiscoveryTileKey {
