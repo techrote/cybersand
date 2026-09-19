@@ -154,10 +154,21 @@ the existing actual-change dirty/write path is preferred. Same-value no-ops do n
 need a revision. Multi-cell movement must invalidate both endpoints before a new
 summary may publish.
 
+**Payload locality rule:** tuple/temperature mutation dirties the tile(s) containing
+the actually changed cells. Cross-tile connectivity is responsible for invalidating
+facing-neighbor region completeness when a dirty tile could gain/lose a bridge.
+Do not inflate every payload write by `maximum_rule_radius` merely for connectivity.
+
+A dependency halo is used only where the observed semantic itself has wider
+influence, for example accepted events, occupancy/contact conservatism or another
+explicitly documented rule dependency. Such halos use the actual configured
+`maximum_rule_radius` and must be counted as producer fanout.
+
 For phased workers, existing `JobEffects` rectangles are the first bounded
 producer. After each phase barrier, `merge_job_effects` invalidates every canonical
-discovery tile intersecting each conservative effect rectangle plus required
-dependency halo. Quantify false invalidation caused by rectangle coarseness.
+discovery tile intersecting each conservative effect rectangle. Connectivity then
+invalidates the required facing-neighbor region completeness. Quantify false
+invalidation caused by rectangle coarseness separately from explicit semantic halos.
 
 Do not append discovery work from `write_cell`, `move_cell`,
 `transfer_water`, `keep_cell_active` or `schedule_interaction_wake` when they
