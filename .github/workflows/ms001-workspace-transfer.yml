@@ -26,40 +26,102 @@ jobs:
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           test -z "$(git status --porcelain)"
-          git merge-base --is-ancestor de332eaf8f4e70b25b097bed0c2e2a7b2aac0173 HEAD
-          gh api repos/techrote/cybersand/git/blobs/43157c769c6b413b3960c780aea3b7e796e38726 > "$RUNNER_TEMP/blob.json"
+          git merge-base --is-ancestor ea7e8809b51b2ca727eb4d4873587706a65e7a85 HEAD
           python3 - <<'PY'
-          import base64, hashlib, json, os, pathlib
-          root = pathlib.Path(os.environ['RUNNER_TEMP'])
-          blob = json.loads((root/'blob.json').read_text())
-          assert blob['encoding'] == 'base64'
-          patch = base64.b64decode(blob['content'])
-          assert hashlib.sha256(patch).hexdigest() == '32638659022fde12ef41a374e780efe20f93d5e11e2dad01b520c64abc727661'
-          (root/'checkpoint.patch').write_bytes(patch)
+          import base64, gzip, hashlib, json, os, pathlib, subprocess
+          chunks = [
+              ('cdae090e9fe72d74cf733c48de90c0de3ce8b501','cdae090e9fe72d74cf733c48de90c0de3ce8b501'),
+              ('7ce2b1e246fe973107f3a1a4558aae2530a675ce','7ce2b1e246fe973107f3a1a4558aae2530a675ce'),
+              ('1c50d133c2b77701bcf50362800402b46e199ace','026c86e0a7c68deb2d28cddae401f0f183dfaf76'),
+              ('d8768f5322bc7c4fb32f3321ea1fa4216a4c4f0f','d8768f5322bc7c4fb32f3321ea1fa4216a4c4f0f'),
+              ('c4b0f71ac52121e75e8b897d874075db6289324d','c4b0f71ac52121e75e8b897d874075db6289324d'),
+              ('5995262b947509f757b709a9eccfb86369b9acb6','5995262b947509f757b709a9eccfb86369b9acb6'),
+              ('9e5887248e6064f7c2ca78583c28ba299d8a818d','9e5887248e6064f7c2ca78583c28ba299d8a818d'),
+              ('8d5f2afe10ae084697f58c38ada01a47ab5c37fa','b66aea1c12976fca1939a2efa607101ea72a9852'),
+              ('ad7143a87dff79d03b895e0dec00928cc97189c7','ad7143a87dff79d03b895e0dec00928cc97189c7'),
+              ('8bc5ed5e6d559582bea75549812576ecad9656fa','8bc5ed5e6d559582bea75549812576ecad9656fa'),
+              ('90248029e421f65f2703c24b11892eb24ddfd7cc','90248029e421f65f2703c24b11892eb24ddfd7cc'),
+          ]
+          encoded = bytearray()
+          for index, (stored, expected) in enumerate(chunks):
+              blob = json.loads(subprocess.check_output(['gh','api',f'repos/techrote/cybersand/git/blobs/{stored}']))
+              assert blob['sha'] == stored and blob['encoding'] == 'base64'
+              content = base64.b64decode(blob['content']).decode('ascii')
+              # Repair two transport-only transcription errors; the expected Git
+              # object and full patch hashes must match the locally tested bytes.
+              if index == 2:
+                  content = content.replace('AlQUfeIYabpr4','AlQUfeIabpr4')
+                  assert content[847:1829] == content[1829:2811]
+                  content = content[:1829] + content[2811:]
+              if index == 7:
+                  assert content.count('Pfimz//p88') == 1
+                  content = content.replace('Pfimz//p88','Pfimz//p288')
+              data = content.encode('ascii')
+              assert hashlib.sha1(f'blob {len(data)}\0'.encode() + data).hexdigest() == expected, index
+              encoded.extend(data)
+          assert len(encoded) == 62024
+          patch = gzip.decompress(base64.b64decode(encoded,validate=True))
+          assert len(patch) == 175679
+          assert hashlib.sha256(patch).hexdigest() == 'c345c02ab6240264d1b7bcc12f08dcfbdb414db85ed2988190487c5726796eeb'
+          (pathlib.Path(os.environ['RUNNER_TEMP'])/'checkpoint.patch').write_bytes(patch)
           PY
           git apply --check "$RUNNER_TEMP/checkpoint.patch"
           git apply --index "$RUNNER_TEMP/checkpoint.patch"
           python3 - <<'PY'
           import subprocess
-          expected = {'godot/native_extension/cyber_demo_bridge.hpp','godot/native_extension/cyber_observation_values.hpp','godot/tests/test_microscenario_native_observation.gd','docs/audits/2026-09-19-issue-28-ms001.md','docs/reference/interfaces-and-message-contracts.md'}
+          expected = set('''docs/README.md
+          docs/architecture/data-ownership-and-lifetimes.md
+          docs/audits/2026-09-19-issue-28-ms001.md
+          docs/audits/ms001-2026-09-19/lab-readiness.json
+          docs/operations/configuration-and-capacity-budgets.md
+          docs/operations/experiment-tower.md
+          docs/operations/microscenario-reference-pack.md
+          docs/operations/microscenarios-programme.md
+          docs/operations/microscenarios.md
+          docs/operations/profiling-observability-and-performance.md
+          docs/reference/retrieval-challenges.json
+          docs/reference/retrieval-corpus.json
+          docs/reference/retrieval-index.md
+          docs/reference/status-and-roadmap.md
+          godot/.godot/global_script_class_cache.cfg
+          godot/scripts/main.gd
+          godot/scripts/microscenario_catalogue.gd
+          godot/scripts/microscenario_comparison.gd
+          godot/scripts/microscenario_comparison.gd.uid
+          godot/scripts/microscenario_contract.gd
+          godot/scripts/microscenario_host.gd
+          godot/scripts/microscenario_identity.gd
+          godot/scripts/microscenario_panel.gd
+          godot/scripts/microscenario_reference_pack.gd
+          godot/scripts/microscenario_reference_pack.gd.uid
+          godot/scripts/microscenario_telemetry.gd
+          godot/scripts/microscenario_telemetry.gd.uid
+          godot/scripts/microscenario_workbench.gd
+          godot/scripts/microscenario_workbench.gd.uid
+          godot/scripts/web_demo_controller.gd
+          godot/tests/fixtures/ms001-legacy-definition-hashes.json
+          godot/tests/fixtures/ms001-salt-water-v1.json
+          godot/tests/test_microscenario_materials_lab.gd
+          godot/tests/test_microscenario_reference_contract.gd
+          godot/tests/test_microscenario_workbench.gd'''.splitlines())
           actual = set(subprocess.check_output(['git','diff','--cached','--name-only'],text=True).splitlines())
           assert actual == expected, (actual,expected)
           PY
           git diff --cached --check
           git config user.name 'techrote'
           git config user.email '261801702+techrote@users.noreply.github.com'
-          git commit -m 'feat(ms001): add bounded read-only native observation adapter'
+          git commit -m 'feat(ms001): ship generated Materials Laboratory and fresh-reset workbench'
           test "$(git ls-remote origin refs/heads/codex/issue-28-ms001 | cut -f1)" = "$GITHUB_SHA"
           git push origin HEAD:refs/heads/codex/issue-28-ms001
           test -z "$(git status --porcelain)"
           mkdir "$RUNNER_TEMP/ms001-checkpoint"
-          git bundle create "$RUNNER_TEMP/ms001-checkpoint/source.bundle" HEAD refs/remotes/origin/main
+          git bundle create "$RUNNER_TEMP/ms001-checkpoint/source.bundle" HEAD ^ea7e8809b51b2ca727eb4d4873587706a65e7a85
           git rev-parse HEAD > "$RUNNER_TEMP/ms001-checkpoint/source-revision.txt"
           (cd "$RUNNER_TEMP/ms001-checkpoint" && sha256sum source.bundle source-revision.txt > SHA256SUMS)
-          rm -f "$RUNNER_TEMP/blob.json" "$RUNNER_TEMP/checkpoint.patch"
+          rm -f "$RUNNER_TEMP/checkpoint.patch"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: ms001-native-checkpoint-${{ github.sha }}
+          name: ms001-lab-checkpoint-${{ github.sha }}
           path: ${{ runner.temp }}/ms001-checkpoint/
           if-no-files-found: error
-          retention-days: 3
+          retention-days: 7
