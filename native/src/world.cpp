@@ -725,55 +725,6 @@ void World::dirty_discovery_cell(std::int64_t x, std::int64_t y,
     (void)settled_discovery_->notify_payload(*handle, reason, tick_index_);
 }
 
-void World::dirty_discovery_rect(ChunkCoord coord, std::int32_t minimum_x,
-                                 std::int32_t minimum_y, std::int32_t maximum_x,
-                                 std::int32_t maximum_y,
-                                 soliding::ProducerReason reason) noexcept {
-    if (settled_discovery_ == nullptr) return;
-    const auto* chunk = find_chunk(coord);
-    if (chunk == nullptr) return;
-    minimum_x = std::clamp(minimum_x, 0, config_.chunk_size - 1);
-    minimum_y = std::clamp(minimum_y, 0, config_.chunk_size - 1);
-    maximum_x = std::clamp(maximum_x, 0, config_.chunk_size - 1);
-    maximum_y = std::clamp(maximum_y, 0, config_.chunk_size - 1);
-    if (minimum_x > maximum_x || minimum_y > maximum_y) return;
-    const auto minimum_activity_x = minimum_x / config_.activity_block_size;
-    const auto minimum_activity_y = minimum_y / config_.activity_block_size;
-    const auto maximum_activity_x = maximum_x / config_.activity_block_size;
-    const auto maximum_activity_y = maximum_y / config_.activity_block_size;
-    for (auto activity_y = minimum_activity_y; activity_y <= maximum_activity_y; ++activity_y) {
-        const auto block_y = activity_y * config_.activity_block_size;
-        const auto first_subtile_y = (std::max(minimum_y, block_y) - block_y) / 32;
-        const auto last_subtile_y = (std::min(maximum_y,
-            std::min(block_y + config_.activity_block_size, config_.chunk_size) - 1) - block_y) / 32;
-        for (auto activity_x = minimum_activity_x; activity_x <= maximum_activity_x; ++activity_x) {
-            const auto block_x = activity_x * config_.activity_block_size;
-            const auto first_subtile_x = (std::max(minimum_x, block_x) - block_x) / 32;
-            const auto last_subtile_x = (std::min(maximum_x,
-                std::min(block_x + config_.activity_block_size, config_.chunk_size) - 1) - block_x) / 32;
-            const auto activity_index = static_cast<std::size_t>(activity_y) *
-                static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
-                static_cast<std::size_t>(activity_x);
-            for (auto subtile_y = first_subtile_y; subtile_y <= last_subtile_y; ++subtile_y) {
-                for (auto subtile_x = first_subtile_x; subtile_x <= last_subtile_x; ++subtile_x) {
-                    const soliding::DiscoveryTileKey key{
-                        settled_discovery_->incarnation(), coord.y, coord.x,
-                        activity_y, activity_x, subtile_y, subtile_x,
-                    };
-                    const auto handle = settled_discovery_->find_handle(key);
-                    if (!handle.has_value()) continue;
-                    const auto snapshot = settled_discovery_->tile(*handle);
-                    if (!snapshot.has_value()) continue;
-                    (void)settled_discovery_->dirty(*handle, reason, tick_index_);
-                    auto signals = discovery_signals(coord, activity_index, snapshot->summary.bounds);
-                    signals.occupied = snapshot->signals.occupied;
-                    (void)settled_discovery_->observe(*handle, signals, reason, tick_index_);
-                }
-            }
-        }
-    }
-}
-
 void World::refresh_discovery_signals(soliding::ProducerReason reason) noexcept {
     if (settled_discovery_ == nullptr) return;
     const auto count = settled_discovery_->size();
