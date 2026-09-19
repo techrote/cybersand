@@ -184,7 +184,7 @@ current Stage-3B work.
 | G0 production authority | #56 | Stage-3B implementation routing is canonical |
 | G-P4 event footprint | #57 | Sparse event observer semantics are explicit |
 | G1 lifecycle safety | #58 / PR #72 merged | Reset/replacement cannot revive stale observation |
-| G2 runtime sizing | #59 | Capacity-sized reference preserves Stage-3A semantics |
+| G2 runtime sizing | #59 / PR #76 merged | Capacity-sized reference preserves Stage-3A semantics |
 | G3 indexed geometry | #60 | Registration/lookup have bounded deterministic structure |
 | G4 producer completeness | #61-#63 | Every frozen producer route is witnessed or safely fenced |
 | G4 graph incidence | #64 | Exact local graph and reverse invalidation exist |
@@ -195,18 +195,16 @@ current Stage-3B work.
 
 None of these gates admits Stage 4.
 
-### Issue #59 implementation checkpoint
+### Issue #59 completion / #60 handoff checkpoint
 
-Issue #59 is the active separately dispatched package on
-`codex/issue-59-stage3b-runtime-sized-storage`, based on authoritative `main`
-`3d5504836578eb9d47e11b677767bfbe8039fccb`. Its implementation is bounded to
-Stage-3A-equivalent backing conversion: journal `T`, edges `64T`,
-frontier/seen/members `32T`, effective-capacity key/index storage, with
-`C=1024`, `K=32`, `B=128` and publication `P=4096` unchanged.
+Issue #59 completed on PR #76 and merged to authoritative `main`
+`5d89be4488e5fec3bf37e40ac87601fb14f2989b`. The landed Stage-3A-equivalent
+backing conversion sizes journal `T`, edges `64T`, frontier/seen/members
+`32T`, and key/index storage by effective capacity while retaining
+`C=1024`, `K=32`, `B=128` and publication `P=4096`.
 
-G2 remains open until the exact source-matched runtime publication, final normal
-repository validation and merge of #59. #60 must not begin from the in-flight
-branch.
+G2 is closed. #60 is the next dependency-ready production package and must start
+from current authoritative `main`, not the historical #59 implementation branch.
 
 ## Required ordering principles
 
@@ -295,10 +293,10 @@ identified reference series when it cannot share the matched authority.
 
 1. #56 authority/routing is complete.
 2. #58 / PR #72 is complete and G1 is closed; #57 / PR #73 is complete and
-   G-P4 is closed. #69 remains an independent preregistration lane.
-3. #59 is now the separately dispatched active package from completed #58. Complete
-   its source-matched runtime publication, exact-head validation and merge before
-   starting #60.
+   G-P4 is closed. #69 preregistration is complete; #70 remains gated on #68 and
+   the frozen candidate/source-runtime identity.
+3. #59 / PR #76 is complete and G2 is closed. #60 is the next production package;
+   start it from current authoritative `main`.
 4. After #60, run #61-#63 as the serialized World-producer lane while #64 runs as
    the parallel graph lane. #63 remains blocked on both #62 and #57.
 5. Join at #65.
