@@ -407,8 +407,12 @@ private:
         return bounds.x <= std::numeric_limits<std::int64_t>::max() - static_cast<std::int64_t>(bounds.width - 1U) &&
                bounds.y <= std::numeric_limits<std::int64_t>::max() - static_cast<std::int64_t>(bounds.height - 1U);
     }
-    static std::int64_t max_x(const DiscoveryBounds& bounds) noexcept { return bounds.x + bounds.width - 1U; }
-    static std::int64_t max_y(const DiscoveryBounds& bounds) noexcept { return bounds.y + bounds.height - 1U; }
+    static std::int64_t max_x(const DiscoveryBounds& bounds) noexcept {
+        return bounds.x + static_cast<std::int64_t>(bounds.width - 1U);
+    }
+    static std::int64_t max_y(const DiscoveryBounds& bounds) noexcept {
+        return bounds.y + static_cast<std::int64_t>(bounds.height - 1U);
+    }
     static bool overlaps(const DiscoveryBounds& a, const DiscoveryBounds& b) noexcept {
         return a.x <= max_x(b) && b.x <= max_x(a) && a.y <= max_y(b) && b.y <= max_y(a);
     }
