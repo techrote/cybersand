@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-09-18
+last-reviewed: 2026-09-19
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md]
 ---
 
@@ -142,3 +142,12 @@ fixtures and retained tuning-pass provenance. Kinetic/contact anomalies discover
 in MicroScenarios are captured/reduced and routed to their real physics owner
 instead of being hidden in interaction rules.
 
+
+
+## Issue #29 bounded preflight
+
+The [INT-000 bounded preflight audit](audits/2026-09-19-issue-29-preflight.md)
+records the source-inspected interaction inventory, candidate sparse
+authoring/coverage/provenance model, fixture-family plan and post-gate touchpoints.
+It explicitly leaves the #28 Materials Laboratory readiness gate closed and is
+not implementation, tuning or runtime acceptance evidence.
