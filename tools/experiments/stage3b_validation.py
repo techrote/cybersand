@@ -20,8 +20,8 @@ ARMS=(
  {"id":"stage3b-indexed-graph","class":"intermediate","availability":"unavailable"},
  {"id":"stage3b-candidate","class":"candidate","availability":"unavailable"},
 )
-RESULT_STATES=("success","correctness-failure","performance-failure","refused","timeout",
-               "source-failure","failed-world","unavailable","not-applicable")
+RESULT_STATES=("success","correctness-failure","refused","timeout","source-failure",
+               "failed-world","unavailable","not-applicable")
 PROVENANCE_FIELDS=("source_commit","dirty_status","source_input_hashes","compiler_executable",
  "compiler_version","compiler_sha256","flags","executable_sha256","contract_version","capacities",
  "worker_count","fixture_id","fixture_version","seed","authoritative_mutation_schedule",
@@ -70,7 +70,8 @@ def fixture_catalogue():
     for f in fields:
         for p in positions:
             out.append(fixture(f"one-cell.{f}.{p}","genuine-one-cell-edit",f"Exactly one {f} edit at {p}",
-              intended_changed_cell_count=1,mutation={"selector":p,"field":f,"authoritative_cells_changed":1}))
+              intended_changed_cell_count=1,mutation={"selector":p,"field":f,"authoritative_cells_changed":1},
+              expected_outcomes=["success","not-applicable"] if f in {"noncanonical_empty","negative_temperature"} else ["success"]))
     out += [
       fixture("historical.local-edit-8x8","retained-historical-control","Historical local-edit",intended_changed_cell_count=64,retained_meaning="8x8 patch edit"),
       fixture("historical.bridge-whole-column","retained-historical-control","Historical bridge",retained_meaning="whole-column change"),
@@ -93,7 +94,8 @@ def fixture_catalogue():
         out.append(fixture(f"deadline.{n}","activity-deadline-no-write",n))
     for n in ("direct-tuple-A-B-A","mask-set-clear","mask-reconfiguration","overlapping-event-acceptance-drain",
               "inclusion-requested-applied-ABA","same-barrier-restore","worker-effect-rectangle-fanout","event-dependency-halo-fanout"):
-        out.append(fixture(f"aba.{n}","aba-fanout",n))
+        out.append(fixture(f"aba.{n}","aba-fanout",n,
+          expected_outcomes=["success","not-applicable"] if n=="same-barrier-restore" else ["success"]))
     for n in ("continuous-local-churn","stable-nearby-candidate","stable-far-candidate","independent-pending-domains",
               "churn-every-1-service-call","churn-every-2-service-calls","churn-every-8-service-calls",
               "continuous-lower-coordinate-arrival","stale-work-before-validation","recovery-after-churn-stops","cleanup-reclamation-near-capacity"):
@@ -109,12 +111,14 @@ def fixture_catalogue():
         out.append(fixture(f"failure.{n}","capacity-failure",n,expected_outcomes=["refused","source-failure","failed-world"]))
     for n in ("forward-reverse-registration","successful-free-slot-order","allocation-order","equal-deadline-ties",
               "translated-signed-geometry","adversarial-hash-keys","scarce-publication-capacity-competition"):
-        out.append(fixture(f"determinism.{n}","determinism-permutation",n,parameters={"workers":[1,4],"canonical_output_required":True}))
+        out.append(fixture(f"determinism.{n}","determinism-permutation",n,parameters={"workers":[1,4],"canonical_output_required":True},
+          expected_outcomes=["success","not-applicable"] if n=="adversarial-hash-keys" else ["success"]))
     axes=("configured-capacity","represented-coverage","component-complexity","edge-complexity","dependency-fanout",
           "active-reconstruction-jobs","staged-generations","retired-unreclaimed-generations")
     for a in axes:
         for v in (64,256,1024,4096):
-            out.append(fixture(f"memory.{a}.{v}","memory",f"{a}={v}",parameters={"sweep_axis":a,"value":v,"other_axes":"baseline"}))
+            out.append(fixture(f"memory.{a}.{v}","memory",f"{a}={v}",parameters={"sweep_axis":a,"value":v,"other_axes":"baseline"},
+              expected_outcomes=["success","not-applicable"]))
     return out
 
 def validate_fixtures(fs):
@@ -253,10 +257,10 @@ def validate_result(v,row):
         for g in ("producer_signal","deadline_activity","exact_extraction","index","retirement_dependency","merge_local_fast_path","reconstruction","publication","reclamation"):
             if any(x is not None for x in ms[g].values()): raise ValueError("Current fabricated observer measurements")
     state=v["state"]
-    if state in {"success","correctness-failure","performance-failure","refused","timeout","source-failure","failed-world"}:
+    if state in {"success","correctness-failure","refused","timeout","source-failure","failed-world"}:
         for f in ("source_commit","dirty_status","compiler_executable","compiler_version","compiler_sha256","executable_sha256","stdout_identity","stderr_identity","raw_result_identity"):
             if p.get(f) in (None,""): raise ValueError(f"executed result missing provenance identity: {f}")
-    if state in {"correctness-failure","performance-failure","refused","timeout","source-failure","failed-world"} and not v["failure"].get("kind"):
+    if state in {"correctness-failure","refused","timeout","source-failure","failed-world"} and not v["failure"].get("kind"):
         raise ValueError("failure/refusal/timeout must retain explicit failure kind")
     if state=="unavailable" and row["arm_availability"]=="available": raise ValueError("available arm silently unavailable")
     if state=="success" and row["arm_availability"]=="unavailable": raise ValueError("unavailable arm reported success")
@@ -264,32 +268,76 @@ def validate_result(v,row):
 def pct(xs,p):
     if not xs:return None
     xs=sorted(xs); return xs[max(0,math.ceil(p*len(xs))-1)]
+
+def numeric_summary(values):
+    values=sorted(float(x) for x in values)
+    if not values:return None
+    n=len(values)
+    return {"count":n,"total":sum(values),"min":values[0],"p50":pct(values,.5),
+      "p95":pct(values,.95) if n>=20 else None,
+      "p99":pct(values,.99) if n>=100 else None,"max":values[-1]}
+
+def metric_summaries(values):
+    out={}
+    for group,keys in MEASUREMENTS.items():
+        reported={}
+        for key in keys:
+            numbers=[v["measurements"][group][key] for v in values
+                     if isinstance(v["measurements"][group][key],(int,float))
+                     and not isinstance(v["measurements"][group][key],bool)]
+            if numbers: reported[key]=numeric_summary(numbers)
+        if reported: out[group]=reported
+    return out
+
+def metric_max(values,group,key):
+    numbers=[v["measurements"][group][key] for v in values
+             if isinstance(v["measurements"][group][key],(int,float))
+             and not isinstance(v["measurements"][group][key],bool)]
+    return max(numbers) if numbers else None
+
 def reduce_results(plan,results):
     validate_plan(plan); rows={r["run_id"]:r for r in plan["runs"]}; seen=set(); valid=[]
-    for v in results:
-        rid=v.get("run_id")
+    for value in results:
+        rid=value.get("run_id")
         if rid not in rows or rid in seen: raise ValueError("result absent/duplicate in plan")
-        validate_result(v,rows[rid]); seen.add(rid); valid.append(v)
-    counts={s:sum(v["state"]==s for v in valid) for s in RESULT_STATES}; groups={}
-    for v in valid:
-        r=rows[v["run_id"]]; groups.setdefault((r["arm_id"],r["fixture_id"],r["worker_count"],r["service_mode"]),[]).append(v)
+        validate_result(value,rows[rid]); seen.add(rid); valid.append(value)
+    counts={s:sum(value["state"]==s for value in valid) for s in RESULT_STATES}; groups={}
+    for value in valid:
+        row=rows[value["run_id"]]
+        groups.setdefault((row["arm_id"],row["fixture_id"],row["worker_count"],row["service_mode"]),[]).append(value)
     summaries=[]; insufficient=[]
-    for k,vs in sorted(groups.items()):
-        ok=[v for v in vs if v["state"]=="success"]
-        vals=[float(v["measurements"]["end_to_end"]["total_ms"]) for v in ok if isinstance(v["measurements"]["end_to_end"]["total_ms"],(int,float))]
-        rss=[float(v["measurements"]["memory"]["process_rss_bytes"]) for v in ok if isinstance(v["measurements"]["memory"]["process_rss_bytes"],(int,float))]
-        summaries.append({"arm_id":k[0],"fixture_id":k[1],"worker_count":k[2],"service_mode":k[3],
-          "attempted_records":len(vs),"successful_records":len(ok),"states":{s:sum(v["state"]==s for v in vs) for s in RESULT_STATES if any(v["state"]==s for v in vs)},
-          "total_ms":{"p50":pct(vals,.5),"p95":pct(vals,.95),"p99":pct(vals,.99),"max":max(vals) if vals else None},
-          "process_rss_bytes":{"p50":pct(rss,.5),"max":max(rss) if rss else None}})
-        req=max(rows[v["run_id"]]["cell_repeat_count"] for v in vs)
-        if plan["profile"]=="final" and any(rows[v["run_id"]]["arm_availability"]=="available" for v in vs) and len(ok)<req:
-            insufficient.append({"arm_id":k[0],"fixture_id":k[1],"worker_count":k[2],"service_mode":k[3],"successful_records":len(ok),"required":req})
+    for key,values in sorted(groups.items()):
+        successful=[value for value in values if value["state"]=="success"]
+        reasons={}
+        for value in values:
+            reason=value["measurements"]["reconstruction"]["refusal_reason"]
+            if reason not in (None,""): reasons[str(reason)]=reasons.get(str(reason),0)+1
+        overflow=[value["measurements"]["producer_signal"]["overflow_refusal_count"] for value in values
+                  if isinstance(value["measurements"]["producer_signal"]["overflow_refusal_count"],(int,float))
+                  and not isinstance(value["measurements"]["producer_signal"]["overflow_refusal_count"],bool)]
+        summaries.append({"arm_id":key[0],"fixture_id":key[1],"worker_count":key[2],"service_mode":key[3],
+          "attempted_records":len(values),"successful_records":len(successful),
+          "states":{s:sum(value["state"]==s for value in values) for s in RESULT_STATES if any(value["state"]==s for value in values)},
+          "successful_numeric_metrics":metric_summaries(successful),
+          "high_water_across_all_terminal_records":{
+            "producer_queue":metric_max(values,"producer_signal","queue_high_water"),
+            "reconstruction_frontier":metric_max(values,"reconstruction","frontier_high_water"),
+            "scratch_bytes":metric_max(values,"memory","scratch_high_water_bytes")},
+          "refusals":{"terminal_refused":sum(value["state"]=="refused" for value in values),
+            "overflow_refusal_counter_total":sum(overflow) if overflow else None,
+            "reconstruction_reasons":reasons}})
+        required=max(rows[value["run_id"]]["cell_repeat_count"] for value in values)
+        if plan["profile"]=="final" and any(rows[value["run_id"]]["arm_availability"]=="available" for value in values) and len(successful)<required:
+            insufficient.append({"arm_id":key[0],"fixture_id":key[1],"worker_count":key[2],"service_mode":key[3],
+              "successful_records":len(successful),"required":required})
     return {"schema":REPORT_SCHEMA,"version":1,"contract_version":CONTRACT_VERSION,"plan_sha256":pdigest(plan),
       "records_supplied":len(valid),"state_counts":counts,
-      "missing_available_run_ids":[r["run_id"] for r in plan["runs"] if r["run_id"] not in seen and r["arm_availability"]=="available"],
+      "missing_available_run_ids":[row["run_id"] for row in plan["runs"] if row["run_id"] not in seen and row["arm_availability"]=="available"],
       "insufficient_sample_cells":insufficient,"summaries":summaries,
-      "interpretation":"Correctness failures remain distinct from performance. Unavailable/refused/failed/timeout records are retained. No candidate-specific winner or universal percent-faster threshold is encoded."}
+      "provenance_index":[{"run_id":value["run_id"],"state":value["state"],"provenance":value["provenance"]} for value in valid],
+      "summary_statistics_policy":{"p50_min_samples":1,"p95_min_samples":20,"p99_min_samples":100,
+        "rule":"Percentiles summarize one recorded metric population only; separately reported percentiles are never added."},
+      "interpretation":"Correctness failures remain distinct from performance measurements. Unavailable/refused/failed/timeout records are retained. Configured-memory reduction is not treated as algorithmic performance. No candidate-specific winner or universal percent-faster threshold is encoded."}
 
 def synthetic_smoke(commit):
     p=build_plan(commit,"smoke"); validate_plan(p); rs=[]
