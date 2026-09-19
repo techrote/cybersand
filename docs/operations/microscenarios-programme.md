@@ -505,14 +505,26 @@ this harness. #18/#20 scientific controls and #14/G-final remain separate. #26 h
 with a negative local-candidate disposition and #45 owns its bulk-head successor.
 Do not infer any of those decisions from reusable apparatus or issue numbers.
 
-## MS-001 implementation checkpoint, 2026-09-19
+## MS-001 merged checkpoint, 2026-09-19
 
-The selected MS-000 implementation landed through PR #40 (`de332eaf8f4e70b25b097bed0c2e2a7b2aac0173`).
-MS-001 proceeds only on `codex/issue-28-ms001` / PR #44. The
-[reference pack and controls](microscenario-reference-pack.md) and
-[execution/readiness ledger](../audits/2026-09-19-issue-28-ms001.md) now cover the
-implemented Materials Laboratory, Flood-Control Puzzle and four named Simulation
-Stress profiles. The Lab readiness checkpoint remains the exact prerequisite that
-can be consumed by #29; completing the other two scenarios does not transfer #29
-scope into #28 or change any architecture admission gate. Final PR merge/platform
-acceptance remains distinct from exploratory source/functional completion.
+The selected MS-000 implementation landed through PR #40
+(`de332eaf8f4e70b25b097bed0c2e2a7b2aac0173`). MS-001 then landed through
+PR #44 at accepted head `95aa2a0cb7b68445ed4a23ad16481c947e5a4695`, merged as
+`c1edf907cce1693fa45f89e9f1f573f05483c1e4`.
+
+The [reference pack and controls](microscenario-reference-pack.md) and
+[execution/readiness ledger](../audits/2026-09-19-issue-28-ms001.md) cover the
+Materials Laboratory, Flood-Control Puzzle and four named Simulation Stress
+profiles. Exact-head documentation/provenance, native and Godot CI passed before
+merge. A bounded post-merge review retained the implementation and runtime
+integration, correcting only Flood endpoint wording, an ineffective Stress
+uniqueness assertion and stale compact definition hashes.
+
+The Lab readiness prerequisite for #29 is therefore satisfied. #29 remains a
+separate programme: reconcile its historical preflight against the landed
+schema-2 contract before implementation, preserve existing semantics first, and
+defer actual interaction tuning to later bounded passes. MS-001 completion does
+not waive #18/#20/#26/#14 architecture or physics gates. Actual Windows
+execution, browser/WebAssembly execution and hardware-GPU/target-PC performance
+remain explicitly unavailable rather than inferred from cross-build/Linux UI
+evidence.
