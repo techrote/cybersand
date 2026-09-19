@@ -122,6 +122,12 @@ The first baseline/control and later A/B procedure belong to the
 [measurement contract](../operations/soliding-measurement.md). Missing metrics
 remain gaps; an observer's overhead is not evidence of an acceleration benefit.
 
+**Measured integrated outcome:** the [276-process Stage-3 cost record](../audits/issue-12-2026-09-19/stage3-cost-results.md)
+retains clean workers1/4 Current/producer/journal/connectivity comparisons. It finds
+material fixed memory, producer metadata overhead and expensive large-region rebuilds
+under sparse edits. These are cost-model results, not an acceleration or Stage-4
+admission claim.
+
 ## Bounded work, fairness and metrics
 
 **Current:** one budget unit covers starting/dequeuing a block, reading one cell,

@@ -182,6 +182,37 @@ CYBERSAND_TEST_NOINLINE void movement_mask_event_and_far_locality() {
             "pending-event signal clears only after owner-side drain");
 }
 
+CYBERSAND_TEST_NOINLINE void occupancy_preserves_exact_underlying_tuple() {
+    auto config = tracked_config();
+    config.chunk_size = 8;
+    config.activity_block_size = 1;
+    config.scheduling_core_size = 8;
+    World world(config);
+    require(world.set_cell_state(0, 0, Material::Wall, 17, 3),
+            "under-occupancy tuple fixture accepted");
+    world.set_temperature(0, 0, 222);
+    (void)world.tick();
+    service(world);
+    const auto before = tile_at(world, 0, 0);
+    require(before.summary.classification == DiscoveryClass::Uniform &&
+            before.summary.uniform == DiscoveryCell{1, 17, 3, 222, false},
+            "complete observation contains exact stored tuple before occupancy");
+
+    world.configure_transient_obstacles({0, 0, 1, 1});
+    require(world.set_transient_obstacle(0, 0, 1), "one-cell obstacle accepted");
+    (void)world.tick();
+    service(world);
+    require(tile_at(world, 0, 0).summary.classification == DiscoveryClass::Blocked,
+            "occupancy blocks publication without replacing stored tuple");
+    world.clear_transient_obstacles();
+    (void)world.tick();
+    service(world);
+    const auto after = tile_at(world, 0, 0);
+    require(after.summary.classification == DiscoveryClass::Uniform &&
+            after.summary.uniform == DiscoveryCell{1, 17, 3, 222, false},
+            "mask removal reobserves exact material/state/temperature beneath occupancy");
+}
+
 CYBERSAND_TEST_NOINLINE void no_write_activity_deadline_and_epoch_wrap() {
     auto config = tracked_config();
     World active(config);
@@ -507,6 +538,7 @@ int main() {
         direct_aba_exact_tuple_and_render_independence();
         canonical_geometry_registration_and_capacity();
         movement_mask_event_and_far_locality();
+        occupancy_preserves_exact_underlying_tuple();
         no_write_activity_deadline_and_epoch_wrap();
         custom_geometry_signed_endpoints_and_policy_fence();
         inclusion_reset_move_and_failure_quarantine();
