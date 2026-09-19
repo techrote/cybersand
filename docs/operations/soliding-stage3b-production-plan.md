@@ -29,8 +29,10 @@ Recheck current ownership before the later central World producer handoffs.
 
 ## Resolved #57 event/halo contract
 
-Issue #57 inspected the current event/discovery source at
-`910717aac101363ec2b1b89e4041a22bc9a97b97`. This resolves G-P4 for the later
+Issue #57 originally inspected the event/discovery source at
+`910717aac101363ec2b1b89e4041a22bc9a97b97` and revalidated the same facts
+after merge-based reconciliation against current `main`
+`17f01f729b41da0e0a635a279b6e72684422cdd4`. This resolves G-P4 for the later
 #63 producer package without changing Stage-3A source or event physics.
 
 For an accepted explosion with radius `R`:
@@ -93,7 +95,13 @@ through `35d03001257e0e2a3f60fa7ce6c9f6774c93e9d7` (architecture-review head):
 the relevant Stage-3 native source/tests/bench were unchanged across that
 interval, and intervening MS-001/CI integration was not a fresh Stage-3 timing
 campaign. The Stage-3 native event/discovery source also remained unchanged
-between the architecture-review head and the #57 inspected source head.
+between the architecture-review head and the #57 inspected source head. Final
+revalidation against `17f01f729b41da0e0a635a279b6e72684422cdd4` found that
+intervening #58 changes are limited, for this contract, to discovery
+retirement/reset lifecycle ordering; explosion acceptance/execution, the
+`R + 2` event effect reach, independent `maximum_rule_radius` semantics and
+the existing Stage-3A event observation footprint are unchanged. PR #75's
+intervening change is CI routing only.
 
 ## Work packages
 
@@ -101,7 +109,7 @@ between the architecture-review head and the #57 inspected source head.
 |---|---|---|---|
 | #56 | Record parent decision and implementation authority | parent decision | Repository execution authority and routing |
 | #57 | Resolve event effect-footprint / dependency-halo contract | #56 | P4 resolved: explosion pending half-extent `(R + 2) + r` |
-| #58 | Harden observer lifecycle/reset/allocation failure | #56 | Safe lifecycle/failure foundation |
+| #58 | Harden observer lifecycle/reset/allocation failure | #56 | G1 closed on main by PR #72: safe lifecycle/failure foundation |
 | #59 | Runtime-size Stage-3A-equivalent storage | #58 | Remove compile-max small-world allocation without semantic change |
 | #60 | Canonical bounded spatial indexing | #59 | Bounded deterministic registration/lookup |
 | #61 | Sparse mutation and worker witness core | #60, #58 | Change-driven payload witnesses |
@@ -173,7 +181,7 @@ current Stage-3B work.
 |---|---|---|
 | G0 production authority | #56 | Stage-3B implementation routing is canonical |
 | G-P4 event footprint | #57 | Sparse event observer semantics are explicit |
-| G1 lifecycle safety | #58 | Reset/replacement cannot revive stale observation |
+| G1 lifecycle safety | #58 / PR #72 merged | Reset/replacement cannot revive stale observation |
 | G2 runtime sizing | #59 | Capacity-sized reference preserves Stage-3A semantics |
 | G3 indexed geometry | #60 | Registration/lookup have bounded deterministic structure |
 | G4 producer completeness | #61-#63 | Every frozen producer route is witnessed or safely fenced |
@@ -221,11 +229,13 @@ evidence quality.
 
 ## Immediate execution order
 
-1. Complete #56 and merge the authority/routing PR.
-2. Start #57, #58 and #69 in parallel.
-3. #58 -> #59 -> #60.
+1. #56 authority/routing is complete.
+2. #58 / PR #72 is complete and G1 is closed; #57 closes G-P4 on merge. #69
+   remains an independent preregistration lane.
+3. #59 may proceed from the completed #58 prerequisite when separately dispatched,
+   then #59 -> #60. This #57 reconciliation does not start it.
 4. After #60, run #61-#63 as the serialized World-producer lane while #64 runs as
-   the parallel graph lane.
+   the parallel graph lane. #63 remains blocked on both #62 and #57.
 5. Join at #65.
 6. Only then #66 -> #67 -> #68.
 7. Freeze one coherent candidate and execute #70.
