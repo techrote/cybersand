@@ -295,7 +295,7 @@ struct SpecializedInteractionRule {
     std::uint32_t revalidation_tags;
 };
 
-inline constexpr std::array<SpecializedInteractionRule, 18> kSpecializedInteractionRules{{
+inline constexpr std::array<SpecializedInteractionRule, 19> kSpecializedInteractionRules{{
     {"int.kernel.steam.condense.v1", interaction_channel_bit(InteractionChannel::ThermalPhase),
      InteractionTriggerKind::IntrinsicState, Material::Steam, RuleKernel::Steam,
      "native/src/world.cpp::RuleKernel::Steam", "lifetime expiry converts Steam to Water",
@@ -325,6 +325,13 @@ inline constexpr std::array<SpecializedInteractionRule, 18> kSpecializedInteract
      "hot ignition, Water/Brine extinguishing, Dust/Fire/Smoke products",
      interaction_revalidation_bit(InteractionRevalidationTag::WaterContact) |
          interaction_revalidation_bit(InteractionRevalidationTag::GranularContact)},
+    {"int.kernel.spark.charge-ignite.v1",
+     interaction_channel_bit(InteractionChannel::Electrical) |
+         interaction_channel_bit(InteractionChannel::Combustion),
+     InteractionTriggerKind::NeighbourhoodContext, Material::Spark, RuleKernel::Spark,
+     "native/src/world.cpp::RuleKernel::Spark",
+     "adjacent base-Metal charging or sampled combustible ignition; Spark locomotion excluded",
+     interaction_revalidation_bit(InteractionRevalidationTag::SchedulerContact)},
     {"int.kernel.metal.charge.v1",
      interaction_channel_bit(InteractionChannel::Electrical) |
          interaction_channel_bit(InteractionChannel::ThermalPhase),
