@@ -295,6 +295,15 @@ public:
     [[nodiscard]] std::size_t tile_capacity() const noexcept { return tile_capacity_; }
     [[nodiscard]] std::size_t adjacency_capacity() const noexcept { return adjacency_capacity_; }
     [[nodiscard]] std::size_t frontier_capacity() const noexcept { return frontier_capacity_; }
+    [[nodiscard]] std::size_t key_index_capacity() const noexcept { return tile_index_.capacity(); }
+    [[nodiscard]] std::size_t row_interval_capacity() const noexcept { return row_index_.capacity(); }
+    [[nodiscard]] std::optional<std::size_t> containing_tile(
+        DiscoveryBounds bounds) const noexcept {
+        return valid_bounds(bounds) ? containing_tile_impl(bounds) : std::nullopt;
+    }
+    [[nodiscard]] bool overlaps_registered(DiscoveryBounds bounds) const noexcept {
+        return valid_bounds(bounds) && overlaps_bounds(bounds);
+    }
     [[nodiscard]] static constexpr std::size_t publication_capacity() noexcept { return RegionCapacity; }
     [[nodiscard]] static constexpr std::size_t maximum_tile_cells() noexcept { return MaximumTileCells; }
     [[nodiscard]] static constexpr std::size_t components_per_tile() noexcept { return ComponentsPerTile; }
@@ -305,7 +314,9 @@ public:
                adjacency_capacity_ * sizeof(Adjacency) +
                frontier_capacity_ * 3U * sizeof(ComponentRef) +
                tile_capacity_ * (sizeof(bool) + sizeof(std::uint64_t)) +
-               tile_capacity_ * (sizeof(bool) + sizeof(std::size_t));
+               tile_capacity_ * (sizeof(bool) + sizeof(std::size_t)) +
+               (tile_index_.storage_bytes() - sizeof(TileIndex)) +
+               (row_index_.storage_bytes() - sizeof(RowIndex));
     }
 
 private:
@@ -352,6 +363,24 @@ private:
         std::unique_ptr<std::uint64_t[]> revisions;
         std::uint64_t started_work{};
     };
+
+    struct RowKey {
+        std::int64_t y{}, x{};
+        bool operator==(const RowKey&) const = default;
+    };
+    struct RowValue {
+        std::int64_t max_x{};
+        std::uint16_t tile{region_detail::invalid_index};
+    };
+    struct RowKeyLess {
+        bool operator()(const RowKey& a, const RowKey& b) const noexcept {
+            return a.y != b.y ? a.y < b.y : a.x < b.x;
+        }
+    };
+    using TileIndex =
+        BoundedOrderedIndex<RegionTileKey, std::size_t, DiscoveryTileKeyLess>;
+    using RowIndex =
+        BoundedOrderedIndex<RowKey, RowValue, RowKeyLess>;
 
     static void saturating_add(std::uint64_t& value, std::uint64_t amount = 1) noexcept {
         const auto room = std::numeric_limits<std::uint64_t>::max() - value;
@@ -865,11 +894,18 @@ private:
         if (value == 0 || value > maximum) throw std::invalid_argument(message);
         return value;
     }
+    static std::size_t checked_row_capacity(std::size_t tile_capacity) {
+        if (tile_capacity > std::numeric_limits<std::size_t>::max() / 32U)
+            throw std::invalid_argument("settled region row-interval capacity overflows size_t");
+        return tile_capacity * 32U;
+    }
 
     std::uint64_t incarnation_{}, publication_serial_{};
     std::size_t tile_capacity_{}, adjacency_capacity_{}, frontier_capacity_{};
     std::unique_ptr<Tile[]> tiles_;
     std::unique_ptr<Adjacency[]> adjacencies_;
+    TileIndex tile_index_;
+    RowIndex row_index_;
     std::array<Region, RegionCapacity> regions_{};
     Build build_;
     std::unique_ptr<bool[]> member_tiles_scratch_;
@@ -897,6 +933,8 @@ SettledRegions<TileCapacity, MaximumTileCells, ComponentsPerTile, AdjacencyCapac
           "settled region runtime frontier capacity is unsupported")),
       tiles_(std::make_unique<Tile[]>(tile_capacity_)),
       adjacencies_(std::make_unique<Adjacency[]>(adjacency_capacity_)),
+      tile_index_(tile_capacity_),
+      row_index_(checked_row_capacity(tile_capacity_)),
       build_(frontier_capacity_, tile_capacity_),
       member_tiles_scratch_(std::make_unique<bool[]>(tile_capacity_)),
       dependency_slots_scratch_(std::make_unique<std::size_t[]>(tile_capacity_)) {}
