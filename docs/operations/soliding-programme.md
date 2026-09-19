@@ -113,7 +113,10 @@ Stage 3B locality/scalability is open. Both remain read-only, cells-owned observ
 
 The [Stage 3 execution freeze](soliding-stage3-freeze.md) remains the historical and
 architectural correctness contract. PR #47 merged the Stage-3A reference at `fc299c1`.
-The next step is the bounded, read-only
-[Stage-3B Astra architecture review](soliding-stage3b-astra-review.md); do not begin
-Stage-3B implementation or Stage 4 from this checkpoint.
-No Stage-3 cost result selects a representation or threshold.
+The read-only Stage-3B architecture review is complete and its supervising-parent
+reconciliation is recorded in the
+[Stage-3B parent decision](../audits/issue-12-2026-09-19/stage3b-parent-decision.md).
+The active execution route is now the
+[Stage-3B production plan](soliding-stage3b-production-plan.md), issues #56-#70.
+Stage-3B implementation may proceed only through that dependency/gate structure;
+Stage 4 remains blocked. No Stage-3 cost result selects a representation or threshold.

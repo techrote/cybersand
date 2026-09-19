@@ -174,11 +174,14 @@ runtime-identity gates. The bounded correctness/observability reference therefor
 passes **Stage 3A**; PR #47 merged as `fc299c1` and its exact head is on `main`.
 The locality/scalability objective is **Stage 3B open**: the current implementation still performs
 full tracked-tile signal refresh, global mapping/seed work, compiled-maximum storage
-and whole-region rediscovery. Use the read-only
-[Stage-3B Astra architecture-review packet](soliding-stage3b-astra-review.md) next;
-it requires confirmed model identity and stops at a parent architecture decision
-before implementation. Stage 4 is not admitted. Stage 3 remains cells-owned
-discovery and cannot be used to admit stationary acceleration or Rapier dynamics.
+and whole-region rediscovery. The read-only architecture review and supervising-parent
+reconciliation are complete. Use the
+[Stage-3B production plan](soliding-stage3b-production-plan.md), issues #56-#70, as
+the active handoff. Begin with #56, then #57/#58/#69 as the first parallel wave;
+central World producer work remains serialized under #61-#63. Recheck #29 before
+those World edits and again before the final campaign. Stage 4 is not admitted.
+Stage 3 remains cells-owned discovery and cannot be used to admit stationary
+acceleration or Rapier dynamics.
 
 ## Issue #26 / Water bulk-head handoff, 2026-09-19
 
