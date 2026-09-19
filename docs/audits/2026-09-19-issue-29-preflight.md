@@ -213,6 +213,22 @@ compact effective runtime representation if measurement justifies it
 A resolved dense lookup may later be a performance optimization. It must not
 become the human-authored source of truth.
 
+### Family-selector safety
+
+A future `family/default` layer must use **explicit, versioned semantic
+membership**, not names, broad `MaterialState`, density ranges or visual
+similarity. The current catalogue is a direct counterexample to heuristic
+inheritance: Wrought Iron, Bronze, Copper, Steel variants and pipe materials are
+themed hard surfaces and do not automatically inherit base `Metal` charge or
+Acid+Metal behavior; Stained/Chemical/Dark Glass likewise do not automatically
+inherit base `Glass` reactions. Oak Timber and Thatch are explicit themed
+exceptions because their descriptors deliberately select `Combustible`.
+
+Introducing a family selector must therefore preserve current non-inheritance by
+default. Any later expansion such as "conductive metals" or "reactive glasses"
+is a separately versioned interaction/tuning decision with fixtures and evidence,
+not an inference performed by the resolver.
+
 ### Rule identity and trigger shape
 
 A rule needs a stable ID independent of its storage location. The minimum logical
