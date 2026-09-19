@@ -161,3 +161,10 @@ summary does not satisfy production ownership or connected-region gates.
 Use the [successor evidence and next prerequisites](../audits/2026-09-19-issue-12-foundation.md)
 for #12 continuation. The ordinary-sleep control is frozen independently; do not
 relabel synthetic journal service epochs as simulated World ticks.
+
+For the remaining Stage 3 work, follow the frozen
+[producer/connectivity execution contract](soliding-stage3-freeze.md). The linked
+Spark packets intentionally split World witness integration from cross-tile region
+construction; independent verification and measurement follow only after parent
+integration. Stage 3 remains cells-owned discovery and cannot be used to admit
+stationary acceleration or Rapier dynamics.
