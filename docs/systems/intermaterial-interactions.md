@@ -83,9 +83,12 @@ the only reactive-base-glass member; and explicit hot-source, aqueous-contact,
 biological-growth and special-agent sets.
 
 Consequently Wrought Iron, Bronze, Copper, Steel variants, Copper Pipe and other
-themed materials do not inherit base-Metal electrical or Acid+Metal pair semantics.
-Stained/Chemical/Dark Glass do not inherit base-Glass pair semantics. Any later
-expansion is a versioned tuning decision with fixtures/evidence.
+themed materials do not inherit base-Metal electrical semantics or the base
+Acid+Metal compact Smoke/Rust pair override. This does **not** disable the existing
+broad Acid neighbourhood-corrosion kernel; pair-override inheritance and generic
+Acid behavior are distinct provenance paths. Stained/Chemical/Dark Glass do not
+inherit base-Glass thermal pair semantics. Any later expansion is a versioned
+tuning decision with fixtures/evidence.
 
 ## Compact pair migration
 
@@ -129,8 +132,10 @@ rather than meaningless Cartesian entries.
 
 Stable rule IDs carry channel membership, version/supersession fields, selected
 tuning-pass identity, accounting notes and subsystem revalidation tags. Native
-inspection exposes the selected pass parent/disposition/change declaration and a
-stable provenance chain.
+inspection exposes all seven channels for a queried pair, compact-pair
+origin/selection, authored-layer match/conflict/effective origin, represented
+specialized source/target mechanisms, selected-pass parent/disposition/change
+declaration and a stable provenance chain.
 
 Every schema-2 capture also records a rolling kinetic/contact baseline containing
 source/runtime identity, transport hash, effective Water semantics/policy, fixed
