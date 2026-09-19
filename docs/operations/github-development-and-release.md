@@ -4,8 +4,8 @@ status: Current
 document-kind: guide
 scope: Local repository policy and unresolved remote CI and release prerequisites
 canonical-for: [repository-policy, ci-contradictions, release-prerequisites]
-last-reviewed: 2026-09-08
-related-documents: [source-checkpoint-and-recovery.md, local-build-and-validation.md, documentation-maintenance.md]
+last-reviewed: 2026-09-19
+related-documents: [source-checkpoint-and-recovery.md, local-build-and-validation.md, documentation-maintenance.md, ../audits/2026-09-19-runner-routing-weekend-benchmark.md]
 ---
 
 # Repository development and release
@@ -17,7 +17,7 @@ Use [source checkpoint and recovery](source-checkpoint-and-recovery.md) for exac
 identities, companion workspace scope and dirty-state inspection. No push or
 publication was performed by the documentation rewrite itself. The subsequent
 owner-authorized [GitHub milestone](../audits/2026-09-08-github-milestone.md) verified
-that `techrote/cybersand` is private and published both local histories. Branch
+that techrote/cybersand is private and published both local histories. Branch
 protection is not established; dated CI outcomes are recorded in the
 [publication reconciliation](../audits/2026-09-08-validation-reconciliation.md). Intended historical
 integration branch names do not establish today's remote policy.
@@ -31,6 +31,23 @@ exports, tools, caches, logs and local configuration. See [.gitignore](../../.gi
 [CONTRIBUTING](../../CONTRIBUTING.md) and [dependency provenance](../../third_party/README.md).
 Do not change historical release hashes to accept a local rebuild.
 
+## Current runner routing and temporary measurement
+
+**Current configuration, 2026-09-19:** source d6a616e routes sustained Linux
+GDExtension, Native and Web workloads through Sengi while retaining Avrea for
+Windows, regression fan-out and short latency-sensitive gates. Per-job runner
+variables remain explicit overrides, including Avrea wide-runner use when a
+workload benefits from 16/32 vCPUs.
+
+A temporary, non-gating [weekend runner benchmark](../audits/2026-09-19-runner-routing-weekend-benchmark.md)
+compares GitHub ubuntu-slim 1-vCPU and Avrea 1-vCPU on representative micro,
+documentation, regression and SCons build classes. It records acquisition,
+workload and wall-time evidence rather than selecting a runner from each
+invocation's current contents. The active benchmark window ends
+2026-09-21 05:00 UTC; the workflow has an explicit deadline and scheduled
+self-disable. Until the retained evidence is reduced, this experiment does not
+change required CI or the existing Sengi routing for sustained work.
+
 ## Unresolved CI contradictions
 
 **Current inspected configuration, not a remote execution result:**
@@ -38,10 +55,10 @@ Do not change historical release hashes to accept a local rebuild.
 | Conflict | Source evidence | Required next checkpoint |
 |---|---|---|
 | Web CI chooses Emscripten 4.0.11; builder requires 4.0.20 | [web-toolchain.yml](../../.github/workflows/web-toolchain.yml), [web-demo.yml](../../.github/workflows/web-demo.yml), [build_web.py](../../tools/build_web.py) | Align pinned toolchain and artifact producer/consumer, then execute CI |
-| Workflow passes `--native-tests` without separate `--native-cpp` | Same builder argument validation and Web workflow | Supply isolated native bindings; confirm intended host support |
-| `--compile-only --native-tests` does not run runtime fixtures/export | Builder returns after compilation before those stages | Choose explicit coverage and test that the workflow actually executes it |
+| Workflow passes --native-tests without separate --native-cpp | Same builder argument validation and Web workflow | Supply isolated native bindings; confirm intended host support |
+| --compile-only --native-tests does not run runtime fixtures/export | Builder returns after compilation before those stages | Choose explicit coverage and test that the workflow actually executes it |
 | Runtime lock says templates absent; local export uses exact retained templates | [runtime lock](../../third_party/godot-runtime.lock.json) and local setup report | Create current export provenance; preserve historical lock scope |
-| Wrapper export `source_commit` remains acquisition base | Companion `C:/kybersand/tools/dev.py::web_command`; builder's `--source-commit` | Bind builds to actual HEAD plus local changes and artifact hashes |
+| Wrapper export source_commit remains acquisition base | Companion C:/kybersand/tools/dev.py::web_command; builder's --source-commit | Bind builds to actual HEAD plus local changes and artifact hashes |
 
 These Web changes remain **Planned**, tracked by issue #3. Current source/runtime
 identity, retained historical integrity and fresh Linux Godot CI are now
