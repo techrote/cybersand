@@ -617,14 +617,15 @@ public:
         return selector.context_id.empty() || selector.context_id == context_id;
     }
 
-    [[nodiscard]] static constexpr CompiledInteractionLayer compile_layer(
+    [[nodiscard]] static constexpr CompiledInteractionLayer compile_layer_from(
+        std::span<const InteractionLayerDefinition> layers,
         InteractionChannel channel,
         Material source,
         Material target,
         std::string_view context_id = {}) noexcept {
         CompiledInteractionLayer result{};
-        for (std::size_t index = 0; index < kInteractionLayerDefinitions.size(); ++index) {
-            const auto& layer = kInteractionLayerDefinitions[index];
+        for (std::size_t index = 0; index < layers.size(); ++index) {
+            const auto& layer = layers[index];
             if (layer.channel != channel ||
                 !selector_matches(layer.selector, source, target, context_id)) {
                 continue;
@@ -637,6 +638,15 @@ public:
             }
         }
         return result;
+    }
+
+    [[nodiscard]] static constexpr CompiledInteractionLayer compile_layer(
+        InteractionChannel channel,
+        Material source,
+        Material target,
+        std::string_view context_id = {}) noexcept {
+        return compile_layer_from(
+            kInteractionLayerDefinitions, channel, source, target, context_id);
     }
 
     [[nodiscard]] static constexpr InteractionCatalogueValidation validate_catalogue() noexcept {
