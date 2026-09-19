@@ -69,6 +69,11 @@ class Stage3BValidationTests(unittest.TestCase):
             "raw_result_identity": "raw",
         })
         v.validate_result(success, row)
+        unsupported = copy.deepcopy(success)
+        unsupported["measurements"]["end_to_end"]["service_call_latency_sample_count"] = 5
+        unsupported["measurements"]["end_to_end"]["service_call_latency_p95_ms"] = 1.0
+        with self.assertRaisesRegex(ValueError, "p95 requires at least 20 samples"):
+            v.validate_result(unsupported, row)
         failed = copy.deepcopy(success)
         failed["state"] = "timeout"
         with self.assertRaisesRegex(ValueError, "explicit failure kind"):
