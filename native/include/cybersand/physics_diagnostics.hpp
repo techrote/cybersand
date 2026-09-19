@@ -10,6 +10,7 @@ namespace cybersand {
 enum class WaterLevelingExperiment : std::uint8_t {
     Baseline = 0,
     HeadScaledLocal = 1,
+    BoundedHorizon = 2,
 };
 
 // Experiment-only construction options. Defaults preserve the production rules.

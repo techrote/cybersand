@@ -477,7 +477,9 @@ int run_case(const Spec& spec, int shift, int workers, bool mirror,
 
     std::cout << "{";
     std::cout << "\"scenario\":\"" << spec.name << "\",";
-    std::cout << "\"mode\":\"" << (experiment == WaterLevelingExperiment::HeadScaledLocal ? "head" : "baseline") << "\",";
+    const char* mode_name = experiment == WaterLevelingExperiment::HeadScaledLocal ? "head" :
+        experiment == WaterLevelingExperiment::BoundedHorizon ? "horizon" : "baseline";
+    std::cout << "\"mode\":\"" << mode_name << "\",";
     std::cout << "\"shift\":" << shift << ",";
     std::cout << "\"mirror\":" << (mirror ? 1 : 0) << ",";
     std::cout << "\"workers\":" << workers << ",";
@@ -543,7 +545,7 @@ int run_case(const Spec& spec, int shift, int workers, bool mirror,
 
 int main(int argc, char** argv) {
     if (argc != 6) {
-        std::cerr << "usage: water_issue26 <scenario> <shift> <workers> <mirror> <baseline|head>\n";
+        std::cerr << "usage: water_issue26 <scenario> <shift> <workers> <mirror> <baseline|head|horizon>\n";
         return 2;
     }
     try {
@@ -554,6 +556,7 @@ int main(int argc, char** argv) {
         const std::string mode = argv[5];
         WaterLevelingExperiment experiment = WaterLevelingExperiment::Baseline;
         if (mode == "head") experiment = WaterLevelingExperiment::HeadScaledLocal;
+        else if (mode == "horizon") experiment = WaterLevelingExperiment::BoundedHorizon;
         else if (mode != "baseline") return 2;
         if (workers != 1 && workers != 4) return 2;
         return run_case(spec, shift, workers, mirror, experiment);

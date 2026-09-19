@@ -29,7 +29,7 @@ WORKERS = [1, 4]
 p = argparse.ArgumentParser()
 p.add_argument("output", type=Path)
 p.add_argument("--cxx", default=os.environ.get("CXX", "g++"))
-p.add_argument("--mode", choices=["baseline", "head"], default="baseline")
+p.add_argument("--mode", choices=["baseline", "head", "horizon"], default="baseline")
 a = p.parse_args()
 a.output.mkdir(parents=True, exist_ok=True)
 

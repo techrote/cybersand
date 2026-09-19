@@ -71,17 +71,17 @@ jobs:
         with:
           lfs: true
 
-      - name: Re-run frozen issue 26 baseline with candidate code present
+      - name: Re-run frozen issue 26 baseline with horizon code present
         run: timeout 15m python3 tools/physics/water_issue26.py issue26-water-baseline-rerun --cxx g++-13 --mode baseline
 
-      - name: Run issue 26 head-scaled local-drive candidate
-        run: timeout 15m python3 tools/physics/water_issue26.py issue26-water-head --cxx g++-13 --mode head
+      - name: Run issue 26 bounded-horizon candidate
+        run: timeout 15m python3 tools/physics/water_issue26.py issue26-water-horizon --cxx g++-13 --mode horizon
 
-      - name: Upload issue 26 head-candidate evidence
+      - name: Upload issue 26 horizon-candidate evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: issue26-water-head-candidate
+          name: issue26-water-horizon-candidate
           path: |
             issue26-water-baseline-rerun
-            issue26-water-head
+            issue26-water-horizon
           if-no-files-found: error

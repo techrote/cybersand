@@ -1676,6 +1676,26 @@ bool World::update_water(std::int64_t x, std::int64_t y, JobEffects* effects) {
                     config_.water_experiment_policy.maximum(), head_request));
             }
         }
+        if (leveling_experiment == WaterLevelingExperiment::BoundedHorizon) {
+            // Issue #26 isolated candidate: inspect one additional same-row cell
+            // in the transfer direction, within the existing radius-two read
+            // contract. A hard barrier at either adjacent or lookahead position
+            // rejects the boost. The actual write remains the adjacent transfer.
+            const auto step = target_x - x;
+            const auto probe_x = target_x + step;
+            record_physics(PhysicsEvent::LateralProbe, Material::Water,
+                           Material::Empty, probe_x - x, 0, effects);
+            const auto probe_material = get(probe_x, target_y);
+            if (probe_material == Material::Empty || probe_material == Material::Water) {
+                const auto probe_mass = static_cast<std::uint16_t>(
+                    liquid_mass(probe_x, target_y));
+                if (source_mass > probe_mass + tolerance) {
+                    const auto horizon_request =
+                        static_cast<std::uint32_t>(source_mass - probe_mass) * 3U / 4U;
+                    raw_request = std::max(raw_request, horizon_request);
+                }
+            }
+        }
         if (raw_request == 0U) return;
         const auto requested = MaterialRules::apply_lateral_viscosity(
             Material::Water, static_cast<std::uint16_t>(raw_request));
