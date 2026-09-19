@@ -7,12 +7,18 @@
 
 namespace cybersand {
 
+enum class WaterLevelingExperiment : std::uint8_t {
+    Baseline = 0,
+    HeadScaledLocal = 1,
+};
+
 // Experiment-only construction options. Defaults preserve the production rules.
 // No descriptor mutation, new random draws, or live worker reconfiguration.
 struct PhysicsDiagnosticConfig {
     bool enabled = false;
     bool disable_powder_exchange_targets = false;
     std::int16_t mercury_viscosity = -1;
+    WaterLevelingExperiment water_leveling_experiment = WaterLevelingExperiment::Baseline;
 };
 
 enum class PhysicsEvent : std::uint8_t {

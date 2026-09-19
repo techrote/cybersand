@@ -71,12 +71,17 @@ jobs:
         with:
           lfs: true
 
-      - name: Run preregistered issue 26 Water characterization
-        run: timeout 15m python3 tools/physics/water_issue26.py issue26-water-evidence --cxx g++-13
+      - name: Re-run frozen issue 26 baseline with candidate code present
+        run: timeout 15m python3 tools/physics/water_issue26.py issue26-water-baseline-rerun --cxx g++-13 --mode baseline
 
-      - name: Upload issue 26 Water characterization evidence
+      - name: Run issue 26 head-scaled local-drive candidate
+        run: timeout 15m python3 tools/physics/water_issue26.py issue26-water-head --cxx g++-13 --mode head
+
+      - name: Upload issue 26 head-candidate evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: issue26-water-characterization
-          path: issue26-water-evidence
+          name: issue26-water-head-candidate
+          path: |
+            issue26-water-baseline-rerun
+            issue26-water-head
           if-no-files-found: error

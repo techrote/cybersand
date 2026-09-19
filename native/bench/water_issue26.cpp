@@ -20,6 +20,7 @@ using cybersand::PhysicsEvent;
 using cybersand::PhysicsTotals;
 using cybersand::World;
 using cybersand::WorldConfig;
+using cybersand::WaterLevelingExperiment;
 
 constexpr int kWidth = 96;
 constexpr int kFloorY = 62;
@@ -324,7 +325,8 @@ std::int64_t mean_surface(MassAt&& mass_at, int x0, int x1, std::uint16_t maximu
     return stats.mean_milli;
 }
 
-int run_case(const Spec& spec, int shift, int workers, bool mirror) {
+int run_case(const Spec& spec, int shift, int workers, bool mirror,
+             WaterLevelingExperiment experiment) {
     WorldConfig config;
     config.worker_threads = static_cast<std::uint32_t>(workers);
     config.parallel_job_threshold = 1;
@@ -332,6 +334,7 @@ int run_case(const Spec& spec, int shift, int workers, bool mirror) {
     config.active_chunk_capacity = 64;
     config.active_core_capacity = 512;
     config.physics_diagnostics.enabled = true;
+    config.physics_diagnostics.water_leveling_experiment = experiment;
     World world(config);
     world.reserve_region({shift - 128, shift - 128, 512, 512});
     build_fixture(world, spec, shift, mirror);
@@ -474,6 +477,7 @@ int run_case(const Spec& spec, int shift, int workers, bool mirror) {
 
     std::cout << "{";
     std::cout << "\"scenario\":\"" << spec.name << "\",";
+    std::cout << "\"mode\":\"" << (experiment == WaterLevelingExperiment::HeadScaledLocal ? "head" : "baseline") << "\",";
     std::cout << "\"shift\":" << shift << ",";
     std::cout << "\"mirror\":" << (mirror ? 1 : 0) << ",";
     std::cout << "\"workers\":" << workers << ",";
@@ -538,8 +542,8 @@ int run_case(const Spec& spec, int shift, int workers, bool mirror) {
 }  // namespace
 
 int main(int argc, char** argv) {
-    if (argc != 5) {
-        std::cerr << "usage: water_issue26 <scenario> <shift> <workers> <mirror>\n";
+    if (argc != 6) {
+        std::cerr << "usage: water_issue26 <scenario> <shift> <workers> <mirror> <baseline|head>\n";
         return 2;
     }
     try {
@@ -547,8 +551,12 @@ int main(int argc, char** argv) {
         const int shift = std::stoi(argv[2]);
         const int workers = std::stoi(argv[3]);
         const bool mirror = std::stoi(argv[4]) != 0;
+        const std::string mode = argv[5];
+        WaterLevelingExperiment experiment = WaterLevelingExperiment::Baseline;
+        if (mode == "head") experiment = WaterLevelingExperiment::HeadScaledLocal;
+        else if (mode != "baseline") return 2;
         if (workers != 1 && workers != 4) return 2;
-        return run_case(spec, shift, workers, mirror);
+        return run_case(spec, shift, workers, mirror, experiment);
     } catch (const std::exception& error) {
         std::cerr << error.what() << "\n";
         return 4;

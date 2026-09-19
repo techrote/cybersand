@@ -29,6 +29,7 @@ WORKERS = [1, 4]
 p = argparse.ArgumentParser()
 p.add_argument("output", type=Path)
 p.add_argument("--cxx", default=os.environ.get("CXX", "g++"))
+p.add_argument("--mode", choices=["baseline", "head"], default="baseline")
 a = p.parse_args()
 a.output.mkdir(parents=True, exist_ok=True)
 
@@ -88,7 +89,7 @@ for scenario in SCENARIOS:
         for mirror in MIRRORS:
             for workers in WORKERS:
                 key = f"{scenario}-s{shift}-m{mirror}-t{workers}"
-                run_cmd = [str(exe), scenario, str(shift), str(workers), str(mirror)]
+                run_cmd = [str(exe), scenario, str(shift), str(workers), str(mirror), a.mode]
                 completed = subprocess.run(
                     run_cmd,
                     cwd=ROOT,
@@ -114,6 +115,7 @@ for scenario in SCENARIOS:
                 completed.check_returncode()
                 row = json.loads(completed.stdout)
                 assert row["scenario"] == scenario
+                assert row["mode"] == a.mode
                 assert row["workers"] == workers
                 assert row["shift"] == shift
                 assert row["mirror"] == mirror
@@ -193,6 +195,7 @@ for scenario in SCENARIOS:
 
 summary["_run"] = {
     "platform": platform.platform(),
+    "mode": a.mode,
     "scenario_count": len(SCENARIOS),
     "case_count": len(results),
     "authoritative_worker_parity": True,
