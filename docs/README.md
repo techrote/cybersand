@@ -14,6 +14,7 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 | Need | Start here |
 |---|---|
+| Explore Materials Laboratory or compare generated definitions | [Reference pack and controls](operations/microscenario-reference-pack.md), [MS-001 evidence](audits/2026-09-19-issue-28-ms001.md) |
 | Author, load or benchmark a MicroScenario | [Current shared contract and host](operations/microscenarios.md), [checkpoint evidence](audits/2026-09-19-issue-27-microscenarios.md) |
 | Begin development | [Handover](operations/cybersand-codex-development-handover.md), [actual source identity](operations/source-checkpoint-and-recovery.md), [roadmap](reference/status-and-roadmap.md) |
 | Choose current MicroScenarios / interaction work order | [Canonical programme graph](operations/microscenarios-programme.md), then the target issue and its named dependencies; issue numbers are not sequence |

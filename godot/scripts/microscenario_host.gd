@@ -5,6 +5,11 @@ extends RefCounted
 # owner. Never pass this instance, its World, or a live scene node across threads.
 const Contract = preload("res://scripts/microscenario_contract.gd")
 const MAX_TIMINGS: int = 3600
+const Telemetry = preload("res://scripts/microscenario_telemetry.gd")
+var _inspection_bridge: Variant
+var _telemetry: CyberMicroScenarioTelemetry
+var _before_elapsed_us: int = 0
+var _material_ids: Array[int] = []
 var last_error: String = ""
 var _world: Variant
 var _definition: Dictionary = {}
@@ -45,12 +50,28 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 		return false
 	var candidate: Dictionary = checked.definition
 	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
+	if int(candidate.schema_version) == 2 and (not bridge.has_method(&"inspect_cell")
+		or not bridge.has_method(&"inspect_statistics")):
+		last_error = "Schema 2 requires the rebuilt native observation adapter; prior world preserved"
+		return false
 	if not bridge.build_water_feel_world(world, PackedInt32Array(candidate.rectangles),
 		checked.transport.packed, PackedInt32Array(candidate.water_semantics),
 		PackedInt32Array(candidate.partial_water_fills)):
 		last_error = str(bridge.get_last_error())
 		return false
 	_world = world
+	_inspection_bridge = bridge if int(candidate.schema_version) == 2 else null
+	_telemetry = Telemetry.new()
+	_before_elapsed_us = 0
+	_material_ids.clear()
+	for index: int in range(4, candidate.rectangles.size(), 5):
+		if not int(candidate.rectangles[index]) in _material_ids: _material_ids.append(int(candidate.rectangles[index]))
+	if not candidate.partial_water_fills.is_empty() and not 3 in _material_ids: _material_ids.append(3)
+	for observation: Dictionary in candidate.observations:
+		if not int(observation.material) in _material_ids: _material_ids.append(int(observation.material))
+	for event: Dictionary in candidate.events:
+		if not int(event.material) in _material_ids: _material_ids.append(int(event.material))
+	_material_ids.sort()
 	_definition = candidate.duplicate(true)
 	_definition_hash = str(checked.hash)
 	_transport_hash = str(checked.transport.hash)
@@ -80,13 +101,17 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 	_last_completed_tick = 0
 	apply_interest()
 	_observe_due() # Tick zero describes initial state, before tick-zero events.
-	return true
+	if _instrumentation and _inspection_bridge != null: _telemetry.sample(_world, _inspection_bridge, false)
+	return not _failed
 
 func active() -> bool:
 	return not _definition.is_empty()
 
 func clear() -> void:
 	_world = null
+	_inspection_bridge = null
+	_telemetry = null
+	_material_ids.clear()
 	_definition.clear()
 	_history.clear()
 	_samples.clear()
@@ -130,6 +155,12 @@ func apply_interest() -> void:
 	_world.set_simulation_window(Vector2i(region[0], region[1]), Vector2i(region[2], region[3]), 0, 0)
 
 func before_tick() -> bool:
+	var start: int = Time.get_ticks_usec() if _instrumentation else 0
+	var ok: bool = _before_tick_impl()
+	_before_elapsed_us = Time.get_ticks_usec() - start if _instrumentation else 0
+	return ok
+
+func _before_tick_impl() -> bool:
 	if not active(): return true
 	if _failed: return false
 	if _world.has_failed(): return _fault("Native World is quarantined; reset required")
@@ -145,6 +176,15 @@ func before_tick() -> bool:
 	return true
 
 func after_tick() -> bool:
+	var start: int = Time.get_ticks_usec() if _instrumentation else 0
+	var previous: int = _last_completed_tick
+	var ok: bool = _after_tick_impl()
+	if ok and _instrumentation and _inspection_bridge != null and _last_completed_tick != previous:
+		_telemetry.sample(_world, _inspection_bridge, true)
+		_telemetry.host_sample(float(_before_elapsed_us + Time.get_ticks_usec() - start) / 1000.0)
+	return ok
+
+func _after_tick_impl() -> bool:
 	if not active(): return true
 	if _failed: return false
 	if _world.has_failed(): return _fault("Native tick failed; reset required")
@@ -209,7 +249,7 @@ func _observe_due() -> void:
 			required = required or condition.observation == specification.id
 		if required:
 			var region: Array = specification.region
-			var amount: int = tick
+			var amount: Variant = tick
 			if specification.metric == "water_integer":
 				amount = int(_world.water_experiment_observation(Vector2i(region[0], region[1]),
 					Vector2i(region[2], region[3])).get("water_integer", 0))
@@ -218,10 +258,15 @@ func _observe_due() -> void:
 				for y: int in range(region[1], region[1] + region[3]):
 					for x: int in range(region[0], region[0] + region[2]):
 						if int(_world.material_at(x,y)) == int(specification.material): amount += 1
+			elif specification.metric == "cell_state":
+				amount = _inspection_bridge.inspect_cell(_world, Vector2i(region[0], region[1]))
+				if not amount.get("ok", false):
+					_fault("Cell-state observation rejected; " + str(amount.get("error", "unavailable")))
+					return
 			_values[specification.id] = amount
 			if _instrumentation:
 				_observations.append({"id":specification.id, "tick":tick,
-					"metric":specification.metric, "value":amount, "region":region.duplicate()})
+					"metric":specification.metric, "value":amount.duplicate(true) if amount is Dictionary else amount, "region":region.duplicate()})
 		_observation_index += 1
 	for condition: Dictionary in _definition.conditions:
 		if not _values.has(condition.observation): continue
@@ -251,7 +296,12 @@ func legacy_water_state() -> Dictionary:
 
 func summary() -> Dictionary:
 	if not active(): return {}
-	return {"id":_definition.id, "schema_version":Contract.VERSION,
+	return {"id":_definition.id, "schema_version":_definition.schema_version,
+		"completed_tick":int(_world.get_tick_index()),
+		"presentation":_definition.get("presentation", {}).duplicate(true),
+		"source_recipe":_definition.source_recipe, "source_recipe_hash":_definition.source_recipe_hash,
+		"transport_hash":_transport_hash, "water_semantics":_definition.water_semantics.duplicate(),
+		"material_ids":_material_ids.duplicate(), "declared_observations":_definition.observations.duplicate(true),
 		"recipe_version":_definition.recipe_version, "seed":_definition.seed,
 		"definition_hash":_definition_hash, "maturity":_definition.maturity,
 		"execution_policy":_definition.execution.policy, "interest_policy":_definition.interest.policy,
@@ -288,7 +338,13 @@ func capture(identity: Dictionary = {}) -> Dictionary:
 			"explicit_source":_source, "explicit_sink":_sink,
 			"observed_current_integer":native.get("water_integer", null),
 			"scope":"scheduled edits only; reactions, user tools and ROI outflow are NOT inferred"},
-		"timing":timing, "replay_complete":false,
+		"timing":timing, "work_statistics":_telemetry.capture(),
+		"budget_outcome":"quarantined" if _failed or _world.has_failed() else "admitted",
+		"definition_budget":{"rectangles":_definition.rectangles.size() / 5,
+			"partial_water_fills":_definition.partial_water_fills.size() / 6,
+			"events":_definition.events.size(), "event_limit":Contract.MAX_EVENTS,
+			"observations":_definition.observations.size(), "observation_limit":Contract.MAX_OBSERVATIONS},
+		"replay_complete":false,
 		"capture_kind":"definition-and-observations; not a restorable runtime snapshot",
 		"utc":Time.get_datetime_string_from_system(true)}, true)
 	return report

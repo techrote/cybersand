@@ -194,3 +194,12 @@ The root Tower button includes #24's focus-neutral correction. Generic fixture R
 and Fresh reset retain the active definition, while choosing Tower explicitly still
 enters Tower. F8 hides/restores the common HUD. [Checkpoint evidence](../audits/2026-09-19-issue-27-microscenarios.md)
 records the source-matched comparisons and platform limits.
+
+## MS-001 reference-pack controls
+
+The shared [Materials Laboratory workbench](microscenario-reference-pack.md) adds
+complete schema-2 definition/result inspection, bounded declared-window stepping
+and fresh-reset A/B. It does not replace Tower version 4, the 35 Water Feel recipes,
+blind policy selection/reveal, Tower room controls or source-owned native physics.
+Only admitted generic paint/erase tools are exposed; F8 clean view and R fresh reset
+use the common owner path. Historical #13/#19 evidence keeps its original identity.

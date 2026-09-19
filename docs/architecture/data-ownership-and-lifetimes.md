@@ -171,3 +171,14 @@ freezes its dictionary/array values once, and publishes it under a monotonic cap
 serial. Old retained captures survive reset without mutation. The main thread
 serializes that record, not mutable World storage. Capacity, failure and reset
 semantics live in the [MicroScenario contract](../operations/microscenarios.md).
+
+## MS-001 inspection and definition comparisons
+
+The [schema-2 workbench](../operations/microscenarios.md#schema-2-complete-apparatus-presentation-and-existing-field-inspection)
+never reads a worker World. Point/state and work-statistic queries run on the same
+serialized external owner as native ticks and return copied values. Desktop
+summaries/captures remain recursively frozen before main-thread publication;
+Rapier scene objects stay main-thread owned. A/B stores copied complete definitions,
+then uses the existing acknowledged fresh-reset transaction. Rejected definitions
+or stale adapters preserve the previous world and schedule. A bounded GUI run waits
+for each single-step acknowledgement; timeout cancels without retry or catch-up.

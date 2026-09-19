@@ -250,3 +250,20 @@ This is apparatus, not a solver/interaction migration. The [programme graph](../
 still controls #28/#29 readiness and keeps architecture gates separate. Read the
 [checkpoint evidence](../audits/2026-09-19-issue-27-microscenarios.md) before claiming
 Windows, GPU or native Web runtime acceptance for this version.
+
+## MS-001 Materials Laboratory checkpoint
+
+**Current source, exploratory 2026-09-19:** PR #44 / `codex/issue-28-ms001` implements
+schema-2 [Materials Laboratory](../operations/microscenario-reference-pack.md),
+complete generated interaction fixtures, bounded read-only native field/work
+inspection, full result/identity display and fresh-reset A/B in the shared host/UI.
+Schema-1 Tower/Water definitions retain their hashes and existing blind controls.
+No material rules, profiles, capacities or physics defaults change.
+
+The [execution ledger](../audits/2026-09-19-issue-28-ms001.md) separates local Linux
+headless/controller/graphical evidence from pinned current-head CI, runtime artifact
+publication and actual Windows/browser execution. Source readiness is not a claim
+that stale bundled binaries implement the new adapter. #28 remains open until
+Flood Control, Simulation Stress Test and applicable acceptance are complete.
+The explicit Lab readiness checkpoint can unblock #29 on its named consumable
+revision; it neither starts #29 here nor waives #18/#20/#26/#14 gates.

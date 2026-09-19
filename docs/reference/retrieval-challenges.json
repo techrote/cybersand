@@ -318,7 +318,42 @@
         "../godot/scripts/microscenario_host.gd",
         "../godot/scripts/simulation_worker.gd"
       ]
+    },
+    {
+      "id": "MS04",
+      "query": "Is Materials Laboratory ready to unblock INT-000 and does that mean all of issue 28 or Windows Web validation is finished?",
+      "canonical": [
+        "operations/microscenario-reference-pack.md",
+        "operations/microscenarios-programme.md"
+      ],
+      "facts": [
+        "Use the explicit Lab readiness checkpoint and exact consumable revision, not issue number or transfer success.",
+        "Branch-ready and merged-ready/platform acceptance are distinct; Flood Control and Simulation Stress Test may remain unfinished.",
+        "No physics gate is waived and the issue 28 worker does not implement issue 29."
+      ],
+      "sources": [
+        "../godot/scripts/microscenario_reference_pack.gd",
+        "../godot/scripts/microscenario_workbench.gd"
+      ]
+    },
+    {
+      "id": "MS05",
+      "query": "How do I compare generated material definitions without changing a live worker and inspect temperature and scheduler work?",
+      "canonical": [
+        "operations/microscenario-reference-pack.md",
+        "operations/microscenarios.md"
+      ],
+      "facts": [
+        "A/B stores complete validated definitions and every load uses a fresh acknowledged reset.",
+        "One-cell probes report existing stored fields; masked temperature and per-cell sleep are not fabricated.",
+        "Native tick, host observer and whole-frame costs are distinct; unavailable counters remain explicit."
+      ],
+      "sources": [
+        "../godot/scripts/microscenario_comparison.gd",
+        "../godot/native_extension/cyber_observation_values.hpp",
+        "../godot/scripts/microscenario_telemetry.gd"
+      ]
     }
   ],
-  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged."
+  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged."
 }

@@ -189,3 +189,16 @@ These are apparatus budgets, not larger native World capacities. Existing native
 allocation, failed-world quarantine and general input-queue limitations remain.
 Fixed fixture execution rejects live cadence/adhesion overrides; owner-policy
 legacy scenarios still require their actual owner settings in comparisons.
+
+## MicroScenario schema-2 presentation and work capture
+
+[MS-001](microscenarios.md#schema-2-complete-apparatus-presentation-and-existing-field-inspection)
+preserves all existing setup, event, observation, JSON and native capacities.
+It admits at most 12 named in-world presentation regions; title/profile/baseline
+labels are at most 128 characters, region labels 96 and instructions 4096. The
+declared run window is 1..3600 ticks, with at most one existing step command awaiting
+acknowledgement. A/B retains two bounded definitions and one capture per slot.
+`cell_state` is exactly one cell. Optional host timings retain at most 3600 values;
+work-counter aggregation has a fixed key set. No recurring native timer or new
+material operation is added. Failed/absent native owners reject read queries;
+reported capacities are actual runtime limits, not UI guesses or raised defaults.

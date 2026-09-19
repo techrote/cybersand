@@ -1,0 +1,248 @@
+{
+  "body_enabled": false,
+  "camera_origin": [
+    0,
+    0
+  ],
+  "conditions": [
+    {
+      "comparison": "ge",
+      "observation": "product-final",
+      "outcome": "complete",
+      "value": 1
+    },
+    {
+      "comparison": "eq",
+      "observation": "product-final",
+      "outcome": "fail",
+      "value": 0
+    }
+  ],
+  "events": [
+    {
+      "coherence": 0,
+      "height": 3,
+      "kind": "erase",
+      "material": 0,
+      "normalized_mass": 0,
+      "tick": 12,
+      "width": 56,
+      "x": 214,
+      "y": 140
+    }
+  ],
+  "execution": {
+    "cadence_lod_enabled": false,
+    "liquid_surface_adhesion_enabled": true,
+    "policy": "fixed"
+  },
+  "id": "materials/salt-water",
+  "interest": {
+    "policy": "fixed",
+    "region": [
+      0,
+      0,
+      512,
+      320
+    ]
+  },
+  "maturity": "exploratory",
+  "observations": [
+    {
+      "id": "dose-initial",
+      "material": 23,
+      "metric": "material_cells",
+      "region": [
+        180,
+        68,
+        124,
+        176
+      ],
+      "tick": 0
+    },
+    {
+      "id": "water-initial",
+      "material": 3,
+      "metric": "water_integer",
+      "region": [
+        180,
+        68,
+        124,
+        176
+      ],
+      "tick": 0
+    },
+    {
+      "id": "dose-state",
+      "material": 23,
+      "metric": "cell_state",
+      "region": [
+        224,
+        134,
+        1,
+        1
+      ],
+      "tick": 0
+    },
+    {
+      "id": "product-60",
+      "material": 24,
+      "metric": "material_cells",
+      "region": [
+        180,
+        68,
+        124,
+        176
+      ],
+      "tick": 60
+    },
+    {
+      "id": "dose-final",
+      "material": 23,
+      "metric": "material_cells",
+      "region": [
+        180,
+        68,
+        124,
+        176
+      ],
+      "tick": 120
+    },
+    {
+      "id": "product-final",
+      "material": 24,
+      "metric": "material_cells",
+      "region": [
+        180,
+        68,
+        124,
+        176
+      ],
+      "tick": 120
+    },
+    {
+      "id": "water-final",
+      "material": 3,
+      "metric": "water_integer",
+      "region": [
+        180,
+        68,
+        124,
+        176
+      ],
+      "tick": 120
+    },
+    {
+      "id": "reservoir-state",
+      "material": 24,
+      "metric": "cell_state",
+      "region": [
+        182,
+        238,
+        1,
+        1
+      ],
+      "tick": 120
+    }
+  ],
+  "partial_water_fills": [
+    180,
+    192,
+    124,
+    52,
+    255,
+    0
+  ],
+  "player_enabled": false,
+  "player_start": [
+    24,
+    222
+  ],
+  "presentation": {
+    "baseline": "de332eaf8f4e70b25b097bed0c2e2a7b2aac0173 / Baseline transport / Water8-coherence12 / exploratory",
+    "duration_ticks": 120,
+    "instructions": "Generated controlled interaction fixture. The complete definition fixes the dose, reservoir, shelf release at tick 12, observations and current engine profiles. Use the normal-dose and small-dose Salt presets as a fresh-reset A/B example, not a tuning verdict. No player/body owner or live brush is omitted by the headless run. The unused bays remain empty inspection space; edit a complete JSON definition to reuse them.",
+    "profile": "salt-water/dose-32/v1",
+    "regions": [
+      {
+        "id": "contact",
+        "label": "SALT-WATER / DOSE 32",
+        "region": [
+          176,
+          64,
+          132,
+          184
+        ]
+      }
+    ],
+    "title": "Materials Laboratory / salt-water"
+  },
+  "recipe_version": 1,
+  "rectangles": [
+    176,
+    64,
+    4,
+    184,
+    1,
+    304,
+    64,
+    4,
+    184,
+    1,
+    176,
+    244,
+    132,
+    4,
+    1,
+    176,
+    64,
+    132,
+    4,
+    1,
+    214,
+    140,
+    56,
+    3,
+    1,
+    224,
+    128,
+    32,
+    12,
+    23
+  ],
+  "schema_version": 2,
+  "seed": 0,
+  "source_recipe": "MS-001 reference-pack/v1/materials/salt-water",
+  "source_recipe_hash": "39cf11e4f5b3b6a921f6352ae9feb538e87d57abf43cebc5627f3476a25b6a0a",
+  "tools": [],
+  "transport_profile": {
+    "families": {
+      "liquid": {
+        "cadence": 1,
+        "carrying": 0,
+        "erosion": 0,
+        "horizontal": 2,
+        "permeability": 1
+      },
+      "powder": {
+        "mixing": 0,
+        "packing": 8,
+        "pickup": 64
+      }
+    },
+    "materials": {
+      "33": {
+        "permeability": 30
+      }
+    },
+    "name": "Baseline",
+    "pairs": [],
+    "version": 1
+  },
+  "water_semantics": [
+    1,
+    8,
+    12,
+    0
+  ]
+}

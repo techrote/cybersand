@@ -2,7 +2,7 @@
 title: MicroScenarios contract and shared host
 status: Current
 document-kind: contract
-scope: MS-000 version 1 declarative recipes, bounded owner lifecycle, Play/Inspect/Benchmark controls and truthful captures; not a physics architecture or full replay
+scope: MS-000 schema 1 and compatible MS-001 schema 2 definitions, bounded owner lifecycle, shared modes, inspection and fresh-reset comparisons; not physics architecture or full replay
 canonical-for: [microscenario-contract, microscenario-host, microscenario-capture]
 last-reviewed: 2026-09-19
 related-documents: [microscenarios-programme.md, experiment-tower.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/level-saves-and-replay.md, ../audits/2026-09-19-issue-27-microscenarios.md]
@@ -15,8 +15,9 @@ related-documents: [microscenarios-programme.md, experiment-tower.md, ../archite
 **Current source:** MS-000 adds one data validator, catalogue and owner-local host
 around existing native builders and operations. `microscenario_contract.gd`,
 `microscenario_catalogue.gd` and `microscenario_host.gd` in `godot/scripts/` own
-those responsibilities. No native C++ source, material kernel, solver, Cell layout,
-transport default, reaction cadence or production Water precision changes here.
+those responsibilities. The MS-000 extraction changes no native source. MS-001
+adds the read-only native adapter described below, not material kernels, solver,
+Cell layout, transport defaults, reaction cadence or production Water precision.
 
 The catalogue wraps the unchanged version-4 Experiment Tower and all 35 version-1
 Water Feel recipes. Two new **exploratory** fixtures, `fixtures/unequal-head` and
@@ -28,8 +29,8 @@ The Sand fixture establishes a non-Water consumer.
 The [programme](microscenarios-programme.md) still owns ordering. #27 does not
 admit #18 compact motion, #20 sparse ballistics, #29 interaction tuning or
 #14/G-final. No #20-style ballistic event is implemented while its admission is
-held. The host is useful to exploratory #28 authoring; it does not itself satisfy
-#28's Materials Laboratory readiness checkpoint.
+held. The host is useful to exploratory #28 authoring; the separately evidenced
+[MS-001 Materials Laboratory](microscenario-reference-pack.md) owns the #28 readiness checkpoint.
 
 [Validation](../audits/2026-09-19-issue-27-microscenarios.md) distinguishes Linux
 native execution, both existing controller code paths, automated GUI input and
@@ -39,7 +40,7 @@ an existing recipe baseline, not physics approval or new all-platform acceptance
 ## Versioned definition and validation
 
 A definition is JSON data, not executable code. `CyberMicroScenarioContract.base`
-provides a complete template; `validate` checks in-memory data and `parse` checks
+provides a complete schema-1 template; `validate` checks in-memory data and `parse` checks
 bounded JSON. Unknown or missing fields, invalid types, fractional integer fields,
 non-finite numbers, out-of-world regions and capacity excess are rejected before
 native replacement. Integral JSON floats are normalized to integers, including
@@ -49,7 +50,7 @@ All root fields are required:
 
 | Fields | Meaning |
 |---|---|
-| `schema_version`, `id`, `recipe_version`, `seed`, `maturity` | Schema 1; stable ID; positive recipe version; 0..2147483647 seed; `exploratory` or existing `reference` baseline |
+| `schema_version`, `id`, `recipe_version`, `seed`, `maturity` | Schema 1 or 2; stable ID; positive recipe version; 0..2147483647 seed; `exploratory` or existing `reference` baseline |
 | `rectangles` | Flat setup records `x,y,width,height,material`; current IDs 0..80 except reserved 10 |
 | `partial_water_fills` | Flat records `x,y,width,height,normalized_mass,coherence`; existing fractional Water setup, not a generalized fractional-liquid solver |
 | `transport_profile`, `water_semantics` | Existing validated transport profile and native Water packet `[1,mass_bits,coherence_ticks,0]`; mass3..8, coherence0..12 |
@@ -57,6 +58,7 @@ All root fields are required:
 | `interest`, `execution` | Declared owner-controlled or fixed region and existing cadence/adhesion settings |
 | `events`, `observations`, `conditions` | Bounded ordered existing operations, read-only observations and objective/failure predicates |
 | `source_recipe`, `source_recipe_hash` | Ancestral recipe identity, distinct from the canonical full definition hash and actual runtime identity |
+| `presentation` (schema 2 only) | Required bounded title/instructions/duration/baseline/profile/region metadata; forbidden in schema 1 |
 
 The finite demo world remains 1024 by 1024. Rectangles/fills must be wholly inside
 it, with positive dimensions. Limits are 4096 records per setup array; total
@@ -99,10 +101,12 @@ Coherence scaling and Water source/sink deltas match the old Water owners.
 
 Observations contain `id,tick,metric,region,material`, with at most 24 unique IDs,
 ordered completed ticks 0..3600, and total region area at most one world area.
-Metrics are `water_integer`, `material_cells` and `tick`. Material-cell counting
+Schema-1 metrics are `water_integer`, `material_cells` and `tick`; schema 2 also
+admits a one-cell structured `cell_state` probe. Material-cell counting
 is refused for body-enabled definitions because the existing point-query API can
 be masked by bodies; it must not be advertised as an authoritative masked census.
-General temperature/entity/electrical probes are not implemented by this version.
+Schema 1 has no temperature/entity/electrical probes. Schema 2 adds the bounded
+existing-field query described below, not a new temperature or electrical solver.
 
 Tick-zero observations happen after setup and before tick-zero events. Later
 observations happen after a successful completed tick. Each observation runs once.
@@ -220,3 +224,53 @@ runtime snapshot**. Generic level export/import is disabled while controlled
 scenarios are active because CYSD1 omits their lifecycle. Capture/reduce/triage is
 supported, but full organic user-input replay, generalized probes, new interaction
 rules and a production persistence redesign remain separate work.
+
+## Schema 2: complete apparatus presentation and existing-field inspection
+
+**Current source:** schema 2 is opt-in. Schema-1 definitions, canonical hashes,
+legacy Tower/Water recipes and their controls remain unchanged. It adds exactly
+one required `presentation` record: `title`, `instructions`, `duration_ticks`,
+`baseline`, `profile`, `regions`. Text is bounded (128 characters for title and
+identity labels, 4096 instructions); duration is 1..3600 completed ticks. At most
+12 unique named regions carry an in-world rectangle and a label of at most 96
+characters. Presentation never changes native physics. The ancestral recipe hash
+is distinct from the complete definition hash and from the executing build.
+
+A schema-2 `cell_state` observation is exactly one cell. It returns copied stored
+material/state, raw temperature availability, body-mask identity and chunk/block
+coordinates through the [exclusive-owner native query](../reference/interfaces-and-message-contracts.md#read-only-native-microscenario-inspection).
+It cannot be used as a scalar condition. Raw temperature is not a calibrated heat
+solver; masked temperature is unavailable, not falsely reported ambient. There
+is no entity census or per-cell awake flag. New capabilities require the rebuilt
+adapter: a stale runtime is rejected **before** replacing the previous world.
+
+No event type or capacity is added. In particular, a scheduled Water fill must
+have positive normalized mass; zero-mass fills are now rejected during pure
+validation because native already rejects them. Use an explicit erase for a sink.
+Initial partial-fill semantics and historical valid definitions are unchanged.
+
+The common workbench displays all declared probes (including pending ones), all
+retained results, complete identities, effective profiles, bounded native work
+statistics and instructions. Its A/B slots hold two independent validated complete
+definitions and at most one capture per slot. **Every load is a fresh reset** via
+the existing acknowledged desktop or synchronous Web owner. Invalid edits preserve
+the active world and slots; no parameter is written into a live worker. Matching
+runtime/tick/seed is necessary, not sufficient to claim matched organic brush input.
+Blind sessions disable these definition/capture routes exactly as before.
+
+**Run declared window** sends one existing single-step command at a time and waits
+for its owner acknowledgement, stopping at the declared completed tick. It is
+bounded by 3600; pause changes, reset/hash changes, quarantine or missing owner
+acknowledgement cancel it without retry/catch-up. This is neither a recurring
+native event nor another physics loop. F8 hides labels, dialogs and HUD. Generic
+controls show only admitted tools; material selection and radius use the existing
+brush command path. Full controls and generated definitions are in the
+[reference pack](microscenario-reference-pack.md).
+
+Schema-2 optional telemetry copies actual completed-tick work and configured
+capacities. Native tick timing remains separate from before/after-host timing;
+CLI advance-loop wall time is broader again. Rendering, Rapier and whole-frame
+cost are not silently included in a native tick distribution. Missing queue
+occupancy, total heap allocations, per-worker utilization and per-cell sleep
+remain explicitly unavailable. Instrumentation off removes optional recording,
+not required objective observations or authoritative behavior.

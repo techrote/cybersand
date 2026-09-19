@@ -1,6 +1,8 @@
 class_name CyberMicroScenarioPanel
 extends VBoxContainer
 
+const Workbench = preload("res://scripts/microscenario_workbench.gd")
+var workbench: CyberMicroScenarioWorkbench
 var host: Control
 var picker: OptionButton
 var mode: OptionButton
@@ -73,6 +75,12 @@ func setup(controller: Control) -> void:
 	definition_text.custom_minimum_size = Vector2(800, 460)
 	definition_text.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	form.add_child(definition_text)
+	workbench = Workbench.new()
+	add_child(workbench)
+	workbench.setup(host)
+
+func modal_open() -> bool:
+	return definition_dialog.visible or workbench.modal_open()
 
 func _launch() -> void:
 	get_viewport().gui_release_focus()
@@ -81,6 +89,8 @@ func _launch() -> void:
 		status.text = "Scenario rejected; active world preserved. " + str(host.microscenario_error)
 
 func refresh(context: Dictionary) -> void:
+	workbench.refresh(context)
+	if host.microscenario_hud_hidden: definition_dialog.hide()
 	var blind: bool = not host.water_blind_set.is_empty() or not host.water_active_blind_label.is_empty()
 	var pending: bool = not host.pending_microscenario_apply.is_empty() or not host.pending_water_apply.is_empty()
 	picker.disabled = blind or pending
@@ -111,7 +121,10 @@ func refresh(context: Dictionary) -> void:
 		str(data.maturity), str(context.get("tick", 0)), str(data.get("outcome", "running"))]
 	if data.mode != "Play":
 		for observation: Dictionary in data.get("observations", []).slice(-3):
-			status.text += " / %s=%s (%s)" % [observation.id, observation.value, observation.metric]
+			var value: Variant = observation.value
+			if value is Dictionary:
+				value = "material=%s a=%s b=%s T=%s" % [value.get("material","?"),value.get("state_a","?"),value.get("state_b","?"),value.get("temperature_raw","unavailable")]
+			status.text += " / %s=%s (%s)" % [observation.id, value, observation.metric]
 	if not str(data.get("error", "")).is_empty(): status.text += " / " + str(data.error)
 
 func _open_definition() -> void:

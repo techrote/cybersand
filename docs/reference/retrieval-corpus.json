@@ -65,7 +65,8 @@
     "operations/cell-layout-experiment.md",
     "operations/liquid-characterization.md",
     "operations/state-precision-experiment.md",
-    "operations/microscenarios.md"
+    "operations/microscenarios.md",
+    "operations/microscenario-reference-pack.md"
   ],
   "navigation": [
     "README.md",

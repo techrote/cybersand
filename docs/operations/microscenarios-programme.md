@@ -488,3 +488,16 @@ platform scope and pending checks. #28 can build on this fixture API once its so
 checkpoint is accepted; the Materials Laboratory readiness gate is not asserted by
 this harness. #18/#20/#26 scientific controls and #14/G-final are unchanged. Do not
 infer those decisions from the presence of a reusable apparatus or from issue numbers.
+
+## MS-001 implementation checkpoint, 2026-09-19
+
+The selected MS-000 implementation landed through PR #40 (`de332eaf8f4e70b25b097bed0c2e2a7b2aac0173`).
+MS-001 proceeds only on `codex/issue-28-ms001` / PR #44. The
+[reference pack and controls](microscenario-reference-pack.md) and
+[execution/readiness ledger](../audits/2026-09-19-issue-28-ms001.md) distinguish the
+implemented Materials Laboratory, its exact consumable branch revision, pending
+merged/platform readiness, and remaining Flood-Control/Simulation Stress Test work.
+Do not infer readiness from a temporary transfer workflow or from the old bundled
+native artifacts. Once the explicit Lab checkpoint is published, #29 may consume
+that exact revision under its own ownership; this does not transfer #29 scope into
+#28 or change any architecture admission gate.

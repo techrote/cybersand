@@ -115,3 +115,14 @@ ordered material counters, Water mass, body impulses, sample ages and depth plot
 Tick and pre-tick coupling p50/p95/max have explicitly different scopes; snapshots
 and result application are outside the latter interval. Concurrent development
 workload and instrumented timings are not production frame-time acceptance.
+
+## MS-001 apparatus cost boundaries
+
+The [reference pack](microscenario-reference-pack.md) retains native tick timing
+separately from before/after-host observation timing and CLI advance-loop wall time.
+Actual native work/capacity counters are copied after successful completed ticks;
+quarantined partial-tick results are not exported as successful measurements.
+Queue occupancy/high-water, all heap allocations, per-worker utilization and
+per-cell sleeping state remain unavailable. Phase-job counts are not utilization.
+None of these measurements substitutes for renderer, Rapier or whole-frame timing,
+or certifies a contended hosted runner as the user's target PC.

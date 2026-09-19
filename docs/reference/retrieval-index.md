@@ -130,3 +130,12 @@ The architecture programme remains the separate authority for #14/#18/#20
 scientific gates. MicroScenarios can provide apparatus and later retained
 fixtures; their existence is not architecture admission evidence.
 
+
+## Materials Laboratory and MS-001 readiness
+
+Route generated interaction definitions, full observation inspection, fresh-reset
+A/B, named reference-pack baselines and #29 readiness questions to the
+[reference-pack runbook](../operations/microscenario-reference-pack.md), then the
+[shared schema/host](../operations/microscenarios.md). The
+[dated execution ledger](../audits/2026-09-19-issue-28-ms001.md) owns platform/run
+claims. Branch-ready is not merged-ready; the programme graph owns admission.

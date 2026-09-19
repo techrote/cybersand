@@ -3,7 +3,7 @@ extends RefCounted
 
 # Pure, JSON-round-trippable setup data. Validation completes before native
 # replacement. No callbacks, scripts, live nodes or arbitrary per-tick writes.
-const VERSION: int = 1
+const VERSION: int = 2
 const SIDE: int = 1024
 const MATERIAL_COUNT: int = 81
 const MAX_RECORDS: int = 4096
@@ -23,7 +23,7 @@ const OBSERVATION_KEYS: Array[String] = ["id", "tick", "metric", "region", "mate
 const CONDITION_KEYS: Array[String] = ["observation", "comparison", "value", "outcome"]
 
 static func base(scenario_id: String, recipe_version: int = 1, seed: int = 0) -> Dictionary:
-	return {"schema_version":VERSION, "id":scenario_id, "recipe_version":recipe_version,
+	return {"schema_version":1, "id":scenario_id, "recipe_version":recipe_version,
 		"seed":seed, "maturity":"exploratory", "rectangles":[], "partial_water_fills":[],
 		"transport_profile":CyberTransportProfiles.preset(0), "water_semantics":[1,8,12,0],
 		"player_start":[24,222], "camera_origin":[0,0], "player_enabled":false,
@@ -41,10 +41,15 @@ static func parse(text: String) -> Dictionary:
 	return validate(parser.data)
 
 static func validate(value: Variant) -> Dictionary:
-	if not value is Dictionary or not _keys(value, ROOT_KEYS):
-		return _error("Missing or unknown scenario field")
-	if not _integer(value.schema_version, VERSION, VERSION):
+	if not value is Dictionary or not _integer(value.get("schema_version"), 1, VERSION):
 		return _error("Unsupported scenario schema")
+	var version: int = int(value.schema_version)
+	var keys: Array = ROOT_KEYS.duplicate()
+	if version == 2: keys.append("presentation")
+	if not _keys(value, keys):
+		return _error("Missing or unknown scenario field")
+	var presentation: Variant = _presentation(value.presentation) if version == 2 else {}
+	if presentation == null: return _error("Invalid presentation or presentation capacity exceeded")
 	if not _identifier(value.id) or not _integer(value.recipe_version, 1, 0x7FFFFFFF):
 		return _error("Invalid scenario identity")
 	if not _integer(value.seed, 0, 0x7FFFFFFF):
@@ -113,6 +118,7 @@ static func validate(value: Variant) -> Dictionary:
 			return _error("Invalid event payload")
 		if entry.kind == "fill":
 			if int(entry.material) != 3: return _error("Fractional fill currently supports Water only")
+			if int(entry.normalized_mass) == 0: return _error("Scheduled fill requires positive mass; use erase explicitly")
 		elif (int(entry.normalized_mass) != 0 or int(entry.coherence) != 0
 			or int(entry.material) == 10
 			or (entry.kind == "erase" and int(entry.material) != 0)):
@@ -142,8 +148,11 @@ static func validate(value: Variant) -> Dictionary:
 			return _error("Observations must be tick-ordered and bounded")
 		if value.body_enabled and entry.metric == "material_cells":
 			return _error("Material-cell counts require an unmasked, body-disabled fixture")
-		if not entry.metric in ["water_integer", "material_cells", "tick"]:
+		if not entry.metric in ["water_integer", "material_cells", "tick", "cell_state"]:
 			return _error("Unsupported observation metric")
+		if entry.metric == "cell_state" and (version != 2 or not _region(entry.region)
+			or int(entry.region[2]) != 1 or int(entry.region[3]) != 1):
+			return _error("Cell-state inspection requires schema 2 and exactly one cell")
 		if (not _region(entry.region) or not _integer(entry.material, 0, MATERIAL_COUNT - 1)
 			or int(entry.material) == 10):
 			return _error("Invalid observation region/material")
@@ -161,12 +170,17 @@ static func validate(value: Variant) -> Dictionary:
 			return _error("Invalid condition fields")
 		if not entry.observation in observation_ids or not entry.comparison in ["eq", "le", "ge"]:
 			return _error("Unknown observation or comparison")
+		for observation: Dictionary in observations:
+			if observation.id == entry.observation and observation.metric == "cell_state":
+				return _error("Structured cell-state observations are not numeric conditions")
 		if not _integer(entry.value, 0, SIDE * SIDE * 255) or not entry.outcome in ["complete", "fail"]:
 			return _error("Invalid condition threshold/outcome")
 		conditions.append({"observation":str(entry.observation), "comparison":str(entry.comparison),
 			"value":int(entry.value), "outcome":str(entry.outcome)})
 
 	var definition: Dictionary = base(str(value.id), int(value.recipe_version), int(value.seed))
+	definition.schema_version = version
+	if version == 2: definition["presentation"] = presentation
 	for key: String in ["maturity", "player_enabled", "body_enabled", "source_recipe", "source_recipe_hash"]:
 		definition[key] = value[key]
 	definition.rectangles = rectangles
@@ -185,6 +199,26 @@ static func validate(value: Variant) -> Dictionary:
 	if canonical.to_utf8_buffer().size() > MAX_JSON_BYTES: return _error("Definition byte budget exceeded")
 	return {"ok":true, "definition":definition, "hash":canonical.sha256_text(),
 		"canonical_json":canonical, "transport":transport}
+
+static func _presentation(value: Variant) -> Variant:
+	if not value is Dictionary or not _keys(value, ["title", "instructions", "duration_ticks", "baseline", "profile", "regions"]):
+		return null
+	for key: String in ["title", "instructions", "baseline", "profile"]:
+		if not value[key] is String or str(value[key]).is_empty(): return null
+		if str(value[key]).length() > (4096 if key == "instructions" else 128): return null
+	if not _integer(value.duration_ticks, 1, MAX_TICK) or not value.regions is Array or value.regions.size() > 12:
+		return null
+	var regions: Array = []
+	var ids: Array = []
+	for region: Variant in value.regions:
+		if not region is Dictionary or not _keys(region, ["id", "label", "region"]): return null
+		if not _identifier(region.id) or region.id in ids or not _region(region.region): return null
+		if not region.label is String or region.label.is_empty() or region.label.length() > 96: return null
+		ids.append(region.id)
+		regions.append({"id":str(region.id), "label":str(region.label), "region":_int_array(region.region)})
+	return {"title":str(value.title), "instructions":str(value.instructions),
+		"duration_ticks":int(value.duration_ticks), "baseline":str(value.baseline),
+		"profile":str(value.profile), "regions":regions}
 
 static func _records(value: Variant, stride: int, area_limit: int) -> Variant:
 	if not value is Array or value.size() % stride != 0 or value.size() / stride > MAX_RECORDS:

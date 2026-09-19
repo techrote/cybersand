@@ -1,0 +1,1391 @@
+{
+  "schema_version": 1,
+  "status": "local-lab-readiness-evidence; publication and pinned runtime matrix separately gated",
+  "source_base": "de332eaf8f4e70b25b097bed0c2e2a7b2aac0173",
+  "native_adapter_commit": "ea7e8809b51b2ca727eb4d4873587706a65e7a85",
+  "source_identity_kind": "reviewed local Lab delta; exact input fingerprints below; publication commit recorded in issue/PR checkpoint",
+  "source_inputs": {
+    "godot/scripts/microscenario_catalogue.gd": "388002d97f0d79b5bc22a2d13f4db653d0eea56a696344616dc7b3ebed8e8e7d",
+    "godot/scripts/microscenario_comparison.gd": "a4aab7a504db70698dafedb368384bcce61b73edaa01795b5ae368a8912a4890",
+    "godot/scripts/microscenario_contract.gd": "74c0266a970de37af67a2455d6aa3693915046593b9822b79418146cc62a7aa0",
+    "godot/scripts/microscenario_host.gd": "e4b14fa117d9960e4036706e5dccbb20344ef17fba991816d9e26aedb5770f9a",
+    "godot/scripts/microscenario_identity.gd": "6e95b08fe3a92370383fd2c4a4c986442c3d338d9d78e33991b61c7138f9ab83",
+    "godot/scripts/microscenario_panel.gd": "1cc3343aa4d156d81d5f9bbadc7d72f6f75fe2c9f942fbc410dd46fd0f459726",
+    "godot/scripts/microscenario_reference_pack.gd": "a490301fa3372a4129b80288a2bdf723ca9196762ac39b557161bf3371eb4523",
+    "godot/scripts/microscenario_telemetry.gd": "539c9832b3514b844cd650afe56683dc2933bc8ed01822d04c2c1f793a52903d",
+    "godot/scripts/microscenario_workbench.gd": "607ef4ee4d8ceb4e82d5954010d3ee937be04017317a7a5b0570ed8eb55577b0",
+    "godot/scripts/main.gd": "6078b841e6aa8fdcae49cdcbcd6554cb9ec4e187f2ac0168e5bcc9c128bbf0f1",
+    "godot/scripts/web_demo_controller.gd": "0d9f935051c28579281ea77414f00e8cf1473c0a3e50a559aa79ed4979fe9210",
+    "godot/tests/test_microscenario_controllers.gd": "052f51581e4ae0739f6b2210af7651e5ef169659d8c00921a2c46cd20b5d8859",
+    "godot/tests/test_microscenario_materials_lab.gd": "8b9a96173b59393dc8be8b6a24de0df2433f2d77c7fb5ec002697bee39beebc9",
+    "godot/tests/test_microscenario_native_observation.gd": "169e103204cabdb58ec7bf95b44245cf137bbb8ca5aa96575312a86dd5754c0b",
+    "godot/tests/test_microscenario_reference_contract.gd": "8280b52d719e39e6ffd45fd538e4bbb26822637ca071a387e97b98816c2c2006",
+    "godot/tests/test_microscenario_workbench.gd": "1db75c16f8f60dd27c0178aedff3f96329b54a71acefec4e4a0a8556f6a748d3",
+    "godot/tests/test_microscenarios.gd": "78ce5b3c774fed8987cdf3e562d7e0594bfb646d61c9a25b0f839cbda5e58c05"
+  },
+  "native_sha256": "5990b590a4b6e07ef39664c0e8bd6fb8550645ae08c32504720af904d75da223",
+  "toolchain": "Debian 13 x86_64 GCC 14.2/binutils 2.44 exploratory override; pinned godot-cpp static input from GCC13.3/binutils2.42 Actions35411576689",
+  "godot": "4.7.stable.official.5b4e0cb0f",
+  "tests": [
+    {
+      "test": "test_microscenario_reference_contract.gd",
+      "assertions": 239,
+      "failures": 0,
+      "timeout_seconds": 180
+    },
+    {
+      "test": "test_microscenario_native_observation.gd",
+      "assertions": 100,
+      "failures": 0,
+      "timeout_seconds": 180
+    },
+    {
+      "test": "test_microscenario_materials_lab.gd",
+      "assertions": 189,
+      "failures": 0,
+      "workers": [
+        1,
+        4
+      ],
+      "modes": [
+        "Play",
+        "Inspect",
+        "Benchmark"
+      ],
+      "observers": [
+        true,
+        false
+      ],
+      "timeout_seconds": 180
+    },
+    {
+      "test": "test_microscenario_workbench.gd",
+      "assertions": 38,
+      "failures": 0,
+      "display": "headless",
+      "timeout_seconds": 180
+    },
+    {
+      "test": "test_microscenario_workbench.gd",
+      "assertions": 42,
+      "failures": 0,
+      "display": "X11 / Mesa llvmpipe software OpenGL",
+      "timeout_seconds": 240
+    },
+    {
+      "test": "test_microscenario_controllers.gd",
+      "assertions": 52,
+      "failures": 0,
+      "display": "headless",
+      "timeout_seconds": 180
+    }
+  ],
+  "generated_gui_capture": {
+    "id": "materials/salt-water",
+    "definition": {
+      "body_enabled": false,
+      "camera_origin": [
+        0,
+        0
+      ],
+      "conditions": [
+        {
+          "comparison": "ge",
+          "observation": "product-final",
+          "outcome": "complete",
+          "value": 1
+        },
+        {
+          "comparison": "eq",
+          "observation": "product-final",
+          "outcome": "fail",
+          "value": 0
+        }
+      ],
+      "events": [
+        {
+          "coherence": 0,
+          "height": 3,
+          "kind": "erase",
+          "material": 0,
+          "normalized_mass": 0,
+          "tick": 12,
+          "width": 56,
+          "x": 214,
+          "y": 140
+        }
+      ],
+      "execution": {
+        "cadence_lod_enabled": false,
+        "liquid_surface_adhesion_enabled": true,
+        "policy": "fixed"
+      },
+      "id": "materials/salt-water",
+      "interest": {
+        "policy": "fixed",
+        "region": [
+          0,
+          0,
+          512,
+          320
+        ]
+      },
+      "maturity": "exploratory",
+      "observations": [
+        {
+          "id": "dose-initial",
+          "material": 23,
+          "metric": "material_cells",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 0
+        },
+        {
+          "id": "water-initial",
+          "material": 3,
+          "metric": "water_integer",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 0
+        },
+        {
+          "id": "dose-state",
+          "material": 23,
+          "metric": "cell_state",
+          "region": [
+            224,
+            134,
+            1,
+            1
+          ],
+          "tick": 0
+        },
+        {
+          "id": "product-60",
+          "material": 24,
+          "metric": "material_cells",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 60
+        },
+        {
+          "id": "dose-final",
+          "material": 23,
+          "metric": "material_cells",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 120
+        },
+        {
+          "id": "product-final",
+          "material": 24,
+          "metric": "material_cells",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 120
+        },
+        {
+          "id": "water-final",
+          "material": 3,
+          "metric": "water_integer",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 120
+        },
+        {
+          "id": "reservoir-state",
+          "material": 24,
+          "metric": "cell_state",
+          "region": [
+            182,
+            238,
+            1,
+            1
+          ],
+          "tick": 120
+        }
+      ],
+      "partial_water_fills": [
+        180,
+        192,
+        124,
+        52,
+        255,
+        0
+      ],
+      "player_enabled": false,
+      "player_start": [
+        24,
+        222
+      ],
+      "presentation": {
+        "baseline": "de332eaf8f4e70b25b097bed0c2e2a7b2aac0173 / Baseline transport / Water8-coherence12 / exploratory",
+        "duration_ticks": 120,
+        "instructions": "Generated controlled interaction fixture. The complete definition fixes the dose, reservoir, shelf release at tick 12, observations and current engine profiles. Use the normal-dose and small-dose Salt presets as a fresh-reset A/B example, not a tuning verdict. No player/body owner or live brush is omitted by the headless run. The unused bays remain empty inspection space; edit a complete JSON definition to reuse them.",
+        "profile": "salt-water/dose-32/v1",
+        "regions": [
+          {
+            "id": "contact",
+            "label": "SALT-WATER / DOSE 32",
+            "region": [
+              176,
+              64,
+              132,
+              184
+            ]
+          }
+        ],
+        "title": "Materials Laboratory / salt-water"
+      },
+      "recipe_version": 1,
+      "rectangles": [
+        176,
+        64,
+        4,
+        184,
+        1,
+        304,
+        64,
+        4,
+        184,
+        1,
+        176,
+        244,
+        132,
+        4,
+        1,
+        176,
+        64,
+        132,
+        4,
+        1,
+        214,
+        140,
+        56,
+        3,
+        1,
+        224,
+        128,
+        32,
+        12,
+        23
+      ],
+      "schema_version": 2,
+      "seed": 0,
+      "source_recipe": "MS-001 reference-pack/v1/materials/salt-water",
+      "source_recipe_hash": "39cf11e4f5b3b6a921f6352ae9feb538e87d57abf43cebc5627f3476a25b6a0a",
+      "tools": [],
+      "transport_profile": {
+        "families": {
+          "liquid": {
+            "cadence": 1,
+            "carrying": 0,
+            "erosion": 0,
+            "horizontal": 2,
+            "permeability": 1
+          },
+          "powder": {
+            "mixing": 0,
+            "packing": 8,
+            "pickup": 64
+          }
+        },
+        "materials": {
+          "33": {
+            "permeability": 30
+          }
+        },
+        "name": "Baseline",
+        "pairs": [],
+        "version": 1
+      },
+      "water_semantics": [
+        1,
+        8,
+        12,
+        0
+      ]
+    },
+    "definition_hash": "71751557b0e2d8bd5a5f2ab6f43f2f7a17d50b9934562de9e8a3cc5a244be387",
+    "seed": 0,
+    "completed_tick": 120,
+    "outcome": "complete",
+    "observations": [
+      {
+        "id": "dose-initial",
+        "metric": "material_cells",
+        "region": [
+          180,
+          68,
+          124,
+          176
+        ],
+        "tick": 0,
+        "value": 384
+      },
+      {
+        "id": "water-initial",
+        "metric": "water_integer",
+        "region": [
+          180,
+          68,
+          124,
+          176
+        ],
+        "tick": 0,
+        "value": 1644240
+      },
+      {
+        "id": "dose-state",
+        "metric": "cell_state",
+        "region": [
+          224,
+          134,
+          1,
+          1
+        ],
+        "tick": 0,
+        "value": {
+          "activity_block_coordinate": [
+            7,
+            4
+          ],
+          "chunk_coordinate": [
+            1,
+            1
+          ],
+          "completed_tick": 0,
+          "material": 23,
+          "ok": true,
+          "scope": "stored cell values; block coordinates are not a per-cell awake flag",
+          "state_a": 0,
+          "state_b": 0,
+          "temperature_available": true,
+          "temperature_raw": 200,
+          "temperature_units": "engine raw integer; not a calibrated heat solver",
+          "transient_body_id": 0,
+          "x": 224,
+          "y": 134
+        }
+      },
+      {
+        "id": "product-60",
+        "metric": "material_cells",
+        "region": [
+          180,
+          68,
+          124,
+          176
+        ],
+        "tick": 60,
+        "value": 0
+      },
+      {
+        "id": "dose-final",
+        "metric": "material_cells",
+        "region": [
+          180,
+          68,
+          124,
+          176
+        ],
+        "tick": 120,
+        "value": 0
+      },
+      {
+        "id": "product-final",
+        "metric": "material_cells",
+        "region": [
+          180,
+          68,
+          124,
+          176
+        ],
+        "tick": 120,
+        "value": 768
+      },
+      {
+        "id": "water-final",
+        "metric": "water_integer",
+        "region": [
+          180,
+          68,
+          124,
+          176
+        ],
+        "tick": 120,
+        "value": 1547232
+      },
+      {
+        "id": "reservoir-state",
+        "metric": "cell_state",
+        "region": [
+          182,
+          238,
+          1,
+          1
+        ],
+        "tick": 120,
+        "value": {
+          "activity_block_coordinate": [
+            5,
+            7
+          ],
+          "chunk_coordinate": [
+            1,
+            1
+          ],
+          "completed_tick": 120,
+          "material": 3,
+          "ok": true,
+          "scope": "stored cell values; block coordinates are not a per-cell awake flag",
+          "state_a": 255,
+          "state_b": 0,
+          "temperature_available": true,
+          "temperature_raw": 200,
+          "temperature_units": "engine raw integer; not a calibrated heat solver",
+          "transient_body_id": 0,
+          "x": 182,
+          "y": 238
+        }
+      }
+    ],
+    "native": {
+      "content_hash": "e0c313e5ee077cc0",
+      "state_hash": "84778d9de4fa4f86",
+      "tick": 120,
+      "water_cells": 6129,
+      "water_integer": 1547232
+    },
+    "runtime_identity": {
+      "godot": "4.7-stable (official)",
+      "material_catalogue": {
+        "authority": "native artifact; cell_world.gd identifies the UI mirror",
+        "count": 81,
+        "reserved_ids": [
+          10
+        ]
+      },
+      "native_path": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "native_sha256": "5990b590a4b6e07ef39664c0e8bd6fb8550645ae08c32504720af904d75da223",
+      "platform": "Linux",
+      "revision_status": "not-embedded",
+      "script_set_sha256": "14511d99a84f286a61c50c7efb79ecf9a7a250d3aade2f78d5eb3792599b906f",
+      "script_sha256": {
+        "scripts/cell_world.gd": "9fa6e8042f165673b7175fe732885fcbb1edc67a0cbed9ac23a7e75d55586622",
+        "scripts/experiment_tower.gd": "aa65451d8bacba91c715445a41cd64ef3849d6dce4e207166abc1a9410a545e8",
+        "scripts/main.gd": "6078b841e6aa8fdcae49cdcbcd6554cb9ec4e187f2ac0168e5bcc9c128bbf0f1",
+        "scripts/material_appearance_lut.gd": "93b6e43d03d13892b8f28256b76085b7ee9daa07582ea2f6a483f9b52b0d1fce",
+        "scripts/microscenario_catalogue.gd": "388002d97f0d79b5bc22a2d13f4db653d0eea56a696344616dc7b3ebed8e8e7d",
+        "scripts/microscenario_comparison.gd": "a4aab7a504db70698dafedb368384bcce61b73edaa01795b5ae368a8912a4890",
+        "scripts/microscenario_contract.gd": "74c0266a970de37af67a2455d6aa3693915046593b9822b79418146cc62a7aa0",
+        "scripts/microscenario_host.gd": "e4b14fa117d9960e4036706e5dccbb20344ef17fba991816d9e26aedb5770f9a",
+        "scripts/microscenario_identity.gd": "6e95b08fe3a92370383fd2c4a4c986442c3d338d9d78e33991b61c7138f9ab83",
+        "scripts/microscenario_panel.gd": "1cc3343aa4d156d81d5f9bbadc7d72f6f75fe2c9f942fbc410dd46fd0f459726",
+        "scripts/microscenario_reference_pack.gd": "a490301fa3372a4129b80288a2bdf723ca9196762ac39b557161bf3371eb4523",
+        "scripts/microscenario_telemetry.gd": "539c9832b3514b844cd650afe56683dc2933bc8ed01822d04c2c1f793a52903d",
+        "scripts/microscenario_workbench.gd": "607ef4ee4d8ceb4e82d5954010d3ee937be04017317a7a5b0570ed8eb55577b0",
+        "scripts/sampled_character.gd": "d9c0f568dbd43a90a1ab47d9c1ee0d5ec4285363c1f81c0322f16fae4c862e25",
+        "scripts/simulation_worker.gd": "01ae540b20b46d60df4e71fd62e75ea7f356eb62de9edcd1bf7b7915b5378a36",
+        "scripts/transport_profiles.gd": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+        "scripts/water_experiment_contract.gd": "80c3147e28885b099d67dcb89d4327e58d84fed7357c76d2d42db65cc8375d6a",
+        "scripts/water_experiment_profiles.gd": "172cd621c16561fce17f3a16e80a060007348201c2b901922531cd620dabaca5",
+        "scripts/water_feel_scenarios.gd": "3eed68b0cf4a986c516f7b7962b91ad71e1059998ca794c0563026322b8628f7",
+        "scripts/web_demo_controller.gd": "0d9f935051c28579281ea77414f00e8cf1473c0a3e50a559aa79ed4979fe9210"
+      },
+      "source_revision": "unavailable",
+      "source_scope": "listed apparatus scripts; not a full checkout manifest"
+    },
+    "worker_count": 1,
+    "water_ledger": {
+      "available": true,
+      "explicit_sink": 0,
+      "explicit_source": 0,
+      "initial_integer": 1644240,
+      "observed_current_integer": 1547232,
+      "scope": "scheduled edits only; reactions, user tools and ROI outflow are NOT inferred"
+    }
+  },
+  "headless_presets": [
+    {
+      "id": "materials/salt-water",
+      "definition_hash": "71751557b0e2d8bd5a5f2ab6f43f2f7a17d50b9934562de9e8a3cc5a244be387",
+      "seed": 0,
+      "completed_tick": 120,
+      "outcome": "complete",
+      "observations": [
+        {
+          "id": "dose-initial",
+          "metric": "material_cells",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 0,
+          "value": 384
+        },
+        {
+          "id": "water-initial",
+          "metric": "water_integer",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 0,
+          "value": 1644240
+        },
+        {
+          "id": "dose-state",
+          "metric": "cell_state",
+          "region": [
+            224,
+            134,
+            1,
+            1
+          ],
+          "tick": 0,
+          "value": {
+            "activity_block_coordinate": [
+              7,
+              4
+            ],
+            "chunk_coordinate": [
+              1,
+              1
+            ],
+            "completed_tick": 0,
+            "material": 23,
+            "ok": true,
+            "scope": "stored cell values; block coordinates are not a per-cell awake flag",
+            "state_a": 0,
+            "state_b": 0,
+            "temperature_available": true,
+            "temperature_raw": 200,
+            "temperature_units": "engine raw integer; not a calibrated heat solver",
+            "transient_body_id": 0,
+            "x": 224,
+            "y": 134
+          }
+        },
+        {
+          "id": "product-60",
+          "metric": "material_cells",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 60,
+          "value": 0
+        },
+        {
+          "id": "dose-final",
+          "metric": "material_cells",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 120,
+          "value": 0
+        },
+        {
+          "id": "product-final",
+          "metric": "material_cells",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 120,
+          "value": 768
+        },
+        {
+          "id": "water-final",
+          "metric": "water_integer",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 120,
+          "value": 1547232
+        },
+        {
+          "id": "reservoir-state",
+          "metric": "cell_state",
+          "region": [
+            182,
+            238,
+            1,
+            1
+          ],
+          "tick": 120,
+          "value": {
+            "activity_block_coordinate": [
+              5,
+              7
+            ],
+            "chunk_coordinate": [
+              1,
+              1
+            ],
+            "completed_tick": 120,
+            "material": 3,
+            "ok": true,
+            "scope": "stored cell values; block coordinates are not a per-cell awake flag",
+            "state_a": 255,
+            "state_b": 0,
+            "temperature_available": true,
+            "temperature_raw": 200,
+            "temperature_units": "engine raw integer; not a calibrated heat solver",
+            "transient_body_id": 0,
+            "x": 182,
+            "y": 238
+          }
+        }
+      ],
+      "water_ledger": {
+        "available": true,
+        "explicit_sink": 0,
+        "explicit_source": 0,
+        "initial_integer": 1644240,
+        "observed_current_integer": 1547232,
+        "scope": "scheduled edits only; reactions, user tools and ROI outflow are NOT inferred"
+      },
+      "runtime_identity": {
+        "godot": "4.7-stable (official)",
+        "material_catalogue": {
+          "authority": "native artifact; cell_world.gd identifies the UI mirror",
+          "count": 81,
+          "reserved_ids": [
+            10
+          ]
+        },
+        "native_path": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "native_sha256": "5990b590a4b6e07ef39664c0e8bd6fb8550645ae08c32504720af904d75da223",
+        "platform": "Linux",
+        "revision_status": "not-embedded",
+        "script_set_sha256": "aa5eca4d977dd954ea43c1c212a4849bf40efae9b8ec9f814fa38cbd81076eff",
+        "script_sha256": {
+          "scripts/cell_world.gd": "9fa6e8042f165673b7175fe732885fcbb1edc67a0cbed9ac23a7e75d55586622",
+          "scripts/experiment_tower.gd": "aa65451d8bacba91c715445a41cd64ef3849d6dce4e207166abc1a9410a545e8",
+          "scripts/main.gd": "43226f4ac4483b5f6a167db4f073b97d9658a8fdee37c669ec4dd8211cf3520b",
+          "scripts/material_appearance_lut.gd": "93b6e43d03d13892b8f28256b76085b7ee9daa07582ea2f6a483f9b52b0d1fce",
+          "scripts/microscenario_catalogue.gd": "388002d97f0d79b5bc22a2d13f4db653d0eea56a696344616dc7b3ebed8e8e7d",
+          "scripts/microscenario_comparison.gd": "a4aab7a504db70698dafedb368384bcce61b73edaa01795b5ae368a8912a4890",
+          "scripts/microscenario_contract.gd": "74c0266a970de37af67a2455d6aa3693915046593b9822b79418146cc62a7aa0",
+          "scripts/microscenario_host.gd": "e4b14fa117d9960e4036706e5dccbb20344ef17fba991816d9e26aedb5770f9a",
+          "scripts/microscenario_identity.gd": "6e95b08fe3a92370383fd2c4a4c986442c3d338d9d78e33991b61c7138f9ab83",
+          "scripts/microscenario_panel.gd": "2c936a1b1901623d157d270161188c3f53ac7330fa00caf8849ecf25bf12eb63",
+          "scripts/microscenario_reference_pack.gd": "a490301fa3372a4129b80288a2bdf723ca9196762ac39b557161bf3371eb4523",
+          "scripts/microscenario_telemetry.gd": "539c9832b3514b844cd650afe56683dc2933bc8ed01822d04c2c1f793a52903d",
+          "scripts/microscenario_workbench.gd": "607ef4ee4d8ceb4e82d5954010d3ee937be04017317a7a5b0570ed8eb55577b0",
+          "scripts/sampled_character.gd": "d9c0f568dbd43a90a1ab47d9c1ee0d5ec4285363c1f81c0322f16fae4c862e25",
+          "scripts/simulation_worker.gd": "01ae540b20b46d60df4e71fd62e75ea7f356eb62de9edcd1bf7b7915b5378a36",
+          "scripts/transport_profiles.gd": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+          "scripts/water_experiment_contract.gd": "80c3147e28885b099d67dcb89d4327e58d84fed7357c76d2d42db65cc8375d6a",
+          "scripts/water_experiment_profiles.gd": "172cd621c16561fce17f3a16e80a060007348201c2b901922531cd620dabaca5",
+          "scripts/water_feel_scenarios.gd": "3eed68b0cf4a986c516f7b7962b91ad71e1059998ca794c0563026322b8628f7",
+          "scripts/web_demo_controller.gd": "0d9f935051c28579281ea77414f00e8cf1473c0a3e50a559aa79ed4979fe9210"
+        },
+        "source_revision": "unavailable",
+        "source_scope": "listed apparatus scripts; not a full checkout manifest"
+      }
+    },
+    {
+      "id": "materials/salt-water-dose-small",
+      "definition_hash": "580d64fe618a4f12648cf39c56532051565a58591e9b3067113e494dbcd12af5",
+      "seed": 0,
+      "completed_tick": 120,
+      "outcome": "complete",
+      "observations": [
+        {
+          "id": "dose-initial",
+          "metric": "material_cells",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 0,
+          "value": 192
+        },
+        {
+          "id": "water-initial",
+          "metric": "water_integer",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 0,
+          "value": 1644240
+        },
+        {
+          "id": "dose-state",
+          "metric": "cell_state",
+          "region": [
+            224,
+            134,
+            1,
+            1
+          ],
+          "tick": 0,
+          "value": {
+            "activity_block_coordinate": [
+              7,
+              4
+            ],
+            "chunk_coordinate": [
+              1,
+              1
+            ],
+            "completed_tick": 0,
+            "material": 23,
+            "ok": true,
+            "scope": "stored cell values; block coordinates are not a per-cell awake flag",
+            "state_a": 0,
+            "state_b": 0,
+            "temperature_available": true,
+            "temperature_raw": 200,
+            "temperature_units": "engine raw integer; not a calibrated heat solver",
+            "transient_body_id": 0,
+            "x": 224,
+            "y": 134
+          }
+        },
+        {
+          "id": "product-60",
+          "metric": "material_cells",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 60,
+          "value": 0
+        },
+        {
+          "id": "dose-final",
+          "metric": "material_cells",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 120,
+          "value": 0
+        },
+        {
+          "id": "product-final",
+          "metric": "material_cells",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 120,
+          "value": 384
+        },
+        {
+          "id": "water-final",
+          "metric": "water_integer",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 120,
+          "value": 1596477
+        },
+        {
+          "id": "reservoir-state",
+          "metric": "cell_state",
+          "region": [
+            182,
+            238,
+            1,
+            1
+          ],
+          "tick": 120,
+          "value": {
+            "activity_block_coordinate": [
+              5,
+              7
+            ],
+            "chunk_coordinate": [
+              1,
+              1
+            ],
+            "completed_tick": 120,
+            "material": 3,
+            "ok": true,
+            "scope": "stored cell values; block coordinates are not a per-cell awake flag",
+            "state_a": 255,
+            "state_b": 0,
+            "temperature_available": true,
+            "temperature_raw": 200,
+            "temperature_units": "engine raw integer; not a calibrated heat solver",
+            "transient_body_id": 0,
+            "x": 182,
+            "y": 238
+          }
+        }
+      ],
+      "water_ledger": {
+        "available": true,
+        "explicit_sink": 0,
+        "explicit_source": 0,
+        "initial_integer": 1644240,
+        "observed_current_integer": 1596477,
+        "scope": "scheduled edits only; reactions, user tools and ROI outflow are NOT inferred"
+      },
+      "runtime_identity": {
+        "godot": "4.7-stable (official)",
+        "material_catalogue": {
+          "authority": "native artifact; cell_world.gd identifies the UI mirror",
+          "count": 81,
+          "reserved_ids": [
+            10
+          ]
+        },
+        "native_path": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "native_sha256": "5990b590a4b6e07ef39664c0e8bd6fb8550645ae08c32504720af904d75da223",
+        "platform": "Linux",
+        "revision_status": "not-embedded",
+        "script_set_sha256": "aa5eca4d977dd954ea43c1c212a4849bf40efae9b8ec9f814fa38cbd81076eff",
+        "script_sha256": {
+          "scripts/cell_world.gd": "9fa6e8042f165673b7175fe732885fcbb1edc67a0cbed9ac23a7e75d55586622",
+          "scripts/experiment_tower.gd": "aa65451d8bacba91c715445a41cd64ef3849d6dce4e207166abc1a9410a545e8",
+          "scripts/main.gd": "43226f4ac4483b5f6a167db4f073b97d9658a8fdee37c669ec4dd8211cf3520b",
+          "scripts/material_appearance_lut.gd": "93b6e43d03d13892b8f28256b76085b7ee9daa07582ea2f6a483f9b52b0d1fce",
+          "scripts/microscenario_catalogue.gd": "388002d97f0d79b5bc22a2d13f4db653d0eea56a696344616dc7b3ebed8e8e7d",
+          "scripts/microscenario_comparison.gd": "a4aab7a504db70698dafedb368384bcce61b73edaa01795b5ae368a8912a4890",
+          "scripts/microscenario_contract.gd": "74c0266a970de37af67a2455d6aa3693915046593b9822b79418146cc62a7aa0",
+          "scripts/microscenario_host.gd": "e4b14fa117d9960e4036706e5dccbb20344ef17fba991816d9e26aedb5770f9a",
+          "scripts/microscenario_identity.gd": "6e95b08fe3a92370383fd2c4a4c986442c3d338d9d78e33991b61c7138f9ab83",
+          "scripts/microscenario_panel.gd": "2c936a1b1901623d157d270161188c3f53ac7330fa00caf8849ecf25bf12eb63",
+          "scripts/microscenario_reference_pack.gd": "a490301fa3372a4129b80288a2bdf723ca9196762ac39b557161bf3371eb4523",
+          "scripts/microscenario_telemetry.gd": "539c9832b3514b844cd650afe56683dc2933bc8ed01822d04c2c1f793a52903d",
+          "scripts/microscenario_workbench.gd": "607ef4ee4d8ceb4e82d5954010d3ee937be04017317a7a5b0570ed8eb55577b0",
+          "scripts/sampled_character.gd": "d9c0f568dbd43a90a1ab47d9c1ee0d5ec4285363c1f81c0322f16fae4c862e25",
+          "scripts/simulation_worker.gd": "01ae540b20b46d60df4e71fd62e75ea7f356eb62de9edcd1bf7b7915b5378a36",
+          "scripts/transport_profiles.gd": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+          "scripts/water_experiment_contract.gd": "80c3147e28885b099d67dcb89d4327e58d84fed7357c76d2d42db65cc8375d6a",
+          "scripts/water_experiment_profiles.gd": "172cd621c16561fce17f3a16e80a060007348201c2b901922531cd620dabaca5",
+          "scripts/water_feel_scenarios.gd": "3eed68b0cf4a986c516f7b7962b91ad71e1059998ca794c0563026322b8628f7",
+          "scripts/web_demo_controller.gd": "0d9f935051c28579281ea77414f00e8cf1473c0a3e50a559aa79ed4979fe9210"
+        },
+        "source_revision": "unavailable",
+        "source_scope": "listed apparatus scripts; not a full checkout manifest"
+      }
+    },
+    {
+      "id": "materials/lava-water",
+      "definition_hash": "092fb0bf4c1435389832af3fa1045e2db433a76af906c6b50eb10ab0828aa431",
+      "seed": 0,
+      "completed_tick": 120,
+      "outcome": "complete",
+      "observations": [
+        {
+          "id": "dose-initial",
+          "metric": "material_cells",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 0,
+          "value": 384
+        },
+        {
+          "id": "water-initial",
+          "metric": "water_integer",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 0,
+          "value": 1644240
+        },
+        {
+          "id": "dose-state",
+          "metric": "cell_state",
+          "region": [
+            224,
+            134,
+            1,
+            1
+          ],
+          "tick": 0,
+          "value": {
+            "activity_block_coordinate": [
+              7,
+              4
+            ],
+            "chunk_coordinate": [
+              1,
+              1
+            ],
+            "completed_tick": 0,
+            "material": 8,
+            "ok": true,
+            "scope": "stored cell values; block coordinates are not a per-cell awake flag",
+            "state_a": 0,
+            "state_b": 0,
+            "temperature_available": true,
+            "temperature_raw": 200,
+            "temperature_units": "engine raw integer; not a calibrated heat solver",
+            "transient_body_id": 0,
+            "x": 224,
+            "y": 134
+          }
+        },
+        {
+          "id": "product-60",
+          "metric": "material_cells",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 60,
+          "value": 0
+        },
+        {
+          "id": "dose-final",
+          "metric": "material_cells",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 120,
+          "value": 0
+        },
+        {
+          "id": "product-final",
+          "metric": "material_cells",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 120,
+          "value": 384
+        },
+        {
+          "id": "water-final",
+          "metric": "water_integer",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 120,
+          "value": 1546320
+        },
+        {
+          "id": "reservoir-state",
+          "metric": "cell_state",
+          "region": [
+            182,
+            238,
+            1,
+            1
+          ],
+          "tick": 120,
+          "value": {
+            "activity_block_coordinate": [
+              5,
+              7
+            ],
+            "chunk_coordinate": [
+              1,
+              1
+            ],
+            "completed_tick": 120,
+            "material": 3,
+            "ok": true,
+            "scope": "stored cell values; block coordinates are not a per-cell awake flag",
+            "state_a": 255,
+            "state_b": 0,
+            "temperature_available": true,
+            "temperature_raw": 200,
+            "temperature_units": "engine raw integer; not a calibrated heat solver",
+            "transient_body_id": 0,
+            "x": 182,
+            "y": 238
+          }
+        }
+      ],
+      "water_ledger": {
+        "available": true,
+        "explicit_sink": 0,
+        "explicit_source": 0,
+        "initial_integer": 1644240,
+        "observed_current_integer": 1546320,
+        "scope": "scheduled edits only; reactions, user tools and ROI outflow are NOT inferred"
+      },
+      "runtime_identity": {
+        "godot": "4.7-stable (official)",
+        "material_catalogue": {
+          "authority": "native artifact; cell_world.gd identifies the UI mirror",
+          "count": 81,
+          "reserved_ids": [
+            10
+          ]
+        },
+        "native_path": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "native_sha256": "5990b590a4b6e07ef39664c0e8bd6fb8550645ae08c32504720af904d75da223",
+        "platform": "Linux",
+        "revision_status": "not-embedded",
+        "script_set_sha256": "aa5eca4d977dd954ea43c1c212a4849bf40efae9b8ec9f814fa38cbd81076eff",
+        "script_sha256": {
+          "scripts/cell_world.gd": "9fa6e8042f165673b7175fe732885fcbb1edc67a0cbed9ac23a7e75d55586622",
+          "scripts/experiment_tower.gd": "aa65451d8bacba91c715445a41cd64ef3849d6dce4e207166abc1a9410a545e8",
+          "scripts/main.gd": "43226f4ac4483b5f6a167db4f073b97d9658a8fdee37c669ec4dd8211cf3520b",
+          "scripts/material_appearance_lut.gd": "93b6e43d03d13892b8f28256b76085b7ee9daa07582ea2f6a483f9b52b0d1fce",
+          "scripts/microscenario_catalogue.gd": "388002d97f0d79b5bc22a2d13f4db653d0eea56a696344616dc7b3ebed8e8e7d",
+          "scripts/microscenario_comparison.gd": "a4aab7a504db70698dafedb368384bcce61b73edaa01795b5ae368a8912a4890",
+          "scripts/microscenario_contract.gd": "74c0266a970de37af67a2455d6aa3693915046593b9822b79418146cc62a7aa0",
+          "scripts/microscenario_host.gd": "e4b14fa117d9960e4036706e5dccbb20344ef17fba991816d9e26aedb5770f9a",
+          "scripts/microscenario_identity.gd": "6e95b08fe3a92370383fd2c4a4c986442c3d338d9d78e33991b61c7138f9ab83",
+          "scripts/microscenario_panel.gd": "2c936a1b1901623d157d270161188c3f53ac7330fa00caf8849ecf25bf12eb63",
+          "scripts/microscenario_reference_pack.gd": "a490301fa3372a4129b80288a2bdf723ca9196762ac39b557161bf3371eb4523",
+          "scripts/microscenario_telemetry.gd": "539c9832b3514b844cd650afe56683dc2933bc8ed01822d04c2c1f793a52903d",
+          "scripts/microscenario_workbench.gd": "607ef4ee4d8ceb4e82d5954010d3ee937be04017317a7a5b0570ed8eb55577b0",
+          "scripts/sampled_character.gd": "d9c0f568dbd43a90a1ab47d9c1ee0d5ec4285363c1f81c0322f16fae4c862e25",
+          "scripts/simulation_worker.gd": "01ae540b20b46d60df4e71fd62e75ea7f356eb62de9edcd1bf7b7915b5378a36",
+          "scripts/transport_profiles.gd": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+          "scripts/water_experiment_contract.gd": "80c3147e28885b099d67dcb89d4327e58d84fed7357c76d2d42db65cc8375d6a",
+          "scripts/water_experiment_profiles.gd": "172cd621c16561fce17f3a16e80a060007348201c2b901922531cd620dabaca5",
+          "scripts/water_feel_scenarios.gd": "3eed68b0cf4a986c516f7b7962b91ad71e1059998ca794c0563026322b8628f7",
+          "scripts/web_demo_controller.gd": "0d9f935051c28579281ea77414f00e8cf1473c0a3e50a559aa79ed4979fe9210"
+        },
+        "source_revision": "unavailable",
+        "source_scope": "listed apparatus scripts; not a full checkout manifest"
+      }
+    },
+    {
+      "id": "materials/contact-lab",
+      "definition_hash": "262296b2b1f1d38ca3ca8b16a8faaf8e36ec091e201ada5255a62c2705ba3ba9",
+      "seed": 0,
+      "completed_tick": 240,
+      "outcome": "complete",
+      "observations": [
+        {
+          "id": "salt-initial",
+          "metric": "material_cells",
+          "region": [
+            28,
+            68,
+            124,
+            176
+          ],
+          "tick": 0,
+          "value": 384
+        },
+        {
+          "id": "water-initial",
+          "metric": "water_integer",
+          "region": [
+            24,
+            64,
+            436,
+            184
+          ],
+          "tick": 0,
+          "value": 4932720
+        },
+        {
+          "id": "dose-state",
+          "metric": "cell_state",
+          "region": [
+            72,
+            134,
+            1,
+            1
+          ],
+          "tick": 0,
+          "value": {
+            "activity_block_coordinate": [
+              2,
+              4
+            ],
+            "chunk_coordinate": [
+              0,
+              1
+            ],
+            "completed_tick": 0,
+            "material": 23,
+            "ok": true,
+            "scope": "stored cell values; block coordinates are not a per-cell awake flag",
+            "state_a": 0,
+            "state_b": 0,
+            "temperature_available": true,
+            "temperature_raw": 200,
+            "temperature_units": "engine raw integer; not a calibrated heat solver",
+            "transient_body_id": 0,
+            "x": 72,
+            "y": 134
+          }
+        },
+        {
+          "id": "brine-120",
+          "metric": "material_cells",
+          "region": [
+            28,
+            68,
+            124,
+            176
+          ],
+          "tick": 120,
+          "value": 768
+        },
+        {
+          "id": "stone-120",
+          "metric": "material_cells",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 120,
+          "value": 384
+        },
+        {
+          "id": "steam-120",
+          "metric": "material_cells",
+          "region": [
+            180,
+            68,
+            124,
+            176
+          ],
+          "tick": 120,
+          "value": 384
+        },
+        {
+          "id": "salt-final",
+          "metric": "material_cells",
+          "region": [
+            28,
+            68,
+            124,
+            176
+          ],
+          "tick": 240,
+          "value": 0
+        },
+        {
+          "id": "brine-final",
+          "metric": "material_cells",
+          "region": [
+            28,
+            68,
+            124,
+            176
+          ],
+          "tick": 240,
+          "value": 768
+        },
+        {
+          "id": "sand-retained",
+          "metric": "material_cells",
+          "region": [
+            332,
+            68,
+            124,
+            176
+          ],
+          "tick": 240,
+          "value": 384
+        },
+        {
+          "id": "water-final",
+          "metric": "water_integer",
+          "region": [
+            24,
+            64,
+            436,
+            184
+          ],
+          "tick": 240,
+          "value": 4737803
+        },
+        {
+          "id": "reservoir-state",
+          "metric": "cell_state",
+          "region": [
+            30,
+            238,
+            1,
+            1
+          ],
+          "tick": 240,
+          "value": {
+            "activity_block_coordinate": [
+              0,
+              7
+            ],
+            "chunk_coordinate": [
+              0,
+              1
+            ],
+            "completed_tick": 240,
+            "material": 3,
+            "ok": true,
+            "scope": "stored cell values; block coordinates are not a per-cell awake flag",
+            "state_a": 255,
+            "state_b": 0,
+            "temperature_available": true,
+            "temperature_raw": 200,
+            "temperature_units": "engine raw integer; not a calibrated heat solver",
+            "transient_body_id": 0,
+            "x": 30,
+            "y": 238
+          }
+        },
+        {
+          "id": "end",
+          "metric": "tick",
+          "region": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "tick": 240,
+          "value": 240
+        }
+      ],
+      "water_ledger": {
+        "available": true,
+        "explicit_sink": 0,
+        "explicit_source": 0,
+        "initial_integer": 4932720,
+        "observed_current_integer": 4737803,
+        "scope": "scheduled edits only; reactions, user tools and ROI outflow are NOT inferred"
+      },
+      "runtime_identity": {
+        "godot": "4.7-stable (official)",
+        "material_catalogue": {
+          "authority": "native artifact; cell_world.gd identifies the UI mirror",
+          "count": 81,
+          "reserved_ids": [
+            10
+          ]
+        },
+        "native_path": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "native_sha256": "5990b590a4b6e07ef39664c0e8bd6fb8550645ae08c32504720af904d75da223",
+        "platform": "Linux",
+        "revision_status": "not-embedded",
+        "script_set_sha256": "aa5eca4d977dd954ea43c1c212a4849bf40efae9b8ec9f814fa38cbd81076eff",
+        "script_sha256": {
+          "scripts/cell_world.gd": "9fa6e8042f165673b7175fe732885fcbb1edc67a0cbed9ac23a7e75d55586622",
+          "scripts/experiment_tower.gd": "aa65451d8bacba91c715445a41cd64ef3849d6dce4e207166abc1a9410a545e8",
+          "scripts/main.gd": "43226f4ac4483b5f6a167db4f073b97d9658a8fdee37c669ec4dd8211cf3520b",
+          "scripts/material_appearance_lut.gd": "93b6e43d03d13892b8f28256b76085b7ee9daa07582ea2f6a483f9b52b0d1fce",
+          "scripts/microscenario_catalogue.gd": "388002d97f0d79b5bc22a2d13f4db653d0eea56a696344616dc7b3ebed8e8e7d",
+          "scripts/microscenario_comparison.gd": "a4aab7a504db70698dafedb368384bcce61b73edaa01795b5ae368a8912a4890",
+          "scripts/microscenario_contract.gd": "74c0266a970de37af67a2455d6aa3693915046593b9822b79418146cc62a7aa0",
+          "scripts/microscenario_host.gd": "e4b14fa117d9960e4036706e5dccbb20344ef17fba991816d9e26aedb5770f9a",
+          "scripts/microscenario_identity.gd": "6e95b08fe3a92370383fd2c4a4c986442c3d338d9d78e33991b61c7138f9ab83",
+          "scripts/microscenario_panel.gd": "2c936a1b1901623d157d270161188c3f53ac7330fa00caf8849ecf25bf12eb63",
+          "scripts/microscenario_reference_pack.gd": "a490301fa3372a4129b80288a2bdf723ca9196762ac39b557161bf3371eb4523",
+          "scripts/microscenario_telemetry.gd": "539c9832b3514b844cd650afe56683dc2933bc8ed01822d04c2c1f793a52903d",
+          "scripts/microscenario_workbench.gd": "607ef4ee4d8ceb4e82d5954010d3ee937be04017317a7a5b0570ed8eb55577b0",
+          "scripts/sampled_character.gd": "d9c0f568dbd43a90a1ab47d9c1ee0d5ec4285363c1f81c0322f16fae4c862e25",
+          "scripts/simulation_worker.gd": "01ae540b20b46d60df4e71fd62e75ea7f356eb62de9edcd1bf7b7915b5378a36",
+          "scripts/transport_profiles.gd": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+          "scripts/water_experiment_contract.gd": "80c3147e28885b099d67dcb89d4327e58d84fed7357c76d2d42db65cc8375d6a",
+          "scripts/water_experiment_profiles.gd": "172cd621c16561fce17f3a16e80a060007348201c2b901922531cd620dabaca5",
+          "scripts/water_feel_scenarios.gd": "3eed68b0cf4a986c516f7b7962b91ad71e1059998ca794c0563026322b8628f7",
+          "scripts/web_demo_controller.gd": "0d9f935051c28579281ea77414f00e8cf1473c0a3e50a559aa79ed4979fe9210"
+        },
+        "source_revision": "unavailable",
+        "source_scope": "listed apparatus scripts; not a full checkout manifest"
+      }
+    }
+  ],
+  "screenshots": {
+    "materials-clean-view.png": "f90e04120659507652cb9d94fb4b12c61f42fbce7992e106f99c0cb7959c94b7",
+    "materials-fresh-reset-ab.png": "896e8c708d2301287b98e50b04d74de4a015d8e843631ff449a8cdd2f774c487",
+    "materials-generated-results.png": "02401d00de2803ed95019f2a4bd80c99169c211f34669eb2d2c02b3cb1676018",
+    "materials-laboratory.png": "6d295189583b86875cf8b76174165b94f39495d3cb4c0b394e7ee1db4ea9dd57"
+  },
+  "negative_results": [
+    {
+      "test": "initial X11 workbench",
+      "assertions": 40,
+      "failures": 1,
+      "cause": "15-second whole-window test deadline reached at tick118/240 while software-rendered owner stepping continued correctly",
+      "resolution": "60-second graphical whole-window wait; unchanged required tick, reset/step acknowledgement and physics; rerun42/0"
+    },
+    {
+      "check": "repository provenance on native checkpoint",
+      "result": "failed as expected",
+      "cause": "old bundled Linux/Windows artifacts do not contain changed native adapter; must rebuild and validate before merge; no checker waiver"
+    }
+  ],
+  "platform_limits": [
+    "Linux Web-controller execution is not browser/WebAssembly execution.",
+    "No Windows execution or real browser acceptance is claimed at this Lab checkpoint.",
+    "Synthetic native body-mask tests do not establish player/body headless parity.",
+    "Software-renderer timings are not target-PC performance acceptance."
+  ],
+  "retrieval": {
+    "frozen32_top5": 32,
+    "supplementary21_top5": 21,
+    "MS04_MS05_top1": true,
+    "answer_review": "The returned Lab readiness and schema-2 chunks were checked against generator/workbench/owner/observation source; lexical hits alone are not correctness."
+  }
+}
