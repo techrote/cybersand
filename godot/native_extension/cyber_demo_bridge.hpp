@@ -277,6 +277,68 @@ public:
         out["target_specialized"] = specialized_interactions(target);
         out["matched"] = resolved.matched;
         out["selected"] = resolved.selected;
+
+        const cybersand::PairInteractionRule* compact_rule =
+            resolved.matched ? &cybersand::InteractionRules::pair_rules()[resolved.rule_index] : nullptr;
+        Array channel_resolution;
+        for (const auto& channel : cybersand::InteractionRules::channels()) {
+            Dictionary item;
+            item["channel"] = interaction_string(channel.id);
+            const bool pair_applies =
+                compact_rule != nullptr &&
+                (compact_rule->channels &
+                 cybersand::interaction_channel_bit(channel.channel)) != 0U;
+            item["pair_rule_applies"] = pair_applies;
+            item["pair_rule_selected"] = pair_applies && resolved.selected;
+            if (pair_applies) {
+                item["pair_rule_id"] = interaction_string(compact_rule->id);
+                item["pair_match"] =
+                    interaction_string(cybersand::interaction_match_id(compact_rule->match));
+            }
+
+            const auto layer = cybersand::InteractionRules::compile_layer(
+                channel.channel, source, target);
+            item["authored_layer_matched"] = layer.matched;
+            bool conflict = layer.conflict;
+            if (layer.matched) {
+                const auto& authored =
+                    cybersand::InteractionRules::authored_layers()[layer.layer_index];
+                item["authored_layer_id"] = interaction_string(authored.id);
+                item["authored_layer_kind"] =
+                    interaction_string(cybersand::interaction_layer_kind_id(authored.kind));
+                item["authored_layer_effect_ref"] = interaction_string(authored.effect_ref);
+                item["authored_layer_precedence"] =
+                    static_cast<std::int64_t>(layer.precedence);
+                if (pair_applies &&
+                    layer.precedence ==
+                        cybersand::InteractionRules::layer_precedence(
+                            cybersand::InteractionLayerKind::PairOverride)) {
+                    conflict = true;
+                }
+            }
+            item["conflict"] = conflict;
+
+            String effective_origin = "none";
+            if (conflict) {
+                effective_origin = "conflict";
+            } else if (layer.matched &&
+                       (!pair_applies ||
+                        layer.precedence >
+                            cybersand::InteractionRules::layer_precedence(
+                                cybersand::InteractionLayerKind::PairOverride))) {
+                effective_origin = interaction_string(
+                    cybersand::InteractionRules::authored_layers()[layer.layer_index].id);
+            } else if (pair_applies) {
+                effective_origin = interaction_string(compact_rule->id);
+            } else if (layer.matched) {
+                effective_origin = interaction_string(
+                    cybersand::InteractionRules::authored_layers()[layer.layer_index].id);
+            }
+            item["effective_origin"] = effective_origin;
+            channel_resolution.push_back(item);
+        }
+        out["channel_resolution"] = channel_resolution;
+
         if (!resolved.matched) {
             out["authored_status"] = "no-compact-pair-rule";
             out["note"] =
