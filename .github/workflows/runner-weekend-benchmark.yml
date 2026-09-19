@@ -1,0 +1,398 @@
+name: Weekend runner benchmark
+
+run-name: Runner benchmark ${{ github.event_name }} ${{ github.ref_name }}
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '5 5 21 9 *'
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  BENCHMARK_END_UTC: '2026-09-21T05:00:00Z'
+  HISTORICAL_SHA: ed4b9abe542a5de0d498a62d3de7f157fe40d129
+  HISTORICAL_RUN_ID: '35434827192'
+  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+
+jobs:
+  benchmark:
+    name: ${{ matrix.workload }} / ${{ matrix.provider }} / ${{ matrix.workload == 'gdextension-linux-build' && format('j{0}', matrix.scons_jobs) || format('repeat-{0}', matrix.scons_jobs) }}
+    if: github.event_name != 'schedule'
+    continue-on-error: true
+    timeout-minutes: 14
+    strategy:
+      fail-fast: false
+      matrix:
+        provider: [github-slim, avrea-1c]
+        scons_jobs: [1, 2]
+        workload:
+          - latency-probe
+          - docs-consistency
+          - historical-regression-shard0
+          - gdextension-linux-build
+    runs-on: ${{ matrix.provider == 'github-slim' && 'ubuntu-slim' || 'avrea-ubuntu-24.04-1-vcpu' }}
+
+    steps:
+      - name: Start benchmark and measure acquisition
+        id: start
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PROVIDER: ${{ matrix.provider }}
+          WORKLOAD: ${{ matrix.workload }}
+          SCONS_JOBS: ${{ matrix.scons_jobs }}
+        run: |
+          set -euo pipefail
+          export BENCHMARK_DIR="$RUNNER_TEMP/cybersand-runner-benchmark"
+          echo "BENCHMARK_DIR=$BENCHMARK_DIR" >> "$GITHUB_ENV"
+          mkdir -p "$BENCHMARK_DIR"
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.request
+          from datetime import datetime, timezone
+
+          out = os.environ["BENCHMARK_DIR"]
+          token = os.environ["GH_TOKEN"]
+          repo = os.environ["GITHUB_REPOSITORY"]
+          run_id = os.environ["GITHUB_RUN_ID"]
+          req = urllib.request.Request(
+              f"https://api.github.com/repos/{repo}/actions/runs/{run_id}",
+              headers={
+                  "Accept": "application/vnd.github+json",
+                  "Authorization": f"Bearer {token}",
+                  "X-GitHub-Api-Version": "2022-11-28",
+              },
+          )
+          with urllib.request.urlopen(req, timeout=30) as response:
+              run = json.load(response)
+
+          created = datetime.fromisoformat(run["created_at"].replace("Z", "+00:00"))
+          started = datetime.now(timezone.utc)
+          end = datetime.fromisoformat(os.environ["BENCHMARK_END_UTC"].replace("Z", "+00:00"))
+          active = started < end
+          payload = {
+              "schema": 1,
+              "provider": os.environ["PROVIDER"],
+              "requested_runner": "ubuntu-slim" if os.environ["PROVIDER"] == "github-slim" else "avrea-ubuntu-24.04-1-vcpu",
+              "workload": os.environ["WORKLOAD"],
+              "scons_jobs": int(os.environ["SCONS_JOBS"]),
+              "scons_jobs_applied": os.environ["WORKLOAD"] == "gdextension-linux-build",
+              "repeat": int(os.environ["SCONS_JOBS"]) if os.environ["WORKLOAD"] != "gdextension-linux-build" else None,
+              "cache_state": "cold/no-actions-cache",
+              "run_id": int(run_id),
+              "run_attempt": int(os.environ["GITHUB_RUN_ATTEMPT"]),
+              "event": os.environ["GITHUB_EVENT_NAME"],
+              "ref": os.environ["GITHUB_REF"],
+              "sha": os.environ["GITHUB_SHA"],
+              "workflow_created_at": run["created_at"],
+              "benchmark_started_at": started.isoformat(),
+              "runnerlag_seconds": round((started - created).total_seconds(), 3),
+              "benchmark_end_utc": os.environ["BENCHMARK_END_UTC"],
+              "active": active,
+          }
+          with open(os.path.join(out, "metadata.json"), "w", encoding="utf-8") as f:
+              json.dump(payload, f, indent=2, sort_keys=True)
+          with open(os.path.join(out, "stages.tsv"), "w", encoding="utf-8") as f:
+              f.write("stage\tstart_ns\tend_ns\tseconds\tstatus\n")
+          print(json.dumps(payload, indent=2, sort_keys=True))
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
+              f.write(f"active={'true' if active else 'false'}\n")
+          PY
+
+      - name: Check out current source for GDExtension benchmark
+        if: steps.start.outputs.active == 'true' && matrix.workload == 'gdextension-linux-build'
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+
+      - name: Check out pinned companion workspace for documentation benchmark
+        if: steps.start.outputs.active == 'true' && matrix.workload == 'docs-consistency'
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 6a58311982941b75f46e22109a0829e5acb83c7e
+          path: workspace
+
+      - name: Check out current source for documentation benchmark
+        if: steps.start.outputs.active == 'true' && matrix.workload == 'docs-consistency'
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          path: workspace/source
+          lfs: true
+          fetch-depth: 0
+
+      - name: Record runner identity
+        if: steps.start.outputs.active == 'true'
+        run: |
+          set -euo pipefail
+          {
+            echo "provider=${{ matrix.provider }}"
+            echo "requested_runner=${{ matrix.provider == 'github-slim' && 'ubuntu-slim' || 'avrea-ubuntu-24.04-1-vcpu' }}"
+            echo "runner_name=${RUNNER_NAME:-unknown}"
+            echo "runner_os=${RUNNER_OS:-unknown}"
+            echo "runner_arch=${RUNNER_ARCH:-unknown}"
+            echo "nproc=$(nproc)"
+            echo "python=$(python3 --version 2>&1)"
+            echo "git=$(git --version 2>&1 || true)"
+            echo "git_lfs=$(git lfs version 2>&1 || true)"
+            echo "gcc13=$(gcc-13 --version 2>/dev/null | head -n1 || true)"
+            echo "gxx13=$(g++-13 --version 2>/dev/null | head -n1 || true)"
+            uname -a
+          } | tee "$BENCHMARK_DIR/runner.txt"
+
+      - name: Run latency probe
+        if: steps.start.outputs.active == 'true' && matrix.workload == 'latency-probe'
+        run: |
+          set -euo pipefail
+          start="$(date +%s%N)"
+          status=success
+          python3 - <<'PY' || status=failure
+          import hashlib
+          payload = b"cybersand-runner-latency-probe"
+          for _ in range(10000):
+              payload = hashlib.sha256(payload).digest()
+          assert payload
+          PY
+          end="$(date +%s%N)"
+          python3 - "$BENCHMARK_DIR/stages.tsv" latency-probe "$start" "$end" "$status" <<'PY'
+          import sys
+          path, stage, start, end, status = sys.argv[1:]
+          with open(path, "a", encoding="utf-8") as f:
+              f.write(f"{stage}\t{start}\t{end}\t{(int(end)-int(start))/1e9:.6f}\t{status}\n")
+          PY
+          test "$status" = success
+
+      - name: Run documentation consistency workload
+        if: steps.start.outputs.active == 'true' && matrix.workload == 'docs-consistency'
+        working-directory: workspace/source
+        run: |
+          set -euo pipefail
+          start="$(date +%s%N)"
+          status=success
+          (
+            timeout 5m python3 tools/ci/check_repository.py --require-materialized
+            timeout 5m python3 tools/ci/check_m11_consistency.py
+            timeout 2m python3 -m unittest discover -s tools/ci -p test_validation_contracts.py
+            timeout 2m python3 -m unittest discover -s tools/experiments -p test_soliding_baseline_reduction.py
+            mkdir -p build/retrieval
+            timeout 2m python3 tools/docs/retrieval_eval.py --output build/retrieval/frozen.json
+            timeout 2m python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-challenges.json --output build/retrieval/challenges.json
+            timeout 5m git lfs fsck
+            git diff --check HEAD
+          ) || status=failure
+          end="$(date +%s%N)"
+          python3 - "$BENCHMARK_DIR/stages.tsv" docs-workload "$start" "$end" "$status" <<'PY'
+          import sys
+          path, stage, start, end, status = sys.argv[1:]
+          with open(path, "a", encoding="utf-8") as f:
+              f.write(f"{stage}\t{start}\t{end}\t{(int(end)-int(start))/1e9:.6f}\t{status}\n")
+          PY
+          test "$status" = success
+
+      - name: Check out historical regression source
+        if: steps.start.outputs.active == 'true' && matrix.workload == 'historical-regression-shard0'
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.HISTORICAL_SHA }}
+
+      - name: Restore historical regression runtime
+        if: steps.start.outputs.active == 'true' && matrix.workload == 'historical-regression-shard0'
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: linux-runtime-35434827192
+          run-id: 35434827192
+          github-token: ${{ github.token }}
+          path: build/linux-runtime
+
+      - name: Prepare historical regression shard
+        if: steps.start.outputs.active == 'true' && matrix.workload == 'historical-regression-shard0'
+        run: |
+          set -euo pipefail
+          start="$(date +%s%N)"
+          status=success
+          (
+            test "$(cat build/linux-runtime/source-sha.txt)" = "$HISTORICAL_SHA"
+            (cd build/linux-runtime && sha256sum --check --strict runtime.sha256)
+            cp build/linux-runtime/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/
+            cp build/linux-runtime/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so godot/addons/godot-rapier2d/bin/
+            timeout 1m tools/check_linux_runtime_floor.sh
+            timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+            echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+            unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+            GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+            test -n "$GODOT_BIN"
+            chmod +x "$GODOT_BIN"
+            test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+            echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+          ) || status=failure
+          end="$(date +%s%N)"
+          python3 - "$BENCHMARK_DIR/stages.tsv" regression-setup "$start" "$end" "$status" <<'PY'
+          import sys
+          path, stage, start, end, status = sys.argv[1:]
+          with open(path, "a", encoding="utf-8") as f:
+              f.write(f"{stage}\t{start}\t{end}\t{(int(end)-int(start))/1e9:.6f}\t{status}\n")
+          PY
+          test "$status" = success
+
+      - name: Run historical regression shard
+        if: steps.start.outputs.active == 'true' && matrix.workload == 'historical-regression-shard0'
+        run: |
+          set -euo pipefail
+          start="$(date +%s%N)"
+          status=success
+          python3 tools/ci/run_godot_regressions.py \
+            --godot "$GODOT_BIN" \
+            --output build/runner-weekend-benchmark \
+            --shard-count 4 \
+            --shard-index 0 || status=failure
+          end="$(date +%s%N)"
+          python3 - "$BENCHMARK_DIR/stages.tsv" regression-workload "$start" "$end" "$status" <<'PY'
+          import sys
+          path, stage, start, end, status = sys.argv[1:]
+          with open(path, "a", encoding="utf-8") as f:
+              f.write(f"{stage}\t{start}\t{end}\t{(int(end)-int(start))/1e9:.6f}\t{status}\n")
+          PY
+          test "$status" = success
+
+      - name: Prepare GDExtension build inputs
+        if: steps.start.outputs.active == 'true' && matrix.workload == 'gdextension-linux-build'
+        run: |
+          set -euo pipefail
+          start="$(date +%s%N)"
+          status=success
+          (
+            git lfs install --local
+            git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+            echo "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+            python3 -m py_compile tools/ci/run_godot_regressions.py tools/ci/test_godot_regression_sharding.py
+            python3 tools/ci/test_godot_regression_sharding.py
+            python3 -m venv "$RUNNER_TEMP/scons"
+            "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+            "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+            mkdir "$RUNNER_TEMP/godot-cpp"
+            git -C "$RUNNER_TEMP/godot-cpp" init
+            git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+            timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+            git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+            test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+          ) || status=failure
+          end="$(date +%s%N)"
+          python3 - "$BENCHMARK_DIR/stages.tsv" gdextension-setup "$start" "$end" "$status" <<'PY'
+          import sys
+          path, stage, start, end, status = sys.argv[1:]
+          with open(path, "a", encoding="utf-8") as f:
+              f.write(f"{stage}\t{start}\t{end}\t{(int(end)-int(start))/1e9:.6f}\t{status}\n")
+          PY
+          test "$status" = success
+
+      - name: Build GDExtension with selected SCons parallelism
+        if: steps.start.outputs.active == 'true' && matrix.workload == 'gdextension-linux-build'
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: ${{ matrix.scons_jobs }}
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          set -euo pipefail
+          start="$(date +%s%N)"
+          status=success
+          (
+            timeout 12m tools/build_pinned_godot_cpp.sh linux
+            timeout 12m tools/build_native_extension.sh
+            file "$CYBERSAND_NATIVE_OUTPUT"
+          ) || status=failure
+          end="$(date +%s%N)"
+          python3 - "$BENCHMARK_DIR/stages.tsv" gdextension-build "$start" "$end" "$status" <<'PY'
+          import sys
+          path, stage, start, end, status = sys.argv[1:]
+          with open(path, "a", encoding="utf-8") as f:
+              f.write(f"{stage}\t{start}\t{end}\t{(int(end)-int(start))/1e9:.6f}\t{status}\n")
+          PY
+          test "$status" = success
+
+      - name: Finalize benchmark record
+        if: always() && steps.start.outputs.active == 'true'
+        env:
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import csv
+          import json
+          import os
+          from datetime import datetime, timezone
+
+          root = os.environ["BENCHMARK_DIR"]
+          with open(os.path.join(root, "metadata.json"), encoding="utf-8") as f:
+              metadata = json.load(f)
+          stages = []
+          path = os.path.join(root, "stages.tsv")
+          if os.path.exists(path):
+              with open(path, newline="", encoding="utf-8") as f:
+                  for row in csv.DictReader(f, delimiter="\t"):
+                      stages.append({
+                          "stage": row["stage"],
+                          "seconds": float(row["seconds"]),
+                          "status": row["status"],
+                      })
+          finished = datetime.now(timezone.utc)
+          started = datetime.fromisoformat(metadata["benchmark_started_at"])
+          metadata.update({
+              "benchmark_finished_at": finished.isoformat(),
+              "measured_job_seconds": round((finished - started).total_seconds(), 3),
+              "job_status_at_finalize": os.environ["JOB_STATUS"],
+              "stages": stages,
+          })
+          with open(os.path.join(root, "metadata.json"), "w", encoding="utf-8") as f:
+              json.dump(metadata, f, indent=2, sort_keys=True)
+          print(json.dumps(metadata, indent=2, sort_keys=True))
+          PY
+
+      - name: Retain benchmark evidence
+        if: always() && steps.start.outputs.active == 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: runner-benchmark-${{ matrix.workload }}-${{ matrix.provider }}-${{ matrix.scons_jobs }}-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/cybersand-runner-benchmark/
+            workspace/source/build/retrieval/
+            build/runner-weekend-benchmark/
+          if-no-files-found: warn
+          retention-days: 7
+
+  expire-benchmark:
+    name: expire weekend benchmark
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-slim
+    timeout-minutes: 5
+    permissions:
+      actions: write
+      contents: read
+    steps:
+      - name: Disable this benchmark workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          now="$(date -u +%s)"
+          end="$(date -u -d "$BENCHMARK_END_UTC" +%s)"
+          if [ "$now" -lt "$end" ]; then
+            echo "Benchmark window still active."
+            exit 0
+          fi
+          curl --fail --silent --show-error \
+            --request PUT \
+            --header "Accept: application/vnd.github+json" \
+            --header "Authorization: Bearer $GH_TOKEN" \
+            --header "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/workflows/runner-weekend-benchmark.yml/disable"

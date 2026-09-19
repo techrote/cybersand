@@ -4,8 +4,8 @@ status: Current
 document-kind: guide
 scope: Local repository policy and unresolved remote CI and release prerequisites
 canonical-for: [repository-policy, ci-contradictions, release-prerequisites]
-last-reviewed: 2026-09-08
-related-documents: [source-checkpoint-and-recovery.md, local-build-and-validation.md, documentation-maintenance.md]
+last-reviewed: 2026-09-19
+related-documents: [source-checkpoint-and-recovery.md, local-build-and-validation.md, documentation-maintenance.md, ../audits/2026-09-19-runner-routing-weekend-benchmark.md]
 ---
 
 # Repository development and release
@@ -30,6 +30,24 @@ Ignore generated imports beyond the three portable bootstrap records, builds,
 exports, tools, caches, logs and local configuration. See [.gitignore](../../.gitignore),
 [CONTRIBUTING](../../CONTRIBUTING.md) and [dependency provenance](../../third_party/README.md).
 Do not change historical release hashes to accept a local rebuild.
+
+
+## Current runner routing and temporary measurement
+
+**Current configuration, 2026-09-19:** source d6a616e routes sustained Linux
+GDExtension, Native and Web workloads through Sengi while retaining Avrea for
+Windows, regression fan-out and short latency-sensitive gates. Per-job runner
+variables remain explicit overrides, including Avrea wide-runner use when a
+workload benefits from 16/32 vCPUs.
+
+A temporary, non-gating [weekend runner benchmark](../audits/2026-09-19-runner-routing-weekend-benchmark.md)
+compares GitHub ubuntu-slim 1-vCPU and Avrea 1-vCPU on representative micro,
+documentation, regression and SCons build classes. It records acquisition,
+workload and wall-time evidence rather than selecting a runner from each
+invocation's current contents. The active benchmark window ends
+2026-09-21 05:00 UTC; the workflow has an explicit deadline and scheduled
+self-disable. Until the retained evidence is reduced, this experiment does not
+change required CI or the existing Sengi routing for sustained work.
 
 ## Unresolved CI contradictions
 
