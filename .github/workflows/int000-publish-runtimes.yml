@@ -1,6 +1,6 @@
 name: INT000 publish integrated runtimes
 
-# One-shot source-matched publication trigger after the Materials Lab regression repair.
+# One-shot source-matched publication trigger after final INT-000 source/diff review.
 # This workflow deletes itself in the publication commit so it cannot become permanent CI.
 
 on:
@@ -16,6 +16,9 @@ concurrency:
   cancel-in-progress: false
 
 env:
+  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
   LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
@@ -67,6 +70,8 @@ jobs:
           timeout 35m tools/build_pinned_godot_cpp.sh linux
           timeout 20m tools/build_native_extension.sh
           file "$CYBERSAND_NATIVE_OUTPUT" | grep 'ELF 64-bit.*x86-64'
+          cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          timeout 1m tools/check_linux_runtime_floor.sh
           strings "$CYBERSAND_NATIVE_OUTPUT" | grep -q 'inspect_interaction_profile'
           strings "$CYBERSAND_NATIVE_OUTPUT" | grep -q 'inspect_interaction'
 
@@ -94,6 +99,50 @@ jobs:
           file "$CYBERSAND_NATIVE_OUTPUT" | grep 'PE32+ executable (DLL).*x86-64'
           strings "$CYBERSAND_NATIVE_OUTPUT" | grep -q 'inspect_interaction_profile'
           strings "$CYBERSAND_NATIVE_OUTPUT" | grep -q 'inspect_interaction'
+
+      - name: Run exact-source INT-000 batch evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tools/interactions/batch.py
+          timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/godot"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          test -n "$GODOT_BIN"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+          timeout 5m "$GODOT_BIN" --headless --path godot --editor --quit
+          SOURCE_SHA="$(cat "$RUNNER_TEMP/source-sha.txt")"
+          timeout 20m python3 tools/interactions/batch.py --godot "$GODOT_BIN" run \
+            --source-sha="$SOURCE_SHA" --workers=1,4 --output="$RUNNER_TEMP/int000-batch"
+          timeout 2m python3 tools/interactions/batch.py compare \
+            "$RUNNER_TEMP/int000-batch/manifest.json" \
+            "$RUNNER_TEMP/int000-batch/manifest.json" \
+            --output="$RUNNER_TEMP/int000-batch/self-comparison.json"
+          python3 - <<'PY'
+          import json, os, pathlib
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])/"int000-batch"
+          manifest=json.loads((root/"manifest.json").read_text())
+          comparison=json.loads((root/"self-comparison.json").read_text())
+          assert manifest["schema"]=="cybersand.int-evidence-batch"
+          assert manifest["workers"]==[1,4]
+          assert len(manifest["fixtures"])==7
+          assert len(manifest["entries"])==14
+          assert manifest["interaction_catalogue"]["catalogue_validation"]["ok"] is True
+          assert "coverage_gaps" in manifest
+          assert comparison["equal_interaction_catalogue"] is True
+          assert comparison["equal_observed_evidence"] is True
+          assert comparison["changed_interactions_or_parameters"]==[]
+          PY
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: int000-batch-${{ github.sha }}
+          path: ${{ runner.temp }}/int000-batch/
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Retain exact build outputs
         shell: bash
@@ -180,7 +229,7 @@ jobs:
           heading='## Integrated runtime publication'
           if heading in audit:
               audit=audit.split(heading)[0].rstrip()
-          audit += f'''\n\n{heading}\n\nLinux and Windows x86_64 GDExtensions were rebuilt from exact publication source `{source}` / tree `{tree}` in Actions run `{run}`.\n\n- Linux x86_64 SHA-256: `{linux_sha}`.\n- Windows x86_64 SHA-256: `{windows_sha}`.\n- Both builds expose `inspect_interaction_profile` and `inspect_interaction`.\n- Windows remains cross-build evidence only. Actual Windows, browser/WebAssembly and target-GPU execution remain unavailable and are not claimed.\n\nThe runtime source-input ledger now includes the new interaction schema header. Final acceptance still requires the subsequently published PR head to pass repository/provenance, native, Godot and retrieval/documentation gates.\n'''
+          audit += f'''\n\n{heading}\n\nLinux and Windows x86_64 GDExtensions were rebuilt from exact publication source `{source}` / tree `{tree}` in Actions run `{run}`.\n\n- Linux x86_64 SHA-256: `{linux_sha}`.\n- Windows x86_64 SHA-256: `{windows_sha}`.\n- Both builds expose `inspect_interaction_profile` and `inspect_interaction`.\n- The exact same source/runtime ran the seven-fixture INT-000 batch at one and four workers; worker-semantic parity passed, coverage gaps were emitted, and the retained manifest self-comparison reported no catalogue/evidence differences. Artifact: `int000-batch-{source}`.\n- Windows remains cross-build evidence only. Actual Windows, browser/WebAssembly and target-GPU execution remain unavailable and are not claimed.\n\nThe runtime source-input ledger now includes the new interaction schema header. Final acceptance still requires the subsequently published PR head to pass repository/provenance, native, Godot and retrieval/documentation gates.\n'''
           audit_path.write_text(audit+'\n')
           PY
 
