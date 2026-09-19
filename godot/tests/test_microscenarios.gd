@@ -132,6 +132,15 @@ func _interaction_provenance_tests() -> void:
 		and salt.get("tuning_pass_changed_rules","missing") == "none"
 		and not salt.get("revalidation_tags",[]).is_empty(),
 		"effective rule did not expose selected-pass changes/revalidation provenance")
+	var pair_channel_count: int = 0
+	for channel: Dictionary in salt.get("channel_resolution",[]):
+		if channel.get("pair_rule_applies",false):
+			pair_channel_count += 1
+			expect(channel.get("effective_origin","") == salt.get("rule_id","")
+				and not channel.get("conflict",true),
+				"effective channel origin/conflict did not resolve to the compact rule")
+	expect(salt.get("channel_resolution",[]).size() == 7 and pair_channel_count == 2,
+		"Water/Salt did not expose all independent channels and its two authored channels")
 	var acid_reverse: Dictionary = bridge.inspect_interaction(28,12,96)
 	expect(acid_reverse.get("selected",false) and int(acid_reverse.get("source_product",-1)) == 29
 		and int(acid_reverse.get("target_product",-1)) == 4 and acid_reverse.get("reversed",false),
