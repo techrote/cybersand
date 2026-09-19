@@ -22,27 +22,127 @@ env:
   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
 
 jobs:
+  scope:
+    name: GDExtension scope gate
+    runs-on: avrea-ubuntu-24.04-2-vcpu
+    outputs:
+      full_build: ${{ steps.classify.outputs.full_build }}
+    steps:
+      - name: Check out enough history to classify the PR
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 2
+
+      - name: Classify whether full GDExtension validation is required
+        id: classify
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          python3 - <<'PY'
+          import os
+          import subprocess
+
+          def emit(full_build: bool, reason: str) -> None:
+              value = "true" if full_build else "false"
+              with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as handle:
+                  handle.write(f"full_build={value}\n")
+              print(f"full_build={value}: {reason}")
+
+          if os.environ["EVENT_NAME"] != "pull_request":
+              emit(True, "push/manual runs always receive full validation")
+              raise SystemExit(0)
+
+          try:
+              base = subprocess.check_output(
+                  ["git", "rev-parse", "HEAD^1"], text=True
+              ).strip()
+          except subprocess.CalledProcessError:
+              emit(True, "PR base parent could not be resolved; fail safe")
+              raise SystemExit(0)
+
+          changed = subprocess.check_output(
+              ["git", "diff", "--name-only", base, "HEAD"], text=True
+          ).splitlines()
+          if not changed:
+              emit(True, "empty/ambiguous change set; fail safe")
+              raise SystemExit(0)
+
+          non_workflow = [
+              path for path in changed if not path.startswith(".github/workflows/")
+          ]
+          if non_workflow:
+              emit(True, "source or other non-workflow files changed")
+              raise SystemExit(0)
+
+          gd_workflow = ".github/workflows/gdextension.yml"
+          if gd_workflow not in changed:
+              emit(False, "workflow-only PR does not alter GDExtension workflow")
+              raise SystemExit(0)
+
+          diff = subprocess.check_output(
+              ["git", "diff", "--unified=0", base, "HEAD", "--", gd_workflow],
+              text=True,
+          )
+
+          def safe_tuning_line(payload: str) -> bool:
+              payload = payload.strip()
+              if payload.startswith("runs-on:"):
+                  return (
+                      "avrea-ubuntu-24.04-" in payload
+                      and "-vcpu" in payload
+                  )
+              if payload.startswith("SCONS_JOBS:"):
+                  value = payload.split(":", 1)[1].strip().strip('"')
+                  return value.isdigit() or "vars." in value
+              return False
+
+          unsafe = []
+          for line in diff.splitlines():
+              if line.startswith(("diff --git ", "index ", "---", "+++", "@@")):
+                  continue
+              if line.startswith(("+", "-")):
+                  payload = line[1:].strip()
+                  if not safe_tuning_line(payload):
+                      unsafe.append(payload)
+
+          if unsafe:
+              print("GDExtension workflow logic changes requiring full validation:")
+              for item in unsafe[:20]:
+                  print(f"  {item}")
+              emit(True, "GDExtension workflow logic changed")
+          else:
+              emit(False, "only Avrea 24.04 size/SCons tuning changed")
+          PY
+
   build:
+    needs: scope
     name: ${{ matrix.target }} x86_64
-    runs-on: ${{ format('avrea-ubuntu-24.04-{0}-vcpu', vars.GDEXT_AVREA_VCPU) }}
+    runs-on: ${{ needs.scope.outputs.full_build == 'true' && format('avrea-ubuntu-24.04-{0}-vcpu', vars.GDEXT_AVREA_VCPU) || 'avrea-ubuntu-24.04-2-vcpu' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
         target: [linux, windows]
     steps:
+      - name: Full GDExtension validation not required
+        if: needs.scope.outputs.full_build != 'true'
+        run: echo "Workflow-only runner/config change; expensive GDExtension validation skipped."
+
       - name: Check out source and LFS runtime dependencies
+        if: needs.scope.outputs.full_build == 'true'
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           lfs: true
 
       - name: Install pinned SCons
+        if: needs.scope.outputs.full_build == 'true'
         run: |
           python3 -m venv "$RUNNER_TEMP/scons"
           "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
           "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
 
       - name: Check out exact godot-cpp source
+        if: needs.scope.outputs.full_build == 'true'
         run: |
           mkdir "$RUNNER_TEMP/godot-cpp"
           git -C "$RUNNER_TEMP/godot-cpp" init
@@ -52,7 +152,7 @@ jobs:
           test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
 
       - name: Prepare exact LLVM-MinGW
-        if: matrix.target == 'windows'
+        if: needs.scope.outputs.full_build == 'true' && matrix.target == 'windows'
         run: |
           timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
           echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
@@ -64,7 +164,7 @@ jobs:
           fi
 
       - name: Build Linux godot-cpp and CyberSand extension
-        if: matrix.target == 'linux'
+        if: needs.scope.outputs.full_build == 'true' && matrix.target == 'linux'
         env:
           GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
           SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
@@ -79,7 +179,7 @@ jobs:
           grep -q 'ELF 64-bit.*x86-64' "$RUNNER_TEMP/linux-file.txt"
 
       - name: Build Windows godot-cpp and CyberSand extension
-        if: matrix.target == 'windows'
+        if: needs.scope.outputs.full_build == 'true' && matrix.target == 'windows'
         env:
           GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
           SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
@@ -95,11 +195,12 @@ jobs:
           "$LLVM_MINGW_ROOT/bin/llvm-objdump" -p "$CYBERSAND_NATIVE_OUTPUT" > "$RUNNER_TEMP/windows-imports.txt"
 
       - name: Hash validation output
+        if: needs.scope.outputs.full_build == 'true'
         run: |
           find "$RUNNER_TEMP" -maxdepth 1 -type f \( -name 'libcybersand_native*.so' -o -name 'cybersand_native*.dll' \) -exec sha256sum {} +
 
       - name: Run current Linux runtime regressions and ABI check
-        if: matrix.target == 'linux'
+        if: needs.scope.outputs.full_build == 'true' && matrix.target == 'linux'
         run: |
           timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
           echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
@@ -114,7 +215,7 @@ jobs:
           git diff --exit-code -- . ':!godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so'
 
       - name: Retain current Linux runtime evidence
-        if: always() && matrix.target == 'linux'
+        if: always() && needs.scope.outputs.full_build == 'true' && matrix.target == 'linux'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: linux-godot-${{ github.run_id }}
