@@ -13,7 +13,7 @@ CORE_HEADERS := $(wildcard native/include/cybersand/*.hpp native/include/cybersa
 TEST_SOURCES := native/tests/test_world.cpp
 BENCH_SOURCES := native/bench/benchmark.cpp
 
-.PHONY: all soliding-test soliding-sanitize soliding-benchmark-smoke soliding-stage3-cost-smoke test c-header-check benchmark shared debug sanitize thread-sanitize clean
+.PHONY: all soliding-test soliding-sanitize soliding-benchmark-smoke soliding-stage3-cost-smoke soliding-stage3b-validation-apparatus-test test c-header-check benchmark shared debug sanitize thread-sanitize clean
 
 all: test benchmark shared
 
@@ -58,6 +58,12 @@ $(BUILD_DIR)/stage3_cost: $(CORE_SOURCES) $(CORE_HEADERS) native/bench/stage3_co
 
 soliding-stage3-cost-smoke: $(BUILD_DIR)/stage3_cost
 	./$(BUILD_DIR)/stage3_cost connectivity bridge 64 1 2 2 -32 0
+
+soliding-stage3b-validation-apparatus-test: | $(BUILD_DIR)
+	python3 tools/experiments/test_stage3b_validation.py
+	python3 tools/experiments/stage3b_validation.py synthetic-smoke --apparatus-source-commit=$$(git rev-parse HEAD) --output $(BUILD_DIR)/stage3b-validation-synthetic-smoke.json
+	python3 tools/experiments/stage3b_validation.py generate-plan --apparatus-source-commit=$$(git rev-parse HEAD) --profile smoke --output $(BUILD_DIR)/stage3b-validation-plan-smoke.json
+	python3 tools/experiments/stage3b_validation.py validate-plan $(BUILD_DIR)/stage3b-validation-plan-smoke.json
 
 soliding-test: $(BUILD_DIR)/test_soliding_lifecycle $(BUILD_DIR)/test_settled_discovery $(BUILD_DIR)/test_settled_regions $(BUILD_DIR)/test_settled_world_discovery
 	./$(BUILD_DIR)/test_soliding_lifecycle

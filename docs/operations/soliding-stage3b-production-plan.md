@@ -5,7 +5,7 @@ document-kind: runbook
 scope: Dependency, ownership, gate and validation routing for Stage-3B locality/scalability implementation
 canonical-for: [soliding-stage3b-production-plan]
 last-reviewed: 2026-09-19
-related-documents: [../audits/issue-12-2026-09-19/stage3b-parent-decision.md, soliding-stage3-freeze.md, soliding-stage3b-astra-review.md, soliding-programme.md]
+related-documents: [../audits/issue-12-2026-09-19/stage3b-parent-decision.md, ../audits/2026-09-19-issue-69-stage3b-validation.md, soliding-stage3-freeze.md, soliding-stage3b-astra-review.md, soliding-programme.md]
 ---
 
 # Issue 12 Stage 3B production implementation plan
@@ -165,10 +165,12 @@ before #65.
 
 ### Evidence lane
 
-Issue #69 may proceed after #56 without candidate semantic changes. Avoid the
-MicroScenario/workbench files currently owned by #29. The final campaign may use
-MS-001 only as supplemental integration evidence after exact source/runtime
-identity is fixed.
+Issue #69 proceeds after #56 without candidate semantic changes. Its executable
+preregistration contract is `tools/experiments/stage3b_validation.py`; the dated
+[issue #69 evidence record](../audits/2026-09-19-issue-69-stage3b-validation.md)
+records the fixture/schema inventory and qualification boundary. The final
+campaign may use MS-001 only as supplemental integration evidence after exact
+source/runtime identity is fixed.
 
 ### Historical branches
 
@@ -227,11 +229,60 @@ address safety, producer locality, index locality, memory reconciliation, bounde
 deletion/service, unrelated remote progress, publication honesty/locality and
 evidence quality.
 
+## Issue #69 registered campaign contract
+
+The candidate-independent #69 apparatus freezes the experiment shape before the
+final candidate exists.
+
+- Arms are explicit for Current/discovery-off, untouched Stage 3A, runtime-sized
+  Stage-3A-equivalent, optional sparse-producer/indexed-graph intermediates and the
+  complete Stage-3B candidate. Missing arms are marked unavailable rather than
+  silently dropped.
+- The fixture catalogue has 168 versioned logical fixtures. Each carries a
+  canonical declarative fixture-protocol hash binding exact geometry/generator
+  parameters and operation schedule into every run/result provenance record.
+  Historical `local-edit` remains an 8x8 patch and historical `bridge` remains
+  a whole column; separate genuine one-cell tuple and topology fixtures carry an
+  exact one-cell mutation contract.
+- Workers are exactly 1 and 4. Drain-to-completion and fixed primitive budgets
+  `1, 8, 64, 256, 1024` are registered. A whole-region loop is never counted as
+  one primitive and the new primitive count is not equated to Stage-3A abstract
+  work units.
+- Paired drain cells and interruption-sensitive fixed-budget cells use five
+  sequential process repeats. Correctness-only drain qualifications are single
+  deterministic processes unless a pre-results amendment is registered.
+- A fixed SHA-256 cell shuffle and balanced normal/reversed arm order are recorded.
+  Final benchmark processes are sequential/uncontended and warm-up/qualification
+  output remains separate.
+- The default generated final plan has 6,488 run records. This is a deliberately
+  bounded matrix rather than a wasteful Cartesian duplication of semantically
+  meaningless Current/historical fixed-budget cases.
+- Result schema v1 retains explicit success, correctness failure, refusal, timeout,
+  source failure, failed-world, unavailable and not-applicable states plus exact
+  source/compiler/runtime/hardware/order provenance. Slow performance remains a
+  measurement, not a threshold-derived failure state.
+- Reducer schema v1 preserves terminal states, high-water/refusal evidence and an
+  exact provenance index; flags missing/insufficient samples; summarizes declared
+  numeric metric populations directly; and encodes no candidate winner or universal
+  percentage-speedup threshold.
+- The #58 replacement-failure fixture uses retire-first lifecycle semantics: a
+  failed replacement leaves discovery unavailable, does not mark the World failed,
+  and a later successful clear creates a fresh observer incarnation.
+- The #57 event-halo fixture binds the additive pending footprint
+  `P = (R + 2) + maximum_rule_radius`; #63 retains implementation ownership for
+  the sparse event/coverage producer.
+
+#70 must freeze one authoritative simulation/material baseline, exact source/runtime
+identity for every available arm, final capacities, compiler/artifact identity,
+target host/OS/power mode and any interface-driven pre-results amendment before
+executing the registered plan. Untouched historical Stage 3A remains a separately
+identified reference series when it cannot share the matched authority.
+
 ## Immediate execution order
 
 1. #56 authority/routing is complete.
-2. #58 / PR #72 is complete and G1 is closed; #57 closes G-P4 on merge. #69
-   remains an independent preregistration lane.
+2. #58 / PR #72 is complete and G1 is closed; #57 / PR #73 is complete and
+   G-P4 is closed. #69 remains an independent preregistration lane.
 3. #59 may proceed from the completed #58 prerequisite when separately dispatched,
    then #59 -> #60. This #57 reconciliation does not start it.
 4. After #60, run #61-#63 as the serialized World-producer lane while #64 runs as
