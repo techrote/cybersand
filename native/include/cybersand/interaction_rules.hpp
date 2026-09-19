@@ -649,6 +649,29 @@ public:
             kInteractionLayerDefinitions, channel, source, target, context_id);
     }
 
+    [[nodiscard]] static constexpr bool pair_rule_matches(
+        const PairInteractionRule& rule,
+        Material source,
+        Material target) noexcept {
+        if (source == rule.first && target == rule.second) return true;
+        return (rule.match == InteractionMatchKind::UnorderedRolePreserving ||
+                rule.match == InteractionMatchKind::Symmetric) &&
+               source == rule.second && target == rule.first;
+    }
+
+    [[nodiscard]] static constexpr bool pair_rules_conflict(
+        const PairInteractionRule& first,
+        const PairInteractionRule& second) noexcept {
+        return (pair_rule_matches(first, first.first, first.second) &&
+                pair_rule_matches(second, first.first, first.second)) ||
+               (pair_rule_matches(first, first.second, first.first) &&
+                pair_rule_matches(second, first.second, first.first)) ||
+               (pair_rule_matches(first, second.first, second.second) &&
+                pair_rule_matches(second, second.first, second.second)) ||
+               (pair_rule_matches(first, second.second, second.first) &&
+                pair_rule_matches(second, second.second, second.first));
+    }
+
     [[nodiscard]] static constexpr InteractionCatalogueValidation validate_catalogue() noexcept {
         InteractionCatalogueValidation result{};
 
@@ -660,10 +683,9 @@ public:
             for (std::size_t right = left + 1U; right < kPairInteractionRules.size(); ++right) {
                 const auto& b = kPairInteractionRules[right];
                 if (a.id == b.id) ++result.duplicate_rule_ids;
-                const bool same_pair =
-                    (a.first == b.first && a.second == b.second) ||
-                    (a.first == b.second && a.second == b.first);
-                if (same_pair) ++result.conflicting_pair_overrides;
+                if (pair_rules_conflict(a, b)) {
+                    ++result.conflicting_pair_overrides;
+                }
             }
         }
         for (std::size_t left = 0; left < kSpecializedInteractionRules.size(); ++left) {
