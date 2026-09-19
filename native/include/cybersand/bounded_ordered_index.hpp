@@ -53,8 +53,8 @@ public:
                 current = nodes_[current].right;
             }
         }
-        return best == npos ? std::nullopt
-                            : std::optional<Entry>{{nodes_[best].key, nodes_[best].value}};
+        if (best == npos) return std::nullopt;
+        return Entry{nodes_[best].key, nodes_[best].value};
     }
 
     [[nodiscard]] std::optional<Entry> predecessor(
@@ -70,8 +70,8 @@ public:
                 current = nodes_[current].left;
             }
         }
-        return best == npos ? std::nullopt
-                            : std::optional<Entry>{{nodes_[best].key, nodes_[best].value}};
+        if (best == npos) return std::nullopt;
+        return Entry{nodes_[best].key, nodes_[best].value};
     }
 
     InsertResult insert(const Key& key, const Value& value,
