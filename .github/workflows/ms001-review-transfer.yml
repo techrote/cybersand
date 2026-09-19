@@ -23,19 +23,21 @@ jobs:
           fetch-depth: 0
           lfs: true
           persist-credentials: false
-      - name: Verify and bundle exact review head
+      - name: Verify and bundle exact review head plus current main
         shell: bash
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           test -z "$(git status --porcelain)"
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          test "$(git rev-parse refs/remotes/origin/main)" = 5001f7f8665cf4e3bc67b3617796127c908ac368
           git fsck --full
           git lfs fsck
           mkdir "$RUNNER_TEMP/ms001-review"
           git bundle create "$RUNNER_TEMP/ms001-review/source.bundle" HEAD refs/remotes/origin/main
           tar -czf "$RUNNER_TEMP/ms001-review/lfs-objects.tar.gz" -C .git/lfs objects
           {
-            printf 'source=%s\n' "$GITHUB_SHA"
+            printf 'source=%s\nmain=%s\n' "$GITHUB_SHA" "$(git rev-parse refs/remotes/origin/main)"
             git status --short --branch
             git lfs ls-files --long
           } > "$RUNNER_TEMP/ms001-review/identity.txt"
