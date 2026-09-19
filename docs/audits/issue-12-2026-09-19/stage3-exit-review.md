@@ -19,7 +19,8 @@ as `5001f7f`, and the integration commits `64413f7` through `c35c8d1` on
 `codex/issue-12-stage3-integration`. The last measured runtime source is
 `2919106d9a8b3b91bab442fbb0e34bdee1b35afc`; `933ad5a` adds the retained cost
 record and an exact-under-occupancy regression, and `c35c8d1` adds direct Water
-transfer endpoint evidence without changing runtime source.
+transfer endpoint evidence without changing runtime source. `4e0d58c` is the
+docs-only parent admission checkpoint validated below.
 
 This decision admits only opt-in, read-only observation. It does not admit a
 scheduler skip, stationary proxy, compact/frozen representation, cohesion,
@@ -74,7 +75,7 @@ false complete result.
 | 25 | PASS | **Whole-system cost.** [`stage3-cost-results.md`](stage3-cost-results.md) retains 276/276 preregistered sequential processes with separate Current, producer, journal/feed and connectivity timing, peak RSS, setup, ordinary/epoch-clear and complete-service p95. Current discovery fields are JSON `null`, never fabricated zero. |
 | 26 | PASS | **Large-world/churn/fanout/wake amplification.** The same evidence covers 512/1024/2048 quiet worlds, 2048 sparse edit, bridge, churn, mask, event, exclusion/re-entry, granular controls and a translated negative ring. It retains the 39.3 ms 2048 sparse-edit complete p95, 1,351,685 connectivity work units, publication/invalidation counts, refusals, fixed storage and setup costs. Whole-region rediscovery is accepted as bounded Stage-3 cost, not local scaling or a win. |
 | 27 | PASS | **No Stage-4/Rapier claim.** Public Stage-3 interfaces expose immutable observations and metrics only. Cells remain authoritative; no scheduler skip, body creation, ownership transfer, cohesion or fracture code is introduced. The measured result explicitly rejects a zero-cost or speedup interpretation. |
-| 28 | PASS subject to exact-head CI | **Docs/evidence/retrieval/identity synchronization.** The canonical discovery page links the corrected cost record; the programme, roadmap, handover and documentation index link this exit review and identify Stage 4 as next only after exact-head CI/merge. Raw local outputs remain uncommitted under the dated validation directory with compiler/executable/plan/result hashes. Companion-aware documentation, M11 integrity, repository policy and retrieval checks are required again on the final PR head. |
+| 28 | PASS with retained artifact gap | **Docs/evidence/retrieval/identity synchronization.** The canonical discovery page links the corrected cost record; the programme, roadmap, handover and documentation index link this exit review and identify Stage 4 as next only after exact-head CI/merge. Raw local outputs remain uncommitted under the dated validation directory with compiler/executable/plan/result hashes. On docs-only head `4e0d58c`, companion-aware documentation passed 69 documents/116 canonical claims/1,103 local links/32 questions; M11 passed 18 records/28 hashes; retrieval hit the canonical route at k for 32/32 questions (MRR 0.8385). Repository policy retained exactly four expected Windows/Linux runtime-rebuild requirements for changed `world.hpp`/`world.cpp`; no binary or historical provenance was rewritten. |
 
 ## Validation retained for the candidate
 
@@ -86,9 +87,10 @@ false complete result.
   after bounded lookup/scalability corrections; it is rerun on the final PR head.
 - Registered measurement runner tests: 4/4 pass. Corrected smoke: 7/7. Corrected
   preregistered campaign: 276/276, no retry, drop, malformed record or cohort mismatch.
-- Documentation and repository integrity checks are recorded on the final PR head;
-  historical runtime-attestation drift for changed `world.hpp`/`world.cpp` remains
-  the expected four-item source-change report and does not rewrite retained binaries.
+- Companion-aware docs and M11 checks pass on `4e0d58c`; retrieval finds canonical
+  routes for 32/32 questions at k. Repository policy retains exactly four expected
+  Windows/Linux runtime-rebuild requirements for changed `world.hpp`/`world.cpp`;
+  this source-change report does not rewrite retained binaries or provenance.
 
 ## Negative and ambiguous evidence retained
 
