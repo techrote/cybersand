@@ -44,6 +44,29 @@ struct WorldDiscoveryTileSnapshot {
     DiscoverySummary summary{};
 };
 
+struct WorldDiscoveryStorageLayout {
+    std::size_t effective_tile_capacity{};
+    std::size_t journal_capacity{};
+    std::size_t owner_record_capacity{};
+    std::size_t key_index_capacity{};
+    std::size_t journal_storage_bytes{};
+    std::size_t owner_record_storage_bytes{};
+    std::size_t key_index_storage_bytes{};
+    std::size_t region_tile_capacity{};
+    std::size_t region_edge_capacity{};
+    std::size_t region_frontier_capacity{};
+    std::size_t region_seen_capacity{};
+    std::size_t region_member_capacity{};
+    std::size_t region_dependency_capacity{};
+    std::size_t region_revision_capacity{};
+    std::size_t region_tile_cell_capacity{};
+    std::size_t region_components_per_tile{};
+    std::size_t region_boundary_slots_per_tile{};
+    std::size_t publication_capacity{};
+    std::size_t region_storage_bytes{};
+    bool regions_enabled{};
+};
+
 // Narrow deterministic fault-injection seam for lifecycle ordering tests.
 // It only affects the next coordinator construction and never simulation state.
 namespace testing {
@@ -86,6 +109,7 @@ public:
     [[nodiscard]] WorldDiscoveryMetrics producer_metrics() const noexcept;
     [[nodiscard]] DiscoveryMetrics journal_metrics() const noexcept;
     [[nodiscard]] std::size_t storage_bytes() const noexcept;
+    [[nodiscard]] WorldDiscoveryStorageLayout storage_layout() const noexcept;
     [[nodiscard]] bool regions_enabled() const noexcept;
     [[nodiscard]] std::size_t region_count() const noexcept;
     [[nodiscard]] std::optional<SettledRegionSnapshot> region(std::size_t slot) const noexcept;
