@@ -54,12 +54,16 @@ struct SettledWorldDiscoveryCoordinator::Impl {
         DiscoveryHandle handle{};
         std::uint64_t region_payload_revision{};
         std::int16_t ambient_temperature{};
+        std::uint64_t payload_revision{};
+        ProducerReason payload_reason{ProducerReason::DirectMutation};
+        bool payload_pending{};
     };
 
     Impl(std::uint64_t identity, std::size_t configured_capacity, bool enable_regions)
         : journal(identity, checked_world_capacity(configured_capacity, enable_regions)),
           tile_capacity(configured_capacity), incarnation(identity),
-          index(configured_capacity) {
+          index(configured_capacity),
+          payload_queue(std::make_unique<std::size_t[]>(configured_capacity)) {
         if (identity == 0) throw std::invalid_argument("settled discovery incarnation must be nonzero");
         records.reserve(tile_capacity);
         if (enable_regions) {
@@ -91,9 +95,10 @@ struct SettledWorldDiscoveryCoordinator::Impl {
     }
 
     DiscoveryOutcome dirty_record(std::size_t record_index, ProducerReason reason,
-                                  std::uint64_t tick) noexcept {
+                                  std::uint64_t tick,
+                                  std::uint64_t mutation_count = 1) noexcept {
         auto& record = records[record_index];
-        const auto outcome = journal.dirty(record.handle, tick);
+        const auto outcome = journal.dirty(record.handle, tick, mutation_count);
         if (outcome == DiscoveryOutcome::Accepted) {
             add(metrics.invalidated_tiles[static_cast<std::size_t>(reason)]);
             if (regions != nullptr) {
@@ -106,6 +111,62 @@ struct SettledWorldDiscoveryCoordinator::Impl {
             }
         }
         return outcome;
+    }
+
+    void enqueue_payload(std::size_t record_index, ProducerReason reason) noexcept {
+        auto& record = records[record_index];
+        const auto summary = journal.snapshot(record.handle);
+        if (!summary.has_value()) return;
+        record.payload_revision = summary->revision;
+        record.payload_reason = reason;
+        if (record.payload_pending) {
+            add(metrics.payload_work_coalesced);
+            return;
+        }
+        record.payload_pending = true;
+        payload_queue[(payload_head + payload_queued) % tile_capacity] = record_index;
+        ++payload_queued;
+        add(metrics.payload_work_enqueued);
+        if (payload_queued > metrics.payload_queue_high_water)
+            metrics.payload_queue_high_water = payload_queued;
+    }
+
+    DiscoveryOutcome notify_payload_record(std::size_t record_index, ProducerReason reason,
+                                           std::uint64_t tick,
+                                           std::uint64_t mutation_count) noexcept {
+        if (mutation_count == 0) return DiscoveryOutcome::Unchanged;
+        add(metrics.payload_mutations, mutation_count);
+        const auto outcome = dirty_record(record_index, reason, tick, mutation_count);
+        if (outcome == DiscoveryOutcome::Accepted)
+            enqueue_payload(record_index, reason);
+        return outcome;
+    }
+
+    std::size_t service_payload_work(
+        std::uint64_t tick, std::size_t budget, const void* context,
+        SettledWorldDiscoveryCoordinator::ReadSignalsFunction read_signals) {
+        std::size_t used = 0;
+        while (payload_queued != 0 && used < budget) {
+            const auto record_index = payload_queue[payload_head];
+            auto& record = records[record_index];
+            const auto expected_revision = record.payload_revision;
+            const auto current = journal.snapshot(record.handle);
+            if (!current.has_value() || current->revision < expected_revision) {
+                journal.fail();
+                if (regions != nullptr) regions->fail(RegionRefusal::SourceFailure);
+                return used;
+            }
+            const auto signals =
+                read_signals(context, record.key, record.bounds, record.signals);
+            add(metrics.signal_observations);
+            (void)observe_record(record_index, signals, record.payload_reason, tick);
+            record.payload_pending = false;
+            payload_head = (payload_head + 1) % tile_capacity;
+            --payload_queued;
+            ++used;
+            add(metrics.payload_work_serviced);
+        }
+        return used;
     }
 
     DiscoveryOutcome observe_record(std::size_t record_index, DiscoverySignals signals,
@@ -141,6 +202,9 @@ struct SettledWorldDiscoveryCoordinator::Impl {
     std::uint64_t incarnation{};
     std::vector<Record> records;
     KeyIndex index;
+    std::unique_ptr<std::size_t[]> payload_queue;
+    std::size_t payload_head{};
+    std::size_t payload_queued{};
     std::unique_ptr<Regions> regions;
     std::array<DiscoveryCell, 1024> region_scratch{};
     mutable WorldDiscoveryMetrics metrics{};
@@ -239,6 +303,27 @@ DiscoveryOutcome SettledWorldDiscoveryCoordinator::dirty(
                                      : DiscoveryOutcome::Stale;
 }
 
+DiscoveryOutcome SettledWorldDiscoveryCoordinator::notify_payload(
+    DiscoveryTileKey key, ProducerReason reason, std::uint64_t tick,
+    std::uint64_t mutation_count) noexcept {
+    auto& state = *impl_;
+    add(state.metrics.notifications[static_cast<std::size_t>(reason)], mutation_count);
+    const auto record = state.find_record(key);
+    return record.has_value()
+        ? state.notify_payload_record(*record, reason, tick, mutation_count)
+        : DiscoveryOutcome::Stale;
+}
+
+DiscoveryOutcome SettledWorldDiscoveryCoordinator::notify_payload(
+    WorldDiscoveryTileHandle handle, ProducerReason reason, std::uint64_t tick,
+    std::uint64_t mutation_count) noexcept {
+    auto& state = *impl_;
+    add(state.metrics.notifications[static_cast<std::size_t>(reason)], mutation_count);
+    return state.valid_owner(handle)
+        ? state.notify_payload_record(handle.slot, reason, tick, mutation_count)
+        : DiscoveryOutcome::Stale;
+}
+
 DiscoveryOutcome SettledWorldDiscoveryCoordinator::observe(
     DiscoveryTileKey key, DiscoverySignals signals, ProducerReason reason,
     std::uint64_t tick) noexcept {
@@ -264,10 +349,24 @@ DiscoveryOutcome SettledWorldDiscoveryCoordinator::observe(
 std::size_t SettledWorldDiscoveryCoordinator::advance(
     std::uint64_t tick, std::size_t budget, const void* context,
     ReadCellFunction read) {
+    return advance(tick, budget, context, read, nullptr);
+}
+
+std::size_t SettledWorldDiscoveryCoordinator::advance(
+    std::uint64_t tick, std::size_t budget, const void* context,
+    ReadCellFunction read, ReadSignalsFunction read_signals) {
     if (read == nullptr) throw std::invalid_argument("settled discovery read callback is null");
     auto& state = *impl_;
+    if (state.journal.halted() != DiscoveryHalt::None || budget == 0) return 0;
     try {
-        return state.journal.advance_with_publication(tick, budget,
+        std::size_t used = 0;
+        if (state.payload_queued != 0) {
+            if (read_signals == nullptr) return 0;
+            used = state.service_payload_work(tick, budget, context, read_signals);
+            if (state.payload_queued != 0 || used == budget ||
+                state.journal.halted() != DiscoveryHalt::None) return used;
+        }
+        used += state.journal.advance_with_publication(tick, budget - used,
             [context, read](std::int64_t x, std::int64_t y) { return read(context, x, y); },
             [&state, context, read](const DiscoverySummary& summary) {
                 if (state.regions == nullptr || summary.handle.slot >= state.records.size()) return;
@@ -301,6 +400,7 @@ std::size_t SettledWorldDiscoveryCoordinator::advance(
                 }
                 record.region_payload_revision = summary.revision;
             });
+        return used;
     } catch (...) {
         if (state.regions != nullptr) state.regions->fail(RegionRefusal::SourceFailure);
         throw;
@@ -317,6 +417,18 @@ void SettledWorldDiscoveryCoordinator::fail() noexcept {
 }
 void SettledWorldDiscoveryCoordinator::note_global_fence() noexcept {
     add(impl_->metrics.global_fences);
+}
+void SettledWorldDiscoveryCoordinator::note_worker_report_records(
+    std::size_t records) noexcept {
+    add(impl_->metrics.worker_report_records, records);
+}
+void SettledWorldDiscoveryCoordinator::fence_lost_payload_report() noexcept {
+    auto& state = *impl_;
+    add(state.metrics.worker_report_overflows);
+    add(state.metrics.observation_fences);
+    add(state.metrics.global_fences);
+    state.journal.fail();
+    if (state.regions != nullptr) state.regions->fail(RegionRefusal::SourceFailure);
 }
 
 std::optional<WorldDiscoveryTileSnapshot> SettledWorldDiscoveryCoordinator::tile(
@@ -357,6 +469,9 @@ std::optional<WorldDiscoveryTileHandle> SettledWorldDiscoveryCoordinator::handle
 std::size_t SettledWorldDiscoveryCoordinator::size() const noexcept { return impl_->records.size(); }
 std::size_t SettledWorldDiscoveryCoordinator::capacity() const noexcept { return impl_->tile_capacity; }
 std::size_t SettledWorldDiscoveryCoordinator::pending() const noexcept { return impl_->journal.pending(); }
+std::size_t SettledWorldDiscoveryCoordinator::pending_payload_work() const noexcept {
+    return impl_->payload_queued;
+}
 std::uint64_t SettledWorldDiscoveryCoordinator::incarnation() const noexcept { return impl_->incarnation; }
 bool SettledWorldDiscoveryCoordinator::capacity_blocked() const noexcept { return impl_->capacity_blocked; }
 DiscoveryHalt SettledWorldDiscoveryCoordinator::halted() const noexcept { return impl_->journal.halted(); }
@@ -366,7 +481,8 @@ std::size_t SettledWorldDiscoveryCoordinator::storage_bytes() const noexcept {
     const auto& state = *impl_;
     return sizeof(Impl) + (state.journal.storage_bytes() - sizeof(Impl::Journal)) +
            state.records.capacity() * sizeof(Impl::Record) +
-           (state.index.storage_bytes() - sizeof(Impl::KeyIndex));
+           (state.index.storage_bytes() - sizeof(Impl::KeyIndex)) +
+           state.tile_capacity * sizeof(std::size_t);
 }
 WorldDiscoveryStorageLayout SettledWorldDiscoveryCoordinator::storage_layout() const noexcept {
     const auto& state = *impl_;
@@ -378,6 +494,8 @@ WorldDiscoveryStorageLayout SettledWorldDiscoveryCoordinator::storage_layout() c
     out.journal_storage_bytes = state.journal.storage_bytes();
     out.owner_record_storage_bytes = state.records.capacity() * sizeof(Impl::Record);
     out.key_index_storage_bytes = state.index.storage_bytes() - sizeof(Impl::KeyIndex);
+    out.payload_queue_capacity = state.tile_capacity;
+    out.payload_queue_storage_bytes = state.tile_capacity * sizeof(std::size_t);
     out.regions_enabled = state.regions != nullptr;
     if (state.regions != nullptr) {
         out.region_tile_capacity = state.regions->tile_capacity();
