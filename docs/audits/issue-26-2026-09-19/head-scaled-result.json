@@ -1,0 +1,112 @@
+{
+  "schema": 1,
+  "issue": 26,
+  "arm": "head-scaled-local-drive",
+  "disposition": "reject",
+  "candidate_commit": "c84e36817d4514b8b08b9c9a34d87ff8a3bfee92",
+  "workflow_run": 35413179226,
+  "artifact": {
+    "id": 10575226046,
+    "zip_sha256": "46e331d714f8ebe88d6cee48b845463575eeb4ac0e8ac02c8a54f51cf1576511",
+    "head_results_sha256": "1fce64fcfb1281fc0e6912eb7ec435feb0701c5943fa6df24a0176fbd30af28e",
+    "head_summary_sha256": "8084cc596ab71ae0085b50c139452bb7dcc0e4c72448873a296921727faf3f4b",
+    "baseline_rerun_results_sha256": "7f17b2aaa949aac16ac052ce09330a71636dca19ff8c3b7c9ac62f2d70bb7ac1",
+    "baseline_rerun_summary_sha256": "bafb23f76a67f954ae0f9d4c565c8dcf498574821221b887fb34ba7fdd400e38"
+  },
+  "control_integrity": {
+    "frozen_baseline_authoritative_samples_equal": true,
+    "frozen_baseline_deterministic_work_equal": true,
+    "note": "Timing excluded from exact equality because it is host noise."
+  },
+  "hard_invariants": {
+    "cases": 108,
+    "mass_conservation": true,
+    "worker_parity": true,
+    "post_setup_allocations_zero": true
+  },
+  "comparison": {
+    "calm_settling": {
+      "control_half_life": 480,
+      "candidate_half_life": 360,
+      "half_life_pass": true,
+      "control_one_cell": 2670,
+      "candidate_one_cell": 2400,
+      "one_cell_pass": false,
+      "half_life_gate_max": 360,
+      "one_cell_gate_max": 1980
+    },
+    "head_deep": {
+      "control_receive300": 27223,
+      "candidate_receive300": 29334,
+      "gate_min": 34029,
+      "pass": false,
+      "candidate_deep_medium_ratio": 1,
+      "ratio_gate_min": 1.1,
+      "ratio_pass": false
+    },
+    "communicating_pools": {
+      "control_final_level_difference_milli": 16000,
+      "candidate": 16000,
+      "gate_max": 12000,
+      "pass": false
+    },
+    "unequal_head_u_tube": {
+      "control_final_level_difference_milli": 24000,
+      "candidate": 24000,
+      "gate_max": 18000,
+      "pass": false
+    },
+    "constriction": {
+      "control_receive300": 15454.5,
+      "candidate": 16352,
+      "gate_min": 19319,
+      "pass": false
+    },
+    "fast_dump": {
+      "control_final_spread_milli": 3392,
+      "candidate": 2421.5,
+      "gate_max": 3731,
+      "pass": true,
+      "wall_gap_candidate": 1,
+      "wall_gap_gate_max": 1
+    },
+    "ledge_sheet": {
+      "control_receive300": 9453.5,
+      "candidate": 9940.5,
+      "gate_min": 6617,
+      "gate_max": 14180,
+      "turnover_candidate": 18.5,
+      "turnover_min": 8,
+      "pass": true
+    }
+  },
+  "performance_review": {
+    "baseline_rerun_p95_us": {
+      "calm": 717.882,
+      "constriction": 742.1475,
+      "head_deep": 594.3455,
+      "fast_dump": 640.7535
+    },
+    "candidate_p95_us": {
+      "calm": 945.5775,
+      "constriction": 974.8515,
+      "head_deep": 774.6035,
+      "fast_dump": 826.3835
+    },
+    "ratios": {
+      "calm": 1.3171767783563315,
+      "constriction": 1.3135549200125312,
+      "head_deep": 1.3032882389115423,
+      "fast_dump": 1.2897057916968069
+    },
+    "review_ratio": 1.15,
+    "flag": true
+  },
+  "reason": [
+    "Mandatory calm-settling sustained <=1-cell gate missed (2400 > 1980 ticks).",
+    "No additional primary benefit gate passed: deep-head, communicating-pools, unequal-head U-tube and constriction all missed.",
+    "Communicating-pools and U-tube head differences were unchanged at 16 and 24 cells.",
+    "Several active-fixture p95 timings exceeded the preregistered 1.15 review ratio.",
+    "Positive controls and hard invariants were preserved, so this is a valid negative result rather than an invalid experiment."
+  ]
+}
