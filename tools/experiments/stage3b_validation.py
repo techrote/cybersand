@@ -28,6 +28,8 @@ PROVENANCE_FIELDS=("source_commit","dirty_status","source_input_hashes","compile
  "observer_service_schedule","arm_id","hardware","os","power_mode","run_order","repeat_index",
  "stdout_identity","stderr_identity","raw_result_identity")
 MEASUREMENTS={
+ "quiet_phases":("initial_construction_ms","registration_ms","first_exact_capture_classification_ms",
+  "first_region_publication_ms","steady_quiet_drain_ms"),
  "producer_signal":("changed_coverage","conservative_coverage","hook_reduction_ms","queue_entries",
   "queue_high_water","revision_witness_advances","overflow_refusal_count","unrelated_coverage_touched"),
  "deadline_activity":("deadline_changes","due_processing","parked_reentry_transitions",
@@ -45,7 +47,10 @@ MEASUREMENTS={
  "reclamation":("nodes_retired","bytes_retired","cleanup_primitives","cleanup_ms","oldest_retained_generation",
   "reclamation_caused_deferral"),
  "end_to_end":("mutation_to_retirement_ms","dirty_to_local_observation_ms","dirty_to_global_observation_ms",
-  "service_call_latency_ms","owner_tick_plus_observer_ms","throughput_per_second","total_ms"),
+  "service_call_latency_ms","service_call_latency_p50_ms","service_call_latency_p95_ms","service_call_latency_p99_ms",
+  "service_call_latency_max_ms","owner_tick_plus_observer_ms","owner_tick_plus_observer_p50_ms",
+  "owner_tick_plus_observer_p95_ms","owner_tick_plus_observer_p99_ms","owner_tick_plus_observer_max_ms",
+  "throughput_per_second","total_ms"),
  "memory":("requested_capacity_bytes","layout_derived_bytes","allocator_committed_bytes","live_bytes",
   "staged_bytes","retired_bytes","scratch_high_water_bytes","process_rss_bytes"),
 }
@@ -81,21 +86,33 @@ def fixture_catalogue():
           "many-child-split","topology-preserving-interior-hole","changed-port-partition")
     one={"one-cell-bridge-add","one-cell-bridge-remove","alternate-path-nonsplit","genuine-large-split",
          "many-child-split","topology-preserving-interior-hole","changed-port-partition"}
+    topology_classes={
+      "one-cell-bridge-add":"additive-bridge-merge",
+      "one-cell-bridge-remove":"reconstruction-required-deletion",
+      "alternate-path-nonsplit":"local-topology-preserving",
+      "genuine-large-split":"reconstruction-required-deletion",
+      "many-child-split":"reconstruction-required-deletion",
+      "topology-preserving-interior-hole":"local-topology-preserving",
+      "changed-port-partition":"changed-port-partition",
+    }
     for n in topo:
-        kw={}
-        if n in one: kw={"intended_changed_cell_count":1,"mutation":{"selector":"canonical-topology-coordinate","field":"material","authoritative_cells_changed":1}}
+        kw={"topology_class":topology_classes.get(n,"structural-control")}
+        if n in one: kw.update({"intended_changed_cell_count":1,"mutation":{"selector":"canonical-topology-coordinate","field":"material","authoritative_cells_changed":1}})
         out.append(fixture(f"topology.{n}","connectivity-topology",n,**kw))
     for n in ("absent-location","absent-to-resident-registration","registered-unknown","unknown-to-ready-matching",
               "unknown-to-ready-nonmatching","unknown-to-canonical-empty","resident-untracked","excluded","re-entry",
               "capacity-refused","failed-read-world","new-facing-coverage-before-payload-ready"):
-        out.append(fixture(f"coverage.{n}","coverage-absence-registration",n,expected_outcomes=["success","refused","source-failure","failed-world"]))
+        out.append(fixture(f"coverage.{n}","coverage-absence-registration",n,expected_outcomes=["success","refused","source-failure","failed-world"],
+          invariant="A dictionary miss alone never proves global completeness."))
     for n in ("future-deadline-insertion","earlier-replacement","cancellation","consumption","equal-deadline-ordering",
               "excluded-overdue-deadline","re-entry","no-write-keep-active","sleep-wake-transition","many-deadline-changes-no-payload-writes"):
-        out.append(fixture(f"deadline.{n}","activity-deadline-no-write",n))
+        out.append(fixture(f"deadline.{n}","activity-deadline-no-write",n,
+          invariant="A future nonzero deadline is not quiet before due." if n=="future-deadline-insertion" else "Deadline/activity state follows exact owner signals."))
     for n in ("direct-tuple-A-B-A","mask-set-clear","mask-reconfiguration","overlapping-event-acceptance-drain",
               "inclusion-requested-applied-ABA","same-barrier-restore","worker-effect-rectangle-fanout","event-dependency-halo-fanout"):
         out.append(fixture(f"aba.{n}","aba-fanout",n,
-          expected_outcomes=["success","not-applicable"] if n=="same-barrier-restore" else ["success"]))
+          expected_outcomes=["success","not-applicable"] if n=="same-barrier-restore" else ["success"],
+          invariant="Monotonic witness state must survive restore-to-original final values."))
     for n in ("continuous-local-churn","stable-nearby-candidate","stable-far-candidate","independent-pending-domains",
               "churn-every-1-service-call","churn-every-2-service-calls","churn-every-8-service-calls",
               "continuous-lower-coordinate-arrival","stale-work-before-validation","recovery-after-churn-stops","cleanup-reclamation-near-capacity"):
@@ -196,7 +213,7 @@ def build_plan(apparatus_source_commit,profile="final",arm_manifest=None,executi
                 runs.append({"run_id":f"{profile}-n{n:06d}","order_index":n,"order_key":okey(f["id"],w,svc["id"]),
                   "repeat_index":r,"cell_repeat_count":reps,"campaign_role":role(f),"arm_position":pos,"arm_id":a,
                   "arm_availability":av,"run_state":"scheduled" if av=="available" else av,"fixture_id":f["id"],
-                  "fixture_version":1,"worker_count":w,"service_mode":svc["id"],"primitive_budget":svc["budget"],"seed":0})
+                  "fixture_version":1,"fixture_expected_outcomes":f["expected_outcomes"],"worker_count":w,"service_mode":svc["id"],"primitive_budget":svc["budget"],"seed":0})
     auth=execution_authority or {}
     return {"schema":PLAN_SCHEMA,"version":1,"contract_version":CONTRACT_VERSION,"profile":profile,
       "apparatus_source_commit":apparatus_source_commit,
@@ -211,6 +228,7 @@ def build_plan(apparatus_source_commit,profile="final",arm_manifest=None,executi
         "rule":"Five repeats apply to paired cells; correctness-only qualification is single-process unless amended before results inspection."},
       "workers":[1,4],"fixed_primitive_budgets":list(BUDGETS),
       "primitive_definition":"One bounded source-read, incidence/index, dependency, heap/tree, or reclamation action; a whole-region loop is never one primitive.",
+      "determinism_contract":["worker finish order","allocator address","tree rotation","unordered iteration","free-slot order","registration order","equal-deadline ties"],
       "arm_scope_policy":{"paired_core":["current-discovery-disabled","stage3a-untouched","stage3a-runtime-sized","stage3b-candidate"],
         "memory":["stage3a-runtime-sized","stage3b-candidate"],"correctness_only":["stage3a-runtime-sized","stage3b-candidate"],
         "intermediate_attribution_fixture_ids":sorted(ATTRIBUTION),"fixed_budget_excludes":["current-discovery-disabled","stage3a-untouched"]},
@@ -254,14 +272,15 @@ def validate_result(v,row):
         if g not in ms or set(keys)-set(ms[g]): raise ValueError(f"missing measurement group/metrics: {g}")
     if not set(TUPLE_FIELDS).issubset(v.get("correctness",{}).get("tuple_fields_verified",[])): raise ValueError("incomplete authoritative tuple comparison")
     if row["arm_id"]=="current-discovery-disabled":
-        for g in ("producer_signal","deadline_activity","exact_extraction","index","retirement_dependency","merge_local_fast_path","reconstruction","publication","reclamation"):
+        for g in ("quiet_phases","producer_signal","deadline_activity","exact_extraction","index","retirement_dependency","merge_local_fast_path","reconstruction","publication","reclamation"):
             if any(x is not None for x in ms[g].values()): raise ValueError("Current fabricated observer measurements")
     state=v["state"]
     if state in {"success","correctness-failure","refused","timeout","source-failure","failed-world"}:
         for f in ("source_commit","dirty_status","compiler_executable","compiler_version","compiler_sha256","executable_sha256","stdout_identity","stderr_identity","raw_result_identity"):
             if p.get(f) in (None,""): raise ValueError(f"executed result missing provenance identity: {f}")
-    if state in {"correctness-failure","refused","timeout","source-failure","failed-world"} and not v["failure"].get("kind"):
+    if state in {"correctness-failure","refused","timeout","source-failure","failed-world","not-applicable"} and not v["failure"].get("kind"):
         raise ValueError("failure/refusal/timeout must retain explicit failure kind")
+    if state=="not-applicable" and "not-applicable" not in row.get("fixture_expected_outcomes",[]): raise ValueError("fixture does not permit not-applicable")
     if state=="unavailable" and row["arm_availability"]=="available": raise ValueError("available arm silently unavailable")
     if state=="success" and row["arm_availability"]=="unavailable": raise ValueError("unavailable arm reported success")
 
