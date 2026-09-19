@@ -22,7 +22,7 @@ Counts identify this inspected source inventory, not a pass for a later revision
 | Change | Focused executable coverage |
 |---|---|
 | Scheduler, storage, activity | Native geometry/non-overlap, signed/core/chunk crossings, stamps, repeat and one/four-worker parity, sleep/wake and capacity tests |
-| Materials and Water | Native catalogue/radius, chemistry/state machines, Smoke lifetime/Fire exclusion, density exchange, conserved leveling/rest and one/four-worker fixtures |
+| Materials, Water and INT-000 interaction substrate | Native catalogue/radius, frozen pair-oracle equivalence, layer precedence/conflict validation, chemistry/state machines, Smoke lifetime/Fire exclusion, density exchange, generated schema-2 interaction fixtures, conserved leveling/rest and one/four-worker fixtures |
 | Explosion or optional fields | Native bounded event validation/queue/hash/parity, static-to-granular conversion and temperature allocation/movement |
 | Immutable publication | Native slot capacity, dirty retention, deterministic patch order, lease concurrency/C lifetime; Godot native bridge and render-handoff fixtures |
 | Presentation/material catalogue | Godot appearance LUT and presentation runners: catalogue rows, representative flair, HDR values, viewport/F3 behavior |
@@ -135,6 +135,39 @@ matching-profile state/trajectory equality. See the
 [runbook](physics-characterisation.md) for experiment commands and bounds.
 Existing F01/F02, save, render ownership and meaningful conservation checks remain
 required. No trace here upgrades CYSD1 into full deterministic replay.
+
+## INT-000 intermaterial interaction validation
+
+**Current:** `native/tests/test_world.cpp` retains a literal frozen copy of the
+pre-migration 14-rule compact pair oracle and compares it against the versioned
+resolver across all material IDs, both orientations and probability boundaries.
+The same regression checks layer precedence/conflict handling, explicit semantic
+family non-inheritance, and ordered/symmetric/unordered-role-preserving match
+semantics. Specialized neighbourhood/lifecycle mechanisms remain in their existing
+`world.cpp` kernels and are represented/provenance-visible rather than duplicated.
+
+`test_microscenarios.gd` validates the native interaction profile/workbench
+provenance, rolling kinetic/contact baseline identity, deterministic repeat and
+one/four-worker semantic parity for the generated proof fixtures.
+`test_microscenario_materials_lab.gd` retains complete-definition GUI/headless
+identity, declared observations, source/sink accounting and transactional invalid
+replacement across every Materials Laboratory preset, including eventless INT-000
+mechanism fixtures.
+
+For retained batch evidence, run:
+
+```text
+python3 tools/interactions/batch.py --godot <godot> run --source-sha=<40-hex-sha> --workers=1,4 --output=<directory>
+python3 tools/interactions/batch.py compare <baseline-manifest.json> <candidate-manifest.json> --output=<comparison.json>
+```
+
+The batch driver delegates fixture construction/execution to schema-2 Godot. It
+fails on worker-semantic drift, preserves source/runtime/transport/Water/execution
+baseline identity, reports explicit coverage gaps and lists stable-ID
+rule/layer/pass fields changed between retained manifests. A comparison difference
+is review evidence, not an automatic tuning decision. Windows cross-build success
+is not Windows execution; browser/WebAssembly and target-GPU acceptance remain
+separate unless a dated run records them.
 
 ## Granular interaction regression
 
