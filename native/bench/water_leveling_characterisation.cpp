@@ -343,14 +343,18 @@ int main(int argc, char** argv) {
             if (fixture.id == "fd" && tick == 1) {
                 for (int y = 40; y <= 87; ++y) put(32, y, Material::Empty);
             }
-            const auto start = std::chrono::steady_clock::now();
+            const auto start = mode == "timing"
+                ? std::chrono::steady_clock::now()
+                : std::chrono::steady_clock::time_point{};
             const TickStats stats = world.tick();
-            const double elapsed = std::chrono::duration<double, std::micro>(
-                std::chrono::steady_clock::now() - start).count();
+            const double elapsed = mode == "timing"
+                ? std::chrono::duration<double, std::micro>(
+                    std::chrono::steady_clock::now() - start).count()
+                : -1.0;
             if (stats.chunk_allocations != 0U || stats.temperature_field_allocations != 0U)
                 throw std::runtime_error("unprepared allocation");
             if (mode == "timing") {
-                timings.push_back(elapsed);
+                if (tick > 120) timings.push_back(elapsed);
                 if (is_checkpoint(tick)) emit(tick, &stats, elapsed, false);
             } else if (mode == "trace") {
                 emit(tick, &stats, elapsed, true);
