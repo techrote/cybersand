@@ -33,10 +33,12 @@ preserves product goals, liked material behavior and deliberate deferrals.
 before choosing the next task. #27 may proceed once its launcher/input hygiene is
 present; it no longer waits for #18 or G-final. #28 exploratory scenarios may
 begin on a stable-enough #27 host and are explicitly provisional until affected
-physics/architecture changes are revalidated. #29/INT-000 may inventory/design
-early; implementation waits for the stable fixture contract plus the #28
-Materials Laboratory readiness checkpoint, not for all of #28 or a global
-physics freeze.
+physics/architecture changes are revalidated. The #29 readiness gate is now
+consumed: PR #55 / `codex/issue-29-int000` is the sole INT-000 implementation
+lane after reconciling historical PR #42 against the landed #27/#28 contracts.
+Do not restart #29 from the preflight branch or infer a global physics freeze.
+Later material tuning remains separate bounded versioned work using PR #55's
+schema/fixtures/provenance once the infrastructure PR is accepted.
 
 The [architecture programme](architecture-programme.md) remains authoritative for
 #14/#18/#20 scientific gates. MicroScenarios may supply apparatus/fixtures but
