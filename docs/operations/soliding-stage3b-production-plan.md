@@ -37,8 +37,10 @@ For an accepted explosion with radius `R`:
 
 - the authoritative **effect footprint** has maximum cell reach
   `E = R + 2`; execution may clear cells inside `R`, convert eligible Wall
-  in the outer two-cell annulus to granular Stone, and set the centre to Fire;
-  it performs no temperature write;
+  in the outer two-cell annulus to granular Stone, and set the centre to Fire.
+  `collapse_strength = 0` or target/random conditions may make an individual
+  event sparser, but `E` is the source-proven conservative maximum for the event
+  kind. The event performs no temperature write;
 - the configured **dependency halo** is the independent
   `r = maximum_rule_radius` rule/scheduler reach;
 - the required **pending observation footprint** at acceptance is the inclusive
