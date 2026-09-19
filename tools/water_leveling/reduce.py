@@ -31,9 +31,19 @@ FIXTURES = {
         "arm_width": 8,
     },
     "cn": {"bed": 72, "leveling_rois": [(4, 63)], "surface_rois": [(4, 63)]},
-    "fd": {"bed": 88, "leveling_rois": [(33, 126)], "surface_rois": [(33, 126)]},
+    "fd": {
+        "bed": 88,
+        "leveling_rois": [(33, 126)],
+        "surface_rois": [(33, 126)],
+        "defect_rois": [(36, 123)],
+    },
     "cs": {"bed": 88, "leveling_rois": [(1, 126)], "surface_rois": [(1, 126)]},
-    "ls": {"bed": 104, "leveling_rois": [(64, 126)], "surface_rois": [(64, 126)]},
+    "ls": {
+        "bed": 104,
+        "leveling_rois": [(64, 126)],
+        "surface_rois": [(64, 126)],
+        "defect_rois": [(68, 123)],
+    },
 }
 FLAT_FIXTURES = {"cp16", "ut96_48", "cs"}
 
@@ -203,12 +213,19 @@ def terrace_metrics(
                 current_start, current_bin = x, b
             elif b != current_bin or previous_wet_x != x - 1:
                 runs.append((current_start, int(previous_wet_x), int(current_bin)))
-                if previous_wet_x == x - 1:
-                    edge_positions.add(previous_wet_x)
                 current_start, current_bin = x, b
             previous_wet_x, previous_bin = x, b
         if current_start is not None and previous_wet_x is not None:
             runs.append((current_start, previous_wet_x, int(current_bin)))
+
+    by_start = sorted(runs)
+    for left, right in zip(by_start, by_start[1:]):
+        if left[1] + 1 != right[0] or left[2] == right[2]:
+            continue
+        left_extent = left[1] - left[0] + 1
+        right_extent = right[1] - right[0] + 1
+        if left_extent >= 3 or right_extent >= 3:
+            edge_positions.add(left[1])
 
     terraces = [run for run in runs if run[1] - run[0] + 1 >= 3]
     count = len(terraces)
@@ -217,7 +234,6 @@ def terrace_metrics(
 
     largest_step_bins = 0
     severe = False
-    by_start = sorted(runs)
     for idx, run in enumerate(by_start):
         start, end, b = run
         extent = end - start + 1
@@ -285,12 +301,13 @@ def metric_rows(fixture: str, rows: Sequence[dict]) -> list[dict]:
             raise ValueError("reduction requires trace rows with columns")
         global_leveling = max_abs_global_slope(columns, cfg["leveling_rois"], bed, False)
         local_leveling = max_abs_local_slope(columns, cfg["leveling_rois"], bed, wet_only=False)
-        global_surface = max_abs_global_slope(columns, cfg["surface_rois"], bed, True)
-        local_surface = max_abs_local_slope(columns, cfg["surface_rois"], bed, wet_only=True)
+        defect_rois = cfg.get("defect_rois", cfg["surface_rois"])
+        global_surface = max_abs_global_slope(columns, defect_rois, bed, True)
+        local_surface = max_abs_local_slope(columns, defect_rois, bed, wet_only=True)
         internal, leveling = cliff_counts(columns, cfg["leveling_rois"])
-        hill_amp, hill_width = hill_metrics(columns, cfg["surface_rois"], bed)
+        hill_amp, hill_width = hill_metrics(columns, defect_rois, bed)
         terrace_count, terrace_extent, terrace_largest, terrace_step, severe, edges = terrace_metrics(
-            columns, cfg["surface_rois"], bed
+            columns, defect_rois, bed
         )
         quantities = [columns[x] for x0, x1 in cfg["leveling_rois"] for x in range(x0, x1 + 1)]
         arm_difference = None
@@ -338,6 +355,52 @@ def metric_rows(fixture: str, rows: Sequence[dict]) -> list[dict]:
     return out
 
 
+def surface_phase_start(fixture: str, rows: Sequence[dict]) -> int | None:
+    cfg = FIXTURES[fixture]
+    defect_rois = cfg.get("defect_rois", cfg["surface_rois"])
+    if fixture == "cs":
+        flags = []
+        for row in rows:
+            columns = row["columns"]
+            quantities = [
+                columns[x]
+                for x0, x1 in cfg["leveling_rois"]
+                for x in range(x0, x1 + 1)
+            ]
+            flags.append(max(quantities, default=0) - min(quantities, default=0) <= 4 * MASS_MAX)
+        index = persistent_first(flags, bool, 60)
+        return None if index is None else rows[index]["tick"]
+    if fixture == "fd":
+        for row in rows:
+            if row["columns"][126] > 0:
+                return row["tick"]
+        return None
+    if fixture == "ls":
+        flags = []
+        for row in rows:
+            columns = row["columns"]
+            flags.append(all(
+                columns[x] > 0
+                for x0, x1 in defect_rois
+                for x in range(x0, x1 + 1)
+            ))
+        index = persistent_first(flags, bool, 60)
+        return None if index is None else rows[index]["tick"]
+    return rows[0]["tick"] if rows else None
+
+
+def surface_l1_cell_equivalents(
+    before: Sequence[int],
+    after: Sequence[int],
+    rois: Sequence[tuple[int, int]],
+) -> float:
+    return sum(
+        abs(after[x] - before[x])
+        for x0, x1 in rois
+        for x in range(x0, x1 + 1)
+    ) / MASS_MAX
+
+
 def summarize(path: Path) -> dict:
     metadata, rows, final = read_jsonl(path)
     fixture = metadata["fixture"]
@@ -379,6 +442,38 @@ def summarize(path: Path) -> dict:
     hill_flags = [row["hill_amplitude"] >= 0.5 for row in metrics]
     terrace_flags = [row["severe_terrace"] for row in metrics]
     wall_flags = [row["wall_gap"] > 0 for row in metrics]
+
+    surface_start = surface_phase_start(fixture, rows)
+    registered_metrics = (
+        [row for row in metrics if row["tick"] >= surface_start]
+        if surface_start is not None else []
+    )
+    registered_rows = (
+        [row for row in rows if row["tick"] >= surface_start]
+        if surface_start is not None else []
+    )
+    registered_hill_flags = [row["hill_amplitude"] >= 0.5 for row in registered_metrics]
+    registered_terrace_flags = [row["severe_terrace"] for row in registered_metrics]
+    registered_turnover = 0
+    registered_low_motion_turnover = 0
+    registered_low_motion_transitions = 0
+    registered_motion_l1 = 0.0
+    defect_rois = FIXTURES[fixture].get("defect_rois", FIXTURES[fixture]["surface_rois"])
+    for before_metric, after_metric, before_row, after_row in zip(
+        registered_metrics, registered_metrics[1:], registered_rows, registered_rows[1:]
+    ):
+        turnover = len(before_metric["terrace_edges"].symmetric_difference(after_metric["terrace_edges"]))
+        registered_turnover += turnover
+        motion = surface_l1_cell_equivalents(before_row["columns"], after_row["columns"], defect_rois)
+        registered_motion_l1 += motion
+        if motion <= 1.0:
+            registered_low_motion_transitions += 1
+            registered_low_motion_turnover += turnover
+    registered_seconds = (
+        max(1, registered_metrics[-1]["tick"] - registered_metrics[0]["tick"]) / 60.0
+        if registered_metrics else 0.0
+    )
+
     edge_turnover = 0
     for a, b in zip(metrics, metrics[1:]):
         edge_turnover += len(a["terrace_edges"].symmetric_difference(b["terrace_edges"]))
@@ -394,7 +489,7 @@ def summarize(path: Path) -> dict:
             }
 
     return {
-        "schema": "cybersand-water-leveling-reduction-v1",
+        "schema": "cybersand-water-leveling-reduction-v2",
         "source_trace": str(path),
         "fixture": fixture,
         "horizon": ticks[-1],
@@ -427,6 +522,45 @@ def summarize(path: Path) -> dict:
         "max_wall_gap_area_cells": max((row["wall_gap"] for row in metrics), default=0),
         "max_wall_gap_vertical_run_cells": max((row["wall_gap_max_run"] for row in metrics), default=0),
         "wall_gap_lifetime_ticks": longest_true_run(wall_flags),
+        "registered_surface_start_tick": surface_start,
+        "registered_surface_censored": surface_start is None,
+        "registered_surface_max_hill_amplitude_cells": max(
+            (row["hill_amplitude"] for row in registered_metrics), default=None
+        ),
+        "registered_surface_max_hill_width_cells": max(
+            (row["hill_width"] for row in registered_metrics), default=None
+        ),
+        "registered_surface_hill_lifetime_ticks": (
+            longest_true_run(registered_hill_flags) if registered_metrics else None
+        ),
+        "registered_surface_max_terrace_count": max(
+            (row["terrace_count"] for row in registered_metrics), default=None
+        ),
+        "registered_surface_max_terrace_step_cells": max(
+            (row["terrace_largest_step"] for row in registered_metrics), default=None
+        ),
+        "registered_surface_severe_terrace_lifetime_ticks": (
+            longest_true_run(registered_terrace_flags) if registered_metrics else None
+        ),
+        "registered_surface_terrace_edge_turnover": (
+            registered_turnover if registered_metrics else None
+        ),
+        "registered_surface_turnover_per_sim_second": (
+            registered_turnover / registered_seconds if registered_seconds > 0 else None
+        ),
+        "registered_surface_motion_l1_cell_equivalents": (
+            registered_motion_l1 if registered_metrics else None
+        ),
+        "registered_surface_turnover_per_motion_cell_equivalent": (
+            registered_turnover / max(1.0, registered_motion_l1)
+            if registered_metrics else None
+        ),
+        "registered_surface_low_motion_edge_turnover": (
+            registered_low_motion_turnover if registered_metrics else None
+        ),
+        "registered_surface_low_motion_transition_count": (
+            registered_low_motion_transitions if registered_metrics else None
+        ),
         "peak_range_cells": max((row["range"] for row in metrics), default=0),
         "peak_small_components": max((row["small_components"] for row in metrics), default=0),
         "peak_components": max((row["components"] for row in metrics), default=0),
