@@ -126,13 +126,17 @@ For each registered surface ROI, global slope is the ordinary least-squares line
 fit of `H_x` against x over all wet columns in that ROI. Report signed slope,
 absolute slope and angle `atan(abs(slope))`.
 
-Local slope uses every contiguous 9-column wet window and the same OLS fit.
+Local slope uses every contiguous 9-column window in a leveling ROI and the same
+OLS fit; surface-defect diagnostics additionally report wet-only local windows.
 Report maximum absolute local slope. This prevents a symmetric mound from
 disappearing behind a near-zero whole-pool slope.
 
-Slope half-life is the first tick at which absolute slope is at most half its
-tick-0 value and remains at or below that bound for 60 consecutive ticks.
-If not reached, report right-censored at the horizon.
+The primary slope half-life uses the maximum absolute 9-column leveling slope:
+it is the first tick at which that value is at most half its tick-0 value and
+remains at or below that bound for 60 consecutive ticks. Global OLS slope and,
+where its tick-0 magnitude is nonzero, global-slope half-life are retained as
+secondary diagnostics. If a half-life is not reached, report it right-censored
+at the horizon.
 
 ### Communicating level difference
 
