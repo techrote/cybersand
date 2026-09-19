@@ -1,6 +1,6 @@
 ---
 title: Issue 60 Stage 3B bounded spatial indexing audit
-status: In progress
+status: Review-ready implementation
 document-kind: audit
 scope: Canonical bounded discovery-tile lookup and generic rectangle compatibility for Stage 3B issue 60
 canonical-for: []
@@ -66,3 +66,55 @@ on canonical registration/facing lookup.
 Final exact-head repository validation and source-matched runtime/provenance
 publication are required if the landed implementation changes tracked runtime
 inputs.
+
+
+## Implementation checkpoint
+
+The implementation retains append-only stable owner/tile slots and replaces the
+normal-path key structures with construction-time array-backed AVL indexes:
+
+- coordinator canonical-key index: exactly `T` nodes;
+- region canonical-key index: exactly `T` nodes;
+- generic row-interval compatibility index: at most `32T` nodes, one interval
+  per occupied tile row;
+- no tree-node allocation, resizing or rehashing occurs after construction.
+
+The canonical comparator is lexicographic over incarnation, chunk, activity and
+subtile coordinates. AVL rotations only relink stable pool indices; in-order
+traversal is therefore canonical and independent of insertion/rotation history.
+
+World paths that have resolved an owner use an incarnation-qualified
+`WorldDiscoveryTileHandle`. This removes repeated key lookup without changing
+the still-global producer scans owned by #61-#63.
+
+Generic rectangles remain supported. Registration proves non-overlap by bounded
+row-interval predecessor/lower-bound queries. Point containment uses the same
+index. Facing geometry is derived with checked signed endpoint arithmetic and
+mapped into the existing 128 boundary slots without scanning unrelated resident
+tiles. Adjacency rebuild, facing publication retirement and deferred-face
+clearing consume that bounded face map. The remaining full dependency-bitmap
+walk in `build_related` is intentionally retained for #64, which owns reverse
+dependency incidence.
+
+Existing `RegionRefusal` numeric values remain stable; the new fail-closed
+`SpatialIndexCapacity` refusal is appended after the prior enum values.
+
+## Focused validation
+
+Temporary focused Actions run
+`35472375089` passed on the implementation source before workflow removal:
+
+- Stage-3B bounded spatial-index adversarial tests;
+- the #59 runtime-sizing contract;
+- existing settled-region regressions;
+- existing World settled-discovery regressions.
+
+The new adversarial suite covers forward/reverse AVL insertion and canonical
+traversal, height bounds, exact capacity refusal, direct-handle incarnation/slot
+failure, negative/custom/partial rectangles, overlap and containment, partial
+face runs, insertion-order-independent normalized region output, and
+`INT64_MIN`/`INT64_MAX` endpoint handling.
+
+The normal documentation gate correctly reports the native Linux and Windows
+runtime provenance stale after the changed tracked source inputs. A single
+source-matched publication is therefore required after final source review.

@@ -32,8 +32,9 @@ struct RegionTileInput {
 enum class RegionOutcome : std::uint8_t { Accepted, Unchanged, Stale, Invalid, Capacity, Refused };
 enum class RegionRefusal : std::uint8_t {
     None, InvalidInput, SignalIncomplete, Occupied, NoncanonicalEmpty,
-    TileCapacity, SpatialIndexCapacity, ComponentCapacity, AdjacencyCapacity, FrontierCapacity, RegionCapacity,
-    UnknownBoundary, RevisionChanged, SourceFailure, GenerationExhausted
+    TileCapacity, ComponentCapacity, AdjacencyCapacity, FrontierCapacity, RegionCapacity,
+    UnknownBoundary, RevisionChanged, SourceFailure, GenerationExhausted,
+    SpatialIndexCapacity
 };
 struct RegionComponentKey {
     std::uint8_t material{};

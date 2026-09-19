@@ -41,7 +41,7 @@ $(BUILD_DIR)/test_soliding_lifecycle: native/tests/test_soliding_lifecycle.cpp n
 $(BUILD_DIR)/test_settled_discovery: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_settled_discovery.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(CORE_SOURCES) native/tests/test_settled_discovery.cpp -o $@
 
-$(BUILD_DIR)/test_settled_regions: native/tests/test_settled_regions.cpp native/include/cybersand/settled_regions.hpp native/include/cybersand/settled_discovery.hpp | $(BUILD_DIR)
+$(BUILD_DIR)/test_settled_regions: native/tests/test_settled_regions.cpp native/include/cybersand/settled_regions.hpp native/include/cybersand/settled_discovery.hpp native/include/cybersand/bounded_ordered_index.hpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) native/tests/test_settled_regions.cpp -o $@
 
 $(BUILD_DIR)/test_settled_world_discovery: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_settled_world_discovery.cpp | $(BUILD_DIR)
@@ -91,7 +91,7 @@ $(BUILD_DIR)/test_soliding_lifecycle_sanitized: native/tests/test_soliding_lifec
 $(BUILD_DIR)/test_settled_discovery_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_settled_discovery.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_settled_discovery.cpp -o $@
 
-$(BUILD_DIR)/test_settled_regions_sanitized: native/tests/test_settled_regions.cpp native/include/cybersand/settled_regions.hpp native/include/cybersand/settled_discovery.hpp | $(BUILD_DIR)
+$(BUILD_DIR)/test_settled_regions_sanitized: native/tests/test_settled_regions.cpp native/include/cybersand/settled_regions.hpp native/include/cybersand/settled_discovery.hpp native/include/cybersand/bounded_ordered_index.hpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined native/tests/test_settled_regions.cpp -o $@
 
 $(BUILD_DIR)/test_settled_world_discovery_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_settled_world_discovery.cpp | $(BUILD_DIR)
