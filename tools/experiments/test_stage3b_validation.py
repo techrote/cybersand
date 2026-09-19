@@ -28,7 +28,11 @@ class Stage3BValidationTests(unittest.TestCase):
         one = by_id["one-cell.material.tile-face"]
         self.assertEqual(one["protocol"]["operations"][0]["at"], [31, 16])
         self.assertEqual(one["protocol"]["operations"][0]["authoritative_cells_changed"], 1)
-        self.assertEqual(by_id["historical.local-edit-8x8"]["protocol"]["operations"][0]["rect"], [28, 28, 8, 8])
+        historical = by_id["historical.local-edit-8x8"]["protocol"]["operations"][0]
+        self.assertEqual(historical["rect"], [28, 28, 8, 8])
+        self.assertEqual(historical["every_iterations"], 16)
+        self.assertEqual(v.BASE_TUPLE["temperature"], 200)
+        self.assertIn("x==32", by_id["historical.ring"]["protocol"]["setup"]["solid_predicate"])
 
     def test_final_plan_freezes_workers_budgets_repeats_and_explicit_unavailability(self):
         plan = self.final_plan()
