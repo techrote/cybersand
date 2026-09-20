@@ -333,6 +333,8 @@ public:
         return count;
     }
     void fail(RegionRefusal reason = RegionRefusal::SourceFailure) noexcept {
+        current_change_serial_ = 0;
+        current_change_ticket_ = {};
         retire_all_regions();
         cancel_build(false);
         halted_ = true;
@@ -654,6 +656,8 @@ private:
                region.batch_serial <= committed_batch_serial_);
     }
     void block_capacity(RegionRefusal reason) noexcept {
+        current_change_serial_ = 0;
+        current_change_ticket_ = {};
         retire_all_regions();
         cancel_build(false);
         coverage_capacity_exhausted_ = true;
@@ -1954,6 +1958,14 @@ private:
     }
     void prepare_tile_revision_change(std::size_t slot) noexcept {
         tiles_[slot].last_change_serial = current_change_serial_;
+        for (std::size_t component = 0;
+             component < tiles_[slot].component_count; ++component) {
+            const auto& current = tiles_[slot].components[component];
+            if (!component_reserved(current)) continue;
+            request_ticket_restart(TicketHandle{
+                current.reconstruction_ticket,
+                current.reconstruction_ticket_generation});
+        }
         cancel_related_build(slot);
         invalidate_tile_subscribers(slot);
         clear_deferred_for_tile_and_faces(slot);
