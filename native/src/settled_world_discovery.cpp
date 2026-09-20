@@ -14,6 +14,8 @@ namespace {
 std::atomic<bool> fail_next_coordinator_construction{false};
 std::atomic<std::uint64_t> next_deadline_generation_limit{
     std::numeric_limits<std::uint64_t>::max()};
+std::atomic<std::uint64_t> next_nonpayload_generation_limit{
+    std::numeric_limits<std::uint64_t>::max()};
 
 void add(std::uint64_t& value, std::uint64_t amount = 1) noexcept {
     const auto room = std::numeric_limits<std::uint64_t>::max() - value;
@@ -42,6 +44,9 @@ void fail_next_settled_world_discovery_construction() noexcept {
 }
 void set_next_deadline_generation_limit(std::uint64_t limit) noexcept {
     next_deadline_generation_limit.store(limit, std::memory_order_release);
+}
+void set_next_nonpayload_generation_limit(std::uint64_t limit) noexcept {
+    next_nonpayload_generation_limit.store(limit, std::memory_order_release);
 }
 } // namespace testing
 
@@ -74,8 +79,16 @@ struct SettledWorldDiscoveryCoordinator::Impl {
         std::uint64_t region_payload_revision{};
         std::int16_t ambient_temperature{};
         std::uint64_t payload_revision{};
+        std::uint64_t mask_occupancy_count{};
+        std::uint64_t pending_event_count{};
+        std::uint64_t mask_revision{1};
+        std::uint64_t event_revision{1};
+        std::uint64_t requested_inclusion_epoch{1};
+        std::uint64_t applied_inclusion_epoch{1};
         ProducerReason payload_reason{ProducerReason::DirectMutation};
         bool payload_pending{};
+        bool requested_included{true};
+        bool applied_included{true};
     };
 
     Impl(std::uint64_t identity, std::size_t configured_capacity, bool enable_regions)
@@ -86,6 +99,8 @@ struct SettledWorldDiscoveryCoordinator::Impl {
           parent_index(configured_capacity),
           deadline_heap(std::make_unique<std::size_t[]>(configured_capacity)),
           deadline_generation_limit(next_deadline_generation_limit.exchange(
+              std::numeric_limits<std::uint64_t>::max(), std::memory_order_acq_rel)),
+          nonpayload_generation_limit(next_nonpayload_generation_limit.exchange(
               std::numeric_limits<std::uint64_t>::max(), std::memory_order_acq_rel)) {
         if (identity == 0) throw std::invalid_argument("settled discovery incarnation must be nonzero");
         records.reserve(tile_capacity);
@@ -452,6 +467,154 @@ struct SettledWorldDiscoveryCoordinator::Impl {
         return outcome;
     }
 
+    [[nodiscard]] DiscoveryCoverageState coverage_state_for(
+        const Record& record) const noexcept {
+        if (capacity_blocked) return DiscoveryCoverageState::CapacityRefused;
+        if (journal.halted() != DiscoveryHalt::None) return DiscoveryCoverageState::Failed;
+        if (!record.signals.included) return DiscoveryCoverageState::Excluded;
+        if (!record.signals.witness_complete || !record.signals.healthy ||
+            record.signals.active || record.pending_event_count != 0 ||
+            record.mask_occupancy_count != 0)
+            return DiscoveryCoverageState::Blocked;
+        const auto summary = journal.snapshot(record.handle);
+        if (!summary.has_value() || summary->classification == DiscoveryClass::Invalid)
+            return DiscoveryCoverageState::RegisteredUnknown;
+        return DiscoveryCoverageState::Ready;
+    }
+
+    bool advance_nonpayload_generation(std::uint64_t& generation) noexcept {
+        if (generation >= nonpayload_generation_limit) {
+            add(metrics.nonpayload_generation_exhaustions);
+            fail_sparse_state();
+            return false;
+        }
+        ++generation;
+        return true;
+    }
+
+    DiscoveryOutcome reconcile_nonpayload_record(
+        std::size_t record_index, ProducerReason reason, std::uint64_t tick,
+        DiscoveryCoverageState previous_state) noexcept {
+        auto& record = records[record_index];
+        const auto outcome = dirty_record(record_index, reason, tick);
+        if (outcome != DiscoveryOutcome::Accepted) return outcome;
+        add(metrics.signal_observations);
+        const auto reconciled =
+            journal.reconcile_queued_signals(record.handle, record.signals, tick);
+        if (reconciled == DiscoveryOutcome::Invalid) {
+            fail_sparse_state();
+            return DiscoveryOutcome::Halted;
+        }
+        if (coverage_state_for(record) != previous_state)
+            add(metrics.coverage_state_transitions);
+        return reconciled == DiscoveryOutcome::Halted ? reconciled
+                                                      : DiscoveryOutcome::Accepted;
+    }
+
+    DiscoveryOutcome witness_mask_record(
+        std::size_t record_index, bool add_occupancy, bool reconfiguration,
+        std::uint64_t tick) noexcept {
+        if (journal.halted() != DiscoveryHalt::None) return DiscoveryOutcome::Halted;
+        auto& record = records[record_index];
+        const auto previous_state = coverage_state_for(record);
+        if (!advance_nonpayload_generation(record.mask_revision))
+            return DiscoveryOutcome::Halted;
+        if (reconfiguration) {
+            add(metrics.mask_reconfigurations);
+        } else if (add_occupancy) {
+            if (record.mask_occupancy_count == std::numeric_limits<std::uint64_t>::max()) {
+                fail_sparse_state();
+                return DiscoveryOutcome::Halted;
+            }
+            ++record.mask_occupancy_count;
+            record.signals.occupied = true;
+            if (record.mask_occupancy_count > metrics.mask_occupancy_high_water)
+                metrics.mask_occupancy_high_water = record.mask_occupancy_count;
+        } else {
+            if (record.mask_occupancy_count == 0) {
+                fail_sparse_state();
+                return DiscoveryOutcome::Halted;
+            }
+            --record.mask_occupancy_count;
+            record.signals.occupied = record.mask_occupancy_count != 0;
+        }
+        add(metrics.mask_witnesses);
+        return reconcile_nonpayload_record(
+            record_index, ProducerReason::TransientMask, tick, previous_state);
+    }
+
+    DiscoveryOutcome witness_event_record(
+        std::size_t record_index, bool add_event, std::uint64_t tick) noexcept {
+        if (journal.halted() != DiscoveryHalt::None) return DiscoveryOutcome::Halted;
+        auto& record = records[record_index];
+        const auto previous_state = coverage_state_for(record);
+        if (!advance_nonpayload_generation(record.event_revision))
+            return DiscoveryOutcome::Halted;
+        if (add_event) {
+            if (record.pending_event_count == std::numeric_limits<std::uint64_t>::max()) {
+                fail_sparse_state();
+                return DiscoveryOutcome::Halted;
+            }
+            ++record.pending_event_count;
+            record.signals.pending_event = true;
+            if (record.pending_event_count > metrics.event_pending_high_water)
+                metrics.event_pending_high_water = record.pending_event_count;
+        } else {
+            if (record.pending_event_count == 0) {
+                fail_sparse_state();
+                return DiscoveryOutcome::Halted;
+            }
+            --record.pending_event_count;
+            record.signals.pending_event = record.pending_event_count != 0;
+        }
+        add(metrics.event_witnesses);
+        return reconcile_nonpayload_record(
+            record_index, ProducerReason::PendingEvent, tick, previous_state);
+    }
+
+    DiscoveryOutcome begin_inclusion_request_epoch() noexcept {
+        if (journal.halted() != DiscoveryHalt::None) return DiscoveryOutcome::Halted;
+        if (requested_inclusion_epoch >= nonpayload_generation_limit) {
+            add(metrics.nonpayload_generation_exhaustions);
+            fail_sparse_state();
+            return DiscoveryOutcome::Halted;
+        }
+        ++requested_inclusion_epoch;
+        add(metrics.inclusion_requests);
+        return DiscoveryOutcome::Accepted;
+    }
+
+    DiscoveryOutcome apply_inclusion_request_epoch() noexcept {
+        if (journal.halted() != DiscoveryHalt::None) return DiscoveryOutcome::Halted;
+        if (applied_inclusion_epoch == requested_inclusion_epoch)
+            return DiscoveryOutcome::Unchanged;
+        applied_inclusion_epoch = requested_inclusion_epoch;
+        add(metrics.inclusion_applications);
+        return DiscoveryOutcome::Accepted;
+    }
+
+    DiscoveryOutcome witness_inclusion_record(
+        std::size_t record_index, bool requested_included_value,
+        bool applied_included_value, std::uint64_t tick) noexcept {
+        if (journal.halted() != DiscoveryHalt::None) return DiscoveryOutcome::Halted;
+        auto& record = records[record_index];
+        const bool changed =
+            record.requested_included != requested_included_value ||
+            record.applied_included != applied_included_value;
+        record.requested_inclusion_epoch = requested_inclusion_epoch;
+        record.applied_inclusion_epoch = applied_inclusion_epoch;
+        if (!changed) return DiscoveryOutcome::Unchanged;
+
+        const auto previous_state = coverage_state_for(record);
+        record.requested_included = requested_included_value;
+        record.applied_included = applied_included_value;
+        record.signals.included =
+            requested_included_value && applied_included_value;
+        add(metrics.inclusion_witnesses);
+        return reconcile_nonpayload_record(
+            record_index, ProducerReason::InclusionFence, tick, previous_state);
+    }
+
     void block_capacity() noexcept {
         if (!capacity_blocked) add(metrics.capacity_halts);
         capacity_blocked = true;
@@ -473,6 +636,9 @@ struct SettledWorldDiscoveryCoordinator::Impl {
     std::size_t deadline_heap_count{};
     std::size_t deadline_ready_count{};
     std::uint64_t deadline_generation_limit{};
+    std::uint64_t nonpayload_generation_limit{};
+    std::uint64_t requested_inclusion_epoch{1};
+    std::uint64_t applied_inclusion_epoch{1};
     std::unique_ptr<Regions> regions;
     std::array<DiscoveryCell, 1024> region_scratch{};
     mutable WorldDiscoveryMetrics metrics{};
@@ -494,17 +660,26 @@ SettledWorldDiscoveryCoordinator& SettledWorldDiscoveryCoordinator::operator=(
 
 DiscoveryOutcome SettledWorldDiscoveryCoordinator::register_tile(
     DiscoveryTileKey key, DiscoveryBounds bounds, std::int16_t ambient_temperature,
-    DiscoverySignals signals, std::uint64_t tick) noexcept {
+    DiscoverySignals signals, std::uint64_t tick,
+    std::uint64_t mask_occupancy_count,
+    std::uint64_t pending_event_count) noexcept {
     auto& state = *impl_;
     add(state.metrics.notifications[static_cast<std::size_t>(ProducerReason::Registration)]);
     add(state.metrics.registration_work);
+    add(state.metrics.coverage_notifications);
     if (state.capacity_blocked || state.journal.halted() != DiscoveryHalt::None)
         return DiscoveryOutcome::Halted;
     if (key.world_incarnation != state.incarnation) return DiscoveryOutcome::Invalid;
+
+    signals.occupied = mask_occupancy_count != 0;
+    signals.pending_event = pending_event_count != 0;
+
     if (const auto existing = state.find_record(key); existing.has_value()) {
         auto& record = state.records[*existing];
-        if (record.bounds != bounds) {
-            state.journal.fail();
+        if (record.bounds != bounds ||
+            record.mask_occupancy_count != mask_occupancy_count ||
+            record.pending_event_count != pending_event_count) {
+            state.fail_sparse_state();
             return DiscoveryOutcome::Invalid;
         }
         const auto outcome = state.journal.observe(record.handle, signals, tick);
@@ -521,11 +696,27 @@ DiscoveryOutcome SettledWorldDiscoveryCoordinator::register_tile(
         }
         return outcome;
     }
+
+    // Coverage becomes resident in the graph before any journal payload can be
+    // published. A capacity/refusal here therefore revokes absence or fails
+    // closed before newly resident cells can become consumer-visible.
+    if (state.regions != nullptr) {
+        const auto region_outcome = state.regions->register_unknown(key, bounds, 1);
+        if (region_outcome != RegionOutcome::Accepted) {
+            add(state.metrics.registration_refusals);
+            state.block_capacity();
+            return region_outcome == RegionOutcome::Capacity
+                ? DiscoveryOutcome::Capacity : DiscoveryOutcome::Halted;
+        }
+        add(state.metrics.coverage_unknown_revocations);
+    }
+
     if (state.records.size() == state.tile_capacity) {
         add(state.metrics.registration_refusals);
         state.block_capacity();
         return DiscoveryOutcome::Capacity;
     }
+
     DiscoveryHandle handle{};
     const auto outcome = state.journal.register_unique_block(bounds, signals, tick, handle);
     if (outcome != DiscoveryOutcome::Accepted) {
@@ -535,21 +726,29 @@ DiscoveryOutcome SettledWorldDiscoveryCoordinator::register_tile(
         }
         return outcome;
     }
-    const auto record = state.records.size();
-    state.records.push_back({key, bounds, signals, handle, 0, ambient_temperature});
-    if (!state.insert_index(key, record)) {
-        state.journal.fail();
-        if (state.regions != nullptr) state.regions->fail();
+
+    const auto record_index = state.records.size();
+    Impl::Record record{};
+    record.key = key;
+    record.bounds = bounds;
+    record.signals = signals;
+    record.handle = handle;
+    record.ambient_temperature = ambient_temperature;
+    record.mask_occupancy_count = mask_occupancy_count;
+    record.pending_event_count = pending_event_count;
+    record.requested_inclusion_epoch = state.requested_inclusion_epoch;
+    record.applied_inclusion_epoch = state.applied_inclusion_epoch;
+    record.requested_included = signals.included;
+    record.applied_included = signals.included;
+    state.records.push_back(record);
+    if (!state.insert_index(key, record_index)) {
+        state.fail_sparse_state();
         return DiscoveryOutcome::Invalid;
     }
-    if (state.regions != nullptr) {
-        const auto region_outcome = state.regions->register_unknown(key, bounds, 1);
-        if (region_outcome != RegionOutcome::Accepted) {
-            state.journal.fail();
-            state.regions->fail();
-            return DiscoveryOutcome::Invalid;
-        }
-    }
+    if (mask_occupancy_count > state.metrics.mask_occupancy_high_water)
+        state.metrics.mask_occupancy_high_water = mask_occupancy_count;
+    if (pending_event_count > state.metrics.event_pending_high_water)
+        state.metrics.event_pending_high_water = pending_event_count;
     add(state.metrics.mapped_tiles);
     return DiscoveryOutcome::Accepted;
 }
@@ -612,6 +811,59 @@ DiscoveryOutcome SettledWorldDiscoveryCoordinator::observe(
     return state.valid_owner(handle)
         ? state.observe_record(handle.slot, signals, reason, tick)
         : DiscoveryOutcome::Stale;
+}
+
+DiscoveryOutcome SettledWorldDiscoveryCoordinator::witness_mask(
+    WorldDiscoveryTileHandle handle, bool add_occupancy, std::uint64_t tick) noexcept {
+    auto& state = *impl_;
+    add(state.metrics.notifications[static_cast<std::size_t>(ProducerReason::TransientMask)]);
+    return state.valid_owner(handle)
+        ? state.witness_mask_record(handle.slot, add_occupancy, false, tick)
+        : DiscoveryOutcome::Stale;
+}
+DiscoveryOutcome SettledWorldDiscoveryCoordinator::witness_mask_reconfiguration(
+    WorldDiscoveryTileHandle handle, std::uint64_t tick) noexcept {
+    auto& state = *impl_;
+    add(state.metrics.notifications[static_cast<std::size_t>(ProducerReason::TransientMask)]);
+    return state.valid_owner(handle)
+        ? state.witness_mask_record(handle.slot, false, true, tick)
+        : DiscoveryOutcome::Stale;
+}
+DiscoveryOutcome SettledWorldDiscoveryCoordinator::witness_event(
+    WorldDiscoveryTileHandle handle, bool add_event, std::uint64_t tick) noexcept {
+    auto& state = *impl_;
+    add(state.metrics.notifications[static_cast<std::size_t>(ProducerReason::PendingEvent)]);
+    return state.valid_owner(handle)
+        ? state.witness_event_record(handle.slot, add_event, tick)
+        : DiscoveryOutcome::Stale;
+}
+DiscoveryOutcome SettledWorldDiscoveryCoordinator::begin_inclusion_request() noexcept {
+    return impl_->begin_inclusion_request_epoch();
+}
+DiscoveryOutcome SettledWorldDiscoveryCoordinator::apply_inclusion_request() noexcept {
+    return impl_->apply_inclusion_request_epoch();
+}
+DiscoveryOutcome SettledWorldDiscoveryCoordinator::witness_inclusion(
+    WorldDiscoveryTileHandle handle, bool requested_included,
+    bool applied_included, std::uint64_t tick) noexcept {
+    auto& state = *impl_;
+    add(state.metrics.notifications[static_cast<std::size_t>(ProducerReason::InclusionFence)]);
+    return state.valid_owner(handle)
+        ? state.witness_inclusion_record(
+              handle.slot, requested_included, applied_included, tick)
+        : DiscoveryOutcome::Stale;
+}
+std::uint64_t SettledWorldDiscoveryCoordinator::requested_inclusion_epoch() const noexcept {
+    return impl_->requested_inclusion_epoch;
+}
+std::uint64_t SettledWorldDiscoveryCoordinator::applied_inclusion_epoch() const noexcept {
+    return impl_->applied_inclusion_epoch;
+}
+DiscoveryCoverageState SettledWorldDiscoveryCoordinator::coverage_state(
+    WorldDiscoveryTileHandle handle) const noexcept {
+    const auto& state = *impl_;
+    if (!state.valid_owner(handle)) return DiscoveryCoverageState::ResidentUntracked;
+    return state.coverage_state_for(state.records[handle.slot]);
 }
 
 DiscoveryOutcome SettledWorldDiscoveryCoordinator::register_activity_parent(
@@ -770,7 +1022,18 @@ std::optional<WorldDiscoveryTileSnapshot> SettledWorldDiscoveryCoordinator::tile
     const auto& record = state.records[handle.slot];
     const auto summary = state.journal.snapshot(record.handle);
     if (!summary.has_value()) return std::nullopt;
-    return WorldDiscoveryTileSnapshot{record.key, record.signals, *summary};
+    return WorldDiscoveryTileSnapshot{
+        record.key,
+        record.signals,
+        *summary,
+        state.coverage_state_for(record),
+        record.mask_occupancy_count,
+        record.pending_event_count,
+        record.mask_revision,
+        record.event_revision,
+        record.requested_inclusion_epoch,
+        record.applied_inclusion_epoch,
+    };
 }
 
 std::optional<std::size_t> SettledWorldDiscoveryCoordinator::find(
@@ -837,6 +1100,9 @@ WorldDiscoveryStorageLayout SettledWorldDiscoveryCoordinator::storage_layout() c
     out.activity_parent_index_storage_bytes =
         state.parent_index.storage_bytes() - sizeof(Impl::ParentIndex);
     out.deadline_heap_storage_bytes = state.tile_capacity * sizeof(std::size_t);
+    out.sparse_witness_record_capacity = state.records.capacity();
+    out.sparse_witness_record_storage_bytes =
+        state.records.capacity() * sizeof(Impl::Record);
     out.regions_enabled = state.regions != nullptr;
     if (state.regions != nullptr) {
         out.region_tile_capacity = state.regions->tile_capacity();
