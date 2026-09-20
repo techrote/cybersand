@@ -807,16 +807,23 @@ void World::register_discovery_chunk(ChunkCoord coord, const Chunk& chunk) noexc
                         activity_y, activity_x, subtile_y / 32, subtile_x / 32,
                     };
                     auto signals = discovery_signals(coord, activity_index, bounds);
-                    for (std::uint32_t y = 0; y < bounds.height && !signals.occupied; ++y)
-                        for (std::uint32_t x = 0; x < bounds.width; ++x)
-                            if (transient_obstacle_at(
-                                    bounds.x + static_cast<std::int64_t>(x),
-                                    bounds.y + static_cast<std::int64_t>(y)) != 0U) {
-                                signals.occupied = true;
-                                break;
-                            }
+                    const auto requested_included =
+                        discovery_tile_fully_covered(bounds, selected_core_region_);
+                    const auto applied_included =
+                        discovery_tile_fully_covered(bounds, applied_core_region_);
+                    const auto mask_occupancy =
+                        discovery_mask_occupancy_count(bounds);
+                    const auto pending_events =
+                        discovery_pending_event_count(bounds);
+                    if (!pending_events.has_value()) {
+                        settled_discovery_->note_global_fence();
+                        settled_discovery_->fail();
+                        return;
+                    }
                     const auto outcome = settled_discovery_->register_tile(
-                        key, bounds, config_.ambient_temperature, signals, tick_index_);
+                        key, bounds, config_.ambient_temperature, signals, tick_index_,
+                        mask_occupancy, *pending_events,
+                        requested_included, applied_included);
                     if (outcome == soliding::DiscoveryOutcome::Capacity ||
                         outcome == soliding::DiscoveryOutcome::Halted) return;
                     if (!parent_registered) {
@@ -856,6 +863,7 @@ soliding::DiscoveryCell World::read_discovery_cell(
 soliding::DiscoverySignals World::read_discovery_signals(
     const void* context, soliding::DiscoveryTileKey key,
     soliding::DiscoveryBounds bounds, soliding::DiscoverySignals previous) {
+    (void)bounds;
     const auto& world = *static_cast<const World*>(context);
     const ChunkCoord coord{key.chunk_x, key.chunk_y};
     const auto* chunk = world.find_chunk(coord);
@@ -864,10 +872,16 @@ soliding::DiscoverySignals World::read_discovery_signals(
         static_cast<std::size_t>(key.activity_y) *
             static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
         static_cast<std::size_t>(key.activity_x);
-    auto signals = world.discovery_signals(coord, activity_index, bounds);
-    // #63 owns mask/event/inclusion producer indexing. Sparse payload service
-    // preserves the already-observed mask bit while refreshing this tile only.
-    signals.occupied = previous.occupied;
+    if (activity_index >= chunk->activity_blocks.size()) return {};
+
+    // #61 payload service may refresh the affected tile's health/activity only.
+    // #63 owns mask/event/inclusion state and those exact witnesses must never be
+    // recomputed here from resident World containers.
+    auto signals = previous;
+    signals.witness_complete = true;
+    signals.healthy = !world.tick_failed_;
+    const auto& block = chunk->activity_blocks[activity_index];
+    signals.active = block.active || block.next_interaction_tick != 0;
     return signals;
 }
 
