@@ -3079,11 +3079,15 @@ void World::begin_tick(TickStats& stats) {
 
     active_chunk_scratch_.clear();
     const auto previous_core_region = applied_core_region_;
-    const bool transition = config_.backend == SimulationBackend::PhasedInPlace &&
-                            selected_core_region_ != previous_core_region;
-    // Apply the requested coverage for observer reads during the existing
-    // re-entry pass. The saved previous coverage below preserves scheduler semantics.
+    const bool coverage_transition = selected_core_region_ != previous_core_region;
+    const bool transition =
+        config_.backend == SimulationBackend::PhasedInPlace && coverage_transition;
+    // Apply the requested coverage before observer reconciliation. Inclusion remains
+    // #63-owned: retain its explicit resident refresh only when coverage actually
+    // transitions, rather than letting #62 activity witnesses rediscover it.
     applied_core_region_ = selected_core_region_;
+    if (coverage_transition && settled_discovery_ != nullptr)
+        refresh_discovery_signals(soliding::ProducerReason::InclusionFence);
     // Reuse the existing metadata pass, with no cell scan or region-sized
     // allocation. Coalesced/equivalent windows do not repeatedly wake blocks.
     for (auto& [coord, chunk] : chunks_) {
