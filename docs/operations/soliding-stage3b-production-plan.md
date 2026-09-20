@@ -29,15 +29,12 @@ Recheck current ownership before the later central World producer handoffs.
 
 ## Live execution checkpoint — 2026-09-20
 
-Authoritative main at the #62 publication checkpoint is
-`bb6f12a7845f7249d68693a277c934e5fef5561d` after #64 / PR #98. #56-#61,
-#64 and #69 are complete. #62 is implemented in draft PR #97 after a normal
-two-parent reconciliation with that main. Source-matched Linux/Windows runtime
-publication passed in Actions run `35526661344` from exact source freeze
-`b8fe9698ca2f7ae5f2473b4a975db1aad6487c52`; final exact-head checks and
-merge remain the package completion boundary at this checkpoint. #63 follows #62.
-#65 remains the join and is blocked on #63; its #64 graph prerequisite is already
-landed.
+Authoritative main at the #63 dispatch checkpoint is
+`97b84035d4fd38602ae8e983b6d4d4ae6c60df6b`: #62 completed through PR #97,
+#64 completed through PR #98, and #57 remains the resolved event/halo authority.
+#63 is the active serialized central-World producer package in PR #101. #65 remains
+the join and stays blocked until #63 is merged and its source-matched runtime/
+provenance evidence is complete; its #64 graph prerequisite is already landed.
 
 The development-claims remediation programme does not pause this lane. REM-002
 #81 must inspect live #62/#63 ownership before touching overlapping body/World/test
@@ -71,10 +68,12 @@ small when `r < 2`; `R + max(2, r)` fails to add the dependency halo beyond
 the event's actual effect reach. The default `r = 2` previously hid the
 distinction because current Stage-3A marks only `R + 2`.
 
-The current source discrepancy is deliberate follow-on work, not a #57 source
-edit: `World::queue_explosion`, `World::observe_discovery_event` and
-`World::discovery_signals` currently use only `R + 2`. #63 owns changing
-the sparse event/coverage producer to the resolved formula after #62 and #57.
+The #63 implementation removes the former `R + 2` observer-only path.
+`World::queue_explosion` retains authoritative event acceptance unchanged, then
+constructs the checked observation footprint `P`; exact bounded tile witnesses carry
+pending counts until drain. If `P` or its bounded witness traversal cannot be
+represented, discovery is quarantined after acceptance while authoritative event
+semantics remain untouched.
 
 Implementation requirements for #63 are:
 
@@ -210,6 +209,18 @@ current Stage-3B work.
 | G8 evidence | #70 | Exact-head campaign ready for parent Stage-3B decision |
 
 None of these gates admits Stage 4.
+
+### Issue #63 non-payload producer checkpoint
+
+PR #101 implements the remaining G4 producer slice after #62. The package owns only
+mask/event/inclusion/coverage witness production: exact transient occupancy counts and
+generations; #57 pending-event geometry and overlap counts; requested/applied
+inclusion epochs; explicit coverage states; new-residency unknown notification before
+payload registration; and conservative fail-closed fencing when local witness
+integrity cannot be represented. #61 payload mutation delivery, #62 parent-local
+activity/deadline state and #64 graph/reverse-retirement ownership remain separate.
+Quiet unchanged worlds perform no #63 resident-wide signal polling. Source changes
+require one final source-matched Linux/Windows GDExtension publication before merge.
 
 ### Issue #59/#60/#61/#62 producer checkpoint
 
