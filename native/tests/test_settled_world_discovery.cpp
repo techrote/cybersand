@@ -149,7 +149,9 @@ CYBERSAND_TEST_NOINLINE void canonical_geometry_registration_and_capacity() {
     require(constrained.settled_discovery_tile(0) == std::nullopt,
             "capacity-unrepresentable coverage exposes no stale usable snapshot");
     require(constrained.settled_region_count() == 0 &&
-            constrained.settled_region_refusal() == RegionRefusal::TileCapacity,
+            constrained.settled_region_refusal() == RegionRefusal::TileCapacity &&
+            constrained.settled_discovery_coverage_state(0, 0) ==
+                DiscoveryCoverageState::CapacityRefused,
             "producer capacity refusal quarantines connectivity without partial publication");
 }
 
@@ -240,6 +242,12 @@ CYBERSAND_TEST_NOINLINE void sparse_mask_coverage_and_inclusion_epochs() {
     require(cleared.mask_occupancy_count == 0 && !cleared.signals.occupied &&
             cleared.mask_revision >= occupied_revision + 2,
             "two clears cannot collapse into a boolean ABA");
+    const auto cleared_generation = cleared.mask_revision;
+    world.configure_transient_obstacles({0, 0, 4, 4});
+    world.configure_transient_obstacles({2, 0, 4, 4});
+    world.configure_transient_obstacles({0, 0, 4, 4});
+    require(tile_at(world, 1, 1).mask_revision > cleared_generation,
+            "mask configuration change-and-restore cannot reuse an earlier generation");
 
     service(world);
     const auto before_exclusion = tile_at(world, 0, 0);
@@ -267,6 +275,28 @@ CYBERSAND_TEST_NOINLINE void sparse_mask_coverage_and_inclusion_epochs() {
                 reentry_applied.requested_inclusion_epoch &&
             reentry_applied.signals.included,
             "applied re-entry receives a fresh generation before reuse");
+
+    World aba(tracked_config());
+    aba.reserve_region({0, 0, 8, 8});
+    service(aba);
+    const auto aba_base = tile_at(aba, 0, 0);
+    aba.set_simulation_region(RectI64{128, 128, 8, 8});
+    const auto aba_away = tile_at(aba, 0, 0);
+    aba.set_simulation_region(std::nullopt);
+    const auto aba_restored_request = tile_at(aba, 0, 0);
+    require(aba_restored_request.requested_inclusion_epoch >
+                aba_away.requested_inclusion_epoch &&
+            aba_restored_request.applied_inclusion_epoch ==
+                aba_base.applied_inclusion_epoch &&
+            aba_restored_request.signals.included,
+            "request ABA restores effective inclusion without aliasing requested epoch");
+    (void)aba.tick();
+    const auto aba_acknowledged = tile_at(aba, 0, 0);
+    require(aba_acknowledged.applied_inclusion_epoch ==
+                aba_acknowledged.requested_inclusion_epoch &&
+            aba_acknowledged.requested_inclusion_epoch >
+                aba_base.requested_inclusion_epoch,
+            "tick acknowledges the newest inclusion epoch even when geometry ABA-restores");
 }
 
 CYBERSAND_TEST_NOINLINE void event_halo_overlap_and_signed_geometry() {
@@ -317,6 +347,14 @@ CYBERSAND_TEST_NOINLINE void event_halo_overlap_and_signed_geometry() {
     require(tile_at(late, 5, 0).pending_event_count == 1,
             "new residency inherits an outstanding event before payload readiness");
 
+    World corner(tracked_config());
+    corner.reserve_region({0, 0, 16, 16});
+    service(corner);
+    require(corner.queue_explosion(3, 3, 1, 0), "corner-crossing event accepted");
+    require(tile_at(corner, 8, 3).signals.pending_event &&
+            tile_at(corner, 8, 8).signals.pending_event,
+            "#57 halo covers both discovery-tile face and corner crossings");
+
     World rejected(config);
     const auto event_before = rejected.settled_discovery_producer_metrics().event_witnesses;
     require(!rejected.queue_explosion(0, 0, 0, 0),
@@ -362,6 +400,13 @@ CYBERSAND_TEST_NOINLINE void overlapping_event_counts_and_generation_fence() {
     require(state.has_value() && state->pending_event_count == 0 &&
             !state->signals.pending_event,
             "last drain clears pending state without underflow");
+    const auto layout = coordinator.storage_layout();
+    const auto producer_metrics = coordinator.producer_metrics();
+    require(layout.sparse_witness_record_capacity == 4 &&
+            layout.sparse_witness_record_storage_bytes ==
+                layout.owner_record_storage_bytes &&
+            producer_metrics.event_pending_high_water == 2,
+            "non-payload witness storage is construction-bounded with exact high-water accounting");
 
     testing::set_next_nonpayload_generation_limit(2);
     SettledWorldDiscoveryCoordinator exhausted(7002, 1, false);
@@ -568,6 +613,8 @@ CYBERSAND_TEST_NOINLINE void inclusion_reset_move_and_failure_quarantine() {
     try { (void)failed.tick(); } catch (const std::runtime_error&) { threw = true; }
     require(threw && failed.has_failed() &&
             failed.settled_discovery_halted() == DiscoveryHalt::ProducerFailure &&
+            failed.settled_discovery_coverage_state(0, 0) ==
+                DiscoveryCoverageState::Failed &&
             !failed.settled_discovery_tile(0).has_value() &&
             failed.advance_settled_discovery(100) == 0 &&
             failed.settled_region_count() == 0 &&
