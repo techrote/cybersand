@@ -1,0 +1,81 @@
+version: 2.1
+
+jobs:
+  windows-gdextension:
+    docker:
+      - image: cimg/python:3.12
+    resource_class: medium
+    environment:
+      GODOT_CPP_COMMIT: "101ae38034304346a46ea9ea84ae156d3e860496"
+      LLVM_MINGW_URL: "https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz"
+      LLVM_MINGW_SHA256: "cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65"
+      SCONS_JOBS: "2"
+    steps:
+      - checkout
+
+      - run:
+          name: Verify required host tools
+          command: |
+            set -euo pipefail
+            python3 --version
+            git --version
+            curl --version
+            tar --version
+            xz --version
+            file --version
+
+      - run:
+          name: Install pinned SCons
+          command: |
+            set -euo pipefail
+            python3 -m venv /tmp/cybersand-scons
+            /tmp/cybersand-scons/bin/python -m pip install --require-hashes -r tools/requirements-build.txt
+            /tmp/cybersand-scons/bin/python -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+
+      - run:
+          name: Check out exact godot-cpp source
+          command: |
+            set -euo pipefail
+            rm -rf /tmp/godot-cpp
+            mkdir /tmp/godot-cpp
+            git -C /tmp/godot-cpp init
+            git -C /tmp/godot-cpp remote add origin https://github.com/godotengine/godot-cpp.git
+            timeout 10m git -C /tmp/godot-cpp fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+            git -C /tmp/godot-cpp checkout --detach FETCH_HEAD
+            test "$(git -C /tmp/godot-cpp rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+
+      - run:
+          name: Prepare exact LLVM-MinGW
+          command: |
+            set -euo pipefail
+            rm -rf /tmp/llvm-mingw /tmp/llvm-mingw.tar.xz
+            timeout 10m curl --fail --location --retry 3 --output /tmp/llvm-mingw.tar.xz "$LLVM_MINGW_URL"
+            echo "$LLVM_MINGW_SHA256  /tmp/llvm-mingw.tar.xz" | sha256sum --check --strict
+            mkdir /tmp/llvm-mingw
+            tar -xJf /tmp/llvm-mingw.tar.xz -C /tmp/llvm-mingw --strip-components=1
+            test -x /tmp/llvm-mingw/bin/x86_64-w64-mingw32-g++
+            if test ! -e /tmp/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar; then
+              ln -s llvm-ar /tmp/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar
+            fi
+
+      - run:
+          name: Build Windows godot-cpp and CyberSand extension
+          no_output_timeout: 20m
+          command: |
+            set -euo pipefail
+            export GODOT_CPP_ROOT=/tmp/godot-cpp
+            export SCONS_PYTHON=/tmp/cybersand-scons/bin/python
+            export LLVM_MINGW_ROOT=/tmp/llvm-mingw
+            export WINDOWS_CXX=/tmp/llvm-mingw/bin/x86_64-w64-mingw32-g++
+            export CYBERSAND_NATIVE_OUTPUT=/tmp/cybersand_native.windows.x86_64.dll
+            timeout 35m tools/build_pinned_godot_cpp.sh windows
+            timeout 20m tools/build_native_extension_windows.sh
+            file "$CYBERSAND_NATIVE_OUTPUT" | tee /tmp/windows-file.txt
+            grep -q 'PE32+ executable (DLL).*x86-64' /tmp/windows-file.txt
+            "$LLVM_MINGW_ROOT/bin/llvm-objdump" -p "$CYBERSAND_NATIVE_OUTPUT" > /tmp/windows-imports.txt
+            sha256sum "$CYBERSAND_NATIVE_OUTPUT"
+
+workflows:
+  gdextension-circle:
+    jobs:
+      - windows-gdextension
