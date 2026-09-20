@@ -22,8 +22,8 @@ tests and documentation, so no #62 producer semantics were absorbed.
 Native source freeze for this package:
 
 - branch: `codex/issue-64-stage3b-local-graph`;
-- source head: `3b195db519287e12a610ea112b4445b0398a509d`;
-- source tree: `f40ea2bcfb3bc78cfb726f724a304abd5077047a`;
+- source head: `f5bc9a887b01693bcef7116a164063d44d42a255`;
+- source tree: `f9eb4137f9e193457ef45e6078ec0e22d229a9f4`;
 - PR: #98.
 
 ## Implemented graph contract
@@ -92,8 +92,10 @@ Existing and added `native/tests/test_settled_regions.cpp` coverage proves:
   publication and permits exact merged rediscovery;
 - absent-to-resident transitions leave an unrelated far publication current;
 - stale edge-slot generation cannot reconnect an old component after pool reuse;
-- subscriber/publication slot reuse remains safe while old dependency cleanup is
-  deliberately deferred;
+- publication-slot reuse remains safe while old dependency cleanup is deliberately
+  deferred; a separate regression then fully reclaims old reverse links, proves a
+  subscriber-pool slot is actually reused under a new generation, and proves both
+  former dependency targets cannot invalidate that reused subscriber;
 - component, edge, frontier, region and explicit dependency capacity refusal;
 - retired public handles become invalid immediately and generation exhaustion
   never makes an old handle current again;
@@ -104,7 +106,7 @@ unknown-boundary, noncanonical-Empty and integrated World regression coverage.
 
 ## Validation evidence
 
-For native source head `3b195db519287e12a610ea112b4445b0398a509d`:
+For the earlier native source head `3b195db519287e12a610ea112b4445b0398a509d`, before the stricter subscriber-slot-reuse assertion:
 
 - Native C++ validation run
   `35517674664`: **passed** — GCC-13 compile; native behavioral/integration
@@ -123,9 +125,9 @@ For native source head `3b195db519287e12a610ea112b4445b0398a509d`:
   Windows runtime provenance. Documentation structure itself passed. The
   source-matched runtime publication below repairs that expected gate rather than
   suppressing it.
-- One-shot source-matched runtime publication: `ISSUE64_PUBLICATION_RUN`.
-- Final exact-head PR validation after provenance publication:
-  `ISSUE64_FINAL_VALIDATION`.
+- Corrected source head `f5bc9a887b01693bcef7116a164063d44d42a255` adds no production semantic change beyond a `subscriber_reuses` observability counter; its new regression requires actual subscriber-pool reuse and stale-target immunity. Normal PR validation is running as Native `35521544125`, GDExtension/Godot `35521544247`, and Documentation/provenance `35521544103` (the latter is expected to remain red until source-matched runtimes are republished; documentation structure itself passed).
+- One-shot source-matched runtime publication after the corrected source gates pass: `ISSUE64_PUBLICATION_RUN`.
+- Final exact-head PR validation after provenance publication: `ISSUE64_FINAL_VALIDATION`.
 
 ## Deferred work and scope boundary
 
