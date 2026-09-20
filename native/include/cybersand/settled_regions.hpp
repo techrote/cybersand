@@ -67,7 +67,7 @@ struct SettledRegionMetrics {
     std::uint64_t facing_invalidation_fanout{}, boundary_cell_checks{}, tile_lookup_probes{};
     std::uint64_t incident_edge_visits{}, edge_retirements{};
     std::uint64_t dependency_records{}, dependency_high_water{}, dependency_refusals{};
-    std::uint64_t subscriber_invalidations{}, absence_subscriptions{};
+    std::uint64_t subscriber_invalidations{}, subscriber_reuses{}, absence_subscriptions{};
     std::uint64_t cleanup_registrations{}, cleanup_units{};
     std::uint64_t publications{}, work_units{}, area_total{}, area_max{};
     std::uint64_t latency_total_units{}, latency_max_units{};
@@ -1095,6 +1095,8 @@ private:
             if (subscriber.generation == std::numeric_limits<std::uint64_t>::max())
                 continue;
             ++subscriber.generation;
+            if (subscriber.generation > 1)
+                saturating_add(metrics_.subscriber_reuses);
             subscriber.kind = kind;
             subscriber.owner_slot = owner_slot;
             subscriber.owner_generation = owner_generation;
