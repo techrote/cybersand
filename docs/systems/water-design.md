@@ -130,9 +130,11 @@ proceed, narrow, recharter, defer or no-go.
 A communicating-head equal-level fixture must state its gas boundary assumption.
 Shared/vented headspaces can legitimately use the same atmospheric boundary;
 separately sealed headspaces generally cannot be assumed to converge to equal
-levels. Optional [#93](https://github.com/techrote/cybersand/issues/93) lumped
-gas-region research explores that boundary condition independently; it does not
-by itself transmit head through saturated Water.
+levels. [WEX-003 research](../research/lumped-gas-region-pressure-bookkeeping.md)
+finds a bounded lumped connected-gas model technically promising for optional
+research and admits only a non-production #94 decompression proof. It remains a
+surface/boundary-pressure model: it does not transmit head through saturated Water
+or change Current Water semantics.
 
 ## Coherent emission and surface adhesion
 
