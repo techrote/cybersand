@@ -21,7 +21,7 @@ env:
 jobs:
   build-publish:
     if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/issue-63-stage3b-sparse-coverage-witnesses'
-    runs-on: sengi-standard-4-ubuntu-2404
+    runs-on: sengi-standard-2-ubuntu-2404
     timeout-minutes: 60
     env:
       CC: gcc-13
