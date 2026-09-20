@@ -1670,9 +1670,14 @@ void World::set_simulation_region(std::optional<RectI64> region) {
             region->x + (region->width - 1), region->y + (region->height - 1));
         selected = CoreRange{first.x, first.y, last.x, last.y};
     }
+    const auto previous_selected = selected_core_region_;
     simulation_region_ = region;
     selected_core_region_ = selected;
-    fence_discovery(soliding::ProducerReason::InclusionFence);
+    if (settled_discovery_ != nullptr && selected_core_region_ != previous_selected) {
+        const auto outcome = settled_discovery_->begin_inclusion_request();
+        if (outcome == soliding::DiscoveryOutcome::Accepted)
+            reconcile_discovery_inclusion();
+    }
 }
 
 void World::set_liquid_surface_adhesion_enabled(bool enabled) noexcept {
@@ -1697,8 +1702,8 @@ void World::configure_transient_obstacles(RectI64 region) {
     if (width > std::numeric_limits<std::size_t>::max() / height) {
         throw std::overflow_error("transient obstacle field exceeds addressable size");
     }
-    dirty_discovery_world_rect(transient_obstacles_->region,
-        soliding::ProducerReason::TransientMask);
+    (void)witness_discovery_rect(
+        transient_obstacles_->region, soliding::ProducerReason::TransientMask, 0);
     clear_transient_obstacles();
     transient_obstacles_->region = region;
     const auto required = static_cast<std::size_t>(width * height);
@@ -1707,7 +1712,8 @@ void World::configure_transient_obstacles(RectI64 region) {
     }
     transient_obstacles_->occupied_indices.reserve(
         std::min<std::size_t>(required, 16U * 256U));
-    dirty_discovery_world_rect(region, soliding::ProducerReason::TransientMask);
+    (void)witness_discovery_rect(
+        region, soliding::ProducerReason::TransientMask, 0);
 }
 
 void World::clear_transient_obstacles() {
@@ -1721,7 +1727,8 @@ void World::clear_transient_obstacles() {
             const auto local_x = static_cast<std::int64_t>(index % static_cast<std::size_t>(width));
             const auto local_y = static_cast<std::int64_t>(index / static_cast<std::size_t>(width));
             wake_cell_neighborhood(state.region.x + local_x, state.region.y + local_y);
-            observe_discovery_mask_cell(state.region.x + local_x, state.region.y + local_y);
+            witness_discovery_mask_cell(
+                state.region.x + local_x, state.region.y + local_y, false);
         }
     }
     state.occupied_indices.clear();
@@ -1763,7 +1770,7 @@ bool World::set_transient_obstacle(std::int64_t x, std::int64_t y,
     slot = body_id;
     state.occupied_indices.push_back(index);
     wake_cell_neighborhood(x, y);
-    observe_discovery_mask_cell(x, y);
+    witness_discovery_mask_cell(x, y, true);
     return true;
 }
 
@@ -1915,7 +1922,19 @@ bool World::queue_explosion(std::int64_t x, std::int64_t y, std::int32_t radius,
         return false;
     }
     pending_explosions_.push_back({x, y, radius, collapse_strength});
-    observe_discovery_event({x - margin, y - margin, margin * 2 + 1, margin * 2 + 1});
+    if (settled_discovery_ != nullptr &&
+        settled_discovery_->halted() == soliding::DiscoveryHalt::None) {
+        const auto observation = discovery_event_observation_rect(x, y, radius);
+        if (!observation.has_value()) {
+            // The authoritative R+2 event was already accepted. #57 requires
+            // observation to fail closed rather than narrowing or rejecting it.
+            settled_discovery_->note_global_fence();
+            settled_discovery_->fail();
+        } else {
+            (void)witness_discovery_rect(
+                *observation, soliding::ProducerReason::PendingEvent, 1);
+        }
+    }
     return true;
 }
 
@@ -1957,15 +1976,20 @@ void World::apply_pending_explosions(TickStats& stats) {
     if (settled_discovery_ == nullptr) {
         pending_explosions_.clear();
     } else {
-        // Preserve the existing PendingEvent producer contract without reviving
-        // the removed activity/deadline resident scan. #63 owns replacing this
-        // represented-tile region walk with event indexing.
         while (!pending_explosions_.empty()) {
             const auto event = pending_explosions_.back();
             pending_explosions_.pop_back();
-            const auto margin = static_cast<std::int64_t>(event.radius) + 2;
-            observe_discovery_event(
-                {event.x - margin, event.y - margin, margin * 2 + 1, margin * 2 + 1});
+            if (settled_discovery_->halted() != soliding::DiscoveryHalt::None)
+                continue;
+            const auto observation =
+                discovery_event_observation_rect(event.x, event.y, event.radius);
+            if (!observation.has_value()) {
+                settled_discovery_->note_global_fence();
+                settled_discovery_->fail();
+                continue;
+            }
+            (void)witness_discovery_rect(
+                *observation, soliding::ProducerReason::PendingEvent, -1);
         }
     }
 }
@@ -3174,12 +3198,15 @@ void World::begin_tick(TickStats& stats) {
     const bool coverage_transition = selected_core_region_ != previous_core_region;
     const bool transition =
         config_.backend == SimulationBackend::PhasedInPlace && coverage_transition;
-    // Apply the requested coverage before observer reconciliation. Inclusion remains
-    // #63-owned: retain its explicit resident refresh only when coverage actually
-    // transitions, rather than letting #62 activity witnesses rediscover it.
+    // Requested and applied inclusion are independently generation-witnessed.
+    // Applying a request never asks #62's activity/deadline path to recompute
+    // unrelated signal state.
     applied_core_region_ = selected_core_region_;
-    if (coverage_transition && settled_discovery_ != nullptr)
-        refresh_discovery_signals(soliding::ProducerReason::InclusionFence);
+    if (coverage_transition && settled_discovery_ != nullptr) {
+        const auto outcome = settled_discovery_->apply_inclusion_request();
+        if (outcome == soliding::DiscoveryOutcome::Accepted)
+            reconcile_discovery_inclusion();
+    }
     // Reuse the existing metadata pass, with no cell scan or region-sized
     // allocation. Coalesced/equivalent windows do not repeatedly wake blocks.
     for (auto& [coord, chunk] : chunks_) {
