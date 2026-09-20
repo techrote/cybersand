@@ -7,6 +7,7 @@ on:
       - '.circleci/**'
       - '.github/workflows/**'
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft]
     paths-ignore:
       - '.circleci/**'
       - '.github/workflows/**'
@@ -21,6 +22,7 @@ concurrency:
 
 jobs:
   native:
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     runs-on: ${{ vars.NATIVE_RUNNER || 'sengi-standard-4-ubuntu-2404' }}
     timeout-minutes: 35
     env:

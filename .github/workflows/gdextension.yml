@@ -7,6 +7,7 @@ on:
       - '.circleci/**'
       - '.github/workflows/**'
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft]
     paths-ignore:
       - '.circleci/**'
       - '.github/workflows/**'
@@ -31,6 +32,7 @@ env:
 jobs:
   linux-build:
     name: linux build x86_64
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     runs-on: ${{ vars.GDEXT_LINUX_RUNNER || 'sengi-standard-4-ubuntu-2404' }}
     timeout-minutes: 30
     steps:
@@ -166,6 +168,7 @@ jobs:
   linux-regression:
     name: linux regression shard ${{ matrix.shard }}
     needs: linux-build
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     # Most Godot shards are runtime/I/O dominated and stay on 1 vCPU. Shard 2 contains
     # test_web_worker_parity, which must have >=2 logical CPUs so its parallel arm
     # actually executes parallel phases instead of collapsing to workers=1.
@@ -223,7 +226,7 @@ jobs:
 
   linux-serial-equivalence:
     name: linux serial equivalence
-    if: github.event_name == 'pull_request' && vars.GDEXT_SERIAL_EQUIVALENCE == '1'
+    if: github.event_name == 'pull_request' && github.event.pull_request.draft == false && vars.GDEXT_SERIAL_EQUIVALENCE == '1'
     needs: linux-build
     runs-on: ${{ vars.GDEXT_SERIAL_RUNNER || 'sengi-standard-4-ubuntu-2404' }}
     timeout-minutes: 35
@@ -275,7 +278,7 @@ jobs:
 
   linux-regression-gate:
     name: linux x86_64
-    if: always()
+    if: always() && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
     needs: [linux-regression, linux-serial-equivalence]
     runs-on: ${{ vars.GDEXT_GATE_RUNNER || 'avrea-ubuntu-24.04-1-vcpu' }}
     timeout-minutes: 10

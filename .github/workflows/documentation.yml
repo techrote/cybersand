@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft]
   workflow_dispatch:
 
 permissions:
@@ -32,7 +33,10 @@ jobs:
           path: workspace/source
           lfs: true
           fetch-depth: 0
-      - name: Validate current documentation, pins and runtime provenance
+      - name: Validate current documentation
+        run: timeout 5m python3 tools/ci/check_docs.py
+      - name: Validate dependency pins and published runtime provenance
+        if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
         run: timeout 5m python3 tools/ci/check_repository.py --require-materialized
       - name: Verify retained M11 records against their audited Git revision
         run: timeout 5m python3 tools/ci/check_m11_consistency.py
@@ -41,6 +45,7 @@ jobs:
       - name: Test soliding evidence integrity contracts
         run: timeout 2m python3 -m unittest discover -s tools/experiments -p test_soliding_baseline_reduction.py
       - name: Evaluate current retrieval routes
+        id: retrieval
         run: |
           mkdir -p build/retrieval
           timeout 2m python3 tools/docs/retrieval_eval.py --output build/retrieval/frozen.json
@@ -50,7 +55,7 @@ jobs:
           timeout 5m git lfs fsck
           git diff --check HEAD
       - name: Retain retrieval evidence
-        if: always()
+        if: always() && steps.retrieval.outcome == 'success'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: retrieval-${{ github.run_id }}

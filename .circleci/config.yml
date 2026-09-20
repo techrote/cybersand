@@ -77,5 +77,6 @@ jobs:
 
 workflows:
   gdextension-circle:
+    when: pipeline.event.name == "api" or (pipeline.event.name == "push" and pipeline.git.branch == "main") or (pipeline.event.name == "pull_request" and pipeline.event.github.pull_request.draft == false)
     jobs:
       - windows-gdextension
