@@ -29,11 +29,14 @@ Recheck current ownership before the later central World producer handoffs.
 
 ## Live execution checkpoint — 2026-09-20
 
-Authoritative main is now
-`db00e84e1b26b99f2816b6c1258d5dea97fc1fa1` after #61 / PR #89.
-#56-#61 and #69 are complete. #62 is the next serialized central-World producer
-package; #63 follows it. #64 remains the separable graph/index lane and may proceed
-in parallel only while its actual write set remains disjoint. #65 is still the join.
+Authoritative main at the #64 implementation checkpoint is
+`86c1bcfd0f4d632816a9ecd89efe7668b343c5d0`. #56-#61 and #69 are complete.
+#62 remains the serialized central-World producer package in draft PR #97; #63 follows
+it. #64 is implemented separately in PR #98 from source
+`f5bc9a887b01693bcef7116a164063d44d42a255`, confined to settled-region graph
+internals and focused tests. Its source validation and source-matched runtime
+publication/final-head gates remain part of that PR's completion boundary. #65 is
+still the join and remains blocked until both #63 and #64 are genuinely complete.
 
 The development-claims remediation programme does not pause this lane. REM-002
 #81 must inspect live #62/#63 ownership before touching overlapping body/World/test
@@ -222,6 +225,25 @@ payload-witness slice of G4 is landed. #62 is the current dependency-ready
 central-World package; it must start from live authoritative `main`, not a stale
 #61 branch.
 
+### Issue #64 graph-incidence checkpoint
+
+PR #98 implements the separable graph lane without editing the active #62
+World/coordinator write set. The package adds revision-bound face runs,
+generation-qualified component incident-edge lists, typed build/publication
+dependencies, dependency-target subscriber lists, bounded absence users, immediate
+public-generation retirement and generation-safe deferred cleanup.
+
+The acceptance regressions include actual subscriber-pool slot reuse under a new
+generation, not merely publication-slot reuse. Normal invalidation and edge work
+therefore follow actual component incidence/subscriber fanout; #65 still owns the
+generic split/reconstruction/reclamation scheduler and #66/#67 retain fast-path and
+digest work.
+
+**Self-resolving merge rule:** on any authoritative `main` that contains PR #98,
+G4 graph incidence is closed by that merge. Before PR #98 is on `main`, this
+section records a candidate/evidence checkpoint only and does not make #65
+dependency-ready by itself.
+
 ## Required ordering principles
 
 - correctness/failure hardening before optimization;
@@ -315,7 +337,8 @@ identified reference series when it cannot share the matched authority.
 4. The serialized World-producer lane remains #61 -> #62 -> #63. #61 closes the
    payload-witness slice; #62 becomes dependency-ready with #61 on `main`.
    #63 remains blocked on both #62 and #57. #64 remains the separate graph lane
-   and is not absorbed into the World-producer work.
+   in PR #98 and is not absorbed into the World-producer work; on main containing
+   that PR, its half of the #65 join is satisfied.
 5. Join at #65.
 6. Only then #66 -> #67 -> #68.
 7. Freeze one coherent candidate and execute #70.
