@@ -94,15 +94,22 @@ Implementation requirements for #63 are:
   head. Any future kind needs its own source-proven effect footprint or a
   conservative fence.
 
-The #63 regression matrix must cover default `r = 2`; valid smaller
-`r = 1`; a valid larger `r > 2`; minimum legal `R = 1`; rejected
-`R = 0`; face and corner crossings; negative coordinates; overlapping events;
+The #63 regression matrix must cover default `r = 2`; the smaller
+`r = 1` checked observation-geometry contract; a valid constructible larger
+`r > 2`; minimum legal `R = 1`; rejected `R = 0`; face and corner
+crossings; negative coordinates; overlapping events;
 absent/untracked coverage registered before drain; acceptance-before-execution;
 successful drain including a halo-only tile; rejected radius/capacity/
 authoritative-endpoint events; and the case where authoritative `R + 2`
 coordinates are representable but the wider observation expansion is not.
 Retain the existing event-before-execution/drain and deferred-explosion physics
 tests as existing evidence rather than duplicating them.
+
+Implementation note: the current material catalogue has an active Rocket rule with
+write radius 2, so `WorldConfig.maximum_rule_radius = 1` is rejected by the existing
+World safety validation. The #57 `r = 1` formula case is therefore exercised through
+the same checked production geometry helper used by World event observation; #63 does
+not relax material-rule write-radius validation.
 
 Evidence continuity for this decision is
 `13a26b78b1ef4d6eafa5f2fc649c79976a2eb6ac` (preparatory briefing boundary)
