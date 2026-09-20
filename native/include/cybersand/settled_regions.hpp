@@ -364,6 +364,11 @@ public:
     [[nodiscard]] std::size_t frontier_capacity() const noexcept { return frontier_capacity_; }
     [[nodiscard]] std::size_t dependency_capacity() const noexcept { return dependency_capacity_; }
     [[nodiscard]] std::size_t dependency_count() const noexcept { return dependency_count_; }
+    [[nodiscard]] std::size_t publication_member_capacity() const noexcept { return member_capacity_; }
+    [[nodiscard]] std::size_t reconstruction_ticket_capacity() const noexcept { return RegionCapacity; }
+    [[nodiscard]] std::size_t reconstruction_seed_capacity() const noexcept { return frontier_capacity_; }
+    [[nodiscard]] std::size_t staged_member_capacity() const noexcept { return frontier_capacity_; }
+    [[nodiscard]] std::size_t staged_child_capacity() const noexcept { return RegionCapacity; }
     [[nodiscard]] std::size_t cleanup_pending() const noexcept {
         return cleanup_pending_count_ +
                (source_handle_valid(source_cleanup_head_) ? 1U : 0U) +
@@ -3279,6 +3284,7 @@ SettledRegions<TileCapacity, MaximumTileCells, ComponentsPerTile, AdjacencyCapac
     }
     seed_free_head_ = frontier_capacity_ == 0 ? invalid_pool_index : 0U;
     staged_member_free_head_ = frontier_capacity_ == 0 ? invalid_pool_index : 0U;
+    metrics_.resource_generation = resource_generation_;
 }
 
 } // namespace cybersand::soliding
