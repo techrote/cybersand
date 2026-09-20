@@ -256,50 +256,51 @@ public:
         return remember(RegionOutcome::Accepted, RegionRefusal::None);
     }
 
-    // One unit is one seed probe, component visit, dependency validation, or publication.
-    // Local <=32x32 extraction and face rebuilding are separately bounded and counted.
+    // One unit is one seed probe, exact-graph component visit, dependency action,
+    // staged member/digest action, publication preparation step, or reclamation action.
+    // Local <=32x32 extraction and face rebuilding remain separately bounded.
     std::size_t advance(std::size_t budget) noexcept {
         if (unavailable() || incarnation_ == 0 || budget == 0) return 0;
         std::size_t used = 0;
         while (used < budget) {
-            if (!work_possible_) {
-                if (cleanup_pending_count_ == 0 || !cleanup_one_dependency()) break;
-                consume(used);
-                continue;
-            }
-            if (build_.phase == Phase::Idle) begin_seek();
-            if (build_.phase == Phase::Seeking) {
-                if (!seek_one()) {
-                    if (!build_.seed_found) {
-                        reset_build();
-                        work_possible_ = false;
-                        continue;
-                    }
-                    begin_traversal(); continue;
+            bool did_work = false;
+            bool reconstruction_work = false;
+            const bool cleanup_turn = (service_round_ & 7U) == 7U;
+            const bool reconstruction_turn = (service_round_ & 3U) != 0U;
+
+            if (cleanup_turn && cleanup_one_any()) {
+                did_work = true;
+                saturating_add(metrics_.cleanup_units);
+            } else if (build_.phase != Phase::Idle) {
+                reconstruction_work = ticket_handle_valid(build_.reconstruction_ticket);
+                did_work = service_active_build_one();
+            } else {
+                if (reconstruction_turn && ticket_handle_valid(reconstruction_queue_head_)) {
+                    did_work = service_reconstruction_ticket_one();
+                    reconstruction_work = did_work;
                 }
-                consume(used); continue;
-            }
-            if (build_.phase == Phase::Traversing) {
-                if (build_.frontier_count == 0) {
-                    build_.phase = Phase::Validating;
-                    build_.validation_dependency = subscriber_dependency_head(build_.subscriber);
-                    continue;
+                if (!did_work && work_possible_) {
+                    begin_seek();
+                    did_work = service_active_build_one();
                 }
-                const auto ref = pop_frontier_min();
-                if (!process_component(ref)) refuse_build(build_.failure);
-                consume(used); continue;
-            }
-            if (dependency_handle_valid(build_.validation_dependency)) {
-                const auto current = build_.validation_dependency;
-                build_.validation_dependency =
-                    dependencies_[current.slot].next_subscriber;
-                if (!dependency_current(current)) {
-                    refuse_build(RegionRefusal::RevisionChanged);
-                    saturating_add(metrics_.builds_restarted);
+                if (!did_work && !reconstruction_turn &&
+                    ticket_handle_valid(reconstruction_queue_head_)) {
+                    did_work = service_reconstruction_ticket_one();
+                    reconstruction_work = did_work;
                 }
-                consume(used); continue;
+                if (!did_work && cleanup_one_any()) {
+                    did_work = true;
+                    saturating_add(metrics_.cleanup_units);
+                }
             }
-            publish_build(); consume(used);
+
+            if (!did_work) break;
+            consume(used);
+            ++service_round_;
+            if (reconstruction_work)
+                saturating_add(metrics_.reconstruction_service_units);
+            else if (ticket_count_ != 0 && !cleanup_turn)
+                saturating_add(metrics_.reconstruction_remote_units);
         }
         return used;
     }
@@ -320,7 +321,10 @@ public:
     }
     [[nodiscard]] std::size_t pending_components() const noexcept {
         if (unavailable()) return 0;
-        std::size_t count = cleanup_pending_count_;
+        std::size_t count = cleanup_pending_count_ + ticket_count_;
+        if (source_handle_valid(source_cleanup_head_)) ++count;
+        if (seed_handle_valid(stale_seed_cleanup_head_)) ++count;
+        if (staged_child_handle_valid(stale_child_cleanup_head_)) ++count;
         for (std::size_t slot = 0; slot < tile_count_; ++slot)
             if (tiles_[slot].ready)
                 for (std::size_t i = 0; i < tiles_[slot].component_count; ++i)
@@ -344,7 +348,12 @@ public:
     [[nodiscard]] std::size_t frontier_capacity() const noexcept { return frontier_capacity_; }
     [[nodiscard]] std::size_t dependency_capacity() const noexcept { return dependency_capacity_; }
     [[nodiscard]] std::size_t dependency_count() const noexcept { return dependency_count_; }
-    [[nodiscard]] std::size_t cleanup_pending() const noexcept { return cleanup_pending_count_; }
+    [[nodiscard]] std::size_t cleanup_pending() const noexcept {
+        return cleanup_pending_count_ +
+               (source_handle_valid(source_cleanup_head_) ? 1U : 0U) +
+               (seed_handle_valid(stale_seed_cleanup_head_) ? 1U : 0U) +
+               (staged_child_handle_valid(stale_child_cleanup_head_) ? 1U : 0U);
+    }
     [[nodiscard]] std::size_t key_index_capacity() const noexcept { return tile_index_.capacity(); }
     [[nodiscard]] std::size_t row_interval_capacity() const noexcept { return row_index_.capacity(); }
     [[nodiscard]] std::optional<std::size_t> containing_tile(
@@ -1213,6 +1222,24 @@ private:
     }
     bool push(ComponentRef ref) noexcept {
         auto& component = tiles_[ref.tile].components[ref.component];
+        if (ticket_handle_valid(build_.reconstruction_ticket)) {
+            const auto handle = build_.reconstruction_ticket;
+            if (component_reserved(component) &&
+                !seed_belongs_to_ticket(component, handle)) {
+                const auto other = TicketHandle{
+                    component.reconstruction_ticket,
+                    component.reconstruction_ticket_generation};
+                if (ticket_handle_valid(other) &&
+                    reconstruction_tickets_[other.slot].serial <
+                        reconstruction_tickets_[handle.slot].serial) {
+                    build_.failure = RegionRefusal::RevisionChanged;
+                    return false;
+                }
+            }
+            component.reconstruction_ticket = handle.slot;
+            component.reconstruction_ticket_generation = handle.generation;
+            component.reconstruction_attempt = reconstruction_tickets_[handle.slot].attempt;
+        }
         if (component.in_build && component.build_generation == build_.generation)
             return true;
         if (build_.frontier_count == frontier_capacity_ ||
@@ -1444,8 +1471,26 @@ private:
         if (subscriber.kind == SubscriberKind::Build) {
             if (build_.phase != Phase::Idle && build_.subscriber == handle)
                 cancel_build(true);
-            else
+            else {
+                request_ticket_restart(
+                    TicketHandle{subscriber.owner_slot, subscriber.owner_generation});
                 retire_subscriber(handle);
+            }
+            return;
+        }
+        if (subscriber.kind == SubscriberKind::Staged) {
+            request_ticket_restart(
+                TicketHandle{subscriber.owner_slot, subscriber.owner_generation});
+            retire_subscriber(handle);
+            return;
+        }
+        if (subscriber.kind == SubscriberKind::Prepared) {
+            if (subscriber.owner_slot < RegionCapacity) {
+                const auto ticket = regions_[subscriber.owner_slot].preparation_ticket;
+                request_ticket_restart(ticket);
+            }
+            retire_handle({incarnation_, subscriber.owner_slot,
+                           subscriber.owner_generation});
             return;
         }
         retire_handle({incarnation_, subscriber.owner_slot,
@@ -1568,7 +1613,8 @@ private:
     }
     bool process_component(ComponentRef ref) noexcept {
         auto& component = tiles_[ref.tile].components[ref.component];
-        if (!tiles_[ref.tile].ready || assigned(component) || component.deferred ||
+        if (!tiles_[ref.tile].ready || assigned(component) ||
+            (component.deferred && !ticket_handle_valid(build_.reconstruction_ticket)) ||
             !(component.key == tiles_[build_.seed.tile].components[build_.seed.component].key)) {
             build_.failure = RegionRefusal::RevisionChanged; return false;
         }
@@ -1597,6 +1643,225 @@ private:
         return true;
     }
 
+
+    void begin_staging_reconstruction_child() noexcept {
+        const auto ticket_handle = build_.reconstruction_ticket;
+        if (!ticket_handle_valid(ticket_handle)) {
+            refuse_build(RegionRefusal::RevisionChanged);
+            return;
+        }
+        const auto child = allocate_staged_child();
+        if (!child.has_value()) {
+            refuse_build(RegionRefusal::RegionCapacity);
+            return;
+        }
+        build_.staging_child = *child;
+        auto& staged = staged_children_[child->slot];
+        staged.subscriber = build_.subscriber;
+        build_.staging_snapshot = {};
+        build_.staging_snapshot.key =
+            tiles_[build_.seed.tile].components[build_.seed.component].key;
+        build_.staging_snapshot.complete = true;
+        build_.staging_member_digest = 1469598103934665603ULL;
+        build_.staging_dependency_digest = 1469598103934665603ULL;
+        build_.staging_member_index = 0;
+        build_.staging_dependency_count = 0;
+        build_.staging_digest_index = 0;
+        build_.phase = Phase::StagingMembers;
+    }
+    bool stage_reconstruction_member_one() noexcept {
+        if (!staged_child_handle_valid(build_.staging_child) ||
+            !ticket_handle_valid(build_.reconstruction_ticket)) {
+            refuse_build(RegionRefusal::RevisionChanged);
+            return true;
+        }
+        if (build_.staging_member_index >= build_.member_count) {
+            build_.phase = Phase::StagingDependencies;
+            build_.staging_dependency = subscriber_dependency_head(build_.subscriber);
+            return false;
+        }
+        const auto ref = build_.members[build_.staging_member_index++];
+        const auto staged_member = allocate_staged_member(ref);
+        if (!staged_member.has_value()) {
+            refuse_build(RegionRefusal::MemberCapacity);
+            return true;
+        }
+        auto& child = staged_children_[build_.staging_child.slot];
+        if (staged_member_handle_valid(child.member_tail))
+            staged_members_[child.member_tail.slot].next = *staged_member;
+        else
+            child.member_head = *staged_member;
+        child.member_tail = *staged_member;
+        ++child.member_count;
+        auto& component = tiles_[ref.tile].components[ref.component];
+        component.in_build = false;
+        component.build_generation = 0;
+        auto& out = build_.staging_snapshot;
+        auto& tile = tiles_[ref.tile];
+        if (tile.staging_mark_generation != build_.generation) {
+            tile.staging_mark_generation = build_.generation;
+            ++out.tile_count;
+        }
+        if (out.component_count == 0) {
+            out.min_x = component.min_x; out.min_y = component.min_y;
+            out.max_x = component.max_x; out.max_y = component.max_y;
+        } else {
+            if (component.min_x < out.min_x) out.min_x = component.min_x;
+            if (component.min_y < out.min_y) out.min_y = component.min_y;
+            if (component.max_x > out.max_x) out.max_x = component.max_x;
+            if (component.max_y > out.max_y) out.max_y = component.max_y;
+        }
+        out.area += component.area;
+        ++out.component_count;
+        region_detail::hash_value(build_.staging_member_digest, component.digest);
+        region_detail::hash_value(build_.staging_member_digest, component.min_y);
+        region_detail::hash_value(build_.staging_member_digest, component.min_x);
+        return true;
+    }
+    bool stage_reconstruction_dependency_one() noexcept {
+        if (!ticket_handle_valid(build_.reconstruction_ticket)) {
+            refuse_build(RegionRefusal::RevisionChanged);
+            return true;
+        }
+        if (dependency_handle_valid(build_.staging_dependency)) {
+            const auto current = build_.staging_dependency;
+            build_.staging_dependency = dependencies_[current.slot].next_subscriber;
+            if (!dependency_current(current)) {
+                request_ticket_restart(build_.reconstruction_ticket);
+                return true;
+            }
+            const auto& record = dependencies_[current.slot];
+            if (record.kind == DependencyKind::TileRevision) {
+                const auto tile_index = static_cast<std::size_t>(record.tile);
+                auto at = build_.staging_dependency_count;
+                while (at != 0 &&
+                       region_detail::less(
+                           tiles_[tile_index].key,
+                           tiles_[dependency_slots_scratch_[at - 1]].key)) {
+                    dependency_slots_scratch_[at] =
+                        dependency_slots_scratch_[at - 1];
+                    --at;
+                }
+                dependency_slots_scratch_[at] = tile_index;
+                ++build_.staging_dependency_count;
+            }
+            return true;
+        }
+        build_.staging_snapshot.dependency_tile_count =
+            static_cast<std::uint32_t>(build_.staging_dependency_count);
+        build_.phase = Phase::StagingDigest;
+        build_.staging_digest_index = 0;
+        return false;
+    }
+    void finish_staged_reconstruction_child() noexcept {
+        const auto ticket_handle = build_.reconstruction_ticket;
+        if (!ticket_handle_valid(ticket_handle) ||
+            !staged_child_handle_valid(build_.staging_child)) {
+            refuse_build(RegionRefusal::RevisionChanged);
+            return;
+        }
+        auto& ticket = reconstruction_tickets_[ticket_handle.slot];
+        auto& child = staged_children_[build_.staging_child.slot];
+        build_.staging_snapshot.member_digest = build_.staging_member_digest;
+        build_.staging_snapshot.dependency_digest = build_.staging_dependency_digest;
+        child.snapshot = build_.staging_snapshot;
+        if (subscriber_handle_valid(build_.subscriber)) {
+            auto& subscriber = subscribers_[build_.subscriber.slot];
+            subscriber.kind = SubscriberKind::Staged;
+            subscriber.owner_slot = ticket_handle.slot;
+            subscriber.owner_generation = ticket_handle.generation;
+        }
+        child.subscriber = build_.subscriber;
+        if (staged_child_handle_valid(ticket.child_tail))
+            staged_children_[ticket.child_tail.slot].next = build_.staging_child;
+        else
+            ticket.child_head = build_.staging_child;
+        ticket.child_tail = build_.staging_child;
+        ++ticket.child_count;
+        ticket.staged_member_count += child.member_count;
+        saturating_add(metrics_.reconstruction_children_staged);
+        build_.subscriber = {};
+        reset_build();
+    }
+    bool stage_reconstruction_digest_one() noexcept {
+        if (build_.staging_digest_index < build_.staging_dependency_count) {
+            const auto tile_index =
+                dependency_slots_scratch_[build_.staging_digest_index++];
+            region_detail::hash_value(
+                build_.staging_dependency_digest,
+                region_detail::tile_hash(
+                    tiles_[tile_index].key, build_.revisions[tile_index]));
+            return true;
+        }
+        finish_staged_reconstruction_child();
+        return true;
+    }
+    bool service_active_build_one() noexcept {
+        while (build_.phase != Phase::Idle) {
+            if (ticket_handle_valid(build_.reconstruction_ticket) &&
+                reconstruction_tickets_[build_.reconstruction_ticket.slot].restart_requested) {
+                begin_ticket_restart(build_.reconstruction_ticket);
+                return true;
+            }
+            if (build_.phase == Phase::Seeking) {
+                if (!seek_one()) {
+                    if (!build_.seed_found) {
+                        reset_build();
+                        work_possible_ = false;
+                        return false;
+                    }
+                    begin_traversal();
+                    continue;
+                }
+                return true;
+            }
+            if (build_.phase == Phase::Traversing) {
+                if (build_.frontier_count == 0) {
+                    build_.phase = Phase::Validating;
+                    build_.validation_dependency =
+                        subscriber_dependency_head(build_.subscriber);
+                    continue;
+                }
+                const auto ref = pop_frontier_min();
+                if (!process_component(ref)) refuse_build(build_.failure);
+                return true;
+            }
+            if (build_.phase == Phase::Validating) {
+                if (dependency_handle_valid(build_.validation_dependency)) {
+                    const auto current = build_.validation_dependency;
+                    build_.validation_dependency =
+                        dependencies_[current.slot].next_subscriber;
+                    if (!dependency_current(current)) {
+                        if (ticket_handle_valid(build_.reconstruction_ticket))
+                            request_ticket_restart(build_.reconstruction_ticket);
+                        else {
+                            refuse_build(RegionRefusal::RevisionChanged);
+                            saturating_add(metrics_.builds_restarted);
+                        }
+                    }
+                    return true;
+                }
+                if (ticket_handle_valid(build_.reconstruction_ticket)) {
+                    begin_staging_reconstruction_child();
+                    continue;
+                }
+                publish_build();
+                return true;
+            }
+            if (build_.phase == Phase::StagingMembers) {
+                if (stage_reconstruction_member_one()) return true;
+                continue;
+            }
+            if (build_.phase == Phase::StagingDependencies) {
+                if (stage_reconstruction_dependency_one()) return true;
+                continue;
+            }
+            if (build_.phase == Phase::StagingDigest)
+                return stage_reconstruction_digest_one();
+        }
+        return false;
+    }
+
     void clear_build_marks() noexcept {
         for (std::size_t i = 0; i < build_.seen_count; ++i) {
             auto& component =
@@ -1608,6 +1873,26 @@ private:
         }
     }
     void refuse_build(RegionRefusal reason) noexcept {
+        if (ticket_handle_valid(build_.reconstruction_ticket)) {
+            const auto ticket_handle = build_.reconstruction_ticket;
+            auto& ticket = reconstruction_tickets_[ticket_handle.slot];
+            ticket.phase = ReconstructionPhase::Refused;
+            ticket.refusal = reason;
+            last_refusal_ = reason;
+            retire_subscriber(build_.subscriber);
+            reset_build();
+            saturating_add(metrics_.builds_refused);
+            if (reason == RegionRefusal::FrontierCapacity)
+                saturating_add(metrics_.frontier_refusals);
+            if (reason == RegionRefusal::DependencyCapacity)
+                saturating_add(metrics_.dependency_refusals);
+            if (reason == RegionRefusal::MemberCapacity)
+                saturating_add(metrics_.member_refusals);
+            if (reason == RegionRefusal::RegionCapacity ||
+                reason == RegionRefusal::GenerationExhausted)
+                saturating_add(metrics_.region_refusals);
+            return;
+        }
         if (build_.seen_count == 0 && build_.seed_found &&
             build_.seed.tile < tile_count_ &&
             build_.seed.component < tiles_[build_.seed.tile].component_count) {
@@ -1639,7 +1924,12 @@ private:
     void cancel_build(bool restarted) noexcept {
         if (build_.phase == Phase::Idle) return;
         const auto subscriber = build_.subscriber;
-        clear_build_marks();
+        const auto ticket = build_.reconstruction_ticket;
+        if (ticket_handle_valid(ticket)) {
+            if (restarted) request_ticket_restart(ticket);
+        } else {
+            clear_build_marks();
+        }
         retire_subscriber(subscriber);
         reset_build();
         if (restarted) saturating_add(metrics_.builds_restarted);
