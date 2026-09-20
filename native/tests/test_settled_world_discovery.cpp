@@ -6,6 +6,7 @@
 #include <new>
 #include <optional>
 #include <stdexcept>
+#include <string>
 #include <utility>
 
 namespace cybersand {
@@ -89,12 +90,20 @@ void service_regions(World& world, std::size_t limit = 1'000'000) {
 WorldDiscoveryTileSnapshot tile_at(const World& world, std::int64_t x, std::int64_t y) {
     for (std::size_t index = 0; index < world.settled_discovery_tile_count(); ++index) {
         const auto tile = world.settled_discovery_tile(index);
-        require(tile.has_value(), "registered tile snapshot available");
+        if (!tile.has_value()) {
+            throw std::runtime_error(
+                "registered tile snapshot unavailable while locating (" +
+                std::to_string(x) + "," + std::to_string(y) + "); halt=" +
+                std::to_string(static_cast<unsigned>(
+                    world.settled_discovery_halted())));
+        }
         const auto& bounds = tile->summary.bounds;
         if (bounds.x <= x && x <= bounds.x + static_cast<std::int64_t>(bounds.width - 1U) &&
             bounds.y <= y && y <= bounds.y + static_cast<std::int64_t>(bounds.height - 1U)) return *tile;
     }
-    throw std::runtime_error("requested discovery tile not found");
+    throw std::runtime_error(
+        "requested discovery tile not found at (" + std::to_string(x) + "," +
+        std::to_string(y) + ")");
 }
 
 CYBERSAND_TEST_NOINLINE void direct_aba_exact_tuple_and_render_independence() {
