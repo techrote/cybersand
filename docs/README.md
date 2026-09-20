@@ -4,8 +4,8 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-09-19
-related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md]
+last-reviewed: 2026-09-20
+related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md]
 ---
 
 # CyberSand documentation
@@ -14,6 +14,7 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 | Need | Start here |
 |---|---|
+| Reconcile a completed/closed claim, broad gameplay acceptance, or remediation owner | [Development-claims remediation programme](operations/development-claims-remediation-programme.md), then the [dated REM-001 audit](audits/2026-09-20-development-claims-closure-audit.md) for intake evidence |
 | Explore the MS-001 Materials Lab / Flood / Stress pack or compare generated definitions | [Reference pack and controls](operations/microscenario-reference-pack.md), [MS-001 evidence](audits/2026-09-19-issue-28-ms001.md) |
 | Author, load or benchmark a MicroScenario | [Current shared contract and host](operations/microscenarios.md), [checkpoint evidence](audits/2026-09-19-issue-27-microscenarios.md) |
 | Begin development | [Handover](operations/cybersand-codex-development-handover.md), [actual source identity](operations/source-checkpoint-and-recovery.md), [roadmap](reference/status-and-roadmap.md) |
@@ -96,9 +97,13 @@ settings/origins, saves editable user copies and applies through an explicit res
 
 The [Water Feel Lab runbook](operations/experiment-tower.md#current-19-water-feel-lab-extension)
 and [completion evidence](audits/2026-09-12-issue-19-water-feel-lab.md) describe
-the Current H-ready four-level presentation and deterministic runtime Water-policy
-apparatus. The later human H study has not run; no production precision, packing,
-#18/#20 admission or G-final decision follows from #19.
+the validated four-level presentation and deterministic runtime Water-policy
+apparatus. No human H preference study has run. The later
+[REM-001 reconciliation](operations/development-claims-remediation-programme.md)
+qualifies the old broad "H-ready" wording: the simulation/presentation apparatus
+remains valid, while formal blind-study capture is held for #84 because arm identity
+and append-only observation integrity require repair. No production precision,
+packing, #18/#20 admission or G-final decision follows from #19.
 
 ## Architecture experimental programme
 
@@ -140,7 +145,16 @@ present, independently of #18 completion; #28 may build provisional exploratory
 worlds on the common host before G-final and revalidate them after relevant
 architecture/physics changes.
 
-#29 is **INT-000**, covering versioned non-kinetic intermaterial interactions rather than chemistry alone. The [current interaction substrate](systems/intermaterial-interactions.md) owns the implemented sparse schema, stable rule/channel/family IDs, native provenance/coverage model and behavior-preserving compact-pair migration. Generated schema-2 fixtures use the same Materials Laboratory/headless/A-B contract, while specialized world.cpp mechanisms remain explicitly represented but current-authoritative where kinetic separation is not clean. Kinetic/contact anomalies are captured/reduced and routed to their real physics owner instead of being hidden in interaction rules.
+#29 is **INT-000**, covering versioned non-kinetic intermaterial interactions rather than chemistry alone. Its infrastructure landed through PR #55 at
+`910717aac101363ec2b1b89e4041a22bc9a97b97`; #30 remains a tracker, not an
+execution gate. The [current interaction substrate](systems/intermaterial-interactions.md)
+owns the implemented sparse schema, stable rule/channel/family IDs, native
+provenance/coverage model and behavior-preserving compact-pair migration.
+Generated schema-2 fixtures use the same Materials Laboratory/headless/A-B
+contract, while specialized world.cpp mechanisms remain explicitly represented
+but current-authoritative where kinetic separation is not clean. Later tuning is
+separate bounded/versioned work. Kinetic/contact anomalies are captured/reduced
+and routed to their real physics owner instead of being hidden in interaction rules.
 
 
 ## Scalable reversible soliding
@@ -152,8 +166,11 @@ Phase 0 endpoint. Read its [reuse audit](audits/2026-09-19-issue-12-phase0-reuse
 [Stage 3 execution freeze](operations/soliding-stage3-freeze.md). The
 [Stage-3 review](audits/issue-12-2026-09-19/stage3-exit-review.md) records the exact
 passed Stage-3A bounded reference, frozen correctness checklist, retained negative cost
-evidence and the open Stage-3B locality/scalability gate. The next bounded step is the
-[read-only Astra architecture review packet](operations/soliding-stage3b-astra-review.md),
-not implementation or Stage 4. Stage 4 is not admitted.
+evidence and the open Stage-3B locality/scalability gate. The read-only Astra review
+and parent reconciliation are complete. The active route is the
+[Stage-3B production plan](operations/soliding-stage3b-production-plan.md): #56-#60
+and #69 plus #61 are complete at the reconciled REM-001 checkpoint. #62 is the
+next serialized central-World producer package, while #64 remains the separable
+graph/index lane. Stage 4 is not admitted.
 Macro-dynamics and coherent-child fracture remain first-class later goals; discovery
 stays read-only with respect to material authority.

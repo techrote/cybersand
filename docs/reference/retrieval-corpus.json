@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-09-19",
+  "reviewed": "2026-09-20",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -28,6 +28,7 @@
     "operations/configuration-and-capacity-budgets.md",
     "operations/current-and-historical-validation.md",
     "operations/cybersand-codex-development-handover.md",
+    "operations/development-claims-remediation-programme.md",
     "operations/documentation-maintenance.md",
     "operations/github-development-and-release.md",
     "operations/local-build-and-validation.md",
@@ -262,6 +263,10 @@
     {
       "path": "audits/2026-09-19-issue-29-int000.md",
       "reason": "Dated issue #29 implementation/equivalence evidence; retrieve explicitly with its source/runtime/check scope, not as a default Current contract"
+    },
+    {
+      "path": "audits/2026-09-20-development-claims-closure-audit.md",
+      "reason": "Dated REM-001 closure/claims intake audit; retrieve explicitly for frozen F01-F19 evidence, while the Current remediation programme owns live status"
     }
   ]
 }

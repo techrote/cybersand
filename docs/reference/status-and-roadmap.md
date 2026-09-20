@@ -4,8 +4,8 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-09-19
-related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md]
+last-reviewed: 2026-09-20
+related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md]
 ---
 
 # Status and foundational roadmap
@@ -18,6 +18,22 @@ secures existing work locally. Resolve the relevant issues below before building
 new physics on assumptions that the current implementation does not guarantee.
 The [validation ledger](validation-evidence.md) separates dated runtime results
 from inspected code. No documentation status is a blanket platform acceptance.
+
+## Development-claims remediation checkpoint — 2026-09-20
+
+The [canonical remediation programme](../operations/development-claims-remediation-programme.md)
+governs F01-F19 and issues #79-#87. It separates Implemented, Integrated, Verified,
+Accepted and Dispositioned instead of using issue closure as a proxy for all five.
+
+Current tracker truth is deliberately conservative: #8 remains open; #9 retains
+its scoped characterization; #10 retains its bounded policy/fixture evidence but
+broad player/granular acceptance is open under #82; #11 retains its bounded
+historical repair evidence but that repair is absent from audited current main,
+so #81 owns integration and #83 owns later broad body/granular acceptance. #12 is
+an independent scalable-soliding programme, not the sole remaining reason for #8.
+
+#10/#11 are evidence/objective anchors, not duplicate implementation lanes.
+Historical completion records remain immutable.
 
 ## Current implementation map
 
@@ -74,15 +90,21 @@ See [principles](../architecture/principles-and-non-goals.md) and the [ADRs](../
 ## Next implementation checkpoints
 
 **Current:** the [issue #9 measured baseline](../audits/2026-09-09-physics-characterisation.md)
-and [reproducible tooling](../operations/physics-characterisation.md) establish
-density-exchange, player-sampling and barrel-feedback evidence. Issue #10 now
-implements the [versioned player and exchange policy](../systems/granular-interaction-policy.md).
-Issue #11 retains **Planned** barrel work: masked-source feedback, barrier-aware
-ejection and persistent bearing. Raising barrel impulse caps alone does not
-provide the intended behavior. The
-[soliding plan](../operations/physics-characterisation-plan.md) still requires an
-explicit ownership decision before dynamic membership handoff. Current F01/F02
-contracts and the separate runtime publication gate remain applicable.
+and [reproducible tooling](../operations/physics-characterisation.md) retain the
+scoped characterization. Issue #10's
+[versioned player and exchange policy](../systems/granular-interaction-policy.md)
+is implemented and its dated fixture evidence remains valid, but later owner
+gameplay evaluation did not accept the broader player/granular objective; #82 owns
+that remediation.
+
+Issue #11 has a source-matched historical repair checkpoint for masked-source
+feedback, bounded ejection paths and ordinary rectangle/load bearing, but that
+accepted code is not in audited current main. #81 owns current-main
+reconstruction/integration and #83 owns the broader body/granular acceptance
+envelope afterwards. Raising barrel impulse caps alone is not a substitute.
+The [remediation programme](../operations/development-claims-remediation-programme.md)
+owns these claim-state distinctions; the soliding programme remains independently
+active. Current F01/F02 contracts and the separate runtime publication gate remain applicable.
 
 1. Preserve the implemented F01 quarantine and F02 pause/re-entry contracts and
    their combined regressions; extend the documented platform/failure-site gaps
@@ -98,11 +120,14 @@ builds. The earlier M11 checkpoint sequence and reported rollback archives remai
 
 ## Issue #10 player and exchange checkpoint
 
-**Current:** Material-aware player support, separate side resistance, bounded
-enclosure recovery, powder-pair exclusion and scheduled Mercury permeability are
-implemented. The [dated evidence](../audits/2026-09-09-issue-10-granular-policy.md)
-records parameter screening, native/fallback/desktop/Web execution and remaining
-publication/platform limits. Barrel feedback/bearing/ejection stays in issue #11.
+**Current implementation, bounded acceptance:** Material-aware player support,
+separate side resistance, bounded enclosure recovery, powder-pair exclusion and
+scheduled Mercury permeability are implemented. The
+[dated evidence](../audits/2026-09-09-issue-10-granular-policy.md) records parameter
+screening, native/fallback/desktop/Web execution and remaining publication/platform
+limits. Those results are retained, but they do not constitute the later owner
+gameplay acceptance that #82 must obtain or explicitly disposition. Body/granular
+integration/acceptance is separately #81/#83.
 
 ## Issue #13 experiment checkpoint
 
@@ -127,9 +152,12 @@ transactional Apply + Reset and reconstructible blind/export controls. Native,
 full Windows Godot, actual GPU and real Chrome compatibility/threaded gates pass.
 See the [completion evidence](../audits/2026-09-12-issue-19-water-feel-lab.md).
 
-This checkpoint is **H-ready**, not an H result: mass8/coherence12 remain the
-production/reference control, no preferred candidate or production packing was
-selected, #18 remains held, #20 remains downstream and G-final remains open.
+This checkpoint is a valid simulation/presentation apparatus result, not an H
+preference result: mass8/coherence12 remain the production/reference control, no
+preferred candidate or production packing was selected, #18 remains held, #20
+remains downstream and G-final remains open. The earlier "H-ready" label is
+qualified for current use by REM-001: formal blind-study capture remains blocked
+on #84's arm-identity separation and append-only observation repair.
 
 ## Issue #26 Water head/leveling disposition
 
@@ -260,8 +288,10 @@ and revalidated after relevant physics/architecture changes rather than being
 silently relabelled as accepted evidence.
 
 #29 is **INT-000: intermaterial interactions**, not a chemistry-only campaign.
-**Current in PR #55 / `codex/issue-29-int000`:** the landed #27/#28 apparatus has
-been consumed by the versioned sparse interaction substrate. The compact 14-rule
+**Merged/current infrastructure:** PR #55 landed as
+`910717aac101363ec2b1b89e4041a22bc9a97b97`; #29 is complete for its bounded
+infrastructure checkpoint and #30 remains the programme tracker. The landed #27/#28
+apparatus has been consumed by the versioned sparse interaction substrate. The compact 14-rule
 pair boundary now resolves through stable IDs/channels with a literal frozen
 pre-migration oracle; layered family/material/pair/context authoring, conflict
 validation, specialized-kernel provenance, coverage/revalidation records,
@@ -314,16 +344,18 @@ post-merge review that retained the implementation while correcting Flood
 endpoint wording, the Stress uniqueness regression and stale compact definition
 hashes. Actual Windows/browser/target-GPU execution remains unavailable.
 
-The explicit Lab readiness prerequisite for #29 is satisfied and has been consumed
-by PR #55 after a fresh reconciliation of the historical preflight against the
-landed schema-2 contract. #29 completion remains conditional on PR #55's
-source-matched runtime/provenance publication, exact-head native/Godot/documentation
-gates and final acceptance review; MS-001 does not waive #18/#20/#26/#14 gates.
+The explicit Lab readiness prerequisite for #29 was satisfied and consumed by
+PR #55 after a fresh reconciliation of the historical preflight against the
+landed schema-2 contract. PR #55 subsequently passed its required acceptance gates
+and merged; #29 is closed. MS-001/INT-000 completion still does not waive
+#18/#20/#26/#14 gates, and later interaction tuning remains separately bounded.
 
 ## INT-000 implementation checkpoint, 2026-09-19
 
-**Current source candidate / final acceptance pending:** PR #55 is the sole #29
-implementation owner. It preserves existing compact pair behavior while migrating
+**Historical pre-merge checkpoint:** PR #55 was the sole #29 implementation
+owner at this point. It has since merged as
+`910717aac101363ec2b1b89e4041a22bc9a97b97`; use the current programme/status
+paragraphs above for live routing. It preserves existing compact pair behavior while migrating
 that bounded authority behind the versioned sparse resolver, exposes read-only
 effective provenance through the existing schema-2 Materials Laboratory path, and
 adds generated mechanism fixtures plus batch coverage/pass comparison tooling.
@@ -367,8 +399,12 @@ architecture review is complete; its supervising-parent reconciliation is record
 the [Stage-3B parent decision](../audits/issue-12-2026-09-19/stage3b-parent-decision.md).
 The active implementation route is the
 [Stage-3B production plan](../operations/soliding-stage3b-production-plan.md), issues
-#56-#70. Stage 4 is blocked; production dynamics, fracture and persistence remain
-unimplemented. Source `de332ea` actually uses
+#56-#70. At the reconciled 2026-09-20 REM-001 checkpoint, #56-#61 and #69 are
+complete; PR #89 landed #61 as
+`db00e84e1b26b99f2816b6c1258d5dea97fc1fa1`. #62 is the next serialized
+central-World producer package, with #64 available as the separable graph/index
+lane subject to actual write-set collision checks. Stage 4
+is blocked; production dynamics, fracture and persistence remain unimplemented. Source `de332ea` actually uses
 the 8-byte superset carrier after #19 integration;
 the [storage contract](../architecture/chunk-tile-and-buffer-model.md) supersedes
 earlier four-byte physical-size statements for this source without selecting G-final.
