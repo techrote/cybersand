@@ -209,6 +209,7 @@ public:
     [[nodiscard]] std::size_t capacity() const noexcept;
     [[nodiscard]] std::size_t pending() const noexcept;
     [[nodiscard]] std::size_t pending_payload_work() const noexcept;
+    [[nodiscard]] bool payload_refresh_pending(WorldDiscoveryTileHandle handle) const noexcept;
     [[nodiscard]] std::uint64_t incarnation() const noexcept;
     [[nodiscard]] bool capacity_blocked() const noexcept;
     [[nodiscard]] DiscoveryHalt halted() const noexcept;
