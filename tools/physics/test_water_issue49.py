@@ -31,8 +31,33 @@ def level_sample(tick: int, value: int | None, *, valid: bool = True) -> dict:
     }
 
 
+def legacy_v1_spread(contour: list[int | None]) -> int:
+    points = [int(value) for value in contour if value is not None]
+    if not points:
+        return 0
+    return max(points) - min(points)
+
+
+def legacy_v1_latched_sustained_tick(
+    samples: list[dict], scenario: str, predicate
+) -> int:
+    streak = 0
+    for sample in samples:
+        if int(sample.get("tick", 0)) == 0:
+            continue
+        value = MODULE._metric_observation(sample, scenario)
+        if value is not None and predicate(value):
+            streak += 1
+            if streak >= 5:
+                return int(sample["tick"]) - 4 * MODULE.SAMPLE_PERIOD
+        else:
+            streak = 0
+    return 0
+
+
 class EquilibriumContractTests(unittest.TestCase):
     def test_dry_column_concentration_cannot_look_flat(self) -> None:
+        self.assertEqual(legacy_v1_spread([12000, None, None, None]), 0)
         samples = [surface_sample(0, 4000)]
         samples.extend(surface_sample(tick, 0, valid=False) for tick in (60, 120, 180, 240, 300))
         result = MODULE.sustained_suffix_status(
@@ -41,6 +66,7 @@ class EquilibriumContractTests(unittest.TestCase):
         self.assertEqual(result, {"status": "invalid_coverage", "tick": None})
 
     def test_empty_roi_is_invalid_not_flat(self) -> None:
+        self.assertEqual(legacy_v1_spread([None, None, None]), 0)
         samples = [surface_sample(0, None, valid=False)]
         samples.extend(
             surface_sample(tick, None, valid=False)
@@ -58,6 +84,12 @@ class EquilibriumContractTests(unittest.TestCase):
             for tick in (60, 120, 180, 240, 300)
         )
         samples.append(surface_sample(360, 2000))
+        self.assertEqual(
+            legacy_v1_latched_sustained_tick(
+                samples, "calm-settling", lambda value: value <= 1000
+            ),
+            60,
+        )
         result = MODULE.sustained_suffix_status(
             samples, "calm-settling", lambda value: value <= 1000
         )
@@ -157,6 +189,22 @@ class RunnerDurabilityTests(unittest.TestCase):
         cases = MODULE.registered_cases()
         self.assertEqual(len(cases), 10 * 3 * 2 * 2)
         self.assertEqual(len({case["case"] for case in cases}), len(cases))
+
+    def test_completion_accounting_rejects_duplicate_in_place_of_missing(self) -> None:
+        cases = [
+            {"case": "a"},
+            {"case": "b"},
+        ]
+        record = MODULE.completion_record(
+            cases,
+            [
+                {"case": "a", "disposition": "success"},
+                {"case": "a", "disposition": "success"},
+            ],
+        )
+        self.assertFalse(record["complete_accounting"])
+        self.assertEqual(record["missing_cases"], ["b"])
+        self.assertEqual(record["duplicate_attempt_count"], 1)
 
 
 if __name__ == "__main__":
