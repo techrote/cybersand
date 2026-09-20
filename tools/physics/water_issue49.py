@@ -216,12 +216,25 @@ def residual_terraces(contour: list[int | None], threshold: int = 750) -> dict[s
 def augment_row(row: dict[str, Any]) -> dict[str, Any]:
     row = dict(row)
     row["equilibrium_v2"] = derive_equilibrium(row)
+    communicating_surface = _primary_kind(str(row["scenario"])) == "level_difference_milli"
     for sample in row.get("samples", []):
-        sample["residual_terraces_v2"] = residual_terraces(
-            list(sample.get("surface_contour_milli", []))
-        )
+        if communicating_surface:
+            sample["surface_defect_scope_v2"] = "separate_limb_free_surfaces"
+            sample["residual_terraces_v2"] = None
+            sample["left_residual_terraces_v2"] = residual_terraces(
+                list(sample.get("left_surface_contour_milli", []))
+            )
+            sample["right_residual_terraces_v2"] = residual_terraces(
+                list(sample.get("right_surface_contour_milli", []))
+            )
+        else:
+            sample["surface_defect_scope_v2"] = "declared_surface_roi"
+            sample["residual_terraces_v2"] = residual_terraces(
+                list(sample.get("surface_contour_milli", []))
+            )
         sample["wall_contact_expected"] = (
-            row["scenario"] == "fast-dump" and int(sample.get("tick", 0)) > 0
+            row["scenario"] == "fast-dump"
+            and int(sample.get("wall_contact_probe_rows", 0)) > 0
         )
     row["surface_sampling_contract"] = {
         "period_ticks": SAMPLE_PERIOD,
@@ -393,17 +406,24 @@ def summarize(results: list[dict[str, Any]]) -> dict[str, Any]:
                 else None
             ),
             "quiescent_p95_us_median": (
-                float(
-                    statistics.median([float(row["quiescent_p95_us"]) for row in rows])
-                )
-                if rows
+                float(statistics.median([
+                    float(row["quiescent_p95_us"])
+                    for row in rows
+                    if row.get("quiescent_p95_us") is not None
+                ]))
+                if any(row.get("quiescent_p95_us") is not None for row in rows)
                 else None
+            ),
+            "quiescent_sampled_cases": sum(
+                row.get("quiescent_p95_us") is not None for row in rows
             ),
             "total_us_median": (
                 float(statistics.median([float(row["total_us"]) for row in rows]))
                 if rows
                 else None
             ),
+            "mass_conserved_cases": sum(bool(row.get("mass_conserved")) for row in rows),
+            "zero_allocation_cases": sum(int(row.get("allocations", -1)) == 0 for row in rows),
         }
     return summary
 
