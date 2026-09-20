@@ -464,7 +464,7 @@ private:
         std::array<FaceRun, 128> face_runs{};
         DependencyHandle revision_subscribers{};
         std::size_t area{}, component_count{}, face_run_count{};
-        std::uint64_t observation_generation{1}, last_change_serial{};
+        std::uint64_t observation_generation{1}, last_change_serial{}, staging_mark_generation{};
         RegionRefusal refusal{RegionRefusal::None};
         bool used{}, has_payload{}, ready{};
     };
@@ -552,6 +552,7 @@ private:
         MemberHandle admit_member{};
         SeedHandle seed_head{}, seed_tail{}, next_seed{};
         StagedChildHandle child_head{}, child_tail{}, preflight_child{}, prepare_child{};
+        StagedMemberHandle prepare_member{};
         DependencyHandle preflight_dependency{};
         TicketHandle next_queue{};
         RegionComponentKey scan_key{};
@@ -559,8 +560,8 @@ private:
         std::uint64_t wait_generation{}, wait_resource_generation{}, batch_serial{};
         std::uint32_t next_free{invalid_pool_index}, wait_tile{invalid_pool_index};
         std::size_t source_count{}, seed_count{}, child_count{}, staged_member_count{};
-        std::size_t scan_component{}, preflight_region_scan{}, preflight_free_count{};
-        std::size_t prepared_child_count{}, prepare_member_index{};
+        std::size_t scan_component{}, scan_tile{}, preflight_region_scan{}, preflight_free_count{};
+        std::size_t prepared_child_count{}, prepare_member_index{}, restart_cleanup_index{};
         ReconstructionPhase phase{ReconstructionPhase::Admitting};
         RegionRefusal refusal{RegionRefusal::None};
         bool allocated{}, queued{}, scanning_changed_tile{}, blocker_seen{}, restart_requested{};
@@ -584,7 +585,9 @@ private:
         TicketHandle reconstruction_ticket{};
         StagedChildHandle staging_child{};
         DependencyHandle staging_dependency{};
-        std::uint64_t generation{};
+        SettledRegionSnapshot staging_snapshot{};
+        std::uint64_t generation{}, staging_member_digest{1469598103934665603ULL};
+        std::uint64_t staging_dependency_digest{1469598103934665603ULL};
         std::size_t staging_member_index{}, staging_dependency_count{}, staging_digest_index{};
         bool seed_found{};
         RegionRefusal failure{RegionRefusal::None};
@@ -1157,7 +1160,16 @@ private:
         build_.seed = {};
         build_.validation_dependency = {};
         build_.subscriber = {};
+        build_.reconstruction_ticket = {};
+        build_.staging_child = {};
+        build_.staging_dependency = {};
+        build_.staging_snapshot = {};
         build_.generation = 0;
+        build_.staging_member_digest = 1469598103934665603ULL;
+        build_.staging_dependency_digest = 1469598103934665603ULL;
+        build_.staging_member_index = 0;
+        build_.staging_dependency_count = 0;
+        build_.staging_digest_index = 0;
         build_.seed_found = false;
         build_.failure = RegionRefusal::None;
         build_.started_work = 0;
@@ -2093,6 +2105,7 @@ private:
     SourceHandle source_cleanup_head_{}, source_cleanup_tail_{};
     std::uint64_t change_serial_{}, current_change_serial_{}, reconstruction_serial_{};
     std::uint64_t resource_generation_{1}, committed_batch_serial_{}, service_round_{};
+    std::size_t region_cleanup_cursor_{};
     std::size_t member_capacity_{}, member_count_{}, source_count_{}, ticket_count_{}, seed_count_{};
     std::size_t staged_member_count_{}, staged_child_count_{};
     std::size_t tile_count_{}, adjacency_count_{}, dependency_count_{}, subscriber_count_{};
