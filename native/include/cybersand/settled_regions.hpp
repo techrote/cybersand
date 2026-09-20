@@ -133,6 +133,8 @@ public:
     RegionOutcome register_unknown(RegionTileKey key, DiscoveryBounds bounds,
                                    std::uint64_t revision) noexcept {
         if (unavailable()) return RegionOutcome::Refused;
+        begin_graph_change();
+        if (unavailable()) return RegionOutcome::Refused;
         if (incarnation_ == 0 || key.world_incarnation != incarnation_ || revision == 0 ||
             !valid_bounds(bounds) ||
             static_cast<std::uint64_t>(bounds.width) * bounds.height > MaximumTileCells)
@@ -168,6 +170,7 @@ public:
         tile.revision = revision;
         tile.has_payload = false;
         tile.ready = false;
+        if (!advance_observation_generation(tile)) return RegionOutcome::Refused;
         tile.component_count = 0;
         tile.face_run_count = 0;
         tile.boundary_runs.fill(region_detail::invalid_index);
@@ -178,6 +181,8 @@ public:
     }
 
     RegionOutcome upsert(const RegionTileInput& input) noexcept {
+        if (unavailable()) return RegionOutcome::Refused;
+        begin_graph_change();
         if (unavailable()) return RegionOutcome::Refused;
         if (!valid_input(input) || incarnation_ == 0 || input.key.world_incarnation != incarnation_)
             return remember(RegionOutcome::Invalid, RegionRefusal::InvalidInput);
@@ -235,6 +240,8 @@ public:
     // a key scan. The key check keeps a mismatched/stale adapter fail-closed.
     RegionOutcome invalidate_known(std::size_t slot, RegionTileKey key,
                                    std::uint64_t next_revision) noexcept {
+        if (unavailable()) return RegionOutcome::Refused;
+        begin_graph_change();
         if (unavailable()) return RegionOutcome::Refused;
         if (slot >= tile_count_ || !(tiles_[slot].key == key))
             return remember(RegionOutcome::Invalid, RegionRefusal::InvalidInput);
@@ -300,10 +307,12 @@ public:
     [[nodiscard]] std::optional<SettledRegionSnapshot> snapshot(SettledRegionHandle handle) const noexcept {
         if (unavailable() || handle.world_incarnation != incarnation_ || handle.slot >= RegionCapacity) return std::nullopt;
         const auto& region = regions_[handle.slot];
-        return region.valid && region.generation == handle.generation ? std::optional{region.snapshot} : std::nullopt;
+        return region_visible(region) && region.generation == handle.generation
+            ? std::optional{region.snapshot} : std::nullopt;
     }
     [[nodiscard]] std::optional<SettledRegionSnapshot> region_at(std::size_t slot) const noexcept {
-        return slot < RegionCapacity && regions_[slot].valid && !unavailable() ? std::optional{regions_[slot].snapshot} : std::nullopt;
+        return slot < RegionCapacity && region_visible(regions_[slot]) && !unavailable()
+            ? std::optional{regions_[slot].snapshot} : std::nullopt;
     }
     [[nodiscard]] std::size_t tile_count() const noexcept { return tile_count_; }
     [[nodiscard]] std::size_t region_count() const noexcept {
@@ -607,6 +616,31 @@ private:
         value += amount > room ? room : amount;
     }
     [[nodiscard]] bool unavailable() const noexcept { return halted_ || coverage_capacity_exhausted_; }
+    void bump_resource_generation() noexcept {
+        if (resource_generation_ != std::numeric_limits<std::uint64_t>::max())
+            ++resource_generation_;
+        metrics_.resource_generation = resource_generation_;
+    }
+    void begin_graph_change() noexcept {
+        if (change_serial_ == std::numeric_limits<std::uint64_t>::max()) {
+            fail(RegionRefusal::GenerationExhausted);
+            return;
+        }
+        current_change_serial_ = ++change_serial_;
+        current_change_ticket_ = {};
+    }
+    bool advance_observation_generation(Tile& tile) noexcept {
+        if (tile.observation_generation == std::numeric_limits<std::uint64_t>::max()) {
+            fail(RegionRefusal::GenerationExhausted);
+            return false;
+        }
+        ++tile.observation_generation;
+        return true;
+    }
+    [[nodiscard]] bool region_visible(const Region& region) const noexcept {
+        return region.valid && (region.batch_serial == 0 ||
+               region.batch_serial <= committed_batch_serial_);
+    }
     void block_capacity(RegionRefusal reason) noexcept {
         retire_all_regions();
         cancel_build(false);
@@ -811,6 +845,7 @@ private:
         tile.ambient_temperature = input.ambient_temperature; tile.signals = input.signals;
         tile.sealed_edges = input.sealed_edges; tile.area = input.cells.size();
         tile.has_payload = true; tile.ready = false; tile.component_count = 0;
+        if (!advance_observation_generation(tile)) return;
         tile.face_run_count = 0; tile.refusal = RegionRefusal::None;
         tile.revision_subscribers = {};
         tile.boundary_runs.fill(region_detail::invalid_index);
@@ -889,7 +924,9 @@ private:
             }
         }
         build_face_runs(slot);
-        tile.ready = true; saturating_add(metrics_.components, tile.component_count);
+        tile.ready = true;
+        if (!advance_observation_generation(tile)) return RegionOutcome::Refused;
+        saturating_add(metrics_.components, tile.component_count);
         return remember(RegionOutcome::Accepted, RegionRefusal::None);
     }
     [[nodiscard]] bool edge_handle_valid(EdgeHandle handle) const noexcept {
@@ -1086,6 +1123,19 @@ private:
         return handle.world_incarnation == incarnation_ && handle.slot < RegionCapacity &&
                regions_[handle.slot].valid && regions_[handle.slot].generation == handle.generation;
     }
+    bool ticket_handle_valid(TicketHandle handle) const noexcept {
+        return handle.slot < RegionCapacity &&
+               reconstruction_tickets_[handle.slot].allocated &&
+               reconstruction_tickets_[handle.slot].generation == handle.generation;
+    }
+    bool component_reserved(const Component& component) const noexcept {
+        if (component.reconstruction_ticket >= RegionCapacity) return false;
+        const auto handle = TicketHandle{
+            component.reconstruction_ticket,
+            component.reconstruction_ticket_generation};
+        if (!ticket_handle_valid(handle)) return false;
+        return reconstruction_tickets_[handle.slot].attempt == component.reconstruction_attempt;
+    }
     bool ref_less(ComponentRef a, ComponentRef b) const noexcept {
         const auto& ac = tiles_[a.tile].components[a.component];
         const auto& bc = tiles_[b.tile].components[b.component];
@@ -1125,7 +1175,7 @@ private:
         if (tile.ready && component_index < tile.component_count) {
             const auto& component = tile.components[component_index];
             const ComponentRef candidate{static_cast<std::uint16_t>(tile_index), static_cast<std::uint16_t>(component_index)};
-            if (!assigned(component) && !component.deferred &&
+            if (!assigned(component) && !component.deferred && !component_reserved(component) &&
                 (!build_.seed_found || ref_less(candidate, build_.best))) {
                 build_.best = candidate; build_.seed_found = true;
             }
@@ -1418,6 +1468,9 @@ private:
     void release_subscriber(SubscriberHandle handle) noexcept {
         if (!subscriber_handle_valid(handle)) return;
         auto& subscriber = subscribers_[handle.slot];
+        const auto kind = subscriber.kind;
+        const auto owner_slot = subscriber.owner_slot;
+        const auto owner_generation = subscriber.owner_generation;
         subscriber.allocated = false;
         subscriber.active = false;
         subscriber.cleanup_pending = false;
@@ -1426,6 +1479,15 @@ private:
         subscriber.next_free = subscriber_free_head_;
         subscriber_free_head_ = handle.slot;
         --subscriber_count_;
+        if ((kind == SubscriberKind::Publication || kind == SubscriberKind::Prepared) &&
+            owner_slot < RegionCapacity) {
+            auto& region = regions_[owner_slot];
+            if (region.generation == owner_generation && region.reclaim_pending) {
+                region.reclaim_pending = false;
+                region.subscriber = {};
+                bump_resource_generation();
+            }
+        }
     }
     bool cleanup_one_dependency() noexcept {
         if (!subscriber_handle_valid(cleanup_head_)) {
@@ -1587,6 +1649,7 @@ private:
         }
     }
     void prepare_tile_revision_change(std::size_t slot) noexcept {
+        tiles_[slot].last_change_serial = current_change_serial_;
         cancel_related_build(slot);
         invalidate_tile_subscribers(slot);
         clear_deferred_for_tile_and_faces(slot);
@@ -1599,7 +1662,9 @@ private:
 
     std::optional<std::size_t> allocate_region_slot() noexcept {
         for (std::size_t i = 0; i < RegionCapacity; ++i)
-            if (!regions_[i].valid && regions_[i].generation < GenerationLimit) return i;
+            if (!regions_[i].valid && !regions_[i].reclaim_pending &&
+                regions_[i].member_head.slot == invalid_pool_index &&
+                regions_[i].generation < GenerationLimit) return i;
         return std::nullopt;
     }
     void publish_build() noexcept {
@@ -1615,9 +1680,19 @@ private:
         if (publication_serial_ == PublicationLimit) {
             refuse_build(RegionRefusal::GenerationExhausted); return;
         }
+        if (member_capacity_ - member_count_ < build_.member_count) {
+            refuse_build(RegionRefusal::MemberCapacity);
+            saturating_add(metrics_.member_refusals);
+            return;
+        }
         auto& region = regions_[*slot];
         ++region.generation;
         region.valid = true;
+        region.reclaim_pending = false;
+        region.batch_serial = 0;
+        region.preparation_ticket = {};
+        region.member_head = {};
+        region.member_count = 0;
         ++published_region_count_;
         auto& out = region.snapshot; out = SettledRegionSnapshot{};
         out.handle = {incarnation_, static_cast<std::uint32_t>(*slot), region.generation};
@@ -1630,6 +1705,14 @@ private:
         for (std::size_t i = 0; i < build_.member_count; ++i) {
             const auto ref = build_.members[i];
             auto& component = tiles_[ref.tile].components[ref.component];
+            const auto member = allocate_publication_member(ref);
+            if (!member.has_value()) {
+                fail(RegionRefusal::MemberCapacity);
+                return;
+            }
+            members_[member->slot].next = region.member_head;
+            region.member_head = *member;
+            ++region.member_count;
             component.assigned_region = out.handle;
             component.in_build = false;
             component.build_generation = 0;
@@ -1708,10 +1791,17 @@ private:
         if (handle.world_incarnation != incarnation_ || handle.slot >= RegionCapacity) return;
         auto& region = regions_[handle.slot];
         if (region.valid && region.generation == handle.generation) {
+            const bool was_visible = region_visible(region);
             region.valid = false;
-            --published_region_count_;
+            if (was_visible && published_region_count_ != 0) --published_region_count_;
+            if (was_visible && current_change_serial_ != 0)
+                attach_retired_region_to_current_change(handle.slot, region);
             retire_subscriber(region.subscriber);
-            region.subscriber = {};
+            region.reclaim_pending = subscriber_handle_valid(region.subscriber);
+            if (!region.reclaim_pending) {
+                region.subscriber = {};
+                bump_resource_generation();
+            }
             saturating_add(metrics_.invalidated_regions);
         }
     }
@@ -1737,6 +1827,134 @@ private:
         };
         (void)clear_tile(slot);
         (void)for_each_facing(slot, clear_tile);
+    }
+
+
+    [[nodiscard]] bool member_handle_valid(MemberHandle handle) const noexcept {
+        return handle.slot < member_capacity_ && members_[handle.slot].active &&
+               members_[handle.slot].generation == handle.generation;
+    }
+    [[nodiscard]] std::optional<MemberHandle> allocate_publication_member(
+        ComponentRef ref) noexcept {
+        while (member_free_head_ != invalid_pool_index) {
+            const auto slot = member_free_head_;
+            auto& member = members_[slot];
+            member_free_head_ = member.next_free;
+            if (member.generation == std::numeric_limits<std::uint64_t>::max())
+                continue;
+            ++member.generation;
+            member.ref = ref;
+            member.tile_revision = ref.tile < tile_count_ ? tiles_[ref.tile].revision : 0;
+            member.next = {};
+            member.next_free = invalid_pool_index;
+            member.active = true;
+            ++member_count_;
+            saturating_add(metrics_.member_records);
+            if (member_count_ > metrics_.member_high_water)
+                metrics_.member_high_water = member_count_;
+            return MemberHandle{slot, member.generation};
+        }
+        saturating_add(metrics_.member_refusals);
+        return std::nullopt;
+    }
+    void release_publication_member(MemberHandle handle) noexcept {
+        if (!member_handle_valid(handle)) return;
+        auto& member = members_[handle.slot];
+        member.active = false;
+        member.next = {};
+        member.next_free = member_free_head_;
+        member_free_head_ = handle.slot;
+        --member_count_;
+        saturating_add(metrics_.member_reclaims);
+        bump_resource_generation();
+    }
+    [[nodiscard]] bool source_handle_valid(SourceHandle handle) const noexcept {
+        return handle.slot < RegionCapacity && sources_[handle.slot].active &&
+               sources_[handle.slot].generation == handle.generation;
+    }
+    [[nodiscard]] std::optional<SourceHandle> allocate_source_region() noexcept {
+        while (source_free_head_ != invalid_pool_index) {
+            const auto slot = source_free_head_;
+            auto& source = sources_[slot];
+            source_free_head_ = source.next_free;
+            if (source.generation == std::numeric_limits<std::uint64_t>::max())
+                continue;
+            const auto generation = source.generation + 1U;
+            source = SourceRegion{};
+            source.generation = generation;
+            source.active = true;
+            source.next_free = invalid_pool_index;
+            ++source_count_;
+            return SourceHandle{slot, generation};
+        }
+        return std::nullopt;
+    }
+    [[nodiscard]] std::optional<TicketHandle> allocate_reconstruction_ticket() noexcept {
+        while (ticket_free_head_ != invalid_pool_index) {
+            const auto slot = ticket_free_head_;
+            auto& ticket = reconstruction_tickets_[slot];
+            ticket_free_head_ = ticket.next_free;
+            if (ticket.generation == std::numeric_limits<std::uint64_t>::max() ||
+                reconstruction_serial_ == std::numeric_limits<std::uint64_t>::max())
+                continue;
+            const auto generation = ticket.generation + 1U;
+            ticket = ReconstructionTicket{};
+            ticket.generation = generation;
+            ticket.serial = ++reconstruction_serial_;
+            ticket.admission_change_serial = change_serial_;
+            ticket.allocated = true;
+            ticket.queued = true;
+            ticket.next_free = invalid_pool_index;
+            ++ticket_count_;
+            saturating_add(metrics_.reconstruction_tickets);
+            const auto handle = TicketHandle{slot, generation};
+            if (ticket_handle_valid(reconstruction_queue_tail_))
+                reconstruction_tickets_[reconstruction_queue_tail_.slot].next_queue = handle;
+            else
+                reconstruction_queue_head_ = handle;
+            reconstruction_queue_tail_ = handle;
+            return handle;
+        }
+        return std::nullopt;
+    }
+    [[nodiscard]] TicketHandle ensure_current_change_ticket() noexcept {
+        if (ticket_handle_valid(current_change_ticket_)) return current_change_ticket_;
+        const auto ticket = allocate_reconstruction_ticket();
+        if (!ticket.has_value()) {
+            last_refusal_ = RegionRefusal::ManifestCapacity;
+            saturating_add(metrics_.builds_refused);
+            return {};
+        }
+        current_change_ticket_ = *ticket;
+        return *ticket;
+    }
+    void attach_retired_region_to_current_change(
+        std::size_t region_slot, Region& region) noexcept {
+        if (region.member_head.slot == invalid_pool_index || region.member_count == 0)
+            return;
+        const auto ticket_handle = ensure_current_change_ticket();
+        if (!ticket_handle_valid(ticket_handle)) return;
+        const auto source_handle = allocate_source_region();
+        if (!source_handle.has_value()) {
+            last_refusal_ = RegionRefusal::ManifestCapacity;
+            saturating_add(metrics_.builds_refused);
+            return;
+        }
+        auto& source = sources_[source_handle->slot];
+        source.key = region.snapshot.key;
+        source.member_head = region.member_head;
+        source.member_count = region.member_count;
+        source.source_region_slot = static_cast<std::uint32_t>(region_slot);
+        source.source_region_generation = region.generation;
+        region.member_head = {};
+        region.member_count = 0;
+        auto& ticket = reconstruction_tickets_[ticket_handle.slot];
+        if (source_handle_valid(ticket.source_tail))
+            sources_[ticket.source_tail.slot].next = *source_handle;
+        else
+            ticket.source_head = *source_handle;
+        ticket.source_tail = *source_handle;
+        ++ticket.source_count;
     }
 
     static std::size_t checked_capacity(std::size_t value, std::size_t maximum,
