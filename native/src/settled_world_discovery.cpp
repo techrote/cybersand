@@ -12,6 +12,8 @@ namespace cybersand::soliding {
 namespace {
 
 std::atomic<bool> fail_next_coordinator_construction{false};
+std::atomic<std::uint64_t> next_deadline_generation_limit{
+    std::numeric_limits<std::uint64_t>::max()};
 
 void add(std::uint64_t& value, std::uint64_t amount = 1) noexcept {
     const auto room = std::numeric_limits<std::uint64_t>::max() - value;
@@ -38,6 +40,9 @@ namespace testing {
 void fail_next_settled_world_discovery_construction() noexcept {
     fail_next_coordinator_construction.store(true, std::memory_order_release);
 }
+void set_next_deadline_generation_limit(std::uint64_t limit) noexcept {
+    next_deadline_generation_limit.store(limit, std::memory_order_release);
+}
 } // namespace testing
 
 struct SettledWorldDiscoveryCoordinator::Impl {
@@ -47,6 +52,20 @@ struct SettledWorldDiscoveryCoordinator::Impl {
                                    kMaximumIntegratedRegionTiles,
                                    kMaximumIntegratedRegionTiles * 32>;
     using KeyIndex = BoundedOrderedIndex<DiscoveryTileKey, std::size_t, DiscoveryTileKeyLess>;
+    using ParentIndex =
+        BoundedOrderedIndex<DiscoveryParentKey, std::size_t, DiscoveryParentKeyLess>;
+    static constexpr std::size_t npos = std::numeric_limits<std::size_t>::max();
+
+    struct ParentRecord {
+        DiscoveryParentKey key{};
+        std::uint64_t deadline_due{};
+        std::uint64_t deadline_generation{};
+        std::size_t heap_position{npos};
+        bool activity_active{};
+        bool parked{};
+        bool ready{};
+    };
+
     struct Record {
         DiscoveryTileKey key{};
         DiscoveryBounds bounds{};
@@ -63,9 +82,14 @@ struct SettledWorldDiscoveryCoordinator::Impl {
         : journal(identity, checked_world_capacity(configured_capacity, enable_regions)),
           tile_capacity(configured_capacity), incarnation(identity),
           index(configured_capacity),
-          payload_queue(std::make_unique<std::size_t[]>(configured_capacity)) {
+          payload_queue(std::make_unique<std::size_t[]>(configured_capacity)),
+          parent_index(configured_capacity),
+          deadline_heap(std::make_unique<std::size_t[]>(configured_capacity)),
+          deadline_generation_limit(next_deadline_generation_limit.exchange(
+              std::numeric_limits<std::uint64_t>::max(), std::memory_order_acq_rel)) {
         if (identity == 0) throw std::invalid_argument("settled discovery incarnation must be nonzero");
         records.reserve(tile_capacity);
+        parents.reserve(tile_capacity);
         if (enable_regions) {
             const auto edge_capacity = checked_scale(tile_capacity, 64U,
                 "settled region edge capacity overflows size_t");
@@ -92,6 +116,233 @@ struct SettledWorldDiscoveryCoordinator::Impl {
 
     [[nodiscard]] bool valid_owner(WorldDiscoveryTileHandle handle) const noexcept {
         return handle.world_incarnation == incarnation && handle.slot < records.size();
+    }
+
+    std::optional<std::size_t> find_parent(DiscoveryParentKey key) const noexcept {
+        std::size_t probes = 0;
+        const auto record = parent_index.find(key, &probes);
+        add(metrics.index_probes, probes);
+        return record;
+    }
+
+    bool insert_parent_index(DiscoveryParentKey key, std::size_t record) noexcept {
+        std::size_t probes = 0;
+        const auto outcome = parent_index.insert(key, record, &probes);
+        add(metrics.index_probes, probes);
+        return outcome == ParentIndex::InsertResult::Inserted;
+    }
+
+    void fail_sparse_state() noexcept {
+        add(metrics.observation_fences);
+        journal.fail();
+        if (regions != nullptr) regions->fail(RegionRefusal::SourceFailure);
+    }
+
+    bool advance_deadline_generation(ParentRecord& record) noexcept {
+        if (record.deadline_generation >= deadline_generation_limit) {
+            add(metrics.deadline_generation_exhaustions);
+            fail_sparse_state();
+            return false;
+        }
+        ++record.deadline_generation;
+        return true;
+    }
+
+    bool deadline_less(std::size_t left, std::size_t right) const noexcept {
+        const auto& a = parents[left];
+        const auto& b = parents[right];
+        if (a.deadline_due != b.deadline_due) return a.deadline_due < b.deadline_due;
+        return DiscoveryParentKeyLess{}(a.key, b.key);
+    }
+
+    void swap_heap(std::size_t left, std::size_t right) noexcept {
+        const auto temporary = deadline_heap[left];
+        deadline_heap[left] = deadline_heap[right];
+        deadline_heap[right] = temporary;
+        parents[deadline_heap[left]].heap_position = left;
+        parents[deadline_heap[right]].heap_position = right;
+    }
+
+    void sift_up(std::size_t position) noexcept {
+        while (position != 0) {
+            const auto parent = (position - 1U) / 2U;
+            if (!deadline_less(deadline_heap[position], deadline_heap[parent])) break;
+            swap_heap(position, parent);
+            position = parent;
+        }
+    }
+
+    void sift_down(std::size_t position) noexcept {
+        for (;;) {
+            const auto left = position * 2U + 1U;
+            if (left >= deadline_heap_count) return;
+            const auto right = left + 1U;
+            auto best = left;
+            if (right < deadline_heap_count &&
+                deadline_less(deadline_heap[right], deadline_heap[left])) best = right;
+            if (!deadline_less(deadline_heap[best], deadline_heap[position])) return;
+            swap_heap(position, best);
+            position = best;
+        }
+    }
+
+    bool push_deadline(std::size_t record_index) noexcept {
+        if (deadline_heap_count >= tile_capacity) {
+            fail_sparse_state();
+            return false;
+        }
+        const auto position = deadline_heap_count++;
+        deadline_heap[position] = record_index;
+        parents[record_index].heap_position = position;
+        sift_up(position);
+        if (deadline_heap_count > metrics.deadline_heap_high_water)
+            metrics.deadline_heap_high_water = deadline_heap_count;
+        return true;
+    }
+
+    void remove_deadline(std::size_t record_index) noexcept {
+        auto& record = parents[record_index];
+        const auto position = record.heap_position;
+        if (position == npos || position >= deadline_heap_count) return;
+        const auto last_position = deadline_heap_count - 1U;
+        if (position != last_position) {
+            deadline_heap[position] = deadline_heap[last_position];
+            parents[deadline_heap[position]].heap_position = position;
+        }
+        --deadline_heap_count;
+        record.heap_position = npos;
+        if (position < deadline_heap_count) {
+            if (position != 0 &&
+                deadline_less(deadline_heap[position], deadline_heap[(position - 1U) / 2U]))
+                sift_up(position);
+            else
+                sift_down(position);
+        }
+    }
+
+    DiscoveryOutcome register_parent(DiscoveryParentKey key, bool active,
+                                     std::uint64_t deadline_due) noexcept {
+        if (journal.halted() != DiscoveryHalt::None) return DiscoveryOutcome::Halted;
+        if (key.world_incarnation != incarnation) return DiscoveryOutcome::Invalid;
+        if (find_parent(key).has_value()) return DiscoveryOutcome::Unchanged;
+        if (parents.size() == tile_capacity) {
+            fail_sparse_state();
+            return DiscoveryOutcome::Capacity;
+        }
+        const auto index_value = parents.size();
+        parents.push_back(ParentRecord{key, 0, 0, npos, active, false, false});
+        if (!insert_parent_index(key, index_value)) {
+            fail_sparse_state();
+            return DiscoveryOutcome::Invalid;
+        }
+        if (deadline_due != 0) {
+            auto& record = parents[index_value];
+            if (!advance_deadline_generation(record)) return DiscoveryOutcome::Halted;
+            record.deadline_due = deadline_due;
+            if (!push_deadline(index_value)) return DiscoveryOutcome::Halted;
+            add(metrics.deadline_insertions);
+        }
+        return DiscoveryOutcome::Accepted;
+    }
+
+    DiscoveryOutcome witness_parent_activity(DiscoveryParentKey key, bool active) noexcept {
+        if (journal.halted() != DiscoveryHalt::None) return DiscoveryOutcome::Halted;
+        const auto index_value = find_parent(key);
+        if (!index_value.has_value()) return DiscoveryOutcome::Stale;
+        add(metrics.activity_witnesses);
+        auto& record = parents[*index_value];
+        if (record.activity_active == active) return DiscoveryOutcome::Unchanged;
+        record.activity_active = active;
+        add(metrics.activity_transitions);
+        return DiscoveryOutcome::Accepted;
+    }
+
+    DiscoveryOutcome schedule_parent_deadline(DiscoveryParentKey key,
+                                              std::uint64_t due_tick) noexcept {
+        if (journal.halted() != DiscoveryHalt::None) return DiscoveryOutcome::Halted;
+        if (due_tick == 0) return DiscoveryOutcome::Invalid;
+        const auto index_value = find_parent(key);
+        if (!index_value.has_value()) return DiscoveryOutcome::Stale;
+        auto& record = parents[*index_value];
+        if (record.deadline_due != 0 && due_tick >= record.deadline_due)
+            return DiscoveryOutcome::Unchanged;
+        if (!advance_deadline_generation(record)) return DiscoveryOutcome::Halted;
+        const bool replacing = record.deadline_due != 0;
+        record.deadline_due = due_tick;
+        if (record.heap_position != npos) {
+            sift_up(record.heap_position);
+        } else if (!record.parked && !record.ready) {
+            if (!push_deadline(*index_value)) return DiscoveryOutcome::Halted;
+        }
+        add(replacing ? metrics.deadline_replacements : metrics.deadline_insertions);
+        return DiscoveryOutcome::Accepted;
+    }
+
+    DiscoveryOutcome clear_parent_deadline(DiscoveryParentKey key, bool consumption) noexcept {
+        if (journal.halted() != DiscoveryHalt::None) return DiscoveryOutcome::Halted;
+        const auto index_value = find_parent(key);
+        if (!index_value.has_value()) return DiscoveryOutcome::Stale;
+        auto& record = parents[*index_value];
+        if (record.deadline_due == 0) return DiscoveryOutcome::Unchanged;
+        if (!advance_deadline_generation(record)) return DiscoveryOutcome::Halted;
+        remove_deadline(*index_value);
+        if (record.ready && deadline_ready_count != 0) --deadline_ready_count;
+        if (consumption && record.parked) add(metrics.deadline_reentries);
+        record.deadline_due = 0;
+        record.parked = false;
+        record.ready = false;
+        add(consumption ? metrics.deadline_consumptions : metrics.deadline_cancellations);
+        return DiscoveryOutcome::Accepted;
+    }
+
+    DiscoveryOutcome mark_parent_deadline_ready(DiscoveryParentKey key) noexcept {
+        if (journal.halted() != DiscoveryHalt::None) return DiscoveryOutcome::Halted;
+        const auto index_value = find_parent(key);
+        if (!index_value.has_value()) return DiscoveryOutcome::Stale;
+        auto& record = parents[*index_value];
+        if (record.deadline_due == 0) return DiscoveryOutcome::Unchanged;
+        if (record.ready) return DiscoveryOutcome::Unchanged;
+        if (!advance_deadline_generation(record)) return DiscoveryOutcome::Halted;
+        remove_deadline(*index_value);
+        record.parked = false;
+        record.ready = true;
+        ++deadline_ready_count;
+        add(metrics.deadline_ready);
+        return DiscoveryOutcome::Accepted;
+    }
+
+    DiscoveryOutcome park_parent_deadline(DiscoveryParentKey key) noexcept {
+        if (journal.halted() != DiscoveryHalt::None) return DiscoveryOutcome::Halted;
+        const auto index_value = find_parent(key);
+        if (!index_value.has_value()) return DiscoveryOutcome::Stale;
+        auto& record = parents[*index_value];
+        if (record.deadline_due == 0) return DiscoveryOutcome::Unchanged;
+        if (record.parked) return DiscoveryOutcome::Unchanged;
+        if (!advance_deadline_generation(record)) return DiscoveryOutcome::Halted;
+        remove_deadline(*index_value);
+        if (record.ready && deadline_ready_count != 0) --deadline_ready_count;
+        record.ready = false;
+        record.parked = true;
+        add(metrics.deadline_parks);
+        return DiscoveryOutcome::Accepted;
+    }
+
+    std::optional<DiscoveryDeadlineSnapshot> deadline_snapshot(
+        DiscoveryParentKey key) const noexcept {
+        const auto index_value = find_parent(key);
+        if (!index_value.has_value()) return std::nullopt;
+        const auto& record = parents[*index_value];
+        return DiscoveryDeadlineSnapshot{
+            record.key, record.deadline_due, record.deadline_generation,
+            record.parked, record.ready};
+    }
+
+    std::optional<DiscoveryDeadlineSnapshot> next_deadline_snapshot() const noexcept {
+        if (deadline_heap_count == 0) return std::nullopt;
+        const auto& record = parents[deadline_heap[0]];
+        return DiscoveryDeadlineSnapshot{
+            record.key, record.deadline_due, record.deadline_generation,
+            record.parked, record.ready};
     }
 
     DiscoveryOutcome dirty_record(std::size_t record_index, ProducerReason reason,
@@ -205,6 +456,12 @@ struct SettledWorldDiscoveryCoordinator::Impl {
     std::unique_ptr<std::size_t[]> payload_queue;
     std::size_t payload_head{};
     std::size_t payload_queued{};
+    std::vector<ParentRecord> parents;
+    ParentIndex parent_index;
+    std::unique_ptr<std::size_t[]> deadline_heap;
+    std::size_t deadline_heap_count{};
+    std::size_t deadline_ready_count{};
+    std::uint64_t deadline_generation_limit{};
     std::unique_ptr<Regions> regions;
     std::array<DiscoveryCell, 1024> region_scratch{};
     mutable WorldDiscoveryMetrics metrics{};
@@ -346,6 +603,52 @@ DiscoveryOutcome SettledWorldDiscoveryCoordinator::observe(
         : DiscoveryOutcome::Stale;
 }
 
+DiscoveryOutcome SettledWorldDiscoveryCoordinator::register_activity_parent(
+    DiscoveryParentKey key, bool active, std::uint64_t deadline_due) noexcept {
+    return impl_->register_parent(key, active, deadline_due);
+}
+DiscoveryOutcome SettledWorldDiscoveryCoordinator::witness_activity(
+    DiscoveryParentKey key, bool active) noexcept {
+    return impl_->witness_parent_activity(key, active);
+}
+DiscoveryOutcome SettledWorldDiscoveryCoordinator::schedule_deadline(
+    DiscoveryParentKey key, std::uint64_t due_tick) noexcept {
+    return impl_->schedule_parent_deadline(key, due_tick);
+}
+DiscoveryOutcome SettledWorldDiscoveryCoordinator::cancel_deadline(
+    DiscoveryParentKey key) noexcept {
+    return impl_->clear_parent_deadline(key, false);
+}
+DiscoveryOutcome SettledWorldDiscoveryCoordinator::mark_deadline_ready(
+    DiscoveryParentKey key) noexcept {
+    return impl_->mark_parent_deadline_ready(key);
+}
+DiscoveryOutcome SettledWorldDiscoveryCoordinator::park_deadline(
+    DiscoveryParentKey key) noexcept {
+    return impl_->park_parent_deadline(key);
+}
+DiscoveryOutcome SettledWorldDiscoveryCoordinator::consume_deadline(
+    DiscoveryParentKey key) noexcept {
+    return impl_->clear_parent_deadline(key, true);
+}
+std::optional<DiscoveryDeadlineSnapshot> SettledWorldDiscoveryCoordinator::next_deadline()
+    const noexcept {
+    return impl_->next_deadline_snapshot();
+}
+std::optional<DiscoveryDeadlineSnapshot> SettledWorldDiscoveryCoordinator::deadline_state(
+    DiscoveryParentKey key) const noexcept {
+    return impl_->deadline_snapshot(key);
+}
+std::size_t SettledWorldDiscoveryCoordinator::activity_parent_count() const noexcept {
+    return impl_->parents.size();
+}
+std::size_t SettledWorldDiscoveryCoordinator::deadline_heap_size() const noexcept {
+    return impl_->deadline_heap_count;
+}
+std::size_t SettledWorldDiscoveryCoordinator::deadline_ready_count() const noexcept {
+    return impl_->deadline_ready_count;
+}
+
 std::size_t SettledWorldDiscoveryCoordinator::advance(
     std::uint64_t tick, std::size_t budget, const void* context,
     ReadCellFunction read) {
@@ -483,6 +786,9 @@ std::size_t SettledWorldDiscoveryCoordinator::storage_bytes() const noexcept {
     return sizeof(Impl) + (state.journal.storage_bytes() - sizeof(Impl::Journal)) +
            state.records.capacity() * sizeof(Impl::Record) +
            (state.index.storage_bytes() - sizeof(Impl::KeyIndex)) +
+           state.tile_capacity * sizeof(std::size_t) +
+           state.parents.capacity() * sizeof(Impl::ParentRecord) +
+           (state.parent_index.storage_bytes() - sizeof(Impl::ParentIndex)) +
            state.tile_capacity * sizeof(std::size_t);
 }
 WorldDiscoveryStorageLayout SettledWorldDiscoveryCoordinator::storage_layout() const noexcept {
@@ -497,6 +803,14 @@ WorldDiscoveryStorageLayout SettledWorldDiscoveryCoordinator::storage_layout() c
     out.key_index_storage_bytes = state.index.storage_bytes() - sizeof(Impl::KeyIndex);
     out.payload_queue_capacity = state.tile_capacity;
     out.payload_queue_storage_bytes = state.tile_capacity * sizeof(std::size_t);
+    out.activity_parent_capacity = state.parents.capacity();
+    out.activity_parent_index_capacity = state.parent_index.capacity();
+    out.deadline_heap_capacity = state.tile_capacity;
+    out.activity_parent_storage_bytes =
+        state.parents.capacity() * sizeof(Impl::ParentRecord);
+    out.activity_parent_index_storage_bytes =
+        state.parent_index.storage_bytes() - sizeof(Impl::ParentIndex);
+    out.deadline_heap_storage_bytes = state.tile_capacity * sizeof(std::size_t);
     out.regions_enabled = state.regions != nullptr;
     if (state.regions != nullptr) {
         out.region_tile_capacity = state.regions->tile_capacity();
