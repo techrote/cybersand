@@ -60,7 +60,7 @@ exit audit and must inspect current evidence rather than inherit child self-rati
 
 ## Dependency graph
 
-\`\`\`text
+```text
 #80 REM-001 authority/RAG
  ├─> #81 REM-002 #11 integration --------> #83 REM-004 broad body/granular
  ├─> #82 REM-003 broad player/granular
@@ -76,7 +76,7 @@ exit audit and must inspect current evidence rather than inherit child self-rati
                          |
                          v
                     parent #79
-\`\`\`
+```
 
 #45 is downstream of #49 but is not itself a prerequisite for closing #79 unless
 a later parent decision explicitly changes that rule. The remediation programme
@@ -103,7 +103,7 @@ records, not current routing.
 
 ### #10 and #11 issue state
 
-REM-001 reopens #10 and #11 because \`closed/completed\` is misleading for their
+REM-001 reopens #10 and #11 because `closed/completed` is misleading for their
 original broad behavioural objectives after the later owner evaluation. Reopening
 does not retract their bounded dated evidence and does not create duplicate
 implementation lanes.
@@ -126,7 +126,7 @@ remains blocked until the parent admits Stage 3B after #70.
 
 #30 remains an open tracker, not an execution prerequisite. #27/MS-000,
 #28/MS-001 and #29/INT-000 infrastructure are landed; #29/PR #55 merged as
-\`910717aac101363ec2b1b89e4041a22bc9a97b97\`. Future interaction tuning is
+`910717aac101363ec2b1b89e4041a22bc9a97b97`. Future interaction tuning is
 bounded, versioned follow-on work, not unfinished #29 infrastructure.
 
 ## Historical evidence rules
@@ -135,7 +135,7 @@ Do not repair current truth by editing old evidence to match it.
 
 - #9's measured baseline remains scoped to its original source/artifacts.
 - #10's policy/evidence remains a valid bounded checkpoint.
-- #11's \`d5f0de6\` evidence and \`f8720d3\` accepted code checkpoint remain
+- #11's `d5f0de6` evidence and `f8720d3` accepted code checkpoint remain
   historical proof even though audited current main lacks the repair.
 - #19's engine/presentation/harness evidence remains valid; only formal blind
   study readiness is withdrawn pending #84.
@@ -187,7 +187,7 @@ does not copy its corrective scope into a new issue.
 
 The affected Water architecture path remains:
 
-\`#49 -> #45 -> directional-reference reassessment -> #18 G-M admission/no-go -> #20/G-B if justified -> #14 G-final\`.
+`#49 -> #45 -> directional-reference reassessment -> #18 G-M admission/no-go -> #20/G-B if justified -> #14 G-final`.
 
 #84 formal H-record integrity is separate from #49's head-transmission apparatus.
 Neither is permission to change Water semantics under REM-001.
