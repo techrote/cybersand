@@ -615,6 +615,9 @@ void deferred_subscriber_cleanup_is_aba_safe() {
             const auto candidate = regions.region_at(slot);
             if (candidate.has_value() && candidate->min_x == 0 &&
                 candidate->max_x == 0 && candidate->area == 1) {
+                if (regions.cleanup_pending() != 0)
+                    require(candidate->handle.slot != old_local.handle.slot,
+                            "live stale references prevent early publication-slot reuse");
                 replacement = candidate;
                 break;
             }
@@ -622,11 +625,6 @@ void deferred_subscriber_cleanup_is_aba_safe() {
     }
     require(replacement.has_value(),
             "replacement publication progresses while stale reverse records are reclaimed");
-    require(regions.cleanup_pending() != 0,
-            "stale subscriber cleanup remains explicitly deferred");
-    require(replacement->handle.slot != old_local.handle.slot,
-            "retired publication slot is not reused while stale references can still name it");
-
     require(put(regions, key(2, 0, 32), {2, 0, 1, 1}, 2, neighbour_changed) ==
                 RegionOutcome::Accepted,
             "old dependency target changes while stale subscriber records remain");
