@@ -706,9 +706,12 @@ DiscoveryOutcome SettledWorldDiscoveryCoordinator::register_tile(
         const auto region_outcome = state.regions->register_unknown(key, bounds, 1);
         if (region_outcome != RegionOutcome::Accepted) {
             add(state.metrics.registration_refusals);
-            state.block_capacity();
-            return region_outcome == RegionOutcome::Capacity
-                ? DiscoveryOutcome::Capacity : DiscoveryOutcome::Halted;
+            if (region_outcome == RegionOutcome::Capacity) {
+                state.block_capacity();
+                return DiscoveryOutcome::Capacity;
+            }
+            state.fail_sparse_state();
+            return DiscoveryOutcome::Halted;
         }
         add(state.metrics.coverage_unknown_revocations);
     }
@@ -725,8 +728,12 @@ DiscoveryOutcome SettledWorldDiscoveryCoordinator::register_tile(
         if (outcome == DiscoveryOutcome::Capacity) {
             add(state.metrics.registration_refusals);
             state.block_capacity();
+            return outcome;
         }
-        return outcome;
+        // Unknown-residency may already have revoked an absence certificate.
+        // Any later registration failure must therefore quarantine observation.
+        state.fail_sparse_state();
+        return DiscoveryOutcome::Halted;
     }
 
     const auto record_index = state.records.size();
