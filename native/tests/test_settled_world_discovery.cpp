@@ -321,32 +321,17 @@ CYBERSAND_TEST_NOINLINE void sparse_mask_coverage_and_inclusion_epochs() {
 CYBERSAND_TEST_NOINLINE void event_halo_overlap_and_signed_geometry() {
     auto config = tracked_config();
     config.activity_block_size = 1;
-    config.settled_discovery_tile_capacity = 256;
+    // This fixture intentionally maps one discovery owner per cell. The phased
+    // event write can make two neighbouring write-domain chunks resident, so
+    // keep capacity above the resulting 320 owners; capacity refusal is covered
+    // separately by canonical_geometry_registration_and_capacity().
+    config.settled_discovery_tile_capacity = 512;
     World world(config);
     world.reserve_region({-8, 0, 17, 1});
     service(world);
 
     const auto halo_before = tile_at(world, 5, 0);
     require(world.queue_explosion(0, 0, 1, 0), "minimum-radius event accepted");
-    if (world.settled_discovery_halted() != DiscoveryHalt::None) {
-        const auto metrics = world.settled_discovery_producer_metrics();
-        throw std::runtime_error(
-            "event acceptance fenced discovery: halt=" +
-            std::to_string(static_cast<unsigned>(world.settled_discovery_halted())) +
-            " global_fences=" + std::to_string(metrics.global_fences) +
-            " observation_fences=" + std::to_string(metrics.observation_fences) +
-            " generation_exhaustions=" +
-            std::to_string(metrics.nonpayload_generation_exhaustions) +
-            " event_witnesses=" + std::to_string(metrics.event_witnesses) +
-            " activity_reconcile_failures=" +
-            std::to_string(metrics.activity_reconcile_failures) +
-            " explicit_observer_failures=" +
-            std::to_string(metrics.explicit_observer_failures) +
-            " capacity_halts=" + std::to_string(metrics.capacity_halts) +
-            " mapped_tiles=" + std::to_string(metrics.mapped_tiles) +
-            " payload_enqueued=" + std::to_string(metrics.payload_work_enqueued) +
-            " payload_serviced=" + std::to_string(metrics.payload_work_serviced));
-    }
     const auto halo_pending = tile_at(world, 5, 0);
     require(halo_pending.pending_event_count == 1 &&
             halo_pending.signals.pending_event &&
@@ -355,25 +340,8 @@ CYBERSAND_TEST_NOINLINE void event_halo_overlap_and_signed_geometry() {
     require(tile_at(world, -5, 0).signals.pending_event,
             "negative-coordinate halo uses the same signed geometry");
     (void)world.tick();
-    if (world.settled_discovery_halted() != DiscoveryHalt::None) {
-        const auto metrics = world.settled_discovery_producer_metrics();
-        throw std::runtime_error(
-            "event drain fenced discovery: global_fences=" +
-            std::to_string(metrics.global_fences) +
-            " observation_fences=" + std::to_string(metrics.observation_fences) +
-            " generation_exhaustions=" +
-            std::to_string(metrics.nonpayload_generation_exhaustions) +
-            " event_witnesses=" + std::to_string(metrics.event_witnesses) +
-            " activity_reconcile_failures=" +
-            std::to_string(metrics.activity_reconcile_failures) +
-            " explicit_observer_failures=" +
-            std::to_string(metrics.explicit_observer_failures) +
-            " payload_refresh_failures=" +
-            std::to_string(metrics.payload_refresh_failures) +
-            " region_ingest_failures=" +
-            std::to_string(metrics.region_ingest_failures) +
-            " capacity_halts=" + std::to_string(metrics.capacity_halts));
-    }
+    require(world.settled_discovery_halted() == DiscoveryHalt::None,
+            "ordinary event drain preserves representable observation");
     const auto halo_drained = tile_at(world, 5, 0);
     require(halo_drained.pending_event_count == 0 &&
             !halo_drained.signals.pending_event,
@@ -401,17 +369,8 @@ CYBERSAND_TEST_NOINLINE void event_halo_overlap_and_signed_geometry() {
     require(late.queue_explosion(0, 0, 1, 0),
             "event may be accepted before destination coverage is resident");
     late.reserve_region({0, 0, 8, 1});
-    if (late.settled_discovery_halted() != DiscoveryHalt::None) {
-        const auto metrics = late.settled_discovery_producer_metrics();
-        throw std::runtime_error(
-            "late-residency registration fenced discovery: global_fences=" +
-            std::to_string(metrics.global_fences) +
-            " observation_fences=" + std::to_string(metrics.observation_fences) +
-            " registration_refusals=" +
-            std::to_string(metrics.registration_refusals) +
-            " coverage_notifications=" +
-            std::to_string(metrics.coverage_notifications));
-    }
+    require(late.settled_discovery_halted() == DiscoveryHalt::None,
+            "late residency inherits representable event state without fencing");
     require(tile_at(late, 5, 0).pending_event_count == 1,
             "new residency inherits an outstanding event before payload readiness");
 
