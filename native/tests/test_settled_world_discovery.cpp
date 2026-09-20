@@ -36,6 +36,16 @@ void require(bool condition, const char* message) {
     if (!condition) throw std::runtime_error(message);
 }
 
+template<class Test>
+void run_named(const char* name, Test&& test) {
+    try {
+        test();
+    } catch (...) {
+        std::cerr << "while running " << name << '\n';
+        throw;
+    }
+}
+
 WorldConfig tracked_config(std::uint32_t workers = 1) {
     WorldConfig config{};
     config.chunk_size = 8;
@@ -917,23 +927,23 @@ CYBERSAND_TEST_NOINLINE void integrated_region_worker_parity() {
 
 int main() {
     try {
-        direct_aba_exact_tuple_and_render_independence();
-        canonical_geometry_registration_and_capacity();
-        movement_mask_event_and_far_locality();
-        sparse_mask_coverage_and_inclusion_epochs();
-        event_halo_overlap_and_signed_geometry();
-        overlapping_event_counts_and_generation_fence();
-        nonpayload_quiet_world_locality();
-        occupancy_preserves_exact_underlying_tuple();
-        water_transfer_witnesses_both_endpoints();
-        no_write_activity_deadline_and_epoch_wrap();
-        custom_geometry_signed_endpoints_and_policy_fence();
-        inclusion_reset_move_and_failure_quarantine();
-        reset_replacement_failure_retires_before_authority_loss();
-        disabled_neutrality_and_worker_parity();
-        integrated_region_publication_split_merge_and_refusal();
-        integrated_new_tile_registration_retires_facing_region();
-        integrated_region_worker_parity();
+        run_named("direct_aba_exact_tuple_and_render_independence", [] { direct_aba_exact_tuple_and_render_independence(); });
+        run_named("canonical_geometry_registration_and_capacity", [] { canonical_geometry_registration_and_capacity(); });
+        run_named("movement_mask_event_and_far_locality", [] { movement_mask_event_and_far_locality(); });
+        run_named("sparse_mask_coverage_and_inclusion_epochs", [] { sparse_mask_coverage_and_inclusion_epochs(); });
+        run_named("event_halo_overlap_and_signed_geometry", [] { event_halo_overlap_and_signed_geometry(); });
+        run_named("overlapping_event_counts_and_generation_fence", [] { overlapping_event_counts_and_generation_fence(); });
+        run_named("nonpayload_quiet_world_locality", [] { nonpayload_quiet_world_locality(); });
+        run_named("occupancy_preserves_exact_underlying_tuple", [] { occupancy_preserves_exact_underlying_tuple(); });
+        run_named("water_transfer_witnesses_both_endpoints", [] { water_transfer_witnesses_both_endpoints(); });
+        run_named("no_write_activity_deadline_and_epoch_wrap", [] { no_write_activity_deadline_and_epoch_wrap(); });
+        run_named("custom_geometry_signed_endpoints_and_policy_fence", [] { custom_geometry_signed_endpoints_and_policy_fence(); });
+        run_named("inclusion_reset_move_and_failure_quarantine", [] { inclusion_reset_move_and_failure_quarantine(); });
+        run_named("reset_replacement_failure_retires_before_authority_loss", [] { reset_replacement_failure_retires_before_authority_loss(); });
+        run_named("disabled_neutrality_and_worker_parity", [] { disabled_neutrality_and_worker_parity(); });
+        run_named("integrated_region_publication_split_merge_and_refusal", [] { integrated_region_publication_split_merge_and_refusal(); });
+        run_named("integrated_new_tile_registration_retires_facing_region", [] { integrated_new_tile_registration_retires_facing_region(); });
+        run_named("integrated_region_worker_parity", [] { integrated_region_worker_parity(); });
         std::cout << "settled World discovery tests passed\n";
         return 0;
     } catch (const std::exception& error) {
