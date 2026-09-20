@@ -34,7 +34,7 @@ jobs:
           persist-credentials: true
 
       - name: Freeze-gate focused #63 correctness and sanitizers
-        # Freeze gate: focused #63 correctness, r1 checked geometry and sanitizers must pass before any runtime build.
+        # Freeze gate: focused #63 correctness, checked event geometry and sanitizers must pass before any runtime build.
         env:
           ASAN_OPTIONS: detect_leaks=1:strict_string_checks=1
         run: |
