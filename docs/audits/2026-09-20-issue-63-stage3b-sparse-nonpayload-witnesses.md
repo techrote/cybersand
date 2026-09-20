@@ -1,6 +1,6 @@
 ---
 title: Issue 63 Stage 3B sparse non-payload producer evidence
-status: Implementation evidence
+status: Review-ready implementation
 document-kind: audit
 scope: Issue #63 mask, event, inclusion and coverage witness package
 canonical-for: [issue-63-stage3b-sparse-nonpayload-witnesses]
@@ -110,10 +110,30 @@ The complete native/soliding suite remains the regression authority for #61 payl
 #62 activity/deadline, #64 graph behavior, workers 1/4 determinism, observer-disabled
 neutrality and sanitizer coverage.
 
-## Publication boundary
+## Source-matched runtime publication
 
-Native source changes invalidate the committed Linux/Windows GDExtension provenance.
-Exactly one source-matched Linux + Windows runtime/provenance publication must be made
-from the final reconciled source after implementation fixes stop. Exact run IDs,
-source SHA and final CI evidence are recorded in PR #101 / issue #63 before merge;
-this document does not pre-claim evidence that has not run.
+The final native source was reconciled with authoritative `main`
+`4e4381d304458ef9b0dfa9336cfe08e8cc162210` before publication. The exact
+publication source is `688c934a63b22a0aee180b11d05a357d86643300`, source tree
+`c4b54ddc2570e2b8e1fdd51ad5d6419975ded42e`.
+
+Actions run `35539993947` passed the focused #63 soliding suite and sanitized
+World-discovery freeze gate before building either runtime, then passed:
+
+- Linux x86_64 Godot 4.7 build plus ABI/runtime-floor validation, SHA-256
+  `edc4399fc7d1b1140d678ceeaead5b402388719f7947e766764f6f2a30f8e84b`;
+- Windows x86_64 pinned LLVM-MinGW cross-build, SHA-256
+  `4509d97b5e5b4c2976459ee78597603cb65c59def70876ba4caa5a21b53b65d9`;
+- exact source-input provenance regeneration and verification;
+- retained runtime artifact publication and Git LFS verification.
+
+The publication commit is
+`51e74dad9944b994792988bef1e4bf1d2bd2ae36`. It changes only the two
+runtime artifacts/provenance manifests and removes the temporary publisher workflow;
+the published native source inputs are unchanged. Windows execution is unavailable
+and is not claimed.
+
+Final merge acceptance still requires the normal exact-head Documentation/provenance,
+Native C++ and GDExtension/Godot workflows to pass after this evidence-only audit
+update. Their run identities are retained on PR #101 so this document does not require
+another post-validation commit.
