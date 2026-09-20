@@ -606,11 +606,12 @@ bool World::discovery_tile_fully_covered(
            last.x <= coverage->max_x && last.y <= coverage->max_y;
 }
 
-std::optional<RectI64> World::discovery_event_observation_rect(
-    std::int64_t x, std::int64_t y, std::int32_t radius) const noexcept {
-    if (radius <= 0 || config_.maximum_rule_radius < 0) return std::nullopt;
+std::optional<RectI64> World::checked_discovery_event_observation_rect(
+    std::int64_t x, std::int64_t y, std::int32_t radius,
+    std::int32_t rule_radius) noexcept {
+    if (radius <= 0 || rule_radius < 0) return std::nullopt;
     const auto effect = static_cast<std::int64_t>(radius) + 2;
-    const auto halo = static_cast<std::int64_t>(config_.maximum_rule_radius);
+    const auto halo = static_cast<std::int64_t>(rule_radius);
     if (halo > std::numeric_limits<std::int64_t>::max() - effect)
         return std::nullopt;
     const auto pending = effect + halo;
@@ -622,6 +623,12 @@ std::optional<RectI64> World::discovery_event_observation_rect(
         return std::nullopt;
     }
     return RectI64{x - pending, y - pending, pending * 2 + 1, pending * 2 + 1};
+}
+
+std::optional<RectI64> World::discovery_event_observation_rect(
+    std::int64_t x, std::int64_t y, std::int32_t radius) const noexcept {
+    return checked_discovery_event_observation_rect(
+        x, y, radius, config_.maximum_rule_radius);
 }
 
 std::optional<std::uint64_t> World::discovery_pending_event_count(
