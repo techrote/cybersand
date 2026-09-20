@@ -193,9 +193,13 @@ success-valued zero for unreached thresholds, non-revoked sustained passage,
 a historical three-compartment fixture mislabeled as a clean U-tube, mixed
 active/sleep p95 interpretation and evidence-runner durability gaps.
 
-[#49](https://github.com/techrote/cybersand/issues/49) is now the required bounded
-correction before #45 implementation/acceptance. #45 must use versioned corrected
-metrics/fixtures and fresh Current-Water baselines. Production Water is unchanged.
+[#49](https://github.com/techrote/cybersand/issues/49) now supplies the bounded
+versioned correction and source-matched
+[Current-Water v2 baseline](../audits/2026-09-20-issue-49-water-apparatus-v2-baseline.md).
+The clean two-limb control remains `not_reached` for both preregistered equilibrium
+thresholds by tick 4800; this is a corrected Current-Water observation, not a new
+solver selection. Production Water is unchanged. #95 must synthesize this control
+with WEX evidence before #45 may proceed, narrow, recharter, defer or no-go.
 
 ## Water hybrid / pressure extension checkpoint — 2026-09-20
 
@@ -208,9 +212,11 @@ investigation before any new #45 pressure/head mechanism is treated as inevitabl
 - [#92](https://github.com/techrote/cybersand/issues/92) may test at most roughly
   3-5 segmented upper-volume solided-Water sheet tiers only on a suitable generic
   #12 hybrid substrate.
-- [#93](https://github.com/techrote/cybersand/issues/93) independently researches
-  lumped connected gas regions; [#94](https://github.com/techrote/cybersand/issues/94)
-  is conditional decompression research.
+- [#93](https://github.com/techrote/cybersand/issues/93) research now records a
+  [bounded lumped-region candidate](../research/lumped-gas-region-pressure-bookkeeping.md):
+  technically promising for optional/research use, with no production atmosphere
+  adoption. It admits [#94](https://github.com/techrote/cybersand/issues/94) only
+  as a bounded non-production decompression proof.
 - [#95](https://github.com/techrote/cybersand/issues/95) synthesizes WEX evidence
   with merged #49 controls and decides whether #45 should proceed, narrow,
   recharter, defer or no-go.

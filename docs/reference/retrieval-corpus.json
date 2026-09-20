@@ -49,6 +49,7 @@
     "reference/product-intent-and-priorities.md",
     "reference/status-and-roadmap.md",
     "reference/validation-evidence.md",
+    "research/lumped-gas-region-pressure-bookkeeping.md",
     "research/sandspiel-performance-and-material-port.md",
     "systems/activity-dirty-regions-and-waking.md",
     "systems/granular-interaction-policy.md",
@@ -268,6 +269,14 @@
     {
       "path": "audits/2026-09-20-development-claims-closure-audit.md",
       "reason": "Dated REM-001 closure/claims intake audit; retrieve explicitly for frozen F01-F19 evidence, while the Current remediation programme owns live status"
+    },
+    {
+      "path": "audits/2026-09-20-issue-49-water-apparatus-v2-registration.md",
+      "reason": "Dated issue #49 preregistration freezing successor apparatus-v2 metric, fixture, runner and acceptance semantics before corrected results; retrieve explicitly when auditing the correction contract"
+    },
+    {
+      "path": "audits/2026-09-20-issue-49-water-apparatus-v2-baseline.md",
+      "reason": "Dated source-matched issue #49 Current-Water successor-apparatus evidence; retrieve explicitly for corrected measurements/provenance while Current routing is mirrored into Water/roadmap/architecture contracts"
     }
   ]
 }

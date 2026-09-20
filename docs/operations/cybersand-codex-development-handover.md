@@ -39,8 +39,9 @@ historical barrel-support result as final behavior. Do not start substitute impl
 under #10/#11.
 
 #19's simulation/presentation apparatus remains valid, but formal blind H capture
-waits for #84. #26's exact negative candidate result remains valid while #49 owns
-the corrected successor apparatus before #45.
+waits for #84. #26's exact negative candidate result remains valid; #49 has now
+supplied the corrected successor apparatus/control, and #95 is the decision join
+before #45 may select a successor disposition.
 
 This remediation is not a global physics freeze. #12 Stage 3B continues under its
 own plan, subject to live owner/write-set collision checks before a remediation
@@ -223,17 +224,25 @@ bulk baseline or a documented no-go. #20 and G-final remain downstream under the
 architecture programme. #28/#29 may continue in parallel, with targeted
 revalidation only after a later accepted Water semantic change.
 
-## Issue #49 Water apparatus correction handoff, 2026-09-19
+## Issue #49 Water successor apparatus v2 handoff, 2026-09-20
 
-Use [the post-merge #26 review](../audits/2026-09-19-issue-26-post-merge-review.md)
-before any successor Water experiment. #26 remains closed and its two local
-candidate rejections remain valid, but the v1 harness is historical evidence rather
-than the acceptance oracle for #45.
+Use [the post-merge #26 review](../audits/2026-09-19-issue-26-post-merge-review.md),
+the [frozen v2 correction registration](../audits/2026-09-20-issue-49-water-apparatus-v2-registration.md)
+and the [source-matched Current-Water v2 baseline](../audits/2026-09-20-issue-49-water-apparatus-v2-baseline.md).
+#26 remains closed and its two exact candidate rejections remain valid; the v1
+harness remains historical evidence rather than the successor acceptance oracle.
 
-[#49](https://github.com/techrote/cybersand/issues/49) must first version/fix the
-settling and censoring metrics, add the clean two-limb communicating-head fixture,
-separate active/sleep performance accounting and harden evidence output. Preserve
-all original #26 archives and generate new baselines for changed metrics/fixtures.
+[#49](https://github.com/techrote/cybersand/issues/49) now supplies versioned
+coverage/equilibrium/censoring metrics, the clean roofed-passage two-limb fixture,
+fixture-appropriate surface evidence, phase-separated timing and a
+failure-retaining evidence runner. Its 120-case Current-Water campaign preserves
+mass, zero post-setup allocation and 1/4-worker authoritative parity. The clean
+two-limb control remains `not_reached` for both preregistered equilibrium
+thresholds by tick 4800. Production Water semantics are unchanged.
+
+The apparatus-side gate is therefore supplied. #95 must consume this corrected
+control with the available WEX evidence before #45 may proceed, narrow, recharter,
+defer or no-go.
 
 ## WEX Water hybrid / pressure extension handoff, 2026-09-20
 
@@ -241,8 +250,9 @@ Read the [canonical WEX programme](water-hybrid-pressure-extension-programme.md)
 and tracker [#90](https://github.com/techrote/cybersand/issues/90) before selecting
 a new #45 mechanism.
 
-#49 remains independently required. In parallel, #91 freezes current generic
-Rapier↔Water splash/displacement and hard-boundary behavior. #92 may later test at
+#49's corrected successor control is now available and remains independently
+required input to #95. In parallel, #91 freezes current generic Rapier↔Water
+splash/displacement and hard-boundary behavior. #92 may later test at
 most roughly 3-5 segmented upper-volume solided-Water sheet tiers, but only through
 a suitable generic #12 hybrid substrate; do not create a Water-only handoff backend.
 #93 is independent lumped gas-region research and #94 is conditional on its
@@ -255,5 +265,5 @@ must state vented/shared-pressure assumptions; separately sealed headspaces are 
 different physical control.
 
 The current affected route is therefore
-`#49 apparatus || #91/#92 hybrid evidence || #93 optional gas -> #95 -> #45 disposition -> #18 admission/no-go`.
+`#49 corrected apparatus + #91/#92 hybrid evidence + #93 optional gas evidence -> #95 -> #45 disposition -> #18 admission/no-go`.
 #28/#29 remain independently runnable.

@@ -5,7 +5,7 @@ document-kind: design
 scope: Parallel/extension research for deep-Water bulk response, generic Rapier↔cellular coupling, bounded solided-Water sheet proofs, saturated-head requirement reassessment, lumped gas regions and optional decompression events; no production architecture adoption
 canonical-for: [water-hybrid-pressure-extension-programme]
 last-reviewed: 2026-09-20
-related-documents: [architecture-programme.md, soliding-programme.md, ../systems/water-design.md, ../architecture/rigid-body-and-cellular-coupling.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md, ../reference/product-intent-and-priorities.md]
+related-documents: [architecture-programme.md, soliding-programme.md, ../systems/water-design.md, ../architecture/rigid-body-and-cellular-coupling.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md, ../reference/product-intent-and-priorities.md, ../research/lumped-gas-region-pressure-bookkeeping.md]
 ---
 
 # Water hybrid, saturated-head and compartment-pressure extension programme
@@ -23,9 +23,10 @@ future work does not silently collapse several different questions into one
 
 Current executable behavior remains defined by source and the focused subsystem
 contracts. Existing staged architecture authority remains in
-[architecture-programme.md](architecture-programme.md). Existing Water successor
-apparatus work remains owned by #49 and existing saturated-head architecture work
-remains owned by #45. Existing scalable reversible soliding remains owned by #12.
+[architecture-programme.md](architecture-programme.md). The corrected Water
+successor apparatus/control has been supplied by #49; existing saturated-head
+architecture work remains owned by #45. Existing scalable reversible soliding
+remains owned by #12.
 
 This programme extends those tracks; it does not duplicate them.
 
@@ -217,13 +218,20 @@ production handoff architecture.
 
 ## Relationship to #49 and #45
 
-### #49 remains valuable and independent
+### #49 corrected apparatus is available and independent
 
-#49 repairs the successor Water experiment apparatus: equilibrium/coverage metrics,
-censored outcomes, the clean communicating-head fixture, active/sleep timing and
-runner durability. None of this extension invalidates that work.
+#49 has supplied the successor Water experiment apparatus correction:
+equilibrium/coverage metrics, categorical censored outcomes, the clean
+roofed-passage communicating-head fixture, fixture-appropriate surface evidence,
+phase-separated timing and runner durability. See the
+[frozen registration](../audits/2026-09-20-issue-49-water-apparatus-v2-registration.md)
+and [source-matched Current-Water baseline](../audits/2026-09-20-issue-49-water-apparatus-v2-baseline.md).
 
-#49 can proceed in parallel and remains the sole owner of those corrections.
+The clean two-limb Current-Water control remains `not_reached` for both
+preregistered equilibrium thresholds by tick 4800. None of this extension
+invalidates or duplicates that apparatus work, and the result does not select a
+new production Water solver. #95 must consume the corrected control alongside
+the available WEX evidence.
 
 ### #45 is no longer treated as an inevitable pressure implementation
 
@@ -236,7 +244,7 @@ control whose boundary assumptions are stated. In particular, equal free-surface
 levels are not a universal target when the gas volumes above the liquids are sealed
 at different pressures.
 
-After #49 and the relevant hybrid evidence, the acceptable #45 dispositions include:
+With the corrected #49 control and the relevant hybrid evidence, the acceptable #45 dispositions include:
 
 - the hybrid mechanism supplies enough intended deep-release behavior and no
   additional saturated-head mechanism is justified;
@@ -366,8 +374,9 @@ existing #45 remains the architecture question consumed/reconciled by #95; it is
 a prerequisite implementation for #91-#94.
 ```
 
-#49 may run in parallel with WEX-001/WEX-003. WEX-002 waits for a suitable generic
-hybrid substrate and must not duplicate #12. WEX-004 is conditional. WEX-005 is a
+#49's corrected control is available to WEX-005. WEX-002 waits for a suitable generic
+hybrid substrate and must not duplicate #12. WEX-003 has now admitted WEX-004 as a
+bounded non-production research proof. WEX-005 is a
 decision/reconciliation issue, not an automatic implementation issue.
 
 #84 formal blind-study capture, #85/#86 broad remediation and unrelated
@@ -453,6 +462,23 @@ No outcome silently edits ADR-005 or adopts the candidate.
 
 This may run independently of WEX-002.
 
+**Research disposition, 2026-09-20:** [WEX-003 feasibility research](../research/lumped-gas-region-pressure-bookkeeping.md)
+finds lumped connected-gas bookkeeping technically promising for a bounded
+optional/research feature, without selecting production integration. The preferred
+candidate combines exact dirty-local gas connectivity, a sparse macro-component
+graph, explicit narrow portals and invalidatable authored seeds. Authoritative gas
+amount plus free volume derive pressure; stale or over-budget split topology returns
+unavailable rather than silently retaining pressure authority. Worst-case closure
+still scales with the affected region, so a later production proof would need
+explicit work/capacity budgets and real churn measurements.
+
+No runtime proof was added because an isolated toy would not measure the relevant
+CyberSand integration cost and would overlap active Stage-3B source surfaces.
+The result explicitly **admits #94 as a bounded non-production decompression-event
+proof**, provided it consumes only resolved region state, snapshots a finite
+pre-opening source budget and cancels stale topology. This is not production
+atmosphere adoption and does not change #45/Water semantics.
+
 Start with architecture research and a small off-production proof if justified.
 Do not integrate a production atmosphere system by default.
 
@@ -480,7 +506,8 @@ Exit may be research-only. A useful cost model with a no-go conclusion is succes
 
 ## WEX-004 — conditional decompression-event proof
 
-Execute only if WEX-003 explicitly admits it.
+WEX-003's 2026-09-20 research disposition explicitly admits this bounded
+non-production proof. Reconcile that landed evidence and live ownership before execution.
 
 Use generic region pressure differences to create a bounded event, not cellular gas.
 Test whether a local occlusion-aware impulse approximation can move:
@@ -587,7 +614,7 @@ were made to the initial discussion concepts:
 - made exact fractional Water mass transfer an explicit hybrid requirement;
 - separated current generic-body characterization from the later sheet proof so
   the good splash and bad floor penetration are frozen before architecture changes;
-- made #49 parallel/independent rather than duplicating its apparatus scope;
+- kept #49 parallel/independent rather than duplicating its apparatus scope; its corrected v2 control is now available to #95;
 - corrected the dependency graph after review so #91 baseline characterization is
   independent of future #12 hybrid availability; only #92 requires both #91 and a
   suitable generic #12 substrate;

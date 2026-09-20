@@ -190,9 +190,31 @@ Final PR #41 CI performed native validation, a Windows x86_64 cross-build, and a
 Linux x86_64 Godot runtime/ABI regression. Do not cite it as fresh Windows runtime
 execution.
 
-[#49](https://github.com/techrote/cybersand/issues/49) is the required correction
-before #45 can use successor metrics/fixtures. See the
-[post-merge review](../audits/2026-09-19-issue-26-post-merge-review.md).
+[#49](https://github.com/techrote/cybersand/issues/49) supplies the corrected
+successor metrics/fixtures. See the
+[post-merge review](../audits/2026-09-19-issue-26-post-merge-review.md),
+the [frozen v2 registration](../audits/2026-09-20-issue-49-water-apparatus-v2-registration.md)
+and the [source-matched v2 baseline](../audits/2026-09-20-issue-49-water-apparatus-v2-baseline.md).
+
+### Issue #49 successor apparatus v2 evidence — 2026-09-20
+
+PR #104 apparatus-source run `35536086473` executed GitHub's synthetic merge
+`9db77a06bcf3d1410f4a30ff8e3c2f79508ee8c0` for branch head
+`f9f568be8fc88d979f1db7efc0793cf87c6bb870`. It ran 13 adversarial tests
+under normal and optimized Python, an ASan+UBSan native-harness smoke, and 120
+Current-Water cases across three shifts, two mirror states and 1/4 workers.
+
+All 120 cases were accounted as successful apparatus executions, conserved Water
+mass and reported zero post-setup allocations; all 60 1/4-worker authoritative
+parity pairs matched. The clean two-limb control retained full 19/19 coverage per
+limb but did not reach either registered equilibrium threshold by tick 4800.
+Unsupported quiescent phase percentiles are `null`, not numeric zero.
+
+Artifact `10613591045`
+(`issue49-water-v2-35536086473`) has ZIP SHA-256
+`23b7b4fd333dc3a07cb636932e360e912126a117b06612b395aeeed558530f4c`.
+This is Linux x86_64 runtime evidence only; it does not create a fresh Windows
+runtime claim.
 
 ## Programme gate reconciliation, 2026-09-11
 
