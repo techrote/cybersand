@@ -3057,10 +3057,15 @@ void World::begin_tick(TickStats& stats) {
         update_epoch_ = 1;
     }
     stats.tick = tick_index_;
+    service_discovery_deadlines();
 
     active_chunk_scratch_.clear();
+    const auto previous_core_region = applied_core_region_;
     const bool transition = config_.backend == SimulationBackend::PhasedInPlace &&
-                            selected_core_region_ != applied_core_region_;
+                            selected_core_region_ != previous_core_region;
+    // Apply the requested coverage for observer reads during the existing
+    // re-entry pass. The saved previous coverage below preserves scheduler semantics.
+    applied_core_region_ = selected_core_region_;
     // Reuse the existing metadata pass, with no cell scan or region-sized
     // allocation. Coalesced/equivalent windows do not repeatedly wake blocks.
     for (auto& [coord, chunk] : chunks_) {
@@ -3077,22 +3082,32 @@ void World::begin_tick(TickStats& stats) {
                     block.quiet_ticks = 0;
                     chunk->active = true;
                     block.next_interaction_tick = 0;
+                    if (settled_discovery_ != nullptr) {
+                        const auto parent = discovery_parent_key(coord, index);
+                        (void)settled_discovery_->consume_deadline(parent);
+                        (void)settled_discovery_->witness_activity(parent, true);
+                        observe_discovery_activity_parent(coord, index);
+                    }
                 }
             }
             if (!transition) continue;
             const auto bounds = block_core_range(coord, index);
             const auto included = clip_core_range(bounds, selected_core_region_);
-            const auto previous = clip_core_range(included, applied_core_region_);
+            const auto previous = clip_core_range(included, previous_core_region);
             if (included.min_x <= included.max_x && included.min_y <= included.max_y &&
                 included != previous) {
                 if (!block.active) record_physics(PhysicsEvent::BlockWake, Material::Empty, Material::Empty, 0, 0, nullptr);
                 block.active = true;
                 block.quiet_ticks = 0;
                 chunk->active = true;
+                if (settled_discovery_ != nullptr) {
+                    const auto parent = discovery_parent_key(coord, index);
+                    (void)settled_discovery_->witness_activity(parent, true);
+                    observe_discovery_activity_parent(coord, index);
+                }
             }
         }
     }
-    applied_core_region_ = selected_core_region_;
 
     // Gameplay events are committed only at a tick boundary. Applying them
     // after resetting change flags makes their edits visible to activity,
@@ -3147,6 +3162,11 @@ void World::finish_tick(TickStats& stats) {
             } else if (age && ++block.quiet_ticks >= config_.sleep_after_quiet_ticks) {
                 record_physics(PhysicsEvent::BlockSleep, Material::Empty, Material::Empty, 0, 0, nullptr);
                 block.active = false;
+                if (settled_discovery_ != nullptr) {
+                    const auto parent = discovery_parent_key(coord, index);
+                    (void)settled_discovery_->witness_activity(parent, false);
+                    observe_discovery_activity_parent(coord, index);
+                }
             }
             any_active_block = any_active_block || block.active;
             if (block.active) ++stats.active_blocks_after;
@@ -3156,7 +3176,6 @@ void World::finish_tick(TickStats& stats) {
         if (chunk->active) ++stats.active_chunks_after;
         if (chunk->dirty) ++stats.dirty_chunks;
     }
-    refresh_discovery_signals(soliding::ProducerReason::ActivityOrDeadline);
 }
 
 TickStats World::tick_serial() {
