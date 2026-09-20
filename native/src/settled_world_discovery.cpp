@@ -726,11 +726,22 @@ void SettledWorldDiscoveryCoordinator::note_worker_report_records(
     std::size_t records) noexcept {
     add(impl_->metrics.worker_report_records, records);
 }
+void SettledWorldDiscoveryCoordinator::note_signal_report_records(
+    std::size_t records) noexcept {
+    add(impl_->metrics.signal_report_records, records);
+}
 void SettledWorldDiscoveryCoordinator::fence_lost_payload_report() noexcept {
     auto& state = *impl_;
     add(state.metrics.worker_report_overflows);
     add(state.metrics.observation_fences);
     add(state.metrics.global_fences);
+    state.journal.fail();
+    if (state.regions != nullptr) state.regions->fail(RegionRefusal::SourceFailure);
+}
+void SettledWorldDiscoveryCoordinator::fence_lost_signal_report() noexcept {
+    auto& state = *impl_;
+    add(state.metrics.signal_report_overflows);
+    add(state.metrics.observation_fences);
     state.journal.fail();
     if (state.regions != nullptr) state.regions->fail(RegionRefusal::SourceFailure);
 }
