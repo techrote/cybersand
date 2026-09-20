@@ -1857,7 +1857,20 @@ void World::apply_pending_explosions(TickStats& stats) {
         }
         ++stats.deferred_events;
     }
-    pending_explosions_.clear();
+    if (settled_discovery_ == nullptr) {
+        pending_explosions_.clear();
+    } else {
+        // Preserve the existing PendingEvent producer contract without reviving
+        // the removed activity/deadline resident scan. #63 owns replacing this
+        // represented-tile region walk with event indexing.
+        while (!pending_explosions_.empty()) {
+            const auto event = pending_explosions_.back();
+            pending_explosions_.pop_back();
+            const auto margin = static_cast<std::int64_t>(event.radius) + 2;
+            observe_discovery_event(
+                {event.x - margin, event.y - margin, margin * 2 + 1, margin * 2 + 1});
+        }
+    }
 }
 
 void World::clear() {
