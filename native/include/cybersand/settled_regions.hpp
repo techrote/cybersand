@@ -397,8 +397,8 @@ public:
                dependency_capacity_ * sizeof(Dependency) +
                subscriber_capacity_ * sizeof(Subscriber) +
                member_capacity_ * sizeof(PublicationMember) +
-               RegionCapacity * (sizeof(SourceRegion) + sizeof(ReconstructionTicket) + sizeof(StagedChild)) +
                frontier_capacity_ * (sizeof(ReconstructionSeed) + sizeof(StagedMember)) +
+               RegionCapacity * sizeof(std::size_t) +
                tile_capacity_ * (sizeof(bool) + sizeof(std::size_t)) +
                (tile_index_.storage_bytes() - sizeof(TileIndex)) +
                (row_index_.storage_bytes() - sizeof(RowIndex));
