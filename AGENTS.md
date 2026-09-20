@@ -34,9 +34,22 @@ Before any #45 Water head-transmission implementation or acceptance work, read t
 [post-merge #26 review](docs/audits/2026-09-19-issue-26-post-merge-review.md) and
 complete [#49](https://github.com/techrote/cybersand/issues/49).
 
-Required affected order is `#49 -> #45 -> directional-reference reassessment -> #18`.
+The 2026-09-20 [Water hybrid/pressure extension](docs/operations/water-hybrid-pressure-extension-programme.md)
+adds a parallel evidence lane. Current generic Rapier↔Water behavior is first
+captured in #91; #92 may test at most roughly 3-5 segmented upper-volume Water
+sheet tiers only by reusing a suitable generic #12 hybrid substrate. #93 is an
+independent research-only lumped gas-region feasibility lane; #94 is conditional.
+
+**Do not treat #45 as an inevitable pressure implementation.** Architecture/read-only
+analysis may continue, but selecting or accepting a #45 implementation must consume
+the corrected #49 apparatus and the #95 WEX synthesis (or its explicit
+blocked/no-go disposition). Equal liquid levels are a vented/shared-pressure
+control, not a universal sealed-room target.
+
 Do not freeze #45 numeric thresholds from apparatus-v1 settling/U-tube metrics,
-rewrite old #26 artifacts, or start #18 compact history while that gate is open.
+rewrite old #26 artifacts, duplicate #49/#12 ownership, silently unify Water
+FreeMass with other-liquid CellularYield, or start #18 compact history merely to
+preserve the old dependency ladder.
 
 ## Architectural constraints
 
