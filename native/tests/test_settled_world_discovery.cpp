@@ -20,6 +20,12 @@ public:
     static std::uint8_t coherence(const World& world, std::int64_t x, std::int64_t y) {
         return world.state_b(x, y);
     }
+    static std::optional<RectI64> event_observation_rect(
+        std::int64_t x, std::int64_t y, std::int32_t radius,
+        std::int32_t rule_radius) {
+        return World::checked_discovery_event_observation_rect(
+            x, y, radius, rule_radius);
+    }
 };
 } // namespace cybersand
 
@@ -347,14 +353,14 @@ CYBERSAND_TEST_NOINLINE void event_halo_overlap_and_signed_geometry() {
             !halo_drained.signals.pending_event,
             "halo-only pending state drains after event execution");
 
-    auto small_config = config;
-    small_config.maximum_rule_radius = 1;
-    World small(small_config);
-    small.reserve_region({0, 0, 8, 1});
-    service(small);
-    require(small.queue_explosion(0, 0, 1, 0), "r=1 event accepted");
-    require(tile_at(small, 4, 0).signals.pending_event,
+    const auto smaller_halo =
+        PrecisionProbe::event_observation_rect(0, 0, 1, 1);
+    require(smaller_halo.has_value() &&
+            *smaller_halo == RectI64{-4, -4, 9, 9},
             "r=1 uses P=(R+2)+1 rather than R+2");
+    // Current material authority includes an active radius-2 Rocket rule, so a
+    // whole World with maximum_rule_radius=1 is intentionally invalid. Exercise
+    // the #57 geometry contract directly rather than weakening scheduler safety.
 
     auto large_config = config;
     large_config.maximum_rule_radius = 3;
