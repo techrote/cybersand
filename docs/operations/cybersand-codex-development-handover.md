@@ -5,7 +5,7 @@ document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
 last-reviewed: 2026-09-20
-related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md]
+related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md]
 ---
 
 # Development handover
@@ -32,8 +32,10 @@ Before relying on a closed/completed issue as current acceptance, read the
 #8 remains open; #10/#11 retain bounded evidence but are reopened as
 evidence/objective anchors because later owner evaluation did not accept their
 broader gameplay objectives. #82 owns broad player/granular acceptance; #81 owns
-integration of the accepted historical #11 repair and #83 owns the broader
-body/granular envelope after #81. Do not start substitute implementation work
+reconstruction/integration of the historical bounded #11 repair and #83 owns the
+broader body/granular envelope after #81. The owner later clarified that the
+barrel is a generic Rapier reference body and does not recall accepting the
+historical barrel-support result as final behavior. Do not start substitute implementation work
 under #10/#11.
 
 #19's simulation/presentation apparatus remains valid, but formal blind H capture
@@ -233,4 +235,25 @@ settling and censoring metrics, add the clean two-limb communicating-head fixtur
 separate active/sleep performance accounting and harden evidence output. Preserve
 all original #26 archives and generate new baselines for changed metrics/fixtures.
 
-Required order is `#49 -> #45 -> #18`. #28/#29 remain independently runnable.
+## WEX Water hybrid / pressure extension handoff, 2026-09-20
+
+Read the [canonical WEX programme](water-hybrid-pressure-extension-programme.md)
+and tracker [#90](https://github.com/techrote/cybersand/issues/90) before selecting
+a new #45 mechanism.
+
+#49 remains independently required. In parallel, #91 freezes current generic
+Rapier↔Water splash/displacement and hard-boundary behavior. #92 may later test at
+most roughly 3-5 segmented upper-volume solided-Water sheet tiers, but only through
+a suitable generic #12 hybrid substrate; do not create a Water-only handoff backend.
+#93 is independent lumped gas-region research and #94 is conditional on its
+positive admission.
+
+[#95](https://github.com/techrote/cybersand/issues/95) is the decision join. It
+must consume corrected #49 controls plus WEX evidence and then route #45 to
+proceed, narrow, recharter, defer or no-go. Equal-level communicating-head results
+must state vented/shared-pressure assumptions; separately sealed headspaces are a
+different physical control.
+
+The current affected route is therefore
+`#49 apparatus || #91/#92 hybrid evidence || #93 optional gas -> #95 -> #45 disposition -> #18 admission/no-go`.
+#28/#29 remain independently runnable.
