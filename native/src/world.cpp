@@ -3483,8 +3483,15 @@ void World::merge_job_effects(const JobEffects& effects) {
         if (report.activity_witness)
             (void)settled_discovery_->witness_activity(
                 parent, chunk->activity_blocks[block_index].active);
-        if (report.deadline_due != 0)
-            (void)settled_discovery_->schedule_deadline(parent, report.deadline_due);
+        if (report.deadline_due != 0) {
+            const auto authoritative_due =
+                chunk->activity_blocks[block_index].next_interaction_tick;
+            if (authoritative_due == 0) {
+                settled_discovery_->fence_lost_signal_report();
+                return;
+            }
+            (void)settled_discovery_->schedule_deadline(parent, authoritative_due);
+        }
         observe_discovery_activity_parent(report.chunk, block_index);
         if (settled_discovery_->halted() != soliding::DiscoveryHalt::None) return;
     }
