@@ -31,8 +31,11 @@ design from conflicting source, ADR or historical claims.
 Issue #26 remains closed as a valid negative experiment for its two exact tested
 local candidates, but its retained apparatus v1 is historical/qualified evidence.
 Before any #45 Water head-transmission implementation or acceptance work, read the
-[post-merge #26 review](docs/audits/2026-09-19-issue-26-post-merge-review.md) and
-complete [#49](https://github.com/techrote/cybersand/issues/49).
+[post-merge #26 review](docs/audits/2026-09-19-issue-26-post-merge-review.md),
+the [#49 v2 correction registration](docs/audits/2026-09-20-issue-49-water-apparatus-v2-registration.md)
+and the [source-matched #49 v2 Current-Water baseline](docs/audits/2026-09-20-issue-49-water-apparatus-v2-baseline.md).
+The corrected #49 apparatus is the successor control; #95 remains the decision
+join before #45 may proceed, narrow, recharter, defer or no-go.
 
 The 2026-09-20 [Water hybrid/pressure extension](docs/operations/water-hybrid-pressure-extension-programme.md)
 adds a parallel evidence lane. Current generic Rapier↔Water behavior is first
