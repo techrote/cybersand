@@ -423,16 +423,26 @@ struct SettledWorldDiscoveryCoordinator::Impl {
     DiscoveryOutcome observe_record(std::size_t record_index, DiscoverySignals signals,
                                     ProducerReason reason, std::uint64_t tick) noexcept {
         auto& record = records[record_index];
-        const auto outcome = journal.observe(record.handle, signals, tick);
+        const bool payload_owns_revision = record.payload_pending;
+        const auto outcome = payload_owns_revision
+            ? journal.reconcile_queued_signals(record.handle, signals, tick)
+            : journal.observe(record.handle, signals, tick);
+        if (outcome == DiscoveryOutcome::Invalid && payload_owns_revision) {
+            journal.fail();
+            if (regions != nullptr) regions->fail(RegionRefusal::SourceFailure);
+            return outcome;
+        }
         if (outcome == DiscoveryOutcome::Accepted) {
             record.signals = signals;
-            add(metrics.invalidated_tiles[static_cast<std::size_t>(reason)]);
-            if (regions != nullptr) {
-                const auto summary = journal.snapshot(record.handle);
-                if (summary.has_value()) {
-                    (void)regions->invalidate_known(
-                        record.handle.slot, record.key, summary->revision);
-                    record.region_payload_revision = 0;
+            if (!payload_owns_revision) {
+                add(metrics.invalidated_tiles[static_cast<std::size_t>(reason)]);
+                if (regions != nullptr) {
+                    const auto summary = journal.snapshot(record.handle);
+                    if (summary.has_value()) {
+                        (void)regions->invalidate_known(
+                            record.handle.slot, record.key, summary->revision);
+                        record.region_payload_revision = 0;
+                    }
                 }
             }
         } else if (outcome == DiscoveryOutcome::Unchanged) {
