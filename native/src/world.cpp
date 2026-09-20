@@ -583,6 +583,86 @@ soliding::DiscoveryParentKey World::discovery_parent_key(
     };
 }
 
+bool World::discovery_tile_fully_covered(
+    soliding::DiscoveryBounds bounds,
+    const std::optional<CoreRange>& coverage) const noexcept {
+    if (!coverage.has_value()) return true;
+    const auto radius = static_cast<std::int64_t>(config_.maximum_rule_radius);
+    if (radius < 0 ||
+        bounds.x < std::numeric_limits<std::int64_t>::min() + radius ||
+        bounds.y < std::numeric_limits<std::int64_t>::min() + radius ||
+        bounds.x > std::numeric_limits<std::int64_t>::max() -
+                       static_cast<std::int64_t>(bounds.width - 1U) - radius ||
+        bounds.y > std::numeric_limits<std::int64_t>::max() -
+                       static_cast<std::int64_t>(bounds.height - 1U) - radius) {
+        return false;
+    }
+    const auto first =
+        scheduler_geometry_.core_for_cell(bounds.x - radius, bounds.y - radius);
+    const auto last = scheduler_geometry_.core_for_cell(
+        bounds.x + static_cast<std::int64_t>(bounds.width - 1U) + radius,
+        bounds.y + static_cast<std::int64_t>(bounds.height - 1U) + radius);
+    return first.x >= coverage->min_x && first.y >= coverage->min_y &&
+           last.x <= coverage->max_x && last.y <= coverage->max_y;
+}
+
+std::optional<RectI64> World::discovery_event_observation_rect(
+    std::int64_t x, std::int64_t y, std::int32_t radius) const noexcept {
+    if (radius <= 0 || config_.maximum_rule_radius < 0) return std::nullopt;
+    const auto effect = static_cast<std::int64_t>(radius) + 2;
+    const auto halo = static_cast<std::int64_t>(config_.maximum_rule_radius);
+    if (halo > std::numeric_limits<std::int64_t>::max() - effect)
+        return std::nullopt;
+    const auto pending = effect + halo;
+    if (x < std::numeric_limits<std::int64_t>::min() + pending ||
+        x > std::numeric_limits<std::int64_t>::max() - pending ||
+        y < std::numeric_limits<std::int64_t>::min() + pending ||
+        y > std::numeric_limits<std::int64_t>::max() - pending ||
+        pending > (std::numeric_limits<std::int64_t>::max() - 1) / 2) {
+        return std::nullopt;
+    }
+    return RectI64{x - pending, y - pending, pending * 2 + 1, pending * 2 + 1};
+}
+
+std::optional<std::uint64_t> World::discovery_pending_event_count(
+    soliding::DiscoveryBounds bounds) const noexcept {
+    const auto maximum_x =
+        bounds.x + static_cast<std::int64_t>(bounds.width - 1U);
+    const auto maximum_y =
+        bounds.y + static_cast<std::int64_t>(bounds.height - 1U);
+    std::uint64_t count = 0;
+    for (const auto& event : pending_explosions_) {
+        const auto region =
+            discovery_event_observation_rect(event.x, event.y, event.radius);
+        if (!region.has_value()) return std::nullopt;
+        const auto event_maximum_x = region->x + region->width - 1;
+        const auto event_maximum_y = region->y + region->height - 1;
+        if (event_maximum_x < bounds.x || maximum_x < region->x ||
+            event_maximum_y < bounds.y || maximum_y < region->y) {
+            continue;
+        }
+        if (count == std::numeric_limits<std::uint64_t>::max())
+            return std::nullopt;
+        ++count;
+    }
+    return count;
+}
+
+std::uint64_t World::discovery_mask_occupancy_count(
+    soliding::DiscoveryBounds bounds) const noexcept {
+    std::uint64_t count = 0;
+    for (std::uint32_t local_y = 0; local_y < bounds.height; ++local_y) {
+        for (std::uint32_t local_x = 0; local_x < bounds.width; ++local_x) {
+            if (transient_obstacle_at(
+                    bounds.x + static_cast<std::int64_t>(local_x),
+                    bounds.y + static_cast<std::int64_t>(local_y)) != 0U) {
+                ++count;
+            }
+        }
+    }
+    return count;
+}
+
 soliding::DiscoverySignals World::discovery_signals(
     ChunkCoord coord, std::size_t activity_index,
     soliding::DiscoveryBounds bounds) const noexcept {
@@ -592,36 +672,14 @@ soliding::DiscoverySignals World::discovery_signals(
     const auto& block = chunk->activity_blocks[activity_index];
     result.witness_complete = true;
     result.healthy = !tick_failed_;
-
-    const auto fully_covered = [this, bounds](const std::optional<CoreRange>& coverage) {
-        if (!coverage.has_value()) return true;
-        const auto radius = static_cast<std::int64_t>(config_.maximum_rule_radius);
-        if (bounds.x < std::numeric_limits<std::int64_t>::min() + radius ||
-            bounds.y < std::numeric_limits<std::int64_t>::min() + radius ||
-            bounds.x > std::numeric_limits<std::int64_t>::max() -
-                           static_cast<std::int64_t>(bounds.width - 1U) - radius ||
-            bounds.y > std::numeric_limits<std::int64_t>::max() -
-                           static_cast<std::int64_t>(bounds.height - 1U) - radius) return false;
-        const auto first = scheduler_geometry_.core_for_cell(bounds.x - radius, bounds.y - radius);
-        const auto last = scheduler_geometry_.core_for_cell(
-            bounds.x + static_cast<std::int64_t>(bounds.width - 1U) + radius,
-            bounds.y + static_cast<std::int64_t>(bounds.height - 1U) + radius);
-        return first.x >= coverage->min_x && first.y >= coverage->min_y &&
-               last.x <= coverage->max_x && last.y <= coverage->max_y;
-    };
-    result.included = fully_covered(selected_core_region_) && fully_covered(applied_core_region_);
+    result.included =
+        discovery_tile_fully_covered(bounds, selected_core_region_) &&
+        discovery_tile_fully_covered(bounds, applied_core_region_);
     result.active = block.active || block.next_interaction_tick != 0;
-
-    const auto maximum_x = bounds.x + static_cast<std::int64_t>(bounds.width - 1U);
-    const auto maximum_y = bounds.y + static_cast<std::int64_t>(bounds.height - 1U);
-    for (const auto& event : pending_explosions_) {
-        const auto margin = static_cast<std::int64_t>(event.radius) + 2;
-        if (event.x + margin >= bounds.x && event.x - margin <= maximum_x &&
-            event.y + margin >= bounds.y && event.y - margin <= maximum_y) {
-            result.pending_event = true;
-            break;
-        }
-    }
+    // #63 owns pending-event and transient-mask state through exact bounded
+    // witnesses. Do not rediscover either producer by scanning World state here.
+    result.pending_event = false;
+    result.occupied = false;
     return result;
 }
 
