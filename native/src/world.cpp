@@ -1322,7 +1322,7 @@ void World::wake_cell_neighborhood(std::int64_t x, std::int64_t y) {
     }
 }
 
-void World::keep_cell_active(std::int64_t x, std::int64_t y) noexcept {
+void World::keep_cell_active(std::int64_t x, std::int64_t y, JobEffects* effects) noexcept {
     const auto source = address(x, y);
     auto* chunk = find_chunk(source.chunk);
     if (chunk == nullptr) return;
@@ -1341,9 +1341,16 @@ void World::keep_cell_active(std::int64_t x, std::int64_t y) noexcept {
     block.changed_this_tick = true;
     block.quiet_ticks = 0;
     chunk->active = true;
+    if (settled_discovery_ != nullptr) {
+        if (effects != nullptr)
+            effects->record_discovery_signal(source, config_.activity_block_size, true);
+        else
+            witness_discovery_activity(source.chunk, block_index);
+    }
 }
 
-void World::schedule_interaction_wake(std::int64_t x, std::int64_t y, std::uint64_t due) noexcept {
+void World::schedule_interaction_wake(std::int64_t x, std::int64_t y, std::uint64_t due,
+                                      JobEffects* effects) noexcept {
     const auto a = address(x,y);
     auto* chunk = find_chunk(a.chunk);
     if (!chunk) return;
@@ -1351,7 +1358,18 @@ void World::schedule_interaction_wake(std::int64_t x, std::int64_t y, std::uint6
         static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
         static_cast<std::size_t>(a.local_x / config_.activity_block_size);
     auto& next = chunk->activity_blocks[index].next_interaction_tick;
-    if (next == 0 || due < next) next = due;
+    if (next == 0 || due < next) {
+        next = due;
+        if (settled_discovery_ != nullptr) {
+            if (effects != nullptr)
+                effects->record_discovery_signal(a, config_.activity_block_size, false, due);
+            else {
+                (void)settled_discovery_->schedule_deadline(
+                    discovery_parent_key(a.chunk, index), due);
+                observe_discovery_activity_parent(a.chunk, index);
+            }
+        }
+    }
 }
 
 void World::set(std::int64_t x, std::int64_t y, Material material) {
@@ -1840,7 +1858,7 @@ void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_
 }
 
 bool World::exchange_permitted(Material source, Material target, std::int64_t x,
-    std::int64_t y, std::int64_t target_x, std::int64_t target_y) {
+    std::int64_t y, std::int64_t target_x, std::int64_t target_y, JobEffects* effects) {
     const bool powder_source = MaterialRules::supports_granular_load(source);
     const bool powder_target = MaterialRules::supports_granular_load(target);
     if (!powder_source && !powder_target) return true; // gas/liquid behavior unchanged
@@ -1856,7 +1874,7 @@ bool World::exchange_permitted(Material source, Material target, std::int64_t x,
             ? config_.transport_policy.pair(static_cast<std::uint8_t>(source),static_cast<std::uint8_t>(target)).permeability
             : liquid == Material::Mercury ? config_.interaction_policy.mercury_exchange_period : 1U;
         if (tick_index_ % period != 0) {
-            schedule_interaction_wake(x,y,tick_index_ + period - tick_index_ % period);
+            schedule_interaction_wake(x,y,tick_index_ + period - tick_index_ % period, effects);
             return false;
         }
     }
@@ -1893,7 +1911,7 @@ bool World::try_move(Material material, std::int64_t x, std::int64_t y, std::int
     if (allow_swap && !(config_.physics_diagnostics.disable_powder_exchange_targets &&
         MaterialRules::descriptor(target).state == MaterialState::Powder) &&
         MaterialRules::can_density_exchange(material, target, target_y - y) &&
-        exchange_permitted(material,target,x,y,target_x,target_y)) {
+        exchange_permitted(material,target,x,y,target_x,target_y,effects)) {
         move_cell(x, y, target_x, target_y, true, effects);
         return true;
     }
@@ -2051,7 +2069,8 @@ void World::mix_after_motion(Material carrier, std::int64_t x, std::int64_t y,
         powder ? PhysicsEvent::PowderMix : PhysicsEvent::GrainTransport);
 }
 
-bool World::lateral_due(Material material, std::int64_t x, std::int64_t y) noexcept {
+bool World::lateral_due(Material material, std::int64_t x, std::int64_t y,
+                        JobEffects* effects) noexcept {
     const auto period = config_.transport_policy.configured
         ? config_.transport_policy.cadence[static_cast<std::size_t>(material)] : 1U;
     if (period == 1U) return true;
@@ -2060,7 +2079,7 @@ bool World::lateral_due(Material material, std::int64_t x, std::int64_t y) noexc
     const auto remaining = (phase + period - tick_index_ % period) % period;
     if (remaining == 0U) return true;
     // One existing bounded block deadline, no catch-up and no new queue.
-    schedule_interaction_wake(x,y,tick_index_+remaining);
+    schedule_interaction_wake(x,y,tick_index_+remaining,effects);
     return false;
 }
 
@@ -2325,7 +2344,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
             if (try_move(material, x, y, x + direction, y - 1, true, effects)) return true;
             if (try_move(material, x, y, x - direction, y - 1, true, effects)) return true;
             if (try_move(material, x, y, x + direction, y, false, effects)) return true;
-            keep_cell_active(x, y);
+            keep_cell_active(x, y, effects);
             return changed;
         }
 
@@ -2361,7 +2380,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
             const auto burn = state_b(x, y);
             if (burn == 0U) return false;
             if (!lifecycle_due) {
-                keep_cell_active(x, y);
+                keep_cell_active(x, y, effects);
                 return false;
             }
             if (find_neighbour([](Material candidate, auto, auto) {
@@ -2403,7 +2422,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
                 return fall_as_powder();
             }
             if (!lifecycle_due) {
-                keep_cell_active(x, y);
+                keep_cell_active(x, y, effects);
                 return false;
             }
             if (find_neighbour([](Material candidate, auto, auto) {
@@ -2432,7 +2451,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
             const auto charge = state_b(x, y);
             if (charge == 0U) return false;
             if (!lifecycle_due) {
-                keep_cell_active(x, y);
+                keep_cell_active(x, y, effects);
                 return false;
             }
             bool changed = false;
@@ -2659,7 +2678,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
 
         case RuleKernel::Cloner: {
             if (!contact_chemistry_due) {
-                keep_cell_active(x, y);
+                keep_cell_active(x, y, effects);
                 return false;
             }
             auto captured = state_b(x, y);
@@ -2710,7 +2729,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
             const auto energy = state_a(x, y);
             if (energy == 0U) return false;
             if (!contact_chemistry_due) {
-                keep_cell_active(x, y);
+                keep_cell_active(x, y, effects);
                 return false;
             }
             const auto start = deterministic_random(
@@ -2761,7 +2780,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
                                          target == Material::Seed ||
                                          target == Material::Dust;
             if (edible_target && !contact_chemistry_due) {
-                keep_cell_active(x, y);
+                keep_cell_active(x, y, effects);
                 return false;
             }
             if (edible_target) {
@@ -2856,7 +2875,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
                 if (support == Material::Sand || support == Material::Plant ||
                     support == Material::Fungus) {
                     if (!contact_chemistry_due) {
-                        keep_cell_active(x, y);
+                        keep_cell_active(x, y, effects);
                         return false;
                     }
                     return write_cell(x, y, Material::Seed, 8, 1, effects);
@@ -2867,7 +2886,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
             }
 
             if (!contact_chemistry_due) {
-                keep_cell_active(x, y);
+                keep_cell_active(x, y, effects);
                 return false;
             }
             if (stage == 0U) return write_cell(x, y, Material::Plant, 16, 0, effects);
