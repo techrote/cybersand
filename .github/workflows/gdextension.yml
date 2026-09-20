@@ -3,7 +3,23 @@ name: GDExtension build and current Godot regression
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - '.circleci/**'
+      - '.github/workflows/documentation.yml'
+      - '.github/workflows/native.yml'
+      - '.github/workflows/release-hashes.yml'
+      - '.github/workflows/sengi-benchmark.yml'
+      - '.github/workflows/web-demo.yml'
+      - '.github/workflows/web-toolchain.yml'
   pull_request:
+    paths-ignore:
+      - '.circleci/**'
+      - '.github/workflows/documentation.yml'
+      - '.github/workflows/native.yml'
+      - '.github/workflows/release-hashes.yml'
+      - '.github/workflows/sengi-benchmark.yml'
+      - '.github/workflows/web-demo.yml'
+      - '.github/workflows/web-toolchain.yml'
   workflow_dispatch:
 
 permissions:
@@ -105,7 +121,10 @@ jobs:
 
   windows-build:
     name: windows x86_64
-    # Keep Windows independent of the Sengi 8-vCPU pool; 2 vCPU is sufficient off the Linux regression critical path.
+    # Routine Windows GDExtension validation is owned by CircleCI at the same
+    # effective 2-vCPU size. Retain the proven Avrea lane only as a manual
+    # workflow_dispatch fallback so Circle outages cannot strand validation.
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ${{ vars.GDEXT_WINDOWS_RUNNER || 'avrea-ubuntu-24.04-2-vcpu' }}
     timeout-minutes: 30
     steps:
