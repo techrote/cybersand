@@ -356,7 +356,8 @@ CYBERSAND_TEST_NOINLINE void event_halo_overlap_and_signed_geometry() {
     const auto smaller_halo =
         PrecisionProbe::event_observation_rect(0, 0, 1, 1);
     require(smaller_halo.has_value() &&
-            *smaller_halo == RectI64{-4, -4, 9, 9},
+            smaller_halo->x == -4 && smaller_halo->y == -4 &&
+            smaller_halo->width == 9 && smaller_halo->height == 9,
             "r=1 uses P=(R+2)+1 rather than R+2");
     // Current material authority includes an active radius-2 Rocket rule, so a
     // whole World with maximum_rule_radius=1 is intentionally invalid. Exercise
