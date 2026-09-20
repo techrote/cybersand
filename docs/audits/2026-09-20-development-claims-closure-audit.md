@@ -11,8 +11,8 @@ related-documents: [../operations/development-claims-remediation-programme.md, .
 # Development claims and closure audit — 2026-09-20
 
 This is the dated intake audit for issue #80 / REM-001. It records what was true
-at authoritative \`main\` commit
-\`e87ac54459a3a62350fa7aa3da6ce979c30a18b8\` before the remediation programme
+at authoritative `main` commit
+`e87ac54459a3a62350fa7aa3da6ce979c30a18b8` before the remediation programme
 changed tracker state. It is historical evidence after publication: later work
 must add new evidence or update the Current remediation programme rather than
 rewrite this record.
@@ -32,15 +32,15 @@ historical #9/#10/#11/#19/#26 evidence.
 
 Relevant current source was inspected only where necessary to separate historical
 acceptance from current-main truth. In particular, current
-\`godot/native_extension/cyber_native_cell_world.cpp\` still contains the legacy
+`godot/native_extension/cyber_native_cell_world.cpp` still contains the legacy
 rectangle overlap/ejection/contact path and no #11 granular-bearing implementation.
 Its current ejection target search checks an empty destination but not the
 historical #11 repair's bounded intervening hard-surface/body-mask path.
 
 The #11 completion audit is not present in the current-main documentation tree.
 It remains available in Git history at evidence commit
-\`d5f0de687283ec366ed4ff33160a274e2a35ddc6\`; the accepted implementation
-checkpoint recorded there is \`f8720d331e653ff40c12149dc1b7164724accd9f\`.
+`d5f0de687283ec366ed4ff33160a274e2a35ddc6`; the accepted implementation
+checkpoint recorded there is `f8720d331e653ff40c12149dc1b7164724accd9f`.
 That historical evidence was read rather than inferred from issue state.
 
 At audit intake:
@@ -49,7 +49,7 @@ At audit intake:
   were open;
 - #9, #10, #11, #19, #26, #27, #28, #29 and Stage-3B #56-#60/#69 were closed;
 - PR #55 / #29 had already merged as
-  \`910717aac101363ec2b1b89e4041a22bc9a97b97\`;
+  `910717aac101363ec2b1b89e4041a22bc9a97b97`;
 - current main already contained #60 / PR #78, so #61 was the next serialized
   central-World producer package and #64 was the separable graph/index lane.
 
@@ -65,7 +65,7 @@ A work item can have several independent states:
 | Accepted | The relevant owner/human acceptance gate has passed for the intended behavioural envelope. |
 | Dispositioned | Any remaining limitation, rejection or no-go is explicitly recorded and owned. |
 
-A GitHub state of \`closed/completed\` cannot substitute for any missing dimension.
+A GitHub state of `closed/completed` cannot substitute for any missing dimension.
 Likewise, a valid historical fixture result is not invalid merely because broad
 acceptance later failed.
 
@@ -110,7 +110,7 @@ repair is not integrated in audited current main, and the broader body/granular
 gameplay envelope was not accepted by the owner.
 
 #8 therefore remains open for truthful umbrella tracking. #12 is an independent
-soliding programme, not the sole remaining reason #8 to stay open.
+soliding programme, not the sole remaining reason for #8 to stay open.
 
 ## #19 and #26 evidence preservation
 
