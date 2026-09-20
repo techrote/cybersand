@@ -59,15 +59,74 @@ static func global_water_mass(world) -> int:
 			total += int(world.diagnostic_snapshot(Vector2i(x,y),Vector2i(512,512)).water_mass)
 	return total
 
+# WEX-001 uses the existing Water experiment observer because it reads stored
+# authoritative mass without allocating/copying a full material snapshot. This is
+# observation-only; it does not change Water or body coupling semantics.
+static func global_water_integer(world) -> int:
+	if world.has_method(&"water_experiment_observation"):
+		var observation: Dictionary = world.water_experiment_observation(Vector2i.ZERO, Vector2i(1024,1024))
+		return int(observation.get("water_integer",-1))
+	return global_water_mass(world)
+
+static func wex001_surface_metrics(snapshot: Dictionary, origin: Vector2i, size: Vector2i, surface_y: int) -> Dictionary:
+	var cells: PackedByteArray = snapshot.get("cells",PackedByteArray())
+	if cells.size() != size.x * size.y:
+		return {"ok":false}
+	var first_water: Array = []
+	first_water.resize(size.x)
+	first_water.fill(2147483647)
+	var water_cells: int = 0
+	var sum_x: int = 0
+	var sum_y: int = 0
+	var highest_y: int = 2147483647
+	for local_y: int in range(size.y):
+		for local_x: int in range(size.x):
+			if cells[local_y*size.x+local_x] != 3:
+				continue
+			var world_x: int = origin.x + local_x
+			var world_y: int = origin.y + local_y
+			water_cells += 1
+			sum_x += world_x
+			sum_y += world_y
+			highest_y = mini(highest_y,world_y)
+			first_water[local_x] = mini(int(first_water[local_x]),world_y)
+	var surface_min: int = 2147483647
+	var surface_max: int = -2147483648
+	var wet_columns: int = 0
+	for value: Variant in first_water:
+		var first: int = int(value)
+		if first == 2147483647:
+			continue
+		wet_columns += 1
+		surface_min = mini(surface_min,first)
+		surface_max = maxi(surface_max,first)
+	return {
+		"ok":true,
+		"water_cells":water_cells,
+		"cell_sum_x":sum_x,
+		"cell_sum_y":sum_y,
+		"wet_columns":wet_columns,
+		"highest_y":highest_y if water_cells > 0 else null,
+		"surface_min":surface_min if wet_columns > 0 else null,
+		"surface_max":surface_max if wet_columns > 0 else null,
+		"surface_span":surface_max-surface_min if wet_columns > 0 else null,
+		"surface_excursion":maxi(0,surface_y-highest_y) if water_cells > 0 else 0,
+	}
+
 static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> Dictionary:
 	var ticks: int = int(spec.get("ticks", 1800))
 	if ticks < 1 or ticks > MAX_TICKS:
 		return {"ok": false, "error": "tick capacity"}
 	var seed: int = int(spec.get("seed", 0))
-	var left: int = 96 + seed * 3
-	var surface: int = 192 + (seed * 7 % 20)
-	var width: int = 96
-	var floor_y: int = surface + 384
+	var translation_x: int = int(spec.get("translation_x",0))
+	var translation_y: int = int(spec.get("translation_y",0))
+	var left: int = int(spec.get("left",96 + seed * 3)) + translation_x
+	var surface: int = int(spec.get("surface",192 + (seed * 7 % 20))) + translation_y
+	var width: int = int(spec.get("width",96))
+	var depth: int = int(spec.get("depth",384))
+	var floor_y: int = surface + depth
+	if width < 16 or width > 256 or depth < 8 or depth > 512 or left < 20 or left + width + 20 >= 1024 or surface < 64 or floor_y + 20 >= 1024:
+		return {"ok":false,"error":"fixture geometry bounds","spec":spec}
 	var material: int = int(spec.get("material", 2))
 	var mode: String = spec.get("mode", "barrel")
 	var layout: String = spec.get("layout", "flat")
@@ -129,6 +188,7 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 	var body_size: Vector2 = Vector2(8,14) * float(spec.get("size",1.0))
 	var angle: float = float(spec.get("angle",0.0))
 	var extent: float = absf(cos(angle))*body_size.y + absf(sin(angle))*body_size.x
+	var body_x: float = float(left) + float(width)/2.0 + float(spec.get("body_offset_x",0.0))
 	if mode == "barrel":
 		viewport = SubViewport.new()
 		viewport.world_2d = World2D.new()
@@ -140,7 +200,7 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 		body.linear_damp = 0.15 * float(spec.get("damping",1.0))
 		body.angular_damp = 0.35 * float(spec.get("damping",1.0))
 		body.continuous_cd = RigidBody2D.CCD_MODE_CAST_SHAPE
-		body.position = Vector2(left+width/2,surface-extent/2-float(spec.get("drop",1.0))*body_size.y)
+		body.position = Vector2(body_x,surface-extent/2-float(spec.get("drop",1.0))*body_size.y)
 		body.rotation = angle
 		var shape: CollisionShape2D = CollisionShape2D.new()
 		var rectangle: RectangleShape2D = RectangleShape2D.new()
@@ -156,7 +216,7 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 			return {"ok": false, "error": "Rapier initialize"}
 		bridge.enable_diagnostics()
 		PhysicsServer2D.body_set_param(body.get_rid(), PhysicsServer2D.BODY_PARAM_FRICTION,float(spec.get("friction",0.78)))
-		bridge.reset_body(0,Vector2(left+width/2,surface-extent/2-float(spec.get("drop",1.0))*body_size.y),angle)
+		bridge.reset_body(0,Vector2(body_x,surface-extent/2-float(spec.get("drop",1.0))*body_size.y),angle)
 		PhysicsServer2D.body_set_state(body.get_rid(),PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY,Vector2(0,float(spec.get("speed",0.0))))
 		bridge.refresh_all_states()
 		var rectangles: PackedInt32Array = world.get_hard_surface_rectangles() if not fallback else PackedInt32Array([left-1,floor_y,width+2,1,left-1,0,1,floor_y,left+width,0,1,floor_y])
@@ -190,6 +250,52 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 	var face_totals: Array = []
 	face_totals.resize(324)
 	face_totals.fill(0)
+	var wex001: bool = bool(spec.get("wex001",false)) and not fallback
+	var wex_surface_stride: int = clampi(int(spec.get("wex_surface_stride",6)),1,60)
+	var wex_mass_stride: int = clampi(int(spec.get("wex_mass_stride",60)),1,600)
+	var wex_surface_rows: Array = []
+	var wex_mass_samples: Array = []
+	var wex_body_trace: Array = []
+	var wex_initial_global_mass: int = -1
+	var wex_max_forbidden_mass: int = 0
+	var wex_first_forbidden_tick: int = -1
+	var wex_forbidden_nonzero_ticks: int = 0
+	var wex_peak_above_surface_mass: int = 0
+	var wex_peak_surface_excursion: int = 0
+	var wex_max_surface_span: int = 0
+	var wex_max_body_floor_penetration: float = 0.0
+	var wex_observation_origin: Vector2i = Vector2i(maxi(0,left-16),maxi(0,surface-32))
+	var wex_observation_size: Vector2i = Vector2i(
+		mini(1024-wex_observation_origin.x,width+32),
+		mini(768,floor_y+17-wex_observation_origin.y))
+	var wex_forbidden_origin: Vector2i = Vector2i(maxi(0,left-16),floor_y+1)
+	var wex_forbidden_size: Vector2i = Vector2i(
+		mini(1024-wex_forbidden_origin.x,width+32),
+		mini(16,1024-wex_forbidden_origin.y))
+	var wex_above_size: Vector2i = Vector2i(wex_observation_size.x,maxi(1,surface-wex_observation_origin.y))
+	if wex001:
+		if not world.has_method(&"water_experiment_observation"):
+			if bridge != null: bridge.shutdown()
+			if viewport != null: viewport.queue_free()
+			return {"ok":false,"error":"WEX-001 requires native Water observer","spec":spec}
+		wex_initial_global_mass = global_water_integer(world)
+		wex_mass_samples.append([0,wex_initial_global_mass])
+		var wex_initial_forbidden: Dictionary = world.water_experiment_observation(wex_forbidden_origin,wex_forbidden_size)
+		var initial_forbidden_mass: int = int(wex_initial_forbidden.get("water_integer",-1))
+		if initial_forbidden_mass > 0:
+			wex_max_forbidden_mass = initial_forbidden_mass
+			wex_first_forbidden_tick = 0
+			wex_forbidden_nonzero_ticks = 1
+		var wex_initial_snapshot: Dictionary = sample(world,wex_observation_origin,wex_observation_size,false)
+		var wex_initial_surface: Dictionary = wex001_surface_metrics(wex_initial_snapshot,wex_observation_origin,wex_observation_size,surface)
+		var wex_initial_above: Dictionary = world.water_experiment_observation(wex_observation_origin,wex_above_size)
+		wex_initial_surface["tick"] = 0
+		wex_initial_surface["water_mass"] = int(wex_initial_snapshot.get("water_mass",-1))
+		wex_initial_surface["above_surface_mass"] = int(wex_initial_above.get("water_integer",-1))
+		wex_surface_rows.append(wex_initial_surface)
+		wex_peak_above_surface_mass = int(wex_initial_surface.above_surface_mass)
+		wex_peak_surface_excursion = int(wex_initial_surface.surface_excursion)
+		wex_max_surface_span = int(wex_initial_surface.get("surface_span",0) if wex_initial_surface.get("surface_span",null) != null else 0)
 	var delay: int = clampi(int(spec.get("delay",0)),0,9)
 	var last_sample: Dictionary = initial
 	var frames: Array[int] = [0,59,299,ticks-1]
@@ -307,6 +413,37 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 			if frames.has(tick) and spec.get("visual",false):
 				frame_records.append({"tick":tick+1,"width":crop_size.x,"height":crop_size.y,"origin":[crop_origin.x,crop_origin.y],
 					"body":[center.x,center.y,rotation,body_size.x,body_size.y],"surface":surface,"cells":Marshalls.raw_to_base64(last_sample.cells)})
+		if wex001:
+			var wex_tick: int = tick + 1
+			var wex_forbidden: Dictionary = world.water_experiment_observation(wex_forbidden_origin,wex_forbidden_size)
+			var forbidden_mass: int = int(wex_forbidden.get("water_integer",-1))
+			wex_max_forbidden_mass = maxi(wex_max_forbidden_mass,forbidden_mass)
+			if forbidden_mass > 0:
+				wex_forbidden_nonzero_ticks += 1
+				if wex_first_forbidden_tick < 0:
+					wex_first_forbidden_tick = wex_tick
+			if mode == "barrel":
+				var bottom_y: float = center.y + extent/2.0
+				var floor_penetration: float = maxf(0.0,bottom_y-float(floor_y))
+				wex_max_body_floor_penetration = maxf(wex_max_body_floor_penetration,floor_penetration)
+				wex_body_trace.append([
+					wex_tick,center.x,center.y,velocity.x,velocity.y,rotation,bottom_y,
+					floor_penetration,displaced,unresolved,max_age])
+			if wex_tick % wex_surface_stride == 0 or tick == ticks-1:
+				var wex_snapshot: Dictionary = sample(world,wex_observation_origin,wex_observation_size,false)
+				var wex_surface: Dictionary = wex001_surface_metrics(wex_snapshot,wex_observation_origin,wex_observation_size,surface)
+				var wex_above: Dictionary = world.water_experiment_observation(wex_observation_origin,wex_above_size)
+				wex_surface["tick"] = wex_tick
+				wex_surface["water_mass"] = int(wex_snapshot.get("water_mass",-1))
+				wex_surface["above_surface_mass"] = int(wex_above.get("water_integer",-1))
+				wex_surface_rows.append(wex_surface)
+				wex_peak_above_surface_mass = maxi(wex_peak_above_surface_mass,int(wex_surface.above_surface_mass))
+				wex_peak_surface_excursion = maxi(wex_peak_surface_excursion,int(wex_surface.surface_excursion))
+				var surface_span_value: Variant = wex_surface.get("surface_span",null)
+				if surface_span_value != null:
+					wex_max_surface_span = maxi(wex_max_surface_span,int(surface_span_value))
+			if wex_tick % wex_mass_stride == 0 or tick == ticks-1:
+				wex_mass_samples.append([wex_tick,global_water_integer(world)])
 		if tick%120 == 0:
 			await host.get_tree().process_frame
 	if spec.get("conservation",false) and not fallback:
@@ -329,7 +466,37 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 		"contact_impulse":[raw_contact.x,raw_contact.y],"applied_impulse":[applied.x,applied.y],"max_sample_age":max_age,
 		"stale":stale,"duplicates":duplicates,"faces":face_totals,"tick_us":quantiles(tick_times),"coupling_us":quantiles(coupling_times),
 		"rows":rows,"frames":frame_records}
+	if wex001:
+		var mass_conserved: bool = true
+		for mass_row: Variant in wex_mass_samples:
+			if int(mass_row[1]) != wex_initial_global_mass:
+				mass_conserved = false
+				break
+		report["wex001"] = {
+			"schema":"wex001-v1",
+			"body_present":mode == "barrel",
+			"water_depth":depth,
+			"tank_width":width,
+			"surface_y":surface,
+			"floor_y":floor_y,
+			"body_x":body_x if mode == "barrel" else null,
+			"global_mass_initial":wex_initial_global_mass,
+			"global_mass_samples":wex_mass_samples,
+			"mass_conserved":mass_conserved,
+			"max_forbidden_water_mass":wex_max_forbidden_mass,
+			"first_forbidden_tick":wex_first_forbidden_tick,
+			"forbidden_nonzero_ticks":wex_forbidden_nonzero_ticks,
+			"peak_above_surface_mass":wex_peak_above_surface_mass,
+			"peak_surface_excursion":wex_peak_surface_excursion,
+			"max_surface_span":wex_max_surface_span,
+			"max_body_floor_penetration":wex_max_body_floor_penetration,
+			"surface_samples":wex_surface_rows,
+			"body_trace":wex_body_trace,
+		}
 	report.ok = int(last_sample.completed_ticks) == ticks and not last_sample.get("failed",false)
+	if wex001 and not bool(report.wex001.mass_conserved):
+		report.ok = false
+		report["error"] = "WEX-001 exact Water mass mismatch"
 	if layout == "hard" and peak_depth > 2.0:
 		report.ok = false
 		report["error"] = "hard-floor control exceeded two-cell fixture tolerance"
