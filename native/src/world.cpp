@@ -275,24 +275,38 @@ struct World::JobEffects {
         std::int32_t subtile_x = 0;
         std::uint64_t mutation_count = 0;
     };
+    struct DiscoverySignalReport {
+        ChunkCoord chunk{};
+        std::int32_t activity_y = 0;
+        std::int32_t activity_x = 0;
+        std::uint64_t deadline_due = 0;
+        bool activity_witness = false;
+    };
 
     static constexpr std::size_t kMaximumTouchedChunks = 16;
     static constexpr std::size_t kMaximumDiscoveryMutationReports = 64;
+    static constexpr std::size_t kMaximumDiscoverySignalReports = 64;
     std::array<ChunkEffect, kMaximumTouchedChunks> chunks{};
     std::array<DiscoveryMutationReport, kMaximumDiscoveryMutationReports>
         discovery_mutations{};
+    std::array<DiscoverySignalReport, kMaximumDiscoverySignalReports>
+        discovery_signals{};
     std::size_t chunk_count = 0;
     std::size_t discovery_mutation_count = 0;
+    std::size_t discovery_signal_count = 0;
     bool overflow = false;
     bool discovery_mutation_overflow = false;
+    bool discovery_signal_overflow = false;
     bool hard_surface_changed = false;
     PhysicsJobHistogram* physics = nullptr;
 
     void reset() noexcept {
         chunk_count = 0;
         discovery_mutation_count = 0;
+        discovery_signal_count = 0;
         overflow = false;
         discovery_mutation_overflow = false;
+        discovery_signal_overflow = false;
         hard_surface_changed = false;
         if (physics != nullptr) *physics = {};
     }
@@ -320,6 +334,31 @@ struct World::JobEffects {
             address_value.local_y,
             non_empty_delta,
         };
+    }
+
+    void record_discovery_signal(const Address& address_value,
+                                 std::int32_t activity_block_size,
+                                 bool activity_witness,
+                                 std::uint64_t deadline_due = 0) noexcept {
+        const auto activity_x = address_value.local_x / activity_block_size;
+        const auto activity_y = address_value.local_y / activity_block_size;
+        for (std::size_t index = 0; index < discovery_signal_count; ++index) {
+            auto& report = discovery_signals[index];
+            if (report.chunk != address_value.chunk ||
+                report.activity_y != activity_y ||
+                report.activity_x != activity_x) continue;
+            report.activity_witness = report.activity_witness || activity_witness;
+            if (deadline_due != 0 &&
+                (report.deadline_due == 0 || deadline_due < report.deadline_due))
+                report.deadline_due = deadline_due;
+            return;
+        }
+        if (discovery_signal_count == discovery_signals.size()) {
+            discovery_signal_overflow = true;
+            return;
+        }
+        discovery_signals[discovery_signal_count++] = {
+            address_value.chunk, activity_y, activity_x, deadline_due, activity_witness};
     }
 
     void record_discovery_mutation(const Address& address_value,
