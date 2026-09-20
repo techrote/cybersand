@@ -335,7 +335,8 @@ public:
     }
     [[nodiscard]] std::size_t pending_components() const noexcept {
         if (unavailable()) return 0;
-        std::size_t count = cleanup_pending_count_ + ticket_count_;
+        std::size_t count = cleanup_pending_count_ + ticket_count_ +
+                            region_reclaim_count_;
         if (source_handle_valid(source_cleanup_head_)) ++count;
         if (seed_handle_valid(stale_seed_cleanup_head_)) ++count;
         if (staged_child_handle_valid(stale_child_cleanup_head_)) ++count;
@@ -370,7 +371,7 @@ public:
     [[nodiscard]] std::size_t staged_member_capacity() const noexcept { return frontier_capacity_; }
     [[nodiscard]] std::size_t staged_child_capacity() const noexcept { return RegionCapacity; }
     [[nodiscard]] std::size_t cleanup_pending() const noexcept {
-        return cleanup_pending_count_ +
+        return cleanup_pending_count_ + region_reclaim_count_ +
                (source_handle_valid(source_cleanup_head_) ? 1U : 0U) +
                (seed_handle_valid(stale_seed_cleanup_head_) ? 1U : 0U) +
                (staged_child_handle_valid(stale_child_cleanup_head_) ? 1U : 0U);
