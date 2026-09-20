@@ -248,7 +248,9 @@ public:
         if (next_revision <= tiles_[slot].revision) return RegionOutcome::Stale;
         prepare_tile_revision_change(slot);
         auto& tile = tiles_[slot]; tile.revision = next_revision; tile.has_payload = false;
-        tile.ready = false; tile.component_count = 0; tile.face_run_count = 0;
+        tile.ready = false;
+        if (!advance_observation_generation(tile)) return RegionOutcome::Refused;
+        tile.component_count = 0; tile.face_run_count = 0;
         tile.boundary_runs.fill(region_detail::invalid_index);
         for (auto& run : tile.face_runs) run = FaceRun{};
         tile.refusal = RegionRefusal::SignalIncomplete;
@@ -279,7 +281,13 @@ public:
                     did_work = service_reconstruction_ticket_one();
                     reconstruction_work = did_work;
                 }
-                if (!did_work && work_possible_) {
+                const bool reconstruction_admission_barrier =
+                    ticket_handle_valid(reconstruction_queue_head_) &&
+                    (reconstruction_tickets_[reconstruction_queue_head_.slot].phase ==
+                         ReconstructionPhase::Admitting ||
+                     reconstruction_tickets_[reconstruction_queue_head_.slot].phase ==
+                         ReconstructionPhase::RestartCleanup);
+                if (!did_work && work_possible_ && !reconstruction_admission_barrier) {
                     begin_seek();
                     did_work = service_active_build_one();
                 }
@@ -2717,16 +2725,22 @@ private:
             return true;
         }
         auto& child = staged_children_[ticket.preflight_child.slot];
-        if (!dependency_handle_valid(ticket.preflight_dependency))
+        if (!dependency_handle_valid(ticket.preflight_dependency)) {
             ticket.preflight_dependency = subscriber_dependency_head(child.subscriber);
-        if (dependency_handle_valid(ticket.preflight_dependency)) {
-            const auto current = ticket.preflight_dependency;
-            ticket.preflight_dependency = dependencies_[current.slot].next_subscriber;
-            if (!dependency_current(current)) request_ticket_restart(handle);
-            return true;
+            if (!dependency_handle_valid(ticket.preflight_dependency)) {
+                ticket.preflight_child = child.next;
+                return true;
+            }
         }
-        ticket.preflight_child = child.next;
-        ticket.preflight_dependency = {};
+        const auto current = ticket.preflight_dependency;
+        const auto next = dependencies_[current.slot].next_subscriber;
+        if (!dependency_current(current)) request_ticket_restart(handle);
+        if (dependency_handle_valid(next)) {
+            ticket.preflight_dependency = next;
+        } else {
+            ticket.preflight_dependency = {};
+            ticket.preflight_child = child.next;
+        }
         return true;
     }
     bool region_slot_reclaimable(std::size_t slot) const noexcept {
