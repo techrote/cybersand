@@ -23,9 +23,10 @@ future work does not silently collapse several different questions into one
 
 Current executable behavior remains defined by source and the focused subsystem
 contracts. Existing staged architecture authority remains in
-[architecture-programme.md](architecture-programme.md). Existing Water successor
-apparatus work remains owned by #49 and existing saturated-head architecture work
-remains owned by #45. Existing scalable reversible soliding remains owned by #12.
+[architecture-programme.md](architecture-programme.md). The corrected Water
+successor apparatus/control has been supplied by #49; existing saturated-head
+architecture work remains owned by #45. Existing scalable reversible soliding
+remains owned by #12.
 
 This programme extends those tracks; it does not duplicate them.
 
@@ -217,13 +218,20 @@ production handoff architecture.
 
 ## Relationship to #49 and #45
 
-### #49 remains valuable and independent
+### #49 corrected apparatus is available and independent
 
-#49 repairs the successor Water experiment apparatus: equilibrium/coverage metrics,
-censored outcomes, the clean communicating-head fixture, active/sleep timing and
-runner durability. None of this extension invalidates that work.
+#49 has supplied the successor Water experiment apparatus correction:
+equilibrium/coverage metrics, categorical censored outcomes, the clean
+roofed-passage communicating-head fixture, fixture-appropriate surface evidence,
+phase-separated timing and runner durability. See the
+[frozen registration](../audits/2026-09-20-issue-49-water-apparatus-v2-registration.md)
+and [source-matched Current-Water baseline](../audits/2026-09-20-issue-49-water-apparatus-v2-baseline.md).
 
-#49 can proceed in parallel and remains the sole owner of those corrections.
+The clean two-limb Current-Water control remains `not_reached` for both
+preregistered equilibrium thresholds by tick 4800. None of this extension
+invalidates or duplicates that apparatus work, and the result does not select a
+new production Water solver. #95 must consume the corrected control alongside
+the available WEX evidence.
 
 ### #45 is no longer treated as an inevitable pressure implementation
 
@@ -236,7 +244,7 @@ control whose boundary assumptions are stated. In particular, equal free-surface
 levels are not a universal target when the gas volumes above the liquids are sealed
 at different pressures.
 
-After #49 and the relevant hybrid evidence, the acceptable #45 dispositions include:
+With the corrected #49 control and the relevant hybrid evidence, the acceptable #45 dispositions include:
 
 - the hybrid mechanism supplies enough intended deep-release behavior and no
   additional saturated-head mechanism is justified;
@@ -366,7 +374,7 @@ existing #45 remains the architecture question consumed/reconciled by #95; it is
 a prerequisite implementation for #91-#94.
 ```
 
-#49 may run in parallel with WEX-001/WEX-003. WEX-002 waits for a suitable generic
+#49's corrected control is available to WEX-005. WEX-002 waits for a suitable generic
 hybrid substrate and must not duplicate #12. WEX-003 has now admitted WEX-004 as a
 bounded non-production research proof. WEX-005 is a
 decision/reconciliation issue, not an automatic implementation issue.
@@ -606,7 +614,7 @@ were made to the initial discussion concepts:
 - made exact fractional Water mass transfer an explicit hybrid requirement;
 - separated current generic-body characterization from the later sheet proof so
   the good splash and bad floor penetration are frozen before architecture changes;
-- made #49 parallel/independent rather than duplicating its apparatus scope;
+- kept #49 parallel/independent rather than duplicating its apparatus scope; its corrected v2 control is now available to #95;
 - corrected the dependency graph after review so #91 baseline characterization is
   independent of future #12 hybrid availability; only #92 requires both #91 and a
   suitable generic #12 substrate;
