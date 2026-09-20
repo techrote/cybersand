@@ -675,6 +675,7 @@ DiscoveryOutcome SettledWorldDiscoveryCoordinator::register_tile(
 
     signals.occupied = mask_occupancy_count != 0;
     signals.pending_event = pending_event_count != 0;
+    signals.included = requested_included && applied_included;
 
     if (const auto existing = state.find_record(key); existing.has_value()) {
         auto& record = state.records[*existing];
