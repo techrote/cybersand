@@ -638,6 +638,60 @@ void deferred_subscriber_cleanup_is_aba_safe() {
             "bounded deferred cleanup is eventually reclaimable");
 }
 
+
+void subscriber_slot_reuse_drops_stale_reverse_links() {
+    using Regions = SettledRegions<3, 1, 1, 4, 6, 16>;
+    const std::array<DiscoveryCell, 1> local{sand};
+    const std::array<DiscoveryCell, 1> empty_cell{empty};
+    const std::array<DiscoveryCell, 1> neighbour{other_state};
+    const std::array<DiscoveryCell, 1> neighbour_changed{
+        DiscoveryCell{1, 9, 4, 221, false}};
+    Regions regions(34);
+
+    require(put(regions, key(0, 0, 34), {0, 0, 1, 1}, 1, local, 0x0d) ==
+                RegionOutcome::Accepted &&
+            put(regions, key(1, 0, 34), {1, 0, 1, 1}, 1, neighbour, 0x07) ==
+                RegionOutcome::Accepted,
+            "subscriber-reuse fixture initial neighbours accepted");
+    drain(regions);
+    require(regions.region_count() == 2,
+            "subscriber-reuse fixture publishes both nonmatching neighbours");
+
+    require(put(regions, key(0, 0, 34), {0, 0, 1, 1}, 2, empty_cell, 0x0d) ==
+                RegionOutcome::Accepted,
+            "retiring local component makes old subscriber generations stale");
+    drain(regions);
+    require(regions.cleanup_pending() == 0,
+            "old subscriber reverse links are reclaimed before slot reuse");
+
+    require(put(regions, key(1000, 1000, 34), {1000, 1000, 1, 1}, 1, local) ==
+                RegionOutcome::Accepted,
+            "far sealed candidate accepted after subscriber reclamation");
+    drain(regions);
+    const auto current = snapshots(regions, 6);
+    std::optional<SettledRegionSnapshot> far;
+    for (const auto& candidate : current)
+        if (candidate.min_x == 1000) far = candidate;
+    require(far.has_value(), "far replacement publication exists");
+    require(regions.metrics().subscriber_reuses != 0,
+            "a generation-bearing subscriber slot was actually reused");
+
+    require(put(regions, key(0, 0, 34), {0, 0, 1, 1}, 3, empty_cell, 0x0d) ==
+                RegionOutcome::Accepted,
+            "first old dependency target advances after subscriber reuse");
+    require(regions.snapshot(far->handle).has_value(),
+            "first stale reverse target cannot invalidate reused subscriber slot");
+
+    require(put(regions, key(1, 0, 34), {1, 0, 1, 1}, 2, neighbour_changed, 0x07) ==
+                RegionOutcome::Accepted,
+            "second old dependency target advances after subscriber reuse");
+    require(regions.snapshot(far->handle).has_value(),
+            "second stale reverse target cannot invalidate reused subscriber slot");
+    drain(regions);
+    require(regions.snapshot(far->handle).has_value(),
+            "reused subscriber remains generation-safe after deferred maintenance");
+}
+
 void absence_subscription_invalidates_only_actual_face_users() {
     using Regions = SettledRegions<3, 1, 1, 4, 6, 16>;
     const std::array<DiscoveryCell, 1> one{sand};
@@ -691,6 +745,7 @@ int main() {
         dependency_capacity_is_explicit_and_atomic();
         stale_edge_generation_cannot_reconnect_an_old_component();
         deferred_subscriber_cleanup_is_aba_safe();
+        subscriber_slot_reuse_drops_stale_reverse_links();
         absence_subscription_invalidates_only_actual_face_users();
         std::cout << "settled region tests passed\n";
         return 0;
