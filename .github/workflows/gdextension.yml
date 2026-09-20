@@ -3,7 +3,23 @@ name: GDExtension build and current Godot regression
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - '.circleci/**'
+      - '.github/workflows/documentation.yml'
+      - '.github/workflows/native.yml'
+      - '.github/workflows/release-hashes.yml'
+      - '.github/workflows/sengi-benchmark.yml'
+      - '.github/workflows/web-demo.yml'
+      - '.github/workflows/web-toolchain.yml'
   pull_request:
+    paths-ignore:
+      - '.circleci/**'
+      - '.github/workflows/documentation.yml'
+      - '.github/workflows/native.yml'
+      - '.github/workflows/release-hashes.yml'
+      - '.github/workflows/sengi-benchmark.yml'
+      - '.github/workflows/web-demo.yml'
+      - '.github/workflows/web-toolchain.yml'
   workflow_dispatch:
 
 permissions:
