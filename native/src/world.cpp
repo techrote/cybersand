@@ -657,10 +657,13 @@ void World::observe_discovery_activity_parent(
                 chunk_origin_y + block_y + subtile_y,
                 static_cast<std::uint32_t>(std::min(32, block_width - subtile_x)),
                 static_cast<std::uint32_t>(std::min(32, block_height - subtile_y))};
-            auto signals = discovery_signals(coord, activity_index, bounds);
-            // #63 owns sparse mask/event/inclusion producer state. Activity/deadline
-            // updates must not rediscover or reinterpret the already-observed mask.
-            signals.occupied = previous->signals.occupied;
+            auto signals = previous->signals;
+            // #62 owns only activity/deadline state. Preserve #58/#63-owned
+            // witness/health/inclusion/event/mask signals exactly as last observed;
+            // a parent-local activity update must not become a second producer for them.
+            signals.active =
+                chunk->activity_blocks[activity_index].active ||
+                chunk->activity_blocks[activity_index].next_interaction_tick != 0;
             (void)settled_discovery_->observe(
                 *handle, signals, soliding::ProducerReason::ActivityOrDeadline, tick_index_);
         }
