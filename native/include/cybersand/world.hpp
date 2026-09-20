@@ -320,6 +320,9 @@ private:
     [[nodiscard]] bool discovery_tile_fully_covered(
         soliding::DiscoveryBounds bounds,
         const std::optional<CoreRange>& coverage) const noexcept;
+    [[nodiscard]] static std::optional<RectI64> checked_discovery_event_observation_rect(
+        std::int64_t x, std::int64_t y, std::int32_t radius,
+        std::int32_t rule_radius) noexcept;
     [[nodiscard]] std::optional<RectI64> discovery_event_observation_rect(
         std::int64_t x, std::int64_t y, std::int32_t radius) const noexcept;
     [[nodiscard]] std::optional<std::uint64_t> discovery_pending_event_count(
