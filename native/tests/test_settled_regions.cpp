@@ -512,6 +512,162 @@ void local_churn_does_not_cancel_inflight_remote_region() {
     require(found.size() == 1 && found[0].min_x == 1000,
             "remote complete region progresses despite unrelated local churn");
 }
+
+void dependency_capacity_is_explicit_and_atomic() {
+    using Regions = SettledRegions<1, 1, 1, 1, 2, 8>;
+    const std::array<DiscoveryCell, 1> one{sand};
+    Regions regions(30, 1, 1, 8, 4);
+    require(regions.dependency_capacity() == 4,
+            "dependency capacity is an explicit bounded runtime resource");
+    require(put(regions, key(0, 0, 30), {0, 0, 1, 1}, 1, one) ==
+                RegionOutcome::Accepted,
+            "dependency-capacity fixture payload accepted");
+    drain(regions);
+    require(regions.region_count() == 0 &&
+            regions.last_refusal() == RegionRefusal::DependencyCapacity,
+            "candidate refuses atomically when exact dependency witnesses do not fit");
+    require(regions.metrics().dependency_refusals != 0,
+            "dependency saturation is observable");
+}
+
+void stale_edge_generation_cannot_reconnect_an_old_component() {
+    using Regions = SettledRegions<3, 1, 1, 1, 6, 16>;
+    const std::array<DiscoveryCell, 1> one{sand};
+    const std::array<DiscoveryCell, 1> two{
+        DiscoveryCell{2, 7, 3, 220, false}};
+    Regions regions(31);
+
+    require(put(regions, key(0, 0, 31), {0, 0, 1, 1}, 1, one) ==
+                RegionOutcome::Accepted &&
+            put(regions, key(1, 0, 31), {1, 0, 1, 1}, 1, one) ==
+                RegionOutcome::Accepted,
+            "initial matching edge fixture accepted");
+    drain(regions);
+    const auto joined = snapshots(regions, 6);
+    require(joined.size() == 1 && joined[0].area == 2 &&
+            regions.adjacency_count() == 1,
+            "single edge slot initially joins the matching pair");
+
+    require(put(regions, key(1, 0, 31), {1, 0, 1, 1}, 2, two) ==
+                RegionOutcome::Accepted,
+            "middle tile revision retires the old edge generation");
+    drain(regions);
+    const auto separated = snapshots(regions, 6);
+    require(separated.size() == 2,
+            "mismatching replacement does not retain the stale edge");
+    const auto left = separated[0].min_x == 0 ? separated[0] : separated[1];
+    require(left.area == 1, "left component remains independently published");
+    const auto left_handle = left.handle;
+
+    require(put(regions, key(2, 0, 31), {2, 0, 1, 1}, 1, two) ==
+                RegionOutcome::Accepted,
+            "new right tile reuses the bounded edge pool");
+    require(regions.snapshot(left_handle).has_value(),
+            "edge-slot reuse does not retire an unrelated old-side publication");
+    drain(regions);
+    const auto final = snapshots(regions, 6);
+    require(final.size() == 2 && regions.adjacency_count() == 1,
+            "reused edge generation links only the current middle/right components");
+    bool saw_left = false, saw_right_pair = false;
+    for (const auto& region : final) {
+        saw_left = saw_left || (region.min_x == 0 && region.max_x == 0 && region.area == 1);
+        saw_right_pair = saw_right_pair ||
+                         (region.min_x == 1 && region.max_x == 2 && region.area == 2);
+    }
+    require(saw_left && saw_right_pair,
+            "stale edge generation cannot alias the reused edge slot");
+    require(regions.metrics().edge_retirements != 0,
+            "edge retirement is accounted through component incidence");
+}
+
+void deferred_subscriber_cleanup_is_aba_safe() {
+    using Regions = SettledRegions<2, 2, 2, 8, 4, 16>;
+    const std::array<DiscoveryCell, 2> full{sand, sand};
+    const std::array<DiscoveryCell, 2> local_only{sand, empty};
+    const std::array<DiscoveryCell, 1> neighbour{other_state};
+    const std::array<DiscoveryCell, 1> neighbour_changed{
+        DiscoveryCell{2, 9, 4, 221, false}};
+    Regions regions(32);
+
+    require(put(regions, key(0, 0, 32), {0, 0, 2, 1}, 1, full) ==
+                RegionOutcome::Accepted &&
+            put(regions, key(2, 0, 32), {2, 0, 1, 1}, 1, neighbour) ==
+                RegionOutcome::Accepted,
+            "ABA fixture initial tiles accepted");
+    drain(regions);
+    const auto initial = snapshots(regions, 4);
+    require(initial.size() == 2, "ABA fixture publishes both initial regions");
+    const auto old_local =
+        initial[0].min_x == 0 ? initial[0] : initial[1];
+    require(old_local.max_x == 1,
+            "old local publication subscribes to the facing neighbour revision");
+
+    require(put(regions, key(0, 0, 32), {0, 0, 2, 1}, 2, local_only) ==
+                RegionOutcome::Accepted,
+            "local revision immediately retires the old publication");
+    require(!regions.snapshot(old_local.handle).has_value(),
+            "logical retirement precedes deferred reverse-index cleanup");
+
+    std::optional<SettledRegionSnapshot> replacement;
+    for (std::size_t work = 0; work < 10000 && !replacement.has_value(); ++work) {
+        require(regions.advance(1) <= 1, "ABA fixture keeps exact service budget");
+        for (std::size_t slot = 0; slot < 4; ++slot) {
+            const auto candidate = regions.region_at(slot);
+            if (candidate.has_value() && candidate->min_x == 0 &&
+                candidate->max_x == 0 && candidate->area == 1) {
+                replacement = candidate;
+                break;
+            }
+        }
+    }
+    require(replacement.has_value(),
+            "replacement publication appears before stale reverse records are reclaimed");
+    require(replacement->handle.slot == old_local.handle.slot &&
+            replacement->handle.generation != old_local.handle.generation,
+            "publication slot is reused under a new generation");
+    require(regions.cleanup_pending() != 0,
+            "stale subscriber cleanup remains explicitly deferred");
+
+    require(put(regions, key(2, 0, 32), {2, 0, 1, 1}, 2, neighbour_changed) ==
+                RegionOutcome::Accepted,
+            "old dependency target changes while stale subscriber records remain");
+    require(regions.snapshot(replacement->handle).has_value(),
+            "stale subscriber generation cannot retire the reused publication slot");
+    drain(regions);
+    require(regions.cleanup_pending() == 0,
+            "bounded deferred cleanup is eventually reclaimable");
+}
+
+void absence_subscription_invalidates_only_actual_face_users() {
+    using Regions = SettledRegions<3, 1, 1, 4, 6, 16>;
+    const std::array<DiscoveryCell, 1> one{sand};
+    Regions regions(33);
+    const auto local = key(0, 0, 33);
+    const auto far = key(1000, 1000, 33);
+
+    require(put(regions, local, {0, 0, 1, 1}, 1, one) ==
+                RegionOutcome::Accepted &&
+            put(regions, far, {1000, 1000, 1, 1}, 1, one) ==
+                RegionOutcome::Accepted,
+            "absence-fanout fixture accepted");
+    drain(regions);
+    const auto before = snapshots(regions, 6);
+    require(before.size() == 2, "local and far publications exist");
+    const auto local_region = before[0].min_x == 0 ? before[0] : before[1];
+    const auto far_region = before[0].min_x == 1000 ? before[0] : before[1];
+
+    const auto invalidations_before = regions.metrics().subscriber_invalidations;
+    require(regions.register_unknown(
+                key(1, 0, 33), {1, 0, 1, 1}, 1) == RegionOutcome::Accepted,
+            "new facing residency is registered unknown before payload");
+    require(!regions.snapshot(local_region.handle).has_value(),
+            "new-facing unknown revokes the exact local absence certificate immediately");
+    require(regions.snapshot(far_region.handle).has_value(),
+            "far publication is not retired by unrelated residency");
+    require(regions.metrics().subscriber_invalidations > invalidations_before,
+            "absence target reaches its actual reverse subscribers");
+}
+
 } // namespace
 
 int main() {
@@ -532,6 +688,10 @@ int main() {
         unknown_middle_component_capacity_and_new_match();
         generation_exhaustion_never_revalidates_old_handle();
         local_churn_does_not_cancel_inflight_remote_region();
+        dependency_capacity_is_explicit_and_atomic();
+        stale_edge_generation_cannot_reconnect_an_old_component();
+        deferred_subscriber_cleanup_is_aba_safe();
+        absence_subscription_invalidates_only_actual_face_users();
         std::cout << "settled region tests passed\n";
         return 0;
     } catch (const std::exception& error) {
