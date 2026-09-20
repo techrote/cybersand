@@ -78,13 +78,34 @@ parent-local witnesses plus one canonical due-tick/parent deadline index. Quiet
 observer maintenance therefore does not enumerate every represented discovery tile
 to rediscover unchanged activity/deadline state. Authoritative simulation still walks
 its own activity metadata for scheduler/sleep semantics; #62 does not replace that
-scheduler or reinterpret deadlines. Local mask/event/inclusion producer
-sparsification remains #63. #64 is landed separately in the graph-side
-incidence/reverse-retirement lane and does not absorb either World-producer slice.
-Local mask occupancy, accepted pending events,
-requested/applied inclusion, live adhesion-policy fences, clear/move identity and
-failed-tick quarantine retain their existing semantics. A missing mutation witness
-still makes the producer unsafe: the journal cannot detect an omitted hook. There is no
+scheduler or reinterpret deadlines.
+
+Issue #63 completes the frozen non-payload producer lane. Transient occupancy is
+tracked as an exact per-tile count with a nonwrapping mask generation, so set/clear and
+change-and-restore cannot collapse to one boolean observation. Pending explosions use
+the #57 footprint `P = (R + 2) + maximum_rule_radius`; bounded canonical-key routing
+increments/decrements exact per-tile pending counts, overlapping events retain
+independent obligations, and newly registered coverage derives the count from the
+bounded authoritative pending-event queue. Checked signed geometry failure or a
+rectangle whose absent-address traversal would exceed the configured bound quarantines
+observation without rejecting or rolling back authoritative simulation.
+
+Requested and applied inclusion have separate nonwrapping epochs. Explicit region
+requests reconcile bounded owner records only when a request changes; tick entry
+advances the applied epoch even when request ABA restores the same geometric coverage.
+The #62 parent-local activity/deadline path never recomputes these #63 signals.
+Coverage is exposed explicitly as `NotResident`, `ResidentUntracked`,
+`RegisteredUnknown`, `Ready`, `Excluded`, `Blocked`, `CapacityRefused` or
+`Failed`. With connectivity enabled, new residency is registered graph-side as
+unknown before journal payload registration, so a prior absence certificate is
+revoked before newly resident payload can become consumer-visible. All added witness
+fields live in the construction-reserved `T` owner records; no hot overflow container
+was added. #64 remains separate in the graph-side incidence/reverse-retirement lane.
+
+Local mask occupancy, accepted pending events, requested/applied inclusion, live
+adhesion-policy fences, clear/move identity and failed-tick quarantine retain their
+existing simulation semantics. A missing mutation witness still makes the producer
+unsafe: the journal cannot detect an omitted hook. There is no
 rest-age or observation-gap detector in this journal: a producer must clear
 `witness_complete` on gaps; unchanged flags across elapsed time prove nothing.
 Public registration still rejects exact duplicate bounds but permits overlaps.
