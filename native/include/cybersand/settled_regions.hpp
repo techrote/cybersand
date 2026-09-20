@@ -34,7 +34,7 @@ enum class RegionRefusal : std::uint8_t {
     None, InvalidInput, SignalIncomplete, Occupied, NoncanonicalEmpty,
     TileCapacity, ComponentCapacity, AdjacencyCapacity, FrontierCapacity, RegionCapacity,
     UnknownBoundary, RevisionChanged, SourceFailure, GenerationExhausted,
-    SpatialIndexCapacity
+    SpatialIndexCapacity, DependencyCapacity
 };
 struct RegionComponentKey {
     std::uint8_t material{};
@@ -65,6 +65,10 @@ struct SettledRegionMetrics {
     std::uint64_t builds_refused{}, frontier_high_water{}, frontier_refusals{};
     std::uint64_t region_high_water{}, region_refusals{}, invalidated_regions{};
     std::uint64_t facing_invalidation_fanout{}, boundary_cell_checks{}, tile_lookup_probes{};
+    std::uint64_t incident_edge_visits{}, edge_retirements{};
+    std::uint64_t dependency_records{}, dependency_high_water{}, dependency_refusals{};
+    std::uint64_t subscriber_invalidations{}, absence_subscriptions{};
+    std::uint64_t cleanup_registrations{}, cleanup_units{};
     std::uint64_t publications{}, work_units{}, area_total{}, area_max{};
     std::uint64_t latency_total_units{}, latency_max_units{};
 };
@@ -116,7 +120,8 @@ public:
     explicit SettledRegions(std::uint64_t incarnation,
                             std::size_t tile_capacity = TileCapacity,
                             std::size_t adjacency_capacity = AdjacencyCapacity,
-                            std::size_t frontier_capacity = FrontierCapacity);
+                            std::size_t frontier_capacity = FrontierCapacity,
+                            std::size_t dependency_capacity = 0);
     SettledRegions(const SettledRegions&) = delete;
     SettledRegions& operator=(const SettledRegions&) = delete;
 
@@ -136,10 +141,12 @@ public:
             if (overlaps_bounds(bounds))
                 return remember(RegionOutcome::Invalid, RegionRefusal::InvalidInput);
             slot = first_free_tile();
+            tiles_[slot] = Tile{};
             tiles_[slot].used = true;
             tiles_[slot].key = key;
             tiles_[slot].bounds = bounds;
             tiles_[slot].neighbours.fill(region_detail::invalid_index);
+            tiles_[slot].boundary_runs.fill(region_detail::invalid_index);
             if (!index_tile(slot)) {
                 block_capacity(RegionRefusal::SpatialIndexCapacity);
                 return remember(RegionOutcome::Capacity, RegionRefusal::SpatialIndexCapacity);
@@ -151,10 +158,7 @@ public:
                 return remember(RegionOutcome::Invalid, RegionRefusal::InvalidInput);
             if (revision < tiles_[slot].revision) return RegionOutcome::Stale;
         }
-        retire_for_tile_and_faces(slot);
-        cancel_related_build(slot);
-        clear_deferred_for_tile_and_faces(slot);
-        remove_adjacencies(slot);
+        prepare_tile_revision_change(slot);
         auto& tile = tiles_[slot];
         tile.revision = revision;
         tile.has_payload = false;
@@ -178,8 +182,10 @@ public:
             if (overlaps_bounds(input.bounds))
                 return remember(RegionOutcome::Invalid, RegionRefusal::InvalidInput);
             slot = first_free_tile();
+            tiles_[slot] = Tile{};
             tiles_[slot].used = true; tiles_[slot].key = input.key; tiles_[slot].bounds = input.bounds;
             tiles_[slot].neighbours.fill(region_detail::invalid_index);
+            tiles_[slot].boundary_runs.fill(region_detail::invalid_index);
             if (!index_tile(slot)) {
                 block_capacity(RegionRefusal::SpatialIndexCapacity);
                 return remember(RegionOutcome::Capacity, RegionRefusal::SpatialIndexCapacity);
@@ -196,9 +202,8 @@ public:
                 return remember(RegionOutcome::Invalid, RegionRefusal::RevisionChanged);
             }
         }
-        retire_for_tile_and_faces(slot); cancel_related_build(slot); clear_deferred_for_tile_and_faces(slot);
+        prepare_tile_revision_change(slot);
         work_possible_ = true;
-        remove_adjacencies(slot);
         copy_input(tiles_[slot], input);
         const auto outcome = extract(slot);
         if (outcome != RegionOutcome::Accepted) return outcome;
@@ -226,8 +231,7 @@ public:
         if (slot >= tile_count_ || !(tiles_[slot].key == key))
             return remember(RegionOutcome::Invalid, RegionRefusal::InvalidInput);
         if (next_revision <= tiles_[slot].revision) return RegionOutcome::Stale;
-        retire_for_tile_and_faces(slot); cancel_related_build(slot); clear_deferred_for_tile_and_faces(slot);
-        remove_adjacencies(slot);
+        prepare_tile_revision_change(slot);
         auto& tile = tiles_[slot]; tile.revision = next_revision; tile.has_payload = false;
         tile.ready = false; tile.component_count = 0; tile.refusal = RegionRefusal::SignalIncomplete;
         work_possible_ = true;
@@ -237,9 +241,15 @@ public:
     // One unit is one seed probe, component visit, dependency validation, or publication.
     // Local <=32x32 extraction and face rebuilding are separately bounded and counted.
     std::size_t advance(std::size_t budget) noexcept {
-        if (unavailable() || incarnation_ == 0 || !work_possible_) return 0;
+        if (unavailable() || incarnation_ == 0 || budget == 0) return 0;
         std::size_t used = 0;
         while (used < budget) {
+            if (cleanup_pending_count_ != 0) {
+                if (!cleanup_one_dependency()) break;
+                consume(used);
+                continue;
+            }
+            if (!work_possible_) break;
             if (build_.phase == Phase::Idle) begin_seek();
             if (build_.phase == Phase::Seeking) {
                 if (!seek_one()) {
@@ -249,15 +259,22 @@ public:
                 consume(used); continue;
             }
             if (build_.phase == Phase::Traversing) {
-                if (build_.frontier_count == 0) { build_.phase = Phase::Validating; continue; }
+                if (build_.frontier_count == 0) {
+                    build_.phase = Phase::Validating;
+                    build_.validation_dependency = subscriber_dependency_head(build_.subscriber);
+                    continue;
+                }
                 const auto ref = pop_frontier_min();
                 if (!process_component(ref)) refuse_build(build_.failure);
                 consume(used); continue;
             }
-            if (build_.validation_cursor < tile_count_) {
-                const auto index = build_.validation_cursor++;
-                if (build_.dependencies[index] && (!tiles_[index].ready || tiles_[index].revision != build_.revisions[index])) {
-                    refuse_build(RegionRefusal::RevisionChanged); saturating_add(metrics_.builds_restarted);
+            if (dependency_handle_valid(build_.validation_dependency)) {
+                const auto current = build_.validation_dependency;
+                build_.validation_dependency =
+                    dependencies_[current.slot].next_subscriber;
+                if (!dependency_current(current)) {
+                    refuse_build(RegionRefusal::RevisionChanged);
+                    saturating_add(metrics_.builds_restarted);
                 }
                 consume(used); continue;
             }
@@ -280,7 +297,7 @@ public:
     }
     [[nodiscard]] std::size_t pending_components() const noexcept {
         if (unavailable()) return 0;
-        std::size_t count = 0;
+        std::size_t count = cleanup_pending_count_;
         for (std::size_t slot = 0; slot < tile_count_; ++slot)
             if (tiles_[slot].ready)
                 for (std::size_t i = 0; i < tiles_[slot].component_count; ++i)
@@ -302,6 +319,9 @@ public:
     [[nodiscard]] std::size_t tile_capacity() const noexcept { return tile_capacity_; }
     [[nodiscard]] std::size_t adjacency_capacity() const noexcept { return adjacency_capacity_; }
     [[nodiscard]] std::size_t frontier_capacity() const noexcept { return frontier_capacity_; }
+    [[nodiscard]] std::size_t dependency_capacity() const noexcept { return dependency_capacity_; }
+    [[nodiscard]] std::size_t dependency_count() const noexcept { return dependency_count_; }
+    [[nodiscard]] std::size_t cleanup_pending() const noexcept { return cleanup_pending_count_; }
     [[nodiscard]] std::size_t key_index_capacity() const noexcept { return tile_index_.capacity(); }
     [[nodiscard]] std::size_t row_interval_capacity() const noexcept { return row_index_.capacity(); }
     [[nodiscard]] std::optional<std::size_t> containing_tile(
@@ -320,20 +340,56 @@ public:
                tile_capacity_ * sizeof(Tile) +
                adjacency_capacity_ * sizeof(Adjacency) +
                frontier_capacity_ * 3U * sizeof(ComponentRef) +
-               tile_capacity_ * (sizeof(bool) + sizeof(std::uint64_t)) +
+               tile_capacity_ * 2U * sizeof(std::uint64_t) +
+               dependency_capacity_ * sizeof(Dependency) +
+               subscriber_capacity_ * sizeof(Subscriber) +
                tile_capacity_ * (sizeof(bool) + sizeof(std::size_t)) +
                (tile_index_.storage_bytes() - sizeof(TileIndex)) +
                (row_index_.storage_bytes() - sizeof(RowIndex));
     }
 
 private:
-    struct ComponentRef { std::uint16_t tile{}, component{}; bool operator==(const ComponentRef&) const = default; };
+    static constexpr std::uint32_t invalid_pool_index =
+        std::numeric_limits<std::uint32_t>::max();
+
+    struct ComponentRef {
+        std::uint16_t tile{}, component{};
+        bool operator==(const ComponentRef&) const = default;
+    };
+    struct EdgeHandle {
+        std::uint32_t slot{invalid_pool_index};
+        std::uint64_t generation{};
+        bool operator==(const EdgeHandle&) const = default;
+    };
+    struct DependencyHandle {
+        std::uint32_t slot{invalid_pool_index};
+        std::uint64_t generation{};
+        bool operator==(const DependencyHandle&) const = default;
+    };
+    struct SubscriberHandle {
+        std::uint32_t slot{invalid_pool_index};
+        std::uint64_t generation{};
+        bool operator==(const SubscriberHandle&) const = default;
+    };
+    enum class DependencyKind : std::uint8_t { TileRevision, AbsenceFaceRun };
+    enum class SubscriberKind : std::uint8_t { Build, Publication };
+
     struct Component {
         RegionComponentKey key{};
         std::uint64_t area{}, digest{1469598103934665603ULL};
         std::int64_t min_x{}, min_y{}, max_x{}, max_y{};
         SettledRegionHandle assigned_region{};
+        EdgeHandle incident_head{};
+        std::uint64_t build_generation{};
         bool used{}, in_build{}, deferred{};
+    };
+    struct FaceRun {
+        std::uint8_t direction{};
+        std::uint16_t component{region_detail::invalid_index};
+        std::uint8_t first{}, last{};
+        std::uint64_t revision{}, absence_generation{1}, build_dependency_generation{};
+        DependencyHandle absence_subscribers{};
+        bool used{};
     };
     struct Tile {
         RegionTileKey key{};
@@ -346,28 +402,63 @@ private:
         std::array<std::uint16_t, MaximumTileCells> labels{};
         std::array<Component, ComponentsPerTile> components{};
         std::array<std::uint16_t, 128> neighbours{};
-        std::size_t area{}, component_count{};
+        std::array<std::uint16_t, 128> boundary_runs{};
+        std::array<FaceRun, 128> face_runs{};
+        DependencyHandle revision_subscribers{};
+        std::size_t area{}, component_count{}, face_run_count{};
         RegionRefusal refusal{RegionRefusal::None};
         bool used{}, has_payload{}, ready{};
     };
-    struct Adjacency { ComponentRef a{}, b{}; };
-    struct Region { SettledRegionSnapshot snapshot{}; std::uint64_t generation{}; bool valid{}; };
+    struct Adjacency {
+        ComponentRef a{}, b{};
+        std::uint64_t a_revision{}, b_revision{}, generation{};
+        EdgeHandle next_a{}, next_b{};
+        std::uint32_t next_free{invalid_pool_index};
+        bool active{};
+    };
+    struct Dependency {
+        SubscriberHandle subscriber{};
+        DependencyKind kind{DependencyKind::TileRevision};
+        std::uint16_t tile{region_detail::invalid_index};
+        std::uint16_t face_run{region_detail::invalid_index};
+        std::uint64_t target_revision{}, target_generation{}, generation{};
+        DependencyHandle next_target{}, previous_target{}, next_subscriber{};
+        std::uint32_t next_free{invalid_pool_index};
+        bool active{};
+    };
+    struct Subscriber {
+        SubscriberKind kind{SubscriberKind::Build};
+        std::uint32_t owner_slot{};
+        std::uint64_t owner_generation{}, generation{};
+        DependencyHandle dependency_head{};
+        SubscriberHandle next_cleanup{};
+        std::uint32_t next_free{invalid_pool_index};
+        bool allocated{}, active{}, cleanup_pending{};
+    };
+    struct Region {
+        SettledRegionSnapshot snapshot{};
+        SubscriberHandle subscriber{};
+        std::uint64_t generation{};
+        bool valid{};
+    };
     enum class Phase : std::uint8_t { Idle, Seeking, Traversing, Validating };
     struct Build {
         Build(std::size_t frontier_capacity, std::size_t tile_capacity)
             : frontier(std::make_unique<ComponentRef[]>(frontier_capacity)),
               seen(std::make_unique<ComponentRef[]>(frontier_capacity)),
               members(std::make_unique<ComponentRef[]>(frontier_capacity)),
-              dependencies(std::make_unique<bool[]>(tile_capacity)),
+              dependency_marks(std::make_unique<std::uint64_t[]>(tile_capacity)),
               revisions(std::make_unique<std::uint64_t[]>(tile_capacity)) {}
         Phase phase{Phase::Idle};
-        std::size_t seek_flat{}, frontier_count{}, seen_count{}, member_count{}, validation_cursor{};
+        std::size_t seek_flat{}, frontier_count{}, seen_count{}, member_count{};
         ComponentRef best{}, seed{};
+        DependencyHandle validation_dependency{};
+        SubscriberHandle subscriber{};
+        std::uint64_t generation{};
         bool seed_found{};
         RegionRefusal failure{RegionRefusal::None};
         std::unique_ptr<ComponentRef[]> frontier, seen, members;
-        std::unique_ptr<bool[]> dependencies;
-        std::unique_ptr<std::uint64_t[]> revisions;
+        std::unique_ptr<std::uint64_t[]> dependency_marks, revisions;
         std::uint64_t started_work{};
     };
 
@@ -524,6 +615,13 @@ private:
                 boundary_index(tiles_[slot].bounds, from_direction, from_x, from_y);
             const auto to_index =
                 boundary_index(tiles_[other].bounds, to_direction, to_x, to_y);
+            const auto old = tiles_[other].neighbours[to_index];
+            if (old == region_detail::invalid_index) {
+                const auto run = tiles_[other].boundary_runs[to_index];
+                if (run != region_detail::invalid_index &&
+                    run < tiles_[other].face_run_count)
+                    invalidate_absence_run(other, run);
+            }
             tiles_[slot].neighbours[from_index] = static_cast<std::uint16_t>(other);
             tiles_[other].neighbours[to_index] = static_cast<std::uint16_t>(slot);
         };
@@ -590,7 +688,11 @@ private:
         tile.bounds = input.bounds; tile.revision = input.revision;
         tile.ambient_temperature = input.ambient_temperature; tile.signals = input.signals;
         tile.sealed_edges = input.sealed_edges; tile.area = input.cells.size();
-        tile.has_payload = true; tile.ready = false; tile.component_count = 0; tile.refusal = RegionRefusal::None;
+        tile.has_payload = true; tile.ready = false; tile.component_count = 0;
+        tile.face_run_count = 0; tile.refusal = RegionRefusal::None;
+        tile.revision_subscribers = {};
+        tile.boundary_runs.fill(region_detail::invalid_index);
+        for (auto& run : tile.face_runs) run = FaceRun{};
         for (std::size_t i = 0; i < tile.area; ++i) tile.cells[i] = input.cells[i];
         for (auto& label : tile.labels) label = region_detail::invalid_index;
         for (auto& component : tile.components) component = Component{};
@@ -664,59 +766,168 @@ private:
                 }
             }
         }
+        build_face_runs(slot);
         tile.ready = true; saturating_add(metrics_.components, tile.component_count);
         return remember(RegionOutcome::Accepted, RegionRefusal::None);
     }
+    [[nodiscard]] bool edge_handle_valid(EdgeHandle handle) const noexcept {
+        return handle.slot < adjacency_capacity_ &&
+               adjacencies_[handle.slot].active &&
+               adjacencies_[handle.slot].generation == handle.generation;
+    }
+    [[nodiscard]] EdgeHandle edge_next(
+        const Adjacency& edge, ComponentRef owner) const noexcept {
+        if (edge.a == owner) return edge.next_a;
+        if (edge.b == owner) return edge.next_b;
+        return {};
+    }
+    void set_edge_next(Adjacency& edge, ComponentRef owner, EdgeHandle next) noexcept {
+        if (edge.a == owner) edge.next_a = next;
+        else if (edge.b == owner) edge.next_b = next;
+    }
+    void unlink_edge_from_component(ComponentRef owner, EdgeHandle target) noexcept {
+        if (owner.tile >= tile_count_ ||
+            owner.component >= tiles_[owner.tile].component_count) return;
+        auto& component = tiles_[owner.tile].components[owner.component];
+        EdgeHandle previous{};
+        auto current = component.incident_head;
+        while (edge_handle_valid(current)) {
+            auto& edge = adjacencies_[current.slot];
+            const auto next = edge_next(edge, owner);
+            if (current == target) {
+                if (edge_handle_valid(previous))
+                    set_edge_next(adjacencies_[previous.slot], owner, next);
+                else
+                    component.incident_head = next;
+                return;
+            }
+            previous = current;
+            current = next;
+            saturating_add(metrics_.incident_edge_visits);
+        }
+    }
+    void release_edge(EdgeHandle handle) noexcept {
+        if (!edge_handle_valid(handle)) return;
+        auto& edge = adjacencies_[handle.slot];
+        edge.active = false;
+        edge.a = {}; edge.b = {};
+        edge.next_a = {}; edge.next_b = {};
+        edge.next_free = edge_free_head_;
+        edge_free_head_ = handle.slot;
+        --adjacency_count_;
+        saturating_add(metrics_.edge_retirements);
+    }
+    void remove_component_edges(ComponentRef owner) noexcept {
+        if (owner.tile >= tile_count_ ||
+            owner.component >= tiles_[owner.tile].component_count) return;
+        auto& component = tiles_[owner.tile].components[owner.component];
+        while (edge_handle_valid(component.incident_head)) {
+            const auto handle = component.incident_head;
+            auto& edge = adjacencies_[handle.slot];
+            const auto next = edge_next(edge, owner);
+            const auto other = edge.a == owner ? edge.b : edge.a;
+            unlink_edge_from_component(other, handle);
+            component.incident_head = next;
+            release_edge(handle);
+        }
+        component.incident_head = {};
+    }
     void remove_adjacencies(std::size_t slot) noexcept {
-        std::size_t write = 0;
-        for (std::size_t i = 0; i < adjacency_count_; ++i)
-            if (adjacencies_[i].a.tile != slot && adjacencies_[i].b.tile != slot)
-                adjacencies_[write++] = adjacencies_[i];
-        adjacency_count_ = write;
+        for (std::size_t component = 0;
+             component < tiles_[slot].component_count; ++component)
+            remove_component_edges({
+                static_cast<std::uint16_t>(slot),
+                static_cast<std::uint16_t>(component)});
     }
     bool adjacency_exists(ComponentRef a, ComponentRef b) const noexcept {
-        for (std::size_t i = 0; i < adjacency_count_; ++i)
-            if ((adjacencies_[i].a == a && adjacencies_[i].b == b) ||
-                (adjacencies_[i].a == b && adjacencies_[i].b == a)) return true;
+        if (a.tile >= tile_count_ || a.component >= tiles_[a.tile].component_count)
+            return false;
+        auto current = tiles_[a.tile].components[a.component].incident_head;
+        while (edge_handle_valid(current)) {
+            const auto& edge = adjacencies_[current.slot];
+            if ((edge.a == a && edge.b == b) || (edge.a == b && edge.b == a))
+                return edge.a_revision == tiles_[edge.a.tile].revision &&
+                       edge.b_revision == tiles_[edge.b.tile].revision;
+            current = edge_next(edge, a);
+        }
         return false;
+    }
+    [[nodiscard]] std::optional<EdgeHandle> allocate_edge() noexcept {
+        while (edge_free_head_ != invalid_pool_index) {
+            const auto slot = edge_free_head_;
+            auto& edge = adjacencies_[slot];
+            edge_free_head_ = edge.next_free;
+            if (edge.generation == std::numeric_limits<std::uint64_t>::max())
+                continue;
+            ++edge.generation;
+            edge.active = true;
+            edge.next_free = invalid_pool_index;
+            return EdgeHandle{slot, edge.generation};
+        }
+        return std::nullopt;
     }
     bool add_adjacency(ComponentRef a, ComponentRef b) noexcept {
         if (adjacency_exists(a, b)) return true;
-        if (adjacency_count_ == adjacency_capacity_) { saturating_add(metrics_.adjacency_refusals); return false; }
-        adjacencies_[adjacency_count_++] = {a, b}; saturating_add(metrics_.adjacency_edges); return true;
+        const auto handle = allocate_edge();
+        if (!handle.has_value()) {
+            saturating_add(metrics_.adjacency_refusals);
+            return false;
+        }
+        auto& edge = adjacencies_[handle->slot];
+        edge.a = a; edge.b = b;
+        edge.a_revision = tiles_[a.tile].revision;
+        edge.b_revision = tiles_[b.tile].revision;
+        edge.next_a = tiles_[a.tile].components[a.component].incident_head;
+        edge.next_b = tiles_[b.tile].components[b.component].incident_head;
+        tiles_[a.tile].components[a.component].incident_head = *handle;
+        tiles_[b.tile].components[b.component].incident_head = *handle;
+        ++adjacency_count_;
+        saturating_add(metrics_.adjacency_edges);
+        return true;
     }
     bool compare_face(std::size_t left_slot, std::size_t right_slot) noexcept {
         const auto& a = tiles_[left_slot]; const auto& b = tiles_[right_slot];
         if (!a.ready || !b.ready || !face_neighbours(a.bounds, b.bounds)) return true;
-        auto compare = [&](std::size_t ai, std::size_t bi) {
+        auto compare = [&](std::uint8_t adirection, std::int64_t ax, std::int64_t ay,
+                           std::uint8_t bdirection, std::int64_t bx, std::int64_t by) {
             saturating_add(metrics_.boundary_comparisons);
-            const auto ac = a.labels[ai], bc = b.labels[bi];
-            if (ac == region_detail::invalid_index || bc == region_detail::invalid_index ||
-                !(a.components[ac].key == b.components[bc].key)) return true;
-            return add_adjacency({static_cast<std::uint16_t>(left_slot), ac},
-                                 {static_cast<std::uint16_t>(right_slot), bc});
+            const auto ai = boundary_index(a.bounds, adirection, ax, ay);
+            const auto bi = boundary_index(b.bounds, bdirection, bx, by);
+            const auto ar = a.boundary_runs[ai], br = b.boundary_runs[bi];
+            if (ar == region_detail::invalid_index || br == region_detail::invalid_index ||
+                ar >= a.face_run_count || br >= b.face_run_count) return true;
+            const auto& af = a.face_runs[ar]; const auto& bf = b.face_runs[br];
+            if (!af.used || !bf.used || af.revision != a.revision || bf.revision != b.revision)
+                return true;
+            if (!(a.components[af.component].key == b.components[bf.component].key))
+                return true;
+            return add_adjacency(
+                {static_cast<std::uint16_t>(left_slot), af.component},
+                {static_cast<std::uint16_t>(right_slot), bf.component});
         };
-        if (max_x(a.bounds) != std::numeric_limits<std::int64_t>::max() && max_x(a.bounds) + 1 == b.bounds.x) {
+        if (max_x(a.bounds) != std::numeric_limits<std::int64_t>::max() &&
+            max_x(a.bounds) + 1 == b.bounds.x) {
             const auto lo = a.bounds.y > b.bounds.y ? a.bounds.y : b.bounds.y;
             const auto hi = max_y(a.bounds) < max_y(b.bounds) ? max_y(a.bounds) : max_y(b.bounds);
             for (auto y = lo;; ++y) {
-                const auto ai = static_cast<std::size_t>(y - a.bounds.y) * a.bounds.width + a.bounds.width - 1U;
-                const auto bi = static_cast<std::size_t>(y - b.bounds.y) * b.bounds.width;
-                if (!compare(ai, bi)) return false;
+                if (!compare(region_detail::east, max_x(a.bounds), y,
+                             region_detail::west, b.bounds.x, y)) return false;
                 if (y == hi) break;
             }
-        } else if (max_x(b.bounds) != std::numeric_limits<std::int64_t>::max() && max_x(b.bounds) + 1 == a.bounds.x) {
+        } else if (max_x(b.bounds) != std::numeric_limits<std::int64_t>::max() &&
+                   max_x(b.bounds) + 1 == a.bounds.x) {
             return compare_face(right_slot, left_slot);
-        } else if (max_y(a.bounds) != std::numeric_limits<std::int64_t>::max() && max_y(a.bounds) + 1 == b.bounds.y) {
+        } else if (max_y(a.bounds) != std::numeric_limits<std::int64_t>::max() &&
+                   max_y(a.bounds) + 1 == b.bounds.y) {
             const auto lo = a.bounds.x > b.bounds.x ? a.bounds.x : b.bounds.x;
             const auto hi = max_x(a.bounds) < max_x(b.bounds) ? max_x(a.bounds) : max_x(b.bounds);
             for (auto x = lo;; ++x) {
-                const auto ai = (a.bounds.height - 1U) * a.bounds.width + static_cast<std::size_t>(x - a.bounds.x);
-                const auto bi = static_cast<std::size_t>(x - b.bounds.x);
-                if (!compare(ai, bi)) return false;
+                if (!compare(region_detail::south, x, max_y(a.bounds),
+                             region_detail::north, x, b.bounds.y)) return false;
                 if (x == hi) break;
             }
-        } else if (max_y(b.bounds) != std::numeric_limits<std::int64_t>::max() && max_y(b.bounds) + 1 == a.bounds.y) {
+        } else if (max_y(b.bounds) != std::numeric_limits<std::int64_t>::max() &&
+                   max_y(b.bounds) + 1 == a.bounds.y) {
             return compare_face(right_slot, left_slot);
         }
         return true;
@@ -747,6 +958,7 @@ private:
             return compare_face(slot, other);
         });
     }
+
     bool assigned(const Component& component) const noexcept {
         const auto handle = component.assigned_region;
         return handle.world_incarnation == incarnation_ && handle.slot < RegionCapacity &&
@@ -769,13 +981,13 @@ private:
         build_.frontier_count = 0;
         build_.seen_count = 0;
         build_.member_count = 0;
-        build_.validation_cursor = 0;
         build_.best = {};
         build_.seed = {};
+        build_.validation_dependency = {};
+        build_.subscriber = {};
+        build_.generation = 0;
         build_.seed_found = false;
         build_.failure = RegionRefusal::None;
-        std::fill_n(build_.dependencies.get(), tile_capacity_, false);
-        std::fill_n(build_.revisions.get(), tile_capacity_, 0);
         build_.started_work = 0;
     }
     void begin_seek() noexcept {
@@ -800,19 +1012,35 @@ private:
     }
     void begin_traversal() noexcept {
         build_.phase = Phase::Traversing; build_.seed = build_.best;
+        if (build_generation_serial_ == std::numeric_limits<std::uint64_t>::max()) {
+            refuse_build(RegionRefusal::GenerationExhausted);
+            return;
+        }
+        build_.generation = ++build_generation_serial_;
+        const auto subscriber = allocate_subscriber(
+            SubscriberKind::Build, 0, build_.generation);
+        if (!subscriber.has_value()) {
+            refuse_build(RegionRefusal::DependencyCapacity);
+            return;
+        }
+        build_.subscriber = *subscriber;
         if (!push(build_.seed)) { refuse_build(RegionRefusal::FrontierCapacity); return; }
         saturating_add(metrics_.builds_started);
     }
     bool push(ComponentRef ref) noexcept {
         auto& component = tiles_[ref.tile].components[ref.component];
-        if (component.in_build) return true;
-        if (build_.frontier_count == frontier_capacity_ || build_.seen_count == frontier_capacity_) {
+        if (component.in_build && component.build_generation == build_.generation)
+            return true;
+        if (build_.frontier_count == frontier_capacity_ ||
+            build_.seen_count == frontier_capacity_) {
             build_.failure = RegionRefusal::FrontierCapacity; return false;
         }
         component.in_build = true;
+        component.build_generation = build_.generation;
         build_.frontier[build_.frontier_count++] = ref;
         build_.seen[build_.seen_count++] = ref;
-        if (build_.frontier_count > metrics_.frontier_high_water) metrics_.frontier_high_water = build_.frontier_count;
+        if (build_.frontier_count > metrics_.frontier_high_water)
+            metrics_.frontier_high_water = build_.frontier_count;
         return true;
     }
     ComponentRef pop_frontier_min() noexcept {
@@ -830,26 +1058,313 @@ private:
         }
         build_.members[at] = ref; ++build_.member_count;
     }
-    bool check_outside(std::size_t tile_index, std::uint8_t direction,
-                       std::int64_t x, std::int64_t y) noexcept {
-        const auto neighbour = tiles_[tile_index].neighbours[
-            boundary_index(tiles_[tile_index].bounds, direction, x, y)];
-        if (neighbour == region_detail::invalid_index)
-            return (tiles_[tile_index].sealed_edges & direction) != 0;
-        build_.dependencies[neighbour] = true;
-        build_.revisions[neighbour] = tiles_[neighbour].revision;
-        return tiles_[neighbour].ready;
+    [[nodiscard]] bool dependency_handle_valid(
+        DependencyHandle handle) const noexcept {
+        return handle.slot < dependency_capacity_ &&
+               dependencies_[handle.slot].active &&
+               dependencies_[handle.slot].generation == handle.generation;
+    }
+    [[nodiscard]] bool subscriber_handle_valid(
+        SubscriberHandle handle) const noexcept {
+        return handle.slot < subscriber_capacity_ &&
+               subscribers_[handle.slot].allocated &&
+               subscribers_[handle.slot].generation == handle.generation;
+    }
+    [[nodiscard]] DependencyHandle subscriber_dependency_head(
+        SubscriberHandle handle) const noexcept {
+        return subscriber_handle_valid(handle)
+            ? subscribers_[handle.slot].dependency_head
+            : DependencyHandle{};
+    }
+    [[nodiscard]] std::optional<SubscriberHandle> allocate_subscriber(
+        SubscriberKind kind, std::uint32_t owner_slot,
+        std::uint64_t owner_generation) noexcept {
+        while (subscriber_free_head_ != invalid_pool_index) {
+            const auto slot = subscriber_free_head_;
+            auto& subscriber = subscribers_[slot];
+            subscriber_free_head_ = subscriber.next_free;
+            if (subscriber.generation == std::numeric_limits<std::uint64_t>::max())
+                continue;
+            ++subscriber.generation;
+            subscriber.kind = kind;
+            subscriber.owner_slot = owner_slot;
+            subscriber.owner_generation = owner_generation;
+            subscriber.dependency_head = {};
+            subscriber.next_cleanup = {};
+            subscriber.next_free = invalid_pool_index;
+            subscriber.allocated = true;
+            subscriber.active = true;
+            subscriber.cleanup_pending = false;
+            ++subscriber_count_;
+            return SubscriberHandle{slot, subscriber.generation};
+        }
+        return std::nullopt;
+    }
+    void enqueue_cleanup(SubscriberHandle handle) noexcept {
+        if (!subscriber_handle_valid(handle)) return;
+        auto& subscriber = subscribers_[handle.slot];
+        if (subscriber.cleanup_pending) return;
+        subscriber.cleanup_pending = true;
+        subscriber.next_cleanup = {};
+        if (subscriber_handle_valid(cleanup_tail_))
+            subscribers_[cleanup_tail_.slot].next_cleanup = handle;
+        else
+            cleanup_head_ = handle;
+        cleanup_tail_ = handle;
+        ++cleanup_pending_count_;
+        saturating_add(metrics_.cleanup_registrations);
+    }
+    void retire_subscriber(SubscriberHandle handle) noexcept {
+        if (!subscriber_handle_valid(handle)) return;
+        auto& subscriber = subscribers_[handle.slot];
+        if (!subscriber.active) return;
+        subscriber.active = false;
+        enqueue_cleanup(handle);
+    }
+    [[nodiscard]] std::optional<DependencyHandle> allocate_dependency() noexcept {
+        while (dependency_free_head_ != invalid_pool_index) {
+            const auto slot = dependency_free_head_;
+            auto& dependency = dependencies_[slot];
+            dependency_free_head_ = dependency.next_free;
+            if (dependency.generation == std::numeric_limits<std::uint64_t>::max())
+                continue;
+            ++dependency.generation;
+            dependency.active = true;
+            dependency.next_free = invalid_pool_index;
+            ++dependency_count_;
+            saturating_add(metrics_.dependency_records);
+            if (dependency_count_ > metrics_.dependency_high_water)
+                metrics_.dependency_high_water = dependency_count_;
+            return DependencyHandle{slot, dependency.generation};
+        }
+        saturating_add(metrics_.dependency_refusals);
+        return std::nullopt;
+    }
+    void release_dependency(DependencyHandle handle) noexcept {
+        if (!dependency_handle_valid(handle)) return;
+        auto& dependency = dependencies_[handle.slot];
+        dependency.active = false;
+        dependency.next_target = {};
+        dependency.previous_target = {};
+        dependency.next_subscriber = {};
+        dependency.next_free = dependency_free_head_;
+        dependency_free_head_ = handle.slot;
+        --dependency_count_;
+    }
+    [[nodiscard]] DependencyHandle* target_head(
+        Dependency& dependency) noexcept {
+        if (dependency.tile >= tile_count_) return nullptr;
+        auto& tile = tiles_[dependency.tile];
+        if (dependency.kind == DependencyKind::TileRevision) {
+            if (tile.revision != dependency.target_revision) return nullptr;
+            return &tile.revision_subscribers;
+        }
+        if (tile.revision != dependency.target_revision ||
+            dependency.face_run >= tile.face_run_count)
+            return nullptr;
+        auto& run = tile.face_runs[dependency.face_run];
+        if (!run.used || run.revision != dependency.target_revision ||
+            run.absence_generation != dependency.target_generation)
+            return nullptr;
+        return &run.absence_subscribers;
+    }
+    void unlink_dependency_target(DependencyHandle handle) noexcept {
+        if (!dependency_handle_valid(handle)) return;
+        auto& dependency = dependencies_[handle.slot];
+        auto* head = target_head(dependency);
+        if (head == nullptr) return;
+        if (dependency_handle_valid(dependency.previous_target))
+            dependencies_[dependency.previous_target.slot].next_target =
+                dependency.next_target;
+        else if (*head == handle)
+            *head = dependency.next_target;
+        if (dependency_handle_valid(dependency.next_target))
+            dependencies_[dependency.next_target.slot].previous_target =
+                dependency.previous_target;
+    }
+    bool add_dependency(SubscriberHandle subscriber_handle,
+                        DependencyKind kind, std::size_t tile_index,
+                        std::size_t face_run = region_detail::invalid_index) noexcept {
+        if (!subscriber_handle_valid(subscriber_handle) ||
+            !subscribers_[subscriber_handle.slot].active ||
+            tile_index >= tile_count_)
+            return false;
+        auto& tile = tiles_[tile_index];
+        std::uint64_t target_generation = 0;
+        DependencyHandle* head = nullptr;
+        if (kind == DependencyKind::TileRevision) {
+            head = &tile.revision_subscribers;
+        } else {
+            if (face_run >= tile.face_run_count) return false;
+            auto& run = tile.face_runs[face_run];
+            target_generation = run.absence_generation;
+            head = &run.absence_subscribers;
+        }
+        const auto handle = allocate_dependency();
+        if (!handle.has_value()) return false;
+        auto& dependency = dependencies_[handle->slot];
+        auto& subscriber = subscribers_[subscriber_handle.slot];
+        dependency.subscriber = subscriber_handle;
+        dependency.kind = kind;
+        dependency.tile = static_cast<std::uint16_t>(tile_index);
+        dependency.face_run = static_cast<std::uint16_t>(face_run);
+        dependency.target_revision = tile.revision;
+        dependency.target_generation = target_generation;
+        dependency.previous_target = {};
+        dependency.next_target = *head;
+        dependency.next_subscriber = subscriber.dependency_head;
+        if (dependency_handle_valid(*head))
+            dependencies_[head->slot].previous_target = *handle;
+        *head = *handle;
+        subscriber.dependency_head = *handle;
+        return true;
+    }
+    bool add_tile_dependency(std::size_t tile_index) noexcept {
+        if (build_.dependency_marks[tile_index] == build_.generation)
+            return build_.revisions[tile_index] == tiles_[tile_index].revision;
+        if (!add_dependency(build_.subscriber, DependencyKind::TileRevision, tile_index))
+            return false;
+        build_.dependency_marks[tile_index] = build_.generation;
+        build_.revisions[tile_index] = tiles_[tile_index].revision;
+        return true;
+    }
+    bool add_absence_dependency(std::size_t tile_index, std::size_t face_run) noexcept {
+        auto& run = tiles_[tile_index].face_runs[face_run];
+        if (run.build_dependency_generation == build_.generation) return true;
+        if (!add_dependency(build_.subscriber, DependencyKind::AbsenceFaceRun,
+                            tile_index, face_run))
+            return false;
+        run.build_dependency_generation = build_.generation;
+        saturating_add(metrics_.absence_subscriptions);
+        return true;
+    }
+    [[nodiscard]] bool dependency_current(DependencyHandle handle) const noexcept {
+        if (!dependency_handle_valid(handle)) return false;
+        const auto& dependency = dependencies_[handle.slot];
+        if (dependency.tile >= tile_count_) return false;
+        const auto& tile = tiles_[dependency.tile];
+        if (tile.revision != dependency.target_revision || !tile.ready) return false;
+        if (dependency.kind == DependencyKind::TileRevision) return true;
+        if (dependency.face_run >= tile.face_run_count) return false;
+        const auto& run = tile.face_runs[dependency.face_run];
+        return run.used && run.revision == dependency.target_revision &&
+               run.absence_generation == dependency.target_generation;
+    }
+    void invalidate_subscriber(SubscriberHandle handle) noexcept {
+        if (!subscriber_handle_valid(handle)) return;
+        const auto subscriber = subscribers_[handle.slot];
+        if (!subscriber.active) return;
+        saturating_add(metrics_.subscriber_invalidations);
+        if (subscriber.kind == SubscriberKind::Build) {
+            if (build_.phase != Phase::Idle && build_.subscriber == handle)
+                cancel_build(true);
+            else
+                retire_subscriber(handle);
+            return;
+        }
+        retire_handle({incarnation_, subscriber.owner_slot,
+                       subscriber.owner_generation});
+    }
+    void invalidate_target(DependencyHandle head) noexcept {
+        auto current = head;
+        while (dependency_handle_valid(current)) {
+            const auto next = dependencies_[current.slot].next_target;
+            invalidate_subscriber(dependencies_[current.slot].subscriber);
+            current = next;
+            saturating_add(metrics_.facing_invalidation_fanout);
+        }
+    }
+    void invalidate_tile_subscribers(std::size_t tile_index) noexcept {
+        auto& tile = tiles_[tile_index];
+        const auto head = tile.revision_subscribers;
+        tile.revision_subscribers = {};
+        invalidate_target(head);
+    }
+    void invalidate_absence_run(std::size_t tile_index, std::size_t run_index) noexcept {
+        auto& run = tiles_[tile_index].face_runs[run_index];
+        const auto head = run.absence_subscribers;
+        run.absence_subscribers = {};
+        invalidate_target(head);
+        if (run.absence_generation == std::numeric_limits<std::uint64_t>::max()) {
+            fail(RegionRefusal::GenerationExhausted);
+            return;
+        }
+        ++run.absence_generation;
+    }
+    void release_subscriber(SubscriberHandle handle) noexcept {
+        if (!subscriber_handle_valid(handle)) return;
+        auto& subscriber = subscribers_[handle.slot];
+        subscriber.allocated = false;
+        subscriber.active = false;
+        subscriber.cleanup_pending = false;
+        subscriber.dependency_head = {};
+        subscriber.next_cleanup = {};
+        subscriber.next_free = subscriber_free_head_;
+        subscriber_free_head_ = handle.slot;
+        --subscriber_count_;
+    }
+    bool cleanup_one_dependency() noexcept {
+        if (!subscriber_handle_valid(cleanup_head_)) {
+            cleanup_head_ = {};
+            cleanup_tail_ = {};
+            cleanup_pending_count_ = 0;
+            return false;
+        }
+        const auto handle = cleanup_head_;
+        auto& subscriber = subscribers_[handle.slot];
+        if (dependency_handle_valid(subscriber.dependency_head)) {
+            const auto dependency = subscriber.dependency_head;
+            subscriber.dependency_head =
+                dependencies_[dependency.slot].next_subscriber;
+            unlink_dependency_target(dependency);
+            release_dependency(dependency);
+            saturating_add(metrics_.cleanup_units);
+        }
+        if (!dependency_handle_valid(subscriber.dependency_head)) {
+            cleanup_head_ = subscriber.next_cleanup;
+            if (!subscriber_handle_valid(cleanup_head_)) cleanup_tail_ = {};
+            subscriber.next_cleanup = {};
+            subscriber.cleanup_pending = false;
+            if (cleanup_pending_count_ != 0) --cleanup_pending_count_;
+            release_subscriber(handle);
+        }
+        return true;
     }
     bool boundary_complete(ComponentRef ref) noexcept {
         const auto& tile = tiles_[ref.tile];
-        for (std::size_t index = 0; index < tile.area; ++index) if (tile.labels[index] == ref.component) {
-            const auto x = index % tile.bounds.width, y = index / tile.bounds.width;
-            const auto wx = tile.bounds.x + static_cast<std::int64_t>(x);
-            const auto wy = tile.bounds.y + static_cast<std::int64_t>(y);
-            if (y == 0) { saturating_add(metrics_.boundary_cell_checks); if (!check_outside(ref.tile, region_detail::north, wx, wy)) return false; }
-            if (x + 1U == tile.bounds.width) { saturating_add(metrics_.boundary_cell_checks); if (!check_outside(ref.tile, region_detail::east, wx, wy)) return false; }
-            if (y + 1U == tile.bounds.height) { saturating_add(metrics_.boundary_cell_checks); if (!check_outside(ref.tile, region_detail::south, wx, wy)) return false; }
-            if (x == 0) { saturating_add(metrics_.boundary_cell_checks); if (!check_outside(ref.tile, region_detail::west, wx, wy)) return false; }
+        for (std::size_t run_index = 0; run_index < tile.face_run_count; ++run_index) {
+            const auto& run = tile.face_runs[run_index];
+            if (!run.used || run.revision != tile.revision ||
+                run.component != ref.component) continue;
+            bool saw_absence = false;
+            for (std::size_t position = run.first; position <= run.last; ++position) {
+                std::int64_t x = tile.bounds.x, y = tile.bounds.y;
+                if (run.direction == region_detail::north ||
+                    run.direction == region_detail::south) {
+                    x += static_cast<std::int64_t>(position);
+                    if (run.direction == region_detail::south) y = max_y(tile.bounds);
+                } else {
+                    y += static_cast<std::int64_t>(position);
+                    if (run.direction == region_detail::east) x = max_x(tile.bounds);
+                }
+                const auto neighbour = tile.neighbours[
+                    boundary_index(tile.bounds, run.direction, x, y)];
+                saturating_add(metrics_.boundary_cell_checks);
+                if (neighbour == region_detail::invalid_index) {
+                    if ((tile.sealed_edges & run.direction) == 0) return false;
+                    saw_absence = true;
+                    continue;
+                }
+                if (!add_tile_dependency(neighbour)) {
+                    build_.failure = RegionRefusal::DependencyCapacity;
+                    return false;
+                }
+                if (!tiles_[neighbour].ready) return false;
+            }
+            if (saw_absence && !add_absence_dependency(ref.tile, run_index)) {
+                build_.failure = RegionRefusal::DependencyCapacity;
+                return false;
+            }
         }
         return true;
     }
@@ -859,60 +1374,105 @@ private:
             !(component.key == tiles_[build_.seed.tile].components[build_.seed.component].key)) {
             build_.failure = RegionRefusal::RevisionChanged; return false;
         }
-        build_.dependencies[ref.tile] = true; build_.revisions[ref.tile] = tiles_[ref.tile].revision;
-        if (!boundary_complete(ref)) { build_.failure = RegionRefusal::UnknownBoundary; return false; }
+        if (!add_tile_dependency(ref.tile)) {
+            build_.failure = RegionRefusal::DependencyCapacity; return false;
+        }
+        if (!boundary_complete(ref)) {
+            if (build_.failure == RegionRefusal::None)
+                build_.failure = RegionRefusal::UnknownBoundary;
+            return false;
+        }
         insert_member(ref);
-        for (std::size_t i = 0; i < adjacency_count_; ++i) {
-            std::optional<ComponentRef> neighbour;
-            if (adjacencies_[i].a == ref) neighbour = adjacencies_[i].b;
-            else if (adjacencies_[i].b == ref) neighbour = adjacencies_[i].a;
-            if (neighbour.has_value() && !push(*neighbour)) return false;
+        auto edge_handle = component.incident_head;
+        while (edge_handle_valid(edge_handle)) {
+            const auto& edge = adjacencies_[edge_handle.slot];
+            saturating_add(metrics_.incident_edge_visits);
+            const auto neighbour = edge.a == ref ? edge.b : edge.a;
+            const auto next = edge_next(edge, ref);
+            const bool current =
+                edge.a.tile < tile_count_ && edge.b.tile < tile_count_ &&
+                edge.a_revision == tiles_[edge.a.tile].revision &&
+                edge.b_revision == tiles_[edge.b.tile].revision;
+            if (current && !push(neighbour)) return false;
+            edge_handle = next;
         }
         return true;
     }
+
     void clear_build_marks() noexcept {
-        for (std::size_t i = 0; i < build_.seen_count; ++i)
-            tiles_[build_.seen[i].tile].components[build_.seen[i].component].in_build = false;
+        for (std::size_t i = 0; i < build_.seen_count; ++i) {
+            auto& component =
+                tiles_[build_.seen[i].tile].components[build_.seen[i].component];
+            if (component.build_generation == build_.generation) {
+                component.in_build = false;
+                component.build_generation = 0;
+            }
+        }
     }
     void refuse_build(RegionRefusal reason) noexcept {
+        if (build_.seen_count == 0 && build_.seed_found &&
+            build_.seed.tile < tile_count_ &&
+            build_.seed.component < tiles_[build_.seed.tile].component_count) {
+            auto& seed = tiles_[build_.seed.tile].components[build_.seed.component];
+            if (!seed.deferred) {
+                seed.deferred = true;
+                ++deferred_component_count_;
+            }
+        }
         for (std::size_t i = 0; i < build_.seen_count; ++i) {
             auto& component = tiles_[build_.seen[i].tile].components[build_.seen[i].component];
-            component.in_build = false;
+            if (component.build_generation == build_.generation) {
+                component.in_build = false;
+                component.build_generation = 0;
+            }
             if (!component.deferred) {
                 component.deferred = true;
                 ++deferred_component_count_;
             }
         }
+        retire_subscriber(build_.subscriber);
         last_refusal_ = reason; saturating_add(metrics_.builds_refused);
         if (reason == RegionRefusal::FrontierCapacity) saturating_add(metrics_.frontier_refusals);
+        if (reason == RegionRefusal::DependencyCapacity) saturating_add(metrics_.dependency_refusals);
         if (reason == RegionRefusal::RegionCapacity || reason == RegionRefusal::GenerationExhausted)
             saturating_add(metrics_.region_refusals);
         reset_build();
     }
     void cancel_build(bool restarted) noexcept {
         if (build_.phase == Phase::Idle) return;
-        clear_build_marks(); reset_build();
+        const auto subscriber = build_.subscriber;
+        clear_build_marks();
+        retire_subscriber(subscriber);
+        reset_build();
         if (restarted) saturating_add(metrics_.builds_restarted);
-    }
-    bool build_related(std::size_t slot) const noexcept {
-        for (std::size_t i = 0; i < build_.seen_count; ++i) {
-            const auto member_slot = build_.seen[i].tile;
-            if (slots_face_linked(member_slot, slot)) return true;
-        }
-        // Reverse dependency incidence is deliberately owned by #64. Retain the
-        // dependency bitmap scan here, but use the bounded face map instead of
-        // rediscovering geometry from resident rectangles.
-        for (std::size_t i = 0; i < tile_count_; ++i)
-            if (build_.dependencies[i] && slots_face_linked(i, slot)) return true;
-        return false;
     }
     void cancel_related_build(std::size_t slot) noexcept {
         if (build_.phase == Phase::Idle) return;
-        // A seek may already have inspected this tile, or an earlier canonical
-        // position may have gained a candidate. Its best seed is not valid until
-        // the complete canonical scan witnesses one stable tile set.
-        if (build_.phase == Phase::Seeking || build_related(slot)) cancel_build(true);
+        if (build_.phase == Phase::Seeking) {
+            cancel_build(true);
+            return;
+        }
+        for (std::size_t component = 0;
+             component < tiles_[slot].component_count; ++component) {
+            const auto& current = tiles_[slot].components[component];
+            if (current.in_build &&
+                current.build_generation == build_.generation) {
+                cancel_build(true);
+                return;
+            }
+        }
     }
+    void prepare_tile_revision_change(std::size_t slot) noexcept {
+        cancel_related_build(slot);
+        invalidate_tile_subscribers(slot);
+        clear_deferred_for_tile_and_faces(slot);
+        remove_adjacencies(slot);
+        auto& tile = tiles_[slot];
+        tile.revision_subscribers = {};
+        for (std::size_t run = 0; run < tile.face_run_count; ++run)
+            tile.face_runs[run].absence_subscribers = {};
+    }
+
     std::optional<std::size_t> allocate_region_slot() noexcept {
         for (std::size_t i = 0; i < RegionCapacity; ++i)
             if (!regions_[i].valid && regions_[i].generation < GenerationLimit) return i;
@@ -922,25 +1482,37 @@ private:
         const auto slot = allocate_region_slot();
         if (!slot.has_value()) {
             bool exhausted = true;
-            for (const auto& region : regions_) if (region.valid || region.generation < GenerationLimit) exhausted = false;
-            refuse_build(exhausted ? RegionRefusal::GenerationExhausted : RegionRefusal::RegionCapacity);
+            for (const auto& region : regions_)
+                if (region.valid || region.generation < GenerationLimit) exhausted = false;
+            refuse_build(exhausted ? RegionRefusal::GenerationExhausted
+                                   : RegionRefusal::RegionCapacity);
             return;
         }
-        if (publication_serial_ == PublicationLimit) { refuse_build(RegionRefusal::GenerationExhausted); return; }
-        auto& region = regions_[*slot]; ++region.generation; region.valid = true;
+        if (publication_serial_ == PublicationLimit) {
+            refuse_build(RegionRefusal::GenerationExhausted); return;
+        }
+        auto& region = regions_[*slot];
+        ++region.generation;
+        region.valid = true;
         ++published_region_count_;
         auto& out = region.snapshot; out = SettledRegionSnapshot{};
         out.handle = {incarnation_, static_cast<std::uint32_t>(*slot), region.generation};
         out.key = tiles_[build_.seed.tile].components[build_.seed.component].key;
         out.complete = true; out.publication_serial = ++publication_serial_;
         std::uint64_t members = 1469598103934665603ULL;
-        std::fill_n(member_tiles_scratch_.get(), tile_capacity_, false);
         auto* member_tiles = member_tiles_scratch_.get();
         auto* dependency_slots = dependency_slots_scratch_.get();
         std::size_t dependency_count = 0;
         for (std::size_t i = 0; i < build_.member_count; ++i) {
-            const auto ref = build_.members[i]; auto& component = tiles_[ref.tile].components[ref.component];
-            component.assigned_region = out.handle; component.in_build = false; member_tiles[ref.tile] = true;
+            const auto ref = build_.members[i];
+            auto& component = tiles_[ref.tile].components[ref.component];
+            component.assigned_region = out.handle;
+            component.in_build = false;
+            component.build_generation = 0;
+            if (!member_tiles[ref.tile]) {
+                member_tiles[ref.tile] = true;
+                ++out.tile_count;
+            }
             if (i == 0) {
                 out.min_x = component.min_x; out.min_y = component.min_y;
                 out.max_x = component.max_x; out.max_y = component.max_y;
@@ -955,32 +1527,57 @@ private:
             region_detail::hash_value(members, component.min_y);
             region_detail::hash_value(members, component.min_x);
         }
-        for (std::size_t i = 0; i < tile_count_; ++i) {
-            if (member_tiles[i]) ++out.tile_count;
-            if (build_.dependencies[i]) {
-                ++out.dependency_tile_count;
+        auto dependency = subscriber_dependency_head(build_.subscriber);
+        while (dependency_handle_valid(dependency)) {
+            const auto& record = dependencies_[dependency.slot];
+            if (record.kind == DependencyKind::TileRevision) {
+                const auto tile_index = static_cast<std::size_t>(record.tile);
                 auto at = dependency_count;
-                while (at != 0 && region_detail::less(tiles_[i].key, tiles_[dependency_slots[at - 1]].key)) {
+                while (at != 0 &&
+                       region_detail::less(
+                           tiles_[tile_index].key,
+                           tiles_[dependency_slots[at - 1]].key)) {
                     dependency_slots[at] = dependency_slots[at - 1];
                     --at;
                 }
-                dependency_slots[at] = i;
+                dependency_slots[at] = tile_index;
                 ++dependency_count;
             }
+            dependency = record.next_subscriber;
         }
+        out.dependency_tile_count = static_cast<std::uint32_t>(dependency_count);
         std::uint64_t dependencies = 1469598103934665603ULL;
         for (std::size_t i = 0; i < dependency_count; ++i) {
-            const auto dependency = dependency_slots[i];
-            region_detail::hash_value(dependencies,
-                region_detail::tile_hash(tiles_[dependency].key, build_.revisions[dependency]));
+            const auto tile_index = dependency_slots[i];
+            region_detail::hash_value(
+                dependencies,
+                region_detail::tile_hash(
+                    tiles_[tile_index].key,
+                    build_.revisions[tile_index]));
         }
+        for (std::size_t i = 0; i < build_.member_count; ++i)
+            member_tiles[build_.members[i].tile] = false;
         out.member_digest = members; out.dependency_digest = dependencies;
+        if (!subscriber_handle_valid(build_.subscriber)) {
+            region.valid = false;
+            --published_region_count_;
+            refuse_build(RegionRefusal::RevisionChanged);
+            return;
+        }
+        auto& subscriber = subscribers_[build_.subscriber.slot];
+        subscriber.kind = SubscriberKind::Publication;
+        subscriber.owner_slot = static_cast<std::uint32_t>(*slot);
+        subscriber.owner_generation = region.generation;
+        region.subscriber = build_.subscriber;
+        build_.subscriber = {};
         saturating_add(metrics_.builds_completed); saturating_add(metrics_.publications);
-        saturating_add(metrics_.area_total, out.area); if (out.area > metrics_.area_max) metrics_.area_max = out.area;
+        saturating_add(metrics_.area_total, out.area);
+        if (out.area > metrics_.area_max) metrics_.area_max = out.area;
         const auto latency = metrics_.work_units - build_.started_work;
         saturating_add(metrics_.latency_total_units, latency);
         if (latency > metrics_.latency_max_units) metrics_.latency_max_units = latency;
-        const auto count = region_count(); if (count > metrics_.region_high_water) metrics_.region_high_water = count;
+        const auto count = region_count();
+        if (count > metrics_.region_high_water) metrics_.region_high_water = count;
         reset_build();
     }
     void retire_handle(SettledRegionHandle handle) noexcept {
@@ -989,34 +1586,28 @@ private:
         if (region.valid && region.generation == handle.generation) {
             region.valid = false;
             --published_region_count_;
+            retire_subscriber(region.subscriber);
+            region.subscriber = {};
             saturating_add(metrics_.invalidated_regions);
         }
     }
-    void retire_for_tile_and_faces(std::size_t slot) noexcept {
-        if (published_region_count_ == 0) return;
-        const auto retire_tile = [this](std::size_t tile_index) {
-            for (std::size_t component = 0; component < tiles_[tile_index].component_count; ++component)
-                retire_handle(tiles_[tile_index].components[component].assigned_region);
-            return true;
-        };
-        (void)retire_tile(slot);
-        (void)for_each_facing(slot, [this, &retire_tile](std::size_t other) {
-            saturating_add(metrics_.facing_invalidation_fanout);
-            return retire_tile(other);
-        });
-    }
     void retire_all_regions() noexcept {
-        for (auto& region : regions_) if (region.valid) {
-            region.valid = false; saturating_add(metrics_.invalidated_regions);
+        for (std::size_t slot = 0; slot < RegionCapacity; ++slot) {
+            if (!regions_[slot].valid) continue;
+            retire_handle({incarnation_, static_cast<std::uint32_t>(slot),
+                           regions_[slot].generation});
         }
-        published_region_count_ = 0;
     }
     void clear_deferred_for_tile_and_faces(std::size_t slot) noexcept {
         if (deferred_component_count_ == 0) return;
         const auto clear_tile = [this](std::size_t tile_index) {
-            for (auto& component : tiles_[tile_index].components) if (component.deferred) {
-                component.deferred = false;
-                --deferred_component_count_;
+            for (std::size_t component = 0;
+                 component < tiles_[tile_index].component_count; ++component) {
+                auto& current = tiles_[tile_index].components[component];
+                if (current.deferred) {
+                    current.deferred = false;
+                    --deferred_component_count_;
+                }
             }
             return true;
         };
@@ -1029,16 +1620,104 @@ private:
         if (value == 0 || value > maximum) throw std::invalid_argument(message);
         return value;
     }
+    static std::size_t checked_dependency_capacity(
+        std::size_t tile_capacity, std::size_t frontier_capacity,
+        std::size_t requested) {
+        if (requested != 0) {
+            if (requested >= invalid_pool_index)
+                throw std::invalid_argument("settled region dependency capacity is unsupported");
+            return requested;
+        }
+        if (tile_capacity > std::numeric_limits<std::size_t>::max() / 8U)
+            throw std::invalid_argument("settled region dependency capacity overflows size_t");
+        const auto scaled = tile_capacity * 8U;
+        const auto result = scaled > frontier_capacity ? scaled : frontier_capacity;
+        if (result == 0 || result >= invalid_pool_index)
+            throw std::invalid_argument("settled region dependency capacity is unsupported");
+        return result;
+    }
+    static constexpr std::size_t checked_subscriber_capacity() {
+        static_assert(
+            RegionCapacity <=
+                (static_cast<std::size_t>(invalid_pool_index) - 2U) / 2U,
+            "settled region subscriber capacity exceeds handle range");
+        return RegionCapacity * 2U + 2U;
+    }
+    static std::size_t face_length(const Tile& tile, std::uint8_t direction) noexcept {
+        return direction == region_detail::north || direction == region_detail::south
+            ? tile.bounds.width : tile.bounds.height;
+    }
+    static std::size_t face_cell_index(
+        const Tile& tile, std::uint8_t direction, std::size_t position) noexcept {
+        if (direction == region_detail::north) return position;
+        if (direction == region_detail::south)
+            return (tile.bounds.height - 1U) * tile.bounds.width + position;
+        if (direction == region_detail::west) return position * tile.bounds.width;
+        return position * tile.bounds.width + tile.bounds.width - 1U;
+    }
+    void build_face_runs(std::size_t slot) noexcept {
+        auto& tile = tiles_[slot];
+        tile.face_run_count = 0;
+        tile.boundary_runs.fill(region_detail::invalid_index);
+        constexpr std::array<std::uint8_t, 4> directions{
+            region_detail::north, region_detail::east,
+            region_detail::south, region_detail::west};
+        for (const auto direction : directions) {
+            const auto length = face_length(tile, direction);
+            std::size_t position = 0;
+            while (position < length) {
+                const auto cell = face_cell_index(tile, direction, position);
+                const auto component = tile.labels[cell];
+                if (component == region_detail::invalid_index) {
+                    ++position;
+                    continue;
+                }
+                auto last = position;
+                while (last + 1U < length &&
+                       tile.labels[face_cell_index(tile, direction, last + 1U)] == component)
+                    ++last;
+                auto& run = tile.face_runs[tile.face_run_count];
+                run = FaceRun{};
+                run.used = true;
+                run.direction = direction;
+                run.component = component;
+                run.first = static_cast<std::uint8_t>(position);
+                run.last = static_cast<std::uint8_t>(last);
+                run.revision = tile.revision;
+                run.absence_generation = 1;
+                for (auto at = position; at <= last; ++at) {
+                    std::int64_t x = tile.bounds.x, y = tile.bounds.y;
+                    if (direction == region_detail::north ||
+                        direction == region_detail::south) {
+                        x += static_cast<std::int64_t>(at);
+                        if (direction == region_detail::south) y = max_y(tile.bounds);
+                    } else {
+                        y += static_cast<std::int64_t>(at);
+                        if (direction == region_detail::east) x = max_x(tile.bounds);
+                    }
+                    tile.boundary_runs[
+                        boundary_index(tile.bounds, direction, x, y)] =
+                            static_cast<std::uint16_t>(tile.face_run_count);
+                }
+                ++tile.face_run_count;
+                position = last + 1U;
+            }
+        }
+    }
+
     static std::size_t checked_row_capacity(std::size_t tile_capacity) {
         if (tile_capacity > std::numeric_limits<std::size_t>::max() / 32U)
             throw std::invalid_argument("settled region row-interval capacity overflows size_t");
         return tile_capacity * 32U;
     }
 
-    std::uint64_t incarnation_{}, publication_serial_{};
+    std::uint64_t incarnation_{}, publication_serial_{}, build_generation_serial_{};
     std::size_t tile_capacity_{}, adjacency_capacity_{}, frontier_capacity_{};
+    std::size_t dependency_capacity_{}, subscriber_capacity_{};
     std::unique_ptr<Tile[]> tiles_;
     std::unique_ptr<Adjacency[]> adjacencies_;
+    std::unique_ptr<Dependency[]> dependencies_;
+    std::unique_ptr<Subscriber[]> subscribers_;
     TileIndex tile_index_;
     RowIndex row_index_;
     std::array<Region, RegionCapacity> regions_{};
@@ -1047,7 +1726,12 @@ private:
     std::unique_ptr<std::size_t[]> dependency_slots_scratch_;
     mutable SettledRegionMetrics metrics_{};
     RegionRefusal last_refusal_{RegionRefusal::None};
-    std::size_t tile_count_{}, adjacency_count_{}, published_region_count_{}, deferred_component_count_{};
+    std::uint32_t edge_free_head_{invalid_pool_index};
+    std::uint32_t dependency_free_head_{invalid_pool_index};
+    std::uint32_t subscriber_free_head_{invalid_pool_index};
+    SubscriberHandle cleanup_head_{}, cleanup_tail_{};
+    std::size_t tile_count_{}, adjacency_count_{}, dependency_count_{}, subscriber_count_{};
+    std::size_t published_region_count_{}, deferred_component_count_{}, cleanup_pending_count_{};
     bool halted_{}, coverage_capacity_exhausted_{}, work_possible_{};
 };
 
@@ -1058,7 +1742,8 @@ template<std::size_t TileCapacity, std::size_t MaximumTileCells,
 SettledRegions<TileCapacity, MaximumTileCells, ComponentsPerTile, AdjacencyCapacity,
                RegionCapacity, FrontierCapacity, GenerationLimit, PublicationLimit>::SettledRegions(
     std::uint64_t incarnation, std::size_t tile_capacity,
-    std::size_t adjacency_capacity, std::size_t frontier_capacity)
+    std::size_t adjacency_capacity, std::size_t frontier_capacity,
+    std::size_t dependency_capacity)
     : incarnation_(incarnation),
       tile_capacity_(checked_capacity(tile_capacity, TileCapacity,
           "settled region runtime tile capacity is unsupported")),
@@ -1066,12 +1751,38 @@ SettledRegions<TileCapacity, MaximumTileCells, ComponentsPerTile, AdjacencyCapac
           "settled region runtime adjacency capacity is unsupported")),
       frontier_capacity_(checked_capacity(frontier_capacity, FrontierCapacity,
           "settled region runtime frontier capacity is unsupported")),
+      dependency_capacity_(checked_dependency_capacity(
+          tile_capacity_, frontier_capacity_, dependency_capacity)),
+      subscriber_capacity_(checked_subscriber_capacity()),
       tiles_(std::make_unique<Tile[]>(tile_capacity_)),
       adjacencies_(std::make_unique<Adjacency[]>(adjacency_capacity_)),
+      dependencies_(std::make_unique<Dependency[]>(dependency_capacity_)),
+      subscribers_(std::make_unique<Subscriber[]>(subscriber_capacity_)),
       tile_index_(tile_capacity_),
       row_index_(checked_row_capacity(tile_capacity_)),
       build_(frontier_capacity_, tile_capacity_),
       member_tiles_scratch_(std::make_unique<bool[]>(tile_capacity_)),
-      dependency_slots_scratch_(std::make_unique<std::size_t[]>(tile_capacity_)) {}
+      dependency_slots_scratch_(std::make_unique<std::size_t[]>(tile_capacity_)) {
+    static_assert(AdjacencyCapacity < invalid_pool_index,
+                  "settled region edge capacity exceeds handle range");
+    for (std::size_t i = 0; i < adjacency_capacity_; ++i)
+        adjacencies_[i].next_free =
+            i + 1U < adjacency_capacity_
+                ? static_cast<std::uint32_t>(i + 1U)
+                : invalid_pool_index;
+    edge_free_head_ = adjacency_capacity_ == 0 ? invalid_pool_index : 0U;
+    for (std::size_t i = 0; i < dependency_capacity_; ++i)
+        dependencies_[i].next_free =
+            i + 1U < dependency_capacity_
+                ? static_cast<std::uint32_t>(i + 1U)
+                : invalid_pool_index;
+    dependency_free_head_ = dependency_capacity_ == 0 ? invalid_pool_index : 0U;
+    for (std::size_t i = 0; i < subscriber_capacity_; ++i)
+        subscribers_[i].next_free =
+            i + 1U < subscriber_capacity_
+                ? static_cast<std::uint32_t>(i + 1U)
+                : invalid_pool_index;
+    subscriber_free_head_ = subscriber_capacity_ == 0 ? invalid_pool_index : 0U;
+}
 
 } // namespace cybersand::soliding
