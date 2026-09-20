@@ -65,6 +65,12 @@ $(BUILD_DIR)/test_stage3b_sparse_mutation_witness: $(CORE_SOURCES) $(CORE_HEADER
 soliding-stage3b-sparse-mutation-witness-test: $(BUILD_DIR)/test_stage3b_sparse_mutation_witness
 	./$(BUILD_DIR)/test_stage3b_sparse_mutation_witness
 
+$(BUILD_DIR)/test_stage3b_sparse_activity_deadline: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_stage3b_sparse_activity_deadline.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(CORE_SOURCES) native/tests/test_stage3b_sparse_activity_deadline.cpp -o $@
+
+soliding-stage3b-sparse-activity-deadline-test: $(BUILD_DIR)/test_stage3b_sparse_activity_deadline
+	./$(BUILD_DIR)/test_stage3b_sparse_activity_deadline
+
 $(BUILD_DIR)/settled_discovery: native/bench/settled_discovery.cpp native/include/cybersand/settled_discovery.hpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O3 -DNDEBUG -Werror native/bench/settled_discovery.cpp -o $@
 
@@ -83,7 +89,7 @@ soliding-stage3b-validation-apparatus-test: | $(BUILD_DIR)
 	python3 tools/experiments/stage3b_validation.py generate-plan --apparatus-source-commit=$$(git rev-parse HEAD) --profile smoke --output $(BUILD_DIR)/stage3b-validation-plan-smoke.json
 	python3 tools/experiments/stage3b_validation.py validate-plan $(BUILD_DIR)/stage3b-validation-plan-smoke.json
 
-soliding-test: $(BUILD_DIR)/test_soliding_lifecycle $(BUILD_DIR)/test_settled_discovery $(BUILD_DIR)/test_settled_regions $(BUILD_DIR)/test_settled_world_discovery $(BUILD_DIR)/test_stage3b_runtime_storage $(BUILD_DIR)/test_stage3b_bounded_spatial_index $(BUILD_DIR)/test_stage3b_sparse_mutation_witness
+soliding-test: $(BUILD_DIR)/test_soliding_lifecycle $(BUILD_DIR)/test_settled_discovery $(BUILD_DIR)/test_settled_regions $(BUILD_DIR)/test_settled_world_discovery $(BUILD_DIR)/test_stage3b_runtime_storage $(BUILD_DIR)/test_stage3b_bounded_spatial_index $(BUILD_DIR)/test_stage3b_sparse_mutation_witness $(BUILD_DIR)/test_stage3b_sparse_activity_deadline
 	./$(BUILD_DIR)/test_soliding_lifecycle
 	./$(BUILD_DIR)/test_settled_discovery
 	./$(BUILD_DIR)/test_settled_regions
@@ -91,6 +97,7 @@ soliding-test: $(BUILD_DIR)/test_soliding_lifecycle $(BUILD_DIR)/test_settled_di
 	./$(BUILD_DIR)/test_stage3b_runtime_storage
 	./$(BUILD_DIR)/test_stage3b_bounded_spatial_index
 	./$(BUILD_DIR)/test_stage3b_sparse_mutation_witness
+	./$(BUILD_DIR)/test_stage3b_sparse_activity_deadline
 
 $(BUILD_DIR)/test_soliding_lifecycle_sanitized: native/tests/test_soliding_lifecycle.cpp native/include/cybersand/soliding_lifecycle.hpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined native/tests/test_soliding_lifecycle.cpp -o $@
@@ -113,7 +120,10 @@ $(BUILD_DIR)/test_stage3b_bounded_spatial_index_sanitized: $(CORE_SOURCES) $(COR
 $(BUILD_DIR)/test_stage3b_sparse_mutation_witness_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_stage3b_sparse_mutation_witness.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_stage3b_sparse_mutation_witness.cpp -o $@
 
-soliding-sanitize: $(BUILD_DIR)/test_soliding_lifecycle_sanitized $(BUILD_DIR)/test_settled_discovery_sanitized $(BUILD_DIR)/test_settled_regions_sanitized $(BUILD_DIR)/test_settled_world_discovery_sanitized $(BUILD_DIR)/test_stage3b_runtime_storage_sanitized $(BUILD_DIR)/test_stage3b_bounded_spatial_index_sanitized $(BUILD_DIR)/test_stage3b_sparse_mutation_witness_sanitized
+$(BUILD_DIR)/test_stage3b_sparse_activity_deadline_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_stage3b_sparse_activity_deadline.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_stage3b_sparse_activity_deadline.cpp -o $@
+
+soliding-sanitize: $(BUILD_DIR)/test_soliding_lifecycle_sanitized $(BUILD_DIR)/test_settled_discovery_sanitized $(BUILD_DIR)/test_settled_regions_sanitized $(BUILD_DIR)/test_settled_world_discovery_sanitized $(BUILD_DIR)/test_stage3b_runtime_storage_sanitized $(BUILD_DIR)/test_stage3b_bounded_spatial_index_sanitized $(BUILD_DIR)/test_stage3b_sparse_mutation_witness_sanitized $(BUILD_DIR)/test_stage3b_sparse_activity_deadline_sanitized
 	./$(BUILD_DIR)/test_soliding_lifecycle_sanitized
 	./$(BUILD_DIR)/test_settled_discovery_sanitized
 	./$(BUILD_DIR)/test_settled_regions_sanitized
@@ -121,6 +131,7 @@ soliding-sanitize: $(BUILD_DIR)/test_soliding_lifecycle_sanitized $(BUILD_DIR)/t
 	./$(BUILD_DIR)/test_stage3b_runtime_storage_sanitized
 	./$(BUILD_DIR)/test_stage3b_bounded_spatial_index_sanitized
 	./$(BUILD_DIR)/test_stage3b_sparse_mutation_witness_sanitized
+	./$(BUILD_DIR)/test_stage3b_sparse_activity_deadline_sanitized
 
 test: c-header-check $(BUILD_DIR)/tests soliding-test
 	./$(BUILD_DIR)/tests
@@ -142,4 +153,4 @@ thread-sanitize: $(BUILD_DIR)/tests_tsan
 	TSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/tests_tsan
 
 clean:
-	rm -f $(BUILD_DIR)/settled_discovery $(BUILD_DIR)/stage3_cost $(BUILD_DIR)/test_soliding_lifecycle_sanitized $(BUILD_DIR)/test_settled_discovery_sanitized $(BUILD_DIR)/test_settled_regions_sanitized $(BUILD_DIR)/test_settled_world_discovery_sanitized $(BUILD_DIR)/test_stage3b_runtime_storage_sanitized $(BUILD_DIR)/test_stage3b_bounded_spatial_index_sanitized $(BUILD_DIR)/test_stage3b_sparse_mutation_witness_sanitized $(BUILD_DIR)/test_soliding_lifecycle $(BUILD_DIR)/test_settled_discovery $(BUILD_DIR)/test_settled_regions $(BUILD_DIR)/test_settled_world_discovery $(BUILD_DIR)/test_stage3b_runtime_storage $(BUILD_DIR)/test_stage3b_bounded_spatial_index $(BUILD_DIR)/test_stage3b_sparse_mutation_witness $(BUILD_DIR)/tests $(BUILD_DIR)/tests_sanitized $(BUILD_DIR)/tests_tsan $(BUILD_DIR)/benchmark $(BUILD_DIR)/libcybersand.so
+	rm -f $(BUILD_DIR)/settled_discovery $(BUILD_DIR)/stage3_cost $(BUILD_DIR)/test_soliding_lifecycle_sanitized $(BUILD_DIR)/test_settled_discovery_sanitized $(BUILD_DIR)/test_settled_regions_sanitized $(BUILD_DIR)/test_settled_world_discovery_sanitized $(BUILD_DIR)/test_stage3b_runtime_storage_sanitized $(BUILD_DIR)/test_stage3b_bounded_spatial_index_sanitized $(BUILD_DIR)/test_stage3b_sparse_mutation_witness_sanitized $(BUILD_DIR)/test_stage3b_sparse_activity_deadline_sanitized $(BUILD_DIR)/test_soliding_lifecycle $(BUILD_DIR)/test_settled_discovery $(BUILD_DIR)/test_settled_regions $(BUILD_DIR)/test_settled_world_discovery $(BUILD_DIR)/test_stage3b_runtime_storage $(BUILD_DIR)/test_stage3b_bounded_spatial_index $(BUILD_DIR)/test_stage3b_sparse_mutation_witness $(BUILD_DIR)/test_stage3b_sparse_activity_deadline $(BUILD_DIR)/tests $(BUILD_DIR)/tests_sanitized $(BUILD_DIR)/tests_tsan $(BUILD_DIR)/benchmark $(BUILD_DIR)/libcybersand.so
