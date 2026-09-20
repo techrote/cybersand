@@ -1,7 +1,7 @@
 {
   "version": 1,
   "frozen_date": "2026-09-08",
-  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability.",
+  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension.",
   "questions": [
     {
       "id": "C05",
@@ -24,13 +24,15 @@
       "id": "C06",
       "query": "How will barrels stop sinking at half depth, and how can rested materials become reversible Rapier objects?",
       "canonical": [
+        "reference/product-intent-and-priorities.md",
         "operations/development-claims-remediation-programme.md",
+        "operations/water-hybrid-pressure-extension-programme.md",
         "operations/soliding-programme.md"
       ],
       "facts": [
-        "Audited current main does not contain the historically accepted #11 bounded granular-bearing/ejection repair; #81 owns source-matched current-main integration and #83 owns the broader body/granular gameplay envelope afterwards.",
-        "The historical #11 ordinary rectangle/load evidence remains valid in its recorded scope; reopening/repair routing does not erase it or imply broad acceptance.",
-        "Issue #12 is an independent scalable-soliding programme at Stage 3B; Stage 4 is blocked and #12 is not the sole remaining reason issue #8 is open."
+        "The barrel is a generic rectangular Rapier reference body, not a special physics subsystem; the owner does not recall accepting the historical barrel-support result as final behavior.",
+        "Historical #11 bounded evidence remains valid in its recorded envelope, while current-main reconciliation and later generic coupling work must not manufacture owner acceptance from that fixture.",
+        "Issue #12 is the independent scalable-soliding programme; the WEX plan tests whether its generic hybrid substrate can later support bounded Water-sheet experiments without creating a duplicate backend."
       ],
       "sources": [
         "operations/development-claims-remediation-programme.md",
@@ -142,13 +144,14 @@
       "query": "Why can retained powder inside a barrel generate downward impulses, and is increasing the cap sufficient?",
       "canonical": [
         "operations/development-claims-remediation-programme.md",
+        "reference/product-intent-and-priorities.md",
         "architecture/rigid-body-and-cellular-coupling.md",
         "operations/physics-characterisation.md"
       ],
       "facts": [
         "The issue #9 historical baseline showed proxy-derived downward contacts from stored powder under a body mask and showed that cap tuning alone did not establish intended support.",
-        "A later #11 source-matched checkpoint repaired masked-source feedback and ordinary bearing in a bounded envelope, but that accepted code is absent from audited current main.",
-        "#81 owns current-main integration of the bounded repair; #83 owns broad body/granular gameplay acceptance, so neither historical closure nor cap tuning is current broad acceptance."
+        "A later #11 source-matched checkpoint improved masked-source feedback/ejection and ordinary bearing in a bounded envelope; that bounded evidence is historical, its implementation is absent from the audited current main, and the owner does not recall accepting the result as final body physics.",
+        "#81 owns remediation reconstruction while later generic hybrid coupling must avoid a barrel-specific support owner."
       ],
       "sources": [
         "../native/src/world.cpp",
@@ -159,14 +162,15 @@
       "id": "C10",
       "query": "Did the barrel destroy the Water missing from the measured bed, or move it through the hard floor?",
       "canonical": [
+        "operations/water-hybrid-pressure-extension-programme.md",
         "operations/development-claims-remediation-programme.md",
         "operations/physics-characterisation.md",
         "architecture/rigid-body-and-cellular-coupling.md"
       ],
       "facts": [
         "The issue #9 full-world accounting control preserved all recorded Water mass and showed the cropped deficit below the hard floor: the defect was displacement across the barrier, not Water destruction.",
-        "The historical #11 repair added bounded barrier/body-mask-aware ejection in its accepted source-matched envelope, but audited current main again exposes the legacy endpoint-only target search.",
-        "#81 owns reconstruction/integration of the accepted bounded repair; current broad body/granular acceptance remains a later #83 question."
+        "Historical #11 work added bounded barrier/body-mask-aware ejection in its recorded source-matched envelope, but current-main reconciliation must not describe that bounded result as owner acceptance.",
+        "WEX-001 freezes the current generic Rapier↔Water splash/displacement and hard-floor failure before later hybrid architecture changes."
       ],
       "sources": [
         "../godot/native_extension/cyber_native_cell_world.cpp::find_ejection_target",
@@ -449,6 +453,55 @@
       "sources": [
         "operations/development-claims-remediation-programme.md",
         "operations/soliding-stage3b-production-plan.md"
+      ]
+    },
+    {
+      "id": "WEX01",
+      "query": "Why are we testing solided Water sheets before implementing a new hydrostatic or pressure solver?",
+      "canonical": [
+        "operations/water-hybrid-pressure-extension-programme.md",
+        "systems/water-design.md"
+      ],
+      "facts": [
+        "Current native Water already uses fractional conserved FreeMass while most other liquids use whole-cell CellularYield-style paths, so another explicit Water pressure mechanism would add another bulk-motion authority rather than replace an already unified solver.",
+        "A generic Rapier body entering Water can already create convincing splash/wave displacement; WEX therefore tests whether at most roughly 3–5 segmented upper-volume Water tiers can reuse the generic hybrid substrate to create depth-dependent surge.",
+        "The candidate is experimental, must preserve exact Water quantity and generic ownership, and must actively test slab/membrane, floor-reaction, chatter and boundary-penetration failure modes."
+      ],
+      "sources": [
+        "docs/operations/water-hybrid-pressure-extension-programme.md",
+        "docs/systems/water-design.md"
+      ]
+    },
+    {
+      "id": "WEX02",
+      "query": "Does the corrected communicating-head fixture prove sealed indoor reservoirs should equalize to the same Water level?",
+      "canonical": [
+        "operations/water-hybrid-pressure-extension-programme.md",
+        "systems/water-design.md"
+      ],
+      "facts": [
+        "No: equal-level communicating-head behavior is a shared/vented-pressure control, not a universal sealed-headspace target.",
+        "Separately sealed gas volumes can support different free-surface levels because gas pressure becomes part of the boundary condition.",
+        "#49 still repairs the apparatus, while #95 must synthesize corrected controls and hybrid/gas evidence before #45 is instructed to proceed, narrow, recharter, defer or no-go."
+      ],
+      "sources": [
+        "docs/operations/water-hybrid-pressure-extension-programme.md",
+        "docs/systems/water-design.md"
+      ]
+    },
+    {
+      "id": "WEX03",
+      "query": "How could CyberSand model trapped gas and decompression without simulating every air pixel?",
+      "canonical": [
+        "operations/water-hybrid-pressure-extension-programme.md"
+      ],
+      "facts": [
+        "WEX-003 investigates lumped connected gas regions with explicit amount/free-volume/topology state and derived pressure; a one-byte pressure may be a cache but is not assumed sufficient as authoritative state.",
+        "Gas-space connectivity, not wall-boundary traceability, is the governing topology; openings merge/vent cheaply while closures may require lazy affected-region split reconstruction.",
+        "WEX-004 is conditional research for bounded pressure-difference decompression events that can impart local impulses without full gas CFD or negative absolute pressure."
+      ],
+      "sources": [
+        "docs/operations/water-hybrid-pressure-extension-programme.md"
       ]
     }
   ],
