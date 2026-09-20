@@ -44,7 +44,7 @@ jobs:
           timeout 6m ./build/test_stage3b_sparse_activity_deadline_sanitized
           grep -q "service_discovery_deadlines" native/src/world.cpp
           grep -q "observe_discovery_activity_parent" native/src/world.cpp
-          grep -q "schedule_discovery_deadline" native/src/world.cpp native/src/settled_world_discovery.cpp
+          grep -q "schedule_deadline" native/src/world.cpp native/src/settled_world_discovery.cpp
           grep -q "reconcile_queued_signals" native/src/world.cpp native/include/cybersand/settled_discovery.hpp
           git diff --check "$(git merge-base HEAD origin/main)" HEAD
 
