@@ -2268,7 +2268,7 @@ bool World::update_water(std::int64_t x, std::int64_t y, JobEffects* effects) {
         return changed;
     }
 
-    if (!lateral_due(Material::Water,x,y)) return changed;
+    if (!lateral_due(Material::Water,x,y,effects)) return changed;
     const auto level_with = [this, x, y, effects, &changed](
                                 std::int64_t target_x, std::int64_t target_y) {
         const auto source_mass = static_cast<std::uint16_t>(liquid_mass(x, y));
@@ -2362,7 +2362,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
                 : MaterialRules::descriptor(material).viscosity_index;
             const auto mobility = static_cast<std::uint16_t>(256U - viscosity);
             if (deterministic_random(x, y, random_stream) >= mobility) return false;
-            if (!lateral_due(material,x,y)) return false;
+            if (!lateral_due(material,x,y,effects)) return false;
             if (try_lateral(material,x,y,direction,false,effects)) return true;
             if (config_.transport_policy.configured &&
                 config_.transport_policy.horizontal[static_cast<std::size_t>(material)] == 1) return false;
@@ -2705,7 +2705,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
             if (try_move(material, x, y, x, y + 1, true, effects)) return true;
             if (try_move(material, x, y, x + direction, y + 1, true, effects)) return true;
             if (try_move(material, x, y, x - direction, y + 1, true, effects)) return true;
-            if (lateral_due(material,x,y) && try_lateral(material,x,y,direction,true,effects)) return true;
+            if (lateral_due(material,x,y,effects) && try_lateral(material,x,y,direction,true,effects)) return true;
             return changed;
         }
 
@@ -2726,7 +2726,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
         case RuleKernel::Acid: {
             if (try_move(material, x, y, x, y + 1, true, effects)) return true;
             if (try_move(material, x, y, x + direction, y + 1, true, effects)) return true;
-            if (lateral_due(material,x,y) && try_lateral(material,x,y,direction,true,effects)) return true;
+            if (lateral_due(material,x,y,effects) && try_lateral(material,x,y,direction,true,effects)) return true;
 
             if (!lifecycle_due) return false;
             const auto strength = state_a(x, y);
@@ -2802,7 +2802,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
             if (try_move(material, x, y, x, y + 1, false, effects)) return true;
             if (try_move(material, x, y, x + direction, y + 1, false, effects)) return true;
             if (try_move(material, x, y, x - direction, y + 1, false, effects)) return true;
-            if (lateral_due(material,x,y) && try_lateral(material,x,y,direction,false,effects)) return true;
+            if (lateral_due(material,x,y,effects) && try_lateral(material,x,y,direction,false,effects)) return true;
             return changed;
         }
 
