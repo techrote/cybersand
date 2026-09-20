@@ -359,7 +359,11 @@ CYBERSAND_TEST_NOINLINE void event_halo_overlap_and_signed_geometry() {
             " observation_fences=" + std::to_string(metrics.observation_fences) +
             " generation_exhaustions=" +
             std::to_string(metrics.nonpayload_generation_exhaustions) +
-            " event_witnesses=" + std::to_string(metrics.event_witnesses));
+            " event_witnesses=" + std::to_string(metrics.event_witnesses) +
+            " activity_reconcile_failures=" +
+            std::to_string(metrics.activity_reconcile_failures) +
+            " explicit_observer_failures=" +
+            std::to_string(metrics.explicit_observer_failures));
     }
     const auto halo_drained = tile_at(world, 5, 0);
     require(halo_drained.pending_event_count == 0 &&
