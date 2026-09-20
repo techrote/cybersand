@@ -258,18 +258,22 @@ private:
     [[nodiscard]] Chunk& ensure_chunk(ChunkCoord coord);
     void ensure_temperature_field(Chunk& chunk);
     void apply_pending_explosions(TickStats& stats);
-    void wake_cell_neighborhood(std::int64_t x, std::int64_t y);
-    void keep_cell_active(std::int64_t x, std::int64_t y) noexcept;
-    void schedule_interaction_wake(std::int64_t x, std::int64_t y, std::uint64_t due) noexcept;
+    void wake_cell_neighborhood(std::int64_t x, std::int64_t y,
+                                bool reconcile_discovery = true);
+    void keep_cell_active(std::int64_t x, std::int64_t y, JobEffects* effects) noexcept;
+    void schedule_interaction_wake(std::int64_t x, std::int64_t y, std::uint64_t due,
+                                   JobEffects* effects) noexcept;
     [[nodiscard]] bool exchange_permitted(Material source, Material target,
-        std::int64_t x, std::int64_t y, std::int64_t target_x, std::int64_t target_y);
+        std::int64_t x, std::int64_t y, std::int64_t target_x, std::int64_t target_y,
+        JobEffects* effects);
     void mark_cell_dirty(Chunk& chunk, std::int32_t local_x, std::int32_t local_y);
     void move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_x,
                    std::int64_t to_y, bool swap, JobEffects* effects,
                    PhysicsEvent swap_event = PhysicsEvent::DensitySwap);
     void mix_after_motion(Material carrier, std::int64_t x, std::int64_t y,
         std::int64_t to_x, std::int64_t to_y, std::uint16_t mass, JobEffects* effects);
-    [[nodiscard]] bool lateral_due(Material material, std::int64_t x, std::int64_t y) noexcept;
+    [[nodiscard]] bool lateral_due(Material material, std::int64_t x, std::int64_t y,
+                                  JobEffects* effects) noexcept;
     [[nodiscard]] bool try_lateral(Material material, std::int64_t x, std::int64_t y,
         std::int32_t direction, bool swap, JobEffects* effects);
     [[nodiscard]] bool try_move(Material material, std::int64_t x, std::int64_t y, std::int64_t target_x,
@@ -306,9 +310,15 @@ private:
     void register_discovery_chunk(ChunkCoord coord, const Chunk& chunk) noexcept;
     [[nodiscard]] soliding::DiscoveryTileKey discovery_tile_key(
         const Address& address) const noexcept;
+    [[nodiscard]] soliding::DiscoveryParentKey discovery_parent_key(
+        ChunkCoord coord, std::size_t activity_index) const noexcept;
     [[nodiscard]] soliding::DiscoverySignals discovery_signals(
         ChunkCoord coord, std::size_t activity_index,
         soliding::DiscoveryBounds bounds) const noexcept;
+    void observe_discovery_activity_parent(ChunkCoord coord,
+                                           std::size_t activity_index) noexcept;
+    void witness_discovery_activity(ChunkCoord coord, std::size_t activity_index) noexcept;
+    void service_discovery_deadlines() noexcept;
     void dirty_discovery_cell(std::int64_t x, std::int64_t y,
                               soliding::ProducerReason reason) noexcept;
     void refresh_discovery_signals(soliding::ProducerReason reason) noexcept;

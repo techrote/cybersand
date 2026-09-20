@@ -275,24 +275,38 @@ struct World::JobEffects {
         std::int32_t subtile_x = 0;
         std::uint64_t mutation_count = 0;
     };
+    struct DiscoverySignalReport {
+        ChunkCoord chunk{};
+        std::int32_t activity_y = 0;
+        std::int32_t activity_x = 0;
+        std::uint64_t deadline_due = 0;
+        bool activity_witness = false;
+    };
 
     static constexpr std::size_t kMaximumTouchedChunks = 16;
     static constexpr std::size_t kMaximumDiscoveryMutationReports = 64;
+    static constexpr std::size_t kMaximumDiscoverySignalReports = 64;
     std::array<ChunkEffect, kMaximumTouchedChunks> chunks{};
     std::array<DiscoveryMutationReport, kMaximumDiscoveryMutationReports>
         discovery_mutations{};
+    std::array<DiscoverySignalReport, kMaximumDiscoverySignalReports>
+        discovery_signals{};
     std::size_t chunk_count = 0;
     std::size_t discovery_mutation_count = 0;
+    std::size_t discovery_signal_count = 0;
     bool overflow = false;
     bool discovery_mutation_overflow = false;
+    bool discovery_signal_overflow = false;
     bool hard_surface_changed = false;
     PhysicsJobHistogram* physics = nullptr;
 
     void reset() noexcept {
         chunk_count = 0;
         discovery_mutation_count = 0;
+        discovery_signal_count = 0;
         overflow = false;
         discovery_mutation_overflow = false;
+        discovery_signal_overflow = false;
         hard_surface_changed = false;
         if (physics != nullptr) *physics = {};
     }
@@ -320,6 +334,31 @@ struct World::JobEffects {
             address_value.local_y,
             non_empty_delta,
         };
+    }
+
+    void record_discovery_signal(const Address& address_value,
+                                 std::int32_t activity_block_size,
+                                 bool activity_witness,
+                                 std::uint64_t deadline_due = 0) noexcept {
+        const auto activity_x = address_value.local_x / activity_block_size;
+        const auto activity_y = address_value.local_y / activity_block_size;
+        for (std::size_t index = 0; index < discovery_signal_count; ++index) {
+            auto& report = discovery_signals[index];
+            if (report.chunk != address_value.chunk ||
+                report.activity_y != activity_y ||
+                report.activity_x != activity_x) continue;
+            report.activity_witness = report.activity_witness || activity_witness;
+            if (deadline_due != 0 &&
+                (report.deadline_due == 0 || deadline_due < report.deadline_due))
+                report.deadline_due = deadline_due;
+            return;
+        }
+        if (discovery_signal_count == discovery_signals.size()) {
+            discovery_signal_overflow = true;
+            return;
+        }
+        discovery_signals[discovery_signal_count++] = {
+            address_value.chunk, activity_y, activity_x, deadline_due, activity_witness};
     }
 
     void record_discovery_mutation(const Address& address_value,
@@ -530,6 +569,20 @@ soliding::DiscoveryTileKey World::discovery_tile_key(const Address& target) cons
     };
 }
 
+soliding::DiscoveryParentKey World::discovery_parent_key(
+    ChunkCoord coord, std::size_t activity_index) const noexcept {
+    const auto* chunk = find_chunk(coord);
+    if (chunk == nullptr || chunk->activity_blocks_per_axis <= 0) return {};
+    const auto blocks = static_cast<std::size_t>(chunk->activity_blocks_per_axis);
+    return {
+        settled_discovery_ == nullptr ? 0 : settled_discovery_->incarnation(),
+        coord.y,
+        coord.x,
+        static_cast<std::int32_t>(activity_index / blocks),
+        static_cast<std::int32_t>(activity_index % blocks),
+    };
+}
+
 soliding::DiscoverySignals World::discovery_signals(
     ChunkCoord coord, std::size_t activity_index,
     soliding::DiscoveryBounds bounds) const noexcept {
@@ -572,6 +625,100 @@ soliding::DiscoverySignals World::discovery_signals(
     return result;
 }
 
+void World::observe_discovery_activity_parent(
+    ChunkCoord coord, std::size_t activity_index) noexcept {
+    if (settled_discovery_ == nullptr ||
+        settled_discovery_->halted() != soliding::DiscoveryHalt::None) return;
+    const auto* chunk = find_chunk(coord);
+    if (chunk == nullptr || activity_index >= chunk->activity_blocks.size()) {
+        settled_discovery_->fail();
+        return;
+    }
+    const auto blocks = static_cast<std::size_t>(chunk->activity_blocks_per_axis);
+    const auto activity_y = static_cast<std::int32_t>(activity_index / blocks);
+    const auto activity_x = static_cast<std::int32_t>(activity_index % blocks);
+    const auto block_x = activity_x * config_.activity_block_size;
+    const auto block_y = activity_y * config_.activity_block_size;
+    const auto block_width = std::min(config_.activity_block_size, config_.chunk_size - block_x);
+    const auto block_height = std::min(config_.activity_block_size, config_.chunk_size - block_y);
+    for (std::int32_t subtile_y = 0; subtile_y < block_height; subtile_y += 32) {
+        for (std::int32_t subtile_x = 0; subtile_x < block_width; subtile_x += 32) {
+            const soliding::DiscoveryTileKey key{
+                settled_discovery_->incarnation(), coord.y, coord.x,
+                activity_y, activity_x, subtile_y / 32, subtile_x / 32};
+            const auto handle = settled_discovery_->find_handle(key);
+            if (!handle.has_value()) continue;
+            const auto previous = settled_discovery_->tile(*handle);
+            if (!previous.has_value()) continue;
+            auto signals = previous->signals;
+            // #62 owns only activity/deadline state. Preserve #58/#63-owned
+            // witness/health/inclusion/event/mask signals exactly as last observed;
+            // a parent-local activity update must not become a second producer for them.
+            signals.active =
+                chunk->activity_blocks[activity_index].active ||
+                chunk->activity_blocks[activity_index].next_interaction_tick != 0;
+            (void)settled_discovery_->observe(
+                *handle, signals, soliding::ProducerReason::ActivityOrDeadline, tick_index_);
+        }
+    }
+}
+
+void World::witness_discovery_activity(
+    ChunkCoord coord, std::size_t activity_index) noexcept {
+    if (settled_discovery_ == nullptr ||
+        settled_discovery_->halted() != soliding::DiscoveryHalt::None) return;
+    const auto* chunk = find_chunk(coord);
+    if (chunk == nullptr || activity_index >= chunk->activity_blocks.size()) {
+        settled_discovery_->fail();
+        return;
+    }
+    const auto outcome = settled_discovery_->witness_activity(
+        discovery_parent_key(coord, activity_index),
+        chunk->activity_blocks[activity_index].active);
+    if (outcome == soliding::DiscoveryOutcome::Accepted)
+        observe_discovery_activity_parent(coord, activity_index);
+}
+
+void World::service_discovery_deadlines() noexcept {
+    if (settled_discovery_ == nullptr ||
+        settled_discovery_->halted() != soliding::DiscoveryHalt::None) return;
+    for (;;) {
+        const auto next = settled_discovery_->next_deadline();
+        if (!next.has_value() || next->due_tick > tick_index_) return;
+        if (next->parent.world_incarnation != settled_discovery_->incarnation()) {
+            settled_discovery_->fail();
+            return;
+        }
+        const ChunkCoord coord{next->parent.chunk_x, next->parent.chunk_y};
+        const auto* chunk = find_chunk(coord);
+        if (chunk == nullptr ||
+            next->parent.activity_x < 0 || next->parent.activity_y < 0 ||
+            next->parent.activity_x >= chunk->activity_blocks_per_axis ||
+            next->parent.activity_y >= chunk->activity_blocks_per_axis) {
+            settled_discovery_->fail();
+            return;
+        }
+        const auto index =
+            static_cast<std::size_t>(next->parent.activity_y) *
+                static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
+            static_cast<std::size_t>(next->parent.activity_x);
+        const auto& block = chunk->activity_blocks[index];
+        if (block.next_interaction_tick != next->due_tick) {
+            settled_discovery_->fail();
+            return;
+        }
+        const auto included = clip_core_range(block_core_range(coord, index), selected_core_region_);
+        const bool runnable =
+            config_.backend == SimulationBackend::SerialInPlace ||
+            (included.min_x <= included.max_x && included.min_y <= included.max_y);
+        const auto outcome = runnable
+            ? settled_discovery_->mark_deadline_ready(next->parent)
+            : settled_discovery_->park_deadline(next->parent);
+        if (outcome == soliding::DiscoveryOutcome::Halted ||
+            outcome == soliding::DiscoveryOutcome::Invalid) return;
+    }
+}
+
 void World::register_discovery_chunk(ChunkCoord coord, const Chunk& chunk) noexcept {
     if (settled_discovery_ == nullptr || settled_discovery_->capacity_blocked() ||
         settled_discovery_->halted() != soliding::DiscoveryHalt::None) return;
@@ -588,6 +735,7 @@ void World::register_discovery_chunk(ChunkCoord coord, const Chunk& chunk) noexc
             const auto activity_index = static_cast<std::size_t>(activity_y) *
                 static_cast<std::size_t>(chunk.activity_blocks_per_axis) +
                 static_cast<std::size_t>(activity_x);
+            bool parent_registered = false;
             for (std::int32_t subtile_y = 0; subtile_y < block_height; subtile_y += 32) {
                 for (std::int32_t subtile_x = 0; subtile_x < block_width; subtile_x += 32) {
                     const soliding::DiscoveryBounds bounds{
@@ -613,6 +761,16 @@ void World::register_discovery_chunk(ChunkCoord coord, const Chunk& chunk) noexc
                         key, bounds, config_.ambient_temperature, signals, tick_index_);
                     if (outcome == soliding::DiscoveryOutcome::Capacity ||
                         outcome == soliding::DiscoveryOutcome::Halted) return;
+                    if (!parent_registered) {
+                        const auto& block = chunk.activity_blocks[activity_index];
+                        const auto parent_outcome = settled_discovery_->register_activity_parent(
+                            discovery_parent_key(coord, activity_index),
+                            block.active, block.next_interaction_tick);
+                        if (parent_outcome == soliding::DiscoveryOutcome::Capacity ||
+                            parent_outcome == soliding::DiscoveryOutcome::Halted ||
+                            parent_outcome == soliding::DiscoveryOutcome::Invalid) return;
+                        parent_registered = true;
+                    }
                 }
             }
         }
@@ -719,10 +877,16 @@ void World::dirty_discovery_cell(std::int64_t x, std::int64_t y,
                                  soliding::ProducerReason reason) noexcept {
     if (settled_discovery_ == nullptr) return;
     const auto target = address(x, y);
-    if (find_chunk(target.chunk) == nullptr) return;
+    const auto* chunk = find_chunk(target.chunk);
+    if (chunk == nullptr) return;
+    const auto activity_index =
+        static_cast<std::size_t>(target.local_y / config_.activity_block_size) *
+            static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
+        static_cast<std::size_t>(target.local_x / config_.activity_block_size);
     const auto handle = settled_discovery_->find_handle(discovery_tile_key(target));
-    if (!handle.has_value()) return;
-    (void)settled_discovery_->notify_payload(*handle, reason, tick_index_);
+    if (handle.has_value())
+        (void)settled_discovery_->notify_payload(*handle, reason, tick_index_);
+    witness_discovery_activity(target.chunk, activity_index);
 }
 
 void World::refresh_discovery_signals(soliding::ProducerReason reason) noexcept {
@@ -1238,7 +1402,8 @@ void World::mark_cell_dirty(Chunk& chunk, std::int32_t local_x, std::int32_t loc
     chunk.dirty_max_y = std::max(chunk.dirty_max_y, local_y);
 }
 
-void World::wake_cell_neighborhood(std::int64_t x, std::int64_t y) {
+void World::wake_cell_neighborhood(std::int64_t x, std::int64_t y,
+                                   bool reconcile_discovery) {
     const auto centre = address(x, y);
     const auto block_x = centre.local_x / config_.activity_block_size;
     const auto block_y = centre.local_y / config_.activity_block_size;
@@ -1279,11 +1444,13 @@ void World::wake_cell_neighborhood(std::int64_t x, std::int64_t y) {
             block.active = true;
             block.quiet_ticks = 0;
             chunk->active = true;
+            if (reconcile_discovery)
+                witness_discovery_activity(target.chunk, block_index);
         }
     }
 }
 
-void World::keep_cell_active(std::int64_t x, std::int64_t y) noexcept {
+void World::keep_cell_active(std::int64_t x, std::int64_t y, JobEffects* effects) noexcept {
     const auto source = address(x, y);
     auto* chunk = find_chunk(source.chunk);
     if (chunk == nullptr) return;
@@ -1302,9 +1469,16 @@ void World::keep_cell_active(std::int64_t x, std::int64_t y) noexcept {
     block.changed_this_tick = true;
     block.quiet_ticks = 0;
     chunk->active = true;
+    if (settled_discovery_ != nullptr) {
+        if (effects != nullptr)
+            effects->record_discovery_signal(source, config_.activity_block_size, true);
+        else
+            witness_discovery_activity(source.chunk, block_index);
+    }
 }
 
-void World::schedule_interaction_wake(std::int64_t x, std::int64_t y, std::uint64_t due) noexcept {
+void World::schedule_interaction_wake(std::int64_t x, std::int64_t y, std::uint64_t due,
+                                      JobEffects* effects) noexcept {
     const auto a = address(x,y);
     auto* chunk = find_chunk(a.chunk);
     if (!chunk) return;
@@ -1312,7 +1486,18 @@ void World::schedule_interaction_wake(std::int64_t x, std::int64_t y, std::uint6
         static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
         static_cast<std::size_t>(a.local_x / config_.activity_block_size);
     auto& next = chunk->activity_blocks[index].next_interaction_tick;
-    if (next == 0 || due < next) next = due;
+    if (next == 0 || due < next) {
+        next = due;
+        if (settled_discovery_ != nullptr) {
+            if (effects != nullptr)
+                effects->record_discovery_signal(a, config_.activity_block_size, false, due);
+            else {
+                (void)settled_discovery_->schedule_deadline(
+                    discovery_parent_key(a.chunk, index), due);
+                observe_discovery_activity_parent(a.chunk, index);
+            }
+        }
+    }
 }
 
 void World::set(std::int64_t x, std::int64_t y, Material material) {
@@ -1670,7 +1855,20 @@ void World::apply_pending_explosions(TickStats& stats) {
         }
         ++stats.deferred_events;
     }
-    pending_explosions_.clear();
+    if (settled_discovery_ == nullptr) {
+        pending_explosions_.clear();
+    } else {
+        // Preserve the existing PendingEvent producer contract without reviving
+        // the removed activity/deadline resident scan. #63 owns replacing this
+        // represented-tile region walk with event indexing.
+        while (!pending_explosions_.empty()) {
+            const auto event = pending_explosions_.back();
+            pending_explosions_.pop_back();
+            const auto margin = static_cast<std::int64_t>(event.radius) + 2;
+            observe_discovery_event(
+                {event.x - margin, event.y - margin, margin * 2 + 1, margin * 2 + 1});
+        }
+    }
 }
 
 void World::clear() {
@@ -1801,7 +1999,7 @@ void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_
 }
 
 bool World::exchange_permitted(Material source, Material target, std::int64_t x,
-    std::int64_t y, std::int64_t target_x, std::int64_t target_y) {
+    std::int64_t y, std::int64_t target_x, std::int64_t target_y, JobEffects* effects) {
     const bool powder_source = MaterialRules::supports_granular_load(source);
     const bool powder_target = MaterialRules::supports_granular_load(target);
     if (!powder_source && !powder_target) return true; // gas/liquid behavior unchanged
@@ -1817,7 +2015,7 @@ bool World::exchange_permitted(Material source, Material target, std::int64_t x,
             ? config_.transport_policy.pair(static_cast<std::uint8_t>(source),static_cast<std::uint8_t>(target)).permeability
             : liquid == Material::Mercury ? config_.interaction_policy.mercury_exchange_period : 1U;
         if (tick_index_ % period != 0) {
-            schedule_interaction_wake(x,y,tick_index_ + period - tick_index_ % period);
+            schedule_interaction_wake(x,y,tick_index_ + period - tick_index_ % period, effects);
             return false;
         }
     }
@@ -1854,7 +2052,7 @@ bool World::try_move(Material material, std::int64_t x, std::int64_t y, std::int
     if (allow_swap && !(config_.physics_diagnostics.disable_powder_exchange_targets &&
         MaterialRules::descriptor(target).state == MaterialState::Powder) &&
         MaterialRules::can_density_exchange(material, target, target_y - y) &&
-        exchange_permitted(material,target,x,y,target_x,target_y)) {
+        exchange_permitted(material,target,x,y,target_x,target_y,effects)) {
         move_cell(x, y, target_x, target_y, true, effects);
         return true;
     }
@@ -2012,7 +2210,8 @@ void World::mix_after_motion(Material carrier, std::int64_t x, std::int64_t y,
         powder ? PhysicsEvent::PowderMix : PhysicsEvent::GrainTransport);
 }
 
-bool World::lateral_due(Material material, std::int64_t x, std::int64_t y) noexcept {
+bool World::lateral_due(Material material, std::int64_t x, std::int64_t y,
+                        JobEffects* effects) noexcept {
     const auto period = config_.transport_policy.configured
         ? config_.transport_policy.cadence[static_cast<std::size_t>(material)] : 1U;
     if (period == 1U) return true;
@@ -2021,7 +2220,7 @@ bool World::lateral_due(Material material, std::int64_t x, std::int64_t y) noexc
     const auto remaining = (phase + period - tick_index_ % period) % period;
     if (remaining == 0U) return true;
     // One existing bounded block deadline, no catch-up and no new queue.
-    schedule_interaction_wake(x,y,tick_index_+remaining);
+    schedule_interaction_wake(x,y,tick_index_+remaining,effects);
     return false;
 }
 
@@ -2080,7 +2279,7 @@ bool World::update_water(std::int64_t x, std::int64_t y, JobEffects* effects) {
         return changed;
     }
 
-    if (!lateral_due(Material::Water,x,y)) return changed;
+    if (!lateral_due(Material::Water,x,y,effects)) return changed;
     const auto level_with = [this, x, y, effects, &changed](
                                 std::int64_t target_x, std::int64_t target_y) {
         const auto source_mass = static_cast<std::uint16_t>(liquid_mass(x, y));
@@ -2174,7 +2373,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
                 : MaterialRules::descriptor(material).viscosity_index;
             const auto mobility = static_cast<std::uint16_t>(256U - viscosity);
             if (deterministic_random(x, y, random_stream) >= mobility) return false;
-            if (!lateral_due(material,x,y)) return false;
+            if (!lateral_due(material,x,y,effects)) return false;
             if (try_lateral(material,x,y,direction,false,effects)) return true;
             if (config_.transport_policy.configured &&
                 config_.transport_policy.horizontal[static_cast<std::size_t>(material)] == 1) return false;
@@ -2286,7 +2485,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
             if (try_move(material, x, y, x + direction, y - 1, true, effects)) return true;
             if (try_move(material, x, y, x - direction, y - 1, true, effects)) return true;
             if (try_move(material, x, y, x + direction, y, false, effects)) return true;
-            keep_cell_active(x, y);
+            keep_cell_active(x, y, effects);
             return changed;
         }
 
@@ -2322,7 +2521,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
             const auto burn = state_b(x, y);
             if (burn == 0U) return false;
             if (!lifecycle_due) {
-                keep_cell_active(x, y);
+                keep_cell_active(x, y, effects);
                 return false;
             }
             if (find_neighbour([](Material candidate, auto, auto) {
@@ -2364,7 +2563,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
                 return fall_as_powder();
             }
             if (!lifecycle_due) {
-                keep_cell_active(x, y);
+                keep_cell_active(x, y, effects);
                 return false;
             }
             if (find_neighbour([](Material candidate, auto, auto) {
@@ -2393,7 +2592,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
             const auto charge = state_b(x, y);
             if (charge == 0U) return false;
             if (!lifecycle_due) {
-                keep_cell_active(x, y);
+                keep_cell_active(x, y, effects);
                 return false;
             }
             bool changed = false;
@@ -2517,7 +2716,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
             if (try_move(material, x, y, x, y + 1, true, effects)) return true;
             if (try_move(material, x, y, x + direction, y + 1, true, effects)) return true;
             if (try_move(material, x, y, x - direction, y + 1, true, effects)) return true;
-            if (lateral_due(material,x,y) && try_lateral(material,x,y,direction,true,effects)) return true;
+            if (lateral_due(material,x,y,effects) && try_lateral(material,x,y,direction,true,effects)) return true;
             return changed;
         }
 
@@ -2538,7 +2737,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
         case RuleKernel::Acid: {
             if (try_move(material, x, y, x, y + 1, true, effects)) return true;
             if (try_move(material, x, y, x + direction, y + 1, true, effects)) return true;
-            if (lateral_due(material,x,y) && try_lateral(material,x,y,direction,true,effects)) return true;
+            if (lateral_due(material,x,y,effects) && try_lateral(material,x,y,direction,true,effects)) return true;
 
             if (!lifecycle_due) return false;
             const auto strength = state_a(x, y);
@@ -2614,13 +2813,13 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
             if (try_move(material, x, y, x, y + 1, false, effects)) return true;
             if (try_move(material, x, y, x + direction, y + 1, false, effects)) return true;
             if (try_move(material, x, y, x - direction, y + 1, false, effects)) return true;
-            if (lateral_due(material,x,y) && try_lateral(material,x,y,direction,false,effects)) return true;
+            if (lateral_due(material,x,y,effects) && try_lateral(material,x,y,direction,false,effects)) return true;
             return changed;
         }
 
         case RuleKernel::Cloner: {
             if (!contact_chemistry_due) {
-                keep_cell_active(x, y);
+                keep_cell_active(x, y, effects);
                 return false;
             }
             auto captured = state_b(x, y);
@@ -2671,7 +2870,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
             const auto energy = state_a(x, y);
             if (energy == 0U) return false;
             if (!contact_chemistry_due) {
-                keep_cell_active(x, y);
+                keep_cell_active(x, y, effects);
                 return false;
             }
             const auto start = deterministic_random(
@@ -2722,7 +2921,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
                                          target == Material::Seed ||
                                          target == Material::Dust;
             if (edible_target && !contact_chemistry_due) {
-                keep_cell_active(x, y);
+                keep_cell_active(x, y, effects);
                 return false;
             }
             if (edible_target) {
@@ -2817,7 +3016,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
                 if (support == Material::Sand || support == Material::Plant ||
                     support == Material::Fungus) {
                     if (!contact_chemistry_due) {
-                        keep_cell_active(x, y);
+                        keep_cell_active(x, y, effects);
                         return false;
                     }
                     return write_cell(x, y, Material::Seed, 8, 1, effects);
@@ -2828,7 +3027,7 @@ bool World::update_rule_kernel(RuleKernel kernel, std::int64_t x, std::int64_t y
             }
 
             if (!contact_chemistry_due) {
-                keep_cell_active(x, y);
+                keep_cell_active(x, y, effects);
                 return false;
             }
             if (stage == 0U) return write_cell(x, y, Material::Plant, 16, 0, effects);
@@ -2869,10 +3068,19 @@ void World::begin_tick(TickStats& stats) {
         update_epoch_ = 1;
     }
     stats.tick = tick_index_;
+    service_discovery_deadlines();
 
     active_chunk_scratch_.clear();
-    const bool transition = config_.backend == SimulationBackend::PhasedInPlace &&
-                            selected_core_region_ != applied_core_region_;
+    const auto previous_core_region = applied_core_region_;
+    const bool coverage_transition = selected_core_region_ != previous_core_region;
+    const bool transition =
+        config_.backend == SimulationBackend::PhasedInPlace && coverage_transition;
+    // Apply the requested coverage before observer reconciliation. Inclusion remains
+    // #63-owned: retain its explicit resident refresh only when coverage actually
+    // transitions, rather than letting #62 activity witnesses rediscover it.
+    applied_core_region_ = selected_core_region_;
+    if (coverage_transition && settled_discovery_ != nullptr)
+        refresh_discovery_signals(soliding::ProducerReason::InclusionFence);
     // Reuse the existing metadata pass, with no cell scan or region-sized
     // allocation. Coalesced/equivalent windows do not repeatedly wake blocks.
     for (auto& [coord, chunk] : chunks_) {
@@ -2889,22 +3097,32 @@ void World::begin_tick(TickStats& stats) {
                     block.quiet_ticks = 0;
                     chunk->active = true;
                     block.next_interaction_tick = 0;
+                    if (settled_discovery_ != nullptr) {
+                        const auto parent = discovery_parent_key(coord, index);
+                        (void)settled_discovery_->consume_deadline(parent);
+                        (void)settled_discovery_->witness_activity(parent, true);
+                        observe_discovery_activity_parent(coord, index);
+                    }
                 }
             }
             if (!transition) continue;
             const auto bounds = block_core_range(coord, index);
             const auto included = clip_core_range(bounds, selected_core_region_);
-            const auto previous = clip_core_range(included, applied_core_region_);
+            const auto previous = clip_core_range(included, previous_core_region);
             if (included.min_x <= included.max_x && included.min_y <= included.max_y &&
                 included != previous) {
                 if (!block.active) record_physics(PhysicsEvent::BlockWake, Material::Empty, Material::Empty, 0, 0, nullptr);
                 block.active = true;
                 block.quiet_ticks = 0;
                 chunk->active = true;
+                if (settled_discovery_ != nullptr) {
+                    const auto parent = discovery_parent_key(coord, index);
+                    (void)settled_discovery_->witness_activity(parent, true);
+                    observe_discovery_activity_parent(coord, index);
+                }
             }
         }
     }
-    applied_core_region_ = selected_core_region_;
 
     // Gameplay events are committed only at a tick boundary. Applying them
     // after resetting change flags makes their edits visible to activity,
@@ -2959,6 +3177,11 @@ void World::finish_tick(TickStats& stats) {
             } else if (age && ++block.quiet_ticks >= config_.sleep_after_quiet_ticks) {
                 record_physics(PhysicsEvent::BlockSleep, Material::Empty, Material::Empty, 0, 0, nullptr);
                 block.active = false;
+                if (settled_discovery_ != nullptr) {
+                    const auto parent = discovery_parent_key(coord, index);
+                    (void)settled_discovery_->witness_activity(parent, false);
+                    observe_discovery_activity_parent(coord, index);
+                }
             }
             any_active_block = any_active_block || block.active;
             if (block.active) ++stats.active_blocks_after;
@@ -2968,7 +3191,6 @@ void World::finish_tick(TickStats& stats) {
         if (chunk->active) ++stats.active_chunks_after;
         if (chunk->dirty) ++stats.dirty_chunks;
     }
-    refresh_discovery_signals(soliding::ProducerReason::ActivityOrDeadline);
 }
 
 TickStats World::tick_serial() {
@@ -3191,6 +3413,10 @@ void World::merge_job_effects(const JobEffects& effects) {
         physics_totals_->overflow += effects.physics->overflow;
     }
     if (effects.hard_surface_changed) ++hard_surface_revision_;
+
+    // Merge authoritative block/chunk state first. Discovery reconciliation is
+    // deliberately deferred until the exact #61 payload records are invalidated,
+    // so an activity wake cannot create a second revision for the same mutation.
     for (std::size_t effect_index = 0; effect_index < effects.chunk_count; ++effect_index) {
         const auto& effect = effects.chunks[effect_index];
         auto* chunk = find_chunk(effect.chunk);
@@ -3230,7 +3456,9 @@ void World::merge_job_effects(const JobEffects& effects) {
                         static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
                     static_cast<std::size_t>(block_x);
                 auto& block = chunk->activity_blocks[block_index];
-                if (!block.active) record_physics(PhysicsEvent::BlockWake, Material::Empty, Material::Empty, 0, 0, nullptr);
+                if (!block.active)
+                    record_physics(PhysicsEvent::BlockWake, Material::Empty,
+                                   Material::Empty, 0, 0, nullptr);
                 block.active = true;
                 block.changed_this_tick = true;
                 block.quiet_ticks = 0;
@@ -3244,22 +3472,33 @@ void World::merge_job_effects(const JobEffects& effects) {
                     std::min(local_top + config_.activity_block_size, config_.chunk_size) - 1;
                 const auto world_origin_x = effect.chunk.x * config_.chunk_size;
                 const auto world_origin_y = effect.chunk.y * config_.chunk_size;
-                wake_cell_neighborhood(world_origin_x + local_left, world_origin_y + local_top);
-                wake_cell_neighborhood(world_origin_x + local_right, world_origin_y + local_top);
-                wake_cell_neighborhood(world_origin_x + local_left, world_origin_y + local_bottom);
-                wake_cell_neighborhood(world_origin_x + local_right, world_origin_y + local_bottom);
+                wake_cell_neighborhood(
+                    world_origin_x + local_left, world_origin_y + local_top, false);
+                wake_cell_neighborhood(
+                    world_origin_x + local_right, world_origin_y + local_top, false);
+                wake_cell_neighborhood(
+                    world_origin_x + local_left, world_origin_y + local_bottom, false);
+                wake_cell_neighborhood(
+                    world_origin_x + local_right, world_origin_y + local_bottom, false);
             }
         }
     }
+
     if (settled_discovery_ == nullptr) return;
     settled_discovery_->note_worker_report_records(effects.discovery_mutation_count);
-    if (effects.discovery_mutation_overflow) {
-        // Authoritative writes already happened. Lost observation detail fences
-        // discovery only; World remains healthy and is never rolled back.
-        settled_discovery_->fence_lost_payload_report();
+    settled_discovery_->note_signal_report_records(effects.discovery_signal_count);
+    if (effects.discovery_mutation_overflow || effects.discovery_signal_overflow) {
+        if (effects.discovery_mutation_overflow)
+            settled_discovery_->fence_lost_payload_report();
+        if (effects.discovery_signal_overflow)
+            settled_discovery_->fence_lost_signal_report();
         return;
     }
     if (settled_discovery_->halted() != soliding::DiscoveryHalt::None) return;
+
+    // #61 exact payload invalidation is serialized first. Parent-local #62
+    // activity/deadline signals may then coalesce into that already-invalid
+    // queued record without manufacturing a second payload revision.
     for (std::size_t index = 0; index < effects.discovery_mutation_count; ++index) {
         const auto& report = effects.discovery_mutations[index];
         const soliding::DiscoveryTileKey key{
@@ -3273,6 +3512,80 @@ void World::merge_job_effects(const JobEffects& effects) {
         (void)settled_discovery_->notify_payload(
             *handle, soliding::ProducerReason::WorkerMutation, tick_index_,
             report.mutation_count);
+        if (settled_discovery_->halted() != soliding::DiscoveryHalt::None) return;
+    }
+
+    // Reconcile every block/neighbor wake caused by the merged writes. The
+    // authoritative wake already occurred above; this second deterministic pass
+    // only supplies the sparse observer witness after payload invalidation.
+    for (std::size_t effect_index = 0; effect_index < effects.chunk_count; ++effect_index) {
+        const auto& effect = effects.chunks[effect_index];
+        auto* chunk = find_chunk(effect.chunk);
+        if (chunk == nullptr) {
+            settled_discovery_->fence_lost_signal_report();
+            return;
+        }
+        const auto minimum_block_x = effect.minimum_x / config_.activity_block_size;
+        const auto minimum_block_y = effect.minimum_y / config_.activity_block_size;
+        const auto maximum_block_x = effect.maximum_x / config_.activity_block_size;
+        const auto maximum_block_y = effect.maximum_y / config_.activity_block_size;
+        for (auto block_y = minimum_block_y; block_y <= maximum_block_y; ++block_y) {
+            for (auto block_x = minimum_block_x; block_x <= maximum_block_x; ++block_x) {
+                const auto block_index =
+                    static_cast<std::size_t>(block_y) *
+                        static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
+                    static_cast<std::size_t>(block_x);
+                witness_discovery_activity(effect.chunk, block_index);
+
+                const auto local_left = block_x * config_.activity_block_size;
+                const auto local_top = block_y * config_.activity_block_size;
+                const auto local_right =
+                    std::min(local_left + config_.activity_block_size, config_.chunk_size) - 1;
+                const auto local_bottom =
+                    std::min(local_top + config_.activity_block_size, config_.chunk_size) - 1;
+                const auto world_origin_x = effect.chunk.x * config_.chunk_size;
+                const auto world_origin_y = effect.chunk.y * config_.chunk_size;
+                wake_cell_neighborhood(
+                    world_origin_x + local_left, world_origin_y + local_top);
+                wake_cell_neighborhood(
+                    world_origin_x + local_right, world_origin_y + local_top);
+                wake_cell_neighborhood(
+                    world_origin_x + local_left, world_origin_y + local_bottom);
+                wake_cell_neighborhood(
+                    world_origin_x + local_right, world_origin_y + local_bottom);
+            }
+        }
+    }
+
+    for (std::size_t index = 0; index < effects.discovery_signal_count; ++index) {
+        const auto& report = effects.discovery_signals[index];
+        const auto* chunk = find_chunk(report.chunk);
+        if (chunk == nullptr ||
+            report.activity_x < 0 || report.activity_y < 0 ||
+            report.activity_x >= chunk->activity_blocks_per_axis ||
+            report.activity_y >= chunk->activity_blocks_per_axis) {
+            settled_discovery_->fence_lost_signal_report();
+            return;
+        }
+        const auto block_index =
+            static_cast<std::size_t>(report.activity_y) *
+                static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
+            static_cast<std::size_t>(report.activity_x);
+        const auto parent = discovery_parent_key(report.chunk, block_index);
+        if (report.activity_witness)
+            (void)settled_discovery_->witness_activity(
+                parent, chunk->activity_blocks[block_index].active);
+        if (report.deadline_due != 0) {
+            const auto authoritative_due =
+                chunk->activity_blocks[block_index].next_interaction_tick;
+            if (authoritative_due == 0) {
+                settled_discovery_->fence_lost_signal_report();
+                return;
+            }
+            (void)settled_discovery_->schedule_deadline(parent, authoritative_due);
+        }
+        observe_discovery_activity_parent(report.chunk, block_index);
+        if (settled_discovery_->halted() != soliding::DiscoveryHalt::None) return;
     }
 }
 

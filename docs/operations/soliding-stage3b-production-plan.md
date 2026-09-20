@@ -29,14 +29,15 @@ Recheck current ownership before the later central World producer handoffs.
 
 ## Live execution checkpoint — 2026-09-20
 
-Authoritative main at the #64 implementation checkpoint is
-`86c1bcfd0f4d632816a9ecd89efe7668b343c5d0`. #56-#61 and #69 are complete.
-#62 remains the serialized central-World producer package in draft PR #97; #63 follows
-it. #64 is implemented separately in PR #98 from source
-`f5bc9a887b01693bcef7116a164063d44d42a255`, confined to settled-region graph
-internals and focused tests. Its source validation and source-matched runtime
-publication/final-head gates remain part of that PR's completion boundary. #65 is
-still the join and remains blocked until both #63 and #64 are genuinely complete.
+Authoritative main at the #62 publication checkpoint is
+`bb6f12a7845f7249d68693a277c934e5fef5561d` after #64 / PR #98. #56-#61,
+#64 and #69 are complete. #62 is implemented in draft PR #97 after a normal
+two-parent reconciliation with that main. Source-matched Linux/Windows runtime
+publication passed in Actions run `35526661344` from exact source freeze
+`b8fe9698ca2f7ae5f2473b4a975db1aad6487c52`; final exact-head checks and
+merge remain the package completion boundary at this checkpoint. #63 follows #62.
+#65 remains the join and is blocked on #63; its #64 graph prerequisite is already
+landed.
 
 The development-claims remediation programme does not pause this lane. REM-002
 #81 must inspect live #62/#63 ownership before touching overlapping body/World/test
@@ -210,7 +211,7 @@ current Stage-3B work.
 
 None of these gates admits Stage 4.
 
-### Issue #59/#60/#61 completion and #62 handoff checkpoint
+### Issue #59/#60/#61/#62 producer checkpoint
 
 Issue #59 completed on PR #76 and merged to authoritative `main`
 `5d89be4488e5fec3bf37e40ac87601fb14f2989b`. The landed Stage-3A-equivalent
@@ -221,14 +222,24 @@ backing conversion sizes journal `T`, edges `64T`, frontier/seen/members
 G2 is closed. #60 subsequently merged through PR #78, and #61 subsequently
 merged through PR #89 as
 `db00e84e1b26b99f2816b6c1258d5dea97fc1fa1`. G3 is closed and the
-payload-witness slice of G4 is landed. #62 is the current dependency-ready
-central-World package; it must start from live authoritative `main`, not a stale
-#61 branch.
+payload-witness slice of G4 is landed. PR #97 implements the #62 producer slice
+from current authority after reconciling landed #64. It replaces ordinary
+observer-wide activity/deadline rediscovery with bounded parent-local activity
+witnesses and one canonical due-tick/parent deadline index, including in-place
+replace/cancel/consume, excluded-overdue parking and re-entry. Authoritative
+simulation scheduler semantics are unchanged.
+
+Source-matched publication run `35526661344` passed from source freeze
+`b8fe9698ca2f7ae5f2473b4a975db1aad6487c52`. **Self-resolving merge rule:**
+on any authoritative `main` containing PR #97, the #62 G4 activity/deadline
+producer slice is closed and #63 becomes dependency-ready. Before that merge,
+the final exact-head gates remain part of #62's completion boundary.
 
 ### Issue #64 graph-incidence checkpoint
 
-PR #98 implements the separable graph lane without editing the active #62
-World/coordinator write set. The package adds revision-bound face runs,
+#64 completed through PR #98 and merged as
+`bb6f12a7845f7249d68693a277c934e5fef5561d` without editing the #62
+World/coordinator write set. The landed package adds revision-bound face runs,
 generation-qualified component incident-edge lists, typed build/publication
 dependencies, dependency-target subscriber lists, bounded absence users, immediate
 public-generation retirement and generation-safe deferred cleanup.
@@ -239,10 +250,9 @@ therefore follow actual component incidence/subscriber fanout; #65 still owns th
 generic split/reconstruction/reclamation scheduler and #66/#67 retain fast-path and
 digest work.
 
-**Self-resolving merge rule:** on any authoritative `main` that contains PR #98,
-G4 graph incidence is closed by that merge. Before PR #98 is on `main`, this
-section records a candidate/evidence checkpoint only and does not make #65
-dependency-ready by itself.
+G4 graph incidence is closed on current `main`. #65 still remains blocked until
+the serialized World-producer lane reaches #63 and that package is genuinely
+complete.
 
 ## Required ordering principles
 

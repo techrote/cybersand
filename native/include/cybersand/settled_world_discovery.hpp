@@ -44,6 +44,19 @@ struct WorldDiscoveryMetrics {
     std::uint64_t worker_report_records{};
     std::uint64_t worker_report_overflows{};
     std::uint64_t observation_fences{};
+    std::uint64_t activity_witnesses{};
+    std::uint64_t activity_transitions{};
+    std::uint64_t deadline_insertions{};
+    std::uint64_t deadline_replacements{};
+    std::uint64_t deadline_cancellations{};
+    std::uint64_t deadline_consumptions{};
+    std::uint64_t deadline_parks{};
+    std::uint64_t deadline_reentries{};
+    std::uint64_t deadline_ready{};
+    std::uint64_t deadline_heap_high_water{};
+    std::uint64_t deadline_generation_exhaustions{};
+    std::uint64_t signal_report_records{};
+    std::uint64_t signal_report_overflows{};
 };
 
 struct WorldDiscoveryTileHandle {
@@ -58,6 +71,32 @@ struct WorldDiscoveryTileSnapshot {
     DiscoverySummary summary{};
 };
 
+struct DiscoveryParentKey {
+    std::uint64_t world_incarnation{};
+    std::int64_t chunk_y{}, chunk_x{};
+    std::int32_t activity_y{}, activity_x{};
+    bool operator==(const DiscoveryParentKey&) const = default;
+};
+
+struct DiscoveryParentKeyLess {
+    bool operator()(const DiscoveryParentKey& a, const DiscoveryParentKey& b) const noexcept {
+        if (a.world_incarnation != b.world_incarnation)
+            return a.world_incarnation < b.world_incarnation;
+        if (a.chunk_y != b.chunk_y) return a.chunk_y < b.chunk_y;
+        if (a.chunk_x != b.chunk_x) return a.chunk_x < b.chunk_x;
+        if (a.activity_y != b.activity_y) return a.activity_y < b.activity_y;
+        return a.activity_x < b.activity_x;
+    }
+};
+
+struct DiscoveryDeadlineSnapshot {
+    DiscoveryParentKey parent{};
+    std::uint64_t due_tick{};
+    std::uint64_t generation{};
+    bool parked{};
+    bool ready{};
+};
+
 struct WorldDiscoveryStorageLayout {
     std::size_t effective_tile_capacity{};
     std::size_t journal_capacity{};
@@ -68,6 +107,12 @@ struct WorldDiscoveryStorageLayout {
     std::size_t key_index_storage_bytes{};
     std::size_t payload_queue_capacity{};
     std::size_t payload_queue_storage_bytes{};
+    std::size_t activity_parent_capacity{};
+    std::size_t activity_parent_index_capacity{};
+    std::size_t deadline_heap_capacity{};
+    std::size_t activity_parent_storage_bytes{};
+    std::size_t activity_parent_index_storage_bytes{};
+    std::size_t deadline_heap_storage_bytes{};
     std::size_t region_tile_capacity{};
     std::size_t region_edge_capacity{};
     std::size_t region_frontier_capacity{};
@@ -89,6 +134,7 @@ struct WorldDiscoveryStorageLayout {
 // It only affects the next coordinator construction and never simulation state.
 namespace testing {
 void fail_next_settled_world_discovery_construction() noexcept;
+void set_next_deadline_generation_limit(std::uint64_t limit) noexcept;
 }
 
 class SettledWorldDiscoveryCoordinator final {
@@ -122,6 +168,22 @@ public:
                              ProducerReason reason, std::uint64_t tick) noexcept;
     DiscoveryOutcome observe(WorldDiscoveryTileHandle handle, DiscoverySignals signals,
                              ProducerReason reason, std::uint64_t tick) noexcept;
+
+    DiscoveryOutcome register_activity_parent(DiscoveryParentKey key, bool active,
+                                              std::uint64_t deadline_due) noexcept;
+    DiscoveryOutcome witness_activity(DiscoveryParentKey key, bool active) noexcept;
+    DiscoveryOutcome schedule_deadline(DiscoveryParentKey key, std::uint64_t due_tick) noexcept;
+    DiscoveryOutcome cancel_deadline(DiscoveryParentKey key) noexcept;
+    DiscoveryOutcome mark_deadline_ready(DiscoveryParentKey key) noexcept;
+    DiscoveryOutcome park_deadline(DiscoveryParentKey key) noexcept;
+    DiscoveryOutcome consume_deadline(DiscoveryParentKey key) noexcept;
+    [[nodiscard]] std::optional<DiscoveryDeadlineSnapshot> next_deadline() const noexcept;
+    [[nodiscard]] std::optional<DiscoveryDeadlineSnapshot> deadline_state(
+        DiscoveryParentKey key) const noexcept;
+    [[nodiscard]] std::size_t activity_parent_count() const noexcept;
+    [[nodiscard]] std::size_t deadline_heap_size() const noexcept;
+    [[nodiscard]] std::size_t deadline_ready_count() const noexcept;
+
     std::size_t advance(std::uint64_t tick, std::size_t budget,
                         const void* context, ReadCellFunction read);
     std::size_t advance(std::uint64_t tick, std::size_t budget,
@@ -131,7 +193,9 @@ public:
     void fail() noexcept;
     void note_global_fence() noexcept;
     void note_worker_report_records(std::size_t records) noexcept;
+    void note_signal_report_records(std::size_t records) noexcept;
     void fence_lost_payload_report() noexcept;
+    void fence_lost_signal_report() noexcept;
 
     [[nodiscard]] std::optional<WorldDiscoveryTileSnapshot> tile(std::size_t index) const noexcept;
     [[nodiscard]] std::optional<WorldDiscoveryTileSnapshot> tile(
@@ -145,6 +209,7 @@ public:
     [[nodiscard]] std::size_t capacity() const noexcept;
     [[nodiscard]] std::size_t pending() const noexcept;
     [[nodiscard]] std::size_t pending_payload_work() const noexcept;
+    [[nodiscard]] bool payload_refresh_pending(WorldDiscoveryTileHandle handle) const noexcept;
     [[nodiscard]] std::uint64_t incarnation() const noexcept;
     [[nodiscard]] bool capacity_blocked() const noexcept;
     [[nodiscard]] DiscoveryHalt halted() const noexcept;

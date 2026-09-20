@@ -423,13 +423,14 @@ architecture review is complete; its supervising-parent reconciliation is record
 the [Stage-3B parent decision](../audits/issue-12-2026-09-19/stage3b-parent-decision.md).
 The active implementation route is the
 [Stage-3B production plan](../operations/soliding-stage3b-production-plan.md), issues
-#56-#70. At the reconciled 2026-09-20 checkpoint, #56-#61 and #69 are
-complete; PR #89 landed #61 as
-`db00e84e1b26b99f2816b6c1258d5dea97fc1fa1`. #62 remains the serialized
-central-World producer package in draft PR #97. #64 is implemented separately in
-PR #98 from frozen source `f5bc9a887b01693bcef7116a164063d44d42a255`, with
-actual write-set checks confirming it remains outside the #62 World/coordinator
-surface; on main containing PR #98, the graph half of the #65 join is satisfied.
+#56-#70. At the reconciled 2026-09-20 checkpoint, #56-#61, #64 and #69 are
+complete; #64 landed through PR #98 as
+`bb6f12a7845f7249d68693a277c934e5fef5561d`. #62 is implemented in draft
+PR #97 after reconciliation with that main. Its source-matched runtime publication
+passed in Actions run `35526661344`; final exact-head checks and merge remain the
+completion boundary at this checkpoint. On main containing PR #97, #62 is complete,
+#63 becomes dependency-ready, and #65 remains blocked only on the serialized #63 side
+of the already-landed graph join.
 Stage 4
 is blocked; production dynamics, fracture and persistence remain unimplemented. Source `de332ea` actually uses
 the 8-byte superset carrier after #19 integration;

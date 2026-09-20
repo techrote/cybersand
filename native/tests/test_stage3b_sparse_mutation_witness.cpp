@@ -186,8 +186,9 @@ void direct_aba_exact_tuple_heat_and_locality() {
             far_after.summary.revision == far_before.summary.revision,
             "direct mutation invalidates only its canonical tile");
     require(metrics_after.payload_mutations == metrics_before.payload_mutations + 4 &&
-            metrics_after.signal_observations == metrics_before.signal_observations,
-            "direct payload hook is immediate but does not synchronously scan resident signals");
+            metrics_after.signal_observations == metrics_before.signal_observations + 1 &&
+            metrics_after.activity_transitions == metrics_before.activity_transitions + 1,
+            "direct payload hook retains exact #61 witnesses plus one parent-local #62 activity transition");
     require(world.stored_state_a(0, 0) == 0 && world.stored_state_b(0, 0) == 0 &&
             world.temperature(0, 0) == 20,
             "authoritative exact tuple and heat restore independently of observation");
