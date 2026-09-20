@@ -1796,6 +1796,9 @@ private:
         saturating_add(metrics_.reconstruction_children_staged);
         build_.subscriber = {};
         reset_build();
+        if (ticket_handle_valid(reconstruction_queue_head_) &&
+            reconstruction_queue_head_ == ticket_handle)
+            rotate_reconstruction_head();
     }
     bool stage_reconstruction_digest_one() noexcept {
         if (build_.staging_digest_index < build_.staging_dependency_count) {
@@ -2559,18 +2562,26 @@ private:
     bool service_ticket_restart_cleanup(TicketHandle handle) noexcept {
         if (!ticket_handle_valid(handle)) return false;
         auto& ticket = reconstruction_tickets_[handle.slot];
-        if (ticket.restart_cleanup_index < RegionCapacity) {
-            auto& region = regions_[ticket.restart_cleanup_index++];
-            if (region.preparation_ticket == handle &&
-                region.batch_serial > committed_batch_serial_) {
-                if (region.valid) {
-                    region.valid = false;
-                    retire_subscriber(region.subscriber);
+        if (ticket.restart_cleanup_index < ticket.preflight_free_count) {
+            const auto index = ticket.restart_cleanup_index++;
+            const auto slot = preflight_region_slots_[index];
+            if (index < ticket.prepared_child_count) {
+                auto& region = regions_[slot];
+                if (region.preparation_ticket == handle &&
+                    region.batch_serial > committed_batch_serial_) {
+                    if (region.valid) {
+                        region.valid = false;
+                        retire_subscriber(region.subscriber);
+                    }
+                    region.reclaim_pending =
+                        subscriber_handle_valid(region.subscriber) ||
+                        member_handle_valid(region.member_head);
+                    region.preparation_ticket = {};
+                    if (!region.reclaim_pending)
+                        return_region_slot(slot);
                 }
-                region.reclaim_pending =
-                    subscriber_handle_valid(region.subscriber) ||
-                    member_handle_valid(region.member_head);
-                region.preparation_ticket = {};
+            } else {
+                return_region_slot(slot);
             }
             return true;
         }
@@ -2586,6 +2597,9 @@ private:
         ticket.preflight_free_count = 0;
         ticket.batch_serial = 0;
         reset_ticket_admission(ticket);
+        if (ticket_handle_valid(reconstruction_queue_head_) &&
+            reconstruction_queue_head_ == handle)
+            rotate_reconstruction_head();
         return true;
     }
     bool add_ticket_seed(TicketHandle handle, ComponentRef ref) noexcept {
@@ -2761,42 +2775,40 @@ private:
         }
         return true;
     }
-    bool region_slot_reclaimable(std::size_t slot) const noexcept {
-        if (slot >= RegionCapacity) return false;
-        const auto& region = regions_[slot];
-        return !region.valid && !region.reclaim_pending &&
-               !member_handle_valid(region.member_head) &&
-               region.generation < GenerationLimit;
-    }
     bool service_ticket_preflight_regions(TicketHandle handle) noexcept {
         if (!ticket_handle_valid(handle)) return false;
         auto& ticket = reconstruction_tickets_[handle.slot];
-        if (ticket.preflight_region_scan < RegionCapacity) {
-            const auto slot = ticket.preflight_region_scan++;
-            if (region_slot_reclaimable(slot) &&
-                ticket.preflight_free_count < RegionCapacity)
-                preflight_region_slots_[ticket.preflight_free_count++] = slot;
-            return true;
+        if (ticket.preflight_region_scan == 0) {
+            if (ticket.child_count > PublicationLimit - publication_serial_ ||
+                committed_batch_serial_ == std::numeric_limits<std::uint64_t>::max()) {
+                ticket.phase = ReconstructionPhase::Refused;
+                ticket.refusal = RegionRefusal::GenerationExhausted;
+                last_refusal_ = ticket.refusal;
+                return true;
+            }
+            if (region_free_count_ < ticket.child_count ||
+                member_capacity_ - member_count_ < ticket.staged_member_count) {
+                ticket.phase = ReconstructionPhase::Blocked;
+                ticket.refusal = region_free_count_ < ticket.child_count
+                    ? RegionRefusal::RegionCapacity : RegionRefusal::MemberCapacity;
+                ticket.wait_resource_generation = resource_generation_;
+                last_refusal_ = ticket.refusal;
+                saturating_add(metrics_.reconstruction_waits);
+                if (ticket.refusal == RegionRefusal::MemberCapacity)
+                    saturating_add(metrics_.member_refusals);
+                else
+                    saturating_add(metrics_.region_refusals);
+                return true;
+            }
+            ticket.preflight_region_scan = 1;
         }
-        if (ticket.preflight_free_count < ticket.child_count ||
-            member_capacity_ - member_count_ < ticket.staged_member_count) {
-            ticket.phase = ReconstructionPhase::Blocked;
-            ticket.refusal = ticket.preflight_free_count < ticket.child_count
-                ? RegionRefusal::RegionCapacity : RegionRefusal::MemberCapacity;
-            ticket.wait_resource_generation = resource_generation_;
-            last_refusal_ = ticket.refusal;
-            saturating_add(metrics_.reconstruction_waits);
-            if (ticket.refusal == RegionRefusal::MemberCapacity)
-                saturating_add(metrics_.member_refusals);
-            else
-                saturating_add(metrics_.region_refusals);
-            return true;
-        }
-        if (ticket.child_count > PublicationLimit - publication_serial_ ||
-            committed_batch_serial_ == std::numeric_limits<std::uint64_t>::max()) {
-            ticket.phase = ReconstructionPhase::Refused;
-            ticket.refusal = RegionRefusal::GenerationExhausted;
-            last_refusal_ = ticket.refusal;
+        if (ticket.preflight_free_count < ticket.child_count) {
+            const auto slot = allocate_region_slot();
+            if (!slot.has_value()) {
+                request_ticket_restart(handle);
+                return true;
+            }
+            preflight_region_slots_[ticket.preflight_free_count++] = *slot;
             return true;
         }
         ticket.batch_serial = committed_batch_serial_ + 1U;
@@ -2821,6 +2833,7 @@ private:
             ++region.generation;
             region.valid = true;
             region.reclaim_pending = false;
+            region.on_free_list = false;
             region.batch_serial = ticket.batch_serial;
             region.preparation_ticket = handle;
             region.member_head = {};
