@@ -281,13 +281,19 @@ public:
                     did_work = service_reconstruction_ticket_one();
                     reconstruction_work = did_work;
                 }
-                const bool reconstruction_admission_barrier =
-                    ticket_handle_valid(reconstruction_queue_head_) &&
-                    (reconstruction_tickets_[reconstruction_queue_head_.slot].phase ==
-                         ReconstructionPhase::Admitting ||
-                     reconstruction_tickets_[reconstruction_queue_head_.slot].phase ==
-                         ReconstructionPhase::RestartCleanup);
-                if (!did_work && work_possible_ && !reconstruction_admission_barrier) {
+                bool reconstruction_exclusive = false;
+                if (ticket_handle_valid(reconstruction_queue_head_)) {
+                    const auto phase =
+                        reconstruction_tickets_[reconstruction_queue_head_.slot].phase;
+                    reconstruction_exclusive =
+                        phase == ReconstructionPhase::Admitting ||
+                        phase == ReconstructionPhase::RestartCleanup ||
+                        phase == ReconstructionPhase::PreflightDependencies ||
+                        phase == ReconstructionPhase::PreflightRegions ||
+                        phase == ReconstructionPhase::Preparing ||
+                        phase == ReconstructionPhase::CommitReady;
+                }
+                if (!did_work && work_possible_ && !reconstruction_exclusive) {
                     begin_seek();
                     did_work = service_active_build_one();
                 }
@@ -577,6 +583,7 @@ private:
         RegionComponentKey scan_key{};
         std::uint64_t generation{}, attempt{1}, serial{}, admission_change_serial{};
         std::uint64_t wait_generation{}, wait_resource_generation{}, batch_serial{};
+        std::uint64_t staged_area_total{}, staged_area_max{}, started_work{};
         std::uint32_t next_free{invalid_pool_index}, wait_tile{invalid_pool_index};
         std::size_t source_count{}, seed_count{}, child_count{}, staged_member_count{};
         std::size_t scan_component{}, scan_tile{}, preflight_region_scan{}, preflight_free_count{};
@@ -1793,6 +1800,9 @@ private:
         ticket.child_tail = build_.staging_child;
         ++ticket.child_count;
         ticket.staged_member_count += child.member_count;
+        saturating_add(ticket.staged_area_total, child.snapshot.area);
+        if (child.snapshot.area > ticket.staged_area_max)
+            ticket.staged_area_max = child.snapshot.area;
         saturating_add(metrics_.reconstruction_children_staged);
         build_.subscriber = {};
         reset_build();
@@ -2253,6 +2263,7 @@ private:
             ticket.generation = generation;
             ticket.serial = ++reconstruction_serial_;
             ticket.admission_change_serial = change_serial_;
+            ticket.started_work = metrics_.work_units;
             ticket.allocated = true;
             ticket.queued = true;
             ticket.next_free = invalid_pool_index;
@@ -2489,6 +2500,8 @@ private:
         ticket.seed_count = 0;
         ticket.child_count = 0;
         ticket.staged_member_count = 0;
+        ticket.staged_area_total = 0;
+        ticket.staged_area_max = 0;
     }
     void request_ticket_restart(TicketHandle handle) noexcept {
         if (!ticket_handle_valid(handle)) return;
@@ -2630,6 +2643,7 @@ private:
                 ticket.phase = ReconstructionPhase::Blocked;
                 ticket.refusal = RegionRefusal::UnknownBoundary;
                 ticket.wait_resource_generation = resource_generation_;
+                last_refusal_ = ticket.refusal;
                 saturating_add(metrics_.reconstruction_waits);
             } else {
                 ticket.phase = ReconstructionPhase::Building;
@@ -2893,7 +2907,17 @@ private:
         published_region_count_ += ticket.child_count;
         saturating_add(metrics_.publications, ticket.child_count);
         saturating_add(metrics_.builds_completed, ticket.child_count);
+        saturating_add(metrics_.area_total, ticket.staged_area_total);
+        if (ticket.staged_area_max > metrics_.area_max)
+            metrics_.area_max = ticket.staged_area_max;
+        const auto latency = metrics_.work_units >= ticket.started_work
+            ? metrics_.work_units - ticket.started_work : 0;
+        saturating_add(metrics_.latency_total_units, latency);
+        if (latency > metrics_.latency_max_units) metrics_.latency_max_units = latency;
+        if (published_region_count_ > metrics_.region_high_water)
+            metrics_.region_high_water = published_region_count_;
         saturating_add(metrics_.reconstruction_batches_committed);
+        last_refusal_ = RegionRefusal::None;
         append_source_cleanup(ticket.source_head, ticket.source_tail);
         ticket.source_head = {};
         ticket.source_tail = {};
