@@ -84,6 +84,7 @@ struct Sample {
     std::int64_t right_mean_milli = -1;
     std::vector<std::int64_t> left_contour_milli{};
     std::vector<std::int64_t> right_contour_milli{};
+    int wall_contact_probe_rows = 0;
     int wall_gap_cells = 0;
     std::uint64_t content_hash = 0;
 };
@@ -452,11 +453,12 @@ int run_case(const Spec& spec, int shift, int workers, bool mirror) {
         }
         if (spec.wall_gap_probe) {
             for (int y = 38; y < kFloorY; ++y) {
-                if (mass_at(kWidth - 1, y) != 0U) continue;
+                const bool contact = mass_at(kWidth - 1, y) != 0U;
                 bool nearby = false;
                 for (int x = kWidth - 8; x < kWidth - 1; ++x)
                     nearby = nearby || mass_at(x, y) != 0U;
-                if (nearby) ++sample.wall_gap_cells;
+                if (contact || nearby) ++sample.wall_contact_probe_rows;
+                if (!contact && nearby) ++sample.wall_gap_cells;
             }
         }
         sample.content_hash = world.content_hash();
@@ -698,6 +700,7 @@ int run_case(const Spec& spec, int shift, int workers, bool mirror) {
         std::cout << "\"hill_width\":" << sample.surface.hill_width << ",";
         std::cout << "\"terraces\":" << sample.surface.terrace_count << ",";
         std::cout << "\"terrace_step_milli\":" << sample.surface.max_terrace_step_milli << ",";
+        std::cout << "\"wall_contact_probe_rows\":" << sample.wall_contact_probe_rows << ",";
         std::cout << "\"wall_gap_cells\":" << sample.wall_gap_cells << ",";
         std::cout << "\"surface_signature\":\"" << hex64(sample.surface.classification_signature) << "\",";
         std::cout << "\"content\":\"" << hex64(sample.content_hash) << "\"";
