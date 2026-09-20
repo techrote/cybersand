@@ -569,6 +569,20 @@ soliding::DiscoveryTileKey World::discovery_tile_key(const Address& target) cons
     };
 }
 
+soliding::DiscoveryParentKey World::discovery_parent_key(
+    ChunkCoord coord, std::size_t activity_index) const noexcept {
+    const auto* chunk = find_chunk(coord);
+    if (chunk == nullptr || chunk->activity_blocks_per_axis <= 0) return {};
+    const auto blocks = static_cast<std::size_t>(chunk->activity_blocks_per_axis);
+    return {
+        settled_discovery_ == nullptr ? 0 : settled_discovery_->incarnation(),
+        coord.y,
+        coord.x,
+        static_cast<std::int32_t>(activity_index / blocks),
+        static_cast<std::int32_t>(activity_index % blocks),
+    };
+}
+
 soliding::DiscoverySignals World::discovery_signals(
     ChunkCoord coord, std::size_t activity_index,
     soliding::DiscoveryBounds bounds) const noexcept {
@@ -609,6 +623,104 @@ soliding::DiscoverySignals World::discovery_signals(
         }
     }
     return result;
+}
+
+void World::observe_discovery_activity_parent(
+    ChunkCoord coord, std::size_t activity_index) noexcept {
+    if (settled_discovery_ == nullptr ||
+        settled_discovery_->halted() != soliding::DiscoveryHalt::None) return;
+    const auto* chunk = find_chunk(coord);
+    if (chunk == nullptr || activity_index >= chunk->activity_blocks.size()) {
+        settled_discovery_->fail();
+        return;
+    }
+    const auto blocks = static_cast<std::size_t>(chunk->activity_blocks_per_axis);
+    const auto activity_y = static_cast<std::int32_t>(activity_index / blocks);
+    const auto activity_x = static_cast<std::int32_t>(activity_index % blocks);
+    const auto block_x = activity_x * config_.activity_block_size;
+    const auto block_y = activity_y * config_.activity_block_size;
+    const auto block_width = std::min(config_.activity_block_size, config_.chunk_size - block_x);
+    const auto block_height = std::min(config_.activity_block_size, config_.chunk_size - block_y);
+    const auto chunk_origin_x = coord.x * config_.chunk_size;
+    const auto chunk_origin_y = coord.y * config_.chunk_size;
+    for (std::int32_t subtile_y = 0; subtile_y < block_height; subtile_y += 32) {
+        for (std::int32_t subtile_x = 0; subtile_x < block_width; subtile_x += 32) {
+            const soliding::DiscoveryTileKey key{
+                settled_discovery_->incarnation(), coord.y, coord.x,
+                activity_y, activity_x, subtile_y / 32, subtile_x / 32};
+            const auto handle = settled_discovery_->find_handle(key);
+            if (!handle.has_value()) continue;
+            const auto previous = settled_discovery_->tile(*handle);
+            if (!previous.has_value()) continue;
+            const soliding::DiscoveryBounds bounds{
+                chunk_origin_x + block_x + subtile_x,
+                chunk_origin_y + block_y + subtile_y,
+                static_cast<std::uint32_t>(std::min(32, block_width - subtile_x)),
+                static_cast<std::uint32_t>(std::min(32, block_height - subtile_y))};
+            auto signals = discovery_signals(coord, activity_index, bounds);
+            // #63 owns sparse mask/event/inclusion producer state. Activity/deadline
+            // updates must not rediscover or reinterpret the already-observed mask.
+            signals.occupied = previous->signals.occupied;
+            (void)settled_discovery_->observe(
+                *handle, signals, soliding::ProducerReason::ActivityOrDeadline, tick_index_);
+        }
+    }
+}
+
+void World::witness_discovery_activity(
+    ChunkCoord coord, std::size_t activity_index) noexcept {
+    if (settled_discovery_ == nullptr ||
+        settled_discovery_->halted() != soliding::DiscoveryHalt::None) return;
+    const auto* chunk = find_chunk(coord);
+    if (chunk == nullptr || activity_index >= chunk->activity_blocks.size()) {
+        settled_discovery_->fail();
+        return;
+    }
+    const auto outcome = settled_discovery_->witness_activity(
+        discovery_parent_key(coord, activity_index),
+        chunk->activity_blocks[activity_index].active);
+    if (outcome == soliding::DiscoveryOutcome::Accepted)
+        observe_discovery_activity_parent(coord, activity_index);
+}
+
+void World::service_discovery_deadlines() noexcept {
+    if (settled_discovery_ == nullptr ||
+        settled_discovery_->halted() != soliding::DiscoveryHalt::None) return;
+    for (;;) {
+        const auto next = settled_discovery_->next_deadline();
+        if (!next.has_value() || next->due_tick > tick_index_) return;
+        if (next->parent.world_incarnation != settled_discovery_->incarnation()) {
+            settled_discovery_->fail();
+            return;
+        }
+        const ChunkCoord coord{next->parent.chunk_x, next->parent.chunk_y};
+        const auto* chunk = find_chunk(coord);
+        if (chunk == nullptr ||
+            next->parent.activity_x < 0 || next->parent.activity_y < 0 ||
+            next->parent.activity_x >= chunk->activity_blocks_per_axis ||
+            next->parent.activity_y >= chunk->activity_blocks_per_axis) {
+            settled_discovery_->fail();
+            return;
+        }
+        const auto index =
+            static_cast<std::size_t>(next->parent.activity_y) *
+                static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
+            static_cast<std::size_t>(next->parent.activity_x);
+        const auto& block = chunk->activity_blocks[index];
+        if (block.next_interaction_tick != next->due_tick) {
+            settled_discovery_->fail();
+            return;
+        }
+        const auto included = clip_core_range(block_core_range(coord, index), selected_core_region_);
+        const bool runnable =
+            config_.backend == SimulationBackend::SerialInPlace ||
+            (included.min_x <= included.max_x && included.min_y <= included.max_y);
+        const auto outcome = runnable
+            ? settled_discovery_->mark_deadline_ready(next->parent)
+            : settled_discovery_->park_deadline(next->parent);
+        if (outcome == soliding::DiscoveryOutcome::Halted ||
+            outcome == soliding::DiscoveryOutcome::Invalid) return;
+    }
 }
 
 void World::register_discovery_chunk(ChunkCoord coord, const Chunk& chunk) noexcept {
