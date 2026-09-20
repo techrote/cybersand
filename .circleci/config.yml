@@ -1,0 +1,17 @@
+version: 2.1
+
+jobs:
+  stage3b-validation-apparatus:
+    docker:
+      - image: cimg/python:3.12
+    resource_class: small
+    steps:
+      - checkout
+      - run:
+          name: Validate Stage-3B preregistration apparatus
+          command: timeout 3m make soliding-stage3b-validation-apparatus-test
+
+workflows:
+  circleci-pilot:
+    jobs:
+      - stage3b-validation-apparatus
