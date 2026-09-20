@@ -52,6 +52,11 @@ jobs:
           ! grep -q "observe_discovery_event" native/src/world.cpp
           git diff --check "$(git merge-base HEAD origin/main)" HEAD
 
+      - name: Hold publication until final main reconciliation
+        run: |
+          echo "Focused #63 gate passed; final runtime publication is intentionally held until current main is reconciled."
+          exit 1
+
       - name: Pin exact publication source
         shell: bash
         run: |
