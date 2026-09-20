@@ -193,9 +193,13 @@ success-valued zero for unreached thresholds, non-revoked sustained passage,
 a historical three-compartment fixture mislabeled as a clean U-tube, mixed
 active/sleep p95 interpretation and evidence-runner durability gaps.
 
-[#49](https://github.com/techrote/cybersand/issues/49) is now the required bounded
-correction before #45 implementation/acceptance. #45 must use versioned corrected
-metrics/fixtures and fresh Current-Water baselines. Production Water is unchanged.
+[#49](https://github.com/techrote/cybersand/issues/49) now supplies the bounded
+versioned correction and source-matched
+[Current-Water v2 baseline](../audits/2026-09-20-issue-49-water-apparatus-v2-baseline.md).
+The clean two-limb control remains `not_reached` for both preregistered equilibrium
+thresholds by tick 4800; this is a corrected Current-Water observation, not a new
+solver selection. Production Water is unchanged. #95 must synthesize this control
+with WEX evidence before #45 may proceed, narrow, recharter, defer or no-go.
 
 ## Water hybrid / pressure extension checkpoint — 2026-09-20
 
