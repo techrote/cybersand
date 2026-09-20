@@ -444,6 +444,7 @@ struct SettledWorldDiscoveryCoordinator::Impl {
             ? journal.reconcile_queued_signals(record.handle, signals, tick)
             : journal.observe(record.handle, signals, tick);
         if (outcome == DiscoveryOutcome::Invalid && payload_owns_revision) {
+            add(metrics.activity_reconcile_failures);
             journal.fail();
             if (regions != nullptr) regions->fail(RegionRefusal::SourceFailure);
             return outcome;
@@ -990,6 +991,7 @@ std::size_t SettledWorldDiscoveryCoordinator::advance_regions(std::size_t budget
 }
 
 void SettledWorldDiscoveryCoordinator::fail() noexcept {
+    add(impl_->metrics.explicit_observer_failures);
     impl_->journal.fail();
     if (impl_->regions != nullptr) impl_->regions->fail(RegionRefusal::SourceFailure);
 }
