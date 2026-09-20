@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "status": "validated-build-runtime",
-  "source_commit": "e75c5fd52a14a01185795b78651f82960d97f9c6",
-  "source_tree": "d4f9ce78e08b5ae7eb1adc5b69b58945f89c7031",
+  "source_commit": "f5bc9a887b01693bcef7116a164063d44d42a255",
+  "source_tree": "f9eb4137f9e193457ef45e6078ec0e22d229a9f4",
   "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
-  "sha256": "f8466e8f3669c32483f58c53d654d196e74d7e39f1a1820530cbe7311f686dfb",
-  "size": 1976832,
+  "sha256": "06ebf085c287556d841b4d414e5027af1f03eabdd47d5ddd758a24cd55840aab",
+  "size": 1985024,
   "source_input_hash_kind": "SHA-256 of canonical Git blob bytes; CRLF working files normalize to LF",
   "source_inputs": {
     "godot/native_extension/cyber_demo_bridge.hpp": "92d1ada53f684ca92832f245399078d4f43fdba0b4c6c5e41ba99f265cf759a5",
@@ -26,7 +26,7 @@
     "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
     "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
     "native/include/cybersand/settled_discovery.hpp": "aba8a38535e146db1afe3afded41eee1563c45efd59a704f20c94ee98c397bec",
-    "native/include/cybersand/settled_regions.hpp": "23a8dafe314d6246fc714eedce92757dd5e0befa0ff3697974fc7c2a37d51bed",
+    "native/include/cybersand/settled_regions.hpp": "09ad47a1167f7fd24af4b787ad2fc5736bf4cc2f7c7466a865e4803f6ef5b0e0",
     "native/include/cybersand/settled_world_discovery.hpp": "f56fa4c57b3c654f552d1b7144a9160a06a2b0baba219f3b71f9bf4949dadf88",
     "native/include/cybersand/transport_policy.hpp": "9204d1e7b112e260097ba3924c8653cde45568d5886d33b9bb53fdfa8019e348",
     "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
@@ -39,10 +39,10 @@
     "native/src/settled_world_discovery.cpp": "16d2389aa1abdc0c7e2edeb364c96df8d73e98c724f49cc39a609bc59af34169",
     "native/src/world.cpp": "affbe634ff94968f1b0c4a1e8529dca6b36f1696dbdf6fc0f928b110fa66a8f6"
   },
-  "evidence": "docs/audits/2026-09-20-issue-61-stage3b-sparse-mutation-witness.md",
+  "evidence": "docs/audits/2026-09-20-issue-64-stage3b-local-graph.md",
   "validated_platform": "Windows x86_64 Godot 4.7 (pinned cross-build; execution unavailable)",
-  "toolchain": "LLVM-MinGW 20260826 UCRT Clang 23.1.0; godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496; Stage-3B #61 sparse mutation/witness source",
-  "acceptance": "Exact #61-source Windows x86_64 GDExtension cross-build passed in Actions run 35476457792. Actual Windows execution is unavailable and not claimed.",
-  "validation_output": "Actions run 35476457792 / artifact issue61-source-matched-runtimes-e75c5fd52a14a01185795b78651f82960d97f9c6",
-  "other_platforms": "Linux runtime was rebuilt from the same exact native source. Browser/WebAssembly execution and hardware-GPU/target-PC performance remain unavailable and are not claimed."
+  "toolchain": "LLVM-MinGW 20260826 UCRT Clang 23.1.0; godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496; Stage-3B #64 exact local graph source",
+  "acceptance": "Exact #64 source passed the ordinary Windows cross-build in Actions run 35521544247; retained equivalent-source Windows bytes were rebuilt once in publication run 35522565247. Actual Windows execution is unavailable and not claimed.",
+  "validation_output": "Actions runs 35521544247 and 35522565247",
+  "other_platforms": "Linux runtime was retained from the same exact-tree PR validation. Browser/WebAssembly execution and hardware-GPU/target-PC performance remain unavailable and are not claimed."
 }

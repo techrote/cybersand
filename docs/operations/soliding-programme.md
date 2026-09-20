@@ -38,9 +38,13 @@ Stone stationary opportunities remain independent of dynamic admission.
 
 The read-only architecture review and parent reconciliation are complete. #56-#61
 and #69 are complete; #61 landed through PR #89 at
-`db00e84e1b26b99f2816b6c1258d5dea97fc1fa1`. #62 is the next serialized
-central-World producer package, #63 follows it, and #64 is the separable
-graph/index lane before the #65 join.
+`db00e84e1b26b99f2816b6c1258d5dea97fc1fa1`. #62 remains the serialized
+central-World producer package in draft PR #97 and #63 follows it. #64 is implemented
+independently in PR #98 from frozen source
+`f5bc9a887b01693bcef7116a164063d44d42a255`, with exact local graph incidence,
+reverse dependencies and generation-safe retirement; it remains a candidate until
+its source-matched runtime publication and final exact-head gates pass. On a main
+that contains PR #98, the graph half of the #65 join is satisfied.
 Stage 4 remains blocked pending the full Stage-3B path and parent admission.
 
 The development-claims remediation programme is parallel authority, not a blanket
