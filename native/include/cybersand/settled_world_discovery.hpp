@@ -55,6 +55,8 @@ struct WorldDiscoveryMetrics {
     std::uint64_t deadline_ready{};
     std::uint64_t deadline_heap_high_water{};
     std::uint64_t deadline_generation_exhaustions{};
+    std::uint64_t signal_report_records{};
+    std::uint64_t signal_report_overflows{};
 };
 
 struct WorldDiscoveryTileHandle {
@@ -191,7 +193,9 @@ public:
     void fail() noexcept;
     void note_global_fence() noexcept;
     void note_worker_report_records(std::size_t records) noexcept;
+    void note_signal_report_records(std::size_t records) noexcept;
     void fence_lost_payload_report() noexcept;
+    void fence_lost_signal_report() noexcept;
 
     [[nodiscard]] std::optional<WorldDiscoveryTileSnapshot> tile(std::size_t index) const noexcept;
     [[nodiscard]] std::optional<WorldDiscoveryTileSnapshot> tile(
