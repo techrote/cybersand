@@ -527,7 +527,7 @@ private:
         std::uint64_t generation{}, batch_serial{};
         TicketHandle preparation_ticket{};
         std::size_t member_count{};
-        bool valid{}, reclaim_pending{}, on_free_list{};
+        bool valid{}, reclaim_pending{}, on_free_list{}, generation_exhausted_recorded{};
     };
     struct SourceRegion {
         RegionComponentKey key{};
@@ -2004,29 +2004,34 @@ private:
         if (slot >= RegionCapacity) return;
         auto& region = regions_[slot];
         if (region.on_free_list || region.valid || region.reclaim_pending ||
-            member_handle_valid(region.member_head) ||
-            region.generation >= GenerationLimit)
+            member_handle_valid(region.member_head))
             return;
+        if (region.generation >= GenerationLimit) {
+            if (!region.generation_exhausted_recorded) {
+                region.generation_exhausted_recorded = true;
+                ++region_generation_exhausted_count_;
+                bump_resource_generation();
+            }
+            return;
+        }
         region_free_stack_[region_free_count_++] = static_cast<std::uint32_t>(slot);
         region.on_free_list = true;
         bump_resource_generation();
     }
     void publish_build() noexcept {
-        const auto slot = allocate_region_slot();
-        if (!slot.has_value()) {
-            bool exhausted = true;
-            for (const auto& region : regions_)
-                if (region.valid || region.generation < GenerationLimit) exhausted = false;
-            refuse_build(exhausted ? RegionRefusal::GenerationExhausted
-                                   : RegionRefusal::RegionCapacity);
-            return;
-        }
         if (publication_serial_ == PublicationLimit) {
             refuse_build(RegionRefusal::GenerationExhausted); return;
         }
         if (member_capacity_ - member_count_ < build_.member_count) {
             refuse_build(RegionRefusal::MemberCapacity);
             saturating_add(metrics_.member_refusals);
+            return;
+        }
+        const auto slot = allocate_region_slot();
+        if (!slot.has_value()) {
+            refuse_build(region_generation_exhausted_count_ == RegionCapacity
+                ? RegionRefusal::GenerationExhausted
+                : RegionRefusal::RegionCapacity);
             return;
         }
         auto& region = regions_[*slot];
@@ -2146,7 +2151,7 @@ private:
                                      member_handle_valid(region.member_head);
             if (!region.reclaim_pending) {
                 region.subscriber = {};
-                bump_resource_generation();
+                return_region_slot(handle.slot);
             }
             saturating_add(metrics_.invalidated_regions);
         }
@@ -2990,7 +2995,8 @@ private:
             return true;
         }
         if (RegionCapacity != 0) {
-            auto& region = regions_[region_cleanup_cursor_];
+            const auto cleanup_slot = region_cleanup_cursor_;
+            auto& region = regions_[cleanup_slot];
             region_cleanup_cursor_ = (region_cleanup_cursor_ + 1U) % RegionCapacity;
             if (!region.valid && member_handle_valid(region.member_head)) {
                 const auto member = region.member_head;
@@ -3006,7 +3012,7 @@ private:
                 !subscriber_handle_valid(region.subscriber)) {
                 region.reclaim_pending = false;
                 region.subscriber = {};
-                bump_resource_generation();
+                return_region_slot(cleanup_slot);
                 saturating_add(metrics_.reclamation_units);
                 return true;
             }
@@ -3159,6 +3165,7 @@ private:
     std::uint64_t change_serial_{}, current_change_serial_{}, reconstruction_serial_{};
     std::uint64_t resource_generation_{1}, committed_batch_serial_{}, service_round_{};
     std::size_t region_cleanup_cursor_{}, region_free_count_{RegionCapacity};
+    std::size_t region_generation_exhausted_count_{};
     std::size_t member_capacity_{}, member_count_{}, source_count_{}, ticket_count_{}, seed_count_{};
     std::size_t staged_member_count_{}, staged_child_count_{};
     std::size_t tile_count_{}, adjacency_count_{}, dependency_count_{}, subscriber_count_{};
