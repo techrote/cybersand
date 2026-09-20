@@ -5,7 +5,7 @@ document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
 last-reviewed: 2026-09-20
-related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md]
+related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
 # Status and foundational roadmap
@@ -99,9 +99,11 @@ that remediation.
 
 Issue #11 has a source-matched historical repair checkpoint for masked-source
 feedback, bounded ejection paths and ordinary rectangle/load bearing, but that
-accepted code is not in audited current main. #81 owns current-main
-reconstruction/integration and #83 owns the broader body/granular acceptance
-envelope afterwards. Raising barrel impulse caps alone is not a substitute.
+historical implementation is not in audited current main. The owner later clarified
+that the barrel is only a generic Rapier reference body and does not recall
+accepting the historical barrel-support result as final behavior. #81 owns
+current-main reconstruction/integration and #83 owns the broader body/granular
+acceptance envelope afterwards. Raising barrel impulse caps alone is not a substitute.
 The [remediation programme](../operations/development-claims-remediation-programme.md)
 owns these claim-state distinctions; the soliding programme remains independently
 active. Current F01/F02 contracts and the separate runtime publication gate remain applicable.
@@ -193,8 +195,30 @@ active/sleep p95 interpretation and evidence-runner durability gaps.
 
 [#49](https://github.com/techrote/cybersand/issues/49) is now the required bounded
 correction before #45 implementation/acceptance. #45 must use versioned corrected
-metrics/fixtures and fresh Current-Water baselines. Production Water is unchanged;
-#18 remains held behind `#49 -> #45`.
+metrics/fixtures and fresh Current-Water baselines. Production Water is unchanged.
+
+## Water hybrid / pressure extension checkpoint — 2026-09-20
+
+The [WEX programme](../operations/water-hybrid-pressure-extension-programme.md)
+and tracker [#90](https://github.com/techrote/cybersand/issues/90) add a parallel
+investigation before any new #45 pressure/head mechanism is treated as inevitable.
+
+- [#91](https://github.com/techrote/cybersand/issues/91) freezes current generic
+  Rapier↔Water splash/displacement and hard-boundary failure evidence.
+- [#92](https://github.com/techrote/cybersand/issues/92) may test at most roughly
+  3-5 segmented upper-volume solided-Water sheet tiers only on a suitable generic
+  #12 hybrid substrate.
+- [#93](https://github.com/techrote/cybersand/issues/93) independently researches
+  lumped connected gas regions; [#94](https://github.com/techrote/cybersand/issues/94)
+  is conditional decompression research.
+- [#95](https://github.com/techrote/cybersand/issues/95) synthesizes WEX evidence
+  with merged #49 controls and decides whether #45 should proceed, narrow,
+  recharter, defer or no-go.
+
+Water FreeMass and other-liquid CellularYield remain separate; no unification or
+production solver change is selected. Equal-level communicating-head fixtures are
+vented/shared-pressure controls, not universal sealed-room targets. #18 remains
+held pending the resulting evidence rather than by issue-number sequence alone.
 
 ## Opt-in transport profiles
 

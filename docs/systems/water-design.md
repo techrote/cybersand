@@ -4,8 +4,8 @@ document-kind: contract
 canonical-for: [native-water-semantics, native-fallback-water-differences]
 status: Current
 scope: Native conserved Water, coherent emission and adhesion, rest/hash fixtures, fallback differences, and future reaction accounting
-last-reviewed: 2026-09-19
-related-documents: [materials-and-rule-kernels.md, material-appearance-and-rendering.md, ../reference/level-saves-and-replay.md, ../decisions/ADR-005-water-model.md]
+last-reviewed: 2026-09-20
+related-documents: [materials-and-rule-kernels.md, material-appearance-and-rendering.md, ../reference/level-saves-and-replay.md, ../operations/water-hybrid-pressure-extension-programme.md, ../decisions/ADR-005-water-model.md]
 ---
 
 # Water design
@@ -100,6 +100,39 @@ metrics, add a clean two-limb communicating-head fixture and fresh Current-Water
 control baseline, and harden evidence output before #45 may freeze thresholds or
 accept/reject a successor mechanism. Preserve all original #26 artifacts as
 historical evidence.
+
+## Hybrid / pressure extension after the 2026-09-20 owner clarification
+
+**Current Water semantics are unchanged.** The
+[Water hybrid/pressure extension programme](../operations/water-hybrid-pressure-extension-programme.md)
+records a parallel investigation before a new head/pressure mechanism is selected.
+
+The important distinction is that Current already has two different native liquid
+motion/quantity families: Water's fractional conserved FreeMass path and the
+generally whole-cell CellularYield-style path used by other liquids, with Oil
+specialization. #15 retained that separation; no unification was selected.
+
+The owner-observed deep-Water target is faster depth-dependent outward surge when a
+deep body becomes unrestrained, while shallow Water already behaves reasonably.
+A simple generic Rapier body entering Water can create a useful splash/wave, so
+[#91](https://github.com/techrote/cybersand/issues/91) first freezes that generic
+body↔Water baseline and its hard-floor failure. [#92](https://github.com/techrote/cybersand/issues/92)
+may then test, only on a suitable generic #12 hybrid substrate, at most roughly
+3-5 **segmented upper-volume** solided-Water sheet tiers. The candidate is not a
+monolithic core or full-depth lamination and does not authorize production adoption.
+
+#49 continues to own the corrected successor apparatus. #45 remains the existing
+saturated-head architecture question, but a new pressure/head mechanism is no
+longer assumed inevitable: [#95](https://github.com/techrote/cybersand/issues/95)
+must synthesize corrected #49 controls and WEX evidence before #45 is instructed to
+proceed, narrow, recharter, defer or no-go.
+
+A communicating-head equal-level fixture must state its gas boundary assumption.
+Shared/vented headspaces can legitimately use the same atmospheric boundary;
+separately sealed headspaces generally cannot be assumed to converge to equal
+levels. Optional [#93](https://github.com/techrote/cybersand/issues/93) lumped
+gas-region research explores that boundary condition independently; it does not
+by itself transmit head through saturated Water.
 
 ## Coherent emission and surface adhesion
 

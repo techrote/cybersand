@@ -40,8 +40,8 @@ RAG describes remediation state, not severity of the original subsystem.
 
 | Finding | RAG after REM-001 routing | Current interpretation | Owner / prerequisite |
 |---|---|---|---|
-| F01 #11 repair missing from main | Red | Historical bounded repair valid; audited main lacks it. | #81, then #83 for broader behaviour |
-| F02 broad #10/#11 acceptance overclaim | Red | Bounded evidence retained; later owner gameplay acceptance failed. | #82 player; #81 -> #83 body; #8 umbrella |
+| F01 #11 repair missing from main | Red | Historical bounded repair evidence is valid in its recorded envelope; the owner does not recall accepting it as final barrel/body behavior, and audited main lacks that implementation. | #81, then #83 for broader behaviour |
+| F02 broad #10/#11 acceptance overclaim | Red | Bounded evidence retained; broad player/body outcomes are not owner-accepted as complete. | #82 player; #81 -> #83 body; #8 umbrella |
 | F03 premature closure semantics | Amber | Historical incident retained; process control still missing. | #86 |
 | F04 formal Water H blinding | Red | #19 simulation/presentation evidence valid; formal blind capture not ready. | #84 |
 | F05 append-only H evidence | Red | Formal observation durability incomplete. | #84 |
@@ -112,8 +112,9 @@ implementation lanes.
 belongs to #82.
 
 #11 is now an evidence/objective anchor; #81 owns reconstruction/integration of
-the accepted bounded repair into current main, and #83 owns the broader
-body/granular gameplay envelope after #81.
+the historical bounded repair into current main, and #83 owns the broader
+body/granular gameplay envelope after #81. The barrel remains a generic Rapier
+reference body; remediation must not create a barrel-specific support subsystem.
 
 ### #12 Stage 3B
 
@@ -137,8 +138,9 @@ Do not repair current truth by editing old evidence to match it.
 
 - #9's measured baseline remains scoped to its original source/artifacts.
 - #10's policy/evidence remains a valid bounded checkpoint.
-- #11's `d5f0de6` evidence and `f8720d3` accepted code checkpoint remain
-  historical proof even though audited current main lacks the repair.
+- #11's `d5f0de6` evidence and `f8720d3` recorded code checkpoint remain
+  historical proof of the bounded implementation/evidence even though audited
+  current main lacks the repair; they are not owner acceptance of final body physics.
 - #19's engine/presentation/harness evidence remains valid; only formal blind
   study readiness is withdrawn pending #84.
 - #26's two rejected local candidates remain rejected under their frozen gates;
@@ -188,12 +190,16 @@ It may not manufacture a pass by weakening its intended behavioural objective.
 #49 is the sole corrective owner for F06-F11. REM-001 does not reopen #26 and
 does not copy its corrective scope into a new issue.
 
-The affected Water architecture path remains:
+The remediation requirement remains #49's apparatus repair. Broader Water
+architecture routing is now extended by the independent
+[WEX programme](water-hybrid-pressure-extension-programme.md):
 
-`#49 -> #45 -> directional-reference reassessment -> #18 G-M admission/no-go -> #20/G-B if justified -> #14 G-final`.
+`#49 apparatus || WEX evidence -> #95 synthesis -> #45 proceed/narrow/recharter/defer/no-go -> directional reassessment -> #18 G-M admission/no-go -> #20/G-B if justified -> #14 G-final`.
 
-#84 formal H-record integrity is separate from #49's head-transmission apparatus.
-Neither is permission to change Water semantics under REM-001.
+WEX #90-#95 are not new #79 closure prerequisites unless the remediation parent is
+explicitly amended later; they are architecture research. #84 formal H-record
+integrity is also separate from #49's head-transmission apparatus. None of these
+lanes is permission to change Water semantics under remediation authority.
 
 ## Retrieval and evidence use
 
