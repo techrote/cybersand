@@ -538,7 +538,8 @@ private:
         std::uint64_t generation{}, batch_serial{};
         TicketHandle preparation_ticket{};
         std::size_t member_count{};
-        bool valid{}, reclaim_pending{}, on_free_list{}, generation_exhausted_recorded{};
+        bool valid{}, reclaim_pending{}, reclaim_enqueued{}, on_free_list{},
+             generation_exhausted_recorded{};
     };
     struct SourceRegion {
         RegionComponentKey key{};
@@ -1563,13 +1564,8 @@ private:
         if ((kind == SubscriberKind::Publication || kind == SubscriberKind::Prepared) &&
             owner_slot < RegionCapacity) {
             auto& region = regions_[owner_slot];
-            if (region.generation == owner_generation && region.reclaim_pending) {
+            if (region.generation == owner_generation && region.reclaim_pending)
                 region.subscriber = {};
-                if (!member_handle_valid(region.member_head)) {
-                    region.reclaim_pending = false;
-                    return_region_slot(owner_slot);
-                }
-            }
         }
     }
     bool cleanup_one_dependency() noexcept {
@@ -2019,7 +2015,7 @@ private:
         if (slot >= RegionCapacity) return;
         auto& region = regions_[slot];
         if (region.on_free_list || region.valid || region.reclaim_pending ||
-            member_handle_valid(region.member_head))
+            region.reclaim_enqueued || member_handle_valid(region.member_head))
             return;
         if (region.generation >= GenerationLimit) {
             if (!region.generation_exhausted_recorded) {
@@ -2152,6 +2148,23 @@ private:
         if (count > metrics_.region_high_water) metrics_.region_high_water = count;
         reset_build();
     }
+    void enqueue_region_reclamation(std::size_t slot) noexcept {
+        if (slot >= RegionCapacity) return;
+        auto& region = regions_[slot];
+        if (!region.reclaim_pending || region.reclaim_enqueued) return;
+        if (region_reclaim_count_ == RegionCapacity) {
+            fail(RegionRefusal::ManifestCapacity);
+            return;
+        }
+        region_reclaim_queue_[region_reclaim_tail_] =
+            static_cast<std::uint32_t>(slot);
+        region_reclaim_tail_ = (region_reclaim_tail_ + 1U) % RegionCapacity;
+        ++region_reclaim_count_;
+        region.reclaim_enqueued = true;
+        if (region_reclaim_count_ > metrics_.reclamation_high_water)
+            metrics_.reclamation_high_water = region_reclaim_count_;
+    }
+
     void retire_handle(SettledRegionHandle handle) noexcept {
         if (handle.world_incarnation != incarnation_ || handle.slot >= RegionCapacity) return;
         auto& region = regions_[handle.slot];
@@ -2167,6 +2180,8 @@ private:
             if (!region.reclaim_pending) {
                 region.subscriber = {};
                 return_region_slot(handle.slot);
+            } else {
+                enqueue_region_reclamation(handle.slot);
             }
             saturating_add(metrics_.invalidated_regions);
         }
@@ -2602,6 +2617,8 @@ private:
                     region.preparation_ticket = {};
                     if (!region.reclaim_pending)
                         return_region_slot(slot);
+                    else
+                        enqueue_region_reclamation(slot);
                 }
             } else {
                 return_region_slot(slot);
@@ -3023,16 +3040,16 @@ private:
             saturating_add(metrics_.reclamation_units);
             return true;
         }
-        if (RegionCapacity != 0) {
-            const auto cleanup_slot = region_cleanup_cursor_;
+        if (region_reclaim_count_ != 0) {
+            const auto cleanup_slot =
+                static_cast<std::size_t>(region_reclaim_queue_[region_reclaim_head_]);
             auto& region = regions_[cleanup_slot];
-            region_cleanup_cursor_ = (region_cleanup_cursor_ + 1U) % RegionCapacity;
-            if (!region.valid && member_handle_valid(region.member_head)) {
+            if (!region.valid && region.reclaim_pending &&
+                member_handle_valid(region.member_head)) {
                 const auto member = region.member_head;
                 region.member_head = members_[member.slot].next;
                 if (region.member_count != 0) --region.member_count;
                 release_publication_member(member);
-                region.reclaim_pending = true;
                 saturating_add(metrics_.reclamation_units);
                 return true;
             }
@@ -3040,7 +3057,10 @@ private:
                 !member_handle_valid(region.member_head) &&
                 !subscriber_handle_valid(region.subscriber)) {
                 region.reclaim_pending = false;
+                region.reclaim_enqueued = false;
                 region.subscriber = {};
+                region_reclaim_head_ = (region_reclaim_head_ + 1U) % RegionCapacity;
+                --region_reclaim_count_;
                 return_region_slot(cleanup_slot);
                 saturating_add(metrics_.reclamation_units);
                 return true;
@@ -3172,6 +3192,7 @@ private:
     RowIndex row_index_;
     std::array<Region, RegionCapacity> regions_{};
     std::array<std::uint32_t, RegionCapacity> region_free_stack_{};
+    std::array<std::uint32_t, RegionCapacity> region_reclaim_queue_{};
     Build build_;
     std::unique_ptr<bool[]> member_tiles_scratch_;
     std::unique_ptr<std::size_t[]> dependency_slots_scratch_;
@@ -3193,7 +3214,8 @@ private:
     SourceHandle source_cleanup_head_{}, source_cleanup_tail_{};
     std::uint64_t change_serial_{}, current_change_serial_{}, reconstruction_serial_{};
     std::uint64_t resource_generation_{1}, committed_batch_serial_{}, service_round_{};
-    std::size_t region_cleanup_cursor_{}, region_free_count_{RegionCapacity};
+    std::size_t region_free_count_{RegionCapacity};
+    std::size_t region_reclaim_head_{}, region_reclaim_tail_{}, region_reclaim_count_{};
     std::size_t region_generation_exhausted_count_{};
     std::size_t member_capacity_{}, member_count_{}, source_count_{}, ticket_count_{}, seed_count_{};
     std::size_t staged_member_count_{}, staged_child_count_{};
