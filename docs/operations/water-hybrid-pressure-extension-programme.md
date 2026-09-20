@@ -352,23 +352,18 @@ The keys below are stable programme labels. GitHub issues are #90-#95 and their
 dependency meanings are authoritative here rather than by numeric order.
 
 ```text
-                         existing #12 soliding/hybrid substrate
-                                      |
-                                      v
-#91 WEX-001 current generic Rapier<->Water baseline
-                                      |
-                                      v
-#92 WEX-002 bounded upper-volume Water-sheet proof
-                                      |
-                                      +----------------------+
-                                                             |
-existing #49 corrected Water apparatus ----------------------+--> #95 WEX-005 synthesis
-                                                             |         |
-existing #45 architecture question <-------------------------+         v
-                                                                      #45 disposition/
-#93 WEX-003 lumped gas-region feasibility -----------------------+         updated #14 route
-          |
-          +--> #94 WEX-004 decompression proof only if admitted -+
+#91 WEX-001 current generic Rapier<->Water baseline ----+
+                                                        |
+existing #12 suitable generic hybrid substrate ---------+--> #92 WEX-002 Water-sheet proof --+
+                                                                                              |
+existing #49 corrected Water apparatus -------------------------------------------------------+--> #95 WEX-005 synthesis
+                                                                                              |         |
+#93 WEX-003 lumped gas-region feasibility ------------------------------+                     |         v
+          |                                                            +---------------------+    #45 disposition /
+          +--> #94 WEX-004 only if #93 explicitly admits it -----------+                          updated #14/#18 route
+
+existing #45 remains the architecture question consumed/reconciled by #95; it is not
+a prerequisite implementation for #91-#94.
 ```
 
 #49 may run in parallel with WEX-001/WEX-003. WEX-002 waits for a suitable generic
@@ -593,6 +588,9 @@ were made to the initial discussion concepts:
 - separated current generic-body characterization from the later sheet proof so
   the good splash and bad floor penetration are frozen before architecture changes;
 - made #49 parallel/independent rather than duplicating its apparatus scope;
+- corrected the dependency graph after review so #91 baseline characterization is
+  independent of future #12 hybrid availability; only #92 requires both #91 and a
+  suitable generic #12 substrate;
 - changed #45 from an assumed implementation step to an evidence-consuming
   architecture disposition that may legitimately defer/no-go;
 - separated compartment pressure from Water bulk-head transport;
