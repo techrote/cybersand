@@ -444,6 +444,37 @@ def registered_cases() -> list[dict[str, Any]]:
     ]
 
 
+def completion_record(
+    cases: list[dict[str, Any]], attempts: list[dict[str, Any]]
+) -> dict[str, Any]:
+    expected = [str(case["case"]) for case in cases]
+    observed = [str(attempt.get("case")) for attempt in attempts]
+    expected_set = set(expected)
+    observed_set = set(observed)
+    dispositions: dict[str, int] = {}
+    for attempt in attempts:
+        name = str(attempt.get("disposition"))
+        dispositions[name] = dispositions.get(name, 0) + 1
+    complete = (
+        len(expected) == len(expected_set)
+        and len(attempts) == len(cases)
+        and len(observed) == len(observed_set)
+        and observed_set == expected_set
+    )
+    return {
+        "runner_schema": RUNNER_SCHEMA,
+        "registered_case_count": len(cases),
+        "accounted_case_count": len(attempts),
+        "complete_accounting": complete,
+        "all_cases_successful": complete and dispositions == {"success": len(cases)},
+        "missing_cases": sorted(expected_set - observed_set),
+        "unexpected_cases": sorted(observed_set - expected_set),
+        "duplicate_attempt_count": len(observed) - len(observed_set),
+        "dispositions": dispositions,
+        "attempts": attempts,
+    }
+
+
 def build_executable(output: Path, cxx: str) -> tuple[Path, dict[str, Any]]:
     exe_name = "water_issue49.exe" if os.name == "nt" else "water_issue49"
     exe = (output / exe_name).resolve()
@@ -593,21 +624,8 @@ def run_campaign(output: Path, cxx: str) -> int:
 
     _write_json(output / "results.json", results)
     _write_json(output / "summary.json", summarize(results))
-    dispositions: dict[str, int] = {}
-    for attempt in attempts:
-        name = str(attempt["disposition"])
-        dispositions[name] = dispositions.get(name, 0) + 1
-    complete = len(attempts) == len(cases)
-    completion = {
-        "runner_schema": RUNNER_SCHEMA,
-        "registered_case_count": len(cases),
-        "accounted_case_count": len(attempts),
-        "complete_accounting": complete,
-        "all_cases_successful": complete and dispositions == {"success": len(cases)},
-        "dispositions": dispositions,
-        "attempts": attempts,
-    }
-    if complete:
+    completion = completion_record(cases, attempts)
+    if completion["complete_accounting"]:
         _write_json(output / "completion-manifest.json", completion)
     if not completion["all_cases_successful"]:
         return 2
