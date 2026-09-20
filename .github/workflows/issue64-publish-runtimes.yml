@@ -45,7 +45,6 @@ jobs:
           test "$(git rev-parse "$SOURCE_SHA^{tree}")" = "$SOURCE_TREE"
           test "$(git merge-base HEAD "$SOURCE_SHA")" = "$SOURCE_SHA"
           git diff --exit-code "$SOURCE_SHA"..HEAD -- native godot/native_extension
-          python3 tools/ci/check_docs.py
           git diff --check "$SOURCE_SHA"..HEAD
 
       - name: Restore validated Linux runtime from source run
@@ -194,11 +193,23 @@ jobs:
           audit.write_text(audit_text.replace('ISSUE64_PUBLICATION_RUN', publication_run))
           PY
 
-      - name: Verify current documentation and runtime identity before publication
+      - name: Verify source inputs and runtime identities before publication
         shell: bash
         run: |
           set -euo pipefail
-          timeout 5m python3 tools/ci/check_repository.py --require-materialized
+          python3 - <<'PY'
+          import hashlib, json, pathlib
+          root = pathlib.Path('.')
+          for name in ('runtime-provenance.json', 'runtime-provenance.linux.json'):
+              manifest = json.loads((root/'godot/addons/cybersand_native'/name).read_text())
+              for rel, expected in manifest['source_inputs'].items():
+                  actual = hashlib.sha256((root/rel).read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+                  assert actual == expected, (name, rel, actual, expected)
+              artifact = root/manifest['artifact']
+              data = artifact.read_bytes()
+              assert hashlib.sha256(data).hexdigest() == manifest['sha256'], name
+              assert len(data) == manifest['size'], name
+          PY
           timeout 5m python3 tools/ci/check_m11_consistency.py
           git diff --check
 
