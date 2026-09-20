@@ -621,23 +621,261 @@ void deferred_subscriber_cleanup_is_aba_safe() {
         }
     }
     require(replacement.has_value(),
-            "replacement publication appears before stale reverse records are reclaimed");
-    require(replacement->handle.slot == old_local.handle.slot &&
-            replacement->handle.generation != old_local.handle.generation,
-            "publication slot is reused under a new generation");
+            "replacement publication progresses while stale reverse records are reclaimed");
     require(regions.cleanup_pending() != 0,
             "stale subscriber cleanup remains explicitly deferred");
+    require(replacement->handle.slot != old_local.handle.slot,
+            "retired publication slot is not reused while stale references can still name it");
 
     require(put(regions, key(2, 0, 32), {2, 0, 1, 1}, 2, neighbour_changed) ==
                 RegionOutcome::Accepted,
             "old dependency target changes while stale subscriber records remain");
     require(regions.snapshot(replacement->handle).has_value(),
-            "stale subscriber generation cannot retire the reused publication slot");
+            "stale subscriber generation cannot retire a distinct replacement publication");
     drain(regions);
     require(regions.cleanup_pending() == 0,
             "bounded deferred cleanup is eventually reclaimable");
 }
 
+
+
+void reconstruction_split_is_batch_atomic_under_unit_budget() {
+    using Regions = SettledRegions<1, 3, 3, 8, 3, 16>;
+    const std::array<DiscoveryCell, 3> joined{sand, sand, sand};
+    const std::array<DiscoveryCell, 3> split{sand, empty, sand};
+    Regions regions(35);
+
+    require(put(regions, key(0, 0, 35), {0, 0, 3, 1}, 1, joined) ==
+                RegionOutcome::Accepted,
+            "atomic-split initial component accepted");
+    drain(regions);
+    const auto before = snapshots(regions, 3);
+    require(before.size() == 1 && before[0].area == 3,
+            "atomic-split fixture begins as one complete region");
+    const auto old = before[0].handle;
+
+    require(put(regions, key(0, 0, 35), {0, 0, 3, 1}, 2, split) ==
+                RegionOutcome::Accepted,
+            "atomic-split deletion accepted");
+    require(!regions.snapshot(old).has_value() && regions.region_count() == 0,
+            "old region retires before replacement service");
+
+    std::size_t guard = 0;
+    while (regions.region_count() == 0 && guard++ < 10000) {
+        require(regions.advance(1) <= 1,
+                "atomic split consumes at most one primitive per unit budget");
+    }
+    require(guard < 10000, "atomic split eventually commits");
+    require(regions.region_count() == 2,
+            "first observable replacement state contains every split child, never a prefix");
+    const auto after = snapshots(regions, 3);
+    require(after.size() == 2 && after[0].area == 1 && after[1].area == 1,
+            "atomic split publishes both exact singleton children");
+    require(regions.metrics().reconstruction_children_staged >= 2 &&
+            regions.metrics().reconstruction_batches_committed != 0,
+            "split staging and one batch commit are observable");
+}
+
+void alternate_path_deletion_does_not_false_split() {
+    using Regions = SettledRegions<1, 9, 9, 16, 3, 32>;
+    const std::array<DiscoveryCell, 9> full{
+        sand, sand, sand,
+        sand, sand, sand,
+        sand, sand, sand,
+    };
+    const std::array<DiscoveryCell, 9> ring{
+        sand, sand, sand,
+        sand, empty, sand,
+        sand, sand, sand,
+    };
+    Regions regions(36);
+    require(put(regions, key(0, 0, 36), {0, 0, 3, 3}, 1, full) ==
+                RegionOutcome::Accepted,
+            "alternate-path full tile accepted");
+    drain(regions);
+    require(regions.region_count() == 1 && snapshots(regions, 3)[0].area == 9,
+            "alternate-path fixture begins connected");
+
+    require(put(regions, key(0, 0, 36), {0, 0, 3, 3}, 2, ring) ==
+                RegionOutcome::Accepted,
+            "alternate-path center deletion accepted");
+    drain(regions);
+    const auto after = snapshots(regions, 3);
+    require(after.size() == 1 && after[0].area == 8 && after[0].complete,
+            "alternate path keeps one exact replacement instead of a false split");
+}
+
+void reconstruction_capacity_wait_never_publishes_a_subset() {
+    using Regions = SettledRegions<1, 3, 3, 8, 1, 16>;
+    const std::array<DiscoveryCell, 3> joined{sand, sand, sand};
+    const std::array<DiscoveryCell, 3> split{sand, empty, sand};
+    Regions regions(37);
+    require(put(regions, key(0, 0, 37), {0, 0, 3, 1}, 1, joined) ==
+                RegionOutcome::Accepted,
+            "capacity-wait initial region accepted");
+    drain(regions);
+    require(regions.region_count() == 1, "capacity-wait fixture initially publishes");
+
+    require(put(regions, key(0, 0, 37), {0, 0, 3, 1}, 2, split) ==
+                RegionOutcome::Accepted,
+            "capacity-wait split accepted");
+    for (std::size_t work = 0; work < 10000; ++work) {
+        const auto used = regions.advance(1);
+        require(used <= 1, "capacity wait respects unit primitive budget");
+        require(regions.region_count() == 0,
+                "insufficient all-child capacity never leaks one replacement child");
+        if (used == 0 && regions.last_refusal() == RegionRefusal::RegionCapacity)
+            break;
+    }
+    require(regions.region_count() == 0 &&
+            regions.last_refusal() == RegionRefusal::RegionCapacity &&
+            regions.metrics().reconstruction_waits != 0,
+            "all-child publication remains explicitly blocked on stable capacity");
+}
+
+void unknown_reconstruction_waits_for_observation_generation() {
+    using Regions = SettledRegions<2, 1, 1, 8, 4, 16>;
+    const std::array<DiscoveryCell, 1> one{sand};
+    Regions regions(38);
+    const auto left = key(0, 0, 38);
+    const auto right = key(1, 0, 38);
+    require(put(regions, left, {0, 0, 1, 1}, 1, one, 0x0d) ==
+                RegionOutcome::Accepted &&
+            put(regions, right, {1, 0, 1, 1}, 1, one, 0x07) ==
+                RegionOutcome::Accepted,
+            "unknown-wait joined fixture accepted");
+    drain(regions);
+    require(regions.region_count() == 1 && snapshots(regions, 4)[0].area == 2,
+            "unknown-wait fixture initially joined");
+
+    require(regions.invalidate(right, 2) == RegionOutcome::Accepted,
+            "right dependency becomes explicitly unknown");
+    std::size_t guard = 0;
+    while (regions.last_refusal() != RegionRefusal::UnknownBoundary &&
+           guard++ < 10000)
+        require(regions.advance(1) <= 1, "unknown wait remains bounded");
+    require(guard < 10000 && regions.region_count() == 0,
+            "unknown continuation blocks exact reconstruction without speculation");
+    const auto service_before = regions.metrics().reconstruction_service_units;
+    for (std::size_t i = 0; i < 32; ++i)
+        (void)regions.advance(1);
+    require(regions.metrics().reconstruction_service_units <= service_before + 1,
+            "unchanged unknown dependency does not hot-spin reconstruction");
+
+    require(put(regions, right, {1, 0, 1, 1}, 2, one, 0x07) ==
+                RegionOutcome::Accepted,
+            "unknown dependency becomes ready at the same authoritative revision");
+    drain(regions);
+    const auto after = snapshots(regions, 4);
+    require(after.size() == 1 && after[0].area == 2,
+            "dependency generation advance resumes exact reconstruction");
+}
+
+void unvisited_source_mutation_restarts_before_publication() {
+    using Regions = SettledRegions<3, 1, 1, 8, 6, 24>;
+    const std::array<DiscoveryCell, 1> one{sand};
+    const std::array<DiscoveryCell, 1> hole{empty};
+    Regions regions(39);
+    require(put(regions, key(0, 0, 39), {0, 0, 1, 1}, 1, one, 0x0d) ==
+                RegionOutcome::Accepted &&
+            put(regions, key(1, 0, 39), {1, 0, 1, 1}, 1, one, 0x05) ==
+                RegionOutcome::Accepted &&
+            put(regions, key(2, 0, 39), {2, 0, 1, 1}, 1, one, 0x07) ==
+                RegionOutcome::Accepted,
+            "unvisited-source fixture accepted");
+    drain(regions);
+    require(regions.region_count() == 1 && snapshots(regions, 6)[0].area == 3,
+            "unvisited-source fixture initially joined");
+
+    require(put(regions, key(0, 0, 39), {0, 0, 1, 1}, 2, hole, 0x0d) ==
+                RegionOutcome::Accepted,
+            "first source mutation starts reconstruction");
+    require(regions.advance(1) <= 1,
+            "one admission primitive executes before the unvisited mutation");
+    require(put(regions, key(2, 0, 39), {2, 0, 1, 1}, 2, hole, 0x07) ==
+                RegionOutcome::Accepted,
+            "unvisited old member mutates during reconstruction");
+    require(regions.region_count() == 0,
+            "stale attempt cannot publish against mixed revisions");
+    drain(regions);
+    const auto after = snapshots(regions, 6);
+    require(after.size() == 1 && after[0].area == 1 &&
+            after[0].min_x == 1 && after[0].max_x == 1,
+            "restart publishes only the exact surviving current component");
+    require(regions.metrics().reconstruction_restarts != 0,
+            "unvisited source mutation is recorded as a reconstruction restart");
+}
+
+void retained_ticket_fairness_survives_sustained_local_churn() {
+    using Regions = SettledRegions<2, 1, 1, 8, 4, 16>;
+    const std::array<DiscoveryCell, 1> one{sand};
+    Regions regions(40);
+    const auto local = key(0, 0, 40);
+    const auto remote = key(1000, 1000, 40);
+    require(put(regions, local, {0, 0, 1, 1}, 1, one) ==
+                RegionOutcome::Accepted &&
+            put(regions, remote, {1000, 1000, 1, 1}, 1, one) ==
+                RegionOutcome::Accepted,
+            "fairness fixture initial regions accepted");
+    drain(regions);
+
+    require(put(regions, local, {0, 0, 1, 1}, 2, one) ==
+                RegionOutcome::Accepted &&
+            put(regions, remote, {1000, 1000, 1, 1}, 2, one) ==
+                RegionOutcome::Accepted,
+            "two independent reconstruction tickets are admitted");
+
+    bool remote_visible = false;
+    std::uint64_t revision = 3;
+    for (std::size_t step = 0; step < 4000 && !remote_visible; ++step) {
+        require(regions.advance(1) <= 1, "fairness service remains primitive-bounded");
+        if ((step % 7U) == 6U) {
+            require(put(regions, local, {0, 0, 1, 1}, revision++, one) ==
+                        RegionOutcome::Accepted,
+                    "sustained local churn remains admissible");
+        }
+        for (const auto& snapshot : snapshots(regions, 4))
+            if (snapshot.min_x == 1000 && snapshot.area == 1)
+                remote_visible = true;
+    }
+    require(remote_visible,
+            "older unrelated remote admitted work receives positive service under local churn");
+    require(regions.metrics().reconstruction_restarts != 0 &&
+            regions.metrics().reconstruction_service_units != 0,
+            "fairness and churn are separately observable");
+}
+
+void reclaimed_region_slot_reuse_rejects_stale_handle() {
+    using Regions = SettledRegions<1, 1, 1, 4, 1, 8>;
+    const std::array<DiscoveryCell, 1> one{sand};
+    Regions regions(41);
+    const auto tile = key(0, 0, 41);
+    require(put(regions, tile, {0, 0, 1, 1}, 1, one) ==
+                RegionOutcome::Accepted,
+            "slot-reuse initial region accepted");
+    drain(regions);
+    const auto first = snapshots(regions, 1);
+    require(first.size() == 1, "slot-reuse initial region published");
+    const auto stale = first[0].handle;
+
+    require(put(regions, tile, {0, 0, 1, 1}, 2, one) ==
+                RegionOutcome::Accepted,
+            "slot-reuse replacement revision accepted");
+    require(!regions.snapshot(stale).has_value(),
+            "old generation is invalid immediately");
+    drain(regions);
+    const auto replacement = snapshots(regions, 1);
+    require(replacement.size() == 1 &&
+            replacement[0].handle.slot == stale.slot &&
+            replacement[0].handle.generation != stale.generation,
+            "slot is reused only after reclamation under a new generation");
+    require(!regions.snapshot(stale).has_value() &&
+            regions.snapshot(replacement[0].handle).has_value(),
+            "stale generation cannot alias the reclaimed publication slot");
+    require(regions.metrics().member_reclaims != 0 &&
+            regions.metrics().reclamation_units != 0,
+            "member and reclamation work are explicitly accounted");
+}
 
 void subscriber_slot_reuse_drops_stale_reverse_links() {
     using Regions = SettledRegions<3, 1, 1, 4, 6, 16>;
@@ -745,6 +983,13 @@ int main() {
         dependency_capacity_is_explicit_and_atomic();
         stale_edge_generation_cannot_reconnect_an_old_component();
         deferred_subscriber_cleanup_is_aba_safe();
+        reconstruction_split_is_batch_atomic_under_unit_budget();
+        alternate_path_deletion_does_not_false_split();
+        reconstruction_capacity_wait_never_publishes_a_subset();
+        unknown_reconstruction_waits_for_observation_generation();
+        unvisited_source_mutation_restarts_before_publication();
+        retained_ticket_fairness_survives_sustained_local_churn();
+        reclaimed_region_slot_reuse_rejects_stale_handle();
         subscriber_slot_reuse_drops_stale_reverse_links();
         absence_subscription_invalidates_only_actual_face_users();
         std::cout << "settled region tests passed\n";
