@@ -3220,7 +3220,9 @@ void World::begin_tick(TickStats& stats) {
     // Applying a request never asks #62's activity/deadline path to recompute
     // unrelated signal state.
     applied_core_region_ = selected_core_region_;
-    if (coverage_transition && settled_discovery_ != nullptr) {
+    if (settled_discovery_ != nullptr &&
+        settled_discovery_->requested_inclusion_epoch() !=
+            settled_discovery_->applied_inclusion_epoch()) {
         const auto outcome = settled_discovery_->apply_inclusion_request();
         if (outcome == soliding::DiscoveryOutcome::Accepted)
             reconcile_discovery_inclusion();
