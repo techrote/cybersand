@@ -80,6 +80,10 @@ struct Sample {
     int left_wet_columns = 0;
     int right_total_columns = 0;
     int right_wet_columns = 0;
+    std::int64_t left_mean_milli = -1;
+    std::int64_t right_mean_milli = -1;
+    std::vector<std::int64_t> left_contour_milli{};
+    std::vector<std::int64_t> right_contour_milli{};
     int wall_gap_cells = 0;
     std::uint64_t content_hash = 0;
 };
@@ -126,6 +130,8 @@ Spec make_spec(const std::string& name) {
         spec.right_x1 = 93;
         spec.receive_x0 = 49;
         spec.primary_level_difference = true;
+        spec.required_left_wet_columns = spec.left_x1 - spec.left_x0 + 1;
+        spec.required_right_wet_columns = spec.right_x1 - spec.right_x0 + 1;
     } else if (name == "unequal-head-communicating-reservoir-v2") {
         spec.horizon = 4800;
         spec.surface_x0 = 9;
@@ -435,6 +441,10 @@ int run_case(const Spec& spec, int shift, int workers, bool mirror) {
             sample.left_wet_columns = left.wet_columns;
             sample.right_total_columns = right.total_columns;
             sample.right_wet_columns = right.wet_columns;
+            sample.left_mean_milli = left.mean_milli;
+            sample.right_mean_milli = right.mean_milli;
+            sample.left_contour_milli = left.contour_milli;
+            sample.right_contour_milli = right.contour_milli;
             sample.level_difference_valid =
                 left.coverage_valid && right.coverage_valid && left.mean_milli >= 0 && right.mean_milli >= 0;
             if (sample.level_difference_valid)
@@ -587,16 +597,40 @@ int run_case(const Spec& spec, int shift, int workers, bool mirror) {
     std::cout << "\"setup_us\":" << std::fixed << std::setprecision(3) << setup_us << ",";
     std::cout << "\"active_tick_count\":" << active_tick_times.size() << ",";
     std::cout << "\"active_total_us\":" << active_total_us << ",";
-    std::cout << "\"active_p50_us\":" << percentile(active_tick_times, 0.50) << ",";
-    std::cout << "\"active_p95_us\":" << percentile(active_tick_times, 0.95) << ",";
-    std::cout << "\"active_p99_us\":" << percentile(active_tick_times, 0.99) << ",";
-    std::cout << "\"active_max_us\":" << (active_tick_times.empty() ? 0.0 : *std::max_element(active_tick_times.begin(), active_tick_times.end())) << ",";
+    std::cout << "\"active_p50_us\":";
+    if (active_tick_times.empty()) std::cout << "null";
+    else std::cout << percentile(active_tick_times, 0.50);
+    std::cout << ",";
+    std::cout << "\"active_p95_us\":";
+    if (active_tick_times.empty()) std::cout << "null";
+    else std::cout << percentile(active_tick_times, 0.95);
+    std::cout << ",";
+    std::cout << "\"active_p99_us\":";
+    if (active_tick_times.empty()) std::cout << "null";
+    else std::cout << percentile(active_tick_times, 0.99);
+    std::cout << ",";
+    std::cout << "\"active_max_us\":";
+    if (active_tick_times.empty()) std::cout << "null";
+    else std::cout << *std::max_element(active_tick_times.begin(), active_tick_times.end());
+    std::cout << ",";
     std::cout << "\"quiescent_suffix_tick_count\":" << final_quiescent_times.size() << ",";
     std::cout << "\"quiescent_total_us\":" << quiescent_total_us << ",";
-    std::cout << "\"quiescent_p50_us\":" << percentile(final_quiescent_times, 0.50) << ",";
-    std::cout << "\"quiescent_p95_us\":" << percentile(final_quiescent_times, 0.95) << ",";
-    std::cout << "\"quiescent_p99_us\":" << percentile(final_quiescent_times, 0.99) << ",";
-    std::cout << "\"quiescent_max_us\":" << (final_quiescent_times.empty() ? 0.0 : *std::max_element(final_quiescent_times.begin(), final_quiescent_times.end())) << ",";
+    std::cout << "\"quiescent_p50_us\":";
+    if (final_quiescent_times.empty()) std::cout << "null";
+    else std::cout << percentile(final_quiescent_times, 0.50);
+    std::cout << ",";
+    std::cout << "\"quiescent_p95_us\":";
+    if (final_quiescent_times.empty()) std::cout << "null";
+    else std::cout << percentile(final_quiescent_times, 0.95);
+    std::cout << ",";
+    std::cout << "\"quiescent_p99_us\":";
+    if (final_quiescent_times.empty()) std::cout << "null";
+    else std::cout << percentile(final_quiescent_times, 0.99);
+    std::cout << ",";
+    std::cout << "\"quiescent_max_us\":";
+    if (final_quiescent_times.empty()) std::cout << "null";
+    else std::cout << *std::max_element(final_quiescent_times.begin(), final_quiescent_times.end());
+    std::cout << ",";
     std::cout << "\"time_to_quiescence_tick\":";
     if (time_to_quiescence_tick) std::cout << *time_to_quiescence_tick;
     else std::cout << "null";
@@ -633,6 +667,28 @@ int run_case(const Spec& spec, int shift, int workers, bool mirror) {
         std::cout << "\"left_wet_columns\":" << sample.left_wet_columns << ",";
         std::cout << "\"right_total_columns\":" << sample.right_total_columns << ",";
         std::cout << "\"right_wet_columns\":" << sample.right_wet_columns << ",";
+        std::cout << "\"left_mean_milli\":";
+        if (sample.left_mean_milli < 0) std::cout << "null";
+        else std::cout << sample.left_mean_milli;
+        std::cout << ",";
+        std::cout << "\"right_mean_milli\":";
+        if (sample.right_mean_milli < 0) std::cout << "null";
+        else std::cout << sample.right_mean_milli;
+        std::cout << ",";
+        std::cout << "\"left_surface_contour_milli\":[";
+        for (std::size_t j = 0; j < sample.left_contour_milli.size(); ++j) {
+            if (j) std::cout << ",";
+            if (sample.left_contour_milli[j] < 0) std::cout << "null";
+            else std::cout << sample.left_contour_milli[j];
+        }
+        std::cout << "],";
+        std::cout << "\"right_surface_contour_milli\":[";
+        for (std::size_t j = 0; j < sample.right_contour_milli.size(); ++j) {
+            if (j) std::cout << ",";
+            if (sample.right_contour_milli[j] < 0) std::cout << "null";
+            else std::cout << sample.right_contour_milli[j];
+        }
+        std::cout << "],";
         std::cout << "\"level_difference_valid\":" << (sample.level_difference_valid ? "true" : "false") << ",";
         std::cout << "\"level_difference_milli\":";
         if (sample.level_difference_valid) std::cout << sample.level_difference_milli;
