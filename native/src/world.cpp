@@ -3423,6 +3423,7 @@ void World::merge_job_effects(const JobEffects& effects) {
                 block.changed_this_tick = true;
                 block.quiet_ticks = 0;
                 chunk->active = true;
+                witness_discovery_activity(effect.chunk, block_index);
 
                 const auto local_left = block_x * config_.activity_block_size;
                 const auto local_top = block_y * config_.activity_block_size;
@@ -3440,6 +3441,34 @@ void World::merge_job_effects(const JobEffects& effects) {
         }
     }
     if (settled_discovery_ == nullptr) return;
+    settled_discovery_->note_signal_report_records(effects.discovery_signal_count);
+    if (effects.discovery_signal_overflow) {
+        settled_discovery_->fence_lost_signal_report();
+        return;
+    }
+    for (std::size_t index = 0; index < effects.discovery_signal_count; ++index) {
+        const auto& report = effects.discovery_signals[index];
+        const auto* chunk = find_chunk(report.chunk);
+        if (chunk == nullptr ||
+            report.activity_x < 0 || report.activity_y < 0 ||
+            report.activity_x >= chunk->activity_blocks_per_axis ||
+            report.activity_y >= chunk->activity_blocks_per_axis) {
+            settled_discovery_->fence_lost_signal_report();
+            return;
+        }
+        const auto block_index =
+            static_cast<std::size_t>(report.activity_y) *
+                static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
+            static_cast<std::size_t>(report.activity_x);
+        const auto parent = discovery_parent_key(report.chunk, block_index);
+        if (report.activity_witness)
+            (void)settled_discovery_->witness_activity(
+                parent, chunk->activity_blocks[block_index].active);
+        if (report.deadline_due != 0)
+            (void)settled_discovery_->schedule_deadline(parent, report.deadline_due);
+        observe_discovery_activity_parent(report.chunk, block_index);
+        if (settled_discovery_->halted() != soliding::DiscoveryHalt::None) return;
+    }
     settled_discovery_->note_worker_report_records(effects.discovery_mutation_count);
     if (effects.discovery_mutation_overflow) {
         // Authoritative writes already happened. Lost observation detail fences
