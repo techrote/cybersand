@@ -179,6 +179,8 @@ public:
         settled_discovery_tile(std::size_t index) const noexcept;
     [[nodiscard]] soliding::WorldDiscoveryMetrics settled_discovery_producer_metrics() const noexcept;
     [[nodiscard]] soliding::DiscoveryMetrics settled_discovery_journal_metrics() const noexcept;
+    [[nodiscard]] soliding::DiscoveryCoverageState settled_discovery_coverage_state(
+        std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] soliding::DiscoveryHalt settled_discovery_halted() const noexcept;
     [[nodiscard]] bool settled_discovery_capacity_blocked() const noexcept;
     [[nodiscard]] std::size_t settled_discovery_storage_bytes() const noexcept;
@@ -315,18 +317,31 @@ private:
     [[nodiscard]] soliding::DiscoverySignals discovery_signals(
         ChunkCoord coord, std::size_t activity_index,
         soliding::DiscoveryBounds bounds) const noexcept;
+    [[nodiscard]] bool discovery_tile_fully_covered(
+        soliding::DiscoveryBounds bounds,
+        const std::optional<CoreRange>& coverage) const noexcept;
+    [[nodiscard]] static std::optional<RectI64> checked_discovery_event_observation_rect(
+        std::int64_t x, std::int64_t y, std::int32_t radius,
+        std::int32_t rule_radius) noexcept;
+    [[nodiscard]] std::optional<RectI64> discovery_event_observation_rect(
+        std::int64_t x, std::int64_t y, std::int32_t radius) const noexcept;
+    [[nodiscard]] std::optional<std::uint64_t> discovery_pending_event_count(
+        soliding::DiscoveryBounds bounds) const noexcept;
+    [[nodiscard]] std::uint64_t discovery_mask_occupancy_count(
+        soliding::DiscoveryBounds bounds) const noexcept;
     void observe_discovery_activity_parent(ChunkCoord coord,
                                            std::size_t activity_index) noexcept;
     void witness_discovery_activity(ChunkCoord coord, std::size_t activity_index) noexcept;
     void service_discovery_deadlines() noexcept;
     void dirty_discovery_cell(std::int64_t x, std::int64_t y,
                               soliding::ProducerReason reason) noexcept;
-    void refresh_discovery_signals(soliding::ProducerReason reason) noexcept;
     void fence_discovery(soliding::ProducerReason reason) noexcept;
-    void observe_discovery_mask_cell(std::int64_t x, std::int64_t y) noexcept;
-    void dirty_discovery_world_rect(RectI64 region,
-                                    soliding::ProducerReason reason) noexcept;
-    void observe_discovery_event(RectI64 region) noexcept;
+    void witness_discovery_mask_cell(std::int64_t x, std::int64_t y,
+                                     bool add) noexcept;
+    bool witness_discovery_rect(RectI64 region,
+                                soliding::ProducerReason reason,
+                                int delta) noexcept;
+    void reconcile_discovery_inclusion() noexcept;
     [[nodiscard]] static soliding::DiscoveryCell read_discovery_cell(
         const void* context, std::int64_t x, std::int64_t y);
     [[nodiscard]] static soliding::DiscoverySignals read_discovery_signals(

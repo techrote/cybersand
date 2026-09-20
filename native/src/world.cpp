@@ -583,6 +583,93 @@ soliding::DiscoveryParentKey World::discovery_parent_key(
     };
 }
 
+bool World::discovery_tile_fully_covered(
+    soliding::DiscoveryBounds bounds,
+    const std::optional<CoreRange>& coverage) const noexcept {
+    if (!coverage.has_value()) return true;
+    const auto radius = static_cast<std::int64_t>(config_.maximum_rule_radius);
+    if (radius < 0 ||
+        bounds.x < std::numeric_limits<std::int64_t>::min() + radius ||
+        bounds.y < std::numeric_limits<std::int64_t>::min() + radius ||
+        bounds.x > std::numeric_limits<std::int64_t>::max() -
+                       static_cast<std::int64_t>(bounds.width - 1U) - radius ||
+        bounds.y > std::numeric_limits<std::int64_t>::max() -
+                       static_cast<std::int64_t>(bounds.height - 1U) - radius) {
+        return false;
+    }
+    const auto first =
+        scheduler_geometry_.core_for_cell(bounds.x - radius, bounds.y - radius);
+    const auto last = scheduler_geometry_.core_for_cell(
+        bounds.x + static_cast<std::int64_t>(bounds.width - 1U) + radius,
+        bounds.y + static_cast<std::int64_t>(bounds.height - 1U) + radius);
+    return first.x >= coverage->min_x && first.y >= coverage->min_y &&
+           last.x <= coverage->max_x && last.y <= coverage->max_y;
+}
+
+std::optional<RectI64> World::checked_discovery_event_observation_rect(
+    std::int64_t x, std::int64_t y, std::int32_t radius,
+    std::int32_t rule_radius) noexcept {
+    if (radius <= 0 || rule_radius < 0) return std::nullopt;
+    const auto effect = static_cast<std::int64_t>(radius) + 2;
+    const auto halo = static_cast<std::int64_t>(rule_radius);
+    if (halo > std::numeric_limits<std::int64_t>::max() - effect)
+        return std::nullopt;
+    const auto pending = effect + halo;
+    if (x < std::numeric_limits<std::int64_t>::min() + pending ||
+        x > std::numeric_limits<std::int64_t>::max() - pending ||
+        y < std::numeric_limits<std::int64_t>::min() + pending ||
+        y > std::numeric_limits<std::int64_t>::max() - pending ||
+        pending > (std::numeric_limits<std::int64_t>::max() - 1) / 2) {
+        return std::nullopt;
+    }
+    return RectI64{x - pending, y - pending, pending * 2 + 1, pending * 2 + 1};
+}
+
+std::optional<RectI64> World::discovery_event_observation_rect(
+    std::int64_t x, std::int64_t y, std::int32_t radius) const noexcept {
+    return checked_discovery_event_observation_rect(
+        x, y, radius, config_.maximum_rule_radius);
+}
+
+std::optional<std::uint64_t> World::discovery_pending_event_count(
+    soliding::DiscoveryBounds bounds) const noexcept {
+    const auto maximum_x =
+        bounds.x + static_cast<std::int64_t>(bounds.width - 1U);
+    const auto maximum_y =
+        bounds.y + static_cast<std::int64_t>(bounds.height - 1U);
+    std::uint64_t count = 0;
+    for (const auto& event : pending_explosions_) {
+        const auto region =
+            discovery_event_observation_rect(event.x, event.y, event.radius);
+        if (!region.has_value()) return std::nullopt;
+        const auto event_maximum_x = region->x + region->width - 1;
+        const auto event_maximum_y = region->y + region->height - 1;
+        if (event_maximum_x < bounds.x || maximum_x < region->x ||
+            event_maximum_y < bounds.y || maximum_y < region->y) {
+            continue;
+        }
+        if (count == std::numeric_limits<std::uint64_t>::max())
+            return std::nullopt;
+        ++count;
+    }
+    return count;
+}
+
+std::uint64_t World::discovery_mask_occupancy_count(
+    soliding::DiscoveryBounds bounds) const noexcept {
+    std::uint64_t count = 0;
+    for (std::uint32_t local_y = 0; local_y < bounds.height; ++local_y) {
+        for (std::uint32_t local_x = 0; local_x < bounds.width; ++local_x) {
+            if (transient_obstacle_at(
+                    bounds.x + static_cast<std::int64_t>(local_x),
+                    bounds.y + static_cast<std::int64_t>(local_y)) != 0U) {
+                ++count;
+            }
+        }
+    }
+    return count;
+}
+
 soliding::DiscoverySignals World::discovery_signals(
     ChunkCoord coord, std::size_t activity_index,
     soliding::DiscoveryBounds bounds) const noexcept {
@@ -592,36 +679,14 @@ soliding::DiscoverySignals World::discovery_signals(
     const auto& block = chunk->activity_blocks[activity_index];
     result.witness_complete = true;
     result.healthy = !tick_failed_;
-
-    const auto fully_covered = [this, bounds](const std::optional<CoreRange>& coverage) {
-        if (!coverage.has_value()) return true;
-        const auto radius = static_cast<std::int64_t>(config_.maximum_rule_radius);
-        if (bounds.x < std::numeric_limits<std::int64_t>::min() + radius ||
-            bounds.y < std::numeric_limits<std::int64_t>::min() + radius ||
-            bounds.x > std::numeric_limits<std::int64_t>::max() -
-                           static_cast<std::int64_t>(bounds.width - 1U) - radius ||
-            bounds.y > std::numeric_limits<std::int64_t>::max() -
-                           static_cast<std::int64_t>(bounds.height - 1U) - radius) return false;
-        const auto first = scheduler_geometry_.core_for_cell(bounds.x - radius, bounds.y - radius);
-        const auto last = scheduler_geometry_.core_for_cell(
-            bounds.x + static_cast<std::int64_t>(bounds.width - 1U) + radius,
-            bounds.y + static_cast<std::int64_t>(bounds.height - 1U) + radius);
-        return first.x >= coverage->min_x && first.y >= coverage->min_y &&
-               last.x <= coverage->max_x && last.y <= coverage->max_y;
-    };
-    result.included = fully_covered(selected_core_region_) && fully_covered(applied_core_region_);
+    result.included =
+        discovery_tile_fully_covered(bounds, selected_core_region_) &&
+        discovery_tile_fully_covered(bounds, applied_core_region_);
     result.active = block.active || block.next_interaction_tick != 0;
-
-    const auto maximum_x = bounds.x + static_cast<std::int64_t>(bounds.width - 1U);
-    const auto maximum_y = bounds.y + static_cast<std::int64_t>(bounds.height - 1U);
-    for (const auto& event : pending_explosions_) {
-        const auto margin = static_cast<std::int64_t>(event.radius) + 2;
-        if (event.x + margin >= bounds.x && event.x - margin <= maximum_x &&
-            event.y + margin >= bounds.y && event.y - margin <= maximum_y) {
-            result.pending_event = true;
-            break;
-        }
-    }
+    // #63 owns pending-event and transient-mask state through exact bounded
+    // witnesses. Do not rediscover either producer by scanning World state here.
+    result.pending_event = false;
+    result.occupied = false;
     return result;
 }
 
@@ -749,16 +814,23 @@ void World::register_discovery_chunk(ChunkCoord coord, const Chunk& chunk) noexc
                         activity_y, activity_x, subtile_y / 32, subtile_x / 32,
                     };
                     auto signals = discovery_signals(coord, activity_index, bounds);
-                    for (std::uint32_t y = 0; y < bounds.height && !signals.occupied; ++y)
-                        for (std::uint32_t x = 0; x < bounds.width; ++x)
-                            if (transient_obstacle_at(
-                                    bounds.x + static_cast<std::int64_t>(x),
-                                    bounds.y + static_cast<std::int64_t>(y)) != 0U) {
-                                signals.occupied = true;
-                                break;
-                            }
+                    const auto requested_included =
+                        discovery_tile_fully_covered(bounds, selected_core_region_);
+                    const auto applied_included =
+                        discovery_tile_fully_covered(bounds, applied_core_region_);
+                    const auto mask_occupancy =
+                        discovery_mask_occupancy_count(bounds);
+                    const auto pending_events =
+                        discovery_pending_event_count(bounds);
+                    if (!pending_events.has_value()) {
+                        settled_discovery_->note_global_fence();
+                        settled_discovery_->fail();
+                        return;
+                    }
                     const auto outcome = settled_discovery_->register_tile(
-                        key, bounds, config_.ambient_temperature, signals, tick_index_);
+                        key, bounds, config_.ambient_temperature, signals, tick_index_,
+                        mask_occupancy, *pending_events,
+                        requested_included, applied_included);
                     if (outcome == soliding::DiscoveryOutcome::Capacity ||
                         outcome == soliding::DiscoveryOutcome::Halted) return;
                     if (!parent_registered) {
@@ -798,6 +870,7 @@ soliding::DiscoveryCell World::read_discovery_cell(
 soliding::DiscoverySignals World::read_discovery_signals(
     const void* context, soliding::DiscoveryTileKey key,
     soliding::DiscoveryBounds bounds, soliding::DiscoverySignals previous) {
+    (void)bounds;
     const auto& world = *static_cast<const World*>(context);
     const ChunkCoord coord{key.chunk_x, key.chunk_y};
     const auto* chunk = world.find_chunk(coord);
@@ -806,10 +879,16 @@ soliding::DiscoverySignals World::read_discovery_signals(
         static_cast<std::size_t>(key.activity_y) *
             static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
         static_cast<std::size_t>(key.activity_x);
-    auto signals = world.discovery_signals(coord, activity_index, bounds);
-    // #63 owns mask/event/inclusion producer indexing. Sparse payload service
-    // preserves the already-observed mask bit while refreshing this tile only.
-    signals.occupied = previous.occupied;
+    if (activity_index >= chunk->activity_blocks.size()) return {};
+
+    // #61 payload service may refresh the affected tile's health/activity only.
+    // #63 owns mask/event/inclusion state and those exact witnesses must never be
+    // recomputed here from resident World containers.
+    auto signals = previous;
+    signals.witness_complete = true;
+    signals.healthy = !world.tick_failed_;
+    const auto& block = chunk->activity_blocks[activity_index];
+    signals.active = block.active || block.next_interaction_tick != 0;
     return signals;
 }
 
@@ -834,6 +913,24 @@ soliding::WorldDiscoveryMetrics World::settled_discovery_producer_metrics() cons
 soliding::DiscoveryMetrics World::settled_discovery_journal_metrics() const noexcept {
     return settled_discovery_ == nullptr ? soliding::DiscoveryMetrics{}
                                          : settled_discovery_->journal_metrics();
+}
+soliding::DiscoveryCoverageState World::settled_discovery_coverage_state(
+    std::int64_t x, std::int64_t y) const noexcept {
+    if (tick_failed_) return soliding::DiscoveryCoverageState::Failed;
+    const auto target = address(x, y);
+    if (find_chunk(target.chunk) == nullptr)
+        return soliding::DiscoveryCoverageState::NotResident;
+    if (settled_discovery_ == nullptr)
+        return soliding::DiscoveryCoverageState::ResidentUntracked;
+    if (settled_discovery_->capacity_blocked())
+        return soliding::DiscoveryCoverageState::CapacityRefused;
+    if (settled_discovery_->halted() != soliding::DiscoveryHalt::None)
+        return soliding::DiscoveryCoverageState::Failed;
+    const auto handle =
+        settled_discovery_->find_handle(discovery_tile_key(target));
+    if (!handle.has_value())
+        return soliding::DiscoveryCoverageState::ResidentUntracked;
+    return settled_discovery_->coverage_state(*handle);
 }
 soliding::DiscoveryHalt World::settled_discovery_halted() const noexcept {
     return settled_discovery_ == nullptr ? soliding::DiscoveryHalt::None
@@ -889,26 +986,6 @@ void World::dirty_discovery_cell(std::int64_t x, std::int64_t y,
     witness_discovery_activity(target.chunk, activity_index);
 }
 
-void World::refresh_discovery_signals(soliding::ProducerReason reason) noexcept {
-    if (settled_discovery_ == nullptr) return;
-    const auto count = settled_discovery_->size();
-    for (std::size_t index = 0; index < count; ++index) {
-        const auto handle = settled_discovery_->handle_at(index);
-        if (!handle.has_value()) return;
-        const auto current = settled_discovery_->tile(*handle);
-        if (!current.has_value()) return;
-        const ChunkCoord coord{current->key.chunk_x, current->key.chunk_y};
-        const auto* chunk = find_chunk(coord);
-        if (chunk == nullptr) continue;
-        const auto activity_index = static_cast<std::size_t>(current->key.activity_y) *
-            static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
-            static_cast<std::size_t>(current->key.activity_x);
-        auto signals = discovery_signals(coord, activity_index, current->summary.bounds);
-        signals.occupied = current->signals.occupied;
-        (void)settled_discovery_->observe(*handle, signals, reason, tick_index_);
-    }
-}
-
 void World::fence_discovery(soliding::ProducerReason reason) noexcept {
     if (settled_discovery_ == nullptr) return;
     settled_discovery_->note_global_fence();
@@ -918,85 +995,132 @@ void World::fence_discovery(soliding::ProducerReason reason) noexcept {
         if (!handle.has_value()) return;
         (void)settled_discovery_->dirty(*handle, reason, tick_index_);
     }
-    refresh_discovery_signals(reason);
 }
 
-void World::observe_discovery_mask_cell(std::int64_t x, std::int64_t y) noexcept {
-    if (settled_discovery_ == nullptr) return;
-    const auto target = address(x, y);
-    const auto* chunk = find_chunk(target.chunk);
-    if (chunk == nullptr) return;
-    const auto key = discovery_tile_key(target);
-    const auto handle = settled_discovery_->find_handle(key);
-    if (!handle.has_value()) return;
-    const auto current = settled_discovery_->tile(*handle);
-    if (!current.has_value()) return;
-    const auto activity_index = static_cast<std::size_t>(key.activity_y) *
-        static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
-        static_cast<std::size_t>(key.activity_x);
-    auto signals = discovery_signals(target.chunk, activity_index, current->summary.bounds);
-    for (std::uint32_t local_y = 0; local_y < current->summary.bounds.height && !signals.occupied; ++local_y)
-        for (std::uint32_t local_x = 0; local_x < current->summary.bounds.width; ++local_x)
-            if (transient_obstacle_at(
-                    current->summary.bounds.x + static_cast<std::int64_t>(local_x),
-                    current->summary.bounds.y + static_cast<std::int64_t>(local_y)) != 0U) {
-                signals.occupied = true;
-                break;
-            }
-    (void)settled_discovery_->observe(*handle, signals,
-        soliding::ProducerReason::TransientMask, tick_index_);
-}
-
-void World::dirty_discovery_world_rect(RectI64 region,
-                                       soliding::ProducerReason reason) noexcept {
-    if (settled_discovery_ == nullptr || region.width <= 0 || region.height <= 0) return;
-    if (region.x > std::numeric_limits<std::int64_t>::max() - (region.width - 1) ||
-        region.y > std::numeric_limits<std::int64_t>::max() - (region.height - 1)) {
-        settled_discovery_->fail();
+void World::witness_discovery_mask_cell(
+    std::int64_t x, std::int64_t y, bool add_occupancy) noexcept {
+    if (settled_discovery_ == nullptr ||
+        settled_discovery_->halted() != soliding::DiscoveryHalt::None) {
         return;
     }
-    const auto maximum_x = region.x + (region.width - 1);
-    const auto maximum_y = region.y + (region.height - 1);
-    const auto count = settled_discovery_->size();
-    for (std::size_t index = 0; index < count; ++index) {
-        const auto handle = settled_discovery_->handle_at(index);
-        if (!handle.has_value()) return;
-        const auto current = settled_discovery_->tile(*handle);
-        if (!current.has_value()) return;
-        const auto& bounds = current->summary.bounds;
-        const auto tile_maximum_x = bounds.x + static_cast<std::int64_t>(bounds.width - 1U);
-        const auto tile_maximum_y = bounds.y + static_cast<std::int64_t>(bounds.height - 1U);
-        if (maximum_x < bounds.x || tile_maximum_x < region.x ||
-            maximum_y < bounds.y || tile_maximum_y < region.y) continue;
-        (void)settled_discovery_->dirty(*handle, reason, tick_index_);
-    }
+    const auto handle =
+        settled_discovery_->find_handle(discovery_tile_key(address(x, y)));
+    if (!handle.has_value()) return;
+    (void)settled_discovery_->witness_mask(
+        *handle, add_occupancy, tick_index_);
 }
 
-void World::observe_discovery_event(RectI64 region) noexcept {
-    if (settled_discovery_ == nullptr) return;
-    const auto maximum_x = region.x + (region.width - 1);
-    const auto maximum_y = region.y + (region.height - 1);
+bool World::witness_discovery_rect(
+    RectI64 region, soliding::ProducerReason reason, int delta) noexcept {
+    if (settled_discovery_ == nullptr ||
+        settled_discovery_->halted() != soliding::DiscoveryHalt::None ||
+        region.width <= 0 || region.height <= 0) {
+        return settled_discovery_ == nullptr ||
+               settled_discovery_->halted() == soliding::DiscoveryHalt::None;
+    }
+    if (region.x > std::numeric_limits<std::int64_t>::max() - (region.width - 1) ||
+        region.y > std::numeric_limits<std::int64_t>::max() - (region.height - 1)) {
+        settled_discovery_->note_global_fence();
+        settled_discovery_->fail();
+        return false;
+    }
+
+    const auto maximum_x = region.x + region.width - 1;
+    const auto maximum_y = region.y + region.height - 1;
+    const auto logical_position_limit =
+        std::max<std::size_t>(64U, settled_discovery_->capacity() * 64U);
+    std::size_t logical_positions = 0;
+
+    auto axis_end = [this](std::int64_t coordinate, std::int32_t local) noexcept {
+        const auto block_start =
+            (local / config_.activity_block_size) * config_.activity_block_size;
+        const auto within = local - block_start;
+        const auto subtile_start = block_start + (within / 32) * 32;
+        const auto local_end = std::min({
+            subtile_start + 31,
+            block_start + config_.activity_block_size - 1,
+            config_.chunk_size - 1,
+        });
+        const auto delta_to_end =
+            static_cast<std::int64_t>(local_end - local);
+        if (coordinate > std::numeric_limits<std::int64_t>::max() - delta_to_end)
+            return std::numeric_limits<std::int64_t>::max();
+        return coordinate + delta_to_end;
+    };
+
+    auto current_y = region.y;
+    for (;;) {
+        auto current_x = region.x;
+        for (;;) {
+            if (++logical_positions > logical_position_limit) {
+                // A huge sparse rectangle could otherwise make observation work
+                // proportional to absent address space. Fail-close the observer
+                // rather than inventing an unbounded overflow structure or scan.
+                settled_discovery_->note_global_fence();
+                settled_discovery_->fail();
+                return false;
+            }
+
+            const auto target = address(current_x, current_y);
+            const auto handle =
+                settled_discovery_->find_handle(discovery_tile_key(target));
+            if (handle.has_value()) {
+                soliding::DiscoveryOutcome outcome = soliding::DiscoveryOutcome::Invalid;
+                if (reason == soliding::ProducerReason::TransientMask && delta == 0) {
+                    outcome = settled_discovery_->witness_mask_reconfiguration(
+                        *handle, tick_index_);
+                } else if (reason == soliding::ProducerReason::PendingEvent &&
+                           (delta == 1 || delta == -1)) {
+                    outcome = settled_discovery_->witness_event(
+                        *handle, delta > 0, tick_index_);
+                } else {
+                    settled_discovery_->note_global_fence();
+                    settled_discovery_->fail();
+                    return false;
+                }
+                if (outcome == soliding::DiscoveryOutcome::Halted ||
+                    outcome == soliding::DiscoveryOutcome::Invalid) {
+                    return false;
+                }
+            }
+
+            const auto x_end = axis_end(current_x, target.local_x);
+            if (x_end >= maximum_x) break;
+            current_x = x_end + 1;
+        }
+
+        const auto row = address(region.x, current_y);
+        const auto y_end = axis_end(current_y, row.local_y);
+        if (y_end >= maximum_y) break;
+        current_y = y_end + 1;
+    }
+    return true;
+}
+
+void World::reconcile_discovery_inclusion() noexcept {
+    if (settled_discovery_ == nullptr ||
+        settled_discovery_->halted() != soliding::DiscoveryHalt::None) {
+        return;
+    }
     const auto count = settled_discovery_->size();
     for (std::size_t index = 0; index < count; ++index) {
         const auto handle = settled_discovery_->handle_at(index);
-        if (!handle.has_value()) return;
+        if (!handle.has_value()) {
+            settled_discovery_->fail();
+            return;
+        }
         const auto current = settled_discovery_->tile(*handle);
         if (!current.has_value()) return;
-        const auto& bounds = current->summary.bounds;
-        const auto tile_maximum_x = bounds.x + static_cast<std::int64_t>(bounds.width - 1U);
-        const auto tile_maximum_y = bounds.y + static_cast<std::int64_t>(bounds.height - 1U);
-        if (maximum_x < bounds.x || tile_maximum_x < region.x ||
-            maximum_y < bounds.y || tile_maximum_y < region.y) continue;
-        const ChunkCoord coord{current->key.chunk_x, current->key.chunk_y};
-        const auto* chunk = find_chunk(coord);
-        if (chunk == nullptr) continue;
-        const auto activity_index = static_cast<std::size_t>(current->key.activity_y) *
-            static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
-            static_cast<std::size_t>(current->key.activity_x);
-        auto signals = discovery_signals(coord, activity_index, bounds);
-        signals.occupied = current->signals.occupied;
-        (void)settled_discovery_->observe(*handle, signals,
-            soliding::ProducerReason::PendingEvent, tick_index_);
+        const auto requested =
+            discovery_tile_fully_covered(current->summary.bounds, selected_core_region_);
+        const auto applied =
+            discovery_tile_fully_covered(current->summary.bounds, applied_core_region_);
+        const auto outcome = settled_discovery_->witness_inclusion(
+            *handle, requested, applied, tick_index_);
+        if (outcome == soliding::DiscoveryOutcome::Halted ||
+            outcome == soliding::DiscoveryOutcome::Invalid) {
+            return;
+        }
     }
 }
 
@@ -1571,9 +1695,14 @@ void World::set_simulation_region(std::optional<RectI64> region) {
             region->x + (region->width - 1), region->y + (region->height - 1));
         selected = CoreRange{first.x, first.y, last.x, last.y};
     }
+    const auto previous_selected = selected_core_region_;
     simulation_region_ = region;
     selected_core_region_ = selected;
-    fence_discovery(soliding::ProducerReason::InclusionFence);
+    if (settled_discovery_ != nullptr && selected_core_region_ != previous_selected) {
+        const auto outcome = settled_discovery_->begin_inclusion_request();
+        if (outcome == soliding::DiscoveryOutcome::Accepted)
+            reconcile_discovery_inclusion();
+    }
 }
 
 void World::set_liquid_surface_adhesion_enabled(bool enabled) noexcept {
@@ -1598,8 +1727,8 @@ void World::configure_transient_obstacles(RectI64 region) {
     if (width > std::numeric_limits<std::size_t>::max() / height) {
         throw std::overflow_error("transient obstacle field exceeds addressable size");
     }
-    dirty_discovery_world_rect(transient_obstacles_->region,
-        soliding::ProducerReason::TransientMask);
+    (void)witness_discovery_rect(
+        transient_obstacles_->region, soliding::ProducerReason::TransientMask, 0);
     clear_transient_obstacles();
     transient_obstacles_->region = region;
     const auto required = static_cast<std::size_t>(width * height);
@@ -1608,7 +1737,8 @@ void World::configure_transient_obstacles(RectI64 region) {
     }
     transient_obstacles_->occupied_indices.reserve(
         std::min<std::size_t>(required, 16U * 256U));
-    dirty_discovery_world_rect(region, soliding::ProducerReason::TransientMask);
+    (void)witness_discovery_rect(
+        region, soliding::ProducerReason::TransientMask, 0);
 }
 
 void World::clear_transient_obstacles() {
@@ -1622,7 +1752,8 @@ void World::clear_transient_obstacles() {
             const auto local_x = static_cast<std::int64_t>(index % static_cast<std::size_t>(width));
             const auto local_y = static_cast<std::int64_t>(index / static_cast<std::size_t>(width));
             wake_cell_neighborhood(state.region.x + local_x, state.region.y + local_y);
-            observe_discovery_mask_cell(state.region.x + local_x, state.region.y + local_y);
+            witness_discovery_mask_cell(
+                state.region.x + local_x, state.region.y + local_y, false);
         }
     }
     state.occupied_indices.clear();
@@ -1664,7 +1795,7 @@ bool World::set_transient_obstacle(std::int64_t x, std::int64_t y,
     slot = body_id;
     state.occupied_indices.push_back(index);
     wake_cell_neighborhood(x, y);
-    observe_discovery_mask_cell(x, y);
+    witness_discovery_mask_cell(x, y, true);
     return true;
 }
 
@@ -1816,7 +1947,19 @@ bool World::queue_explosion(std::int64_t x, std::int64_t y, std::int32_t radius,
         return false;
     }
     pending_explosions_.push_back({x, y, radius, collapse_strength});
-    observe_discovery_event({x - margin, y - margin, margin * 2 + 1, margin * 2 + 1});
+    if (settled_discovery_ != nullptr &&
+        settled_discovery_->halted() == soliding::DiscoveryHalt::None) {
+        const auto observation = discovery_event_observation_rect(x, y, radius);
+        if (!observation.has_value()) {
+            // The authoritative R+2 event was already accepted. #57 requires
+            // observation to fail closed rather than narrowing or rejecting it.
+            settled_discovery_->note_global_fence();
+            settled_discovery_->fail();
+        } else {
+            (void)witness_discovery_rect(
+                *observation, soliding::ProducerReason::PendingEvent, 1);
+        }
+    }
     return true;
 }
 
@@ -1858,15 +2001,20 @@ void World::apply_pending_explosions(TickStats& stats) {
     if (settled_discovery_ == nullptr) {
         pending_explosions_.clear();
     } else {
-        // Preserve the existing PendingEvent producer contract without reviving
-        // the removed activity/deadline resident scan. #63 owns replacing this
-        // represented-tile region walk with event indexing.
         while (!pending_explosions_.empty()) {
             const auto event = pending_explosions_.back();
             pending_explosions_.pop_back();
-            const auto margin = static_cast<std::int64_t>(event.radius) + 2;
-            observe_discovery_event(
-                {event.x - margin, event.y - margin, margin * 2 + 1, margin * 2 + 1});
+            if (settled_discovery_->halted() != soliding::DiscoveryHalt::None)
+                continue;
+            const auto observation =
+                discovery_event_observation_rect(event.x, event.y, event.radius);
+            if (!observation.has_value()) {
+                settled_discovery_->note_global_fence();
+                settled_discovery_->fail();
+                continue;
+            }
+            (void)witness_discovery_rect(
+                *observation, soliding::ProducerReason::PendingEvent, -1);
         }
     }
 }
@@ -3075,12 +3223,17 @@ void World::begin_tick(TickStats& stats) {
     const bool coverage_transition = selected_core_region_ != previous_core_region;
     const bool transition =
         config_.backend == SimulationBackend::PhasedInPlace && coverage_transition;
-    // Apply the requested coverage before observer reconciliation. Inclusion remains
-    // #63-owned: retain its explicit resident refresh only when coverage actually
-    // transitions, rather than letting #62 activity witnesses rediscover it.
+    // Requested and applied inclusion are independently generation-witnessed.
+    // Applying a request never asks #62's activity/deadline path to recompute
+    // unrelated signal state.
     applied_core_region_ = selected_core_region_;
-    if (coverage_transition && settled_discovery_ != nullptr)
-        refresh_discovery_signals(soliding::ProducerReason::InclusionFence);
+    if (settled_discovery_ != nullptr &&
+        settled_discovery_->requested_inclusion_epoch() !=
+            settled_discovery_->applied_inclusion_epoch()) {
+        const auto outcome = settled_discovery_->apply_inclusion_request();
+        if (outcome == soliding::DiscoveryOutcome::Accepted)
+            reconcile_discovery_inclusion();
+    }
     // Reuse the existing metadata pass, with no cell scan or region-sized
     // allocation. Coalesced/equivalent windows do not repeatedly wake blocks.
     for (auto& [coord, chunk] : chunks_) {

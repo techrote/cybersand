@@ -6,6 +6,7 @@
 #include <new>
 #include <optional>
 #include <stdexcept>
+#include <string>
 #include <utility>
 
 namespace cybersand {
@@ -18,6 +19,12 @@ public:
     }
     static std::uint8_t coherence(const World& world, std::int64_t x, std::int64_t y) {
         return world.state_b(x, y);
+    }
+    static std::optional<RectI64> event_observation_rect(
+        std::int64_t x, std::int64_t y, std::int32_t radius,
+        std::int32_t rule_radius) {
+        return World::checked_discovery_event_observation_rect(
+            x, y, radius, rule_radius);
     }
 };
 } // namespace cybersand
@@ -34,6 +41,16 @@ using namespace cybersand::soliding;
 
 void require(bool condition, const char* message) {
     if (!condition) throw std::runtime_error(message);
+}
+
+template<class Test>
+void run_named(const char* name, Test&& test) {
+    try {
+        test();
+    } catch (...) {
+        std::cerr << "while running " << name << '\n';
+        throw;
+    }
 }
 
 WorldConfig tracked_config(std::uint32_t workers = 1) {
@@ -79,12 +96,20 @@ void service_regions(World& world, std::size_t limit = 1'000'000) {
 WorldDiscoveryTileSnapshot tile_at(const World& world, std::int64_t x, std::int64_t y) {
     for (std::size_t index = 0; index < world.settled_discovery_tile_count(); ++index) {
         const auto tile = world.settled_discovery_tile(index);
-        require(tile.has_value(), "registered tile snapshot available");
+        if (!tile.has_value()) {
+            throw std::runtime_error(
+                "registered tile snapshot unavailable while locating (" +
+                std::to_string(x) + "," + std::to_string(y) + "); halt=" +
+                std::to_string(static_cast<unsigned>(
+                    world.settled_discovery_halted())));
+        }
         const auto& bounds = tile->summary.bounds;
         if (bounds.x <= x && x <= bounds.x + static_cast<std::int64_t>(bounds.width - 1U) &&
             bounds.y <= y && y <= bounds.y + static_cast<std::int64_t>(bounds.height - 1U)) return *tile;
     }
-    throw std::runtime_error("requested discovery tile not found");
+    throw std::runtime_error(
+        "requested discovery tile not found at (" + std::to_string(x) + "," +
+        std::to_string(y) + ")");
 }
 
 CYBERSAND_TEST_NOINLINE void direct_aba_exact_tuple_and_render_independence() {
@@ -149,7 +174,9 @@ CYBERSAND_TEST_NOINLINE void canonical_geometry_registration_and_capacity() {
     require(constrained.settled_discovery_tile(0) == std::nullopt,
             "capacity-unrepresentable coverage exposes no stale usable snapshot");
     require(constrained.settled_region_count() == 0 &&
-            constrained.settled_region_refusal() == RegionRefusal::TileCapacity,
+            constrained.settled_region_refusal() == RegionRefusal::TileCapacity &&
+            constrained.settled_discovery_coverage_state(0, 0) ==
+                DiscoveryCoverageState::CapacityRefused,
             "producer capacity refusal quarantines connectivity without partial publication");
 }
 
@@ -195,6 +222,260 @@ CYBERSAND_TEST_NOINLINE void movement_mask_event_and_far_locality() {
     (void)world.tick();
     require(!tile_at(world, 8, 2).signals.pending_event,
             "pending-event signal clears only after owner-side drain");
+}
+
+CYBERSAND_TEST_NOINLINE void sparse_mask_coverage_and_inclusion_epochs() {
+    auto disabled_config = tracked_config();
+    disabled_config.settled_discovery_enabled = false;
+    World disabled(disabled_config);
+    disabled.reserve_region({0, 0, 8, 8});
+    require(disabled.settled_discovery_coverage_state(0, 0) ==
+                DiscoveryCoverageState::ResidentUntracked,
+            "resident coverage is explicit when observation is disabled");
+
+    World world(tracked_config());
+    require(world.settled_discovery_coverage_state(0, 0) ==
+                DiscoveryCoverageState::NotResident,
+            "absence is explicit before residency");
+    world.reserve_region({0, 0, 16, 8});
+    require(world.settled_discovery_coverage_state(0, 0) ==
+                DiscoveryCoverageState::RegisteredUnknown,
+            "new residency is registered unknown before payload classification");
+    service(world);
+    require(world.settled_discovery_coverage_state(0, 0) ==
+                DiscoveryCoverageState::Ready,
+            "registered unknown becomes ready only after exact payload service");
+
+    const auto initial = tile_at(world, 0, 0);
+    const auto far_initial = tile_at(world, 8, 0);
+    world.configure_transient_obstacles({0, 0, 8, 8});
+    const auto reconfigured = tile_at(world, 0, 0);
+    require(reconfigured.mask_revision > initial.mask_revision &&
+            reconfigured.mask_occupancy_count == 0 &&
+            tile_at(world, 8, 0).summary.revision == far_initial.summary.revision,
+            "empty mask reconfiguration is a local generation witness");
+
+    require(world.set_transient_obstacle(1, 1, 1), "first mask occupancy accepted");
+    require(world.set_transient_obstacle(2, 1, 2), "second mask occupancy accepted");
+    const auto two_masks = tile_at(world, 1, 1);
+    require(two_masks.mask_occupancy_count == 2 && two_masks.signals.occupied &&
+            two_masks.coverage == DiscoveryCoverageState::Blocked,
+            "multiple mask incidences keep an exact local occupancy count");
+    const auto occupied_revision = two_masks.mask_revision;
+    world.clear_transient_obstacles();
+    const auto cleared = tile_at(world, 1, 1);
+    require(cleared.mask_occupancy_count == 0 && !cleared.signals.occupied &&
+            cleared.mask_revision >= occupied_revision + 2,
+            "two clears cannot collapse into a boolean ABA");
+    const auto cleared_generation = cleared.mask_revision;
+    world.configure_transient_obstacles({0, 0, 4, 4});
+    world.configure_transient_obstacles({2, 0, 4, 4});
+    world.configure_transient_obstacles({0, 0, 4, 4});
+    require(tile_at(world, 1, 1).mask_revision > cleared_generation,
+            "mask configuration change-and-restore cannot reuse an earlier generation");
+
+    service(world);
+    const auto before_exclusion = tile_at(world, 0, 0);
+    world.set_simulation_region(RectI64{128, 128, 8, 8});
+    const auto requested = tile_at(world, 0, 0);
+    require(requested.coverage == DiscoveryCoverageState::Excluded &&
+            requested.requested_inclusion_epoch > before_exclusion.requested_inclusion_epoch &&
+            requested.applied_inclusion_epoch == before_exclusion.applied_inclusion_epoch,
+            "requested inclusion epoch fences excluded coverage before application");
+    (void)world.tick();
+    const auto applied = tile_at(world, 0, 0);
+    require(applied.applied_inclusion_epoch == applied.requested_inclusion_epoch &&
+            applied.coverage == DiscoveryCoverageState::Excluded,
+            "applied inclusion epoch catches up only at tick entry");
+
+    world.set_simulation_region(std::nullopt);
+    const auto reentry_requested = tile_at(world, 0, 0);
+    require(reentry_requested.requested_inclusion_epoch > applied.requested_inclusion_epoch &&
+            reentry_requested.applied_inclusion_epoch == applied.applied_inclusion_epoch &&
+            !reentry_requested.signals.included,
+            "requested re-entry cannot alias the still-excluded applied generation");
+    (void)world.tick();
+    const auto reentry_applied = tile_at(world, 0, 0);
+    require(reentry_applied.applied_inclusion_epoch ==
+                reentry_applied.requested_inclusion_epoch &&
+            reentry_applied.signals.included,
+            "applied re-entry receives a fresh generation before reuse");
+
+    World aba(tracked_config());
+    aba.reserve_region({0, 0, 8, 8});
+    service(aba);
+    const auto aba_base = tile_at(aba, 0, 0);
+    aba.set_simulation_region(RectI64{128, 128, 8, 8});
+    const auto aba_away = tile_at(aba, 0, 0);
+    aba.set_simulation_region(std::nullopt);
+    const auto aba_restored_request = tile_at(aba, 0, 0);
+    require(aba_restored_request.requested_inclusion_epoch >
+                aba_away.requested_inclusion_epoch &&
+            aba_restored_request.applied_inclusion_epoch ==
+                aba_base.applied_inclusion_epoch &&
+            aba_restored_request.signals.included,
+            "request ABA restores effective inclusion without aliasing requested epoch");
+    (void)aba.tick();
+    const auto aba_acknowledged = tile_at(aba, 0, 0);
+    require(aba_acknowledged.applied_inclusion_epoch ==
+                aba_acknowledged.requested_inclusion_epoch &&
+            aba_acknowledged.requested_inclusion_epoch >
+                aba_base.requested_inclusion_epoch,
+            "tick acknowledges the newest inclusion epoch even when geometry ABA-restores");
+}
+
+CYBERSAND_TEST_NOINLINE void event_halo_overlap_and_signed_geometry() {
+    auto config = tracked_config();
+    config.activity_block_size = 1;
+    // This fixture intentionally maps one discovery owner per cell. The phased
+    // event write can make two neighbouring write-domain chunks resident, so
+    // keep capacity above the resulting 320 owners; capacity refusal is covered
+    // separately by canonical_geometry_registration_and_capacity().
+    config.settled_discovery_tile_capacity = 512;
+    World world(config);
+    world.reserve_region({-8, 0, 17, 1});
+    service(world);
+
+    const auto halo_before = tile_at(world, 5, 0);
+    require(world.queue_explosion(0, 0, 1, 0), "minimum-radius event accepted");
+    const auto halo_pending = tile_at(world, 5, 0);
+    require(halo_pending.pending_event_count == 1 &&
+            halo_pending.signals.pending_event &&
+            halo_pending.event_revision > halo_before.event_revision,
+            "default r=2 marks the halo-only P=R+4 tile");
+    require(tile_at(world, -5, 0).signals.pending_event,
+            "negative-coordinate halo uses the same signed geometry");
+    (void)world.tick();
+    require(world.settled_discovery_halted() == DiscoveryHalt::None,
+            "ordinary event drain preserves representable observation");
+    const auto halo_drained = tile_at(world, 5, 0);
+    require(halo_drained.pending_event_count == 0 &&
+            !halo_drained.signals.pending_event,
+            "halo-only pending state drains after event execution");
+
+    const auto smaller_halo =
+        PrecisionProbe::event_observation_rect(0, 0, 1, 1);
+    require(smaller_halo.has_value() &&
+            smaller_halo->x == -4 && smaller_halo->y == -4 &&
+            smaller_halo->width == 9 && smaller_halo->height == 9,
+            "r=1 uses P=(R+2)+1 rather than R+2");
+    // Current material authority includes an active radius-2 Rocket rule, so a
+    // whole World with maximum_rule_radius=1 is intentionally invalid. Exercise
+    // the #57 geometry contract directly rather than weakening scheduler safety.
+
+    auto large_config = config;
+    large_config.maximum_rule_radius = 3;
+    World large(large_config);
+    large.reserve_region({0, 0, 8, 1});
+    service(large);
+    require(large.queue_explosion(0, 0, 1, 0), "r=3 event accepted");
+    require(tile_at(large, 6, 0).signals.pending_event,
+            "r>2 is added to the event effect reach");
+
+    World late(config);
+    require(late.queue_explosion(0, 0, 1, 0),
+            "event may be accepted before destination coverage is resident");
+    late.reserve_region({0, 0, 8, 1});
+    require(late.settled_discovery_halted() == DiscoveryHalt::None,
+            "late residency inherits representable event state without fencing");
+    require(tile_at(late, 5, 0).pending_event_count == 1,
+            "new residency inherits an outstanding event before payload readiness");
+
+    World corner(tracked_config());
+    corner.reserve_region({0, 0, 16, 16});
+    service(corner);
+    require(corner.queue_explosion(3, 3, 1, 0), "corner-crossing event accepted");
+    require(tile_at(corner, 8, 3).signals.pending_event &&
+            tile_at(corner, 8, 8).signals.pending_event,
+            "#57 halo covers both discovery-tile face and corner crossings");
+
+    World rejected(config);
+    const auto event_before = rejected.settled_discovery_producer_metrics().event_witnesses;
+    require(!rejected.queue_explosion(0, 0, 0, 0),
+            "radius zero remains authoritatively rejected");
+    require(rejected.settled_discovery_producer_metrics().event_witnesses == event_before,
+            "rejected event creates no observation witness");
+
+    World observation_overflow(tracked_config());
+    const auto accepted_x = std::numeric_limits<std::int64_t>::max() - 3;
+    require(observation_overflow.queue_explosion(accepted_x, 0, 1, 0),
+            "authoritative R+2 extent remains accepted at the signed endpoint");
+    require(observation_overflow.settled_discovery_halted() ==
+                DiscoveryHalt::ProducerFailure,
+            "unrepresentable wider P halo fail-closes observation without rejecting event");
+}
+
+CYBERSAND_TEST_NOINLINE void overlapping_event_counts_and_generation_fence() {
+    SettledWorldDiscoveryCoordinator coordinator(7001, 4, false);
+    const DiscoveryTileKey key{7001, 0, 0, 0, 0, 0, 0};
+    const DiscoveryBounds bounds{0, 0, 8, 8};
+    const DiscoverySignals signals{true, true, true, false, false, false};
+    require(coordinator.register_tile(key, bounds, 20, signals, 0) ==
+                DiscoveryOutcome::Accepted,
+            "direct sparse-event fixture registered");
+    const auto handle = coordinator.find_handle(key);
+    require(handle.has_value(), "direct sparse-event handle available");
+    require(coordinator.witness_event(*handle, true, 0) == DiscoveryOutcome::Accepted &&
+            coordinator.witness_event(*handle, true, 0) == DiscoveryOutcome::Accepted,
+            "overlapping events add independent incidences");
+    auto state = coordinator.tile(*handle);
+    require(state.has_value() && state->pending_event_count == 2 &&
+            state->signals.pending_event,
+            "overlap retains exact pending count two");
+    require(coordinator.witness_event(*handle, false, 0) == DiscoveryOutcome::Accepted,
+            "first overlapping event drains");
+    state = coordinator.tile(*handle);
+    require(state.has_value() && state->pending_event_count == 1 &&
+            state->signals.pending_event,
+            "first drain cannot clear the second event obligation");
+    require(coordinator.witness_event(*handle, false, 0) == DiscoveryOutcome::Accepted,
+            "second overlapping event drains");
+    state = coordinator.tile(*handle);
+    require(state.has_value() && state->pending_event_count == 0 &&
+            !state->signals.pending_event,
+            "last drain clears pending state without underflow");
+    const auto layout = coordinator.storage_layout();
+    const auto producer_metrics = coordinator.producer_metrics();
+    require(layout.sparse_witness_record_capacity == 4 &&
+            layout.sparse_witness_record_storage_bytes ==
+                layout.owner_record_storage_bytes &&
+            producer_metrics.event_pending_high_water == 2,
+            "non-payload witness storage is construction-bounded with exact high-water accounting");
+
+    testing::set_next_nonpayload_generation_limit(2);
+    SettledWorldDiscoveryCoordinator exhausted(7002, 1, false);
+    const DiscoveryTileKey exhausted_key{7002, 0, 0, 0, 0, 0, 0};
+    require(exhausted.register_tile(
+                exhausted_key, bounds, 20, signals, 0) == DiscoveryOutcome::Accepted,
+            "generation-exhaustion fixture registered");
+    const auto exhausted_handle = exhausted.find_handle(exhausted_key);
+    require(exhausted_handle.has_value() &&
+            exhausted.witness_event(*exhausted_handle, true, 0) ==
+                DiscoveryOutcome::Accepted,
+            "last representable event generation accepted");
+    require(exhausted.witness_event(*exhausted_handle, true, 0) ==
+                DiscoveryOutcome::Halted &&
+            exhausted.halted() == DiscoveryHalt::ProducerFailure,
+            "generation exhaustion fences instead of aliasing a reused witness");
+}
+
+CYBERSAND_TEST_NOINLINE void nonpayload_quiet_world_locality() {
+    World world(tracked_config());
+    world.reserve_region({0, 0, 24, 8});
+    service(world);
+    const auto before = world.settled_discovery_producer_metrics();
+    const auto far_revision = tile_at(world, 16, 0).summary.revision;
+    for (int tick = 0; tick < 8; ++tick) {
+        (void)world.tick();
+        service(world);
+    }
+    const auto after = world.settled_discovery_producer_metrics();
+    require(after.mask_witnesses == before.mask_witnesses &&
+            after.event_witnesses == before.event_witnesses &&
+            after.inclusion_witnesses == before.inclusion_witnesses &&
+            after.signal_observations == before.signal_observations &&
+            tile_at(world, 16, 0).summary.revision == far_revision,
+            "unchanged worlds perform no #63 resident-wide signal polling");
 }
 
 CYBERSAND_TEST_NOINLINE void occupancy_preserves_exact_underlying_tuple() {
@@ -366,6 +647,8 @@ CYBERSAND_TEST_NOINLINE void inclusion_reset_move_and_failure_quarantine() {
     try { (void)failed.tick(); } catch (const std::runtime_error&) { threw = true; }
     require(threw && failed.has_failed() &&
             failed.settled_discovery_halted() == DiscoveryHalt::ProducerFailure &&
+            failed.settled_discovery_coverage_state(0, 0) ==
+                DiscoveryCoverageState::Failed &&
             !failed.settled_discovery_tile(0).has_value() &&
             failed.advance_settled_discovery(100) == 0 &&
             failed.settled_region_count() == 0 &&
@@ -668,19 +951,23 @@ CYBERSAND_TEST_NOINLINE void integrated_region_worker_parity() {
 
 int main() {
     try {
-        direct_aba_exact_tuple_and_render_independence();
-        canonical_geometry_registration_and_capacity();
-        movement_mask_event_and_far_locality();
-        occupancy_preserves_exact_underlying_tuple();
-        water_transfer_witnesses_both_endpoints();
-        no_write_activity_deadline_and_epoch_wrap();
-        custom_geometry_signed_endpoints_and_policy_fence();
-        inclusion_reset_move_and_failure_quarantine();
-        reset_replacement_failure_retires_before_authority_loss();
-        disabled_neutrality_and_worker_parity();
-        integrated_region_publication_split_merge_and_refusal();
-        integrated_new_tile_registration_retires_facing_region();
-        integrated_region_worker_parity();
+        run_named("direct_aba_exact_tuple_and_render_independence", [] { direct_aba_exact_tuple_and_render_independence(); });
+        run_named("canonical_geometry_registration_and_capacity", [] { canonical_geometry_registration_and_capacity(); });
+        run_named("movement_mask_event_and_far_locality", [] { movement_mask_event_and_far_locality(); });
+        run_named("sparse_mask_coverage_and_inclusion_epochs", [] { sparse_mask_coverage_and_inclusion_epochs(); });
+        run_named("event_halo_overlap_and_signed_geometry", [] { event_halo_overlap_and_signed_geometry(); });
+        run_named("overlapping_event_counts_and_generation_fence", [] { overlapping_event_counts_and_generation_fence(); });
+        run_named("nonpayload_quiet_world_locality", [] { nonpayload_quiet_world_locality(); });
+        run_named("occupancy_preserves_exact_underlying_tuple", [] { occupancy_preserves_exact_underlying_tuple(); });
+        run_named("water_transfer_witnesses_both_endpoints", [] { water_transfer_witnesses_both_endpoints(); });
+        run_named("no_write_activity_deadline_and_epoch_wrap", [] { no_write_activity_deadline_and_epoch_wrap(); });
+        run_named("custom_geometry_signed_endpoints_and_policy_fence", [] { custom_geometry_signed_endpoints_and_policy_fence(); });
+        run_named("inclusion_reset_move_and_failure_quarantine", [] { inclusion_reset_move_and_failure_quarantine(); });
+        run_named("reset_replacement_failure_retires_before_authority_loss", [] { reset_replacement_failure_retires_before_authority_loss(); });
+        run_named("disabled_neutrality_and_worker_parity", [] { disabled_neutrality_and_worker_parity(); });
+        run_named("integrated_region_publication_split_merge_and_refusal", [] { integrated_region_publication_split_merge_and_refusal(); });
+        run_named("integrated_new_tile_registration_retires_facing_region", [] { integrated_new_tile_registration_retires_facing_region(); });
+        run_named("integrated_region_worker_parity", [] { integrated_region_worker_parity(); });
         std::cout << "settled World discovery tests passed\n";
         return 0;
     } catch (const std::exception& error) {

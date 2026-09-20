@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "status": "validated-development-runtime",
-  "source_commit": "b8fe9698ca2f7ae5f2473b4a975db1aad6487c52",
-  "source_tree": "fa7790e50ad849390440bd2532b04d30be85f917",
+  "source_commit": "688c934a63b22a0aee180b11d05a357d86643300",
+  "source_tree": "c4b54ddc2570e2b8e1fdd51ad5d6419975ded42e",
   "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
-  "sha256": "6e2cddc8c0cecb9ca7250d9e5d171f9055e4b519b5c529656d9c9a30dbad70d3",
-  "size": 1524112,
+  "sha256": "edc4399fc7d1b1140d678ceeaead5b402388719f7947e766764f6f2a30f8e84b",
+  "size": 1534728,
   "source_input_hash_kind": "SHA-256 of canonical Git blob bytes; CRLF working files normalize to LF",
   "source_inputs": {
     "godot/native_extension/cyber_demo_bridge.hpp": "92d1ada53f684ca92832f245399078d4f43fdba0b4c6c5e41ba99f265cf759a5",
@@ -27,22 +27,22 @@
     "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
     "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
     "native/include/cybersand/settled_regions.hpp": "09ad47a1167f7fd24af4b787ad2fc5736bf4cc2f7c7466a865e4803f6ef5b0e0",
-    "native/include/cybersand/settled_world_discovery.hpp": "c699a853871e93859ba6eb72ea24e4e180201a1ed2630246173acf00324fd377",
+    "native/include/cybersand/settled_world_discovery.hpp": "54adfe169342beb1b4c63f13b19b5e5dba3c230d0529f1780ff065fdb6e1abb8",
     "native/include/cybersand/transport_policy.hpp": "9204d1e7b112e260097ba3924c8653cde45568d5886d33b9bb53fdfa8019e348",
     "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
-    "native/include/cybersand/world.hpp": "3cf557e9f2f0478ffa3f4ab28f746bd64b8b27b94126e808b769b98ca3a8bae7",
+    "native/include/cybersand/world.hpp": "949ccb938588cfca4dd1865691db41ddb44a8f96eb8736461ff844e8b19b9763",
     "native/src/c_api.cpp": "9e70906c5489bd10ec2fd00663328c818fe8b281d5199e6a01d756b2cd9b6274",
     "native/src/material_rules.cpp": "711abb73d10fef68ace68996cab9a9b1a8f0c2f0b5d12a48934714d93d6c3a4a",
     "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
     "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
     "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
-    "native/src/settled_world_discovery.cpp": "a65eb4daac3116c73c0c5826bce7924ea7f03ff85c0d734882cde8ea99f6f7e8",
-    "native/src/world.cpp": "54e2558217784db166fd5c0512c013d219eea710011344224eb98b6b4d82b34f"
+    "native/src/settled_world_discovery.cpp": "1e0a9b97af52641efb46d49b3d44d6c0575dbf819841b87018c6e33d80e7467a",
+    "native/src/world.cpp": "974b44bb777583c6768f47e7985d59e2ea8d6d940bda3e60ff617987070ffdcb"
   },
-  "evidence": "docs/audits/2026-09-20-issue-62-stage3b-sparse-activity-deadline.md",
+  "evidence": "docs/audits/2026-09-20-issue-63-stage3b-sparse-nonpayload-witnesses.md",
   "validated_platform": "Linux x86_64 Godot 4.7",
-  "toolchain": "Ubuntu 24.04, GCC/G++ 13.3.0, binutils 2.42, SCons 4.10.1; godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496; Stage-3B #62 sparse activity/deadline source",
-  "acceptance": "Exact #62-source Linux x86_64 GDExtension build and ABI-floor validation passed in Actions run 35526661344. Exact-head Godot acceptance is rerun after publication.",
+  "toolchain": "Ubuntu 24.04, GCC/G++ 13.3.0, binutils 2.42, SCons 4.10.1; godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496; Stage-3B #63 sparse mask/event/inclusion/coverage source",
+  "acceptance": "Exact #63-source Linux x86_64 GDExtension build and ABI-floor validation passed in Actions run 35539993947. Exact-head Godot acceptance is rerun after publication.",
   "other_platforms": "Windows cross-build is from the same exact native source but is not Windows execution. Browser/WebAssembly execution and hardware-GPU/target-PC performance remain unavailable and are not claimed.",
-  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/35526661344"
+  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/35539993947"
 }
