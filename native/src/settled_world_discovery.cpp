@@ -418,7 +418,6 @@ struct SettledWorldDiscoveryCoordinator::Impl {
             const auto expected_revision = record.payload_revision;
             const auto current = journal.snapshot(record.handle);
             if (!current.has_value() || current->revision < expected_revision) {
-                add(metrics.payload_refresh_failures);
                 journal.fail();
                 if (regions != nullptr) regions->fail(RegionRefusal::SourceFailure);
                 return used;
@@ -445,7 +444,6 @@ struct SettledWorldDiscoveryCoordinator::Impl {
             ? journal.reconcile_queued_signals(record.handle, signals, tick)
             : journal.observe(record.handle, signals, tick);
         if (outcome == DiscoveryOutcome::Invalid && payload_owns_revision) {
-            add(metrics.activity_reconcile_failures);
             journal.fail();
             if (regions != nullptr) regions->fail(RegionRefusal::SourceFailure);
             return outcome;
@@ -973,7 +971,6 @@ std::size_t SettledWorldDiscoveryCoordinator::advance(
                 };
                 const auto outcome = state.regions->upsert(input);
                 if (outcome == RegionOutcome::Invalid || outcome == RegionOutcome::Stale) {
-                    add(state.metrics.region_ingest_failures);
                     state.journal.fail();
                     state.regions->fail();
                     return;
@@ -993,7 +990,6 @@ std::size_t SettledWorldDiscoveryCoordinator::advance_regions(std::size_t budget
 }
 
 void SettledWorldDiscoveryCoordinator::fail() noexcept {
-    add(impl_->metrics.explicit_observer_failures);
     impl_->journal.fail();
     if (impl_->regions != nullptr) impl_->regions->fail(RegionRefusal::SourceFailure);
 }
