@@ -3496,9 +3496,9 @@ void World::merge_job_effects(const JobEffects& effects) {
     }
     if (settled_discovery_->halted() != soliding::DiscoveryHalt::None) return;
 
-    // #61 exact payload invalidation is serialized first. Parent-local signal
-    // reconciliation below skips any tile with deferred payload work, so the
-    // payload mutation remains the sole revision witness for that tile.
+    // #61 exact payload invalidation is serialized first. Parent-local #62
+    // activity/deadline signals may then coalesce into that already-invalid
+    // queued record without manufacturing a second payload revision.
     for (std::size_t index = 0; index < effects.discovery_mutation_count; ++index) {
         const auto& report = effects.discovery_mutations[index];
         const soliding::DiscoveryTileKey key{
