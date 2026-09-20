@@ -347,6 +347,16 @@ CYBERSAND_TEST_NOINLINE void event_halo_overlap_and_signed_geometry() {
     require(tile_at(world, -5, 0).signals.pending_event,
             "negative-coordinate halo uses the same signed geometry");
     (void)world.tick();
+    if (world.settled_discovery_halted() != DiscoveryHalt::None) {
+        const auto metrics = world.settled_discovery_producer_metrics();
+        throw std::runtime_error(
+            "event drain fenced discovery: global_fences=" +
+            std::to_string(metrics.global_fences) +
+            " observation_fences=" + std::to_string(metrics.observation_fences) +
+            " generation_exhaustions=" +
+            std::to_string(metrics.nonpayload_generation_exhaustions) +
+            " event_witnesses=" + std::to_string(metrics.event_witnesses));
+    }
     const auto halo_drained = tile_at(world, 5, 0);
     require(halo_drained.pending_event_count == 0 &&
             !halo_drained.signals.pending_event,
@@ -374,6 +384,17 @@ CYBERSAND_TEST_NOINLINE void event_halo_overlap_and_signed_geometry() {
     require(late.queue_explosion(0, 0, 1, 0),
             "event may be accepted before destination coverage is resident");
     late.reserve_region({0, 0, 8, 1});
+    if (late.settled_discovery_halted() != DiscoveryHalt::None) {
+        const auto metrics = late.settled_discovery_producer_metrics();
+        throw std::runtime_error(
+            "late-residency registration fenced discovery: global_fences=" +
+            std::to_string(metrics.global_fences) +
+            " observation_fences=" + std::to_string(metrics.observation_fences) +
+            " registration_refusals=" +
+            std::to_string(metrics.registration_refusals) +
+            " coverage_notifications=" +
+            std::to_string(metrics.coverage_notifications));
+    }
     require(tile_at(late, 5, 0).pending_event_count == 1,
             "new residency inherits an outstanding event before payload readiness");
 
