@@ -188,7 +188,9 @@ public:
                                    std::int16_t ambient_temperature,
                                    DiscoverySignals signals, std::uint64_t tick,
                                    std::uint64_t mask_occupancy_count = 0,
-                                   std::uint64_t pending_event_count = 0) noexcept;
+                                   std::uint64_t pending_event_count = 0,
+                                   bool requested_included = true,
+                                   bool applied_included = true) noexcept;
     DiscoveryOutcome dirty(DiscoveryTileKey key, ProducerReason reason,
                            std::uint64_t tick) noexcept;
     DiscoveryOutcome dirty(WorldDiscoveryTileHandle handle, ProducerReason reason,
