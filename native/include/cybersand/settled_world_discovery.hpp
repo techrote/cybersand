@@ -26,6 +26,17 @@ enum class ProducerReason : std::uint8_t {
     Count,
 };
 
+enum class DiscoveryCoverageState : std::uint8_t {
+    NotResident,
+    ResidentUntracked,
+    RegisteredUnknown,
+    Ready,
+    Excluded,
+    Blocked,
+    CapacityRefused,
+    Failed,
+};
+
 struct WorldDiscoveryMetrics {
     std::array<std::uint64_t, static_cast<std::size_t>(ProducerReason::Count)> notifications{};
     std::array<std::uint64_t, static_cast<std::size_t>(ProducerReason::Count)> invalidated_tiles{};
@@ -57,6 +68,18 @@ struct WorldDiscoveryMetrics {
     std::uint64_t deadline_generation_exhaustions{};
     std::uint64_t signal_report_records{};
     std::uint64_t signal_report_overflows{};
+    std::uint64_t mask_witnesses{};
+    std::uint64_t mask_reconfigurations{};
+    std::uint64_t mask_occupancy_high_water{};
+    std::uint64_t event_witnesses{};
+    std::uint64_t event_pending_high_water{};
+    std::uint64_t inclusion_requests{};
+    std::uint64_t inclusion_applications{};
+    std::uint64_t inclusion_witnesses{};
+    std::uint64_t nonpayload_generation_exhaustions{};
+    std::uint64_t coverage_notifications{};
+    std::uint64_t coverage_unknown_revocations{};
+    std::uint64_t coverage_state_transitions{};
 };
 
 struct WorldDiscoveryTileHandle {
@@ -69,6 +92,13 @@ struct WorldDiscoveryTileSnapshot {
     DiscoveryTileKey key{};
     DiscoverySignals signals{};
     DiscoverySummary summary{};
+    DiscoveryCoverageState coverage{DiscoveryCoverageState::RegisteredUnknown};
+    std::uint64_t mask_occupancy_count{};
+    std::uint64_t pending_event_count{};
+    std::uint64_t mask_revision{};
+    std::uint64_t event_revision{};
+    std::uint64_t requested_inclusion_epoch{};
+    std::uint64_t applied_inclusion_epoch{};
 };
 
 struct DiscoveryParentKey {
@@ -113,6 +143,8 @@ struct WorldDiscoveryStorageLayout {
     std::size_t activity_parent_storage_bytes{};
     std::size_t activity_parent_index_storage_bytes{};
     std::size_t deadline_heap_storage_bytes{};
+    std::size_t sparse_witness_record_capacity{};
+    std::size_t sparse_witness_record_storage_bytes{};
     std::size_t region_tile_capacity{};
     std::size_t region_edge_capacity{};
     std::size_t region_frontier_capacity{};
@@ -135,6 +167,7 @@ struct WorldDiscoveryStorageLayout {
 namespace testing {
 void fail_next_settled_world_discovery_construction() noexcept;
 void set_next_deadline_generation_limit(std::uint64_t limit) noexcept;
+void set_next_nonpayload_generation_limit(std::uint64_t limit) noexcept;
 }
 
 class SettledWorldDiscoveryCoordinator final {
@@ -153,7 +186,9 @@ public:
 
     DiscoveryOutcome register_tile(DiscoveryTileKey key, DiscoveryBounds bounds,
                                    std::int16_t ambient_temperature,
-                                   DiscoverySignals signals, std::uint64_t tick) noexcept;
+                                   DiscoverySignals signals, std::uint64_t tick,
+                                   std::uint64_t mask_occupancy_count = 0,
+                                   std::uint64_t pending_event_count = 0) noexcept;
     DiscoveryOutcome dirty(DiscoveryTileKey key, ProducerReason reason,
                            std::uint64_t tick) noexcept;
     DiscoveryOutcome dirty(WorldDiscoveryTileHandle handle, ProducerReason reason,
@@ -168,6 +203,23 @@ public:
                              ProducerReason reason, std::uint64_t tick) noexcept;
     DiscoveryOutcome observe(WorldDiscoveryTileHandle handle, DiscoverySignals signals,
                              ProducerReason reason, std::uint64_t tick) noexcept;
+
+    DiscoveryOutcome witness_mask(WorldDiscoveryTileHandle handle, bool add,
+                                  std::uint64_t tick) noexcept;
+    DiscoveryOutcome witness_mask_reconfiguration(WorldDiscoveryTileHandle handle,
+                                                  std::uint64_t tick) noexcept;
+    DiscoveryOutcome witness_event(WorldDiscoveryTileHandle handle, bool add,
+                                   std::uint64_t tick) noexcept;
+    DiscoveryOutcome begin_inclusion_request() noexcept;
+    DiscoveryOutcome apply_inclusion_request() noexcept;
+    DiscoveryOutcome witness_inclusion(WorldDiscoveryTileHandle handle,
+                                       bool requested_included,
+                                       bool applied_included,
+                                       std::uint64_t tick) noexcept;
+    [[nodiscard]] std::uint64_t requested_inclusion_epoch() const noexcept;
+    [[nodiscard]] std::uint64_t applied_inclusion_epoch() const noexcept;
+    [[nodiscard]] DiscoveryCoverageState coverage_state(
+        WorldDiscoveryTileHandle handle) const noexcept;
 
     DiscoveryOutcome register_activity_parent(DiscoveryParentKey key, bool active,
                                               std::uint64_t deadline_due) noexcept;
