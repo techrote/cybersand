@@ -423,7 +423,8 @@ struct SettledWorldDiscoveryCoordinator::Impl {
     DiscoveryOutcome observe_record(std::size_t record_index, DiscoverySignals signals,
                                     ProducerReason reason, std::uint64_t tick) noexcept {
         auto& record = records[record_index];
-        const bool payload_owns_revision = record.payload_pending;
+        const bool payload_owns_revision =
+            record.payload_pending && reason == ProducerReason::ActivityOrDeadline;
         const auto outcome = payload_owns_revision
             ? journal.reconcile_queued_signals(record.handle, signals, tick)
             : journal.observe(record.handle, signals, tick);
