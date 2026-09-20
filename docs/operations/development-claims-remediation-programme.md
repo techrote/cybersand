@@ -45,7 +45,7 @@ RAG describes remediation state, not severity of the original subsystem.
 | F03 premature closure semantics | Amber | Historical incident retained; process control still missing. | #86 |
 | F04 formal Water H blinding | Red | #19 simulation/presentation evidence valid; formal blind capture not ready. | #84 |
 | F05 append-only H evidence | Red | Formal observation durability incomplete. | #84 |
-| F06-F11 #26 successor apparatus | Red | Exact candidate rejections stand; apparatus v1 cannot govern #45 acceptance. | existing #49 -> #45 |
+| F06-F11 #26 successor apparatus | Amber | #49 v2 correction and source-matched Current-Water baseline are available; apparatus v1 remains historical and #26's exact candidate rejections stand. Independent #87 exit audit is still required before REM marks the finding Green. | #49 satisfied; #87 verifies |
 | F12 platform evidence vocabulary | Amber | Specific #26 correction landed; repository-wide current truth still needs sweep. | #85 |
 | F13 MS-001 corrected historical interpretation | Amber | Corrections are retained; guard against stale present-tense reversion. | #85 |
 | F14 #12 Stage-3A overclosure | Amber | #12 is open; Stage 3B active; Stage 4 blocked. | #85 guard; #12/#56-#70 execute |
@@ -65,7 +65,7 @@ exit audit and must inspect current evidence rather than inherit child self-rati
  ├─> #81 REM-002 #11 integration --------> #83 REM-004 broad body/granular
  ├─> #82 REM-003 broad player/granular
  ├─> #84 REM-005 formal Water H capture
- ├─> #49 existing Water apparatus --------> #45 Water head successor
+ ├─> #49 existing Water apparatus v2 -----> #87 independent exit audit
  ├─> #85 REM-006 current-truth/platform/counter sweep
  └─> #86 REM-007 closure/ownership/validation controls
 
@@ -177,7 +177,7 @@ unrelated programme by policy fiat.
 | #82 REM-003 | Current player/granular behaviour characterized/redesigned within its authority; relevant automated coverage and explicit owner gameplay acceptance or explicit rejected/no-go disposition. |
 | #83 REM-004 | Starts after #81; current body/granular envelope tested beyond the historical ordinary rectangle case; explicit owner gameplay acceptance or explicit rejected/no-go disposition. |
 | #84 REM-005 | Formal blind-study arm identity inaccessible to the operator during capture; observations retained append-only with reconstructible post-reveal provenance; #19 simulation/presentation semantics unchanged. |
-| #49 existing | Versioned corrected Water metrics/fixtures/runner, adversarial regressions, fresh Current-Water baseline and honest active/sleep/censoring evidence; old #26 archive untouched. |
+| #49 existing | **Satisfied on the implementation side:** versioned corrected Water metrics/fixtures/runner, adversarial regressions, fresh source-matched Current-Water baseline and honest active/quiescent/censoring evidence; old #26 archive untouched. #87 still verifies the landed repair independently. |
 | #85 REM-006 | Current docs/source/platform/counter truth reconciled, including current carrier size, unsupported-vs-zero semantics and stale programme summaries; corrected historical incidents preserved. |
 | #86 REM-007 | Repository-native multidimensional closure state, one active implementation owner/write set convention, validation-precondition receipts and stop-on-blocked rules are enforceable/retrievable. |
 | #87 REM-008 | Independent exact-head audit maps every F01-F19 item to Fixed, Historically qualified, or Remaining limitation with an explicit owner; checks current source/evidence rather than trusting child closure. |
@@ -190,8 +190,11 @@ It may not manufacture a pass by weakening its intended behavioural objective.
 #49 is the sole corrective owner for F06-F11. REM-001 does not reopen #26 and
 does not copy its corrective scope into a new issue.
 
-The remediation requirement remains #49's apparatus repair. Broader Water
-architecture routing is now extended by the independent
+The remediation implementation requirement is now supplied by #49's corrected v2
+apparatus and source-matched
+[Current-Water baseline](../audits/2026-09-20-issue-49-water-apparatus-v2-baseline.md).
+F06-F11 remain Amber here until #87 independently verifies the landed repair.
+Broader Water architecture routing remains governed by the independent
 [WEX programme](water-hybrid-pressure-extension-programme.md):
 
 `#49 apparatus || WEX evidence -> #95 synthesis -> #45 proceed/narrow/recharter/defer/no-go -> directional reassessment -> #18 G-M admission/no-go -> #20/G-B if justified -> #14 G-final`.

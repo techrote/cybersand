@@ -38,7 +38,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Local wake, conservative phase wake, dirty/sleep | [Activity](../systems/activity-dirty-regions-and-waking.md) |
 | Material IDs, adapted rules, staggered cadence | [Material kernels](../systems/materials-and-rule-kernels.md) |
 | Native Water versus discrete fallback, viscosity/rest | [Water design](../systems/water-design.md) |
-| What survives #26 review, what must #49 repair, and when may #45 proceed? | [Water design](../systems/water-design.md), [#26 post-merge review](../audits/2026-09-19-issue-26-post-merge-review.md), [architecture programme](../operations/architecture-programme.md) |
+| What survives #26 review, what did #49 repair, and what now gates #45? | [Water design](../systems/water-design.md), [#26 post-merge review](../audits/2026-09-19-issue-26-post-merge-review.md), [#49 v2 registration](../audits/2026-09-20-issue-49-water-apparatus-v2-registration.md), [#49 Current-Water v2 baseline](../audits/2026-09-20-issue-49-water-apparatus-v2-baseline.md), [architecture programme](../operations/architecture-programme.md) |
 | Why can deep connected Water keep unequal levels, what did #26 reject, and what comes next? | [Water design](../systems/water-design.md), [architecture programme](../operations/architecture-programme.md), [#26 evidence](../audits/2026-09-19-issue-26-water-leveling.md) |
 | Why test hybrid Water sheets before adding another pressure solver? | [Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md), [Water design](../systems/water-design.md), [soliding programme](../operations/soliding-programme.md) |
 | Is the barrel a special physics object, and was its historical support result owner-accepted? | [Product intent](product-intent-and-priorities.md), [Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md), [remediation programme](../operations/development-claims-remediation-programme.md) |
@@ -116,9 +116,11 @@ and [completion evidence](../audits/2026-09-12-issue-19-water-feel-lab.md).
 #19 supplied the validated simulation/presentation apparatus. Formal blind-study
 capture now waits on #84. Separately, later H-related evidence and #26 identify a
 bulk head/leveling defect first; both #26 bounded local candidates remain rejected.
-Post-merge review requires #49 to repair/version the successor apparatus before #45
-implementation/acceptance. #18 remains held through #49 -> #45 until the bulk
-confound is resolved and directional references can be interpreted cleanly. #20
+Post-merge review required #49 to repair/version the successor apparatus; the
+corrected v2 control is now available in the dated #49 baseline. #95 must synthesize
+that control with WEX evidence before #45 may select a disposition. #18 remains held
+until the resulting bulk-head disposition lets directional references be
+interpreted cleanly. #20
 remains downstream of #18/G-M; G-final remains open.
 
 For the pre-refinement identity/scope reconciliation, use the [dated reconciliation audit](../audits/2026-09-11-programme-gate-reconciliation.md).

@@ -1,0 +1,103 @@
+name: Issue 49 Water apparatus v2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'native/bench/water_issue49.cpp'
+      - 'tools/physics/water_issue49.py'
+      - 'tools/physics/test_water_issue49.py'
+      - 'docs/audits/2026-09-20-issue-49-*.md'
+      - 'docs/operations/development-claims-remediation-programme.md'
+      - 'docs/operations/cybersand-codex-development-handover.md'
+      - 'docs/operations/water-hybrid-pressure-extension-programme.md'
+      - 'docs/reference/status-and-roadmap.md'
+      - 'docs/reference/validation-evidence.md'
+      - 'docs/reference/retrieval-index.md'
+      - 'docs/reference/retrieval-corpus.json'
+      - 'docs/systems/water-design.md'
+      - '.github/workflows/issue49-water-apparatus.yml'
+  pull_request:
+    paths:
+      - 'native/bench/water_issue49.cpp'
+      - 'tools/physics/water_issue49.py'
+      - 'tools/physics/test_water_issue49.py'
+      - 'docs/audits/2026-09-20-issue-49-*.md'
+      - 'docs/operations/development-claims-remediation-programme.md'
+      - 'docs/operations/cybersand-codex-development-handover.md'
+      - 'docs/operations/water-hybrid-pressure-extension-programme.md'
+      - 'docs/reference/status-and-roadmap.md'
+      - 'docs/reference/validation-evidence.md'
+      - 'docs/reference/retrieval-index.md'
+      - 'docs/reference/retrieval-corpus.json'
+      - 'docs/systems/water-design.md'
+      - '.github/workflows/issue49-water-apparatus.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: issue49-water-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  apparatus:
+    runs-on: ${{ vars.NATIVE_RUNNER || 'sengi-standard-4-ubuntu-2404' }}
+    timeout-minutes: 60
+    env:
+      CC: gcc-13
+      CXX: g++-13
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+
+      - name: Record tool identity
+        run: |
+          git rev-parse HEAD
+          git status --porcelain=v2
+          gcc-13 --version
+          g++-13 --version
+          python3 --version
+
+      - name: Run apparatus and runner adversarial regressions
+        run: |
+          timeout 2m python3 tools/physics/test_water_issue49.py
+          timeout 2m python3 -O tools/physics/test_water_issue49.py
+
+      - name: Sanitize the successor native harness
+        run: |
+          mkdir -p build
+          timeout 10m g++-13 -std=c++20 -O1 -g -pthread -fno-omit-frame-pointer \
+            -fsanitize=address,undefined -Inative/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/src/render_snapshot.cpp native/bench/water_issue49.cpp \
+            -o build/water_issue49_sanitized
+          timeout 5m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 \
+            UBSAN_OPTIONS=halt_on_error=1 \
+            ./build/water_issue49_sanitized unequal-head-two-limb-v2 0 1 0 \
+            > build/water_issue49_sanitized.json
+          python3 -c 'import json; json.load(open("build/water_issue49_sanitized.json", encoding="utf-8"))'
+
+      - name: Run preregistered Current-Water apparatus-v2 baseline
+        run: |
+          mkdir -p build
+          set +e
+          timeout 50m python3 tools/physics/water_issue49.py build/issue49-water-v2 --cxx g++-13
+          status=$?
+          echo "campaign exit: $status"
+          test ! -f build/issue49-water-v2/summary.json || cat build/issue49-water-v2/summary.json
+          test ! -f build/issue49-water-v2/completion-manifest.json || cat build/issue49-water-v2/completion-manifest.json
+          exit "$status"
+
+      - name: Retain complete apparatus evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: issue49-water-v2-${{ github.run_id }}
+          path: build/issue49-water-v2/
+          if-no-files-found: error
+          retention-days: 30

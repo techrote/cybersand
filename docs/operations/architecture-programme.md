@@ -51,19 +51,27 @@ Current architecture ordering for the affected path is therefore:
 #12 coherent soliding and the MicroScenarios/#28/#29 lane remain independently
 parallel under their own ownership/dependency rules.
 
-## Post-#26 apparatus correction gate — 2026-09-19
+## Post-#26 apparatus correction gate — 2026-09-20
 
 Independent post-merge review preserves #26 Outcome B for its two exact rejected
-local candidates, but its retained apparatus v1 is not sufficient to govern
-successor acceptance. [#49](https://github.com/techrote/cybersand/issues/49) owns
-the bounded metric/fixture/evidence repair.
+local candidates, while apparatus v1 remains historical/qualified evidence.
+[#49](https://github.com/techrote/cybersand/issues/49) has supplied the
+versioned corrected apparatus and fresh source-matched
+[Current-Water v2 control](../audits/2026-09-20-issue-49-water-apparatus-v2-baseline.md).
 
-No #45 implementation or numeric candidate acceptance may begin until #49 merges
-with a versioned corrected apparatus and fresh successor control baseline.
+The corrected control uses explicit wet coverage, categorical censoring, the clean
+roofed-passage two-limb fixture, fixture-appropriate contours, phase-separated
+timing and failure-retaining campaign accounting. Current Water does not reach
+the preregistered half-life or <=1-cell target in the clean two-limb control by
+tick 4800.
+
+#49 therefore no longer blocks on apparatus availability. #45 still may not select
+or accept an implementation directly: the live decision join is #95, which must
+synthesize corrected #49 controls with available WEX evidence.
 
 Affected architecture order:
 
-`#49 -> #45 bulk-head disposition -> directional-reference reassessment -> #18 G-M admission/no-go -> #20/G-B if justified -> G-final`.
+`#49 corrected apparatus + WEX evidence -> #95 synthesis -> #45 proceed/narrow/recharter/defer/no-go -> directional-reference reassessment -> #18 G-M admission/no-go -> #20/G-B if justified -> G-final`.
 
 This correction changes no production Water semantics and does not reopen #26.
 
@@ -86,7 +94,7 @@ The clarification is:
 - before adding a new Water-specific pressure/momentum mechanism, test whether the
   generic #12 cell↔Rapier hybrid substrate can support at most roughly 3-5
   segmented upper-volume Water sheet tiers as bounded load/momentum carriers;
-- #49 continues independently and remains mandatory apparatus correction;
+- #49's corrected v2 apparatus/control is available and remains the mandatory successor evidence;
 - #45 remains the existing saturated-head architecture owner, but **implementation
   selection is held for the WEX synthesis** rather than assumed inevitable;
 - the corrected communicating-head fixture must state whether headspaces are
