@@ -377,6 +377,8 @@ void future_deadline_parking_reentry_and_observer_neutrality() {
     require(reentered.deadline_reentries != 0 &&
                 reentered.deadline_consumptions != 0,
             "re-entry failed to reconcile and consume the already-due obligation");
+    require(tile_at(world, 0, 0).signals.included,
+            "re-entry failed to restore #63-owned inclusion state");
 
     auto observed_config = config;
     auto control_config = config;
