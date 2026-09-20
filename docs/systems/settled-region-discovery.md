@@ -209,7 +209,7 @@ total tick latency. Counters saturate; identity/revision counters refuse exhaust
 `storage_bytes()` includes the fixed records/queue, not a World or native heap estimate.
 Connectivity separately records extraction, components, boundary comparisons,
 adjacency, incident-edge visits/retirement, typed dependency allocation/high-water/
-refusal, subscriber invalidation, absence subscriptions, deferred cleanup,
+refusal, subscriber invalidation/reuse, absence subscriptions, deferred cleanup,
 seed probes, traversal/validation/publication work, region area/count and latency.
 `settled_region_storage_bytes()` reports bounded structural connectivity storage
 for the configured runtime capacities; it is not a resident-set measurement.
