@@ -3,7 +3,13 @@ name: Native C++ validation
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - '.circleci/**'
+      - '.github/workflows/gdextension.yml'
   pull_request:
+    paths-ignore:
+      - '.circleci/**'
+      - '.github/workflows/gdextension.yml'
   workflow_dispatch:
 
 permissions:
