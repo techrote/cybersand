@@ -95,11 +95,18 @@ unreached thresholds use a success-valued numeric zero, the historical fixture
 named `unequal-head-u-tube` is actually a three-compartment communicating
 geometry, and whole-run p95 mixes active and sleeping phases.
 
-[#49](https://github.com/techrote/cybersand/issues/49) must repair/version those
-metrics, add a clean two-limb communicating-head fixture and fresh Current-Water
-control baseline, and harden evidence output before #45 may freeze thresholds or
-accept/reject a successor mechanism. Preserve all original #26 artifacts as
-historical evidence.
+[#49](https://github.com/techrote/cybersand/issues/49) now supplies the
+versioned correction: explicit wet coverage, categorical censoring, a clean
+roofed-passage two-limb communicating-head fixture, fixture-appropriate contour
+evidence, phase-separated timing and failure-retaining campaign accounting. See
+the [frozen v2 registration](../audits/2026-09-20-issue-49-water-apparatus-v2-registration.md)
+and [source-matched Current-Water baseline](../audits/2026-09-20-issue-49-water-apparatus-v2-baseline.md).
+
+Current Water remains unchanged. In the clean two-limb control it does not reach
+the preregistered half-life or <=1-cell target by tick 4800. Preserve all original
+#26 artifacts as historical evidence; this corrected negative control does not
+select a successor mechanism. #95 must synthesize it with WEX evidence before #45
+may proceed, narrow, recharter, defer or no-go.
 
 ## Hybrid / pressure extension after the 2026-09-20 owner clarification
 
@@ -121,11 +128,11 @@ may then test, only on a suitable generic #12 hybrid substrate, at most roughly
 3-5 **segmented upper-volume** solided-Water sheet tiers. The candidate is not a
 monolithic core or full-depth lamination and does not authorize production adoption.
 
-#49 continues to own the corrected successor apparatus. #45 remains the existing
-saturated-head architecture question, but a new pressure/head mechanism is no
-longer assumed inevitable: [#95](https://github.com/techrote/cybersand/issues/95)
-must synthesize corrected #49 controls and WEX evidence before #45 is instructed to
-proceed, narrow, recharter, defer or no-go.
+#49's corrected successor apparatus/control is now available. #45 remains the
+existing saturated-head architecture question, but a new pressure/head mechanism
+is not assumed inevitable: [#95](https://github.com/techrote/cybersand/issues/95)
+must synthesize the corrected #49 control and WEX evidence before #45 is instructed
+to proceed, narrow, recharter, defer or no-go.
 
 A communicating-head equal-level fixture must state its gas boundary assumption.
 Shared/vented headspaces can legitimately use the same atmospheric boundary;
