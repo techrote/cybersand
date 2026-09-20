@@ -739,6 +739,7 @@ void World::register_discovery_chunk(ChunkCoord coord, const Chunk& chunk) noexc
             const auto activity_index = static_cast<std::size_t>(activity_y) *
                 static_cast<std::size_t>(chunk.activity_blocks_per_axis) +
                 static_cast<std::size_t>(activity_x);
+            bool parent_registered = false;
             for (std::int32_t subtile_y = 0; subtile_y < block_height; subtile_y += 32) {
                 for (std::int32_t subtile_x = 0; subtile_x < block_width; subtile_x += 32) {
                     const soliding::DiscoveryBounds bounds{
@@ -764,6 +765,16 @@ void World::register_discovery_chunk(ChunkCoord coord, const Chunk& chunk) noexc
                         key, bounds, config_.ambient_temperature, signals, tick_index_);
                     if (outcome == soliding::DiscoveryOutcome::Capacity ||
                         outcome == soliding::DiscoveryOutcome::Halted) return;
+                    if (!parent_registered) {
+                        const auto& block = chunk.activity_blocks[activity_index];
+                        const auto parent_outcome = settled_discovery_->register_activity_parent(
+                            discovery_parent_key(coord, activity_index),
+                            block.active, block.next_interaction_tick);
+                        if (parent_outcome == soliding::DiscoveryOutcome::Capacity ||
+                            parent_outcome == soliding::DiscoveryOutcome::Halted ||
+                            parent_outcome == soliding::DiscoveryOutcome::Invalid) return;
+                        parent_registered = true;
+                    }
                 }
             }
         }
