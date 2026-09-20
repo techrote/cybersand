@@ -649,7 +649,8 @@ void World::observe_discovery_activity_parent(
                 settled_discovery_->incarnation(), coord.y, coord.x,
                 activity_y, activity_x, subtile_y / 32, subtile_x / 32};
             const auto handle = settled_discovery_->find_handle(key);
-            if (!handle.has_value()) continue;
+            if (!handle.has_value() ||
+                settled_discovery_->payload_refresh_pending(*handle)) continue;
             const auto previous = settled_discovery_->tile(*handle);
             if (!previous.has_value()) continue;
             const soliding::DiscoveryBounds bounds{
@@ -887,10 +888,10 @@ void World::dirty_discovery_cell(std::int64_t x, std::int64_t y,
         static_cast<std::size_t>(target.local_y / config_.activity_block_size) *
             static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
         static_cast<std::size_t>(target.local_x / config_.activity_block_size);
-    witness_discovery_activity(target.chunk, activity_index);
     const auto handle = settled_discovery_->find_handle(discovery_tile_key(target));
-    if (!handle.has_value()) return;
-    (void)settled_discovery_->notify_payload(*handle, reason, tick_index_);
+    if (handle.has_value())
+        (void)settled_discovery_->notify_payload(*handle, reason, tick_index_);
+    witness_discovery_activity(target.chunk, activity_index);
 }
 
 void World::refresh_discovery_signals(soliding::ProducerReason reason) noexcept {
@@ -1406,7 +1407,8 @@ void World::mark_cell_dirty(Chunk& chunk, std::int32_t local_x, std::int32_t loc
     chunk.dirty_max_y = std::max(chunk.dirty_max_y, local_y);
 }
 
-void World::wake_cell_neighborhood(std::int64_t x, std::int64_t y) {
+void World::wake_cell_neighborhood(std::int64_t x, std::int64_t y,
+                                   bool reconcile_discovery) {
     const auto centre = address(x, y);
     const auto block_x = centre.local_x / config_.activity_block_size;
     const auto block_y = centre.local_y / config_.activity_block_size;
@@ -1447,7 +1449,8 @@ void World::wake_cell_neighborhood(std::int64_t x, std::int64_t y) {
             block.active = true;
             block.quiet_ticks = 0;
             chunk->active = true;
-            witness_discovery_activity(target.chunk, block_index);
+            if (reconcile_discovery)
+                witness_discovery_activity(target.chunk, block_index);
         }
     }
 }
@@ -3411,6 +3414,10 @@ void World::merge_job_effects(const JobEffects& effects) {
         physics_totals_->overflow += effects.physics->overflow;
     }
     if (effects.hard_surface_changed) ++hard_surface_revision_;
+
+    // Merge authoritative block/chunk state first. Discovery reconciliation is
+    // deliberately deferred until the exact #61 payload records are invalidated,
+    // so an activity wake cannot create a second revision for the same mutation.
     for (std::size_t effect_index = 0; effect_index < effects.chunk_count; ++effect_index) {
         const auto& effect = effects.chunks[effect_index];
         auto* chunk = find_chunk(effect.chunk);
@@ -3450,11 +3457,85 @@ void World::merge_job_effects(const JobEffects& effects) {
                         static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
                     static_cast<std::size_t>(block_x);
                 auto& block = chunk->activity_blocks[block_index];
-                if (!block.active) record_physics(PhysicsEvent::BlockWake, Material::Empty, Material::Empty, 0, 0, nullptr);
+                if (!block.active)
+                    record_physics(PhysicsEvent::BlockWake, Material::Empty,
+                                   Material::Empty, 0, 0, nullptr);
                 block.active = true;
                 block.changed_this_tick = true;
                 block.quiet_ticks = 0;
                 chunk->active = true;
+
+                const auto local_left = block_x * config_.activity_block_size;
+                const auto local_top = block_y * config_.activity_block_size;
+                const auto local_right =
+                    std::min(local_left + config_.activity_block_size, config_.chunk_size) - 1;
+                const auto local_bottom =
+                    std::min(local_top + config_.activity_block_size, config_.chunk_size) - 1;
+                const auto world_origin_x = effect.chunk.x * config_.chunk_size;
+                const auto world_origin_y = effect.chunk.y * config_.chunk_size;
+                wake_cell_neighborhood(
+                    world_origin_x + local_left, world_origin_y + local_top, false);
+                wake_cell_neighborhood(
+                    world_origin_x + local_right, world_origin_y + local_top, false);
+                wake_cell_neighborhood(
+                    world_origin_x + local_left, world_origin_y + local_bottom, false);
+                wake_cell_neighborhood(
+                    world_origin_x + local_right, world_origin_y + local_bottom, false);
+            }
+        }
+    }
+
+    if (settled_discovery_ == nullptr) return;
+    settled_discovery_->note_worker_report_records(effects.discovery_mutation_count);
+    settled_discovery_->note_signal_report_records(effects.discovery_signal_count);
+    if (effects.discovery_mutation_overflow || effects.discovery_signal_overflow) {
+        if (effects.discovery_mutation_overflow)
+            settled_discovery_->fence_lost_payload_report();
+        if (effects.discovery_signal_overflow)
+            settled_discovery_->fence_lost_signal_report();
+        return;
+    }
+    if (settled_discovery_->halted() != soliding::DiscoveryHalt::None) return;
+
+    // #61 exact payload invalidation is serialized first. Parent-local signal
+    // reconciliation below skips any tile with deferred payload work, so the
+    // payload mutation remains the sole revision witness for that tile.
+    for (std::size_t index = 0; index < effects.discovery_mutation_count; ++index) {
+        const auto& report = effects.discovery_mutations[index];
+        const soliding::DiscoveryTileKey key{
+            settled_discovery_->incarnation(),
+            report.chunk.y, report.chunk.x,
+            report.activity_y, report.activity_x,
+            report.subtile_y, report.subtile_x,
+        };
+        const auto handle = settled_discovery_->find_handle(key);
+        if (!handle.has_value()) continue;
+        (void)settled_discovery_->notify_payload(
+            *handle, soliding::ProducerReason::WorkerMutation, tick_index_,
+            report.mutation_count);
+        if (settled_discovery_->halted() != soliding::DiscoveryHalt::None) return;
+    }
+
+    // Reconcile every block/neighbor wake caused by the merged writes. The
+    // authoritative wake already occurred above; this second deterministic pass
+    // only supplies the sparse observer witness after payload invalidation.
+    for (std::size_t effect_index = 0; effect_index < effects.chunk_count; ++effect_index) {
+        const auto& effect = effects.chunks[effect_index];
+        auto* chunk = find_chunk(effect.chunk);
+        if (chunk == nullptr) {
+            settled_discovery_->fence_lost_signal_report();
+            return;
+        }
+        const auto minimum_block_x = effect.minimum_x / config_.activity_block_size;
+        const auto minimum_block_y = effect.minimum_y / config_.activity_block_size;
+        const auto maximum_block_x = effect.maximum_x / config_.activity_block_size;
+        const auto maximum_block_y = effect.maximum_y / config_.activity_block_size;
+        for (auto block_y = minimum_block_y; block_y <= maximum_block_y; ++block_y) {
+            for (auto block_x = minimum_block_x; block_x <= maximum_block_x; ++block_x) {
+                const auto block_index =
+                    static_cast<std::size_t>(block_y) *
+                        static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
+                    static_cast<std::size_t>(block_x);
                 witness_discovery_activity(effect.chunk, block_index);
 
                 const auto local_left = block_x * config_.activity_block_size;
@@ -3465,19 +3546,18 @@ void World::merge_job_effects(const JobEffects& effects) {
                     std::min(local_top + config_.activity_block_size, config_.chunk_size) - 1;
                 const auto world_origin_x = effect.chunk.x * config_.chunk_size;
                 const auto world_origin_y = effect.chunk.y * config_.chunk_size;
-                wake_cell_neighborhood(world_origin_x + local_left, world_origin_y + local_top);
-                wake_cell_neighborhood(world_origin_x + local_right, world_origin_y + local_top);
-                wake_cell_neighborhood(world_origin_x + local_left, world_origin_y + local_bottom);
-                wake_cell_neighborhood(world_origin_x + local_right, world_origin_y + local_bottom);
+                wake_cell_neighborhood(
+                    world_origin_x + local_left, world_origin_y + local_top);
+                wake_cell_neighborhood(
+                    world_origin_x + local_right, world_origin_y + local_top);
+                wake_cell_neighborhood(
+                    world_origin_x + local_left, world_origin_y + local_bottom);
+                wake_cell_neighborhood(
+                    world_origin_x + local_right, world_origin_y + local_bottom);
             }
         }
     }
-    if (settled_discovery_ == nullptr) return;
-    settled_discovery_->note_signal_report_records(effects.discovery_signal_count);
-    if (effects.discovery_signal_overflow) {
-        settled_discovery_->fence_lost_signal_report();
-        return;
-    }
+
     for (std::size_t index = 0; index < effects.discovery_signal_count; ++index) {
         const auto& report = effects.discovery_signals[index];
         const auto* chunk = find_chunk(report.chunk);
@@ -3507,28 +3587,6 @@ void World::merge_job_effects(const JobEffects& effects) {
         }
         observe_discovery_activity_parent(report.chunk, block_index);
         if (settled_discovery_->halted() != soliding::DiscoveryHalt::None) return;
-    }
-    settled_discovery_->note_worker_report_records(effects.discovery_mutation_count);
-    if (effects.discovery_mutation_overflow) {
-        // Authoritative writes already happened. Lost observation detail fences
-        // discovery only; World remains healthy and is never rolled back.
-        settled_discovery_->fence_lost_payload_report();
-        return;
-    }
-    if (settled_discovery_->halted() != soliding::DiscoveryHalt::None) return;
-    for (std::size_t index = 0; index < effects.discovery_mutation_count; ++index) {
-        const auto& report = effects.discovery_mutations[index];
-        const soliding::DiscoveryTileKey key{
-            settled_discovery_->incarnation(),
-            report.chunk.y, report.chunk.x,
-            report.activity_y, report.activity_x,
-            report.subtile_y, report.subtile_x,
-        };
-        const auto handle = settled_discovery_->find_handle(key);
-        if (!handle.has_value()) continue;
-        (void)settled_discovery_->notify_payload(
-            *handle, soliding::ProducerReason::WorkerMutation, tick_index_,
-            report.mutation_count);
     }
 }
 
