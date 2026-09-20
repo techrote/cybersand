@@ -4,7 +4,7 @@ status: Current
 document-kind: design
 scope: Stage 3 read-only World producer, journal and bounded connectivity foundations; acceleration remains separate
 canonical-for: [settled-region-discovery]
-last-reviewed: 2026-09-19
+last-reviewed: 2026-09-20
 related-documents: [../architecture/soliding-lifecycle.md, ../operations/soliding-programme.md, activity-dirty-regions-and-waking.md, ../operations/soliding-measurement.md]
 ---
 
@@ -25,17 +25,26 @@ uniform-summary classification, never silently filled or averaged.
 explicitly enabled, each completed journal publication is copied into the bounded
 [`SettledRegions`](../../native/include/cybersand/settled_regions.hpp) engine under
 the serialized World owner. Region publication remains read-only: it neither skips
-simulation work nor transfers cell/material ownership. New tile registration and
-every accepted tile invalidation first register unknown coverage and retire both
-the old tile's regions and facing-neighbor completeness. Blocked, refused and
-capacity-unavailable tiles therefore cannot be crossed by a complete publication.
+simulation work nor transfers cell/material ownership. Issue #64 replaces the earlier coarse facing-tile retirement with exact graph
+incidence. Each accepted tile revision owns bounded local components and
+revision-bound face runs; components own their incident cross-tile edges, while
+typed tile-revision and absence-face dependencies point back to the exact active
+build/publication subscribers that use them. A changed tile therefore retires
+its own dependency subscribers and only the absence certificates or neighboring
+publications that actually depend on newly resident/facing coverage. Blocked,
+refused and capacity-unavailable tiles remain unknown and therefore cannot be
+crossed by a complete publication.
 
 The Stage 2 lifecycle received an independent review and focused transition tests
 before this substrate was written. **Current:** #59 sizes journal and connectivity
 backing from the effective runtime tile capacity rather than the compiled maximum:
 journal/owner/key storage are `T`, region edge storage is `64T`, and
 frontier/seen/member storage is `32T`; `C=1024`, `K=32`, `B=128` and
-publication `P=4096` remain frozen. #60 adds construction-time bounded ordered
+publication `P=4096` remain frozen. #64 adds runtime-sized typed dependency
+storage `D=max(16T, frontier_capacity)` (therefore `32T` in the integrated
+configuration), plus `2P+2` bounded generation-bearing subscriber headers.
+These are observer resources only: saturation refuses connectivity publication
+without changing authoritative World state. #60 adds construction-time bounded ordered
 key/spatial indexes without hot resizing or per-operation allocation. Registration
 rejects zero/oversized/overflowing bounds, duplicate/overlapping geometry where
 required, and full capacity. Handles contain an externally unique nonzero
@@ -65,8 +74,9 @@ payload report, observation is fail-closed by a producer fence while authoritati
 World state remains valid.
 
 The final resident metadata pass still supplies activity/deadline signals and is owned
-by #62. Local mask/event/inclusion producer sparsification remains #63; reverse graph
-incidence remains #64. Local mask occupancy, accepted pending events,
+by #62. Local mask/event/inclusion producer sparsification remains #63. #64 owns and
+implements the disjoint settled-region graph-side incidence/reverse-retirement slice;
+it does not absorb either World-producer lane. Local mask occupancy, accepted pending events,
 requested/applied inclusion, live adhesion-policy fences, clear/move identity and
 failed-tick quarantine retain their existing semantics. A missing mutation witness
 still makes the producer unsafe: the journal cannot detect an omitted hook. There is no
@@ -139,10 +149,19 @@ effective-capacity storage now scales with `T` while the frozen per-tile and
 publication limits above remain explicit. #60 replaces normal-path resident
 registration/key/face scans with height-bounded canonical key lookup, a bounded
 row-interval geometry index, direct owner handles and checked boundary mapping.
-Reverse dependency incidence is intentionally not claimed here; #64 owns that
-remaining graph-index work. The earlier ~67.7 MB compile-max measurement is
-retained only as historical Stage-3A negative scaling evidence, not as a
-description of the current implementation.
+#64 replaces the Stage-3A global edge/dependency invalidation paths with bounded
+generation-qualified local incidence: component→incident-edge lists,
+revision-bound face runs, build/publication→typed dependency lists, and
+tile/absence-target→subscriber reverse lists. Normal edge removal and traversal
+now follow actual component incidence; revision/new-facing invalidation follows
+actual subscribers rather than all resident publications or configured edge
+capacity. Public generation retirement is immediate. Reverse-list reclamation is
+registered separately and performed incrementally with generation checks so a
+reused publication, subscriber, dependency or edge slot cannot be reached through
+a stale ABA reference. The final split/reconstruction/fair-reclamation scheduler
+remains #65. The earlier ~67.7 MB compile-max measurement is retained only as
+historical Stage-3A negative scaling evidence, not as a description of the current
+implementation.
 
 It must quantify cell/block/chunk inspections, queue/scratch high water/refusal,
 latency distribution, churn/false invalidation, region count/area, CPU and memory
@@ -189,9 +208,11 @@ counts, registration refusals, queue high-water and first-dirty-to-classified ma
 total tick latency. Counters saturate; identity/revision counters refuse exhaustion.
 `storage_bytes()` includes the fixed records/queue, not a World or native heap estimate.
 Connectivity separately records extraction, components, boundary comparisons,
-adjacency, seed probes, traversal/validation/publication work, refusal/high-water,
-region area/count, invalidation fanout and latency. `settled_region_storage_bytes()`
-reports the fixed compiled connectivity object; it is not a resident-set measurement.
+adjacency, incident-edge visits/retirement, typed dependency allocation/high-water/
+refusal, subscriber invalidation, absence subscriptions, deferred cleanup,
+seed probes, traversal/validation/publication work, region area/count and latency.
+`settled_region_storage_bytes()` reports bounded structural connectivity storage
+for the configured runtime capacities; it is not a resident-set measurement.
 No large-world distribution or real-hook CPU cost is inferred from these counters;
 the registered campaign supplies those costs and its negative results define the
 open Stage-3B work.
