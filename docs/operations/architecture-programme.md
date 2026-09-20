@@ -4,8 +4,8 @@ status: Planned
 document-kind: design
 scope: Evidence gates for Cell representation, liquid state and transport, presentation, and conditional sparse motion; no production architecture selection
 canonical-for: [architecture-experimental-programme]
-last-reviewed: 2026-09-19
-related-documents: [architecture-programme-source-ledger.md, physics-characterisation.md, physics-characterisation-plan.md, microscenarios-programme.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md]
+last-reviewed: 2026-09-20
+related-documents: [architecture-programme-source-ledger.md, physics-characterisation.md, physics-characterisation-plan.md, microscenarios-programme.md, water-hybrid-pressure-extension-programme.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md]
 ---
 
 # CyberSand architecture experimental programme
@@ -66,6 +66,42 @@ Affected architecture order:
 `#49 -> #45 bulk-head disposition -> directional-reference reassessment -> #18 G-M admission/no-go -> #20/G-B if justified -> G-final`.
 
 This correction changes no production Water semantics and does not reopen #26.
+
+## Water hybrid/pressure extension checkpoint — 2026-09-20
+
+Later owner clarification adds a parallel investigation without selecting a new
+Water solver. The governing extension is the
+[Water hybrid/pressure programme](water-hybrid-pressure-extension-programme.md)
+and tracker [#90](https://github.com/techrote/cybersand/issues/90).
+
+The clarification is:
+
+- native Water remains the fractional conserved FreeMass path; most other liquids
+  remain whole-cell CellularYield-style paths after #15;
+- the barrel is only a generic rectangular Rapier reference body, not a special
+  support subsystem, and historical bounded barrel evidence is not owner acceptance
+  of final body physics;
+- current generic Rapier→Water entry can produce useful splash/wave displacement,
+  while hard-floor material/body penetration remains a separate correctness defect;
+- before adding a new Water-specific pressure/momentum mechanism, test whether the
+  generic #12 cell↔Rapier hybrid substrate can support at most roughly 3-5
+  segmented upper-volume Water sheet tiers as bounded load/momentum carriers;
+- #49 continues independently and remains mandatory apparatus correction;
+- #45 remains the existing saturated-head architecture owner, but **implementation
+  selection is held for the WEX synthesis** rather than assumed inevitable;
+- the corrected communicating-head fixture must state whether headspaces are
+  vented/shared-pressure or sealed; equal levels are not a universal sealed-room
+  target;
+- #93 lumped gas-region work is optional research, not a production atmosphere
+  commitment, and does not itself solve saturated Water head transmission.
+
+The affected implementation-decision route is therefore:
+
+`#49 apparatus || #91/#92 hybrid evidence || #93 optional gas research -> #95 synthesis -> #45 proceed/narrow/recharter/defer/no-go -> directional reassessment -> #18 admission/no-go -> #20/G-B if justified -> G-final`.
+
+#94 decompression research runs only after #93 explicitly admits it. #12 remains
+the sole production soliding/hybrid owner; WEX may not create a Water-only duplicate
+handoff backend. This checkpoint does not modify Current Water semantics.
 
 ## Current staged status, after G-P (2026-09-11)
 
@@ -161,9 +197,10 @@ is never numerical approximation.
 
 No. A source-matched 2026-09-13 #11 checkpoint did implement and verify
 masked-source correction, bounded barrier/body-mask-aware ejection and ordinary
-rectangle/load bearing in a stated envelope. That evidence remains valid in Git
-history, but the accepted implementation is absent from audited current main and
-later owner evaluation did not accept the broader body/granular gameplay result.
+rectangle/load bearing in a stated envelope. That bounded evidence remains valid
+in Git history, but its implementation is absent from audited current main. The
+owner later clarified that the barrel is only a generic Rapier reference body and
+does not recall accepting the historical barrel-support result as final behavior.
 
 REM-001 therefore routes current-main integration to #81 and the broader envelope
 to #83 while preserving the historical #11 record. #12 Stage 3B remains an
