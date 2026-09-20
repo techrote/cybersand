@@ -4,7 +4,7 @@ status: Approved design
 document-kind: runbook
 scope: Dependency, ownership, gate and validation routing for Stage-3B locality/scalability implementation
 canonical-for: [soliding-stage3b-production-plan]
-last-reviewed: 2026-09-19
+last-reviewed: 2026-09-20
 related-documents: [../audits/issue-12-2026-09-19/stage3b-parent-decision.md, ../audits/2026-09-19-issue-69-stage3b-validation.md, soliding-stage3-freeze.md, soliding-stage3b-astra-review.md, soliding-programme.md]
 ---
 
@@ -26,6 +26,18 @@ MicroScenario/workbench surfaces, but did not change `native/src/world.cpp`,
 World event/discovery geometry or settled-discovery internals. Stage 3B observes
 authoritative interaction mutations; it does not duplicate INT-000 semantics.
 Recheck current ownership before the later central World producer handoffs.
+
+## Live execution checkpoint — 2026-09-20
+
+Authoritative main has advanced through #60 / PR #78. #56, #57, #58, #59, #60
+and #69 are complete. #61 is now the serialized central-World producer owner;
+#62 then #63 remain downstream. #64 is dependency-ready as the separable
+graph/index lane and may run in parallel only while its actual write set remains
+disjoint from #61-#63. #65 is still the join.
+
+The development-claims remediation programme does not pause this lane. REM-002
+#81 must inspect live #61-#63 ownership before touching body/World/test surfaces
+and stop on a real collision. Stage 4 remains blocked.
 
 ## Resolved #57 event/halo contract
 
@@ -185,7 +197,7 @@ current Stage-3B work.
 | G-P4 event footprint | #57 | Sparse event observer semantics are explicit |
 | G1 lifecycle safety | #58 / PR #72 merged | Reset/replacement cannot revive stale observation |
 | G2 runtime sizing | #59 / PR #76 merged | Capacity-sized reference preserves Stage-3A semantics |
-| G3 indexed geometry | #60 | Registration/lookup have bounded deterministic structure |
+| G3 indexed geometry | #60 / PR #78 merged | Registration/lookup have bounded deterministic structure |
 | G4 producer completeness | #61-#63 | Every frozen producer route is witnessed or safely fenced |
 | G4 graph incidence | #64 | Exact local graph and reverse invalidation exist |
 | G5 exact backend | #65 | Generic split/delete works before fast paths |
@@ -195,7 +207,7 @@ current Stage-3B work.
 
 None of these gates admits Stage 4.
 
-### Issue #59 completion / #60 handoff checkpoint
+### Issue #59/#60 completion and #61 handoff checkpoint
 
 Issue #59 completed on PR #76 and merged to authoritative `main`
 `5d89be4488e5fec3bf37e40ac87601fb14f2989b`. The landed Stage-3A-equivalent
@@ -203,8 +215,11 @@ backing conversion sizes journal `T`, edges `64T`, frontier/seen/members
 `32T`, and key/index storage by effective capacity while retaining
 `C=1024`, `K=32`, `B=128` and publication `P=4096`.
 
-G2 is closed. #60 is the next dependency-ready production package and must start
-from current authoritative `main`, not the historical #59 implementation branch.
+G2 is closed. #60 subsequently completed on PR #78 and is present in authoritative
+main `e87ac54459a3a62350fa7aa3da6ce979c30a18b8`, closing G3. #61 is the current
+central-World production package; it must start from live authoritative main and
+must recheck overlapping current ownership rather than reviving a historical
+implementation branch.
 
 ## Required ordering principles
 
@@ -295,10 +310,10 @@ identified reference series when it cannot share the matched authority.
 2. #58 / PR #72 is complete and G1 is closed; #57 / PR #73 is complete and
    G-P4 is closed. #69 preregistration is complete; #70 remains gated on #68 and
    the frozen candidate/source-runtime identity.
-3. #59 / PR #76 is complete and G2 is closed. #60 is the next production package;
-   start it from current authoritative `main`.
-4. After #60, run #61-#63 as the serialized World-producer lane while #64 runs as
-   the parallel graph lane. #63 remains blocked on both #62 and #57.
+3. #59 / PR #76 and #60 / PR #78 are complete; G2 and G3 are closed.
+4. Run #61-#63 as the serialized World-producer lane while #64 may run as the
+   parallel graph lane when its live write set remains disjoint. #63 remains
+   blocked on both #62 and #57.
 5. Join at #65.
 6. Only then #66 -> #67 -> #68.
 7. Freeze one coherent candidate and execute #70.
