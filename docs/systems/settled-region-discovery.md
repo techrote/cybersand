@@ -73,10 +73,15 @@ discovery-wide resident scan and no hot allocation. If a worker cannot represent
 payload report, observation is fail-closed by a producer fence while authoritative
 World state remains valid.
 
-The final resident metadata pass still supplies activity/deadline signals and is owned
-by #62. Local mask/event/inclusion producer sparsification remains #63. #64 owns and
-implements the disjoint settled-region graph-side incidence/reverse-retirement slice;
-it does not absorb either World-producer lane. Local mask occupancy, accepted pending events,
+Issue #62 replaces the ordinary resident-wide activity/deadline refresh with bounded
+parent-local witnesses plus one canonical due-tick/parent deadline index. Quiet
+observer maintenance therefore does not enumerate every represented discovery tile
+to rediscover unchanged activity/deadline state. Authoritative simulation still walks
+its own activity metadata for scheduler/sleep semantics; #62 does not replace that
+scheduler or reinterpret deadlines. Local mask/event/inclusion producer
+sparsification remains #63. #64 is landed separately in the graph-side
+incidence/reverse-retirement lane and does not absorb either World-producer slice.
+Local mask occupancy, accepted pending events,
 requested/applied inclusion, live adhesion-policy fences, clear/move identity and
 failed-tick quarantine retain their existing semantics. A missing mutation witness
 still makes the producer unsafe: the journal cannot detect an omitted hook. There is no
@@ -93,9 +98,15 @@ publication can clear. Direct material/state/temperature edits and deterministic
 post-barrier worker reports invalidate summaries. Change-and-restore still advances
 the witness even when deferred tile service coalesces repeated writes; movement and
 Water report both endpoints. Worker report loss is never treated as "no change": it
-fences observation. Active, pending-deadline, occupied, excluded and failed-world
-states cannot gain discovery rest. Re-entry must revalidate through ordinary
-activity. No sleeping flag alone authorizes representation replacement.
+fences observation. #62 carries no-write keep-active and ordinary sleep/wake as
+parent-local activity witnesses. Future interaction obligations are stored in a
+bounded heap ordered by due tick then canonical parent identity, with at most one
+current entry per parent, in-place earlier replacement/cancellation/consumption and
+no stale tombstone accumulation. Overdue excluded obligations park explicitly and
+re-enter already due; nonwrapping generation exhaustion fail-closes observation.
+Active, pending-deadline, occupied, excluded and failed-world states cannot gain
+discovery rest. Re-entry must revalidate through ordinary activity. No sleeping flag
+alone authorizes representation replacement.
 
 A resumable scan retains its starting revision and scratch only. Relevant edits
 invalidate any old summary immediately; no partial result is publicly eligible.
@@ -158,10 +169,12 @@ actual subscribers rather than all resident publications or configured edge
 capacity. Public generation retirement is immediate. Reverse-list reclamation is
 registered separately and performed incrementally with generation checks so a
 reused publication, subscriber, dependency or edge slot cannot be reached through
-a stale ABA reference. The final split/reconstruction/fair-reclamation scheduler
-remains #65. The earlier ~67.7 MB compile-max measurement is retained only as
-historical Stage-3A negative scaling evidence, not as a description of the current
-implementation.
+a stale ABA reference. #62 separately removes ordinary observer activity/deadline
+resident polling through bounded indexed producer state; #63 still owns the remaining
+mask/event/inclusion/coverage producer sparsification. The final
+split/reconstruction/fair-reclamation scheduler remains #65. The earlier ~67.7 MB
+compile-max measurement is retained only as historical Stage-3A negative scaling
+evidence, not as a description of the current implementation.
 
 It must quantify cell/block/chunk inspections, queue/scratch high water/refusal,
 latency distribution, churn/false invalidation, region count/area, CPU and memory
