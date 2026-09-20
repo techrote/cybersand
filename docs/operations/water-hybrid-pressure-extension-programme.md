@@ -348,27 +348,27 @@ issue records a positive admission.
 
 ## Programme graph
 
-The keys below are stable programme labels. GitHub issue numbers are recorded in
-the issue index after creation.
+The keys below are stable programme labels. GitHub issues are #90-#95 and their
+dependency meanings are authoritative here rather than by numeric order.
 
 ```text
                          existing #12 soliding/hybrid substrate
                                       |
                                       v
-WEX-001 current generic Rapier<->Water baseline
+#91 WEX-001 current generic Rapier<->Water baseline
                                       |
                                       v
-WEX-002 bounded upper-volume Water-sheet proof
+#92 WEX-002 bounded upper-volume Water-sheet proof
                                       |
                                       +----------------------+
                                                              |
-existing #49 corrected Water apparatus ----------------------+--> WEX-005 synthesis
+existing #49 corrected Water apparatus ----------------------+--> #95 WEX-005 synthesis
                                                              |         |
 existing #45 architecture question <-------------------------+         v
                                                                       #45 disposition/
-WEX-003 lumped gas-region feasibility -----------------------+         updated #14 route
+#93 WEX-003 lumped gas-region feasibility -----------------------+         updated #14 route
           |
-          +--> WEX-004 decompression proof only if admitted -+
+          +--> #94 WEX-004 decompression proof only if admitted -+
 ```
 
 #49 may run in parallel with WEX-001/WEX-003. WEX-002 waits for a suitable generic
@@ -607,11 +607,14 @@ were made to the initial discussion concepts:
 
 ## Issue index
 
-The GitHub issue numbers are populated after creation. Until then the stable keys are:
+The published issue chain is:
 
-- WEX-000 — programme tracker;
-- WEX-001 — current generic Rapier↔Water baseline;
-- WEX-002 — bounded upper-volume Water-sheet proof;
-- WEX-003 — lumped gas-region feasibility;
-- WEX-004 — conditional decompression-event proof;
-- WEX-005 — evidence synthesis and #45 routing.
+- [#90](https://github.com/techrote/cybersand/issues/90) — WEX-000 programme tracker;
+- [#91](https://github.com/techrote/cybersand/issues/91) — WEX-001 current generic Rapier↔Water baseline;
+- [#92](https://github.com/techrote/cybersand/issues/92) — WEX-002 bounded upper-volume Water-sheet proof;
+- [#93](https://github.com/techrote/cybersand/issues/93) — WEX-003 lumped gas-region feasibility;
+- [#94](https://github.com/techrote/cybersand/issues/94) — WEX-004 conditional decompression-event proof;
+- [#95](https://github.com/techrote/cybersand/issues/95) — WEX-005 evidence synthesis and #45 routing.
+
+Issue numbers are identifiers, not execution order. Follow the graph and live
+ownership checks above.
