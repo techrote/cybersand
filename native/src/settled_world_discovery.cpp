@@ -418,6 +418,7 @@ struct SettledWorldDiscoveryCoordinator::Impl {
             const auto expected_revision = record.payload_revision;
             const auto current = journal.snapshot(record.handle);
             if (!current.has_value() || current->revision < expected_revision) {
+                add(metrics.payload_refresh_failures);
                 journal.fail();
                 if (regions != nullptr) regions->fail(RegionRefusal::SourceFailure);
                 return used;
@@ -972,6 +973,7 @@ std::size_t SettledWorldDiscoveryCoordinator::advance(
                 };
                 const auto outcome = state.regions->upsert(input);
                 if (outcome == RegionOutcome::Invalid || outcome == RegionOutcome::Stale) {
+                    add(state.metrics.region_ingest_failures);
                     state.journal.fail();
                     state.regions->fail();
                     return;
