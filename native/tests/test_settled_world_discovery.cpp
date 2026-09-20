@@ -328,6 +328,17 @@ CYBERSAND_TEST_NOINLINE void event_halo_overlap_and_signed_geometry() {
 
     const auto halo_before = tile_at(world, 5, 0);
     require(world.queue_explosion(0, 0, 1, 0), "minimum-radius event accepted");
+    if (world.settled_discovery_halted() != DiscoveryHalt::None) {
+        const auto metrics = world.settled_discovery_producer_metrics();
+        throw std::runtime_error(
+            "event acceptance fenced discovery: halt=" +
+            std::to_string(static_cast<unsigned>(world.settled_discovery_halted())) +
+            " global_fences=" + std::to_string(metrics.global_fences) +
+            " observation_fences=" + std::to_string(metrics.observation_fences) +
+            " generation_exhaustions=" +
+            std::to_string(metrics.nonpayload_generation_exhaustions) +
+            " event_witnesses=" + std::to_string(metrics.event_witnesses));
+    }
     const auto halo_pending = tile_at(world, 5, 0);
     require(halo_pending.pending_event_count == 1 &&
             halo_pending.signals.pending_event &&
