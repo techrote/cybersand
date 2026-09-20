@@ -4,8 +4,8 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-09-19
-related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md]
+last-reviewed: 2026-09-20
+related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md]
 ---
 
 # Development handover
@@ -25,6 +25,25 @@ for the requested change. Use the [retrieval index](../reference/retrieval-index
 for a focused question. The [owner-intent reference](../reference/product-intent-and-priorities.md)
 preserves product goals, liked material behavior and deliberate deferrals.
 
+## Development-claims remediation routing — 2026-09-20
+
+Before relying on a closed/completed issue as current acceptance, read the
+[development-claims remediation programme](development-claims-remediation-programme.md).
+#8 remains open; #10/#11 retain bounded evidence but are reopened as
+evidence/objective anchors because later owner evaluation did not accept their
+broader gameplay objectives. #82 owns broad player/granular acceptance; #81 owns
+integration of the accepted historical #11 repair and #83 owns the broader
+body/granular envelope after #81. Do not start substitute implementation work
+under #10/#11.
+
+#19's simulation/presentation apparatus remains valid, but formal blind H capture
+waits for #84. #26's exact negative candidate result remains valid while #49 owns
+the corrected successor apparatus before #45.
+
+This remediation is not a global physics freeze. #12 Stage 3B continues under its
+own plan, subject to live owner/write-set collision checks before a remediation
+child touches the same native World/test surfaces.
+
 ## Current execution-order rule
 
 **Do not execute GitHub issues numerically.** For #24/#27-#30 and their links to
@@ -33,12 +52,12 @@ preserves product goals, liked material behavior and deliberate deferrals.
 before choosing the next task. #27 may proceed once its launcher/input hygiene is
 present; it no longer waits for #18 or G-final. #28 exploratory scenarios may
 begin on a stable-enough #27 host and are explicitly provisional until affected
-physics/architecture changes are revalidated. The #29 readiness gate is now
-consumed: PR #55 / `codex/issue-29-int000` is the sole INT-000 implementation
-lane after reconciling historical PR #42 against the landed #27/#28 contracts.
-Do not restart #29 from the preflight branch or infer a global physics freeze.
-Later material tuning remains separate bounded versioned work using PR #55's
-schema/fixtures/provenance once the infrastructure PR is accepted.
+physics/architecture changes are revalidated. The #29 readiness gate has been consumed and PR #55 has merged as
+`910717aac101363ec2b1b89e4041a22bc9a97b97`. #29 is complete for its bounded
+INT-000 infrastructure checkpoint; #30 remains a tracker, not an execution gate.
+Do not restart #29 from the historical preflight branch. Later material tuning is
+separate bounded/versioned work using the landed schema/fixtures/provenance, and
+no global physics freeze follows from INT-000.
 
 The [architecture programme](architecture-programme.md) remains authoritative for
 #14/#18/#20 scientific gates. MicroScenarios may supply apparatus/fixtures but
@@ -179,9 +198,10 @@ full tracked-tile signal refresh, global mapping/seed work, compiled-maximum sto
 and whole-region rediscovery. The read-only architecture review and supervising-parent
 reconciliation are complete. Use the
 [Stage-3B production plan](soliding-stage3b-production-plan.md), issues #56-#70, as
-the active handoff. Begin with #56, then #57/#58/#69 as the first parallel wave;
-central World producer work remains serialized under #61-#63. Recheck #29 before
-those World edits and again before the final campaign. Stage 4 is not admitted.
+the active handoff. At the 2026-09-20 checkpoint #56-#60 and #69 are complete;
+#61 is the serialized central-World producer owner, #62/#63 follow it, and #64 is
+the separable graph/index lane before the #65 join. Recheck live ownership before
+overlapping World edits and again before the final campaign. Stage 4 is not admitted.
 Stage 3 remains cells-owned discovery and cannot be used to admit stationary
 acceleration or Rapier dynamics.
 
