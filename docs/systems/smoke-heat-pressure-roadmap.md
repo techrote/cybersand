@@ -88,6 +88,17 @@ bounds, wake/interest behavior, serialization/hash coverage, and failure behavio
 Then add a reference fixture, edge/worker comparison, and current/2× load
 measurements. Production interaction ordering across fields is not approved.
 
+### WEX-003 compartment-pressure research
+
+The [WEX-003 feasibility result](../research/lumped-gas-region-pressure-bookkeeping.md)
+does **not** implement the general Pressure row above. It identifies a narrower
+optional architecture: resolved connected gas regions own amount/free-volume
+bookkeeping and derive a compartment boundary pressure, while closures use
+affected-component reconstruction and unresolved topology returns no authoritative
+pressure. The result admits only the bounded #94 decompression research proof.
+Per-cell gas pressure/velocity, composition, heat coupling and production field
+integration remain unimplemented.
+
 **Deferred:** GPU-resident derived fields may be benchmarked after their authority
 and synchronization are explicit. **Rejected for the current architecture:**
 GPU-only terrain/collision authority, unsynchronized gameplay reads, and routine
