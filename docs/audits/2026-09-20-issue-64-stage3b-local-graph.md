@@ -125,9 +125,12 @@ For the earlier native source head `3b195db519287e12a610ea112b4445b0398a509d`, b
   Windows runtime provenance. Documentation structure itself passed. The
   source-matched runtime publication below repairs that expected gate rather than
   suppressing it.
-- Corrected source head `f5bc9a887b01693bcef7116a164063d44d42a255` adds no production semantic change beyond a `subscriber_reuses` observability counter; its new regression requires actual subscriber-pool reuse and stale-target immunity. Normal PR validation is running as Native `35521544125`, GDExtension/Godot `35521544247`, and Documentation/provenance `35521544103` (the latter is expected to remain red until source-matched runtimes are republished; documentation structure itself passed).
-- One-shot source-matched runtime publication after the corrected source gates pass: `ISSUE64_PUBLICATION_RUN`.
-- Final exact-head PR validation after provenance publication: `ISSUE64_FINAL_VALIDATION`.
+- Corrected source head `f5bc9a887b01693bcef7116a164063d44d42a255` adds no production semantic change beyond a `subscriber_reuses` observability counter; its new regression requires actual subscriber-pool reuse and stale-target immunity.
+- Native C++ run `35521544125`: **passed** — compile, full behavioral/integration suite, focused soliding regressions, characterization and Stage-3B apparatus, retained cost smoke, ASan+UBSan, sanitized soliding, TSan, shared-library and benchmark compilation.
+- GDExtension/Godot run `35521544247`: **passed** — Linux and Windows x86_64 builds, all four isolated Linux Godot regression shards and the Linux gate.
+- Documentation/provenance run `35521544103`: documentation structure **passed**; the overall job failed only because the corrected native header intentionally made the retained Linux/Windows runtime provenance stale. No provenance gate is weakened; the one-shot publication below repairs it.
+- One-shot source-matched runtime publication: `ISSUE64_PUBLICATION_RUN`.
+- After that publication is fast-forwarded onto PR #98, the normal Documentation/provenance, Native C++ and GDExtension/Godot workflows are the required final exact-head gate. Their live results are retained on PR #98 rather than embedding a run ID that would require another post-validation documentation commit.
 
 ## Deferred work and scope boundary
 
