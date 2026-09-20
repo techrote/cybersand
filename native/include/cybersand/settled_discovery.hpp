@@ -165,6 +165,28 @@ public:
         return invalidate(*record, tick);
     }
 
+    // A producer may learn a newer blocking signal while an exact payload mutation
+    // already owns the outstanding revision. Coalesce that signal into the queued,
+    // already-invalid record without manufacturing a second mutation revision.
+    // This is valid only while the record is already queued; callers must fail
+    // closed if that owner-side precondition is violated.
+    DiscoveryOutcome reconcile_queued_signals(DiscoveryHandle handle,
+                                              DiscoverySignals signals,
+                                              std::uint64_t tick) noexcept {
+        auto* record = find(handle);
+        if (!record) return DiscoveryOutcome::Stale;
+        if (!clock(tick)) return DiscoveryOutcome::Halted;
+        increment(metrics_.signal_observations);
+        if (!record->queued) return DiscoveryOutcome::Invalid;
+        if (record->signals == signals) return DiscoveryOutcome::Unchanged;
+        record->signals = signals;
+        if (record->scanning) {
+            record->scanning = false;
+            increment(metrics_.restarts);
+        }
+        return DiscoveryOutcome::Accepted;
+    }
+
     // Each dequeue/start, individual cell read and final validation/publication
     // costs one unit. A source read must be bounded, read-only and owner-serialized.
     // Calls may span ticks. No partially scanned tile is publicly classified.
