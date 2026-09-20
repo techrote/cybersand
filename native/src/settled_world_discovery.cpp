@@ -662,7 +662,9 @@ DiscoveryOutcome SettledWorldDiscoveryCoordinator::register_tile(
     DiscoveryTileKey key, DiscoveryBounds bounds, std::int16_t ambient_temperature,
     DiscoverySignals signals, std::uint64_t tick,
     std::uint64_t mask_occupancy_count,
-    std::uint64_t pending_event_count) noexcept {
+    std::uint64_t pending_event_count,
+    bool requested_included,
+    bool applied_included) noexcept {
     auto& state = *impl_;
     add(state.metrics.notifications[static_cast<std::size_t>(ProducerReason::Registration)]);
     add(state.metrics.registration_work);
@@ -738,8 +740,9 @@ DiscoveryOutcome SettledWorldDiscoveryCoordinator::register_tile(
     record.pending_event_count = pending_event_count;
     record.requested_inclusion_epoch = state.requested_inclusion_epoch;
     record.applied_inclusion_epoch = state.applied_inclusion_epoch;
-    record.requested_included = signals.included;
-    record.applied_included = signals.included;
+    record.requested_included = requested_included;
+    record.applied_included = applied_included;
+    record.signals.included = requested_included && applied_included;
     state.records.push_back(record);
     if (!state.insert_index(key, record_index)) {
         state.fail_sparse_state();
