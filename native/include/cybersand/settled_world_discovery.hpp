@@ -80,6 +80,8 @@ struct WorldDiscoveryMetrics {
     std::uint64_t coverage_notifications{};
     std::uint64_t coverage_unknown_revocations{};
     std::uint64_t coverage_state_transitions{};
+    std::uint64_t activity_reconcile_failures{};
+    std::uint64_t explicit_observer_failures{};
 };
 
 struct WorldDiscoveryTileHandle {
