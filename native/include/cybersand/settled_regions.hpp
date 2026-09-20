@@ -164,6 +164,9 @@ public:
         tile.has_payload = false;
         tile.ready = false;
         tile.component_count = 0;
+        tile.face_run_count = 0;
+        tile.boundary_runs.fill(region_detail::invalid_index);
+        for (auto& run : tile.face_runs) run = FaceRun{};
         tile.refusal = RegionRefusal::SignalIncomplete;
         work_possible_ = true;
         return remember(RegionOutcome::Accepted, RegionRefusal::None);
@@ -233,7 +236,10 @@ public:
         if (next_revision <= tiles_[slot].revision) return RegionOutcome::Stale;
         prepare_tile_revision_change(slot);
         auto& tile = tiles_[slot]; tile.revision = next_revision; tile.has_payload = false;
-        tile.ready = false; tile.component_count = 0; tile.refusal = RegionRefusal::SignalIncomplete;
+        tile.ready = false; tile.component_count = 0; tile.face_run_count = 0;
+        tile.boundary_runs.fill(region_detail::invalid_index);
+        for (auto& run : tile.face_runs) run = FaceRun{};
+        tile.refusal = RegionRefusal::SignalIncomplete;
         work_possible_ = true;
         return remember(RegionOutcome::Accepted, RegionRefusal::None);
     }
@@ -1631,9 +1637,11 @@ private:
                 throw std::invalid_argument("settled region dependency capacity is unsupported");
             return requested;
         }
-        if (tile_capacity > std::numeric_limits<std::size_t>::max() / 8U)
+        if (tile_capacity > std::numeric_limits<std::size_t>::max() / 16U)
             throw std::invalid_argument("settled region dependency capacity overflows size_t");
-        const auto scaled = tile_capacity * 8U;
+        // Keep enough bounded headroom for one active and one logically retired
+        // isolated-tile generation while cleanup is deliberately deferred.
+        const auto scaled = tile_capacity * 16U;
         const auto result = scaled > frontier_capacity ? scaled : frontier_capacity;
         if (result == 0 || result >= invalid_pool_index)
             throw std::invalid_argument("settled region dependency capacity is unsupported");
