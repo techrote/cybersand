@@ -9,9 +9,9 @@
 #include <stdexcept>
 #include <utility>
 
-// Stage 3 substrate only: the serialized producer supplies complete invalidation
-// and activity signals. This is NOT wired into World and cannot authorize skips,
-// cohesion, colliders or transfers. It owns observations, never material.
+// Stage 3 observation substrate: the serialized World producer supplies complete
+// invalidation and activity signals. It cannot authorize simulation skips, cohesion,
+// colliders or transfers. It owns observations, never material.
 namespace cybersand::soliding {
 
 struct DiscoveryTileKey {
@@ -141,10 +141,18 @@ public:
     // Must be called for every relevant mutation, even change-and-restore, plus
     // affected halo dependents. Render publication cannot acknowledge this journal.
     DiscoveryOutcome dirty(DiscoveryHandle handle, std::uint64_t tick) noexcept {
+        return dirty(handle, tick, 1);
+    }
+    // Owner-side worker reduction may coalesce repeated writes to one tile while
+    // preserving the exact nonwrapping mutation witness count. This advances the
+    // independent revision in one bounded operation rather than replaying N calls.
+    DiscoveryOutcome dirty(DiscoveryHandle handle, std::uint64_t tick,
+                           std::uint64_t mutation_count) noexcept {
         auto* record = find(handle);
         if (!record) return DiscoveryOutcome::Stale;
         if (!clock(tick)) return DiscoveryOutcome::Halted;
-        return invalidate(*record, tick);
+        if (mutation_count == 0) return DiscoveryOutcome::Unchanged;
+        return invalidate(*record, tick, mutation_count);
     }
     DiscoveryOutcome observe(DiscoveryHandle handle, DiscoverySignals signals,
                               std::uint64_t tick) noexcept {
@@ -237,6 +245,7 @@ public:
         return records_[handle.slot].summary; // immutable value; never live World bytes
     }
     void fail() noexcept { if (halt_ == DiscoveryHalt::None) halt_ = DiscoveryHalt::ProducerFailure; }
+    void source_fail() noexcept { if (halt_ == DiscoveryHalt::None) halt_ = DiscoveryHalt::SourceFailure; }
     [[nodiscard]] DiscoveryHalt halted() const noexcept { return halt_; }
     [[nodiscard]] DiscoveryMetrics metrics() const noexcept { return metrics_; }
     [[nodiscard]] std::size_t pending() const noexcept { return queued_; }
@@ -288,13 +297,16 @@ private:
         head_ = (head_ + 1) % slot_capacity_;
         --queued_;
     }
-    DiscoveryOutcome invalidate(Record& record, std::uint64_t tick) noexcept {
-        if (record.summary.revision == RevisionLimit) {
+    DiscoveryOutcome invalidate(Record& record, std::uint64_t tick,
+                                std::uint64_t mutation_count = 1) noexcept {
+        if (mutation_count == 0) return DiscoveryOutcome::Unchanged;
+        if (mutation_count > RevisionLimit ||
+            record.summary.revision > RevisionLimit - mutation_count) {
             halt_ = DiscoveryHalt::RevisionExhausted;
             return DiscoveryOutcome::Halted;
         }
-        ++record.summary.revision;
-        increment(metrics_.invalidations);
+        record.summary.revision += mutation_count;
+        add(metrics_.invalidations, mutation_count);
         if (record.scanning) {
             increment(metrics_.restarts);
             // A repeatedly changed head must not starve quiet blocks behind it.

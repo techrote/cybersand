@@ -267,17 +267,32 @@ struct World::JobEffects {
         std::int32_t maximum_y = 0;
         std::int64_t non_empty_delta = 0;
     };
+    struct DiscoveryMutationReport {
+        ChunkCoord chunk{};
+        std::int32_t activity_y = 0;
+        std::int32_t activity_x = 0;
+        std::int32_t subtile_y = 0;
+        std::int32_t subtile_x = 0;
+        std::uint64_t mutation_count = 0;
+    };
 
     static constexpr std::size_t kMaximumTouchedChunks = 16;
+    static constexpr std::size_t kMaximumDiscoveryMutationReports = 64;
     std::array<ChunkEffect, kMaximumTouchedChunks> chunks{};
+    std::array<DiscoveryMutationReport, kMaximumDiscoveryMutationReports>
+        discovery_mutations{};
     std::size_t chunk_count = 0;
+    std::size_t discovery_mutation_count = 0;
     bool overflow = false;
+    bool discovery_mutation_overflow = false;
     bool hard_surface_changed = false;
     PhysicsJobHistogram* physics = nullptr;
 
     void reset() noexcept {
         chunk_count = 0;
+        discovery_mutation_count = 0;
         overflow = false;
+        discovery_mutation_overflow = false;
         hard_surface_changed = false;
         if (physics != nullptr) *physics = {};
     }
@@ -305,6 +320,38 @@ struct World::JobEffects {
             address_value.local_y,
             non_empty_delta,
         };
+    }
+
+    void record_discovery_mutation(const Address& address_value,
+                                   std::int32_t activity_block_size) noexcept {
+        const auto activity_x = address_value.local_x / activity_block_size;
+        const auto activity_y = address_value.local_y / activity_block_size;
+        const auto within_x =
+            address_value.local_x - activity_x * activity_block_size;
+        const auto within_y =
+            address_value.local_y - activity_y * activity_block_size;
+        const auto subtile_x = within_x / 32;
+        const auto subtile_y = within_y / 32;
+        for (std::size_t index = 0; index < discovery_mutation_count; ++index) {
+            auto& report = discovery_mutations[index];
+            if (report.chunk != address_value.chunk ||
+                report.activity_y != activity_y ||
+                report.activity_x != activity_x ||
+                report.subtile_y != subtile_y ||
+                report.subtile_x != subtile_x) continue;
+            if (report.mutation_count == std::numeric_limits<std::uint64_t>::max()) {
+                discovery_mutation_overflow = true;
+                return;
+            }
+            ++report.mutation_count;
+            return;
+        }
+        if (discovery_mutation_count == discovery_mutations.size()) {
+            discovery_mutation_overflow = true;
+            return;
+        }
+        discovery_mutations[discovery_mutation_count++] = {
+            address_value.chunk, activity_y, activity_x, subtile_y, subtile_x, 1};
     }
 };
 
@@ -590,6 +637,24 @@ soliding::DiscoveryCell World::read_discovery_cell(
     };
 }
 
+soliding::DiscoverySignals World::read_discovery_signals(
+    const void* context, soliding::DiscoveryTileKey key,
+    soliding::DiscoveryBounds bounds, soliding::DiscoverySignals previous) {
+    const auto& world = *static_cast<const World*>(context);
+    const ChunkCoord coord{key.chunk_x, key.chunk_y};
+    const auto* chunk = world.find_chunk(coord);
+    if (chunk == nullptr) return {};
+    const auto activity_index =
+        static_cast<std::size_t>(key.activity_y) *
+            static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
+        static_cast<std::size_t>(key.activity_x);
+    auto signals = world.discovery_signals(coord, activity_index, bounds);
+    // #63 owns mask/event/inclusion producer indexing. Sparse payload service
+    // preserves the already-observed mask bit while refreshing this tile only.
+    signals.occupied = previous.occupied;
+    return signals;
+}
+
 bool World::settled_discovery_enabled() const noexcept { return settled_discovery_ != nullptr; }
 std::uint64_t World::settled_discovery_incarnation() const noexcept {
     return settled_discovery_ == nullptr ? 0 : settled_discovery_->incarnation();
@@ -624,7 +689,9 @@ std::size_t World::settled_discovery_storage_bytes() const noexcept {
 }
 std::size_t World::advance_settled_discovery(std::size_t budget) {
     if (settled_discovery_ == nullptr) return 0;
-    return settled_discovery_->advance(tick_index_, budget, this, &World::read_discovery_cell);
+    return settled_discovery_->advance(
+        tick_index_, budget, this, &World::read_discovery_cell,
+        &World::read_discovery_signals);
 }
 std::size_t World::advance_settled_regions(std::size_t budget) noexcept {
     return settled_discovery_ == nullptr ? 0 : settled_discovery_->advance_regions(budget);
@@ -652,69 +719,10 @@ void World::dirty_discovery_cell(std::int64_t x, std::int64_t y,
                                  soliding::ProducerReason reason) noexcept {
     if (settled_discovery_ == nullptr) return;
     const auto target = address(x, y);
-    const auto* chunk = find_chunk(target.chunk);
-    if (chunk == nullptr) return;
-    const auto key = discovery_tile_key(target);
-    const auto handle = settled_discovery_->find_handle(key);
+    if (find_chunk(target.chunk) == nullptr) return;
+    const auto handle = settled_discovery_->find_handle(discovery_tile_key(target));
     if (!handle.has_value()) return;
-    const auto snapshot = settled_discovery_->tile(*handle);
-    if (!snapshot.has_value()) return;
-    (void)settled_discovery_->dirty(*handle, reason, tick_index_);
-    const auto activity_index = static_cast<std::size_t>(key.activity_y) *
-        static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
-        static_cast<std::size_t>(key.activity_x);
-    auto signals = discovery_signals(target.chunk, activity_index, snapshot->summary.bounds);
-    signals.occupied = snapshot->signals.occupied;
-    (void)settled_discovery_->observe(*handle, signals, reason, tick_index_);
-}
-
-void World::dirty_discovery_rect(ChunkCoord coord, std::int32_t minimum_x,
-                                 std::int32_t minimum_y, std::int32_t maximum_x,
-                                 std::int32_t maximum_y,
-                                 soliding::ProducerReason reason) noexcept {
-    if (settled_discovery_ == nullptr) return;
-    const auto* chunk = find_chunk(coord);
-    if (chunk == nullptr) return;
-    minimum_x = std::clamp(minimum_x, 0, config_.chunk_size - 1);
-    minimum_y = std::clamp(minimum_y, 0, config_.chunk_size - 1);
-    maximum_x = std::clamp(maximum_x, 0, config_.chunk_size - 1);
-    maximum_y = std::clamp(maximum_y, 0, config_.chunk_size - 1);
-    if (minimum_x > maximum_x || minimum_y > maximum_y) return;
-    const auto minimum_activity_x = minimum_x / config_.activity_block_size;
-    const auto minimum_activity_y = minimum_y / config_.activity_block_size;
-    const auto maximum_activity_x = maximum_x / config_.activity_block_size;
-    const auto maximum_activity_y = maximum_y / config_.activity_block_size;
-    for (auto activity_y = minimum_activity_y; activity_y <= maximum_activity_y; ++activity_y) {
-        const auto block_y = activity_y * config_.activity_block_size;
-        const auto first_subtile_y = (std::max(minimum_y, block_y) - block_y) / 32;
-        const auto last_subtile_y = (std::min(maximum_y,
-            std::min(block_y + config_.activity_block_size, config_.chunk_size) - 1) - block_y) / 32;
-        for (auto activity_x = minimum_activity_x; activity_x <= maximum_activity_x; ++activity_x) {
-            const auto block_x = activity_x * config_.activity_block_size;
-            const auto first_subtile_x = (std::max(minimum_x, block_x) - block_x) / 32;
-            const auto last_subtile_x = (std::min(maximum_x,
-                std::min(block_x + config_.activity_block_size, config_.chunk_size) - 1) - block_x) / 32;
-            const auto activity_index = static_cast<std::size_t>(activity_y) *
-                static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
-                static_cast<std::size_t>(activity_x);
-            for (auto subtile_y = first_subtile_y; subtile_y <= last_subtile_y; ++subtile_y) {
-                for (auto subtile_x = first_subtile_x; subtile_x <= last_subtile_x; ++subtile_x) {
-                    const soliding::DiscoveryTileKey key{
-                        settled_discovery_->incarnation(), coord.y, coord.x,
-                        activity_y, activity_x, subtile_y, subtile_x,
-                    };
-                    const auto handle = settled_discovery_->find_handle(key);
-                    if (!handle.has_value()) continue;
-                    const auto snapshot = settled_discovery_->tile(*handle);
-                    if (!snapshot.has_value()) continue;
-                    (void)settled_discovery_->dirty(*handle, reason, tick_index_);
-                    auto signals = discovery_signals(coord, activity_index, snapshot->summary.bounds);
-                    signals.occupied = snapshot->signals.occupied;
-                    (void)settled_discovery_->observe(*handle, signals, reason, tick_index_);
-                }
-            }
-        }
-    }
+    (void)settled_discovery_->notify_payload(*handle, reason, tick_index_);
 }
 
 void World::refresh_discovery_signals(soliding::ProducerReason reason) noexcept {
@@ -1186,6 +1194,8 @@ bool World::write_cell(std::int64_t x, std::int64_t y, Material material,
 
     if (effects != nullptr) {
         effects->record(target, delta);
+        if (settled_discovery_ != nullptr)
+            effects->record_discovery_mutation(target, config_.activity_block_size);
         effects->hard_surface_changed =
             effects->hard_surface_changed || hard_surface_changed;
     } else {
@@ -1771,6 +1781,10 @@ void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_
     if (effects != nullptr) {
         effects->record(source_address, source_delta);
         effects->record(destination_address, destination_delta);
+        if (settled_discovery_ != nullptr) {
+            effects->record_discovery_mutation(source_address, config_.activity_block_size);
+            effects->record_discovery_mutation(destination_address, config_.activity_block_size);
+        }
         effects->hard_surface_changed =
             effects->hard_surface_changed || hard_surface_changed;
     } else {
@@ -1914,6 +1928,10 @@ std::uint16_t World::transfer_water(std::int64_t from_x, std::int64_t from_y,
     if (effects != nullptr) {
         effects->record(source_address, source_delta);
         effects->record(destination_address, destination_delta);
+        if (settled_discovery_ != nullptr) {
+            effects->record_discovery_mutation(source_address, config_.activity_block_size);
+            effects->record_discovery_mutation(destination_address, config_.activity_block_size);
+        }
     } else {
         source->non_empty_cell_count = static_cast<std::size_t>(
             static_cast<std::int64_t>(source->non_empty_cell_count) + source_delta);
@@ -3232,9 +3250,29 @@ void World::merge_job_effects(const JobEffects& effects) {
                 wake_cell_neighborhood(world_origin_x + local_right, world_origin_y + local_bottom);
             }
         }
-        dirty_discovery_rect(effect.chunk, effect.minimum_x, effect.minimum_y,
-            effect.maximum_x, effect.maximum_y,
-            soliding::ProducerReason::WorkerMutation);
+    }
+    if (settled_discovery_ == nullptr) return;
+    settled_discovery_->note_worker_report_records(effects.discovery_mutation_count);
+    if (effects.discovery_mutation_overflow) {
+        // Authoritative writes already happened. Lost observation detail fences
+        // discovery only; World remains healthy and is never rolled back.
+        settled_discovery_->fence_lost_payload_report();
+        return;
+    }
+    if (settled_discovery_->halted() != soliding::DiscoveryHalt::None) return;
+    for (std::size_t index = 0; index < effects.discovery_mutation_count; ++index) {
+        const auto& report = effects.discovery_mutations[index];
+        const soliding::DiscoveryTileKey key{
+            settled_discovery_->incarnation(),
+            report.chunk.y, report.chunk.x,
+            report.activity_y, report.activity_x,
+            report.subtile_y, report.subtile_x,
+        };
+        const auto handle = settled_discovery_->find_handle(key);
+        if (!handle.has_value()) continue;
+        (void)settled_discovery_->notify_payload(
+            *handle, soliding::ProducerReason::WorkerMutation, tick_index_,
+            report.mutation_count);
     }
 }
 

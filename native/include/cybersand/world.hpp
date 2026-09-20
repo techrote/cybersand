@@ -311,10 +311,6 @@ private:
         soliding::DiscoveryBounds bounds) const noexcept;
     void dirty_discovery_cell(std::int64_t x, std::int64_t y,
                               soliding::ProducerReason reason) noexcept;
-    void dirty_discovery_rect(ChunkCoord coord, std::int32_t minimum_x,
-                              std::int32_t minimum_y, std::int32_t maximum_x,
-                              std::int32_t maximum_y,
-                              soliding::ProducerReason reason) noexcept;
     void refresh_discovery_signals(soliding::ProducerReason reason) noexcept;
     void fence_discovery(soliding::ProducerReason reason) noexcept;
     void observe_discovery_mask_cell(std::int64_t x, std::int64_t y) noexcept;
@@ -323,6 +319,9 @@ private:
     void observe_discovery_event(RectI64 region) noexcept;
     [[nodiscard]] static soliding::DiscoveryCell read_discovery_cell(
         const void* context, std::int64_t x, std::int64_t y);
+    [[nodiscard]] static soliding::DiscoverySignals read_discovery_signals(
+        const void* context, soliding::DiscoveryTileKey key,
+        soliding::DiscoveryBounds bounds, soliding::DiscoverySignals previous);
 };
 
 }  // namespace cybersand

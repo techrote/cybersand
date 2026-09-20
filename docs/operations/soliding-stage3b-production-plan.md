@@ -111,8 +111,8 @@ intervening change is CI routing only.
 | #57 | Resolve event effect-footprint / dependency-halo contract | #56 | P4 resolved: explosion pending half-extent `(R + 2) + r` |
 | #58 | Harden observer lifecycle/reset/allocation failure | #56 | G1 closed on main by PR #72: safe lifecycle/failure foundation |
 | #59 | Runtime-size Stage-3A-equivalent storage | #58 | Remove compile-max small-world allocation without semantic change |
-| #60 | Canonical bounded spatial indexing | #59 | Bounded deterministic registration/lookup |
-| #61 | Sparse mutation and worker witness core | #60, #58 | Change-driven payload witnesses |
+| #60 | Canonical bounded spatial indexing | #59 | Bounded deterministic registration/lookup; merged by PR #78 |
+| #61 | Sparse mutation and worker witness core | #60, #58 | Change-driven payload witnesses implemented; merge closes the payload slice |
 | #62 | Indexed activity/deadline sparse state | #61 | Remove observer deadline/activity resident polling |
 | #63 | Sparse mask/event/inclusion/coverage witnesses | #62, #57 | Complete non-payload producer coverage |
 | #64 | Exact local graph/face/reverse retirement indexes | #60, #59 | Local incidence and dependency invalidation |
@@ -185,7 +185,7 @@ current Stage-3B work.
 | G-P4 event footprint | #57 | Sparse event observer semantics are explicit |
 | G1 lifecycle safety | #58 / PR #72 merged | Reset/replacement cannot revive stale observation |
 | G2 runtime sizing | #59 / PR #76 merged | Capacity-sized reference preserves Stage-3A semantics |
-| G3 indexed geometry | #60 | Registration/lookup have bounded deterministic structure |
+| G3 indexed geometry | #60 / PR #78 merged | Registration/lookup have bounded deterministic structure |
 | G4 producer completeness | #61-#63 | Every frozen producer route is witnessed or safely fenced |
 | G4 graph incidence | #64 | Exact local graph and reverse invalidation exist |
 | G5 exact backend | #65 | Generic split/delete works before fast paths |
@@ -295,10 +295,11 @@ identified reference series when it cannot share the matched authority.
 2. #58 / PR #72 is complete and G1 is closed; #57 / PR #73 is complete and
    G-P4 is closed. #69 preregistration is complete; #70 remains gated on #68 and
    the frozen candidate/source-runtime identity.
-3. #59 / PR #76 is complete and G2 is closed. #60 is the next production package;
-   start it from current authoritative `main`.
-4. After #60, run #61-#63 as the serialized World-producer lane while #64 runs as
-   the parallel graph lane. #63 remains blocked on both #62 and #57.
+3. #59 / PR #76 and #60 / PR #78 are complete; G2 and G3 are closed.
+4. The serialized World-producer lane remains #61 -> #62 -> #63. #61 closes the
+   payload-witness slice; #62 becomes dependency-ready with #61 on `main`.
+   #63 remains blocked on both #62 and #57. #64 remains the separate graph lane
+   and is not absorbed into the World-producer work.
 5. Join at #65.
 6. Only then #66 -> #67 -> #68.
 7. Freeze one coherent candidate and execute #70.

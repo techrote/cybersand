@@ -208,6 +208,9 @@ WorldDiscoveryStorageLayout layout_case() {
             "dependency/revision backing follows effective T");
     require(layout.key_index_capacity == Capacity,
             "bounded canonical key index is exactly T");
+    require(layout.payload_queue_capacity == Capacity &&
+            layout.payload_queue_storage_bytes == Capacity * sizeof(std::size_t),
+            "sparse payload service queue is fixed exactly at T with no hot growth");
     require(layout.region_key_index_capacity == Capacity &&
             layout.region_row_interval_capacity == Capacity * 32U,
             "region key and row-interval indexes are exactly T and 32T");
