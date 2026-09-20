@@ -4,7 +4,7 @@ status: Planned
 document-kind: design
 scope: Issue 12 stage dependencies, acceleration and macro-dynamics objectives, and current-main successor admission
 canonical-for: [scalable-soliding-programme]
-last-reviewed: 2026-09-19
+last-reviewed: 2026-09-20
 related-documents: [architecture-programme.md, ../architecture/soliding-lifecycle.md, soliding-measurement.md, soliding-stage3-freeze.md, ../audits/2026-09-19-issue-12-phase0-reuse.md]
 ---
 
@@ -33,6 +33,17 @@ The representation ladder is active cells -> ordinary sleep -> tracked summary
 Fracture partitions material into coherent moving/stationary children and only
 locally loose cellular debris. Rest does not authorize rigid cohesion. Sand and
 Stone stationary opportunities remain independent of dynamic admission.
+
+## Stage 3B live checkpoint — 2026-09-20
+
+The read-only architecture review and parent reconciliation are complete. #56-#60
+and #69 are complete; #61 is the serialized central-World producer owner,
+#62/#63 follow it, and #64 is the separable graph/index lane before the #65 join.
+Stage 4 remains blocked pending the full Stage-3B path and parent admission.
+
+The development-claims remediation programme is parallel authority, not a blanket
+soliding pause. Any remediation child that reaches the same World/test surfaces
+must inspect live Stage-3B ownership and stop on a real collision.
 
 ## Which stage may proceed?
 
