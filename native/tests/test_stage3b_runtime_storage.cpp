@@ -211,6 +211,14 @@ WorldDiscoveryStorageLayout layout_case() {
     require(layout.payload_queue_capacity == Capacity &&
             layout.payload_queue_storage_bytes == Capacity * sizeof(std::size_t),
             "sparse payload service queue is fixed exactly at T with no hot growth");
+    require(layout.activity_parent_capacity == Capacity &&
+            layout.activity_parent_index_capacity == Capacity &&
+            layout.deadline_heap_capacity == Capacity,
+            "activity parent index and deadline heap are fixed exactly at T");
+    require(layout.activity_parent_storage_bytes != 0 &&
+            layout.activity_parent_index_storage_bytes != 0 &&
+            layout.deadline_heap_storage_bytes == Capacity * sizeof(std::size_t),
+            "activity/deadline structural storage is construction-bounded and accounted");
     require(layout.region_key_index_capacity == Capacity &&
             layout.region_row_interval_capacity == Capacity * 32U,
             "region key and row-interval indexes are exactly T and 32T");
