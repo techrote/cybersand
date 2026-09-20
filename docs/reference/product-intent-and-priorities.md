@@ -4,8 +4,8 @@ status: Current
 document-kind: reference
 scope: Approved owner direction and deliberately preserved behavior; not current implementation or performance evidence
 canonical-for: [owner-intent, product-priorities, preserved-material-feel]
-last-reviewed: 2026-09-18
-related-documents: [status-and-roadmap.md, ../decisions/ADR-008-bounded-approximate-fidelity.md, ../operations/microscenarios-programme.md]
+last-reviewed: 2026-09-20
+related-documents: [status-and-roadmap.md, ../decisions/ADR-008-bounded-approximate-fidelity.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
 # Product intent and priorities
@@ -57,6 +57,38 @@ roughly half their depth, then remain supported. Include eventual reversible
 motion and ballistics. Exact thresholds and representation changes are
 **Planned**, not current physics. The [characterisation plan](../operations/physics-characterisation-plan.md)
 owns experiments, candidate tuning and staged architecture decisions.
+
+## Backend, generic-body and Water clarification, 2026-09-20
+
+**Approved owner clarification:** CyberSand's current priority is the backend
+engine itself. Fine player/gameplay tuning is secondary while foundational
+soliding, hybrid ownership and Water architecture are still moving. Physics
+correctness, conservation, collision topology and cell↔Rapier handoff quality are
+still core engine requirements.
+
+The red "barrel" should be understood as a deliberately simple **generic Rapier
+reference body**, not as a special gameplay subsystem. The owner does not recall
+accepting the historical barrel-support result as final behavior. Historical
+bounded evidence remains useful, and a later Water/body rework visibly improved
+splash/displacement behavior, but future work should generalize through the same
+Rapier↔cellular coupling that solided material uses rather than add barrel-only
+support rules. Earlier half-depth wording remains a historical/provisional fixture
+target, not a mandate for a distinct barrel mechanic.
+
+For Water, shallow behavior is generally liked while deep released volumes can
+still drain as a slow slope instead of producing a convincing surge/wave. Before
+adding another Water-specific pressure/momentum mechanism, the owner wants the
+generic soliding/hybrid path tested as a possible contributor. The planned
+[Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md)
+therefore tests at most roughly 3-5 segmented upper-volume Water sheet tiers,
+preserving ordinary cellular surface rows and exact Water quantity. This is a
+research candidate, not an approved production solver.
+
+Separate trapped-gas research is also considered worthwhile even if never
+integrated: prefer lumped connected gas-region bookkeeping and lazy topology over
+per-pixel gas CFD, and treat pressure as a boundary condition rather than assuming
+it automatically solves saturated Water transmission. Space/vacuum decompression
+is an optional later proof, not current production scope.
 
 ## Exploratory MicroScenario workflow, 2026-09-18
 
