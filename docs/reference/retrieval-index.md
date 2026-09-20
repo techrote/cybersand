@@ -5,7 +5,7 @@ document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
 last-reviewed: 2026-09-20
-related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md]
+related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
 # Retrieval question index
@@ -40,6 +40,9 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Native Water versus discrete fallback, viscosity/rest | [Water design](../systems/water-design.md) |
 | What survives #26 review, what must #49 repair, and when may #45 proceed? | [Water design](../systems/water-design.md), [#26 post-merge review](../audits/2026-09-19-issue-26-post-merge-review.md), [architecture programme](../operations/architecture-programme.md) |
 | Why can deep connected Water keep unequal levels, what did #26 reject, and what comes next? | [Water design](../systems/water-design.md), [architecture programme](../operations/architecture-programme.md), [#26 evidence](../audits/2026-09-19-issue-26-water-leveling.md) |
+| Why test hybrid Water sheets before adding another pressure solver? | [Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md), [Water design](../systems/water-design.md), [soliding programme](../operations/soliding-programme.md) |
+| Is the barrel a special physics object, and was its historical support result owner-accepted? | [Product intent](product-intent-and-priorities.md), [Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md), [remediation programme](../operations/development-claims-remediation-programme.md) |
+| How could trapped gas, sealed rooms or vacuum be approximated without cellular gas CFD? | [Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md), [field roadmap](../systems/smoke-heat-pressure-roadmap.md) |
 | Heat/pressure/wind and Smoke limits | [Field roadmap](../systems/smoke-heat-pressure-roadmap.md) |
 | Appearance LUTs, glow, authoring intent | [Appearance](../systems/material-appearance-and-rendering.md), [authored programs](../architecture/item-authored-material-programs.md) |
 | API versions, packed samples/results | [Interfaces](interfaces-and-message-contracts.md) |
