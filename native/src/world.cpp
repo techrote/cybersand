@@ -907,6 +907,24 @@ soliding::DiscoveryMetrics World::settled_discovery_journal_metrics() const noex
     return settled_discovery_ == nullptr ? soliding::DiscoveryMetrics{}
                                          : settled_discovery_->journal_metrics();
 }
+soliding::DiscoveryCoverageState World::settled_discovery_coverage_state(
+    std::int64_t x, std::int64_t y) const noexcept {
+    if (tick_failed_) return soliding::DiscoveryCoverageState::Failed;
+    const auto target = address(x, y);
+    if (find_chunk(target.chunk) == nullptr)
+        return soliding::DiscoveryCoverageState::NotResident;
+    if (settled_discovery_ == nullptr)
+        return soliding::DiscoveryCoverageState::ResidentUntracked;
+    if (settled_discovery_->capacity_blocked())
+        return soliding::DiscoveryCoverageState::CapacityRefused;
+    if (settled_discovery_->halted() != soliding::DiscoveryHalt::None)
+        return soliding::DiscoveryCoverageState::Failed;
+    const auto handle =
+        settled_discovery_->find_handle(discovery_tile_key(target));
+    if (!handle.has_value())
+        return soliding::DiscoveryCoverageState::ResidentUntracked;
+    return settled_discovery_->coverage_state(*handle);
+}
 soliding::DiscoveryHalt World::settled_discovery_halted() const noexcept {
     return settled_discovery_ == nullptr ? soliding::DiscoveryHalt::None
                                          : settled_discovery_->halted();
