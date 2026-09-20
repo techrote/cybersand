@@ -124,7 +124,8 @@ surface, expressed in body heights:
 | Sg | shallow | 0.25 | 0 | 0 | 1 | 600 | gentle entry |
 | Sm | shallow | 1.0 | 0 | 0 | 1 | 600 | moderate entry / floor-failure reference |
 | Sh | shallow | 4.0 | 0 | 0 | 1 | 600 | harder bounded entry |
-| Dm | deep | 1.0 | 0 | 0 | 1 | 600 | deep entry expected to remain away from floor for an initial interval |
+| Dn | deep | 1.0 | 0 | 0 | 1 | 60 | bounded body+Water control that must end before floor contact |
+| Dm | deep | 1.0 | 0 | 0 | 1 | 600 | deep entry with pre-floor and later behavior retained |
 | Dl | deep | 1.0 | 0 | 0 | 1 | 900 | delayed/floor-reaching observation |
 | M- | shallow | 1.0 | -18 | 0 | 1 | 600 | mirrored left-offset entry |
 | M+ | shallow | 1.0 | +18 | 0 | 1 | 600 | mirrored right-offset entry |
@@ -134,7 +135,7 @@ surface, expressed in body heights:
 | O0 | deep | 1.0 | 0 | 0 | 1 | 360 | observer/telemetry-on reference |
 | O1 | deep | 1.0 | 0 | 0 | 1 | 360 | body diagnostics disabled overhead/neutrality control |
 
-The matrix is deterministic and has no simulation RNG. The fixture seed is fixed
+This Dn no-floor arm was added while registration was still documentation-only, before any instrumentation edit. The matrix is deterministic and has no simulation RNG. The fixture seed is fixed
 to 0; `translation_x` and `body_offset_x` are the registered spatial variations.
 No arm changes Water semantics or coupling gains.
 
