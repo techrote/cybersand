@@ -22,6 +22,14 @@ all four complete conversations, later refinements, rejected alternatives and
 repository conflicts. It is the traceability record; this page owns the programme.
 Future implementers use the linked prompts without needing those conversations.
 
+**REM-001 current-truth qualification (2026-09-20):** use the source-qualified
+[storage contract](../architecture/chunk-tile-and-buffer-model.md) for the physical
+current-main Cell carrier. Older four-byte wording on this programme page records
+its experiment/control context and must not be promoted to a current-main storage
+claim; #85 owns the full current-truth cleanup without changing G-L/G-P history.
+For broad #10/#11 acceptance and issue-state routing, use the
+[development-claims remediation programme](development-claims-remediation-programme.md).
+
 ## Post-H bulk Water disposition — 2026-09-19
 
 The Water H handoff and [issue #26 characterization](../audits/2026-09-19-issue-26-water-leveling.md)
@@ -149,15 +157,19 @@ with an exact control, explicit error ledger and later architecture decision.
 No experiment silently amends either ADR; shared or missing material ownership
 is never numerical approximation.
 
-### Does closed issue #11 prove barrel support is ready for soliding?
+### Does issue #11 prove broad barrel support is ready for soliding?
 
-No. GitHub marks #11 closed, but the intake source and retained evidence still
-describe missing persistent barrel bearing, masked-source feedback and
-barrier-crossing ejection. Soliding issue #12 can begin bounded diagnostics and
-design; support-dependent integration requires a source-matched fix and evidence
-or an explicit scope decision. Administrative issue closure is not runtime
-acceptance. The programme records this conflict without reopening or replacing
-the owner's issue.
+No. A source-matched 2026-09-13 #11 checkpoint did implement and verify
+masked-source correction, bounded barrier/body-mask-aware ejection and ordinary
+rectangle/load bearing in a stated envelope. That evidence remains valid in Git
+history, but the accepted implementation is absent from audited current main and
+later owner evaluation did not accept the broader body/granular gameplay result.
+
+REM-001 therefore routes current-main integration to #81 and the broader envelope
+to #83 while preserving the historical #11 record. #12 Stage 3B remains an
+independent discovery/locality programme; do not infer a blanket soliding block
+or broad support acceptance from issue state. Administrative closure is not
+runtime or owner acceptance.
 
 ## C. Questions and bounded outcomes
 

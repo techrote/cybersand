@@ -4,7 +4,7 @@ status: Planned
 document-kind: design
 scope: Canonical development-order graph for reusable exploratory MicroScenarios, anomaly triage, non-kinetic intermaterial-interaction authoring/tuning, and staged showcase work
 canonical-for: [microscenarios-programme, microscenarios-development-order, intermaterial-interaction-programme]
-last-reviewed: 2026-09-19
+last-reviewed: 2026-09-20
 related-documents: [experiment-tower.md, architecture-programme.md, ../reference/status-and-roadmap.md, ../reference/product-intent-and-priorities.md, ../MATERIAL_LAB.md, ../systems/flow-transport-and-profiles.md]
 ---
 
@@ -29,6 +29,18 @@ Issue #30 tracks this programme. #27 owns the reusable harness, #28 the first
 exploratory/reference scenario pack, and #29 is **INT-000**, the versioned
 intermaterial-interaction framework/campaign. #30 is a tracker, never a prerequisite
 that must itself be "executed" before those work items.
+
+## Live infrastructure checkpoint — 2026-09-20
+
+#27/MS-000, #28/MS-001 and #29/INT-000 infrastructure are landed. PR #55 merged
+as `910717aac101363ec2b1b89e4041a22bc9a97b97`, so references below to PR #55
+as an active candidate are retained 2026-09-19 checkpoint context rather than live
+implementation ownership. #30 remains an open programme tracker and is never an
+execution gate. Later interaction tuning is bounded/versioned follow-on work.
+
+This does not waive #18/#20/#14 scientific gates or #49/#45 Water ordering, and
+it does not imply broad player/body granular acceptance; that claim state is
+owned by the [development-claims remediation programme](development-claims-remediation-programme.md).
 
 ## Authority and ordering rules
 
@@ -303,7 +315,7 @@ Do not make humans maintain a dense N×N table. With 64 materials there are 4096
 ordered pairs; with 256 there are 65536. A dense resolved runtime lookup may be
 perfectly reasonable if measurement favors it; **dense manual authoring is not**.
 
-INT-000's current PR #55 implementation extends the useful #13 profile precedent:
+The landed INT-000 implementation from PR #55 extends the useful #13 profile precedent:
 
 ```text
 intrinsic material properties/state
@@ -415,7 +427,7 @@ A fixture definition should run:
 - in batch coverage campaigns;
 - under human visual/feel review where appropriate.
 
-The PR #55 Interaction Workbench exposes the **effective** interaction
+The landed PR #55 Interaction Workbench exposes the **effective** interaction
 profile/coverage without making a dense matrix the authored source of truth.
 Read-only native inspection reports resolved compact-pair channel values,
 rule/version/pass provenance, directionality, revalidation tags, represented
@@ -558,3 +570,12 @@ interaction tuning to later bounded passes. MS-001 completion and INT-000
 infrastructure do not waive #18/#20/#26/#14 architecture or physics gates. Actual
 Windows execution, browser/WebAssembly execution and hardware-GPU/target-PC
 performance remain explicitly unavailable unless separately recorded.
+
+
+## INT-000 merged status — 2026-09-20
+
+The 2026-09-19 "implementation checkpoint" above is retained as its pre-merge
+record. PR #55 later passed its source-matched publication and exact-head gates
+and merged as `910717aac101363ec2b1b89e4041a22bc9a97b97`; #29 is closed.
+No broad interaction retune was part of that merge. #30 remains the tracker for
+programme-level follow-on routing.

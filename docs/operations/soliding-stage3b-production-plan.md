@@ -4,7 +4,7 @@ status: Approved design
 document-kind: runbook
 scope: Dependency, ownership, gate and validation routing for Stage-3B locality/scalability implementation
 canonical-for: [soliding-stage3b-production-plan]
-last-reviewed: 2026-09-19
+last-reviewed: 2026-09-20
 related-documents: [../audits/issue-12-2026-09-19/stage3b-parent-decision.md, ../audits/2026-09-19-issue-69-stage3b-validation.md, soliding-stage3-freeze.md, soliding-stage3b-astra-review.md, soliding-programme.md]
 ---
 
@@ -26,6 +26,18 @@ MicroScenario/workbench surfaces, but did not change `native/src/world.cpp`,
 World event/discovery geometry or settled-discovery internals. Stage 3B observes
 authoritative interaction mutations; it does not duplicate INT-000 semantics.
 Recheck current ownership before the later central World producer handoffs.
+
+## Live execution checkpoint — 2026-09-20
+
+Authoritative main is now
+`db00e84e1b26b99f2816b6c1258d5dea97fc1fa1` after #61 / PR #89.
+#56-#61 and #69 are complete. #62 is the next serialized central-World producer
+package; #63 follows it. #64 remains the separable graph/index lane and may proceed
+in parallel only while its actual write set remains disjoint. #65 is still the join.
+
+The development-claims remediation programme does not pause this lane. REM-002
+#81 must inspect live #62/#63 ownership before touching overlapping body/World/test
+surfaces and stop on a real collision. Stage 4 remains blocked.
 
 ## Resolved #57 event/halo contract
 
@@ -195,7 +207,7 @@ current Stage-3B work.
 
 None of these gates admits Stage 4.
 
-### Issue #59 completion / #60 handoff checkpoint
+### Issue #59/#60/#61 completion and #62 handoff checkpoint
 
 Issue #59 completed on PR #76 and merged to authoritative `main`
 `5d89be4488e5fec3bf37e40ac87601fb14f2989b`. The landed Stage-3A-equivalent
@@ -203,8 +215,12 @@ backing conversion sizes journal `T`, edges `64T`, frontier/seen/members
 `32T`, and key/index storage by effective capacity while retaining
 `C=1024`, `K=32`, `B=128` and publication `P=4096`.
 
-G2 is closed. #60 is the next dependency-ready production package and must start
-from current authoritative `main`, not the historical #59 implementation branch.
+G2 is closed. #60 subsequently merged through PR #78, and #61 subsequently
+merged through PR #89 as
+`db00e84e1b26b99f2816b6c1258d5dea97fc1fa1`. G3 is closed and the
+payload-witness slice of G4 is landed. #62 is the current dependency-ready
+central-World package; it must start from live authoritative `main`, not a stale
+#61 branch.
 
 ## Required ordering principles
 

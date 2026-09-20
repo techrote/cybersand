@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-09-19
+last-reviewed: 2026-09-20
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md]
 ---
 
@@ -18,13 +18,14 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 
 | Question family | Canonical route |
 |---|---|
+| Is a closed/completed development claim actually implemented, integrated, verified and owner-accepted now? | [Development-claims remediation programme](../operations/development-claims-remediation-programme.md); use the [2026-09-20 audit](../audits/2026-09-20-development-claims-closure-audit.md) for the frozen intake findings |
 | How do Play/Inspect/Benchmark share a definition, and is a scenario capture replay? | [MicroScenario contract](../operations/microscenarios.md) |
 | Actual version, commits, local changes, recovery | [Source checkpoint](../operations/source-checkpoint-and-recovery.md) |
 | Who mutates cells; may a worker touch Godot? | [Ownership and lifetime](../architecture/data-ownership-and-lifetimes.md) |
 | Desktop/Web order, synchronous ticks, failed-world reset/replacement | [Tick and threading](../architecture/simulation-tick-and-threading.md) |
 | Web compatibility/threaded Auto and hosting | [Web threading](../operations/web-threading.md) |
 | Body masks, displacement, terrain, Rapier scope | [Rigid-body/cellular coupling](../architecture/rigid-body-and-cellular-coupling.md) |
-| Current powder/player collision and Mercury penetration | [Granular policy](../systems/granular-interaction-policy.md), [version decision](../decisions/ADR-011-granular-interaction-policy.md), [issue #10 evidence](../audits/2026-09-09-issue-10-granular-policy.md) |
+| Current powder/player collision and Mercury penetration | [Granular policy](../systems/granular-interaction-policy.md), [version decision](../decisions/ADR-011-granular-interaction-policy.md), [issue #10 evidence](../audits/2026-09-09-issue-10-granular-policy.md); use the [remediation programme](../operations/development-claims-remediation-programme.md) for broad gameplay-acceptance status |
 | Historical powder measurements, barrel sinking and reversible soliding | [Baseline tooling](../operations/physics-characterisation.md), [issue #9 results](../audits/2026-09-09-physics-characterisation.md), [future soliding plan](../operations/physics-characterisation-plan.md) |
 | Pinned Rapier acquisition and verification | [Rapier runbook](../operations/rapier-2d-migration-runbook.md) |
 | Native snapshots, dirty retention, GPU uploads | [Rendering/gameplay bridges](../architecture/rendering-and-gameplay-bridges.md) |
@@ -50,7 +51,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Product intent and next priorities | [Owner intent](product-intent-and-priorities.md), [roadmap](status-and-roadmap.md) |
 | Meaning of a term or unexplained symptom | [Glossary](glossary.md), [troubleshooting](../operations/troubleshooting.md) |
 | Why #17 does not make mass8 the perceptual minimum | [Water-feel programme addendum](../operations/architecture-programme-water-feel-addendum.md), [#17 evidence](../audits/2026-09-11-issue-17-state-precision.md) |
-| What #19 delivers and how the H-ready Water Feel Lab is configured | [Experiment Tower](../operations/experiment-tower.md), [policy registration](../operations/water-feel-lab-experiment.md), [completion evidence](../audits/2026-09-12-issue-19-water-feel-lab.md) |
+| What #19 delivers, and whether the Water Feel Lab is ready for a formal blind human study | [Experiment Tower](../operations/experiment-tower.md), [policy registration](../operations/water-feel-lab-experiment.md), [completion evidence](../audits/2026-09-12-issue-19-water-feel-lab.md), then [REM-001 current qualification](../operations/development-claims-remediation-programme.md) |
 | Why #18 remains held after G-P | [Water-feel programme addendum](../operations/architecture-programme-water-feel-addendum.md), [compact-motion prompt](../operations/architecture-programme-prompts/compact-motion.md) |
 | What is the actual #24/#27-#30 development order, and may MicroScenarios run before G-final? | [Canonical MicroScenarios/interactions programme](../operations/microscenarios-programme.md), [roadmap](status-and-roadmap.md) |
 | What interaction schema/rule/provenance is authoritative now, and how do we avoid a destructive N² matrix? | [Current interaction substrate](../systems/intermaterial-interactions.md), [canonical programme](../operations/microscenarios-programme.md) |
@@ -81,8 +82,10 @@ Current runtime/source gates and immutable M11 retention use [separate validatio
 For reproducible five-floor experiments and preserving Mercury while tuning Sand, use the [Experiment Tower](../operations/experiment-tower.md), then its [dated evidence](../audits/2026-09-09-issue-13-transport.md).
 
 The Current Tower includes #19's 35-scenario Water Feel Lab, normalized runtime
-policy, transactional Apply + Reset and blind/export controls. It is H-ready, not
-a human preference result.
+policy and transactional Apply + Reset. Its simulation/presentation apparatus
+remains validated, but the old broad "H-ready" wording is not sufficient for a
+formal blind human study: #84 owns arm-identity separation and append-only study
+observations. No human preference result exists yet.
 
 ## Opt-in transport profiles
 
@@ -107,8 +110,9 @@ the intended four-visible-level Water presentation and a deterministic
 runtime-configurable Water Feel Lab. See the [post-G-P refinement](../operations/architecture-programme-water-feel-addendum.md)
 and [completion evidence](../audits/2026-09-12-issue-19-water-feel-lab.md).
 
-#19 supplied the H-ready apparatus. Later H evidence and #26 identify a bulk
-head/leveling defect first; both #26 bounded local candidates remain rejected.
+#19 supplied the validated simulation/presentation apparatus. Formal blind-study
+capture now waits on #84. Separately, later H-related evidence and #26 identify a
+bulk head/leveling defect first; both #26 bounded local candidates remain rejected.
 Post-merge review requires #49 to repair/version the successor apparatus before #45
 implementation/acceptance. #18 remains held through #49 -> #45 until the bulk
 confound is resolved and directional references can be interpreted cleanly. #20
@@ -154,7 +158,7 @@ separate; the programme graph owns admission.
 - Owners, lifecycle, eligibility and nonwrapping identities: [soliding lifecycle](../architecture/soliding-lifecycle.md).
 - Dirty/activity discovery, complete summaries and refusal: [discovery substrate](../systems/settled-region-discovery.md).
 - Passed Stage-3A bounded-reference evidence and open Stage-3B locality/scalability gate: [Stage-3 review](../audits/issue-12-2026-09-19/stage3-exit-review.md).
-- Next read-only Stage-3B locality/scalability analysis and parent decision boundary: [Astra architecture-review packet](../operations/soliding-stage3b-astra-review.md).
+- Completed read-only Stage-3B review and active implementation route: [Astra architecture-review packet](../operations/soliding-stage3b-astra-review.md), then the [Stage-3B production plan](../operations/soliding-stage3b-production-plan.md). At the reconciled REM-001 checkpoint #56-#61/#69 are complete; #62 is the next serialized central-World producer package and #64 remains the separable graph/index lane.
 - Ordinary Current sleep control and measurement gaps: [measurement contract](../operations/soliding-measurement.md).
 
 - Blocked falling/torque/coherent-child motion fixture: [macro-fracture preregistration](../operations/soliding-macro-fracture-fixture.md).

@@ -4,8 +4,8 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-09-19
-related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md]
+last-reviewed: 2026-09-20
+related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md]
 ---
 
 # Validation evidence ledger
@@ -36,6 +36,29 @@ certifies a later binary, another platform or complete replay.
 Local `validation/...` paths above are relative to `C:/kybersand` and are retained
 outside source history. The curated audit JSON preserves command and artifact
 references when those local logs are unavailable.
+
+## REM-001 claim-state reconciliation, 2026-09-20
+
+The [dated closure audit](../audits/2026-09-20-development-claims-closure-audit.md)
+and [Current remediation programme](../operations/development-claims-remediation-programme.md)
+add no new runtime pass. They qualify how existing evidence may be used.
+
+- #9 remains scoped characterization evidence.
+- #10's executed policy/fixture evidence remains valid within its recorded source,
+  artifact, platform and scenario envelope; it is not broad owner gameplay
+  acceptance, which is open under #82.
+- #11's 2026-09-13 bounded repair evidence remains accessible in Git history and
+  valid for its ordinary rectangle/load envelope, but the accepted implementation
+  is absent from audited current main; #81 owns integration and #83 later broad
+  acceptance.
+- #19's simulation/presentation/harness evidence remains valid, but no human H
+  preference study ran and formal blind-study capture is not accepted until #84
+  repairs identity separation and append-only observations.
+- #26's exact negative candidate results remain valid; its v1 apparatus is not a
+  successor acceptance oracle until #49 completes.
+
+These are evidence-boundary corrections, not re-execution or retroactive failure
+of the original bounded campaigns.
 
 ## Which binaries and dependencies did E-AUDIT use?
 

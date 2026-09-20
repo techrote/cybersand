@@ -24,17 +24,18 @@
       "id": "C06",
       "query": "How will barrels stop sinking at half depth, and how can rested materials become reversible Rapier objects?",
       "canonical": [
-        "operations/physics-characterisation-plan.md"
+        "operations/development-claims-remediation-programme.md",
+        "operations/soliding-programme.md"
       ],
       "facts": [
-        "Measure impact depth and long-term creep independently; capped pressure impulses do not establish static granular support.",
-        "Soliding proceeds through diagnostics, stationary proxies and an explicit ownership ADR for dynamic aggregates.",
-        "Promotion and demotion need bounded revision-checked handoffs, exclusive material ownership and conservation; erase/simulate/restore and per-cell physics objects remain rejected.",
-        "These are Planned experiments and architecture candidates, not implemented support or ballistics."
+        "Audited current main does not contain the historically accepted #11 bounded granular-bearing/ejection repair; #81 owns source-matched current-main integration and #83 owns the broader body/granular gameplay envelope afterwards.",
+        "The historical #11 ordinary rectangle/load evidence remains valid in its recorded scope; reopening/repair routing does not erase it or imply broad acceptance.",
+        "Issue #12 is an independent scalable-soliding programme at Stage 3B; Stage 4 is blocked and #12 is not the sole remaining reason issue #8 is open."
       ],
       "sources": [
-        "../godot/native_extension/cyber_native_cell_world.cpp",
-        "decisions/ADR-007-rigid-body-cellular-coupling.md"
+        "operations/development-claims-remediation-programme.md",
+        "operations/soliding-programme.md",
+        "../godot/native_extension/cyber_native_cell_world.cpp"
       ]
     },
     {
@@ -140,13 +141,14 @@
       "id": "C09",
       "query": "Why can retained powder inside a barrel generate downward impulses, and is increasing the cap sufficient?",
       "canonical": [
+        "operations/development-claims-remediation-programme.md",
         "architecture/rigid-body-and-cellular-coupling.md",
         "operations/physics-characterisation.md"
       ],
       "facts": [
-        "Stored powder selects the update kernel, but masked lookup sees the Wall proxy; repeated attempted downward moves create contacts.",
-        "Per-add and final saturation must be distinguished from accepted age-scaled impulses.",
-        "Cap increases alone did not establish support; masked-source feedback remains issue #11, outside the current player/exchange policy."
+        "The issue #9 historical baseline showed proxy-derived downward contacts from stored powder under a body mask and showed that cap tuning alone did not establish intended support.",
+        "A later #11 source-matched checkpoint repaired masked-source feedback and ordinary bearing in a bounded envelope, but that accepted code is absent from audited current main.",
+        "#81 owns current-main integration of the bounded repair; #83 owns broad body/granular gameplay acceptance, so neither historical closure nor cap tuning is current broad acceptance."
       ],
       "sources": [
         "../native/src/world.cpp",
@@ -157,13 +159,14 @@
       "id": "C10",
       "query": "Did the barrel destroy the Water missing from the measured bed, or move it through the hard floor?",
       "canonical": [
+        "operations/development-claims-remediation-programme.md",
         "operations/physics-characterisation.md",
         "architecture/rigid-body-and-cellular-coupling.md"
       ],
       "facts": [
-        "The five-seed full-world accounting control preserves 9,400,320 Water mass units; all cropped deficit is below the floor.",
-        "Body ejection checks the empty endpoint without an intervening barrier check; the minimal fixture reproduces this before any tick or Rapier step.",
-        "This is a separate displacement-path defect, not chemical conversion, density exchange, or destruction of Water."
+        "The issue #9 full-world accounting control preserved all recorded Water mass and showed the cropped deficit below the hard floor: the defect was displacement across the barrier, not Water destruction.",
+        "The historical #11 repair added bounded barrier/body-mask-aware ejection in its accepted source-matched envelope, but audited current main again exposes the legacy endpoint-only target search.",
+        "#81 owns reconstruction/integration of the accepted bounded repair; current broad body/granular acceptance remains a later #83 question."
       ],
       "sources": [
         "../godot/native_extension/cyber_native_cell_world.cpp::find_ejection_target",
@@ -415,7 +418,39 @@
         "../godot/tests/test_microscenario_flood_control.gd",
         "../godot/tests/test_microscenario_stress.gd"
       ]
+    },
+    {
+      "id": "REM01",
+      "query": "Issues 10 and 11 were completed, so are player and barrel granular interactions accepted and finished now?",
+      "canonical": [
+        "operations/development-claims-remediation-programme.md"
+      ],
+      "facts": [
+        "No single closed/completed bit answers the question: bounded #10 and historical #11 evidence remain valid, while later owner gameplay evaluation did not accept the broad player/body granular objectives.",
+        "#10 routes broad current player/granular acceptance to #82; #11 routes accepted bounded repair integration to #81 and broader body/granular acceptance to #83.",
+        "Issue #8 remains open and issue #12 is an independent soliding programme rather than the sole remaining blocker."
+      ],
+      "sources": [
+        "operations/development-claims-remediation-programme.md",
+        "audits/2026-09-20-development-claims-closure-audit.md"
+      ]
+    },
+    {
+      "id": "REM02",
+      "query": "What remediation issue owns each development-claims audit finding, and can Stage 3B continue while remediation runs?",
+      "canonical": [
+        "operations/development-claims-remediation-programme.md"
+      ],
+      "facts": [
+        "F01 routes to #81; broad F02 routes to #82/#83; formal Water H integrity to #84; F06-F11 stay with existing #49; current-truth/platform/counter cleanup goes to #85; closure/ownership/validation controls go to #86; #87 is the independent exit audit.",
+        "Stage 3B remains independently active: #61 has landed through PR #89; #62 then #63 are the serialized central-World continuation, while #64 is the separable graph/index lane before the #65 join.",
+        "Remediation does not impose a blanket Stage-3B pause; overlapping children must inspect live ownership/write sets and stop on a real collision rather than duplicate work."
+      ],
+      "sources": [
+        "operations/development-claims-remediation-programme.md",
+        "operations/soliding-stage3b-production-plan.md"
+      ]
     }
   ],
-  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source."
+  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions."
 }
