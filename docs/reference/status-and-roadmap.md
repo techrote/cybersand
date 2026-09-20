@@ -208,9 +208,11 @@ investigation before any new #45 pressure/head mechanism is treated as inevitabl
 - [#92](https://github.com/techrote/cybersand/issues/92) may test at most roughly
   3-5 segmented upper-volume solided-Water sheet tiers only on a suitable generic
   #12 hybrid substrate.
-- [#93](https://github.com/techrote/cybersand/issues/93) independently researches
-  lumped connected gas regions; [#94](https://github.com/techrote/cybersand/issues/94)
-  is conditional decompression research.
+- [#93](https://github.com/techrote/cybersand/issues/93) research now records a
+  [bounded lumped-region candidate](../research/lumped-gas-region-pressure-bookkeeping.md):
+  technically promising for optional/research use, with no production atmosphere
+  adoption. It admits [#94](https://github.com/techrote/cybersand/issues/94) only
+  as a bounded non-production decompression proof.
 - [#95](https://github.com/techrote/cybersand/issues/95) synthesizes WEX evidence
   with merged #49 controls and decides whether #45 should proceed, narrow,
   recharter, defer or no-go.
