@@ -1,0 +1,72 @@
+name: Issue 49 Water apparatus v2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'native/bench/water_issue49.cpp'
+      - 'tools/physics/water_issue49.py'
+      - 'tools/physics/test_water_issue49.py'
+      - 'docs/audits/2026-09-20-issue-49-water-apparatus-v2-registration.md'
+      - '.github/workflows/issue49-water-apparatus.yml'
+  pull_request:
+    paths:
+      - 'native/bench/water_issue49.cpp'
+      - 'tools/physics/water_issue49.py'
+      - 'tools/physics/test_water_issue49.py'
+      - 'docs/audits/2026-09-20-issue-49-water-apparatus-v2-registration.md'
+      - '.github/workflows/issue49-water-apparatus.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: issue49-water-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  apparatus:
+    runs-on: ${{ vars.NATIVE_RUNNER || 'sengi-standard-4-ubuntu-2404' }}
+    timeout-minutes: 60
+    env:
+      CC: gcc-13
+      CXX: g++-13
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+
+      - name: Record tool identity
+        run: |
+          git rev-parse HEAD
+          git status --porcelain=v2
+          gcc-13 --version
+          g++-13 --version
+          python3 --version
+
+      - name: Run apparatus and runner adversarial regressions
+        run: |
+          timeout 2m python3 tools/physics/test_water_issue49.py
+          timeout 2m python3 -O tools/physics/test_water_issue49.py
+
+      - name: Run preregistered Current-Water apparatus-v2 baseline
+        run: |
+          mkdir -p build
+          set +e
+          timeout 50m python3 tools/physics/water_issue49.py build/issue49-water-v2 --cxx g++-13
+          status=$?
+          echo "campaign exit: $status"
+          test ! -f build/issue49-water-v2/summary.json || cat build/issue49-water-v2/summary.json
+          test ! -f build/issue49-water-v2/completion-manifest.json || cat build/issue49-water-v2/completion-manifest.json
+          exit "$status"
+
+      - name: Retain complete apparatus evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: issue49-water-v2-${{ github.run_id }}
+          path: build/issue49-water-v2/
+          if-no-files-found: error
+          retention-days: 30
