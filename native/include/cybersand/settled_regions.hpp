@@ -1716,6 +1716,11 @@ private:
         child.member_tail = *staged_member;
         ++child.member_count;
         auto& component = tiles_[ref.tile].components[ref.component];
+        const auto ticket_handle = build_.reconstruction_ticket;
+        component.reconstruction_ticket = ticket_handle.slot;
+        component.reconstruction_ticket_generation = ticket_handle.generation;
+        component.reconstruction_attempt =
+            reconstruction_tickets_[ticket_handle.slot].attempt;
         component.in_build = false;
         component.build_generation = 0;
         auto& out = build_.staging_snapshot;
@@ -1869,12 +1874,19 @@ private:
                     }
                     return true;
                 }
-                if (ticket_handle_valid(build_.reconstruction_ticket)) {
-                    begin_staging_reconstruction_child();
-                    continue;
+                if (!ticket_handle_valid(build_.reconstruction_ticket)) {
+                    const auto ticket = allocate_reconstruction_ticket();
+                    if (!ticket.has_value()) {
+                        refuse_build(RegionRefusal::ManifestCapacity);
+                        return true;
+                    }
+                    auto& adopted = reconstruction_tickets_[ticket->slot];
+                    adopted.phase = ReconstructionPhase::Building;
+                    adopted.started_work = build_.started_work;
+                    build_.reconstruction_ticket = *ticket;
                 }
-                publish_build();
-                return true;
+                begin_staging_reconstruction_child();
+                continue;
             }
             if (build_.phase == Phase::StagingMembers) {
                 if (stage_reconstruction_member_one()) return true;
@@ -1907,6 +1919,12 @@ private:
             ticket.phase = ReconstructionPhase::Refused;
             ticket.refusal = reason;
             last_refusal_ = reason;
+            if (staged_child_handle_valid(build_.staging_child)) {
+                auto& child = staged_children_[build_.staging_child.slot];
+                append_child_cleanup(build_.staging_child, build_.staging_child);
+                build_.staging_child = {};
+                child.next = {};
+            }
             retire_subscriber(build_.subscriber);
             reset_build();
             saturating_add(metrics_.builds_refused);
@@ -2588,6 +2606,12 @@ private:
         auto& ticket = reconstruction_tickets_[handle.slot];
         queue_ticket_attempt_artifacts(ticket);
         if (build_.phase != Phase::Idle && build_.reconstruction_ticket == handle) {
+            if (staged_child_handle_valid(build_.staging_child)) {
+                auto& child = staged_children_[build_.staging_child.slot];
+                append_child_cleanup(build_.staging_child, build_.staging_child);
+                build_.staging_child = {};
+                child.next = {};
+            }
             const auto subscriber = build_.subscriber;
             retire_subscriber(subscriber);
             reset_build();
