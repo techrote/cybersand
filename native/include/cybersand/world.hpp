@@ -306,9 +306,15 @@ private:
     void register_discovery_chunk(ChunkCoord coord, const Chunk& chunk) noexcept;
     [[nodiscard]] soliding::DiscoveryTileKey discovery_tile_key(
         const Address& address) const noexcept;
+    [[nodiscard]] soliding::DiscoveryParentKey discovery_parent_key(
+        ChunkCoord coord, std::size_t activity_index) const noexcept;
     [[nodiscard]] soliding::DiscoverySignals discovery_signals(
         ChunkCoord coord, std::size_t activity_index,
         soliding::DiscoveryBounds bounds) const noexcept;
+    void observe_discovery_activity_parent(ChunkCoord coord,
+                                           std::size_t activity_index) noexcept;
+    void witness_discovery_activity(ChunkCoord coord, std::size_t activity_index) noexcept;
+    void service_discovery_deadlines() noexcept;
     void dirty_discovery_cell(std::int64_t x, std::int64_t y,
                               soliding::ProducerReason reason) noexcept;
     void refresh_discovery_signals(soliding::ProducerReason reason) noexcept;
