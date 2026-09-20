@@ -39,14 +39,7 @@ jobs:
         run: |
           set -euo pipefail
           git merge-base --is-ancestor "$RECONCILED_MAIN" HEAD
-          if ! timeout 15m make soliding-test; then
-            gdb -batch \
-              -ex 'break require if !condition' \
-              -ex run \
-              -ex bt \
-              --args ./build/test_settled_world_discovery || true
-            exit 1
-          fi
+          timeout 15m make soliding-test
           timeout 12m make build/test_settled_world_discovery_sanitized
           timeout 8m ./build/test_settled_world_discovery_sanitized
           grep -q "discovery_event_observation_rect" native/src/world.cpp
