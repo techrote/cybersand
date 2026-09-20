@@ -5,7 +5,7 @@ document-kind: design
 scope: Parallel/extension research for deep-Water bulk response, generic Rapier↔cellular coupling, bounded solided-Water sheet proofs, saturated-head requirement reassessment, lumped gas regions and optional decompression events; no production architecture adoption
 canonical-for: [water-hybrid-pressure-extension-programme]
 last-reviewed: 2026-09-20
-related-documents: [architecture-programme.md, soliding-programme.md, ../systems/water-design.md, ../architecture/rigid-body-and-cellular-coupling.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md, ../reference/product-intent-and-priorities.md]
+related-documents: [architecture-programme.md, soliding-programme.md, ../systems/water-design.md, ../architecture/rigid-body-and-cellular-coupling.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md, ../reference/product-intent-and-priorities.md, ../research/lumped-gas-region-pressure-bookkeeping.md]
 ---
 
 # Water hybrid, saturated-head and compartment-pressure extension programme
@@ -367,7 +367,8 @@ a prerequisite implementation for #91-#94.
 ```
 
 #49 may run in parallel with WEX-001/WEX-003. WEX-002 waits for a suitable generic
-hybrid substrate and must not duplicate #12. WEX-004 is conditional. WEX-005 is a
+hybrid substrate and must not duplicate #12. WEX-003 has now admitted WEX-004 as a
+bounded non-production research proof. WEX-005 is a
 decision/reconciliation issue, not an automatic implementation issue.
 
 #84 formal blind-study capture, #85/#86 broad remediation and unrelated
@@ -453,6 +454,23 @@ No outcome silently edits ADR-005 or adopts the candidate.
 
 This may run independently of WEX-002.
 
+**Research disposition, 2026-09-20:** [WEX-003 feasibility research](../research/lumped-gas-region-pressure-bookkeeping.md)
+finds lumped connected-gas bookkeeping technically promising for a bounded
+optional/research feature, without selecting production integration. The preferred
+candidate combines exact dirty-local gas connectivity, a sparse macro-component
+graph, explicit narrow portals and invalidatable authored seeds. Authoritative gas
+amount plus free volume derive pressure; stale or over-budget split topology returns
+unavailable rather than silently retaining pressure authority. Worst-case closure
+still scales with the affected region, so a later production proof would need
+explicit work/capacity budgets and real churn measurements.
+
+No runtime proof was added because an isolated toy would not measure the relevant
+CyberSand integration cost and would overlap active Stage-3B source surfaces.
+The result explicitly **admits #94 as a bounded non-production decompression-event
+proof**, provided it consumes only resolved region state, snapshots a finite
+pre-opening source budget and cancels stale topology. This is not production
+atmosphere adoption and does not change #45/Water semantics.
+
 Start with architecture research and a small off-production proof if justified.
 Do not integrate a production atmosphere system by default.
 
@@ -480,7 +498,8 @@ Exit may be research-only. A useful cost model with a no-go conclusion is succes
 
 ## WEX-004 — conditional decompression-event proof
 
-Execute only if WEX-003 explicitly admits it.
+WEX-003's 2026-09-20 research disposition explicitly admits this bounded
+non-production proof. Reconcile that landed evidence and live ownership before execution.
 
 Use generic region pressure differences to create a bounded event, not cellular gas.
 Test whether a local occlusion-aware impulse approximation can move:
