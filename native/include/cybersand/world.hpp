@@ -258,7 +258,8 @@ private:
     [[nodiscard]] Chunk& ensure_chunk(ChunkCoord coord);
     void ensure_temperature_field(Chunk& chunk);
     void apply_pending_explosions(TickStats& stats);
-    void wake_cell_neighborhood(std::int64_t x, std::int64_t y);
+    void wake_cell_neighborhood(std::int64_t x, std::int64_t y,
+                                bool reconcile_discovery = true);
     void keep_cell_active(std::int64_t x, std::int64_t y, JobEffects* effects) noexcept;
     void schedule_interaction_wake(std::int64_t x, std::int64_t y, std::uint64_t due,
                                    JobEffects* effects) noexcept;
