@@ -527,7 +527,7 @@ private:
         std::uint64_t generation{}, batch_serial{};
         TicketHandle preparation_ticket{};
         std::size_t member_count{};
-        bool valid{}, reclaim_pending{};
+        bool valid{}, reclaim_pending{}, on_free_list{};
     };
     struct SourceRegion {
         RegionComponentKey key{};
@@ -3105,6 +3105,7 @@ private:
     TileIndex tile_index_;
     RowIndex row_index_;
     std::array<Region, RegionCapacity> regions_{};
+    std::array<std::uint32_t, RegionCapacity> region_free_stack_{};
     Build build_;
     std::unique_ptr<bool[]> member_tiles_scratch_;
     std::unique_ptr<std::size_t[]> dependency_slots_scratch_;
@@ -3126,7 +3127,7 @@ private:
     SourceHandle source_cleanup_head_{}, source_cleanup_tail_{};
     std::uint64_t change_serial_{}, current_change_serial_{}, reconstruction_serial_{};
     std::uint64_t resource_generation_{1}, committed_batch_serial_{}, service_round_{};
-    std::size_t region_cleanup_cursor_{};
+    std::size_t region_cleanup_cursor_{}, region_free_count_{RegionCapacity};
     std::size_t member_capacity_{}, member_count_{}, source_count_{}, ticket_count_{}, seed_count_{};
     std::size_t staged_member_count_{}, staged_child_count_{};
     std::size_t tile_count_{}, adjacency_count_{}, dependency_count_{}, subscriber_count_{};
@@ -3196,6 +3197,8 @@ SettledRegions<TileCapacity, MaximumTileCells, ComponentsPerTile, AdjacencyCapac
             ? static_cast<std::uint32_t>(i + 1U) : invalid_pool_index;
     member_free_head_ = member_capacity_ == 0 ? invalid_pool_index : 0U;
     for (std::size_t i = 0; i < RegionCapacity; ++i) {
+        region_free_stack_[i] = static_cast<std::uint32_t>(RegionCapacity - 1U - i);
+        regions_[i].on_free_list = true;
         sources_[i].next_free = i + 1U < RegionCapacity
             ? static_cast<std::uint32_t>(i + 1U) : invalid_pool_index;
         reconstruction_tickets_[i].next_free = i + 1U < RegionCapacity
