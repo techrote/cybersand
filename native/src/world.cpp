@@ -649,8 +649,7 @@ void World::observe_discovery_activity_parent(
                 settled_discovery_->incarnation(), coord.y, coord.x,
                 activity_y, activity_x, subtile_y / 32, subtile_x / 32};
             const auto handle = settled_discovery_->find_handle(key);
-            if (!handle.has_value() ||
-                settled_discovery_->payload_refresh_pending(*handle)) continue;
+            if (!handle.has_value()) continue;
             const auto previous = settled_discovery_->tile(*handle);
             if (!previous.has_value()) continue;
             const soliding::DiscoveryBounds bounds{
