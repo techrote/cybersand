@@ -244,16 +244,19 @@ public:
         if (unavailable() || incarnation_ == 0 || budget == 0) return 0;
         std::size_t used = 0;
         while (used < budget) {
-            if (cleanup_pending_count_ != 0) {
-                if (!cleanup_one_dependency()) break;
+            if (!work_possible_) {
+                if (cleanup_pending_count_ == 0 || !cleanup_one_dependency()) break;
                 consume(used);
                 continue;
             }
-            if (!work_possible_) break;
             if (build_.phase == Phase::Idle) begin_seek();
             if (build_.phase == Phase::Seeking) {
                 if (!seek_one()) {
-                    if (!build_.seed_found) { reset_build(); work_possible_ = false; break; }
+                    if (!build_.seed_found) {
+                        reset_build();
+                        work_possible_ = false;
+                        continue;
+                    }
                     begin_traversal(); continue;
                 }
                 consume(used); continue;
