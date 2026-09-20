@@ -304,6 +304,40 @@ void ordinary_sleep_wake_and_no_write_keep_active() {
     }
 }
 
+void pending_payload_no_write_signal_coalesces_revision() {
+    World world(tracked_config(4));
+    world.reserve_region({0, 0, 8, 8});
+    service(world);
+    require(world.set_cell_state(0, 0, Material::Wood, 0, 5),
+            "pending-payload combustible fixture accepted");
+
+    bool saw_no_write = false;
+    std::uint64_t sparse_revision = 0;
+    for (int attempt = 0; attempt < 12 && !saw_no_write; ++attempt) {
+        const auto before_hash = world.content_hash();
+        const auto before_tile = tile_at(world, 0, 0);
+        (void)world.tick();
+        if (world.content_hash() == before_hash) {
+            saw_no_write = true;
+            const auto after_tile = tile_at(world, 0, 0);
+            require(after_tile.signals.active,
+                    "pending #61 payload work dropped the no-write keep-active witness");
+            require(after_tile.summary.revision == before_tile.summary.revision,
+                    "sparse signal reconciliation manufactured a second payload revision");
+            sparse_revision = after_tile.summary.revision;
+        }
+    }
+    require(saw_no_write,
+            "pending-payload fixture reached no deterministic no-write keep-active tick");
+
+    service(world);
+    const auto serviced = tile_at(world, 0, 0);
+    require(serviced.summary.revision == sparse_revision,
+            "servicing the pending payload resurrected a coalesced signal revision");
+    require(serviced.signals.active,
+            "payload service lost the coalesced blocking activity state");
+}
+
 void seed_deadline_fixture(World& world) {
     for (int x = -2; x <= 2; ++x)
         for (int y = -2; y <= 3; ++y) world.set(x, y, Material::Wall);
@@ -406,6 +440,7 @@ int main() {
         deadline_generation_exhaustion_fail_closes_observation();
         quiet_world_has_no_resident_signal_polling();
         ordinary_sleep_wake_and_no_write_keep_active();
+        pending_payload_no_write_signal_coalesces_revision();
         future_deadline_parking_reentry_and_observer_neutrality();
         workers_one_four_sparse_state_parity();
         std::cout << "Stage-3B sparse activity/deadline tests passed\n";
