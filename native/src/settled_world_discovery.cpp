@@ -787,6 +787,10 @@ std::size_t SettledWorldDiscoveryCoordinator::pending() const noexcept { return 
 std::size_t SettledWorldDiscoveryCoordinator::pending_payload_work() const noexcept {
     return impl_->payload_queued;
 }
+bool SettledWorldDiscoveryCoordinator::payload_refresh_pending(
+    WorldDiscoveryTileHandle handle) const noexcept {
+    return impl_->valid_owner(handle) && impl_->records[handle.slot].payload_pending;
+}
 std::uint64_t SettledWorldDiscoveryCoordinator::incarnation() const noexcept { return impl_->incarnation; }
 bool SettledWorldDiscoveryCoordinator::capacity_blocked() const noexcept { return impl_->capacity_blocked; }
 DiscoveryHalt SettledWorldDiscoveryCoordinator::halted() const noexcept { return impl_->journal.halted(); }
