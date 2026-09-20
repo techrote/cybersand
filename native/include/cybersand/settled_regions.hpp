@@ -1555,7 +1555,7 @@ private:
                 region.subscriber = {};
                 if (!member_handle_valid(region.member_head)) {
                     region.reclaim_pending = false;
-                    bump_resource_generation();
+                    return_region_slot(owner_slot);
                 }
             }
         }
@@ -1985,11 +1985,28 @@ private:
     }
 
     std::optional<std::size_t> allocate_region_slot() noexcept {
-        for (std::size_t i = 0; i < RegionCapacity; ++i)
-            if (!regions_[i].valid && !regions_[i].reclaim_pending &&
-                regions_[i].member_head.slot == invalid_pool_index &&
-                regions_[i].generation < GenerationLimit) return i;
+        while (region_free_count_ != 0) {
+            const auto slot = static_cast<std::size_t>(
+                region_free_stack_[--region_free_count_]);
+            auto& region = regions_[slot];
+            region.on_free_list = false;
+            if (!region.valid && !region.reclaim_pending &&
+                !member_handle_valid(region.member_head) &&
+                region.generation < GenerationLimit)
+                return slot;
+        }
         return std::nullopt;
+    }
+    void return_region_slot(std::size_t slot) noexcept {
+        if (slot >= RegionCapacity) return;
+        auto& region = regions_[slot];
+        if (region.on_free_list || region.valid || region.reclaim_pending ||
+            member_handle_valid(region.member_head) ||
+            region.generation >= GenerationLimit)
+            return;
+        region_free_stack_[region_free_count_++] = static_cast<std::uint32_t>(slot);
+        region.on_free_list = true;
+        bump_resource_generation();
     }
     void publish_build() noexcept {
         const auto slot = allocate_region_slot();
@@ -2013,6 +2030,7 @@ private:
         ++region.generation;
         region.valid = true;
         region.reclaim_pending = false;
+        region.on_free_list = false;
         region.batch_serial = 0;
         region.preparation_ticket = {};
         region.member_head = {};
