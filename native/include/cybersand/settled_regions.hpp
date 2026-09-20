@@ -34,7 +34,7 @@ enum class RegionRefusal : std::uint8_t {
     None, InvalidInput, SignalIncomplete, Occupied, NoncanonicalEmpty,
     TileCapacity, ComponentCapacity, AdjacencyCapacity, FrontierCapacity, RegionCapacity,
     UnknownBoundary, RevisionChanged, SourceFailure, GenerationExhausted,
-    SpatialIndexCapacity, DependencyCapacity
+    SpatialIndexCapacity, DependencyCapacity, MemberCapacity, ManifestCapacity
 };
 struct RegionComponentKey {
     std::uint8_t material{};
@@ -69,6 +69,11 @@ struct SettledRegionMetrics {
     std::uint64_t dependency_records{}, dependency_high_water{}, dependency_refusals{};
     std::uint64_t subscriber_invalidations{}, subscriber_reuses{}, absence_subscriptions{};
     std::uint64_t cleanup_registrations{}, cleanup_units{};
+    std::uint64_t reconstruction_tickets{}, reconstruction_restarts{}, reconstruction_waits{};
+    std::uint64_t reconstruction_service_units{}, reconstruction_remote_units{};
+    std::uint64_t reconstruction_children_staged{}, reconstruction_batches_committed{};
+    std::uint64_t member_records{}, member_high_water{}, member_refusals{}, member_reclaims{};
+    std::uint64_t reclamation_units{}, reclamation_high_water{}, resource_generation{};
     std::uint64_t publications{}, work_units{}, area_total{}, area_max{};
     std::uint64_t latency_total_units{}, latency_max_units{};
 };
@@ -352,6 +357,9 @@ public:
                tile_capacity_ * 2U * sizeof(std::uint64_t) +
                dependency_capacity_ * sizeof(Dependency) +
                subscriber_capacity_ * sizeof(Subscriber) +
+               member_capacity_ * sizeof(PublicationMember) +
+               RegionCapacity * (sizeof(SourceRegion) + sizeof(ReconstructionTicket) + sizeof(StagedChild)) +
+               frontier_capacity_ * (sizeof(ReconstructionSeed) + sizeof(StagedMember)) +
                tile_capacity_ * (sizeof(bool) + sizeof(std::size_t)) +
                (tile_index_.storage_bytes() - sizeof(TileIndex)) +
                (row_index_.storage_bytes() - sizeof(RowIndex));
@@ -380,8 +388,38 @@ private:
         std::uint64_t generation{};
         bool operator==(const SubscriberHandle&) const = default;
     };
+    struct MemberHandle {
+        std::uint32_t slot{invalid_pool_index};
+        std::uint64_t generation{};
+        bool operator==(const MemberHandle&) const = default;
+    };
+    struct TicketHandle {
+        std::uint32_t slot{invalid_pool_index};
+        std::uint64_t generation{};
+        bool operator==(const TicketHandle&) const = default;
+    };
+    struct SourceHandle {
+        std::uint32_t slot{invalid_pool_index};
+        std::uint64_t generation{};
+        bool operator==(const SourceHandle&) const = default;
+    };
+    struct SeedHandle {
+        std::uint32_t slot{invalid_pool_index};
+        std::uint64_t generation{};
+        bool operator==(const SeedHandle&) const = default;
+    };
+    struct StagedMemberHandle {
+        std::uint32_t slot{invalid_pool_index};
+        std::uint64_t generation{};
+        bool operator==(const StagedMemberHandle&) const = default;
+    };
+    struct StagedChildHandle {
+        std::uint32_t slot{invalid_pool_index};
+        std::uint64_t generation{};
+        bool operator==(const StagedChildHandle&) const = default;
+    };
     enum class DependencyKind : std::uint8_t { TileRevision, AbsenceFaceRun };
-    enum class SubscriberKind : std::uint8_t { Build, Publication };
+    enum class SubscriberKind : std::uint8_t { Build, Publication, Staged, Prepared };
 
     struct Component {
         RegionComponentKey key{};
@@ -390,6 +428,8 @@ private:
         SettledRegionHandle assigned_region{};
         EdgeHandle incident_head{};
         std::uint64_t build_generation{};
+        std::uint32_t reconstruction_ticket{invalid_pool_index};
+        std::uint64_t reconstruction_ticket_generation{}, reconstruction_attempt{};
         bool used{}, in_build{}, deferred{};
     };
     struct FaceRun {
@@ -415,6 +455,7 @@ private:
         std::array<FaceRun, 128> face_runs{};
         DependencyHandle revision_subscribers{};
         std::size_t area{}, component_count{}, face_run_count{};
+        std::uint64_t observation_generation{1}, last_change_serial{};
         RegionRefusal refusal{RegionRefusal::None};
         bool used{}, has_payload{}, ready{};
     };
@@ -444,13 +485,81 @@ private:
         std::uint32_t next_free{invalid_pool_index};
         bool allocated{}, active{}, cleanup_pending{};
     };
+    struct PublicationMember {
+        ComponentRef ref{};
+        std::uint64_t tile_revision{}, generation{};
+        MemberHandle next{};
+        std::uint32_t next_free{invalid_pool_index};
+        bool active{};
+    };
     struct Region {
         SettledRegionSnapshot snapshot{};
         SubscriberHandle subscriber{};
-        std::uint64_t generation{};
-        bool valid{};
+        MemberHandle member_head{};
+        std::uint64_t generation{}, batch_serial{};
+        TicketHandle preparation_ticket{};
+        std::size_t member_count{};
+        bool valid{}, reclaim_pending{};
     };
-    enum class Phase : std::uint8_t { Idle, Seeking, Traversing, Validating };
+    struct SourceRegion {
+        RegionComponentKey key{};
+        MemberHandle member_head{};
+        SourceHandle next{};
+        std::uint64_t generation{}, source_region_generation{};
+        std::uint32_t source_region_slot{}, next_free{invalid_pool_index};
+        std::size_t member_count{};
+        bool active{};
+    };
+    struct ReconstructionSeed {
+        ComponentRef ref{};
+        SeedHandle next{};
+        std::uint64_t generation{};
+        std::uint32_t next_free{invalid_pool_index};
+        bool active{};
+    };
+    struct StagedMember {
+        ComponentRef ref{};
+        StagedMemberHandle next{};
+        std::uint64_t generation{};
+        std::uint32_t next_free{invalid_pool_index};
+        bool active{};
+    };
+    struct StagedChild {
+        SettledRegionSnapshot snapshot{};
+        SubscriberHandle subscriber{};
+        StagedMemberHandle member_head{}, member_tail{};
+        StagedChildHandle next{};
+        std::uint64_t generation{};
+        std::uint32_t next_free{invalid_pool_index};
+        std::size_t member_count{};
+        bool active{};
+    };
+    enum class ReconstructionPhase : std::uint8_t {
+        Admitting, Building, PreflightDependencies, PreflightRegions,
+        Preparing, CommitReady, Blocked, Refused
+    };
+    struct ReconstructionTicket {
+        SourceHandle source_head{}, source_tail{}, admit_source{};
+        MemberHandle admit_member{};
+        SeedHandle seed_head{}, seed_tail{}, next_seed{};
+        StagedChildHandle child_head{}, child_tail{}, preflight_child{}, prepare_child{};
+        DependencyHandle preflight_dependency{};
+        TicketHandle next_queue{};
+        RegionComponentKey scan_key{};
+        std::uint64_t generation{}, attempt{1}, serial{}, admission_change_serial{};
+        std::uint64_t wait_generation{}, wait_resource_generation{}, batch_serial{};
+        std::uint32_t next_free{invalid_pool_index}, wait_tile{invalid_pool_index};
+        std::size_t source_count{}, seed_count{}, child_count{}, staged_member_count{};
+        std::size_t scan_component{}, preflight_region_scan{}, preflight_free_count{};
+        std::size_t prepared_child_count{}, prepare_member_index{};
+        ReconstructionPhase phase{ReconstructionPhase::Admitting};
+        RegionRefusal refusal{RegionRefusal::None};
+        bool allocated{}, queued{}, scanning_changed_tile{}, blocker_seen{}, restart_requested{};
+    };
+    enum class Phase : std::uint8_t {
+        Idle, Seeking, Traversing, Validating, StagingMembers,
+        StagingDependencies, StagingDigest
+    };
     struct Build {
         Build(std::size_t frontier_capacity, std::size_t tile_capacity)
             : frontier(std::make_unique<ComponentRef[]>(frontier_capacity)),
@@ -463,7 +572,11 @@ private:
         ComponentRef best{}, seed{};
         DependencyHandle validation_dependency{};
         SubscriberHandle subscriber{};
+        TicketHandle reconstruction_ticket{};
+        StagedChildHandle staging_child{};
+        DependencyHandle staging_dependency{};
         std::uint64_t generation{};
+        std::size_t staging_member_index{}, staging_dependency_count{}, staging_digest_index{};
         bool seed_found{};
         RegionRefusal failure{RegionRefusal::None};
         std::unique_ptr<ComponentRef[]> frontier, seen, members;
@@ -1731,6 +1844,13 @@ private:
     std::unique_ptr<Adjacency[]> adjacencies_;
     std::unique_ptr<Dependency[]> dependencies_;
     std::unique_ptr<Subscriber[]> subscribers_;
+    std::unique_ptr<PublicationMember[]> members_;
+    std::array<SourceRegion, RegionCapacity> sources_{};
+    std::array<ReconstructionTicket, RegionCapacity> reconstruction_tickets_{};
+    std::unique_ptr<ReconstructionSeed[]> reconstruction_seeds_;
+    std::unique_ptr<StagedMember[]> staged_members_;
+    std::array<StagedChild, RegionCapacity> staged_children_{};
+    std::unique_ptr<std::size_t[]> preflight_region_slots_;
     TileIndex tile_index_;
     RowIndex row_index_;
     std::array<Region, RegionCapacity> regions_{};
@@ -1742,7 +1862,21 @@ private:
     std::uint32_t edge_free_head_{invalid_pool_index};
     std::uint32_t dependency_free_head_{invalid_pool_index};
     std::uint32_t subscriber_free_head_{invalid_pool_index};
+    std::uint32_t member_free_head_{invalid_pool_index};
+    std::uint32_t source_free_head_{invalid_pool_index};
+    std::uint32_t ticket_free_head_{invalid_pool_index};
+    std::uint32_t seed_free_head_{invalid_pool_index};
+    std::uint32_t staged_member_free_head_{invalid_pool_index};
+    std::uint32_t staged_child_free_head_{invalid_pool_index};
     SubscriberHandle cleanup_head_{}, cleanup_tail_{};
+    TicketHandle reconstruction_queue_head_{}, reconstruction_queue_tail_{}, current_change_ticket_{};
+    SeedHandle stale_seed_cleanup_head_{}, stale_seed_cleanup_tail_{};
+    StagedChildHandle stale_child_cleanup_head_{}, stale_child_cleanup_tail_{};
+    SourceHandle source_cleanup_head_{}, source_cleanup_tail_{};
+    std::uint64_t change_serial_{}, current_change_serial_{}, reconstruction_serial_{};
+    std::uint64_t resource_generation_{1}, committed_batch_serial_{}, service_round_{};
+    std::size_t member_capacity_{}, member_count_{}, source_count_{}, ticket_count_{}, seed_count_{};
+    std::size_t staged_member_count_{}, staged_child_count_{};
     std::size_t tile_count_{}, adjacency_count_{}, dependency_count_{}, subscriber_count_{};
     std::size_t published_region_count_{}, deferred_component_count_{}, cleanup_pending_count_{};
     bool halted_{}, coverage_capacity_exhausted_{}, work_possible_{};
@@ -1767,10 +1901,17 @@ SettledRegions<TileCapacity, MaximumTileCells, ComponentsPerTile, AdjacencyCapac
       dependency_capacity_(checked_dependency_capacity(
           tile_capacity_, frontier_capacity_, dependency_capacity)),
       subscriber_capacity_(checked_subscriber_capacity()),
+      member_capacity_(frontier_capacity_ > std::numeric_limits<std::size_t>::max() / 2U
+          ? throw std::invalid_argument("settled reconstruction member capacity overflows size_t")
+          : frontier_capacity_ * 2U),
       tiles_(std::make_unique<Tile[]>(tile_capacity_)),
       adjacencies_(std::make_unique<Adjacency[]>(adjacency_capacity_)),
       dependencies_(std::make_unique<Dependency[]>(dependency_capacity_)),
       subscribers_(std::make_unique<Subscriber[]>(subscriber_capacity_)),
+      members_(std::make_unique<PublicationMember[]>(member_capacity_)),
+      reconstruction_seeds_(std::make_unique<ReconstructionSeed[]>(frontier_capacity_)),
+      staged_members_(std::make_unique<StagedMember[]>(frontier_capacity_)),
+      preflight_region_slots_(std::make_unique<std::size_t[]>(RegionCapacity)),
       tile_index_(tile_capacity_),
       row_index_(checked_row_capacity(tile_capacity_)),
       build_(frontier_capacity_, tile_capacity_),
@@ -1796,6 +1937,31 @@ SettledRegions<TileCapacity, MaximumTileCells, ComponentsPerTile, AdjacencyCapac
                 ? static_cast<std::uint32_t>(i + 1U)
                 : invalid_pool_index;
     subscriber_free_head_ = subscriber_capacity_ == 0 ? invalid_pool_index : 0U;
+    if (member_capacity_ >= invalid_pool_index)
+        throw std::invalid_argument("settled reconstruction member capacity exceeds handle range");
+    for (std::size_t i = 0; i < member_capacity_; ++i)
+        members_[i].next_free = i + 1U < member_capacity_
+            ? static_cast<std::uint32_t>(i + 1U) : invalid_pool_index;
+    member_free_head_ = member_capacity_ == 0 ? invalid_pool_index : 0U;
+    for (std::size_t i = 0; i < RegionCapacity; ++i) {
+        sources_[i].next_free = i + 1U < RegionCapacity
+            ? static_cast<std::uint32_t>(i + 1U) : invalid_pool_index;
+        reconstruction_tickets_[i].next_free = i + 1U < RegionCapacity
+            ? static_cast<std::uint32_t>(i + 1U) : invalid_pool_index;
+        staged_children_[i].next_free = i + 1U < RegionCapacity
+            ? static_cast<std::uint32_t>(i + 1U) : invalid_pool_index;
+    }
+    source_free_head_ = RegionCapacity == 0 ? invalid_pool_index : 0U;
+    ticket_free_head_ = RegionCapacity == 0 ? invalid_pool_index : 0U;
+    staged_child_free_head_ = RegionCapacity == 0 ? invalid_pool_index : 0U;
+    for (std::size_t i = 0; i < frontier_capacity_; ++i) {
+        reconstruction_seeds_[i].next_free = i + 1U < frontier_capacity_
+            ? static_cast<std::uint32_t>(i + 1U) : invalid_pool_index;
+        staged_members_[i].next_free = i + 1U < frontier_capacity_
+            ? static_cast<std::uint32_t>(i + 1U) : invalid_pool_index;
+    }
+    seed_free_head_ = frontier_capacity_ == 0 ? invalid_pool_index : 0U;
+    staged_member_free_head_ = frontier_capacity_ == 0 ? invalid_pool_index : 0U;
 }
 
 } // namespace cybersand::soliding
