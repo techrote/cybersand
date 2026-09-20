@@ -641,8 +641,6 @@ void World::observe_discovery_activity_parent(
     const auto block_y = activity_y * config_.activity_block_size;
     const auto block_width = std::min(config_.activity_block_size, config_.chunk_size - block_x);
     const auto block_height = std::min(config_.activity_block_size, config_.chunk_size - block_y);
-    const auto chunk_origin_x = coord.x * config_.chunk_size;
-    const auto chunk_origin_y = coord.y * config_.chunk_size;
     for (std::int32_t subtile_y = 0; subtile_y < block_height; subtile_y += 32) {
         for (std::int32_t subtile_x = 0; subtile_x < block_width; subtile_x += 32) {
             const soliding::DiscoveryTileKey key{
@@ -652,11 +650,6 @@ void World::observe_discovery_activity_parent(
             if (!handle.has_value()) continue;
             const auto previous = settled_discovery_->tile(*handle);
             if (!previous.has_value()) continue;
-            const soliding::DiscoveryBounds bounds{
-                chunk_origin_x + block_x + subtile_x,
-                chunk_origin_y + block_y + subtile_y,
-                static_cast<std::uint32_t>(std::min(32, block_width - subtile_x)),
-                static_cast<std::uint32_t>(std::min(32, block_height - subtile_y))};
             auto signals = previous->signals;
             // #62 owns only activity/deadline state. Preserve #58/#63-owned
             // witness/health/inclusion/event/mask signals exactly as last observed;
