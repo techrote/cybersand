@@ -881,7 +881,13 @@ void World::dirty_discovery_cell(std::int64_t x, std::int64_t y,
                                  soliding::ProducerReason reason) noexcept {
     if (settled_discovery_ == nullptr) return;
     const auto target = address(x, y);
-    if (find_chunk(target.chunk) == nullptr) return;
+    const auto* chunk = find_chunk(target.chunk);
+    if (chunk == nullptr) return;
+    const auto activity_index =
+        static_cast<std::size_t>(target.local_y / config_.activity_block_size) *
+            static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
+        static_cast<std::size_t>(target.local_x / config_.activity_block_size);
+    witness_discovery_activity(target.chunk, activity_index);
     const auto handle = settled_discovery_->find_handle(discovery_tile_key(target));
     if (!handle.has_value()) return;
     (void)settled_discovery_->notify_payload(*handle, reason, tick_index_);
@@ -1441,6 +1447,7 @@ void World::wake_cell_neighborhood(std::int64_t x, std::int64_t y) {
             block.active = true;
             block.quiet_ticks = 0;
             chunk->active = true;
+            witness_discovery_activity(target.chunk, block_index);
         }
     }
 }
