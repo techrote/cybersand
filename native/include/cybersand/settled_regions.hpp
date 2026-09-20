@@ -1540,9 +1540,11 @@ private:
             owner_slot < RegionCapacity) {
             auto& region = regions_[owner_slot];
             if (region.generation == owner_generation && region.reclaim_pending) {
-                region.reclaim_pending = false;
                 region.subscriber = {};
-                bump_resource_generation();
+                if (!member_handle_valid(region.member_head)) {
+                    region.reclaim_pending = false;
+                    bump_resource_generation();
+                }
             }
         }
     }
@@ -2099,7 +2101,8 @@ private:
             if (was_visible && current_change_serial_ != 0)
                 attach_retired_region_to_current_change(handle.slot, region);
             retire_subscriber(region.subscriber);
-            region.reclaim_pending = subscriber_handle_valid(region.subscriber);
+            region.reclaim_pending = subscriber_handle_valid(region.subscriber) ||
+                                     member_handle_valid(region.member_head);
             if (!region.reclaim_pending) {
                 region.subscriber = {};
                 bump_resource_generation();
