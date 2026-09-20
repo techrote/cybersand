@@ -51,8 +51,8 @@ jobs:
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: linux-runtime-35521544247
-          path: \${{ runner.temp }}/issue64-linux
-          github-token: \${{ github.token }}
+          path: ${{ runner.temp }}/issue64-linux
+          github-token: ${{ github.token }}
           repository: techrote/cybersand
           run-id: 35521544247
 
@@ -94,12 +94,12 @@ jobs:
 
       - name: Build retained Windows x86_64 runtime once
         env:
-          GODOT_CPP_ROOT: \${{ runner.temp }}/godot-cpp
-          SCONS_PYTHON: \${{ runner.temp }}/scons/bin/python
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
           SCONS_JOBS: "2"
-          LLVM_MINGW_ROOT: \${{ runner.temp }}/llvm-mingw
-          WINDOWS_CXX: \${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
-          CYBERSAND_NATIVE_OUTPUT: \${{ runner.temp }}/cybersand_native.windows.x86_64.dll
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
         run: |
           set -euo pipefail
           timeout 35m tools/build_pinned_godot_cpp.sh windows
@@ -226,8 +226,8 @@ jobs:
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: issue64-source-matched-runtimes-\${{ github.sha }}
-          path: \${{ runner.temp }}/issue64-runtimes/
+          name: issue64-source-matched-runtimes-${{ github.sha }}
+          path: ${{ runner.temp }}/issue64-runtimes/
           if-no-files-found: error
           retention-days: 30
 
