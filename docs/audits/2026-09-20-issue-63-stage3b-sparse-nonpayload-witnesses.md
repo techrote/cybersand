@@ -47,12 +47,19 @@ passes the existing `R + 2` acceptance endpoint checks, observation uses #57 exa
 
 `P = (R + 2) + maximum_rule_radius`.
 
-Endpoints use checked signed arithmetic. Canonical tile traversal increments one exact
-pending count per intersecting represented tile; drain decrements the same footprint.
-Overlapping events therefore cannot clear a shared tile early. Registration while an
-event is pending derives its initial count from the bounded authoritative pending-event
-queue, so absent/untracked coverage that becomes resident before drain inherits the
-obligation.
+Endpoints use checked signed arithmetic. The checked footprint arithmetic is a
+single production helper used by World event observation and by the #57 geometry
+regressions. In particular, the required smaller non-default `r = 1` case is tested
+directly against that helper. A full current World cannot safely set
+`maximum_rule_radius = 1` because the live material catalogue contains an active
+Rocket rule with write radius 2; #63 does not weaken that independent scheduler-safety
+validation merely to make the geometry fixture constructible.
+
+Canonical tile traversal increments one exact pending count per intersecting represented
+tile; drain decrements the same footprint. Overlapping events therefore cannot clear a
+shared tile early. Registration while an event is pending derives its initial count
+from the bounded authoritative pending-event queue, so absent/untracked coverage that
+becomes resident before drain inherits the obligation.
 
 If the wider `P` box is unrepresentable although the authoritative `R + 2` event
 was valid, or bounded local witness traversal cannot preserve integrity, only the
