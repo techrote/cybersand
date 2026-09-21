@@ -833,7 +833,7 @@ void alternate_path_deletion_does_not_false_split() {
             "alternate path keeps one exact replacement instead of a false split");
 }
 
-void reconstruction_capacity_wait_never_publishes_a_subset() {
+void intrinsic_region_capacity_refusal_never_publishes_a_subset() {
     using Regions = SettledRegions<1, 3, 3, 8, 1, 16>;
     const std::array<DiscoveryCell, 3> joined{sand, sand, sand};
     const std::array<DiscoveryCell, 3> split{sand, empty, sand};
@@ -849,16 +849,17 @@ void reconstruction_capacity_wait_never_publishes_a_subset() {
             "capacity-wait split accepted");
     for (std::size_t work = 0; work < 10000; ++work) {
         const auto used = regions.advance(1);
-        require(used <= 1, "capacity wait respects unit primitive budget");
+        require(used <= 1, "capacity refusal respects unit primitive budget");
         require(regions.region_count() == 0,
                 "insufficient all-child capacity never leaks one replacement child");
         if (used == 0 && regions.last_refusal() == RegionRefusal::RegionCapacity)
             break;
     }
     require(regions.region_count() == 0 &&
-            regions.last_refusal() == RegionRefusal::RegionCapacity &&
-            regions.metrics().reconstruction_waits != 0,
-            "all-child publication remains explicitly blocked on stable capacity");
+            regions.last_refusal() == RegionRefusal::RegionCapacity,
+            "intrinsically unrepresentable all-child publication is explicitly refused");
+    require(regions.metrics().reconstruction_waits == 0,
+            "intrinsic region-capacity refusal does not hot-wait for impossible capacity");
 }
 
 void unknown_reconstruction_waits_for_observation_generation() {
@@ -1603,7 +1604,7 @@ int main() {
         deferred_subscriber_cleanup_is_aba_safe();
         reconstruction_split_is_batch_atomic_under_unit_budget();
         alternate_path_deletion_does_not_false_split();
-        reconstruction_capacity_wait_never_publishes_a_subset();
+        intrinsic_region_capacity_refusal_never_publishes_a_subset();
         unknown_reconstruction_waits_for_observation_generation();
         unvisited_source_mutation_restarts_before_publication();
         retained_ticket_fairness_survives_sustained_local_churn();
