@@ -1,3 +1,4 @@
+#define CYBERSAND_SETTLED_REGIONS_TEST_ACCESS 1
 #include "cybersand/settled_regions.hpp"
 
 #include <array>
@@ -658,7 +659,82 @@ void deferred_subscriber_cleanup_is_aba_safe() {
             "old dependency target changes while stale subscriber records remain");
     require(regions.snapshot(replacement->handle).has_value(),
             "stale subscriber generation cannot retire a distinct replacement publication");
-    drain(regions);
+
+    std::size_t cleanup_guard = 0;
+    while (regions.pending_components() != 0 && cleanup_guard++ < 100000) {
+        const auto used = regions.advance(1);
+        require(used <= 1, "ABA forensic drain keeps exact service budget");
+        if (used != 0) continue;
+
+        const auto cleanup = regions.test_cleanup_debug();
+        const auto old_region = regions.test_region_debug(old_local.handle.slot);
+        const auto replacement_region =
+            regions.test_region_debug(replacement->handle.slot);
+        const auto reclaim_head_region =
+            cleanup.region_reclaim_head_slot !=
+                    std::numeric_limits<std::uint32_t>::max()
+                ? regions.test_region_debug(cleanup.region_reclaim_head_slot)
+                : typename Regions::TestRegionDebug{};
+
+        std::cerr
+            << "ABA_FORENSIC"
+            << " cleanup_pending_count=" << cleanup.cleanup_pending_count
+            << " region_reclaim_count=" << cleanup.region_reclaim_count
+            << " source_cleanup_live=" << cleanup.source_cleanup_live
+            << " source_cleanup_slot=" << cleanup.source_cleanup_slot
+            << " seed_cleanup_live=" << cleanup.seed_cleanup_live
+            << " seed_cleanup_slot=" << cleanup.seed_cleanup_slot
+            << " staged_child_cleanup_live=" << cleanup.staged_child_cleanup_live
+            << " staged_child_cleanup_slot=" << cleanup.staged_child_cleanup_slot
+            << " source_count=" << cleanup.source_count
+            << " seed_count=" << cleanup.seed_count
+            << " staged_child_count=" << cleanup.staged_child_count
+            << " staged_member_count=" << cleanup.staged_member_count
+            << " cleanup_head_valid=" << cleanup.cleanup_head_valid
+            << " cleanup_head_slot=" << cleanup.cleanup_head_slot
+            << " cleanup_head_generation=" << cleanup.cleanup_head_generation
+            << " cleanup_head_active=" << cleanup.cleanup_head_active
+            << " cleanup_head_cleanup_pending="
+            << cleanup.cleanup_head_cleanup_pending
+            << " cleanup_head_dependency_live="
+            << cleanup.cleanup_head_dependency_live
+            << " region_reclaim_head_slot=" << cleanup.region_reclaim_head_slot
+            << "\n";
+
+        const auto print_region = [](const char* name, const auto& region) {
+            std::cerr
+                << "ABA_FORENSIC_REGION " << name
+                << " valid=" << region.valid
+                << " reclaim_pending=" << region.reclaim_pending
+                << " reclaim_enqueued=" << region.reclaim_enqueued
+                << " on_free_list=" << region.on_free_list
+                << " generation=" << region.generation
+                << " generation_exhausted_recorded="
+                << region.generation_exhausted_recorded
+                << " member_count=" << region.member_count
+                << " member_head_live=" << region.member_head_live
+                << " subscriber_slot=" << region.subscriber_slot
+                << " subscriber_generation=" << region.subscriber_generation
+                << " subscriber_live=" << region.subscriber_live
+                << " subscriber_active=" << region.subscriber_active
+                << " subscriber_cleanup_pending="
+                << region.subscriber_cleanup_pending
+                << " subscriber_dependency_live="
+                << region.subscriber_dependency_live
+                << " preparation_ticket_live="
+                << region.preparation_ticket_live
+                << "\n";
+        };
+        print_region("old", old_region);
+        print_region("replacement", replacement_region);
+        if (cleanup.region_reclaim_head_slot !=
+            std::numeric_limits<std::uint32_t>::max())
+            print_region("reclaim_head", reclaim_head_region);
+        break;
+    }
+    require(cleanup_guard < 100000,
+            "ABA forensic drain remains bounded");
+
     require(!regions.halted(),
             "deferred subscriber cleanup cannot fail the observer");
     require(!regions.capacity_blocked(),
