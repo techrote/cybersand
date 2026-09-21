@@ -587,6 +587,7 @@ private:
     enum class ReconstructionResource : std::uint8_t {
         None, Region, Member, Frontier, Dependency, Manifest
     };
+    enum class CleanupDisposition : std::uint8_t { Restart, Block, Refuse };
     struct ReconstructionTicket {
         SourceHandle source_head{}, source_tail{}, admit_source{};
         MemberHandle admit_member{};
@@ -606,7 +607,9 @@ private:
         std::size_t prepared_child_count{}, prepare_member_index{}, restart_cleanup_index{};
         ReconstructionPhase phase{ReconstructionPhase::Admitting};
         ReconstructionResource wait_resource{ReconstructionResource::None};
-        RegionRefusal refusal{RegionRefusal::None};
+        ReconstructionResource cleanup_resource{ReconstructionResource::None};
+        CleanupDisposition cleanup_disposition{CleanupDisposition::Restart};
+        RegionRefusal refusal{RegionRefusal::None}, cleanup_refusal{RegionRefusal::None};
         bool allocated{}, queued{}, scanning_changed_tile{}, blocker_seen{}, restart_requested{},
              publication_reserved{};
     };
@@ -2637,6 +2640,24 @@ private:
         if (!ticket_handle_valid(handle)) return;
         reconstruction_tickets_[handle.slot].restart_requested = true;
     }
+    void cleanup_then_block(
+        TicketHandle handle, RegionRefusal reason) noexcept {
+        if (!ticket_handle_valid(handle)) return;
+        auto& ticket = reconstruction_tickets_[handle.slot];
+        ticket.cleanup_disposition = CleanupDisposition::Block;
+        ticket.cleanup_refusal = reason;
+        ticket.cleanup_resource = resource_for_refusal(reason);
+        request_ticket_restart(handle);
+    }
+    void cleanup_then_refuse(
+        TicketHandle handle, RegionRefusal reason) noexcept {
+        if (!ticket_handle_valid(handle)) return;
+        auto& ticket = reconstruction_tickets_[handle.slot];
+        ticket.cleanup_disposition = CleanupDisposition::Refuse;
+        ticket.cleanup_refusal = reason;
+        ticket.cleanup_resource = ReconstructionResource::None;
+        request_ticket_restart(handle);
+    }
     void rotate_reconstruction_head() noexcept {
         if (!ticket_handle_valid(reconstruction_queue_head_) ||
             reconstruction_queue_head_ == reconstruction_queue_tail_)
@@ -2752,13 +2773,6 @@ private:
         }
 
         queue_ticket_attempt_artifacts(ticket);
-        if (ticket.attempt == std::numeric_limits<std::uint64_t>::max()) {
-            ticket.phase = ReconstructionPhase::Refused;
-            ticket.refusal = RegionRefusal::GenerationExhausted;
-            last_refusal_ = ticket.refusal;
-            return true;
-        }
-        ++ticket.attempt;
         ticket.prepared_child_count = 0;
         ticket.preflight_region_scan = 0;
         ticket.preflight_free_count = 0;
@@ -2767,6 +2781,45 @@ private:
         ticket.publication_end_serial = 0;
         ticket.publication_reserved = false;
         ticket.restart_child = {};
+
+        if (ticket.cleanup_disposition == CleanupDisposition::Refuse) {
+            ticket.phase = ReconstructionPhase::Refused;
+            ticket.refusal = ticket.cleanup_refusal;
+            last_refusal_ = ticket.refusal;
+            ticket.cleanup_disposition = CleanupDisposition::Restart;
+            ticket.cleanup_refusal = RegionRefusal::None;
+            ticket.cleanup_resource = ReconstructionResource::None;
+            return true;
+        }
+        if (ticket.cleanup_disposition == CleanupDisposition::Block) {
+            ticket.phase = ReconstructionPhase::Blocked;
+            ticket.refusal = ticket.cleanup_refusal;
+            ticket.wait_resource = ticket.cleanup_resource;
+            ticket.wait_resource_generation =
+                resource_generation(ticket.wait_resource);
+            last_refusal_ = ticket.refusal;
+            saturating_add(metrics_.reconstruction_waits);
+            if (ticket.refusal == RegionRefusal::FrontierCapacity)
+                saturating_add(metrics_.frontier_refusals);
+            if (ticket.refusal == RegionRefusal::DependencyCapacity)
+                saturating_add(metrics_.dependency_refusals);
+            if (ticket.refusal == RegionRefusal::MemberCapacity)
+                saturating_add(metrics_.member_refusals);
+            if (ticket.refusal == RegionRefusal::RegionCapacity)
+                saturating_add(metrics_.region_refusals);
+            ticket.cleanup_disposition = CleanupDisposition::Restart;
+            ticket.cleanup_refusal = RegionRefusal::None;
+            ticket.cleanup_resource = ReconstructionResource::None;
+            return true;
+        }
+
+        if (ticket.attempt == std::numeric_limits<std::uint64_t>::max()) {
+            ticket.phase = ReconstructionPhase::Refused;
+            ticket.refusal = RegionRefusal::GenerationExhausted;
+            last_refusal_ = ticket.refusal;
+            return true;
+        }
+        ++ticket.attempt;
         reset_ticket_admission(ticket);
         if (ticket_handle_valid(reconstruction_queue_head_) &&
             reconstruction_queue_head_ == handle)
@@ -2778,7 +2831,7 @@ private:
         auto before = reconstruction_tickets_[handle.slot].seed_count;
         const auto seed = allocate_reconstruction_seed(handle, ref);
         if (!seed.has_value()) {
-            block_reconstruction_ticket(handle, RegionRefusal::FrontierCapacity);
+            cleanup_then_block(handle, RegionRefusal::FrontierCapacity);
             return false;
         }
         (void)before;
@@ -2953,7 +3006,7 @@ private:
         } else {
             const auto allocated = allocate_seed_node(ref);
             if (!allocated.has_value()) {
-                block_reconstruction_ticket(handle, RegionRefusal::FrontierCapacity);
+                cleanup_then_block(handle, RegionRefusal::FrontierCapacity);
                 return false;
             }
             node = *allocated;
@@ -3011,7 +3064,7 @@ private:
                 saturating_add(metrics_.absence_subscriptions);
             return true;
         }
-        block_reconstruction_ticket(handle, RegionRefusal::DependencyCapacity);
+        cleanup_then_block(handle, RegionRefusal::DependencyCapacity);
         return false;
     }
 
@@ -3105,10 +3158,8 @@ private:
                 continue;
             }
             if (build_generation_serial_ == std::numeric_limits<std::uint64_t>::max()) {
-                ticket.phase = ReconstructionPhase::Refused;
-                ticket.refusal = RegionRefusal::GenerationExhausted;
-                last_refusal_ = ticket.refusal;
                 release_reconstruction_seed(seed_handle);
+                cleanup_then_refuse(handle, RegionRefusal::GenerationExhausted);
                 return true;
             }
             const auto child_handle = allocate_staged_child();
@@ -3124,7 +3175,7 @@ private:
                     ref.component < tiles_[ref.tile].component_count)
                     tiles_[ref.tile].components[ref.component].pending_seed = seed_handle;
                 ++ticket.seed_count;
-                block_reconstruction_ticket(handle, RegionRefusal::ManifestCapacity);
+                cleanup_then_block(handle, RegionRefusal::ManifestCapacity);
                 return true;
             }
             const auto subscriber = allocate_subscriber(
@@ -3141,7 +3192,7 @@ private:
                     ref.component < tiles_[ref.tile].component_count)
                     tiles_[ref.tile].components[ref.component].pending_seed = seed_handle;
                 ++ticket.seed_count;
-                block_reconstruction_ticket(handle, RegionRefusal::DependencyCapacity);
+                cleanup_then_block(handle, RegionRefusal::DependencyCapacity);
                 return true;
             }
             auto& child = staged_children_[child_handle->slot];
@@ -3212,7 +3263,7 @@ private:
         const auto staged_member = allocate_staged_member(ref);
         if (!staged_member.has_value()) {
             release_frontier();
-            block_reconstruction_ticket(handle, RegionRefusal::MemberCapacity);
+            cleanup_then_block(handle, RegionRefusal::MemberCapacity);
             return true;
         }
         if (staged_member_handle_valid(child.member_tail))
@@ -3255,10 +3306,7 @@ private:
                    digest_owner_child_ == child_handle;
         }
         if (digest_generation_serial_ == std::numeric_limits<std::uint64_t>::max()) {
-            auto& ticket = reconstruction_tickets_[handle.slot];
-            ticket.phase = ReconstructionPhase::Refused;
-            ticket.refusal = RegionRefusal::GenerationExhausted;
-            last_refusal_ = ticket.refusal;
+            cleanup_then_refuse(handle, RegionRefusal::GenerationExhausted);
             return false;
         }
         digest_owner_ticket_ = handle;
@@ -3554,9 +3602,7 @@ private:
         if (!ticket.publication_reserved) {
             if (ticket.child_count > PublicationLimit - publication_reservation_serial_ ||
                 batch_serial_generation_ == std::numeric_limits<std::uint64_t>::max()) {
-                ticket.phase = ReconstructionPhase::Refused;
-                ticket.refusal = RegionRefusal::GenerationExhausted;
-                last_refusal_ = ticket.refusal;
+                cleanup_then_refuse(handle, RegionRefusal::GenerationExhausted);
                 return true;
             }
             ticket.publication_base_serial =
@@ -3576,11 +3622,11 @@ private:
                 saturating_add(metrics_.region_refusals);
                 return true;
             }
-            block_reconstruction_ticket(handle, RegionRefusal::RegionCapacity);
+            cleanup_then_block(handle, RegionRefusal::RegionCapacity);
             return true;
         }
         if (member_capacity_ - member_count_ < ticket.staged_member_count) {
-            block_reconstruction_ticket(handle, RegionRefusal::MemberCapacity);
+            cleanup_then_block(handle, RegionRefusal::MemberCapacity);
             return true;
         }
 
@@ -3664,7 +3710,7 @@ private:
             auto& region = regions_[slot];
             const auto member = allocate_publication_member(staged.ref);
             if (!member.has_value()) {
-                request_ticket_restart(handle);
+                cleanup_then_block(handle, RegionRefusal::MemberCapacity);
                 return true;
             }
             members_[member->slot].next = region.member_head;
