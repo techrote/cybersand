@@ -1394,6 +1394,7 @@ private:
         dependency.next_free = dependency_free_head_;
         dependency_free_head_ = handle.slot;
         --dependency_count_;
+        bump_resource_generation();
     }
     [[nodiscard]] DependencyHandle* target_head(
         Dependency& dependency) noexcept {
@@ -1567,6 +1568,7 @@ private:
         subscriber.next_free = subscriber_free_head_;
         subscriber_free_head_ = handle.slot;
         --subscriber_count_;
+        bump_resource_generation();
         if ((kind == SubscriberKind::Publication || kind == SubscriberKind::Prepared) &&
             owner_slot < RegionCapacity) {
             auto& region = regions_[owner_slot];
