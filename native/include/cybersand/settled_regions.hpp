@@ -3345,8 +3345,8 @@ private:
         if (child.phase == StagedChildPhase::GatherMembers) {
             if (staged_member_handle_valid(child.digest_member)) {
                 if (child.scratch_member_count == frontier_capacity_) {
-                    block_reconstruction_ticket(handle, RegionRefusal::MemberCapacity);
                     release_child_digest_owner(handle, child_handle);
+                    cleanup_then_block(handle, RegionRefusal::MemberCapacity);
                     return true;
                 }
                 build_.members[child.scratch_member_count++] =
@@ -3616,10 +3616,8 @@ private:
 
         if (region_free_count_ < ticket.child_count - ticket.preflight_free_count) {
             if (region_generation_exhausted_count_ == RegionCapacity) {
-                ticket.phase = ReconstructionPhase::Refused;
-                ticket.refusal = RegionRefusal::GenerationExhausted;
-                last_refusal_ = ticket.refusal;
                 saturating_add(metrics_.region_refusals);
+                cleanup_then_refuse(handle, RegionRefusal::GenerationExhausted);
                 return true;
             }
             cleanup_then_block(handle, RegionRefusal::RegionCapacity);
@@ -3639,12 +3637,7 @@ private:
         if (staged_child_handle_valid(ticket.preflight_child)) {
             const auto slot = allocate_region_slot();
             if (!slot.has_value()) {
-                ticket.phase = ReconstructionPhase::Blocked;
-                ticket.refusal = RegionRefusal::RegionCapacity;
-                ticket.wait_resource_generation = resource_generation_;
-                last_refusal_ = ticket.refusal;
-                saturating_add(metrics_.reconstruction_waits);
-                saturating_add(metrics_.region_refusals);
+                cleanup_then_block(handle, RegionRefusal::RegionCapacity);
                 return true;
             }
             auto& child = staged_children_[ticket.preflight_child.slot];
