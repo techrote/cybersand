@@ -929,6 +929,238 @@ void refused_reconstruction_never_falls_back_to_prefix_publication() {
     }
 }
 
+
+void many_child_split_publishes_one_atomic_batch() {
+    using Regions = SettledRegions<1, 9, 9, 16, 8, 32>;
+    const std::array<DiscoveryCell, 9> plus{
+        empty, sand, empty,
+        sand,  sand, sand,
+        empty, sand, empty,
+    };
+    const std::array<DiscoveryCell, 9> four{
+        empty, sand, empty,
+        sand,  empty, sand,
+        empty, sand, empty,
+    };
+    Regions regions(44);
+    require(put(regions, key(0, 0, 44), {0, 0, 3, 3}, 1, plus) ==
+                RegionOutcome::Accepted,
+            "many-child plus accepted");
+    drain(regions);
+    require(regions.region_count() == 1 && snapshots(regions, 8)[0].area == 5,
+            "many-child fixture begins as one plus component");
+
+    require(put(regions, key(0, 0, 44), {0, 0, 3, 3}, 2, four) ==
+                RegionOutcome::Accepted,
+            "many-child center deletion accepted");
+    std::size_t guard = 0;
+    while (regions.region_count() == 0 && guard++ < 20000)
+        require(regions.advance(1) <= 1, "many-child split is primitive bounded");
+    require(guard < 20000 && regions.region_count() == 4,
+            "first visible replacement state contains all four children");
+    const auto found = snapshots(regions, 8);
+    require(found.size() == 4,
+            "many-child split exposes exactly four complete replacements");
+    for (const auto& region : found)
+        require(region.area == 1 && region.complete,
+                "every many-child replacement is a complete singleton");
+}
+
+void mutation_during_frontier_traversal_restarts_exactly() {
+    using Regions = SettledRegions<5, 1, 1, 16, 8, 32>;
+    const std::array<DiscoveryCell, 1> one{sand};
+    const std::array<DiscoveryCell, 1> hole{empty};
+    Regions regions(45);
+    for (std::int64_t x = 0; x < 5; ++x) {
+        std::uint8_t sealed = 0x05;
+        if (x == 0) sealed |= 0x08;
+        if (x == 4) sealed |= 0x02;
+        require(put(regions, key(x, 0, 45), {x, 0, 1, 1}, 1, one, sealed) ==
+                    RegionOutcome::Accepted,
+                "frontier-mutation chain member accepted");
+    }
+    drain(regions);
+    require(regions.region_count() == 1 && snapshots(regions, 8)[0].area == 5,
+            "frontier-mutation fixture begins connected");
+
+    require(put(regions, key(2, 0, 45), {2, 0, 1, 1}, 2, hole, 0x05) ==
+                RegionOutcome::Accepted,
+            "frontier-mutation bridge deletion accepted");
+    std::size_t guard = 0;
+    while (regions.metrics().reconstruction_traversal_units < 2 && guard++ < 10000)
+        require(regions.advance(1) <= 1, "frontier traversal remains bounded");
+    require(guard < 10000 && regions.region_count() == 0,
+            "frontier traversal begins before any child publication");
+
+    require(put(regions, key(4, 0, 45), {4, 0, 1, 1}, 2, hole, 0x07) ==
+                RegionOutcome::Accepted,
+            "unvisited frontier member mutates during traversal");
+    drain(regions);
+    const auto found = snapshots(regions, 8);
+    require(found.size() == 2,
+            "frontier mutation restarts to the two exact surviving components");
+    bool left = false, right = false;
+    for (const auto& region : found) {
+        left = left || (region.min_x == 0 && region.max_x == 1 && region.area == 2);
+        right = right || (region.min_x == 3 && region.max_x == 3 && region.area == 1);
+    }
+    require(left && right && regions.metrics().reconstruction_restarts != 0,
+            "mixed-revision frontier work never publishes");
+}
+
+void mutations_before_and_during_preparation_never_leak_children() {
+    const std::array<DiscoveryCell, 3> joined{sand, sand, sand};
+    const std::array<DiscoveryCell, 3> split{sand, empty, sand};
+    const std::array<DiscoveryCell, 3> right_only{empty, empty, sand};
+
+    {
+        using Regions = SettledRegions<1, 3, 3, 8, 4, 16>;
+        Regions regions(46);
+        require(put(regions, key(0, 0, 46), {0, 0, 3, 1}, 1, joined) ==
+                    RegionOutcome::Accepted,
+                "post-traversal fixture accepted");
+        drain(regions);
+        require(put(regions, key(0, 0, 46), {0, 0, 3, 1}, 2, split) ==
+                    RegionOutcome::Accepted,
+                "post-traversal split accepted");
+        std::size_t guard = 0;
+        while (regions.metrics().reconstruction_children_staged == 0 &&
+               guard++ < 10000)
+            require(regions.advance(1) <= 1, "post-traversal staging bounded");
+        require(guard < 10000 &&
+                regions.metrics().reconstruction_hidden_preparations == 0 &&
+                regions.region_count() == 0,
+                "a complete staged child remains externally hidden before preparation");
+        require(put(regions, key(0, 0, 46), {0, 0, 3, 1}, 3, right_only) ==
+                    RegionOutcome::Accepted,
+                "mutation after traversal but before preparation accepted");
+        drain(regions);
+        const auto found = snapshots(regions, 4);
+        require(found.size() == 1 && found[0].min_x == 2 && found[0].area == 1,
+                "post-traversal mutation cancels stale staged topology");
+    }
+
+    {
+        using Regions = SettledRegions<1, 3, 3, 8, 4, 16>;
+        Regions regions(47);
+        require(put(regions, key(0, 0, 47), {0, 0, 3, 1}, 1, joined) ==
+                    RegionOutcome::Accepted,
+                "preparation-mutation fixture accepted");
+        drain(regions);
+        require(put(regions, key(0, 0, 47), {0, 0, 3, 1}, 2, split) ==
+                    RegionOutcome::Accepted,
+                "preparation-mutation split accepted");
+        std::size_t guard = 0;
+        while (regions.metrics().reconstruction_hidden_preparations == 0 &&
+               guard++ < 20000) {
+            require(regions.advance(1) <= 1, "hidden preparation remains bounded");
+            require(regions.region_count() == 0,
+                    "prepared subset cannot become visible before ticket commit");
+        }
+        require(guard < 20000 && regions.region_count() == 0,
+                "at least one hidden prepared child exists without prefix publication");
+        require(put(regions, key(0, 0, 47), {0, 0, 3, 1}, 3, right_only) ==
+                    RegionOutcome::Accepted,
+                "mutation during staged preparation accepted");
+        require(regions.region_count() == 0,
+                "mutation during preparation cannot expose the hidden child");
+        drain(regions);
+        const auto found = snapshots(regions, 4);
+        require(found.size() == 1 && found[0].min_x == 2 && found[0].area == 1 &&
+                regions.metrics().reconstruction_restarts != 0,
+                "prepared stale children are retired before exact replacement commit");
+    }
+}
+
+void intrinsic_frontier_and_dependency_exhaustion_refuse_without_prefix() {
+    {
+        using Regions = SettledRegions<1, 5, 5, 8, 6, 2>;
+        const std::array<DiscoveryCell, 5> joined{sand, sand, sand, sand, sand};
+        const std::array<DiscoveryCell, 5> three{sand, empty, sand, empty, sand};
+        Regions regions(48);
+        require(put(regions, key(0, 0, 48), {0, 0, 5, 1}, 1, joined) ==
+                    RegionOutcome::Accepted,
+                "frontier-exhaustion initial region accepted");
+        drain(regions);
+        require(regions.region_count() == 1, "frontier-exhaustion initial publication exists");
+        require(put(regions, key(0, 0, 48), {0, 0, 5, 1}, 2, three) ==
+                    RegionOutcome::Accepted,
+                "frontier-exhaustion split accepted");
+        std::size_t guard = 0;
+        while (guard++ < 20000) {
+            const auto used = regions.advance(1);
+            require(regions.region_count() == 0,
+                    "frontier exhaustion cannot publish a subset");
+            if (used == 0 && regions.last_refusal() == RegionRefusal::FrontierCapacity)
+                break;
+        }
+        require(guard < 20000 &&
+                regions.last_refusal() == RegionRefusal::FrontierCapacity,
+                "intrinsic frontier demand is a stable typed refusal");
+    }
+
+    {
+        using Regions = SettledRegions<1, 3, 3, 8, 4, 16>;
+        const std::array<DiscoveryCell, 3> joined{sand, sand, sand};
+        const std::array<DiscoveryCell, 3> split{sand, empty, sand};
+        Regions regions(49, 1, 8, 16, 6);
+        require(put(regions, key(0, 0, 49), {0, 0, 3, 1}, 1, joined) ==
+                    RegionOutcome::Accepted,
+                "dependency-exhaustion initial region accepted");
+        drain(regions);
+        require(regions.region_count() == 1,
+                "dependency-exhaustion initial publication fits the bounded pool");
+        require(put(regions, key(0, 0, 49), {0, 0, 3, 1}, 2, split) ==
+                    RegionOutcome::Accepted,
+                "dependency-exhaustion split accepted");
+        std::size_t guard = 0;
+        while (guard++ < 30000) {
+            const auto used = regions.advance(1);
+            require(regions.region_count() == 0,
+                    "dependency exhaustion cannot publish a subset");
+            if (used == 0 &&
+                regions.last_refusal() == RegionRefusal::DependencyCapacity)
+                break;
+        }
+        require(guard < 30000 &&
+                regions.last_refusal() == RegionRefusal::DependencyCapacity,
+                "intrinsic dependency demand is a stable typed refusal");
+    }
+}
+
+void reclamation_pressure_is_bounded_and_eventually_drains() {
+    using Regions = SettledRegions<6, 1, 1, 16, 12, 32>;
+    const std::array<DiscoveryCell, 1> one{sand};
+    Regions regions(50);
+    for (std::int64_t x = 0; x < 6; ++x)
+        require(put(regions, key(x * 100, 0, 50), {x * 100, 0, 1, 1}, 1, one) ==
+                    RegionOutcome::Accepted,
+                "reclamation-pressure initial region accepted");
+    drain(regions);
+    require(regions.region_count() == 6,
+            "reclamation-pressure fixture begins with six publications");
+
+    for (std::int64_t x = 0; x < 6; ++x)
+        require(put(regions, key(x * 100, 0, 50), {x * 100, 0, 1, 1}, 2, one) ==
+                    RegionOutcome::Accepted,
+                "reclamation-pressure replacement admitted");
+
+    bool saw_reconstruction = false, saw_reclamation = false;
+    for (std::size_t step = 0; step < 50000 && regions.pending_components() != 0; ++step) {
+        require(regions.advance(1) <= 1, "reclamation-pressure service is unit bounded");
+        const auto metrics = regions.metrics();
+        saw_reconstruction = saw_reconstruction || metrics.reconstruction_service_units != 0;
+        saw_reclamation = saw_reclamation || metrics.reclamation_units != 0;
+    }
+    require(regions.region_count() == 6 &&
+            saw_reconstruction && saw_reclamation,
+            "cleanup receives bounded service without preventing reconstruction progress");
+    drain(regions);
+    require(regions.cleanup_pending() == 0 &&
+            regions.metrics().reclamation_high_water != 0,
+            "deferred reclamation eventually completes and records bounded pressure");
+}
+
 void reclaimed_region_slot_reuse_rejects_stale_handle() {
     using Regions = SettledRegions<1, 1, 1, 4, 1, 8>;
     const std::array<DiscoveryCell, 1> one{sand};
@@ -1075,6 +1307,11 @@ int main() {
         retained_ticket_fairness_survives_sustained_local_churn();
         large_reconstruction_yields_to_remote_ticket();
         refused_reconstruction_never_falls_back_to_prefix_publication();
+        many_child_split_publishes_one_atomic_batch();
+        mutation_during_frontier_traversal_restarts_exactly();
+        mutations_before_and_during_preparation_never_leak_children();
+        intrinsic_frontier_and_dependency_exhaustion_refuse_without_prefix();
+        reclamation_pressure_is_bounded_and_eventually_drains();
         reclaimed_region_slot_reuse_rejects_stale_handle();
         subscriber_slot_reuse_drops_stale_reverse_links();
         absence_subscription_invalidates_only_actual_face_users();
