@@ -166,6 +166,7 @@ public:
             if (revision < tiles_[slot].revision) return RegionOutcome::Stale;
         }
         prepare_tile_revision_change(slot);
+        if (unavailable()) return RegionOutcome::Refused;
         auto& tile = tiles_[slot];
         tile.revision = revision;
         tile.has_payload = false;
@@ -216,6 +217,7 @@ public:
             }
         }
         prepare_tile_revision_change(slot);
+        if (unavailable()) return RegionOutcome::Refused;
         work_possible_ = true;
         copy_input(tiles_[slot], input);
         const auto outcome = extract(slot);
@@ -247,6 +249,7 @@ public:
             return remember(RegionOutcome::Invalid, RegionRefusal::InvalidInput);
         if (next_revision <= tiles_[slot].revision) return RegionOutcome::Stale;
         prepare_tile_revision_change(slot);
+        if (unavailable()) return RegionOutcome::Refused;
         auto& tile = tiles_[slot]; tile.revision = next_revision; tile.has_payload = false;
         tile.ready = false;
         if (!advance_observation_generation(tile)) return RegionOutcome::Refused;
@@ -2434,6 +2437,8 @@ private:
         component.reconstruction_ticket = ticket_handle.slot;
         component.reconstruction_ticket_generation = ticket_handle.generation;
         component.reconstruction_attempt = ticket.attempt;
+        component.build_generation = 0;
+        component.in_build = false;
         return handle;
     }
     void release_reconstruction_seed(SeedHandle handle) noexcept {
@@ -2812,6 +2817,9 @@ private:
         auto& component = tiles_[ref.tile].components[ref.component];
         if (component.build_generation == child.build_generation)
             return true;
+        if (seed_belongs_to_ticket(component, handle) &&
+            component.build_generation != 0)
+            return true;
 
         if (component_reserved(component) && !seed_belongs_to_ticket(component, handle)) {
             const auto other = TicketHandle{
@@ -3018,9 +3026,7 @@ private:
                 ticket.child_head = *child_handle;
             ticket.child_tail = *child_handle;
             ticket.active_child = *child_handle;
-            if (!ticket_frontier_push(handle, *child_handle, ref, seed_handle)) {
-                request_ticket_restart(handle);
-            }
+            (void)ticket_frontier_push(handle, *child_handle, ref, seed_handle);
             saturating_add(metrics_.builds_started);
             return true;
         }
