@@ -3428,18 +3428,29 @@ private:
                 last_refusal_ = ticket.refusal;
                 return true;
             }
-            if (region_free_count_ < ticket.child_count ||
-                member_capacity_ - member_count_ < ticket.staged_member_count) {
+            if (region_free_count_ < ticket.child_count) {
+                if (region_generation_exhausted_count_ == RegionCapacity) {
+                    ticket.phase = ReconstructionPhase::Refused;
+                    ticket.refusal = RegionRefusal::GenerationExhausted;
+                    last_refusal_ = ticket.refusal;
+                    saturating_add(metrics_.region_refusals);
+                    return true;
+                }
                 ticket.phase = ReconstructionPhase::Blocked;
-                ticket.refusal = region_free_count_ < ticket.child_count
-                    ? RegionRefusal::RegionCapacity : RegionRefusal::MemberCapacity;
+                ticket.refusal = RegionRefusal::RegionCapacity;
                 ticket.wait_resource_generation = resource_generation_;
                 last_refusal_ = ticket.refusal;
                 saturating_add(metrics_.reconstruction_waits);
-                if (ticket.refusal == RegionRefusal::MemberCapacity)
-                    saturating_add(metrics_.member_refusals);
-                else
-                    saturating_add(metrics_.region_refusals);
+                saturating_add(metrics_.region_refusals);
+                return true;
+            }
+            if (member_capacity_ - member_count_ < ticket.staged_member_count) {
+                ticket.phase = ReconstructionPhase::Blocked;
+                ticket.refusal = RegionRefusal::MemberCapacity;
+                ticket.wait_resource_generation = resource_generation_;
+                last_refusal_ = ticket.refusal;
+                saturating_add(metrics_.reconstruction_waits);
+                saturating_add(metrics_.member_refusals);
                 return true;
             }
             ticket.preflight_region_scan = 1;
