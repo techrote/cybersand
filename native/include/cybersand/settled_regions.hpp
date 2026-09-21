@@ -615,6 +615,7 @@ private:
         StagedChildHandle child_head{}, child_tail{}, preflight_child{}, prepare_child{}, active_child{}, restart_child{};
         StagedMemberHandle prepare_member{};
         DependencyHandle preflight_dependency{};
+        SubscriberHandle admission_wait_subscriber{};
         TicketHandle next_queue{}, previous_wait{}, next_wait{}, wait_ticket{};
         RegionComponentKey scan_key{};
         std::uint64_t generation{}, attempt{1}, serial{}, admission_change_serial{}, scan_generation{};
@@ -2951,6 +2952,9 @@ private:
     void begin_ticket_restart(TicketHandle handle) noexcept {
         if (!ticket_handle_valid(handle)) return;
         auto& ticket = reconstruction_tickets_[handle.slot];
+        if (subscriber_handle_valid(ticket.admission_wait_subscriber))
+            retire_subscriber(ticket.admission_wait_subscriber);
+        ticket.admission_wait_subscriber = {};
         if (digest_owner_ticket_ == handle) {
             digest_owner_ticket_ = {};
             digest_owner_child_ = {};
@@ -3114,11 +3118,45 @@ private:
         (void)before;
         return true;
     }
+    bool ensure_admission_wait_dependency(
+        TicketHandle handle, std::size_t tile_index) noexcept {
+        if (!ticket_handle_valid(handle) || tile_index >= tile_count_) return false;
+        auto& ticket = reconstruction_tickets_[handle.slot];
+        if (subscriber_handle_valid(ticket.admission_wait_subscriber))
+            return true;
+
+        const auto subscriber = allocate_subscriber(
+            SubscriberKind::Staged, handle.slot, handle.generation);
+        if (!subscriber.has_value()) {
+            cleanup_then_block(handle, RegionRefusal::DependencyCapacity);
+            return false;
+        }
+        ticket.admission_wait_subscriber = *subscriber;
+        if (!add_dependency(
+                *subscriber, DependencyKind::TileRevision, tile_index)) {
+            retire_subscriber(*subscriber);
+            ticket.admission_wait_subscriber = {};
+            if (ticket.owned_dependencies >= dependency_capacity_)
+                cleanup_then_refuse(handle, RegionRefusal::DependencyCapacity);
+            else
+                cleanup_then_block(handle, RegionRefusal::DependencyCapacity);
+            return false;
+        }
+        ++ticket.owned_dependencies;
+        return true;
+    }
+
     bool service_ticket_admission(TicketHandle handle) noexcept {
         if (!ticket_handle_valid(handle)) return false;
         auto& ticket = reconstruction_tickets_[handle.slot];
         if (!source_handle_valid(ticket.admit_source)) {
             if (ticket.blocker_seen) {
+                if (ticket.wait_tile >= tile_count_) {
+                    request_ticket_restart(handle);
+                    return true;
+                }
+                if (!ensure_admission_wait_dependency(handle, ticket.wait_tile))
+                    return true;
                 ticket.phase = ReconstructionPhase::Blocked;
                 ticket.refusal = RegionRefusal::UnknownBoundary;
                 ticket.wait_resource = ReconstructionResource::None;
