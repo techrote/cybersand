@@ -516,9 +516,11 @@ void generation_exhaustion_never_revalidates_old_handle() {
     require(put(regions, tile_key, {0, 0, 1, 1}, 3, one) == RegionOutcome::Accepted,
             "post-exhaustion input can still be observed without identity reuse");
     drain(regions);
-    require(regions.region_count() == 0 &&
-            regions.last_refusal() == RegionRefusal::GenerationExhausted &&
-            !regions.snapshot(stale).has_value(),
+    require(regions.region_count() == 0,
+            "post-exhaustion observation cannot publish a replacement region");
+    require(regions.last_refusal() == RegionRefusal::GenerationExhausted,
+            "post-exhaustion observation preserves the terminal typed refusal");
+    require(!regions.snapshot(stale).has_value(),
             "slot/object reuse cannot make an exhausted old handle current again");
 }
 
