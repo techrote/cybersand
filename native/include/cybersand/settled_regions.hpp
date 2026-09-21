@@ -394,7 +394,6 @@ public:
                subscriber_capacity_ * sizeof(Subscriber) +
                member_capacity_ * sizeof(PublicationMember) +
                frontier_capacity_ * (sizeof(ReconstructionSeed) + sizeof(StagedMember)) +
-               RegionCapacity * sizeof(std::size_t) +
                tile_capacity_ * (sizeof(bool) + sizeof(std::size_t)) +
                (tile_index_.storage_bytes() - sizeof(TileIndex)) +
                (row_index_.storage_bytes() - sizeof(RowIndex));
@@ -573,7 +572,7 @@ private:
         DependencyHandle digest_dependency{};
         StagedChildHandle next{};
         std::uint64_t generation{}, build_generation{}, digest_generation{};
-        std::uint32_t next_free{invalid_pool_index};
+        std::uint32_t next_free{invalid_pool_index}, target_region_slot{invalid_pool_index};
         std::size_t member_count{}, frontier_count{};
         std::size_t scratch_member_count{}, sort_i{}, sort_j{}, sort_best{}, fold_i{};
         std::size_t scratch_dependency_count{}, dep_sort_i{}, dep_sort_j{}, dep_sort_best{}, dep_fold_i{};
@@ -588,13 +587,14 @@ private:
         SourceHandle source_head{}, source_tail{}, admit_source{};
         MemberHandle admit_member{};
         SeedHandle seed_head{}, seed_tail{}, next_seed{};
-        StagedChildHandle child_head{}, child_tail{}, preflight_child{}, prepare_child{}, active_child{};
+        StagedChildHandle child_head{}, child_tail{}, preflight_child{}, prepare_child{}, active_child{}, restart_child{};
         StagedMemberHandle prepare_member{};
         DependencyHandle preflight_dependency{};
         TicketHandle next_queue{};
         RegionComponentKey scan_key{};
         std::uint64_t generation{}, attempt{1}, serial{}, admission_change_serial{};
         std::uint64_t wait_generation{}, wait_resource_generation{}, batch_serial{};
+        std::uint64_t publication_base_serial{}, publication_end_serial{};
         std::uint64_t staged_area_total{}, staged_area_max{}, started_work{};
         std::uint32_t next_free{invalid_pool_index}, wait_tile{invalid_pool_index};
         std::size_t source_count{}, seed_count{}, child_count{}, staged_member_count{};
@@ -602,7 +602,8 @@ private:
         std::size_t prepared_child_count{}, prepare_member_index{}, restart_cleanup_index{};
         ReconstructionPhase phase{ReconstructionPhase::Admitting};
         RegionRefusal refusal{RegionRefusal::None};
-        bool allocated{}, queued{}, scanning_changed_tile{}, blocker_seen{}, restart_requested{};
+        bool allocated{}, queued{}, scanning_changed_tile{}, blocker_seen{}, restart_requested{},
+             publication_reserved{};
     };
     enum class Phase : std::uint8_t {
         Idle, Seeking, Traversing, Validating, StagingMembers,
@@ -679,8 +680,9 @@ private:
         return true;
     }
     [[nodiscard]] bool region_visible(const Region& region) const noexcept {
-        return region.valid && (region.batch_serial == 0 ||
-               region.batch_serial <= committed_batch_serial_);
+        return region.valid &&
+               (region.batch_serial == 0 ||
+                !ticket_handle_valid(region.preparation_ticket));
     }
     void block_capacity(RegionRefusal reason) noexcept {
         current_change_serial_ = 0;
@@ -2073,7 +2075,17 @@ private:
         auto& out = region.snapshot; out = SettledRegionSnapshot{};
         out.handle = {incarnation_, static_cast<std::uint32_t>(*slot), region.generation};
         out.key = tiles_[build_.seed.tile].components[build_.seed.component].key;
-        out.complete = true; out.publication_serial = ++publication_serial_;
+        out.complete = true;
+        if (publication_reservation_serial_ == PublicationLimit) {
+            region.valid = false;
+            --published_region_count_;
+            return_region_slot(*slot);
+            refuse_build(RegionRefusal::GenerationExhausted);
+            return;
+        }
+        out.publication_serial = ++publication_reservation_serial_;
+        if (out.publication_serial > publication_serial_)
+            publication_serial_ = out.publication_serial;
         std::uint64_t members = 1469598103934665603ULL;
         auto* member_tiles = member_tiles_scratch_.get();
         auto* dependency_slots = dependency_slots_scratch_.get();
@@ -2626,7 +2638,10 @@ private:
     void begin_ticket_restart(TicketHandle handle) noexcept {
         if (!ticket_handle_valid(handle)) return;
         auto& ticket = reconstruction_tickets_[handle.slot];
-        queue_ticket_attempt_artifacts(ticket);
+        if (digest_owner_ticket_ == handle) {
+            digest_owner_ticket_ = {};
+            digest_owner_child_ = {};
+        }
         if (build_.phase != Phase::Idle && build_.reconstruction_ticket == handle) {
             if (staged_child_handle_valid(build_.staging_child)) {
                 auto& child = staged_children_[build_.staging_child.slot];
@@ -2638,6 +2653,7 @@ private:
             retire_subscriber(subscriber);
             reset_build();
         }
+        ticket.restart_child = ticket.child_head;
         ticket.phase = ReconstructionPhase::RestartCleanup;
         ticket.restart_cleanup_index = 0;
         ticket.restart_requested = false;
@@ -2646,31 +2662,37 @@ private:
     bool service_ticket_restart_cleanup(TicketHandle handle) noexcept {
         if (!ticket_handle_valid(handle)) return false;
         auto& ticket = reconstruction_tickets_[handle.slot];
-        if (ticket.restart_cleanup_index < ticket.preflight_free_count) {
-            const auto index = ticket.restart_cleanup_index++;
-            const auto slot = preflight_region_slots_[index];
-            if (index < ticket.prepared_child_count) {
-                auto& region = regions_[slot];
-                if (region.preparation_ticket == handle &&
-                    region.batch_serial > committed_batch_serial_) {
-                    if (region.valid) {
-                        region.valid = false;
-                        retire_subscriber(region.subscriber);
-                    }
-                    region.reclaim_pending =
-                        subscriber_handle_valid(region.subscriber) ||
-                        member_handle_valid(region.member_head);
-                    region.preparation_ticket = {};
-                    if (!region.reclaim_pending)
+
+        if (staged_child_handle_valid(ticket.restart_child)) {
+            auto& child = staged_children_[ticket.restart_child.slot];
+            if (child.target_region_slot != invalid_pool_index) {
+                const auto slot = static_cast<std::size_t>(child.target_region_slot);
+                if (slot < RegionCapacity) {
+                    auto& region = regions_[slot];
+                    if (region.preparation_ticket == handle) {
+                        if (region.valid) {
+                            region.valid = false;
+                            retire_subscriber(region.subscriber);
+                        }
+                        region.reclaim_pending =
+                            subscriber_handle_valid(region.subscriber) ||
+                            member_handle_valid(region.member_head);
+                        region.preparation_ticket = {};
+                        if (!region.reclaim_pending)
+                            return_region_slot(slot);
+                        else
+                            enqueue_region_reclamation(slot);
+                    } else {
                         return_region_slot(slot);
-                    else
-                        enqueue_region_reclamation(slot);
+                    }
                 }
-            } else {
-                return_region_slot(slot);
+                child.target_region_slot = invalid_pool_index;
             }
+            ticket.restart_child = child.next;
             return true;
         }
+
+        queue_ticket_attempt_artifacts(ticket);
         if (ticket.attempt == std::numeric_limits<std::uint64_t>::max()) {
             ticket.phase = ReconstructionPhase::Refused;
             ticket.refusal = RegionRefusal::GenerationExhausted;
@@ -2682,6 +2704,10 @@ private:
         ticket.preflight_region_scan = 0;
         ticket.preflight_free_count = 0;
         ticket.batch_serial = 0;
+        ticket.publication_base_serial = 0;
+        ticket.publication_end_serial = 0;
+        ticket.publication_reserved = false;
+        ticket.restart_child = {};
         reset_ticket_admission(ticket);
         if (ticket_handle_valid(reconstruction_queue_head_) &&
             reconstruction_queue_head_ == handle)
@@ -3396,6 +3422,7 @@ private:
             ticket.phase = ReconstructionPhase::PreflightRegions;
             ticket.preflight_region_scan = 0;
             ticket.preflight_free_count = 0;
+            ticket.preflight_child = ticket.child_head;
             return true;
         }
         auto& child = staged_children_[ticket.preflight_child.slot];
@@ -3420,22 +3447,59 @@ private:
     bool service_ticket_preflight_regions(TicketHandle handle) noexcept {
         if (!ticket_handle_valid(handle)) return false;
         auto& ticket = reconstruction_tickets_[handle.slot];
-        if (ticket.preflight_region_scan == 0) {
-            if (ticket.child_count > PublicationLimit - publication_serial_ ||
-                committed_batch_serial_ == std::numeric_limits<std::uint64_t>::max()) {
+
+        if (!ticket.publication_reserved) {
+            if (ticket.child_count > PublicationLimit - publication_reservation_serial_ ||
+                batch_serial_generation_ == std::numeric_limits<std::uint64_t>::max()) {
                 ticket.phase = ReconstructionPhase::Refused;
                 ticket.refusal = RegionRefusal::GenerationExhausted;
                 last_refusal_ = ticket.refusal;
                 return true;
             }
-            if (region_free_count_ < ticket.child_count) {
-                if (region_generation_exhausted_count_ == RegionCapacity) {
-                    ticket.phase = ReconstructionPhase::Refused;
-                    ticket.refusal = RegionRefusal::GenerationExhausted;
-                    last_refusal_ = ticket.refusal;
-                    saturating_add(metrics_.region_refusals);
-                    return true;
-                }
+            ticket.publication_base_serial =
+                publication_reservation_serial_ + 1U;
+            publication_reservation_serial_ += ticket.child_count;
+            ticket.publication_end_serial = publication_reservation_serial_;
+            ticket.batch_serial = ++batch_serial_generation_;
+            ticket.publication_reserved = true;
+            return true;
+        }
+
+        if (region_free_count_ < ticket.child_count - ticket.preflight_free_count) {
+            if (region_generation_exhausted_count_ == RegionCapacity) {
+                ticket.phase = ReconstructionPhase::Refused;
+                ticket.refusal = RegionRefusal::GenerationExhausted;
+                last_refusal_ = ticket.refusal;
+                saturating_add(metrics_.region_refusals);
+                return true;
+            }
+            ticket.phase = ReconstructionPhase::Blocked;
+            ticket.refusal = RegionRefusal::RegionCapacity;
+            ticket.wait_resource_generation = resource_generation_;
+            last_refusal_ = ticket.refusal;
+            saturating_add(metrics_.reconstruction_waits);
+            saturating_add(metrics_.region_refusals);
+            return true;
+        }
+        if (member_capacity_ - member_count_ < ticket.staged_member_count) {
+            ticket.phase = ReconstructionPhase::Blocked;
+            ticket.refusal = RegionRefusal::MemberCapacity;
+            ticket.wait_resource_generation = resource_generation_;
+            last_refusal_ = ticket.refusal;
+            saturating_add(metrics_.reconstruction_waits);
+            saturating_add(metrics_.member_refusals);
+            return true;
+        }
+
+        while (staged_child_handle_valid(ticket.preflight_child) &&
+               staged_children_[ticket.preflight_child.slot].target_region_slot !=
+                   invalid_pool_index) {
+            ticket.preflight_child =
+                staged_children_[ticket.preflight_child.slot].next;
+        }
+        if (staged_child_handle_valid(ticket.preflight_child)) {
+            const auto slot = allocate_region_slot();
+            if (!slot.has_value()) {
                 ticket.phase = ReconstructionPhase::Blocked;
                 ticket.refusal = RegionRefusal::RegionCapacity;
                 ticket.wait_resource_generation = resource_generation_;
@@ -3444,33 +3508,21 @@ private:
                 saturating_add(metrics_.region_refusals);
                 return true;
             }
-            if (member_capacity_ - member_count_ < ticket.staged_member_count) {
-                ticket.phase = ReconstructionPhase::Blocked;
-                ticket.refusal = RegionRefusal::MemberCapacity;
-                ticket.wait_resource_generation = resource_generation_;
-                last_refusal_ = ticket.refusal;
-                saturating_add(metrics_.reconstruction_waits);
-                saturating_add(metrics_.member_refusals);
-                return true;
-            }
-            ticket.preflight_region_scan = 1;
-        }
-        if (ticket.preflight_free_count < ticket.child_count) {
-            const auto slot = allocate_region_slot();
-            if (!slot.has_value()) {
-                request_ticket_restart(handle);
-                return true;
-            }
-            preflight_region_slots_[ticket.preflight_free_count++] = *slot;
+            auto& child = staged_children_[ticket.preflight_child.slot];
+            child.target_region_slot = static_cast<std::uint32_t>(*slot);
+            ++ticket.preflight_free_count;
+            ticket.preflight_child = child.next;
             return true;
         }
-        ticket.batch_serial = committed_batch_serial_ + 1U;
+
         ticket.phase = ReconstructionPhase::Preparing;
         ticket.prepare_child = ticket.child_head;
         ticket.prepare_member = {};
         ticket.prepared_child_count = 0;
+        ticket.prepare_member_index = 0;
         return true;
     }
+
     bool service_ticket_preparing(TicketHandle handle) noexcept {
         if (!ticket_handle_valid(handle)) return false;
         auto& ticket = reconstruction_tickets_[handle.slot];
@@ -3479,9 +3531,15 @@ private:
             return true;
         }
         auto& child = staged_children_[ticket.prepare_child.slot];
+        if (child.target_region_slot == invalid_pool_index ||
+            child.target_region_slot >= RegionCapacity) {
+            request_ticket_restart(handle);
+            return true;
+        }
+        const auto slot = static_cast<std::size_t>(child.target_region_slot);
+
         if (!staged_member_handle_valid(ticket.prepare_member) &&
             ticket.prepare_member_index == 0) {
-            const auto slot = preflight_region_slots_[ticket.prepared_child_count];
             auto& region = regions_[slot];
             ++region.generation;
             region.valid = true;
@@ -3495,7 +3553,7 @@ private:
             region.snapshot.handle = {
                 incarnation_, static_cast<std::uint32_t>(slot), region.generation};
             region.snapshot.publication_serial =
-                publication_serial_ + ticket.prepared_child_count + 1U;
+                ticket.publication_base_serial + ticket.prepared_child_count;
             region.subscriber = child.subscriber;
             if (subscriber_handle_valid(region.subscriber)) {
                 auto& subscriber = subscribers_[region.subscriber.slot];
@@ -3510,7 +3568,6 @@ private:
         }
         if (staged_member_handle_valid(ticket.prepare_member)) {
             const auto staged = staged_members_[ticket.prepare_member.slot];
-            const auto slot = preflight_region_slots_[ticket.prepared_child_count];
             auto& region = regions_[slot];
             const auto member = allocate_publication_member(staged.ref);
             if (!member.has_value()) {
@@ -3533,11 +3590,14 @@ private:
         ticket.prepare_member_index = 0;
         return true;
     }
+
     void finalize_ticket_commit(TicketHandle handle) noexcept {
         if (!ticket_handle_valid(handle)) return;
         auto& ticket = reconstruction_tickets_[handle.slot];
-        committed_batch_serial_ = ticket.batch_serial;
-        publication_serial_ += ticket.child_count;
+        if (ticket.batch_serial > committed_batch_serial_)
+            committed_batch_serial_ = ticket.batch_serial;
+        if (ticket.publication_end_serial > publication_serial_)
+            publication_serial_ = ticket.publication_end_serial;
         published_region_count_ += ticket.child_count;
         saturating_add(metrics_.publications, ticket.child_count);
         saturating_add(metrics_.builds_completed, ticket.child_count);
@@ -3797,7 +3857,8 @@ private:
         return tile_capacity * 32U;
     }
 
-    std::uint64_t incarnation_{}, publication_serial_{}, build_generation_serial_{};
+    std::uint64_t incarnation_{}, publication_serial_{}, publication_reservation_serial_{},
+                  batch_serial_generation_{}, build_generation_serial_{};
     std::size_t tile_capacity_{}, adjacency_capacity_{}, frontier_capacity_{};
     std::size_t dependency_capacity_{}, subscriber_capacity_{}, member_capacity_{};
     std::unique_ptr<Tile[]> tiles_;
@@ -3810,7 +3871,6 @@ private:
     std::unique_ptr<ReconstructionSeed[]> reconstruction_seeds_;
     std::unique_ptr<StagedMember[]> staged_members_;
     std::array<StagedChild, RegionCapacity> staged_children_{};
-    std::unique_ptr<std::size_t[]> preflight_region_slots_;
     TileIndex tile_index_;
     RowIndex row_index_;
     std::array<Region, RegionCapacity> regions_{};
@@ -3878,7 +3938,6 @@ SettledRegions<TileCapacity, MaximumTileCells, ComponentsPerTile, AdjacencyCapac
       members_(std::make_unique<PublicationMember[]>(member_capacity_)),
       reconstruction_seeds_(std::make_unique<ReconstructionSeed[]>(frontier_capacity_)),
       staged_members_(std::make_unique<StagedMember[]>(frontier_capacity_)),
-      preflight_region_slots_(std::make_unique<std::size_t[]>(RegionCapacity)),
       tile_index_(tile_capacity_),
       row_index_(checked_row_capacity(tile_capacity_)),
       build_(frontier_capacity_, tile_capacity_),
