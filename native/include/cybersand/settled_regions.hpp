@@ -773,7 +773,13 @@ private:
         last_refusal_ = reason;
     }
     void consume(std::size_t& used) noexcept { ++used; saturating_add(metrics_.work_units); }
-    RegionOutcome remember(RegionOutcome outcome, RegionRefusal refusal) noexcept { last_refusal_ = refusal; return outcome; }
+    RegionOutcome remember(RegionOutcome outcome, RegionRefusal refusal) noexcept {
+        if (refusal == RegionRefusal::None && terminal_generation_exhausted_)
+            last_refusal_ = RegionRefusal::GenerationExhausted;
+        else
+            last_refusal_ = refusal;
+        return outcome;
+    }
     static bool valid_bounds(DiscoveryBounds bounds) noexcept {
         if (bounds.width == 0 || bounds.height == 0 || bounds.width > 32 || bounds.height > 32) return false;
         return bounds.x <= std::numeric_limits<std::int64_t>::max() - static_cast<std::int64_t>(bounds.width - 1U) &&
@@ -2777,6 +2783,12 @@ private:
     }
     void park_refused_ticket(TicketHandle handle) noexcept {
         if (!ticket_handle_valid(handle)) return;
+        const auto& ticket = reconstruction_tickets_[handle.slot];
+        if (ticket.phase == ReconstructionPhase::Refused &&
+            ticket.refusal == RegionRefusal::GenerationExhausted) {
+            terminal_generation_exhausted_ = true;
+            last_refusal_ = RegionRefusal::GenerationExhausted;
+        }
         unlink_resource_wait(handle);
         if (reconstruction_queue_head_ == handle)
             dequeue_reconstruction_head(handle);
@@ -4055,7 +4067,9 @@ private:
         if (published_region_count_ > metrics_.region_high_water)
             metrics_.region_high_water = published_region_count_;
         saturating_add(metrics_.reconstruction_batches_committed);
-        last_refusal_ = RegionRefusal::None;
+        last_refusal_ = terminal_generation_exhausted_
+            ? RegionRefusal::GenerationExhausted
+            : RegionRefusal::None;
         append_source_cleanup(ticket.source_head, ticket.source_tail);
         ticket.source_head = {};
         ticket.source_tail = {};
@@ -4385,6 +4399,7 @@ private:
     std::size_t tile_count_{}, adjacency_count_{}, dependency_count_{}, subscriber_count_{};
     std::size_t published_region_count_{}, deferred_component_count_{}, cleanup_pending_count_{};
     bool halted_{}, coverage_capacity_exhausted_{}, work_possible_{};
+    bool terminal_generation_exhausted_{};
 
 #ifdef CYBERSAND_SETTLED_REGIONS_TEST_ACCESS
 public:
