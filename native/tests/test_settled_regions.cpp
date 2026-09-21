@@ -1161,6 +1161,142 @@ void reclamation_pressure_is_bounded_and_eventually_drains() {
             "deferred reclamation eventually completes and records bounded pressure");
 }
 
+
+void region_capacity_retry_waits_for_region_generation() {
+    using Regions = SettledRegions<2, 3, 3, 8, 2, 16>;
+    const std::array<DiscoveryCell, 3> joined{sand, sand, sand};
+    const std::array<DiscoveryCell, 3> split{sand, empty, sand};
+    const std::array<DiscoveryCell, 1> one{sand};
+    const std::array<DiscoveryCell, 1> hole{empty};
+    Regions regions(51);
+
+    require(put(regions, key(0, 0, 51), {0, 0, 3, 1}, 1, joined) ==
+                RegionOutcome::Accepted &&
+            put(regions, key(100, 0, 51), {100, 0, 1, 1}, 1, one) ==
+                RegionOutcome::Accepted,
+            "region-generation fixture fills both publication slots");
+    drain(regions);
+    require(regions.region_count() == 2, "both initial slots are visible");
+
+    require(put(regions, key(0, 0, 51), {0, 0, 3, 1}, 2, split) ==
+                RegionOutcome::Accepted,
+            "two-child split starts with only one reclaimable source slot");
+    std::size_t guard = 0;
+    while (regions.last_refusal() != RegionRefusal::RegionCapacity &&
+           guard++ < 20000)
+        require(regions.advance(1) <= 1, "region-capacity wait is bounded");
+    require(guard < 20000 && regions.region_count() == 1,
+            "split waits without a prefix while unrelated publication occupies a slot");
+
+    const auto service_before = regions.metrics().reconstruction_service_units;
+    for (std::size_t i = 0; i < 32; ++i)
+        (void)regions.advance(1);
+    require(regions.metrics().reconstruction_service_units <= service_before + 1,
+            "unchanged region-slot blocker does not hot-spin");
+
+    require(put(regions, key(100, 0, 51), {100, 0, 1, 1}, 2, hole) ==
+                RegionOutcome::Accepted,
+            "unrelated publication is removed and its slot becomes reclaimable");
+    guard = 0;
+    while (regions.region_count() != 2 && guard++ < 30000)
+        require(regions.advance(1) <= 1, "region-generation retry remains bounded");
+    require(guard < 30000,
+            "relevant region resource generation resumes the blocked split");
+    const auto found = snapshots(regions, 2);
+    require(found.size() == 2 && found[0].area == 1 && found[1].area == 1,
+            "retry publishes the complete two-child result only after capacity exists");
+}
+
+void older_ticket_survives_later_low_key_arrivals() {
+    using Regions = SettledRegions<13, 1, 1, 32, 20, 96>;
+    const std::array<DiscoveryCell, 1> one{sand};
+    const std::array<DiscoveryCell, 1> hole{empty};
+    Regions regions(52);
+
+    for (std::int64_t x = 0; x < 5; ++x)
+        require(put(regions, key(x * 10, 0, 52), {x * 10, 0, 1, 1}, 1, one) ==
+                    RegionOutcome::Accepted,
+                "low-key arrival fixture accepted");
+    for (std::int64_t x = 1000; x < 1008; ++x) {
+        std::uint8_t sealed = 0x05;
+        if (x == 1000) sealed |= 0x08;
+        if (x == 1007) sealed |= 0x02;
+        require(put(regions, key(x, 0, 52), {x, 0, 1, 1}, 1, one, sealed) ==
+                    RegionOutcome::Accepted,
+                "older high-key chain accepted");
+    }
+    drain(regions);
+    require(regions.region_count() == 6,
+            "older-ticket fixture begins with five small regions and one chain");
+
+    require(put(regions, key(1003, 0, 52), {1003, 0, 1, 1}, 2, hole, 0x05) ==
+                RegionOutcome::Accepted,
+            "older retained high-key reconstruction admitted first");
+
+    std::uint64_t local_revision = 2;
+    std::size_t next_local = 0;
+    bool high_key_visible = false;
+    for (std::size_t step = 0; step < 50000 && !high_key_visible; ++step) {
+        require(regions.advance(1) <= 1, "arrival fairness service remains bounded");
+        if ((step % 3U) == 2U && next_local < 5) {
+            const auto x = static_cast<std::int64_t>(next_local) * 10;
+            require(put(regions, key(x, 0, 52), {x, 0, 1, 1},
+                        local_revision++, one) == RegionOutcome::Accepted,
+                    "later lower-key reconstruction arrival admitted");
+            ++next_local;
+        }
+        for (const auto& region : snapshots(regions, 20))
+            if (region.min_x >= 1000)
+                high_key_visible = true;
+    }
+    require(high_key_visible,
+            "later low-key arrivals cannot permanently starve the older retained ticket");
+}
+
+void reconstruction_does_not_rescan_unrelated_components() {
+    using Regions = SettledRegions<9, 1, 1, 32, 16, 64>;
+    const std::array<DiscoveryCell, 1> one{sand};
+    const std::array<DiscoveryCell, 1> hole{empty};
+    Regions regions(53);
+
+    for (std::int64_t x = 0; x < 6; ++x)
+        require(put(regions, key(x * 100, 100, 53),
+                    {x * 100, 100, 1, 1}, 1, one) ==
+                    RegionOutcome::Accepted,
+                "locality far publication accepted");
+    for (std::int64_t x = 1000; x < 1003; ++x) {
+        std::uint8_t sealed = 0x05;
+        if (x == 1000) sealed |= 0x08;
+        if (x == 1002) sealed |= 0x02;
+        require(put(regions, key(x, 0, 53), {x, 0, 1, 1}, 1, one, sealed) ==
+                    RegionOutcome::Accepted,
+                "locality affected chain accepted");
+    }
+    drain(regions);
+    require(regions.region_count() == 7,
+            "locality fixture begins fully published");
+    const auto before = snapshots(regions, 16);
+    std::optional<SettledRegionSnapshot> far_before;
+    for (const auto& region : before)
+        if (region.min_y == 100 && region.min_x == 500) far_before = region;
+    require(far_before.has_value(), "locality far handle captured");
+    const auto seed_probes_before = regions.metrics().seed_probes;
+
+    require(put(regions, key(1001, 0, 53), {1001, 0, 1, 1}, 2, hole, 0x05) ==
+                RegionOutcome::Accepted,
+            "locality bridge deletion accepted");
+    std::size_t guard = 0;
+    while (regions.region_count() != 8 && guard++ < 30000) {
+        require(regions.advance(1) <= 1, "locality reconstruction is primitive bounded");
+        require(regions.snapshot(far_before->handle).has_value(),
+                "stable unrelated publication remains current during local reconstruction");
+    }
+    require(guard < 30000,
+            "affected reconstruction commits without waiting for a global seed pass");
+    require(regions.metrics().seed_probes == seed_probes_before,
+            "ticket reconstruction does not invoke the ordinary global component seeker");
+}
+
 void reclaimed_region_slot_reuse_rejects_stale_handle() {
     using Regions = SettledRegions<1, 1, 1, 4, 1, 8>;
     const std::array<DiscoveryCell, 1> one{sand};
@@ -1312,6 +1448,9 @@ int main() {
         mutations_before_and_during_preparation_never_leak_children();
         intrinsic_frontier_and_dependency_exhaustion_refuse_without_prefix();
         reclamation_pressure_is_bounded_and_eventually_drains();
+        region_capacity_retry_waits_for_region_generation();
+        older_ticket_survives_later_low_key_arrivals();
+        reconstruction_does_not_rescan_unrelated_components();
         reclaimed_region_slot_reuse_rejects_stale_handle();
         subscriber_slot_reuse_drops_stale_reverse_links();
         absence_subscription_invalidates_only_actual_face_users();
