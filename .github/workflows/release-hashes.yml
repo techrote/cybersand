@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   hashes:
-    runs-on: ${{ vars.RELEASE_HASHES_RUNNER || 'avrea-ubuntu-24.04-1-vcpu' }}
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     defaults:
       run:
