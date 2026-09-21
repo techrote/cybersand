@@ -52,6 +52,32 @@ std::vector<SettledRegionSnapshot> snapshots(const Regions& regions, std::size_t
     return result;
 }
 
+template<class Regions>
+void drain_budget(Regions& regions, std::size_t budget, std::size_t limit = 100000) {
+    std::size_t work = 0;
+    while (regions.pending_components() != 0 && work < limit) {
+        const auto used = regions.advance(budget);
+        require(used <= budget, "chunked advance respects primitive budget");
+        if (used == 0) break;
+        work += used;
+    }
+    require(work < limit, "chunked bounded traversal terminates");
+}
+
+bool same_region_semantics(
+    const SettledRegionSnapshot& a, const SettledRegionSnapshot& b) {
+    return a.handle == b.handle && a.key == b.key &&
+           a.min_x == b.min_x && a.min_y == b.min_y &&
+           a.max_x == b.max_x && a.max_y == b.max_y &&
+           a.area == b.area && a.tile_count == b.tile_count &&
+           a.component_count == b.component_count &&
+           a.dependency_tile_count == b.dependency_tile_count &&
+           a.member_digest == b.member_digest &&
+           a.dependency_digest == b.dependency_digest &&
+           a.publication_serial == b.publication_serial &&
+           a.complete == b.complete;
+}
+
 void single_tile_holes_and_exact_keys() {
     using Regions = SettledRegions<4, 16, 16, 32, 8, 64>;
     Regions regions(1);
@@ -1297,6 +1323,42 @@ void reconstruction_does_not_rescan_unrelated_components() {
             "ticket reconstruction does not invoke the ordinary global component seeker");
 }
 
+
+void reconstruction_ticket_order_is_budget_shape_deterministic() {
+    using Regions = SettledRegions<4, 1, 1, 8, 8, 24>;
+    const std::array<DiscoveryCell, 1> one{sand};
+    Regions unit(54), chunked(54);
+
+    for (std::int64_t x = 0; x < 4; ++x) {
+        const auto k = key(x * 100, 0, 54);
+        const DiscoveryBounds bounds{x * 100, 0, 1, 1};
+        require(put(unit, k, bounds, 1, one) == RegionOutcome::Accepted &&
+                put(chunked, k, bounds, 1, one) == RegionOutcome::Accepted,
+                "determinism initial regions accepted");
+    }
+    drain(unit);
+    drain(chunked);
+
+    constexpr std::array<std::int64_t, 4> order{300, 0, 200, 100};
+    for (const auto x : order) {
+        const auto k = key(x, 0, 54);
+        const DiscoveryBounds bounds{x, 0, 1, 1};
+        require(put(unit, k, bounds, 2, one) == RegionOutcome::Accepted &&
+                put(chunked, k, bounds, 2, one) == RegionOutcome::Accepted,
+                "determinism replacement ticket admitted");
+    }
+
+    drain_budget(unit, 1);
+    drain_budget(chunked, 7);
+    const auto a = snapshots(unit, 8);
+    const auto b = snapshots(chunked, 8);
+    require(a.size() == b.size() && a.size() == 4,
+            "determinism runs publish the same region count");
+    for (std::size_t i = 0; i < a.size(); ++i)
+        require(same_region_semantics(a[i], b[i]),
+                "ticket order and publication identity are budget-shape deterministic");
+}
+
 void reclaimed_region_slot_reuse_rejects_stale_handle() {
     using Regions = SettledRegions<1, 1, 1, 4, 1, 8>;
     const std::array<DiscoveryCell, 1> one{sand};
@@ -1451,6 +1513,7 @@ int main() {
         region_capacity_retry_waits_for_region_generation();
         older_ticket_survives_later_low_key_arrivals();
         reconstruction_does_not_rescan_unrelated_components();
+        reconstruction_ticket_order_is_budget_shape_deterministic();
         reclaimed_region_slot_reuse_rejects_stale_handle();
         subscriber_slot_reuse_drops_stale_reverse_links();
         absence_subscription_invalidates_only_actual_face_users();
