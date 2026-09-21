@@ -2807,6 +2807,8 @@ private:
             ticket.cleanup_disposition = CleanupDisposition::Refuse;
             ticket.cleanup_refusal = RegionRefusal::GenerationExhausted;
             ticket.cleanup_resource = ReconstructionResource::None;
+            ticket.wait_resource = ReconstructionResource::None;
+            ticket.wait_resource_generation = 0;
             last_refusal_ = RegionRefusal::GenerationExhausted;
             request_ticket_restart(handle);
             return;
