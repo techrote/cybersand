@@ -461,6 +461,7 @@ private:
         std::int64_t min_x{}, min_y{}, max_x{}, max_y{};
         SettledRegionHandle assigned_region{};
         EdgeHandle incident_head{};
+        SeedHandle pending_seed{};
         std::uint64_t build_generation{};
         std::uint32_t reconstruction_ticket{invalid_pool_index};
         std::uint64_t reconstruction_ticket_generation{}, reconstruction_attempt{};
@@ -548,7 +549,7 @@ private:
     };
     struct ReconstructionSeed {
         ComponentRef ref{};
-        SeedHandle next{};
+        SeedHandle previous{}, next{};
         std::uint64_t generation{};
         std::uint32_t next_free{invalid_pool_index};
         bool active{};
@@ -2487,6 +2488,8 @@ private:
         const auto handle = allocate_seed_node(ref);
         if (!handle.has_value()) return std::nullopt;
         auto& ticket = reconstruction_tickets_[ticket_handle.slot];
+        auto& seed = reconstruction_seeds_[handle->slot];
+        seed.previous = ticket.seed_tail;
         if (seed_handle_valid(ticket.seed_tail))
             reconstruction_seeds_[ticket.seed_tail.slot].next = *handle;
         else
@@ -2496,6 +2499,7 @@ private:
         component.reconstruction_ticket = ticket_handle.slot;
         component.reconstruction_ticket_generation = ticket_handle.generation;
         component.reconstruction_attempt = ticket.attempt;
+        component.pending_seed = *handle;
         component.build_generation = 0;
         component.in_build = false;
         return handle;
@@ -2503,7 +2507,14 @@ private:
     void release_reconstruction_seed(SeedHandle handle) noexcept {
         if (!seed_handle_valid(handle)) return;
         auto& seed = reconstruction_seeds_[handle.slot];
+        if (seed.ref.tile < tile_count_ &&
+            seed.ref.component < tiles_[seed.ref.tile].component_count) {
+            auto& component = tiles_[seed.ref.tile].components[seed.ref.component];
+            if (component.pending_seed == handle)
+                component.pending_seed = {};
+        }
         seed.active = false;
+        seed.previous = {};
         seed.next = {};
         seed.next_free = seed_free_head_;
         seed_free_head_ = handle.slot;
@@ -2573,6 +2584,8 @@ private:
     }
     void append_seed_cleanup(SeedHandle head, SeedHandle tail) noexcept {
         if (!seed_handle_valid(head)) return;
+        if (seed_handle_valid(head))
+            reconstruction_seeds_[head.slot].previous = {};
         if (seed_handle_valid(stale_seed_cleanup_tail_))
             reconstruction_seeds_[stale_seed_cleanup_tail_.slot].next = head;
         else
@@ -2914,8 +2927,29 @@ private:
         SeedHandle node{};
         if (reused.has_value() && seed_handle_valid(*reused)) {
             node = *reused;
+            if (component.pending_seed == node)
+                component.pending_seed = {};
             reconstruction_seeds_[node.slot].ref = ref;
+            reconstruction_seeds_[node.slot].previous = {};
             reconstruction_seeds_[node.slot].next = {};
+        } else if (seed_handle_valid(component.pending_seed) &&
+                   seed_belongs_to_ticket(component, handle)) {
+            node = component.pending_seed;
+            auto& seed = reconstruction_seeds_[node.slot];
+            const auto previous = seed.previous;
+            const auto next = seed.next;
+            if (seed_handle_valid(previous))
+                reconstruction_seeds_[previous.slot].next = next;
+            else
+                ticket.seed_head = next;
+            if (seed_handle_valid(next))
+                reconstruction_seeds_[next.slot].previous = previous;
+            else
+                ticket.seed_tail = previous;
+            if (ticket.seed_count != 0) --ticket.seed_count;
+            component.pending_seed = {};
+            seed.previous = {};
+            seed.next = {};
         } else {
             const auto allocated = allocate_seed_node(ref);
             if (!allocated.has_value()) {
@@ -2924,6 +2958,7 @@ private:
             }
             node = *allocated;
         }
+        reconstruction_seeds_[node.slot].previous = {};
         if (seed_handle_valid(child.frontier_tail))
             reconstruction_seeds_[child.frontier_tail.slot].next = node;
         else
@@ -3045,9 +3080,17 @@ private:
             const auto next = reconstruction_seeds_[seed_handle.slot].next;
             const auto ref = reconstruction_seeds_[seed_handle.slot].ref;
             ticket.seed_head = next;
-            if (!seed_handle_valid(next)) ticket.seed_tail = {};
+            if (seed_handle_valid(next))
+                reconstruction_seeds_[next.slot].previous = {};
+            else
+                ticket.seed_tail = {};
+            reconstruction_seeds_[seed_handle.slot].previous = {};
             reconstruction_seeds_[seed_handle.slot].next = {};
             if (ticket.seed_count != 0) --ticket.seed_count;
+            if (ref.tile < tile_count_ &&
+                ref.component < tiles_[ref.tile].component_count &&
+                tiles_[ref.tile].components[ref.component].pending_seed == seed_handle)
+                tiles_[ref.tile].components[ref.component].pending_seed = {};
 
             if (ref.tile >= tile_count_ ||
                 ref.component >= tiles_[ref.tile].component_count) {
@@ -3071,20 +3114,32 @@ private:
             const auto child_handle = allocate_staged_child();
             if (!child_handle.has_value()) {
                 // Put the seed back at the head and wait for staged-child capacity.
+                reconstruction_seeds_[seed_handle.slot].previous = {};
                 reconstruction_seeds_[seed_handle.slot].next = ticket.seed_head;
+                if (seed_handle_valid(ticket.seed_head))
+                    reconstruction_seeds_[ticket.seed_head.slot].previous = seed_handle;
                 ticket.seed_head = seed_handle;
                 if (!seed_handle_valid(ticket.seed_tail)) ticket.seed_tail = seed_handle;
+                if (ref.tile < tile_count_ &&
+                    ref.component < tiles_[ref.tile].component_count)
+                    tiles_[ref.tile].components[ref.component].pending_seed = seed_handle;
                 ++ticket.seed_count;
-                block_reconstruction_ticket(handle, RegionRefusal::RegionCapacity);
+                block_reconstruction_ticket(handle, RegionRefusal::ManifestCapacity);
                 return true;
             }
             const auto subscriber = allocate_subscriber(
                 SubscriberKind::Staged, handle.slot, handle.generation);
             if (!subscriber.has_value()) {
                 release_staged_child(*child_handle);
+                reconstruction_seeds_[seed_handle.slot].previous = {};
                 reconstruction_seeds_[seed_handle.slot].next = ticket.seed_head;
+                if (seed_handle_valid(ticket.seed_head))
+                    reconstruction_seeds_[ticket.seed_head.slot].previous = seed_handle;
                 ticket.seed_head = seed_handle;
                 if (!seed_handle_valid(ticket.seed_tail)) ticket.seed_tail = seed_handle;
+                if (ref.tile < tile_count_ &&
+                    ref.component < tiles_[ref.tile].component_count)
+                    tiles_[ref.tile].components[ref.component].pending_seed = seed_handle;
                 ++ticket.seed_count;
                 block_reconstruction_ticket(handle, RegionRefusal::DependencyCapacity);
                 return true;
