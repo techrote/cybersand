@@ -2800,6 +2800,15 @@ private:
         TicketHandle handle, RegionRefusal reason) noexcept {
         if (!ticket_handle_valid(handle)) return;
         auto& ticket = reconstruction_tickets_[handle.slot];
+        if (reason == RegionRefusal::RegionCapacity &&
+            region_generation_exhausted_count_ == RegionCapacity) {
+            ticket.cleanup_disposition = CleanupDisposition::Refuse;
+            ticket.cleanup_refusal = RegionRefusal::GenerationExhausted;
+            ticket.cleanup_resource = ReconstructionResource::None;
+            last_refusal_ = RegionRefusal::GenerationExhausted;
+            request_ticket_restart(handle);
+            return;
+        }
         ticket.cleanup_disposition = CleanupDisposition::Block;
         ticket.cleanup_refusal = reason;
         ticket.cleanup_resource = resource_for_refusal(reason);
@@ -3094,6 +3103,11 @@ private:
         std::uint32_t wait_tile = invalid_pool_index,
         std::uint64_t wait_generation = 0) noexcept {
         if (!ticket_handle_valid(handle)) return;
+        if (reason == RegionRefusal::RegionCapacity &&
+            region_generation_exhausted_count_ == RegionCapacity) {
+            cleanup_then_refuse(handle, RegionRefusal::GenerationExhausted);
+            return;
+        }
         auto& ticket = reconstruction_tickets_[handle.slot];
         ticket.phase = ReconstructionPhase::Blocked;
         ticket.refusal = reason;
