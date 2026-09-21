@@ -1,4 +1,3 @@
-#define CYBERSAND_SETTLED_REGIONS_TEST_ACCESS 1
 #include "cybersand/settled_regions.hpp"
 
 #include <array>
@@ -662,80 +661,7 @@ void deferred_subscriber_cleanup_is_aba_safe() {
     require(regions.snapshot(replacement->handle).has_value(),
             "stale subscriber generation cannot retire a distinct replacement publication");
 
-    std::size_t cleanup_guard = 0;
-    while (regions.pending_components() != 0 && cleanup_guard++ < 100000) {
-        const auto used = regions.advance(1);
-        require(used <= 1, "ABA forensic drain keeps exact service budget");
-        if (used != 0) continue;
-
-        const auto cleanup = regions.test_cleanup_debug();
-        const auto old_region = regions.test_region_debug(old_local.handle.slot);
-        const auto replacement_region =
-            regions.test_region_debug(replacement->handle.slot);
-        const auto reclaim_head_region =
-            cleanup.region_reclaim_head_slot !=
-                    std::numeric_limits<std::uint32_t>::max()
-                ? regions.test_region_debug(cleanup.region_reclaim_head_slot)
-                : typename Regions::TestRegionDebug{};
-
-        std::cerr
-            << "ABA_FORENSIC"
-            << " cleanup_pending_count=" << cleanup.cleanup_pending_count
-            << " region_reclaim_count=" << cleanup.region_reclaim_count
-            << " source_cleanup_live=" << cleanup.source_cleanup_live
-            << " source_cleanup_slot=" << cleanup.source_cleanup_slot
-            << " seed_cleanup_live=" << cleanup.seed_cleanup_live
-            << " seed_cleanup_slot=" << cleanup.seed_cleanup_slot
-            << " staged_child_cleanup_live=" << cleanup.staged_child_cleanup_live
-            << " staged_child_cleanup_slot=" << cleanup.staged_child_cleanup_slot
-            << " source_count=" << cleanup.source_count
-            << " seed_count=" << cleanup.seed_count
-            << " staged_child_count=" << cleanup.staged_child_count
-            << " staged_member_count=" << cleanup.staged_member_count
-            << " cleanup_head_valid=" << cleanup.cleanup_head_valid
-            << " cleanup_head_slot=" << cleanup.cleanup_head_slot
-            << " cleanup_head_generation=" << cleanup.cleanup_head_generation
-            << " cleanup_head_active=" << cleanup.cleanup_head_active
-            << " cleanup_head_cleanup_pending="
-            << cleanup.cleanup_head_cleanup_pending
-            << " cleanup_head_dependency_live="
-            << cleanup.cleanup_head_dependency_live
-            << " region_reclaim_head_slot=" << cleanup.region_reclaim_head_slot
-            << "\n";
-
-        const auto print_region = [](const char* name, const auto& region) {
-            std::cerr
-                << "ABA_FORENSIC_REGION " << name
-                << " valid=" << region.valid
-                << " reclaim_pending=" << region.reclaim_pending
-                << " reclaim_enqueued=" << region.reclaim_enqueued
-                << " on_free_list=" << region.on_free_list
-                << " generation=" << region.generation
-                << " generation_exhausted_recorded="
-                << region.generation_exhausted_recorded
-                << " member_count=" << region.member_count
-                << " member_head_live=" << region.member_head_live
-                << " subscriber_slot=" << region.subscriber_slot
-                << " subscriber_generation=" << region.subscriber_generation
-                << " subscriber_live=" << region.subscriber_live
-                << " subscriber_active=" << region.subscriber_active
-                << " subscriber_cleanup_pending="
-                << region.subscriber_cleanup_pending
-                << " subscriber_dependency_live="
-                << region.subscriber_dependency_live
-                << " preparation_ticket_live="
-                << region.preparation_ticket_live
-                << "\n";
-        };
-        print_region("old", old_region);
-        print_region("replacement", replacement_region);
-        if (cleanup.region_reclaim_head_slot !=
-            std::numeric_limits<std::uint32_t>::max())
-            print_region("reclaim_head", reclaim_head_region);
-        break;
-    }
-    require(cleanup_guard < 100000,
-            "ABA forensic drain remains bounded");
+    drain(regions);
 
     require(!regions.halted(),
             "deferred subscriber cleanup cannot fail the observer");
@@ -774,26 +700,7 @@ void reconstruction_split_is_batch_atomic_under_unit_budget() {
                 "atomic split consumes at most one primitive per unit budget");
     }
     require(guard < 10000, "atomic split eventually commits");
-    if (regions.region_count() != 2) {
-        const auto debug_snapshots = snapshots(regions, 3);
-        const auto metrics = regions.metrics();
-        std::cerr
-            << "ATOMIC_SPLIT_FORENSIC"
-            << " region_count=" << regions.region_count()
-            << " snapshot_count=" << debug_snapshots.size()
-            << " children_staged=" << metrics.reconstruction_children_staged
-            << " hidden_preparations=" << metrics.reconstruction_hidden_preparations
-            << " batches_committed=" << metrics.reconstruction_batches_committed
-            << " tickets=" << metrics.reconstruction_tickets
-            << " restarts=" << metrics.reconstruction_restarts
-            << " waits=" << metrics.reconstruction_waits
-            << " service_units=" << metrics.reconstruction_service_units;
-        for (const auto& snapshot : debug_snapshots)
-            std::cerr << " area=" << snapshot.area
-                      << " min_x=" << snapshot.min_x
-                      << " max_x=" << snapshot.max_x;
-        std::cerr << "\n";
-    }
+
     require(regions.region_count() == 2,
             "first observable replacement state contains every split child, never a prefix");
     const auto after = snapshots(regions, 3);
@@ -1457,41 +1364,7 @@ void reconstruction_ticket_order_is_budget_shape_deterministic() {
     drain_budget(chunked, 7);
     const auto a = snapshots(unit, 8);
     const auto b = snapshots(chunked, 8);
-    if (a.size() != b.size() || a.size() != 4) {
-        const auto am = unit.metrics();
-        const auto bm = chunked.metrics();
-        std::cerr
-            << "DETERMINISM_FORENSIC"
-            << " unit_count=" << a.size()
-            << " chunked_count=" << b.size()
-            << " unit_pending=" << unit.pending_components()
-            << " chunked_pending=" << chunked.pending_components()
-            << " unit_cleanup=" << unit.cleanup_pending()
-            << " chunked_cleanup=" << chunked.cleanup_pending()
-            << " unit_refusal=" << static_cast<unsigned>(unit.last_refusal())
-            << " chunked_refusal=" << static_cast<unsigned>(chunked.last_refusal())
-            << " unit_tickets=" << am.reconstruction_tickets
-            << " chunked_tickets=" << bm.reconstruction_tickets
-            << " unit_batches=" << am.reconstruction_batches_committed
-            << " chunked_batches=" << bm.reconstruction_batches_committed
-            << " unit_restarts=" << am.reconstruction_restarts
-            << " chunked_restarts=" << bm.reconstruction_restarts
-            << " unit_service=" << am.reconstruction_service_units
-            << " chunked_service=" << bm.reconstruction_service_units
-            << "\n";
-        for (const auto& snapshot : a)
-            std::cerr << "DETERMINISM_UNIT"
-                      << " slot=" << snapshot.handle.slot
-                      << " gen=" << snapshot.handle.generation
-                      << " x=" << snapshot.min_x
-                      << " serial=" << snapshot.publication_serial << "\n";
-        for (const auto& snapshot : b)
-            std::cerr << "DETERMINISM_CHUNKED"
-                      << " slot=" << snapshot.handle.slot
-                      << " gen=" << snapshot.handle.generation
-                      << " x=" << snapshot.min_x
-                      << " serial=" << snapshot.publication_serial << "\n";
-    }
+
     require(a.size() == b.size() && a.size() == 4,
             "determinism runs publish the same region count");
     for (std::size_t i = 0; i < a.size(); ++i)
