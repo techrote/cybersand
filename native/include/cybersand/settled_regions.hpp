@@ -2812,6 +2812,8 @@ private:
         ticket.cleanup_disposition = CleanupDisposition::Block;
         ticket.cleanup_refusal = reason;
         ticket.cleanup_resource = resource_for_refusal(reason);
+        ticket.wait_resource_generation =
+            resource_generation(ticket.cleanup_resource);
         request_ticket_restart(handle);
     }
     void cleanup_then_refuse(
@@ -2821,6 +2823,7 @@ private:
         ticket.cleanup_disposition = CleanupDisposition::Refuse;
         ticket.cleanup_refusal = reason;
         ticket.cleanup_resource = ReconstructionResource::None;
+        ticket.wait_resource_generation = 0;
         request_ticket_restart(handle);
     }
     void rotate_reconstruction_head() noexcept {
@@ -2879,6 +2882,8 @@ private:
         ticket.wait_tile = invalid_pool_index;
         ticket.wait_generation = 0;
         ticket.refusal = RegionRefusal::None;
+        ticket.wait_resource = ReconstructionResource::None;
+        ticket.wait_resource_generation = 0;
         ticket.restart_requested = false;
     }
     void begin_ticket_restart(TicketHandle handle) noexcept {
@@ -2959,11 +2964,38 @@ private:
             return true;
         }
         if (ticket.cleanup_disposition == CleanupDisposition::Block) {
+            const auto blocked_refusal = ticket.cleanup_refusal;
+            const auto blocked_resource = ticket.cleanup_resource;
+            const auto blocked_generation = ticket.wait_resource_generation;
+            ticket.cleanup_disposition = CleanupDisposition::Restart;
+            ticket.cleanup_refusal = RegionRefusal::None;
+            ticket.cleanup_resource = ReconstructionResource::None;
+
+            // The blocking resource may have changed while this attempt's
+            // staged state was being reclaimed. In that case parking now would
+            // miss the only relevant wakeup, so retry directly from a clean
+            // attempt instead of recording the already-advanced generation.
+            if (blocked_resource != ReconstructionResource::None &&
+                blocked_resource != ReconstructionResource::Count &&
+                blocked_generation != resource_generation(blocked_resource)) {
+                ticket.wait_resource = ReconstructionResource::None;
+                ticket.wait_resource_generation = 0;
+                if (ticket.attempt == std::numeric_limits<std::uint64_t>::max()) {
+                    ticket.phase = ReconstructionPhase::Refused;
+                    ticket.refusal = RegionRefusal::GenerationExhausted;
+                    last_refusal_ = ticket.refusal;
+                    park_refused_ticket(handle);
+                    return true;
+                }
+                ++ticket.attempt;
+                reset_ticket_admission(ticket);
+                return true;
+            }
+
             ticket.phase = ReconstructionPhase::Blocked;
-            ticket.refusal = ticket.cleanup_refusal;
-            ticket.wait_resource = ticket.cleanup_resource;
-            ticket.wait_resource_generation =
-                resource_generation(ticket.wait_resource);
+            ticket.refusal = blocked_refusal;
+            ticket.wait_resource = blocked_resource;
+            ticket.wait_resource_generation = blocked_generation;
             last_refusal_ = ticket.refusal;
             saturating_add(metrics_.reconstruction_waits);
             if (ticket.refusal == RegionRefusal::FrontierCapacity)
@@ -2974,9 +3006,6 @@ private:
                 saturating_add(metrics_.member_refusals);
             if (ticket.refusal == RegionRefusal::RegionCapacity)
                 saturating_add(metrics_.region_refusals);
-            ticket.cleanup_disposition = CleanupDisposition::Restart;
-            ticket.cleanup_refusal = RegionRefusal::None;
-            ticket.cleanup_resource = ReconstructionResource::None;
             park_blocked_ticket(handle);
             return true;
         }
