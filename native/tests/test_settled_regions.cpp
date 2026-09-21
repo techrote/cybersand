@@ -1457,6 +1457,41 @@ void reconstruction_ticket_order_is_budget_shape_deterministic() {
     drain_budget(chunked, 7);
     const auto a = snapshots(unit, 8);
     const auto b = snapshots(chunked, 8);
+    if (a.size() != b.size() || a.size() != 4) {
+        const auto am = unit.metrics();
+        const auto bm = chunked.metrics();
+        std::cerr
+            << "DETERMINISM_FORENSIC"
+            << " unit_count=" << a.size()
+            << " chunked_count=" << b.size()
+            << " unit_pending=" << unit.pending_components()
+            << " chunked_pending=" << chunked.pending_components()
+            << " unit_cleanup=" << unit.cleanup_pending()
+            << " chunked_cleanup=" << chunked.cleanup_pending()
+            << " unit_refusal=" << static_cast<unsigned>(unit.last_refusal())
+            << " chunked_refusal=" << static_cast<unsigned>(chunked.last_refusal())
+            << " unit_tickets=" << am.reconstruction_tickets
+            << " chunked_tickets=" << bm.reconstruction_tickets
+            << " unit_batches=" << am.reconstruction_batches_committed
+            << " chunked_batches=" << bm.reconstruction_batches_committed
+            << " unit_restarts=" << am.reconstruction_restarts
+            << " chunked_restarts=" << bm.reconstruction_restarts
+            << " unit_service=" << am.reconstruction_service_units
+            << " chunked_service=" << bm.reconstruction_service_units
+            << "\n";
+        for (const auto& snapshot : a)
+            std::cerr << "DETERMINISM_UNIT"
+                      << " slot=" << snapshot.handle.slot
+                      << " gen=" << snapshot.handle.generation
+                      << " x=" << snapshot.min_x
+                      << " serial=" << snapshot.publication_serial << "\n";
+        for (const auto& snapshot : b)
+            std::cerr << "DETERMINISM_CHUNKED"
+                      << " slot=" << snapshot.handle.slot
+                      << " gen=" << snapshot.handle.generation
+                      << " x=" << snapshot.min_x
+                      << " serial=" << snapshot.publication_serial << "\n";
+    }
     require(a.size() == b.size() && a.size() == 4,
             "determinism runs publish the same region count");
     for (std::size_t i = 0; i < a.size(); ++i)
