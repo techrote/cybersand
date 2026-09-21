@@ -2100,6 +2100,15 @@ private:
             tile.face_runs[run].absence_subscribers = {};
     }
 
+    void record_region_generation_exhaustion(Region& region) noexcept {
+        if (region.valid || region.generation < GenerationLimit ||
+            region.generation_exhausted_recorded)
+            return;
+        region.generation_exhausted_recorded = true;
+        ++region_generation_exhausted_count_;
+        bump_resource_generation(ReconstructionResource::Region);
+    }
+
     std::optional<std::size_t> allocate_region_slot() noexcept {
         while (region_free_count_ != 0) {
             const auto slot = static_cast<std::size_t>(
@@ -2120,11 +2129,7 @@ private:
             region.reclaim_enqueued || member_handle_valid(region.member_head))
             return;
         if (region.generation >= GenerationLimit) {
-            if (!region.generation_exhausted_recorded) {
-                region.generation_exhausted_recorded = true;
-                ++region_generation_exhausted_count_;
-                bump_resource_generation(ReconstructionResource::Region);
-            }
+            record_region_generation_exhaustion(region);
             return;
         }
         region_free_stack_[region_free_count_++] = static_cast<std::uint32_t>(slot);
@@ -2163,6 +2168,7 @@ private:
         out.complete = true;
         if (publication_reservation_serial_ == PublicationLimit) {
             region.valid = false;
+            record_region_generation_exhaustion(region);
             --published_region_count_;
             return_region_slot(*slot);
             refuse_build(RegionRefusal::GenerationExhausted);
@@ -2240,6 +2246,7 @@ private:
         out.member_digest = members; out.dependency_digest = dependencies;
         if (!subscriber_handle_valid(build_.subscriber)) {
             region.valid = false;
+            record_region_generation_exhaustion(region);
             --published_region_count_;
             refuse_build(RegionRefusal::RevisionChanged);
             return;
@@ -2283,6 +2290,7 @@ private:
         if (region.valid && region.generation == handle.generation) {
             const bool was_visible = region_visible(region);
             region.valid = false;
+            record_region_generation_exhaustion(region);
             if (was_visible && published_region_count_ != 0) --published_region_count_;
             if (was_visible && current_change_serial_ != 0 &&
                 !attach_retired_region_to_current_change(handle.slot, region)) {
@@ -2945,6 +2953,7 @@ private:
                     if (region.preparation_ticket == handle) {
                         if (region.valid) {
                             region.valid = false;
+                            record_region_generation_exhaustion(region);
                             retire_subscriber(region.subscriber);
                         }
                         region.reclaim_pending =
