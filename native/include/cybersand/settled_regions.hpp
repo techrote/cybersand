@@ -583,6 +583,9 @@ private:
         Admitting, Building, PreflightDependencies, PreflightRegions,
         Preparing, CommitReady, RestartCleanup, Blocked, Refused
     };
+    enum class ReconstructionResource : std::uint8_t {
+        None, Region, Member, Frontier, Dependency, Manifest
+    };
     struct ReconstructionTicket {
         SourceHandle source_head{}, source_tail{}, admit_source{};
         MemberHandle admit_member{};
@@ -592,7 +595,7 @@ private:
         DependencyHandle preflight_dependency{};
         TicketHandle next_queue{};
         RegionComponentKey scan_key{};
-        std::uint64_t generation{}, attempt{1}, serial{}, admission_change_serial{};
+        std::uint64_t generation{}, attempt{1}, serial{}, admission_change_serial{}, scan_generation{};
         std::uint64_t wait_generation{}, wait_resource_generation{}, batch_serial{};
         std::uint64_t publication_base_serial{}, publication_end_serial{};
         std::uint64_t staged_area_total{}, staged_area_max{}, started_work{};
@@ -601,6 +604,7 @@ private:
         std::size_t scan_component{}, scan_tile{}, preflight_region_scan{}, preflight_free_count{};
         std::size_t prepared_child_count{}, prepare_member_index{}, restart_cleanup_index{};
         ReconstructionPhase phase{ReconstructionPhase::Admitting};
+        ReconstructionResource wait_resource{ReconstructionResource::None};
         RegionRefusal refusal{RegionRefusal::None};
         bool allocated{}, queued{}, scanning_changed_tile{}, blocker_seen{}, restart_requested{},
              publication_reserved{};
@@ -658,10 +662,51 @@ private:
         value += amount > room ? room : amount;
     }
     [[nodiscard]] bool unavailable() const noexcept { return halted_ || coverage_capacity_exhausted_; }
-    void bump_resource_generation() noexcept {
-        if (resource_generation_ != std::numeric_limits<std::uint64_t>::max())
-            ++resource_generation_;
+    [[nodiscard]] std::uint64_t resource_generation(
+        ReconstructionResource resource) const noexcept {
+        switch (resource) {
+        case ReconstructionResource::Region: return region_resource_generation_;
+        case ReconstructionResource::Member: return member_resource_generation_;
+        case ReconstructionResource::Frontier: return frontier_resource_generation_;
+        case ReconstructionResource::Dependency: return dependency_resource_generation_;
+        case ReconstructionResource::Manifest: return manifest_resource_generation_;
+        case ReconstructionResource::None: return resource_generation_;
+        }
+        return resource_generation_;
+    }
+    void bump_resource_generation(
+        ReconstructionResource resource = ReconstructionResource::None) noexcept {
+        auto bump = [](std::uint64_t& value) noexcept {
+            if (value != std::numeric_limits<std::uint64_t>::max()) ++value;
+        };
+        bump(resource_generation_);
+        switch (resource) {
+        case ReconstructionResource::Region: bump(region_resource_generation_); break;
+        case ReconstructionResource::Member: bump(member_resource_generation_); break;
+        case ReconstructionResource::Frontier: bump(frontier_resource_generation_); break;
+        case ReconstructionResource::Dependency: bump(dependency_resource_generation_); break;
+        case ReconstructionResource::Manifest: bump(manifest_resource_generation_); break;
+        case ReconstructionResource::None: break;
+        }
         metrics_.resource_generation = resource_generation_;
+    }
+    [[nodiscard]] static ReconstructionResource resource_for_refusal(
+        RegionRefusal reason) noexcept {
+        switch (reason) {
+        case RegionRefusal::RegionCapacity:
+            return ReconstructionResource::Region;
+        case RegionRefusal::MemberCapacity:
+            return ReconstructionResource::Member;
+        case RegionRefusal::FrontierCapacity:
+            return ReconstructionResource::Frontier;
+        case RegionRefusal::DependencyCapacity:
+            return ReconstructionResource::Dependency;
+        case RegionRefusal::ManifestCapacity:
+        case RegionRefusal::RevisionChanged:
+            return ReconstructionResource::Manifest;
+        default:
+            return ReconstructionResource::None;
+        }
     }
     void begin_graph_change() noexcept {
         if (change_serial_ == std::numeric_limits<std::uint64_t>::max()) {
@@ -1396,7 +1441,7 @@ private:
         dependency.next_free = dependency_free_head_;
         dependency_free_head_ = handle.slot;
         --dependency_count_;
-        bump_resource_generation();
+        bump_resource_generation(ReconstructionResource::Dependency);
     }
     [[nodiscard]] DependencyHandle* target_head(
         Dependency& dependency) noexcept {
@@ -1570,7 +1615,7 @@ private:
         subscriber.next_free = subscriber_free_head_;
         subscriber_free_head_ = handle.slot;
         --subscriber_count_;
-        bump_resource_generation();
+        bump_resource_generation(ReconstructionResource::Dependency);
         if ((kind == SubscriberKind::Publication || kind == SubscriberKind::Prepared) &&
             owner_slot < RegionCapacity) {
             auto& region = regions_[owner_slot];
@@ -2038,13 +2083,13 @@ private:
             if (!region.generation_exhausted_recorded) {
                 region.generation_exhausted_recorded = true;
                 ++region_generation_exhausted_count_;
-                bump_resource_generation();
+                bump_resource_generation(ReconstructionResource::Region);
             }
             return;
         }
         region_free_stack_[region_free_count_++] = static_cast<std::uint32_t>(slot);
         region.on_free_list = true;
-        bump_resource_generation();
+        bump_resource_generation(ReconstructionResource::Region);
     }
     void publish_build() noexcept {
         if (publication_serial_ == PublicationLimit) {
@@ -2277,7 +2322,7 @@ private:
         member_free_head_ = handle.slot;
         --member_count_;
         saturating_add(metrics_.member_reclaims);
-        bump_resource_generation();
+        bump_resource_generation(ReconstructionResource::Member);
     }
     [[nodiscard]] bool source_handle_valid(SourceHandle handle) const noexcept {
         return handle.slot < RegionCapacity && sources_[handle.slot].active &&
@@ -2399,7 +2444,7 @@ private:
         source.next_free = source_free_head_;
         source_free_head_ = handle.slot;
         if (source_count_ != 0) --source_count_;
-        bump_resource_generation();
+        bump_resource_generation(ReconstructionResource::Manifest);
     }
     [[nodiscard]] std::optional<SeedHandle> allocate_seed_node(
         ComponentRef ref) noexcept {
@@ -2463,7 +2508,7 @@ private:
         seed.next_free = seed_free_head_;
         seed_free_head_ = handle.slot;
         if (seed_count_ != 0) --seed_count_;
-        bump_resource_generation();
+        bump_resource_generation(ReconstructionResource::Frontier);
     }
     [[nodiscard]] std::optional<StagedMemberHandle> allocate_staged_member(
         ComponentRef ref) noexcept {
@@ -2492,7 +2537,7 @@ private:
         member.next_free = staged_member_free_head_;
         staged_member_free_head_ = handle.slot;
         if (staged_member_count_ != 0) --staged_member_count_;
-        bump_resource_generation();
+        bump_resource_generation(ReconstructionResource::Member);
     }
     [[nodiscard]] std::optional<StagedChildHandle> allocate_staged_child() noexcept {
         while (staged_child_free_head_ != invalid_pool_index) {
@@ -2524,7 +2569,7 @@ private:
         child.next_free = staged_child_free_head_;
         staged_child_free_head_ = handle.slot;
         if (staged_child_count_ != 0) --staged_child_count_;
-        bump_resource_generation();
+        bump_resource_generation(ReconstructionResource::Manifest);
     }
     void append_seed_cleanup(SeedHandle head, SeedHandle tail) noexcept {
         if (!seed_handle_valid(head)) return;
@@ -2604,7 +2649,7 @@ private:
         ticket.next_free = ticket_free_head_;
         ticket_free_head_ = handle.slot;
         if (ticket_count_ != 0) --ticket_count_;
-        bump_resource_generation();
+        bump_resource_generation(ReconstructionResource::Manifest);
     }
     void advance_source_cursor(ReconstructionTicket& ticket) noexcept {
         if (!source_handle_valid(ticket.admit_source)) {
@@ -2629,6 +2674,7 @@ private:
         ticket.scanning_changed_tile = false;
         ticket.scan_component = 0;
         ticket.scan_tile = 0;
+        ticket.scan_generation = 0;
         ticket.blocker_seen = false;
         ticket.wait_tile = invalid_pool_index;
         ticket.wait_generation = 0;
@@ -2719,13 +2765,7 @@ private:
         auto before = reconstruction_tickets_[handle.slot].seed_count;
         const auto seed = allocate_reconstruction_seed(handle, ref);
         if (!seed.has_value()) {
-            auto& ticket = reconstruction_tickets_[handle.slot];
-            ticket.phase = ReconstructionPhase::Blocked;
-            ticket.refusal = RegionRefusal::FrontierCapacity;
-            ticket.wait_resource_generation = resource_generation_;
-            last_refusal_ = ticket.refusal;
-            saturating_add(metrics_.frontier_refusals);
-            saturating_add(metrics_.reconstruction_waits);
+            block_reconstruction_ticket(handle, RegionRefusal::FrontierCapacity);
             return false;
         }
         (void)before;
@@ -2738,7 +2778,8 @@ private:
             if (ticket.blocker_seen) {
                 ticket.phase = ReconstructionPhase::Blocked;
                 ticket.refusal = RegionRefusal::UnknownBoundary;
-                ticket.wait_resource_generation = resource_generation_;
+                ticket.wait_resource = ReconstructionResource::None;
+                ticket.wait_resource_generation = 0;
                 last_refusal_ = ticket.refusal;
                 saturating_add(metrics_.reconstruction_waits);
             } else {
@@ -2754,6 +2795,10 @@ private:
                 return true;
             }
             auto& tile = tiles_[ticket.scan_tile];
+            if (tile.observation_generation != ticket.scan_generation) {
+                request_ticket_restart(handle);
+                return true;
+            }
             if (ticket.scan_component < tile.component_count) {
                 const auto component_index = ticket.scan_component++;
                 if (tile.ready && tile.components[component_index].key == ticket.scan_key) {
@@ -2802,6 +2847,7 @@ private:
         ticket.scanning_changed_tile = true;
         ticket.scan_tile = member.ref.tile;
         ticket.scan_component = 0;
+        ticket.scan_generation = tile.observation_generation;
         ticket.scan_key = source.key;
         return true;
     }
@@ -2823,7 +2869,9 @@ private:
         ticket.refusal = reason;
         ticket.wait_tile = wait_tile;
         ticket.wait_generation = wait_generation;
-        ticket.wait_resource_generation = resource_generation_;
+        ticket.wait_resource = resource_for_refusal(reason);
+        ticket.wait_resource_generation =
+            resource_generation(ticket.wait_resource);
         last_refusal_ = reason;
         saturating_add(metrics_.reconstruction_waits);
         if (reason == RegionRefusal::FrontierCapacity)
@@ -3473,21 +3521,11 @@ private:
                 saturating_add(metrics_.region_refusals);
                 return true;
             }
-            ticket.phase = ReconstructionPhase::Blocked;
-            ticket.refusal = RegionRefusal::RegionCapacity;
-            ticket.wait_resource_generation = resource_generation_;
-            last_refusal_ = ticket.refusal;
-            saturating_add(metrics_.reconstruction_waits);
-            saturating_add(metrics_.region_refusals);
+            block_reconstruction_ticket(handle, RegionRefusal::RegionCapacity);
             return true;
         }
         if (member_capacity_ - member_count_ < ticket.staged_member_count) {
-            ticket.phase = ReconstructionPhase::Blocked;
-            ticket.refusal = RegionRefusal::MemberCapacity;
-            ticket.wait_resource_generation = resource_generation_;
-            last_refusal_ = ticket.refusal;
-            saturating_add(metrics_.reconstruction_waits);
-            saturating_add(metrics_.member_refusals);
+            block_reconstruction_ticket(handle, RegionRefusal::MemberCapacity);
             return true;
         }
 
@@ -3632,7 +3670,9 @@ private:
                 request_ticket_restart(handle);
                 return true;
             }
-        } else if (ticket.wait_resource_generation != resource_generation_) {
+        } else if (ticket.wait_resource != ReconstructionResource::None &&
+                   ticket.wait_resource_generation !=
+                       resource_generation(ticket.wait_resource)) {
             request_ticket_restart(handle);
             return true;
         }
@@ -3898,7 +3938,10 @@ private:
     StagedChildHandle stale_child_cleanup_head_{}, stale_child_cleanup_tail_{};
     SourceHandle source_cleanup_head_{}, source_cleanup_tail_{};
     std::uint64_t change_serial_{}, current_change_serial_{}, reconstruction_serial_{}, digest_generation_serial_{};
-    std::uint64_t resource_generation_{1}, committed_batch_serial_{}, service_round_{};
+    std::uint64_t resource_generation_{1}, region_resource_generation_{1},
+                  member_resource_generation_{1}, frontier_resource_generation_{1},
+                  dependency_resource_generation_{1}, manifest_resource_generation_{1},
+                  committed_batch_serial_{}, service_round_{};
     std::size_t region_free_count_{RegionCapacity};
     std::size_t region_reclaim_head_{}, region_reclaim_tail_{}, region_reclaim_count_{};
     std::size_t region_generation_exhausted_count_{};
