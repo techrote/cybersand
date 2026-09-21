@@ -3365,100 +3365,104 @@ private:
     bool start_ticket_child(TicketHandle handle) noexcept {
         if (!ticket_handle_valid(handle)) return false;
         auto& ticket = reconstruction_tickets_[handle.slot];
-        while (seed_handle_valid(ticket.seed_head)) {
-            const auto seed_handle = ticket.seed_head;
-            const auto next = reconstruction_seeds_[seed_handle.slot].next;
-            const auto ref = reconstruction_seeds_[seed_handle.slot].ref;
-            ticket.seed_head = next;
-            if (seed_handle_valid(next))
-                reconstruction_seeds_[next.slot].previous = {};
-            else
-                ticket.seed_tail = {};
-            reconstruction_seeds_[seed_handle.slot].previous = {};
-            reconstruction_seeds_[seed_handle.slot].next = {};
-            if (ticket.seed_count != 0) --ticket.seed_count;
-            if (ref.tile < tile_count_ &&
-                ref.component < tiles_[ref.tile].component_count &&
-                tiles_[ref.tile].components[ref.component].pending_seed == seed_handle)
-                tiles_[ref.tile].components[ref.component].pending_seed = {};
 
-            if (ref.tile >= tile_count_ ||
-                ref.component >= tiles_[ref.tile].component_count) {
-                release_reconstruction_seed(seed_handle);
-                continue;
-            }
-            auto& component = tiles_[ref.tile].components[ref.component];
-            if (!seed_belongs_to_ticket(component, handle) || assigned(component) ||
-                (component.build_generation != 0 &&
-                 component.reconstruction_attempt == ticket.attempt)) {
-                release_reconstruction_seed(seed_handle);
-                continue;
-            }
-            if (build_generation_serial_ == std::numeric_limits<std::uint64_t>::max()) {
-                release_reconstruction_seed(seed_handle);
-                cleanup_then_refuse(handle, RegionRefusal::GenerationExhausted);
-                return true;
-            }
-            const auto child_handle = allocate_staged_child();
-            if (!child_handle.has_value()) {
-                // Put the seed back at the head. If this one ticket already owns
-                // P complete children then the exact result cannot fit; otherwise
-                // the manifest shortage is transient contention.
-                reconstruction_seeds_[seed_handle.slot].previous = {};
-                reconstruction_seeds_[seed_handle.slot].next = ticket.seed_head;
-                if (seed_handle_valid(ticket.seed_head))
-                    reconstruction_seeds_[ticket.seed_head.slot].previous = seed_handle;
-                ticket.seed_head = seed_handle;
-                if (!seed_handle_valid(ticket.seed_tail)) ticket.seed_tail = seed_handle;
-                if (ref.tile < tile_count_ &&
-                    ref.component < tiles_[ref.tile].component_count)
-                    tiles_[ref.tile].components[ref.component].pending_seed = seed_handle;
-                ++ticket.seed_count;
-                if (ticket.child_count >= RegionCapacity)
-                    cleanup_then_refuse(handle, RegionRefusal::RegionCapacity);
-                else
-                    cleanup_then_block(handle, RegionRefusal::ManifestCapacity);
-                return true;
-            }
-            const auto subscriber = allocate_subscriber(
-                SubscriberKind::Staged, handle.slot, handle.generation);
-            if (!subscriber.has_value()) {
-                release_staged_child(*child_handle);
-                reconstruction_seeds_[seed_handle.slot].previous = {};
-                reconstruction_seeds_[seed_handle.slot].next = ticket.seed_head;
-                if (seed_handle_valid(ticket.seed_head))
-                    reconstruction_seeds_[ticket.seed_head.slot].previous = seed_handle;
-                ticket.seed_head = seed_handle;
-                if (!seed_handle_valid(ticket.seed_tail)) ticket.seed_tail = seed_handle;
-                if (ref.tile < tile_count_ &&
-                    ref.component < tiles_[ref.tile].component_count)
-                    tiles_[ref.tile].components[ref.component].pending_seed = seed_handle;
-                ++ticket.seed_count;
-                cleanup_then_block(handle, RegionRefusal::DependencyCapacity);
-                return true;
-            }
-            auto& child = staged_children_[child_handle->slot];
-            child.subscriber = *subscriber;
-            child.snapshot = {};
-            child.snapshot.key = component.key;
-            child.snapshot.complete = true;
-            child.snapshot.member_digest = 1469598103934665603ULL;
-            child.snapshot.dependency_digest = 1469598103934665603ULL;
-            child.build_generation = ++build_generation_serial_;
-            child.phase = StagedChildPhase::Traversing;
-            if (staged_child_handle_valid(ticket.child_tail))
-                staged_children_[ticket.child_tail.slot].next = *child_handle;
-            else
-                ticket.child_head = *child_handle;
-            ticket.child_tail = *child_handle;
-            ticket.active_child = *child_handle;
-            (void)ticket_frontier_push(handle, *child_handle, ref, seed_handle);
-            saturating_add(metrics_.builds_started);
+        if (!seed_handle_valid(ticket.seed_head)) {
+            ticket.phase = ReconstructionPhase::PreflightDependencies;
+            ticket.preflight_child = ticket.child_head;
+            ticket.preflight_dependency = {};
             return true;
         }
-        ticket.phase = ReconstructionPhase::PreflightDependencies;
-        ticket.preflight_child = ticket.child_head;
-        ticket.preflight_dependency = {};
+
+        // One service unit owns exactly one retained-seed probe. Do not hide a
+        // stale/assigned seed sweep inside one advance(1) call.
+        const auto seed_handle = ticket.seed_head;
+        const auto next = reconstruction_seeds_[seed_handle.slot].next;
+        const auto ref = reconstruction_seeds_[seed_handle.slot].ref;
+        ticket.seed_head = next;
+        if (seed_handle_valid(next))
+            reconstruction_seeds_[next.slot].previous = {};
+        else
+            ticket.seed_tail = {};
+        reconstruction_seeds_[seed_handle.slot].previous = {};
+        reconstruction_seeds_[seed_handle.slot].next = {};
+        if (ticket.seed_count != 0) --ticket.seed_count;
+        if (ref.tile < tile_count_ &&
+            ref.component < tiles_[ref.tile].component_count &&
+            tiles_[ref.tile].components[ref.component].pending_seed == seed_handle)
+            tiles_[ref.tile].components[ref.component].pending_seed = {};
+
+        if (ref.tile >= tile_count_ ||
+            ref.component >= tiles_[ref.tile].component_count) {
+            release_reconstruction_seed(seed_handle);
+            return true;
+        }
+        auto& component = tiles_[ref.tile].components[ref.component];
+        if (!seed_belongs_to_ticket(component, handle) || assigned(component) ||
+            (component.build_generation != 0 &&
+             component.reconstruction_attempt == ticket.attempt)) {
+            release_reconstruction_seed(seed_handle);
+            return true;
+        }
+        if (build_generation_serial_ == std::numeric_limits<std::uint64_t>::max()) {
+            release_reconstruction_seed(seed_handle);
+            cleanup_then_refuse(handle, RegionRefusal::GenerationExhausted);
+            return true;
+        }
+        const auto child_handle = allocate_staged_child();
+        if (!child_handle.has_value()) {
+            // Put this one seed back at the head. If this ticket already owns
+            // P complete children then the exact result cannot fit; otherwise
+            // the manifest shortage is transient contention.
+            reconstruction_seeds_[seed_handle.slot].previous = {};
+            reconstruction_seeds_[seed_handle.slot].next = ticket.seed_head;
+            if (seed_handle_valid(ticket.seed_head))
+                reconstruction_seeds_[ticket.seed_head.slot].previous = seed_handle;
+            ticket.seed_head = seed_handle;
+            if (!seed_handle_valid(ticket.seed_tail)) ticket.seed_tail = seed_handle;
+            if (ref.tile < tile_count_ &&
+                ref.component < tiles_[ref.tile].component_count)
+                tiles_[ref.tile].components[ref.component].pending_seed = seed_handle;
+            ++ticket.seed_count;
+            if (ticket.child_count >= RegionCapacity)
+                cleanup_then_refuse(handle, RegionRefusal::RegionCapacity);
+            else
+                cleanup_then_block(handle, RegionRefusal::ManifestCapacity);
+            return true;
+        }
+        const auto subscriber = allocate_subscriber(
+            SubscriberKind::Staged, handle.slot, handle.generation);
+        if (!subscriber.has_value()) {
+            release_staged_child(*child_handle);
+            reconstruction_seeds_[seed_handle.slot].previous = {};
+            reconstruction_seeds_[seed_handle.slot].next = ticket.seed_head;
+            if (seed_handle_valid(ticket.seed_head))
+                reconstruction_seeds_[ticket.seed_head.slot].previous = seed_handle;
+            ticket.seed_head = seed_handle;
+            if (!seed_handle_valid(ticket.seed_tail)) ticket.seed_tail = seed_handle;
+            if (ref.tile < tile_count_ &&
+                ref.component < tiles_[ref.tile].component_count)
+                tiles_[ref.tile].components[ref.component].pending_seed = seed_handle;
+            ++ticket.seed_count;
+            cleanup_then_block(handle, RegionRefusal::DependencyCapacity);
+            return true;
+        }
+        auto& child = staged_children_[child_handle->slot];
+        child.subscriber = *subscriber;
+        child.snapshot = {};
+        child.snapshot.key = component.key;
+        child.snapshot.complete = true;
+        child.snapshot.member_digest = 1469598103934665603ULL;
+        child.snapshot.dependency_digest = 1469598103934665603ULL;
+        child.build_generation = ++build_generation_serial_;
+        child.phase = StagedChildPhase::Traversing;
+        if (staged_child_handle_valid(ticket.child_tail))
+            staged_children_[ticket.child_tail.slot].next = *child_handle;
+        else
+            ticket.child_head = *child_handle;
+        ticket.child_tail = *child_handle;
+        ticket.active_child = *child_handle;
+        (void)ticket_frontier_push(handle, *child_handle, ref, seed_handle);
+        saturating_add(metrics_.builds_started);
         return true;
     }
 
