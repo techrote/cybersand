@@ -2466,12 +2466,22 @@ private:
         region.member_head = {};
         region.member_count = 0;
         auto& ticket = reconstruction_tickets_[ticket_handle.slot];
+        const bool first_source = ticket.source_count == 0;
         if (source_handle_valid(ticket.source_tail))
             sources_[ticket.source_tail.slot].next = *source_handle;
         else
             ticket.source_head = *source_handle;
         ticket.source_tail = *source_handle;
         ++ticket.source_count;
+
+        // Fresh reconstruction tickets are created before their retired source
+        // manifest is attached. Seed the admission cursor with the first source
+        // at attachment time so the first service step cannot mistake an
+        // uninitialized cursor for an exhausted manifest.
+        if (first_source && ticket.phase == ReconstructionPhase::Admitting) {
+            ticket.admit_source = *source_handle;
+            ticket.admit_member = source.member_head;
+        }
         return true;
     }
 
