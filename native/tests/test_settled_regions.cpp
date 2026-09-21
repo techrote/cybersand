@@ -505,10 +505,12 @@ void generation_exhaustion_never_revalidates_old_handle() {
             !regions.snapshot(stale).has_value() && regions.region_count() == 0,
             "revision replacement immediately retires the old generation");
     drain(regions);
-    require(regions.region_count() == 0 &&
-            regions.last_refusal() == RegionRefusal::GenerationExhausted &&
-            !regions.snapshot(stale).has_value(),
-            "generation exhaustion refuses publication instead of wrapping a stale handle");
+    require(regions.region_count() == 0,
+            "generation exhaustion cannot publish a replacement region");
+    require(regions.last_refusal() == RegionRefusal::GenerationExhausted,
+            "generation exhaustion reports the terminal typed refusal");
+    require(!regions.snapshot(stale).has_value(),
+            "generation exhaustion cannot revalidate the stale handle");
 
     require(put(regions, tile_key, {0, 0, 1, 1}, 3, one) == RegionOutcome::Accepted,
             "post-exhaustion input can still be observed without identity reuse");
