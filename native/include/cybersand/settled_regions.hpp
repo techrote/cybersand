@@ -3736,6 +3736,7 @@ private:
             region.snapshot.publication_serial =
                 ticket.publication_base_serial + ticket.prepared_child_count;
             region.subscriber = child.subscriber;
+            saturating_add(metrics_.reconstruction_hidden_preparations);
             if (subscriber_handle_valid(region.subscriber)) {
                 auto& subscriber = subscribers_[region.subscriber.slot];
                 subscriber.kind = SubscriberKind::Prepared;
@@ -3830,6 +3831,7 @@ private:
             begin_ticket_restart(handle);
 
         bool did_work = false;
+        const auto serviced_phase = ticket.phase;
         switch (ticket.phase) {
         case ReconstructionPhase::RestartCleanup:
             did_work = service_ticket_restart_cleanup(handle); break;
@@ -3852,6 +3854,18 @@ private:
         case ReconstructionPhase::Refused:
             did_work = false;
             break;
+        }
+        if (did_work) {
+            if (serviced_phase == ReconstructionPhase::Admitting)
+                saturating_add(metrics_.reconstruction_admission_units);
+            else if (serviced_phase == ReconstructionPhase::Building)
+                saturating_add(metrics_.reconstruction_traversal_units);
+            else if (serviced_phase == ReconstructionPhase::PreflightDependencies)
+                saturating_add(metrics_.reconstruction_dependency_units);
+            else if (serviced_phase == ReconstructionPhase::PreflightRegions ||
+                     serviced_phase == ReconstructionPhase::Preparing ||
+                     serviced_phase == ReconstructionPhase::CommitReady)
+                saturating_add(metrics_.reconstruction_preparation_units);
         }
         if (ticket_handle_valid(handle) && reconstruction_queue_head_ == handle)
             rotate_reconstruction_head();
