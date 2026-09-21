@@ -71,6 +71,9 @@ struct SettledRegionMetrics {
     std::uint64_t cleanup_registrations{}, cleanup_units{};
     std::uint64_t reconstruction_tickets{}, reconstruction_restarts{}, reconstruction_waits{};
     std::uint64_t reconstruction_service_units{}, reconstruction_remote_units{};
+    std::uint64_t reconstruction_admission_units{}, reconstruction_traversal_units{};
+    std::uint64_t reconstruction_dependency_units{}, reconstruction_preparation_units{};
+    std::uint64_t reconstruction_hidden_preparations{};
     std::uint64_t reconstruction_children_staged{}, reconstruction_batches_committed{};
     std::uint64_t member_records{}, member_high_water{}, member_refusals{}, member_reclaims{};
     std::uint64_t reclamation_units{}, reclamation_high_water{}, resource_generation{};
@@ -549,6 +552,7 @@ private:
     };
     struct ReconstructionSeed {
         ComponentRef ref{};
+        TicketHandle owner{};
         SeedHandle previous{}, next{};
         std::uint64_t generation{};
         std::uint32_t next_free{invalid_pool_index};
@@ -556,6 +560,7 @@ private:
     };
     struct StagedMember {
         ComponentRef ref{};
+        TicketHandle owner{};
         StagedMemberHandle next{};
         std::uint64_t generation{};
         std::uint32_t next_free{invalid_pool_index};
@@ -603,6 +608,7 @@ private:
         std::uint64_t staged_area_total{}, staged_area_max{}, started_work{};
         std::uint32_t next_free{invalid_pool_index}, wait_tile{invalid_pool_index};
         std::size_t source_count{}, seed_count{}, child_count{}, staged_member_count{};
+        std::size_t owned_seed_nodes{}, owned_staged_members{}, owned_dependencies{};
         std::size_t scan_component{}, scan_tile{}, preflight_region_scan{}, preflight_free_count{};
         std::size_t prepared_child_count{}, prepare_member_index{}, restart_cleanup_index{};
         ReconstructionPhase phase{ReconstructionPhase::Admitting};
