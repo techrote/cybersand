@@ -590,7 +590,7 @@ private:
         Preparing, CommitReady, RestartCleanup, Blocked, Refused
     };
     enum class ReconstructionResource : std::uint8_t {
-        None, Region, Member, Frontier, Dependency, Manifest
+        None, Region, Member, Frontier, Dependency, Manifest, Count
     };
     enum class CleanupDisposition : std::uint8_t { Restart, Block, Refuse };
     struct ReconstructionTicket {
@@ -600,7 +600,7 @@ private:
         StagedChildHandle child_head{}, child_tail{}, preflight_child{}, prepare_child{}, active_child{}, restart_child{};
         StagedMemberHandle prepare_member{};
         DependencyHandle preflight_dependency{};
-        TicketHandle next_queue{};
+        TicketHandle next_queue{}, previous_wait{}, next_wait{};
         RegionComponentKey scan_key{};
         std::uint64_t generation{}, attempt{1}, serial{}, admission_change_serial{}, scan_generation{};
         std::uint64_t wait_generation{}, wait_resource_generation{}, batch_serial{};
@@ -616,8 +616,8 @@ private:
         ReconstructionResource cleanup_resource{ReconstructionResource::None};
         CleanupDisposition cleanup_disposition{CleanupDisposition::Restart};
         RegionRefusal refusal{RegionRefusal::None}, cleanup_refusal{RegionRefusal::None};
-        bool allocated{}, queued{}, scanning_changed_tile{}, blocker_seen{}, restart_requested{},
-             publication_reserved{};
+        bool allocated{}, queued{}, wait_listed{}, scanning_changed_tile{}, blocker_seen{},
+             restart_requested{}, publication_reserved{};
     };
     enum class Phase : std::uint8_t {
         Idle, Seeking, Traversing, Validating, StagingMembers,
@@ -680,7 +680,9 @@ private:
         case ReconstructionResource::Frontier: return frontier_resource_generation_;
         case ReconstructionResource::Dependency: return dependency_resource_generation_;
         case ReconstructionResource::Manifest: return manifest_resource_generation_;
-        case ReconstructionResource::None: return resource_generation_;
+        case ReconstructionResource::None:
+        case ReconstructionResource::Count:
+            return resource_generation_;
         }
         return resource_generation_;
     }
@@ -696,9 +698,17 @@ private:
         case ReconstructionResource::Frontier: bump(frontier_resource_generation_); break;
         case ReconstructionResource::Dependency: bump(dependency_resource_generation_); break;
         case ReconstructionResource::Manifest: bump(manifest_resource_generation_); break;
-        case ReconstructionResource::None: break;
+        case ReconstructionResource::None:
+        case ReconstructionResource::Count:
+            break;
         }
         metrics_.resource_generation = resource_generation_;
+        const auto index = static_cast<std::size_t>(resource);
+        if (resource != ReconstructionResource::None &&
+            resource != ReconstructionResource::Count &&
+            index < resource_wait_heads_.size() &&
+            ticket_handle_valid(resource_wait_heads_[index]))
+            resource_wake_pending_[index] = true;
     }
     [[nodiscard]] static ReconstructionResource resource_for_refusal(
         RegionRefusal reason) noexcept {
@@ -4094,6 +4104,11 @@ private:
     std::uint32_t staged_child_free_head_{invalid_pool_index};
     SubscriberHandle cleanup_head_{}, cleanup_tail_{};
     TicketHandle reconstruction_queue_head_{}, reconstruction_queue_tail_{}, current_change_ticket_{};
+    std::array<TicketHandle, static_cast<std::size_t>(ReconstructionResource::Count)>
+        resource_wait_heads_{}, resource_wait_tails_{};
+    std::array<bool, static_cast<std::size_t>(ReconstructionResource::Count)>
+        resource_wake_pending_{};
+    std::size_t resource_wake_cursor_{1};
     TicketHandle digest_owner_ticket_{};
     StagedChildHandle digest_owner_child_{};
     SeedHandle stale_seed_cleanup_head_{}, stale_seed_cleanup_tail_{};
