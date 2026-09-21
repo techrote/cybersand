@@ -3878,11 +3878,12 @@ private:
             return true;
         }
 
-        while (staged_child_handle_valid(ticket.preflight_child) &&
-               staged_children_[ticket.preflight_child.slot].target_region_slot !=
-                   invalid_pool_index) {
+        if (staged_child_handle_valid(ticket.preflight_child) &&
+            staged_children_[ticket.preflight_child.slot].target_region_slot !=
+                invalid_pool_index) {
             ticket.preflight_child =
                 staged_children_[ticket.preflight_child.slot].next;
+            return true;
         }
         if (staged_child_handle_valid(ticket.preflight_child)) {
             const auto slot = allocate_region_slot();
