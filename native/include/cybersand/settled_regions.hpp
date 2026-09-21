@@ -279,7 +279,10 @@ public:
             const bool cleanup_turn = (service_round_ & 7U) == 7U;
             const bool reconstruction_turn = (service_round_ & 3U) != 0U;
 
-            if (cleanup_turn && cleanup_one_any()) {
+            if (service_resource_waiter_one()) {
+                did_work = true;
+                reconstruction_work = true;
+            } else if (cleanup_turn && cleanup_one_any()) {
                 did_work = true;
                 saturating_add(metrics_.cleanup_units);
             } else if (build_.phase != Phase::Idle) {
@@ -2004,6 +2007,7 @@ private:
                 child.next = {};
             }
             retire_subscriber(build_.subscriber);
+            park_refused_ticket(ticket_handle);
             reset_build();
             saturating_add(metrics_.builds_refused);
             if (reason == RegionRefusal::FrontierCapacity)
@@ -3007,6 +3011,7 @@ private:
                 ticket.wait_resource_generation = 0;
                 last_refusal_ = ticket.refusal;
                 saturating_add(metrics_.reconstruction_waits);
+                park_blocked_ticket(handle);
             } else {
                 ticket.phase = ReconstructionPhase::Building;
                 ticket.next_seed = ticket.seed_head;
