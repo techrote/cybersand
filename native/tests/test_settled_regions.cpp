@@ -772,6 +772,26 @@ void reconstruction_split_is_batch_atomic_under_unit_budget() {
                 "atomic split consumes at most one primitive per unit budget");
     }
     require(guard < 10000, "atomic split eventually commits");
+    if (regions.region_count() != 2) {
+        const auto debug_snapshots = snapshots(regions, 3);
+        const auto metrics = regions.metrics();
+        std::cerr
+            << "ATOMIC_SPLIT_FORENSIC"
+            << " region_count=" << regions.region_count()
+            << " snapshot_count=" << debug_snapshots.size()
+            << " children_staged=" << metrics.reconstruction_children_staged
+            << " hidden_preparations=" << metrics.reconstruction_hidden_preparations
+            << " batches_committed=" << metrics.reconstruction_batches_committed
+            << " tickets=" << metrics.reconstruction_tickets
+            << " restarts=" << metrics.reconstruction_restarts
+            << " waits=" << metrics.reconstruction_waits
+            << " service_units=" << metrics.reconstruction_service_units;
+        for (const auto& snapshot : debug_snapshots)
+            std::cerr << " area=" << snapshot.area
+                      << " min_x=" << snapshot.min_x
+                      << " max_x=" << snapshot.max_x;
+        std::cerr << "\n";
+    }
     require(regions.region_count() == 2,
             "first observable replacement state contains every split child, never a prefix");
     const auto after = snapshots(regions, 3);
