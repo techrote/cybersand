@@ -2757,6 +2757,41 @@ private:
         ticket.restart_requested = true;
         enqueue_reconstruction_ticket(handle);
     }
+    bool service_resource_waiter_one() noexcept {
+        constexpr auto count =
+            static_cast<std::size_t>(ReconstructionResource::Count);
+        if (count <= 1) return false;
+        for (std::size_t offset = 0; offset < count - 1U; ++offset) {
+            const auto index =
+                1U + ((resource_wake_cursor_ - 1U + offset) % (count - 1U));
+            if (!resource_wake_pending_[index]) continue;
+            const auto head = resource_wait_heads_[index];
+            if (!ticket_handle_valid(head)) {
+                resource_wait_heads_[index] = {};
+                resource_wait_tails_[index] = {};
+                resource_wake_pending_[index] = false;
+                resource_wake_cursor_ = index % (count - 1U) + 1U;
+                continue;
+            }
+            auto& ticket = reconstruction_tickets_[head.slot];
+            const auto resource = static_cast<ReconstructionResource>(index);
+            if (ticket.wait_resource_generation == resource_generation(resource)) {
+                // Waiters are appended with monotonic observed generations, so
+                // once the head is current, every later waiter is current too.
+                resource_wake_pending_[index] = false;
+                resource_wake_cursor_ = index % (count - 1U) + 1U;
+                continue;
+            }
+            unlink_resource_wait(head);
+            ticket.wait_resource = ReconstructionResource::None;
+            ticket.wait_resource_generation = 0;
+            ticket.restart_requested = true;
+            enqueue_reconstruction_ticket(head);
+            resource_wake_cursor_ = index % (count - 1U) + 1U;
+            return true;
+        }
+        return false;
+    }
     void cleanup_then_block(
         TicketHandle handle, RegionRefusal reason) noexcept {
         if (!ticket_handle_valid(handle)) return;
@@ -2907,6 +2942,7 @@ private:
             ticket.cleanup_disposition = CleanupDisposition::Restart;
             ticket.cleanup_refusal = RegionRefusal::None;
             ticket.cleanup_resource = ReconstructionResource::None;
+            park_refused_ticket(handle);
             return true;
         }
         if (ticket.cleanup_disposition == CleanupDisposition::Block) {
@@ -2928,6 +2964,7 @@ private:
             ticket.cleanup_disposition = CleanupDisposition::Restart;
             ticket.cleanup_refusal = RegionRefusal::None;
             ticket.cleanup_resource = ReconstructionResource::None;
+            park_blocked_ticket(handle);
             return true;
         }
 
@@ -2935,6 +2972,7 @@ private:
             ticket.phase = ReconstructionPhase::Refused;
             ticket.refusal = RegionRefusal::GenerationExhausted;
             last_refusal_ = ticket.refusal;
+            park_refused_ticket(handle);
             return true;
         }
         ++ticket.attempt;
@@ -3069,6 +3107,7 @@ private:
             saturating_add(metrics_.member_refusals);
         if (reason == RegionRefusal::RegionCapacity)
             saturating_add(metrics_.region_refusals);
+        park_blocked_ticket(handle);
     }
 
     bool ticket_frontier_push(
