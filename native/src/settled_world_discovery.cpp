@@ -1131,7 +1131,7 @@ WorldDiscoveryStorageLayout SettledWorldDiscoveryCoordinator::storage_layout() c
             state.regions->staged_member_capacity();
         out.region_staged_child_capacity =
             state.regions->staged_child_capacity();
-        out.region_dependency_capacity = state.regions->tile_capacity();
+        out.region_dependency_capacity = state.regions->dependency_capacity();
         out.region_revision_capacity = state.regions->tile_capacity();
         out.region_key_index_capacity = state.regions->key_index_capacity();
         out.region_row_interval_capacity = state.regions->row_interval_capacity();
