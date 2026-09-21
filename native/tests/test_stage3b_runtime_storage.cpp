@@ -210,9 +210,9 @@ WorldDiscoveryStorageLayout layout_case() {
     require(layout.region_reconstruction_ticket_capacity == 4096 &&
             layout.region_staged_child_capacity == 4096,
             "reconstruction ticket and staged-child pools remain fixed at P=4096");
-    require(layout.region_dependency_capacity == Capacity &&
+    require(layout.region_dependency_capacity == Capacity * 32U &&
             layout.region_revision_capacity == Capacity,
-            "dependency/revision backing follows effective T");
+            "dependency backing is 32T while revision backing follows T");
     require(layout.key_index_capacity == Capacity,
             "bounded canonical key index is exactly T");
     require(layout.payload_queue_capacity == Capacity &&
