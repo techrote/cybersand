@@ -3210,7 +3210,9 @@ private:
             }
             const auto child_handle = allocate_staged_child();
             if (!child_handle.has_value()) {
-                // Put the seed back at the head and wait for staged-child capacity.
+                // Put the seed back at the head. If this one ticket already owns
+                // P complete children then the exact result cannot fit; otherwise
+                // the manifest shortage is transient contention.
                 reconstruction_seeds_[seed_handle.slot].previous = {};
                 reconstruction_seeds_[seed_handle.slot].next = ticket.seed_head;
                 if (seed_handle_valid(ticket.seed_head))
@@ -3221,7 +3223,10 @@ private:
                     ref.component < tiles_[ref.tile].component_count)
                     tiles_[ref.tile].components[ref.component].pending_seed = seed_handle;
                 ++ticket.seed_count;
-                cleanup_then_block(handle, RegionRefusal::ManifestCapacity);
+                if (ticket.child_count >= RegionCapacity)
+                    cleanup_then_refuse(handle, RegionRefusal::RegionCapacity);
+                else
+                    cleanup_then_block(handle, RegionRefusal::ManifestCapacity);
                 return true;
             }
             const auto subscriber = allocate_subscriber(
