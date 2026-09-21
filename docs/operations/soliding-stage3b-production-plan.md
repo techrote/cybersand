@@ -27,18 +27,23 @@ World event/discovery geometry or settled-discovery internals. Stage 3B observes
 authoritative interaction mutations; it does not duplicate INT-000 semantics.
 Recheck current ownership before the later central World producer handoffs.
 
-## Live execution checkpoint — 2026-09-20
+## Live execution checkpoint — 2026-09-21
 
-Authoritative main at the #63 dispatch checkpoint is
-`97b84035d4fd38602ae8e983b6d4d4ae6c60df6b`: #62 completed through PR #97,
-#64 completed through PR #98, and #57 remains the resolved event/halo authority.
-#63 is the active serialized central-World producer package in PR #101. #65 remains
-the join and stays blocked until #63 is merged and its source-matched runtime/
-provenance evidence is complete; its #64 graph prerequisite is already landed.
+Authoritative `main` is
+`20337053911d28f985a3211b5cd7c8f70fd4d9b5` after CI recovery PR #108.
+#62 is complete through PR #97, #63 is complete through PR #101, #64 is complete
+through PR #98, and #57 remains the resolved event/halo authority. Both prerequisites
+of #65 are therefore landed.
+
+#65 is the active Stage-3B join package in PR #106. Its frozen native/test source is
+`8dfa779a561374a5693556f50def3e9666783a98`; focused GitHub-hosted
+`soliding-test` run `35654164638` passed that clean source. Full exact-head
+validation, source-matched runtime/provenance publication and final merge gates remain
+before #65 can close. #66 remains blocked until that completion.
 
 The development-claims remediation programme does not pause this lane. REM-002
-#81 must inspect live #62/#63 ownership before touching overlapping body/World/test
-surfaces and stop on a real collision. Stage 4 remains blocked.
+#81 must inspect live ownership before touching overlapping body/World/test surfaces
+and stop on a real collision. Stage 4 remains blocked.
 
 ## Resolved #57 event/halo contract
 
@@ -268,9 +273,9 @@ therefore follow actual component incidence/subscriber fanout; #65 still owns th
 generic split/reconstruction/reclamation scheduler and #66/#67 retain fast-path and
 digest work.
 
-G4 graph incidence is closed on current `main`. #65 still remains blocked until
-the serialized World-producer lane reaches #63 and that package is genuinely
-complete.
+G4 graph incidence and the serialized #63 producer prerequisite are both closed on
+current `main`. #65 is now the active join package; #66 remains blocked until #65
+passes its source-matched runtime/provenance and final exact-head completion gates.
 
 ## Required ordering principles
 
@@ -362,13 +367,11 @@ identified reference series when it cannot share the matched authority.
    G-P4 is closed. #69 preregistration is complete; #70 remains gated on #68 and
    the frozen candidate/source-runtime identity.
 3. #59 / PR #76 and #60 / PR #78 are complete; G2 and G3 are closed.
-4. The serialized World-producer lane remains #61 -> #62 -> #63. #61 closes the
-   payload-witness slice; #62 becomes dependency-ready with #61 on `main`.
-   #63 remains blocked on both #62 and #57. #64 remains the separate graph lane
-   in PR #98 and is not absorbed into the World-producer work; on main containing
-   that PR, its half of the #65 join is satisfied.
-5. Join at #65.
-6. Only then #66 -> #67 -> #68.
+4. The serialized World-producer lane #61 -> #62 -> #63 is complete, and #64's
+   separate graph lane is complete. Both halves of the #65 join are landed.
+5. Complete #65 through PR #106: exact-head validation, source-matched runtime/
+   provenance publication, final gates and merge verification.
+6. Only after genuine #65 completion proceed #66 -> #67 -> #68.
 7. Freeze one coherent candidate and execute #70.
 8. Return #70 to the supervising parent. Do not self-admit Stage 3B.
 
