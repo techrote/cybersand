@@ -2539,7 +2539,7 @@ private:
         bump_resource_generation(ReconstructionResource::Frontier);
     }
     [[nodiscard]] std::optional<StagedMemberHandle> allocate_staged_member(
-        ComponentRef ref) noexcept {
+        ComponentRef ref, TicketHandle owner = {}) noexcept {
         while (staged_member_free_head_ != invalid_pool_index) {
             const auto slot = staged_member_free_head_;
             auto& member = staged_members_[slot];
@@ -2550,9 +2550,12 @@ private:
             member = StagedMember{};
             member.generation = generation;
             member.active = true;
+            member.owner = owner;
             member.ref = ref;
             member.next_free = invalid_pool_index;
             ++staged_member_count_;
+            if (ticket_handle_valid(owner))
+                ++reconstruction_tickets_[owner.slot].owned_staged_members;
             return StagedMemberHandle{slot, generation};
         }
         return std::nullopt;
@@ -2560,7 +2563,12 @@ private:
     void release_staged_member(StagedMemberHandle handle) noexcept {
         if (!staged_member_handle_valid(handle)) return;
         auto& member = staged_members_[handle.slot];
+        const auto owner = member.owner;
         member.active = false;
+        member.owner = {};
+        if (ticket_handle_valid(owner) &&
+            reconstruction_tickets_[owner.slot].owned_staged_members != 0)
+            --reconstruction_tickets_[owner.slot].owned_staged_members;
         member.next = {};
         member.next_free = staged_member_free_head_;
         staged_member_free_head_ = handle.slot;
@@ -3274,7 +3282,7 @@ private:
             return true;
         }
 
-        const auto staged_member = allocate_staged_member(ref);
+        const auto staged_member = allocate_staged_member(ref, handle);
         if (!staged_member.has_value()) {
             release_frontier();
             cleanup_then_block(handle, RegionRefusal::MemberCapacity);
