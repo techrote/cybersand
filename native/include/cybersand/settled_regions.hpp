@@ -2457,7 +2457,7 @@ private:
         bump_resource_generation(ReconstructionResource::Manifest);
     }
     [[nodiscard]] std::optional<SeedHandle> allocate_seed_node(
-        ComponentRef ref) noexcept {
+        TicketHandle owner, ComponentRef ref) noexcept {
         while (seed_free_head_ != invalid_pool_index) {
             const auto slot = seed_free_head_;
             auto& seed = reconstruction_seeds_[slot];
@@ -2468,9 +2468,12 @@ private:
             seed = ReconstructionSeed{};
             seed.generation = generation;
             seed.active = true;
+            seed.owner = owner;
             seed.ref = ref;
             seed.next_free = invalid_pool_index;
             ++seed_count_;
+            if (ticket_handle_valid(owner))
+                ++reconstruction_tickets_[owner.slot].owned_seed_nodes;
             return SeedHandle{slot, generation};
         }
         return std::nullopt;
@@ -2494,7 +2497,7 @@ private:
                     reconstruction_tickets_[ticket_handle.slot].serial)
                 return SeedHandle{};
         }
-        const auto handle = allocate_seed_node(ref);
+        const auto handle = allocate_seed_node(ticket_handle, ref);
         if (!handle.has_value()) return std::nullopt;
         auto& ticket = reconstruction_tickets_[ticket_handle.slot];
         auto& seed = reconstruction_seeds_[handle->slot];
@@ -2516,6 +2519,7 @@ private:
     void release_reconstruction_seed(SeedHandle handle) noexcept {
         if (!seed_handle_valid(handle)) return;
         auto& seed = reconstruction_seeds_[handle.slot];
+        const auto owner = seed.owner;
         if (seed.ref.tile < tile_count_ &&
             seed.ref.component < tiles_[seed.ref.tile].component_count) {
             auto& component = tiles_[seed.ref.tile].components[seed.ref.component];
@@ -2523,6 +2527,10 @@ private:
                 component.pending_seed = {};
         }
         seed.active = false;
+        seed.owner = {};
+        if (ticket_handle_valid(owner) &&
+            reconstruction_tickets_[owner.slot].owned_seed_nodes != 0)
+            --reconstruction_tickets_[owner.slot].owned_seed_nodes;
         seed.previous = {};
         seed.next = {};
         seed.next_free = seed_free_head_;
@@ -3010,7 +3018,7 @@ private:
             seed.previous = {};
             seed.next = {};
         } else {
-            const auto allocated = allocate_seed_node(ref);
+            const auto allocated = allocate_seed_node(handle, ref);
             if (!allocated.has_value()) {
                 cleanup_then_block(handle, RegionRefusal::FrontierCapacity);
                 return false;
