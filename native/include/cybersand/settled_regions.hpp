@@ -2685,10 +2685,12 @@ private:
         const auto seed = allocate_reconstruction_seed(handle, ref);
         if (!seed.has_value()) {
             auto& ticket = reconstruction_tickets_[handle.slot];
-            ticket.phase = ReconstructionPhase::Refused;
+            ticket.phase = ReconstructionPhase::Blocked;
             ticket.refusal = RegionRefusal::FrontierCapacity;
+            ticket.wait_resource_generation = resource_generation_;
             last_refusal_ = ticket.refusal;
             saturating_add(metrics_.frontier_refusals);
+            saturating_add(metrics_.reconstruction_waits);
             return false;
         }
         (void)before;
@@ -2775,6 +2777,574 @@ private:
                component.reconstruction_attempt ==
                    reconstruction_tickets_[handle.slot].attempt;
     }
+
+    void block_reconstruction_ticket(
+        TicketHandle handle, RegionRefusal reason,
+        std::uint32_t wait_tile = invalid_pool_index,
+        std::uint64_t wait_generation = 0) noexcept {
+        if (!ticket_handle_valid(handle)) return;
+        auto& ticket = reconstruction_tickets_[handle.slot];
+        ticket.phase = ReconstructionPhase::Blocked;
+        ticket.refusal = reason;
+        ticket.wait_tile = wait_tile;
+        ticket.wait_generation = wait_generation;
+        ticket.wait_resource_generation = resource_generation_;
+        last_refusal_ = reason;
+        saturating_add(metrics_.reconstruction_waits);
+        if (reason == RegionRefusal::FrontierCapacity)
+            saturating_add(metrics_.frontier_refusals);
+        if (reason == RegionRefusal::DependencyCapacity)
+            saturating_add(metrics_.dependency_refusals);
+        if (reason == RegionRefusal::MemberCapacity)
+            saturating_add(metrics_.member_refusals);
+        if (reason == RegionRefusal::RegionCapacity)
+            saturating_add(metrics_.region_refusals);
+    }
+
+    bool ticket_frontier_push(
+        TicketHandle handle, StagedChildHandle child_handle, ComponentRef ref,
+        std::optional<SeedHandle> reused = std::nullopt) noexcept {
+        if (!ticket_handle_valid(handle) || !staged_child_handle_valid(child_handle) ||
+            ref.tile >= tile_count_ || ref.component >= tiles_[ref.tile].component_count)
+            return false;
+        auto& ticket = reconstruction_tickets_[handle.slot];
+        auto& child = staged_children_[child_handle.slot];
+        auto& component = tiles_[ref.tile].components[ref.component];
+        if (component.build_generation == child.build_generation)
+            return true;
+
+        if (component_reserved(component) && !seed_belongs_to_ticket(component, handle)) {
+            const auto other = TicketHandle{
+                component.reconstruction_ticket,
+                component.reconstruction_ticket_generation};
+            if (ticket_handle_valid(other) &&
+                reconstruction_tickets_[other.slot].serial < ticket.serial) {
+                block_reconstruction_ticket(handle, RegionRefusal::RevisionChanged);
+                return false;
+            }
+            request_ticket_restart(other);
+        }
+
+        SeedHandle node{};
+        if (reused.has_value() && seed_handle_valid(*reused)) {
+            node = *reused;
+            reconstruction_seeds_[node.slot].ref = ref;
+            reconstruction_seeds_[node.slot].next = {};
+        } else {
+            const auto allocated = allocate_seed_node(ref);
+            if (!allocated.has_value()) {
+                block_reconstruction_ticket(handle, RegionRefusal::FrontierCapacity);
+                return false;
+            }
+            node = *allocated;
+        }
+        if (seed_handle_valid(child.frontier_tail))
+            reconstruction_seeds_[child.frontier_tail.slot].next = node;
+        else
+            child.frontier_head = node;
+        child.frontier_tail = node;
+        ++child.frontier_count;
+
+        component.reconstruction_ticket = handle.slot;
+        component.reconstruction_ticket_generation = handle.generation;
+        component.reconstruction_attempt = ticket.attempt;
+        component.build_generation = child.build_generation;
+        component.in_build = true;
+        return true;
+    }
+
+    bool pop_ticket_frontier_min(
+        StagedChild& child, SeedHandle& out_handle, ComponentRef& out_ref) noexcept {
+        if (!seed_handle_valid(child.frontier_head)) return false;
+        SeedHandle previous{}, current = child.frontier_head;
+        SeedHandle best_previous{}, best = current;
+        while (seed_handle_valid(current)) {
+            if (ref_less(reconstruction_seeds_[current.slot].ref,
+                         reconstruction_seeds_[best.slot].ref)) {
+                best = current;
+                best_previous = previous;
+            }
+            previous = current;
+            current = reconstruction_seeds_[current.slot].next;
+        }
+        const auto next = reconstruction_seeds_[best.slot].next;
+        if (seed_handle_valid(best_previous))
+            reconstruction_seeds_[best_previous.slot].next = next;
+        else
+            child.frontier_head = next;
+        if (child.frontier_tail == best)
+            child.frontier_tail = best_previous;
+        reconstruction_seeds_[best.slot].next = {};
+        if (child.frontier_count != 0) --child.frontier_count;
+        out_handle = best;
+        out_ref = reconstruction_seeds_[best.slot].ref;
+        return true;
+    }
+
+    bool add_ticket_dependency(
+        TicketHandle handle, StagedChild& child, DependencyKind kind,
+        std::size_t tile_index,
+        std::size_t face_run = region_detail::invalid_index) noexcept {
+        if (add_dependency(child.subscriber, kind, tile_index, face_run)) {
+            if (kind == DependencyKind::AbsenceFaceRun)
+                saturating_add(metrics_.absence_subscriptions);
+            return true;
+        }
+        block_reconstruction_ticket(handle, RegionRefusal::DependencyCapacity);
+        return false;
+    }
+
+    bool ticket_boundary_complete(
+        TicketHandle handle, StagedChild& child, ComponentRef ref) noexcept {
+        const auto& tile = tiles_[ref.tile];
+        for (std::size_t run_index = 0; run_index < tile.face_run_count; ++run_index) {
+            const auto& run = tile.face_runs[run_index];
+            if (!run.used || run.revision != tile.revision ||
+                run.component != ref.component) continue;
+            bool saw_absence = false;
+            for (std::size_t position = run.first; position <= run.last; ++position) {
+                std::int64_t x = tile.bounds.x, y = tile.bounds.y;
+                if (run.direction == region_detail::north ||
+                    run.direction == region_detail::south) {
+                    x += static_cast<std::int64_t>(position);
+                    if (run.direction == region_detail::south) y = max_y(tile.bounds);
+                } else {
+                    y += static_cast<std::int64_t>(position);
+                    if (run.direction == region_detail::east) x = max_x(tile.bounds);
+                }
+                const auto neighbour = tile.neighbours[
+                    boundary_index(tile.bounds, run.direction, x, y)];
+                saturating_add(metrics_.boundary_cell_checks);
+                if (neighbour == region_detail::invalid_index) {
+                    // Subscribe even for an unsealed unknown run so newly registered
+                    // residency is the exact retry trigger rather than polling.
+                    if (!add_ticket_dependency(
+                            handle, child, DependencyKind::AbsenceFaceRun,
+                            ref.tile, run_index))
+                        return false;
+                    if ((tile.sealed_edges & run.direction) == 0) {
+                        block_reconstruction_ticket(
+                            handle, RegionRefusal::UnknownBoundary,
+                            static_cast<std::uint32_t>(ref.tile),
+                            tile.observation_generation);
+                        return false;
+                    }
+                    saw_absence = true;
+                    continue;
+                }
+                if (!add_ticket_dependency(
+                        handle, child, DependencyKind::TileRevision, neighbour))
+                    return false;
+                if (!tiles_[neighbour].ready) {
+                    block_reconstruction_ticket(
+                        handle, RegionRefusal::UnknownBoundary,
+                        static_cast<std::uint32_t>(neighbour),
+                        tiles_[neighbour].observation_generation);
+                    return false;
+                }
+            }
+            if (saw_absence) {
+                // The dependency above is both the absence proof and its exact
+                // new-residency invalidation trigger.
+            }
+        }
+        return true;
+    }
+
+    bool start_ticket_child(TicketHandle handle) noexcept {
+        if (!ticket_handle_valid(handle)) return false;
+        auto& ticket = reconstruction_tickets_[handle.slot];
+        while (seed_handle_valid(ticket.seed_head)) {
+            const auto seed_handle = ticket.seed_head;
+            const auto next = reconstruction_seeds_[seed_handle.slot].next;
+            const auto ref = reconstruction_seeds_[seed_handle.slot].ref;
+            ticket.seed_head = next;
+            if (!seed_handle_valid(next)) ticket.seed_tail = {};
+            reconstruction_seeds_[seed_handle.slot].next = {};
+            if (ticket.seed_count != 0) --ticket.seed_count;
+
+            if (ref.tile >= tile_count_ ||
+                ref.component >= tiles_[ref.tile].component_count) {
+                release_reconstruction_seed(seed_handle);
+                continue;
+            }
+            auto& component = tiles_[ref.tile].components[ref.component];
+            if (!seed_belongs_to_ticket(component, handle) || assigned(component) ||
+                (component.build_generation != 0 &&
+                 component.reconstruction_attempt == ticket.attempt)) {
+                release_reconstruction_seed(seed_handle);
+                continue;
+            }
+            if (build_generation_serial_ == std::numeric_limits<std::uint64_t>::max()) {
+                ticket.phase = ReconstructionPhase::Refused;
+                ticket.refusal = RegionRefusal::GenerationExhausted;
+                last_refusal_ = ticket.refusal;
+                release_reconstruction_seed(seed_handle);
+                return true;
+            }
+            const auto child_handle = allocate_staged_child();
+            if (!child_handle.has_value()) {
+                // Put the seed back at the head and wait for staged-child capacity.
+                reconstruction_seeds_[seed_handle.slot].next = ticket.seed_head;
+                ticket.seed_head = seed_handle;
+                if (!seed_handle_valid(ticket.seed_tail)) ticket.seed_tail = seed_handle;
+                ++ticket.seed_count;
+                block_reconstruction_ticket(handle, RegionRefusal::RegionCapacity);
+                return true;
+            }
+            const auto subscriber = allocate_subscriber(
+                SubscriberKind::Staged, handle.slot, handle.generation);
+            if (!subscriber.has_value()) {
+                release_staged_child(*child_handle);
+                reconstruction_seeds_[seed_handle.slot].next = ticket.seed_head;
+                ticket.seed_head = seed_handle;
+                if (!seed_handle_valid(ticket.seed_tail)) ticket.seed_tail = seed_handle;
+                ++ticket.seed_count;
+                block_reconstruction_ticket(handle, RegionRefusal::DependencyCapacity);
+                return true;
+            }
+            auto& child = staged_children_[child_handle->slot];
+            child.subscriber = *subscriber;
+            child.snapshot = {};
+            child.snapshot.key = component.key;
+            child.snapshot.complete = true;
+            child.snapshot.member_digest = 1469598103934665603ULL;
+            child.snapshot.dependency_digest = 1469598103934665603ULL;
+            child.build_generation = ++build_generation_serial_;
+            child.phase = StagedChildPhase::Traversing;
+            if (staged_child_handle_valid(ticket.child_tail))
+                staged_children_[ticket.child_tail.slot].next = *child_handle;
+            else
+                ticket.child_head = *child_handle;
+            ticket.child_tail = *child_handle;
+            ticket.active_child = *child_handle;
+            if (!ticket_frontier_push(handle, *child_handle, ref, seed_handle)) {
+                request_ticket_restart(handle);
+            }
+            saturating_add(metrics_.builds_started);
+            return true;
+        }
+        ticket.phase = ReconstructionPhase::PreflightDependencies;
+        ticket.preflight_child = ticket.child_head;
+        ticket.preflight_dependency = {};
+        return true;
+    }
+
+    bool process_ticket_child_component(
+        TicketHandle handle, StagedChildHandle child_handle) noexcept {
+        if (!ticket_handle_valid(handle) || !staged_child_handle_valid(child_handle))
+            return false;
+        auto& ticket = reconstruction_tickets_[handle.slot];
+        auto& child = staged_children_[child_handle.slot];
+        SeedHandle frontier_node{};
+        ComponentRef ref{};
+        if (!pop_ticket_frontier_min(child, frontier_node, ref)) {
+            child.phase = StagedChildPhase::GatherMembers;
+            return true;
+        }
+
+        const auto release_frontier = [this, frontier_node]() noexcept {
+            release_reconstruction_seed(frontier_node);
+        };
+        if (ref.tile >= tile_count_ ||
+            ref.component >= tiles_[ref.tile].component_count) {
+            release_frontier();
+            request_ticket_restart(handle);
+            return true;
+        }
+        auto& component = tiles_[ref.tile].components[ref.component];
+        if (!tiles_[ref.tile].ready || assigned(component) ||
+            !seed_belongs_to_ticket(component, handle) ||
+            !(component.key == child.snapshot.key)) {
+            release_frontier();
+            request_ticket_restart(handle);
+            return true;
+        }
+        if (!add_ticket_dependency(
+                handle, child, DependencyKind::TileRevision, ref.tile)) {
+            release_frontier();
+            return true;
+        }
+        if (!ticket_boundary_complete(handle, child, ref)) {
+            release_frontier();
+            return true;
+        }
+
+        const auto staged_member = allocate_staged_member(ref);
+        if (!staged_member.has_value()) {
+            release_frontier();
+            block_reconstruction_ticket(handle, RegionRefusal::MemberCapacity);
+            return true;
+        }
+        if (staged_member_handle_valid(child.member_tail))
+            staged_members_[child.member_tail.slot].next = *staged_member;
+        else
+            child.member_head = *staged_member;
+        child.member_tail = *staged_member;
+        ++child.member_count;
+        component.in_build = false;
+
+        auto edge_handle = component.incident_head;
+        while (edge_handle_valid(edge_handle)) {
+            const auto& edge = adjacencies_[edge_handle.slot];
+            saturating_add(metrics_.incident_edge_visits);
+            const auto neighbour = edge.a == ref ? edge.b : edge.a;
+            const auto next = edge_next(edge, ref);
+            const bool current =
+                edge.a.tile < tile_count_ && edge.b.tile < tile_count_ &&
+                edge.a_revision == tiles_[edge.a.tile].revision &&
+                edge.b_revision == tiles_[edge.b.tile].revision;
+            if (current &&
+                tiles_[neighbour.tile].components[neighbour.component].key ==
+                    child.snapshot.key &&
+                !ticket_frontier_push(handle, child_handle, neighbour)) {
+                release_frontier();
+                return true;
+            }
+            edge_handle = next;
+        }
+        release_frontier();
+        return true;
+    }
+
+    bool claim_child_digest(
+        TicketHandle handle, StagedChildHandle child_handle) noexcept {
+        if (!ticket_handle_valid(handle) || !staged_child_handle_valid(child_handle))
+            return false;
+        if (ticket_handle_valid(digest_owner_ticket_)) {
+            return digest_owner_ticket_ == handle &&
+                   digest_owner_child_ == child_handle;
+        }
+        if (digest_generation_serial_ == std::numeric_limits<std::uint64_t>::max()) {
+            auto& ticket = reconstruction_tickets_[handle.slot];
+            ticket.phase = ReconstructionPhase::Refused;
+            ticket.refusal = RegionRefusal::GenerationExhausted;
+            last_refusal_ = ticket.refusal;
+            return false;
+        }
+        digest_owner_ticket_ = handle;
+        digest_owner_child_ = child_handle;
+        auto& child = staged_children_[child_handle.slot];
+        child.digest_generation = ++digest_generation_serial_;
+        child.digest_member = child.member_head;
+        child.scratch_member_count = 0;
+        child.sort_i = child.sort_j = child.sort_best = child.fold_i = 0;
+        child.digest_dependency = {};
+        child.scratch_dependency_count = 0;
+        child.dep_sort_i = child.dep_sort_j = child.dep_sort_best = child.dep_fold_i = 0;
+        child.snapshot.area = 0;
+        child.snapshot.tile_count = 0;
+        child.snapshot.component_count = 0;
+        child.snapshot.dependency_tile_count = 0;
+        child.snapshot.member_digest = 1469598103934665603ULL;
+        child.snapshot.dependency_digest = 1469598103934665603ULL;
+        return true;
+    }
+
+    void release_child_digest_owner(
+        TicketHandle handle, StagedChildHandle child_handle) noexcept {
+        if (digest_owner_ticket_ == handle && digest_owner_child_ == child_handle) {
+            digest_owner_ticket_ = {};
+            digest_owner_child_ = {};
+        }
+    }
+
+    bool service_child_digest(
+        TicketHandle handle, StagedChildHandle child_handle) noexcept {
+        if (!claim_child_digest(handle, child_handle)) return false;
+        auto& ticket = reconstruction_tickets_[handle.slot];
+        auto& child = staged_children_[child_handle.slot];
+
+        if (child.phase == StagedChildPhase::GatherMembers) {
+            if (staged_member_handle_valid(child.digest_member)) {
+                if (child.scratch_member_count == frontier_capacity_) {
+                    block_reconstruction_ticket(handle, RegionRefusal::MemberCapacity);
+                    release_child_digest_owner(handle, child_handle);
+                    return true;
+                }
+                build_.members[child.scratch_member_count++] =
+                    staged_members_[child.digest_member.slot].ref;
+                child.digest_member = staged_members_[child.digest_member.slot].next;
+                return true;
+            }
+            child.phase = StagedChildPhase::SortMembers;
+            child.sort_i = 0;
+            child.sort_best = 0;
+            child.sort_j = child.scratch_member_count > 1 ? 1 : 0;
+            return true;
+        }
+
+        if (child.phase == StagedChildPhase::SortMembers) {
+            if (child.scratch_member_count <= 1 ||
+                child.sort_i + 1 >= child.scratch_member_count) {
+                child.phase = StagedChildPhase::FoldMembers;
+                child.fold_i = 0;
+                return true;
+            }
+            if (child.sort_j < child.scratch_member_count) {
+                if (ref_less(build_.members[child.sort_j],
+                             build_.members[child.sort_best]))
+                    child.sort_best = child.sort_j;
+                ++child.sort_j;
+                return true;
+            }
+            if (child.sort_best != child.sort_i)
+                std::swap(build_.members[child.sort_i],
+                          build_.members[child.sort_best]);
+            ++child.sort_i;
+            child.sort_best = child.sort_i;
+            child.sort_j = child.sort_i + 1;
+            return true;
+        }
+
+        if (child.phase == StagedChildPhase::FoldMembers) {
+            if (child.fold_i < child.scratch_member_count) {
+                const auto ref = build_.members[child.fold_i++];
+                if (ref.tile >= tile_count_ ||
+                    ref.component >= tiles_[ref.tile].component_count) {
+                    request_ticket_restart(handle);
+                    release_child_digest_owner(handle, child_handle);
+                    return true;
+                }
+                auto& component = tiles_[ref.tile].components[ref.component];
+                if (!seed_belongs_to_ticket(component, handle) ||
+                    !tiles_[ref.tile].ready ||
+                    !(component.key == child.snapshot.key)) {
+                    request_ticket_restart(handle);
+                    release_child_digest_owner(handle, child_handle);
+                    return true;
+                }
+                auto& out = child.snapshot;
+                if (out.component_count == 0) {
+                    out.min_x = component.min_x; out.min_y = component.min_y;
+                    out.max_x = component.max_x; out.max_y = component.max_y;
+                } else {
+                    if (component.min_x < out.min_x) out.min_x = component.min_x;
+                    if (component.min_y < out.min_y) out.min_y = component.min_y;
+                    if (component.max_x > out.max_x) out.max_x = component.max_x;
+                    if (component.max_y > out.max_y) out.max_y = component.max_y;
+                }
+                out.area += component.area;
+                ++out.component_count;
+                if (tiles_[ref.tile].staging_mark_generation != child.digest_generation) {
+                    tiles_[ref.tile].staging_mark_generation = child.digest_generation;
+                    ++out.tile_count;
+                }
+                region_detail::hash_value(out.member_digest, component.digest);
+                region_detail::hash_value(out.member_digest, component.min_y);
+                region_detail::hash_value(out.member_digest, component.min_x);
+                return true;
+            }
+            child.phase = StagedChildPhase::GatherDependencies;
+            child.digest_dependency = subscriber_dependency_head(child.subscriber);
+            return true;
+        }
+
+        if (child.phase == StagedChildPhase::GatherDependencies) {
+            if (dependency_handle_valid(child.digest_dependency)) {
+                const auto current = child.digest_dependency;
+                child.digest_dependency = dependencies_[current.slot].next_subscriber;
+                if (!dependency_current(current)) {
+                    request_ticket_restart(handle);
+                    release_child_digest_owner(handle, child_handle);
+                    return true;
+                }
+                const auto& dependency = dependencies_[current.slot];
+                if (dependency.kind == DependencyKind::TileRevision) {
+                    const auto tile_index = static_cast<std::size_t>(dependency.tile);
+                    if (tiles_[tile_index].dependency_digest_mark_generation !=
+                        child.digest_generation) {
+                        tiles_[tile_index].dependency_digest_mark_generation =
+                            child.digest_generation;
+                        if (child.scratch_dependency_count == tile_capacity_) {
+                            block_reconstruction_ticket(
+                                handle, RegionRefusal::DependencyCapacity);
+                            release_child_digest_owner(handle, child_handle);
+                            return true;
+                        }
+                        dependency_slots_scratch_[child.scratch_dependency_count++] =
+                            tile_index;
+                    }
+                }
+                return true;
+            }
+            child.phase = StagedChildPhase::SortDependencies;
+            child.dep_sort_i = 0;
+            child.dep_sort_best = 0;
+            child.dep_sort_j = child.scratch_dependency_count > 1 ? 1 : 0;
+            return true;
+        }
+
+        if (child.phase == StagedChildPhase::SortDependencies) {
+            if (child.scratch_dependency_count <= 1 ||
+                child.dep_sort_i + 1 >= child.scratch_dependency_count) {
+                child.phase = StagedChildPhase::FoldDependencies;
+                child.dep_fold_i = 0;
+                return true;
+            }
+            if (child.dep_sort_j < child.scratch_dependency_count) {
+                const auto candidate =
+                    dependency_slots_scratch_[child.dep_sort_j];
+                const auto best =
+                    dependency_slots_scratch_[child.dep_sort_best];
+                if (region_detail::less(
+                        tiles_[candidate].key, tiles_[best].key))
+                    child.dep_sort_best = child.dep_sort_j;
+                ++child.dep_sort_j;
+                return true;
+            }
+            if (child.dep_sort_best != child.dep_sort_i)
+                std::swap(
+                    dependency_slots_scratch_[child.dep_sort_i],
+                    dependency_slots_scratch_[child.dep_sort_best]);
+            ++child.dep_sort_i;
+            child.dep_sort_best = child.dep_sort_i;
+            child.dep_sort_j = child.dep_sort_i + 1;
+            return true;
+        }
+
+        if (child.phase == StagedChildPhase::FoldDependencies) {
+            if (child.dep_fold_i < child.scratch_dependency_count) {
+                const auto tile_index =
+                    dependency_slots_scratch_[child.dep_fold_i++];
+                region_detail::hash_value(
+                    child.snapshot.dependency_digest,
+                    region_detail::tile_hash(
+                        tiles_[tile_index].key, tiles_[tile_index].revision));
+                return true;
+            }
+            child.snapshot.dependency_tile_count =
+                static_cast<std::uint32_t>(child.scratch_dependency_count);
+            child.phase = StagedChildPhase::Complete;
+            ++ticket.child_count;
+            ticket.staged_member_count += child.member_count;
+            saturating_add(ticket.staged_area_total, child.snapshot.area);
+            if (child.snapshot.area > ticket.staged_area_max)
+                ticket.staged_area_max = child.snapshot.area;
+            saturating_add(metrics_.reconstruction_children_staged);
+            ticket.active_child = {};
+            release_child_digest_owner(handle, child_handle);
+            return true;
+        }
+
+        return false;
+    }
+
+    bool service_ticket_active_child(TicketHandle handle) noexcept {
+        if (!ticket_handle_valid(handle)) return false;
+        auto& ticket = reconstruction_tickets_[handle.slot];
+        if (!staged_child_handle_valid(ticket.active_child))
+            return start_ticket_child(handle);
+        auto& child = staged_children_[ticket.active_child.slot];
+        if (child.phase == StagedChildPhase::Traversing) {
+            if (seed_handle_valid(child.frontier_head))
+                return process_ticket_child_component(handle, ticket.active_child);
+            child.phase = StagedChildPhase::GatherMembers;
+            return true;
+        }
+        return service_child_digest(handle, ticket.active_child);
+    }
+
     bool begin_reconstruction_traversal(TicketHandle handle, ComponentRef seed) noexcept {
         if (!ticket_handle_valid(handle) || seed.tile >= tile_count_ ||
             seed.component >= tiles_[seed.tile].component_count)
@@ -2807,23 +3377,7 @@ private:
     }
     bool service_ticket_building(TicketHandle handle) noexcept {
         if (!ticket_handle_valid(handle)) return false;
-        auto& ticket = reconstruction_tickets_[handle.slot];
-        while (seed_handle_valid(ticket.next_seed)) {
-            const auto current = ticket.next_seed;
-            ticket.next_seed = reconstruction_seeds_[current.slot].next;
-            const auto ref = reconstruction_seeds_[current.slot].ref;
-            if (ref.tile >= tile_count_ || ref.component >= tiles_[ref.tile].component_count)
-                return true;
-            auto& component = tiles_[ref.tile].components[ref.component];
-            if (!seed_belongs_to_ticket(component, handle) || assigned(component))
-                return true;
-            (void)begin_reconstruction_traversal(handle, ref);
-            return true;
-        }
-        ticket.phase = ReconstructionPhase::PreflightDependencies;
-        ticket.preflight_child = ticket.child_head;
-        ticket.preflight_dependency = {};
-        return true;
+        return service_ticket_active_child(handle);
     }
     bool service_ticket_preflight_dependencies(TicketHandle handle) noexcept {
         if (!ticket_handle_valid(handle)) return false;
@@ -3001,39 +3555,43 @@ private:
             request_ticket_restart(handle);
             return true;
         }
-        rotate_reconstruction_head();
         return false;
     }
     bool service_reconstruction_ticket_one() noexcept {
         if (!ticket_handle_valid(reconstruction_queue_head_)) return false;
         const auto handle = reconstruction_queue_head_;
         auto& ticket = reconstruction_tickets_[handle.slot];
-        if (ticket.restart_requested && ticket.phase != ReconstructionPhase::RestartCleanup)
+        if (ticket.restart_requested &&
+            ticket.phase != ReconstructionPhase::RestartCleanup)
             begin_ticket_restart(handle);
+
+        bool did_work = false;
         switch (ticket.phase) {
         case ReconstructionPhase::RestartCleanup:
-            return service_ticket_restart_cleanup(handle);
+            did_work = service_ticket_restart_cleanup(handle); break;
         case ReconstructionPhase::Admitting:
-            return service_ticket_admission(handle);
+            did_work = service_ticket_admission(handle); break;
         case ReconstructionPhase::Building:
-            if (build_.phase != Phase::Idle) return false;
-            return service_ticket_building(handle);
+            did_work = service_ticket_building(handle); break;
         case ReconstructionPhase::PreflightDependencies:
-            return service_ticket_preflight_dependencies(handle);
+            did_work = service_ticket_preflight_dependencies(handle); break;
         case ReconstructionPhase::PreflightRegions:
-            return service_ticket_preflight_regions(handle);
+            did_work = service_ticket_preflight_regions(handle); break;
         case ReconstructionPhase::Preparing:
-            return service_ticket_preparing(handle);
+            did_work = service_ticket_preparing(handle); break;
         case ReconstructionPhase::CommitReady:
             finalize_ticket_commit(handle);
-            return true;
+            did_work = true;
+            break;
         case ReconstructionPhase::Blocked:
-            return service_ticket_blocked(handle);
+            did_work = service_ticket_blocked(handle); break;
         case ReconstructionPhase::Refused:
-            rotate_reconstruction_head();
-            return false;
+            did_work = false;
+            break;
         }
-        return false;
+        if (ticket_handle_valid(handle) && reconstruction_queue_head_ == handle)
+            rotate_reconstruction_head();
+        return did_work;
     }
     bool cleanup_one_reconstruction_artifact() noexcept {
         if (source_handle_valid(source_cleanup_head_)) {
