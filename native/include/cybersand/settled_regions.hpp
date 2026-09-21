@@ -4365,6 +4365,92 @@ private:
     std::size_t tile_count_{}, adjacency_count_{}, dependency_count_{}, subscriber_count_{};
     std::size_t published_region_count_{}, deferred_component_count_{}, cleanup_pending_count_{};
     bool halted_{}, coverage_capacity_exhausted_{}, work_possible_{};
+
+#ifdef CYBERSAND_SETTLED_REGIONS_TEST_ACCESS
+public:
+    struct TestCleanupDebug {
+        std::size_t cleanup_pending_count{}, region_reclaim_count{};
+        std::size_t source_count{}, seed_count{}, staged_child_count{}, staged_member_count{};
+        bool source_cleanup_live{}, seed_cleanup_live{}, staged_child_cleanup_live{};
+        std::uint32_t source_cleanup_slot{invalid_pool_index};
+        std::uint32_t seed_cleanup_slot{invalid_pool_index};
+        std::uint32_t staged_child_cleanup_slot{invalid_pool_index};
+        std::uint32_t region_reclaim_head_slot{invalid_pool_index};
+        std::uint32_t cleanup_head_slot{invalid_pool_index};
+        std::uint64_t cleanup_head_generation{};
+        bool cleanup_head_valid{}, cleanup_head_active{}, cleanup_head_cleanup_pending{};
+        bool cleanup_head_dependency_live{};
+    };
+
+    struct TestRegionDebug {
+        bool valid{}, reclaim_pending{}, reclaim_enqueued{}, on_free_list{};
+        bool generation_exhausted_recorded{}, member_head_live{};
+        std::uint64_t generation{};
+        std::size_t member_count{};
+        std::uint32_t subscriber_slot{invalid_pool_index};
+        std::uint64_t subscriber_generation{};
+        bool subscriber_live{}, subscriber_active{}, subscriber_cleanup_pending{};
+        bool subscriber_dependency_live{}, preparation_ticket_live{};
+    };
+
+    [[nodiscard]] TestCleanupDebug test_cleanup_debug() const noexcept {
+        TestCleanupDebug out{};
+        out.cleanup_pending_count = cleanup_pending_count_;
+        out.region_reclaim_count = region_reclaim_count_;
+        out.source_count = source_count_;
+        out.seed_count = seed_count_;
+        out.staged_child_count = staged_child_count_;
+        out.staged_member_count = staged_member_count_;
+        out.source_cleanup_live = source_handle_valid(source_cleanup_head_);
+        out.seed_cleanup_live = seed_handle_valid(stale_seed_cleanup_head_);
+        out.staged_child_cleanup_live =
+            staged_child_handle_valid(stale_child_cleanup_head_);
+        if (out.source_cleanup_live) out.source_cleanup_slot = source_cleanup_head_.slot;
+        if (out.seed_cleanup_live) out.seed_cleanup_slot = stale_seed_cleanup_head_.slot;
+        if (out.staged_child_cleanup_live)
+            out.staged_child_cleanup_slot = stale_child_cleanup_head_.slot;
+        if (region_reclaim_count_ != 0)
+            out.region_reclaim_head_slot = region_reclaim_queue_[region_reclaim_head_];
+        out.cleanup_head_valid = subscriber_handle_valid(cleanup_head_);
+        if (out.cleanup_head_valid) {
+            out.cleanup_head_slot = cleanup_head_.slot;
+            out.cleanup_head_generation = cleanup_head_.generation;
+            const auto& subscriber = subscribers_[cleanup_head_.slot];
+            out.cleanup_head_active = subscriber.active;
+            out.cleanup_head_cleanup_pending = subscriber.cleanup_pending;
+            out.cleanup_head_dependency_live =
+                dependency_handle_valid(subscriber.dependency_head);
+        }
+        return out;
+    }
+
+    [[nodiscard]] TestRegionDebug test_region_debug(std::size_t slot) const noexcept {
+        TestRegionDebug out{};
+        if (slot >= RegionCapacity) return out;
+        const auto& region = regions_[slot];
+        out.valid = region.valid;
+        out.reclaim_pending = region.reclaim_pending;
+        out.reclaim_enqueued = region.reclaim_enqueued;
+        out.on_free_list = region.on_free_list;
+        out.generation_exhausted_recorded = region.generation_exhausted_recorded;
+        out.generation = region.generation;
+        out.member_count = region.member_count;
+        out.member_head_live = member_handle_valid(region.member_head);
+        out.subscriber_slot = region.subscriber.slot;
+        out.subscriber_generation = region.subscriber.generation;
+        out.subscriber_live = subscriber_handle_valid(region.subscriber);
+        if (out.subscriber_live) {
+            const auto& subscriber = subscribers_[region.subscriber.slot];
+            out.subscriber_active = subscriber.active;
+            out.subscriber_cleanup_pending = subscriber.cleanup_pending;
+            out.subscriber_dependency_live =
+                dependency_handle_valid(subscriber.dependency_head);
+        }
+        out.preparation_ticket_live = ticket_handle_valid(region.preparation_ticket);
+        return out;
+    }
+private:
+#endif
 };
 
 template<std::size_t TileCapacity, std::size_t MaximumTileCells,
