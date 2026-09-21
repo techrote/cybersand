@@ -843,6 +843,92 @@ void retained_ticket_fairness_survives_sustained_local_churn() {
             "fairness and churn are separately observable");
 }
 
+
+void large_reconstruction_yields_to_remote_ticket() {
+    using Regions = SettledRegions<9, 1, 1, 32, 12, 64>;
+    const std::array<DiscoveryCell, 1> one{sand};
+    const std::array<DiscoveryCell, 1> hole{empty};
+    Regions regions(42);
+
+    for (std::int64_t x = 0; x < 8; ++x) {
+        std::uint8_t sealed = 0x05;
+        if (x == 0) sealed |= 0x08;
+        if (x == 7) sealed |= 0x02;
+        require(put(regions, key(x, 0, 42), {x, 0, 1, 1}, 1, one, sealed) ==
+                    RegionOutcome::Accepted,
+                "large-fairness local member accepted");
+    }
+    require(put(regions, key(1000, 1000, 42), {1000, 1000, 1, 1}, 1, one) ==
+                RegionOutcome::Accepted,
+            "large-fairness remote member accepted");
+    drain(regions);
+    require(regions.region_count() == 2,
+            "large-fairness fixture begins with local and remote publications");
+
+    require(put(regions, key(3, 0, 42), {3, 0, 1, 1}, 2, hole, 0x05) ==
+                RegionOutcome::Accepted,
+            "large local deletion starts a multi-child reconstruction");
+    require(put(regions, key(1000, 1000, 42), {1000, 1000, 1, 1}, 2, one) ==
+                RegionOutcome::Accepted,
+            "remote stable region is independently admitted for reconstruction");
+
+    bool remote_visible = false;
+    bool local_visible_before_remote = false;
+    for (std::size_t step = 0; step < 20000 && !remote_visible; ++step) {
+        require(regions.advance(1) <= 1,
+                "large-fairness service stays primitive-bounded");
+        for (const auto& snapshot : snapshots(regions, 12)) {
+            if (snapshot.min_x == 1000 && snapshot.area == 1)
+                remote_visible = true;
+            if (snapshot.min_x < 100 && snapshot.area != 0)
+                local_visible_before_remote = true;
+        }
+    }
+    require(remote_visible,
+            "remote admitted ticket completes while a larger local ticket remains active");
+    require(!local_visible_before_remote,
+            "large local reconstruction cannot monopolize service through its first commit");
+    require(regions.metrics().reconstruction_service_units != 0,
+            "round-robin reconstruction service is observable");
+}
+
+void refused_reconstruction_never_falls_back_to_prefix_publication() {
+    using Regions = SettledRegions<
+        1, 3, 3, 8, 3, 16,
+        std::numeric_limits<std::uint64_t>::max(), 1>;
+    const std::array<DiscoveryCell, 3> joined{sand, sand, sand};
+    const std::array<DiscoveryCell, 3> split{sand, empty, sand};
+    Regions regions(43);
+
+    require(put(regions, key(0, 0, 43), {0, 0, 3, 1}, 1, joined) ==
+                RegionOutcome::Accepted,
+            "refusal-fence initial component accepted");
+    drain(regions);
+    require(regions.region_count() == 1,
+            "refusal-fence fixture consumes its sole publication serial");
+
+    require(put(regions, key(0, 0, 43), {0, 0, 3, 1}, 2, split) ==
+                RegionOutcome::Accepted,
+            "refusal-fence split mutation accepted");
+    for (std::size_t step = 0; step < 20000; ++step) {
+        const auto used = regions.advance(1);
+        require(used <= 1, "refusal-fence service remains primitive-bounded");
+        require(regions.region_count() == 0,
+                "refused all-child reconstruction never leaks a fallback child");
+        if (used == 0 &&
+            regions.last_refusal() == RegionRefusal::GenerationExhausted)
+            break;
+    }
+    require(regions.region_count() == 0 &&
+            regions.last_refusal() == RegionRefusal::GenerationExhausted,
+            "static publication exhaustion leaves an explicit refused ticket and no prefix");
+    for (std::size_t step = 0; step < 64; ++step) {
+        (void)regions.advance(1);
+        require(regions.region_count() == 0,
+                "ordinary seed seeking stays fenced behind a refused reconstruction");
+    }
+}
+
 void reclaimed_region_slot_reuse_rejects_stale_handle() {
     using Regions = SettledRegions<1, 1, 1, 4, 1, 8>;
     const std::array<DiscoveryCell, 1> one{sand};
@@ -987,6 +1073,8 @@ int main() {
         unknown_reconstruction_waits_for_observation_generation();
         unvisited_source_mutation_restarts_before_publication();
         retained_ticket_fairness_survives_sustained_local_churn();
+        large_reconstruction_yields_to_remote_ticket();
+        refused_reconstruction_never_falls_back_to_prefix_publication();
         reclaimed_region_slot_reuse_rejects_stale_handle();
         subscriber_slot_reuse_drops_stale_reverse_links();
         absence_subscription_invalidates_only_actual_face_users();
