@@ -2548,8 +2548,10 @@ private:
         ticket.prepare_child = {};
         ticket.prepare_member = {};
         ticket.active_child = {};
-        if (digest_owner_ticket_.slot != invalid_pool_index &&
-            digest_owner_ticket_.slot == static_cast<std::uint32_t>(&ticket - reconstruction_tickets_.data())) {
+        const auto ticket_slot =
+            static_cast<std::uint32_t>(&ticket - reconstruction_tickets_.data());
+        if (digest_owner_ticket_.slot == ticket_slot &&
+            digest_owner_ticket_.generation == ticket.generation) {
             digest_owner_ticket_ = {};
             digest_owner_child_ = {};
         }
