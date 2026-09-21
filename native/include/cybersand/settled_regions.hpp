@@ -1444,6 +1444,17 @@ private:
     void release_dependency(DependencyHandle handle) noexcept {
         if (!dependency_handle_valid(handle)) return;
         auto& dependency = dependencies_[handle.slot];
+        TicketHandle reconstruction_owner{};
+        if (subscriber_handle_valid(dependency.subscriber)) {
+            const auto& subscriber = subscribers_[dependency.subscriber.slot];
+            if (subscriber.kind == SubscriberKind::Staged)
+                reconstruction_owner = TicketHandle{
+                    subscriber.owner_slot, subscriber.owner_generation};
+            else if (subscriber.kind == SubscriberKind::Prepared &&
+                     subscriber.owner_slot < RegionCapacity)
+                reconstruction_owner =
+                    regions_[subscriber.owner_slot].preparation_ticket;
+        }
         dependency.active = false;
         dependency.next_target = {};
         dependency.previous_target = {};
@@ -1451,6 +1462,9 @@ private:
         dependency.next_free = dependency_free_head_;
         dependency_free_head_ = handle.slot;
         --dependency_count_;
+        if (ticket_handle_valid(reconstruction_owner) &&
+            reconstruction_tickets_[reconstruction_owner.slot].owned_dependencies != 0)
+            --reconstruction_tickets_[reconstruction_owner.slot].owned_dependencies;
         bump_resource_generation(ReconstructionResource::Dependency);
     }
     [[nodiscard]] DependencyHandle* target_head(
@@ -3082,6 +3096,7 @@ private:
         std::size_t tile_index,
         std::size_t face_run = region_detail::invalid_index) noexcept {
         if (add_dependency(child.subscriber, kind, tile_index, face_run)) {
+            ++reconstruction_tickets_[handle.slot].owned_dependencies;
             if (kind == DependencyKind::AbsenceFaceRun)
                 saturating_add(metrics_.absence_subscriptions);
             return true;
