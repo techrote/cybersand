@@ -2394,16 +2394,12 @@ private:
             ticket.admission_change_serial = change_serial_;
             ticket.started_work = metrics_.work_units;
             ticket.allocated = true;
-            ticket.queued = true;
+            ticket.queued = false;
             ticket.next_free = invalid_pool_index;
             ++ticket_count_;
             saturating_add(metrics_.reconstruction_tickets);
             const auto handle = TicketHandle{slot, generation};
-            if (ticket_handle_valid(reconstruction_queue_tail_))
-                reconstruction_tickets_[reconstruction_queue_tail_.slot].next_queue = handle;
-            else
-                reconstruction_queue_head_ = handle;
-            reconstruction_queue_tail_ = handle;
+            enqueue_reconstruction_ticket(handle);
             return handle;
         }
         return std::nullopt;
@@ -2682,9 +2678,84 @@ private:
         ticket.staged_area_total = 0;
         ticket.staged_area_max = 0;
     }
+    void enqueue_reconstruction_ticket(TicketHandle handle) noexcept {
+        if (!ticket_handle_valid(handle)) return;
+        auto& ticket = reconstruction_tickets_[handle.slot];
+        if (ticket.queued) return;
+        ticket.next_queue = {};
+        if (ticket_handle_valid(reconstruction_queue_tail_))
+            reconstruction_tickets_[reconstruction_queue_tail_.slot].next_queue = handle;
+        else
+            reconstruction_queue_head_ = handle;
+        reconstruction_queue_tail_ = handle;
+        ticket.queued = true;
+    }
+    void dequeue_reconstruction_head(TicketHandle handle) noexcept {
+        if (!ticket_handle_valid(handle) || reconstruction_queue_head_ != handle)
+            return;
+        auto& ticket = reconstruction_tickets_[handle.slot];
+        reconstruction_queue_head_ = ticket.next_queue;
+        if (!ticket_handle_valid(reconstruction_queue_head_))
+            reconstruction_queue_tail_ = {};
+        ticket.next_queue = {};
+        ticket.queued = false;
+    }
+    void unlink_resource_wait(TicketHandle handle) noexcept {
+        if (!ticket_handle_valid(handle)) return;
+        auto& ticket = reconstruction_tickets_[handle.slot];
+        if (!ticket.wait_listed ||
+            ticket.wait_resource == ReconstructionResource::None ||
+            ticket.wait_resource == ReconstructionResource::Count)
+            return;
+        const auto index = static_cast<std::size_t>(ticket.wait_resource);
+        const auto previous = ticket.previous_wait;
+        const auto next = ticket.next_wait;
+        if (ticket_handle_valid(previous))
+            reconstruction_tickets_[previous.slot].next_wait = next;
+        else if (resource_wait_heads_[index] == handle)
+            resource_wait_heads_[index] = next;
+        if (ticket_handle_valid(next))
+            reconstruction_tickets_[next.slot].previous_wait = previous;
+        else if (resource_wait_tails_[index] == handle)
+            resource_wait_tails_[index] = previous;
+        ticket.previous_wait = {};
+        ticket.next_wait = {};
+        ticket.wait_listed = false;
+    }
+    void park_blocked_ticket(TicketHandle handle) noexcept {
+        if (!ticket_handle_valid(handle)) return;
+        auto& ticket = reconstruction_tickets_[handle.slot];
+        if (reconstruction_queue_head_ == handle)
+            dequeue_reconstruction_head(handle);
+        if (ticket.wait_resource == ReconstructionResource::None ||
+            ticket.wait_resource == ReconstructionResource::Count)
+            return;
+        const auto index = static_cast<std::size_t>(ticket.wait_resource);
+        if (ticket.wait_listed) return;
+        ticket.previous_wait = resource_wait_tails_[index];
+        ticket.next_wait = {};
+        if (ticket_handle_valid(resource_wait_tails_[index]))
+            reconstruction_tickets_[resource_wait_tails_[index].slot].next_wait = handle;
+        else
+            resource_wait_heads_[index] = handle;
+        resource_wait_tails_[index] = handle;
+        ticket.wait_listed = true;
+    }
+    void park_refused_ticket(TicketHandle handle) noexcept {
+        if (!ticket_handle_valid(handle)) return;
+        unlink_resource_wait(handle);
+        if (reconstruction_queue_head_ == handle)
+            dequeue_reconstruction_head(handle);
+    }
     void request_ticket_restart(TicketHandle handle) noexcept {
         if (!ticket_handle_valid(handle)) return;
-        reconstruction_tickets_[handle.slot].restart_requested = true;
+        auto& ticket = reconstruction_tickets_[handle.slot];
+        if (ticket.phase == ReconstructionPhase::Refused &&
+            ticket.refusal == RegionRefusal::GenerationExhausted)
+            return;
+        unlink_resource_wait(handle);
+        ticket.restart_requested = true;
+        enqueue_reconstruction_ticket(handle);
     }
     void cleanup_then_block(
         TicketHandle handle, RegionRefusal reason) noexcept {
@@ -2718,14 +2789,15 @@ private:
     void release_reconstruction_ticket(TicketHandle handle) noexcept {
         if (!ticket_handle_valid(handle)) return;
         auto& ticket = reconstruction_tickets_[handle.slot];
-        if (reconstruction_queue_head_ == handle) {
-            reconstruction_queue_head_ = ticket.next_queue;
-            if (!ticket_handle_valid(reconstruction_queue_head_))
-                reconstruction_queue_tail_ = {};
-        }
+        unlink_resource_wait(handle);
+        if (reconstruction_queue_head_ == handle)
+            dequeue_reconstruction_head(handle);
         ticket.allocated = false;
         ticket.queued = false;
+        ticket.wait_listed = false;
         ticket.next_queue = {};
+        ticket.previous_wait = {};
+        ticket.next_wait = {};
         ticket.next_free = ticket_free_head_;
         ticket_free_head_ = handle.slot;
         if (ticket_count_ != 0) --ticket_count_;
