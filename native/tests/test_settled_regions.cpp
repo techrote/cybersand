@@ -659,6 +659,10 @@ void deferred_subscriber_cleanup_is_aba_safe() {
     require(regions.snapshot(replacement->handle).has_value(),
             "stale subscriber generation cannot retire a distinct replacement publication");
     drain(regions);
+    require(!regions.halted(),
+            "deferred subscriber cleanup cannot fail the observer");
+    require(!regions.capacity_blocked(),
+            "deferred subscriber cleanup cannot capacity-block the observer");
     require(regions.cleanup_pending() == 0,
             "bounded deferred cleanup is eventually reclaimable");
 }
