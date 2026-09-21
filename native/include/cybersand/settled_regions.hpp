@@ -605,7 +605,7 @@ private:
         Preparing, CommitReady, RestartCleanup, Blocked, Refused
     };
     enum class ReconstructionResource : std::uint8_t {
-        None, Region, Member, Frontier, Dependency, Manifest, Count
+        None, Region, Member, Frontier, Dependency, Manifest, DigestScratch, Count
     };
     enum class CleanupDisposition : std::uint8_t { Restart, Block, Refuse };
     struct ReconstructionTicket {
@@ -696,6 +696,7 @@ private:
         case ReconstructionResource::Frontier: return frontier_resource_generation_;
         case ReconstructionResource::Dependency: return dependency_resource_generation_;
         case ReconstructionResource::Manifest: return manifest_resource_generation_;
+        case ReconstructionResource::DigestScratch: return digest_resource_generation_;
         case ReconstructionResource::None:
         case ReconstructionResource::Count:
             return resource_generation_;
@@ -714,6 +715,7 @@ private:
         case ReconstructionResource::Frontier: bump(frontier_resource_generation_); break;
         case ReconstructionResource::Dependency: bump(dependency_resource_generation_); break;
         case ReconstructionResource::Manifest: bump(manifest_resource_generation_); break;
+        case ReconstructionResource::DigestScratch: bump(digest_resource_generation_); break;
         case ReconstructionResource::None:
         case ReconstructionResource::Count:
             break;
@@ -2712,6 +2714,7 @@ private:
             digest_owner_ticket_.generation == ticket.generation) {
             digest_owner_ticket_ = {};
             digest_owner_child_ = {};
+            bump_resource_generation(ReconstructionResource::DigestScratch);
         }
         ticket.seed_count = 0;
         ticket.child_count = 0;
@@ -2832,7 +2835,16 @@ private:
             unlink_resource_wait(head);
             ticket.wait_resource = ReconstructionResource::None;
             ticket.wait_resource_generation = 0;
-            ticket.restart_requested = true;
+            if (resource == ReconstructionResource::DigestScratch) {
+                // Scratch contention preserves the in-progress child. Requeue
+                // the exact resumable phase instead of discarding and
+                // reconstructing already validated work.
+                ticket.phase = ReconstructionPhase::Building;
+                ticket.refusal = RegionRefusal::None;
+                ticket.restart_requested = false;
+            } else {
+                ticket.restart_requested = true;
+            }
             enqueue_reconstruction_ticket(head);
             resource_wake_cursor_ = index % (count - 1U) + 1U;
             return true;
@@ -2958,6 +2970,7 @@ private:
         if (digest_owner_ticket_ == handle) {
             digest_owner_ticket_ = {};
             digest_owner_child_ = {};
+            bump_resource_generation(ReconstructionResource::DigestScratch);
         }
         if (build_.phase != Phase::Idle && build_.reconstruction_ticket == handle) {
             if (staged_child_handle_valid(build_.staging_child)) {
@@ -3655,13 +3668,28 @@ private:
         return true;
     }
 
+    void park_digest_scratch_wait(TicketHandle handle) noexcept {
+        if (!ticket_handle_valid(handle)) return;
+        auto& ticket = reconstruction_tickets_[handle.slot];
+        ticket.phase = ReconstructionPhase::Blocked;
+        ticket.refusal = RegionRefusal::None;
+        ticket.wait_resource = ReconstructionResource::DigestScratch;
+        ticket.wait_resource_generation =
+            resource_generation(ReconstructionResource::DigestScratch);
+        saturating_add(metrics_.reconstruction_waits);
+        park_blocked_ticket(handle);
+    }
+
     bool claim_child_digest(
         TicketHandle handle, StagedChildHandle child_handle) noexcept {
         if (!ticket_handle_valid(handle) || !staged_child_handle_valid(child_handle))
             return false;
         if (ticket_handle_valid(digest_owner_ticket_)) {
-            return digest_owner_ticket_ == handle &&
-                   digest_owner_child_ == child_handle;
+            if (digest_owner_ticket_ == handle &&
+                digest_owner_child_ == child_handle)
+                return true;
+            park_digest_scratch_wait(handle);
+            return false;
         }
         if (digest_generation_serial_ == std::numeric_limits<std::uint64_t>::max()) {
             cleanup_then_refuse(handle, RegionRefusal::GenerationExhausted);
@@ -3691,12 +3719,19 @@ private:
         if (digest_owner_ticket_ == handle && digest_owner_child_ == child_handle) {
             digest_owner_ticket_ = {};
             digest_owner_child_ = {};
+            bump_resource_generation(ReconstructionResource::DigestScratch);
         }
     }
 
     bool service_child_digest(
         TicketHandle handle, StagedChildHandle child_handle) noexcept {
-        if (!claim_child_digest(handle, child_handle)) return false;
+        if (!claim_child_digest(handle, child_handle)) {
+            return ticket_handle_valid(handle) &&
+                   reconstruction_tickets_[handle.slot].phase ==
+                       ReconstructionPhase::Blocked &&
+                   reconstruction_tickets_[handle.slot].wait_resource ==
+                       ReconstructionResource::DigestScratch;
+        }
         auto& ticket = reconstruction_tickets_[handle.slot];
         auto& child = staged_children_[child_handle.slot];
 
@@ -4428,7 +4463,7 @@ private:
     std::uint64_t resource_generation_{1}, region_resource_generation_{1},
                   member_resource_generation_{1}, frontier_resource_generation_{1},
                   dependency_resource_generation_{1}, manifest_resource_generation_{1},
-                  committed_batch_serial_{}, service_round_{};
+                  digest_resource_generation_{1}, committed_batch_serial_{}, service_round_{};
     std::size_t region_free_count_{RegionCapacity};
     std::size_t region_reclaim_head_{}, region_reclaim_tail_{}, region_reclaim_count_{};
     std::size_t region_generation_exhausted_count_{};
