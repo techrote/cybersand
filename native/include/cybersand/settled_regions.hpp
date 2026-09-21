@@ -578,6 +578,8 @@ private:
         SubscriberHandle subscriber{};
         StagedMemberHandle member_head{}, member_tail{}, digest_member{};
         SeedHandle frontier_head{}, frontier_tail{};
+        SeedHandle frontier_scan{}, frontier_scan_previous{};
+        SeedHandle frontier_best{}, frontier_best_previous{}, selected_frontier{};
         DependencyHandle digest_dependency{};
         StagedChildHandle next{};
         std::uint64_t generation{}, build_generation{}, digest_generation{};
@@ -3238,31 +3240,49 @@ private:
         return true;
     }
 
-    bool pop_ticket_frontier_min(
-        StagedChild& child, SeedHandle& out_handle, ComponentRef& out_ref) noexcept {
-        if (!seed_handle_valid(child.frontier_head)) return false;
-        SeedHandle previous{}, current = child.frontier_head;
-        SeedHandle best_previous{}, best = current;
-        while (seed_handle_valid(current)) {
-            if (ref_less(reconstruction_seeds_[current.slot].ref,
-                         reconstruction_seeds_[best.slot].ref)) {
-                best = current;
-                best_previous = previous;
-            }
-            previous = current;
-            current = reconstruction_seeds_[current.slot].next;
+    bool service_ticket_frontier_selection_one(StagedChild& child) noexcept {
+        if (!seed_handle_valid(child.frontier_head) ||
+            seed_handle_valid(child.selected_frontier))
+            return false;
+
+        if (!seed_handle_valid(child.frontier_scan)) {
+            child.frontier_scan = child.frontier_head;
+            child.frontier_scan_previous = {};
+            child.frontier_best = child.frontier_head;
+            child.frontier_best_previous = {};
         }
-        const auto next = reconstruction_seeds_[best.slot].next;
+
+        const auto current = child.frontier_scan;
+        if (!seed_handle_valid(current)) return false;
+        if (ref_less(reconstruction_seeds_[current.slot].ref,
+                     reconstruction_seeds_[child.frontier_best.slot].ref)) {
+            child.frontier_best = current;
+            child.frontier_best_previous = child.frontier_scan_previous;
+        }
+
+        const auto next = reconstruction_seeds_[current.slot].next;
+        child.frontier_scan_previous = current;
+        child.frontier_scan = next;
+        if (seed_handle_valid(next))
+            return true;
+
+        const auto best = child.frontier_best;
+        const auto best_previous = child.frontier_best_previous;
+        const auto best_next = reconstruction_seeds_[best.slot].next;
         if (seed_handle_valid(best_previous))
-            reconstruction_seeds_[best_previous.slot].next = next;
+            reconstruction_seeds_[best_previous.slot].next = best_next;
         else
-            child.frontier_head = next;
+            child.frontier_head = best_next;
         if (child.frontier_tail == best)
             child.frontier_tail = best_previous;
         reconstruction_seeds_[best.slot].next = {};
+        reconstruction_seeds_[best.slot].previous = {};
         if (child.frontier_count != 0) --child.frontier_count;
-        out_handle = best;
-        out_ref = reconstruction_seeds_[best.slot].ref;
+        child.selected_frontier = best;
+        child.frontier_scan = {};
+        child.frontier_scan_previous = {};
+        child.frontier_best = {};
+        child.frontier_best_previous = {};
         return true;
     }
 
@@ -3446,12 +3466,11 @@ private:
             return false;
         auto& ticket = reconstruction_tickets_[handle.slot];
         auto& child = staged_children_[child_handle.slot];
-        SeedHandle frontier_node{};
-        ComponentRef ref{};
-        if (!pop_ticket_frontier_min(child, frontier_node, ref)) {
-            child.phase = StagedChildPhase::GatherMembers;
-            return true;
-        }
+        if (!seed_handle_valid(child.selected_frontier))
+            return false;
+        const auto frontier_node = child.selected_frontier;
+        const auto ref = reconstruction_seeds_[frontier_node.slot].ref;
+        child.selected_frontier = {};
 
         const auto release_frontier = [this, frontier_node]() noexcept {
             release_reconstruction_seed(frontier_node);
@@ -3747,8 +3766,10 @@ private:
             return start_ticket_child(handle);
         auto& child = staged_children_[ticket.active_child.slot];
         if (child.phase == StagedChildPhase::Traversing) {
-            if (seed_handle_valid(child.frontier_head))
+            if (seed_handle_valid(child.selected_frontier))
                 return process_ticket_child_component(handle, ticket.active_child);
+            if (seed_handle_valid(child.frontier_head))
+                return service_ticket_frontier_selection_one(child);
             child.phase = StagedChildPhase::GatherMembers;
             return true;
         }
@@ -4063,6 +4084,17 @@ private:
         }
         if (staged_child_handle_valid(stale_child_cleanup_head_)) {
             auto& child = staged_children_[stale_child_cleanup_head_.slot];
+            if (seed_handle_valid(child.selected_frontier)) {
+                const auto seed = child.selected_frontier;
+                child.selected_frontier = {};
+                child.frontier_scan = {};
+                child.frontier_scan_previous = {};
+                child.frontier_best = {};
+                child.frontier_best_previous = {};
+                release_reconstruction_seed(seed);
+                saturating_add(metrics_.reclamation_units);
+                return true;
+            }
             if (seed_handle_valid(child.frontier_head)) {
                 const auto seed = child.frontier_head;
                 child.frontier_head = reconstruction_seeds_[seed.slot].next;
