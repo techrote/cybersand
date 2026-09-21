@@ -3788,7 +3788,7 @@ private:
 
     std::uint64_t incarnation_{}, publication_serial_{}, build_generation_serial_{};
     std::size_t tile_capacity_{}, adjacency_capacity_{}, frontier_capacity_{};
-    std::size_t dependency_capacity_{}, subscriber_capacity_{};
+    std::size_t dependency_capacity_{}, subscriber_capacity_{}, member_capacity_{};
     std::unique_ptr<Tile[]> tiles_;
     std::unique_ptr<Adjacency[]> adjacencies_;
     std::unique_ptr<Dependency[]> dependencies_;
@@ -3831,7 +3831,7 @@ private:
     std::size_t region_free_count_{RegionCapacity};
     std::size_t region_reclaim_head_{}, region_reclaim_tail_{}, region_reclaim_count_{};
     std::size_t region_generation_exhausted_count_{};
-    std::size_t member_capacity_{}, member_count_{}, source_count_{}, ticket_count_{}, seed_count_{};
+    std::size_t member_count_{}, source_count_{}, ticket_count_{}, seed_count_{};
     std::size_t staged_member_count_{}, staged_child_count_{};
     std::size_t tile_count_{}, adjacency_count_{}, dependency_count_{}, subscriber_count_{};
     std::size_t published_region_count_{}, deferred_component_count_{}, cleanup_pending_count_{};
