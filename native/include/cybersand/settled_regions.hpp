@@ -605,7 +605,7 @@ private:
         StagedChildHandle child_head{}, child_tail{}, preflight_child{}, prepare_child{}, active_child{}, restart_child{};
         StagedMemberHandle prepare_member{};
         DependencyHandle preflight_dependency{};
-        TicketHandle next_queue{}, previous_wait{}, next_wait{};
+        TicketHandle next_queue{}, previous_wait{}, next_wait{}, wait_ticket{};
         RegionComponentKey scan_key{};
         std::uint64_t generation{}, attempt{1}, serial{}, admission_change_serial{}, scan_generation{};
         std::uint64_t wait_generation{}, wait_resource_generation{}, batch_serial{};
@@ -2816,8 +2816,24 @@ private:
         ticket.cleanup_disposition = CleanupDisposition::Block;
         ticket.cleanup_refusal = reason;
         ticket.cleanup_resource = resource_for_refusal(reason);
+        ticket.wait_ticket = {};
         ticket.wait_resource_generation =
             resource_generation(ticket.cleanup_resource);
+        request_ticket_restart(handle);
+    }
+    void cleanup_then_wait_for_ticket(
+        TicketHandle handle, TicketHandle older) noexcept {
+        if (!ticket_handle_valid(handle)) return;
+        auto& ticket = reconstruction_tickets_[handle.slot];
+        ticket.cleanup_disposition = CleanupDisposition::Block;
+        ticket.cleanup_refusal = RegionRefusal::RevisionChanged;
+        ticket.cleanup_resource = ReconstructionResource::Manifest;
+        ticket.wait_ticket = older;
+        // The final wait generation is sampled after this attempt's own
+        // manifest cleanup. The ticket handle itself closes the cleanup-time
+        // lost-wakeup window if the older owner completes meanwhile.
+        ticket.wait_resource_generation =
+            resource_generation(ReconstructionResource::Manifest);
         request_ticket_restart(handle);
     }
     void cleanup_then_refuse(
@@ -2827,6 +2843,7 @@ private:
         ticket.cleanup_disposition = CleanupDisposition::Refuse;
         ticket.cleanup_refusal = reason;
         ticket.cleanup_resource = ReconstructionResource::None;
+        ticket.wait_ticket = {};
         ticket.wait_resource_generation = 0;
         request_ticket_restart(handle);
     }
@@ -2886,6 +2903,7 @@ private:
         ticket.wait_tile = invalid_pool_index;
         ticket.wait_generation = 0;
         ticket.refusal = RegionRefusal::None;
+        ticket.wait_ticket = {};
         ticket.wait_resource = ReconstructionResource::None;
         ticket.wait_resource_generation = 0;
         ticket.restart_requested = false;
@@ -2964,6 +2982,7 @@ private:
             ticket.cleanup_disposition = CleanupDisposition::Restart;
             ticket.cleanup_refusal = RegionRefusal::None;
             ticket.cleanup_resource = ReconstructionResource::None;
+            ticket.wait_ticket = {};
             park_refused_ticket(handle);
             return true;
         }
@@ -2971,17 +2990,26 @@ private:
             const auto blocked_refusal = ticket.cleanup_refusal;
             const auto blocked_resource = ticket.cleanup_resource;
             const auto blocked_generation = ticket.wait_resource_generation;
+            const auto blocked_ticket = ticket.wait_ticket;
             ticket.cleanup_disposition = CleanupDisposition::Restart;
             ticket.cleanup_refusal = RegionRefusal::None;
             ticket.cleanup_resource = ReconstructionResource::None;
 
-            // The blocking resource may have changed while this attempt's
-            // staged state was being reclaimed. In that case parking now would
-            // miss the only relevant wakeup, so retry directly from a clean
-            // attempt instead of recording the already-advanced generation.
-            if (blocked_resource != ReconstructionResource::None &&
-                blocked_resource != ReconstructionResource::Count &&
-                blocked_generation != resource_generation(blocked_resource)) {
+            // A ticket-order conflict must release its own partial pools before
+            // sleeping. If the older owner completed during that cleanup, its
+            // generation-bearing handle is already stale and this clean attempt
+            // can retry immediately. Otherwise sample Manifest after our own
+            // cleanup so we cannot wake ourselves.
+            const bool ticket_conflict =
+                blocked_refusal == RegionRefusal::RevisionChanged &&
+                blocked_resource == ReconstructionResource::Manifest;
+            const bool retry_after_cleanup = ticket_conflict
+                ? !ticket_handle_valid(blocked_ticket)
+                : (blocked_resource != ReconstructionResource::None &&
+                   blocked_resource != ReconstructionResource::Count &&
+                   blocked_generation != resource_generation(blocked_resource));
+            if (retry_after_cleanup) {
+                ticket.wait_ticket = {};
                 ticket.wait_resource = ReconstructionResource::None;
                 ticket.wait_resource_generation = 0;
                 if (ticket.attempt == std::numeric_limits<std::uint64_t>::max()) {
@@ -2998,8 +3026,11 @@ private:
 
             ticket.phase = ReconstructionPhase::Blocked;
             ticket.refusal = blocked_refusal;
+            ticket.wait_ticket = blocked_ticket;
             ticket.wait_resource = blocked_resource;
-            ticket.wait_resource_generation = blocked_generation;
+            ticket.wait_resource_generation = ticket_conflict
+                ? resource_generation(blocked_resource)
+                : blocked_generation;
             last_refusal_ = ticket.refusal;
             saturating_add(metrics_.reconstruction_waits);
             if (ticket.refusal == RegionRefusal::FrontierCapacity)
@@ -3183,7 +3214,7 @@ private:
                 component.reconstruction_ticket_generation};
             if (ticket_handle_valid(other) &&
                 reconstruction_tickets_[other.slot].serial < ticket.serial) {
-                block_reconstruction_ticket(handle, RegionRefusal::RevisionChanged);
+                cleanup_then_wait_for_ticket(handle, other);
                 return false;
             }
             request_ticket_restart(other);
