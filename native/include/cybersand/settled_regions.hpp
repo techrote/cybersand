@@ -309,6 +309,16 @@ public:
                 }
             }
 
+            // A service phase may retire/reset itself without consuming a unit
+            // (for example, an exhausted ordinary seek). Cleanup must still
+            // receive its bounded progress opportunity before advance() may
+            // report zero work, otherwise live reclamation queues can be
+            // stranded behind a phase that has just become idle.
+            if (!did_work && cleanup_one_any()) {
+                did_work = true;
+                saturating_add(metrics_.cleanup_units);
+            }
+
             if (!did_work) break;
             consume(used);
             ++service_round_;
