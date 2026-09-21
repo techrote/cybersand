@@ -2867,7 +2867,10 @@ private:
         auto before = reconstruction_tickets_[handle.slot].seed_count;
         const auto seed = allocate_reconstruction_seed(handle, ref);
         if (!seed.has_value()) {
-            cleanup_then_block(handle, RegionRefusal::FrontierCapacity);
+            if (reconstruction_tickets_[handle.slot].owned_seed_nodes >= frontier_capacity_)
+                cleanup_then_refuse(handle, RegionRefusal::FrontierCapacity);
+            else
+                cleanup_then_block(handle, RegionRefusal::FrontierCapacity);
             return false;
         }
         (void)before;
@@ -3042,7 +3045,10 @@ private:
         } else {
             const auto allocated = allocate_seed_node(handle, ref);
             if (!allocated.has_value()) {
-                cleanup_then_block(handle, RegionRefusal::FrontierCapacity);
+                if (ticket.owned_seed_nodes >= frontier_capacity_)
+                    cleanup_then_refuse(handle, RegionRefusal::FrontierCapacity);
+                else
+                    cleanup_then_block(handle, RegionRefusal::FrontierCapacity);
                 return false;
             }
             node = *allocated;
@@ -3101,7 +3107,10 @@ private:
                 saturating_add(metrics_.absence_subscriptions);
             return true;
         }
-        cleanup_then_block(handle, RegionRefusal::DependencyCapacity);
+        if (reconstruction_tickets_[handle.slot].owned_dependencies >= dependency_capacity_)
+            cleanup_then_refuse(handle, RegionRefusal::DependencyCapacity);
+        else
+            cleanup_then_block(handle, RegionRefusal::DependencyCapacity);
         return false;
     }
 
@@ -3300,7 +3309,10 @@ private:
         const auto staged_member = allocate_staged_member(ref, handle);
         if (!staged_member.has_value()) {
             release_frontier();
-            cleanup_then_block(handle, RegionRefusal::MemberCapacity);
+            if (ticket.owned_staged_members >= frontier_capacity_)
+                cleanup_then_refuse(handle, RegionRefusal::MemberCapacity);
+            else
+                cleanup_then_block(handle, RegionRefusal::MemberCapacity);
             return true;
         }
         if (staged_member_handle_valid(child.member_tail))
@@ -3383,7 +3395,7 @@ private:
             if (staged_member_handle_valid(child.digest_member)) {
                 if (child.scratch_member_count == frontier_capacity_) {
                     release_child_digest_owner(handle, child_handle);
-                    cleanup_then_block(handle, RegionRefusal::MemberCapacity);
+                    cleanup_then_refuse(handle, RegionRefusal::MemberCapacity);
                     return true;
                 }
                 build_.members[child.scratch_member_count++] =
