@@ -20,6 +20,7 @@ env:
   TESTED_LINUX_MERGE: 962ed86e739de88a1919efd595376446fa444d88
   TESTED_LINUX_ARTIFACT: linux-runtime-35726233644
   TESTED_LINUX_ARTIFACT_ID: "10693674907"
+  COMPANION_DOCS_COMMIT: 6a58311982941b75f46e22109a0829e5acb83c7e
   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
   LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
@@ -187,17 +188,19 @@ jobs:
           lin_path.write_text(json.dumps(lin, indent=2) + '\n', encoding='utf-8')
           PY
 
-      - name: Verify materialized runtime provenance
+      - name: Verify generated runtime bytes and manifests
         shell: bash
         run: |
           set -euo pipefail
-          python3 tools/ci/check_repository.py --require-materialized
           git diff --check
           python3 - <<'PY'
           import hashlib, json, pathlib
           root = pathlib.Path('.')
           for name in ('runtime-provenance.json', 'runtime-provenance.linux.json'):
               manifest = json.loads((root / 'godot/addons/cybersand_native' / name).read_text())
+              for rel, expected in manifest['source_inputs'].items():
+                  actual = hashlib.sha256((root / rel).read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+                  assert actual == expected, (name, rel, actual, expected)
               data = (root / manifest['artifact']).read_bytes()
               assert hashlib.sha256(data).hexdigest() == manifest['sha256']
               assert len(data) == manifest['size']
@@ -223,16 +226,36 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-      - name: Publish LFS runtimes and remove one-shot workflow
+      - name: Create local LFS publication commit
         shell: bash
         run: |
           set -euo pipefail
           git lfs install --local
-          git add             godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll             godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so             godot/addons/cybersand_native/runtime-provenance.json             godot/addons/cybersand_native/runtime-provenance.linux.json
+          git add godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/runtime-provenance.json godot/addons/cybersand_native/runtime-provenance.linux.json
           git rm -f .github/workflows/issue65-publish-runtimes.yml
           git diff --cached --check
           git config user.name techrote
           git config user.email 261801702+techrote@users.noreply.github.com
           git commit -m 'build(stage3b): publish issue 65 source-matched runtimes'
           git lfs fsck
+
+      - name: Verify committed materialized provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin "$COMPANION_DOCS_COMMIT"
+          mkdir -p ../docs ../tools ../validation
+          git show "$COMPANION_DOCS_COMMIT:SOURCE-PROVENANCE.json" > ../SOURCE-PROVENANCE.json
+          git show "$COMPANION_DOCS_COMMIT:docs/WEB_THREADING.md" > ../docs/WEB_THREADING.md
+          git show "$COMPANION_DOCS_COMMIT:tools/dev.py" > ../tools/dev.py
+          git show "$COMPANION_DOCS_COMMIT:docs/LOCAL_DEVELOPMENT.md" > ../docs/LOCAL_DEVELOPMENT.md
+          git show "$COMPANION_DOCS_COMMIT:validation/browser-results.json" > ../validation/browser-results.json
+          python3 tools/ci/check_repository.py --require-materialized
+          git lfs fsck
+          git diff --check HEAD
+
+      - name: Push verified LFS publication
+        shell: bash
+        run: |
+          set -euo pipefail
           git push origin HEAD:codex/issue-65-stage3b-exact-reconstruction
