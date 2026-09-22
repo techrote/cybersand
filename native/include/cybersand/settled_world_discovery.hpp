@@ -150,6 +150,11 @@ struct WorldDiscoveryStorageLayout {
     std::size_t region_frontier_capacity{};
     std::size_t region_seen_capacity{};
     std::size_t region_member_capacity{};
+    std::size_t region_publication_member_capacity{};
+    std::size_t region_reconstruction_ticket_capacity{};
+    std::size_t region_reconstruction_seed_capacity{};
+    std::size_t region_staged_member_capacity{};
+    std::size_t region_staged_child_capacity{};
     std::size_t region_dependency_capacity{};
     std::size_t region_revision_capacity{};
     std::size_t region_key_index_capacity{};

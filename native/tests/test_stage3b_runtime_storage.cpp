@@ -203,9 +203,16 @@ WorldDiscoveryStorageLayout layout_case() {
             layout.region_seen_capacity == Capacity * 32U &&
             layout.region_member_capacity == Capacity * 32U,
             "frontier/seen/member storage is exactly 32T");
-    require(layout.region_dependency_capacity == Capacity &&
+    require(layout.region_publication_member_capacity == Capacity * 64U &&
+            layout.region_reconstruction_seed_capacity == Capacity * 32U &&
+            layout.region_staged_member_capacity == Capacity * 32U,
+            "reconstruction publication/seed/staging pools are exactly 64T/32T/32T");
+    require(layout.region_reconstruction_ticket_capacity == 4096 &&
+            layout.region_staged_child_capacity == 4096,
+            "reconstruction ticket and staged-child pools remain fixed at P=4096");
+    require(layout.region_dependency_capacity == Capacity * 32U &&
             layout.region_revision_capacity == Capacity,
-            "dependency/revision backing follows effective T");
+            "dependency backing is 32T while revision backing follows T");
     require(layout.key_index_capacity == Capacity,
             "bounded canonical key index is exactly T");
     require(layout.payload_queue_capacity == Capacity &&
