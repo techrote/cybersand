@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Local repository policy and unresolved remote CI and release prerequisites
 canonical-for: [repository-policy, ci-contradictions, release-prerequisites]
-last-reviewed: 2026-09-19
+last-reviewed: 2026-09-22
 related-documents: [source-checkpoint-and-recovery.md, local-build-and-validation.md, documentation-maintenance.md, ../audits/2026-09-19-runner-routing-weekend-benchmark.md]
 ---
 
@@ -32,22 +32,72 @@ exports, tools, caches, logs and local configuration. See [.gitignore](../../.gi
 Do not change historical release hashes to accept a local rebuild.
 
 
-## Current runner routing and temporary measurement
+## Current CI provider and draft gating
 
-**Current configuration, 2026-09-19:** source d6a616e routes sustained Linux
-GDExtension, Native and Web workloads through Sengi while retaining Avrea for
-Windows, regression fan-out and short latency-sensitive gates. Per-job runner
-variables remain explicit overrides, including Avrea wide-runner use when a
-workload benefits from 16/32 vCPUs.
+**Current configuration, 2026-09-22:** routine active workflows use literal
+GitHub-hosted runner labels. The previous external-provider routing experiment is
+historical evidence only; it is not current policy. The retained
+[weekend runner benchmark](../audits/2026-09-19-runner-routing-weekend-benchmark.md)
+must not be read as authorization to restore its provider configuration.
 
-A temporary, non-gating [weekend runner benchmark](../audits/2026-09-19-runner-routing-weekend-benchmark.md)
-compares GitHub ubuntu-slim 1-vCPU and Avrea 1-vCPU on representative micro,
-documentation, regression and SCons build classes. It records acquisition,
-workload and wall-time evidence rather than selecting a runner from each
-invocation's current contents. The active benchmark window ends
-2026-09-21 05:00 UTC; the workflow has an explicit deadline and scheduled
-self-disable. Until the retained evidence is reduced, this experiment does not
-change required CI or the existing Sengi routing for sustained work.
+[check_ci_provider_policy.py](../../tools/ci/check_ci_provider_policy.py) enforces
+the active configuration boundary. It rejects:
+
+- `.circleci/config.yml`;
+- Avrea, Sengi or CircleCI routing tokens in active GitHub workflows;
+- `*_RUNNER` variable indirection;
+- any `runs-on` value that is not a literal GitHub-hosted
+  `ubuntu-*`, `windows-*` or `macos-*` label.
+
+The Documentation/provenance workflow runs this cheap check and its focused unit
+tests even while a PR is draft. Historical documents are deliberately outside the
+checker's scan scope.
+
+Draft PRs suppress the expensive Native, GDExtension/Godot and scoped Water jobs.
+Moving a PR to ready-for-review is the final-validation transition. For behavior or
+runtime changes, record the exact-head Documentation/provenance result and every
+applicable Native, GDExtension/Godot and scoped apparatus result before merge.
+Do not use a skipped draft run as final evidence. Source-sensitive runtime
+provenance remains a hard gate: a changed runtime input requires a source-matched
+rebuild and provenance update rather than a hand-edited hash.
+
+## Main-branch protection: exact owner action
+
+Remote inspection on 2026-09-22 reports `main.protected=false` and no repository
+rulesets. The repository GitHub App does not have administration permission to
+read or change the protection endpoint, so automation must not claim this control
+was installed.
+
+The repository owner should apply this exact minimal rule in **Settings → Rules →
+Rulesets** (or the equivalent branch-protection UI):
+
+1. Create an active branch ruleset targeting the default branch `main`.
+2. Require changes to reach `main` through a pull request. A solo repository may
+   use zero mandatory approving reviews; the purpose here is to prevent direct
+   source pushes, not to invent a second human reviewer.
+3. Block force pushes and branch deletion.
+4. Require the universal check **`Documentation and provenance / consistency`**.
+   It has no path filter and therefore does not deadlock workflow-only changes.
+5. Do **not** globally require the Native, GDExtension or Issue49 job names yet.
+   Native/GDExtension intentionally suppress workflow-only/draft work, while
+   Issue49 is path-scoped; making those names unconditional required checks can
+   leave unrelated PRs permanently pending.
+6. For implementation/behavior PRs, the procedural final gate remains the
+   exact-head Native `native` job, GDExtension `windows x86_64` plus aggregate
+   `linux x86_64` job, and any applicable path-scoped apparatus workflow.
+7. Keep only repository-owner/administrator emergency bypass. Any bypass is an
+   incident/recovery action and must be recorded; it is not the normal merge path.
+8. After saving the rule, verify the branch page reports `main` protected and
+   that a direct non-PR push is rejected.
+
+A future owner-approved CI migration may revise both this section and the
+machine-checkable provider policy in one focused change. Merely editing a stale
+branch or runner variable is not sufficient authority.
+
+The multidimensional completion, active-implementation ownership and validation
+premise controls are separately owned by the
+[development-claims remediation programme](development-claims-remediation-programme.md);
+this CI/provider rule does not duplicate that schema.
 
 ## Unresolved CI contradictions
 

@@ -26,6 +26,23 @@ Runtime results need dated source/artifact/platform evidence. Investigate and
 record contradictions before changing implementation; do not silently choose a
 design from conflicting source, ADR or historical claims.
 
+## CI and merge safety
+
+Routine active CI is GitHub-hosted. Do not add `.circleci/config.yml`, external
+runner labels, self-hosted/custom runner routing or `*_RUNNER` indirection unless
+an explicit owner-approved provider-migration task first changes the canonical
+policy and its checker. Run `python3 tools/ci/check_ci_provider_policy.py` when CI
+configuration changes.
+
+Draft PRs intentionally suppress expensive Native/GDExtension/Water execution;
+use draft state during iterative debugging. Before an implementation PR merges,
+move it to ready-for-review and record the exact-head Documentation/provenance
+result plus every applicable Native, GDExtension/Godot and scoped apparatus gate.
+A stale source-sensitive runtime/provenance check is a blocker, not a bookkeeping
+failure. See [repository development and release](docs/operations/github-development-and-release.md).
+Completion/ownership/validation-premise semantics remain separately owned by the
+[development-claims remediation programme](docs/operations/development-claims-remediation-programme.md).
+
 ## Water successor safety
 
 Issue #26 remains closed as a valid negative experiment for its two exact tested
