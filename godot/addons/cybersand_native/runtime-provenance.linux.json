@@ -1,16 +1,16 @@
 {
   "schema_version": 1,
   "status": "validated-development-runtime",
-  "source_commit": "2cef97763579bb3cee645d15a22d254c3210410b",
-  "source_tree": "f03efb6d5768ae39a30f633c863c8400b27f825a",
+  "source_commit": "66a2935e1001737e63ecb03fd21050f7d433bda7",
+  "source_tree": "326bc7594f3b1e50194a6d7f8ba479797db102d9",
   "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
-  "sha256": "35319c915dd6f309c94b9388c2929931817a2cb511afba2cb004b36a93e5b8f7",
-  "size": 1612480,
+  "sha256": "58eca0792f067a2706c5a9d1a01f52226cd7e7e0b4118fc0229ebcddc1d4064e",
+  "size": 1612912,
   "source_input_hash_kind": "SHA-256 of canonical Git blob bytes; CRLF working files normalize to LF",
   "source_inputs": {
     "godot/native_extension/cyber_demo_bridge.hpp": "92d1ada53f684ca92832f245399078d4f43fdba0b4c6c5e41ba99f265cf759a5",
-    "godot/native_extension/cyber_native_cell_world.cpp": "099fd43ce2e8ec4bfe948a6688e9b68782855304bdb02ebff017674a9355ebea",
-    "godot/native_extension/cyber_native_cell_world.hpp": "e7639d61d152bc9b565c36de049d9205b4907be5cd51aef15ddeb6666837e491",
+    "godot/native_extension/cyber_native_cell_world.cpp": "5b3b04ce40b3bd5d4e6c9bef313b2bbd91f48c28d3d790db91d75583b22e25d0",
+    "godot/native_extension/cyber_native_cell_world.hpp": "124cfb108cca5f57545e46990db2fd84f55c1d617157a04ce0d5c68579c3247f",
     "godot/native_extension/cyber_observation_values.hpp": "8b76a566de1118e2ee0c4d9b6a4c3d4d8d988c4953743f8bcf0fc786f61705e5",
     "godot/native_extension/register_types.cpp": "db08c4fe5267831aac9c33faffd68f2adea4c55f30711b7cdeaf3a3b02173dd2",
     "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
@@ -39,13 +39,13 @@
     "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
     "native/src/world.cpp": "974b44bb777583c6768f47e7985d59e2ea8d6d940bda3e60ff617987070ffdcb"
   },
-  "evidence": "docs/audits/2026-09-21-issue-65-stage3b-exact-reconstruction.md",
+  "evidence": "docs/research/bounded-decompression-impulse-events.md",
   "validated_platform": "Linux x86_64 Godot 4.7",
-  "toolchain": "Ubuntu 24.04, GCC/G++ 13.3.0, binutils 2.42, SCons 4.10.1; godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496; #65 frozen native/test source",
-  "acceptance": "Exact #65-source Linux x86_64 GDExtension artifact from Actions run 35726233644; all four isolated Godot regression shards passed on these exact bytes before publication.",
+  "toolchain": "Ubuntu 24.04, GCC/G++ 13.3.0, binutils 2.42, SCons 4.10.1; godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496; WEX-004 diagnostic-only relocation source",
+  "acceptance": "Exact WEX-004-source Linux x86_64 GDExtension artifact from Actions run 35744170918; all four isolated Godot regression shards, including test_wex004_decompression, passed on these exact bytes before publication.",
   "other_platforms": "Windows runtime is cross-built from identical validated source inputs but is not Windows execution. Browser/WebAssembly execution and hardware-GPU/target-PC performance remain unavailable and are not claimed.",
-  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/35726233644",
-  "tested_merge_commit": "962ed86e739de88a1919efd595376446fa444d88",
-  "artifact_id": 10693674907,
-  "validation_output": "Actions run 35726233644 / artifact linux-runtime-35726233644"
+  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/35744170918",
+  "tested_merge_commit": "b6217ba92aac290c2f2a072ae549b8da4dde920a",
+  "artifact_id": 10701248166,
+  "validation_output": "Actions run 35744170918 / artifact linux-runtime-35744170918"
 }
