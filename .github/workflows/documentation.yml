@@ -33,6 +33,10 @@ jobs:
           path: workspace/source
           lfs: true
           fetch-depth: 0
+      - name: Validate active CI provider policy
+        run: timeout 1m python3 tools/ci/check_ci_provider_policy.py
+      - name: Test CI provider policy checker
+        run: timeout 1m python3 -m unittest discover -s tools/ci -p test_ci_provider_policy.py
       - name: Validate current documentation
         run: timeout 5m python3 tools/ci/check_docs.py
       - name: Validate dependency pins and published runtime provenance
