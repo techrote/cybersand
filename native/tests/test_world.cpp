@@ -2618,6 +2618,34 @@ void test_int000_sparse_schema_shadow_equivalence() {
             "INT coverage/pass metadata is incomplete");
 }
 
+
+void test_serialized_relocation_preserves_payload() {
+    World world;
+    world.reserve_region({0, 0, 128, 128});
+    world.reserve_temperature_region({0, 0, 128, 128});
+    require(world.set_cell_state(40, 40, Material::Sand, 17U, 23U),
+            "relocation payload setup failed");
+    world.set_temperature(40, 40, 777);
+
+    require(world.relocate_stored_cell(40, 40, 41, 40),
+            "serialized relocation rejected legal empty destination");
+    require(world.stored_material(40, 40) == Material::Empty &&
+                world.stored_material(41, 40) == Material::Sand,
+            "serialized relocation lost or duplicated material");
+    require(world.stored_state_a(41, 40) == 17U &&
+                world.stored_state_b(41, 40) == 23U,
+            "serialized relocation changed compact cell state");
+    require(world.temperature(41, 40) == 777 &&
+                world.temperature(40, 40) == world.config().ambient_temperature,
+            "serialized relocation did not preserve optional temperature");
+
+    world.set(42, 40, Material::Stone);
+    const auto before = world.state_hash();
+    require(!world.relocate_stored_cell(41, 40, 42, 40) &&
+                world.state_hash() == before,
+            "serialized relocation mutated state on occupied-destination refusal");
+}
+
 int main() {
     struct Test {
         const char* name;
@@ -2653,6 +2681,7 @@ int main() {
         {"Water experiment worker parity", test_water_experiment_policy_worker_parity},
         {"default Water experiment state-hash correspondence", test_water_experiment_default_state_hash_correspondence},
         {"optional temperature movement", test_optional_temperature_moves_across_chunk},
+        {"serialized relocation preserves payload", test_serialized_relocation_preserves_payload},
         {"preallocated hot path", test_preallocated_tick_has_no_owned_allocations},
         {"chunk capacity", test_chunk_capacity_fails_explicitly},
         {"smoke", test_smoke_rises},
