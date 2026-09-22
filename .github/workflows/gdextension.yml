@@ -5,6 +5,16 @@ on:
     branches: [main]
     paths-ignore:
       - '.github/workflows/**'
+      - 'docs/**'
+      - 'AGENTS.md'
+      - '.github/pull_request_template.md'
+      - 'tools/ci/check_ci_provider_policy.py'
+      - 'tools/ci/test_ci_provider_policy.py'
+      - 'docs/**'
+      - 'AGENTS.md'
+      - '.github/pull_request_template.md'
+      - 'tools/ci/check_ci_provider_policy.py'
+      - 'tools/ci/test_ci_provider_policy.py'
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review, converted_to_draft]
     paths-ignore:
