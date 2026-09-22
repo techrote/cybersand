@@ -47,8 +47,8 @@ jobs:
           git merge-base --is-ancestor "$VALIDATED_HEAD" HEAD
           test "$(git rev-parse "$VALIDATED_HEAD^{tree}")" = "$VALIDATED_TREE"
           git diff --exit-code "$VALIDATED_HEAD" HEAD --             godot/native_extension             native/include             native/src             tools/build_native_extension.sh             tools/build_native_extension_windows.sh             tools/build_pinned_godot_cpp.sh             tools/requirements-build.txt
-          git show "$TESTED_LINUX_MERGE^{tree}" > "$RUNNER_TEMP/tested-linux-tree.txt"
-          test "$(cat "$RUNNER_TEMP/tested-linux-tree.txt")" = "$VALIDATED_TREE"
+          git fetch --no-tags --depth=1 origin "$TESTED_LINUX_MERGE"
+          test "$(git rev-parse FETCH_HEAD^{tree})" = "$VALIDATED_TREE"
 
       - name: Restore exact tested Linux runtime
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
