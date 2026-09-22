@@ -10,6 +10,8 @@ Describe the concrete behavior change and affected canonical subsystem/ADR.
 - [ ] `tools/ci/check_m11_consistency.py` result attached; historical hash failures remain explicit and historical records unchanged.
 - [ ] Current behavior is distinguished from Approved/Planned/Deferred/Rejected requirements and level saves from exact replay.
 - [ ] Actual local-delta/checkpoint coverage is recorded; no generated output, secrets or unpinned dependencies are included.
+- [ ] `tools/ci/check_ci_provider_policy.py` passes; no external provider routing or runner indirection is introduced without an explicit policy migration.
+- [ ] If this is an implementation/behavior PR, the final ready-for-review exact-head Documentation/provenance and applicable Native/GDExtension/Water gates are recorded.
 
 ## Remaining gaps
 
