@@ -24,6 +24,7 @@ on:
 permissions:
   contents: read
   actions: read
+  pull-requests: read
 
 concurrency:
   group: gdextension-${{ github.ref }}
@@ -38,9 +39,78 @@ env:
   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
 
 jobs:
+  ready_scope:
+    name: ready validation scope
+    if: github.event_name == 'pull_request' && github.event.action == 'ready_for_review'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    outputs:
+      required: ${{ steps.scope.outputs.required }}
+    steps:
+      - name: Classify ready-for-review change scope
+        id: scope
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          ignored_prefixes = (".github/workflows/", "docs/")
+          ignored_exact = {
+              "AGENTS.md",
+              ".github/pull_request_template.md",
+              "tools/ci/check_ci_provider_policy.py",
+              "tools/ci/test_ci_provider_policy.py",
+          }
+
+          files = []
+          page = 1
+          while True:
+              url = (
+                  f"https://api.github.com/repos/{os.environ['REPOSITORY']}"
+                  f"/pulls/{os.environ['PR_NUMBER']}/files?per_page=100&page={page}"
+              )
+              request = urllib.request.Request(
+                  url,
+                  headers={
+                      "Authorization": f"Bearer {os.environ['GH_TOKEN']}",
+                      "Accept": "application/vnd.github+json",
+                      "X-GitHub-Api-Version": "2022-11-28",
+                  },
+              )
+              with urllib.request.urlopen(request) as response:
+                  batch = json.load(response)
+              files.extend(item["filename"] for item in batch)
+              if len(batch) < 100:
+                  break
+              page += 1
+
+          def ignored(path):
+              return path in ignored_exact or path.startswith(ignored_prefixes)
+
+          required = any(not ignored(path) for path in files)
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write(f"required={'true' if required else 'false'}\\n")
+          print(
+              "ready-for-review expensive validation:",
+              "required" if required else "not required",
+          )
+          print("\n".join(files))
+          PY
+
   linux-build:
     name: linux build x86_64
-    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    needs: [ready_scope]
+    if: >-
+      always() &&
+      (github.event_name != 'pull_request' ||
+       (github.event.pull_request.draft == false &&
+        (github.event.action != 'ready_for_review' ||
+         needs.ready_scope.outputs.required == 'true')))
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -123,7 +193,13 @@ jobs:
     name: windows x86_64
     # Routine Windows cross-build validation runs on the standard GitHub-hosted
     # Ubuntu runner using the pinned LLVM-MinGW toolchain below.
-    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    needs: [ready_scope]
+    if: >-
+      always() &&
+      (github.event_name != 'pull_request' ||
+       (github.event.pull_request.draft == false &&
+        (github.event.action != 'ready_for_review' ||
+         needs.ready_scope.outputs.required == 'true')))
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -294,8 +370,13 @@ jobs:
 
   linux-regression-gate:
     name: linux x86_64
-    if: always() && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
-    needs: [linux-regression, linux-serial-equivalence]
+    needs: [ready_scope, linux-regression, linux-serial-equivalence]
+    if: >-
+      always() &&
+      (github.event_name != 'pull_request' ||
+       (github.event.pull_request.draft == false &&
+        (github.event.action != 'ready_for_review' ||
+         needs.ready_scope.outputs.required == 'true')))
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
