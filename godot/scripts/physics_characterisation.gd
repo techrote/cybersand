@@ -310,6 +310,8 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 		if layout == "reentry" and tick == 600:
 			world.set_simulation_window(Vector2i(left-4,0),Vector2i(width+8,floor_y+4),0,0)
 		var start: int = Time.get_ticks_usec()
+		var player_horizontal: float = 0.0
+		var player_after_tick: bool = mode == "player" and bool(spec.get("player_after_tick", false))
 		if mode == "barrel":
 			bridge.step()
 			var states: PackedFloat32Array = bridge.pack_body_states()
@@ -317,10 +319,10 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 			var selected: PackedFloat32Array = history[maxi(0,tick-delay)%10]
 			world.prepare_rigid_body_coupling(selected)
 		elif mode == "player":
-			var horizontal: float = 0.0
 			if layout == "walk" or layout == "slope" or layout == "side":
-				horizontal = 1.0 if tick%240 < 120 else -1.0
-			player.simulate(DT,horizontal,false,world)
+				player_horizontal = 1.0 if tick%240 < 120 else -1.0
+			if not player_after_tick:
+				player.simulate(DT,player_horizontal,false,world)
 		coupling_times[tick] = Time.get_ticks_usec()-start
 		start = Time.get_ticks_usec()
 		var succeeded: Variant = world.simulation_tick()
@@ -329,6 +331,10 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 			if bridge != null: bridge.shutdown()
 			if viewport != null: viewport.queue_free()
 			return {"ok": false, "error": "failed tick", "completed": tick, "spec": spec}
+		if player_after_tick:
+			start = Time.get_ticks_usec()
+			player.simulate(DT,player_horizontal,false,world)
+			coupling_times[tick] += Time.get_ticks_usec()-start
 		var center: Vector2 = player.centre()
 		var velocity: Vector2 = player.velocity
 		var rotation: float = 0.0
