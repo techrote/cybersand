@@ -187,7 +187,7 @@ static func mechanism_fixture(mechanism: String, seed: int = 0) -> Dictionary:
 static func player_granular_review(seed: int = 0) -> Dictionary:
 	if seed != 0: return {}
 	var out: Dictionary = base(
-		REM003_ID, 1, "REM-003 Player / Granular Review", "candidate-c1/owner-review-v1", 600,
+		REM003_ID, seed, "REM-003 Player / Granular Review", "candidate-c1/owner-review-v1", 600,
 		"Owner gameplay review for REM-003 candidate C1. Use A/D and Space. Walk, accelerate, brake and reverse on the flat Sand lane; cross the one-cell step and rising shoulder; traverse Dust/Salt support; use the jetpack for ordinary and harder landings onto Sand; RMB erase the marked shelf or supporting bed to trigger loose/falling grains and collapse. Reset with R between comparisons. Judge support, yield, slopes/edges, loose-versus-packed discrimination, transitions and any remaining sticky/rigid/jittery behavior. Automated counters do not decide acceptance."
 	)
 	out.player_enabled = true
