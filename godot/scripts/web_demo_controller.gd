@@ -322,6 +322,38 @@ func _ready() -> void:
 		print("WEB_INTERACTION_POLICY ",JSON.stringify(result))
 		JavaScriptBridge.eval("var p=document.createElement('pre');p.id='cybersand-interaction-result';p.textContent="+JSON.stringify(JSON.stringify(result))+";document.body.appendChild(p);fetch('/physics-results',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userAgent:navigator.userAgent,isolated:crossOriginIsolated,result:"+JSON.stringify(result)+"})});",true)
 		return
+	if test_enabled and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('rem003') === '1'", true)):
+		set_process(false)
+		set_physics_process(false)
+		var workers: int = 4 if OS.has_feature("threads") else 1
+		var cases: Array = [
+			{"id":"rem003-ordinary","mode":"player","material":CyberCellWorld.SAND,
+				"ticks":240,"workers":workers},
+			{"id":"rem003-hard","mode":"player","material":CyberCellWorld.SAND,
+				"ticks":240,"workers":workers,"player_initial_vy":86.0},
+			{"id":"rem003-hard-terrain","mode":"player","material":0,"layout":"hard",
+				"ticks":240,"workers":workers},
+			{"id":"rem003-water","mode":"player","material":CyberCellWorld.WATER,
+				"ticks":240,"workers":workers},
+		]
+		var result: Dictionary = await CyberPhysicsCharacterisation.run(self,cases)
+		var counts: Dictionary = {}
+		for report: Dictionary in result.get("results", []):
+			counts[str(report.get("spec",{}).get("id",""))] = int(
+				report.get("player_granular_disturbance_total",-1)
+			)
+		var candidate_ok: bool = (
+			bool(result.get("ok",false))
+			and int(counts.get("rem003-ordinary",-1)) == 1
+			and int(counts.get("rem003-hard",-1)) == 2
+			and int(counts.get("rem003-hard-terrain",-1)) == 0
+			and int(counts.get("rem003-water",-1)) == 0
+		)
+		result["rem003_counts"] = counts
+		result["ok"] = candidate_ok
+		print("WEB_REM003_PLAYER_GRANULAR ",JSON.stringify(result))
+		JavaScriptBridge.eval("var p=document.createElement('pre');p.id='cybersand-rem003-result';p.textContent="+JSON.stringify(JSON.stringify(result))+";document.body.appendChild(p);fetch('/physics-results',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userAgent:navigator.userAgent,isolated:crossOriginIsolated,result:"+JSON.stringify(result)+"})});",true)
+		return
 	if test_enabled and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('physics') === '1'", true)):
 		set_process(false)
 		set_physics_process(false)
