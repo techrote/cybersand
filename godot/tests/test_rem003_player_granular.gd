@@ -91,6 +91,14 @@ func _build_case(world: Object, fallback: bool, spec: Dictionary) -> Vector2:
 		"edge":
 			_fill(world, fallback, LEFT, SURFACE_Y, 88, FLOOR_Y - SURFACE_Y, material)
 			return Vector2(128, SURFACE_Y - BODY_SIZE.y)
+		"step":
+			_fill(world, fallback, LEFT, SURFACE_Y, RIGHT - LEFT, FLOOR_Y - SURFACE_Y, material)
+			_fill(world, fallback, 150, SURFACE_Y - 1, 24, 1, material)
+			return Vector2(112, SURFACE_Y - BODY_SIZE.y)
+		"boundary":
+			_fill(world, fallback, LEFT, SURFACE_Y, 96, FLOOR_Y - SURFACE_Y, CyberCellWorld.SAND)
+			_fill(world, fallback, 160, SURFACE_Y, RIGHT - 160, FLOOR_Y - SURFACE_Y, CyberCellWorld.DUST)
+			return Vector2(156, SURFACE_Y - BODY_SIZE.y)
 		"film":
 			_fill(world, fallback, LEFT, SURFACE_Y, RIGHT - LEFT, 1, material)
 			return Vector2(104, SURFACE_Y - 32.0)
@@ -109,6 +117,13 @@ func _build_case(world: Object, fallback: bool, spec: Dictionary) -> Vector2:
 			_fill(world, fallback, LEFT, SURFACE_Y, RIGHT - LEFT, FLOOR_Y - SURFACE_Y, material)
 			var drop_gap: float = float(spec.get("drop_gap", 12.0))
 			return Vector2(104, SURFACE_Y - BODY_SIZE.y - drop_gap)
+		"falling":
+			_fill(world, fallback, LEFT, 236, RIGHT - LEFT, FLOOR_Y - 236, material)
+			_fill(world, fallback, 92, 150, 56, 8, material)
+			return Vector2(108, 222)
+		"reentry":
+			_fill(world, fallback, LEFT, SURFACE_Y, RIGHT - LEFT, FLOOR_Y - SURFACE_Y, material)
+			return Vector2(104, SURFACE_Y - BODY_SIZE.y)
 		"excavate":
 			_fill(world, fallback, LEFT, SURFACE_Y, RIGHT - LEFT, FLOOR_Y - SURFACE_Y, material)
 			return Vector2(104, SURFACE_Y - BODY_SIZE.y)
@@ -228,6 +243,15 @@ func _run_case(spec: Dictionary, fallback: bool) -> Dictionary:
 	var sample_rows: Array = []
 
 	for tick: int in range(ticks):
+		if str(spec.get("layout", "")) == "reentry":
+			if tick == 90:
+				# Restore identical geometry while making the support block active,
+				# then exclude it. Paused active grains are not settled support.
+				_fill(world, fallback, 104, SURFACE_Y, 1, 1, CyberCellWorld.EMPTY)
+				_fill(world, fallback, 104, SURFACE_Y, 1, 1, CyberCellWorld.SAND)
+				world.set_simulation_window(Vector2i(768, 768), Vector2i(64, 64), 0, 0)
+			elif tick == 96:
+				world.set_simulation_window(Vector2i(LEFT - 4, 144), Vector2i(RIGHT - LEFT + 8, 128), 0, 0)
 		if str(spec.get("layout", "")) == "excavate" and tick == 180:
 			var shaft_x: int = floori(player.position.x) - 3
 			_fill(
@@ -409,9 +433,52 @@ func _direct_candidate_contract(fallback: bool) -> void:
 		)
 
 
+func _native_stone_state_contract() -> void:
+	var world: Object = _new_world(false)
+	if world == null:
+		return
+	_base_containment(world, false)
+	_check(world.diagnostic_fill_rect(
+		Vector2i(LEFT, SURFACE_Y), Vector2i(RIGHT - LEFT, FLOOR_Y - SURFACE_Y),
+		CyberCellWorld.STONE, 1
+	), "native granular-Stone setup failed")
+	_check(
+		world.character_box_collides(Vector2(104, SURFACE_Y - BODY_SIZE.y + 0.5), BODY_SIZE, 1),
+		"granular Stone failed sampled support"
+	)
+
+
+func _no_player_control(fallback: bool) -> Dictionary:
+	var world: Object = _new_world(fallback)
+	if world == null:
+		return {"ok":false}
+	_base_containment(world, fallback)
+	_fill(world, fallback, LEFT, SURFACE_Y, RIGHT - LEFT, FLOOR_Y - SURFACE_Y, CyberCellWorld.SAND)
+	var started: int = Time.get_ticks_usec()
+	var moves: int = 0
+	var scanned: int = 0
+	for _tick: int in range(300):
+		var result: Variant = world.simulation_tick()
+		if not fallback and not bool(result):
+			return {"ok":false}
+		if not fallback:
+			moves += int(world.get_moves_last_tick())
+			scanned += int(world.get_scanned_last_tick())
+	return {
+		"ok":true,
+		"backend":"fallback" if fallback else "native",
+		"ticks":300,
+		"elapsed_usec":Time.get_ticks_usec() - started,
+		"moves":moves if not fallback else -1,
+		"scanned":scanned if not fallback else -1,
+	}
+
+
 func _run() -> void:
 	_direct_candidate_contract(false)
 	_direct_candidate_contract(true)
+	_native_stone_state_contract()
+	var no_player_controls: Array = [_no_player_control(false), _no_player_control(true)]
 
 	var cases: Array = [
 		{"id": "C00-hard-stand", "layout": "hardflat", "material": CyberCellWorld.GRANITE_BLOCK, "ticks": 240},
@@ -420,17 +487,22 @@ func _run() -> void:
 		{"id": "S02-shallow-supported", "layout": "shallow", "material": CyberCellWorld.SAND, "ticks": 240},
 		{"id": "S03-film", "layout": "film", "material": CyberCellWorld.SAND, "ticks": 360},
 		{"id": "H01-walk-reverse", "layout": "flat", "material": CyberCellWorld.SAND, "schedule": "walk", "ticks": 360},
+		{"id": "H02-one-cell-step", "layout": "step", "material": CyberCellWorld.SAND, "schedule": "right", "ticks": 240},
 		{"id": "H03-slope", "layout": "slope", "material": CyberCellWorld.SAND, "schedule": "right", "ticks": 360},
 		{"id": "H04-packed-side", "layout": "side", "material": CyberCellWorld.SAND, "schedule": "right", "ticks": 300},
 		{"id": "H05-edge", "layout": "edge", "material": CyberCellWorld.SAND, "schedule": "right", "ticks": 300},
 		{"id": "H06-repeated", "layout": "flat", "material": CyberCellWorld.SAND, "schedule": "repeat", "ticks": 390},
+		{"id": "H07-material-boundary", "layout": "boundary", "material": CyberCellWorld.SAND, "schedule": "slow", "ticks": 240},
 		{"id": "V01-ordinary-landing", "layout": "landing", "material": CyberCellWorld.SAND, "ticks": 240, "drop_gap": 12.0},
 		{"id": "V02-hard-landing", "layout": "landing", "material": CyberCellWorld.SAND, "ticks": 300, "drop_gap": 58.0, "initial_vy": 86.0},
 		{"id": "V03-jetpack", "layout": "flat", "material": CyberCellWorld.SAND, "ticks": 300, "jetpack": true},
+		{"id": "D01-falling-grains", "layout": "falling", "material": CyberCellWorld.SAND, "ticks": 300},
+		{"id": "D02-active-avalanche", "layout": "side", "material": CyberCellWorld.SAND, "schedule": "right", "ticks": 300},
 		{"id": "D03-excavate", "layout": "excavate", "material": CyberCellWorld.SAND, "ticks": 360},
 		{"id": "S05-dust", "layout": "flat", "material": CyberCellWorld.DUST, "schedule": "slow", "ticks": 300},
 		{"id": "S06-salt", "layout": "flat", "material": CyberCellWorld.SALT, "schedule": "slow", "ticks": 300},
-		{"id": "S07-stone-granular", "layout": "flat", "material": CyberCellWorld.STONE, "schedule": "slow", "ticks": 300},
+		{"id": "S07-stone-braced", "layout": "flat", "material": CyberCellWorld.STONE, "schedule": "slow", "ticks": 300},
+		{"id": "L01-window-reentry", "layout": "reentry", "material": CyberCellWorld.SAND, "ticks": 180},
 		{"id": "G02-chunk-seam", "layout": "seam", "material": CyberCellWorld.SAND, "schedule": "right", "start_x": 500, "ticks": 180},
 	]
 	var results: Array = []
@@ -472,8 +544,22 @@ func _run() -> void:
 				"hard landing changed Sand cell count")
 		elif id == "D03-excavate":
 			_check(int(result.release_tick) >= 181, "excavation did not release grounded support")
-		elif id == "S05-dust" or id == "S06-salt" or id == "S07-stone-granular":
+		elif id == "H02-one-cell-step":
+			_check(float(result.max_x) > 170.0, "one-cell step blocked horizontal traversal")
+			_check(int(result.granular_disturbance_total) == 0, "horizontal step triggered landing disturbance")
+		elif id == "H07-material-boundary":
+			_check(int(result.grounded_ticks) > 200, "mixed support-capable boundary lost support")
+			_check(int(result.peak_overlap) <= 1, "material boundary produced excessive overlap")
+		elif id == "D01-falling-grains":
+			_check(int(result.grounded_ticks) > 0, "falling-grain case never recovered grounded support")
+		elif id == "D02-active-avalanche":
+			_check(int(result.changed_cells) > 0, "active-avalanche case produced no granular motion")
+		elif id == "S05-dust" or id == "S06-salt" or id == "S07-stone-braced":
 			_check(int(result.grounded_ticks) > 200, id + " failed representative powder support")
+		elif id == "L01-window-reentry":
+			_check(int(result.grounded_transitions) >= 3, "window exclusion/re-entry did not expose support transition")
+			_check(bool(result.samples[-1].grounded), "window re-entry did not recover support")
+			_check(int(result.granular_disturbance_total) == 0, "window re-entry invented impact disturbance")
 		elif id == "G02-chunk-seam":
 			_check(int(result.grounded_ticks) > 120, "chunk-seam support failed in matching simulation window")
 			_check(int(result.peak_overlap) <= 1, "chunk-seam traversal produced excessive overlap")
@@ -483,6 +569,7 @@ func _run() -> void:
 		"source_note": "CI runner identity binds exact source/runtime",
 		"platform": OS.get_name(),
 		"godot": Engine.get_version_info().string,
+		"no_player_controls": no_player_controls,
 		"results": results,
 	}))
 	if not _failed:
