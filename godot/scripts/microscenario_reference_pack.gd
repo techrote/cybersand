@@ -212,7 +212,8 @@ static func player_granular_review(seed: int = 0) -> Dictionary:
 	# Rising Sand shoulder/crest. Each column remains ordinary authored material.
 	for x: int in range(168, 236):
 		var rise: int = mini(14, (x - 168) / 4)
-		out.rectangles.append_array([x,216-rise,1,rise,2])
+		if rise > 0:
+			out.rectangles.append_array([x,216-rise,1,rise,2])
 
 	out.presentation.regions = [
 		region("flat","FLAT SAND / WALK + REVERSE",[40,176,104,84]),
