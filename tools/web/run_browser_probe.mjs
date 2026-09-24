@@ -11,8 +11,9 @@ const url = values.get("--url");
 const output = resolve(values.get("--output"));
 const screenshot = resolve(values.get("--screenshot"));
 const timeoutMs = Number(values.get("--timeout-ms") ?? "180000");
+const resultId = values.get("--result-id") ?? "cybersand-water-result";
 if (!port || !url || !output || !screenshot) {
-  throw new Error("usage: --port N --url URL --output FILE --screenshot FILE [--timeout-ms N]");
+  throw new Error("usage: --port N --url URL --output FILE --screenshot FILE [--timeout-ms N] [--result-id ID]");
 }
 
 const delay = (milliseconds) => new Promise((resolveDelay) => setTimeout(resolveDelay, milliseconds));
@@ -58,7 +59,7 @@ let text = "";
 while (Date.now() < deadline) {
   try {
     const evaluated = await command("Runtime.evaluate", {
-      expression: "document.getElementById('cybersand-water-result')?.textContent ?? ''",
+      expression: "document.getElementById(" + JSON.stringify(resultId) + ")?.textContent ?? ''",
       returnByValue: true,
     });
     text = evaluated.result?.value ?? "";
@@ -68,7 +69,7 @@ while (Date.now() < deadline) {
   }
   await delay(250);
 }
-if (!text) throw new Error("Water browser probe timed out after " + timeoutMs + " ms");
+if (!text) throw new Error("Browser probe timed out waiting for #" + resultId + " after " + timeoutMs + " ms");
 const browser = await command("Runtime.evaluate", {
   expression: "({userAgent:navigator.userAgent,isolated:crossOriginIsolated})",
   returnByValue: true,
