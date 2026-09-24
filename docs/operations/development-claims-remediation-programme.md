@@ -40,7 +40,7 @@ RAG describes remediation state, not severity of the original subsystem.
 
 | Finding | RAG after REM-001 routing | Current interpretation | Owner / prerequisite |
 |---|---|---|---|
-| F01 #11 repair missing from main | Red | Historical bounded repair evidence is valid in its recorded envelope; the owner does not recall accepting it as final barrel/body behavior, and audited main lacks that implementation. | #81, then #83 for broader behaviour |
+| F01 #11 repair missing from main | Amber pending #87 | REM-002 reconstructed the divergence as a never-integrated branch and reconciles the still-valid masked-source, barrier/foreign-mask ejection and bounded granular-bearing semantics on current source with source-matched runtimes. This is integration repair, not broad owner gameplay acceptance. | #81 satisfied on implementation/verification; #83 owns broader behaviour; #87 independently certifies |
 | F02 broad #10/#11 acceptance overclaim | Red | Bounded evidence retained; broad player/body outcomes are not owner-accepted as complete. | #82 player; #81 -> #83 body; #8 umbrella |
 | F03 premature closure semantics | Amber | Historical incident retained; process control still missing. | #86 |
 | F04 formal Water H blinding | Red | #19 simulation/presentation evidence valid; formal blind capture not ready. | #84 |
@@ -111,10 +111,13 @@ implementation lanes.
 #10 is now an evidence/objective anchor; active current-main player/granular work
 belongs to #82.
 
-#11 is now an evidence/objective anchor; #81 owns reconstruction/integration of
-the historical bounded repair into current main, and #83 owns the broader
-body/granular gameplay envelope after #81. The barrel remains a generic Rapier
-reference body; remediation must not create a barrel-specific support subsystem.
+#11 remains an evidence/objective anchor. REM-002 / #81 has now reconstructed
+the historical divergence and reconciled the still-valid bounded generic
+body↔cellular repair on current source; the
+[REM-002 forensic/current evidence](../audits/2026-09-24-rem002-issue11-integration-forensics.md)
+is the canonical record. #83 owns the broader body/granular gameplay envelope and
+explicit owner acceptance. The barrel remains a generic Rapier reference body;
+remediation must not create a barrel-specific support subsystem.
 
 ### #12 Stage 3B
 
@@ -140,8 +143,10 @@ Do not repair current truth by editing old evidence to match it.
 - #9's measured baseline remains scoped to its original source/artifacts.
 - #10's policy/evidence remains a valid bounded checkpoint.
 - #11's `d5f0de6` evidence and `f8720d3` recorded code checkpoint remain
-  historical proof of the bounded implementation/evidence even though audited
-  current main lacks the repair; they are not owner acceptance of final body physics.
+  historical proof of the bounded branch implementation/evidence; REM-002 shows
+  that branch was never integrated rather than later regressed. Current source now
+  has a reconciled bounded successor, but neither historical nor REM-002 evidence
+  is owner acceptance of final body physics.
 - #19's engine/presentation/harness evidence remains valid; only formal blind
   study readiness is withdrawn pending #84.
 - #26's two rejected local candidates remain rejected under their frozen gates;
@@ -158,11 +163,11 @@ Do not freeze CyberSand globally for remediation work. Determine concurrency fro
 the live owner and actual write set.
 
 The Stage-3B central-World producer sequence through #65 is landed. The current
-soliding implementation sequence is #66 -> #67 -> #68 -> #70. #81 is expected
-to touch body coupling and may touch native World tests or helper semantics; it
-must inspect the live #66/#67/#68 branch/PR state before editing. #82/#83 similarly
-inspect current player/body/native/test owners instead of assuming a historical
-branch is safe.
+soliding implementation sequence is #66 -> #67 -> #68 -> #70. REM-002 inspected
+the live #66/#67/#68 ownership before touching body coupling/native World helpers
+and found no active conflicting implementation owner. #82/#83 must still inspect
+current player/body/native/test owners before editing rather than assuming the
+REM-002 or historical branch write set remains free.
 
 If an active implementation owner overlaps materially and the child issue does
 not already define reconciliation, stop under the child's blocker rule. Do not
@@ -173,7 +178,7 @@ unrelated programme by policy fiat.
 
 | Work | Required exit from the remediation programme |
 |---|---|
-| #81 REM-002 | Historical #11 repair reconstructed/reconciled against current main; no silent semantic drift; source-matched tests/evidence; exact integration identity; no broad gameplay acceptance claim. |
+| #81 REM-002 | **Satisfied on this source:** historical #11 divergence reconstructed as never-integrated; bounded masked-source/ejection/bearing semantics reconciled; focused current-source tests plus Native/Godot/Water guards pass; source-matched retained runtimes published; broad gameplay acceptance explicitly remains #83. #87 still independently verifies the landed result. |
 | #82 REM-003 | Current player/granular behaviour characterized/redesigned within its authority; relevant automated coverage and explicit owner gameplay acceptance or explicit rejected/no-go disposition. |
 | #83 REM-004 | Starts after #81; current body/granular envelope tested beyond the historical ordinary rectangle case; explicit owner gameplay acceptance or explicit rejected/no-go disposition. |
 | #84 REM-005 | Formal blind-study arm identity inaccessible to the operator during capture; observations retained append-only with reconstructible post-reveal provenance; #19 simulation/presentation semantics unchanged. |
