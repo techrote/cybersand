@@ -84,6 +84,10 @@ func _build_case(world: Object, fallback: bool, spec: Dictionary) -> Vector2:
 			_fill(world, fallback, LEFT, SURFACE_Y + 3, RIGHT - LEFT, FLOOR_Y - SURFACE_Y - 3, CyberCellWorld.WALL)
 			_fill(world, fallback, LEFT, SURFACE_Y, RIGHT - LEFT, 3, material)
 			return Vector2(104, SURFACE_Y - BODY_SIZE.y)
+		"seam":
+			_fill(world, fallback, 448, FLOOR_Y, 192, 1, CyberCellWorld.WALL)
+			_fill(world, fallback, 448, SURFACE_Y, 192, FLOOR_Y - SURFACE_Y, material)
+			return Vector2(float(spec.get("start_x", 500)), SURFACE_Y - BODY_SIZE.y)
 		"edge":
 			_fill(world, fallback, LEFT, SURFACE_Y, 88, FLOOR_Y - SURFACE_Y, material)
 			return Vector2(128, SURFACE_Y - BODY_SIZE.y)
@@ -132,7 +136,7 @@ func _input_for(schedule: String, tick: int) -> float:
 		"repeat":
 			if tick < 30:
 				return 0.0
-			return 1.0 if ((tick - 30) / 60) as int % 2 == 0 else -1.0
+			return 1.0 if int(floor(float(tick - 30) / 60.0)) % 2 == 0 else -1.0
 		_:
 			return 0.0
 
@@ -188,8 +192,9 @@ func _run_case(spec: Dictionary, fallback: bool) -> Dictionary:
 	if str(spec.get("layout", "")) == "landing":
 		player.velocity.y = float(spec.get("initial_vy", 0.0))
 
-	var roi_origin := Vector2i(LEFT - 1, 150)
-	var roi_size := Vector2i(RIGHT - LEFT + 2, FLOOR_Y - 149)
+	var seam_case: bool = str(spec.get("layout", "")) == "seam"
+	var roi_origin := Vector2i(447, 150) if seam_case else Vector2i(LEFT - 1, 150)
+	var roi_size := Vector2i(194, FLOOR_Y - 149) if seam_case else Vector2i(RIGHT - LEFT + 2, FLOOR_Y - 149)
 	var initial: Dictionary = CyberPhysicsCharacterisation.sample(world, roi_origin, roi_size, false)
 	var initial_cells: PackedByteArray = initial.get("cells", PackedByteArray())
 
@@ -366,7 +371,7 @@ func _run() -> void:
 		{"id": "S05-dust", "layout": "flat", "material": CyberCellWorld.DUST, "schedule": "slow", "ticks": 300},
 		{"id": "S06-salt", "layout": "flat", "material": CyberCellWorld.SALT, "schedule": "slow", "ticks": 300},
 		{"id": "S07-stone-granular", "layout": "flat", "material": CyberCellWorld.STONE, "schedule": "slow", "ticks": 300},
-		{"id": "G02-chunk-seam", "layout": "flat", "material": CyberCellWorld.SAND, "schedule": "right", "start_x": 500, "ticks": 180},
+		{"id": "G02-chunk-seam", "layout": "seam", "material": CyberCellWorld.SAND, "schedule": "right", "start_x": 500, "ticks": 180},
 	]
 	var results: Array = []
 	for fallback: bool in [false, true]:
