@@ -1492,8 +1492,15 @@ func character_disturb_granular(origin: Vector2, size: Vector2, impact_speed: fl
 	):
 		return 0
 	var first_x: int = floori(origin.x + 0.001)
+	var first_y: int = floori(origin.y + 0.001)
 	var last_x: int = ceili(origin.x + size.x - 0.001) - 1
 	var contact_y: int = ceili(origin.y + size.y - 0.001) - 1
+	# Hard-surface collision remains owned by the existing terrain contract.
+	# Mixed hard/granular contact must not manufacture a granular disturbance.
+	for y: int in range(first_y, contact_y + 1):
+		for x: int in range(first_x, last_x + 1):
+			if _is_hard_surface_material(stored_material_at(x, y)):
+				return 0
 	var budget: int = 2 if impact_speed >= 72.0 else 1
 	var left_first: bool = (tick_index & 1) == 0
 	var moved: int = 0
