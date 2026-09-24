@@ -1872,6 +1872,13 @@ void test_granular_player_support_policy() {
     (void)excluded.tick();
     require(!excluded.granular_support_at(64,100,false,false),
             "paused active grains outside the selected region provided support");
+
+    World signed_support;
+    for (std::int64_t y=-100; y<=-98; ++y)
+        for (std::int64_t x=-65; x<=-63; ++x)
+            signed_support.set(x,y,Material::Sand);
+    require(signed_support.granular_support_at(-64,-100,false,false),
+            "negative-coordinate packed support failed");
 }
 
 void test_powder_pair_and_void_policy() {
