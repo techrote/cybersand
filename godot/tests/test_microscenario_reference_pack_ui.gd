@@ -78,8 +78,8 @@ func run() -> void:
 		and bench.instructions.text.contains("Owner gameplay review")
 		and bench.instructions.text.contains("harder landings"),
 		"REM-003 owner-review scenario lacks registered gameplay guidance")
-	expect(bench.material_picker.disabled and not bench.radius_input.editable,
-		"REM-003 owner-review scenario unexpectedly enabled paint authoring")
+	expect(bench.material_picker.disabled and bench.radius_input.editable,
+		"REM-003 erase-only owner-review tools do not match the declared contract")
 	await screenshot("rem003-player-granular-review")
 
 	desktop.simulation_worker.stop_worker()
