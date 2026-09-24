@@ -52,6 +52,8 @@ public:
     [[nodiscard]] std::int64_t material_at(std::int64_t x, std::int64_t y) const;
     [[nodiscard]] bool box_collides(Vector2 origin, Vector2 size) const;
     [[nodiscard]] bool character_box_collides(Vector2 origin, Vector2 size, std::int64_t mode) const;
+    [[nodiscard]] std::int64_t character_disturb_granular(
+        Vector2 origin, Vector2 size, double impact_speed);
     [[nodiscard]] PackedByteArray get_cells() const;
     [[nodiscard]] Dictionary take_render_snapshot(bool force_full = false);
     [[nodiscard]] PackedInt32Array get_hard_surface_rectangles() const;
