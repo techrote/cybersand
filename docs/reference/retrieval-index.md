@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-09-20
+last-reviewed: 2026-09-24
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -49,6 +49,10 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Invariants and incomplete enforcement | [Invariants](invariants.md) |
 | Exact tools, separate native/Web bindings | [Build guide](../operations/local-build-and-validation.md) |
 | CI drift, base-only build identity, release readiness | [Repository/release](../operations/github-development-and-release.md) |
+| What is the current CI provider/recovery state, and is main protected? | [Repository/release](../operations/github-development-and-release.md), then the [2026-09-24 recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md) for incident evidence |
+| Is Stage-3B #65 complete and what is the next dependency-ready package? | [Stage-3B production plan](../operations/soliding-stage3b-production-plan.md), [roadmap](status-and-roadmap.md); use the [recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md) for #65 recovery evidence |
+| Are the retained #65 Linux/Windows runtimes source-matched, and what was actually executed? | [Current/runtime validation](../operations/current-and-historical-validation.md), [validation evidence](validation-evidence.md), then the [recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md) |
+| How should implementation/integration/verification/acceptance be distinguished when closing work? | [Development-claims remediation programme](../operations/development-claims-remediation-programme.md); #86 remains the live owner for the durable closure/ownership/validation-premise controls |
 | Historical versus current platform/test claims | [Validation evidence](validation-evidence.md) |
 | What to update at a physics checkpoint | [Documentation checklist](../operations/documentation-maintenance.md#documentation-update-checklist) |
 | Product intent and next priorities | [Owner intent](product-intent-and-priorities.md), [roadmap](status-and-roadmap.md) |
@@ -163,7 +167,7 @@ separate; the programme graph owns admission.
 - Owners, lifecycle, eligibility and nonwrapping identities: [soliding lifecycle](../architecture/soliding-lifecycle.md).
 - Dirty/activity discovery, complete summaries and refusal: [discovery substrate](../systems/settled-region-discovery.md).
 - Passed Stage-3A bounded-reference evidence and open Stage-3B locality/scalability gate: [Stage-3 review](../audits/issue-12-2026-09-19/stage3-exit-review.md).
-- Completed read-only Stage-3B review and active implementation route: [Astra architecture-review packet](../operations/soliding-stage3b-astra-review.md), then the [Stage-3B production plan](../operations/soliding-stage3b-production-plan.md). At the reconciled REM-001 checkpoint #56-#61/#69 are complete; #62 is the next serialized central-World producer package and #64 remains the separable graph/index lane.
+- Completed read-only Stage-3B review and active implementation route: [Astra architecture-review packet](../operations/soliding-stage3b-astra-review.md), then the [Stage-3B production plan](../operations/soliding-stage3b-production-plan.md). #56-#65/#69 are complete; #65 landed and was verified through the recovery programme. **#66 is next**, followed by #67, #68 and #70.
 - Ordinary Current sleep control and measurement gaps: [measurement contract](../operations/soliding-measurement.md).
 
 - Blocked falling/torque/coherent-child motion fixture: [macro-fracture preregistration](../operations/soliding-macro-fracture-fixture.md).
