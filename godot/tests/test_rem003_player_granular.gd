@@ -351,12 +351,68 @@ func _run_case(spec: Dictionary, fallback: bool) -> Dictionary:
 		"native_active_blocks_sum": native_active_blocks_sum if not fallback else -1,
 		"native_active_blocks_max": native_active_blocks_max if not fallback else -1,
 		"changed_cells": _changed_cells(initial_cells, final_cells),
+		"material_count_initial": int(initial.counts[int(spec.get("material", CyberCellWorld.SAND))]),
+		"material_count_final": int(final.counts[int(spec.get("material", CyberCellWorld.SAND))]),
 		"samples": sample_rows,
 	}
 	return result
 
 
+func _direct_candidate_contract(fallback: bool) -> void:
+	# Directly exercise the registered threshold/conservation contract before the
+	# longer movement cases. Fresh worlds keep each threshold arm independent.
+	for arm: Dictionary in [
+		{"speed":23.0, "expected":0},
+		{"speed":46.0, "expected":1},
+		{"speed":87.5, "expected":2},
+	]:
+		var world: Object = _new_world(fallback)
+		if world == null:
+			continue
+		_base_containment(world, fallback)
+		_fill(world, fallback, LEFT, SURFACE_Y, RIGHT - LEFT, FLOOR_Y - SURFACE_Y, CyberCellWorld.SAND)
+		var before: Dictionary = CyberPhysicsCharacterisation.sample(
+			world, Vector2i(LEFT - 1, 180), Vector2i(RIGHT - LEFT + 2, 48), false
+		)
+		var moved: int = int(world.character_disturb_granular(
+			Vector2(104.0, SURFACE_Y - BODY_SIZE.y + 0.5), BODY_SIZE, float(arm.speed)
+		))
+		var after: Dictionary = CyberPhysicsCharacterisation.sample(
+			world, Vector2i(LEFT - 1, 180), Vector2i(RIGHT - LEFT + 2, 48), false
+		)
+		_check(moved == int(arm.expected),
+			("threshold %.1f moved %d grains, expected %d" % [float(arm.speed), moved, int(arm.expected)]))
+		_check(
+			int(before.counts[CyberCellWorld.SAND]) == int(after.counts[CyberCellWorld.SAND]),
+			"direct disturbance changed Sand cell count"
+		)
+
+	# Mixed hard/granular collision is hard-terrain-owned and must fail closed.
+	var mixed: Object = _new_world(fallback)
+	if mixed != null:
+		_base_containment(mixed, fallback)
+		_fill(mixed, fallback, LEFT, SURFACE_Y, RIGHT - LEFT, FLOOR_Y - SURFACE_Y, CyberCellWorld.SAND)
+		_fill(mixed, fallback, 107, SURFACE_Y, 1, 1, CyberCellWorld.GRANITE_BLOCK)
+		var mixed_before: Dictionary = CyberPhysicsCharacterisation.sample(
+			mixed, Vector2i(LEFT - 1, 180), Vector2i(RIGHT - LEFT + 2, 48), false
+		)
+		var mixed_moved: int = int(mixed.character_disturb_granular(
+			Vector2(104.0, SURFACE_Y - BODY_SIZE.y + 0.5), BODY_SIZE, 87.5
+		))
+		var mixed_after: Dictionary = CyberPhysicsCharacterisation.sample(
+			mixed, Vector2i(LEFT - 1, 180), Vector2i(RIGHT - LEFT + 2, 48), false
+		)
+		_check(mixed_moved == 0, "mixed hard/granular contact disturbed grains")
+		_check(
+			int(mixed_before.counts[CyberCellWorld.SAND]) == int(mixed_after.counts[CyberCellWorld.SAND]),
+			"mixed hard/granular guard changed Sand count"
+		)
+
+
 func _run() -> void:
+	_direct_candidate_contract(false)
+	_direct_candidate_contract(true)
+
 	var cases: Array = [
 		{"id": "C00-hard-stand", "layout": "hardflat", "material": CyberCellWorld.GRANITE_BLOCK, "ticks": 240},
 		{"id": "C01-water-landing", "layout": "landing", "material": CyberCellWorld.WATER, "ticks": 240, "drop_gap": 12.0},
@@ -403,10 +459,17 @@ func _run() -> void:
 		elif id == "S03-film":
 			_check(int(result.grounded_ticks) < int(result.ticks), "unsupported film became permanent support")
 			_check(int(result.granular_disturbance_total) == 0, "unsupported film triggered impact disturbance")
+		elif id == "H01-walk-reverse":
+			_check(int(result.granular_disturbance_total) == 0, "flat walking churned packed Sand")
+			_check(int(result.changed_cells) == 0, "flat walking changed the settled bed")
 		elif id == "V01-ordinary-landing":
 			_check(int(result.granular_disturbance_total) == 1, "ordinary Sand landing did not move exactly one grain")
+			_check(int(result.material_count_initial) == int(result.material_count_final),
+				"ordinary landing changed Sand cell count")
 		elif id == "V02-hard-landing":
 			_check(int(result.granular_disturbance_total) == 2, "hard Sand landing did not move exactly two grains")
+			_check(int(result.material_count_initial) == int(result.material_count_final),
+				"hard landing changed Sand cell count")
 		elif id == "D03-excavate":
 			_check(int(result.release_tick) >= 181, "excavation did not release grounded support")
 		elif id == "S05-dust" or id == "S06-salt" or id == "S07-stone-granular":
