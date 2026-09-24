@@ -102,6 +102,8 @@ void CyberNativeCellWorld::_bind_methods() {
                          &CyberNativeCellWorld::box_collides);
     ClassDB::bind_method(D_METHOD("character_box_collides", "origin", "size", "mode"),
                          &CyberNativeCellWorld::character_box_collides);
+    ClassDB::bind_method(D_METHOD("character_disturb_granular", "origin", "size", "impact_speed"),
+                         &CyberNativeCellWorld::character_disturb_granular);
     ClassDB::bind_method(D_METHOD("get_cells"), &CyberNativeCellWorld::get_cells);
     ClassDB::bind_method(D_METHOD("take_render_snapshot", "force_full"),
                          &CyberNativeCellWorld::take_render_snapshot,
@@ -831,6 +833,46 @@ bool CyberNativeCellWorld::character_box_collides(Vector2 origin, Vector2 size, 
         if (world_->granular_support_at(x, y, mode >= 2)) return true;
     }
     return false;
+}
+
+std::int64_t CyberNativeCellWorld::character_disturb_granular(
+    Vector2 origin, Vector2 size, double impact_speed) {
+    if (world_ == nullptr || world_->has_failed() || !origin.is_finite() ||
+        !size.is_finite() || !std::isfinite(impact_speed) || impact_speed < 24.0 ||
+        size.x <= 0 || size.y <= 0 || size.x > 32 || size.y > 32 ||
+        origin.x < 0 || origin.y < 0 || origin.x + size.x > kWorldWidth ||
+        origin.y + size.y > kWorldHeight) {
+        return 0;
+    }
+
+    const auto first_x = static_cast<std::int32_t>(std::floor(origin.x + 0.001));
+    const auto last_x = static_cast<std::int32_t>(std::ceil(origin.x + size.x - 0.001)) - 1;
+    const auto contact_y =
+        static_cast<std::int32_t>(std::ceil(origin.y + size.y - 0.001)) - 1;
+    const auto budget = impact_speed >= 72.0 ? 2 : 1;
+    const bool left_first = (world_->tick_index() & 1U) == 0U;
+    std::int64_t moved = 0;
+
+    for (int pass = 0; pass < 2 && moved < budget; ++pass) {
+        const bool use_left = pass == 0 ? left_first : !left_first;
+        const auto source_x = use_left ? first_x : last_x;
+        const auto outward = use_left ? -1 : 1;
+        const auto target_x = source_x + outward;
+        const auto target_y = contact_y - 1;
+        if (!in_bounds(source_x, contact_y) || !in_bounds(target_x, target_y)) continue;
+
+        const auto material = world_->stored_material(source_x, contact_y);
+        if (!cybersand::MaterialRules::supports_granular_load(material) ||
+            !world_->granular_support_at(source_x, contact_y, false, false)) {
+            continue;
+        }
+        if (world_->relocate_stored_cell(source_x, contact_y, target_x, target_y)) {
+            ++moved;
+        }
+    }
+
+    if (moved != 0) ++revision_;
+    return moved;
 }
 
 void CyberNativeCellWorld::refresh_render_cells() const {
