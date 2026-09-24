@@ -55,6 +55,8 @@ CyberNativeCellWorld::~CyberNativeCellWorld() = default;
 void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("diagnostic_reset", "options"), &CyberNativeCellWorld::diagnostic_reset);
     ClassDB::bind_method(D_METHOD("diagnostic_fill_rect", "origin", "size", "material", "state_b"), &CyberNativeCellWorld::diagnostic_fill_rect, DEFVAL(0));
+    ClassDB::bind_method(D_METHOD("diagnostic_relocate_cell", "from", "to"),
+                         &CyberNativeCellWorld::diagnostic_relocate_cell);
     ClassDB::bind_method(D_METHOD("diagnostic_snapshot", "origin", "size", "include_histogram"), &CyberNativeCellWorld::diagnostic_snapshot, DEFVAL(false));
     ClassDB::bind_method(D_METHOD("diagnostic_body_metrics"), &CyberNativeCellWorld::diagnostic_body_metrics);
     ClassDB::bind_method(D_METHOD("get_water_experiment_policy"),
@@ -1256,6 +1258,23 @@ bool CyberNativeCellWorld::diagnostic_fill_rect(Vector2i origin, Vector2i size,
         for (auto x = origin.x; x < origin.x + size.x; ++x)
             (void)world_->set_cell_state(x, y, value, state_a,
                                        static_cast<std::uint8_t>(state_b));
+    ++revision_;
+    return true;
+}
+
+bool CyberNativeCellWorld::diagnostic_relocate_cell(Vector2i from, Vector2i to) {
+    if (!diagnostic_fixture_ || world_ == nullptr || world_->has_failed() ||
+        !in_bounds(from.x, from.y) || !in_bounds(to.x, to.y)) {
+        return false;
+    }
+    const auto source = world_->stored_material(from.x, from.y);
+    if (source == cybersand::Material::Empty ||
+        cybersand::MaterialRules::is_hard_surface(source)) {
+        return false;
+    }
+    if (!world_->relocate_stored_cell(from.x, from.y, to.x, to.y)) {
+        return false;
+    }
     ++revision_;
     return true;
 }

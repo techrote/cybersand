@@ -100,6 +100,9 @@ public:
     bool diagnostic_reset(const Dictionary& options);
     bool diagnostic_fill_rect(Vector2i origin, Vector2i size, std::int64_t material,
                               std::int64_t state_b = 0);
+    // Serialized diagnostic-only relocation through World::relocate_stored_cell.
+    // Hard-surface sources are rejected so this helper cannot bypass collider ownership.
+    bool diagnostic_relocate_cell(Vector2i from, Vector2i to);
     [[nodiscard]] Dictionary diagnostic_snapshot(Vector2i origin, Vector2i size,
                                                   bool include_histogram = false) const;
     [[nodiscard]] Array diagnostic_body_metrics() const;
