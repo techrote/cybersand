@@ -5,8 +5,8 @@ canonical-for: [rigid-body-cellular-coupling]
 status: Current
 scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact; generalized physics and exact replay remain absent
 keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
-related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md]
-last-reviewed: 2026-09-09
+related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md]
+last-reviewed: 2026-09-24
 ---
 
 # Rigid-body and cellular coupling
@@ -39,8 +39,11 @@ Source: [native `prepare_rigid_body_coupling`, `parse_body_states`, `rasterize_b
    current accepted transform. The first mask writer wins where bodies overlap.
 3. When overlap response is enabled, reconcile movable material against the
    temporary sweep. Then clear it and rebuild only endpoint occupancy.
-4. Accumulate endpoint boundary pressure and cellular movement contacts. Publish
-   bounded observations keyed by body/sample identity.
+4. Accumulate endpoint boundary pressure, cellular movement contacts and the
+   bounded granular-bearing contribution from exposed downward body cells. Bearing
+   queries the existing granular support policy against **stored** material, not
+   the transient body proxy. Publish bounded observations keyed by body/sample
+   identity.
 
 The GDScript fallback projects input order; arbitrary sample reordering is not
 claimed equivalent. Body/body collision remains Rapier's responsibility.
@@ -58,10 +61,11 @@ unit contract. Packed fields are documented in
 |---|---|
 | Translation sweep | More than 32 pixels between samples is treated as a teleport: endpoint only |
 | Sweep sampling | Approximately one-cell spacing, capped at 24 intervals/25 samples; interpolates centre, shortest rotation and size |
-| Endpoint overlap | Search outward from nearest face and along its tangent, at most eight cells |
+| Endpoint overlap | Search outward from nearest face and along its tangent, at most eight cells; the bounded half-cell path may not cross hard terrain or another body's transient mask |
 | Swept-only overlap | Prefer ejection in body-travel direction; rotational response remains approximate |
-| No valid destination | Retain the cell and report unresolved overlap plus reaction; no particle fallback or silent deletion |
-| Native impulse | Contact/displacement/density pressure terms; combined magnitude capped at 3 per body/tick |
+| No valid destination | Retain the complete stored cell payload and report unresolved overlap plus reaction; no particle fallback or silent deletion |
+| Granular bearing | Exposed downward body cells query the version-1 granular support predicate against stored material; response is recomputed each accepted sample, capped at 20 impulse units and uses at most 0.5-cell low-speed correction |
+| Native impulse | Contact/displacement/density pressure terms retain the ordinary cap; the bounded bearing term shares the cellular coupling owner rather than becoming a second collider/solver |
 | Stale results | Reject age above eight body samples; suppress correction above one; scale impulse by `1/(1+0.25*age)` |
 
 Ejection transfers the compact cell state including Water mass. Pure closed
@@ -112,32 +116,53 @@ for every fast/thin/rotating shape. Rationale lives in
 
 ## What did the measured barrel baseline establish?
 
-**Current, 2026-09-09 measured scope:** the [issue #9 report](../audits/2026-09-09-physics-characterisation.md)
-separates stored-cell displacement, boundary pressure, transient contact and
-Rapier hard-floor collision. Packed Sand does not stop an ordinary barrel before
-the deep hard floor. Contact feedback from retained masked grains can point
-downward: dispatch uses stored material, while kernel lookup sees the Wall proxy.
-This source path has a native characterization fixture; it is a measured defect
-hypothesis for successor implementation, not a new support contract.
+**Historical 2026-09-09 scope:** the [issue #9 report](../audits/2026-09-09-physics-characterisation.md)
+separated stored-cell displacement, boundary pressure, transient contact and
+Rapier hard-floor collision. On that source, packed Sand did not stop an ordinary
+rectangle before the deep hard floor; masked stored grains could produce
+Wall-proxy-derived contact feedback; and endpoint-only ejection could move Water
+across a one-cell hard floor. Those observations remain valid historical evidence
+for the identified source. They are no longer Current behavior after REM-002.
 
-`record_impulse` clamps after each displacement/boundary addition; the final
-combined result is capped again after pixel contact. Opposing terms therefore
-cannot be assessed from a single final cap count. Diagnostic construction options
-and the unchanged nine-float result are described by the
-[measurement runbook](../operations/physics-characterisation.md). Raw impulses
-are not calibrated force or buoyancy. Disabling contact experimentally does not
-meet the half-depth impact target and does not implement static bearing.
+## What does REM-002 establish on Current source?
 
-The global Water accounting control also reproduces a separate ejection-path
-defect: `find_ejection_target` checks the endpoint, allowing displacement across
-a one-cell hard floor. All Water remains in the finite World, but some leaves
-the bed's measurement crop. A one-cell fixture proves this without a cellular
-tick or Rapier step. This is not density exchange or loss of Water mass; #11
-needs a bounded barrier-aware displacement policy.
+**Current bounded baseline, 2026-09-24:** [REM-002 evidence](../audits/2026-09-24-rem002-issue11-integration-forensics.md)
+reconciles the never-integrated historical #11 repair into current main without
+claiming broad body/granular gameplay acceptance.
+
+Current semantics are:
+
+- a stored cell beneath a transient body mask remains material authority and does
+  not execute its normal cellular kernel as the body Wall proxy;
+- ejection endpoints and their bounded path reject hard terrain and foreign body
+  masks; if no legal target exists, the complete payload stays at the source and
+  unresolved overlap is reported;
+- an ordinary rectangle may receive a bounded cellular-owned granular-bearing
+  contribution from current support-capable packed material;
+- bearing is recomputed from current cells every accepted sample and disappears
+  after excavation/support loss; there is no support cache or granular Rapier
+  collider;
+- hard terrain remains Rapier/static-terrain contact, and liquids do not become
+  granular bearing;
+- the existing 11-float input / 9-float result ABI and sample-age policy remain
+  unchanged.
+
+On frozen source `df54e927...`, the focused real-Rapier Linux regression measured
+one-height Sand peak/final depth **3.748/0.000 cells**, four-height
+**6.652/1.472 cells**, and explicit excavation released the body into substantial
+downward travel. The exact runtime/platform qualifications and retained hashes are
+in the dated REM-002 audit.
+
+This is still a bounded ordinary rectangle/load baseline. General shapes, high
+energy/thin beds, crowding, sustained publication delay, calibrated force/torque,
+fracture and broad body↔granular gameplay acceptance remain outside this contract
+and are owned by REM-004 / #83 where applicable.
 
 ## Sampled player support is a separate owner
 
 **Current:** the [granular/player policy](../systems/granular-interaction-policy.md)
-adds material-aware packing queries, directional collision and bounded enclosure
-recovery. The sampled character alone resolves those contacts. Rapier barrel
-bearing, masked-source feedback and barrier-aware ejection remain issue #11.
+still owns sampled-character material-aware packing queries, directional collision
+and bounded enclosure recovery. REM-002 reuses the same support predicate for a
+separate bounded body-coupling observation against stored material; it does not
+make the sampled character a Rapier collider and does not add a second material
+owner.

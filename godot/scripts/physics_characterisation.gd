@@ -241,6 +241,8 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 	var raw_displacement: Vector2 = Vector2.ZERO
 	var raw_boundary: Vector2 = Vector2.ZERO
 	var raw_contact: Vector2 = Vector2.ZERO
+	var raw_bearing: Vector2 = Vector2.ZERO
+	var support_samples: int = 0
 	var applied: Vector2 = Vector2.ZERO
 	var max_age: int = 0
 	var stale: int = 0
@@ -349,6 +351,9 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 				caps += int(d[12])
 				final_caps += int(d[13])
 				for i: int in range(324): face_totals[i] += int(d[16][i])
+				if d.size() >= 20:
+					raw_bearing += Vector2(d[17],d[18])
+					support_samples += int(d[19])
 			if result.size() >= 9:
 				displaced += int(result[6])
 				unresolved += int(result[7])
@@ -403,7 +408,8 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 				"grounded":player.grounded,"overlap":overlap,"materials":contact_materials,"foot_materials":foot_materials,"water_mass":last_sample.water_mass,
 				"impulse_x":impulse.x,"impulse_y":impulse.y,"caps":caps,"unresolved":unresolved,"displaced":displaced,
 				"raw_displacement":[raw_displacement.x,raw_displacement.y],"raw_boundary":[raw_boundary.x,raw_boundary.y],
-				"raw_contact":[raw_contact.x,raw_contact.y],"applied":[applied.x,applied.y],"max_age":max_age})
+				"raw_contact":[raw_contact.x,raw_contact.y],"raw_bearing":[raw_bearing.x,raw_bearing.y],
+				"support_samples":support_samples,"applied":[applied.x,applied.y],"max_age":max_age})
 			if mode == "cellular":
 				var front: int = 0
 				for index: int in range(last_sample.cells.size()):
@@ -463,7 +469,8 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 		"floor_contact_tick":floor_contact_tick,"pre_floor":pre_floor,"grounded_ticks":grounded_ticks,
 		"max_overlap":max_overlap,"intermediate_caps":caps,"final_caps":final_caps,"displaced":displaced,"unresolved":unresolved,
 		"displacement_impulse":[raw_displacement.x,raw_displacement.y],"boundary_impulse":[raw_boundary.x,raw_boundary.y],
-		"contact_impulse":[raw_contact.x,raw_contact.y],"applied_impulse":[applied.x,applied.y],"max_sample_age":max_age,
+		"contact_impulse":[raw_contact.x,raw_contact.y],"bearing_impulse":[raw_bearing.x,raw_bearing.y],
+		"support_samples":support_samples,"applied_impulse":[applied.x,applied.y],"max_sample_age":max_age,
 		"stale":stale,"duplicates":duplicates,"faces":face_totals,"tick_us":quantiles(tick_times),"coupling_us":quantiles(coupling_times),
 		"rows":rows,"frames":frame_records}
 	if wex001:

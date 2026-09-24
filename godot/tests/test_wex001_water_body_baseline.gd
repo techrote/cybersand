@@ -54,15 +54,16 @@ func _run() -> void:
 	if int(by_id.Sm.displaced) <= 0 or int(by_id.Sm.wex001.peak_above_surface_mass) <= shallow_control_peak:
 		_fail("moderate shallow body did not reproduce useful Water displacement")
 		return
-	# This is deliberately a characterization lock on a known defect, not an
-	# acceptance requirement. A semantic fix must intentionally reconcile #91.
-	if int(by_id.Sm.wex001.max_forbidden_water_mass) <= 0:
-		_fail("registered current floor-crossing defect no longer reproduces; reconcile the WEX-001 baseline")
-		return
-
+	# WEX-001 originally locked the then-current floor-crossing defect so a later
+	# semantic repair could not disappear silently. REM-002 is that explicit
+	# successor repair: retain the historical audit, but Current must now keep
+	# body-driven Water on the legal side of hard terrain.
 	for id: String in ["Sg","Sm","Sh","Dm","Dl","M-","M+","T","P1","P2","O0","O1"]:
 		if int(by_id[id].displaced) <= 0:
 			_fail(id + " produced no body-driven cell displacement")
+			return
+		if int(by_id[id].wex001.max_forbidden_water_mass) != 0:
+			_fail(id + " displaced Water through the hard-floor barrier")
 			return
 
 	for pair: Array in [["Sm","P1"],["Dm","P2"]]:

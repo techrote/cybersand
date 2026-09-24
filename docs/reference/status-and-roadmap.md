@@ -114,16 +114,21 @@ is implemented and its dated fixture evidence remains valid, but later owner
 gameplay evaluation did not accept the broader player/granular objective; #82 owns
 that remediation.
 
-Issue #11 has a source-matched historical repair checkpoint for masked-source
-feedback, bounded ejection paths and ordinary rectangle/load bearing, but that
-historical implementation is not in audited current main. The owner later clarified
-that the barrel is only a generic Rapier reference body and does not recall
-accepting the historical barrel-support result as final behavior. #81 owns
-current-main reconstruction/integration and #83 owns the broader body/granular
-acceptance envelope afterwards. Raising barrel impulse caps alone is not a substitute.
-The [remediation programme](../operations/development-claims-remediation-programme.md)
-owns these claim-state distinctions; the soliding programme remains independently
-active. Current F01/F02 contracts and the separate runtime publication gate remain applicable.
+Issue #11's historical repair checkpoint remains bounded evidence, and REM-002
+has now established why it disappeared from project truth: the repair branch was
+**never integrated into main**, rather than later merged and regressed. Current
+source reconciles the still-valid generic masked-source, barrier/foreign-mask
+ejection and bounded granular-bearing semantics, with source-matched retained
+runtimes and a focused recurrence regression. See the
+[REM-002 forensic/current evidence](../audits/2026-09-24-rem002-issue11-integration-forensics.md).
+
+This does not convert the historical result into broad acceptance. The owner
+clarification still treats the barrel as a generic Rapier reference body and does
+not accept the historical ordinary envelope as finished body physics. **#83 /
+REM-004 is now the body↔granular acceptance owner after REM-002**. Raising impulse
+caps alone remains an invalid substitute. The
+[remediation programme](../operations/development-claims-remediation-programme.md)
+owns these claim-state distinctions; #12 remains independently active.
 
 1. Preserve the implemented F01 quarantine and F02 pause/re-entry contracts and
    their combined regressions; extend the documented platform/failure-site gaps

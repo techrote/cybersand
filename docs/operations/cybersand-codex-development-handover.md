@@ -56,12 +56,13 @@ Before relying on a closed/completed issue as current acceptance, read the
 [development-claims remediation programme](development-claims-remediation-programme.md).
 #8 remains open; #10/#11 retain bounded evidence but are reopened as
 evidence/objective anchors because later owner evaluation did not accept their
-broader gameplay objectives. #82 owns broad player/granular acceptance; #81 owns
-reconstruction/integration of the historical bounded #11 repair and #83 owns the
-broader body/granular envelope after #81. The owner later clarified that the
-barrel is a generic Rapier reference body and does not recall accepting the
-historical barrel-support result as final behavior. Do not start substitute implementation work
-under #10/#11.
+broader gameplay objectives. #82 owns broad player/granular acceptance. REM-002 /
+#81 has now reconstructed the historical #11 divergence as a never-integrated
+branch and reconciled the still-valid bounded generic body↔cellular semantics on
+current source; [its dated audit](../audits/2026-09-24-rem002-issue11-integration-forensics.md)
+is the current integration record. #83 now owns the broader body/granular envelope
+and owner acceptance. The barrel remains a generic Rapier reference body; do not
+start substitute implementation work under #10/#11.
 
 #19's simulation/presentation apparatus remains valid, but formal blind H capture
 waits for #84. #26's exact negative candidate result remains valid; #49 has now
@@ -139,15 +140,20 @@ and [reproduction runbook](physics-characterisation.md). That dated baseline use
 `ab4851e9e6a3ee182aba1a31a8f66d135e87df3a` plus a recorded diagnostic delta,
 subsequently committed as `10e8153` on `codex/issue-9-physics-characterisation`.
 Density exchange, the former Sand-only player predicate and masked-source barrel
-feedback have separate baseline evidence. Issue #10 changes the first two under
-its versioned policy; barrel work remains #11. The local source checkpoint includes
-fixtures, reduced data and plots; generated runtimes/raw logs remain in the
-active development workspace. Do not treat the old published DLL as containing
-the new diagnostic API or close the issue by reusing historical acceptance.
+feedback have separate baseline evidence. Issue #10 changed the first two under
+its versioned policy. The masked-source/barrier/bearing defect family was later
+reconciled by REM-002; use the current coupling contract and REM-002 audit rather
+than treating this 2026-09-09 baseline as Current behavior. The local historical
+checkpoint still retains its original fixtures, reduced data and plots.
 
 ## Issue #10 handoff
 
-**Current:** Issue #9 baseline is committed at 10e8153. Player and exchange are separate focused changes, with fresh DLL builds and preserved intake artifact. Barrel feedback/bearing/ejection belongs to #11. See the [granular/player policy](../systems/granular-interaction-policy.md).
+**Current:** Issue #9 remains historical characterization and Issue #10's
+bounded player/exchange policy remains valid. REM-002 now supplies the current
+bounded generic rectangle baseline for masked-source authority, barrier-aware
+ejection and granular bearing; broad body/granular acceptance belongs to #83.
+See the [granular/player policy](../systems/granular-interaction-policy.md) and
+[current coupling contract](../architecture/rigid-body-and-cellular-coupling.md).
 
 Continue from `codex/issue-10-player-and-exchange`; support commit `1fba848`
 precedes the exchange/evidence commit. Read the
