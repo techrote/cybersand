@@ -1,9 +1,8 @@
 extends SceneTree
 
-# REM-003 / #82 observation-first Current-source characterization.
-# This file deliberately asserts only execution/correctness invariants at the
-# preregistration checkpoint. It prints bounded behavior measurements for Current;
-# candidate-specific regressions are added only after the mechanism is classified.
+# REM-003 / #82 Current-baseline plus candidate-C1 regression envelope.
+# Historical baseline evidence is frozen at c4ebb485; this current file checks the
+# bounded C1 implementation objectively. Owner gameplay acceptance remains separate.
 
 const DT: float = 1.0 / 60.0
 const BODY_SIZE := Vector2(8.0, 14.0)
@@ -520,7 +519,7 @@ func _run() -> void:
 			_check(bool(result.get("ok", false)), str(result.get("id", "case")) + " failed to execute")
 			await process_frame
 
-	# Pre-candidate invariant checks only. These do not declare gameplay quality.
+	# Objective C1 engineering checks only. These do not declare gameplay quality.
 	for result: Dictionary in results:
 		if not bool(result.get("ok", false)):
 			continue
@@ -571,8 +570,8 @@ func _run() -> void:
 			_check(int(result.grounded_ticks) > 120, "chunk-seam support failed in matching simulation window")
 			_check(int(result.peak_overlap) <= 1, "chunk-seam traversal produced excessive overlap")
 
-	print("REM003_CURRENT ", JSON.stringify({
-		"schema": "rem003-current-v1",
+	print("REM003_C1 ", JSON.stringify({
+		"schema": "rem003-c1-v1",
 		"source_note": "CI runner identity binds exact source/runtime",
 		"platform": OS.get_name(),
 		"godot": Engine.get_version_info().string,
@@ -580,5 +579,5 @@ func _run() -> void:
 		"results": results,
 	}))
 	if not _failed:
-		print("REM-003 Current characterization completed")
+		print("REM-003 C1 engineering characterization completed")
 	quit(1 if _failed else 0)
