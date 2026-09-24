@@ -258,6 +258,19 @@ For WEX programme completion, #94 can be considered satisfied after this
 disposition and its exact-head/merged-main validation. #95 still requires #92 or
 an explicit current blocked/no-go disposition for #92.
 
+## Final-validation trigger note
+
+On the first `ready_for_review` event, the repository's ready-scope job correctly
+enumerated this PR's native/GDExtension files and reported expensive validation
+**required**, but the downstream expensive job was nevertheless recorded as
+skipped for that event. That skipped job is **not** acceptance evidence.
+
+Final #94 acceptance therefore uses a subsequent `synchronize` event while the PR
+is already ready-for-review. The WEX force law/native/test source remains unchanged;
+this documentation synchronization exists only to force the normal ready-PR
+Native/GDExtension validation path to execute. Exact final run identities are
+recorded in the PR/issue completion record after they finish.
+
 ## Remaining evidence limits
 
 - Linux Godot runtime execution only; Windows is cross-build evidence.
