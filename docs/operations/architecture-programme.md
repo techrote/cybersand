@@ -105,11 +105,22 @@ The clarification is:
 
 The affected implementation-decision route is therefore:
 
-`#49 apparatus || #91/#92 hybrid evidence || #93 optional gas research -> #95 synthesis -> #45 proceed/narrow/recharter/defer/no-go -> directional reassessment -> #18 admission/no-go -> #20/G-B if justified -> G-final`.
+`#49 apparatus || #91 baseline + #92 result/disposition || #93/#94 research -> #95 synthesis -> #45 proceed/narrow/recharter/defer/no-go -> directional reassessment -> #18 admission/no-go -> #20/G-B if justified -> G-final`.
 
-#94 decompression research runs only after #93 explicitly admits it. #12 remains
-the sole production soliding/hybrid owner; WEX may not create a Water-only duplicate
-handoff backend. This checkpoint does not modify Current Water semantics.
+Current WEX disposition on 2026-09-24:
+
+- #92 is **BLOCKED**, not no-go: the generic #12 dynamic material↔Rapier handoff
+  needed for a real Water-sheet proof remains Planned/model-only. No sheet arm ran,
+  so deep-release benefit/cost remains unknown. The canonical record is
+  [WEX-002 blocked disposition](../audits/2026-09-24-wex002-water-sheet-blocked-disposition.md).
+- #94 completed as **NARROW-USE** local/simple-breach decompression research; it
+  does not admit a production atmosphere system.
+
+#12 remains the sole production soliding/hybrid owner; WEX may not create a
+Water-only duplicate handoff backend. With #92 explicitly blocked and #91/#93/#94
+complete, #95 may now synthesize the available evidence without waiting for
+speculative future #12 dynamics. This checkpoint does not modify Current Water
+semantics.
 
 ## Current staged status, after G-P (2026-09-11)
 

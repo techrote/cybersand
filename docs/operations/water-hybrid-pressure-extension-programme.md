@@ -5,7 +5,7 @@ document-kind: design
 scope: Parallel/extension research for deep-Water bulk response, generic Rapier↔cellular coupling, bounded solided-Water sheet proofs, saturated-head requirement reassessment, lumped gas regions and optional decompression events; no production architecture adoption
 canonical-for: [water-hybrid-pressure-extension-programme]
 last-reviewed: 2026-09-24
-related-documents: [architecture-programme.md, soliding-programme.md, ../systems/water-design.md, ../architecture/rigid-body-and-cellular-coupling.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md, ../reference/product-intent-and-priorities.md, ../research/lumped-gas-region-pressure-bookkeeping.md, ../audits/2026-09-24-wex004-decompression-disposition.md]
+related-documents: [architecture-programme.md, soliding-programme.md, ../systems/water-design.md, ../architecture/rigid-body-and-cellular-coupling.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md, ../reference/product-intent-and-priorities.md, ../research/lumped-gas-region-pressure-bookkeeping.md, ../audits/2026-09-24-wex002-water-sheet-blocked-disposition.md, ../audits/2026-09-24-wex004-decompression-disposition.md]
 ---
 
 # Water hybrid, saturated-head and compartment-pressure extension programme
@@ -374,21 +374,27 @@ existing #45 remains the architecture question consumed/reconciled by #95; it is
 a prerequisite implementation for #91-#94.
 ```
 
-#49's corrected control is available to WEX-005. WEX-002 still waits for a suitable
-generic dynamic cell↔Rapier substrate and must not duplicate #12; current Stage-3B
-through #70 remains cells-owned read-only discovery and does not by itself satisfy
-that gate.
+#49's corrected control is available to WEX-005.
 
-WEX-003 admitted WEX-004 as a bounded non-production proof. WEX-004 has now
-completed with the [2026-09-24 narrow-use disposition](../audits/2026-09-24-wex004-decompression-disposition.md):
+WEX-002 is now complete for the current programme pass with the
+[2026-09-24 BLOCKED disposition](../audits/2026-09-24-wex002-water-sheet-blocked-disposition.md).
+Current Stage-3B through #70 remains cells-owned read-only discovery; the
+production dynamic ownership transaction (native payload owner ↔ main-thread
+Rapier body with fenced commit/demotion) is still Planned/model-only. Therefore no
+legitimate generic substrate exists for the sheet proof, and WEX-002 deliberately
+did not create a Water-only duplicate backend. The Water-sheet hypothesis remains
+untested rather than rejected.
+
+WEX-003 admitted WEX-004 as a bounded non-production proof. WEX-004 completed with
+the [2026-09-24 narrow-use disposition](../audits/2026-09-24-wex004-decompression-disposition.md):
 simple/open direct breaches can use a finite local pressure-difference event
 without gas CFD, but routed/corner/room-scale decompression is unproven and no
 production atmosphere feature is admitted.
 
-The immediate remaining WEX routing is therefore to give #92 an explicit current
-blocked/no-go disposition if no suitable generic dynamic hybrid substrate exists,
-then execute WEX-005 synthesis. WEX-005 is a decision/reconciliation issue, not an
-automatic implementation issue.
+All WEX-005 prerequisites are now available in their allowed form: #91 complete,
+#92 explicitly blocked, #93 complete, #94 complete, and #49 corrected apparatus
+available. **#95 is the next WEX programme action.** WEX-005 is a
+decision/reconciliation issue, not an automatic implementation issue.
 
 #84 formal blind-study capture, #85/#86 broad remediation and unrelated
 MicroScenario work are separate. Do not make them blanket prerequisites for this
@@ -419,6 +425,33 @@ and the defect both retained. No semantic Water tuning is required to complete t
 baseline.
 
 ## WEX-002 — bounded upper-volume Water-sheet proof
+
+**Completed current-pass disposition, 2026-09-24: BLOCKED.**
+
+See the [final WEX-002 blocked disposition](../audits/2026-09-24-wex002-water-sheet-blocked-disposition.md).
+
+The blocker is the hard entry gate, not negative sheet evidence. Current generic
+body↔cell coupling keeps material in native cells and Rapier bodies independent.
+The #12 lifecycle describes a future singular-owner dynamic transaction, but
+dynamic coherent aggregates, the production fence/rendezvous, live Rapier body
+handoff and reversible payload demotion remain Planned/model-only. Current
+Stage-3B is read-only cells-owned discovery; completing #66-#70 does not by itself
+supply the required dynamic substrate.
+
+Accordingly no sheet arm was executed and no Water-specific handoff backend was
+created. The 0..3 primary / 4..5 bounded extension concept, upper-volume segmented
+geometry and S0-S10 falsification matrix remain future registration requirements,
+not passed evidence.
+
+Re-entry requires an actually implemented/admitted generic dynamic substrate with
+exact Water FreeMass/payload transfer, fenced main-thread Rapier ownership,
+collision-topology handoff, bounded refusal/quarantine, reversible demotion and
+the #91 hard-boundary defect fixed or explicitly fenced. Do not automatically
+reactivate this proof merely because Stage 3B closes.
+
+For #95, classify WEX-002 as **still blocked by missing generic hybrid substrate**.
+The deep-release surge question therefore remains untested/unknown; do not convert
+this block into evidence for or against the Water-sheet hypothesis.
 
 Entry:
 
