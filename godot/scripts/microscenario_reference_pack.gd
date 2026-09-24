@@ -8,12 +8,14 @@ const VERSION: int = 1
 const BASELINE: String = "de332eaf8f4e70b25b097bed0c2e2a7b2aac0173 / Baseline transport / Water8-coherence12 / exploratory"
 const MATERIAL_IDS: Array[String] = ["materials/contact-lab", "materials/salt-water", "materials/salt-water-dose-small", "materials/lava-water", "materials/sand-water-control", "materials/fire-gunpowder", "materials/acid-metal", "materials/spark-metal", "materials/cement-water"]
 const FLOOD_ID: String = "ms001/flood-control"
+const REM003_ID: String = "rem003/player-granular-review"
 const STRESS_PREFIX: String = "ms001/stress/"
 const STRESS_PROFILES: Array[String] = ["water-flow", "granular-collapse", "gas-column", "mixed"]
 
 static func ids() -> Array[String]:
 	var out: Array[String] = MATERIAL_IDS.duplicate()
 	out.append(FLOOD_ID)
+	out.append(REM003_ID)
 	for profile: String in STRESS_PROFILES: out.append(STRESS_PREFIX + profile)
 	return out
 
@@ -29,6 +31,7 @@ static func definition(id: String, seed: int = 0) -> Dictionary:
 		"materials/spark-metal": return mechanism_fixture("spark-metal", seed)
 		"materials/cement-water": return mechanism_fixture("cement-water", seed)
 		FLOOD_ID: return flood_control(seed)
+		REM003_ID: return player_granular_review(seed)
 	if id.begins_with(STRESS_PREFIX): return simulation_stress(id.trim_prefix(STRESS_PREFIX), seed)
 	return {}
 
@@ -178,6 +181,54 @@ static func mechanism_fixture(mechanism: String, seed: int = 0) -> Dictionary:
 				{"observation":"concrete-120","comparison":"eq","value":0,"outcome":"fail"}]
 	out.conditions.append({"observation":"end","comparison":"eq","value":duration,"outcome":"complete"})
 	out.source_recipe = "INT-000 generated mechanism fixture v1 / " + mechanism
+	return finish(out)
+
+
+static func player_granular_review(seed: int = 0) -> Dictionary:
+	if seed != 0: return {}
+	var out: Dictionary = base(
+		REM003_ID, 1, "REM-003 Player / Granular Review", "candidate-c1/owner-review-v1", 600,
+		"Owner gameplay review for REM-003 candidate C1. Use A/D and Space. Walk, accelerate, brake and reverse on the flat Sand lane; cross the one-cell step and rising shoulder; traverse Dust/Salt support; use the jetpack for ordinary and harder landings onto Sand; RMB erase the marked shelf or supporting bed to trigger loose/falling grains and collapse. Reset with R between comparisons. Judge support, yield, slopes/edges, loose-versus-packed discrimination, transitions and any remaining sticky/rigid/jittery behavior. Automated counters do not decide acceptance."
+	)
+	out.player_enabled = true
+	out.tools = ["player", "erase"]
+	out.player_start = [48, 202]
+	out.camera_origin = [24, 48]
+	out.interest = {"policy":"fixed", "region":[24,48,488,224]}
+
+	# Shared hard floor/walls and separated packed review lanes.
+	out.rectangles = [
+		32,64,4,200,1, 508,64,4,200,1, 32,260,480,4,1,
+		40,216,104,44,2,
+		152,216,104,44,2,
+		264,216,52,44,14,
+		316,216,52,44,23,
+		376,216,124,44,2,
+		112,215,24,1,2,
+		56,132,56,28,2,
+		52,160,64,4,1,
+		392,154,92,4,1,
+	]
+	# Rising Sand shoulder/crest. Each column remains ordinary authored material.
+	for x: int in range(168, 236):
+		var rise: int = mini(14, (x - 168) / 4)
+		out.rectangles.append_array([x,216-rise,1,rise,2])
+
+	out.presentation.regions = [
+		region("flat","FLAT SAND / WALK + REVERSE",[40,176,104,84]),
+		region("shoulder","STEP + SHOULDER / EDGE TRANSITIONS",[144,176,112,84]),
+		region("powders","DUST / SALT / MATERIAL BOUNDARY",[264,176,104,84]),
+		region("landing","SAND LANDING ZONE / JETPACK DROP",[376,150,124,110]),
+		region("collapse","ERASE SHELF / FALLING + COLLAPSE",[48,120,72,76]),
+	]
+	out.observations = [
+		observe("sand-initial",0,"material_cells",[32,120,480,140],2),
+		observe("dust-initial",0,"material_cells",[264,176,52,84],14),
+		observe("salt-initial",0,"material_cells",[316,176,52,84],23),
+		observe("end",600,"tick",[0,0,1,1]),
+	]
+	out.conditions = [{"observation":"end","comparison":"eq","value":600,"outcome":"complete"}]
+	out.source_recipe = "REM-003 candidate C1 playable owner-review surface v1"
 	return finish(out)
 
 
