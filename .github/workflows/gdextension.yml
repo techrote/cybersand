@@ -260,7 +260,10 @@ jobs:
   linux-regression:
     name: linux regression shard ${{ matrix.shard }}
     needs: linux-build
-    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    if: >-
+      always() &&
+      needs.linux-build.result == 'success' &&
+      (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
     # Shard 2 contains test_web_worker_parity and requires >=2 logical CPUs so
     # its parallel arm actually executes. Standard private-repo ubuntu-24.04
     # GitHub-hosted runners provide 2 vCPUs, so one runner class preserves parity.
@@ -318,8 +321,13 @@ jobs:
 
   linux-serial-equivalence:
     name: linux serial equivalence
-    if: github.event_name == 'pull_request' && github.event.pull_request.draft == false && vars.GDEXT_SERIAL_EQUIVALENCE == '1'
     needs: linux-build
+    if: >-
+      always() &&
+      needs.linux-build.result == 'success' &&
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.draft == false &&
+      vars.GDEXT_SERIAL_EQUIVALENCE == '1'
     runs-on: ubuntu-24.04
     timeout-minutes: 35
     steps:
