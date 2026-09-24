@@ -50,14 +50,48 @@ add no new runtime pass. They qualify how existing evidence may be used.
   artifact, platform and scenario envelope; it is not broad owner gameplay
   acceptance, which is open under #82.
 - #11's 2026-09-13 bounded repair evidence remains accessible in Git history and
-  valid for its ordinary rectangle/load envelope, but the accepted implementation
-  is absent from audited current main; #81 owns integration and #83 later broad
-  acceptance.
+  valid for its ordinary rectangle/load envelope. REM-002 later proved that repair
+  was never integrated rather than later regressed, and reconciled a bounded
+  current-source successor; #83 still owns broad body/granular acceptance.
 - #19's simulation/presentation/harness evidence remains valid, but no human H
   preference study ran and formal blind-study capture is not accepted until #84
   repairs identity separation and append-only observations.
 - #26's exact negative candidate results remain valid; its v1 apparatus is not a
   successor acceptance oracle until #49 completes.
+
+## REM-002 bounded generic body↔granular reconciliation, 2026-09-24
+
+The [REM-002 forensic/current evidence](../audits/2026-09-24-rem002-issue11-integration-forensics.md)
+records both the historical integration mechanism and the current-source successor.
+
+Frozen repair source `df54e927022c464e0da4f41602b2a6e10e1e6075` passed:
+
+- Native C++ **36046243938**;
+- GDExtension/Godot **36046243935**, including all four isolated Linux shards;
+- Water apparatus-v2 regression **36046243988**.
+
+Focused Linux job **107792501555** executed the REM-002 owner-path regression on
+the exact retained Linux runtime and measured:
+
+- one-height Sand peak/final depth `3.7484/0.0000` cells;
+- four-height Sand `6.6518/1.4718` cells;
+- explicit excavation release to peak/final depth
+  `229.3073/229.0247` cells.
+
+The result also covers masked-source authority, thin hard-floor and foreign-body
+ejection blocking, exact blocked-payload retention, native/fallback bearing,
+Water/hard-terrain controls and age-1/age-9 result handling.
+
+Source-matched publication run **36057247186** produced retained Linux runtime
+SHA-256
+`bfc735dd7380edb00ddebc9100b09455d92b2ae17c4e7fb3d027b415f835e6ca`
+with actual Linux Godot execution, and Windows DLL SHA-256
+`22adb31926895b4b2df7a8e92d8b1101533aaccc91ed9ca2710e92e4946d2a80`
+as pinned cross-build-only evidence. No new Windows or browser runtime execution is
+claimed by REM-002.
+
+This is a bounded generic rectangle/load integration result, not owner acceptance
+of production body↔granular gameplay. REM-004 / #83 owns that broader envelope.
 
 These are evidence-boundary corrections, not re-execution or retroactive failure
 of the original bounded campaigns.
