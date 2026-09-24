@@ -166,6 +166,7 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 	var crop_size: Vector2i = Vector2i(width+2, floor_y-crop_origin.y+1)
 	var player: CyberSampledCharacter = CyberSampledCharacter.new()
 	player.reset(Vector2(left+width/2-4,surface-28))
+	player.velocity.y = float(spec.get("player_initial_vy", 0.0))
 	if layout == "enclosed":
 		player.reset(Vector2(left+width/2-4,surface+12))
 	if layout == "interior":
@@ -467,6 +468,7 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 		"completed_ticks":ticks,"surface":surface,"floor":floor_y,"initial":initial,"final":last_sample,
 		"peak_depth":peak_depth,"final_depth":final_depth,"late_creep":final_depth-late_start if floor_contact_tick<0 and ticks>=600 else null,
 		"floor_contact_tick":floor_contact_tick,"pre_floor":pre_floor,"grounded_ticks":grounded_ticks,
+		"player_granular_disturbance_total":player.granular_disturbance_total,
 		"max_overlap":max_overlap,"intermediate_caps":caps,"final_caps":final_caps,"displaced":displaced,"unresolved":unresolved,
 		"displacement_impulse":[raw_displacement.x,raw_displacement.y],"boundary_impulse":[raw_boundary.x,raw_boundary.y],
 		"contact_impulse":[raw_contact.x,raw_contact.y],"bearing_impulse":[raw_bearing.x,raw_bearing.y],
