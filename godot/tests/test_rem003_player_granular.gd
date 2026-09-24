@@ -202,8 +202,15 @@ func _run_case(spec: Dictionary, fallback: bool) -> Dictionary:
 	if world == null:
 		return {"ok": false, "error": "world construction"}
 	var start: Vector2 = _build_case(world, fallback, spec)
-	if str(spec.get("layout", "")) == "seam":
+	var layout: String = str(spec.get("layout", ""))
+	if layout == "seam":
 		world.set_simulation_window(Vector2i(448, 144), Vector2i(192, 128), 0, 0)
+	elif layout == "reentry":
+		if fallback:
+			world.simulation_window_enabled = true
+		world.set_simulation_window(
+			Vector2i(LEFT - 4, 144), Vector2i(RIGHT - LEFT + 8, 128), 0, 0
+		)
 	var player := CyberSampledCharacter.new()
 	player.reset(start)
 	if str(spec.get("layout", "")) == "landing":
