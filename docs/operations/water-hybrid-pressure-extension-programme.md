@@ -4,8 +4,8 @@ status: Planned
 document-kind: design
 scope: Parallel/extension research for deep-Water bulk response, generic Rapier↔cellular coupling, bounded solided-Water sheet proofs, saturated-head requirement reassessment, lumped gas regions and optional decompression events; no production architecture adoption
 canonical-for: [water-hybrid-pressure-extension-programme]
-last-reviewed: 2026-09-20
-related-documents: [architecture-programme.md, soliding-programme.md, ../systems/water-design.md, ../architecture/rigid-body-and-cellular-coupling.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md, ../reference/product-intent-and-priorities.md, ../research/lumped-gas-region-pressure-bookkeeping.md]
+last-reviewed: 2026-09-24
+related-documents: [architecture-programme.md, soliding-programme.md, ../systems/water-design.md, ../architecture/rigid-body-and-cellular-coupling.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md, ../reference/product-intent-and-priorities.md, ../research/lumped-gas-region-pressure-bookkeeping.md, ../audits/2026-09-24-wex004-decompression-disposition.md]
 ---
 
 # Water hybrid, saturated-head and compartment-pressure extension programme
@@ -374,10 +374,21 @@ existing #45 remains the architecture question consumed/reconciled by #95; it is
 a prerequisite implementation for #91-#94.
 ```
 
-#49's corrected control is available to WEX-005. WEX-002 waits for a suitable generic
-hybrid substrate and must not duplicate #12. WEX-003 has now admitted WEX-004 as a
-bounded non-production research proof. WEX-005 is a
-decision/reconciliation issue, not an automatic implementation issue.
+#49's corrected control is available to WEX-005. WEX-002 still waits for a suitable
+generic dynamic cell↔Rapier substrate and must not duplicate #12; current Stage-3B
+through #70 remains cells-owned read-only discovery and does not by itself satisfy
+that gate.
+
+WEX-003 admitted WEX-004 as a bounded non-production proof. WEX-004 has now
+completed with the [2026-09-24 narrow-use disposition](../audits/2026-09-24-wex004-decompression-disposition.md):
+simple/open direct breaches can use a finite local pressure-difference event
+without gas CFD, but routed/corner/room-scale decompression is unproven and no
+production atmosphere feature is admitted.
+
+The immediate remaining WEX routing is therefore to give #92 an explicit current
+blocked/no-go disposition if no suitable generic dynamic hybrid substrate exists,
+then execute WEX-005 synthesis. WEX-005 is a decision/reconciliation issue, not an
+automatic implementation issue.
 
 #84 formal blind-study capture, #85/#86 broad remediation and unrelated
 MicroScenario work are separate. Do not make them blanket prerequisites for this
@@ -506,23 +517,32 @@ Exit may be research-only. A useful cost model with a no-go conclusion is succes
 
 ## WEX-004 — conditional decompression-event proof
 
-WEX-003's 2026-09-20 research disposition explicitly admits this bounded
-non-production proof. Reconcile that landed evidence and live ownership before execution.
+**Completed research disposition, 2026-09-24: NARROW-USE.**
 
-Use generic region pressure differences to create a bounded event, not cellular gas.
-Test whether a local occlusion-aware impulse approximation can move:
+See the [final WEX-004 evidence/disposition](../audits/2026-09-24-wex004-decompression-disposition.md).
 
-- loose powder/debris;
-- small generic Rapier bodies;
-- optional Water/spray where physically sensible;
+The executed proof retains a finite source budget shared across openings, fixed
+10-cell local horizon, 12-step lifetime, bounded cell/body work, direct hard-surface
+occlusion, generation/revision cancellation and legal cellular/Rapier ownership
+paths. D0-D8 pass in the registered envelope; the retained Linux Godot run includes
+a 64-sample first-step timing population.
 
-without global pathfinding every tick or full-room particle CFD.
+The result is intentionally **not** a general decompression model:
 
-Measure event work, affected area, momentum/energy budget, obstacle response,
-multi-opening behavior, pressure decay and stale-topology cancellation.
+- obstacle handling suppresses blocked direct paths rather than routing around
+  corners;
+- conservative authority revision invalidates the event on unrecognized external
+  world mutation;
+- no long-corridor, branching-room, routed-flow or persistent atmosphere evidence
+  exists;
+- work/impulse values are bounded gameplay proxies rather than calibrated gas
+  mechanics.
 
-Reject a simple magical radial attractor if it ignores intervening geometry badly
-enough to break the engine abstraction.
+Retain WEX-004 as evidence that resolved compartment-pressure snapshots can drive
+a cheap local simple-breach effect without cellular gas CFD. Do not infer
+production atmosphere adoption, #45 Water-head completion or routed decompression.
+A future production issue requires a concrete use case, an admitted gas-region/
+portal owner and a new proof for any behavior beyond this direct local envelope.
 
 ## WEX-005 — evidence synthesis and #45 routing
 
