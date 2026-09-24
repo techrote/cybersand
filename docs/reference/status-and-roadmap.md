@@ -226,17 +226,22 @@ investigation before any new #45 pressure/head mechanism is treated as inevitabl
 
 - [#91](https://github.com/techrote/cybersand/issues/91) freezes current generic
   Rapier↔Water splash/displacement and hard-boundary failure evidence.
-- [#92](https://github.com/techrote/cybersand/issues/92) may test at most roughly
-  3-5 segmented upper-volume solided-Water sheet tiers only on a suitable generic
-  #12 hybrid substrate.
-- [#93](https://github.com/techrote/cybersand/issues/93) research now records a
+- [#92](https://github.com/techrote/cybersand/issues/92) is dispositioned
+  **BLOCKED** on current main: the required generic dynamic cell↔Rapier singular-owner
+  handoff remains Planned/model-only under #12. No sheet arm ran and the hypothesis
+  is untested, not rejected. See the
+  [blocked disposition](../audits/2026-09-24-wex002-water-sheet-blocked-disposition.md).
+- [#93](https://github.com/techrote/cybersand/issues/93) research records a
   [bounded lumped-region candidate](../research/lumped-gas-region-pressure-bookkeeping.md):
   technically promising for optional/research use, with no production atmosphere
-  adoption. It admits [#94](https://github.com/techrote/cybersand/issues/94) only
-  as a bounded non-production decompression proof.
-- [#95](https://github.com/techrote/cybersand/issues/95) synthesizes WEX evidence
-  with merged #49 controls and decides whether #45 should proceed, narrow,
-  recharter, defer or no-go.
+  adoption.
+- [#94](https://github.com/techrote/cybersand/issues/94) completed as
+  [NARROW-USE local decompression research](../audits/2026-09-24-wex004-decompression-disposition.md);
+  no general routed/room-scale atmosphere feature is admitted.
+- [#95](https://github.com/techrote/cybersand/issues/95) now has all prerequisites
+  in their allowed form (#92 explicitly blocked) and is the next WEX action. It
+  synthesizes WEX evidence with merged #49 controls and decides whether #45 should
+  proceed, narrow, recharter, defer or no-go.
 
 Water FreeMass and other-liquid CellularYield remain separate; no unification or
 production solver change is selected. Equal-level communicating-head fixtures are
