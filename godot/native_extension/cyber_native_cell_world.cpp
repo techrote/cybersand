@@ -846,9 +846,23 @@ std::int64_t CyberNativeCellWorld::character_disturb_granular(
     }
 
     const auto first_x = static_cast<std::int32_t>(std::floor(origin.x + 0.001));
+    const auto first_y = static_cast<std::int32_t>(std::floor(origin.y + 0.001));
     const auto last_x = static_cast<std::int32_t>(std::ceil(origin.x + size.x - 0.001)) - 1;
     const auto contact_y =
         static_cast<std::int32_t>(std::ceil(origin.y + size.y - 0.001)) - 1;
+
+    // A hard-surface collision remains wholly owned by the existing character /
+    // terrain contract. Do not add granular disturbance merely because a mixed
+    // contact also has an eligible grain at one foot edge.
+    for (auto y = first_y; y <= contact_y; ++y) {
+        for (auto x = first_x; x <= last_x; ++x) {
+            if (cybersand::MaterialRules::is_hard_surface(
+                    world_->stored_material(x, y))) {
+                return 0;
+            }
+        }
+    }
+
     const auto budget = impact_speed >= 72.0 ? 2 : 1;
     const bool left_first = (world_->tick_index() & 1U) == 0U;
     std::int64_t moved = 0;
