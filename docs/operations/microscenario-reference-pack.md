@@ -71,6 +71,29 @@ and native artifact hashes are retained separately. Missing exported source byte
 remain unavailable rather than borrowing an old build identity.
 
 
+## REM-003 player/granular owner-review surface
+
+Catalogue ID `rem003/player-granular-review` is a **candidate-C1 owner-review
+surface**, not a new automated acceptance oracle. It uses the shared schema-2
+MicroScenario host in Play mode with the sampled player enabled and erase-only
+world editing.
+
+The finite review world contains five labelled regions: flat packed Sand for
+walking/acceleration/braking/reversal; a one-cell step plus rising Sand shoulder
+for transition/edge behavior; adjacent Dust and Salt support; a Sand landing zone
+for low and higher jetpack drops; and a supported Sand shelf that can be erased
+to expose falling/collapse behavior. Fresh reset restores the exact candidate
+review geometry.
+
+The on-screen instructions ask the owner to judge support, yield,
+slopes/shoulders/edges, loose-versus-packed discrimination, excavation/collapse
+and any sticky, rigid or jittery behavior. Those observations are deliberately
+subjective. The scenario's declared completion condition only proves the bounded
+600-tick apparatus can execute; it does **not** accept C1 gameplay. Automated
+REM-003 correctness/measurement evidence remains in the dated REM-003 audit and
+issue #82 stays open until explicit owner acceptance or another allowed
+disposition.
+
 ## Flood-Control Puzzle
 
 Catalogue ID `ms001/flood-control` is a compact hydraulic world with a finite
