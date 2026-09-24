@@ -187,6 +187,8 @@ func _run_case(spec: Dictionary, fallback: bool) -> Dictionary:
 	if world == null:
 		return {"ok": false, "error": "world construction"}
 	var start: Vector2 = _build_case(world, fallback, spec)
+	if str(spec.get("layout", "")) == "seam":
+		world.set_simulation_window(Vector2i(448, 144), Vector2i(192, 128), 0, 0)
 	var player := CyberSampledCharacter.new()
 	player.reset(start)
 	if str(spec.get("layout", "")) == "landing":
@@ -339,6 +341,7 @@ func _run_case(spec: Dictionary, fallback: bool) -> Dictionary:
 		"max_packing_occupancy": max_packing,
 		"full_stop_ticks": full_stop_ticks,
 		"release_tick": release_tick,
+		"granular_disturbance_total": player.granular_disturbance_total,
 		"observer_probe_queries": probe_queries,
 		"observer_probe_usec_total": probe_usec,
 		"player_simulate_usec_total": player_usec,
@@ -356,6 +359,7 @@ func _run_case(spec: Dictionary, fallback: bool) -> Dictionary:
 func _run() -> void:
 	var cases: Array = [
 		{"id": "C00-hard-stand", "layout": "hardflat", "material": CyberCellWorld.GRANITE_BLOCK, "ticks": 240},
+		{"id": "C01-water-landing", "layout": "landing", "material": CyberCellWorld.WATER, "ticks": 240, "drop_gap": 12.0},
 		{"id": "S01-packed-stand", "layout": "flat", "material": CyberCellWorld.SAND, "ticks": 300},
 		{"id": "S02-shallow-supported", "layout": "shallow", "material": CyberCellWorld.SAND, "ticks": 240},
 		{"id": "S03-film", "layout": "film", "material": CyberCellWorld.SAND, "ticks": 360},
@@ -389,15 +393,27 @@ func _run() -> void:
 		if id == "C00-hard-stand":
 			_check(int(result.grounded_ticks) > 190, "hard control failed durable standing support")
 			_check(int(result.peak_overlap) == 0, "hard control penetrated hard terrain")
+			_check(int(result.granular_disturbance_total) == 0, "hard terrain triggered granular disturbance")
+		elif id == "C01-water-landing":
+			_check(int(result.granular_disturbance_total) == 0, "Water triggered granular disturbance")
 		elif id == "S01-packed-stand":
 			_check(int(result.grounded_ticks) > 240, "packed Sand failed durable standing support")
 			_check(int(result.peak_overlap) == 0, "packed standing penetrated authoritative material")
+			_check(int(result.granular_disturbance_total) == 0, "resting contact churned packed Sand")
 		elif id == "S03-film":
 			_check(int(result.grounded_ticks) < int(result.ticks), "unsupported film became permanent support")
+			_check(int(result.granular_disturbance_total) == 0, "unsupported film triggered impact disturbance")
+		elif id == "V01-ordinary-landing":
+			_check(int(result.granular_disturbance_total) == 1, "ordinary Sand landing did not move exactly one grain")
+		elif id == "V02-hard-landing":
+			_check(int(result.granular_disturbance_total) == 2, "hard Sand landing did not move exactly two grains")
 		elif id == "D03-excavate":
 			_check(int(result.release_tick) >= 181, "excavation did not release grounded support")
 		elif id == "S05-dust" or id == "S06-salt" or id == "S07-stone-granular":
 			_check(int(result.grounded_ticks) > 200, id + " failed representative powder support")
+		elif id == "G02-chunk-seam":
+			_check(int(result.grounded_ticks) > 120, "chunk-seam support failed in matching simulation window")
+			_check(int(result.peak_overlap) <= 1, "chunk-seam traversal produced excessive overlap")
 
 	print("REM003_CURRENT ", JSON.stringify({
 		"schema": "rem003-current-v1",
