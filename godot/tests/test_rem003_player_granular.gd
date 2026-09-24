@@ -49,6 +49,8 @@ func _new_world(fallback: bool) -> Object:
 
 
 func _fill(world: Object, fallback: bool, x: int, y: int, w: int, h: int, material: int) -> void:
+	if w <= 0 or h <= 0:
+		return
 	if not fallback:
 		_check(
 			world.diagnostic_fill_rect(Vector2i(x, y), Vector2i(w, h), material),
@@ -187,8 +189,13 @@ func _run_case(spec: Dictionary, fallback: bool) -> Dictionary:
 	var max_packing: int = 0
 	var full_stop_ticks: int = 0
 	var probe_queries: int = 0
+	var probe_usec: int = 0
 	var player_usec: int = 0
 	var world_usec: int = 0
+	var native_moves_sum: int = 0
+	var native_scanned_sum: int = 0
+	var native_active_blocks_sum: int = 0
+	var native_active_blocks_max: int = 0
 	var release_tick: int = -1
 	var first_grounded_tick: int = -1
 	var max_abs_vx: float = 0.0
@@ -216,6 +223,7 @@ func _run_case(spec: Dictionary, fallback: bool) -> Dictionary:
 		player.simulate(DT, horizontal, jetpack, world)
 		player_usec += Time.get_ticks_usec() - started
 
+		started = Time.get_ticks_usec()
 		var down_support: bool = world.character_box_collides(
 			player.position + Vector2(0.0, 0.5), BODY_SIZE, 1
 		)
@@ -224,6 +232,7 @@ func _run_case(spec: Dictionary, fallback: bool) -> Dictionary:
 			BODY_SIZE,
 			2
 		)
+		probe_usec += Time.get_ticks_usec() - started
 		probe_queries += 2
 		support_ticks += int(down_support)
 		side_ticks += int(side_support)
@@ -258,6 +267,12 @@ func _run_case(spec: Dictionary, fallback: bool) -> Dictionary:
 				"tick": tick + 1,
 				"case": spec.get("id", "unknown"),
 			}
+		if not fallback:
+			var active_blocks: int = int(world.get_active_blocks_last_tick())
+			native_moves_sum += int(world.get_moves_last_tick())
+			native_scanned_sum += int(world.get_scanned_last_tick())
+			native_active_blocks_sum += active_blocks
+			native_active_blocks_max = maxi(native_active_blocks_max, active_blocks)
 
 		if tick % 60 == 59 or tick == ticks - 1:
 			sample_rows.append({
@@ -298,9 +313,14 @@ func _run_case(spec: Dictionary, fallback: bool) -> Dictionary:
 		"max_packing_occupancy": max_packing,
 		"full_stop_ticks": full_stop_ticks,
 		"release_tick": release_tick,
-		"probe_queries": probe_queries,
-		"player_query_usec_total": player_usec,
+		"observer_probe_queries": probe_queries,
+		"observer_probe_usec_total": probe_usec,
+		"player_simulate_usec_total": player_usec,
 		"world_tick_usec_total": world_usec,
+		"native_moves_sum": native_moves_sum if not fallback else -1,
+		"native_scanned_sum": native_scanned_sum if not fallback else -1,
+		"native_active_blocks_sum": native_active_blocks_sum if not fallback else -1,
+		"native_active_blocks_max": native_active_blocks_max if not fallback else -1,
 		"changed_cells": _changed_cells(initial_cells, final_cells),
 		"samples": sample_rows,
 	}
