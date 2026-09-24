@@ -328,13 +328,13 @@ func _ready() -> void:
 		var workers: int = 4 if OS.has_feature("threads") else 1
 		var cases: Array = [
 			{"id":"rem003-ordinary","mode":"player","material":CyberCellWorld.SAND,
-				"ticks":240,"workers":workers},
+				"ticks":240,"workers":workers,"player_after_tick":true},
 			{"id":"rem003-hard","mode":"player","material":CyberCellWorld.SAND,
-				"ticks":240,"workers":workers,"player_initial_vy":86.0},
+				"ticks":240,"workers":workers,"player_initial_vy":86.0,"player_after_tick":true},
 			{"id":"rem003-hard-terrain","mode":"player","material":0,"layout":"hard",
-				"ticks":240,"workers":workers},
+				"ticks":240,"workers":workers,"player_after_tick":true},
 			{"id":"rem003-water","mode":"player","material":CyberCellWorld.WATER,
-				"ticks":240,"workers":workers},
+				"ticks":240,"workers":workers,"player_after_tick":true},
 		]
 		var result: Dictionary = await CyberPhysicsCharacterisation.run(self,cases)
 		var counts: Dictionary = {}
