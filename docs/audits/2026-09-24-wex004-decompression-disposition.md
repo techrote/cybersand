@@ -260,16 +260,27 @@ an explicit current blocked/no-go disposition for #92.
 
 ## Final-validation trigger note
 
-On the first `ready_for_review` event, the repository's ready-scope job correctly
-enumerated this PR's native/GDExtension files and reported expensive validation
-**required**, but the downstream expensive job was nevertheless recorded as
-skipped for that event. That skipped job is **not** acceptance evidence.
+The first `ready_for_review` event correctly classified this PR as requiring
+expensive validation, but the downstream jobs were skipped by event-state
+orchestration. Those skipped jobs are **not** acceptance evidence.
 
-Final #94 acceptance therefore uses a subsequent `synchronize` event while the PR
-is already ready-for-review. The WEX force law/native/test source remains unchanged;
-this documentation synchronization exists only to force the normal ready-PR
-Native/GDExtension validation path to execute. Exact final run identities are
-recorded in the PR/issue completion record after they finish.
+A subsequent ready-PR `synchronize` run proved the source builds were healthy,
+but exposed a second orchestration defect: Linux and Windows GDExtension builds
+passed while all Linux regression shards inherited a skipped `ready_scope`
+ancestor and were skipped; aggregate run **36017635355** therefore failed
+correctly rather than manufacturing green.
+
+That repository-level validation-premise bug was fixed separately in PR #126,
+merged as `207bd4202c1a98b6a782333595f733d10c90a609`. The fix adds explicit
+`always()` evaluation plus a successful-`linux-build` premise to downstream
+GDExtension regression/serial jobs; it changes no WEX source, test, runner or
+provider.
+
+This documentation synchronization triggers final #94 validation against the
+corrected current main. The WEX force law/native/test source remains unchanged.
+Exact final run identities are recorded in the PR/issue completion record after
+they finish. The earlier skipped/aggregate-failed orchestration runs remain
+non-evidence.
 
 ## Remaining evidence limits
 
