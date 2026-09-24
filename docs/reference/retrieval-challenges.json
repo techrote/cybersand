@@ -1,7 +1,7 @@
 {
   "version": 1,
   "frozen_date": "2026-09-08",
-  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension.",
+  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing.",
   "questions": [
     {
       "id": "C05",
@@ -447,7 +447,7 @@
       ],
       "facts": [
         "F01 routes to #81; broad F02 routes to #82/#83; formal Water H integrity to #84; F06-F11 stay with existing #49; current-truth/platform/counter cleanup goes to #85; closure/ownership/validation controls go to #86; #87 is the independent exit audit.",
-        "Stage 3B remains independently active: #61 has landed through PR #89; #62 then #63 are the serialized central-World continuation, while #64 is the separable graph/index lane before the #65 join.",
+        "#12 Stage 3B remains independently active: #56-#65 and #69 are complete; #65 landed and was fully verified through recovery, so #66 is the next dependency-ready package, followed by #67, #68 and #70.",
         "Remediation does not impose a blanket Stage-3B pause; overlapping children must inspect live ownership/write sets and stop on a real collision rather than duplicate work."
       ],
       "sources": [
@@ -503,7 +503,74 @@
       "sources": [
         "docs/operations/water-hybrid-pressure-extension-programme.md"
       ]
+    },
+    {
+      "id": "REC01",
+      "query": "After the CI incident, which runner provider is authoritative now and is main actually protected?",
+      "canonical": [
+        "operations/github-development-and-release.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "facts": [
+        "Routine active CI is GitHub-hosted and the provider-policy checker rejects active Avrea, Sengi, CircleCI, self-hosted/custom runner routing and *_RUNNER indirection unless policy is explicitly changed.",
+        "REC-007 baseline 0405cdfe35a855e8287215a71d1165e3107fd1d6 passed Documentation/provenance run 35751825085.",
+        "Main remains unprotected with no ruleset at the 2026-09-24 inspection; the owner-side minimal ruleset is documented and must not be claimed as installed."
+      ],
+      "sources": [
+        "operations/github-development-and-release.md",
+        "audits/2026-09-24-cybersand-recovery-audit.md"
+      ]
+    },
+    {
+      "id": "REC02",
+      "query": "Was Stage 3B issue 65 really completed after the recovery, including sanitizers and landed-main verification?",
+      "canonical": [
+        "reference/validation-evidence.md",
+        "operations/soliding-stage3b-production-plan.md"
+      ],
+      "facts": [
+        "#65/PR106 frozen native/test source 8dfa779a561374a5693556f50def3e9666783a98 was repaired at the lifecycle/scheduler invariant rather than by weakening assertions.",
+        "Final exact-head Documentation, Water, Native and GDExtension/Godot gates all passed, including dedicated soliding ASan+UBSan, TSan, shared-library and benchmark execution.",
+        "PR106 merged as cdf0a0874d4732c41273e10d921bcd5feaac3e3c and the same four landed-main gates subsequently passed; the premature issue-closure ordering is preserved as history."
+      ],
+      "sources": [
+        "reference/validation-evidence.md",
+        "audits/2026-09-24-cybersand-recovery-audit.md"
+      ]
+    },
+    {
+      "id": "REC03",
+      "query": "Are the retained Linux and Windows CyberSand runtimes after issue 65 source matched, and did Windows actually run?",
+      "canonical": [
+        "operations/current-and-historical-validation.md",
+        "reference/validation-evidence.md"
+      ],
+      "facts": [
+        "REC-004 published retained Linux and Windows runtimes from the unchanged validated #65 source tree and passed materialized repository/LFS validation.",
+        "The retained Linux bytes are the exact artifact exercised by all four Linux Godot regression shards.",
+        "The retained Windows DLL is pinned cross-build evidence only; no Windows runtime execution is claimed."
+      ],
+      "sources": [
+        "operations/current-and-historical-validation.md",
+        "audits/2026-09-24-cybersand-recovery-audit.md"
+      ]
+    },
+    {
+      "id": "SOL04",
+      "query": "Now that issue 65 is done, what is the actual next Stage 3B work and does that admit Stage 4?",
+      "canonical": [
+        "operations/soliding-stage3b-production-plan.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "facts": [
+        "#56-#65 and #69 are complete.",
+        "#66 is the next dependency-ready package, followed by #67, #68 and the registered #70 campaign/exit packet.",
+        "#70 returns evidence to the parent and does not self-admit Stage 3B; Stage 4 remains blocked."
+      ],
+      "sources": [
+        "operations/soliding-stage3b-production-plan.md"
+      ]
     }
   ],
-  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions."
+  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set."
 }

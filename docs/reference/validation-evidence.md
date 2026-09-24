@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-09-20
+last-reviewed: 2026-09-24
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md]
 ---
 
@@ -19,6 +19,8 @@ certifies a later binary, another platform or complete replay.
 
 | Evidence ID/date | Executed check and outcome | Limits and record |
 |---|---|---|
+| E-REC-65, 2026-09-22 | #65 / PR #106 exact-head Documentation `35732818172`, Water `35732816499`, Native `35732816547` and GDExtension/Godot `35732816733` all passed; landed main `cdf0a0874d4732c41273e10d921bcd5feaac3e3c` then passed `35735467304`, `35735467111`, `35735467244`, `35735467359` | Includes ordinary soliding, dedicated ASan+UBSan, TSan, shared-library and benchmark execution. Retained Linux runtime is source-matched and actually exercised; Windows retained runtime is cross-build-only. [Final recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md) |
+| E-REC-CI, 2026-09-22 | Main `20337053911d28f985a3211b5cd7c8f70fd4d9b5` artifact run `35627733817` recovered from two intermittent 403 download failures by rerunning only failed shards; both restored the unchanged exact artifact and aggregate gate passed. REC-007 baseline `0405cdfe35a855e8287215a71d1165e3107fd1d6` Documentation/provenance run `35751825085` passed. | Classified as an intermittent GitHub artifact-service/intermediary failure, not a persistent workflow defect. Active CI is GitHub-hosted; remote main protection remains an owner action. [Final recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md) |
 | E-PHYS, 2026-09-09 | Fresh Windows adapter: 49 native tests, 19 Godot runners; deterministic P1–P4 matrices, five-seed desktop async and 25 fixtures per real Web profile | [Issue #9 measured report](../audits/2026-09-09-physics-characterisation.md) separates symptoms, controls, long creep, hashes and gaps. Local diagnostic artifacts do not update published Linux/Windows runtime provenance. |
 | E-PUBLISH, 2026-09-08 | Pushed source passes Linux 46-test native, ASan/UBSan and TSan runs; rebuilt Linux Godot passes 16 runners plus profiles/import/scene; both extension builds pass | [Publication reconciliation](../audits/2026-09-08-validation-reconciliation.md) records exact revisions, workflows and limits, plus separate current/M11 gates |
 | E-F02, 2026-09-08 | 46 native regressions; rebuilt Windows adapter/owners and 16 Godot runners passed; paired Web exports exercised | [Issue #2 and combined record](../audits/2026-09-08-issue-2-interest-regions.md) identifies browser results, worker/profile and artifact scope; historical failures remain preserved |
@@ -59,6 +61,33 @@ add no new runtime pass. They qualify how existing evidence may be used.
 
 These are evidence-boundary corrections, not re-execution or retroactive failure
 of the original bounded campaigns.
+
+## Recovery and Stage-3B #65 evidence — 2026-09-22
+
+The recovery programme separated implementation, integration and validation rather
+than accepting a merge alone.
+
+The ABA/reclamation fixture exposed a scheduler liveness defect: an ordinary
+Seeking build could exhaust search, reset to Idle and return zero from
+`service_active_build_one()`; `advance()` had already taken the active-build
+branch and could therefore return zero without servicing actionable cleanup.
+The final bounded cleanup fallback corrected that lifecycle invariant. Focused
+GitHub-hosted `make soliding-test` run `35654164638` passed on frozen native/test
+source `8dfa779a561374a5693556f50def3e9666783a98`.
+
+The subsequent sanitizer failure in run `35654798534` was compile-time, not a
+sanitizer finding. REC-002 measured the sanitized settled-regions compile at about
+10m29.63s and ~7.65 GiB peak RSS, then separated the expensive bounded build from
+the unchanged complete sanitizer execution. Native run `35726233890` passed all
+eight dedicated soliding ASan+UBSan executables, TSan (62 tests), shared-library
+build and benchmark.
+
+REC-004 then published one source-matched Linux/Windows retained runtime set.
+Final exact-head and landed-main matrices are E-REC-65 above. #65 was closed at
+merge before the landed-main matrix had finished; that chronology is preserved,
+and the missing landed verification subsequently passed. The evidence therefore
+supports #65's current completed state without rewriting the premature closure
+ordering.
 
 ## Which binaries and dependencies did E-AUDIT use?
 

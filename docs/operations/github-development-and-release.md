@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Local repository policy and unresolved remote CI and release prerequisites
 canonical-for: [repository-policy, ci-contradictions, release-prerequisites]
-last-reviewed: 2026-09-22
+last-reviewed: 2026-09-24
 related-documents: [source-checkpoint-and-recovery.md, local-build-and-validation.md, documentation-maintenance.md, ../audits/2026-09-19-runner-routing-weekend-benchmark.md]
 ---
 
@@ -16,9 +16,11 @@ The active source now has upstream-derived history and a local checkpoint branch
 Use [source checkpoint and recovery](source-checkpoint-and-recovery.md) for exact
 identities, companion workspace scope and dirty-state inspection. No push or
 publication was performed by the documentation rewrite itself. The subsequent
-owner-authorized [GitHub milestone](../audits/2026-09-08-github-milestone.md) verified
-that `techrote/cybersand` is private and published both local histories. Branch
-protection is not established; dated CI outcomes are recorded in the
+owner-authorized [GitHub milestone](../audits/2026-09-08-github-milestone.md) recorded
+that `techrote/cybersand` was private at that historical checkpoint and published
+both local histories. Current GitHub repository metadata inspected on 2026-09-24
+reports the repository as **public**. Branch protection is not established; dated
+CI outcomes are recorded in the
 [publication reconciliation](../audits/2026-09-08-validation-reconciliation.md). Intended historical
 integration branch names do not establish today's remote policy.
 
@@ -68,9 +70,22 @@ evidence. Source-sensitive runtime provenance remains a hard gate: a changed
 runtime input requires a source-matched rebuild and provenance update rather than
 a hand-edited hash.
 
+## Recovery closure checkpoint — 2026-09-24
+
+The [final recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md)
+records REC-001 through REC-008, including the transient artifact 403 incident,
+#65 reclamation/sanitizer/runtime recovery, #94/PR #105 reconstruction and the
+REC-007 provider/cost guardrails. The stable pre-REC-008 baseline is
+`0405cdfe35a855e8287215a71d1165e3107fd1d6`; its Documentation/provenance
+push run `35751825085` passed.
+
+The recovery programme does not authorize a return to historical provider routing.
+Old provider/recovery branches are inventoried in the dated audit. They are not
+active policy, and REC-008 deletes none of them.
+
 ## Main-branch protection: exact owner action
 
-Remote inspection on 2026-09-22 reports `main.protected=false` and no repository
+Remote inspection on 2026-09-24 reports `main.protected=false` and no repository
 rulesets. The repository GitHub App does not have administration permission to
 read or change the protection endpoint, so automation must not claim this control
 was installed.

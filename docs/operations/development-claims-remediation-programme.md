@@ -4,7 +4,7 @@ status: Current
 document-kind: design
 scope: Canonical F01-F19 remediation routing, claim-state rules, dependencies and exit criteria for issues #79-#87 plus existing #49
 canonical-for: [development-claims-remediation-programme]
-last-reviewed: 2026-09-20
+last-reviewed: 2026-09-24
 related-documents: [../audits/2026-09-20-development-claims-closure-audit.md, ../reference/status-and-roadmap.md, cybersand-codex-development-handover.md, current-and-historical-validation.md, soliding-stage3b-production-plan.md]
 ---
 
@@ -118,12 +118,13 @@ reference body; remediation must not create a barrel-specific support subsystem.
 
 ### #12 Stage 3B
 
-#12 remains open and independent. At reconciled REM-001 publication, #56-#61
-and #69 are complete; #61 landed through PR #89 as
-`db00e84e1b26b99f2816b6c1258d5dea97fc1fa1`. #62 is the next serialized
-central World producer package, #63 follows it, and #64 remains the separable
-graph/index lane after #60/#59. #65 is the join. Stage 4
-remains blocked until the parent admits Stage 3B after #70.
+#12 remains open and independent. The recovery programme has now completed the
+producer/reconstruction chain through #65: #56-#65 and #69 are complete, and
+#65 / PR #106 landed as
+`cdf0a0874d4732c41273e10d921bcd5feaac3e3c` with exact-head and landed-main
+validation plus source-matched retained runtimes. **#66 is the next dependency-ready
+package**, followed by #67, #68 and #70. Stage 4 remains blocked until the parent
+admits Stage 3B after #70.
 
 ### #30 / INT-000
 
@@ -156,13 +157,12 @@ and later qualification where it affects the answer.
 Do not freeze CyberSand globally for remediation work. Determine concurrency from
 the live owner and actual write set.
 
-The Stage-3B production plan serializes #61-#63 because they touch central World
-mutation/activity/event paths. #61 is now landed; #62 then #63 remain the live
-central-World sequence. #64 is primarily graph/index work and may run in parallel
-when its real write set remains disjoint. #81 is expected to touch body coupling
-and may touch native World tests or helper semantics; it must inspect the live
-#62/#63 branch/PR state before editing. #82/#83 similarly inspect current
-player/body/native/test owners instead of assuming a historical branch is safe.
+The Stage-3B central-World producer sequence through #65 is landed. The current
+soliding implementation sequence is #66 -> #67 -> #68 -> #70. #81 is expected
+to touch body coupling and may touch native World tests or helper semantics; it
+must inspect the live #66/#67/#68 branch/PR state before editing. #82/#83 similarly
+inspect current player/body/native/test owners instead of assuming a historical
+branch is safe.
 
 If an active implementation owner overlaps materially and the child issue does
 not already define reconciliation, stop under the child's blocker rule. Do not

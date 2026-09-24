@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-09-20
+last-reviewed: 2026-09-24
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -18,6 +18,7 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 | Explore the MS-001 Materials Lab / Flood / Stress pack or compare generated definitions | [Reference pack and controls](operations/microscenario-reference-pack.md), [MS-001 evidence](audits/2026-09-19-issue-28-ms001.md) |
 | Author, load or benchmark a MicroScenario | [Current shared contract and host](operations/microscenarios.md), [checkpoint evidence](audits/2026-09-19-issue-27-microscenarios.md) |
 | Begin development | [Handover](operations/cybersand-codex-development-handover.md), [actual source identity](operations/source-checkpoint-and-recovery.md), [roadmap](reference/status-and-roadmap.md) |
+| Understand the recovered CI baseline, #65 completion or the 2026-09-20 through 2026-09-22 incident | [Repository/release policy](operations/github-development-and-release.md), [final recovery audit](audits/2026-09-24-cybersand-recovery-audit.md), [Stage-3B production plan](operations/soliding-stage3b-production-plan.md) |
 | Choose current MicroScenarios / interaction work order | [Canonical programme graph](operations/microscenarios-programme.md), then the target issue and its named dependencies; issue numbers are not sequence |
 | Inspect current intermaterial rule/provenance/coverage semantics | [Interaction substrate](systems/intermaterial-interactions.md), [#29 implementation evidence](audits/2026-09-19-issue-29-int000.md) |
 | Understand the engine | [Architecture overview](architecture/overview.md), then its focused ownership/threading/coupling links |
@@ -166,12 +167,14 @@ Phase 0 endpoint. Read its [reuse audit](audits/2026-09-19-issue-12-phase0-reuse
 [ordinary-sleep control](operations/soliding-measurement.md) and current
 [Stage 3 execution freeze](operations/soliding-stage3-freeze.md). The
 [Stage-3 review](audits/issue-12-2026-09-19/stage3-exit-review.md) records the exact
-passed Stage-3A bounded reference, frozen correctness checklist, retained negative cost
-evidence and the open Stage-3B locality/scalability gate. The read-only Astra review
-and parent reconciliation are complete. The active route is the
-[Stage-3B production plan](operations/soliding-stage3b-production-plan.md): #56-#60
-and #69 plus #61 are complete at the reconciled REM-001 checkpoint. #62 is the
-next serialized central-World producer package, while #64 remains the separable
-graph/index lane. Stage 4 is not admitted.
+passed Stage-3A bounded reference and the Stage-3B locality/scalability gate.
+
+The active route is now the
+[Stage-3B production plan](operations/soliding-stage3b-production-plan.md).
+#56-#65 and #69 are complete; #65 landed through PR #106 as
+`cdf0a0874d4732c41273e10d921bcd5feaac3e3c` with exact-head and landed-main
+Documentation, Water, Native and GDExtension/Godot validation. **#66 is the next
+dependency-ready Stage-3B implementation package**, followed by #67, #68 and the
+registered #70 campaign/exit packet. Stage 4 is not admitted.
 Macro-dynamics and coherent-child fracture remain first-class later goals; discovery
 stays read-only with respect to material authority.

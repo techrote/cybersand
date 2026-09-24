@@ -4,7 +4,7 @@ status: Approved design
 document-kind: runbook
 scope: Dependency, ownership, gate and validation routing for Stage-3B locality/scalability implementation
 canonical-for: [soliding-stage3b-production-plan]
-last-reviewed: 2026-09-20
+last-reviewed: 2026-09-24
 related-documents: [../audits/issue-12-2026-09-19/stage3b-parent-decision.md, ../audits/2026-09-19-issue-69-stage3b-validation.md, soliding-stage3-freeze.md, soliding-stage3b-astra-review.md, soliding-programme.md]
 ---
 
@@ -27,23 +27,38 @@ World event/discovery geometry or settled-discovery internals. Stage 3B observes
 authoritative interaction mutations; it does not duplicate INT-000 semantics.
 Recheck current ownership before the later central World producer handoffs.
 
-## Live execution checkpoint — 2026-09-21
+## Live execution checkpoint — 2026-09-24
 
-Authoritative `main` is
-`20337053911d28f985a3211b5cd7c8f70fd4d9b5` after CI recovery PR #108.
-#62 is complete through PR #97, #63 is complete through PR #101, #64 is complete
-through PR #98, and #57 remains the resolved event/halo authority. Both prerequisites
-of #65 are therefore landed.
+The recovery programme is complete through REC-007 and REC-008 records the final
+audit. The inspected pre-REC-008 authoritative main is
+`0405cdfe35a855e8287215a71d1165e3107fd1d6`.
 
-#65 is the active Stage-3B join package in PR #106. Its frozen native/test source is
-`8dfa779a561374a5693556f50def3e9666783a98`; focused GitHub-hosted
-`soliding-test` run `35654164638` passed that clean source. Full exact-head
-validation, source-matched runtime/provenance publication and final merge gates remain
-before #65 can close. #66 remains blocked until that completion.
+#62, #63 and #64 are landed. #65 completed through PR #106 and merged as
+`cdf0a0874d4732c41273e10d921bcd5feaac3e3c`. The accepted PR head was
+`2fa4d2270662a0e60985b52253a7e9de8bf737ff`; frozen native/test source was
+`8dfa779a561374a5693556f50def3e9666783a98`.
 
-The development-claims remediation programme does not pause this lane. REM-002
-#81 must inspect live ownership before touching overlapping body/World/test surfaces
-and stop on a real collision. Stage 4 remains blocked.
+#65's final exact-head Documentation/provenance, Water apparatus, Native and
+GDExtension/Godot runs all passed, and the same four gates passed again on landed
+main. Dedicated soliding ASan+UBSan, TSan, shared-library and benchmark execution
+are included in that evidence. Source-matched retained Linux/Windows runtimes were
+published before final acceptance; Windows remains cross-build-only evidence.
+
+Therefore **#66 is dependency-ready**. The serialized continuation is
+`#66 -> #67 -> #68 -> #70`. #70 remains the registered campaign/parent-exit
+package and does not self-admit Stage 3B. Stage 4 remains blocked.
+
+The development-claims remediation programme is parallel authority, not a blanket
+pause. #86 remains open for general completion/ownership/validation-premise
+controls, and overlapping work must still inspect live ownership/write sets.
+
+### Recovery-era checkpoint — 2026-09-21 (historical)
+
+At that checkpoint main was `20337053911d28f985a3211b5cd7c8f70fd4d9b5`,
+#65 / PR #106 was still the active join package, and exact-head sanitizer/runtime
+publication gates remained open. The [final recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md)
+records how those blockers were resolved. This historical state is retained here
+only to explain the transition; it is not current routing.
 
 ## Resolved #57 event/halo contract
 
@@ -369,9 +384,10 @@ identified reference series when it cannot share the matched authority.
 3. #59 / PR #76 and #60 / PR #78 are complete; G2 and G3 are closed.
 4. The serialized World-producer lane #61 -> #62 -> #63 is complete, and #64's
    separate graph lane is complete. Both halves of the #65 join are landed.
-5. Complete #65 through PR #106: exact-head validation, source-matched runtime/
-   provenance publication, final gates and merge verification.
-6. Only after genuine #65 completion proceed #66 -> #67 -> #68.
+5. #65 / PR #106 is complete, source-matched and landed; do not reopen it merely
+   to recreate recovery chronology.
+6. Proceed #66 -> #67 -> #68 from current authoritative main, preserving #65 as
+   the exact fallback/backend correctness contract.
 7. Freeze one coherent candidate and execute #70.
 8. Return #70 to the supervising parent. Do not self-admit Stage 3B.
 

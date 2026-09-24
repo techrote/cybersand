@@ -4,8 +4,8 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-09-20
-related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md]
+last-reviewed: 2026-09-24
+related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
 # Development handover
@@ -24,6 +24,31 @@ Read [AGENTS.md](../../AGENTS.md), the [documentation index](../README.md),
 for the requested change. Use the [retrieval index](../reference/retrieval-index.md)
 for a focused question. The [owner-intent reference](../reference/product-intent-and-priorities.md)
 preserves product goals, liked material behavior and deliberate deferrals.
+
+## Recovery and CI checkpoint — 2026-09-24
+
+The 2026-09-20 through 2026-09-22 CI / Stage-3B incident is closed by the
+[final recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md). The
+pre-REC-008 authoritative baseline is
+`0405cdfe35a855e8287215a71d1165e3107fd1d6` (REC-007 / PR #124).
+Routine active CI is GitHub-hosted; active Avrea, Sengi, CircleCI, self-hosted
+routing and `*_RUNNER` indirection are rejected by the repository policy checker.
+
+#65 / PR #106 is genuinely landed and verified. Its accepted merge is
+`cdf0a0874d4732c41273e10d921bcd5feaac3e3c`; source-sensitive retained
+Linux/Windows runtimes are matched to the validated #65 source, with Windows
+explicitly cross-build-only. Stage-3B resumes at **#66**, then #67, #68 and #70.
+Stage 4 remains blocked.
+
+PR #105 / #94 was reconstructed cleanly from recovered main and remains draft,
+non-production research pending #94's separate evidence/disposition review. Do
+not merge or promote it merely because REC-006 validated the recovered proof.
+
+Remote `main` is still unprotected and has no ruleset at this checkpoint.
+The exact owner-side minimal ruleset is recorded in
+[repository development and release](github-development-and-release.md#main-branch-protection-exact-owner-action).
+That unresolved owner action is not a CI recovery failure and must not be described
+as already installed.
 
 ## Development-claims remediation routing — 2026-09-20
 
@@ -196,18 +221,19 @@ a win. Publication checkpoint `82e65f3` passed exact-head native/sanitizer,
 Windows/Linux build, sharded Linux Godot, documentation/provenance, retrieval and
 runtime-identity gates. The bounded correctness/observability reference therefore
 passes **Stage 3A**; PR #47 merged as `fc299c1` and its exact head is on `main`.
-The locality/scalability objective is **Stage 3B open**: the current implementation still performs
-full tracked-tile signal refresh, global mapping/seed work, compiled-maximum storage
-and whole-region rediscovery. The read-only architecture review and supervising-parent
-reconciliation are complete. Use the
-[Stage-3B production plan](soliding-stage3b-production-plan.md), issues #56-#70, as
-the active handoff. At the reconciled 2026-09-20 checkpoint #56-#61 and #69 are complete;
-PR #89 merged #61 as `db00e84e1b26b99f2816b6c1258d5dea97fc1fa1`.
-#62 is the next serialized central-World producer package, #63 follows it, and
-#64 is the separable graph/index lane before the #65 join. Recheck live ownership before
-overlapping World edits and again before the final campaign. Stage 4 is not admitted.
-Stage 3 remains cells-owned discovery and cannot be used to admit stationary
-acceleration or Rapier dynamics.
+The locality/scalability objective is **Stage 3B open**, but the recovery-era
+producer/reconstruction chain through #65 is now complete. PR #106 landed as
+`cdf0a0874d4732c41273e10d921bcd5feaac3e3c`; exact-head and landed-main
+Documentation, Water, Native, dedicated sanitizer/TSan/shared/benchmark and
+GDExtension/Godot gates are recorded in the
+[final recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md).
+
+Use the [Stage-3B production plan](soliding-stage3b-production-plan.md), issues
+#56-#70, as the active handoff. #56-#65 and #69 are complete. **#66 is next**;
+then #67, #68 and the registered #70 campaign/exit packet. Recheck live ownership
+before overlapping World edits and again before the final campaign. Stage 4 is not
+admitted. Stage 3 remains cells-owned discovery and cannot be used to admit
+stationary acceleration or Rapier dynamics.
 
 ## Issue #26 / Water bulk-head handoff, 2026-09-19
 
