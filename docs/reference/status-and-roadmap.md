@@ -4,8 +4,8 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-09-20
-related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
+last-reviewed: 2026-09-24
+related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
 # Status and foundational roadmap
@@ -18,6 +18,23 @@ secures existing work locally. Resolve the relevant issues below before building
 new physics on assumptions that the current implementation does not guarantee.
 The [validation ledger](validation-evidence.md) separates dated runtime results
 from inspected code. No documentation status is a blanket platform acceptance.
+
+## Recovery / current CI checkpoint — 2026-09-24
+
+The [final recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md)
+closes the 2026-09-20 through 2026-09-22 CI / Stage-3B recovery programme.
+The inspected pre-REC-008 main is
+`0405cdfe35a855e8287215a71d1165e3107fd1d6`.
+
+Routine active CI is GitHub-hosted and machine-checkably rejects obsolete
+Avrea/Sengi/CircleCI routing, self-hosted/custom runner labels and
+`*_RUNNER` indirection. #65 is merged and fully verified; Stage-3B's next
+dependency-ready package is **#66**, followed by #67, #68 and #70. Stage 4 remains
+blocked. PR #105/#94 is recovered but remains draft research pending its separate
+disposition.
+
+Remote `main` remains unprotected with no repository ruleset. The owner-side
+minimal protection action is explicitly documented; do not report it as installed.
 
 ## Development-claims remediation checkpoint — 2026-09-20
 
@@ -429,16 +446,12 @@ architecture review is complete; its supervising-parent reconciliation is record
 the [Stage-3B parent decision](../audits/issue-12-2026-09-19/stage3b-parent-decision.md).
 The active implementation route is the
 [Stage-3B production plan](../operations/soliding-stage3b-production-plan.md), issues
-#56-#70. At the reconciled 2026-09-20 checkpoint, #56-#61, #64 and #69 are
-complete; #64 landed through PR #98 as
-`bb6f12a7845f7249d68693a277c934e5fef5561d`. #62 is implemented in draft
-PR #97 after reconciliation with that main. Its source-matched runtime publication
-passed in Actions run `35526661344`; final exact-head checks and merge remain the
-completion boundary at this checkpoint. On main containing PR #97, #62 is complete,
-#63 becomes dependency-ready, and #65 remains blocked only on the serialized #63 side
-of the already-landed graph join.
-Stage 4
-is blocked; production dynamics, fracture and persistence remain unimplemented. Source `de332ea` actually uses
+#56-#70. #56-#65 and #69 are complete. #65 / PR #106 landed as
+`cdf0a0874d4732c41273e10d921bcd5feaac3e3c` after exact-head validation and
+source-matched runtime publication; landed-main Documentation, Water, Native and
+GDExtension/Godot validation also passed. **#66 is now dependency-ready**, then
+#67, #68 and #70. Stage 4 is blocked; production dynamics, fracture and persistence
+remain unimplemented. Source `de332ea` actually uses
 the 8-byte superset carrier after #19 integration;
 the [storage contract](../architecture/chunk-tile-and-buffer-model.md) supersedes
 earlier four-byte physical-size statements for this source without selecting G-final.
