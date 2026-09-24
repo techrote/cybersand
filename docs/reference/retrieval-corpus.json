@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-09-20",
+  "reviewed": "2026-09-24",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -277,6 +277,10 @@
     {
       "path": "audits/2026-09-20-issue-49-water-apparatus-v2-baseline.md",
       "reason": "Dated source-matched issue #49 Current-Water successor-apparatus evidence; retrieve explicitly for corrected measurements/provenance while Current routing is mirrored into Water/roadmap/architecture contracts"
+    },
+    {
+      "path": "audits/2026-09-24-cybersand-recovery-audit.md",
+      "reason": "Dated REC-008 final recovery audit; retrieve explicitly for the 2026-09-20 through 2026-09-22 CI/Stage-3B incident and exact recovery evidence, while Current routing lives in operations/reference contracts"
     }
   ]
 }
