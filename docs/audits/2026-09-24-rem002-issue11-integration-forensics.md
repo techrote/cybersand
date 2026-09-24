@@ -186,6 +186,112 @@ Focused observable gates must prove at minimum:
 10. retained native runtimes are regenerated from the accepted source, with Linux
     runtime execution and Windows evidence described only at the level actually run.
 
+## Executed current-source evidence
+
+The implementation source was frozen at:
+
+`df54e927022c464e0da4f41602b2a6e10e1e6075`
+
+with Git tree:
+
+`2275c63002ad375d9d005e07bdb8a5304b48f9d6`.
+
+The pull-request synthetic merge used for Linux GDExtension execution was
+`fe8efdb704641bc26930aa0f090430b5fa9715c7`; its tree is byte-identical to
+the frozen source tree above.
+
+### Exact-source validation
+
+- Native C++ validation **36046243938** — **success**. The suite includes the
+  normative masked-source/stored-support assertions, ordinary behavioral and
+  integration coverage, soliding/Stage-3B guards, ASan+UBSan, the dedicated
+  sanitized soliding path, TSan, shared-library build and benchmark.
+- GDExtension/Godot **36046243935** — **success**. Linux and Windows x86_64 builds
+  passed; all four isolated Linux Godot regression shards passed on one exact
+  Linux runtime artifact.
+- Issue-49 Water apparatus-v2 **36046243988** — **success**, including adversarial
+  apparatus checks, sanitized harness and the preregistered Current-Water
+  baseline. REM-002 therefore did not silently alter the separate Water-head
+  apparatus contract.
+- The first Documentation/provenance run **36046243934** failed **only** because
+  the tracked Linux/Windows runtimes still described the pre-REM-002 source. That
+  was the intended publication stop condition, not waived evidence.
+
+### Focused REM-002 owner-path result
+
+`test_rem002_body_granular.gd` executed in Linux regression shard 1, job
+**107792501555**, on the exact staged Linux runtime.
+
+It passed native and fallback support/support-loss controls, Water/hard-terrain
+non-bearing controls, age-1 acceptance, age-9 stale rejection and the real
+Rapier P4/P5 cases.
+
+Emitted current-source measurements:
+
+| Case | Peak depth | Final depth | Notes |
+|---|---:|---:|---|
+| P4 one-height, Sand | 3.7484 cells | 0.0000 | 410 support samples; no hard-floor contact |
+| P4 four-height, Sand | 6.6518 cells | 1.4718 | within the retained <=8-cell narrow envelope; no hard-floor contact |
+| P5 excavation, Sand | 229.3073 cells | 229.0247 | support is removed and the body resumes large downward travel before the deep floor |
+
+The P4 values reproduce the useful historical bounded behavior on current source
+to normal floating-point/solver variation. P5 is intentionally a release test,
+not a requirement to stay near the former supported surface.
+
+The existing WEX-001 regression was explicitly reconciled in
+`df54e927...`: its 2026-09-20 audit remains the historical record that the
+then-current source crossed the hard floor, while Current regression semantics now
+require zero forbidden-floor Water mass after REM-002's barrier-aware ejection
+repair. This is a successor semantic fix, not a rewrite of #91 history.
+
+### Source-matched runtime publication
+
+One-shot GitHub-hosted publication run **36057247186** restored the exact Linux
+runtime exercised by run **36046243935**, rebuilt Windows from the same frozen
+source, regenerated manifests from the actual bytes, passed materialized
+repository/provenance and LFS checks, removed its temporary workflow, and pushed
+publication commit:
+
+`009ab2f27040d995ae13d839daa426a0bf17a457`.
+
+Retained Linux runtime:
+
+- SHA-256
+  `bfc735dd7380edb00ddebc9100b09455d92b2ae17c4e7fb3d027b415f835e6ca`;
+- size **1,617,224 bytes**;
+- actual Linux Godot execution: **yes**, all four regression shards in
+  **36046243935**.
+
+Retained Windows runtime:
+
+- SHA-256
+  `22adb31926895b4b2df7a8e92d8b1101533aaccc91ed9ca2710e92e4946d2a80`;
+- size **2,091,008 bytes**;
+- actual Windows execution: **no**; pinned LLVM-MinGW cross-build evidence only.
+
+Browser/WebAssembly execution was not newly performed by REM-002. Historical #11
+browser results remain historical branch-era evidence and are not promoted to
+current-main runtime acceptance.
+
+### Acceptance boundary
+
+This evidence establishes the **bounded generic coupling baseline** required by
+REM-002:
+
+- masked stored material remains authoritative;
+- barrier/foreign-mask crossing is rejected without material loss;
+- current packed granular material can supply bounded bearing;
+- excavation removes that bearing;
+- liquid and hard terrain remain distinct;
+- sample-age refusal remains bounded;
+- source-matched Linux/Windows retained runtimes now correspond to the repaired
+  native inputs.
+
+It does **not** establish broad arbitrary-body/body↔granular gameplay acceptance,
+high-energy/thin-bed/crowded/general-shape support, general torque/fracture, or a
+dynamic material↔Rapier ownership substrate. Those remain outside REM-002 and,
+where applicable, belong to REM-004 / #83 or #12.
+
 ## Downstream
 
 Successful REM-002 completion supplies REM-004 / #83 with a clean current-main
