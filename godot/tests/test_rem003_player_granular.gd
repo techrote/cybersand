@@ -76,7 +76,17 @@ func _build_case(world: Object, fallback: bool, spec: Dictionary) -> Vector2:
 	match layout:
 		"flat":
 			_fill(world, fallback, LEFT, SURFACE_Y, RIGHT - LEFT, FLOOR_Y - SURFACE_Y, material)
+			return Vector2(float(spec.get("start_x", 104)), SURFACE_Y - BODY_SIZE.y)
+		"hardflat":
+			_fill(world, fallback, LEFT, SURFACE_Y, RIGHT - LEFT, FLOOR_Y - SURFACE_Y, material)
+			return Vector2(float(spec.get("start_x", 104)), SURFACE_Y - BODY_SIZE.y)
+		"shallow":
+			_fill(world, fallback, LEFT, SURFACE_Y + 3, RIGHT - LEFT, FLOOR_Y - SURFACE_Y - 3, CyberCellWorld.WALL)
+			_fill(world, fallback, LEFT, SURFACE_Y, RIGHT - LEFT, 3, material)
 			return Vector2(104, SURFACE_Y - BODY_SIZE.y)
+		"edge":
+			_fill(world, fallback, LEFT, SURFACE_Y, 88, FLOOR_Y - SURFACE_Y, material)
+			return Vector2(128, SURFACE_Y - BODY_SIZE.y)
 		"film":
 			_fill(world, fallback, LEFT, SURFACE_Y, RIGHT - LEFT, 1, material)
 			return Vector2(104, SURFACE_Y - 32.0)
@@ -93,7 +103,8 @@ func _build_case(world: Object, fallback: bool, spec: Dictionary) -> Vector2:
 			return Vector2(96, 214.0 - BODY_SIZE.y)
 		"landing":
 			_fill(world, fallback, LEFT, SURFACE_Y, RIGHT - LEFT, FLOOR_Y - SURFACE_Y, material)
-			return Vector2(104, SURFACE_Y - 72.0)
+			var drop_gap: float = float(spec.get("drop_gap", 12.0))
+			return Vector2(104, SURFACE_Y - BODY_SIZE.y - drop_gap)
 		"excavate":
 			_fill(world, fallback, LEFT, SURFACE_Y, RIGHT - LEFT, FLOOR_Y - SURFACE_Y, material)
 			return Vector2(104, SURFACE_Y - BODY_SIZE.y)
@@ -118,6 +129,10 @@ func _input_for(schedule: String, tick: int) -> float:
 			return 0.25 if tick >= 30 else 0.0
 		"right":
 			return 1.0 if tick >= 30 else 0.0
+		"repeat":
+			if tick < 30:
+				return 0.0
+			return 1.0 if ((tick - 30) / 60) as int % 2 == 0 else -1.0
 		_:
 			return 0.0
 
@@ -198,6 +213,7 @@ func _run_case(spec: Dictionary, fallback: bool) -> Dictionary:
 	var native_active_blocks_max: int = 0
 	var release_tick: int = -1
 	var first_grounded_tick: int = -1
+	var first_impact_speed: float = -1.0
 	var max_abs_vx: float = 0.0
 	var max_abs_vy: float = 0.0
 	var min_x: float = player.position.x
@@ -219,9 +235,13 @@ func _run_case(spec: Dictionary, fallback: bool) -> Dictionary:
 
 		var horizontal: float = _input_for(schedule, tick)
 		var jetpack: bool = bool(spec.get("jetpack", false)) and tick >= 90 and tick < 120
+		var was_grounded: bool = player.grounded
+		var pre_sim_vy: float = player.velocity.y
 		var started: int = Time.get_ticks_usec()
 		player.simulate(DT, horizontal, jetpack, world)
 		player_usec += Time.get_ticks_usec() - started
+		if not was_grounded and player.grounded and first_impact_speed < 0.0:
+			first_impact_speed = maxf(0.0, pre_sim_vy + CyberSampledCharacter.GRAVITY * DT)
 
 		started = Time.get_ticks_usec()
 		var down_support: bool = world.character_box_collides(
@@ -307,6 +327,7 @@ func _run_case(spec: Dictionary, fallback: bool) -> Dictionary:
 		"grounded_ticks": grounded_ticks,
 		"grounded_transitions": grounded_transitions,
 		"first_grounded_tick": first_grounded_tick,
+		"first_impact_speed": first_impact_speed,
 		"support_ticks": support_ticks,
 		"side_support_ticks": side_ticks,
 		"peak_overlap": peak_overlap,
@@ -329,16 +350,23 @@ func _run_case(spec: Dictionary, fallback: bool) -> Dictionary:
 
 func _run() -> void:
 	var cases: Array = [
+		{"id": "C00-hard-stand", "layout": "hardflat", "material": CyberCellWorld.GRANITE_BLOCK, "ticks": 240},
 		{"id": "S01-packed-stand", "layout": "flat", "material": CyberCellWorld.SAND, "ticks": 300},
+		{"id": "S02-shallow-supported", "layout": "shallow", "material": CyberCellWorld.SAND, "ticks": 240},
 		{"id": "S03-film", "layout": "film", "material": CyberCellWorld.SAND, "ticks": 360},
 		{"id": "H01-walk-reverse", "layout": "flat", "material": CyberCellWorld.SAND, "schedule": "walk", "ticks": 360},
 		{"id": "H03-slope", "layout": "slope", "material": CyberCellWorld.SAND, "schedule": "right", "ticks": 360},
 		{"id": "H04-packed-side", "layout": "side", "material": CyberCellWorld.SAND, "schedule": "right", "ticks": 300},
-		{"id": "V01-landing", "layout": "landing", "material": CyberCellWorld.SAND, "ticks": 300, "initial_vy": 0.0},
-		{"id": "V02-hard-landing", "layout": "landing", "material": CyberCellWorld.SAND, "ticks": 300, "initial_vy": 86.0},
+		{"id": "H05-edge", "layout": "edge", "material": CyberCellWorld.SAND, "schedule": "right", "ticks": 300},
+		{"id": "H06-repeated", "layout": "flat", "material": CyberCellWorld.SAND, "schedule": "repeat", "ticks": 390},
+		{"id": "V01-ordinary-landing", "layout": "landing", "material": CyberCellWorld.SAND, "ticks": 240, "drop_gap": 12.0},
+		{"id": "V02-hard-landing", "layout": "landing", "material": CyberCellWorld.SAND, "ticks": 300, "drop_gap": 58.0, "initial_vy": 86.0},
+		{"id": "V03-jetpack", "layout": "flat", "material": CyberCellWorld.SAND, "ticks": 300, "jetpack": true},
 		{"id": "D03-excavate", "layout": "excavate", "material": CyberCellWorld.SAND, "ticks": 360},
 		{"id": "S05-dust", "layout": "flat", "material": CyberCellWorld.DUST, "schedule": "slow", "ticks": 300},
 		{"id": "S06-salt", "layout": "flat", "material": CyberCellWorld.SALT, "schedule": "slow", "ticks": 300},
+		{"id": "S07-stone-granular", "layout": "flat", "material": CyberCellWorld.STONE, "schedule": "slow", "ticks": 300},
+		{"id": "G02-chunk-seam", "layout": "flat", "material": CyberCellWorld.SAND, "schedule": "right", "start_x": 500, "ticks": 180},
 	]
 	var results: Array = []
 	for fallback: bool in [false, true]:
@@ -353,14 +381,17 @@ func _run() -> void:
 		if not bool(result.get("ok", false)):
 			continue
 		var id: String = str(result.id)
-		if id == "S01-packed-stand":
+		if id == "C00-hard-stand":
+			_check(int(result.grounded_ticks) > 190, "hard control failed durable standing support")
+			_check(int(result.peak_overlap) == 0, "hard control penetrated hard terrain")
+		elif id == "S01-packed-stand":
 			_check(int(result.grounded_ticks) > 240, "packed Sand failed durable standing support")
 			_check(int(result.peak_overlap) == 0, "packed standing penetrated authoritative material")
 		elif id == "S03-film":
 			_check(int(result.grounded_ticks) < int(result.ticks), "unsupported film became permanent support")
 		elif id == "D03-excavate":
 			_check(int(result.release_tick) >= 181, "excavation did not release grounded support")
-		elif id == "S05-dust" or id == "S06-salt":
+		elif id == "S05-dust" or id == "S06-salt" or id == "S07-stone-granular":
 			_check(int(result.grounded_ticks) > 200, id + " failed representative powder support")
 
 	print("REM003_CURRENT ", JSON.stringify({
