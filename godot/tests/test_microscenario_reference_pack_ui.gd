@@ -66,9 +66,7 @@ func run() -> void:
 
 	var rem003: Dictionary = Pack.player_granular_review(0)
 	expect(desktop.microscenario_apply_definition(rem003,"Play"),"desktop REM-003 review definition refused")
-	var rem003_installed: bool = await wait_for(
-		func() -> bool: return desktop.pending_microscenario_apply.is_empty() and desktop.tower_context.get("micro_active",false)
-	)
+	var rem003_installed: bool = await wait_for(func() -> bool: return desktop.pending_microscenario_apply.is_empty() and desktop.tower_context.get("micro_active",false))
 	expect(rem003_installed,"desktop REM-003 review reset did not acknowledge")
 	desktop._refresh_microscenario_controls()
 	expect(str(desktop.tower_context.microscenario.id) == Pack.REM003_ID,
