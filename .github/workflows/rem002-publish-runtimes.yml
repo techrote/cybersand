@@ -47,7 +47,8 @@ jobs:
           set -euo pipefail
           git merge-base --is-ancestor "$VALIDATED_HEAD" HEAD
           test "$(git rev-parse "$VALIDATED_HEAD^{tree}")" = "$VALIDATED_TREE"
-          test "$(git rev-parse "$TESTED_LINUX_MERGE^{tree}")" = "$VALIDATED_TREE"
+          git fetch --no-tags --depth=1 origin "$TESTED_LINUX_MERGE"
+          test "$(git rev-parse FETCH_HEAD^{tree})" = "$VALIDATED_TREE"
           git diff --exit-code "$VALIDATED_HEAD" HEAD --             godot/native_extension             godot/scripts/cell_world.gd             godot/scripts/interaction_policy.gd             godot/scripts/physics_characterisation.gd             godot/scripts/rigid_body_coupling.gd             godot/scripts/rapier_physics_bridge.gd             godot/tests/test_cell_world.gd             godot/tests/test_physics_instrumentation.gd             godot/tests/test_rem002_body_granular.gd             godot/tests/test_wex001_water_body_baseline.gd             native/include             native/src             native/tests/test_world.cpp             tools/build_native_extension.sh             tools/build_native_extension_windows.sh             tools/build_pinned_godot_cpp.sh             tools/requirements-build.txt
 
       - name: Restore exact tested Linux runtime
