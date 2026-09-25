@@ -81,11 +81,16 @@ Per-frame metadata includes:
 - render-generation monotonic time, consumer publication time, elapsed monotonic
   time and a wall-clock estimate derived from the session start;
 - backend and worker count;
-- sampled-player origin, extent, velocity, grounded state and representation;
+- sampled-player origin, extent, velocity, grounded state, representation and the full resolved player/environment tuning profile bound to that render generation;
 - copied rigid-body input ID, center, rotation, extent, velocities, mass and
   sample serial for the exact value sample consumed by the worker publication;
 - active MicroScenario ID/hash/recipe/seed/mode and presentation tuning profile;
 - transport profile name/hash and Water policy hash when present.
+
+PENV-001 also retains the full player/environment profile in scenario identity,
+while the session's desktop configuration records the profile active at recording
+start. These are tuning/provenance inputs, not evidence that a candidate is
+physically calibrated or owner-accepted.
 
 REC-001 v1 retains the serialized material-ID channel only. The render
 visual-condition channel is explicitly omitted. Temperature is not present in
