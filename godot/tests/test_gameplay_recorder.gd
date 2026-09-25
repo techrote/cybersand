@@ -205,7 +205,7 @@ func _test_patch_reconstruction_and_overflow() -> void:
 func _test_actor_only_motion_and_representation() -> void:
 	var recorder = Recorder.new()
 	var start_error: Error = recorder.start_recording({
-		"roi": Rect2i(10, 20, 40, 40),
+		"roi": Rect2i(10, 20, 4, 3),
 		"capture_hz": 60,
 		"queue_capacity": 4,
 	}, {"source": "test"}, false)
