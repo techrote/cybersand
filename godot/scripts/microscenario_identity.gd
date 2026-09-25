@@ -10,7 +10,8 @@ const SOURCES: Array[String] = [
 	"scripts/microscenario_telemetry.gd", "scripts/microscenario_workbench.gd",
 	"scripts/microscenario_comparison.gd", "scripts/cell_world.gd",
 	"scripts/material_appearance_lut.gd", "scripts/sampled_character.gd",
-	"scripts/simulation_worker.gd", "scripts/main.gd", "scripts/web_demo_controller.gd",
+	"scripts/gameplay_recorder.gd", "scripts/simulation_worker.gd", "scripts/main.gd",
+	"scripts/web_demo_controller.gd",
 	"scripts/experiment_tower.gd", "scripts/water_feel_scenarios.gd",
 	"scripts/transport_profiles.gd", "scripts/water_experiment_profiles.gd",
 	"scripts/water_experiment_contract.gd"]
