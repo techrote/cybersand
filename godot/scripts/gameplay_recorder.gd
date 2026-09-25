@@ -410,8 +410,14 @@ func _frame_metadata(snapshot: CyberSimulationSnapshot) -> Dictionary:
 	var player_velocity: Vector2 = snapshot.render_character_velocity
 	var player_grounded: bool = snapshot.render_character_grounded
 	var elapsed_usec: int = maxi(0, render_usec - _start_monotonic_usec)
-	var source_identity: Dictionary = _identity.get("source", {})
-	var native_identity: Dictionary = _identity.get("native_runtime", {})
+	var source_identity: Dictionary = {}
+	var source_value: Variant = _identity.get("source", {})
+	if source_value is Dictionary:
+		source_identity = source_value
+	var native_identity: Dictionary = {}
+	var native_value: Variant = _identity.get("native_runtime", {})
+	if native_value is Dictionary:
+		native_identity = native_value
 	return {
 		"schema_id": SCHEMA_ID,
 		"evidence_kind": EVIDENCE_KIND,
