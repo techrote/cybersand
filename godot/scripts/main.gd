@@ -1,6 +1,8 @@
 extends Control
 
 const GameplayRecorder = preload("res://scripts/gameplay_recorder.gd")
+const PlayerEnvironmentProfiles = preload("res://scripts/player_environment_profiles.gd")
+const PlayerEnvironmentPanel = preload("res://scripts/player_environment_panel.gd")
 const DEFAULT_RECORDING_HZ: int = 15
 const DEFAULT_RECORDING_QUEUE_CAPACITY: int = 8
 
@@ -136,6 +138,12 @@ const MATERIAL_GROUP_FIRST_IDS: Array[int] = [
 var simulation_worker: CyberSimulationWorker = CyberSimulationWorker.new()
 var gameplay_recorder = GameplayRecorder.new()
 var recording_button: Button
+var player_environment_panel
+var player_environment_button: Button
+var active_player_environment_profile: Dictionary = PlayerEnvironmentProfiles.preset(
+	PlayerEnvironmentProfiles.PRESET_CURRENT
+)
+var pending_player_environment_profile: Dictionary = {}
 var tower_panel: CyberTowerPanel
 var tower_active: bool = false
 var tower_floor: int = 0
@@ -225,7 +233,9 @@ func microscenario_reset() -> void:
 func microscenario_capture() -> void:
 	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty(): return
 	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty(): return
-	tower_command({"scenario_capture":true, "identity":CyberMicroScenarioIdentity.current()})
+	var identity: Dictionary = CyberMicroScenarioIdentity.current()
+	identity["player_environment_profile"] = active_player_environment_profile.duplicate(true)
+	tower_command({"scenario_capture":true, "identity":identity})
 
 func _write_microscenario_capture(report: Dictionary) -> void:
 	var target: String = "user://microscenario-observation.json"
@@ -583,6 +593,7 @@ func recording_runtime_identity() -> Dictionary:
 			"requested_native_worker_threads": int(
 				ProjectSettings.get_setting("cybersand/native_worker_threads", 0)
 			),
+			"player_environment_profile": active_player_environment_profile.duplicate(true),
 		},
 	}
 
@@ -741,9 +752,72 @@ var last_hard_surface_revision: int = -1
 var hard_surface_rebuild_cooldown: float = 0.0
 
 
+func setup_player_environment_tuning() -> void:
+	active_player_environment_profile = PlayerEnvironmentProfiles.preset(
+		PlayerEnvironmentProfiles.PRESET_CURRENT
+	)
+	player_environment_button = Button.new()
+	player_environment_button.name = "PlayerEnvironmentTuningLauncher"
+	player_environment_button.text = "Player / Environment Tuning"
+	player_environment_button.focus_mode = Control.FOCUS_NONE
+	player_environment_button.pressed.connect(toggle_player_environment_tuning)
+	$Layout.add_child(player_environment_button)
+
+	player_environment_panel = PlayerEnvironmentPanel.new()
+	player_environment_panel.configure(
+		PlayerEnvironmentProfiles,
+		active_player_environment_profile
+	)
+	player_environment_panel.apply_requested.connect(apply_player_environment_profile)
+	player_environment_panel.visible = false
+	$Layout.add_child(player_environment_panel)
+
+
+func toggle_player_environment_tuning() -> void:
+	if player_environment_panel == null:
+		return
+	player_environment_panel.visible = not player_environment_panel.visible
+
+
+func apply_player_environment_profile(candidate: Dictionary) -> void:
+	if (
+		not water_blind_set.is_empty()
+		or not water_active_blind_label.is_empty()
+	):
+		player_environment_panel.set_error(
+			"Finish/reveal the active Water blind set before changing player tuning."
+		)
+		return
+	var resolved: Dictionary = PlayerEnvironmentProfiles.resolve(candidate)
+	if not resolved.get("ok", false):
+		player_environment_panel.set_error(
+			"Rejected: " + str(resolved.get("error", "invalid profile"))
+		)
+		return
+	if not simulation_worker.queue_player_environment_profile(resolved.profile):
+		player_environment_panel.set_error("Worker rejected the player/environment profile.")
+		return
+
+	pending_player_environment_profile = resolved.profile.duplicate(true)
+	paused = true
+
+	# PENV edits remain fresh-reset inputs and reuse the current PCHAR-aware owner
+	# boundary. Ordinary barrel/sample selection and sampled burial-safe recovery
+	# therefore survive tuning changes; registered labs still force sampled-baseline.
+	if tower_context.get("micro_active", false):
+		microscenario_reset()
+	elif water_controlled_run_active():
+		water_lab_reset()
+	elif tower_active:
+		tower_reset()
+	else:
+		reset_world()
+
+
 func _ready() -> void:
 	setup_tower_panel()
 	setup_player_representation_button()
+	setup_player_environment_tuning()
 	var tower_button: Button = Button.new()
 	tower_button.name = "ExperimentTowerLauncher"
 	tower_button.text = "Experiment Tower / F9"
@@ -1365,6 +1439,20 @@ func consume_worker_snapshot() -> void:
 			paused=bool(pending_water_apply.get("previous_paused",true))
 			pending_water_apply.clear()
 	if tower_context.has("profile"): tower_profile = tower_context.profile
+	var published_player_profile: Dictionary = tower_context.get(
+		"player_environment_profile",
+		{}
+	)
+	if not published_player_profile.is_empty():
+		active_player_environment_profile = published_player_profile.duplicate(true)
+		if (
+			not pending_player_environment_profile.is_empty()
+			and str(pending_player_environment_profile.get("hash", ""))
+				== str(active_player_environment_profile.get("hash", ""))
+		):
+			pending_player_environment_profile.clear()
+		if player_environment_panel != null:
+			player_environment_panel.set_active(active_player_environment_profile)
 	consumed_snapshot_serial = snapshot.serial
 	if snapshot.simulation_failed:
 		paused = true
@@ -1906,6 +1994,8 @@ func update_status() -> void:
 			rapier_bridge.pending_hard_surface_chunks(),
 		]
 	var player_text: String = "disabled" if tower_context.get("micro_active",false) and not tower_context.get("microscenario",{}).get("player_enabled",false) else "%.0f,%.0f" % [character_position.x,character_position.y]
+	player_text += " / " + player_representation_identity()
+	player_text += " / " + str(active_player_environment_profile.get("id", "current-baseline"))
 	status_label.text = "FPS %d | frame %.2f ms peak %.2f | render %d Hz %s %s | step %.2f ms | upload %.2f ms | %s\n%s | tick %d age %.1f ms | bridge %d patches %.1f KiB%s | cells %d + %d dormant | moved %d (%d ballistic) | blocks %d/%d + %d frozen | sched %d jobs/%d phases cap~%d\n%s | %s | %s %s | bodies %d contact + %d displaced + %d unresolved | player %s | camera %.0f,%.0f %s | %s | overruns %d | %s" % [
 		int(Engine.get_frames_per_second()),
 		frame_time_ms,
