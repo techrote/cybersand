@@ -6,7 +6,7 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-25
 ---
 
 # Data ownership and lifetimes
@@ -157,6 +157,29 @@ lateral Water mass transport drive bounded optional mixing and grain pickup;
 horizontal sampling and cadence are separate fixed experiments.
 Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
 are unchanged. No unsynchronized live descriptor mutation is introduced.
+
+## Desktop gameplay recording ownership
+
+**Current REC-001:** the desktop gameplay recorder is a second consumer of
+`CyberSimulationSnapshot`, not a second World owner. The main thread applies the
+immutable render publication to a private fixed-ROI material-ID buffer and copies
+due frames into an explicit bounded queue. Its dedicated writer thread owns only
+those frame copies plus copied metadata; it performs encoding/file I/O without
+calling World, Rapier or scene-tree APIs.
+
+The worker publication also carries a small value-only evidence sample bound to
+each render generation: completed tick/time, sampled-character values, copied
+rigid-body input values and reduced scenario/profile context. Later worker
+snapshots may share the same frozen render bytes, so the recorder keys admission
+to the render serial and never relabels an older material generation with newer
+tick/actor values. The body array is the same copied bridge sample already
+consumed by native coupling, not a live physics object.
+
+Recorder queue saturation drops capture attempts with timing/tick provenance and
+never waits on or skips an authoritative simulation tick. Recorder/file failure
+stops recording admission and produces an incomplete evidence disposition without
+changing simulation ownership or recovery. See
+[gameplay recording](../operations/gameplay-recording.md).
 
 ## MicroScenario owner-local values
 

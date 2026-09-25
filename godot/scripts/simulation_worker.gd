@@ -264,6 +264,16 @@ var _pending_render_channels: int = 1
 var _pending_render_full_refresh: bool = false
 var _pending_render_patch_rectangles: PackedInt32Array = PackedInt32Array()
 var _pending_render_patch_cells: PackedByteArray = PackedByteArray()
+var _pending_render_tick_index: int = 0
+var _pending_render_generated_usec: int = 0
+var _pending_render_character_position: Vector2 = Vector2.ZERO
+var _pending_render_character_velocity: Vector2 = Vector2.ZERO
+var _pending_render_character_grounded: bool = false
+var _pending_render_rigid_body_states: PackedFloat32Array = PackedFloat32Array()
+var _pending_render_simulation_time_ms: float = 0.0
+var _pending_render_worker_step_time_ms: float = 0.0
+var _pending_render_worker_overruns: int = 0
+var _pending_render_context: Dictionary = {}
 var _pending_render_payload_generation: int = 0
 var _published_render_payload_generation: int = -1
 var _published_render_patch_rectangles: PackedInt32Array = PackedInt32Array()
@@ -605,7 +615,8 @@ func _worker_loop() -> void:
 			worker_step_time_ms,
 			local_paused,
 			local_render_snapshot_interval_usec,
-			local_reset_requested
+			local_reset_requested,
+			local_rigid_body_states
 		)
 
 		next_tick_usec += TICK_INTERVAL_USEC
@@ -622,13 +633,16 @@ func _publish_snapshot(
 	worker_step_time_ms: float,
 	paused: bool,
 	render_snapshot_interval_usec: int,
-	force_render_full_refresh: bool = false
+	force_render_full_refresh: bool = false,
+	rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 ) -> void:
 	if _simulation_failed:
 		_publish_failure_snapshot()
 		return
 	var copy_start_usec: int = Time.get_ticks_usec()
 	var now_usec: int = Time.get_ticks_usec()
+	var render_serial_before: int = _pending_render_snapshot_serial
+	var render_generation_advanced: bool = false
 	var acknowledged_render_serial: int = 0
 	var render_full_refresh_requested: bool = false
 	_mutex.lock()
@@ -683,6 +697,17 @@ func _publish_snapshot(
 			_pending_render_payload_generation += 1
 		_snapshot_world_revision = _world.revision
 		_last_render_snapshot_usec = now_usec
+		if _pending_render_snapshot_serial > render_serial_before:
+			_pending_render_tick_index = int(_world.tick_index)
+			_pending_render_generated_usec = now_usec
+			_pending_render_character_position = _character.position
+			_pending_render_character_velocity = _character.velocity
+			_pending_render_character_grounded = _character.grounded
+			_pending_render_rigid_body_states = rigid_body_states.duplicate()
+			_pending_render_simulation_time_ms = _world.simulation_time_ms
+			_pending_render_worker_step_time_ms = worker_step_time_ms
+			_pending_render_worker_overruns = _worker_overruns
+			render_generation_advanced = true
 	var current_hard_surface_revision: int = int(_world.hard_surface_revision)
 	if (
 		current_hard_surface_revision != _snapshot_hard_surface_revision
@@ -707,11 +732,21 @@ func _publish_snapshot(
 	snapshot.serial = _snapshot_serial
 	snapshot.published_usec = Time.get_ticks_usec()
 	snapshot.world_revision = _snapshot_world_revision
+	snapshot.simulation_world_revision = int(_world.revision)
 	snapshot.hard_surface_revision = _snapshot_hard_surface_revision
 	snapshot.cells = _snapshot_cells
 	snapshot.render_snapshot_serial = _pending_render_snapshot_serial
 	snapshot.render_channels = _pending_render_channels
 	snapshot.render_full_refresh = _pending_render_full_refresh
+	snapshot.render_tick_index = _pending_render_tick_index
+	snapshot.render_generated_usec = _pending_render_generated_usec
+	snapshot.render_character_position = _pending_render_character_position
+	snapshot.render_character_velocity = _pending_render_character_velocity
+	snapshot.render_character_grounded = _pending_render_character_grounded
+	snapshot.render_rigid_body_states = _pending_render_rigid_body_states
+	snapshot.render_simulation_time_ms = _pending_render_simulation_time_ms
+	snapshot.render_worker_step_time_ms = _pending_render_worker_step_time_ms
+	snapshot.render_worker_overruns = _pending_render_worker_overruns
 	_refresh_published_render_payload()
 	snapshot.render_patch_rectangles = _published_render_patch_rectangles
 	snapshot.render_patch_cells = _published_render_patch_cells
@@ -724,6 +759,7 @@ func _publish_snapshot(
 	snapshot.character_position = _character.position
 	snapshot.character_velocity = _character.velocity
 	snapshot.character_grounded = _character.grounded
+	snapshot.current_rigid_body_states = rigid_body_states.duplicate()
 	snapshot.character_runtime_recovery_enabled = (
 		_character.runtime_enclosure_recovery_enabled
 	)
@@ -800,6 +836,29 @@ func _publish_snapshot(
 			"current":_water_current_integer if _water_lab_active else 0,
 		},
 	}
+	if render_generation_advanced:
+		var render_micro: Dictionary = snapshot.lab_context.get("microscenario", {})
+		var render_presentation: Dictionary = render_micro.get("presentation", {})
+		var render_profile: Dictionary = snapshot.lab_context.get("profile", {})
+		_pending_render_context = {
+			"micro_active": bool(snapshot.lab_context.get("micro_active", false)),
+			"profile": {"name": str(render_profile.get("name", ""))},
+			"profile_hash": str(snapshot.lab_context.get("profile_hash", "")),
+			"water_policy_hash": str(snapshot.lab_context.get("water_policy_hash", "")),
+			"microscenario": {
+				"id": str(render_micro.get("id", "")),
+				"definition_hash": str(render_micro.get("definition_hash", "")),
+				"source_recipe": str(render_micro.get("source_recipe", "")),
+				"source_recipe_hash": str(render_micro.get("source_recipe_hash", "")),
+				"seed": int(render_micro.get("seed", 0)),
+				"mode": str(render_micro.get("mode", "")),
+				"presentation": {
+					"profile": str(render_presentation.get("profile", "")),
+				},
+			},
+		}
+		_freeze_capture(_pending_render_context)
+	snapshot.render_context = _pending_render_context
 
 	_mutex.lock()
 	_published_snapshot = snapshot

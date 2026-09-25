@@ -1,5 +1,9 @@
 extends Control
 
+const GameplayRecorder = preload("res://scripts/gameplay_recorder.gd")
+const DEFAULT_RECORDING_HZ: int = 15
+const DEFAULT_RECORDING_QUEUE_CAPACITY: int = 8
+
 # Presentation and orchestration only. A dedicated worker owns all mutable
 # cellular and sampled-character physics and publishes immutable snapshots.
 const DEFAULT_VIEW_SIZE: Vector2i = Vector2i(320, 180)
@@ -130,6 +134,8 @@ const MATERIAL_GROUP_FIRST_IDS: Array[int] = [
 @onready var test_rigid_body_3: RigidBody2D = $RigidBodies/TestBody3
 
 var simulation_worker: CyberSimulationWorker = CyberSimulationWorker.new()
+var gameplay_recorder = GameplayRecorder.new()
+var recording_button: Button
 var tower_panel: CyberTowerPanel
 var tower_active: bool = false
 var tower_floor: int = 0
@@ -548,6 +554,133 @@ func water_runtime_identity() -> Dictionary:
 		return result
 	result.merge(parsed,true)
 	return result
+
+
+func recording_runtime_identity() -> Dictionary:
+	var source_revision: String = OS.get_environment("CYBERSAND_SOURCE_REVISION")
+	if source_revision.is_empty():
+		source_revision = OS.get_environment("GITHUB_SHA")
+	if source_revision.is_empty():
+		source_revision = "unavailable"
+	return {
+		"source": CyberMicroScenarioIdentity.current(source_revision),
+		"native_runtime": water_runtime_identity(),
+		"recorder_script": {
+			"path": "res://scripts/gameplay_recorder.gd",
+			"sha256": FileAccess.get_sha256("res://scripts/gameplay_recorder.gd"),
+		},
+		"worker": {
+			"backend": latest_snapshot.backend_name if latest_snapshot != null else "unavailable",
+			"worker_count": latest_snapshot.scheduler_thread_capacity_hint if latest_snapshot != null else 0,
+		},
+		"desktop_configuration": {
+			"render_snapshot_hz": render_snapshot_hz,
+			"simulation_window_enabled": simulation_window_enabled,
+			"cadence_lod_enabled": cadence_lod_enabled,
+			"liquid_surface_adhesion_enabled": liquid_surface_adhesion_enabled,
+			"view_size": [current_view_size.x, current_view_size.y],
+			"simulation_margin": [simulation_margin.x, simulation_margin.y],
+			"requested_native_worker_threads": int(
+				ProjectSettings.get_setting("cybersand/native_worker_threads", 0)
+			),
+		},
+	}
+
+
+func recording_configuration() -> Dictionary:
+	var roi: Rect2i = Rect2i(
+		floori(camera_origin.x),
+		floori(camera_origin.y),
+		current_view_size.x,
+		current_view_size.y
+	)
+	var result: Dictionary = {
+		"capture_hz": DEFAULT_RECORDING_HZ,
+		"queue_capacity": DEFAULT_RECORDING_QUEUE_CAPACITY,
+		"roi": roi,
+		"retain_raw_ids": true,
+		"selected_material_id_at_start": selected_material_id,
+		"selected_paint_slot_at_start": selected_paint_slot,
+	}
+	for raw_argument: String in OS.get_cmdline_user_args():
+		var argument: String = str(raw_argument)
+		if argument.begins_with("--record-hz="):
+			result.capture_hz = clampi(
+				int(argument.trim_prefix("--record-hz=")),
+				1,
+				60
+			)
+		elif argument.begins_with("--record-queue="):
+			result.queue_capacity = clampi(
+				int(argument.trim_prefix("--record-queue=")),
+				1,
+				GameplayRecorder.MAX_QUEUE_CAPACITY
+			)
+		elif argument.begins_with("--record-roi="):
+			var parts: PackedStringArray = argument.trim_prefix("--record-roi=").split(",")
+			if parts.size() == 4:
+				result.roi = Rect2i(
+					int(parts[0]),
+					int(parts[1]),
+					maxi(1, int(parts[2])),
+					maxi(1, int(parts[3]))
+				)
+	return result
+
+
+func toggle_gameplay_recording() -> void:
+	if gameplay_recorder.is_active():
+		var stopped: Dictionary = gameplay_recorder.stop_recording()
+		print("REC-001 recording stopped: ", JSON.stringify(stopped))
+		_refresh_recording_button()
+		return
+	var start_error: Error = gameplay_recorder.start_recording(
+		recording_configuration(),
+		recording_runtime_identity()
+	)
+	if start_error != OK:
+		push_error("REC-001 recorder failed to start: error %d" % int(start_error))
+		_refresh_recording_button()
+		return
+	# A full immutable render publication primes the recorder's private ROI. The
+	# recorder never reaches back into mutable World storage.
+	simulation_worker.request_render_full_refresh()
+	print("REC-001 recording started: ", gameplay_recorder.session_path())
+	_refresh_recording_button()
+
+
+func _refresh_recording_button() -> void:
+	if recording_button == null:
+		return
+	var recorder_status: Dictionary = gameplay_recorder.status()
+	if bool(recorder_status.get("active", false)):
+		if bool(recorder_status.get("failed", false)):
+			recording_button.text = "Finalize Failed Recording / F10"
+		elif not bool(recorder_status.get("accepting", false)):
+			recording_button.text = "Finalize Recording / F10"
+		elif not bool(recorder_status.get("primed", false)):
+			recording_button.text = "Recording (priming) / F10"
+		else:
+			recording_button.text = "Stop Recording / F10"
+		recording_button.tooltip_text = (
+			"%s | written %d | queued %d/%d | dropped %d" % [
+				str(recorder_status.get("session_path", "")),
+				int(recorder_status.get("written_frames", 0)),
+				int(recorder_status.get("queued_frames", 0)),
+				int(recorder_status.get("queue_capacity", 0)),
+				int(recorder_status.get("dropped_frames", 0)),
+			]
+		)
+	else:
+		recording_button.text = "Start Recording / F10"
+		var prior_path: String = str(recorder_status.get("session_path", ""))
+		recording_button.tooltip_text = (
+			"Last recording: " + prior_path
+			if not prior_path.is_empty()
+			else "Record low-overhead material-state evidence"
+		)
+
+
 var latest_snapshot: CyberSimulationSnapshot
 var worker_start_error: Error = OK
 var consumed_snapshot_serial: int = -1
@@ -617,6 +750,13 @@ func _ready() -> void:
 	tower_button.focus_mode = Control.FOCUS_NONE
 	tower_button.pressed.connect(tower_reset)
 	$Layout.add_child(tower_button)
+	recording_button = Button.new()
+	recording_button.name = "GameplayRecordingLauncher"
+	recording_button.text = "Start Recording / F10"
+	recording_button.focus_mode = Control.FOCUS_NONE
+	recording_button.pressed.connect(toggle_gameplay_recording)
+	$Layout.add_child(recording_button)
+	_refresh_recording_button()
 	if OS.get_processor_count() < 4:
 		var warning: Label = Label.new()
 		warning.text = "4 physical CPU cores are the recommended minimum. Fewer than 4 logical threads reported."
@@ -704,6 +844,9 @@ func _ready() -> void:
 
 
 func _exit_tree() -> void:
+	if gameplay_recorder.is_active():
+		var stopped: Dictionary = gameplay_recorder.stop_recording()
+		print("REC-001 recording finalized at exit: ", JSON.stringify(stopped))
 	simulation_worker.stop_worker()
 	rapier_bridge.shutdown()
 
@@ -714,6 +857,7 @@ func _process(delta: float) -> void:
 	frame_time_ms = delta * 1000.0
 	maximum_frame_time_ms = maxf(maximum_frame_time_ms, frame_time_ms)
 	consume_worker_snapshot()
+	_refresh_recording_button()
 	sync_player_presentation_position()
 	refresh_player_representation_button()
 	hard_surface_rebuild_cooldown = maxf(0.0, hard_surface_rebuild_cooldown - delta)
@@ -757,6 +901,10 @@ func _physics_process(_delta: float) -> void:
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F8:
 		microscenario_toggle_hud()
+		get_viewport().set_input_as_handled()
+		return
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F10:
+		toggle_gameplay_recording()
 		get_viewport().set_input_as_handled()
 		return
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F6:
@@ -1237,6 +1385,7 @@ func consume_worker_snapshot() -> void:
 			)
 		else:
 			reject_render_snapshot(snapshot)
+	gameplay_recorder.ingest_snapshot(snapshot)
 
 
 func record_render_payload(snapshot: CyberSimulationSnapshot) -> void:
