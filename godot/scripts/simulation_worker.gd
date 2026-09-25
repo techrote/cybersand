@@ -17,7 +17,7 @@ const HARD_SURFACE_SNAPSHOT_INTERVAL_USEC: int = 250000
 const RENDER_PATCH_METADATA_STRIDE: int = 6
 const MAX_PENDING_RENDER_PATCHES: int = 256
 const MAX_BRUSH_FOOTPRINT_CELLS: int = 4096
-const MAX_PENDING_BRUSH_COMMANDS: int = 64
+const MAX_PENDING_BRUSH_COMMANDS: int = 8
 
 var _thread: Thread = Thread.new()
 var _mutex: Mutex = Mutex.new()
@@ -410,6 +410,14 @@ func queue_emit_cells(
 		and _published_snapshot.lab_context.get("water_active",false)):
 		_mutex.unlock()
 		return false
+	if not _pending_cell_emissions.is_empty():
+		var last_command: Dictionary = _pending_cell_emissions.back()
+		if (
+			int(last_command.get("packed_material", -1)) == packed_material
+			and last_command.get("points", PackedInt32Array()) == points
+		):
+			_mutex.unlock()
+			return true
 	if _pending_cell_emissions.size() >= MAX_PENDING_BRUSH_COMMANDS:
 		_mutex.unlock()
 		return false
