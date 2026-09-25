@@ -24,6 +24,11 @@ Material render publications are folded into a private fixed ROI buffer on the
 presentation thread. Retained frames copy that ROI into a bounded queue. A
 dedicated writer thread performs file encoding and disk I/O.
 
+Recording schema v2 separates the **material generation** from the **actor
+sample**. Once the ROI is primed, later immutable worker snapshots may produce
+capture frames while reusing unchanged material bytes, so actor-only movement is
+visible without manufacturing a new cellular render revision.
+
 This keeps the native/Godot ownership decision in ADR-003 intact. Recording may
 consume CPU, memory bandwidth and disk bandwidth, but recorder pressure is not
 allowed to block or skip authoritative simulation work.
@@ -37,9 +42,11 @@ Desktop builds expose a **Start Recording / F10** control. Starting a session:
 3. requests one full immutable render publication to prime the private ROI;
 4. begins capture only after that full publication covers the ROI.
 
-Stopping drains the already-bounded writer queue, joins the writer and finalizes
-`recording.json`. Closing the desktop while recording uses the same normal
-finalization path.
+Interactive **Stop Recording / F10** closes admission and requests finalization.
+The bounded queue drains and the final manifest is written on the recorder thread
+while the desktop remains responsive. The UI shows a non-interactive finalizing
+state until completion. Application shutdown may still synchronously join the
+bounded writer as part of teardown.
 
 Defaults are 15 retained capture attempts per second and an eight-frame queue.
 The following user arguments override the defaults for a run:
@@ -68,10 +75,16 @@ The raw `.ids` file preserves material identities even where the review bitmap
 draws an actor outline. The canonical material RGBA8 palette is copied into the
 session manifest so frame interpretation is stable.
 
-Per-frame metadata is bound to the **exact render generation** represented by the
-material IDs. A later worker snapshot may carry that same frozen material payload;
-such snapshots do not create duplicate frames and cannot relabel an older material
-generation with a newer simulation tick or actor state.
+Per-frame metadata carries two explicit identities:
+
+- **material generation** — render serial, cellular revision, completed tick and
+  generation timestamp for the retained material-ID bytes;
+- **actor sample** — immutable worker snapshot, completed tick, publication time,
+  active representation and active player body ID where applicable.
+
+A later worker snapshot may therefore reuse the same frozen material payload while
+advancing the sampled or Rapier player. The older material generation retains its
+own tick/time identity and is never relabelled as newly generated material.
 
 Per-frame metadata includes:
 
@@ -81,7 +94,9 @@ Per-frame metadata includes:
 - render-generation monotonic time, consumer publication time, elapsed monotonic
   time and a wall-clock estimate derived from the session start;
 - backend and worker count;
-- sampled-player origin, extent, velocity, grounded state, representation and the full resolved player/environment tuning profile bound to that render generation;
+- active-player representation, body identity where applicable, origin, extent,
+  velocity, sampled grounded/recovery state where applicable, and the full
+  resolved player/environment tuning profile at the actor sample;
 - copied rigid-body input ID, center, rotation, extent, velocities, mass and
   sample serial for the exact value sample consumed by the worker publication;
 - active MicroScenario ID/hash/recipe/seed/mode and presentation tuning profile;
@@ -92,7 +107,7 @@ while the session's desktop configuration records the profile active at recordin
 start. These are tuning/provenance inputs, not evidence that a candidate is
 physically calibrated or owner-accepted.
 
-REC-001 v1 retains the serialized material-ID channel only. The render
+REC-001 v2 retains the serialized material-ID channel only. The render
 visual-condition channel is explicitly omitted. Temperature is not present in
 the immutable desktop render publication and is therefore recorded as
 **unavailable/omitted**, never as zero or inferred data.
@@ -131,9 +146,10 @@ does not ask the simulation worker to skip or slow a tick.
 
 Material publications continue to update the recorder's private ROI even when a
 capture frame is dropped. The next retained frame therefore represents the
-latest consumed publication rather than a stale queued state. Worker snapshots
-that merely repeat an already-consumed render serial are ignored for capture
-cadence, so main-thread lag cannot manufacture duplicate review frames.
+latest consumed publication rather than a stale queued state. Worker snapshots that repeat an already-consumed render serial do not reapply
+material patches. They may still satisfy capture cadence when the actor sample has
+advanced; the resulting frame explicitly points back to the unchanged material
+generation.
 
 Malformed recorder input or a writer failure stops admission and marks the
 session incomplete. A simulation failure likewise stops admission and records
@@ -165,3 +181,22 @@ results. Do not convert owner taste into an automated acceptance score.
 
 #135 is the finite first implementation child. Parent #130 remains open for
 future recording, comparison, export and review ergonomics.
+
+
+## REC-001 integration correction
+
+The post-implementation integration review identified four recorder integration
+gaps. Schema v2 corrects them without changing simulation semantics:
+
+- actor-only motion is recordable against unchanged material bytes;
+- worker-owned snapshots identify `sampled-baseline`,
+  `sampled-burial-safe` or `barrel-rapier`, and the active Rapier player body
+  is drawn as the player rather than as a generic body;
+- `launch-desktop.cmd` / `tools/launch_desktop.ps1` exports the exact checkout
+  SHA to the child Godot process as `CYBERSAND_SOURCE_REVISION`;
+- interactive stop/finalization no longer waits for disk/encoding completion on
+  the presentation thread.
+
+These corrections do not satisfy #135's remaining owner/performance evidence
+gate by themselves. Matched recording OFF/ON measurements and useful retained
+desktop clips are still required before closing #135.

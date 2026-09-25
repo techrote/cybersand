@@ -42,6 +42,10 @@ var hard_surface_chunk_rectangles_valid: bool = false
 var character_position: Vector2 = Vector2.ZERO
 var character_velocity: Vector2 = Vector2.ZERO
 var character_grounded: bool = false
+# Active gameplay actor identity at this worker publication. Body ID is zero for
+# the sampled character and the 1-based coupling ID for a Rapier player body.
+var player_representation: String = "sampled-baseline"
+var player_body_id: int = 0
 # Exact copied body input sample consumed by this worker publication.
 var current_rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 var character_runtime_recovery_enabled: bool = true

@@ -694,8 +694,10 @@ func recording_configuration() -> Dictionary:
 
 func toggle_gameplay_recording() -> void:
 	if gameplay_recorder.is_active():
-		var stopped: Dictionary = gameplay_recorder.stop_recording()
-		print("REC-001 recording stopped: ", JSON.stringify(stopped))
+		var current_status: Dictionary = gameplay_recorder.status()
+		if bool(current_status.get("accepting", false)):
+			var requested: Dictionary = gameplay_recorder.request_stop()
+			print("REC-001 recording finalization requested: ", JSON.stringify(requested))
 		_refresh_recording_button()
 		return
 	var start_error: Error = gameplay_recorder.start_recording(
@@ -717,11 +719,12 @@ func _refresh_recording_button() -> void:
 	if recording_button == null:
 		return
 	var recorder_status: Dictionary = gameplay_recorder.status()
+	recording_button.disabled = bool(recorder_status.get("finalizing", false))
 	if bool(recorder_status.get("active", false)):
 		if bool(recorder_status.get("failed", false)):
-			recording_button.text = "Finalize Failed Recording / F10"
-		elif not bool(recorder_status.get("accepting", false)):
-			recording_button.text = "Finalize Recording / F10"
+			recording_button.text = "Recording failed (finalizing)"
+		elif bool(recorder_status.get("finalizing", false)):
+			recording_button.text = "Finalizing recording..."
 		elif not bool(recorder_status.get("primed", false)):
 			recording_button.text = "Recording (priming) / F10"
 		else:
@@ -736,6 +739,7 @@ func _refresh_recording_button() -> void:
 			]
 		)
 	else:
+		recording_button.disabled = false
 		recording_button.text = "Start Recording / F10"
 		var prior_path: String = str(recorder_status.get("session_path", ""))
 		recording_button.tooltip_text = (
@@ -990,6 +994,7 @@ func _process(delta: float) -> void:
 	frame_time_ms = delta * 1000.0
 	maximum_frame_time_ms = maxf(maximum_frame_time_ms, frame_time_ms)
 	consume_worker_snapshot()
+	gameplay_recorder.poll_finalization()
 	_refresh_recording_button()
 	sync_player_presentation_position()
 	refresh_player_representation_button()
