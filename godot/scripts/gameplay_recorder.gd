@@ -1,4 +1,3 @@
-class_name CyberGameplayRecorder
 extends RefCounted
 
 # REC-001 desktop gameplay evidence recorder.
@@ -60,6 +59,9 @@ var _dropped_frames: int = 0
 var _queue_high_water: int = 0
 var _drop_events: Array[Dictionary] = []
 var _drop_events_omitted: int = 0
+var _render_publications_observed: int = 0
+var _patch_apply_usec_total: int = 0
+var _patch_apply_usec_max: int = 0
 var _capture_copy_usec_total: int = 0
 var _capture_copy_usec_max: int = 0
 var _write_usec_total: int = 0
@@ -238,23 +240,37 @@ func ingest_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 		)
 		return
 
+	var render_advanced: bool = false
 	if (
 		snapshot.render_snapshot_serial > 0
 		and snapshot.render_snapshot_serial > _last_render_snapshot_serial
 	):
+		var patch_started: int = Time.get_ticks_usec()
 		var patch_error: String = _apply_render_publication(snapshot)
+		var patch_usec: int = Time.get_ticks_usec() - patch_started
+		_mutex.lock()
+		_render_publications_observed += 1
+		_patch_apply_usec_total += patch_usec
+		_patch_apply_usec_max = maxi(_patch_apply_usec_max, patch_usec)
+		_mutex.unlock()
 		if not patch_error.is_empty():
 			_mark_incomplete_and_stop(patch_error, true)
 			return
 		_last_render_snapshot_serial = snapshot.render_snapshot_serial
+		render_advanced = true
 
-	if not _primed:
+	# One evidence frame belongs to one immutable render generation. Later worker
+	# snapshots may legitimately carry the same material payload with a newer
+	# simulation tick; those must not relabel or duplicate the material frame.
+	if not _primed or not render_advanced:
 		return
 
-	var published_usec: int = snapshot.published_usec
-	if published_usec < _next_capture_usec:
+	var render_usec: int = snapshot.render_generated_usec
+	if render_usec <= 0:
+		render_usec = snapshot.published_usec
+	if render_usec < _next_capture_usec:
 		return
-	while _next_capture_usec <= published_usec:
+	while _next_capture_usec <= render_usec:
 		_next_capture_usec += _capture_interval_usec
 
 	_capture_attempts += 1
@@ -352,12 +368,16 @@ func _apply_render_publication(snapshot: CyberSimulationSnapshot) -> String:
 
 
 func _frame_metadata(snapshot: CyberSimulationSnapshot) -> Dictionary:
-	var context: Dictionary = snapshot.lab_context
+	var context: Dictionary = (
+		snapshot.render_context
+		if not snapshot.render_context.is_empty()
+		else snapshot.lab_context
+	)
 	var micro: Dictionary = context.get("microscenario", {})
 	var presentation: Dictionary = micro.get("presentation", {})
 	var profile: Dictionary = context.get("profile", {})
 	var bodies: Array[Dictionary] = []
-	var body_states: PackedFloat32Array = snapshot.rigid_body_states
+	var body_states: PackedFloat32Array = snapshot.render_rigid_body_states
 	var stride: int = CyberRigidBodyCoupling.INPUT_STRIDE
 	for offset: int in range(0, body_states.size() - stride + 1, stride):
 		bodies.append({
@@ -380,28 +400,48 @@ func _frame_metadata(snapshot: CyberSimulationSnapshot) -> Dictionary:
 			"sample_serial": roundi(body_states[offset + CyberRigidBodyCoupling.INPUT_SAMPLE_SERIAL]),
 		})
 
-	var elapsed_usec: int = maxi(0, snapshot.published_usec - _start_monotonic_usec)
+	var render_usec: int = snapshot.render_generated_usec
+	if render_usec <= 0:
+		render_usec = snapshot.published_usec
+	var render_tick: int = snapshot.render_tick_index
+	if render_tick <= 0:
+		render_tick = snapshot.tick_index
+	var player_position: Vector2 = snapshot.render_character_position
+	var player_velocity: Vector2 = snapshot.render_character_velocity
+	var player_grounded: bool = snapshot.render_character_grounded
+	var elapsed_usec: int = maxi(0, render_usec - _start_monotonic_usec)
+	var source_identity: Dictionary = _identity.get("source", {})
+	var native_identity: Dictionary = _identity.get("native_runtime", {})
 	return {
 		"schema_id": SCHEMA_ID,
 		"evidence_kind": EVIDENCE_KIND,
 		"snapshot_serial": snapshot.serial,
 		"render_snapshot_serial": snapshot.render_snapshot_serial,
-		"completed_simulation_tick": snapshot.tick_index,
-		"snapshot_published_monotonic_usec": snapshot.published_usec,
+		"completed_simulation_tick": render_tick,
+		"render_generated_monotonic_usec": render_usec,
+		"consumer_snapshot_tick": snapshot.tick_index,
+		"consumer_snapshot_published_monotonic_usec": snapshot.published_usec,
 		"elapsed_monotonic_usec": elapsed_usec,
 		"wall_unix_usec_estimate": _start_wall_unix_usec + elapsed_usec,
 		"world_revision": snapshot.world_revision,
 		"backend": snapshot.backend_name,
 		"worker_count": snapshot.scheduler_thread_capacity_hint,
-		"simulation_time_ms": snapshot.simulation_time_ms,
-		"worker_step_time_ms": snapshot.worker_step_time_ms,
-		"worker_overruns": snapshot.worker_overruns,
+		"simulation_time_ms": snapshot.render_simulation_time_ms,
+		"worker_step_time_ms": snapshot.render_worker_step_time_ms,
+		"worker_overruns": snapshot.render_worker_overruns,
+		"render_publication": {
+			"serial": snapshot.render_snapshot_serial,
+			"channels": snapshot.render_channels,
+			"full_refresh": snapshot.render_full_refresh,
+			"patch_count": snapshot.render_patch_rectangles.size() / RENDER_PATCH_METADATA_STRIDE,
+			"payload_bytes": snapshot.render_patch_cells.size(),
+		},
 		"player": {
 			"representation": "sampled-character",
-			"origin": [snapshot.character_position.x, snapshot.character_position.y],
+			"origin": [player_position.x, player_position.y],
 			"extent": [CyberSampledCharacter.BODY_SIZE.x, CyberSampledCharacter.BODY_SIZE.y],
-			"velocity": [snapshot.character_velocity.x, snapshot.character_velocity.y],
-			"grounded": snapshot.character_grounded,
+			"velocity": [player_velocity.x, player_velocity.y],
+			"grounded": player_grounded,
 		},
 		"rigid_bodies": bodies,
 		"scenario": {
@@ -419,24 +459,41 @@ func _frame_metadata(snapshot: CyberSimulationSnapshot) -> Dictionary:
 			"hash": str(context.get("profile_hash", "")),
 		},
 		"water_policy_hash": str(context.get("water_policy_hash", "")),
+		"recording_configuration": _config.duplicate(true),
 		"recording_roi": [_roi.position.x, _roi.position.y, _roi.size.x, _roi.size.y],
+		"session_identity": {
+			"source_revision": str(source_identity.get("source_revision", "unavailable")),
+			"source_revision_status": str(source_identity.get("revision_status", "unavailable")),
+			"script_set_sha256": str(source_identity.get("script_set_sha256", "unavailable")),
+			"native_sha256": str(source_identity.get("native_sha256", "unavailable")),
+			"platform": str(source_identity.get("platform", "unavailable")),
+			"godot": str(source_identity.get("godot", "unavailable")),
+			"runtime_source_commit": str(native_identity.get("source_commit", "unavailable")),
+			"runtime_artifact_sha256": str(native_identity.get("sha256", "unavailable")),
+		},
 	}
-
 
 func _record_drop_locked(snapshot: CyberSimulationSnapshot, reason: String) -> void:
 	_dropped_frames += 1
+	var render_usec: int = snapshot.render_generated_usec
+	if render_usec <= 0:
+		render_usec = snapshot.published_usec
+	var render_tick: int = snapshot.render_tick_index
+	if render_tick <= 0:
+		render_tick = snapshot.tick_index
 	var event: Dictionary = {
 		"attempt": _capture_attempts,
 		"reason": reason,
-		"completed_simulation_tick": snapshot.tick_index,
-		"snapshot_published_monotonic_usec": snapshot.published_usec,
+		"render_snapshot_serial": snapshot.render_snapshot_serial,
+		"completed_simulation_tick": render_tick,
+		"render_generated_monotonic_usec": render_usec,
+		"consumer_snapshot_published_monotonic_usec": snapshot.published_usec,
 		"capture_observed_monotonic_usec": Time.get_ticks_usec(),
 	}
 	if _drop_events.size() < DROP_EVENT_LIMIT:
 		_drop_events.append(event)
 	else:
 		_drop_events_omitted += 1
-
 
 func _writer_loop() -> void:
 	while true:
@@ -711,12 +768,15 @@ func _manifest_payload(disposition: String) -> Dictionary:
 			"replay": "not an exact replay stream",
 		},
 		"counters": {
+			"render_publications_observed": _render_publications_observed,
 			"capture_attempts": _capture_attempts,
 			"enqueued_frames": _enqueued_frames,
 			"written_frames": _written_frames,
 			"dropped_frames": _dropped_frames,
 			"queue_high_water": _queue_high_water,
 			"queue_capacity": _queue_capacity,
+			"render_patch_apply_usec_total": _patch_apply_usec_total,
+			"render_patch_apply_usec_max": _patch_apply_usec_max,
 			"capture_copy_usec_total": _capture_copy_usec_total,
 			"capture_copy_usec_max": _capture_copy_usec_max,
 			"writer_write_usec_total": _write_usec_total,
@@ -777,10 +837,13 @@ func _status_locked() -> Dictionary:
 		"queue_capacity": _queue_capacity,
 		"queued_frames": _queue.size(),
 		"queue_high_water": _queue_high_water,
+		"render_publications_observed": _render_publications_observed,
 		"capture_attempts": _capture_attempts,
 		"enqueued_frames": _enqueued_frames,
 		"written_frames": _written_frames,
 		"dropped_frames": _dropped_frames,
+		"render_patch_apply_usec_total": _patch_apply_usec_total,
+		"render_patch_apply_usec_max": _patch_apply_usec_max,
 		"capture_copy_usec_total": _capture_copy_usec_total,
 		"capture_copy_usec_max": _capture_copy_usec_max,
 		"writer_write_usec_total": _write_usec_total,
@@ -813,6 +876,9 @@ func _reset_session_state() -> void:
 	_next_capture_usec = 0
 	_last_render_snapshot_serial = 0
 	_primed = false
+	_render_publications_observed = 0
+	_patch_apply_usec_total = 0
+	_patch_apply_usec_max = 0
 	_capture_attempts = 0
 	_enqueued_frames = 0
 	_written_frames = 0
