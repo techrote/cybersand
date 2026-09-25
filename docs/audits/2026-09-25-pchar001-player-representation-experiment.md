@@ -100,12 +100,59 @@ registered erase operation is the experimental input and is not interpreted as
 spontaneous conservation failure. Other retained granular arms require unchanged
 Sand cell count inside the complete fixture crop.
 
-## Validation state
+## Exact-head validation and observed result
 
-Exact-head CI/runtime execution is required before this record makes platform or
-pass-count claims. Until that evidence is appended, the implementation is a
-reviewable candidate with source-level ownership bounds and deterministic fixture
-definitions, not a validated production player selection.
+Frozen executable-source head is
+`5cf644588af1ed8e6936862ba1419e82f2c198d5`.
 
-Parent #132 remains open after #137. Even a passing PCHAR-001 result only supplies
-one comparative branch of the durable player-representation programme.
+GitHub Actions on that exact head passed:
+
+- GDExtension/Godot run `36146011393`: Linux source-matched extension build,
+  Windows x86_64 cross-build, four isolated Linux Godot regression shards and
+  the aggregate Linux gate all succeeded.
+- Native C++ run `36146011480`: the full native validation workflow succeeded.
+- Documentation/provenance run `36146011195`: documentation, dependency/runtime
+  provenance, retained M11 integrity, retrieval, LFS and whitespace checks
+  succeeded.
+
+The PCHAR test executed on Linux Godot 4.7 against the exact source-matched
+runtime in shard 0 and passed. Its retained summary reproduced the intended
+mechanism separation:
+
+- sampled baseline runtime enclosure moved exactly **14 px upward**;
+- sampled burial-safe remained at **(100,100)**;
+- explicit invalid-spawn recovery separately moved **14 px upward**;
+- a synthetic cellular body reaction produced live velocity approximately
+  **(1.248,-0.499)**;
+- zero player input applied **0.0** control impulse and preserved that live
+  velocity exactly at the control boundary;
+- positive horizontal control applied the registered **3.0** impulse cap,
+  increasing x velocity while leaving y unchanged at application.
+
+All seven requested barrel fixtures executed successfully. Lateral pressure
+produced cumulative cellular x reaction opposite the positive locomotion direction
+(about **-66.76** applied x impulse), while the hard-terrain control produced zero
+cellular reaction. This demonstrates that material reaction remains able to move
+the player rather than being overwritten by locomotion.
+
+The stress fixtures also retain an important generic-body limit rather than
+silently treating the experiment as production acceptance: unresolved-overlap
+counts were high under sustained burial/pressure (for example **9,345** for
+walking into loose/falling material and **7,552** for lateral pressure). Current
+generic coupling preserves the stored material when no bounded ejection target
+exists, so these counts are not material loss, but they confirm that broad
+high-pressure body/granular behavior remains #83 / REM-004 work. PCHAR-001 does
+not change that generic mechanism.
+
+## Disposition
+
+The bounded PCHAR-001 experiment satisfies its engineering purpose: the sampled
+upward-ejection mechanism is identified and directly reproduced; a burial-safe
+sampled arm keeps runtime enclosure in place while preserving separate spawn
+repair; and a controllable barrel/Rapier arm reuses existing coupling while
+retaining incoming reactions.
+
+This result does **not** select the barrel representation as the production player,
+nor does it close the durable representation programme. Parent #132 remains open
+after #137. The retained high-pressure generic-body limitations are routed to
+#83 rather than absorbed here.
