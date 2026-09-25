@@ -244,7 +244,7 @@ func _ready() -> void:
 	$Layout/Status.add_theme_font_size_override("font_size", 14)
 	$Layout/Help.add_theme_font_size_override("font_size", 14)
 	$Layout/Title.text = "CYBERSAND / M11"
-	$Layout/Help.text = "A/D move · Space jetpack · LMB/RMB paint/erase · 1–6 slots · Q/E materials · X blast · P pause · R reset · Esc menu"
+	$Layout/Help.text = "A/D move · Space jetpack · LMB primary · MMB secondary · RMB erase · 1–6 slots · Q/E materials · X blast · P pause · R reset · Esc menu"
 	for body: RigidBody2D in [test_rigid_body_1, test_rigid_body_2, test_rigid_body_3]:
 		body.freeze = true
 		body.collision_layer = 0
@@ -405,7 +405,14 @@ func _process(delta: float) -> void:
 	if not ready_to_play:
 		return
 	frame_time_ms = delta * 1000.0
-	if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) and not Input.is_physical_key_pressed(KEY_A) and not Input.is_physical_key_pressed(KEY_D) and not Input.is_physical_key_pressed(KEY_SPACE):
+	if (
+		not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+		and not Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE)
+		and not Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)
+		and not Input.is_physical_key_pressed(KEY_A)
+		and not Input.is_physical_key_pressed(KEY_D)
+		and not Input.is_physical_key_pressed(KEY_SPACE)
+	):
 		input_armed = focused and not ui.open
 	if not ui.open and focused:
 		update_camera(delta)
@@ -504,6 +511,40 @@ func queue_brush_mutation(
 	paint_commands+=1
 	return true
 
+func queue_brush_footprint_mutation(
+		world_x: int,
+		world_y: int,
+		material_id: int,
+		emission_flags: int = CyberCellWorld.EMISSION_FLAG_NONE
+	) -> bool:
+	if water_controlled_run_active() or not _microscenario_tool_allowed(material_id):
+		return false
+	if brush_shape == "circle" and (brush_size_px & 1) == 1:
+		return queue_brush_mutation(
+			world_x,
+			world_y,
+			(brush_size_px - 1) / 2,
+			material_id,
+			emission_flags
+		)
+	var cells: PackedInt32Array = brush_footprint_cells(world_x, world_y)
+	if cells.is_empty():
+		return false
+	for offset: int in range(0, cells.size(), 2):
+		if material_id == CyberCellWorld.EMPTY:
+			native_world.paint_disc(cells[offset], cells[offset + 1], 0, 0, 0)
+		else:
+			native_world.emit_disc(
+				cells[offset],
+				cells[offset + 1],
+				0,
+				material_id,
+				emission_flags
+			)
+	paint_commands += 1
+	return true
+
+
 func queue_explosion_mutation(world_x: int, world_y: int, radius: int) -> bool:
 	if water_controlled_run_active() or tower_context.get("micro_active", false): return false
 	return bool(demo_bridge.queue_explosion(native_world,world_x,world_y,radius))
@@ -518,15 +559,25 @@ func set_liquid_surface_adhesion(enabled: bool) -> bool:
 func _paint_pointer() -> void:
 	if microscenario_panel != null and microscenario_panel.modal_open(): return
 	if tower_profile_panel.visible: return
-	var radius: int = microscenario_brush_radius if tower_context.get("micro_active",false) else brush_radius
 	var point: Vector2i = _world_pointer()
 	if point.x < 0 or point.y < 0 or point.x >= 1024 or point.y >= 1024:
 		return
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
-		queue_brush_mutation(point.x,point.y,radius,CyberCellWorld.EMPTY)
-	elif Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		queue_brush_mutation(point.x,point.y,radius,selected_material_id,
-			1 if coherent_liquid_emission else 0)
+	var material_id: int = brush_material_for_buttons(
+		Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT),
+		Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE),
+		Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)
+	)
+	if material_id < 0:
+		return
+	var emission_flags: int = CyberCellWorld.EMISSION_FLAG_NONE
+	if material_id != CyberCellWorld.EMPTY and coherent_liquid_emission:
+		emission_flags = CyberCellWorld.EMISSION_FLAG_COHERENT_LIQUID
+	queue_brush_footprint_mutation(
+		point.x,
+		point.y,
+		material_id,
+		emission_flags
+	)
 
 func _publish_world() -> void:
 	if native_world.has_failed():
@@ -701,6 +752,18 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			coherent_liquid_emission = not coherent_liquid_emission
 		KEY_T:
 			set_liquid_surface_adhesion(not liquid_surface_adhesion_enabled)
+		KEY_J:
+			cycle_brush_shape()
+		KEY_MINUS:
+			set_brush_size(brush_size_px - 1)
+		KEY_EQUAL:
+			set_brush_size(brush_size_px + 1)
+		KEY_COMMA:
+			set_brush_rectangle_ratio(brush_rectangle_ratio - 1)
+		KEY_PERIOD:
+			set_brush_rectangle_ratio(brush_rectangle_ratio + 1)
+		KEY_O:
+			set_brush_rectangle_vertical(not brush_rectangle_vertical)
 		KEY_G:
 			glow_enabled = not glow_enabled
 		KEY_F3:
