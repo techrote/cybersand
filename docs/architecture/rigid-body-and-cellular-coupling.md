@@ -5,8 +5,8 @@ canonical-for: [rigid-body-cellular-coupling]
 status: Current
 scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact; generalized physics and exact replay remain absent
 keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
-related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md]
-last-reviewed: 2026-09-24
+related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
+last-reviewed: 2026-09-25
 ---
 
 # Rigid-body and cellular coupling
@@ -113,6 +113,29 @@ bounded gameplay approximation, not exact continuum mechanics or a guarantee
 for every fast/thin/rotating shape. Rationale lives in
 [ADR-007](../decisions/ADR-007-rigid-body-cellular-coupling.md) and
 [ADR-009](../decisions/ADR-009-rapier-2d-rigid-body-backend.md).
+
+## PCHAR-001 switchable barrel-player experiment
+
+**Current experiment:** the ordinary sandbox can select either the historical
+sampled character or a barrel-style player through a fresh-reset-only boundary.
+The barrel player is the existing body-0 rectangle and uses the same
+`CyberRapierPhysicsBridge` sampling, transient body mask, native cellular
+reaction results, static hard-terrain colliders and Rapier ownership as the red
+reference barrel. There is no in-place sampled↔body ownership conversion.
+
+Barrel locomotion adds only a bounded main-thread horizontal central impulse.
+The controller reads live Rapier velocity **after** cellular results are applied,
+adds at most 3 impulse units per fixed step toward a 42 px/s horizontal target,
+does nothing when there is no horizontal input, and never assigns linear velocity
+or changes the vertical component. Existing cellular displacement/contact/bearing
+results therefore remain observable rather than being overwritten by a character
+velocity controller.
+
+PCHAR-001 does not change generic body↔cellular semantics, result ABI, bearing,
+ejection, sample-age policy, Water behavior or hard-terrain ownership. Any such
+change still belongs to #83 / REM-004. The switch is an evidence-generating
+player-representation experiment under parent #132, not a declaration that the
+current rectangle envelope is production-complete.
 
 ## What did the measured barrel baseline establish?
 
