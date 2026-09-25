@@ -1035,9 +1035,15 @@ func toggle_sampled_runtime_recovery() -> bool:
 
 func _force_sampled_player_for_lab() -> void:
 	# Registered Tower/Water/MicroScenario definitions retain their historical
-	# sampled-player identity. PCHAR switching is an ordinary-sandbox experiment.
+	# sampled-player identity and body layout. PCHAR switching is an
+	# ordinary-sandbox experiment only.
+	var restore_body_layout: bool = player_uses_barrel()
 	player_representation = CyberPlayerRepresentation.SAMPLED
 	sampled_runtime_recovery_enabled = true
+	if restore_body_layout and not rigid_bodies.is_empty():
+		reset_test_rigid_bodies()
+		simulation_worker.set_rigid_body_states(pack_rigid_body_states())
+		character_position = CHARACTER_SPAWN
 	refresh_player_representation_button()
 
 
