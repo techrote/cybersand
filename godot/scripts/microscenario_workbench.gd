@@ -15,7 +15,10 @@ var _awaiting_tick: int = -1
 var _step_deadline_ms: int = 0
 var _run_hash: String = ""
 var material_picker: OptionButton
+var shape_picker: OptionButton
 var radius_input: SpinBox
+var ratio_input: SpinBox
+var orientation_button: Button
 var details_dialog: AcceptDialog
 var details_text: TextEdit
 var compare_dialog: AcceptDialog
@@ -84,15 +87,41 @@ func setup(controller: Control) -> void:
 	material_picker.item_selected.connect(func(index: int) -> void:
 		host.selected_material_id = material_picker.get_item_id(index))
 	row.add_child(material_picker)
+	shape_picker = OptionButton.new()
+	shape_picker.focus_mode = Control.FOCUS_NONE
+	for shape: String in ["circle", "square", "rectangle"]:
+		shape_picker.add_item(shape.capitalize())
+	shape_picker.item_selected.connect(func(index: int) -> void:
+		host.set_brush_shape(["circle", "square", "rectangle"][index])
+		_refresh_brush_controls())
+	row.add_child(shape_picker)
 	radius_input = SpinBox.new()
 	radius_input.min_value = 1
-	radius_input.max_value = 16
-	radius_input.value = 4
-	radius_input.prefix = "Brush radius "
+	radius_input.max_value = 32
+	radius_input.step = 1
+	radius_input.value = host.brush_size_px
 	radius_input.custom_minimum_size.x = 170
-	radius_input.value_changed.connect(func(value: float) -> void: host.microscenario_brush_radius = int(value))
+	radius_input.value_changed.connect(func(value: float) -> void:
+		host.set_brush_size(int(value))
+		_refresh_brush_controls())
 	radius_input.get_line_edit().text_submitted.connect(func(_text: String) -> void: radius_input.get_line_edit().release_focus())
 	row.add_child(radius_input)
+	ratio_input = SpinBox.new()
+	ratio_input.min_value = 1
+	ratio_input.max_value = 4
+	ratio_input.step = 1
+	ratio_input.value = host.brush_rectangle_ratio
+	ratio_input.prefix = "Long/short ×"
+	ratio_input.custom_minimum_size.x = 145
+	ratio_input.value_changed.connect(func(value: float) -> void:
+		host.set_brush_rectangle_ratio(int(value))
+		_refresh_brush_controls())
+	ratio_input.get_line_edit().text_submitted.connect(func(_text: String) -> void: ratio_input.get_line_edit().release_focus())
+	row.add_child(ratio_input)
+	orientation_button = _button(row, "Rect H", func() -> void:
+		host.set_brush_rectangle_vertical(not host.brush_rectangle_vertical)
+		_refresh_brush_controls())
+	_refresh_brush_controls()
 	instructions = Label.new()
 	instructions.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	instructions.add_theme_font_size_override("font_size",13)
@@ -116,6 +145,30 @@ func setup(controller: Control) -> void:
 	overlay.clip_contents = true
 	host.world_view.add_child(overlay)
 	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+
+func _refresh_brush_controls() -> void:
+	if host == null or shape_picker == null:
+		return
+	var shapes: Array[String] = ["circle", "square", "rectangle"]
+	var shape_index: int = shapes.find(host.brush_shape)
+	if shape_index >= 0 and shape_picker.selected != shape_index:
+		shape_picker.select(shape_index)
+	if int(radius_input.value) != host.brush_size_px:
+		radius_input.value = host.brush_size_px
+	radius_input.prefix = (
+		"Diameter "
+		if host.brush_shape == "circle"
+		else "Edge "
+		if host.brush_shape == "square"
+		else "Short edge "
+	)
+	if int(ratio_input.value) != host.brush_rectangle_ratio:
+		ratio_input.value = host.brush_rectangle_ratio
+	var rectangle: bool = host.brush_shape == "rectangle"
+	ratio_input.visible = rectangle
+	orientation_button.visible = rectangle
+	orientation_button.text = "Rect V" if host.brush_rectangle_vertical else "Rect H"
+
 
 func blocked() -> bool:
 	return (not host.water_blind_set.is_empty() or not host.water_active_blind_label.is_empty()
@@ -150,8 +203,13 @@ func refresh(context: Dictionary) -> void:
 		overlay.regions = presentation.get("regions",[]).duplicate(true)
 	overlay.queue_redraw()
 	var tools: Array = current.get("tools",[])
+	var brush_enabled: bool = "paint" in tools or "erase" in tools
 	material_picker.disabled = not "paint" in tools
-	radius_input.editable = "paint" in tools or "erase" in tools
+	shape_picker.disabled = not brush_enabled
+	radius_input.editable = brush_enabled
+	ratio_input.editable = brush_enabled
+	orientation_button.disabled = not brush_enabled
+	_refresh_brush_controls()
 	material_picker.select(material_picker.get_item_index(int(host.selected_material_id)))
 	for button: Button in compare_buttons: button.disabled = guarded
 	_pump_declared_window()
