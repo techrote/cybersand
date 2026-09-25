@@ -968,10 +968,23 @@ func brush_summary() -> String:
 
 
 func brush_footprint_cells(world_x: int, world_y: int) -> PackedInt32Array:
+	var cells := PackedInt32Array()
+	if brush_shape == "circle" and (brush_size_px & 1) == 1:
+		# Odd diameters map exactly to the retained emit_disc lattice. This keeps
+		# the default 9 px brush identical to the historical radius-4 tool.
+		var radius: int = (brush_size_px - 1) / 2
+		var radius_squared: int = radius * radius
+		for offset_y: int in range(-radius, radius + 1):
+			for offset_x: int in range(-radius, radius + 1):
+				if offset_x * offset_x + offset_y * offset_y > radius_squared:
+					continue
+				cells.append(world_x + offset_x)
+				cells.append(world_y + offset_y)
+		return cells
+
 	var dimensions: Vector2i = brush_dimensions()
 	var start_x: int = world_x - int((dimensions.x - 1) / 2)
 	var start_y: int = world_y - int((dimensions.y - 1) / 2)
-	var cells := PackedInt32Array()
 	var circle_radius: float = float(brush_size_px) * 0.5
 	var circle_radius_squared: float = circle_radius * circle_radius
 	for local_y: int in range(dimensions.y):
@@ -1428,6 +1441,14 @@ func queue_brush_footprint_mutation(
 	) -> bool:
 	if water_controlled_run_active() or not _microscenario_tool_allowed(material_id):
 		return false
+	if brush_shape == "circle" and (brush_size_px & 1) == 1:
+		return simulation_worker.queue_emit_disc(
+			world_x,
+			world_y,
+			(brush_size_px - 1) / 2,
+			material_id,
+			emission_flags
+		)
 	var cells: PackedInt32Array = brush_footprint_cells(world_x, world_y)
 	if cells.is_empty():
 		return false
