@@ -1,0 +1,255 @@
+name: REM-003 publish source-matched runtimes
+
+on:
+  push:
+    branches: [rem/issue-82-web-acceptance]
+    paths: [.github/workflows/rem003-publish-runtimes.yml]
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: rem003-publish-runtimes
+  cancel-in-progress: true
+
+env:
+  TARGET_BRANCH: rem/issue-82-player-granular-acceptance
+  CANDIDATE_HEAD: 2a5c99b9c3c9569bede3c37a80656f191b61eb84
+  CANDIDATE_TREE: 01b317e780061499e22ccac15b711a65cd69d04d
+  CANDIDATE_RUNTIME_RUN: "36075409671"
+  CANDIDATE_RUNTIME_ARTIFACT: linux-runtime-36075409671
+  CANDIDATE_RUNTIME_ARTIFACT_ID: "10839524187"
+  BEHAVIOR_RUNTIME_RUN: "36071291438"
+  BEHAVIOR_RUNTIME_ARTIFACT: linux-runtime-36071291438
+  BEHAVIOR_RUNTIME_ARTIFACT_ID: "10838178491"
+  RECURRENCE_RUN: "36076161414"
+  WEB_RUN: "36075766808"
+  COMPANION_DOCS_COMMIT: 6a58311982941b75f46e22109a0829e5acb83c7e
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - name: Check out target branch
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.TARGET_BRANCH }}
+          fetch-depth: 0
+          lfs: true
+          persist-credentials: true
+
+      - name: Verify frozen C1 source inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor "$CANDIDATE_HEAD" HEAD
+          test "$(git rev-parse "$CANDIDATE_HEAD^{tree}")" = "$CANDIDATE_TREE"
+          git diff --exit-code "$CANDIDATE_HEAD" HEAD --             godot/native_extension             native/include             native/src             tools/build_native_extension.sh             tools/build_native_extension_windows.sh             tools/build_pinned_godot_cpp.sh             tools/requirements-build.txt
+          git lfs fsck
+
+      - name: Restore corrected-candidate Linux runtime
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: ${{ env.CANDIDATE_RUNTIME_ARTIFACT }}
+          path: ${{ runner.temp }}/candidate-runtime
+          github-token: ${{ github.token }}
+          run-id: ${{ env.CANDIDATE_RUNTIME_RUN }}
+
+      - name: Restore behavior-tested Linux runtime
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: ${{ env.BEHAVIOR_RUNTIME_ARTIFACT }}
+          path: ${{ runner.temp }}/behavior-runtime
+          github-token: ${{ github.token }}
+          run-id: ${{ env.BEHAVIOR_RUNTIME_RUN }}
+
+      - name: Prove byte-identical Linux C1 runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd "$RUNNER_TEMP/candidate-runtime" && sha256sum --check --strict runtime.sha256)
+          (cd "$RUNNER_TEMP/behavior-runtime" && sha256sum --check --strict runtime.sha256)
+          CANDIDATE_SHA="$(sha256sum "$RUNNER_TEMP/candidate-runtime/libcybersand_native.linux.x86_64.so" | cut -d' ' -f1)"
+          BEHAVIOR_SHA="$(sha256sum "$RUNNER_TEMP/behavior-runtime/libcybersand_native.linux.x86_64.so" | cut -d' ' -f1)"
+          test "$CANDIDATE_SHA" = "$BEHAVIOR_SHA"
+          cp "$RUNNER_TEMP/candidate-runtime/libcybersand_native.linux.x86_64.so"             godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          timeout 1m tools/check_linux_runtime_floor.sh
+          echo "C1 Linux runtime SHA-256: $CANDIDATE_SHA"
+
+      - name: Install pinned SCons
+        run: |
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+
+      - name: Check out exact godot-cpp
+        run: |
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+
+      - name: Prepare exact LLVM-MinGW
+        run: |
+          timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          test -x "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-g++"
+          if test ! -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; then
+            ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+          fi
+
+      - name: Build source-matched Windows runtime
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: "2"
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
+        run: |
+          timeout 35m tools/build_pinned_godot_cpp.sh windows
+          timeout 20m tools/build_native_extension_windows.sh
+          file "$CYBERSAND_NATIVE_OUTPUT" | tee "$RUNNER_TEMP/windows-file.txt"
+          grep -q 'PE32+ executable (DLL).*x86-64' "$RUNNER_TEMP/windows-file.txt"
+          "$LLVM_MINGW_ROOT/bin/llvm-objdump" -p "$CYBERSAND_NATIVE_OUTPUT" > "$RUNNER_TEMP/windows-imports.txt"
+          cp "$CYBERSAND_NATIVE_OUTPUT"             godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll
+          sha256sum "$CYBERSAND_NATIVE_OUTPUT"
+
+      - name: Regenerate runtime provenance from actual bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PUBLICATION_RUN="$GITHUB_RUN_ID"
+          python3 - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+
+          root = Path(".")
+          source = os.environ["CANDIDATE_HEAD"]
+          tree = os.environ["CANDIDATE_TREE"]
+          publication_run = os.environ["PUBLICATION_RUN"]
+          candidate_run = os.environ["CANDIDATE_RUNTIME_RUN"]
+          behavior_run = os.environ["BEHAVIOR_RUNTIME_RUN"]
+          recurrence_run = os.environ["RECURRENCE_RUN"]
+          web_run = os.environ["WEB_RUN"]
+
+          win_path = root / "godot/addons/cybersand_native/runtime-provenance.json"
+          lin_path = root / "godot/addons/cybersand_native/runtime-provenance.linux.json"
+          win = json.loads(win_path.read_text(encoding="utf-8"))
+          lin = json.loads(lin_path.read_text(encoding="utf-8"))
+
+          inputs = set(win["source_inputs"]) | set(lin["source_inputs"])
+          source_inputs = {}
+          for rel in sorted(inputs):
+              data = (root / rel).read_bytes().replace(b"\r\n", b"\n")
+              source_inputs[rel] = hashlib.sha256(data).hexdigest()
+
+          linux = root / "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so"
+          windows = root / "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
+          linux_sha = hashlib.sha256(linux.read_bytes()).hexdigest()
+          windows_sha = hashlib.sha256(windows.read_bytes()).hexdigest()
+          evidence = "docs/audits/2026-09-25-rem003-player-granular-acceptance.md"
+
+          common = {
+              "source_commit": source,
+              "source_tree": tree,
+              "source_input_hash_kind": "SHA-256 of canonical Git blob bytes; CRLF working files normalize to LF",
+              "source_inputs": source_inputs,
+              "evidence": evidence,
+          }
+
+          win.update(common)
+          win.update({
+              "schema_version": 1,
+              "status": "validated-build-runtime",
+              "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+              "sha256": windows_sha,
+              "size": windows.stat().st_size,
+              "validated_platform": "Windows x86_64 Godot 4.7 (pinned cross-build; execution unavailable)",
+              "toolchain": "LLVM-MinGW 20260826 UCRT Clang 23.1.0; godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496; SCons 4.10.1; REM-003 C1 sampled-player/granular source",
+              "acceptance": f"Exact REM-003 C1 source Windows x86_64 GDExtension cross-build passed in publication run {publication_run}. Actual Windows execution is unavailable and not claimed.",
+              "validation_output": f"GitHub Actions publication run {publication_run}; source {source}",
+              "other_platforms": f"Linux byte-identical C1 runtime is covered by behavior run {behavior_run}, corrected exact-runtime recurrence {recurrence_run}, and real Web compatibility/threaded run {web_run}.",
+          })
+
+          tested_merge = (Path(os.environ["RUNNER_TEMP"]) / "candidate-runtime/source-sha.txt").read_text().strip()
+          lin.update(common)
+          lin.update({
+              "schema_version": 1,
+              "status": "validated-development-runtime",
+              "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+              "sha256": linux_sha,
+              "size": linux.stat().st_size,
+              "validated_platform": "Linux x86_64 Godot 4.7",
+              "toolchain": "Ubuntu 24.04, GCC/G++ 13.3.0, binutils 2.42, SCons 4.10.1; godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496; REM-003 C1 sampled-player/granular source",
+              "acceptance": f"Byte-identical C1 Linux runtime: sampled-player behavior executed in run {behavior_run}; corrected schema plus REM-002 recurrence executed in run {recurrence_run}; frozen native source {source}.",
+              "other_platforms": f"Real Chromium compatibility/threaded C1 acceptance passed in run {web_run}. Windows runtime is cross-built from identical source inputs but is not Windows execution.",
+              "workflow_run": f"https://github.com/techrote/cybersand/actions/runs/{candidate_run}",
+              "tested_merge_commit": tested_merge,
+              "artifact_id": int(os.environ["CANDIDATE_RUNTIME_ARTIFACT_ID"]),
+              "validation_output": f"Actions runtime {candidate_run}; behavior runtime {behavior_run}; corrected recurrence {recurrence_run}",
+          })
+
+          win_path.write_text(json.dumps(win, indent=2) + "\n", encoding="utf-8")
+          lin_path.write_text(json.dumps(lin, indent=2) + "\n", encoding="utf-8")
+          print("LINUX_SHA", linux_sha)
+          print("WINDOWS_SHA", windows_sha)
+          PY
+
+      - name: Verify generated runtime bytes and manifests
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          python3 - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          root = Path(".")
+          for name in ("runtime-provenance.json", "runtime-provenance.linux.json"):
+              manifest = json.loads((root / "godot/addons/cybersand_native" / name).read_text())
+              for rel, expected in manifest["source_inputs"].items():
+                  actual = hashlib.sha256((root / rel).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+                  assert actual == expected, (name, rel, actual, expected)
+              data = (root / manifest["artifact"]).read_bytes()
+              assert hashlib.sha256(data).hexdigest() == manifest["sha256"]
+              assert len(data) == manifest["size"]
+          PY
+          python3 tools/ci/check_docs.py
+          python3 tools/ci/check_m11_consistency.py
+
+      - name: Prepare companion validation inputs
+        run: |
+          git fetch --no-tags --depth=1 origin "$COMPANION_DOCS_COMMIT"
+          mkdir -p ../docs ../tools ../validation
+          git show "$COMPANION_DOCS_COMMIT:SOURCE-PROVENANCE.json" > ../SOURCE-PROVENANCE.json
+          git show "$COMPANION_DOCS_COMMIT:docs/WEB_THREADING.md" > ../docs/WEB_THREADING.md
+          git show "$COMPANION_DOCS_COMMIT:tools/dev.py" > ../tools/dev.py
+          git show "$COMPANION_DOCS_COMMIT:docs/LOCAL_DEVELOPMENT.md" > ../docs/LOCAL_DEVELOPMENT.md
+          git show "$COMPANION_DOCS_COMMIT:validation/browser-results.json" > ../validation/browser-results.json
+
+      - name: Verify materialized current provenance
+        run: |
+          python3 tools/ci/check_repository.py --require-materialized
+          git lfs fsck
+
+      - name: Commit and push publication
+        shell: bash
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git add             godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll             godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so             godot/addons/cybersand_native/runtime-provenance.json             godot/addons/cybersand_native/runtime-provenance.linux.json
+          git diff --cached --check
+          git config user.name techrote
+          git config user.email 261801702+techrote@users.noreply.github.com
+          git commit -m 'build(rem003): publish source-matched runtimes'
+          git lfs fsck
+          git push origin "HEAD:$TARGET_BRANCH"
