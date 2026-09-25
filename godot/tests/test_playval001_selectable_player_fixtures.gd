@@ -114,6 +114,12 @@ func assert_matched_definitions() -> void:
 		not bool(barrel.player_enabled) and bool(barrel.body_enabled),
 		"barrel ownership fields are wrong"
 	)
+	expect(
+		barrel.observations.size() == 1
+			and str(barrel.observations[0].id) == "end"
+			and str(barrel.observations[0].metric) == "tick",
+		"barrel fixture retained masked material-cell census observations"
+	)
 
 
 func assert_active_arm(
