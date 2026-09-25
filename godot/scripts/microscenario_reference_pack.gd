@@ -285,6 +285,14 @@ static func player_granular_experiment(id: String, seed: int = 0) -> Dictionary:
 	out.maturity = "exploratory"
 	out.player_enabled = identity != "barrel-rapier"
 	out.body_enabled = identity == "barrel-rapier"
+	if out.body_enabled:
+		# Schema 2 refuses material-cell census while a body mask is active.
+		# Retain only the neutral bounded-horizon observation/objective; visual
+		# material-state recording supplies the PLAY-VAL comparison evidence.
+		out.observations = [observe("end",600,"tick",[0,0,1,1])]
+		out.conditions = [
+			{"observation":"end","comparison":"eq","value":600,"outcome":"complete"}
+		]
 	out.presentation.title = "PLAY-VAL-001 / " + identity
 	out.presentation.profile = "play-val-001/" + identity + "/v1"
 	out.presentation.instructions = (
