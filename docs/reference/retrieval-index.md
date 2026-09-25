@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-09-24
+last-reviewed: 2026-09-25
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -26,6 +26,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Web compatibility/threaded Auto and hosting | [Web threading](../operations/web-threading.md) |
 | Body masks, displacement, terrain, Rapier scope | [Rigid-body/cellular coupling](../architecture/rigid-body-and-cellular-coupling.md) |
 | Current powder/player collision and Mercury penetration | [Granular policy](../systems/granular-interaction-policy.md), [version decision](../decisions/ADR-011-granular-interaction-policy.md), [issue #10 evidence](../audits/2026-09-09-issue-10-granular-policy.md); use the [remediation programme](../operations/development-claims-remediation-programme.md) for broad gameplay-acceptance status |
+| Why can the sampled player rapidly surface through enclosing material, and how does the barrel-player experiment differ? | [Granular policy](../systems/granular-interaction-policy.md), [rigid-body/cellular coupling](../architecture/rigid-body-and-cellular-coupling.md), [PCHAR-001 evidence](../audits/2026-09-25-pchar001-player-representation-experiment.md) |
 | Historical powder measurements, barrel sinking and reversible soliding | [Baseline tooling](../operations/physics-characterisation.md), [issue #9 results](../audits/2026-09-09-physics-characterisation.md), [future soliding plan](../operations/physics-characterisation-plan.md) |
 | Pinned Rapier acquisition and verification | [Rapier runbook](../operations/rapier-2d-migration-runbook.md) |
 | Native snapshots, dirty retention, GPU uploads | [Rendering/gameplay bridges](../architecture/rendering-and-gameplay-bridges.md) |
