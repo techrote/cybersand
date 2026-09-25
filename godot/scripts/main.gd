@@ -570,6 +570,17 @@ func recording_runtime_identity() -> Dictionary:
 			"backend": latest_snapshot.backend_name if latest_snapshot != null else "unavailable",
 			"worker_count": latest_snapshot.scheduler_thread_capacity_hint if latest_snapshot != null else 0,
 		},
+		"desktop_configuration": {
+			"render_snapshot_hz": render_snapshot_hz,
+			"simulation_window_enabled": simulation_window_enabled,
+			"cadence_lod_enabled": cadence_lod_enabled,
+			"liquid_surface_adhesion_enabled": liquid_surface_adhesion_enabled,
+			"view_size": [current_view_size.x, current_view_size.y],
+			"simulation_margin": [simulation_margin.x, simulation_margin.y],
+			"requested_native_worker_threads": int(
+				ProjectSettings.get_setting("cybersand/native_worker_threads", 0)
+			),
+		},
 	}
 
 
@@ -585,6 +596,8 @@ func recording_configuration() -> Dictionary:
 		"queue_capacity": DEFAULT_RECORDING_QUEUE_CAPACITY,
 		"roi": roi,
 		"retain_raw_ids": true,
+		"selected_material_id_at_start": selected_material_id,
+		"selected_paint_slot_at_start": selected_paint_slot,
 	}
 	for raw_argument: String in OS.get_cmdline_user_args():
 		var argument: String = str(raw_argument)
