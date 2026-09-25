@@ -26,6 +26,15 @@ var hard_surface_chunk_rectangles_valid: bool = false
 var character_position: Vector2 = Vector2.ZERO
 var character_velocity: Vector2 = Vector2.ZERO
 var character_grounded: bool = false
+var character_runtime_recovery_enabled: bool = true
+var character_runtime_enclosed: bool = false
+var character_runtime_recovery_attempts: int = 0
+var character_runtime_recovery_successes: int = 0
+var character_runtime_recovery_upward_cells: int = 0
+var character_invalid_spawn_recovery_attempts: int = 0
+var character_invalid_spawn_recovery_successes: int = 0
+var character_last_recovery_kind: String = ""
+var character_last_recovery_offset: Vector2 = Vector2.ZERO
 
 var tick_index: int = 0
 var moves_last_tick: int = 0
