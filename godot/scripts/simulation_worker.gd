@@ -571,7 +571,8 @@ func _worker_loop() -> void:
 			worker_step_time_ms,
 			local_paused,
 			local_render_snapshot_interval_usec,
-			local_reset_requested
+			local_reset_requested,
+			local_rigid_body_states
 		)
 
 		next_tick_usec += TICK_INTERVAL_USEC
@@ -588,7 +589,8 @@ func _publish_snapshot(
 	worker_step_time_ms: float,
 	paused: bool,
 	render_snapshot_interval_usec: int,
-	force_render_full_refresh: bool = false
+	force_render_full_refresh: bool = false,
+	rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 ) -> void:
 	if _simulation_failed:
 		_publish_failure_snapshot()
@@ -704,6 +706,7 @@ func _publish_snapshot(
 	snapshot.scheduler_thread_capacity_hint = _scheduler_thread_capacity_hint
 	snapshot.backend_name = _backend_name
 	snapshot.sparse_flight_moves_last_tick = _world.sparse_flight_moves_last_tick
+	snapshot.rigid_body_states = rigid_body_states.duplicate()
 	snapshot.rigid_body_results = _world.rigid_body_results()
 	snapshot.rigid_body_contacts_last_tick = _world.rigid_body_contacts_last_tick
 	snapshot.rigid_body_displaced_last_tick = _world.rigid_body_displaced_last_tick
