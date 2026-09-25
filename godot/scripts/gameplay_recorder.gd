@@ -504,7 +504,8 @@ func _write_frame(job: Dictionary) -> String:
 	metadata["review_bitmap_file"] = bmp_name
 	metadata["review_bitmap_note"] = (
 		"8-bit indexed BMP; material palette indices equal serialized material IDs; "
-		+ "index 255 is sampled-player outline and 254 is rigid-body review outline"
+		+ "index 255 is sampled-player outline and 254 is an axis-aligned rigid-body "
+		+ "review outline; exact rigid-body rotation remains in JSON metadata"
 	)
 
 	var json_name: String = base_name + ".json"
