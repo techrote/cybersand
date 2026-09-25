@@ -265,9 +265,13 @@ quarantine, opening the definition editor, or missing owner acknowledgement canc
 it without retry/catch-up. At most one already-admitted step may complete while a
 modal opens. This is neither a recurring native event nor another physics loop.
 F8 hides labels, dialogs, help and optional telemetry across later status refreshes. Generic
-controls show only admitted tools; material selection and radius use the existing
-brush command path. Full controls and generated definitions are in the
-[reference pack](microscenario-reference-pack.md).
+controls show only admitted tools. Material selection and the circle/square/rectangle
+brush geometry controls use the existing owner command boundary; brush shape,
+pixel size, rectangle ratio/orientation and effective secondary material are
+**exploratory UI/tool state, not fields in a registered definition**. Changing
+them therefore does not rewrite the active definition or its canonical hash, and
+fresh reset still reconstructs only the validated fixture setup. Full controls and
+generated definitions are in the [reference pack](microscenario-reference-pack.md).
 
 Schema-2 optional telemetry copies actual completed-tick work and configured
 capacities. Native tick timing remains separate from before/after-host timing;
