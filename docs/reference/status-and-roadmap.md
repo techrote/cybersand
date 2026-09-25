@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-09-24
+last-reviewed: 2026-09-25
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
@@ -60,7 +60,7 @@ Historical completion records remain immutable.
 | Scheduler and storage | Sparse chunks, phased in-place jobs, explicit capacities and activity sleep; [chunk/tile model](../architecture/chunk-tile-and-buffer-model.md), [storage](../systems/world-storage-and-interest-region.md) |
 | Materials | Bounded adapted kernels, mass-conserving native Water, discrete fallback, secondary interaction lanes; [materials](../systems/materials-and-rule-kernels.md), [Water](../systems/water-design.md) |
 | Field storage and events | Optional temperature storage and bounded explosions; no general heat/pressure/wind solver; [field roadmap](../systems/smoke-heat-pressure-roadmap.md) |
-| Bodies and character | Main-thread Rapier, rectangular masks/displacement, static terrain packets and sampled character; [coupling](../architecture/rigid-body-and-cellular-coupling.md) |
+| Bodies and character | Main-thread Rapier, rectangular masks/displacement, static terrain packets, sampled character, and PCHAR reset-scoped barrel-player experiment; [coupling](../architecture/rigid-body-and-cellular-coupling.md) |
 | Rendering | Immutable native snapshots, copied dirty RG8 patches, full finite GPU texture update and derived material appearance; [bridges](../architecture/rendering-and-gameplay-bridges.md) |
 | Persistence | Fixed CYSD1 demo levels; complete resumed replay absent; [save contract](level-saves-and-replay.md) |
 | Runtime availability | All 18 required LFS payloads materialized; current execution scope is platform-specific; [build](../operations/local-build-and-validation.md) and [evidence](validation-evidence.md) |
@@ -152,6 +152,20 @@ screening, native/fallback/desktop/Web execution and remaining publication/platf
 limits. Those results are retained, but they do not constitute the later owner
 gameplay acceptance that #82 must obtain or explicitly disposition. Body/granular
 integration/acceptance is separately #81/#83.
+
+## PCHAR-001 player representation checkpoint
+
+**Current experiment:** issue #137 under parent #132 introduces a fresh-reset
+choice between the historical sampled character and a barrel/Rapier player using
+the existing body-0 rectangle. The sampled baseline now measures its bounded
+upward-first runtime enclosure recovery; an optional sampled-burial-safe mode
+retains explicit invalid-spawn repair while refusing runtime actor reordering.
+
+The barrel candidate keeps native cells as material authority and main-thread
+Rapier as body authority. Horizontal movement is a bounded additive impulse after
+cellular reaction, with no vertical velocity assignment and no generic
+body↔granular semantic change. #83 remains the production body-envelope owner and
+#132 remains open for later representation experiments and selection.
 
 ## Issue #13 experiment checkpoint
 

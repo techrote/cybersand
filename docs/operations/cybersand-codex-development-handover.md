@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-09-24
+last-reviewed: 2026-09-25
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
@@ -72,6 +72,23 @@ before #45 may select a successor disposition.
 This remediation is not a global physics freeze. #12 Stage 3B continues under its
 own plan, subject to live owner/write-set collision checks before a remediation
 child touches the same native World/test surfaces.
+
+## PCHAR player-representation experiment — 2026-09-25
+
+PCHAR-001 / #137 adds a reset-scoped ordinary-sandbox experiment under parent
+#132. F6 switches between the historical sampled character and body 0 acting as
+a barrel/Rapier player; F7 toggles the sampled-only burial-safe runtime policy.
+Both controls perform a fresh reset. Registered Tower, Water and MicroScenario
+runs force the historical sampled-baseline identity rather than silently changing
+their fixtures.
+
+The sampled baseline now exposes runtime enclosure-recovery attempts, successes
+and upward relocation. Burial-safe sampled mode retains explicit invalid-spawn
+repair but does not reorder an actor that becomes enclosed at runtime. The barrel
+player reuses current generic body coupling and receives only bounded horizontal
+main-thread locomotion impulses. Do not change generic body bearing/ejection or
+sample-age semantics here; those remain #83 / REM-004. Parent #132 remains open
+regardless of the PCHAR-001 experimental outcome.
 
 ## Current execution-order rule
 

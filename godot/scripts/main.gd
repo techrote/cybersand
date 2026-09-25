@@ -189,6 +189,7 @@ func microscenario_launch(scenario_id: String, mode: String = "Inspect", seed: i
 func microscenario_apply_definition(definition: Dictionary, mode: String = "Inspect") -> bool:
 	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty(): return false
 	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty(): return false
+	_force_sampled_player_for_lab()
 	var checked: Dictionary = CyberMicroScenarioContract.validate(definition)
 	if not checked.get("ok", false) or not mode in CyberMicroScenarioContract.MODES:
 		microscenario_error = str(checked.get("error", "Invalid mode"))
@@ -349,6 +350,7 @@ func water_controlled_run_active() -> bool:
 func water_lab_apply_result(result: Dictionary, blind_label: String = "") -> void:
 	if not result.get("ok",false): return
 	if not _water_blind_application_allowed(result,blind_label): return
+	_force_sampled_player_for_lab()
 	var checked: Dictionary=CyberWaterExperimentProfiles.resolve({},{},result.policy)
 	if not checked.get("ok",false) or str(checked.hash)!=str(result.hash): return
 	var recipe: Dictionary=CyberWaterFeelScenarios.recipe(
@@ -462,6 +464,7 @@ func tower_floor_select(index: int) -> void:
 	tower_command({"floor":tower_floor})
 
 func tower_reset() -> void:
+	_force_sampled_player_for_lab()
 	pending_microscenario_apply.clear()
 	pending_water_exit={"kind":"fresh"}
 	pending_water_apply.clear()
@@ -727,6 +730,9 @@ var maximum_collider_time_ms: float = 0.0
 var character_position: Vector2 = CHARACTER_SPAWN
 var camera_origin: Vector2 = Vector2.ZERO
 var camera_follow_enabled: bool = true
+var player_representation: StringName = CyberPlayerRepresentation.SAMPLED
+var sampled_runtime_recovery_enabled: bool = true
+var player_representation_button: Button
 var rigid_bodies: Array[RigidBody2D] = []
 var rapier_bridge: CyberRapierPhysicsBridge = CyberRapierPhysicsBridge.new()
 var rapier_start_error: Error = OK
@@ -737,6 +743,7 @@ var hard_surface_rebuild_cooldown: float = 0.0
 
 func _ready() -> void:
 	setup_tower_panel()
+	setup_player_representation_button()
 	var tower_button: Button = Button.new()
 	tower_button.name = "ExperimentTowerLauncher"
 	tower_button.text = "Experiment Tower / F9"
@@ -851,6 +858,8 @@ func _process(delta: float) -> void:
 	maximum_frame_time_ms = maxf(maximum_frame_time_ms, frame_time_ms)
 	consume_worker_snapshot()
 	_refresh_recording_button()
+	sync_player_presentation_position()
+	refresh_player_representation_button()
 	hard_surface_rebuild_cooldown = maxf(0.0, hard_surface_rebuild_cooldown - delta)
 	if hard_surface_rebuild_cooldown <= 0.0:
 		sync_hard_surface_colliders()
@@ -884,6 +893,7 @@ func _physics_process(_delta: float) -> void:
 		and worker_start_error == OK
 	):
 		apply_latest_rigid_body_results()
+		apply_barrel_player_control(_delta)
 		rapier_bridge.step()
 	simulation_worker.set_rigid_body_states(pack_rigid_body_states())
 
@@ -896,6 +906,14 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F10:
 		toggle_gameplay_recording()
 		get_viewport().set_input_as_handled()
+		return
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F6:
+		if cycle_player_representation():
+			get_viewport().set_input_as_handled()
+		return
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F7:
+		if toggle_sampled_runtime_recovery():
+			get_viewport().set_input_as_handled()
 		return
 	if tower_profile_panel != null and tower_profile_panel.visible:
 		if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE: tower_profile_panel.hide()
@@ -1081,10 +1099,145 @@ func material_id_for_paint_slot(slot: int) -> int:
 			return -1
 
 
+func setup_player_representation_button() -> void:
+	player_representation_button = Button.new()
+	player_representation_button.name = "PlayerRepresentation"
+	player_representation_button.focus_mode = Control.FOCUS_NONE
+	player_representation_button.pressed.connect(cycle_player_representation)
+	$Layout.add_child(player_representation_button)
+	refresh_player_representation_button()
+
+
+func player_representation_identity() -> String:
+	return CyberPlayerRepresentation.identity(
+		player_representation,
+		sampled_runtime_recovery_enabled
+	)
+
+
+func player_uses_barrel() -> bool:
+	return player_representation == CyberPlayerRepresentation.BARREL_RAPIER
+
+
+func refresh_player_representation_button() -> void:
+	if player_representation_button == null:
+		return
+	var recovery_text: String = ""
+	if not player_uses_barrel():
+		recovery_text = (
+			" | runtime surfacing ON / F7"
+			if sampled_runtime_recovery_enabled
+			else " | burial-safe ON / F7"
+		)
+		if latest_snapshot != null and latest_snapshot.character_runtime_recovery_attempts > 0:
+			recovery_text += " | recover %d/%d up %dpx" % [
+				latest_snapshot.character_runtime_recovery_successes,
+				latest_snapshot.character_runtime_recovery_attempts,
+				latest_snapshot.character_runtime_recovery_upward_cells,
+			]
+	else:
+		recovery_text = " | horizontal impulse control only"
+	player_representation_button.text = "Player %s / F6%s" % [
+		player_representation_identity(),
+		recovery_text,
+	]
+	player_representation_button.visible = (
+		not tower_active
+		and not water_controlled_run_active()
+		and not tower_context.get("micro_active", false)
+	)
+
+
+func cycle_player_representation() -> bool:
+	if (
+		tower_active
+		or water_controlled_run_active()
+		or tower_context.get("micro_active", false)
+		or not pending_microscenario_apply.is_empty()
+		or not pending_water_apply.is_empty()
+	):
+		return false
+	player_representation = (
+		CyberPlayerRepresentation.BARREL_RAPIER
+		if player_representation == CyberPlayerRepresentation.SAMPLED
+		else CyberPlayerRepresentation.SAMPLED
+	)
+	# Never convert an actor in place. Rebuild both simulation and body state from
+	# the ordinary fresh-reset boundary under the newly selected owner.
+	reset_world()
+	return true
+
+
+func toggle_sampled_runtime_recovery() -> bool:
+	if (
+		player_uses_barrel()
+		or tower_active
+		or water_controlled_run_active()
+		or tower_context.get("micro_active", false)
+	):
+		return false
+	sampled_runtime_recovery_enabled = not sampled_runtime_recovery_enabled
+	reset_world()
+	return true
+
+
+func _force_sampled_player_for_lab() -> void:
+	# Registered Tower/Water/MicroScenario definitions retain their historical
+	# sampled-player identity and body layout. PCHAR switching is an
+	# ordinary-sandbox experiment only.
+	var restore_body_layout: bool = player_uses_barrel()
+	player_representation = CyberPlayerRepresentation.SAMPLED
+	sampled_runtime_recovery_enabled = true
+	if restore_body_layout and not rigid_bodies.is_empty():
+		reset_test_rigid_bodies()
+		simulation_worker.set_rigid_body_states(pack_rigid_body_states())
+		character_position = CHARACTER_SPAWN
+	refresh_player_representation_button()
+
+
+func barrel_player_spawn_centre() -> Vector2:
+	return CHARACTER_SPAWN + CyberSampledCharacter.BODY_SIZE * 0.5
+
+
+func apply_barrel_player_control(delta: float) -> void:
+	if (
+		not player_uses_barrel()
+		or not rapier_bridge.is_initialized()
+		or rigid_bodies.size() <= CyberPlayerRepresentation.BARREL_BODY_INDEX
+	):
+		return
+	rapier_bridge.apply_horizontal_control(
+		CyberPlayerRepresentation.BARREL_BODY_INDEX,
+		get_horizontal_input(),
+		CyberPlayerRepresentation.BARREL_WALK_SPEED,
+		CyberPlayerRepresentation.BARREL_HORIZONTAL_ACCELERATION,
+		CyberPlayerRepresentation.BARREL_MAX_HORIZONTAL_IMPULSE,
+		delta
+	)
+
+
+func sync_player_presentation_position() -> void:
+	if (
+		player_uses_barrel()
+		and rapier_bridge.is_initialized()
+		and rigid_bodies.size() > CyberPlayerRepresentation.BARREL_BODY_INDEX
+	):
+		character_position = (
+			rapier_bridge.body_transform(
+				CyberPlayerRepresentation.BARREL_BODY_INDEX
+			).origin
+			- CyberSampledCharacter.BODY_SIZE * 0.5
+		)
+
+
 func reset_world() -> void:
 	if water_controlled_run_active(): return
 	reset_test_rigid_bodies()
-	simulation_worker.queue_reset(CHARACTER_SPAWN)
+	simulation_worker.queue_reset(
+		CHARACTER_SPAWN,
+		not player_uses_barrel(),
+		sampled_runtime_recovery_enabled
+	)
 	character_position = CHARACTER_SPAWN
 	camera_follow_enabled = true
 	camera_origin = clamped_camera_origin(character_centre() - Vector2(current_view_size) * 0.5)
@@ -1113,7 +1266,11 @@ func reset_test_rigid_bodies() -> void:
 func test_rigid_body_spawn(body_index: int) -> Vector2:
 	match body_index:
 		0:
-			return Vector2(124.0, 92.0)
+			return (
+				barrel_player_spawn_centre()
+				if player_uses_barrel()
+				else Vector2(124.0, 92.0)
+			)
 		1:
 			return Vector2(140.0, 72.0)
 		_:
@@ -1211,7 +1368,8 @@ func consume_worker_snapshot() -> void:
 	consumed_snapshot_serial = snapshot.serial
 	if snapshot.simulation_failed:
 		paused = true
-	character_position = snapshot.character_position
+	if not player_uses_barrel():
+		character_position = snapshot.character_position
 	if snapshot.render_snapshot_serial > last_uploaded_render_snapshot_serial:
 		record_render_payload(snapshot)
 		var render_uploaded: bool = upload_texture_patches(
@@ -1288,6 +1446,14 @@ func update_camera(delta: float) -> void:
 
 
 func character_centre() -> Vector2:
+	if (
+		player_uses_barrel()
+		and rapier_bridge.is_initialized()
+		and rigid_bodies.size() > CyberPlayerRepresentation.BARREL_BODY_INDEX
+	):
+		return rapier_bridge.body_transform(
+			CyberPlayerRepresentation.BARREL_BODY_INDEX
+		).origin
 	return character_position + CyberSampledCharacter.BODY_SIZE * 0.5
 
 
@@ -1634,9 +1800,17 @@ func update_shader_parameters() -> void:
 		"camera_origin_px",
 		Vector2(floori(camera_origin.x), floori(camera_origin.y))
 	)
-	world_shader.set_shader_parameter("player_origin_px",
-		Vector2(-1000,-1000) if tower_context.get("micro_active", false)
-		and not tower_context.get("microscenario", {}).get("player_enabled", true) else character_position)
+	var sampled_player_visible: bool = (
+		not player_uses_barrel()
+		and not (
+			tower_context.get("micro_active", false)
+			and not tower_context.get("microscenario", {}).get("player_enabled", true)
+		)
+	)
+	world_shader.set_shader_parameter(
+		"player_origin_px",
+		character_position if sampled_player_visible else Vector2(-1000,-1000)
+	)
 	world_shader.set_shader_parameter("player_size_px", CyberSampledCharacter.BODY_SIZE)
 	var snapshot_blend: float = 1.0
 	if cadence_lod_enabled:
