@@ -68,12 +68,18 @@ The raw `.ids` file preserves material identities even where the review bitmap
 draws an actor outline. The canonical material RGBA8 palette is copied into the
 session manifest so frame interpretation is stable.
 
+Per-frame metadata is bound to the **exact render generation** represented by the
+material IDs. A later worker snapshot may carry that same frozen material payload;
+such snapshots do not create duplicate frames and cannot relabel an older material
+generation with a newer simulation tick or actor state.
+
 Per-frame metadata includes:
 
-- immutable snapshot serial and render-publication serial;
-- completed simulation tick;
-- snapshot monotonic publication time, elapsed monotonic time and a wall-clock
-  estimate derived from the session start;
+- immutable consumer-snapshot serial and render-publication serial;
+- completed simulation tick for the render generation, plus the later consumer
+  snapshot tick as a diagnostic field;
+- render-generation monotonic time, consumer publication time, elapsed monotonic
+  time and a wall-clock estimate derived from the session start;
 - backend and worker count;
 - sampled-player origin, extent, velocity, grounded state and representation;
 - copied rigid-body input ID, center, rotation, extent, velocities, mass and
@@ -94,10 +100,14 @@ drains. It records:
 - evidence kind `simulation-state-evidence-not-exact-replay`;
 - complete/incomplete disposition and reason;
 - source/script/native-runtime/platform/Godot identity supplied by the desktop;
-- ROI, cadence, queue capacity and retained-state scope;
+- active desktop worker/backend count plus render cadence, simulation-window,
+  cadence-LOD, liquid-adhesion, view/margin and requested-worker configuration;
+- ROI, capture cadence, queue capacity, starting material-tool selection and
+  retained-state scope;
 - the canonical material palette and review-overlay indices;
 - capture attempts, enqueued frames, written frames and dropped frames;
 - queue high-water and capacity;
+- render-publication count and render-patch folding time total/maximum;
 - capture-copy time total/maximum and writer write time total/maximum;
 - retained drop records plus an explicit omitted-drop count if the bounded
   drop-event ledger itself fills.
@@ -116,7 +126,9 @@ does not ask the simulation worker to skip or slow a tick.
 
 Material publications continue to update the recorder's private ROI even when a
 capture frame is dropped. The next retained frame therefore represents the
-latest consumed publication rather than a stale queued state.
+latest consumed publication rather than a stale queued state. Worker snapshots
+that merely repeat an already-consumed render serial are ignored for capture
+cadence, so main-thread lag cannot manufacture duplicate review frames.
 
 Malformed recorder input or a writer failure stops admission and marks the
 session incomplete. A simulation failure likewise stops admission and records
@@ -135,6 +147,7 @@ At minimum retain:
 
 - simulation tick timing/throughput and worker overruns;
 - render/publication cadence and relevant publication/upload counters;
+- render-publication count and render-patch folding cost;
 - requested capture cadence;
 - capture attempts, enqueued/written/dropped frames;
 - queue high-water/capacity;
