@@ -6,7 +6,7 @@ scope: Version 1 material capability, sampled player support, pair exchange and 
 canonical-for: [granular-support-policy, granular-pair-policy, sampled-player-collision]
 keywords: [powder, packing, player, Dust, Mercury, permeability, enclosure, side resistance]
 last-reviewed: 2026-09-24
-related-documents: [materials-and-rule-kernels.md, ../architecture/rigid-body-and-cellular-coupling.md, ../operations/physics-characterisation.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md]
+related-documents: [materials-and-rule-kernels.md, ../architecture/rigid-body-and-cellular-coupling.md, ../operations/physics-characterisation.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md, ../audits/2026-09-24-rem003-current-characterisation.md]
 ---
 
 # Granular interaction and sampled player policy
@@ -62,6 +62,37 @@ the read neighbourhood does not enlarge native job write domains. Desktop and
 Web retain their different character/cell order. Fallback uses the same query
 geometry and material capability, but its narrower cellular rules remain a
 separate semantic reference, not native Water/reaction parity.
+
+### REM-003 sampled-player landing response
+
+**Current candidate C1:** the version-1 8/9 downward and 9/9 side/upward support
+classification is unchanged. REM-003 source-matched characterization found that
+packed standing, flat traversal, representative powders and excavation release
+worked within their registered cases, while materially different Sand landing
+speeds resolved to nearly the same rigid support height with no granular response.
+C1 therefore changes the sampled-character response rather than retuning the
+shared support predicate used by REM-002 generic body bearing.
+
+On a downward sampled-player collision, impact speed below 24 cells/second causes
+no disturbance. From 24 through less than 72, at most one supported foot-edge
+grain may move; at 72 or above, at most two may move. Only the left/right contact
+edge is considered. A candidate grain must be a stored support-capable granular
+material that currently satisfies the existing packing/stability predicate.
+It may move exactly one cell diagonally outward/up only through the existing
+whole-cell conservative relocation path into real Empty storage not occupied by
+another transient body. Material state and temperature move with the cell and
+the normal wake/dirty machinery runs. Hard terrain anywhere in the sampled
+collision volume fails this disturbance path closed; liquids, loose/unsupported
+grains and ordinary resting contact likewise do not trigger it.
+
+The player still stops on the accepted support surface; C1 does not introduce
+character-owned material, a granular Rapier collider, a pressure/velocity field,
+per-cell character physics or a second body-bearing solver. The native adapter and
+fallback mirror the bounded operation under their existing serialized owners.
+The resulting grain may subsequently move under ordinary cellular rules, so the
+disturbance count is not a promise of permanent crater geometry. Broad generic
+body↔granular acceptance remains REM-004 / #83. Owner gameplay acceptance of C1
+is a separate REM-003 gate and is not implied by automated tests.
 
 ## How do pairs exchange, and how does Mercury keep progressing?
 

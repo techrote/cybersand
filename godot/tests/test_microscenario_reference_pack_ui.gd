@@ -64,6 +64,23 @@ func run() -> void:
 	expect(bench.retained_capture.work_statistics.available and int(bench.retained_capture.work_statistics.sampled_ticks) == 180,
 		"Stress UI capture lacks comparable native work telemetry")
 
+	var rem003: Dictionary = Pack.player_granular_review(0)
+	expect(desktop.microscenario_apply_definition(rem003,"Play"),"desktop REM-003 review definition refused")
+	var rem003_installed: bool = await wait_for(func() -> bool: return desktop.pending_microscenario_apply.is_empty() and desktop.tower_context.get("micro_active",false))
+	expect(rem003_installed,"desktop REM-003 review reset did not acknowledge")
+	desktop._refresh_microscenario_controls()
+	expect(str(desktop.tower_context.microscenario.id) == Pack.REM003_ID,
+		"desktop did not install REM-003 review catalogue identity")
+	expect(bool(desktop.tower_context.microscenario.player_enabled),
+		"REM-003 owner-review scenario did not enable the sampled player")
+	expect(bench.overlay.regions.size() == 5
+		and bench.instructions.text.contains("Owner gameplay review")
+		and bench.instructions.text.contains("harder landings"),
+		"REM-003 owner-review scenario lacks registered gameplay guidance")
+	expect(bench.material_picker.disabled and bench.radius_input.editable,
+		"REM-003 erase-only owner-review tools do not match the declared contract")
+	await screenshot("rem003-player-granular-review")
+
 	desktop.simulation_worker.stop_worker()
 	desktop.rapier_bridge.shutdown()
 	desktop.queue_free()

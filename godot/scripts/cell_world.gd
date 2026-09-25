@@ -1475,6 +1475,63 @@ func character_box_collides(origin: Vector2, size: Vector2, mode: int) -> bool:
 	return false
 
 
+func character_disturb_granular(origin: Vector2, size: Vector2, impact_speed: float) -> int:
+	if (
+		not origin.is_finite()
+		or not size.is_finite()
+		or not is_finite(impact_speed)
+		or impact_speed < 24.0
+		or size.x <= 0
+		or size.y <= 0
+		or size.x > 32
+		or size.y > 32
+		or origin.x < 0
+		or origin.y < 0
+		or origin.x + size.x > WORLD_WIDTH
+		or origin.y + size.y > WORLD_HEIGHT
+	):
+		return 0
+	var first_x: int = floori(origin.x + 0.001)
+	var first_y: int = floori(origin.y + 0.001)
+	var last_x: int = ceili(origin.x + size.x - 0.001) - 1
+	var contact_y: int = ceili(origin.y + size.y - 0.001) - 1
+	# Hard-surface collision remains owned by the existing terrain contract.
+	# Mixed hard/granular contact must not manufacture a granular disturbance.
+	for y: int in range(first_y, contact_y + 1):
+		for x: int in range(first_x, last_x + 1):
+			if _is_hard_surface_material(stored_material_at(x, y)):
+				return 0
+	var budget: int = 2 if impact_speed >= 72.0 else 1
+	var left_first: bool = (tick_index & 1) == 0
+	var moved: int = 0
+	for pass_index: int in range(2):
+		if moved >= budget:
+			break
+		var use_left: bool = left_first if pass_index == 0 else not left_first
+		var source_x: int = first_x if use_left else last_x
+		var outward: int = -1 if use_left else 1
+		var target_x: int = source_x + outward
+		var target_y: int = contact_y - 1
+		if not in_bounds(source_x, contact_y) or not in_bounds(target_x, target_y):
+			continue
+		var material: int = stored_material_at(source_x, contact_y)
+		if (
+			not CyberInteractionPolicy.supports_load(material)
+			or not CyberInteractionPolicy.supports_at(
+				self, source_x, contact_y, false, false
+			)
+		):
+			continue
+		var target_index: int = cell_index(target_x, target_y)
+		if cells[target_index] != EMPTY or rigid_body_occupancy[target_index] != 0:
+			continue
+		_move_material_for_body(source_x, contact_y, target_x, target_y)
+		moved += 1
+	if moved > 0:
+		revision += 1
+	return moved
+
+
 func set_interest_center(world_cell: Vector2i) -> void:
 	interest_cell.x = clampi(world_cell.x, 0, WORLD_WIDTH - 1)
 	interest_cell.y = clampi(world_cell.y, 0, WORLD_HEIGHT - 1)

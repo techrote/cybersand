@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-09-24
+last-reviewed: 2026-09-25
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md]
 ---
 
@@ -95,6 +95,24 @@ of production body↔granular gameplay. REM-004 / #83 owns that broader envelope
 
 These are evidence-boundary corrections, not re-execution or retroactive failure
 of the original bounded campaigns.
+
+## REM-003 sampled player↔granular C1 — 2026-09-25
+
+The [REM-003 acceptance record](../audits/2026-09-25-rem003-player-granular-acceptance.md)
+freezes candidate source `2a5c99b9c3c9569bede3c37a80656f191b61eb84`. C1 leaves the
+shared 8/9 downward and 9/9 side/upward support predicate unchanged and adds only a
+bounded sampled-player landing disturbance.
+
+The exact C1 Linux runtime passed the corrected schema-2 reference contract (459
+assertions), REM-002 body/granular recurrence and the remaining shard-1 controls in
+validation run `36076161414`. Real Chromium compatibility and threaded execution
+both passed in `36075766808` with ordinary=1, hard=2, hard-terrain=0 and Water=0
+disturbance counts; threaded execution was cross-origin isolated. Windows remains
+cross-build-only. Retained Linux/Windows publication is required before merge and
+its authoritative hashes/run belong in the current runtime provenance manifests.
+
+This establishes an objective C1 engineering candidate, not owner gameplay
+acceptance. #82 remains open for the explicit owner review/disposition gate.
 
 ## Recovery and Stage-3B #65 evidence — 2026-09-22
 

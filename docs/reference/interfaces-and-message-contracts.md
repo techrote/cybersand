@@ -64,6 +64,26 @@ this worker protocol. Source: [simulation_worker.gd](../../godot/scripts/simulat
 Ownership and timing are defined by [lifetimes](../architecture/data-ownership-and-lifetimes.md)
 and [step order](../architecture/simulation-tick-and-threading.md).
 
+### Sampled-player granular disturbance adapter
+
+**Current private Godot adapter:** `character_disturb_granular(origin, size,
+impact_speed)` is a serialized owner operation used only by
+`CyberSampledCharacter` after an accepted downward granular collision. It is not
+part of the public C ABI or the rigid-body packed result format. Position/size are
+finite finite-adapter cell/pixel coordinates; impact speed is downward
+cells/pixels per second. Malformed/out-of-world input, failed worlds, impact below
+24, hard-surface involvement or the absence of supported foot-edge grains returns
+zero moved cells.
+
+The operation has a fixed maximum of one move for impact speed 24..<72 and two
+moves at >=72. Each move is one whole stored granular cell to an outward/up
+diagonal Empty destination through the existing conservative relocation machinery;
+state/temperature and wake/dirty semantics are retained. It creates no queue,
+unbounded search, material ownership transfer or Rapier contact. The GDScript
+fallback mirrors the same bounded surface. See
+[granular/player policy](../systems/granular-interaction-policy.md#rem-003-sampled-player-landing-response)
+for the gameplay semantics and owner-acceptance boundary.
+
 ## Gameplay command contract
 
 **Current desktop emission encoding:** `Vector4i(x, y, radius, packed)` where

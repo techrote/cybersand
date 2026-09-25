@@ -18,6 +18,8 @@ var position: Vector2 = Vector2.ZERO
 var velocity: Vector2 = Vector2.ZERO
 var grounded: bool = false
 var recovery_blocked: bool = false
+var granular_disturbance_last: int = 0
+var granular_disturbance_total: int = 0
 const RECOVERY_RADIUS: int = 32
 const RECOVERY_DIRECTIONS: Array[Vector2] = [Vector2.UP, Vector2.LEFT, Vector2.RIGHT, Vector2.DOWN]
 
@@ -27,10 +29,13 @@ func reset(spawn_position: Vector2) -> void:
 	velocity = Vector2.ZERO
 	grounded = false
 	recovery_blocked = false
+	granular_disturbance_last = 0
+	granular_disturbance_total = 0
 
 
 func simulate(delta: float, horizontal_input: float, jetpack_active: bool, world) -> void:
 	# At most nine one-cell movement steps per axis at the configured speeds.
+	granular_disturbance_last = 0
 	delta = clampf(delta, 0.0, 0.1)
 	if not recover_enclosure(world):
 		return
@@ -97,6 +102,11 @@ func move_vertical(distance: float, world) -> void:
 		var candidate: Vector2 = position + Vector2(0.0, movement)
 		if world.character_box_collides(candidate, BODY_SIZE, 1 if movement > 0 else 3):
 			if movement > 0.0:
+				if world.has_method(&"character_disturb_granular"):
+					granular_disturbance_last = int(
+						world.character_disturb_granular(candidate, BODY_SIZE, velocity.y)
+					)
+					granular_disturbance_total += granular_disturbance_last
 				grounded = true
 			velocity.y = 0.0
 			return
