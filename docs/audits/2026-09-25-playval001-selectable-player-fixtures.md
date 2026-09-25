@@ -103,9 +103,10 @@ The repository's Godot regression runner discovers this test automatically.
 ## Validation state
 
 Implementation is **review-ready but not yet runtime-verified** at this document
-checkpoint. Exact-head Documentation/provenance, GDExtension/Godot and applicable
-repository gates remain required before merge. No Windows gameplay judgment is
-claimed here.
+checkpoint. Draft Documentation/provenance passed before the PR was marked ready.
+A post-ready synchronization commit intentionally triggers the full exact-head
+Documentation/provenance, GDExtension/Godot and applicable repository gates before
+merge. No Windows gameplay judgment is claimed here.
 
 Even after those objective gates pass, #139 remains open for its recorded owner
 review campaign and disposition.
