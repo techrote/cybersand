@@ -158,6 +158,23 @@ horizontal sampling and cadence are separate fixed experiments.
 Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
 are unchanged. No unsynchronized live descriptor mutation is introduced.
 
+## Desktop gameplay recording ownership
+
+**Current REC-001:** the desktop gameplay recorder is a second consumer of
+`CyberSimulationSnapshot`, not a second World owner. The main thread applies the
+immutable render publication to a private fixed-ROI material-ID buffer and copies
+due frames into an explicit bounded queue. Its dedicated writer thread owns only
+those frame copies plus copied metadata; it performs encoding/file I/O without
+calling World, Rapier or scene-tree APIs.
+
+The worker publication now also carries the copied rigid-body input value array
+latched for that worker step. This is the same data-only bridge sample already
+consumed by native coupling, not a live physics object. Recorder queue saturation
+drops capture attempts with timing/tick provenance and never waits on or skips an
+authoritative simulation tick. Recorder/file failure stops recording admission and
+produces an incomplete evidence disposition without changing simulation ownership
+or recovery. See [gameplay recording](../operations/gameplay-recording.md).
+
 ## MicroScenario owner-local values
 
 **Current MS-000:** `CyberMicroScenarioHost` is a RefCounted value/lifecycle helper
