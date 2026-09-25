@@ -698,6 +698,7 @@ func _publish_snapshot(
 	snapshot.serial = _snapshot_serial
 	snapshot.published_usec = Time.get_ticks_usec()
 	snapshot.world_revision = _snapshot_world_revision
+	snapshot.simulation_world_revision = int(_world.revision)
 	snapshot.hard_surface_revision = _snapshot_hard_surface_revision
 	snapshot.cells = _snapshot_cells
 	snapshot.render_snapshot_serial = _pending_render_snapshot_serial
@@ -724,6 +725,7 @@ func _publish_snapshot(
 	snapshot.character_position = _character.position
 	snapshot.character_velocity = _character.velocity
 	snapshot.character_grounded = _character.grounded
+	snapshot.current_rigid_body_states = rigid_body_states.duplicate()
 	snapshot.tick_index = _world.tick_index
 	snapshot.moves_last_tick = _world.moves_last_tick
 	snapshot.scanned_last_tick = _world.scanned_last_tick
