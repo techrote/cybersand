@@ -5,7 +5,7 @@ document-kind: contract
 scope: PENV-001 sampled-player mass, gravity, terminal/jetpack tuning, material-response identity and step/knee/clamber traversal; excludes Water semantic changes and generic-body physics
 canonical-for: [player-environment-tuning, sampled-character-traversal-bands]
 last-reviewed: 2026-09-25
-related-documents: [granular-interaction-policy.md, ../operations/gameplay-recording.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/configuration-reference.md]
+related-documents: [granular-interaction-policy.md, ../operations/gameplay-recording.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/configuration-reference.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
 ---
 
 # Player/environment tuning profiles and sampled traversal
@@ -23,6 +23,13 @@ validated value profile, and the presentation owner then invokes the appropriate
 fresh-reset path for the ordinary demo world, Experiment Tower, Water Feel Lab or
 the current MicroScenario. Native cell authority, Rapier ownership and material
 descriptors are unchanged.
+
+PCHAR-001's player representation/recovery layer is orthogonal to this profile.
+Ordinary sandbox use may select the sampled character or the barrel/Rapier
+experiment and may choose sampled-baseline or burial-safe runtime recovery. PENV
+does not overwrite those choices. Registered Tower/Water/MicroScenario runs keep
+PCHAR's forced sampled-baseline representation while still receiving the active
+player/environment profile.
 
 The profile hash is SHA-256 over the resolved profile fields. It identifies the
 player/environment tuning inputs; it is not a state hash or exact-replay identity.
