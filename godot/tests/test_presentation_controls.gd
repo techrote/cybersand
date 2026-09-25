@@ -53,6 +53,13 @@ func _run() -> void:
 	_expect(status.visible, "Shift+F3 did not restore the stats readout")
 	toggle.shift_pressed = false
 
+	_expect(
+		main.brush_shape == "circle"
+			and main.brush_size_px == 9
+			and main.brush_footprint_cells(100, 100).size() / 2 == 49,
+		"default circle no longer matches the retained radius-4 lattice"
+	)
+
 	var primary: int = main.selected_material_id
 	var primary_index: int = main.PAINTABLE_MATERIAL_IDS.find(primary)
 	var expected_secondary: int = main.PAINTABLE_MATERIAL_IDS[
