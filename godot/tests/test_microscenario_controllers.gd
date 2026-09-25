@@ -126,6 +126,21 @@ func _run() -> void:
 	web.focused = true
 	web.ui.close_menu()
 	expect(web.ready_to_play, "synchronous controller did not initialize")
+	var desktop_only_player_fixture: Dictionary = Catalogue.definition(
+		"rem003/player-granular-review/sampled-baseline",
+		0
+	)
+	expect(
+		not web.microscenario_apply_definition(
+			desktop_only_player_fixture,
+			"Play"
+		),
+		"Web silently accepted a desktop-only PLAY-VAL player fixture"
+	)
+	expect(
+		"desktop asynchronous owner" in web.microscenario_error,
+		"Web player-fixture refusal did not explain its platform scope"
+	)
 	expect(web.microscenario_apply_definition(definition, "Benchmark"), "Web-owner generic definition refused")
 	expect(web.micro_host.summary().definition_hash == wanted, "owners disagree on definition identity")
 	web.microscenario_capture()
