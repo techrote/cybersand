@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: MS-000 schema 1 and compatible MS-001 schema 2 definitions, bounded owner lifecycle, shared modes, inspection and fresh-reset comparisons; not physics architecture or full replay
 canonical-for: [microscenario-contract, microscenario-host, microscenario-capture]
-last-reviewed: 2026-09-19
+last-reviewed: 2026-09-25
 related-documents: [microscenarios-programme.md, experiment-tower.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/level-saves-and-replay.md, ../audits/2026-09-19-issue-27-microscenarios.md]
 ---
 
@@ -155,8 +155,16 @@ to Tower. Pause/resume and bounded single-step use existing owner commands.
 Play hides the legacy developer panel and shows objective/status. Inspect and
 Benchmark expose available observations and capture; all three use the same
 validated definition, native operations and physics. No GUI mode selects a different
-solver. F8 hides/restores the common HUD and Tower labels for captures. Optional
-players are not simulated or drawn in the supplied player-disabled fixtures.
+solver. F8 hides/restores the common HUD and Tower labels for captures.
+
+Most apparatus definitions either use the historical sampled-player owner or
+disable players entirely. PLAY-VAL-001 adds three explicitly named exploratory
+player-review catalogue arms. Their world definitions remain ordinary schema-2
+data; the desktop owner maps those IDs at the fresh-reset boundary to the already
+implemented sampled-baseline, sampled-burial-safe or barrel/Rapier representation.
+That representation/recovery choice is **not** a new schema field and cannot be
+changed live with F6/F7 while the controlled fixture is active. The barrel arm
+admits only body 0; other generic reference bodies stay absent.
 
 **Definition JSON** opens a bounded paste/edit view for a complete definition.
 Validation failure leaves the running world untouched; application is always a
