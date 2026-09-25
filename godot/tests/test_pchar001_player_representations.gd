@@ -222,6 +222,25 @@ func _barrel_control_preserves_reaction() -> Dictionary:
 	)
 	bridge.step()
 	var after_reaction: Vector2 = bridge.body_linear_velocity(0)
+	var zero_control_impulse: float = bridge.apply_horizontal_control(
+		0,
+		0.0,
+		CyberPlayerRepresentation.BARREL_WALK_SPEED,
+		CyberPlayerRepresentation.BARREL_HORIZONTAL_ACCELERATION,
+		CyberPlayerRepresentation.BARREL_MAX_HORIZONTAL_IMPULSE,
+		1.0 / 60.0
+	)
+	bridge.step()
+	var after_zero_control: Vector2 = bridge.body_linear_velocity(0)
+	_check(
+		is_zero_approx(zero_control_impulse),
+		"zero horizontal input produced a locomotion impulse"
+	)
+	_check(
+		after_zero_control.is_equal_approx(after_reaction),
+		"zero horizontal input damped or overwrote incoming cellular reaction"
+	)
+
 	var control_impulse: float = bridge.apply_horizontal_control(
 		0,
 		1.0,
@@ -260,6 +279,11 @@ func _barrel_control_preserves_reaction() -> Dictionary:
 	await process_frame
 	return {
 		"reaction_velocity": [after_reaction.x, after_reaction.y],
+		"zero_control_impulse": zero_control_impulse,
+		"post_zero_control_velocity": [
+			after_zero_control.x,
+			after_zero_control.y,
+		],
 		"control_impulse": control_impulse,
 		"post_control_velocity": [after_control.x, after_control.y],
 	}
