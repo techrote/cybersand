@@ -177,10 +177,12 @@ an Earth-feel owner-tuning candidate doubles gravity only.
 
 Profile changes pause and use the current fresh-reset owner boundary. After
 PCHAR-001 merged as `5e53178ba083a0ccd10933cd404395fdbd7dc2b3`,
-ordinary barrel/sample selection and sampled burial-safe recovery remain intact;
-registered labs still force PCHAR's sampled-baseline identity. The desktop exposes
-active values and REC-001 retains the resolved profile with exact
-render-generation evidence.
+ordinary barrel/sample selection and sampled burial-safe recovery remain intact.
+Tower, Water and ordinary registered MicroScenarios still force PCHAR's
+sampled-baseline identity; PLAY-VAL-001 / #139 adds only three explicitly named
+experimental REM-003 arms for matched sampled-baseline, sampled-burial-safe and
+barrel/Rapier owner review. The desktop exposes active values and REC-001 retains
+the resolved profile with exact render-generation evidence.
 
 Granular response reuses the existing REM-003 C1 hook with separate mass and
 sensitivity multipliers. Liquid sensitivity is inspectable/captured only; Water
