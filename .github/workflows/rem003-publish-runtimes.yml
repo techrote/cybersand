@@ -223,7 +223,6 @@ jobs:
               assert hashlib.sha256(data).hexdigest() == manifest["sha256"]
               assert len(data) == manifest["size"]
           PY
-          python3 tools/ci/check_docs.py
           python3 tools/ci/check_m11_consistency.py
 
       - name: Prepare companion validation inputs
@@ -238,6 +237,7 @@ jobs:
 
       - name: Verify materialized current provenance
         run: |
+          python3 tools/ci/check_docs.py
           python3 tools/ci/check_repository.py --require-materialized
           git lfs fsck
 
