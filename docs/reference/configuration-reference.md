@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-09-10
+last-reviewed: 2026-09-25
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md]
 ---
 
@@ -278,3 +278,21 @@ capacities. The journal defaults to at most 1024 cells per registered block; a
 producer must refuse or deliberately tile larger custom World geometry. There is
 no WorldConfig flag or gameplay control for either module. These test capacities
 are not selected production thresholds; ordinary runtime remains unchanged.
+
+
+## Player/environment tuning profile
+
+**Current:** `godot/scripts/player_environment_profiles.gd` owns version 1.
+The exact-current preset uses effective mass 1.0, gravity acceleration 92,
+terminal fall speed 86, jetpack acceleration 180, maximum rise speed 60,
+granular-response sensitivity 1.0, liquid-response sensitivity 1.0, traversal
+thresholds 1/1/1 px and knee/clamber speed factors 0.65/0.35. The latter factors
+are unreachable in the exact-current profile because knee/clamber do not extend
+beyond the historical one-pixel step.
+
+The Earth-feel candidate changes gravity only to 184; terminal speed remains 86.
+These values are existing gameplay-space cell/pixel units, not calibrated SI
+gravity or mass. The desktop editor accepts bounded custom values and applies
+them only through a fresh reset. See the
+[player/environment contract](../systems/player-environment-profiles-and-traversal.md)
+for field bounds, material-response ownership and traversal semantics.

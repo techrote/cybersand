@@ -49,6 +49,13 @@ func _base_snapshot(serial: int, published_usec: int) -> CyberSimulationSnapshot
 		"profile": {"name": "Baseline"},
 		"profile_hash": "transport-test",
 		"water_policy_hash": "",
+		"player_environment_profile": {
+			"id": "earth-feel-2x-gravity",
+			"hash": "penv-test",
+			"effective_mass": 1.0,
+			"gravity_acceleration": 184.0,
+			"terminal_fall_speed": 86.0,
+		},
 		"microscenario": {
 			"id": "rem003/player-granular-review",
 			"definition_hash": "definition-test",
@@ -64,6 +71,10 @@ func _base_snapshot(serial: int, published_usec: int) -> CyberSimulationSnapshot
 		"micro_active": true,
 		"profile": {"name": "WrongLaterProfile"},
 		"profile_hash": "wrong-later-hash",
+		"player_environment_profile": {
+			"id": "wrong-later-player-profile",
+			"gravity_acceleration": 1.0,
+		},
 		"microscenario": {
 			"id": "wrong/later-snapshot",
 			"presentation": {"profile": "wrong-later-tuning"},
@@ -258,6 +269,14 @@ func _test_threaded_output_and_provenance() -> void:
 			_expect(
 				str(frame.scenario.tuning_profile) == "candidate-c1/owner-review-v1",
 				"tuning profile identity was not retained"
+			)
+			_expect(
+				str(frame.player.environment_profile.id) == "earth-feel-2x-gravity",
+				"render-generation player/environment profile was not retained"
+			)
+			_expect(
+				absf(float(frame.scenario.player_environment_profile.gravity_acceleration) - 184.0) < 0.0001,
+				"scenario identity lost the active player/environment settings"
 			)
 			_expect(
 				absf(float(frame.player.origin[0]) - 11.25) < 0.0001,

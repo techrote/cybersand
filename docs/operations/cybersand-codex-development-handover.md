@@ -316,3 +316,27 @@ different physical control.
 The current affected route is therefore
 `#49 corrected apparatus + #91/#92 hybrid evidence + #93 optional gas evidence -> #95 -> #45 disposition -> #18 admission/no-go`.
 #28/#29 remain independently runnable.
+
+
+## PENV-001 player/environment tuning handoff
+
+Issue #138 is the first finite child under long-lived parent #133. Read the
+[player/environment tuning contract](../systems/player-environment-profiles-and-traversal.md)
+before changing sampled-character gravity, terminal speed, effective mass,
+jetpack values or traversal thresholds.
+
+The exact-current profile is the regression control. Candidate edits remain
+fresh-reset inputs; do not turn the panel into unsynchronized live mutation.
+REM-003 C1 still owns bounded player↔granular disturbance semantics, while
+PENV-001 supplies only separate player-side mass/sensitivity scaling. The exposed
+liquid-sensitivity identity is not permission to alter Water pressure,
+displacement or generic Rapier-body behavior.
+
+PCHAR-001 / #137 merged first as `5e53178ba083a0ccd10933cd404395fdbd7dc2b3`.
+PENV-001 is reconciled on top of that representation layer: ordinary sandbox
+barrel/sample selection and sampled burial-safe recovery remain independently
+owned, while registered Tower/Water/MicroScenario runs retain PCHAR's forced
+sampled-baseline behavior. Tuning a profile therefore must not erase or silently
+change the selected representation/recovery policy.
+
+Parent #133 remains open after #138.

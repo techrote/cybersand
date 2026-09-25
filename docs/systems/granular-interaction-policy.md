@@ -103,6 +103,21 @@ disturbance count is not a promise of permanent crater geometry. Broad generic
 body↔granular acceptance remains REM-004 / #83. Owner gameplay acceptance of C1
 is a separate REM-003 gate and is not implied by automated tests.
 
+## PENV-001 player-side tuning input
+
+**Current:** [player/environment profiles](player-environment-profiles-and-traversal.md)
+leave this policy's support classification, PCHAR recovery policy and conservative
+C1 relocation semantics unchanged. The sampled character supplies its existing
+landing-response request as vertical impact speed multiplied by the active
+profile's effective-mass and granular-sensitivity inputs. The exact-current
+profile uses 1.0 for both, so the pre-PENV C1 request is reproduced.
+
+Mass and granular sensitivity are deliberately separate tuning inputs; neither
+changes gravity or terminal speed. Liquid response has a separately identified
+profile field, but PENV-001 adds no Water response hook or generic-body semantic.
+PCHAR representation selection remains separate: this profile governs the sampled
+character and does not redefine the barrel/Rapier coupling path.
+
 ## How do pairs exchange, and how does Mercury keep progressing?
 
 **Current version 1:** `MaterialRules::can_density_exchange` rejects every ordered

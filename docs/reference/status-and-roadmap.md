@@ -167,6 +167,26 @@ cellular reaction, with no vertical velocity assignment and no generic
 body↔granular semantic change. #83 remains the production body-envelope owner and
 #132 remains open for later representation experiments and selection.
 
+## PENV-001 player/environment tuning checkpoint
+
+**Current implementation candidate:** sampled-player gravity, terminal speed,
+effective mass, jetpack acceleration/rise limit, granular/liquid response identity
+and step/knee/clamber traversal are explicit versioned profile inputs. The
+exact-current preset reproduces the pre-PENV values and one-pixel step envelope;
+an Earth-feel owner-tuning candidate doubles gravity only.
+
+Profile changes pause and use the current fresh-reset owner boundary. After
+PCHAR-001 merged as `5e53178ba083a0ccd10933cd404395fdbd7dc2b3`,
+ordinary barrel/sample selection and sampled burial-safe recovery remain intact;
+registered labs still force PCHAR's sampled-baseline identity. The desktop exposes
+active values and REC-001 retains the resolved profile with exact
+render-generation evidence.
+
+Granular response reuses the existing REM-003 C1 hook with separate mass and
+sensitivity multipliers. Liquid sensitivity is inspectable/captured only; Water
+and generic-body semantics are unchanged. Parent #133 remains the long-lived
+programme for later environment/player tuning after finite child #138.
+
 ## Issue #13 experiment checkpoint
 
 **Current:** shared five-floor Experiment Tower, frozen pre-change references,

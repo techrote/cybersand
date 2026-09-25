@@ -376,6 +376,10 @@ func _frame_metadata(snapshot: CyberSimulationSnapshot) -> Dictionary:
 	var micro: Dictionary = context.get("microscenario", {})
 	var presentation: Dictionary = micro.get("presentation", {})
 	var profile: Dictionary = context.get("profile", {})
+	var player_environment_profile: Dictionary = context.get(
+		"player_environment_profile",
+		{}
+	)
 	var bodies: Array[Dictionary] = []
 	var body_states: PackedFloat32Array = snapshot.render_rigid_body_states
 	var stride: int = CyberRigidBodyCoupling.INPUT_STRIDE
@@ -448,6 +452,7 @@ func _frame_metadata(snapshot: CyberSimulationSnapshot) -> Dictionary:
 			"extent": [CyberSampledCharacter.BODY_SIZE.x, CyberSampledCharacter.BODY_SIZE.y],
 			"velocity": [player_velocity.x, player_velocity.y],
 			"grounded": player_grounded,
+			"environment_profile": player_environment_profile.duplicate(true),
 		},
 		"rigid_bodies": bodies,
 		"scenario": {
@@ -459,6 +464,7 @@ func _frame_metadata(snapshot: CyberSimulationSnapshot) -> Dictionary:
 			"seed": int(micro.get("seed", 0)),
 			"mode": str(micro.get("mode", "")),
 			"tuning_profile": str(presentation.get("profile", "")),
+			"player_environment_profile": player_environment_profile.duplicate(true),
 		},
 		"transport_profile": {
 			"name": str(profile.get("name", "")),
