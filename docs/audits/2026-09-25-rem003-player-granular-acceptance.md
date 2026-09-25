@@ -57,6 +57,13 @@ published hashes and publication run are recorded in
 `runtime-provenance.linux.json` and `runtime-provenance.json`; old runtime bytes
 must not be relabelled.
 
+The source-matched runtime publication landed as
+`8e6c9844f8c265daf5435fb913a0fb9f81cbfb15`. Because that commit was pushed by
+the publication GitHub Actions workflow, GitHub created PR check suites with
+`action_required` and no jobs. This documentation-only successor commit exists
+solely to trigger ordinary post-publication PR validation; it changes no frozen
+C1 source input or retained runtime byte.
+
 ## Preserved failures and corrections
 
 The initial REM-003 fixture attempt rejected zero-height rectangles and was not
