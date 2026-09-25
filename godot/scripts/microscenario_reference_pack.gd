@@ -267,7 +267,7 @@ static func player_configuration(id: String) -> Dictionary:
 
 
 static func player_granular_experiment(id: String, seed: int = 0) -> Dictionary:
-	if not id in REM003_EXPERIMENT_IDS:
+	if not (id in REM003_EXPERIMENT_IDS):
 		return {}
 	var out: Dictionary = player_granular_review(seed)
 	if out.is_empty():
