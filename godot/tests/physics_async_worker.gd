@@ -15,8 +15,14 @@ func prepare_trace(limit: int) -> bool:
 	diagnostic_trace.fill(0.0)
 	return true
 
-func _publish_snapshot(step_ms: float, paused: bool, interval: int, force_full: bool = false) -> void:
-	super._publish_snapshot(step_ms,paused,interval,force_full)
+func _publish_snapshot(
+		step_ms: float,
+		paused: bool,
+		interval: int,
+		force_full: bool = false,
+		rigid_body_states: PackedFloat32Array = PackedFloat32Array()
+) -> void:
+	super._publish_snapshot(step_ms, paused, interval, force_full, rigid_body_states)
 	var tick: int = int(_world.get_tick_index())
 	if tick > recorded_tick and tick <= diagnostic_limit and not _simulation_failed:
 		var offset: int = tick*12
