@@ -1,0 +1,68 @@
+name: REM-003 exact-runtime recurrence
+
+on:
+  push:
+    branches: [rem/issue-82-web-acceptance]
+    paths: [.github/workflows/rem003-gd-recurrence.yml]
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  CANDIDATE_HEAD: 2a5c99b9c3c9569bede3c37a80656f191b61eb84
+  RUNTIME_RUN: "36075409671"
+  RUNTIME_ARTIFACT: linux-runtime-36075409671
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+
+jobs:
+  recurrence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+
+      - name: Verify candidate source differs only by validation workflows
+        run: |
+          git diff --exit-code "$CANDIDATE_HEAD" HEAD --             godot native tools ':!.github/workflows/**'
+
+      - name: Restore exact candidate Linux runtime
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: ${{ env.RUNTIME_ARTIFACT }}
+          path: build/linux-runtime
+          github-token: ${{ github.token }}
+          run-id: ${{ env.RUNTIME_RUN }}
+
+      - name: Verify and install exact runtime
+        run: |
+          (cd build/linux-runtime && sha256sum --check --strict runtime.sha256)
+          cp build/linux-runtime/libcybersand_native.linux.x86_64.so             godot/addons/cybersand_native/bin/
+          cp build/linux-runtime/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so             godot/addons/godot_rapier2d/bin/ 2>/dev/null ||           cp build/linux-runtime/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so             godot/addons/godot-rapier2d/bin/
+          timeout 1m tools/check_linux_runtime_floor.sh
+
+      - name: Prepare exact Godot
+        run: |
+          curl --fail --location --retry 3             'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'             -o "$RUNNER_TEMP/godot.zip"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+
+      - name: Import exact candidate scripts
+        run: |
+          "$GODOT_BIN" --headless --editor --path godot --quit
+
+      - name: Run corrected shard-1 remainder
+        run: |
+          set -euo pipefail
+          for test in             test_microscenario_reference_contract.gd             test_microscenario_workbench.gd             test_native_fire_presentation_regression.gd             test_physics_async.gd             test_presentation_controls.gd             test_rem002_body_granular.gd             test_water_experiment_profiles.gd             test_web_demo_setup.gd
+          do
+            echo "RUN $test"
+            "$GODOT_BIN" --headless --path godot --script "res://tests/$test"
+          done
