@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Exploratory Materials Laboratory, Flood-Control Puzzle and Simulation Stress Test definitions on the shared host, with fresh-reset A/B, world-state objectives and bounded telemetry
 canonical-for: [microscenario-reference-pack, materials-laboratory-readiness, flood-control-scenario, simulation-stress-test, microscenario-workbench-controls]
-last-reviewed: 2026-09-19
+last-reviewed: 2026-09-25
 related-documents: [microscenarios.md, microscenarios-programme.md, experiment-tower.md, ../reference/status-and-roadmap.md, ../audits/2026-09-19-issue-28-ms001.md]
 ---
 
@@ -93,6 +93,44 @@ subjective. The scenario's declared completion condition only proves the bounded
 REM-003 correctness/measurement evidence remains in the dated REM-003 audit and
 issue #82 stays open until explicit owner acceptance or another allowed
 disposition.
+
+## PLAY-VAL-001 selectable player-representation fixtures
+
+Issue #139 adds three **exploratory** catalogue entries derived from the same
+REM-003 review geometry:
+
+- `rem003/player-granular-review/sampled-baseline`
+- `rem003/player-granular-review/sampled-burial-safe`
+- `rem003/player-granular-review/barrel-rapier`
+
+They preserve the original review surface's rectangles, events, player start,
+camera, admitted tools and ancestral geometry/action hash. The sampled-baseline
+arm enables the historical runtime enclosure recovery; sampled-burial-safe disables
+that runtime reordering while retaining the separate invalid-spawn repair contract;
+barrel-rapier disables the sampled owner and admits only Rapier body 0 as the
+controllable player at the same authored start.
+
+Representation selection is **reset-scoped owner configuration**, not a new schema-2
+field. The controlled fixture therefore refuses ordinary F6/F7 live representation
+changes: select another catalogue arm and perform a fresh reset instead. This keeps
+the registered world definition reproducible while making the PCHAR alternatives
+directly selectable for matched owner review.
+
+The three PLAY-VAL representation arms are currently **desktop-only**. Web uses a
+different synchronous player/body owner and explicitly rejects these IDs instead of
+pretending to execute the desktop PCHAR representation contract. Ordinary
+MicroScenarios remain available to their previously supported owners.
+
+The common MicroScenario status reports the active player identity. Scenario
+capture also receives the active representation/recovery identity from the desktop
+owner. Because schema 2 forbids authoritative `material_cells` census while a
+body mask is active, the barrel fixture retains only the neutral 600-tick
+completion probe; its material comparison is visual/recording evidence rather than
+a masked census. These fixtures do not select a production player, change
+generic-body semantics or satisfy #139's subjective owner-review disposition by
+themselves.
+See the dated PLAY-VAL-001 fixture evidence for exact implementation/validation
+scope.
 
 ## Flood-Control Puzzle
 

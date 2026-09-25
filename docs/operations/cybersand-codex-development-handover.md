@@ -78,9 +78,15 @@ child touches the same native World/test surfaces.
 PCHAR-001 / #137 adds a reset-scoped ordinary-sandbox experiment under parent
 #132. F6 switches between the historical sampled character and body 0 acting as
 a barrel/Rapier player; F7 toggles the sampled-only burial-safe runtime policy.
-Both controls perform a fresh reset. Registered Tower, Water and MicroScenario
-runs force the historical sampled-baseline identity rather than silently changing
-their fixtures.
+Both controls perform a fresh reset. Registered Tower/Water and ordinary
+MicroScenario definitions still force the historical sampled-baseline identity.
+
+PLAY-VAL-001 / #139 adds three explicit **experimental** REM-003 catalogue arms
+for matched owner comparison: sampled-baseline, sampled-burial-safe and
+barrel-rapier. Their representation is selected only by loading the named fixture
+through a fresh reset; F6/F7 remain blocked while a controlled MicroScenario is
+active. This is the only current registered-MicroScenario exception to the
+historical sampled-baseline rule.
 
 The sampled baseline now exposes runtime enclosure-recovery attempts, successes
 and upward relocation. Burial-safe sampled mode retains explicit invalid-spawn

@@ -9,6 +9,15 @@ const BASELINE: String = "de332eaf8f4e70b25b097bed0c2e2a7b2aac0173 / Baseline tr
 const MATERIAL_IDS: Array[String] = ["materials/contact-lab", "materials/salt-water", "materials/salt-water-dose-small", "materials/lava-water", "materials/sand-water-control", "materials/fire-gunpowder", "materials/acid-metal", "materials/spark-metal", "materials/cement-water"]
 const FLOOD_ID: String = "ms001/flood-control"
 const REM003_ID: String = "rem003/player-granular-review"
+const REM003_EXPERIMENT_PREFIX: String = "rem003/player-granular-review/"
+const REM003_SAMPLED_BASELINE_ID: String = REM003_EXPERIMENT_PREFIX + "sampled-baseline"
+const REM003_BURIAL_SAFE_ID: String = REM003_EXPERIMENT_PREFIX + "sampled-burial-safe"
+const REM003_BARREL_ID: String = REM003_EXPERIMENT_PREFIX + "barrel-rapier"
+const REM003_EXPERIMENT_IDS: Array[String] = [
+	REM003_SAMPLED_BASELINE_ID,
+	REM003_BURIAL_SAFE_ID,
+	REM003_BARREL_ID,
+]
 const STRESS_PREFIX: String = "ms001/stress/"
 const STRESS_PROFILES: Array[String] = ["water-flow", "granular-collapse", "gas-column", "mixed"]
 
@@ -16,6 +25,7 @@ static func ids() -> Array[String]:
 	var out: Array[String] = MATERIAL_IDS.duplicate()
 	out.append(FLOOD_ID)
 	out.append(REM003_ID)
+	out.append_array(REM003_EXPERIMENT_IDS)
 	for profile: String in STRESS_PROFILES: out.append(STRESS_PREFIX + profile)
 	return out
 
@@ -32,6 +42,8 @@ static func definition(id: String, seed: int = 0) -> Dictionary:
 		"materials/cement-water": return mechanism_fixture("cement-water", seed)
 		FLOOD_ID: return flood_control(seed)
 		REM003_ID: return player_granular_review(seed)
+	if id in REM003_EXPERIMENT_IDS:
+		return player_granular_experiment(id, seed)
 	if id.begins_with(STRESS_PREFIX): return simulation_stress(id.trim_prefix(STRESS_PREFIX), seed)
 	return {}
 
@@ -232,6 +244,74 @@ static func player_granular_review(seed: int = 0) -> Dictionary:
 	out.conditions = [{"observation":"end","comparison":"eq","value":600,"outcome":"complete"}]
 	out.source_recipe = "REM-003 candidate C1 playable owner-review surface v1"
 	return finish(out)
+
+
+static func player_configuration(id: String) -> Dictionary:
+	match id:
+		REM003_SAMPLED_BASELINE_ID:
+			return {
+				"representation": "sampled",
+				"runtime_recovery_enabled": true,
+			}
+		REM003_BURIAL_SAFE_ID:
+			return {
+				"representation": "sampled",
+				"runtime_recovery_enabled": false,
+			}
+		REM003_BARREL_ID:
+			return {
+				"representation": "barrel-rapier",
+				"runtime_recovery_enabled": false,
+			}
+	return {}
+
+
+static func player_granular_experiment(id: String, seed: int = 0) -> Dictionary:
+	if not (id in REM003_EXPERIMENT_IDS):
+		return {}
+	var out: Dictionary = player_granular_review(seed)
+	if out.is_empty():
+		return out
+	var configuration: Dictionary = player_configuration(id)
+	var identity: String = str(configuration.get("representation", "sampled"))
+	if identity == "sampled" and not bool(
+		configuration.get("runtime_recovery_enabled", true)
+	):
+		identity = "sampled-burial-safe"
+	elif identity == "sampled":
+		identity = "sampled-baseline"
+
+	out.id = id
+	out.maturity = "exploratory"
+	out.player_enabled = identity != "barrel-rapier"
+	out.body_enabled = identity == "barrel-rapier"
+	if out.body_enabled:
+		# Schema 2 refuses material-cell census while a body mask is active.
+		# Retain only the neutral bounded-horizon observation/objective; visual
+		# material-state recording supplies the PLAY-VAL comparison evidence.
+		out.observations = [observe("end",600,"tick",[0,0,1,1])]
+		out.conditions = [
+			{"observation":"end","comparison":"eq","value":600,"outcome":"complete"}
+		]
+	out.presentation.title = "PLAY-VAL-001 / " + identity
+	out.presentation.profile = "play-val-001/" + identity + "/v1"
+	out.presentation.instructions = (
+		"PLAY-VAL-001 fresh-reset experimental fixture. Geometry, materials, "
+		+ "tools, camera and review regions match the REM-003 owner-review "
+		+ "surface; only the explicitly named player representation/recovery "
+		+ "arm differs. Use A/D for locomotion. Space is sampled-player jetpack "
+		+ "only; the barrel arm intentionally retains horizontal impulse control "
+		+ "only. RMB erase remains available. Reset with R before comparisons. "
+		+ "F6/F7 representation toggles are intentionally disabled while a "
+		+ "controlled MicroScenario is active: choose another fixture instead."
+	)
+	out.source_recipe = (
+		"PLAY-VAL-001 selectable REM-003 representation fixture v1 / " + identity
+	)
+	# Geometry/action ancestry intentionally matches REM003_ID. The canonical
+	# complete-definition hash still differs because id/presentation/player/body
+	# participation are part of the validated definition.
+	return out
 
 
 static func flood_control(seed: int = 0) -> Dictionary:

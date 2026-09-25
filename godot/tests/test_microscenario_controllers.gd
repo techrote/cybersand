@@ -80,6 +80,10 @@ func _run() -> void:
 	expect(not desktop.tower_command({"step":true}), "pending desktop reset was overwritten by a step")
 	expect(await wait_for(func() -> bool: return desktop.pending_microscenario_apply.is_empty() and desktop.tower_context.get("micro_active",false)), "desktop generic reset did not acknowledge")
 	desktop._refresh_microscenario_controls()
+	expect(
+		desktop.microscenario_panel.status.text.contains("player disabled"),
+		"player-disabled generic fixture gained a false active-player identity"
+	)
 	expect(desktop.microscenario_panel.picker.get_item_text(desktop.microscenario_panel.picker.selected) == "fixtures/unequal-head"
 		and int(desktop.microscenario_panel.seed_input.value) == 2, "launcher selection did not match the installed fixture")
 	expect(desktop.tower_context.microscenario.definition_hash == wanted, "desktop definition identity mismatch")
@@ -126,6 +130,21 @@ func _run() -> void:
 	web.focused = true
 	web.ui.close_menu()
 	expect(web.ready_to_play, "synchronous controller did not initialize")
+	var desktop_only_player_fixture: Dictionary = Catalogue.definition(
+		"rem003/player-granular-review/sampled-baseline",
+		0
+	)
+	expect(
+		not web.microscenario_apply_definition(
+			desktop_only_player_fixture,
+			"Play"
+		),
+		"Web silently accepted a desktop-only PLAY-VAL player fixture"
+	)
+	expect(
+		"desktop asynchronous owner" in web.microscenario_error,
+		"Web player-fixture refusal did not explain its platform scope"
+	)
 	expect(web.microscenario_apply_definition(definition, "Benchmark"), "Web-owner generic definition refused")
 	expect(web.micro_host.summary().definition_hash == wanted, "owners disagree on definition identity")
 	web.microscenario_capture()

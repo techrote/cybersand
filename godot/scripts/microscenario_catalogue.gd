@@ -46,6 +46,10 @@ static func water(policy_result: Dictionary) -> Dictionary:
 	out.source_recipe_hash = Water.recipe_hash(recipe)
 	return out
 
+static func player_configuration(scenario_id: String) -> Dictionary:
+	return ReferencePack.player_configuration(scenario_id)
+
+
 static func definition(scenario_id: String, seed: int = 0) -> Dictionary:
 	if scenario_id == "experiment-tower":
 		return tower() if seed == 0 else {} # Legacy Tower never had a seed control.

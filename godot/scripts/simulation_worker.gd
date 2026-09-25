@@ -134,9 +134,21 @@ func _apply_lab(command: Dictionary) -> bool:
 		if not resolved.get("ok",false):
 			_lab_status = "Profile rejected; running world preserved"
 			return false
-		if not _scenario_host.install(_world, MicroCatalogue.tower(resolved.profile), str(command.get("scenario_mode", "Inspect"))):
+		var tower_definition: Dictionary = MicroCatalogue.tower(resolved.profile)
+		if not _scenario_host.install(
+			_world,
+			tower_definition,
+			str(command.get("scenario_mode", "Inspect"))
+		):
 			_lab_status = _scenario_host.last_error
 			return false
+		_activate_sampled_character(
+			Vector2(
+				tower_definition.player_start[0],
+				tower_definition.player_start[1]
+			),
+			true
+		)
 		_lab_profile = resolved.profile.duplicate(true)
 		_lab_profile_hash = str(resolved.hash)
 		_lab_active = true
@@ -221,7 +233,11 @@ func _apply_lab(command: Dictionary) -> bool:
 		_lab_inputs.clear()
 		_micro_capture = {}
 		_simulation_failed = false
-		_activate_sampled_character(Vector2(definition.player_start[0], definition.player_start[1]), true)
+		_configure_sampled_character(
+			Vector2(definition.player_start[0], definition.player_start[1]),
+			bool(command.get("sampled_character_enabled", true)),
+			bool(command.get("runtime_enclosure_recovery_enabled", true))
+		)
 		_lab_status = "MicroScenario " + str(definition.id)
 	if not _lab_active: return false
 	if command.has("scenario_capture") and _scenario_host.active():
@@ -308,14 +324,27 @@ func _create_world():
 	return CyberCellWorld.new()
 
 
+func _configure_sampled_character(
+	spawn_position: Vector2,
+	enabled: bool,
+	runtime_recovery_enabled: bool
+) -> void:
+	_sampled_character_enabled = enabled
+	_character.configure_runtime_enclosure_recovery(runtime_recovery_enabled)
+	_character.reset(spawn_position)
+	if enabled:
+		_character.recover_invalid_spawn(_world)
+
+
 func _activate_sampled_character(
 	spawn_position: Vector2,
 	runtime_recovery_enabled: bool
 ) -> void:
-	_sampled_character_enabled = true
-	_character.configure_runtime_enclosure_recovery(runtime_recovery_enabled)
-	_character.reset(spawn_position)
-	_character.recover_invalid_spawn(_world)
+	_configure_sampled_character(
+		spawn_position,
+		true,
+		runtime_recovery_enabled
+	)
 
 
 func start_worker(spawn_position: Vector2) -> Error:
@@ -910,6 +939,10 @@ func _publish_snapshot(
 		"profile":_lab_profile.duplicate(true),
 		"profile_hash":_lab_profile_hash,
 		"player_environment_profile":_player_environment_profile.duplicate(true),
+		"sampled_character_enabled":_sampled_character_enabled,
+		"sampled_runtime_recovery_enabled":(
+			_character.runtime_enclosure_recovery_enabled
+		),
 		"micro_active":_micro_active,
 		"microscenario":_scenario_host.summary() if _lab_active else {},
 		"micro_capture_serial":_micro_capture_serial,

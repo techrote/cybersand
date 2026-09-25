@@ -207,20 +207,49 @@ func microscenario_launch(scenario_id: String, mode: String = "Inspect", seed: i
 func microscenario_apply_definition(definition: Dictionary, mode: String = "Inspect") -> bool:
 	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty(): return false
 	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty(): return false
-	_force_sampled_player_for_lab()
 	var checked: Dictionary = CyberMicroScenarioContract.validate(definition)
 	if not checked.get("ok", false) or not mode in CyberMicroScenarioContract.MODES:
 		microscenario_error = str(checked.get("error", "Invalid mode"))
 		return false
+	var player_configuration: Dictionary = _player_configuration_for_microscenario(
+		checked.definition
+	)
+	if player_configuration.is_empty():
+		return false
 	if microscenario_panel != null: microscenario_panel.workbench.cancel_declared_window()
-	pending_microscenario_apply = {"hash":checked.hash, "definition":checked.definition,
-		"previous_paused":paused}
+	pending_microscenario_apply = {
+		"hash":checked.hash,
+		"definition":checked.definition,
+		"previous_paused":paused,
+		"player_configuration":player_configuration.duplicate(true),
+	}
 	microscenario_mode = mode
 	paused = true
-	tower_command({"scenario_reset":checked.definition, "scenario_mode":mode})
+	var requested_representation := StringName(
+		str(player_configuration.get("representation", "sampled"))
+	)
+	tower_command({
+		"scenario_reset":checked.definition,
+		"scenario_mode":mode,
+		"sampled_character_enabled":(
+			requested_representation != CyberPlayerRepresentation.BARREL_RAPIER
+		),
+		"runtime_enclosure_recovery_enabled":bool(
+			player_configuration.get("runtime_recovery_enabled", true)
+		),
+	})
 	return true
 
 func _microscenario_installed(definition: Dictionary) -> void:
+	var player_configuration: Dictionary = pending_microscenario_apply.get(
+		"player_configuration",
+		{
+			"representation":"sampled",
+			"runtime_recovery_enabled":true,
+			"experimental":false,
+		}
+	)
+	_apply_microscenario_player_configuration(definition, player_configuration)
 	microscenario_definition = definition.duplicate(true)
 	tower_active = true
 	paused = true
@@ -228,7 +257,10 @@ func _microscenario_installed(definition: Dictionary) -> void:
 	camera_follow_enabled = false
 	camera_origin = Vector2(definition.camera_origin[0], definition.camera_origin[1])
 	character_position = Vector2(definition.player_start[0], definition.player_start[1])
-	_activate_water_body_scenario(bool(definition.body_enabled))
+	if player_uses_barrel():
+		_activate_microscenario_barrel_player(character_position)
+	else:
+		_activate_water_body_scenario(bool(definition.body_enabled))
 	$Layout/Title.text = "CYBERSAND / MICROSCENARIO / " + str(definition.id)
 
 func microscenario_reset() -> void:
@@ -245,6 +277,10 @@ func microscenario_capture() -> void:
 	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty(): return
 	var identity: Dictionary = CyberMicroScenarioIdentity.current()
 	identity["player_environment_profile"] = active_player_environment_profile.duplicate(true)
+	identity["player_representation"] = player_representation_identity()
+	identity["sampled_runtime_recovery_enabled"] = sampled_runtime_recovery_enabled
+	if player_uses_barrel():
+		identity["player_body_index"] = CyberPlayerRepresentation.BARREL_BODY_INDEX
 	tower_command({"scenario_capture":true, "identity":identity})
 
 func _write_microscenario_capture(report: Dictionary) -> void:
@@ -767,6 +803,7 @@ var camera_origin: Vector2 = Vector2.ZERO
 var camera_follow_enabled: bool = true
 var player_representation: StringName = CyberPlayerRepresentation.SAMPLED
 var sampled_runtime_recovery_enabled: bool = true
+var barrel_player_spawn_position: Vector2 = CHARACTER_SPAWN
 var player_representation_button: Button
 var rigid_bodies: Array[RigidBody2D] = []
 var rapier_bridge: CyberRapierPhysicsBridge = CyberRapierPhysicsBridge.new()
@@ -1400,6 +1437,7 @@ func cycle_player_representation() -> bool:
 		if player_representation == CyberPlayerRepresentation.SAMPLED
 		else CyberPlayerRepresentation.SAMPLED
 	)
+	barrel_player_spawn_position = CHARACTER_SPAWN
 	# Never convert an actor in place. Rebuild both simulation and body state from
 	# the ordinary fresh-reset boundary under the newly selected owner.
 	reset_world()
@@ -1426,6 +1464,7 @@ func _force_sampled_player_for_lab() -> void:
 	var restore_body_layout: bool = player_uses_barrel()
 	player_representation = CyberPlayerRepresentation.SAMPLED
 	sampled_runtime_recovery_enabled = true
+	barrel_player_spawn_position = CHARACTER_SPAWN
 	if restore_body_layout and not rigid_bodies.is_empty():
 		reset_test_rigid_bodies()
 		simulation_worker.set_rigid_body_states(pack_rigid_body_states())
@@ -1433,8 +1472,89 @@ func _force_sampled_player_for_lab() -> void:
 	refresh_player_representation_button()
 
 
+func _player_configuration_for_microscenario(definition: Dictionary) -> Dictionary:
+	var configuration: Dictionary = CyberMicroScenarioCatalogue.player_configuration(
+		str(definition.get("id", ""))
+	)
+	if configuration.is_empty():
+		return {
+			"representation":"sampled",
+			"runtime_recovery_enabled":true,
+			"experimental":false,
+		}
+
+	var representation := StringName(
+		str(configuration.get("representation", "sampled"))
+	)
+	var runtime_recovery: bool = bool(
+		configuration.get("runtime_recovery_enabled", true)
+	)
+	if not CyberPlayerRepresentation.is_valid(representation):
+		microscenario_error = "Experimental fixture has an invalid player representation"
+		return {}
+	var barrel: bool = representation == CyberPlayerRepresentation.BARREL_RAPIER
+	if barrel != bool(definition.body_enabled):
+		microscenario_error = (
+			"Experimental fixture body ownership does not match its player representation"
+		)
+		return {}
+	if barrel == bool(definition.player_enabled):
+		microscenario_error = (
+			"Experimental fixture sampled-player ownership does not match its representation"
+		)
+		return {}
+
+	return {
+		"representation":str(representation),
+		"runtime_recovery_enabled":runtime_recovery,
+		"experimental":true,
+	}
+
+
+func _apply_microscenario_player_configuration(
+	definition: Dictionary,
+	configuration: Dictionary
+) -> void:
+	player_representation = StringName(
+		str(configuration.get("representation", "sampled"))
+	)
+	sampled_runtime_recovery_enabled = bool(
+		configuration.get("runtime_recovery_enabled", true)
+	)
+	barrel_player_spawn_position = Vector2(
+		definition.player_start[0],
+		definition.player_start[1]
+	)
+	refresh_player_representation_button()
+
+
+func _activate_microscenario_barrel_player(spawn_position: Vector2) -> void:
+	# PLAY-VAL-001 uses only body 0 as the player. Do not activate the other two
+	# generic reference bodies, because they would contaminate matched A/B geometry.
+	_activate_water_body_scenario(false)
+	rigid_bodies = [test_rigid_body_1]
+	var body_sizes := PackedVector2Array([TEST_RIGID_BODY_SIZE])
+	rapier_start_error = rapier_bridge.initialize(
+		get_viewport().world_2d.space,
+		rigid_bodies,
+		body_sizes
+	)
+	test_rigid_body_1.freeze = false
+	test_rigid_body_1.collision_layer = 1
+	test_rigid_body_1.collision_mask = 1
+	barrel_player_spawn_position = spawn_position
+	if rapier_start_error == OK and rapier_bridge.is_initialized():
+		reset_test_rigid_bodies()
+	else:
+		microscenario_error = "Could not initialize barrel-player Rapier bridge"
+	simulation_worker.set_rigid_body_states(pack_rigid_body_states())
+
+
 func barrel_player_spawn_centre() -> Vector2:
-	return CHARACTER_SPAWN + CyberSampledCharacter.BODY_SIZE * 0.5
+	return (
+		barrel_player_spawn_position
+		+ CyberSampledCharacter.BODY_SIZE * 0.5
+	)
 
 
 func apply_barrel_player_control(delta: float) -> void:
@@ -2249,11 +2369,15 @@ func update_status() -> void:
 	var publication_text: String = "%dHz target" % render_snapshot_hz
 	if measured_render_publication_hz > 0.0:
 		publication_text += "/%.1f actual" % measured_render_publication_hz
+	var player_available: bool = (
+		player_uses_barrel()
+		or not tower_context.get("micro_active", false)
+		or tower_context.get("microscenario", {}).get("player_enabled", false)
+	)
 	var player_text: String = (
-		"disabled"
-		if tower_context.get("micro_active",false)
-			and not tower_context.get("microscenario",{}).get("player_enabled",false)
-		else "%.0f,%.0f" % [character_position.x, character_position.y]
+		"%.0f,%.0f" % [character_position.x, character_position.y]
+		if player_available
+		else "disabled"
 	)
 	player_text += " / " + player_representation_identity()
 	player_text += " / " + str(active_player_environment_profile.get("id", "current-baseline"))
