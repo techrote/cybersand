@@ -265,6 +265,9 @@ var _pending_render_character_position: Vector2 = Vector2.ZERO
 var _pending_render_character_velocity: Vector2 = Vector2.ZERO
 var _pending_render_character_grounded: bool = false
 var _pending_render_rigid_body_states: PackedFloat32Array = PackedFloat32Array()
+var _pending_render_simulation_time_ms: float = 0.0
+var _pending_render_worker_step_time_ms: float = 0.0
+var _pending_render_worker_overruns: int = 0
 var _pending_render_context: Dictionary = {}
 var _pending_render_payload_generation: int = 0
 var _published_render_payload_generation: int = -1
@@ -667,6 +670,9 @@ func _publish_snapshot(
 			_pending_render_character_velocity = _character.velocity
 			_pending_render_character_grounded = _character.grounded
 			_pending_render_rigid_body_states = rigid_body_states.duplicate()
+			_pending_render_simulation_time_ms = _world.simulation_time_ms
+			_pending_render_worker_step_time_ms = worker_step_time_ms
+			_pending_render_worker_overruns = _worker_overruns
 			render_generation_advanced = true
 	var current_hard_surface_revision: int = int(_world.hard_surface_revision)
 	if (
@@ -703,6 +709,9 @@ func _publish_snapshot(
 	snapshot.render_character_velocity = _pending_render_character_velocity
 	snapshot.render_character_grounded = _pending_render_character_grounded
 	snapshot.render_rigid_body_states = _pending_render_rigid_body_states
+	snapshot.render_simulation_time_ms = _pending_render_simulation_time_ms
+	snapshot.render_worker_step_time_ms = _pending_render_worker_step_time_ms
+	snapshot.render_worker_overruns = _pending_render_worker_overruns
 	_refresh_published_render_payload()
 	snapshot.render_patch_rectangles = _published_render_patch_rectangles
 	snapshot.render_patch_cells = _published_render_patch_cells
