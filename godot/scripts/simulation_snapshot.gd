@@ -41,6 +41,9 @@ var scheduler_parallel_phases_last_tick: int = 0
 var scheduler_thread_capacity_hint: int = 1
 var backend_name: String = "unknown"
 var sparse_flight_moves_last_tick: int = 0
+# Exact copied body input sample consumed by the worker for this publication.
+# Value-only bridge data; no Node/RID/physics object crosses the owner boundary.
+var rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 var rigid_body_results: PackedFloat32Array = PackedFloat32Array()
 var rigid_body_contacts_last_tick: int = 0
 var rigid_body_displaced_last_tick: int = 0
