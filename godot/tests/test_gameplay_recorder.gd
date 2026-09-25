@@ -37,6 +37,9 @@ func _base_snapshot(serial: int, published_usec: int) -> CyberSimulationSnapshot
 	snapshot.player_body_id = 0
 	snapshot.backend_name = "test-native"
 	snapshot.scheduler_thread_capacity_hint = 4
+	snapshot.simulation_time_ms = 2.5
+	snapshot.worker_step_time_ms = 3.0
+	snapshot.worker_overruns = 4
 
 	snapshot.render_tick_index = 100 + serial
 	snapshot.render_generated_usec = published_usec
@@ -356,20 +359,20 @@ func _test_threaded_output_and_provenance() -> void:
 				"tuning profile identity was not retained"
 			)
 			_expect(
-				str(frame.player.environment_profile.id) == "earth-feel-2x-gravity",
-				"render-generation player/environment profile was not retained"
+				str(frame.player.environment_profile.id) == "wrong-later-player-profile",
+				"actor-sample player/environment profile was not retained"
 			)
 			_expect(
-				absf(float(frame.scenario.player_environment_profile.gravity_acceleration) - 184.0) < 0.0001,
-				"scenario identity lost the active player/environment settings"
+				absf(float(frame.scenario.player_environment_profile.gravity_acceleration) - 1.0) < 0.0001,
+				"scenario evidence lost actor-sample player/environment settings"
 			)
 			_expect(
-				absf(float(frame.player.origin[0]) - 11.25) < 0.0001,
-				"player state was taken from the later consumer snapshot"
+				absf(float(frame.player.origin[0]) - 99.0) < 0.0001,
+				"player state was not taken from the actor sample"
 			)
 			_expect(
-				absf(float(frame.simulation_time_ms) - 1.25) < 0.0001,
-				"render-generation simulation timing was not retained"
+				absf(float(frame.simulation_time_ms) - 2.5) < 0.0001,
+				"actor-sample simulation timing was not retained"
 			)
 			_expect(
 				int(frame.recording_configuration.capture_hz) == 60,
