@@ -18,6 +18,15 @@ var render_channels: int = 1
 var render_full_refresh: bool = false
 var render_patch_rectangles: PackedInt32Array = PackedInt32Array()
 var render_patch_cells: PackedByteArray = PackedByteArray()
+# Value-only state bound to the exact render generation above. These values
+# remain stable while later worker snapshots may advance simulation state.
+var render_tick_index: int = 0
+var render_generated_usec: int = 0
+var render_character_position: Vector2 = Vector2.ZERO
+var render_character_velocity: Vector2 = Vector2.ZERO
+var render_character_grounded: bool = false
+var render_rigid_body_states: PackedFloat32Array = PackedFloat32Array()
+var render_context: Dictionary = {}
 var hard_surface_rectangles: PackedInt32Array = PackedInt32Array()
 var hard_surface_rectangles_valid: bool = false
 var hard_surface_chunk_rectangles: PackedInt32Array = PackedInt32Array()
@@ -41,9 +50,6 @@ var scheduler_parallel_phases_last_tick: int = 0
 var scheduler_thread_capacity_hint: int = 1
 var backend_name: String = "unknown"
 var sparse_flight_moves_last_tick: int = 0
-# Exact copied body input sample consumed by the worker for this publication.
-# Value-only bridge data; no Node/RID/physics object crosses the owner boundary.
-var rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 var rigid_body_results: PackedFloat32Array = PackedFloat32Array()
 var rigid_body_contacts_last_tick: int = 0
 var rigid_body_displaced_last_tick: int = 0
