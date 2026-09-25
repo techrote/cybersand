@@ -118,8 +118,12 @@ directly selectable for matched owner review.
 
 The common MicroScenario status reports the active player identity. Scenario
 capture also receives the active representation/recovery identity from the desktop
-owner. These fixtures do not select a production player, change generic-body
-semantics or satisfy #139's subjective owner-review disposition by themselves.
+owner. Because schema 2 forbids authoritative `material_cells` census while a
+body mask is active, the barrel fixture retains only the neutral 600-tick
+completion probe; its material comparison is visual/recording evidence rather than
+a masked census. These fixtures do not select a production player, change
+generic-body semantics or satisfy #139's subjective owner-review disposition by
+themselves.
 See the dated PLAY-VAL-001 fixture evidence for exact implementation/validation
 scope.
 
