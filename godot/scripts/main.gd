@@ -211,7 +211,7 @@ func microscenario_apply_definition(definition: Dictionary, mode: String = "Insp
 	if not checked.get("ok", false) or not mode in CyberMicroScenarioContract.MODES:
 		microscenario_error = str(checked.get("error", "Invalid mode"))
 		return false
-	var player_configuration: Dictionary = _configure_player_for_microscenario(
+	var player_configuration: Dictionary = _player_configuration_for_microscenario(
 		checked.definition
 	)
 	if player_configuration.is_empty():
@@ -225,15 +225,31 @@ func microscenario_apply_definition(definition: Dictionary, mode: String = "Insp
 	}
 	microscenario_mode = mode
 	paused = true
+	var requested_representation := StringName(
+		str(player_configuration.get("representation", "sampled"))
+	)
 	tower_command({
 		"scenario_reset":checked.definition,
 		"scenario_mode":mode,
-		"sampled_character_enabled":not player_uses_barrel(),
-		"runtime_enclosure_recovery_enabled":sampled_runtime_recovery_enabled,
+		"sampled_character_enabled":(
+			requested_representation != CyberPlayerRepresentation.BARREL_RAPIER
+		),
+		"runtime_enclosure_recovery_enabled":bool(
+			player_configuration.get("runtime_recovery_enabled", true)
+		),
 	})
 	return true
 
 func _microscenario_installed(definition: Dictionary) -> void:
+	var player_configuration: Dictionary = pending_microscenario_apply.get(
+		"player_configuration",
+		{
+			"representation":"sampled",
+			"runtime_recovery_enabled":true,
+			"experimental":false,
+		}
+	)
+	_apply_microscenario_player_configuration(definition, player_configuration)
 	microscenario_definition = definition.duplicate(true)
 	tower_active = true
 	paused = true
@@ -1451,12 +1467,11 @@ func _force_sampled_player_for_lab() -> void:
 	refresh_player_representation_button()
 
 
-func _configure_player_for_microscenario(definition: Dictionary) -> Dictionary:
+func _player_configuration_for_microscenario(definition: Dictionary) -> Dictionary:
 	var configuration: Dictionary = CyberMicroScenarioCatalogue.player_configuration(
 		str(definition.get("id", ""))
 	)
 	if configuration.is_empty():
-		_force_sampled_player_for_lab()
 		return {
 			"representation":"sampled",
 			"runtime_recovery_enabled":true,
@@ -1484,18 +1499,28 @@ func _configure_player_for_microscenario(definition: Dictionary) -> Dictionary:
 		)
 		return {}
 
-	player_representation = representation
-	sampled_runtime_recovery_enabled = runtime_recovery
-	barrel_player_spawn_position = Vector2(
-		definition.player_start[0],
-		definition.player_start[1]
-	)
-	refresh_player_representation_button()
 	return {
 		"representation":str(representation),
 		"runtime_recovery_enabled":runtime_recovery,
 		"experimental":true,
 	}
+
+
+func _apply_microscenario_player_configuration(
+	definition: Dictionary,
+	configuration: Dictionary
+) -> void:
+	player_representation = StringName(
+		str(configuration.get("representation", "sampled"))
+	)
+	sampled_runtime_recovery_enabled = bool(
+		configuration.get("runtime_recovery_enabled", true)
+	)
+	barrel_player_spawn_position = Vector2(
+		definition.player_start[0],
+		definition.player_start[1]
+	)
+	refresh_player_representation_button()
 
 
 func _activate_microscenario_barrel_player(spawn_position: Vector2) -> void:
