@@ -235,21 +235,27 @@ jobs:
           git show "$COMPANION_DOCS_COMMIT:docs/LOCAL_DEVELOPMENT.md" > ../docs/LOCAL_DEVELOPMENT.md
           git show "$COMPANION_DOCS_COMMIT:validation/browser-results.json" > ../validation/browser-results.json
 
-      - name: Verify materialized current provenance
-        run: |
-          python3 tools/ci/check_docs.py
-          python3 tools/ci/check_repository.py --require-materialized
-          git lfs fsck
-
-      - name: Commit and push publication
+      - name: Create local LFS publication commit
         shell: bash
         run: |
           set -euo pipefail
           git lfs install --local
-          git add             godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll             godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so             godot/addons/cybersand_native/runtime-provenance.json             godot/addons/cybersand_native/runtime-provenance.linux.json
+          git add godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/runtime-provenance.json godot/addons/cybersand_native/runtime-provenance.linux.json
           git diff --cached --check
           git config user.name techrote
           git config user.email 261801702+techrote@users.noreply.github.com
           git commit -m 'build(rem003): publish source-matched runtimes'
           git lfs fsck
+
+      - name: Verify committed materialized current provenance
+        run: |
+          python3 tools/ci/check_docs.py
+          python3 tools/ci/check_repository.py --require-materialized
+          git lfs fsck
+          git diff --check HEAD
+
+      - name: Push verified publication
+        shell: bash
+        run: |
+          set -euo pipefail
           git push origin "HEAD:$TARGET_BRANCH"
