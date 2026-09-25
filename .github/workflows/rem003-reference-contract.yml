@@ -1,0 +1,34 @@
+name: REM-003 reference-contract smoke
+
+on:
+  push:
+    branches: [rem/issue-82-web-acceptance]
+    paths: [.github/workflows/rem003-reference-contract.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: true
+      - name: Verify candidate GDScript identity
+        run: |
+          git diff --exit-code 2a5c99b9c3c9569bede3c37a80656f191b61eb84 HEAD --             godot/scripts/microscenario_reference_pack.gd             godot/scripts/microscenario_contract.gd             godot/tests/test_microscenario_reference_contract.gd
+      - name: Prepare exact Godot
+        run: |
+          curl --fail --location --retry 3             'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'             -o "$RUNNER_TEMP/godot.zip"
+          echo '0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  '"$RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = '4.7.stable.official.5b4e0cb0f'
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+      - name: Run schema-2 reference contract
+        run: |
+          "$GODOT_BIN" --headless --editor --path godot --quit
+          "$GODOT_BIN" --headless --path godot --script res://tests/test_microscenario_reference_contract.gd
