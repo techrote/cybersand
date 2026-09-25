@@ -55,6 +55,22 @@ function Resolve-GodotExecutable {
     throw "Pinned Godot 4.7 executable was not found under C:\Godot47. Pass -Godot <path> or set CYBERSAND_GODOT."
 }
 
+function Resolve-GodotVersionProbe {
+    param([string]$LaunchExecutable)
+
+    $leaf = [System.IO.Path]::GetFileName($LaunchExecutable)
+    if ($leaf -notlike "*console*") {
+        $stem = [System.IO.Path]::GetFileNameWithoutExtension($leaf)
+        $consoleCandidate = Join-Path (
+            [System.IO.Path]::GetDirectoryName($LaunchExecutable)
+        ) ($stem + "_console.exe")
+        if (Test-Path -LiteralPath $consoleCandidate -PathType Leaf) {
+            return (Resolve-Path -LiteralPath $consoleCandidate).Path
+        }
+    }
+    return $LaunchExecutable
+}
+
 foreach ($required in @($ProjectFile, $NativeDll, $NativeProvenance, $RapierDll)) {
     if (-not (Test-Path -LiteralPath $required -PathType Leaf)) {
         throw "Required desktop runtime input is missing: $required. This launcher does not rebuild or replace runtime files."
@@ -77,12 +93,14 @@ Assert-MaterializedRuntime -Path $NativeDll
 Assert-MaterializedRuntime -Path $RapierDll
 
 $GodotExe = Resolve-GodotExecutable -Override $Godot
-$GodotVersion = ((& $GodotExe --version 2>&1) | Select-Object -First 1).ToString().Trim()
-if ($LASTEXITCODE -ne 0) {
-    throw "Godot version probe failed for $GodotExe with exit code $LASTEXITCODE."
+$GodotVersionProbe = Resolve-GodotVersionProbe -LaunchExecutable $GodotExe
+$GodotVersionOutput = @(& $GodotVersionProbe --version 2>&1)
+if ($LASTEXITCODE -ne 0 -or $GodotVersionOutput.Count -eq 0) {
+    throw "Godot version probe failed for $GodotVersionProbe with exit code $LASTEXITCODE."
 }
+$GodotVersion = ([string]$GodotVersionOutput[0]).Trim()
 if ($GodotVersion -ne $PinnedGodotVersion) {
-    throw "Godot version mismatch. Required '$PinnedGodotVersion'; found '$GodotVersion' at '$GodotExe'."
+    throw "Godot version mismatch. Required '$PinnedGodotVersion'; found '$GodotVersion' via '$GodotVersionProbe'."
 }
 
 $gitCommand = Get-Command git -ErrorAction SilentlyContinue
@@ -93,7 +111,7 @@ $CheckoutHead = ((& $gitCommand.Path -C $RepoRoot rev-parse HEAD 2>&1) | Select-
 if ($LASTEXITCODE -ne 0 -or $CheckoutHead -notmatch "^[0-9a-f]{40}$") {
     throw "Could not identify the Git checkout at '$RepoRoot'."
 }
-$CheckoutDirtyLines = @(& $gitCommand.Path -C $RepoRoot status --porcelain --untracked-files=no 2>&1)
+$CheckoutDirtyLines = @(& $gitCommand.Path -C $RepoRoot status --porcelain 2>&1)
 if ($LASTEXITCODE -ne 0) {
     throw "Could not inspect Git checkout status at '$RepoRoot'."
 }
@@ -113,6 +131,7 @@ Write-Host "  checkout       : $CheckoutHead ($CheckoutState)"
 Write-Host "  project        : $ProjectFile"
 Write-Host "  Godot          : $GodotVersion"
 Write-Host "  Godot exe      : $GodotExe"
+Write-Host "  version probe  : $GodotVersionProbe"
 Write-Host "  native runtime : $NativeHash"
 Write-Host "  native source  : $($provenance.source_commit)"
 Write-Host "  Rapier runtime : $RapierHash"
