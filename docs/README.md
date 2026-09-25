@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-09-24
+last-reviewed: 2026-09-25
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -18,6 +18,7 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 | Explore the MS-001 Materials Lab / Flood / Stress pack or compare generated definitions | [Reference pack and controls](operations/microscenario-reference-pack.md), [MS-001 evidence](audits/2026-09-19-issue-28-ms001.md) |
 | Author, load or benchmark a MicroScenario | [Current shared contract and host](operations/microscenarios.md), [checkpoint evidence](audits/2026-09-19-issue-27-microscenarios.md) |
 | Record desktop gameplay/material state for tuning review | [Desktop gameplay state recording](operations/gameplay-recording.md), then the target scenario/physics owner |
+| Tune sampled-player gravity, terminal speed, mass, jetpack or step/knee/clamber traversal | [Player/environment tuning contract](systems/player-environment-profiles-and-traversal.md), then [granular policy](systems/granular-interaction-policy.md) for landing response boundaries |
 | Begin development | [Handover](operations/cybersand-codex-development-handover.md), [actual source identity](operations/source-checkpoint-and-recovery.md), [roadmap](reference/status-and-roadmap.md) |
 | Understand the recovered CI baseline, #65 completion or the 2026-09-20 through 2026-09-22 incident | [Repository/release policy](operations/github-development-and-release.md), [final recovery audit](audits/2026-09-24-cybersand-recovery-audit.md), [Stage-3B production plan](operations/soliding-stage3b-production-plan.md) |
 | Choose current MicroScenarios / interaction work order | [Canonical programme graph](operations/microscenarios-programme.md), then the target issue and its named dependencies; issue numbers are not sequence |
