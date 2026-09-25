@@ -53,6 +53,12 @@ wrappers; the repository-native scripts are listed below.
 .\dev.cmd web --profile threaded
 ```
 
+The repository also contains `launch-desktop.cmd` /
+`tools/launch_desktop.ps1` for source-only Windows checkouts. It validates the
+pinned Godot/runtime inputs, prints checkout/runtime identity, exports the exact
+checkout SHA to the child Godot process as `CYBERSAND_SOURCE_REVISION` for
+recording provenance, and does **not** rebuild or replace retained runtimes.
+
 `native-bindings` builds pinned Windows godot-cpp; `native-build` builds the
 GDExtension. `native-test` compiles/runs the C header check and native tests;
 `godot-test` imports the project then runs all `test_*.gd` runners. Godot tests
