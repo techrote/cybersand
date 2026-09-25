@@ -7,7 +7,11 @@ extends RefCounted
 var serial: int = 0
 var lab_context: Dictionary = {} # Copied owner values; immutable after publication.
 var published_usec: int = 0
+# Revision represented by the retained material render publication.
 var world_revision: int = -1
+# Current authoritative cellular revision at this worker publication. Equality
+# with world_revision proves the retained material bytes are still current.
+var simulation_world_revision: int = -1
 var hard_surface_revision: int = -1
 var cells: PackedByteArray = PackedByteArray()
 # Native RenderBridge payload. Rectangles use six integers per patch:
@@ -38,6 +42,8 @@ var hard_surface_chunk_rectangles_valid: bool = false
 var character_position: Vector2 = Vector2.ZERO
 var character_velocity: Vector2 = Vector2.ZERO
 var character_grounded: bool = false
+# Exact copied body input sample consumed by this worker publication.
+var current_rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 
 var tick_index: int = 0
 var moves_last_tick: int = 0
