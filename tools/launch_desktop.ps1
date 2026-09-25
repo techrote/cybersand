@@ -61,6 +61,21 @@ foreach ($required in @($ProjectFile, $NativeDll, $NativeProvenance, $RapierDll)
     }
 }
 
+function Assert-MaterializedRuntime {
+    param([string]$Path)
+    $item = Get-Item -LiteralPath $Path
+    if ($item.Length -ge 1024) {
+        return
+    }
+    $smallText = [System.IO.File]::ReadAllText($item.FullName)
+    if ($smallText.StartsWith("version https://git-lfs.github.com/spec/v1")) {
+        throw "Required runtime is only a Git LFS pointer, not materialized bytes: $Path. Run the repository's normal LFS materialization step; this launcher will not replace it."
+    }
+}
+
+Assert-MaterializedRuntime -Path $NativeDll
+Assert-MaterializedRuntime -Path $RapierDll
+
 $GodotExe = Resolve-GodotExecutable -Override $Godot
 $GodotVersion = ((& $GodotExe --version 2>&1) | Select-Object -First 1).ToString().Trim()
 if ($LASTEXITCODE -ne 0) {
@@ -74,11 +89,11 @@ $gitCommand = Get-Command git -ErrorAction SilentlyContinue
 if ($null -eq $gitCommand) {
     throw "git is required to report the current checkout identity."
 }
-$CheckoutHead = ((& $gitCommand.Source -C $RepoRoot rev-parse HEAD 2>&1) | Select-Object -First 1).ToString().Trim()
+$CheckoutHead = ((& $gitCommand.Path -C $RepoRoot rev-parse HEAD 2>&1) | Select-Object -First 1).ToString().Trim()
 if ($LASTEXITCODE -ne 0 -or $CheckoutHead -notmatch "^[0-9a-f]{40}$") {
     throw "Could not identify the Git checkout at '$RepoRoot'."
 }
-$CheckoutDirtyLines = @(& $gitCommand.Source -C $RepoRoot status --porcelain --untracked-files=no 2>&1)
+$CheckoutDirtyLines = @(& $gitCommand.Path -C $RepoRoot status --porcelain --untracked-files=no 2>&1)
 if ($LASTEXITCODE -ne 0) {
     throw "Could not inspect Git checkout status at '$RepoRoot'."
 }
