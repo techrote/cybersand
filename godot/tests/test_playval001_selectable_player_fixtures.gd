@@ -209,6 +209,27 @@ func run() -> void:
 			desktop.player_representation_identity() == before_identity,
 			"blocked fixture switches still mutated sampled baseline"
 		)
+		var mismatched_barrel: Dictionary = Pack.player_granular_experiment(
+			Pack.REM003_BARREL_ID,
+			0
+		)
+		mismatched_barrel.player_enabled = true
+		var baseline_definition_hash: String = str(
+			desktop.tower_context.microscenario.definition_hash
+		)
+		expect(
+			not desktop.microscenario_apply_definition(
+				mismatched_barrel,
+				"Play"
+			),
+			"mismatched experimental body/player ownership was accepted"
+		)
+		expect(
+			desktop.player_representation_identity() == before_identity
+				and str(desktop.tower_context.microscenario.definition_hash)
+					== baseline_definition_hash,
+			"rejected experimental reset mutated the installed player arm"
+		)
 		await assert_reset_retains_arm(
 			desktop,
 			Pack.REM003_SAMPLED_BASELINE_ID,
