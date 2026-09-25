@@ -8,8 +8,14 @@ func prepare() -> void:
 	trace.resize(241*4)
 	trace.fill(0)
 
-func _publish_snapshot(step_ms: float, paused: bool, interval: int, force_full: bool = false) -> void:
-	super._publish_snapshot(step_ms,paused,interval,force_full)
+func _publish_snapshot(
+		step_ms: float,
+		paused: bool,
+		interval: int,
+		force_full: bool = false,
+		rigid_body_states: PackedFloat32Array = PackedFloat32Array()
+) -> void:
+	super._publish_snapshot(step_ms, paused, interval, force_full, rigid_body_states)
 	var tick: int = int(_world.get_tick_index())
 	if tick > last_tick and tick <= 240 and not _simulation_failed:
 		trace[tick*4] = tick
