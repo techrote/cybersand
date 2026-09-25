@@ -244,7 +244,7 @@ func _ready() -> void:
 	$Layout/Status.add_theme_font_size_override("font_size", 14)
 	$Layout/Help.add_theme_font_size_override("font_size", 14)
 	$Layout/Title.text = "CYBERSAND / M11"
-	$Layout/Help.text = "A/D move · Space jetpack · LMB primary · MMB secondary · RMB erase · 1–6 slots · Q/E materials · X blast · P pause · R reset · Esc menu"
+	$Layout/Help.text = "A/D move · Space jetpack · LMB paint primary · MMB paint secondary · RMB erase · 1–6 slots · Q/E materials · X blast · P pause · R reset · Esc menu"
 	for body: RigidBody2D in [test_rigid_body_1, test_rigid_body_2, test_rigid_body_3]:
 		body.freeze = true
 		body.collision_layer = 0
