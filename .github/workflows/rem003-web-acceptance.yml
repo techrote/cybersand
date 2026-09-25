@@ -1,0 +1,203 @@
+name: REM-003 real Web acceptance
+
+on:
+  push:
+    branches: [rem/issue-82-web-acceptance]
+    paths: [.github/workflows/rem003-web-acceptance.yml]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rem003-web-acceptance
+  cancel-in-progress: true
+
+env:
+  VALIDATED_HEAD: 2a5c99b9c3c9569bede3c37a80656f191b61eb84
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  EMSDK_COMMIT: e4fe26ef59168ff44f4c23c466e497bf60b3411e
+  EMSDK_VERSION: 4.0.20
+
+jobs:
+  browser:
+    name: Chromium ${{ matrix.profile }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [compat, threaded]
+    steps:
+      - name: Check out validation branch and LFS
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Verify exact candidate source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor "$VALIDATED_HEAD" HEAD
+          git diff --exit-code "$VALIDATED_HEAD" HEAD --             godot/native_extension             godot/scripts/cell_world.gd             godot/scripts/interaction_policy.gd             godot/scripts/physics_characterisation.gd             godot/scripts/sampled_character.gd             godot/scripts/web_demo_controller.gd             native/include             native/src             native/tests             tools/build_web.py             tools/web/run_browser_probe.mjs
+          git lfs fsck
+
+      - name: Prepare pinned Python build environment
+        run: |
+          python3 -m venv "$RUNNER_TEMP/web-python"
+          "$RUNNER_TEMP/web-python/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/web-python/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+
+      - name: Check out exact godot-cpp
+        run: |
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+
+      - name: Prepare exact Emscripten
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none https://github.com/emscripten-core/emsdk.git "$RUNNER_TEMP/emsdk"
+          git -C "$RUNNER_TEMP/emsdk" checkout --detach "$EMSDK_COMMIT"
+          test "$(git -C "$RUNNER_TEMP/emsdk" rev-parse HEAD)" = "$EMSDK_COMMIT"
+          "$RUNNER_TEMP/emsdk/emsdk" install "$EMSDK_VERSION"
+          "$RUNNER_TEMP/emsdk/emsdk" activate "$EMSDK_VERSION"
+          source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
+          emcc --version | head -n 1 | tee "$RUNNER_TEMP/emcc-version.txt"
+          grep -q '4.0.20' "$RUNNER_TEMP/emcc-version.txt"
+
+      - name: Prepare exact Godot and Web templates
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3             'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'             -o "$RUNNER_TEMP/godot.zip"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/godot"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+
+          base=https://github.com/godotengine/godot-builds/releases/download/4.7-stable
+          curl --fail --location --retry 3 "$base/SHA512-SUMS.txt" -o "$RUNNER_TEMP/SHA512-SUMS.txt"
+          curl --fail --location --retry 3 "$base/Godot_v4.7-stable_export_templates.tpz"             -o "$RUNNER_TEMP/Godot_v4.7-stable_export_templates.tpz"
+          (
+            cd "$RUNNER_TEMP"
+            grep ' Godot_v4.7-stable_export_templates.tpz$' SHA512-SUMS.txt | sha512sum --check --strict
+          )
+          mkdir "$RUNNER_TEMP/web-templates"
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+          import os
+          src = Path(os.environ["RUNNER_TEMP"]) / "Godot_v4.7-stable_export_templates.tpz"
+          dst = Path(os.environ["RUNNER_TEMP"]) / "web-templates"
+          with ZipFile(src) as z:
+              for name in z.namelist():
+                  base = Path(name).name
+                  if base.startswith("web") and base.endswith(".zip"):
+                      (dst / base).write_bytes(z.read(name))
+          required = [
+              "web_dlink_release.zip",
+              "web_dlink_debug.zip",
+              "web_dlink_nothreads_release.zip",
+              "web_dlink_nothreads_debug.zip",
+          ]
+          missing = [name for name in required if not (dst / name).is_file()]
+          if missing:
+              raise SystemExit(f"Missing Web templates: {missing}")
+          PY
+
+      - name: Build and export exact Web profile
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          WEB_TEMPLATE_ROOT: ${{ runner.temp }}/web-templates
+          SCONS_JOBS: "2"
+          PROFILE: ${{ matrix.profile }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
+          timeout 35m "$RUNNER_TEMP/web-python/bin/python" tools/build_web.py             --cpp "$GODOT_CPP_ROOT"             --godot "$GODOT_BIN"             --templates "$WEB_TEMPLATE_ROOT"             --profile "$PROFILE"             --source-commit "$VALIDATED_HEAD"
+          if test "$PROFILE" = threaded; then
+            test -f build/web-threaded/index.html
+          else
+            test -f build/web/index.html
+          fi
+
+      - name: Execute REM-003 in real Chromium
+        env:
+          PROFILE: ${{ matrix.profile }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          CHROME="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
+          test -n "$CHROME"
+          if test "$PROFILE" = threaded; then
+            EXPORT_DIR=build/web-threaded
+          else
+            EXPORT_DIR=build/web
+          fi
+          mkdir -p "build/rem003-web-$PROFILE"
+          python3 tools/serve_web.py --directory "$EXPORT_DIR" --port 8123             >"build/rem003-web-$PROFILE/server.log" 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          for i in $(seq 1 40); do
+            if curl --fail --silent http://127.0.0.1:8123/ >/dev/null; then break; fi
+            sleep 0.25
+          done
+          curl --fail --silent http://127.0.0.1:8123/ >/dev/null
+
+          "$CHROME"             --headless=new             --no-sandbox             --disable-dev-shm-usage             --ignore-gpu-blocklist             --use-angle=swiftshader             --enable-webgl             --remote-debugging-port=9222             --user-data-dir="$RUNNER_TEMP/chrome-$PROFILE"             about:blank             >"build/rem003-web-$PROFILE/chrome.log" 2>&1 &
+          CHROME_PID=$!
+          trap 'kill "$CHROME_PID" "$SERVER_PID" 2>/dev/null || true' EXIT
+
+          node tools/web/run_browser_probe.mjs             --port 9222             --url 'http://127.0.0.1:8123/?test=1&rem003=1'             --result-id cybersand-rem003-result             --output "build/rem003-web-$PROFILE/result.json"             --screenshot "build/rem003-web-$PROFILE/screenshot.png"             --timeout-ms 240000
+
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          profile = os.environ["PROFILE"]
+          path = Path(f"build/rem003-web-{profile}/result.json")
+          envelope = json.loads(path.read_text(encoding="utf-8"))
+          result = envelope["result"]
+          if result.get("ok") is not True:
+              raise SystemExit(f"REM-003 Web probe failed: {result}")
+          expected = {
+              "rem003-ordinary": 1,
+              "rem003-hard": 2,
+              "rem003-hard-terrain": 0,
+              "rem003-water": 0,
+          }
+          if result.get("rem003_counts") != expected:
+              raise SystemExit(
+                  f"REM-003 disturbance counts differ: {result.get('rem003_counts')} != {expected}"
+              )
+          if profile == "threaded" and envelope.get("isolated") is not True:
+              raise SystemExit("Threaded profile is not cross-origin isolated")
+          print(json.dumps({
+              "profile": profile,
+              "isolated": envelope.get("isolated"),
+              "counts": result["rem003_counts"],
+              "ok": True,
+          }, sort_keys=True))
+          PY
+
+      - name: Retain real-browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: rem003-web-${{ matrix.profile }}-${{ github.run_id }}
+          path: |
+            build/rem003-web-${{ matrix.profile }}/
+            build/web*/build-info.json
+            build/web*/SHA256SUMS
+          if-no-files-found: warn
+          retention-days: 30
