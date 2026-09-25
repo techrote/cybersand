@@ -40,6 +40,12 @@ different.
 The original `rem003/player-granular-review` remains unchanged as the historical
 candidate-C1 owner-review surface.
 
+The barrel definition omits the original three `material_cells` census probes.
+Schema 2 intentionally rejects material-cell census while a body mask is active,
+so the barrel arm retains only the neutral 600-tick completion observation and
+uses gameplay/material-state recording for visual comparison. This changes no
+authored world geometry or scheduled event.
+
 ## Why representation is not a schema field
 
 The versioned MicroScenario definition continues to describe reproducible world
