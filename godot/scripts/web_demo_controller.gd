@@ -129,6 +129,14 @@ func water_lab_apply_result(result: Dictionary, blind_label: String = "") -> voi
 
 func microscenario_apply_definition(definition: Dictionary, mode: String = "Inspect") -> bool:
 	if not ready_to_play or not water_blind_set.is_empty() or not water_active_blind_label.is_empty(): return false
+	if not CyberMicroScenarioCatalogue.player_configuration(
+		str(definition.get("id", ""))
+	).is_empty():
+		microscenario_error = (
+			"PLAY-VAL player-representation fixtures require the desktop "
+			+ "asynchronous owner; Web execution is intentionally refused."
+		)
+		return false
 	if not micro_host.install(native_world, definition, mode):
 		microscenario_error = micro_host.last_error
 		return false
