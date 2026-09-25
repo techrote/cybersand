@@ -185,7 +185,7 @@ future recording, comparison, export and review ergonomics.
 
 ## REC-001 integration correction
 
-The post-implementation integration review identified three recorder integration
+The post-implementation integration review identified four recorder integration
 gaps. Schema v2 corrects them without changing simulation semantics:
 
 - actor-only motion is recordable against unchanged material bytes;
