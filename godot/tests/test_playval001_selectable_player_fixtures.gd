@@ -164,15 +164,16 @@ func assert_reset_retains_arm(
 	expected_identity: String
 ) -> void:
 	desktop.microscenario_reset()
+	var reset_acknowledged: bool = await wait_for(func() -> bool:
+		return (
+			desktop.pending_microscenario_apply.is_empty()
+			and str(
+				desktop.tower_context.get("microscenario", {}).get("id", "")
+			) == scenario_id
+		)
+	)
 	expect(
-		await wait_for(func() -> bool:
-			return (
-				desktop.pending_microscenario_apply.is_empty()
-				and str(
-					desktop.tower_context.get("microscenario", {}).get("id", "")
-				) == scenario_id
-			)
-		),
+		reset_acknowledged,
 		scenario_id + " fresh reset did not acknowledge"
 	)
 	expect(
