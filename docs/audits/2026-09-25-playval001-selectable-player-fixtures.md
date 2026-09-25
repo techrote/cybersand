@@ -70,6 +70,12 @@ Changing representation means selecting another registered fixture and performin
 a fresh reset. This preserves explicit identity instead of mutating an active
 reference definition.
 
+These three representation fixtures are **desktop-only**. The Web controller has
+a different synchronous player/body owner and does not implement the PCHAR reset
+contract; it therefore refuses the PLAY-VAL IDs with an explicit platform-scope
+error instead of silently running the wrong representation. No Web gameplay
+acceptance is claimed by this checkpoint.
+
 ## Capture and visible identity
 
 The MicroScenario status line identifies the active player arm. GUI capture adds
