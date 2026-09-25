@@ -4,7 +4,7 @@ status: Current
 document-kind: design
 scope: Canonical F01-F19 remediation routing, claim-state rules, dependencies and exit criteria for issues #79-#87 plus existing #49
 canonical-for: [development-claims-remediation-programme]
-last-reviewed: 2026-09-24
+last-reviewed: 2026-09-25
 related-documents: [../audits/2026-09-20-development-claims-closure-audit.md, ../reference/status-and-roadmap.md, cybersand-codex-development-handover.md, current-and-historical-validation.md, soliding-stage3b-production-plan.md]
 ---
 
@@ -41,7 +41,7 @@ RAG describes remediation state, not severity of the original subsystem.
 | Finding | RAG after REM-001 routing | Current interpretation | Owner / prerequisite |
 |---|---|---|---|
 | F01 #11 repair missing from main | Amber pending #87 | REM-002 reconstructed the divergence as a never-integrated branch and reconciles the still-valid masked-source, barrier/foreign-mask ejection and bounded granular-bearing semantics on current source with source-matched runtimes. This is integration repair, not broad owner gameplay acceptance. | #81 satisfied on implementation/verification; #83 owns broader behaviour; #87 independently certifies |
-| F02 broad #10/#11 acceptance overclaim | Red | Bounded evidence retained; broad player/body outcomes are not owner-accepted as complete. | #82 player; #81 -> #83 body; #8 umbrella |
+| F02 broad #10/#11 acceptance overclaim | Amber | #82 has a source-matched bounded sampled-player C1 engineering candidate with native/fallback and real-Web evidence; explicit owner gameplay acceptance/disposition remains open. #81 supplies the bounded generic-body baseline and #83 still owns broad body/granular acceptance. | #82 player owner-review gate; #81 -> #83 body; #8 umbrella |
 | F03 premature closure semantics | Amber | Historical incident retained; process control still missing. | #86 |
 | F04 formal Water H blinding | Red | #19 simulation/presentation evidence valid; formal blind capture not ready. | #84 |
 | F05 append-only H evidence | Red | Formal observation durability incomplete. | #84 |
