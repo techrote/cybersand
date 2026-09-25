@@ -258,7 +258,7 @@ func _refresh_microscenario_controls() -> void:
 	var help: Label = $Layout/Help
 	if tower_context.get("micro_active",false):
 		if _microscenario_saved_help.is_empty(): _microscenario_saved_help = help.text
-		help.text = "F3 compact/details · Shift+F3 stats · F8 clean view · H publication Hz · J shape · -/+ size · ,/. rectangle ratio · O rotate · LMB primary · MMB secondary · RMB erase"
+		help.text = "F3 compact/details · Shift+F3 stats · F8 clean view · H publication Hz · J shape · -/+ size · ,/. rectangle ratio · O rotate · LMB paint primary · MMB paint secondary · RMB erase"
 	elif not _microscenario_saved_help.is_empty():
 		help.text = _microscenario_saved_help
 		_microscenario_saved_help = ""
