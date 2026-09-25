@@ -116,6 +116,11 @@ changes: select another catalogue arm and perform a fresh reset instead. This ke
 the registered world definition reproducible while making the PCHAR alternatives
 directly selectable for matched owner review.
 
+The three PLAY-VAL representation arms are currently **desktop-only**. Web uses a
+different synchronous player/body owner and explicitly rejects these IDs instead of
+pretending to execute the desktop PCHAR representation contract. Ordinary
+MicroScenarios remain available to their previously supported owners.
+
 The common MicroScenario status reports the active player identity. Scenario
 capture also receives the active representation/recovery identity from the desktop
 owner. Because schema 2 forbids authoritative `material_cells` census while a
