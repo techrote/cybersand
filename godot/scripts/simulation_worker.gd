@@ -848,6 +848,12 @@ func _publish_snapshot(
 	snapshot.character_position = _character.position
 	snapshot.character_velocity = _character.velocity
 	snapshot.character_grounded = _character.grounded
+	snapshot.player_representation = (
+		("sampled-baseline" if _character.runtime_enclosure_recovery_enabled else "sampled-burial-safe")
+		if _sampled_character_enabled
+		else "barrel-rapier"
+	)
+	snapshot.player_body_id = 0 if _sampled_character_enabled else 1
 	snapshot.current_rigid_body_states = rigid_body_states.duplicate()
 	snapshot.character_runtime_recovery_enabled = (
 		_character.runtime_enclosure_recovery_enabled
