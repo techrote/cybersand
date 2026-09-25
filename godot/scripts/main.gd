@@ -1820,12 +1820,18 @@ func update_status() -> void:
 		else "%.0f,%.0f" % [character_position.x, character_position.y]
 	)
 	var secondary_id: int = effective_secondary_material_id()
-	var tool_text: String = "P %d:%s · M %d:%s · %s" % [
+	var brush_hint: String = (
+		"[J shape · -/+ size · ,/. ratio · O rotate]"
+		if brush_shape == "rectangle"
+		else "[J shape · -/+ size]"
+	)
+	var tool_text: String = "P %d:%s · M %d:%s · %s %s" % [
 		selected_material_id,
 		material_name(selected_material_id),
 		secondary_id,
 		material_name(secondary_id),
 		brush_summary(),
+		brush_hint,
 	]
 	var profile_text: String = str(tower_profile.get("name", "baseline"))
 	if tower_context.get("micro_active", false):
@@ -1852,7 +1858,7 @@ func update_status() -> void:
 		)
 	var run_text: String = "PAUSED" if paused else "RUN"
 	status_label.text = (
-		"FPS %d · frame %.2f/%.2fms · sim %.2fms · pub %s [H] age %.1fms · tick %d · cells %d+%dd · moved %d · over %d\n"
+		"FPS %d · frame %.2f/%.2fms · sim %.2fms · pub %s [H] age %.1fms · tick %d · cells %d + %d dormant · moved %d · overruns %d\n"
 		+ "player %s · %s · profile %s · %s · %s · F3 details"
 	) % [
 		int(Engine.get_frames_per_second()),
