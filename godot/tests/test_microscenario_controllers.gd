@@ -80,6 +80,10 @@ func _run() -> void:
 	expect(not desktop.tower_command({"step":true}), "pending desktop reset was overwritten by a step")
 	expect(await wait_for(func() -> bool: return desktop.pending_microscenario_apply.is_empty() and desktop.tower_context.get("micro_active",false)), "desktop generic reset did not acknowledge")
 	desktop._refresh_microscenario_controls()
+	expect(
+		desktop.microscenario_panel.status.text.contains("player disabled"),
+		"player-disabled generic fixture gained a false active-player identity"
+	)
 	expect(desktop.microscenario_panel.picker.get_item_text(desktop.microscenario_panel.picker.selected) == "fixtures/unequal-head"
 		and int(desktop.microscenario_panel.seed_input.value) == 2, "launcher selection did not match the installed fixture")
 	expect(desktop.tower_context.microscenario.definition_hash == wanted, "desktop definition identity mismatch")
