@@ -957,11 +957,11 @@ func brush_summary() -> String:
 	var dimensions: Vector2i = brush_dimensions()
 	match brush_shape:
 		"circle":
-			return "circle Ø%d" % brush_size_px
+			return "circle Ø%dpx" % brush_size_px
 		"square":
-			return "square %d×%d" % [dimensions.x, dimensions.y]
+			return "square %d×%dpx" % [dimensions.x, dimensions.y]
 		"rectangle":
-			return "rect %d×%d %s r%d" % [
+			return "rect %d×%dpx %s r%d" % [
 				dimensions.x,
 				dimensions.y,
 				"V" if brush_rectangle_vertical else "H",
