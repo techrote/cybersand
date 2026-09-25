@@ -164,7 +164,10 @@ data; the desktop owner maps those IDs at the fresh-reset boundary to the alread
 implemented sampled-baseline, sampled-burial-safe or barrel/Rapier representation.
 That representation/recovery choice is **not** a new schema field and cannot be
 changed live with F6/F7 while the controlled fixture is active. The barrel arm
-admits only body 0; other generic reference bodies stay absent.
+admits only body 0; other generic reference bodies stay absent. These PLAY-VAL
+representation fixtures are desktop-only: the synchronous Web controller rejects
+their IDs explicitly because it does not implement the desktop PCHAR owner/reset
+contract.
 
 **Definition JSON** opens a bounded paste/edit view for a complete definition.
 Validation failure leaves the running world untouched; application is always a
