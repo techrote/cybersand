@@ -51,7 +51,7 @@ func _fresh_sampled_world() -> CyberCellWorld:
 
 
 func _sampled_recovery_contract() -> Dictionary:
-	const START := Vector2(100.0, 100.0)
+	const START: Vector2 = Vector2(100.0, 100.0)
 	var world: CyberCellWorld = _fresh_sampled_world()
 	_fill(world, 100, 100, 8, 14, CyberCellWorld.SAND)
 	var initial_sand: int = _material_count(world, CyberCellWorld.SAND)
@@ -352,8 +352,8 @@ func _barrel_fixture_matrix() -> Array:
 		if not bool(spec.get("explicit_fixture_erase", false)):
 			var initial: Dictionary = report.get("initial", {})
 			var final: Dictionary = report.get("final", {})
-			var initial_counts: Array = initial.get("counts", [])
-			var final_counts: Array = final.get("counts", [])
+			var initial_counts: Variant = initial.get("counts", [])
+			var final_counts: Variant = final.get("counts", [])
 			if (
 				initial_counts.size() > CyberCellWorld.SAND
 				and final_counts.size() > CyberCellWorld.SAND
