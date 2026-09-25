@@ -5,8 +5,8 @@ document-kind: contract
 scope: Version 1 material capability, sampled player support, pair exchange and deterministic permeability wakes
 canonical-for: [granular-support-policy, granular-pair-policy, sampled-player-collision]
 keywords: [powder, packing, player, Dust, Mercury, permeability, enclosure, side resistance]
-last-reviewed: 2026-09-24
-related-documents: [materials-and-rule-kernels.md, ../architecture/rigid-body-and-cellular-coupling.md, ../operations/physics-characterisation.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md, ../audits/2026-09-24-rem003-current-characterisation.md]
+last-reviewed: 2026-09-25
+related-documents: [materials-and-rule-kernels.md, ../architecture/rigid-body-and-cellular-coupling.md, ../operations/physics-characterisation.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md, ../audits/2026-09-24-rem003-current-characterisation.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
 ---
 
 # Granular interaction and sampled player policy
@@ -50,12 +50,21 @@ volume. Malformed/out-of-world boxes fail closed. `box_collides` is mode 0.
 The old material-only fallback helper now identifies hard surfaces only.
 
 `CyberSampledCharacter` uses at most one-cell movement increments, a one-cell
-grounded step-up, and clamps each simulation delta to 0..0.1 seconds. Before
-movement, enclosure recovery searches at most 128 axis candidates within 32
-cells, nearest first and upward/left/right/down at equal distance. It moves only
-the sampled character, never erases cells or moves a Rapier body. When no clear
-candidate exists, velocity is zero and `recovery_blocked` is explicit. Diagonal
-escape, crush damage, barrel pushing and carrying are not implemented.
+grounded step-up, and clamps each simulation delta to 0..0.1 seconds. PCHAR-001
+now distinguishes two uses of the former enclosure search. **Invalid-spawn/reset
+repair** remains an explicit bounded search of at most 128 axis candidates within
+32 cells, nearest first and upward/left/right/down at equal distance. The
+historical **sampled-baseline runtime** retains the same search before movement,
+but records attempts, successes, last offset and cumulative upward relocation.
+This instrumentation makes the previously implicit rapid upward-surfacing
+mechanism directly observable.
+
+The PCHAR **sampled-burial-safe** experiment disables that runtime search while
+retaining explicit invalid-spawn repair. If material occupies the sampled actor
+at runtime, velocity is zero, the actor remains in place with
+`runtime_enclosed/recovery_blocked` set, and no material is erased or displaced.
+This is an experimental disposition, not a new production player selection.
+Diagonal escape, crush damage, barrel pushing and carrying remain unimplemented.
 
 Native queries run only under the serialized World owner, outside kernels;
 the read neighbourhood does not enlarge native job write domains. Desktop and
