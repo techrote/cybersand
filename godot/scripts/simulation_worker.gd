@@ -6,6 +6,7 @@ extends RefCounted
 # PackedByteArray while the cellular solver is modifying it.
 const MicroCatalogue = preload("res://scripts/microscenario_catalogue.gd")
 const MicroHost = preload("res://scripts/microscenario_host.gd")
+const PlayerEnvironmentProfiles = preload("res://scripts/player_environment_profiles.gd")
 const SIMULATION_HZ: float = 60.0
 const FIXED_TIMESTEP: float = 1.0 / SIMULATION_HZ
 const TICK_INTERVAL_USEC: int = 16667
@@ -26,6 +27,10 @@ var _character: CyberSampledCharacter = CyberSampledCharacter.new()
 # Worker-exclusive representation state. Only one player owner is active at a
 # time; PCHAR representation changes are applied through fresh reset.
 var _sampled_character_enabled: bool = true
+var _player_environment_profile: Dictionary = PlayerEnvironmentProfiles.preset(
+	PlayerEnvironmentProfiles.PRESET_CURRENT
+)
+var _pending_player_environment_profile: Dictionary = {}
 
 var _running: bool = false
 var _paused: bool = false
@@ -319,6 +324,7 @@ func start_worker(spawn_position: Vector2) -> Error:
 	else:
 		_scheduler_thread_capacity_hint = 1
 		_backend_name = "gdscript-serial-fallback"
+	_character.configure_profile(_player_environment_profile)
 	_activate_sampled_character(spawn_position, true)
 	_publish_snapshot(0.0, false, _render_snapshot_interval_usec, true)
 	_mutex.lock()
@@ -435,6 +441,20 @@ func queue_reset(
 	_mutex.unlock()
 
 
+func queue_player_environment_profile(profile: Dictionary) -> bool:
+	var resolved: Dictionary = PlayerEnvironmentProfiles.resolve(profile)
+	if not resolved.get("ok", false):
+		return false
+	_mutex.lock()
+	_pending_player_environment_profile = resolved.profile.duplicate(true)
+	# PENV tuning remains fresh-reset only. The presentation owner follows this
+	# with the current PCHAR-aware reset path so representation/recovery selection
+	# is preserved while the profile becomes authoritative.
+	_paused = true
+	_mutex.unlock()
+	return true
+
+
 func take_latest_snapshot(after_serial: int) -> CyberSimulationSnapshot:
 	_mutex.lock()
 	var result: CyberSimulationSnapshot = _published_snapshot
@@ -483,6 +503,7 @@ func _worker_loop() -> void:
 		var local_reset_spawn: Vector2 = Vector2.ZERO
 		var local_reset_sampled_character_enabled: bool = true
 		var local_reset_runtime_recovery_enabled: bool = true
+		var local_player_environment_profile: Dictionary = {}
 		var local_lab: Dictionary = {}
 
 		_mutex.lock()
@@ -507,6 +528,8 @@ func _worker_loop() -> void:
 		local_reset_sampled_character_enabled = _reset_sampled_character_enabled
 		local_reset_runtime_recovery_enabled = _reset_runtime_enclosure_recovery_enabled
 		_reset_requested = false
+		local_player_environment_profile = _pending_player_environment_profile
+		_pending_player_environment_profile = {}
 		local_lab = _lab_request
 		_lab_request = {}
 		_mutex.unlock()
@@ -518,6 +541,10 @@ func _worker_loop() -> void:
 		if _apply_lab(local_lab):
 			local_reset_requested = false
 			local_paused = true
+			_last_render_snapshot_usec = -DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
+		if not local_player_environment_profile.is_empty():
+			_player_environment_profile = local_player_environment_profile.duplicate(true)
+			_character.configure_profile(_player_environment_profile)
 			_last_render_snapshot_usec = -DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 		if _water_lab_active:
 			local_emissions.clear()
@@ -814,6 +841,7 @@ func _publish_snapshot(
 		"input_limit":256,
 		"profile":_lab_profile.duplicate(true),
 		"profile_hash":_lab_profile_hash,
+		"player_environment_profile":_player_environment_profile.duplicate(true),
 		"micro_active":_micro_active,
 		"microscenario":_scenario_host.summary() if _lab_active else {},
 		"micro_capture_serial":_micro_capture_serial,
@@ -845,6 +873,10 @@ func _publish_snapshot(
 			"profile": {"name": str(render_profile.get("name", ""))},
 			"profile_hash": str(snapshot.lab_context.get("profile_hash", "")),
 			"water_policy_hash": str(snapshot.lab_context.get("water_policy_hash", "")),
+			"player_environment_profile": snapshot.lab_context.get(
+				"player_environment_profile",
+				{}
+			).duplicate(true),
 			"microscenario": {
 				"id": str(render_micro.get("id", "")),
 				"definition_hash": str(render_micro.get("definition_hash", "")),
