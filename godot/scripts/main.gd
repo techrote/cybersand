@@ -279,6 +279,9 @@ func _refresh_microscenario_controls() -> void:
 		for label: Label in tower_panel.labels: label.visible = false
 	var launcher: Node = get_node_or_null("Layout/ExperimentTowerLauncher")
 	if launcher != null: launcher.visible = not microscenario_hud_hidden
+	var recording_launcher: Node = get_node_or_null("Layout/GameplayRecordingLauncher")
+	if recording_launcher != null:
+		recording_launcher.visible = not microscenario_hud_hidden
 
 func _microscenario_execution_locked() -> bool:
 	return tower_context.get("micro_active", false) and tower_context.get("microscenario", {}).get("execution_policy", "owner") == "fixed"
