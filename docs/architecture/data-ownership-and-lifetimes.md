@@ -167,13 +167,19 @@ due frames into an explicit bounded queue. Its dedicated writer thread owns only
 those frame copies plus copied metadata; it performs encoding/file I/O without
 calling World, Rapier or scene-tree APIs.
 
-The worker publication now also carries the copied rigid-body input value array
-latched for that worker step. This is the same data-only bridge sample already
-consumed by native coupling, not a live physics object. Recorder queue saturation
-drops capture attempts with timing/tick provenance and never waits on or skips an
-authoritative simulation tick. Recorder/file failure stops recording admission and
-produces an incomplete evidence disposition without changing simulation ownership
-or recovery. See [gameplay recording](../operations/gameplay-recording.md).
+The worker publication also carries a small value-only evidence sample bound to
+each render generation: completed tick/time, sampled-character values, copied
+rigid-body input values and reduced scenario/profile context. Later worker
+snapshots may share the same frozen render bytes, so the recorder keys admission
+to the render serial and never relabels an older material generation with newer
+tick/actor values. The body array is the same copied bridge sample already
+consumed by native coupling, not a live physics object.
+
+Recorder queue saturation drops capture attempts with timing/tick provenance and
+never waits on or skips an authoritative simulation tick. Recorder/file failure
+stops recording admission and produces an incomplete evidence disposition without
+changing simulation ownership or recovery. See
+[gameplay recording](../operations/gameplay-recording.md).
 
 ## MicroScenario owner-local values
 
