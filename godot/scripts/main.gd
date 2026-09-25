@@ -1791,6 +1791,23 @@ func update_shader_parameters() -> void:
 		)
 
 
+func recording_status_for_hud() -> Dictionary:
+	# REC-001 is an independent sibling and may land before or after TEST-UX-001.
+	# Discover its public recorder property dynamically so this branch stays
+	# independently mergeable while consuming the real status() contract once it
+	# is present.
+	for property_info: Dictionary in get_property_list():
+		if str(property_info.get("name", "")) != "gameplay_recorder":
+			continue
+		var recorder: Variant = get("gameplay_recorder")
+		if recorder is Object and recorder.has_method("status"):
+			var raw_status: Variant = recorder.call("status")
+			if raw_status is Dictionary:
+				return (raw_status as Dictionary).duplicate(true)
+		break
+	return {}
+
+
 func update_status() -> void:
 	if latest_snapshot != null and latest_snapshot.simulation_failed:
 		status_label.visible = not microscenario_hud_hidden
@@ -1844,18 +1861,21 @@ func update_status() -> void:
 		profile_text = "water %s" % str(
 			tower_context.get("water_policy_hash", "")
 		).left(8)
-	var recording_data: Variant = tower_context.get(
-		"recording",
-		tower_context.get("recorder", {})
-	)
+	var recording_data: Dictionary = recording_status_for_hud()
 	var recording_text: String = "rec n/a"
-	if recording_data is Dictionary and not recording_data.is_empty():
-		recording_text = "rec %s" % str(
-			recording_data.get(
-				"status",
-				"on" if recording_data.get("active", false) else "off"
-			)
-		)
+	if not recording_data.is_empty():
+		if bool(recording_data.get("failed", false)):
+			recording_text = "REC FAILED"
+		elif bool(recording_data.get("active", false)):
+			recording_text = "REC %dHz q%d/%d drop%d%s" % [
+				int(recording_data.get("capture_hz", 0)),
+				int(recording_data.get("queued_frames", 0)),
+				int(recording_data.get("queue_capacity", 0)),
+				int(recording_data.get("dropped_frames", 0)),
+				" priming" if not bool(recording_data.get("primed", false)) else "",
+			]
+		else:
+			recording_text = "rec off"
 	var run_text: String = "PAUSED" if paused else "RUN"
 	status_label.text = (
 		"FPS %d · frame %.2f/%.2fms · sim %.2fms · pub %s [H] age %.1fms · tick %d · cells %d + %d dormant · moved %d · overruns %d\n"
