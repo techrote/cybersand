@@ -229,6 +229,14 @@ func run() -> void:
 			desktop.rigid_bodies.size() == 1,
 			"barrel fixture activated extra generic reference bodies"
 		)
+		desktop.update_status()
+		expect(
+			desktop.status_label.text.contains("barrel-rapier")
+				and not desktop.status_label.text.contains(
+					"player disabled / barrel-rapier"
+				),
+			"compact HUD labelled the active barrel player as disabled"
+		)
 		expect(
 			desktop.rapier_bridge.is_initialized(),
 			"barrel fixture did not initialize the Rapier bridge"
