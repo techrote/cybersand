@@ -100,6 +100,7 @@ func setup(controller: Control) -> void:
 	radius_input.max_value = 32
 	radius_input.step = 1
 	radius_input.value = host.brush_size_px
+	radius_input.suffix = " px"
 	radius_input.custom_minimum_size.x = 170
 	radius_input.value_changed.connect(func(value: float) -> void:
 		host.set_brush_size(int(value))
