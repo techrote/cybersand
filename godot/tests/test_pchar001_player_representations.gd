@@ -53,7 +53,10 @@ func _fresh_sampled_world() -> CyberCellWorld:
 func _sampled_recovery_contract() -> Dictionary:
 	const START: Vector2 = Vector2(100.0, 100.0)
 	var world: CyberCellWorld = _fresh_sampled_world()
-	_fill(world, 100, 100, 8, 14, CyberCellWorld.SAND)
+	# Constrain left/right/down farther than the 14-pixel upward exit so this
+	# fixture isolates the search-order mechanism instead of merely proving that
+	# some axis escape exists.
+	_fill(world, 68, 100, 72, 40, CyberCellWorld.SAND)
 	var initial_sand: int = _material_count(world, CyberCellWorld.SAND)
 
 	var baseline := CyberSampledCharacter.new()
@@ -230,7 +233,6 @@ func _barrel_control_preserves_reaction() -> Dictionary:
 		CyberPlayerRepresentation.BARREL_MAX_HORIZONTAL_IMPULSE,
 		1.0 / 60.0
 	)
-	bridge.step()
 	var after_zero_control: Vector2 = bridge.body_linear_velocity(0)
 	_check(
 		is_zero_approx(zero_control_impulse),
@@ -238,7 +240,7 @@ func _barrel_control_preserves_reaction() -> Dictionary:
 	)
 	_check(
 		after_zero_control.is_equal_approx(after_reaction),
-		"zero horizontal input damped or overwrote incoming cellular reaction"
+		"zero horizontal input changed live body velocity"
 	)
 
 	var control_impulse: float = bridge.apply_horizontal_control(
@@ -249,6 +251,7 @@ func _barrel_control_preserves_reaction() -> Dictionary:
 		CyberPlayerRepresentation.BARREL_MAX_HORIZONTAL_IMPULSE,
 		1.0 / 60.0
 	)
+	var after_control_application: Vector2 = bridge.body_linear_velocity(0)
 	bridge.step()
 	var after_control: Vector2 = bridge.body_linear_velocity(0)
 	_check(
@@ -262,12 +265,15 @@ func _barrel_control_preserves_reaction() -> Dictionary:
 		"horizontal locomotion impulse exceeded its registered bound"
 	)
 	_check(
-		after_control.x > after_reaction.x,
+		after_control_application.x > after_reaction.x,
 		"horizontal control overwrote rather than added to incoming reaction"
 	)
 	_check(
-		is_equal_approx(after_control.y, after_reaction.y),
-		"horizontal control changed vertical velocity"
+		is_equal_approx(
+			after_control_application.y,
+			after_reaction.y
+		),
+		"horizontal control changed vertical velocity at application"
 	)
 	_check(
 		after_control.x < CyberPlayerRepresentation.BARREL_WALK_SPEED,
@@ -285,6 +291,10 @@ func _barrel_control_preserves_reaction() -> Dictionary:
 			after_zero_control.y,
 		],
 		"control_impulse": control_impulse,
+		"post_control_application_velocity": [
+			after_control_application.x,
+			after_control_application.y,
+		],
 		"post_control_velocity": [after_control.x, after_control.y],
 	}
 
