@@ -7,7 +7,11 @@ extends RefCounted
 var serial: int = 0
 var lab_context: Dictionary = {} # Copied owner values; immutable after publication.
 var published_usec: int = 0
+# Revision represented by the retained material render publication.
 var world_revision: int = -1
+# Current authoritative cellular revision at this worker publication. Equality
+# with world_revision proves the retained material bytes are still current.
+var simulation_world_revision: int = -1
 var hard_surface_revision: int = -1
 var cells: PackedByteArray = PackedByteArray()
 # Native RenderBridge payload. Rectangles use six integers per patch:
@@ -18,6 +22,18 @@ var render_channels: int = 1
 var render_full_refresh: bool = false
 var render_patch_rectangles: PackedInt32Array = PackedInt32Array()
 var render_patch_cells: PackedByteArray = PackedByteArray()
+# Value-only state bound to the exact render generation above. These values
+# remain stable while later worker snapshots may advance simulation state.
+var render_tick_index: int = 0
+var render_generated_usec: int = 0
+var render_character_position: Vector2 = Vector2.ZERO
+var render_character_velocity: Vector2 = Vector2.ZERO
+var render_character_grounded: bool = false
+var render_rigid_body_states: PackedFloat32Array = PackedFloat32Array()
+var render_simulation_time_ms: float = 0.0
+var render_worker_step_time_ms: float = 0.0
+var render_worker_overruns: int = 0
+var render_context: Dictionary = {}
 var hard_surface_rectangles: PackedInt32Array = PackedInt32Array()
 var hard_surface_rectangles_valid: bool = false
 var hard_surface_chunk_rectangles: PackedInt32Array = PackedInt32Array()
@@ -26,6 +42,8 @@ var hard_surface_chunk_rectangles_valid: bool = false
 var character_position: Vector2 = Vector2.ZERO
 var character_velocity: Vector2 = Vector2.ZERO
 var character_grounded: bool = false
+# Exact copied body input sample consumed by this worker publication.
+var current_rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 
 var tick_index: int = 0
 var moves_last_tick: int = 0
