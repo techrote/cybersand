@@ -117,13 +117,16 @@ func refresh(context: Dictionary) -> void:
 	if data.is_empty():
 		status.text = "MicroScenarios: shared Play / Inspect / Benchmark definitions. F8 restores the HUD."
 		return
+	var player_identity: String = "disabled"
+	if bool(data.get("player_enabled", false)) or host.player_uses_barrel():
+		player_identity = str(host.player_representation_identity())
 	status.text = "%s / %s / %s / tick %s / %s / player %s" % [
 		str(data.id),
 		str(data.mode),
 		str(data.maturity),
 		str(context.get("tick", 0)),
 		str(data.get("outcome", "running")),
-		str(host.player_representation_identity()),
+		player_identity,
 	]
 	if data.mode != "Play":
 		for observation: Dictionary in data.get("observations", []).slice(-3):
