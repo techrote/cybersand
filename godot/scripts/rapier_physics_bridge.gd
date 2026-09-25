@@ -698,6 +698,76 @@ func pack_body_states() -> PackedFloat32Array:
 	return states
 
 
+func body_linear_velocity(body_index: int) -> Vector2:
+	if not _initialized or body_index < 0 or body_index >= _body_rids.size():
+		return Vector2.ZERO
+	return PhysicsServer2D.body_get_state(
+		_body_rids[body_index],
+		PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY
+	)
+
+
+func apply_horizontal_control(
+	body_index: int,
+	horizontal_input: float,
+	target_speed: float,
+	acceleration: float,
+	maximum_impulse: float,
+	delta: float
+) -> float:
+	if (
+		not _initialized
+		or body_index < 0
+		or body_index >= _body_rids.size()
+		or not is_finite(horizontal_input)
+		or not is_finite(target_speed)
+		or not is_finite(acceleration)
+		or not is_finite(maximum_impulse)
+		or not is_finite(delta)
+		or target_speed < 0.0
+		or acceleration < 0.0
+		or maximum_impulse < 0.0
+		or delta < 0.0
+	):
+		return 0.0
+
+	# PCHAR-001 deliberately does not brake a body when there is no movement
+	# input. Existing Rapier damping and cellular reaction remain observable.
+	var bounded_input: float = clampf(horizontal_input, -1.0, 1.0)
+	if absf(bounded_input) < 0.001:
+		return 0.0
+
+	# Read live server state after any cellular result application. This avoids
+	# assigning a cached target velocity over incoming displacement/contact
+	# impulses. Only a bounded horizontal central impulse is added.
+	var current_velocity: Vector2 = body_linear_velocity(body_index)
+	var requested_velocity_x: float = bounded_input * target_speed
+	var max_delta_velocity: float = acceleration * delta
+	var delta_velocity_x: float = clampf(
+		requested_velocity_x - current_velocity.x,
+		-max_delta_velocity,
+		max_delta_velocity
+	)
+	var impulse_x: float = clampf(
+		delta_velocity_x * _body_masses[body_index],
+		-maximum_impulse,
+		maximum_impulse
+	)
+	if absf(impulse_x) <= 0.000001:
+		return 0.0
+
+	PhysicsServer2D.body_apply_central_impulse(
+		_body_rids[body_index],
+		Vector2(impulse_x, 0.0)
+	)
+	PhysicsServer2D.body_set_state(
+		_body_rids[body_index],
+		PhysicsServer2D.BODY_STATE_SLEEPING,
+		false
+	)
+	return impulse_x
+
+
 func reset_body(
 	body_index: int,
 	position: Vector2,

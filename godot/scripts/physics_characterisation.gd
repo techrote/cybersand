@@ -172,11 +172,14 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 	if layout == "interior":
 		fill(world,left,surface,width,floor_y-surface,0)
 		fill(world,left+width/2,surface-23,1,1,material)
-	if layout == "side":
+	if layout == "side" or layout == "side_erase":
 		fill(world,left+64,surface-42,16,42,material)
 		player.reset(Vector2(left+40,surface-14))
 	if layout == "falling":
 		fill(world,left,surface,width,floor_y-surface,0)
+		fill(world,left,surface-48,width,8,material)
+	if layout == "burial":
+		# PCHAR-001: settled support plus a bounded incoming granular curtain.
 		fill(world,left,surface-48,width,8,material)
 	var initial: Dictionary = sample(world,crop_origin,crop_size,false)
 	if spec.get("conservation",false) and not fallback:
@@ -244,6 +247,8 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 	var raw_contact: Vector2 = Vector2.ZERO
 	var raw_bearing: Vector2 = Vector2.ZERO
 	var support_samples: int = 0
+	var horizontal_control_abs_impulse: float = 0.0
+	var horizontal_control_peak_impulse: float = 0.0
 	var applied: Vector2 = Vector2.ZERO
 	var max_age: int = 0
 	var stale: int = 0
@@ -305,6 +310,10 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 	for tick: int in range(ticks):
 		if layout == "excavate" and tick == 600:
 			fill(world,left+width/2-16,surface,32,floor_y-surface,0)
+		if layout == "side_erase" and tick == 120:
+			# Remove support under the adjacent pile; the body remains owned by
+			# Rapier and the falling pile remains owned by cells.
+			fill(world,left+64,surface,16,6,0)
 		if layout == "reentry" and tick == 120:
 			world.set_simulation_window(Vector2i(768,768),Vector2i(64,64),0,0)
 		if layout == "reentry" and tick == 600:
@@ -313,6 +322,32 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 		var player_horizontal: float = 0.0
 		var player_after_tick: bool = mode == "player" and bool(spec.get("player_after_tick", false))
 		if mode == "barrel":
+			var control_input: float = float(spec.get("horizontal_input", 0.0))
+			var reverse_tick: int = int(spec.get("horizontal_reverse_tick", -1))
+			if reverse_tick >= 0 and tick >= reverse_tick:
+				control_input = -control_input
+			var control_impulse: float = bridge.apply_horizontal_control(
+				0,
+				control_input,
+				float(spec.get(
+					"horizontal_target_speed",
+					CyberPlayerRepresentation.BARREL_WALK_SPEED
+				)),
+				float(spec.get(
+					"horizontal_acceleration",
+					CyberPlayerRepresentation.BARREL_HORIZONTAL_ACCELERATION
+				)),
+				float(spec.get(
+					"horizontal_max_impulse",
+					CyberPlayerRepresentation.BARREL_MAX_HORIZONTAL_IMPULSE
+				)),
+				DT
+			)
+			horizontal_control_abs_impulse += absf(control_impulse)
+			horizontal_control_peak_impulse = maxf(
+				horizontal_control_peak_impulse,
+				absf(control_impulse)
+			)
 			bridge.step()
 			var states: PackedFloat32Array = bridge.pack_body_states()
 			history[tick%10] = states
@@ -479,6 +514,8 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 		"displacement_impulse":[raw_displacement.x,raw_displacement.y],"boundary_impulse":[raw_boundary.x,raw_boundary.y],
 		"contact_impulse":[raw_contact.x,raw_contact.y],"bearing_impulse":[raw_bearing.x,raw_bearing.y],
 		"support_samples":support_samples,"applied_impulse":[applied.x,applied.y],"max_sample_age":max_age,
+		"horizontal_control_abs_impulse":horizontal_control_abs_impulse,
+		"horizontal_control_peak_impulse":horizontal_control_peak_impulse,
 		"stale":stale,"duplicates":duplicates,"faces":face_totals,"tick_us":quantiles(tick_times),"coupling_us":quantiles(coupling_times),
 		"rows":rows,"frames":frame_records}
 	if wex001:

@@ -25,6 +25,9 @@ var _mutex: Mutex = Mutex.new()
 # platforms retain the script world as a functional compatibility fallback.
 var _world = _create_world()
 var _character: CyberSampledCharacter = CyberSampledCharacter.new()
+# Worker-exclusive representation state. Only one player owner is active at a
+# time; PCHAR representation changes are applied through fresh reset.
+var _sampled_character_enabled: bool = true
 
 var _running: bool = false
 var _paused: bool = false
@@ -46,6 +49,8 @@ var _pending_emissions: Array[Vector4i] = []
 var _pending_cell_emissions: Array[Dictionary] = []
 var _reset_requested: bool = false
 var _reset_spawn: Vector2 = Vector2(150.0, 145.0)
+var _reset_sampled_character_enabled: bool = true
+var _reset_runtime_enclosure_recovery_enabled: bool = true
 var _lab_request: Dictionary = {} # One bounded pending control command; newest wins.
 var _lab_active: bool = false
 var _lab_floor: int = 0
@@ -187,7 +192,7 @@ func _apply_lab(command: Dictionary) -> bool:
 			_water_initial_integer*255-_water_initial_requested_numerator_255)
 		_lab_schedule.clear();_lab_inputs.clear()
 		_simulation_failed=false
-		_character.reset(Vector2(recipe.player_start))
+		_activate_sampled_character(Vector2(recipe.player_start), true)
 		if _water_blind_label!="":
 			_lab_status="Water Feel candidate %s / scenario %s / seed %d" % [
 				_water_blind_label,str(_water_policy.scenario_id),int(_water_policy.seed)]
@@ -211,7 +216,7 @@ func _apply_lab(command: Dictionary) -> bool:
 		_lab_inputs.clear()
 		_micro_capture = {}
 		_simulation_failed = false
-		_character.reset(Vector2(definition.player_start[0], definition.player_start[1]))
+		_activate_sampled_character(Vector2(definition.player_start[0], definition.player_start[1]), true)
 		_lab_status = "MicroScenario " + str(definition.id)
 	if not _lab_active: return false
 	if command.has("scenario_capture") and _scenario_host.active():
@@ -224,7 +229,7 @@ func _apply_lab(command: Dictionary) -> bool:
 	if command.has("floor"):
 		_lab_schedule.clear() # Navigation abandons scheduled inputs; no catch-up.
 		_lab_floor = clampi(int(command.floor),0,4)
-		_character.reset(CyberExperimentTower.landing(_lab_floor))
+		_activate_sampled_character(CyberExperimentTower.landing(_lab_floor), true)
 	if command.has("release"):
 		_lab_release(int(command.release))
 		if command.get("adjacent",false): _lab_release(int(command.release)+1)
@@ -298,6 +303,16 @@ func _create_world():
 	return CyberCellWorld.new()
 
 
+func _activate_sampled_character(
+	spawn_position: Vector2,
+	runtime_recovery_enabled: bool
+) -> void:
+	_sampled_character_enabled = true
+	_character.configure_runtime_enclosure_recovery(runtime_recovery_enabled)
+	_character.reset(spawn_position)
+	_character.recover_invalid_spawn(_world)
+
+
 func start_worker(spawn_position: Vector2) -> Error:
 	if _thread.is_started():
 		return OK
@@ -307,7 +322,7 @@ func start_worker(spawn_position: Vector2) -> Error:
 	else:
 		_scheduler_thread_capacity_hint = 1
 		_backend_name = "gdscript-serial-fallback"
-	_character.reset(spawn_position)
+	_activate_sampled_character(spawn_position, true)
 	_publish_snapshot(0.0, false, _render_snapshot_interval_usec, true)
 	_mutex.lock()
 	_running = true
@@ -448,10 +463,16 @@ func queue_paint(
 	queue_emit_disc(world_x, world_y, radius, material_id, emission_flags)
 
 
-func queue_reset(spawn_position: Vector2) -> void:
+func queue_reset(
+	spawn_position: Vector2,
+	sampled_character_enabled: bool = true,
+	runtime_enclosure_recovery_enabled: bool = true
+) -> void:
 	_mutex.lock()
 	_reset_requested = true
 	_reset_spawn = spawn_position
+	_reset_sampled_character_enabled = sampled_character_enabled
+	_reset_runtime_enclosure_recovery_enabled = runtime_enclosure_recovery_enabled
 	_pending_emissions.clear()
 	_pending_cell_emissions.clear()
 	_mutex.unlock()
@@ -504,6 +525,8 @@ func _worker_loop() -> void:
 		var local_cell_emissions: Array[Dictionary] = []
 		var local_reset_requested: bool = false
 		var local_reset_spawn: Vector2 = Vector2.ZERO
+		var local_reset_sampled_character_enabled: bool = true
+		var local_reset_runtime_recovery_enabled: bool = true
 		var local_lab: Dictionary = {}
 
 		_mutex.lock()
@@ -527,6 +550,8 @@ func _worker_loop() -> void:
 		_pending_cell_emissions = []
 		local_reset_requested = _reset_requested
 		local_reset_spawn = _reset_spawn
+		local_reset_sampled_character_enabled = _reset_sampled_character_enabled
+		local_reset_runtime_recovery_enabled = _reset_runtime_enclosure_recovery_enabled
 		_reset_requested = false
 		local_lab = _lab_request
 		_lab_request = {}
@@ -594,7 +619,13 @@ func _worker_loop() -> void:
 				_water_lab_active = false
 				_micro_capture = {}
 				_simulation_failed = false
+				_sampled_character_enabled = local_reset_sampled_character_enabled
+				_character.configure_runtime_enclosure_recovery(
+					local_reset_runtime_recovery_enabled
+				)
 				_character.reset(local_reset_spawn)
+				if _sampled_character_enabled:
+					_character.recover_invalid_spawn(_world)
 				# Publish the replacement before any attempted continuation.
 				local_paused = true
 		if not _simulation_failed:
@@ -620,7 +651,10 @@ func _worker_loop() -> void:
 					)
 
 			if not local_paused:
-				if not _micro_active or _scenario_host.player_enabled():
+				if (
+					_sampled_character_enabled
+					and (not _micro_active or _scenario_host.player_enabled())
+				):
 					_character.simulate(
 						FIXED_TIMESTEP,
 						local_horizontal_input,
@@ -788,6 +822,21 @@ func _publish_snapshot(
 	snapshot.character_velocity = _character.velocity
 	snapshot.character_grounded = _character.grounded
 	snapshot.current_rigid_body_states = rigid_body_states.duplicate()
+	snapshot.character_runtime_recovery_enabled = (
+		_character.runtime_enclosure_recovery_enabled
+	)
+	snapshot.character_runtime_enclosed = _character.runtime_enclosed
+	snapshot.character_runtime_recovery_attempts = _character.runtime_recovery_attempts
+	snapshot.character_runtime_recovery_successes = _character.runtime_recovery_successes
+	snapshot.character_runtime_recovery_upward_cells = _character.runtime_recovery_upward_cells
+	snapshot.character_invalid_spawn_recovery_attempts = (
+		_character.invalid_spawn_recovery_attempts
+	)
+	snapshot.character_invalid_spawn_recovery_successes = (
+		_character.invalid_spawn_recovery_successes
+	)
+	snapshot.character_last_recovery_kind = _character.last_recovery_kind
+	snapshot.character_last_recovery_offset = _character.last_recovery_offset
 	snapshot.tick_index = _world.tick_index
 	snapshot.moves_last_tick = _world.moves_last_tick
 	snapshot.scanned_last_tick = _world.scanned_last_tick
