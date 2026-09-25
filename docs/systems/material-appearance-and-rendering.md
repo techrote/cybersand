@@ -102,9 +102,13 @@ No second mutable world image is introduced by shader neighbor sampling.
 ## Temporal smoothing and glow
 
 Two RG8 textures alternate on accepted snapshots. The shader may evaluate
-previous and current material appearance during transitions. Configured
-publication cadence is separate from target fixed-step simulation rate;
-overload and Web terrain backlog can reduce actual progress.
+previous and current material appearance during transitions. **Current desktop
+default:** publication targets 60 Hz; `H` cycles the retained 30/45/60 Hz
+presentation modes. The desktop simulation remains independently fixed at 60 Hz;
+changing publication cadence does not change its simulation timestep. The compact
+desktop HUD reports both the configured publication target and a measured effective
+publication rate when samples are available. Overload and Web terrain backlog can
+reduce actual progress.
 
 HDR 2D output supports one half-logical-resolution glow SubViewport. Its
 thirteen-sample source and thirteen-tap near/far additive composite derive

@@ -29,6 +29,12 @@ const HARD_SURFACE_CHUNKS_PER_FRAME: int = 32
 const HARD_SURFACE_FRAME_BUDGET_USEC: int = 750
 const RENDER_PATCH_METADATA_STRIDE: int = 6
 const RENDER_SNAPSHOT_HZ_PRESETS: Array[int] = [30, 45, 60]
+const BRUSH_SHAPES: Array[String] = ["circle", "square", "rectangle"]
+const BRUSH_MIN_SIZE_PX: int = 1
+const BRUSH_MAX_SIZE_PX: int = 32
+const BRUSH_MIN_RECTANGLE_RATIO: int = 1
+const BRUSH_MAX_RECTANGLE_RATIO: int = 4
+const BRUSH_PREVIEW_SEGMENTS: int = 32
 const WATER_POLICY_PATH: String = "user://water-experiment-policy.json"
 # Prototype paint-tool slots are UI identifiers, not material IDs. Their
 # mappings may change without changing simulation or serialized material identity.
@@ -152,7 +158,11 @@ var pending_water_apply: Dictionary = {}
 var pending_water_exit: Dictionary = {}
 var water_policy_available: bool = true
 
-var microscenario_brush_radius: int = 4
+var brush_shape: String = "circle"
+var brush_size_px: int = 9
+var brush_rectangle_ratio: int = 2
+var brush_rectangle_vertical: bool = false
+var brush_preview: Line2D
 var microscenario_panel: CyberMicroScenarioPanel
 var microscenario_mode: String = "Inspect"
 var microscenario_error: String = ""
@@ -255,23 +265,30 @@ func _refresh_microscenario_controls() -> void:
 	var help: Label = $Layout/Help
 	if tower_context.get("micro_active",false):
 		if _microscenario_saved_help.is_empty(): _microscenario_saved_help = help.text
-		var declared: Dictionary = tower_context.get("microscenario",{})
-		help.text = "P pause/resume · R fresh reset · Arrow keys pan · F8 clean view · Run declared window for a bounded comparison"
-		if "paint" in declared.get("tools",[]): help.text += " · LMB paint · 1–6 / Q,E / picker select material"
-		if "erase" in declared.get("tools",[]): help.text += " · RMB erase"
-		if declared.get("player_enabled",false): help.text += " · A/D move · Space jetpack"
+		help.text = "F3 compact/details · Shift+F3 stats · F8 clean view · H publication Hz · J shape · -/+ size · ,/. rectangle ratio · O rotate · LMB paint primary · MMB paint secondary · RMB erase"
 	elif not _microscenario_saved_help.is_empty():
 		help.text = _microscenario_saved_help
 		_microscenario_saved_help = ""
-	for path: String in ["Layout/Title", "Layout/Help"]:
-		get_node(path).visible = not microscenario_hud_hidden
-	status_label.visible = debug_stats_visible and not microscenario_hud_hidden
+	$Layout/Title.visible = not microscenario_hud_hidden
+	help.visible = (
+		not microscenario_hud_hidden
+		and debug_stats_visible
+		and debug_stats_expanded
+	)
+	var failed: bool = latest_snapshot != null and latest_snapshot.simulation_failed
+	status_label.visible = (
+		not microscenario_hud_hidden
+		and (debug_stats_visible or failed)
+	)
 	if microscenario_hud_hidden or tower_context.get("micro_active", false) or (
 		tower_context.get("microscenario", {}).get("mode", "Inspect") == "Play"):
 		tower_panel.visible = false
 		for label: Label in tower_panel.labels: label.visible = false
 	var launcher: Node = get_node_or_null("Layout/ExperimentTowerLauncher")
 	if launcher != null: launcher.visible = not microscenario_hud_hidden
+	var recording_launcher: Node = get_node_or_null("Layout/GameplayRecordingLauncher")
+	if recording_launcher != null:
+		recording_launcher.visible = not microscenario_hud_hidden
 
 func _microscenario_execution_locked() -> bool:
 	return tower_context.get("micro_active", false) and tower_context.get("microscenario", {}).get("execution_policy", "owner") == "fixed"
@@ -699,9 +716,12 @@ var last_render_was_full_refresh: bool = false
 var rejected_render_snapshot_count: int = 0
 var last_rejected_render_snapshot_serial: int = -1
 var last_render_patch_validation_error: String = ""
+var last_render_publication_usec: int = -1
+var measured_render_publication_hz: float = 0.0
 var snapshot_blend_start_usec: int = 0
 var glow_enabled: bool = true
 var debug_stats_visible: bool = true
+var debug_stats_expanded: bool = false
 var glow_viewport: SubViewport
 var glow_source: ColorRect
 var glow_source_shader: ShaderMaterial
@@ -718,7 +738,7 @@ var simulation_window_enabled: bool = true
 var cadence_lod_enabled: bool = true
 var coherent_liquid_emission: bool = false
 var liquid_surface_adhesion_enabled: bool = true
-var render_snapshot_hz_index: int = 1
+var render_snapshot_hz_index: int = 2
 var render_snapshot_hz: int = RENDER_SNAPSHOT_HZ_PRESETS[render_snapshot_hz_index]
 var status_accumulator: float = 0.0
 var upload_time_ms: float = 0.0
@@ -743,6 +763,7 @@ var hard_surface_rebuild_cooldown: float = 0.0
 
 func _ready() -> void:
 	setup_tower_panel()
+	setup_brush_preview()
 	setup_player_representation_button()
 	var tower_button: Button = Button.new()
 	tower_button.name = "ExperimentTowerLauncher"
@@ -763,6 +784,7 @@ func _ready() -> void:
 		warning.add_theme_color_override("font_color", Color(1.0, 0.75, 0.35))
 		$Layout.add_child(warning)
 	status_label.visible = debug_stats_visible
+	$Layout/Help.visible = debug_stats_visible and debug_stats_expanded
 	rigid_bodies = [test_rigid_body_1, test_rigid_body_2, test_rigid_body_3]
 	var body_sizes: PackedVector2Array = PackedVector2Array()
 	body_sizes.resize(rigid_bodies.size())
@@ -871,6 +893,7 @@ func _process(delta: float) -> void:
 		maximum_collider_time_ms,
 		rapier_bridge.last_hard_surface_build_time_ms()
 	)
+	update_brush_preview()
 	handle_painting()
 	update_camera(delta)
 	update_worker_frame_state()
@@ -979,6 +1002,18 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			set_cadence_lod(not cadence_lod_enabled)
 		KEY_H:
 			cycle_render_snapshot_hz()
+		KEY_J:
+			cycle_brush_shape()
+		KEY_MINUS:
+			set_brush_size(brush_size_px - 1)
+		KEY_EQUAL:
+			set_brush_size(brush_size_px + 1)
+		KEY_COMMA:
+			set_brush_rectangle_ratio(brush_rectangle_ratio - 1)
+		KEY_PERIOD:
+			set_brush_rectangle_ratio(brush_rectangle_ratio + 1)
+		KEY_O:
+			set_brush_rectangle_vertical(not brush_rectangle_vertical)
 		KEY_G:
 			glow_enabled = not glow_enabled
 			if glow_overlay != null:
@@ -990,8 +1025,16 @@ func _unhandled_key_input(event: InputEvent) -> void:
 					else SubViewport.UPDATE_DISABLED
 				)
 		KEY_F3:
-			debug_stats_visible = not debug_stats_visible
-			status_label.visible = debug_stats_visible
+			if key_event.shift_pressed:
+				debug_stats_visible = not debug_stats_visible
+			else:
+				debug_stats_expanded = not debug_stats_expanded
+			$Layout/Help.visible = (
+				debug_stats_visible
+				and debug_stats_expanded
+				and not microscenario_hud_hidden
+			)
+			status_label.visible = debug_stats_visible and not microscenario_hud_hidden
 			if debug_stats_visible:
 				update_status()
 
@@ -1021,6 +1064,122 @@ func cycle_material_group(direction: int) -> void:
 	group_index = posmod(group_index + direction, MATERIAL_GROUP_FIRST_IDS.size())
 	selected_paint_slot = 0
 	selected_material_id = MATERIAL_GROUP_FIRST_IDS[group_index]
+
+
+func effective_secondary_material_id() -> int:
+	var material_index: int = PAINTABLE_MATERIAL_IDS.find(selected_material_id)
+	if material_index < 0:
+		return PAINTABLE_MATERIAL_IDS[0]
+	return PAINTABLE_MATERIAL_IDS[
+		posmod(material_index + 1, PAINTABLE_MATERIAL_IDS.size())
+	]
+
+
+func set_brush_shape(shape: String) -> bool:
+	if not shape in BRUSH_SHAPES:
+		return false
+	brush_shape = shape
+	return true
+
+
+func cycle_brush_shape() -> void:
+	var index: int = BRUSH_SHAPES.find(brush_shape)
+	if index < 0:
+		index = 0
+	set_brush_shape(BRUSH_SHAPES[(index + 1) % BRUSH_SHAPES.size()])
+
+
+func set_brush_size(size_px: int) -> bool:
+	if size_px < BRUSH_MIN_SIZE_PX or size_px > BRUSH_MAX_SIZE_PX:
+		return false
+	brush_size_px = size_px
+	return true
+
+
+func set_brush_rectangle_ratio(ratio: int) -> bool:
+	if ratio < BRUSH_MIN_RECTANGLE_RATIO or ratio > BRUSH_MAX_RECTANGLE_RATIO:
+		return false
+	brush_rectangle_ratio = ratio
+	return true
+
+
+func set_brush_rectangle_vertical(vertical: bool) -> void:
+	brush_rectangle_vertical = vertical
+
+
+func brush_dimensions() -> Vector2i:
+	if brush_shape != "rectangle":
+		return Vector2i(brush_size_px, brush_size_px)
+	var short_edge: int = brush_size_px
+	var long_edge: int = brush_size_px * brush_rectangle_ratio
+	return (
+		Vector2i(short_edge, long_edge)
+		if brush_rectangle_vertical
+		else Vector2i(long_edge, short_edge)
+	)
+
+
+func brush_summary() -> String:
+	var dimensions: Vector2i = brush_dimensions()
+	match brush_shape:
+		"circle":
+			return "circle Ø%dpx" % brush_size_px
+		"square":
+			return "square %d×%dpx" % [dimensions.x, dimensions.y]
+		"rectangle":
+			return "rect %d×%dpx %s r%d" % [
+				dimensions.x,
+				dimensions.y,
+				"V" if brush_rectangle_vertical else "H",
+				brush_rectangle_ratio,
+			]
+	return brush_shape
+
+
+func brush_footprint_cells(world_x: int, world_y: int) -> PackedInt32Array:
+	var cells := PackedInt32Array()
+	if brush_shape == "circle" and (brush_size_px & 1) == 1:
+		# Odd diameters map exactly to the retained emit_disc lattice. This keeps
+		# the default 9 px brush identical to the historical radius-4 tool.
+		var radius: int = (brush_size_px - 1) / 2
+		var radius_squared: int = radius * radius
+		for offset_y: int in range(-radius, radius + 1):
+			for offset_x: int in range(-radius, radius + 1):
+				if offset_x * offset_x + offset_y * offset_y > radius_squared:
+					continue
+				cells.append(world_x + offset_x)
+				cells.append(world_y + offset_y)
+		return cells
+
+	var dimensions: Vector2i = brush_dimensions()
+	var start_x: int = world_x - int((dimensions.x - 1) / 2)
+	var start_y: int = world_y - int((dimensions.y - 1) / 2)
+	var circle_radius: float = float(brush_size_px) * 0.5
+	var circle_radius_squared: float = circle_radius * circle_radius
+	for local_y: int in range(dimensions.y):
+		for local_x: int in range(dimensions.x):
+			if brush_shape == "circle":
+				var dx: float = float(local_x) + 0.5 - float(dimensions.x) * 0.5
+				var dy: float = float(local_y) + 0.5 - float(dimensions.y) * 0.5
+				if dx * dx + dy * dy > circle_radius_squared:
+					continue
+			cells.append(start_x + local_x)
+			cells.append(start_y + local_y)
+	return cells
+
+
+func brush_material_for_buttons(
+		left_pressed: bool,
+		middle_pressed: bool,
+		right_pressed: bool
+	) -> int:
+	if right_pressed:
+		return CyberCellWorld.EMPTY
+	if middle_pressed:
+		return effective_secondary_material_id()
+	if left_pressed:
+		return selected_material_id
+	return -1
 
 
 func cycle_view_size() -> bool:
@@ -1389,6 +1548,17 @@ func consume_worker_snapshot() -> void:
 
 
 func record_render_payload(snapshot: CyberSimulationSnapshot) -> void:
+	var publication_usec: int = Time.get_ticks_usec()
+	if last_render_publication_usec >= 0 and publication_usec > last_render_publication_usec:
+		var instantaneous_hz: float = 1000000.0 / float(
+			publication_usec - last_render_publication_usec
+		)
+		measured_render_publication_hz = (
+			instantaneous_hz
+			if measured_render_publication_hz <= 0.0
+			else lerpf(measured_render_publication_hz, instantaneous_hz, 0.2)
+		)
+	last_render_publication_usec = publication_usec
 	last_render_patch_count = snapshot.render_patch_rectangles.size() / 6
 	last_render_patch_bytes = snapshot.render_patch_cells.size()
 	last_render_was_full_refresh = snapshot.render_full_refresh
@@ -1485,28 +1655,23 @@ func update_worker_frame_state() -> void:
 	)
 
 
-func queue_brush_mutation(
-		world_x: int,
-		world_y: int,
-		radius: int,
-		material_id: int,
-		emission_flags: int = CyberCellWorld.EMISSION_FLAG_NONE
-	) -> bool:
-	if water_controlled_run_active() or not _microscenario_tool_allowed(material_id):
-		return false
-	return simulation_worker.queue_emit_disc(
-		world_x,world_y,radius,material_id,emission_flags)
+func setup_brush_preview() -> void:
+	brush_preview = Line2D.new()
+	brush_preview.name = "BrushPreview"
+	brush_preview.width = 1.5
+	brush_preview.default_color = Color(0.95, 0.98, 1.0, 0.9)
+	brush_preview.antialiased = false
+	brush_preview.z_index = 64
+	brush_preview.visible = false
+	world_view.add_child(brush_preview)
 
 
-func handle_painting() -> void:
-	if microscenario_panel != null and microscenario_panel.modal_open(): return
-	if tower_profile_panel != null and tower_profile_panel.visible: return
-	var mouse: Vector2 = world_view.get_local_mouse_position()
+func view_pixel_from_local_point(mouse: Vector2) -> Vector2i:
 	var content_rect: Rect2 = view_content_rect()
 	if content_rect.size.x <= 0.0 or content_rect.size.y <= 0.0:
-		return
+		return Vector2i(-1, -1)
 	if not content_rect.has_point(mouse):
-		return
+		return Vector2i(-1, -1)
 	var normalized_position: Vector2 = (mouse - content_rect.position) / content_rect.size
 	var view_pixel: Vector2i = Vector2i(normalized_position * Vector2(current_view_size))
 	if (
@@ -1515,23 +1680,124 @@ func handle_painting() -> void:
 		or view_pixel.y < 0
 		or view_pixel.y >= current_view_size.y
 	):
+		return Vector2i(-1, -1)
+	return view_pixel
+
+
+func brush_outline_points(view_pixel: Vector2i) -> PackedVector2Array:
+	var points := PackedVector2Array()
+	if view_pixel.x < 0 or view_pixel.y < 0:
+		return points
+	var content_rect: Rect2 = view_content_rect()
+	if content_rect.size.x <= 0.0 or content_rect.size.y <= 0.0:
+		return points
+	var scale: Vector2 = content_rect.size / Vector2(current_view_size)
+	var dimensions: Vector2i = brush_dimensions()
+	var start: Vector2 = Vector2(
+		view_pixel.x - int((dimensions.x - 1) / 2),
+		view_pixel.y - int((dimensions.y - 1) / 2)
+	)
+	if brush_shape == "circle":
+		var centre: Vector2 = (
+			content_rect.position
+			+ (start + Vector2(dimensions) * 0.5) * scale
+		)
+		var radii: Vector2 = Vector2(dimensions) * scale * 0.5
+		for step: int in range(BRUSH_PREVIEW_SEGMENTS + 1):
+			var angle: float = TAU * float(step) / float(BRUSH_PREVIEW_SEGMENTS)
+			points.append(
+				centre + Vector2(cos(angle) * radii.x, sin(angle) * radii.y)
+			)
+		return points
+	var top_left: Vector2 = content_rect.position + start * scale
+	var bottom_right: Vector2 = top_left + Vector2(dimensions) * scale
+	points.append(top_left)
+	points.append(Vector2(bottom_right.x, top_left.y))
+	points.append(bottom_right)
+	points.append(Vector2(top_left.x, bottom_right.y))
+	points.append(top_left)
+	return points
+
+
+func update_brush_preview() -> void:
+	if brush_preview == null:
+		return
+	if (
+		(microscenario_panel != null and microscenario_panel.modal_open())
+		or (tower_profile_panel != null and tower_profile_panel.visible)
+	):
+		brush_preview.visible = false
+		return
+	var view_pixel: Vector2i = view_pixel_from_local_point(
+		world_view.get_local_mouse_position()
+	)
+	var points: PackedVector2Array = brush_outline_points(view_pixel)
+	brush_preview.visible = not points.is_empty()
+	if brush_preview.visible:
+		brush_preview.points = points
+
+
+func queue_brush_mutation(
+		world_x: int,
+		world_y: int,
+		radius: int,
+		material_id: int,
+		emission_flags: int = CyberCellWorld.EMISSION_FLAG_NONE
+	) -> bool:
+	# Retained compatibility entry point for existing disc-oriented fixtures.
+	if water_controlled_run_active() or not _microscenario_tool_allowed(material_id):
+		return false
+	return simulation_worker.queue_emit_disc(
+		world_x,world_y,radius,material_id,emission_flags)
+
+
+func queue_brush_footprint_mutation(
+		world_x: int,
+		world_y: int,
+		material_id: int,
+		emission_flags: int = CyberCellWorld.EMISSION_FLAG_NONE
+	) -> bool:
+	if water_controlled_run_active() or not _microscenario_tool_allowed(material_id):
+		return false
+	if brush_shape == "circle" and (brush_size_px & 1) == 1:
+		return simulation_worker.queue_emit_disc(
+			world_x,
+			world_y,
+			(brush_size_px - 1) / 2,
+			material_id,
+			emission_flags
+		)
+	var cells: PackedInt32Array = brush_footprint_cells(world_x, world_y)
+	if cells.is_empty():
+		return false
+	return simulation_worker.queue_emit_cells(cells, material_id, emission_flags)
+
+
+func handle_painting() -> void:
+	if microscenario_panel != null and microscenario_panel.modal_open(): return
+	if tower_profile_panel != null and tower_profile_panel.visible: return
+	var view_pixel: Vector2i = view_pixel_from_local_point(
+		world_view.get_local_mouse_position()
+	)
+	if view_pixel.x < 0:
 		return
 
-	var emitted_material_id: int = selected_material_id
-	var emission_flags: int = CyberCellWorld.EMISSION_FLAG_NONE
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
-		emitted_material_id = CyberCellWorld.EMPTY
-	elif not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+	var emitted_material_id: int = brush_material_for_buttons(
+		Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT),
+		Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE),
+		Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)
+	)
+	if emitted_material_id < 0:
 		return
-	elif coherent_liquid_emission:
+	var emission_flags: int = CyberCellWorld.EMISSION_FLAG_NONE
+	if emitted_material_id != CyberCellWorld.EMPTY and coherent_liquid_emission:
 		emission_flags = CyberCellWorld.EMISSION_FLAG_COHERENT_LIQUID
 
 	var world_x: int = floori(camera_origin.x) + view_pixel.x
 	var world_y: int = floori(camera_origin.y) + view_pixel.y
-	queue_brush_mutation(
+	queue_brush_footprint_mutation(
 		world_x,
 		world_y,
-		microscenario_brush_radius if tower_context.get("micro_active",false) else 4,
 		emitted_material_id,
 		emission_flags
 	)
@@ -1851,10 +2117,30 @@ func update_shader_parameters() -> void:
 		)
 
 
+func recording_status_for_hud() -> Dictionary:
+	# REC-001 is an independent sibling and may land before or after TEST-UX-001.
+	# Discover its public recorder property dynamically so this branch stays
+	# independently mergeable while consuming the real status() contract once it
+	# is present.
+	for property_info: Dictionary in get_property_list():
+		if str(property_info.get("name", "")) != "gameplay_recorder":
+			continue
+		var recorder: Variant = get("gameplay_recorder")
+		if recorder is Object and recorder.has_method("status"):
+			var raw_status: Variant = recorder.call("status")
+			if raw_status is Dictionary:
+				return (raw_status as Dictionary).duplicate(true)
+		break
+	return {}
+
+
 func update_status() -> void:
 	if latest_snapshot != null and latest_snapshot.simulation_failed:
 		status_label.visible = not microscenario_hud_hidden
-		status_label.text = "Simulation stopped. Press R to reset. " + latest_snapshot.last_tick_error
+		status_label.text = "STOPPED — R reset | fault %d | %s" % [
+			latest_snapshot.tick_failure_count,
+			latest_snapshot.last_tick_error,
+		]
 		return
 	status_label.visible = debug_stats_visible and not microscenario_hud_hidden
 	if not debug_stats_visible or microscenario_hud_hidden:
@@ -1862,93 +2148,137 @@ func update_status() -> void:
 	if latest_snapshot == null:
 		status_label.text = "Simulation worker did not publish an initial snapshot."
 		return
-	var follow_text: String = "follow" if camera_follow_enabled else "free"
-	var window_text: String = "windowed" if simulation_window_enabled else "whole-world"
-	var cadence_text: String = "smooth" if cadence_lod_enabled else "raw"
-	var emission_text: String = (
-		"calm-emission" if coherent_liquid_emission else "spray-emission"
-	)
-	var selection_text: String = "material %s [id %d]" % [
-		material_name(selected_material_id),
-		selected_material_id,
-	]
-	if selected_paint_slot > 0:
-		selection_text = "slot %d %s [id %d]" % [
-			selected_paint_slot,
-			material_name(selected_material_id),
-			selected_material_id,
-		]
-	var region_text: String = "view %dx%d margin %dx%d" % [
-		current_view_size.x,
-		current_view_size.y,
-		simulation_margin.x,
-		simulation_margin.y,
-	]
-	var adhesion_text: String = "adhesion-on" if liquid_surface_adhesion_enabled else "adhesion-off"
-	var glow_text: String = "glow-on" if glow_enabled else "glow-off"
+
 	var snapshot_age_ms: float = maxf(
 		0.0,
 		float(Time.get_ticks_usec() - latest_snapshot.published_usec) / 1000.0
 	)
-	var thread_text: String = "%s/%d threads" % [
-		latest_snapshot.backend_name,
-		latest_snapshot.scheduler_thread_capacity_hint,
+	var publication_text: String = "%dHz target" % render_snapshot_hz
+	if measured_render_publication_hz > 0.0:
+		publication_text += "/%.1f actual" % measured_render_publication_hz
+	var player_text: String = (
+		"disabled"
+		if tower_context.get("micro_active",false)
+			and not tower_context.get("microscenario",{}).get("player_enabled",false)
+		else "%.0f,%.0f" % [character_position.x, character_position.y]
+	)
+	var secondary_id: int = effective_secondary_material_id()
+	var brush_hint: String = (
+		"[J shape · -/+ size · ,/. ratio · O rotate]"
+		if brush_shape == "rectangle"
+		else "[J shape · -/+ size]"
+	)
+	var tool_text: String = "P %d:%s · M %d:%s · %s %s" % [
+		selected_material_id,
+		material_name(selected_material_id),
+		secondary_id,
+		material_name(secondary_id),
+		brush_summary(),
+		brush_hint,
 	]
-	if worker_start_error != OK:
-		thread_text = "thread-error-%d" % int(worker_start_error)
-	var physics_text: String = "rapier-error-%d" % int(rapier_start_error)
-	if rapier_bridge.is_initialized():
-		physics_text = "Rapier %.2f+%.2f ms | hard %d | collider peak %.2f ms | pending %d" % [
-			rapier_bridge.last_step_time_ms(),
-			rapier_bridge.last_flush_time_ms(),
-			rapier_bridge.hard_surface_shape_count(),
-			maximum_collider_time_ms,
-			rapier_bridge.pending_hard_surface_chunks(),
+	var profile_text: String = str(tower_profile.get("name", "baseline"))
+	if tower_context.get("micro_active", false):
+		var micro: Dictionary = tower_context.get("microscenario", {})
+		profile_text = "%s/%s" % [
+			str(micro.get("id", "micro")),
+			str(micro.get("mode", microscenario_mode)),
 		]
-	var player_text: String = "disabled" if tower_context.get("micro_active",false) and not tower_context.get("microscenario",{}).get("player_enabled",false) else "%.0f,%.0f" % [character_position.x,character_position.y]
-	status_label.text = "FPS %d | frame %.2f ms peak %.2f | render %d Hz %s %s | step %.2f ms | upload %.2f ms | %s\n%s | tick %d age %.1f ms | bridge %d patches %.1f KiB%s | cells %d + %d dormant | moved %d (%d ballistic) | blocks %d/%d + %d frozen | sched %d jobs/%d phases cap~%d\n%s | %s | %s %s | bodies %d contact + %d displaced + %d unresolved | player %s | camera %.0f,%.0f %s | %s | overruns %d | %s" % [
+	elif tower_context.get("water_active", false):
+		profile_text = "water %s" % str(
+			tower_context.get("water_policy_hash", "")
+		).left(8)
+	var recording_data: Dictionary = recording_status_for_hud()
+	var recording_text: String = "rec n/a"
+	if not recording_data.is_empty():
+		if bool(recording_data.get("failed", false)):
+			recording_text = "REC FAILED"
+		elif bool(recording_data.get("active", false)):
+			recording_text = "REC %dHz q%d/%d drop%d%s" % [
+				int(recording_data.get("capture_hz", 0)),
+				int(recording_data.get("queued_frames", 0)),
+				int(recording_data.get("queue_capacity", 0)),
+				int(recording_data.get("dropped_frames", 0)),
+				" priming" if not bool(recording_data.get("primed", false)) else "",
+			]
+		else:
+			recording_text = "rec off"
+	var run_text: String = "PAUSED" if paused else "RUN"
+	status_label.text = (
+		"FPS %d · frame %.2f/%.2fms · sim %.2fms · pub %s [H] age %.1fms · tick %d · cells %d + %d dormant · moved %d · overruns %d\n"
+		+ "player %s · %s · profile %s · %s · %s · F3 details"
+	) % [
 		int(Engine.get_frames_per_second()),
 		frame_time_ms,
 		maximum_frame_time_ms,
-		render_snapshot_hz,
-		cadence_text,
-		glow_text,
 		latest_snapshot.worker_step_time_ms,
-		upload_time_ms,
-		physics_text,
-		thread_text,
-		latest_snapshot.tick_index,
+		publication_text,
 		snapshot_age_ms,
-		last_render_patch_count,
-		float(last_render_patch_bytes) / 1024.0,
-		" full" if last_render_was_full_refresh else "",
+		latest_snapshot.tick_index,
 		latest_snapshot.scanned_last_tick,
 		latest_snapshot.dormant_cells_skipped_last_tick,
 		latest_snapshot.moves_last_tick,
-		latest_snapshot.sparse_flight_moves_last_tick,
-		latest_snapshot.active_blocks_last_tick,
-		latest_snapshot.eligible_blocks_last_tick,
-		latest_snapshot.frozen_blocks_last_tick,
-		latest_snapshot.scheduler_jobs_last_tick,
-		latest_snapshot.scheduler_parallel_phases_last_tick,
-		latest_snapshot.scheduler_thread_capacity_hint,
-		selection_text,
-		region_text,
-		emission_text,
-		adhesion_text,
-		latest_snapshot.rigid_body_contacts_last_tick,
-		latest_snapshot.rigid_body_displaced_last_tick,
-		latest_snapshot.rigid_body_unresolved_last_tick,
-		player_text,
-		camera_origin.x,
-		camera_origin.y,
-		follow_text,
-		window_text,
 		latest_snapshot.worker_overruns,
-		"PAUSED" if paused else "RUNNING",
+		player_text,
+		tool_text,
+		profile_text,
+		recording_text,
+		run_text,
 	]
+
+	if debug_stats_expanded:
+		var thread_text: String = "%s/%d threads" % [
+			latest_snapshot.backend_name,
+			latest_snapshot.scheduler_thread_capacity_hint,
+		]
+		if worker_start_error != OK:
+			thread_text = "thread-error-%d" % int(worker_start_error)
+		var physics_text: String = "rapier-error-%d" % int(rapier_start_error)
+		if rapier_bridge.is_initialized():
+			physics_text = "Rapier %.2f+%.2fms hard=%d collider=%.2fms pending=%d" % [
+				rapier_bridge.last_step_time_ms(),
+				rapier_bridge.last_flush_time_ms(),
+				rapier_bridge.hard_surface_shape_count(),
+				maximum_collider_time_ms,
+				rapier_bridge.pending_hard_surface_chunks(),
+			]
+		status_label.text += (
+			"\nDETAIL %s · bridge %d/%.1fKiB%s · blocks %d/%d+%d frozen · sched %d jobs/%d phases cap~%d · ballistic %d"
+			% [
+				thread_text,
+				last_render_patch_count,
+				float(last_render_patch_bytes) / 1024.0,
+				" full" if last_render_was_full_refresh else "",
+				latest_snapshot.active_blocks_last_tick,
+				latest_snapshot.eligible_blocks_last_tick,
+				latest_snapshot.frozen_blocks_last_tick,
+				latest_snapshot.scheduler_jobs_last_tick,
+				latest_snapshot.scheduler_parallel_phases_last_tick,
+				latest_snapshot.scheduler_thread_capacity_hint,
+				latest_snapshot.sparse_flight_moves_last_tick,
+			]
+		)
+		status_label.text += (
+			"\nPHYS %s · bodies %d/%d/%d · view %dx%d +%dx%d · camera %.0f,%.0f %s · %s · %s · %s"
+			% [
+				physics_text,
+				latest_snapshot.rigid_body_contacts_last_tick,
+				latest_snapshot.rigid_body_displaced_last_tick,
+				latest_snapshot.rigid_body_unresolved_last_tick,
+				current_view_size.x,
+				current_view_size.y,
+				simulation_margin.x,
+				simulation_margin.y,
+				camera_origin.x,
+				camera_origin.y,
+				"follow" if camera_follow_enabled else "free",
+				"windowed" if simulation_window_enabled else "whole-world",
+				"smooth" if cadence_lod_enabled else "raw",
+				"glow" if glow_enabled else "no-glow",
+			]
+		)
+
 	if latest_snapshot.tick_failure_count > 0:
-		status_label.text += " // STOPPED — R to reset. Fault %d: %s" % [
+		status_label.text += " // STOPPED — R reset. Fault %d: %s" % [
 			latest_snapshot.tick_failure_count,
 			latest_snapshot.last_tick_error,
 		]

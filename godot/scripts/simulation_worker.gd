@@ -12,10 +12,12 @@ const TICK_INTERVAL_USEC: int = 16667
 const MAX_BACKLOG_TICKS: int = 3
 const EMISSION_MATERIAL_MASK: int = 255
 const EMISSION_FLAGS_SHIFT: int = 8
-const DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC: int = 22222
+const DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC: int = 16667
 const HARD_SURFACE_SNAPSHOT_INTERVAL_USEC: int = 250000
 const RENDER_PATCH_METADATA_STRIDE: int = 6
 const MAX_PENDING_RENDER_PATCHES: int = 256
+const MAX_BRUSH_FOOTPRINT_CELLS: int = 4096
+const MAX_PENDING_BRUSH_COMMANDS: int = 8
 
 var _thread: Thread = Thread.new()
 var _mutex: Mutex = Mutex.new()
@@ -44,6 +46,7 @@ var _render_snapshot_interval_usec: int = DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 var _rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 
 var _pending_emissions: Array[Vector4i] = []
+var _pending_cell_emissions: Array[Dictionary] = []
 var _reset_requested: bool = false
 var _reset_spawn: Vector2 = Vector2(150.0, 145.0)
 var _reset_sampled_character_enabled: bool = true
@@ -409,6 +412,45 @@ func queue_emit_disc(
 	return true
 
 
+func queue_emit_cells(
+	points: PackedInt32Array,
+	material_id: int,
+	emission_flags: int = CyberCellWorld.EMISSION_FLAG_NONE
+) -> bool:
+	if points.is_empty() or (points.size() & 1) != 0:
+		return false
+	if points.size() / 2 > MAX_BRUSH_FOOTPRINT_CELLS:
+		return false
+	var packed_flags: int = emission_flags << EMISSION_FLAGS_SHIFT
+	var packed_material: int = (material_id & EMISSION_MATERIAL_MASK) | packed_flags
+	var command: Dictionary = {
+		"points": points.duplicate(),
+		"packed_material": packed_material,
+	}
+	_mutex.lock()
+	if _published_snapshot != null and _published_snapshot.simulation_failed:
+		_mutex.unlock()
+		return false
+	if (_published_snapshot != null
+		and _published_snapshot.lab_context.get("water_active",false)):
+		_mutex.unlock()
+		return false
+	if not _pending_cell_emissions.is_empty():
+		var last_command: Dictionary = _pending_cell_emissions.back()
+		if (
+			int(last_command.get("packed_material", -1)) == packed_material
+			and last_command.get("points", PackedInt32Array()) == points
+		):
+			_mutex.unlock()
+			return true
+	if _pending_cell_emissions.size() >= MAX_PENDING_BRUSH_COMMANDS:
+		_mutex.unlock()
+		return false
+	_pending_cell_emissions.append(command)
+	_mutex.unlock()
+	return true
+
+
 func queue_paint(
 	world_x: int,
 	world_y: int,
@@ -432,6 +474,7 @@ func queue_reset(
 	_reset_sampled_character_enabled = sampled_character_enabled
 	_reset_runtime_enclosure_recovery_enabled = runtime_enclosure_recovery_enabled
 	_pending_emissions.clear()
+	_pending_cell_emissions.clear()
 	_mutex.unlock()
 
 
@@ -479,6 +522,7 @@ func _worker_loop() -> void:
 		var local_render_snapshot_interval_usec: int = DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 		var local_rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 		var local_emissions: Array[Vector4i] = []
+		var local_cell_emissions: Array[Dictionary] = []
 		var local_reset_requested: bool = false
 		var local_reset_spawn: Vector2 = Vector2.ZERO
 		var local_reset_sampled_character_enabled: bool = true
@@ -502,6 +546,8 @@ func _worker_loop() -> void:
 		local_rigid_body_states = _rigid_body_states
 		local_emissions = _pending_emissions
 		_pending_emissions = []
+		local_cell_emissions = _pending_cell_emissions
+		_pending_cell_emissions = []
 		local_reset_requested = _reset_requested
 		local_reset_spawn = _reset_spawn
 		local_reset_sampled_character_enabled = _reset_sampled_character_enabled
@@ -521,10 +567,15 @@ func _worker_loop() -> void:
 			_last_render_snapshot_usec = -DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 		if _water_lab_active:
 			local_emissions.clear()
+			local_cell_emissions.clear()
 		if _micro_active:
 			for i: int in range(local_emissions.size() - 1, -1, -1):
 				var tool: String = "erase" if (local_emissions[i].w & EMISSION_MATERIAL_MASK) == 0 else "paint"
 				if not _scenario_host.allows_tool(tool): local_emissions.remove_at(i)
+			for i: int in range(local_cell_emissions.size() - 1, -1, -1):
+				var packed_material: int = int(local_cell_emissions[i].get("packed_material", 0))
+				var tool: String = "erase" if (packed_material & EMISSION_MATERIAL_MASK) == 0 else "paint"
+				if not _scenario_host.allows_tool(tool): local_cell_emissions.remove_at(i)
 		if _lab_active:
 			if not ((_water_lab_active and bool(_water_recipe.get("body_enabled",false))) or (_micro_active and _scenario_host.body_enabled())):
 				local_rigid_body_states = PackedFloat32Array()
@@ -587,6 +638,17 @@ func _worker_loop() -> void:
 					emission_command.w & EMISSION_MATERIAL_MASK,
 					emission_command.w >> EMISSION_FLAGS_SHIFT
 				)
+			for emission_batch: Dictionary in local_cell_emissions:
+				var points: PackedInt32Array = emission_batch.get("points", PackedInt32Array())
+				var packed_material: int = int(emission_batch.get("packed_material", 0))
+				for point_index: int in range(0, points.size(), 2):
+					_world.emit_disc(
+						points[point_index],
+						points[point_index + 1],
+						0,
+						packed_material & EMISSION_MATERIAL_MASK,
+						packed_material >> EMISSION_FLAGS_SHIFT
+					)
 
 			if not local_paused:
 				if (

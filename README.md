@@ -32,6 +32,11 @@ dev.cmd web
 0Preview.cmd
 ```
 
+A source-only checkout also has a repository-contained Windows desktop path:
+`launch-desktop.cmd`. It validates the pinned Godot/runtime inputs, prints the
+checkout/runtime identity and launches `godot/project.godot` without rebuilding
+the retained DLL; see the build guide for overrides and identity-only use.
+
 [Build instructions](docs/operations/local-build-and-validation.md) distinguish
 native DLL compilation, tests, Web exports and browser execution. Godot uses the
 exact 4.7 pin. Desktop has an asynchronous simulation owner; Web ticks are

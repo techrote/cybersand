@@ -79,6 +79,19 @@ func run() -> void:
 		"REM-003 owner-review scenario lacks registered gameplay guidance")
 	expect(bench.material_picker.disabled and bench.radius_input.editable,
 		"REM-003 erase-only owner-review tools do not match the declared contract")
+	expect(not bench.shape_picker.disabled,
+		"REM-003 erase-only owner-review did not expose brush geometry controls")
+	var retained_definition_hash: String = str(desktop.tower_context.microscenario.definition_hash)
+	expect(desktop.set_brush_shape("rectangle")
+		and desktop.set_brush_size(5)
+		and desktop.set_brush_rectangle_ratio(3),
+		"REM-003 brush controls rejected valid exploratory settings")
+	desktop.set_brush_rectangle_vertical(true)
+	desktop._refresh_microscenario_controls()
+	expect(str(desktop.tower_context.microscenario.definition_hash) == retained_definition_hash,
+		"exploratory brush settings mutated registered fixture identity")
+	expect(bench.ratio_input.visible and bench.orientation_button.visible,
+		"rectangle ratio/orientation controls were not exposed")
 	await screenshot("rem003-player-granular-review")
 
 	desktop.simulation_worker.stop_worker()

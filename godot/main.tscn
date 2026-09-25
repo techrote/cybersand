@@ -103,13 +103,14 @@ expand_mode = 1
 stretch_mode = 0
 
 [node name="Status" type="Label" parent="Layout"]
-custom_minimum_size = Vector2(0, 66)
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 text = "Starting simulation…"
 autowrap_mode = 2
 
 [node name="Help" type="Label" parent="Layout"]
+visible = false
 layout_mode = 2
 modulate = Color(0.7, 0.76, 0.86, 1)
-text = "A/D move • Space jetpack • Arrows pan • F follow • V view • B sim margin • L whole world • K smoothing • H render Hz • P pause • F3 stats • G glow • LMB/RMB paint/erase • 1–6 quick slot • Q/E material • Shift+Q/E group • C calm emission • T adhesion • R reset"
+text = "F3 compact/details • Shift+F3 hide stats • H publication Hz • J brush shape • -/+ brush size • ,/. rectangle ratio • O rectangle orientation • F8 clean MicroScenario HUD"
 autowrap_mode = 2

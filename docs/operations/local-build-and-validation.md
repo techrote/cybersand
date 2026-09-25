@@ -60,6 +60,32 @@ load the installed DLL: running them alone does **not** rebuild that DLL.
 Record its hash and source identity with the result. The wrapper allows 240 s
 for import, 180 s per Godot runner, and rejects Godot error output even with exit 0.
 
+### Repository-contained Windows desktop launcher
+
+**Current:** a source checkout can launch the retained desktop test project without
+the companion-workspace `dev.cmd`:
+
+```powershell
+.\launch-desktop.cmd
+.\launch-desktop.cmd -Godot C:\path\to\Godot_v4.7-stable_win64.exe
+.\launch-desktop.cmd -PrintIdentityOnly
+.\launch-desktop.cmd -Editor
+```
+
+The wrapper invokes [`tools/launch_desktop.ps1`](../../tools/launch_desktop.ps1).
+It accepts an explicit `-Godot` path or `CYBERSAND_GODOT`; otherwise it searches
+the established `C:\Godot47` location. It requires exactly
+`4.7.stable.official.5b4e0cb0f`, verifies that the project, retained CyberSand
+Windows DLL/provenance file and Rapier Windows DLL are present, verifies the
+CyberSand DLL SHA-256 against `runtime-provenance.json`, and prints checkout,
+Godot and runtime identities before launch. The default action runs
+`godot/project.godot` through its configured `main.tscn`; `-Editor` opens the
+same project in the editor.
+
+The launcher deliberately contains **no build step**. A missing, hash-mismatched or
+wrong-version runtime is an explicit failure; it never rebuilds, replaces or
+silently refreshes the retained DLL.
+
 M11 output byte equality now requires `CYBERSAND_VERIFY_M11_OUTPUT=1`; current
 builds keep compiler/source pin checks and identify their own tested outputs. See
 [validation policies](current-and-historical-validation.md). The existing local
