@@ -141,6 +141,11 @@ if ($PrintIdentityOnly) {
     exit 0
 }
 
+# Child Godot process inherits the exact checkout identity used by REC recording
+# provenance. Do not substitute the retained native source commit for the current
+# script checkout revision.
+$env:CYBERSAND_SOURCE_REVISION = $CheckoutHead
+
 $GodotArguments = @("--path", $ProjectDir)
 if ($Editor) {
     $GodotArguments += "--editor"

@@ -8,7 +8,7 @@ extends RefCounted
 # bounded single-producer queue. A dedicated writer thread performs JSON/BMP/raw
 # encoding and disk I/O. Queue pressure drops capture attempts, never simulation
 # ticks.
-const SCHEMA_ID: String = "cybersand-state-recording-v1"
+const SCHEMA_ID: String = "cybersand-state-recording-v2"
 const EVIDENCE_KIND: String = "simulation-state-evidence-not-exact-replay"
 const DEFAULT_CAPTURE_HZ: int = 15
 const DEFAULT_QUEUE_CAPACITY: int = 8
@@ -73,7 +73,8 @@ func start_recording(
 		identity: Dictionary,
 		writer_enabled: bool = true
 ) -> Error:
-	if is_active():
+	poll_finalization()
+	if is_active() or (_writer_thread.is_started() and _writer_thread.is_alive()):
 		return ERR_ALREADY_IN_USE
 
 	_reset_session_state()
@@ -118,7 +119,7 @@ func start_recording(
 		"roi": [_roi.position.x, _roi.position.y, _roi.size.x, _roi.size.y],
 		"retain_raw_ids": _retain_raw_ids,
 		"material_channels_retained": ["material_id"],
-		"visual_condition_channel": "intentionally omitted in REC-001 v1",
+		"visual_condition_channel": "intentionally omitted in REC-001 v2",
 		"temperature_state": "unavailable from immutable render publication; omitted",
 	}
 	_start_monotonic_usec = Time.get_ticks_usec()
@@ -165,7 +166,7 @@ func start_recording(
 	return OK
 
 
-func stop_recording(reason: String = "") -> Dictionary:
+func request_stop(reason: String = "") -> Dictionary:
 	_mutex.lock()
 	if not _active:
 		var inactive_status: Dictionary = _status_locked()
@@ -174,18 +175,34 @@ func stop_recording(reason: String = "") -> Dictionary:
 	_accepting = false
 	if not reason.is_empty() and _incomplete_reason.is_empty():
 		_incomplete_reason = reason
+	var should_post: bool = not _stop_requested and _writer_enabled
 	_stop_requested = true
-	_mutex.unlock()
-
-	if _writer_enabled:
-		_writer_semaphore.post()
-		if _writer_thread.is_started():
-			_writer_thread.wait_to_finish()
-	else:
-		_mutex.lock()
+	var writer_enabled: bool = _writer_enabled
+	if not writer_enabled:
 		_queue.clear()
-		_mutex.unlock()
+		_active = false
+	var requested_status: Dictionary = _status_locked()
+	_mutex.unlock()
+	if should_post:
+		_writer_semaphore.post()
+	return requested_status
 
+
+func poll_finalization() -> Dictionary:
+	# Joining a completed writer is non-blocking. Never wait for a live writer
+	# from the presentation loop.
+	if _writer_thread.is_started() and not _writer_thread.is_alive():
+		_writer_thread.wait_to_finish()
+	return status()
+
+
+func stop_recording(reason: String = "") -> Dictionary:
+	# Synchronous drain is reserved for tests/shutdown. Interactive F10 uses
+	# request_stop() and lets the writer finish off the presentation thread.
+	request_stop(reason)
+	if _writer_enabled and _writer_thread.is_started():
+		_writer_semaphore.post()
+		_writer_thread.wait_to_finish()
 	_mutex.lock()
 	_active = false
 	var result: Dictionary = _status_locked()
@@ -240,7 +257,9 @@ func ingest_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 		)
 		return
 
-	var render_advanced: bool = false
+	# Material generations and actor samples are independent. Fold a new material
+	# publication when present, but allow capture cadence to advance using later
+	# immutable worker snapshots even when material bytes are unchanged.
 	if (
 		snapshot.render_snapshot_serial > 0
 		and snapshot.render_snapshot_serial > _last_render_snapshot_serial
@@ -257,20 +276,16 @@ func ingest_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 			_mark_incomplete_and_stop(patch_error, true)
 			return
 		_last_render_snapshot_serial = snapshot.render_snapshot_serial
-		render_advanced = true
 
-	# One evidence frame belongs to one immutable render generation. Later worker
-	# snapshots may legitimately carry the same material payload with a newer
-	# simulation tick; those must not relabel or duplicate the material frame.
-	if not _primed or not render_advanced:
+	if not _primed:
 		return
 
-	var render_usec: int = snapshot.render_generated_usec
-	if render_usec <= 0:
-		render_usec = snapshot.published_usec
-	if render_usec < _next_capture_usec:
+	var capture_usec: int = snapshot.published_usec
+	if capture_usec <= 0:
+		capture_usec = Time.get_ticks_usec()
+	if capture_usec < _next_capture_usec:
 		return
-	while _next_capture_usec <= render_usec:
+	while _next_capture_usec <= capture_usec:
 		_next_capture_usec += _capture_interval_usec
 
 	_capture_attempts += 1
@@ -287,8 +302,6 @@ func ingest_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 	var copy_usec: int = Time.get_ticks_usec() - copy_started
 
 	_mutex.lock()
-	# There is only one producer. The writer can only drain between the earlier
-	# capacity check and this append, so this cannot become fuller in between.
 	if _queue.size() >= _queue_capacity:
 		_record_drop_locked(snapshot, "queue-full-after-copy")
 		_mutex.unlock()
@@ -368,20 +381,26 @@ func _apply_render_publication(snapshot: CyberSimulationSnapshot) -> String:
 
 
 func _frame_metadata(snapshot: CyberSimulationSnapshot) -> Dictionary:
-	var context: Dictionary = (
+	var material_context: Dictionary = (
 		snapshot.render_context
 		if not snapshot.render_context.is_empty()
 		else snapshot.lab_context
 	)
-	var micro: Dictionary = context.get("microscenario", {})
+	var current_context: Dictionary = (
+		snapshot.lab_context
+		if not snapshot.lab_context.is_empty()
+		else material_context
+	)
+	var micro: Dictionary = material_context.get("microscenario", {})
 	var presentation: Dictionary = micro.get("presentation", {})
-	var profile: Dictionary = context.get("profile", {})
-	var player_environment_profile: Dictionary = context.get(
+	var profile: Dictionary = material_context.get("profile", {})
+	var player_environment_profile: Dictionary = current_context.get(
 		"player_environment_profile",
 		{}
 	)
+
 	var bodies: Array[Dictionary] = []
-	var body_states: PackedFloat32Array = snapshot.render_rigid_body_states
+	var body_states: PackedFloat32Array = snapshot.current_rigid_body_states
 	var stride: int = CyberRigidBodyCoupling.INPUT_STRIDE
 	for offset: int in range(0, body_states.size() - stride + 1, stride):
 		bodies.append({
@@ -404,16 +423,51 @@ func _frame_metadata(snapshot: CyberSimulationSnapshot) -> Dictionary:
 			"sample_serial": roundi(body_states[offset + CyberRigidBodyCoupling.INPUT_SAMPLE_SERIAL]),
 		})
 
+	var representation: String = str(snapshot.player_representation)
+	var active_body_id: int = snapshot.player_body_id
+	var player: Dictionary = {
+		"representation": representation,
+		"body_id": active_body_id,
+		"origin": [snapshot.character_position.x, snapshot.character_position.y],
+		"extent": [CyberSampledCharacter.BODY_SIZE.x, CyberSampledCharacter.BODY_SIZE.y],
+		"velocity": [snapshot.character_velocity.x, snapshot.character_velocity.y],
+		"grounded": snapshot.character_grounded,
+		"grounded_available": true,
+		"rotation_radians": 0.0,
+		"runtime_recovery_enabled": snapshot.character_runtime_recovery_enabled,
+		"environment_profile": player_environment_profile.duplicate(true),
+	}
+	if active_body_id > 0:
+		for body: Dictionary in bodies:
+			if int(body.get("id", 0)) != active_body_id:
+				continue
+			var center: Array = body.get("center", [])
+			var extent: Array = body.get("extent", [])
+			var velocity: Array = body.get("linear_velocity", [])
+			if center.size() == 2 and extent.size() == 2:
+				player.origin = [
+					float(center[0]) - float(extent[0]) * 0.5,
+					float(center[1]) - float(extent[1]) * 0.5,
+				]
+				player.extent = extent.duplicate()
+			if velocity.size() == 2:
+				player.velocity = velocity.duplicate()
+			player.rotation_radians = float(body.get("rotation_radians", 0.0))
+			player.grounded = false
+			player.grounded_available = false
+			player.runtime_recovery_enabled = false
+			break
+
 	var render_usec: int = snapshot.render_generated_usec
 	if render_usec <= 0:
 		render_usec = snapshot.published_usec
 	var render_tick: int = snapshot.render_tick_index
 	if render_tick <= 0:
 		render_tick = snapshot.tick_index
-	var player_position: Vector2 = snapshot.render_character_position
-	var player_velocity: Vector2 = snapshot.render_character_velocity
-	var player_grounded: bool = snapshot.render_character_grounded
-	var elapsed_usec: int = maxi(0, render_usec - _start_monotonic_usec)
+	var capture_usec: int = snapshot.published_usec
+	if capture_usec <= 0:
+		capture_usec = render_usec
+	var elapsed_usec: int = maxi(0, capture_usec - _start_monotonic_usec)
 	var source_identity: Dictionary = {}
 	var source_value: Variant = _identity.get("source", {})
 	if source_value is Dictionary:
@@ -427,18 +481,32 @@ func _frame_metadata(snapshot: CyberSimulationSnapshot) -> Dictionary:
 		"evidence_kind": EVIDENCE_KIND,
 		"snapshot_serial": snapshot.serial,
 		"render_snapshot_serial": snapshot.render_snapshot_serial,
-		"completed_simulation_tick": render_tick,
+		"completed_simulation_tick": snapshot.tick_index,
 		"render_generated_monotonic_usec": render_usec,
 		"consumer_snapshot_tick": snapshot.tick_index,
-		"consumer_snapshot_published_monotonic_usec": snapshot.published_usec,
+		"consumer_snapshot_published_monotonic_usec": capture_usec,
 		"elapsed_monotonic_usec": elapsed_usec,
 		"wall_unix_usec_estimate": _start_wall_unix_usec + elapsed_usec,
 		"world_revision": snapshot.world_revision,
+		"simulation_world_revision": snapshot.simulation_world_revision,
 		"backend": snapshot.backend_name,
 		"worker_count": snapshot.scheduler_thread_capacity_hint,
-		"simulation_time_ms": snapshot.render_simulation_time_ms,
-		"worker_step_time_ms": snapshot.render_worker_step_time_ms,
-		"worker_overruns": snapshot.render_worker_overruns,
+		"simulation_time_ms": snapshot.simulation_time_ms,
+		"worker_step_time_ms": snapshot.worker_step_time_ms,
+		"worker_overruns": snapshot.worker_overruns,
+		"material_generation": {
+			"render_snapshot_serial": snapshot.render_snapshot_serial,
+			"completed_simulation_tick": render_tick,
+			"generated_monotonic_usec": render_usec,
+			"world_revision": snapshot.world_revision,
+		},
+		"actor_sample": {
+			"snapshot_serial": snapshot.serial,
+			"completed_simulation_tick": snapshot.tick_index,
+			"published_monotonic_usec": capture_usec,
+			"representation": representation,
+			"player_body_id": active_body_id,
+		},
 		"render_publication": {
 			"serial": snapshot.render_snapshot_serial,
 			"channels": snapshot.render_channels,
@@ -446,17 +514,10 @@ func _frame_metadata(snapshot: CyberSimulationSnapshot) -> Dictionary:
 			"patch_count": snapshot.render_patch_rectangles.size() / RENDER_PATCH_METADATA_STRIDE,
 			"payload_bytes": snapshot.render_patch_cells.size(),
 		},
-		"player": {
-			"representation": "sampled-character",
-			"origin": [player_position.x, player_position.y],
-			"extent": [CyberSampledCharacter.BODY_SIZE.x, CyberSampledCharacter.BODY_SIZE.y],
-			"velocity": [player_velocity.x, player_velocity.y],
-			"grounded": player_grounded,
-			"environment_profile": player_environment_profile.duplicate(true),
-		},
+		"player": player,
 		"rigid_bodies": bodies,
 		"scenario": {
-			"active": bool(context.get("micro_active", false)),
+			"active": bool(material_context.get("micro_active", false)),
 			"id": str(micro.get("id", "")),
 			"definition_hash": str(micro.get("definition_hash", "")),
 			"source_recipe": str(micro.get("source_recipe", "")),
@@ -468,9 +529,9 @@ func _frame_metadata(snapshot: CyberSimulationSnapshot) -> Dictionary:
 		},
 		"transport_profile": {
 			"name": str(profile.get("name", "")),
-			"hash": str(context.get("profile_hash", "")),
+			"hash": str(material_context.get("profile_hash", "")),
 		},
-		"water_policy_hash": str(context.get("water_policy_hash", "")),
+		"water_policy_hash": str(material_context.get("water_policy_hash", "")),
 		"recording_configuration": _config.duplicate(true),
 		"recording_roi": [_roi.position.x, _roi.position.y, _roi.size.x, _roi.size.y],
 		"session_identity": {
@@ -485,6 +546,7 @@ func _frame_metadata(snapshot: CyberSimulationSnapshot) -> Dictionary:
 		},
 	}
 
+
 func _record_drop_locked(snapshot: CyberSimulationSnapshot, reason: String) -> void:
 	_dropped_frames += 1
 	var render_usec: int = snapshot.render_generated_usec
@@ -497,15 +559,18 @@ func _record_drop_locked(snapshot: CyberSimulationSnapshot, reason: String) -> v
 		"attempt": _capture_attempts,
 		"reason": reason,
 		"render_snapshot_serial": snapshot.render_snapshot_serial,
-		"completed_simulation_tick": render_tick,
+		"material_generation_tick": render_tick,
+		"actor_sample_tick": snapshot.tick_index,
 		"render_generated_monotonic_usec": render_usec,
-		"consumer_snapshot_published_monotonic_usec": snapshot.published_usec,
+		"actor_sample_published_monotonic_usec": snapshot.published_usec,
 		"capture_observed_monotonic_usec": Time.get_ticks_usec(),
+		"player_representation": str(snapshot.player_representation),
 	}
 	if _drop_events.size() < DROP_EVENT_LIMIT:
 		_drop_events.append(event)
 	else:
 		_drop_events_omitted += 1
+
 
 func _writer_loop() -> void:
 	while true:
@@ -537,14 +602,15 @@ func _writer_loop() -> void:
 
 	var disposition: String = _final_disposition()
 	var final_error: String = _write_manifest_file(disposition)
+	_mutex.lock()
 	if not final_error.is_empty():
-		_mutex.lock()
 		_failed = true
 		if _failure_reason.is_empty():
 			_failure_reason = final_error
 		if _incomplete_reason.is_empty():
 			_incomplete_reason = final_error
-		_mutex.unlock()
+	_active = false
+	_mutex.unlock()
 
 
 func _write_frame(job: Dictionary) -> String:
@@ -573,7 +639,7 @@ func _write_frame(job: Dictionary) -> String:
 	metadata["review_bitmap_file"] = bmp_name
 	metadata["review_bitmap_note"] = (
 		"8-bit indexed BMP; material palette indices equal serialized material IDs; "
-		+ "index 255 is sampled-player outline and 254 is an axis-aligned rigid-body "
+		+ "index 255 is the active player outline and 254 is a non-player rigid-body "
 		+ "review outline; exact rigid-body rotation remains in JSON metadata"
 	)
 
@@ -600,10 +666,13 @@ func _draw_review_overlays(display_ids: PackedByteArray, metadata: Dictionary) -
 			float(player_extent[1]),
 			PLAYER_PALETTE_INDEX
 		)
+	var player_body_id: int = int(player.get("body_id", 0))
 	for body_variant: Variant in metadata.get("rigid_bodies", []):
 		if not body_variant is Dictionary:
 			continue
 		var body: Dictionary = body_variant
+		if player_body_id > 0 and int(body.get("id", 0)) == player_body_id:
+			continue
 		var center: Array = body.get("center", [])
 		var extent: Array = body.get("extent", [])
 		if center.size() != 2 or extent.size() != 2:
@@ -746,7 +815,7 @@ func _manifest_payload(disposition: String) -> Dictionary:
 	var drops: Array[Dictionary] = _drop_events.duplicate(true)
 	var payload: Dictionary = {
 		"schema_id": SCHEMA_ID,
-		"schema_version": 1,
+		"schema_version": 2,
 		"evidence_kind": EVIDENCE_KIND,
 		"disposition": disposition,
 		"incomplete_reason": _incomplete_reason,
@@ -768,15 +837,15 @@ func _manifest_payload(disposition: String) -> Dictionary:
 			"rgba8": CyberMaterialAppearanceLut.BASE_RGBA8.duplicate(),
 			"review_overlay_indices": {
 				"rigid_body": BODY_PALETTE_INDEX,
-				"sampled_player": PLAYER_PALETTE_INDEX,
+				"active_player": PLAYER_PALETTE_INDEX,
 			},
 		},
 		"state_scope": {
 			"material_ids": "retained for every written frame",
-			"player": "sampled-character position/extent/velocity/grounded",
+			"player": "active sampled or Rapier player representation and actor-sample state",
 			"rigid_bodies": "copied owner input transform/extent/velocity/mass/sample serial",
 			"temperature": "unavailable from immutable render publication; not fabricated",
-			"visual_condition_channel": "intentionally omitted in REC-001 v1",
+			"visual_condition_channel": "intentionally omitted in REC-001 v2",
 			"replay": "not an exact replay stream",
 		},
 		"counters": {
@@ -840,6 +909,7 @@ func _status_locked() -> Dictionary:
 	return {
 		"active": _active,
 		"accepting": _accepting,
+		"finalizing": _active and not _accepting,
 		"primed": _primed,
 		"failed": _failed,
 		"failure_reason": _failure_reason,
