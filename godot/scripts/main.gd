@@ -2364,11 +2364,15 @@ func update_status() -> void:
 	var publication_text: String = "%dHz target" % render_snapshot_hz
 	if measured_render_publication_hz > 0.0:
 		publication_text += "/%.1f actual" % measured_render_publication_hz
+	var player_available: bool = (
+		player_uses_barrel()
+		or not tower_context.get("micro_active", false)
+		or tower_context.get("microscenario", {}).get("player_enabled", false)
+	)
 	var player_text: String = (
-		"disabled"
-		if tower_context.get("micro_active",false)
-			and not tower_context.get("microscenario",{}).get("player_enabled",false)
-		else "%.0f,%.0f" % [character_position.x, character_position.y]
+		"%.0f,%.0f" % [character_position.x, character_position.y]
+		if player_available
+		else "disabled"
 	)
 	player_text += " / " + player_representation_identity()
 	player_text += " / " + str(active_player_environment_profile.get("id", "current-baseline"))
