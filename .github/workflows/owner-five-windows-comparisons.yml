@@ -1,0 +1,107 @@
+name: Owner five Windows desktop comparisons
+
+on:
+  push:
+    branches: [compare/owner-five-windows-20260926]
+    paths:
+      - '.github/workflows/owner-five-windows-comparisons.yml'
+      - 'tools/package_owner_comparisons.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: owner-five-windows-comparisons
+  cancel-in-progress: true
+
+env:
+  GIT_LFS_SKIP_SMUDGE: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  package:
+    if: github.ref == 'refs/heads/compare/owner-five-windows-20260926'
+    name: Package and Windows-smoke five preserved builds
+    runs-on: windows-2022
+    timeout-minutes: 25
+    steps:
+      - name: Check out comparison recipe and retained history
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          lfs: false
+
+      - name: Validate packaging script
+        shell: pwsh
+        run: |
+          python --version
+          python -m py_compile tools/package_owner_comparisons.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Assemble source-matched Windows bundles and execute startup smoke
+        shell: pwsh
+        run: |
+          python tools/package_owner_comparisons.py
+          exit $LASTEXITCODE
+
+      - name: Publish A - earlier desktop
+        if: ${{ !cancelled() && hashFiles('comparison-output/CyberSand-A/manifest.json') != '' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CyberSand-A-earlier-desktop
+          path: comparison-output/CyberSand-A/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Publish B - soliding infrastructure checkpoint
+        if: ${{ !cancelled() && hashFiles('comparison-output/CyberSand-B/manifest.json') != '' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CyberSand-B-soliding-infrastructure
+          path: comparison-output/CyberSand-B/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Publish C - body coupling checkpoint
+        if: ${{ !cancelled() && hashFiles('comparison-output/CyberSand-C/manifest.json') != '' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CyberSand-C-body-coupling
+          path: comparison-output/CyberSand-C/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Publish D - impact checkpoint
+        if: ${{ !cancelled() && hashFiles('comparison-output/CyberSand-D/manifest.json') != '' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CyberSand-D-impact
+          path: comparison-output/CyberSand-D/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Publish E - current combined desktop
+        if: ${{ !cancelled() && hashFiles('comparison-output/CyberSand-E/manifest.json') != '' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CyberSand-E-current-combined
+          path: comparison-output/CyberSand-E/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Retain build receipts and any failure logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: five-comparison-build-receipts
+          path: |
+            comparison-output/build-report.json
+            comparison-output/*/evidence/*.log
+          if-no-files-found: warn
+          retention-days: 14
