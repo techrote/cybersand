@@ -1,4 +1,4 @@
-"""Private owner comparison bundles. Packaging only; never edits refs or physics."""
+"""Owner comparison bundles. Packaging only; never edits refs or physics."""
 from __future__ import annotations
 import hashlib
 import json
@@ -175,7 +175,8 @@ def package(repo: Path, staging: Path, output: Path, engine_dir: Path, engine_id
         if not file.is_file():
             continue
         rel = file.relative_to(work / 'godot')
-        if '.godot' in rel.parts or file.suffix.lower() in {'.so','.wasm','.dylib','.a','.lib','.pdb'}:
+        foreign_framework = any(part.endswith(('.framework', '.xcframework')) for part in rel.parts)
+        if '.godot' in rel.parts or foreign_framework or file.suffix.lower() in {'.so','.wasm','.dylib','.a','.lib','.pdb'}:
             continue
         if file.is_symlink():
             raise RuntimeError('Unexpected project symlink: ' + str(rel))
