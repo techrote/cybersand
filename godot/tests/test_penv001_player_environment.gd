@@ -263,7 +263,7 @@ func _test_traversal_bands() -> void:
 	)
 
 	# Owner explicitly tested 2/4/6 and rejected the old whole-box model. This
-	# profile is the primary PENV-002 local-contour classification regression.
+	# profile is the primary PENV-002 owner-rejected-case classification regression.
 	var traversal: Dictionary = baseline.duplicate(true)
 	traversal.id = "step-knee-clamber-2-4-6"
 	traversal.step_height = 2
