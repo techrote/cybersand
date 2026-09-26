@@ -119,10 +119,15 @@ static func recipe(scenario_id: String, seed: int = 0) -> Dictionary:
 			_water(water_fills, 44, 218, 390, 32, 192, 0)
 			_sample(actions, 360, 38, 160, 402, 96)
 		"steps":
+			# Downhill staircase: Water starts on the highest left tread and can
+			# spill only to the right. The previous recipe accidentally built an
+			# uphill staircase in front of the Water, so it mostly tested a static
+			# block against a wall instead of repeated step-edge relaxation.
+			_rect(rectangles, 76, 80, 6, 42, WALL)
 			for index: int in range(7):
-				_rect(rectangles, 80 + index * 45, 230 - index * 18, 45, 26 + index * 18, WALL)
-			_water(water_fills, 82, 192, 42, 38, 255, 12)
-			_action(actions, 0, "erase", 122, 192, 2, 38, EMPTY, 0, 0)
+				_rect(rectangles, 80 + index * 45, 122 + index * 18, 45, 134 - index * 18, WALL)
+			_water(water_fills, 82, 84, 42, 38, 255, 12)
+			_sample(actions, 600, 76, 80, 319, 176)
 		"u-vessel":
 			_rect(rectangles, 104, 80, 8, 176, WALL)
 			_rect(rectangles, 104, 248, 270, 8, WALL)
