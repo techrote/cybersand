@@ -85,3 +85,14 @@ landing disturbance, PCHAR barrel control, generic body coupling or soliding.
 
 Runtime/CI success will establish engineering integration only. The replacement
 requires a later owner feel review before it can be described as gameplay-acceptable.
+
+
+## Validation trigger note
+
+The first ready-head Godot matrix completed Linux/Windows builds and all four
+Linux regression shards successfully, including the replaced PENV traversal
+regression. GitHub nevertheless marked the overall workflow cancelled because a
+duplicate pull-request event superseded that run. This documentation-only
+successor commit exists solely to trigger an ordinary non-draft synchronize event
+for one unambiguous exact-head validation set; no sampled traversal source or test
+semantics change in this commit.
