@@ -2381,6 +2381,16 @@ func update_status() -> void:
 	)
 	player_text += " / " + player_representation_identity()
 	player_text += " / " + str(active_player_environment_profile.get("id", "current-baseline"))
+	if (
+		not player_uses_barrel()
+		and latest_snapshot != null
+		and latest_snapshot.character_traversal_band != "none"
+	):
+		player_text += " / trav %s L%d C%d" % [
+			latest_snapshot.character_traversal_band,
+			latest_snapshot.character_traversal_ledge_height,
+			latest_snapshot.character_traversal_clearance_height,
+		]
 	var secondary_id: int = effective_secondary_material_id()
 	var brush_hint: String = (
 		"[J shape · -/+ size · ,/. ratio · O rotate]"

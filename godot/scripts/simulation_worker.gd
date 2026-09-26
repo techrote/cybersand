@@ -899,6 +899,14 @@ func _publish_snapshot(
 	)
 	snapshot.character_last_recovery_kind = _character.last_recovery_kind
 	snapshot.character_last_recovery_offset = _character.last_recovery_offset
+	snapshot.character_traversal_band = _character.last_traversal_band
+	snapshot.character_traversal_ledge_height = _character.last_traversal_ledge_height
+	snapshot.character_traversal_clearance_height = (
+		_character.last_traversal_clearance_height
+	)
+	snapshot.character_traversal_horizontal_progress = (
+		_character.last_traversal_horizontal_progress
+	)
 	snapshot.tick_index = _world.tick_index
 	snapshot.moves_last_tick = _world.moves_last_tick
 	snapshot.scanned_last_tick = _world.scanned_last_tick

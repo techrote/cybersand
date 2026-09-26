@@ -57,6 +57,10 @@ var character_invalid_spawn_recovery_attempts: int = 0
 var character_invalid_spawn_recovery_successes: int = 0
 var character_last_recovery_kind: String = ""
 var character_last_recovery_offset: Vector2 = Vector2.ZERO
+var character_traversal_band: String = "none"
+var character_traversal_ledge_height: int = 0
+var character_traversal_clearance_height: int = 0
+var character_traversal_horizontal_progress: float = 0.0
 
 var tick_index: int = 0
 var moves_last_tick: int = 0
