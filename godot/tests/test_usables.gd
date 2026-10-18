@@ -87,6 +87,8 @@ func _tools() -> void:
 	_expect(_count_material(2) > 5, "Sand Scatter did not deposit a broad fan")
 	var writes_after_primary: int = int(runtime.snapshot().write_count_last)
 	world.cells.clear()
+	_step(_action(Catalog.index_for(&"sand_scatter")), 1.0 / 15.0)
+	_step(_action(Catalog.index_for(&"sand_scatter")), 1.0 / 15.0)
 	_step(_action(Catalog.index_for(&"sand_scatter"), false, false, true, 1.0))
 	_expect(int(runtime.snapshot().write_count_last) > 0, "tool secondary precision pulse did not apply")
 	_expect(int(runtime.snapshot().write_count_last) <= writes_after_primary, "precision pulse exceeded primary write work")
