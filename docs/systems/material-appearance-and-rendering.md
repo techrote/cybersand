@@ -103,7 +103,14 @@ particles. `apply_ambient_particles` draws embers above hot or burning cells and
 fumes above Acid/Toxic Sludge in Empty cells; a candidate particle reads at most
 three cells below it. Particles are lattice-anchored in world space and never
 become per-cell objects, lights or simulation state. They raise the measured
-world-pass GPU cost (see the review record). The
+world-pass GPU cost (see the review record).
+
+`material_colour` gathers the four neighbour IDs once per evaluated snapshot and
+shares them between `apply_volume_and_contact` and the structural relief.
+That stage adds liquid depth shading (three extra upward reads for liquid pixels
+only), exposed-surface froth/skin, soft gas and foam boundaries, neighbour
+contact effects (molten/water flashes, boiling, acid fizz, fire flaring on fuel),
+emitter rim light on adjacent solids and soft ambient occlusion in Empty cells. The
 [2026-10-18 review](../audits/2026-10-18-material-readability-pass.md) records the
 paired captures and limits. The
 [construction catalogue](themed-construction-materials.md) owns exact themed

@@ -162,16 +162,11 @@ float boundary_strength(int material_id, int neighbour_id) {
 	return 0.34;
 }
 
-vec4 apply_neighbour_relief(
-	vec4 colour,
-	int material_id,
-	vec2 pixel,
-	bool previous_snapshot
-) {
-	int above_id = sampled_material_id(pixel + vec2(0.0, -1.0), previous_snapshot);
-	int below_id = sampled_material_id(pixel + vec2(0.0, 1.0), previous_snapshot);
-	int left_id = sampled_material_id(pixel + vec2(-1.0, 0.0), previous_snapshot);
-	int right_id = sampled_material_id(pixel + vec2(1.0, 0.0), previous_snapshot);
+vec4 apply_neighbour_relief(vec4 colour, int material_id, ivec4 neighbours) {
+	int above_id = neighbours.x;
+	int below_id = neighbours.y;
+	int left_id = neighbours.z;
+	int right_id = neighbours.w;
 
 	if (is_relief_solid(material_id)) {
 		float top_edge = boundary_strength(material_id, above_id);
@@ -200,6 +195,132 @@ vec4 apply_neighbour_relief(
 	// buffer. It is derived from the same immutable material texture.
 	if (material_id == 0 && is_relief_solid(above_id)) {
 		colour.rgb *= 0.68;
+	}
+	// Soft ambient occlusion from the remaining solid neighbours.
+	if (material_id == 0) {
+		float occluders = float(is_relief_solid(below_id)) + float(is_relief_solid(left_id))
+			+ float(is_relief_solid(right_id));
+		colour.rgb *= 1.0 - occluders * 0.09;
+	}
+	return colour;
+}
+
+bool is_emitter(int id) {
+	return id == 5 || id == 6 || id == 8 || id == 34 || id == 36 || (id >= 77 && id <= 80);
+}
+
+vec3 emitter_light(int id) {
+	if (id == 6) return vec3(1.0, 0.55, 0.15);
+	if (id == 8) return vec3(1.0, 0.35, 0.08);
+	if (id == 36) return vec3(1.0, 0.68, 0.30);
+	if (id == 34) return vec3(1.0, 0.92, 0.45);
+	if (id == 77) return vec3(0.20, 1.0, 0.92);
+	if (id == 78) return vec3(1.0, 0.25, 0.75);
+	if (id == 79) return vec3(1.0, 0.70, 0.18);
+	if (id == 80) return vec3(0.85, 0.92, 1.0);
+	if (id == 5) return vec3(0.60, 0.25, 0.85);
+	return vec3(0.0);
+}
+
+bool is_water_like(int id) {
+	return id == 3 || id == 24 || id == 21 || id == 9;
+}
+
+bool is_fuel(int id) {
+	return id == 7 || id == 11 || id == 16 || id == 27 || id == 46 || id == 47 || id == 26;
+}
+
+// Volume, edge and contact shading from the shared neighbour IDs plus, for
+// liquids only, three further reads straight up to estimate depth below the
+// surface. Presentation only: nothing here feeds back into the simulation.
+vec4 apply_volume_and_contact(
+	vec4 colour,
+	int material_id,
+	vec2 pixel,
+	ivec4 neighbours,
+	bool previous_snapshot,
+	float condition
+) {
+	float t = presentation_time();
+	int above_id = neighbours.x;
+	float flick = step(0.55, value_noise(pixel * 0.8 + vec2(t * 7.0, -t * 5.0)));
+
+	if (is_liquid_surface(material_id)) {
+		float depth = float(above_id == material_id)
+			+ float(sampled_material_id(pixel + vec2(0.0, -3.0), previous_snapshot) == material_id)
+			+ float(sampled_material_id(pixel + vec2(0.0, -6.0), previous_snapshot) == material_id)
+			+ float(sampled_material_id(pixel + vec2(0.0, -10.0), previous_snapshot) == material_id);
+		depth *= 0.25;
+		bool exposed = above_id != material_id && !is_liquid_surface(above_id);
+		if (material_id == 8 || material_id == 36) {
+			// Molten: hotter with depth, darker skin and flaring bursts at the top.
+			colour.rgb *= mix(0.88, 1.18, depth);
+			if (exposed) {
+				float skin = value_noise(vec2(pixel.x / 2.0 - t * 0.6, t * 0.4));
+				colour.rgb = mix(colour.rgb, vec3(0.22, 0.06, 0.03), smoothstep(0.35, 0.7, skin) * 0.55);
+				colour.rgb = mix(colour.rgb, vec3(1.0, 0.92, 0.6), step(0.82, skin) * flick);
+			}
+		} else {
+			vec3 deep = material_id == 3 || material_id == 24
+				? vec3(0.02, 0.08, 0.22) : colour.rgb * 0.45;
+			colour.rgb = mix(colour.rgb * mix(1.06, 0.72, depth), deep, depth * 0.30);
+			if (exposed) {
+				float froth = value_noise(vec2(pixel.x / 1.7 - t * 1.8, t * 0.6 + pixel.y));
+				vec3 froth_colour = material_id == 12 ? vec3(0.92, 1.0, 0.45)
+					: material_id == 32 ? vec3(0.55, 1.0, 0.45)
+					: material_id == 16 ? vec3(0.55, 0.45, 0.75)
+					: material_id == 33 ? vec3(0.95, 0.97, 1.0)
+					: vec3(0.85, 0.95, 1.0);
+				colour.rgb = mix(colour.rgb, froth_colour, smoothstep(0.55, 0.85, froth) * 0.65);
+			}
+		}
+	}
+
+	// Gas and foam volumes thin out at their boundaries instead of ending in
+	// hard squares.
+	if (material_id == 4 || material_id == 22 || material_id == 37 || material_id == 6) {
+		float same = float(neighbours.x == material_id) + float(neighbours.y == material_id)
+			+ float(neighbours.z == material_id) + float(neighbours.w == material_id);
+		float edge = 1.0 - same * 0.25;
+		if (material_id == 6) {
+			colour.rgb *= 1.0 - edge * 0.22;
+		} else {
+			colour.a *= 1.0 - edge * 0.55;
+			if (material_id == 37) colour.rgb += vec3(0.10) * edge;
+		}
+	}
+
+	// Contact reactions between neighbouring materials.
+	bool touches_water = is_water_like(neighbours.x) || is_water_like(neighbours.y)
+		|| is_water_like(neighbours.z) || is_water_like(neighbours.w);
+	bool touches_hot = neighbours.x == 8 || neighbours.y == 8 || neighbours.z == 8
+		|| neighbours.w == 8 || neighbours.x == 36 || neighbours.y == 36
+		|| neighbours.z == 36 || neighbours.w == 36 || neighbours.y == 6;
+	if ((material_id == 8 || material_id == 36) && touches_water) {
+		colour.rgb = mix(colour.rgb, vec3(1.0, 0.97, 0.88), flick * 0.75);
+	}
+	if (is_water_like(material_id) && touches_hot) {
+		float boil = step(0.5, value_noise(pixel * 1.3 + vec2(0.0, t * 9.0)));
+		colour.rgb = mix(colour.rgb, vec3(0.92, 0.97, 1.0), boil * 0.7);
+	}
+	if (material_id == 12 || material_id == 32) {
+		bool etching = is_relief_solid(neighbours.x) || is_relief_solid(neighbours.y)
+			|| is_relief_solid(neighbours.z) || is_relief_solid(neighbours.w);
+		if (etching) {
+			float fizz = step(0.72, value_noise(pixel * 1.6 + vec2(t * 8.0, t * 3.0)));
+			colour.rgb = mix(colour.rgb, vec3(0.95, 1.0, 0.55), fizz * 0.7);
+		}
+	}
+	if (material_id == 6 && (is_fuel(neighbours.x) || is_fuel(neighbours.y)
+			|| is_fuel(neighbours.z) || is_fuel(neighbours.w))) {
+		colour.rgb = mix(colour.rgb, heat_ramp(0.92), 0.35 + flick * 0.25);
+	}
+
+	// Emitters rim-light the surfaces next to them.
+	if (is_relief_solid(material_id) || material_id == 2 || material_id == 13 || material_id == 23) {
+		vec3 light = emitter_light(neighbours.x) + emitter_light(neighbours.y)
+			+ emitter_light(neighbours.z) + emitter_light(neighbours.w);
+		colour.rgb += light * colour.rgb * 0.75 + light * 0.10;
 	}
 	return colour;
 }
@@ -255,11 +376,13 @@ vec4 apply_material_flair(
 		colour.rgb *= mix(1.0, 0.54 + triangle_wave(pixel.x / 3.0) * 0.18, knot);
 		if (condition > 0.02) { // burn progress: ember cracks and char
 			float t = presentation_time();
-			float cracks = 1.0 - smoothstep(0.0, 0.08, abs(fbm3(pixel / 3.0) - 0.5));
-			float pulse = 0.65 + 0.35 * value_noise(pixel / 2.0 + vec2(t * 1.5, t * 0.7));
+			float vein = abs(value_noise(pixel / 6.0) - 0.5) + abs(value_noise(pixel / 2.5 + vec2(13.0)) - 0.5) * 0.35;
+			float cracks = 1.0 - smoothstep(0.02, 0.07, vein);
+			float pulse = 0.55 + 0.45 * value_noise(pixel / 4.0 + vec2(t * 1.1, t * 0.5));
 			float burn = smoothstep(0.02, 0.6, condition);
-			colour.rgb *= 1.0 - burn * 0.55;
-			colour.rgb = mix(colour.rgb, heat_ramp(0.35 + pulse * 0.45), cracks * burn * pulse);
+			vec3 char_colour = vec3(0.07, 0.05, 0.045) * (0.8 + cheap_hash(floor(pixel / 2.0)) * 0.4);
+			colour.rgb = mix(colour.rgb, char_colour, burn * 0.80);
+			colour.rgb = mix(colour.rgb, heat_ramp(0.30 + pulse * 0.55), cracks * burn * pulse);
 		}
 		return colour;
 	}
@@ -270,11 +393,13 @@ vec4 apply_material_flair(
 		colour.rgb *= 0.72 + fibre * 0.28 + course * 0.15;
 		if (condition > 0.02) { // burn progress: ember cracks and char
 			float t = presentation_time();
-			float cracks = 1.0 - smoothstep(0.0, 0.08, abs(fbm3(pixel / 3.0) - 0.5));
-			float pulse = 0.65 + 0.35 * value_noise(pixel / 2.0 + vec2(t * 1.5, t * 0.7));
+			float vein = abs(value_noise(pixel / 6.0) - 0.5) + abs(value_noise(pixel / 2.5 + vec2(13.0)) - 0.5) * 0.35;
+			float cracks = 1.0 - smoothstep(0.02, 0.07, vein);
+			float pulse = 0.55 + 0.45 * value_noise(pixel / 4.0 + vec2(t * 1.1, t * 0.5));
 			float burn = smoothstep(0.02, 0.6, condition);
-			colour.rgb *= 1.0 - burn * 0.55;
-			colour.rgb = mix(colour.rgb, heat_ramp(0.35 + pulse * 0.45), cracks * burn * pulse);
+			vec3 char_colour = vec3(0.07, 0.05, 0.045) * (0.8 + cheap_hash(floor(pixel / 2.0)) * 0.4);
+			colour.rgb = mix(colour.rgb, char_colour, burn * 0.80);
+			colour.rgb = mix(colour.rgb, heat_ramp(0.30 + pulse * 0.55), cracks * burn * pulse);
 		}
 		return colour;
 	}
@@ -1090,7 +1215,17 @@ vec4 material_colour(
 	);
 	int flair = int(floor(emission_colour.a + 0.5));
 	colour = apply_material_flair(colour, material_id, flair, world_pixel, condition);
-	return apply_neighbour_relief(colour, material_id, world_pixel, previous_snapshot);
+	// One gather of the four neighbours (from the snapshot being shaded)
+	// feeds both the volume/contact stage and the structural relief.
+	ivec4 neighbours = ivec4(
+		sampled_material_id(world_pixel + vec2(0.0, -1.0), previous_snapshot),
+		sampled_material_id(world_pixel + vec2(0.0, 1.0), previous_snapshot),
+		sampled_material_id(world_pixel + vec2(-1.0, 0.0), previous_snapshot),
+		sampled_material_id(world_pixel + vec2(1.0, 0.0), previous_snapshot)
+	);
+	colour = apply_volume_and_contact(
+		colour, material_id, world_pixel, neighbours, previous_snapshot, condition);
+	return apply_neighbour_relief(colour, material_id, neighbours);
 }
 
 void fragment() {

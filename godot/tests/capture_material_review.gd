@@ -30,6 +30,7 @@ const VIEW: Vector2i = Vector2i(320, 180)
 const BACKGROUND: Color = Color(0.031, 0.043, 0.071, 1.0) # main.tscn Background
 const PLATES: Array[String] = [
 	"inventory", "liquids", "construction", "emission", "transition", "street", "laboratory",
+	"reactions",
 ]
 # Native creation values of the material-selected condition byte (see
 # native/include/cybersand/material.hpp initial_state_a and
@@ -199,6 +200,7 @@ func _plate_inputs(plate: String) -> Dictionary:
 		"transition": return _transition()
 		"street": return _street()
 		"laboratory": return _laboratory()
+		"reactions": return _reactions()
 	return {}
 
 
@@ -379,6 +381,42 @@ func _street() -> Dictionary:
 	_fill(image, 30, 40, 26, 10, 37, 90)
 	return {"current": image, "previous": image, "cameras": [Vector2i.ZERO],
 		"notes": "Synthetic gameplay-scale street composition mixing construction, metals, glass, wet surfaces, liquids and atmosphere.",
+		"synthetic": true}
+
+
+func _reactions() -> Dictionary:
+	# Synthetic contact compositions for neighbour-driven presentation.
+	var image: Image = _blank(VIEW)
+	_fill(image, 0, 170, 320, 10, 1)
+	# Deep Water tank (depth shading, surface froth) with a Lava shelf entering it.
+	_fill(image, 4, 70, 3, 100, 1)
+	_fill(image, 90, 70, 3, 100, 1)
+	_fill(image, 7, 95, 83, 75, 3)
+	_fill(image, 50, 80, 40, 15, 8)
+	_fill(image, 60, 95, 30, 8, 8)
+	# Acid pooled on Stone/Metal with a Toxic Sludge puddle.
+	_fill(image, 100, 150, 70, 20, 13)
+	_fill(image, 110, 140, 50, 10, 12)
+	_fill(image, 170, 140, 30, 30, 28)
+	_fill(image, 172, 132, 26, 8, 32)
+	# Burning timber: Fire against Oak Timber and Wood with burn progress.
+	_fill(image, 210, 140, 40, 30, 46, 120)
+	_fill(image, 210, 120, 40, 20, 6, 200)
+	_fill(image, 252, 150, 20, 20, 7, 160)
+	# Neon and LED mounted on brick (rim light), molten glass on stone.
+	_fill(image, 100, 20, 110, 60, 43)
+	_fill(image, 110, 40, 40, 3, 77)
+	_fill(image, 160, 40, 40, 3, 78)
+	_fill(image, 130, 55, 50, 4, 80)
+	_fill(image, 120, 66, 30, 3, 79)
+	_fill(image, 280, 150, 36, 20, 13)
+	_fill(image, 284, 140, 28, 10, 36, 220)
+	# Free smoke and steam columns (soft edges).
+	_fill(image, 222, 40, 22, 60, 4, 200)
+	_fill(image, 254, 30, 20, 70, 22, 160)
+	_fill(image, 284, 60, 26, 30, 37, 100)
+	return {"current": image, "previous": image, "cameras": [Vector2i.ZERO],
+		"notes": "Synthetic contact plate: deep Water with Lava entering, Acid/Sludge on Stone and Metal, Fire on Oak Timber/Wood with burn progress, neon/LED on brick, Molten Glass on Stone, free Smoke/Steam/Foam columns.",
 		"synthetic": true}
 
 

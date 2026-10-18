@@ -198,6 +198,38 @@ glow off; p95 0.676 ms), 0.182 → 0.468 ms (effects, glow on). This is within
 budget on the TITAN RTX but roughly triples the worst case. Weaker GPUs and
 browser/WebAssembly are unmeasured and may need a quality tier.
 
+### Volume, edge and contact pass (second owner iteration)
+
+The owner asked for more again. `material_colour` now gathers the four
+neighbour IDs once (from the snapshot being shaded) and shares them between a new
+`apply_volume_and_contact` stage and the structural relief:
+
+- Liquids shade by depth (three extra reads straight up, liquid pixels only):
+  Water/Brine deepen toward navy, other liquids darken, molten materials get
+  hotter; exposed surfaces show animated froth or, for molten, a dark skin with
+  flaring bursts.
+- Smoke, Steam, Foam and Fire thin or cool at their boundaries.
+- Contact effects: molten material flashes against Water/Brine/Slush/Ice,
+  water boils beside lava or above fire, Acid/Sludge fizz where they touch
+  solids, Fire flares against fuels.
+- Emitters rim-light adjacent solids and powders in their own colour; Empty
+  cells get soft ambient occlusion from neighbouring solids.
+- Burning timber/thatch now chars dark with larger glowing ember veins.
+
+A synthetic `reactions` plate was added to the fixture
+([before](material-readability-2026-10-18/detail/reactions_before_volume_pass_t1.37_glow.png),
+[after](material-readability-2026-10-18/detail/reactions_volume_pass_t1.37_glow.png)).
+All focused and graphical tests pass.
+
+Matched GPU cost versus the detail pass
+([`cost-volume-pass.json`](material-readability-2026-10-18/cost-volume-pass.json)):
+world pass median 0.145 → 0.195 ms (mixed, glow off), 0.192 → 0.242 ms (mixed, glow
+on), 0.421 → 0.593 ms (effect scene, glow off; p95 0.888 ms), 0.469 → 0.641 ms
+(effects, glow on). Relative to the original baseline the effect scene world pass
+is about 4.4× (0.133 → 0.593 ms). It stays under 1 ms on the TITAN RTX at
+1080p, but weaker GPUs and browser/WebAssembly are unmeasured; a quality tier is
+the obvious mitigation if they fall short.
+
 ## Limits and owner decisions
 
 - Visual acceptance is the author's; the owner has not reviewed the new
