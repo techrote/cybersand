@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Versioned sparse authoring, resolution, provenance, coverage and migration contract for non-kinetic intermaterial semantics
 canonical-for: [intermaterial-interactions, interaction-schema, interaction-provenance, interaction-coverage]
-last-reviewed: 2026-09-19
+last-reviewed: 2026-10-18
 related-documents: [../operations/microscenarios-programme.md, materials-and-rule-kernels.md, ../operations/microscenario-reference-pack.md, ../reference/status-and-roadmap.md]
 ---
 
@@ -104,6 +104,13 @@ to World but delegates to the versioned resolver.
 The four-tick contact cadence, neighbour order/random salts, Water-state
 initialization, worker ownership and writes remain World-owned; the resolver
 selects semantics only.
+
+MAT-001 / #158 changes that World-owned contact baseline: persistent compact pairs
+retain their next temporal opportunity through activity sleep. The 14 authored
+rules, products, probabilities and profile version remain unchanged. Source/runtime
+identity distinguishes this scheduler repair from older contact evidence; the
+[material contract](materials-and-rule-kernels.md#how-do-persistent-reactions-survive-sleep)
+and [dated audit](../audits/2026-10-18-mat001-material-reaction-progress.md) own its scope.
 
 ## Specialized Current mechanisms
 

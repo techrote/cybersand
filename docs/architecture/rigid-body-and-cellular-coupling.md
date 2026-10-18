@@ -6,7 +6,7 @@ status: Current
 scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact; generalized physics and exact replay remain absent
 keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
 related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
-last-reviewed: 2026-09-25
+last-reviewed: 2026-10-18
 ---
 
 # Rigid-body and cellular coupling
@@ -33,7 +33,9 @@ waits behind pending terrain colliders. Exact controller order belongs in
 
 Source: [native `prepare_rigid_body_coupling`, `parse_body_states`, `rasterize_body_sweep`, `reconcile_swept_overlaps`](../../godot/native_extension/cyber_native_cell_world.cpp).
 
-1. Clear/wake the previous obstacle field and clear observations. Parse at most
+1. Clear/wake the previous obstacle field and clear observations. Mask changes
+   wake their own resident activity block and boundary neighbors without a cell
+   or render write, including masks wholly inside a sleeping block. Parse at most
    16 complete records with body IDs 1–16; retain the first duplicate ID.
 2. Traverse ascending body IDs and rasterize a temporary sweep from prior to
    current accepted transform. The first mask writer wins where bodies overlap.
