@@ -106,6 +106,16 @@ and set, including collision-safe tuck state. The review bitmap still draws
 unrotated rectangular outlines rather than the desktop's rotating procedural rig
 glyphs; use JSON for angle, attachments, NPCs and actuator-state interpretation.
 
+
+USABLE-001 also retains copied `actor_usables` at both timing boundaries:
+`actor_sample.actor_usables` is the current worker sample, while
+`material_generation.actor_usables` is frozen with the render generation that
+produced the retained material bytes. Player metadata carries the current
+equipment state as well. This records selection, charge/cooldown/results,
+projectile/device/effect/hit records and bounded work counters; it is evidence,
+not resumed inventory or exact replay. The lightweight review bitmap does not
+draw the equipment overlay, so JSON remains authoritative for those entities.
+
 Per-frame metadata includes:
 
 - immutable consumer-snapshot serial and render-publication serial;
