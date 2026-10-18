@@ -29,7 +29,11 @@
     },
     "native_source_changed": false,
     "retained_runtime_changed": false,
-    "original_neon_recipe_unchanged": true
+    "original_neon_recipe_unchanged": true,
+    "implementation_commit": "b950e62af685509ce91f940156a50e44a3a9c950",
+    "local_implementation_commit": "004b1b73297c137db963329c3bde9d93f3ad55f2",
+    "verified_implementation_tree": "86acb21102411374d696641753ea8493eb160c30",
+    "local_history_branch": "scene/neon-reliquary-local-checkpoint"
   },
   "districts": [
     {
@@ -1093,12 +1097,16 @@
     "Raw logs and toolchains remain local validation artifacts; this curated record preserves selected results, identities and image digests."
   ],
   "publication": {
-    "status": "authorized_prepared_for_push",
+    "status": "published_branch",
     "repository": "techrote/cybersand",
     "branch": "scene/neon-reliquary-demo",
     "authorization": "Owner explicitly requested the three lower tiles and then push all four to the new branch.",
     "historical_status_record": "2026-10-18-neon-reliquary-evidence.json",
-    "github_ci": "not_started",
-    "merged": false
+    "github_ci": "pending_review_publication",
+    "merged": false,
+    "implementation_commit": "b950e62af685509ce91f940156a50e44a3a9c950",
+    "file_tree_matches_reviewed_checkpoint": true,
+    "method": "Connected GitHub object API after command-line Git lacked authentication; exact blob/tree identities checked and remote branch fetched.",
+    "url": "https://github.com/techrote/cybersand/tree/scene/neon-reliquary-demo"
   }
 }

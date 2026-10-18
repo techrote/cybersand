@@ -186,7 +186,22 @@ automated checks do not infer their acceptance of the three new compositions.
 ## Publication
 
 The owner explicitly authorized pushing the complete four-tile set to
-`scene/neon-reliquary-demo` in `techrote/cybersand`. This local implementation
-checkpoint is prepared for that push. No merge is performed by this scene task.
-Applicable exact-head GitHub integration results belong to the published review
-and are required before a later merge; local passes are not substitutes for them.
+[`scene/neon-reliquary-demo`](https://github.com/techrote/cybersand/tree/scene/neon-reliquary-demo)
+in `techrote/cybersand`. The complete set was published as implementation commit
+[`b950e62af685509ce91f940156a50e44a3a9c950`](https://github.com/techrote/cybersand/commit/b950e62af685509ce91f940156a50e44a3a9c950).
+Its file tree **`86acb21102411374d696641753ea8493eb160c30`** exactly matches the
+reviewed local implementation checkpoint **`004b1b73297c137db963329c3bde9d93f3ad55f2`**.
+
+The command-line push could not authenticate because no Git credential was
+available in the execution environment. The connected GitHub integration
+published the same files and images, with every binary blob and the complete
+tree checked against the local Git identities before branch creation. A fresh
+fetch then confirmed the published tree. This changes commit metadata, so the
+remote commit SHA differs from the local checkpoint. The original local history
+is preserved under `scene/neon-reliquary-local-checkpoint`; the working scene
+branch follows the published history. A documentation-only follow-up records
+this publication without changing the validated implementation.
+
+No merge is performed by this scene task. Applicable exact-head GitHub
+integration results belong to the published review and are required before a
+later merge; local passes are not substitutes for them.
