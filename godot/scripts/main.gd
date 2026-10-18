@@ -13,6 +13,8 @@ const BlacksiteNinePresentation = preload("res://scripts/blacksite_nine_presenta
 const ActorPrototypePanel = preload("res://scripts/actor_prototype_panel.gd")
 const ActorPrototypeOverlay = preload("res://scripts/actor_prototype_overlay.gd")
 const ActorRigCatalog = preload("res://scripts/actor_rig_catalog.gd")
+const UsableCatalog = preload("res://scripts/usable_catalog.gd")
+const UsableOverlay = preload("res://scripts/usable_overlay.gd")
 const ACTOR_CONTROL_KEYS: Array[int] = [KEY_W, KEY_A, KEY_S, KEY_D, KEY_SPACE, KEY_SHIFT,
 	KEY_Q, KEY_E, KEY_Z, KEY_X, KEY_C, KEY_BRACKETLEFT, KEY_BRACKETRIGHT]
 const ACTOR_PARAMETRIC_KEYS: Array[int] = [KEY_Q, KEY_E, KEY_Z, KEY_X, KEY_C,
@@ -877,6 +879,15 @@ var _actor_input_sequence: int = 0
 var _actor_input_rearm: bool = true
 var _actor_reset_receipt: int = 0
 var _actor_effort: float = 0.7
+var actor_usable_index: int = -1
+var _actor_usable_requested_index: int = -1
+var _actor_usable_power: float = 0.8
+var _actor_usable_input_epoch: int = -1
+var _actor_usable_input_sequence: int = 0
+var _actor_usable_input_rearm: bool = true
+var _actor_usable_pointer_rearm: bool = true
+var _actor_usable_transition_pending: bool = false
+var usable_overlay: CyberUsableOverlay
 var rigid_bodies: Array[RigidBody2D] = []
 var rapier_bridge: CyberRapierPhysicsBridge = CyberRapierPhysicsBridge.new()
 var rapier_start_error: Error = OK
@@ -1090,6 +1101,7 @@ func _process(delta: float) -> void:
 	frame_time_ms = delta * 1000.0
 	maximum_frame_time_ms = maxf(maximum_frame_time_ms, frame_time_ms)
 	consume_worker_snapshot()
+	refresh_actor_usables()
 	gameplay_recorder.poll_finalization()
 	_refresh_recording_button()
 	sync_player_presentation_position()
@@ -1112,6 +1124,10 @@ func _process(delta: float) -> void:
 		latest_snapshot.actor_prototypes if latest_snapshot != null else {},
 		camera_origin.floor(), current_view_size, view_content_rect()
 	)
+	usable_overlay.present(
+		latest_snapshot.actor_usables if latest_snapshot != null else {},
+		camera_origin.floor(), current_view_size, view_content_rect()
+	)
 	update_worker_frame_state()
 	update_shader_parameters()
 
@@ -1126,6 +1142,7 @@ func _process(delta: float) -> void:
 
 func _physics_process(_delta: float) -> void:
 	publish_actor_keyboard_input()
+	publish_actor_usable_input()
 	if paused or simulation_worker.has_failed():
 		physical_trial_input.armed = false
 	if simulation_worker.has_failed():
@@ -1154,6 +1171,18 @@ func setup_depth_lab_launcher() -> void:
 func open_depth_lab() -> void:
 	get_tree().set_meta("cybersand_depth_lab_visited", true)
 	get_tree().change_scene_to_file("res://depth_lab.tscn")
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if (
+		event is InputEventMouseButton
+		and event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]
+		and actor_equipment_active()
+	):
+		var trigger: bool = event.pressed if event.button_index == MOUSE_BUTTON_LEFT else Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+		var alternate: bool = event.pressed if event.button_index == MOUSE_BUTTON_RIGHT else Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)
+		_publish_actor_usable_buttons(trigger, alternate)
+		get_viewport().set_input_as_handled()
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
@@ -2052,10 +2081,15 @@ func setup_actor_prototypes() -> void:
 	actor_prototype_panel.name = "ActorPrototypePanel"
 	add_child(actor_prototype_panel)
 	actor_prototype_panel.apply_requested.connect(apply_actor_prototype_configuration)
+	actor_prototype_panel.equipment_requested.connect(apply_actor_equipment_configuration)
 	actor_prototype_overlay = ActorPrototypeOverlay.new()
 	actor_prototype_overlay.name = "ActorPrototypeOverlay"
 	actor_prototype_overlay.clip_contents = true
 	$Layout/World.add_child(actor_prototype_overlay)
+	usable_overlay = UsableOverlay.new()
+	usable_overlay.name = "ActorUsableOverlay"
+	usable_overlay.clip_contents = true
+	$Layout/World.add_child(usable_overlay)
 
 
 func actor_prototypes_allowed() -> bool:
@@ -2078,6 +2112,7 @@ func toggle_actor_prototypes() -> void:
 	actor_prototype_panel.configure_selection(selected_model, actor_producer_selection, actor_demo_npcs)
 	actor_prototype_panel.set_context(str(microscenario_definition.get("id", "Sandbox")) if tower_context.get("micro_active", false) else "Sandbox")
 	actor_prototype_panel.effort_slider.value = _actor_effort
+	actor_prototype_panel.configure_equipment(actor_usable_index, _actor_usable_power)
 	actor_prototype_panel.show_selection()
 
 
@@ -2128,6 +2163,13 @@ func apply_actor_prototype_configuration(model_id: StringName, producer: StringN
 	actor_demo_npcs = demo_npcs and not physical
 	_actor_effort = actor_prototype_panel.effort_slider.value
 	_actor_input_rearm = true
+	actor_usable_index = -1
+	_actor_usable_requested_index = -1
+	_actor_usable_input_epoch = -1
+	_actor_usable_input_sequence = 0
+	_actor_usable_input_rearm = true
+	_actor_usable_pointer_rearm = true
+	_actor_usable_transition_pending = false
 	physical_trial_arm = arm
 	physical_trial_input = PhysicalTrial.new()
 	player_representation = CyberPlayerRepresentation.BARREL_RAPIER if physical else CyberPlayerRepresentation.SAMPLED
@@ -2144,6 +2186,113 @@ func apply_actor_prototype_configuration(model_id: StringName, producer: StringN
 	camera_origin = clamped_camera_origin(character_centre() - Vector2(current_view_size) * 0.5)
 	actor_prototype_panel.hide()
 	return true
+
+
+func apply_actor_equipment_configuration(usable_index: int, power: float) -> bool:
+	if (
+		latest_snapshot == null or latest_snapshot.actor_prototypes.is_empty()
+		or latest_snapshot.actor_prototypes.producers[0] != &"human"
+		or paused or simulation_worker.has_failed() or _actor_reset_receipt != 0
+	):
+		actor_prototype_panel.set_error("Equip-only requires an active, unpaused human sampled actor.")
+		return false
+	if usable_index < -1 or usable_index >= UsableCatalog.count():
+		actor_prototype_panel.set_error("Unknown equipment selection.")
+		return false
+	var context: Dictionary = latest_snapshot.actor_prototypes
+	var epoch: int = int(context.epoch)
+	if epoch != _actor_usable_input_epoch:
+		_actor_usable_input_epoch = epoch
+		_actor_usable_input_sequence = 0
+	_actor_usable_input_sequence += 1
+	var accepted: bool = simulation_worker.submit_actor_usable_action(
+		0, epoch, _actor_usable_input_sequence, int(context.tick),
+		usable_index, actor_pointer_aim(), clampf(power, 0.0, 1.0),
+		false, false, 6, &"human"
+	)
+	if not accepted:
+		actor_prototype_panel.set_error("Equipment command was stale or refused by the simulation owner.")
+		return false
+	_actor_usable_requested_index = usable_index
+	_actor_usable_power = clampf(power, 0.0, 1.0)
+	_actor_usable_transition_pending = true
+	_actor_usable_input_rearm = true
+	_actor_usable_pointer_rearm = true
+	actor_prototype_panel.hide()
+	return true
+
+
+func actor_equipment_active() -> bool:
+	if latest_snapshot == null or latest_snapshot.actor_usables.is_empty():
+		return false
+	var equipped: PackedInt32Array = latest_snapshot.actor_usables.get("equipped", PackedInt32Array())
+	return not equipped.is_empty() and equipped[0] >= 0
+
+
+func refresh_actor_usables() -> void:
+	if latest_snapshot == null or latest_snapshot.actor_usables.is_empty():
+		actor_usable_index = -1
+		_actor_usable_transition_pending = false
+		return
+	var equipped: PackedInt32Array = latest_snapshot.actor_usables.get("equipped", PackedInt32Array())
+	if equipped.is_empty():
+		return
+	actor_usable_index = int(equipped[0])
+	if _actor_usable_transition_pending and actor_usable_index == _actor_usable_requested_index:
+		_actor_usable_transition_pending = false
+		_actor_usable_pointer_rearm = true
+
+
+func _actor_usable_input_allowed() -> bool:
+	if not actor_keyboard_allowed():
+		return false
+	if showcase_presentation != null and showcase_presentation.input_blocked():
+		return false
+	if blacksite_nine_presentation != null and blacksite_nine_presentation.input_blocked():
+		return false
+	return true
+
+
+func _publish_actor_usable_buttons(trigger: bool, alternate: bool) -> void:
+	if latest_snapshot == null or latest_snapshot.actor_prototypes.is_empty():
+		return
+	var context: Dictionary = latest_snapshot.actor_prototypes
+	if context.producers[0] != &"human":
+		return
+	var epoch: int = int(context.epoch)
+	if epoch != _actor_usable_input_epoch:
+		_actor_usable_input_epoch = epoch
+		_actor_usable_input_sequence = 0
+		_actor_usable_input_rearm = true
+		_actor_usable_pointer_rearm = true
+	if _actor_usable_transition_pending:
+		return
+	if (
+		not _actor_usable_input_allowed() or context.get("suspended", false)
+		or _actor_reset_receipt != 0 or simulation_worker.has_failed()
+	):
+		_actor_usable_input_rearm = true
+		simulation_worker.cancel_actor_usable_input(0, epoch, &"human")
+		return
+	if actor_usable_index < 0:
+		return
+	if _actor_usable_pointer_rearm:
+		if trigger or alternate:
+			return
+		_actor_usable_pointer_rearm = false
+	_actor_usable_input_sequence += 1
+	simulation_worker.submit_actor_usable_action(
+		0, epoch, _actor_usable_input_sequence, int(context.tick),
+		actor_usable_index, actor_pointer_aim(), _actor_usable_power,
+		trigger, alternate, 6, &"human"
+	)
+
+
+func publish_actor_usable_input() -> void:
+	_publish_actor_usable_buttons(
+		Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT),
+		Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)
+	)
 
 
 func _reconcile_actor_prototype_reset() -> void:
@@ -2451,6 +2600,16 @@ func queue_brush_footprint_mutation(
 
 
 func handle_painting() -> void:
+	if _actor_usable_transition_pending or actor_equipment_active():
+		return
+	if _actor_usable_pointer_rearm:
+		if (
+			Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+			or Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE)
+			or Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)
+		):
+			return
+		_actor_usable_pointer_rearm = false
 	if showcase_presentation != null and showcase_presentation.input_blocked(): return
 	if blacksite_nine_presentation != null and blacksite_nine_presentation.input_blocked(): return
 	if actor_prototype_panel != null and actor_prototype_panel.visible: return
