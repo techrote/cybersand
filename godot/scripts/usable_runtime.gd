@@ -141,7 +141,7 @@ func _advance_actor(index: int, dt: float, world, action: Dictionary) -> void:
 			actor.last_result = alternate_result
 			_actors[index] = actor
 			return
-	var activate: bool = held or pressed if StringName(str(definition.category)) == Catalog.CATEGORY_TOOL else pressed
+	var activate: bool = (held or pressed or alternate_pressed) if StringName(str(definition.category)) == Catalog.CATEGORY_TOOL else pressed
 	if activate and float(actor.cooldown) <= 0.0:
 		var cost: float = float(definition.get("cost", 0.0))
 		if float(actor.charge) + 0.0001 < cost:
@@ -155,7 +155,7 @@ func _advance_actor(index: int, dt: float, world, action: Dictionary) -> void:
 						actual_power *= 0.35
 					result = _apply_tool(index, definition, aim, actual_power, world)
 				Catalog.CATEGORY_PROJECTILE:
-					result = _launch(index, definition, aim, power)
+					result = _launch(index, definition, aim, power, world)
 				Catalog.CATEGORY_OBJECT:
 					result = _deploy(index, definition, aim, power, world)
 			if result in ["applied", "launched", "deployed"]:
@@ -227,18 +227,18 @@ func _apply_tool(owner: int, definition: Dictionary, aim: Vector2, power: float,
 					continue
 				var point: Vector2i = Vector2i((origin + direction * reach * float(s) / float(steps)).round())
 				var material: int = _read(point, world)
-				if material == WALL:
+				if material != EMPTY:
 					break
-				if material == EMPTY and not _inside_any_actor(Vector2(point) + Vector2(0.5, 0.5)):
+				if not _inside_any_actor(Vector2(point) + Vector2(0.5, 0.5)):
 					if _write(point, int(definition.material), world):
 						changed += 1
 	elif operation == &"line_deposit":
 		var points: Array[Vector2i] = _line_points(origin, origin + aim * reach, int(definition.get("steps", 12)))
 		for point: Vector2i in points:
 			var material: int = _read(point, world)
-			if material == WALL:
+			if material != EMPTY:
 				break
-			if material == EMPTY and not _inside_any_actor(Vector2(point) + Vector2(0.5, 0.5)):
+			if not _inside_any_actor(Vector2(point) + Vector2(0.5, 0.5)):
 				if _write(point, int(definition.material), world):
 					changed += 1
 	elif operation == &"bead":
@@ -277,12 +277,12 @@ func _apply_tool(owner: int, definition: Dictionary, aim: Vector2, power: float,
 	_add_effect(origin + aim * reach, definition.color, 2.0 + power * 2.0, str(operation))
 	return "applied"
 
-func _launch(owner: int, definition: Dictionary, aim: Vector2, power: float) -> String:
+func _launch(owner: int, definition: Dictionary, aim: Vector2, power: float, world) -> String:
 	if _projectiles.size() >= MAX_PROJECTILES:
 		return "capacity"
 	var origin: Vector2 = _centres[owner] if owner < _centres.size() else Vector2.ZERO
 	var muzzle: Vector2 = origin + aim * 3.0
-	if _inside_foreign_actor(muzzle, owner) >= 0:
+	if _inside_foreign_actor(muzzle, owner) >= 0 or _read(Vector2i(muzzle.floor()), world) != EMPTY:
 		return "blocked"
 	var projectile: Dictionary = {
 		"entity_id": _allocate_id(),
@@ -308,6 +308,9 @@ func _deploy(owner: int, definition: Dictionary, aim: Vector2, power: float, wor
 	var origin: Vector2 = _centres[owner] if owner < _centres.size() else Vector2.ZERO
 	var distance: float = lerpf(8.0, 20.0, power)
 	var center := Vector2i((origin + aim * distance).round())
+	var placement_trace: Dictionary = _trace_contact(origin, Vector2(center), world)
+	if placement_trace.get("hit", false) or placement_trace.get("out_of_bounds", false) or placement_trace.get("budget_refused", false):
+		return "blocked"
 	for y: int in range(center.y - 2, center.y + 3):
 		for x: int in range(center.x - 2, center.x + 3):
 			if _read(Vector2i(x,y), world) != EMPTY or _inside_any_actor(Vector2(x + 0.5, y + 0.5)):
@@ -350,7 +353,7 @@ func _step_projectiles(dt: float, world) -> void:
 			i += 1
 			continue
 		if str(p.state) == "armed":
-			if _sensor_has(Vector2i(p.position.round()), [3,24], int(definition.get("sensor_radius", 4)), world):
+			if _sensor_has(Vector2i(Vector2(p.position).round()), [3,24], int(definition.get("sensor_radius", 4)), world):
 				_write_if_empty(Vector2i(roundi(p.position.x), roundi(p.position.y)), 6, world)
 				_add_effect(p.position, definition.color, 3.0, "wet-trigger")
 				_projectiles.remove_at(i)
@@ -564,6 +567,8 @@ func _edit_disc(center: Vector2i, radius: int, allowed: Array[int], world) -> in
 		for x: int in range(center.x - radius, center.x + radius + 1):
 			var point := Vector2i(x,y)
 			if Vector2(point - center).length() > float(radius) + 0.25:
+				continue
+			if _inside_any_actor(Vector2(point) + Vector2(0.5,0.5)):
 				continue
 			var material: int = _read(point, world)
 			if material in [EMPTY, WALL]:
