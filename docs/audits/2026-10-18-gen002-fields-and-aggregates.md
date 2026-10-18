@@ -243,7 +243,7 @@ These pixels are generation output before simulation; no aggregate settling,
 Water equilibrium, actor traversal, target-GPU frame time or Windows/Web execution
 claim follows from their successful rendering.
 
-Six final software-OpenGL/Xvfb captures exercised field editing, aggregate
+Six pre-publication software-OpenGL/Xvfb captures exercised field editing, aggregate
 materials, modifier diagnostics, context-aware sculpting, module masks and a
 compact field panel. The capture process exited 0, all six layout checks passed
 and the native runtime hash remained unchanged. The project uses a logical
@@ -254,8 +254,8 @@ that flag. A blank programmatically selected sculpt-tool overlay was resolved
 by requesting redraw in the capture harness; the normal user-selection signal
 already does so. Neither required a product rendering change.
 
-The readable [aggregate workbench capture](../figures/worldgen-aggregate-workbench.png)
-is the exact 1800×1012 PNG, 170,874 bytes, SHA-256
+The [pre-publication aggregate workbench capture](https://github.com/techrote/cybersand/blob/781eccfa016ac0d220a51d2ecf12de1edf1b6d7b/docs/figures/worldgen-aggregate-workbench.png)
+was the exact 1800×1012 PNG, 170,874 bytes, SHA-256
 `b870a7892ee3b7455c8bd63559d9d441810a9a6630fab00027840e3b71b236e1`.
 Godot executable SHA-256 was
 `f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75`;
@@ -297,8 +297,8 @@ quality improvement.
 After the final UI evidence and screenshot caption, the required documentation,
 M11, frozen/supplementary retrieval and diff checks were rerun successfully.
 Documentation now counts **1,451 local links**; the other counts and both retrieval
-metrics above are unchanged. The repository's retained runtime manifests still
-require actual publication of source-matched artifacts. Runtime provenance must
+metrics above are unchanged. At that pre-publication point, the retained runtime
+manifests still required actual publication of source-matched artifacts. Runtime provenance must
 come from those rebuilt artifacts and complete source maps; editing old manifests
 to disguise stale source is not an admissible substitute. Publication must rerun
 the current repository/CI gates against its exact source checkpoint.
@@ -307,3 +307,132 @@ Local compilation, Linux execution, Windows cross-compilation, hosted exact-head
 CI, browser execution and owner visual/gameplay acceptance remain separate
 evidence categories. No merge, release, production streaming or blanket platform
 acceptance is asserted by this working checkpoint.
+
+## Completed source and runtime publication — 2026-10-18
+
+The source/API checkpoint is
+[`781eccfa016ac0d220a51d2ecf12de1edf1b6d7b`](https://github.com/techrote/cybersand/commit/781eccfa016ac0d220a51d2ecf12de1edf1b6d7b),
+tree `9fde678e97e453ba94eba6b8407909e672063e7e`, in
+[PR #173](https://github.com/techrote/cybersand/pull/173). Its two parents preserve
+GEN-001 `54d455ca3157ecc3dbf9be2be2a5778567ec3311` and the current main observed
+at freeze, `087ca3e972296b189c8b83060463125c06d600e2`. The earlier local
+`f98d5ec…` checkpoint remains the test-ledger base described above; publication
+does not rewrite that historical execution identity.
+
+The guarded publisher was installed at
+`57e497ebf62ee882620248bf28beba33158f14be`, workflow SHA-256
+`dda3a4f9b6834f82aca012ac1f01acca6168560bffae8094b649314dbdfd1c6e`.
+[Run 39120381132](https://github.com/techrote/cybersand/actions/runs/39120381132)
+**passed on attempt 1**, completing at 10:58:06 UTC. The build checkout was the
+workflow-install commit; all 37 native source inputs and 35 build/validation
+inputs were checked against the frozen `781eccfa…` Git blobs. Downloaded reports,
+artifact bytes and the 15 Linux/two Windows recorded log hashes were verified.
+
+Publication commit
+[`47ee9496d0d0a68e5d7e066cf0b18e34bbc78391`](https://github.com/techrote/cybersand/commit/47ee9496d0d0a68e5d7e066cf0b18e34bbc78391),
+tree `726bb1180b1121517152c13c65ecbd027af52d58`, changed only the two runtime
+artifacts, their two provenance manifests and deletion of the one-shot publisher.
+The local checkout was fast-forwarded and both published LFS artifacts materialized.
+
+| Published artifact | Bytes | SHA-256 | Acceptance scope |
+|---|---:|---|---|
+| Linux x86_64 | 2,124,592 | `71bb831ac1ea841b2f381b710bca6a49ff4b21ff3b8ec37a2bef95d979b98128` | Fresh hosted build, ABI check and Linux execution below |
+| Windows x86_64 | 2,589,184 | `29140e5c8449ddf4a2013bfd2b2caeb92114421fb7ddbeda169e90b166f88c35` | Fresh pinned cross-build and PE32+/AMD64 inspection; Windows execution not performed |
+
+The [Linux provenance](../../godot/addons/cybersand_native/runtime-provenance.linux.json)
+and [Windows provenance](../../godot/addons/cybersand_native/runtime-provenance.json)
+retain the exact source/tree, build commit, toolchain, input maps and run identity.
+Their artifact hashes are distinct from the earlier local builds and are recorded
+separately. The hosted Linux build used Ubuntu 24.04/GCC 13.3; both targets used
+the pinned godot-cpp commit `101ae38034304346a46ea9ea84ae156d3e860496`.
+
+Hosted Linux passed all **70 core native tests**, all **four optimized generation
+suites**, and all **four generation ASan/UBSan suites** with
+`ASAN_OPTIONS=detect_leaks=1:strict_string_checks=1` and
+`UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1`. LeakSanitizer therefore passed
+in this supported hosted environment; the earlier local process-inspection
+limitation remains a separate retained result.
+
+All eight Godot cases passed with return code 0 and no diagnostic errors: clean
+import, native render bridge, native edge/contact, MicroScenario native observation
+(100 assertions), workbench (138 assertions), field authoring (263 assertions),
+180 headless workbench scene frames and all three executable example profiles
+(12/48/12 chunks). Each of the six hosted material/mask PNGs was **byte-identical**
+to its earlier input for the documentation figure. This confirms those figure
+inputs against the actual published Linux generator; the local software-OpenGL
+layout captures keep their separately recorded runtime identity.
+
+Post-publication `check_repository.py --require-materialized` **passed with zero
+errors** and all 18 required runtime files materialized, resolving all eight
+pre-publication stale-input errors. Documentation passed at 82 documents,
+145 claims, 1,451 links and 81 anchors with no errors/warnings. M11 again passed
+18 records/28 historical source hashes. Frozen retrieval remained 32/32 at rank 5
+(24 at rank 1, MRR 0.8646); supplementary retrieval remained 53/53 at rank 5
+(41 at rank 1, MRR 0.8670), each across 840 chunks. Provider policy and
+`git diff --check` passed. These checks used the materialized publication checkout
+plus this audit-only follow-up; no native or UI source was changed.
+
+Normal ready-for-review Documentation, Native, GDExtension and scoped Water CI
+are separate from this publisher. Their actual final PR head, checkout and run
+results belong to the later PR validation record; no draft skip or publisher
+success substitutes for those gates. Windows execution, browser/WebAssembly,
+target-device performance and product/gameplay acceptance remain outside this
+publication's scope.
+
+## Post-publication accepted-profile UI defaults — 2026-10-18
+
+Final review found that reopening an accepted profile with omitted optional
+values displayed new-draft presets instead of native defaults. An aggregate's
+implicit `grain_size` is 4, while the editor's intentional new-draft preset is
+12; an accepted modifier's implicit priority is 0, while a new draft starts at
+10. An aggregate component may also omit its weight, which the native adapter
+interprets as 1. The UI now uses those native defaults for accepted entries and
+retains its separate new-draft presets. This prevents an unchanged Apply action
+from altering an accepted aggregate's grains or a modifier's ordering.
+
+The correction changes only
+[`worldgen_workbench.gd`](../../godot/scripts/worldgen_workbench.gd) and its
+[field-authoring regression](../../godot/tests/test_worldgen_fields.gd). Eight
+additional assertions verify displayed defaults, unchanged reapplication, equal
+canonical fingerprints in independently configured generators, equal generated
+material bytes/hashes, and preservation of the new-draft presets.
+
+Execution used the **published Linux runtime**
+`71bb831ac1ea841b2f381b710bca6a49ff4b21ff3b8ec37a2bef95d979b98128`,
+Godot `4.7.stable.official.5b4e0cb0f` and Rapier2D `0.35.2`.
+`test_worldgen_workbench.gd` passed **138 assertions / zero failures**;
+`test_worldgen_fields.gd` passed **271 assertions / zero failures**.
+No C++ source or runtime binary changed, and no native rebuild was required.
+
+| Corrected source | SHA-256 |
+|---|---|
+| `godot/scripts/worldgen_workbench.gd` | `d2ffc9d95062dd643b7331134a8b80fa45894cec1a0b30d008da8c14d202e967` |
+| `godot/tests/test_worldgen_fields.gd` | `f325c3984c3bd0d0e1f6c14e690f359d1e3f4fb038f7c8d4e2660e792e192e49` |
+
+The publisher's original 138/263 results and its 37 native/35 build-input maps
+remain the actual publication snapshot. They are not rewritten to claim that
+the publisher tested these later GDScript changes. The 138/271 runs above are
+separate post-publication evidence; normal exact-head PR CI remains an
+independent gate.
+
+All six software-OpenGL/Xvfb views were then recaptured with the corrected UI on
+the published `71bb831a…` Linux runtime: **six captures / zero failures**, process
+exit 0 and no `ERROR`/`SCRIPT ERROR`. The reviewed aggregate panel visibly shows
+the accepted native grain size 4; contextual-sculpt and compact-field layouts were
+also inspected. Godot/Xvfb executable hashes and the logical/physical viewport
+basis remain those recorded above.
+
+The current [aggregate workbench figure](../figures/worldgen-aggregate-workbench.png)
+is this updated 1800×1012 capture, **170,611 bytes**, SHA-256
+`2e263ca78aa88c459fc55b71d3da392a46ff53aee3eb755ecea7d7e5eafe3f42`.
+The earlier `b870a789…` capture is retained under its pre-publication commit link
+above and is not relabeled as the corrected view. The native material/mask
+comparison figure and the publisher's six-image byte-equality result are unchanged.
+
+After this correction and recapture, the required repository check with
+`--require-materialized` passed with zero errors and all 18 runtime files present.
+Documentation, M11 integrity, both retrieval evaluations, provider policy and
+diff checks passed again with the same counts and metrics recorded above. The
+final working delta was exactly this audit, the current aggregate figure, the
+workbench script and the field-authoring test; runtime manifests and native
+source remained unchanged.

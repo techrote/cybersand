@@ -568,14 +568,14 @@ func _render_aggregate_rows() -> void:
 		var material: OptionButton = _material_options(row)
 		material.select(material.get_item_index(int(component.material)))
 		material.item_selected.connect(func(_selected: int) -> void: component.material = material.get_selected_id())
-		var weight: SpinBox = _spin(row, 0, 1000000, 0.1, float(component.weight))
+		var weight: SpinBox = _spin(row, 0, 1000000, 0.1, float(component.get("weight", 1)))
 		weight.value_changed.connect(func(value: float) -> void: component.weight = value)
 		_button(row, "×", func() -> void: aggregate_components.remove_at(index); _render_aggregate_rows())
 
 func _load_aggregate() -> void:
 	var item: Dictionary = _entry("aggregates", _reference(aggregate_choice))
 	aggregate_id.text = str(item.get("id", _entry_id("aggregates", "aggregate")))
-	aggregate_grain.value = float(item.get("grain_size", 12))
+	aggregate_grain.value = float(item.get("grain_size", 12 if item.is_empty() else 4))
 	_select_reference(aggregate_variation, str(item.get("variation", "")))
 	aggregate_components.clear()
 	for component: Dictionary in item.get("components", [{"material":38,"weight":3.0},{"material":39,"weight":1.0}]):
@@ -593,7 +593,7 @@ func apply_aggregate() -> bool:
 func _load_modifier() -> void:
 	var item: Dictionary = _entry("modifiers", _reference(modifier_choice))
 	modifier_id.text = str(item.get("id", _entry_id("modifiers", "modifier")))
-	modifier_priority.value = float(item.get("priority", 10))
+	modifier_priority.value = float(item.get("priority", 10 if item.is_empty() else 0))
 	modifier_strength.value = float(item.get("strength", 1))
 	_select_reference(modifier_application, str(item.get("application", "")))
 	_select_reference(modifier_exclusion, str(item.get("exclusion", "")))

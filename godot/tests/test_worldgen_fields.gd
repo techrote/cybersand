@@ -224,6 +224,36 @@ func drain(app: CyberWorldGenerationWorkbench) -> void:
 	expect(calls < 512 and not app._has_active_chunk and app.pending_chunks.is_empty(), "Field inspection queue did not drain within its bound")
 	expect(app.cache.size() <= Workbench.MAX_CACHE_CHUNKS and app.pending_chunks.size() <= Workbench.MAX_QUEUED_CHUNKS, "Field inspection exceeded preview queue/cache capacity")
 
+func check_loaded_defaults(app: CyberWorldGenerationWorkbench) -> void:
+	var recipe: Dictionary = base_recipe()
+	recipe.aggregates = [{"id":"implicit-grain","components":[{"material":38},{"material":39}]}]
+	recipe.modifiers = [{"id":"implicit-priority","aggregate":"implicit-grain"}, {"id":"later-paint","priority":5,"bounds":[0,0,8,16],"material":62}]
+	var original_generator: Variant = ClassDB.instantiate(&"CyberWorldGenerator")
+	var original_identity: Dictionary = original_generator.configure(recipe)
+	expect(original_identity.ok and app.apply_recipe(recipe), "Omitted native-default fixture was not accepted")
+	var original: Dictionary = original_generator.generate_chunk(Vector2i.ZERO)
+	Workbench._select_reference(app.aggregate_choice,"implicit-grain")
+	app._load_aggregate()
+	var first_row: HBoxContainer = app.aggregate_rows.get_child(0)
+	expect(app.aggregate_grain.value == 4 and (first_row.get_child(1) as SpinBox).value == 1, "Accepted aggregate displayed draft defaults instead of native grain 4 and weight 1")
+	expect(app.apply_aggregate() and app._entry("aggregates","implicit-grain").grain_size == 4, "Unchanged aggregate apply changed its implicit native grain size")
+	Workbench._select_reference(app.modifier_choice,"implicit-priority")
+	app._load_modifier()
+	expect(app.modifier_priority.value == 0, "Accepted modifier displayed draft priority instead of native priority 0")
+	expect(app.apply_modifier() and app._entry("modifiers","implicit-priority").priority == 0, "Unchanged modifier apply changed its implicit native ordering")
+	# Separate generators each begin at revision 1, so their canonical plan
+	# fingerprints can compare omitted defaults with the UI's explicit defaults.
+	var equivalent_generator: Variant = ClassDB.instantiate(&"CyberWorldGenerator")
+	var equivalent_identity: Dictionary = equivalent_generator.configure(app.active_recipe)
+	expect(equivalent_identity.ok and equivalent_identity.fingerprint == original_identity.fingerprint, "Reopening and applying omitted defaults changed canonical recipe semantics")
+	var reapplied: Dictionary = app.generator.generate_chunk(Vector2i.ZERO)
+	expect(original.ok and reapplied.ok and original.cells == reapplied.cells and original.hash == reapplied.hash, "Reopening and applying omitted defaults changed aggregate grains or modifier ordering")
+	app.aggregate_choice.select(0)
+	app._load_aggregate()
+	app.modifier_choice.select(0)
+	app._load_modifier()
+	expect(app.aggregate_grain.value == 12 and app.modifier_priority.value == 10, "Intentional new-draft presets were lost when fixing accepted-entry defaults")
+
 func check_workbench() -> void:
 	root.size = Vector2i(1600,1000)
 	var app: CyberWorldGenerationWorkbench = WorkbenchScene.instantiate()
@@ -381,6 +411,7 @@ func check_workbench() -> void:
 	var far_points: Dictionary = {"id":"far-points","points":[[0.1,0.2],[16777217.125,16777219.25]],"radius":4,"material":0}
 	expect(app.upsert_entry("modifiers",far_points), "Large-coordinate point fixture was not admitted")
 	expect(app.transform_modifier("far-points",Vector2.ZERO,1) and app._entry("modifiers","far-points").points == far_points.points, "Identity transform narrowed point coordinates or lost precision through centroid cancellation")
+	check_loaded_defaults(app)
 	app.queue_free()
 	await process_frame
 
