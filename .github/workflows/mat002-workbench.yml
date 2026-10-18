@@ -1,0 +1,56 @@
+name: MAT-002 bounded phase workbench
+on:
+  push:
+    branches: [mat/phase-quantity-quench]
+    paths: [.github/workflows/mat002-workbench.yml]
+permissions:
+  contents: read
+concurrency:
+  group: mat002-workbench
+  cancel-in-progress: false
+jobs:
+  baseline:
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/mat/phase-quantity-quench'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Guard the frozen production source
+        run: |
+          set -euo pipefail
+          git diff --exit-code ec05d7227885bda59bf72a5889b004296b9a07e5 HEAD -- native/src native/include godot Makefile
+          mkdir -p build/mat002
+          git rev-parse HEAD
+          g++-13 --version | head -1
+      - name: Compile the public-World regression oracle against old source
+        run: |
+          printf '#include "phase_quantity_tests.hpp"\nint main() { return cybersand::mat002_tests::run_all() ? 0 : 1; }\n' > build/mat002/main.cpp
+          timeout 5m g++-13 -std=c++20 -O1 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -Inative/tests native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/src/c_api.cpp build/mat002/main.cpp -o build/mat002/baseline
+      - name: Require the known baseline failures rather than accept them
+        run: |
+          set +e
+          timeout 5m build/mat002/baseline > build/mat002/baseline.log 2>&1
+          result=$?
+          set -e
+          cat build/mat002/baseline.log
+          test "$result" = 1
+          grep -F '[fail] MAT-002 evaporation inventory: evaporation invented Water inventory' build/mat002/baseline.log
+          grep -F '[fail] MAT-002 cumulative quench:' build/mat002/baseline.log
+      - name: Inspect affected current metadata and producer consumers
+        run: |
+          git grep -nE 'tuning_passes\(|kInteractionProfileVersion|selected_tuning_pass|int\.pair\.(lava-water|steam-ice)|int\.pass\.current-oracle' -- godot tools native/tests ':!native/tests/phase_quantity_tests.hpp' | head -100 || true
+          grep -n -A4 -B2 'Material::Steam\|Material::Ice' native/src/world.cpp | tail -170
+          sed -n '1,140p' docs/systems/water-design.md
+          sed -n '1,100p' docs/architecture/chunk-tile-and-buffer-model.md
+      - name: Retain reproduced failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mat002-baseline-${{ github.run_id }}
+          path: build/mat002/baseline.log
+          if-no-files-found: warn
+          retention-days: 30
