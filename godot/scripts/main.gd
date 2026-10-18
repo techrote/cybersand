@@ -1598,6 +1598,7 @@ func cycle_player_representation() -> bool:
 		or not pending_water_apply.is_empty()
 	):
 		return false
+	var restore_reference_bodies: bool = not physical_trial_arm.is_empty()
 	physical_trial_arm = ""
 	physical_trial_input = PhysicalTrial.new()
 	actor_model_selection = &""
@@ -1609,6 +1610,9 @@ func cycle_player_representation() -> bool:
 		else CyberPlayerRepresentation.SAMPLED
 	)
 	barrel_player_spawn_position = CHARACTER_SPAWN
+	if restore_reference_bodies:
+		_activate_water_body_scenario(false)
+		_activate_water_body_scenario(true)
 	# Never convert an actor in place. Rebuild both simulation and body state from
 	# the ordinary fresh-reset boundary under the newly selected owner.
 	reset_world()

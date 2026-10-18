@@ -407,7 +407,7 @@ Run `godot --headless --path godot --script res://tests/test_exploratory_actor_s
 with a 180-second timeout and the pinned materialized native/Rapier libraries.
 It exercises all five authored exploratory maps, physical barrel/Ripper and
 sampled baseline/rig replacement, R retention, all 29 sampled rigs with their
-scripted companions, physics labels and protected fixture/Benchmark refusal.
+scripted companions, physics labels, legacy F6 reference-body restoration and protected fixture/Benchmark refusal.
 Existing Set A/rig, physical-trial, Blacksite/showcase and controller tests remain
 required. The [physical actor programme](physical-actor-programme.md) owns controls
 and the full-roster Rapier conversion requirement; these tests do not validate

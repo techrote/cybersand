@@ -24,11 +24,11 @@ native source, binary, dependency pin, CI provider or historical hash was change
 |---|---|
 | `godot/scripts/actor_prototype_panel.gd` | `e7bd374875207d13992433197bbf7ee48c6de568f4bf1c05e9dd598376b5159c` |
 | `godot/scripts/feature_launcher.gd` | `dcfa22fcd8b0384089f192396086c9a594d178967f94d122dd7ab893e12c3dbc` |
-| `godot/scripts/main.gd` | `c447e4a6a1f47d7c13ed735be1f5f897b1362a2bf1a871e2911bc3f183c45bba` |
+| `godot/scripts/main.gd` | `93d06b6266edc8dbda2df7a074c5c63f8fd2dedb1d3673d687c18659db967855` |
 | `godot/scripts/microscenario_catalogue.gd` | `d58a1010b7709828730f49a623c9a29016995352e861122a54ef739a90970b0b` |
 | `godot/scripts/simulation_worker.gd` | `765c998716aeda615b5a1ad135a3ea9a2f98ac7c2bbad7bffcd94268e20ea6c1` |
 | `godot/tests/test_actor_rig_integration.gd` | `5fbddf016e04a889b6fbc4723498b596cf9474b00a575c97f05b5466d13d82c6` |
-| `godot/tests/test_exploratory_actor_selection.gd` | `7f41c8a1425e7de7e0c2fdf3d5163c5794a960d37f6b80ca09286e8130b9bacf` |
+| `godot/tests/test_exploratory_actor_selection.gd` | `ee2aa2ab86746bf6d1a673769a56d7fd88e5fc8432fb70e9be6ab1ab4590ab64` |
 
 ## Changed behavior and invariants
 
@@ -84,16 +84,19 @@ git diff --check
 Focused and ordinary suite cases use a 180-second timeout (the runner owns
 individual exceptions). Local suite logs are under
 `C:/Users/_/AppData/Local/Temp/cybersand-exploratory-actors-suite-v3/`;
-final expanded focused output is `actor-integration-final-focused-v3.log` in the
+final expanded focused output is `actor-integration-final-focused-v4.log` in the
 same temporary root. The full sweep passed import plus all 80 assigned cases (81 result records),
 including Water, Web-controller host and generation tests. Final focused integration
-passes 474 assertions; the existing 56-assertion
+passes 479 assertions; the existing 56-assertion
 physical-trial run also passes. The whole sweep includes the earlier
 460-assertion revision and the popup before its final first-open fitting change;
 the expanded final focused run adds navigation, owner-refusal and keyboard-only
 UI checks. Final-source actor-rig integration (683 assertions) and feature launcher
 (31 assertions) also passed after the popup fitting change. The final focused run uses the source
-hashes above, including the opaque popup and hidden sampled-only power row.
+hashes above, including the opaque fitted popup, hidden sampled-only power row and legacy F6
+reference-body restoration. Post-correction PCHAR representation checks and the
+157-assertion original actor integration also pass. The full sweep predates only
+the final UI fit and F6 restoration, covered by these focused final-source runs.
 
 ## Visual inspection
 
@@ -114,6 +117,9 @@ acknowledgement corrected it. Early iterations also encountered invalid script
 encoding/line endings, a fixed-size picker expectation and a changed override
 signature; UTF-8/LF, preserved Set A indices with appended physical choices, and
 the unchanged public two-argument scenario method corrected those failures.
+Boundary review also found that legacy F6 could leave a Ripper-sized hull behind
+when restoring the sampled sandbox player. F6 now rebuilds the three reference
+bodies, and the focused test checks their 8 by 14 collider extent.
 The initial GPU helper read `current_scene` before deferred replacement completed;
 it now waits for the scene. Failed logs were retained in the temporary root.
 

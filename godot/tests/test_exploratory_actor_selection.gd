@@ -33,6 +33,15 @@ func run() -> void:
 		expect(desktop.player_uses_barrel() == str(model).begins_with("physical/"), "Sandbox ownership follows physics choice")
 		if not desktop.player_uses_barrel():
 			expect(desktop.rigid_bodies.size() == 3, "Leaving a physical hull restores reference bodies")
+	expect(desktop.apply_actor_prototype_configuration(&"physical/ripper", &"human", false), "Physical Ripper before legacy F6")
+	await installed()
+	expect(desktop.cycle_player_representation(), "Legacy F6 must leave physical Ripper")
+	var legacy_deadline: int = Time.get_ticks_msec() + 60000
+	while desktop.latest_snapshot.player_representation == "barrel-rapier" and Time.get_ticks_msec() < legacy_deadline:
+		await process_frame
+	expect(not desktop.player_uses_barrel() and desktop.rigid_bodies.size() == 3, "Legacy F6 must restore all three reference bodies")
+	var reference_shape: RectangleShape2D = desktop.test_rigid_body_1.get_node("CollisionShape2D").shape
+	expect(reference_shape.size == Vector2(8,14), "Legacy F6 must restore reference collider and render extent")
 	var maps: Array[String] = CyberShowcaseTiles.scenario_ids()
 	maps.append(CyberBlacksiteNine.SCENARIO_ID)
 	for id: String in maps:
