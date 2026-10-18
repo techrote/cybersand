@@ -67,7 +67,7 @@ It is an aesthetic showcase; existing physics programmes retain their own gates.
 | Scheduler and storage | Sparse chunks, phased in-place jobs, explicit capacities and activity sleep; [chunk/tile model](../architecture/chunk-tile-and-buffer-model.md), [storage](../systems/world-storage-and-interest-region.md) |
 | Materials | Bounded adapted kernels, mass-conserving native Water, discrete fallback, secondary interaction lanes; [materials](../systems/materials-and-rule-kernels.md), [Water](../systems/water-design.md) |
 | Field storage and events | Optional temperature storage and bounded explosions; no general heat/pressure/wind solver; [field roadmap](../systems/smoke-heat-pressure-roadmap.md) |
-| Bodies and character | Main-thread Rapier, rectangular masks/displacement, static terrain packets, sampled character, PCHAR reset-scoped barrel-player experiment, and optional Runner/Skimmer/Crawler [actor control prototypes](../systems/actor-control-prototypes.md); [coupling](../architecture/rigid-body-and-cellular-coupling.md) |
+| Bodies and character | Main-thread Rapier, rectangular masks/displacement, static terrain packets, sampled character, PCHAR reset-scoped barrel-player experiment, and 29 optional sampled [actor rigs](../systems/actor-rigs.md) including the unchanged SetA trio; [coupling](../architecture/rigid-body-and-cellular-coupling.md) |
 | Rendering | Immutable native snapshots, copied dirty RG8 patches, full finite GPU texture update and derived material appearance; [bridges](../architecture/rendering-and-gameplay-bridges.md) |
 | Persistence | Fixed CYSD1 demo levels; complete resumed replay absent; [save contract](level-saves-and-replay.md) |
 | Runtime availability | All 18 required LFS payloads materialized; current execution scope is platform-specific; [build](../operations/local-build-and-validation.md) and [evidence](validation-evidence.md) |
@@ -198,22 +198,32 @@ programme for later environment/player tuning after finite child #138.
 
 ## Provisional actor control checkpoint — 2026-10-18
 
-**Current implementation, experimental:** Runner, Skimmer and Crawler provide
-three sampled movement rule sets using a shared player/policy action interface.
-Their abilities differ: jump/dash traversal, two-axis flight with energy and
-braking, and traction/hop/brace with bounded clamber. The
-[actor contract](../systems/actor-control-prototypes.md) owns the action,
-observation, lifetime and desktop comparison boundaries.
+**Current implementation, experimental:** ACT-002 / #168 expands the original
+ACT-001 trio into 29 [actor rigs](../systems/actor-rigs.md) across SetA/B/F/Y/U/V.
+SetA preserves Runner, Skimmer and Crawler plus their original two-button motor
+and 16-value observations. The new rigs add independent aim, effort, trim, reel
+and auxiliary input, with additive 40-value observations and consumed action/edge
+readback. Human, scripted and external-policy producers share admission and motor
+capabilities. The canonical rig contract owns each rig's control map and limits.
 
-They use fixed model tuning and the existing material-aware sampled rectangle;
-they do not replace PENV profiles, select PCHAR's final player representation or
-change generic Rapier/body or Water authority. Runtime enclosure immobilizes the
-prototype rather than invoking sampled-baseline runtime relocation.
+The experiments include nimble ground traversal, a broad three-legged lunging
+robot, tracked/hover/drilling machines, unusual flight/descent, adhesion, ropes,
+bounded recoil and six salvage-tool designs. SetV's seven named interface personas
+are explicitly fictional designs, not real model preference or capability claims.
+F5 compares the selected set through a fresh ordinary-world reset.
+
+New-rig sampled rectangles have bounded conservative rotation/resize queries and
+selected local tool effects through existing native cell writes. They do not
+replace PENV profiles, select PCHAR's final representation, add articulated rigid
+bodies or change generic Rapier/Water authority. Runtime enclosure immobilizes
+the rig rather than invoking sampled-baseline runtime relocation.
 
 Neural-network inference/training, larger NPC populations and target-PC
 performance/feel acceptance remain future work. A shared command seam or
 hand-authored demonstration policy is not evidence of a trained controller.
 Registered scientific/control fixtures retain their existing actor identities.
+Use the [validation ledger](validation-evidence.md) for scoped execution evidence;
+the preserved ACT-001 audit does not automatically validate the additional rigs.
 
 ## Issue #13 experiment checkpoint
 

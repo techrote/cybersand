@@ -88,7 +88,7 @@ own tick/time identity and is never relabelled as newly generated material.
 Tick zero is a valid reset generation when a render-publication serial exists;
 both retained frames and drop records preserve it even after actors advance.
 
-ACT-001 adds copied [prototype actor context](../systems/actor-control-prototypes.md)
+ACT-001 adds copied [SetA actor context](../systems/actor-control-prototypes.md)
 to `actor_sample.actor_prototypes` and `material_generation.actor_prototypes`.
 The former contains the current bounded session observation; the latter remains
 bound to the exact material generation. The player metadata also retains this
@@ -96,6 +96,15 @@ context and an `environment_profile_applied` flag, which is false for prototypes
 because their model owns the movement values. JSON includes the demo NPC rows;
 the review bitmap retains its existing player/body outlines and does not draw
 additional prototype NPCs.
+
+ACT-002 adds the [rig schema](../systems/actor-rigs.md#what-does-the-version-2-observation-contain)
+inside those same separately timed actor contexts: set/rig identity, 40-value
+state rows, ten-value consumed actions, consumed edge flags and admitted/applied
+sequences. Catalog body/color metadata is published as numeric arrays. The player
+metadata records the current unrotated hull extent, exact actor rotation, rig ID
+and set, including collision-safe tuck state. The review bitmap still draws
+unrotated rectangular outlines rather than the desktop's rotating procedural rig
+glyphs; use JSON for angle, attachments, NPCs and actuator-state interpretation.
 
 Per-frame metadata includes:
 

@@ -27,17 +27,29 @@ preserves product goals, liked material behavior and deliberate deferrals.
 
 ## Actor control prototypes — 2026-10-18
 
-ACT-001 / #161 adds optional Runner, Skimmer and Crawler actors to the ordinary
-desktop sandbox. Read the [actor contract](../systems/actor-control-prototypes.md)
-before changing their movement rules or adding a policy consumer. **F5** selects
-the model, keyboard/demo/external-policy pilot and two optional demo NPCs. All
-producers share the same expiring action interface; no neural inference runs in
-the simulation owner. Controlled fixtures keep their explicit player identity.
+ACT-002 / #168 expands the original ACT-001 / #161 trio into 29 optional desktop
+rigs in SetA/B/F/Y/U/V. Read the [rig contract](../systems/actor-rigs.md) before
+changing movement, input or observation fields. The
+[SetA compatibility page](../systems/actor-control-prototypes.md) preserves Runner,
+Skimmer and Crawler's original motor and 16-value observations. New rigs use
+independent aim, effort, trim, reel and auxiliary with additive 40-value state and
+consumed action/edge readback. Catalog names and fictional SetV personas do not
+connect model services or claim real model behavior.
 
-The motor/session boundary is bounded to eight actors and 32 collision queries
-per actor update. Source and Linux headless evidence remain separate from target-PC
-feel, many-NPC throughput and Windows/Web execution. The ACT-001 dated record is
-routed from the [validation ledger](../reference/validation-evidence.md).
+**F5** selects a set/rig, keyboard/demo/external-policy pilot, power and optional
+comparison with the other rigs in that set. WASD, pointer aim, Space/Shift/C,
+Q/E trim, Z/X reel and brackets use the same expiring policy interface. The owner
+acknowledges reset outcomes before human control resumes; controlled fixtures
+retain their explicit player identities. Expiry/cancellation discards charge,
+attachment and pending effects before neutral input advances.
+
+The session remains capped at eight actors. SetA retains its 32-query limit;
+new rigs have explicit occupancy, ray, effect and angular/translation budgets in
+the [configuration reference](../reference/configuration-reference.md#actor-rig-values).
+Source and Linux headless evidence remain separate from target-PC feel,
+many-NPC throughput and Windows/Web execution. The
+[validation ledger](../reference/validation-evidence.md) owns dated execution;
+the original ACT-001 audit remains unchanged.
 
 ## Material consistency repair — 2026-10-18
 

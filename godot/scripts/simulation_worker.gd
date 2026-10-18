@@ -408,6 +408,19 @@ func cancel_actor_input(actor_id: int, epoch: int, producer: StringName) -> bool
 	return _actor_session.cancel_input(actor_id, epoch, producer)
 
 
+func submit_actor_rig_action(
+	actor_id: int, epoch: int, sequence: int, observed_tick: int,
+	movement: Vector2, aim: Vector2, effort: float, trim: float, reel: float,
+	primary: bool, secondary: bool, auxiliary: bool,
+	lease_ticks: int = ActorSession.DEFAULT_LEASE_TICKS,
+	producer: StringName = &"policy"
+) -> bool:
+	# ACT-002: the extended envelope admits values, never caller-supplied World
+	# commands, effect footprints or mutable motor references.
+	return _actor_session.submit_rig_action(actor_id, epoch, sequence, observed_tick,
+		movement, aim, effort, trim, reel, primary, secondary, auxiliary, lease_ticks, producer)
+
+
 func queue_actor_prototype_reset(definitions: Array, spawn_position: Vector2) -> int:
 	# A positive receipt acknowledges admission; the owner publishes disposition.
 	if not ActorSession.valid_definitions(definitions) or not spawn_position.is_finite():
@@ -768,14 +781,16 @@ func _worker_loop() -> void:
 				_simulation_failed = false
 				_configure_sampled_character(local_reset_spawn,
 					local_reset_sampled_character_enabled, local_reset_runtime_recovery_enabled)
+				var actors_configured: bool = local_actor_definitions.is_empty()
 				if not local_actor_definitions.is_empty():
-					if _actor_session.configure(local_actor_definitions, _world):
+					actors_configured = _actor_session.configure(local_actor_definitions, _world)
+					if actors_configured:
 						_character = _actor_session.player()
 						_sampled_character_enabled = true
 				if local_actor_prototype_request:
-					_actor_prototype_status = "Actor reset applied"
+					_actor_prototype_status = "Actor reset applied" if actors_configured else "Refused actor configuration after World reset"
 					_actor_prototype_result_serial = local_actor_prototype_serial
-					_actor_prototype_reset_applied = true
+					_actor_prototype_reset_applied = actors_configured
 				# Publish the replacement before any attempted continuation.
 				local_paused = true
 			elif local_actor_prototype_request:

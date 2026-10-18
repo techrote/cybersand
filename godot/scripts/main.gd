@@ -6,6 +6,11 @@ const PlayerEnvironmentPanel = preload("res://scripts/player_environment_panel.g
 const ShowcasePresentation = preload("res://scripts/showcase_presentation.gd")
 const ActorPrototypePanel = preload("res://scripts/actor_prototype_panel.gd")
 const ActorPrototypeOverlay = preload("res://scripts/actor_prototype_overlay.gd")
+const ActorRigCatalog = preload("res://scripts/actor_rig_catalog.gd")
+const ACTOR_CONTROL_KEYS: Array[int] = [KEY_W, KEY_A, KEY_S, KEY_D, KEY_SPACE, KEY_SHIFT,
+	KEY_Q, KEY_E, KEY_Z, KEY_X, KEY_C, KEY_BRACKETLEFT, KEY_BRACKETRIGHT]
+const ACTOR_PARAMETRIC_KEYS: Array[int] = [KEY_Q, KEY_E, KEY_Z, KEY_X, KEY_C,
+	KEY_BRACKETLEFT, KEY_BRACKETRIGHT]
 const DEFAULT_RECORDING_HZ: int = 15
 const DEFAULT_RECORDING_QUEUE_CAPACITY: int = 8
 
@@ -835,6 +840,7 @@ var _actor_input_epoch: int = -1
 var _actor_input_sequence: int = 0
 var _actor_input_rearm: bool = true
 var _actor_reset_receipt: int = 0
+var _actor_effort: float = 0.7
 var rigid_bodies: Array[RigidBody2D] = []
 var rapier_bridge: CyberRapierPhysicsBridge = CyberRapierPhysicsBridge.new()
 var rapier_start_error: Error = OK
@@ -1084,6 +1090,21 @@ func _physics_process(_delta: float) -> void:
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F11:
 		showcase_presentation.launch()
+		get_viewport().set_input_as_handled()
+		return
+	if (
+		event is InputEventKey and event.keycode in ACTOR_PARAMETRIC_KEYS
+		and actor_human_control_active() and actor_keyboard_allowed()
+		and int(latest_snapshot.actor_prototypes.get("rig_version", 1)) >= 2
+		and not CyberActorPrototypeSession.MODEL_IDS.has(StringName(str(latest_snapshot.actor_prototypes.models[0])))
+	):
+		if event.pressed and not event.echo:
+			if event.keycode == KEY_BRACKETLEFT:
+				_actor_effort = clampf(_actor_effort - 0.05, 0.0, 1.0)
+			elif event.keycode == KEY_BRACKETRIGHT:
+				_actor_effort = clampf(_actor_effort + 0.05, 0.0, 1.0)
+		if not event.echo:
+			publish_actor_keyboard_input()
 		get_viewport().set_input_as_handled()
 		return
 	if (
@@ -1901,7 +1922,7 @@ func get_horizontal_input() -> float:
 func setup_actor_prototypes() -> void:
 	actor_prototype_button = Button.new()
 	actor_prototype_button.name = "ActorPrototypes"
-	actor_prototype_button.text = "Actor prototypes / F5"
+	actor_prototype_button.text = "Actor-rigs / F5"
 	actor_prototype_button.focus_mode = Control.FOCUS_NONE
 	actor_prototype_button.pressed.connect(toggle_actor_prototypes)
 	$Layout.add_child(actor_prototype_button)
@@ -1931,7 +1952,8 @@ func toggle_actor_prototypes() -> void:
 		return
 	_actor_input_rearm = true
 	actor_prototype_panel.configure_selection(actor_model_selection, actor_producer_selection, actor_demo_npcs)
-	actor_prototype_panel.popup_centered(Vector2i(500, 420))
+	actor_prototype_panel.effort_slider.value = _actor_effort
+	actor_prototype_panel.popup_centered(Vector2i(600, 600))
 
 
 func actor_prototype_definitions(model_id: StringName, producer: StringName, demo_npcs: bool) -> Array:
@@ -1939,7 +1961,7 @@ func actor_prototype_definitions(model_id: StringName, producer: StringName, dem
 		return []
 	var definitions: Array = [{"model": model_id, "producer": producer, "position": CHARACTER_SPAWN}]
 	if demo_npcs:
-		for candidate: StringName in CyberActorPrototypeSession.MODEL_IDS:
+		for candidate: StringName in ActorRigCatalog.rigs_in_set(ActorRigCatalog.set_for(model_id)):
 			if candidate != model_id:
 				definitions.append({"model": candidate, "producer": &"demo",
 					"position": CHARACTER_SPAWN + Vector2(float(definitions.size()) * 22.0, -4.0)})
@@ -1948,9 +1970,9 @@ func actor_prototype_definitions(model_id: StringName, producer: StringName, dem
 
 func apply_actor_prototype_configuration(model_id: StringName, producer: StringName, demo_npcs: bool) -> bool:
 	if not actor_prototypes_allowed():
-		actor_prototype_panel.set_error("Prototype selection is available in the ordinary sandbox.")
+		actor_prototype_panel.set_error("Actor-rig selection is available in the ordinary sandbox.")
 		return false
-	if model_id != &"" and not CyberActorPrototypeSession.MODEL_IDS.has(model_id):
+	if model_id != &"" and not ActorRigCatalog.has_rig(model_id):
 		return false
 	if not CyberActorPrototypeSession.PRODUCERS.has(producer):
 		return false
@@ -1963,6 +1985,7 @@ func apply_actor_prototype_configuration(model_id: StringName, producer: StringN
 	actor_model_selection = model_id
 	actor_producer_selection = producer
 	actor_demo_npcs = demo_npcs
+	_actor_effort = actor_prototype_panel.effort_slider.value
 	_actor_input_rearm = true
 	player_representation = CyberPlayerRepresentation.SAMPLED
 	sampled_runtime_recovery_enabled = model_id == &""
@@ -2010,6 +2033,26 @@ func actor_keyboard_allowed() -> bool:
 	return focus == null
 
 
+func actor_human_control_active() -> bool:
+	return (
+		latest_snapshot != null and not latest_snapshot.actor_prototypes.is_empty()
+		and latest_snapshot.actor_prototypes.producers[0] == &"human"
+	)
+
+
+func actor_pointer_aim() -> Vector2:
+	return actor_pointer_aim_at(world_view.get_local_mouse_position())
+
+
+func actor_pointer_aim_at(pointer: Vector2) -> Vector2:
+	# Read only displayed actor/camera state, using the terrain's aspect-fit map.
+	var content: Rect2 = view_content_rect()
+	if not pointer.is_finite() or content.size.x <= 0.0 or content.size.y <= 0.0 or not content.has_point(pointer):
+		return Vector2.ZERO
+	var world_point: Vector2 = camera_origin.floor() + (pointer - content.position) / content.size * Vector2(current_view_size)
+	return (world_point - character_centre()).normalized()
+
+
 func publish_actor_keyboard_input() -> void:
 	if latest_snapshot == null or latest_snapshot.actor_prototypes.is_empty():
 		return
@@ -2025,6 +2068,9 @@ func publish_actor_keyboard_input() -> void:
 		float(Input.is_key_pressed(KEY_S)) - float(Input.is_key_pressed(KEY_W)))
 	var primary: bool = Input.is_key_pressed(KEY_SPACE)
 	var secondary: bool = Input.is_key_pressed(KEY_SHIFT)
+	var auxiliary: bool = Input.is_key_pressed(KEY_C)
+	var trim: float = float(Input.is_key_pressed(KEY_E)) - float(Input.is_key_pressed(KEY_Q))
+	var reel: float = float(Input.is_key_pressed(KEY_X)) - float(Input.is_key_pressed(KEY_Z))
 	if (
 		not actor_keyboard_allowed() or context.get("suspended", false)
 		or _actor_reset_receipt != 0 or simulation_worker.has_failed()
@@ -2033,32 +2079,40 @@ func publish_actor_keyboard_input() -> void:
 		simulation_worker.cancel_actor_input(0, epoch, &"human")
 		return
 	if _actor_input_rearm:
-		if (
-			Input.is_key_pressed(KEY_W) or Input.is_key_pressed(KEY_A)
-			or Input.is_key_pressed(KEY_S) or Input.is_key_pressed(KEY_D)
-			or primary or secondary
-		):
-			return
+		for key: int in ACTOR_CONTROL_KEYS:
+			if Input.is_key_pressed(key):
+				return
 		_actor_input_rearm = false
 	_actor_input_sequence += 1
-	simulation_worker.submit_actor_action(0, epoch, _actor_input_sequence,
-		int(context.tick), movement, primary, secondary, 6, &"human")
+	if int(context.get("rig_version", 1)) < 2 or CyberActorPrototypeSession.MODEL_IDS.has(StringName(str(context.models[0]))):
+		# Keep the original Set A desktop adapter path and its public v1 seam.
+		simulation_worker.submit_actor_action(0, epoch, _actor_input_sequence,
+			int(context.tick), movement, primary, secondary, 6, &"human")
+		return
+	simulation_worker.submit_actor_rig_action(0, epoch, _actor_input_sequence,
+		int(context.tick), movement, actor_pointer_aim(), _actor_effort, trim, reel,
+		primary, secondary, auxiliary, 6, &"human")
 
 
 func refresh_actor_prototypes() -> void:
 	actor_prototype_button.disabled = not actor_prototypes_allowed()
 	if latest_snapshot == null or latest_snapshot.actor_prototypes.is_empty():
-		actor_prototype_button.text = "Actor prototypes / F5"
+		actor_prototype_button.text = "Actor-rigs / F5"
 		return
 	var context: Dictionary = latest_snapshot.actor_prototypes
 	var states: PackedFloat32Array = context.states
-	actor_prototype_button.text = "%s / F5 | %s | energy %d%% | %d actors" % [
-		str(context.models[0]).capitalize(), str(context.producers[0]),
-		roundi(states[6] * 100.0), int(context.count)]
-	actor_prototype_button.tooltip_text = (
-		"WASD movement · Space primary · Shift secondary · release keys after UI/focus changes\n"
-		+ "Policy/demo input uses the same action contract; prototypes are sampled, burial-safe actors."
-	)
+	var rig_id: StringName = StringName(str(context.models[0]))
+	var power_text: String = ""
+	if ActorRigCatalog.entry(rig_id).channels.has("effort"):
+		var power: float = _actor_effort
+		var applied: PackedFloat32Array = context.get("applied_actions", PackedFloat32Array())
+		if context.producers[0] != &"human":
+			power = applied[4] if applied.size() >= CyberActorPrototypeSession.ACTION_STRIDE else 0.0
+		power_text = " | power %d%%" % roundi(power * 100.0)
+	actor_prototype_button.text = "%s · %s / F5 | %s | energy %d%%%s | %d rigs" % [
+		ActorRigCatalog.name_for(rig_id), str(ActorRigCatalog.set_for(rig_id)), str(context.producers[0]),
+		roundi(states[6] * 100.0), power_text, int(context.count)]
+	actor_prototype_button.tooltip_text = ActorRigCatalog.controls_text(rig_id) + "\nRelease control keys after UI/focus changes."
 
 
 func update_camera(delta: float) -> void:
@@ -2088,6 +2142,10 @@ func character_centre() -> Vector2:
 		return rapier_bridge.body_transform(
 			CyberPlayerRepresentation.BARREL_BODY_INDEX
 		).origin
+	if latest_snapshot != null and not latest_snapshot.actor_prototypes.is_empty():
+		var rig_states: PackedFloat32Array = latest_snapshot.actor_prototypes.get("rig_states", PackedFloat32Array())
+		if rig_states.size() >= CyberActorPrototypeSession.RIG_OBSERVATION_STRIDE:
+			return character_position + Vector2(rig_states[35], rig_states[36]) * 0.5
 	return character_position + CyberSampledCharacter.BODY_SIZE * 0.5
 
 
