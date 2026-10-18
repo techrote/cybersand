@@ -86,6 +86,7 @@ func _tools() -> void:
 	_step(_action(Catalog.index_for(&"sand_scatter"), true, true))
 	_expect(_count_material(2) > 5, "Sand Scatter did not deposit a broad fan")
 	var writes_after_primary: int = int(runtime.snapshot().write_count_last)
+	world.cells.clear()
 	_step(_action(Catalog.index_for(&"sand_scatter"), false, false, true, 1.0))
 	_expect(int(runtime.snapshot().write_count_last) > 0, "tool secondary precision pulse did not apply")
 	_expect(int(runtime.snapshot().write_count_last) <= writes_after_primary, "precision pulse exceeded primary write work")
@@ -107,7 +108,8 @@ func _tools() -> void:
 	world.cells[Vector2i(126,100)] = 13
 	_equip(Catalog.index_for(&"glass_scorer"))
 	_step(_action(Catalog.index_for(&"glass_scorer"), true, true))
-	_expect(world.material_at(122,100) == 0 or world.material_at(126,100) == 13, "Glass Scorer selective path failed")
+	_expect(world.material_at(122,100) == 0, "Glass Scorer did not remove supported Glass")
+	_expect(world.material_at(126,100) == 13, "Glass Scorer removed non-glass material")
 
 func _projectiles() -> void:
 	runtime.configure(1)
