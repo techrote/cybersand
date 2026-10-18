@@ -349,6 +349,8 @@ bounded allocations; the implementation does not claim zero heap work per tick.
 The [focused build/test route](../operations/local-build-and-validation.md#actor-rig-checks)
 covers catalog/control mechanics, stale action handling, SetA parity and desktop
 integration. Use the [validation ledger](../reference/validation-evidence.md) for
-dated commands, source/runtime identities and actual outcomes. The original
+dated commands, source/runtime identities and actual outcomes. The
+[ACT-002 audit](../audits/2026-10-18-act002-actor-rigs.md) records the new rigs'
+scoped Linux passes, preserved failures and remaining acceptance boundaries. The original
 [ACT-001 audit](../audits/2026-10-18-act001-actor-control-prototypes.md) remains
 evidence for its recorded SetA checkpoint, not automatic acceptance of all 29 rigs.

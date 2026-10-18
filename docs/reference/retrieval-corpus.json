@@ -96,6 +96,10 @@
   ],
   "excluded": [
     {
+      "path": "audits/2026-10-18-act002-actor-rigs.md",
+      "reason": "Dated ACT-002 source/runtime, preserved failure and scoped rig validation evidence; retrieve explicitly through the rig contract or validation ledger, not as a default Current runtime contract"
+    },
+    {
       "path": "audits/2026-10-18-act001-actor-control-prototypes.md",
       "reason": "Dated ACT-001 source/runtime and scoped prototype validation evidence; retrieve explicitly through the actor contract or validation ledger, not as a default Current runtime contract"
     },
