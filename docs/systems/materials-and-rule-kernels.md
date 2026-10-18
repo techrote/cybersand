@@ -19,6 +19,21 @@ loader are **Planned**.
 This is the runtime contract for the [secured source checkpoint](../operations/source-checkpoint-and-recovery.md).
 Test executions are scoped in the [evidence ledger](../reference/validation-evidence.md).
 
+## MAT-002 phase quantity and quench state
+
+**Current software candidate / #160:** Steam and Ice use `state_b` for retained
+aqueous quantity, with zero retaining the legacy/full-parcel meaning. Lava and
+MoltenGlass use `state_b` for cumulative Water-quench progress. Steam lifetime and
+MoltenGlass cooling updates preserve these fields. Water's mass and coherence
+states, all material IDs and descriptor defaults remain unchanged.
+
+The [Water phase contract](water-design.md#how-do-water-steam-and-ice-preserve-quantity)
+owns the exact lattice/sentinel, threshold, chemical-source and physical-model
+limits. The [versioned interaction substrate](intermaterial-interactions.md#mat-002-versioned-quantity-execution)
+owns affected rule identities. Ordinary full-contact products/probabilities and
+coordinate cadence remain controls, not proof that partial contacts are unchanged.
+The [dated audit](../audits/2026-10-18-mat002-phase-quantity.md) scopes executed tests.
+
 ## Identity, descriptors, and state
 
 [material.hpp](../../native/include/cybersand/material.hpp) defines byte-sized
@@ -32,8 +47,9 @@ permission, lateral-flow mode, viscosity, kernel, initial compact state, palette
 and maximum write radius. Numeric density and movability do not by themselves
 permit exchange. Descriptor values are fixed during a tick.
 
-World owns the four-byte Cell: material, `state_a`, `state_b`, update epoch.
-The two generic bytes hold material-specific mass, lifetime, burn/growth,
+World owns material identity, `state_a`, `state_b` and update epoch through the
+existing [superset carrier](../architecture/chunk-tile-and-buffer-model.md#what-is-stored-per-cell-and-per-chunk).
+Its two logical state fields hold material-specific mass, lifetime, burn/growth,
 capture, heading, or projectile state. Stone `state_b` distinguishes
 brace-aware Stone from explosion-created granular falling Stone. Temperature
 is a separate optional field; [its current uses](smoke-heat-pressure-roadmap.md)

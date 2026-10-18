@@ -1,10 +1,10 @@
 ---
 title: Water design
 document-kind: contract
-canonical-for: [native-water-semantics, native-fallback-water-differences]
+canonical-for: [native-water-semantics, native-fallback-water-differences, aqueous-phase-quantity, water-quench-budget]
 status: Current
-scope: Native conserved Water, coherent emission and adhesion, rest/hash fixtures, fallback differences, and future reaction accounting
-last-reviewed: 2026-09-20
+scope: Native Water transport and phase quantities, bounded quench progress, coherent emission, rest/hash fixtures, fallback differences and remaining reaction accounting
+last-reviewed: 2026-10-18
 related-documents: [materials-and-rule-kernels.md, material-appearance-and-rendering.md, ../reference/level-saves-and-replay.md, ../operations/water-hybrid-pressure-extension-programme.md, ../decisions/ADR-005-water-model.md]
 ---
 
@@ -19,6 +19,69 @@ every material reaction or exact save/replay continuation.
 Source identity is in the [checkpoint](../operations/source-checkpoint-and-recovery.md);
 dated fixture executions are in the [evidence ledger](../reference/validation-evidence.md).
 [ADR-005](../decisions/ADR-005-water-model.md) owns the solver decision and rejected alternatives.
+
+## How do Water, Steam and Ice preserve quantity?
+
+**Current MAT-002 software candidate / #160:** evaporation, condensation, freezing
+and melting retain the exact integer aqueous quantity on the selected Water
+lattice. Let `M = 2^mass_bits - 1` (normally 255; experimental policies use 3..8 bits).
+The implementation lives in [World](../../native/src/world.cpp), with retained
+[public-World regressions](../../native/tests/phase_quantity_tests.hpp) and a
+[real Godot adapter/save regression](../../godot/tests/test_phase_quantity_regression.gd).
+The [dated evidence](../audits/2026-10-18-mat002-phase-quantity.md) separates
+source qualification from runtime/owner acceptance.
+
+| Material-local state | Meaning |
+|---|---|
+| Water `state_a` | Aqueous quantity 1..M; Water `state_b` remains coherent-emission delay |
+| Steam `state_a` | Existing lifetime; changing it must preserve the quantity byte |
+| Steam / Ice `state_b = 0` | Legacy or painted full parcel: exactly M, **not zero inventory** |
+| Steam / Ice `state_b = 1..M` | Explicit aqueous quantity; new full parcels canonically use zero |
+| Lava / MoltenGlass `state_b = 0..M-1` | Accumulated Water-quench progress, in the same integer coolant units |
+
+Water-to-Steam pair rules and charged-Metal evaporation retain the original Water
+quantity. Steam expiry or Steam/Ice contact returns that amount, not a fresh full
+cell. Ice melting and Water freezing retain quantity as well. Motion, conservative
+swaps and serialized body relocation carry the existing compact state. Unchanged
+Water, Ice and Lava pair participants preserve their state rather than being
+reinitialized. Merely waiting or observing does not invent additional quantity.
+
+### Why does a tiny Water parcel no longer instantly turn Lava into Stone?
+
+For Water contacting Lava or MoltenGlass, each selected contact adds the parcel's
+actual quantity to that hot cell's quench progress. The hot cell remains liquid
+until cumulative coolant reaches M, then becomes the existing Stone or Glass
+product. A full Water cell therefore keeps the original full-contact result;
+several small contacts accumulate instead of each generating a whole solid cell.
+MoltenGlass's separate cooling timer and Lava/Glass interactions preserve progress.
+
+The contacting Water parcel becomes Steam in full, retaining its quantity even
+when the threshold is crossed. Solid products remain whole cells, so completion
+can overshoot the threshold by less than the final parcel. This is a deliberately
+bounded **game-scale coolant-contact budget**, not a temperature equation, joules,
+latent heat, a physical steam-expansion law or universal energy conservation.
+Natural MoltenGlass cooling remains a separate existing path. Stone's existing
+brace/support behavior is unchanged; broad crust/bridge realism is not accepted
+by quantity conservation alone.
+
+### Which reactions remain outside the closed phase ledger?
+
+A closed Water/Steam/Ice thermal fixture sums Water `a` plus decoded Steam/Ice `b`.
+Existing liquid-only `liquid_mass` and Water observation counters still omit
+vapor/ice and must not be used alone as that combined ledger. Brine and Sludge
+are still whole-cell chemical materials, not a quantitative mixture model. Sludge
+purification preserves the original Water parcel and adds one explicitly modeled
+full Water cell from Sludge; it must not refill both cells. Brine-to-Steam recipes,
+painting, Cloner/Rocket emissions and direct replacement are explicit sources or
+sinks. Salt/Sodium chemistry, Acid corrosion, growth and explosions have their own
+accounting boundaries. No global species/mass conservation claim follows.
+
+Invalid explicit phase quantities and unfinished quench progress are rejected by
+World input validation; the Godot diagnostic rectangle preflights these fields
+before any write. CYSD1 retains the same bytes/layout, with the
+[save compatibility limits](../reference/level-saves-and-replay.md#mat-002-phase-payload-compatibility).
+Native Water transport, mass/coherence defaults, scheduler ownership, pressure/head
+successor gates and fallback semantics are unchanged by this phase pass.
 
 ## Current native representation and flow
 

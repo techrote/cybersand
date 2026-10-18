@@ -10,6 +10,13 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## MAT-002 phase quantity route
+
+For partial Water evaporation/condensation, Ice quantity or Lava/MoltenGlass
+quenching, use the [Water phase contract](systems/water-design.md#how-do-water-steam-and-ice-preserve-quantity),
+[save compatibility](reference/level-saves-and-replay.md#mat-002-phase-payload-compatibility)
+and [dated evidence](audits/2026-10-18-mat002-phase-quantity.md).
+
 ## Choose a reading route
 
 | Need | Start here |

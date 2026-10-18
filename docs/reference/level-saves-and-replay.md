@@ -4,11 +4,31 @@ status: Current
 document-kind: contract
 scope: Current CYSD1 finite-level format, exclusive ownership, import failure and omitted continuation state
 canonical-for: [cysd1-level-format, save-import-export, replay-persistence]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-10-18
 related-documents: [interfaces-and-message-contracts.md, ../architecture/determinism-and-boundary-transfers.md, validation-evidence.md]
 ---
 
 # Level saves and exact replay
+
+## MAT-002 phase payload compatibility
+
+**Current software candidate / #160:** CYSD1 still stores the same material/a/b/
+temperature payload. Steam/Ice aqueous quantity and Lava/MoltenGlass quench progress
+therefore survive exact payload export/import without adding fields or changing
+Cell allocation. The [phase state contract](../systems/water-design.md#how-do-water-steam-and-ice-preserve-quantity)
+defines the new material-local interpretation.
+
+Existing ordinary Steam/Ice payloads with `state_b=0` retain the legacy full-cell
+meaning. Previously arbitrary nonzero bytes are now meaningful quantities/progress;
+invalid values are refused during replacement construction, leaving the active
+World intact. The new Godot regression checks exact round-trip, retained quantity,
+legacy initialization and invalid-import non-mutation through the real adapter.
+
+Layout compatibility is **not backward semantic compatibility**: an older runtime
+can discard or misinterpret these newly used bytes. Use matching source/runtime
+and the same Water policy; CYSD1 is not a complete policy/replay container and does
+not authorize resuming low-precision experimental state under a different lattice.
+No exact next-tick continuation or old-runtime compatibility is claimed.
 
 ## Does an identical save reproduce the next tick?
 
@@ -41,9 +61,10 @@ and [CyberDemoBridge](../../godot/native_extension/cyber_demo_bridge.hpp).
 | Body records | At most three Physics Pit bodies: position, angle, linear/angular velocity, sleeping flag |
 | Local slot | `user://web_demo_slot_1.cys`; browser storage is origin/profile dependent |
 
-The authoritative hot cell remains four bytes. Save bytes intentionally exclude
-its update epoch and add temperature from the optional field; the five-byte
-save layout is not the in-memory `Cell` ABI.
+The [current in-memory carrier](../architecture/chunk-tile-and-buffer-model.md#what-is-stored-per-cell-and-per-chunk)
+is separately specified. Save bytes intentionally exclude its update epoch and
+add temperature from the optional field; the five-byte save layout is not the
+in-memory `Cell` ABI.
 
 ## May saving run concurrently with a tick?
 

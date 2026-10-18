@@ -10,6 +10,21 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## MAT-002 material phase checkpoint — 2026-10-18
+
+**Implemented software candidate:** #160 follows merged MAT-001 / #158 with exact
+Water/Steam/Ice phase inventory, retained same-material state and a bounded
+cumulative Water-quench budget for Lava/MoltenGlass. The original full-contact
+recipes remain controls; tiny parcels no longer gain a full aqueous inventory or
+instantly complete a whole hot-cell quench. See the
+[canonical phase contract](../systems/water-design.md#how-do-water-steam-and-ice-preserve-quantity)
+and [dated qualification](../audits/2026-10-18-mat002-phase-quantity.md).
+
+The core nine-group regression and complete native suite passed before the
+Godot/input/save follow-up. Source-matched runtimes and final normal CI remain
+integration gates. Windows graphical game-feel acceptance, general heat/energy
+semantics, broad chemistry and Water #95/#45 head/pressure work are separate.
+
 ## Is the foundation ready to extend?
 
 **Current documentation is organized for foundational work; the simulation has

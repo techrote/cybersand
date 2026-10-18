@@ -1401,6 +1401,15 @@ bool CyberNativeCellWorld::diagnostic_fill_rect(Vector2i origin, Vector2i size,
         !in_bounds(origin.x, origin.y) || !in_bounds(static_cast<std::int64_t>(origin.x) + size.x - 1,
                                                    static_cast<std::int64_t>(origin.y) + size.y - 1)) return false;
     const auto value = static_cast<cybersand::Material>(material);
+    const auto& policy = world_->config().water_experiment_policy;
+    // Validate the entire rectangle's material-local payload before its first
+    // write. Invalid diagnostic input must not throw through the Godot binding
+    // or leave a partially applied rectangle/revision behind.
+    if ((value == cybersand::Material::Water && state_b > policy.coherence_ticks()) ||
+        ((value == cybersand::Material::Steam || value == cybersand::Material::Ice) &&
+         state_b > policy.maximum()) ||
+        ((value == cybersand::Material::Lava || value == cybersand::Material::MoltenGlass) &&
+         state_b >= policy.maximum())) return false;
     const auto state_a = value == cybersand::Material::Water
         ? world_->config().water_experiment_policy.maximum()
         : static_cast<std::uint16_t>(cybersand::MaterialRules::descriptor(value).initial_state_a);
