@@ -15,11 +15,17 @@ last-reviewed: 2026-10-18
 
 **Current desktop:** the simulation owner installs copied sampled actor definitions
 only at the accepted exploratory scenario reset boundary. Main owns live Rapier
-objects and rebuilds the selected physical hull after a matching reset serial and
-map hash arrive in an immutable snapshot. Switching representations does not
-transfer a mutable actor or World reference between threads. No cell or joint
-ownership changes accompany the picker integration; future articulated actors
-remain subject to the [physical programme](../operations/physical-actor-programme.md).
+objects and rebuilds the selected physical assembly within the reset protocol.
+The sandbox may create it while reset is pending; it cannot step until the
+matching reset acknowledgement, actor epoch and initial terrain are ready.
+Exploratory scenario installation also checks the accepted map hash.
+Switching representations does not
+transfer a mutable actor or World reference between threads. ACT-004 keeps
+`CyberPhysicalActorSession`, body/joint nodes, control state and the Rapier bridge
+on the main thread. Copied effect requests cross to the cellular owner, which
+validates and applies them; only copied receipts return. Reset/close retires the
+old run, command leases, effects and joint graph. See the
+[physical actor contract](../systems/physical-actor-rigs.md).
 
 ## Who may mutate each resource?
 
@@ -40,6 +46,8 @@ but must not touch live scene-tree or Rapier objects.
 | Native snapshot slots | One serialized producer writes only an unleased slot | Shared exchange state outlives its facade while leases exist; no-slot/capacity failure retains dirty state |
 | Desktop world, sampled character and optional actor prototypes | Godot pacing Thread after startup handoff | Worker lifetime; stopped/joined before destruction; actor session reset invalidates old input epochs |
 | Live body nodes, RIDs and physics state | Main-thread Rapier bridge and PhysicsServer2D | Scene/bridge lifetime; never passed to cellular workers |
+| Physical actor rigs, joints and local controllers | Main-thread `CyberPhysicalActorSession`; at most eight rigs/eight total parts each | Run/actor/epoch-bound command leases; cancel discards future work, close retires bodies/joints |
+| Physical usable effect requests | Copied by the physical owner; exclusively validated/consumed by the native-world owner | Epoch/sequence/source-bound, bounded per actor and batch; consumed refusals cannot replay after an obstacle disappears |
 | Body samples and observations | Adapter owns copied samples and native transient occupancy; results are copied into publication | Mask rebuilt at coupling preparation; sample IDs identify result application |
 | Godot CPU image and textures | Main thread validates patches and updates resources | Application lifetime; upload never borrows mutable World bytes |
 | Compiled procedural recipe, field graph and prepared modules | Immutable `generation::Generator`, independent of World | Jobs retain shared ownership; replacing the caller's recipe cannot mutate existing jobs |
@@ -128,8 +136,11 @@ refresh when byte or patch thresholds are exceeded. This recovery bounds the
 retained display representation; it does not implement generalized bounded
 GameplayBridge queues.
 
-Native rectangle parsing considers at most 16 complete input records, accepts
-IDs 1–16, and preserves the first parsed duplicate. The occupancy field belongs
+Native rectangle parsing considers at most 64 complete input records, accepts
+exact IDs 1–64 from finite valid records, and preserves the first valid duplicate.
+The ACT-004 physical effect queue separately admits a whole incoming batch within
+eight pending requests or publishes an explicit refusal; it does not bound the
+older generic emission queue described above. The occupancy field belongs
 to World; it is separate from material identity. See
 [coupling](rigid-body-and-cellular-coupling.md) for displacement and overflow.
 

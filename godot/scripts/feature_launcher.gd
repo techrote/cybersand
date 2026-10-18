@@ -29,16 +29,17 @@ func _ready() -> void:
 	column.add_theme_constant_override("separation", 10)
 	scroll.add_child(column)
 	_label(column, "CYBERSAND / PLAY & EXPERIMENT", 30)
-	_label(column, "Choose a feature. F2 returns here; returning closes the current session. Showcase maps start paused. F5 selects Sampled rigs or Rapier barrel/Ripper in the sandbox and showcase maps.", 18)
+	_label(column, "Choose a feature. F2 returns here; returning closes the current session. Showcase maps start paused. F5 selects 41 articulated Rapier actors or sampled references in the sandbox and showcase maps.", 18)
 	_button(column, "Blacksite Nine — connected industrial complex", "blacksite")
 	_button(column, "Neon Reliquary — four showcase districts", "showcase")
-	_button(column, "Actor sandbox — F5 selects sampled rigs or physical Rapier bodies", "actors")
+	_button(column, "Actor sandbox — 41 articulated Rapier rigs / F5", "actors")
 	_button(column, "Materials sandbox / Experiment Tower — F9", "sandbox")
 	_button(column, "Thunderbowl — actor control arena", "thunderbowl")
+	_button(column, "Physical Thunderbowl — articulated actors, tools and scripted pilots", "physical_actors")
 	_button(column, "World generation workbench — terrain authoring preview", "worldgen")
 	_button(column, "Strata Theatre — layering and parallax depth lab", "depth")
 	_label(column, "BLACKSITE COMPARISONS / fresh reset for each arm", 22)
-	_label(column, "Real Rapier barrel and low rectangular Ripper: A/D drive, Q/E torque, Space short upward pulse.\nRipper is an initial single-body trial; articulated tracks, tools and granular tuning remain follow-up work.", 17)
+	_label(column, "Original single-hull Rapier barrel and Ripper reference trials: A/D drive, Q/E torque, Space short upward pulse. The articulated actor versions and scripted pilots are available through F5 and Physical Thunderbowl.", 17)
 	for arm: String in Trial.ARMS:
 		_button(column, "Blacksite / " + arm, Trial.PREFIX + arm)
 
@@ -59,6 +60,7 @@ func _button(parent: Node, text: String, destination: String) -> void:
 func launch(destination: String) -> void:
 	var scene: String = "res://main.tscn"
 	if destination == "thunderbowl": scene = "res://examples/thunderbowl/thunderbowl.tscn"
+	elif destination == "physical_actors": scene = "res://examples/thunderbowl/physical_thunderbowl.tscn"
 	elif destination == "worldgen": scene = "res://worldgen_workbench.tscn"
 	elif destination == "depth": scene = "res://depth_lab.tscn"
 	get_tree().set_meta("cybersand_feature", destination)

@@ -239,12 +239,14 @@ Offsets below are float indices within each record.
 Positions/sizes/corrections use pixels/cells, rotation radians, velocities
 pixels/second and radians/second. Mass/impulse use the Godot adapter's quantities;
 production physical-unit calibration remains unresolved. IDs/counts/serials
-travel as floats. Native parsing rounds IDs/serials, considers at most 16
-complete records, accepts IDs 1–16, ignores trailing partial records and retains
-the first duplicate. Full sizes clamp to at least one cell; mass to 0.001.
-This is not a complete hostile-input validator: it does not establish a finite-
-number/NaN policy for every field. General shapes, torque and robust public
-validation remain Planned. Numerical response and sample-age policy belong in
+travel as floats. ACT-004 parsing considers at most 64 complete records, accepts
+integer IDs 1–64 and integer sample serials 0–16,777,215, rejects any nonfinite
+field or nonpositive size/mass, ignores trailing partial records and retains
+the first duplicate. Accepted full sizes clamp to at least one cell and mass to
+0.001. The same finite-record predicate is used by the fallback and bridge.
+The physical session rejects a complete assembly beyond capacity before spawning.
+General contours and cellular torque feedback remain Planned; these private
+packed records are not an unrestricted public network protocol. Numerical response and sample-age policy belong in
 [coupling](../architecture/rigid-body-and-cellular-coupling.md).
 
 ## Immutable dirty snapshot contract
@@ -435,3 +437,110 @@ GDExtension method, worker message or live runtime admission. Real World produce
 witnesses and cross-owner queues remain Planned.
 
 The [physical Blacksite experiment](../operations/physical-actor-programme.md) reuses the current body input/result ABI with one rectangle. `apply_trial_impulses` is a main-thread bridge method; no native field layout or sampled actor action/observation stride changes.
+
+## Physical actor control and effects
+
+**Current experimental ACT-004:**
+[`CyberPhysicalActorSession`](../../godot/scripts/physical_actor_session.gd)
+is the main-thread physical owner shared by desktop F5 and physical Thunderbowl.
+Configuration identifies a catalogue `model`, one producer (`human`, `demo` or
+`policy`) and a finite spawn position per actor. The F5 picker prefixes physical
+choices with `rapier/`; session model IDs are the bare catalogue IDs.
+
+The physical command envelope is version 2 with exactly these top-level fields:
+
+```json
+{
+  "version": 2, "kind": "physical_wire_action",
+  "run_id": "issued-run-id", "actor_id": 0, "epoch": 1, "sequence": 1,
+  "observed_tick": 0, "observation_id": "issued-observation-id",
+  "lease_ticks": 12,
+  "action": {"move": [1, 0], "aim": [1, -0.6], "effort": 0.8, "primary": false}
+}
+```
+
+The identity strings above are illustrative. `make_command(view, sequence,
+action, lease_ticks)` copies an actually issued `observation(actor_id)` view. `submit(command,
+producer)` requires matching run, actor, epoch and producer ownership, a strictly
+newer nonnegative sequence, and an observation still retained in the bounded
+issuance history. Integer identity fields accept only exact finite integers.
+Lease expiry is `observed_tick + lease_ticks`, never receipt time; future,
+invented, stale and misaddressed views are refused. A queued model response cannot
+extend its authority by arriving late. See the [configuration bounds](configuration-reference.md#physical-actor-values).
+
+Actions admit `move`, `aim`, `effort`, `trim`, `reel`, `primary`, `secondary`,
+`auxiliary`, `tool`, `release_usable` and `attach_usable`. Unknown keys, wrong
+types and nonfinite values are refused. Vectors accept `Vector2` or two numeric
+array values and are length-clamped to one; effort is clamped to zero through
+one, trim/reel to minus one through one. Missing action fields receive neutral
+defaults; buttons must be Booleans. All producers reach the same normalized
+action and bounded physical actuator path.
+
+`observation(actor_id)` returns copied identity, tick, selected profile,
+pose/velocity, contacts and local rays, resource/charge/cooldown, part and joint
+states, attachment/tool state and lease status. These dictionaries do not change
+the sampled actor state/observation strides. Physical actors currently expose
+the wire lane only; sampled v1 tag, message, metal and NCA contracts remain
+separate. Desktop exposes `physical_actor_observation(actor_id)` and
+`submit_physical_actor_command(command)` and `cancel_physical_actor_command(actor_id)`
+from `main.gd` for a policy-owned actor.
+No network transport or model service is supplied by those methods.
+Desktop command admission remains suspended until the selected native reset is
+acknowledged and that epoch's initial hard-terrain colliders are installed.
+A faulted rig reports `suspended=true` and `lease_remaining=0`; its session refuses
+new commands with `actor_fault` and does not issue new control authority.
+
+`cancel_input(actor_id, epoch, producer)` clears the command and calls runtime
+cancellation; pause and close also revoke pending authority. Cancellation clears
+charged launch intent, ropes, temporary grips and pending effects without
+performing a charge release or erasing velocity. The same actor's held tool is
+released only by its explicit release action or destruction of the session.
+Cancellation and lease expiry also invalidate issued observations and emit the
+session's `input_cancelled(actor_id, epoch)` notification. The desktop host uses
+it to revoke the worker's queued and already-copied, not-yet-admitted effects for
+that actor. Other actors retain their own command/effect generations. A fresh
+observation immediately reports the cleared charge, grip, rope and action state.
+
+The session flattens actual part bodies into stable IDs within the 64-body
+bridge. It emits copied effect requests with `actor_slot`, `epoch`, `sequence`,
+`kind`, `source`, `origin`, `source_part`, `source_body_id`, `radius`, `strength`,
+`material` and optional `pattern`. The physical rig applies recoil; the exclusive
+cellular owner validates and applies cell edits through
+[`CyberPhysicalActorEffects`](../../godot/scripts/physical_actor_effects.gd).
+Freshness, source-body clearance, bounds and protected materials remain checked
+even when the request originated in a local demo. Receipts report actual changed
+cells or refusal. The worker copies requests alongside the corresponding body
+publication and tags results with `rigid_body_epoch`; a retired actor epoch cannot
+be applied to its replacement.
+
+`SimulationWorker.set_rigid_body_states(states, body_epoch, effects)` publishes
+body states independently of effect admission and returns a copied batch outcome.
+A nonempty batch is admitted wholly or refused: at most eight requests can be
+pending, and a newer batch never displaces older requests to make room. Outcome
+fields are `epoch`, `status`, `reason`, `requested`, `queued` and `refused`.
+`status` is `queued`, `refused` or `no_effects`; capacity refusals distinguish
+`batch_capacity` from `pending_capacity`. Epoch, failed-world, pause, pending
+reset/lab replacement and invalid actor-slot refusals remain explicit.
+
+`physical_actor_effect_admission()` and the additive snapshot field of the same
+name return copied `capacity`, `pending_requests`, accepted/refused batch and
+request counts, `overflow_batches` and `last_batch`, bound to the current effect
+epoch. Setting an actor epoch resets this bounded history; cancellation retains
+it. Body-only publications do not erase the last nonempty outcome. These are
+queue-admission diagnostics; later actual-cell receipts remain separate, and
+neither admission nor refusal reverses already applied physical recoil.
+
+This effect ingress trusts the main-thread session to assign the actor-to-body
+mapping; it is not a public policy API. Policy actions cannot supply positions,
+body IDs or arbitrary material requests. Desktop effects originate before its
+Rapier step and travel with the subsequent body sample, so an empty cell at the
+source is allowed; a foreign occupied cell is refused. The synchronous physical
+arena samples the source mask before actuation and consumes effects before its
+Rapier step. Neither schedule promises a perfectly simultaneous cross-thread
+collision snapshot.
+
+Desktop asynchronous publication and the physical arena's synchronous step have
+distinct [schedules](../architecture/simulation-tick-and-threading.md#physical-actor-scheduling).
+Neither grants a controller mutable World access or guarantees equivalence with
+the historical sampled arena. Mechanism and usable semantics are owned by the
+[physical actor contract](../systems/physical-actor-rigs.md).

@@ -282,6 +282,46 @@ Use actual platform artifacts and retain their identities for platform acceptanc
 
 ## Actor control prototype checks
 
+### ACT-004 articulated actors and physical Thunderbowl v2
+
+The physical catalogue, real Rapier fixtures, native effects/capacity, common
+session, desktop installation and separate physical arena have focused runners:
+
+```text
+godot --headless --path godot --script res://tests/test_physical_actor_catalog.gd
+godot --headless --path godot --script res://tests/test_physical_actor_script.gd
+godot --headless --path godot --script res://tests/test_physical_actor_actuation.gd
+godot --headless --path godot --script res://tests/test_physical_actor_rigs.gd
+godot --headless --path godot --script res://tests/test_physical_actor_session.gd
+godot --headless --path godot --script res://tests/test_physical_actor_integration.gd
+godot --headless --path godot --script res://tests/test_physical_actor_effects.gd
+godot --headless --path godot --script res://tests/test_physical_actor_effect_admission.gd
+godot --headless --path godot --script res://tests/test_act004_body_capacity.gd
+godot --headless --path godot --script res://tests/test_physical_actor_arena.gd
+```
+
+Use the pinned Godot 4.7/Rapier 0.35.2 and source-matched native runtime. The
+64-body adapter change requires a rebuild; a previous retained binary does not
+implement it merely because new scripts load. All `test_*.gd` runners are
+automatically discovered by `tools/ci/run_godot_regressions.py` and included once
+in the existing four GitHub-hosted shards. The original
+`test_physical_actor_trial.gd`, sampled rig/session, Thunderbowl and protected
+scenario regressions remain in that suite.
+
+The catalogue test checks definitions and local producers. The Rapier fixture
+checks connected real assemblies, sustained movement, contact-dependent control,
+recovery and attachment lifecycles. Native effects/capacity tests exercise real
+cell admission and bounded material edits; session/integration tests cover
+source identity, leases, cancellation, replacement and the F5 owner boundary.
+The physical arena tests use a distinct synchronous world/space. Their concrete
+fixture thresholds are regression bounds, not a target-machine feel or universal
+traversal claim. The [ACT-004 audit](../audits/2026-10-18-act004-articulated-actors.md)
+records what ran, failures corrected during tuning and remaining platform limits.
+
+The [physical Thunderbowl reference](../systems/thunderbowl-control-reference.md#physical-thunderbowl-v2)
+contains scene and headless runner examples. Its version-2 command and observation
+contract is separate from the sampled control lab below.
+
 ### Thunderbowl controls and native arena
 
 The [Thunderbowl reference](../systems/thunderbowl-control-reference.md) contains

@@ -365,9 +365,9 @@ func _selector_and_geometry() -> void:
 	await process_frame
 	desktop.paused = true
 	var panel: CyberActorPrototypePanel = desktop.actor_prototype_panel
-	_expect(panel.set_choice.item_count == 6 and panel.model_choice.item_count == 6
+	_expect(panel.set_choice.item_count == 7 and panel.model_choice.item_count == 9
 		and panel._visible_models.slice(0, 4) == [&"", &"runner", &"skimmer", &"crawler"],
-		"rig selector lost six sets, original Set A indices or the two physical choices")
+		"rig selector lost seven sets, original Set A indices, reference trials or articulated choices")
 	for set_id: StringName in Catalog.SET_IDS:
 		var group: Array[StringName] = Catalog.rigs_in_set(set_id)
 		for model: StringName in group:

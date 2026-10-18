@@ -70,6 +70,17 @@ func initialize(
 		return ERR_UNAVAILABLE
 	if not space.is_valid() or bodies.is_empty() or bodies.size() != body_sizes.size():
 		return ERR_INVALID_PARAMETER
+	if bodies.size() > CyberRigidBodyCoupling.MAX_BODIES:
+		return ERR_OUT_OF_MEMORY
+	var unique_bodies: Dictionary = {}
+	for index: int in range(bodies.size()):
+		var candidate: RigidBody2D = bodies[index]
+		if not is_instance_valid(candidate) or not candidate.is_inside_tree() \
+			or not candidate.get_rid().is_valid() or unique_bodies.has(candidate.get_rid()) \
+			or not body_sizes[index].is_finite() or body_sizes[index].x <= 0.0 or body_sizes[index].y <= 0.0 \
+			or not is_finite(candidate.mass) or candidate.mass <= 0.0:
+			return ERR_INVALID_DATA
+		unique_bodies[candidate.get_rid()] = true
 
 	_space = space
 	_bodies.assign(bodies)
@@ -95,15 +106,18 @@ func initialize(
 		_body_index_by_rid[body_rid] = body_index
 		_transforms.append(Transform2D.IDENTITY)
 		_sleeping.append(false)
+		# ACT-004 parts deliberately vary traction and rebound. Historical bodies
+		# without a material override retain the original reference coefficients.
+		var material: PhysicsMaterial = body.physics_material_override
 		PhysicsServer2D.body_set_param(
 			body_rid,
 			PhysicsServer2D.BODY_PARAM_FRICTION,
-			HARD_SURFACE_FRICTION
+			material.friction if material != null else HARD_SURFACE_FRICTION
 		)
 		PhysicsServer2D.body_set_param(
 			body_rid,
 			PhysicsServer2D.BODY_PARAM_BOUNCE,
-			HARD_SURFACE_BOUNCE
+			material.bounce if material != null else HARD_SURFACE_BOUNCE
 		)
 		PhysicsServer2D.body_set_continuous_collision_detection_mode(
 			body_rid,

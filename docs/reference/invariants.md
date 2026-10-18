@@ -6,7 +6,7 @@ status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
 related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-10-18
 ---
 
 # Architectural and simulation invariants
@@ -145,6 +145,28 @@ Source/tests: [native adapter](../../godot/native_extension/cyber_native_cell_wo
 | BODY-006 | Current configuration: Rapier2D is the sole backend; no production toggle |
 | BODY-007 | Current manual owner: automatic space stepping is disabled while the bridge owns explicit steps |
 | BODY-008 | Current: direct server state, not stale scene transforms, owns post-step body results |
+
+## Physical actor invariants
+
+Contract: [articulated actors](../systems/physical-actor-rigs.md),
+[physical commands](interfaces-and-message-contracts.md#physical-actor-control-and-effects).
+Sources: [session](../../godot/scripts/physical_actor_session.gd),
+[runtime](../../godot/scripts/physical_actor_rig.gd),
+[effects](../../godot/scripts/physical_actor_effects.gd).
+Focused catalogue, Rapier, session, effects and integration runners detect the
+listed boundaries; execution evidence remains separately dated.
+
+| ID | Status and narrow claim |
+|---|---|
+| RIG-001 | Current: main-thread Rapier owns every live part/joint; the cellular owner receives copied values and alone writes native materials |
+| RIG-002 | Current: physical actor polygons use actual rectangular collider dimensions and published transforms; authored leg, rotor and held parts are physical bodies |
+| RIG-003 | Current: installation checks at most eight actors, eight parts per actor including held objects, and 64 total coupled bodies before activation |
+| RIG-004 | Current: human, demo and policy producers use one normalized action path; run/actor/epoch/sequence/issued-observation leases prevent stale authority from controlling a replacement |
+| RIG-005 | Current: cancellation clears stored launch intent and pending effects without interpreting it as charged release or deleting physical velocity |
+| RIG-006 | Approved and Current authored policy: bounded gyro assistance, approximate slides and controlled flex/play are permitted; finite gyro momentum and exact mechanical joint emulation are not required |
+| RIG-007 | Current: physical command/environment version 2 is distinct from sampled actor rows and Thunderbowl v1; no tag, metal, neural-service or reward equivalence is implied |
+| RIG-008 | Current: new desktop assemblies wait for matching reset/epoch and installed initial terrain; a retired world's cached geometry cannot release the fence |
+| RIG-009 | Current: worker effect batches are admitted wholly within eight pending requests or explicitly refused; bounded copied admission diagnostics are separate from actual-cell receipts |
 
 ## Capacity and allocation invariants
 

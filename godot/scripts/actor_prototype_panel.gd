@@ -7,6 +7,7 @@ signal apply_requested(model_id: StringName, producer: StringName, demo_npcs: bo
 const MODELS: Array[StringName] = [&"", &"runner", &"skimmer", &"crawler"]
 const PRODUCERS: Array[StringName] = [&"human", &"demo", &"policy"]
 const Catalog = preload("res://scripts/actor_rig_catalog.gd")
+const PhysicalCatalog = preload("res://scripts/physical_actor_catalog.gd")
 
 var set_choice: OptionButton
 var model_choice: OptionButton
@@ -39,13 +40,13 @@ func _ready() -> void:
 	title.add_theme_font_size_override("font_size", 23)
 	column.add_child(title)
 	var subtitle: Label = Label.new()
-	subtitle.text = "Sampled rigs or physical Rapier prototypes - explicit physics ownership"
+	subtitle.text = "41 articulated Rapier actors, scripted pilots and sampled references"
 	subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	column.add_child(subtitle)
 	set_choice = OptionButton.new()
-	for set_id: StringName in Catalog.SET_IDS:
-		var first: StringName = Catalog.rigs_in_set(set_id)[0]
-		set_choice.add_item(str(set_id) + " — " + str(Catalog.entry(first).theme))
+	for set_id: StringName in PhysicalCatalog.SET_IDS:
+		var first: StringName = PhysicalCatalog.rigs_in_set(set_id)[0]
+		set_choice.add_item(str(set_id) + " — " + str(PhysicalCatalog.entry(first).theme))
 	set_choice.item_selected.connect(_select_set)
 	column.add_child(set_choice)
 	model_choice = OptionButton.new()
@@ -99,12 +100,14 @@ func _ready() -> void:
 
 
 func selected_set_id() -> StringName:
-	return Catalog.SET_IDS[clampi(set_choice.selected, 0, Catalog.SET_IDS.size() - 1)]
+	return PhysicalCatalog.SET_IDS[clampi(set_choice.selected, 0, PhysicalCatalog.SET_IDS.size() - 1)]
 
 
 func configure_selection(model_id: StringName, producer: StringName, demo_npcs: bool) -> void:
 	var set_id: StringName = Catalog.set_for(model_id) if Catalog.has_rig(model_id) else &"setA"
-	set_choice.select(Catalog.SET_IDS.find(set_id))
+	if str(model_id).begins_with("rapier/"):
+		set_id = PhysicalCatalog.set_for(StringName(str(model_id).trim_prefix("rapier/")))
+	set_choice.select(maxi(0, PhysicalCatalog.SET_IDS.find(set_id)))
 	_populate_models(set_id, model_id)
 	producer_choice.select(maxi(0, PRODUCERS.find(producer)))
 	npc_choice.button_pressed = demo_npcs
@@ -114,7 +117,7 @@ func configure_selection(model_id: StringName, producer: StringName, demo_npcs: 
 func _select_set(index: int) -> void:
 	set_choice.select(index)
 	var set_id: StringName = selected_set_id()
-	_populate_models(set_id, Catalog.rigs_in_set(set_id)[0])
+	_populate_models(set_id, StringName("rapier/" + str(PhysicalCatalog.rigs_in_set(set_id)[0])))
 
 
 func _populate_models(set_id: StringName, selected: StringName) -> void:
@@ -125,15 +128,19 @@ func _populate_models(set_id: StringName, selected: StringName) -> void:
 		_visible_models.append(rig_id)
 		model_choice.add_item("Sampled — " + Catalog.name_for(rig_id))
 	_visible_models.append_array([&"physical/barrel", &"physical/ripper"])
-	model_choice.add_item("Rapier — physical barrel (impulses + torque)")
-	model_choice.add_item("Rapier — physical Ripper (single hull, impulses + torque)")
+	model_choice.add_item("Rapier reference — barrel (single hull)")
+	model_choice.add_item("Rapier reference — Ripper (single hull)")
+	for rig_id: StringName in PhysicalCatalog.rigs_in_set(set_id):
+		_visible_models.append(StringName("rapier/" + str(rig_id)))
+		model_choice.add_item("Articulated Rapier — " + PhysicalCatalog.name_for(rig_id))
 	model_choice.select(maxi(0, _visible_models.find(selected)))
-	npc_choice.text = "Add the other %d rigs in this set as scripted demo NPCs" % (Catalog.rigs_in_set(set_id).size() - 1)
+	npc_choice.text = "Add up to 7 other rigs in this set as scripted demo NPCs"
 	_refresh_description(model_choice.selected)
 
 
 func _refresh_description(index: int) -> void:
 	var rig_id: StringName = _visible_models[index]
+	var articulated: bool = str(rig_id).begins_with("rapier/")
 	var physical: bool = str(rig_id).begins_with("physical/")
 	producer_choice.disabled = rig_id == &"" or physical
 	npc_choice.disabled = rig_id == &"" or physical
@@ -141,8 +148,14 @@ func _refresh_description(index: int) -> void:
 	if physical:
 		producer_choice.select(0)
 		npc_choice.button_pressed = false
-		description.text = "PHYSICAL RAPIER %s\nOne live collision hull, driven by impulses and torque. A/D drive; Q/E torque; Space upward thruster pulse (0.6 s cooldown; works airborne). Release controls after switching.\n\nKeyboard pilot only. Articulation and full actor conversions are planned; this is the initial single-hull trial." % str(rig_id).trim_prefix("physical/").to_upper()
+		description.text = "REFERENCE RAPIER %s\nOne live collision hull, driven by impulses and torque. A/D drive; Q/E torque; Space upward thruster pulse (0.6 s cooldown; works airborne). Release controls after switching.\n\nKeyboard pilot only. This preserves the original comparison trial. Choose an Articulated Rapier entry for the complete actor and scripted pilot." % str(rig_id).trim_prefix("physical/").to_upper()
 		effort_slider.editable = false
+		return
+	if articulated:
+		var bare_id := StringName(str(rig_id).trim_prefix("rapier/"))
+		var rig: Dictionary = PhysicalCatalog.entry(bare_id)
+		description.text = "%s / ARTICULATED RAPIER\n%s\n\n%s\n\n%d moving parts · %d joints. Scripted pilots patrol, use their abilities and recover using local feedback.\nM: use mounted tool · N: release held tool · U: reattach nearby tool." % [str(rig.name).to_upper(), str(rig.description), PhysicalCatalog.controls_text(bare_id), rig.parts.size(), rig.joints.size()]
+		effort_slider.editable = producer_choice.selected == 0
 		return
 	if rig_id == &"":
 		description.text = "Restore the existing sampled character and player/environment profile."
@@ -179,7 +192,7 @@ func show_selection() -> void:
 
 
 func set_context(map_name: String) -> void:
-	status.text = "Map: %s\nApplying restores this map's starting layout; edits and motion reset. External policy waits for actions. [ / ] changes sampled-rig power." % map_name
+	status.text = "Map: %s\nApplying restores this map's starting layout; edits and motion reset. External policy waits for actions. [ / ] changes keyboard power. P resumes play after applying." % map_name
 
 
 func set_error(message: String) -> void:

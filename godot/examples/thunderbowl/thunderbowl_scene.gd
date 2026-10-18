@@ -76,6 +76,10 @@ func _build_ui() -> void:
 	restart.text = "Start / restart"
 	restart.pressed.connect(_restart)
 	bar.add_child(restart)
+	var physical := Button.new()
+	physical.text = "Physical v2 lab"
+	physical.pressed.connect(func() -> void: get_tree().change_scene_to_file("res://examples/thunderbowl/physical_thunderbowl.tscn"))
+	bar.add_child(physical)
 	_device = OptionButton.new()
 	_device.add_item("Keyboard + mouse")
 	_device.add_item("Gamepad 1")

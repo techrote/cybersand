@@ -12,7 +12,7 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Choose a reading route
 
-Choose sampled or physical Rapier actors with F5 in the sandbox and exploratory maps; try the integrated desktop features and barrel/Ripper arms: [combined launcher and physical actor programme](operations/physical-actor-programme.md).
+Choose all 41 [articulated Rapier actors](systems/physical-actor-rigs.md) with F5 in the sandbox and exploratory maps, using keyboard, local scripted or external-policy control. Sampled references and the initial hull arms remain available; [the physical actor programme](operations/physical-actor-programme.md) preserves owner intent and integration scope.
 
 Layering, quantized relief and Strata Theatre: [depth prototype contract](systems/depth-layers-and-parallax.md).
 

@@ -1766,7 +1766,7 @@ void World::configure_transient_obstacles(RectI64 region) {
         transient_obstacles_->body_ids.assign(required, 0U);
     }
     transient_obstacles_->occupied_indices.reserve(
-        std::min<std::size_t>(required, 16U * 256U));
+        std::min<std::size_t>(required, kMaximumTransientBodies * 256U));
     (void)witness_discovery_rect(
         region, soliding::ProducerReason::TransientMask, 0);
 }

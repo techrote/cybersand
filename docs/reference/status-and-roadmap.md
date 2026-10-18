@@ -12,15 +12,20 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## Exploratory actor integration and physical migration — 2026-10-18
 
-**Current desktop:** F5 selects sampled actors or the physical Rapier
-barrel/Ripper in the sandbox, Blacksite and four showcase districts. Applying
-restores the selected map; R retains the actor. Controlled apparatus and Benchmark
-mode remain protected. See the [programme](../operations/physical-actor-programme.md).
+**Current experimental desktop source, ACT-004:** F5 selects all 29 existing
+actor identities as articulated Rapier rigs, plus twelve SetX mechanisms, with
+keyboard, scripted-demo and external-policy producers. Physical is the default
+actor route; sampled references remain explicit choices. Applying restores the
+selected map and R retains the actor. Controlled apparatus and Benchmark mode
+remain protected. See the [physical actor contract](../systems/physical-actor-rigs.md)
+and [programme](../operations/physical-actor-programme.md).
 
-**Approved / Planned:** convert all 29 rigs to real Rapier actors, permitting only
-specifically justified impossible configurations as exceptions. Articulated
-mechanisms, general physical policy pilots and usable grips are not implemented
-by the exploratory picker. No broad granular acceptance is claimed.
+The shared owner provides bounded rotary/slide/spring mechanics, gyro assistance,
+compliant play, part-matched polygons, mounts/recoil and held-part lifecycle.
+The native coupling budget is 64 body IDs. Physical Thunderbowl v2 is a separate
+owner from the retained sampled v1 experiment. Learned policies, global planning,
+Windows/browser feel qualification and broad granular acceptance remain outside
+this implementation result.
 
 ## Is the foundation ready to extend?
 
@@ -91,8 +96,8 @@ It is an aesthetic showcase; existing physics programmes retain their own gates.
 | Procedural generation candidates | Opt-in Strata, Flow Network and District Grammar; theme/brush/override/module recipes plus bounded scalar fields, masked context guidance and aggregate materials; copied chunk proposals and explicit fresh-chunk admission; [generation contract](../systems/procedural-world-generation.md), [field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md) |
 | Materials | Bounded adapted kernels, mass-conserving native Water, discrete fallback, secondary interaction lanes; 51 MAT-002 building materials (IDs 81–131) with combustion and 42 versioned pair reactions — native runtime republication pending; [materials](../systems/materials-and-rule-kernels.md), [building catalogue](../systems/building-material-catalogue.md), [Water](../systems/water-design.md) |
 | Field storage and events | Optional temperature storage and bounded explosions; no general heat/pressure/wind solver; [field roadmap](../systems/smoke-heat-pressure-roadmap.md) |
-| Bodies and character | Main-thread Rapier, rectangular masks/displacement, static terrain packets, sampled character, PCHAR reset-scoped barrel-player experiment, and 29 optional sampled [actor rigs](../systems/actor-rigs.md) including the unchanged SetA trio; [coupling](../architecture/rigid-body-and-cellular-coupling.md) |
-| Actor control and battle experiments | Standalone native [Thunderbowl](../systems/thunderbowl-control-reference.md), eight-actor virtual tag combat, wire/direct actuator lanes, privilege-filtered policies, bounded local messages and smart-link file adapter; trained policies and general actor damage remain Planned |
+| Bodies and character | Main-thread Rapier, 64-ID rectangular coupling, static terrain packets, 41 articulated [physical actors](../systems/physical-actor-rigs.md), shared keyboard/demo/policy control and usables; sampled and single-hull references remain available |
+| Actor control and battle experiments | Separate physical Thunderbowl v2 plus retained sampled [Thunderbowl v1](../systems/thunderbowl-control-reference.md); physical wire control does not silently inherit sampled metal/NCA/message semantics; trained policies and general actor damage remain Planned |
 | Rendering | Immutable native snapshots, copied dirty RG8 patches, full finite GPU texture update and derived material appearance; [bridges](../architecture/rendering-and-gameplay-bridges.md) |
 | Persistence | Fixed CYSD1 demo levels; complete resumed replay absent; [save contract](level-saves-and-replay.md) |
 | Runtime availability | All 18 required LFS payloads materialized; current execution scope is platform-specific; [build](../operations/local-build-and-validation.md) and [evidence](validation-evidence.md) |
@@ -266,7 +271,7 @@ programme for later environment/player tuning after finite child #138.
 
 ## Provisional actor control checkpoint — 2026-10-18
 
-**Current implementation, experimental:** ACT-002 / #168 expands the original
+**Current sampled reference implementation, experimental:** ACT-002 / #168 expands the original
 ACT-001 trio into 29 [actor rigs](../systems/actor-rigs.md) across SetA/B/F/Y/U/V.
 SetA preserves Runner, Skimmer and Crawler plus their original two-button motor
 and 16-value observations. The new rigs add independent aim, effort, trim, reel
@@ -608,7 +613,7 @@ earlier four-byte physical-size statements for this source without selecting G-f
 
 ## Combined desktop features and physical actor trial — 2026-10-18
 
-The [physical actor programme](../operations/physical-actor-programme.md) owns the combined launcher and initial single-body barrel/Ripper Blacksite comparison. Articulation, broad granular acceptance and usable attachments remain Planned; the preserved owner observations are not solver validation.
+The [physical actor programme](../operations/physical-actor-programme.md) retains the initial barrel/Ripper comparison and owner notes. The [ACT-004 contract](../systems/physical-actor-rigs.md) now owns articulation, shared physical control and usable attachments. Broad granular acceptance remains separate; owner observations and scripted fixture results are distinct forms of evidence.
 
 ## Strata Theatre integration — 2026-10-18
 

@@ -15,7 +15,9 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 The [dated integration audit](../audits/2026-10-18-exploratory-actor-integration.md)
 records Windows source/artifact identity, sampled and physical map switching,
 owner acknowledgement, protected-scenario refusal, GPU popup inspection and
-retained failures. The full-roster Rapier migration remains Approved / Planned.
+retained failures. That audit describes the pre-ACT-004 source. The later
+[ACT-004 audit](../audits/2026-10-18-act004-articulated-actors.md) owns the 41-rig
+implementation and its independently recorded physical-control qualification.
 
 ## What has actually passed?
 

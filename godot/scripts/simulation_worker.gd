@@ -8,6 +8,7 @@ const MicroCatalogue = preload("res://scripts/microscenario_catalogue.gd")
 const MicroHost = preload("res://scripts/microscenario_host.gd")
 const PlayerEnvironmentProfiles = preload("res://scripts/player_environment_profiles.gd")
 const ActorSession = preload("res://scripts/actor_prototype_session.gd")
+const PhysicalEffects = preload("res://scripts/physical_actor_effects.gd")
 const SIMULATION_HZ: float = 60.0
 const FIXED_TIMESTEP: float = 1.0 / SIMULATION_HZ
 const TICK_INTERVAL_USEC: int = 16667
@@ -51,6 +52,20 @@ var _cadence_lod_enabled: bool = true
 var _liquid_surface_adhesion_enabled: bool = true
 var _render_snapshot_interval_usec: int = DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 var _rigid_body_states: PackedFloat32Array = PackedFloat32Array()
+var _rigid_body_epoch: int = 0
+var _physical_effect_epoch: int = 0
+var _physical_effect_generations := PackedInt64Array([0, 0, 0, 0, 0, 0, 0, 0])
+var _pending_physical_effects: Array = []
+var _physical_effects = PhysicalEffects.new() # Worker-exclusive consumer.
+var _physical_effect_receipts: Array = []
+# Mutex-owned admission telemetry is fixed-size; native application receipts
+# remain worker-exclusive and describe actual cell changes separately.
+var _physical_effect_accepted_batches: int = 0
+var _physical_effect_accepted_requests: int = 0
+var _physical_effect_refused_batches: int = 0
+var _physical_effect_refused_requests: int = 0
+var _physical_effect_overflow_batches: int = 0
+var _physical_effect_last_admission: Dictionary = {}
 
 var _pending_emissions: Array[Vector4i] = []
 var _pending_cell_emissions: Array[Dictionary] = []
@@ -99,6 +114,7 @@ var _water_explicit_sink: int = 0
 func queue_lab(command: Dictionary) -> void:
 	_mutex.lock()
 	_lab_request = command.duplicate(true)
+	_pending_physical_effects.clear()
 	if command.has("step") or command.has("reset") or command.has("water_reset") or command.has("scenario_reset") or command.has("floor"): _paused = true
 	_mutex.unlock()
 
@@ -335,6 +351,7 @@ var _acknowledged_render_snapshot_serial: int = 0
 var _render_full_refresh_requested: bool = false
 var _fallback_render_snapshot_serial: int = 0
 var _snapshot_hard_surface_revision: int = -1
+var _snapshot_hard_surface_epoch: int = -1
 var _snapshot_hard_surface_rectangles: PackedInt32Array = PackedInt32Array()
 var _snapshot_hard_surface_rectangles_valid: bool = false
 var _snapshot_hard_surface_chunk_rectangles: PackedInt32Array = PackedInt32Array()
@@ -474,6 +491,7 @@ func queue_actor_prototype_reset(definitions: Array, spawn_position: Vector2, sa
 	var receipt: int = _actor_prototype_request_serial
 	_pending_emissions.clear()
 	_pending_cell_emissions.clear()
+	_pending_physical_effects.clear()
 	_mutex.unlock()
 	return receipt
 
@@ -494,6 +512,10 @@ func set_frame_state(
 	_mutex.lock()
 	_horizontal_input = horizontal_input
 	_jetpack_active = jetpack_active
+	if paused and not _paused:
+		_pending_physical_effects.clear()
+		for actor: int in range(PhysicalEffects.MAX_ACTORS):
+			_physical_effect_generations[actor] += 1
 	_paused = paused
 	_interest_center = interest_center
 	_view_origin = view_origin
@@ -506,12 +528,125 @@ func set_frame_state(
 	_mutex.unlock()
 
 
-func set_rigid_body_states(states: PackedFloat32Array) -> void:
+func set_rigid_body_states(states: PackedFloat32Array, body_epoch: int = 0, effects: Array = []) -> Dictionary:
 	# Packed value data is copied at the bridge; scene-tree nodes and Physics RIDs
-	# remain exclusively on the main/physics thread.
+	# remain exclusively on the main/physics thread. Body publication is independent
+	# of effect admission. A nonempty effects batch is queued wholly or refused;
+	# previously queued work is never replaced to make room for a newer batch.
 	_mutex.lock()
 	_rigid_body_states = states.duplicate()
+	_rigid_body_epoch = body_epoch
+	var requested: int = effects.size()
+	var result: Dictionary = {"epoch": body_epoch, "status": "no_effects", "reason": "",
+		"requested": requested, "queued": 0, "refused": 0}
+	if requested == 0:
+		# Routine body-only frames must not erase the latest admission outcome.
+		_mutex.unlock()
+		return result
+	var reason: String = ""
+	if body_epoch <= 0 or body_epoch != _physical_effect_epoch:
+		reason = "epoch"
+	elif _published_snapshot != null and _published_snapshot.simulation_failed:
+		reason = "simulation_failed"
+	elif _paused:
+		reason = "paused"
+	elif _reset_requested:
+		reason = "reset_pending"
+	elif not _lab_request.is_empty():
+		reason = "lab_pending"
+	elif requested > PhysicalEffects.MAX_REQUESTS:
+		reason = "batch_capacity"
+	elif requested > PhysicalEffects.MAX_REQUESTS - _pending_physical_effects.size():
+		reason = "pending_capacity"
+	else:
+		# Full effect schema/geometry validation belongs to the native-owner
+		# consumer. This bounded pass verifies only generation-index safety.
+		for effect: Variant in effects:
+			if not effect is Dictionary or not effect.get("actor_slot") is int \
+				or int(effect.actor_slot) < 0 or int(effect.actor_slot) >= PhysicalEffects.MAX_ACTORS:
+				reason = "actor_slot"
+				break
+	if reason.is_empty():
+		for effect: Dictionary in effects:
+			_pending_physical_effects.append({"request": effect.duplicate(true),
+				"generation": _physical_effect_generations[int(effect.actor_slot)]})
+		result.status = "queued"
+		result.queued = requested
+		_physical_effect_accepted_batches += 1
+		_physical_effect_accepted_requests += requested
+	else:
+		result.status = "refused"
+		result.reason = reason
+		result.refused = requested
+		_physical_effect_refused_batches += 1
+		_physical_effect_refused_requests += requested
+		if reason in ["batch_capacity", "pending_capacity"]:
+			_physical_effect_overflow_batches += 1
+	_physical_effect_last_admission = result
+	var copied_result: Dictionary = result.duplicate(true)
 	_mutex.unlock()
+	return copied_result
+
+
+func physical_actor_effect_admission() -> Dictionary:
+	# Counts/last batch cover calls since the latest set_physical_actor_epoch,
+	# including stale-epoch refusals. Cancellation drains work but retains history.
+	_mutex.lock()
+	var result: Dictionary = {"epoch": _physical_effect_epoch,
+		"capacity": PhysicalEffects.MAX_REQUESTS, "pending_requests": _pending_physical_effects.size(),
+		"accepted_batches": _physical_effect_accepted_batches,
+		"accepted_requests": _physical_effect_accepted_requests,
+		"refused_batches": _physical_effect_refused_batches,
+		"refused_requests": _physical_effect_refused_requests,
+		"overflow_batches": _physical_effect_overflow_batches,
+		"last_batch": _physical_effect_last_admission.duplicate(true)}
+	_mutex.unlock()
+	return result
+
+
+func set_physical_actor_epoch(epoch: int) -> void:
+	# Switching owners retires pending effects; no node/RID enters this boundary.
+	_mutex.lock()
+	_physical_effect_epoch = maxi(0, epoch)
+	_pending_physical_effects.clear()
+	_physical_effect_accepted_batches = 0
+	_physical_effect_accepted_requests = 0
+	_physical_effect_refused_batches = 0
+	_physical_effect_refused_requests = 0
+	_physical_effect_overflow_batches = 0
+	_physical_effect_last_admission.clear()
+	for actor: int in range(PhysicalEffects.MAX_ACTORS):
+		_physical_effect_generations[actor] += 1
+	_mutex.unlock()
+
+
+func cancel_physical_actor_effects(epoch: int, actor_id: int = -1) -> bool:
+	if actor_id < -1 or actor_id >= PhysicalEffects.MAX_ACTORS:
+		return false
+	_mutex.lock()
+	if epoch <= 0 or epoch != _physical_effect_epoch:
+		_mutex.unlock()
+		return false
+	for actor: int in range(PhysicalEffects.MAX_ACTORS):
+		if actor_id == -1 or actor_id == actor:
+			_physical_effect_generations[actor] += 1
+	_pending_physical_effects = _pending_physical_effects.filter(func(packet: Dictionary) -> bool:
+		return actor_id != -1 and int(packet.request.actor_slot) != actor_id)
+	_mutex.unlock()
+	return true
+
+
+func _admit_physical_effects(packets: Array, epoch: int) -> Array:
+	var admitted: Array = []
+	_mutex.lock()
+	if not _paused and not _reset_requested and _lab_request.is_empty() \
+		and epoch > 0 and epoch == _physical_effect_epoch:
+		for packet: Dictionary in packets:
+			var actor: int = packet.request.actor_slot
+			if packet.generation == _physical_effect_generations[actor]:
+				admitted.append(packet.request)
+	_mutex.unlock()
+	return admitted
 
 
 func set_render_snapshot_hz(render_hz: int) -> void:
@@ -613,6 +748,7 @@ func queue_reset(
 	# resets still replace the single pending reset, without orphaning its caller.
 	_pending_emissions.clear()
 	_pending_cell_emissions.clear()
+	_pending_physical_effects.clear()
 	_mutex.unlock()
 
 
@@ -673,6 +809,8 @@ func _worker_loop() -> void:
 		var local_liquid_adhesion_enabled: bool = true
 		var local_render_snapshot_interval_usec: int = DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 		var local_rigid_body_states: PackedFloat32Array = PackedFloat32Array()
+		var local_rigid_body_epoch: int = 0
+		var local_physical_effects: Array = []
 		var local_emissions: Array[Vector4i] = []
 		var local_cell_emissions: Array[Dictionary] = []
 		var local_reset_requested: bool = false
@@ -700,6 +838,9 @@ func _worker_loop() -> void:
 		local_liquid_adhesion_enabled = _liquid_surface_adhesion_enabled
 		local_render_snapshot_interval_usec = _render_snapshot_interval_usec
 		local_rigid_body_states = _rigid_body_states
+		local_rigid_body_epoch = _rigid_body_epoch
+		local_physical_effects = _pending_physical_effects
+		_pending_physical_effects = []
 		local_emissions = _pending_emissions
 		_pending_emissions = []
 		local_cell_emissions = _pending_cell_emissions
@@ -733,6 +874,11 @@ func _worker_loop() -> void:
 			_actor_prototype_reset_applied = false
 			_actor_prototype_status = "Refused actor reset: superseded by ordinary reset"
 		if _apply_lab(local_lab):
+			# Candidate Worlds may reuse a hard-surface revision number. Their
+			# initial terrain must replace the previous World's retained packet.
+			_snapshot_hard_surface_revision = -1
+			local_physical_effects.clear()
+			_physical_effect_receipts.clear()
 			if local_actor_prototype_request:
 				_actor_prototype_result_serial = local_actor_prototype_serial
 				_actor_prototype_reset_applied = false
@@ -797,6 +943,8 @@ func _worker_loop() -> void:
 			_actor_prototype_reset_applied = false
 			_actor_prototype_status = "Refused actor reset: a registered scenario is active"
 		if local_reset_requested:
+			local_physical_effects.clear()
+			_physical_effect_receipts.clear()
 			var recovered: bool = true
 			if _world.has_method(&"has_failed"):
 				recovered = bool(_world.reset_demo_world())
@@ -830,6 +978,16 @@ func _worker_loop() -> void:
 		_actor_session.set_suspended(local_paused or _simulation_failed)
 		if not _simulation_failed:
 			_world.prepare_rigid_body_coupling(local_rigid_body_states, not local_paused)
+			# Admission is rechecked at the exclusive owner's consume boundary.
+			var physical_effects_allowed: bool = (not local_paused
+				and not _sampled_character_enabled and not _water_lab_active
+				and (not _lab_active or (_micro_active
+					and CyberMicroScenarioCatalogue.exploratory_actor_map(_scenario_host.definition())
+					and not _scenario_host.fixed_execution())))
+			if physical_effects_allowed and not local_physical_effects.is_empty():
+				local_physical_effects = _admit_physical_effects(local_physical_effects, local_rigid_body_epoch)
+				_physical_effect_receipts = _physical_effects.apply(
+					_world, local_physical_effects, local_rigid_body_epoch)
 			for emission_command: Vector4i in local_emissions:
 				_world.emit_disc(
 					emission_command.x,
@@ -881,7 +1039,8 @@ func _worker_loop() -> void:
 			local_paused,
 			local_render_snapshot_interval_usec,
 			local_reset_requested,
-			local_rigid_body_states
+			local_rigid_body_states,
+			local_rigid_body_epoch
 		)
 
 		next_tick_usec += TICK_INTERVAL_USEC
@@ -899,7 +1058,8 @@ func _publish_snapshot(
 	paused: bool,
 	render_snapshot_interval_usec: int,
 	force_render_full_refresh: bool = false,
-	rigid_body_states: PackedFloat32Array = PackedFloat32Array()
+	rigid_body_states: PackedFloat32Array = PackedFloat32Array(),
+	rigid_body_epoch: int = 0
 ) -> void:
 	if _simulation_failed:
 		_publish_failure_snapshot()
@@ -975,9 +1135,14 @@ func _publish_snapshot(
 			render_generation_advanced = true
 	var current_hard_surface_revision: int = int(_world.hard_surface_revision)
 	if (
-		current_hard_surface_revision != _snapshot_hard_surface_revision
-		and now_usec - _last_hard_surface_snapshot_usec >= HARD_SURFACE_SNAPSHOT_INTERVAL_USEC
+		force_render_full_refresh
+		or rigid_body_epoch != _snapshot_hard_surface_epoch
+		or _snapshot_hard_surface_revision < 0
+		or (current_hard_surface_revision != _snapshot_hard_surface_revision
+			and now_usec - _last_hard_surface_snapshot_usec >= HARD_SURFACE_SNAPSHOT_INTERVAL_USEC)
 	):
+		# A new physical owner/reset cannot acknowledge a retained terrain
+		# packet from its predecessor, even inside the ordinary edit throttle.
 		if _world.has_method(&"get_hard_surface_chunk_rectangles"):
 			_snapshot_hard_surface_chunk_rectangles = PackedInt32Array(
 				_world.get_hard_surface_chunk_rectangles()
@@ -989,11 +1154,15 @@ func _publish_snapshot(
 			)
 			_snapshot_hard_surface_rectangles_valid = true
 		_snapshot_hard_surface_revision = current_hard_surface_revision
+		_snapshot_hard_surface_epoch = rigid_body_epoch
 		_last_hard_surface_snapshot_usec = now_usec
 	var copy_time_ms: float = float(Time.get_ticks_usec() - copy_start_usec) / 1000.0
 
 	var snapshot: CyberSimulationSnapshot = CyberSimulationSnapshot.new()
 	snapshot.actor_prototypes = _actor_session.snapshot()
+	snapshot.rigid_body_epoch = rigid_body_epoch
+	snapshot.physical_actor_effects = _physical_effect_receipts.duplicate(true)
+	snapshot.physical_actor_effect_admission = physical_actor_effect_admission()
 	snapshot.actor_prototype_status = _actor_prototype_status
 	snapshot.actor_prototype_reset_serial = _actor_prototype_result_serial
 	snapshot.actor_prototype_reset_applied = _actor_prototype_reset_applied
