@@ -83,7 +83,8 @@
     "operations/soliding-measurement.md",
     "operations/soliding-macro-fracture-fixture.md",
     "operations/soliding-stage3-freeze.md",
-    "operations/neon-reliquary-demo.md"
+    "operations/neon-reliquary-demo.md",
+    "operations/blacksite-nine-demo.md"
   ],
   "navigation": [
     "README.md",
@@ -295,6 +296,10 @@
     {
       "path": "audits/2026-09-24-cybersand-recovery-audit.md",
       "reason": "Dated REC-008 final recovery audit; retrieve explicitly for the 2026-09-20 through 2026-09-22 CI/Stage-3B incident and exact recovery evidence, while Current routing lives in operations/reference contracts"
+    },
+    {
+      "path": "audits/2026-10-18-blacksite-nine.md",
+      "reason": "Dated Blacksite Nine source/runtime, route-continuity and rendered-scene evidence; retrieve explicitly through the scene guide or validation ledger, not as a default Current runtime contract"
     }
   ]
 }

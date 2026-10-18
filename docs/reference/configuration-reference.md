@@ -32,6 +32,16 @@ Each has no Rapier bodies or scheduled events and retains Baseline transport and
 Water8/coherence12. Per-tile capacities and ordinary sandbox defaults are
 unchanged. The scene guide owns viewpoints and controls.
 
+The separate [Blacksite Nine complex](../operations/blacksite-nine-demo.md) uses
+one 960 × 960 composition at `(32,32)` inside the same 1024 × 1024 native world.
+Its nine camera tiles are 320 × 320, with twelve reciprocal 28-cell-wide clear
+passages. Fixed interest is `[32,32,960,960]`; the ordinary owner execution policy
+and transport controls remain. The overview is 960 × 960, individual tile views
+are 320 × 320, and player follow uses 480 × 270. Camera selection preserves the
+whole world; reset restores all nine tiles. The existing schema-2 limits apply
+to the complete complex: 4,096 rectangles, eight world areas of construction
+writes, 1 MiB JSON and at most twelve presentation regions (nine are used).
+
 Source: [world.hpp::WorldConfig](../../native/include/cybersand/world.hpp).
 All members are construction-time; `cybersand_config_v2` mirrors the configuration.
 

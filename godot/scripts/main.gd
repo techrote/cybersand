@@ -4,6 +4,7 @@ const GameplayRecorder = preload("res://scripts/gameplay_recorder.gd")
 const PlayerEnvironmentProfiles = preload("res://scripts/player_environment_profiles.gd")
 const PlayerEnvironmentPanel = preload("res://scripts/player_environment_panel.gd")
 const ShowcasePresentation = preload("res://scripts/showcase_presentation.gd")
+const BlacksiteNinePresentation = preload("res://scripts/blacksite_nine_presentation.gd")
 const ActorPrototypePanel = preload("res://scripts/actor_prototype_panel.gd")
 const ActorPrototypeOverlay = preload("res://scripts/actor_prototype_overlay.gd")
 const ActorRigCatalog = preload("res://scripts/actor_rig_catalog.gd")
@@ -188,6 +189,7 @@ var pending_microscenario_apply: Dictionary = {}
 var microscenario_capture_seen: int = 0
 var microscenario_definition: Dictionary = {}
 var showcase_presentation: CyberShowcasePresentation
+var blacksite_nine_presentation: CyberBlacksiteNinePresentation
 
 func microscenario_launch(scenario_id: String, mode: String = "Inspect", seed: int = 0) -> bool:
 	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty(): return false
@@ -273,6 +275,8 @@ func _microscenario_installed(definition: Dictionary) -> void:
 	$Layout/Title.text = "CYBERSAND / MICROSCENARIO / " + str(definition.id)
 	if showcase_presentation != null:
 		showcase_presentation.installed(definition)
+	if blacksite_nine_presentation != null:
+		blacksite_nine_presentation.installed(definition)
 
 func microscenario_reset() -> void:
 	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty(): return
@@ -380,6 +384,8 @@ func setup_tower_panel() -> void:
 	microscenario_panel.setup(self)
 	showcase_presentation = ShowcasePresentation.new()
 	showcase_presentation.setup(self)
+	blacksite_nine_presentation = BlacksiteNinePresentation.new()
+	blacksite_nine_presentation.setup(self)
 	water_experiment_panel = CyberWaterExperimentPanel.new()
 	add_child(water_experiment_panel)
 	var profile_input: Variant = {}
@@ -1020,7 +1026,9 @@ func _ready() -> void:
 		reject_render_snapshot(latest_snapshot)
 	update_shader_parameters()
 	update_status()
-	if "--showcase" in OS.get_cmdline_user_args():
+	if "--blacksite-nine" in OS.get_cmdline_user_args():
+		blacksite_nine_presentation.launch.call_deferred()
+	elif "--showcase" in OS.get_cmdline_user_args():
 		showcase_presentation.launch.call_deferred()
 
 
@@ -1088,8 +1096,17 @@ func _physics_process(_delta: float) -> void:
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
+	if blacksite_nine_presentation != null and blacksite_nine_presentation.map_popup.visible:
+		if event is InputEventKey and event.pressed and not event.echo:
+			if event.keycode == KEY_ESCAPE: blacksite_nine_presentation.map_popup.hide()
+			elif event.keycode == KEY_F8: microscenario_toggle_hud()
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F11:
-		showcase_presentation.launch()
+		if event.shift_pressed:
+			blacksite_nine_presentation.launch()
+		else:
+			showcase_presentation.launch()
 		get_viewport().set_input_as_handled()
 		return
 	if (
@@ -1408,6 +1425,8 @@ func set_liquid_surface_adhesion(enabled: bool) -> bool:
 
 func set_camera_follow(enabled: bool) -> bool:
 	if water_controlled_run_active(): return false
+	if enabled and blacksite_nine_presentation != null and blacksite_nine_presentation.active():
+		current_view_size = Vector2i(480, 270)
 	camera_follow_enabled=enabled
 	return true
 
@@ -1914,9 +1933,14 @@ func sync_hard_surface_colliders() -> void:
 
 
 func get_horizontal_input() -> float:
+	if _blacksite_keyboard_blocked(): return 0.0
 	var move_left: float = 1.0 if Input.is_key_pressed(KEY_A) else 0.0
 	var move_right: float = 1.0 if Input.is_key_pressed(KEY_D) else 0.0
 	return move_right - move_left
+
+
+func _blacksite_keyboard_blocked() -> bool:
+	return blacksite_nine_presentation != null and blacksite_nine_presentation.keyboard_blocked()
 
 
 func setup_actor_prototypes() -> void:
@@ -2117,6 +2141,7 @@ func refresh_actor_prototypes() -> void:
 
 func update_camera(delta: float) -> void:
 	if water_controlled_run_active(): return
+	if _blacksite_keyboard_blocked(): return
 	var pan_input: Vector2 = Vector2(
 		(1.0 if Input.is_key_pressed(KEY_RIGHT) else 0.0) - (1.0 if Input.is_key_pressed(KEY_LEFT) else 0.0),
 		(1.0 if Input.is_key_pressed(KEY_DOWN) else 0.0) - (1.0 if Input.is_key_pressed(KEY_UP) else 0.0)
@@ -2164,7 +2189,7 @@ func update_worker_frame_state() -> void:
 	)
 	simulation_worker.set_frame_state(
 		get_horizontal_input(),
-		Input.is_key_pressed(KEY_SPACE),
+		Input.is_key_pressed(KEY_SPACE) and not _blacksite_keyboard_blocked(),
 		paused,
 		interest,
 		view_origin,
@@ -2249,6 +2274,7 @@ func update_brush_preview() -> void:
 		or (tower_profile_panel != null and tower_profile_panel.visible)
 		or (actor_prototype_panel != null and actor_prototype_panel.visible)
 		or (showcase_presentation != null and showcase_presentation.input_blocked())
+		or (blacksite_nine_presentation != null and blacksite_nine_presentation.input_blocked())
 	):
 		brush_preview.visible = false
 		return
@@ -2299,6 +2325,7 @@ func queue_brush_footprint_mutation(
 
 func handle_painting() -> void:
 	if showcase_presentation != null and showcase_presentation.input_blocked(): return
+	if blacksite_nine_presentation != null and blacksite_nine_presentation.input_blocked(): return
 	if actor_prototype_panel != null and actor_prototype_panel.visible: return
 	if microscenario_panel != null and microscenario_panel.modal_open(): return
 	if tower_profile_panel != null and tower_profile_panel.visible: return
@@ -2644,6 +2671,8 @@ func update_shader_parameters() -> void:
 		)
 	if showcase_presentation != null:
 		showcase_presentation.refresh()
+	if blacksite_nine_presentation != null:
+		blacksite_nine_presentation.refresh()
 
 
 func recording_status_for_hud() -> Dictionary:

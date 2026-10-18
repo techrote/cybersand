@@ -4,6 +4,24 @@ CyberSand is a C++20 cellular simulation engine hosted by Godot, with a material
 lab and bounded Rapier2D/cellular coupling proof. The longer-term product intent
 is a reusable foundation for cyberpunk RPG and exploration games.
 
+## Blacksite Nine
+
+Press **Shift+F11** or click **Blacksite Nine** to open a continuous 3 × 3
+industrial complex. A fortified research laboratory sits between two ruined
+wastelands, above six dense underground districts: worker warrens, containment
+galleries, condensate machinery, crushing works, an instrument vault and a flooded
+pump terminus. All nine share one native world, with twelve connected passages.
+
+Use the **3×3 tile map** to inspect a district, **Whole complex** for the atlas,
+or **F** to follow the player through the narrow routes. The scene starts paused;
+**P** runs it, **A/D** move, and holding **Space** rises through shafts. Camera
+changes preserve the entire complex and its edits; **R** restores all nine
+districts together. It is also available in the Web demo menu. See the
+[Blacksite Nine guide](docs/operations/blacksite-nine-demo.md) for the route,
+controls, construction and reproducible captures.
+
+![Blacksite Nine rendered in CyberSand](docs/images/blacksite-nine/blacksite-nine.png)
+
 ## Neon Reliquary and the city below
 
 Press **F11** or click **Neon Reliquary** in the desktop sandbox to open an

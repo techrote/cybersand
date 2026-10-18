@@ -51,6 +51,18 @@ many-NPC throughput and Windows/Web execution. The
 [validation ledger](../reference/validation-evidence.md) owns dated execution;
 the original ACT-001 audit remains unchanged.
 
+## Connected scene content — 2026-10-18
+
+[Blacksite Nine](blacksite-nine-demo.md) adds a new, continuous 3×3 scene on
+`scene/blacksite-nine`, based on the four-scene branch and current ACT-002 main
+`087ca3e972296b189c8b83060463125c06d600e2`. It places a fortified research lab
+between two industrial wastelands above six dense underground districts. Twelve
+ordinary native openings connect all neighbouring tiles. Shift+F11/Web menu
+launch the whole world; its 3×3 camera map preserves edits and player state,
+while R restores the complete complex. The
+[dated evidence](../audits/2026-10-18-blacksite-nine.md) owns traversal, rendering,
+source/runtime identities and publication status.
+
 ## Material consistency repair — 2026-10-18
 
 The separate [Neon Reliquary descent](neon-reliquary-demo.md) adds four detailed

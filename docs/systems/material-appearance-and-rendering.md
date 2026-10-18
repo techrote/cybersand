@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [material-visual-projection, palette-program-appearance, render-upload-cost]
 status: Current
 scope: Native RG8 presentation, palette/program LUTs, shader flair, temporal smoothing, glow, and current GPU upload limitation
-last-reviewed: 2026-09-12
+last-reviewed: 2026-10-18
 related-documents: [themed-construction-materials.md, materials-and-rule-kernels.md, ../architecture/rendering-and-gameplay-bridges.md, ../architecture/item-authored-material-programs.md]
 ---
 
@@ -31,6 +31,20 @@ sampled player. The top tile retains its original cyan atmosphere; lower tiles
 progress through warm residential haze, utility teal and swamp green. This changes
 none of the material palette/program, condition projection,
 emission or glow behavior described here.
+
+[Blacksite Nine](../operations/blacksite-nine-demo.md) adds two scene-specific
+passes over the same immutable textures: an Empty-space industrial backdrop,
+and multiplicative exposure with an eight-sample recess shadow for occupied
+cells. Both use absolute world coordinates, including neighbouring cells beyond
+the current camera frame. They introduce no camera-relative parallax, per-tile
+tint or time-dependent grain. This keeps the treatment continuous across all
+twelve tile boundaries. The grade preserves the sampled player and leaves
+instrument glass and LEDs comparatively bright. It does not alter material
+identity, collision, native rules, the base palette or the glow source. Both
+passes are disabled when scene variants admit rigid bodies, whose masks they do
+not own. **Depth & haze** controls these scene passes. The guide and
+[dated audit](../audits/2026-10-18-blacksite-nine.md) distinguish actual pixel
+checks from unmeasured hardware performance.
 
 [project_visual_state](../../native/include/cybersand/material_appearance.hpp)
 selects zero, `state_a`, or `state_b` for each material. No visual seed or RGB
