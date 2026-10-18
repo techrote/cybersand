@@ -288,6 +288,10 @@ private:
     [[nodiscard]] std::uint16_t transfer_water(std::int64_t from_x, std::int64_t from_y,
                                                std::int64_t to_x, std::int64_t to_y,
                                                std::uint16_t requested, JobEffects* effects);
+    // Water-lattice inventory across Water/Steam/Ice. Steam/Ice b=0 is
+    // legacy/full inventory; it is not an empty parcel.
+    [[nodiscard]] std::uint16_t phase_water_quantity(std::int64_t x, std::int64_t y) const noexcept;
+    [[nodiscard]] std::uint8_t phase_quantity_state(std::uint16_t quantity) const noexcept;
     [[nodiscard]] std::uint16_t state_a(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] std::uint8_t state_b(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] bool write_cell(std::int64_t x, std::int64_t y, Material material,

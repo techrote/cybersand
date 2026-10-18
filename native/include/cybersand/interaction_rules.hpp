@@ -16,7 +16,7 @@ namespace cybersand {
 inline constexpr std::string_view kInteractionSchemaId = "cybersand.interactions";
 inline constexpr std::uint32_t kInteractionSchemaVersion = 1U;
 inline constexpr std::string_view kInteractionProfileId = "int.current-behaviour";
-inline constexpr std::uint32_t kInteractionProfileVersion = 1U;
+inline constexpr std::uint32_t kInteractionProfileVersion = 2U;
 
 enum class InteractionChannel : std::uint8_t {
     ThermalPhase,
@@ -144,24 +144,24 @@ struct PairInteractionRule {
 };
 
 inline constexpr std::array<PairInteractionRule, 14> kPairInteractionRules{{
-    {"int.pair.lava-water.quench.v1",
+    {"int.pair.lava-water.quench.v2",
      interaction_channel_bit(InteractionChannel::ThermalPhase) |
          interaction_channel_bit(InteractionChannel::ChemicalConversionProducts) |
          interaction_channel_bit(InteractionChannel::AuthoritativeEmissionsByproducts),
      InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
      Material::Lava, Material::Water, Material::Stone, Material::Steam, 255,
-     "replace both participants; preserve role-specific products",
+     "retain Water inventory in Steam; solidify Lava only after one full-cell equivalent of cumulative coolant",
      interaction_revalidation_bit(InteractionRevalidationTag::WaterContact) |
-         interaction_revalidation_bit(InteractionRevalidationTag::SchedulerContact)},
-    {"int.pair.fire-water.extinguish.v1",
+         interaction_revalidation_bit(InteractionRevalidationTag::SchedulerContact), 2U, "int.pair.lava-water.quench.v1", "int.pass.mat002-phase-quantity"},
+    {"int.pair.fire-water.extinguish.v2",
      interaction_channel_bit(InteractionChannel::ThermalPhase) |
          interaction_channel_bit(InteractionChannel::Combustion) |
          interaction_channel_bit(InteractionChannel::AuthoritativeEmissionsByproducts),
      InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
      Material::Fire, Material::Water, Material::Smoke, Material::Steam, 255,
-     "replace both participants; preserve role-specific products",
+     "extinguish Fire; retain the Water parcel quantity in Steam",
      interaction_revalidation_bit(InteractionRevalidationTag::WaterContact) |
-         interaction_revalidation_bit(InteractionRevalidationTag::SchedulerContact)},
+         interaction_revalidation_bit(InteractionRevalidationTag::SchedulerContact), 2U, "int.pair.fire-water.extinguish.v1", "int.pass.mat002-phase-quantity"},
     {"int.pair.water-salt.dissolve.v1",
      interaction_channel_bit(InteractionChannel::DissolutionCorrosion) |
          interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
@@ -170,15 +170,15 @@ inline constexpr std::array<PairInteractionRule, 14> kPairInteractionRules{{
      "replace both participants with brine",
      interaction_revalidation_bit(InteractionRevalidationTag::WaterContact) |
          interaction_revalidation_bit(InteractionRevalidationTag::GranularContact)},
-    {"int.pair.water-sodium.react.v1",
+    {"int.pair.water-sodium.react.v2",
      interaction_channel_bit(InteractionChannel::ChemicalConversionProducts) |
          interaction_channel_bit(InteractionChannel::Combustion) |
          interaction_channel_bit(InteractionChannel::AuthoritativeEmissionsByproducts),
      InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
      Material::Water, Material::Sodium, Material::Steam, Material::Fire, 255,
-     "replace both participants; preserve role-specific products",
+     "retain Water quantity in Steam; Sodium-to-Fire remains an explicit chemical conversion",
      interaction_revalidation_bit(InteractionRevalidationTag::WaterContact) |
-         interaction_revalidation_bit(InteractionRevalidationTag::GranularContact)},
+         interaction_revalidation_bit(InteractionRevalidationTag::GranularContact), 2U, "int.pair.water-sodium.react.v1", "int.pass.mat002-phase-quantity"},
     {"int.pair.brine-sodium.react.v1",
      interaction_channel_bit(InteractionChannel::ChemicalConversionProducts) |
          interaction_channel_bit(InteractionChannel::Combustion) |
@@ -188,36 +188,36 @@ inline constexpr std::array<PairInteractionRule, 14> kPairInteractionRules{{
      "replace both participants; preserve role-specific products",
      interaction_revalidation_bit(InteractionRevalidationTag::GranularContact) |
          interaction_revalidation_bit(InteractionRevalidationTag::SchedulerContact)},
-    {"int.pair.water-toxic-sludge.purify.v1",
+    {"int.pair.water-toxic-sludge.purify.v2",
      interaction_channel_bit(InteractionChannel::DissolutionCorrosion) |
          interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
      InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
      Material::Water, Material::ToxicSludge, Material::Water, Material::Water, 255,
-     "replace both participants with water",
-     interaction_revalidation_bit(InteractionRevalidationTag::WaterContact)},
-    {"int.pair.steam-ice.condense.v1",
+     "preserve unchanged Water state; Sludge contributes one explicit full-cell Water source",
+     interaction_revalidation_bit(InteractionRevalidationTag::WaterContact), 2U, "int.pair.water-toxic-sludge.purify.v1", "int.pass.mat002-phase-quantity"},
+    {"int.pair.steam-ice.condense.v2",
      interaction_channel_bit(InteractionChannel::ThermalPhase),
      InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
      Material::Steam, Material::Ice, Material::Water, Material::Ice, 32,
-     "convert steam role to water; preserve ice role",
+     "retain Steam quantity on condensation; preserve the existing Ice quantity",
      interaction_revalidation_bit(InteractionRevalidationTag::WaterContact) |
-         interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence)},
-    {"int.pair.water-molten-glass.quench.v1",
+         interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence), 2U, "int.pair.steam-ice.condense.v1", "int.pass.mat002-phase-quantity"},
+    {"int.pair.water-molten-glass.quench.v2",
      interaction_channel_bit(InteractionChannel::ThermalPhase) |
          interaction_channel_bit(InteractionChannel::ChemicalConversionProducts) |
          interaction_channel_bit(InteractionChannel::AuthoritativeEmissionsByproducts),
      InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
      Material::Water, Material::MoltenGlass, Material::Steam, Material::Glass, 255,
-     "replace both participants; preserve role-specific products",
+     "retain Water inventory in Steam; solidify MoltenGlass after one full-cell equivalent of cumulative coolant",
      interaction_revalidation_bit(InteractionRevalidationTag::WaterContact) |
-         interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence)},
-    {"int.pair.lava-glass.melt.v1",
+         interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence), 2U, "int.pair.water-molten-glass.quench.v1", "int.pass.mat002-phase-quantity"},
+    {"int.pair.lava-glass.melt.v2",
      interaction_channel_bit(InteractionChannel::ThermalPhase) |
          interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
      InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
      Material::Lava, Material::Glass, Material::Lava, Material::MoltenGlass, 255,
-     "preserve lava role; convert glass role to molten glass",
-     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence)},
+     "preserve Lava state and quench progress; convert Glass to initialized MoltenGlass",
+     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence), 2U, "int.pair.lava-glass.melt.v1", "int.pass.mat002-phase-quantity"},
     {"int.pair.acid-metal.corrosion.v1",
      interaction_channel_bit(InteractionChannel::DissolutionCorrosion) |
          interaction_channel_bit(InteractionChannel::ChemicalConversionProducts) |
@@ -370,10 +370,10 @@ struct SpecializedInteractionRule {
 };
 
 inline constexpr std::array<SpecializedInteractionRule, 19> kSpecializedInteractionRules{{
-    {"int.kernel.steam.condense.v1", interaction_channel_bit(InteractionChannel::ThermalPhase),
+    {"int.kernel.steam.condense.v2", interaction_channel_bit(InteractionChannel::ThermalPhase),
      InteractionTriggerKind::IntrinsicState, Material::Steam, RuleKernel::Steam,
-     "native/src/world.cpp::RuleKernel::Steam", "lifetime expiry converts Steam to Water",
-     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence)},
+     "native/src/world.cpp::RuleKernel::Steam", "lifetime expiry converts Steam to Water with retained aqueous quantity",
+     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence), 2U, "int.kernel.steam.condense.v1", "int.pass.mat002-phase-quantity"},
     {"int.kernel.fire.ignite-smoke.v1",
      interaction_channel_bit(InteractionChannel::Combustion) |
          interaction_channel_bit(InteractionChannel::AuthoritativeEmissionsByproducts),
@@ -406,36 +406,36 @@ inline constexpr std::array<SpecializedInteractionRule, 19> kSpecializedInteract
      "native/src/world.cpp::RuleKernel::Spark",
      "adjacent base-Metal charging or sampled combustible ignition; Spark locomotion excluded",
      interaction_revalidation_bit(InteractionRevalidationTag::SchedulerContact)},
-    {"int.kernel.metal.charge.v1",
+    {"int.kernel.metal.charge.v2",
      interaction_channel_bit(InteractionChannel::Electrical) |
          interaction_channel_bit(InteractionChannel::ThermalPhase),
      InteractionTriggerKind::NeighbourhoodContext, Material::Metal, RuleKernel::Metal,
      "native/src/world.cpp::RuleKernel::Metal",
-     "base-Metal charge propagation and charged-Metal Water-to-Steam consequence",
-     interaction_revalidation_bit(InteractionRevalidationTag::WaterContact)},
+     "base-Metal charge propagation; Water-to-Steam retains the original Water quantity",
+     interaction_revalidation_bit(InteractionRevalidationTag::WaterContact), 2U, "int.kernel.metal.charge.v1", "int.pass.mat002-phase-quantity"},
     {"int.kernel.cement.cure.v1", interaction_channel_bit(InteractionChannel::CuringGrowthSpecialState),
      InteractionTriggerKind::NeighbourhoodContext, Material::Cement, RuleKernel::Cement,
      "native/src/world.cpp::RuleKernel::Cement",
      "air/Water/Brine/Concrete-context cure ending as Concrete",
      interaction_revalidation_bit(InteractionRevalidationTag::WaterContact)},
-    {"int.kernel.molten-glass.cool.v1", interaction_channel_bit(InteractionChannel::ThermalPhase),
+    {"int.kernel.molten-glass.cool.v2", interaction_channel_bit(InteractionChannel::ThermalPhase),
      InteractionTriggerKind::NeighbourhoodContext, Material::MoltenGlass, RuleKernel::MoltenGlass,
      "native/src/world.cpp::RuleKernel::MoltenGlass",
-     "hot-neighbour cooling reset and eventual conversion to Glass",
-     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence)},
-    {"int.kernel.lava.contact.v1",
+     "hot-neighbour cooling reset and Glass conversion; countdown preserves Water-quench progress",
+     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence), 2U, "int.kernel.molten-glass.cool.v1", "int.pass.mat002-phase-quantity"},
+    {"int.kernel.lava.contact.v2",
      interaction_channel_bit(InteractionChannel::ThermalPhase) |
          interaction_channel_bit(InteractionChannel::Combustion),
      InteractionTriggerKind::NeighbourhoodContext, Material::Lava, RuleKernel::Lava,
      "native/src/world.cpp::RuleKernel::Lava",
-     "sampled Ice-to-Water conversion or neighbour ignition; movement excluded",
+     "sampled Ice melting retains aqueous quantity; neighbour ignition and movement unchanged",
      interaction_revalidation_bit(InteractionRevalidationTag::WaterContact) |
-         interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence)},
-    {"int.kernel.ice.phase.v1", interaction_channel_bit(InteractionChannel::ThermalPhase),
+         interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence), 2U, "int.kernel.lava.contact.v1", "int.pass.mat002-phase-quantity"},
+    {"int.kernel.ice.phase.v2", interaction_channel_bit(InteractionChannel::ThermalPhase),
      InteractionTriggerKind::NeighbourhoodContext, Material::Ice, RuleKernel::Ice,
-     "native/src/world.cpp::RuleKernel::Ice", "hot-neighbour melt and sampled Water freeze",
+     "native/src/world.cpp::RuleKernel::Ice", "hot melting and sampled freezing retain aqueous quantity",
      interaction_revalidation_bit(InteractionRevalidationTag::WaterContact) |
-         interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence)},
+         interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence), 2U, "int.kernel.ice.phase.v1", "int.pass.mat002-phase-quantity"},
     {"int.kernel.acid.corrosion.v1",
      interaction_channel_bit(InteractionChannel::DissolutionCorrosion) |
          interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
@@ -495,10 +495,10 @@ struct InteractionCoverageEntry {
 
 inline constexpr std::array<InteractionCoverageEntry, 7> kInteractionCoverage{{
     {"compact-pair-current", "multiple", InteractionAuthoredStatus::ExplicitOverride,
-     InteractionEvidenceStatus::CurrentRegression, "int.pair.*.v1",
-     "all 14 compact pair rules are characterized against the frozen Current oracle"},
+     InteractionEvidenceStatus::CurrentRegression, "int.pair.*",
+     "14 full-contact product/probability recipes retain the frozen oracle; MAT-002 versions conditional quantity execution"},
     {"specialized-current-kernels", "multiple", InteractionAuthoredStatus::AcceptedWithLimitation,
-     InteractionEvidenceStatus::CurrentRegression, "int.kernel.*.v1",
+     InteractionEvidenceStatus::CurrentRegression, "int.kernel.*",
      "represented/provenance-visible; authoritative execution remains in world.cpp"},
     {"control.water-sand", "chemical_conversion_products", InteractionAuthoredStatus::ExplicitNonInteracting,
      InteractionEvidenceStatus::GeneratedFixture, "",
@@ -525,8 +525,10 @@ struct InteractionTuningPassDefinition {
     std::string_view changed_rules;
 };
 
-inline constexpr std::array<InteractionTuningPassDefinition, 1> kInteractionTuningPasses{{
+inline constexpr std::array<InteractionTuningPassDefinition, 2> kInteractionTuningPasses{{
     {"int.pass.current-oracle", 1U, "", "characterized-baseline", "none"},
+    {"int.pass.mat002-phase-quantity", 1U, "int.pass.current-oracle", "bounded-software-candidate",
+     "Water/Steam/Ice quantity; Lava/MoltenGlass coolant budget; retained unchanged participant state"},
 }};
 
 class InteractionRules final {
