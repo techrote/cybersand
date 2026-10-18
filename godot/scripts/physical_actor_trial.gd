@@ -9,6 +9,7 @@ const Blacksite = preload("res://scripts/blacksite_nine.gd")
 var armed: bool = false
 var jump_held: bool = false
 var pulse_cooldown: float = 0.0
+var action: Dictionary = {"drive":0.0, "trim":0.0, "pulse":false}
 
 static func contains(id: String) -> bool:
 	return id.begins_with(PREFIX) and id.trim_prefix(PREFIX) in ARMS
@@ -34,16 +35,23 @@ static func definition(id: String, seed: int = 0) -> Dictionary:
 	return out
 
 func sample(delta: float, allowed: bool, horizontal: float, trim: float, jump: bool) -> Dictionary:
+	# Main-thread scratch only; never published or retained as a snapshot.
+	action.drive = 0.0
+	action.trim = 0.0
+	action.pulse = false
 	if not allowed:
 		armed = false
 		jump_held = jump
-		return {"drive":0.0, "trim":0.0, "pulse":false}
+		return action
 	pulse_cooldown = maxf(0.0, pulse_cooldown - delta)
 	if not armed:
 		armed = absf(horizontal) < 0.001 and absf(trim) < 0.001 and not jump
 		jump_held = jump
-		return {"drive":0.0, "trim":0.0, "pulse":false}
+		return action
 	var pulse: bool = jump and not jump_held and pulse_cooldown <= 0.0
 	jump_held = jump
 	if pulse: pulse_cooldown = 0.6
-	return {"drive":clampf(horizontal,-1,1), "trim":clampf(trim,-1,1), "pulse":pulse}
+	action.drive = clampf(horizontal,-1,1)
+	action.trim = clampf(trim,-1,1)
+	action.pulse = pulse
+	return action
