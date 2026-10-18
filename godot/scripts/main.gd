@@ -876,10 +876,15 @@ func apply_player_environment_profile(candidate: Dictionary) -> void:
 
 
 func _ready() -> void:
+	if OS.get_cmdline_user_args().has("--depth-lab") and not get_tree().has_meta("cybersand_depth_lab_visited"):
+		set_process(false)
+		call_deferred("open_depth_lab")
+		return
 	setup_tower_panel()
 	setup_brush_preview()
 	setup_player_representation_button()
 	setup_player_environment_tuning()
+	setup_depth_lab_launcher()
 	var tower_button: Button = Button.new()
 	tower_button.name = "ExperimentTowerLauncher"
 	tower_button.text = "Experiment Tower / F9"
@@ -1037,7 +1042,26 @@ func _physics_process(_delta: float) -> void:
 	simulation_worker.set_rigid_body_states(pack_rigid_body_states())
 
 
+func setup_depth_lab_launcher() -> void:
+	var launcher := Button.new()
+	launcher.name = "DepthLabLauncher"
+	launcher.text = "Depth lab / F4"
+	launcher.tooltip_text = "Open the separate layering/parallax prototype scene. Returning starts a fresh sandbox."
+	launcher.focus_mode = Control.FOCUS_NONE
+	launcher.pressed.connect(open_depth_lab)
+	$Layout.add_child(launcher)
+
+
+func open_depth_lab() -> void:
+	get_tree().set_meta("cybersand_depth_lab_visited", true)
+	get_tree().change_scene_to_file("res://depth_lab.tscn")
+
+
 func _unhandled_key_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F4:
+		get_viewport().set_input_as_handled()
+		open_depth_lab()
+		return
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F8:
 		microscenario_toggle_hud()
 		get_viewport().set_input_as_handled()
