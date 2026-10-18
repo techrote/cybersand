@@ -91,6 +91,8 @@ enforced; [invariants](invariants.md) identifies that gap.
 **Planned:** generalized bounded command/result queues; safe live reconfiguration;
 general world/configuration/replay persistence; field equations and units; production
 body-shape/CCD/force policy; GPU subregion writes; authored appearance schema/tooling;
+a user-facing material-presentation quality tier with weaker-GPU and browser cost
+measurement ([effects register](material-effects-register.md#planned));
 remaining platform/LeakSanitizer and production performance acceptance. Current
 Linux native ASan/UBSan/TSan results are in the validation ledger.
 

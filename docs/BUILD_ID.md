@@ -25,7 +25,7 @@ The historical hash table and test outcomes below are intentionally unchanged.
 - **Current**: native publication projects dirty RG8 material/condition patches into copied Godot value arrays.
 - **Current**: a 64×256 palette atlas and four-texel-per-material program LUT derive appearance on the GPU.
 - **Current**: 43 construction IDs extend the catalogue through 80; 41 are inert radius-zero hard surfaces and Oak Timber/Thatch reuse bounded combustion.
-- **Current**: 42 analytic flair classes at this build identity (45 since the 2026-10-18 [material readability pass](audits/2026-10-18-material-readability-pass.md)) reuse program texel 3 alpha without another simulation byte, program texel, or palette row.
+- **Current**: 42 analytic flair classes reuse program texel 3 alpha without another simulation byte, program texel, or palette row.
 - **Current**: powders, Smoke, Steam, Foam, organics, Ice, reactive liquids, Mercury, charged Metal, and Cloner now have specialized bounded GPU programs.
 - **Current**: four-neighbour RG8 reads derive structural bevels, liquid lips, and contact shadows through an alias of the existing world texture; no image/upload was added.
 - **Current**: stable coordinate texture never uses authoritative epochs or frame-random noise; bounded glint/sheens/neon use presentation time only.

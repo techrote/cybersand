@@ -136,7 +136,7 @@ All runs on the platform in [Identities](#identities), 2026-10-18.
 | Live controllers, `materials/fire-gunpowder` | graphical | Desktop and natively hosted Web: glow on adds light to 12–14k pixels, never darkens; on→off→on returns the identical frame |
 | R8 fallback presentation (`--fallback-r8`) | graphical | Renders; without the condition channel Cement shows as cured |
 | `check_docs.py`, `check_repository.py` | — | Same 6 missing companion-workspace sources as clean `main`; no new errors |
-| `check_m11_consistency.py` | — | No errors |
+| `check_m11_consistency.py` | — | No errors (a review fix briefly edited the retained historical `docs/BUILD_ID.md`; that edit was reverted because M11 records are immutable) |
 | `retrieval_eval.py` | — | 32/32 canonical hit@k, MRR 0.833 |
 
 **Matched cost** ([`cost.json`](material-readability-2026-10-18/cost.json),

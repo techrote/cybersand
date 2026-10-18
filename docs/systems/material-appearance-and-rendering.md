@@ -5,7 +5,7 @@ canonical-for: [material-visual-projection, palette-program-appearance, render-u
 status: Current
 scope: Native RG8 presentation, palette/program LUTs, shader flair, temporal smoothing, glow, and current GPU upload limitation
 last-reviewed: 2026-10-18
-related-documents: [themed-construction-materials.md, materials-and-rule-kernels.md, ../architecture/rendering-and-gameplay-bridges.md, ../architecture/item-authored-material-programs.md]
+related-documents: [material-visual-pattern-library.md, ../reference/material-effects-register.md, themed-construction-materials.md, materials-and-rule-kernels.md, ../architecture/rendering-and-gameplay-bridges.md, ../architecture/item-authored-material-programs.md]
 ---
 
 # Material appearance and rendering
