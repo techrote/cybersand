@@ -1798,9 +1798,12 @@ std::uint16_t World::transient_obstacle_at(std::int64_t x, std::int64_t y) const
         x < state.region.x || y < state.region.y) {
         return 0U;
     }
-    const auto local_x = x - state.region.x;
-    const auto local_y = y - state.region.y;
-    if (local_x >= state.region.width || local_y >= state.region.height) return 0U;
+    // x/y are already >= the mask origin. Unsigned subtraction represents the
+    // full non-negative distance without signed overflow for distant chunks.
+    const auto local_x = static_cast<std::uint64_t>(x) - static_cast<std::uint64_t>(state.region.x);
+    const auto local_y = static_cast<std::uint64_t>(y) - static_cast<std::uint64_t>(state.region.y);
+    if (local_x >= static_cast<std::uint64_t>(state.region.width) ||
+        local_y >= static_cast<std::uint64_t>(state.region.height)) return 0U;
     const auto index = static_cast<std::size_t>(local_y) *
                            static_cast<std::size_t>(state.region.width) +
                        static_cast<std::size_t>(local_x);
@@ -1816,9 +1819,10 @@ bool World::set_transient_obstacle(std::int64_t x, std::int64_t y,
         x < state.region.x || y < state.region.y) {
         return false;
     }
-    const auto local_x = x - state.region.x;
-    const auto local_y = y - state.region.y;
-    if (local_x >= state.region.width || local_y >= state.region.height) return false;
+    const auto local_x = static_cast<std::uint64_t>(x) - static_cast<std::uint64_t>(state.region.x);
+    const auto local_y = static_cast<std::uint64_t>(y) - static_cast<std::uint64_t>(state.region.y);
+    if (local_x >= static_cast<std::uint64_t>(state.region.width) ||
+        local_y >= static_cast<std::uint64_t>(state.region.height)) return false;
     const auto index = static_cast<std::size_t>(local_y) *
                            static_cast<std::size_t>(state.region.width) +
                        static_cast<std::size_t>(local_x);
@@ -1963,6 +1967,62 @@ void World::reserve_temperature_region(RectI64 region) {
             ensure_temperature_field(ensure_chunk({chunk_x, chunk_y}));
         }
     }
+}
+
+ChunkInstallOutcome World::install_generated_chunk(
+    ChunkCoord coord, std::span<const Material> row_major_materials) {
+    if (tick_failed_) return ChunkInstallOutcome::WorldFailed;
+    if (tick_in_progress_) return ChunkInstallOutcome::TickInProgress;
+    const auto size = static_cast<std::int64_t>(config_.chunk_size);
+    const auto cell_count = static_cast<std::size_t>(size) *
+                            static_cast<std::size_t>(size);
+    if (row_major_materials.size() != cell_count)
+        return ChunkInstallOutcome::InvalidPayload;
+
+    constexpr auto minimum = std::numeric_limits<std::int64_t>::min();
+    constexpr auto maximum = std::numeric_limits<std::int64_t>::max();
+    // Check multiplication first, then reserve the rule's arithmetic reach at
+    // either endpoint. No wrapped coordinate can select a different chunk.
+    if (coord.x < minimum / size || coord.y < minimum / size ||
+        coord.x > maximum / size || coord.y > maximum / size)
+        return ChunkInstallOutcome::CoordinateOverflow;
+    const auto origin_x = coord.x * size;
+    const auto origin_y = coord.y * size;
+    const auto radius = static_cast<std::int64_t>(config_.maximum_rule_radius);
+    if (origin_x < minimum + radius || origin_y < minimum + radius ||
+        origin_x > maximum - (size - 1) - radius ||
+        origin_y > maximum - (size - 1) - radius)
+        return ChunkInstallOutcome::CoordinateOverflow;
+    if (find_chunk(coord) != nullptr) return ChunkInstallOutcome::AlreadyResident;
+    if (chunks_.size() >= config_.maximum_chunk_count)
+        return ChunkInstallOutcome::CapacityFull;
+
+    for (std::size_t index = 0; index < cell_count; ++index) {
+        if (!valid_material(static_cast<std::uint16_t>(row_major_materials[index])))
+            return ChunkInstallOutcome::InvalidPayload;
+        const auto x = origin_x + static_cast<std::int64_t>(index %
+            static_cast<std::size_t>(size));
+        const auto y = origin_y + static_cast<std::int64_t>(index /
+            static_cast<std::size_t>(size));
+        if (transient_obstacle_at(x, y) != 0U)
+            return ChunkInstallOutcome::TransientOccupancy;
+    }
+
+    // Chunk construction and unordered-map insertion complete before any
+    // material is written. The following setters need no storage allocation:
+    // one owner has validated every material and the complete body-mask domain.
+    // They preserve Water defaults, activity, dirtiness, hard-surface revision
+    // and discovery semantics instead of introducing a second cell writer.
+    (void)ensure_chunk(coord);
+    for (std::size_t index = 0; index < cell_count; ++index) {
+        if (row_major_materials[index] == Material::Empty) continue;
+        const auto x = origin_x + static_cast<std::int64_t>(index %
+            static_cast<std::size_t>(size));
+        const auto y = origin_y + static_cast<std::int64_t>(index /
+            static_cast<std::size_t>(size));
+        set(x, y, row_major_materials[index]);
+    }
+    return ChunkInstallOutcome::Installed;
 }
 
 bool World::queue_explosion(std::int64_t x, std::int64_t y, std::int32_t radius,

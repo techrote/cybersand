@@ -21,6 +21,35 @@ owns preparation/failure semantics. [Evidence](validation-evidence.md) owns
 executed validation; [level saves](level-saves-and-replay.md) owns what CYSD1
 actually persists.
 
+## Opt-in procedural generation configuration
+
+**Current GEN-001/GEN-002 source:** [`generation::Recipe`](../../native/include/cybersand/world_generation.hpp)
+is separate from `WorldConfig` and the transport/Water profiles. Its native
+defaults are schema version 1, algorithm version 2, seed 1, revision 1, candidate `strata`,
+chunk edge 128 and the `natural` theme family. Generator chunk edges are admitted
+from 8 through 256 cells; complete output must remain within
+`-2^40 <= coordinate < 2^40`. Native World installation additionally requires its
+own configured chunk geometry and exclusive owner boundary.
+
+The logical operation limit defaults to 64,000,000 per chunk. Recipe capacities,
+numeric parameter ranges, theme inheritance, global topology controls and the
+different workbench starting preset belong to the
+[procedural generation contract](../systems/procedural-world-generation.md),
+with validation in [`Generator::compile`](../../native/src/world_generation.cpp).
+The workbench offers narrower slider ranges for some controls while its JSON
+editor accepts the validated native range. No general World configuration,
+residency or replay serialization follows from saving a generation recipe.
+
+GEN-002 optionally adds up to 64 fields, 32 aggregates and 64 modifiers. The scalar
+graph caps depth at 16 and declared operations at 4096 per sample. Aggregates
+admit 1..16 unique existing material IDs with strictly positive finite weights;
+their grain size defaults to 4 and accepts integers 1..4096. Named variation
+fields select per cell without grain quantization. Field defaults/arity/ranges
+are exposed by native `field_kind_specs()` and copied by `get_catalogue`.
+The [field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md)
+owns these values, context meaning, masks and diagnostic bounds; these scalar
+authoring fields do not allocate optional simulation temperature/pressure storage.
+
 ## Native WorldConfig defaults
 
 Source: [world.hpp::WorldConfig](../../native/include/cybersand/world.hpp).

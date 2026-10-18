@@ -3,7 +3,7 @@ title: Interfaces and message contracts
 document-kind: contract
 canonical-for: [public-and-adapter-interface-layouts]
 status: Current
-scope: Current C ABI versions and private Godot packed layouts; proposed gameplay/job/reconfiguration contracts are not executable APIs
+scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md]
 last-reviewed: 2026-10-18
@@ -12,6 +12,45 @@ last-reviewed: 2026-10-18
 # Interfaces and message contracts
 
 ## Current public surfaces
+
+### Native procedural generation and fresh-chunk admission
+
+**Current GEN-001/GEN-002 source:**
+[`generation::Generator`](../../native/include/cybersand/world_generation.hpp)
+compiles a value-only recipe into immutable theme/field/aggregate/module state.
+`begin(ChunkCoord, diagnostic="")` creates a private `GenerationJob`; `advance(cell_budget)`
+limits work, and `result()` refuses access while pending. Ready results contain
+copied row-major materials, coordinates, revision, recipe fingerprint, content
+hash and an admission receipt binding those identities and optional diagnostic
+channel/float data. Failed/cancelled jobs expose neither cell nor diagnostic
+payload. `accepts(result)` checks complete current recipe/receipt
+identity; it does not identify the lifetime of a separate mutable World.
+
+[`World::install_generated_chunk`](../../native/src/world.cpp) takes a coordinate
+and immutable material span under the existing exclusive owner, between ticks.
+It validates the whole payload and admits only an absent storage chunk; resident
+empty, reserved and edited-then-cleared chunks remain protected. Its explicit
+outcomes cover refusal/capacity/ownership conditions. This material-only method
+does not perform generator-revision or World/reset-session checks: the caller
+must establish both before admission. It is a C++ primitive, not a new C ABI or
+an automatic desktop streaming command.
+
+[`CyberWorldGenerator`](../../godot/native_extension/cyber_world_generator.hpp)
+is a separate serialized Godot `RefCounted` owner with `configure`,
+`get_configuration`, `get_catalogue`, `generate_chunk`, `begin_chunk` and
+`advance` methods. It returns copied dictionaries/bytes and retains the last
+valid configuration on validation failure. Its single pending job is retired
+when a new accepted configuration replaces the generator. The opt-in workbench
+consumes these proposals for preview; it never acquires a live World reference.
+The two chunk methods accept an optional `field:<id>`, `modifier:<id>` or
+`module:<id>` channel. Ready packets include `diagnostic` and copied
+`PackedFloat32Array` `diagnostics` alongside `PackedByteArray` `cells`; no channel
+means an empty array. Native receipt validation precedes copying, while the UI
+also checks its current identity, expected coordinate, channel and normalized
+shape. The [field contract](../systems/procedural-generation-fields-and-modifiers.md)
+owns scalar DAG/context semantics and catalogue descriptors.
+The [generation contract](../systems/procedural-world-generation.md) owns exact
+schema and packet fields, module trust and source/runtime limits.
 
 ### Native C API
 

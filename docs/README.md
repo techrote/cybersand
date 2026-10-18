@@ -14,6 +14,9 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 | Need | Start here |
 |---|---|
+| Generate and blend procedural chunk themes, paint broad guidance, impose exact overrides or add structured modules | [Procedural generation contract and workbench](systems/procedural-world-generation.md), then [GEN-001 source and validation evidence](audits/2026-10-18-gen001-procedural-generation.md) |
+| Compose Hilbert/Morton or noise fields, sidechain masks, sculpt with initial context, author aggregate materials or inspect modifier influence | [Generation fields and masked modifiers](systems/procedural-generation-fields-and-modifiers.md), then [GEN-002 source and validation evidence](audits/2026-10-18-gen002-fields-and-aggregates.md) |
+| Distinguish generated previews, fresh native chunk admission and general world streaming | [Procedural generation](systems/procedural-world-generation.md), [World storage](systems/world-storage-and-interest-region.md), and [ownership](architecture/data-ownership-and-lifetimes.md) |
 | Reconcile a completed/closed claim, broad gameplay acceptance, or remediation owner | [Development-claims remediation programme](operations/development-claims-remediation-programme.md), then the [dated REM-001 audit](audits/2026-09-20-development-claims-closure-audit.md) for intake evidence |
 | Explore the MS-001 Materials Lab / Flood / Stress pack or compare generated definitions | [Reference pack and controls](operations/microscenario-reference-pack.md), [MS-001 evidence](audits/2026-09-19-issue-28-ms001.md) |
 | Author, load or benchmark a MicroScenario | [Current shared contract and host](operations/microscenarios.md), [checkpoint evidence](audits/2026-09-19-issue-27-microscenarios.md) |

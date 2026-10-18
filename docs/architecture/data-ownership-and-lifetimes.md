@@ -32,6 +32,10 @@ but must not touch live scene-tree or Rapier objects.
 | Live body nodes, RIDs and physics state | Main-thread Rapier bridge and PhysicsServer2D | Scene/bridge lifetime; never passed to cellular workers |
 | Body samples and observations | Adapter owns copied samples and native transient occupancy; results are copied into publication | Mask rebuilt at coupling preparation; sample IDs identify result application |
 | Godot CPU image and textures | Main thread validates patches and updates resources | Application lifetime; upload never borrows mutable World bytes |
+| Compiled procedural recipe, field graph and prepared modules | Immutable `generation::Generator`, independent of World | Jobs retain shared ownership; replacing the caller's recipe cannot mutate existing jobs |
+| Procedural sample context | Copied initial candidate material, surface and route values | Captured before fields/modules/material changes; every mask for that cell sees the same values |
+| Procedural chunk staging | One `GenerationJob` owns private material/optional diagnostic arrays and cursor | Allocated before incremental advance; pending bytes stay private, failure/cancel discards both payloads |
+| World-generation workbench previews | One main-thread `CyberWorldGenerator` owner plus copied material/texture cache | Accepted recipe changes retire old preview work; cache eviction regenerates previews, never evicts simulation chunks |
 
 Source: [World/Chunk](../../native/src/world.cpp),
 [native exchange](../../native/src/render_snapshot.cpp),
@@ -39,6 +43,33 @@ Source: [World/Chunk](../../native/src/world.cpp),
 [Web controller](../../godot/scripts/web_demo_controller.gd) and
 [Rapier bridge](../../godot/scripts/rapier_physics_bridge.gd).
 Step order belongs in the [threading contract](simulation-tick-and-threading.md).
+
+## How may generated content enter cell authority?
+
+**Current GEN-001/GEN-002 source:** the generation job API and supplied module context
+provide no mutable World, scene-tree or Rapier state. The
+[generation contract](../systems/procedural-world-generation.md) separates
+immutable recipe/revision receipts from the destination World's lifetime.
+`Generator::accepts` validates the former; the caller must also establish the
+current World/reset session and hold exclusive ownership before invoking
+[`World::install_generated_chunk`](../../native/src/world.cpp).
+
+Installation prevalidates one complete material span before allocating/writing,
+requires an absent destination chunk and uses existing native mutation defaults.
+Even a reserved empty or edited-then-cleared resident chunk is protected from
+regeneration. Failed Worlds, in-tick calls, invalid payloads, capacity/coordinate
+failure and overlapping transient occupancy are explicit refusals. This method
+is a loading/setup boundary primitive; it supplies no background World owner,
+automatic resident eviction or reset-session manager. The opt-in workbench only
+previews copied proposals and never calls it on the sandbox World.
+
+GEN-002 scalar context observes the initial procedural candidate, including its
+old brushes and hard geometry controls, before any masked modifier or module.
+It does not borrow live World material or infer player edits from empty preview
+cells. Diagnostic floats are job-owned and receipt-bound, then copied into the
+workbench cache; changing inspection channels retires that cache. The
+[field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md)
+owns this immutable-context and diagnostic lifecycle.
 
 ## When can a render payload be reused?
 

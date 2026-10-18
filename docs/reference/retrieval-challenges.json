@@ -1,7 +1,7 @@
 {
   "version": 1,
   "frozen_date": "2026-09-08",
-  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair. ACT01-ACT03 cover provisional actor capabilities, player/policy input lifetime and bounded-work limits. ACT04-ACT09 cover the 29-rig sets, parametric input, consumed-action identity, fictional personas, bounded tool/rope authority and SetA compatibility.",
+  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair. GEN01-GEN04 cover the 2026-10-18 procedural-generation candidates, controls, module trust and World-admission boundaries. ACT01-ACT03 cover provisional actor capabilities, player/policy input lifetime and bounded-work limits. ACT04-ACT09 cover the 29-rig sets, parametric input, consumed-action identity, fictional personas, bounded tool/rope authority and SetA compatibility. GEN05-GEN08 cover finite curve locality, noncyclic scalar sidechains, immutable context and hard authority, aggregate realization and diagnostic/budget ownership. Integration retains the Thunderbowl questions THB01-THB06 and their original evidence boundaries.",
   "questions": [
     {
       "id": "C05",
@@ -606,6 +606,79 @@
       ]
     },
     {
+      "id": "GEN01",
+      "query": "How do theme supersets and subsets, exclusions, weighted blends, broad brushstrokes, fine parameters and hard overrides combine in procedural generation?",
+      "canonical": [
+        "systems/procedural-world-generation.md"
+      ],
+      "facts": [
+        "Concrete descendants are selected through a validated theme DAG; group weight splits among eligible descendants, overlapping selections accumulate, and global exclusions cannot be reintroduced by brushes.",
+        "Broad strokes have radius/strength/falloff and parameter edits; controls use canonical priority and ID ordering. Hard parameters and candidate selections apply before generation, and hard material overrides apply last.",
+        "The global district_size topology cannot be edited spatially by a theme, brush or hard override; exact material overrides can intentionally block a route."
+      ],
+      "sources": [
+        "../native/include/cybersand/world_generation.hpp",
+        "../native/src/world_generation.cpp",
+        "../native/tests/test_world_generation.cpp"
+      ]
+    },
+    {
+      "id": "GEN02",
+      "query": "Will Strata, Flow Network or District Grammar change terrain when chunks are requested in a different order, and how are routes connected across negative-coordinate seams?",
+      "canonical": [
+        "systems/procedural-world-generation.md",
+        "architecture/chunk-tile-and-buffer-model.md"
+      ],
+      "facts": [
+        "All three candidates sample deterministic global coordinates from a compiled recipe; output partition and request order do not determine generated material content.",
+        "Flow Network and District Grammar reconstruct shared macrocell ports and restore their route skeleton after prepared structure modules, while explicit authored material overrides retain final authority.",
+        "Generation has an explicit coordinate and work domain; on-demand proposal generation and the bounded preview cache do not implement resident-world loading, eviction or modified-world persistence."
+      ],
+      "sources": [
+        "../native/src/world_generation.cpp",
+        "../native/tests/test_world_generation.cpp",
+        "../godot/scripts/worldgen_workbench.gd"
+      ]
+    },
+    {
+      "id": "GEN03",
+      "query": "Can a completed procedural chunk from an old recipe or a previous World reset overwrite player edits or a reserved empty chunk?",
+      "canonical": [
+        "systems/procedural-world-generation.md",
+        "architecture/data-ownership-and-lifetimes.md",
+        "systems/world-storage-and-interest-region.md"
+      ],
+      "facts": [
+        "Generator accepts validates complete payload, recipe fingerprint/revision and the coordinate-bound receipt; pending, cancelled, failed or mismatched results are refused.",
+        "World install_generated_chunk accepts a material span only for an absent destination under exclusive ownership between ticks, and refuses every resident chunk including empty reservations and edited-then-cleared chunks.",
+        "The material-only World method does not know generator identity or World/reset-session identity. A caller must establish both, and the current workbench only previews copied chunks without installing into the sandbox World."
+      ],
+      "sources": [
+        "../native/src/world_generation.cpp",
+        "../native/src/world.cpp",
+        "../native/include/cybersand/world.hpp",
+        "../godot/scripts/worldgen_workbench.gd"
+      ]
+    },
+    {
+      "id": "GEN04",
+      "query": "How can advanced architectural modules extend chunk generation, and what does the engine actually enforce about module cost, dependencies, failure and mutable World access?",
+      "canonical": [
+        "systems/procedural-world-generation.md",
+        "architecture/module-boundaries.md"
+      ],
+      "facts": [
+        "Versioned registry factories prepare immutable feature samplers off the simulation tick; explicit instance dependencies receive deterministic topological ordering and modules sample only inside declared bounds.",
+        "A module receives coordinate, effective parameters/palette and previous proposed material, returns at most one material, and cannot reach mutable World through the supplied context. Invalid output or callback failure discards the complete pending proposal.",
+        "Declared logical work and output capacities are enforced, but in-process C++ samplers remain trusted cooperative code. Recipes select registered modules and do not load arbitrary executable plugins."
+      ],
+      "sources": [
+        "../native/include/cybersand/world_generation.hpp",
+        "../native/src/world_generation.cpp",
+        "../native/tests/test_world_generation.cpp"
+      ]
+    },
+    {
       "id": "ACT01",
       "query": "Which actions distinguish the Runner, Skimmer and Crawler prototypes, and can each be a player or neural-network NPC?",
       "canonical": [
@@ -760,6 +833,78 @@
       ]
     },
     {
+      "id": "GEN05",
+      "query": "Does a Hilbert or Morton generation field make one continuous infinite corridor, and do its tiles change at negative chunk boundaries?",
+      "canonical": [
+        "systems/procedural-generation-fields-and-modifiers.md",
+        "architecture/chunk-tile-and-buffer-model.md"
+      ],
+      "facts": [
+        "Hilbert guarantees edge adjacency between consecutive ranks inside a finite power-of-two tile only; repeated tiles do not promise a continuous infinite Hilbert curve. Morton interleaves coordinates and successive ranks need not share an edge.",
+        "Orders 1 through 20 and integer cell sizes 1 through 4096 use signed floor tiling at absolute coordinates, independently of the output chunk partition.",
+        "The separately defined macrocell hub/port network owns interconnected procedural routes. Curve fields can guide masks, parameters or material variation without replacing that network."
+      ],
+      "sources": [
+        "../native/include/cybersand/generation_fields.hpp",
+        "../native/src/generation_fields.cpp",
+        "../native/tests/test_generation_fields.cpp"
+      ]
+    },
+    {
+      "id": "GEN06",
+      "query": "Can a sidechained mask inspect material painted by an earlier sculpting modifier, or can a masked theme blend restore a globally excluded theme?",
+      "canonical": [
+        "systems/procedural-generation-fields-and-modifiers.md"
+      ],
+      "facts": [
+        "The field DAG evaluates each declared node once at a sample from immutable initial proposal context, after original theme/brush/hard geometry but before fields, modules, material modifiers, connecting routes, paths and hard material.",
+        "Application times one-minus-exclusion times strength, context predicate and shape is captured once per modifier and reused for guidance and material output. Earlier modifiers cannot feed back into later context masks.",
+        "Missing references and cycles, including warp references, reject; warp shifts only the receiving primitive rather than recursively resampling dependencies. Global exclusions stay authoritative, hard geometry is reapplied after guidance, and hard material is final."
+      ],
+      "sources": [
+        "../native/src/generation_fields.cpp",
+        "../native/src/world_generation.cpp",
+        "../native/tests/test_generation_modifiers.cpp"
+      ]
+    },
+    {
+      "id": "GEN07",
+      "query": "Do procedural aggregate definitions create new mixture physics, and does grain_size quantize a named variation field?",
+      "canonical": [
+        "systems/procedural-generation-fields-and-modifiers.md",
+        "reference/configuration-reference.md"
+      ],
+      "facts": [
+        "An aggregate realizes one existing material ID per cell, with 1 through 16 unique components and strictly positive finite weights. It does not add density, reactions, fractional material state or simulation field storage.",
+        "Without a variation field, a seed-and-ID hash selects one material per signed world-aligned grain. A named variation field selects directly at each sample; grain_size does not quantize it.",
+        "Canonical recipes retain authored weights separately from prepared normalized selection. Zero, invalid IDs, duplicate components and normalization underflow reject; weights express preferences rather than finite-crop quotas."
+      ],
+      "sources": [
+        "../native/include/cybersand/world_generation.hpp",
+        "../native/src/world_generation.cpp",
+        "../native/tests/test_generation_modifiers.cpp"
+      ]
+    },
+    {
+      "id": "GEN08",
+      "query": "Does hiding a generator modifier or selecting a diagnostic bypass budgets, and can an old inspection packet enter a new preview or live World?",
+      "canonical": [
+        "systems/procedural-generation-fields-and-modifiers.md",
+        "architecture/data-ownership-and-lifetimes.md"
+      ],
+      "facts": [
+        "The field graph caps 64 declarations, depth 16 and 4096 logical operations per sample. All declared field/modifier/component/module work counts even when masked; zero module influence avoids its callback but not its declared charge.",
+        "A field, modifier or module diagnostic is collected as normalized floats during paced cell generation. Its channel, shape and float bits join the receipt; altered data reject, and failure or cancellation discards both materials and diagnostics.",
+        "The workbench validates recipe identity, expected coordinate, inspection token, channel and values before caching copied proposals. It has no live World installer; native admission still requires current recipe acceptance and caller-owned World/reset lifetime."
+      ],
+      "sources": [
+        "../native/src/generation_fields.cpp",
+        "../native/src/world_generation.cpp",
+        "../godot/scripts/worldgen_workbench.gd",
+        "../godot/native_extension/cyber_world_generator.cpp"
+      ]
+    },
+    {
       "id": "THB01",
       "query": "In Thunderbowl, does fly by metal bypass steering and stabilization, which rigs support it, and how can I tell force demand from actual motion?",
       "canonical": [
@@ -856,5 +1001,5 @@
       ]
     }
   ],
-  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set. 2026-10-18: MAT01/MAT02 add independent persistent-contact and interior mask-wake questions; the frozen 32 and prior questions are unchanged. 2026-10-18: ACT01-ACT03 add independent actor model/input/performance-boundary questions; the frozen 32-question set is unchanged. 2026-10-18 ACT-002: ACT04-ACT09 add independent expanded-rig/control/observation/persona/budget/compatibility questions. ACT03 now explicitly scopes original numeric limits to SetA and names the additive extension; the frozen 32-question set remains unchanged. 2026-10-18 ACT-003: THB01-THB06 add independent Thunderbowl actuation, topology, emergence/NCA, model-plan freshness, arena combat and device/schema questions; the frozen 32-question set is unchanged."
+  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set. 2026-10-18: MAT01/MAT02 add independent persistent-contact and interior mask-wake questions; the frozen 32 and prior questions are unchanged. 2026-10-18: GEN01-GEN04 add independent generation-control, seam, receipt/World-lifetime and module-boundary questions; the frozen 32 and prior questions remain unchanged. 2026-10-18: ACT01-ACT03 add independent actor model/input/performance-boundary questions; the frozen 32-question set is unchanged. 2026-10-18 ACT-002: ACT04-ACT09 add independent expanded-rig/control/observation/persona/budget/compatibility questions. ACT03 now explicitly scopes original numeric limits to SetA and names the additive extension; the frozen 32-question set remains unchanged. 2026-10-18 GEN-002: GEN05-GEN08 add supplementary field/curve/context/aggregate/diagnostic questions; all 49 prior supplementary objects and the frozen 32 questions remain unchanged."
 }

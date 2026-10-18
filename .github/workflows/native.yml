@@ -85,7 +85,7 @@ jobs:
 
           required = any(not ignored(path) for path in files)
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
-              output.write(f"required={'true' if required else 'false'}\\n")
+              output.write(f"required={'true' if required else 'false'}\n")
           print(
               "ready-for-review expensive validation:",
               "required" if required else "not required",
@@ -124,6 +124,12 @@ jobs:
 
       - name: Run native behavioral and integration suite
         run: timeout 15m ./build/tests
+
+      - name: Validate procedural generation candidates and fresh chunk admission
+        run: timeout 5m make worldgen-test
+
+      - name: Sanitize procedural generation and chunk admission
+        run: timeout 10m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 make worldgen-sanitize
 
       - name: Run soliding contract regressions
         run: timeout 5m make soliding-test

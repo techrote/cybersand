@@ -66,6 +66,17 @@ struct ChunkCoordHash {
     [[nodiscard]] std::size_t operator()(const ChunkCoord& coord) const noexcept;
 };
 
+enum class ChunkInstallOutcome : std::uint8_t {
+    Installed,
+    AlreadyResident,
+    InvalidPayload,
+    CoordinateOverflow,
+    CapacityFull,
+    TransientOccupancy,
+    WorldFailed,
+    TickInProgress,
+};
+
 struct RectI64 {
     std::int64_t x = 0;
     std::int64_t y = 0;
@@ -130,6 +141,13 @@ public:
     void paint_disc(std::int64_t centre_x, std::int64_t centre_y, std::int32_t radius, Material material);
     void reserve_region(RectI64 region);
     void reserve_temperature_region(RectI64 region);
+    // Exclusive external owner only, between ticks. Accept exactly one absent
+    // storage chunk; even a resident empty chunk is protected from regeneration.
+    // Validate the entire immutable material payload before allocating/writing.
+    // Allocation failures throw before cell authority changes. Caller owns the
+    // generator/session revision check; this material-only API is not a receipt.
+    [[nodiscard]] ChunkInstallOutcome install_generated_chunk(
+        ChunkCoord coord, std::span<const Material> row_major_materials);
     void set_simulation_region(std::optional<RectI64> region);
     [[nodiscard]] std::optional<RectI64> simulation_region() const noexcept;
     void set_liquid_surface_adhesion_enabled(bool enabled) noexcept;

@@ -25,6 +25,43 @@ for the requested change. Use the [retrieval index](../reference/retrieval-index
 for a focused question. The [owner-intent reference](../reference/product-intent-and-priorities.md)
 preserves product goals, liked material behavior and deliberate deferrals.
 
+## Procedural generation candidates — 2026-10-18
+
+GEN-001 / [#163](https://github.com/techrote/cybersand/issues/163) implements a
+separate native generator and opt-in authoring workbench. Start with the
+[generation contract](../systems/procedural-world-generation.md) and
+[dated evidence](../audits/2026-10-18-gen001-procedural-generation.md). Strata,
+Flow Network and District Grammar share theme DAG selections, blends, brush
+controls, routes, exact overrides and prepared versioned feature factories.
+The workbench previews bounded demand generation; general simulation streaming,
+eviction/persistence and automatic reconciliation of edited recipes remain
+separate. Its native fresh-chunk installer refuses all existing storage and
+requires caller-owned receipt/reset admission. Do not attach it concurrently to
+a live World owner or infer production streaming from the preview.
+
+## Procedural fields and masked authoring — 2026-10-18
+
+GEN-002 / [#171](https://github.com/techrote/cybersand/issues/171) extends those
+candidates with a bounded scalar DAG, finite Hilbert/Morton tiles, structured
+noise, analytic/context masks, theme/parameter/material modifiers, aggregates and
+field-masked feature instances. Read the
+[field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md)
+and [dated evidence](../audits/2026-10-18-gen002-fields-and-aggregates.md) before
+changing observation order or selection semantics. Every mask sees the initial
+proposal; hard geometry is reapplied after guidance, the route skeleton follows
+material modifiers, and hard material is final. Aggregate weights are strictly
+positive and resolve ordinary existing material IDs.
+
+The workbench adds field/aggregate/modifier editing, context-aware brushes,
+transforms and copied diagnostic overlays. `make worldgen-test` and
+`make worldgen-sanitize` include independent curve/field and modifier regressions,
+including historical GEN-001 material hashes. The
+[local build guide](local-build-and-validation.md) covers both Godot test scripts
+and the native example renderer. Algorithm identity is now 2; a retained GEN-001
+binary is not source-matched evidence for these APIs. The ACT-002 merge preserves
+its rig behavior and supplementary retrieval questions; no actor/native physics
+owner is changed by generation guidance.
+
 ## Thunderbowl control laboratory — 2026-10-18
 
 ACT-003 / #172 adds the standalone native
