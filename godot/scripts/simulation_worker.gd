@@ -1123,6 +1123,7 @@ func _publish_snapshot(
 		"profile_hash":_lab_profile_hash,
 		"player_environment_profile":_player_environment_profile.duplicate(true),
 		"actor_prototypes":snapshot.actor_prototypes,
+		"actor_usables":snapshot.actor_usables,
 		"sampled_character_enabled":_sampled_character_enabled,
 		"sampled_runtime_recovery_enabled":(
 			_character.runtime_enclosure_recovery_enabled
@@ -1157,6 +1158,7 @@ func _publish_snapshot(
 		var render_profile: Dictionary = snapshot.lab_context.get("profile", {})
 		_pending_render_context = {
 			"actor_prototypes": snapshot.actor_prototypes.duplicate(true),
+			"actor_usables": snapshot.actor_usables.duplicate(true),
 			"micro_active": bool(snapshot.lab_context.get("micro_active", false)),
 			"profile": {"name": str(render_profile.get("name", ""))},
 			"profile_hash": str(snapshot.lab_context.get("profile_hash", "")),
