@@ -207,9 +207,12 @@ material/player/transition mask for all four.
 
 New scene installation uses the established desktop worker acknowledgement or
 synchronous Web host. A pending reset or open experiment/definition modal blocks
-the showcase shortcut. Viewpoint popups block paint underneath them and require
-mouse release before paint resumes. F8 also hides the player/environment tuning
-controls, preserving the promised clean view.
+the showcase shortcut. On desktop, this also includes an open actor selector or
+an actor installation awaiting acknowledgement. Viewpoint popups block paint
+underneath them and require mouse release before paint resumes. F8 also hides the
+player/environment and actor launchers and dismisses their tuning panels,
+preserving the promised clean view. Accepted showcase installation clears
+ordinary sandbox actor prototypes through the existing MicroScenario transition.
 
 ## Reproduce the visual captures
 

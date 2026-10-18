@@ -6,7 +6,7 @@
     "preceding_local_commit": "813f9e8ca1222e4ea97bf19e4c38399270559acb",
     "original_neon_implementation_commit": "14c9f3e4128c76e0580b466a8943a7313a6168b1",
     "branch": "scene/neon-reliquary-demo",
-    "identity_scope": "The source hashes identify the tested implementation delta. The containing Git commit preserves the full checkpoint. Native implementation and retained runtime files are unchanged.",
+    "identity_scope": "These source hashes identify the initial published implementation b950e62af685509ce91f940156a50e44a3a9c950 and its exact local tree. The later post_publication_integration record separately binds the combined ACT-001/showcase implementation. Native implementation and retained runtime files are unchanged in both scene checkpoints.",
     "source_files_sha256": {
       "godot/.godot/global_script_class_cache.cfg": "7c83ad5d1a0aad2878962a381cfd6b7e549b3e8d0259d1063fb81a75d9e2da1b",
       "godot/project.godot": "cc95bec2f6a7d73f8f90e1d41a7b8a04928201c2ce9c634ca39f4917b9b879be",
@@ -1102,11 +1102,739 @@
     "branch": "scene/neon-reliquary-demo",
     "authorization": "Owner explicitly requested the three lower tiles and then push all four to the new branch.",
     "historical_status_record": "2026-10-18-neon-reliquary-evidence.json",
-    "github_ci": "pending_review_publication",
+    "github_ci": "Pending publication of the integrated feature head and ready-for-review transition; see PR167 for exact-head status.",
     "merged": false,
     "implementation_commit": "b950e62af685509ce91f940156a50e44a3a9c950",
     "file_tree_matches_reviewed_checkpoint": true,
     "method": "Connected GitHub object API after command-line Git lacked authentication; exact blob/tree identities checked and remote branch fetched.",
-    "url": "https://github.com/techrote/cybersand/tree/scene/neon-reliquary-demo"
+    "url": "https://github.com/techrote/cybersand/tree/scene/neon-reliquary-demo",
+    "pr_number": 167,
+    "pr_url": "https://github.com/techrote/cybersand/pull/167"
+  },
+  "post_publication_integration": {
+    "recorded_date": "2026-10-18",
+    "feature_parent": "7021c49aa90a91128f1f0a15d8ba048450fdca67",
+    "main_parent": "a532daa70140aac163e5501051fe5afa1bcf377f",
+    "scope": "Merge updated main (ACT-001 / PR165) into scene/neon-reliquary-demo to resolve PR167 conflicts. No merge of the feature into main. This source record supersedes the initial checkpoint only for the combined integration; original captures and historical results retain their original scope.",
+    "changes": [
+      "Preserve ACT-001 and all six showcase class registrations and controller lifecycle hooks.",
+      "Block desktop showcase admission while the actor selector is open or an actor reset receipt is pending, through an optional host method that keeps the synchronous Web controller compatible.",
+      "Include the actor launcher and selector in F8 clean-view visibility; suppress the brush preview under the actor modal.",
+      "Retain both scene retrieval questions and all three actor challenges, plus their evidence ledger rows."
+    ],
+    "source_files_sha256": {
+      "godot/main.tscn": "0117dc2c6c07b2ddc2b3bfa8bb1df6da516a4f154893a20cd67bc37a66eda42b",
+      "godot/project.godot": "cc95bec2f6a7d73f8f90e1d41a7b8a04928201c2ce9c634ca39f4917b9b879be",
+      "godot/scripts/actor_prototype.gd": "ccb25275e52150f1e4bfdd228854da3bcaa6e1d2026b52775c3150e6f451bb92",
+      "godot/scripts/actor_prototype_overlay.gd": "a8d67367629df39d4190175d23025af325c5730744f3a5c9d6aefe43af59a4e8",
+      "godot/scripts/actor_prototype_panel.gd": "95f84a092adef9987ea1a63887ac92be4e53c8ba1442f6d99e3561773bef35b5",
+      "godot/scripts/actor_prototype_session.gd": "98586a84e4fb4c51615c2eebb44fed813477976a67c79fd6fd65a0adccb74771",
+      "godot/scripts/cell_world.gd": "121b2fede9329fdc2c7c88e50c9cbbf36d50701afbcc40bdf64908f5a8752601",
+      "godot/scripts/decompression_diagnostic.gd": "2d1b81c11381b51f5f410d36d0b8a835d044afef934f34b284b0ab67b0a4edb9",
+      "godot/scripts/demo_save_codec.gd": "70e6d9e0da9ad174c5896f3edd859c022486cbd1a5462b9c39fd609ea66d64a8",
+      "godot/scripts/demo_worlds.gd": "3a167e91e72b3189f38b1c6bdb6afc9c91b9bd66b2d0d9cdf5e191917d4aa362",
+      "godot/scripts/experiment_tower.gd": "aa65451d8bacba91c715445a41cd64ef3849d6dce4e207166abc1a9410a545e8",
+      "godot/scripts/gameplay_recorder.gd": "f23a94be81537fccd6076968d51f35f280daf4667b208394517997128de3ca08",
+      "godot/scripts/industrial_underswamp.gd": "d603d587c36e1ebf0d2ec16bd244c03df1c0cab83896e95472d768fb9c418cf8",
+      "godot/scripts/interaction_policy.gd": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+      "godot/scripts/interaction_policy_probe.gd": "e369778ca76a365af4cea4eccda7d288c2c498e623d6b3ff76f0d3cfcc01da36",
+      "godot/scripts/main.gd": "f1f2487ec8798a8e60d20df87881242aa479b3b7a6d2961f5b79e37ed0bd13fd",
+      "godot/scripts/material_appearance_lut.gd": "93b6e43d03d13892b8f28256b76085b7ee9daa07582ea2f6a483f9b52b0d1fce",
+      "godot/scripts/microscenario_catalogue.gd": "9a12fed8061fae9922113897d600dd9f0713fc15b40448d373ac4c51013fa577",
+      "godot/scripts/microscenario_comparison.gd": "a4aab7a504db70698dafedb368384bcce61b73edaa01795b5ae368a8912a4890",
+      "godot/scripts/microscenario_contract.gd": "74c0266a970de37af67a2455d6aa3693915046593b9822b79418146cc62a7aa0",
+      "godot/scripts/microscenario_host.gd": "4bb2c74d5d8d8b4e2a670e59e8cf2a27e1e95efd192cf0d9cd4f5a891a853745",
+      "godot/scripts/microscenario_identity.gd": "e4590e4e8520fb56bbc5cdb6a5256ec6375c2d9e506ec3b0da91749e5a10f04a",
+      "godot/scripts/microscenario_panel.gd": "eeb0bc948eeff10a2f5b7a9c96afc46d01d817f98dab700e35202c14273a813c",
+      "godot/scripts/microscenario_reference_pack.gd": "98e3c2f8d215c698ac4b13501934dec2e8c48fe8f992650be0f7b658a540480f",
+      "godot/scripts/microscenario_telemetry.gd": "539c9832b3514b844cd650afe56683dc2933bc8ed01822d04c2c1f793a52903d",
+      "godot/scripts/microscenario_workbench.gd": "e5b0aabc5579338e58c2d08cce7e0bd463bd01dd8a8629fe7c84e1fe61e09887",
+      "godot/scripts/middle_cyberberbia.gd": "aee352913a6cb7e067f3412f061698f1a6ee64c21044b5b7997cf7ac419420c8",
+      "godot/scripts/neon_reliquary.gd": "f48f4ffac8d8e112991ebc948864a3da7783439b0450e6e12df4b3a2073110fa",
+      "godot/scripts/physics_characterisation.gd": "518910aa78ef56db6566f0a688e6e3262bde2df524c2a8e1b1150a87eba10360",
+      "godot/scripts/player_environment_panel.gd": "743aea24cf53d583759fa39fad331804b5e88d017b784920d81f4897f9233115",
+      "godot/scripts/player_environment_profiles.gd": "7c9ee013758d303125da456e1128bbf3a7bbba3d841c65341ba38617d52fbc16",
+      "godot/scripts/player_representation.gd": "4b481c04af45ecf9139cd57d0c5ef3dd9d7579c1ce21addaef99132ff420dc96",
+      "godot/scripts/rapier_physics_bridge.gd": "6f2e6185f8d606d75344be91809502b017205f1ab4f8644d8f0f3f604c1d3664",
+      "godot/scripts/rigid_body_coupling.gd": "4b1c0c35387d5726770e3520183452f8964eab780e287a7edc9714d767121be6",
+      "godot/scripts/sampled_character.gd": "fb56187c5fa44cfd2124dd003fb2bb046d3ef5377e346c933d0bd377fa29fe40",
+      "godot/scripts/sewertech_alley.gd": "985371f4632880ceb297128b332bf6a265a83cbcc7675bde342119a6d2822357",
+      "godot/scripts/showcase_presentation.gd": "e478efd9e63db7f3994c7e86ee73d1d32a276c0202fb37bbf20d270d25e16d6b",
+      "godot/scripts/showcase_tiles.gd": "c496da1fb7507e11763cec92113ad594b3f0fae44e54af040f8501f91e03a7d5",
+      "godot/scripts/simulation_snapshot.gd": "a6c711859ee1713bab1f4ee76772f47b8c64bfd9150caa58793223f8e9c5981d",
+      "godot/scripts/simulation_worker.gd": "41c28848f045ba03c5c26fe84b67fc0fecf992b762f0cad28a5eff1a51b28af9",
+      "godot/scripts/tick_failure_probe.gd": "575910573f6f70093fae9d5f8dfe20d8d6219e22671e0d6aa28603bc26c4f14a",
+      "godot/scripts/tower_panel.gd": "14cc8fa74867924d08477b76357ee5a958ad7f06ca4853e473b84c2cae79c255",
+      "godot/scripts/transport_probe.gd": "c7f495b72eeb165dc366667ac6d31bdbf79c0323a67f0779797cd73975d287e8",
+      "godot/scripts/transport_profile_panel.gd": "456e6c24213979c8ba2ff983078ad29d530acb80a2c929013aeae24c1b35bd6b",
+      "godot/scripts/transport_profiles.gd": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+      "godot/scripts/water_experiment_blind.gd": "25dab75373382c09d11afeda4e3b9ab027e491c4f83f6d4b526f5f824a11ae85",
+      "godot/scripts/water_experiment_contract.gd": "80c3147e28885b099d67dcb89d4327e58d84fed7357c76d2d42db65cc8375d6a",
+      "godot/scripts/water_experiment_panel.gd": "0ff5791741fcf72220a72f161ceecdb553bf827838c0d1aad9c19c420b5ee903",
+      "godot/scripts/water_experiment_profiles.gd": "172cd621c16561fce17f3a16e80a060007348201c2b901922531cd620dabaca5",
+      "godot/scripts/water_feel_scenarios.gd": "3eed68b0cf4a986c516f7b7962b91ad71e1059998ca794c0563026322b8628f7",
+      "godot/scripts/water_feel_web_probe.gd": "81ddc84d026fe7a81868a59ab5f0556e34885275ef3c1fc484e884d9549de2a4",
+      "godot/scripts/water_presentation_model.gd": "6c5d808c98ef3359b4d697a46750dec41f344894ec58b5e2adc5a7e9969c4f24",
+      "godot/scripts/web_capabilities.gd": "c7435f4af9e5161e6aab337b1804e5fe2e39b974f2149b519778caaf6e311527",
+      "godot/scripts/web_demo_controller.gd": "5eae22e894955fded0765b205d50a864cc3c838713487e81854d942ee8a4f838",
+      "godot/scripts/web_demo_menu.gd": "5a0a24ec11de8c88ed6f7b37bbdb27563f50ac4fe646d34a653852d4b55f6b0e",
+      "godot/scripts/web_rapier_probe.gd": "d91540caab0ab3db296a55a45b6cc87c44780c6141cde85c6620462093065026",
+      "godot/scripts/web_worker_probe.gd": "e13b3e12484c41fd5d19b4b135bb2d464c576abce429a23cb3d1618a4150a2f5",
+      "godot/scripts/worker_benchmark.gd": "f7f094e4cb8800953a5803e1cd7b2f3d2d17aa13a00d70d17e9b26878c4b6d31",
+      "godot/shaders/glow_composite.gdshader": "0685d7df435b76860facfde0bd604e9cfa2e1dbce8a86ae4063b7def67accccf",
+      "godot/shaders/material_emission.gdshader": "3b1148cdb99113bd172f1cb64e7d6c48ad86c33980739c571111aab479b15668",
+      "godot/shaders/material_palette.gdshader": "1e38bba9121aeeb998f7dfa2bf18de6d3ff35d575084e058fb85d28558a2fad6",
+      "godot/shaders/neon_reliquary_backdrop.gdshader": "15e7968fa50d43327aaae592a03ee59ceb0d7cd0565c41798e557ac35d39ea85",
+      "godot/tests/test_actor_prototype_integration.gd": "42d560eaae52e77ce80ba5bbda120e4d708b1f9bd7ddd787777f1d9224cf03cc",
+      "godot/tests/test_actor_prototype_session.gd": "a2e443d1b3ab8c6a2cdd2723693892074ab5aa5f406d060862cc5a584d369c9d",
+      "godot/tests/test_actor_prototypes.gd": "a1af3bedca1f04fe4c515c8d0efedd05dacffd73dc8615893a66b4806a3d6ae5",
+      "godot/tests/test_brush_owner_commands.gd": "f217d9b44bbcc595752f7285433694311d03a7c7bd4c1945748449a0a0bd9b9c",
+      "godot/tests/test_microscenario_controllers.gd": "5fcef384a036a729304f0f754eb2854bc6883c07bb7b97f6ed9c7755b24be8a2",
+      "godot/tests/test_neon_reliquary.gd": "457b1d39ff7baef4f3632347f49cabe63fadb66fef2df3e03e450efb424e9b9d",
+      "godot/tests/test_pchar001_player_representations.gd": "f3d2055f82000e51e0263ec26643e2338a0d12270b273b81b8c2fab854f72b74",
+      "godot/tests/test_penv001_player_environment.gd": "2b52d48bc0b2c9a2047fc857a8cd0eecd241b96fd0cdee4540df699e9ea834dd",
+      "godot/tests/test_playval001_selectable_player_fixtures.gd": "5817ccc105a802558b8afed596787170d7ca893cf9a23e6fb57f593e3c17b91c",
+      "godot/tests/test_render_patch_handoff_regression.gd": "da665d9ab52942480707de53535d03d26342a0f387ef4ec492951f7482ea1922",
+      "godot/tests/test_showcase_tiles.gd": "453884358473d45c84fd85f963216b0e33f6d772a49d9e518df616bfb007a401",
+      "godot/tests/test_water_feel_controller.gd": "5c924b0bd7568271d08f973643bc13969144eeb59fd394ee950c5fce0dab51c4",
+      "godot/tests/test_web_demo_setup.gd": "d83ccfba470f6e63d12f640ceb8a5967c597eb2f585dcfe671d265a6172488c0",
+      "godot/web_main.tscn": "813c57a0bda7b4741ad1558a978ef6bb94943e3b01c370852358bc8218a6851f",
+      "godot/.godot/global_script_class_cache.cfg": "d9b454367a88633f17cbc003333969c32cb65e35b05d819e54c03ece9c3b9e99"
+    },
+    "portable_class_cache": {
+      "registrations": 64,
+      "matches_union_of_parents": true,
+      "showcase_classes": 6,
+      "actor_classes": 4,
+      "missing_or_duplicate_entries": []
+    },
+    "runtime": {
+      "godot_version": "4.7.stable.official.5b4e0cb0f",
+      "godot_binary": {
+        "bytes": 144186224,
+        "path": "/tmp/cybersand-demo-validation/runtime/Godot_v4.7-stable_linux.x86_64",
+        "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+      },
+      "runtime_files": {
+        "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": {
+          "bytes": 1630856,
+          "sha256": "43e747137249041d56a522dbe0ec35219082ea555e1ec1cbdd40971c6a58db9c"
+        },
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": {
+          "bytes": 10781080,
+          "sha256": "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831"
+        }
+      },
+      "native_provenance_sha256": "59f6b3e797a6099d1ba18223313505c08812538302894545d0d117679b2a03c7",
+      "native_source_inputs_match": true
+    },
+    "native_source_inputs": 30,
+    "regressions": {
+      "status": "passed",
+      "cases": 13,
+      "unchanged_source_passes": [
+        {
+          "command": [
+            "/tmp/cybersand-demo-validation/run-godot.sh",
+            "--headless",
+            "--path",
+            "/workspace/scratch/fb9daf9fc631/cybersand/godot",
+            "--script",
+            "res://tests/test_actor_prototypes.gd"
+          ],
+          "diagnostic_error": false,
+          "expected_neon_assertions": null,
+          "log": "test_actor_prototypes.log",
+          "log_sha256": "26254a76cfcdd0a9dfbe7d59388dc62da8992a6c3599dfa537d000357c8c624b",
+          "name": "test_actor_prototypes",
+          "returncode": 0,
+          "role": "actor",
+          "seconds": 0.566,
+          "started_at_utc": "2026-10-18T08:22:43.317372+00:00",
+          "status": "passed",
+          "summary_lines": [
+            "ACTOR_PROTOTYPES {\"assertions\":12293,\"failures\":0,\"peak_occupancy_queries\":13,\"timing\":[{\"maximum_occupancy_queries\":7,\"mean_microseconds\":8.31816666666667,\"model\":\"runner\",\"scope\":\"headless host / mock occupancy / informational timing\",\"steps\":6000},{\"maximum_occupancy_queries\":6,\"mean_microseconds\":6.45266666666667,\"model\":\"skimmer\",\"scope\":\"headless host / mock occupancy / informational timing\",\"steps\":6000},{\"maximum_occupancy_queries\":6,\"mean_microseconds\":7.69283333333333,\"model\":\"crawler\",\"scope\":\"headless host / mock occupancy / informational timing\",\"steps\":6000}]}"
+          ],
+          "timed_out": false,
+          "timeout_seconds": 180
+        },
+        {
+          "command": [
+            "/tmp/cybersand-demo-validation/run-godot.sh",
+            "--headless",
+            "--path",
+            "/workspace/scratch/fb9daf9fc631/cybersand/godot",
+            "--script",
+            "res://tests/test_actor_prototype_session.gd"
+          ],
+          "diagnostic_error": false,
+          "expected_neon_assertions": null,
+          "log": "test_actor_prototype_session.log",
+          "log_sha256": "8271c47be787ec3ac5f484f19f6ba588d119a14af86cd2ac54005bc8e10ca3d7",
+          "name": "test_actor_prototype_session",
+          "returncode": 0,
+          "role": "actor",
+          "seconds": 0.465,
+          "started_at_utc": "2026-10-18T08:22:43.883758+00:00",
+          "status": "passed",
+          "summary_lines": [
+            "ACTOR_SESSION: 626 assertions; 0 failures"
+          ],
+          "timed_out": false,
+          "timeout_seconds": 180
+        },
+        {
+          "command": [
+            "/tmp/cybersand-demo-validation/run-godot.sh",
+            "--headless",
+            "--path",
+            "/workspace/scratch/fb9daf9fc631/cybersand/godot",
+            "--script",
+            "res://tests/test_actor_prototype_integration.gd"
+          ],
+          "diagnostic_error": false,
+          "expected_neon_assertions": null,
+          "log": "test_actor_prototype_integration.log",
+          "log_sha256": "b5e81678e265633e41c928b0cff89b8d112ddd723ca0d28a7fe835260051ee33",
+          "name": "test_actor_prototype_integration",
+          "returncode": 0,
+          "role": "actor",
+          "seconds": 2.872,
+          "started_at_utc": "2026-10-18T08:22:44.349661+00:00",
+          "status": "passed",
+          "summary_lines": [
+            "ACTOR_INTEGRATION: 157 assertions; 0 failures"
+          ],
+          "timed_out": false,
+          "timeout_seconds": 180
+        },
+        {
+          "command": [
+            "/tmp/cybersand-demo-validation/run-godot.sh",
+            "--headless",
+            "--path",
+            "/workspace/scratch/fb9daf9fc631/cybersand/godot",
+            "--script",
+            "res://tests/test_neon_reliquary.gd"
+          ],
+          "diagnostic_error": false,
+          "expected_neon_assertions": true,
+          "log": "test_neon_reliquary.log",
+          "log_sha256": "4e05f2a9714cafb477c2af022df12b1649b7693decbe50bdd1fc8710a7433838",
+          "name": "test_neon_reliquary",
+          "returncode": 0,
+          "role": "showcase-scene",
+          "seconds": 5.481,
+          "started_at_utc": "2026-10-18T08:22:47.222308+00:00",
+          "status": "passed",
+          "summary_lines": [
+            "WEB_RAPIER_PROBE {\"ok\":true,\"reason\":\"Manual-step/CCD probe passed\",\"y\":72.5059432983398}",
+            "NEON_RELIQUARY: 89 assertions; 0 failures; native material progression=120 ticks/1 worker, desktop and synchronous Web-controller lifecycle",
+            "NEON_RELIQUARY_IDENTITY: 3973 setup records; definition_sha256=895796380f2f82692724fb4378d77c2b239223f6a81bbb018233629e6ccaed0f"
+          ],
+          "timed_out": false,
+          "timeout_seconds": 180
+        },
+        {
+          "command": [
+            "/tmp/cybersand-demo-validation/run-godot.sh",
+            "--headless",
+            "--path",
+            "/workspace/scratch/fb9daf9fc631/cybersand/godot",
+            "--script",
+            "res://tests/test_microscenario_controllers.gd"
+          ],
+          "diagnostic_error": false,
+          "expected_neon_assertions": null,
+          "log": "test_microscenario_controllers.log",
+          "log_sha256": "7c4c327a2f1af017dc1def0a35a4de4f23e0414ec79f2ef09cb60e7b2ff21061",
+          "name": "test_microscenario_controllers",
+          "returncode": 0,
+          "role": "focused-shared-controller",
+          "seconds": 3.272,
+          "started_at_utc": "2026-10-18T08:22:52.920308+00:00",
+          "status": "passed",
+          "summary_lines": [
+            "WEB_RAPIER_PROBE {\"ok\":true,\"reason\":\"Manual-step/CCD probe passed\",\"y\":72.5059432983398}",
+            "MICROSCENARIO_CONTROLLERS: 55 assertions; 0 failures"
+          ],
+          "timed_out": false,
+          "timeout_seconds": 180
+        },
+        {
+          "command": [
+            "/tmp/cybersand-demo-validation/run-godot.sh",
+            "--headless",
+            "--path",
+            "/workspace/scratch/fb9daf9fc631/cybersand/godot",
+            "--script",
+            "res://tests/test_web_demo_setup.gd"
+          ],
+          "diagnostic_error": false,
+          "expected_neon_assertions": null,
+          "log": "test_web_demo_setup.log",
+          "log_sha256": "c6a2398f8f1e8ac01d1e6f38182579075226edd9ec198b6cb2c1758b513c19de",
+          "name": "test_web_demo_setup",
+          "returncode": 0,
+          "role": "focused-shared-controller",
+          "seconds": 0.565,
+          "started_at_utc": "2026-10-18T08:22:56.192953+00:00",
+          "status": "passed",
+          "summary_lines": [
+            "Web demo setup fixture: four constructors, stepping, CYSD1 and native rejection; failures=0"
+          ],
+          "timed_out": false,
+          "timeout_seconds": 180
+        },
+        {
+          "command": [
+            "/tmp/cybersand-demo-validation/run-godot.sh",
+            "--headless",
+            "--path",
+            "/workspace/scratch/fb9daf9fc631/cybersand/godot",
+            "--script",
+            "res://tests/test_pchar001_player_representations.gd"
+          ],
+          "diagnostic_error": false,
+          "expected_neon_assertions": null,
+          "log": "test_pchar001_player_representations.log",
+          "log_sha256": "a224c2daffbb72503570dff3e83e2544f94e177cc11803c3fff221221b38d5cd",
+          "name": "test_pchar001_player_representations",
+          "returncode": 0,
+          "role": "focused-shared-controller",
+          "seconds": 4.643,
+          "started_at_utc": "2026-10-18T08:22:56.758830+00:00",
+          "status": "passed",
+          "summary_lines": [
+            "PCHAR-001 player representation experiment passed"
+          ],
+          "timed_out": false,
+          "timeout_seconds": 180
+        },
+        {
+          "command": [
+            "/tmp/cybersand-demo-validation/run-godot.sh",
+            "--headless",
+            "--path",
+            "/workspace/scratch/fb9daf9fc631/cybersand/godot",
+            "--script",
+            "res://tests/test_penv001_player_environment.gd"
+          ],
+          "diagnostic_error": false,
+          "expected_neon_assertions": null,
+          "log": "test_penv001_player_environment.log",
+          "log_sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8",
+          "name": "test_penv001_player_environment",
+          "returncode": 0,
+          "role": "focused-shared-controller",
+          "seconds": 0.275,
+          "started_at_utc": "2026-10-18T08:23:01.402071+00:00",
+          "status": "passed",
+          "summary_lines": [],
+          "timed_out": false,
+          "timeout_seconds": 180
+        },
+        {
+          "command": [
+            "/tmp/cybersand-demo-validation/run-godot.sh",
+            "--headless",
+            "--path",
+            "/workspace/scratch/fb9daf9fc631/cybersand/godot",
+            "--script",
+            "res://tests/test_playval001_selectable_player_fixtures.gd"
+          ],
+          "diagnostic_error": false,
+          "expected_neon_assertions": null,
+          "log": "test_playval001_selectable_player_fixtures.log",
+          "log_sha256": "c2ffd6af8d6bf9bf0caa34f4805dc104c29fd070ab1a9becc0232c8dff38374e",
+          "name": "test_playval001_selectable_player_fixtures",
+          "returncode": 0,
+          "role": "focused-shared-controller",
+          "seconds": 3.632,
+          "started_at_utc": "2026-10-18T08:23:01.677448+00:00",
+          "status": "passed",
+          "summary_lines": [
+            "PLAYVAL001_SELECTABLE_PLAYER_FIXTURES: 75 assertions; 0 failures"
+          ],
+          "timed_out": false,
+          "timeout_seconds": 180
+        },
+        {
+          "command": [
+            "/tmp/cybersand-demo-validation/run-godot.sh",
+            "--headless",
+            "--path",
+            "/workspace/scratch/fb9daf9fc631/cybersand/godot",
+            "--script",
+            "res://tests/test_brush_owner_commands.gd"
+          ],
+          "diagnostic_error": false,
+          "expected_neon_assertions": null,
+          "log": "test_brush_owner_commands.log",
+          "log_sha256": "9888fa192bfe50f3856e2f4cd9317eebfab8b1c84246235dde221a14e9dbad5a",
+          "name": "test_brush_owner_commands",
+          "returncode": 0,
+          "role": "focused-shared-controller",
+          "seconds": 0.716,
+          "started_at_utc": "2026-10-18T08:23:05.309841+00:00",
+          "status": "passed",
+          "summary_lines": [],
+          "timed_out": false,
+          "timeout_seconds": 180
+        },
+        {
+          "command": [
+            "/tmp/cybersand-demo-validation/run-godot.sh",
+            "--headless",
+            "--path",
+            "/workspace/scratch/fb9daf9fc631/cybersand/godot",
+            "--script",
+            "res://tests/test_water_feel_controller.gd"
+          ],
+          "diagnostic_error": false,
+          "expected_neon_assertions": null,
+          "log": "test_water_feel_controller.log",
+          "log_sha256": "38c4678b82946baf2897a7829ebc90dc444a900bf112e666a3f1ce18da5e8076",
+          "name": "test_water_feel_controller",
+          "returncode": 0,
+          "role": "focused-shared-controller",
+          "seconds": 4.726,
+          "started_at_utc": "2026-10-18T08:23:06.026291+00:00",
+          "status": "passed",
+          "summary_lines": [
+            "WEB_RAPIER_PROBE {\"ok\":true,\"reason\":\"Manual-step/CCD probe passed\",\"y\":72.5059432983398}",
+            "WATER_FEEL_CONTROLLER: transactional rejection/body collision isolation/desktop+Web blind lifecycle passed"
+          ],
+          "timed_out": false,
+          "timeout_seconds": 180
+        },
+        {
+          "command": [
+            "/tmp/cybersand-demo-validation/run-godot.sh",
+            "--headless",
+            "--path",
+            "/workspace/scratch/fb9daf9fc631/cybersand/godot",
+            "--script",
+            "res://tests/test_render_patch_handoff_regression.gd"
+          ],
+          "diagnostic_error": false,
+          "expected_neon_assertions": null,
+          "log": "test_render_patch_handoff_regression.log",
+          "log_sha256": "08263aedb595ff899a3fe56ccdf61b3337c034a5b930b1214bc9b8d008a7a51a",
+          "name": "test_render_patch_handoff_regression",
+          "returncode": 0,
+          "role": "focused-shared-controller",
+          "seconds": 0.666,
+          "started_at_utc": "2026-10-18T08:23:10.752942+00:00",
+          "status": "passed",
+          "summary_lines": [
+            "Render patch handoff regression passed"
+          ],
+          "timed_out": false,
+          "timeout_seconds": 180
+        }
+      ],
+      "showcase_final": {
+        "command": [
+          "/tmp/cybersand-demo-validation/run-godot.sh",
+          "--headless",
+          "--path",
+          "/workspace/scratch/fb9daf9fc631/cybersand/godot",
+          "--script",
+          "res://tests/test_showcase_tiles.gd"
+        ],
+        "diagnostic_errors": [],
+        "expected_200_assertions": true,
+        "identity_after_file": "identity-after.json",
+        "identity_file": "identity.json",
+        "log": "test_showcase_tiles.log",
+        "log_sha256": "12378d6c5bb34f0e493ef7970c895f184ac281cd0a9708c1f160b39d820da8de",
+        "prior_evidence_sha256": {
+          "identity-after.json": "64901a2315f33dda25b93ca310ff6b01d8bd9ce32f8140e4deb4c4544f90fb62",
+          "identity.json": "ded96b677f89d01f94dbce773fba3739017c24584f343182c44743396ad567e4",
+          "results.json": "e79db4910b9c6a9d2693ca95dada370cb56b69017e3232ee29b0deb3a77b13f9",
+          "runner.log": "bf699cb8c01c14fc937f7c2bac5f974c3b856d47a131ca6ec4ba74e0e315be55",
+          "test_showcase_tiles.log": "bf4942824eeb69d0d2749b8f7f1c869cea205c43bbd01537e8d3e29ba1179f9b"
+        },
+        "prior_evidence_unchanged": true,
+        "returncode": 0,
+        "runtime_stable": true,
+        "seconds": 13.219,
+        "source_files_changed_during_run": [],
+        "source_files_changed_since_previous_run": [
+          "godot/tests/test_showcase_tiles.gd"
+        ],
+        "status": "passed",
+        "summary_lines": [
+          "SHOWCASE_TILES: 200 assertions; 0 failures; new-district native material progression=120 ticks/1 worker; desktop asynchronous and synchronous Web-controller transitions"
+        ],
+        "timed_out": false,
+        "timeout_seconds": 180
+      },
+      "showcase_assertions": 200,
+      "neon_assertions": 89,
+      "actor_assertions": [
+        12293,
+        626,
+        157
+      ],
+      "shared_controller_cases": 8,
+      "source_changed_between_attempts": [
+        "godot/tests/test_showcase_tiles.gd"
+      ],
+      "scope": "The initial 12 passing cases and final showcase retry share identical implementation sources and runtime. The sole intervening change parenthesized the test lambda boolean continuation."
+    },
+    "diagnosed_attempt": {
+      "result": {
+        "command": [
+          "/tmp/cybersand-demo-validation/run-godot.sh",
+          "--headless",
+          "--path",
+          "/workspace/scratch/fb9daf9fc631/cybersand/godot",
+          "--script",
+          "res://tests/test_showcase_tiles.gd"
+        ],
+        "diagnostic_error": true,
+        "expected_neon_assertions": null,
+        "log": "test_showcase_tiles.log",
+        "log_sha256": "bf4942824eeb69d0d2749b8f7f1c869cea205c43bbd01537e8d3e29ba1179f9b",
+        "name": "test_showcase_tiles",
+        "returncode": 1,
+        "role": "showcase-scene",
+        "seconds": 0.215,
+        "started_at_utc": "2026-10-18T08:22:52.704789+00:00",
+        "status": "failed",
+        "summary_lines": [],
+        "timed_out": false,
+        "timeout_seconds": 180
+      },
+      "resolution": "Parenthesized a multiline boolean return in the newly added showcase test lambda. No production implementation or existing tests changed; the corrected fixture passed all 200 assertions."
+    },
+    "rendered_clean_view": {
+      "command": [
+        "/tmp/cybersand-demo-validation/run-rendered-godot.sh",
+        "--path",
+        "godot",
+        "--script",
+        "res://tools/capture_neon_reliquary.gd",
+        "--",
+        "--tile=neon_reliquary",
+        "--capture-dir=/tmp/cybersand-demo-validation/actor-integration-clean-view"
+      ],
+      "returncode": 0,
+      "source_sha256_before": {
+        "godot/scripts/main.gd": "f1f2487ec8798a8e60d20df87881242aa479b3b7a6d2961f5b79e37ed0bd13fd",
+        "godot/scripts/showcase_presentation.gd": "e478efd9e63db7f3994c7e86ee73d1d32a276c0202fb37bbf20d270d25e16d6b",
+        "godot/scripts/neon_reliquary.gd": "f48f4ffac8d8e112991ebc948864a3da7783439b0450e6e12df4b3a2073110fa",
+        "godot/tools/capture_neon_reliquary.gd": "ddad707b48758bdc8f487d5c74039f3be51f0d1ed72ff3472156cc8984e70dcd",
+        "godot/.godot/global_script_class_cache.cfg": "d9b454367a88633f17cbc003333969c32cb65e35b05d819e54c03ece9c3b9e99"
+      },
+      "source_sha256_after": {
+        "godot/scripts/main.gd": "f1f2487ec8798a8e60d20df87881242aa479b3b7a6d2961f5b79e37ed0bd13fd",
+        "godot/scripts/showcase_presentation.gd": "e478efd9e63db7f3994c7e86ee73d1d32a276c0202fb37bbf20d270d25e16d6b",
+        "godot/scripts/neon_reliquary.gd": "f48f4ffac8d8e112991ebc948864a3da7783439b0450e6e12df4b3a2073110fa",
+        "godot/tools/capture_neon_reliquary.gd": "ddad707b48758bdc8f487d5c74039f3be51f0d1ed72ff3472156cc8984e70dcd",
+        "godot/.godot/global_script_class_cache.cfg": "d9b454367a88633f17cbc003333969c32cb65e35b05d819e54c03ece9c3b9e99"
+      },
+      "source_unchanged": true,
+      "png_sha256": {
+        "neon-reliquary-00.png": "2162d013ed7a2ccae2f08b3dbff0b86c6daf4fe7900f709f6fd84c28511e3ca3",
+        "neon-reliquary-01.png": "87b82f7a598bf4a04520dc61ecf6051f85fbcb21bb412ac505a58cec835c42f1",
+        "neon-reliquary-02.png": "038f130f39783f89a47d0365f2f2639e1c8f25c024ee0902f81aed35de00ade9",
+        "neon-reliquary-03.png": "496b7356ceef5b6bf52d5ecb036c700f66b4e028a259d7bada63b97de1c7390b",
+        "neon-reliquary-04.png": "e2e615857088712fc0c8a86ffdb5d66b5b3dfde0fee08e4432e2440818b434b1"
+      },
+      "visual_review": {
+        "visually_reviewed": [
+          "neon-reliquary-00.png",
+          "neon-reliquary-01.png",
+          "neon-reliquary-02.png",
+          "neon-reliquary-03.png",
+          "neon-reliquary-04.png"
+        ],
+        "actor_launcher_visible": false,
+        "actor_popup_visible": false,
+        "renderer_errors": [],
+        "all_paused_at_tick_zero": true,
+        "definition_sha256": "895796380f2f82692724fb4378d77c2b239223f6a81bbb018233629e6ccaed0f",
+        "native_sha256": "43e747137249041d56a522dbe0ec35219082ea555e1ec1cbdd40971c6a58db9c",
+        "display": "X11",
+        "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+        "godot": "4.7-stable (official)",
+        "notes": "All five actual 1920x1080 images reviewed. Clean scene only; no actor controls, popup or unexpected actor overlay. Ordinary sampled player remains visible on the west landing in overview. Single non-failing llvmpipe V-Sync warning retained in log."
+      }
+    },
+    "documentation_and_identity": {
+      "status": "passed",
+      "documentation": {
+        "documents": 80,
+        "navigation_link_documents": 8,
+        "canonical_claims": 139,
+        "local_links": 1368,
+        "heading_anchors": 70,
+        "questions": 32,
+        "errors": [],
+        "warnings": []
+      },
+      "repository": {
+        "materialized_runtime_files": 18,
+        "unmaterialized_runtime_files": 0,
+        "errors": []
+      },
+      "historical_m11": {
+        "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+        "records_checked": 18,
+        "source_hashes_checked": 28,
+        "compare_working_tree": false,
+        "errors": []
+      },
+      "retrieval": {
+        "retrieval-frozen": {
+          "documents": 80,
+          "chunks": 796,
+          "questions": 32,
+          "canonical_hit_at_1": 24,
+          "canonical_hit_at_k": 32,
+          "mrr_at_k": 0.8594,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+        },
+        "retrieval-challenges": {
+          "documents": 80,
+          "chunks": 796,
+          "questions": 41,
+          "canonical_hit_at_1": 28,
+          "canonical_hit_at_k": 41,
+          "mrr_at_k": 0.824,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+        }
+      },
+      "requested_ranks": {
+        "SCENE01": {
+          "canonical_rank": 1,
+          "path": "operations/neon-reliquary-demo.md",
+          "heading": "Neon Reliquary and the city below > Open and explore the level"
+        },
+        "SCENE02": {
+          "canonical_rank": 1,
+          "path": "operations/neon-reliquary-demo.md",
+          "heading": "Neon Reliquary and the city below"
+        },
+        "ACT01": {
+          "canonical_rank": 2,
+          "path": "systems/actor-control-prototypes.md",
+          "heading": "Provisional actor control models > Which capabilities distinguish the three models?"
+        },
+        "ACT02": {
+          "canonical_rank": 1,
+          "path": "systems/actor-control-prototypes.md",
+          "heading": "Provisional actor control models > How are the prototypes selected and controlled?"
+        },
+        "ACT03": {
+          "canonical_rank": 1,
+          "path": "systems/actor-control-prototypes.md",
+          "heading": "Provisional actor control models > What bounds the cost and response time?"
+        }
+      },
+      "scope": "Read-only checks of the resolved integration tree before the separately planned post-integration audit/evidence append. Retrieval ranks are lexical canonical-route evidence, not answer correctness.",
+      "commands": "commands.json",
+      "process_results": "process-results.json"
+    },
+    "report_sha256": {
+      "act001-merge-regressions/results.json": "e79db4910b9c6a9d2693ca95dada370cb56b69017e3232ee29b0deb3a77b13f9",
+      "act001-merge-regressions/showcase-after-lambda-fix/results.json": "341b4fd35039d1f18316b8a3f6da8b3906847a6e55ce342b00d7e7fc85745c94",
+      "actor-integration-clean-view/capture.json": "c7b424db2edcf7de3140df97ca49a5baadd234a63a3201765101353761aba93f",
+      "actor-integration-clean-view/rendered-capture.log": "8e4a63bc6de4b7c8423bef81e60a04ea7f3806bae23e1a88b7e75c07278211ee",
+      "actor-integration-clean-view/review-identity.json": "cfe5218c950a6bf1e4c6903f0b874f8c511844da85a53b8425ed15d2abb453e8",
+      "actor-integration-docs/summary.json": "46075c67212bc2fd16db0f9bab65484044519de1a61f9053420d794cb58e1d7d"
+    },
+    "github_ci": "Pending publication of the integrated feature head and ready-for-review transition; the PR records exact-head integration status.",
+    "limitations": "Linux controller/native tests and software OpenGL capture only. Original twenty gallery views and four-palette pixel oracle remain separately bound to their prior source scope. No native, material, engine pin or retained runtime change.",
+    "final_documentation_review": {
+      "status": "passed",
+      "documentation": {
+        "status": "passed",
+        "documents": 80,
+        "navigation_link_documents": 8,
+        "canonical_claims": 139,
+        "local_links": 1368,
+        "heading_anchors": 70,
+        "questions": 32,
+        "errors": [],
+        "warnings": [],
+        "limitations": [
+          "Does not verify source semantics or runtime claims",
+          "Does not fetch external URLs",
+          "Does not rewrite or reattest historical audits",
+          "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+        ]
+      },
+      "scope": "Documentation, both retrieval sets and staged whitespace were checked after the integration audit and scene-guide updates; this metadata-only append changes no indexed documentation or source.",
+      "report_sha256": {
+        "documentation-final.log": "ba97d2dbeff9ed9111c06023eb526c049ee44f80aec787e33e60b66384e73f19",
+        "retrieval-frozen-final.json": "fe6a9de79c983bdc18a404bc72b08009883ed37839c18c049e14fafc93e3f9ca",
+        "retrieval-challenges-final.json": "4c4e0cce4c21ed1b6bb65695b3713fbe8fc15c2a3e3f92abd3fb6dc9e440c8aa",
+        "staged-diff-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "retrieval-frozen-final": {
+        "created_utc": "2026-10-18T08:27:48.967662+00:00",
+        "corpus_root": "/workspace/scratch/fb9daf9fc631/cybersand",
+        "method": {
+          "name": "heading-chunk BM25 lexical development baseline",
+          "k": 5,
+          "maximum_body_words": 420,
+          "overlap_words": 0,
+          "k1": 1.2,
+          "b": 0.75,
+          "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+          "query_expansion": false,
+          "stemming": false,
+          "reranker": false,
+          "embeddings": false,
+          "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"
+        },
+        "fixture_sha256": "b65be8a80190703bb4550ac49b19a7eb8541652585c91acad2d4f40fc9dca5f2",
+        "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+        "corpus_manifest_sha256": "52eae539683bc5cf23a4a48d55bde4cbb4ab85d4eb224016f80181b758f3ac95",
+        "document_count": 80,
+        "chunk_count": 796,
+        "summary": {
+          "questions": 32,
+          "canonical_hit_at_1": 24,
+          "canonical_hit_at_k": 32,
+          "mrr_at_k": 0.8594,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+        }
+      },
+      "retrieval-challenges-final": {
+        "created_utc": "2026-10-18T08:27:48.986897+00:00",
+        "corpus_root": "/workspace/scratch/fb9daf9fc631/cybersand",
+        "method": {
+          "name": "heading-chunk BM25 lexical development baseline",
+          "k": 5,
+          "maximum_body_words": 420,
+          "overlap_words": 0,
+          "k1": 1.2,
+          "b": 0.75,
+          "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+          "query_expansion": false,
+          "stemming": false,
+          "reranker": false,
+          "embeddings": false,
+          "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"
+        },
+        "fixture_sha256": "5b494a4577b117f1fe4d9fdd32ff4b13139a752615365123f0c2a14710724e85",
+        "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+        "corpus_manifest_sha256": "52eae539683bc5cf23a4a48d55bde4cbb4ab85d4eb224016f80181b758f3ac95",
+        "document_count": 80,
+        "chunk_count": 796,
+        "summary": {
+          "questions": 41,
+          "canonical_hit_at_1": 28,
+          "canonical_hit_at_k": 41,
+          "mrr_at_k": 0.824,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+        }
+      }
+    }
   }
 }

@@ -217,6 +217,25 @@ func _desktop_transitions(checked: Array[Dictionary]) -> void:
 	root.add_child(desktop)
 	await process_frame
 	var presentation: CyberShowcasePresentation = desktop.showcase_presentation
+	desktop.toggle_actor_prototypes()
+	expect(desktop.actor_prototype_panel.visible and not presentation.launch(IDS[0])
+		and desktop.pending_microscenario_apply.is_empty(),
+		"District launch replaced the world while the actor selector owned input")
+	desktop.update_brush_preview()
+	expect(not desktop.brush_preview.visible, "Actor selector left the world brush preview visible")
+	desktop.microscenario_toggle_hud()
+	expect(not desktop.actor_prototype_button.visible and not desktop.actor_prototype_panel.visible,
+		"Clean view left the actor launcher or selector visible")
+	desktop.microscenario_toggle_hud()
+	expect(desktop.actor_prototype_button.visible, "Leaving clean view did not restore the actor launcher")
+	expect(desktop.apply_actor_prototype_configuration(&"runner", &"human", false)
+		and desktop._actor_reset_receipt != 0 and not presentation.launch(IDS[0])
+		and desktop.pending_microscenario_apply.is_empty(),
+		"District launch replaced a pending actor installation")
+	expect(await wait_for(func() -> bool:
+		return (desktop._actor_reset_receipt == 0 and desktop.latest_snapshot != null
+			and not desktop.latest_snapshot.actor_prototypes.is_empty())),
+		"The ordinary sandbox did not acknowledge its actor installation")
 	for index: int in range(IDS.size()):
 		var previous: Dictionary = _presentation_state(desktop, presentation)
 		var accepted: bool = false
@@ -243,6 +262,15 @@ func _desktop_transitions(checked: Array[Dictionary]) -> void:
 		expect(installed, "Desktop district install did not acknowledge: " + IDS[index])
 		if not installed: break
 		_check_accepted_view(desktop, presentation, index)
+		if index == 0:
+			expect(desktop.latest_snapshot.actor_prototypes.is_empty()
+				and desktop.actor_model_selection == &"",
+				"Accepted showcase district retained ordinary sandbox actor ownership")
+			desktop.microscenario_toggle_hud()
+			await process_frame
+			expect(not desktop.actor_prototype_button.visible and not presentation.controls.visible,
+				"The actor launcher or scene controls remained in a clean showcase view")
+			desktop.microscenario_toggle_hud()
 		expect(desktop.paused and desktop.latest_snapshot.paused
 			and desktop.latest_snapshot.tick_index == 0 and not desktop.latest_snapshot.simulation_failed,
 			"Desktop district did not begin paused at tick zero: " + IDS[index])

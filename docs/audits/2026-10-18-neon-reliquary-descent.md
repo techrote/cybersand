@@ -202,6 +202,53 @@ is preserved under `scene/neon-reliquary-local-checkpoint`; the working scene
 branch follows the published history. A documentation-only follow-up records
 this publication without changing the validated implementation.
 
-No merge is performed by this scene task. Applicable exact-head GitHub
+No merge into main is performed by this scene task. Applicable exact-head GitHub
 integration results belong to the published review and are required before a
 later merge; local passes are not substitutes for them.
+
+
+## Integration with updated main
+
+During publication, main advanced to **`a532daa70140aac163e5501051fe5afa1bcf377f`**
+with ACT-001 actor prototypes from PR165. The published feature parent was
+**`7021c49aa90a91128f1f0a15d8ba048450fdca67`**. PR167 consequently reported a
+controller/documentation conflict. This follow-up integrates that main revision
+into the scene branch; it does not merge the scene PR into main.
+
+The merge preserves both controller lifecycles, all 64 portable class-cache
+registrations, both scene retrieval questions, all three actor challenges and
+both evidence histories. Desktop showcase requests now wait while the actor
+selector owns input or an actor reset is awaiting acknowledgement. An optional
+host method keeps this desktop condition out of the synchronous Web controller.
+The actor launcher and panel participate in F8 clean-view visibility, and the
+actor modal suppresses the world brush preview. Accepted MicroScenario setup
+continues to clear ordinary actor ownership through the existing owner protocol.
+
+The combined source passes **13 focused fixtures**: the four-district regression
+now has **200 assertions**, the unchanged Neon regression has **89**, the three
+ACT fixtures pass **12,293 / 626 / 157**, and all eight shared-controller fixtures
+pass again. The eight new showcase assertions exercise actual modal admission,
+pending actor installation, acknowledged runner creation, subsequent actor
+clearing and HUD visibility. The first extended-test attempt had a GDScript
+multiline-lambda parse error; adding parentheses to that test's boolean return
+resolved it. Only that fixture required a retry. Its final run and the twelve
+prior passes share identical production source and runtime identities.
+
+Five fresh 1920 × 1080 Neon captures from the combined controller were reviewed
+at paused tick zero. No actor launcher, popup, unexpected actor overlay or script
+or renderer error appeared. The ordinary sampled player remains visible on its
+landing. The same non-failing software V-Sync warning is retained. These checks
+use the same pinned Linux engine, native library and Rapier identities recorded
+above; all 30 native source inputs still match. The original twenty district
+screenshots and earlier four-palette pixel evidence are preserved under their
+original source scope, rather than relabelled as new integrated captures.
+
+Post-integration documentation and provenance checks pass: **80 documents, 139
+canonical claims, 1,368 local links**, all 18 required runtime files materialized,
+and the same 18 historical M11 records / 28 source hashes. Retrieval hit@5 is
+**32/32** for frozen questions and **41/41** for the combined challenges. SCENE01
+and SCENE02 rank the scene guide first; ACT01/02/03 reach their canonical document
+at ranks 2/1/1. The appended integration manifest records the commands, source
+hashes, final and diagnosed results, and rendered review. Exact published-head
+GitHub integration checks remain attached to PR167 and are required before a
+later merge into main.

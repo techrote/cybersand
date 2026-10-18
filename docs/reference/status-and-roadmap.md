@@ -67,7 +67,7 @@ It is an aesthetic showcase; existing physics programmes retain their own gates.
 | Scheduler and storage | Sparse chunks, phased in-place jobs, explicit capacities and activity sleep; [chunk/tile model](../architecture/chunk-tile-and-buffer-model.md), [storage](../systems/world-storage-and-interest-region.md) |
 | Materials | Bounded adapted kernels, mass-conserving native Water, discrete fallback, secondary interaction lanes; [materials](../systems/materials-and-rule-kernels.md), [Water](../systems/water-design.md) |
 | Field storage and events | Optional temperature storage and bounded explosions; no general heat/pressure/wind solver; [field roadmap](../systems/smoke-heat-pressure-roadmap.md) |
-| Bodies and character | Main-thread Rapier, rectangular masks/displacement, static terrain packets, sampled character, and PCHAR reset-scoped barrel-player experiment; [coupling](../architecture/rigid-body-and-cellular-coupling.md) |
+| Bodies and character | Main-thread Rapier, rectangular masks/displacement, static terrain packets, sampled character, PCHAR reset-scoped barrel-player experiment, and optional Runner/Skimmer/Crawler [actor control prototypes](../systems/actor-control-prototypes.md); [coupling](../architecture/rigid-body-and-cellular-coupling.md) |
 | Rendering | Immutable native snapshots, copied dirty RG8 patches, full finite GPU texture update and derived material appearance; [bridges](../architecture/rendering-and-gameplay-bridges.md) |
 | Persistence | Fixed CYSD1 demo levels; complete resumed replay absent; [save contract](level-saves-and-replay.md) |
 | Runtime availability | All 18 required LFS payloads materialized; current execution scope is platform-specific; [build](../operations/local-build-and-validation.md) and [evidence](validation-evidence.md) |
@@ -195,6 +195,25 @@ Granular response reuses the existing REM-003 C1 hook with separate mass and
 sensitivity multipliers. Liquid sensitivity is inspectable/captured only; Water
 and generic-body semantics are unchanged. Parent #133 remains the long-lived
 programme for later environment/player tuning after finite child #138.
+
+## Provisional actor control checkpoint — 2026-10-18
+
+**Current implementation, experimental:** Runner, Skimmer and Crawler provide
+three sampled movement rule sets using a shared player/policy action interface.
+Their abilities differ: jump/dash traversal, two-axis flight with energy and
+braking, and traction/hop/brace with bounded clamber. The
+[actor contract](../systems/actor-control-prototypes.md) owns the action,
+observation, lifetime and desktop comparison boundaries.
+
+They use fixed model tuning and the existing material-aware sampled rectangle;
+they do not replace PENV profiles, select PCHAR's final player representation or
+change generic Rapier/body or Water authority. Runtime enclosure immobilizes the
+prototype rather than invoking sampled-baseline runtime relocation.
+
+Neural-network inference/training, larger NPC populations and target-PC
+performance/feel acceptance remain future work. A shared command seam or
+hand-authored demonstration policy is not evidence of a trained controller.
+Registered scientific/control fixtures retain their existing actor identities.
 
 ## Issue #13 experiment checkpoint
 

@@ -110,6 +110,7 @@ func _request_blocked() -> bool:
 		or not host.pending_player_environment_profile.is_empty()
 		or not host.water_blind_set.is_empty()
 		or not host.water_active_blind_label.is_empty()
+		or (host.has_method("showcase_launch_blocked") and host.showcase_launch_blocked())
 		or (host.microscenario_panel != null and host.microscenario_panel.modal_open())
 		or (host.tower_profile_panel != null and host.tower_profile_panel.visible)
 		or (host.water_experiment_panel != null and host.water_experiment_panel.visible))
