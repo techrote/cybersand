@@ -985,6 +985,17 @@ vec4 apply_ambient_particles(vec4 colour, vec2 pixel) {
 		colour.rgb = mix(colour.rgb, heat_ramp(0.45 + flicker * 0.5 * tail), strength * flicker * tail);
 		return colour;
 	}
+	vec2 leak = lattice_particle(
+		pixel + vec2(sin(t * 1.3 + pixel.y * 0.5) * 1.0, t * 6.0), 4.0, 0.35, 29.0);
+	if (leak.x > 0.5 && cheap_hash(floor(pixel / 14.0) + vec2(5.0)) > 0.72) {
+		int side = cell_material(sampled_cell(pixel + vec2(0.0, 2.0)));
+		if (side != 68 && side != 69) side = cell_material(sampled_cell(pixel + vec2(0.0, 4.0)));
+		if (side == 68 || side == 69) {
+			float puff = 0.45 + 0.35 * sin(t * 4.0 + leak.y * 20.0);
+			colour.rgb = mix(colour.rgb, vec3(0.86, 0.90, 0.92), puff);
+			return colour;
+		}
+	}
 	vec2 fume = lattice_particle(
 		pixel + vec2(sin(t * 0.9 + pixel.y * 0.25) * 1.6, t * 5.0), 5.0, 0.30, 17.0);
 	if (fume.x > 0.5) {
@@ -1186,6 +1197,244 @@ int displayed_material_id(
 	return water_mask_contains(mask, subcell) ? material_id : 0;
 }
 
+// ---------------------------------------------------------------------------
+// Shape-aware ("space-filling") construction fills. A pixel measures how far
+// its own material continues in each cardinal direction (bounded run-length:
+// reads at 2, 3, 5 and 8 cells after the shared neighbour), then generates
+// orientation, cross-section and region-anchored patterns from that. Only the
+// materials listed in uses_structured_fill() pay for the extra reads. All of
+// it is time-independent except deliberate manufactured effects (cable data
+// pulses, neon plasma).
+
+bool uses_structured_fill(int material_id) {
+	return material_id == 76 || material_id == 68 || material_id == 69
+		|| material_id == 75 || material_id == 74 || material_id == 46
+		|| material_id == 64 || material_id == 55 || material_id == 70
+		|| material_id == 58 || material_id == 43 || material_id == 57
+		|| (material_id >= 77 && material_id <= 79);
+}
+
+float run_length(vec2 pixel, vec2 direction, int material_id, int first, bool previous_snapshot) {
+	if (first != material_id) return 0.0;
+	if (sampled_material_id(pixel + direction * 2.0, previous_snapshot) != material_id) return 1.0;
+	if (sampled_material_id(pixel + direction * 3.0, previous_snapshot) != material_id) return 2.0;
+	if (sampled_material_id(pixel + direction * 5.0, previous_snapshot) != material_id) return 3.0;
+	if (sampled_material_id(pixel + direction * 8.0, previous_snapshot) != material_id) return 5.0;
+	return 8.0;
+}
+
+// x = cells of the same material above, y = below, z = left, w = right.
+vec4 region_extent(vec2 pixel, int material_id, ivec4 neighbours, bool previous_snapshot) {
+	return vec4(
+		run_length(pixel, vec2(0.0, -1.0), material_id, neighbours.x, previous_snapshot),
+		run_length(pixel, vec2(0.0, 1.0), material_id, neighbours.y, previous_snapshot),
+		run_length(pixel, vec2(-1.0, 0.0), material_id, neighbours.z, previous_snapshot),
+		run_length(pixel, vec2(1.0, 0.0), material_id, neighbours.w, previous_snapshot)
+	);
+}
+
+vec4 apply_burn(vec4 colour, vec2 pixel, float condition) {
+	if (condition <= 0.02) return colour;
+	float t = presentation_time();
+	float vein = abs(value_noise(pixel / 6.0) - 0.5) + abs(value_noise(pixel / 2.5 + vec2(13.0)) - 0.5) * 0.35;
+	float cracks = 1.0 - smoothstep(0.02, 0.07, vein);
+	float pulse = 0.55 + 0.45 * value_noise(pixel / 4.0 + vec2(t * 1.1, t * 0.5));
+	float burn = smoothstep(0.02, 0.6, condition);
+	vec3 char_colour = vec3(0.07, 0.05, 0.045) * (0.8 + cheap_hash(floor(pixel / 2.0)) * 0.4);
+	colour.rgb = mix(colour.rgb, char_colour, burn * 0.80);
+	colour.rgb = mix(colour.rgb, heat_ramp(0.30 + pulse * 0.55), cracks * burn * pulse);
+	return colour;
+}
+
+vec4 apply_structured_fill(
+	vec4 colour,
+	int material_id,
+	int flair,
+	vec2 pixel,
+	ivec4 neighbours,
+	vec4 extent,
+	float condition
+) {
+	float t = presentation_time();
+	// Run geometry. Horizontal when the run is at least as wide as it is tall.
+	float span_x = extent.z + extent.w + 1.0;
+	float span_y = extent.x + extent.y + 1.0;
+	// A direction that reached the 8-cell probe is treated as long, so large
+	// panels do not flip orientation near their edges; those use a default.
+	float long_x = (extent.z >= 8.0 || extent.w >= 8.0) ? 99.0 : span_x;
+	float long_y = (extent.x >= 8.0 || extent.y >= 8.0) ? 99.0 : span_y;
+	bool large = long_x > 50.0 && long_y > 50.0;
+	bool horizontal = large ? material_id != 64 : long_x >= long_y;
+	float across_pos = horizontal ? extent.x : extent.z;          // cells from the near edge
+	float across_span = horizontal ? span_y : span_x;
+	float across_u = (across_pos + 0.5) / across_span;           // 0..1 across the run
+	float along = horizontal ? pixel.x : pixel.y;                // world-anchored along axis
+	float across_world = horizontal ? pixel.y : pixel.x;
+	float edge = min(min(extent.x, extent.y), min(extent.z, extent.w));
+	bool exposed = edge < 0.5;
+
+	if (material_id == 68 || material_id == 69) { // pipes
+		float cylinder = sqrt(max(0.0, 1.0 - pow(across_u * 2.0 - 1.0, 2.0)));
+		float specular = smoothstep(0.80, 1.0, 1.0 - abs(across_u - 0.30) * 3.2);
+		float segment = floor(along / 14.0);
+		float in_segment = mod(along, 14.0);
+		float flange = 1.0 - step(1.0, in_segment);
+		float bolt = flange * step(0.5, abs(across_u - 0.5) * 2.0 - 0.45);
+		bool junction = abs(span_x - span_y) < 1.5 && span_x > 2.0;
+		colour.rgb *= 0.30 + cylinder * 0.95;
+		colour.rgb += vec3(0.38) * specular * (1.0 - flange);
+		colour.rgb *= 1.0 - (1.0 - cylinder) * 0.25;
+		colour.rgb = mix(colour.rgb, colour.rgb * 0.62 + vec3(0.04), flange);
+		colour.rgb += vec3(0.22) * bolt;
+		if (junction) {
+			float box = step(0.5, mod(pixel.x + pixel.y, 2.0));
+			colour.rgb = mix(colour.rgb, colour.rgb * 0.7, 0.5) + vec3(0.06) * box;
+		}
+		if (material_id == 69) { // copper patina pooled underneath
+			float patina = smoothstep(0.55, 0.85, value_noise(pixel / 3.0)) * smoothstep(0.5, 1.0, across_u);
+			colour.rgb = mix(colour.rgb, vec3(0.25, 0.55, 0.45), patina * 0.6);
+		}
+		return colour;
+	}
+
+	if (material_id == 76) { // hazard stripes anchored to the panel
+		float thickness = min(long_x, long_y);
+		float width = clamp(floor(across_span / 3.0), 2.0, 5.0);
+		float stripe;
+		if (thickness <= 5.0) { // thin strip: chevrons pointing along the run
+			float c = abs(across_pos - (across_span - 1.0) * 0.5);
+			stripe = step(0.5, fract((along + c) / (width * 2.0)));
+		} else {
+			stripe = step(0.5, fract((pixel.x + pixel.y) / 8.0));
+		}
+		vec3 yellow = colour.rgb * 1.08;
+		vec3 black = vec3(0.045, 0.05, 0.055);
+		colour.rgb = mix(black, yellow, stripe);
+		float worn = step(0.72, value_noise(pixel / 1.6)) * step(0.6, cheap_hash(pixel));
+		colour.rgb = mix(colour.rgb, vec3(0.38, 0.40, 0.42), worn * 0.45);
+		if (exposed && thickness > 5.0) colour.rgb = black * 1.6;
+		return colour;
+	}
+
+	if (material_id == 75) { // quilted insulation batts with foil facing
+		vec2 quilt = mod(pixel, vec2(7.0, 5.0));
+		vec2 centred = (quilt - vec2(3.0, 2.0)) / vec2(3.5, 2.5);
+		float puff = 1.0 - clamp(dot(centred, centred), 0.0, 1.0);
+		float seam = step(quilt.x, 0.5) + step(quilt.y, 0.5);
+		float stitch = seam * step(0.5, mod(pixel.x + pixel.y, 2.0));
+		float fibre = triangle_wave((pixel.x * 1.7 - pixel.y) / 4.0);
+		colour.rgb *= 0.62 + puff * 0.42 + fibre * 0.10;
+		colour.rgb *= 1.0 - stitch * 0.35;
+		if (exposed) { // crinkled reflective foil on the open face
+			float crinkle = value_noise(pixel * 0.9);
+			colour.rgb = vec3(0.62, 0.64, 0.66) * (0.65 + crinkle * 0.55);
+		}
+		return colour;
+	}
+
+	if (material_id == 74) { // round cables running along the bundle
+		float lane = floor(across_world);
+		float pick = cheap_hash(vec2(lane, 17.0));
+		vec3 jacket = pick < 0.25 ? vec3(0.08, 0.66, 0.85)
+			: pick < 0.50 ? vec3(0.88, 0.17, 0.48)
+			: pick < 0.75 ? vec3(0.92, 0.62, 0.10) : vec3(0.16, 0.16, 0.18);
+		float round_shade = 0.65 + 0.35 * (1.0 - triangle_wave(across_world * 0.5 + 0.25));
+		float tie = 1.0 - step(1.0, mod(along, 11.0));
+		colour.rgb = jacket * round_shade;
+		colour.rgb = mix(colour.rgb, vec3(0.12, 0.12, 0.13), tie);
+		if (pick > 0.86) { // fibre-optic strand with travelling data pulses
+			float pulse = step(0.93, fract(along / 23.0 - t * 0.9 + pick * 5.0));
+			colour.rgb = mix(vec3(0.10, 0.20, 0.24), vec3(0.55, 1.0, 1.0), pulse);
+		}
+		return colour;
+	}
+
+	if (material_id == 46) { // planks along the long axis
+		float plank = floor(across_world / 3.0);
+		float offset = cheap_hash(vec2(plank, 5.0)) * 13.0;
+		float in_plank = mod(along + offset, 13.0);
+		float joint = 1.0 - step(0.8, in_plank);
+		float gap = 1.0 - step(0.6, mod(across_world, 3.0));
+		float grain = triangle_wave((along + cheap_hash(vec2(plank, 9.0)) * 9.0) / 11.0
+			+ sin(across_world * 1.7) * 0.15);
+		colour.rgb *= 0.76 + grain * 0.30;
+		colour.rgb *= 1.0 - gap * 0.38 - joint * 0.45;
+		float nail = step(abs(in_plank - 1.5), 0.6) * step(0.5, mod(across_world, 3.0) - 0.9)
+			* step(mod(across_world, 3.0), 1.6);
+		colour.rgb = mix(colour.rgb, vec3(0.30, 0.31, 0.33), nail * 0.9);
+		return apply_burn(colour, pixel, condition);
+	}
+
+	if (material_id == 64) { // corrugation ridges follow the sheet's long axis
+		float ridge = triangle_wave(across_world / 4.0);
+		float lap = 1.0 - step(0.6, mod(along, 18.0));
+		float glint = manufactured_glint(pixel, 0.24) * smoothstep(0.62, 1.0, ridge);
+		colour.rgb *= 0.62 + (1.0 - ridge) * 0.58;
+		colour.rgb *= mix(1.0, 0.58, lap);
+		colour.rgb += vec3(glint * (1.0 - lap) * 0.38);
+		float streak = smoothstep(0.6, 0.9, value_noise(vec2(across_world / 2.0, along / 9.0)));
+		colour.rgb = mix(colour.rgb, vec3(0.42, 0.24, 0.14), streak * 0.30);
+		return colour;
+	}
+
+	if (material_id == 55) { // generative leaded glass (jittered Voronoi panes)
+		vec2 cell = floor(pixel / 7.0);
+		float nearest = 9.0;
+		float second = 9.0;
+		vec2 owner = cell;
+		for (int y = -1; y <= 1; y++) {
+			for (int x = -1; x <= 1; x++) {
+				vec2 candidate = cell + vec2(float(x), float(y));
+				vec2 site = (candidate + vec2(0.15) + vec2(cheap_hash(candidate), cheap_hash(candidate + vec2(7.0))) * 0.7) * 7.0;
+				float d = length(pixel + vec2(0.5) - site);
+				if (d < nearest) { second = nearest; nearest = d; owner = candidate; }
+				else if (d < second) { second = d; }
+			}
+		}
+		float choice = cheap_hash(owner + vec2(31.0));
+		vec3 pane = choice < 0.2 ? vec3(0.10, 0.70, 0.90) : choice < 0.4 ? vec3(0.80, 0.14, 0.62)
+			: choice < 0.6 ? vec3(0.95, 0.58, 0.10) : choice < 0.8 ? vec3(0.18, 0.62, 0.28) : vec3(0.20, 0.28, 0.85);
+		float light = 0.75 + value_noise(pixel / 5.0) * 0.35;
+		float lead = 1.0 - step(0.75, second - nearest);
+		colour.rgb = mix(pane * light, vec3(0.04, 0.04, 0.05), lead);
+		if (exposed) colour.rgb = vec3(0.08, 0.08, 0.09);
+		return colour;
+	}
+
+	if (material_id >= 77 && material_id <= 79) { // neon tube core along the run
+		colour = apply_material_flair(colour, material_id, flair, pixel, condition);
+		vec3 hue = colour.rgb / max(max(colour.r, max(colour.g, colour.b)), 0.001);
+		float core = 1.0 - abs(across_u * 2.0 - 1.0);
+		float plasma = value_noise(vec2(along / 3.0 - t * 5.0, across_world * 0.7));
+		colour.rgb = hue * (0.50 + core * 0.40 + plasma * 0.14);
+		colour.rgb = mix(colour.rgb, vec3(1.0), smoothstep(0.70, 1.0, core) * 0.55);
+		return colour;
+	}
+
+	// Remaining materials keep their finish and gain edge-aware detail.
+	colour = apply_material_flair(colour, material_id, flair, pixel, condition);
+	if (material_id == 43 || material_id == 57) { // soldier course and corner quoins
+		if (extent.x < 3.5 && extent.x > 0.5) {
+			float header = 1.0 - step(0.6, mod(pixel.x, 2.0));
+			colour.rgb *= 1.0 - header * 0.40;
+		}
+		bool corner_side = extent.z < 2.5 || extent.w < 2.5;
+		if (corner_side && mod(floor(pixel.y / 4.0), 2.0) < 0.5) {
+			colour.rgb = mix(colour.rgb, vec3(0.70, 0.66, 0.58) * (0.85 + cheap_hash(floor(pixel / 4.0)) * 0.2), 0.75);
+		}
+	} else if (material_id == 70) { // bullnose trim on exposed tile edges
+		if (exposed) colour.rgb = colour.rgb * 1.12 + vec3(0.05);
+		else if (edge < 1.5) colour.rgb *= 0.86;
+	} else if (material_id == 58) { // tie holes and exposed rebar
+		vec2 tie = mod(pixel, vec2(10.0, 8.0)) - vec2(5.0, 4.0);
+		colour.rgb *= 1.0 - (1.0 - step(0.8, length(tie))) * 0.55;
+		if (exposed && cheap_hash(floor(pixel / 2.0) + vec2(9.0)) > 0.55) {
+			colour.rgb = vec3(0.42, 0.20, 0.10) * (0.8 + cheap_hash(pixel) * 0.4);
+		}
+	}
+	return colour;
+}
+
 vec4 material_colour(
 	int material_id,
 	float condition,
@@ -1214,15 +1463,21 @@ vec4 material_colour(
 		response
 	);
 	int flair = int(floor(emission_colour.a + 0.5));
-	colour = apply_material_flair(colour, material_id, flair, world_pixel, condition);
 	// One gather of the four neighbours (from the snapshot being shaded)
-	// feeds both the volume/contact stage and the structural relief.
+	// feeds the structured fills, the volume/contact stage and the relief.
 	ivec4 neighbours = ivec4(
 		sampled_material_id(world_pixel + vec2(0.0, -1.0), previous_snapshot),
 		sampled_material_id(world_pixel + vec2(0.0, 1.0), previous_snapshot),
 		sampled_material_id(world_pixel + vec2(-1.0, 0.0), previous_snapshot),
 		sampled_material_id(world_pixel + vec2(1.0, 0.0), previous_snapshot)
 	);
+	if (uses_structured_fill(material_id)) {
+		vec4 extent = region_extent(world_pixel, material_id, neighbours, previous_snapshot);
+		colour = apply_structured_fill(
+			colour, material_id, flair, world_pixel, neighbours, extent, condition);
+	} else {
+		colour = apply_material_flair(colour, material_id, flair, world_pixel, condition);
+	}
 	colour = apply_volume_and_contact(
 		colour, material_id, world_pixel, neighbours, previous_snapshot, condition);
 	return apply_neighbour_relief(colour, material_id, neighbours);

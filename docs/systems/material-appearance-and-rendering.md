@@ -110,7 +110,14 @@ shares them between `apply_volume_and_contact` and the structural relief.
 That stage adds liquid depth shading (three extra upward reads for liquid pixels
 only), exposed-surface froth/skin, soft gas and foam boundaries, neighbour
 contact effects (molten/water flashes, boiling, acid fizz, fire flaring on fuel),
-emitter rim light on adjacent solids and soft ambient occlusion in Empty cells. The
+emitter rim light on adjacent solids and soft ambient occlusion in Empty cells.
+
+Shape-aware construction fills (`uses_structured_fill`, `region_extent`,
+`apply_structured_fill`) give pipes, hazard stripes, insulation, cables, timber,
+corrugation, stained glass, neon, brick, tile and reinforced concrete
+orientation, cross-section and edge treatment from a bounded per-direction run
+length (at most 16 extra reads, those materials only). They remain
+time-independent apart from cable data pulses, neon plasma and pipe steam leaks. The
 [2026-10-18 review](../audits/2026-10-18-material-readability-pass.md) records the
 paired captures and limits. The
 [construction catalogue](themed-construction-materials.md) owns exact themed

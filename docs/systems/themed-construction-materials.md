@@ -110,6 +110,10 @@ courses, seams, and grain. Timber/pipes currently read most clearly horizontally
 corrugation is vertical. Rough/hammered metals stay matte; smooth manufactured
 surfaces can use restrained moving glints. Wet construction and glass finishes
 are fixed in time (2026-10-18); neon and LED effects use presentation time.
+Pipes, hazard stripes, insulation, cables, Oak Timber, corrugation, Stained
+Glass, neon, brick, tile and reinforced concrete adapt to the shape of the run
+they are painted in (orientation, cross-section, edges); see the
+[appearance contract](material-appearance-and-rendering.md).
 None changes physics or wakes cells.
 
 Selected finish arithmetic is separate from the common four-neighbor relief

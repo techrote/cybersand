@@ -163,6 +163,26 @@ func _run() -> void:
 	var still_b: Image = await _render(still, still, 11.7)
 	_expect(_difference(still_a, still_b, full) <= TOLERANCE, "still-scenery finish changed over time")
 
+	# Shape-aware fills are still and follow the run: a pipe is brighter on
+	# its centre line than its rim, whichever way the run points.
+	var shaped: Image = _blank()
+	_block(shaped, Rect2i(0, 2, 30, 5), CyberCellWorld.STEEL_PIPE)
+	_block(shaped, Rect2i(36, 0, 5, 24), CyberCellWorld.STEEL_PIPE)
+	_block(shaped, Rect2i(0, 10, 16, 14), CyberCellWorld.HAZARD_STRIPE)
+	_block(shaped, Rect2i(18, 10, 14, 14), CyberCellWorld.INSULATION)
+	_block(shaped, Rect2i(42, 0, 6, 24), CyberCellWorld.STAINED_GLASS)
+	var shaped_a: Image = await _render(shaped, shaped, 0.0)
+	var shaped_b: Image = await _render(shaped, shaped, 8.3)
+	# Material cells only: Empty cells above pipes may show animated steam leaks.
+	for still_rect: Rect2i in [Rect2i(0, 2, 30, 5), Rect2i(36, 0, 5, 24), Rect2i(0, 10, 16, 14),
+			Rect2i(18, 10, 14, 14), Rect2i(42, 0, 6, 24)]:
+		_expect(_difference(shaped_a, shaped_b, still_rect) <= TOLERANCE,
+			"shape-aware fill changed over time in %s" % str(still_rect))
+	_expect(_mean_luma(shaped_a, Rect2i(0, 4, 30, 1)) > _mean_luma(shaped_a, Rect2i(0, 2, 30, 1)) + 0.03,
+		"horizontal pipe lacks cross-section shading")
+	_expect(_mean_luma(shaped_a, Rect2i(38, 0, 1, 24)) > _mean_luma(shaped_a, Rect2i(36, 0, 1, 24)) + 0.03,
+		"vertical pipe lacks cross-section shading")
+
 	# World anchoring: a one-cell camera pan shifts output by exactly one cell.
 	var world: Image = Image.create_empty(64, 40, false, Image.FORMAT_RG8)
 	world.fill(Color(0, 0, 0, 1))

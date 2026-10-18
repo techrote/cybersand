@@ -30,7 +30,7 @@ const VIEW: Vector2i = Vector2i(320, 180)
 const BACKGROUND: Color = Color(0.031, 0.043, 0.071, 1.0) # main.tscn Background
 const PLATES: Array[String] = [
 	"inventory", "liquids", "construction", "emission", "transition", "street", "laboratory",
-	"reactions",
+	"reactions", "shapes",
 ]
 # Native creation values of the material-selected condition byte (see
 # native/include/cybersand/material.hpp initial_state_a and
@@ -201,6 +201,7 @@ func _plate_inputs(plate: String) -> Dictionary:
 		"street": return _street()
 		"laboratory": return _laboratory()
 		"reactions": return _reactions()
+		"shapes": return _shapes()
 	return {}
 
 
@@ -417,6 +418,48 @@ func _reactions() -> Dictionary:
 	_fill(image, 284, 60, 26, 30, 37, 100)
 	return {"current": image, "previous": image, "cameras": [Vector2i.ZERO],
 		"notes": "Synthetic contact plate: deep Water with Lava entering, Acid/Sludge on Stone and Metal, Fire on Oak Timber/Wood with burn progress, neon/LED on brick, Molten Glass on Stone, free Smoke/Steam/Foam columns.",
+		"synthetic": true}
+
+
+func _shapes() -> Dictionary:
+	# Shape-aware fills: the same material in different run widths/orientations.
+	var image: Image = _blank(VIEW)
+	# Pipes: horizontal runs of bore 3, 5 and 7, a vertical riser and an L joint.
+	_fill(image, 4, 6, 120, 3, 68)
+	_fill(image, 4, 14, 120, 5, 68)
+	_fill(image, 4, 24, 120, 7, 69)
+	_fill(image, 130, 6, 5, 60, 68)
+	_fill(image, 130, 61, 50, 5, 68)
+	_fill(image, 142, 6, 3, 50, 69)
+	# Hazard: a large panel, a thin horizontal strip and a thin vertical post.
+	_fill(image, 190, 6, 60, 30, 76)
+	_fill(image, 190, 42, 120, 4, 76)
+	_fill(image, 300, 6, 4, 34, 76)
+	# Insulation wall exposed on its left face, cable bundles both ways.
+	_fill(image, 4, 40, 50, 40, 75)
+	_fill(image, 60, 40, 60, 7, 74)
+	_fill(image, 60, 50, 6, 40, 74)
+	# Planks both ways and corrugated cladding both ways.
+	_fill(image, 72, 52, 50, 15, 46)
+	_fill(image, 72, 70, 12, 40, 46)
+	_fill(image, 90, 72, 40, 18, 64)
+	_fill(image, 90, 94, 14, 36, 64)
+	# Stained-glass window set in brick with quoins; tiles; broken concrete.
+	_fill(image, 190, 52, 70, 60, 43)
+	_fill(image, 205, 62, 40, 36, 55)
+	_fill(image, 266, 52, 50, 40, 70)
+	_fill(image, 140, 96, 44, 34, 58)
+	_fill(image, 162, 118, 22, 12, 0)
+	# Neon bars horizontal and vertical.
+	_fill(image, 4, 90, 50, 4, 77)
+	_fill(image, 4, 100, 50, 3, 78)
+	_fill(image, 60, 96, 4, 40, 79)
+	_fill(image, 266, 100, 4, 40, 77)
+	_fill(image, 276, 104, 40, 5, 79)
+	_fill(image, 0, 170, 320, 10, 1)
+	_fill(image, 190, 120, 70, 50, 58)
+	return {"current": image, "previous": image, "cameras": [Vector2i.ZERO],
+		"notes": "Synthetic shape plate: pipes of bore 3/5/7 horizontal, vertical and L-joined; hazard panel, strip and post; insulation, cables, planks and corrugation in both orientations; stained glass in brick; tiles; broken reinforced concrete; neon bars both ways.",
 		"synthetic": true}
 
 

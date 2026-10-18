@@ -230,6 +230,43 @@ is about 4.4× (0.133 → 0.593 ms). It stays under 1 ms on the TITAN RTX at
 1080p, but weaker GPUs and browser/WebAssembly are unmeasured; a quality tier is
 the obvious mitigation if they fall short.
 
+### Shape-aware construction fills (third owner iteration)
+
+The owner asked for generative, space-filling fills on static materials. For
+Steel/Copper Pipe, Hazard Stripe, Insulation, Cable Bundle, Oak Timber,
+Corrugated Steel, Stained Glass, the three neon colours, Red/Industrial Brick,
+Ceramic Tile and Reinforced Concrete, `region_extent` measures how far the
+pixel's own material continues in each direction. It uses reads at 2, 3, 5 and
+8 cells after the shared neighbour, at most 16 extra reads, and only for these
+materials. `apply_structured_fill` then derives orientation, cross-section and
+edges:
+
+- pipes: cylinder shading, flanges with bolts, junction couplings, copper patina
+- hazard: diagonal stripes with a dark trim; strips of five cells or fewer become chevrons
+- insulation: quilted batts with stitched seams and foil on exposed faces
+- cables: individual round cables with ties and travelling fibre-optic pulses
+- timber: planks along the run with staggered joints and nails; burn still applies
+- corrugation: ridges follow the sheet's run
+- stained glass: jittered-Voronoi leaded panes with a lead border
+- neon: a white core centred in the tube in either orientation
+- brick: a soldier course and quoins at edges
+- tile: bullnose edge trim
+- reinforced concrete: tie holes and exposed rebar at broken edges
+
+A run that reaches the 8-cell probe counts as long, so large panels keep one
+orientation (per-material default). Steam puffs leak from some pipe runs into
+the Empty cells above. Everything except cable pulses, neon plasma and the leaks
+is time-independent; the presentation test asserts stillness and cross-section
+shading for horizontal and vertical pipes. A synthetic `shapes` plate shows
+the result ([before](material-readability-2026-10-18/detail/shapes_before_structured_pass_t1.37_glow.png),
+[after](material-readability-2026-10-18/detail/shapes_structured_pass_t1.37_glow.png)).
+
+Matched GPU cost versus the volume pass
+([`cost-structure-pass.json`](material-readability-2026-10-18/cost-structure-pass.json)):
+world pass median 0.195 → 0.276 ms (mixed scene, which is dense in these
+materials, glow off) and 0.242 → 0.323 ms (glow on); the effect scene was
+unchanged within noise (0.594 → 0.571 ms).
+
 ## Limits and owner decisions
 
 - Visual acceptance is the author's; the owner has not reviewed the new
