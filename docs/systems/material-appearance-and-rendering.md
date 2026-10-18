@@ -93,7 +93,17 @@ icy granules in slowly shifting meltwater; Brine uses the Water finish plus fixe
 salt motes; Wet Asphalt/Cobblestone keep their solid substrate under a fixed,
 world-anchored film. These phases are decorative presentation, not measured flow.
 Glass, Chemical Glass, Dark Glass and Ice sheens are time-independent so still
-glazing stays still. The
+glazing stays still.
+
+**Current since the 2026-10-18 detail pass:** shared `value_noise`/`fbm3`,
+`heat_ramp` and `lattice_particle` helpers drive richer animated finishes
+(heat-ramped Fire and Lava, advected Smoke/Steam, Water caustics, Oil
+iridescence, burn-progress embers, striated neon) and presentation-only pixel
+particles. `apply_ambient_particles` draws embers above hot or burning cells and
+fumes above Acid/Toxic Sludge in Empty cells; a candidate particle reads at most
+three cells below it. Particles are lattice-anchored in world space and never
+become per-cell objects, lights or simulation state. They raise the measured
+world-pass GPU cost (see the review record). The
 [2026-10-18 review](../audits/2026-10-18-material-readability-pass.md) records the
 paired captures and limits. The
 [construction catalogue](themed-construction-materials.md) owns exact themed

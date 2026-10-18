@@ -71,6 +71,49 @@ float manufactured_glint(vec2 pixel, float speed) {
 	return step(0.982, seed) * smoothstep(0.86, 1.0, sweep);
 }
 
+// Smooth hashed value noise and a three-octave sum. Arithmetic only; every
+// lattice is world-anchored, so texture never swims with the camera.
+float value_noise(vec2 p) {
+	vec2 i = floor(p);
+	vec2 f = fract(p);
+	f = f * f * (3.0 - 2.0 * f);
+	float a = cheap_hash(i);
+	float b = cheap_hash(i + vec2(1.0, 0.0));
+	float c = cheap_hash(i + vec2(0.0, 1.0));
+	float d = cheap_hash(i + vec2(1.0, 1.0));
+	return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+}
+
+float fbm3(vec2 p) {
+	return value_noise(p) * 0.55
+		+ value_noise(p * 2.03 + vec2(17.1, 3.7)) * 0.30
+		+ value_noise(p * 4.11 + vec2(5.3, 29.9)) * 0.15;
+}
+
+// Black-body style ramp for presentation heat 0..1 (ember red to white).
+// Values stay at or below 1 so hot cores keep structure instead of clipping.
+vec3 heat_ramp(float heat) {
+	vec3 colour = mix(vec3(0.30, 0.025, 0.01), vec3(0.95, 0.26, 0.03), smoothstep(0.0, 0.40, heat));
+	colour = mix(colour, vec3(1.0, 0.70, 0.12), smoothstep(0.35, 0.75, heat));
+	return mix(colour, vec3(1.0, 0.97, 0.82), smoothstep(0.82, 1.0, heat));
+}
+
+// Sparse pixel particles. One candidate per world-lattice cell of size
+// `cell` in the moving coordinate p; x = hit (0/1), y = that particle's hash.
+// Motion comes from the caller offsetting p by velocity * time.
+vec2 lattice_particle(vec2 p, float cell, float density, float salt) {
+	vec2 id = floor(p / cell);
+	float h = cheap_hash(id + vec2(salt, salt * 1.7));
+	vec2 position = floor(vec2(
+		cheap_hash(id + vec2(salt + 3.1, 1.3)),
+		cheap_hash(id + vec2(5.9, salt + 7.7))
+	) * cell);
+	vec2 local = floor(p - id * cell);
+	float hit = step(1.0 - density, h)
+		* step(abs(local.x - position.x) + abs(local.y - position.y), 0.5);
+	return vec2(hit, h);
+}
+
 int sampled_material_id(vec2 pixel, bool previous_snapshot) {
 	vec2 clamped_pixel = clamp(floor(pixel), vec2(0.0), world_size_px - vec2(1.0));
 	vec2 world_uv = (clamped_pixel + vec2(0.5)) / world_size_px;
@@ -177,6 +220,9 @@ vec4 apply_material_flair(
 		float seam = max(1.0 - step(0.66, local_x), 1.0 - step(0.72, local_y));
 		float face = 0.94 + cheap_hash(floor(vec2((pixel.x + mod(row, 2.0) * 4.0) / 8.0, row))) * 0.15;
 		colour.rgb *= mix(face, 0.47, seam);
+		float chip = step(0.975, cheap_hash(pixel + vec2(71.0, 13.0))) * (1.0 - seam);
+		float grime = value_noise(pixel / 11.0);
+		colour.rgb *= mix(1.0, 0.62, chip) * (0.92 + grime * 0.12);
 		return colour;
 	}
 
@@ -207,6 +253,14 @@ vec4 apply_material_flair(
 		float knot = step(0.978, cheap_hash(floor(pixel / vec2(9.0, 4.0))));
 		colour.rgb *= 0.76 + grain * 0.34;
 		colour.rgb *= mix(1.0, 0.54 + triangle_wave(pixel.x / 3.0) * 0.18, knot);
+		if (condition > 0.02) { // burn progress: ember cracks and char
+			float t = presentation_time();
+			float cracks = 1.0 - smoothstep(0.0, 0.08, abs(fbm3(pixel / 3.0) - 0.5));
+			float pulse = 0.65 + 0.35 * value_noise(pixel / 2.0 + vec2(t * 1.5, t * 0.7));
+			float burn = smoothstep(0.02, 0.6, condition);
+			colour.rgb *= 1.0 - burn * 0.55;
+			colour.rgb = mix(colour.rgb, heat_ramp(0.35 + pulse * 0.45), cracks * burn * pulse);
+		}
 		return colour;
 	}
 
@@ -214,6 +268,14 @@ vec4 apply_material_flair(
 		float fibre = triangle_wave((pixel.x + pixel.y * 1.65) / 3.0);
 		float course = cheap_hash(floor(pixel / vec2(5.0, 3.0)));
 		colour.rgb *= 0.72 + fibre * 0.28 + course * 0.15;
+		if (condition > 0.02) { // burn progress: ember cracks and char
+			float t = presentation_time();
+			float cracks = 1.0 - smoothstep(0.0, 0.08, abs(fbm3(pixel / 3.0) - 0.5));
+			float pulse = 0.65 + 0.35 * value_noise(pixel / 2.0 + vec2(t * 1.5, t * 0.7));
+			float burn = smoothstep(0.02, 0.6, condition);
+			colour.rgb *= 1.0 - burn * 0.55;
+			colour.rgb = mix(colour.rgb, heat_ramp(0.35 + pulse * 0.45), cracks * burn * pulse);
+		}
 		return colour;
 	}
 
@@ -268,6 +330,8 @@ vec4 apply_material_flair(
 		float aggregate = cheap_hash(pixel);
 		colour.rgb *= 0.86 + cloud * 0.22;
 		colour.rgb += vec3((step(0.94, aggregate) - step(aggregate, 0.035)) * 0.12);
+		float crack = 1.0 - smoothstep(0.0, 0.035, abs(value_noise(pixel / 9.0) - 0.5));
+		colour.rgb *= 1.0 - crack * 0.30;
 		return colour;
 	}
 
@@ -293,10 +357,19 @@ vec4 apply_material_flair(
 		));
 		colour.rgb *= 0.75 + streak * 0.17 + cross_flow * 0.10;
 		colour.rgb += vec3(0.58, 0.72, 0.82) * sparkle;
+		// Thin-film iridescence riding the approved wave crests.
+		float film = value_noise(pixel / 9.0 + vec2(presentation_time() * 0.05, 0.0));
+		vec3 rainbow = 0.5 + 0.5 * cos(6.2832 * (film * 1.6 + vec3(0.0, 0.33, 0.67)));
+		colour.rgb += rainbow * (0.045 + streak * 0.22 + cross_flow * 0.12);
+		if (condition > 0.02) { // burning Oil: licking surface flames
+			float lick = fbm3(vec2(pixel.x / 3.0, pixel.y / 2.0 + presentation_time() * 2.6));
+			float burn = smoothstep(0.45, 0.85, lick) * smoothstep(0.02, 0.5, condition);
+			colour.rgb = mix(colour.rgb, heat_ramp(0.45 + lick * 0.5), burn);
+		}
 		return colour;
 	}
 
-	if (flair == 14 || flair == 15) { // plate seams, rivets, optional paint chips
+	if (flair == 14 || flair == 15) { // plate seams, rivets, scratches, optional paint chips
 		vec2 local = mod(pixel, 12.0);
 		float seam = max(1.0 - step(0.55, local.x), 1.0 - step(0.55, local.y));
 		float rivet = 1.0 - step(0.92, length(local - vec2(1.15)));
@@ -305,6 +378,9 @@ vec4 apply_material_flair(
 		colour.rgb *= mix(0.88 + brushed * 0.18, 0.46, seam);
 		colour.rgb += vec3(rivet * 0.26);
 		colour.rgb += vec3(glint * (1.0 - seam) * (flair == 15 ? 0.24 : 0.46));
+		float scratch = step(0.97, triangle_wave((pixel.x * 0.31 - pixel.y) / 7.0 + cheap_hash(floor(pixel / 12.0)) * 5.0))
+			* step(0.6, cheap_hash(floor(pixel / vec2(5.0, 3.0)) + vec2(3.0)));
+		colour.rgb += vec3(0.07) * scratch * (1.0 - seam);
 		if (flair == 15) {
 			float chip = step(0.965, cheap_hash(pixel + vec2(19.0, 4.0)));
 			colour.rgb = mix(colour.rgb, vec3(0.31, 0.34, 0.35), chip);
@@ -411,6 +487,12 @@ vec4 apply_material_flair(
 		));
 		colour.rgb *= pulse * mix(1.0, 0.64, fault);
 		colour.rgb += colour.rgb * travelling * 0.12;
+		// Rebuild from hue so HDR-bright tubes keep striations instead of clipping.
+		float tube = 1.0 - triangle_wave(pixel.y / 3.0);
+		float plasma = value_noise(vec2(pixel.x / 3.0 - presentation_time() * 5.0, pixel.y * 0.7));
+		vec3 hue = colour.rgb / max(max(colour.r, max(colour.g, colour.b)), 0.001);
+		colour.rgb = hue * (0.55 + tube * 0.33 + plasma * 0.14);
+		colour.rgb = mix(colour.rgb, vec3(1.0), smoothstep(0.80, 1.0, tube) * 0.50);
 		return colour;
 	}
 
@@ -422,6 +504,8 @@ vec4 apply_material_flair(
 			presentation_time() * 0.22 + (pixel.x + pixel.y) / 41.0
 		));
 		colour.rgb *= mix(0.28, scan + refresh * 0.12, diode);
+		colour.rgb = min(colour.rgb, vec3(1.0)) * mix(0.82, 1.0, diode);
+		colour.rgb += vec3(0.10) * diode * value_noise(pixel / 2.0 + vec2(presentation_time() * 0.8));
 		return colour;
 	}
 
@@ -438,27 +522,48 @@ vec4 apply_material_flair(
 			float salt = step(0.972, cheap_hash(pixel + vec2(53.0, 11.0)));
 			colour.rgb = mix(colour.rgb, vec3(0.84, 0.90, 0.88), salt * 0.40);
 		}
+		float caustic_a = value_noise(pixel / 6.0 + vec2(presentation_time() * 0.21, presentation_time() * 0.13));
+		float caustic_b = value_noise(pixel / 7.5 - vec2(presentation_time() * 0.17, -presentation_time() * 0.09) + vec2(9.1));
+		float caustic = 1.0 - smoothstep(0.0, 0.11, abs(caustic_a - caustic_b));
+		colour.rgb += vec3(0.16, 0.30, 0.38) * caustic;
+		vec2 bubble = lattice_particle(pixel + vec2(sin(presentation_time() * 1.3 + pixel.y * 0.4) * 0.6,
+			presentation_time() * 7.0), 8.0, 0.32, 41.0);
+		colour.rgb = mix(colour.rgb, vec3(0.70, 0.88, 1.0), bubble.x * 0.55);
 		return colour;
 	}
 
-	if (flair == 30) { // layered flame shimmer
-		float lick_a = triangle_wave((pixel.x * 0.7 - pixel.y) / 6.0 + presentation_time() * 0.9);
-		float lick_b = triangle_wave((pixel.x * -0.35 - pixel.y) / 11.0 + presentation_time() * 0.53);
-		float hot_core = smoothstep(0.62, 0.98, 1.0 - abs(lick_a - lick_b));
-		colour.rgb *= 0.78 + lick_a * 0.19 + lick_b * 0.14;
-		colour.rgb += vec3(0.72, 0.24, 0.025) * hot_core * 0.24;
-		colour.a *= 0.82 + hot_core * 0.18;
+	if (flair == 30) { // Fire: rising flame tongues, structured hot core, flicking sparks
+		float t = presentation_time();
+		float tongue = fbm3(vec2(pixel.x / 4.0, pixel.y / 2.6 + t * 3.4));
+		float shear = value_noise(vec2(pixel.x / 2.0 + t * 0.7, pixel.y / 5.0 + t * 2.1));
+		float heat = clamp(condition * 0.78 + (tongue - 0.5) * 0.95 + (shear - 0.5) * 0.25, 0.0, 1.0);
+		colour.rgb = heat_ramp(heat);
+		colour.a = smoothstep(0.04, 0.32, heat) * 0.95 + 0.05;
+		vec2 spark = lattice_particle(pixel + vec2(sin(t * 3.0 + pixel.y) * 0.7, t * 22.0), 5.0, 0.22, 13.0);
+		float flick = 0.5 + 0.5 * sin(t * 17.0 + spark.y * 50.0);
+		colour.rgb = mix(colour.rgb, vec3(1.0, 0.95, 0.70), spark.x * flick);
+		colour.a = max(colour.a, spark.x * flick);
 		return colour;
 	}
 
-	if (flair == 31) { // lava/molten-glass convection bands and cooling crust
-		float flow = triangle_wave((pixel.x + pixel.y * 0.35) / 9.0 + presentation_time() * 0.16);
-		float counter_flow = triangle_wave((pixel.y - pixel.x * 0.21) / 15.0 - presentation_time() * 0.09);
-		float crust = step(0.88, cheap_hash(floor(pixel / 3.0)));
-		float fissure = smoothstep(0.86, 0.98, 1.0 - abs(flow - counter_flow));
-		colour.rgb *= 0.78 + (1.0 - flow) * 0.21 + (1.0 - counter_flow) * 0.14;
-		colour.rgb *= mix(1.0, 0.48, crust);
-		colour.rgb += vec3(0.72, 0.16, 0.015) * fissure * (1.0 - crust) * 0.28;
+	if (flair == 31) { // Lava/molten glass: drifting crust plates, glowing seams, bubbling pops
+		float t = presentation_time();
+		bool glass = material_id == 36;
+		vec2 drift = vec2(t * 0.35, t * 0.12);
+		float plates = fbm3(pixel / 6.5 + drift * 0.15);
+		float seams = 1.0 - smoothstep(0.0, 0.06, abs(plates - 0.5));
+		float churn = fbm3(pixel / 3.5 - drift * 0.4 + vec2(11.0));
+		float heat = clamp(0.48 + (churn - 0.5) * 0.7 + seams * 0.45, 0.0, 1.0);
+		if (glass) heat = clamp(heat * (0.38 + condition * 0.52) + 0.05, 0.0, 1.0);
+		vec3 molten = heat_ramp(heat);
+		if (glass) molten = mix(molten, vec3(1.0, 0.86, 0.52), 0.35);
+		float crust = smoothstep(0.56, 0.68, plates) * (1.0 - seams);
+		if (glass) crust *= 1.0 - condition;
+		vec3 crust_colour = vec3(0.16, 0.05, 0.035) * (0.75 + value_noise(pixel / 2.0) * 0.5);
+		colour.rgb = mix(molten, crust_colour, crust * 0.88);
+		vec2 pop = lattice_particle(pixel, 7.0, 0.30, 23.0);
+		float pop_phase = fract(t * 0.6 + pop.y * 7.0);
+		colour.rgb = mix(colour.rgb, vec3(1.0, 0.92, 0.60), pop.x * smoothstep(0.85, 1.0, pop_phase));
 		return colour;
 	}
 
@@ -470,6 +575,11 @@ vec4 apply_material_flair(
 		));
 		colour.rgb *= twinkle;
 		colour.rgb += vec3(0.45, 0.38, 0.12) * streak;
+		float star = step(0.93, cheap_hash(pixel + vec2(floor(presentation_time() * 12.0))));
+		colour.rgb = mix(colour.rgb, vec3(1.0, 1.0, 0.88), star);
+		float crackle = value_noise(pixel / 1.5 + vec2(presentation_time() * 9.0, -presentation_time() * 7.0));
+		colour.rgb = mix(colour.rgb, vec3(1.0, 0.98, 0.85), smoothstep(0.55, 0.9, crackle) * 0.8);
+		colour.rgb *= 0.75 + crackle * 0.35;
 		return colour;
 	}
 
@@ -485,30 +595,41 @@ vec4 apply_material_flair(
 			colour.rgb += vec3(0.13, 0.12, 0.09) * speck;
 			colour.rgb *= mix(1.0, 0.68, pit);
 		}
+		if (material_id == 27 && condition > 0.02) { // burning Coal: glowing grains
+			float pulse = value_noise(pixel / 2.0 + vec2(presentation_time() * 1.2, 0.0));
+			colour.rgb = mix(colour.rgb, heat_ramp(0.3 + pulse * 0.5), coarse * smoothstep(0.02, 0.5, condition));
+		}
+		float glint_grain = step(0.994, cheap_hash(pixel + vec2(floor(presentation_time() * 0.7) * 3.0, 9.0)));
+		colour.rgb += vec3(0.30, 0.28, 0.22) * glint_grain * (material_id == 26 || material_id == 27 ? 0.0 : 1.0);
 		return colour;
 	}
 
-	if (flair == 34) { // Smoke: slow layered turbulent wisps
-		float drift_a = triangle_wave(
-			(pixel.x + pixel.y * 0.37) / 17.0 + presentation_time() * 0.052
-		);
-		float drift_b = triangle_wave(
-			(pixel.y - pixel.x * 0.23) / 23.0 - presentation_time() * 0.031
-		);
-		float wisp = smoothstep(0.18, 0.88, drift_a * 0.58 + drift_b * 0.42);
-		float billow = 0.82 + cheap_hash(floor(pixel / 5.0) + vec2(floor(presentation_time() * 0.08))) * 0.18;
-		colour.rgb *= 0.70 + wisp * 0.35;
-		colour.a *= (0.48 + wisp * 0.52) * billow;
+	if (flair == 34) { // Smoke: advected billows, dark cores, lit rims, drifting soot
+		float t = presentation_time();
+		float billow = fbm3(pixel / 9.0 + vec2(t * 0.05, t * 0.17));
+		float curl = fbm3(pixel / 4.0 + vec2(sin(t * 0.3 + pixel.y * 0.05) * 0.8, t * 0.32));
+		float wisp = smoothstep(0.28, 0.82, billow * 0.65 + curl * 0.35);
+		float rim = smoothstep(0.55, 0.72, curl) * (1.0 - smoothstep(0.72, 0.9, curl));
+		colour.rgb *= 0.55 + wisp * 0.50;
+		colour.rgb += vec3(0.07, 0.075, 0.08) * rim;
+		colour.a *= (0.40 + wisp * 0.60);
+		vec2 soot = lattice_particle(pixel + vec2(sin(t * 0.8 + pixel.y * 0.2) * 1.2, t * 4.0), 6.0, 0.28, 31.0);
+		colour.rgb = mix(colour.rgb, vec3(0.06, 0.06, 0.07), soot.x * 0.7);
+		colour.a = max(colour.a, soot.x * 0.8 * condition);
 		return colour;
 	}
 
-	if (flair == 35) { // Steam: fine rising translucent curls
-		float rise = presentation_time() * 0.11;
-		float curl_a = triangle_wave((pixel.x + pixel.y * 0.41) / 13.0 + rise);
-		float curl_b = triangle_wave((pixel.x * -0.28 + pixel.y) / 19.0 - rise * 0.73);
-		float vapour = smoothstep(0.20, 0.92, curl_a * curl_b + curl_b * 0.25);
-		colour.rgb *= 0.88 + vapour * 0.18;
-		colour.a *= 0.36 + vapour * 0.64;
+	if (flair == 35) { // Steam: rising curls, bright plumes, condensation glints
+		float t = presentation_time();
+		float plume = fbm3(vec2(pixel.x / 6.0 + sin(t * 0.4 + pixel.y * 0.08), pixel.y / 5.0 + t * 0.9));
+		float curl = value_noise(pixel / 2.5 + vec2(t * 0.6, t * 1.4));
+		float vapour = smoothstep(0.30, 0.85, plume * 0.75 + curl * 0.25);
+		colour.rgb *= 0.86 + vapour * 0.22;
+		colour.a *= 0.25 + vapour * 0.75;
+		vec2 drop = lattice_particle(pixel + vec2(0.0, t * 10.0), 7.0, 0.20, 37.0);
+		float shine = 0.5 + 0.5 * sin(t * 8.0 + drop.y * 30.0);
+		colour.rgb = mix(colour.rgb, vec3(0.95, 1.0, 1.0), drop.x * shine * 0.8);
+		colour.a = max(colour.a, drop.x * shine * 0.7);
 		return colour;
 	}
 
@@ -523,6 +644,16 @@ vec4 apply_material_flair(
 		colour.rgb *= 0.82 + rim * 0.28;
 		colour.rgb += vec3(0.23, 0.30, 0.25) * rim * collapse;
 		colour.a *= mix(0.42, 1.0, collapse) * (1.0 - core * 0.18);
+		vec2 small_cell = floor(pixel / 3.0);
+		float small_seed = cheap_hash(small_cell + vec2(7.0));
+		vec2 small_local = mod(pixel, 3.0) - vec2(1.0);
+		float small_rim = (1.0 - smoothstep(0.2, 0.6, abs(length(small_local) - 0.9))) * step(0.45, small_seed);
+		colour.rgb += vec3(0.10, 0.12, 0.11) * small_rim;
+		float specular = step(0.9, 1.0 - length(local - vec2(-0.6, -0.6)) / max(radius, 0.5)) * rim;
+		colour.rgb += vec3(0.25) * specular;
+		float pop = step(0.985, cheap_hash(bubble_cell + vec2(floor(presentation_time() * 3.0))))
+			* (1.0 - collapse);
+		colour.rgb += vec3(0.45, 0.50, 0.48) * pop * rim;
 		return colour;
 	}
 
@@ -535,6 +666,11 @@ vec4 apply_material_flair(
 			: 1.0;
 		colour.rgb *= (0.72 + vein_a * 0.20 + vein_b * 0.14) * pulse;
 		colour.rgb += vec3(0.16, 0.20, 0.08) * node;
+		if (material_id == 18) {
+			vec2 spot = lattice_particle(pixel, 5.0, 0.45, 53.0);
+			float glow = 0.5 + 0.5 * sin(presentation_time() * 1.4 + spot.y * 20.0);
+			colour.rgb = mix(colour.rgb, vec3(0.95, 0.55, 1.0), spot.x * (0.35 + glow * 0.5));
+		}
 		return colour;
 	}
 
@@ -547,6 +683,10 @@ vec4 apply_material_flair(
 		));
 		colour.rgb *= plane;
 		colour.rgb += vec3(0.28, 0.52, 0.66) * sheen;
+		float fracture = 1.0 - smoothstep(0.0, 0.05, abs(value_noise(pixel / 7.0) - 0.5));
+		colour.rgb += vec3(0.18, 0.24, 0.28) * fracture;
+		vec2 frozen = lattice_particle(pixel, 6.0, 0.25, 67.0);
+		colour.rgb = mix(colour.rgb, vec3(0.88, 0.96, 1.0), frozen.x * 0.5);
 		return colour;
 	}
 
@@ -568,6 +708,11 @@ vec4 apply_material_flair(
 			: vec3(0.08, 0.40, 0.10);
 		colour.rgb *= 0.72 + swirl * 0.28;
 		colour.rgb += reactive_tint * bubble * 0.75;
+		vec2 fizz = lattice_particle(pixel + vec2(sin(presentation_time() * 2.0 + pixel.y) * 0.5,
+			presentation_time() * speed * 60.0), 4.0, 0.35, 19.0);
+		colour.rgb = mix(colour.rgb, reactive_tint * 2.4 + vec3(0.15), fizz.x * 0.65);
+		float froth = smoothstep(0.62, 0.80, fbm3(pixel / 3.0 + vec2(presentation_time() * speed * 2.0, 0.0)));
+		colour.rgb += reactive_tint * froth * 0.35;
 		return colour;
 	}
 
@@ -582,6 +727,11 @@ vec4 apply_material_flair(
 		float pin = step(0.986, cheap_hash(pixel)) * mirror;
 		colour.rgb *= 0.52 + mirror * 0.64;
 		colour.rgb += vec3(0.48, 0.58, 0.68) * pin;
+		float warp = value_noise(pixel / 5.0 + vec2(presentation_time() * 0.30, -presentation_time() * 0.12));
+		float reflection = smoothstep(0.35, 0.65, value_noise(vec2(pixel.x / 11.0 + warp * 1.5, pixel.y / 3.0)));
+		colour.rgb = mix(colour.rgb * 0.85, colour.rgb * 1.25 + vec3(0.05), reflection * 0.6);
+		vec2 glint = lattice_particle(pixel + vec2(presentation_time() * 2.0, 0.0), 8.0, 0.30, 43.0);
+		colour.rgb += vec3(0.55, 0.60, 0.65) * glint.x * (0.5 + 0.5 * sin(presentation_time() * 6.0 + glint.y * 20.0));
 		return colour;
 	}
 
@@ -599,6 +749,9 @@ vec4 apply_material_flair(
 		colour.rgb *= mix(0.86 + brushed * 0.20, 0.46, seam);
 		colour.rgb += vec3(glint * (1.0 - seam) * 0.48);
 		colour.rgb += vec3(0.10, 0.62, 1.18) * arc * (1.0 - seam);
+		vec2 arc_spark = lattice_particle(pixel + vec2(presentation_time() * 9.0, 0.0), 6.0, 0.4, 61.0);
+		colour.rgb += vec3(0.55, 0.85, 1.25) * arc_spark.x * condition
+			* step(0.5, sin(presentation_time() * 23.0 + arc_spark.y * 40.0));
 		return colour;
 	}
 
@@ -643,6 +796,8 @@ vec4 apply_material_flair(
 		colour.rgb *= 0.80 + grain * 0.18 + facet * 0.06;
 		colour.rgb *= 1.0 + (melt - 0.5) * 0.06 * (1.0 - crystal);
 		colour.rgb = mix(colour.rgb, vec3(0.80, 0.93, 0.98), crystal * 0.42);
+		float twinkle = crystal * step(0.92, cheap_hash(pixel + vec2(floor(presentation_time() * 1.5))));
+		colour.rgb += vec3(0.30, 0.38, 0.42) * twinkle;
 		return colour;
 	}
 
@@ -665,6 +820,56 @@ vec4 apply_material_flair(
 		return colour;
 	}
 
+	return colour;
+}
+
+vec2 sampled_cell(vec2 pixel) {
+	vec2 clamped_pixel = clamp(floor(pixel), vec2(0.0), world_size_px - vec2(1.0));
+	return texture(current_world_texture, (clamped_pixel + vec2(0.5)) / world_size_px).rg;
+}
+
+int cell_material(vec2 cell) {
+	return int(floor(cell.r * 255.0 + 0.5));
+}
+
+bool is_hot_source(vec2 cell) {
+	int id = cell_material(cell);
+	if (id == 6 || id == 8 || id == 34 || id == 36) return true;
+	// Burning fuels project burn progress (Wood, Oil, Coal, Oak, Thatch).
+	return (id == 7 || id == 16 || id == 27 || id == 46 || id == 47) && cell.g > 0.02;
+}
+
+// Presentation-only particles drawn in Empty cells: embers rising above hot
+// sources and fumes above reactive liquids. The arithmetic particle test runs
+// first; only a candidate particle pixel reads up to three cells below it.
+vec4 apply_ambient_particles(vec4 colour, vec2 pixel) {
+	float t = presentation_time();
+	vec2 ember_p = pixel + vec2(sin(t * 1.7 + pixel.y * 0.35) * 1.2, t * 14.0);
+	vec2 ember = lattice_particle(ember_p, 5.0, 0.45, 11.0);
+	float tail = 1.0;
+	if (ember.x < 0.5) {
+		ember = lattice_particle(ember_p - vec2(0.0, 1.0), 5.0, 0.45, 11.0);
+		tail = 0.45;
+	}
+	if (ember.x > 0.5) {
+		float strength = 0.0;
+		if (is_hot_source(sampled_cell(pixel + vec2(0.0, 2.0)))) strength = 1.0;
+		else if (is_hot_source(sampled_cell(pixel + vec2(0.0, 5.0)))) strength = 0.75;
+		else if (is_hot_source(sampled_cell(pixel + vec2(0.0, 9.0)))) strength = 0.45;
+		float flicker = 0.55 + 0.45 * sin(t * 11.0 + ember.y * 60.0);
+		colour.rgb = mix(colour.rgb, heat_ramp(0.45 + flicker * 0.5 * tail), strength * flicker * tail);
+		return colour;
+	}
+	vec2 fume = lattice_particle(
+		pixel + vec2(sin(t * 0.9 + pixel.y * 0.25) * 1.6, t * 5.0), 5.0, 0.30, 17.0);
+	if (fume.x > 0.5) {
+		float strength = 0.0;
+		int below = cell_material(sampled_cell(pixel + vec2(0.0, 2.0)));
+		if (below != 12 && below != 32) below = cell_material(sampled_cell(pixel + vec2(0.0, 4.0)));
+		if (below == 12 || below == 32) strength = 0.55;
+		vec3 tint = below == 12 ? vec3(0.78, 0.92, 0.25) : vec3(0.35, 0.85, 0.30);
+		colour.rgb = mix(colour.rgb, tint, strength * (0.6 + 0.4 * sin(t * 3.0 + fume.y * 30.0)));
+	}
 	return colour;
 }
 
@@ -936,6 +1141,9 @@ void fragment() {
 			colour,
 			snapshot_blend
 		);
+	}
+	if (material_id == 0 && inside_view) {
+		colour = apply_ambient_particles(colour, world_pixel);
 	}
 
 	vec2 player_max = player_origin_px + player_size_px;

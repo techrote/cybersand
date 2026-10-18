@@ -158,6 +158,46 @@ and about 1% in the effect scene on this GPU; application frame time
 (wall time between `frame_post_draw`, not GPU time) was unchanged within noise.
 Texture reads per fragment are unchanged. Other GPUs were not measured.
 
+## Owner-requested detail pass (same day)
+
+After reviewing the build, the owner asked for much more detailed material
+effects "with lots of flare", taking Acid and Smoke as the minimum level. The
+palette gained arithmetic value noise, a three-octave sum, a heat ramp and
+world-lattice pixel particles, and these finishes:
+
+- Fire: rising flame tongues on a heat ramp driven by remaining lifetime (hot
+  cores keep structure instead of clipping), flicking sparks.
+- Lava / molten glass: drifting crust plates, glowing seams, bubbling pops;
+  molten glass heat follows its condition byte.
+- Smoke (billows, lit rims, soot), Steam (rising plumes, condensation glints),
+  Foam (small bubbles, speculars, popping), Acid/Sludge (fizz layer, froth),
+  Mercury (warped reflection, moving speculars), Water (caustic net, rising
+  micro-bubbles), Oil (thin-film iridescence on the retained wave), Slush
+  (twinkling crystals), Spark (crackling core), neon (striated tubes with flowing
+  plasma, rebuilt from hue so they no longer clip), LED shimmer, charged-metal
+  arc sparks, bioluminescent Fungus, rare powder glints.
+- Burn progress now shows ember cracks on Wood/Oak/Thatch, glowing Coal grains and
+  surface flames on burning Oil.
+- Empty cells show embers rising above hot/burning sources and fumes above Acid
+  and Toxic Sludge. A particle candidate reads at most three cells below it;
+  other Empty pixels add arithmetic only.
+- Still scenery stays time-independent but gained static detail: brick chips and
+  grime, concrete hairline cracks, plate scratches, ice fractures and frozen
+  bubbles.
+
+Oil therefore no longer matches the baseline pixels; its wave geometry and rate
+are unchanged and an iridescent film rides on it. Representative 1080p readbacks
+are in [`detail/`](material-readability-2026-10-18/detail). All focused and
+graphical tests above were re-run and pass.
+
+Matched GPU cost versus the pre-detail candidate
+([`cost-detail-pass.json`](material-readability-2026-10-18/cost-detail-pass.json),
+same method): world pass median 0.101 → 0.144 ms (mixed, glow off),
+0.147 → 0.192 ms (mixed, glow on), 0.135 → 0.420 ms (all-emitter effect scene,
+glow off; p95 0.676 ms), 0.182 → 0.468 ms (effects, glow on). This is within
+budget on the TITAN RTX but roughly triples the worst case. Weaker GPUs and
+browser/WebAssembly are unmeasured and may need a quality tier.
+
 ## Limits and owner decisions
 
 - Visual acceptance is the author's; the owner has not reviewed the new
