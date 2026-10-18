@@ -1131,15 +1131,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		KEY_O:
 			set_brush_rectangle_vertical(not brush_rectangle_vertical)
 		KEY_G:
-			glow_enabled = not glow_enabled
-			if glow_overlay != null:
-				glow_overlay.visible = glow_enabled
-			if glow_viewport != null:
-				glow_viewport.render_target_update_mode = (
-					SubViewport.UPDATE_ALWAYS
-					if glow_enabled
-					else SubViewport.UPDATE_DISABLED
-				)
+			set_glow_enabled(not glow_enabled)
 		KEY_F3:
 			if key_event.shift_pressed:
 				debug_stats_visible = not debug_stats_visible
@@ -2534,13 +2526,25 @@ func setup_glow_pipeline() -> void:
 	glow_overlay.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	glow_overlay.texture = glow_viewport.get_texture()
 	glow_overlay.material = glow_composite_shader
-	glow_overlay.visible = glow_enabled
 	world_view.add_child(glow_overlay)
+	set_glow_enabled(glow_enabled)
 	glow_source_shader.set_shader_parameter("world_texture", texture)
 	glow_source_shader.set_shader_parameter(
 		"material_program_lut",
 		material_appearance_program
 	)
+
+
+# Single owner of glow state. Desktop/Web input, initialization and level
+# restoration all route here so the flag, overlay and source updates agree.
+func set_glow_enabled(enabled: bool) -> void:
+	glow_enabled = enabled
+	if glow_overlay != null:
+		glow_overlay.visible = enabled
+	if glow_viewport != null:
+		glow_viewport.render_target_update_mode = (
+			SubViewport.UPDATE_ALWAYS if enabled else SubViewport.UPDATE_DISABLED
+		)
 
 
 func update_glow_parameters(content_rect: Rect2) -> void:

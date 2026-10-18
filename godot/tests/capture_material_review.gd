@@ -8,13 +8,18 @@ extends SceneTree
 # Graphical only: a headless DisplayServer submits no frames.
 #   <godot> --path godot --script res://tests/capture_material_review.gd -- \
 #     --output=<absolute dir> [--plates=inventory,liquids,...] [--clip-frames=90]
+#     [--shader-root=<dir with the three .gdshader files>] [--lut-script=<path>]
+#
+# --shader-root/--lut-script render another revision's presentation sources
+# (for example extracted with git show) through this same fixture, so a
+# baseline and candidate differ only in those sources.
 #
 # Every image pair holds the RG8 bytes, camera, view/output size, glow, blend
 # and presentation_time_override constant; manifest.json records them.
 
-const PALETTE_SHADER: String = "res://shaders/material_palette.gdshader"
-const EMISSION_SHADER: String = "res://shaders/material_emission.gdshader"
-const COMPOSITE_SHADER: String = "res://shaders/glow_composite.gdshader"
+const PALETTE_FILE: String = "material_palette.gdshader"
+const EMISSION_FILE: String = "material_emission.gdshader"
+const COMPOSITE_FILE: String = "glow_composite.gdshader"
 const Pack = preload("res://scripts/microscenario_reference_pack.gd")
 const Host = preload("res://scripts/microscenario_host.gd")
 const VIEW: Vector2i = Vector2i(320, 180)
@@ -31,6 +36,9 @@ const INITIAL_CONDITION: Dictionary = {
 const SYNTHETIC_MOLTEN_GLASS_HEAT: int = 200
 
 var output_dir: String = ""
+var shader_root: String = "res://shaders"
+var lut_script_path: String = "res://scripts/material_appearance_lut.gd"
+var shaders: Dictionary = {}
 var plate_filter: Array[String] = []
 var clip_frames: int = 90
 var clip_fps: float = 30.0
@@ -52,6 +60,10 @@ func _parse_arguments() -> void:
 		elif argument.begins_with("--plates="):
 			for plate: String in argument.trim_prefix("--plates=").split(",", false):
 				plate_filter.append(plate)
+		elif argument.begins_with("--shader-root="):
+			shader_root = argument.trim_prefix("--shader-root=")
+		elif argument.begins_with("--lut-script="):
+			lut_script_path = argument.trim_prefix("--lut-script=")
 		elif argument.begins_with("--clip-frames="):
 			clip_frames = maxi(0, int(argument.trim_prefix("--clip-frames=")))
 
@@ -72,8 +84,25 @@ func _run() -> void:
 		return
 	DirAccess.make_dir_recursive_absolute(output_dir)
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
-	palette_lut = CyberMaterialAppearanceLut.create_texture()
-	program_lut = CyberMaterialAppearanceLut.create_program_texture()
+	var sources: Dictionary = {}
+	for file_name: String in [PALETTE_FILE, EMISSION_FILE, COMPOSITE_FILE]:
+		var code: String = FileAccess.get_file_as_string(shader_root.path_join(file_name))
+		var shader: Shader = Shader.new()
+		shader.code = code
+		shaders[file_name] = shader
+		sources[file_name] = code.sha256_text()
+	# A detached copy of the LUT compiler; its class_name would shadow the
+	# project's global class, so it is removed before compilation.
+	var lut_code: String = FileAccess.get_file_as_string(lut_script_path)
+	sources["material_appearance_lut.gd"] = lut_code.sha256_text()
+	var lut_script: GDScript = GDScript.new()
+	lut_script.source_code = lut_code.replace("class_name CyberMaterialAppearanceLut", "")
+	if lut_script.reload() != OK:
+		push_error("LUT script failed to compile: " + lut_script_path)
+		quit(3)
+		return
+	palette_lut = lut_script.call("create_texture")
+	program_lut = lut_script.call("create_program_texture")
 	var namer: Object = load("res://scripts/main.gd").new()
 	for material_id: int in range(CyberMaterialAppearanceLut.MATERIAL_COUNT):
 		names.append(str(namer.material_name(material_id)))
@@ -87,6 +116,10 @@ func _run() -> void:
 		"adapter_vendor": RenderingServer.get_video_adapter_vendor(),
 		"api": RenderingServer.get_video_adapter_api_version(),
 		"view_size": [VIEW.x, VIEW.y],
+		"shader_root": shader_root,
+		"lut_script": lut_script_path,
+		"presentation_source_sha256": sources,
+		"hdr_2d": true,
 		"material_names": names,
 		"plates": {},
 	}
@@ -396,6 +429,7 @@ func _make_rig(current: Image, previous: Image, scale: int) -> Dictionary:
 	viewport.size = output_size
 	viewport.disable_3d = true
 	viewport.transparent_bg = false
+	viewport.use_hdr_2d = true # main.gd enables HDR 2D on the root viewport
 	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	root.add_child(viewport)
 	var background: ColorRect = ColorRect.new()
@@ -407,7 +441,7 @@ func _make_rig(current: Image, previous: Image, scale: int) -> Dictionary:
 	var world_size: Vector2 = Vector2(current.get_size())
 
 	var palette: ShaderMaterial = ShaderMaterial.new()
-	palette.shader = load(PALETTE_SHADER)
+	palette.shader = shaders[PALETTE_FILE]
 	palette.set_shader_parameter("world_size_px", world_size)
 	palette.set_shader_parameter("view_size_px", Vector2(VIEW))
 	palette.set_shader_parameter("view_rect_uv", Vector4(0, 0, 1, 1))
@@ -438,7 +472,7 @@ func _make_rig(current: Image, previous: Image, scale: int) -> Dictionary:
 	glow_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	viewport.add_child(glow_viewport)
 	var emission: ShaderMaterial = ShaderMaterial.new()
-	emission.shader = load(EMISSION_SHADER)
+	emission.shader = shaders[EMISSION_FILE]
 	emission.set_shader_parameter("world_texture", current_texture)
 	emission.set_shader_parameter("material_program_lut", program_lut)
 	emission.set_shader_parameter("world_size_px", world_size)
@@ -450,7 +484,7 @@ func _make_rig(current: Image, previous: Image, scale: int) -> Dictionary:
 	source.material = emission
 	glow_viewport.add_child(source)
 	var composite: ShaderMaterial = ShaderMaterial.new()
-	composite.shader = load(COMPOSITE_SHADER)
+	composite.shader = shaders[COMPOSITE_FILE]
 	var overlay: TextureRect = TextureRect.new()
 	overlay.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	overlay.stretch_mode = TextureRect.STRETCH_SCALE
@@ -481,7 +515,10 @@ func _grab(rig: Dictionary) -> Image:
 	# before the outer viewport samples it.
 	await RenderingServer.frame_post_draw
 	await RenderingServer.frame_post_draw
-	return rig.viewport.get_texture().get_image()
+	var image: Image = rig.viewport.get_texture().get_image()
+	# Compatibility HDR 2D keeps sRGB values; conversion clamps like the display.
+	image.convert(Image.FORMAT_RGB8)
+	return image
 
 
 func _free_rig(rig: Dictionary) -> void:

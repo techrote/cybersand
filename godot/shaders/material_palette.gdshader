@@ -42,6 +42,11 @@ float presentation_time() {
 	return presentation_time_override >= 0.0 ? presentation_time_override : TIME;
 }
 
+// Oil's wave phase rate in cycles per second. Decorative presentation phase,
+// not measured flow; it equals the value the shared wet finish previously
+// derived for Oil from its ID so the approved wave look is unchanged.
+const float OIL_WAVE_RATE = 0.057;
+
 float cheap_hash(vec2 value) {
 	// Arithmetic-only render hash: cheaper than the previous transcendental
 	// hash and stable for a fixed world coordinate/material on one GPU.
@@ -66,10 +71,15 @@ float manufactured_glint(vec2 pixel, float speed) {
 	return step(0.982, seed) * smoothstep(0.86, 1.0, sweep);
 }
 
-int sampled_material_id(vec2 pixel) {
+int sampled_material_id(vec2 pixel, bool previous_snapshot) {
 	vec2 clamped_pixel = clamp(floor(pixel), vec2(0.0), world_size_px - vec2(1.0));
 	vec2 world_uv = (clamped_pixel + vec2(0.5)) / world_size_px;
-	return int(floor(texture(current_world_texture, world_uv).r * 255.0 + 0.5));
+	// Relief reads the same snapshot as the material being shaded, so the old
+	// side of a crossfade keeps its own neighbourhood. Same four reads.
+	float stored = previous_snapshot
+		? texture(previous_world_texture, world_uv).r
+		: texture(current_world_texture, world_uv).r;
+	return int(floor(stored * 255.0 + 0.5));
 }
 
 bool is_relief_solid(int material_id) {
@@ -109,11 +119,16 @@ float boundary_strength(int material_id, int neighbour_id) {
 	return 0.34;
 }
 
-vec4 apply_neighbour_relief(vec4 colour, int material_id, vec2 pixel) {
-	int above_id = sampled_material_id(pixel + vec2(0.0, -1.0));
-	int below_id = sampled_material_id(pixel + vec2(0.0, 1.0));
-	int left_id = sampled_material_id(pixel + vec2(-1.0, 0.0));
-	int right_id = sampled_material_id(pixel + vec2(1.0, 0.0));
+vec4 apply_neighbour_relief(
+	vec4 colour,
+	int material_id,
+	vec2 pixel,
+	bool previous_snapshot
+) {
+	int above_id = sampled_material_id(pixel + vec2(0.0, -1.0), previous_snapshot);
+	int below_id = sampled_material_id(pixel + vec2(0.0, 1.0), previous_snapshot);
+	int left_id = sampled_material_id(pixel + vec2(-1.0, 0.0), previous_snapshot);
+	int right_id = sampled_material_id(pixel + vec2(1.0, 0.0), previous_snapshot);
 
 	if (is_relief_solid(material_id)) {
 		float top_edge = boundary_strength(material_id, above_id);
@@ -264,17 +279,9 @@ vec4 apply_material_flair(
 		return colour;
 	}
 
-	if (flair == 13) { // wet media and viscous liquids
-		if (material_id == 61) {
-			float row = floor(pixel.y / 4.0);
-			vec2 local = vec2(mod(pixel.x + mod(row, 2.0) * 2.5, 5.0) / 5.0,
-				mod(pixel.y, 4.0) / 4.0) - vec2(0.5);
-			colour.rgb *= mix(1.02, 0.53, smoothstep(0.36, 0.53, length(local)));
-		}
+	if (flair == 13) { // Oil: viscous wave film and sparse sheen (owner-approved)
 		float seed = cheap_hash(pixel);
-		bool flowing = material_id != 60 && material_id != 61;
-		float flow_speed = 0.045 + mod(float(material_id), 5.0) * 0.012;
-		float flow_phase = flowing ? presentation_time() * flow_speed : 0.0;
+		float flow_phase = presentation_time() * OIL_WAVE_RATE;
 		float sweep = 1.0 - triangle_wave(presentation_time() * 0.22 + seed +
 			(pixel.x + pixel.y * 0.35) / 37.0);
 		float sparkle = step(0.972, seed) * smoothstep(0.82, 1.0, sweep);
@@ -358,7 +365,9 @@ vec4 apply_material_flair(
 	}
 
 	if (flair == 22) { // glass sheen without scene-dependent refraction
-		float band = 1.0 - triangle_wave((pixel.x + pixel.y * 0.72) / 13.0 + presentation_time() * 0.035);
+		// World-anchored and time-independent: installed glazing is still
+		// scenery, and a sub-pixel travelling line steps visibly.
+		float band = 1.0 - triangle_wave((pixel.x + pixel.y * 0.72) / 13.0);
 		float edge = smoothstep(0.90, 1.0, band);
 		colour.rgb += vec3(0.30, 0.48, 0.55) * edge;
 		return colour;
@@ -425,6 +434,10 @@ vec4 apply_material_flair(
 		));
 		colour.rgb *= 0.91 + ripple * 0.13;
 		colour.rgb += vec3(0.32, 0.56, 0.75) * glint;
+		if (material_id == 24) { // Brine: Water family with fixed pale salt motes
+			float salt = step(0.972, cheap_hash(pixel + vec2(53.0, 11.0)));
+			colour.rgb = mix(colour.rgb, vec3(0.84, 0.90, 0.88), salt * 0.40);
+		}
 		return colour;
 	}
 
@@ -525,12 +538,12 @@ vec4 apply_material_flair(
 		return colour;
 	}
 
-	if (flair == 38) { // Ice: faceted crystal planes and travelling cold sheen
+	if (flair == 38) { // Ice: faceted crystal planes and a fixed cold sheen
 		float facet_a = triangle_wave((pixel.x + pixel.y) / 7.0);
 		float facet_b = triangle_wave((pixel.x - pixel.y * 1.4) / 11.0);
 		float plane = 0.70 + facet_a * 0.18 + facet_b * 0.16;
 		float sheen = smoothstep(0.88, 1.0, 1.0 - triangle_wave(
-			(pixel.x + pixel.y * 0.52) / 29.0 + presentation_time() * 0.045
+			(pixel.x + pixel.y * 0.52) / 29.0
 		));
 		colour.rgb *= plane;
 		colour.rgb += vec3(0.28, 0.52, 0.66) * sheen;
@@ -598,6 +611,57 @@ vec4 apply_material_flair(
 		));
 		colour.rgb *= mix(0.62, 1.08 + scan * 0.25, max(trace, node));
 		colour.rgb += vec3(0.20, 0.05, 0.34) * node * scan;
+		return colour;
+	}
+
+	if (flair == 43) { // Paste / wet Cement: heavy, matte, slowly settling clumps
+		float lump = cheap_hash(floor(pixel / vec2(3.0, 2.0)));
+		float fine = cheap_hash(pixel + vec2(7.0, 29.0));
+		// Cement fades its settling with remaining cure; Paste has no
+		// projected condition and keeps a constant, very gentle settle.
+		float wet = material_id == 30 ? condition : 1.0;
+		float settle = triangle_wave(
+			(pixel.x * 0.8 + pixel.y * 0.35) / 31.0 + presentation_time() * 0.018
+		);
+		colour.rgb *= 0.86 + lump * 0.16;
+		colour.rgb *= 1.0 - 0.05 * wet + settle * 0.05 * wet;
+		if (material_id == 30) {
+			colour.rgb += vec3((step(0.95, fine) - step(fine, 0.04)) * 0.07);
+		} else {
+			colour.rgb *= mix(1.0, 0.78, step(0.96, fine));
+		}
+		return colour;
+	}
+
+	if (flair == 44) { // Slush: icy granules in slowly shifting meltwater
+		float grain = cheap_hash(floor(pixel / 2.0));
+		float facet = triangle_wave((pixel.x * 1.3 + pixel.y * 0.7) / 3.0);
+		float crystal = step(0.78, cheap_hash(pixel + vec2(3.0, 17.0)));
+		float melt = triangle_wave(
+			(pixel.x + pixel.y * 0.3) / 17.0 + presentation_time() * 0.035
+		);
+		colour.rgb *= 0.80 + grain * 0.18 + facet * 0.06;
+		colour.rgb *= 1.0 + (melt - 0.5) * 0.06 * (1.0 - crystal);
+		colour.rgb = mix(colour.rgb, vec3(0.80, 0.93, 0.98), crystal * 0.42);
+		return colour;
+	}
+
+	if (flair == 45) { // Wet Asphalt/Cobblestone: solid substrate under a still film
+		if (material_id == 61) {
+			float row = floor(pixel.y / 4.0);
+			vec2 local = vec2(mod(pixel.x + mod(row, 2.0) * 2.5, 5.0) / 5.0,
+				mod(pixel.y, 4.0) / 4.0) - vec2(0.5);
+			float stone = 0.94 + cheap_hash(floor(vec2(pixel.x / 5.0, row))) * 0.16;
+			colour.rgb *= mix(stone, 0.53, smoothstep(0.36, 0.53, length(local)));
+		} else {
+			float grain = cheap_hash(pixel);
+			colour.rgb *= 0.84 + grain * 0.30;
+			colour.rgb += vec3(0.055, 0.062, 0.070) * step(0.94, grain);
+		}
+		// Fixed, world-anchored film reflections pooled in broad patches.
+		float pool = cheap_hash(floor(pixel / vec2(9.0, 5.0)));
+		float sheen = smoothstep(0.62, 1.0, triangle_wave((pixel.x + pixel.y * 0.24) / 19.0));
+		colour.rgb += vec3(0.060, 0.080, 0.100) * sheen * (0.35 + pool * 0.65);
 		return colour;
 	}
 
@@ -792,7 +856,12 @@ int displayed_material_id(
 	return water_mask_contains(mask, subcell) ? material_id : 0;
 }
 
-vec4 material_colour(int material_id, float condition, vec2 world_pixel) {
+vec4 material_colour(
+	int material_id,
+	float condition,
+	vec2 world_pixel,
+	bool previous_snapshot
+) {
 	float variation = stable_pixel_hash(world_pixel, material_id);
 	float variation_index = floor(variation * material_lut_size.x);
 	vec2 lut_uv = vec2(
@@ -816,7 +885,7 @@ vec4 material_colour(int material_id, float condition, vec2 world_pixel) {
 	);
 	int flair = int(floor(emission_colour.a + 0.5));
 	colour = apply_material_flair(colour, material_id, flair, world_pixel, condition);
-	return apply_neighbour_relief(colour, material_id, world_pixel);
+	return apply_neighbour_relief(colour, material_id, world_pixel, previous_snapshot);
 }
 
 void fragment() {
@@ -854,7 +923,7 @@ void fragment() {
 		cell_fraction,
 		true
 	);
-	vec4 colour = material_colour(material_id, condition, world_pixel);
+	vec4 colour = material_colour(material_id, condition, world_pixel, false);
 	if (
 		previous_material_id != material_id
 		&& (
@@ -863,7 +932,7 @@ void fragment() {
 		)
 	) {
 		colour = mix(
-			material_colour(previous_material_id, previous_condition, world_pixel),
+			material_colour(previous_material_id, previous_condition, world_pixel, true),
 			colour,
 			snapshot_blend
 		);
@@ -895,7 +964,7 @@ void fragment() {
 		colour = rigid_body_colour;
 	}
 	if (!inside_view) {
-		colour = material_colour(0, 0.0, world_pixel);
+		colour = material_colour(0, 0.0, world_pixel, false);
 	}
 
 	COLOR = colour;

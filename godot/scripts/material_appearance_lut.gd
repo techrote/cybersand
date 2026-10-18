@@ -28,7 +28,7 @@ const FLAIR_STAINED_GLASS: int = 9
 const FLAIR_EARTH: int = 10
 const FLAIR_CONCRETE: int = 11
 const FLAIR_ASPHALT: int = 12
-const FLAIR_WET: int = 13
+const FLAIR_OIL: int = 13
 const FLAIR_METAL_PLATE: int = 14
 const FLAIR_PAINTED_METAL: int = 15
 const FLAIR_CORRUGATED: int = 16
@@ -58,7 +58,10 @@ const FLAIR_REACTIVE_LIQUID: int = 39
 const FLAIR_MERCURY: int = 40
 const FLAIR_CHARGED_METAL: int = 41
 const FLAIR_CLONER: int = 42
-const FLAIR_CLASS_COUNT: int = 42
+const FLAIR_PASTE: int = 43
+const FLAIR_SLUSH: int = 44
+const FLAIR_WET_SURFACE: int = 45
+const FLAIR_CLASS_COUNT: int = 45
 
 # Canonical RGBA8 colours mirror native/include/cybersand/material.hpp. Keeping
 # every possible byte-sized material row allocated means unknown IDs remain
@@ -324,7 +327,13 @@ static func create_program_texture() -> ImageTexture:
 	_set_flair(program, [56], FLAIR_EARTH)
 	_set_flair(program, [31, 58], FLAIR_CONCRETE)
 	_set_flair(program, [59], FLAIR_ASPHALT)
-	_set_flair(program, [16, 20, 21, 24, 30, 60, 61], FLAIR_WET)
+	# The former shared wet finish is split by material family: Oil keeps its
+	# approved wave, Paste/Cement are heavy, Slush is icy, Brine joins the
+	# Water family and wet construction keeps a still, solid substrate.
+	_set_flair(program, [16], FLAIR_OIL)
+	_set_flair(program, [20, 30], FLAIR_PASTE)
+	_set_flair(program, [21], FLAIR_SLUSH)
+	_set_flair(program, [60, 61], FLAIR_WET_SURFACE)
 	_set_flair(program, [51, 62], FLAIR_METAL_PLATE)
 	_set_flair(program, [63], FLAIR_PAINTED_METAL)
 	_set_flair(program, [64], FLAIR_CORRUGATED)
@@ -340,7 +349,7 @@ static func create_program_texture() -> ImageTexture:
 	_set_flair(program, [76], FLAIR_HAZARD)
 	_set_flair(program, [77, 78, 79], FLAIR_NEON)
 	_set_flair(program, [80], FLAIR_LED)
-	_set_flair(program, [3], FLAIR_WATER)
+	_set_flair(program, [3, 24], FLAIR_WATER)
 	_set_flair(program, [6], FLAIR_FLAME)
 	_set_flair(program, [8, 36], FLAIR_MOLTEN)
 	_set_flair(program, [34], FLAIR_SPARK)
