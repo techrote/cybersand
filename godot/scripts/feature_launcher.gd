@@ -5,6 +5,7 @@ const Trial = preload("res://scripts/physical_actor_trial.gd")
 func _ready() -> void:
 	# Keep existing direct-launch arguments compatible with the desktop wrapper.
 	if "--depth-lab" in OS.get_cmdline_user_args():
+		get_tree().set_meta("cybersand_depth_lab_visited", true)
 		get_tree().change_scene_to_file.call_deferred("res://depth_lab.tscn")
 		return
 	if "--blacksite-nine" in OS.get_cmdline_user_args() or "--showcase" in OS.get_cmdline_user_args():
