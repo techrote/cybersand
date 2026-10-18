@@ -89,10 +89,17 @@ func _worker_integration() -> void:
 	seq = int(equipment.sequences[0]) + 1
 	_expect(worker.submit_actor_usable_action(0,int(actors.epoch),seq,int(actors.tick),
 		airburst,Vector2.RIGHT,1.0,false,false,6,&"human"), "airburst equip was refused")
-	await _wait_for(func() -> bool:
+	_expect(await _wait_for(func() -> bool:
 		var snapshot: CyberSimulationSnapshot = worker.take_latest_snapshot(0)
-		return snapshot != null and int(snapshot.actor_usables.equipped[0]) == airburst
-	)
+		if snapshot == null or snapshot.actor_usables.is_empty():
+			return false
+		var rows: Array = snapshot.actor_usables.get("actors", [])
+		return (
+			not rows.is_empty()
+			and int(snapshot.actor_usables.equipped[0]) == airburst
+			and float(rows[0].get("cooldown", 1.0)) <= 0.0
+		)
+	), "airburst equip/cooldown did not become ready")
 	live = worker.take_latest_snapshot(0)
 	actors = live.actor_prototypes
 	equipment = live.actor_usables
@@ -101,21 +108,32 @@ func _worker_integration() -> void:
 		airburst,Vector2.RIGHT,0.7,true,false,6,&"human"), "airburst press was refused")
 	_expect(worker.submit_actor_usable_action(0,int(actors.epoch),seq+1,int(actors.tick),
 		airburst,Vector2.RIGHT,0.7,false,false,6,&"human"), "airburst release was refused")
-	_expect(await _wait_for(func() -> bool:
+	var committed_visible: bool = await _wait_for(func() -> bool:
 		var snapshot: CyberSimulationSnapshot = worker.take_latest_snapshot(0)
 		return snapshot != null and snapshot.actor_usables.projectiles.size() == 1
-	), "committed airburst did not appear")
+	)
+	_expect(committed_visible, "committed airburst did not appear")
+	if not committed_visible:
+		worker.stop_worker()
+		return
 	_frame(worker,true)
 	_expect(await _wait_for(func() -> bool:
 		var snapshot: CyberSimulationSnapshot = worker.take_latest_snapshot(0)
 		return snapshot != null and snapshot.paused and snapshot.actor_prototypes.suspended
 	), "pause did not publish")
 	var paused: CyberSimulationSnapshot = worker.take_latest_snapshot(0)
-	var age: float = float(paused.actor_usables.projectiles[0].age)
+	var paused_projectiles: Array = paused.actor_usables.get("projectiles", [])
+	_expect(paused_projectiles.size() == 1, "pause did not retain committed projectile")
+	if paused_projectiles.size() != 1:
+		worker.stop_worker()
+		return
+	var age: float = float(paused_projectiles[0].age)
 	await create_timer(0.12).timeout
 	var still_paused: CyberSimulationSnapshot = worker.take_latest_snapshot(0)
-	_expect(still_paused.actor_usables.projectiles.size() == 1, "pause deleted committed projectile")
-	_expect(is_equal_approx(float(still_paused.actor_usables.projectiles[0].age), age), "pause advanced usable simulation time")
+	var still_projectiles: Array = still_paused.actor_usables.get("projectiles", [])
+	_expect(still_projectiles.size() == 1, "pause deleted committed projectile")
+	if still_projectiles.size() == 1:
+		_expect(is_equal_approx(float(still_projectiles[0].age), age), "pause advanced usable simulation time")
 	worker.stop_worker()
 
 func _desktop_surface() -> void:
