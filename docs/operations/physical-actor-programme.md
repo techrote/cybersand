@@ -113,7 +113,7 @@ claims about mechanisms already implemented:
   attachment/release and wall clearance. First compare a mounted tool, a recoiling
   item and an articulated held item; do not require every usable to be a body.
 
-The original local observation text is preserved verbatim in the
+The original local observation text is preserved in the
 [dated owner-notes record](../audits/2026-10-18-owner-actor-observations.md).
 The conversational additions above supplement that file; the attached video
 and image were inspected locally and are not copied into the source repository.

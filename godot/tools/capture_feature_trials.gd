@@ -40,4 +40,3 @@ func run() -> void:
 		await capture("blacksite-" + arm)
 	print("Rendered launcher and physical trial captures: " + output)
 	quit()
-

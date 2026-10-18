@@ -2,7 +2,7 @@
 title: Owner actor observations on the quick-play builds
 status: Current
 document-kind: audit
-scope: Verbatim owner-supplied notes received 2026-10-18; subjective observations and preferences, not runtime validation
+scope: Owner-supplied notes received 2026-10-18; subjective observations and preferences, not runtime validation
 canonical-for: []
 last-reviewed: 2026-10-18
 related-documents: [../operations/physical-actor-programme.md]
@@ -12,11 +12,11 @@ related-documents: [../operations/physical-actor-programme.md]
 
 Original filename: `october 18 cybersand observations.txt`.
 Original byte SHA-256: `84a9667157327a68bb5283769d629487da10eeb7faf2b076189a39d3c5c67d94`.
-The following is the supplied text, with line endings normalized only. Later
+The following is the supplied text, with line endings and trailing whitespace normalized. Later
 conversational additions are preserved in the linked programme.
 
 ```text
-player barrel-rapier horizontal impulse only very interesting and "physical"/kinetic feeling, some "sands" interactions not super realistic (tunnels right through it) but that can be tuned. player/water/barrels interaction VERY convincing. Could be even better with torque control. 
+player barrel-rapier horizontal impulse only very interesting and "physical"/kinetic feeling, some "sands" interactions not super realistic (tunnels right through it) but that can be tuned. player/water/barrels interaction VERY convincing. Could be even better with torque control.
 "burial safe" mode in 03-actor-sandbox pins characters in place if only a single pixel overlaps. So I think we should consider treating most actors as rapier objects and controlling with impulses.
 
 Player sampled baseline mode in 05-material-effects-sandbox fixes the "getting stuck" problem, but that player motion  seems to look more visually jittery, but maybe that's an optical illusion just because it's held perfectly upright.
