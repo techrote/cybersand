@@ -472,6 +472,31 @@ allocations, complete native reaction cost, neural inference latency, target-PC
 frame time or large NPC-population throughput. Source-owned movement details and
 per-rig limitations remain in the [catalog contract](../systems/actor-rigs.md).
 
+## Actor usable values
+
+**Current, experimental USABLE-001:** [actor usables](../systems/actor-usables.md)
+run as a separate equipment session beside sampled actor rigs. Units are gameplay
+cells, seconds and authored charge; recipe accounting is authored cell slots.
+
+| Boundary | Current value and consequence |
+|---|---|
+| Equipment actor slots | 8; follows the actor-session count |
+| Committed projectiles | 64 globally |
+| Fixed processors | 16 globally; at most 4 owned by one actor |
+| Visual effects / hit receipts | 64 / 64 |
+| Material work | At most 2,048 reads and 128 writes per equipment owner step |
+| Swept projectile trace | At most 96 samples per movement segment |
+| Accepted delta | At most 1/15 second |
+| Shared equipment charge | 100 maximum; regenerates 6 per simulation second |
+| Processor lifetime / stock | 45 seconds; normally 16 successful batches; Firewarden 12 pulses |
+| Equipment leases | 12 ticks default, 18 maximum; desktop human input uses six ticks |
+| Publications | Copied equipment selection, charge/cooldown/result, projectiles, devices, effects, hit receipts and work counters |
+
+Capacity exhaustion refuses or defers bounded work. It does not silently replace
+an existing projectile/device or authorize an unbounded catch-up queue. Exact
+per-item speeds, fuses, recipes and controls belong to the
+[usable contract](../systems/actor-usables.md).
+
 ## Thunderbowl values
 
 **Current, experimental ACT-003:** the standalone
