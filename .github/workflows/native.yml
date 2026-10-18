@@ -85,7 +85,7 @@ jobs:
 
           required = any(not ignored(path) for path in files)
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
-              output.write(f"required={'true' if required else 'false'}\\n")
+              output.write(f"required={'true' if required else 'false'}\n")
           print(
               "ready-for-review expensive validation:",
               "required" if required else "not required",
