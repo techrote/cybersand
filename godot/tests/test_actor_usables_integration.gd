@@ -74,7 +74,10 @@ func _worker_integration() -> void:
 		brick,Vector2.RIGHT,1.0,false,false,6,&"human"), "short usable release was refused")
 	_expect(await _wait_for(func() -> bool:
 		var snapshot: CyberSimulationSnapshot = worker.take_latest_snapshot(0)
-		return snapshot != null and int(snapshot.actor_usables.get("write_count_last",0)) > 0
+		if snapshot == null or snapshot.actor_usables.is_empty():
+			return false
+		var actor_rows: Array = snapshot.actor_usables.get("actors", [])
+		return not actor_rows.is_empty() and str(actor_rows[0].get("last_result", "")) == "applied"
 	), "quick click did not produce owner-side material work")
 	_expect(equipment == retained, "later owner tick mutated retained usable snapshot")
 
