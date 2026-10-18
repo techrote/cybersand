@@ -51,15 +51,18 @@ func _run() -> void:
 	_expect(_submit(1,0,slug,false), "equip command refused")
 	session.step(1.0/60.0,world,_context(1))
 	_expect(int(session.snapshot().equipped[0]) == slug, "equipment selection was not applied")
+
 	# Switching equipment while a trigger is already held must not synthesize a shot.
 	var airburst_switch: int = Catalog.index_for(&"timer_airburst")
 	_expect(_submit(2,1,airburst_switch,true), "held equipment switch was refused")
 	session.step(1.0/60.0,world,_context(2))
 	_expect(session.snapshot().projectiles.is_empty(), "held input fired during an equipment switch")
 	_expect(_submit(3,2,airburst_switch,false), "release/rearm packet was refused")
-	session.step(1.0/60.0,world,_context(6))
+	session.step(1.0/60.0,world,_context(3))
 	_expect(_submit(4,3,slug,false), "switch back to slug was refused")
 	session.step(1.0/60.0,world,_context(4))
+
+	# A press/release between owner ticks must survive as one bounded edge.
 	_expect(_submit(5,4,slug,true), "quick-click press refused")
 	_expect(_submit(6,4,slug,false), "quick-click release refused")
 	_expect(not _submit(6,4,slug,false), "duplicate sequence was accepted")
@@ -70,7 +73,7 @@ func _run() -> void:
 	# Cancellation neutralizes input but does not delete committed projectiles.
 	var age_before: float = float(session.snapshot().projectiles[0].age)
 	_expect(session.cancel_input(0,1,&"human"), "usable cancellation refused")
-	session.step(1.0/60.0,world,_context(3))
+	session.step(1.0/60.0,world,_context(6))
 	_expect(session.snapshot().projectiles.size() == 1, "cancellation deleted committed projectile")
 	_expect(float(session.snapshot().projectiles[0].age) > age_before, "committed projectile stopped after input cancellation")
 
@@ -79,7 +82,7 @@ func _run() -> void:
 	session.step(1.0/15.0,world,_context(6,2,true))
 	_expect(is_equal_approx(float(session.snapshot().projectiles[0].age), paused_age), "pause advanced projectile time")
 	_expect(not _submit(8,6,slug,true,false,6,1), "old epoch was accepted after pause")
-	session.step(1.0/60.0,world,_context(10,3,false))
+	session.step(1.0/60.0,world,_context(7,3,false))
 	_expect(session.snapshot().projectiles.size() == 1, "resume cleared committed projectile")
 
 	# A held tool expires to neutral without unequipping.
@@ -89,7 +92,7 @@ func _run() -> void:
 	_expect(_submit(2,8,sand,true,false,1,3), "short tool lease refused")
 	session.step(1.0/60.0,world,_context(9,3,false))
 	var writes_live: int = int(session.snapshot().write_count_last)
-	session.step(1.0/60.0,world,_context(7,3,false))
+	session.step(1.0/60.0,world,_context(10,3,false))
 	_expect(writes_live > 0, "live Sand Scatter lease produced no work")
 	_expect(int(session.snapshot().write_count_last) == 0, "expired tool lease continued applying")
 	_expect(int(session.snapshot().equipped[0]) == sand, "lease expiry unequipped the tool")
