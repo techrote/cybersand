@@ -155,7 +155,7 @@ These are gameplay tuning/bounds, not calibrated physical units.
 
 | Native constant/concept | Value | Fallback counterpart |
 |---|---:|---|
-| Maximum transient body IDs | 16 | `MAX_BODIES=16` |
+| Maximum transient body IDs | 64 | `MAX_BODIES=64` |
 | Input/result float stride | 11 / 9 | Shared packed layout |
 | `kMaximumBodySweepDistance` | 32.0 | `MAX_BODY_SWEEP_DISTANCE` |
 | `kBodySweepSampleSpacing` | 1.0 | `BODY_SWEEP_SAMPLE_SPACING` |
@@ -166,7 +166,10 @@ These are gameplay tuning/bounds, not calibrated physical units.
 | `kBodyBoundaryPressureImpulse` | 0.19 | `BODY_BOUNDARY_PRESSURE_IMPULSE` |
 | `kMaximumBodyImpulsePerTick` | 3.0 | `MAX_BODY_IMPULSE_PER_TICK` |
 
-The three test rectangles are 8×14. Sweep truncation/sample limits and unresolved
+The retained three reference rectangles are 8×14. ACT-004 admits up to eight
+physical rigs with eight total parts each, including held parts, through the
+same 64-ID bound. The current catalogue uses two through seven parts.
+Sweep truncation/sample limits and unresolved
 overlap semantics belong to the [coupling contract](../architecture/rigid-body-and-cellular-coupling.md);
 these numbers do not guarantee continuous collision detection.
 Fallback-only `BODY_GRAVITY_SUPPORT_IMPULSE_PER_MASS=92/60` is retained in
@@ -509,6 +512,43 @@ The matched configuration gate requires equal rig, actuation lane and observatio
 profile and excludes human cadence; it does not prove equal effective compute,
 training privilege or empirical fairness. The visible scene displays evaluator
 information, so its human examples use mechanics/asymmetric classification.
+
+## Physical actor values
+
+**Current experimental ACT-004:** the
+[catalogue](../../godot/scripts/physical_actor_catalog.gd),
+[rig runtime](../../godot/scripts/physical_actor_rig.gd),
+[session](../../godot/scripts/physical_actor_session.gd),
+[effects owner](../../godot/scripts/physical_actor_effects.gd) and
+[physical arena](../../godot/scripts/physical_actor_arena.gd) own these bounds.
+Individual profiles intentionally vary; these are game units and capacity
+limits, not calibrated real-world actuator specifications.
+
+| Value | Current bound or default |
+|---|---|
+| Catalogue | 41 rigs in seven sets; all 29 existing IDs plus twelve SetX IDs |
+| Assembly | At most eight parts, fourteen authored joints and three mounts per rig; supplied rigs use two through seven rectangular parts |
+| Population | One through eight actors and at most 64 total coupled parts; held/released objects retain their part slot |
+| Physics / demo cadence | 60 Hz physical owner; demo decisions every six ticks, or 10 Hz |
+| Command lease | One through eighteen ticks from the issued observation; helper/demo default twelve, desktop human six; nineteen issuance-history slots |
+| Accepted physical delta | Positive finite delta, at most 1/30 second; oversized calls do not enlarge a control step |
+| Profile gravity | Default 156 cells/s², applied through per-body gravity scale; profiles remain authored data |
+| Actuation safeguards | Acceleration at most 1,200 cells/s², angular acceleration at most 100 rad/s², requested impulse at most 100 times the receiving part's mass |
+| Local sensing | At most 24 rays per rig observation and eight reported contacts per part |
+| Terrain rope | One straight attachment per rig; current runtime length clamp six through 96 cells; no wrapping |
+| Effect batch | At most eight requests, one admitted request per actor, with epoch and sequence validation |
+| Desktop pending effects | Eight requests total; atomic incoming-batch admission; over-capacity refusal preserves the existing queue and reports copied counters/last outcome |
+| Per-effect work | At most 1,024 reads and 64 attempted writes; trace at most 100 cells; source-to-origin reach at most 32 cells; radius one through four |
+| Deposition | Ordinary Sand ID 2; named `rocket_charge` permits Fire ID 6 and Gunpowder ID 26 in empty unmasked cells |
+| Physical arena | Version 2; one native worker; one through 36,000 ticks; seed 0 through 2,147,483,647; local patch radius zero through eight, default six |
+| Physical lab files | Config/action input at most 4 MiB per file; at most one scheduled action per actor/tick |
+
+F5 comparisons include at most eight members from the selected set; selecting a
+SetX actor cannot display all twelve SetX members simultaneously. The session
+checks the complete assembly budget before installation. Its dictionary
+observations and version-2 commands are separate from sampled actor packed rows.
+Usable lifecycle, gyro/play semantics and producer limits belong to the
+[physical actor contract](../systems/physical-actor-rigs.md).
 
 ## Initial physical Blacksite trial
 

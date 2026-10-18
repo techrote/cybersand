@@ -28,6 +28,9 @@ constexpr std::int32_t kInputVelocityY = 7;
 constexpr std::int32_t kInputAngularVelocity = 8;
 constexpr std::int32_t kInputMass = 9;
 constexpr std::int32_t kInputSampleSerial = 10;
+// All integer values up to this bound are exactly representable by the ABI's
+// float32 carrier. The live bridge wraps its sample serial much earlier.
+constexpr double kMaximumBodySampleSerial = 16'777'215.0;
 
 constexpr double kMaximumBodySweepDistance = 32.0;
 constexpr double kBodySweepSampleSpacing = 1.0;
@@ -96,6 +99,8 @@ void CyberNativeCellWorld::_bind_methods() {
                          DEFVAL(true));
     ClassDB::bind_method(D_METHOD("rigid_body_results"),
                          &CyberNativeCellWorld::rigid_body_results);
+    ClassDB::bind_method(D_METHOD("rigid_body_id_at", "x", "y"),
+                         &CyberNativeCellWorld::rigid_body_id_at);
     ClassDB::bind_method(D_METHOD("material_at", "x", "y"),
                          &CyberNativeCellWorld::material_at);
     ClassDB::bind_method(D_METHOD("box_collides", "origin", "size"),
@@ -435,8 +440,20 @@ void CyberNativeCellWorld::parse_body_states(const PackedFloat32Array& states) {
         cybersand::World::kMaximumTransientBodies, states.size() / kInputStride);
     for (std::int64_t body_index = 0; body_index < count; ++body_index) {
         const auto offset = body_index * kInputStride;
-        const auto id_value = static_cast<std::int64_t>(std::llround(states[offset + kInputBodyId]));
-        if (id_value <= 0 || id_value > cybersand::World::kMaximumTransientBodies) continue;
+        bool finite_record = true;
+        for (std::int32_t field = 0; field < kInputStride; ++field) {
+            finite_record = finite_record && std::isfinite(states[offset + field]);
+        }
+        if (!finite_record) continue;
+        const double input_id = states[offset + kInputBodyId];
+        const double serial = states[offset + kInputSampleSerial];
+        if (input_id < 1.0 || input_id > cybersand::World::kMaximumTransientBodies ||
+            std::trunc(input_id) != input_id || serial < 0.0 ||
+            serial > kMaximumBodySampleSerial || std::trunc(serial) != serial ||
+            states[offset + kInputSizeX] <= 0.0F ||
+            states[offset + kInputSizeY] <= 0.0F ||
+            states[offset + kInputMass] <= 0.0F) continue;
+        const auto id_value = static_cast<std::int64_t>(input_id);
         auto& body = current_bodies_[static_cast<std::size_t>(id_value)];
         if (body.valid) continue;
         body.id = static_cast<std::uint16_t>(id_value);
@@ -449,8 +466,7 @@ void CyberNativeCellWorld::parse_body_states(const PackedFloat32Array& states) {
         body.velocity = {states[offset + kInputVelocityX], states[offset + kInputVelocityY]};
         body.angular_velocity = states[offset + kInputAngularVelocity];
         body.mass = std::max(0.001, static_cast<double>(states[offset + kInputMass]));
-        body.sample_serial = static_cast<std::int32_t>(
-            std::llround(states[offset + kInputSampleSerial]));
+        body.sample_serial = static_cast<std::int32_t>(serial);
         body.valid = true;
     }
 }
@@ -475,9 +491,9 @@ void CyberNativeCellWorld::rasterize_body_sweep(const BodyState& body,
         rasterize_body(body);
         return;
     }
-    const auto steps = std::clamp(
-        static_cast<std::int32_t>(std::ceil(sweep_extent / kBodySweepSampleSpacing)),
-        1, kMaximumBodySweepSteps);
+    const auto steps = static_cast<std::int32_t>(std::clamp(
+        std::ceil(sweep_extent / kBodySweepSampleSpacing),
+        1.0, static_cast<double>(kMaximumBodySweepSteps)));
     for (std::int32_t step = 0; step <= steps; ++step) {
         const auto weight = static_cast<double>(step) / steps;
         rasterize_transform(
@@ -496,14 +512,16 @@ void CyberNativeCellWorld::rasterize_transform(std::uint16_t body_id, Vector2 ce
         std::abs(cosine) * half_size.x + std::abs(sine) * half_size.y,
         std::abs(sine) * half_size.x + std::abs(cosine) * half_size.y,
     };
-    const auto first_x = std::clamp(static_cast<std::int32_t>(std::floor(center.x - extent.x)),
-                                    0, kWorldWidth - 1);
-    const auto last_x = std::clamp(static_cast<std::int32_t>(std::ceil(center.x + extent.x)) - 1,
-                                   0, kWorldWidth - 1);
-    const auto first_y = std::clamp(static_cast<std::int32_t>(std::floor(center.y - extent.y)),
-                                    0, kWorldHeight - 1);
-    const auto last_y = std::clamp(static_cast<std::int32_t>(std::ceil(center.y + extent.y)) - 1,
-                                   0, kWorldHeight - 1);
+    // Clamp in floating point before conversion: an escaped body may be far
+    // outside the cell world, but must not overflow an integer raster bound.
+    const auto first_x = static_cast<std::int32_t>(std::clamp(
+        std::floor(static_cast<double>(center.x) - extent.x), 0.0, double(kWorldWidth - 1)));
+    const auto last_x = static_cast<std::int32_t>(std::clamp(
+        std::ceil(static_cast<double>(center.x) + extent.x) - 1.0, 0.0, double(kWorldWidth - 1)));
+    const auto first_y = static_cast<std::int32_t>(std::clamp(
+        std::floor(static_cast<double>(center.y) - extent.y), 0.0, double(kWorldHeight - 1)));
+    const auto last_y = static_cast<std::int32_t>(std::clamp(
+        std::ceil(static_cast<double>(center.y) + extent.y) - 1.0, 0.0, double(kWorldHeight - 1)));
     for (auto y = first_y; y <= last_y; ++y) {
         for (auto x = first_x; x <= last_x; ++x) {
             const Vector2 delta{static_cast<double>(x) + 0.5 - center.x,
@@ -807,6 +825,11 @@ std::int64_t CyberNativeCellWorld::material_at(std::int64_t x, std::int64_t y) c
         return static_cast<std::int64_t>(cybersand::Material::Wall);
     }
     return static_cast<std::int64_t>(world_->get(x, y));
+}
+
+std::int64_t CyberNativeCellWorld::rigid_body_id_at(std::int64_t x, std::int64_t y) const {
+    if (world_ == nullptr || !in_bounds(x, y)) return 0;
+    return world_->transient_obstacle_at(x, y);
 }
 
 bool CyberNativeCellWorld::box_collides(Vector2 origin, Vector2 size) const {
@@ -1373,7 +1396,7 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         candidate->reserve_region({0, 0, kWorldWidth, kWorldHeight});
         candidate->configure_transient_obstacles({0, 0, kWorldWidth, kWorldHeight});
         auto diagnostics = config.physics_diagnostics.enabled
-            ? std::make_unique<std::array<BodyDiagnostic, 17>>() : nullptr;
+            ? std::make_unique<BodyDiagnostics>() : nullptr;
         world_.swap(candidate);
         body_diagnostics_ = std::move(diagnostics);
         diagnostic_fixture_ = true;

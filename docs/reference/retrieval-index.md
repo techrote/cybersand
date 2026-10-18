@@ -18,7 +18,9 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 
 | Question family | Canonical route |
 |---|---|
-| How do I choose Sampled or Rapier actors in Blacksite/showcase maps, keep the map on switching, and track the full-roster physical conversion requirement? | [Physical actor programme](../operations/physical-actor-programme.md) |
+| How do I choose all 41 articulated Rapier actors in Blacksite/showcase maps, retain sampled references, and use the same scripted or policy controls? | [Physical actor contract](../systems/physical-actor-rigs.md), [physical actor programme](../operations/physical-actor-programme.md) |
+| Do gyros track finite momentum, what flex/play is intentional, and which joints or held tools are actual bodies? | [Physical mechanics and usables](../systems/physical-actor-rigs.md), [physical limits](configuration-reference.md#physical-actor-values) |
+| How does physical Thunderbowl v2 differ from the sampled v1 control lab and its metal/NCA examples? | [Physical Thunderbowl v2](../systems/thunderbowl-control-reference.md#physical-thunderbowl-v2) |
 | How do I enter Blacksite Nine, follow the route through its connected 3×3 districts, use the camera map, and preserve or reset edits across shared boundaries? | [Blacksite Nine connected-complex guide](../operations/blacksite-nine-demo.md) |
 | How do I open Neon Reliquary, descend through Middle Cyberberbia, Sewertech Alley and Industrial Underswamp, inspect viewpoints, or capture all four tiles? | [Neon Reliquary scene guide](../operations/neon-reliquary-demo.md) |
 
@@ -193,6 +195,6 @@ separate; the programme graph owns admission.
 
 - Blocked falling/torque/coherent-child motion fixture: [macro-fracture preregistration](../operations/soliding-macro-fracture-fixture.md).
 
-Integrated launch and physical actor comparison questions route to the [physical actor programme](../operations/physical-actor-programme.md), including owner feedback, impulses, trial limitations and follow-up articulation.
+Integrated launch and retained hull comparisons route to the [physical actor programme](../operations/physical-actor-programme.md). Current articulation, the 41-rig roster, scripted feedback, command freshness and usable lifecycle route to the [physical actor contract](../systems/physical-actor-rigs.md).
 
 Layered material worlds, Strata Theatre, quantized relief and explicit interlayer event questions route to the [depth prototype contract](../systems/depth-layers-and-parallax.md).

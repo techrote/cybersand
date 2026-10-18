@@ -10,6 +10,11 @@ related-documents: [actor-rigs.md, actor-control-prototypes.md, ../architecture/
 
 # Thunderbowl actor arena and control reference
 
+ACT-004 adds a separate [physical Thunderbowl v2](#physical-thunderbowl-v2).
+The ACT-003 contracts below retain sampled Thunderbowl v1's tag combat, control
+examples and observation privileges. The two environments publish their own
+version and schedule rather than silently sharing an acceptance result.
+
 ## What is Thunderbowl for?
 
 Thunderbowl (ACT-003, [issue #172](https://github.com/techrote/cybersand/issues/172))
@@ -17,7 +22,7 @@ compares the same actor rigs under different control laws, information access
 and group behavior. Controller sophistication, population size and privileged
 knowledge are separate advantages that each result must identify.
 
-The arena design is a standalone native desktop scene with at most eight actors,
+The sampled v1 arena is a standalone native desktop scene with at most eight actors,
 separate from the ordinary F5 rig comparison and the registered scientific
 fixtures. Its battle model is an arena-owned virtual tag exercise with bounded
 aim, range, line of sight and cooldown. Virtual hit points and tag outcomes are
@@ -33,6 +38,76 @@ evidence, with source/runtime identities and preserved failures in the
 Trained policies, a terrain-lattice NCA and a live model service remain
 **Planned**. No controller-efficacy or target-machine performance claim follows
 from having executable examples.
+
+## Physical Thunderbowl v2
+
+**Current experimental ACT-004:** the separate physical lab uses all 41
+[articulated Rapier actors](physical-actor-rigs.md), their actual jointed parts,
+native materials and the same human/demo/policy session as F5. It owns a native
+world and an isolated Rapier space. Its purpose is manoeuvre, recovery and usable
+testing. It has no virtual tag score, damage/reward system, metal lane, oracle
+team, NCA controller or live model service. Those sampled v1 examples remain
+independently runnable below.
+
+Run the physical scene from the launcher or directly:
+
+```text
+godot --path godot res://examples/thunderbowl/physical_thunderbowl.tscn
+godot --headless --path godot --script res://examples/thunderbowl/run_physical_thunderbowl.gd -- --rig=ripper --actors=4 --ticks=600 --seed=0 --output=physical-result.json
+```
+
+The UI selects any catalogue rig and one through eight actors. Actor zero may be
+human, demo or policy; companion actors use the local scripted examples. Whole
+arena/follow cameras and collider outlines show the actual parts. Click the
+arena to arm human control. WASD, mouse, Space/Shift/C, Q/E, Z/X and brackets
+match F5; M uses the tool, N releases a held object, U reattaches a nearby one.
+Pause, cancel, focus changes and reset revoke pending control through the owner.
+The whole-arena camera is evaluator information, so human play is not an
+equal-perception policy benchmark.
+
+[`CyberPhysicalActorArena`](../../godot/scripts/physical_actor_arena.gd) exposes
+`configure`, `reset`, `observation`, `submit`, `cancel`, `set_paused`, `step`,
+`snapshot` and `close`. Configuration has this shape:
+
+```json
+{
+  "version": 2, "seed": 0, "max_ticks": 600, "local_patch_radius": 6,
+  "actors": [
+    {"model": "ripper", "producer": "policy"},
+    {"model": "copter", "producer": "demo"}
+  ]
+}
+```
+
+Actor positions may optionally be explicit finite `[x,y]` coordinates in the
+authored arena. Unknown fields and invalid capacities are refused before replacing
+a live environment. `submit(command, producer)` and `step(policy_commands)`
+consume the same version-2 issued-observation envelope as the desktop
+[physical command interface](../reference/interfaces-and-message-contracts.md#physical-actor-control-and-effects).
+Model names alone never invoke model APIs.
+
+`observation(actor_id)` contains the copied local rig view plus a bounded square
+native material/body-ID patch, default radius six and maximum eight. It includes
+only that actor's effect receipts. The patch identifies its sample tick and body
+mask pose tick. `snapshot()` is a separate evaluator surface with all actors,
+cellular feedback, effect totals, terrain and termination/truncation state;
+do not feed it into a nominally local policy. The seed selects authored material
+fixture geometry; it does not promise bit-identical Rapier replay.
+
+The headless runner accepts `--config=<json>` instead of roster options and an
+optional `--actions=<json>` array of `{tick, actor_id, action, lease_ticks?}`.
+Scheduled actors must be policy-owned. The driver builds each command from a
+fresh issued observation at that step. It exercises the policy admission path,
+but does not simulate network latency or frontier-model computation. Files are
+bounded and outputs contain explicit environment version and schedule.
+
+The synchronous schedule is mask, actuation, effects, material tick, cellular
+feedback, terrain update, Rapier integration and next observation. It uses one
+native worker and 60 Hz physics; the
+[threading contract](../architecture/simulation-tick-and-threading.md#physical-actor-scheduling)
+owns timing details. Desktop remains asynchronous and Web is not migrated by
+this lab. Dated source/platform evidence is in the
+[ACT-004 audit](../audits/2026-10-18-act004-articulated-actors.md).
 
 ## How should the control modes be classified?
 

@@ -1,0 +1,328 @@
+extends Control
+
+# Thunderbowl v2 is a physical manoeuvre/usable lab. The full arena display is
+# an evaluator view; policy producers receive only their actor-local view.
+const Arena = preload("res://scripts/physical_actor_arena.gd")
+const Catalog = preload("res://scripts/physical_actor_catalog.gd")
+const Session = preload("res://scripts/physical_actor_session.gd")
+const Overlay = preload("res://scripts/physical_actor_overlay.gd")
+const Palette = preload("res://scripts/material_appearance_lut.gd")
+var _arena: CyberPhysicalActorArena
+var _model: OptionButton
+var _count: SpinBox
+var _producer: OptionButton
+var _seed: SpinBox
+var _camera: OptionButton
+var _follow: OptionButton
+var _pause: Button
+var _effort: HSlider
+var _status: Label
+var _controls: Label
+var _canvas: Control
+var _terrain: TextureRect
+var _overlay: CyberPhysicalActorOverlay
+var _labels: Array[Label] = []
+var _texture: ImageTexture
+var _view := Arena.ARENA_RECT
+var _last_visual_tick: int = -6
+var _last_visual_view := Rect2i()
+var _focused: bool = true
+var _rearm: bool = true
+var _sequence: int = 0
+
+
+func _ready() -> void:
+	Engine.physics_ticks_per_second = Arena.PHYSICS_HZ
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_build_ui()
+	_arena = Arena.new()
+	add_child(_arena)
+	for argument: String in OS.get_cmdline_user_args():
+		if argument.begins_with("--rig="):
+			var index: int = Catalog.RIG_IDS.find(StringName(argument.trim_prefix("--rig=")))
+			if index >= 0:
+				_model.select(index)
+		elif argument.begins_with("--actors=") and argument.trim_prefix("--actors=").is_valid_int():
+			_count.value = clampi(int(argument.trim_prefix("--actors=")), 1, 8)
+	_restart()
+
+
+func _button(text: String, callback: Callable, parent: Control) -> Button:
+	var button := Button.new()
+	button.text = text
+	button.focus_mode = Control.FOCUS_NONE
+	button.pressed.connect(callback)
+	parent.add_child(button)
+	return button
+
+
+func _build_ui() -> void:
+	var backdrop := ColorRect.new()
+	backdrop.color = Color("111823")
+	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(backdrop)
+	var column := VBoxContainer.new()
+	column.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	column.offset_left = 18
+	column.offset_right = -18
+	column.offset_top = 12
+	column.offset_bottom = -12
+	column.add_theme_constant_override("separation", 8)
+	add_child(column)
+	var title := Label.new()
+	title.text = "THUNDERBOWL v2  ·  Physical manoeuvre / usable lab"
+	title.add_theme_font_size_override("font_size", 24)
+	column.add_child(title)
+	var note := Label.new()
+	note.text = "41 articulated Rapier rigs · native material interactions · scripted local feedback · full evaluator camera"
+	note.add_theme_font_size_override("font_size", 13)
+	column.add_child(note)
+	var bar := HBoxContainer.new()
+	bar.add_theme_constant_override("separation", 8)
+	column.add_child(bar)
+	_model = OptionButton.new()
+	_model.custom_minimum_size.x = 208
+	for id: StringName in Catalog.RIG_IDS:
+		_model.add_item("%s · %d parts" % [Catalog.name_for(id), Catalog.entry(id).part_count])
+	_model.select(Catalog.RIG_IDS.find(&"ripper"))
+	_model.item_selected.connect(func(_index: int) -> void: _restart())
+	bar.add_child(_model)
+	_count = SpinBox.new()
+	_count.min_value = 1
+	_count.max_value = 8
+	_count.value = 4
+	_count.prefix = "Actors "
+	_count.custom_minimum_size.x = 115
+	bar.add_child(_count)
+	_producer = OptionButton.new()
+	_producer.add_item("Scripted demos")
+	_producer.add_item("Human actor 0 + demos")
+	_producer.add_item("Policy actor 0 + demos")
+	_producer.item_selected.connect(func(_index: int) -> void: _restart())
+	bar.add_child(_producer)
+	_seed = SpinBox.new()
+	_seed.min_value = 0
+	_seed.max_value = 2147483647
+	_seed.prefix = "Seed "
+	_seed.custom_minimum_size.x = 125
+	bar.add_child(_seed)
+	_button("Reset", _restart, bar)
+	_pause = _button("Pause", _toggle_pause, bar)
+	_button("Cancel input", _cancel_input, bar)
+	var tools := HBoxContainer.new()
+	tools.add_theme_constant_override("separation", 8)
+	column.add_child(tools)
+	_camera = OptionButton.new()
+	_camera.add_item("Whole lab")
+	_camera.add_item("Follow actor")
+	tools.add_child(_camera)
+	_follow = OptionButton.new()
+	_follow.custom_minimum_size.x = 165
+	tools.add_child(_follow)
+	var outlines := CheckButton.new()
+	outlines.text = "Collider outlines"
+	outlines.button_pressed = true
+	outlines.toggled.connect(func(value: bool) -> void: _overlay.outlines = value)
+	tools.add_child(outlines)
+	var power := Label.new()
+	power.text = "Effort"
+	tools.add_child(power)
+	_effort = HSlider.new()
+	_effort.min_value = 0.0
+	_effort.max_value = 1.0
+	_effort.step = 0.01
+	_effort.value = 0.7
+	_effort.custom_minimum_size.x = 105
+	tools.add_child(_effort)
+	_button("Sampled v1", func() -> void: get_tree().change_scene_to_file("res://examples/thunderbowl/thunderbowl.tscn"), tools)
+	_button("Feature menu (F2)", func() -> void: get_tree().change_scene_to_file("res://feature_launcher.tscn"), tools)
+	_status = Label.new()
+	_status.add_theme_font_size_override("font_size", 13)
+	column.add_child(_status)
+	_canvas = Control.new()
+	_canvas.custom_minimum_size = Vector2(512, 256)
+	_canvas.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_canvas.gui_input.connect(_canvas_input)
+	column.add_child(_canvas)
+	_terrain = TextureRect.new()
+	_terrain.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_terrain.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_terrain.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_terrain.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_terrain.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_canvas.add_child(_terrain)
+	_overlay = Overlay.new()
+	_canvas.add_child(_overlay)
+	for _index: int in range(8):
+		var label := Label.new()
+		label.add_theme_font_size_override("font_size", 12)
+		label.add_theme_color_override("font_shadow_color", Color.BLACK)
+		label.add_theme_constant_override("shadow_offset_x", 1)
+		label.add_theme_constant_override("shadow_offset_y", 1)
+		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_canvas.add_child(label)
+		_labels.append(label)
+	_controls = Label.new()
+	_controls.add_theme_font_size_override("font_size", 13)
+	_controls.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	column.add_child(_controls)
+	var help := Label.new()
+	help.text = "Click arena to arm · WASD / mouse aim · Space primary · Shift secondary · C auxiliary · Q/E trim · Z/X reel · [ / ] effort\nM mounted tool · N detach usable · U attach nearby usable · release controls after focus changes. Policy slot waits for version 2 wire commands."
+	help.add_theme_font_size_override("font_size", 12)
+	help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	column.add_child(help)
+
+
+func _restart() -> void:
+	if _arena == null:
+		return
+	var config: Dictionary = Arena.default_config(Catalog.RIG_IDS[_model.selected], int(_count.value))
+	config.seed = int(_seed.value)
+	if _producer.selected != 0:
+		config.actors[0].producer = "human" if _producer.selected == 1 else "policy"
+	if not _arena.configure(config):
+		_status.text = "Cannot start: " + _arena.last_error
+		return
+	_follow.clear()
+	for index: int in range(config.actors.size()):
+		_follow.add_item("%d · %s" % [index, Catalog.name_for(StringName(config.actors[index].model))])
+	_sequence = 0
+	_rearm = true
+	_pause.text = "Pause"
+	_last_visual_tick = -6
+	_controls.text = Catalog.controls_text(Catalog.RIG_IDS[_model.selected])
+	_present(_arena.snapshot())
+
+
+func _toggle_pause() -> void:
+	if _arena == null or _arena.session == null:
+		return
+	_arena.set_paused(not bool(_arena.snapshot().paused))
+	_pause.text = "Resume" if bool(_arena.snapshot().paused) else "Pause"
+	_rearm = true
+
+
+func _cancel_input() -> void:
+	if _arena != null and _arena.session != null:
+		var state: Dictionary = _arena.snapshot()
+		for actor: Dictionary in state.actors:
+			_arena.cancel(int(actor.actor_id), StringName(actor.producer))
+	_rearm = true
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_WINDOW_FOCUS_OUT:
+		_focused = false
+		_cancel_input()
+	elif what == NOTIFICATION_WM_WINDOW_FOCUS_IN:
+		_focused = true
+		_rearm = true
+
+
+func _canvas_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		var focus: Control = get_viewport().gui_get_focus_owner()
+		if focus != null:
+			focus.release_focus()
+		_rearm = true
+
+
+func _any_control_held() -> bool:
+	for key: Key in [KEY_W, KEY_A, KEY_S, KEY_D, KEY_SPACE, KEY_SHIFT, KEY_C,
+		KEY_Q, KEY_E, KEY_Z, KEY_X, KEY_M, KEY_N, KEY_U, KEY_BRACKETLEFT, KEY_BRACKETRIGHT]:
+		if Input.is_physical_key_pressed(key):
+			return true
+	return false
+
+
+func _physics_process(delta: float) -> void:
+	if _arena == null or _arena.session == null:
+		return
+	if _producer.selected == 1:
+		var allowed: bool = _focused and get_viewport().gui_get_focus_owner() == null
+		if not allowed:
+			if not _rearm:
+				_arena.cancel(0, &"human")
+			_rearm = true
+		elif _rearm and not _any_control_held():
+			_rearm = false
+		if allowed and not _rearm and not bool(_arena.snapshot().paused):
+			var view: Dictionary = _arena.observation(0)
+			if not view.is_empty():
+				_effort.value += float(int(Input.is_physical_key_pressed(KEY_BRACKETRIGHT))
+					- int(Input.is_physical_key_pressed(KEY_BRACKETLEFT))) * delta * 0.7
+				var action: Dictionary = {
+					"move": Vector2(int(Input.is_physical_key_pressed(KEY_D)) - int(Input.is_physical_key_pressed(KEY_A)),
+						int(Input.is_physical_key_pressed(KEY_S)) - int(Input.is_physical_key_pressed(KEY_W))),
+					"aim": _pointer_aim(view.position), "effort": _effort.value,
+					"trim": float(int(Input.is_physical_key_pressed(KEY_E)) - int(Input.is_physical_key_pressed(KEY_Q))),
+					"reel": float(int(Input.is_physical_key_pressed(KEY_X)) - int(Input.is_physical_key_pressed(KEY_Z))),
+					"primary": Input.is_physical_key_pressed(KEY_SPACE), "secondary": Input.is_physical_key_pressed(KEY_SHIFT),
+					"auxiliary": Input.is_physical_key_pressed(KEY_C), "tool": Input.is_physical_key_pressed(KEY_M),
+					"release_usable": Input.is_physical_key_pressed(KEY_N), "attach_usable": Input.is_physical_key_pressed(KEY_U)}
+				_arena.submit(Session.make_command(view, _sequence, action, 6), &"human")
+				_sequence += 1
+	_present(_arena.step())
+
+
+func _content_rect() -> Rect2:
+	var scale: float = minf(_canvas.size.x / _view.size.x, _canvas.size.y / _view.size.y)
+	var size: Vector2 = Vector2(_view.size) * scale
+	return Rect2((_canvas.size - size) * 0.5, size)
+
+
+func _pointer_aim(actor_position: Vector2) -> Vector2:
+	var content: Rect2 = _content_rect()
+	if content.size.x <= 0.0 or content.size.y <= 0.0:
+		return Vector2.RIGHT
+	var pointer: Vector2 = Vector2(_view.position) + (_canvas.get_local_mouse_position() - content.position) / content.size * Vector2(_view.size)
+	return (pointer - actor_position).normalized()
+
+
+func _present(state: Dictionary) -> void:
+	_view = Arena.ARENA_RECT
+	if _camera.selected == 1 and not state.actors.is_empty():
+		var actor: Dictionary = state.actors[clampi(_follow.selected, 0, state.actors.size() - 1)]
+		var center: Vector2 = actor.position
+		_view = Rect2i(clampi(floori(center.x) - 128, 0, 768), clampi(floori(center.y) - 80, 0, 864), 256, 160)
+	if _texture == null or int(state.tick) - _last_visual_tick >= 6 or _last_visual_view != _view:
+		var cells: PackedByteArray = _arena.presentation_cells(_view)
+		if cells.size() == _view.size.x * _view.size.y:
+			var bytes := PackedByteArray()
+			bytes.resize(cells.size() * 4)
+			for index: int in range(cells.size()):
+				var color: int = Palette.BASE_RGBA8[mini(int(cells[index]), 80)]
+				bytes[index * 4] = (color >> 24) & 255
+				bytes[index * 4 + 1] = (color >> 16) & 255
+				bytes[index * 4 + 2] = (color >> 8) & 255
+				bytes[index * 4 + 3] = 255
+			var image: Image = Image.create_from_data(_view.size.x, _view.size.y, false, Image.FORMAT_RGBA8, bytes)
+			if _texture == null or _texture.get_size() != Vector2(_view.size):
+				_texture = ImageTexture.create_from_image(image)
+				_terrain.texture = _texture
+			else:
+				_texture.update(image)
+		_last_visual_tick = int(state.tick)
+		_last_visual_view = _view
+	var content: Rect2 = _content_rect()
+	_overlay.present(_arena.render_parts(), Vector2(_view.position), _view.size, content)
+	for index: int in range(_labels.size()):
+		var label: Label = _labels[index]
+		label.visible = index < state.actors.size()
+		if not label.visible:
+			continue
+		var actor: Dictionary = state.actors[index]
+		var local: Vector2 = (Vector2(actor.position) - Vector2(_view.position)) / Vector2(_view.size) * content.size
+		label.position = content.position + local + Vector2(8, -24)
+		label.visible = Rect2(Vector2.ZERO, content.size).has_point(local)
+		label.text = "%d %s · %d%%" % [index, Catalog.name_for(StringName(actor.model)), roundi(float(actor.energy) * 100.0)]
+	var source: String = "scripted feedback" if _producer.selected == 0 else ("human: release keys to arm" if _rearm and _producer.selected == 1 else "human active" if _producer.selected == 1 else "policy slot waiting for commands")
+	_status.text = "Tick %d / %d · %d actors / %d parts · %s · tool writes %d · %s" % [
+		int(state.tick), int(state.max_ticks), int(state.actor_count), int(state.body_count), source,
+		int(state.effect_totals.changed_cells), "PAUSED" if bool(state.paused) else str(state.reason)]
+
+
+func _exit_tree() -> void:
+	if is_instance_valid(_arena):
+		_arena.close()

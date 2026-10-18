@@ -2124,6 +2124,85 @@ void test_physics_masked_source_characterisation() {
     require(stored_sand==1, "masked source material was lost or duplicated");
 }
 
+void test_articulated_body_identity_capacity() {
+    static_assert(World::kMaximumTransientBodies == 64U);
+    std::uint64_t reference_hash = 0;
+    for (const auto workers : {1U, 4U}) {
+        WorldConfig config;
+        config.worker_threads = workers;
+        config.parallel_job_threshold = 1;
+        World world(config);
+        world.reserve_region({0, 0, 128, 128});
+        world.configure_transient_obstacles({0, 0, 128, 128});
+        require(world.set_cell_state(120, 121, Material::Water, 173U, 0U),
+                "highest-ID payload fixture setup failed");
+
+        // One independent blocked falling grain for every part identity. This
+        // exercises actual native contact routing, including IDs17..64.
+        for (std::uint16_t id = 1; id <= 64U; ++id) {
+            const auto x = 8 + ((id - 1) % 8) * 16;
+            const auto y = 8 + ((id - 1) / 8) * 16;
+            world.set(x, y, Material::Sand);
+            world.set(x - 1, y, Material::Wall);
+            world.set(x + 1, y, Material::Wall);
+            for (auto dx = -1; dx <= 1; ++dx) {
+                require(world.set_transient_obstacle(x + dx, y + 1, id),
+                        "articulated part mask was refused within capacity");
+                require(world.transient_obstacle_at(x + dx, y + 1) == id,
+                        "articulated part mask lost its full identity");
+            }
+        }
+        require(!world.set_transient_obstacle(2, 2, 0U) &&
+                    !world.set_transient_obstacle(2, 2, 65U),
+                "out-of-capacity body identity was accepted");
+        require(!world.set_transient_obstacle(8, 9, 64U) &&
+                    world.transient_obstacle_at(8, 9) == 1U,
+                "overlapping body changed first-writer ownership");
+
+        // A transient mask cannot replace or execute the payload beneath it.
+        const auto before = world.content_hash();
+        (void)world.tick();
+        for (std::uint16_t id = 1; id <= 64U; ++id) {
+            require(world.transient_contact_count(id) > 0U,
+                    "articulated part received no independently routed contact");
+            require(world.transient_contact_impulse_y(id) > 0,
+                    "articulated part lost its downward granular contact impulse");
+        }
+        require(world.transient_contact_count(0U) == 0U &&
+                    world.transient_contact_count(65U) == 0U &&
+                    world.transient_contact_impulse_x(65U) == 0 &&
+                    world.transient_contact_impulse_y(65U) == 0,
+                "invalid body query returned another part's contact");
+        require(world.content_hash() == before &&
+                    world.stored_material(120, 121) == Material::Water &&
+                    world.stored_state_a(120, 121) == 173U,
+                "body occupancy modified authoritative stored material");
+        if (workers == 1U) reference_hash = world.state_hash();
+        else require(world.state_hash() == reference_hash,
+                     "64-part contact routing changed worker parity");
+
+        world.clear_transient_obstacles();
+        require(world.content_hash() == before && world.get(120, 121) == Material::Water,
+                "retiring articulated parts restored or erased cell payloads");
+        for (std::uint16_t id = 1; id <= 64U; ++id) {
+            const auto x = 8 + ((id - 1) % 8) * 16;
+            const auto y = 8 + ((id - 1) / 8) * 16;
+            require(world.transient_obstacle_at(x, y + 1) == 0U &&
+                        world.transient_contact_count(id) == 0U &&
+                        world.transient_contact_impulse_y(id) == 0,
+                    "retired part left occupancy or contact state");
+        }
+        require(world.set_transient_obstacle(2, 2, 64U) &&
+                    world.transient_obstacle_at(2, 2) == 64U &&
+                    world.transient_contact_count(64U) == 0U,
+                "highest part slot could not be cleanly reused");
+        (void)world.tick();
+        require(world.stored_material(8, 8) == Material::Empty &&
+                    world.stored_material(8, 9) == Material::Sand,
+                "retired actor mask did not release and wake supported material");
+    }
+}
+
 void test_granular_player_support_policy() {
     for (const auto& definition : cybersand::MaterialRules::descriptors()) {
         const auto material = static_cast<Material>(&definition - cybersand::kMaterialDefinitions.data());
@@ -2987,6 +3066,7 @@ int main() {
         {"physics diagnostic observer and worker parity", test_physics_diagnostics_observational},
         {"physics diagnostic isolated controls", test_physics_diagnostic_controls},
         {"physics masked source characterisation", test_physics_masked_source_characterisation},
+        {"ACT-004 articulated body identity capacity", test_articulated_body_identity_capacity},
         {"negative coordinates", test_negative_coordinates},
         {"scheduler geometry", test_scheduler_geometry},
         {"sand fall", test_sand_falls_and_stops},

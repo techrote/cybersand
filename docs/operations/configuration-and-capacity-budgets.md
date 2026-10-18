@@ -136,7 +136,7 @@ Do not promote design requirements to Current on source presence alone.
 **Current:** the [measurement runbook](physics-characterisation.md) defines 256
 histogram slots per scheduled-core scratch slot and 8,192 merged slots, allocated
 only on opt-in World construction. Counter overflow is explicit and drops
-observations. Body metrics use the existing 16-body bound, with fixed scalar and
+observations. Body metrics use the current 64-body bound, with fixed scalar and
 4-by-81 face/material counters. Copied cell observations are limited to 512 by
 768 cells; fixture runs are bounded to 7,200 ticks and 512 cases per invocation.
 Rapier application observations use six scalars per body.
