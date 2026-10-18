@@ -322,6 +322,10 @@
     {
       "path": "audits/2026-10-18-depth-parallax-prototypes.md",
       "reason": "Historical original and reconstructed depth prototype evidence; fresh integration validation is recorded separately."
+    },
+    {
+      "path": "audits/2026-10-18-depth-integration-validation.md",
+      "reason": "Fresh dated reconstructed-depth integration evidence; runtime semantics remain in the depth contract."
     }
   ],
   "integration_note": "Retains all scene, generation, actor, Thunderbowl and presentation routes from both parents; historical questions are preserved."

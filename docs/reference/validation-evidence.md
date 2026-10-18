@@ -389,3 +389,5 @@ crossfade endpoint checks, live desktop and natively hosted Web controller glow
 frames, focused/graphical tests and a matched per-viewport GPU-time comparison.
 It is not browser/WebAssembly, Linux or other-GPU evidence, and it does not record
 owner visual acceptance.
+
+The [fresh reconstructed-depth audit](../audits/2026-10-18-depth-integration-validation.md) records Windows 83/13/17 focused checks and actual NVIDIA material-surface pixel checks, separately from original local depth evidence. Final exact-head gates belong to PR #169.

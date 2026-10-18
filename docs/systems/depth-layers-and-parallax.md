@@ -146,3 +146,7 @@ Production adoption still needs decisions about persistence/streaming,
 immutable cross-plane events, ROI/texture sizing and region uploads, actors on
 non-play planes, replay semantics for independent clocks, and browser/lower-end
 GPU cost.
+
+## Reconstructed integration checkpoint
+
+The [fresh integration audit](../audits/2026-10-18-depth-integration-validation.md) records new Windows/native and actual GPU checks, parsing/ROI/first-bake repairs and preserved failures. These qualify the reconstructed branch independently of the original local evidence. Frozen surfaces request a one-shot bake on publication or pause; each plane has its own render canvas.
