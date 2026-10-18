@@ -464,3 +464,7 @@ sampled-baseline behavior. Tuning a profile therefore must not erase or silently
 change the selected representation/recovery policy.
 
 Parent #133 remains open after #138.
+
+## Reconstructed depth prototype — 2026-10-18
+
+PR #169 integrates [Strata Theatre](../systems/depth-layers-and-parallax.md) with the feature branches. Use its [fresh validation record](../audits/2026-10-18-depth-integration-validation.md); old local evidence does not certify the reconstructed source. F4 opens the separate lab; it does not attach four new owners to the ordinary gameplay World.

@@ -191,3 +191,5 @@ separate; the programme graph owns admission.
 - Ordinary Current sleep control and measurement gaps: [measurement contract](../operations/soliding-measurement.md).
 
 - Blocked falling/torque/coherent-child motion fixture: [macro-fracture preregistration](../operations/soliding-macro-fracture-fixture.md).
+
+Layered material worlds, Strata Theatre, quantized relief and explicit interlayer event questions route to the [depth prototype contract](../systems/depth-layers-and-parallax.md).
