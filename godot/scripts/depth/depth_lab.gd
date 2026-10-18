@@ -1,7 +1,7 @@
 extends Control
 
 const Runtime = preload("res://scripts/depth/depth_layer_runtime.gd")
-const Compositor = preload("res://scripts/depth/depth_compositor.gd")
+const DepthCompositor = preload("res://scripts/depth/depth_compositor.gd")
 const Fixture = preload("res://scripts/depth/depth_lab_fixture.gd")
 const Cell = preload("res://scripts/cell_world.gd")
 
@@ -61,7 +61,7 @@ func _ready() -> void:
 	set_process_unhandled_key_input(true)
 	set_process_input(true)
 	_build_ui()
-	compositor = Compositor.new()
+	compositor = DepthCompositor.new()
 	compositor.name = "DepthCompositor"
 	compositor.position = Vector2(12, 72)
 	compositor.size = Vector2(maxf(640.0, size.x - 346.0), maxf(360.0, size.y - 88.0))

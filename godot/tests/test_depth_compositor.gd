@@ -1,6 +1,6 @@
 extends SceneTree
 
-const Compositor = preload("res://scripts/depth/depth_compositor.gd")
+const DepthCompositor = preload("res://scripts/depth/depth_compositor.gd")
 const Surface = preload("res://scripts/depth/depth_layer_surface.gd")
 
 var failures: int = 0
@@ -13,10 +13,15 @@ func _run() -> void:
 	var host := Control.new()
 	host.size = Vector2(960, 540)
 	root.add_child(host)
-	var compositor: CyberDepthCompositor = Compositor.new()
+	var compositor: CyberDepthCompositor = DepthCompositor.new()
 	compositor.size = host.size
 	host.add_child(compositor)
 	compositor.configure()
+	for index: int in range(4):
+		var plane: CyberDepthLayerSurface = compositor._surfaces[index]
+		_expect(plane._material_rect.size == Vector2(640,360), "Native backing must not expand the rendered ROI")
+		if index > 0:
+			_expect(plane.world_2d != compositor._surfaces[index - 1].world_2d, "Material planes must have independent canvases")
 	compositor.set_camera(Vector2(80, 45))
 	compositor.set_options({
 		"mode": "hybrid",

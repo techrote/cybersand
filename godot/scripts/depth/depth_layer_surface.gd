@@ -30,16 +30,22 @@ var _material: ShaderMaterial
 func configure(id: String, frozen: bool = false) -> void:
 	layer_id = id
 	static_bake = frozen
+	# Each material plane needs its own canvas; inherited World2D would draw
+	# every sibling plane into all four viewport textures.
+	world_2d = World2D.new()
 	size = MATERIAL_SURFACE_SIZE
 	transparent_bg = true
 	render_target_clear_mode = SubViewport.CLEAR_MODE_ALWAYS
-	render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	render_enabled = not static_bake
+	render_target_update_mode = SubViewport.UPDATE_ALWAYS if render_enabled else SubViewport.UPDATE_ONCE
 	cell_image = Image.create(NATIVE_SIZE.x, NATIVE_SIZE.y, false, Image.FORMAT_RG8)
 	cell_image.fill(Color(0.0, 0.0, 0.0, 1.0))
 	cell_texture = ImageTexture.create_from_image(cell_image)
 
 	_material_rect = TextureRect.new()
 	_material_rect.name = "MaterialSurface"
+	_material_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_material_rect.stretch_mode = TextureRect.STRETCH_SCALE
 	_material_rect.position = Vector2.ZERO
 	_material_rect.size = Vector2(MATERIAL_SURFACE_SIZE)
 	_material_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -110,6 +116,7 @@ func apply_packet(packet: Dictionary) -> bool:
 	if not images.is_empty():
 		cell_texture.update(cell_image)
 		set_source_texture(cell_texture)
+		if not render_enabled: render_target_update_mode = SubViewport.UPDATE_ONCE
 		upload_count += 1
 		# ImageTexture.update uploads the complete backing image.
 		uploaded_bytes += MAX_PAYLOAD_BYTES
@@ -127,8 +134,9 @@ func apply_packet(packet: Dictionary) -> bool:
 	return true
 
 func set_render_enabled(enabled: bool) -> void:
-	render_enabled = enabled
-	render_target_update_mode = SubViewport.UPDATE_ALWAYS if enabled else SubViewport.UPDATE_DISABLED
+	render_enabled = enabled and not static_bake
+	# Pausing before the first draw must still bake the latest admitted packet.
+	render_target_update_mode = SubViewport.UPDATE_ALWAYS if render_enabled else SubViewport.UPDATE_ONCE
 
 func diagnostics() -> Dictionary:
 	return {
