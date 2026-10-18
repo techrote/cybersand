@@ -5,7 +5,7 @@ document-kind: contract
 scope: Six sets of 29 optional desktop sampled actor rigs, their shared player/policy actions, observations and bounded gameplay mechanics; excludes learned inference and generalized rigid-body or pressure physics
 canonical-for: [actor-rig-sets, actor-policy-input, actor-rig-observations-v2]
 last-reviewed: 2026-10-18
-related-documents: [actor-control-prototypes.md, granular-interaction-policy.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../reference/status-and-roadmap.md]
+related-documents: [actor-control-prototypes.md, actor-usables.md, granular-interaction-policy.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../reference/status-and-roadmap.md]
 ---
 
 # Provisional actor rigs and shared control interface
@@ -44,6 +44,11 @@ Source: [`actor_rig_catalog.gd`](../../godot/scripts/actor_rig_catalog.gd)
 [`actor_rig_motor.gd`](../../godot/scripts/actor_rig_motor.gd)
 (`simulate_rig_action`, `_advance_rig`) and
 [`actor_prototype_session.gd`](../../godot/scripts/actor_prototype_session.gd).
+
+USABLE-001 adds an independent [actor equipment layer](actor-usables.md) for the
+sampled rig session. Equipment has its own epoch/sequence/lease stream and does
+not reuse movement buttons or grant policies direct World-edit authority. The
+physical Rapier trials and ACT-004 articulated bodies remain separate mount work.
 
 ## How does each rig move?
 
