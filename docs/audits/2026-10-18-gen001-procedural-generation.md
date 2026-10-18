@@ -82,6 +82,7 @@ repairs are included in the source identities below:
 | A fallible error assignment could occur before discarding partial output | Clear cells/hashes first; use a pre-reserved, bounded diagnostic copy |
 | The first diagnostic copy imported `std::string::_M_replace_cold`, requiring GLIBCXX 3.4.31 | Bounded `push_back` into reserved storage removes the import; final Linux floor is GLIBCXX 3.4.30 |
 | Existing transient-mask subtraction could overflow for distant opposing signed coordinates | Compare lower bounds first, then use unsigned differences; installer endpoint/mask regressions run under UBSan |
+| Source-freeze review found the tracked portable Godot class cache lacked the two new `class_name` records | Copy the two exact entries from the tested clean import; preserve the strict source-diff guard |
 | UI completion admission initially omitted an explicit match to its in-flight coordinate | Reject missing/nonintegral/out-of-range coordinates and wrong completion slots before cache mutation |
 | Repeated failed requests while panning could retain old refusal entries | Prune refusals to the bounded visible request set; exhausted-budget panning regression |
 
