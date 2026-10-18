@@ -15,6 +15,17 @@ This page carries forward owner direction recorded in the
 at checkpoint `126175c`. It preserves intent separately from source and dated
 validation; later approved decisions should update this canonical reference.
 
+## Should all actors use Rapier physics?
+
+**Approved owner direction (2026-10-18):** adapt or reimplement the entire actor
+roster as physical Rapier objects, including articulated mechanisms where their
+behaviour needs them. Exceptions require a specific impossible physical
+behaviour/configuration and documented justification. Sampled rigs remain
+labelled comparison controls during migration. See the
+[physical actor programme](../operations/physical-actor-programme.md) for scope,
+conversion sequence and preserved actor-specific notes. This is a requirement;
+Current physical conversions are still limited to the barrel/Ripper hull trials.
+
 ## What are we building toward?
 
 **Approved owner direction:** a reusable native pixel-material simulation engine,

@@ -10,6 +10,15 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Exploratory actor picker follow-up — 2026-10-18
+
+F5 now connects the sandbox, Blacksite and four showcase maps to explicit Sampled
+and Rapier choices. The selected map is restored on change; R retains the actor.
+The [physical actor programme](physical-actor-programme.md) owns controls and the
+new approved full-roster Rapier conversion requirement. Sampled-to-sampled resets
+need both owner request serial and map hash; do not regress to hash-only admission.
+The implementation remains desktop scoped and does not convert the full roster.
+
 ## Start here for the next task
 
 Work in `C:/kybersand`, with executable source in `source/`. The companion workspace

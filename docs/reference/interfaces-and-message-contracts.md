@@ -11,6 +11,19 @@ last-reviewed: 2026-10-18
 
 # Interfaces and message contracts
 
+## Exploratory actor replacement acknowledgement
+
+**Current desktop:** `scenario_reset` may carry copied
+`exploratory_actor_definitions`, validated by the owner against the explicit map
+allowlist, non-Benchmark mode and sampled-player ownership before installation.
+`scenario_request_serial` identifies each reset; immutable `lab_context` publishes
+that serial and `scenario_request_applied`. Desktop acknowledgement requires both
+the request serial and definition hash, including when a sampled-to-sampled switch
+leaves the map hash unchanged. Ordinary `queue_actor_prototype_reset` accepts an
+optional `sampled_enabled` flag (default true); false requires an empty sampled
+session and supports physical sandbox trials. See the
+[programme](../operations/physical-actor-programme.md) for controls and limits.
+
 ## Current public surfaces
 
 ### Native procedural generation and fresh-chunk admission

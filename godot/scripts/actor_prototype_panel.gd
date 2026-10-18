@@ -20,6 +20,12 @@ var _visible_models: Array[StringName] = []
 
 
 func _ready() -> void:
+	var background := StyleBoxFlat.new()
+	background.bg_color = Color(0.035, 0.045, 0.065, 1.0)
+	background.border_color = Color(0.25, 0.35, 0.45)
+	background.set_border_width_all(1)
+	background.set_corner_radius_all(6)
+	add_theme_stylebox_override("panel", background)
 	var margin: MarginContainer = MarginContainer.new()
 	for side: String in ["left", "top", "right", "bottom"]:
 		margin.add_theme_constant_override("margin_" + side, 18)
@@ -33,7 +39,7 @@ func _ready() -> void:
 	title.add_theme_font_size_override("font_size", 23)
 	column.add_child(title)
 	var subtitle: Label = Label.new()
-	subtitle.text = "29 provisional rigs in six sets • keyboard, demo or external policy"
+	subtitle.text = "Sampled rigs or physical Rapier prototypes - explicit physics ownership"
 	subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	column.add_child(subtitle)
 	set_choice = OptionButton.new()
@@ -76,12 +82,12 @@ func _ready() -> void:
 	status = Label.new()
 	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	status.modulate = Color(0.75, 0.82, 0.9)
-	status.text = "Applying starts a fresh sandbox. External policy mode waits for actions.\nAim with the pointer; [ / ] changes power. Release control keys after switching."
+	status.text = "Applying restores the selected map, including its materials, to its starting layout. External policy mode waits for actions.\nAim with the pointer; [ / ] changes power. Release control keys after switching."
 	column.add_child(status)
 	var row: HBoxContainer = HBoxContainer.new()
 	column.add_child(row)
 	var apply: Button = Button.new()
-	apply.text = "Apply + reset sandbox"
+	apply.text = "Apply + restore this map"
 	apply.pressed.connect(_apply)
 	row.add_child(apply)
 	var close: Button = Button.new()
@@ -114,10 +120,13 @@ func _select_set(index: int) -> void:
 func _populate_models(set_id: StringName, selected: StringName) -> void:
 	model_choice.clear()
 	_visible_models.assign([&""])
-	model_choice.add_item("Current sampled character")
+	model_choice.add_item("Sampled — baseline character (runtime surfacing)")
 	for rig_id: StringName in Catalog.rigs_in_set(set_id):
 		_visible_models.append(rig_id)
-		model_choice.add_item(Catalog.name_for(rig_id))
+		model_choice.add_item("Sampled — " + Catalog.name_for(rig_id))
+	_visible_models.append_array([&"physical/barrel", &"physical/ripper"])
+	model_choice.add_item("Rapier — physical barrel (impulses + torque)")
+	model_choice.add_item("Rapier — physical Ripper (single hull, impulses + torque)")
 	model_choice.select(maxi(0, _visible_models.find(selected)))
 	npc_choice.text = "Add the other %d rigs in this set as scripted demo NPCs" % (Catalog.rigs_in_set(set_id).size() - 1)
 	_refresh_description(model_choice.selected)
@@ -125,8 +134,16 @@ func _populate_models(set_id: StringName, selected: StringName) -> void:
 
 func _refresh_description(index: int) -> void:
 	var rig_id: StringName = _visible_models[index]
-	producer_choice.disabled = rig_id == &""
-	npc_choice.disabled = rig_id == &""
+	var physical: bool = str(rig_id).begins_with("physical/")
+	producer_choice.disabled = rig_id == &"" or physical
+	npc_choice.disabled = rig_id == &"" or physical
+	effort_label.get_parent().visible = not physical
+	if physical:
+		producer_choice.select(0)
+		npc_choice.button_pressed = false
+		description.text = "PHYSICAL RAPIER %s\nOne live collision hull, driven by impulses and torque. A/D drive; Q/E torque; Space upward thruster pulse (0.6 s cooldown; works airborne). Release controls after switching.\n\nKeyboard pilot only. Articulation and full actor conversions are planned; this is the initial single-hull trial." % str(rig_id).trim_prefix("physical/").to_upper()
+		effort_slider.editable = false
+		return
 	if rig_id == &"":
 		description.text = "Restore the existing sampled character and player/environment profile."
 		effort_slider.editable = false
@@ -150,6 +167,10 @@ func _refresh_effort(value: float) -> void:
 func _apply() -> void:
 	apply_requested.emit(_visible_models[model_choice.selected], PRODUCERS[producer_choice.selected],
 		npc_choice.button_pressed)
+
+
+func set_context(map_name: String) -> void:
+	status.text = "Map: %s\nApplying restores this map's starting layout; edits and motion reset. External policy waits for actions. [ / ] changes sampled-rig power." % map_name
 
 
 func set_error(message: String) -> void:

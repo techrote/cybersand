@@ -10,6 +10,13 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## Exploratory map actor integration - 2026-10-18
+
+The [dated integration audit](../audits/2026-10-18-exploratory-actor-integration.md)
+records Windows source/artifact identity, sampled and physical map switching,
+owner acknowledgement, protected-scenario refusal, GPU popup inspection and
+retained failures. The full-roster Rapier migration remains Approved / Planned.
+
 ## What has actually passed?
 
 **Current evidence policy:** a result applies to its recorded source/artifact,

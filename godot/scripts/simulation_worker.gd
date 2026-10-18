@@ -75,6 +75,8 @@ var _lab_profile: Dictionary = CyberTransportProfiles.preset(0)
 var _lab_profile_hash: String = ""
 var _scenario_host: CyberMicroScenarioHost = MicroHost.new()
 var _micro_active: bool = false
+var _scenario_request_serial: int = 0
+var _scenario_request_applied: bool = false
 var _micro_capture: Dictionary = {}
 var _micro_capture_serial: int = 0
 var _water_lab_active: bool = false
@@ -227,6 +229,17 @@ func _apply_lab(command: Dictionary) -> bool:
 				_water_policy_hash.left(12),_water_recipe_hash.left(12),
 				int(_water_policy.seed)]
 	if command.has("scenario_reset"):
+		_scenario_request_serial = int(command.get("scenario_request_serial", 0))
+		_scenario_request_applied = false
+		var actor_definitions: Array = command.get("exploratory_actor_definitions", [])
+		if not actor_definitions.is_empty() and (
+			not MicroCatalogue.exploratory_actor_map(command.scenario_reset)
+			or str(command.get("scenario_mode", "Inspect")) == "Benchmark"
+			or not bool(command.scenario_reset.player_enabled)
+			or not bool(command.get("sampled_character_enabled", true))
+			or not ActorSession.valid_definitions(actor_definitions)):
+			_lab_status = "Refused actor configuration for controlled scenario"
+			return false
 		if not _scenario_host.install(_world, command.scenario_reset, str(command.get("scenario_mode", "Inspect"))):
 			_lab_status = "MicroScenario rejected; " + _scenario_host.last_error
 			return false
@@ -247,6 +260,13 @@ func _apply_lab(command: Dictionary) -> bool:
 			bool(command.get("sampled_character_enabled", true)),
 			bool(command.get("runtime_enclosure_recovery_enabled", true))
 		)
+		if not actor_definitions.is_empty():
+			if not _actor_session.configure(actor_definitions, _world):
+				_lab_status = "Refused exploratory actor configuration"
+				return false
+			_character = _actor_session.player()
+			_sampled_character_enabled = true
+		_scenario_request_applied = true
 		_lab_status = "MicroScenario " + str(definition.id)
 	if not _lab_active: return false
 	if command.has("scenario_capture") and _scenario_host.active():
@@ -431,9 +451,9 @@ func submit_actor_actuator_action(
 		observed_tick, actuators, lease_ticks, producer)
 
 
-func queue_actor_prototype_reset(definitions: Array, spawn_position: Vector2) -> int:
+func queue_actor_prototype_reset(definitions: Array, spawn_position: Vector2, sampled_enabled: bool = true) -> int:
 	# A positive receipt acknowledges admission; the owner publishes disposition.
-	if not ActorSession.valid_definitions(definitions) or not spawn_position.is_finite():
+	if not ActorSession.valid_definitions(definitions) or not spawn_position.is_finite() or (not sampled_enabled and not definitions.is_empty()):
 		return 0
 	_mutex.lock()
 	# The experimental sandbox cannot rewrite a registered apparatus identity.
@@ -445,8 +465,8 @@ func queue_actor_prototype_reset(definitions: Array, spawn_position: Vector2) ->
 		return 0
 	_reset_requested = true
 	_reset_spawn = spawn_position
-	_reset_sampled_character_enabled = true
-	_reset_runtime_enclosure_recovery_enabled = definitions.is_empty()
+	_reset_sampled_character_enabled = sampled_enabled
+	_reset_runtime_enclosure_recovery_enabled = sampled_enabled and definitions.is_empty()
 	_reset_actor_definitions = definitions.duplicate(true)
 	_reset_actor_prototype_request = true
 	_actor_prototype_request_serial += 1
@@ -1077,6 +1097,8 @@ func _publish_snapshot(
 		"sampled_runtime_recovery_enabled":(
 			_character.runtime_enclosure_recovery_enabled
 		),
+		"scenario_request_serial":_scenario_request_serial,
+		"scenario_request_applied":_scenario_request_applied,
 		"micro_active":_micro_active,
 		"microscenario":_scenario_host.summary() if _lab_active else {},
 		"micro_capture_serial":_micro_capture_serial,

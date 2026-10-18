@@ -12,7 +12,7 @@ related-documents: [actor-control-prototypes.md, granular-interaction-policy.md,
 
 ## Which actor rigs are available?
 
-**Current, experimental (ACT-002 / #168):** the ordinary desktop sandbox has six
+**Current, experimental (ACT-002 / #168):** the desktop sandbox and exploratory showcase maps have six
 sets containing 29 movement rigs. Every rig can be assigned to keyboard input,
 an external policy producer or the built-in scripted demonstration. Producer
 identity changes who may submit an action; it does not grant different movement,
@@ -161,8 +161,13 @@ or connected by selecting a rig.
 demonstration or external policy input. The comparison option adds the other rigs
 in the selected set as scripted NPCs, for at most seven actors in that UI selection.
 The session itself retains its separate eight-slot capacity. Applying a selection
-requests a fresh ordinary-world reset and waits for the owner's published receipt
-before human input is admitted. Choosing the sampled baseline leaves the rig session.
+restores the current exploratory map (or ordinary sandbox) and waits for the
+owner acknowledgement before human input is admitted. The picker labels these
+rigs Sampled and separately offers Rapier barrel/Ripper keyboard trials. R retains
+the choice; authored-map geometry is retained but live edits reset. Controlled
+apparatus and Benchmark mode remain protected. Choosing the sampled baseline
+leaves the rig session. See the [physical actor programme](../operations/physical-actor-programme.md)
+for current scope and the approved full-roster Rapier migration.
 
 | Desktop input | Shared channel |
 |---|---|
