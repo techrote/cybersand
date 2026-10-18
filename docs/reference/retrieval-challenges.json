@@ -1,7 +1,7 @@
 {
   "version": 1,
   "frozen_date": "2026-09-08",
-  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair. ACT01-ACT03 cover provisional actor capabilities, player/policy input lifetime and bounded-work limits.",
+  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair. ACT01-ACT03 cover provisional actor capabilities, player/policy input lifetime and bounded-work limits. ACT04-ACT09 cover the 29-rig sets, parametric input, consumed-action identity, fictional personas, bounded tool/rope authority and SetA compatibility.",
   "questions": [
     {
       "id": "C05",
@@ -646,15 +646,119 @@
         "reference/configuration-reference.md"
       ],
       "facts": [
-        "The session admits at most eight actors. Controllers reuse an 8 by 14 sampled body, clamp each step to 1/30 second and cap speed at 120 cells/second, bounding ordinary movement to four increments per axis.",
+        "The session admits at most eight actors. Original SetA controllers reuse an 8 by 14 sampled body, clamp each step to 1/30 second and cap speed at 120 cells/second, bounding ordinary movement to four increments per axis; additional ACT-002 rigs have their own separately bounded motor.",
         "Crawler ledge search is bounded to four cells with intervening clearance; runtime enclosure immobilizes the prototype rather than initiating repeated terrain relocation.",
-        "Observations are 16 floats plus session identity, not full-world scans. Bounded local work is not proof of zero allocations, target-PC performance, inference latency or production many-NPC scaling."
+        "SetA observations retain 16 floats plus session identity; ACT-002 adds versioned rig fields without requiring full-world scans. Bounded local work is not proof of zero allocations, target-PC performance, inference latency or production many-NPC scaling."
       ],
       "sources": [
         "../godot/scripts/actor_prototype.gd",
         "../godot/scripts/actor_prototype_session.gd"
       ]
+    },
+    {
+      "id": "ACT04",
+      "query": "Which actors are in SetA, SetB, SetF, SetY, SetU and SetV, and what makes the 29 rigs different?",
+      "canonical": [
+        "systems/actor-rigs.md"
+      ],
+      "facts": [
+        "SetA retains Runner, Skimmer and Crawler; SetB adds Scout, Scrabbler, Ripper, GroundEffect and Digger; SetF adds Copter, Pouncer, Dropbot and Lineshank; SetY adds Walljumper, Clamberer, Swinger and Rocketjumper.",
+        "SetU is six self-propelled salvage tools: Springjack, Gyrocrate, Bellows, Winchbug, Magpie and Skatesail. SetV is seven speculative interface personas: Astra, Claude, Luna, Qwen, Bonsai, Jev and Gemini.",
+        "Every rig may use human, scripted-demo or external-policy input through the same admitted value actions; the stable IDs use setA/setB/setF/setY/setU/setV and groundeffect without an underscore."
+      ],
+      "sources": [
+        "../godot/scripts/actor_rig_catalog.gd",
+        "../godot/scripts/actor_rig_motor.gd",
+        "../godot/scripts/actor_prototype_session.gd"
+      ]
+    },
+    {
+      "id": "ACT05",
+      "query": "How can a controller drive a tracked Ripper while tilting it, steer Digger downward, and independently aim and reel a Lineshank?",
+      "canonical": [
+        "systems/actor-rigs.md",
+        "reference/configuration-reference.md"
+      ],
+      "facts": [
+        "The extended input contains movement and independent aim vectors, effort from zero to one, trim and reel from minus one to one, and primary/secondary/auxiliary buttons; each rig uses its declared subset.",
+        "Ripper separates track direction from tilt/torque; Digger deliberately limits drill steering to a downward cone; Lineshank has an aimed bungee harpoon, reel control, blade lift and a release that spends stored tension on a bounded horizontal kick.",
+        "WASD, pointer aim, Space/Shift/C, Q/E trim, Z/X reel and brackets/power are the desktop adapters for human-controlled new rigs; the worker never reads raw Input for a policy."
+      ],
+      "sources": [
+        "../godot/scripts/actor_rig_motor.gd",
+        "../godot/scripts/actor_rig_catalog.gd",
+        "../godot/scripts/main.gd"
+      ]
+    },
+    {
+      "id": "ACT06",
+      "query": "If primary was pressed and released between ticks, or Pouncer input expires while charged, which applied action actually caused the movement?",
+      "canonical": [
+        "systems/actor-rigs.md"
+      ],
+      "facts": [
+        "Latest admitted sequences differ from applied_sequences; ten-float applied_actions rows retain held states, while applied_flags retains button rises and cancellation so a brief tap remains explainable.",
+        "Each slot retains one latest command plus coalesced rising edges; several same-button rises before a tick coalesce and do not create an action FIFO.",
+        "Lease expiry or explicit cancellation clears charge, attachment and pending effects before neutral motor input, so a canceled charged Pouncer must not leap as though deliberately released."
+      ],
+      "sources": [
+        "../godot/scripts/actor_prototype_session.gd",
+        "../godot/scripts/actor_rig_motor.gd"
+      ]
+    },
+    {
+      "id": "ACT07",
+      "query": "Do Astra, Claude, Luna, Qwen, Bonsai, Jev and Gemini actor rigs represent real model preferences or start neural services?",
+      "canonical": [
+        "systems/actor-rigs.md",
+        "reference/product-intent-and-priorities.md"
+      ],
+      "facts": [
+        "SetV is explicitly fictional interface design created for the experiment, not a factual claim about any real model behavior, preferences, personality, performance or capabilities.",
+        "Selecting a named rig does not call or connect that model. Scripted demo is hand-authored; external policy selects the command seam and still requires a future inference producer.",
+        "The personas compare vector bursts, deliberate contact, short pulses, explicit modes, compact adhesion, ricochets and paired thrusters within the same finite actor authority."
+      ],
+      "sources": [
+        "../godot/scripts/actor_rig_catalog.gd",
+        "../godot/scripts/actor_prototype_session.gd"
+      ]
+    },
+    {
+      "id": "ACT08",
+      "query": "Can actor drills or blasts erase protected walls, can ropes wrap around obstacles, and what bounds new rig cost?",
+      "canonical": [
+        "systems/actor-rigs.md",
+        "reference/configuration-reference.md"
+      ],
+      "facts": [
+        "Local tools use an explicit material whitelist, bounded footprints and existing owner-local single-cell writes; Wall, composed body masks, out-of-bounds and other noneditable material remain protected.",
+        "Ropes have one bounded straight segment and no wrapping; failed or obstructed anchor revalidation releases attachment rather than teleporting through terrain.",
+        "The session caps eight actors; new motors cap 96 occupancy queries, 64 ray reads and 64 effect reads/writes per update, with finite sweep/angular work. These limits do not prove target-PC throughput or zero allocations."
+      ],
+      "sources": [
+        "../godot/scripts/actor_rig_effects.gd",
+        "../godot/scripts/actor_rig_motor.gd",
+        "../godot/scripts/actor_prototype_session.gd"
+      ]
+    },
+    {
+      "id": "ACT09",
+      "query": "Does the 40-value actor rig observation replace the old 16-value SetA format or retune Runner, Skimmer and Crawler?",
+      "canonical": [
+        "systems/actor-rigs.md",
+        "systems/actor-control-prototypes.md"
+      ],
+      "facts": [
+        "SetA still instantiates CyberActorPrototype and ignores added aim/effort/trim/reel/auxiliary channels; both old and extended submission paths preserve its movement semantics.",
+        "The session retains version1 states with stride16 and adds rig_version2 rig_states with stride40. SetA copies its original prefix, sets original body dimensions and zeros unsupported new fields.",
+        "New fields include angle, angular velocity, contact/attachment, anchor/line, charge/mode, effects and gait; this compact actor-state vector is not full perception or complete future-affecting replay state."
+      ],
+      "sources": [
+        "../godot/scripts/actor_prototype.gd",
+        "../godot/scripts/actor_prototype_session.gd",
+        "../godot/scripts/actor_rig_motor.gd"
+      ]
     }
   ],
-  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set. 2026-10-18: MAT01/MAT02 add independent persistent-contact and interior mask-wake questions; the frozen 32 and prior questions are unchanged. 2026-10-18: ACT01-ACT03 add independent actor model/input/performance-boundary questions; the frozen 32-question set is unchanged."
+  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set. 2026-10-18: MAT01/MAT02 add independent persistent-contact and interior mask-wake questions; the frozen 32 and prior questions are unchanged. 2026-10-18: ACT01-ACT03 add independent actor model/input/performance-boundary questions; the frozen 32-question set is unchanged. 2026-10-18 ACT-002: ACT04-ACT09 add independent expanded-rig/control/observation/persona/budget/compatibility questions. ACT03 now explicitly scopes original numeric limits to SetA and names the additive extension; the frozen 32-question set remains unchanged."
 }

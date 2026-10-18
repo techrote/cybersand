@@ -219,7 +219,7 @@ Use actual platform artifacts and retain their identities for platform acceptanc
 
 ## Actor control prototype checks
 
-`test_actor_prototypes.gd`, `test_actor_prototype_session.gd` and
+The original **SetA** tests `test_actor_prototypes.gd`, `test_actor_prototype_session.gd` and
 `test_actor_prototype_integration.gd` are discovered by the existing Godot
 regression runner. The core runner covers the shared
 action/observation contract, Runner jump/dash timing, Skimmer
@@ -252,6 +252,49 @@ controller fixture from desktop controls, visual/feel review, a learned policy
 or Web integration. Use the [validation ledger](../reference/validation-evidence.md)
 for the actually executed source/runtime/platform scope. These commands are
 reproduction instructions and do not themselves claim a pass.
+
+## Actor rig checks
+
+ACT-002 adds `test_actor_rigs.gd`, `test_actor_rig_session.gd` and
+`test_actor_rig_integration.gd` through the
+same discovered Godot regression runner. The motor fixtures exercise all 26
+additional rigs against independent occupancy/material worlds: input bounds,
+conservative angular clearance, traversal, flight/resources, adhesion/tuck,
+rope attachment/occlusion/reel/release, local tools and protected materials.
+Native smoke cases use the source-matched retained extension separately from
+the mock-world controller timing loop.
+
+The session fixtures check the 29-entry catalog and stable set IDs, the additive
+40-value observation and ten-value action layouts, consumed edge/sequence
+readback, producer/epoch/lease rejection, cancellation and deep-copy retention.
+SetA parity compares the original motor with both legacy and extended submission
+paths; adding channels must not silently retune the original three models.
+
+The integration fixture uses the native desktop owner for extended-action
+admission, dual v1/v2 publications and tool telemetry. It also checks every set's
+selector/comparison capacity, independent pointer projection, keyboard axes and
+quick taps/rearm, rotated overlay geometry and anchor projection, recorder JSON
+with separate actor/material times, and controlled-scenario exclusion.
+
+After pinned-runtime import, run the new fixtures alongside the three SetA
+commands above:
+
+```sh
+timeout 180 <godot> --headless --path godot --script res://tests/test_actor_rigs.gd
+timeout 180 <godot> --headless --path godot --script res://tests/test_actor_rig_session.gd
+timeout 180 <godot> --headless --path godot --script res://tests/test_actor_rig_integration.gd
+```
+
+Changing the selector, human controls, worker, overlay or recorder also requires
+desktop integration and existing PENV/PCHAR/PLAY-VAL/publication/recording
+regressions. Use the full discovered runner for the intended CI matrix rather
+than treating these focused commands as the complete gate.
+
+The [rig contract](../systems/actor-rigs.md) owns control meanings and limits.
+The [validation ledger](../reference/validation-evidence.md) owns actual dated
+execution. Printed mock-world motor timings are informational local-host results,
+not native scene throughput, learned-policy latency, target-PC playfeel or Web
+acceptance. Reproduction commands alone do not claim successful execution.
 
 ## Soliding successor validation
 

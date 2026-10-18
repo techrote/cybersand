@@ -111,11 +111,14 @@ native jobs. Their bounded neighbourhood adds no job view, cache or Rapier objec
 
 ## Optional actor prototype ownership
 
-**Current, experimental:** the [actor session](../systems/actor-control-prototypes.md)
+**Current, experimental:** the [actor session](../systems/actor-rigs.md)
 owns a bounded set of sampled motors under `CyberSimulationWorker`. Human or
 policy producers submit scalar/value commands through its mutex-protected
 mailbox. Only the serialized simulation owner configures, advances or observes
-the motors and calls World collision queries. The public worker forwarding
+the motors and calls World collision/ray queries or bounded local tool writes.
+SetA retains its original motor; additional rig geometry, attachment, angular
+state, charge and effect scratch storage belong to the same owner. Input producers
+cannot provide callback code or arbitrary native writes. The public worker forwarding
 methods do not grant producers a live actor, World or Rapier reference.
 
 Publications copy state/capability values. A current actor observation and a
@@ -124,6 +127,13 @@ relabeling the other. Session pause/reset/clear boundaries invalidate prior
 command epochs, and failed-world publication retains the previous successful
 display contract. The actor-specific action/lease protocol does not bound the
 separate general emission queues described above.
+
+Cancellation clears armed charge, attachments and pending effects before neutral
+input advances; a Pouncer release action must not fire because its lease expired.
+Consumed action/sequence/edge fields and latest admitted sequences are distinct
+copied values. Catalog dictionaries are deep-copied at configuration/publication
+boundaries rather than used as mutable shared actor state. Sampled rig bodies and
+drawn extremities are not scene-tree physics objects or new native job owners.
 
 ## Failed-world ownership and recovery
 
