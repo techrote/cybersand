@@ -5,6 +5,7 @@
 #include "cybersand/render_snapshot.hpp"
 #include "cybersand/scheduler_geometry.hpp"
 #include "cybersand/world.hpp"
+#include "phase_quantity_tests.hpp"
 
 #include <algorithm>
 #include <atomic>
@@ -2719,7 +2720,7 @@ void test_int000_sparse_schema_shadow_equivalence() {
     require(cybersand::kInteractionSchemaVersion == 1U,
             "INT schema version changed");
     require(cybersand::kInteractionProfileId == "int.current-behaviour" &&
-                cybersand::kInteractionProfileVersion == 1U,
+                cybersand::kInteractionProfileVersion == 2U,
             "INT current profile identity changed");
     require(InteractionRules::channels().size() == 7U,
             "INT channel catalogue is incomplete");
@@ -2933,7 +2934,7 @@ void test_int000_sparse_schema_shadow_equivalence() {
                 "themed glass inherited base Glass INT semantics");
     }
     require(InteractionRules::coverage().size() >= 7U &&
-                InteractionRules::tuning_passes().size() == 1U,
+                InteractionRules::tuning_passes().size() == 2U,
             "INT coverage/pass metadata is incomplete");
 }
 
@@ -2971,6 +2972,9 @@ int main() {
         void (*function)();
     };
     const Test tests[] = {
+        {"MAT-002 phase quantities and quench budget", +[] {
+            require(cybersand::mat002_tests::run_all(), "MAT-002 phase quantity group failed");
+        }},
         {"persistent material contacts survive sleep", test_persistent_material_contacts_survive_sleep},
         {"Ice contact boundaries and worker parity", test_ice_contact_boundaries_and_worker_parity},
         {"inert material contacts still sleep", test_inert_material_contacts_still_sleep},

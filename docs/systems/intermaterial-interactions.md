@@ -10,6 +10,30 @@ related-documents: [../operations/microscenarios-programme.md, materials-and-rul
 
 # Intermaterial interaction substrate
 
+## MAT-002 versioned quantity execution
+
+**Current software candidate / #160:** schema remains version 1; the
+`int.current-behaviour` profile is version **2**. The original
+`int.pass.current-oracle` remains the retained parent of
+`int.pass.mat002-phase-quantity`, whose disposition is `bounded-software-candidate`.
+The changed pair rules are `lava-water.quench`, `fire-water.extinguish`,
+`water-sodium.react`, `water-toxic-sludge.purify`, `steam-ice.condense`,
+`water-molten-glass.quench` and `lava-glass.melt`; their `int.pair.*.v2` entries
+carry explicit version, v1 supersession, pass identity and accounting.
+Steam condensation, Metal charge, MoltenGlass cooling, Lava contact and Ice phase
+specialized `int.kernel.*.v2` entries likewise identify their changed state semantics.
+
+The frozen 14-rule product/probability oracle remains a **full-contact recipe**
+control. It is not an assertion that partial-quantity runtime execution is unchanged:
+World now plans both product states before writing either participant, preserves
+unchanged aqueous/hot state, and conditionally retains a hot material until its
+coolant threshold. The
+[Water contract](water-design.md#how-do-water-steam-and-ice-preserve-quantity)
+defines that bounded model and explicit chemical sources/sinks. Read
+[MAT-002 evidence](../audits/2026-10-18-mat002-phase-quantity.md) before reusing old
+interaction captures; earlier profiles/artifacts retain their original identities.
+No general heat field, dense chemistry table or new kinetic solver is introduced.
+
 ## Current boundary
 
 INT-000 owns non-kinetic material/material semantics: conversions and products,
@@ -35,7 +59,7 @@ The native authored source is native/include/cybersand/interaction_rules.hpp.
 Current schema/profile:
 
 - schema ID cybersand.interactions, version 1;
-- profile ID int.current-behaviour, version 1;
+- profile ID int.current-behaviour, version 2 (MAT-002 quantity execution);
 - tuning-pass root int.pass.current-oracle, version 1.
 
 The source is sparse constexpr data plus a deterministic resolver. It is

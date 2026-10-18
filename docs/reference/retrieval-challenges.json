@@ -1,7 +1,7 @@
 {
   "version": 1,
   "frozen_date": "2026-09-08",
-  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair.",
+  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair. MAT03/MAT04 cover MAT-002 aqueous phase quantity and cumulative quench progress.",
   "questions": [
     {
       "id": "C05",
@@ -603,6 +603,38 @@
       "sources": [
         "../native/src/world.cpp",
         "../native/tests/test_world.cpp"
+      ]
+    },
+    {
+      "id": "MAT03",
+      "query": "How does partial Water preserve quantity when evaporating into Steam, condensing or freezing into Ice?",
+      "canonical": [
+        "systems/water-design.md"
+      ],
+      "facts": [
+        "Steam/Ice state_b retains Water-lattice quantity; zero is the legacy full-cell sentinel.",
+        "Steam lifetime and thermal conversions preserve exact quantity; liquid-only observations omit Steam and Ice.",
+        "This closed phase ledger does not claim global chemical/species or energy conservation."
+      ],
+      "sources": [
+        "../native/src/world.cpp",
+        "../native/tests/phase_quantity_tests.hpp"
+      ]
+    },
+    {
+      "id": "MAT04",
+      "query": "Why does a tiny Water parcel no longer instantly turn Lava into Stone, and how is quench progress counted?",
+      "canonical": [
+        "systems/water-design.md"
+      ],
+      "facts": [
+        "Lava/MoltenGlass state_b accumulates actual coolant quantity until one full Water-cell equivalent.",
+        "The contacting Water remains quantity-bearing Steam; whole-solid completion may overshoot by less than a parcel.",
+        "The threshold is a bounded game-scale contact budget, not a latent-heat/temperature solver."
+      ],
+      "sources": [
+        "../native/src/world.cpp",
+        "../native/include/cybersand/interaction_rules.hpp"
       ]
     }
   ],

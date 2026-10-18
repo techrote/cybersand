@@ -1429,6 +1429,21 @@ std::uint8_t World::deterministic_random(std::int64_t x, std::int64_t y,
         0xffU);
 }
 
+std::uint16_t World::phase_water_quantity(std::int64_t x, std::int64_t y) const noexcept {
+    const auto material = get(x, y);
+    if (material == Material::Water) return state_a(x, y);
+    if (material != Material::Steam && material != Material::Ice) return 0;
+    const auto quantity = state_b(x, y);
+    return quantity == 0U ? config_.water_experiment_policy.maximum() : quantity;
+}
+
+std::uint8_t World::phase_quantity_state(std::uint16_t quantity) const noexcept {
+    // Keep old full-cell initialization and traces canonical. Callers supply a
+    // nonzero, validated quantity; actual zero inventory is Material::Empty.
+    return quantity == config_.water_experiment_policy.maximum()
+        ? std::uint8_t{0} : static_cast<std::uint8_t>(quantity);
+}
+
 bool World::rule_is_active(Material material, std::uint16_t state_a_value,
                            std::uint8_t state_b_value) const noexcept {
     const auto& definition = MaterialRules::descriptor(material);
@@ -1479,6 +1494,14 @@ bool World::write_cell(std::int64_t x, std::int64_t y, Material material,
          state_a_value > config_.water_experiment_policy.maximum() ||
          state_b_value > config_.water_experiment_policy.coherence_ticks())) {
         throw std::logic_error("internal Water state outside experiment policy");
+    }
+    if ((material == Material::Steam || material == Material::Ice) &&
+        state_b_value > config_.water_experiment_policy.maximum()) {
+        throw std::logic_error("internal phase quantity outside Water policy");
+    }
+    if ((material == Material::Lava || material == Material::MoltenGlass) &&
+        state_b_value >= config_.water_experiment_policy.maximum()) {
+        throw std::logic_error("internal quench progress outside Water policy");
     }
     if (material != Material::Empty && transient_obstacle_at(x, y) != 0U) return false;
     const auto target = address(x, y);
@@ -1698,6 +1721,12 @@ bool World::set_cell_state(std::int64_t x, std::int64_t y, Material material,
         throw std::invalid_argument("experimental Water state out of domain");
     if (material != Material::Water && state_a_value > 255)
         throw std::invalid_argument("non-Water byte state out of domain");
+    if ((material == Material::Steam || material == Material::Ice) &&
+        state_b_value > config_.water_experiment_policy.maximum())
+        throw std::invalid_argument("phase quantity outside Water policy");
+    if ((material == Material::Lava || material == Material::MoltenGlass) &&
+        state_b_value >= config_.water_experiment_policy.maximum())
+        throw std::invalid_argument("quench progress outside Water policy");
     if (tick_failed_) return false;
     if (!valid_material(static_cast<std::uint16_t>(material))) {
         throw std::invalid_argument("invalid material identifier");
@@ -2567,25 +2596,57 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             const auto reaction =
                 MaterialRules::pair_reaction(material, target, probability_roll);
             if (!reaction.has_value()) continue;
-            const auto& source_definition =
-                MaterialRules::descriptor(reaction->source_product);
-            const auto& target_definition =
-                MaterialRules::descriptor(reaction->target_product);
-            const auto source_state_a = reaction->source_product == Material::Water
-                ? config_.water_experiment_policy.maximum()
-                : static_cast<std::uint16_t>(source_definition.initial_state_a);
-            const auto target_state_a = reaction->target_product == Material::Water
-                ? config_.water_experiment_policy.maximum()
-                : static_cast<std::uint16_t>(target_definition.initial_state_a);
-            bool changed = write_cell(
-                target_x, target_y, reaction->target_product,
-                target_state_a, target_definition.initial_state_b,
-                effects);
-            changed = write_cell(
-                          x, y, reaction->source_product,
-                          source_state_a,
-                          source_definition.initial_state_b, effects) ||
-                      changed;
+            struct ProductState {
+                Material material;
+                std::uint16_t a;
+                std::uint8_t b;
+            };
+            const auto product_state = [this](Material before, Material product,
+                                               std::int64_t px, std::int64_t py) {
+                const auto& definition = MaterialRules::descriptor(product);
+                ProductState result{product,
+                    product == Material::Water ? config_.water_experiment_policy.maximum()
+                                               : static_cast<std::uint16_t>(definition.initial_state_a),
+                    definition.initial_state_b};
+                if (before == product &&
+                    (before == Material::Water || before == Material::Ice || before == Material::Lava)) {
+                    // A preserved participant is not a fresh full-cell source.
+                    result.a = state_a(px, py);
+                    result.b = state_b(px, py);
+                } else if (before == Material::Water && product == Material::Steam) {
+                    result.b = phase_quantity_state(phase_water_quantity(px, py));
+                } else if (before == Material::Steam && product == Material::Water) {
+                    result.a = phase_water_quantity(px, py);
+                }
+                return result;
+            };
+            // Capture both original participants before either write. Reading
+            // the second inventory after the first conversion would lose roles.
+            auto source_product = product_state(material, reaction->source_product, x, y);
+            auto target_product = product_state(target, reaction->target_product, target_x, target_y);
+            const auto is_quenchable = [](Material candidate) {
+                return candidate == Material::Lava || candidate == Material::MoltenGlass;
+            };
+            const auto quench = [this](Material hot, std::int64_t hx, std::int64_t hy,
+                                       std::uint16_t coolant, ProductState& output) {
+                const auto progress = static_cast<std::uint16_t>(state_b(hx, hy) + coolant);
+                if (progress < config_.water_experiment_policy.maximum()) {
+                    output = {hot, state_a(hx, hy), static_cast<std::uint8_t>(progress)};
+                }
+                // At threshold retain the authored whole-cell solid product.
+                // All contacting Water becomes quantity-bearing Steam. Excess
+                // coolant is retained in that parcel, not deleted. This is a
+                // game-scale contact budget, not a physical latent-heat solver.
+            };
+            if (material == Material::Water && is_quenchable(target)) {
+                quench(target, target_x, target_y, phase_water_quantity(x, y), target_product);
+            } else if (target == Material::Water && is_quenchable(material)) {
+                quench(material, x, y, phase_water_quantity(target_x, target_y), source_product);
+            }
+            bool changed = write_cell(target_x, target_y, target_product.material,
+                                      target_product.a, target_product.b, effects);
+            changed = write_cell(x, y, source_product.material,
+                                 source_product.a, source_product.b, effects) || changed;
             return changed;
         }
     }
@@ -2611,10 +2672,10 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             const auto lifetime = state_a(x, y);
             if (lifetime <= 1U) {
                 return write_cell(x, y, Material::Water,
-                                  config_.water_experiment_policy.maximum(), 0, effects);
+                                  phase_water_quantity(x, y), 0, effects);
             }
             bool changed = write_cell(x, y, Material::Steam,
-                                      static_cast<std::uint8_t>(lifetime - 1U), 0,
+                                      static_cast<std::uint8_t>(lifetime - 1U), state_b(x, y),
                                       effects);
             if (try_move(material, x, y, x, y - 1, true, effects)) return true;
             if (try_move(material, x, y, x + direction, y - 1, true, effects)) return true;
@@ -2788,7 +2849,8 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             if ((charge & 3U) == 0U) {
                 const auto [target_x, target_y] = neighbour(deterministic_random(x, y, 123U));
                 if (get(target_x, target_y) == Material::Water) {
-                    changed = write_cell(target_x, target_y, Material::Steam, 90, 0,
+                    changed = write_cell(target_x, target_y, Material::Steam, 90,
+                                         phase_quantity_state(phase_water_quantity(target_x, target_y)),
                                          effects) ||
                               changed;
                 }
@@ -2871,7 +2933,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
                     return write_cell(x, y, Material::Glass, 0, 0, effects);
                 }
                 if (cooling != cooling_before) {
-                    changed = write_cell(x, y, Material::MoltenGlass, cooling, 0,
+                    changed = write_cell(x, y, Material::MoltenGlass, cooling, state_b(x, y),
                                          effects);
                 }
             }
@@ -2886,7 +2948,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
                 const auto sampled = get(sample_x, sample_y);
                 if (sampled == Material::Ice) {
                     changed = write_cell(sample_x, sample_y, Material::Water,
-                                         config_.water_experiment_policy.maximum(), 0, effects);
+                                         phase_water_quantity(sample_x, sample_y), 0, effects);
                 } else {
                     changed = ignite(sample_x, sample_y, 64);
                 }
@@ -2904,12 +2966,13 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
                     return is_hot(candidate);
                 })) {
                 return write_cell(x, y, Material::Water,
-                                  config_.water_experiment_policy.maximum(), 0, effects);
+                                  phase_water_quantity(x, y), 0, effects);
             }
             if (!temporal_lane_due(16U, 192U)) return false;
             const auto [target_x, target_y] = neighbour(deterministic_random(x, y, 30U));
             if (get(target_x, target_y) != Material::Water) return false;
-            return write_cell(target_x, target_y, Material::Ice, 0, 0, effects);
+            return write_cell(target_x, target_y, Material::Ice, 0,
+                              phase_quantity_state(phase_water_quantity(target_x, target_y)), effects);
         }
 
         case RuleKernel::Acid: {

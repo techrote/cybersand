@@ -284,6 +284,10 @@
     {
       "path": "audits/2026-09-24-cybersand-recovery-audit.md",
       "reason": "Dated REC-008 final recovery audit; retrieve explicitly for the 2026-09-20 through 2026-09-22 CI/Stage-3B incident and exact recovery evidence, while Current routing lives in operations/reference contracts"
+    },
+    {
+      "path": "audits/2026-10-18-mat002-phase-quantity.md",
+      "reason": "Dated phase-quantity and quench candidate evidence; use with exact source/runtime/platform identity"
     }
   ]
 }

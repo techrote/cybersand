@@ -10,6 +10,17 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## MAT-002 phase quantity follow-up — 2026-10-18
+
+Issue #160 / branch `mat/phase-quantity-quench` owns the owner-authorized phase
+quantity and cumulative-quench implementation after MAT-001. Read the
+[phase contract](../systems/water-design.md#how-do-water-steam-and-ice-preserve-quantity)
+and [qualification record](../audits/2026-10-18-mat002-phase-quantity.md), not just
+the prior full-cell product oracle. Steam/Ice quantity and hot-cell progress reuse
+state bytes; same-source native runtimes are mandatory before integration. The
+new real-Godot `test_phase_quantity_regression.gd` is automatically discovered by
+the existing regression runner. #30 and the independent #95/#45 gates remain open.
+
 ## Start here for the next task
 
 Work in `C:/kybersand`, with executable source in `source/`. The companion workspace

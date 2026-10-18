@@ -67,6 +67,15 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | What is the actual #24/#27-#30 development order, and may MicroScenarios run before G-final? | [Canonical MicroScenarios/interactions programme](../operations/microscenarios-programme.md), [roadmap](status-and-roadmap.md) |
 | What interaction schema/rule/provenance is authoritative now, and how do we avoid a destructive N² matrix? | [Current interaction substrate](../systems/intermaterial-interactions.md), [canonical programme](../operations/microscenarios-programme.md) |
 
+## Water phase quantity and quench progress
+
+Why does partial Water retain its quantity through Steam and Ice, and why does a
+tiny parcel not instantly solidify Lava? Read the
+[Water phase contract](../systems/water-design.md#how-do-water-steam-and-ice-preserve-quantity).
+For payload persistence and old-runtime limits use
+[phase save compatibility](level-saves-and-replay.md#mat-002-phase-payload-compatibility).
+The [MAT-002 audit](../audits/2026-10-18-mat002-phase-quantity.md) carries dated evidence.
+
 ## Retrieve historical results explicitly
 
 For the M11 August audit use [audits/m11](../audits/m11/README.md) and

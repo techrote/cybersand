@@ -6,10 +6,19 @@ status: Current
 scope: Native storage, activity, scheduling and write-domain geometry; explicit fallback and buffered distinctions
 keywords: [128x128 chunk, 32x32 activity, 64x64 core, radius two, four phases, Buffered]
 related-documents: [data-ownership-and-lifetimes.md, determinism-and-boundary-transfers.md, ../systems/activity-dirty-regions-and-waking.md]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-10-18
 ---
 
 # Chunk, tile, and buffer model
+
+## MAT-002 material-local state reuse
+
+The [Water phase contract](../systems/water-design.md#how-do-water-steam-and-ice-preserve-quantity)
+assigns existing Steam/Ice `state_b` to aqueous quantity and Lava/MoltenGlass
+`state_b` to bounded quench progress. No carrier size/alignment, chunk geometry,
+per-cell allocation, render payload width or scheduler ownership changes. The
+quantity helper reads the same bounded contact neighborhood; both product states
+are captured before in-place pair writes. Default Water remains mass8/coherence12.
 
 ## Why are there three different spatial sizes?
 
