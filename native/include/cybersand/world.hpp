@@ -109,7 +109,9 @@ class PrecisionProbe;
 class World {
     friend class PrecisionProbe;
 public:
-    static constexpr std::uint16_t kMaximumTransientBodies = 16;
+    // ACT-004 admits eight actors with at most eight rectangular parts each.
+    // These are transient occupancy identities, never authoritative cell IDs.
+    static constexpr std::uint16_t kMaximumTransientBodies = 64;
 
     explicit World(WorldConfig config = {});
     ~World();

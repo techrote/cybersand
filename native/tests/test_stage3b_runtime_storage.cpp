@@ -154,10 +154,14 @@ void region_stage3a_parity() {
     using Runtime = SettledRegions<4096, 1, 1, 4096U * 64U, 4096, 4096U * 32U>;
     constexpr std::uint64_t incarnation = 2000U + Capacity;
 
-    Reference reference(incarnation);
-    Runtime runtime(incarnation, Capacity, Capacity * 64U, Capacity * 32U);
-    const auto a = exercise_region_pair(reference, incarnation);
-    const auto b = exercise_region_pair(runtime, incarnation);
+    // These two comparison fixtures together exceed a normal 8 MiB stack at
+    // Capacity=4096. Their ownership location is independent of the storage
+    // capacities and region behavior being compared below.
+    const auto reference = std::make_unique<Reference>(incarnation);
+    const auto runtime = std::make_unique<Runtime>(
+        incarnation, Capacity, Capacity * 64U, Capacity * 32U);
+    const auto a = exercise_region_pair(*reference, incarnation);
+    const auto b = exercise_region_pair(*runtime, incarnation);
 
     require(a.first == b.first && a.second == b.second &&
             a.refusal == b.refusal && a.count == b.count,

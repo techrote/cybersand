@@ -2,7 +2,7 @@
 title: Physical actors and combined feature trials
 status: Approved design
 document-kind: design
-scope: Owner-authorized integration sequence, Blacksite barrel/Ripper experiment and preserved 2026-10-18 actor preferences; not broad physics acceptance
+scope: Owner-authorized ACT-004 integration, retained Blacksite hull comparison and preserved 2026-10-18 actor preferences; not broad physics acceptance
 canonical-for: [physical-actor-programme, combined-feature-launcher, physical-blacksite-comparison]
 last-reviewed: 2026-10-18
 related-documents: [blacksite-nine-demo.md, ../systems/actor-rigs.md, ../systems/thunderbowl-control-reference.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/product-intent-and-priorities.md]
@@ -12,45 +12,51 @@ related-documents: [blacksite-nine-demo.md, ../systems/actor-rigs.md, ../systems
 
 ## What is the approved direction for the complete actor roster?
 
-**Approved owner requirement, 2026-10-18; implementation Planned:** adapt or
-reimplement all 29 actor rigs as physical Rapier actors by default. An actor may
-retain a non-Rapier configuration only when a specific behaviour/configuration
-cannot be realized through the physical representation; record the concrete
-reason and comparison evidence. Implementation inconvenience is not an exception.
-Sampled rigs remain explicit reference controls during migration, not the default
-long-term actor representation. The current physical Ripper is still a single
-rectangular hull and does not complete the Ripper conversion.
+**Approved owner requirement, implemented in ACT-004 source:** all 29 existing
+actor identities now have articulated Rapier definitions, with twelve additional
+SetX examples. The [physical actor contract](../systems/physical-actor-rigs.md)
+owns their mechanisms, scripted examples and shared human/demo/policy interface.
+Physical choices are the default actor route. Sampled motors remain explicit
+references; no existing rig required a nonphysical exception in this catalogue.
+The retained single-hull Ripper arm below is distinct from the new five-part rig.
 
-The migration must preserve each actor's recognizable control and energy while
-using live bodies, bounded impulses/torques, collider-matched polygon graphics,
-and main-thread-owned joints where appropriate. Ground propulsion, hinged parts,
-gyros, thrusters, grips and usable recoil need explicit physical authority; do not
-rename sampled motors or turn cosmetic joints into claims of articulation.
+**Approved fidelity:** preserve recognizable control and energy with real bodies,
+bounded impulses/torques and collider-matched graphics. The owner explicitly
+permits authored gyro assistance without finite momentum accounting, approximate
+connections and modest flex/play to avoid twitchiness. Exact mechanical replicas
+are not an acceptance requirement. Physical ground propulsion still requires
+contact, and joints, thrust, grip and recoil have explicit runtime authority.
 
-**Planned sequence:** establish reusable physical actor/body/joint lifecycle and
-actions/observations behind the existing replaceable bridge; convert barrel and
-Ripper into reference physical mechanisms; then convert ground/contact rigs,
-flight/gyro rigs, rope/attachment rigs and the scripted-policy roster. Trial each
-in Blacksite and the showcase districts against its sampled reference, including
-focus/pause/reset, constrained traversal, Water/Sand contact and held-usables
-attachment/release/recoil. Keep native cell ownership, bounded body capacity and
-#83 granular ownership intact. Arbitrary colliders, articulated coupling and
-policy control are work to implement and validate, not supplied by this picker.
+The reusable main-thread body/joint/session substrate, command leases, mounted
+tools and separate physical Thunderbowl v2 are now implemented. Current bounds
+are eight actors, eight parts per actor including held objects, and 64 coupled
+bodies; the supplied rigs use two through seven parts. Further feel and
+constrained-map trials remain useful, especially Sand contact and difficult
+recovery. Neither this conversion nor a headless fixture pass closes generic
+granular #83, soliding #12 or the Water successor gates. Dated execution and
+remaining limits are in the [ACT-004 record](../audits/2026-10-18-act004-articulated-actors.md).
 
 ## How do I switch actors without leaving an exploratory map?
 
 **Current desktop implementation:** F5 is available in the ordinary sandbox,
 Blacksite Nine and all four showcase districts (Neon Reliquary, Middle Cyberberbia,
-Sewertech Alley and Industrial Underswamp). Each set lists **Sampled** baseline/rig
-choices and **Rapier** physical barrel/Ripper choices. Applying restores the
+Sewertech Alley and Industrial Underswamp). F5 lists all 41 **Rapier** rigs, plus
+the **Sampled** baseline/rig references and original barrel/Ripper hull trials.
+Keyboard, scripted-demo and external-policy producers use the same physical
+session and action vocabulary. Applying restores the
 selected map's starting layout and spawn, starts paused, and keeps the selected
 map identity. Material edits and motion are reset; this is not an in-place
 conversion. R retains the selected actor. Above/Below district navigation carries
 the choice to the destination's own spawn. The ordinary actor sandbox supports the
-same physical choices. The physical trials currently accept keyboard control only;
-scripted/policy pilots and companion NPCs remain sampled-rig options.
+same physical choices. Only the retained single-body hull arms remain
+keyboard-only. Physical comparisons admit up to eight actors from the selected
+set; SetX's twelve entries therefore require more than one simultaneous view.
 
-The worker configures sampled sessions at the scenario-install boundary. The UI
+The worker configures sampled sessions at the scenario-install boundary. The
+main thread installs physical sessions for the selected reset and keeps them
+suspended until the matching reset acknowledgement, actor epoch and terrain are ready.
+Physical picker IDs are `rapier/<model>`; the retained hull IDs are
+`physical/barrel` and `physical/ripper`. The UI
 waits for a matching per-request acknowledgement and definition hash; a previous
 snapshot with the same map hash cannot acknowledge a new actor. Only the explicit
 exploratory map allowlist admits this override. Benchmark mode, Tower, controlled
@@ -67,7 +73,7 @@ scenario-install handling and `actor_prototype_panel.gd` physics labels.
 **Current implementation:** the desktop project's default scene is
 [`feature_launcher.tscn`](../../godot/feature_launcher.tscn). It opens Blacksite
 Nine, the four showcase districts, the ordinary actor/material sandbox,
-Thunderbowl, the separate generation workbench or Strata Theatre. F2 closes the current session
+sampled or physical Thunderbowl, the separate generation workbench or Strata Theatre. F2 closes the current session
 and returns to the launcher; unsaved edits are discarded. Explicit `main.tscn`,
 `-- --blacksite-nine` and `-- --showcase` entry points remain available.
 The native generation workbench remains an isolated authoring preview, without
@@ -83,7 +89,7 @@ transfer of ongoing physical state between representations.
 
 ## What is the first physical comparison?
 
-**Current experimental implementation:** barrel and Ripper each use one live
+**Retained initial comparison:** barrel and Ripper each use one live
 Rapier rectangle, through the existing main-thread bridge and native cellular
 coupling. The sampled owner is disabled. Barrel retains the reference 8 by 14
 hull and horizontal drive. Ripper uses an 18 by 8 hull, a 70-cell/s horizontal
@@ -128,8 +134,9 @@ observations rather than claiming the shaders fixed collision.
 
 The owner approved landing the existing presentation, generation and scene
 features, a combined launcher, and starting the physical barrel/Ripper trial.
-The following preferences are **Approved direction / Planned follow-up**, not
-claims about mechanisms already implemented:
+The following preferences were **Approved direction / Planned follow-up at
+intake**. They remain the owner-intent record; current implementation and its
+qualification are separately described above and in the physical actor contract:
 
 - Prefer experimental impulse/torque-driven Rapier machines; keep sampled
   reference arms for comparison. Add short high-power vertical pulses and torque
@@ -172,17 +179,18 @@ and image were inspected locally and are not copied into the source repository.
 
 ## Follow-up order and ownership
 
-1. Land the existing features with exact-head gates; retain prior audits.
-2. Validate the combined launcher and single-body Blacksite experiment.
-3. Establish one reusable articulated-body/joint substrate with Scrabbler.
-   Explicitly budget actor count, part count and the current 16-body coupling
-   limit; preserve main-thread Rapier and worker-owned native cell authority.
-4. Reuse that substrate for other rigs and usable attachments. Keep generic
-   granular response, shape coupling and cellular torque work with their canonical
-   owners. Do not recharter #12/#45 or alter historical scientific fixtures.
+The initial sequence was feature integration, the matched single-body trial,
+then a reusable articulated substrate and roster migration. ACT-004 implements
+that substrate and all 41 definitions. Its shared capacity was deliberately
+raised from the former 16-body bound to 64 with finite-record admission and
+capacity tests. The packed body/result strides are unchanged.
 
-No selection of a universal actor representation, acceptance of every rig,
-articulated mechanism, learned controller or broad platform result follows from
-this first experiment.
+Further training, model-service orchestration and broad feel/platform acceptance
+require their own evidence. Generic granular response, arbitrary shape coupling
+and cellular torque remain with their canonical owners. Keep #83, #12 and the
+Water programme scopes intact; historical scientific fixtures remain references.
 
-The [Strata Theatre depth prototype](../systems/depth-layers-and-parallax.md) is also available from the launcher and retains F4/direct entry. It owns its four synchronous material worlds independently of gameplay. The source-image conversation produced tool-art references; those are follow-up usable assets, not an implemented wielding system.
+The [Strata Theatre depth prototype](../systems/depth-layers-and-parallax.md)
+retains its independent four-world host. The source-image conversation produced
+32 usable-art references. ACT-004 implements a bounded mount/recoil/held-item
+substrate and a few actual tools, not all 32 inventory items.

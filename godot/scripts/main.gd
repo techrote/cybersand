@@ -1,9 +1,18 @@
 extends Control
 
 const PhysicalTrial = preload("res://scripts/physical_actor_trial.gd")
+const PhysicalCatalog = preload("res://scripts/physical_actor_catalog.gd")
+const PhysicalSession = preload("res://scripts/physical_actor_session.gd")
+const PhysicalOverlay = preload("res://scripts/physical_actor_overlay.gd")
 var exploratory_actor_configuration: Dictionary = {}
 var physical_trial_arm: String = ""
 var physical_trial_input = PhysicalTrial.new()
+var physical_rig_id: StringName = &""
+var physical_actor_session: CyberPhysicalActorSession
+var physical_actor_overlay: CyberPhysicalActorOverlay
+var _physical_epoch: int = 0
+var _physical_terrain_ready: bool = false
+const PHYSICAL_TOOL_KEYS: Array[int] = [KEY_M, KEY_N, KEY_U]
 
 const GameplayRecorder = preload("res://scripts/gameplay_recorder.gd")
 const PlayerEnvironmentProfiles = preload("res://scripts/player_environment_profiles.gd")
@@ -295,7 +304,9 @@ func _microscenario_installed(definition: Dictionary) -> void:
 	camera_follow_enabled = false
 	camera_origin = Vector2(definition.camera_origin[0], definition.camera_origin[1])
 	character_position = Vector2(definition.player_start[0], definition.player_start[1])
-	if player_uses_barrel():
+	if physical_rig_id != &"":
+		_activate_articulated_actor_rigs(character_position)
+	elif player_uses_barrel():
 		_activate_microscenario_barrel_player(character_position)
 	else:
 		_activate_water_body_scenario(bool(definition.body_enabled))
@@ -537,6 +548,7 @@ func water_lab_apply_blind(index: int = -1) -> bool:
 	return true
 
 func _activate_water_body_scenario(active: bool) -> void:
+	_close_physical_actors()
 	var default_shape := RectangleShape2D.new()
 	default_shape.size = TEST_RIGID_BODY_SIZE
 	test_rigid_body_1.get_node("CollisionShape2D").shape = default_shape
@@ -997,7 +1009,7 @@ func _ready() -> void:
 			body.freeze = true
 	camera_origin = clamped_camera_origin(character_centre() - Vector2(current_view_size) * 0.5)
 	update_worker_frame_state()
-	simulation_worker.set_rigid_body_states(pack_rigid_body_states())
+	_publish_physical_body_state()
 	simulation_worker.set_render_snapshot_hz(render_snapshot_hz)
 	worker_start_error = simulation_worker.start_worker(CHARACTER_SPAWN)
 	if worker_start_error != OK:
@@ -1080,6 +1092,7 @@ func _exit_tree() -> void:
 	if gameplay_recorder.is_active():
 		var stopped: Dictionary = gameplay_recorder.stop_recording()
 		print("REC-001 recording finalized at exit: ", JSON.stringify(stopped))
+	_close_physical_actors()
 	simulation_worker.stop_worker()
 	rapier_bridge.shutdown()
 
@@ -1101,6 +1114,7 @@ func _process(delta: float) -> void:
 		HARD_SURFACE_CHUNKS_PER_FRAME,
 		HARD_SURFACE_FRAME_BUDGET_USEC
 	)
+	_update_physical_terrain_ready()
 	maximum_collider_time_ms = maxf(
 		maximum_collider_time_ms,
 		rapier_bridge.last_hard_surface_build_time_ms()
@@ -1112,6 +1126,9 @@ func _process(delta: float) -> void:
 		latest_snapshot.actor_prototypes if latest_snapshot != null else {},
 		camera_origin.floor(), current_view_size, view_content_rect()
 	)
+	physical_actor_overlay.present(
+		physical_actor_session.render_parts() if physical_actor_session != null else [],
+		camera_origin.floor(), current_view_size, view_content_rect())
 	update_worker_frame_state()
 	update_shader_parameters()
 
@@ -1125,6 +1142,10 @@ func _process(delta: float) -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	if physical_actor_session != null:
+		physical_actor_session.set_suspended(paused or simulation_worker.has_failed()
+			or not _physical_terrain_ready or _actor_reset_receipt != 0
+			or not pending_microscenario_apply.is_empty())
 	publish_actor_keyboard_input()
 	if paused or simulation_worker.has_failed():
 		physical_trial_input.armed = false
@@ -1134,11 +1155,19 @@ func _physics_process(_delta: float) -> void:
 		rapier_bridge.is_initialized()
 		and not paused
 		and worker_start_error == OK
+		and _actor_reset_receipt == 0
+		and pending_microscenario_apply.is_empty()
+		and (physical_actor_session == null or _physical_terrain_ready)
 	):
 		apply_latest_rigid_body_results()
-		apply_barrel_player_control(_delta)
+		if physical_actor_session != null:
+			physical_actor_session.advance(rapier_bridge.fixed_delta())
+		else:
+			apply_barrel_player_control(_delta)
 		rapier_bridge.step()
-	simulation_worker.set_rigid_body_states(pack_rigid_body_states())
+		if physical_actor_session != null:
+			physical_actor_session.complete_step()
+	_publish_physical_body_state()
 
 
 func setup_depth_lab_launcher() -> void:
@@ -1157,6 +1186,17 @@ func open_depth_lab() -> void:
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
+	if physical_rig_id != &"" and event is InputEventKey \
+		and (event.keycode in ACTOR_CONTROL_KEYS or event.keycode in PHYSICAL_TOOL_KEYS):
+		if actor_human_control_active() and actor_keyboard_allowed() and event.pressed and not event.echo:
+			if event.keycode == KEY_BRACKETLEFT:
+				_actor_effort = clampf(_actor_effort - 0.05, 0.0, 1.0)
+			elif event.keycode == KEY_BRACKETRIGHT:
+				_actor_effort = clampf(_actor_effort + 0.05, 0.0, 1.0)
+		if not event.echo:
+			publish_actor_keyboard_input()
+		get_viewport().set_input_as_handled()
+		return
 	if not physical_trial_arm.is_empty() and event is InputEventKey and event.keycode in [KEY_Q, KEY_E]:
 		# Trial torque owns these keys; do not also cycle the brush material.
 		get_viewport().set_input_as_handled()
@@ -1545,6 +1585,7 @@ func setup_player_representation_button() -> void:
 
 
 func player_representation_identity() -> String:
+	if physical_rig_id != &"": return "articulated-rapier/" + str(physical_rig_id)
 	if not physical_trial_arm.is_empty(): return "physical-" + physical_trial_arm
 	if latest_snapshot != null and not latest_snapshot.actor_prototypes.is_empty():
 		return latest_snapshot.player_representation
@@ -1577,7 +1618,7 @@ func refresh_player_representation_button() -> void:
 				latest_snapshot.character_runtime_recovery_upward_cells,
 			]
 	else:
-		recovery_text = " | impulses + torque + upward pulse" if not physical_trial_arm.is_empty() else " | horizontal impulse control only"
+		recovery_text = " | articulated controls / F5" if physical_rig_id != &"" else (" | impulses + torque + upward pulse" if not physical_trial_arm.is_empty() else " | horizontal impulse control only")
 	player_representation_button.text = "Player %s / F6%s" % [
 		player_representation_identity(),
 		recovery_text,
@@ -1598,7 +1639,9 @@ func cycle_player_representation() -> bool:
 		or not pending_water_apply.is_empty()
 	):
 		return false
-	var restore_reference_bodies: bool = not physical_trial_arm.is_empty()
+	var restore_reference_bodies: bool = not physical_trial_arm.is_empty() or physical_rig_id != &""
+	_close_physical_actors()
+	physical_rig_id = &""
 	physical_trial_arm = ""
 	physical_trial_input = PhysicalTrial.new()
 	actor_model_selection = &""
@@ -1633,6 +1676,8 @@ func toggle_sampled_runtime_recovery() -> bool:
 
 
 func _force_sampled_player_for_lab() -> void:
+	_close_physical_actors()
+	physical_rig_id = &""
 	physical_trial_arm = ""
 	physical_trial_input = PhysicalTrial.new()
 	actor_model_selection = &""
@@ -1649,7 +1694,7 @@ func _force_sampled_player_for_lab() -> void:
 	barrel_player_spawn_position = CHARACTER_SPAWN
 	if restore_body_layout and not rigid_bodies.is_empty():
 		reset_test_rigid_bodies()
-		simulation_worker.set_rigid_body_states(pack_rigid_body_states())
+		_publish_physical_body_state()
 		character_position = CHARACTER_SPAWN
 	refresh_player_representation_button()
 
@@ -1699,6 +1744,7 @@ func _apply_microscenario_player_configuration(
 	configuration: Dictionary
 ) -> void:
 	physical_trial_arm = str(configuration.get("physical_trial", ""))
+	physical_rig_id = StringName(str(configuration.get("physical_rig", "")))
 	physical_trial_input = PhysicalTrial.new()
 	exploratory_actor_configuration = configuration.duplicate(true) if CyberMicroScenarioCatalogue.exploratory_actor_map(definition) and configuration.has("actor_model") else {}
 	actor_model_selection = StringName(str(configuration.get("actor_model", "")))
@@ -1744,7 +1790,7 @@ func _activate_microscenario_barrel_player(spawn_position: Vector2) -> void:
 		reset_test_rigid_bodies()
 	else:
 		microscenario_error = "Could not initialize barrel-player Rapier bridge"
-	simulation_worker.set_rigid_body_states(pack_rigid_body_states())
+	_publish_physical_body_state()
 
 
 func barrel_player_spawn_centre() -> Vector2:
@@ -1800,6 +1846,10 @@ func sync_player_presentation_position() -> void:
 
 func reset_world() -> void:
 	if water_controlled_run_active(): return
+	if physical_rig_id != &"":
+		apply_actor_prototype_configuration(StringName("rapier/" + str(physical_rig_id)),
+			actor_producer_selection, actor_demo_npcs)
+		return
 	physical_trial_input = PhysicalTrial.new()
 	if actor_model_selection != &"":
 		var receipt: int = simulation_worker.queue_actor_prototype_reset(
@@ -1821,10 +1871,12 @@ func reset_world() -> void:
 	camera_follow_enabled = true
 	camera_origin = clamped_camera_origin(character_centre() - Vector2(current_view_size) * 0.5)
 	update_worker_frame_state()
-	simulation_worker.set_rigid_body_states(pack_rigid_body_states())
+	_publish_physical_body_state()
 
 
 func reset_test_rigid_bodies() -> void:
+	if physical_actor_session != null:
+		return # Recreate the complete assembly through the fresh-reset path.
 	for body_index: int in range(rigid_bodies.size()):
 		if rapier_bridge.is_initialized():
 			rapier_bridge.reset_body(
@@ -1891,6 +1943,10 @@ func pack_rigid_body_states() -> PackedFloat32Array:
 
 func apply_latest_rigid_body_results() -> void:
 	if latest_snapshot == null or latest_snapshot.simulation_failed or not rapier_bridge.is_initialized():
+		return
+	if _actor_reset_receipt != 0 or not pending_microscenario_apply.is_empty():
+		return
+	if latest_snapshot.rigid_body_epoch != (_physical_epoch if physical_actor_session != null else 0):
 		return
 	rapier_bridge.apply_cellular_results(
 		latest_snapshot.serial,
@@ -2010,10 +2066,16 @@ func sync_hard_surface_colliders() -> void:
 		or latest_snapshot.hard_surface_revision == last_hard_surface_revision
 	):
 		return
+	if physical_actor_session != null and not _physical_terrain_ready \
+		and (latest_snapshot.rigid_body_epoch != _physical_epoch or _actor_reset_receipt != 0
+			or not pending_microscenario_apply.is_empty()):
+		return
 	if latest_snapshot.hard_surface_chunk_rectangles_valid:
-		rapier_bridge.queue_hard_surface_chunk_snapshot(
+		if not rapier_bridge.queue_hard_surface_chunk_snapshot(
 			latest_snapshot.hard_surface_chunk_rectangles
-		)
+		):
+			microscenario_error = "Terrain collider snapshot was refused"
+			return
 	elif latest_snapshot.hard_surface_rectangles_valid:
 		rapier_bridge.rebuild_hard_surface_colliders_from_rectangles_chunked(
 			latest_snapshot.hard_surface_rectangles,
@@ -2028,6 +2090,20 @@ func sync_hard_surface_colliders() -> void:
 		)
 	last_hard_surface_revision = latest_snapshot.hard_surface_revision
 	hard_surface_rebuild_cooldown = HARD_SURFACE_REBUILD_INTERVAL
+
+
+func _update_physical_terrain_ready() -> void:
+	# New actors wait for their own native reset/pose acknowledgement and the
+	# complete initial terrain install. Subsequent edits keep the ordinary
+	# budgeted refresh path; this fence prevents an early unpause falling through
+	# colliders that have not been installed yet.
+	if physical_actor_session == null or _physical_terrain_ready or latest_snapshot == null:
+		return
+	_physical_terrain_ready = (_actor_reset_receipt == 0 and pending_microscenario_apply.is_empty()
+		and latest_snapshot.rigid_body_epoch == _physical_epoch
+		and last_hard_surface_revision >= 0
+		and last_hard_surface_revision == latest_snapshot.hard_surface_revision
+		and rapier_bridge.is_initialized() and rapier_bridge.pending_hard_surface_chunks() == 0)
 
 
 func get_horizontal_input() -> float:
@@ -2056,6 +2132,9 @@ func setup_actor_prototypes() -> void:
 	actor_prototype_overlay.name = "ActorPrototypeOverlay"
 	actor_prototype_overlay.clip_contents = true
 	$Layout/World.add_child(actor_prototype_overlay)
+	physical_actor_overlay = PhysicalOverlay.new()
+	physical_actor_overlay.name = "PhysicalActorOverlay"
+	$Layout/World.add_child(physical_actor_overlay)
 
 
 func actor_prototypes_allowed() -> bool:
@@ -2075,6 +2154,7 @@ func toggle_actor_prototypes() -> void:
 		return
 	_actor_input_rearm = true
 	var selected_model: StringName = StringName("physical/" + physical_trial_arm) if not physical_trial_arm.is_empty() else actor_model_selection
+	if physical_rig_id != &"": selected_model = StringName("rapier/" + str(physical_rig_id))
 	actor_prototype_panel.configure_selection(selected_model, actor_producer_selection, actor_demo_npcs)
 	actor_prototype_panel.set_context(str(microscenario_definition.get("id", "Sandbox")) if tower_context.get("micro_active", false) else "Sandbox")
 	actor_prototype_panel.effort_slider.value = _actor_effort
@@ -2093,25 +2173,150 @@ func actor_prototype_definitions(model_id: StringName, producer: StringName, dem
 	return definitions
 
 
+func physical_actor_definitions(model_id: StringName, producer: StringName, demo_npcs: bool, spawn: Vector2) -> Array:
+	if not PhysicalCatalog.has_rig(model_id):
+		return []
+	var models: Array[StringName] = [model_id]
+	if demo_npcs:
+		for candidate: StringName in PhysicalCatalog.rigs_in_set(PhysicalCatalog.set_for(model_id)):
+			if candidate != model_id and models.size() < PhysicalSession.MAX_ACTORS:
+				models.append(candidate)
+	var definitions: Array = []
+	var next_x: float = spawn.x + CyberSampledCharacter.BODY_SIZE.x * 0.5
+	for index: int in range(models.size()):
+		var data: Dictionary = PhysicalCatalog.entry(models[index])
+		var bounds: Rect2 = data.bounds
+		# Align the lowest part above the authored player's feet. Neighbours are
+		# spaced by their complete assembly widths, including the usable mount.
+		if index > 0:
+			next_x += -bounds.position.x + 8.0
+		var origin := Vector2(next_x, spawn.y + CyberSampledCharacter.BODY_SIZE.y - float(data.spawn_floor_clearance))
+		origin.x = clampf(origin.x, -bounds.position.x + 2.0, 1022.0 - bounds.end.x)
+		origin.y = clampf(origin.y, -bounds.position.y + 2.0, 1022.0 - bounds.end.y)
+		definitions.append({"model": models[index], "producer": producer if index == 0 else &"demo", "position": origin})
+		next_x = origin.x + bounds.end.x
+	return definitions
+
+
+func _activate_articulated_actor_rigs(spawn: Vector2) -> bool:
+	var definitions: Array = physical_actor_definitions(physical_rig_id,
+		actor_producer_selection, actor_demo_npcs, spawn)
+	if not PhysicalSession.valid_definitions(definitions):
+		microscenario_error = "Physical actor configuration exceeds its bounded assembly budget"
+		return false
+	_activate_water_body_scenario(false)
+	_physical_epoch += 1
+	_physical_terrain_ready = false
+	physical_actor_session = PhysicalSession.new()
+	physical_actor_session.name = "PhysicalActorSession"
+	physical_actor_session.visible = false
+	add_child(physical_actor_session)
+	if not physical_actor_session.configure(definitions, get_viewport().world_2d.space, _physical_epoch):
+		microscenario_error = physical_actor_session.last_error
+		_close_physical_actors()
+		return false
+	physical_actor_session.input_cancelled.connect(_on_physical_actor_input_cancelled)
+	physical_actor_session.set_suspended(true)
+	rapier_bridge = physical_actor_session.bridge
+	rigid_bodies = physical_actor_session.bodies()
+	rapier_start_error = OK
+	last_hard_surface_revision = -1
+	hard_surface_rebuild_cooldown = 0.0
+	simulation_worker.set_physical_actor_epoch(_physical_epoch)
+	_publish_physical_body_state()
+	return true
+
+
+func _close_physical_actors() -> void:
+	_physical_terrain_ready = false
+	if physical_actor_session == null:
+		return
+	simulation_worker.set_physical_actor_epoch(0)
+	physical_actor_session.close()
+	physical_actor_session.free()
+	physical_actor_session = null
+	rigid_bodies.clear()
+	rapier_bridge = CyberRapierPhysicsBridge.new()
+	last_hard_surface_revision = -1
+	if physical_actor_overlay != null:
+		physical_actor_overlay.present([], Vector2.ZERO, current_view_size, view_content_rect())
+
+
+func _publish_physical_body_state() -> void:
+	var effects: Array = physical_actor_session.drain_effects() if physical_actor_session != null else []
+	simulation_worker.set_rigid_body_states(pack_rigid_body_states(),
+		_physical_epoch if physical_actor_session != null else 0, effects)
+
+
+func physical_actor_observation(actor_id: int = 0) -> Dictionary:
+	return physical_actor_session.observation(actor_id) if physical_actor_session != null else {}
+
+
+func submit_physical_actor_command(command: Dictionary) -> bool:
+	return (physical_actor_session != null and actor_prototypes_allowed()
+		and not paused and _physical_terrain_ready and _actor_reset_receipt == 0
+		and physical_actor_session.submit(command, &"policy"))
+
+
+func cancel_physical_actor_command(actor_id: int = 0) -> bool:
+	return physical_actor_session != null and physical_actor_session.cancel_input(
+		actor_id, _physical_epoch, &"policy")
+
+
+func _on_physical_actor_input_cancelled(actor_id: int, actor_epoch: int) -> void:
+	simulation_worker.cancel_physical_actor_effects(actor_epoch, actor_id)
+
+
+func _publish_physical_keyboard_input() -> void:
+	if actor_producer_selection != &"human":
+		return
+	if not actor_keyboard_allowed() or _actor_reset_receipt != 0 or simulation_worker.has_failed():
+		_actor_input_rearm = true
+		physical_actor_session.cancel_input(0, _physical_epoch, &"human")
+		return
+	if _actor_input_rearm:
+		for key: int in ACTOR_CONTROL_KEYS + PHYSICAL_TOOL_KEYS:
+			if Input.is_key_pressed(key):
+				return
+		_actor_input_rearm = false
+	var action: Dictionary = {
+		"move": Vector2(get_horizontal_input(), float(Input.is_key_pressed(KEY_S)) - float(Input.is_key_pressed(KEY_W))),
+		"aim": actor_pointer_aim(), "effort": _actor_effort,
+		"trim": float(Input.is_key_pressed(KEY_E)) - float(Input.is_key_pressed(KEY_Q)),
+		"reel": float(Input.is_key_pressed(KEY_X)) - float(Input.is_key_pressed(KEY_Z)),
+		"primary": Input.is_key_pressed(KEY_SPACE), "secondary": Input.is_key_pressed(KEY_SHIFT),
+		"auxiliary": Input.is_key_pressed(KEY_C), "tool": Input.is_key_pressed(KEY_M),
+		"release_usable": Input.is_key_pressed(KEY_N), "attach_usable": Input.is_key_pressed(KEY_U),
+	}
+	physical_actor_session.submit_local(0, action, &"human", 6)
+
+
 func apply_actor_prototype_configuration(model_id: StringName, producer: StringName, demo_npcs: bool) -> bool:
 	if not actor_prototypes_allowed():
 		actor_prototype_panel.set_error("Actor changes are available in exploratory maps and the sandbox; controlled scenarios are protected.")
 		return false
-	var physical: bool = model_id in [&"physical/barrel", &"physical/ripper"]
+	var trial: bool = model_id in [&"physical/barrel", &"physical/ripper"]
+	var articulated: bool = str(model_id).begins_with("rapier/")
+	var bare_id := StringName(str(model_id).trim_prefix("rapier/")) if articulated else &""
+	if articulated and not PhysicalCatalog.has_rig(bare_id): return false
+	var physical: bool = trial or articulated
 	if not physical and model_id != &"" and not ActorRigCatalog.has_rig(model_id): return false
 	if not CyberActorPrototypeSession.PRODUCERS.has(producer): return false
 	var spawn: Vector2 = CHARACTER_SPAWN
 	if tower_context.get("micro_active", false):
 		spawn = Vector2(microscenario_definition.player_start[0], microscenario_definition.player_start[1])
 	var definitions: Array = [] if physical else actor_prototype_definitions(model_id, producer, demo_npcs, spawn)
-	var arm: String = str(model_id).trim_prefix("physical/") if physical else ""
+	if articulated and not PhysicalSession.valid_definitions(physical_actor_definitions(bare_id, producer, demo_npcs, spawn)):
+		return false
+	var arm: String = str(model_id).trim_prefix("physical/") if trial else ""
 	var configuration: Dictionary = {
 		"representation":"barrel-rapier" if physical else "sampled",
 		"runtime_recovery_enabled":not physical and model_id == &"",
 		"experimental":true, "physical_trial":arm,
+		"physical_rig":str(bare_id),
 		"actor_model":"" if physical else str(model_id),
-		"actor_producer":"human" if physical else str(producer),
-		"actor_demo_npcs":demo_npcs and not physical,
+		"actor_producer":"human" if trial else str(producer),
+		"actor_demo_npcs":demo_npcs and not trial,
 		"actor_definitions":definitions,
 	}
 	if tower_context.get("micro_active", false):
@@ -2124,21 +2329,26 @@ func apply_actor_prototype_configuration(model_id: StringName, producer: StringN
 	_actor_reset_receipt = receipt
 	paused = true
 	actor_model_selection = &"" if physical else model_id
-	actor_producer_selection = &"human" if physical else producer
-	actor_demo_npcs = demo_npcs and not physical
+	actor_producer_selection = &"human" if trial else producer
+	actor_demo_npcs = demo_npcs and not trial
 	_actor_effort = actor_prototype_panel.effort_slider.value
 	_actor_input_rearm = true
 	physical_trial_arm = arm
+	physical_rig_id = bare_id
 	physical_trial_input = PhysicalTrial.new()
 	player_representation = CyberPlayerRepresentation.BARREL_RAPIER if physical else CyberPlayerRepresentation.SAMPLED
 	sampled_runtime_recovery_enabled = not physical and model_id == &""
-	if physical:
+	if articulated:
+		if not _activate_articulated_actor_rigs(spawn):
+			actor_prototype_panel.set_error(microscenario_error)
+			return false
+	elif physical:
 		_activate_microscenario_barrel_player(spawn)
 	else:
 		_activate_water_body_scenario(false)
 		_activate_water_body_scenario(true)
 		reset_test_rigid_bodies()
-		simulation_worker.set_rigid_body_states(pack_rigid_body_states())
+		_publish_physical_body_state()
 	character_position = spawn
 	camera_follow_enabled = true
 	camera_origin = clamped_camera_origin(character_centre() - Vector2(current_view_size) * 0.5)
@@ -2151,10 +2361,17 @@ func _reconcile_actor_prototype_reset() -> void:
 		return
 	_actor_reset_receipt = 0
 	if latest_snapshot.actor_prototype_reset_applied:
+		last_hard_surface_revision = -1
+		hard_surface_rebuild_cooldown = 0.0
 		return
 	# The owner may have accepted a scenario after the last displayed snapshot.
 	# Reconcile a refused request with actual actor identity, never UI optimism.
 	var context: Dictionary = latest_snapshot.actor_prototypes
+	if physical_actor_session != null:
+		_close_physical_actors()
+		physical_rig_id = &""
+		player_representation = CyberPlayerRepresentation.SAMPLED if latest_snapshot.player_body_id == 0 else CyberPlayerRepresentation.BARREL_RAPIER
+		_activate_water_body_scenario(true)
 	actor_model_selection = &"" if context.is_empty() else StringName(str(context.models[0]))
 	if not context.is_empty():
 		actor_producer_selection = StringName(str(context.producers[0]))
@@ -2171,6 +2388,8 @@ func _reconcile_actor_prototype_reset() -> void:
 func actor_keyboard_allowed() -> bool:
 	if paused or not get_window().has_focus() or not actor_prototypes_allowed():
 		return false
+	if physical_actor_session != null and not _physical_terrain_ready:
+		return false
 	if actor_prototype_panel.visible or player_environment_panel.visible:
 		return false
 	if tower_profile_panel != null and tower_profile_panel.visible:
@@ -2182,6 +2401,8 @@ func actor_keyboard_allowed() -> bool:
 
 
 func actor_human_control_active() -> bool:
+	if physical_actor_session != null:
+		return actor_producer_selection == &"human"
 	return (
 		latest_snapshot != null and not latest_snapshot.actor_prototypes.is_empty()
 		and latest_snapshot.actor_prototypes.producers[0] == &"human"
@@ -2202,6 +2423,9 @@ func actor_pointer_aim_at(pointer: Vector2) -> Vector2:
 
 
 func publish_actor_keyboard_input() -> void:
+	if physical_actor_session != null:
+		_publish_physical_keyboard_input()
+		return
 	if latest_snapshot == null or latest_snapshot.actor_prototypes.is_empty():
 		return
 	var context: Dictionary = latest_snapshot.actor_prototypes
@@ -2244,6 +2468,12 @@ func publish_actor_keyboard_input() -> void:
 
 func refresh_actor_prototypes() -> void:
 	actor_prototype_button.disabled = not actor_prototypes_allowed()
+	if physical_actor_session != null:
+		var state: Dictionary = physical_actor_session.snapshot()
+		actor_prototype_button.text = "Rapier %s / F5 | %s | %d actors / %d parts" % [
+			PhysicalCatalog.name_for(physical_rig_id), str(actor_producer_selection), state.actor_count, state.body_count]
+		actor_prototype_button.tooltip_text = PhysicalCatalog.controls_text(physical_rig_id) + "\nM tool · N release · U reattach. Release controls after switching."
+		return
 	if not physical_trial_arm.is_empty():
 		actor_prototype_button.text = "Rapier %s / impulses + torque / F5" % physical_trial_arm
 		return
@@ -2777,7 +3007,7 @@ func update_shader_parameters() -> void:
 		water_mode=2 if str(tower_context.get("water_policy",{}).get(
 			"interface_mode","coverage"))=="oriented" else 1
 	world_shader.set_shader_parameter("water_presentation_mode",water_mode)
-	for body_index: int in range(rigid_bodies.size()):
+	for body_index: int in range(mini(3, rigid_bodies.size()) if physical_actor_session == null else 0):
 		var body_transform: Transform2D
 		if rapier_bridge.is_initialized():
 			body_transform = rapier_bridge.body_transform(body_index)

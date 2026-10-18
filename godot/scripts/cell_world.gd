@@ -369,6 +369,8 @@ func prepare_rigid_body_coupling(
 	var body_count: int = CyberRigidBodyCoupling.input_body_count(rigid_body_states)
 	for body_index: int in range(body_count):
 		var state_offset: int = body_index * CyberRigidBodyCoupling.INPUT_STRIDE
+		if not CyberRigidBodyCoupling.input_record_valid(rigid_body_states, state_offset):
+			continue
 		var body_id: int = roundi(
 			rigid_body_states[state_offset + CyberRigidBodyCoupling.INPUT_BODY_ID]
 		)
@@ -408,6 +410,8 @@ func prepare_rigid_body_coupling(
 	rigid_body_occupied_indices.clear()
 	for body_index: int in range(body_count):
 		var state_offset: int = body_index * CyberRigidBodyCoupling.INPUT_STRIDE
+		if not CyberRigidBodyCoupling.input_record_valid(rigid_body_states, state_offset):
+			continue
 		var body_id: int = roundi(
 			rigid_body_states[state_offset + CyberRigidBodyCoupling.INPUT_BODY_ID]
 		)
@@ -425,15 +429,25 @@ func prepare_rigid_body_coupling(
 		revision += 1
 
 
+func rigid_body_id_at(x: int, y: int) -> int:
+	if not in_bounds(x, y):
+		return 0
+	return rigid_body_occupancy[cell_index(x, y)]
+
+
 func rigid_body_results() -> PackedFloat32Array:
 	var results: PackedFloat32Array = PackedFloat32Array()
 	var body_count: int = CyberRigidBodyCoupling.input_body_count(rigid_body_states)
 	for body_index: int in range(body_count):
 		var state_offset: int = body_index * CyberRigidBodyCoupling.INPUT_STRIDE
+		if not CyberRigidBodyCoupling.input_record_valid(rigid_body_states, state_offset):
+			continue
 		var body_id: int = roundi(
 			rigid_body_states[state_offset + CyberRigidBodyCoupling.INPUT_BODY_ID]
 		)
 		if body_id <= 0 or body_id > CyberRigidBodyCoupling.MAX_BODIES:
+			continue
+		if rigid_body_state_offsets[body_id] != state_offset:
 			continue
 		results.append(float(body_id))
 		results.append(rigid_body_impulse_x[body_id])
@@ -539,11 +553,11 @@ func _rasterize_rigid_body_sweep(
 	if sweep_extent <= BODY_SWEEP_SAMPLE_SPACING:
 		_rasterize_rigid_body_transform(body_id, center, rotation, half_size)
 		return
-	var sweep_steps: int = clampi(
-		ceili(sweep_extent / BODY_SWEEP_SAMPLE_SPACING),
-		1,
-		MAX_BODY_SWEEP_STEPS
-	)
+	var sweep_steps: int = int(clampf(
+		ceilf(sweep_extent / BODY_SWEEP_SAMPLE_SPACING),
+		1.0,
+		float(MAX_BODY_SWEEP_STEPS)
+	))
 	for sweep_step: int in range(sweep_steps + 1):
 		var weight: float = float(sweep_step) / float(sweep_steps)
 		_rasterize_rigid_body_transform(
@@ -566,10 +580,10 @@ func _rasterize_rigid_body_transform(
 		absf(cosine) * half_size.x + absf(sine) * half_size.y,
 		absf(sine) * half_size.x + absf(cosine) * half_size.y
 	)
-	var first_x: int = clampi(floori(center.x - extent.x), 0, WORLD_WIDTH - 1)
-	var last_x: int = clampi(ceili(center.x + extent.x) - 1, 0, WORLD_WIDTH - 1)
-	var first_y: int = clampi(floori(center.y - extent.y), 0, WORLD_HEIGHT - 1)
-	var last_y: int = clampi(ceili(center.y + extent.y) - 1, 0, WORLD_HEIGHT - 1)
+	var first_x: int = int(clampf(floorf(center.x - extent.x), 0.0, float(WORLD_WIDTH - 1)))
+	var last_x: int = int(clampf(ceilf(center.x + extent.x) - 1.0, 0.0, float(WORLD_WIDTH - 1)))
+	var first_y: int = int(clampf(floorf(center.y - extent.y), 0.0, float(WORLD_HEIGHT - 1)))
+	var last_y: int = int(clampf(ceilf(center.y + extent.y) - 1.0, 0.0, float(WORLD_HEIGHT - 1)))
 
 	for y: int in range(first_y, last_y + 1):
 		for x: int in range(first_x, last_x + 1):
