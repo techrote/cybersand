@@ -33,6 +33,9 @@ func configure() -> void:
 	_output.name = "Composite"
 	_output.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_output.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	var white := Image.create(1, 1, false, Image.FORMAT_RGBA8)
+	white.fill(Color.WHITE)
+	_output.texture = ImageTexture.create_from_image(white)
 	_output.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_output.stretch_mode = TextureRect.STRETCH_SCALE
 	add_child(_output)
