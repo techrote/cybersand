@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "seed": 73,
+  "max_ticks": 1800,
+  "layout": "training_pit",
+  "evaluation": "mechanics",
+  "actors": [
+    {
+      "model": "ripper",
+      "control_mode": "metal",
+      "observation_mode": "local",
+      "team": 0,
+      "controller": "metal_pulse"
+    },
+    {
+      "model": "copter",
+      "control_mode": "metal",
+      "observation_mode": "local",
+      "team": 0,
+      "controller": "metal_pulse"
+    },
+    {
+      "model": "gemini",
+      "control_mode": "metal",
+      "observation_mode": "local",
+      "team": 0,
+      "controller": "metal_pulse"
+    }
+  ]
+}

@@ -413,3 +413,41 @@ Bounds apply to owner-local controller work. They do not establish zero
 allocations, complete native reaction cost, neural inference latency, target-PC
 frame time or large NPC-population throughput. Source-owned movement details and
 per-rig limitations remain in the [catalog contract](../systems/actor-rigs.md).
+
+## Thunderbowl values
+
+**Current, experimental ACT-003:** the standalone
+[arena/control reference](../systems/thunderbowl-control-reference.md) owns
+behavior and schema meaning. These are fixed prototype constants, not live
+world/PENV tuning or accepted population-throughput targets. Sources are
+[`thunderbowl_arena.gd`](../../godot/scripts/thunderbowl_arena.gd),
+[`thunderbowl_contract.gd`](../../godot/scripts/thunderbowl_contract.gd),
+[`actor_rig_actuation.gd`](../../godot/scripts/actor_rig_actuation.gd) and the
+[`example driver`](../../godot/examples/thunderbowl/thunderbowl_driver.gd).
+
+| Boundary | Current value and consequence |
+|---|---|
+| Arena / population | One 256 by 144 cell training pit beginning at (96,96); 1–8 rigs; native workers=1 |
+| Episode duration | 1–36,000 ticks; rig/material step 1/60 second; terminal scores freeze |
+| Script / human cadence | Script, local reflex and graph-NCA decisions every six ticks (10 Hz); scene human sampling every tick (60 Hz) |
+| Commands | At most eight envelopes per owner step, at most one admitted per actor; one latest held session packet |
+| Input lease | Default 12, maximum 18 ticks, derived from the issued observation's tick; 19 issuance-history slots per actor |
+| Local sensing | 9 by 9 material samples spaced four cells; at most seven actors within 64 cells and clear native-cell line of sight |
+| Oracle sensing | Full copied actor states/virtual HP plus 32 by 18 global material samples at eight-cell spacing; no full-resolution native grid |
+| Sensing budget | At most 8,192 reads per completed-state generation; at most 192 reads per line; conservative opaque result on exhaustion |
+| Tag combat | Virtual HP=3, range=56 cells, aim dot threshold=0.94, rising-edge shot, cooldown=30 ticks, one target per shot |
+| Tag work / reward | At most 10,752 line reads per step; +1/-1 per hit; elimination +2 shared among simultaneous contributors and -2 to victim; ring-out -2 |
+| Local messages | One typed four-float message per admitted sender command; same team, radius/LOS gated, next-tick delivery; expiry is packet lease deadline; at most seven retained senders per receiver / 56 deliveries |
+| Event history | Last 128 events retained with monotonic IDs and explicit dropped-event count |
+| Smart-link requests | At most one pending request per actor, request interval at least 30 ticks; plan validity 1–120 ticks from original observation |
+| JSON file boundary | At most 65,536 bytes for a loaded config/response; optional file I/O runs between arena steps and can delay the caller |
+| Graph neural example | Four hidden channels per actor; one shared 12→8→4 residual MLP update per decision; 140 authored untrained weight/bias values clamped by schema to -4..4 |
+| Metal profiles | Ripper: drive/torque/brake/zero; Copter: collective/lateral/torque/brake; Gemini: independent left/right/zero/zero; original motor geometry/query/speed caps remain |
+| Direct readback | Version 1, 32 values per actor, separate from v1/v2 rig state; game-unit force/torque and mass/inertia, no SI/Rapier-force claim |
+| Optional scene image | At most one copied 256 by 144 material region every six ticks (36,864 reads); no such full-region sampling in headless policy sensing |
+
+`evaluation` declares `mechanics`, `matched`, `asymmetric` or `oracle_reference`.
+The matched configuration gate requires equal rig, actuation lane and observation
+profile and excludes human cadence; it does not prove equal effective compute,
+training privilege or empirical fairness. The visible scene displays evaluator
+information, so its human examples use mechanics/asymmetric classification.
