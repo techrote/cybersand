@@ -22,7 +22,7 @@ func _run() -> void:
 	)
 	_expect(CyberMaterialAppearanceLut.MATERIAL_COUNT == 81, "themed material extent changed")
 	_expect(
-		CyberMaterialAppearanceLut.FLAIR_CLASS_COUNT == 42,
+		CyberMaterialAppearanceLut.FLAIR_CLASS_COUNT == 45,
 		"expanded GPU flair class count changed"
 	)
 	_expect(
@@ -63,17 +63,21 @@ func _run() -> void:
 			programs.get_pixel(2, CyberCellWorld.SMOKE).g >= 1.0,
 		"smoke lifetime did not compile to a long fade curve"
 	)
-	for liquid_id: int in [
-		CyberCellWorld.OIL,
-		CyberCellWorld.PASTE,
-		CyberCellWorld.SLUSH,
-		CyberCellWorld.BRINE,
-		CyberCellWorld.CEMENT,
-	]:
+	# The former shared wet finish is split by family (material readability pass).
+	var wet_family: Dictionary = {
+		CyberCellWorld.OIL: CyberMaterialAppearanceLut.FLAIR_OIL,
+		CyberCellWorld.PASTE: CyberMaterialAppearanceLut.FLAIR_PASTE,
+		CyberCellWorld.CEMENT: CyberMaterialAppearanceLut.FLAIR_PASTE,
+		CyberCellWorld.SLUSH: CyberMaterialAppearanceLut.FLAIR_SLUSH,
+		CyberCellWorld.BRINE: CyberMaterialAppearanceLut.FLAIR_WATER,
+		CyberCellWorld.WATER: CyberMaterialAppearanceLut.FLAIR_WATER,
+		CyberCellWorld.WET_ASPHALT: CyberMaterialAppearanceLut.FLAIR_WET_SURFACE,
+		CyberCellWorld.WET_COBBLESTONE: CyberMaterialAppearanceLut.FLAIR_WET_SURFACE,
+	}
+	for liquid_id: int in wet_family:
 		_expect(
-			roundi(programs.get_pixel(3, liquid_id).a) ==
-				CyberMaterialAppearanceLut.FLAIR_WET,
-			"liquid %d did not compile to animated flow flair" % liquid_id
+			roundi(programs.get_pixel(3, liquid_id).a) == int(wet_family[liquid_id]),
+			"material %d did not compile to its wet-family flair" % liquid_id
 		)
 	_expect(
 		roundi(programs.get_pixel(3, CyberCellWorld.SMOKE).a) ==
