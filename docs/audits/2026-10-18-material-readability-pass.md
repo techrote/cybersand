@@ -26,6 +26,7 @@ reaction, scheduling or body-ownership source changed.
 | Native runtime (unchanged) | `cybersand_native.windows.x86_64.dll` SHA-256 `aeaa28ba2681ddd11f10fffd8ce8f96b5abf578fa65a20ec976074dc0860cd88` (matches `runtime-provenance.json`) |
 | Godot | `4.7.stable.official.5b4e0cb0f` Windows x86_64 (official `Godot_v4.7-stable_win64.exe.zip`, SHA-256 `02a53122…bcd71`, release SHA-512 verified) |
 | Renderer / GPU | `gl_compatibility`, OpenGL 3.3.0 NVIDIA 581.80, NVIDIA TITAN RTX, Windows 11 Pro 10.0.26300 |
+| Reconciliation | PR #159 (MAT-001) merged to `main` as `ec05d72` during the pass and was merged into this branch (`38a3c62`); its Windows runtime `61e4ad3a0288c1479098a78c36f64efda6764beacbece917532751f4eb39ffe7` matches its provenance. Repeated after the merge: full Godot regressions, both graphical tests, the native Laboratory capture (RG8 at tick 90 byte-identical to the pre-merge runtime's, so the paired evidence stands) and live desktop/Web glow captures. |
 | Parallel work | PR #159 (MAT-001, native reaction scheduling) and PR #148 (PENV-002, touches `main.gd`) were open; neither touches the shaders or LUT. Shader pairs use identical RG8 inputs, so no physics difference is attributed to shaders. |
 
 ## Apparatus
