@@ -18,6 +18,9 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 
 | Question family | Canonical route |
 |---|---|
+| How do I enter Blacksite Nine, follow the route through its connected 3×3 districts, use the camera map, and preserve or reset edits across shared boundaries? | [Blacksite Nine connected-complex guide](../operations/blacksite-nine-demo.md) |
+| How do I open Neon Reliquary, descend through Middle Cyberberbia, Sewertech Alley and Industrial Underswamp, inspect viewpoints, or capture all four tiles? | [Neon Reliquary scene guide](../operations/neon-reliquary-demo.md) |
+
 | How do Strata, Flow Network and District Grammar generate interconnected chunks on demand? | [Procedural generation](../systems/procedural-world-generation.md); source/runtime scope belongs to [GEN-001 evidence](../audits/2026-10-18-gen001-procedural-generation.md) |
 | How do theme supersets/subsets, exclusions, blended brushstrokes, fine parameters and hard overrides combine? | [Procedural generation controls](../systems/procedural-world-generation.md), [configuration](configuration-reference.md) |
 | How can advanced structure modules extend generation without touching World, and can stale results overwrite player edits? | [Procedural generation](../systems/procedural-world-generation.md), [ownership](../architecture/data-ownership-and-lifetimes.md), [interfaces](interfaces-and-message-contracts.md) |

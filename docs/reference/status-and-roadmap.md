@@ -54,6 +54,24 @@ Historical completion records remain immutable.
 
 ## Current implementation map
 
+**Connected scene content, 2026-10-18:**
+[Blacksite Nine](../operations/blacksite-nine-demo.md) composes nine 320 × 320
+districts into one 960 × 960 native region: a surface laboratory between two
+wastelands, above six dense underground industrial districts. Twelve reciprocal
+ports and a common final passage carve connect the whole map. Shift+F11 and the
+Web demo menu install the complex; the 3×3 map, atlas and following views change
+only the camera, while R resets all nine districts together. Its fixed interest
+region and world-coordinate presentation preserve continuity without introducing
+a streaming subsystem. The [dated scene audit](../audits/2026-10-18-blacksite-nine.md)
+owns recipe, runtime and visual evidence; physics programmes retain their gates.
+
+**Scene content, 2026-10-18:** [Neon Reliquary](../operations/neon-reliquary-demo.md)
+adds an ornate machine-cathedral demo and the three tiles beneath it: Middle
+Cyberberbia, Sewertech Alley and Industrial Underswamp. They use the shared native
+MicroScenario host, with desktop/Web entry points, five views per tile, Above/Below
+navigation and themed distant scenery. District changes load original layouts.
+It is an aesthetic showcase; existing physics programmes retain their own gates.
+
 | Area | Implemented scope and canonical contract |
 |---|---|
 | Cellular authority and platform owners | Native World; asynchronous desktop GDScript owner, synchronous Web callbacks with optional internal pool; [threading](../architecture/simulation-tick-and-threading.md) |

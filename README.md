@@ -4,6 +4,41 @@ CyberSand is a C++20 cellular simulation engine hosted by Godot, with a material
 lab and bounded Rapier2D/cellular coupling proof. The longer-term product intent
 is a reusable foundation for cyberpunk RPG and exploration games.
 
+## Blacksite Nine
+
+Press **Shift+F11** or click **Blacksite Nine** to open a continuous 3 × 3
+industrial complex. A fortified research laboratory sits between two ruined
+wastelands, above six dense underground districts: worker warrens, containment
+galleries, condensate machinery, crushing works, an instrument vault and a flooded
+pump terminus. All nine share one native world, with twelve connected passages.
+
+Use the **3×3 tile map** to inspect a district, **Whole complex** for the atlas,
+or **F** to follow the player through the narrow routes. The scene starts paused;
+**P** runs it, **A/D** move, and holding **Space** rises through shafts. Camera
+changes preserve the entire complex and its edits; **R** restores all nine
+districts together. It is also available in the Web demo menu. See the
+[Blacksite Nine guide](docs/operations/blacksite-nine-demo.md) for the route,
+controls, construction and reproducible captures.
+
+![Blacksite Nine rendered in CyberSand](docs/images/blacksite-nine/blacksite-nine.png)
+
+## Neon Reliquary and the city below
+
+Press **F11** or click **Neon Reliquary** in the desktop sandbox to open an
+elaborate machine cathedral: a suspended cyan engine, stained glass, stacked
+service buildings, cable runs and a flooded nave. It is also available in the Web
+demo menu. From there, use **Below** to descend through **Middle Cyberberbia**,
+**Sewertech Alley**, and **Industrial Underswamp**: stacked homes and a garden
+bridge, a dense technological sewer ravine, then drowned and overgrown machinery.
+Each tile opens in its original paused layout with five camera views. Press
+**F8** for a clean view and **P** to animate the materials.
+See the [four-tile scene guide](docs/operations/neon-reliquary-demo.md) for controls,
+construction details and reproducible captures.
+
+![Neon Reliquary rendered in CyberSand](docs/images/neon-reliquary/overview.png)
+
+## Development
+
 **Current source, reviewed 2026-09-08:** this checkout preserves the acquired
 `web-demo-m11` history plus existing local work, checkpointed before the RAG
 rewrite as `126175c`. Inspect current HEAD/status; historical M11 `BUILD_ID` and

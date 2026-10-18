@@ -4,7 +4,7 @@ document-kind: runbook
 canonical-for: [material-lab-controls, manual-material-recipes]
 status: Current
 scope: Desktop and Web manual controls, repeatable interaction observations, construction recipes, and finite-demo limits
-last-reviewed: 2026-09-18
+last-reviewed: 2026-10-18
 related-documents: [systems/materials-and-rule-kernels.md, systems/themed-construction-materials.md, systems/water-design.md, reference/configuration-reference.md, reference/level-saves-and-replay.md, operations/microscenarios-programme.md]
 ---
 
@@ -24,6 +24,21 @@ behavior; the desktop fallback is a narrower, different implementation.
 Physics Pit requires the [Rapier capability checks](operations/rapier-2d-migration-runbook.md).
 
 ## Desktop controls
+
+The detailed [Neon Reliquary demo](operations/neon-reliquary-demo.md) is available
+through **F11** or its launcher. It opens a paused machine-cathedral scene with
+five viewpoints; **F8** supplies a clean view and **P** resumes its materials.
+**Below / Above** and the district selector navigate its four-tile descent:
+Neon Reliquary, Middle Cyberberbia, Sewertech Alley and Industrial Underswamp.
+Changing district loads that tile's original paused layout; changing its camera
+view preserves edits.
+
+**Shift+F11** or **Blacksite Nine** opens the separate
+[connected 3×3 complex](operations/blacksite-nine-demo.md). Use its **3×3 tile
+map** to frame any district, **Whole complex** for the overview, and **F** to
+follow the player. A/D and held Space move through the twelve connecting
+galleries and shafts. Tile framing preserves edits everywhere; **R** restores
+the entire nine-tile world.
 
 Source: [main.gd::_unhandled_key_input, update_camera, update_worker_frame_state](../godot/scripts/main.gd).
 
@@ -60,12 +75,15 @@ Source: [web_demo_controller.gd](../godot/scripts/web_demo_controller.gd),
 [web_demo_menu.gd](../godot/scripts/web_demo_menu.gd), and
 [demo_worlds.gd](../godot/scripts/demo_worlds.gd).
 
-Web offers Material Lab, Waterworks, Foundry, Neon Works, and Physics Pit.
+Web offers Material Lab, Waterworks, Foundry, Neon Works, Physics Pit,
+Experiment Tower, all four [Neon Reliquary district tiles](operations/neon-reliquary-demo.md),
+and the [Blacksite Nine 3×3 complex](operations/blacksite-nine-demo.md).
 Escape opens/closes the menu; during a reference benchmark it requests cancel.
 Gameplay shortcuts are ignored while the menu is open. Shared shortcuts are
-mouse paint/erase, A/D, Space, 1–6, Q/E, P, R, F, C, T, G, and F3. X requests
+mouse paint/erase, A/D, Space, 1–6, Q/E, P, R, F, C, T, G, F3, F8, F11 and
+Shift+F11. X requests
 a bounded radius-20 explosion at the valid world pointer. Desktop's V/B/L/K/H,
-Page keys, and Shift-group shortcuts are not a Web shortcut contract.
+Page keys, and other Shift-group shortcuts are not a Web shortcut contract.
 
 LOW/NORMAL/HIGH pair view, margins, and publication rate. The menu also exposes
 level text export/import, a local save slot, and isolated performance/stress

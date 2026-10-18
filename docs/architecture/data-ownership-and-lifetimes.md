@@ -44,6 +44,13 @@ Source: [World/Chunk](../../native/src/world.cpp),
 [Rapier bridge](../../godot/scripts/rapier_physics_bridge.gd).
 Step order belongs in the [threading contract](simulation-tick-and-threading.md).
 
+The [Blacksite Nine camera map](../operations/blacksite-nine-demo.md) is a
+main-thread presentation consumer of one installed native world. Selecting any
+of its nine tiles changes only the camera rectangle and follow state; it neither
+installs a tile nor queries the desktop worker's mutable cells. Its backdrop and
+exposure use the accepted current/previous textures. Initial launch and whole-map
+reset retain the existing owner-local MicroScenario replacement boundary.
+
 ## How may generated content enter cell authority?
 
 **Current GEN-001/GEN-002 source:** the generation job API and supplied module context

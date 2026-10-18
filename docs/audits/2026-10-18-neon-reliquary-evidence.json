@@ -1,0 +1,373 @@
+{
+  "schema_version": 1,
+  "recorded_date": "2026-10-18",
+  "checkpoint": {
+    "baseline_commit": "ec05d7227885bda59bf72a5889b004296b9a07e5",
+    "branch": "scene/neon-reliquary-demo",
+    "identity_scope": "Scene implementation over the stated main baseline. Source-file digests and the local implementation commit identify the tested content; the commit containing this manifest retains the current publication status.",
+    "source_files_sha256": {
+      "godot/.godot/global_script_class_cache.cfg": "d382096d5c6737b32edb42a91c7d32e8bf855f266aef1c797ff6f5dfa2238448",
+      "godot/scripts/demo_worlds.gd": "db8ca0b746ba6cdd0f2c10dcffdffc70d556351fd25b42f9e34267b5b157c2b2",
+      "godot/scripts/main.gd": "caeeb9282f2162df53b5157e4c483dcefcfdb7cb4f89640dca360afe52a43ade",
+      "godot/scripts/microscenario_catalogue.gd": "5e47bcd30ff793da93034ed51fb19af5b8b8a94104cc7ff5cdc918f49d7bc22d",
+      "godot/scripts/neon_reliquary.gd": "f48f4ffac8d8e112991ebc948864a3da7783439b0450e6e12df4b3a2073110fa",
+      "godot/scripts/showcase_presentation.gd": "60816523b0d35f87f3494935291909712ea70c328a103585cd644dc7cf73638b",
+      "godot/scripts/web_demo_controller.gd": "00d061fb6593a06c54631d99266d3cd4646b6ac207c1bef9b310deb24b9f0be6",
+      "godot/shaders/neon_reliquary_backdrop.gdshader": "0a32fea80a6740c99b037e1e01ec30742085ad175bbf6d25eebeecadd4a1ac75",
+      "godot/tests/test_neon_reliquary.gd": "457b1d39ff7baef4f3632347f49cabe63fadb66fef2df3e03e450efb424e9b9d",
+      "godot/tests/test_showcase_backdrop_render.gd": "90136f7a55fdb95d2794b85f980544806016e06766615dfd35f07be99dc05580",
+      "godot/tools/capture_neon_reliquary.gd": "c2e32d7f4a8d3db7f7e99190e32a308a435637bb0a46f50374044991ca51676a"
+    },
+    "native_source_changed": false,
+    "retained_runtime_changed": false,
+    "implementation_commit": "14c9f3e4128c76e0580b466a8943a7313a6168b1"
+  },
+  "scene": {
+    "id": "showcase/neon-reliquary",
+    "version": 1,
+    "seed": 0,
+    "definition_sha256": "895796380f2f82692724fb4378d77c2b239223f6a81bbb018233629e6ccaed0f",
+    "construction_records": 3973,
+    "construction_record_limit": 4096,
+    "authored_cell_writes": 543468,
+    "authored_cell_write_limit": 8388608,
+    "material_id_count": 34,
+    "interest": [
+      32,
+      16,
+      960,
+      540
+    ],
+    "worker_threads": 1,
+    "transport": "Baseline",
+    "water_mass_bits": 8,
+    "initial_tick": 0,
+    "initial_paused": true,
+    "rigid_bodies_enabled": false,
+    "coherence_ticks": 12
+  },
+  "runtime": {
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "godot_archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+    "godot_binary_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "linux_native_sha256": "43e747137249041d56a522dbe0ec35219082ea555e1ec1cbdd40971c6a58db9c",
+    "linux_native_bytes": 1630856,
+    "rapier_sha256": "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831",
+    "rapier_bytes": 10781080,
+    "native_source_input_errors": [],
+    "renderer": "OpenGL 4.5 / Compatibility / Mesa 25.2.8-0ubuntu0.24.04.2 / llvmpipe LLVM 20.1.2, 256 bits"
+  },
+  "local_checks": {
+    "scene_regression": {
+      "status": "passed",
+      "assertions": 89,
+      "failures": 0,
+      "native_ticks": 120,
+      "workers": 1,
+      "source_scope": "Final implementation hashes listed above; desktop owner and synchronous Web controller executed on Linux.",
+      "runner_result": {
+        "identity": {
+          "godot_version": "4.7.stable.official.5b4e0cb0f",
+          "head": "ec05d7227885bda59bf72a5889b004296b9a07e5",
+          "runtime_files": {
+            "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "43e747137249041d56a522dbe0ec35219082ea555e1ec1cbdd40971c6a58db9c",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831"
+          },
+          "scope": "Final current working tree; Linux native + headless desktop and synchronous Web-controller lifecycle. Not a performance measurement.",
+          "tested_files": {
+            "godot/scripts/demo_worlds.gd": "db8ca0b746ba6cdd0f2c10dcffdffc70d556351fd25b42f9e34267b5b157c2b2",
+            "godot/scripts/main.gd": "caeeb9282f2162df53b5157e4c483dcefcfdb7cb4f89640dca360afe52a43ade",
+            "godot/scripts/microscenario_catalogue.gd": "5e47bcd30ff793da93034ed51fb19af5b8b8a94104cc7ff5cdc918f49d7bc22d",
+            "godot/scripts/neon_reliquary.gd": "f48f4ffac8d8e112991ebc948864a3da7783439b0450e6e12df4b3a2073110fa",
+            "godot/scripts/showcase_presentation.gd": "60816523b0d35f87f3494935291909712ea70c328a103585cd644dc7cf73638b",
+            "godot/scripts/web_demo_controller.gd": "00d061fb6593a06c54631d99266d3cd4646b6ac207c1bef9b310deb24b9f0be6",
+            "godot/shaders/neon_reliquary_backdrop.gdshader": "0a32fea80a6740c99b037e1e01ec30742085ad175bbf6d25eebeecadd4a1ac75",
+            "godot/tests/test_neon_reliquary.gd": "457b1d39ff7baef4f3632347f49cabe63fadb66fef2df3e03e450efb424e9b9d"
+          }
+        },
+        "result": {
+          "diagnostic_error": false,
+          "log": "test_neon_reliquary.log",
+          "name": "test_neon_reliquary",
+          "returncode": 0,
+          "role": "final-showcase-guards",
+          "seconds": 5.478,
+          "status": "passed",
+          "timeout_seconds": 180
+        },
+        "source_files_changed_during_run": []
+      }
+    },
+    "existing_shared_controller_regressions": {
+      "status": "passed",
+      "cases": [
+        {
+          "diagnostic_error": false,
+          "log": "test_microscenario_controllers.log",
+          "name": "test_microscenario_controllers",
+          "returncode": 0,
+          "role": "focused-shared-controller",
+          "seconds": 3.072,
+          "status": "passed",
+          "timeout_seconds": 180
+        },
+        {
+          "diagnostic_error": false,
+          "log": "test_web_demo_setup.log",
+          "name": "test_web_demo_setup",
+          "returncode": 0,
+          "role": "focused-shared-controller",
+          "seconds": 0.566,
+          "status": "passed",
+          "timeout_seconds": 180
+        },
+        {
+          "diagnostic_error": false,
+          "log": "test_pchar001_player_representations.log",
+          "name": "test_pchar001_player_representations",
+          "returncode": 0,
+          "role": "focused-shared-controller",
+          "seconds": 4.077,
+          "status": "passed",
+          "timeout_seconds": 180
+        },
+        {
+          "diagnostic_error": false,
+          "log": "test_penv001_player_environment.log",
+          "name": "test_penv001_player_environment",
+          "returncode": 0,
+          "role": "focused-shared-controller",
+          "seconds": 0.215,
+          "status": "passed",
+          "timeout_seconds": 180
+        },
+        {
+          "diagnostic_error": false,
+          "log": "test_playval001_selectable_player_fixtures.log",
+          "name": "test_playval001_selectable_player_fixtures",
+          "returncode": 0,
+          "role": "focused-shared-controller",
+          "seconds": 3.186,
+          "status": "passed",
+          "timeout_seconds": 180
+        },
+        {
+          "diagnostic_error": false,
+          "log": "test_brush_owner_commands.log",
+          "name": "test_brush_owner_commands",
+          "returncode": 0,
+          "role": "focused-shared-controller",
+          "seconds": 0.766,
+          "status": "passed",
+          "timeout_seconds": 180
+        },
+        {
+          "diagnostic_error": false,
+          "log": "test_water_feel_controller.log",
+          "name": "test_water_feel_controller",
+          "returncode": 0,
+          "role": "focused-shared-controller",
+          "seconds": 4.636,
+          "status": "passed",
+          "timeout_seconds": 180
+        },
+        {
+          "diagnostic_error": false,
+          "log": "test_render_patch_handoff_regression.log",
+          "name": "test_render_patch_handoff_regression",
+          "returncode": 0,
+          "role": "focused-shared-controller",
+          "seconds": 0.666,
+          "status": "passed",
+          "timeout_seconds": 180
+        }
+      ],
+      "tested_source_sha256": {
+        "godot/scripts/demo_worlds.gd": "db8ca0b746ba6cdd0f2c10dcffdffc70d556351fd25b42f9e34267b5b157c2b2",
+        "godot/scripts/main.gd": "caeeb9282f2162df53b5157e4c483dcefcfdb7cb4f89640dca360afe52a43ade",
+        "godot/scripts/microscenario_catalogue.gd": "5e47bcd30ff793da93034ed51fb19af5b8b8a94104cc7ff5cdc918f49d7bc22d",
+        "godot/scripts/neon_reliquary.gd": "f48f4ffac8d8e112991ebc948864a3da7783439b0450e6e12df4b3a2073110fa",
+        "godot/scripts/showcase_presentation.gd": "60816523b0d35f87f3494935291909712ea70c328a103585cd644dc7cf73638b",
+        "godot/scripts/web_demo_controller.gd": "00d061fb6593a06c54631d99266d3cd4646b6ac207c1bef9b310deb24b9f0be6",
+        "godot/shaders/neon_reliquary_backdrop.gdshader": "0a32fea80a6740c99b037e1e01ec30742085ad175bbf6d25eebeecadd4a1ac75"
+      }
+    },
+    "rendered_backdrop_oracle": {
+      "status": "passed",
+      "failures": 0,
+      "display": "X11 software OpenGL",
+      "scope": "Actual rendered pixels: filled solid/liquid cells, previous-material transition, player, erase, fresh paint and completed transition masks."
+    },
+    "scene_capture": {
+      "status": "passed",
+      "display": "X11",
+      "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+      "normal_desktop_controller": true,
+      "all_views_visually_inspected": true,
+      "views": [
+        {
+          "file": "docs/images/neon-reliquary/overview.png",
+          "name": "The whole reliquary",
+          "origin": [
+            32.0,
+            16.0
+          ],
+          "paused": true,
+          "size": [
+            960,
+            540
+          ],
+          "tick": 0,
+          "dimensions": [
+            1920,
+            1080
+          ],
+          "sha256": "e1e0e0efcfcc63cf5160fbdcb462a5d92edf7a21470f8fa608598c4c0b0fe1a9",
+          "bytes": 927453
+        },
+        {
+          "file": "docs/images/neon-reliquary/heart.png",
+          "name": "The suspended heart",
+          "origin": [
+            272.0,
+            96.0
+          ],
+          "paused": true,
+          "size": [
+            480,
+            270
+          ],
+          "tick": 0,
+          "dimensions": [
+            1920,
+            1080
+          ],
+          "sha256": "011fca2a38ab2a803410c2b454533493644a8eff8c10f7ad04f98c71d537c6b3",
+          "bytes": 409866
+        },
+        {
+          "file": "docs/images/neon-reliquary/nave.png",
+          "name": "The drowned nave",
+          "origin": [
+            272.0,
+            286.0
+          ],
+          "paused": true,
+          "size": [
+            480,
+            270
+          ],
+          "tick": 0,
+          "dimensions": [
+            1920,
+            1080
+          ],
+          "sha256": "a82b4bc13dfc03286d6660f7f7e958089c568e1e13eb52303c0dd1685a4d70e6",
+          "bytes": 345259
+        },
+        {
+          "file": "docs/images/neon-reliquary/west.png",
+          "name": "West service quarter",
+          "origin": [
+            32.0,
+            88.0
+          ],
+          "paused": true,
+          "size": [
+            480,
+            270
+          ],
+          "tick": 0,
+          "dimensions": [
+            1920,
+            1080
+          ],
+          "sha256": "f3e4e5151090b8f8e06e70d251b5c69fc1a84f84c093d67abc39083b6fd9406a",
+          "bytes": 410224
+        },
+        {
+          "file": "docs/images/neon-reliquary/crown.png",
+          "name": "The broken crown",
+          "origin": [
+            272.0,
+            16.0
+          ],
+          "paused": true,
+          "size": [
+            480,
+            270
+          ],
+          "tick": 0,
+          "dimensions": [
+            1920,
+            1080
+          ],
+          "sha256": "c5058e9e08ccfc5d8d1b15f0e3018923369113271a67911398788ed1d05a30a4",
+          "bytes": 334758
+        }
+      ]
+    },
+    "documentation_and_identity": {
+      "status": "passed",
+      "errors": [],
+      "warnings": [],
+      "documents": 79,
+      "canonical_claims": 136,
+      "local_links": 1314,
+      "heading_anchors": 63,
+      "materialized_required_runtime_files": 18,
+      "historical_m11": {
+        "status": "passed",
+        "reference_revision": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+        "records": 18,
+        "source_hashes": 28
+      },
+      "retrieval_default": {
+        "status": "passed",
+        "canonical_hit_at_5": 32,
+        "question_count": 32,
+        "hit_at_1": 24,
+        "mrr_at_5": 0.8594
+      },
+      "retrieval_challenge": {
+        "status": "passed",
+        "canonical_hit_at_5": 37,
+        "question_count": 37,
+        "hit_at_1": 25,
+        "mrr_at_5": 0.8185,
+        "SCENE01_rank": 1
+      },
+      "git_diff_check": "passed",
+      "companion_inputs_revision": "6a58311982941b75f46e22109a0829e5acb83c7e",
+      "ci_provider_policy": "passed"
+    },
+    "capture_manifest_error_handling": {
+      "status": "passed",
+      "scope": "Successful real five-view recapture after adding manifest open/write/flush failure handling. This is a normal capture-path check, not injected filesystem fault coverage.",
+      "capture_helper_sha256": "c2e32d7f4a8d3db7f7e99190e32a308a435637bb0a46f50374044991ca51676a",
+      "views": 5,
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "all_views_paused": true,
+      "all_ticks": 0,
+      "runtime_errors": false
+    }
+  },
+  "limitations": [
+    "Linux software OpenGL execution; no new Windows runtime, browser/WebAssembly execution, hardware-GPU performance or broad gameplay/physics acceptance.",
+    "The synchronous Web controller was exercised in Linux Godot; that is not actual browser execution.",
+    "The background fills empty native cells. Occupied glass, gas and partial Water cells retain the ordinary material renderer background.",
+    "Scene composition deliberately prioritizes aesthetics; no owner aesthetic acceptance is inferred from automated checks.",
+    "Raw logs and toolchains remain local validation artifacts; this manifest retains selected results, identities and screenshot digests."
+  ],
+  "publication": {
+    "status": "local_only_pending_owner_approval",
+    "branch": "scene/neon-reliquary-demo",
+    "destination": "techrote/cybersand",
+    "pull_request": null,
+    "github_ci": "not_started",
+    "reason": "Automatic approval review refused the isolated-branch push because explicit authorization to publish the new files to the external repository was not established. No push was executed."
+  }
+}

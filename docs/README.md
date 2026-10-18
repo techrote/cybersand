@@ -12,6 +12,15 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Choose a reading route
 
+For **Blacksite Nine**, start with the
+[connected-complex guide](operations/blacksite-nine-demo.md): Shift+F11 entry,
+the 3×3 camera map, twelve shared passages, player-follow exploration and the
+whole-complex reset. All nine districts occupy one continuous native world.
+
+For Neon Reliquary and the three district tiles below it, start with the
+[scene guide](operations/neon-reliquary-demo.md): opening the stack on desktop/Web,
+moving Above/Below, choosing viewpoints, editing native cells and capturing images.
+
 | Need | Start here |
 |---|---|
 | Generate and blend procedural chunk themes, paint broad guidance, impose exact overrides or add structured modules | [Procedural generation contract and workbench](systems/procedural-world-generation.md), then [GEN-001 source and validation evidence](audits/2026-10-18-gen001-procedural-generation.md) |

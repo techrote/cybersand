@@ -443,6 +443,19 @@ time-to-first-reaction/quiescence, work/performance and repeat/worker identity.
 
 ## Showcase catalogue and staging
 
+**Owner-requested aesthetic content, 2026-10-18:**
+[Neon Reliquary and the three tiles below it](neon-reliquary-demo.md) use the
+landed scenario host for a detailed four-district descent. Middle Cyberberbia,
+Sewertech Alley and Industrial Underswamp each load as a bounded authored world.
+This is an independent scene-art increment;
+the gameplay/scientific concepts and dependencies below remain separately scoped.
+
+The next owner-requested composition, [Blacksite Nine](blacksite-nine-demo.md),
+adds a continuous 3×3 research blacksite and underground industrial complex.
+It remains one bounded scenario-host consumer, with shared native openings,
+camera-only tile selection and whole-complex reset. Its focused scene-route
+evidence does not change the separately scoped showcase dependencies below.
+
 Do not create every showcase issue before its underlying systems are useful to
 exercise. The ten current concepts remain:
 

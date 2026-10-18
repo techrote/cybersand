@@ -1,0 +1,2428 @@
+{
+  "schema_version": 1,
+  "recorded_date": "2026-10-18",
+  "checkpoint": {
+    "branch": "scene/blacksite-nine",
+    "baseline_commit": "b93a17de775b8fdb98fd7ddfd88f01ffeaae56e1",
+    "baseline_tree": "eedc52b3ad8bff2f096d9de136f11d7d6e50ffb0",
+    "published_baseline_commit": "94f6cbefc313a65f27c6e6ba8ca0d1aa89412bac",
+    "baseline_parents": [
+      "1ab7c9fc6bd35c832fdc70a4fcdfceae3e71d0f3",
+      "087ca3e972296b189c8b83060463125c06d600e2"
+    ],
+    "identity_scope": "Final listed implementation/test bytes plus the local delta on the recorded merge baseline. Publication binds this exact tree in the dated Markdown audit; documentation/manifest bytes are excluded from their own source hash set.",
+    "source_files_sha256": {
+      "godot/.godot/global_script_class_cache.cfg": "323d831adb253ffc011ac844738c09946a19b1240ee6d6042652154e3122c300",
+      "godot/main.tscn": "0117dc2c6c07b2ddc2b3bfa8bb1df6da516a4f154893a20cd67bc37a66eda42b",
+      "godot/project.godot": "cc95bec2f6a7d73f8f90e1d41a7b8a04928201c2ce9c634ca39f4917b9b879be",
+      "godot/scripts/blacksite_nine.gd": "81b119e4b19a886f1864efc9dd3bbf2d61745adda7f6c470627cdc93acb28244",
+      "godot/scripts/blacksite_nine_art.gd": "651428983c725e1a2d87e3596279f8c7a5964a5e49663a35782bc3f1e450a22e",
+      "godot/scripts/blacksite_nine_depths.gd": "fe6db42104fc135e56aaa731895cb85b42ecbb5d29acf4ed79f2bb099638d2d1",
+      "godot/scripts/blacksite_nine_layout.gd": "ccc27cdaf2479d58a9ec4391485f9141c8ac07b58d0c1d97e2c35f4f286ac69d",
+      "godot/scripts/blacksite_nine_midworks.gd": "eaf655d2ccf6ce54551a49852e0a6c39038bfa93f1fb7624a2db68100d71ace6",
+      "godot/scripts/blacksite_nine_presentation.gd": "e94efcb73e2c40de2e5370c06d91abaa798b4faa5fc4905ae190c3cc1f907903",
+      "godot/scripts/blacksite_nine_surface.gd": "347888118cf2b20b564d8171f35d8d80feae1c0341f90829fbfee482b0397813",
+      "godot/scripts/demo_worlds.gd": "a83ad490681cc9da262f9d2863d9b9100bbb5dbc17eef88e6cfba55d88a8cf5d",
+      "godot/scripts/industrial_underswamp.gd": "d603d587c36e1ebf0d2ec16bd244c03df1c0cab83896e95472d768fb9c418cf8",
+      "godot/scripts/main.gd": "f599a8bbd9e30767467a4c62826f789ec03f0ec0585775e648555b1ebff95ec3",
+      "godot/scripts/microscenario_catalogue.gd": "3e361ce69582c9c932d1645de83909225b6d27dc7a4962846c56db60f6ce4e56",
+      "godot/scripts/microscenario_contract.gd": "74c0266a970de37af67a2455d6aa3693915046593b9822b79418146cc62a7aa0",
+      "godot/scripts/microscenario_host.gd": "4bb2c74d5d8d8b4e2a670e59e8cf2a27e1e95efd192cf0d9cd4f5a891a853745",
+      "godot/scripts/middle_cyberberbia.gd": "aee352913a6cb7e067f3412f061698f1a6ee64c21044b5b7997cf7ac419420c8",
+      "godot/scripts/neon_reliquary.gd": "f48f4ffac8d8e112991ebc948864a3da7783439b0450e6e12df4b3a2073110fa",
+      "godot/scripts/sampled_character.gd": "fb56187c5fa44cfd2124dd003fb2bb046d3ef5377e346c933d0bd377fa29fe40",
+      "godot/scripts/sewertech_alley.gd": "985371f4632880ceb297128b332bf6a265a83cbcc7675bde342119a6d2822357",
+      "godot/scripts/showcase_presentation.gd": "e478efd9e63db7f3994c7e86ee73d1d32a276c0202fb37bbf20d270d25e16d6b",
+      "godot/scripts/showcase_tiles.gd": "c496da1fb7507e11763cec92113ad594b3f0fae44e54af040f8501f91e03a7d5",
+      "godot/scripts/simulation_worker.gd": "39fc7bf5c79c288263ea1b752869b08c9875b1a3aa8f1801827f5625e5a8cf5f",
+      "godot/scripts/web_demo_controller.gd": "efa63d8ba6a0dc842cb4722d7cba99b69e08fe56ddd75f321b7a94d50eb1af97",
+      "godot/shaders/blacksite_nine_backdrop.gdshader": "9e8613e0edb9df573c3fe5541f9eb9ca6ed92a0e2e666f7d58169915c7691f82",
+      "godot/shaders/blacksite_nine_grade.gdshader": "63bf0fdb93c8b23b87c46dbb52a5c65712263a3de9488bcdc6285d86ff798468",
+      "godot/tests/test_blacksite_nine.gd": "62cc5264590ce43f3101e4fccb1a2d01ad79aa68a2d86dc37c29ef0fcc9e402d",
+      "godot/tests/test_blacksite_nine_integration.gd": "fb973c0f54f0efecb635fbf2794fdd887db756cb09a9f7e463ff112867ebe09f",
+      "godot/tests/test_blacksite_nine_render.gd": "1ad64126216b8441067e29e67f08336a3dfde9cd7c463a57a2c59e9bb2c58d89",
+      "godot/tools/capture_blacksite_nine.gd": "7c933f2a012c6cf9fa67ae2121f2a46bf881784eff995ef4f329789e10689559",
+      "godot/web_main.tscn": "813c57a0bda7b4741ad1558a978ef6bb94943e3b01c370852358bc8218a6851f"
+    },
+    "native_source_changed": false,
+    "retained_runtime_changed": false,
+    "existing_four_scene_recipes_unchanged": true,
+    "implementation_commit": "ab7eb974c3b9442b14661ea96c8344385b33b688",
+    "local_implementation_commit": "d3c477ea6164b634b6642829763ceed9cc9360c4",
+    "verified_implementation_tree": "79ac1fc79d10f4678d6227ba4af02eb8cd536bbc",
+    "local_history_branch": "scene/blacksite-nine-local-checkpoint",
+    "pull_request": "https://github.com/techrote/cybersand/pull/175",
+    "pull_request_draft": true,
+    "remote_tree_verified_by_fresh_fetch": true,
+    "publication_scope": "The implementation commit contains the exact tested source and image tree. The following audit/manifest-only commit records publication identity and does not alter implementation, tests, recipes or captures."
+  },
+  "runtime": {
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "godot": {
+      "file": "/tmp/cybersand-demo-validation/runtime/Godot_v4.7-stable_linux.x86_64",
+      "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "bytes": 144186224
+    },
+    "godot_archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+    "native": {
+      "file": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "sha256": "43e747137249041d56a522dbe0ec35219082ea555e1ec1cbdd40971c6a58db9c",
+      "bytes": 1630856
+    },
+    "native_provenance": {
+      "file": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "sha256": "59f6b3e797a6099d1ba18223313505c08812538302894545d0d117679b2a03c7",
+      "bytes": 6763
+    },
+    "native_source_commit": "aae015058f907e15b0781ff7fbd3ebd55e4d990e",
+    "native_source_inputs_verified": 30,
+    "native_source_inputs_sha256": {
+      "godot/native_extension/cyber_demo_bridge.hpp": "92d1ada53f684ca92832f245399078d4f43fdba0b4c6c5e41ba99f265cf759a5",
+      "godot/native_extension/cyber_native_cell_world.cpp": "1736659e909d2f3043fb3cf3b6541d3694ce0c612d8035cc1d76d526ebf77136",
+      "godot/native_extension/cyber_native_cell_world.hpp": "656e5a09503efe0f6608834efe2941ef5168ff16758de8fd67f766f1a5247458",
+      "godot/native_extension/cyber_observation_values.hpp": "8b76a566de1118e2ee0c4d9b6a4c3d4d8d988c4953743f8bcf0fc786f61705e5",
+      "godot/native_extension/register_types.cpp": "db08c4fe5267831aac9c33faffd68f2adea4c55f30711b7cdeaf3a3b02173dd2",
+      "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+      "native/include/cybersand/c_api.h": "d39b153e42111e2b5696c04832f64d1d69f401799236372ca8b690c7d0e1d429",
+      "native/include/cybersand/demo_snapshot.hpp": "1a46f7beef756e0a916be7229956ae295955d555be047e16203eca05860cd3cb",
+      "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+      "native/include/cybersand/interaction_rules.hpp": "914bc68f4f82d74dc1b444b2962229ed4337ed5d7de2e6a142e28fbc47b98d1e",
+      "native/include/cybersand/material.hpp": "de1bbbccb812d49151c34831196a7e38d5ee97d2045c9b29c197b11553ed126a",
+      "native/include/cybersand/material_appearance.hpp": "5668ffb77a60950159daa393aa1e292b61881f84e4f1c3c786508b4f50015168",
+      "native/include/cybersand/material_rules.hpp": "647931176804ffe3d5c31aa62fbeb5ed3f39b643e8bbecde0d4cfb6719d5ca0e",
+      "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+      "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+      "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+      "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+      "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+      "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+      "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+      "native/include/cybersand/transport_policy.hpp": "9204d1e7b112e260097ba3924c8653cde45568d5886d33b9bb53fdfa8019e348",
+      "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+      "native/include/cybersand/world.hpp": "ed879a1cf89404b0381ea4d599f01fe6ad0024e456d21f155e5a4314d3edd1dd",
+      "native/src/c_api.cpp": "9e70906c5489bd10ec2fd00663328c818fe8b281d5199e6a01d756b2cd9b6274",
+      "native/src/material_rules.cpp": "711abb73d10fef68ace68996cab9a9b1a8f0c2f0b5d12a48934714d93d6c3a4a",
+      "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+      "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+      "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+      "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+      "native/src/world.cpp": "b455cadfb94fdc7ecc3e737a9e0f825c2beb8bcdd44a404d86c87b53eeeeb019"
+    },
+    "rapier_version": "0.35.2",
+    "rapier": {
+      "file": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "sha256": "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831",
+      "bytes": 10781080
+    },
+    "platform": "Linux x86_64",
+    "rendering": "X11; Godot compatibility/OpenGL 4.5; Mesa 25.2.8; llvmpipe LLVM 20.1.2",
+    "wrappers": [
+      {
+        "file": "/tmp/cybersand-demo-validation/run-godot.sh",
+        "sha256": "b914889fa7b8a146b60fbe6a548dc1f3509d1a63dd1b797d01fd399cdb7412be",
+        "bytes": 343
+      },
+      {
+        "file": "/tmp/cybersand-demo-validation/run-rendered-godot.sh",
+        "sha256": "d03d053e67466d9907a6a81dd79a676b31e3d8d58fd3ba17d379d167697df31e",
+        "bytes": 247
+      }
+    ],
+    "editor_import_required": false
+  },
+  "scene": {
+    "id": "showcase/blacksite-nine",
+    "version": 1,
+    "world_size": [
+      1024,
+      1024
+    ],
+    "composition_region": [
+      32,
+      32,
+      960,
+      960
+    ],
+    "tile_size": [
+      320,
+      320
+    ],
+    "tile_count": 9,
+    "connection_count": 12,
+    "clear_passage_width": 28,
+    "rectangles": 3527,
+    "authored_cell_writes": 2776918,
+    "material_identities_including_empty": 32,
+    "canonical_definition_bytes": 58021,
+    "canonical_definition_sha256": "225b0cdbd677d678cdfd5188df2f8fd17987e7edfbe508049fbbae261f21d489",
+    "definition_file": {
+      "file": "docs/images/blacksite-nine/blacksite-nine.scenario.json",
+      "sha256": "42285d402fd756ea77fe8f8a8cec091577e68d721e19d6c4098848019a3e0a34",
+      "bytes": 58022
+    },
+    "tour": [
+      "A1",
+      "A2",
+      "B2",
+      "B1",
+      "C1",
+      "C2",
+      "C3",
+      "B3",
+      "A3"
+    ],
+    "native_geometry_and_character": {
+      "definition_sha256": "225b0cdbd677d678cdfd5188df2f8fd17987e7edfbe508049fbbae261f21d489",
+      "records": 3527,
+      "write_area": 2776918,
+      "native_material_ticks": 120,
+      "native_workers": 1,
+      "stable_hard_cells": 549763,
+      "seam_count": 12,
+      "actual_directed_crossings": 24,
+      "tour": [
+        0,
+        1,
+        4,
+        3,
+        6,
+        7,
+        8,
+        5,
+        2
+      ],
+      "tour_steps": 6712,
+      "tour_jetpack_steps": 2154,
+      "all_character_steps": 8572,
+      "runtime_recovery_attempts": 0,
+      "invalid_spawn_recovery_attempts": 0,
+      "independent_nine_id_check": true,
+      "bounded_unique_edge_check": true,
+      "driver": "Actual CyberSampledCharacter.simulate at 1/60 with horizontal input in {-1,0,1} and Boolean jetpack. One reset at tour start; no position/velocity writes while travelling.",
+      "scope": "Movement against the native geometry after 120 material ticks. This is not thousands of live material ticks, UI key routing, a performance measurement, or a replacement for desktop/Web owner integration tests."
+    }
+  },
+  "focused_tests": [
+    {
+      "script": "/workspace/scratch/fb9daf9fc631/cybersand/godot/tests/test_blacksite_nine.gd",
+      "script_sha256": "62cc5264590ce43f3101e4fccb1a2d01ad79aa68a2d86dc37c29ef0fcc9e402d",
+      "command": [
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "180s",
+        "/tmp/cybersand-demo-validation/run-godot.sh",
+        "--headless",
+        "--path",
+        "godot",
+        "--script",
+        "res://tests/test_blacksite_nine.gd"
+      ],
+      "cwd": "/workspace/scratch/fb9daf9fc631/cybersand",
+      "exit_code": 0,
+      "assertions": 158,
+      "failures": 0,
+      "log": "/tmp/cybersand-demo-validation/test_blacksite_nine-final.log",
+      "log_sha256": "707628231b101ef8f69fcc2db75c0557043ee935a88ee258e98bc97f635d9e1b",
+      "summary": [
+        "BLACKSITE_NINE: 158 assertions; 0 failures; 120 native material ticks/1 worker; 8572 sampled-character steps against native geometry"
+      ],
+      "error_lines": []
+    },
+    {
+      "file": "/tmp/cybersand-demo-validation/blacksite-integration-layout-final.log",
+      "sha256": "54e98f84bcdd535d14a4271711ccc782ed7fbeaff060c300e08c262b68d19a5f",
+      "bytes": 1537,
+      "command": "/tmp/cybersand-demo-validation/run-godot.sh --headless --path /workspace/scratch/fb9daf9fc631/cybersand/godot --script res://tests/test_blacksite_nine_integration.gd > /tmp/cybersand-demo-validation/blacksite-integration-layout-final.log 2>&1",
+      "cwd": "/workspace/scratch/fb9daf9fc631/cybersand",
+      "exit_code": 0,
+      "assertions": 249,
+      "failures": 0,
+      "summary": [
+        "BLACKSITE_NINE_INTEGRATION_IDENTITY: [{\"backend\":\"native-phased\",\"camera_tiles\":9,\"completed_tick\":4,\"definition_sha256\":\"225b0cdbd677d678cdfd5188df2f8fd17987e7edfbe508049fbbae261f21d489\",\"godot\":\"4.7-stable (official)\",\"off_camera_regions_advanced\":8,\"owner\":\"desktop\",\"paint_crosses_seam\":[352,444],\"platform\":\"Linux\",\"regions_advanced\":9,\"worker_count\":1},{\"completed_tick\":21,\"map_keyboard_guard\":\"open + closed-held + fresh gesture\",\"native_steps\":17,\"owner\":\"desktop\",\"physical_keys\":[\"D\",\"Space\",\"Right\"]},{\"backend\":\"native-phased\",\"camera_tiles\":9,\"completed_tick\":4,\"definition_sha256\":\"225b0cdbd677d678cdfd5188df2f8fd17987e7edfbe508049fbbae261f21d489\",\"godot\":\"4.7-stable (official)\",\"off_camera_regions_advanced\":8,\"owner\":\"Web\",\"paint_crosses_seam\":[352,444],\"platform\":\"Linux\",\"regions_advanced\":9,\"worker_count\":1},{\"completed_tick\":21,\"map_keyboard_guard\":\"open + closed-held + fresh gesture\",\"native_steps\":17,\"owner\":\"Web\",\"physical_keys\":[\"D\",\"Space\",\"Right\"]}]",
+        "BLACKSITE_NINE_INTEGRATION: 249 assertions; 0 failures; desktop asynchronous and synchronous Web-controller camera/edit/interest/lifecycle coverage"
+      ],
+      "warnings": [],
+      "external_timeout_seconds": null,
+      "ordinary_wait_timeout_ms": 20000,
+      "keyboard_step_timeout_ms": 5000
+    },
+    {
+      "file": "/tmp/cybersand-demo-validation/blacksite-render-final.log",
+      "sha256": "062898062be903daa4a2fa9f5374f01163a1d3c355adffe11e346a6da4700055",
+      "bytes": 613,
+      "command": [
+        "timeout",
+        "150",
+        "/tmp/cybersand-demo-validation/run-rendered-godot.sh",
+        "--path",
+        "godot",
+        "--script",
+        "res://tests/test_blacksite_nine_render.gd"
+      ],
+      "cwd": "/workspace/scratch/fb9daf9fc631/cybersand",
+      "exit_code": 0,
+      "assertions": 40,
+      "failures": 0,
+      "summary": [
+        "BLACKSITE_NINE_RENDER: 40 checks; 12 shared edges × 2 world-anchored effects; failures=0"
+      ],
+      "warnings": [
+        "WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver."
+      ]
+    }
+  ],
+  "existing_regressions": [
+    {
+      "script": "/workspace/scratch/fb9daf9fc631/cybersand/godot/tests/test_showcase_tiles.gd",
+      "script_sha256": "453884358473d45c84fd85f963216b0e33f6d772a49d9e518df616bfb007a401",
+      "command": [
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "180s",
+        "/tmp/cybersand-demo-validation/run-godot.sh",
+        "--headless",
+        "--path",
+        "godot",
+        "--script",
+        "res://tests/test_showcase_tiles.gd"
+      ],
+      "cwd": "/workspace/scratch/fb9daf9fc631/cybersand",
+      "exit_code": 0,
+      "assertions": 200,
+      "failures": 0,
+      "log": "/tmp/cybersand-demo-validation/blacksite-regression-showcase_tiles.log",
+      "log_sha256": "12378d6c5bb34f0e493ef7970c895f184ac281cd0a9708c1f160b39d820da8de",
+      "summary": [
+        "SHOWCASE_TILES: 200 assertions; 0 failures; new-district native material progression=120 ticks/1 worker; desktop asynchronous and synchronous Web-controller transitions"
+      ],
+      "error_lines": []
+    },
+    {
+      "script": "/workspace/scratch/fb9daf9fc631/cybersand/godot/tests/test_neon_reliquary.gd",
+      "script_sha256": "457b1d39ff7baef4f3632347f49cabe63fadb66fef2df3e03e450efb424e9b9d",
+      "command": [
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "180s",
+        "/tmp/cybersand-demo-validation/run-godot.sh",
+        "--headless",
+        "--path",
+        "godot",
+        "--script",
+        "res://tests/test_neon_reliquary.gd"
+      ],
+      "cwd": "/workspace/scratch/fb9daf9fc631/cybersand",
+      "exit_code": 0,
+      "assertions": 89,
+      "failures": 0,
+      "log": "/tmp/cybersand-demo-validation/blacksite-regression-neon_reliquary.log",
+      "log_sha256": "4e05f2a9714cafb477c2af022df12b1649b7693decbe50bdd1fc8710a7433838",
+      "summary": [
+        "NEON_RELIQUARY: 89 assertions; 0 failures; native material progression=120 ticks/1 worker, desktop and synchronous Web-controller lifecycle"
+      ],
+      "error_lines": []
+    },
+    {
+      "script": "/workspace/scratch/fb9daf9fc631/cybersand/godot/tests/test_microscenarios.gd",
+      "script_sha256": "a0efdc326b49fedb0ce637c012acf65c52188166ef57306f5cbeb1fdc088271a",
+      "command": [
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "240s",
+        "/tmp/cybersand-demo-validation/run-godot.sh",
+        "--headless",
+        "--path",
+        "godot",
+        "--script",
+        "res://tests/test_microscenarios.gd"
+      ],
+      "cwd": "/workspace/scratch/fb9daf9fc631/cybersand",
+      "exit_code": 0,
+      "assertions": 8843,
+      "failures": 0,
+      "log": "/tmp/cybersand-demo-validation/blacksite-regression-microscenarios.log",
+      "log_sha256": "a906c00da368d5b6a4944442ab5b0233e4d59fd0492d723661123474f214f97a",
+      "summary": [
+        "MICROSCENARIOS: 8843 assertions; 0 failures"
+      ],
+      "error_lines": []
+    },
+    {
+      "script": "/workspace/scratch/fb9daf9fc631/cybersand/godot/tests/test_web_demo_setup.gd",
+      "script_sha256": "d83ccfba470f6e63d12f640ceb8a5967c597eb2f585dcfe671d265a6172488c0",
+      "command": [
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "180s",
+        "/tmp/cybersand-demo-validation/run-godot.sh",
+        "--headless",
+        "--path",
+        "godot",
+        "--script",
+        "res://tests/test_web_demo_setup.gd"
+      ],
+      "cwd": "/workspace/scratch/fb9daf9fc631/cybersand",
+      "exit_code": 0,
+      "assertions": null,
+      "failures": 0,
+      "log": "/tmp/cybersand-demo-validation/blacksite-regression-web_demo_setup.log",
+      "log_sha256": "c6a2398f8f1e8ac01d1e6f38182579075226edd9ec198b6cb2c1758b513c19de",
+      "summary": [
+        "Web demo setup fixture: four constructors, stepping, CYSD1 and native rejection; failures=0"
+      ],
+      "error_lines": []
+    },
+    {
+      "script": "/workspace/scratch/fb9daf9fc631/cybersand/godot/tests/test_actor_rig_integration.gd",
+      "script_sha256": "ff9c63ac89e20a06cbb7f69ebac5c6de0afd12e79c47ad1dd0f14565d2fbeb80",
+      "command": [
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "180s",
+        "/tmp/cybersand-demo-validation/run-godot.sh",
+        "--headless",
+        "--path",
+        "godot",
+        "--script",
+        "res://tests/test_actor_rig_integration.gd"
+      ],
+      "cwd": "/workspace/scratch/fb9daf9fc631/cybersand",
+      "exit_code": 0,
+      "assertions": 683,
+      "failures": 0,
+      "log": "/tmp/cybersand-demo-validation/blacksite-regression-actor_rig_integration.log",
+      "log_sha256": "dcd0be8365eeaaf2a10a6cf1736a0a8806bc9339c6325f0583203cffc19a3174",
+      "summary": [
+        "ACTOR_RIG_INTEGRATION: 683 assertions; 0 failures"
+      ],
+      "error_lines": []
+    },
+    {
+      "script": "/workspace/scratch/fb9daf9fc631/cybersand/godot/tests/test_brush_owner_commands.gd",
+      "script_sha256": "f217d9b44bbcc595752f7285433694311d03a7c7bd4c1945748449a0a0bd9b9c",
+      "command": [
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "180s",
+        "/tmp/cybersand-demo-validation/run-godot.sh",
+        "--headless",
+        "--path",
+        "godot",
+        "--script",
+        "res://tests/test_brush_owner_commands.gd"
+      ],
+      "cwd": "/workspace/scratch/fb9daf9fc631/cybersand",
+      "exit_code": 0,
+      "assertions": null,
+      "failures": 0,
+      "log": "/tmp/cybersand-demo-validation/blacksite-regression-brush_owner_commands.log",
+      "log_sha256": "9888fa192bfe50f3856e2f4cd9317eebfab8b1c84246235dde221a14e9dbad5a",
+      "summary": [
+        "BRUSH_OWNER_COMMANDS: 0 failure(s)"
+      ],
+      "error_lines": []
+    }
+  ],
+  "regression_source_boundary": {
+    "existing_regressions_source_at_start": {
+      "main.gd": "88134594638270f60de8583668e36e7e083cc81fef3f29452f1e2eaa180f9b7a",
+      "blacksite_nine_presentation.gd": "2e52498c8ed884dca3b02142f4ebe7ad52b661b884378ddd5fa70a0fa4d27245"
+    },
+    "source_at_completion": {
+      "blacksite_nine.gd": "81b119e4b19a886f1864efc9dd3bbf2d61745adda7f6c470627cdc93acb28244",
+      "blacksite_nine_layout.gd": "ccc27cdaf2479d58a9ec4391485f9141c8ac07b58d0c1d97e2c35f4f286ac69d",
+      "blacksite_nine_depths.gd": "fe6db42104fc135e56aaa731895cb85b42ecbb5d29acf4ed79f2bb099638d2d1",
+      "blacksite_nine_presentation.gd": "d4d99323f45c37b6db823f426a196aab6f5426d87914633074c082eb045ad3e8",
+      "sampled_character.gd": "fb56187c5fa44cfd2124dd003fb2bb046d3ef5377e346c933d0bd377fa29fe40",
+      "main.gd": "f599a8bbd9e30767467a4c62826f789ec03f0ec0585775e648555b1ebff95ec3",
+      "web_demo_controller.gd": "efa63d8ba6a0dc842cb4722d7cba99b69e08fe56ddd75f321b7a94d50eb1af97"
+    },
+    "publication_note": "The six existing suites completed before the isolated Blacksite keyboard-modal fix; they exercise inactive Blacksite controls. Parent explicitly requested no optional repeats. Separate runtime integration tests own final modal-fix coverage.",
+    "worker_policy": "Existing fixture policies preserved; MicroScenarios intentionally compares one/four workers. New Blacksite test uses one native worker."
+  },
+  "captures": {
+    "run": {
+      "file": "/tmp/cybersand-demo-validation/blacksite-final-capture.log",
+      "sha256": "76296647a5c49c51bc72f7bc8c117d96e3ed41480b8eef66c71f229eb491a106",
+      "bytes": 1654,
+      "command": [
+        "timeout",
+        "150",
+        "/tmp/cybersand-demo-validation/run-rendered-godot.sh",
+        "--path",
+        "godot",
+        "--script",
+        "res://tools/capture_blacksite_nine.gd",
+        "--",
+        "--capture-dir=/workspace/scratch/fb9daf9fc631/cybersand/docs/images/blacksite-nine"
+      ],
+      "cwd": "/workspace/scratch/fb9daf9fc631/cybersand",
+      "exit_code": 0,
+      "assertions": null,
+      "failures": 0,
+      "summary": [
+        "BLACKSITE_CAPTURE {\"directory\":\"/workspace/scratch/fb9daf9fc631/cybersand/docs/images/blacksite-nine\",\"hash\":\"225b0cdbd677d678cdfd5188df2f8fd17987e7edfbe508049fbbae261f21d489\",\"ok\":true,\"records\":3527,\"size\":[2880,2880]}"
+      ],
+      "warnings": [
+        "WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver."
+      ]
+    },
+    "capture_manifest": {
+      "file": "docs/images/blacksite-nine/capture.json",
+      "sha256": "1400622447eeaf66228dd63638796641a9e9dbdc580eaf1c79cd3347d19d4173",
+      "bytes": 5951
+    },
+    "tick": 0,
+    "paused": true,
+    "pixels_per_cell": 3,
+    "overview": {
+      "file": "docs/images/blacksite-nine/blacksite-nine.png",
+      "sha256": "a0b42651d8459bcb24b8aa1803ed2e8fa807e47d0c9734c01a2f0e87b5a08080",
+      "bytes": 2174686,
+      "dimensions": [
+        2880,
+        2880
+      ]
+    },
+    "tiles": [
+      {
+        "code": "A1",
+        "column": 0,
+        "file": "docs/images/blacksite-nine/a1-slag-approach.png",
+        "name": "Slag Approach",
+        "row": 0,
+        "world_origin": [
+          32,
+          32
+        ],
+        "world_size": [
+          320,
+          320
+        ],
+        "sha256": "0685fb51b1f57c933c2489761bcf9304d368c09eee52eae40d9a029a88bc280a",
+        "bytes": 185325,
+        "dimensions": [
+          960,
+          960
+        ],
+        "equal_to_atlas_crop": true
+      },
+      {
+        "code": "A2",
+        "column": 1,
+        "file": "docs/images/blacksite-nine/a2-aster-research.png",
+        "name": "Aster Research",
+        "row": 0,
+        "world_origin": [
+          352,
+          32
+        ],
+        "world_size": [
+          320,
+          320
+        ],
+        "sha256": "9aa2b3a3fcddee715138a024468bc1226000758ccf583a4290512706e64691b9",
+        "bytes": 266386,
+        "dimensions": [
+          960,
+          960
+        ],
+        "equal_to_atlas_crop": true
+      },
+      {
+        "code": "A3",
+        "column": 2,
+        "file": "docs/images/blacksite-nine/a3-ashworks-breach.png",
+        "name": "Ashworks Breach",
+        "row": 0,
+        "world_origin": [
+          672,
+          32
+        ],
+        "world_size": [
+          320,
+          320
+        ],
+        "sha256": "2865411dcd566965900530815066a99763bc4463503f8ffb37c3c28a2745d455",
+        "bytes": 185170,
+        "dimensions": [
+          960,
+          960
+        ],
+        "equal_to_atlas_crop": true
+      },
+      {
+        "code": "B1",
+        "column": 0,
+        "file": "docs/images/blacksite-nine/b1-intake-warrens.png",
+        "name": "The Intake Warrens",
+        "row": 1,
+        "world_origin": [
+          32,
+          352
+        ],
+        "world_size": [
+          320,
+          320
+        ],
+        "sha256": "ffb3ea4fd2d188292603b64c7913f81945aec5712620bfc84a8decb2deccf64c",
+        "bytes": 256463,
+        "dimensions": [
+          960,
+          960
+        ],
+        "equal_to_atlas_crop": true
+      },
+      {
+        "code": "B2",
+        "column": 1,
+        "file": "docs/images/blacksite-nine/b2-containment-choir.png",
+        "name": "Containment Choir",
+        "row": 1,
+        "world_origin": [
+          352,
+          352
+        ],
+        "world_size": [
+          320,
+          320
+        ],
+        "sha256": "97081c67aa560378e23b54477633042046dc98bd4205c962f26d7e5358b33d53",
+        "bytes": 283364,
+        "dimensions": [
+          960,
+          960
+        ],
+        "equal_to_atlas_crop": true
+      },
+      {
+        "code": "B3",
+        "column": 2,
+        "file": "docs/images/blacksite-nine/b3-condensate-works.png",
+        "name": "Condensate Works",
+        "row": 1,
+        "world_origin": [
+          672,
+          352
+        ],
+        "world_size": [
+          320,
+          320
+        ],
+        "sha256": "31656a62d9fb9a0b7ba491c2e92ffa680350680c23d3e9ef431b3034af38c87a",
+        "bytes": 255428,
+        "dimensions": [
+          960,
+          960
+        ],
+        "equal_to_atlas_crop": true
+      },
+      {
+        "code": "C1",
+        "column": 0,
+        "file": "docs/images/blacksite-nine/c1-furnace-ossuary.png",
+        "name": "Furnace Ossuary",
+        "row": 2,
+        "world_origin": [
+          32,
+          672
+        ],
+        "world_size": [
+          320,
+          320
+        ],
+        "sha256": "e4369c0324d0cc1f5f0359e82a58c6672f207c0d84c0f6380e2f3fc6368689a3",
+        "bytes": 252822,
+        "dimensions": [
+          960,
+          960
+        ],
+        "equal_to_atlas_crop": true
+      },
+      {
+        "code": "C2",
+        "column": 1,
+        "file": "docs/images/blacksite-nine/c2-synapse-vault.png",
+        "name": "The Synapse Vault",
+        "row": 2,
+        "world_origin": [
+          352,
+          672
+        ],
+        "world_size": [
+          320,
+          320
+        ],
+        "sha256": "f104064690c324e42dcf5591a678340c0e940f256c1eb7794b9dc68e06d61f36",
+        "bytes": 267482,
+        "dimensions": [
+          960,
+          960
+        ],
+        "equal_to_atlas_crop": true
+      },
+      {
+        "code": "C3",
+        "column": 2,
+        "file": "docs/images/blacksite-nine/c3-blackwater-terminus.png",
+        "name": "Blackwater Terminus",
+        "row": 2,
+        "world_origin": [
+          672,
+          672
+        ],
+        "world_size": [
+          320,
+          320
+        ],
+        "sha256": "fdb2c76e6af47858b4a4216b3aab6aa96e07a3d4c243ed0fade00cd36c137d92",
+        "bytes": 243405,
+        "dimensions": [
+          960,
+          960
+        ],
+        "equal_to_atlas_crop": true
+      }
+    ],
+    "exact_stitch": {
+      "tiles_checked": 9,
+      "equal_to_atlas": true,
+      "different_pixels": 0
+    },
+    "visual_review": {
+      "status": "passed",
+      "scene": "showcase/blacksite-nine",
+      "definition_sha256": "225b0cdbd677d678cdfd5188df2f8fd17987e7edfbe508049fbbae261f21d489",
+      "canonical_json_bytes": 58021,
+      "capture_tick": 0,
+      "capture_paused": true,
+      "atlas_size": [
+        2880,
+        2880
+      ],
+      "tiles": [
+        {
+          "code": "A1",
+          "file": "a1-slag-approach.png",
+          "size": [
+            960,
+            960
+          ],
+          "equal_to_atlas_crop": true,
+          "different_pixels": 0,
+          "maximum_channel_difference": 0
+        },
+        {
+          "code": "A2",
+          "file": "a2-aster-research.png",
+          "size": [
+            960,
+            960
+          ],
+          "equal_to_atlas_crop": true,
+          "different_pixels": 0,
+          "maximum_channel_difference": 0
+        },
+        {
+          "code": "A3",
+          "file": "a3-ashworks-breach.png",
+          "size": [
+            960,
+            960
+          ],
+          "equal_to_atlas_crop": true,
+          "different_pixels": 0,
+          "maximum_channel_difference": 0
+        },
+        {
+          "code": "B1",
+          "file": "b1-intake-warrens.png",
+          "size": [
+            960,
+            960
+          ],
+          "equal_to_atlas_crop": true,
+          "different_pixels": 0,
+          "maximum_channel_difference": 0
+        },
+        {
+          "code": "B2",
+          "file": "b2-containment-choir.png",
+          "size": [
+            960,
+            960
+          ],
+          "equal_to_atlas_crop": true,
+          "different_pixels": 0,
+          "maximum_channel_difference": 0
+        },
+        {
+          "code": "B3",
+          "file": "b3-condensate-works.png",
+          "size": [
+            960,
+            960
+          ],
+          "equal_to_atlas_crop": true,
+          "different_pixels": 0,
+          "maximum_channel_difference": 0
+        },
+        {
+          "code": "C1",
+          "file": "c1-furnace-ossuary.png",
+          "size": [
+            960,
+            960
+          ],
+          "equal_to_atlas_crop": true,
+          "different_pixels": 0,
+          "maximum_channel_difference": 0
+        },
+        {
+          "code": "C2",
+          "file": "c2-synapse-vault.png",
+          "size": [
+            960,
+            960
+          ],
+          "equal_to_atlas_crop": true,
+          "different_pixels": 0,
+          "maximum_channel_difference": 0
+        },
+        {
+          "code": "C3",
+          "file": "c3-blackwater-terminus.png",
+          "size": [
+            960,
+            960
+          ],
+          "equal_to_atlas_crop": true,
+          "different_pixels": 0,
+          "maximum_channel_difference": 0
+        }
+      ],
+      "stitched_equal_to_atlas": true,
+      "different_pixels_in_stitch": 0,
+      "visual_files_inspected": [
+        "blacksite-nine.png",
+        "a1-slag-approach.png",
+        "a2-aster-research.png",
+        "a3-ashworks-breach.png",
+        "b1-intake-warrens.png",
+        "b2-containment-choir.png",
+        "b3-condensate-works.png",
+        "c1-furnace-ossuary.png",
+        "c2-synapse-vault.png",
+        "c3-blackwater-terminus.png"
+      ],
+      "visual_assessment": "All nine district exports and the full atlas visually inspected. Central fortified lab, distinct west viaduct/east receiver-and-crane wastelands, and six enclosed underground landmark compositions are legible. Dark wiring and world-coordinate grading give a consistent subdued palette. No material aesthetic defect requiring another art change was found.",
+      "scope": "Read-only image review and exact decoded-pixel crop/stitch check; no new runtime traversal or physics claims."
+    },
+    "ui_review": {
+      "reviewed_utc": "2026-10-18T11:10:20.634111+00:00",
+      "status": "passed",
+      "reviewer": "runtime_setup",
+      "repository": "/workspace/scratch/fb9daf9fc631/cybersand",
+      "base_head": "b93a17de775b8fdb98fd7ddfd88f01ffeaae56e1",
+      "source_identity_timing": "Hashes recorded after the completed runs; parent held implementation source stable during these runs.",
+      "source_sha256": {
+        "godot/scripts/main.gd": "f599a8bbd9e30767467a4c62826f789ec03f0ec0585775e648555b1ebff95ec3",
+        "godot/scripts/web_demo_controller.gd": "efa63d8ba6a0dc842cb4722d7cba99b69e08fe56ddd75f321b7a94d50eb1af97",
+        "godot/scripts/blacksite_nine.gd": "81b119e4b19a886f1864efc9dd3bbf2d61745adda7f6c470627cdc93acb28244",
+        "godot/scripts/blacksite_nine_layout.gd": "ccc27cdaf2479d58a9ec4391485f9141c8ac07b58d0c1d97e2c35f4f286ac69d",
+        "godot/scripts/blacksite_nine_art.gd": "651428983c725e1a2d87e3596279f8c7a5964a5e49663a35782bc3f1e450a22e",
+        "godot/scripts/blacksite_nine_surface.gd": "347888118cf2b20b564d8171f35d8d80feae1c0341f90829fbfee482b0397813",
+        "godot/scripts/blacksite_nine_midworks.gd": "eaf655d2ccf6ce54551a49852e0a6c39038bfa93f1fb7624a2db68100d71ace6",
+        "godot/scripts/blacksite_nine_depths.gd": "fe6db42104fc135e56aaa731895cb85b42ecbb5d29acf4ed79f2bb099638d2d1",
+        "godot/scripts/blacksite_nine_presentation.gd": "e94efcb73e2c40de2e5370c06d91abaa798b4faa5fc4905ae190c3cc1f907903",
+        "godot/shaders/blacksite_nine_backdrop.gdshader": "9e8613e0edb9df573c3fe5541f9eb9ca6ed92a0e2e666f7d58169915c7691f82",
+        "godot/shaders/blacksite_nine_grade.gdshader": "63bf0fdb93c8b23b87c46dbb52a5c65712263a3de9488bcdc6285d86ff798468",
+        "godot/tests/test_blacksite_nine_integration.gd": "fb973c0f54f0efecb635fbf2794fdd887db756cb09a9f7e463ff112867ebe09f"
+      },
+      "native_source_and_retained_runtime_delta_from_baseline": [],
+      "runtime": {
+        "godot": {
+          "path": "/tmp/cybersand-demo-validation/runtime/Godot_v4.7-stable_linux.x86_64",
+          "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+        },
+        "native": {
+          "path": "/workspace/scratch/fb9daf9fc631/cybersand/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "sha256": "43e747137249041d56a522dbe0ec35219082ea555e1ec1cbdd40971c6a58db9c"
+        },
+        "rapier": {
+          "path": "/workspace/scratch/fb9daf9fc631/cybersand/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+          "sha256": "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831"
+        }
+      },
+      "display": ":92",
+      "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+      "godot": "4.7-stable (official)",
+      "embedded_subwindows": true,
+      "integration": {
+        "assertions": 249,
+        "failures": 0,
+        "exit_code": 0,
+        "command": "/tmp/cybersand-demo-validation/run-godot.sh --headless --path /workspace/scratch/fb9daf9fc631/cybersand/godot --script res://tests/test_blacksite_nine_integration.gd > /tmp/cybersand-demo-validation/blacksite-integration-layout-final.log 2>&1",
+        "external_timeout_seconds": null,
+        "ordinary_wait_timeout_ms": 20000,
+        "keyboard_step_timeout_ms": 5000,
+        "log": "/tmp/cybersand-demo-validation/blacksite-integration-layout-final.log",
+        "log_sha256": "54e98f84bcdd535d14a4271711ccc782ed7fbeaff060c300e08c262b68d19a5f",
+        "layout_checks_per_owner": [
+          "Shared existing launcher parent",
+          "Active minimum preserves x and releases y to 0",
+          "Exit restores exact prior minimum Vector2"
+        ],
+        "controllers": [
+          "Desktop asynchronous native owner",
+          "Synchronous Web controller executed on Linux"
+        ],
+        "web_focus_qualification": "Fixture forces focused and input_armed immediately before explicit native steps to isolate the keyboard map latch from the separate application-focus guard; it does not establish browser execution."
+      },
+      "rendered_ui": {
+        "states": [
+          {
+            "name": "1280x720-tile",
+            "window_size": [
+              1280,
+              720
+            ],
+            "title": "CYBERSAND / BLACKSITE NINE",
+            "active": true,
+            "view": 5,
+            "camera_origin": "(352.0, 352.0)",
+            "view_size": "(320, 320)",
+            "hud_hidden": false,
+            "backdrop_visible": true,
+            "grade_visible": true,
+            "map_visible": false,
+            "paused": true,
+            "tick": 0,
+            "out_of_bounds_ui": [],
+            "logical_canvas": [
+              1920,
+              1080
+            ],
+            "visible_ui_count": 29,
+            "title_logical_rect": [
+              20.0,
+              16.0,
+              1880.0,
+              31.0
+            ],
+            "title_physical_rect": [
+              13.333333,
+              10.666667,
+              1253.333333,
+              20.666667
+            ],
+            "recorder_logical_rect": [
+              20.0,
+              1033.0,
+              1880.0,
+              31.0
+            ],
+            "recorder_physical_rect": [
+              13.333333,
+              688.666667,
+              1253.333333,
+              20.666667
+            ]
+          },
+          {
+            "name": "1280x720-map",
+            "window_size": [
+              1280,
+              720
+            ],
+            "title": "CYBERSAND / BLACKSITE NINE",
+            "active": true,
+            "view": 5,
+            "camera_origin": "(352.0, 352.0)",
+            "view_size": "(320, 320)",
+            "hud_hidden": false,
+            "backdrop_visible": true,
+            "grade_visible": true,
+            "map_visible": true,
+            "paused": true,
+            "tick": 0,
+            "out_of_bounds_ui": [],
+            "logical_canvas": [
+              1920,
+              1080
+            ],
+            "visible_ui_count": 40,
+            "title_logical_rect": [
+              20.0,
+              16.0,
+              1880.0,
+              31.0
+            ],
+            "title_physical_rect": [
+              13.333333,
+              10.666667,
+              1253.333333,
+              20.666667
+            ],
+            "recorder_logical_rect": [
+              20.0,
+              1033.0,
+              1880.0,
+              31.0
+            ],
+            "recorder_physical_rect": [
+              13.333333,
+              688.666667,
+              1253.333333,
+              20.666667
+            ],
+            "popup_logical_size": "(700, 260)",
+            "popup_logical_position": "(610, 410)",
+            "pointer_blocked": true,
+            "keyboard_blocked": true,
+            "tile_labels": [
+              "A1 · Slag Approach",
+              "A2 · Aster Research",
+              "A3 · Ashworks Breach",
+              "B1 · The Intake Warrens",
+              "B2 · Containment Choir",
+              "B3 · Condensate Works",
+              "C1 · Furnace Ossuary",
+              "C2 · The Synapse Vault",
+              "C3 · Blackwater Terminus"
+            ]
+          },
+          {
+            "name": "1280x720-clean",
+            "window_size": [
+              1280,
+              720
+            ],
+            "title": "CYBERSAND / BLACKSITE NINE",
+            "active": true,
+            "view": 5,
+            "camera_origin": "(352.0, 352.0)",
+            "view_size": "(320, 320)",
+            "hud_hidden": true,
+            "backdrop_visible": true,
+            "grade_visible": true,
+            "map_visible": false,
+            "paused": true,
+            "tick": 0,
+            "out_of_bounds_ui": [],
+            "logical_canvas": [
+              1920,
+              1080
+            ],
+            "visible_ui_count": 0
+          },
+          {
+            "name": "1600x900-tile",
+            "window_size": [
+              1600,
+              900
+            ],
+            "title": "CYBERSAND / BLACKSITE NINE",
+            "active": true,
+            "view": 5,
+            "camera_origin": "(352.0, 352.0)",
+            "view_size": "(320, 320)",
+            "hud_hidden": false,
+            "backdrop_visible": true,
+            "grade_visible": true,
+            "map_visible": false,
+            "paused": true,
+            "tick": 0,
+            "out_of_bounds_ui": [],
+            "logical_canvas": [
+              1920,
+              1080
+            ],
+            "visible_ui_count": 29,
+            "title_logical_rect": [
+              20.0,
+              16.0,
+              1880.0,
+              31.0
+            ],
+            "title_physical_rect": [
+              16.666667,
+              13.333333,
+              1566.666667,
+              25.833333
+            ],
+            "recorder_logical_rect": [
+              20.0,
+              1033.0,
+              1880.0,
+              31.0
+            ],
+            "recorder_physical_rect": [
+              16.666667,
+              860.833333,
+              1566.666667,
+              25.833333
+            ]
+          },
+          {
+            "name": "1600x900-map",
+            "window_size": [
+              1600,
+              900
+            ],
+            "title": "CYBERSAND / BLACKSITE NINE",
+            "active": true,
+            "view": 5,
+            "camera_origin": "(352.0, 352.0)",
+            "view_size": "(320, 320)",
+            "hud_hidden": false,
+            "backdrop_visible": true,
+            "grade_visible": true,
+            "map_visible": true,
+            "paused": true,
+            "tick": 0,
+            "out_of_bounds_ui": [],
+            "logical_canvas": [
+              1920,
+              1080
+            ],
+            "visible_ui_count": 40,
+            "title_logical_rect": [
+              20.0,
+              16.0,
+              1880.0,
+              31.0
+            ],
+            "title_physical_rect": [
+              16.666667,
+              13.333333,
+              1566.666667,
+              25.833333
+            ],
+            "recorder_logical_rect": [
+              20.0,
+              1033.0,
+              1880.0,
+              31.0
+            ],
+            "recorder_physical_rect": [
+              16.666667,
+              860.833333,
+              1566.666667,
+              25.833333
+            ],
+            "popup_logical_size": "(700, 260)",
+            "popup_logical_position": "(610, 410)",
+            "pointer_blocked": true,
+            "keyboard_blocked": true,
+            "tile_labels": [
+              "A1 · Slag Approach",
+              "A2 · Aster Research",
+              "A3 · Ashworks Breach",
+              "B1 · The Intake Warrens",
+              "B2 · Containment Choir",
+              "B3 · Condensate Works",
+              "C1 · Furnace Ossuary",
+              "C2 · The Synapse Vault",
+              "C3 · Blackwater Terminus"
+            ]
+          },
+          {
+            "name": "1600x900-clean",
+            "window_size": [
+              1600,
+              900
+            ],
+            "title": "CYBERSAND / BLACKSITE NINE",
+            "active": true,
+            "view": 5,
+            "camera_origin": "(352.0, 352.0)",
+            "view_size": "(320, 320)",
+            "hud_hidden": true,
+            "backdrop_visible": true,
+            "grade_visible": true,
+            "map_visible": false,
+            "paused": true,
+            "tick": 0,
+            "out_of_bounds_ui": [],
+            "logical_canvas": [
+              1920,
+              1080
+            ],
+            "visible_ui_count": 0
+          },
+          {
+            "name": "1600x900-after-exit",
+            "window_size": [
+              1600,
+              900
+            ],
+            "title": "CYBERSAND / EXPERIMENT TOWER",
+            "active": false,
+            "view": 5,
+            "camera_origin": "(0.0, 8.0)",
+            "view_size": "(480, 270)",
+            "hud_hidden": false,
+            "backdrop_visible": false,
+            "grade_visible": false,
+            "map_visible": false,
+            "paused": true,
+            "tick": 0,
+            "out_of_bounds_ui": [],
+            "logical_canvas": [
+              1920,
+              1080
+            ],
+            "visible_ui_count": 18,
+            "title_logical_rect": [
+              20.0,
+              16.0,
+              1880.0,
+              31.0
+            ],
+            "title_physical_rect": [
+              16.666667,
+              13.333333,
+              1566.666667,
+              25.833333
+            ],
+            "recorder_logical_rect": [
+              20.0,
+              1033.0,
+              1880.0,
+              31.0
+            ],
+            "recorder_physical_rect": [
+              16.666667,
+              860.833333,
+              1566.666667,
+              25.833333
+            ]
+          }
+        ],
+        "failures": 0,
+        "exit_code": 0,
+        "command": "/tmp/cybersand-demo-validation/run-rendered-godot.sh --path /workspace/scratch/fb9daf9fc631/cybersand/godot --script /tmp/cybersand-demo-validation/capture_blacksite_ui.gd > /tmp/cybersand-demo-validation/blacksite-ui-review/render-final.log 2>&1",
+        "external_timeout_seconds": null,
+        "install_exit_wait_timeout_ms": 15000,
+        "log": "/tmp/cybersand-demo-validation/blacksite-ui-review/render-final.log",
+        "log_sha256": "ab235a093bfaaf06026b2a94957940d1603e289cbfeecdad153bd1b5de2faa5d",
+        "metadata": "/tmp/cybersand-demo-validation/blacksite-ui-review/final/ui-metadata.json",
+        "metadata_sha256": "6c9b0798d4fa9d2e0fbd63f32f7362df763f9a53c4b20a8ec331f3aa5df317f5",
+        "helper": "/tmp/cybersand-demo-validation/capture_blacksite_ui.gd",
+        "helper_sha256": "09984fdc9bbd0b3ca8066dafa4dfe196172dc3b7d7b851ece35521378b4d7eef",
+        "images": [
+          {
+            "path": "/tmp/cybersand-demo-validation/blacksite-ui-review/final/1280x720-clean.png",
+            "sha256": "50d9b1b9483d92c544e8424403e18732332dce33f42a60aac4e04d25c43b3c64",
+            "pixels": [
+              1280,
+              720
+            ]
+          },
+          {
+            "path": "/tmp/cybersand-demo-validation/blacksite-ui-review/final/1280x720-map-panel.png",
+            "sha256": "9eeb99be79bdf3e898931c10d11e5293c6ad72a2b10b9a0ff7ba7038c7c6bf53",
+            "pixels": [
+              467,
+              174
+            ]
+          },
+          {
+            "path": "/tmp/cybersand-demo-validation/blacksite-ui-review/final/1280x720-map.png",
+            "sha256": "b27b47257b5a52c038f6d0c7d20392329b670652ae8b707c08724701e356e49d",
+            "pixels": [
+              1280,
+              720
+            ]
+          },
+          {
+            "path": "/tmp/cybersand-demo-validation/blacksite-ui-review/final/1280x720-tile.png",
+            "sha256": "fa77dcd26aecb7bcb7f89af0a5827873a559dfa39a30b02cd0a7fa42a6d1b581",
+            "pixels": [
+              1280,
+              720
+            ]
+          },
+          {
+            "path": "/tmp/cybersand-demo-validation/blacksite-ui-review/final/1600x900-after-exit.png",
+            "sha256": "36bae3d76e32fe55dd4bf31bf8c7f770bf03fa7d9be21109ef680099f764fb78",
+            "pixels": [
+              1600,
+              900
+            ]
+          },
+          {
+            "path": "/tmp/cybersand-demo-validation/blacksite-ui-review/final/1600x900-clean.png",
+            "sha256": "a1e301baf728af51a28ad27725204d5692d1f54b8471d9d3e51662bdae3d4be4",
+            "pixels": [
+              1600,
+              900
+            ]
+          },
+          {
+            "path": "/tmp/cybersand-demo-validation/blacksite-ui-review/final/1600x900-map-panel.png",
+            "sha256": "4f6e15a7eddfa1137a446d5345a8e7494dbc084b361d82bb1b93b68afe54c5f0",
+            "pixels": [
+              584,
+              217
+            ]
+          },
+          {
+            "path": "/tmp/cybersand-demo-validation/blacksite-ui-review/final/1600x900-map.png",
+            "sha256": "af3c97c191e0a359b770323cffed7c470f81b5afeb4133f7d5ed275d809df549",
+            "pixels": [
+              1600,
+              900
+            ]
+          },
+          {
+            "path": "/tmp/cybersand-demo-validation/blacksite-ui-review/final/1600x900-tile.png",
+            "sha256": "c08895fc1985236dd4c6d61d1198b94c83b0d09fa7592896576eba9acb8b006d",
+            "pixels": [
+              1600,
+              900
+            ]
+          }
+        ],
+        "visual_inspection": [
+          "Both full tile views: title and bottom recording control visible; no overlapping controls",
+          "Both full map views: all nine tile labels readable, popup contained",
+          "Both clean views: no HUD or popup visible; scene atmosphere retained",
+          "Exit view: Experiment Tower title/layout restored; scene backdrop and exposure grade hidden"
+        ],
+        "warnings": [
+          "Software renderer cannot change V-Sync mode"
+        ]
+      },
+      "retained_prior_evidence": [
+        {
+          "path": "/tmp/cybersand-demo-validation/blacksite-integration-attempt-1.log",
+          "disposition": "158 assertions, 4 incorrect fixture assumptions about owner window/quality policy; preserved"
+        },
+        {
+          "path": "/tmp/cybersand-demo-validation/blacksite-integration-attempt-2.log",
+          "disposition": "159 assertions, 0 failures before keyboard expansion; preserved"
+        },
+        {
+          "path": "/tmp/cybersand-demo-validation/blacksite-integration-after-keyboard-fix.log",
+          "disposition": "Interrupted after synchronous Web native steps were blocked by headless popup application focus-out; preserved"
+        },
+        {
+          "path": "/tmp/cybersand-demo-validation/blacksite-integration-final.log",
+          "disposition": "243 assertions, 0 failures before six layout assertions; preserved"
+        },
+        {
+          "path": "/tmp/cybersand-demo-validation/blacksite-map-key-repro.log",
+          "disposition": "Actual pre-fix held movement, jetpack and camera leak with visible map; preserved"
+        },
+        {
+          "path": "/tmp/cybersand-demo-validation/blacksite-ui-review/rendered-keyboard-after-fix.log",
+          "disposition": "Actual rendered six-step map keyboard reproduction passes after input latch correction; preserved"
+        },
+        {
+          "path": "/tmp/cybersand-demo-validation/blacksite-ui-review/ui-metadata.json",
+          "disposition": "Before layout fix, title y=-18.5 and recording bottom=1098.5 exceeded the logical canvas; preserved"
+        }
+      ],
+      "limits": [
+        "Software OpenGL on Linux only; no Windows or browser execution",
+        "Timing/FPS overlays are not performance acceptance",
+        "No editor import or shared source changes were performed by this final review"
+      ]
+    }
+  },
+  "documentation_gates": {
+    "repository.json": {
+      "artifact": {
+        "file": "/tmp/cybersand-demo-validation/blacksite-docs-final/repository.json",
+        "sha256": "4ee09625350e514bfe68d01363054b27355041240209e000275552a0d8443e87",
+        "bytes": 2542
+      },
+      "result": {
+        "status": "passed",
+        "scope": "current source/documentation and artifact identity",
+        "documentation": {
+          "status": "passed",
+          "documents": 82,
+          "navigation_link_documents": 8,
+          "canonical_claims": 146,
+          "local_links": 1444,
+          "heading_anchors": 84,
+          "questions": 32,
+          "errors": [],
+          "warnings": [],
+          "limitations": [
+            "Does not verify source semantics or runtime claims",
+            "Does not fetch external URLs",
+            "Does not rewrite or reattest historical audits",
+            "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+          ]
+        },
+        "materialized_runtime_files": [
+          "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+          "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+        ],
+        "unmaterialized_runtime_files": [],
+        "errors": [],
+        "limitations": [
+          "Identity is not execution evidence; read the dated runtime acceptance report",
+          "Retained vendor binaries and platform execution have separate dated provenance",
+          "Historical M11 integrity is checked separately by check_m11_consistency.py"
+        ]
+      }
+    },
+    "frozen.json": {
+      "artifact": {
+        "file": "/tmp/cybersand-demo-validation/blacksite-docs-final/frozen.json",
+        "sha256": "a83b739670f31f0da2b32534610c8e6a5c1e99bbc84b39dd67abc05ad8d9f7e1",
+        "bytes": 372868
+      },
+      "result": {
+        "created_utc": "2026-10-18T11:21:53.303666+00:00",
+        "method": {
+          "name": "heading-chunk BM25 lexical development baseline",
+          "k": 5,
+          "maximum_body_words": 420,
+          "overlap_words": 0,
+          "k1": 1.2,
+          "b": 0.75,
+          "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+          "query_expansion": false,
+          "stemming": false,
+          "reranker": false,
+          "embeddings": false,
+          "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"
+        },
+        "fixture_sha256": "b65be8a80190703bb4550ac49b19a7eb8541652585c91acad2d4f40fc9dca5f2",
+        "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+        "corpus_manifest_sha256": "334ef873321c743263fac453bee739424daa5d6315e443ad8976adfd0d9d0185",
+        "document_count": 82,
+        "chunk_count": 825,
+        "summary": {
+          "questions": 32,
+          "canonical_hit_at_1": 23,
+          "canonical_hit_at_k": 32,
+          "mrr_at_k": 0.8438,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+        }
+      }
+    },
+    "challenges.json": {
+      "artifact": {
+        "file": "/tmp/cybersand-demo-validation/blacksite-docs-final/challenges.json",
+        "sha256": "a7bcadcbc30cf57707360a3225889dd94b52328b6a571b3018ac8ba78923d1e8",
+        "bytes": 648333
+      },
+      "result": {
+        "created_utc": "2026-10-18T11:21:53.427992+00:00",
+        "method": {
+          "name": "heading-chunk BM25 lexical development baseline",
+          "k": 5,
+          "maximum_body_words": 420,
+          "overlap_words": 0,
+          "k1": 1.2,
+          "b": 0.75,
+          "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+          "query_expansion": false,
+          "stemming": false,
+          "reranker": false,
+          "embeddings": false,
+          "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"
+        },
+        "fixture_sha256": "325140ec15ea2b04a41b3e7dea5dda3e86535ee6d832946c2222d87f49ab1d2b",
+        "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+        "corpus_manifest_sha256": "334ef873321c743263fac453bee739424daa5d6315e443ad8976adfd0d9d0185",
+        "document_count": 82,
+        "chunk_count": 825,
+        "summary": {
+          "questions": 48,
+          "canonical_hit_at_1": 37,
+          "canonical_hit_at_k": 48,
+          "mrr_at_k": 0.8705,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+        }
+      }
+    },
+    "docs.log": {
+      "file": "/tmp/cybersand-demo-validation/blacksite-docs-final/docs.log",
+      "sha256": "c3d444784162daec883ebe5a32db11aaecdb22afb462db7f3c86be7352be75f9",
+      "bytes": 468,
+      "output": "{\n  \"status\": \"passed\",\n  \"documents\": 82,\n  \"navigation_link_documents\": 8,\n  \"canonical_claims\": 146,\n  \"local_links\": 1444,\n  \"heading_anchors\": 84,\n  \"questions\": 32,\n  \"errors\": [],\n  \"warnings\": [],\n  \"limitations\": [\n    \"Does not verify source semantics or runtime claims\",\n    \"Does not fetch external URLs\",\n    \"Does not rewrite or reattest historical audits\",\n    \"Retrieval quality requires the separate lexical evaluation and expected-fact review\"\n  ]\n}\n",
+      "exit_code": 0
+    },
+    "repository.log": {
+      "file": "/tmp/cybersand-demo-validation/blacksite-docs-final/repository.log",
+      "sha256": "4ee09625350e514bfe68d01363054b27355041240209e000275552a0d8443e87",
+      "bytes": 2542,
+      "output": "{\n  \"status\": \"passed\",\n  \"scope\": \"current source/documentation and artifact identity\",\n  \"documentation\": {\n    \"status\": \"passed\",\n    \"documents\": 82,\n    \"navigation_link_documents\": 8,\n    \"canonical_claims\": 146,\n    \"local_links\": 1444,\n    \"heading_anchors\": 84,\n    \"questions\": 32,\n    \"errors\": [],\n    \"warnings\": [],\n    \"limitations\": [\n      \"Does not verify source semantics or runtime claims\",\n      \"Does not fetch external URLs\",\n      \"Does not rewrite or reattest historical audits\",\n      \"Retrieval quality requires the separate lexical evaluation and expected-fact review\"\n    ]\n  },\n  \"materialized_runtime_files\": [\n    \"godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll\",\n    \"godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so\",\n    \"godot/addons/godot-rapier2d/bin/godot_rapier.wasm\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm\"\n  ],\n  \"unmaterialized_runtime_files\": [],\n  \"errors\": [],\n  \"limitations\": [\n    \"Identity is not execution evidence; read the dated runtime acceptance report\",\n    \"Retained vendor binaries and platform execution have separate dated provenance\",\n    \"Historical M11 integrity is checked separately by check_m11_consistency.py\"\n  ]\n}\n",
+      "exit_code": 0
+    },
+    "m11.log": {
+      "file": "/tmp/cybersand-demo-validation/blacksite-docs-final/m11.log",
+      "sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+      "bytes": 308,
+      "output": "{\n  \"status\": \"passed\",\n  \"scope\": \"historical M11 integrity; no current runtime acceptance\",\n  \"historical_source_commit\": \"05ea45fda7bdd7b0150eb86c4922c202e89e08f4\",\n  \"records_checked\": 18,\n  \"source_hashes_checked\": 28,\n  \"compare_working_tree\": false,\n  \"working_tree_differences\": [],\n  \"errors\": []\n}\n",
+      "exit_code": 0
+    },
+    "diff-check.log": {
+      "file": "/tmp/cybersand-demo-validation/blacksite-docs-final/diff-check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "output": "",
+      "exit_code": 0
+    },
+    "gate_summary": {
+      "artifact": {
+        "file": "/tmp/cybersand-demo-validation/blacksite-docs-final/gate-summary.json",
+        "sha256": "5b52643b8640abc31eedcb6b74f89e850a87e8262b73223fb3cb20aa2723a3f1",
+        "bytes": 32600
+      },
+      "record": {
+        "schema_version": 1,
+        "status": "passed",
+        "completed_utc": "2026-10-18T11:23:59.098489+00:00",
+        "source_before": {
+          "captured_utc": "2026-10-18T11:21:52.796867+00:00",
+          "cwd": "/workspace/scratch/fb9daf9fc631/cybersand",
+          "head": "b93a17de775b8fdb98fd7ddfd88f01ffeaae56e1",
+          "branch": "scene/blacksite-nine",
+          "status": "M README.md\n M docs/MATERIAL_LAB.md\n M docs/README.md\n M docs/architecture/data-ownership-and-lifetimes.md\n M docs/operations/cybersand-codex-development-handover.md\n M docs/operations/microscenarios-programme.md\n M docs/operations/microscenarios.md\n M docs/reference/configuration-reference.md\n M docs/reference/retrieval-challenges.json\n M docs/reference/retrieval-corpus.json\n M docs/reference/retrieval-index.md\n M docs/reference/status-and-roadmap.md\n M docs/reference/validation-evidence.md\n M docs/systems/material-appearance-and-rendering.md\n M godot/.godot/global_script_class_cache.cfg\n M godot/scripts/demo_worlds.gd\n M godot/scripts/main.gd\n M godot/scripts/microscenario_catalogue.gd\n M godot/scripts/web_demo_controller.gd\n?? docs/audits/2026-10-18-blacksite-nine-evidence.json\n?? docs/audits/2026-10-18-blacksite-nine.md\n?? docs/images/blacksite-nine/\n?? docs/operations/blacksite-nine-demo.md\n?? godot/scripts/blacksite_nine.gd\n?? godot/scripts/blacksite_nine_art.gd\n?? godot/scripts/blacksite_nine_depths.gd\n?? godot/scripts/blacksite_nine_layout.gd\n?? godot/scripts/blacksite_nine_midworks.gd\n?? godot/scripts/blacksite_nine_presentation.gd\n?? godot/scripts/blacksite_nine_surface.gd\n?? godot/shaders/blacksite_nine_backdrop.gdshader\n?? godot/shaders/blacksite_nine_grade.gdshader\n?? godot/tests/test_blacksite_nine.gd\n?? godot/tests/test_blacksite_nine_integration.gd\n?? godot/tests/test_blacksite_nine_render.gd\n?? godot/tools/capture_blacksite_nine.gd",
+          "inputs_sha256": {
+            "tools/ci/check_docs.py": "3509bba9904b0134c81eccd825162b62251655e4bfdc67bd0e106edf671e9ac9",
+            "tools/ci/check_repository.py": "90a2764dade7f806a1cb16986e6c0ddb43c446f72dbdbd0ac1d7b29d92edf906",
+            "tools/ci/check_m11_consistency.py": "8d1e3ce2f92c02b388b243082b08a8b27fac2e0e02d652935a7a7cb6b9885a7c",
+            "tools/docs/retrieval_eval.py": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+            "docs/reference/retrieval-corpus.json": "334ef873321c743263fac453bee739424daa5d6315e443ad8976adfd0d9d0185",
+            "docs/reference/retrieval-questions.json": "b65be8a80190703bb4550ac49b19a7eb8541652585c91acad2d4f40fc9dca5f2",
+            "docs/reference/retrieval-challenges.json": "325140ec15ea2b04a41b3e7dea5dda3e86535ee6d832946c2222d87f49ab1d2b",
+            "docs/operations/blacksite-nine-demo.md": "f94c5f0241a0ed0bfa022e448a0a973977681f4310238132c2982d18e5c76d97",
+            "docs/audits/2026-10-18-blacksite-nine.md": "e20a60f7869a1c0d7080c2911e5767c800266725208b7b7179a8300db531ab56"
+          }
+        },
+        "source_after": {
+          "captured_utc": "2026-10-18T11:23:59.098489+00:00",
+          "cwd": "/workspace/scratch/fb9daf9fc631/cybersand",
+          "head": "b93a17de775b8fdb98fd7ddfd88f01ffeaae56e1",
+          "branch": "scene/blacksite-nine",
+          "status": "M README.md\n M docs/MATERIAL_LAB.md\n M docs/README.md\n M docs/architecture/data-ownership-and-lifetimes.md\n M docs/operations/cybersand-codex-development-handover.md\n M docs/operations/microscenarios-programme.md\n M docs/operations/microscenarios.md\n M docs/reference/configuration-reference.md\n M docs/reference/retrieval-challenges.json\n M docs/reference/retrieval-corpus.json\n M docs/reference/retrieval-index.md\n M docs/reference/status-and-roadmap.md\n M docs/reference/validation-evidence.md\n M docs/systems/material-appearance-and-rendering.md\n M godot/.godot/global_script_class_cache.cfg\n M godot/scripts/demo_worlds.gd\n M godot/scripts/main.gd\n M godot/scripts/microscenario_catalogue.gd\n M godot/scripts/web_demo_controller.gd\n?? docs/audits/2026-10-18-blacksite-nine-evidence.json\n?? docs/audits/2026-10-18-blacksite-nine.md\n?? docs/images/blacksite-nine/\n?? docs/operations/blacksite-nine-demo.md\n?? godot/scripts/blacksite_nine.gd\n?? godot/scripts/blacksite_nine_art.gd\n?? godot/scripts/blacksite_nine_depths.gd\n?? godot/scripts/blacksite_nine_layout.gd\n?? godot/scripts/blacksite_nine_midworks.gd\n?? godot/scripts/blacksite_nine_presentation.gd\n?? godot/scripts/blacksite_nine_surface.gd\n?? godot/shaders/blacksite_nine_backdrop.gdshader\n?? godot/shaders/blacksite_nine_grade.gdshader\n?? godot/tests/test_blacksite_nine.gd\n?? godot/tests/test_blacksite_nine_integration.gd\n?? godot/tests/test_blacksite_nine_render.gd\n?? godot/tools/capture_blacksite_nine.gd",
+          "inputs_sha256": {
+            "tools/ci/check_docs.py": "3509bba9904b0134c81eccd825162b62251655e4bfdc67bd0e106edf671e9ac9",
+            "tools/ci/check_repository.py": "90a2764dade7f806a1cb16986e6c0ddb43c446f72dbdbd0ac1d7b29d92edf906",
+            "tools/ci/check_m11_consistency.py": "8d1e3ce2f92c02b388b243082b08a8b27fac2e0e02d652935a7a7cb6b9885a7c",
+            "tools/docs/retrieval_eval.py": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+            "docs/reference/retrieval-corpus.json": "334ef873321c743263fac453bee739424daa5d6315e443ad8976adfd0d9d0185",
+            "docs/reference/retrieval-questions.json": "b65be8a80190703bb4550ac49b19a7eb8541652585c91acad2d4f40fc9dca5f2",
+            "docs/reference/retrieval-challenges.json": "325140ec15ea2b04a41b3e7dea5dda3e86535ee6d832946c2222d87f49ab1d2b",
+            "docs/operations/blacksite-nine-demo.md": "f94c5f0241a0ed0bfa022e448a0a973977681f4310238132c2982d18e5c76d97",
+            "docs/audits/2026-10-18-blacksite-nine.md": "e20a60f7869a1c0d7080c2911e5767c800266725208b7b7179a8300db531ab56"
+          }
+        },
+        "source_input_changes_during_gates": [],
+        "evaluated_corpus_changes_by_summary_time": [],
+        "all_results_inspected": true,
+        "commands": [
+          {
+            "id": "docs",
+            "argv": [
+              "python3",
+              "tools/ci/check_docs.py",
+              "--json",
+              "/tmp/cybersand-demo-validation/blacksite-docs-final/docs.json"
+            ],
+            "log": "/tmp/cybersand-demo-validation/blacksite-docs-final/docs.log",
+            "shell_command": "python3 tools/ci/check_docs.py --json /tmp/cybersand-demo-validation/blacksite-docs-final/docs.json > /tmp/cybersand-demo-validation/blacksite-docs-final/docs.log 2>&1",
+            "exit_code": 0,
+            "wall_time_seconds": 0.039124379,
+            "status": "passed",
+            "log_sha256": "c3d444784162daec883ebe5a32db11aaecdb22afb462db7f3c86be7352be75f9",
+            "json": "/tmp/cybersand-demo-validation/blacksite-docs-final/docs.json",
+            "json_sha256": "c3d444784162daec883ebe5a32db11aaecdb22afb462db7f3c86be7352be75f9"
+          },
+          {
+            "id": "repository",
+            "argv": [
+              "python3",
+              "tools/ci/check_repository.py",
+              "--require-materialized",
+              "--json",
+              "/tmp/cybersand-demo-validation/blacksite-docs-final/repository.json"
+            ],
+            "log": "/tmp/cybersand-demo-validation/blacksite-docs-final/repository.log",
+            "shell_command": "python3 tools/ci/check_repository.py --require-materialized --json /tmp/cybersand-demo-validation/blacksite-docs-final/repository.json > /tmp/cybersand-demo-validation/blacksite-docs-final/repository.log 2>&1",
+            "exit_code": 0,
+            "wall_time_seconds": 0.462360428,
+            "status": "passed",
+            "log_sha256": "4ee09625350e514bfe68d01363054b27355041240209e000275552a0d8443e87",
+            "json": "/tmp/cybersand-demo-validation/blacksite-docs-final/repository.json",
+            "json_sha256": "4ee09625350e514bfe68d01363054b27355041240209e000275552a0d8443e87"
+          },
+          {
+            "id": "m11",
+            "argv": [
+              "python3",
+              "tools/ci/check_m11_consistency.py",
+              "--json",
+              "/tmp/cybersand-demo-validation/blacksite-docs-final/m11.json"
+            ],
+            "log": "/tmp/cybersand-demo-validation/blacksite-docs-final/m11.log",
+            "shell_command": "python3 tools/ci/check_m11_consistency.py --json /tmp/cybersand-demo-validation/blacksite-docs-final/m11.json > /tmp/cybersand-demo-validation/blacksite-docs-final/m11.log 2>&1",
+            "exit_code": 0,
+            "wall_time_seconds": 0.028274859,
+            "status": "passed",
+            "log_sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+            "json": "/tmp/cybersand-demo-validation/blacksite-docs-final/m11.json",
+            "json_sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d"
+          },
+          {
+            "id": "frozen",
+            "argv": [
+              "python3",
+              "tools/docs/retrieval_eval.py",
+              "--output",
+              "/tmp/cybersand-demo-validation/blacksite-docs-final/frozen.json"
+            ],
+            "log": "/tmp/cybersand-demo-validation/blacksite-docs-final/frozen.log",
+            "shell_command": "python3 tools/docs/retrieval_eval.py --output /tmp/cybersand-demo-validation/blacksite-docs-final/frozen.json > /tmp/cybersand-demo-validation/blacksite-docs-final/frozen.log 2>&1",
+            "exit_code": 0,
+            "wall_time_seconds": 0.080379988,
+            "status": "passed",
+            "log_sha256": "52381e702684e300273665440581c24aabff668db5be4e09de4482b30f6b84c6",
+            "json": "/tmp/cybersand-demo-validation/blacksite-docs-final/frozen.json",
+            "json_sha256": "a83b739670f31f0da2b32534610c8e6a5c1e99bbc84b39dd67abc05ad8d9f7e1"
+          },
+          {
+            "id": "challenges",
+            "argv": [
+              "python3",
+              "tools/docs/retrieval_eval.py",
+              "--queries",
+              "docs/reference/retrieval-challenges.json",
+              "--output",
+              "/tmp/cybersand-demo-validation/blacksite-docs-final/challenges.json"
+            ],
+            "log": "/tmp/cybersand-demo-validation/blacksite-docs-final/challenges.log",
+            "shell_command": "python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-challenges.json --output /tmp/cybersand-demo-validation/blacksite-docs-final/challenges.json > /tmp/cybersand-demo-validation/blacksite-docs-final/challenges.log 2>&1",
+            "exit_code": 0,
+            "wall_time_seconds": 0.155263384,
+            "status": "passed",
+            "log_sha256": "6987a042c00195b5dd82e72d8bfd9f05a70537decc9e6fd9ed62a610cb10a8e7",
+            "json": "/tmp/cybersand-demo-validation/blacksite-docs-final/challenges.json",
+            "json_sha256": "a7bcadcbc30cf57707360a3225889dd94b52328b6a571b3018ac8ba78923d1e8"
+          },
+          {
+            "id": "diff-check",
+            "argv": [
+              "git",
+              "diff",
+              "--check"
+            ],
+            "log": "/tmp/cybersand-demo-validation/blacksite-docs-final/diff-check.log",
+            "shell_command": "git diff --check > /tmp/cybersand-demo-validation/blacksite-docs-final/diff-check.log 2>&1",
+            "exit_code": 0,
+            "wall_time_seconds": 2.5338e-05,
+            "status": "passed",
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "documentation": {
+          "status": "passed",
+          "documents": 82,
+          "navigation_link_documents": 8,
+          "canonical_claims": 146,
+          "local_links": 1444,
+          "heading_anchors": 84,
+          "questions": 32,
+          "errors": [],
+          "warnings": [],
+          "limitations": [
+            "Does not verify source semantics or runtime claims",
+            "Does not fetch external URLs",
+            "Does not rewrite or reattest historical audits",
+            "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+          ]
+        },
+        "repository": {
+          "status": "passed",
+          "materialized_runtime_count": 18,
+          "unmaterialized_runtime_count": 0,
+          "errors": [],
+          "scope": "current source/documentation and artifact identity"
+        },
+        "historical_m11": {
+          "status": "passed",
+          "scope": "historical M11 integrity; no current runtime acceptance",
+          "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+          "records_checked": 18,
+          "source_hashes_checked": 28,
+          "compare_working_tree": false,
+          "working_tree_differences": [],
+          "errors": []
+        },
+        "frozen_retrieval": {
+          "documents": 82,
+          "chunks": 825,
+          "questions": 32,
+          "canonical_hit_at_1": 23,
+          "canonical_hit_at_k": 32,
+          "mrr_at_k": 0.8438,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+          "fixture_sha256": "b65be8a80190703bb4550ac49b19a7eb8541652585c91acad2d4f40fc9dca5f2",
+          "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+          "corpus_manifest_sha256": "334ef873321c743263fac453bee739424daa5d6315e443ad8976adfd0d9d0185",
+          "canonical_ranks": {
+            "Q01": 1,
+            "Q02": 1,
+            "Q03": 2,
+            "Q04": 2,
+            "Q05": 1,
+            "Q06": 1,
+            "Q07": 1,
+            "Q08": 2,
+            "Q09": 1,
+            "Q10": 1,
+            "Q11": 1,
+            "Q12": 1,
+            "Q13": 1,
+            "Q14": 1,
+            "Q15": 1,
+            "Q16": 1,
+            "Q17": 3,
+            "Q18": 1,
+            "Q19": 1,
+            "Q20": 1,
+            "Q21": 2,
+            "Q22": 1,
+            "Q23": 1,
+            "Q24": 2,
+            "Q25": 1,
+            "Q26": 3,
+            "Q27": 1,
+            "Q28": 1,
+            "Q29": 3,
+            "Q30": 1,
+            "Q31": 1,
+            "Q32": 2
+          }
+        },
+        "challenge_retrieval": {
+          "documents": 82,
+          "chunks": 825,
+          "questions": 48,
+          "canonical_hit_at_1": 37,
+          "canonical_hit_at_k": 48,
+          "mrr_at_k": 0.8705,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+          "fixture_sha256": "325140ec15ea2b04a41b3e7dea5dda3e86535ee6d832946c2222d87f49ab1d2b",
+          "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+          "corpus_manifest_sha256": "334ef873321c743263fac453bee739424daa5d6315e443ad8976adfd0d9d0185",
+          "canonical_ranks": {
+            "C05": 4,
+            "C06": 2,
+            "C01": 1,
+            "C02": 1,
+            "C03": 1,
+            "C04": 1,
+            "C07": 1,
+            "C08": 1,
+            "C09": 5,
+            "C10": 1,
+            "C11": 2,
+            "C12": 1,
+            "C13": 1,
+            "C14": 1,
+            "C15": 1,
+            "C16": 2,
+            "MS01": 1,
+            "MS02": 3,
+            "MS03": 1,
+            "MS04": 2,
+            "MS05": 2,
+            "SOL01": 2,
+            "SOL02": 2,
+            "SOL03": 1,
+            "MS06": 1,
+            "REM01": 1,
+            "REM02": 1,
+            "WEX01": 1,
+            "WEX02": 1,
+            "WEX03": 1,
+            "REC01": 1,
+            "REC02": 2,
+            "REC03": 1,
+            "SOL04": 1,
+            "MAT01": 1,
+            "MAT02": 1,
+            "SCENE01": 1,
+            "SCENE02": 1,
+            "ACT01": 1,
+            "ACT02": 1,
+            "ACT03": 1,
+            "ACT04": 1,
+            "ACT05": 1,
+            "ACT06": 1,
+            "ACT07": 1,
+            "ACT08": 1,
+            "ACT09": 1,
+            "SCENE03": 1
+          }
+        },
+        "focus_ranks": {
+          "SCENE01": 1,
+          "SCENE02": 1,
+          "ACT01": 1,
+          "ACT02": 1,
+          "ACT03": 1,
+          "ACT04": 1,
+          "ACT05": 1,
+          "ACT06": 1,
+          "ACT07": 1,
+          "ACT08": 1,
+          "ACT09": 1,
+          "SCENE03": 1
+        },
+        "retrieval_semantic_review": {
+          "scope": "SCENE03 expected-fact coverage in retrieved top-five chunks",
+          "result": "The retrieved guide chunks include entry, full tour, all-tile native continuity, fixed interest, camera-only views, reset scope and world-coordinate presentation. Canonical hit metrics remain a lexical retrieval measure, not general answer correctness."
+        },
+        "diff_check": {
+          "status": "passed",
+          "exit_code": 0,
+          "output_bytes": 0
+        },
+        "evaluated_corpus_files": [
+          {
+            "path": "docs/MATERIAL_LAB.md",
+            "sha256": "07ed6a6b9a085419a44942d0d9e5af0803f663fa5f5d59e6b477b909dfbc2bed",
+            "bytes": 11320
+          },
+          {
+            "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+            "sha256": "19e30669c3d1d4b99f2dc72da4ff844a1b3739ba45761cca6253c4a497a6cde6",
+            "bytes": 6461
+          },
+          {
+            "path": "docs/architecture/data-ownership-and-lifetimes.md",
+            "sha256": "9bfa79986b36b261e9c8ad86bd973bb63de9903360d12f5b8f33b3f1d22bda1a",
+            "bytes": 16004
+          },
+          {
+            "path": "docs/architecture/determinism-and-boundary-transfers.md",
+            "sha256": "915b4a914e39e41304592b8b9873856b7c9b9714a043ac9384669ee9163d200a",
+            "bytes": 7295
+          },
+          {
+            "path": "docs/architecture/item-authored-material-programs.md",
+            "sha256": "facc6f3209743cafff997bd775ab1b77114f05439bead78c17624e62c32ecd72",
+            "bytes": 5204
+          },
+          {
+            "path": "docs/architecture/module-boundaries.md",
+            "sha256": "6bf104f7779108e8b40eae7e95170eb0d4cd31639ecc6206833dff31519de94e",
+            "bytes": 6019
+          },
+          {
+            "path": "docs/architecture/overview.md",
+            "sha256": "47a6d4646dabf966232808c48c21ba3d5178b327644aeb9ebd1ed356f4ab7144",
+            "bytes": 5292
+          },
+          {
+            "path": "docs/architecture/principles-and-non-goals.md",
+            "sha256": "8dd55cf5b315f460b844fa66307296f4f77eb8f5e29fc2ba5ad9d1f2df60c377",
+            "bytes": 6556
+          },
+          {
+            "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+            "sha256": "c848f86507b7888cf8ac9704fbcdb95f0c19f164c65d258595eb625e07971bdc",
+            "bytes": 6485
+          },
+          {
+            "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+            "sha256": "74849b2d80901ffbed0e819787fb93932fd369c4d7ddbc32599d4379c86ffc5e",
+            "bytes": 12067
+          },
+          {
+            "path": "docs/architecture/simulation-tick-and-threading.md",
+            "sha256": "3469e5cf896d274b3e2162bcf8c762059b86df4421faa7392fbad1526314debe",
+            "bytes": 9250
+          },
+          {
+            "path": "docs/architecture/soliding-lifecycle.md",
+            "sha256": "10832029af506bd5b593cfc8cb4eadc39ce6097674c66eb220ea745cdb191f80",
+            "bytes": 19320
+          },
+          {
+            "path": "docs/decisions/ADR-001-native-simulation-core.md",
+            "sha256": "183256ad4f0bb86477ebb52917ef5f39dbb473befe42a2ca9c8af7a1388cd0bf",
+            "bytes": 3490
+          },
+          {
+            "path": "docs/decisions/ADR-002-double-buffered-tile-jobs.md",
+            "sha256": "b621c6eac703579ed9c737e07fe67516f04b8e02deb90bc10745aba759ce2991",
+            "bytes": 3876
+          },
+          {
+            "path": "docs/decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+            "sha256": "5f6f4317020f9b423a326945dbc54d3d04d50ace0a911aa66d2d5228d333c343",
+            "bytes": 4207
+          },
+          {
+            "path": "docs/decisions/ADR-004-interest-region-and-reconfiguration.md",
+            "sha256": "9d445644a387b0ebcb75d2488409d52e1cf5739b8c79b4d063bb73be12689c3c",
+            "bytes": 5074
+          },
+          {
+            "path": "docs/decisions/ADR-005-water-model.md",
+            "sha256": "ca741af1d41237c2c6cc70c80e5f098bf10b4cca3098183168a1f386aa0ab9bc",
+            "bytes": 4594
+          },
+          {
+            "path": "docs/decisions/ADR-006-gpu-compute-deferral.md",
+            "sha256": "de55bb1adf6d8bdb3324c80558ccdbb71e422a4e494df09dccbfcb0bf909ca00",
+            "bytes": 3351
+          },
+          {
+            "path": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+            "sha256": "4176beaad08fca041922b87f8f8451a5a3b7b4831946d117119eeb21c7e466e9",
+            "bytes": 4438
+          },
+          {
+            "path": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+            "sha256": "f57b275187490cdc12c28456f9417a6eb4a73d2daf4a97ba9e6950e07568efe5",
+            "bytes": 6062
+          },
+          {
+            "path": "docs/decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+            "sha256": "5691c7f6aaaf99418cc03a651004cc58290cc6af3e03ed5a28dfa177673ab55f",
+            "bytes": 4394
+          },
+          {
+            "path": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+            "sha256": "7c3e320ab521c0dbfffc5f8831507f948c6614775dc294ca6f77aa5c742b7000",
+            "bytes": 2879
+          },
+          {
+            "path": "docs/decisions/ADR-011-granular-interaction-policy.md",
+            "sha256": "79b0d6bb92c5bc624f3d24b76b51837d2bf81ee22b277d88f8e5d0675b828c00",
+            "bytes": 4669
+          },
+          {
+            "path": "docs/operations/architecture-programme-water-feel-addendum.md",
+            "sha256": "ace6c7f6d05d1fbc8087bbbfb9ed93481df88835f9bf974eaa6b0e0e10f6ea51",
+            "bytes": 8984
+          },
+          {
+            "path": "docs/operations/architecture-programme.md",
+            "sha256": "ed45fc119606ab3d73841e5d09874eaa60700ba4428f2110f0964709a38b872a",
+            "bytes": 52679
+          },
+          {
+            "path": "docs/operations/blacksite-nine-demo.md",
+            "sha256": "f94c5f0241a0ed0bfa022e448a0a973977681f4310238132c2982d18e5c76d97",
+            "bytes": 13714
+          },
+          {
+            "path": "docs/operations/cell-layout-experiment.md",
+            "sha256": "92d2ae798728bbd5203ed648b36dc16cf69c436880ac78a3f7af07e7ca3c6e58",
+            "bytes": 26101
+          },
+          {
+            "path": "docs/operations/configuration-and-capacity-budgets.md",
+            "sha256": "07558ef807a0a27af2f363550743583d0896e7cc1bc98e316989bc4157cbd6a1",
+            "bytes": 12098
+          },
+          {
+            "path": "docs/operations/current-and-historical-validation.md",
+            "sha256": "6e06adf2a1a9c3ff0a3e5b40dfd02565e1e66e6dc4ca8d91f4acf16d95049ee2",
+            "bytes": 6408
+          },
+          {
+            "path": "docs/operations/cybersand-codex-development-handover.md",
+            "sha256": "95a568cea0fd3923b850c31af4888a08078196745fd10d07fded7ab1d27b5ad8",
+            "bytes": 24846
+          },
+          {
+            "path": "docs/operations/development-claims-remediation-programme.md",
+            "sha256": "91508be4c98b959775070251a3a2f7b8f7a2bda9d93876564b582294f4d47711",
+            "bytes": 14706
+          },
+          {
+            "path": "docs/operations/documentation-maintenance.md",
+            "sha256": "f3de7a4bab92bc23e8efbf1c8540c74ca124c3c56314c4ca793fd41ad2ef6068",
+            "bytes": 6809
+          },
+          {
+            "path": "docs/operations/experiment-tower.md",
+            "sha256": "f171c48fad0026b61c69ccd9e902b62963068eaeec78cdcb6513f55b499c9c05",
+            "bytes": 12858
+          },
+          {
+            "path": "docs/operations/gameplay-recording.md",
+            "sha256": "af86b8e242054a8e0429119f4aab85e8c69e5a8c23cb659ab3787b05cc08d168",
+            "bytes": 11663
+          },
+          {
+            "path": "docs/operations/github-development-and-release.md",
+            "sha256": "1a40be078ad1d1f662e67e0e427aad8255a80ff1c6de77b254e9c3d00caf16ad",
+            "bytes": 9442
+          },
+          {
+            "path": "docs/operations/liquid-characterization.md",
+            "sha256": "d18df9a9ed150165d6f51fff5469f77ce531374a4c7673a020955a194a826147",
+            "bytes": 4710
+          },
+          {
+            "path": "docs/operations/local-build-and-validation.md",
+            "sha256": "4d0ff2e3d8f03e2ac4cc32fcd07633df2b099ca2489ac74ba8c7466d0d05cd39",
+            "bytes": 16554
+          },
+          {
+            "path": "docs/operations/microscenario-reference-pack.md",
+            "sha256": "dfddad77cd621573fa8e29254b90765552fc8e2ec00159f008c27cb4f7ed1820",
+            "bytes": 16807
+          },
+          {
+            "path": "docs/operations/microscenarios-programme.md",
+            "sha256": "738f4d459942b6918f53d0ce7143c0fa38c695400401272adaad5ac00022f0fe",
+            "bytes": 28853
+          },
+          {
+            "path": "docs/operations/microscenarios.md",
+            "sha256": "37a3dc17233192b630252c72647194b07f429b018e49982bb285df0711d2459e",
+            "bytes": 20649
+          },
+          {
+            "path": "docs/operations/neon-reliquary-demo.md",
+            "sha256": "db57bf8976427464069e8dab42a05b78e5876a3be31feaa90a1ba9e1ba5e84ca",
+            "bytes": 14168
+          },
+          {
+            "path": "docs/operations/physics-characterisation-plan.md",
+            "sha256": "c306e1e0539835caefa668c72f5a118f2d34f0fb0235305ce7462aaca75d3a0d",
+            "bytes": 22957
+          },
+          {
+            "path": "docs/operations/physics-characterisation.md",
+            "sha256": "c49eec0b414c617d25ba4600f0baa6c950f98f6add9dcd31acb715559be82b46",
+            "bytes": 20249
+          },
+          {
+            "path": "docs/operations/profiling-observability-and-performance.md",
+            "sha256": "7e76b4ca6e433099d18036d3f8cd1cafb38ddf0e3c8852cfe735d267838c2fcf",
+            "bytes": 8297
+          },
+          {
+            "path": "docs/operations/rapier-2d-migration-runbook.md",
+            "sha256": "42ac74e51b946ebeaf71670a76e88c9957a64181283dccee30c3983b809ce8f6",
+            "bytes": 5159
+          },
+          {
+            "path": "docs/operations/soliding-macro-fracture-fixture.md",
+            "sha256": "a5f29551330843705a1360108965609a9973d0d167604755dd9ba5b9d8ffdd43",
+            "bytes": 8314
+          },
+          {
+            "path": "docs/operations/soliding-measurement.md",
+            "sha256": "029b9fc75960e23e00737fd4a8ef5de4d93a9b68b53173a31b144890246f7127",
+            "bytes": 16631
+          },
+          {
+            "path": "docs/operations/soliding-programme.md",
+            "sha256": "9945607e405ff94199fe2aea91da7d4a2911b20c7f13629c7762d275bf8531f0",
+            "bytes": 9976
+          },
+          {
+            "path": "docs/operations/soliding-stage3-freeze.md",
+            "sha256": "e9bb416fbc00534936f31ec823ff4200084b9839e29b104ca06c6e5842a8f855",
+            "bytes": 25036
+          },
+          {
+            "path": "docs/operations/soliding-stage3b-production-plan.md",
+            "sha256": "a2c8b0df12e69eaddb5e36200fdac89d978d43ce5190242022cf83a6bef43919",
+            "bytes": 22377
+          },
+          {
+            "path": "docs/operations/source-checkpoint-and-recovery.md",
+            "sha256": "61b421444a590c6d896bb7b93d46f7c2f96bb4f4b74771d6c76ed859f4cb58b3",
+            "bytes": 10375
+          },
+          {
+            "path": "docs/operations/state-precision-experiment.md",
+            "sha256": "5ec8493d0aea4114c3049380cd6eae3be4d34a0dfc4ca8bfbebc67df3e800c0a",
+            "bytes": 10075
+          },
+          {
+            "path": "docs/operations/testing-validation-and-replay.md",
+            "sha256": "1237a16f5e7b741f9ad2b0f606183fc00ac213ef676dc161c833cfecc55f2850",
+            "bytes": 15706
+          },
+          {
+            "path": "docs/operations/troubleshooting.md",
+            "sha256": "eddf1c8591c8396dc22c2d257410e249caee20d189ff998601d472784f731b7d",
+            "bytes": 5027
+          },
+          {
+            "path": "docs/operations/water-feel-lab-experiment.md",
+            "sha256": "be7b1e0b54803ed85f611c979d2d98c58abdece6ba9902e4855e8298437b36e4",
+            "bytes": 14686
+          },
+          {
+            "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+            "sha256": "ab5cf209f9e72714c260f75f8fcdbb64f6f96ddd111b23a055fedf8e5615d08e",
+            "bytes": 34216
+          },
+          {
+            "path": "docs/operations/web-threading.md",
+            "sha256": "47c5c6b5e10363f9d5a8bf18c643470e94bcbc70e92d15337310cfa341ec55c4",
+            "bytes": 6183
+          },
+          {
+            "path": "docs/reference/configuration-reference.md",
+            "sha256": "52981d21ee655c5ce02a9556304b73b845ac992cc5400d1929f39bd1c645c1ae",
+            "bytes": 26390
+          },
+          {
+            "path": "docs/reference/glossary.md",
+            "sha256": "123cb43131703c15362ff8f85ef5e343844db526c3107d90937e7c8288debdde",
+            "bytes": 6071
+          },
+          {
+            "path": "docs/reference/interfaces-and-message-contracts.md",
+            "sha256": "2d5316f751cf4d315be25ab06c25a08daced634262cbb8aabc26099f3a21d40b",
+            "bytes": 20505
+          },
+          {
+            "path": "docs/reference/invariants.md",
+            "sha256": "05b2ae02ced08a32c0e666e733fcd8e70415be686dd605c0bb24f4268376ab28",
+            "bytes": 16768
+          },
+          {
+            "path": "docs/reference/level-saves-and-replay.md",
+            "sha256": "96eb4be87b3018893684adb35747b4804e9091c92ed0a186bcc87372fd261181",
+            "bytes": 6484
+          },
+          {
+            "path": "docs/reference/product-intent-and-priorities.md",
+            "sha256": "d21bafaba5bd00fa2daa3c63272864661873c7aaf72b757b8827e5c27d78bcbb",
+            "bytes": 12084
+          },
+          {
+            "path": "docs/reference/status-and-roadmap.md",
+            "sha256": "4a777a40b6596ed1b0eb3cdaa421c75ea130ab3ec1045dc740f00f1ce54c5fed",
+            "bytes": 37387
+          },
+          {
+            "path": "docs/reference/validation-evidence.md",
+            "sha256": "5f78b8b5bd573be9fd98969ec68313a7500c9fca85b6a9b9dada00bdda63d02c",
+            "bytes": 28285
+          },
+          {
+            "path": "docs/research/bounded-decompression-impulse-events.md",
+            "sha256": "f7e168691be4c3534894004f1c11c0e4c35e1016eda94825a74c884f3fe5e102",
+            "bytes": 16290
+          },
+          {
+            "path": "docs/research/lumped-gas-region-pressure-bookkeeping.md",
+            "sha256": "dfa36ee21cb19208fd7bc2bd30992381df0ff780f5c86c474e23e3f26473c550",
+            "bytes": 20849
+          },
+          {
+            "path": "docs/research/sandspiel-performance-and-material-port.md",
+            "sha256": "239d4fc9ca44d86a0971659305c61decec2dcd7c14b5a3d17a0f79844fa61791",
+            "bytes": 7166
+          },
+          {
+            "path": "docs/systems/activity-dirty-regions-and-waking.md",
+            "sha256": "c95ef0118736e5c98fda7e0d13d9dcb05b0a39c7c483aa08e686c26ccff3db98",
+            "bytes": 10305
+          },
+          {
+            "path": "docs/systems/actor-control-prototypes.md",
+            "sha256": "2cb0187ef937a44fdb360a2d41d4d629f51e43a17947a4335dd229d9b7f4885f",
+            "bytes": 17924
+          },
+          {
+            "path": "docs/systems/actor-rigs.md",
+            "sha256": "db2f9b87bfccd8282908dd72911cb7fd0c113d73d5ddba91c6a7ee35ccb387cc",
+            "bytes": 23577
+          },
+          {
+            "path": "docs/systems/flow-transport-and-profiles.md",
+            "sha256": "15e10e3d1df51e2745f7e36dd917453b7b6f9b05fc4077be7c98098f8908a2de",
+            "bytes": 7805
+          },
+          {
+            "path": "docs/systems/granular-interaction-policy.md",
+            "sha256": "d3c64b172e1b701471cf4a4823cc1919f9a1dcf9cb49be5dad5805c387644688",
+            "bytes": 12363
+          },
+          {
+            "path": "docs/systems/intermaterial-interactions.md",
+            "sha256": "4639e8eba71467fcfc8231bb1df9c55823ae8ced589036d563ba72c5f095fa69",
+            "bytes": 9689
+          },
+          {
+            "path": "docs/systems/material-appearance-and-rendering.md",
+            "sha256": "ffc26a21981767d762dcea846a574a37e9402b0ebfe9fe44119d1094a258df81",
+            "bytes": 9021
+          },
+          {
+            "path": "docs/systems/materials-and-rule-kernels.md",
+            "sha256": "24a43015214856f003e53872547300780f58e0107a65779d5629f353bd1fb349",
+            "bytes": 12291
+          },
+          {
+            "path": "docs/systems/player-environment-profiles-and-traversal.md",
+            "sha256": "d2d3b683c30868f4f9161ad9a8b7b9b26146e99049be950443f3557554f38042",
+            "bytes": 6898
+          },
+          {
+            "path": "docs/systems/settled-region-discovery.md",
+            "sha256": "1bb29704ecd99425abadfbd2dd58d753bb12bbbdb00679f70562e8821778c1ba",
+            "bytes": 22753
+          },
+          {
+            "path": "docs/systems/smoke-heat-pressure-roadmap.md",
+            "sha256": "a147e13269dac95dd5b4d57c329686c2761acec4c64209c6a49c2e2d8ba2019c",
+            "bytes": 6117
+          },
+          {
+            "path": "docs/systems/themed-construction-materials.md",
+            "sha256": "b84dbef7fdb0fd9faf0a389b7be7f85a8d70aca9f677423de37a2d01e2857b8a",
+            "bytes": 9404
+          },
+          {
+            "path": "docs/systems/water-design.md",
+            "sha256": "2c0120b5e1cff9ee8e86741c39387ab5fb68e5df1bfe2c4f7bd3d583c0088d4c",
+            "bytes": 17179
+          },
+          {
+            "path": "docs/systems/world-storage-and-interest-region.md",
+            "sha256": "93f6db41a9a4f11ccfc05aef2fca851faadf473e4a23b014ebd0f9826e65e740",
+            "bytes": 10300
+          }
+        ],
+        "artifacts": {
+          "challenges.contexts.md": {
+            "sha256": "8484f11f0e2049cd033de93a45a99c8f01aea4378ca8961d486003d627754756",
+            "bytes": 564262
+          },
+          "challenges.json": {
+            "sha256": "a7bcadcbc30cf57707360a3225889dd94b52328b6a571b3018ac8ba78923d1e8",
+            "bytes": 648333
+          },
+          "challenges.log": {
+            "sha256": "6987a042c00195b5dd82e72d8bfd9f05a70537decc9e6fd9ed62a610cb10a8e7",
+            "bytes": 7217
+          },
+          "commands.json": {
+            "sha256": "1a48438f74b4d73c90f36be65dccbdedfa0f0ebc740e7fc5f19dbc251d99e93b",
+            "bytes": 1638
+          },
+          "diff-check.log": {
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0
+          },
+          "docs.json": {
+            "sha256": "c3d444784162daec883ebe5a32db11aaecdb22afb462db7f3c86be7352be75f9",
+            "bytes": 468
+          },
+          "docs.log": {
+            "sha256": "c3d444784162daec883ebe5a32db11aaecdb22afb462db7f3c86be7352be75f9",
+            "bytes": 468
+          },
+          "frozen.contexts.md": {
+            "sha256": "3fa0a53e0ff29bc2d5a3e5ee5ce43daa40e46e94c0baafb35dd4c407b25eb791",
+            "bytes": 311620
+          },
+          "frozen.json": {
+            "sha256": "a83b739670f31f0da2b32534610c8e6a5c1e99bbc84b39dd67abc05ad8d9f7e1",
+            "bytes": 372868
+          },
+          "frozen.log": {
+            "sha256": "52381e702684e300273665440581c24aabff668db5be4e09de4482b30f6b84c6",
+            "bytes": 4297
+          },
+          "m11.json": {
+            "sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+            "bytes": 308
+          },
+          "m11.log": {
+            "sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+            "bytes": 308
+          },
+          "process-results.json": {
+            "sha256": "afee2592559ac541bcd194cb0912ab7fc6d3a5d47249f9e7ae6153d246b9eef4",
+            "bytes": 2148
+          },
+          "repository.json": {
+            "sha256": "4ee09625350e514bfe68d01363054b27355041240209e000275552a0d8443e87",
+            "bytes": 2542
+          },
+          "repository.log": {
+            "sha256": "4ee09625350e514bfe68d01363054b27355041240209e000275552a0d8443e87",
+            "bytes": 2542
+          },
+          "source-after.json": {
+            "sha256": "226d0847793780201f2ee99aa1792a86eb9bd88654feb318cd12359cde689c55",
+            "bytes": 2737
+          },
+          "source-before.json": {
+            "sha256": "2bef9a92543d7808f24c42bef3ee7ec7e651f5dc7bff6661043e59903ed7ef95",
+            "bytes": 2737
+          }
+        },
+        "limitations": [
+          "No native or browser tests were run for this documentation-gate task.",
+          "Repository identity and materialization do not constitute platform execution acceptance.",
+          "M11 compares retained historical records against its historical source commit, not current runtime behavior.",
+          "Root-owned subsequent publication text is outside this completed source/input snapshot."
+        ]
+      }
+    }
+  },
+  "limitations": [
+    "The 6712-step full tour uses the real sampled motor against native geometry after 120 material ticks. Material stepping is held during that long motor traversal; this is not 6712 live-material ticks or a performance measurement.",
+    "Synchronous Web-controller integration executes on Linux through the retained native adapter. It is not exported browser/WebAssembly execution.",
+    "Held-key map tests explicitly arm and focus the synchronous fixture so Linux headless popup focus loss cannot make the suppression test vacuous. Application focus-loss behavior is unchanged.",
+    "Rendering/UI evidence uses software OpenGL on Linux. No new Windows, macOS, hardware-GPU, WebGPU, browser, target-PC performance or player feel acceptance is claimed.",
+    "Effects are disabled for edited body-enabled variants because there is no body mask. Material/player authority and existing native effects are unchanged.",
+    "Nine tiles are fixed views of one finite world; this does not establish streamed chunks or independent live tile worlds.",
+    "Remote ready-for-review and merge CI are separate gates. This task publishes a reviewable scene branch without merging main."
+  ],
+  "initial_publication_ci": {
+    "head": "ab7eb974c3b9442b14661ea96c8344385b33b688",
+    "workflow_runs": [
+      {
+        "id": 39123398645,
+        "name": "GDExtension build and current Godot regression",
+        "status": "completed",
+        "conclusion": "skipped",
+        "run_number": 743,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/39123398645/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/39123398645/logs",
+        "workflow_id": 344993861
+      },
+      {
+        "id": 39123398748,
+        "name": "Native C++ validation",
+        "status": "completed",
+        "conclusion": "skipped",
+        "run_number": 743,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/39123398748/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/39123398748/logs",
+        "workflow_id": 344993864
+      },
+      {
+        "id": 39123398663,
+        "name": "Documentation and provenance",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 764,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/39123398663/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/39123398663/logs",
+        "workflow_id": 344993860
+      }
+    ]
+  },
+  "publication_documentation_recheck": {
+    "publication-docs.log": {
+      "path": "/tmp/cybersand-demo-validation/blacksite-docs-final/publication-docs.log",
+      "sha256": "c3d444784162daec883ebe5a32db11aaecdb22afb462db7f3c86be7352be75f9",
+      "result": {
+        "status": "passed",
+        "documents": 82,
+        "navigation_link_documents": 8,
+        "canonical_claims": 146,
+        "local_links": 1444,
+        "heading_anchors": 84,
+        "questions": 32,
+        "errors": [],
+        "warnings": [],
+        "limitations": [
+          "Does not verify source semantics or runtime claims",
+          "Does not fetch external URLs",
+          "Does not rewrite or reattest historical audits",
+          "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+        ]
+      },
+      "exit_code": 0
+    },
+    "publication-repository.json": {
+      "path": "/tmp/cybersand-demo-validation/blacksite-docs-final/publication-repository.json",
+      "sha256": "4ee09625350e514bfe68d01363054b27355041240209e000275552a0d8443e87",
+      "result": {
+        "status": "passed",
+        "scope": "current source/documentation and artifact identity",
+        "documentation": {
+          "status": "passed",
+          "documents": 82,
+          "navigation_link_documents": 8,
+          "canonical_claims": 146,
+          "local_links": 1444,
+          "heading_anchors": 84,
+          "questions": 32,
+          "errors": [],
+          "warnings": [],
+          "limitations": [
+            "Does not verify source semantics or runtime claims",
+            "Does not fetch external URLs",
+            "Does not rewrite or reattest historical audits",
+            "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+          ]
+        },
+        "materialized_runtime_files": [
+          "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+          "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+        ],
+        "unmaterialized_runtime_files": [],
+        "errors": [],
+        "limitations": [
+          "Identity is not execution evidence; read the dated runtime acceptance report",
+          "Retained vendor binaries and platform execution have separate dated provenance",
+          "Historical M11 integrity is checked separately by check_m11_consistency.py"
+        ]
+      },
+      "exit_code": 0
+    }
+  }
+}

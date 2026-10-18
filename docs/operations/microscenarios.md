@@ -39,6 +39,22 @@ an existing recipe baseline, not physics approval or new all-platform acceptance
 
 ## Versioned definition and validation
 
+The exploratory [Neon Reliquary district stack](neon-reliquary-demo.md) adds four
+schema-2 catalogue consumers: `showcase/neon-reliquary`,
+`showcase/middle-cyberberbia`, `showcase/sewertech-alley`, and
+`showcase/industrial-underswamp`. Each ornate construction uses the same
+prevalidated native install/reset boundary. Above/Below selects a fresh authored
+tile through that owner; viewpoint changes preserve its state. There are no
+scheduled events, observation conditions, native ABI changes or additional loops.
+
+The separate [Blacksite Nine](blacksite-nine-demo.md) consumer registers one
+`showcase/blacksite-nine` definition for the complete connected 3×3 map. Nine
+presentation regions describe its camera tiles; twelve reciprocal openings are
+ordinary Empty geometry in one native world. Fixed `[32,32,960,960]` interest
+keeps every district in the simulation region. Camera-map selection preserves
+the installed definition, tick, player and material edits. Its explicit reset
+reinstalls the entire complex through the existing owner boundary.
+
 A definition is JSON data, not executable code. `CyberMicroScenarioContract.base`
 provides a complete schema-1 template; `validate` checks in-memory data and `parse` checks
 bounded JSON. Unknown or missing fields, invalid types, fractional integer fields,
