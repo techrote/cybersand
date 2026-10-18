@@ -293,6 +293,28 @@ Registered scientific/control fixtures retain their existing actor identities.
 Use the [validation ledger](validation-evidence.md) for scoped execution evidence;
 the preserved ACT-001 audit does not automatically validate the additional rigs.
 
+## Actor usable checkpoint — 2026-10-18
+
+**Current source, experimental USABLE-001 / PR #180:** the sampled actor-rig
+session has a separate 32-entry [equipment catalogue](../systems/actor-usables.md):
+12 material deposition/destruction tools, 10 swept ballistic payloads and 10
+fixed processors/catalytic responders. Input admission uses actor producer
+identity plus an independent epoch/sequence/lease stream. The simulation owner
+alone performs bounded material queries and writes.
+
+Committed projectiles/devices outlive a released input, freeze with simulation
+pause and clear on fresh actor/World reset. Processor recipes preflight all
+required inputs, catalysts, outputs and bounded owner work before consuming a
+batch. Gameplay recording retains current actor-equipment state separately at
+the actor sample and material-generation boundaries.
+
+This increment does not add health/damage, inventory conservation, exact
+chemistry/heat/momentum accounting, persistence of committed equipment state,
+learned policies, or physical Rapier/articulated equipment mounts. ACT-004/#178
+remains the owner for articulated physical actors and any later mount/recoil
+integration. Exact-head execution evidence belongs to the validation ledger/audit
+after the PR acceptance gates run.
+
 ## Issue #13 experiment checkpoint
 
 **Current:** shared five-floor Experiment Tower, frozen pre-change references,
