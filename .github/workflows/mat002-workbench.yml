@@ -9,80 +9,88 @@ concurrency:
   group: mat002-workbench
   cancel-in-progress: false
 jobs:
-  candidate:
+  integration:
     if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/mat/phase-quantity-quench'
     runs-on: ubuntu-24.04
-    timeout-minutes: 35
+    timeout-minutes: 20
     permissions:
       contents: write
-    env:
-      CC: gcc-13
-      CXX: g++-13
+    defaults:
+      run:
+        shell: bash
+        working-directory: workspace/source
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Check out exact companion documentation
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 6a58311982941b75f46e22109a0829e5acb83c7e
+          path: workspace
+          persist-credentials: false
+      - name: Check out the guarded integration source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           ref: ${{ github.sha }}
+          path: workspace/source
           fetch-depth: 0
           persist-credentials: true
-      - name: Guard source and branch ownership
+      - name: Verify the qualified native core is unchanged
         run: |
           set -euo pipefail
           test "$GITHUB_REF" = refs/heads/mat/phase-quantity-quench
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           test "$(git ls-remote --exit-code origin "$GITHUB_REF" | cut -f1)" = "$GITHUB_SHA"
-          git diff --exit-code ec05d7227885bda59bf72a5889b004296b9a07e5 HEAD -- native/src native/include godot Makefile
+          git diff --exit-code dd4f6ca01d4bf29d009d62f3142531bef99ed474 HEAD -- native Makefile godot/native_extension
           git diff --exit-code
           mkdir -p build/mat002
-          g++-13 --version | head -1
-      - name: Apply the exact reviewed source transformation
+      - name: Integrate exact adapter and documentation changes
         run: |
           set -euo pipefail
-          python3 -m py_compile .github/mat002_apply.py
-          python3 .github/mat002_apply.py
+          python3 -m py_compile .github/mat002_finish.py
+          python3 .github/mat002_finish.py
           git diff --check
           git diff --stat
-      - name: Run all quantity and quench regression groups
+      - name: Validate current docs, historical integrity and retrieval routes
         run: |
           set -euo pipefail
-          printf '#include "phase_quantity_tests.hpp"\nint main() { return cybersand::mat002_tests::run_all() ? 0 : 1; }\n' > build/mat002/main.cpp
-          timeout 5m g++-13 -std=c++20 -O1 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -Inative/tests native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/src/c_api.cpp build/mat002/main.cpp -o build/mat002/candidate
-          timeout 10m build/mat002/candidate 2>&1 | tee build/mat002/quantity-tests.log
-      - name: Run the complete core native suite
+          timeout 1m python3 tools/ci/check_ci_provider_policy.py
+          timeout 5m python3 tools/ci/check_docs.py 2>&1 | tee build/mat002/docs.log
+          timeout 5m python3 tools/ci/check_m11_consistency.py 2>&1 | tee build/mat002/historical.log
+          timeout 2m python3 tools/docs/retrieval_eval.py --output build/mat002/frozen.json
+          timeout 2m python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-challenges.json --output build/mat002/challenges.json
+          python3 tools/ci/test_godot_regression_sharding.py
+      - name: Preserve the implementation for exact-source runtime qualification
         run: |
           set -euo pipefail
-          timeout 5m make build/tests
-          timeout 15m ./build/tests 2>&1 | tee build/mat002/native-tests.log
-      - name: Commit only the qualified source delta
-        run: |
-          set -euo pipefail
-          git rm -- .github/mat002_apply.py
+          git rm -- .github/mat002_finish.py
           python3 - <<'PY'
           import subprocess
-          allowed = {'Makefile', 'native/src/world.cpp', 'native/include/cybersand/world.hpp',
-                     'native/include/cybersand/interaction_rules.hpp', 'native/tests/test_world.cpp',
-                     '.github/mat002_apply.py'}
+          allowed = {'godot/native_extension/cyber_native_cell_world.cpp', '.github/mat002_finish.py',
+                     'docs/systems/water-design.md', 'docs/systems/materials-and-rule-kernels.md',
+                     'docs/systems/intermaterial-interactions.md', 'docs/reference/level-saves-and-replay.md',
+                     'docs/architecture/chunk-tile-and-buffer-model.md', 'docs/reference/status-and-roadmap.md',
+                     'docs/operations/cybersand-codex-development-handover.md', 'docs/README.md',
+                     'docs/reference/retrieval-index.md', 'docs/reference/retrieval-corpus.json',
+                     'docs/reference/retrieval-challenges.json', 'docs/audits/2026-10-18-mat002-phase-quantity.md'}
           changed = set(subprocess.check_output(['git', 'diff', 'HEAD', '--name-only'], text=True).splitlines())
-          if changed != allowed:
-              raise SystemExit('Unexpected source write set: ' + repr(changed))
+          # The new audit is not yet tracked; do not pick up arbitrary untracked files.
+          if changed != allowed - {'docs/audits/2026-10-18-mat002-phase-quantity.md'}:
+              raise SystemExit('Unexpected tracked integration write set: ' + repr(changed))
+          for path in sorted(allowed - {'.github/mat002_finish.py'}):
+              subprocess.run(['git', 'add', '--', path], check=True)
           PY
-          git add -- Makefile native/src/world.cpp native/include/cybersand/world.hpp native/include/cybersand/interaction_rules.hpp native/tests/test_world.cpp
           git diff --cached --check
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -m 'fix(materials): preserve phase inventory and accumulate quench progress' -m 'Retain Water/Steam/Ice quantity, bound hot-cell quenching, version the affected interaction rules, and integrate the public-World regressions. Refs #160.'
+          git commit -m 'fix(mat002): reject invalid adapter state and document phase contracts' -m 'Preflight material-local byte domains, record tested native phase quantities and versioned interaction semantics, and preserve runtime/save qualification as separate gates. Refs #160.'
           test "$(git show -s --format=%P HEAD)" = "$GITHUB_SHA"
           test "$(git ls-remote --exit-code origin "$GITHUB_REF" | cut -f1)" = "$GITHUB_SHA"
           git push origin HEAD:refs/heads/mat/phase-quantity-quench
           git rev-parse HEAD | tee build/mat002/source-commit.txt
-          sha256sum native/src/world.cpp native/include/cybersand/world.hpp native/include/cybersand/interaction_rules.hpp native/tests/test_world.cpp native/tests/phase_quantity_tests.hpp > build/mat002/source-inputs.sha256
-      - name: Retain source and qualification evidence
+      - name: Retain integration evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: mat002-candidate-${{ github.run_id }}
-          path: |
-            build/mat002/*.log
-            build/mat002/*.txt
-            build/mat002/*.sha256
+          name: mat002-integration-${{ github.run_id }}
+          path: workspace/source/build/mat002/
           if-no-files-found: warn
           retention-days: 30
