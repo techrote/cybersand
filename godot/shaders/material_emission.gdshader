@@ -12,6 +12,12 @@ uniform vec2 view_size_px = vec2(320.0, 180.0);
 uniform vec2 camera_origin_px = vec2(0.0);
 uniform float condition_projection_enabled = 0.0;
 uniform float sample_radius_px : hint_range(1.0, 12.0, 0.5) = 4.0;
+// Shared with the palette pass; negative keeps the engine TIME.
+uniform float presentation_time_override = -1.0;
+
+float presentation_time() {
+	return presentation_time_override >= 0.0 ? presentation_time_override : TIME;
+}
 
 float cheap_hash(vec2 value) {
 	vec3 parts = fract(value.xyx * 0.1031);
@@ -26,30 +32,30 @@ float triangle_wave(float value) {
 float flair_emission_multiplier(int flair, vec2 pixel) {
 	if (flair == 27) { // neon
 		float seed = cheap_hash(floor(pixel / 8.0));
-		float pulse = 0.94 + (1.0 - triangle_wave(TIME * 0.55 + seed)) * 0.08;
-		float fault = step(0.988, cheap_hash(vec2(seed * 91.0, floor(TIME * 2.0))));
+		float pulse = 0.94 + (1.0 - triangle_wave(presentation_time() * 0.55 + seed)) * 0.08;
+		float fault = step(0.988, cheap_hash(vec2(seed * 91.0, floor(presentation_time() * 2.0))));
 		return pulse * mix(1.0, 0.64, fault);
 	}
 	if (flair == 28) { // LED scan
-		return 0.90 + 0.10 * (1.0 - triangle_wave(TIME * 0.30 + pixel.y / 18.0));
+		return 0.90 + 0.10 * (1.0 - triangle_wave(presentation_time() * 0.30 + pixel.y / 18.0));
 	}
 	if (flair == 30) { // flame
-		return 0.88 + triangle_wave((pixel.x * 0.7 - pixel.y) / 6.0 + TIME * 0.9) * 0.22;
+		return 0.88 + triangle_wave((pixel.x * 0.7 - pixel.y) / 6.0 + presentation_time() * 0.9) * 0.22;
 	}
 	if (flair == 31) { // molten material
-		return 0.90 + (1.0 - triangle_wave((pixel.x + pixel.y * 0.35) / 9.0 + TIME * 0.16)) * 0.24;
+		return 0.90 + (1.0 - triangle_wave((pixel.x + pixel.y * 0.35) / 9.0 + presentation_time() * 0.16)) * 0.24;
 	}
 	if (flair == 32) { // spark
-		return 0.72 + (1.0 - triangle_wave(TIME * 2.4 + cheap_hash(pixel))) * 0.60;
+		return 0.72 + (1.0 - triangle_wave(presentation_time() * 2.4 + cheap_hash(pixel))) * 0.60;
 	}
 	if (flair == 41) { // charged metal
 		return 0.92 + smoothstep(0.88, 1.0, 1.0 - triangle_wave(
-			(pixel.x + pixel.y * 0.37) / 13.0 + TIME * 0.48
+			(pixel.x + pixel.y * 0.37) / 13.0 + presentation_time() * 0.48
 		)) * 0.34;
 	}
 	if (flair == 42) { // cloner circuitry
 		return 0.88 + smoothstep(0.80, 1.0, 1.0 - triangle_wave(
-			(pixel.x + pixel.y) / 19.0 - TIME * 0.26
+			(pixel.x + pixel.y) / 19.0 - presentation_time() * 0.26
 		)) * 0.30;
 	}
 	return 1.0;

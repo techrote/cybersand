@@ -282,6 +282,32 @@ Use actual platform artifacts and retain their identities for platform acceptanc
 
 ## Actor control prototype checks
 
+### Thunderbowl controls and native arena
+
+The [Thunderbowl reference](../systems/thunderbowl-control-reference.md) contains
+the standalone scene/CLI commands and fourteen match definitions. Four new
+automatically discovered Godot regressions cover direct actuation, its session
+mailbox, native arena/driver/presentation behavior and controller/schema output:
+
+```sh
+timeout 180 <godot> --headless --path godot --script res://tests/test_actor_rig_actuation.gd
+timeout 180 <godot> --headless --path godot --script res://tests/test_actor_actuator_session.gd
+timeout 180 <godot> --headless --path godot --script res://tests/test_thunderbowl_arena.gd
+timeout 180 <godot> --headless --path godot --script res://tests/test_thunderbowl_controllers.gd
+```
+
+Run the existing actor-rig and SetA suites when changing the shared session or
+motor. The controller suite retains structured positive/adversarial cases in
+`user://thunderbowl-contract-cases.json`; the separate
+[`validate_examples.py`](../../tools/thunderbowl/validate_examples.py) checks them
+and the eight schema definitions with Python `jsonschema` (development tool,
+tested with 4.26.0). Its `--capture` argument accepts the resolved Godot user-data
+path. This validates JSON shape independently from the Godot validator; actual
+run/observation identity, capacity, privilege and input lifetime remain native
+arena/session integration checks. No inference service or credentials are needed.
+
+### Original actor compatibility checks
+
 The original **SetA** tests `test_actor_prototypes.gd`, `test_actor_prototype_session.gd` and
 `test_actor_prototype_integration.gd` are discovered by the existing Godot
 regression runner. The core runner covers the shared

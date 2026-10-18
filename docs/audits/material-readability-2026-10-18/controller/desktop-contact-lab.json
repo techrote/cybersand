@@ -1,0 +1,31 @@
+{
+  "adapter": "NVIDIA TITAN RTX",
+  "controller": "desktop",
+  "images": {
+    "glow-off": {
+      "glow_enabled": false,
+      "overlay_visible": false,
+      "path": "desktop-contact-lab-glow-off.png",
+      "source_update_mode": 0
+    },
+    "glow-on": {
+      "glow_enabled": true,
+      "overlay_visible": true,
+      "path": "desktop-contact-lab-glow-on.png",
+      "source_update_mode": 4
+    },
+    "glow-on-again": {
+      "glow_enabled": true,
+      "overlay_visible": true,
+      "path": "desktop-contact-lab-glow-on-again.png",
+      "source_update_mode": 4
+    }
+  },
+  "installed": true,
+  "scenario": "materials/contact-lab",
+  "tick": 119,
+  "window": [
+    1920,
+    1080
+  ]
+}

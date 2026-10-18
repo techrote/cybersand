@@ -132,6 +132,39 @@ and main-thread Rapier ownership are unchanged. New-rig tools may invoke the
 existing owner-local single-cell emission adapter under explicit per-update
 budgets; a policy cannot supply an arbitrary World operation or effect footprint.
 
+### Direct actuator lane and Thunderbowl envelopes
+
+**Current, experimental ACT-003:** actor definitions may add `control_mode`
+(`wire` by default, or `metal`). Metal requires a declared Ripper, Copter or
+Gemini profile and a human/policy producer; unsupported combinations are refused.
+The worker value seam is:
+
+```gdscript
+submit_actor_actuator_action(actor_id: int, epoch: int, sequence: int,
+    observed_tick: int, actuators: Vector4, lease_ticks: int = 12,
+    producer: StringName = &"policy") -> bool
+```
+
+The session method is `submit_actuator_action`. It retains the existing
+producer/epoch/sequence/observed-tick lease checks, with held latest values and
+no action-button edges. Raw profile channels map to forces/torques without the
+intent motor's steering, stabilization or traversal assistance. Passive physics,
+resource gates and the existing bounded collision path still constrain motion.
+The session adds `control_modes`, `actuation_version:1`, `actuation_stride:32`,
+`actuation_states`, `actuation_profiles` and copied `actuation_capabilities`.
+Wire rows in that new array are zero; metal rows in `applied_actions` are zero.
+`applied_sequences` continues to identify the consumed lane's command. Existing
+16/40/10 strides and their meanings are unchanged.
+
+The standalone arena wraps this typed seam in strict version-1 JSON envelopes.
+It issues opaque run/observation identities, derives producer assignment from
+configuration and checks lane, liveness, monotonically increasing sequence,
+observation issuance/freshness, communication privilege and command capacity
+before admitting values. Command admission is not a hit or movement guarantee.
+Its copied self/local/oracle observation formats, human device frames, typed
+messages, slow model intentions and JSON Schema files are owned by the
+[Thunderbowl reference](../systems/thunderbowl-control-reference.md).
+
 ### Sampled-player granular disturbance adapter
 
 **Current private Godot adapter:** `character_disturb_granular(origin, size,

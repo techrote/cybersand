@@ -1,0 +1,473 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Thunderbowl v1 observation",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "actor_id": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 7
+    },
+    "epoch": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2147483647
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 36000
+    },
+    "observation_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "observation_mode": {
+      "enum": [
+        "self",
+        "local",
+        "oracle"
+      ]
+    },
+    "control_mode": {
+      "enum": [
+        "wire",
+        "metal"
+      ]
+    },
+    "model": {
+      "enum": [
+        "runner",
+        "skimmer",
+        "crawler",
+        "scout",
+        "scrabbler",
+        "ripper",
+        "groundeffect",
+        "digger",
+        "copter",
+        "pouncer",
+        "dropbot",
+        "lineshank",
+        "walljumper",
+        "clamberer",
+        "swinger",
+        "rocketjumper",
+        "springjack",
+        "gyrocrate",
+        "bellows",
+        "winchbug",
+        "magpie",
+        "skatesail",
+        "astra",
+        "claude",
+        "luna",
+        "qwen",
+        "bonsai",
+        "jev",
+        "gemini"
+      ]
+    },
+    "team": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 7
+    },
+    "alive": {
+      "type": "boolean"
+    },
+    "self_state": {
+      "type": "array",
+      "minItems": 40,
+      "maxItems": 40,
+      "items": {
+        "type": "number",
+        "minimum": -1000000,
+        "maximum": 1000000
+      }
+    },
+    "self_hp": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 3
+    },
+    "tag_ready": {
+      "type": "boolean"
+    },
+    "actuation_state": {
+      "type": "array",
+      "minItems": 32,
+      "maxItems": 32,
+      "items": {
+        "type": "number",
+        "minimum": -1000000,
+        "maximum": 1000000
+      }
+    },
+    "actuation_profile": {
+      "type": "string",
+      "maxLength": 64
+    },
+    "terrain": {
+      "type": "object",
+      "properties": {
+        "origin": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "number",
+            "minimum": -1024,
+            "maximum": 2048
+          }
+        },
+        "size": {
+          "const": [
+            9,
+            9
+          ]
+        },
+        "cell_step": {
+          "const": 4
+        },
+        "cells": {
+          "type": "array",
+          "minItems": 81,
+          "maxItems": 81,
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 255
+          }
+        }
+      },
+      "required": [
+        "origin",
+        "size",
+        "cell_step",
+        "cells"
+      ],
+      "additionalProperties": false
+    },
+    "neighbors": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "properties": {
+          "actor_id": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 7
+          },
+          "team": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 7
+          },
+          "relative_position": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "number",
+              "minimum": -64,
+              "maximum": 64
+            }
+          },
+          "velocity": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "number",
+              "minimum": -160,
+              "maximum": 160
+            }
+          },
+          "body_size": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 24
+            }
+          },
+          "rotation": {
+            "type": "number",
+            "minimum": -100000,
+            "maximum": 100000
+          }
+        },
+        "required": [
+          "actor_id",
+          "team",
+          "relative_position",
+          "velocity",
+          "body_size",
+          "rotation"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "messages": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "properties": {
+          "sender": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 7
+          },
+          "kind": {
+            "enum": [
+              "goal_hint",
+              "latent_state"
+            ]
+          },
+          "payload": {
+            "type": "array",
+            "minItems": 4,
+            "maxItems": 4,
+            "items": {
+              "type": "number",
+              "minimum": -1,
+              "maximum": 1
+            }
+          },
+          "sent_tick": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 36000
+          },
+          "expires_tick": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 36018
+          }
+        },
+        "required": [
+          "sender",
+          "kind",
+          "payload",
+          "sent_tick",
+          "expires_tick"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "oracle": {
+      "type": "object",
+      "properties": {
+        "actors": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": {
+            "type": "object",
+            "properties": {
+              "actor_id": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 7
+              },
+              "model": {
+                "enum": [
+                  "runner",
+                  "skimmer",
+                  "crawler",
+                  "scout",
+                  "scrabbler",
+                  "ripper",
+                  "groundeffect",
+                  "digger",
+                  "copter",
+                  "pouncer",
+                  "dropbot",
+                  "lineshank",
+                  "walljumper",
+                  "clamberer",
+                  "swinger",
+                  "rocketjumper",
+                  "springjack",
+                  "gyrocrate",
+                  "bellows",
+                  "winchbug",
+                  "magpie",
+                  "skatesail",
+                  "astra",
+                  "claude",
+                  "luna",
+                  "qwen",
+                  "bonsai",
+                  "jev",
+                  "gemini"
+                ]
+              },
+              "team": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 7
+              },
+              "alive": {
+                "type": "boolean"
+              },
+              "hp": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "state": {
+                "type": "array",
+                "minItems": 40,
+                "maxItems": 40,
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000,
+                  "maximum": 1000000
+                }
+              }
+            },
+            "required": [
+              "actor_id",
+              "model",
+              "team",
+              "alive",
+              "hp",
+              "state"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "terrain": {
+          "type": "object",
+          "properties": {
+            "origin": {
+              "const": [
+                96,
+                96
+              ]
+            },
+            "size": {
+              "const": [
+                32,
+                18
+              ]
+            },
+            "cell_spacing": {
+              "const": 8
+            },
+            "sample_offset": {
+              "const": [
+                4,
+                4
+              ]
+            },
+            "cells": {
+              "type": "array",
+              "minItems": 576,
+              "maxItems": 576,
+              "items": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 255
+              }
+            }
+          },
+          "required": [
+            "origin",
+            "size",
+            "cell_spacing",
+            "sample_offset",
+            "cells"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "actors",
+        "terrain"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "version",
+    "run_id",
+    "actor_id",
+    "epoch",
+    "tick",
+    "observation_id",
+    "observation_mode",
+    "control_mode",
+    "model",
+    "team",
+    "alive",
+    "self_state",
+    "self_hp",
+    "tag_ready",
+    "actuation_state",
+    "actuation_profile",
+    "terrain",
+    "neighbors",
+    "messages"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "observation_mode": {
+            "const": "oracle"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "oracle"
+        ]
+      },
+      "else": {
+        "not": {
+          "required": [
+            "oracle"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "observation_mode": {
+            "const": "self"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "neighbors": {
+            "maxItems": 0
+          },
+          "messages": {
+            "maxItems": 0
+          }
+        }
+      }
+    }
+  ]
+}

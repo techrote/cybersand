@@ -1,0 +1,30 @@
+{
+  "eligible_pixels": 4150,
+  "blends": {
+    "0.00": {
+      "eligible_max_abs_error": 0.0,
+      "eligible_pixels_over_2_255": 0,
+      "same_id_max_abs_error_vs_current": 0.0
+    },
+    "0.25": {
+      "eligible_max_abs_error": 0.1765,
+      "eligible_pixels_over_2_255": 1374,
+      "same_id_max_abs_error_vs_current": 0.0
+    },
+    "0.50": {
+      "eligible_max_abs_error": 0.2118,
+      "eligible_pixels_over_2_255": 1372,
+      "same_id_max_abs_error_vs_current": 0.0
+    },
+    "0.75": {
+      "eligible_max_abs_error": 0.1559,
+      "eligible_pixels_over_2_255": 1372,
+      "same_id_max_abs_error_vs_current": 0.0
+    },
+    "1.00": {
+      "eligible_max_abs_error": 0.0,
+      "eligible_pixels_over_2_255": 0,
+      "same_id_max_abs_error_vs_current": 0.0
+    }
+  }
+}

@@ -773,7 +773,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		KEY_O:
 			set_brush_rectangle_vertical(not brush_rectangle_vertical)
 		KEY_G:
-			glow_enabled = not glow_enabled
+			set_glow_enabled(not glow_enabled)
 		KEY_F3:
 			debug_stats_visible = not debug_stats_visible
 		KEY_X:
@@ -838,7 +838,7 @@ func _import_decoded(decoded: Dictionary) -> void:
 	selected_material_id = int(metadata.material)
 	coherent_liquid_emission = bool(metadata.coherent)
 	liquid_surface_adhesion_enabled = bool(metadata.adhesion)
-	glow_enabled = bool(metadata.glow)
+	set_glow_enabled(bool(metadata.glow))
 	native_world.set_liquid_surface_adhesion_enabled(liquid_surface_adhesion_enabled)
 	set_quality(int(metadata.quality))
 	camera_origin = clamped_camera_origin(player.centre() - Vector2(current_view_size) * 0.5)

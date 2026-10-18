@@ -7,12 +7,14 @@ extends RefCounted
 const Prototype = preload("res://scripts/actor_prototype.gd")
 const RigMotor = preload("res://scripts/actor_rig_motor.gd")
 const RigCatalog = preload("res://scripts/actor_rig_catalog.gd")
+const Actuation = preload("res://scripts/actor_rig_actuation.gd")
 const MAX_ACTORS: int = 8
 const MAX_LEASE_TICKS: int = 18
 const DEFAULT_LEASE_TICKS: int = 12
 const OBSERVATION_STRIDE: int = 16
 const RIG_OBSERVATION_STRIDE: int = 40
 const ACTION_STRIDE: int = 10
+const ACTUATION_STRIDE: int = 32
 const DEMO_INTERVAL_TICKS: int = 6
 const MODEL_IDS: Array[StringName] = [&"runner", &"skimmer", &"crawler"]
 const RIG_IDS: Array[StringName] = RigCatalog.RIG_IDS
@@ -42,9 +44,13 @@ class ActionSlot:
 	var sequence: int = -1
 	var deadline: int = -1
 	var producer: StringName = &"policy"
+	var control_mode: StringName = &"wire"
+	var model: StringName = &"runner"
+	var actuators: Vector4 = Vector4.ZERO
 	var was_live: bool = false
 
 	func neutralize() -> void:
+		actuators = Vector4.ZERO
 		movement = Vector2.ZERO
 		aim = Vector2.ZERO
 		effort = 0.0
@@ -79,6 +85,10 @@ var _producers: Array[StringName] = []
 var _capabilities: Array[Dictionary] = []
 var _rig_capabilities: Array[Dictionary] = []
 var _rig_sets: Array[StringName] = []
+var _control_modes: Array[StringName] = []
+var _actuation_profiles: Array[String] = []
+var _actuation_capabilities: Array[Dictionary] = []
+var _actuators: Array[Vector4] = []
 var _epoch: int = 0
 var _tick: int = 0
 var _count: int = 0 # Mailbox count; guarded together with epoch/tick/suspension.
@@ -104,6 +114,7 @@ func _init() -> void:
 	_demo_sequences.resize(MAX_ACTORS)
 	for _index: int in range(MAX_ACTORS):
 		_slots.append(ActionSlot.new())
+		_actuators.append(Vector4.ZERO)
 
 
 static func valid_definitions(definitions: Array) -> bool:
@@ -122,6 +133,15 @@ static func valid_definitions(definitions: Array) -> bool:
 		if not RigCatalog.has_rig(model_id):
 			return false
 		if not PRODUCERS.has(StringName(producer_value)):
+			return false
+		var mode_value = definition.get("control_mode", "wire")
+		if not (mode_value is String or mode_value is StringName):
+			return false
+		if not ["wire", "metal"].has(String(mode_value)):
+			return false
+		if String(mode_value) == "metal" and (
+			not Actuation.supports_model(model_id) or String(producer_value) == "demo"
+		):
 			return false
 		var spawn = definition.get("position", null)
 		if not spawn is Vector2 or not spawn.is_finite():
@@ -146,6 +166,9 @@ func configure(definitions: Array, world) -> bool:
 	var rig_sets: Array[StringName] = []
 	var models: Array[StringName] = []
 	var producers: Array[StringName] = []
+	var control_modes: Array[StringName] = []
+	var actuation_profiles: Array[String] = []
+	var actuation_capabilities: Array[Dictionary] = []
 	for definition: Dictionary in definitions:
 		var model_id: StringName = StringName(definition.model)
 		var actor: CyberActorPrototype = Prototype.new() if MODEL_IDS.has(model_id) else RigMotor.new()
@@ -166,12 +189,19 @@ func configure(definitions: Array, world) -> bool:
 		rig_sets.append(RigCatalog.set_for(model_id))
 		models.append(model_id)
 		producers.append(StringName(str(definition.get("producer", "policy"))))
+		var control_mode: StringName = StringName(str(definition.get("control_mode", "wire")))
+		control_modes.append(control_mode)
+		actuation_profiles.append(String(Actuation.profile_id_for(model_id)) if control_mode == &"metal" else "")
+		actuation_capabilities.append(Actuation.profile(model_id) if control_mode == &"metal" else {})
 	_actors = candidates
 	_models = models
 	_producers = producers
 	_capabilities = capabilities
 	_rig_capabilities = rig_capabilities
 	_rig_sets = rig_sets
+	_control_modes = control_modes
+	_actuation_profiles = actuation_profiles
+	_actuation_capabilities = actuation_capabilities
 	_mutex.lock()
 	_epoch += 1
 	_tick = 0
@@ -184,6 +214,8 @@ func configure(definitions: Array, world) -> bool:
 		_demo_sequences[index] = 0
 		if index < _count:
 			_slots[index].producer = _producers[index]
+			_slots[index].control_mode = _control_modes[index]
+			_slots[index].model = _models[index]
 			_homes[index] = _actors[index].position
 			_directions[index] = 1.0 if index % 2 == 0 else -1.0
 	_mutex.unlock()
@@ -204,6 +236,9 @@ func clear() -> void:
 	_capabilities.clear()
 	_rig_capabilities.clear()
 	_rig_sets.clear()
+	_control_modes.clear()
+	_actuation_profiles.clear()
+	_actuation_capabilities.clear()
 	_mutex.lock()
 	_epoch += 1
 	_tick = 0
@@ -280,7 +315,7 @@ func submit_rig_action(
 		_mutex.unlock()
 		return false
 	var slot: ActionSlot = _slots[actor_id]
-	if sequence <= slot.sequence or producer != slot.producer:
+	if sequence <= slot.sequence or producer != slot.producer or slot.control_mode != &"wire":
 		_mutex.unlock()
 		return false
 	# Preserve a brief press/release between ticks. Multiple rises coalesce to one
@@ -296,6 +331,36 @@ func submit_rig_action(
 	slot.primary = primary
 	slot.secondary = secondary
 	slot.auxiliary = auxiliary
+	slot.sequence = sequence
+	slot.deadline = observed_tick + lease_ticks
+	_mutex.unlock()
+	return true
+
+
+func submit_actuator_action(
+	actor_id: int, epoch: int, sequence: int, observed_tick: int,
+	actuators: Vector4, lease_ticks: int = DEFAULT_LEASE_TICKS,
+	producer: StringName = &"policy"
+) -> bool:
+	# ACT-003: direct held actuator values use the same bounded identity/lease
+	# envelope, but never pass through the intent motor or its button edges.
+	if not actuators.is_finite() or sequence < 0 or lease_ticks < 1 or lease_ticks > MAX_LEASE_TICKS:
+		return false
+	_mutex.lock()
+	if (
+		_suspended or epoch != _epoch or actor_id < 0 or actor_id >= _count
+		or observed_tick < 0 or observed_tick > _tick
+		or observed_tick < _tick - MAX_LEASE_TICKS
+		or observed_tick + lease_ticks <= _tick
+	):
+		_mutex.unlock()
+		return false
+	var slot: ActionSlot = _slots[actor_id]
+	if sequence <= slot.sequence or producer != slot.producer or slot.control_mode != &"metal" \
+		or not Actuation.valid_command(slot.model, actuators):
+		_mutex.unlock()
+		return false
+	slot.actuators = Actuation.clamp_command(slot.model, actuators)
 	slot.sequence = sequence
 	slot.deadline = observed_tick + lease_ticks
 	_mutex.unlock()
@@ -350,6 +415,7 @@ func step(delta: float, world) -> void:
 		_efforts[index] = slot.effort if live else 0.0
 		_trims[index] = slot.trim if live else 0.0
 		_reels[index] = slot.reel if live else 0.0
+		_actuators[index] = slot.actuators if live else Vector4.ZERO
 		var flags: int = CANCEL if slot.cancel_pending or (slot.was_live and not live) else 0
 		if live:
 			if slot.primary: flags |= PRIMARY_HELD
@@ -381,10 +447,13 @@ func step(delta: float, world) -> void:
 			actor.clear_actions()
 		if actor is CyberActorRigMotor:
 			var rig_actor: CyberActorRigMotor = actor as CyberActorRigMotor
-			rig_actor.simulate_rig_action(delta, _moves[index], _aims[index], _efforts[index],
-				_trims[index], _reels[index], bool(flags & PRIMARY_HELD), bool(flags & SECONDARY_HELD),
-				bool(flags & AUXILIARY_HELD), world, bool(flags & PRIMARY_PRESSED),
-				bool(flags & SECONDARY_PRESSED), bool(flags & AUXILIARY_PRESSED))
+			if _control_modes[index] == &"metal":
+				rig_actor.simulate_actuator_action(delta, _actuators[index], world)
+			else:
+				rig_actor.simulate_rig_action(delta, _moves[index], _aims[index], _efforts[index],
+					_trims[index], _reels[index], bool(flags & PRIMARY_HELD), bool(flags & SECONDARY_HELD),
+					bool(flags & AUXILIARY_HELD), world, bool(flags & PRIMARY_PRESSED),
+					bool(flags & SECONDARY_PRESSED), bool(flags & AUXILIARY_PRESSED))
 			ray_query_count_last += rig_actor.ray_queries_last
 			effect_read_count_last += rig_actor.effect_reads_last
 			edited_cell_count_last += rig_actor.edited_cells_last
@@ -451,6 +520,8 @@ func snapshot() -> Dictionary:
 	states.resize(_actors.size() * OBSERVATION_STRIDE)
 	var rig_states: PackedFloat32Array = PackedFloat32Array()
 	rig_states.resize(_actors.size() * RIG_OBSERVATION_STRIDE)
+	var actuation_states: PackedFloat32Array = PackedFloat32Array()
+	actuation_states.resize(_actors.size() * ACTUATION_STRIDE)
 	for index: int in range(_actors.size()):
 		var observation: PackedFloat32Array = _actors[index].observation()
 		for field: int in range(OBSERVATION_STRIDE):
@@ -462,6 +533,10 @@ func snapshot() -> Dictionary:
 			var rig_observation: PackedFloat32Array = rig_actor.rig_observation()
 			for field: int in range(RIG_OBSERVATION_STRIDE):
 				rig_states[index * RIG_OBSERVATION_STRIDE + field] = rig_observation[field]
+			if _control_modes[index] == &"metal":
+				var raw_observation: PackedFloat32Array = rig_actor.actuation_observation()
+				for field: int in range(ACTUATION_STRIDE):
+					actuation_states[index * ACTUATION_STRIDE + field] = raw_observation[field]
 		else:
 			rig_states[index * RIG_OBSERVATION_STRIDE + 35] = CyberSampledCharacter.BODY_SIZE.x
 			rig_states[index * RIG_OBSERVATION_STRIDE + 36] = CyberSampledCharacter.BODY_SIZE.y
@@ -488,6 +563,11 @@ func snapshot() -> Dictionary:
 		"rig_version": 2, "rig_observation_stride": RIG_OBSERVATION_STRIDE,
 		"rig_states": rig_states, "rig_sets": _rig_sets.duplicate(),
 		"rig_capabilities": _rig_capabilities.duplicate(true),
+		"control_modes": _control_modes.duplicate(),
+		"actuation_version": 1, "actuation_stride": ACTUATION_STRIDE,
+		"actuation_states": actuation_states,
+		"actuation_profiles": _actuation_profiles.duplicate(),
+		"actuation_capabilities": _actuation_capabilities.duplicate(true),
 		"action_stride": ACTION_STRIDE, "applied_actions": _applied_actions.slice(0, _actors.size() * ACTION_STRIDE),
 		"applied_sequences": _applied_sequences.slice(0, _actors.size()),
 		"applied_flags": _flags.slice(0, _actors.size()),
