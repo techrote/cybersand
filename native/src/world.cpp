@@ -53,6 +53,14 @@ std::uint64_t allocate_discovery_incarnation() {
     return value ^ (value >> 31U);
 }
 
+[[nodiscard]] constexpr std::uint64_t temporal_lane_phase(
+    std::int64_t x, std::int64_t y, std::uint64_t period,
+    std::uint32_t stream) noexcept {
+    return mix64(static_cast<std::uint64_t>(x) * 0x9e3779b185ebca87ULL ^
+                 std::rotl(static_cast<std::uint64_t>(y), 23) ^
+                 static_cast<std::uint64_t>(stream) * 0xa0761d6478bd642fULL) % period;
+}
+
 void hash_byte(std::uint64_t& hash, std::uint8_t byte) noexcept {
     hash ^= byte;
     hash *= 1099511628211ULL;
@@ -1773,6 +1781,8 @@ void World::clear_transient_obstacles() {
             state.body_ids[index] = 0U;
             const auto local_x = static_cast<std::int64_t>(index % static_cast<std::size_t>(width));
             const auto local_y = static_cast<std::int64_t>(index / static_cast<std::size_t>(width));
+            // A mask change has no material write to wake its own block.
+            keep_cell_active(state.region.x + local_x, state.region.y + local_y, nullptr);
             wake_cell_neighborhood(state.region.x + local_x, state.region.y + local_y);
             witness_discovery_mask_cell(
                 state.region.x + local_x, state.region.y + local_y, false);
@@ -1816,6 +1826,7 @@ bool World::set_transient_obstacle(std::int64_t x, std::int64_t y,
     if (slot != 0U) return false;
     slot = body_id;
     state.occupied_indices.push_back(index);
+    keep_cell_active(x, y, nullptr);
     wake_cell_neighborhood(x, y);
     witness_discovery_mask_cell(x, y, true);
     return true;
@@ -2496,16 +2507,12 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
         return std::nullopt;
     };
     // Transport remains full-rate, while secondary work occupies spatially
-    // staggered temporal lanes. This is the gameplay-fidelity path: every lane
-    // is eventually visited, but a short-lived contact may intentionally be
-    // missed. Stable phases avoid whole material fields pulsing in lockstep.
+    // staggered temporal lanes. Pending compact pairs and Ice contacts retain
+    // a wake deadline; a short-lived contact may intentionally be missed.
+    // Stable phases avoid whole material fields pulsing in lockstep.
     const auto temporal_lane_due = [this, x, y](std::uint64_t period,
                                                  std::uint32_t stream) {
-        const auto phase = mix64(
-            static_cast<std::uint64_t>(x) * 0x9e3779b185ebca87ULL ^
-            std::rotl(static_cast<std::uint64_t>(y), 23) ^
-            static_cast<std::uint64_t>(stream) * 0xa0761d6478bd642fULL) % period;
-        return tick_index_ % period == phase;
+        return tick_index_ % period == temporal_lane_phase(x, y, period, stream);
     };
     const bool contact_chemistry_due = temporal_lane_due(4U, 190U);
     const bool lifecycle_due = temporal_lane_due(2U, 191U);
@@ -3215,6 +3222,45 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
     return false;
 }
 
+void World::schedule_pending_reaction_wake(Material material, std::int64_t x,
+                                           std::int64_t y, JobEffects* effects) noexcept {
+    const bool has_pair_reactions = MaterialRules::has_pair_reactions(material);
+    const bool is_ice = material == Material::Ice;
+    if (!has_pair_reactions && !is_ice) return;
+
+    bool pair_pending = false;
+    bool melt_pending = false;
+    bool freeze_pending = false;
+    for (const auto offset : kMooreNeighbours) {
+        // The visible neighbour is the contact authority, including body masks.
+        const auto target = get(x + offset.x, y + offset.y);
+        if (has_pair_reactions && !pair_pending) {
+            // A failed probability roll must retain its next opportunity too.
+            pair_pending = MaterialRules::pair_reaction(material, target, 0U).has_value();
+        }
+        if (is_ice) {
+            melt_pending = melt_pending || is_hot(target);
+            freeze_pending = freeze_pending || target == Material::Water;
+        } else if (pair_pending) {
+            break;
+        }
+    }
+
+    const auto schedule_next_lane = [this, x, y, effects](std::uint64_t period,
+                                                         std::uint32_t stream) {
+        const auto phase = temporal_lane_phase(x, y, period, stream);
+        const auto elapsed = (tick_index_ % period + period - phase) % period;
+        // Strictly future even when this tick's eligible attempt missed.
+        schedule_interaction_wake(x, y, tick_index_ + period - elapsed, effects);
+    };
+    if (pair_pending) schedule_next_lane(4U, 190U);
+    if (melt_pending) {
+        schedule_next_lane(4U, 192U);
+    } else if (freeze_pending) {
+        schedule_next_lane(16U, 192U);
+    }
+}
+
 bool World::update_cell(std::int64_t x, std::int64_t y, JobEffects* effects) {
     const auto source_address = address(x, y);
     auto* source_chunk = find_chunk(source_address.chunk);
@@ -3229,7 +3275,14 @@ bool World::update_cell(std::int64_t x, std::int64_t y, JobEffects* effects) {
     // using the body occupancy proxy as source or contact authority.
     if (transient_obstacle_at(x, y) != 0U) return false;
     const auto& definition = MaterialRules::descriptor(material);
-    return update_rule_kernel(definition.kernel, material, x, y, effects);
+    const bool changed = update_rule_kernel(definition.kernel, material, x, y, effects);
+    // Source writes/motion already keep their block active. A neighbour-only
+    // success can leave this source unchanged, so the kernel result alone is
+    // insufficient to decide whether its next opportunity survives sleep.
+    if (source_chunk->cells[source_address.index].epoch_value() != update_epoch_) {
+        schedule_pending_reaction_wake(material, x, y, effects);
+    }
+    return changed;
 }
 
 void World::begin_tick(TickStats& stats) {

@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Approved owner direction and deliberately preserved behavior; not current implementation or performance evidence
 canonical-for: [owner-intent, product-priorities, preserved-material-feel]
-last-reviewed: 2026-09-20
+last-reviewed: 2026-10-18
 related-documents: [status-and-roadmap.md, ../decisions/ADR-008-bounded-approximate-fidelity.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -30,6 +30,13 @@ behavior under load, exact engineering comparisons and recoverable checkpoints.
 headless fixtures or a particular worker count.
 
 ## Which material behavior should changes preserve?
+
+**Owner clarification, 2026-10-18:** the reported problem across all four builds
+resolved after restarting the computer. The requested next work is to investigate
+and fix material behavior so it feels more game-like, realistic and consistent.
+That report is no longer an unresolved build/performance blocker. MAT-001 / #158
+starts with reproduced persistent-reaction and mask-wake consistency defects;
+broader Water architecture still follows its separately approved decision gates.
 
 | Owner preference | Implication for future changes |
 |---|---|

@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [material-runtime-model, material-kernel-cadence, reactive-material-families]
 status: Current
 scope: Native material identity, descriptors, mutable state, kernel execution, current interactions, and extension boundaries
-last-reviewed: 2026-09-10
+last-reviewed: 2026-10-18
 related-documents: [themed-construction-materials.md, material-appearance-and-rendering.md, water-design.md, smoke-heat-pressure-roadmap.md, ../research/sandspiel-performance-and-material-port.md]
 ---
 
@@ -60,12 +60,34 @@ identity or completion timing.
 | Ice freezing sample | 16 ticks | Specialized sub-lane after the four-tick thermal gate |
 | Ambient Fire ignition sample | 120 ticks | One sampled neighbor on the due lane |
 
-Some waiting rules keep blocks active without a false render write; not every
-kernel does so. Ice, for example, returns between thermal samples without an
-explicit keep-awake call. Activity and contact persistence therefore also affect
-which samples actually execute.
+Some waiting rules keep blocks active without a false render write. Persistent
+compact-pair and Ice contacts use a scheduled block wake instead; other specialized
+kernels retain their existing waiting behavior. Activity and contact persistence
+therefore still matter outside that repaired scope.
 This deterministic cadence is Current approximate runtime behavior; it is not
 a selectable strict-every-contact mode or full replay capture.
+
+### How do persistent reactions survive sleep?
+
+**Current, MAT-001 / #158:** after ordinary source admission and kernel execution,
+World checks an unchanged source for a possible compact-pair reaction, or Ice for
+hot/Water neighbors. A registered pair schedules its next four-tick contact lane.
+Ice schedules its next four-tick melting lane when heat is present, otherwise its
+sixteen-tick freezing sample when Water is present. All use the original stable
+coordinate phases. Products, probabilities, neighbor order and random streams are
+unchanged; the repair preserves opportunities that quiet-block sleep used to lose.
+
+A failed probability roll or an Ice sample that misses the eligible neighbor
+retains another opportunity. A successful neighbor-only write also rechecks the
+unchanged source, which matters when another contact remains across a block/core
+boundary. Eligibility respects body masks. Removing a mask wakes the affected
+resident block so its newly visible contacts can be reconsidered.
+
+This does not force a reaction on every contact or prescribe a universal completion
+time. The [activity contract](activity-dirty-regions-and-waking.md) owns bounded
+deadline, pause/re-entry and render-dirty semantics. The
+[MAT-001 evidence](../audits/2026-10-18-mat001-material-reaction-progress.md) records
+the reproduced starvation, retained controls and platform limits.
 
 ## Current material families
 

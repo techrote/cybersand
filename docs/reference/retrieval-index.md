@@ -39,6 +39,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Actual defaults and adapter/fallback overrides | [Configuration reference](configuration-reference.md) |
 | Interest filtering, preallocation, sleeping re-entry | [World storage](../systems/world-storage-and-interest-region.md) |
 | Local wake, conservative phase wake, dirty/sleep | [Activity](../systems/activity-dirty-regions-and-waking.md) |
+| Why do persistent reactions or Ice freezing stop after settling, and what wakes material after a body moves away? | [Material kernels](../systems/materials-and-rule-kernels.md#how-do-persistent-reactions-survive-sleep), [activity](../systems/activity-dirty-regions-and-waking.md), [MAT-001 evidence](../audits/2026-10-18-mat001-material-reaction-progress.md) |
 | Material IDs, adapted rules, staggered cadence | [Material kernels](../systems/materials-and-rule-kernels.md) |
 | Native Water versus discrete fallback, viscosity/rest | [Water design](../systems/water-design.md) |
 | What survives #26 review, what did #49 repair, and what now gates #45? | [Water design](../systems/water-design.md), [#26 post-merge review](../audits/2026-09-19-issue-26-post-merge-review.md), [#49 v2 registration](../audits/2026-09-20-issue-49-water-apparatus-v2-registration.md), [#49 Current-Water v2 baseline](../audits/2026-09-20-issue-49-water-apparatus-v2-baseline.md), [architecture programme](../operations/architecture-programme.md) |

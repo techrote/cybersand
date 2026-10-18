@@ -1,7 +1,7 @@
 {
   "version": 1,
   "frozen_date": "2026-09-08",
-  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing.",
+  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair.",
   "questions": [
     {
       "id": "C05",
@@ -570,7 +570,41 @@
       "sources": [
         "operations/soliding-stage3b-production-plan.md"
       ]
+    },
+    {
+      "id": "MAT01",
+      "query": "Why can Ice freezing or Lava and Water reactions stop after settling, and does unrelated nearby activity change the result?",
+      "canonical": [
+        "systems/materials-and-rule-kernels.md",
+        "systems/activity-dirty-regions-and-waking.md"
+      ],
+      "facts": [
+        "MAT-001 preserves the next existing opportunity for persistent compact-pair and Ice contacts through the existing earliest block deadline.",
+        "Pair contact keeps its four-tick phase; Ice melting uses four ticks and freezing sixteen. Products, probabilities, neighbor order and random streams are unchanged.",
+        "The source epoch check includes neighbor-only successful writes, while contact eligibility respects body masks. Other specialized lifecycle kernels retain their existing waiting behavior."
+      ],
+      "sources": [
+        "../native/src/world.cpp",
+        "../native/tests/test_world.cpp"
+      ]
+    },
+    {
+      "id": "MAT02",
+      "query": "Why can removing a body mask leave settled sand or material reactions asleep, and how is that wake repaired without a false render write?",
+      "canonical": [
+        "systems/activity-dirty-regions-and-waking.md",
+        "architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "facts": [
+        "The ordinary neighbor wake helper skips the center block because material writes already wake it. Mask changes need their own explicit center-block activity wake.",
+        "Insertion and removal wake the resident mask block plus ordinary boundary neighbors without changing stored cell bytes or marking rendering dirty.",
+        "The current coupling rebuilds masks, so this can wake touched interior body blocks on each rebuild; the repair does not add a global wake or change body forces."
+      ],
+      "sources": [
+        "../native/src/world.cpp",
+        "../native/tests/test_world.cpp"
+      ]
     }
   ],
-  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set."
+  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set. 2026-10-18: MAT01/MAT02 add independent persistent-contact and interior mask-wake questions; the frozen 32 and prior questions are unchanged."
 }
