@@ -28,8 +28,8 @@ remote repository `techrote/cybersand`. The current local branch is
 previous four-scene history and current ACT-002 actor rigs before this new
 connected-scene delta. It is not the final Blacksite implementation commit.
 
-The implementation and documentation described here are a working delta above
-that merge baseline. The companion
+The implementation was validated as a delta above that merge baseline, then
+published with the identical Git tree recorded below. The companion
 [evidence manifest](2026-10-18-blacksite-nine-evidence.json) binds the recipe,
 source files, tests, runtime and retained images. The capture's own script list
 is an apparatus identity, not a complete checkout manifest; its unembedded Git
@@ -441,8 +441,33 @@ WebGPU or cross-platform parity. It supplies no new Water successor, general
 body-coupling, broad gameplay acceptance or exact replay guarantee. The
 GDScript fallback does not gain equivalent native scene/material semantics.
 
-**Publication pending:** `scene/blacksite-nine` is the intended publication
-branch. The final implementation commit, any PR URL and exact published-head CI
-results are not yet recorded here. The remote publication identity will be
-appended from the verified Git tree. Local passes do not substitute for applicable
-ready-for-review integration jobs before a later merge into main.
+**Published:** [scene/blacksite-nine](https://github.com/techrote/cybersand/tree/scene/blacksite-nine),
+with [draft PR #175](https://github.com/techrote/cybersand/pull/175) targeting
+main. The PR builds on the still-open four-scene [PR #167](https://github.com/techrote/cybersand/pull/167)
+and includes the current ACT-002 main baseline. Neither PR nor main was merged
+by this task.
+
+| Publication identity | Value |
+|---|---|
+| Published scene implementation | `ab7eb974c3b9442b14661ea96c8344385b33b688` |
+| Verified implementation tree | `79ac1fc79d10f4678d6227ba4af02eb8cd536bbc` |
+| Equivalent local implementation | `d3c477ea6164b634b6642829763ceed9cc9360c4` |
+| Published merge baseline | `94f6cbefc313a65f27c6e6ba8ca0d1aa89412bac` |
+| Identical local/published baseline tree | `eedc52b3ad8bff2f096d9de136f11d7d6e50ffb0` |
+| Preserved local history branch | `scene/blacksite-nine-local-checkpoint` |
+
+Git data publication verified every uploaded image blob and required the remote
+implementation tree to equal the committed local tree before creating the branch.
+A fresh fetch then confirmed the same tree and a zero-difference checkout.
+The local history checkpoint retains the original merge and implementation
+commits; the working branch tracks the published branch. This subsequent audit
+and manifest update changes only publication documentation, leaving all recorded
+implementation, test, recipe and image hashes unchanged.
+
+The PR remains a draft review checkpoint. Local passes do not substitute for
+applicable exact-head ready-for-review integration jobs before a later merge
+into main; draft scope/classification jobs are not runtime execution evidence.
+The initial published implementation passed
+[Documentation/provenance run 39123398663](https://github.com/techrote/cybersand/actions/runs/39123398663).
+Its Native and GDExtension workflows were skipped in draft state. The PR owns
+the CI disposition of subsequent publication-documentation commits.
