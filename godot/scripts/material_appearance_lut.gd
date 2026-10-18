@@ -309,8 +309,8 @@ static func create_program_texture() -> ImageTexture:
 		Vector2(1.16, 1.16), Vector2(1.0, 1.0), Vector2(0.90, 0.90),
 		Color(2.20, 0.82, 0.04, 0.0)) # neon amber
 	_set_program_row(program, 80, Color(0.0, 0.0, 0.0, 0.0), Vector2(0.0, 1.0),
-		Vector2(1.12, 1.12), Vector2(1.0, 1.0), Vector2(0.72, 0.72),
-		Color(1.45, 1.72, 2.05, 0.0)) # white LED panel
+		Vector2(1.12, 1.12), Vector2(1.0, 1.0), Vector2(0.36, 0.36),
+		Color(1.45, 1.72, 2.05, 0.0)) # white LED panel (halved 2026-10-18 so the display reads)
 
 	# Flair assignment changes only texel 3 alpha, preserving the condition and
 	# emission profiles above. Each branch is constant-bounded and performs no

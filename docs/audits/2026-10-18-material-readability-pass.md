@@ -267,6 +267,53 @@ world pass median 0.195 → 0.276 ms (mixed scene, which is dense in these
 materials, glow off) and 0.242 → 0.323 ms (glow on); the effect scene was
 unchanged within noise (0.594 → 0.571 ms).
 
+### Shape-aware fills for every static material (fourth owner iteration)
+
+The owner asked for the same treatment on essentially every static material.
+`uses_structured_fill` now covers Wall, Cloner, Wood, Ice, Metal, Concrete,
+Glass and IDs 38–80. Shared helpers add open-air detection and hashed drip runs
+hanging from top edges. Each material's fill:
+
+| Material | Fill |
+|---|---|
+| Wall, Concrete, Metal | Block and formwork seams, lit caps, drips, machined edges |
+| Limestone, Sandstone, Granite | Ashlar with cap course, quoins and drips; sandstone bedding; granite flecks |
+| Cobblestone, Mossy Cobblestone | Polished tops; moss on open tops (Mossy also in joints) |
+| Lime Plaster | Spalling that reveals brick, more near edges |
+| Wattle and Daub | Half-timbered posts, rails and braces |
+| Thatch | Ridge binding and a ragged eave fringe (fringe cells become transparent) |
+| Terracotta Tile, Slate | Ridge caps, eave shadow, lichen |
+| Wrought Iron | Balusters with collars and finials when thin; riveted plate when wide |
+| Lead Sheet | Standing seams and white bloom |
+| Bronze, Copper, Verdigris Copper | Patina runs |
+| Packed Earth | Strata and a grassy top |
+| Asphalt | Tar-sealed cracks |
+| Wet Asphalt, Wet Cobblestone | A fixed puddle sheen on top |
+| Steel Plate, Painted Steel | Rivet rows and grime gradient; painted steel chips and rust runs |
+| Rusted Steel | Bleed runs and perforated edges |
+| Steel Grating, Chainlink | Frames and posts |
+| Glass, Dark Glass | Frames and mullions; dark glass shows faint reflected lit windows |
+| Chemical Glass | A tank with a fill line and rising bubbles |
+| Ice | Frosted tops and icicles carved into open undersides |
+| Rubber | A moving conveyor when thin; tread plate when wide |
+| LED White | A bezelled generative scrolling display; its LUT emission is halved so the bloom does not wash it out |
+| Cloner | Truchet circuit traces with pulses |
+
+A `structured_detail` uniform (default 1) disables these fills and their reads
+as a future quality-tier hook; no controller exposes it yet. The still-scenery
+assertion now lists Slate instead of the animated Chemical Glass tank. A
+synthetic `statics` plate shows every material as a block, bar and strip
+([before](material-readability-2026-10-18/detail/statics_before_annotated_t1.37_glow.png),
+[after](material-readability-2026-10-18/detail/statics_pass_annotated_t1.37_glow.png)).
+
+Matched GPU cost versus the previous structured pass
+([`cost-statics-pass.json`](material-readability-2026-10-18/cost-statics-pass.json)):
+world pass median 0.276 → 0.375 ms (mixed, glow off; p95 0.715 ms) and
+0.571 → 0.815 ms (effect scene, glow off; p95 1.926 ms). The cumulative effect
+scene is about 6× the original baseline. It is still a fraction of a 16.7 ms
+frame on the TITAN RTX, but a user-facing quality tier is recommended before
+weaker GPUs or browser/WebAssembly ship.
+
 ## Limits and owner decisions
 
 - Visual acceptance is the author's; the owner has not reviewed the new

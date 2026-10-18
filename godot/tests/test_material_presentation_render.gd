@@ -154,7 +154,8 @@ func _run() -> void:
 
 	# Still scenery: glazing, Ice and wet construction are time-independent.
 	var still: Image = _blank()
-	var still_ids: Array[int] = [CyberCellWorld.GLASS, CyberCellWorld.CHEMICAL_GLASS,
+	# Chemical Glass is a liquid tank with rising bubbles, so it is not listed.
+	var still_ids: Array[int] = [CyberCellWorld.GLASS, CyberCellWorld.SLATE,
 		CyberCellWorld.DARK_GLASS, CyberCellWorld.ICE, CyberCellWorld.WET_ASPHALT,
 		CyberCellWorld.WET_COBBLESTONE, CyberCellWorld.WROUGHT_IRON, CyberCellWorld.CEMENT]
 	for index: int in range(still_ids.size()):

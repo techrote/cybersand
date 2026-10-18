@@ -116,8 +116,12 @@ Shape-aware construction fills (`uses_structured_fill`, `region_extent`,
 `apply_structured_fill`) give pipes, hazard stripes, insulation, cables, timber,
 corrugation, stained glass, neon, brick, tile and reinforced concrete
 orientation, cross-section and edge treatment from a bounded per-direction run
-length (at most 16 extra reads, those materials only). They remain
-time-independent apart from cable data pulses, neon plasma and pipe steam leaks. The
+length (at most 16 extra reads, those materials only). Since the fourth
+iteration this covers Wall, Cloner, Wood, Ice, Metal, Concrete, Glass and every
+construction ID 38–80. They remain time-independent apart from cable data
+pulses, neon plasma, pipe steam leaks, the Chemical Glass tank bubbles, the
+Rubber conveyor, the LED display and Cloner trace pulses. The
+`structured_detail` uniform (default 1) disables them as a quality-tier hook. The
 [2026-10-18 review](../audits/2026-10-18-material-readability-pass.md) records the
 paired captures and limits. The
 [construction catalogue](themed-construction-materials.md) owns exact themed

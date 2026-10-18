@@ -30,7 +30,7 @@ const VIEW: Vector2i = Vector2i(320, 180)
 const BACKGROUND: Color = Color(0.031, 0.043, 0.071, 1.0) # main.tscn Background
 const PLATES: Array[String] = [
 	"inventory", "liquids", "construction", "emission", "transition", "street", "laboratory",
-	"reactions", "shapes",
+	"reactions", "shapes", "statics",
 ]
 # Native creation values of the material-selected condition byte (see
 # native/include/cybersand/material.hpp initial_state_a and
@@ -202,6 +202,7 @@ func _plate_inputs(plate: String) -> Dictionary:
 		"laboratory": return _laboratory()
 		"reactions": return _reactions()
 		"shapes": return _shapes()
+		"statics": return _statics()
 	return {}
 
 
@@ -461,6 +462,26 @@ func _shapes() -> Dictionary:
 	return {"current": image, "previous": image, "cameras": [Vector2i.ZERO],
 		"notes": "Synthetic shape plate: pipes of bore 3/5/7 horizontal, vertical and L-joined; hazard panel, strip and post; insulation, cables, planks and corrugation in both orientations; stained glass in brick; tiles; broken reinforced concrete; neon bars both ways.",
 		"synthetic": true}
+
+
+func _statics() -> Dictionary:
+	# Every static material as a block with open air around it, a thin vertical
+	# bar and a thin horizontal strip, so shape-aware fills show their edges.
+	var image: Image = _blank(VIEW)
+	var ids: Array[int] = [1, 5, 7, 9, 28, 31, 35]
+	for id: int in range(38, 81):
+		ids.append(id)
+	var regions: Array = []
+	for index: int in range(ids.size()):
+		var x: int = 2 + (index % 10) * 32
+		var y: int = 3 + (index / 10) * 36
+		_fill(image, x, y, 22, 16, ids[index])
+		_fill(image, x + 24, y, 3, 22, ids[index])
+		_fill(image, x, y + 19, 22, 3, ids[index])
+		regions.append({"id": ids[index], "rect": [x, y, 22, 16]})
+	return {"current": image, "previous": image, "cameras": [Vector2i.ZERO],
+		"notes": "All static materials: 22x16 block, 3-wide vertical bar and 3-tall strip each, open air around.",
+		"regions": regions, "synthetic": true}
 
 
 func _snapshot_image(world: Variant) -> Image:
