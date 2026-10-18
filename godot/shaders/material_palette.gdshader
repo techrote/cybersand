@@ -45,7 +45,7 @@ float presentation_time() {
 // Oil's wave phase rate in cycles per second. Decorative presentation phase,
 // not measured flow; it equals the value the shared wet finish previously
 // derived for Oil from its ID so the approved wave look is unchanged.
-const float OIL_WAVE_RATE = 0.057;
+const float OIL_WAVE_RATE = 0.045 + 1.0 * 0.012;
 
 float cheap_hash(vec2 value) {
 	// Arithmetic-only render hash: cheaper than the previous transcendental
@@ -614,11 +614,11 @@ vec4 apply_material_flair(
 		return colour;
 	}
 
-	if (flair == 43) { // Paste / wet Cement: heavy, matte, slowly settling clumps
+	if (flair == 43) { // Paste / wet Cement: heavy matte clumps, gentle decorative swell
 		float lump = cheap_hash(floor(pixel / vec2(3.0, 2.0)));
 		float fine = cheap_hash(pixel + vec2(7.0, 29.0));
-		// Cement fades its settling with remaining cure; Paste has no
-		// projected condition and keeps a constant, very gentle settle.
+		// Decorative phase, not flow. Cement scales it by cure remaining;
+		// Paste projects no condition and keeps a constant, very gentle swell.
 		float wet = material_id == 30 ? condition : 1.0;
 		float settle = triangle_wave(
 			(pixel.x * 0.8 + pixel.y * 0.35) / 31.0 + presentation_time() * 0.018
@@ -633,7 +633,7 @@ vec4 apply_material_flair(
 		return colour;
 	}
 
-	if (flair == 44) { // Slush: icy granules in slowly shifting meltwater
+	if (flair == 44) { // Slush: icy granules over a gentle decorative meltwater shimmer
 		float grain = cheap_hash(floor(pixel / 2.0));
 		float facet = triangle_wave((pixel.x * 1.3 + pixel.y * 0.7) / 3.0);
 		float crystal = step(0.78, cheap_hash(pixel + vec2(3.0, 17.0)));

@@ -137,7 +137,7 @@ func _run() -> void:
 		)
 
 	if _failures == 0:
-		print("Material appearance LUT regression passed; 81 IDs and 42 flair classes")
+		print("Material appearance LUT regression passed; 81 IDs and 45 flair classes")
 	quit(_failures)
 
 

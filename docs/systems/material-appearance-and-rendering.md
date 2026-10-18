@@ -86,8 +86,8 @@ bands; Metal charge drives arcs and Cloner has circuitry.
 **Current since 2026-10-18:** the former shared wet finish is split by family
 (`FLAIR_OIL`, `FLAIR_PASTE`, `FLAIR_SLUSH`, `FLAIR_WET_SURFACE` in the
 [LUT](../../godot/scripts/material_appearance_lut.gd)). Oil keeps its approved
-wave/streak pattern at the named `OIL_WAVE_RATE` (the value it previously
-derived from its ID); Paste and wet Cement use heavy matte clumps with a very
+wave/streak pattern at the named `OIL_WAVE_RATE` (the same expression it
+previously derived from its ID); Paste and wet Cement use heavy matte clumps with a very
 slow settle, Cement's settle scaled by its cure-remaining condition; Slush shows
 icy granules in slowly shifting meltwater; Brine uses the Water finish plus fixed
 salt motes; Wet Asphalt/Cobblestone keep their solid substrate under a fixed,

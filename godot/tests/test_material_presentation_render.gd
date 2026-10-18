@@ -154,10 +154,11 @@ func _run() -> void:
 
 	# Still scenery: glazing, Ice and wet construction are time-independent.
 	var still: Image = _blank()
-	var still_ids: Array[int] = [CyberCellWorld.GLASS, CyberCellWorld.DARK_GLASS, CyberCellWorld.ICE,
-		CyberCellWorld.WET_ASPHALT, CyberCellWorld.WET_COBBLESTONE, CyberCellWorld.WROUGHT_IRON]
+	var still_ids: Array[int] = [CyberCellWorld.GLASS, CyberCellWorld.CHEMICAL_GLASS,
+		CyberCellWorld.DARK_GLASS, CyberCellWorld.ICE, CyberCellWorld.WET_ASPHALT,
+		CyberCellWorld.WET_COBBLESTONE, CyberCellWorld.WROUGHT_IRON, CyberCellWorld.CEMENT]
 	for index: int in range(still_ids.size()):
-		_block(still, Rect2i(index * 8, 0, 8, 24), still_ids[index])
+		_block(still, Rect2i(index * 6, 0, 6, 24), still_ids[index])
 	var still_a: Image = await _render(still, still, 0.0)
 	var still_b: Image = await _render(still, still, 11.7)
 	_expect(_difference(still_a, still_b, full) <= TOLERANCE, "still-scenery finish changed over time")
@@ -168,6 +169,7 @@ func _run() -> void:
 	_block(world, Rect2i(0, 0, 64, 40), CyberCellWorld.RED_BRICK)
 	_block(world, Rect2i(10, 8, 30, 20), CyberCellWorld.STEEL_PLATE)
 	_block(world, Rect2i(44, 4, 12, 30), CyberCellWorld.WET_COBBLESTONE)
+	_block(world, Rect2i(2, 30, 30, 8), CyberCellWorld.OIL)
 	var at_origin: Image = await _render(world, world, 2.0, 1.0, Vector2i(0, 0))
 	var panned: Image = await _render(world, world, 2.0, 1.0, Vector2i(3, 2))
 	_expect(_difference(at_origin, panned, Rect2i(3, 2, SIDE.x - 3, SIDE.y - 2), Vector2i(-3, -2)) <= TOLERANCE,
@@ -211,6 +213,19 @@ func _run() -> void:
 	var cured_render: Image = await _render(cured, cured, 0.0)
 	_expect(_mean_luma(conditioned, Rect2i(24, 0, 12, 24)) > _mean_luma(cured_render, Rect2i(24, 0, 12, 24)),
 		"wet Cement cure response inverted")
+	# Flair branch, not just the LUT curve: wet Cement (cure remaining) swells
+	# over time while cured Cement (condition 0, in the still set above) does
+	# not; Paste projects no condition, so its G byte must not matter.
+	var wet_later: Image = await _render(conditions, conditions, 17.0)
+	_expect(_difference(conditioned, wet_later, Rect2i(24, 0, 12, 24)) > 1.5 / 255.0,
+		"wet Cement finish ignores its cure-remaining condition")
+	var paste_zero: Image = _blank()
+	var paste_byte: Image = _blank()
+	_block(paste_zero, full, CyberCellWorld.PASTE, 0)
+	_block(paste_byte, full, CyberCellWorld.PASTE, 200)
+	_expect(_difference(await _render(paste_zero, paste_zero, 4.0),
+		await _render(paste_byte, paste_byte, 4.0), full) <= TOLERANCE,
+		"Paste appearance depends on an unprojected condition byte")
 	var invalid: Color = conditioned.get_pixel(42, 12)
 	_expect(invalid.r > 0.6 and invalid.b > 0.6 and invalid.g < 0.35, "reserved ID 10 is not visibly invalid")
 

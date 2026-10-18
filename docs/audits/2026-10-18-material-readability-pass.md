@@ -82,8 +82,9 @@ change per frame) and rough/hammered metals are matte; both left unchanged.
 
 - **Wet/liquid families** ([palette](../../godot/shaders/material_palette.gdshader),
   [LUT](../../godot/scripts/material_appearance_lut.gd)): `FLAIR_OIL` (13) keeps
-  Oil byte-identical at the same time sample (rate now the named
-  `OIL_WAVE_RATE = 0.057`); `FLAIR_PASTE` (43) for Paste/Cement, Cement settle
+  Oil's arithmetic (rate now the named `OIL_WAVE_RATE = 0.045 + 1.0 * 0.012`,
+  the same expression the base evaluated for ID 16); captured Oil pixels were
+  identical at every sampled time on the tested GPU; `FLAIR_PASTE` (43) for Paste/Cement, Cement settle
   scaled by cure remaining; `FLAIR_SLUSH` (44); Brine → `FLAIR_WATER` with fixed
   salt motes; `FLAIR_WET_SURFACE` (45) for Wet Asphalt/Cobblestone.
 - **Still glazing**: Glass/Chemical/Dark Glass and Ice sheen geometry unchanged at
@@ -122,7 +123,39 @@ clips and pans) were not committed; they are reproducible with the commands abov
 
 ## Validation
 
-COST_AND_TESTS_PLACEHOLDER
+All runs on the platform in [Identities](#identities), 2026-10-18.
+
+| Check | Mode | Result |
+|---|---|---|
+| `tools/ci/run_godot_regressions.py` (import + 54 cases, one shard) at `3d3967c` | headless | Passed |
+| `test_material_appearance_lut`, `test_water_presentation_model`, `test_native_render_bridge_regression`, `test_render_patch_handoff_regression`, `test_material_glow_control`, `test_microscenario_controllers` | headless | Passed |
+| `test_water_presentation_render` (issue #19 coverage/orientation) | graphical | Passed (coverage 2/4 at 2×, 8/16 at 4×, oriented edge) |
+| `test_material_presentation_render` (new) | graphical | Passed; against the baseline palette it fails the still-scenery and blend-0 endpoint assertions |
+| `test_material_glow_control` (new) | headless | Passed (30 assertions); with the old Web `G` handler it fails overlay/update agreement |
+| Live controllers, `materials/fire-gunpowder` | graphical | Desktop and natively hosted Web: glow on adds light to 12–14k pixels, never darkens; on→off→on returns the identical frame |
+| R8 fallback presentation (`--fallback-r8`) | graphical | Renders; without the condition channel Cement shows as cured |
+| `check_docs.py`, `check_repository.py` | — | Same 6 missing companion-workspace sources as clean `main`; no new errors |
+| `check_m11_consistency.py` | — | No errors |
+| `retrieval_eval.py` | — | 32/32 canonical hit@k, MRR 0.833 |
+
+**Matched cost** ([`cost.json`](material-readability-2026-10-18/cost.json),
+[`measure_material_presentation_cost.gd`](../../godot/tests/measure_material_presentation_cost.gd)):
+`RenderingServer.viewport_get_measured_render_time_gpu` for the 1920×1080 world
+viewport and 160×90 glow source, identical 1024² RG8 input, camera, view and
+`snapshot_blend` 0.5, baseline/candidate interleaved in 6 blocks × 300 frames
+after warm-up, vsync off.
+
+| Scene / glow | World GPU median ms (base → cand) | p95 | Glow source median |
+|---|---|---|---|
+| Mixed / off | 0.095 → 0.101 | 0.135 → 0.140 | — |
+| Mixed / on | 0.141 → 0.148 | 0.143 → 0.149 | 0.065 → 0.064 |
+| Effects / off | 0.133 → 0.135 | 0.135 → 0.136 | — |
+| Effects / on | 0.181 → 0.183 | 0.182 → 0.184 | 0.064 → 0.065 |
+
+The candidate costs about 5% (≈6 µs) more world-pass GPU time in the mixed scene
+and about 1% in the effect scene on this GPU; application frame time
+(wall time between `frame_post_draw`, not GPU time) was unchanged within noise.
+Texture reads per fragment are unchanged. Other GPUs were not measured.
 
 ## Limits and owner decisions
 
