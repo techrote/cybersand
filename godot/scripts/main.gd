@@ -1114,6 +1114,10 @@ func _physics_process(_delta: float) -> void:
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
+	if not physical_trial_arm.is_empty() and event is InputEventKey and event.keycode in [KEY_Q, KEY_E]:
+		# Trial torque owns these keys; do not also cycle the brush material.
+		get_viewport().set_input_as_handled()
+		return
 	if blacksite_nine_presentation != null and blacksite_nine_presentation.map_popup.visible:
 		if event is InputEventKey and event.pressed and not event.echo:
 			if event.keycode == KEY_ESCAPE: blacksite_nine_presentation.map_popup.hide()
