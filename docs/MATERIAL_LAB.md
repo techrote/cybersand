@@ -56,7 +56,7 @@ Source: [main.gd::_unhandled_key_input, update_camera, update_worker_frame_state
 | T | Toggle native Water supported-film adhesion |
 | K | Toggle render smoothing; also forwards fallback sparse-flight sampling option |
 | H | Cycle render publication target through 30/45/60 Hz |
-| G | Toggle glow overlay and glow SubViewport updates |
+| G | Toggle glow overlay and glow SubViewport updates (desktop and Web) |
 | F3 | Toggle statistics and periodic status-string construction |
 | P / R | Pause / reset |
 

@@ -25,6 +25,65 @@ for the requested change. Use the [retrieval index](../reference/retrieval-index
 for a focused question. The [owner-intent reference](../reference/product-intent-and-priorities.md)
 preserves product goals, liked material behavior and deliberate deferrals.
 
+## Procedural generation candidates — 2026-10-18
+
+GEN-001 / [#163](https://github.com/techrote/cybersand/issues/163) implements a
+separate native generator and opt-in authoring workbench. Start with the
+[generation contract](../systems/procedural-world-generation.md) and
+[dated evidence](../audits/2026-10-18-gen001-procedural-generation.md). Strata,
+Flow Network and District Grammar share theme DAG selections, blends, brush
+controls, routes, exact overrides and prepared versioned feature factories.
+The workbench previews bounded demand generation; general simulation streaming,
+eviction/persistence and automatic reconciliation of edited recipes remain
+separate. Its native fresh-chunk installer refuses all existing storage and
+requires caller-owned receipt/reset admission. Do not attach it concurrently to
+a live World owner or infer production streaming from the preview.
+
+## Procedural fields and masked authoring — 2026-10-18
+
+GEN-002 / [#171](https://github.com/techrote/cybersand/issues/171) extends those
+candidates with a bounded scalar DAG, finite Hilbert/Morton tiles, structured
+noise, analytic/context masks, theme/parameter/material modifiers, aggregates and
+field-masked feature instances. Read the
+[field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md)
+and [dated evidence](../audits/2026-10-18-gen002-fields-and-aggregates.md) before
+changing observation order or selection semantics. Every mask sees the initial
+proposal; hard geometry is reapplied after guidance, the route skeleton follows
+material modifiers, and hard material is final. Aggregate weights are strictly
+positive and resolve ordinary existing material IDs.
+
+The workbench adds field/aggregate/modifier editing, context-aware brushes,
+transforms and copied diagnostic overlays. `make worldgen-test` and
+`make worldgen-sanitize` include independent curve/field and modifier regressions,
+including historical GEN-001 material hashes. The
+[local build guide](local-build-and-validation.md) covers both Godot test scripts
+and the native example renderer. Algorithm identity is now 2; a retained GEN-001
+binary is not source-matched evidence for these APIs. The ACT-002 merge preserves
+its rig behavior and supplementary retrieval questions; no actor/native physics
+owner is changed by generation guidance.
+
+## Thunderbowl control laboratory — 2026-10-18
+
+ACT-003 / #172 adds the standalone native
+[Thunderbowl reference and examples](../systems/thunderbowl-control-reference.md).
+Its owner wraps a real World and the current eight-slot actor session; it does
+not replace ordinary F5 selection or registered scientific fixtures. New actor
+definitions may fix `control_mode` to `metal` for Ripper, Copter or Gemini.
+That lane bypasses intent actuation and publishes separate 32-value force/torque
+readback; original v1/v2 observations and SetA motor bytes remain compatible.
+
+The shared driver collects copied policy views before stepping any actors.
+Self/local/oracle privileges, message delivery, arena-only virtual tag combat,
+model-plan freshness and resource/work bounds are explicit. Controller examples,
+eight JSON schemas and fourteen match definitions live under
+[`godot/examples/thunderbowl`](../../godot/examples/thunderbowl).
+The NCA-inspired graph weights are untrained; the Python smart-link client is an
+offline mock. Model inference, learned performance, complete replay and broad
+platform/feel acceptance must not be inferred from runnable examples.
+The [dated ACT-003 audit](../audits/2026-10-18-act003-thunderbowl-control-lab.md)
+binds local execution to the public source checkpoint; PR #174 records final
+hosted CI and integration disposition.
+
 ## Actor control prototypes — 2026-10-18
 
 ACT-002 / #168 expands the original ACT-001 / #161 trio into 29 optional desktop

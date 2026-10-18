@@ -813,7 +813,249 @@
         "../godot/scripts/blacksite_nine_presentation.gd",
         "../godot/scripts/web_demo_controller.gd"
       ]
+    },
+    {
+      "id": "GEN01",
+      "query": "How do theme supersets and subsets, exclusions, weighted blends, broad brushstrokes, fine parameters and hard overrides combine in procedural generation?",
+      "canonical": [
+        "systems/procedural-world-generation.md"
+      ],
+      "facts": [
+        "Concrete descendants are selected through a validated theme DAG; group weight splits among eligible descendants, overlapping selections accumulate, and global exclusions cannot be reintroduced by brushes.",
+        "Broad strokes have radius/strength/falloff and parameter edits; controls use canonical priority and ID ordering. Hard parameters and candidate selections apply before generation, and hard material overrides apply last.",
+        "The global district_size topology cannot be edited spatially by a theme, brush or hard override; exact material overrides can intentionally block a route."
+      ],
+      "sources": [
+        "../native/include/cybersand/world_generation.hpp",
+        "../native/src/world_generation.cpp",
+        "../native/tests/test_world_generation.cpp"
+      ]
+    },
+    {
+      "id": "GEN02",
+      "query": "Will Strata, Flow Network or District Grammar change terrain when chunks are requested in a different order, and how are routes connected across negative-coordinate seams?",
+      "canonical": [
+        "systems/procedural-world-generation.md",
+        "architecture/chunk-tile-and-buffer-model.md"
+      ],
+      "facts": [
+        "All three candidates sample deterministic global coordinates from a compiled recipe; output partition and request order do not determine generated material content.",
+        "Flow Network and District Grammar reconstruct shared macrocell ports and restore their route skeleton after prepared structure modules, while explicit authored material overrides retain final authority.",
+        "Generation has an explicit coordinate and work domain; on-demand proposal generation and the bounded preview cache do not implement resident-world loading, eviction or modified-world persistence."
+      ],
+      "sources": [
+        "../native/src/world_generation.cpp",
+        "../native/tests/test_world_generation.cpp",
+        "../godot/scripts/worldgen_workbench.gd"
+      ]
+    },
+    {
+      "id": "GEN03",
+      "query": "Can a completed procedural chunk from an old recipe or a previous World reset overwrite player edits or a reserved empty chunk?",
+      "canonical": [
+        "systems/procedural-world-generation.md",
+        "architecture/data-ownership-and-lifetimes.md",
+        "systems/world-storage-and-interest-region.md"
+      ],
+      "facts": [
+        "Generator accepts validates complete payload, recipe fingerprint/revision and the coordinate-bound receipt; pending, cancelled, failed or mismatched results are refused.",
+        "World install_generated_chunk accepts a material span only for an absent destination under exclusive ownership between ticks, and refuses every resident chunk including empty reservations and edited-then-cleared chunks.",
+        "The material-only World method does not know generator identity or World/reset-session identity. A caller must establish both, and the current workbench only previews copied chunks without installing into the sandbox World."
+      ],
+      "sources": [
+        "../native/src/world_generation.cpp",
+        "../native/src/world.cpp",
+        "../native/include/cybersand/world.hpp",
+        "../godot/scripts/worldgen_workbench.gd"
+      ]
+    },
+    {
+      "id": "GEN04",
+      "query": "How can advanced architectural modules extend chunk generation, and what does the engine actually enforce about module cost, dependencies, failure and mutable World access?",
+      "canonical": [
+        "systems/procedural-world-generation.md",
+        "architecture/module-boundaries.md"
+      ],
+      "facts": [
+        "Versioned registry factories prepare immutable feature samplers off the simulation tick; explicit instance dependencies receive deterministic topological ordering and modules sample only inside declared bounds.",
+        "A module receives coordinate, effective parameters/palette and previous proposed material, returns at most one material, and cannot reach mutable World through the supplied context. Invalid output or callback failure discards the complete pending proposal.",
+        "Declared logical work and output capacities are enforced, but in-process C++ samplers remain trusted cooperative code. Recipes select registered modules and do not load arbitrary executable plugins."
+      ],
+      "sources": [
+        "../native/include/cybersand/world_generation.hpp",
+        "../native/src/world_generation.cpp",
+        "../native/tests/test_world_generation.cpp"
+      ]
+    },
+    {
+      "id": "GEN05",
+      "query": "Does a Hilbert or Morton generation field make one continuous infinite corridor, and do its tiles change at negative chunk boundaries?",
+      "canonical": [
+        "systems/procedural-generation-fields-and-modifiers.md",
+        "architecture/chunk-tile-and-buffer-model.md"
+      ],
+      "facts": [
+        "Hilbert guarantees edge adjacency between consecutive ranks inside a finite power-of-two tile only; repeated tiles do not promise a continuous infinite Hilbert curve. Morton interleaves coordinates and successive ranks need not share an edge.",
+        "Orders 1 through 20 and integer cell sizes 1 through 4096 use signed floor tiling at absolute coordinates, independently of the output chunk partition.",
+        "The separately defined macrocell hub/port network owns interconnected procedural routes. Curve fields can guide masks, parameters or material variation without replacing that network."
+      ],
+      "sources": [
+        "../native/include/cybersand/generation_fields.hpp",
+        "../native/src/generation_fields.cpp",
+        "../native/tests/test_generation_fields.cpp"
+      ]
+    },
+    {
+      "id": "GEN06",
+      "query": "Can a sidechained mask inspect material painted by an earlier sculpting modifier, or can a masked theme blend restore a globally excluded theme?",
+      "canonical": [
+        "systems/procedural-generation-fields-and-modifiers.md"
+      ],
+      "facts": [
+        "The field DAG evaluates each declared node once at a sample from immutable initial proposal context, after original theme/brush/hard geometry but before fields, modules, material modifiers, connecting routes, paths and hard material.",
+        "Application times one-minus-exclusion times strength, context predicate and shape is captured once per modifier and reused for guidance and material output. Earlier modifiers cannot feed back into later context masks.",
+        "Missing references and cycles, including warp references, reject; warp shifts only the receiving primitive rather than recursively resampling dependencies. Global exclusions stay authoritative, hard geometry is reapplied after guidance, and hard material is final."
+      ],
+      "sources": [
+        "../native/src/generation_fields.cpp",
+        "../native/src/world_generation.cpp",
+        "../native/tests/test_generation_modifiers.cpp"
+      ]
+    },
+    {
+      "id": "GEN07",
+      "query": "Do procedural aggregate definitions create new mixture physics, and does grain_size quantize a named variation field?",
+      "canonical": [
+        "systems/procedural-generation-fields-and-modifiers.md",
+        "reference/configuration-reference.md"
+      ],
+      "facts": [
+        "An aggregate realizes one existing material ID per cell, with 1 through 16 unique components and strictly positive finite weights. It does not add density, reactions, fractional material state or simulation field storage.",
+        "Without a variation field, a seed-and-ID hash selects one material per signed world-aligned grain. A named variation field selects directly at each sample; grain_size does not quantize it.",
+        "Canonical recipes retain authored weights separately from prepared normalized selection. Zero, invalid IDs, duplicate components and normalization underflow reject; weights express preferences rather than finite-crop quotas."
+      ],
+      "sources": [
+        "../native/include/cybersand/world_generation.hpp",
+        "../native/src/world_generation.cpp",
+        "../native/tests/test_generation_modifiers.cpp"
+      ]
+    },
+    {
+      "id": "GEN08",
+      "query": "Does hiding a generator modifier or selecting a diagnostic bypass budgets, and can an old inspection packet enter a new preview or live World?",
+      "canonical": [
+        "systems/procedural-generation-fields-and-modifiers.md",
+        "architecture/data-ownership-and-lifetimes.md"
+      ],
+      "facts": [
+        "The field graph caps 64 declarations, depth 16 and 4096 logical operations per sample. All declared field/modifier/component/module work counts even when masked; zero module influence avoids its callback but not its declared charge.",
+        "A field, modifier or module diagnostic is collected as normalized floats during paced cell generation. Its channel, shape and float bits join the receipt; altered data reject, and failure or cancellation discards both materials and diagnostics.",
+        "The workbench validates recipe identity, expected coordinate, inspection token, channel and values before caching copied proposals. It has no live World installer; native admission still requires current recipe acceptance and caller-owned World/reset lifetime."
+      ],
+      "sources": [
+        "../native/src/generation_fields.cpp",
+        "../native/src/world_generation.cpp",
+        "../godot/scripts/worldgen_workbench.gd",
+        "../godot/native_extension/cyber_world_generator.cpp"
+      ]
+    },
+    {
+      "id": "THB01",
+      "query": "In Thunderbowl, does fly by metal bypass steering and stabilization, which rigs support it, and how can I tell force demand from actual motion?",
+      "canonical": [
+        "systems/thunderbowl-control-reference.md"
+      ],
+      "facts": [
+        "Current wire uses rig intent rules; fixed metal profiles bypass the intent controller for Ripper, Copter and Gemini only. Gravity, drag, resource limits and bounded collision still apply.",
+        "The same actor/producer/epoch/sequence/observed-tick leases govern both lanes. Raw channels are held latest values without high-level button edges.",
+        "Additive actuation version1 has 32 fields separating requested/applied channels and force/torque, passive physics, game mass/inertia, resource scale and actual post-collision deltas. Existing16/40/10 layouts are retained."
+      ],
+      "sources": [
+        "../godot/scripts/actor_rig_actuation.gd",
+        "../godot/scripts/actor_prototype_session.gd"
+      ]
+    },
+    {
+      "id": "THB02",
+      "query": "What distinguishes an all-knowing oracle from an independent lemming or locally coordinating actor swarm, and can neural controllers see hidden enemies?",
+      "canonical": [
+        "systems/thunderbowl-control-reference.md"
+      ],
+      "facts": [
+        "Control abstraction, decision placement, perception privilege, coordination and training privilege are separate design axes; v1 only implements its explicitly supported registry combinations.",
+        "Policies receive copied self/local/oracle views before any motor steps. Local views contain a bounded material stencil, nearby line-of-sight actors and permitted typed messages; global evaluator snapshots are separate.",
+        "Oracle receives full copied actor states/HP and coarse global terrain; local messaging is same-team radius/line-of-sight gated and delayed. Trusted in-process scripts are not a malicious-code sandbox; the full-view human scene is explicitly asymmetric."
+      ],
+      "sources": [
+        "../godot/scripts/thunderbowl_arena.gd",
+        "../godot/examples/thunderbowl/oracle.gd"
+      ]
+    },
+    {
+      "id": "THB03",
+      "query": "Does the Thunderbowl emergent swarm actually improve with density, and is the NCA example a trained terrain cellular automaton?",
+      "canonical": [
+        "systems/thunderbowl-control-reference.md"
+      ],
+      "facts": [
+        "Independent Diggers incidentally share edited native terrain without messages, neighbor steering or actor-to-actor contact. Density benefit is a testable hypothesis; more aggregate attempts or firepower alone do not establish emergence.",
+        "The provided 1/2/4/8 Digger presets are bounded pilot conditions. Compare normalized utility, fixed resources, terrain-coupling ablations, seeds and held-out layouts before efficacy claims.",
+        "The executable NCA-inspired example is a shared 12-to-8-to-4 residual neural update on the local actor communication graph, with four hidden channels and explicit untrained weights. Trained policies and a regular terrain-lattice NCA remain Planned."
+      ],
+      "sources": [
+        "../godot/examples/thunderbowl/emergent.gd",
+        "../godot/examples/thunderbowl/nca.gd"
+      ]
+    },
+    {
+      "id": "THB04",
+      "query": "How can a slow vision or decision model control Thunderbowl without stale replies taking over or blocking the physics loop?",
+      "canonical": [
+        "systems/thunderbowl-control-reference.md"
+      ],
+      "facts": [
+        "The smart-link adapter permits one outstanding observation-bound request, at most every 30 ticks; model plans expire within 120 ticks of the original observation. Forged identities, replayed/out-of-order and expired replies are rejected.",
+        "A fresh 10 Hz local reflex converts a still-valid intention to ordinary 12-tick input leases; zero drive demand, missing/expired plans or hold cancel armed actions and leave passive physics.",
+        "The optional capped file adapter operates between arena steps and never waits for model inference, but synchronous filesystem latency can delay the caller. The Python client is an offline mock; no live vision model, trained policy or hard real-time performance is claimed."
+      ],
+      "sources": [
+        "../godot/examples/thunderbowl/smart_link.gd",
+        "../tools/thunderbowl/mock_smart_link.py"
+      ]
+    },
+    {
+      "id": "THB05",
+      "query": "How do I spawn and run Thunderbowl battle tests, and are tags, eliminations and rewards real native weapon damage?",
+      "canonical": [
+        "systems/thunderbowl-control-reference.md"
+      ],
+      "facts": [
+        "A separate native owner and CLI/playable scene load version1 match JSON with1 to 8 current rigs. Fourteen presets cover wire/metal/oracle/lemming/emergent/local/NCA/smart-link experiments without replacing scientific fixtures.",
+        "Arena-only virtual tag combat uses 3 HP, 56-cell range, aiming/line-of-sight checks, rising shots and 30-tick cooldown, with simultaneous hits, explicit rewards and a 128-event history.",
+        "Elimination cancels input without physical corpse/removal or generic actor damage. Seeded setup and material hashes are scoped experimental identities, not complete replay; evaluation labels do not prove empirical fairness."
+      ],
+      "sources": [
+        "../godot/scripts/thunderbowl_arena.gd",
+        "../godot/examples/thunderbowl/run_thunderbowl.gd"
+      ]
+    },
+    {
+      "id": "THB06",
+      "query": "What command and readback schemas should keyboard, gamepad, touch and model producers use for actor rigs in the Thunderbowl?",
+      "canonical": [
+        "systems/thunderbowl-control-reference.md"
+      ],
+      "facts": [
+        "Eight JSON Schema files define command, match, assisted input, direct actuator input, observation, smart request/decision and neural weights. Unknown command fields and nonfinite/out-of-range JSON values are refused.",
+        "Human device adapters normalize movement/aim/effort/trim/reel/buttons; raw gamepad input permits independent Gemini trigger channels. decide_input binds actor identity before sampling the fresh human frame.",
+        "Commands carry an opaque run ID and issued observation ID, actor/epoch/sequence, observed tick/lease, lane-specific action, separate arena tag, typed message and explicit neutral cancellation. Structural schema validity does not grant runtime identity or capability authority."
+      ],
+      "sources": [
+        "../godot/scripts/thunderbowl_contract.gd",
+        "../godot/examples/thunderbowl/human_devices.gd"
+      ]
     }
   ],
-  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set. 2026-10-18: MAT01/MAT02 add independent persistent-contact and interior mask-wake questions; the frozen 32 and prior questions are unchanged. 2026-10-18: SCENE01 adds independent demo-level entry/view/ownership routing; the frozen 32-question set is unchanged. 2026-10-18: SCENE02 adds the owner-requested four-tile descent and state-boundary question; all prior and frozen questions remain unchanged. 2026-10-18: ACT01-ACT03 add independent actor model/input/performance-boundary questions; the frozen 32-question set is unchanged. 2026-10-18 ACT-002: ACT04-ACT09 add independent expanded-rig/control/observation/persona/budget/compatibility questions. ACT03 now explicitly scopes original numeric limits to SetA and names the additive extension; the frozen 32-question set remains unchanged. 2026-10-18: SCENE03 adds the nine-district route and continuity question; all 47 prior supplementary questions, including SCENE01/SCENE02 and ACT01-ACT09, and the frozen 32-question set remain unchanged."
+  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set. 2026-10-18: MAT01/MAT02 add independent persistent-contact and interior mask-wake questions; the frozen 32 and prior questions are unchanged. 2026-10-18: SCENE01 adds independent demo-level entry/view/ownership routing; the frozen 32-question set is unchanged. 2026-10-18: SCENE02 adds the owner-requested four-tile descent and state-boundary question; all prior and frozen questions remain unchanged. 2026-10-18: ACT01-ACT03 add independent actor model/input/performance-boundary questions; the frozen 32-question set is unchanged. 2026-10-18 ACT-002: ACT04-ACT09 add independent expanded-rig/control/observation/persona/budget/compatibility questions. ACT03 now explicitly scopes original numeric limits to SetA and names the additive extension; the frozen 32-question set remains unchanged. 2026-10-18: SCENE03 adds the nine-district route and continuity question; all 47 prior supplementary questions, including SCENE01/SCENE02 and ACT01-ACT09, and the frozen 32-question set remain unchanged.",
+  "integration_note": "Retains all scene, generation, actor, Thunderbowl and presentation routes from both parents; historical questions are preserved."
 }

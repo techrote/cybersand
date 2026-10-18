@@ -1,0 +1,1609 @@
+{
+  "construction": {
+    "frames": 90,
+    "fps": 30.0,
+    "whole": {
+      "mean_abs_delta": 6.268050492508337e-05,
+      "changing_fraction": 0.0033021223470661673
+    },
+    "regions": [
+      {
+        "id": 50,
+        "name": "wrought iron",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0334
+      },
+      {
+        "id": 54,
+        "name": "verdigris copper",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0668
+      },
+      {
+        "id": 52,
+        "name": "bronze",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0633
+      },
+      {
+        "id": 53,
+        "name": "copper",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0629
+      },
+      {
+        "id": 51,
+        "name": "lead sheet",
+        "condition": null,
+        "mean_abs_delta": 0.00016,
+        "changing_fraction": 0.0026,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.00185,
+        "spatial_std": 0.1032
+      },
+      {
+        "id": 62,
+        "name": "steel plate",
+        "condition": null,
+        "mean_abs_delta": 7e-05,
+        "changing_fraction": 0.001,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.00081,
+        "spatial_std": 0.1241
+      },
+      {
+        "id": 63,
+        "name": "painted steel",
+        "condition": null,
+        "mean_abs_delta": 6e-05,
+        "changing_fraction": 0.0023,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.00075,
+        "spatial_std": 0.0823
+      },
+      {
+        "id": 64,
+        "name": "corrugated steel",
+        "condition": null,
+        "mean_abs_delta": 2e-05,
+        "changing_fraction": 0.0004,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.00022,
+        "spatial_std": 0.1135
+      },
+      {
+        "id": 65,
+        "name": "rusted steel",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0743
+      },
+      {
+        "id": 66,
+        "name": "steel grating",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1604
+      },
+      {
+        "id": 67,
+        "name": "chainlink",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1702
+      },
+      {
+        "id": 68,
+        "name": "steel pipe",
+        "condition": null,
+        "mean_abs_delta": 3e-05,
+        "changing_fraction": 0.0003,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.00025,
+        "spatial_std": 0.1006
+      },
+      {
+        "id": 69,
+        "name": "copper pipe",
+        "condition": null,
+        "mean_abs_delta": 2e-05,
+        "changing_fraction": 0.0003,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.00019,
+        "spatial_std": 0.0993
+      },
+      {
+        "id": 28,
+        "name": "metal",
+        "condition": null,
+        "mean_abs_delta": 0.00013,
+        "changing_fraction": 0.0016,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.00131,
+        "spatial_std": 0.1235
+      },
+      {
+        "id": 35,
+        "name": "glass",
+        "condition": null,
+        "mean_abs_delta": 0.00071,
+        "changing_fraction": 0.047,
+        "p99_abs_delta": 0.0137,
+        "temporal_std": 0.01774,
+        "spatial_std": 0.056
+      },
+      {
+        "id": 71,
+        "name": "chemical glass",
+        "condition": null,
+        "mean_abs_delta": 0.00073,
+        "changing_fraction": 0.0403,
+        "p99_abs_delta": 0.0112,
+        "temporal_std": 0.01664,
+        "spatial_std": 0.0572
+      },
+      {
+        "id": 72,
+        "name": "dark glass",
+        "condition": null,
+        "mean_abs_delta": 0.0008,
+        "changing_fraction": 0.0466,
+        "p99_abs_delta": 0.0112,
+        "temporal_std": 0.0179,
+        "spatial_std": 0.0462
+      },
+      {
+        "id": 9,
+        "name": "ice",
+        "condition": null,
+        "mean_abs_delta": 0.0009,
+        "changing_fraction": 0.0488,
+        "p99_abs_delta": 0.0165,
+        "temporal_std": 0.02354,
+        "spatial_std": 0.0814
+      },
+      {
+        "id": 55,
+        "name": "stained glass",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1891
+      },
+      {
+        "id": 70,
+        "name": "ceramic tile",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1854
+      },
+      {
+        "id": 38,
+        "name": "limestone block",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.206
+      },
+      {
+        "id": 43,
+        "name": "red brick",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1059
+      },
+      {
+        "id": 41,
+        "name": "cobblestone",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1237
+      },
+      {
+        "id": 46,
+        "name": "oak timber",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0555
+      },
+      {
+        "id": 48,
+        "name": "terracotta tile",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1271
+      },
+      {
+        "id": 49,
+        "name": "slate",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0895
+      },
+      {
+        "id": 47,
+        "name": "thatch",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0891
+      },
+      {
+        "id": 44,
+        "name": "lime plaster",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1067
+      },
+      {
+        "id": 31,
+        "name": "concrete",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0547
+      },
+      {
+        "id": 58,
+        "name": "reinforced concrete",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0652
+      },
+      {
+        "id": 59,
+        "name": "asphalt",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0383
+      },
+      {
+        "id": 76,
+        "name": "hazard stripe",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.3598
+      }
+    ]
+  },
+  "emission": {
+    "frames": 90,
+    "fps": 30.0,
+    "whole": {
+      "mean_abs_delta": 0.0004568719014059752,
+      "changing_fraction": 0.00955036672908864
+    },
+    "regions": [
+      {
+        "id": 6,
+        "name": "fire",
+        "condition": 240,
+        "mean_abs_delta": 0.00482,
+        "changing_fraction": 0.1872,
+        "p99_abs_delta": 0.0482,
+        "temporal_std": 0.01985,
+        "spatial_std": 0.003
+      },
+      {
+        "id": 6,
+        "name": "fire",
+        "condition": 120,
+        "mean_abs_delta": 0.01633,
+        "changing_fraction": 0.4249,
+        "p99_abs_delta": 0.0597,
+        "temporal_std": 0.06762,
+        "spatial_std": 0.0206
+      },
+      {
+        "id": 6,
+        "name": "fire",
+        "condition": 30,
+        "mean_abs_delta": 0.01536,
+        "changing_fraction": 0.3881,
+        "p99_abs_delta": 0.0617,
+        "temporal_std": 0.06209,
+        "spatial_std": 0.034
+      },
+      {
+        "id": 8,
+        "name": "lava",
+        "condition": -1,
+        "mean_abs_delta": 0.00162,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0084,
+        "temporal_std": 0.02718,
+        "spatial_std": 0.0781
+      },
+      {
+        "id": 36,
+        "name": "molten glass",
+        "condition": 200,
+        "mean_abs_delta": 0.00023,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0028,
+        "temporal_std": 0.00482,
+        "spatial_std": 0.0664
+      },
+      {
+        "id": 36,
+        "name": "molten glass",
+        "condition": 40,
+        "mean_abs_delta": 0.00161,
+        "changing_fraction": 0.01,
+        "p99_abs_delta": 0.01,
+        "temporal_std": 0.02454,
+        "spatial_std": 0.0984
+      },
+      {
+        "id": 34,
+        "name": "spark",
+        "condition": 12,
+        "mean_abs_delta": 0.00475,
+        "changing_fraction": 0.0167,
+        "p99_abs_delta": 0.0113,
+        "temporal_std": 0.01031,
+        "spatial_std": 0.0018
+      },
+      {
+        "id": 34,
+        "name": "spark",
+        "condition": 4,
+        "mean_abs_delta": 0.00376,
+        "changing_fraction": 0.0069,
+        "p99_abs_delta": 0.0093,
+        "temporal_std": 0.00737,
+        "spatial_std": 0.0028
+      },
+      {
+        "id": 28,
+        "name": "metal",
+        "condition": 0,
+        "mean_abs_delta": 0.00015,
+        "changing_fraction": 0.002,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.00163,
+        "spatial_std": 0.1257
+      },
+      {
+        "id": 28,
+        "name": "metal",
+        "condition": 32,
+        "mean_abs_delta": 0.00059,
+        "changing_fraction": 0.0205,
+        "p99_abs_delta": 0.0268,
+        "temporal_std": 0.00399,
+        "spatial_std": 0.1593
+      },
+      {
+        "id": 28,
+        "name": "metal",
+        "condition": 160,
+        "mean_abs_delta": 0.00013,
+        "changing_fraction": 0.0024,
+        "p99_abs_delta": 0.0042,
+        "temporal_std": 0.00082,
+        "spatial_std": 0.1691
+      },
+      {
+        "id": 77,
+        "name": "neon cyan",
+        "condition": -1,
+        "mean_abs_delta": 0.00051,
+        "changing_fraction": 0.0064,
+        "p99_abs_delta": 0.0017,
+        "temporal_std": 0.00461,
+        "spatial_std": 0.0058
+      },
+      {
+        "id": 78,
+        "name": "neon magenta",
+        "condition": -1,
+        "mean_abs_delta": 0.00161,
+        "changing_fraction": 0.0048,
+        "p99_abs_delta": 0.0056,
+        "temporal_std": 0.01466,
+        "spatial_std": 0.0191
+      },
+      {
+        "id": 79,
+        "name": "neon amber",
+        "condition": -1,
+        "mean_abs_delta": 0.00044,
+        "changing_fraction": 0.0075,
+        "p99_abs_delta": 0.0065,
+        "temporal_std": 0.00501,
+        "spatial_std": 0.0045
+      },
+      {
+        "id": 80,
+        "name": "LED white",
+        "condition": -1,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.187
+      },
+      {
+        "id": 5,
+        "name": "cloner",
+        "condition": -1,
+        "mean_abs_delta": 0.00071,
+        "changing_fraction": 0.0391,
+        "p99_abs_delta": 0.0179,
+        "temporal_std": 0.00931,
+        "spatial_std": 0.1363
+      },
+      {
+        "id": 4,
+        "name": "smoke",
+        "condition": 240,
+        "mean_abs_delta": 0.00076,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0039,
+        "temporal_std": 0.01935,
+        "spatial_std": 0.0788
+      },
+      {
+        "id": 4,
+        "name": "smoke",
+        "condition": 120,
+        "mean_abs_delta": 0.00027,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0031,
+        "temporal_std": 0.0068,
+        "spatial_std": 0.0285
+      },
+      {
+        "id": 4,
+        "name": "smoke",
+        "condition": 30,
+        "mean_abs_delta": 6e-05,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0028,
+        "temporal_std": 0.00159,
+        "spatial_std": 0.006
+      },
+      {
+        "id": 4,
+        "name": "smoke",
+        "condition": 5,
+        "mean_abs_delta": 5e-05,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0028,
+        "temporal_std": 0.0015,
+        "spatial_std": 0.0057
+      },
+      {
+        "id": 22,
+        "name": "steam",
+        "condition": 180,
+        "mean_abs_delta": 0.00295,
+        "changing_fraction": 0.1009,
+        "p99_abs_delta": 0.0118,
+        "temporal_std": 0.08146,
+        "spatial_std": 0.1656
+      },
+      {
+        "id": 22,
+        "name": "steam",
+        "condition": 90,
+        "mean_abs_delta": 0.00141,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0078,
+        "temporal_std": 0.03816,
+        "spatial_std": 0.0979
+      },
+      {
+        "id": 22,
+        "name": "steam",
+        "condition": 20,
+        "mean_abs_delta": 0.00083,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0039,
+        "temporal_std": 0.02295,
+        "spatial_std": 0.0504
+      },
+      {
+        "id": 37,
+        "name": "foam",
+        "condition": 120,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1379
+      },
+      {
+        "id": 37,
+        "name": "foam",
+        "condition": 60,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0549
+      },
+      {
+        "id": 37,
+        "name": "foam",
+        "condition": 10,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0141
+      },
+      {
+        "id": 71,
+        "name": "chemical glass",
+        "condition": -1,
+        "mean_abs_delta": 0.00077,
+        "changing_fraction": 0.043,
+        "p99_abs_delta": 0.0112,
+        "temporal_std": 0.0174,
+        "spatial_std": 0.0664
+      }
+    ]
+  },
+  "inventory": {
+    "frames": 90,
+    "fps": 30.0,
+    "whole": {
+      "mean_abs_delta": 0.00020051782485097647,
+      "changing_fraction": 0.004989271223470662
+    },
+    "regions": [
+      {
+        "id": 0,
+        "name": "empty",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0
+      },
+      {
+        "id": 1,
+        "name": "wall",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0982
+      },
+      {
+        "id": 2,
+        "name": "sand",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0881
+      },
+      {
+        "id": 3,
+        "name": "water",
+        "condition": null,
+        "mean_abs_delta": 0.00044,
+        "changing_fraction": 0.0033,
+        "p99_abs_delta": 0.0039,
+        "temporal_std": 0.00897,
+        "spatial_std": 0.0262
+      },
+      {
+        "id": 4,
+        "name": "smoke",
+        "condition": null,
+        "mean_abs_delta": 0.00068,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0039,
+        "temporal_std": 0.01754,
+        "spatial_std": 0.0905
+      },
+      {
+        "id": 5,
+        "name": "cloner",
+        "condition": null,
+        "mean_abs_delta": 0.00088,
+        "changing_fraction": 0.0477,
+        "p99_abs_delta": 0.0189,
+        "temporal_std": 0.01212,
+        "spatial_std": 0.1396
+      },
+      {
+        "id": 6,
+        "name": "fire",
+        "condition": null,
+        "mean_abs_delta": 0.00464,
+        "changing_fraction": 0.1803,
+        "p99_abs_delta": 0.0482,
+        "temporal_std": 0.01947,
+        "spatial_std": 0.003
+      },
+      {
+        "id": 7,
+        "name": "wood",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0457
+      },
+      {
+        "id": 8,
+        "name": "lava",
+        "condition": null,
+        "mean_abs_delta": 0.00152,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0084,
+        "temporal_std": 0.02537,
+        "spatial_std": 0.1156
+      },
+      {
+        "id": 9,
+        "name": "ice",
+        "condition": null,
+        "mean_abs_delta": 0.00016,
+        "changing_fraction": 0.0084,
+        "p99_abs_delta": 0.007,
+        "temporal_std": 0.00463,
+        "spatial_std": 0.0763
+      },
+      {
+        "id": 10,
+        "name": "material-10",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0
+      },
+      {
+        "id": 11,
+        "name": "plant",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0568
+      },
+      {
+        "id": 12,
+        "name": "acid",
+        "condition": null,
+        "mean_abs_delta": 0.00367,
+        "changing_fraction": 0.0466,
+        "p99_abs_delta": 0.035,
+        "temporal_std": 0.06569,
+        "spatial_std": 0.0699
+      },
+      {
+        "id": 13,
+        "name": "stone",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1336
+      },
+      {
+        "id": 14,
+        "name": "dust",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0909
+      },
+      {
+        "id": 15,
+        "name": "mite",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0361
+      },
+      {
+        "id": 16,
+        "name": "oil",
+        "condition": null,
+        "mean_abs_delta": 0.00052,
+        "changing_fraction": 0.0045,
+        "p99_abs_delta": 0.0036,
+        "temporal_std": 0.00947,
+        "spatial_std": 0.0241
+      },
+      {
+        "id": 17,
+        "name": "rocket",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0253
+      },
+      {
+        "id": 18,
+        "name": "fungus",
+        "condition": null,
+        "mean_abs_delta": 0.00036,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0036,
+        "temporal_std": 0.00798,
+        "spatial_std": 0.057
+      },
+      {
+        "id": 19,
+        "name": "seed",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0697
+      },
+      {
+        "id": 20,
+        "name": "paste",
+        "condition": null,
+        "mean_abs_delta": 0.00038,
+        "changing_fraction": 0.0023,
+        "p99_abs_delta": 0.0039,
+        "temporal_std": 0.00836,
+        "spatial_std": 0.0305
+      },
+      {
+        "id": 21,
+        "name": "slush",
+        "condition": null,
+        "mean_abs_delta": 0.00068,
+        "changing_fraction": 0.0024,
+        "p99_abs_delta": 0.0042,
+        "temporal_std": 0.01577,
+        "spatial_std": 0.0456
+      },
+      {
+        "id": 22,
+        "name": "steam",
+        "condition": null,
+        "mean_abs_delta": 0.00283,
+        "changing_fraction": 0.0941,
+        "p99_abs_delta": 0.0118,
+        "temporal_std": 0.07745,
+        "spatial_std": 0.1686
+      },
+      {
+        "id": 23,
+        "name": "salt",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0968
+      },
+      {
+        "id": 24,
+        "name": "brine",
+        "condition": null,
+        "mean_abs_delta": 0.00118,
+        "changing_fraction": 0.0057,
+        "p99_abs_delta": 0.007,
+        "temporal_std": 0.02333,
+        "spatial_std": 0.0357
+      },
+      {
+        "id": 25,
+        "name": "sodium",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0903
+      },
+      {
+        "id": 26,
+        "name": "gunpowder",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0345
+      },
+      {
+        "id": 27,
+        "name": "coal",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0096
+      },
+      {
+        "id": 28,
+        "name": "metal",
+        "condition": null,
+        "mean_abs_delta": 0.00028,
+        "changing_fraction": 0.0037,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.00297,
+        "spatial_std": 0.1174
+      },
+      {
+        "id": 29,
+        "name": "rust",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0872
+      },
+      {
+        "id": 30,
+        "name": "cement",
+        "condition": null,
+        "mean_abs_delta": 0.00057,
+        "changing_fraction": 0.002,
+        "p99_abs_delta": 0.0039,
+        "temporal_std": 0.01354,
+        "spatial_std": 0.0332
+      },
+      {
+        "id": 31,
+        "name": "concrete",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0493
+      },
+      {
+        "id": 32,
+        "name": "toxic sludge",
+        "condition": null,
+        "mean_abs_delta": 0.00183,
+        "changing_fraction": 0.0433,
+        "p99_abs_delta": 0.0179,
+        "temporal_std": 0.04029,
+        "spatial_std": 0.0707
+      },
+      {
+        "id": 33,
+        "name": "mercury",
+        "condition": null,
+        "mean_abs_delta": 0.00442,
+        "changing_fraction": 0.2446,
+        "p99_abs_delta": 0.0188,
+        "temporal_std": 0.0968,
+        "spatial_std": 0.1021
+      },
+      {
+        "id": 34,
+        "name": "spark",
+        "condition": null,
+        "mean_abs_delta": 0.00475,
+        "changing_fraction": 0.0176,
+        "p99_abs_delta": 0.0113,
+        "temporal_std": 0.01032,
+        "spatial_std": 0.0019
+      },
+      {
+        "id": 35,
+        "name": "glass",
+        "condition": null,
+        "mean_abs_delta": 0.00065,
+        "changing_fraction": 0.0423,
+        "p99_abs_delta": 0.0133,
+        "temporal_std": 0.01659,
+        "spatial_std": 0.0552
+      },
+      {
+        "id": 36,
+        "name": "molten glass",
+        "condition": null,
+        "mean_abs_delta": 0.00011,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0003,
+        "temporal_std": 0.00228,
+        "spatial_std": 0.0299
+      },
+      {
+        "id": 37,
+        "name": "foam",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1358
+      },
+      {
+        "id": 38,
+        "name": "limestone block",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.2022
+      },
+      {
+        "id": 39,
+        "name": "sandstone block",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1855
+      },
+      {
+        "id": 40,
+        "name": "granite block",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1317
+      },
+      {
+        "id": 41,
+        "name": "cobblestone",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1282
+      },
+      {
+        "id": 42,
+        "name": "mossy cobblestone",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1233
+      },
+      {
+        "id": 43,
+        "name": "red brick",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1107
+      },
+      {
+        "id": 44,
+        "name": "lime plaster",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1219
+      },
+      {
+        "id": 45,
+        "name": "wattle and daub",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1033
+      },
+      {
+        "id": 46,
+        "name": "oak timber",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0527
+      },
+      {
+        "id": 47,
+        "name": "thatch",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0947
+      },
+      {
+        "id": 48,
+        "name": "terracotta tile",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1311
+      },
+      {
+        "id": 49,
+        "name": "slate",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0789
+      },
+      {
+        "id": 50,
+        "name": "wrought iron",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0329
+      },
+      {
+        "id": 51,
+        "name": "lead sheet",
+        "condition": null,
+        "mean_abs_delta": 0.00015,
+        "changing_fraction": 0.0024,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.00154,
+        "spatial_std": 0.1022
+      },
+      {
+        "id": 52,
+        "name": "bronze",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0631
+      },
+      {
+        "id": 53,
+        "name": "copper",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0644
+      },
+      {
+        "id": 54,
+        "name": "verdigris copper",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0729
+      },
+      {
+        "id": 55,
+        "name": "stained glass",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1917
+      },
+      {
+        "id": 56,
+        "name": "packed earth",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0804
+      },
+      {
+        "id": 57,
+        "name": "industrial brick",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0869
+      },
+      {
+        "id": 58,
+        "name": "reinforced concrete",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0665
+      },
+      {
+        "id": 59,
+        "name": "asphalt",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0415
+      },
+      {
+        "id": 60,
+        "name": "wet asphalt",
+        "condition": null,
+        "mean_abs_delta": 0.00023,
+        "changing_fraction": 0.0037,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.00289,
+        "spatial_std": 0.0195
+      },
+      {
+        "id": 61,
+        "name": "wet cobblestone",
+        "condition": null,
+        "mean_abs_delta": 0.00065,
+        "changing_fraction": 0.011,
+        "p99_abs_delta": 0.0194,
+        "temporal_std": 0.0084,
+        "spatial_std": 0.0571
+      },
+      {
+        "id": 62,
+        "name": "steel plate",
+        "condition": null,
+        "mean_abs_delta": 9e-05,
+        "changing_fraction": 0.0015,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.00104,
+        "spatial_std": 0.1251
+      },
+      {
+        "id": 63,
+        "name": "painted steel",
+        "condition": null,
+        "mean_abs_delta": 4e-05,
+        "changing_fraction": 0.0014,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.00051,
+        "spatial_std": 0.0786
+      },
+      {
+        "id": 64,
+        "name": "corrugated steel",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1161
+      },
+      {
+        "id": 65,
+        "name": "rusted steel",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0751
+      },
+      {
+        "id": 66,
+        "name": "steel grating",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1603
+      },
+      {
+        "id": 67,
+        "name": "chainlink",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1736
+      },
+      {
+        "id": 68,
+        "name": "steel pipe",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 3e-05,
+        "spatial_std": 0.0983
+      },
+      {
+        "id": 69,
+        "name": "copper pipe",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 2e-05,
+        "spatial_std": 0.0944
+      },
+      {
+        "id": 70,
+        "name": "ceramic tile",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1847
+      },
+      {
+        "id": 71,
+        "name": "chemical glass",
+        "condition": null,
+        "mean_abs_delta": 0.00072,
+        "changing_fraction": 0.0395,
+        "p99_abs_delta": 0.0112,
+        "temporal_std": 0.01626,
+        "spatial_std": 0.0535
+      },
+      {
+        "id": 72,
+        "name": "dark glass",
+        "condition": null,
+        "mean_abs_delta": 0.00073,
+        "changing_fraction": 0.0433,
+        "p99_abs_delta": 0.0112,
+        "temporal_std": 0.01696,
+        "spatial_std": 0.0464
+      },
+      {
+        "id": 73,
+        "name": "rubber",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0201
+      },
+      {
+        "id": 74,
+        "name": "cable bundle",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0778
+      },
+      {
+        "id": 75,
+        "name": "insulation",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1249
+      },
+      {
+        "id": 76,
+        "name": "hazard stripe",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.3605
+      },
+      {
+        "id": 77,
+        "name": "neon cyan",
+        "condition": null,
+        "mean_abs_delta": 0.00035,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0017,
+        "temporal_std": 0.00253,
+        "spatial_std": 0.0053
+      },
+      {
+        "id": 78,
+        "name": "neon magenta",
+        "condition": null,
+        "mean_abs_delta": 0.00139,
+        "changing_fraction": 0.003,
+        "p99_abs_delta": 0.0056,
+        "temporal_std": 0.01085,
+        "spatial_std": 0.0171
+      },
+      {
+        "id": 79,
+        "name": "neon amber",
+        "condition": null,
+        "mean_abs_delta": 0.00013,
+        "changing_fraction": 0.0005,
+        "p99_abs_delta": 0.0006,
+        "temporal_std": 0.00143,
+        "spatial_std": 0.0021
+      },
+      {
+        "id": 80,
+        "name": "LED white",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1757
+      }
+    ]
+  },
+  "laboratory": {
+    "frames": 90,
+    "fps": 30.0,
+    "whole": {
+      "mean_abs_delta": 0.00010996484343195334,
+      "changing_fraction": 0.0009628589263420724
+    },
+    "regions": []
+  },
+  "liquids": {
+    "frames": 90,
+    "fps": 30.0,
+    "whole": {
+      "mean_abs_delta": 0.00011881202954100445,
+      "changing_fraction": 0.0023560393258426965
+    },
+    "regions": [
+      {
+        "id": 3,
+        "name": "water",
+        "condition": null,
+        "mean_abs_delta": 0.00013,
+        "changing_fraction": 0.0007,
+        "p99_abs_delta": 0.0031,
+        "temporal_std": 0.00271,
+        "spatial_std": 0.1789
+      },
+      {
+        "id": 30,
+        "name": "cement",
+        "condition": null,
+        "mean_abs_delta": 0.00014,
+        "changing_fraction": 0.0008,
+        "p99_abs_delta": 0.0039,
+        "temporal_std": 0.00303,
+        "spatial_std": 0.1861
+      },
+      {
+        "id": 16,
+        "name": "oil",
+        "condition": null,
+        "mean_abs_delta": 0.00015,
+        "changing_fraction": 0.0016,
+        "p99_abs_delta": 0.0031,
+        "temporal_std": 0.0027,
+        "spatial_std": 0.1134
+      },
+      {
+        "id": 33,
+        "name": "mercury",
+        "condition": null,
+        "mean_abs_delta": 0.00143,
+        "changing_fraction": 0.0653,
+        "p99_abs_delta": 0.016,
+        "temporal_std": 0.03039,
+        "spatial_std": 0.2311
+      },
+      {
+        "id": 20,
+        "name": "paste",
+        "condition": null,
+        "mean_abs_delta": 0.00015,
+        "changing_fraction": 0.0009,
+        "p99_abs_delta": 0.0036,
+        "temporal_std": 0.00325,
+        "spatial_std": 0.1721
+      },
+      {
+        "id": 12,
+        "name": "acid",
+        "condition": null,
+        "mean_abs_delta": 0.00118,
+        "changing_fraction": 0.0177,
+        "p99_abs_delta": 0.0238,
+        "temporal_std": 0.02001,
+        "spatial_std": 0.3072
+      },
+      {
+        "id": 21,
+        "name": "slush",
+        "condition": null,
+        "mean_abs_delta": 0.00024,
+        "changing_fraction": 0.0006,
+        "p99_abs_delta": 0.0039,
+        "temporal_std": 0.00565,
+        "spatial_std": 0.2237
+      },
+      {
+        "id": 32,
+        "name": "toxic sludge",
+        "condition": null,
+        "mean_abs_delta": 0.00045,
+        "changing_fraction": 0.0094,
+        "p99_abs_delta": 0.0095,
+        "temporal_std": 0.01014,
+        "spatial_std": 0.2076
+      },
+      {
+        "id": 24,
+        "name": "brine",
+        "condition": null,
+        "mean_abs_delta": 0.00028,
+        "changing_fraction": 0.0012,
+        "p99_abs_delta": 0.007,
+        "temporal_std": 0.00557,
+        "spatial_std": 0.1925
+      },
+      {
+        "id": 8,
+        "name": "lava",
+        "condition": null,
+        "mean_abs_delta": 0.00046,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0056,
+        "temporal_std": 0.00788,
+        "spatial_std": 0.3075
+      },
+      {
+        "id": 59,
+        "name": "asphalt",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.0356
+      },
+      {
+        "id": 60,
+        "name": "wet asphalt",
+        "condition": null,
+        "mean_abs_delta": 0.00032,
+        "changing_fraction": 0.0054,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.00446,
+        "spatial_std": 0.0173
+      },
+      {
+        "id": 41,
+        "name": "cobblestone",
+        "condition": null,
+        "mean_abs_delta": 0.0,
+        "changing_fraction": 0.0,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.0,
+        "spatial_std": 0.1214
+      },
+      {
+        "id": 61,
+        "name": "wet cobblestone",
+        "condition": null,
+        "mean_abs_delta": 0.00033,
+        "changing_fraction": 0.0055,
+        "p99_abs_delta": 0.0,
+        "temporal_std": 0.00443,
+        "spatial_std": 0.0563
+      }
+    ]
+  },
+  "street": {
+    "frames": 90,
+    "fps": 30.0,
+    "whole": {
+      "mean_abs_delta": 6.85142949805595e-05,
+      "changing_fraction": 0.0018853386392009988
+    },
+    "regions": []
+  },
+  "transition": {
+    "frames": 90,
+    "fps": 30.0,
+    "whole": {
+      "mean_abs_delta": 5.2504578889056575e-06,
+      "changing_fraction": 2.3213171036204743e-05
+    },
+    "regions": []
+  }
+}

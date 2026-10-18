@@ -84,7 +84,12 @@
     "operations/soliding-macro-fracture-fixture.md",
     "operations/soliding-stage3-freeze.md",
     "operations/neon-reliquary-demo.md",
-    "operations/blacksite-nine-demo.md"
+    "operations/blacksite-nine-demo.md",
+    "systems/procedural-world-generation.md",
+    "systems/procedural-generation-fields-and-modifiers.md",
+    "systems/thunderbowl-control-reference.md",
+    "systems/material-visual-pattern-library.md",
+    "reference/material-effects-register.md"
   ],
   "navigation": [
     "README.md",
@@ -300,6 +305,19 @@
     {
       "path": "audits/2026-10-18-blacksite-nine.md",
       "reason": "Dated Blacksite Nine source/runtime, route-continuity and rendered-scene evidence; retrieve explicitly through the scene guide or validation ledger, not as a default Current runtime contract"
+    },
+    {
+      "path": "audits/2026-10-18-gen002-fields-and-aggregates.md",
+      "reason": "Dated GEN-002 source/runtime, compatibility-oracle and scoped field/modifier evidence; retrieve explicitly through the generation field contract, not as a default Current runtime contract"
+    },
+    {
+      "path": "audits/2026-10-18-gen001-procedural-generation.md",
+      "reason": "Dated GEN-001 procedural-generation source and validation checkpoint; retrieve explicitly with its source/artifact/platform limits, while Current generation semantics belong to the canonical subsystem contract"
+    },
+    {
+      "path": "audits/2026-10-18-act003-thunderbowl-control-lab.md",
+      "reason": "Dated ACT-003 source/runtime, preserved failure, schema and bounded arena evidence; retrieve explicitly through the Thunderbowl contract or validation ledger, not as a default Current control contract"
     }
-  ]
+  ],
+  "integration_note": "Retains all scene, generation, actor, Thunderbowl and presentation routes from both parents; historical questions are preserved."
 }

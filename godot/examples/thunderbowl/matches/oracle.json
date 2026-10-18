@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "seed": 73,
+  "max_ticks": 1800,
+  "layout": "training_pit",
+  "evaluation": "oracle_reference",
+  "actors": [
+    {
+      "model": "scout",
+      "control_mode": "wire",
+      "observation_mode": "oracle",
+      "team": 0,
+      "controller": "oracle"
+    },
+    {
+      "model": "scout",
+      "control_mode": "wire",
+      "observation_mode": "oracle",
+      "team": 0,
+      "controller": "oracle"
+    },
+    {
+      "model": "scout",
+      "control_mode": "wire",
+      "observation_mode": "local",
+      "team": 1,
+      "controller": "wire_seek"
+    },
+    {
+      "model": "scout",
+      "control_mode": "wire",
+      "observation_mode": "local",
+      "team": 1,
+      "controller": "wire_seek"
+    }
+  ]
+}

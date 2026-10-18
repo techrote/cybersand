@@ -88,6 +88,14 @@ in its set. All share a bounded input/observation boundary; neural inference is 
 future consumer. The [SetA contract](docs/systems/actor-control-prototypes.md)
 retains the original motor and policy compatibility details.
 
+The standalone [Thunderbowl control reference](docs/systems/thunderbowl-control-reference.md)
+adds a native battle/training test area, runnable controller scripts and eight
+versioned JSON schemas. Compare assisted controls, direct actuator profiles,
+oracle teams, independent and coordinating swarms, an untrained NCA-inspired
+controller and an external smart-link adapter. The first arena uses explicit
+virtual tag combat, with at most eight rigs and bounded local observations.
+Run its separate scene or headless examples using the reference commands.
+
 [Dated validation](docs/reference/validation-evidence.md) records what actually
 ran and which artifacts/platforms it covers. CYSD1 restores levels, not exact
 replay continuation. Review [license status](LICENSE_STATUS.md) and

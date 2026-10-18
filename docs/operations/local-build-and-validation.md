@@ -125,12 +125,13 @@ Windows runtime launch.
 
 ## Linux GDExtension CI sharding
 
-**Current:** the [Linux GDExtension workflow](../../.github/workflows/gdextension.yml)
+**Current:** the [GDExtension workflow](../../.github/workflows/gdextension.yml)
 builds the pinned Linux runtime once on GitHub-hosted `ubuntu-24.04`, verifies its
 ABI/runtime floor and publishes that exact extension plus the pinned Rapier Linux
-runtime as a short-lived artifact. Four isolated GitHub-hosted jobs restore the
-same source/runtime identity and run deterministic subsets of the Godot regression suite. Each shard
-performs its own clean headless import before its assigned cases.
+runtime as a short-lived artifact. Four isolated GitHub-hosted regression jobs
+restore the same source/runtime identity and run deterministic subsets of the
+Godot suite. Each shard performs its own clean headless import. Active external
+or self-hosted runner routing is rejected by the repository policy checker.
 
 The local/default invocation remains serial and unchanged in scope:
 
@@ -147,10 +148,72 @@ exactly once in the union of shards.
 
 The initial migration PR proved exact serial/sharded coverage equivalence on the
 same source/runtime/Godot identity. That serial lane is now opt-in only via
-`GDEXT_SERIAL_EQUIVALENCE=1`; ordinary PRs use the sharded gate. Current build jobs
-set `SCONS_JOBS=2` directly. Routine CI does not use external/self-hosted runners
-or provider-routing variables; the
-[repository provider policy](github-development-and-release.md) owns that boundary.
+`GDEXT_SERIAL_EQUIVALENCE=1`; ordinary PRs use the sharded gate. The active workflow
+uses literal GitHub-hosted runner labels and pinned build inputs; source/runtime
+identity and the required exact-head gates are independent of shard scheduling.
+Current build jobs set `SCONS_JOBS=2` directly; the
+[repository provider policy](github-development-and-release.md) owns the runner
+and provider-routing boundary.
+
+## Procedural generation candidates and workbench
+
+GEN-001/GEN-002 provide native-only comparison, field/modifier regressions and
+focused fresh-chunk admission checks:
+
+```sh
+make worldgen-test
+ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 make worldgen-sanitize
+make worldgen-demo
+./build/worldgen_demo --output build/worldgen-plain.ppm --seed 314159 --plain
+```
+
+The explicit sanitizer command disables leak detection for environments where
+LeakSanitizer cannot inspect processes under ptrace. Without that override the
+sanitizer runtime enables it; use `detect_leaks=1` in a supported execution
+environment. The [GEN-001](../audits/2026-10-18-gen001-procedural-generation.md) and
+[GEN-002](../audits/2026-10-18-gen002-fields-and-aggregates.md) evidence distinguish
+actual LeakSanitizer infrastructure failures from passing ASan/UBSan results.
+The PPM contains actual generated material pixels from Strata, Flow Network
+and District Grammar; its printed local elapsed time is not a performance gate.
+
+With a source-matched extension, launch the separate authoring scene or its
+regression script using the pinned Godot executable:
+
+```sh
+godot --path godot res://worldgen_workbench.tscn
+godot --headless --path godot --script res://tests/test_worldgen_workbench.gd
+godot --headless --path godot --script res://tests/test_worldgen_fields.gd
+```
+
+The generation workbench is separate from the ordinary sandbox and its optional
+[actor prototypes](../systems/actor-control-prototypes.md). It previews bounded
+native chunk generation, with theme/parameter strokes, guide paths, hard rectangles,
+module instances, fields/sidechains, context masks, aggregate materials and complete
+JSON profiles, without ticking the simulation. The
+[field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md)
+owns the extended controls and diagnostic channel meaning.
+Load the examples under `examples/worldgen/`; use the
+[generation contract](../systems/procedural-world-generation.md) for exact ranges,
+module registration, receipt ownership and the separate fresh-chunk installer.
+Native generator/binding changes require rebuilt runtimes before these Godot
+commands establish source-matched evidence. Merely importing an old extension
+does not register `CyberWorldGenerator`.
+
+To reproduce the three GEN-002 material/mask panels, run the checked-in renderer
+with an absolute script path. From the repository root:
+
+```sh
+GENERATION_ROOT="$PWD"
+godot --headless --path "$GENERATION_ROOT/godot" --script "$GENERATION_ROOT/tools/render_worldgen_fields.gd" -- --output "$GENERATION_ROOT/build/worldgen-fields"
+```
+
+The tool loads `hilbert-seams.json`, `weathered-aggregate.json` and
+`sidechained-arcology.json` directly from `examples/worldgen/`. For each profile it
+generates a 512×384-cell region at `[-256,0]`, writes material and grayscale mask
+PNGs, and records per-chunk content/receipt hashes plus logical work in
+`render-manifest.json`. Its 12/48/12 chunks follow each profile's declared geometry.
+This is actual native proposal output, before any material simulation; the tool
+does not assess visual GPU throughput or Windows/Web execution.
 
 ## Web compile, export and execution are different checks
 
@@ -218,6 +281,32 @@ browser run merely because it exercises the synchronous controller on Linux.
 Use actual platform artifacts and retain their identities for platform acceptance.
 
 ## Actor control prototype checks
+
+### Thunderbowl controls and native arena
+
+The [Thunderbowl reference](../systems/thunderbowl-control-reference.md) contains
+the standalone scene/CLI commands and fourteen match definitions. Four new
+automatically discovered Godot regressions cover direct actuation, its session
+mailbox, native arena/driver/presentation behavior and controller/schema output:
+
+```sh
+timeout 180 <godot> --headless --path godot --script res://tests/test_actor_rig_actuation.gd
+timeout 180 <godot> --headless --path godot --script res://tests/test_actor_actuator_session.gd
+timeout 180 <godot> --headless --path godot --script res://tests/test_thunderbowl_arena.gd
+timeout 180 <godot> --headless --path godot --script res://tests/test_thunderbowl_controllers.gd
+```
+
+Run the existing actor-rig and SetA suites when changing the shared session or
+motor. The controller suite retains structured positive/adversarial cases in
+`user://thunderbowl-contract-cases.json`; the separate
+[`validate_examples.py`](../../tools/thunderbowl/validate_examples.py) checks them
+and the eight schema definitions with Python `jsonschema` (development tool,
+tested with 4.26.0). Its `--capture` argument accepts the resolved Godot user-data
+path. This validates JSON shape independently from the Godot validator; actual
+run/observation identity, capacity, privilege and input lifetime remain native
+arena/session integration checks. No inference service or credentials are needed.
+
+### Original actor compatibility checks
 
 The original **SetA** tests `test_actor_prototypes.gd`, `test_actor_prototype_session.gd` and
 `test_actor_prototype_integration.gd` are discovered by the existing Godot

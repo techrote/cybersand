@@ -421,6 +421,16 @@ func submit_actor_rig_action(
 		movement, aim, effort, trim, reel, primary, secondary, auxiliary, lease_ticks, producer)
 
 
+func submit_actor_actuator_action(
+	actor_id: int, epoch: int, sequence: int, observed_tick: int,
+	actuators: Vector4, lease_ticks: int = ActorSession.DEFAULT_LEASE_TICKS,
+	producer: StringName = &"policy"
+) -> bool:
+	# The configuration-fixed direct lane admits copied actuator values only.
+	return _actor_session.submit_actuator_action(actor_id, epoch, sequence,
+		observed_tick, actuators, lease_ticks, producer)
+
+
 func queue_actor_prototype_reset(definitions: Array, spawn_position: Vector2) -> int:
 	# A positive receipt acknowledges admission; the owner publishes disposition.
 	if not ActorSession.valid_definitions(definitions) or not spawn_position.is_finite():
