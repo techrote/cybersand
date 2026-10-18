@@ -1,4 +1,4 @@
-name: MAT-002 bounded phase workbench
+name: MAT-002 publish source-matched runtimes
 on:
   push:
     branches: [mat/phase-quantity-quench]
@@ -6,91 +6,421 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: mat002-workbench
+  group: mat002-runtime-publication-${{ github.ref }}
   cancel-in-progress: false
+env:
+  SOURCE_HEAD: b2691594bdc27622979f52df0b9969e8da185b4f
+  PUBLICATION_BRANCH: mat/phase-quantity-quench
+  PUBLISHER_PATH: .github/workflows/mat002-workbench.yml
+  COMPANION_DOCS_COMMIT: 6a58311982941b75f46e22109a0829e5acb83c7e
+  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
 jobs:
-  integration:
+  build:
     if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/mat/phase-quantity-quench'
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [linux, windows]
+    env:
+      BUILD_TARGET: ${{ matrix.target }}
+      CC: gcc-13
+      CXX: g++-13
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out exact publisher installation commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: ${{ matrix.target == 'linux' }}
+          persist-credentials: false
+      - name: Guard source and record exact build inputs
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/mat002-runtime"
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, re, subprocess
+          def git(*args):
+              return subprocess.check_output(['git', *args], text=True).strip()
+          source = os.environ['SOURCE_HEAD']
+          if not re.fullmatch(r'[0-9a-f]{40}', source):
+              raise SystemExit('SOURCE_HEAD must be a frozen implementation commit')
+          if os.environ['GITHUB_REF'] != 'refs/heads/' + os.environ['PUBLICATION_BRANCH']:
+              raise SystemExit('Unexpected publication branch')
+          if git('rev-parse', 'HEAD') != os.environ['GITHUB_SHA'] or git('show', '-s', '--format=%P', 'HEAD') != source:
+              raise SystemExit('Publisher must be the immediate one-parent child of SOURCE_HEAD')
+          if git('diff', '--name-status', source, 'HEAD') != 'M\t' + os.environ['PUBLISHER_PATH']:
+              raise SystemExit('Publisher installation changed more than its own existing workflow')
+          if git('status', '--porcelain', '--untracked-files=no'):
+              raise SystemExit('Build starts with unexpected tracked changes')
+          manifests = [json.loads(pathlib.Path('godot/addons/cybersand_native', name).read_text())
+                       for name in ('runtime-provenance.json', 'runtime-provenance.linux.json')]
+          inputs = sorted(set().union(*(m['source_inputs'] for m in manifests)))
+          build_paths = [
+              'tools/build_native_extension.sh', 'tools/build_native_extension_windows.sh',
+              'tools/build_pinned_godot_cpp.sh', 'tools/requirements-build.txt',
+              'tools/toolchains/g++', 'tools/check_linux_runtime_floor.sh',
+              'tools/ci/run_godot_regressions.py', 'Makefile', 'native/tests/test_world.cpp',
+              'native/tests/phase_quantity_tests.hpp', 'godot/tests/test_phase_quantity_regression.gd',
+              'godot/tests/test_native_render_bridge_regression.gd',
+              'godot/tests/test_native_edge_contact_regression.gd',
+              'godot/tests/test_microscenario_native_observation.gd',
+              'third_party/native-toolchain.lock.json', 'third_party/godot-runtime.lock.json',
+              'godot/third_party/rapier2d.lock.json',
+          ]
+          def source_digest(relative):
+              committed = subprocess.check_output(['git', 'show', source + ':' + relative])
+              actual = pathlib.Path(relative).read_bytes().replace(b'\r\n', b'\n')
+              if actual != committed:
+                  raise SystemExit('Build input differs from frozen source: ' + relative)
+              return hashlib.sha256(committed).hexdigest()
+          report = {'source_commit': source, 'source_tree': git('rev-parse', source + '^{tree}'),
+                    'build_commit': os.environ['GITHUB_SHA'], 'run_id': os.environ['GITHUB_RUN_ID'],
+                    'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'], 'target': os.environ['BUILD_TARGET'],
+                    'source_inputs': {p: source_digest(p) for p in inputs},
+                    'build_inputs': {p: source_digest(p) for p in build_paths}}
+          pathlib.Path(os.environ['RUNNER_TEMP'], 'mat002-runtime', 'source-inputs.json').write_text(json.dumps(report, indent=2) + '\n')
+          print('Frozen source:', source, 'build commit:', report['build_commit'])
+          PY
+      - name: Install pinned SCons and fetch pinned godot-cpp
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          test "$("$RUNNER_TEMP/scons/bin/python" -c 'import SCons; print(SCons.__version__)')" = '4.10.1'
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+      - name: Prepare pinned LLVM-MinGW
+        if: matrix.target == 'windows'
+        run: |
+          set -euo pipefail
+          timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          test -x "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-g++"
+          if test ! -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; then
+            ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+          fi
+      - name: Build fresh Linux runtime
+        if: matrix.target == 'linux'
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/mat002-runtime/libcybersand_native.linux.x86_64.so
+        run: |
+          set -euo pipefail
+          timeout 35m tools/build_pinned_godot_cpp.sh linux 2>&1 | tee "$RUNNER_TEMP/mat002-runtime/godot-cpp-build.log"
+          timeout 20m tools/build_native_extension.sh 2>&1 | tee "$RUNNER_TEMP/mat002-runtime/extension-build.log"
+          file "$CYBERSAND_NATIVE_OUTPUT" | tee "$RUNNER_TEMP/mat002-runtime/runtime-format.txt"
+          grep -q 'ELF 64-bit.*x86-64' "$RUNNER_TEMP/mat002-runtime/runtime-format.txt"
+          cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          timeout 1m tools/check_linux_runtime_floor.sh 2>&1 | tee "$RUNNER_TEMP/mat002-runtime/linux-runtime-floor.log"
+      - name: Build fresh Windows runtime
+        if: matrix.target == 'windows'
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/mat002-runtime/cybersand_native.windows.x86_64.dll
+        run: |
+          set -euo pipefail
+          timeout 35m tools/build_pinned_godot_cpp.sh windows 2>&1 | tee "$RUNNER_TEMP/mat002-runtime/godot-cpp-build.log"
+          timeout 20m tools/build_native_extension_windows.sh 2>&1 | tee "$RUNNER_TEMP/mat002-runtime/extension-build.log"
+          file "$CYBERSAND_NATIVE_OUTPUT" | tee "$RUNNER_TEMP/mat002-runtime/runtime-format.txt"
+          grep -q 'PE32+ executable (DLL).*x86-64' "$RUNNER_TEMP/mat002-runtime/runtime-format.txt"
+          "$LLVM_MINGW_ROOT/bin/llvm-objdump" -p "$CYBERSAND_NATIVE_OUTPUT" > "$RUNNER_TEMP/mat002-runtime/windows-imports.txt"
+      - name: Run complete current native suite
+        if: matrix.target == 'linux'
+        run: |
+          set -euo pipefail
+          timeout 15m make build/tests 2>&1 | tee "$RUNNER_TEMP/mat002-runtime/native-build.log"
+          timeout 15m ./build/tests 2>&1 | tee "$RUNNER_TEMP/mat002-runtime/native-tests.log"
+      - name: Prepare exact Linux Godot runtime
+        if: matrix.target == 'linux'
+        run: |
+          set -euo pipefail
+          echo '147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum --check --strict
+          timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          test -n "$GODOT_BIN"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+      - name: Exercise actual rebuilt extension including phase saves and refused inputs
+        if: matrix.target == 'linux'
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, pathlib, sys
+          sys.path.insert(0, str(pathlib.Path('tools/ci').resolve()))
+          from run_godot_regressions import Case, ROOT, run_case
+          output = pathlib.Path(os.environ['RUNNER_TEMP'], 'mat002-runtime')
+          cases = [Case('import', ('--editor', '--quit'), 240, 3.0)]
+          cases += [Case(name, ('--script', 'res://tests/' + name + '.gd'), 180, 5.0)
+                    for name in ('test_native_render_bridge_regression', 'test_native_edge_contact_regression',
+                                 'test_microscenario_native_observation', 'test_phase_quantity_regression')]
+          records = []
+          for case in cases:
+              record, failed = run_case(os.environ['GODOT_BIN'], case, output, 'publisher-smoke')
+              record['command'] = [os.environ['GODOT_BIN'], '--headless', '--path', str(ROOT / 'godot'), *case.flags]
+              record['cwd'] = str(ROOT)
+              records.append(record)
+              (output / 'godot-smoke.json').write_text(json.dumps(records, indent=2) + '\n')
+              if failed:
+                  raise SystemExit(1)
+          PY
+      - name: Record exact artifact bytes and validation scope
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- . ':!godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so'
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          output = pathlib.Path(os.environ['RUNNER_TEMP'], 'mat002-runtime')
+          report = json.loads((output / 'source-inputs.json').read_text())
+          target = os.environ['BUILD_TARGET']
+          artifact = 'libcybersand_native.linux.x86_64.so' if target == 'linux' else 'cybersand_native.windows.x86_64.dll'
+          data = (output / artifact).read_bytes()
+          if data.startswith(b'version https://git-lfs.github.com/spec/v1\n'):
+              raise SystemExit('Build produced a pointer instead of a runtime')
+          for relative, expected in (report['source_inputs'] | report['build_inputs']).items():
+              actual = hashlib.sha256(pathlib.Path(relative).read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+              if actual != expected:
+                  raise SystemExit('Source changed during build: ' + relative)
+          def first_line(command):
+              return subprocess.check_output(command, text=True).splitlines()[0]
+          compiler = ['/usr/bin/g++-13', '--version'] if target == 'linux' else [
+              os.environ['RUNNER_TEMP'] + '/llvm-mingw/bin/x86_64-w64-mingw32-g++', '--version']
+          platform_tools = [first_line(['ld', '--version'])] if target == 'linux' else [
+              'LLVM-MinGW 20260826 UCRT archive SHA-256 ' + os.environ['LLVM_MINGW_SHA256'],
+              'PE inspector: ' + first_line([os.environ['RUNNER_TEMP'] + '/llvm-mingw/bin/llvm-objdump', '--version'])]
+          report.update({'artifact': artifact, 'sha256': hashlib.sha256(data).hexdigest(), 'size': len(data),
+              'toolchain': ['Ubuntu 24.04', first_line(compiler), *platform_tools,
+                            'godot-cpp ' + os.environ['GODOT_CPP_COMMIT'], 'SCons 4.10.1'],
+              'native_core_suite': 'passed' if target == 'linux' else 'not-run',
+              'godot_smoke': json.loads((output / 'godot-smoke.json').read_text()) if target == 'linux' else [],
+              'godot_version': os.environ['GODOT_VERSION'] if target == 'linux' else None,
+              'windows_execution': 'not-run', 'full_ready_ci': 'separate-pending-gate',
+              'log_sha256': {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(output.glob('*.log'))}})
+          (output / 'build-report.json').write_text(json.dumps(report, indent=2) + '\n')
+          (output / 'runtime.sha256').write_text(report['sha256'] + '  ' + artifact + '\n')
+          print(target, artifact, report['sha256'], report['size'])
+          PY
+      - name: Retain runtime and exact build evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mat002-runtime-${{ matrix.target }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/mat002-runtime/
+          if-no-files-found: error
+          overwrite: true
+          retention-days: 30
+  publish:
+    needs: build
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/mat/phase-quantity-quench'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
     permissions:
       contents: write
+      actions: read
     defaults:
       run:
         shell: bash
         working-directory: workspace/source
     steps:
-      - name: Check out exact companion documentation
+      - name: Check out pinned companion documentation
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: 6a58311982941b75f46e22109a0829e5acb83c7e
+          ref: ${{ env.COMPANION_DOCS_COMMIT }}
           path: workspace
           persist-credentials: false
-      - name: Check out the guarded integration source
+      - name: Check out exact publication head with LFS
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           ref: ${{ github.sha }}
           path: workspace/source
           fetch-depth: 0
+          lfs: true
           persist-credentials: true
-      - name: Verify the qualified native core is unchanged
+      - name: Refuse publication when source or branch ownership moved
         run: |
           set -euo pipefail
-          test "$GITHUB_REF" = refs/heads/mat/phase-quantity-quench
+          test "$GITHUB_REF" = "refs/heads/$PUBLICATION_BRANCH"
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git show -s --format=%P HEAD)" = "$SOURCE_HEAD"
+          test "$(git diff --name-only "$SOURCE_HEAD" HEAD)" = "$PUBLISHER_PATH"
           test "$(git ls-remote --exit-code origin "$GITHUB_REF" | cut -f1)" = "$GITHUB_SHA"
-          git diff --exit-code dd4f6ca01d4bf29d009d62f3142531bef99ed474 HEAD -- native Makefile godot/native_extension
           git diff --exit-code
-          mkdir -p build/mat002
-      - name: Integrate exact adapter and documentation changes
+      - name: Download this run's Linux runtime
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: mat002-runtime-linux-${{ github.run_id }}
+          path: ${{ runner.temp }}/mat002-incoming/linux
+      - name: Download this run's Windows runtime
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: mat002-runtime-windows-${{ github.run_id }}
+          path: ${{ runner.temp }}/mat002-incoming/windows
+      - name: Verify and install fresh artifacts with new provenance
         run: |
           set -euo pipefail
-          python3 -m py_compile .github/mat002_finish.py
-          python3 .github/mat002_finish.py
-          git diff --check
-          git diff --stat
-      - name: Validate current docs, historical integrity and retrieval routes
-        run: |
-          set -euo pipefail
-          timeout 1m python3 tools/ci/check_ci_provider_policy.py
-          timeout 5m python3 tools/ci/check_docs.py 2>&1 | tee build/mat002/docs.log
-          timeout 5m python3 tools/ci/check_m11_consistency.py 2>&1 | tee build/mat002/historical.log
-          timeout 2m python3 tools/docs/retrieval_eval.py --output build/mat002/frozen.json
-          timeout 2m python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-challenges.json --output build/mat002/challenges.json
-          python3 tools/ci/test_godot_regression_sharding.py
-      - name: Preserve the implementation for exact-source runtime qualification
-        run: |
-          set -euo pipefail
-          git rm -- .github/mat002_finish.py
           python3 - <<'PY'
-          import subprocess
-          allowed = {'godot/native_extension/cyber_native_cell_world.cpp', '.github/mat002_finish.py',
-                     'docs/systems/water-design.md', 'docs/systems/materials-and-rule-kernels.md',
-                     'docs/systems/intermaterial-interactions.md', 'docs/reference/level-saves-and-replay.md',
-                     'docs/architecture/chunk-tile-and-buffer-model.md', 'docs/reference/status-and-roadmap.md',
-                     'docs/operations/cybersand-codex-development-handover.md', 'docs/README.md',
-                     'docs/reference/retrieval-index.md', 'docs/reference/retrieval-corpus.json',
-                     'docs/reference/retrieval-challenges.json', 'docs/audits/2026-10-18-mat002-phase-quantity.md'}
-          changed = set(subprocess.check_output(['git', 'diff', 'HEAD', '--name-only'], text=True).splitlines())
-          # The new audit is not yet tracked; do not pick up arbitrary untracked files.
-          if changed != allowed - {'docs/audits/2026-10-18-mat002-phase-quantity.md'}:
-              raise SystemExit('Unexpected tracked integration write set: ' + repr(changed))
-          for path in sorted(allowed - {'.github/mat002_finish.py'}):
-              subprocess.run(['git', 'add', '--', path], check=True)
+          import hashlib, json, os, pathlib, shutil, subprocess
+          root = pathlib.Path('.')
+          incoming = pathlib.Path(os.environ['RUNNER_TEMP'], 'mat002-incoming')
+          retained = pathlib.Path(os.environ['RUNNER_TEMP'], 'mat002-publication')
+          retained.mkdir()
+          run_url = 'https://github.com/techrote/cybersand/actions/runs/' + os.environ['GITHUB_RUN_ID']
+          source_tree = subprocess.check_output(['git', 'rev-parse', os.environ['SOURCE_HEAD'] + '^{tree}'], text=True).strip()
+          expected_inputs = set()
+          for name in ('runtime-provenance.json', 'runtime-provenance.linux.json'):
+              expected_inputs.update(json.loads((root / 'godot/addons/cybersand_native' / name).read_text())['source_inputs'])
+          expected_smoke = {'import', 'test_native_render_bridge_regression', 'test_native_edge_contact_regression',
+                            'test_microscenario_native_observation', 'test_phase_quantity_regression'}
+          reports = {}
+          for target in ('linux', 'windows'):
+              folder = incoming / target
+              report = json.loads((folder / 'build-report.json').read_text())
+              for key, value in {'source_commit': os.environ['SOURCE_HEAD'], 'source_tree': source_tree,
+                                 'build_commit': os.environ['GITHUB_SHA'], 'run_id': os.environ['GITHUB_RUN_ID'],
+                                 'target': target}.items():
+                  if report.get(key) != value:
+                      raise SystemExit('Runtime identity mismatch: ' + target + '/' + key)
+              if set(report['source_inputs']) != expected_inputs:
+                  raise SystemExit('Runtime report changed the required source input set')
+              for relative, expected in (report['source_inputs'] | report['build_inputs']).items():
+                  data = (root / relative).read_bytes().replace(b'\r\n', b'\n')
+                  committed = subprocess.check_output(['git', 'show', os.environ['SOURCE_HEAD'] + ':' + relative])
+                  if data != committed or hashlib.sha256(data).hexdigest() != expected:
+                      raise SystemExit('Runtime source input mismatch: ' + relative)
+              filename = 'libcybersand_native.linux.x86_64.so' if target == 'linux' else 'cybersand_native.windows.x86_64.dll'
+              if report['artifact'] != filename:
+                  raise SystemExit('Unexpected runtime artifact path')
+              data = (folder / filename).read_bytes()
+              if data.startswith(b'version https://git-lfs.github.com/spec/v1\n'):
+                  raise SystemExit('Runtime payload is an LFS pointer')
+              if hashlib.sha256(data).hexdigest() != report['sha256'] or len(data) != report['size']:
+                  raise SystemExit('Runtime bytes differ from build report')
+              for name, digest in report['log_sha256'].items():
+                  if pathlib.Path(name).name != name or hashlib.sha256((folder / name).read_bytes()).hexdigest() != digest:
+                      raise SystemExit('Build log identity mismatch')
+              if target == 'linux':
+                  smoke = report['godot_smoke']
+                  if report['native_core_suite'] != 'passed' or report['godot_version'] != os.environ['GODOT_VERSION']:
+                      raise SystemExit('Fresh Linux runtime evidence is incomplete')
+                  if len(smoke) != len(expected_smoke) or {r['name'] for r in smoke} != expected_smoke:
+                      raise SystemExit('Focused Godot case accounting is incomplete')
+                  if any(r['status'] != 'passed' or r['returncode'] != 0 or r['diagnostic_error'] for r in smoke):
+                      raise SystemExit('Focused Godot case failed')
+              elif report['windows_execution'] != 'not-run' or report['native_core_suite'] != 'not-run' or report['godot_smoke']:
+                  raise SystemExit('Windows cross-build must not claim native execution')
+              artifact = 'godot/addons/cybersand_native/bin/' + filename
+              shutil.copy2(folder / filename, root / artifact)
+              manifest = {
+                  'schema_version': 1,
+                  'status': 'validated-development-runtime' if target == 'linux' else 'validated-build-runtime',
+                  'source_commit': os.environ['SOURCE_HEAD'], 'source_tree': source_tree,
+                  'artifact': artifact, 'sha256': report['sha256'], 'size': report['size'],
+                  'source_input_hash_kind': 'SHA-256 of canonical Git blob bytes; CRLF working files normalize to LF',
+                  'source_inputs': report['source_inputs'], 'build_inputs': report['build_inputs'],
+                  'build_commit': report['build_commit'],
+                  'evidence': 'docs/audits/2026-10-18-mat002-phase-quantity.md',
+                  'validated_platform': 'Linux x86_64 Godot 4.7' if target == 'linux' else 'Windows x86_64 Godot 4.7 (pinned cross-build; execution unavailable)',
+                  'toolchain': '; '.join(report['toolchain']),
+                  'acceptance': (
+                      'Fresh MAT-002 source passed the full 71-test native suite including all nine phase/quench groups. '
+                      'This exact rebuilt Linux GDExtension passed Godot import, render bridge, edge/contact, native observation '
+                      'and phase quantity/save/refused-input tests in publication run ' + os.environ['GITHUB_RUN_ID'] + '. Full ready CI is separate.'
+                      if target == 'linux' else
+                      'Fresh MAT-002 Windows x86_64 GDExtension cross-build and PE inspection passed in publication run '
+                      + os.environ['GITHUB_RUN_ID'] + '. Windows execution was not performed.'),
+                  'workflow_run': run_url, 'workflow_attempt': report['run_attempt'],
+                  'validation_output': 'mat002-runtime-' + target + '-' + os.environ['GITHUB_RUN_ID'] + '/build-report.json',
+                  'other_platforms': 'Windows is cross-built from matching source. No Windows graphical, actual browser/WebAssembly, visual-feel or GPU-performance acceptance is claimed.'}
+              name = 'runtime-provenance.linux.json' if target == 'linux' else 'runtime-provenance.json'
+              destination = root / 'godot/addons/cybersand_native' / name
+              destination.write_text(json.dumps(manifest, indent=2) + '\n')
+              shutil.copytree(folder, retained / target)
+              shutil.copy2(destination, retained / name)
+              reports[target] = report
+          if reports['linux']['source_inputs'] != reports['windows']['source_inputs']:
+              raise SystemExit('Platform builds used different native source inputs')
+          (retained / 'publication-source.json').write_text(json.dumps({
+              'source_commit': os.environ['SOURCE_HEAD'], 'source_tree': source_tree,
+              'installation_commit': os.environ['GITHUB_SHA'], 'workflow_run': run_url}, indent=2) + '\n')
+          PY
+          timeout 1m tools/check_linux_runtime_floor.sh
+          git diff --check
+      - name: Commit only LFS runtimes and provenance; remove the temporary workbench
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git add -- godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/runtime-provenance.json godot/addons/cybersand_native/runtime-provenance.linux.json
+          git rm -- "$PUBLISHER_PATH"
+          python3 - <<'PY'
+          import os, subprocess
+          allowed = {'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll',
+                     'godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so',
+                     'godot/addons/cybersand_native/runtime-provenance.json',
+                     'godot/addons/cybersand_native/runtime-provenance.linux.json', os.environ['PUBLISHER_PATH']}
+          changed = set(subprocess.check_output(['git', 'diff', '--cached', '--name-only'], text=True).splitlines())
+          required = {os.environ['PUBLISHER_PATH'], 'godot/addons/cybersand_native/runtime-provenance.json',
+                      'godot/addons/cybersand_native/runtime-provenance.linux.json'}
+          if not required <= changed <= allowed:
+              raise SystemExit('Unexpected staged publication write set: ' + repr(changed))
+          if subprocess.check_output(['git', 'diff', '--name-only'], text=True).strip():
+              raise SystemExit('Unexpected unstaged tracked changes')
           PY
           git diff --cached --check
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -m 'fix(mat002): reject invalid adapter state and document phase contracts' -m 'Preflight material-local byte domains, record tested native phase quantities and versioned interaction semantics, and preserve runtime/save qualification as separate gates. Refs #160.'
+          git commit -m 'build(mat002): publish source-matched phase quantity runtimes'
           test "$(git show -s --format=%P HEAD)" = "$GITHUB_SHA"
+      - name: Verify materialized current runtime and historical identity gates
+        run: |
+          set -euo pipefail
+          timeout 1m python3 tools/ci/check_ci_provider_policy.py
+          timeout 5m python3 tools/ci/check_docs.py
+          timeout 5m python3 tools/ci/check_repository.py --require-materialized 2>&1 | tee "$RUNNER_TEMP/mat002-publication/repository-materialized.log"
+          timeout 5m git lfs fsck 2>&1 | tee "$RUNNER_TEMP/mat002-publication/lfs-fsck.log"
+          git diff --exit-code HEAD
+          git diff --check HEAD
+      - name: Push verified descendant with unchanged branch ownership
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/$PUBLICATION_BRANCH"
           test "$(git ls-remote --exit-code origin "$GITHUB_REF" | cut -f1)" = "$GITHUB_SHA"
-          git push origin HEAD:refs/heads/mat/phase-quantity-quench
-          git rev-parse HEAD | tee build/mat002/source-commit.txt
-      - name: Retain integration evidence
+          test "$(git show -s --format=%P HEAD)" = "$GITHUB_SHA"
+          git push origin "HEAD:refs/heads/$PUBLICATION_BRANCH"
+          test "$(git ls-remote --exit-code origin "$GITHUB_REF" | cut -f1)" = "$(git rev-parse HEAD)"
+          git rev-parse HEAD > "$RUNNER_TEMP/mat002-publication/published-commit.txt"
+          echo 'Runtime publication complete. Normal exact-head PR validation and review remain separate merge gates.' >> "$GITHUB_STEP_SUMMARY"
+      - name: Retain publication payloads and verification evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: mat002-integration-${{ github.run_id }}
-          path: workspace/source/build/mat002/
+          name: mat002-publication-${{ github.run_id }}
+          path: ${{ runner.temp }}/mat002-publication/
           if-no-files-found: warn
+          overwrite: true
           retention-days: 30
