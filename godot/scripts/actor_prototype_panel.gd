@@ -1,0 +1,156 @@
+class_name CyberActorPrototypePanel
+extends PopupPanel
+
+signal apply_requested(model_id: StringName, producer: StringName, demo_npcs: bool)
+
+# Preserve the original setA indices for callers using the first prototype panel.
+const MODELS: Array[StringName] = [&"", &"runner", &"skimmer", &"crawler"]
+const PRODUCERS: Array[StringName] = [&"human", &"demo", &"policy"]
+const Catalog = preload("res://scripts/actor_rig_catalog.gd")
+
+var set_choice: OptionButton
+var model_choice: OptionButton
+var producer_choice: OptionButton
+var npc_choice: CheckBox
+var effort_slider: HSlider
+var effort_label: Label
+var description: Label
+var status: Label
+var _visible_models: Array[StringName] = []
+
+
+func _ready() -> void:
+	var margin: MarginContainer = MarginContainer.new()
+	for side: String in ["left", "top", "right", "bottom"]:
+		margin.add_theme_constant_override("margin_" + side, 18)
+	add_child(margin)
+	var column: VBoxContainer = VBoxContainer.new()
+	column.custom_minimum_size = Vector2(540, 0)
+	column.add_theme_constant_override("separation", 9)
+	margin.add_child(column)
+	var title: Label = Label.new()
+	title.text = "ACTOR-RIGS"
+	title.add_theme_font_size_override("font_size", 23)
+	column.add_child(title)
+	var subtitle: Label = Label.new()
+	subtitle.text = "29 provisional rigs in six sets • keyboard, demo or external policy"
+	subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	column.add_child(subtitle)
+	set_choice = OptionButton.new()
+	for set_id: StringName in Catalog.SET_IDS:
+		var first: StringName = Catalog.rigs_in_set(set_id)[0]
+		set_choice.add_item(str(set_id) + " — " + str(Catalog.entry(first).theme))
+	set_choice.item_selected.connect(_select_set)
+	column.add_child(set_choice)
+	model_choice = OptionButton.new()
+	model_choice.item_selected.connect(_refresh_description)
+	column.add_child(model_choice)
+	producer_choice = OptionButton.new()
+	for label: String in ["Pilot: keyboard", "Pilot: scripted demonstration", "Pilot: external policy input"]:
+		producer_choice.add_item(label)
+	producer_choice.item_selected.connect(_refresh_producer)
+	column.add_child(producer_choice)
+	npc_choice = CheckBox.new()
+	column.add_child(npc_choice)
+	var power_row: HBoxContainer = HBoxContainer.new()
+	column.add_child(power_row)
+	effort_label = Label.new()
+	effort_label.custom_minimum_size.x = 150
+	power_row.add_child(effort_label)
+	effort_slider = HSlider.new()
+	effort_slider.min_value = 0.0
+	effort_slider.max_value = 1.0
+	effort_slider.step = 0.05
+	effort_slider.value = 0.7
+	effort_slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	effort_slider.value_changed.connect(_refresh_effort)
+	power_row.add_child(effort_slider)
+	var scroll: ScrollContainer = ScrollContainer.new()
+	scroll.custom_minimum_size.y = 180
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	column.add_child(scroll)
+	description = Label.new()
+	description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	description.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(description)
+	status = Label.new()
+	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	status.modulate = Color(0.75, 0.82, 0.9)
+	status.text = "Applying starts a fresh sandbox. External policy mode waits for actions.\nAim with the pointer; [ / ] changes power. Release control keys after switching."
+	column.add_child(status)
+	var row: HBoxContainer = HBoxContainer.new()
+	column.add_child(row)
+	var apply: Button = Button.new()
+	apply.text = "Apply + reset sandbox"
+	apply.pressed.connect(_apply)
+	row.add_child(apply)
+	var close: Button = Button.new()
+	close.text = "Close"
+	close.pressed.connect(hide)
+	row.add_child(close)
+	_populate_models(&"setA", &"")
+	_refresh_effort(effort_slider.value)
+
+
+func selected_set_id() -> StringName:
+	return Catalog.SET_IDS[clampi(set_choice.selected, 0, Catalog.SET_IDS.size() - 1)]
+
+
+func configure_selection(model_id: StringName, producer: StringName, demo_npcs: bool) -> void:
+	var set_id: StringName = Catalog.set_for(model_id) if Catalog.has_rig(model_id) else &"setA"
+	set_choice.select(Catalog.SET_IDS.find(set_id))
+	_populate_models(set_id, model_id)
+	producer_choice.select(maxi(0, PRODUCERS.find(producer)))
+	npc_choice.button_pressed = demo_npcs
+	_refresh_description(model_choice.selected)
+
+
+func _select_set(index: int) -> void:
+	set_choice.select(index)
+	var set_id: StringName = selected_set_id()
+	_populate_models(set_id, Catalog.rigs_in_set(set_id)[0])
+
+
+func _populate_models(set_id: StringName, selected: StringName) -> void:
+	model_choice.clear()
+	_visible_models.assign([&""])
+	model_choice.add_item("Current sampled character")
+	for rig_id: StringName in Catalog.rigs_in_set(set_id):
+		_visible_models.append(rig_id)
+		model_choice.add_item(Catalog.name_for(rig_id))
+	model_choice.select(maxi(0, _visible_models.find(selected)))
+	npc_choice.text = "Add the other %d rigs in this set as scripted demo NPCs" % (Catalog.rigs_in_set(set_id).size() - 1)
+	_refresh_description(model_choice.selected)
+
+
+func _refresh_description(index: int) -> void:
+	var rig_id: StringName = _visible_models[index]
+	producer_choice.disabled = rig_id == &""
+	npc_choice.disabled = rig_id == &""
+	if rig_id == &"":
+		description.text = "Restore the existing sampled character and player/environment profile."
+		effort_slider.editable = false
+		return
+	var definition: Dictionary = Catalog.entry(rig_id)
+	description.text = "%s • %s\n%s\n\n%s" % [str(definition.name).to_upper(),
+		str(definition.set), str(definition.description), Catalog.controls_text(rig_id)]
+	if not definition.limitations.is_empty():
+		description.text += "\n\n" + str(definition.limitations[0])
+	effort_slider.editable = definition.channels.has("effort") and producer_choice.selected == 0
+
+
+func _refresh_producer(_index: int) -> void:
+	_refresh_description(model_choice.selected)
+
+
+func _refresh_effort(value: float) -> void:
+	effort_label.text = "Keyboard power: %d%%" % roundi(value * 100.0)
+
+
+func _apply() -> void:
+	apply_requested.emit(_visible_models[model_choice.selected], PRODUCERS[producer_choice.selected],
+		npc_choice.button_pressed)
+
+
+func set_error(message: String) -> void:
+	status.text = message

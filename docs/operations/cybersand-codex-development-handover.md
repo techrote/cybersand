@@ -25,7 +25,114 @@ for the requested change. Use the [retrieval index](../reference/retrieval-index
 for a focused question. The [owner-intent reference](../reference/product-intent-and-priorities.md)
 preserves product goals, liked material behavior and deliberate deferrals.
 
+## Procedural generation candidates — 2026-10-18
+
+GEN-001 / [#163](https://github.com/techrote/cybersand/issues/163) implements a
+separate native generator and opt-in authoring workbench. Start with the
+[generation contract](../systems/procedural-world-generation.md) and
+[dated evidence](../audits/2026-10-18-gen001-procedural-generation.md). Strata,
+Flow Network and District Grammar share theme DAG selections, blends, brush
+controls, routes, exact overrides and prepared versioned feature factories.
+The workbench previews bounded demand generation; general simulation streaming,
+eviction/persistence and automatic reconciliation of edited recipes remain
+separate. Its native fresh-chunk installer refuses all existing storage and
+requires caller-owned receipt/reset admission. Do not attach it concurrently to
+a live World owner or infer production streaming from the preview.
+
+## Procedural fields and masked authoring — 2026-10-18
+
+GEN-002 / [#171](https://github.com/techrote/cybersand/issues/171) extends those
+candidates with a bounded scalar DAG, finite Hilbert/Morton tiles, structured
+noise, analytic/context masks, theme/parameter/material modifiers, aggregates and
+field-masked feature instances. Read the
+[field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md)
+and [dated evidence](../audits/2026-10-18-gen002-fields-and-aggregates.md) before
+changing observation order or selection semantics. Every mask sees the initial
+proposal; hard geometry is reapplied after guidance, the route skeleton follows
+material modifiers, and hard material is final. Aggregate weights are strictly
+positive and resolve ordinary existing material IDs.
+
+The workbench adds field/aggregate/modifier editing, context-aware brushes,
+transforms and copied diagnostic overlays. `make worldgen-test` and
+`make worldgen-sanitize` include independent curve/field and modifier regressions,
+including historical GEN-001 material hashes. The
+[local build guide](local-build-and-validation.md) covers both Godot test scripts
+and the native example renderer. Algorithm identity is now 2; a retained GEN-001
+binary is not source-matched evidence for these APIs. The ACT-002 merge preserves
+its rig behavior and supplementary retrieval questions; no actor/native physics
+owner is changed by generation guidance.
+
+## Thunderbowl control laboratory — 2026-10-18
+
+ACT-003 / #172 adds the standalone native
+[Thunderbowl reference and examples](../systems/thunderbowl-control-reference.md).
+Its owner wraps a real World and the current eight-slot actor session; it does
+not replace ordinary F5 selection or registered scientific fixtures. New actor
+definitions may fix `control_mode` to `metal` for Ripper, Copter or Gemini.
+That lane bypasses intent actuation and publishes separate 32-value force/torque
+readback; original v1/v2 observations and SetA motor bytes remain compatible.
+
+The shared driver collects copied policy views before stepping any actors.
+Self/local/oracle privileges, message delivery, arena-only virtual tag combat,
+model-plan freshness and resource/work bounds are explicit. Controller examples,
+eight JSON schemas and fourteen match definitions live under
+[`godot/examples/thunderbowl`](../../godot/examples/thunderbowl).
+The NCA-inspired graph weights are untrained; the Python smart-link client is an
+offline mock. Model inference, learned performance, complete replay and broad
+platform/feel acceptance must not be inferred from runnable examples.
+The [dated ACT-003 audit](../audits/2026-10-18-act003-thunderbowl-control-lab.md)
+binds local execution to the public source checkpoint; PR #174 records final
+hosted CI and integration disposition.
+
+## Actor control prototypes — 2026-10-18
+
+ACT-002 / #168 expands the original ACT-001 / #161 trio into 29 optional desktop
+rigs in SetA/B/F/Y/U/V. Read the [rig contract](../systems/actor-rigs.md) before
+changing movement, input or observation fields. The
+[SetA compatibility page](../systems/actor-control-prototypes.md) preserves Runner,
+Skimmer and Crawler's original motor and 16-value observations. New rigs use
+independent aim, effort, trim, reel and auxiliary with additive 40-value state and
+consumed action/edge readback. Catalog names and fictional SetV personas do not
+connect model services or claim real model behavior.
+
+**F5** selects a set/rig, keyboard/demo/external-policy pilot, power and optional
+comparison with the other rigs in that set. WASD, pointer aim, Space/Shift/C,
+Q/E trim, Z/X reel and brackets use the same expiring policy interface. The owner
+acknowledges reset outcomes before human control resumes; controlled fixtures
+retain their explicit player identities. Expiry/cancellation discards charge,
+attachment and pending effects before neutral input advances.
+
+The session remains capped at eight actors. SetA retains its 32-query limit;
+new rigs have explicit occupancy, ray, effect and angular/translation budgets in
+the [configuration reference](../reference/configuration-reference.md#actor-rig-values).
+Source and Linux headless evidence remain separate from target-PC feel,
+many-NPC throughput and Windows/Web execution. The
+[validation ledger](../reference/validation-evidence.md) owns dated execution;
+the original ACT-001 audit remains unchanged.
+
+## Connected scene content — 2026-10-18
+
+[Blacksite Nine](blacksite-nine-demo.md) adds a new, continuous 3×3 scene on
+`scene/blacksite-nine`, based on the four-scene branch and current ACT-002 main
+`087ca3e972296b189c8b83060463125c06d600e2`. It places a fortified research lab
+between two industrial wastelands above six dense underground districts. Twelve
+ordinary native openings connect all neighbouring tiles. Shift+F11/Web menu
+launch the whole world; its 3×3 camera map preserves edits and player state,
+while R restores the complete complex. The
+[dated evidence](../audits/2026-10-18-blacksite-nine.md) owns traversal, rendering,
+source/runtime identities and publication status.
+
 ## Material consistency repair — 2026-10-18
+
+The separate [Neon Reliquary descent](neon-reliquary-demo.md) adds four detailed
+districts based on accepted MAT-001 main `ec05d722`: Neon Reliquary, Middle
+Cyberberbia, Sewertech Alley and Industrial Underswamp. Desktop F11 and the Web
+menu use the existing shared scenario host; Above/Below load the neighboring
+district's original paused layout, while viewpoint changes preserve edits.
+The [four-tile evidence](../audits/2026-10-18-neon-reliquary-descent.md) records
+actual Godot views, focused validation and the owner's explicit branch-push
+authorization. Work is isolated on `scene/neon-reliquary-demo`. Keep subsequent
+material-shader work separate from these recipes and their empty-space backdrop.
 
 The owner reports that restarting resolved the all-four-builds problem and asks
 for actual material-behavior improvements. MAT-001 / #158 owns the bounded native

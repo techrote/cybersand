@@ -29,6 +29,57 @@ behavior under load, exact engineering comparisons and recoverable checkpoints.
 60 FPS is a product target; it is not a performance guarantee established by
 headless fixtures or a particular worker count.
 
+## Procedural generation direction, 2026-10-18
+
+**Approved owner direction:** create procedural chunk-generation framework/engine
+candidates that support on-demand interconnected worlds, specific theme subsets
+and supersets, and blends between them. Authoring should combine broad spatial
+brushstroke guidance with fine tunable parameters, hard overrides and extensible
+algorithmic hooks for complex architectural or computationally advanced zones.
+The intended result is an engine foundation with reusable control/module
+boundaries, not a single fixed generated level.
+
+GEN-001 / [#163](https://github.com/techrote/cybersand/issues/163) supplies the
+[current native candidate and preview-workbench scope](../systems/procedural-world-generation.md).
+Its source, integration and platform evidence remain separate from product
+acceptance and from the existing general World streaming/persistence roadmap.
+
+### Fields, sidechains and context-aware authoring — 2026-10-18
+
+**Approved owner extension:** add space-filling curves, structured noise, masks
+and sidechains, masked modifiers, simple aggregate-material definitions and
+context-aware generation guidance, sculpting and manipulation. Controls should
+compose through reusable bounded interfaces and preserve explicit hard authority.
+GEN-002 / [#171](https://github.com/techrote/cybersand/issues/171) implements the
+[current field/modifier candidate scope](../systems/procedural-generation-fields-and-modifiers.md).
+Its context is the immutable initial procedural proposal; aggregate definitions
+select existing materials. General live World editing, new mixture physics and
+production streamed residency require their own owner/validation contracts.
+
+## Provisional actor controls — 2026-10-18
+
+**Approved owner request:** create three provisional actor input/ruleset/model
+and capability alternatives, keep them performant and reactive, and allow each
+to serve either a player character or a neural-network-controlled NPC. ACT-001 /
+#161 implements optional Runner, Skimmer and Crawler prototypes through a shared
+action/observation boundary. The [actor contract](../systems/actor-control-prototypes.md)
+owns Current capabilities and limitations; this request does not select a final
+production character model or imply that neural inference/training already exists.
+
+**Approved owner expansion, ACT-002 / #168:** retain those three as SetA, then
+add SetB ground/near-ground machines (Scout, Scrabbler, Ripper, GroundEffect,
+Digger), SetF unusual flight/descent (Copter, Pouncer, Dropbot, Lineshank), SetY
+contact/rope/impulse traversal (Walljumper, Clamberer, Swinger, Rocketjumper), six
+coherently themed SetU inventions and seven SetV interfaces imagined for Astra,
+Claude, Luna, Qwen, Bonsai, Jev and Gemini. The interface personas are speculative
+design prompts; they do not claim real model preferences or capabilities.
+
+The [current rig contract](../systems/actor-rigs.md) owns the resulting 29-rig
+catalog, shared action/observation seam and implementation limits. The expansion
+preserves responsive bounded control for player or policy producers. Distinctive
+movement can use authored sampled torque, adhesion, ropes and local tools without
+implying general rigid-body simulation, a pressure solver or learned inference.
+
 ## Which material behavior should changes preserve?
 
 **Owner clarification, 2026-10-18:** the reported problem across all four builds

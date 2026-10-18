@@ -1,0 +1,201 @@
+{
+  "definition_file": "blacksite-nine.scenario.json",
+  "definition_sha256": "225b0cdbd677d678cdfd5188df2f8fd17987e7edfbe508049fbbae261f21d489",
+  "display": "X11",
+  "godot": "4.7-stable (official)",
+  "identity": {
+    "godot": "4.7-stable (official)",
+    "material_catalogue": {
+      "authority": "native artifact; cell_world.gd identifies the UI mirror",
+      "count": 81,
+      "reserved_ids": [
+        10
+      ]
+    },
+    "native_path": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "native_sha256": "43e747137249041d56a522dbe0ec35219082ea555e1ec1cbdd40971c6a58db9c",
+    "platform": "Linux",
+    "revision_status": "not-embedded",
+    "script_set_sha256": "4339929ee4d3ae1e6826907cf6b1113165745f6424951b340f3f1388b43a6597",
+    "script_sha256": {
+      "scripts/cell_world.gd": "121b2fede9329fdc2c7c88e50c9cbbf36d50701afbcc40bdf64908f5a8752601",
+      "scripts/experiment_tower.gd": "aa65451d8bacba91c715445a41cd64ef3849d6dce4e207166abc1a9410a545e8",
+      "scripts/gameplay_recorder.gd": "65c19c1c5a6ef34334bbaa49221f91259fd76007bb40797e6d834a18d19d77d8",
+      "scripts/main.gd": "f599a8bbd9e30767467a4c62826f789ec03f0ec0585775e648555b1ebff95ec3",
+      "scripts/material_appearance_lut.gd": "93b6e43d03d13892b8f28256b76085b7ee9daa07582ea2f6a483f9b52b0d1fce",
+      "scripts/microscenario_catalogue.gd": "3e361ce69582c9c932d1645de83909225b6d27dc7a4962846c56db60f6ce4e56",
+      "scripts/microscenario_comparison.gd": "a4aab7a504db70698dafedb368384bcce61b73edaa01795b5ae368a8912a4890",
+      "scripts/microscenario_contract.gd": "74c0266a970de37af67a2455d6aa3693915046593b9822b79418146cc62a7aa0",
+      "scripts/microscenario_host.gd": "4bb2c74d5d8d8b4e2a670e59e8cf2a27e1e95efd192cf0d9cd4f5a891a853745",
+      "scripts/microscenario_identity.gd": "e4590e4e8520fb56bbc5cdb6a5256ec6375c2d9e506ec3b0da91749e5a10f04a",
+      "scripts/microscenario_panel.gd": "eeb0bc948eeff10a2f5b7a9c96afc46d01d817f98dab700e35202c14273a813c",
+      "scripts/microscenario_reference_pack.gd": "98e3c2f8d215c698ac4b13501934dec2e8c48fe8f992650be0f7b658a540480f",
+      "scripts/microscenario_telemetry.gd": "539c9832b3514b844cd650afe56683dc2933bc8ed01822d04c2c1f793a52903d",
+      "scripts/microscenario_workbench.gd": "e5b0aabc5579338e58c2d08cce7e0bd463bd01dd8a8629fe7c84e1fe61e09887",
+      "scripts/sampled_character.gd": "fb56187c5fa44cfd2124dd003fb2bb046d3ef5377e346c933d0bd377fa29fe40",
+      "scripts/simulation_snapshot.gd": "a6c711859ee1713bab1f4ee76772f47b8c64bfd9150caa58793223f8e9c5981d",
+      "scripts/simulation_worker.gd": "39fc7bf5c79c288263ea1b752869b08c9875b1a3aa8f1801827f5625e5a8cf5f",
+      "scripts/transport_profiles.gd": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+      "scripts/water_experiment_contract.gd": "80c3147e28885b099d67dcb89d4327e58d84fed7357c76d2d42db65cc8375d6a",
+      "scripts/water_experiment_profiles.gd": "172cd621c16561fce17f3a16e80a060007348201c2b901922531cd620dabaca5",
+      "scripts/water_feel_scenarios.gd": "3eed68b0cf4a986c516f7b7962b91ad71e1059998ca794c0563026322b8628f7",
+      "scripts/web_demo_controller.gd": "efa63d8ba6a0dc842cb4722d7cba99b69e08fe56ddd75f321b7a94d50eb1af97"
+    },
+    "source_revision": "unavailable",
+    "source_scope": "listed apparatus scripts; not a full checkout manifest"
+  },
+  "overview": "blacksite-nine.png",
+  "paused": true,
+  "pixels_per_cell": 3,
+  "recipe_version": 1,
+  "record_count": 3527,
+  "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+  "scene": "showcase/blacksite-nine",
+  "tick": 0,
+  "tiles": [
+    {
+      "code": "A1",
+      "column": 0,
+      "file": "a1-slag-approach.png",
+      "name": "Slag Approach",
+      "row": 0,
+      "world_origin": [
+        32,
+        32
+      ],
+      "world_size": [
+        320,
+        320
+      ]
+    },
+    {
+      "code": "A2",
+      "column": 1,
+      "file": "a2-aster-research.png",
+      "name": "Aster Research",
+      "row": 0,
+      "world_origin": [
+        352,
+        32
+      ],
+      "world_size": [
+        320,
+        320
+      ]
+    },
+    {
+      "code": "A3",
+      "column": 2,
+      "file": "a3-ashworks-breach.png",
+      "name": "Ashworks Breach",
+      "row": 0,
+      "world_origin": [
+        672,
+        32
+      ],
+      "world_size": [
+        320,
+        320
+      ]
+    },
+    {
+      "code": "B1",
+      "column": 0,
+      "file": "b1-intake-warrens.png",
+      "name": "The Intake Warrens",
+      "row": 1,
+      "world_origin": [
+        32,
+        352
+      ],
+      "world_size": [
+        320,
+        320
+      ]
+    },
+    {
+      "code": "B2",
+      "column": 1,
+      "file": "b2-containment-choir.png",
+      "name": "Containment Choir",
+      "row": 1,
+      "world_origin": [
+        352,
+        352
+      ],
+      "world_size": [
+        320,
+        320
+      ]
+    },
+    {
+      "code": "B3",
+      "column": 2,
+      "file": "b3-condensate-works.png",
+      "name": "Condensate Works",
+      "row": 1,
+      "world_origin": [
+        672,
+        352
+      ],
+      "world_size": [
+        320,
+        320
+      ]
+    },
+    {
+      "code": "C1",
+      "column": 0,
+      "file": "c1-furnace-ossuary.png",
+      "name": "Furnace Ossuary",
+      "row": 2,
+      "world_origin": [
+        32,
+        672
+      ],
+      "world_size": [
+        320,
+        320
+      ]
+    },
+    {
+      "code": "C2",
+      "column": 1,
+      "file": "c2-synapse-vault.png",
+      "name": "The Synapse Vault",
+      "row": 2,
+      "world_origin": [
+        352,
+        672
+      ],
+      "world_size": [
+        320,
+        320
+      ]
+    },
+    {
+      "code": "C3",
+      "column": 2,
+      "file": "c3-blackwater-terminus.png",
+      "name": "Blackwater Terminus",
+      "row": 2,
+      "world_origin": [
+        672,
+        672
+      ],
+      "world_size": [
+        320,
+        320
+      ]
+    }
+  ],
+  "title": "Blacksite Nine",
+  "world_origin": [
+    32,
+    32
+  ],
+  "world_size": [
+    960,
+    960
+  ]
+}

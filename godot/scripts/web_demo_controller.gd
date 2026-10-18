@@ -161,6 +161,12 @@ func microscenario_apply_definition(definition: Dictionary, mode: String = "Insp
 	tower_context = {"active":true, "micro_active":true, "water_active":false,
 		"microscenario":micro_host.summary(), "status":"MicroScenario " + str(installed.id)}
 	_activate_physics(bool(installed.body_enabled))
+	showcase_presentation.installed(installed)
+	blacksite_nine_presentation.installed(installed)
+	if CyberShowcaseTiles.contains(str(installed.id)):
+		demo_id = CyberShowcaseTiles.demo_id(str(installed.id))
+	elif str(installed.id) == CyberDemoWorlds.BlacksiteNine.SCENARIO_ID:
+		demo_id = CyberDemoWorlds.BlacksiteNine.ID
 	force_publication = true
 	_publish_world()
 	update_shader_parameters()
@@ -421,7 +427,7 @@ func _process(delta: float) -> void:
 		and not Input.is_physical_key_pressed(KEY_D)
 		and not Input.is_physical_key_pressed(KEY_SPACE)
 	):
-		input_armed = focused and not ui.open
+		input_armed = focused and not ui.open and not _blacksite_keyboard_blocked()
 	if not ui.open and focused:
 		update_camera(delta)
 	_sync_web_colliders()
@@ -451,7 +457,8 @@ func _physics_process(_delta: float) -> void:
 	if native_world.has_failed():
 		_report_tick_failure()
 		return
-	if input_armed:
+	var controls_allowed: bool = input_armed and not _blacksite_keyboard_blocked()
+	if controls_allowed:
 		_paint_pointer()
 	if paused and not tower_single_step:
 		return
@@ -483,8 +490,8 @@ func _physics_process(_delta: float) -> void:
 		tower_context["status"] = micro_host.last_error
 		return
 	total_moves += int(native_world.get_moves_last_tick())
-	var horizontal: float = get_horizontal_input() if input_armed else 0.0
-	var jetpack: bool = input_armed and Input.is_physical_key_pressed(KEY_SPACE)
+	var horizontal: float = get_horizontal_input() if controls_allowed else 0.0
+	var jetpack: bool = controls_allowed and Input.is_physical_key_pressed(KEY_SPACE)
 	if not tower_context.get("micro_active", false) or micro_host.player_enabled():
 		player.simulate(1.0 / 60.0, horizontal, jetpack, native_world)
 	character_position = player.position
@@ -565,6 +572,8 @@ func set_liquid_surface_adhesion(enabled: bool) -> bool:
 	return true
 
 func _paint_pointer() -> void:
+	if showcase_presentation != null and showcase_presentation.input_blocked(): return
+	if blacksite_nine_presentation != null and blacksite_nine_presentation.input_blocked(): return
 	if microscenario_panel != null and microscenario_panel.modal_open(): return
 	if tower_profile_panel.visible: return
 	var point: Vector2i = _world_pointer()
@@ -656,6 +665,15 @@ func _activate_physics(active: bool, saved_bodies: Array = []) -> void:
 func select_demo(id: String, close: bool = true) -> void:
 	if not ready_to_play or not CyberDemoWorlds.valid_id(id):
 		return
+	if id == CyberDemoWorlds.BlacksiteNine.ID:
+		if blacksite_nine_presentation.launch() and close:
+			ui.close_menu()
+		return
+	if CyberShowcaseTiles.contains(id):
+		if showcase_presentation.launch(id) and close:
+			ui.close_menu()
+		return
+	var leaving_showcase: bool = showcase_presentation.active() or blacksite_nine_presentation.active()
 	if id == "physics_pit" and not rapier_available:
 		ui.message("Physics Pit is unavailable in this build.")
 		return
@@ -682,6 +700,8 @@ func select_demo(id: String, close: bool = true) -> void:
 	paused = id == "experiment_tower"
 	tower_active = id == "experiment_tower"
 	if tower_active: tower_floor_select(tower_floor)
+	if leaving_showcase:
+		set_quality(quality)
 	total_moves = 0
 	_activate_physics(id == "physics_pit")
 	native_world.set_liquid_surface_adhesion_enabled(liquid_surface_adhesion_enabled)
@@ -712,6 +732,10 @@ func update_status() -> void:
 	if native_world == null:
 		return
 	$Layout/Title.text = "CYBERSAND / " + (str(tower_context.get("microscenario", {}).get("id", "MicroScenario")) if tower_context.get("micro_active", false) else CyberDemoWorlds.title(demo_id).to_upper())
+	if showcase_presentation != null and showcase_presentation.active():
+		$Layout/Title.text = "CYBERSAND / " + CyberShowcaseTiles.title(showcase_presentation.current_scenario_id()).to_upper()
+	elif blacksite_nine_presentation != null and blacksite_nine_presentation.active():
+		$Layout/Title.text = "CYBERSAND / BLACKSITE NINE"
 	var text: String = "%s / %s / %s" % [material_name(selected_material_id), "PAUSED" if paused else "60 TPS target", "CALM" if coherent_liquid_emission else "SPRAY"]
 	if native_world.has_failed():
 		text = "STOPPED / Restart world or load a saved level / " + str(native_world.get_last_tick_error())
@@ -720,6 +744,12 @@ func update_status() -> void:
 	status_label.text = text
 
 func _unhandled_key_input(event: InputEvent) -> void:
+	if blacksite_nine_presentation != null and blacksite_nine_presentation.map_popup.visible:
+		if event is InputEventKey and event.pressed and not event.echo:
+			if event.keycode == KEY_ESCAPE: blacksite_nine_presentation.map_popup.hide()
+			elif event.keycode == KEY_F8: microscenario_toggle_hud()
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F8:
 		microscenario_toggle_hud()
 		get_viewport().set_input_as_handled()
@@ -743,6 +773,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if not ready_to_play or ui.open:
 		return
 	match event.keycode:
+		KEY_F11:
+			if event.shift_pressed: blacksite_nine_presentation.launch()
+			else: showcase_presentation.launch()
 		KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6:
 			selected_material_id = (CyberExperimentTower.QUICK[tower_floor] if tower_active and not tower_context.get("micro_active",false) else [2,3,1,4,20,21])[int(event.keycode)-KEY_1]
 		KEY_Q, KEY_E:
@@ -773,7 +806,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		KEY_O:
 			set_brush_rectangle_vertical(not brush_rectangle_vertical)
 		KEY_G:
-			glow_enabled = not glow_enabled
+			set_glow_enabled(not glow_enabled)
 		KEY_F3:
 			debug_stats_visible = not debug_stats_visible
 		KEY_X:
@@ -838,7 +871,7 @@ func _import_decoded(decoded: Dictionary) -> void:
 	selected_material_id = int(metadata.material)
 	coherent_liquid_emission = bool(metadata.coherent)
 	liquid_surface_adhesion_enabled = bool(metadata.adhesion)
-	glow_enabled = bool(metadata.glow)
+	set_glow_enabled(bool(metadata.glow))
 	native_world.set_liquid_surface_adhesion_enabled(liquid_surface_adhesion_enabled)
 	set_quality(int(metadata.quality))
 	camera_origin = clamped_camera_origin(player.centre() - Vector2(current_view_size) * 0.5)

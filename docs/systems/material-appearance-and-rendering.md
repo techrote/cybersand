@@ -4,8 +4,8 @@ document-kind: contract
 canonical-for: [material-visual-projection, palette-program-appearance, render-upload-cost]
 status: Current
 scope: Native RG8 presentation, palette/program LUTs, shader flair, temporal smoothing, glow, and current GPU upload limitation
-last-reviewed: 2026-09-12
-related-documents: [themed-construction-materials.md, materials-and-rule-kernels.md, ../architecture/rendering-and-gameplay-bridges.md, ../architecture/item-authored-material-programs.md]
+last-reviewed: 2026-10-18
+related-documents: [material-visual-pattern-library.md, ../reference/material-effects-register.md, themed-construction-materials.md, materials-and-rule-kernels.md, ../architecture/rendering-and-gameplay-bridges.md, ../architecture/item-authored-material-programs.md]
 ---
 
 # Material appearance and rendering
@@ -24,6 +24,28 @@ headless checks, browser observations, and absent representative GPU profiling.
 
 ## Current visual projection
 
+The optional [Neon Reliquary district backdrops](../operations/neon-reliquary-demo.md#presentation-and-ownership)
+use the same accepted current/previous textures to fill only empty space with
+distant scenery. It masks current cells, unfinished material transitions and the
+sampled player. The top tile retains its original cyan atmosphere; lower tiles
+progress through warm residential haze, utility teal and swamp green. This changes
+none of the material palette/program, condition projection,
+emission or glow behavior described here.
+
+[Blacksite Nine](../operations/blacksite-nine-demo.md) adds two scene-specific
+passes over the same immutable textures: an Empty-space industrial backdrop,
+and multiplicative exposure with an eight-sample recess shadow for occupied
+cells. Both use absolute world coordinates, including neighbouring cells beyond
+the current camera frame. They introduce no camera-relative parallax, per-tile
+tint or time-dependent grain. This keeps the treatment continuous across all
+twelve tile boundaries. The grade preserves the sampled player and leaves
+instrument glass and LEDs comparatively bright. It does not alter material
+identity, collision, native rules, the base palette or the glow source. Both
+passes are disabled when scene variants admit rigid bodies, whose masks they do
+not own. **Depth & haze** controls these scene passes. The guide and
+[dated audit](../audits/2026-10-18-blacksite-nine.md) distinguish actual pixel
+checks from unmeasured hardware performance.
+
 [project_visual_state](../../native/include/cybersand/material_appearance.hpp)
 selects zero, `state_a`, or `state_b` for each material. No visual seed or RGB
 field enlarges the four-byte authoritative Cell.
@@ -33,7 +55,7 @@ field enlarges the four-byte authoritative Cell.
 | RG8 R | Material ID | Water, Smoke, Metal |
 | RG8 G | Material-selected condition | Water mass; Fire/Smoke lifetime; Wood/Oil/Coal burn; Metal charge; Cement cure |
 | World coordinates and ID | Stable presentation variation | Grain, courses, seams, rivets |
-| Render time | Presentation-only animation | Liquid bands, wet glints, neon pulse |
+| Presentation time | Presentation-only animation | Liquid bands, Oil waves, neon pulse |
 
 The update epoch is excluded: visual appearance must not depend on scheduler
 history. Condition projection is not a promise that future physics must fit in
@@ -64,16 +86,66 @@ The program describes tint/blend, condition range, value, alpha, emission
 response/color, and an integer flair selector in texel 3 alpha.
 
 The [material palette shader](../../godot/shaders/material_palette.gdshader)
-implements 42 non-neutral flair classes through bounded analytic branches.
+implements 45 non-neutral flair classes through bounded analytic branches.
 Their selected finish uses arithmetic, hashes, and optional presentation time;
 it adds no per-cell object, particle, light, or physics field. The common relief
 stage then reads four neighbors from the same already-uploaded world texture
 to derive structural highlights/shadows, liquid surface lips, and contact shadow.
 
+Animated branches read one `presentation_time()` helper. Its
+`presentation_time_override` uniform (also on the
+[emission shader](../../godot/shaders/material_emission.gdshader)) defaults to
+negative, which keeps engine `TIME`; capture fixtures set the same non-negative
+sample on both passes so paired images share an exact phase.
+
 Water mass determines render-only coverage. Smoke/Steam use wisps; Foam uses
 condition-dependent collapsing rims; powders, organics, and Ice have distinct
 grain/fibre/facet programs. Reactive liquids and Mercury have chemical/mirror
-bands; Metal charge drives arcs and Cloner has circuitry. The
+bands; Metal charge drives arcs and Cloner has circuitry.
+
+### Wet and liquid families
+
+**Current since 2026-10-18:** the former shared wet finish is split by family
+(`FLAIR_OIL`, `FLAIR_PASTE`, `FLAIR_SLUSH`, `FLAIR_WET_SURFACE` in the
+[LUT](../../godot/scripts/material_appearance_lut.gd)). Oil keeps its approved
+wave/streak pattern at the named `OIL_WAVE_RATE` (the same expression it
+previously derived from its ID); Paste and wet Cement use heavy matte clumps with a very
+slow settle, Cement's settle scaled by its cure-remaining condition; Slush shows
+icy granules in slowly shifting meltwater; Brine uses the Water finish plus fixed
+salt motes; Wet Asphalt/Cobblestone keep their solid substrate under a fixed,
+world-anchored film. These phases are decorative presentation, not measured flow.
+Glass, Chemical Glass, Dark Glass and Ice sheens are time-independent so still
+glazing stays still.
+
+**Current since the 2026-10-18 detail pass:** shared `value_noise`/`fbm3`,
+`heat_ramp` and `lattice_particle` helpers drive richer animated finishes
+(heat-ramped Fire and Lava, advected Smoke/Steam, Water caustics, Oil
+iridescence, burn-progress embers, striated neon) and presentation-only pixel
+particles. `apply_ambient_particles` draws embers above hot or burning cells and
+fumes above Acid/Toxic Sludge in Empty cells; a candidate particle reads at most
+three cells below it. Particles are lattice-anchored in world space and never
+become per-cell objects, lights or simulation state. They raise the measured
+world-pass GPU cost (see the review record).
+
+`material_colour` gathers the four neighbour IDs once per evaluated snapshot and
+shares them between `apply_volume_and_contact` and the structural relief.
+That stage adds liquid depth shading (three extra upward reads for liquid pixels
+only), exposed-surface froth/skin, soft gas and foam boundaries, neighbour
+contact effects (molten/water flashes, boiling, acid fizz, fire flaring on fuel),
+emitter rim light on adjacent solids and soft ambient occlusion in Empty cells.
+
+Shape-aware construction fills (`uses_structured_fill`, `region_extent`,
+`apply_structured_fill`) give pipes, hazard stripes, insulation, cables, timber,
+corrugation, stained glass, neon, brick, tile and reinforced concrete
+orientation, cross-section and edge treatment from a bounded per-direction run
+length (at most 16 extra reads, those materials only). Since the fourth
+iteration this covers Wall, Cloner, Wood, Ice, Metal, Concrete, Glass and every
+construction ID 38–80. They remain time-independent apart from cable data
+pulses, neon plasma, pipe steam leaks, the Chemical Glass tank bubbles, the
+Rubber conveyor, the LED display and Cloner trace pulses. The
+`structured_detail` uniform (default 1) disables them as a quality-tier hook. The
+[2026-10-18 review](../audits/2026-10-18-material-readability-pass.md) records the
+paired captures and limits. The
 [construction catalogue](themed-construction-materials.md) owns exact themed
 ID-to-finish mappings.
 
@@ -102,7 +174,12 @@ No second mutable world image is introduced by shader neighbor sampling.
 ## Temporal smoothing and glow
 
 Two RG8 textures alternate on accepted snapshots. The shader may evaluate
-previous and current material appearance during transitions. **Current desktop
+previous and current material appearance during transitions. Only pixels whose
+displayed material changes and where either side is temporally smoothed are
+crossfaded. **Current since 2026-10-18:** each side's neighbour relief reads its
+own snapshot (same four reads), so `snapshot_blend` 0 and 1 reproduce the
+previous and current snapshot alone for those pixels. The emission pass reads
+only the latest snapshot; halo changes are not crossfaded. **Current desktop
 default:** publication targets 60 Hz; `H` cycles the retained 30/45/60 Hz
 presentation modes. The desktop simulation remains independently fixed at 60 Hz;
 changing publication cadence does not change its simulation timestep. The compact
@@ -113,7 +190,10 @@ reduce actual progress.
 HDR 2D output supports one half-logical-resolution glow SubViewport. Its
 thirteen-sample source and thirteen-tap near/far additive composite derive
 emission from the existing presentation inputs. This is a visual halo, not an
-authoritative heat/light field. `G` disables both its overlay and updates;
+authoritative heat/light field. `G` disables both its overlay and updates on
+desktop and Web; `set_glow_enabled` in [main.gd](../../godot/scripts/main.gd)
+owns that state for input, initialization and Web level restore (before
+2026-10-18 Web `G`/restore flipped only the flag);
 other controls are in [Material Lab](../MATERIAL_LAB.md).
 
 ## Historical cost comparison and remaining evidence

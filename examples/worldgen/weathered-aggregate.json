@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "seed": 917431,
+  "chunk_size": 64,
+  "candidate": "strata",
+  "parameters": {
+    "surface_y": 60,
+    "relief": 64,
+    "feature_scale": 112,
+    "cave_threshold": 0.58,
+    "strata_period": 22,
+    "warp": 22,
+    "detail": 0.28,
+    "fluid_level": 316
+  },
+  "themes": {"weights": {"dry_cavern": 3, "wet_cavern": 1}},
+  "fields": [
+    {"id": "burial", "kind": "context", "context": "depth", "parameters": {"low": 0, "high": 110}},
+    {"id": "exposure", "kind": "invert", "inputs": ["burial"]},
+    {"id": "weather_noise", "kind": "fbm", "parameters": {"scale": 96, "octaves": 2, "salt": 24}},
+    {"id": "weather_bias", "kind": "remap", "inputs": ["weather_noise"], "parameters": {"low": 0.38, "high": 0.64}},
+    {"id": "weather_mask", "kind": "multiply", "inputs": ["exposure", "weather_bias"]},
+    {"id": "cellular_gap", "kind": "cellular_gap", "parameters": {"scale": 32, "salt": 115, "jitter": 0.9}},
+    {"id": "crack_falloff", "kind": "smoothstep", "inputs": ["cellular_gap"], "parameters": {"low": 0.02, "high": 0.08}},
+    {"id": "cracks", "kind": "invert", "inputs": ["crack_falloff"]},
+    {"id": "open_cracks", "kind": "multiply", "inputs": ["cracks", "weather_mask"]}
+  ],
+  "aggregates": [
+    {
+      "id": "weathered_stone",
+      "grain_size": 3,
+      "components": [
+        {"material": 39, "weight": 5},
+        {"material": 41, "weight": 3},
+        {"material": 42, "weight": 2},
+        {"material": 56, "weight": 1}
+      ]
+    }
+  ],
+  "modifiers": [
+    {
+      "id": "shallow_banding",
+      "priority": 0,
+      "application": "weather_mask",
+      "context": "solid",
+      "parameters": {"detail": 0.7},
+      "mappings": [{"parameter": "strata_period", "field": "weather_bias", "low": 8, "high": 24}]
+    },
+    {"id": "weathered_surface", "priority": 10, "application": "weather_mask", "context": "solid", "aggregate": "weathered_stone"},
+    {"id": "open_surface_fractures", "priority": 20, "application": "open_cracks", "context": "solid", "strength": 0.95, "material": 0}
+  ],
+  "paths": [
+    {"id": "survey_gallery", "points": [[-256, 264], [-128, 244], [32, 256], [256, 240]], "width": 8, "material": 0}
+  ]
+}

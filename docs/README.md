@@ -12,13 +12,29 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Choose a reading route
 
+Layering, quantized relief and Strata Theatre: [depth prototype contract](systems/depth-layers-and-parallax.md).
+
+For **Blacksite Nine**, start with the
+[connected-complex guide](operations/blacksite-nine-demo.md): Shift+F11 entry,
+the 3×3 camera map, twelve shared passages, player-follow exploration and the
+whole-complex reset. All nine districts occupy one continuous native world.
+
+For Neon Reliquary and the three district tiles below it, start with the
+[scene guide](operations/neon-reliquary-demo.md): opening the stack on desktop/Web,
+moving Above/Below, choosing viewpoints, editing native cells and capturing images.
+
 | Need | Start here |
 |---|---|
+| Generate and blend procedural chunk themes, paint broad guidance, impose exact overrides or add structured modules | [Procedural generation contract and workbench](systems/procedural-world-generation.md), then [GEN-001 source and validation evidence](audits/2026-10-18-gen001-procedural-generation.md) |
+| Compose Hilbert/Morton or noise fields, sidechain masks, sculpt with initial context, author aggregate materials or inspect modifier influence | [Generation fields and masked modifiers](systems/procedural-generation-fields-and-modifiers.md), then [GEN-002 source and validation evidence](audits/2026-10-18-gen002-fields-and-aggregates.md) |
+| Distinguish generated previews, fresh native chunk admission and general world streaming | [Procedural generation](systems/procedural-world-generation.md), [World storage](systems/world-storage-and-interest-region.md), and [ownership](architecture/data-ownership-and-lifetimes.md) |
 | Reconcile a completed/closed claim, broad gameplay acceptance, or remediation owner | [Development-claims remediation programme](operations/development-claims-remediation-programme.md), then the [dated REM-001 audit](audits/2026-09-20-development-claims-closure-audit.md) for intake evidence |
 | Explore the MS-001 Materials Lab / Flood / Stress pack or compare generated definitions | [Reference pack and controls](operations/microscenario-reference-pack.md), [MS-001 evidence](audits/2026-09-19-issue-28-ms001.md) |
 | Author, load or benchmark a MicroScenario | [Current shared contract and host](operations/microscenarios.md), [checkpoint evidence](audits/2026-09-19-issue-27-microscenarios.md) |
 | Record desktop gameplay/material state for tuning review | [Desktop gameplay state recording](operations/gameplay-recording.md), then the target scenario/physics owner |
 | Tune sampled-player gravity, terminal speed, mass, jetpack or step/knee/clamber traversal | [Player/environment tuning contract](systems/player-environment-profiles-and-traversal.md), then [granular policy](systems/granular-interaction-policy.md) for landing response boundaries |
+| Compare the 29 actor rigs in SetA/B/F/Y/U/V, or connect player/policy input | [Actor rigs and shared input](systems/actor-rigs.md), [rig limits](reference/configuration-reference.md#actor-rig-values); [SetA compatibility](systems/actor-control-prototypes.md) retains Runner/Skimmer/Crawler v1 |
+| Spawn Thunderbowl teams; compare fly by wire/metal, oracle, swarm, NCA and smart-link controllers | [Thunderbowl reference, schemas and runnable examples](systems/thunderbowl-control-reference.md), [arena capacities](reference/configuration-reference.md#thunderbowl-values) |
 | Begin development | [Handover](operations/cybersand-codex-development-handover.md), [actual source identity](operations/source-checkpoint-and-recovery.md), [roadmap](reference/status-and-roadmap.md) |
 | Understand the recovered CI baseline, #65 completion or the 2026-09-20 through 2026-09-22 incident | [Repository/release policy](operations/github-development-and-release.md), [final recovery audit](audits/2026-09-24-cybersand-recovery-audit.md), [Stage-3B production plan](operations/soliding-stage3b-production-plan.md) |
 | Choose current MicroScenarios / interaction work order | [Canonical programme graph](operations/microscenarios-programme.md), then the target issue and its named dependencies; issue numbers are not sequence |
@@ -26,6 +42,7 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 | Understand the engine | [Architecture overview](architecture/overview.md), then its focused ownership/threading/coupling links |
 | Answer one technical question | [Retrieval index](reference/retrieval-index.md) |
 | Change a material | [Rule kernels](systems/materials-and-rule-kernels.md), [Water](systems/water-design.md), [material lab](MATERIAL_LAB.md) |
+| Design a material's look or a procedural/generative fill | [Material visual pattern library](systems/material-visual-pattern-library.md), [effects register](reference/material-effects-register.md), [appearance contract](systems/material-appearance-and-rendering.md) |
 | Understand the persistent-reaction and body-mask wake repair | [Material cadence](systems/materials-and-rule-kernels.md#how-do-persistent-reactions-survive-sleep), [activity lifecycle](systems/activity-dirty-regions-and-waking.md), [MAT-001 evidence](audits/2026-10-18-mat001-material-reaction-progress.md) |
 | Investigate deep Water surge, hybrid Water sheets, trapped gas or decompression | [Water hybrid/pressure extension](operations/water-hybrid-pressure-extension-programme.md), [WEX-002 blocked disposition](audits/2026-09-24-wex002-water-sheet-blocked-disposition.md), [WEX-003 gas-region feasibility](research/lumped-gas-region-pressure-bookkeeping.md), [WEX-004 narrow-use disposition](audits/2026-09-24-wex004-decompression-disposition.md), then [Water Current semantics](systems/water-design.md) and [soliding programme](operations/soliding-programme.md) |
 | Investigate powder penetration, barrel sinking or soliding | [Measured baseline tooling](operations/physics-characterisation.md), [dated results](audits/2026-09-09-physics-characterisation.md), [future soliding plan](operations/physics-characterisation-plan.md) |

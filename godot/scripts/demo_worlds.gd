@@ -1,10 +1,13 @@
 class_name CyberDemoWorlds
 extends RefCounted
 
+const ShowcaseTiles = preload("res://scripts/showcase_tiles.gd")
+const BlacksiteNine = preload("res://scripts/blacksite_nine.gd")
+
 # Construction commands only: x, y, width, height, material ID. The native
 # adapter assigns the material's real initial state and runs the M11 solver.
-const IDS: Array[String] = ["material_lab", "waterworks", "foundry", "neon_works", "physics_pit", "experiment_tower"]
-const TITLES: Array[String] = ["Material Lab", "Waterworks", "Foundry", "Neon Works", "Physics Pit", "Experiment Tower"]
+const IDS: Array[String] = ["material_lab", "waterworks", "foundry", "neon_works", "physics_pit", "experiment_tower", "neon_reliquary", "middle_cyberberbia", "sewertech_alley", "industrial_underswamp", "blacksite_nine"]
+const TITLES: Array[String] = ["Material Lab", "Waterworks", "Foundry", "Neon Works", "Physics Pit", "Experiment Tower", "Neon Reliquary", "Middle Cyberberbia", "Sewertech Alley", "Industrial Underswamp", "Blacksite Nine / 3×3"]
 const DESCRIPTIONS: Array[String] = [
 	"79 materials. Paint, erase, and mix them.",
 	"Reservoirs, slope films, viscosity, and rising gas.",
@@ -12,6 +15,11 @@ const DESCRIPTIONS: Array[String] = [
 	"Industrial surfaces, glass, wet metal, and emissive finishes.",
 	"Rapier rectangles, thin terrain, and cellular coupling.",
 	"Five floors of reproducible physics and chemistry observations. Starts paused.",
+	"A luminous machine cathedral, layered city architecture, and flooded vaults. Starts paused.",
+	"Stacked homes, warm workshops, and an inhabited garden bridge. Starts paused.",
+	"A descending sluice amid dense pipes, service balconies, and mossy culverts. Starts paused.",
+	"Drowned refinery machinery, broken gantries, and overgrown industrial pools. Starts paused.",
+	"Nine connected tiles: industrial wastelands, a research blacksite, and six oppressive underground districts.",
 ]
 
 static func valid_id(id: String) -> bool:
@@ -22,6 +30,10 @@ static func title(id: String) -> String:
 	return TITLES[index] if index >= 0 else "Unknown demo"
 
 static func spawn(_id: String) -> Vector2:
+	if _id == BlacksiteNine.ID:
+		return BlacksiteNine.spawn()
+	if ShowcaseTiles.contains(_id):
+		return ShowcaseTiles.recipe(_id).spawn()
 	if _id == "experiment_tower":
 		return CyberExperimentTower.landing(0)
 	return Vector2(24, 222)
@@ -37,6 +49,10 @@ static func _tank(out: PackedInt32Array, x: int, y: int, w: int, h: int, shell: 
 		_rect(out, x + 3, y + h - 3 - depth, w - 6, depth, liquid)
 
 static func rectangles(id: String) -> PackedInt32Array:
+	if id == BlacksiteNine.ID:
+		return BlacksiteNine.rectangles()
+	if ShowcaseTiles.contains(id):
+		return ShowcaseTiles.recipe(id).rectangles()
 	if id == "experiment_tower":
 		return CyberExperimentTower.rectangles()
 	var out: PackedInt32Array = PackedInt32Array()

@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-09-19
+last-reviewed: 2026-10-18
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md]
 ---
 
@@ -125,12 +125,13 @@ Windows runtime launch.
 
 ## Linux GDExtension CI sharding
 
-**Current CI migration checkpoint:** the Linux GDExtension workflow builds the pinned
-Linux runtime once on an Avrea 4-vCPU runner by default, verifies its ABI/runtime floor and
-publishes that exact extension plus the pinned Rapier Linux runtime as a short-lived
-artifact. Four isolated Avrea 2-vCPU jobs then restore the same source/runtime
-identity and run deterministic subsets of the Godot regression suite. Each shard
-performs its own clean headless import before its assigned cases.
+**Current:** the [GDExtension workflow](../../.github/workflows/gdextension.yml)
+builds the pinned Linux runtime once on GitHub-hosted `ubuntu-24.04`, verifies its
+ABI/runtime floor and publishes that exact extension plus the pinned Rapier Linux
+runtime as a short-lived artifact. Four isolated GitHub-hosted regression jobs
+restore the same source/runtime identity and run deterministic subsets of the
+Godot suite. Each shard performs its own clean headless import. Active external
+or self-hosted runner routing is rejected by the repository policy checker.
 
 The local/default invocation remains serial and unchanged in scope:
 
@@ -147,10 +148,72 @@ exactly once in the union of shards.
 
 The initial migration PR proved exact serial/sharded coverage equivalence on the
 same source/runtime/Godot identity. That serial lane is now opt-in only via
-`GDEXT_SERIAL_EQUIVALENCE=1`; ordinary PRs use the sharded gate. Runner sizes are
-cost-first defaults and may be overridden with repository variables without editing
-the workflow. Build SCons concurrency inherits the corresponding vCPU variable
-unless a dedicated `*_SCONS_JOBS` override is set.
+`GDEXT_SERIAL_EQUIVALENCE=1`; ordinary PRs use the sharded gate. The active workflow
+uses literal GitHub-hosted runner labels and pinned build inputs; source/runtime
+identity and the required exact-head gates are independent of shard scheduling.
+Current build jobs set `SCONS_JOBS=2` directly; the
+[repository provider policy](github-development-and-release.md) owns the runner
+and provider-routing boundary.
+
+## Procedural generation candidates and workbench
+
+GEN-001/GEN-002 provide native-only comparison, field/modifier regressions and
+focused fresh-chunk admission checks:
+
+```sh
+make worldgen-test
+ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 make worldgen-sanitize
+make worldgen-demo
+./build/worldgen_demo --output build/worldgen-plain.ppm --seed 314159 --plain
+```
+
+The explicit sanitizer command disables leak detection for environments where
+LeakSanitizer cannot inspect processes under ptrace. Without that override the
+sanitizer runtime enables it; use `detect_leaks=1` in a supported execution
+environment. The [GEN-001](../audits/2026-10-18-gen001-procedural-generation.md) and
+[GEN-002](../audits/2026-10-18-gen002-fields-and-aggregates.md) evidence distinguish
+actual LeakSanitizer infrastructure failures from passing ASan/UBSan results.
+The PPM contains actual generated material pixels from Strata, Flow Network
+and District Grammar; its printed local elapsed time is not a performance gate.
+
+With a source-matched extension, launch the separate authoring scene or its
+regression script using the pinned Godot executable:
+
+```sh
+godot --path godot res://worldgen_workbench.tscn
+godot --headless --path godot --script res://tests/test_worldgen_workbench.gd
+godot --headless --path godot --script res://tests/test_worldgen_fields.gd
+```
+
+The generation workbench is separate from the ordinary sandbox and its optional
+[actor prototypes](../systems/actor-control-prototypes.md). It previews bounded
+native chunk generation, with theme/parameter strokes, guide paths, hard rectangles,
+module instances, fields/sidechains, context masks, aggregate materials and complete
+JSON profiles, without ticking the simulation. The
+[field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md)
+owns the extended controls and diagnostic channel meaning.
+Load the examples under `examples/worldgen/`; use the
+[generation contract](../systems/procedural-world-generation.md) for exact ranges,
+module registration, receipt ownership and the separate fresh-chunk installer.
+Native generator/binding changes require rebuilt runtimes before these Godot
+commands establish source-matched evidence. Merely importing an old extension
+does not register `CyberWorldGenerator`.
+
+To reproduce the three GEN-002 material/mask panels, run the checked-in renderer
+with an absolute script path. From the repository root:
+
+```sh
+GENERATION_ROOT="$PWD"
+godot --headless --path "$GENERATION_ROOT/godot" --script "$GENERATION_ROOT/tools/render_worldgen_fields.gd" -- --output "$GENERATION_ROOT/build/worldgen-fields"
+```
+
+The tool loads `hilbert-seams.json`, `weathered-aggregate.json` and
+`sidechained-arcology.json` directly from `examples/worldgen/`. For each profile it
+generates a 512×384-cell region at `[-256,0]`, writes material and grayscale mask
+PNGs, and records per-chunk content/receipt hashes plus logical work in
+`render-manifest.json`. Its 12/48/12 chunks follow each profile's declared geometry.
+This is actual native proposal output, before any material simulation; the tool
+does not assess visual GPU throughput or Windows/Web execution.
 
 ## Web compile, export and execution are different checks
 
@@ -216,6 +279,111 @@ The [MicroScenario runbook](microscenarios.md#headless-runs-from-the-same-defini
 describes the bounded native-only JSON runner. Its result is not a Windows or
 browser run merely because it exercises the synchronous controller on Linux.
 Use actual platform artifacts and retain their identities for platform acceptance.
+
+## Actor control prototype checks
+
+### Thunderbowl controls and native arena
+
+The [Thunderbowl reference](../systems/thunderbowl-control-reference.md) contains
+the standalone scene/CLI commands and fourteen match definitions. Four new
+automatically discovered Godot regressions cover direct actuation, its session
+mailbox, native arena/driver/presentation behavior and controller/schema output:
+
+```sh
+timeout 180 <godot> --headless --path godot --script res://tests/test_actor_rig_actuation.gd
+timeout 180 <godot> --headless --path godot --script res://tests/test_actor_actuator_session.gd
+timeout 180 <godot> --headless --path godot --script res://tests/test_thunderbowl_arena.gd
+timeout 180 <godot> --headless --path godot --script res://tests/test_thunderbowl_controllers.gd
+```
+
+Run the existing actor-rig and SetA suites when changing the shared session or
+motor. The controller suite retains structured positive/adversarial cases in
+`user://thunderbowl-contract-cases.json`; the separate
+[`validate_examples.py`](../../tools/thunderbowl/validate_examples.py) checks them
+and the eight schema definitions with Python `jsonschema` (development tool,
+tested with 4.26.0). Its `--capture` argument accepts the resolved Godot user-data
+path. This validates JSON shape independently from the Godot validator; actual
+run/observation identity, capacity, privilege and input lifetime remain native
+arena/session integration checks. No inference service or credentials are needed.
+
+### Original actor compatibility checks
+
+The original **SetA** tests `test_actor_prototypes.gd`, `test_actor_prototype_session.gd` and
+`test_actor_prototype_integration.gd` are discovered by the existing Godot
+regression runner. The core runner covers the shared
+action/observation contract, Runner jump/dash timing, Skimmer
+thrust/energy/braking, Crawler supported clamber/brace, runtime burial, bounded
+query work and native hard-surface collision/material conservation. The tests
+also print informational controller timings; those are not target-PC performance
+acceptance or a neural-network inference benchmark. The session runner covers
+capacity, producer/epoch/sequence/lease admission, edge coalescing, cancellation,
+independent actor instances and copied observations.
+The integration runner exercises real owner reset/refusal receipts, desktop
+model/scenario selection, input release/rearm, overlay geometry and recorder
+actor/material-generation identities.
+
+After importing the project with the pinned Godot runtime, a focused run is:
+
+```sh
+timeout 180 <godot> --headless --path godot --script res://tests/test_actor_prototypes.gd
+timeout 180 <godot> --headless --path godot --script res://tests/test_actor_prototype_session.gd
+timeout 180 <godot> --headless --path godot --script res://tests/test_actor_prototype_integration.gd
+```
+
+Run the existing PENV, PCHAR, PLAY-VAL, controller and immutable publication tests
+alongside the prototype tests when changing desktop integration or fixture
+lifecycle. The unchanged full suite remains available through
+`tools/ci/run_godot_regressions.py`; new `test_*.gd` files are discovered by all
+appropriate deterministic CI shards without a hand-maintained case list.
+
+The [actor contract](../systems/actor-control-prototypes.md) distinguishes a
+controller fixture from desktop controls, visual/feel review, a learned policy
+or Web integration. Use the [validation ledger](../reference/validation-evidence.md)
+for the actually executed source/runtime/platform scope. These commands are
+reproduction instructions and do not themselves claim a pass.
+
+## Actor rig checks
+
+ACT-002 adds `test_actor_rigs.gd`, `test_actor_rig_session.gd` and
+`test_actor_rig_integration.gd` through the
+same discovered Godot regression runner. The motor fixtures exercise all 26
+additional rigs against independent occupancy/material worlds: input bounds,
+conservative angular clearance, traversal, flight/resources, adhesion/tuck,
+rope attachment/occlusion/reel/release, local tools and protected materials.
+Native smoke cases use the source-matched retained extension separately from
+the mock-world controller timing loop.
+
+The session fixtures check the 29-entry catalog and stable set IDs, the additive
+40-value observation and ten-value action layouts, consumed edge/sequence
+readback, producer/epoch/lease rejection, cancellation and deep-copy retention.
+SetA parity compares the original motor with both legacy and extended submission
+paths; adding channels must not silently retune the original three models.
+
+The integration fixture uses the native desktop owner for extended-action
+admission, dual v1/v2 publications and tool telemetry. It also checks every set's
+selector/comparison capacity, independent pointer projection, keyboard axes and
+quick taps/rearm, rotated overlay geometry and anchor projection, recorder JSON
+with separate actor/material times, and controlled-scenario exclusion.
+
+After pinned-runtime import, run the new fixtures alongside the three SetA
+commands above:
+
+```sh
+timeout 180 <godot> --headless --path godot --script res://tests/test_actor_rigs.gd
+timeout 180 <godot> --headless --path godot --script res://tests/test_actor_rig_session.gd
+timeout 180 <godot> --headless --path godot --script res://tests/test_actor_rig_integration.gd
+```
+
+Changing the selector, human controls, worker, overlay or recorder also requires
+desktop integration and existing PENV/PCHAR/PLAY-VAL/publication/recording
+regressions. Use the full discovered runner for the intended CI matrix rather
+than treating these focused commands as the complete gate.
+
+The [rig contract](../systems/actor-rigs.md) owns control meanings and limits.
+The [validation ledger](../reference/validation-evidence.md) owns actual dated
+execution. Printed mock-world motor timings are informational local-host results,
+not native scene throughput, learned-policy latency, target-PC playfeel or Web
+acceptance. Reproduction commands alone do not claim successful execution.
 
 ## Soliding successor validation
 

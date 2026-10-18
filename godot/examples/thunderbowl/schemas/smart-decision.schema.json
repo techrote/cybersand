@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Thunderbowl v1 smart decision",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "actor_id": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 7
+    },
+    "epoch": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2147483647
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "observation_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "observed_tick": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 36000
+    },
+    "valid_for_ticks": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 120
+    },
+    "intent": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "enum": [
+            "hold",
+            "move_to",
+            "pursue_visible"
+          ]
+        },
+        "goal": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1024
+          }
+        },
+        "speed": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "engage": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "mode",
+        "goal",
+        "speed",
+        "engage"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "version",
+    "run_id",
+    "actor_id",
+    "epoch",
+    "request_id",
+    "observation_id",
+    "observed_tick",
+    "valid_for_ticks",
+    "intent"
+  ],
+  "additionalProperties": false
+}

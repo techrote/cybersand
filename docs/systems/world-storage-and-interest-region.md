@@ -3,8 +3,8 @@ title: World storage and interest region
 document-kind: contract
 canonical-for: [world-storage, camera-interest-region]
 status: Current
-scope: Sparse native storage, finite adapters, bounded interest pause/resume, planned persistence/reconfiguration and deferred streaming
-last-reviewed: 2026-09-19
+scope: Sparse native storage, finite adapters, interest pause/resume and fresh generated-chunk admission; general persistence/reconfiguration/streaming remain separate
+last-reviewed: 2026-10-18
 related-documents: [activity-dirty-regions-and-waking.md, ../architecture/chunk-tile-and-buffer-model.md, ../reference/configuration-reference.md, ../reference/level-saves-and-replay.md, ../decisions/ADR-004-interest-region-and-reconfiguration.md]
 ---
 
@@ -17,6 +17,18 @@ resident activity blocks once at tick entry, without elapsed-time catch-up. Safe
 **Planned**; broad world streaming is **Deferred** until the local foundation is mature.
 General sparse-world persistence is also **Planned**; the existing CYSD1 format
 reconstructs only a finite demo level.
+
+**Current GEN-001/GEN-002 source:** opt-in native procedural generators can prepare
+complete deterministic chunks on demand, and `World::install_generated_chunk`
+can admit one absent chunk through the exclusive owner. The workbench generates
+copied previews in its own bounded cache. These additions do not supply the
+Deferred manager for loading/evicting simulation residents or the Planned
+serializer for modified sparse worlds. See
+[procedural generation](procedural-world-generation.md) for that implemented
+candidate scope, [field/mask controls](procedural-generation-fields-and-modifiers.md)
+for the extension, and the dated
+[GEN-001](../audits/2026-10-18-gen001-procedural-generation.md)/[GEN-002](../audits/2026-10-18-gen002-fields-and-aggregates.md)
+evidence for validation limits.
 
 A “2×” workload is a validation target whose dimensions must be stated; it is
 not a maximum world size or proof that storage streaming exists. Current finite
@@ -47,6 +59,26 @@ observations are therefore meaningful. Reservation is not a streaming manager.
 The [configuration reference](../reference/configuration-reference.md) owns
 construction defaults and the [capacity guide](../operations/configuration-and-capacity-budgets.md)
 owns failure/preparation procedures.
+
+## What does fresh generated-chunk admission protect?
+
+**Current:** [`World::install_generated_chunk`](../../native/src/world.cpp)
+accepts exactly one row-major material span whose dimensions match the native
+storage chunk. It checks the whole payload, coordinate arithmetic, capacity,
+transient occupancy and current World/tick state before mutation. Every resident
+chunk is refused, including empty reservations and chunks whose edits were later
+cleared. Accepted cells use ordinary native initialization, activity and dirty
+tracking; generation is not an alternate material simulation.
+
+The caller owns recipe/receipt validation and the destination World/reset-session
+check. The material-only admission method is not proof that a stale job still
+belongs to a newly reset World. Use the
+[ownership contract](../architecture/data-ownership-and-lifetimes.md) before
+connecting it to a future streaming controller. The current generation workbench
+has no live sandbox installer and its preview cache evicts only copied previews.
+Context-aware sculpting reads immutable initial generator context; aggregate
+recipes produce existing material IDs. Neither observes resident player changes,
+changes the installer guard nor adds optional simulation field storage.
 
 ## Interest filtering and re-entry
 

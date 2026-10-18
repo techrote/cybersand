@@ -18,6 +18,15 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 
 | Question family | Canonical route |
 |---|---|
+| How do I enter Blacksite Nine, follow the route through its connected 3×3 districts, use the camera map, and preserve or reset edits across shared boundaries? | [Blacksite Nine connected-complex guide](../operations/blacksite-nine-demo.md) |
+| How do I open Neon Reliquary, descend through Middle Cyberberbia, Sewertech Alley and Industrial Underswamp, inspect viewpoints, or capture all four tiles? | [Neon Reliquary scene guide](../operations/neon-reliquary-demo.md) |
+
+| How do Strata, Flow Network and District Grammar generate interconnected chunks on demand? | [Procedural generation](../systems/procedural-world-generation.md); source/runtime scope belongs to [GEN-001 evidence](../audits/2026-10-18-gen001-procedural-generation.md) |
+| How do theme supersets/subsets, exclusions, blended brushstrokes, fine parameters and hard overrides combine? | [Procedural generation controls](../systems/procedural-world-generation.md), [configuration](configuration-reference.md) |
+| How can advanced structure modules extend generation without touching World, and can stale results overwrite player edits? | [Procedural generation](../systems/procedural-world-generation.md), [ownership](../architecture/data-ownership-and-lifetimes.md), [interfaces](interfaces-and-message-contracts.md) |
+| Do Hilbert/Morton fields form one infinite connected path, and how do signed tiles or aggregate grains cross chunk boundaries? | [Generation fields and finite curves](../systems/procedural-generation-fields-and-modifiers.md), [chunk geometry](../architecture/chunk-tile-and-buffer-model.md) |
+| How do masks, noncyclic sidechains, context predicates and hard controls combine for procedural sculpting? | [Generation fields and masked modifiers](../systems/procedural-generation-fields-and-modifiers.md) |
+| Do aggregate definitions create new physics materials, and what does a copied field/modifier diagnostic prove? | [Generation aggregates and diagnostics](../systems/procedural-generation-fields-and-modifiers.md), [GEN-002 evidence](../audits/2026-10-18-gen002-fields-and-aggregates.md) |
 | Is a closed/completed development claim actually implemented, integrated, verified and owner-accepted now? | [Development-claims remediation programme](../operations/development-claims-remediation-programme.md); use the [2026-09-20 audit](../audits/2026-09-20-development-claims-closure-audit.md) for the frozen intake findings |
 | How do Play/Inspect/Benchmark share a definition, and is a scenario capture replay? | [MicroScenario contract](../operations/microscenarios.md) |
 | Actual version, commits, local changes, recovery | [Source checkpoint](../operations/source-checkpoint-and-recovery.md) |
@@ -27,6 +36,10 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Body masks, displacement, terrain, Rapier scope | [Rigid-body/cellular coupling](../architecture/rigid-body-and-cellular-coupling.md) |
 | Current powder/player collision and Mercury penetration | [Granular policy](../systems/granular-interaction-policy.md), [version decision](../decisions/ADR-011-granular-interaction-policy.md), [issue #10 evidence](../audits/2026-09-09-issue-10-granular-policy.md); use the [remediation programme](../operations/development-claims-remediation-programme.md) for broad gameplay-acceptance status |
 | Sampled-player gravity, terminal speed, effective mass, jetpack and step/knee/clamber tuning | [Player/environment tuning](../systems/player-environment-profiles-and-traversal.md); use [granular policy](../systems/granular-interaction-policy.md) for REM-003/PCHAR sampled-player response boundaries and [Water design](../systems/water-design.md) for the separate liquid semantic owner |
+| Which Runner, Skimmer and Crawler actions remain compatible with either player or policy input? | [SetA actor controls](../systems/actor-control-prototypes.md), [SetA limits](configuration-reference.md#actor-control-prototype-values) |
+| Which rigs belong to SetB/F/Y/U/V, how do aim/effort/trim/reel work, and are the model personas factual? | [Actor rigs and shared input](../systems/actor-rigs.md), [rig limits](configuration-reference.md#actor-rig-values); SetV is explicitly fictional interface design |
+| How can Thunderbowl spawn battle/training actors with fly by wire, direct metal, oracle, lemming, emergent/local swarm, NCA or smart-link control? | [Thunderbowl control reference](../systems/thunderbowl-control-reference.md), [arena limits](configuration-reference.md#thunderbowl-values) |
+| How do stale rig actions, a quick tap or expired charged leap appear in policy observations and recordings? | [Admission and consumed edges](../systems/actor-rigs.md#identity-freshness-and-consumed-edges), [v2 observations](../systems/actor-rigs.md#what-does-the-version-2-observation-contain), [recording](../operations/gameplay-recording.md) |
 | Why can the sampled player rapidly surface through enclosing material, and how does the barrel-player experiment differ? | [Granular policy](../systems/granular-interaction-policy.md), [rigid-body/cellular coupling](../architecture/rigid-body-and-cellular-coupling.md), [PCHAR-001 evidence](../audits/2026-09-25-pchar001-player-representation-experiment.md) |
 | Historical powder measurements, barrel sinking and reversible soliding | [Baseline tooling](../operations/physics-characterisation.md), [issue #9 results](../audits/2026-09-09-physics-characterisation.md), [future soliding plan](../operations/physics-characterisation-plan.md) |
 | Pinned Rapier acquisition and verification | [Rapier runbook](../operations/rapier-2d-migration-runbook.md) |
@@ -49,6 +62,9 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | How could trapped gas, sealed rooms or vacuum be approximated without cellular gas CFD? | [WEX-003 feasibility research](../research/lumped-gas-region-pressure-bookkeeping.md), [Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md), [field roadmap](../systems/smoke-heat-pressure-roadmap.md) |
 | Heat/pressure/wind and Smoke limits | [Field roadmap](../systems/smoke-heat-pressure-roadmap.md) |
 | Appearance LUTs, glow, authoring intent | [Appearance](../systems/material-appearance-and-rendering.md), [authored programs](../architecture/item-authored-material-programs.md) |
+| How do I design a material pattern or a new procedural fill, and which primitives/recipes exist? | [Material visual pattern library](../systems/material-visual-pattern-library.md), then the [appearance contract](../systems/material-appearance-and-rendering.md) for semantics and cost |
+| Which material effects are implemented, planned, potential or rejected? | [Material effects register](material-effects-register.md) |
+| Which wet/liquid and glazing finishes changed on 2026-10-18, and what rendered evidence supports them? | [Appearance](../systems/material-appearance-and-rendering.md#wet-and-liquid-families), then the [material readability pass](../audits/2026-10-18-material-readability-pass.md) for paired captures, tests, cost and limits |
 | API versions, packed samples/results | [Interfaces](interfaces-and-message-contracts.md) |
 | Invariants and incomplete enforcement | [Invariants](invariants.md) |
 | Exact tools, separate native/Web bindings | [Build guide](../operations/local-build-and-validation.md) |
@@ -175,3 +191,5 @@ separate; the programme graph owns admission.
 - Ordinary Current sleep control and measurement gaps: [measurement contract](../operations/soliding-measurement.md).
 
 - Blocked falling/torque/coherent-child motion fixture: [macro-fracture preregistration](../operations/soliding-macro-fracture-fixture.md).
+
+Layered material worlds, Strata Theatre, quantized relief and explicit interlayer event questions route to the [depth prototype contract](../systems/depth-layers-and-parallax.md).

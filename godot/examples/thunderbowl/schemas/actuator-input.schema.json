@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Thunderbowl v1 actuator input",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "device": {
+      "enum": [
+        "keyboard_mouse",
+        "gamepad",
+        "touch",
+        "virtual"
+      ]
+    },
+    "actuators": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "number",
+        "minimum": -1,
+        "maximum": 1
+      }
+    },
+    "aim": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "number",
+        "minimum": -1,
+        "maximum": 1
+      }
+    },
+    "tag": {
+      "type": "boolean"
+    },
+    "deadman": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "version",
+    "device",
+    "actuators",
+    "aim",
+    "tag",
+    "deadman"
+  ],
+  "additionalProperties": false
+}
