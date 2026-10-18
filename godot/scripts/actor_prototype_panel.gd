@@ -169,6 +169,15 @@ func _apply() -> void:
 		npc_choice.button_pressed)
 
 
+func show_selection() -> void:
+	popup_centered(Vector2i(600, 600))
+	# Wrapped labels need one layout frame before their final minimum height.
+	# Fit again on first opening rather than retaining a tall provisional popup.
+	await get_tree().process_frame
+	if visible:
+		popup_centered(Vector2i(600, 600))
+
+
 func set_context(map_name: String) -> void:
 	status.text = "Map: %s\nApplying restores this map's starting layout; edits and motion reset. External policy waits for actions. [ / ] changes sampled-rig power." % map_name
 

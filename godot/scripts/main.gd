@@ -2074,7 +2074,7 @@ func toggle_actor_prototypes() -> void:
 	actor_prototype_panel.configure_selection(selected_model, actor_producer_selection, actor_demo_npcs)
 	actor_prototype_panel.set_context(str(microscenario_definition.get("id", "Sandbox")) if tower_context.get("micro_active", false) else "Sandbox")
 	actor_prototype_panel.effort_slider.value = _actor_effort
-	actor_prototype_panel.popup_centered(Vector2i(600, 600))
+	actor_prototype_panel.show_selection()
 
 
 func actor_prototype_definitions(model_id: StringName, producer: StringName, demo_npcs: bool, spawn: Vector2 = CHARACTER_SPAWN) -> Array:
