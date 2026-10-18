@@ -15,7 +15,7 @@ related-documents: [blacksite-nine-demo.md, ../systems/actor-rigs.md, ../systems
 **Current implementation:** the desktop project's default scene is
 [`feature_launcher.tscn`](../../godot/feature_launcher.tscn). It opens Blacksite
 Nine, the four showcase districts, the ordinary actor/material sandbox,
-Thunderbowl or the separate generation workbench. F2 closes the current session
+Thunderbowl, the separate generation workbench or Strata Theatre. F2 closes the current session
 and returns to the launcher; unsaved edits are discarded. Explicit `main.tscn`,
 `-- --blacksite-nine` and `-- --showcase` entry points remain available.
 The native generation workbench remains an isolated authoring preview, without
@@ -132,3 +132,5 @@ and image were inspected locally and are not copied into the source repository.
 No selection of a universal actor representation, acceptance of every rig,
 articulated mechanism, learned controller or broad platform result follows from
 this first experiment.
+
+The [Strata Theatre depth prototype](../systems/depth-layers-and-parallax.md) is also available from the launcher and retains F4/direct entry. It owns its four synchronous material worlds independently of gameplay. The source-image conversation produced tool-art references; those are follow-up usable assets, not an implemented wielding system.

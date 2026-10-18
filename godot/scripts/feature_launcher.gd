@@ -4,6 +4,9 @@ const Trial = preload("res://scripts/physical_actor_trial.gd")
 
 func _ready() -> void:
 	# Keep existing direct-launch arguments compatible with the desktop wrapper.
+	if "--depth-lab" in OS.get_cmdline_user_args():
+		get_tree().change_scene_to_file.call_deferred("res://depth_lab.tscn")
+		return
 	if "--blacksite-nine" in OS.get_cmdline_user_args() or "--showcase" in OS.get_cmdline_user_args():
 		get_tree().change_scene_to_file.call_deferred("res://main.tscn")
 		return
@@ -30,6 +33,7 @@ func _ready() -> void:
 	_button(column, "Materials sandbox / Experiment Tower — F9", "sandbox")
 	_button(column, "Thunderbowl — actor control arena", "thunderbowl")
 	_button(column, "World generation workbench — terrain authoring preview", "worldgen")
+	_button(column, "Strata Theatre — layering and parallax depth lab", "depth")
 	_label(column, "BLACKSITE COMPARISONS / fresh reset for each arm", 22)
 	_label(column, "Real Rapier barrel and low rectangular Ripper: A/D drive, Q/E torque, Space short upward pulse.\nRipper is an initial single-body trial; articulated tracks, tools and granular tuning remain follow-up work.", 17)
 	for arm: String in Trial.ARMS:
@@ -53,5 +57,6 @@ func launch(destination: String) -> void:
 	var scene: String = "res://main.tscn"
 	if destination == "thunderbowl": scene = "res://examples/thunderbowl/thunderbowl.tscn"
 	elif destination == "worldgen": scene = "res://worldgen_workbench.tscn"
+	elif destination == "depth": scene = "res://depth_lab.tscn"
 	get_tree().set_meta("cybersand_feature", destination)
 	get_tree().change_scene_to_file(scene)

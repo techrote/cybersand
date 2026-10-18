@@ -105,3 +105,7 @@ Water gates are recorded in the respective PR descriptions before merge. Draft
 skips and old heads are not acceptance evidence. This local record alone does
 not authorize a failed or stale gate to merge. Final integration disposition is
 recorded separately from these local execution results.
+
+## Depth addition after chat-history access recovered
+
+The depth conversation identified separate PR #169, previously omitted while history access was rate-limited. Its corrected reconstructed implementation is included in the combined branch, with separate [fresh depth validation](2026-10-18-depth-integration-validation.md). The launcher now opens seven features plus four comparison arms; the updated navigation runner passes 31 assertions. Focused physical checks still pass 56 assertions after integration. The seven-feature run supersedes the earlier 27-assertion launcher count for the enlarged menu, without rewriting that earlier evidence. Final exact-head hosted checks remain the integration gate.
