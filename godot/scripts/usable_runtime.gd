@@ -222,13 +222,16 @@ func _apply_tool(owner: int, definition: Dictionary, aim: Vector2, power: float,
 		for ray: int in range(rays):
 			var t: float = 0.0 if rays == 1 else float(ray) / float(rays - 1) * 2.0 - 1.0
 			var direction: Vector2 = aim.rotated(t * spread)
+			var previous: Vector2 = origin
 			for s: int in range(1, steps + 1):
+				var target: Vector2 = origin + direction * reach * float(s) / float(steps)
+				var segment: Dictionary = _trace_contact(previous, target, world)
+				if segment.get("hit", false) or segment.get("out_of_bounds", false) or segment.get("budget_refused", false):
+					break
+				previous = target
 				if s % stride != 0:
 					continue
-				var point: Vector2i = Vector2i((origin + direction * reach * float(s) / float(steps)).round())
-				var material: int = _read(point, world)
-				if material != EMPTY:
-					break
+				var point: Vector2i = Vector2i(target.floor())
 				if not _inside_any_actor(Vector2(point) + Vector2(0.5, 0.5)):
 					if _write(point, int(definition.material), world):
 						changed += 1
@@ -242,7 +245,11 @@ func _apply_tool(owner: int, definition: Dictionary, aim: Vector2, power: float,
 				if _write(point, int(definition.material), world):
 					changed += 1
 	elif operation == &"bead":
-		var target: Vector2i = Vector2i((origin + aim * reach).round())
+		var target_position: Vector2 = origin + aim * reach
+		var trace: Dictionary = _trace_contact(origin, target_position, world)
+		if trace.get("budget_refused", false) or trace.get("out_of_bounds", false):
+			return "blocked"
+		var target: Vector2i = trace.get("previous", Vector2i(target_position.floor())) if trace.get("hit", false) else Vector2i(target_position.floor())
 		var normal := Vector2(-aim.y, aim.x)
 		for offset: int in [-2, -1, 0, 1, 2]:
 			var point := Vector2i((Vector2(target) + normal * float(offset)).round())
@@ -250,7 +257,11 @@ func _apply_tool(owner: int, definition: Dictionary, aim: Vector2, power: float,
 				if _write(point, int(definition.material), world):
 					changed += 1
 	elif operation == &"stamp":
-		var target: Vector2i = Vector2i((origin + aim * reach).round())
+		var target_position: Vector2 = origin + aim * reach
+		var trace: Dictionary = _trace_contact(origin, target_position, world)
+		if trace.get("budget_refused", false) or trace.get("out_of_bounds", false):
+			return "blocked"
+		var target: Vector2i = trace.get("previous", Vector2i(target_position.floor())) if trace.get("hit", false) else Vector2i(target_position.floor())
 		for offset: Vector2i in [Vector2i.ZERO, Vector2i(-1,-1), Vector2i(1,-1), Vector2i(-1,1), Vector2i(1,1)]:
 			var point: Vector2i = target + offset
 			if _read(point, world) == EMPTY and not _inside_any_actor(Vector2(point) + Vector2(0.5, 0.5)):
@@ -266,10 +277,18 @@ func _apply_tool(owner: int, definition: Dictionary, aim: Vector2, power: float,
 				if _write(point, EMPTY, world):
 					changed += 1
 	elif operation == &"bore":
-		var target: Vector2i = Vector2i((origin + aim * reach).round())
+		var target_position: Vector2 = origin + aim * reach
+		var trace: Dictionary = _trace_contact(origin, target_position, world)
+		if trace.get("budget_refused", false) or trace.get("out_of_bounds", false):
+			return "blocked"
+		var target: Vector2i = trace.get("point", Vector2i(target_position.floor())) if trace.get("hit", false) else Vector2i(target_position.floor())
 		changed = _edit_disc(target, int(definition.get("radius", 3)), [], world)
 	elif operation in [&"powder_sink", &"liquid_sink"]:
-		var target: Vector2i = Vector2i((origin + aim * reach).round())
+		var target_position: Vector2 = origin + aim * reach
+		var trace: Dictionary = _trace_contact(origin, target_position, world)
+		if trace.get("budget_refused", false) or trace.get("out_of_bounds", false):
+			return "blocked"
+		var target: Vector2i = trace.get("point", Vector2i(target_position.floor())) if trace.get("hit", false) else Vector2i(target_position.floor())
 		var allowed: Array[int] = POWDERS if operation == &"powder_sink" else LIQUIDS
 		changed = _edit_disc(target, int(definition.get("radius", 4)), allowed, world)
 	if changed <= 0:
@@ -402,6 +421,7 @@ func _step_projectiles(dt: float, world) -> void:
 func _impact_projectile(index: int, p: Dictionary, definition: Dictionary, contact: Dictionary, world) -> bool:
 	var operation: StringName = StringName(str(definition.operation))
 	var point: Vector2i = contact.point
+	var reachable: Vector2 = Vector2(contact.previous) + Vector2(0.5,0.5)
 	p.position = Vector2(point) + Vector2(0.5,0.5)
 	if operation == &"penetrate":
 		if int(contact.material) != WALL and _write(point, EMPTY, world):
@@ -427,6 +447,7 @@ func _impact_projectile(index: int, p: Dictionary, definition: Dictionary, conta
 		_projectiles[index] = p
 		return true
 	elif operation == &"sticky_delayed":
+		p.position = reachable
 		p.state = "stuck"
 		p.velocity = Vector2.ZERO
 		p.fuse_remaining = float(definition.fuse)
@@ -434,12 +455,14 @@ func _impact_projectile(index: int, p: Dictionary, definition: Dictionary, conta
 		return true
 	elif operation == &"staged_igniter":
 		_payload(point, int(definition.material), int(definition.radius), world)
+		p.position = reachable
 		p.state = "primed"
 		p.velocity = Vector2.ZERO
 		p.fuse_remaining = float(definition.fuse)
 		_projectiles[index] = p
 		return true
 	elif operation == &"water_sensor":
+		p.position = reachable
 		p.state = "armed"
 		p.velocity = Vector2.ZERO
 		_projectiles[index] = p
@@ -534,7 +557,7 @@ func _object_cycle(obj: Dictionary, definition: Dictionary, world) -> String:
 		if _read(outputs[oi], world) != EMPTY:
 			return "blocked-output"
 	var writes_needed: int = required.size() + produced.size()
-	if write_count_last + writes_needed > MAX_WRITES:
+	if write_count_last + writes_needed > MAX_WRITES or read_count_last + writes_needed > MAX_READS:
 		refused_writes_last += writes_needed
 		return "capacity"
 	for ri: int in range(required.size()):
@@ -610,13 +633,13 @@ func _trace_contact(start: Vector2, finish: Vector2, world) -> Dictionary:
 		last_t = t
 	return {"hit":false,"out_of_bounds":false,"previous":previous}
 
-func _line_points(start: Vector2, finish: Vector2, max_steps: int) -> Array[Vector2i]:
+func _line_points(start: Vector2, finish: Vector2, _max_steps: int) -> Array[Vector2i]:
 	var result: Array[Vector2i] = []
 	var distance: float = start.distance_to(finish)
-	var steps: int = clampi(maxi(1, ceili(distance)), 1, maxi(1, max_steps))
+	var steps: int = clampi(maxi(1, ceili(distance * 2.0)), 1, MAX_TRACE_STEPS)
 	var last := Vector2i(1 << 29, 1 << 29)
 	for i: int in range(1, steps + 1):
-		var point := Vector2i(start.lerp(finish, float(i) / float(steps)).round())
+		var point := Vector2i(start.lerp(finish, float(i) / float(steps)).floor())
 		if point != last:
 			result.append(point)
 			last = point
