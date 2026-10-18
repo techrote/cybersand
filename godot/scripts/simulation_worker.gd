@@ -7,6 +7,7 @@ extends RefCounted
 const MicroCatalogue = preload("res://scripts/microscenario_catalogue.gd")
 const MicroHost = preload("res://scripts/microscenario_host.gd")
 const PlayerEnvironmentProfiles = preload("res://scripts/player_environment_profiles.gd")
+const ActorSession = preload("res://scripts/actor_prototype_session.gd")
 const SIMULATION_HZ: float = 60.0
 const FIXED_TIMESTEP: float = 1.0 / SIMULATION_HZ
 const TICK_INTERVAL_USEC: int = 16667
@@ -26,6 +27,7 @@ var _mutex: Mutex = Mutex.new()
 # platforms retain the script world as a functional compatibility fallback.
 var _world = _create_world()
 var _character: CyberSampledCharacter = CyberSampledCharacter.new()
+var _actor_session: CyberActorPrototypeSession = ActorSession.new()
 # Worker-exclusive representation state. Only one player owner is active at a
 # time; PCHAR representation changes are applied through fresh reset.
 var _sampled_character_enabled: bool = true
@@ -56,6 +58,13 @@ var _reset_requested: bool = false
 var _reset_spawn: Vector2 = Vector2(150.0, 145.0)
 var _reset_sampled_character_enabled: bool = true
 var _reset_runtime_enclosure_recovery_enabled: bool = true
+var _reset_actor_definitions: Array = []
+var _reset_actor_prototype_request: bool = false
+var _actor_prototype_status: String = ""
+var _actor_prototype_request_serial: int = 0
+var _reset_actor_prototype_serial: int = 0
+var _actor_prototype_result_serial: int = 0
+var _actor_prototype_reset_applied: bool = false
 var _lab_request: Dictionary = {} # One bounded pending control command; newest wins.
 var _lab_active: bool = false
 var _lab_floor: int = 0
@@ -329,6 +338,10 @@ func _configure_sampled_character(
 	enabled: bool,
 	runtime_recovery_enabled: bool
 ) -> void:
+	_actor_session.clear()
+	if _character is CyberActorPrototype:
+		_character = CyberSampledCharacter.new()
+		_character.configure_profile(_player_environment_profile)
 	_sampled_character_enabled = enabled
 	_character.configure_runtime_enclosure_recovery(runtime_recovery_enabled)
 	_character.reset(spawn_position)
@@ -377,6 +390,49 @@ func stop_worker() -> void:
 	_running = false
 	_mutex.unlock()
 	_thread.wait_to_finish()
+	_actor_session.set_suspended(true)
+
+
+func submit_actor_action(
+	actor_id: int, epoch: int, sequence: int, observed_tick: int,
+	movement: Vector2, primary: bool, secondary: bool,
+	lease_ticks: int = ActorSession.DEFAULT_LEASE_TICKS,
+	producer: StringName = &"policy"
+) -> bool:
+	# Thread-safe value admission only. World and motors stay worker-exclusive.
+	return _actor_session.submit_action(actor_id, epoch, sequence, observed_tick,
+		movement, primary, secondary, lease_ticks, producer)
+
+
+func cancel_actor_input(actor_id: int, epoch: int, producer: StringName) -> bool:
+	return _actor_session.cancel_input(actor_id, epoch, producer)
+
+
+func queue_actor_prototype_reset(definitions: Array, spawn_position: Vector2) -> int:
+	# A positive receipt acknowledges admission; the owner publishes disposition.
+	if not ActorSession.valid_definitions(definitions) or not spawn_position.is_finite():
+		return 0
+	_mutex.lock()
+	# The experimental sandbox cannot rewrite a registered apparatus identity.
+	if (
+		not _lab_request.is_empty()
+		or (_published_snapshot != null and _published_snapshot.lab_context.get("active", false))
+	):
+		_mutex.unlock()
+		return 0
+	_reset_requested = true
+	_reset_spawn = spawn_position
+	_reset_sampled_character_enabled = true
+	_reset_runtime_enclosure_recovery_enabled = definitions.is_empty()
+	_reset_actor_definitions = definitions.duplicate(true)
+	_reset_actor_prototype_request = true
+	_actor_prototype_request_serial += 1
+	_reset_actor_prototype_serial = _actor_prototype_request_serial
+	var receipt: int = _actor_prototype_request_serial
+	_pending_emissions.clear()
+	_pending_cell_emissions.clear()
+	_mutex.unlock()
+	return receipt
 
 
 func set_frame_state(
@@ -508,6 +564,10 @@ func queue_reset(
 	_reset_spawn = spawn_position
 	_reset_sampled_character_enabled = sampled_character_enabled
 	_reset_runtime_enclosure_recovery_enabled = runtime_enclosure_recovery_enabled
+	_reset_actor_definitions = []
+	_reset_actor_prototype_request = false
+	# Preserve any overwritten actor receipt for owner-side cancellation. Ordinary
+	# resets still replace the single pending reset, without orphaning its caller.
 	_pending_emissions.clear()
 	_pending_cell_emissions.clear()
 	_mutex.unlock()
@@ -576,6 +636,9 @@ func _worker_loop() -> void:
 		var local_reset_spawn: Vector2 = Vector2.ZERO
 		var local_reset_sampled_character_enabled: bool = true
 		var local_reset_runtime_recovery_enabled: bool = true
+		var local_actor_definitions: Array = []
+		var local_actor_prototype_request: bool = false
+		var local_actor_prototype_serial: int = 0
 		var local_player_environment_profile: Dictionary = {}
 		var local_lab: Dictionary = {}
 
@@ -602,6 +665,12 @@ func _worker_loop() -> void:
 		local_reset_spawn = _reset_spawn
 		local_reset_sampled_character_enabled = _reset_sampled_character_enabled
 		local_reset_runtime_recovery_enabled = _reset_runtime_enclosure_recovery_enabled
+		local_actor_definitions = _reset_actor_definitions
+		_reset_actor_definitions = []
+		local_actor_prototype_request = _reset_actor_prototype_request
+		_reset_actor_prototype_request = false
+		local_actor_prototype_serial = _reset_actor_prototype_serial
+		_reset_actor_prototype_serial = 0
 		_reset_requested = false
 		local_player_environment_profile = _pending_player_environment_profile
 		_pending_player_environment_profile = {}
@@ -613,13 +682,25 @@ func _worker_loop() -> void:
 			return
 
 		var step_start_usec: int = Time.get_ticks_usec()
+		if (
+			not local_actor_prototype_request
+			and local_actor_prototype_serial > _actor_prototype_result_serial
+		):
+			_actor_prototype_result_serial = local_actor_prototype_serial
+			_actor_prototype_reset_applied = false
+			_actor_prototype_status = "Refused actor reset: superseded by ordinary reset"
 		if _apply_lab(local_lab):
+			if local_actor_prototype_request:
+				_actor_prototype_result_serial = local_actor_prototype_serial
+				_actor_prototype_reset_applied = false
+				_actor_prototype_status = "Refused actor reset: scenario transition took priority"
 			local_reset_requested = false
 			local_paused = true
 			_last_render_snapshot_usec = -DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 		if not local_player_environment_profile.is_empty():
 			_player_environment_profile = local_player_environment_profile.duplicate(true)
-			_character.configure_profile(_player_environment_profile)
+			if not _actor_session.active():
+				_character.configure_profile(_player_environment_profile)
 			_last_render_snapshot_usec = -DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 		if _water_lab_active:
 			local_emissions.clear()
@@ -662,6 +743,16 @@ func _worker_loop() -> void:
 
 		if _micro_active: _scenario_host.apply_interest()
 
+		if (
+			local_reset_requested and local_actor_prototype_request
+			and (_lab_active or _micro_active or _water_lab_active)
+		):
+			# Main-thread publication can lag a lab command already extracted by
+			# this owner. Revalidate here before replacing a registered World.
+			local_reset_requested = false
+			_actor_prototype_result_serial = local_actor_prototype_serial
+			_actor_prototype_reset_applied = false
+			_actor_prototype_status = "Refused actor reset: a registered scenario is active"
 		if local_reset_requested:
 			var recovered: bool = true
 			if _world.has_method(&"has_failed"):
@@ -675,15 +766,23 @@ func _worker_loop() -> void:
 				_water_lab_active = false
 				_micro_capture = {}
 				_simulation_failed = false
-				_sampled_character_enabled = local_reset_sampled_character_enabled
-				_character.configure_runtime_enclosure_recovery(
-					local_reset_runtime_recovery_enabled
-				)
-				_character.reset(local_reset_spawn)
-				if _sampled_character_enabled:
-					_character.recover_invalid_spawn(_world)
+				_configure_sampled_character(local_reset_spawn,
+					local_reset_sampled_character_enabled, local_reset_runtime_recovery_enabled)
+				if not local_actor_definitions.is_empty():
+					if _actor_session.configure(local_actor_definitions, _world):
+						_character = _actor_session.player()
+						_sampled_character_enabled = true
+				if local_actor_prototype_request:
+					_actor_prototype_status = "Actor reset applied"
+					_actor_prototype_result_serial = local_actor_prototype_serial
+					_actor_prototype_reset_applied = true
 				# Publish the replacement before any attempted continuation.
 				local_paused = true
+			elif local_actor_prototype_request:
+				_actor_prototype_result_serial = local_actor_prototype_serial
+				_actor_prototype_reset_applied = false
+				_actor_prototype_status = "Refused actor reset: World replacement failed"
+		_actor_session.set_suspended(local_paused or _simulation_failed)
 		if not _simulation_failed:
 			_world.prepare_rigid_body_coupling(local_rigid_body_states, not local_paused)
 			for emission_command: Vector4i in local_emissions:
@@ -711,12 +810,15 @@ func _worker_loop() -> void:
 					_sampled_character_enabled
 					and (not _micro_active or _scenario_host.player_enabled())
 				):
-					_character.simulate(
-						FIXED_TIMESTEP,
-						local_horizontal_input,
-						local_jetpack_active,
-						_world
-					)
+					if _actor_session.active():
+						_actor_session.step(FIXED_TIMESTEP, _world)
+					else:
+						_character.simulate(
+							FIXED_TIMESTEP,
+							local_horizontal_input,
+							local_jetpack_active,
+							_world
+						)
 				if _world.has_method(&"has_failed"):
 					_simulation_failed = not bool(_world.simulation_tick())
 				else:
@@ -846,6 +948,10 @@ func _publish_snapshot(
 	var copy_time_ms: float = float(Time.get_ticks_usec() - copy_start_usec) / 1000.0
 
 	var snapshot: CyberSimulationSnapshot = CyberSimulationSnapshot.new()
+	snapshot.actor_prototypes = _actor_session.snapshot()
+	snapshot.actor_prototype_status = _actor_prototype_status
+	snapshot.actor_prototype_reset_serial = _actor_prototype_result_serial
+	snapshot.actor_prototype_reset_applied = _actor_prototype_reset_applied
 	_snapshot_serial += 1
 	snapshot.serial = _snapshot_serial
 	snapshot.published_usec = Time.get_ticks_usec()
@@ -883,6 +989,8 @@ func _publish_snapshot(
 		else "barrel-rapier"
 	)
 	snapshot.player_body_id = 0 if _sampled_character_enabled else 1
+	if not snapshot.actor_prototypes.is_empty():
+		snapshot.player_representation = "actor-prototype/" + str(snapshot.actor_prototypes.models[0])
 	snapshot.current_rigid_body_states = rigid_body_states.duplicate()
 	snapshot.character_runtime_recovery_enabled = (
 		_character.runtime_enclosure_recovery_enabled
@@ -939,6 +1047,7 @@ func _publish_snapshot(
 		"profile":_lab_profile.duplicate(true),
 		"profile_hash":_lab_profile_hash,
 		"player_environment_profile":_player_environment_profile.duplicate(true),
+		"actor_prototypes":snapshot.actor_prototypes,
 		"sampled_character_enabled":_sampled_character_enabled,
 		"sampled_runtime_recovery_enabled":(
 			_character.runtime_enclosure_recovery_enabled
@@ -970,6 +1079,7 @@ func _publish_snapshot(
 		var render_presentation: Dictionary = render_micro.get("presentation", {})
 		var render_profile: Dictionary = snapshot.lab_context.get("profile", {})
 		_pending_render_context = {
+			"actor_prototypes": snapshot.actor_prototypes.duplicate(true),
 			"micro_active": bool(snapshot.lab_context.get("micro_active", false)),
 			"profile": {"name": str(render_profile.get("name", ""))},
 			"profile_hash": str(snapshot.lab_context.get("profile_hash", "")),
@@ -1006,10 +1116,14 @@ func has_failed() -> bool:
 
 
 func _publish_failure_snapshot() -> void:
+	_actor_session.set_suspended(true)
 	# Copy the last valid publication, never partial cells/character/body results.
 	# The previous snapshot and its packed payloads remain immutable.
 	var previous: CyberSimulationSnapshot = _published_snapshot
-	if previous != null and previous.simulation_failed:
+	if (
+		previous != null and previous.simulation_failed
+		and previous.actor_prototype_reset_serial == _actor_prototype_result_serial
+	):
 		return
 	var snapshot: CyberSimulationSnapshot = CyberSimulationSnapshot.new()
 	if previous != null:
@@ -1020,6 +1134,9 @@ func _publish_failure_snapshot() -> void:
 	snapshot.serial = _snapshot_serial
 	snapshot.published_usec = Time.get_ticks_usec()
 	snapshot.simulation_failed = true
+	snapshot.actor_prototype_status = _actor_prototype_status
+	snapshot.actor_prototype_reset_serial = _actor_prototype_result_serial
+	snapshot.actor_prototype_reset_applied = _actor_prototype_reset_applied
 	snapshot.paused = true
 	snapshot.rigid_body_results = PackedFloat32Array()
 	snapshot.failed_tick_index = int(_world.get_attempted_tick_index())

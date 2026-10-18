@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-09-19
+last-reviewed: 2026-10-18
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md]
 ---
 
@@ -125,11 +125,11 @@ Windows runtime launch.
 
 ## Linux GDExtension CI sharding
 
-**Current CI migration checkpoint:** the Linux GDExtension workflow builds the pinned
-Linux runtime once on an Avrea 4-vCPU runner by default, verifies its ABI/runtime floor and
-publishes that exact extension plus the pinned Rapier Linux runtime as a short-lived
-artifact. Four isolated Avrea 2-vCPU jobs then restore the same source/runtime
-identity and run deterministic subsets of the Godot regression suite. Each shard
+**Current:** the [Linux GDExtension workflow](../../.github/workflows/gdextension.yml)
+builds the pinned Linux runtime once on GitHub-hosted `ubuntu-24.04`, verifies its
+ABI/runtime floor and publishes that exact extension plus the pinned Rapier Linux
+runtime as a short-lived artifact. Four isolated GitHub-hosted jobs restore the
+same source/runtime identity and run deterministic subsets of the Godot regression suite. Each shard
 performs its own clean headless import before its assigned cases.
 
 The local/default invocation remains serial and unchanged in scope:
@@ -147,10 +147,10 @@ exactly once in the union of shards.
 
 The initial migration PR proved exact serial/sharded coverage equivalence on the
 same source/runtime/Godot identity. That serial lane is now opt-in only via
-`GDEXT_SERIAL_EQUIVALENCE=1`; ordinary PRs use the sharded gate. Runner sizes are
-cost-first defaults and may be overridden with repository variables without editing
-the workflow. Build SCons concurrency inherits the corresponding vCPU variable
-unless a dedicated `*_SCONS_JOBS` override is set.
+`GDEXT_SERIAL_EQUIVALENCE=1`; ordinary PRs use the sharded gate. Current build jobs
+set `SCONS_JOBS=2` directly. Routine CI does not use external/self-hosted runners
+or provider-routing variables; the
+[repository provider policy](github-development-and-release.md) owns that boundary.
 
 ## Web compile, export and execution are different checks
 
@@ -216,6 +216,37 @@ The [MicroScenario runbook](microscenarios.md#headless-runs-from-the-same-defini
 describes the bounded native-only JSON runner. Its result is not a Windows or
 browser run merely because it exercises the synchronous controller on Linux.
 Use actual platform artifacts and retain their identities for platform acceptance.
+
+## Actor control prototype checks
+
+`test_actor_prototypes.gd` and `test_actor_prototype_session.gd` are discovered by
+the existing Godot regression runner. The core runner covers the shared
+action/observation contract, Runner jump/dash timing, Skimmer
+thrust/energy/braking, Crawler supported clamber/brace, runtime burial, bounded
+query work and native hard-surface collision/material conservation. The tests
+also print informational controller timings; those are not target-PC performance
+acceptance or a neural-network inference benchmark. The session runner covers
+capacity, producer/epoch/sequence/lease admission, edge coalescing, cancellation,
+independent actor instances and copied observations.
+
+After importing the project with the pinned Godot runtime, a focused run is:
+
+```sh
+timeout 180 <godot> --headless --path godot --script res://tests/test_actor_prototypes.gd
+timeout 180 <godot> --headless --path godot --script res://tests/test_actor_prototype_session.gd
+```
+
+Run the existing PENV, PCHAR, PLAY-VAL, controller and immutable publication tests
+alongside the prototype tests when changing desktop integration or fixture
+lifecycle. The unchanged full suite remains available through
+`tools/ci/run_godot_regressions.py`; new `test_*.gd` files are discovered by all
+appropriate deterministic CI shards without a hand-maintained case list.
+
+The [actor contract](../systems/actor-control-prototypes.md) distinguishes a
+controller fixture from desktop controls, visual/feel review, a learned policy
+or Web integration. Use the [validation ledger](../reference/validation-evidence.md)
+for the actually executed source/runtime/platform scope. These commands are
+reproduction instructions and do not themselves claim a pass.
 
 ## Soliding successor validation
 
