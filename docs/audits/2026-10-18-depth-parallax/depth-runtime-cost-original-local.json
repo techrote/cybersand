@@ -1,0 +1,82 @@
+{
+  "schema": "cybersand.depth-runtime-cost.v1-original-local",
+  "fixture": "STRATA THEATRE",
+  "provenance": {
+    "source_base": "ec05d7227885bda59bf72a5889b004296b9a07e5",
+    "local_commit": "4046cf07a05e935c9f8ae0f52544a22980ba0363",
+    "exact_remote_head": false,
+    "note": "Historical local prototype evidence only; rerun measure_depth_layer_runtime.gd for the reconstructed remote branch."
+  },
+  "platform": {
+    "os": "Linux",
+    "processor": "AMD EPYC 9V74 80-Core Processor",
+    "godot": "4.7-stable (official)"
+  },
+  "scope": "Host elapsed serialized owner/update and copied publication timing; excludes Image blit, texture upload, shader and window presentation.",
+  "warmup_updates": 30,
+  "measured_updates": 120,
+  "cases": [
+    {
+      "id": "default_60_20_30",
+      "rates": {
+        "play": 60,
+        "scripted": 20,
+        "effects": 30,
+        "background": 0
+      },
+      "reset_construction_ms": 111.654,
+      "initial_publication_ms": 168.777,
+      "initial_rg8_bytes": 8388608,
+      "owner_advance": {
+        "mean_ms": 1.73869166666667,
+        "p50_ms": 2.028,
+        "p95_ms": 4.187,
+        "max_ms": 4.416,
+        "total_ms": 208.643
+      },
+      "copied_snapshot_publication": {
+        "mean_ms": 0.15125,
+        "p95_ms": 0.31,
+        "max_ms": 0.339
+      },
+      "ticks": {
+        "play": 120,
+        "scripted": 40,
+        "effects": 60,
+        "background": 0
+      },
+      "weather_emission_commands": 600,
+      "weather_sink_cells_visited": 509040
+    },
+    {
+      "id": "reduced_60_10_15",
+      "rates": {
+        "play": 60,
+        "scripted": 10,
+        "effects": 15,
+        "background": 0
+      },
+      "reset_construction_ms": 87.769,
+      "initial_publication_ms": 169.863,
+      "owner_advance": {
+        "mean_ms": 0.852491666666667,
+        "p50_ms": 0.012,
+        "p95_ms": 3.966,
+        "max_ms": 4.405
+      },
+      "copied_snapshot_publication": {
+        "mean_ms": 0.077725,
+        "p95_ms": 0.269,
+        "max_ms": 0.339
+      },
+      "ticks": {
+        "play": 120,
+        "scripted": 20,
+        "effects": 30,
+        "background": 0
+      },
+      "weather_emission_commands": 300,
+      "weather_sink_cells_visited": 254520
+    }
+  ]
+}
