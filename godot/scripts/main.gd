@@ -1047,9 +1047,9 @@ func _ready() -> void:
 		showcase_presentation.launch.call_deferred()
 	elif feature == "actors":
 		toggle_actor_prototypes.call_deferred()
-	elif "--blacksite-nine" in OS.get_cmdline_user_args():
+	elif feature.is_empty() and "--blacksite-nine" in OS.get_cmdline_user_args():
 		blacksite_nine_presentation.launch.call_deferred()
-	elif "--showcase" in OS.get_cmdline_user_args():
+	elif feature.is_empty() and "--showcase" in OS.get_cmdline_user_args():
 		showcase_presentation.launch.call_deferred()
 
 
