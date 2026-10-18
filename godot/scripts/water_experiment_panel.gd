@@ -92,8 +92,12 @@ func submit_draft() -> bool:
 			status.text = str(result.error) + "; running policy unchanged"
 		return false
 	if status != null:
-		_show_result(result, "Validated; owner must Apply + Reset atomically")
+		_show_result(result, "Apply + Reset requested; waiting for owner acknowledgement")
 	apply_requested.emit(result.duplicate(true))
+	# A successful submit is an action, not a second confirmation step. Keeping
+	# this full-screen panel open made an acknowledged Water Feel reset look
+	# wedged behind the modal during H testing.
+	hide()
 	return true
 
 
@@ -174,7 +178,7 @@ func _build_controls() -> void:
 	box.add_child(effective_text)
 	var actions: HBoxContainer = HBoxContainer.new()
 	box.add_child(actions)
-	_button(actions, "Validate and request Apply + Reset", submit_draft)
+	_button(actions, "Apply + Reset", submit_draft)
 	_button(actions, "Cancel / keep running policy", hide)
 	status = Label.new()
 	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

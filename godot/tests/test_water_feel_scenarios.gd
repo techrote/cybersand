@@ -3,7 +3,7 @@ extends SceneTree
 const Contract = preload("res://scripts/water_experiment_contract.gd")
 const Scenarios = preload("res://scripts/water_feel_scenarios.gd")
 const EXPECTED_CATALOGUE_HASH: String = \
-	"c0d465a25dfd0bf26301c1f2466b327c8d9af914e6254d9defff07a9bf662014"
+	"36fca816b62774809b5c744b9f121afed32e01ce1691a98e3fbf64687536d96c"
 
 var _failures: int = 0
 
@@ -16,6 +16,7 @@ func _run() -> void:
 	_test_catalogue_completeness_and_bounds()
 	_test_deterministic_identity_and_fresh_values()
 	_test_reference_isolation()
+	_test_steps_downhill_fixture()
 	_test_invalid_identity()
 	if _failures == 0:
 		print(
@@ -27,9 +28,10 @@ func _run() -> void:
 
 func _test_catalogue_completeness_and_bounds() -> void:
 	_expect(Scenarios.ids() == Contract.SCENARIO_IDS, "scenario registry diverged from contract")
+	var catalogue_hash: String=Scenarios.catalogue_hash(0)
 	_expect(
-		Scenarios.catalogue_hash(0) == EXPECTED_CATALOGUE_HASH,
-		"seed-0 catalogue identity changed"
+		catalogue_hash == EXPECTED_CATALOGUE_HASH,
+		"seed-0 catalogue identity changed: "+catalogue_hash
 	)
 	var identities: Dictionary = {}
 	for scenario_id: String in Contract.SCENARIO_IDS:
@@ -101,6 +103,33 @@ func _test_reference_isolation() -> void:
 		not PackedInt32Array(baseline["partial_water_fills"]).is_empty(),
 		"Water/Sand lacks Water"
 	)
+
+
+func _test_steps_downhill_fixture() -> void:
+	var value: Dictionary=Scenarios.recipe("steps",0)
+	var rectangles: PackedInt32Array=PackedInt32Array(value["rectangles"])
+	# Four world-bound rectangles plus one retaining wall precede the seven treads.
+	var first_step_offset: int=5*Scenarios.RECTANGLE_STRIDE
+	var previous_top: int=-1
+	for index: int in range(7):
+		var offset: int=first_step_offset+index*Scenarios.RECTANGLE_STRIDE
+		var x: int=rectangles[offset]
+		var top: int=rectangles[offset+1]
+		var width: int=rectangles[offset+2]
+		var height: int=rectangles[offset+3]
+		_expect(x==80+index*45,"steps tread x-position changed at %d"%index)
+		_expect(width==45,"steps tread width changed at %d"%index)
+		_expect(top+height==256,"steps tread does not share the floor baseline at %d"%index)
+		if previous_top>=0:_expect(top>previous_top,"steps terrain is not downhill left-to-right at %d"%index)
+		previous_top=top
+	var fills: PackedInt32Array=PackedInt32Array(value["partial_water_fills"])
+	_expect(fills.size()>=Scenarios.WATER_FILL_STRIDE,"steps Water fill missing")
+	if fills.size()>=Scenarios.WATER_FILL_STRIDE:
+		_expect(fills[0]==82 and fills[1]==84 and fills[2]==42 and fills[3]==38,"steps Water start block changed")
+		_expect(fills[1]+fills[3]==rectangles[first_step_offset+1],"steps Water does not rest on the highest tread")
+	var actions: Array=value["actions"]
+	_expect(actions.size()==1 and str(actions[0].get("kind",""))=="sample","steps fixture should observe downhill flow without an artificial release gate")
+
 
 
 func _test_invalid_identity() -> void:
