@@ -12,6 +12,10 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Choose a reading route
 
+For Neon Reliquary and the three district tiles below it, start with the
+[scene guide](operations/neon-reliquary-demo.md): opening the stack on desktop/Web,
+moving Above/Below, choosing viewpoints, editing native cells and capturing images.
+
 | Need | Start here |
 |---|---|
 | Reconcile a completed/closed claim, broad gameplay acceptance, or remediation owner | [Development-claims remediation programme](operations/development-claims-remediation-programme.md), then the [dated REM-001 audit](audits/2026-09-20-development-claims-closure-audit.md) for intake evidence |

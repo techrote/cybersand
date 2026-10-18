@@ -27,6 +27,16 @@ preserves product goals, liked material behavior and deliberate deferrals.
 
 ## Material consistency repair — 2026-10-18
 
+The separate [Neon Reliquary descent](neon-reliquary-demo.md) adds four detailed
+districts based on accepted MAT-001 main `ec05d722`: Neon Reliquary, Middle
+Cyberberbia, Sewertech Alley and Industrial Underswamp. Desktop F11 and the Web
+menu use the existing shared scenario host; Above/Below load the neighboring
+district's original paused layout, while viewpoint changes preserve edits.
+The [four-tile evidence](../audits/2026-10-18-neon-reliquary-descent.md) records
+actual Godot views, focused validation and the owner's explicit branch-push
+authorization. Work is isolated on `scene/neon-reliquary-demo`. Keep subsequent
+material-shader work separate from these recipes and their empty-space backdrop.
+
 The owner reports that restarting resolved the all-four-builds problem and asks
 for actual material-behavior improvements. MAT-001 / #158 owns the bounded native
 repair for persistent compact-pair/Ice reactions lost to sleep and center-block

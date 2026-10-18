@@ -3,6 +3,7 @@ extends Control
 const GameplayRecorder = preload("res://scripts/gameplay_recorder.gd")
 const PlayerEnvironmentProfiles = preload("res://scripts/player_environment_profiles.gd")
 const PlayerEnvironmentPanel = preload("res://scripts/player_environment_panel.gd")
+const ShowcasePresentation = preload("res://scripts/showcase_presentation.gd")
 const DEFAULT_RECORDING_HZ: int = 15
 const DEFAULT_RECORDING_QUEUE_CAPACITY: int = 8
 
@@ -179,6 +180,7 @@ var _microscenario_saved_help: String = ""
 var pending_microscenario_apply: Dictionary = {}
 var microscenario_capture_seen: int = 0
 var microscenario_definition: Dictionary = {}
+var showcase_presentation: CyberShowcasePresentation
 
 func microscenario_launch(scenario_id: String, mode: String = "Inspect", seed: int = 0) -> bool:
 	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty(): return false
@@ -262,6 +264,8 @@ func _microscenario_installed(definition: Dictionary) -> void:
 	else:
 		_activate_water_body_scenario(bool(definition.body_enabled))
 	$Layout/Title.text = "CYBERSAND / MICROSCENARIO / " + str(definition.id)
+	if showcase_presentation != null:
+		showcase_presentation.installed(definition)
 
 func microscenario_reset() -> void:
 	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty(): return
@@ -335,6 +339,10 @@ func _refresh_microscenario_controls() -> void:
 	var recording_launcher: Node = get_node_or_null("Layout/GameplayRecordingLauncher")
 	if recording_launcher != null:
 		recording_launcher.visible = not microscenario_hud_hidden
+	if player_environment_button != null:
+		player_environment_button.visible = not microscenario_hud_hidden
+	if microscenario_hud_hidden and player_environment_panel != null:
+		player_environment_panel.hide()
 
 func _microscenario_execution_locked() -> bool:
 	return tower_context.get("micro_active", false) and tower_context.get("microscenario", {}).get("execution_policy", "owner") == "fixed"
@@ -355,6 +363,8 @@ func setup_tower_panel() -> void:
 	$Layout.add_child(microscenario_panel)
 	$Layout.move_child(microscenario_panel, 1)
 	microscenario_panel.setup(self)
+	showcase_presentation = ShowcasePresentation.new()
+	showcase_presentation.setup(self)
 	water_experiment_panel = CyberWaterExperimentPanel.new()
 	add_child(water_experiment_panel)
 	var profile_input: Variant = {}
@@ -978,6 +988,8 @@ func _ready() -> void:
 		reject_render_snapshot(latest_snapshot)
 	update_shader_parameters()
 	update_status()
+	if "--showcase" in OS.get_cmdline_user_args():
+		showcase_presentation.launch.call_deferred()
 
 
 func _exit_tree() -> void:
@@ -1038,6 +1050,10 @@ func _physics_process(_delta: float) -> void:
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F11:
+		showcase_presentation.launch()
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F8:
 		microscenario_toggle_hud()
 		get_viewport().set_input_as_handled()
@@ -1938,6 +1954,7 @@ func update_brush_preview() -> void:
 	if (
 		(microscenario_panel != null and microscenario_panel.modal_open())
 		or (tower_profile_panel != null and tower_profile_panel.visible)
+		or (showcase_presentation != null and showcase_presentation.input_blocked())
 	):
 		brush_preview.visible = false
 		return
@@ -1987,6 +2004,7 @@ func queue_brush_footprint_mutation(
 
 
 func handle_painting() -> void:
+	if showcase_presentation != null and showcase_presentation.input_blocked(): return
 	if microscenario_panel != null and microscenario_panel.modal_open(): return
 	if tower_profile_panel != null and tower_profile_panel.visible: return
 	var view_pixel: Vector2i = view_pixel_from_local_point(
@@ -2328,6 +2346,8 @@ func update_shader_parameters() -> void:
 			"rigid_body_rotation_%d" % body_index,
 			body_transform.get_rotation()
 		)
+	if showcase_presentation != null:
+		showcase_presentation.refresh()
 
 
 func recording_status_for_hud() -> Dictionary:

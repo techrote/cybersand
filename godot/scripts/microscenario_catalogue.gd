@@ -5,6 +5,7 @@ const Contract = preload("res://scripts/microscenario_contract.gd")
 const Water = preload("res://scripts/water_feel_scenarios.gd")
 const Tower = preload("res://scripts/experiment_tower.gd")
 const ReferencePack = preload("res://scripts/microscenario_reference_pack.gd")
+const Showcase = preload("res://scripts/showcase_tiles.gd")
 
 static func ids() -> Array[String]:
 	var result: Array[String] = ["experiment-tower"]
@@ -12,6 +13,7 @@ static func ids() -> Array[String]:
 	result.append("fixtures/unequal-head")
 	result.append("fixtures/sand-release")
 	result.append_array(ReferencePack.ids())
+	result.append_array(Showcase.scenario_ids())
 	return result
 
 static func tower(profile: Dictionary = {}) -> Dictionary:
@@ -51,6 +53,8 @@ static func player_configuration(scenario_id: String) -> Dictionary:
 
 
 static func definition(scenario_id: String, seed: int = 0) -> Dictionary:
+	if Showcase.contains(scenario_id):
+		return Showcase.definition(scenario_id, seed)
 	if scenario_id == "experiment-tower":
 		return tower() if seed == 0 else {} # Legacy Tower never had a seed control.
 	if scenario_id.begins_with("water/"):

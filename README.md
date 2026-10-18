@@ -4,6 +4,23 @@ CyberSand is a C++20 cellular simulation engine hosted by Godot, with a material
 lab and bounded Rapier2D/cellular coupling proof. The longer-term product intent
 is a reusable foundation for cyberpunk RPG and exploration games.
 
+## Neon Reliquary and the city below
+
+Press **F11** or click **Neon Reliquary** in the desktop sandbox to open an
+elaborate machine cathedral: a suspended cyan engine, stained glass, stacked
+service buildings, cable runs and a flooded nave. It is also available in the Web
+demo menu. From there, use **Below** to descend through **Middle Cyberberbia**,
+**Sewertech Alley**, and **Industrial Underswamp**: stacked homes and a garden
+bridge, a dense technological sewer ravine, then drowned and overgrown machinery.
+Each tile opens in its original paused layout with five camera views. Press
+**F8** for a clean view and **P** to animate the materials.
+See the [four-tile scene guide](docs/operations/neon-reliquary-demo.md) for controls,
+construction details and reproducible captures.
+
+![Neon Reliquary rendered in CyberSand](docs/images/neon-reliquary/overview.png)
+
+## Development
+
 **Current source, reviewed 2026-09-08:** this checkout preserves the acquired
 `web-demo-m11` history plus existing local work, checkpointed before the RAG
 rewrite as `126175c`. Inspect current HEAD/status; historical M11 `BUILD_ID` and

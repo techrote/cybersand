@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-09-25
+last-reviewed: 2026-10-18
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md]
 ---
 
@@ -19,6 +19,8 @@ certifies a later binary, another platform or complete replay.
 
 | Evidence ID/date | Executed check and outcome | Limits and record |
 |---|---|---|
+| E-SCENE-002, 2026-10-18 | Four-district descent: 192 assertions passed for catalogue/order, three new native recipes, 120 ticks per new tile, exact resets and desktop/synchronous-Web transitions. Original 89-assertion Neon test and eight shared regressions pass; all four backdrop palettes pass the real-pixel oracle. Twenty scene views and a 1280 × 720 navigation view rendered and inspected | Linux Godot 4.7, source-matched retained native runtime and software OpenGL. Separate finite scene loads; no streaming, offscreen-edit persistence, new Windows/browser or performance acceptance. [Four-tile evidence](../audits/2026-10-18-neon-reliquary-descent.md) |
+| E-SCENE-001, 2026-10-18 | Neon Reliquary: 89 focused assertions, 120 native ticks, desktop/synchronous-Web controller lifecycle and actual-pixel backdrop masking passed; five real Godot scene views rendered and inspected | Linux Godot 4.7, retained source-matched native runtime, software OpenGL/llvmpipe. No new Windows/browser/hardware-performance acceptance. [Scene implementation evidence](../audits/2026-10-18-neon-reliquary-demo.md) |
 | E-REC-65, 2026-09-22 | #65 / PR #106 exact-head Documentation `35732818172`, Water `35732816499`, Native `35732816547` and GDExtension/Godot `35732816733` all passed; landed main `cdf0a0874d4732c41273e10d921bcd5feaac3e3c` then passed `35735467304`, `35735467111`, `35735467244`, `35735467359` | Includes ordinary soliding, dedicated ASan+UBSan, TSan, shared-library and benchmark execution. Retained Linux runtime is source-matched and actually exercised; Windows retained runtime is cross-build-only. [Final recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md) |
 | E-REC-CI, 2026-09-22 | Main `20337053911d28f985a3211b5cd7c8f70fd4d9b5` artifact run `35627733817` recovered from two intermittent 403 download failures by rerunning only failed shards; both restored the unchanged exact artifact and aggregate gate passed. REC-007 baseline `0405cdfe35a855e8287215a71d1165e3107fd1d6` Documentation/provenance run `35751825085` passed. | Classified as an intermittent GitHub artifact-service/intermediary failure, not a persistent workflow defect. Active CI is GitHub-hosted; remote main protection remains an owner action. [Final recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md) |
 | E-PHYS, 2026-09-09 | Fresh Windows adapter: 49 native tests, 19 Godot runners; deterministic P1–P4 matrices, five-seed desktop async and 25 fixtures per real Web profile | [Issue #9 measured report](../audits/2026-09-09-physics-characterisation.md) separates symptoms, controls, long creep, hashes and gaps. Local diagnostic artifacts do not update published Linux/Windows runtime provenance. |

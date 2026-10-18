@@ -39,6 +39,14 @@ an existing recipe baseline, not physics approval or new all-platform acceptance
 
 ## Versioned definition and validation
 
+The exploratory [Neon Reliquary district stack](neon-reliquary-demo.md) adds four
+schema-2 catalogue consumers: `showcase/neon-reliquary`,
+`showcase/middle-cyberberbia`, `showcase/sewertech-alley`, and
+`showcase/industrial-underswamp`. Each ornate construction uses the same
+prevalidated native install/reset boundary. Above/Below selects a fresh authored
+tile through that owner; viewpoint changes preserve its state. There are no
+scheduled events, observation conditions, native ABI changes or additional loops.
+
 A definition is JSON data, not executable code. `CyberMicroScenarioContract.base`
 provides a complete schema-1 template; `validate` checks in-memory data and `parse` checks
 bounded JSON. Unknown or missing fields, invalid types, fractional integer fields,

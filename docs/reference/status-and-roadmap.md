@@ -54,6 +54,13 @@ Historical completion records remain immutable.
 
 ## Current implementation map
 
+**Scene content, 2026-10-18:** [Neon Reliquary](../operations/neon-reliquary-demo.md)
+adds an ornate machine-cathedral demo and the three tiles beneath it: Middle
+Cyberberbia, Sewertech Alley and Industrial Underswamp. They use the shared native
+MicroScenario host, with desktop/Web entry points, five views per tile, Above/Below
+navigation and themed distant scenery. District changes load original layouts.
+It is an aesthetic showcase; existing physics programmes retain their own gates.
+
 | Area | Implemented scope and canonical contract |
 |---|---|
 | Cellular authority and platform owners | Native World; asynchronous desktop GDScript owner, synchronous Web callbacks with optional internal pool; [threading](../architecture/simulation-tick-and-threading.md) |

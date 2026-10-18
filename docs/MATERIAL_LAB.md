@@ -4,7 +4,7 @@ document-kind: runbook
 canonical-for: [material-lab-controls, manual-material-recipes]
 status: Current
 scope: Desktop and Web manual controls, repeatable interaction observations, construction recipes, and finite-demo limits
-last-reviewed: 2026-09-18
+last-reviewed: 2026-10-18
 related-documents: [systems/materials-and-rule-kernels.md, systems/themed-construction-materials.md, systems/water-design.md, reference/configuration-reference.md, reference/level-saves-and-replay.md, operations/microscenarios-programme.md]
 ---
 
@@ -24,6 +24,14 @@ behavior; the desktop fallback is a narrower, different implementation.
 Physics Pit requires the [Rapier capability checks](operations/rapier-2d-migration-runbook.md).
 
 ## Desktop controls
+
+The detailed [Neon Reliquary demo](operations/neon-reliquary-demo.md) is available
+through **F11** or its launcher. It opens a paused machine-cathedral scene with
+five viewpoints; **F8** supplies a clean view and **P** resumes its materials.
+**Below / Above** and the district selector navigate its four-tile descent:
+Neon Reliquary, Middle Cyberberbia, Sewertech Alley and Industrial Underswamp.
+Changing district loads that tile's original paused layout; changing its camera
+view preserves edits.
 
 Source: [main.gd::_unhandled_key_input, update_camera, update_worker_frame_state](../godot/scripts/main.gd).
 
@@ -60,7 +68,8 @@ Source: [web_demo_controller.gd](../godot/scripts/web_demo_controller.gd),
 [web_demo_menu.gd](../godot/scripts/web_demo_menu.gd), and
 [demo_worlds.gd](../godot/scripts/demo_worlds.gd).
 
-Web offers Material Lab, Waterworks, Foundry, Neon Works, and Physics Pit.
+Web offers Material Lab, Waterworks, Foundry, Neon Works, Physics Pit,
+Experiment Tower, and all four [Neon Reliquary district tiles](operations/neon-reliquary-demo.md).
 Escape opens/closes the menu; during a reference benchmark it requests cancel.
 Gameplay shortcuts are ignored while the menu is open. Shared shortcuts are
 mouse paint/erase, A/D, Space, 1–6, Q/E, P, R, F, C, T, G, and F3. X requests

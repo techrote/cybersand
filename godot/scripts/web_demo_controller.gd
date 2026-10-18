@@ -161,6 +161,9 @@ func microscenario_apply_definition(definition: Dictionary, mode: String = "Insp
 	tower_context = {"active":true, "micro_active":true, "water_active":false,
 		"microscenario":micro_host.summary(), "status":"MicroScenario " + str(installed.id)}
 	_activate_physics(bool(installed.body_enabled))
+	showcase_presentation.installed(installed)
+	if CyberShowcaseTiles.contains(str(installed.id)):
+		demo_id = CyberShowcaseTiles.demo_id(str(installed.id))
 	force_publication = true
 	_publish_world()
 	update_shader_parameters()
@@ -565,6 +568,7 @@ func set_liquid_surface_adhesion(enabled: bool) -> bool:
 	return true
 
 func _paint_pointer() -> void:
+	if showcase_presentation != null and showcase_presentation.input_blocked(): return
 	if microscenario_panel != null and microscenario_panel.modal_open(): return
 	if tower_profile_panel.visible: return
 	var point: Vector2i = _world_pointer()
@@ -656,6 +660,11 @@ func _activate_physics(active: bool, saved_bodies: Array = []) -> void:
 func select_demo(id: String, close: bool = true) -> void:
 	if not ready_to_play or not CyberDemoWorlds.valid_id(id):
 		return
+	if CyberShowcaseTiles.contains(id):
+		if showcase_presentation.launch(id) and close:
+			ui.close_menu()
+		return
+	var leaving_showcase: bool = showcase_presentation.active()
 	if id == "physics_pit" and not rapier_available:
 		ui.message("Physics Pit is unavailable in this build.")
 		return
@@ -682,6 +691,8 @@ func select_demo(id: String, close: bool = true) -> void:
 	paused = id == "experiment_tower"
 	tower_active = id == "experiment_tower"
 	if tower_active: tower_floor_select(tower_floor)
+	if leaving_showcase:
+		set_quality(quality)
 	total_moves = 0
 	_activate_physics(id == "physics_pit")
 	native_world.set_liquid_surface_adhesion_enabled(liquid_surface_adhesion_enabled)
@@ -712,6 +723,8 @@ func update_status() -> void:
 	if native_world == null:
 		return
 	$Layout/Title.text = "CYBERSAND / " + (str(tower_context.get("microscenario", {}).get("id", "MicroScenario")) if tower_context.get("micro_active", false) else CyberDemoWorlds.title(demo_id).to_upper())
+	if showcase_presentation != null and showcase_presentation.active():
+		$Layout/Title.text = "CYBERSAND / " + CyberShowcaseTiles.title(showcase_presentation.current_scenario_id()).to_upper()
 	var text: String = "%s / %s / %s" % [material_name(selected_material_id), "PAUSED" if paused else "60 TPS target", "CALM" if coherent_liquid_emission else "SPRAY"]
 	if native_world.has_failed():
 		text = "STOPPED / Restart world or load a saved level / " + str(native_world.get_last_tick_error())
@@ -743,6 +756,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if not ready_to_play or ui.open:
 		return
 	match event.keycode:
+		KEY_F11:
+			showcase_presentation.launch()
 		KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6:
 			selected_material_id = (CyberExperimentTower.QUICK[tower_floor] if tower_active and not tower_context.get("micro_active",false) else [2,3,1,4,20,21])[int(event.keycode)-KEY_1]
 		KEY_Q, KEY_E:

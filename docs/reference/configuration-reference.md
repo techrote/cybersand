@@ -23,6 +23,15 @@ actually persists.
 
 ## Native WorldConfig defaults
 
+Scene-specific exception: each of the four [Neon Reliquary district tiles](../operations/neon-reliquary-demo.md)
+opens a 960 × 540 overview at `(32,16)`, with four 480 × 270 detail views and fixed
+`[32,16,960,540]` simulation interest. The stack order is Neon Reliquary, Middle
+Cyberberbia, Sewertech Alley, Industrial Underswamp. One finite 1024 × 1024 world
+is installed at a time; district selection loads the original paused layout.
+Each has no Rapier bodies or scheduled events and retains Baseline transport and
+Water8/coherence12. Per-tile capacities and ordinary sandbox defaults are
+unchanged. The scene guide owns viewpoints and controls.
+
 Source: [world.hpp::WorldConfig](../../native/include/cybersand/world.hpp).
 All members are construction-time; `cybersand_config_v2` mirrors the configuration.
 

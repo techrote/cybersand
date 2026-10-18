@@ -24,6 +24,14 @@ headless checks, browser observations, and absent representative GPU profiling.
 
 ## Current visual projection
 
+The optional [Neon Reliquary district backdrops](../operations/neon-reliquary-demo.md#presentation-and-ownership)
+use the same accepted current/previous textures to fill only empty space with
+distant scenery. It masks current cells, unfinished material transitions and the
+sampled player. The top tile retains its original cyan atmosphere; lower tiles
+progress through warm residential haze, utility teal and swamp green. This changes
+none of the material palette/program, condition projection,
+emission or glow behavior described here.
+
 [project_visual_state](../../native/include/cybersand/material_appearance.hpp)
 selects zero, `state_a`, or `state_b` for each material. No visual seed or RGB
 field enlarges the four-byte authoritative Cell.
