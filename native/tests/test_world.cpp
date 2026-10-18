@@ -618,6 +618,297 @@ void test_fire_combustion_and_extinguishing() {
     require(wood_consumed, "fire failed to ignite and consume wood");
 }
 
+void enclose_material_pair(World& world, std::int64_t x, std::int64_t y,
+                           Material first, Material second) {
+    for (auto wall_y = y - 1; wall_y <= y + 1; ++wall_y) {
+        for (auto wall_x = x - 1; wall_x <= x + 2; ++wall_x) {
+            world.set(wall_x, wall_y, Material::Wall);
+        }
+    }
+    world.set(x, y, first);
+    world.set(x + 1, y, second);
+}
+
+void require_same_pair(const World& actual, const World& expected,
+                       std::int64_t x, std::int64_t y, std::string_view message) {
+    for (const auto cell_x : {x, x + 1}) {
+        require(actual.stored_material(cell_x, y) == expected.stored_material(cell_x, y) &&
+                    actual.stored_state_a(cell_x, y) == expected.stored_state_a(cell_x, y) &&
+                    actual.stored_state_b(cell_x, y) == expected.stored_state_b(cell_x, y),
+                message);
+    }
+}
+
+void test_persistent_material_contacts_survive_sleep() {
+    struct Contact {
+        Material first, second, first_product, second_product;
+        const char* name;
+    };
+    constexpr Contact contacts[] = {
+        {Material::Lava, Material::Water, Material::Stone, Material::Steam, "Lava/Water"},
+        {Material::Water, Material::Salt, Material::Brine, Material::Brine, "Water/Salt"},
+        {Material::Ice, Material::Water, Material::Ice, Material::Ice, "Ice/Water"},
+    };
+    for (const auto contact : contacts) {
+        for (const auto quiet_ticks : {1U, 3U}) {
+            WorldConfig config;
+            config.sleep_after_quiet_ticks = quiet_ticks;
+            WorldConfig awake_config = config;
+            awake_config.sleep_after_quiet_ticks = 1'024U;
+            World quiet(config), awake(awake_config), busy(config);
+            for (auto* world : {&quiet, &awake, &busy}) {
+                enclose_material_pair(*world, 8, 8, contact.first, contact.second);
+            }
+            // Enclosed Smoke cannot contact the pair, but its independent
+            // lifetime keeps the same activity block running. It must not be
+            // what makes a persistent material contact receive its next sample.
+            enclose_material_pair(busy, 0, 8, Material::Smoke, Material::Wall);
+            bool reacted = false;
+            for (int tick = 1; tick <= 128; ++tick) {
+                (void)quiet.tick();
+                (void)awake.tick();
+                (void)busy.tick();
+                const auto context = std::string(contact.name) + " at tick " +
+                    std::to_string(tick) + ", quiet limit " + std::to_string(quiet_ticks);
+                require_same_pair(quiet, awake, 8, 8,
+                                  "sleep starved persistent " + context);
+                require_same_pair(busy, awake, 8, 8,
+                                  "unrelated activity changed persistent " + context);
+                reacted = awake.stored_material(8, 8) == contact.first_product &&
+                          awake.stored_material(9, 8) == contact.second_product;
+                if (reacted) break;
+            }
+            require(reacted, std::string(contact.name) + " awake control did not react");
+        }
+    }
+}
+
+void test_ice_contact_boundaries_and_worker_parity() {
+    // These are distinct coordinate/random phases, not translated-state hash
+    // oracles. Each isolated sleeper must match its own awake reference.
+    for (const std::int64_t x : {31, 127, -1}) {
+        WorldConfig config;
+        WorldConfig awake_config = config;
+        awake_config.sleep_after_quiet_ticks = 1'024U;
+        World quiet(config), awake(awake_config);
+        enclose_material_pair(quiet, x, 8, Material::Ice, Material::Water);
+        enclose_material_pair(awake, x, 8, Material::Ice, Material::Water);
+        for (int tick = 0; tick < 128; ++tick) {
+            (void)quiet.tick();
+            (void)awake.tick();
+            require_same_pair(quiet, awake, x, 8,
+                              "Ice contact changed at an activity/core/storage boundary");
+        }
+        require(quiet.stored_material(x + 1, 8) == Material::Ice,
+                "persistent boundary Water did not freeze");
+    }
+
+    WorldConfig single_config;
+    single_config.parallel_job_threshold = 1U;
+    WorldConfig multi_config = single_config;
+    multi_config.worker_threads = 4U;
+    World single(single_config), multi(multi_config);
+    for (auto* world : {&single, &multi}) {
+        for (const std::int64_t x : {31, 127, -1}) {
+            enclose_material_pair(*world, x, 8, Material::Ice, Material::Water);
+        }
+        // Four separated even-x cores in the same scheduler phase force real
+        // multi-job execution; a two-cell seam fixture alone would not do so.
+        for (const std::int64_t x : {8, 136, 264, 392}) {
+            enclose_material_pair(*world, x, 136, Material::Lava, Material::Water);
+        }
+    }
+    bool parallel_phase_seen = false;
+    for (int tick = 0; tick < 128; ++tick) {
+        (void)single.tick();
+        const auto stats = multi.tick();
+        parallel_phase_seen = parallel_phase_seen ||
+            *std::max_element(stats.phase_jobs.begin(), stats.phase_jobs.end()) >= 4U;
+        require(single.state_hash() == multi.state_hash(),
+                "material deadlines or products diverged across worker counts");
+    }
+    require(parallel_phase_seen, "material parity fixture did not exercise parallel jobs");
+    for (const std::int64_t x : {31, 127, -1}) {
+        require(single.stored_material(x + 1, 8) == Material::Ice,
+                "worker-parity fixture never exercised freezing");
+    }
+}
+
+void test_inert_material_contacts_still_sleep() {
+    World world;
+    // Reactive-capable materials with no eligible partner must remain idle.
+    enclose_material_pair(world, 8, 8, Material::Ice, Material::Wall);
+    enclose_material_pair(world, 136, 8, Material::Lava, Material::Wall);
+    enclose_material_pair(world, 264, 8, Material::Water, Material::Wall);
+    (void)world.take_dirty_chunks();
+    const auto before = world.content_hash();
+    cybersand::TickStats stats;
+    for (int tick = 0; tick < 64; ++tick) {
+        stats = world.tick();
+        require(world.content_hash() == before, "idle material contact changed content");
+        require(world.take_dirty_chunks().empty(), "waiting material created a false render write");
+    }
+    require(stats.scheduled_cores == 0U && world.active_chunk_count() == 0U,
+            "materials without eligible contacts were kept awake");
+}
+
+void test_material_deadlines_pause_and_unmask() {
+    World paused;
+    enclose_material_pair(paused, 8, 8, Material::Ice, Material::Water);
+    for (int tick = 0; tick < 3; ++tick) (void)paused.tick();
+    const auto before_pause = paused.content_hash();
+    paused.set_simulation_region(cybersand::RectI64{512, 512, 64, 64});
+    for (int tick = 0; tick < 64; ++tick) (void)paused.tick();
+    require(paused.content_hash() == before_pause,
+            "expired material deadline executed outside the simulation region");
+    paused.set_simulation_region(cybersand::RectI64{0, 0, 64, 64});
+    for (int tick = 0; tick < 256 && paused.stored_material(9, 8) != Material::Ice; ++tick) {
+        (void)paused.tick();
+    }
+    require(paused.stored_material(9, 8) == Material::Ice,
+            "material deadline did not resume after region re-entry");
+
+    for (const std::int64_t masked_x : {8, 9}) {
+        World masked;
+        enclose_material_pair(masked, 8, 8, Material::Ice, Material::Water);
+        masked.configure_transient_obstacles({0, 0, 32, 32});
+        require(masked.set_transient_obstacle(masked_x, 8, 1U), "material contact mask setup failed");
+        (void)masked.take_dirty_chunks();
+        for (int tick = 0; tick < 64; ++tick) (void)masked.tick();
+        require(masked.stored_material(8, 8) == Material::Ice &&
+                    masked.stored_material(9, 8) == Material::Water &&
+                    masked.stored_state_a(9, 8) == 255U,
+                "material reaction crossed a masked source or partner");
+        require(masked.take_dirty_chunks().empty(), "masked material produced a render write");
+        masked.clear_transient_obstacles();
+        for (int tick = 0; tick < 256 && masked.stored_material(9, 8) != Material::Ice; ++tick) {
+            (void)masked.tick();
+        }
+        require(masked.stored_material(9, 8) == Material::Ice,
+                "persistent material contact did not resume after unmasking x=" +
+                    std::to_string(masked_x) + ", tick=" + std::to_string(masked.tick_index()) +
+                    ", active chunks=" + std::to_string(masked.active_chunk_count()));
+    }
+
+    World released;
+    enclose_material_pair(released, 8, 8, Material::Sand, Material::Wall);
+    released.set(8, 9, Material::Empty);
+    released.set(8, 10, Material::Wall);
+    released.configure_transient_obstacles({0, 0, 32, 32});
+    require(released.set_transient_obstacle(8, 9, 1U), "granular release mask setup failed");
+    for (int tick = 0; tick < 8; ++tick) (void)released.tick();
+    require(released.stored_material(8, 8) == Material::Sand &&
+                released.active_chunk_count() == 0U,
+            "body-supported grain did not settle");
+    (void)released.take_dirty_chunks();
+    released.clear_transient_obstacles();
+    require(released.take_dirty_chunks().empty(), "unmasking created a false render write");
+    (void)released.tick();
+    require(released.stored_material(8, 8) == Material::Empty &&
+                released.stored_material(8, 9) == Material::Sand,
+            "interior body-mask removal did not release a sleeping grain");
+}
+
+void test_ice_neighbor_success_keeps_pending_contact() {
+    WorldConfig config;
+    config.sleep_after_quiet_ticks = 1U;
+    WorldConfig awake_config = config;
+    awake_config.sleep_after_quiet_ticks = 1'024U;
+    World quiet(config), awake(awake_config);
+    for (auto* world : {&quiet, &awake}) {
+        for (std::int64_t y = 15; y <= 17; ++y) {
+            for (std::int64_t x = 61; x <= 65; ++x) world->set(x, y, Material::Wall);
+        }
+        world->set(62, 16, Material::Water);
+        world->set(63, 16, Material::Ice);
+        world->set(64, 16, Material::Water);
+    }
+    // The first freeze writes only the right neighbor, in another core. The
+    // original Ice still owns the remaining left contact: the newly made Ice
+    // cannot reach it. A successful neighbor write must not lose that deadline.
+    bool neighbor_only_success_seen = false;
+    for (int tick = 0; tick < 128; ++tick) {
+        (void)quiet.tick();
+        (void)awake.tick();
+        neighbor_only_success_seen = neighbor_only_success_seen ||
+            (awake.stored_material(62, 16) == Material::Water &&
+             awake.stored_material(64, 16) == Material::Ice);
+        require_same_pair(quiet, awake, 62, 16,
+                          "neighbor-only success lost the remaining Ice contact");
+        require_same_pair(quiet, awake, 63, 16,
+                          "cross-core Ice neighbor write changed under sleep");
+    }
+    require(neighbor_only_success_seen, "Ice fixture missed its neighbor-only success case");
+    require(quiet.stored_material(62, 16) == Material::Ice &&
+                quiet.stored_material(64, 16) == Material::Ice,
+            "remaining Ice contact never completed");
+}
+
+void test_material_deadlines_follow_contact_removal_and_reset() {
+    World world;
+    enclose_material_pair(world, 8, 8, Material::Ice, Material::Water);
+    (void)world.tick();
+    world.set(9, 8, Material::Wall);
+    (void)world.take_dirty_chunks();
+    for (int tick = 0; tick < 64; ++tick) (void)world.tick();
+    require(world.stored_material(8, 8) == Material::Ice &&
+                world.stored_material(9, 8) == Material::Wall &&
+                world.active_chunk_count() == 0U,
+            "removed partner left a live material reaction or perpetual wake");
+    require(world.take_dirty_chunks().empty(), "removed contact produced a false render write");
+    world.set(9, 8, Material::Water);
+    for (int tick = 0; tick < 256 && world.stored_material(9, 8) != Material::Ice; ++tick) {
+        (void)world.tick();
+    }
+    require(world.stored_material(9, 8) == Material::Ice,
+            "reintroducing a partner did not restore the pending reaction");
+
+    World reset;
+    enclose_material_pair(reset, 8, 8, Material::Ice, Material::Water);
+    (void)reset.tick();
+    reset.clear();
+    enclose_material_pair(reset, 8, 8, Material::Water, Material::Wall);
+    (void)reset.take_dirty_chunks();
+    for (int tick = 0; tick < 64; ++tick) (void)reset.tick();
+    require(reset.stored_material(8, 8) == Material::Water &&
+                reset.stored_state_a(8, 8) == 255U && reset.active_chunk_count() == 0U,
+            "World reset retained a stale material deadline");
+    require(reset.take_dirty_chunks().empty(), "stale pre-reset reaction dirtied the new world");
+}
+
+void test_material_deadlines_with_discovery_observer() {
+    for (const bool mask_source : {false, true}) {
+        WorldConfig config;
+        WorldConfig observed_config = config;
+        observed_config.settled_discovery_enabled = true;
+        World plain(config), observed(observed_config);
+        for (auto* world : {&plain, &observed}) {
+            enclose_material_pair(*world, 8, 8, Material::Ice, Material::Water);
+            if (mask_source) {
+                world->configure_transient_obstacles({0, 0, 32, 32});
+                require(world->set_transient_obstacle(8, 8, 1U), "observed contact mask setup failed");
+            }
+        }
+        require(observed.settled_discovery_tile_count() != 0U,
+                "material deadline observer fixture did not register discovery tiles");
+        for (int tick = 0; tick < 192; ++tick) {
+            if (mask_source && tick == 64) {
+                plain.clear_transient_obstacles();
+                observed.clear_transient_obstacles();
+            }
+            (void)plain.tick();
+            (void)observed.tick();
+            (void)observed.advance_settled_discovery(64U);
+            require(plain.content_hash() == observed.content_hash(),
+                    "discovery observer changed material deadline progression");
+            require(observed.settled_discovery_halted() == cybersand::soliding::DiscoveryHalt::None,
+                    "material deadline or mask change halted the discovery observer");
+        }
+        require(observed.stored_material(9, 8) == Material::Ice,
+                "observed material contact never froze");
+    }
+}
+
 void test_lava_ice_dust_and_oil_reactions() {
     World lava_water({16, 3, 200});
     for (std::int64_t y = -1; y <= 1; ++y) {
@@ -2680,6 +2971,13 @@ int main() {
         void (*function)();
     };
     const Test tests[] = {
+        {"persistent material contacts survive sleep", test_persistent_material_contacts_survive_sleep},
+        {"Ice contact boundaries and worker parity", test_ice_contact_boundaries_and_worker_parity},
+        {"inert material contacts still sleep", test_inert_material_contacts_still_sleep},
+        {"material deadlines pause and unmask", test_material_deadlines_pause_and_unmask},
+        {"Ice neighbor success keeps pending contact", test_ice_neighbor_success_keeps_pending_contact},
+        {"material deadlines follow contact removal and reset", test_material_deadlines_follow_contact_removal_and_reset},
+        {"material deadlines with discovery observer", test_material_deadlines_with_discovery_observer},
         {"INT-000 sparse schema shadow equivalence", test_int000_sparse_schema_shadow_equivalence},
         {"flow resting packing, films, barriers and signed seams", test_flow_rest_films_and_barriers},
         {"flow conserved state, temperature, workers and exclusion", test_flow_conservation_state_and_workers},

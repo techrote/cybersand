@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [cell-activity-sleep-wake, simulation-render-dirty-state]
 status: Current
 scope: Native activity and dirty-state lifecycle; separate fallback behavior and future wake requirements
-last-reviewed: 2026-09-10
+last-reviewed: 2026-10-18
 related-documents: [world-storage-and-interest-region.md, materials-and-rule-kernels.md, ../architecture/chunk-tile-and-buffer-model.md, ../architecture/rendering-and-gameplay-bridges.md]
 ---
 
@@ -42,9 +42,10 @@ block is independent of the 64×64 scheduling core and 128×128 storage chunk;
    all active blocks. Chunk activity includes retained offscreen work.
 
 This is in-place cell mutation with merged observations, not a buffered transfer
-commit. Delayed secondary rules use `keep_cell_active` to set activity/change
-metadata without changing cell bytes or render dirtiness. Their cadence belongs
-to [material kernels](materials-and-rule-kernels.md).
+commit. Some delayed secondary rules use `keep_cell_active` to set activity/change
+metadata without changing cell bytes or render dirtiness. Persistent compact-pair
+and Ice contacts instead retain their next opportunity through the existing block
+deadline. Their cadence belongs to [material kernels](materials-and-rule-kernels.md).
 
 ## What wakes a region?
 
@@ -55,7 +56,13 @@ and destination. The phased `merge_job_effects` path additionally wakes through
 the corners of touched block bounds, so its wake can be broader than one direct
 cell write.
 
-Explosion edits and transient-obstacle changes use explicit wake paths.
+Explosion edits and transient-obstacle changes use explicit wake paths. A mask
+insertion or removal explicitly wakes its own resident block without a render
+write, then applies the ordinary boundary-neighbor wake. The neighbor helper
+alone excludes the center block because ordinary material writes already wake it.
+Mask changes must not depend on a neighboring material write to resume contact.
+The current body-coupling path rebuilds masks, so it can wake touched interior body
+blocks even for stationary bodies; this is confined to that existing footprint.
 Settled Water can become inactive; render dithering does not wake it.
 
 **Current:** a denied slow Mercury pair records the earliest due tick in its
@@ -65,6 +72,23 @@ cell scan. Excluded deadlines remain pending; re-entry evaluates only the curren
 modulo lane, with no missed-move catch-up. Clear/replacement discards these
 deadlines and failed-world quarantine prevents their processing. The
 [versioned pair policy](granular-interaction-policy.md) owns rate and endpoint rules.
+
+**Current, MAT-001 / #158:** `World::schedule_pending_reaction_wake` uses that same
+earliest block deadline for an eligible compact-pair contact or an Ice thermal
+contact. It runs after an admitted kernel when the source itself was not written
+in the current epoch, including successful neighbor-only work. Eligibility uses
+the existing pair resolver and mask-aware neighbors, independent of the current
+probability roll. The deadline is strictly in the future, so a missed sample can
+receive another scheduled opportunity. Waiting does not alter cell content,
+movement counts or render dirtiness; an inert contact acquires no new deadline.
+
+The deadline is shared by all work in a block. Removing one partner does not
+cancel a deadline that may belong to another source or a transport lane; one
+already scheduled wake can retire normally after re-evaluation. Interest exclusion,
+re-entry, clear and failed-world handling use the existing lifecycle above.
+The [dated regression record](../audits/2026-10-18-mat001-material-reaction-progress.md)
+scopes the executed evidence. Other specialized kernels retain their own waiting
+behavior; this is not a guarantee for every future material rule.
 
 **Current:** newly included cores wake their resident blocks once, including
 sleeping blocks. Existing overlap and unchanged/equivalent regions stay asleep.

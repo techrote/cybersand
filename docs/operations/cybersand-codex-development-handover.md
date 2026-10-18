@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-09-25
+last-reviewed: 2026-10-18
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
@@ -24,6 +24,17 @@ Read [AGENTS.md](../../AGENTS.md), the [documentation index](../README.md),
 for the requested change. Use the [retrieval index](../reference/retrieval-index.md)
 for a focused question. The [owner-intent reference](../reference/product-intent-and-priorities.md)
 preserves product goals, liked material behavior and deliberate deferrals.
+
+## Material consistency repair — 2026-10-18
+
+The owner reports that restarting resolved the all-four-builds problem and asks
+for actual material-behavior improvements. MAT-001 / #158 owns the bounded native
+repair for persistent compact-pair/Ice reactions lost to sleep and center-block
+waking on body-mask changes. Read the [dated implementation/validation record](../audits/2026-10-18-mat001-material-reaction-progress.md)
+and [activity contract](../systems/activity-dirty-regions-and-waking.md) before
+extending that scope. It does not select a #45 Water successor or change authored
+interaction products/probabilities. Source-matched retained Linux/Windows runtimes
+and the normal applicable ready-for-review checks remain integration gates.
 
 ## Recovery and CI checkpoint — 2026-09-24
 

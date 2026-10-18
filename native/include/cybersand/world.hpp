@@ -266,6 +266,8 @@ private:
     void keep_cell_active(std::int64_t x, std::int64_t y, JobEffects* effects) noexcept;
     void schedule_interaction_wake(std::int64_t x, std::int64_t y, std::uint64_t due,
                                    JobEffects* effects) noexcept;
+    void schedule_pending_reaction_wake(Material material, std::int64_t x,
+                                        std::int64_t y, JobEffects* effects) noexcept;
     [[nodiscard]] bool exchange_permitted(Material source, Material target,
         std::int64_t x, std::int64_t y, std::int64_t target_x, std::int64_t target_y,
         JobEffects* effects);
