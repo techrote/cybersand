@@ -52,6 +52,14 @@ static func water(policy_result: Dictionary) -> Dictionary:
 	out.source_recipe_hash = Water.recipe_hash(recipe)
 	return out
 
+# Only authored exploratory play maps opt into actor replacement. Apparatus IDs
+# and fixed execution never inherit this permission from maturity alone.
+static func exploratory_actor_map(definition: Dictionary) -> bool:
+	var id: String = str(definition.get("id", ""))
+	return (definition.get("maturity", "") == "exploratory"
+		and definition.get("execution", {}).get("policy", "") == "owner"
+		and (id == BlacksiteNine.SCENARIO_ID or Showcase.contains(id) or PhysicalTrial.contains(id)))
+
 static func player_configuration(scenario_id: String) -> Dictionary:
 	if PhysicalTrial.contains(scenario_id): return PhysicalTrial.configuration(scenario_id)
 	return ReferencePack.player_configuration(scenario_id)

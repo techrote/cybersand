@@ -6,6 +6,8 @@ CyberSand is a C++20 cellular simulation engine hosted by Godot, with a material
 lab and bounded Rapier2D/cellular coupling proof. The longer-term product intent
 is a reusable foundation for cyberpunk RPG and exploration games.
 
+F5 selects **Sampled** rigs or **Rapier** barrel/Ripper in the sandbox, Blacksite and all four showcase districts. Applying restores the selected map; R retains the actor. A/D drives physical bodies, Q/E adds torque and Space supplies an upward pulse.
+
 ## Blacksite Nine
 
 Press **Shift+F11** or click **Blacksite Nine** to open a continuous 3 × 3

@@ -11,6 +11,16 @@ last-reviewed: 2026-10-18
 
 # Data ownership and lifetimes
 
+## Exploratory map actor installation
+
+**Current desktop:** the simulation owner installs copied sampled actor definitions
+only at the accepted exploratory scenario reset boundary. Main owns live Rapier
+objects and rebuilds the selected physical hull after a matching reset serial and
+map hash arrive in an immutable snapshot. Switching representations does not
+transfer a mutable actor or World reference between threads. No cell or joint
+ownership changes accompany the picker integration; future articulated actors
+remain subject to the [physical programme](../operations/physical-actor-programme.md).
+
 ## Who may mutate each resource?
 
 **Current:** each selected cellular world has one external owner. On desktop

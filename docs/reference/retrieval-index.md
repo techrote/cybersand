@@ -18,6 +18,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 
 | Question family | Canonical route |
 |---|---|
+| How do I choose Sampled or Rapier actors in Blacksite/showcase maps, keep the map on switching, and track the full-roster physical conversion requirement? | [Physical actor programme](../operations/physical-actor-programme.md) |
 | How do I enter Blacksite Nine, follow the route through its connected 3×3 districts, use the camera map, and preserve or reset edits across shared boundaries? | [Blacksite Nine connected-complex guide](../operations/blacksite-nine-demo.md) |
 | How do I open Neon Reliquary, descend through Middle Cyberberbia, Sewertech Alley and Industrial Underswamp, inspect viewpoints, or capture all four tiles? | [Neon Reliquary scene guide](../operations/neon-reliquary-demo.md) |
 

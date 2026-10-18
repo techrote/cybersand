@@ -10,6 +10,58 @@ related-documents: [blacksite-nine-demo.md, ../systems/actor-rigs.md, ../systems
 
 # Physical actors and combined feature trials
 
+## What is the approved direction for the complete actor roster?
+
+**Approved owner requirement, 2026-10-18; implementation Planned:** adapt or
+reimplement all 29 actor rigs as physical Rapier actors by default. An actor may
+retain a non-Rapier configuration only when a specific behaviour/configuration
+cannot be realized through the physical representation; record the concrete
+reason and comparison evidence. Implementation inconvenience is not an exception.
+Sampled rigs remain explicit reference controls during migration, not the default
+long-term actor representation. The current physical Ripper is still a single
+rectangular hull and does not complete the Ripper conversion.
+
+The migration must preserve each actor's recognizable control and energy while
+using live bodies, bounded impulses/torques, collider-matched polygon graphics,
+and main-thread-owned joints where appropriate. Ground propulsion, hinged parts,
+gyros, thrusters, grips and usable recoil need explicit physical authority; do not
+rename sampled motors or turn cosmetic joints into claims of articulation.
+
+**Planned sequence:** establish reusable physical actor/body/joint lifecycle and
+actions/observations behind the existing replaceable bridge; convert barrel and
+Ripper into reference physical mechanisms; then convert ground/contact rigs,
+flight/gyro rigs, rope/attachment rigs and the scripted-policy roster. Trial each
+in Blacksite and the showcase districts against its sampled reference, including
+focus/pause/reset, constrained traversal, Water/Sand contact and held-usables
+attachment/release/recoil. Keep native cell ownership, bounded body capacity and
+#83 granular ownership intact. Arbitrary colliders, articulated coupling and
+policy control are work to implement and validate, not supplied by this picker.
+
+## How do I switch actors without leaving an exploratory map?
+
+**Current desktop implementation:** F5 is available in the ordinary sandbox,
+Blacksite Nine and all four showcase districts (Neon Reliquary, Middle Cyberberbia,
+Sewertech Alley and Industrial Underswamp). Each set lists **Sampled** baseline/rig
+choices and **Rapier** physical barrel/Ripper choices. Applying restores the
+selected map's starting layout and spawn, starts paused, and keeps the selected
+map identity. Material edits and motion are reset; this is not an in-place
+conversion. R retains the selected actor. Above/Below district navigation carries
+the choice to the destination's own spawn. The ordinary actor sandbox supports the
+same physical choices. The physical trials currently accept keyboard control only;
+scripted/policy pilots and companion NPCs remain sampled-rig options.
+
+The worker configures sampled sessions at the scenario-install boundary. The UI
+waits for a matching per-request acknowledgement and definition hash; a previous
+snapshot with the same map hash cannot acknowledge a new actor. Only the explicit
+exploratory map allowlist admits this override. Benchmark mode, Tower, controlled
+Water and registered apparatus remain protected. Depth's separate four-world host,
+the generation authoring preview and Thunderbowl's control apparatus are not
+members of this exploratory-map path. Desktop changes do not extend Web controls.
+
+Sources: `main.gd` actor selection and scenario acknowledgement,
+`microscenario_catalogue.gd` exploratory allowlist, `simulation_worker.gd`
+scenario-install handling and `actor_prototype_panel.gd` physics labels.
+
 ## How do I try the integrated features?
 
 **Current implementation:** the desktop project's default scene is

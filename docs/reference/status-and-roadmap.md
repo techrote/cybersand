@@ -10,6 +10,18 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Exploratory actor integration and physical migration — 2026-10-18
+
+**Current desktop:** F5 selects sampled actors or the physical Rapier
+barrel/Ripper in the sandbox, Blacksite and four showcase districts. Applying
+restores the selected map; R retains the actor. Controlled apparatus and Benchmark
+mode remain protected. See the [programme](../operations/physical-actor-programme.md).
+
+**Approved / Planned:** convert all 29 rigs to real Rapier actors, permitting only
+specifically justified impossible configurations as exceptions. Articulated
+mechanisms, general physical policy pilots and usable grips are not implemented
+by the exploratory picker. No broad granular acceptance is claimed.
+
 ## Is the foundation ready to extend?
 
 **Current documentation is organized for foundational work; the simulation has

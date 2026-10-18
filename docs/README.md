@@ -12,7 +12,7 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Choose a reading route
 
-Try the integrated desktop features and physical barrel/Ripper arms: [combined launcher and physical actor programme](operations/physical-actor-programme.md).
+Choose sampled or physical Rapier actors with F5 in the sandbox and exploratory maps; try the integrated desktop features and barrel/Ripper arms: [combined launcher and physical actor programme](operations/physical-actor-programme.md).
 
 Layering, quantized relief and Strata Theatre: [depth prototype contract](systems/depth-layers-and-parallax.md).
 

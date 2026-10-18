@@ -59,11 +59,13 @@ an unsupported material structure load-bearing.
 ## How are the prototypes selected and controlled?
 
 **Current desktop controls:** open the actor selector with **F5** in the ordinary
-sandbox and choose **SetA**. Select **Current sampled character**, **Runner**,
+sandbox or exploratory showcase map and choose **SetA**. Select the **Sampled** baseline, **Runner**,
 **Skimmer** or **Crawler**; choose **Pilot: keyboard**, **Pilot: scripted demonstration** or
 **Pilot: external policy input**. Two optional demonstration NPCs allow a
-small simultaneous comparison. Applying the selection uses a fresh ordinary-world
-reset, so the active model identity is established at the owner boundary.
+small simultaneous comparison. Applying restores the selected map
+or sandbox at the owner boundary. The [physical actor programme](../operations/physical-actor-programme.md)
+describes the separate Rapier choices, protected apparatus and per-request map
+installation acknowledgements.
 
 The worker's `queue_actor_prototype_reset(definitions, spawn_position)` returns
 zero for immediate refusal or a positive request receipt for queued admission.

@@ -345,6 +345,16 @@ them only through a fresh reset. See the
 [player/environment contract](../systems/player-environment-profiles-and-traversal.md)
 for field bounds, material-response ownership and traversal semantics.
 
+## Exploratory actor selection
+
+**Current desktop:** F5 exposes 29 sampled rigs, the sampled baseline and two
+physical Rapier hulls in the ordinary sandbox and five authored exploratory maps.
+A physical choice owns exactly one live body; sampled session capacity remains
+eight, with at most seven rigs offered by a set-comparison selection. Physics
+switching restores the selected map and starts paused. No new per-tick body or
+cell capacity is introduced. See the [programme](../operations/physical-actor-programme.md)
+for controls, protected scenarios and full-roster migration scope.
+
 ## Actor control prototype values
 
 **Current, experimental:** [`actor_prototype.gd`](../../godot/scripts/actor_prototype.gd)

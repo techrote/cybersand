@@ -1,6 +1,7 @@
 extends Control
 
 const PhysicalTrial = preload("res://scripts/physical_actor_trial.gd")
+var exploratory_actor_configuration: Dictionary = {}
 var physical_trial_arm: String = ""
 var physical_trial_input = PhysicalTrial.new()
 
@@ -190,6 +191,7 @@ var microscenario_error: String = ""
 var microscenario_hud_hidden: bool = false
 var _microscenario_saved_help: String = ""
 var pending_microscenario_apply: Dictionary = {}
+var _microscenario_request_serial: int = 0
 var microscenario_capture_seen: int = 0
 var microscenario_definition: Dictionary = {}
 var showcase_presentation: CyberShowcasePresentation
@@ -220,19 +222,38 @@ func microscenario_launch(scenario_id: String, mode: String = "Inspect", seed: i
 	return microscenario_apply_definition(checked.definition, mode)
 
 func microscenario_apply_definition(definition: Dictionary, mode: String = "Inspect") -> bool:
+	return _apply_microscenario_definition(definition, mode)
+
+
+func _apply_microscenario_definition(definition: Dictionary, mode: String, actor_configuration: Dictionary = {}) -> bool:
 	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty(): return false
 	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty(): return false
+	definition = definition.duplicate(true)
+	var exploratory: bool = CyberMicroScenarioCatalogue.exploratory_actor_map(definition) and mode != "Benchmark"
+	var selected_actor: Dictionary = actor_configuration if not actor_configuration.is_empty() else exploratory_actor_configuration
+	if exploratory and not selected_actor.is_empty():
+		selected_actor = selected_actor.duplicate(true)
+		var model: StringName = StringName(str(selected_actor.get("actor_model", "")))
+		if model != &"":
+			selected_actor.actor_definitions = actor_prototype_definitions(model,
+				StringName(str(selected_actor.get("actor_producer", "human"))),
+				bool(selected_actor.get("actor_demo_npcs", false)),
+				Vector2(definition.player_start[0], definition.player_start[1]))
+		definition.body_enabled = selected_actor.representation == "barrel-rapier"
+		definition.player_enabled = not definition.body_enabled
 	var checked: Dictionary = CyberMicroScenarioContract.validate(definition)
 	if not checked.get("ok", false) or not mode in CyberMicroScenarioContract.MODES:
 		microscenario_error = str(checked.get("error", "Invalid mode"))
 		return false
-	var player_configuration: Dictionary = _player_configuration_for_microscenario(
-		checked.definition
-	)
+	var player_configuration: Dictionary = (selected_actor.duplicate(true)
+		if exploratory and not selected_actor.is_empty()
+		else _player_configuration_for_microscenario(checked.definition))
 	if player_configuration.is_empty():
 		return false
 	if microscenario_panel != null: microscenario_panel.workbench.cancel_declared_window()
+	_microscenario_request_serial += 1
 	pending_microscenario_apply = {
+		"serial":_microscenario_request_serial,
 		"hash":checked.hash,
 		"definition":checked.definition,
 		"previous_paused":paused,
@@ -245,6 +266,7 @@ func microscenario_apply_definition(definition: Dictionary, mode: String = "Insp
 	)
 	tower_command({
 		"scenario_reset":checked.definition,
+		"scenario_request_serial":_microscenario_request_serial,
 		"scenario_mode":mode,
 		"sampled_character_enabled":(
 			requested_representation != CyberPlayerRepresentation.BARREL_RAPIER
@@ -252,6 +274,7 @@ func microscenario_apply_definition(definition: Dictionary, mode: String = "Insp
 		"runtime_enclosure_recovery_enabled":bool(
 			player_configuration.get("runtime_recovery_enabled", true)
 		),
+		"exploratory_actor_definitions":player_configuration.get("actor_definitions", []),
 	})
 	return true
 
@@ -1554,7 +1577,7 @@ func refresh_player_representation_button() -> void:
 				latest_snapshot.character_runtime_recovery_upward_cells,
 			]
 	else:
-		recovery_text = " | horizontal impulse control only"
+		recovery_text = " | impulses + torque + upward pulse" if not physical_trial_arm.is_empty() else " | horizontal impulse control only"
 	player_representation_button.text = "Player %s / F6%s" % [
 		player_representation_identity(),
 		recovery_text,
@@ -1575,6 +1598,9 @@ func cycle_player_representation() -> bool:
 		or not pending_water_apply.is_empty()
 	):
 		return false
+	var restore_reference_bodies: bool = not physical_trial_arm.is_empty()
+	physical_trial_arm = ""
+	physical_trial_input = PhysicalTrial.new()
 	actor_model_selection = &""
 	_actor_reset_receipt = 0
 	_actor_input_rearm = true
@@ -1584,6 +1610,9 @@ func cycle_player_representation() -> bool:
 		else CyberPlayerRepresentation.SAMPLED
 	)
 	barrel_player_spawn_position = CHARACTER_SPAWN
+	if restore_reference_bodies:
+		_activate_water_body_scenario(false)
+		_activate_water_body_scenario(true)
 	# Never convert an actor in place. Rebuild both simulation and body state from
 	# the ordinary fresh-reset boundary under the newly selected owner.
 	reset_world()
@@ -1671,7 +1700,10 @@ func _apply_microscenario_player_configuration(
 ) -> void:
 	physical_trial_arm = str(configuration.get("physical_trial", ""))
 	physical_trial_input = PhysicalTrial.new()
-	actor_model_selection = &""
+	exploratory_actor_configuration = configuration.duplicate(true) if CyberMicroScenarioCatalogue.exploratory_actor_map(definition) and configuration.has("actor_model") else {}
+	actor_model_selection = StringName(str(configuration.get("actor_model", "")))
+	actor_producer_selection = StringName(str(configuration.get("actor_producer", "human")))
+	actor_demo_npcs = bool(configuration.get("actor_demo_npcs", false))
 	_actor_reset_receipt = 0
 	_actor_input_rearm = true
 	if actor_prototype_panel != null:
@@ -1768,6 +1800,7 @@ func sync_player_presentation_position() -> void:
 
 func reset_world() -> void:
 	if water_controlled_run_active(): return
+	physical_trial_input = PhysicalTrial.new()
 	if actor_model_selection != &"":
 		var receipt: int = simulation_worker.queue_actor_prototype_reset(
 			actor_prototype_definitions(actor_model_selection, actor_producer_selection, actor_demo_npcs),
@@ -1873,10 +1906,14 @@ func consume_worker_snapshot() -> void:
 	_reconcile_actor_prototype_reset()
 	tower_context = snapshot.lab_context
 	if not pending_microscenario_apply.is_empty():
-		if tower_context.get("micro_active", false) and str(tower_context.get("microscenario", {}).get("definition_hash", "")) == str(pending_microscenario_apply.hash):
+		if (tower_context.get("micro_active", false)
+			and int(tower_context.get("scenario_request_serial", 0)) == int(pending_microscenario_apply.serial)
+			and bool(tower_context.get("scenario_request_applied", false))
+			and str(tower_context.get("microscenario", {}).get("definition_hash", "")) == str(pending_microscenario_apply.hash)):
 			_microscenario_installed(pending_microscenario_apply.definition)
 			pending_microscenario_apply.clear()
-		elif str(tower_context.get("status", "")).begins_with("MicroScenario rejected"):
+		elif (int(tower_context.get("scenario_request_serial", 0)) == int(pending_microscenario_apply.serial)
+			and not bool(tower_context.get("scenario_request_applied", true))):
 			paused = bool(pending_microscenario_apply.previous_paused)
 			microscenario_error = str(tower_context.status)
 			pending_microscenario_apply.clear()
@@ -2007,7 +2044,7 @@ func _blacksite_keyboard_blocked() -> bool:
 func setup_actor_prototypes() -> void:
 	actor_prototype_button = Button.new()
 	actor_prototype_button.name = "ActorPrototypes"
-	actor_prototype_button.text = "Actor-rigs / F5"
+	actor_prototype_button.text = "Sampled baseline / actors / F5"
 	actor_prototype_button.focus_mode = Control.FOCUS_NONE
 	actor_prototype_button.pressed.connect(toggle_actor_prototypes)
 	$Layout.add_child(actor_prototype_button)
@@ -2022,11 +2059,12 @@ func setup_actor_prototypes() -> void:
 
 
 func actor_prototypes_allowed() -> bool:
-	return (
-		not tower_active and not water_controlled_run_active()
-		and not tower_context.get("micro_active", false)
-		and pending_microscenario_apply.is_empty() and pending_water_apply.is_empty()
-	)
+	var exploratory: bool = (tower_context.get("micro_active", false)
+		and CyberMicroScenarioCatalogue.exploratory_actor_map(microscenario_definition)
+		and microscenario_mode != "Benchmark")
+	return ((exploratory or (not tower_active and not tower_context.get("micro_active", false)))
+		and not water_controlled_run_active()
+		and pending_microscenario_apply.is_empty() and pending_water_apply.is_empty())
 
 
 func toggle_actor_prototypes() -> void:
@@ -2036,47 +2074,72 @@ func toggle_actor_prototypes() -> void:
 		actor_prototype_panel.hide()
 		return
 	_actor_input_rearm = true
-	actor_prototype_panel.configure_selection(actor_model_selection, actor_producer_selection, actor_demo_npcs)
+	var selected_model: StringName = StringName("physical/" + physical_trial_arm) if not physical_trial_arm.is_empty() else actor_model_selection
+	actor_prototype_panel.configure_selection(selected_model, actor_producer_selection, actor_demo_npcs)
+	actor_prototype_panel.set_context(str(microscenario_definition.get("id", "Sandbox")) if tower_context.get("micro_active", false) else "Sandbox")
 	actor_prototype_panel.effort_slider.value = _actor_effort
-	actor_prototype_panel.popup_centered(Vector2i(600, 600))
+	actor_prototype_panel.show_selection()
 
 
-func actor_prototype_definitions(model_id: StringName, producer: StringName, demo_npcs: bool) -> Array:
+func actor_prototype_definitions(model_id: StringName, producer: StringName, demo_npcs: bool, spawn: Vector2 = CHARACTER_SPAWN) -> Array:
 	if model_id == &"":
 		return []
-	var definitions: Array = [{"model": model_id, "producer": producer, "position": CHARACTER_SPAWN}]
+	var definitions: Array = [{"model": model_id, "producer": producer, "position": spawn}]
 	if demo_npcs:
 		for candidate: StringName in ActorRigCatalog.rigs_in_set(ActorRigCatalog.set_for(model_id)):
 			if candidate != model_id:
 				definitions.append({"model": candidate, "producer": &"demo",
-					"position": CHARACTER_SPAWN + Vector2(float(definitions.size()) * 22.0, -4.0)})
+					"position": spawn + Vector2(float(definitions.size()) * 22.0, -4.0)})
 	return definitions
 
 
 func apply_actor_prototype_configuration(model_id: StringName, producer: StringName, demo_npcs: bool) -> bool:
 	if not actor_prototypes_allowed():
-		actor_prototype_panel.set_error("Actor-rig selection is available in the ordinary sandbox.")
+		actor_prototype_panel.set_error("Actor changes are available in exploratory maps and the sandbox; controlled scenarios are protected.")
 		return false
-	if model_id != &"" and not ActorRigCatalog.has_rig(model_id):
-		return false
-	if not CyberActorPrototypeSession.PRODUCERS.has(producer):
-		return false
-	var definitions: Array = actor_prototype_definitions(model_id, producer, demo_npcs)
-	var receipt: int = simulation_worker.queue_actor_prototype_reset(definitions, CHARACTER_SPAWN)
+	var physical: bool = model_id in [&"physical/barrel", &"physical/ripper"]
+	if not physical and model_id != &"" and not ActorRigCatalog.has_rig(model_id): return false
+	if not CyberActorPrototypeSession.PRODUCERS.has(producer): return false
+	var spawn: Vector2 = CHARACTER_SPAWN
+	if tower_context.get("micro_active", false):
+		spawn = Vector2(microscenario_definition.player_start[0], microscenario_definition.player_start[1])
+	var definitions: Array = [] if physical else actor_prototype_definitions(model_id, producer, demo_npcs, spawn)
+	var arm: String = str(model_id).trim_prefix("physical/") if physical else ""
+	var configuration: Dictionary = {
+		"representation":"barrel-rapier" if physical else "sampled",
+		"runtime_recovery_enabled":not physical and model_id == &"",
+		"experimental":true, "physical_trial":arm,
+		"actor_model":"" if physical else str(model_id),
+		"actor_producer":"human" if physical else str(producer),
+		"actor_demo_npcs":demo_npcs and not physical,
+		"actor_definitions":definitions,
+	}
+	if tower_context.get("micro_active", false):
+		_actor_effort = actor_prototype_panel.effort_slider.value
+		return _apply_microscenario_definition(microscenario_definition, microscenario_mode, configuration)
+	var receipt: int = simulation_worker.queue_actor_prototype_reset(definitions, spawn, not physical)
 	if receipt == 0:
 		actor_prototype_panel.set_error("A scenario reset is pending; finish that transition first.")
 		return false
 	_actor_reset_receipt = receipt
-	actor_model_selection = model_id
-	actor_producer_selection = producer
-	actor_demo_npcs = demo_npcs
+	paused = true
+	actor_model_selection = &"" if physical else model_id
+	actor_producer_selection = &"human" if physical else producer
+	actor_demo_npcs = demo_npcs and not physical
 	_actor_effort = actor_prototype_panel.effort_slider.value
 	_actor_input_rearm = true
-	player_representation = CyberPlayerRepresentation.SAMPLED
-	sampled_runtime_recovery_enabled = model_id == &""
-	reset_test_rigid_bodies()
-	simulation_worker.set_rigid_body_states(pack_rigid_body_states())
-	character_position = CHARACTER_SPAWN
+	physical_trial_arm = arm
+	physical_trial_input = PhysicalTrial.new()
+	player_representation = CyberPlayerRepresentation.BARREL_RAPIER if physical else CyberPlayerRepresentation.SAMPLED
+	sampled_runtime_recovery_enabled = not physical and model_id == &""
+	if physical:
+		_activate_microscenario_barrel_player(spawn)
+	else:
+		_activate_water_body_scenario(false)
+		_activate_water_body_scenario(true)
+		reset_test_rigid_bodies()
+		simulation_worker.set_rigid_body_states(pack_rigid_body_states())
+	character_position = spawn
 	camera_follow_enabled = true
 	camera_origin = clamped_camera_origin(character_centre() - Vector2(current_view_size) * 0.5)
 	actor_prototype_panel.hide()
@@ -2181,8 +2244,11 @@ func publish_actor_keyboard_input() -> void:
 
 func refresh_actor_prototypes() -> void:
 	actor_prototype_button.disabled = not actor_prototypes_allowed()
+	if not physical_trial_arm.is_empty():
+		actor_prototype_button.text = "Rapier %s / impulses + torque / F5" % physical_trial_arm
+		return
 	if latest_snapshot == null or latest_snapshot.actor_prototypes.is_empty():
-		actor_prototype_button.text = "Actor-rigs / F5"
+		actor_prototype_button.text = "Sampled baseline / actors / F5"
 		return
 	var context: Dictionary = latest_snapshot.actor_prototypes
 	var states: PackedFloat32Array = context.states
@@ -2194,7 +2260,7 @@ func refresh_actor_prototypes() -> void:
 		if context.producers[0] != &"human":
 			power = applied[4] if applied.size() >= CyberActorPrototypeSession.ACTION_STRIDE else 0.0
 		power_text = " | power %d%%" % roundi(power * 100.0)
-	actor_prototype_button.text = "%s · %s / F5 | %s | energy %d%%%s | %d rigs" % [
+	actor_prototype_button.text = "Sampled %s · %s / F5 | %s | energy %d%%%s | %d rigs" % [
 		ActorRigCatalog.name_for(rig_id), str(ActorRigCatalog.set_for(rig_id)), str(context.producers[0]),
 		roundi(states[6] * 100.0), power_text, int(context.count)]
 	actor_prototype_button.tooltip_text = ActorRigCatalog.controls_text(rig_id) + "\nRelease control keys after UI/focus changes."
