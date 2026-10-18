@@ -90,6 +90,7 @@
     "systems/thunderbowl-control-reference.md",
     "systems/material-visual-pattern-library.md",
     "reference/material-effects-register.md",
+    "operations/physical-actor-programme.md",
     "systems/depth-layers-and-parallax.md"
   ],
   "navigation": [
@@ -318,6 +319,14 @@
     {
       "path": "audits/2026-10-18-act003-thunderbowl-control-lab.md",
       "reason": "Dated ACT-003 source/runtime, preserved failure, schema and bounded arena evidence; retrieve explicitly through the Thunderbowl contract or validation ledger, not as a default Current control contract"
+    },
+    {
+      "path": "audits/2026-10-18-owner-actor-observations.md",
+      "reason": "Verbatim dated owner observations; current implementation and planned follow-up are separately scoped in the physical actor programme."
+    },
+    {
+      "path": "audits/2026-10-18-combined-features-and-physical-trial.md",
+      "reason": "Dated local validation and preserved failures; current behavior belongs to the physical actor programme and hosted final gates remain separate."
     },
     {
       "path": "audits/2026-10-18-depth-parallax-prototypes.md",

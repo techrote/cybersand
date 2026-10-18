@@ -1,5 +1,9 @@
 extends Control
 
+const PhysicalTrial = preload("res://scripts/physical_actor_trial.gd")
+var physical_trial_arm: String = ""
+var physical_trial_input = PhysicalTrial.new()
+
 const GameplayRecorder = preload("res://scripts/gameplay_recorder.gd")
 const PlayerEnvironmentProfiles = preload("res://scripts/player_environment_profiles.gd")
 const PlayerEnvironmentPanel = preload("res://scripts/player_environment_panel.gd")
@@ -510,6 +514,9 @@ func water_lab_apply_blind(index: int = -1) -> bool:
 	return true
 
 func _activate_water_body_scenario(active: bool) -> void:
+	var default_shape := RectangleShape2D.new()
+	default_shape.size = TEST_RIGID_BODY_SIZE
+	test_rigid_body_1.get_node("CollisionShape2D").shape = default_shape
 	if not active:
 		for body: RigidBody2D in [test_rigid_body_1,test_rigid_body_2,test_rigid_body_3]:
 			body.freeze=true
@@ -1031,9 +1038,18 @@ func _ready() -> void:
 		reject_render_snapshot(latest_snapshot)
 	update_shader_parameters()
 	update_status()
-	if "--blacksite-nine" in OS.get_cmdline_user_args():
+	var feature: String = str(get_tree().get_meta("cybersand_feature", ""))
+	if PhysicalTrial.contains(feature):
+		microscenario_launch.call_deferred(feature, "Play", 0)
+	elif feature == "blacksite":
 		blacksite_nine_presentation.launch.call_deferred()
-	elif "--showcase" in OS.get_cmdline_user_args():
+	elif feature == "showcase":
+		showcase_presentation.launch.call_deferred()
+	elif feature == "actors":
+		toggle_actor_prototypes.call_deferred()
+	elif feature.is_empty() and "--blacksite-nine" in OS.get_cmdline_user_args():
+		blacksite_nine_presentation.launch.call_deferred()
+	elif feature.is_empty() and "--showcase" in OS.get_cmdline_user_args():
 		showcase_presentation.launch.call_deferred()
 
 
@@ -1087,6 +1103,8 @@ func _process(delta: float) -> void:
 
 func _physics_process(_delta: float) -> void:
 	publish_actor_keyboard_input()
+	if paused or simulation_worker.has_failed():
+		physical_trial_input.armed = false
 	if simulation_worker.has_failed():
 		return
 	if (
@@ -1116,6 +1134,10 @@ func open_depth_lab() -> void:
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
+	if not physical_trial_arm.is_empty() and event is InputEventKey and event.keycode in [KEY_Q, KEY_E]:
+		# Trial torque owns these keys; do not also cycle the brush material.
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F4:
 		get_viewport().set_input_as_handled()
 		open_depth_lab()
@@ -1500,6 +1522,7 @@ func setup_player_representation_button() -> void:
 
 
 func player_representation_identity() -> String:
+	if not physical_trial_arm.is_empty(): return "physical-" + physical_trial_arm
 	if latest_snapshot != null and not latest_snapshot.actor_prototypes.is_empty():
 		return latest_snapshot.player_representation
 	return CyberPlayerRepresentation.identity(
@@ -1581,6 +1604,8 @@ func toggle_sampled_runtime_recovery() -> bool:
 
 
 func _force_sampled_player_for_lab() -> void:
+	physical_trial_arm = ""
+	physical_trial_input = PhysicalTrial.new()
 	actor_model_selection = &""
 	_actor_reset_receipt = 0
 	_actor_input_rearm = true
@@ -1636,6 +1661,7 @@ func _player_configuration_for_microscenario(definition: Dictionary) -> Dictiona
 		"representation":str(representation),
 		"runtime_recovery_enabled":runtime_recovery,
 		"experimental":true,
+		"physical_trial":str(configuration.get("physical_trial", "")),
 	}
 
 
@@ -1643,6 +1669,8 @@ func _apply_microscenario_player_configuration(
 	definition: Dictionary,
 	configuration: Dictionary
 ) -> void:
+	physical_trial_arm = str(configuration.get("physical_trial", ""))
+	physical_trial_input = PhysicalTrial.new()
 	actor_model_selection = &""
 	_actor_reset_receipt = 0
 	_actor_input_rearm = true
@@ -1666,7 +1694,11 @@ func _activate_microscenario_barrel_player(spawn_position: Vector2) -> void:
 	# generic reference bodies, because they would contaminate matched A/B geometry.
 	_activate_water_body_scenario(false)
 	rigid_bodies = [test_rigid_body_1]
-	var body_sizes := PackedVector2Array([TEST_RIGID_BODY_SIZE])
+	var size: Vector2 = PhysicalTrial.body_size(physical_trial_arm)
+	var shape := RectangleShape2D.new()
+	shape.size = size
+	test_rigid_body_1.get_node("CollisionShape2D").shape = shape
+	var body_sizes := PackedVector2Array([size])
 	rapier_start_error = rapier_bridge.initialize(
 		get_viewport().world_2d.space,
 		rigid_bodies,
@@ -1697,14 +1729,27 @@ func apply_barrel_player_control(delta: float) -> void:
 		or rigid_bodies.size() <= CyberPlayerRepresentation.BARREL_BODY_INDEX
 	):
 		return
+	var drive: float = get_horizontal_input()
+	if not physical_trial_arm.is_empty():
+		drive = _apply_physical_trial_input(delta)
 	rapier_bridge.apply_horizontal_control(
 		CyberPlayerRepresentation.BARREL_BODY_INDEX,
-		get_horizontal_input(),
-		CyberPlayerRepresentation.BARREL_WALK_SPEED,
-		CyberPlayerRepresentation.BARREL_HORIZONTAL_ACCELERATION,
+		drive,
+		70.0 if physical_trial_arm == "ripper" else CyberPlayerRepresentation.BARREL_WALK_SPEED,
+		260.0 if physical_trial_arm == "ripper" else CyberPlayerRepresentation.BARREL_HORIZONTAL_ACCELERATION,
 		CyberPlayerRepresentation.BARREL_MAX_HORIZONTAL_IMPULSE,
 		delta
 	)
+
+
+func _apply_physical_trial_input(delta: float) -> float:
+	var allowed: bool = get_window().has_focus() and not paused and not _blacksite_keyboard_blocked()
+	allowed = allowed and get_viewport().gui_get_focus_owner() == null
+	allowed = allowed and not microscenario_panel.modal_open() and not tower_profile_panel.visible and not player_environment_panel.visible and not actor_prototype_panel.visible
+	var trim: float = float(Input.is_key_pressed(KEY_E)) - float(Input.is_key_pressed(KEY_Q))
+	var action: Dictionary = physical_trial_input.sample(delta, allowed, get_horizontal_input(), trim, Input.is_key_pressed(KEY_SPACE))
+	rapier_bridge.apply_trial_impulses(0, Vector2(0,-24.0) if action.pulse else Vector2.ZERO, float(action.trim) * delta * 12.0)
+	return float(action.drive)
 
 
 func sync_player_presentation_position() -> void:
@@ -2677,8 +2722,8 @@ func update_shader_parameters() -> void:
 			Vector4(
 				body_transform.origin.x,
 				body_transform.origin.y,
-				TEST_RIGID_BODY_SIZE.x,
-				TEST_RIGID_BODY_SIZE.y
+				(PhysicalTrial.body_size(physical_trial_arm).x if body_index == 0 and player_uses_barrel() else TEST_RIGID_BODY_SIZE.x),
+				(PhysicalTrial.body_size(physical_trial_arm).y if body_index == 0 and player_uses_barrel() else TEST_RIGID_BODY_SIZE.y)
 			)
 		)
 		world_shader.set_shader_parameter(

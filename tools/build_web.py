@@ -118,9 +118,11 @@ def stage_project(library: Path, native_library: Path | None, cellular_only: boo
     if native_library:
         shutil.copy2(native_library, binaries / native_library.name)
     project = (stage / "project.godot").read_text()
-    project = project.replace('run/main_scene="res://main.tscn"', 'run/main_scene="res://web_main.tscn"')
+    for desktop_scene in ("main.tscn", "feature_launcher.tscn"):
+        project = project.replace(f'run/main_scene="res://{desktop_scene}"', 'run/main_scene="res://web_main.tscn"')
     if 'run/main_scene="res://web_main.tscn"' not in project:
         raise RuntimeError("Unexpected project main-scene configuration")
+    project = project.replace('FeatureNavigation="*res://scripts/feature_navigation.gd"\n', '')
     if cellular_only:
         shutil.rmtree(stage / "addons/godot-rapier2d")
         project = project.replace('"Rapier2D"', '"GodotPhysics2D"')

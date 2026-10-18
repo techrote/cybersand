@@ -465,6 +465,10 @@ change the selected representation/recovery policy.
 
 Parent #133 remains open after #138.
 
+## Combined features and physical actors — 2026-10-18
+
+Use the [physical actor programme](physical-actor-programme.md) for the combined desktop launcher, reset-scoped Blacksite comparison and preserved owner notes. The Ripper arm is a single live Rapier rectangle; articulated rigs remain follow-up work.
+
 ## Reconstructed depth prototype — 2026-10-18
 
 PR #169 integrates [Strata Theatre](../systems/depth-layers-and-parallax.md) with the feature branches. Use its [fresh validation record](../audits/2026-10-18-depth-integration-validation.md); old local evidence does not certify the reconstructed source. F4 opens the separate lab; it does not attach four new owners to the ordinary gameplay World.

@@ -219,3 +219,7 @@ field catch-up, automatic failure retry, rollback or state-preserving live resiz
 ## Issue #13 experiment checkpoint
 
 Owner feedback for issue #13: Mercury through Sand is especially satisfying and must survive indirect Sand changes. The earlier reduction in fire cadence made Wood smoulder while Oil and Coal felt good. The [chemistry observation floor](../operations/experiment-tower.md) records current behavior without retuning reactions/fire in this physics issue.
+
+## Physical actor preferences — 2026-10-18
+
+The owner prefers the barrel’s kinetic feel, Vector/Jolt’s scripted energy, articulated machines, collider-matched polygon graphics and usable attachments tested in constrained maps. Preserve Gyrocrate and Bellows character. The [physical actor programme](../operations/physical-actor-programme.md) records the full dated preferences, implementation boundary and follow-up sequence.

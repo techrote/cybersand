@@ -1,5 +1,7 @@
 # CyberSand
 
+Desktop opens the [combined feature launcher](docs/operations/physical-actor-programme.md): showcase maps, actor/material sandboxes, Thunderbowl, Strata Theatre depth studies, generation authoring and the initial physical barrel/Ripper Blacksite comparison. F2 returns to the launcher and closes the current session.
+
 CyberSand is a C++20 cellular simulation engine hosted by Godot, with a material
 lab and bounded Rapier2D/cellular coupling proof. The longer-term product intent
 is a reusable foundation for cyberpunk RPG and exploration games.

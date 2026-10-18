@@ -768,6 +768,19 @@ func apply_horizontal_control(
 	return impulse_x
 
 
+func apply_trial_impulses(body_index: int, impulse: Vector2, angular_impulse: float) -> bool:
+	# Experimental player actuation; same live body and main-thread owner as
+	# ordinary coupling. Never overwrite transforms or incoming contact velocity.
+	if not _initialized or body_index < 0 or body_index >= _body_rids.size(): return false
+	if not impulse.is_finite() or not is_finite(angular_impulse): return false
+	var rid: RID = _body_rids[body_index]
+	PhysicsServer2D.body_apply_central_impulse(rid, impulse.limit_length(24.0))
+	PhysicsServer2D.body_apply_torque_impulse(rid, clampf(angular_impulse, -0.2, 0.2))
+	if impulse.length_squared() > 0.0 or angular_impulse != 0.0:
+		PhysicsServer2D.body_set_state(rid, PhysicsServer2D.BODY_STATE_SLEEPING, false)
+	return true
+
+
 func reset_body(
 	body_index: int,
 	position: Vector2,

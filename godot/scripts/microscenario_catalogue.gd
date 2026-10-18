@@ -7,6 +7,7 @@ const Tower = preload("res://scripts/experiment_tower.gd")
 const ReferencePack = preload("res://scripts/microscenario_reference_pack.gd")
 const Showcase = preload("res://scripts/showcase_tiles.gd")
 const BlacksiteNine = preload("res://scripts/blacksite_nine.gd")
+const PhysicalTrial = preload("res://scripts/physical_actor_trial.gd")
 
 static func ids() -> Array[String]:
 	var result: Array[String] = ["experiment-tower"]
@@ -16,6 +17,7 @@ static func ids() -> Array[String]:
 	result.append_array(ReferencePack.ids())
 	result.append_array(Showcase.scenario_ids())
 	result.append(BlacksiteNine.SCENARIO_ID)
+	for arm: String in PhysicalTrial.ARMS: result.append(PhysicalTrial.PREFIX + arm)
 	return result
 
 static func tower(profile: Dictionary = {}) -> Dictionary:
@@ -51,10 +53,12 @@ static func water(policy_result: Dictionary) -> Dictionary:
 	return out
 
 static func player_configuration(scenario_id: String) -> Dictionary:
+	if PhysicalTrial.contains(scenario_id): return PhysicalTrial.configuration(scenario_id)
 	return ReferencePack.player_configuration(scenario_id)
 
 
 static func definition(scenario_id: String, seed: int = 0) -> Dictionary:
+	if PhysicalTrial.contains(scenario_id): return PhysicalTrial.definition(scenario_id, seed)
 	if scenario_id == BlacksiteNine.SCENARIO_ID:
 		return BlacksiteNine.definition(seed)
 	if Showcase.contains(scenario_id):
