@@ -43,6 +43,24 @@ exact 4.7 pin. Desktop has an asynchronous simulation owner; Web ticks are
 synchronous even with internal pthreads. Rapier objects stay on the main thread.
 The GDScript fallback has different material semantics.
 
+The desktop sandbox includes 29 provisional
+[actor rigs](docs/systems/actor-rigs.md) in six sets: the original **SetA**
+Runner/Skimmer/Crawler controls, **SetB** ground machines, **SetF** flight and
+descent, **SetY** contact/rope/impulse traversal, **SetU** salvage-tool movers and
+**SetV** fictional interface personas. Open **F5** to choose a rig and a keyboard,
+scripted-demo or external-policy pilot, adjust power and compare the other rigs
+in its set. All share a bounded input/observation boundary; neural inference is a
+future consumer. The [SetA contract](docs/systems/actor-control-prototypes.md)
+retains the original motor and policy compatibility details.
+
+The standalone [Thunderbowl control reference](docs/systems/thunderbowl-control-reference.md)
+adds a native battle/training test area, runnable controller scripts and eight
+versioned JSON schemas. Compare assisted controls, direct actuator profiles,
+oracle teams, independent and coordinating swarms, an untrained NCA-inspired
+controller and an external smart-link adapter. The first arena uses explicit
+virtual tag combat, with at most eight rigs and bounded local observations.
+Run its separate scene or headless examples using the reference commands.
+
 [Dated validation](docs/reference/validation-evidence.md) records what actually
 ran and which artifacts/platforms it covers. CYSD1 restores levels, not exact
 replay continuation. Review [license status](LICENSE_STATUS.md) and

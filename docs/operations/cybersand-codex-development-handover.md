@@ -25,6 +25,54 @@ for the requested change. Use the [retrieval index](../reference/retrieval-index
 for a focused question. The [owner-intent reference](../reference/product-intent-and-priorities.md)
 preserves product goals, liked material behavior and deliberate deferrals.
 
+## Thunderbowl control laboratory — 2026-10-18
+
+ACT-003 / #172 adds the standalone native
+[Thunderbowl reference and examples](../systems/thunderbowl-control-reference.md).
+Its owner wraps a real World and the current eight-slot actor session; it does
+not replace ordinary F5 selection or registered scientific fixtures. New actor
+definitions may fix `control_mode` to `metal` for Ripper, Copter or Gemini.
+That lane bypasses intent actuation and publishes separate 32-value force/torque
+readback; original v1/v2 observations and SetA motor bytes remain compatible.
+
+The shared driver collects copied policy views before stepping any actors.
+Self/local/oracle privileges, message delivery, arena-only virtual tag combat,
+model-plan freshness and resource/work bounds are explicit. Controller examples,
+eight JSON schemas and fourteen match definitions live under
+[`godot/examples/thunderbowl`](../../godot/examples/thunderbowl).
+The NCA-inspired graph weights are untrained; the Python smart-link client is an
+offline mock. Model inference, learned performance, complete replay and broad
+platform/feel acceptance must not be inferred from runnable examples.
+The [dated ACT-003 audit](../audits/2026-10-18-act003-thunderbowl-control-lab.md)
+binds local execution to the public source checkpoint; PR #174 records final
+hosted CI and integration disposition.
+
+## Actor control prototypes — 2026-10-18
+
+ACT-002 / #168 expands the original ACT-001 / #161 trio into 29 optional desktop
+rigs in SetA/B/F/Y/U/V. Read the [rig contract](../systems/actor-rigs.md) before
+changing movement, input or observation fields. The
+[SetA compatibility page](../systems/actor-control-prototypes.md) preserves Runner,
+Skimmer and Crawler's original motor and 16-value observations. New rigs use
+independent aim, effort, trim, reel and auxiliary with additive 40-value state and
+consumed action/edge readback. Catalog names and fictional SetV personas do not
+connect model services or claim real model behavior.
+
+**F5** selects a set/rig, keyboard/demo/external-policy pilot, power and optional
+comparison with the other rigs in that set. WASD, pointer aim, Space/Shift/C,
+Q/E trim, Z/X reel and brackets use the same expiring policy interface. The owner
+acknowledges reset outcomes before human control resumes; controlled fixtures
+retain their explicit player identities. Expiry/cancellation discards charge,
+attachment and pending effects before neutral input advances.
+
+The session remains capped at eight actors. SetA retains its 32-query limit;
+new rigs have explicit occupancy, ray, effect and angular/translation budgets in
+the [configuration reference](../reference/configuration-reference.md#actor-rig-values).
+Source and Linux headless evidence remain separate from target-PC feel,
+many-NPC throughput and Windows/Web execution. The
+[validation ledger](../reference/validation-evidence.md) owns dated execution;
+the original ACT-001 audit remains unchanged.
+
 ## Material consistency repair — 2026-10-18
 
 The owner reports that restarting resolved the all-four-builds problem and asks

@@ -6,7 +6,7 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-09-25
+last-reviewed: 2026-10-18
 ---
 
 # Data ownership and lifetimes
@@ -28,7 +28,7 @@ but must not touch live scene-tree or Rapier objects.
 | Activity/dirty metadata and job effects | Job-local observations, then coordinator merge after the phase barrier | Persistent chunk metadata and reusable bounded scratch; dirty bounds survive unsuccessful publication |
 | Delayed pair deadline | A phase-exclusive source activity block stores its earliest due tick; coordinator wakes it at healthy tick entry | One scalar per block; excluded blocks retain it, clear/replacement discards it |
 | Native snapshot slots | One serialized producer writes only an unleased slot | Shared exchange state outlives its facade while leases exist; no-slot/capacity failure retains dirty state |
-| Desktop world and sampled character | Godot pacing Thread after startup handoff | Worker lifetime; stopped/joined before destruction |
+| Desktop world, sampled character and optional actor prototypes | Godot pacing Thread after startup handoff | Worker lifetime; stopped/joined before destruction; actor session reset invalidates old input epochs |
 | Live body nodes, RIDs and physics state | Main-thread Rapier bridge and PhysicsServer2D | Scene/bridge lifetime; never passed to cellular workers |
 | Body samples and observations | Adapter owns copied samples and native transient occupancy; results are copied into publication | Mask rebuilt at coupling preparation; sample IDs identify result application |
 | Godot CPU image and textures | Main thread validates patches and updates resources | Application lifetime; upload never borrows mutable World bytes |
@@ -108,6 +108,57 @@ the rationale remains [ADR-003](../decisions/ADR-003-godot-bridge-and-immutable-
 Sampled [granular support queries](../systems/granular-interaction-policy.md) read
 current cells and copied body occupancy only under this exclusive owner, outside
 native jobs. Their bounded neighbourhood adds no job view, cache or Rapier object.
+
+## Optional actor prototype ownership
+
+**Current, experimental:** the [actor session](../systems/actor-rigs.md)
+owns a bounded set of sampled motors under `CyberSimulationWorker`. Human or
+policy producers submit scalar/value commands through its mutex-protected
+mailbox. Only the serialized simulation owner configures, advances or observes
+the motors and calls World collision/ray queries or bounded local tool writes.
+SetA retains its original motor; additional rig geometry, attachment, angular
+state, charge and effect scratch storage belong to the same owner. Input producers
+cannot provide callback code or arbitrary native writes. The public worker forwarding
+methods do not grant producers a live actor, World or Rapier reference.
+
+Publications copy state/capability values. A current actor observation and a
+material render generation have distinct ticks; retaining one does not authorize
+relabeling the other. Session pause/reset/clear boundaries invalidate prior
+command epochs, and failed-world publication retains the previous successful
+display contract. The actor-specific action/lease protocol does not bound the
+separate general emission queues described above.
+
+Cancellation clears armed charge, attachments and pending effects before neutral
+input advances; a Pouncer release action must not fire because its lease expired.
+Consumed action/sequence/edge fields and latest admitted sequences are distinct
+copied values. Catalog dictionaries are deep-copied at configuration/publication
+boundaries rather than used as mutable shared actor state. Sampled rig bodies and
+drawn extremities are not scene-tree physics objects or new native job owners.
+
+### Standalone Thunderbowl ownership
+
+**Current, experimental ACT-003:** a separate
+[`CyberThunderbowlArena`](../../godot/scripts/thunderbowl_arena.gd) instance owns
+one native World and actor session on its serialized caller thread. Setup builds
+and validates a candidate before replacement. All due policies receive copied
+views from the same completed state; no callback runs while motors or materials
+advance. The driver and optional scene consume values, and only the arena calls
+live cell, collision or motor APIs. This standalone host does not take ownership
+of the desktop worker's World or registered scientific fixtures.
+
+Direct actuator helper state belongs to each sampled motor. Producer-side lane,
+model, identity, sequence and lease validation reads mutex-protected slot values;
+it never borrows owner-replaced actor arrays. `wire`/`metal` is fixed at session
+configuration, preventing hidden held state from crossing an input-mode switch.
+
+Local observation filtering occurs before controller dispatch. Global evaluator
+snapshots remain separate, and local messages read the previous delivered
+generation. These trusted in-process GDScript examples establish a data-access
+contract, not isolation from malicious script code. Slow model decisions enter
+through a copied one-request adapter; its bounded optional file I/O runs between
+arena steps, never inside native jobs or motor updates. File latency can still
+delay the caller. Exact capacities, cancellation and failure/terminal semantics
+belong to the [Thunderbowl reference](../systems/thunderbowl-control-reference.md).
 
 ## Failed-world ownership and recovery
 

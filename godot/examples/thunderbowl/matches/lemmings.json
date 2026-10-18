@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "seed": 73,
+  "max_ticks": 1800,
+  "layout": "training_pit",
+  "evaluation": "matched",
+  "actors": [
+    {
+      "model": "scout",
+      "control_mode": "wire",
+      "observation_mode": "self",
+      "team": 0,
+      "controller": "lemming"
+    },
+    {
+      "model": "scout",
+      "control_mode": "wire",
+      "observation_mode": "self",
+      "team": 1,
+      "controller": "lemming"
+    },
+    {
+      "model": "scout",
+      "control_mode": "wire",
+      "observation_mode": "self",
+      "team": 0,
+      "controller": "lemming"
+    },
+    {
+      "model": "scout",
+      "control_mode": "wire",
+      "observation_mode": "self",
+      "team": 1,
+      "controller": "lemming"
+    },
+    {
+      "model": "scout",
+      "control_mode": "wire",
+      "observation_mode": "self",
+      "team": 0,
+      "controller": "lemming"
+    },
+    {
+      "model": "scout",
+      "control_mode": "wire",
+      "observation_mode": "self",
+      "team": 1,
+      "controller": "lemming"
+    },
+    {
+      "model": "scout",
+      "control_mode": "wire",
+      "observation_mode": "self",
+      "team": 0,
+      "controller": "lemming"
+    },
+    {
+      "model": "scout",
+      "control_mode": "wire",
+      "observation_mode": "self",
+      "team": 1,
+      "controller": "lemming"
+    }
+  ]
+}

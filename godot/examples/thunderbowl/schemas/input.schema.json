@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Thunderbowl v1 input",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "device": {
+      "enum": [
+        "keyboard_mouse",
+        "gamepad",
+        "touch",
+        "virtual"
+      ]
+    },
+    "movement": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "number",
+        "minimum": -1,
+        "maximum": 1
+      }
+    },
+    "aim": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "number",
+        "minimum": -1,
+        "maximum": 1
+      }
+    },
+    "effort": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "trim": {
+      "type": "number",
+      "minimum": -1,
+      "maximum": 1
+    },
+    "reel": {
+      "type": "number",
+      "minimum": -1,
+      "maximum": 1
+    },
+    "primary": {
+      "type": "boolean"
+    },
+    "secondary": {
+      "type": "boolean"
+    },
+    "auxiliary": {
+      "type": "boolean"
+    },
+    "tag": {
+      "type": "boolean"
+    },
+    "deadman": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "version",
+    "device",
+    "movement",
+    "aim",
+    "effort",
+    "trim",
+    "reel",
+    "primary",
+    "secondary",
+    "auxiliary",
+    "tag",
+    "deadman"
+  ],
+  "additionalProperties": false
+}

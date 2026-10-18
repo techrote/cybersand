@@ -29,6 +29,30 @@ behavior under load, exact engineering comparisons and recoverable checkpoints.
 60 FPS is a product target; it is not a performance guarantee established by
 headless fixtures or a particular worker count.
 
+## Provisional actor controls — 2026-10-18
+
+**Approved owner request:** create three provisional actor input/ruleset/model
+and capability alternatives, keep them performant and reactive, and allow each
+to serve either a player character or a neural-network-controlled NPC. ACT-001 /
+#161 implements optional Runner, Skimmer and Crawler prototypes through a shared
+action/observation boundary. The [actor contract](../systems/actor-control-prototypes.md)
+owns Current capabilities and limitations; this request does not select a final
+production character model or imply that neural inference/training already exists.
+
+**Approved owner expansion, ACT-002 / #168:** retain those three as SetA, then
+add SetB ground/near-ground machines (Scout, Scrabbler, Ripper, GroundEffect,
+Digger), SetF unusual flight/descent (Copter, Pouncer, Dropbot, Lineshank), SetY
+contact/rope/impulse traversal (Walljumper, Clamberer, Swinger, Rocketjumper), six
+coherently themed SetU inventions and seven SetV interfaces imagined for Astra,
+Claude, Luna, Qwen, Bonsai, Jev and Gemini. The interface personas are speculative
+design prompts; they do not claim real model preferences or capabilities.
+
+The [current rig contract](../systems/actor-rigs.md) owns the resulting 29-rig
+catalog, shared action/observation seam and implementation limits. The expansion
+preserves responsive bounded control for player or policy producers. Distinctive
+movement can use authored sampled torque, adhesion, ropes and local tools without
+implying general rigid-body simulation, a pressure solver or learned inference.
+
 ## Which material behavior should changes preserve?
 
 **Owner clarification, 2026-10-18:** the reported problem across all four builds

@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-09-25
+last-reviewed: 2026-10-18
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md]
 ---
 
@@ -296,3 +296,158 @@ gravity or mass. The desktop editor accepts bounded custom values and applies
 them only through a fresh reset. See the
 [player/environment contract](../systems/player-environment-profiles-and-traversal.md)
 for field bounds, material-response ownership and traversal semantics.
+
+## Actor control prototype values
+
+**Current, experimental:** [`actor_prototype.gd`](../../godot/scripts/actor_prototype.gd)
+owns fixed version-1 **SetA** Runner, Skimmer and Crawler tuning. These values do not
+inherit live PENV player/environment edits. Positions and dimensions use cells
+(the current gameplay pixels), speeds use cells/second and timing uses seconds;
+energy is a normalized gameplay resource. None is an SI calibration.
+
+| Shared limit | Value and meaning |
+|---|---|
+| Sampled body | 8 by 14 cells, shared by all three models |
+| Accepted update duration | At most 1/30 second; longer updates are bounded rather than running an unlimited catch-up loop |
+| Velocity magnitude | At most 120 cells/second |
+| Downward gravity | 140 cells/second squared for ground models and unpowered Skimmer motion |
+| Ordinary movement sweep | At most four one-cell increments per axis per accepted update |
+| Traversal search | At most one ledge search per update, with a maximum four-cell rise and clearance along the intervening path |
+| Occupancy-query budget | At most 32 adapter occupancy queries per actor update; quota refusal blocks further movement |
+| Observation | 16 floats; schema/order belongs to the [actor contract](../systems/actor-control-prototypes.md#how-can-a-neural-policy-control-the-same-actor) |
+| Material landing response | Existing REM-003 C1 hook at effective mass 1.0 and sensitivity 1.0 |
+| Runtime enclosure recovery | Disabled for these prototypes; bounded explicit spawn repair remains separate |
+| Session admission | At most eight actor slots |
+| Human command lease | Six ticks (100 ms at 60 Hz), renewed from the latest published observation |
+| Policy command lease | Default 12 ticks, maximum 18 ticks, based on observation tick; at 60 Hz this is 200/300 ms of simulation time |
+| Pending input | One latest held state plus coalesced rising edges per actor, with epoch/producer/sequence validation |
+| Scripted demonstration cadence | One bounded action decision every six actor ticks (10 Hz at the 60 Hz simulation rate) |
+
+| Model | Version-1 movement/action settings |
+|---|---|
+| Runner | Walk 60; jump speed 78; jump-release rise-speed cutoff 32; coyote time 0.10 s; input buffer 0.12 s; dash speed 120 for 0.10 s with 0.65 s cooldown |
+| Skimmer | Cruise 54; boost 90; normalized two-axis input; energy drain 0.10/s in powered flight plus 0.65/s while boosting; ground recharge 0.45/s; braking recharge 0.20/s; exhausted flight resumes after energy reaches 0.15 |
+| Crawler | Walk 32; hop speed 48; supported clamber up to four cells; secondary action braces |
+
+| Model | Acceleration and deceleration in cells/second squared |
+|---|---|
+| Runner | Ground acceleration 900; air acceleration 360; neutral ground deceleration 1100; neutral air deceleration 180 |
+| Skimmer | Powered steering and horizontal exhaustion drag 360; explicit vector airbrake 720, followed by gravity |
+| Crawler | Movement acceleration 720; neutral horizontal deceleration 1200; brace immediately clears horizontal velocity |
+
+The Crawler's admitted clamber may add up to four cells of vertical relocation
+beside the ordinary movement sweep; the four-cell sweep limit alone is not a
+total vertical-displacement claim. Skimmer energy recharges while resting on
+ground, braking or exhausted. Neutral airborne input uses powered hover until
+energy is exhausted. Lease durations are simulation-time limits, not a guarantee
+of wall-clock response when the world or host is overloaded.
+
+These finite limits describe controller work, not accepted many-NPC throughput or
+zero-allocation execution. Read the [actor contract](../systems/actor-control-prototypes.md)
+for input lifetime, ownership, capabilities and remaining platform/acceptance gaps.
+
+## Actor rig values
+
+**Current, experimental ACT-002:** the 26 additional SetB/F/Y/U/V rigs use
+[`actor_rig_motor.gd`](../../godot/scripts/actor_rig_motor.gd), while SetA retains
+the preceding constants. Catalog metadata supplies fixed unrotated dimensions;
+the motor owns movement/resource tuning. Effort is a bounded action input, not a
+live PENV override. Units remain gameplay cells, seconds and radians.
+
+| Shared new-rig limit | Value and meaning |
+|---|---|
+| Session capacity | Eight actors; the F5 compare-set option adds the other selected-set rigs, at most seven actors total |
+| Update duration / speed norm | At most 1/30 second / 160 cells per second |
+| Baseline gravity | 156 cells per second squared before rig-specific authored lift/braking/gravity factors |
+| Translation | Six one-cell sweep increments per axis; six-cell absolute travel budget per axis includes admitted ledge/pivot movement |
+| Angular motion | At most 6 radians per second and eight tested angular increments; interval envelopes include interior AABB maxima |
+| Occupancy queries | At most 96 per actor update; refusal is treated as blocked movement |
+| Surface ray queries | At most 64 material reads per actor update, shared by cast/revalidation/ground sensing and actor-to-effect-origin checks |
+| Rope length / acquisition range | 6–44 cells / 44 cells; retained anchors are refused beyond 52 cells, and read-budget exhaustion may shorten the available cast |
+| Rope work | One terrain anchor and straight segment; bounded spring force with no positional teleport; negative reel shortens and positive reel extends |
+| Ripper / Digger / Lineshank tool radius | 3 / 4 / 2 cells |
+| Rocketjumper / Dropbot blast radius | 4 / 3 cells |
+| Rocketjumper surface reach | At most six cells beyond the current conservative collision proxy along aim; no surface means no energy spend/recoil/effect |
+| Local effect work | At most one effect, 64 material reads and 64 single-cell adapter writes per actor update; fixed radius at most four cells |
+| Effect retention | No deferred effect queue; cancellation drops armed effects and charge |
+| Effect materials | Explicit whitelist in `CyberActorRigEffects.editable_material`; Wall, composed body masks, out-of-bounds and other noneditable cells are protected |
+| Input bounds | Movement components -1..1; normalized nonzero aim or zero; effort 0..1; trim/reel -1..1; finite values required |
+| Minimal adapter defaults | Aim follows movement, effort 0.7, trim/reel zero, auxiliary false |
+| Leases and producer cadence | Existing six-tick human lease, 12-tick policy default/18-tick maximum, six-tick demo cadence; deadlines derive from observed actor tick |
+| Publications | Legacy 16-float rows plus v2 40-float rows; consumed action rows of ten floats, consumed edge flags and admitted/applied sequence identities |
+
+The 12/18-tick policy limits are 200/300 ms at the desktop 60 Hz actor cadence;
+they are simulation-time limits rather than a wall-clock service guarantee.
+The ten consumed action fields and 40 observation fields are defined only in the
+[actor-rigs contract](../systems/actor-rigs.md#what-does-the-version-2-observation-contain).
+The internal catalog's `parameters` dictionary is currently empty; it is not an
+editable movement schema. Effect-strength telemetry is an authored fraction,
+not a calibrated physical pressure or a promise to edit every cell in the radius.
+
+Clamberer adhesion drains 0.025 energy/second, permitting roughly 40 seconds from
+full energy with valid contact and no other action expenditure. Walljumper's
+1.15/second drain deliberately allows a much shorter attachment window. These are
+resource calculations, not guaranteed travel durations across changing terrain.
+Lineshank's held blade drains 0.06/second and derives lift and drag from airspeed,
+each capped at 240 cells/second squared; its separate initial pulse costs 0.09
+with a 0.24-second cooldown. Its bungee stiffness is `24 + 20 * effort`.
+Rocketjumper recoil is `(78 + 65 * effort) * (1 - 0.7 * gap / 6)` in the direction
+opposite aim, with admitted gap clamped to 0–6 cells, cost 0.26 and cooldown
+0.55 seconds. The final common speed bound still applies.
+
+| Set | Unrotated body dimensions in catalog order, width × height |
+|---|---|
+| SetA | Runner 8×14; Skimmer 8×14; Crawler 8×14 |
+| SetB | Scout 8×12; Scrabbler 14×10; Ripper 10×10; GroundEffect 14×7; Digger 6×6 |
+| SetF | Copter 12×8; Pouncer 10×10; Dropbot 10×10; Lineshank 8×12 |
+| SetY | Walljumper 8×14; Clamberer 8×12; Swinger 8×12; Rocketjumper 10×12 |
+| SetU | Springjack 8×12; Gyrocrate 10×10; Bellows 10×10; Winchbug 10×8; Magpie 8×10; Skatesail 12×8 |
+| SetV | Astra 8×12; Claude 8×12; Luna 8×10; Qwen 10×10; Bonsai 6×10; Jev 10×10; Gemini 12×8 |
+
+Clamberer may hold an 8×6 tuck and Bonsai a 6×6 tuck. Both preserve their center
+while resizing and restore the full hull only if its conservative occupied volume
+is clear. The rotated occupancy envelope can exceed the listed unrotated width
+or height; decorative extremities do not enlarge collision authority.
+
+Bounds apply to owner-local controller work. They do not establish zero
+allocations, complete native reaction cost, neural inference latency, target-PC
+frame time or large NPC-population throughput. Source-owned movement details and
+per-rig limitations remain in the [catalog contract](../systems/actor-rigs.md).
+
+## Thunderbowl values
+
+**Current, experimental ACT-003:** the standalone
+[arena/control reference](../systems/thunderbowl-control-reference.md) owns
+behavior and schema meaning. These are fixed prototype constants, not live
+world/PENV tuning or accepted population-throughput targets. Sources are
+[`thunderbowl_arena.gd`](../../godot/scripts/thunderbowl_arena.gd),
+[`thunderbowl_contract.gd`](../../godot/scripts/thunderbowl_contract.gd),
+[`actor_rig_actuation.gd`](../../godot/scripts/actor_rig_actuation.gd) and the
+[`example driver`](../../godot/examples/thunderbowl/thunderbowl_driver.gd).
+
+| Boundary | Current value and consequence |
+|---|---|
+| Arena / population | One 256 by 144 cell training pit beginning at (96,96); 1–8 rigs; native workers=1 |
+| Episode duration | 1–36,000 ticks; rig/material step 1/60 second; terminal scores freeze |
+| Script / human cadence | Script, local reflex and graph-NCA decisions every six ticks (10 Hz); scene human sampling every tick (60 Hz) |
+| Commands | At most eight envelopes per owner step, at most one admitted per actor; one latest held session packet |
+| Input lease | Default 12, maximum 18 ticks, derived from the issued observation's tick; 19 issuance-history slots per actor |
+| Local sensing | 9 by 9 material samples spaced four cells; at most seven actors within 64 cells and clear native-cell line of sight |
+| Oracle sensing | Full copied actor states/virtual HP plus 32 by 18 global material samples at eight-cell spacing; no full-resolution native grid |
+| Sensing budget | At most 8,192 reads per completed-state generation; at most 192 reads per line; conservative opaque result on exhaustion |
+| Tag combat | Virtual HP=3, range=56 cells, aim dot threshold=0.94, rising-edge shot, cooldown=30 ticks, one target per shot |
+| Tag work / reward | At most 10,752 line reads per step; +1/-1 per hit; elimination +2 shared among simultaneous contributors and -2 to victim; ring-out -2 |
+| Local messages | One typed four-float message per admitted sender command; same team, radius/LOS gated, next-tick delivery; expiry is packet lease deadline; at most seven retained senders per receiver / 56 deliveries |
+| Event history | Last 128 events retained with monotonic IDs and explicit dropped-event count |
+| Smart-link requests | At most one pending request per actor, request interval at least 30 ticks; plan validity 1–120 ticks from original observation |
+| JSON file boundary | At most 65,536 bytes for a loaded config/response; optional file I/O runs between arena steps and can delay the caller |
+| Graph neural example | Four hidden channels per actor; one shared 12→8→4 residual MLP update per decision; 140 authored untrained weight/bias values clamped by schema to -4..4 |
+| Metal profiles | Ripper: drive/torque/brake/zero; Copter: collective/lateral/torque/brake; Gemini: independent left/right/zero/zero; original motor geometry/query/speed caps remain |
+| Direct readback | Version 1, 32 values per actor, separate from v1/v2 rig state; game-unit force/torque and mass/inertia, no SI/Rapier-force claim |
+| Optional scene image | At most one copied 256 by 144 material region every six ticks (36,864 reads); no such full-region sampling in headless policy sensing |
+
+`evaluation` declares `mechanics`, `matched`, `asymmetric` or `oracle_reference`.
+The matched configuration gate requires equal rig, actuation lane and observation
+profile and excludes human cadence; it does not prove equal effective compute,
+training privilege or empirical fairness. The visible scene displays evaluator
+information, so its human examples use mechanics/asymmetric classification.

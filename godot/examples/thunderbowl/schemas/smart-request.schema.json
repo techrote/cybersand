@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Thunderbowl v1 smart request",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "actor_id": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 7
+    },
+    "epoch": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2147483647
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "observation_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "observed_tick": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 36000
+    },
+    "expires_tick": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 36120
+    },
+    "observation": {
+      "$ref": "observation.schema.json"
+    }
+  },
+  "required": [
+    "version",
+    "run_id",
+    "actor_id",
+    "epoch",
+    "request_id",
+    "observation_id",
+    "observed_tick",
+    "expires_tick",
+    "observation"
+  ],
+  "additionalProperties": false
+}

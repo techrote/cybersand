@@ -6,7 +6,7 @@ status: Current
 scope: Current C ABI versions and private Godot packed layouts; proposed gameplay/job/reconfiguration contracts are not executable APIs
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-10-18
 ---
 
 # Interfaces and message contracts
@@ -64,11 +64,74 @@ this worker protocol. Source: [simulation_worker.gd](../../godot/scripts/simulat
 Ownership and timing are defined by [lifetimes](../architecture/data-ownership-and-lifetimes.md)
 and [step order](../architecture/simulation-tick-and-threading.md).
 
+### Optional actor prototype control surface
+
+**Current, experimental desktop:** `queue_actor_prototype_reset`,
+`submit_actor_action`, `submit_actor_rig_action` and `cancel_actor_input` are
+GDScript worker methods for the bounded [actor rig session](../systems/actor-rigs.md).
+Reset definitions are copied; the reset method returns zero on refusal or a
+positive request receipt. Snapshot reset-serial/applied/status fields separately
+report the owner outcome after it rechecks scenario authority. Action admission validates actor/producer, epoch,
+sequence and observation-derived expiry before retaining a bounded input value.
+`CyberSimulationSnapshot.actor_prototypes` carries copied session identity,
+capabilities and fixed-stride observation rows. The [SetA compatibility page](../systems/actor-control-prototypes.md)
+owns the original two-button command and 16-float order. The
+[v2 rig contract](../systems/actor-rigs.md#what-action-does-a-player-or-neural-policy-submit)
+adds independent aim, effort, trim, reel and auxiliary, plus 40-float rig rows.
+The old fields remain additive-compatible; SetA still instantiates its original motor.
+
+`sequences` reports latest admitted input. `applied_sequences` and ten-float
+`applied_actions` rows identify the last consumed live command; `applied_flags`
+retains held, pressed and cancellation bits so brief taps are not lost from
+readback. The v2 contract owns the exact field order and flag values. These
+publications remain observations rather than complete replay state. `rig_capabilities`
+converts catalog body/color values to numeric arrays for structured JSON retention.
+
+This is an in-process adapter seam, not a network protocol, native C ABI, trained
+policy or Web input implementation. Existing native material/collision interfaces
+and main-thread Rapier ownership are unchanged. New-rig tools may invoke the
+existing owner-local single-cell emission adapter under explicit per-update
+budgets; a policy cannot supply an arbitrary World operation or effect footprint.
+
+### Direct actuator lane and Thunderbowl envelopes
+
+**Current, experimental ACT-003:** actor definitions may add `control_mode`
+(`wire` by default, or `metal`). Metal requires a declared Ripper, Copter or
+Gemini profile and a human/policy producer; unsupported combinations are refused.
+The worker value seam is:
+
+```gdscript
+submit_actor_actuator_action(actor_id: int, epoch: int, sequence: int,
+    observed_tick: int, actuators: Vector4, lease_ticks: int = 12,
+    producer: StringName = &"policy") -> bool
+```
+
+The session method is `submit_actuator_action`. It retains the existing
+producer/epoch/sequence/observed-tick lease checks, with held latest values and
+no action-button edges. Raw profile channels map to forces/torques without the
+intent motor's steering, stabilization or traversal assistance. Passive physics,
+resource gates and the existing bounded collision path still constrain motion.
+The session adds `control_modes`, `actuation_version:1`, `actuation_stride:32`,
+`actuation_states`, `actuation_profiles` and copied `actuation_capabilities`.
+Wire rows in that new array are zero; metal rows in `applied_actions` are zero.
+`applied_sequences` continues to identify the consumed lane's command. Existing
+16/40/10 strides and their meanings are unchanged.
+
+The standalone arena wraps this typed seam in strict version-1 JSON envelopes.
+It issues opaque run/observation identities, derives producer assignment from
+configuration and checks lane, liveness, monotonically increasing sequence,
+observation issuance/freshness, communication privilege and command capacity
+before admitting values. Command admission is not a hit or movement guarantee.
+Its copied self/local/oracle observation formats, human device frames, typed
+messages, slow model intentions and JSON Schema files are owned by the
+[Thunderbowl reference](../systems/thunderbowl-control-reference.md).
+
 ### Sampled-player granular disturbance adapter
 
 **Current private Godot adapter:** `character_disturb_granular(origin, size,
 impact_speed)` is a serialized owner operation used only by
-`CyberSampledCharacter` after an accepted downward granular collision. It is not
+`CyberSampledCharacter` and its `CyberActorPrototype` subclass after an accepted
+downward granular collision. It is not
 part of the public C ABI or the rigid-body packed result format. Position/size are
 finite finite-adapter cell/pixel coordinates; impact speed is downward
 cells/pixels per second. Malformed/out-of-world input, failed worlds, impact below

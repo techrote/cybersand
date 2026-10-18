@@ -3,6 +3,13 @@ extends Control
 const GameplayRecorder = preload("res://scripts/gameplay_recorder.gd")
 const PlayerEnvironmentProfiles = preload("res://scripts/player_environment_profiles.gd")
 const PlayerEnvironmentPanel = preload("res://scripts/player_environment_panel.gd")
+const ActorPrototypePanel = preload("res://scripts/actor_prototype_panel.gd")
+const ActorPrototypeOverlay = preload("res://scripts/actor_prototype_overlay.gd")
+const ActorRigCatalog = preload("res://scripts/actor_rig_catalog.gd")
+const ACTOR_CONTROL_KEYS: Array[int] = [KEY_W, KEY_A, KEY_S, KEY_D, KEY_SPACE, KEY_SHIFT,
+	KEY_Q, KEY_E, KEY_Z, KEY_X, KEY_C, KEY_BRACKETLEFT, KEY_BRACKETRIGHT]
+const ACTOR_PARAMETRIC_KEYS: Array[int] = [KEY_Q, KEY_E, KEY_Z, KEY_X, KEY_C,
+	KEY_BRACKETLEFT, KEY_BRACKETRIGHT]
 const DEFAULT_RECORDING_HZ: int = 15
 const DEFAULT_RECORDING_QUEUE_CAPACITY: int = 8
 
@@ -805,6 +812,17 @@ var player_representation: StringName = CyberPlayerRepresentation.SAMPLED
 var sampled_runtime_recovery_enabled: bool = true
 var barrel_player_spawn_position: Vector2 = CHARACTER_SPAWN
 var player_representation_button: Button
+var actor_prototype_button: Button
+var actor_prototype_panel: CyberActorPrototypePanel
+var actor_prototype_overlay: CyberActorPrototypeOverlay
+var actor_model_selection: StringName = &""
+var actor_producer_selection: StringName = &"human"
+var actor_demo_npcs: bool = false
+var _actor_input_epoch: int = -1
+var _actor_input_sequence: int = 0
+var _actor_input_rearm: bool = true
+var _actor_reset_receipt: int = 0
+var _actor_effort: float = 0.7
 var rigid_bodies: Array[RigidBody2D] = []
 var rapier_bridge: CyberRapierPhysicsBridge = CyberRapierPhysicsBridge.new()
 var rapier_start_error: Error = OK
@@ -841,6 +859,11 @@ func toggle_player_environment_tuning() -> void:
 
 
 func apply_player_environment_profile(candidate: Dictionary) -> void:
+	if actor_model_selection != &"":
+		player_environment_panel.set_error(
+			"Actor prototypes own their movement settings. Select Current sampled character in F5 to tune PENV."
+		)
+		return
 	if (
 		not water_blind_set.is_empty()
 		or not water_active_blind_label.is_empty()
@@ -880,6 +903,7 @@ func _ready() -> void:
 	setup_brush_preview()
 	setup_player_representation_button()
 	setup_player_environment_tuning()
+	setup_actor_prototypes()
 	var tower_button: Button = Button.new()
 	tower_button.name = "ExperimentTowerLauncher"
 	tower_button.text = "Experiment Tower / F9"
@@ -1012,6 +1036,10 @@ func _process(delta: float) -> void:
 	update_brush_preview()
 	handle_painting()
 	update_camera(delta)
+	actor_prototype_overlay.present(
+		latest_snapshot.actor_prototypes if latest_snapshot != null else {},
+		camera_origin.floor(), current_view_size, view_content_rect()
+	)
 	update_worker_frame_state()
 	update_shader_parameters()
 
@@ -1019,11 +1047,13 @@ func _process(delta: float) -> void:
 	if status_accumulator >= STATUS_INTERVAL:
 		status_accumulator = 0.0
 		update_status()
+		refresh_actor_prototypes()
 		maximum_frame_time_ms = frame_time_ms
 		maximum_collider_time_ms = 0.0
 
 
 func _physics_process(_delta: float) -> void:
+	publish_actor_keyboard_input()
 	if simulation_worker.has_failed():
 		return
 	if (
@@ -1038,6 +1068,33 @@ func _physics_process(_delta: float) -> void:
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
+	if (
+		event is InputEventKey and event.keycode in ACTOR_PARAMETRIC_KEYS
+		and actor_human_control_active() and actor_keyboard_allowed()
+		and int(latest_snapshot.actor_prototypes.get("rig_version", 1)) >= 2
+		and not CyberActorPrototypeSession.MODEL_IDS.has(StringName(str(latest_snapshot.actor_prototypes.models[0])))
+	):
+		if event.pressed and not event.echo:
+			if event.keycode == KEY_BRACKETLEFT:
+				_actor_effort = clampf(_actor_effort - 0.05, 0.0, 1.0)
+			elif event.keycode == KEY_BRACKETRIGHT:
+				_actor_effort = clampf(_actor_effort + 0.05, 0.0, 1.0)
+		if not event.echo:
+			publish_actor_keyboard_input()
+		get_viewport().set_input_as_handled()
+		return
+	if (
+		event is InputEventKey and not event.echo
+		and event.keycode in [KEY_W, KEY_A, KEY_S, KEY_D, KEY_SPACE, KEY_SHIFT]
+	):
+		# Publish both edges as well as the regular physics sample, preserving a
+		# quick tap that starts and ends between two physics callbacks. GUI-owned
+		# events never reach this handler; focus/rearm admission still applies.
+		publish_actor_keyboard_input()
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F5:
+		toggle_actor_prototypes()
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F8:
 		microscenario_toggle_hud()
 		get_viewport().set_input_as_handled()
@@ -1376,6 +1433,8 @@ func setup_player_representation_button() -> void:
 
 
 func player_representation_identity() -> String:
+	if latest_snapshot != null and not latest_snapshot.actor_prototypes.is_empty():
+		return latest_snapshot.player_representation
 	return CyberPlayerRepresentation.identity(
 		player_representation,
 		sampled_runtime_recovery_enabled
@@ -1390,7 +1449,9 @@ func refresh_player_representation_button() -> void:
 	if player_representation_button == null:
 		return
 	var recovery_text: String = ""
-	if not player_uses_barrel():
+	if actor_model_selection != &"":
+		recovery_text = " | prototype controls / F5 | burial-safe"
+	elif not player_uses_barrel():
 		recovery_text = (
 			" | runtime surfacing ON / F7"
 			if sampled_runtime_recovery_enabled
@@ -1424,6 +1485,9 @@ func cycle_player_representation() -> bool:
 		or not pending_water_apply.is_empty()
 	):
 		return false
+	actor_model_selection = &""
+	_actor_reset_receipt = 0
+	_actor_input_rearm = true
 	player_representation = (
 		CyberPlayerRepresentation.BARREL_RAPIER
 		if player_representation == CyberPlayerRepresentation.SAMPLED
@@ -1438,7 +1502,7 @@ func cycle_player_representation() -> bool:
 
 func toggle_sampled_runtime_recovery() -> bool:
 	if (
-		player_uses_barrel()
+		player_uses_barrel() or actor_model_selection != &""
 		or tower_active
 		or water_controlled_run_active()
 		or tower_context.get("micro_active", false)
@@ -1450,6 +1514,11 @@ func toggle_sampled_runtime_recovery() -> bool:
 
 
 func _force_sampled_player_for_lab() -> void:
+	actor_model_selection = &""
+	_actor_reset_receipt = 0
+	_actor_input_rearm = true
+	if actor_prototype_panel != null:
+		actor_prototype_panel.hide()
 	# Registered Tower/Water/MicroScenario definitions retain their historical
 	# sampled-player identity and body layout. PCHAR switching is an
 	# ordinary-sandbox experiment only.
@@ -1507,6 +1576,11 @@ func _apply_microscenario_player_configuration(
 	definition: Dictionary,
 	configuration: Dictionary
 ) -> void:
+	actor_model_selection = &""
+	_actor_reset_receipt = 0
+	_actor_input_rearm = true
+	if actor_prototype_panel != null:
+		actor_prototype_panel.hide()
 	player_representation = StringName(
 		str(configuration.get("representation", "sampled"))
 	)
@@ -1582,12 +1656,22 @@ func sync_player_presentation_position() -> void:
 
 func reset_world() -> void:
 	if water_controlled_run_active(): return
+	if actor_model_selection != &"":
+		var receipt: int = simulation_worker.queue_actor_prototype_reset(
+			actor_prototype_definitions(actor_model_selection, actor_producer_selection, actor_demo_npcs),
+			CHARACTER_SPAWN
+		)
+		if receipt == 0:
+			return
+		_actor_reset_receipt = receipt
+	else:
+		simulation_worker.queue_reset(
+			CHARACTER_SPAWN,
+			not player_uses_barrel(),
+			sampled_runtime_recovery_enabled
+		)
+	_actor_input_rearm = true
 	reset_test_rigid_bodies()
-	simulation_worker.queue_reset(
-		CHARACTER_SPAWN,
-		not player_uses_barrel(),
-		sampled_runtime_recovery_enabled
-	)
 	character_position = CHARACTER_SPAWN
 	camera_follow_enabled = true
 	camera_origin = clamped_camera_origin(character_centre() - Vector2(current_view_size) * 0.5)
@@ -1674,6 +1758,7 @@ func consume_worker_snapshot() -> void:
 	if snapshot == null:
 		return
 	latest_snapshot = snapshot
+	_reconcile_actor_prototype_reset()
 	tower_context = snapshot.lab_context
 	if not pending_microscenario_apply.is_empty():
 		if tower_context.get("micro_active", false) and str(tower_context.get("microscenario", {}).get("definition_hash", "")) == str(pending_microscenario_apply.hash):
@@ -1802,6 +1887,202 @@ func get_horizontal_input() -> float:
 	return move_right - move_left
 
 
+func setup_actor_prototypes() -> void:
+	actor_prototype_button = Button.new()
+	actor_prototype_button.name = "ActorPrototypes"
+	actor_prototype_button.text = "Actor-rigs / F5"
+	actor_prototype_button.focus_mode = Control.FOCUS_NONE
+	actor_prototype_button.pressed.connect(toggle_actor_prototypes)
+	$Layout.add_child(actor_prototype_button)
+	actor_prototype_panel = ActorPrototypePanel.new()
+	actor_prototype_panel.name = "ActorPrototypePanel"
+	add_child(actor_prototype_panel)
+	actor_prototype_panel.apply_requested.connect(apply_actor_prototype_configuration)
+	actor_prototype_overlay = ActorPrototypeOverlay.new()
+	actor_prototype_overlay.name = "ActorPrototypeOverlay"
+	actor_prototype_overlay.clip_contents = true
+	$Layout/World.add_child(actor_prototype_overlay)
+
+
+func actor_prototypes_allowed() -> bool:
+	return (
+		not tower_active and not water_controlled_run_active()
+		and not tower_context.get("micro_active", false)
+		and pending_microscenario_apply.is_empty() and pending_water_apply.is_empty()
+	)
+
+
+func toggle_actor_prototypes() -> void:
+	if not actor_prototypes_allowed():
+		return
+	if actor_prototype_panel.visible:
+		actor_prototype_panel.hide()
+		return
+	_actor_input_rearm = true
+	actor_prototype_panel.configure_selection(actor_model_selection, actor_producer_selection, actor_demo_npcs)
+	actor_prototype_panel.effort_slider.value = _actor_effort
+	actor_prototype_panel.popup_centered(Vector2i(600, 600))
+
+
+func actor_prototype_definitions(model_id: StringName, producer: StringName, demo_npcs: bool) -> Array:
+	if model_id == &"":
+		return []
+	var definitions: Array = [{"model": model_id, "producer": producer, "position": CHARACTER_SPAWN}]
+	if demo_npcs:
+		for candidate: StringName in ActorRigCatalog.rigs_in_set(ActorRigCatalog.set_for(model_id)):
+			if candidate != model_id:
+				definitions.append({"model": candidate, "producer": &"demo",
+					"position": CHARACTER_SPAWN + Vector2(float(definitions.size()) * 22.0, -4.0)})
+	return definitions
+
+
+func apply_actor_prototype_configuration(model_id: StringName, producer: StringName, demo_npcs: bool) -> bool:
+	if not actor_prototypes_allowed():
+		actor_prototype_panel.set_error("Actor-rig selection is available in the ordinary sandbox.")
+		return false
+	if model_id != &"" and not ActorRigCatalog.has_rig(model_id):
+		return false
+	if not CyberActorPrototypeSession.PRODUCERS.has(producer):
+		return false
+	var definitions: Array = actor_prototype_definitions(model_id, producer, demo_npcs)
+	var receipt: int = simulation_worker.queue_actor_prototype_reset(definitions, CHARACTER_SPAWN)
+	if receipt == 0:
+		actor_prototype_panel.set_error("A scenario reset is pending; finish that transition first.")
+		return false
+	_actor_reset_receipt = receipt
+	actor_model_selection = model_id
+	actor_producer_selection = producer
+	actor_demo_npcs = demo_npcs
+	_actor_effort = actor_prototype_panel.effort_slider.value
+	_actor_input_rearm = true
+	player_representation = CyberPlayerRepresentation.SAMPLED
+	sampled_runtime_recovery_enabled = model_id == &""
+	reset_test_rigid_bodies()
+	simulation_worker.set_rigid_body_states(pack_rigid_body_states())
+	character_position = CHARACTER_SPAWN
+	camera_follow_enabled = true
+	camera_origin = clamped_camera_origin(character_centre() - Vector2(current_view_size) * 0.5)
+	actor_prototype_panel.hide()
+	return true
+
+
+func _reconcile_actor_prototype_reset() -> void:
+	if _actor_reset_receipt == 0 or latest_snapshot.actor_prototype_reset_serial < _actor_reset_receipt:
+		return
+	_actor_reset_receipt = 0
+	if latest_snapshot.actor_prototype_reset_applied:
+		return
+	# The owner may have accepted a scenario after the last displayed snapshot.
+	# Reconcile a refused request with actual actor identity, never UI optimism.
+	var context: Dictionary = latest_snapshot.actor_prototypes
+	actor_model_selection = &"" if context.is_empty() else StringName(str(context.models[0]))
+	if not context.is_empty():
+		actor_producer_selection = StringName(str(context.producers[0]))
+		sampled_runtime_recovery_enabled = false
+	else:
+		sampled_runtime_recovery_enabled = latest_snapshot.character_runtime_recovery_enabled
+	_actor_input_rearm = true
+	if actor_prototype_panel != null:
+		actor_prototype_panel.set_error(latest_snapshot.actor_prototype_status)
+	if actor_prototype_button != null:
+		actor_prototype_button.tooltip_text = latest_snapshot.actor_prototype_status
+
+
+func actor_keyboard_allowed() -> bool:
+	if paused or not get_window().has_focus() or not actor_prototypes_allowed():
+		return false
+	if actor_prototype_panel.visible or player_environment_panel.visible:
+		return false
+	if tower_profile_panel != null and tower_profile_panel.visible:
+		return false
+	if microscenario_panel != null and microscenario_panel.modal_open():
+		return false
+	var focus: Control = get_viewport().gui_get_focus_owner()
+	return focus == null
+
+
+func actor_human_control_active() -> bool:
+	return (
+		latest_snapshot != null and not latest_snapshot.actor_prototypes.is_empty()
+		and latest_snapshot.actor_prototypes.producers[0] == &"human"
+	)
+
+
+func actor_pointer_aim() -> Vector2:
+	return actor_pointer_aim_at(world_view.get_local_mouse_position())
+
+
+func actor_pointer_aim_at(pointer: Vector2) -> Vector2:
+	# Read only displayed actor/camera state, using the terrain's aspect-fit map.
+	var content: Rect2 = view_content_rect()
+	if not pointer.is_finite() or content.size.x <= 0.0 or content.size.y <= 0.0 or not content.has_point(pointer):
+		return Vector2.ZERO
+	var world_point: Vector2 = camera_origin.floor() + (pointer - content.position) / content.size * Vector2(current_view_size)
+	return (world_point - character_centre()).normalized()
+
+
+func publish_actor_keyboard_input() -> void:
+	if latest_snapshot == null or latest_snapshot.actor_prototypes.is_empty():
+		return
+	var context: Dictionary = latest_snapshot.actor_prototypes
+	if context.producers[0] != &"human":
+		return
+	var epoch: int = int(context.epoch)
+	if epoch != _actor_input_epoch:
+		_actor_input_epoch = epoch
+		_actor_input_sequence = 0
+		_actor_input_rearm = true
+	var movement: Vector2 = Vector2(get_horizontal_input(),
+		float(Input.is_key_pressed(KEY_S)) - float(Input.is_key_pressed(KEY_W)))
+	var primary: bool = Input.is_key_pressed(KEY_SPACE)
+	var secondary: bool = Input.is_key_pressed(KEY_SHIFT)
+	var auxiliary: bool = Input.is_key_pressed(KEY_C)
+	var trim: float = float(Input.is_key_pressed(KEY_E)) - float(Input.is_key_pressed(KEY_Q))
+	var reel: float = float(Input.is_key_pressed(KEY_X)) - float(Input.is_key_pressed(KEY_Z))
+	if (
+		not actor_keyboard_allowed() or context.get("suspended", false)
+		or _actor_reset_receipt != 0 or simulation_worker.has_failed()
+	):
+		_actor_input_rearm = true
+		simulation_worker.cancel_actor_input(0, epoch, &"human")
+		return
+	if _actor_input_rearm:
+		for key: int in ACTOR_CONTROL_KEYS:
+			if Input.is_key_pressed(key):
+				return
+		_actor_input_rearm = false
+	_actor_input_sequence += 1
+	if int(context.get("rig_version", 1)) < 2 or CyberActorPrototypeSession.MODEL_IDS.has(StringName(str(context.models[0]))):
+		# Keep the original Set A desktop adapter path and its public v1 seam.
+		simulation_worker.submit_actor_action(0, epoch, _actor_input_sequence,
+			int(context.tick), movement, primary, secondary, 6, &"human")
+		return
+	simulation_worker.submit_actor_rig_action(0, epoch, _actor_input_sequence,
+		int(context.tick), movement, actor_pointer_aim(), _actor_effort, trim, reel,
+		primary, secondary, auxiliary, 6, &"human")
+
+
+func refresh_actor_prototypes() -> void:
+	actor_prototype_button.disabled = not actor_prototypes_allowed()
+	if latest_snapshot == null or latest_snapshot.actor_prototypes.is_empty():
+		actor_prototype_button.text = "Actor-rigs / F5"
+		return
+	var context: Dictionary = latest_snapshot.actor_prototypes
+	var states: PackedFloat32Array = context.states
+	var rig_id: StringName = StringName(str(context.models[0]))
+	var power_text: String = ""
+	if ActorRigCatalog.entry(rig_id).channels.has("effort"):
+		var power: float = _actor_effort
+		var applied: PackedFloat32Array = context.get("applied_actions", PackedFloat32Array())
+		if context.producers[0] != &"human":
+			power = applied[4] if applied.size() >= CyberActorPrototypeSession.ACTION_STRIDE else 0.0
+		power_text = " | power %d%%" % roundi(power * 100.0)
+	actor_prototype_button.text = "%s · %s / F5 | %s | energy %d%%%s | %d rigs" % [
+		ActorRigCatalog.name_for(rig_id), str(ActorRigCatalog.set_for(rig_id)), str(context.producers[0]),
+		roundi(states[6] * 100.0), power_text, int(context.count)]
+	actor_prototype_button.tooltip_text = ActorRigCatalog.controls_text(rig_id) + "\nRelease control keys after UI/focus changes."
+
+
 func update_camera(delta: float) -> void:
 	if water_controlled_run_active(): return
 	var pan_input: Vector2 = Vector2(
@@ -1829,6 +2110,10 @@ func character_centre() -> Vector2:
 		return rapier_bridge.body_transform(
 			CyberPlayerRepresentation.BARREL_BODY_INDEX
 		).origin
+	if latest_snapshot != null and not latest_snapshot.actor_prototypes.is_empty():
+		var rig_states: PackedFloat32Array = latest_snapshot.actor_prototypes.get("rig_states", PackedFloat32Array())
+		if rig_states.size() >= CyberActorPrototypeSession.RIG_OBSERVATION_STRIDE:
+			return character_position + Vector2(rig_states[35], rig_states[36]) * 0.5
 	return character_position + CyberSampledCharacter.BODY_SIZE * 0.5
 
 
@@ -1979,6 +2264,7 @@ func queue_brush_footprint_mutation(
 
 
 func handle_painting() -> void:
+	if actor_prototype_panel != null and actor_prototype_panel.visible: return
 	if microscenario_panel != null and microscenario_panel.modal_open(): return
 	if tower_profile_panel != null and tower_profile_panel.visible: return
 	var view_pixel: Vector2i = view_pixel_from_local_point(
@@ -2273,6 +2559,7 @@ func update_shader_parameters() -> void:
 	)
 	var sampled_player_visible: bool = (
 		not player_uses_barrel()
+		and (latest_snapshot == null or latest_snapshot.actor_prototypes.is_empty())
 		and not (
 			tower_context.get("micro_active", false)
 			and not tower_context.get("microscenario", {}).get("player_enabled", true)
