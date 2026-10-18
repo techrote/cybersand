@@ -56,6 +56,7 @@
     "systems/activity-dirty-regions-and-waking.md",
     "systems/actor-control-prototypes.md",
     "systems/actor-rigs.md",
+    "systems/actor-usables.md",
     "systems/granular-interaction-policy.md",
     "systems/player-environment-profiles-and-traversal.md",
     "systems/material-appearance-and-rendering.md",
@@ -337,5 +338,5 @@
       "reason": "Fresh dated reconstructed-depth integration evidence; runtime semantics remain in the depth contract."
     }
   ],
-  "integration_note": "Retains all scene, generation, actor, Thunderbowl and presentation routes from both parents; historical questions are preserved."
+  "integration_note": "Retains scene, generation, actor, actor-usable, Thunderbowl and presentation routes; historical questions remain separately scoped."
 }
