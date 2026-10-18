@@ -29,6 +29,16 @@ behavior under load, exact engineering comparisons and recoverable checkpoints.
 60 FPS is a product target; it is not a performance guarantee established by
 headless fixtures or a particular worker count.
 
+## Provisional actor controls — 2026-10-18
+
+**Approved owner request:** create three provisional actor input/ruleset/model
+and capability alternatives, keep them performant and reactive, and allow each
+to serve either a player character or a neural-network-controlled NPC. ACT-001 /
+#161 implements optional Runner, Skimmer and Crawler prototypes through a shared
+action/observation boundary. The [actor contract](../systems/actor-control-prototypes.md)
+owns Current capabilities and limitations; this request does not select a final
+production character model or imply that neural inference/training already exists.
+
 ## Which material behavior should changes preserve?
 
 **Owner clarification, 2026-10-18:** the reported problem across all four builds

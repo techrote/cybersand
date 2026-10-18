@@ -436,6 +436,8 @@ func _frame_metadata(snapshot: CyberSimulationSnapshot) -> Dictionary:
 		"rotation_radians": 0.0,
 		"runtime_recovery_enabled": snapshot.character_runtime_recovery_enabled,
 		"environment_profile": player_environment_profile.duplicate(true),
+		"environment_profile_applied": snapshot.actor_prototypes.is_empty() and active_body_id == 0,
+		"actor_prototype": snapshot.actor_prototypes.duplicate(true),
 	}
 	if active_body_id > 0:
 		for body: Dictionary in bodies:
@@ -462,7 +464,8 @@ func _frame_metadata(snapshot: CyberSimulationSnapshot) -> Dictionary:
 	if render_usec <= 0:
 		render_usec = snapshot.published_usec
 	var render_tick: int = snapshot.render_tick_index
-	if render_tick <= 0:
+	# Tick zero is a valid reset generation even while actor samples advance.
+	if render_tick <= 0 and snapshot.render_snapshot_serial <= 0:
 		render_tick = snapshot.tick_index
 	var capture_usec: int = snapshot.published_usec
 	if capture_usec <= 0:
@@ -499,6 +502,7 @@ func _frame_metadata(snapshot: CyberSimulationSnapshot) -> Dictionary:
 			"completed_simulation_tick": render_tick,
 			"generated_monotonic_usec": render_usec,
 			"world_revision": snapshot.world_revision,
+			"actor_prototypes": material_context.get("actor_prototypes", {}).duplicate(true),
 		},
 		"actor_sample": {
 			"snapshot_serial": snapshot.serial,
@@ -506,6 +510,7 @@ func _frame_metadata(snapshot: CyberSimulationSnapshot) -> Dictionary:
 			"published_monotonic_usec": capture_usec,
 			"representation": representation,
 			"player_body_id": active_body_id,
+			"actor_prototypes": snapshot.actor_prototypes.duplicate(true),
 		},
 		"render_publication": {
 			"serial": snapshot.render_snapshot_serial,
@@ -553,7 +558,7 @@ func _record_drop_locked(snapshot: CyberSimulationSnapshot, reason: String) -> v
 	if render_usec <= 0:
 		render_usec = snapshot.published_usec
 	var render_tick: int = snapshot.render_tick_index
-	if render_tick <= 0:
+	if render_tick <= 0 and snapshot.render_snapshot_serial <= 0:
 		render_tick = snapshot.tick_index
 	var event: Dictionary = {
 		"attempt": _capture_attempts,
