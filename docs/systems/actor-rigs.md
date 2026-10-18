@@ -182,6 +182,14 @@ The slider is enabled for keyboard control only when the rig uses effort. Demo
 and policy HUD power comes from the action actually consumed, not the idle human
 slider; those producers supply their own effort through the shared seam.
 
+The separate [Thunderbowl control laboratory](thunderbowl-control-reference.md)
+uses these same rigs for bounded battle/training experiments. Its configuration
+may select a direct `metal` actuation lane for Ripper, Copter or Gemini; ordinary
+actor definitions default to `wire`. Direct force/torque commands and their
+32-value readback are an additive contract, separate from the v2 intent channels.
+The Thunderbowl reference owns controller topologies, local/oracle perception,
+messages, model-plan adapters and arena-only tag combat.
+
 Tower, Water and registered MicroScenario controls preserve their fixture identity.
 PENV changes remain refused while rigs own the motor settings. F7 remains the
 sampled-baseline recovery control, and F6 leaves rigs through the existing PCHAR

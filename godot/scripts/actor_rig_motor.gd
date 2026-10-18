@@ -7,8 +7,11 @@ extends CyberActorPrototype
 # here. The shared action packet describes intent; this motor owns admission.
 const Catalog = preload("res://scripts/actor_rig_catalog.gd")
 const RigEffects = preload("res://scripts/actor_rig_effects.gd")
+const Actuation = preload("res://scripts/actor_rig_actuation.gd")
 const RIG_VERSION: int = 1
 const RIG_OBSERVATION_SIZE: int = 40
+const ACTUATION_VERSION: int = Actuation.VERSION
+const ACTUATION_OBSERVATION_SIZE: int = Actuation.OBSERVATION_SIZE
 const RIG_MAX_TIMESTEP: float = 1.0 / 30.0
 const RIG_MAX_SPEED: float = 160.0
 const RIG_MAX_TRAVEL: float = 6.0
@@ -45,6 +48,7 @@ var effect_strength: float = 0.0
 var effect_radius: float = 0.0
 var effect_reads_last: int = 0
 var gait_phase: float = 0.0
+var actuation: CyberActorRigActuation = Actuation.new()
 
 var _base_body_size: Vector2 = body_size
 var _rig_index: int = -1
@@ -74,6 +78,7 @@ var _pending_effect_origin: Vector2 = Vector2.ZERO
 var _pending_effect_radius: int = 0
 var _pending_effect_strength: float = 0.0
 var _effects: CyberActorRigEffects = RigEffects.new()
+var _metal_control: bool = false
 
 
 func configure_model(candidate: StringName) -> bool:
@@ -89,6 +94,7 @@ func configure_model(candidate: StringName) -> bool:
 	_rig_index = index
 	_base_body_size = configured_body
 	body_size = configured_body
+	actuation.configure_model(candidate)
 	reset(position if position.is_finite() else Vector2.ZERO)
 	return true
 
@@ -103,6 +109,7 @@ func reset(spawn_position: Vector2) -> void:
 	_attach_lock = 0.0
 	_coast_mode = false
 	_flight_mode = false
+	_metal_control = false
 	_adhesion_exhausted = false
 	_contacts = 0
 	air_jumps_remaining = 2 if model_id == &"scout" else 0
@@ -133,6 +140,9 @@ func clear_actions() -> void:
 	effect_origin = Vector2.ZERO
 	effect_strength = 0.0
 	effect_radius = 0.0
+	if actuation != null:
+		actuation.clear_output()
+		actuation.remaining_energy = clampf(energy, 0.0, 1.0) if is_finite(energy) else 0.0
 	_update_readiness()
 
 
@@ -182,12 +192,54 @@ func simulate_rig_action(delta: float, movement: Vector2, aim: Vector2, effort: 
 		trim: float, reel: float, primary: bool, secondary: bool, auxiliary: bool, world,
 		primary_pressed: bool = false, secondary_pressed: bool = false,
 		auxiliary_pressed: bool = false) -> void:
+	_simulate_rig_step(delta, movement, aim, effort, trim, reel, primary, secondary,
+		auxiliary, world, primary_pressed, secondary_pressed, auxiliary_pressed, false, Vector4.ZERO)
+
+
+func simulate_actuator_action(delta: float, actuators: Vector4, world) -> bool:
+	# This is a separate control lane. Invalid packets never become neutral
+	# high-level actions, and zero actuators still use direct passive dynamics.
+	if not Actuation.supports_model(model_id):
+		_clear_telemetry()
+		actuation.flags = Actuation.UNSUPPORTED
+		return false
+	if not is_finite(delta) or delta <= 0.0 or not Actuation.valid_command(model_id, actuators):
+		_clear_telemetry()
+		actuation.flags = Actuation.INVALID
+		movement_limited = not is_finite(delta) or delta < 0.0 or not Actuation.valid_command(model_id, actuators)
+		return false
+	if world == null or (world.has_method(&"has_failed") and world.has_failed()):
+		_clear_telemetry()
+		clear_actions()
+		actuation.requested_actuators = Actuation.clamp_command(model_id, actuators)
+		actuation.flags = Actuation.BLOCKED
+		return false
+	var advanced: bool = _simulate_rig_step(delta, Vector2.ZERO, Vector2.ZERO, 0.0,
+		0.0, 0.0, false, false, false, world, false, false, false, true, actuators)
+	if not advanced:
+		# A blocked/enclosed actor performs no force solve or energy spend. The
+		# consumed raw request remains inspectable beside its explicit refusal.
+		actuation.requested_actuators = Actuation.clamp_command(model_id, actuators)
+		actuation.flags = Actuation.BLOCKED
+		actuation.remaining_energy = clampf(energy, 0.0, 1.0) if is_finite(energy) else 0.0
+	return advanced
+
+
+func _simulate_rig_step(delta: float, movement: Vector2, aim: Vector2, effort: float,
+		trim: float, reel: float, primary: bool, secondary: bool, auxiliary: bool, world,
+		primary_pressed: bool, secondary_pressed: bool, auxiliary_pressed: bool,
+		metal_control: bool, actuators: Vector4) -> bool:
 	_clear_telemetry()
 	if not is_finite(delta) or delta <= 0.0:
 		movement_limited = not is_finite(delta) or delta < 0.0
-		return
+		return false
+	if _metal_control != metal_control:
+		_metal_control = metal_control
+		clear_actions()
 	if delta > RIG_MAX_TIMESTEP:
 		movement_limited = true
+		if metal_control:
+			actuation.flags |= Actuation.DELTA_CLAMPED
 	delta = minf(delta, RIG_MAX_TIMESTEP)
 	movement = _finite_vector(movement)
 	aim = _finite_vector(aim).limit_length(1.0)
@@ -203,6 +255,14 @@ func simulate_rig_action(delta: float, movement: Vector2, aim: Vector2, effort: 
 		movement_limited = true
 	energy = clampf(energy, 0.0, 1.0) if is_finite(energy) else 0.0
 	charge = clampf(charge, 0.0, 1.0) if is_finite(charge) else 0.0
+	if metal_control:
+		# Force evaluation cannot overflow on a malformed externally assigned
+		# velocity. This state guard belongs only to the new direct lane.
+		_bound_rig_velocity()
+	var initial_velocity: Vector2 = velocity
+	var initial_angular_velocity: float = angular_velocity
+	var initial_centre: Vector2 = centre()
+	var initial_rotation: float = rotation
 	cooldown_remaining = maxf(0.0, cooldown_remaining - delta) if is_finite(cooldown_remaining) else 0.0
 	_secondary_cooldown = maxf(0.0, _secondary_cooldown - delta)
 	_auxiliary_cooldown = maxf(0.0, _auxiliary_cooldown - delta)
@@ -223,7 +283,7 @@ func simulate_rig_action(delta: float, movement: Vector2, aim: Vector2, effort: 
 		recovery_blocked = true
 		grounded = false
 		clear_actions()
-		return
+		return false
 	runtime_enclosure_recovery_enabled = false
 	runtime_enclosed = _pose_collides(world, position, rotation, 0)
 	recovery_blocked = runtime_enclosed
@@ -232,7 +292,7 @@ func simulate_rig_action(delta: float, movement: Vector2, aim: Vector2, effort: 
 		angular_velocity = 0.0
 		grounded = false
 		clear_actions()
-		return
+		return false
 	_read_contacts(world)
 	grounded = (_contacts & 1) != 0 and velocity.y >= 0.0
 	_coyote_remaining = 0.10 if grounded else maxf(0.0, _coyote_remaining - delta)
@@ -245,9 +305,12 @@ func simulate_rig_action(delta: float, movement: Vector2, aim: Vector2, effort: 
 	_ricochet = false
 	locomotion_mode = 0 if grounded else 1
 	gait_phase = fposmod(gait_phase + delta * (0.9 + minf(velocity.length(), 120.0) / 36.0), 1.0)
-	_advance_rig(delta, movement, _action_direction(aim), effort, trim, reel,
-		primary, secondary, auxiliary, primary_edge, secondary_edge, auxiliary_edge,
-		primary_release, world)
+	if metal_control:
+		_advance_actuators(delta, actuators)
+	else:
+		_advance_rig(delta, movement, _action_direction(aim), effort, trim, reel,
+			primary, secondary, auxiliary, primary_edge, secondary_edge, auxiliary_edge,
+			primary_release, world)
 	if not _powered:
 		energy = minf(1.0, energy + _recharge_rate * delta)
 	velocity.y += RIG_GRAVITY * _gravity_scale * delta
@@ -266,6 +329,30 @@ func simulate_rig_action(delta: float, movement: Vector2, aim: Vector2, effort: 
 	_bound_rig_velocity()
 	_copy_effect_telemetry()
 	_update_readiness()
+	if metal_control:
+		actuation.delta_velocity = velocity - initial_velocity
+		actuation.delta_angular_velocity = angular_velocity - initial_angular_velocity
+		actuation.delta_position = centre() - initial_centre
+		actuation.delta_rotation = wrapf(rotation - initial_rotation, -PI, PI)
+		actuation.remaining_energy = energy
+		if movement_limited:
+			actuation.flags |= Actuation.MOTION_LIMITED
+	return true
+
+
+func _advance_actuators(delta: float, actuators: Vector4) -> void:
+	# No _advance_rig intent policy is evaluated here. Floor adhesion, powered
+	# impulse buttons, autovaults, target speeds and stabilizers are absent.
+	_allow_ledge = 0
+	_gravity_scale = 0.0 # Gravity is included in the reported passive wrench.
+	actuation.solve(actuators, delta, rotation, velocity, angular_velocity, grounded, energy)
+	energy = actuation.remaining_energy
+	_powered = actuation.power_demand
+	velocity += (actuation.applied_force + actuation.passive_force) * (delta / actuation.mass)
+	angular_velocity += (actuation.applied_torque + actuation.passive_torque) * (delta / actuation.inertia)
+	locomotion_mode = 8 if model_id == &"ripper" else 10
+	if model_id == &"ripper" and absf(actuators.x) > MOTION_EPSILON:
+		facing_x = signf(actuators.x)
 
 
 func _clear_telemetry() -> void:
@@ -288,6 +375,8 @@ func _clear_telemetry() -> void:
 	effect_strength = 0.0
 	effect_radius = 0.0
 	_effects.clear()
+	actuation.clear_output()
+	actuation.remaining_energy = clampf(energy, 0.0, 1.0) if is_finite(energy) else 0.0
 
 
 func _finite_vector(value: Vector2) -> Vector2:
@@ -953,6 +1042,8 @@ func _advance_rotation(delta: float, world) -> void:
 		if _travel_y + used_y > RIG_MAX_TRAVEL or _box_query(world, envelope_centre, interval_half, 0):
 			angular_velocity = 0.0
 			movement_limited = true
+			if _metal_control:
+				actuation.flags |= Actuation.COLLISION_CONSTRAINED
 			return
 		trial_angle = next_angle
 	position = trial_position
@@ -989,6 +1080,8 @@ func _sweep_axis(distance: float, axis: int, world) -> void:
 		var candidate: Vector2 = position + displacement
 		var mode: int = 2 if axis == 0 else (1 if step > 0.0 else 3)
 		if _pose_collides(world, candidate, rotation, mode):
+			if _metal_control:
+				actuation.flags |= Actuation.COLLISION_CONSTRAINED
 			if axis == 0 and grounded and velocity.y >= 0.0 and attachment_mode == 0 \
 				and not _ledge_attempted and _allow_ledge > 0:
 				if _try_rig_ledge(step, world):
@@ -1195,6 +1288,10 @@ func _copy_effect_telemetry() -> void:
 
 
 func _update_readiness() -> void:
+	if _metal_control:
+		primary_ready = false
+		secondary_ready = false
+		return
 	if runtime_enclosed or recovery_blocked:
 		primary_ready = false
 		secondary_ready = false
@@ -1334,7 +1431,15 @@ func capabilities() -> Dictionary:
 		"effect_semantics": "bounded-gameplay-excavation-and-authored-recoil",
 		"granular_response": "rem003-c1-baseline-impact-request",
 		"rigid_body_force_feedback": false,
+		"actuator_control_supported": Actuation.supports_model(model_id),
+		"actuation_version": ACTUATION_VERSION,
+		"actuation_observation_size": ACTUATION_OBSERVATION_SIZE,
+		"actuation_profile": Actuation.profile(model_id),
 	}
+
+
+func actuation_observation() -> PackedFloat32Array:
+	return actuation.observation()
 
 
 func observation() -> PackedFloat32Array:

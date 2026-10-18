@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "seed": 73,
+  "max_ticks": 900,
+  "layout": "training_pit",
+  "evaluation": "mechanics",
+  "actors": [
+    {
+      "model": "digger",
+      "control_mode": "wire",
+      "observation_mode": "self",
+      "team": 0,
+      "controller": "emergent"
+    },
+    {
+      "model": "digger",
+      "control_mode": "wire",
+      "observation_mode": "self",
+      "team": 0,
+      "controller": "emergent"
+    },
+    {
+      "model": "digger",
+      "control_mode": "wire",
+      "observation_mode": "self",
+      "team": 0,
+      "controller": "emergent"
+    },
+    {
+      "model": "digger",
+      "control_mode": "wire",
+      "observation_mode": "self",
+      "team": 0,
+      "controller": "emergent"
+    }
+  ]
+}

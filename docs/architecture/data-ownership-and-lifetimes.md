@@ -135,6 +135,31 @@ copied values. Catalog dictionaries are deep-copied at configuration/publication
 boundaries rather than used as mutable shared actor state. Sampled rig bodies and
 drawn extremities are not scene-tree physics objects or new native job owners.
 
+### Standalone Thunderbowl ownership
+
+**Current, experimental ACT-003:** a separate
+[`CyberThunderbowlArena`](../../godot/scripts/thunderbowl_arena.gd) instance owns
+one native World and actor session on its serialized caller thread. Setup builds
+and validates a candidate before replacement. All due policies receive copied
+views from the same completed state; no callback runs while motors or materials
+advance. The driver and optional scene consume values, and only the arena calls
+live cell, collision or motor APIs. This standalone host does not take ownership
+of the desktop worker's World or registered scientific fixtures.
+
+Direct actuator helper state belongs to each sampled motor. Producer-side lane,
+model, identity, sequence and lease validation reads mutex-protected slot values;
+it never borrows owner-replaced actor arrays. `wire`/`metal` is fixed at session
+configuration, preventing hidden held state from crossing an input-mode switch.
+
+Local observation filtering occurs before controller dispatch. Global evaluator
+snapshots remain separate, and local messages read the previous delivered
+generation. These trusted in-process GDScript examples establish a data-access
+contract, not isolation from malicious script code. Slow model decisions enter
+through a copied one-request adapter; its bounded optional file I/O runs between
+arena steps, never inside native jobs or motor updates. File latency can still
+delay the caller. Exact capacities, cancellation and failure/terminal semantics
+belong to the [Thunderbowl reference](../systems/thunderbowl-control-reference.md).
+
 ## Failed-world ownership and recovery
 
 **Current:** failure quarantines the existing World under its same exclusive owner.

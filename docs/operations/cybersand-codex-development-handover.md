@@ -25,6 +25,28 @@ for the requested change. Use the [retrieval index](../reference/retrieval-index
 for a focused question. The [owner-intent reference](../reference/product-intent-and-priorities.md)
 preserves product goals, liked material behavior and deliberate deferrals.
 
+## Thunderbowl control laboratory — 2026-10-18
+
+ACT-003 / #172 adds the standalone native
+[Thunderbowl reference and examples](../systems/thunderbowl-control-reference.md).
+Its owner wraps a real World and the current eight-slot actor session; it does
+not replace ordinary F5 selection or registered scientific fixtures. New actor
+definitions may fix `control_mode` to `metal` for Ripper, Copter or Gemini.
+That lane bypasses intent actuation and publishes separate 32-value force/torque
+readback; original v1/v2 observations and SetA motor bytes remain compatible.
+
+The shared driver collects copied policy views before stepping any actors.
+Self/local/oracle privileges, message delivery, arena-only virtual tag combat,
+model-plan freshness and resource/work bounds are explicit. Controller examples,
+eight JSON schemas and fourteen match definitions live under
+[`godot/examples/thunderbowl`](../../godot/examples/thunderbowl).
+The NCA-inspired graph weights are untrained; the Python smart-link client is an
+offline mock. Model inference, learned performance, complete replay and broad
+platform/feel acceptance must not be inferred from runnable examples.
+The [dated ACT-003 audit](../audits/2026-10-18-act003-thunderbowl-control-lab.md)
+binds local execution to the public source checkpoint; PR #174 records final
+hosted CI and integration disposition.
+
 ## Actor control prototypes — 2026-10-18
 
 ACT-002 / #168 expands the original ACT-001 / #161 trio into 29 optional desktop

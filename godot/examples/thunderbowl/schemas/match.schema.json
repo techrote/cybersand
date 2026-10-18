@@ -1,0 +1,241 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Thunderbowl v1 match",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "seed": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2147483647
+    },
+    "max_ticks": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 36000
+    },
+    "layout": {
+      "const": "training_pit"
+    },
+    "evaluation": {
+      "enum": [
+        "mechanics",
+        "matched",
+        "asymmetric",
+        "oracle_reference"
+      ]
+    },
+    "actors": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "enum": [
+              "runner",
+              "skimmer",
+              "crawler",
+              "scout",
+              "scrabbler",
+              "ripper",
+              "groundeffect",
+              "digger",
+              "copter",
+              "pouncer",
+              "dropbot",
+              "lineshank",
+              "walljumper",
+              "clamberer",
+              "swinger",
+              "rocketjumper",
+              "springjack",
+              "gyrocrate",
+              "bellows",
+              "winchbug",
+              "magpie",
+              "skatesail",
+              "astra",
+              "claude",
+              "luna",
+              "qwen",
+              "bonsai",
+              "jev",
+              "gemini"
+            ]
+          },
+          "control_mode": {
+            "enum": [
+              "wire",
+              "metal"
+            ]
+          },
+          "observation_mode": {
+            "enum": [
+              "self",
+              "local",
+              "oracle"
+            ]
+          },
+          "team": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 7
+          },
+          "controller": {
+            "enum": [
+              "human_wire",
+              "human_metal",
+              "wire_seek",
+              "metal_pulse",
+              "oracle",
+              "lemming",
+              "emergent",
+              "local_swarm",
+              "nca",
+              "smart_link"
+            ]
+          }
+        },
+        "required": [
+          "model",
+          "control_mode",
+          "observation_mode",
+          "team",
+          "controller"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "controller": {
+                  "enum": [
+                    "human_metal",
+                    "metal_pulse"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "control_mode": {
+                  "const": "metal"
+                },
+                "model": {
+                  "enum": [
+                    "ripper",
+                    "copter",
+                    "gemini"
+                  ]
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "control_mode": {
+                  "const": "wire"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "controller": {
+                  "const": "oracle"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "observation_mode": {
+                  "const": "oracle"
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "observation_mode": {
+                  "enum": [
+                    "self",
+                    "local"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "controller": {
+                  "enum": [
+                    "lemming",
+                    "emergent"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "observation_mode": {
+                  "const": "self"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "controller": {
+                  "enum": [
+                    "wire_seek",
+                    "local_swarm",
+                    "nca",
+                    "smart_link"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "observation_mode": {
+                  "const": "local"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "controller": {
+                  "const": "emergent"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "model": {
+                  "const": "digger"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "version",
+    "seed",
+    "max_ticks",
+    "layout",
+    "evaluation",
+    "actors"
+  ],
+  "additionalProperties": false,
+  "$comment": "For matched classification, runtime additionally requires all models, lanes and observation profiles equal and excludes human cadence. This is a declared comparison category, not empirical fairness acceptance."
+}
