@@ -6,7 +6,7 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-09-25
+last-reviewed: 2026-10-18
 ---
 
 # Data ownership and lifetimes
@@ -32,6 +32,9 @@ but must not touch live scene-tree or Rapier objects.
 | Live body nodes, RIDs and physics state | Main-thread Rapier bridge and PhysicsServer2D | Scene/bridge lifetime; never passed to cellular workers |
 | Body samples and observations | Adapter owns copied samples and native transient occupancy; results are copied into publication | Mask rebuilt at coupling preparation; sample IDs identify result application |
 | Godot CPU image and textures | Main thread validates patches and updates resources | Application lifetime; upload never borrows mutable World bytes |
+| Compiled procedural recipe and prepared modules | Immutable `generation::Generator`, independent of World | Jobs retain shared ownership; replacing the caller's recipe cannot mutate existing jobs |
+| Procedural chunk staging | One `GenerationJob` owns its private material array and cursor | Allocated before incremental advance; pending bytes stay private, failure/cancel discards payload |
+| World-generation workbench previews | One main-thread `CyberWorldGenerator` owner plus copied material/texture cache | Accepted recipe changes retire old preview work; cache eviction regenerates previews, never evicts simulation chunks |
 
 Source: [World/Chunk](../../native/src/world.cpp),
 [native exchange](../../native/src/render_snapshot.cpp),
@@ -39,6 +42,25 @@ Source: [World/Chunk](../../native/src/world.cpp),
 [Web controller](../../godot/scripts/web_demo_controller.gd) and
 [Rapier bridge](../../godot/scripts/rapier_physics_bridge.gd).
 Step order belongs in the [threading contract](simulation-tick-and-threading.md).
+
+## How may generated content enter cell authority?
+
+**Current GEN-001 source:** the generation job API and supplied module context
+provide no mutable World, scene-tree or Rapier state. The
+[generation contract](../systems/procedural-world-generation.md) separates
+immutable recipe/revision receipts from the destination World's lifetime.
+`Generator::accepts` validates the former; the caller must also establish the
+current World/reset session and hold exclusive ownership before invoking
+[`World::install_generated_chunk`](../../native/src/world.cpp).
+
+Installation prevalidates one complete material span before allocating/writing,
+requires an absent destination chunk and uses existing native mutation defaults.
+Even a reserved empty or edited-then-cleared resident chunk is protected from
+regeneration. Failed Worlds, in-tick calls, invalid payloads, capacity/coordinate
+failure and overlapping transient occupancy are explicit refusals. This method
+is a loading/setup boundary primitive; it supplies no background World owner,
+automatic resident eviction or reset-session manager. The opt-in workbench only
+previews copied proposals and never calls it on the sandbox World.
 
 ## When can a render payload be reused?
 

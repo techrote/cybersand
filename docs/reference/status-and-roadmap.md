@@ -58,12 +58,33 @@ Historical completion records remain immutable.
 |---|---|
 | Cellular authority and platform owners | Native World; asynchronous desktop GDScript owner, synchronous Web callbacks with optional internal pool; [threading](../architecture/simulation-tick-and-threading.md) |
 | Scheduler and storage | Sparse chunks, phased in-place jobs, explicit capacities and activity sleep; [chunk/tile model](../architecture/chunk-tile-and-buffer-model.md), [storage](../systems/world-storage-and-interest-region.md) |
+| Procedural generation candidates | Opt-in native Strata, Flow Network and District Grammar; compiled theme/brush/override/module recipes, incremental copied chunk proposals and explicit fresh-chunk admission; [generation contract](../systems/procedural-world-generation.md) |
 | Materials | Bounded adapted kernels, mass-conserving native Water, discrete fallback, secondary interaction lanes; [materials](../systems/materials-and-rule-kernels.md), [Water](../systems/water-design.md) |
 | Field storage and events | Optional temperature storage and bounded explosions; no general heat/pressure/wind solver; [field roadmap](../systems/smoke-heat-pressure-roadmap.md) |
 | Bodies and character | Main-thread Rapier, rectangular masks/displacement, static terrain packets, sampled character, and PCHAR reset-scoped barrel-player experiment; [coupling](../architecture/rigid-body-and-cellular-coupling.md) |
 | Rendering | Immutable native snapshots, copied dirty RG8 patches, full finite GPU texture update and derived material appearance; [bridges](../architecture/rendering-and-gameplay-bridges.md) |
 | Persistence | Fixed CYSD1 demo levels; complete resumed replay absent; [save contract](level-saves-and-replay.md) |
 | Runtime availability | All 18 required LFS payloads materialized; current execution scope is platform-specific; [build](../operations/local-build-and-validation.md) and [evidence](validation-evidence.md) |
+
+## Procedural generation candidate checkpoint — 2026-10-18
+
+**Current source, GEN-001 / [#163](https://github.com/techrote/cybersand/issues/163):**
+three deterministic native candidates share hierarchical theme selections,
+weighted blends, spatial brushstrokes, guide paths, fine parameters, hard
+overrides and a registry of prepared structure modules. Flow Network and
+District Grammar reserve a shared macro route skeleton across independently
+requested chunks; explicit hard material overrides can block those routes.
+The [canonical generation contract](../systems/procedural-world-generation.md)
+owns exact precedence, bounds, identity and module responsibilities.
+
+The opt-in Godot workbench generates and caches copied material previews. Native
+`World::install_generated_chunk` supplies a separate exclusive-owner primitive
+that accepts only absent storage chunks. A production caller must still bind
+results to its current World/reset session before admission. General world
+loading, resident-chunk eviction and modified-world persistence remain
+**Deferred/Planned in their existing scope**. This source checkpoint does not
+claim a merged release or platform acceptance; use the
+[dated GEN-001 evidence](../audits/2026-10-18-gen001-procedural-generation.md).
 
 ## Decisions and defects to resolve
 
@@ -94,8 +115,10 @@ body-shape/CCD/force policy; GPU subregion writes; authored appearance schema/to
 remaining platform/LeakSanitizer and production performance acceptance. Current
 Linux native ASan/UBSan/TSan results are in the validation ledger.
 
-**Deferred:** asynchronous Web simulation/render ownership, streamed generation,
-and GPU/coarse/hex experiments. Active-only buffering is a **Planned candidate**
+**Deferred:** asynchronous Web simulation/render ownership, general streamed
+world loading/eviction, and GPU/coarse/hex experiments. Opt-in procedural chunk
+generation now has the bounded candidate scope described above; it does not
+supply a resident-world streaming manager. Active-only buffering is a **Planned candidate**
 whose implementation/comparison is **Deferred** until a field or benchmark
 justifies it. The reserved buffered enum does not run.
 

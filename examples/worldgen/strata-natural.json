@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "seed": 314159,
+  "chunk_size": 128,
+  "candidate": "strata",
+  "parameters": {
+    "surface_y": 40,
+    "relief": 56,
+    "feature_scale": 112,
+    "cave_threshold": 0.57,
+    "strata_period": 22,
+    "warp": 26,
+    "detail": 0.4,
+    "fluid_level": 320
+  },
+  "themes": {
+    "weights": {"natural": 2, "ruins": 1},
+    "exclude": ["basalt"]
+  },
+  "strokes": [
+    {
+      "id": "wet-garden-ribbon",
+      "points": [[-256, 128], [0, 224], [320, 176]],
+      "radius": 112,
+      "strength": 0.85,
+      "falloff": 1.2,
+      "themes": {"weights": {"wet_cavern": 1, "garden": 2}},
+      "parameters": {"relief": 24, "cave_threshold": 0.5}
+    }
+  ],
+  "paths": [
+    {"id": "traversal-guide", "points": [[-384, 240], [-64, 220], [192, 176], [384, 192]], "width": 10, "material": 0}
+  ],
+  "overrides": [
+    {"id": "fixed-platform", "bounds": [-48, 272, 96, 5], "material": 62, "priority": 100}
+  ],
+  "modules": []
+}

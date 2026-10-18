@@ -6,7 +6,7 @@ status: Approved design
 scope: Approved responsibility boundaries mapped to current source; no claim that every named module is a class
 keywords: [SimulationCore, SimulationScheduler, WorldStorage, TileJob, MaterialRules, RenderBridge, GameplayBridge]
 related-documents: [overview.md, data-ownership-and-lifetimes.md, rendering-and-gameplay-bridges.md]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-10-18
 ---
 
 # Module boundaries
@@ -23,7 +23,8 @@ and [implementation](../../native/src/world.cpp).
 |---|---|---|
 | SimulationCore | Authoritative cell/field semantics and invariants | World kernels and tick entry; extraction remains incomplete |
 | SimulationScheduler | Work planning, pool, barriers, deterministic coordination and overload metrics | `World::tick_phased`, `ParallelState`; desktop wall-clock pacing is still GDScript and Web owns synchronous callbacks |
-| WorldStorage | Chunk lifetime, optional fields, activity and capacity; future persistence | `World::Chunk`, `chunks_`, reservation/query methods; general streaming and live resize are absent |
+| WorldStorage | Chunk lifetime, optional fields, activity and capacity; future persistence | `World::Chunk`, `chunks_`, reservation/query methods and explicit fresh generated-chunk admission; general streaming and live resize are absent |
+| Procedural generator | Compile generation guidance and prepare complete deterministic material proposals | Opt-in `generation::Generator`/`GenerationJob` and immutable prepared feature modules; no mutable World access; [generation contract](../systems/procedural-world-generation.md) |
 | TileJob | Temporary bounded work assignment and local observations | Core indices, `JobEffects`, local `TickStats`; no public type-enforced bounded rule context |
 | MaterialRules | Immutable descriptors, traits and kernel selection | Descriptor/pair-reaction APIs are separate; executable kernels remain inside World |
 | RenderBridge | Consume immutable simulation publication and update presentation | Native `RenderSnapshotExchange`, copied Godot packets and CPU-image consumer; GPU subregion writes are absent |
@@ -32,6 +33,24 @@ and [implementation](../../native/src/world.cpp).
 
 Adding a native class is justified when it establishes a usable responsibility
 or lifetime boundary. A cosmetic rename is not architectural progress.
+
+### How do advanced generation modules extend the engine?
+
+**Current GEN-001 source:** the native
+[`ModuleRegistry`](../../native/include/cybersand/world_generation.hpp) resolves
+versioned factories before generation. Factories prepare immutable samplers
+outside simulation ticks; a sampler receives the current coordinate, immutable
+effective parameters/palette and previous proposed material. It returns at most
+one material for that cell. The generator clips the module's declared rectangle,
+orders dependencies and validates the result before publishing a chunk.
+
+Modules are trusted cooperative C++ code: declared logical cost bounds admission,
+while the host cannot sandbox an arbitrary callback or enforce its execution
+time. The workbench selects registered modules through recipes; it does not load
+arbitrary executable libraries from a recipe. Native World remains the sole cell
+authority and accepts a completed material span only through its separate
+exclusive-owner admission method. See the [generation contract](../systems/procedural-world-generation.md)
+and [lifetimes](data-ownership-and-lifetimes.md).
 
 ## Which dependencies are permitted?
 

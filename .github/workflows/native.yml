@@ -125,6 +125,12 @@ jobs:
       - name: Run native behavioral and integration suite
         run: timeout 15m ./build/tests
 
+      - name: Validate procedural generation candidates and fresh chunk admission
+        run: timeout 5m make worldgen-test
+
+      - name: Sanitize procedural generation and chunk admission
+        run: timeout 10m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 make worldgen-sanitize
+
       - name: Run soliding contract regressions
         run: timeout 5m make soliding-test
 

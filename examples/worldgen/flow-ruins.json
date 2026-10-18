@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "seed": 271828,
+  "chunk_size": 128,
+  "candidate": "flow_network",
+  "parameters": {
+    "surface_y": -96,
+    "feature_scale": 128,
+    "cave_threshold": 0.68,
+    "corridor_width": 12,
+    "district_size": 256,
+    "fluid_level": 384
+  },
+  "themes": {"weights": {"dry_cavern": 1, "ruins": 2, "industrial": 1}, "exclude": ["basalt"]},
+  "strokes": [
+    {
+      "id": "wet-service-line",
+      "points": [[-192, 128], [64, 96], [320, 192]],
+      "radius": 80,
+      "strength": 0.8,
+      "themes": {"weights": {"wet_cavern": 1}},
+      "parameters": {"corridor_width": 18}
+    }
+  ],
+  "modules": [
+    {"id": "ruin-vault", "module": "vault", "version": 1, "bounds": [-256, 128, 256, 256], "parameters": {"cell_size": 32, "wall": 2, "door_width": 10}},
+    {"id": "water-crossing", "module": "aqueduct", "version": 1, "bounds": [-96, 64, 384, 128], "parameters": {"span": 64, "deck_height": 28, "wall": 3, "channel_depth": 8}, "after": ["ruin-vault"]}
+  ],
+  "paths": [
+    {"id": "entry-spine", "points": [[-384, 256], [-128, 256], [128, 240], [384, 240]], "width": 12, "material": 0, "priority": 10}
+  ],
+  "overrides": [
+    {"id": "protected-chamber", "bounds": [64, 272, 96, 64], "candidate": "district_grammar", "parameters": {"room_size": 32, "wall_thickness": 2}, "priority": 10},
+    {"id": "intentional-route-gate", "bounds": [56, 228, 5, 26], "material": 62, "priority": 100}
+  ]
+}

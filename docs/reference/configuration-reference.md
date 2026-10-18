@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-09-25
+last-reviewed: 2026-10-18
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md]
 ---
 
@@ -20,6 +20,25 @@ This page owns values. The [capacity runbook](../operations/configuration-and-ca
 owns preparation/failure semantics. [Evidence](validation-evidence.md) owns
 executed validation; [level saves](level-saves-and-replay.md) owns what CYSD1
 actually persists.
+
+## Opt-in procedural generation configuration
+
+**Current GEN-001 source:** [`generation::Recipe`](../../native/include/cybersand/world_generation.hpp)
+is separate from `WorldConfig` and the transport/Water profiles. Its native
+defaults are schema/algorithm version 1, seed 1, revision 1, candidate `strata`,
+chunk edge 128 and the `natural` theme family. Generator chunk edges are admitted
+from 8 through 256 cells; complete output must remain within
+`-2^40 <= coordinate < 2^40`. Native World installation additionally requires its
+own configured chunk geometry and exclusive owner boundary.
+
+The logical operation limit defaults to 64,000,000 per chunk. Recipe capacities,
+numeric parameter ranges, theme inheritance, global topology controls and the
+different workbench starting preset belong to the
+[procedural generation contract](../systems/procedural-world-generation.md),
+with validation in [`Generator::compile`](../../native/src/world_generation.cpp).
+The workbench offers narrower slider ranges for some controls while its JSON
+editor accepts the validated native range. No general World configuration,
+residency or replay serialization follows from saving a generation recipe.
 
 ## Native WorldConfig defaults
 

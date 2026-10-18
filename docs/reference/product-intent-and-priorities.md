@@ -29,6 +29,21 @@ behavior under load, exact engineering comparisons and recoverable checkpoints.
 60 FPS is a product target; it is not a performance guarantee established by
 headless fixtures or a particular worker count.
 
+## Procedural generation direction, 2026-10-18
+
+**Approved owner direction:** create procedural chunk-generation framework/engine
+candidates that support on-demand interconnected worlds, specific theme subsets
+and supersets, and blends between them. Authoring should combine broad spatial
+brushstroke guidance with fine tunable parameters, hard overrides and extensible
+algorithmic hooks for complex architectural or computationally advanced zones.
+The intended result is an engine foundation with reusable control/module
+boundaries, not a single fixed generated level.
+
+GEN-001 / [#163](https://github.com/techrote/cybersand/issues/163) supplies the
+[current native candidate and preview-workbench scope](../systems/procedural-world-generation.md).
+Its source, integration and platform evidence remain separate from product
+acceptance and from the existing general World streaming/persistence roadmap.
+
 ## Which material behavior should changes preserve?
 
 **Owner clarification, 2026-10-18:** the reported problem across all four builds

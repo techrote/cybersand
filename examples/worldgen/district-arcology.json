@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "seed": 161803,
+  "chunk_size": 128,
+  "candidate": "district_grammar",
+  "parameters": {"district_size": 256, "corridor_width": 12, "room_size": 48, "wall_thickness": 3, "detail": 0.6},
+  "themes": {"weights": {"built": 1}, "exclude": ["ruins"]},
+  "strokes": [
+    {"id": "industrial-quarter", "points": [[-256, -128], [-128, 128], [0, 256]], "radius": 160, "strength": 1, "themes": {"weights": {"industrial": 1}}},
+    {"id": "garden-quarter", "points": [[160, -128], [192, 96], [320, 256]], "radius": 128, "strength": 0.9, "themes": {"weights": {"garden": 1}}, "parameters": {"detail": 0.75}}
+  ],
+  "modules": [
+    {"id": "central-arcology", "module": "arcology", "version": 1, "bounds": [-128, -64, 256, 384], "parameters": {"bay_width": 48, "floor_height": 32, "wall": 3, "shaft_width": 14}},
+    {"id": "sublevel-vault", "module": "vault", "version": 1, "bounds": [-128, 320, 384, 192], "parameters": {"cell_size": 32, "wall": 2, "door_width": 10}, "after": ["central-arcology"]}
+  ],
+  "paths": [
+    {"id": "horizontal-concourse", "points": [[-384, 208], [384, 208]], "width": 14, "material": 0},
+    {"id": "lift-spine", "points": [[0, -160], [0, 512]], "width": 14, "material": 0, "priority": 1}
+  ],
+  "overrides": [
+    {"id": "fixed-service-shaft", "bounds": [-6, -128, 13, 576], "material": 0, "priority": 100},
+    {"id": "protected-support", "bounds": [136, 32, 8, 240], "material": 58, "priority": 200}
+  ]
+}

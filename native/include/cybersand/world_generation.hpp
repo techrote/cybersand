@@ -1,0 +1,233 @@
+#pragma once
+
+#include "cybersand/world.hpp"
+
+#include <cstdint>
+#include <functional>
+#include <map>
+#include <memory>
+#include <optional>
+#include <string>
+#include <vector>
+
+// Opt-in CPU generation. No World pointer, Godot call, clock, mutable shared RNG,
+// neighbor request, or simulation tick is reachable through the module context.
+namespace cybersand::generation {
+
+inline constexpr std::uint32_t kSchemaVersion = 1;
+inline constexpr std::uint32_t kAlgorithmVersion = 1;
+// Brush geometry uses doubles; reject coordinates beyond the exact integer range
+// deliberately rather than silently aliasing distant chunks.
+inline constexpr std::int64_t kCoordinateLimit = (INT64_C(1) << 40);
+
+enum class Candidate : std::uint8_t { Strata, FlowNetwork, DistrictGrammar };
+enum class Parameter : std::uint8_t {
+    SurfaceY, Relief, FeatureScale, CaveThreshold, StrataPeriod, Warp,
+    CorridorWidth, DistrictSize, RoomSize, WallThickness, Detail, FluidLevel
+};
+
+struct Parameters {
+    double surface_y = 96.0;
+    double relief = 48.0;
+    double feature_scale = 96.0;
+    double cave_threshold = 0.60;
+    double strata_period = 18.0;
+    double warp = 12.0;
+    double corridor_width = 7.0;
+    double district_size = 256.0;
+    double room_size = 48.0;
+    double wall_thickness = 3.0;
+    double detail = 0.32;
+    double fluid_level = 224.0;
+};
+
+struct ParameterEdit { Parameter parameter{}; double value{}; };
+struct Point { double x{}, y{}; };
+
+struct Palette {
+    Material rock = Material::GraniteBlock;
+    Material surface = Material::PackedEarth;
+    Material accent = Material::Copper;
+    Material fluid = Material::Water;
+};
+
+struct Theme {
+    std::string id;
+    std::vector<std::string> parents;
+    bool concrete = false; // groups expand to their concrete descendants
+    Palette palette;
+    std::vector<ParameterEdit> parameters;
+};
+
+struct ThemeWeight { std::string id; double weight = 1.0; };
+struct ThemeSelection {
+    std::vector<ThemeWeight> weights{{"natural", 1.0}};
+    std::vector<std::string> exclude;
+};
+
+struct BrushStroke {
+    std::string id;
+    std::vector<Point> points;
+    double radius = 96.0;
+    double strength = 1.0;
+    double falloff = 1.0;
+    int priority = 0;
+    // An empty weights list changes only the supplied parameters.
+    ThemeSelection themes{{}, {}};
+    std::vector<ParameterEdit> parameters;
+};
+
+struct GuidePath {
+    std::string id;
+    std::vector<Point> points;
+    double width = 10.0;
+    Material material = Material::Empty;
+    int priority = 0;
+};
+
+struct HardOverride {
+    std::string id;
+    RectI64 bounds;
+    std::optional<Material> material;
+    std::optional<Candidate> candidate;
+    std::vector<ParameterEdit> parameters;
+    int priority = 0;
+};
+
+struct ModuleInstance {
+    std::string id; // unique instance identity
+    std::string module; // registry factory identity
+    std::uint32_t version = 1;
+    RectI64 bounds;
+    std::map<std::string, double> parameters;
+    std::vector<std::string> after; // explicit instance dependencies
+    int priority = 0;
+};
+
+struct Limits {
+    std::size_t max_themes = 64;
+    std::size_t max_strokes = 64;
+    std::size_t max_points_per_path = 128;
+    std::size_t max_paths = 64;
+    std::size_t max_overrides = 64;
+    std::size_t max_modules = 32;
+    std::uint64_t max_operations_per_chunk = 64'000'000;
+};
+
+struct Recipe {
+    std::uint32_t schema = kSchemaVersion;
+    std::uint64_t seed = 1;
+    std::uint64_t revision = 1;
+    std::int32_t chunk_size = 128;
+    Candidate candidate = Candidate::Strata;
+    Parameters parameters;
+    std::vector<Theme> catalogue; // empty selects the built-in catalogue
+    ThemeSelection themes;
+    std::vector<BrushStroke> strokes;
+    std::vector<GuidePath> paths;
+    std::vector<HardOverride> overrides;
+    std::vector<ModuleInstance> modules;
+    Limits limits;
+};
+
+struct ModuleContext {
+    std::int64_t x{}, y{};
+    std::uint64_t seed{};
+    const Parameters& parameters;
+    const Palette& palette;
+};
+
+// A prepared sampler is owned by the immutable compiled generator and must be
+// const/thread-safe. It may only return one material for the current cell. The
+// engine clips its domain, validates output and charges the declared logical
+// work cost. C++ callbacks are trusted cooperative code, not sandboxed plugins.
+class FeatureSampler {
+public:
+    virtual ~FeatureSampler() = default;
+    [[nodiscard]] virtual std::optional<Material> sample(
+        const ModuleContext&, Material previous) const = 0;
+};
+
+struct ModuleFactory {
+    std::string id;
+    std::uint32_t version = 1;
+    std::uint32_t operations_per_cell = 16;
+    std::function<std::shared_ptr<const FeatureSampler>(
+        const ModuleInstance&, std::uint64_t)> prepare;
+};
+
+class ModuleRegistry {
+public:
+    void add(ModuleFactory factory); // duplicates and invalid declarations throw
+    [[nodiscard]] const ModuleFactory& find(const std::string&, std::uint32_t) const;
+    [[nodiscard]] static ModuleRegistry builtins();
+private:
+    std::vector<ModuleFactory> factories_;
+};
+
+enum class ResultState : std::uint8_t { Pending, Ready, Cancelled, Failed };
+struct ChunkResult {
+    ResultState state = ResultState::Pending;
+    ChunkCoord chunk;
+    std::int32_t chunk_size = 0;
+    std::uint64_t revision = 0;
+    std::uint64_t fingerprint = 0;
+    std::uint64_t content_hash = 0;
+    std::uint64_t receipt_hash = 0; // binds payload to coordinates and recipe
+    std::uint64_t operations = 0;
+    std::string error;
+    std::vector<Material> cells; // never published before Ready
+};
+
+class GenerationJob;
+class Generator final : public std::enable_shared_from_this<Generator> {
+public:
+    // Validate/compile off the simulation tick. All invalid, ambiguous and
+    // over-capacity inputs throw; callers retain the last valid generator.
+    [[nodiscard]] static std::shared_ptr<const Generator> compile(
+        Recipe recipe, const ModuleRegistry& registry = ModuleRegistry::builtins());
+    [[nodiscard]] static std::vector<Theme> builtin_themes();
+    [[nodiscard]] static std::vector<std::string> builtin_modules();
+    [[nodiscard]] const Recipe& recipe() const noexcept;
+    [[nodiscard]] std::uint64_t fingerprint() const noexcept;
+    [[nodiscard]] std::vector<ThemeWeight> theme_weights_at(std::int64_t x, std::int64_t y) const;
+    [[nodiscard]] Material sample(std::int64_t x, std::int64_t y) const;
+    [[nodiscard]] std::unique_ptr<GenerationJob> begin(ChunkCoord chunk) const;
+    [[nodiscard]] ChunkResult generate(ChunkCoord chunk) const;
+    [[nodiscard]] bool accepts(const ChunkResult& result) const noexcept;
+    ~Generator();
+
+private:
+    struct Impl;
+    explicit Generator(std::unique_ptr<Impl> impl);
+    std::unique_ptr<Impl> impl_;
+    friend class GenerationJob;
+};
+
+class GenerationJob final {
+public:
+    ~GenerationJob();
+    GenerationJob(const GenerationJob&) = delete;
+    GenerationJob& operator=(const GenerationJob&) = delete;
+    // Zero is a no-op. Work is capped by cells and the recipe's logical cost
+    // bound. No partial cells are returned on error/cancellation.
+    [[nodiscard]] ResultState advance(std::size_t cell_budget);
+    void cancel() noexcept;
+    [[nodiscard]] ResultState state() const noexcept;
+    [[nodiscard]] std::size_t completed_cells() const noexcept;
+    [[nodiscard]] const ChunkResult& result() const; // Pending throws
+private:
+    GenerationJob(std::shared_ptr<const Generator>, ChunkCoord);
+    std::shared_ptr<const Generator> generator_;
+    ChunkResult result_;
+    std::size_t cursor_ = 0;
+    std::int64_t origin_x_ = 0, origin_y_ = 0;
+    friend class Generator;
+};
+
+[[nodiscard]] const char* candidate_name(Candidate candidate) noexcept;
+[[nodiscard]] std::optional<Candidate> parse_candidate(const std::string& name) noexcept;
+[[nodiscard]] const char* parameter_name(Parameter parameter) noexcept;
+[[nodiscard]] std::optional<Parameter> parse_parameter(const std::string& name) noexcept;
+
+} // namespace cybersand::generation

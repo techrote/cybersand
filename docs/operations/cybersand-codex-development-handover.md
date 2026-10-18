@@ -25,6 +25,20 @@ for the requested change. Use the [retrieval index](../reference/retrieval-index
 for a focused question. The [owner-intent reference](../reference/product-intent-and-priorities.md)
 preserves product goals, liked material behavior and deliberate deferrals.
 
+## Procedural generation candidates — 2026-10-18
+
+GEN-001 / [#163](https://github.com/techrote/cybersand/issues/163) implements a
+separate native generator and opt-in authoring workbench. Start with the
+[generation contract](../systems/procedural-world-generation.md) and
+[dated evidence](../audits/2026-10-18-gen001-procedural-generation.md). Strata,
+Flow Network and District Grammar share theme DAG selections, blends, brush
+controls, routes, exact overrides and prepared versioned feature factories.
+The workbench previews bounded demand generation; general simulation streaming,
+eviction/persistence and automatic reconciliation of edited recipes remain
+separate. Its native fresh-chunk installer refuses all existing storage and
+requires caller-owned receipt/reset admission. Do not attach it concurrently to
+a live World owner or infer production streaming from the preview.
+
 ## Material consistency repair — 2026-10-18
 
 The owner reports that restarting resolved the all-four-builds problem and asks

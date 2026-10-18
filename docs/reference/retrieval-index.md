@@ -18,6 +18,9 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 
 | Question family | Canonical route |
 |---|---|
+| How do Strata, Flow Network and District Grammar generate interconnected chunks on demand? | [Procedural generation](../systems/procedural-world-generation.md); source/runtime scope belongs to [GEN-001 evidence](../audits/2026-10-18-gen001-procedural-generation.md) |
+| How do theme supersets/subsets, exclusions, blended brushstrokes, fine parameters and hard overrides combine? | [Procedural generation controls](../systems/procedural-world-generation.md), [configuration](configuration-reference.md) |
+| How can advanced structure modules extend generation without touching World, and can stale results overwrite player edits? | [Procedural generation](../systems/procedural-world-generation.md), [ownership](../architecture/data-ownership-and-lifetimes.md), [interfaces](interfaces-and-message-contracts.md) |
 | Is a closed/completed development claim actually implemented, integrated, verified and owner-accepted now? | [Development-claims remediation programme](../operations/development-claims-remediation-programme.md); use the [2026-09-20 audit](../audits/2026-09-20-development-claims-closure-audit.md) for the frozen intake findings |
 | How do Play/Inspect/Benchmark share a definition, and is a scenario capture replay? | [MicroScenario contract](../operations/microscenarios.md) |
 | Actual version, commits, local changes, recovery | [Source checkpoint](../operations/source-checkpoint-and-recovery.md) |

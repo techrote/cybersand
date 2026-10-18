@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-09-19
+last-reviewed: 2026-10-18
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md]
 ---
 
@@ -125,12 +125,13 @@ Windows runtime launch.
 
 ## Linux GDExtension CI sharding
 
-**Current CI migration checkpoint:** the Linux GDExtension workflow builds the pinned
-Linux runtime once on an Avrea 4-vCPU runner by default, verifies its ABI/runtime floor and
-publishes that exact extension plus the pinned Rapier Linux runtime as a short-lived
-artifact. Four isolated Avrea 2-vCPU jobs then restore the same source/runtime
-identity and run deterministic subsets of the Godot regression suite. Each shard
-performs its own clean headless import before its assigned cases.
+**Current:** the [GDExtension workflow](../../.github/workflows/gdextension.yml)
+builds the pinned Linux runtime once on GitHub-hosted `ubuntu-24.04`, verifies its
+ABI/runtime floor and publishes that exact extension plus the pinned Rapier Linux
+runtime as a short-lived artifact. Four isolated GitHub-hosted regression jobs
+restore the same source/runtime identity and run deterministic subsets of the
+Godot suite. Each shard performs its own clean headless import. Active external
+or self-hosted runner routing is rejected by the repository policy checker.
 
 The local/default invocation remains serial and unchanged in scope:
 
@@ -147,10 +148,44 @@ exactly once in the union of shards.
 
 The initial migration PR proved exact serial/sharded coverage equivalence on the
 same source/runtime/Godot identity. That serial lane is now opt-in only via
-`GDEXT_SERIAL_EQUIVALENCE=1`; ordinary PRs use the sharded gate. Runner sizes are
-cost-first defaults and may be overridden with repository variables without editing
-the workflow. Build SCons concurrency inherits the corresponding vCPU variable
-unless a dedicated `*_SCONS_JOBS` override is set.
+`GDEXT_SERIAL_EQUIVALENCE=1`; ordinary PRs use the sharded gate. The active workflow
+uses literal GitHub-hosted runner labels and pinned build inputs; source/runtime
+identity and the required exact-head gates are independent of shard scheduling.
+
+## Procedural generation candidates and workbench
+
+GEN-001 adds a native-only comparison path and focused admission checks:
+
+```sh
+make worldgen-test
+ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 make worldgen-sanitize
+make worldgen-demo
+./build/worldgen_demo --output build/worldgen-plain.ppm --seed 314159 --plain
+```
+
+The explicit sanitizer command disables leak detection. The target's default
+still enables it; the [dated GEN-001 evidence](../audits/2026-10-18-gen001-procedural-generation.md)
+records the hosted LeakSanitizer limitation separately from the passing ASan/UBSan
+run. The PPM contains actual generated material pixels from Strata, Flow Network
+and District Grammar; its printed local elapsed time is not a performance gate.
+
+With a source-matched extension, launch the separate authoring scene or its
+regression script using the pinned Godot executable:
+
+```sh
+godot --path godot res://worldgen_workbench.tscn
+godot --headless --path godot --script res://tests/test_worldgen_workbench.gd
+```
+
+The ordinary main scene is unchanged. The workbench previews bounded native
+chunk generation, with theme/parameter strokes, guide paths, hard rectangles,
+module instances and complete JSON profiles. It does not tick the simulation.
+Load the examples under `examples/worldgen/`; use the
+[generation contract](../systems/procedural-world-generation.md) for exact ranges,
+module registration, receipt ownership and the separate fresh-chunk installer.
+Native generator/binding changes require rebuilt runtimes before these Godot
+commands establish source-matched evidence. Merely importing an old extension
+does not register `CyberWorldGenerator`.
 
 ## Web compile, export and execution are different checks
 

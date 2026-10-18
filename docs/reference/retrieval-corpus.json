@@ -56,6 +56,7 @@
     "systems/activity-dirty-regions-and-waking.md",
     "systems/granular-interaction-policy.md",
     "systems/player-environment-profiles-and-traversal.md",
+    "systems/procedural-world-generation.md",
     "systems/material-appearance-and-rendering.md",
     "systems/materials-and-rule-kernels.md",
     "systems/intermaterial-interactions.md",
@@ -284,6 +285,10 @@
     {
       "path": "audits/2026-09-24-cybersand-recovery-audit.md",
       "reason": "Dated REC-008 final recovery audit; retrieve explicitly for the 2026-09-20 through 2026-09-22 CI/Stage-3B incident and exact recovery evidence, while Current routing lives in operations/reference contracts"
+    },
+    {
+      "path": "audits/2026-10-18-gen001-procedural-generation.md",
+      "reason": "Dated GEN-001 procedural-generation source and validation checkpoint; retrieve explicitly with its source/artifact/platform limits, while Current generation semantics belong to the canonical subsystem contract"
     }
   ]
 }
