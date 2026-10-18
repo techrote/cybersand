@@ -25,7 +25,7 @@ for the requested change. Use the [retrieval index](../reference/retrieval-index
 for a focused question. The [owner-intent reference](../reference/product-intent-and-priorities.md)
 preserves product goals, liked material behavior and deliberate deferrals.
 
-## Procedural generation candidates â€” 2026-10-18
+## Procedural generation candidates — 2026-10-18
 
 GEN-001 / [#163](https://github.com/techrote/cybersand/issues/163) implements a
 separate native generator and opt-in authoring workbench. Start with the
@@ -39,7 +39,7 @@ separate. Its native fresh-chunk installer refuses all existing storage and
 requires caller-owned receipt/reset admission. Do not attach it concurrently to
 a live World owner or infer production streaming from the preview.
 
-## Procedural fields and masked authoring â€” 2026-10-18
+## Procedural fields and masked authoring — 2026-10-18
 
 GEN-002 / [#171](https://github.com/techrote/cybersand/issues/171) extends those
 candidates with a bounded scalar DAG, finite Hilbert/Morton tiles, structured
@@ -62,7 +62,7 @@ binary is not source-matched evidence for these APIs. The ACT-002 merge preserve
 its rig behavior and supplementary retrieval questions; no actor/native physics
 owner is changed by generation guidance.
 
-## Thunderbowl control laboratory â€” 2026-10-18
+## Thunderbowl control laboratory — 2026-10-18
 
 ACT-003 / #172 adds the standalone native
 [Thunderbowl reference and examples](../systems/thunderbowl-control-reference.md).
@@ -84,7 +84,7 @@ The [dated ACT-003 audit](../audits/2026-10-18-act003-thunderbowl-control-lab.md
 binds local execution to the public source checkpoint; PR #174 records final
 hosted CI and integration disposition.
 
-## Actor control prototypes â€” 2026-10-18
+## Actor control prototypes — 2026-10-18
 
 ACT-002 / #168 expands the original ACT-001 / #161 trio into 29 optional desktop
 rigs in SetA/B/F/Y/U/V. Read the [rig contract](../systems/actor-rigs.md) before
@@ -110,7 +110,7 @@ many-NPC throughput and Windows/Web execution. The
 [validation ledger](../reference/validation-evidence.md) owns dated execution;
 the original ACT-001 audit remains unchanged.
 
-## Material consistency repair â€” 2026-10-18
+## Material consistency repair — 2026-10-18
 
 The owner reports that restarting resolved the all-four-builds problem and asks
 for actual material-behavior improvements. MAT-001 / #158 owns the bounded native
@@ -121,7 +121,7 @@ extending that scope. It does not select a #45 Water successor or change authore
 interaction products/probabilities. Source-matched retained Linux/Windows runtimes
 and the normal applicable ready-for-review checks remain integration gates.
 
-## Recovery and CI checkpoint â€” 2026-09-24
+## Recovery and CI checkpoint — 2026-09-24
 
 The 2026-09-20 through 2026-09-22 CI / Stage-3B incident is closed by the
 [final recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md). The
@@ -146,7 +146,7 @@ The exact owner-side minimal ruleset is recorded in
 That unresolved owner action is not a CI recovery failure and must not be described
 as already installed.
 
-## Development-claims remediation routing â€” 2026-09-20
+## Development-claims remediation routing — 2026-09-20
 
 Before relying on a closed/completed issue as current acceptance, read the
 [development-claims remediation programme](development-claims-remediation-programme.md).
@@ -154,7 +154,7 @@ Before relying on a closed/completed issue as current acceptance, read the
 evidence/objective anchors because later owner evaluation did not accept their
 broader gameplay objectives. #82 owns broad player/granular acceptance. REM-002 /
 #81 has now reconstructed the historical #11 divergence as a never-integrated
-branch and reconciled the still-valid bounded generic bodyâ†”cellular semantics on
+branch and reconciled the still-valid bounded generic body↔cellular semantics on
 current source; [its dated audit](../audits/2026-09-24-rem002-issue11-integration-forensics.md)
 is the current integration record. #83 now owns the broader body/granular envelope
 and owner acceptance. The barrel remains a generic Rapier reference body; do not
@@ -169,7 +169,7 @@ This remediation is not a global physics freeze. #12 Stage 3B continues under it
 own plan, subject to live owner/write-set collision checks before a remediation
 child touches the same native World/test surfaces.
 
-## PCHAR player-representation experiment â€” 2026-09-25
+## PCHAR player-representation experiment — 2026-09-25
 
 PCHAR-001 / #137 adds a reset-scoped ordinary-sandbox experiment under parent
 #132. F6 switches between the historical sampled character and body 0 acting as
@@ -402,7 +402,7 @@ and tracker [#90](https://github.com/techrote/cybersand/issues/90) before select
 a new #45 mechanism.
 
 #49's corrected successor control is now available and remains independently
-required input to #95. In parallel, #91 freezes current generic Rapierâ†”Water
+required input to #95. In parallel, #91 freezes current generic Rapier↔Water
 splash/displacement and hard-boundary behavior. #92 may later test at
 most roughly 3-5 segmented upper-volume solided-Water sheet tiers, but only through
 a suitable generic #12 hybrid substrate; do not create a Water-only handoff backend.
@@ -429,7 +429,7 @@ jetpack values or traversal thresholds.
 
 The exact-current profile is the regression control. Candidate edits remain
 fresh-reset inputs; do not turn the panel into unsynchronized live mutation.
-REM-003 C1 still owns bounded playerâ†”granular disturbance semantics, while
+REM-003 C1 still owns bounded player↔granular disturbance semantics, while
 PENV-001 supplies only separate player-side mass/sensitivity scaling. The exposed
 liquid-sensitivity identity is not permission to alter Water pressure,
 displacement or generic Rapier-body behavior.
