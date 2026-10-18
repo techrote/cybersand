@@ -1,7 +1,7 @@
 ---
 title: Depth layers and parallax prototypes
 status: Current
-document-kind: subsystem
+document-kind: contract
 scope: Opt-in Strata Theatre prototypes for material-world layering, foreground-derived relief and explicit interlayer events; not production world ownership
 canonical-for: [depth-layer-prototype, parallax-prototype, quantized-relief, interlayer-events]
 last-reviewed: 2026-10-18
