@@ -53,6 +53,9 @@ float flair_emission_multiplier(int flair, vec2 pixel) {
 			(pixel.x + pixel.y * 0.37) / 13.0 + presentation_time() * 0.48
 		)) * 0.34;
 	}
+	if (flair == 50) { // activated firework: hot flicker feeding the bloom
+		return 0.85 + 0.45 * (0.5 + 0.5 * sin(presentation_time() * 37.0 + cheap_hash(pixel) * 60.0));
+	}
 	if (flair == 42) { // cloner circuitry
 		return 0.88 + smoothstep(0.80, 1.0, 1.0 - triangle_wave(
 			(pixel.x + pixel.y) / 19.0 - presentation_time() * 0.26
@@ -74,13 +77,20 @@ vec3 emission_at(vec2 world_pixel) {
 	float response = smoothstep(curve_value.x, curve_value.y, condition);
 	float intensity = mix(alpha_emission.z, alpha_emission.w, response);
 	int flair = int(floor(emission_program.a + 0.5));
-	return emission_program.rgb * intensity * flair_emission_multiplier(flair, world_pixel);
+	float multiplier = flair_emission_multiplier(flair, world_pixel);
+	if (material_id == 127) { // phosphor afterglow breathes slowly
+		multiplier *= 0.80 + 0.20 * sin(presentation_time() * 0.8 + world_pixel.x * 0.05);
+	}
+	return emission_program.rgb * intensity * multiplier;
 }
 
 void fragment() {
 	vec2 world_pixel = camera_origin_px + floor(UV * view_size_px);
 	float radius = sample_radius_px;
-	vec3 emission = emission_at(world_pixel) * 0.22;
+	// The half-resolution texel covers a 2x2 block of cells; taking the brightest
+	// keeps single-cell emitters (activated fireworks, sparks) in the bloom.
+	vec3 emission = max(max(emission_at(world_pixel), emission_at(world_pixel + vec2(1.0, 0.0))),
+		max(emission_at(world_pixel + vec2(0.0, 1.0)), emission_at(world_pixel + vec2(1.0, 1.0)))) * 0.22;
 	emission += emission_at(world_pixel + vec2(radius, 0.0)) * 0.09;
 	emission += emission_at(world_pixel + vec2(-radius, 0.0)) * 0.09;
 	emission += emission_at(world_pixel + vec2(0.0, radius)) * 0.09;

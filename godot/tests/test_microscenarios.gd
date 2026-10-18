@@ -111,7 +111,7 @@ func _interaction_provenance_tests() -> void:
 	var profile: Dictionary = bridge.inspect_interaction_profile()
 	expect(profile.get("schema_id","") == "cybersand.interactions" and int(profile.get("schema_version",0)) == 1,
 		"INT-000 native schema identity is missing")
-	expect(profile.get("pair_rules",[]).size() == 14 and profile.get("channels",[]).size() == 7
+	expect(profile.get("pair_rules",[]).size() == 56 and profile.get("channels",[]).size() == 7
 		and profile.get("specialized_rules",[]).size() == 19 and profile.get("layer_kinds",[]).size() == 5,
 		"INT-000 profile catalogue is incomplete")
 	expect(profile.get("authored_layers",[]).is_empty(),
@@ -169,7 +169,7 @@ func _interaction_provenance_tests() -> void:
 			for tick: int in range(duration): expect(host.advance(), fixture + ": " + host.last_error)
 			var report: Dictionary = host.capture({"source_revision":"test-only"})
 			expect(report.get("outcome","") == "complete", "generated fixture did not complete: " + fixture)
-			expect(report.get("interaction_profile_full",{}).get("pair_rules",[]).size() == 14,
+			expect(report.get("interaction_profile_full",{}).get("pair_rules",[]).size() == 56,
 				"capture lost full INT profile: " + fixture)
 			var baseline: Dictionary = report.get("kinetic_contact_baseline",{})
 			expect(baseline.get("transport_hash","") == report.get("transport_hash","")

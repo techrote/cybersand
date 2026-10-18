@@ -65,6 +65,8 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Appearance LUTs, glow, authoring intent | [Appearance](../systems/material-appearance-and-rendering.md), [authored programs](../architecture/item-authored-material-programs.md) |
 | How do I design a material pattern or a new procedural fill, and which primitives/recipes exist? | [Material visual pattern library](../systems/material-visual-pattern-library.md), then the [appearance contract](../systems/material-appearance-and-rendering.md) for semantics and cost |
 | Which material effects are implemented, planned, potential or rejected? | [Material effects register](material-effects-register.md) |
+| Which building materials exist after ID 80, which react with Fire/Lava/Water/Acid/Spark, and what do they become? | [Building material catalogue](../systems/building-material-catalogue.md), then the [interaction substrate](../systems/intermaterial-interactions.md#mat-002-building-material-pass) |
+| Why does vapour leave a fading afterimage, and why do liquids swirl instead of scrolling bands? | [Appearance](../systems/material-appearance-and-rendering.md#second-fidelity-pass-mat-002), then the [fidelity pass record](../audits/2026-10-18-material-fidelity-pass-2.md) |
 | Which wet/liquid and glazing finishes changed on 2026-10-18, and what rendered evidence supports them? | [Appearance](../systems/material-appearance-and-rendering.md#wet-and-liquid-families), then the [material readability pass](../audits/2026-10-18-material-readability-pass.md) for paired captures, tests, cost and limits |
 | API versions, packed samples/results | [Interfaces](interfaces-and-message-contracts.md) |
 | Invariants and incomplete enforcement | [Invariants](invariants.md) |

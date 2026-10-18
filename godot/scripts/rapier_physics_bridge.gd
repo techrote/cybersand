@@ -600,7 +600,7 @@ func _merge_hard_surface_rectangles(
 
 
 func _is_hard_surface_material(material_id: int) -> bool:
-	if material_id >= CyberCellWorld.LIMESTONE_BLOCK and material_id <= CyberCellWorld.LED_WHITE:
+	if material_id >= CyberCellWorld.LIMESTONE_BLOCK and material_id <= CyberCellWorld.LAST_MATERIAL:
 		return true
 	match material_id:
 		CyberCellWorld.WALL, CyberCellWorld.CLONER, CyberCellWorld.WOOD, CyberCellWorld.ICE, CyberCellWorld.METAL, CyberCellWorld.CONCRETE, CyberCellWorld.GLASS:

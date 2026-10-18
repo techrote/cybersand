@@ -49,7 +49,7 @@ Source: [main.gd::_unhandled_key_input, update_camera, update_worker_frame_state
 | Arrow keys; F | Pan camera (disables follow); toggle character follow |
 | 1–6 | Quick slots: Sand, Water, Wall, Smoke, Paste, Slush |
 | Q / E or Page Up / Page Down | Cycle all paintable materials |
-| Shift plus those cycling keys | Jump core/reactive, medieval, industrial, luminous groups |
+| Shift plus those cycling keys | Jump core/reactive, medieval, industrial, luminous, woods, stone/earth, metals and glass/chemical groups |
 | V / B | Cycle logical view / independent per-side simulation margins |
 | L | Toggle camera-interest / whole finite-world simulation |
 | C | Toggle ordinary Water emission / coherent lateral-delay emission |
@@ -119,7 +119,12 @@ one brief contact with no reaction is not sufficient evidence of a defect.
 | Acid against several materials, Wall as control | Finite corrosion and exceptions |
 | Plant/Fungus beside substrate; Seed on Sand | Growth, germination, and later ignition |
 | Cloner beside one material with empty output space | Capture and initialized emission |
-| Rocket beside payload, then Fire/Lava | Capture, launch trigger, trail, and impact |
+| Rocket beside payload, then Fire/Lava | Capture, launch trigger, trail, and impact; a flying Rocket blooms with sparks |
+| Building woods (81–97) beside Fire/Lava, then Water | Bounded combustion and extinguishing, char/ember finish |
+| Raw Clay or Adobe beside Fire/Lava; Packed Snow beside Fire/Salt/Steam | Kiln firing to Terracotta/Red Brick; melting, thawing and condensation |
+| Quicklime, Gypsum, Rock Salt, Sugar Glass beside Water | Slaking to Steam+Cement, softening to Paste, dissolving to Brine/Salt |
+| Spark onto Thermite or Magnesium; Fire onto Sulfur/Phosphor/Wax/Polymer | Ignition to Lava/Fire; melting to Oil; Smoke products |
+| Acid against Marble, Chalk, Zinc, Bare Iron; Water/Brine against Bare Iron | Effervescence (Foam) or corrosion versus the broad Acid kernel; slow rusting |
 
 For Water conservation/rest assertions use native fixture mass and
 `content_hash()`, not apparent particle count or advancing `state_hash()`.
@@ -128,7 +133,8 @@ The [Water contract](systems/water-design.md) defines acceptance bounds.
 ## Construction recipes
 
 These are authoring suggestions using the
-[complete themed catalogue](systems/themed-construction-materials.md).
+[complete themed catalogue](systems/themed-construction-materials.md) and the
+[building catalogue](systems/building-material-catalogue.md).
 
 | Scene | Suggested composition |
 |---|---|
@@ -136,6 +142,10 @@ These are authoring suggestions using the
 | Village house | Oak frame; Wattle and Daub/Lime Plaster infill; Thatch/Terracotta roof; Red Brick chimney; Packed Earth path |
 | Chemical bay | Reinforced Concrete/Ceramic shell; Steel Plate tanks; Painted Steel panels; Steel/Copper Pipes; Cable/Rubber/Insulation; Chemical Glass inspection zones |
 | Rainy alley | Industrial Brick; Wet Asphalt/Cobblestone; Rusted/Corrugated Steel; Chainlink; narrow cyan/magenta neon; Smoke/Steam/reactive liquids |
+| Forest lodge | Rough Oak/Birch logs as posts; Pine Planks and Cedar Shingles; Moss Wall foundations; Paper Screen windows; Plant beds with flowers and vines |
+| Pottery kiln yard | Firebrick kiln around Lava; Raw Clay and Adobe ware that fires to Terracotta/Red Brick; Sandbags; Rammed Earth walls |
+| Alchemist lab | Marble/Terrazzo floor; Glass Block and Frosted Glass; Uranium Glass and Phosphor accents; Sulfur, Wax, Quicklime and Thermite stores |
+| Spaceport | Heat-Shield Tile, Carbon Fibre, Aluminium and Solar Panel cladding; Polymer and Acrylic fittings; Gold Leaf trim |
 
 Chainlink and grating collide as solid cells despite visual holes. Decorative
 metal/glass names do not inherit every reaction of base Metal/Glass. Use Empty

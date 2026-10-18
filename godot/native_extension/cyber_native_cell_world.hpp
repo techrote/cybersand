@@ -144,7 +144,7 @@ private:
         Vector2 bearing{};
         std::uint64_t support_samples = 0;
         std::uint64_t intermediate_caps = 0;
-        std::array<std::uint64_t, 4 * 81> faces{};
+        std::array<std::uint64_t, 4 * cybersand::kMaterialDefinitions.size()> faces{};
     };
     std::unique_ptr<std::array<BodyDiagnostic, 17>> body_diagnostics_;
     bool diagnostic_fixture_ = false;

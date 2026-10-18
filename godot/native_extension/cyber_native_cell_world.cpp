@@ -1540,7 +1540,7 @@ Dictionary CyberNativeCellWorld::diagnostic_snapshot(Vector2i origin, Vector2i s
     if (!diagnostic_fixture_ || size.x < 1 || size.y < 1 || size.x > 512 || size.y > 768 ||
         !in_bounds(origin.x, origin.y) || !in_bounds(static_cast<std::int64_t>(origin.x) + size.x - 1,
                                                    static_cast<std::int64_t>(origin.y) + size.y - 1)) return result;
-    std::array<std::int64_t, 81> counts{}, sum_y{};
+    std::array<std::int64_t, cybersand::kMaterialDefinitions.size()> counts{}, sum_y{};
     PackedByteArray cells;
     cells.resize(static_cast<std::int64_t>(size.x) * size.y);
     auto* bytes = cells.ptrw();

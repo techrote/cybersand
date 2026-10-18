@@ -94,6 +94,10 @@ Mite recognize Oak as timber in their existing bounded substrate/feeding rules.
 The desktop fallback treats these IDs as static surfaces and lacks that native
 combustion behavior.
 
+`is_hard_surface` covers the contiguous range from Limestone Block to
+`kLastMaterial`, so the [building catalogue](building-material-catalogue.md)
+(IDs 81–131) shares this collision classification.
+
 Changes to hard-versus-non-hard occupancy update hard-surface revisions. Replacing
 one inert hard material with another changes appearance but not collision
 classification. Rapier rectangle count follows fragmented occupancy, not the

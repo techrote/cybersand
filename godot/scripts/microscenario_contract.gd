@@ -5,7 +5,7 @@ extends RefCounted
 # replacement. No callbacks, scripts, live nodes or arbitrary per-tick writes.
 const VERSION: int = 2
 const SIDE: int = 1024
-const MATERIAL_COUNT: int = 81
+const MATERIAL_COUNT: int = 132
 const MAX_RECORDS: int = 4096
 const MAX_EVENTS: int = 24
 const MAX_OBSERVATIONS: int = 24

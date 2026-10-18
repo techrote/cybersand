@@ -90,6 +90,115 @@ const NEON_CYAN: int = 77
 const NEON_MAGENTA: int = 78
 const NEON_AMBER: int = 79
 const LED_WHITE: int = 80
+# MAT-002 building materials. Native owns their combustion and pair
+# reactions; this fallback treats them as static hard surfaces.
+const PINE_PLANKS: int = 81
+const BIRCH_LOG: int = 82
+const OAK_LOG: int = 83
+const WALNUT_PANEL: int = 84
+const MAHOGANY_PANEL: int = 85
+const BAMBOO: int = 86
+const PLYWOOD: int = 87
+const DRIFTWOOD: int = 88
+const CEDAR_SHINGLES: int = 89
+const CHARRED_TIMBER: int = 90
+const CORK: int = 91
+const WICKER: int = 92
+const CARDBOARD: int = 93
+const PAPER_SCREEN: int = 94
+const TAR_BLOCK: int = 95
+const ACRYLIC_SHEET: int = 96
+const MOSS_WALL: int = 97
+const MARBLE: int = 98
+const CHALK_BLOCK: int = 99
+const BASALT_COLUMNS: int = 100
+const OBSIDIAN: int = 101
+const ADOBE_BRICK: int = 102
+const RAW_CLAY: int = 103
+const FIREBRICK: int = 104
+const PACKED_SNOW: int = 105
+const ROCK_SALT_BLOCK: int = 106
+const GYPSUM_BOARD: int = 107
+const QUICKLIME_BLOCK: int = 108
+const RAMMED_EARTH: int = 109
+const SANDBAG: int = 110
+const TERRAZZO: int = 111
+const GABION: int = 112
+const ZINC_SHEET: int = 113
+const ALUMINIUM_PANEL: int = 114
+const MAGNESIUM_PLATE: int = 115
+const THERMITE_BRICK: int = 116
+const BARE_IRON: int = 117
+const GOLD_LEAF: int = 118
+const BRASS_PANEL: int = 119
+const GLASS_BLOCK: int = 120
+const FROSTED_GLASS: int = 121
+const QUARTZ_CRYSTAL: int = 122
+const URANIUM_GLASS: int = 123
+const SUGAR_GLASS: int = 124
+const WAX_BLOCK: int = 125
+const SULFUR_BLOCK: int = 126
+const PHOSPHOR_PANEL: int = 127
+const POLYMER_PANEL: int = 128
+const SOLAR_PANEL: int = 129
+const CARBON_FIBRE: int = 130
+const HEAT_SHIELD_TILE: int = 131
+const FIRST_BUILDING_MATERIAL: int = 81
+const LAST_MATERIAL: int = 131
+# Display names for IDs FIRST_BUILDING_MATERIAL..LAST_MATERIAL.
+const BUILDING_MATERIAL_NAMES: Array[String] = [
+	"pine planks",
+	"birch log",
+	"rough oak log",
+	"walnut panel",
+	"mahogany panel",
+	"bamboo",
+	"plywood",
+	"driftwood",
+	"cedar shingles",
+	"charred timber",
+	"cork",
+	"wicker",
+	"cardboard",
+	"paper screen",
+	"tar block",
+	"acrylic sheet",
+	"moss wall",
+	"marble",
+	"chalk block",
+	"basalt columns",
+	"obsidian",
+	"adobe brick",
+	"raw clay",
+	"firebrick",
+	"packed snow",
+	"rock salt block",
+	"gypsum board",
+	"quicklime block",
+	"rammed earth",
+	"sandbag",
+	"terrazzo",
+	"gabion",
+	"galvanised zinc sheet",
+	"aluminium panel",
+	"magnesium plate",
+	"thermite brick",
+	"bare iron plate",
+	"gold leaf",
+	"brass panel",
+	"glass block",
+	"frosted glass",
+	"quartz crystal",
+	"uranium glass",
+	"sugar glass",
+	"wax block",
+	"sulfur block",
+	"phosphor panel",
+	"polymer panel",
+	"solar panel",
+	"carbon fibre",
+	"heat-shield tile",
+]
 
 const EMISSION_FLAG_NONE: int = 0
 const EMISSION_FLAG_COHERENT_LIQUID: int = 1
@@ -2075,7 +2184,7 @@ func in_bounds(x: int, y: int) -> bool:
 
 
 func _is_hard_surface_material(material_id: int) -> bool:
-	if material_id >= LIMESTONE_BLOCK and material_id <= LED_WHITE:
+	if material_id >= LIMESTONE_BLOCK and material_id <= LAST_MATERIAL:
 		return true
 	match material_id:
 		WALL, CLONER, WOOD, ICE, METAL, CONCRETE, GLASS:

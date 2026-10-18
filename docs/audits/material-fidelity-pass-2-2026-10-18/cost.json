@@ -1,0 +1,226 @@
+{
+  "a_root": "C:/Users/_/AppData/Local/Temp/claude/C--khybersand/cd16198f-7528-40d2-b39f-194321c778e4/scratchpad/baseline",
+  "adapter": "NVIDIA TITAN RTX",
+  "api": "3.3.0 NVIDIA 581.80",
+  "b_root": "res://shaders",
+  "blocks": 4,
+  "frames_per_block": 200,
+  "godot": "4.7-stable (official)",
+  "metrics": "world_gpu_ms/glow_gpu_ms = RenderingServer.viewport_get_measured_render_time_gpu for the 1920x1080 world viewport and the 160x90 glow source; frame_cpu_ms = wall time between frame_post_draw signals (whole application frame, vsync off)",
+  "output": [
+    1920,
+    1080
+  ],
+  "renderer": "gl_compatibility",
+  "results": {
+    "effects/glow/a": {
+      "frame_cpu_ms": {
+        "median": 1.018,
+        "n": 800,
+        "p95": 1.478
+      },
+      "glow_gpu_ms": {
+        "median": 0.037,
+        "n": 800,
+        "p95": 0.038
+      },
+      "world_gpu_ms": {
+        "median": 0.886,
+        "n": 800,
+        "p95": 1.326
+      }
+    },
+    "effects/glow/b": {
+      "frame_cpu_ms": {
+        "median": 1.388,
+        "n": 800,
+        "p95": 1.876
+      },
+      "glow_gpu_ms": {
+        "median": 0.044,
+        "n": 800,
+        "p95": 0.045
+      },
+      "world_gpu_ms": {
+        "median": 1.25,
+        "n": 800,
+        "p95": 1.734
+      }
+    },
+    "effects/noglow/a": {
+      "frame_cpu_ms": {
+        "median": 0.92,
+        "n": 800,
+        "p95": 1.378
+      },
+      "glow_gpu_ms": {
+        "median": 0.0,
+        "n": 800,
+        "p95": 0.0
+      },
+      "world_gpu_ms": {
+        "median": 0.827,
+        "n": 800,
+        "p95": 1.296
+      }
+    },
+    "effects/noglow/b": {
+      "frame_cpu_ms": {
+        "median": 1.29,
+        "n": 800,
+        "p95": 1.75
+      },
+      "glow_gpu_ms": {
+        "median": 0.0,
+        "n": 800,
+        "p95": 0.0
+      },
+      "world_gpu_ms": {
+        "median": 1.196,
+        "n": 800,
+        "p95": 1.667
+      }
+    },
+    "living/glow/a": {
+      "frame_cpu_ms": {
+        "median": 0.455,
+        "n": 800,
+        "p95": 0.759
+      },
+      "glow_gpu_ms": {
+        "median": 0.04,
+        "n": 800,
+        "p95": 0.041
+      },
+      "world_gpu_ms": {
+        "median": 0.32,
+        "n": 800,
+        "p95": 0.325
+      }
+    },
+    "living/glow/b": {
+      "frame_cpu_ms": {
+        "median": 0.97,
+        "n": 800,
+        "p95": 1.415
+      },
+      "glow_gpu_ms": {
+        "median": 0.048,
+        "n": 800,
+        "p95": 0.049
+      },
+      "world_gpu_ms": {
+        "median": 0.827,
+        "n": 800,
+        "p95": 1.175
+      }
+    },
+    "living/noglow/a": {
+      "frame_cpu_ms": {
+        "median": 0.371,
+        "n": 800,
+        "p95": 0.574
+      },
+      "glow_gpu_ms": {
+        "median": 0.0,
+        "n": 800,
+        "p95": 0.0
+      },
+      "world_gpu_ms": {
+        "median": 0.276,
+        "n": 800,
+        "p95": 0.29
+      }
+    },
+    "living/noglow/b": {
+      "frame_cpu_ms": {
+        "median": 0.871,
+        "n": 800,
+        "p95": 1.321
+      },
+      "glow_gpu_ms": {
+        "median": 0.0,
+        "n": 800,
+        "p95": 0.0
+      },
+      "world_gpu_ms": {
+        "median": 0.778,
+        "n": 800,
+        "p95": 1.23
+      }
+    },
+    "mixed/glow/a": {
+      "frame_cpu_ms": {
+        "median": 0.578,
+        "n": 800,
+        "p95": 0.914
+      },
+      "glow_gpu_ms": {
+        "median": 0.036,
+        "n": 800,
+        "p95": 0.038
+      },
+      "world_gpu_ms": {
+        "median": 0.446,
+        "n": 800,
+        "p95": 0.737
+      }
+    },
+    "mixed/glow/b": {
+      "frame_cpu_ms": {
+        "median": 0.924,
+        "n": 800,
+        "p95": 1.376
+      },
+      "glow_gpu_ms": {
+        "median": 0.043,
+        "n": 800,
+        "p95": 0.044
+      },
+      "world_gpu_ms": {
+        "median": 0.788,
+        "n": 800,
+        "p95": 1.26
+      }
+    },
+    "mixed/noglow/a": {
+      "frame_cpu_ms": {
+        "median": 0.494,
+        "n": 800,
+        "p95": 0.95
+      },
+      "glow_gpu_ms": {
+        "median": 0.0,
+        "n": 800,
+        "p95": 0.0
+      },
+      "world_gpu_ms": {
+        "median": 0.397,
+        "n": 800,
+        "p95": 0.7
+      }
+    },
+    "mixed/noglow/b": {
+      "frame_cpu_ms": {
+        "median": 0.838,
+        "n": 800,
+        "p95": 1.281
+      },
+      "glow_gpu_ms": {
+        "median": 0.0,
+        "n": 800,
+        "p95": 0.0
+      },
+      "world_gpu_ms": {
+        "median": 0.74,
+        "n": 800,
+        "p95": 1.084
+      }
+    }
+  },
+  "snapshot_blend": 0.5,
+  "view": [
+    320,
+    180
+  ]
+}

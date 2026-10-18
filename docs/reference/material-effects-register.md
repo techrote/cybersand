@@ -5,7 +5,7 @@ document-kind: reference
 scope: Register of presentation effects — implemented (Current), planned, potential and rejected — with stage, materials, inputs, motion, cost class and evidence
 canonical-for: [material-effects-register]
 last-reviewed: 2026-10-18
-related-documents: [../systems/material-visual-pattern-library.md, ../systems/material-appearance-and-rendering.md, status-and-roadmap.md, ../audits/2026-10-18-material-readability-pass.md]
+related-documents: [../systems/material-visual-pattern-library.md, ../systems/material-appearance-and-rendering.md, ../systems/building-material-catalogue.md, status-and-roadmap.md, ../audits/2026-10-18-material-readability-pass.md, ../audits/2026-10-18-material-fidelity-pass-2.md]
 ---
 
 # Material effects register
@@ -34,6 +34,7 @@ reshaped the effect:
 - **P3:** volume and contact pass.
 - **P4:** shape-aware pass.
 - **P5:** every static material.
+- **P6:** second fidelity pass (MAT-002, [record](../audits/2026-10-18-material-fidelity-pass-2.md)).
 
 ## Implemented (Current)
 
@@ -48,13 +49,15 @@ reshaped the effect:
 | Run-length extent (`region_extent`) | structured | Probes 1, 2, 3, 5, 8 per direction | R16 | P4 |
 | `structured_detail` quality hook | structured | Uniform; 0 disables shape-aware fills. Not yet exposed in UI | — | P5 |
 | Shared glow setter (`set_glow_enabled`) | controller | Desktop/Web `G`, initialization, restore | — | P1 |
-| Half-resolution emission plus additive composite | glow | 13 source samples and 13 composite taps | fixed | base |
+| Half-resolution emission plus additive composite | glow | 13 source samples (centre takes the brightest of its 2×2 cells since P6) and 13 composite taps | fixed | base/P6 |
+| Vapour afterimage buffer | trail | Two half-float view-sized viewports ping-pong once per frame; `vapour_trail_strength` | 1 read per Empty pixel | P6 |
+| `growth_decor` quality hook | Empty | Uniform; 0 disables growth decor | — | P6 |
 
 ### Liquids
 
 | Effect | Materials | Inputs | Motion | Cost | Since |
 |---|---|---|---|---|---|
-| Ripple bands and micro-glints | Water, Brine | — | yes | A | base |
+| Swirled ripple and micro-glints | Water, Brine | — | yes | A | base/P6 |
 | Caustic net | Water, Brine | — | yes | A | P2 |
 | Rising micro-bubbles | Water, Brine | — | yes | A | P2 |
 | Fixed salt motes | Brine | — | — | A | P1 |
@@ -62,13 +65,13 @@ reshaped the effect:
 | Depth shading | liquids | depth | — | R3 | P3 |
 | Exposed-surface froth | liquids | neighbours | yes | A | P3 |
 | Boiling beside heat | Water, Brine, Slush, Ice | neighbours | yes | A | P3 |
-| Oil wave and streaks (owner-approved) | Oil | — | yes | A | base |
-| Thin-film iridescence; burning flames | Oil | burn | yes | A | P2 |
-| Heavy clumps and slow swell | Paste, Cement | Cement cure | slow | A | P1 |
+| Swirling marbled slick, contour iridescence (replaces the wave/streak bands) | Oil | — | yes | A | P6 |
+| Burning flames | Oil | burn | yes | A | P2 |
+| Heavy clumps and slow swirled swell | Paste, Cement | Cement cure | slow | A | P1/P6 |
 | Icy granules, twinkling crystals | Slush | — | slow | A | P1/P2 |
-| Chemical bands, bubbles, fizz, froth | Acid, Toxic Sludge | — | yes | A | base/P2 |
+| Swirling chemical eddies, bubbles, fizz, froth; darker sludge with filaments | Acid, Toxic Sludge | — | yes | A | base/P6 |
 | Etching fizz on solids | Acid, Toxic Sludge | neighbours | yes | A | P3 |
-| Mirror bands, warped reflection, speculars | Mercury | — | yes | A | base/P2 |
+| Swirling liquid-metal reflections and pin highlights (replaces bands) | Mercury | — | yes | A | P6 |
 | Crust plates, seams, pops | Lava, Molten Glass | heat | yes | A | P2 |
 | Depth heat, molten skin, water flashes | Lava, Molten Glass | depth, neighbours | yes | R3 | P3 |
 
@@ -80,8 +83,11 @@ reshaped the effect:
 | Edge cooling; flare on fuel | Fire | neighbours | yes | A | P3 |
 | Flicking sparks | Fire | — | yes | A | P2 |
 | Crackling white core | Spark | lifetime | yes | A | P2 |
-| Advected billows, rims, soot | Smoke | lifetime | yes | A | P2 |
-| Rising plumes, condensation glints | Steam | lifetime | yes | A | P2 |
+| Advected billows, rims, soot; last lifetime thins from the wisps | Smoke | lifetime | yes | A | P2/P6 |
+| Near-white rising plumes, condensation glints | Steam | lifetime | yes | A | P2/P6 |
+| Fading afterimage of moved or vanished vapour | Empty | vapour buffer | yes | 1 read | P6 |
+| Coloured sparks beside a flying firework | Empty | Rocket flight | yes | R4 for candidates | P6 |
+| Grass, flowers, leaves, mushrooms, hanging vines and hyphae | Empty | Plant, Moss Wall, Fungus nearby | sway, glow | R7 + R6 | P6 |
 | Bubble rims, small bubbles, speculars, pops | Foam | lifetime | yes | A | base/P2 |
 | Soft gas and foam boundaries | Smoke, Steam, Foam | neighbours | — | A | P3 |
 | Embers above hot or burning cells | Empty | sources below | yes | R3 for candidates | P2 |
@@ -99,7 +105,11 @@ reshaped the effect:
 | Charged arcs and arc sparks | Metal | when charged | A | base/P2 |
 | Restrained travelling glints | Steel Plate, Painted Steel, Corrugated, Pipes | sparse | A | base |
 | Emitter rim light on adjacent solids and powders | solids, powders | no (follows emitters) | shared | P3 |
-| Bioluminescent spots | Fungus | yes | A | P2 |
+| Mycelium web, fruiting knots, bioluminescent pulses | Fungus | yes | A | P2/P6 |
+| Jittered leaf clusters, midribs, sway | Plant | yes | A (cell field, 9 cells) | P6 |
+| Iridescent glistening chitin | Mite | yes | A | P6 |
+| White-gold flickering core with HDR bloom | Rocket (flight state ≥ 1) | yes | A | P6 |
+| Fluorescent glow / breathing afterglow | Uranium Glass, Phosphor Panel | phosphor | R16 | P6 |
 | Fibre-optic data pulses | Cable Bundle | yes | R16 | P4 |
 | Moving conveyor with rollers | Rubber (thin runs) | yes | R16 | P5 |
 | Tank fill line and rising bubbles | Chemical Glass | yes | R16 | P5 |
@@ -126,7 +136,9 @@ reshaped the effect:
 | Strata, grassy top | Packed Earth | P5 |
 | Tar-sealed cracks | Asphalt | P5 |
 | Rivet rows, grime gradient, scratches, paint chips, rust runs | Steel Plate, Painted Steel | P2/P5 |
-| Bleed runs, perforated edges | Rusted Steel | P5 |
+| Organic corrosion spills from edges and seams, perforation only inside corrosion | Rusted Steel | P5/P6 |
+| Organic blotches, flaking scale, spill runs, clustered pits | Rust, Rusted Steel | P6 |
+| 51 building finishes (woods, bark, stone, metals, glass, chemical/industrial) | IDs 81–131, see the [building catalogue](../systems/building-material-catalogue.md) | P6 |
 | Frames, posts | Grating, Chainlink | P5 |
 | Cylinder shading, flanges and bolts, couplings, patina | Steel Pipe, Copper Pipe | P4 |
 | Diagonal stripes with trim; chevrons on strips; worn paint | Hazard Stripe | P4 |
@@ -162,7 +174,7 @@ reshaped the effect:
 | Smoke lit by nearby fire | Volumetric feel | Neighbour classification over a wider radius |
 | Rain and wetness overlays | Mood | Scene-level state, not a material property |
 | Signage, stencils and decals | Readable environments | Needs per-region identity, or the Planned paint/decal layers in the [construction catalogue](../systems/themed-construction-materials.md#limits-and-authoring) |
-| New construction materials (pipe elbows, vents, screens, rebar mesh) | More vocabulary | New native material IDs and a native runtime rebuild; outside presentation-only scope |
+| New construction materials (pipe elbows, vents, screens, rebar mesh) | More vocabulary | New native material IDs and a native runtime rebuild; P6 added 51 building materials (IDs 81–131) but not these |
 | Orientation and variant channel | Authored direction per cell | Explicitly Planned elsewhere; changes the RG8 contract |
 
 ## Rejected

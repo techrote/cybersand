@@ -86,7 +86,7 @@ The program describes tint/blend, condition range, value, alpha, emission
 response/color, and an integer flair selector in texel 3 alpha.
 
 The [material palette shader](../../godot/shaders/material_palette.gdshader)
-implements 45 non-neutral flair classes through bounded analytic branches.
+implements 50 non-neutral flair classes through bounded analytic branches.
 Their selected finish uses arithmetic, hashes, and optional presentation time;
 it adds no per-cell object, particle, light, or physics field. The common relief
 stage then reads four neighbors from the same already-uploaded world texture
@@ -149,11 +149,63 @@ paired captures and limits. The
 [construction catalogue](themed-construction-materials.md) owns exact themed
 ID-to-finish mappings.
 
-**Approved owner intent:** preserve Oil's wave character, distinguish liquid
-motion, use restrained glints on smooth/manufactured metals, and leave rough/
-hammered metals matte. World-anchored texture must not swim with the camera.
+**Approved owner intent:** distinguish liquid motion, use restrained glints on
+smooth/manufactured metals, and leave rough/hammered metals matte. **Owner
+direction 2026-10-18 (second pass):** slowly scrolling hatched bands read badly,
+especially on Oil and Mercury bulk; liquid bulk should swirl pseudorandomly. This
+supersedes the earlier "preserve Oil's wave character" preference for the bulk
+pattern; Oil keeps its named `OIL_WAVE_RATE` as the swirl phase and its
+iridescence. World-anchored texture must not swim with the camera.
 Appearance, flicker, and dither must not affect conservation, collision, sleeping,
 or replay.
+
+### Second fidelity pass (MAT-002)
+
+**Current since 2026-10-18 (pass 2):**
+
+- **Swirling liquid bulk.** `swirl_field` (two slow warp noises bending `fbm3`)
+  and `field_contours` replace the travelling `triangle_wave` bands of Oil, Mercury,
+  Water ripple, Acid/Toxic Sludge, Paste/Cement swell and Slush meltwater. Oil
+  suppresses per-cell dither and draws its rainbow along curved contours.
+- **Organic corrosion.** `corrosion_field` (blotches, gravity-stretched spill runs,
+  clustered pits) replaces the 3×3 hash blocks of Rust and Rusted Steel scale;
+  Rusted Steel spills from top edges and seams and only perforates inside corrosion.
+- **Living finishes.** `FLAIR_PLANT` draws jittered cellular leaves, midribs and
+  stems with a slight sway; `FLAIR_FUNGUS` a mycelium web with fruiting knots and
+  bioluminescent pulses; `FLAIR_MITE` thin-film iridescence with glistening
+  highlights; Seed keeps `FLAIR_ORGANIC`.
+- **Growth decor in Empty cells.** `apply_growth_decor` (quality uniform
+  `growth_decor`, default 1) draws grass tufts, flowers and leaves above Plant and
+  Moss Wall, mushrooms (some bioluminescent) above Fungus, and vines/hyphae hanging
+  beneath them. One sprout per three-column group scans its centre column (≤ 7
+  reads); hanging growth scans its own column (≤ 6 reads). It never alters material
+  cells or simulation.
+- **Fireworks.** `FLAIR_ROCKET` stripes idle Rockets and turns any flight state
+  (condition byte ≥ 1) into a flickering white-gold core with HDR emission; Empty
+  cells beside a flying Rocket show coloured sparks (≤ 4 reads for lattice
+  candidates). The emission source now takes the brightest of the 2×2 cells its
+  half-resolution texel covers, so single-cell emitters such as fireworks and
+  sparks reliably bloom.
+- **Steam and Smoke.** Steam is near-white (`0xE6EEF2D8`, mirrored natively) and
+  denser; Smoke's last lifetime thins from the wisps inward. A presentation-only
+  **vapour afterimage** ([material_vapour_trail.gdshader](../../godot/shaders/material_vapour_trail.gdshader),
+  `setup_vapour_trail_pipeline`/`update_vapour_trail` in [main.gd](../../godot/scripts/main.gd))
+  ping-pongs two half-float view-sized SubViewports once per rendered frame. Each
+  keeps the brighter of current Steam/Smoke coverage and the reprojected, risen,
+  bilinearly diffused previous frame, decayed with 0.42 s / 0.65 s e-folding times;
+  the palette draws the remainder over Empty cells. It reads the same immutable
+  snapshot, is independent of simulation cadence and pauses, and is disabled
+  (`vapour_trail_strength` 0) in capture fixtures.
+- **Building catalogue.** `FLAIR_BUILDING` selects `apply_building_finish` by
+  material ID for IDs 81–131 using the run probe (or a fixed panel geometry
+  when `structured_detail` is 0). Luminous building materials do not rim-light
+  their own interior. The [building catalogue](building-material-catalogue.md)
+  lists each finish.
+- **Colour intent.** Toxic Sludge is a deeper, darker green (`0x2B6A22`, mirrored
+  natively) with dark depths and oily filaments.
+
+These are presentation-only. Evidence, cost and limits are in the
+[dated record](../audits/2026-10-18-material-fidelity-pass-2.md).
 
 ## Dirty bytes versus GPU upload
 

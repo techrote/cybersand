@@ -55,7 +55,7 @@ bool MaterialRules::is_free_leveling_liquid(Material material) noexcept {
 bool MaterialRules::is_hard_surface(Material material) noexcept {
     const auto material_id = static_cast<std::uint8_t>(material);
     if (material_id >= static_cast<std::uint8_t>(Material::LimestoneBlock) &&
-        material_id <= static_cast<std::uint8_t>(Material::LedWhite)) {
+        material_id <= static_cast<std::uint8_t>(kLastMaterial)) {
         return true;
     }
     switch (material) {

@@ -99,6 +99,13 @@ is multiplied accordingly. Budget reads before arithmetic.
 | `run_length` / `region_extent` | `vec4` up, down, left, right | Orientation, cross-section, edge distance | ≤16 reads |
 | `is_open_cell`, `is_emitter`, `emitter_light`, `is_fuel`, `is_hot_source` | — | Neighbour classification for edges, contact and particles | trivial |
 | `apply_burn` | `vec4(vec4, pixel, condition)` | Char and ember veins from burn progress | ~2 noise |
+| `swirl_field` | `float(vec2 p, t, speed)` | Domain-warped flow for liquid bulk: pseudorandom eddies, never straight bands | 5 noise |
+| `field_contours` | `float(field, count, width)` | Thin curved contour lines of a smooth field (marbling, veins, slick rainbow) | trivial |
+| `corrosion_field` | `vec2(vec2, up_bias)` | Rust coverage and deep-pit mask: blotches, gravity-stretched spills, pits | 7 noise |
+| `cell_field` | `vec3(vec2, size, seed)` | Jittered 3×3 cellular field: distance, border gap, owner hash (leaves, crystals, stones, chips) | 18 hashes |
+| `wood_grain`, `wood_knot`, `board_layout` | — | Flowing late-wood bands, knots with ring swirl, staggered board lanes | 2 noise |
+| `block_courses` | `vec2(vec2, size, seed)` | Running-bond seams and per-block hash | 1 hash |
+| `BuildGeometry` / `default_build_geometry` | struct | Run geometry for the building catalogue, or a fixed panel without the probe | — |
 
 ## Recipe catalogue
 
@@ -170,17 +177,21 @@ animation. Static materials are time-independent and asserted by
 | IDs | Material | Recipe | Inputs | Motion |
 |---|---|---|---|---|
 | 3, 24 | Water, Brine | Ripple, glints, caustic net, micro-bubbles, depth, froth; Brine adds fixed salt motes; boils beside heat | condition = mass (coverage), neighbours, depth | yes |
-| 16 | Oil | Approved wave/streak (`OIL_WAVE_RATE`), thin-film iridescence, flames when burning | condition = burn | yes |
+| 16 | Oil | Smooth slick, `swirl_field` eddies phased by `OIL_WAVE_RATE`, contour-line iridescence, flames when burning | condition = burn | yes |
 | 20, 30 | Paste, wet Cement | Heavy matte clumps, slow swell; Cement aggregate, swell ∝ cure remaining | Cement condition = cure remaining | slow |
 | 21 | Slush | Icy granules, twinkling crystals, meltwater shimmer | — | slow |
-| 12, 32 | Acid, Toxic Sludge | Chemical bands, rising bubbles, fizz layer, froth, fumes above, etching fizz on solids | neighbours | yes |
-| 33 | Mercury | Mirror bands, warped reflection, moving speculars | — | yes |
+| 12, 32 | Acid, Toxic Sludge | Swirling eddies, rising bubbles, fizz layer, froth, fumes above, etching fizz; sludge deep green with dark depths and filaments | neighbours | yes |
+| 33 | Mercury | Swirled fake environment map, contour highlights, pin speculars | — | yes |
 | 8, 36 | Lava, Molten Glass | Crust plates, glowing seams, pops, depth heat, surface skin, water flashes | Molten Glass condition = heat | yes |
 | 6 | Fire | `fbm3` tongues on a heat ramp, edge cooling, sparks, flare on fuel, embers above | condition = lifetime | yes |
 | 34 | Spark | Twinkle, crackling white core | condition = lifetime | yes |
 | 4, 22, 37 | Smoke, Steam, Foam | Billows with rims and soot / plumes with glints / bubble rims, speculars and pops; soft edges | condition = lifetime | yes |
 | 2, 14, 23, 25, 26, 27 | Powders | Clustered grains, facets, rare glints; burning Coal glows | Coal condition = burn | rare glint |
-| 11, 18, 19 | Organics | Fibres and nodes; Fungus bioluminescent spots | — | Fungus |
+| 11 | Plant | Cellular leaves, midribs, stems, sway; grass/flowers above and vines below in Empty cells | condition = energy | sway |
+| 18 | Fungus | Mycelium web, fruiting knots, pulses; mushrooms above and hyphae below in Empty cells | — | yes |
+| 19 | Seed | Fibres and nodes | — | — |
+| 15 | Mite | Iridescent glistening chitin | — | yes |
+| 17 | Rocket | Striped casing; flying (condition ≥ 1) white-gold core, bloom, sparks around | condition = flight | yes |
 | 28 | Metal | Charged arcs and arc sparks; seams and machined edges | condition = charge | when charged |
 | 1, 31, 58 | Wall, Concrete, Reinforced Concrete | Block or formwork seams, lit caps, drips; tie holes and exposed rebar | run extent | — |
 | 38–40 | Limestone, Sandstone, Granite | Ashlar with caps, quoins and drips; bedding / flecks | run extent | — |
@@ -198,7 +209,8 @@ animation. Static materials are time-independent and asserted by
 | 59–61 | Asphalt, Wet Asphalt, Wet Cobblestone | Grain and tar-sealed cracks / substrate under a fixed film and puddle sheen | run extent | — |
 | 62, 63 | Steel Plate, Painted Steel | Seams, rivets, scratches, rivet rows, grime gradient; chips and rust runs | run extent | sparse glint |
 | 64 | Corrugated Steel | Ridges along the sheet run, laps, rust streaks | run extent | sparse glint |
-| 65 | Rusted Steel | Scale and pits, bleed runs, perforated edges | run extent | — |
+| 29, 65 | Rust, Rusted Steel | `corrosion_field` blotches, flaking scale, spill runs, clustered pits; steel spills from edges/seams | run extent | — |
+| 81–131 | Building catalogue | Per-ID `apply_building_finish`; see the [building catalogue](building-material-catalogue.md) | run extent, burn | glints, glitter, phosphor |
 | 66, 67 | Grating, Chainlink | Bars or diamonds with frame / posts | run extent | — |
 | 68, 69 | Steel / Copper Pipe | Cylinder shading, flanges with bolts, couplings, patina; steam leaks | run extent | leaks |
 | 70 | Ceramic Tile | Grout grid, glaze shine, bullnose trim | run extent | — |
@@ -256,6 +268,14 @@ animation. Static materials are time-independent and asserted by
   (the quality-tier hook).
 
 ## Lessons learned and anti-patterns
+
+**Second pass (2026-10-18):** straight travelling `triangle_wave` bands read as
+hatching on large liquid areas; domain-warped fields read as fluid. Hash blocks
+(`floor(pixel / 3)`) read as a chequerboard on corrosion; layered noise reads as
+organic. A single-cell emitter can fall between half-resolution glow samples, so
+the emission centre takes the 2×2 maximum. Luminous materials must not rim-light
+their own interior or they saturate to white. Leaves on a fixed lattice read as a
+grid; a jittered cell field reads as foliage.
 
 - **Sub-pixel crawl:** a thresholded line moving at under one cell per second
   steps visibly. That was the original glass/ice sheens; make such features

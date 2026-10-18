@@ -102,6 +102,57 @@ inline constexpr std::array<VisualStateSource, kMaterialDefinitions.size()>
         VisualStateSource::Zero,   // neon magenta
         VisualStateSource::Zero,   // neon amber
         VisualStateSource::Zero,   // LED white
+        VisualStateSource::StateB,  // pine planks burn progress
+        VisualStateSource::StateB,  // birch log burn progress
+        VisualStateSource::StateB,  // rough oak log burn progress
+        VisualStateSource::StateB,  // walnut panel burn progress
+        VisualStateSource::StateB,  // mahogany panel burn progress
+        VisualStateSource::StateB,  // bamboo burn progress
+        VisualStateSource::StateB,  // plywood burn progress
+        VisualStateSource::StateB,  // driftwood burn progress
+        VisualStateSource::StateB,  // cedar shingles burn progress
+        VisualStateSource::StateB,  // charred timber burn progress
+        VisualStateSource::StateB,  // cork burn progress
+        VisualStateSource::StateB,  // wicker burn progress
+        VisualStateSource::StateB,  // cardboard burn progress
+        VisualStateSource::StateB,  // paper screen burn progress
+        VisualStateSource::StateB,  // tar block burn progress
+        VisualStateSource::StateB,  // acrylic sheet burn progress
+        VisualStateSource::StateB,  // moss wall burn progress
+        VisualStateSource::Zero,   // marble
+        VisualStateSource::Zero,   // chalk block
+        VisualStateSource::Zero,   // basalt columns
+        VisualStateSource::Zero,   // obsidian
+        VisualStateSource::Zero,   // adobe brick
+        VisualStateSource::Zero,   // raw clay
+        VisualStateSource::Zero,   // firebrick
+        VisualStateSource::Zero,   // packed snow
+        VisualStateSource::Zero,   // rock salt block
+        VisualStateSource::Zero,   // gypsum board
+        VisualStateSource::Zero,   // quicklime block
+        VisualStateSource::Zero,   // rammed earth
+        VisualStateSource::Zero,   // sandbag
+        VisualStateSource::Zero,   // terrazzo
+        VisualStateSource::Zero,   // gabion
+        VisualStateSource::Zero,   // galvanised zinc sheet
+        VisualStateSource::Zero,   // aluminium panel
+        VisualStateSource::Zero,   // magnesium plate
+        VisualStateSource::Zero,   // thermite brick
+        VisualStateSource::Zero,   // bare iron plate
+        VisualStateSource::Zero,   // gold leaf
+        VisualStateSource::Zero,   // brass panel
+        VisualStateSource::Zero,   // glass block
+        VisualStateSource::Zero,   // frosted glass
+        VisualStateSource::Zero,   // quartz crystal
+        VisualStateSource::Zero,   // uranium glass
+        VisualStateSource::Zero,   // sugar glass
+        VisualStateSource::Zero,   // wax block
+        VisualStateSource::Zero,   // sulfur block
+        VisualStateSource::Zero,   // phosphor panel
+        VisualStateSource::Zero,   // polymer panel
+        VisualStateSource::Zero,   // solar panel
+        VisualStateSource::Zero,   // carbon fibre
+        VisualStateSource::Zero,   // heat-shield tile
     }};
 
 [[nodiscard]] constexpr std::uint8_t project_visual_state(
