@@ -5,7 +5,7 @@ document-kind: contract
 scope: Thunderbowl actuation, decision and perception distinctions; prototype control schemas and bounded battle/training experiments, with explicit limits on neural, swarm and model-link claims
 canonical-for: [thunderbowl-control-reference, thunderbowl-control-topologies, thunderbowl-training-design]
 last-reviewed: 2026-10-18
-related-documents: [actor-rigs.md, actor-control-prototypes.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../reference/validation-evidence.md]
+related-documents: [actor-rigs.md, actor-control-prototypes.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../reference/validation-evidence.md, ../audits/2026-10-18-act003-thunderbowl-control-lab.md]
 ---
 
 # Thunderbowl actor arena and control reference
@@ -28,7 +28,9 @@ sampled locomotion and terrain tools.
 
 Current source defines the prototype below; the
 [validation ledger](../reference/validation-evidence.md) owns dated acceptance
-evidence. Trained policies, a terrain-lattice NCA and a live model service remain
+evidence, with source/runtime identities and preserved failures in the
+[ACT-003 audit](../audits/2026-10-18-act003-thunderbowl-control-lab.md).
+Trained policies, a terrain-lattice NCA and a live model service remain
 **Planned**. No controller-efficacy or target-machine performance claim follows
 from having executable examples.
 

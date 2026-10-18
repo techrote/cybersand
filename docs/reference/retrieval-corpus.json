@@ -97,6 +97,10 @@
   ],
   "excluded": [
     {
+      "path": "audits/2026-10-18-act003-thunderbowl-control-lab.md",
+      "reason": "Dated ACT-003 source/runtime, preserved failure, schema and bounded arena evidence; retrieve explicitly through the Thunderbowl contract or validation ledger, not as a default Current control contract"
+    },
+    {
       "path": "audits/2026-10-18-act002-actor-rigs.md",
       "reason": "Dated ACT-002 source/runtime, preserved failure and scoped rig validation evidence; retrieve explicitly through the rig contract or validation ledger, not as a default Current runtime contract"
     },

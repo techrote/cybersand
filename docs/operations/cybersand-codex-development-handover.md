@@ -43,6 +43,9 @@ eight JSON schemas and fourteen match definitions live under
 The NCA-inspired graph weights are untrained; the Python smart-link client is an
 offline mock. Model inference, learned performance, complete replay and broad
 platform/feel acceptance must not be inferred from runnable examples.
+The [dated ACT-003 audit](../audits/2026-10-18-act003-thunderbowl-control-lab.md)
+binds local execution to the public source checkpoint; PR #174 records final
+hosted CI and integration disposition.
 
 ## Actor control prototypes — 2026-10-18
 
