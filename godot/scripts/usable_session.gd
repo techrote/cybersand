@@ -21,6 +21,7 @@ class ActionSlot:
 	var producer: StringName = &"policy"
 	var was_live: bool = false
 	var cancel_pending: bool = false
+	var rearm_pending: bool = false
 
 	func neutralize(reset_sequence: bool = false) -> void:
 		trigger = false
@@ -30,6 +31,7 @@ class ActionSlot:
 		deadline = -1
 		was_live = false
 		cancel_pending = true
+		rearm_pending = false
 		if reset_sequence:
 			sequence = -1
 
@@ -138,22 +140,27 @@ func submit_action(
 		_mutex.unlock()
 		return false
 	var switched: bool = usable_index != slot.usable_index
-	slot.trigger_pressed = slot.trigger_pressed or (trigger and not slot.trigger)
-	slot.alternate_pressed = slot.alternate_pressed or (alternate and not slot.alternate)
-	slot.usable_index = usable_index
+	if switched:
+		slot.usable_index = usable_index
+		slot.rearm_pending = trigger or alternate
+		slot.trigger = false
+		slot.alternate = false
+		slot.trigger_pressed = false
+		slot.alternate_pressed = false
+	elif slot.rearm_pending:
+		if not trigger and not alternate:
+			slot.rearm_pending = false
+		slot.trigger = false
+		slot.alternate = false
+	else:
+		slot.trigger_pressed = slot.trigger_pressed or (trigger and not slot.trigger)
+		slot.alternate_pressed = slot.alternate_pressed or (alternate and not slot.alternate)
+		slot.trigger = trigger
+		slot.alternate = alternate
 	slot.aim = normalized_aim
 	slot.power = clampf(power, 0.0, 1.0)
-	slot.trigger = trigger
-	slot.alternate = alternate
 	slot.sequence = sequence
 	slot.deadline = observed_tick + lease_ticks
-	if switched and trigger:
-		# Held input across an equipment change must be released/rearmed; a
-		# deliberate quick click in the same packet remains available only when
-		# the previous equipment was already selected.
-		slot.trigger_pressed = false
-	if switched and alternate:
-		slot.alternate_pressed = false
 	_mutex.unlock()
 	return true
 
