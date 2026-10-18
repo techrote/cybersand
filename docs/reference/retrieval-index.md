@@ -191,3 +191,5 @@ separate; the programme graph owns admission.
 - Ordinary Current sleep control and measurement gaps: [measurement contract](../operations/soliding-measurement.md).
 
 - Blocked falling/torque/coherent-child motion fixture: [macro-fracture preregistration](../operations/soliding-macro-fracture-fixture.md).
+
+Integrated launch and physical actor comparison questions route to the [physical actor programme](../operations/physical-actor-programme.md), including owner feedback, impulses, trial limitations and follow-up articulation.

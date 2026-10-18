@@ -395,3 +395,7 @@ benchmark compilation; builds/tests must stop during registered local timing.
 `make soliding-benchmark-smoke` compiles the isolated journal characterization
 with warnings as errors and exercises its bounded-work/fairness assertions on a
 small fixture. CI timings are not performance acceptance measurements.
+
+## Combined desktop entry
+
+The project now defaults to `res://feature_launcher.tscn`; F2 returns there and discards the current session. Direct `res://main.tscn` and showcase user arguments remain available. See the [physical actor programme](physical-actor-programme.md) for the Blacksite comparison and `test_physical_actor_trial.gd` regression.

@@ -464,3 +464,7 @@ sampled-baseline behavior. Tuning a profile therefore must not erase or silently
 change the selected representation/recovery policy.
 
 Parent #133 remains open after #138.
+
+## Combined features and physical actors — 2026-10-18
+
+Use the [physical actor programme](physical-actor-programme.md) for the combined desktop launcher, reset-scoped Blacksite comparison and preserved owner notes. The Ripper arm is a single live Rapier rectangle; articulated rigs remain follow-up work.

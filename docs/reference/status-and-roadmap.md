@@ -593,3 +593,7 @@ remain unimplemented. Source `de332ea` actually uses
 the 8-byte superset carrier after #19 integration;
 the [storage contract](../architecture/chunk-tile-and-buffer-model.md) supersedes
 earlier four-byte physical-size statements for this source without selecting G-final.
+
+## Combined desktop features and physical actor trial — 2026-10-18
+
+The [physical actor programme](../operations/physical-actor-programme.md) owns the combined launcher and initial single-body barrel/Ripper Blacksite comparison. Articulation, broad granular acceptance and usable attachments remain Planned; the preserved owner observations are not solver validation.

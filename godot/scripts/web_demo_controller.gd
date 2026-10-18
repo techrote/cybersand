@@ -128,6 +128,7 @@ func water_lab_apply_result(result: Dictionary, blind_label: String = "") -> voi
 	_publish_world();update_shader_parameters();update_status()
 
 func microscenario_apply_definition(definition: Dictionary, mode: String = "Inspect") -> bool:
+	if str(definition.get("id", "")).begins_with("experimental/blacksite/"): return false
 	if not ready_to_play or not water_blind_set.is_empty() or not water_active_blind_label.is_empty(): return false
 	if not CyberMicroScenarioCatalogue.player_configuration(
 		str(definition.get("id", ""))

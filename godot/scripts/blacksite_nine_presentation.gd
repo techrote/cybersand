@@ -1,6 +1,7 @@
 class_name CyberBlacksiteNinePresentation
 extends RefCounted
 
+const Trial = preload("res://scripts/physical_actor_trial.gd")
 const Scene = preload("res://scripts/blacksite_nine.gd")
 const Layout = preload("res://scripts/blacksite_nine_layout.gd")
 var host: Control
@@ -112,7 +113,8 @@ func _button(parent: Node, text: String, action: Callable) -> Button:
 
 func active() -> bool:
 	return (host.tower_context.get("micro_active", false)
-		and str(host.tower_context.get("microscenario", {}).get("id", "")) == Scene.SCENARIO_ID)
+		and (str(host.tower_context.get("microscenario", {}).get("id", "")) == Scene.SCENARIO_ID
+		or Trial.contains(str(host.tower_context.get("microscenario", {}).get("id", "")))))
 
 func _request_blocked() -> bool:
 	# Both scene launchers obey the same existing owner/modal admission boundary.
@@ -126,9 +128,10 @@ func launch() -> bool:
 	return accepted
 
 func installed(definition: Dictionary) -> void:
-	if str(definition.get("id", "")) != Scene.SCENARIO_ID: return
+	if str(definition.get("id", "")) != Scene.SCENARIO_ID and not Trial.contains(str(definition.get("id", ""))): return
 	_apply_frame(0)
-	host.get_node("Layout/Title").text = "CYBERSAND / BLACKSITE NINE"
+	host.get_node("Layout/Title").text = ("CYBERSAND / " + str(definition.presentation.title)
+		if Trial.contains(str(definition.id)) else "CYBERSAND / BLACKSITE NINE")
 
 func show_map() -> void:
 	if not active() or _request_blocked(): return

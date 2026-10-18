@@ -11,8 +11,12 @@ config_version=5
 [application]
 
 config/name="Cyber Sand Reference Sandbox"
-run/main_scene="res://main.tscn"
+run/main_scene="res://feature_launcher.tscn"
 config/features=PackedStringArray("4.7")
+
+[autoload]
+
+FeatureNavigation="*res://scripts/feature_navigation.gd"
 
 [cybersand]
 

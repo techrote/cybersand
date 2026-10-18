@@ -118,8 +118,21 @@ if ($LASTEXITCODE -ne 0) {
 $CheckoutState = if ($CheckoutDirtyLines.Count -eq 0) { "clean" } else { "tracked-dirty" }
 
 $provenance = Get-Content -LiteralPath $NativeProvenance -Raw | ConvertFrom-Json
-$NativeHash = (Get-FileHash -LiteralPath $NativeDll -Algorithm SHA256).Hash.ToLowerInvariant()
-$RapierHash = (Get-FileHash -LiteralPath $RapierDll -Algorithm SHA256).Hash.ToLowerInvariant()
+function Get-RuntimeSha256 {
+    param([string]$Path)
+    # Works in the Windows PowerShell entry point even when the optional
+    # Get-FileHash cmdlet is unavailable. The stream is always closed.
+    $stream = [System.IO.File]::OpenRead($Path)
+    $algorithm = [System.Security.Cryptography.SHA256]::Create()
+    try {
+        return ([System.BitConverter]::ToString($algorithm.ComputeHash($stream))).Replace("-", "").ToLowerInvariant()
+    } finally {
+        $algorithm.Dispose()
+        $stream.Dispose()
+    }
+}
+$NativeHash = Get-RuntimeSha256 -Path $NativeDll
+$RapierHash = Get-RuntimeSha256 -Path $RapierDll
 $ExpectedNativeHash = [string]$provenance.sha256
 if (-not [string]::IsNullOrWhiteSpace($ExpectedNativeHash) -and
     $NativeHash -ne $ExpectedNativeHash.ToLowerInvariant()) {

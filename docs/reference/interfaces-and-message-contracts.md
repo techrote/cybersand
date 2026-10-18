@@ -420,3 +420,5 @@ uses incarnation/slot/generation handles and immutable transaction tokens;
 classifications under an independent revision witness. Neither adds a C API,
 GDExtension method, worker message or live runtime admission. Real World producer
 witnesses and cross-owner queues remain Planned.
+
+The [physical Blacksite experiment](../operations/physical-actor-programme.md) reuses the current body input/result ABI with one rectangle. `apply_trial_impulses` is a main-thread bridge method; no native field layout or sampled actor action/observation stride changes.

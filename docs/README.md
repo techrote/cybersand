@@ -12,6 +12,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Choose a reading route
 
+Try the integrated desktop features and physical barrel/Ripper arms: [combined launcher and physical actor programme](operations/physical-actor-programme.md).
+
 For **Blacksite Nine**, start with the
 [connected-complex guide](operations/blacksite-nine-demo.md): Shift+F11 entry,
 the 3×3 camera map, twelve shared passages, player-follow exploration and the

@@ -304,3 +304,5 @@ transitions and tests a synthetic bounded ledger. The [discovery substrate](../s
 owns copied observations only. Neither is connected to World/Godot/Rapier or
 changes Current owners. Production hooks, barriers, queues and payload transitions
 remain separately gated; the source reader must stay serialized and read-only.
+
+The desktop [physical actor trial](../operations/physical-actor-programme.md) uses one main-thread Rapier rectangle and the existing immutable body-value publication. It disables the sampled owner, adds no worker-side Rapier access and does not attach the generation preview to live cell storage.

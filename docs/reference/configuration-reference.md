@@ -499,3 +499,7 @@ The matched configuration gate requires equal rig, actuation lane and observatio
 profile and excludes human cadence; it does not prove equal effective compute,
 training privilege or empirical fairness. The visible scene displays evaluator
 information, so its human examples use mechanics/asymmetric classification.
+
+## Initial physical Blacksite trial
+
+The [physical actor programme](../operations/physical-actor-programme.md) owns the reset-scoped barrel/Ripper control bounds, hull sizes, cooldown and desktop-only scope. Existing reference controls and registered definitions retain their defaults.
