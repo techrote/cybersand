@@ -24,7 +24,7 @@ and [implementation](../../native/src/world.cpp).
 | SimulationCore | Authoritative cell/field semantics and invariants | World kernels and tick entry; extraction remains incomplete |
 | SimulationScheduler | Work planning, pool, barriers, deterministic coordination and overload metrics | `World::tick_phased`, `ParallelState`; desktop wall-clock pacing is still GDScript and Web owns synchronous callbacks |
 | WorldStorage | Chunk lifetime, optional fields, activity and capacity; future persistence | `World::Chunk`, `chunks_`, reservation/query methods and explicit fresh generated-chunk admission; general streaming and live resize are absent |
-| Procedural generator | Compile generation guidance and prepare complete deterministic material proposals | Opt-in `generation::Generator`/`GenerationJob` and immutable prepared feature modules; no mutable World access; [generation contract](../systems/procedural-world-generation.md) |
+| Procedural generator | Compile generation guidance and prepare complete deterministic material proposals | Opt-in `generation::Generator`/`GenerationJob`, immutable scalar graphs/aggregates and prepared feature modules; no mutable World access; [generation contract](../systems/procedural-world-generation.md) |
 | TileJob | Temporary bounded work assignment and local observations | Core indices, `JobEffects`, local `TickStats`; no public type-enforced bounded rule context |
 | MaterialRules | Immutable descriptors, traits and kernel selection | Descriptor/pair-reaction APIs are separate; executable kernels remain inside World |
 | RenderBridge | Consume immutable simulation publication and update presentation | Native `RenderSnapshotExchange`, copied Godot packets and CPU-image consumer; GPU subregion writes are absent |
@@ -36,13 +36,21 @@ or lifetime boundary. A cosmetic rename is not architectural progress.
 
 ### How do advanced generation modules extend the engine?
 
-**Current GEN-001 source:** the native
+**Current GEN-001/GEN-002 source:** the native
 [`ModuleRegistry`](../../native/include/cybersand/world_generation.hpp) resolves
 versioned factories before generation. Factories prepare immutable samplers
 outside simulation ticks; a sampler receives the current coordinate, immutable
 effective parameters/palette and previous proposed material. It returns at most
 one material for that cell. The generator clips the module's declared rectangle,
 orders dependencies and validates the result before publishing a chunk.
+
+The independent [`FieldGraph`](../../native/include/cybersand/generation_fields.hpp)
+evaluates a bounded scalar DAG from coordinates and copied initial context.
+It has no custom callback or simulation dependency. The generator uses those
+values to mask modules and guide themes, parameters or discrete aggregate output.
+Aggregate definitions resolve existing material IDs; they do not define new
+MaterialRules. The [field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md)
+owns fixed observation order, finite curve scope and graph budgets.
 
 Modules are trusted cooperative C++ code: declared logical cost bounds admission,
 while the host cannot sandbox an arbitrary callback or enforce its execution

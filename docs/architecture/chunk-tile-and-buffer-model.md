@@ -34,7 +34,7 @@ That fallback geometry does not describe either native Web profile.
 
 ## How does a generation chunk relate to simulation geometry?
 
-**Current GEN-001 source:** an opt-in
+**Current GEN-001/GEN-002 source:** an opt-in
 [`generation::Recipe`](../../native/include/cybersand/world_generation.hpp)
 chooses the square output partition for a procedural proposal. Sampling uses
 global coordinates, so requesting neighboring chunks in a different order or
@@ -50,6 +50,14 @@ domains or new cellular transfer rules. The
 [generation contract](../systems/procedural-world-generation.md) owns their
 bounds/precedence; World admission separately requires its configured chunk
 size and a previously absent destination.
+
+Finite Hilbert/Morton tiles, aggregate grains, mask shapes and output chunks are
+separate spatial partitions. GEN-002 addresses each from absolute coordinates
+with signed floor division; changing output chunk size does not reset a field
+tile or grain. Consecutive Hilbert ranks connect only within one finite tile,
+while Morton ranks are not a continuous route. Neither substitutes for the
+generator's macrocell port network or the simulation scheduler's write domains.
+See the [field/curve contract](../systems/procedural-generation-fields-and-modifiers.md).
 
 ## How are writes into a neighboring tile made safe?
 

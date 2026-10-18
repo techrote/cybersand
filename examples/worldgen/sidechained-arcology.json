@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "seed": 271828,
+  "chunk_size": 128,
+  "candidate": "strata",
+  "parameters": {
+    "surface_y": 352,
+    "relief": 18,
+    "feature_scale": 128,
+    "cave_threshold": 0.7,
+    "detail": 0.12,
+    "fluid_level": 512
+  },
+  "themes": {"weights": {"industrial": 1}},
+  "fields": [
+    {"id": "building_envelope", "kind": "box", "parameters": {"x": -208, "y": 24, "width": 416, "height": 320}},
+    {"id": "excavation_envelope", "kind": "circle", "parameters": {"x": 80, "y": 176, "radius": 100, "feather": 20}},
+    {"id": "warp_driver", "kind": "gradient_noise", "parameters": {"scale": 96, "salt": 81}},
+    {"id": "breakup_noise", "kind": "value_noise", "warp_x": "warp_driver", "parameters": {"scale": 56, "salt": 37, "warp": 28}},
+    {"id": "breakup", "kind": "smoothstep", "inputs": ["breakup_noise"], "parameters": {"low": 0.38, "high": 0.65}},
+    {"id": "excavation", "kind": "multiply", "inputs": ["excavation_envelope", "breakup"]},
+    {"id": "service_core", "kind": "box", "parameters": {"x": -12, "y": 24, "width": 24, "height": 320}},
+    {"id": "outside_core", "kind": "invert", "inputs": ["service_core"]},
+    {"id": "module_exclusion", "kind": "multiply", "inputs": ["excavation", "outside_core"]}
+  ],
+  "modules": [
+    {
+      "id": "weathered_arcology",
+      "module": "arcology",
+      "version": 1,
+      "bounds": [-208, 24, 416, 320],
+      "parameters": {"bay_width": 48, "floor_height": 32, "wall": 3, "shaft_width": 12},
+      "application": "building_envelope",
+      "exclusion": "module_exclusion",
+      "strength": 1
+    }
+  ],
+  "paths": [
+    {"id": "public_concourse", "points": [[-256, 312], [256, 312]], "width": 10, "material": 0}
+  ],
+  "overrides": [
+    {"id": "clear_service_shaft", "bounds": [-6, 24, 12, 320], "material": 0, "priority": 100},
+    {"id": "protected_foundation", "bounds": [-232, 344, 464, 8], "material": 58, "priority": 200}
+  ]
+}

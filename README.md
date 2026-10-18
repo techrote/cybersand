@@ -43,12 +43,15 @@ exact 4.7 pin. Desktop has an asynchronous simulation owner; Web ticks are
 synchronous even with internal pthreads. Rapier objects stay on the main thread.
 The GDScript fallback has different material semantics.
 
-The desktop sandbox also includes three provisional
-[actor control models](docs/systems/actor-control-prototypes.md): **Runner**
-(jump/dash), **Skimmer** (energy-limited flight) and **Crawler** (traction/clamber).
-Open **Actor prototypes / F5** to choose a keyboard, scripted-demo or external-policy
-pilot and optionally add the other two models as demo NPCs. All three share the
-same bounded action/observation interface; neural inference is a future consumer.
+The desktop sandbox includes 29 provisional
+[actor rigs](docs/systems/actor-rigs.md) in six sets: the original **SetA**
+Runner/Skimmer/Crawler controls, **SetB** ground machines, **SetF** flight and
+descent, **SetY** contact/rope/impulse traversal, **SetU** salvage-tool movers and
+**SetV** fictional interface personas. Open **F5** to choose a rig and a keyboard,
+scripted-demo or external-policy pilot, adjust power and compare the other rigs
+in its set. All share a bounded input/observation boundary; neural inference is a
+future consumer. The [SetA contract](docs/systems/actor-control-prototypes.md)
+retains the original motor and policy compatibility details.
 
 [Dated validation](docs/reference/validation-evidence.md) records what actually
 ran and which artifacts/platforms it covers. CYSD1 restores levels, not exact

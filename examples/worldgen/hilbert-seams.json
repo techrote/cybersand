@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "seed": 20261018,
+  "chunk_size": 128,
+  "candidate": "strata",
+  "parameters": {
+    "surface_y": -256,
+    "relief": 0,
+    "feature_scale": 96,
+    "cave_threshold": 1,
+    "detail": 0
+  },
+  "themes": {"weights": {"industrial": 1}},
+  "fields": [
+    {"id": "hilbert_rank", "kind": "hilbert", "parameters": {"order": 4, "cell_size": 8, "origin_x": -240, "origin_y": 16}},
+    {"id": "morton_rank", "kind": "morton", "parameters": {"order": 4, "cell_size": 8, "origin_x": -208, "origin_y": 48}},
+    {"id": "early_trace", "kind": "band", "inputs": ["hilbert_rank"], "parameters": {"low": 0.15, "high": 0.22}},
+    {"id": "late_trace", "kind": "band", "inputs": ["hilbert_rank"], "parameters": {"low": 0.57, "high": 0.63}},
+    {"id": "hilbert_seams", "kind": "maximum", "inputs": ["early_trace", "late_trace"]},
+    {"id": "morton_panels", "kind": "band", "inputs": ["morton_rank"], "parameters": {"low": 0.62, "high": 0.95}},
+    {"id": "warp_driver", "kind": "value_noise", "parameters": {"scale": 80, "salt": 47}},
+    {"id": "panel_noise", "kind": "fbm", "warp_x": "warp_driver", "warp_y": "hilbert_rank", "parameters": {"scale": 48, "octaves": 2, "salt": 73, "warp": 12}},
+    {"id": "panel_variation", "kind": "remap", "inputs": ["panel_noise"], "parameters": {"low": 0.38, "high": 0.62}},
+    {"id": "service_well", "kind": "circle", "parameters": {"x": 0, "y": 192, "radius": 35}}
+  ],
+  "aggregates": [
+    {
+      "id": "layered_panels",
+      "variation": "panel_variation",
+      "components": [
+        {"material": 53, "weight": 1},
+        {"material": 62, "weight": 4},
+        {"material": 72, "weight": 3}
+      ]
+    }
+  ],
+  "modifiers": [
+    {"id": "morton_insets", "priority": 0, "application": "morton_panels", "context": "solid", "aggregate": "layered_panels"},
+    {"id": "cyan_hilbert_traces", "priority": 20, "application": "hilbert_seams", "exclusion": "service_well", "material": 77},
+    {"id": "open_service_well", "priority": 30, "application": "service_well", "material": 0}
+  ],
+  "overrides": [
+    {"id": "protected_service_spine", "bounds": [-3, 0, 6, 384], "material": 62, "priority": 100}
+  ]
+}

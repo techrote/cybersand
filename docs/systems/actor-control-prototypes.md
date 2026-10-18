@@ -1,21 +1,26 @@
 ---
-title: Provisional actor control models
+title: SetA actor controls and legacy policy compatibility
 status: Current
 document-kind: contract
-scope: Three optional sampled actor movement models, shared player/policy input and bounded desktop ownership; excludes neural inference, production character selection and generalized body physics
-canonical-for: [actor-control-prototypes, actor-policy-input]
+scope: Original SetA Runner, Skimmer and Crawler motors and version-1 policy compatibility; the actor-rigs contract owns additional sets and version-2 actions
+canonical-for: [actor-control-prototypes, actor-policy-input-v1]
 last-reviewed: 2026-10-18
-related-documents: [granular-interaction-policy.md, player-environment-profiles-and-traversal.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../reference/status-and-roadmap.md]
+related-documents: [actor-rigs.md, granular-interaction-policy.md, player-environment-profiles-and-traversal.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../reference/status-and-roadmap.md]
 ---
 
-# Provisional actor control models
+# SetA actor controls and legacy policy compatibility
 
 ## What is being prototyped?
 
-**Current, experimental (ACT-001 / #161):** Runner, Skimmer and Crawler are three alternative
-movement rule sets for an ordinary actor. Each can receive human input or a
+**Current, experimental:** Runner, Skimmer and Crawler are the three original
+ACT-001 / #161 movement rule sets, now grouped as **SetA**. Each receives human input or a
 policy-produced command through the same value interface. A controller's source
 does not grant different collision rules, movement authority or capabilities.
+
+The [actor-rigs contract](actor-rigs.md) owns ACT-002's additional SetB/F/Y/U/V
+rigs, independent aim and effort/trim/reel channels, auxiliary action and additive
+40-value observations. This page preserves the SetA motor and version-1 seam;
+its three-model and fixed-body claims apply to SetA.
 
 The models reuse the sampled character's fixed rectangular body and current
 material-aware support/collision queries. They remain separate from PCHAR's
@@ -53,9 +58,9 @@ an unsupported material structure load-bearing.
 
 ## How are the prototypes selected and controlled?
 
-**Current desktop controls:** open **Actor prototypes / F5** in the ordinary
-sandbox. Select **Current sampled character**, **Runner**, **Skimmer** or
-**Crawler**; choose **Pilot: keyboard**, **Pilot: scripted demonstration** or
+**Current desktop controls:** open the actor selector with **F5** in the ordinary
+sandbox and choose **SetA**. Select **Current sampled character**, **Runner**,
+**Skimmer** or **Crawler**; choose **Pilot: keyboard**, **Pilot: scripted demonstration** or
 **Pilot: external policy input**. Two optional demonstration NPCs allow a
 small simultaneous comparison. Applying the selection uses a fresh ordinary-world
 reset, so the active model identity is established at the owner boundary.
@@ -168,7 +173,9 @@ observation row with epoch, simulation tick, model, producer and accepted
 sequence. The zero-based row index is its actor ID; the vector alone is
 insufficient to identify a response target. `sequences` reports the latest
 **admitted** command, which may arrive after the motor last stepped; it is not an
-applied-action or exact-replay receipt.
+applied-action or exact-replay receipt. ACT-002 additionally publishes consumed
+actions, sequences and edge flags through the [v2 observation contract](actor-rigs.md#identity-freshness-and-consumed-edges);
+these additive fields do not change the original observation order.
 
 ### Command admission and expiry
 
@@ -268,11 +275,13 @@ world/fixture, platform and worker configuration actually tested.
 
 ## What remains experimental?
 
-The three models are candidates for play and comparison. Owner evaluation still
+These three SetA models are candidates for play and comparison. Owner evaluation still
 decides whether their acceleration, timing and special actions are useful.
 Combat, tools, inventory, animation, arbitrary actor shapes, actor-to-actor rigid
 collisions, broad material-response calibration and learned policies are outside
-this increment. The sampled body does not become a cellular material or a
+the original SetA increment. The [additional rig sets](actor-rigs.md) separately
+introduce authored shapes, torque, attachments and selected bounded tools.
+The sampled body does not become a cellular material or a
 generic Rapier body merely because a policy controls it.
 
 The desktop experiment and controller-level tests do not establish a Web/browser

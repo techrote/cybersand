@@ -439,6 +439,12 @@ func _frame_metadata(snapshot: CyberSimulationSnapshot) -> Dictionary:
 		"environment_profile_applied": snapshot.actor_prototypes.is_empty() and active_body_id == 0,
 		"actor_prototype": snapshot.actor_prototypes.duplicate(true),
 	}
+	var rig_states: PackedFloat32Array = snapshot.actor_prototypes.get("rig_states", PackedFloat32Array())
+	if rig_states.size() >= CyberActorPrototypeSession.RIG_OBSERVATION_STRIDE:
+		player.extent = [rig_states[35], rig_states[36]]
+		player.rotation_radians = rig_states[16]
+		player.rig_id = str(snapshot.actor_prototypes.models[0])
+		player.rig_set = str(snapshot.actor_prototypes.rig_sets[0])
 	if active_body_id > 0:
 		for body: Dictionary in bodies:
 			if int(body.get("id", 0)) != active_body_id:
@@ -645,7 +651,7 @@ func _write_frame(job: Dictionary) -> String:
 	metadata["review_bitmap_note"] = (
 		"8-bit indexed BMP; material palette indices equal serialized material IDs; "
 		+ "index 255 is the active player outline and 254 is a non-player rigid-body "
-		+ "review outline; exact rigid-body rotation remains in JSON metadata"
+		+ "review outline; outlines use unrotated extents and exact actor/body rotation remains in JSON metadata"
 	)
 
 	var json_name: String = base_name + ".json"

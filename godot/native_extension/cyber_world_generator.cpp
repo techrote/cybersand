@@ -3,6 +3,7 @@
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/array.hpp>
 #include <godot_cpp/variant/packed_byte_array.hpp>
+#include <godot_cpp/variant/packed_float32_array.hpp>
 #include <godot_cpp/variant/string.hpp>
 
 #include <algorithm>
@@ -26,7 +27,10 @@ std::string string_value(const Variant& value, const std::string& context) {
         invalid(context, "expected a string");
     const String text = value;
     if (text.length() > 256) invalid(context, "string exceeds 256 characters");
-    return text.utf8().get_data();
+    for (std::int64_t index = 0; index < text.length(); ++index)
+        if (text[index] == U'\0') invalid(context, "embedded NUL in string");
+    const auto encoded = text.utf8();
+    return std::string(encoded.get_data(), static_cast<std::size_t>(encoded.length()));
 }
 
 Dictionary dictionary_value(const Variant& value, const std::string& context) {
@@ -188,7 +192,8 @@ int priority_value(const Dictionary& dictionary, const std::string& context) {
 
 gen::Recipe parse_recipe(const Dictionary& input, std::uint64_t revision) {
     fields(input, {"schema", "seed", "chunk_size", "candidate", "parameters", "themes",
-                   "strokes", "paths", "overrides", "modules", "limits", "catalogue"}, "recipe");
+                   "strokes", "paths", "overrides", "modules", "limits", "catalogue",
+                   "fields", "aggregates", "modifiers"}, "recipe");
     gen::Recipe recipe;
     recipe.revision = revision;
     if (input.has("schema")) recipe.schema = static_cast<std::uint32_t>(bounded_integer(
@@ -202,7 +207,8 @@ gen::Recipe parse_recipe(const Dictionary& input, std::uint64_t revision) {
     if (input.has("limits")) {
         const auto limits = dictionary_value(input["limits"], "limits");
         fields(limits, {"max_themes", "max_strokes", "max_points_per_path", "max_paths",
-                        "max_overrides", "max_modules", "max_operations_per_chunk"}, "limits");
+                        "max_overrides", "max_modules", "max_fields", "max_aggregates",
+                        "max_modifiers", "max_operations_per_chunk"}, "limits");
         // The adapter permits tightening the native candidate's construction
         // budgets. A user document cannot expand its own parser/memory bound.
         const auto limit = [&](const char* name, std::size_t maximum) {
@@ -215,6 +221,9 @@ gen::Recipe parse_recipe(const Dictionary& input, std::uint64_t revision) {
         recipe.limits.max_paths = limit("max_paths", recipe.limits.max_paths);
         recipe.limits.max_overrides = limit("max_overrides", recipe.limits.max_overrides);
         recipe.limits.max_modules = limit("max_modules", recipe.limits.max_modules);
+        recipe.limits.max_fields = limit("max_fields", recipe.limits.max_fields);
+        recipe.limits.max_aggregates = limit("max_aggregates", recipe.limits.max_aggregates);
+        recipe.limits.max_modifiers = limit("max_modifiers", recipe.limits.max_modifiers);
         if (limits.has("max_operations_per_chunk")) recipe.limits.max_operations_per_chunk =
             static_cast<std::uint64_t>(bounded_integer(limits["max_operations_per_chunk"], 1,
                 static_cast<std::int64_t>(recipe.limits.max_operations_per_chunk), "limits.max_operations_per_chunk"));
@@ -294,7 +303,8 @@ gen::Recipe parse_recipe(const Dictionary& input, std::uint64_t revision) {
         const auto array = array_value(input["modules"], recipe.limits.max_modules, "modules");
         for (std::int64_t index = 0; index < array.size(); ++index) {
             const auto item = dictionary_value(array[index], "module");
-            fields(item, {"id", "module", "version", "bounds", "parameters", "after", "priority"}, "module");
+            fields(item, {"id", "module", "version", "bounds", "parameters", "after", "priority",
+                          "application", "exclusion", "strength"}, "module");
             gen::ModuleInstance module;
             module.id = string_value(required(item, "id", "module"), "module.id");
             module.module = string_value(required(item, "module", "module"), "module.module");
@@ -311,7 +321,95 @@ gen::Recipe parse_recipe(const Dictionary& input, std::uint64_t revision) {
             }
             if (item.has("after")) module.after = strings(item["after"], recipe.limits.max_modules, "module.after");
             module.priority = priority_value(item, "module");
+            if (item.has("application")) module.application = string_value(item["application"], "module.application");
+            if (item.has("exclusion")) module.exclusion = string_value(item["exclusion"], "module.exclusion");
+            if (item.has("strength")) module.strength = number_value(item["strength"], "module.strength");
             recipe.modules.push_back(std::move(module));
+        }
+    }
+    if (input.has("fields")) {
+        const auto array = array_value(input["fields"], recipe.limits.max_fields, "fields");
+        for (std::int64_t index = 0; index < array.size(); ++index) {
+            const auto item = dictionary_value(array[index], "field");
+            fields(item, {"id", "kind", "inputs", "parameters", "warp_x", "warp_y", "context"}, "field");
+            gen::FieldNode node;
+            node.id = string_value(required(item, "id", "field"), "field.id");
+            const auto kind = gen::parse_field_kind(string_value(required(item, "kind", "field"), "field.kind"));
+            if (!kind) invalid("field.kind", "unknown field kind");
+            node.kind = *kind;
+            if (item.has("inputs")) node.inputs = strings(item["inputs"], recipe.limits.max_fields, "field.inputs");
+            if (item.has("parameters")) {
+                const auto parameters = dictionary_value(item["parameters"], "field.parameters");
+                if (parameters.size() > 32) invalid("field.parameters", "too many parameters");
+                const auto keys = parameters.keys();
+                for (std::int64_t key = 0; key < keys.size(); ++key)
+                    node.parameters.emplace(string_value(keys[key], "field.parameters"),
+                                            number_value(parameters[keys[key]], "field.parameters"));
+            }
+            if (item.has("warp_x")) node.warp_x = string_value(item["warp_x"], "field.warp_x");
+            if (item.has("warp_y")) node.warp_y = string_value(item["warp_y"], "field.warp_y");
+            if (item.has("context")) node.context = string_value(item["context"], "field.context");
+            recipe.fields.push_back(std::move(node));
+        }
+    }
+    if (input.has("aggregates")) {
+        const auto array = array_value(input["aggregates"], recipe.limits.max_aggregates, "aggregates");
+        for (std::int64_t index = 0; index < array.size(); ++index) {
+            const auto item = dictionary_value(array[index], "aggregate");
+            fields(item, {"id", "components", "grain_size", "variation"}, "aggregate");
+            gen::Aggregate aggregate;
+            aggregate.id = string_value(required(item, "id", "aggregate"), "aggregate.id");
+            const auto components = array_value(required(item, "components", "aggregate"), 16, "aggregate.components");
+            for (std::int64_t component_index = 0; component_index < components.size(); ++component_index) {
+                const auto component = dictionary_value(components[component_index], "aggregate.component");
+                fields(component, {"material", "weight"}, "aggregate.component");
+                aggregate.components.push_back({material_value(required(component, "material", "aggregate.component"),
+                    "aggregate.component.material"), component.has("weight") ? number_value(component["weight"], "aggregate.component.weight") : 1.0});
+            }
+            if (item.has("grain_size")) aggregate.grain_size = static_cast<std::int32_t>(bounded_integer(item["grain_size"], 1, 4096, "aggregate.grain_size"));
+            if (item.has("variation")) aggregate.variation = string_value(item["variation"], "aggregate.variation");
+            recipe.aggregates.push_back(std::move(aggregate));
+        }
+    }
+    if (input.has("modifiers")) {
+        const auto array = array_value(input["modifiers"], recipe.limits.max_modifiers, "modifiers");
+        for (std::int64_t index = 0; index < array.size(); ++index) {
+            const auto item = dictionary_value(array[index], "modifier");
+            fields(item, {"id", "priority", "bounds", "points", "radius", "falloff", "strength", "application", "exclusion",
+                          "context", "context_material", "themes", "parameters", "mappings", "material", "aggregate"}, "modifier");
+            gen::Modifier modifier;
+            modifier.id = string_value(required(item, "id", "modifier"), "modifier.id");
+            modifier.priority = priority_value(item, "modifier");
+            if (item.has("bounds")) modifier.bounds = bounds_value(item["bounds"], "modifier.bounds");
+            if (item.has("points")) modifier.points = points_value(item["points"], recipe.limits.max_points_per_path, "modifier.points");
+            if (item.has("radius")) modifier.radius = number_value(item["radius"], "modifier.radius");
+            if (item.has("falloff")) modifier.falloff = number_value(item["falloff"], "modifier.falloff");
+            if (item.has("strength")) modifier.strength = number_value(item["strength"], "modifier.strength");
+            if (item.has("application")) modifier.application = string_value(item["application"], "modifier.application");
+            if (item.has("exclusion")) modifier.exclusion = string_value(item["exclusion"], "modifier.exclusion");
+            if (item.has("context")) {
+                const auto context = gen::parse_context_predicate(string_value(item["context"], "modifier.context"));
+                if (!context) invalid("modifier.context", "unknown context predicate");
+                modifier.context = *context;
+            }
+            if (item.has("context_material")) modifier.context_material = material_value(item["context_material"], "modifier.context_material");
+            if (item.has("themes")) modifier.themes = themes_value(item["themes"], recipe.limits.max_themes, "modifier.themes");
+            if (item.has("parameters")) modifier.parameters = parameter_edits(item["parameters"], "modifier.parameters");
+            if (item.has("mappings")) {
+                const auto mappings = array_value(item["mappings"], 12, "modifier.mappings");
+                for (std::int64_t mapping_index = 0; mapping_index < mappings.size(); ++mapping_index) {
+                    const auto mapping = dictionary_value(mappings[mapping_index], "modifier.mapping");
+                    fields(mapping, {"parameter", "field", "low", "high"}, "modifier.mapping");
+                    const auto parameter = gen::parse_parameter(string_value(required(mapping, "parameter", "modifier.mapping"), "modifier.mapping.parameter"));
+                    if (!parameter) invalid("modifier.mapping.parameter", "unknown terrain parameter");
+                    modifier.mappings.push_back({*parameter, string_value(required(mapping, "field", "modifier.mapping"), "modifier.mapping.field"),
+                        number_value(required(mapping, "low", "modifier.mapping"), "modifier.mapping.low"),
+                        number_value(required(mapping, "high", "modifier.mapping"), "modifier.mapping.high")});
+                }
+            }
+            if (item.has("material")) modifier.material = material_value(item["material"], "modifier.material");
+            if (item.has("aggregate")) modifier.aggregate = string_value(item["aggregate"], "modifier.aggregate");
+            recipe.modifiers.push_back(std::move(modifier));
         }
     }
     return recipe;
@@ -352,8 +450,8 @@ void CyberWorldGenerator::_bind_methods() {
     ClassDB::bind_method(D_METHOD("configure", "recipe"), &CyberWorldGenerator::configure);
     ClassDB::bind_method(D_METHOD("get_configuration"), &CyberWorldGenerator::get_configuration);
     ClassDB::bind_method(D_METHOD("get_catalogue"), &CyberWorldGenerator::get_catalogue);
-    ClassDB::bind_method(D_METHOD("generate_chunk", "coord"), &CyberWorldGenerator::generate_chunk);
-    ClassDB::bind_method(D_METHOD("begin_chunk", "coord"), &CyberWorldGenerator::begin_chunk);
+    ClassDB::bind_method(D_METHOD("generate_chunk", "coord", "diagnostic"), &CyberWorldGenerator::generate_chunk, DEFVAL(String()));
+    ClassDB::bind_method(D_METHOD("begin_chunk", "coord", "diagnostic"), &CyberWorldGenerator::begin_chunk, DEFVAL(String()));
     ClassDB::bind_method(D_METHOD("advance", "cell_budget"), &CyberWorldGenerator::advance);
 }
 
@@ -412,6 +510,36 @@ Dictionary CyberWorldGenerator::get_catalogue() const {
     result["parameters"] = parameters;
     result["minimum_chunk_size"] = 8;
     result["maximum_chunk_size"] = 256;
+    Array field_kinds, field_contexts, contexts;
+    for (const auto& spec : gen::field_kind_specs()) {
+        Dictionary item;
+        item["id"] = String(spec.name);
+        item["input_count"] = static_cast<std::int64_t>(spec.input_count);
+        item["supports_warp"] = spec.supports_warp;
+        item["requires_context"] = spec.requires_context;
+        Array settings;
+        for (const auto& setting : spec.parameters) {
+            Dictionary description;
+            description["name"] = String(setting.name);
+            description["default_value"] = setting.default_value;
+            description["minimum"] = setting.minimum;
+            description["maximum"] = setting.maximum;
+            description["integer"] = setting.integer;
+            settings.push_back(description);
+        }
+        item["parameters"] = settings;
+        field_kinds.push_back(item);
+    }
+    for (const auto* name : gen::field_context_names()) field_contexts.push_back(String(name));
+    for (const auto context : {gen::ContextPredicate::Any, gen::ContextPredicate::Empty, gen::ContextPredicate::Occupied,
+                              gen::ContextPredicate::Solid, gen::ContextPredicate::Fluid, gen::ContextPredicate::Material})
+        contexts.push_back(String(gen::context_predicate_name(context)));
+    result["field_kinds"] = field_kinds;
+    result["field_contexts"] = field_contexts;
+    result["modifier_contexts"] = contexts;
+    result["maximum_fields"] = 64;
+    result["maximum_aggregates"] = 32;
+    result["maximum_modifiers"] = 64;
     return result;
 }
 
@@ -447,20 +575,26 @@ Dictionary CyberWorldGenerator::copy_result(const gen::ChunkResult& chunk) const
     result["cells"] = cells;
     result["hash"] = hexadecimal(chunk.content_hash);
     result["receipt_hash"] = hexadecimal(chunk.receipt_hash);
+    PackedFloat32Array diagnostics;
+    if (diagnostics.resize(static_cast<std::int64_t>(chunk.diagnostics.size())) != OK)
+        return failure("cannot allocate copied diagnostic output");
+    if (!chunk.diagnostics.empty()) std::memcpy(diagnostics.ptrw(), chunk.diagnostics.data(), chunk.diagnostics.size() * sizeof(float));
+    result["diagnostic"] = String(chunk.diagnostic.c_str());
+    result["diagnostics"] = diagnostics;
     return result;
 }
 
-Dictionary CyberWorldGenerator::generate_chunk(Vector2i coord) const {
+Dictionary CyberWorldGenerator::generate_chunk(Vector2i coord, const String& diagnostic) const {
     if (!generator_) return failure("configure a generator before requesting chunks");
-    try { return copy_result(generator_->generate({coord.x, coord.y})); }
+    try { return copy_result(generator_->generate({coord.x, coord.y}, string_value(diagnostic, "diagnostic"))); }
     catch (const std::exception& error) { return failure(error.what()); }
     catch (...) { return failure("unknown chunk generation failure"); }
 }
 
-Dictionary CyberWorldGenerator::begin_chunk(Vector2i coord) {
+Dictionary CyberWorldGenerator::begin_chunk(Vector2i coord, const String& diagnostic) {
     if (!generator_) return failure("configure a generator before requesting chunks");
     try {
-        auto candidate = generator_->begin({coord.x, coord.y});
+        auto candidate = generator_->begin({coord.x, coord.y}, string_value(diagnostic, "diagnostic"));
         if (job_) job_->cancel();
         job_ = std::move(candidate);
         job_chunk_ = {coord.x, coord.y};

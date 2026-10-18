@@ -18,15 +18,17 @@ resident activity blocks once at tick entry, without elapsed-time catch-up. Safe
 General sparse-world persistence is also **Planned**; the existing CYSD1 format
 reconstructs only a finite demo level.
 
-**Current GEN-001 source:** opt-in native procedural generators can now prepare
+**Current GEN-001/GEN-002 source:** opt-in native procedural generators can prepare
 complete deterministic chunks on demand, and `World::install_generated_chunk`
 can admit one absent chunk through the exclusive owner. The workbench generates
 copied previews in its own bounded cache. These additions do not supply the
 Deferred manager for loading/evicting simulation residents or the Planned
 serializer for modified sparse worlds. See
 [procedural generation](procedural-world-generation.md) for that implemented
-candidate scope and [GEN-001 evidence](../audits/2026-10-18-gen001-procedural-generation.md)
-for validation limits.
+candidate scope, [field/mask controls](procedural-generation-fields-and-modifiers.md)
+for the extension, and the dated
+[GEN-001](../audits/2026-10-18-gen001-procedural-generation.md)/[GEN-002](../audits/2026-10-18-gen002-fields-and-aggregates.md)
+evidence for validation limits.
 
 A “2×” workload is a validation target whose dimensions must be stated; it is
 not a maximum world size or proof that storage streaming exists. Current finite
@@ -74,6 +76,9 @@ belongs to a newly reset World. Use the
 [ownership contract](../architecture/data-ownership-and-lifetimes.md) before
 connecting it to a future streaming controller. The current generation workbench
 has no live sandbox installer and its preview cache evicts only copied previews.
+Context-aware sculpting reads immutable initial generator context; aggregate
+recipes produce existing material IDs. Neither observes resident player changes,
+changes the installer guard nor adds optional simulation field storage.
 
 ## Interest filtering and re-entry
 

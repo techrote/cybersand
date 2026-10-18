@@ -55,9 +55,11 @@
     "research/sandspiel-performance-and-material-port.md",
     "systems/activity-dirty-regions-and-waking.md",
     "systems/actor-control-prototypes.md",
+    "systems/actor-rigs.md",
     "systems/granular-interaction-policy.md",
     "systems/player-environment-profiles-and-traversal.md",
     "systems/procedural-world-generation.md",
+    "systems/procedural-generation-fields-and-modifiers.md",
     "systems/material-appearance-and-rendering.md",
     "systems/materials-and-rule-kernels.md",
     "systems/intermaterial-interactions.md",
@@ -95,6 +97,14 @@
     "../.github/pull_request_template.md"
   ],
   "excluded": [
+    {
+      "path": "audits/2026-10-18-gen002-fields-and-aggregates.md",
+      "reason": "Dated GEN-002 source/runtime, compatibility-oracle and scoped field/modifier evidence; retrieve explicitly through the generation field contract, not as a default Current runtime contract"
+    },
+    {
+      "path": "audits/2026-10-18-act002-actor-rigs.md",
+      "reason": "Dated ACT-002 source/runtime, preserved failure and scoped rig validation evidence; retrieve explicitly through the rig contract or validation ledger, not as a default Current runtime contract"
+    },
     {
       "path": "audits/2026-10-18-act001-actor-control-prototypes.md",
       "reason": "Dated ACT-001 source/runtime and scoped prototype validation evidence; retrieve explicitly through the actor contract or validation ledger, not as a default Current runtime contract"

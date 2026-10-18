@@ -99,6 +99,7 @@ command=(
     "$project_root/godot/native_extension/register_types.cpp"
     "$project_root/native/src/world.cpp"
     "$project_root/native/src/world_generation.cpp"
+    "$project_root/native/src/generation_fields.cpp"
     "$project_root/native/src/render_snapshot.cpp"
     "$project_root/native/src/settled_world_discovery.cpp"
     "$project_root/native/src/material_rules.cpp"

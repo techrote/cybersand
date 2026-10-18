@@ -39,19 +39,54 @@ separate. Its native fresh-chunk installer refuses all existing storage and
 requires caller-owned receipt/reset admission. Do not attach it concurrently to
 a live World owner or infer production streaming from the preview.
 
+## Procedural fields and masked authoring — 2026-10-18
+
+GEN-002 / [#171](https://github.com/techrote/cybersand/issues/171) extends those
+candidates with a bounded scalar DAG, finite Hilbert/Morton tiles, structured
+noise, analytic/context masks, theme/parameter/material modifiers, aggregates and
+field-masked feature instances. Read the
+[field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md)
+and [dated evidence](../audits/2026-10-18-gen002-fields-and-aggregates.md) before
+changing observation order or selection semantics. Every mask sees the initial
+proposal; hard geometry is reapplied after guidance, the route skeleton follows
+material modifiers, and hard material is final. Aggregate weights are strictly
+positive and resolve ordinary existing material IDs.
+
+The workbench adds field/aggregate/modifier editing, context-aware brushes,
+transforms and copied diagnostic overlays. `make worldgen-test` and
+`make worldgen-sanitize` include independent curve/field and modifier regressions,
+including historical GEN-001 material hashes. The
+[local build guide](local-build-and-validation.md) covers both Godot test scripts
+and the native example renderer. Algorithm identity is now 2; a retained GEN-001
+binary is not source-matched evidence for these APIs. The ACT-002 merge preserves
+its rig behavior and supplementary retrieval questions; no actor/native physics
+owner is changed by generation guidance.
+
 ## Actor control prototypes — 2026-10-18
 
-ACT-001 / #161 adds optional Runner, Skimmer and Crawler actors to the ordinary
-desktop sandbox. Read the [actor contract](../systems/actor-control-prototypes.md)
-before changing their movement rules or adding a policy consumer. **F5** selects
-the model, keyboard/demo/external-policy pilot and two optional demo NPCs. All
-producers share the same expiring action interface; no neural inference runs in
-the simulation owner. Controlled fixtures keep their explicit player identity.
+ACT-002 / #168 expands the original ACT-001 / #161 trio into 29 optional desktop
+rigs in SetA/B/F/Y/U/V. Read the [rig contract](../systems/actor-rigs.md) before
+changing movement, input or observation fields. The
+[SetA compatibility page](../systems/actor-control-prototypes.md) preserves Runner,
+Skimmer and Crawler's original motor and 16-value observations. New rigs use
+independent aim, effort, trim, reel and auxiliary with additive 40-value state and
+consumed action/edge readback. Catalog names and fictional SetV personas do not
+connect model services or claim real model behavior.
 
-The motor/session boundary is bounded to eight actors and 32 collision queries
-per actor update. Source and Linux headless evidence remain separate from target-PC
-feel, many-NPC throughput and Windows/Web execution. The ACT-001 dated record is
-routed from the [validation ledger](../reference/validation-evidence.md).
+**F5** selects a set/rig, keyboard/demo/external-policy pilot, power and optional
+comparison with the other rigs in that set. WASD, pointer aim, Space/Shift/C,
+Q/E trim, Z/X reel and brackets use the same expiring policy interface. The owner
+acknowledges reset outcomes before human control resumes; controlled fixtures
+retain their explicit player identities. Expiry/cancellation discards charge,
+attachment and pending effects before neutral input advances.
+
+The session remains capped at eight actors. SetA retains its 32-query limit;
+new rigs have explicit occupancy, ray, effect and angular/translation budgets in
+the [configuration reference](../reference/configuration-reference.md#actor-rig-values).
+Source and Linux headless evidence remain separate from target-PC feel,
+many-NPC throughput and Windows/Web execution. The
+[validation ledger](../reference/validation-evidence.md) owns dated execution;
+the original ACT-001 audit remains unchanged.
 
 ## Material consistency repair — 2026-10-18
 

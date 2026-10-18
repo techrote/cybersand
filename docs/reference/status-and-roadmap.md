@@ -58,10 +58,10 @@ Historical completion records remain immutable.
 |---|---|
 | Cellular authority and platform owners | Native World; asynchronous desktop GDScript owner, synchronous Web callbacks with optional internal pool; [threading](../architecture/simulation-tick-and-threading.md) |
 | Scheduler and storage | Sparse chunks, phased in-place jobs, explicit capacities and activity sleep; [chunk/tile model](../architecture/chunk-tile-and-buffer-model.md), [storage](../systems/world-storage-and-interest-region.md) |
-| Procedural generation candidates | Opt-in native Strata, Flow Network and District Grammar; compiled theme/brush/override/module recipes, incremental copied chunk proposals and explicit fresh-chunk admission; [generation contract](../systems/procedural-world-generation.md) |
+| Procedural generation candidates | Opt-in Strata, Flow Network and District Grammar; theme/brush/override/module recipes plus bounded scalar fields, masked context guidance and aggregate materials; copied chunk proposals and explicit fresh-chunk admission; [generation contract](../systems/procedural-world-generation.md), [field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md) |
 | Materials | Bounded adapted kernels, mass-conserving native Water, discrete fallback, secondary interaction lanes; [materials](../systems/materials-and-rule-kernels.md), [Water](../systems/water-design.md) |
 | Field storage and events | Optional temperature storage and bounded explosions; no general heat/pressure/wind solver; [field roadmap](../systems/smoke-heat-pressure-roadmap.md) |
-| Bodies and character | Main-thread Rapier, rectangular masks/displacement, static terrain packets, sampled character, PCHAR reset-scoped barrel-player experiment, and optional Runner/Skimmer/Crawler [actor control prototypes](../systems/actor-control-prototypes.md); [coupling](../architecture/rigid-body-and-cellular-coupling.md) |
+| Bodies and character | Main-thread Rapier, rectangular masks/displacement, static terrain packets, sampled character, PCHAR reset-scoped barrel-player experiment, and 29 optional sampled [actor rigs](../systems/actor-rigs.md) including the unchanged SetA trio; [coupling](../architecture/rigid-body-and-cellular-coupling.md) |
 | Rendering | Immutable native snapshots, copied dirty RG8 patches, full finite GPU texture update and derived material appearance; [bridges](../architecture/rendering-and-gameplay-bridges.md) |
 | Persistence | Fixed CYSD1 demo levels; complete resumed replay absent; [save contract](level-saves-and-replay.md) |
 | Runtime availability | All 18 required LFS payloads materialized; current execution scope is platform-specific; [build](../operations/local-build-and-validation.md) and [evidence](validation-evidence.md) |
@@ -85,6 +85,25 @@ loading, resident-chunk eviction and modified-world persistence remain
 **Deferred/Planned in their existing scope**. This source checkpoint does not
 claim a merged release or platform acceptance; use the
 [dated GEN-001 evidence](../audits/2026-10-18-gen001-procedural-generation.md).
+
+## Procedural fields and aggregate checkpoint — 2026-10-18
+
+**Current source, GEN-002 / [#171](https://github.com/techrote/cybersand/issues/171):**
+named fields add finite Hilbert/Morton ranks, structured noise, analytic masks,
+scalar sidechains and immutable initial-material/surface/route context. Masked
+modifiers guide themes/parameters or carve/paint ordinary materials and aggregate
+mixtures; registered feature instances accept the same application/exclusion
+controls. The workbench edits these recipes and previews paced diagnostic masks.
+The [field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md)
+owns finite-curve scope, fixed context, hard/exclusion authority and budgets.
+
+These are generation controls. They do not add live World sculpting, new material
+physics, optional simulation field storage or inter-tile Hilbert connectivity.
+Schema remains 1 and generator algorithm identity advances to 2; retained legacy
+material hashes cover the three old candidates without the new controls. Exact
+source/runtime results and remaining publication/platform gates belong to the
+[GEN-002 evidence](../audits/2026-10-18-gen002-fields-and-aggregates.md), independently
+of the older GEN-001 checkpoint.
 
 ## Decisions and defects to resolve
 
@@ -214,22 +233,32 @@ programme for later environment/player tuning after finite child #138.
 
 ## Provisional actor control checkpoint — 2026-10-18
 
-**Current implementation, experimental:** Runner, Skimmer and Crawler provide
-three sampled movement rule sets using a shared player/policy action interface.
-Their abilities differ: jump/dash traversal, two-axis flight with energy and
-braking, and traction/hop/brace with bounded clamber. The
-[actor contract](../systems/actor-control-prototypes.md) owns the action,
-observation, lifetime and desktop comparison boundaries.
+**Current implementation, experimental:** ACT-002 / #168 expands the original
+ACT-001 trio into 29 [actor rigs](../systems/actor-rigs.md) across SetA/B/F/Y/U/V.
+SetA preserves Runner, Skimmer and Crawler plus their original two-button motor
+and 16-value observations. The new rigs add independent aim, effort, trim, reel
+and auxiliary input, with additive 40-value observations and consumed action/edge
+readback. Human, scripted and external-policy producers share admission and motor
+capabilities. The canonical rig contract owns each rig's control map and limits.
 
-They use fixed model tuning and the existing material-aware sampled rectangle;
-they do not replace PENV profiles, select PCHAR's final player representation or
-change generic Rapier/body or Water authority. Runtime enclosure immobilizes the
-prototype rather than invoking sampled-baseline runtime relocation.
+The experiments include nimble ground traversal, a broad three-legged lunging
+robot, tracked/hover/drilling machines, unusual flight/descent, adhesion, ropes,
+bounded recoil and six salvage-tool designs. SetV's seven named interface personas
+are explicitly fictional designs, not real model preference or capability claims.
+F5 compares the selected set through a fresh ordinary-world reset.
+
+New-rig sampled rectangles have bounded conservative rotation/resize queries and
+selected local tool effects through existing native cell writes. They do not
+replace PENV profiles, select PCHAR's final representation, add articulated rigid
+bodies or change generic Rapier/Water authority. Runtime enclosure immobilizes
+the rig rather than invoking sampled-baseline runtime relocation.
 
 Neural-network inference/training, larger NPC populations and target-PC
 performance/feel acceptance remain future work. A shared command seam or
 hand-authored demonstration policy is not evidence of a trained controller.
 Registered scientific/control fixtures retain their existing actor identities.
+Use the [validation ledger](validation-evidence.md) for scoped execution evidence;
+the preserved ACT-001 audit does not automatically validate the additional rigs.
 
 ## Issue #13 experiment checkpoint
 

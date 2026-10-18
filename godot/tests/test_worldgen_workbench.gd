@@ -104,7 +104,7 @@ func check_workbench() -> void:
 	app.set_process(false)
 	await process_frame
 	expect(app.generator != null and app.active_revision > 0, "Workbench did not configure its private native generator")
-	expect(app.parameter_inputs.size() == 12 and app.tool_picker.item_count == 6, "Authoring controls are incomplete")
+	expect(app.parameter_inputs.size() == 12 and app.tool_picker.item_count == 11, "Authoring controls are incomplete")
 	if app.generator == null:
 		app.queue_free()
 		return

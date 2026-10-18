@@ -201,6 +201,8 @@ std::uint64_t receipt_hash(const ChunkResult& result) noexcept {
     hash_word(h, static_cast<std::uint64_t>(result.chunk_size));
     hash_word(h, result.revision); hash_word(h, result.fingerprint);
     hash_word(h, result.content_hash); hash_word(h, result.operations);
+    hash_text(h, result.diagnostic); hash_word(h, result.diagnostics.size());
+    for (const auto v : result.diagnostics) hash_word(h, std::bit_cast<std::uint32_t>(v));
     return h;
 }
 void set_diagnostic(std::string& destination, const char* message) noexcept {
@@ -350,8 +352,51 @@ struct Generator::Impl {
         std::uint32_t cost{};
     };
     std::vector<Prepared> modules;
+    std::shared_ptr<const FieldGraph> fields;
+    static constexpr auto absent = std::numeric_limits<std::size_t>::max();
+    struct Mask {
+        std::size_t application = absent, exclusion = absent;
+        double strength = 1.0;
+        double at(const FieldValues& values) const noexcept {
+            return strength * (application == absent ? 1.0 : values.values[application]) *
+                (exclusion == absent ? 1.0 : 1.0 - values.values[exclusion]);
+        }
+    };
+    struct PreparedModifier {
+        Mask mask;
+        Weights themes{};
+        std::vector<std::size_t> mappings;
+        std::size_t aggregate = absent;
+        std::uint64_t salt = 0;
+    };
+    std::vector<PreparedModifier> modifiers;
+    std::vector<Mask> module_masks;
+    std::vector<std::uint64_t> module_salts;
+    std::vector<std::size_t> aggregate_variations;
+    std::vector<std::uint64_t> aggregate_salts;
+    std::vector<std::vector<double>> aggregate_weights;
     std::uint64_t fingerprint = kFnv;
     std::uint64_t cost = 128;
+
+    Mask compile_mask(const std::string& application, const std::string& exclusion, double strength) const {
+        require(std::isfinite(strength) && strength >= 0 && strength <= 1, "mask strength must be 0..1");
+        return {application.empty() ? absent : fields->index(application),
+            exclusion.empty() ? absent : fields->index(exclusion), strength};
+    }
+
+    std::pair<unsigned, std::size_t> diagnostic(const std::string& name) const {
+        if (name.empty()) return {0, 0};
+        if (name.starts_with("field:")) return {1, fields->index(name.substr(6))};
+        if (name.starts_with("modifier:")) {
+            for (std::size_t i = 0; i < recipe.modifiers.size(); ++i)
+                if (recipe.modifiers[i].id == name.substr(9)) return {2, i};
+        }
+        if (name.starts_with("module:")) {
+            for (std::size_t i = 0; i < modules.size(); ++i)
+                if (modules[i].instance.id == name.substr(7)) return {3, i};
+        }
+        invalid("unknown generation diagnostic: " + name);
+    }
 
     Weights resolve(const ThemeSelection& selection) const {
         Weights result{}; auto banned = excluded;
@@ -437,8 +482,7 @@ struct Generator::Impl {
         return Material::Empty;
     }
 
-    Material sample(std::int64_t x, std::int64_t y) const {
-        const auto w = weights(x, y);
+    Parameters parameters_at(const Weights& w, std::int64_t x, std::int64_t y) const {
         auto p = recipe.parameters;
         const auto first = static_cast<std::size_t>(std::find_if(w.begin(), w.end(), [](double v) { return v > 0; }) - w.begin());
         for (std::size_t parameter = 0; parameter < kParameterCount; ++parameter) {
@@ -453,11 +497,19 @@ struct Generator::Impl {
             value(p, key) = std::clamp(reference + delta, low, high);
         }
         for (const auto& brush : recipe.strokes) apply_edits(p, brush.parameters, influence(brush, x, y));
+        return p;
+    }
+
+    Candidate hard_parameters(Parameters& p, std::int64_t x, std::int64_t y) const {
         auto candidate = recipe.candidate;
         for (const auto& hard : recipe.overrides) if (inside(hard.bounds, x, y)) {
             apply_edits(p, hard.parameters);
             if (hard.candidate) candidate = *hard.candidate;
         }
+        return candidate;
+    }
+
+    const Palette& palette_at(const Weights& w, std::int64_t x, std::int64_t y) const noexcept {
         // A uniform hash per warped patch gives coherent discrete palettes,
         // without misinterpreting value noise's centre-heavy distribution as a
         // uniform probability. Weights are regional preferences, not quotas.
@@ -467,19 +519,137 @@ struct Generator::Impl {
         const auto py = dy + (noise(recipe.seed, dx, dy, palette_scale * 2, 53) - 0.5) * palette_scale;
         auto selector = unit(hash_xy(recipe.seed, static_cast<std::int64_t>(std::floor(px / palette_scale)),
             static_cast<std::int64_t>(std::floor(py / palette_scale)), 55));
-        std::size_t selected = first;
+        std::size_t selected = 0;
         for (std::size_t i = 0; i < leaves.size(); ++i) if (w[i] > 0) {
             selected = i; selector -= w[i]; if (selector < 0) break;
         }
-        const auto& palette = leaves[selected].palette;
-        Material result = candidate == Candidate::DistrictGrammar ? district(x, y, p, palette) : strata(x, y, p, palette);
-        const ModuleContext context{x, y, recipe.seed, p, palette};
-        for (const auto& module : modules) if (inside(module.instance.bounds, x, y)) {
-            const auto changed = module.sampler->sample(context, result);
-            if (changed) {
-                if (!valid_material(*changed)) throw std::runtime_error("module returned invalid material: " + module.instance.id);
-                result = *changed;
+        return leaves[selected].palette;
+    }
+
+    double surface_at(double x, const Parameters& p) const noexcept {
+        return p.surface_y + (noise(recipe.seed, x, 0, p.feature_scale * 2, 1) - 0.5) * p.relief * 2.0;
+    }
+
+    FieldContext field_context(std::int64_t x, std::int64_t y, const Parameters& p,
+                               Candidate candidate, Material material) const {
+        const auto state = material_definition(material).state;
+        const auto dx = static_cast<double>(x);
+        const auto surface = surface_at(dx, p);
+        const auto neighbor_surface = [&](std::int64_t nx) {
+            auto neighbor = parameters_at(weights(nx, y), nx, y);
+            (void)hard_parameters(neighbor, nx, y);
+            return surface_at(static_cast<double>(nx), neighbor);
+        };
+        const auto left = x == -kCoordinateLimit ? surface : neighbor_surface(x - 1);
+        const auto right = x == kCoordinateLimit - 1 ? surface : neighbor_surface(x + 1);
+        const auto spacing = x == -kCoordinateLimit || x == kCoordinateLimit - 1 ? 1.0 : 2.0;
+        return {material == Material::Empty ? 0.0 : 1.0,
+            state == MaterialState::Solid ? 1.0 : 0.0,
+            state == MaterialState::Liquid ? 1.0 : 0.0,
+            static_cast<double>(y) - surface,
+            std::abs(right - left) / spacing,
+            candidate != Candidate::Strata && network(x, y, p.corridor_width) ? 1.0 : 0.0,
+            static_cast<std::uint16_t>(material)};
+    }
+
+    static bool matches(const Modifier& m, const FieldContext& c) noexcept {
+        switch (m.context) {
+            case ContextPredicate::Any: return true;
+            case ContextPredicate::Empty: return c.occupied == 0;
+            case ContextPredicate::Occupied: return c.occupied != 0;
+            case ContextPredicate::Solid: return c.solid != 0;
+            case ContextPredicate::Fluid: return c.fluid != 0;
+            case ContextPredicate::Material: return c.material == static_cast<std::uint16_t>(*m.context_material);
+        }
+        return false;
+    }
+
+    static double shape(const Modifier& m, std::int64_t x, std::int64_t y) noexcept {
+        if (m.bounds && !inside(*m.bounds, x, y)) return 0;
+        if (m.points.empty()) return 1;
+        const auto distance = std::sqrt(path_distance2({static_cast<double>(x), static_cast<double>(y)}, m.points));
+        if (distance >= m.radius) return 0;
+        return std::pow(smooth(1.0 - distance / m.radius), m.falloff);
+    }
+
+    Material aggregate_at(std::size_t index, std::int64_t x, std::int64_t y, const FieldValues& values) const noexcept {
+        const auto& a = recipe.aggregates[index];
+        auto selector = aggregate_variations[index] == absent ?
+            unit(hash_xy(recipe.seed ^ aggregate_salts[index], floor_div(x, a.grain_size), floor_div(y, a.grain_size), 880)) :
+            values.values[aggregate_variations[index]];
+        Material selected = a.components.back().material;
+        for (std::size_t i = 0; i < a.components.size(); ++i) {
+            selected = a.components[i].material; selector -= aggregate_weights[index][i];
+            if (selector < 0) break;
+        }
+        return selected;
+    }
+
+    Material sample(std::int64_t x, std::int64_t y, unsigned diagnostic_kind = 0,
+                    std::size_t diagnostic_index = 0, float* diagnostic_value = nullptr) const {
+        auto w = weights(x, y);
+        auto p = parameters_at(w, x, y);
+        auto candidate = hard_parameters(p, x, y);
+        const auto* palette = &palette_at(w, x, y);
+        Material result = candidate == Candidate::DistrictGrammar ? district(x, y, p, *palette) : strata(x, y, p, *palette);
+        FieldValues values;
+        std::array<double, 64> alpha{};
+        bool changed_themes = false, changed_parameters = false;
+        // One immutable analytic terrain proposal defines all context. No module,
+        // earlier modifier, neighbor chunk or final override feeds this snapshot.
+        if (!recipe.fields.empty() || !recipe.modifiers.empty()) {
+            const auto base_context = field_context(x, y, p, candidate, result);
+            fields->evaluate(x, y, base_context, values);
+            for (std::size_t i = 0; i < recipe.modifiers.size(); ++i) {
+                const auto& m = recipe.modifiers[i];
+                alpha[i] = matches(m, base_context) ? modifiers[i].mask.at(values) * shape(m, x, y) : 0;
+                if (alpha[i] == 0) continue;
+                if (!m.themes.weights.empty()) {
+                    for (std::size_t leaf = 0; leaf < leaves.size(); ++leaf)
+                        w[leaf] = lerp(w[leaf], modifiers[i].themes[leaf], alpha[i]);
+                    changed_themes = true;
+                }
+                changed_parameters = changed_parameters || !m.parameters.empty() || !m.mappings.empty();
             }
+            if (changed_themes) p = parameters_at(w, x, y);
+            if (changed_parameters || changed_themes) {
+                for (std::size_t i = 0; i < recipe.modifiers.size(); ++i) {
+                    if (alpha[i] == 0) continue;
+                    const auto& m = recipe.modifiers[i];
+                    apply_edits(p, m.parameters, alpha[i]);
+                    for (std::size_t j = 0; j < m.mappings.size(); ++j) {
+                        const auto& mapping = m.mappings[j];
+                        const auto target = lerp(mapping.low, mapping.high, values.values[modifiers[i].mappings[j]]);
+                        value(p, mapping.parameter) = lerp(value(p, mapping.parameter), target, alpha[i]);
+                    }
+                }
+                candidate = hard_parameters(p, x, y);
+                palette = &palette_at(w, x, y);
+                result = candidate == Candidate::DistrictGrammar ? district(x, y, p, *palette) : strata(x, y, p, *palette);
+            }
+        }
+        if (diagnostic_value) {
+            *diagnostic_value = diagnostic_kind == 1 ? static_cast<float>(values.values[diagnostic_index]) :
+                diagnostic_kind == 2 ? static_cast<float>(alpha[diagnostic_index]) : 0.0F;
+        }
+        const ModuleContext context{x, y, recipe.seed, p, *palette};
+        for (std::size_t i = 0; i < modules.size(); ++i) {
+            const auto& module = modules[i];
+            const auto mask = inside(module.instance.bounds, x, y) ? module_masks[i].at(values) : 0;
+            if (diagnostic_value && diagnostic_kind == 3 && diagnostic_index == i) *diagnostic_value = static_cast<float>(mask);
+            if (mask > 0 && (mask == 1 || unit(hash_xy(recipe.seed ^ module_salts[i], x, y, 881)) < mask)) {
+                const auto changed = module.sampler->sample(context, result);
+                if (changed) {
+                    if (!valid_material(*changed)) throw std::runtime_error("module returned invalid material: " + module.instance.id);
+                    result = *changed;
+                }
+            }
+        }
+        for (std::size_t i = 0; i < recipe.modifiers.size(); ++i) {
+            const auto& m = recipe.modifiers[i];
+            if ((!m.material && m.aggregate.empty()) || alpha[i] == 0) continue;
+            if (alpha[i] < 1 && unit(hash_xy(recipe.seed ^ modifiers[i].salt, x, y, 882)) >= alpha[i]) continue;
+            result = m.material ? *m.material : aggregate_at(modifiers[i].aggregate, x, y, values);
         }
         // Network/paths reserve connective space after structural modules. A hard
         // authored override below is the explicit way to block that connection.
@@ -534,13 +704,48 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
     const auto& limits = recipe.limits;
     require(limits.max_themes > 0 && limits.max_themes <= 64 && limits.max_strokes <= 64 &&
         limits.max_points_per_path > 0 && limits.max_points_per_path <= 128 && limits.max_paths <= 64 &&
-        limits.max_overrides <= 64 && limits.max_modules <= 32 && limits.max_operations_per_chunk > 0 &&
+        limits.max_overrides <= 64 && limits.max_modules <= 32 &&
+        limits.max_fields > 0 && limits.max_fields <= 64 && limits.max_aggregates > 0 &&
+        limits.max_aggregates <= 32 && limits.max_modifiers > 0 && limits.max_modifiers <= 64 && limits.max_operations_per_chunk > 0 &&
         limits.max_operations_per_chunk <= UINT64_C(1'000'000'000), "invalid generation limits");
     if (recipe.catalogue.empty()) recipe.catalogue = builtin_themes();
     require(recipe.catalogue.size() <= limits.max_themes && recipe.strokes.size() <= limits.max_strokes &&
         recipe.paths.size() <= limits.max_paths && recipe.overrides.size() <= limits.max_overrides &&
-        recipe.modules.size() <= limits.max_modules, "recipe capacity exceeded");
+        recipe.modules.size() <= limits.max_modules && recipe.fields.size() <= limits.max_fields &&
+        recipe.aggregates.size() <= limits.max_aggregates && recipe.modifiers.size() <= limits.max_modifiers, "recipe capacity exceeded");
     auto impl = std::make_unique<Impl>();
+    impl->fields = FieldGraph::compile(recipe.fields, recipe.seed, {limits.max_fields, kMaxFieldDepth, kMaxFieldOperations});
+    recipe.fields = impl->fields->nodes();
+    impl->cost += impl->fields->operations_per_sample();
+    if (!recipe.fields.empty() || !recipe.modifiers.empty()) impl->cost += 384;
+    std::sort(recipe.aggregates.begin(), recipe.aggregates.end(), [](const auto& a, const auto& b) { return a.id < b.id; });
+    std::map<std::string, std::size_t> aggregate_index;
+    for (auto& aggregate : recipe.aggregates) {
+        identifier(aggregate.id);
+        require(aggregate_index.emplace(aggregate.id, aggregate_index.size()).second, "duplicate aggregate ID: " + aggregate.id);
+        require(aggregate.grain_size >= 1 && aggregate.grain_size <= 4096 &&
+            !aggregate.components.empty() && aggregate.components.size() <= 16, "invalid aggregate grain size or component capacity");
+        std::sort(aggregate.components.begin(), aggregate.components.end(), [](const auto& a, const auto& b) { return a.material < b.material; });
+        double total = 0;
+        for (std::size_t i = 0; i < aggregate.components.size(); ++i) {
+            const auto& c = aggregate.components[i];
+            require(valid_material(c.material) && std::isfinite(c.weight) && c.weight > 0 && c.weight <= 1'000'000,
+                "invalid aggregate component");
+            require(i == 0 || aggregate.components[i - 1].material != c.material, "duplicate aggregate material");
+            total += c.weight;
+        }
+        std::vector<double> normalized;
+        normalized.reserve(aggregate.components.size());
+        for (const auto& c : aggregate.components) {
+            const auto weight = c.weight / total;
+            require(weight > 0, "aggregate component weight underflows when normalized");
+            normalized.push_back(weight);
+        }
+        impl->aggregate_weights.push_back(std::move(normalized));
+        impl->aggregate_variations.push_back(aggregate.variation.empty() ? Impl::absent : impl->fields->index(aggregate.variation));
+        auto salt = kFnv; hash_text(salt, aggregate.id); impl->aggregate_salts.push_back(salt);
+        impl->cost += 24 + aggregate.components.size() * 4;
+    }
     std::sort(recipe.catalogue.begin(), recipe.catalogue.end(), [](const auto& a, const auto& b) { return a.id < b.id; });
     std::map<std::string, std::size_t> theme_index;
     for (std::size_t i = 0; i < recipe.catalogue.size(); ++i) {
@@ -581,6 +786,7 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
     impl->base_weights = impl->resolve(recipe.themes);
     order_and_identify(recipe.strokes); order_and_identify(recipe.paths);
     order_and_identify(recipe.overrides); order_and_identify(recipe.modules);
+    order_and_identify(recipe.modifiers);
     for (auto& b : recipe.strokes) {
         validate_points(b.points, limits); validate_edits(b.parameters); canonical_selection(b.themes);
         require(std::isfinite(b.radius) && b.radius >= 1 && b.radius <= 1'000'000 &&
@@ -602,10 +808,53 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
         require(hard.material || hard.candidate || !hard.parameters.empty(), "empty hard override");
         impl->cost += 16 + hard.parameters.size() * 4;
     }
+    bool has_guidance = false;
+    for (auto& m : recipe.modifiers) {
+        require(!(m.bounds && !m.points.empty()), "modifier bounds and points are exclusive");
+        if (m.bounds) validate_rect(*m.bounds);
+        if (!m.points.empty()) validate_points(m.points, limits);
+        require(std::isfinite(m.radius) && m.radius >= 1 && m.radius <= 1'000'000 &&
+            std::isfinite(m.falloff) && m.falloff >= 0.1 && m.falloff <= 8, "invalid modifier brush geometry");
+        require(parse_context_predicate(context_predicate_name(m.context)).has_value(), "invalid modifier context");
+        require((m.context == ContextPredicate::Material) == m.context_material.has_value(), "material context requires exactly one context_material");
+        require(!m.context_material || valid_material(*m.context_material), "invalid modifier context material");
+        require(!m.material || valid_material(*m.material), "invalid modifier material");
+        require(!m.material || m.aggregate.empty(), "modifier material and aggregate are exclusive");
+        require(m.material || !m.aggregate.empty() || !m.parameters.empty() || !m.themes.weights.empty() || !m.mappings.empty(), "empty modifier");
+        validate_edits(m.parameters); canonical_selection(m.themes);
+        require(!m.themes.weights.empty() || m.themes.exclude.empty(), "modifier theme exclusions require a selection");
+        require(m.mappings.size() <= kParameterCount, "modifier mapping capacity exceeded");
+        Impl::PreparedModifier prepared;
+        prepared.mask = impl->compile_mask(m.application, m.exclusion, m.strength);
+        if (!m.themes.weights.empty()) prepared.themes = impl->resolve(m.themes);
+        if (!m.aggregate.empty()) {
+            const auto found = aggregate_index.find(m.aggregate);
+            require(found != aggregate_index.end(), "unknown aggregate: " + m.aggregate); prepared.aggregate = found->second;
+        }
+        prepared.salt = kFnv; hash_text(prepared.salt, m.id);
+        std::sort(m.mappings.begin(), m.mappings.end(), [](const auto& a, const auto& b) { return a.parameter < b.parameter; });
+        for (std::size_t i = 0; i < m.mappings.size(); ++i) {
+            const auto& mapping = m.mappings[i];
+            validate_parameter(mapping.parameter, mapping.low); validate_parameter(mapping.parameter, mapping.high);
+            require(mapping.parameter != Parameter::DistrictSize, "district_size cannot be spatially mapped");
+            require(i == 0 || m.mappings[i - 1].parameter != mapping.parameter, "duplicate modifier mapping");
+            require(std::none_of(m.parameters.begin(), m.parameters.end(), [&](const auto& e) { return e.parameter == mapping.parameter; }),
+                "modifier parameter cannot have both a target and a mapping");
+            prepared.mappings.push_back(impl->fields->index(mapping.field));
+        }
+        impl->modifiers.push_back(std::move(prepared));
+        has_guidance = has_guidance || !m.themes.weights.empty() || !m.parameters.empty() || !m.mappings.empty();
+        impl->cost += 96 + m.points.size() * 24 + m.parameters.size() * 8 + m.mappings.size() * 12 + impl->leaves.size() * 4;
+    }
+    if (has_guidance) {
+        impl->cost += 128 + impl->leaves.size() * kParameterCount * 4;
+        for (const auto& b : recipe.strokes) impl->cost += 128 + b.points.size() * 24 + b.parameters.size() * 8;
+    }
     std::set<std::string> module_ids, emitted;
     for (const auto& m : recipe.modules) module_ids.insert(m.id);
     for (auto& m : recipe.modules) {
         identifier(m.module); validate_rect(m.bounds);
+        (void)impl->compile_mask(m.application, m.exclusion, m.strength);
         require(m.parameters.size() <= 32 && m.after.size() <= limits.max_modules, "module argument capacity exceeded");
         for (const auto& [name, v] : m.parameters) { identifier(name); require(std::isfinite(v), "non-finite module parameter"); }
         std::sort(m.after.begin(), m.after.end());
@@ -621,9 +870,20 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
         auto prepared = f.prepare(*next, recipe.seed);
         require(static_cast<bool>(prepared), "module preparation returned no sampler");
         impl->modules.push_back({*next, std::move(prepared), f.operations_per_cell});
+        impl->module_masks.push_back(impl->compile_mask(next->application, next->exclusion, next->strength));
+        auto salt = kFnv; hash_text(salt, next->id); impl->module_salts.push_back(salt);
         impl->cost += f.operations_per_cell + 8; emitted.insert(next->id);
     }
     impl->cost += impl->leaves.size() * kParameterCount * 4;
+    if (!recipe.fields.empty() || !recipe.modifiers.empty()) {
+        // The surface-slope context samples two neighboring immutable parameter
+        // proposals, never another field graph or mutable/generated cell.
+        std::uint64_t neighbor_cost = 64 + impl->leaves.size() * kParameterCount * 4;
+        for (const auto& b : recipe.strokes)
+            neighbor_cost += 128 + b.points.size() * 24 + b.parameters.size() * 8 + impl->leaves.size() * 4;
+        for (const auto& hard : recipe.overrides) neighbor_cost += 16 + hard.parameters.size() * 4;
+        impl->cost += neighbor_cost * 2;
+    }
     auto& h = impl->fingerprint;
     hash_word(h, kAlgorithmVersion); hash_word(h, recipe.schema); hash_word(h, recipe.seed);
     hash_word(h, recipe.revision); hash_word(h, static_cast<std::uint64_t>(recipe.chunk_size)); hash_word(h, static_cast<std::uint64_t>(recipe.candidate));
@@ -657,9 +917,31 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
         hash_word(h, m.instance.parameters.size());
         for (const auto& [name, v] : m.instance.parameters) { hash_text(h, name); hash_real(h, v); }
         hash_word(h, m.instance.after.size()); for (const auto& name : m.instance.after) hash_text(h, name);
+        hash_text(h, m.instance.application); hash_text(h, m.instance.exclusion); hash_real(h, m.instance.strength);
+    }
+    hash_word(h, impl->fields->fingerprint());
+    hash_word(h, recipe.aggregates.size());
+    for (const auto& a : recipe.aggregates) {
+        hash_text(h, a.id); hash_word(h, static_cast<std::uint64_t>(a.grain_size)); hash_text(h, a.variation);
+        hash_word(h, a.components.size());
+        for (const auto& c : a.components) { hash_word(h, static_cast<std::uint64_t>(c.material)); hash_real(h, c.weight); }
+    }
+    hash_word(h, recipe.modifiers.size());
+    for (const auto& m : recipe.modifiers) {
+        hash_text(h, m.id); hash_word(h, static_cast<std::uint64_t>(m.priority));
+        hash_word(h, m.bounds.has_value()); if (m.bounds) hash_rect(h, *m.bounds);
+        hash_points(h, m.points); hash_real(h, m.radius); hash_real(h, m.falloff); hash_real(h, m.strength);
+        hash_text(h, m.application); hash_text(h, m.exclusion); hash_word(h, static_cast<std::uint64_t>(m.context));
+        hash_word(h, m.context_material ? static_cast<std::uint64_t>(*m.context_material) + 1 : 0);
+        hash_selection(h, m.themes); hash_edits(h, m.parameters); hash_word(h, m.mappings.size());
+        for (const auto& map : m.mappings) {
+            hash_word(h, static_cast<std::uint64_t>(map.parameter)); hash_text(h, map.field);
+            hash_real(h, map.low); hash_real(h, map.high);
+        }
+        hash_word(h, m.material ? static_cast<std::uint64_t>(*m.material) + 1 : 0); hash_text(h, m.aggregate);
     }
     for (const auto v : {limits.max_themes, limits.max_strokes, limits.max_points_per_path, limits.max_paths,
-            limits.max_overrides, limits.max_modules}) hash_word(h, v);
+            limits.max_overrides, limits.max_modules, limits.max_fields, limits.max_aggregates, limits.max_modifiers}) hash_word(h, v);
     hash_word(h, limits.max_operations_per_chunk);
     impl->recipe = std::move(recipe);
     return std::shared_ptr<const Generator>(new Generator(std::move(impl)));
@@ -671,7 +953,22 @@ const Recipe& Generator::recipe() const noexcept { return impl_->recipe; }
 std::uint64_t Generator::fingerprint() const noexcept { return impl_->fingerprint; }
 std::vector<ThemeWeight> Generator::theme_weights_at(std::int64_t x, std::int64_t y) const {
     require(x >= -kCoordinateLimit && x < kCoordinateLimit && y >= -kCoordinateLimit && y < kCoordinateLimit, "sample coordinate out of range");
-    const auto weights = impl_->weights(x, y); std::vector<ThemeWeight> result;
+    auto weights = impl_->weights(x, y); std::vector<ThemeWeight> result;
+    if (!recipe().modifiers.empty()) {
+        auto p = impl_->parameters_at(weights, x, y);
+        const auto candidate = impl_->hard_parameters(p, x, y);
+        const auto& palette = impl_->palette_at(weights, x, y);
+        const auto base = candidate == Candidate::DistrictGrammar ? impl_->district(x, y, p, palette) : impl_->strata(x, y, p, palette);
+        const auto context = impl_->field_context(x, y, p, candidate, base);
+        FieldValues values; impl_->fields->evaluate(x, y, context, values);
+        for (std::size_t i = 0; i < recipe().modifiers.size(); ++i) {
+            const auto& m = recipe().modifiers[i];
+            if (m.themes.weights.empty() || !Impl::matches(m, context)) continue;
+            const auto alpha = impl_->modifiers[i].mask.at(values) * Impl::shape(m, x, y);
+            for (std::size_t leaf = 0; leaf < impl_->leaves.size(); ++leaf)
+                weights[leaf] = lerp(weights[leaf], impl_->modifiers[i].themes[leaf], alpha);
+        }
+    }
     for (std::size_t i = 0; i < impl_->leaves.size(); ++i) if (weights[i] > 0) result.push_back({impl_->leaves[i].id, weights[i]});
     return result;
 }
@@ -679,11 +976,11 @@ Material Generator::sample(std::int64_t x, std::int64_t y) const {
     require(x >= -kCoordinateLimit && x < kCoordinateLimit && y >= -kCoordinateLimit && y < kCoordinateLimit, "sample coordinate out of range");
     return impl_->sample(x, y);
 }
-std::unique_ptr<GenerationJob> Generator::begin(ChunkCoord chunk) const {
-    return std::unique_ptr<GenerationJob>(new GenerationJob(shared_from_this(), chunk));
+std::unique_ptr<GenerationJob> Generator::begin(ChunkCoord chunk, const std::string& diagnostic) const {
+    return std::unique_ptr<GenerationJob>(new GenerationJob(shared_from_this(), chunk, diagnostic));
 }
-ChunkResult Generator::generate(ChunkCoord chunk) const {
-    auto job = begin(chunk); (void)job->advance(static_cast<std::size_t>(recipe().chunk_size) * static_cast<std::size_t>(recipe().chunk_size));
+ChunkResult Generator::generate(ChunkCoord chunk, const std::string& diagnostic) const {
+    auto job = begin(chunk, diagnostic); (void)job->advance(static_cast<std::size_t>(recipe().chunk_size) * static_cast<std::size_t>(recipe().chunk_size));
     return job->result();
 }
 bool Generator::accepts(const ChunkResult& result) const noexcept {
@@ -693,10 +990,15 @@ bool Generator::accepts(const ChunkResult& result) const noexcept {
         result.chunk_size != size || result.cells.size() != static_cast<std::size_t>(size) * static_cast<std::size_t>(size) ||
         result.chunk.x < min_chunk || result.chunk.x > max_chunk || result.chunk.y < min_chunk || result.chunk.y > max_chunk) return false;
     for (const auto m : result.cells) if (!valid_material(m)) return false;
+    if (result.diagnostic.empty() ? !result.diagnostics.empty() : result.diagnostics.size() != result.cells.size()) return false;
+    try { (void)impl_->diagnostic(result.diagnostic); } catch (...) { return false; }
+    for (const auto v : result.diagnostics) if (!std::isfinite(v) || v < 0 || v > 1) return false;
     return result.content_hash == payload_hash(result.cells) && result.receipt_hash == receipt_hash(result);
 }
 
-GenerationJob::GenerationJob(std::shared_ptr<const Generator> generator, ChunkCoord chunk) : generator_(std::move(generator)) {
+GenerationJob::GenerationJob(std::shared_ptr<const Generator> generator, ChunkCoord chunk, const std::string& diagnostic) : generator_(std::move(generator)) {
+    const auto selected = generator_->impl_->diagnostic(diagnostic);
+    diagnostic_kind_ = selected.first; diagnostic_index_ = selected.second;
     const auto size = generator_->recipe().chunk_size;
     const auto min_chunk = -(kCoordinateLimit / size), max_chunk = (kCoordinateLimit - size) / size;
     require(chunk.x >= min_chunk && chunk.y >= min_chunk && chunk.x <= max_chunk && chunk.y <= max_chunk, "chunk coordinate outside supported range");
@@ -704,6 +1006,8 @@ GenerationJob::GenerationJob(std::shared_ptr<const Generator> generator, ChunkCo
     result_.chunk = chunk; result_.chunk_size = size; result_.revision = generator_->recipe().revision;
     result_.fingerprint = generator_->fingerprint();
     result_.cells.resize(static_cast<std::size_t>(size) * static_cast<std::size_t>(size));
+    result_.diagnostic = diagnostic;
+    if (diagnostic_kind_ != 0) result_.diagnostics.resize(result_.cells.size());
     result_.error.reserve(256);
 }
 GenerationJob::~GenerationJob() = default;
@@ -712,27 +1016,29 @@ ResultState GenerationJob::advance(std::size_t cell_budget) {
     const auto end = cursor_ + std::min(cell_budget, result_.cells.size() - cursor_);
     try {
         while (cursor_ < end) {
-            const auto cost = generator_->impl_->cost;
+            const auto cost = generator_->impl_->cost + (diagnostic_kind_ == 0 ? 0 : 4);
             if (cost > generator_->recipe().limits.max_operations_per_chunk - result_.operations) throw std::runtime_error("generation logical operation budget exhausted");
             result_.operations += cost;
             const auto size = static_cast<std::size_t>(result_.chunk_size);
-            result_.cells[cursor_] = generator_->impl_->sample(origin_x_ + static_cast<std::int64_t>(cursor_ % size), origin_y_ + static_cast<std::int64_t>(cursor_ / size));
+            result_.cells[cursor_] = generator_->impl_->sample(origin_x_ + static_cast<std::int64_t>(cursor_ % size),
+                origin_y_ + static_cast<std::int64_t>(cursor_ / size), diagnostic_kind_, diagnostic_index_,
+                diagnostic_kind_ == 0 ? nullptr : &result_.diagnostics[cursor_]);
             ++cursor_;
         }
         if (cursor_ == result_.cells.size()) {
             result_.content_hash = payload_hash(result_.cells); result_.receipt_hash = receipt_hash(result_); result_.state = ResultState::Ready;
         }
     } catch (const std::exception& error) {
-        result_.state = ResultState::Failed; result_.cells.clear(); result_.content_hash = 0; result_.receipt_hash = 0;
+        result_.state = ResultState::Failed; result_.cells.clear(); result_.diagnostics.clear(); result_.content_hash = 0; result_.receipt_hash = 0;
         set_diagnostic(result_.error, error.what());
     } catch (...) {
-        result_.state = ResultState::Failed; result_.cells.clear(); result_.content_hash = 0; result_.receipt_hash = 0;
+        result_.state = ResultState::Failed; result_.cells.clear(); result_.diagnostics.clear(); result_.content_hash = 0; result_.receipt_hash = 0;
         set_diagnostic(result_.error, "module threw an unknown exception");
     }
     return result_.state;
 }
 void GenerationJob::cancel() noexcept {
-    if (result_.state == ResultState::Pending) { result_.state = ResultState::Cancelled; result_.cells.clear(); result_.content_hash = 0; result_.receipt_hash = 0; }
+    if (result_.state == ResultState::Pending) { result_.state = ResultState::Cancelled; result_.cells.clear(); result_.diagnostics.clear(); result_.content_hash = 0; result_.receipt_hash = 0; }
 }
 ResultState GenerationJob::state() const noexcept { return result_.state; }
 std::size_t GenerationJob::completed_cells() const noexcept { return cursor_; }
@@ -754,6 +1060,14 @@ const char* parameter_name(Parameter p) noexcept {
 }
 std::optional<Parameter> parse_parameter(const std::string& name) noexcept {
     for (unsigned i = 0; i < kParameterCount; ++i) if (name == parameter_name(static_cast<Parameter>(i))) return static_cast<Parameter>(i);
+    return std::nullopt;
+}
+const char* context_predicate_name(ContextPredicate predicate) noexcept {
+    constexpr std::array names{"any", "empty", "occupied", "solid", "fluid", "material"};
+    const auto index = static_cast<std::size_t>(predicate); return index < names.size() ? names[index] : "invalid";
+}
+std::optional<ContextPredicate> parse_context_predicate(const std::string& name) noexcept {
+    for (unsigned i = 0; i < 6; ++i) if (name == context_predicate_name(static_cast<ContextPredicate>(i))) return static_cast<ContextPredicate>(i);
     return std::nullopt;
 }
 } // namespace cybersand::generation

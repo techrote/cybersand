@@ -15,14 +15,15 @@ last-reviewed: 2026-10-18
 
 ### Native procedural generation and fresh-chunk admission
 
-**Current GEN-001 source:**
+**Current GEN-001/GEN-002 source:**
 [`generation::Generator`](../../native/include/cybersand/world_generation.hpp)
-compiles a value-only recipe into immutable theme/module state.
-`begin(ChunkCoord)` creates a private `GenerationJob`; `advance(cell_budget)`
+compiles a value-only recipe into immutable theme/field/aggregate/module state.
+`begin(ChunkCoord, diagnostic="")` creates a private `GenerationJob`; `advance(cell_budget)`
 limits work, and `result()` refuses access while pending. Ready results contain
 copied row-major materials, coordinates, revision, recipe fingerprint, content
-hash and an admission receipt binding those identities. Failed/cancelled jobs
-expose no cell payload. `accepts(result)` checks complete current recipe/receipt
+hash and an admission receipt binding those identities and optional diagnostic
+channel/float data. Failed/cancelled jobs expose neither cell nor diagnostic
+payload. `accepts(result)` checks complete current recipe/receipt
 identity; it does not identify the lifetime of a separate mutable World.
 
 [`World::install_generated_chunk`](../../native/src/world.cpp) takes a coordinate
@@ -41,6 +42,13 @@ is a separate serialized Godot `RefCounted` owner with `configure`,
 valid configuration on validation failure. Its single pending job is retired
 when a new accepted configuration replaces the generator. The opt-in workbench
 consumes these proposals for preview; it never acquires a live World reference.
+The two chunk methods accept an optional `field:<id>`, `modifier:<id>` or
+`module:<id>` channel. Ready packets include `diagnostic` and copied
+`PackedFloat32Array` `diagnostics` alongside `PackedByteArray` `cells`; no channel
+means an empty array. Native receipt validation precedes copying, while the UI
+also checks its current identity, expected coordinate, channel and normalized
+shape. The [field contract](../systems/procedural-generation-fields-and-modifiers.md)
+owns scalar DAG/context semantics and catalogue descriptors.
 The [generation contract](../systems/procedural-world-generation.md) owns exact
 schema and packet fields, module trust and source/runtime limits.
 
@@ -98,19 +106,31 @@ and [step order](../architecture/simulation-tick-and-threading.md).
 ### Optional actor prototype control surface
 
 **Current, experimental desktop:** `queue_actor_prototype_reset`,
-`submit_actor_action` and `cancel_actor_input` are GDScript worker methods for
-the bounded [actor prototype session](../systems/actor-control-prototypes.md).
+`submit_actor_action`, `submit_actor_rig_action` and `cancel_actor_input` are
+GDScript worker methods for the bounded [actor rig session](../systems/actor-rigs.md).
 Reset definitions are copied; the reset method returns zero on refusal or a
 positive request receipt. Snapshot reset-serial/applied/status fields separately
 report the owner outcome after it rechecks scenario authority. Action admission validates actor/producer, epoch,
 sequence and observation-derived expiry before retaining a bounded input value.
 `CyberSimulationSnapshot.actor_prototypes` carries copied session identity,
-capabilities and fixed-stride observation rows. The canonical actor contract owns
-the exact command fields and 16-float observation order.
+capabilities and fixed-stride observation rows. The [SetA compatibility page](../systems/actor-control-prototypes.md)
+owns the original two-button command and 16-float order. The
+[v2 rig contract](../systems/actor-rigs.md#what-action-does-a-player-or-neural-policy-submit)
+adds independent aim, effort, trim, reel and auxiliary, plus 40-float rig rows.
+The old fields remain additive-compatible; SetA still instantiates its original motor.
+
+`sequences` reports latest admitted input. `applied_sequences` and ten-float
+`applied_actions` rows identify the last consumed live command; `applied_flags`
+retains held, pressed and cancellation bits so brief taps are not lost from
+readback. The v2 contract owns the exact field order and flag values. These
+publications remain observations rather than complete replay state. `rig_capabilities`
+converts catalog body/color values to numeric arrays for structured JSON retention.
 
 This is an in-process adapter seam, not a network protocol, native C ABI, trained
 policy or Web input implementation. Existing native material/collision interfaces
-and main-thread Rapier ownership are unchanged.
+and main-thread Rapier ownership are unchanged. New-rig tools may invoke the
+existing owner-local single-cell emission adapter under explicit per-update
+budgets; a policy cannot supply an arbitrary World operation or effect footprint.
 
 ### Sampled-player granular disturbance adapter
 

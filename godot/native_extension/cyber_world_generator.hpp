@@ -4,6 +4,7 @@
 
 #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/variant/dictionary.hpp>
+#include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/variant/vector2i.hpp>
 
 #include <memory>
@@ -21,8 +22,8 @@ public:
     [[nodiscard]] Dictionary configure(const Dictionary& recipe);
     [[nodiscard]] Dictionary get_configuration() const;
     [[nodiscard]] Dictionary get_catalogue() const;
-    [[nodiscard]] Dictionary generate_chunk(Vector2i coord) const;
-    [[nodiscard]] Dictionary begin_chunk(Vector2i coord);
+    [[nodiscard]] Dictionary generate_chunk(Vector2i coord, const String& diagnostic = String()) const;
+    [[nodiscard]] Dictionary begin_chunk(Vector2i coord, const String& diagnostic = String());
     [[nodiscard]] Dictionary advance(std::int64_t cell_budget);
 
 protected:

@@ -32,8 +32,9 @@ but must not touch live scene-tree or Rapier objects.
 | Live body nodes, RIDs and physics state | Main-thread Rapier bridge and PhysicsServer2D | Scene/bridge lifetime; never passed to cellular workers |
 | Body samples and observations | Adapter owns copied samples and native transient occupancy; results are copied into publication | Mask rebuilt at coupling preparation; sample IDs identify result application |
 | Godot CPU image and textures | Main thread validates patches and updates resources | Application lifetime; upload never borrows mutable World bytes |
-| Compiled procedural recipe and prepared modules | Immutable `generation::Generator`, independent of World | Jobs retain shared ownership; replacing the caller's recipe cannot mutate existing jobs |
-| Procedural chunk staging | One `GenerationJob` owns its private material array and cursor | Allocated before incremental advance; pending bytes stay private, failure/cancel discards payload |
+| Compiled procedural recipe, field graph and prepared modules | Immutable `generation::Generator`, independent of World | Jobs retain shared ownership; replacing the caller's recipe cannot mutate existing jobs |
+| Procedural sample context | Copied initial candidate material, surface and route values | Captured before fields/modules/material changes; every mask for that cell sees the same values |
+| Procedural chunk staging | One `GenerationJob` owns private material/optional diagnostic arrays and cursor | Allocated before incremental advance; pending bytes stay private, failure/cancel discards both payloads |
 | World-generation workbench previews | One main-thread `CyberWorldGenerator` owner plus copied material/texture cache | Accepted recipe changes retire old preview work; cache eviction regenerates previews, never evicts simulation chunks |
 
 Source: [World/Chunk](../../native/src/world.cpp),
@@ -45,7 +46,7 @@ Step order belongs in the [threading contract](simulation-tick-and-threading.md)
 
 ## How may generated content enter cell authority?
 
-**Current GEN-001 source:** the generation job API and supplied module context
+**Current GEN-001/GEN-002 source:** the generation job API and supplied module context
 provide no mutable World, scene-tree or Rapier state. The
 [generation contract](../systems/procedural-world-generation.md) separates
 immutable recipe/revision receipts from the destination World's lifetime.
@@ -61,6 +62,14 @@ failure and overlapping transient occupancy are explicit refusals. This method
 is a loading/setup boundary primitive; it supplies no background World owner,
 automatic resident eviction or reset-session manager. The opt-in workbench only
 previews copied proposals and never calls it on the sandbox World.
+
+GEN-002 scalar context observes the initial procedural candidate, including its
+old brushes and hard geometry controls, before any masked modifier or module.
+It does not borrow live World material or infer player edits from empty preview
+cells. Diagnostic floats are job-owned and receipt-bound, then copied into the
+workbench cache; changing inspection channels retires that cache. The
+[field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md)
+owns this immutable-context and diagnostic lifecycle.
 
 ## When can a render payload be reused?
 
@@ -133,11 +142,14 @@ native jobs. Their bounded neighbourhood adds no job view, cache or Rapier objec
 
 ## Optional actor prototype ownership
 
-**Current, experimental:** the [actor session](../systems/actor-control-prototypes.md)
+**Current, experimental:** the [actor session](../systems/actor-rigs.md)
 owns a bounded set of sampled motors under `CyberSimulationWorker`. Human or
 policy producers submit scalar/value commands through its mutex-protected
 mailbox. Only the serialized simulation owner configures, advances or observes
-the motors and calls World collision queries. The public worker forwarding
+the motors and calls World collision/ray queries or bounded local tool writes.
+SetA retains its original motor; additional rig geometry, attachment, angular
+state, charge and effect scratch storage belong to the same owner. Input producers
+cannot provide callback code or arbitrary native writes. The public worker forwarding
 methods do not grant producers a live actor, World or Rapier reference.
 
 Publications copy state/capability values. A current actor observation and a
@@ -146,6 +158,13 @@ relabeling the other. Session pause/reset/clear boundaries invalidate prior
 command epochs, and failed-world publication retains the previous successful
 display contract. The actor-specific action/lease protocol does not bound the
 separate general emission queues described above.
+
+Cancellation clears armed charge, attachments and pending effects before neutral
+input advances; a Pouncer release action must not fire because its lease expired.
+Consumed action/sequence/edge fields and latest admitted sequences are distinct
+copied values. Catalog dictionaries are deep-copied at configuration/publication
+boundaries rather than used as mutable shared actor state. Sampled rig bodies and
+drawn extremities are not scene-tree physics objects or new native job owners.
 
 ## Failed-world ownership and recovery
 

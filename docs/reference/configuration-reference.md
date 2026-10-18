@@ -23,9 +23,9 @@ actually persists.
 
 ## Opt-in procedural generation configuration
 
-**Current GEN-001 source:** [`generation::Recipe`](../../native/include/cybersand/world_generation.hpp)
+**Current GEN-001/GEN-002 source:** [`generation::Recipe`](../../native/include/cybersand/world_generation.hpp)
 is separate from `WorldConfig` and the transport/Water profiles. Its native
-defaults are schema/algorithm version 1, seed 1, revision 1, candidate `strata`,
+defaults are schema version 1, algorithm version 2, seed 1, revision 1, candidate `strata`,
 chunk edge 128 and the `natural` theme family. Generator chunk edges are admitted
 from 8 through 256 cells; complete output must remain within
 `-2^40 <= coordinate < 2^40`. Native World installation additionally requires its
@@ -39,6 +39,16 @@ with validation in [`Generator::compile`](../../native/src/world_generation.cpp)
 The workbench offers narrower slider ranges for some controls while its JSON
 editor accepts the validated native range. No general World configuration,
 residency or replay serialization follows from saving a generation recipe.
+
+GEN-002 optionally adds up to 64 fields, 32 aggregates and 64 modifiers. The scalar
+graph caps depth at 16 and declared operations at 4096 per sample. Aggregates
+admit 1..16 unique existing material IDs with strictly positive finite weights;
+their grain size defaults to 4 and accepts integers 1..4096. Named variation
+fields select per cell without grain quantization. Field defaults/arity/ranges
+are exposed by native `field_kind_specs()` and copied by `get_catalogue`.
+The [field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md)
+owns these values, context meaning, masks and diagnostic bounds; these scalar
+authoring fields do not allocate optional simulation temperature/pressure storage.
 
 ## Native WorldConfig defaults
 
@@ -319,7 +329,7 @@ for field bounds, material-response ownership and traversal semantics.
 ## Actor control prototype values
 
 **Current, experimental:** [`actor_prototype.gd`](../../godot/scripts/actor_prototype.gd)
-owns fixed version-1 Runner, Skimmer and Crawler tuning. These values do not
+owns fixed version-1 **SetA** Runner, Skimmer and Crawler tuning. These values do not
 inherit live PENV player/environment edits. Positions and dimensions use cells
 (the current gameplay pixels), speeds use cells/second and timing uses seconds;
 energy is a normalized gameplay resource. None is an SI calibration.
@@ -364,3 +374,71 @@ of wall-clock response when the world or host is overloaded.
 These finite limits describe controller work, not accepted many-NPC throughput or
 zero-allocation execution. Read the [actor contract](../systems/actor-control-prototypes.md)
 for input lifetime, ownership, capabilities and remaining platform/acceptance gaps.
+
+## Actor rig values
+
+**Current, experimental ACT-002:** the 26 additional SetB/F/Y/U/V rigs use
+[`actor_rig_motor.gd`](../../godot/scripts/actor_rig_motor.gd), while SetA retains
+the preceding constants. Catalog metadata supplies fixed unrotated dimensions;
+the motor owns movement/resource tuning. Effort is a bounded action input, not a
+live PENV override. Units remain gameplay cells, seconds and radians.
+
+| Shared new-rig limit | Value and meaning |
+|---|---|
+| Session capacity | Eight actors; the F5 compare-set option adds the other selected-set rigs, at most seven actors total |
+| Update duration / speed norm | At most 1/30 second / 160 cells per second |
+| Baseline gravity | 156 cells per second squared before rig-specific authored lift/braking/gravity factors |
+| Translation | Six one-cell sweep increments per axis; six-cell absolute travel budget per axis includes admitted ledge/pivot movement |
+| Angular motion | At most 6 radians per second and eight tested angular increments; interval envelopes include interior AABB maxima |
+| Occupancy queries | At most 96 per actor update; refusal is treated as blocked movement |
+| Surface ray queries | At most 64 material reads per actor update, shared by cast/revalidation/ground sensing and actor-to-effect-origin checks |
+| Rope length / acquisition range | 6–44 cells / 44 cells; retained anchors are refused beyond 52 cells, and read-budget exhaustion may shorten the available cast |
+| Rope work | One terrain anchor and straight segment; bounded spring force with no positional teleport; negative reel shortens and positive reel extends |
+| Ripper / Digger / Lineshank tool radius | 3 / 4 / 2 cells |
+| Rocketjumper / Dropbot blast radius | 4 / 3 cells |
+| Rocketjumper surface reach | At most six cells beyond the current conservative collision proxy along aim; no surface means no energy spend/recoil/effect |
+| Local effect work | At most one effect, 64 material reads and 64 single-cell adapter writes per actor update; fixed radius at most four cells |
+| Effect retention | No deferred effect queue; cancellation drops armed effects and charge |
+| Effect materials | Explicit whitelist in `CyberActorRigEffects.editable_material`; Wall, composed body masks, out-of-bounds and other noneditable cells are protected |
+| Input bounds | Movement components -1..1; normalized nonzero aim or zero; effort 0..1; trim/reel -1..1; finite values required |
+| Minimal adapter defaults | Aim follows movement, effort 0.7, trim/reel zero, auxiliary false |
+| Leases and producer cadence | Existing six-tick human lease, 12-tick policy default/18-tick maximum, six-tick demo cadence; deadlines derive from observed actor tick |
+| Publications | Legacy 16-float rows plus v2 40-float rows; consumed action rows of ten floats, consumed edge flags and admitted/applied sequence identities |
+
+The 12/18-tick policy limits are 200/300 ms at the desktop 60 Hz actor cadence;
+they are simulation-time limits rather than a wall-clock service guarantee.
+The ten consumed action fields and 40 observation fields are defined only in the
+[actor-rigs contract](../systems/actor-rigs.md#what-does-the-version-2-observation-contain).
+The internal catalog's `parameters` dictionary is currently empty; it is not an
+editable movement schema. Effect-strength telemetry is an authored fraction,
+not a calibrated physical pressure or a promise to edit every cell in the radius.
+
+Clamberer adhesion drains 0.025 energy/second, permitting roughly 40 seconds from
+full energy with valid contact and no other action expenditure. Walljumper's
+1.15/second drain deliberately allows a much shorter attachment window. These are
+resource calculations, not guaranteed travel durations across changing terrain.
+Lineshank's held blade drains 0.06/second and derives lift and drag from airspeed,
+each capped at 240 cells/second squared; its separate initial pulse costs 0.09
+with a 0.24-second cooldown. Its bungee stiffness is `24 + 20 * effort`.
+Rocketjumper recoil is `(78 + 65 * effort) * (1 - 0.7 * gap / 6)` in the direction
+opposite aim, with admitted gap clamped to 0–6 cells, cost 0.26 and cooldown
+0.55 seconds. The final common speed bound still applies.
+
+| Set | Unrotated body dimensions in catalog order, width × height |
+|---|---|
+| SetA | Runner 8×14; Skimmer 8×14; Crawler 8×14 |
+| SetB | Scout 8×12; Scrabbler 14×10; Ripper 10×10; GroundEffect 14×7; Digger 6×6 |
+| SetF | Copter 12×8; Pouncer 10×10; Dropbot 10×10; Lineshank 8×12 |
+| SetY | Walljumper 8×14; Clamberer 8×12; Swinger 8×12; Rocketjumper 10×12 |
+| SetU | Springjack 8×12; Gyrocrate 10×10; Bellows 10×10; Winchbug 10×8; Magpie 8×10; Skatesail 12×8 |
+| SetV | Astra 8×12; Claude 8×12; Luna 8×10; Qwen 10×10; Bonsai 6×10; Jev 10×10; Gemini 12×8 |
+
+Clamberer may hold an 8×6 tuck and Bonsai a 6×6 tuck. Both preserve their center
+while resizing and restore the full hull only if its conservative occupied volume
+is clear. The rotated occupancy envelope can exceed the listed unrotated width
+or height; decorative extremities do not enlarge collision authority.
+
+Bounds apply to owner-local controller work. They do not establish zero
+allocations, complete native reaction cost, neural inference latency, target-PC
+frame time or large NPC-population throughput. Source-owned movement details and
+per-rig limitations remain in the [catalog contract](../systems/actor-rigs.md).

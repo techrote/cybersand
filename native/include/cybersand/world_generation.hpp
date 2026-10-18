@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cybersand/world.hpp"
+#include "cybersand/generation_fields.hpp"
 
 #include <cstdint>
 #include <functional>
@@ -15,7 +16,7 @@
 namespace cybersand::generation {
 
 inline constexpr std::uint32_t kSchemaVersion = 1;
-inline constexpr std::uint32_t kAlgorithmVersion = 1;
+inline constexpr std::uint32_t kAlgorithmVersion = 2;
 // Brush geometry uses doubles; reject coordinates beyond the exact integer range
 // deliberately rather than silently aliasing distant chunks.
 inline constexpr std::int64_t kCoordinateLimit = (INT64_C(1) << 40);
@@ -102,6 +103,45 @@ struct ModuleInstance {
     std::map<std::string, double> parameters;
     std::vector<std::string> after; // explicit instance dependencies
     int priority = 0;
+    std::string application{}; // named field; empty is one
+    std::string exclusion{}; // named field; empty is zero
+    double strength = 1.0;
+};
+
+enum class ContextPredicate : std::uint8_t { Any, Empty, Occupied, Solid, Fluid, Material };
+
+struct AggregateComponent { Material material = Material::GraniteBlock; double weight = 1.0; };
+// An authoring recipe which emits ordinary material IDs, not a physics material.
+struct Aggregate {
+    std::string id;
+    std::vector<AggregateComponent> components;
+    std::int32_t grain_size = 4;
+    std::string variation; // optional normalized selector field; not an area quota
+};
+
+struct ParameterMapping {
+    Parameter parameter{};
+    std::string field;
+    double low{}, high{}; // both are valid spatial values; descending maps allowed
+};
+
+struct Modifier {
+    std::string id;
+    int priority = 0;
+    std::optional<RectI64> bounds; // exclusive with points; absent means global
+    std::vector<Point> points;
+    double radius = 96.0;
+    double falloff = 1.0;
+    double strength = 1.0;
+    std::string application;
+    std::string exclusion;
+    ContextPredicate context = ContextPredicate::Any;
+    std::optional<Material> context_material;
+    ThemeSelection themes{{}, {}};
+    std::vector<ParameterEdit> parameters;
+    std::vector<ParameterMapping> mappings;
+    std::optional<Material> material; // Empty carves; exclusive with aggregate
+    std::string aggregate;
 };
 
 struct Limits {
@@ -111,6 +151,9 @@ struct Limits {
     std::size_t max_paths = 64;
     std::size_t max_overrides = 64;
     std::size_t max_modules = 32;
+    std::size_t max_fields = 64;
+    std::size_t max_aggregates = 32;
+    std::size_t max_modifiers = 64;
     std::uint64_t max_operations_per_chunk = 64'000'000;
 };
 
@@ -127,6 +170,9 @@ struct Recipe {
     std::vector<GuidePath> paths;
     std::vector<HardOverride> overrides;
     std::vector<ModuleInstance> modules;
+    std::vector<FieldNode> fields;
+    std::vector<Aggregate> aggregates;
+    std::vector<Modifier> modifiers;
     Limits limits;
 };
 
@@ -177,6 +223,8 @@ struct ChunkResult {
     std::uint64_t operations = 0;
     std::string error;
     std::vector<Material> cells; // never published before Ready
+    std::string diagnostic; // empty or field:<id>, modifier:<id>, module:<id>
+    std::vector<float> diagnostics; // optional [0,1] channel, paced with cells
 };
 
 class GenerationJob;
@@ -192,8 +240,8 @@ public:
     [[nodiscard]] std::uint64_t fingerprint() const noexcept;
     [[nodiscard]] std::vector<ThemeWeight> theme_weights_at(std::int64_t x, std::int64_t y) const;
     [[nodiscard]] Material sample(std::int64_t x, std::int64_t y) const;
-    [[nodiscard]] std::unique_ptr<GenerationJob> begin(ChunkCoord chunk) const;
-    [[nodiscard]] ChunkResult generate(ChunkCoord chunk) const;
+    [[nodiscard]] std::unique_ptr<GenerationJob> begin(ChunkCoord chunk, const std::string& diagnostic = {}) const;
+    [[nodiscard]] ChunkResult generate(ChunkCoord chunk, const std::string& diagnostic = {}) const;
     [[nodiscard]] bool accepts(const ChunkResult& result) const noexcept;
     ~Generator();
 
@@ -217,11 +265,13 @@ public:
     [[nodiscard]] std::size_t completed_cells() const noexcept;
     [[nodiscard]] const ChunkResult& result() const; // Pending throws
 private:
-    GenerationJob(std::shared_ptr<const Generator>, ChunkCoord);
+    GenerationJob(std::shared_ptr<const Generator>, ChunkCoord, const std::string&);
     std::shared_ptr<const Generator> generator_;
     ChunkResult result_;
     std::size_t cursor_ = 0;
     std::int64_t origin_x_ = 0, origin_y_ = 0;
+    unsigned diagnostic_kind_ = 0;
+    std::size_t diagnostic_index_ = 0;
     friend class Generator;
 };
 
@@ -229,5 +279,7 @@ private:
 [[nodiscard]] std::optional<Candidate> parse_candidate(const std::string& name) noexcept;
 [[nodiscard]] const char* parameter_name(Parameter parameter) noexcept;
 [[nodiscard]] std::optional<Parameter> parse_parameter(const std::string& name) noexcept;
+[[nodiscard]] const char* context_predicate_name(ContextPredicate predicate) noexcept;
+[[nodiscard]] std::optional<ContextPredicate> parse_context_predicate(const std::string& name) noexcept;
 
 } // namespace cybersand::generation

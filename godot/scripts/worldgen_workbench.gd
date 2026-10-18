@@ -32,6 +32,20 @@ const MODULE_DEFAULTS: Dictionary = {
 	"vault": {"cell_size": 32, "wall": 2, "door_width": 8},
 	"aqueduct": {"span": 64, "deck_height": 24, "wall": 3, "channel_depth": 6},
 }
+# Presentation names for the existing native material IDs, matching main.gd.
+# The reserved invalid slot 10 is never offered by an authoring picker.
+const MATERIAL_LABELS: Array[String] = [
+	"empty", "wall", "sand", "water", "smoke", "cloner", "fire", "wood",
+	"lava", "ice", "invalid", "plant", "acid", "stone", "dust", "mite",
+	"oil", "rocket", "fungus", "seed", "paste", "slush", "steam", "salt",
+	"brine", "sodium", "gunpowder", "coal", "metal", "rust", "cement", "concrete",
+	"toxic sludge", "mercury", "spark", "glass", "molten glass", "foam", "limestone block", "sandstone block",
+	"granite block", "cobblestone", "mossy cobblestone", "red brick", "lime plaster", "wattle and daub", "oak timber", "thatch",
+	"terracotta tile", "slate", "wrought iron", "lead sheet", "bronze", "copper", "verdigris copper", "stained glass",
+	"packed earth", "industrial brick", "reinforced concrete", "asphalt", "wet asphalt", "wet cobblestone", "steel plate", "painted steel",
+	"corrugated steel", "rusted steel", "steel grating", "chainlink", "steel pipe", "copper pipe", "ceramic tile", "chemical glass",
+	"dark glass", "rubber", "cable bundle", "insulation", "hazard stripe", "neon cyan", "neon magenta", "neon amber", "LED white",
+]
 
 var generator: Variant
 var active_recipe: Dictionary = {}
@@ -83,6 +97,59 @@ var _job_compute_us: int = 0
 var _authoring_serial: int = 0
 var _syncing_controls: bool = false
 var _dirty_controls: Dictionary = {}
+var page_picker: OptionButton
+var diagnostic_picker: OptionButton
+var diagnostic_channel: String = ""
+var _view_token: int = 0
+var _active_view_token: int = 0
+var _inspected_material: int = -1
+var field_specs: Dictionary = {}
+var field_choice: OptionButton
+var field_id: LineEdit
+var field_kind: OptionButton
+var field_inputs: LineEdit
+var field_warp_x: OptionButton
+var field_warp_y: OptionButton
+var field_context: OptionButton
+var field_parameter_box: VBoxContainer
+var field_parameter_inputs: Dictionary = {}
+var field_help: Label
+var aggregate_choice: OptionButton
+var aggregate_id: LineEdit
+var aggregate_grain: SpinBox
+var aggregate_variation: OptionButton
+var aggregate_rows: VBoxContainer
+var aggregate_components: Array[Dictionary] = []
+var modifier_choice: OptionButton
+var modifier_id: LineEdit
+var modifier_priority: SpinBox
+var modifier_strength: SpinBox
+var modifier_application: OptionButton
+var modifier_exclusion: OptionButton
+var modifier_context: OptionButton
+var modifier_context_material: OptionButton
+var modifier_bounds: LineEdit
+var modifier_action: OptionButton
+var modifier_material: OptionButton
+var modifier_aggregate: OptionButton
+var modifier_parameter: OptionButton
+var modifier_low: SpinBox
+var modifier_high: SpinBox
+var modifier_mapping_field: OptionButton
+var modifier_theme: OptionButton
+var modifier_json: TextEdit
+var modifier_translate_x: SpinBox
+var modifier_translate_y: SpinBox
+var modifier_scale: SpinBox
+var brush_application: OptionButton
+var brush_exclusion: OptionButton
+var brush_context: OptionButton
+var brush_context_material: OptionButton
+var brush_aggregate: OptionButton
+var module_application: OptionButton
+var module_exclusion: OptionButton
+var module_strength: SpinBox
+var module_choice: OptionButton
 
 static func default_recipe() -> Dictionary:
 	var parameters: Dictionary = {}
@@ -108,7 +175,12 @@ func _ready() -> void:
 			generator = null
 			_set_error("The loaded native generator has an incompatible API. Rebuild the GDExtension for this source.")
 			return
-	_populate_catalogue(generator.get_catalogue())
+	var catalogue: Dictionary = generator.get_catalogue()
+	if not catalogue.has("field_kinds"):
+		generator = null
+		_set_error("The loaded native generator predates field authoring. Rebuild the GDExtension for this source.")
+		return
+	_populate_catalogue(catalogue)
 	apply_recipe(default_recipe(), false)
 
 func _build_ui() -> void:
@@ -129,6 +201,7 @@ func _build_ui() -> void:
 	layout.add_child(heading)
 	var title: Label = _label(heading, "CYBERSAND / WORLD GENERATION", 25)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_button(heading, "Examples…", func() -> void: _open_profile(); _choose_load_profile(true))
 	_button(heading, "Profile JSON…", _open_profile)
 	_button(heading, "Apply controls", apply_controls)
 	_button(heading, "Undo", undo_authoring)
@@ -137,13 +210,22 @@ func _build_ui() -> void:
 	body.add_theme_constant_override("separation", 16)
 	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	layout.add_child(body)
+	var sidebar := VBoxContainer.new()
+	sidebar.custom_minimum_size = Vector2(390, 450)
+	sidebar.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	body.add_child(sidebar)
+	page_picker = _options(sidebar, ["Generator", "Brushes / contextual sculpt", "Modules", "Fields & masks", "Aggregates", "Modifiers"])
 	var tabs := TabContainer.new()
-	tabs.custom_minimum_size = Vector2(370, 450)
+	tabs.tabs_visible = false
 	tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	body.add_child(tabs)
+	sidebar.add_child(tabs)
+	page_picker.item_selected.connect(func(index: int) -> void: tabs.current_tab = index)
 	_build_generator_tab(_tab(tabs, "Generator"))
 	_build_brush_tab(_tab(tabs, "Brushes"))
 	_build_module_tab(_tab(tabs, "Modules"))
+	_build_field_tab(_tab(tabs, "Fields"))
+	_build_aggregate_tab(_tab(tabs, "Aggregates"))
+	_build_modifier_tab(_tab(tabs, "Modifiers"))
 	var viewer := VBoxContainer.new()
 	viewer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	viewer.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -174,10 +256,21 @@ func _build_ui() -> void:
 	preview.pan_requested.connect(func(delta: Vector2) -> void: set_camera_origin(camera_origin + delta))
 	preview.zoom_requested.connect(zoom_view)
 	preview.point_inspected.connect(_inspect_point)
+	var inspection := HBoxContainer.new()
+	viewer.add_child(inspection)
+	_label(inspection, "Inspect", 14)
+	diagnostic_picker = _options(inspection, ["Materials"])
+	diagnostic_picker.set_item_metadata(0, "")
+	diagnostic_picker.item_selected.connect(func(index: int) -> void: select_diagnostic(str(diagnostic_picker.get_item_metadata(index))))
+	var opacity: SpinBox = _labelled_spin(inspection, "Mask opacity", 0, 1, 0.1, 1)
+	opacity.value_changed.connect(func(value: float) -> void: preview.diagnostic_opacity = value; preview.queue_redraw())
+	_label(inspection, "0 dark · 1 bright", 13)
 	grid.toggled.connect(func(enabled: bool) -> void: preview.grid_visible = enabled; preview.queue_redraw())
 	guides.toggled.connect(func(enabled: bool) -> void: preview.guides_visible = enabled; preview.queue_redraw())
 	pointer_label = _label(viewer, "Drag to author · right/middle drag to pan · wheel to zoom · Esc cancels a stroke", 14, Color(0.65, 0.77, 0.81))
+	pointer_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	marks_label = _label(viewer, "", 14)
+	marks_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	identity_label = _label(layout, "Waiting for native generator…", 14, Color(0.65, 0.85, 0.8))
 	status_label = _label(layout, "", 14)
 	status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -235,7 +328,7 @@ func _build_generator_tab(box: VBoxContainer) -> void:
 
 func _build_brush_tab(box: VBoxContainer) -> void:
 	_label(box, "BROAD GUIDANCE / EXACT MARKS", 14, Color(0.54, 0.85, 0.81))
-	tool_picker = _options(box, ["Theme stroke", "Parameter stroke", "Carved / material route", "Hard material rectangle", "Structured module", "Pan only"])
+	tool_picker = _options(box, ["Theme stroke", "Parameter stroke", "Carved / material route", "Hard material rectangle", "Structured module", "Pan only", "Contextual carve", "Contextual material", "Contextual aggregate", "Contextual parameter", "Contextual theme"])
 	tool_picker.item_selected.connect(func(index: int) -> void:
 		if preview != null:
 			preview.cancel_gesture()
@@ -271,9 +364,20 @@ func _build_brush_tab(box: VBoxContainer) -> void:
 	precedence.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_button(box, "Undo accepted edit", undo_authoring)
 	_button(box, "Clear all marks & modules", clear_authoring)
+	_label(box, "CONTEXTUAL SCULPT", 14, Color(0.73, 0.68, 1.0))
+	_note(box, "Contextual tools append a masked modifier. Context samples the fixed base terrain before fields, modules and modifiers; it never queries live simulation.")
+	brush_application = _field_reference(box, "Application field")
+	brush_exclusion = _field_reference(box, "Exclusion field")
+	brush_context = _options(box, ["any", "empty", "occupied", "solid", "fluid", "material"])
+	brush_context_material = _material_options(box)
+	_button(box, "Use last inspected material", _pick_context_material)
+	_note(box, "The picked ID is from the displayed result. The context filter still tests the original base terrain, so a painted result may differ from that context.")
+	brush_aggregate = _field_reference(box, "Aggregate for contextual paint")
 
 func _build_module_tab(box: VBoxContainer) -> void:
 	_label(box, "STRUCTURED FEATURES", 14, Color(0.73, 0.68, 1.0))
+	module_choice = _field_reference(box, "Accepted instance / new placement")
+	module_choice.item_selected.connect(func(_index: int) -> void: _load_module_instance())
 	module_picker = _options(box, ["arcology", "vault", "aqueduct"])
 	module_picker.item_selected.connect(func(_index: int) -> void: _refresh_module_editor())
 	module_help = _label(box, "", 14)
@@ -282,6 +386,11 @@ func _build_module_tab(box: VBoxContainer) -> void:
 	module_parameters.custom_minimum_size = Vector2(0, 190)
 	module_parameters.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
 	box.add_child(module_parameters)
+	module_application = _field_reference(box, "Application field")
+	module_exclusion = _field_reference(box, "Exclusion field")
+	module_strength = _labelled_spin(box, "Masked output strength", 0, 1, 0.05, 1)
+	_button(box, "Apply parameters & masks to selected instance", apply_module_instance)
+	_button(box, "Inspect selected module mask", func() -> void: select_diagnostic("module:" + _reference(module_choice)))
 	_button(box, "Draw module bounds", func() -> void:
 		tool_picker.select(4)
 		preview.tool_mode = 4
@@ -294,6 +403,356 @@ func _build_module_tab(box: VBoxContainer) -> void:
 	var limits: Label = _label(box, "One private native generation job. Up to 2,048 cells per frame, 24 queued chunks and 32 cached chunks. Evicted previews are regenerated deterministically. Simulation residency and modified-world persistence are separate systems.", 14)
 	limits.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_refresh_module_editor()
+
+func _build_field_tab(box: VBoxContainer) -> void:
+	_note(box, "Named native fields drive masks, sidechains, parameter mappings and material variation. Inputs reference other field IDs; cycles are rejected.")
+	field_choice = _field_reference(box, "Accepted field / new draft")
+	field_choice.item_selected.connect(func(_index: int) -> void: _load_field())
+	field_id = _text_input(box, "Field ID", "field-1")
+	field_kind = _options(box, ["constant"])
+	field_kind.item_selected.connect(func(_index: int) -> void: _refresh_field_parameters({}))
+	field_inputs = _text_input(box, "Input IDs, comma separated", "")
+	field_warp_x = _field_reference(box, "Warp X driver")
+	field_warp_y = _field_reference(box, "Warp Y driver")
+	field_context = _options(box, ["occupied", "solid", "fluid", "depth", "slope", "route"])
+	field_help = _note(box, "Field controls require the current native extension.")
+	field_parameter_box = VBoxContainer.new()
+	box.add_child(field_parameter_box)
+	_button(box, "Apply field", apply_field)
+	_button(box, "Duplicate as new field", func() -> void: field_choice.select(0); field_id.text = _entry_id("fields", "field"))
+	_button(box, "Delete selected field", func() -> void: delete_entry("fields", _reference(field_choice)))
+	_button(box, "Inspect accepted field", func() -> void: select_diagnostic("field:" + _reference(field_choice)))
+	_note(box, "SFC ranks describe finite tiles. Hilbert adjacency holds within a tile; tile borders and Morton ranks do not guarantee connected routes. Use the existing route tools for navigation guidance.")
+
+func _build_aggregate_tab(box: VBoxContainer) -> void:
+	_note(box, "An aggregate distributes existing materials in spatial grains. Weights describe preferences; physics and material rules remain unchanged.")
+	aggregate_choice = _field_reference(box, "Accepted aggregate / new draft")
+	aggregate_choice.item_selected.connect(func(_index: int) -> void: _load_aggregate())
+	aggregate_id = _text_input(box, "Aggregate ID", "aggregate-1")
+	aggregate_grain = _labelled_spin(box, "Grain size", 1, 4096, 1, 12)
+	aggregate_variation = _field_reference(box, "Variation field (optional)")
+	_note(box, "A variation field selects the component from its value. Grain size controls the spatial fallback only when no variation field is selected.")
+	_label(box, "MATERIAL / RELATIVE WEIGHT", 14, Color(0.54, 0.85, 0.81))
+	aggregate_rows = VBoxContainer.new()
+	box.add_child(aggregate_rows)
+	aggregate_components = [{"material":38,"weight":3.0}, {"material":39,"weight":1.0}]
+	_render_aggregate_rows()
+	_button(box, "Add component", func() -> void:
+		if aggregate_components.size() < 16:
+			aggregate_components.append({"material":38,"weight":1.0})
+			_render_aggregate_rows())
+	_button(box, "Apply aggregate", apply_aggregate)
+	_button(box, "Duplicate as new aggregate", func() -> void: aggregate_choice.select(0); aggregate_id.text = _entry_id("aggregates", "aggregate"))
+	_button(box, "Delete selected aggregate", func() -> void: delete_entry("aggregates", _reference(aggregate_choice)))
+	_note(box, "Select this aggregate in a modifier or Contextual aggregate brush to place it. Deleting an in-use recipe is refused until its references are changed.")
+
+func _build_modifier_tab(box: VBoxContainer) -> void:
+	_note(box, "A modifier combines a field mask, exclusion sidechain, spatial shape and fixed base-terrain context. Lower priority runs first; final hard material overrides remain authoritative.")
+	modifier_choice = _field_reference(box, "Accepted modifier / new draft")
+	modifier_choice.item_selected.connect(func(_index: int) -> void: _load_modifier())
+	modifier_id = _text_input(box, "Modifier ID", "modifier-1")
+	modifier_priority = _labelled_spin(box, "Priority", -1000, 1000, 1, 10)
+	modifier_strength = _labelled_spin(box, "Strength", 0, 1, 0.05, 1)
+	modifier_application = _field_reference(box, "Application field")
+	modifier_exclusion = _field_reference(box, "Exclusion sidechain field")
+	modifier_context = _options(box, ["any", "empty", "occupied", "solid", "fluid", "material"])
+	modifier_context_material = _material_options(box)
+	modifier_bounds = _text_input(box, "Bounds [x,y,width,height]; blank keeps stroke/world", "")
+	modifier_action = _options(box, ["Keep JSON actions", "Paint material", "Paint aggregate", "Set parameter", "Map field to parameter", "Blend theme"])
+	modifier_material = _material_options(box)
+	modifier_aggregate = _field_reference(box, "Aggregate")
+	var keys: Array[String] = []
+	for key: String in PARAMETER_SPECS:
+		if key != "district_size": keys.append(key)
+	modifier_parameter = _options(box, keys)
+	modifier_parameter.select(keys.find("cave_threshold"))
+	modifier_low = _labelled_spin(box, "Target / mapping low", 0, 1, 0.01, 0.6)
+	modifier_high = _labelled_spin(box, "Mapping high", 0, 1, 0.01, 0.9)
+	modifier_parameter.item_selected.connect(func(_index: int) -> void: _modifier_parameter_range())
+	modifier_mapping_field = _field_reference(box, "Mapping field")
+	modifier_theme = _options(box, THEME_IDS)
+	_label(box, "FULL MODIFIER DRAFT", 14)
+	modifier_json = TextEdit.new()
+	modifier_json.custom_minimum_size.y = 200
+	modifier_json.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
+	modifier_json.text = "{\"material\": 0}"
+	box.add_child(modifier_json)
+	_note(box, "Guided identity, masks, context and bounds are applied to this draft. Keep JSON actions preserves combined themes, parameters and mappings; selecting another action replaces those actions.")
+	_button(box, "Apply modifier", apply_modifier)
+	_button(box, "Duplicate as new modifier", func() -> void: modifier_choice.select(0); modifier_id.text = _entry_id("modifiers", "modifier"))
+	_button(box, "Delete selected modifier", func() -> void: delete_entry("modifiers", _reference(modifier_choice)))
+	_button(box, "Inspect effective mask", func() -> void: select_diagnostic("modifier:" + _reference(modifier_choice)))
+	_label(box, "MOVE / SCALE ACCEPTED MODIFIER", 14, Color(0.73, 0.68, 1.0))
+	modifier_translate_x = _labelled_spin(box, "Translate X", -1000000, 1000000, 1, 0)
+	modifier_translate_y = _labelled_spin(box, "Translate Y", -1000000, 1000000, 1, 0)
+	modifier_scale = _labelled_spin(box, "Uniform scale", 0.05, 20, 0.05, 1)
+	_button(box, "Transform selected modifier", func() -> void:
+		transform_modifier(_reference(modifier_choice), Vector2(modifier_translate_x.value, modifier_translate_y.value), modifier_scale.value))
+	_note(box, "Scale uses the bounds center or the stroke-point centroid and scales its radius. Transforms apply to the accepted modifier and can be undone; world-wide modifiers have no shape to transform.")
+
+func _field_parameter_values() -> Dictionary:
+	var result: Dictionary = {}
+	for key: String in field_parameter_inputs:
+		var input: Control = field_parameter_inputs[key]
+		result[key] = input.get_selected_id() if input is OptionButton else (input as SpinBox).value
+	return result
+
+func _refresh_field_parameters(values: Dictionary) -> void:
+	if field_parameter_box == null: return
+	for child: Node in field_parameter_box.get_children():
+		field_parameter_box.remove_child(child)
+		child.queue_free()
+	field_parameter_inputs.clear()
+	var kind: String = field_kind.get_item_text(field_kind.selected)
+	var spec: Dictionary = field_specs.get(kind, {})
+	for parameter: Dictionary in spec.get("parameters", []):
+		var key: String = str(parameter.name)
+		if kind == "material" and key == "material":
+			_label(field_parameter_box, "Material in fixed base terrain", 13)
+			var picker: OptionButton = _material_options(field_parameter_box)
+			picker.select(picker.get_item_index(int(values.get(key, parameter.default_value))))
+			field_parameter_inputs[key] = picker
+			continue
+		var input: SpinBox = _labelled_spin(field_parameter_box, key, float(parameter.minimum), float(parameter.maximum), 1.0 if parameter.integer else 0.01, float(values.get(key, parameter.default_value)))
+		field_parameter_inputs[key] = input
+	field_warp_x.disabled = not bool(spec.get("supports_warp", false))
+	field_warp_y.disabled = field_warp_x.disabled
+	field_context.disabled = not bool(spec.get("requires_context", false))
+	field_help.text = "%d input field(s) required. Output is normalized to 0..1; parameter defaults and limits come from the native catalogue." % int(spec.get("input_count", 0))
+	match kind:
+		"mix": field_help.text += " Input order: A, B, blend factor. Zero chooses A; one chooses B."
+		"remap", "smoothstep": field_help.text += " Input values at low/high become zero/one, with clipping outside that interval."
+		"band": field_help.text += " Select input values inside low..high; feather softens the inside edges."
+		"circle": field_help.text += " x/y is the center; feather softens the inside edge and must not exceed radius."
+		"box": field_help.text += " x/y is the minimum corner; feather must not exceed half the smaller dimension."
+		"context": field_help.text += " Remap fixed base-terrain context from low..high. Depth is signed cells; slope is absolute surface gradient; route is shared-network membership."
+		"cellular_gap": field_help.text += " Normalized second-minus-first feature distance; this is a gap proxy, not exact Voronoi edge distance."
+
+func _load_field() -> void:
+	var item: Dictionary = _entry("fields", _reference(field_choice))
+	field_id.text = str(item.get("id", _entry_id("fields", "field")))
+	_select_text(field_kind, str(item.get("kind", "constant")))
+	var parts := PackedStringArray()
+	for id: String in item.get("inputs", []): parts.append(id)
+	field_inputs.text = ", ".join(parts)
+	_select_reference(field_warp_x, str(item.get("warp_x", "")))
+	_select_reference(field_warp_y, str(item.get("warp_y", "")))
+	_select_text(field_context, str(item.get("context", "occupied")))
+	_refresh_field_parameters(item.get("parameters", {}))
+
+func apply_field() -> bool:
+	if field_specs.is_empty():
+		_set_error("Field authoring requires the current native extension.")
+		return false
+	var kind: String = field_kind.get_item_text(field_kind.selected)
+	var inputs: Array = []
+	for part: String in field_inputs.text.split(",", false): inputs.append(part.strip_edges())
+	var item: Dictionary = {"id":field_id.text.strip_edges(), "kind":kind, "inputs":inputs, "parameters":_field_parameter_values()}
+	if not field_warp_x.disabled:
+		if not _reference(field_warp_x).is_empty(): item.warp_x = _reference(field_warp_x)
+		if not _reference(field_warp_y).is_empty(): item.warp_y = _reference(field_warp_y)
+	if not field_context.disabled: item.context = field_context.get_item_text(field_context.selected)
+	if not upsert_entry("fields", item, _reference(field_choice)): return false
+	_select_reference(field_choice, str(item.id))
+	_load_field()
+	return true
+
+func _render_aggregate_rows() -> void:
+	for child: Node in aggregate_rows.get_children():
+		aggregate_rows.remove_child(child)
+		child.queue_free()
+	for index: int in range(aggregate_components.size()):
+		var row := HBoxContainer.new()
+		aggregate_rows.add_child(row)
+		var component: Dictionary = aggregate_components[index]
+		var material: OptionButton = _material_options(row)
+		material.select(material.get_item_index(int(component.material)))
+		material.item_selected.connect(func(_selected: int) -> void: component.material = material.get_selected_id())
+		var weight: SpinBox = _spin(row, 0, 1000000, 0.1, float(component.weight))
+		weight.value_changed.connect(func(value: float) -> void: component.weight = value)
+		_button(row, "×", func() -> void: aggregate_components.remove_at(index); _render_aggregate_rows())
+
+func _load_aggregate() -> void:
+	var item: Dictionary = _entry("aggregates", _reference(aggregate_choice))
+	aggregate_id.text = str(item.get("id", _entry_id("aggregates", "aggregate")))
+	aggregate_grain.value = float(item.get("grain_size", 12))
+	_select_reference(aggregate_variation, str(item.get("variation", "")))
+	aggregate_components.clear()
+	for component: Dictionary in item.get("components", [{"material":38,"weight":3.0},{"material":39,"weight":1.0}]):
+		aggregate_components.append(component.duplicate(true))
+	_render_aggregate_rows()
+
+func apply_aggregate() -> bool:
+	var item: Dictionary = {"id":aggregate_id.text.strip_edges(), "components":aggregate_components.duplicate(true), "grain_size":int(aggregate_grain.value)}
+	if not _reference(aggregate_variation).is_empty(): item.variation = _reference(aggregate_variation)
+	if not upsert_entry("aggregates", item, _reference(aggregate_choice)): return false
+	_select_reference(aggregate_choice, str(item.id))
+	_load_aggregate()
+	return true
+
+func _load_modifier() -> void:
+	var item: Dictionary = _entry("modifiers", _reference(modifier_choice))
+	modifier_id.text = str(item.get("id", _entry_id("modifiers", "modifier")))
+	modifier_priority.value = float(item.get("priority", 10))
+	modifier_strength.value = float(item.get("strength", 1))
+	_select_reference(modifier_application, str(item.get("application", "")))
+	_select_reference(modifier_exclusion, str(item.get("exclusion", "")))
+	_select_text(modifier_context, str(item.get("context", "any")))
+	modifier_context_material.select(modifier_context_material.get_item_index(int(item.get("context_material", 0))))
+	modifier_bounds.text = JSON.stringify(item.bounds) if item.has("bounds") else ""
+	modifier_action.select(0)
+	modifier_json.text = JSON.stringify(item if not item.is_empty() else {"material":0}, "  ", true)
+
+func _modifier_parameter_range() -> void:
+	var spec: Array = PARAMETER_SPECS[modifier_parameter.get_item_text(modifier_parameter.selected)]
+	for input: SpinBox in [modifier_low, modifier_high]:
+		input.min_value = float(spec[1])
+		input.max_value = float(spec[2])
+		input.step = float(spec[3])
+		input.value = float(spec[4])
+
+func apply_modifier() -> bool:
+	var parsed := JSON.new()
+	if parsed.parse(modifier_json.text) != OK or not parsed.data is Dictionary:
+		_set_error("Modifier draft must be a JSON object.")
+		return false
+	var item: Dictionary = parsed.data
+	item.id = modifier_id.text.strip_edges()
+	item.priority = int(modifier_priority.value)
+	item.strength = modifier_strength.value
+	_set_optional_reference(item, "application", modifier_application)
+	_set_optional_reference(item, "exclusion", modifier_exclusion)
+	item.context = modifier_context.get_item_text(modifier_context.selected)
+	if item.context == "material": item.context_material = modifier_context_material.get_selected_id()
+	else: item.erase("context_material")
+	if modifier_bounds.text.strip_edges().is_empty(): item.erase("bounds")
+	else:
+		var bounds_json := JSON.new()
+		if bounds_json.parse(modifier_bounds.text) != OK or not bounds_json.data is Array:
+			_set_error("Modifier bounds must be [x,y,width,height].")
+			return false
+		item.bounds = bounds_json.data
+		for key: String in ["points", "radius", "falloff"]: item.erase(key)
+	if modifier_action.selected != 0:
+		for key: String in ["material", "aggregate", "themes", "parameters", "mappings"]: item.erase(key)
+		var parameter: String = modifier_parameter.get_item_text(modifier_parameter.selected)
+		match modifier_action.selected:
+			1: item.material = modifier_material.get_selected_id()
+			2: item.aggregate = _reference(modifier_aggregate)
+			3: item.parameters = {parameter:modifier_low.value}
+			4: item.mappings = [{"parameter":parameter,"field":_reference(modifier_mapping_field),"low":modifier_low.value,"high":modifier_high.value}]
+			5: item.themes = {"weights":{modifier_theme.get_item_text(modifier_theme.selected):1.0}}
+	if not upsert_entry("modifiers", item, _reference(modifier_choice)): return false
+	_select_reference(modifier_choice, str(item.id))
+	_load_modifier()
+	return true
+
+func upsert_entry(section: String, item: Dictionary, previous_id: String = "") -> bool:
+	if active_revision < 0: return false
+	var recipe: Dictionary = active_recipe.duplicate(true)
+	var entries: Array = recipe.get(section, []).duplicate(true)
+	var replaced: bool = false
+	for index: int in range(entries.size()):
+		if str(entries[index].get("id", "")) == (previous_id if not previous_id.is_empty() else str(item.get("id", ""))):
+			entries[index] = item.duplicate(true)
+			replaced = true
+			break
+	if not replaced: entries.append(item.duplicate(true))
+	recipe[section] = entries
+	return apply_recipe(recipe)
+
+func transform_modifier(id: String, translation: Vector2, scale_factor: float) -> bool:
+	var item: Dictionary = _entry("modifiers", id)
+	if item.is_empty() or not translation.is_finite() or not is_finite(scale_factor) or scale_factor <= 0:
+		_set_error("Select an accepted modifier and a finite positive transform.")
+		return false
+	if item.has("bounds"):
+		var bounds: Array = item.bounds
+		var center_x: float = float(bounds[0]) + float(bounds[2]) * 0.5 + float(translation.x)
+		var center_y: float = float(bounds[1]) + float(bounds[3]) * 0.5 + float(translation.y)
+		var width: int = maxi(1, roundi(float(bounds[2]) * scale_factor))
+		var height: int = maxi(1, roundi(float(bounds[3]) * scale_factor))
+		item.bounds = [roundi(center_x - width * 0.5), roundi(center_y - height * 0.5), width, height]
+	elif not item.get("points", []).is_empty():
+		var center_x: float = 0
+		var center_y: float = 0
+		for point: Array in item.points:
+			center_x += float(point[0])
+			center_y += float(point[1])
+		center_x /= item.points.size()
+		center_y /= item.points.size()
+		var moved: Array = []
+		for point: Array in item.points:
+			var x: float = float(point[0])
+			var y: float = float(point[1])
+			# Identity scale must also preserve small coordinates in a stroke
+			# spanning very large distances; avoid cancellation through a centroid.
+			if scale_factor != 1:
+				x = center_x + (x - center_x) * scale_factor
+				y = center_y + (y - center_y) * scale_factor
+			moved.append([x + float(translation.x), y + float(translation.y)])
+		item.points = moved
+		item.radius = float(item.get("radius", 96)) * scale_factor
+	else:
+		_set_error("A world-wide modifier has no bounds or stroke to transform.")
+		return false
+	if not upsert_entry("modifiers", item, id): return false
+	_select_reference(modifier_choice, id)
+	_load_modifier()
+	modifier_translate_x.value = 0
+	modifier_translate_y.value = 0
+	modifier_scale.value = 1
+	return true
+
+func delete_entry(section: String, id: String) -> bool:
+	if id.is_empty() or active_revision < 0: return false
+	var recipe: Dictionary = active_recipe.duplicate(true)
+	var kept: Array = []
+	for item: Dictionary in recipe.get(section, []):
+		if str(item.get("id", "")) != id: kept.append(item.duplicate(true))
+	recipe[section] = kept
+	return apply_recipe(recipe)
+
+func _entry(section: String, id: String) -> Dictionary:
+	for item: Dictionary in active_recipe.get(section, []):
+		if str(item.get("id", "")) == id: return item.duplicate(true)
+	return {}
+
+func _entry_id(section: String, prefix: String) -> String:
+	var index: int = 1
+	while not _entry(section, "%s-%d" % [prefix,index]).is_empty(): index += 1
+	return "%s-%d" % [prefix,index]
+
+func _refresh_extension_lists() -> void:
+	var ids: Dictionary = {"fields":[], "aggregates":[], "modifiers":[]}
+	for section: String in ids:
+		for item: Dictionary in active_recipe.get(section, []): ids[section].append(str(item.id))
+	for picker: OptionButton in [field_choice, field_warp_x, field_warp_y, aggregate_variation, modifier_application, modifier_exclusion, modifier_mapping_field, brush_application, brush_exclusion, module_application, module_exclusion]:
+		_set_references(picker, ids.fields)
+	for picker: OptionButton in [aggregate_choice, modifier_aggregate, brush_aggregate]: _set_references(picker, ids.aggregates)
+	_set_references(modifier_choice, ids.modifiers)
+	var module_ids: Array = []
+	for item: Dictionary in active_recipe.get("modules", []): module_ids.append(str(item.id))
+	_set_references(module_choice, module_ids)
+	var channels: Array = []
+	for section: String in ["fields", "modifiers", "modules"]:
+		var prefix: String = {"fields":"field", "modifiers":"modifier", "modules":"module"}[section]
+		for item: Dictionary in active_recipe.get(section, []): channels.append(prefix+":"+str(item.id))
+	diagnostic_picker.clear()
+	diagnostic_picker.add_item("Materials")
+	diagnostic_picker.set_item_metadata(0, "")
+	for channel: String in channels:
+		diagnostic_picker.add_item(channel)
+		diagnostic_picker.set_item_metadata(diagnostic_picker.item_count-1, channel)
+	if not diagnostic_channel in channels: diagnostic_channel = ""
+	_select_reference(diagnostic_picker, diagnostic_channel)
+
+func _pick_context_material() -> void:
+	if _inspected_material < 0:
+		_set_error("Inspect a ready cell first, then use its material as the context filter.")
+		return
+	_select_text(brush_context, "material")
+	brush_context_material.select(brush_context_material.get_item_index(_inspected_material))
 
 func _build_profile_dialog() -> void:
 	profile_dialog = Window.new()
@@ -311,7 +770,7 @@ func _build_profile_dialog() -> void:
 		margin.add_theme_constant_override("margin_" + side, 12)
 	var box := VBoxContainer.new()
 	margin.add_child(box)
-	var note: Label = _label(box, "Complete recipe: hierarchy/blends, strokes, paths, exact overrides, modules and dependencies. Apply validates before replacing the accepted generation plan.", 14)
+	var note: Label = _label(box, "Complete recipe: hierarchy/blends, fields, aggregates, masked modifiers, strokes, paths, exact overrides and module dependencies. Apply validates before replacing the accepted generation plan.", 14)
 	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	profile_editor = TextEdit.new()
 	profile_editor.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -332,7 +791,7 @@ func _populate_catalogue(catalogue: Dictionary) -> void:
 	for item: Dictionary in catalogue.get("themes", []):
 		ids.append(str(item.id))
 	if not ids.is_empty():
-		for picker: OptionButton in [base_theme, blend_theme, brush_theme]:
+		for picker: OptionButton in [base_theme, blend_theme, brush_theme, modifier_theme]:
 			var prior: String = picker.get_item_text(picker.selected)
 			picker.clear()
 			for id: String in ids:
@@ -350,6 +809,17 @@ func _populate_catalogue(catalogue: Dictionary) -> void:
 			module_parameters.text = prior_parameters
 		else:
 			_refresh_module_editor()
+	if catalogue.has("field_kinds"):
+		var prior_kind: String = field_kind.get_item_text(field_kind.selected)
+		var values: Dictionary = _field_parameter_values()
+		field_specs.clear()
+		field_kind.clear()
+		for spec: Dictionary in catalogue.field_kinds:
+			field_specs[str(spec.id)] = spec.duplicate(true)
+			field_kind.add_item(str(spec.id))
+		_select_text(field_kind, prior_kind)
+		_refresh_field_parameters(values)
+	_refresh_extension_lists()
 
 func apply_recipe(recipe: Dictionary, record_undo: bool = true) -> bool:
 	if generator == null:
@@ -366,6 +836,7 @@ func apply_recipe(recipe: Dictionary, record_undo: bool = true) -> bool:
 	active_recipe = generator.get_configuration().duplicate(true)
 	active_revision = int(checked.revision)
 	active_fingerprint = str(checked.fingerprint)
+	_view_token += 1
 	_has_active_chunk = false
 	_job_completed = 0
 	_job_compute_us = 0
@@ -495,6 +966,22 @@ func add_gesture(points: PackedVector2Array) -> void:
 			if module.is_empty():
 				return
 			_append_mark(recipe, "modules", module)
+		6, 7, 8, 9, 10:
+			var modifier: Dictionary = {"id":id, "priority":priority, "points":packed_points, "radius":radius_input.value, "falloff":falloff_input.value, "strength":strength_input.value, "context":brush_context.get_item_text(brush_context.selected)}
+			_set_optional_reference(modifier, "application", brush_application)
+			_set_optional_reference(modifier, "exclusion", brush_exclusion)
+			if modifier.context == "material": modifier.context_material = brush_context_material.get_selected_id()
+			match tool_picker.selected:
+				6: modifier.material = 0
+				7: modifier.material = material_picker.get_selected_id()
+				8:
+					if _reference(brush_aggregate).is_empty():
+						_set_error("Select an accepted aggregate before painting it.")
+						return
+					modifier.aggregate = _reference(brush_aggregate)
+				9: modifier.parameters = {brush_parameter.get_item_text(brush_parameter.selected):brush_value.value}
+				10: modifier.themes = {"weights":{brush_theme.get_item_text(brush_theme.selected):1.0}}
+			_append_mark(recipe, "modifiers", modifier)
 	apply_recipe(recipe)
 
 func insert_example_module() -> void:
@@ -507,6 +994,36 @@ func insert_example_module() -> void:
 	_append_mark(recipe, "modules", module)
 	if apply_recipe(recipe):
 		set_camera_origin(Vector2(0, 96))
+
+func _load_module_instance() -> void:
+	var item: Dictionary = _entry("modules", _reference(module_choice))
+	if item.is_empty(): return
+	_select_text(module_picker, str(item.module))
+	_refresh_module_editor()
+	module_parameters.text = JSON.stringify(item.get("parameters", {}), "  ", true)
+	_select_reference(module_application, str(item.get("application", "")))
+	_select_reference(module_exclusion, str(item.get("exclusion", "")))
+	module_strength.value = float(item.get("strength", 1))
+
+func apply_module_instance() -> bool:
+	var id: String = _reference(module_choice)
+	var item: Dictionary = _entry("modules", id)
+	if item.is_empty():
+		_set_error("Select an accepted module instance to edit its parameters and masks.")
+		return false
+	var parsed := JSON.new()
+	if parsed.parse(module_parameters.text) != OK or not parsed.data is Dictionary:
+		_set_error("Module parameters must be a JSON object of numeric values.")
+		return false
+	item.module = module_picker.get_item_text(module_picker.selected)
+	item.parameters = parsed.data
+	_set_optional_reference(item, "application", module_application)
+	_set_optional_reference(item, "exclusion", module_exclusion)
+	item.strength = module_strength.value
+	if not upsert_entry("modules", item, id): return false
+	_select_reference(module_choice, id)
+	_load_module_instance()
+	return true
 
 func _module_instance(id: String, bounds: Array, priority: int) -> Dictionary:
 	var parsed := JSON.new()
@@ -523,7 +1040,11 @@ func _module_instance(id: String, bounds: Array, priority: int) -> Dictionary:
 		var cell_size: int = int(value)
 		bounds[2] = maxi(cell_size, ceili(float(bounds[2]) / cell_size) * cell_size)
 		bounds[3] = maxi(cell_size, ceili(float(bounds[3]) / cell_size) * cell_size)
-	return {"id": id, "module": module_id, "version": 1, "bounds": bounds, "parameters": parameters, "after": [], "priority": priority}
+	var instance: Dictionary = {"id": id, "module": module_id, "version": 1, "bounds": bounds, "parameters": parameters, "after": [], "priority": priority}
+	_set_optional_reference(instance, "application", module_application)
+	_set_optional_reference(instance, "exclusion", module_exclusion)
+	if module_strength.value != 1: instance.strength = module_strength.value
+	return instance
 
 static func _gesture_bounds(points: PackedVector2Array) -> Array:
 	var first: Vector2 = points[0].floor()
@@ -539,7 +1060,7 @@ static func _append_mark(recipe: Dictionary, field: String, mark: Dictionary) ->
 
 func _next_id(recipe: Dictionary) -> String:
 	var used: Dictionary = {}
-	for field: String in ["strokes", "paths", "overrides", "modules"]:
+	for field: String in ["strokes", "paths", "overrides", "modules", "modifiers"]:
 		for item: Dictionary in recipe.get(field, []):
 			used[str(item.get("id", ""))] = true
 	_authoring_serial += 1
@@ -558,7 +1079,7 @@ func clear_authoring() -> void:
 	if active_revision < 0:
 		return
 	var recipe: Dictionary = active_recipe.duplicate(true)
-	for field: String in ["strokes", "paths", "overrides", "modules"]:
+	for field: String in ["strokes", "paths", "overrides", "modules", "modifiers"]:
 		recipe[field] = []
 	apply_recipe(recipe)
 
@@ -620,6 +1141,32 @@ func _update_requests() -> void:
 func _process(_delta: float) -> void:
 	service_generation()
 
+func select_diagnostic(channel: String) -> bool:
+	var found: bool = false
+	for index: int in range(diagnostic_picker.item_count):
+		found = found or str(diagnostic_picker.get_item_metadata(index)) == channel
+	if not found:
+		_set_error("Select an accepted field, modifier or module before inspecting its mask.")
+		return false
+	if channel == diagnostic_channel: return true
+	diagnostic_channel = channel
+	_view_token += 1
+	_has_active_chunk = false
+	_job_completed = 0
+	_job_compute_us = 0
+	cache.clear()
+	_cache_order.clear()
+	_blocked_chunks.clear()
+	pending_chunks.clear()
+	last_packet.clear()
+	last_error = ""
+	_inspected_material = -1
+	_select_reference(diagnostic_picker, channel)
+	_sync_preview()
+	_update_requests()
+	_refresh_status()
+	return true
+
 func service_generation() -> void:
 	if generator == null or active_revision < 0:
 		return
@@ -627,7 +1174,8 @@ func service_generation() -> void:
 		if pending_chunks.is_empty():
 			return
 		_active_chunk = pending_chunks.pop_front()
-		var started: Dictionary = generator.begin_chunk(_active_chunk)
+		_active_view_token = _view_token
+		var started: Dictionary = generator.begin_chunk(_active_chunk, diagnostic_channel)
 		if not bool(started.get("ok", false)):
 			_blocked_chunks[_active_chunk] = true
 			_set_error(str(started.get("error", "Chunk request rejected.")))
@@ -647,17 +1195,23 @@ func service_generation() -> void:
 	elif state == "ready":
 		_has_active_chunk = false
 		packet["compute_usec"] = _job_compute_us
-		if not accept_chunk(packet, _active_chunk):
+		if not accept_chunk(packet, _active_chunk, _active_view_token):
 			_blocked_chunks[_active_chunk] = true
 		_update_requests()
 	_refresh_status()
 
-func accept_chunk(packet: Dictionary, expected_coordinate: Variant = null) -> bool:
+func accept_chunk(packet: Dictionary, expected_coordinate: Variant = null, expected_view_token: int = -1) -> bool:
 	if not bool(packet.get("ok", false)) or str(packet.get("state", "ready")) != "ready":
 		_set_error("Only completed native chunks can enter the preview.")
 		return false
 	if int(packet.get("revision", -1)) != active_revision or str(packet.get("fingerprint", "")) != active_fingerprint:
 		_set_error("Discarded a chunk from an older generation profile.")
+		return false
+	if expected_view_token >= 0 and expected_view_token != _view_token:
+		_set_error("Discarded a chunk from an older inspection request.")
+		return false
+	if str(packet.get("diagnostic", "")) != diagnostic_channel:
+		_set_error("Native diagnostic channel does not match the current inspection.")
 		return false
 	for key: String in ["chunk_x", "chunk_y"]:
 		if not packet.has(key) or not packet[key] is int or int(packet[key]) < -2147483648 or int(packet[key]) > 2147483647:
@@ -675,6 +1229,22 @@ func accept_chunk(packet: Dictionary, expected_coordinate: Variant = null) -> bo
 	if cells.size() != chunk_size * chunk_size:
 		_set_error("Native chunk byte count does not match its dimensions.")
 		return false
+	var diagnostics := PackedFloat32Array()
+	if not diagnostic_channel.is_empty():
+		if not packet.get("diagnostics") is PackedFloat32Array:
+			_set_error("Native diagnostic values are missing.")
+			return false
+		diagnostics = packet.diagnostics
+		if diagnostics.size() != cells.size():
+			_set_error("Native diagnostic shape does not match its material chunk.")
+			return false
+		for value: float in diagnostics:
+			if not is_finite(value) or value < 0 or value > 1:
+				_set_error("Native diagnostic contains a non-normalized value.")
+				return false
+	elif packet.has("diagnostics") and (not packet.diagnostics is PackedFloat32Array or not packet.diagnostics.is_empty()):
+		_set_error("Unrequested native diagnostic values cannot enter the material preview.")
+		return false
 	var rgba := PackedByteArray()
 	rgba.resize(cells.size() * 4)
 	for index: int in range(cells.size()):
@@ -689,6 +1259,14 @@ func accept_chunk(packet: Dictionary, expected_coordinate: Variant = null) -> bo
 		rgba[index * 4 + 3] = 255
 	var copied: Dictionary = packet.duplicate(true)
 	copied["texture"] = ImageTexture.create_from_image(Image.create_from_data(chunk_size, chunk_size, false, Image.FORMAT_RGBA8, rgba))
+	if not diagnostics.is_empty():
+		var pixels := PackedByteArray()
+		pixels.resize(cells.size() * 4)
+		for index: int in range(diagnostics.size()):
+			var level: int = roundi(diagnostics[index] * 255.0)
+			for component: int in range(3): pixels[index * 4 + component] = level
+			pixels[index * 4 + 3] = 255
+		copied["diagnostic_texture"] = ImageTexture.create_from_image(Image.create_from_data(chunk_size, chunk_size, false, Image.FORMAT_RGBA8, pixels))
 	cache[coordinate] = copied
 	_cache_order.erase(coordinate)
 	_cache_order.append(coordinate)
@@ -707,6 +1285,7 @@ func _sync_preview() -> void:
 	preview.chunk_size = int(active_recipe.get("chunk_size", 128))
 	preview.chunks = cache
 	preview.recipe = active_recipe
+	preview.diagnostic_channel = diagnostic_channel
 	_refresh_brush_preview()
 	preview.queue_redraw()
 
@@ -741,10 +1320,14 @@ func _inspect_point(point: Vector2) -> void:
 	var chunk_size: int = int(active_recipe.get("chunk_size", 128))
 	var coordinate := Vector2i(floori(float(x) / chunk_size), floori(float(y) / chunk_size))
 	var text: String = "Cell %d, %d · chunk %d, %d" % [x, y, coordinate.x, coordinate.y]
+	_inspected_material = -1
 	if cache.has(coordinate):
 		var index: int = (y - coordinate.y * chunk_size) * chunk_size + x - coordinate.x * chunk_size
 		var id: int = int(cache[coordinate].cells[index])
 		text += " · %d / %s" % [id, _material_label(id)]
+		_inspected_material = id
+		if not diagnostic_channel.is_empty() and cache[coordinate].has("diagnostics"):
+			text += " · %s = %.5f" % [diagnostic_channel, float(cache[coordinate].diagnostics[index])]
 	pointer_label.text = text
 
 func _refresh_status() -> void:
@@ -752,6 +1335,7 @@ func _refresh_status() -> void:
 		return
 	identity_label.text = "%s · seed %s · revision %d · %s" % [str(active_recipe.get("candidate", "strata")), str(active_recipe.get("seed", 1)), active_revision, active_fingerprint]
 	marks_label.text = "%d theme/parameter strokes · %d routes · %d hard overrides · %d modules" % [active_recipe.get("strokes", []).size(), active_recipe.get("paths", []).size(), active_recipe.get("overrides", []).size(), active_recipe.get("modules", []).size()]
+	marks_label.text += " · %d fields · %d aggregates · %d modifiers" % [active_recipe.get("fields", []).size(), active_recipe.get("aggregates", []).size(), active_recipe.get("modifiers", []).size()]
 	if not last_error.is_empty():
 		status_label.text = last_error
 		return
@@ -795,12 +1379,16 @@ func apply_json() -> void:
 		return
 	apply_recipe(parsed.data)
 
-func _choose_load_profile() -> void:
+func _choose_load_profile(examples: bool = false) -> void:
 	var dialog := FileDialog.new()
 	dialog.title = "Load generation profile"
 	dialog.access = FileDialog.ACCESS_FILESYSTEM
 	dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	dialog.filters = PackedStringArray(["*.json ; Generation profile"])
+	if examples:
+		var directory: String = ProjectSettings.globalize_path("res://../examples/worldgen")
+		if DirAccess.dir_exists_absolute(directory): dialog.current_dir = directory
+		profile_status.text = "Choose hilbert-seams.json, weathered-aggregate.json or sidechained-arcology.json from examples/worldgen, then Apply JSON."
 	profile_dialog.add_child(dialog)
 	dialog.file_selected.connect(func(path: String) -> void: load_profile(path); dialog.queue_free())
 	dialog.canceled.connect(dialog.queue_free)
@@ -851,8 +1439,57 @@ func save_profile(path: String) -> bool:
 	return true
 
 static func _material_label(id: int) -> String:
-	var common: Dictionary = {0: "empty / carve", 1: "wall", 2: "sand", 3: "water", 7: "wood", 8: "lava", 11: "plant", 13: "stone", 28: "metal", 31: "concrete", 35: "glass", 38: "limestone", 39: "sandstone", 40: "granite", 41: "cobblestone", 42: "mossy stone", 43: "brick", 53: "copper", 56: "packed earth", 57: "industrial brick", 58: "reinforced concrete", 62: "steel plate", 63: "painted steel", 73: "rubber", 74: "cable bundle"}
-	return str(common.get(id, "material " + str(id)))
+	return MATERIAL_LABELS[id] if id >= 0 and id < MATERIAL_LABELS.size() else "invalid material " + str(id)
+
+func _note(parent: Node, text: String) -> Label:
+	var result: Label = _label(parent, text, 13)
+	result.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	return result
+
+func _text_input(parent: Node, label: String, initial: String) -> LineEdit:
+	_label(parent, label, 13)
+	var input := LineEdit.new()
+	input.text = initial
+	parent.add_child(input)
+	return input
+
+func _material_options(parent: Node) -> OptionButton:
+	var picker: OptionButton = _options(parent, [])
+	for id: int in range(Palette.MATERIAL_COUNT):
+		if id != 10: picker.add_item("%02d / %s" % [id, _material_label(id)], id)
+	return picker
+
+func _field_reference(parent: Node, label: String) -> OptionButton:
+	_label(parent, label, 13)
+	var picker: OptionButton = _options(parent, ["— none / new —"])
+	picker.set_item_metadata(0, "")
+	return picker
+
+static func _reference(picker: OptionButton) -> String:
+	if picker == null or picker.selected < 0: return ""
+	return str(picker.get_item_metadata(picker.selected))
+
+static func _select_reference(picker: OptionButton, value: String) -> void:
+	for index: int in range(picker.item_count):
+		if str(picker.get_item_metadata(index)) == value:
+			picker.select(index)
+			return
+	picker.select(0)
+
+static func _set_optional_reference(item: Dictionary, key: String, picker: OptionButton) -> void:
+	var value: String = _reference(picker)
+	if value.is_empty(): item.erase(key)
+	else: item[key] = value
+
+static func _set_references(picker: OptionButton, ids: Array) -> void:
+	var prior: String = _reference(picker)
+	picker.clear()
+	picker.add_item("— none / new —")
+	picker.set_item_metadata(0, "")
+	for id: String in ids:
+		picker.add_item(id)
+		picker.set_item_metadata(picker.item_count-1, id)
+	_select_reference(picker, prior)
 
 func _label(parent: Node, text: String, font_size: int = 14, tint: Color = Color(0.81, 0.87, 0.9)) -> Label:
 	var label := Label.new()
