@@ -1102,14 +1102,38 @@
     "branch": "scene/neon-reliquary-demo",
     "authorization": "Owner explicitly requested the three lower tiles and then push all four to the new branch.",
     "historical_status_record": "2026-10-18-neon-reliquary-evidence.json",
-    "github_ci": "Pending publication of the integrated feature head and ready-for-review transition; see PR167 for exact-head status.",
+    "github_ci": "Exact-head status is recorded in PR167. The 163fac0 ready-for-review observation below records documentation success and skipped runtime jobs; this documentation-only follow-up requests ordinary synchronize validation.",
     "merged": false,
     "implementation_commit": "b950e62af685509ce91f940156a50e44a3a9c950",
     "file_tree_matches_reviewed_checkpoint": true,
     "method": "Connected GitHub object API after command-line Git lacked authentication; exact blob/tree identities checked and remote branch fetched.",
     "url": "https://github.com/techrote/cybersand/tree/scene/neon-reliquary-demo",
     "pr_number": 167,
-    "pr_url": "https://github.com/techrote/cybersand/pull/167"
+    "pr_url": "https://github.com/techrote/cybersand/pull/167",
+    "integrated_source_commit": "163fac04704a580d7339b1641f291e339075da11",
+    "integrated_source_tree": "a0c3191c34cb6b8578569c27bf90146fa143e9bd",
+    "pr_state": "open, ready for review, mergeable without conflicts",
+    "ready_for_review_observation": {
+      "commit": "163fac04704a580d7339b1641f291e339075da11",
+      "documentation": {
+        "run_id": 39111796032,
+        "job_id": 117629311027,
+        "status": "passed",
+        "url": "https://github.com/techrote/cybersand/actions/runs/39111796032"
+      },
+      "native": {
+        "run_id": 39111796041,
+        "scope_job": "passed",
+        "runtime_job": "skipped"
+      },
+      "gdextension": {
+        "run_id": 39111796057,
+        "scope_job": "passed",
+        "build_and_regression_jobs": "skipped"
+      },
+      "diagnosis": "Both inherited ready_scope writers append a literal backslash-n to GITHUB_OUTPUT, so their required output does not equal the exact true string expected by downstream conditions. The runtime jobs were inspected individually; successful workflow wrappers are not treated as runtime passes.",
+      "follow_up": "This publication-record commit is pushed after the PR became ready, allowing the existing synchronize event to start applicable runtime jobs. No CI workflow, gate, provider, runner, or test is modified. Source-sensitive runtime acceptance remains pending until those exact-head jobs complete."
+    }
   },
   "post_publication_integration": {
     "recorded_date": "2026-10-18",

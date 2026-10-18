@@ -252,3 +252,24 @@ at ranks 2/1/1. The appended integration manifest records the commands, source
 hashes, final and diagnosed results, and rendered review. Exact published-head
 GitHub integration checks remain attached to PR167 and are required before a
 later merge into main.
+
+
+### Published integration review
+
+The combined integration was published at
+**`163fac04704a580d7339b1641f291e339075da11`**, tree
+**`a0c3191c34cb6b8578569c27bf90146fa143e9bd`**. A fresh fetch verified the exact
+local index/tree and both merge parents; the local branch then matched the
+remote with a clean working tree. PR167 is open, ready for review and free of
+merge conflicts. Its Documentation/provenance run **39111796032** passed.
+
+The ready-for-review Native and GDExtension workflow wrappers reported success,
+but inspecting their individual jobs showed that only the scope classifiers ran;
+the runtime jobs were skipped. Both inherited scope writers append a literal
+backslash-n to `GITHUB_OUTPUT`, so the resulting value does not match the exact
+`true` required by their downstream conditions. These wrapper successes are not
+recorded as native or Godot execution passes. This documentation-only publication
+follow-up is pushed while the PR is ready, requesting the existing ordinary
+`synchronize` validation path. It changes no scene source, test, runtime, workflow
+or gate. Applicable exact-head execution remains pending in PR167 until the
+actual jobs complete.
