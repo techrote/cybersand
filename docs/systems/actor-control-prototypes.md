@@ -281,6 +281,7 @@ existing representation identities. Prototype observations do not extend CYSD1
 into exact replay or turn a gameplay recording into a complete training dataset.
 
 Use the [build and validation guide](../operations/local-build-and-validation.md#actor-control-prototype-checks)
-for focused checks, and the [validation ledger](../reference/validation-evidence.md)
-for actual dated execution outcomes. Passing a headless movement fixture is
+for focused checks, and the [ACT-001 dated audit](../audits/2026-10-18-act001-actor-control-prototypes.md)
+and [validation ledger](../reference/validation-evidence.md) for actual execution
+outcomes. Passing a headless movement fixture is
 separate from visual/feel acceptance or a measured NPC scaling result.

@@ -219,8 +219,9 @@ Use actual platform artifacts and retain their identities for platform acceptanc
 
 ## Actor control prototype checks
 
-`test_actor_prototypes.gd` and `test_actor_prototype_session.gd` are discovered by
-the existing Godot regression runner. The core runner covers the shared
+`test_actor_prototypes.gd`, `test_actor_prototype_session.gd` and
+`test_actor_prototype_integration.gd` are discovered by the existing Godot
+regression runner. The core runner covers the shared
 action/observation contract, Runner jump/dash timing, Skimmer
 thrust/energy/braking, Crawler supported clamber/brace, runtime burial, bounded
 query work and native hard-surface collision/material conservation. The tests
@@ -228,12 +229,16 @@ also print informational controller timings; those are not target-PC performance
 acceptance or a neural-network inference benchmark. The session runner covers
 capacity, producer/epoch/sequence/lease admission, edge coalescing, cancellation,
 independent actor instances and copied observations.
+The integration runner exercises real owner reset/refusal receipts, desktop
+model/scenario selection, input release/rearm, overlay geometry and recorder
+actor/material-generation identities.
 
 After importing the project with the pinned Godot runtime, a focused run is:
 
 ```sh
 timeout 180 <godot> --headless --path godot --script res://tests/test_actor_prototypes.gd
 timeout 180 <godot> --headless --path godot --script res://tests/test_actor_prototype_session.gd
+timeout 180 <godot> --headless --path godot --script res://tests/test_actor_prototype_integration.gd
 ```
 
 Run the existing PENV, PCHAR, PLAY-VAL, controller and immutable publication tests
