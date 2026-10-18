@@ -85,14 +85,22 @@ func _run() -> void:
 	session.step(1.0/60.0,world,_context(7,3,false))
 	_expect(session.snapshot().projectiles.size() == 1, "resume cleared committed projectile")
 
-	# A held tool expires to neutral without unequipping.
+	# A held tool expires to neutral without unequipping. Equipment cooldown is
+	# actor-wide, so cancellation/epoch changes do not manufacture a fresh tool.
 	var sand: int = Catalog.index_for(&"sand_scatter")
 	_expect(_submit(1,7,sand,false,false,6,3), "post-resume equipment change refused")
-	session.step(1.0/60.0,world,_context(8,3,false))
-	_expect(_submit(2,8,sand,true,false,1,3), "short tool lease refused")
-	session.step(1.0/60.0,world,_context(9,3,false))
+	var tool_tick: int = 8
+	session.step(1.0/60.0,world,_context(tool_tick,3,false))
+	while float(session.snapshot().actors[0].cooldown) > 0.0 and tool_tick < 32:
+		tool_tick += 1
+		session.step(1.0/60.0,world,_context(tool_tick,3,false))
+	_expect(float(session.snapshot().actors[0].cooldown) <= 0.0, "shared equipment cooldown did not expire")
+	_expect(_submit(2,tool_tick,sand,true,false,1,3), "short tool lease refused")
+	tool_tick += 1
+	session.step(1.0/60.0,world,_context(tool_tick,3,false))
 	var writes_live: int = int(session.snapshot().write_count_last)
-	session.step(1.0/60.0,world,_context(10,3,false))
+	tool_tick += 1
+	session.step(1.0/60.0,world,_context(tool_tick,3,false))
 	_expect(writes_live > 0, "live Sand Scatter lease produced no work")
 	_expect(int(session.snapshot().write_count_last) == 0, "expired tool lease continued applying")
 	_expect(int(session.snapshot().equipped[0]) == sand, "lease expiry unequipped the tool")
