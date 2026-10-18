@@ -112,27 +112,40 @@ are present.
 
 The initial ASan/UBSan binary run with `detect_leaks=1` ends with LeakSanitizer's
 unsupported-ptrace fatal error in this environment. It is not recorded as a
-sanitizer pass. The normal CI-compatible `detect_leaks=0` run, fresh Godot execution
-and exact retained-runtime publication are pending at this draft checkpoint.
-The initial reproduced failures above remain part of the record. Independent
-read-only review found no blocking issue in deadline ownership, probability/phase
-preservation, source-epoch admission or the center-mask repair.
+sanitizer pass. The normal CI-compatible `detect_leaks=0` ASan/UBSan run passes
+locally. The initial reproduced failures above remain part of the record.
+Independent read-only review found no blocking issue in deadline ownership,
+probability/phase preservation, source-epoch admission or the center-mask repair.
 
-Both candidate libraries were built from unchanged recorded source inputs using
-the existing pinned scripts: godot-cpp `101ae38034304346a46ea9ea84ae156d3e860496`,
-SCons 4.10.1, Linux GCC 13.3.0/binutils 2.42 and Windows LLVM-MinGW 20260826 UCRT
-Clang 23.1.0. The local Linux SO is 1,630,848 bytes, SHA-256
-`a874138f656a273a50490217a798b420c1ffb50822fbbcc0220b7743edf5187a`;
-the Windows DLL is 2,099,712 bytes, SHA-256
-`b1d85f38cadd0ce8d364c205f4e4ac00415c080f7dad3bdccb20b4a1a6fcd208`.
-Linux ABI-floor inspection passes with extension GLIBC 2.32 and bundle GLIBC 2.34;
-Windows PE/export/import inspection passes. These are candidate build identities,
-not a claim that the retained repository binaries have already been replaced.
+The guarded GitHub-hosted publication run
+`39096686972` rebuilt both runtimes from frozen implementation commit
+`aae015058f907e15b0781ff7fbd3ebd55e4d990e` and matching source tree
+`85521fb73a9eb587f843bc64c120503ac2118f36`, using godot-cpp
+`101ae38034304346a46ea9ea84ae156d3e860496`, SCons 4.10.1,
+Linux GCC 13.3.0/binutils 2.42 and Windows LLVM-MinGW 20260826 UCRT Clang 23.1.0.
+The exact rebuilt Linux GDExtension passed the full 70-test native suite, Godot
+import, native render-bridge, native edge/contact and MicroScenario native
+observation checks before publication. The publication commit is
+`cf3ec221d006d42e35bb52a5511536da9a0a3e7c`.
 
-Required integration gates are source-matched retained Linux/Windows libraries,
-Documentation/provenance, Native, GDExtension/Godot and the applicable issue49
-Water apparatus v2 campaign. A Windows cross-build is not Windows execution;
-headless correctness is not owner graphical-feel acceptance.
+The retained Linux SO is 1,630,856 bytes, SHA-256
+`43e747137249041d56a522dbe0ec35219082ea555e1ec1cbdd40971c6a58db9c`;
+the retained Windows DLL is 2,099,712 bytes, SHA-256
+`61e4ad3a0288c1479098a78c36f64efda6764beacbece917532751f4eb39ffe7`.
+Linux ABI-floor and materialized repository/LFS validation pass. Windows PE
+cross-build inspection passes, but Windows execution was not performed.
+
+After publication, marking PR #159 ready for review triggered the normal
+ready-scope classifiers, but the expensive Native and GDExtension jobs were
+skipped on that specific event despite native source in the pull request. This
+documentation synchronization therefore deliberately triggers the ordinary
+`synchronize` path for the final exact-head Native/GDExtension checks rather than
+treating those skips as acceptance.
+
+Remaining integration gates are final exact-head Documentation/provenance, Native,
+GDExtension/Godot and the applicable issue49 Water apparatus v2 campaign. A
+Windows cross-build is not Windows execution; headless correctness is not owner
+graphical-feel acceptance.
 
 ## Documentation and compatibility map
 
