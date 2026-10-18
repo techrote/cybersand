@@ -46,6 +46,12 @@ var character_grounded: bool = false
 # the sampled character and the 1-based coupling ID for a Rapier player body.
 var player_representation: String = "sampled-baseline"
 var player_body_id: int = 0
+# ACT-001 current actor sample, independently timestamped from material bytes.
+# Value-only, immutable after publication; no motor or World references.
+var actor_prototypes: Dictionary = {}
+var actor_prototype_status: String = ""
+var actor_prototype_reset_serial: int = 0
+var actor_prototype_reset_applied: bool = false
 # Exact copied body input sample consumed by this worker publication.
 var current_rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 var character_runtime_recovery_enabled: bool = true

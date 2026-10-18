@@ -315,3 +315,52 @@ gravity or mass. The desktop editor accepts bounded custom values and applies
 them only through a fresh reset. See the
 [player/environment contract](../systems/player-environment-profiles-and-traversal.md)
 for field bounds, material-response ownership and traversal semantics.
+
+## Actor control prototype values
+
+**Current, experimental:** [`actor_prototype.gd`](../../godot/scripts/actor_prototype.gd)
+owns fixed version-1 Runner, Skimmer and Crawler tuning. These values do not
+inherit live PENV player/environment edits. Positions and dimensions use cells
+(the current gameplay pixels), speeds use cells/second and timing uses seconds;
+energy is a normalized gameplay resource. None is an SI calibration.
+
+| Shared limit | Value and meaning |
+|---|---|
+| Sampled body | 8 by 14 cells, shared by all three models |
+| Accepted update duration | At most 1/30 second; longer updates are bounded rather than running an unlimited catch-up loop |
+| Velocity magnitude | At most 120 cells/second |
+| Downward gravity | 140 cells/second squared for ground models and unpowered Skimmer motion |
+| Ordinary movement sweep | At most four one-cell increments per axis per accepted update |
+| Traversal search | At most one ledge search per update, with a maximum four-cell rise and clearance along the intervening path |
+| Occupancy-query budget | At most 32 adapter occupancy queries per actor update; quota refusal blocks further movement |
+| Observation | 16 floats; schema/order belongs to the [actor contract](../systems/actor-control-prototypes.md#how-can-a-neural-policy-control-the-same-actor) |
+| Material landing response | Existing REM-003 C1 hook at effective mass 1.0 and sensitivity 1.0 |
+| Runtime enclosure recovery | Disabled for these prototypes; bounded explicit spawn repair remains separate |
+| Session admission | At most eight actor slots |
+| Human command lease | Six ticks (100 ms at 60 Hz), renewed from the latest published observation |
+| Policy command lease | Default 12 ticks, maximum 18 ticks, based on observation tick; at 60 Hz this is 200/300 ms of simulation time |
+| Pending input | One latest held state plus coalesced rising edges per actor, with epoch/producer/sequence validation |
+| Scripted demonstration cadence | One bounded action decision every six actor ticks (10 Hz at the 60 Hz simulation rate) |
+
+| Model | Version-1 movement/action settings |
+|---|---|
+| Runner | Walk 60; jump speed 78; jump-release rise-speed cutoff 32; coyote time 0.10 s; input buffer 0.12 s; dash speed 120 for 0.10 s with 0.65 s cooldown |
+| Skimmer | Cruise 54; boost 90; normalized two-axis input; energy drain 0.10/s in powered flight plus 0.65/s while boosting; ground recharge 0.45/s; braking recharge 0.20/s; exhausted flight resumes after energy reaches 0.15 |
+| Crawler | Walk 32; hop speed 48; supported clamber up to four cells; secondary action braces |
+
+| Model | Acceleration and deceleration in cells/second squared |
+|---|---|
+| Runner | Ground acceleration 900; air acceleration 360; neutral ground deceleration 1100; neutral air deceleration 180 |
+| Skimmer | Powered steering and horizontal exhaustion drag 360; explicit vector airbrake 720, followed by gravity |
+| Crawler | Movement acceleration 720; neutral horizontal deceleration 1200; brace immediately clears horizontal velocity |
+
+The Crawler's admitted clamber may add up to four cells of vertical relocation
+beside the ordinary movement sweep; the four-cell sweep limit alone is not a
+total vertical-displacement claim. Skimmer energy recharges while resting on
+ground, braking or exhausted. Neutral airborne input uses powered hover until
+energy is exhausted. Lease durations are simulation-time limits, not a guarantee
+of wall-clock response when the world or host is overloaded.
+
+These finite limits describe controller work, not accepted many-NPC throughput or
+zero-allocation execution. Read the [actor contract](../systems/actor-control-prototypes.md)
+for input lifetime, ownership, capabilities and remaining platform/acceptance gaps.

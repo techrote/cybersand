@@ -151,6 +151,9 @@ same source/runtime/Godot identity. That serial lane is now opt-in only via
 `GDEXT_SERIAL_EQUIVALENCE=1`; ordinary PRs use the sharded gate. The active workflow
 uses literal GitHub-hosted runner labels and pinned build inputs; source/runtime
 identity and the required exact-head gates are independent of shard scheduling.
+Current build jobs set `SCONS_JOBS=2` directly; the
+[repository provider policy](github-development-and-release.md) owns the runner
+and provider-routing boundary.
 
 ## Procedural generation candidates and workbench
 
@@ -177,9 +180,10 @@ godot --path godot res://worldgen_workbench.tscn
 godot --headless --path godot --script res://tests/test_worldgen_workbench.gd
 ```
 
-The ordinary main scene is unchanged. The workbench previews bounded native
-chunk generation, with theme/parameter strokes, guide paths, hard rectangles,
-module instances and complete JSON profiles. It does not tick the simulation.
+The generation workbench is separate from the ordinary sandbox and its optional
+[actor prototypes](../systems/actor-control-prototypes.md). It previews bounded
+native chunk generation, with theme/parameter strokes, guide paths, hard rectangles,
+module instances and complete JSON profiles, without ticking the simulation.
 Load the examples under `examples/worldgen/`; use the
 [generation contract](../systems/procedural-world-generation.md) for exact ranges,
 module registration, receipt ownership and the separate fresh-chunk installer.
@@ -251,6 +255,42 @@ The [MicroScenario runbook](microscenarios.md#headless-runs-from-the-same-defini
 describes the bounded native-only JSON runner. Its result is not a Windows or
 browser run merely because it exercises the synchronous controller on Linux.
 Use actual platform artifacts and retain their identities for platform acceptance.
+
+## Actor control prototype checks
+
+`test_actor_prototypes.gd`, `test_actor_prototype_session.gd` and
+`test_actor_prototype_integration.gd` are discovered by the existing Godot
+regression runner. The core runner covers the shared
+action/observation contract, Runner jump/dash timing, Skimmer
+thrust/energy/braking, Crawler supported clamber/brace, runtime burial, bounded
+query work and native hard-surface collision/material conservation. The tests
+also print informational controller timings; those are not target-PC performance
+acceptance or a neural-network inference benchmark. The session runner covers
+capacity, producer/epoch/sequence/lease admission, edge coalescing, cancellation,
+independent actor instances and copied observations.
+The integration runner exercises real owner reset/refusal receipts, desktop
+model/scenario selection, input release/rearm, overlay geometry and recorder
+actor/material-generation identities.
+
+After importing the project with the pinned Godot runtime, a focused run is:
+
+```sh
+timeout 180 <godot> --headless --path godot --script res://tests/test_actor_prototypes.gd
+timeout 180 <godot> --headless --path godot --script res://tests/test_actor_prototype_session.gd
+timeout 180 <godot> --headless --path godot --script res://tests/test_actor_prototype_integration.gd
+```
+
+Run the existing PENV, PCHAR, PLAY-VAL, controller and immutable publication tests
+alongside the prototype tests when changing desktop integration or fixture
+lifecycle. The unchanged full suite remains available through
+`tools/ci/run_godot_regressions.py`; new `test_*.gd` files are discovered by all
+appropriate deterministic CI shards without a hand-maintained case list.
+
+The [actor contract](../systems/actor-control-prototypes.md) distinguishes a
+controller fixture from desktop controls, visual/feel review, a learned policy
+or Web integration. Use the [validation ledger](../reference/validation-evidence.md)
+for the actually executed source/runtime/platform scope. These commands are
+reproduction instructions and do not themselves claim a pass.
 
 ## Soliding successor validation
 

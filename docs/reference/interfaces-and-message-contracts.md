@@ -95,11 +95,29 @@ this worker protocol. Source: [simulation_worker.gd](../../godot/scripts/simulat
 Ownership and timing are defined by [lifetimes](../architecture/data-ownership-and-lifetimes.md)
 and [step order](../architecture/simulation-tick-and-threading.md).
 
+### Optional actor prototype control surface
+
+**Current, experimental desktop:** `queue_actor_prototype_reset`,
+`submit_actor_action` and `cancel_actor_input` are GDScript worker methods for
+the bounded [actor prototype session](../systems/actor-control-prototypes.md).
+Reset definitions are copied; the reset method returns zero on refusal or a
+positive request receipt. Snapshot reset-serial/applied/status fields separately
+report the owner outcome after it rechecks scenario authority. Action admission validates actor/producer, epoch,
+sequence and observation-derived expiry before retaining a bounded input value.
+`CyberSimulationSnapshot.actor_prototypes` carries copied session identity,
+capabilities and fixed-stride observation rows. The canonical actor contract owns
+the exact command fields and 16-float observation order.
+
+This is an in-process adapter seam, not a network protocol, native C ABI, trained
+policy or Web input implementation. Existing native material/collision interfaces
+and main-thread Rapier ownership are unchanged.
+
 ### Sampled-player granular disturbance adapter
 
 **Current private Godot adapter:** `character_disturb_granular(origin, size,
 impact_speed)` is a serialized owner operation used only by
-`CyberSampledCharacter` after an accepted downward granular collision. It is not
+`CyberSampledCharacter` and its `CyberActorPrototype` subclass after an accepted
+downward granular collision. It is not
 part of the public C ABI or the rigid-body packed result format. Position/size are
 finite finite-adapter cell/pixel coordinates; impact speed is downward
 cells/pixels per second. Malformed/out-of-world input, failed worlds, impact below

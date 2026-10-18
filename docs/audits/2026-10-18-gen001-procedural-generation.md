@@ -299,3 +299,39 @@ whitespace checks passed. Final frozen retrieval remains 32/32 top-five and is
 27/40 top-one, MRR 0.8113. Both question fixtures preserve all earlier questions.
 The final evidence/screenshot changes contain no native, binding, script or
 runtime-source-input mutation.
+
+## Integration with the actor prototype checkpoint
+
+Main advanced to ACT-001 checkpoint
+`a532daa70140aac163e5501051fe5afa1bcf377f` during runtime publication. The ready
+PR at `dc63cd2c1a33a341d493a357c08b7d3ac23dc9ce` was therefore merge-conflicted;
+the absence of ready-event workflow runs was not passing or skipped validation.
+The integration preserves both canonical subsystem sections, both sets of
+supplementary retrieval questions and all actor scripts. The portable Godot class
+cache retains the four actor types and both generation workbench types.
+
+The incoming actor checkpoint changes none of the 35 native/adapter source-input
+hashes and no native compilation script or dependency pin. The published runtime
+bytes and source provenance remain current for compiled native code. Of the 27
+recorded build/validation inputs, only the portable Godot class cache changes.
+The publisher's actual source/tree and validation-input snapshots remain intact:
+that earlier run did not execute the merged actor scripts. Combined Godot import
+and regression evidence is recorded separately below and in the final PR gates.
+
+The merged working tree passed the documentation gate (80 canonical documents,
+138 claims, 1,368 links, 69 anchors; no errors/warnings), the repository gate with
+all 18 runtimes materialized and the historical M11 gate (18 records, 28 hashes).
+Frozen retrieval remains 32/32 top-five, 24/32 top-one, MRR 0.8646. The union of
+43 supplementary questions achieves 43/43 top-five, 28/43 top-one, MRR 0.8012.
+All prior question objects and the frozen question file remain unchanged.
+
+A separate isolated Godot 4.7 copy of the combined scripts used the actual
+published Linux runtime `cb74e86e4ca0131e0768d19de40b6f2071b7f8e8f3327a0268941905afbcdd1a`.
+Its clean headless import passed. Actor prototypes passed 12,293 assertions,
+actor sessions 626, actor integration 157 and the generation workbench 138,
+each with zero failures. The workbench also completed 180 headless frames with
+no script/runtime errors. The merged portable bootstrap cache contains 60 unique
+class records; its input SHA-256 is
+`f0449c5763e8496a26bc10fbd7f3ce79e8dd24454207940cb20414b62a0e9b4e`.
+These checks qualify the combined script/bootstrap context on Linux, with no
+additional Windows/Web, graphical layout or target-PC performance claim.

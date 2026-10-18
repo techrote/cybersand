@@ -28,7 +28,7 @@ but must not touch live scene-tree or Rapier objects.
 | Activity/dirty metadata and job effects | Job-local observations, then coordinator merge after the phase barrier | Persistent chunk metadata and reusable bounded scratch; dirty bounds survive unsuccessful publication |
 | Delayed pair deadline | A phase-exclusive source activity block stores its earliest due tick; coordinator wakes it at healthy tick entry | One scalar per block; excluded blocks retain it, clear/replacement discards it |
 | Native snapshot slots | One serialized producer writes only an unleased slot | Shared exchange state outlives its facade while leases exist; no-slot/capacity failure retains dirty state |
-| Desktop world and sampled character | Godot pacing Thread after startup handoff | Worker lifetime; stopped/joined before destruction |
+| Desktop world, sampled character and optional actor prototypes | Godot pacing Thread after startup handoff | Worker lifetime; stopped/joined before destruction; actor session reset invalidates old input epochs |
 | Live body nodes, RIDs and physics state | Main-thread Rapier bridge and PhysicsServer2D | Scene/bridge lifetime; never passed to cellular workers |
 | Body samples and observations | Adapter owns copied samples and native transient occupancy; results are copied into publication | Mask rebuilt at coupling preparation; sample IDs identify result application |
 | Godot CPU image and textures | Main thread validates patches and updates resources | Application lifetime; upload never borrows mutable World bytes |
@@ -130,6 +130,22 @@ the rationale remains [ADR-003](../decisions/ADR-003-godot-bridge-and-immutable-
 Sampled [granular support queries](../systems/granular-interaction-policy.md) read
 current cells and copied body occupancy only under this exclusive owner, outside
 native jobs. Their bounded neighbourhood adds no job view, cache or Rapier object.
+
+## Optional actor prototype ownership
+
+**Current, experimental:** the [actor session](../systems/actor-control-prototypes.md)
+owns a bounded set of sampled motors under `CyberSimulationWorker`. Human or
+policy producers submit scalar/value commands through its mutex-protected
+mailbox. Only the serialized simulation owner configures, advances or observes
+the motors and calls World collision queries. The public worker forwarding
+methods do not grant producers a live actor, World or Rapier reference.
+
+Publications copy state/capability values. A current actor observation and a
+material render generation have distinct ticks; retaining one does not authorize
+relabeling the other. Session pause/reset/clear boundaries invalidate prior
+command epochs, and failed-world publication retains the previous successful
+display contract. The actor-specific action/lease protocol does not bound the
+separate general emission queues described above.
 
 ## Failed-world ownership and recovery
 

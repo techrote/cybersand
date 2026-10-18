@@ -44,6 +44,16 @@ GEN-001 / [#163](https://github.com/techrote/cybersand/issues/163) supplies the
 Its source, integration and platform evidence remain separate from product
 acceptance and from the existing general World streaming/persistence roadmap.
 
+## Provisional actor controls — 2026-10-18
+
+**Approved owner request:** create three provisional actor input/ruleset/model
+and capability alternatives, keep them performant and reactive, and allow each
+to serve either a player character or a neural-network-controlled NPC. ACT-001 /
+#161 implements optional Runner, Skimmer and Crawler prototypes through a shared
+action/observation boundary. The [actor contract](../systems/actor-control-prototypes.md)
+owns Current capabilities and limitations; this request does not select a final
+production character model or imply that neural inference/training already exists.
+
 ## Which material behavior should changes preserve?
 
 **Owner clarification, 2026-10-18:** the reported problem across all four builds

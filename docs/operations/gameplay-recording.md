@@ -6,7 +6,7 @@ status: Current
 scope: REC-001 desktop material-state recording, ownership, bounded pressure, evidence format, controls and validation limits
 keywords: [recording, gameplay review, material state, immutable snapshot, bounded queue, dropped frames, REC-001]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/rendering-and-gameplay-bridges.md, microscenarios.md, testing-validation-and-replay.md]
-last-reviewed: 2026-09-25
+last-reviewed: 2026-10-18
 ---
 
 # Desktop gameplay state recording
@@ -85,6 +85,17 @@ Per-frame metadata carries two explicit identities:
 A later worker snapshot may therefore reuse the same frozen material payload while
 advancing the sampled or Rapier player. The older material generation retains its
 own tick/time identity and is never relabelled as newly generated material.
+Tick zero is a valid reset generation when a render-publication serial exists;
+both retained frames and drop records preserve it even after actors advance.
+
+ACT-001 adds copied [prototype actor context](../systems/actor-control-prototypes.md)
+to `actor_sample.actor_prototypes` and `material_generation.actor_prototypes`.
+The former contains the current bounded session observation; the latter remains
+bound to the exact material generation. The player metadata also retains this
+context and an `environment_profile_applied` flag, which is false for prototypes
+because their model owns the movement values. JSON includes the demo NPC rows;
+the review bitmap retains its existing player/body outlines and does not draw
+additional prototype NPCs.
 
 Per-frame metadata includes:
 

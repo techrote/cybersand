@@ -39,6 +39,20 @@ separate. Its native fresh-chunk installer refuses all existing storage and
 requires caller-owned receipt/reset admission. Do not attach it concurrently to
 a live World owner or infer production streaming from the preview.
 
+## Actor control prototypes — 2026-10-18
+
+ACT-001 / #161 adds optional Runner, Skimmer and Crawler actors to the ordinary
+desktop sandbox. Read the [actor contract](../systems/actor-control-prototypes.md)
+before changing their movement rules or adding a policy consumer. **F5** selects
+the model, keyboard/demo/external-policy pilot and two optional demo NPCs. All
+producers share the same expiring action interface; no neural inference runs in
+the simulation owner. Controlled fixtures keep their explicit player identity.
+
+The motor/session boundary is bounded to eight actors and 32 collision queries
+per actor update. Source and Linux headless evidence remain separate from target-PC
+feel, many-NPC throughput and Windows/Web execution. The ACT-001 dated record is
+routed from the [validation ledger](../reference/validation-evidence.md).
+
 ## Material consistency repair — 2026-10-18
 
 The owner reports that restarting resolved the all-four-builds problem and asks
