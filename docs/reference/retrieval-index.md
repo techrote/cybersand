@@ -193,3 +193,5 @@ separate; the programme graph owns admission.
 - Blocked falling/torque/coherent-child motion fixture: [macro-fracture preregistration](../operations/soliding-macro-fracture-fixture.md).
 
 Integrated launch and physical actor comparison questions route to the [physical actor programme](../operations/physical-actor-programme.md), including owner feedback, impulses, trial limitations and follow-up articulation.
+
+Layered material worlds, Strata Theatre, quantized relief and explicit interlayer event questions route to the [depth prototype contract](../systems/depth-layers-and-parallax.md).

@@ -393,3 +393,5 @@ owner visual acceptance.
 ## Combined feature local checkpoint — 2026-10-18
 
 The [combined-feature audit](../audits/2026-10-18-combined-features-and-physical-trial.md) records Windows focused launcher/physical-body checks, the broad sweep and repaired entry premise, actual NVIDIA render inspection, source/runtime hashes and preserved failures. Final hosted exact-head gates and merge disposition are separately recorded in PRs #164/#173/#175/#176.
+
+The [fresh reconstructed-depth audit](../audits/2026-10-18-depth-integration-validation.md) records Windows 83/13/17 focused checks and actual NVIDIA material-surface pixel checks, separately from original local depth evidence. Final exact-head gates belong to PR #169.

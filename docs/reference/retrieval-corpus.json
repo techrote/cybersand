@@ -90,7 +90,8 @@
     "systems/thunderbowl-control-reference.md",
     "systems/material-visual-pattern-library.md",
     "reference/material-effects-register.md",
-    "operations/physical-actor-programme.md"
+    "operations/physical-actor-programme.md",
+    "systems/depth-layers-and-parallax.md"
   ],
   "navigation": [
     "README.md",
@@ -326,6 +327,14 @@
     {
       "path": "audits/2026-10-18-combined-features-and-physical-trial.md",
       "reason": "Dated local validation and preserved failures; current behavior belongs to the physical actor programme and hosted final gates remain separate."
+    },
+    {
+      "path": "audits/2026-10-18-depth-parallax-prototypes.md",
+      "reason": "Historical original and reconstructed depth prototype evidence; fresh integration validation is recorded separately."
+    },
+    {
+      "path": "audits/2026-10-18-depth-integration-validation.md",
+      "reason": "Fresh dated reconstructed-depth integration evidence; runtime semantics remain in the depth contract."
     }
   ],
   "integration_note": "Retains all scene, generation, actor, Thunderbowl and presentation routes from both parents; historical questions are preserved."
