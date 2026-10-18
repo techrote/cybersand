@@ -60,6 +60,8 @@
     "systems/granular-interaction-policy.md",
     "systems/player-environment-profiles-and-traversal.md",
     "systems/material-appearance-and-rendering.md",
+    "systems/material-visual-pattern-library.md",
+    "reference/material-effects-register.md",
     "systems/materials-and-rule-kernels.md",
     "systems/intermaterial-interactions.md",
     "systems/smoke-heat-pressure-roadmap.md",

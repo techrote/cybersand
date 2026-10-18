@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [construction-material-ids, construction-material-physics-and-finish]
 status: Current
 scope: Complete stable IDs 38–80, authored roles, native hard-surface and combustion behavior, and visual limitations
-last-reviewed: 2026-09-08
+last-reviewed: 2026-10-18
 related-documents: [materials-and-rule-kernels.md, material-appearance-and-rendering.md, ../MATERIAL_LAB.md]
 ---
 
@@ -55,8 +55,8 @@ Dated tests and visual limitations are in the [evidence ledger](../reference/val
 | 57 | Industrial Brick | Factory shells, alleys, furnaces | Inert hard surface | Dark staggered courses |
 | 58 | Reinforced Concrete | Foundations, bunkers, loading bays | Inert hard surface | Clouding and aggregate flecks |
 | 59 | Asphalt | Roads, roofs, dry alley floor | Inert hard surface | Fine aggregate |
-| 60 | Wet Asphalt | Rain-dark road and reflective patches | Inert hard surface | Moving sparse wet glints |
-| 61 | Wet Cobblestone | Old-city alley and drain surround | Inert hard surface | Cobble relief plus wet glints |
+| 60 | Wet Asphalt | Rain-dark road and reflective patches | Inert hard surface | Asphalt grain under a fixed wet film |
+| 61 | Wet Cobblestone | Old-city alley and drain surround | Inert hard surface | Cobble relief under a fixed wet film |
 | 62 | Steel Plate | Tanks, walls, bulkheads, machinery | Inert hard surface | Plate seams, brushing, and rivets |
 | 63 | Painted Steel | Doors, casings, coloured machinery | Inert hard surface | Plate seams, rivets, and paint chips |
 | 64 | Corrugated Steel | Sheds, fences, ducting, cladding | Inert hard surface | Repeating ridges and joints |
@@ -67,7 +67,7 @@ Dated tests and visual limitations are in the [evidence ledger](../reference/val
 | 69 | Copper Pipe | Chemical lines, cooling, utilities | Inert hard surface | Cylindrical highlight and coupling bands |
 | 70 | Ceramic Tile | Wash-down walls, laboratory surfaces | Inert hard surface | Grout grid and glazed corner shine |
 | 71 | Chemical Glass | Tanks, tubes, observation windows | Inert hard surface | Glass sheen plus low cyan edge emission |
-| 72 | Dark Glass | Windows, screens, vehicle/factory glazing | Inert hard surface | Slow diagonal sheen |
+| 72 | Dark Glass | Windows, screens, vehicle/factory glazing | Inert hard surface | Fixed diagonal sheen |
 | 73 | Rubber | Mats, seals, bumpers, hoses | Inert hard surface | Matte stipple |
 | 74 | Cable Bundle | Exposed services and cyberpunk clutter | Inert hard surface | Colour-coded lanes and jacket highlight |
 | 75 | Insulation | Pipe lagging and damaged wall fill | Inert hard surface | Diagonal fibres and sparse voids |
@@ -108,8 +108,13 @@ owns body/terrain coupling.
 The finishes in the tables are presentation-only programs, with world-anchored
 courses, seams, and grain. Timber/pipes currently read most clearly horizontally;
 corrugation is vertical. Rough/hammered metals stay matte; smooth manufactured
-surfaces can use restrained moving glints. Wet, glass, neon, and LED effects use
-render time without changing physics or waking cells.
+surfaces can use restrained moving glints. Wet construction and glass finishes
+are fixed in time (2026-10-18); neon and LED effects use presentation time.
+Pipes, hazard stripes, insulation, cables, Oak Timber, corrugation, Stained
+Glass, neon, brick, tile and reinforced concrete adapt to the shape of the run
+they are painted in (orientation, cross-section, edges); see the
+[appearance contract](material-appearance-and-rendering.md).
+None changes physics or wakes cells.
 
 Selected finish arithmetic is separate from the common four-neighbor relief
 stage. Neither creates a second world image or per-cell light. Exact LUT,

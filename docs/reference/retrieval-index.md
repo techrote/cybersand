@@ -53,6 +53,9 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | How could trapped gas, sealed rooms or vacuum be approximated without cellular gas CFD? | [WEX-003 feasibility research](../research/lumped-gas-region-pressure-bookkeeping.md), [Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md), [field roadmap](../systems/smoke-heat-pressure-roadmap.md) |
 | Heat/pressure/wind and Smoke limits | [Field roadmap](../systems/smoke-heat-pressure-roadmap.md) |
 | Appearance LUTs, glow, authoring intent | [Appearance](../systems/material-appearance-and-rendering.md), [authored programs](../architecture/item-authored-material-programs.md) |
+| How do I design a material pattern or a new procedural fill, and which primitives/recipes exist? | [Material visual pattern library](../systems/material-visual-pattern-library.md), then the [appearance contract](../systems/material-appearance-and-rendering.md) for semantics and cost |
+| Which material effects are implemented, planned, potential or rejected? | [Material effects register](material-effects-register.md) |
+| Which wet/liquid and glazing finishes changed on 2026-10-18, and what rendered evidence supports them? | [Appearance](../systems/material-appearance-and-rendering.md#wet-and-liquid-families), then the [material readability pass](../audits/2026-10-18-material-readability-pass.md) for paired captures, tests, cost and limits |
 | API versions, packed samples/results | [Interfaces](interfaces-and-message-contracts.md) |
 | Invariants and incomplete enforcement | [Invariants](invariants.md) |
 | Exact tools, separate native/Web bindings | [Build guide](../operations/local-build-and-validation.md) |
