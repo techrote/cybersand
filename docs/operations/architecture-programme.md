@@ -4,7 +4,7 @@ status: Planned
 document-kind: design
 scope: Evidence gates for Cell representation, liquid state and transport, presentation, and conditional sparse motion; no production architecture selection
 canonical-for: [architecture-experimental-programme]
-last-reviewed: 2026-09-20
+last-reviewed: 2026-10-18
 related-documents: [architecture-programme-source-ledger.md, physics-characterisation.md, physics-characterisation-plan.md, microscenarios-programme.md, water-hybrid-pressure-extension-programme.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md]
 ---
 
@@ -151,6 +151,12 @@ Intake is local `8f4ffb96e03dc50cb43ab9c84de17ccb44c03774` in
 its identity is in the ledger. Remote main is older. Source changes and runtime
 evidence from #9/#10/#13 plus September 10 Water work are local baseline inputs,
 not silently certified by GitHub issue closure or a profile hash.
+
+**ACT-004 capacity qualification, 2026-10-18:** the retained intake table below
+describes its original 16-body coupling limit. Current source now admits 64
+rectangular part identities for the articulated roster; see the
+[physical actor contract](../systems/physical-actor-rigs.md). This capacity change
+does not select generalized shapes or revise this programme's scientific gates.
 
 | Authority | Relevant baseline |
 |---|---|

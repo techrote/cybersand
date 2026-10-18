@@ -350,13 +350,15 @@ for field bounds, material-response ownership and traversal semantics.
 
 ## Exploratory actor selection
 
-**Current desktop:** F5 exposes 29 sampled rigs, the sampled baseline and two
-physical Rapier hulls in the ordinary sandbox and five authored exploratory maps.
-A physical choice owns exactly one live body; sampled session capacity remains
-eight, with at most seven rigs offered by a set-comparison selection. Physics
-switching restores the selected map and starts paused. No new per-tick body or
-cell capacity is introduced. See the [programme](../operations/physical-actor-programme.md)
-for controls, protected scenarios and full-roster migration scope.
+**Current desktop:** F5 exposes all 41 articulated Rapier rigs, 29 sampled rigs,
+the sampled baseline and the two retained single-body hull trials in the ordinary
+sandbox and five authored exploratory maps. Physical sessions admit at most eight
+actors and 64 parts, with up to eight rigs in a set comparison. Sampled session
+capacity remains eight. Switching restores the selected map and starts paused;
+the physical owner also waits for matching reset and terrain readiness. See the
+[physical values](#physical-actor-values) and
+[programme](../operations/physical-actor-programme.md) for controls and protected
+scenarios. This adds no authoritative per-cell actor representation.
 
 ## Actor control prototype values
 

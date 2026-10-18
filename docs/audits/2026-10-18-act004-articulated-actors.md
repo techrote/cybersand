@@ -22,10 +22,14 @@ remain useful tuning context.
 
 The recovered implementation and this completion work begin at main
 `b31a897b485a1913a67a02a39fb271495bacf027`, after the exploratory actor selector
-integration. The owned branch is `codex/act004-complete-41-rigs`. Initial local
-tests used this base plus the ACT-004 working delta, not the base commit alone.
-The frozen source commit and complete native/build input maps will be retained
-by the source-matched runtime publication manifests. Historical sampled actor,
+integration. [PR #181](https://github.com/techrote/cybersand/pull/181) owns branch
+`codex/act004-complete-41-rigs`. Its frozen implementation commit is
+`d897cac257f90ff37b16ae5bc5c65de85c6465ee`, tree
+`a81823da7b038ba25e3b93e7748a47c20fb95988`; all 62 changed source/document blobs
+were checked against the local export before publication. Initial local tests
+used the base plus this working delta, not the base commit alone. Complete
+native/build input maps are retained by the source-matched runtime publication
+manifests. Historical sampled actor,
 M11, Water and soliding evidence is not relabelled as ACT-004 validation.
 
 The [physical actor contract](../systems/physical-actor-rigs.md) owns current
@@ -172,10 +176,11 @@ native build above was installed before the consolidated runs.
 | `test_physical_actor_actuation.gd` | 86 assertions, zero failures; real fin/gimbal motion, cancellation lifecycle and collision-grace restoration |
 | `test_physical_actor_session.gd` | 109 assertions, zero failures; issued-view identity, producer/lease validation, consumed edges, fault refusal and cancellation |
 | `test_physical_actor_effect_admission.gd` | 32 assertions, zero failures; actual mutex-owned queue saturation, atomic refusal, independent body publication, copied telemetry and lifecycle fences |
-| `test_physical_actor_rigs.gd` | All 41 rigs × 1,200 ticks, zero failures; sustained progress, actual articulation, stability, endstops, energy and recovery; 17.77 seconds |
-| `test_physical_actor_arena.gd` | 742 assertions, zero failures; all 41 × 240 native/Rapier ticks, actual travel/effects and eight largest assemblies totalling 56 parts; 8.37 seconds |
-| `test_physical_actor_integration.gd` | 354 assertions, zero failures; every desktop selection, reset/ownership/terrain fence/cache identity, cancellation and 120 live ticks each for Vector, Jolt and Ripper; 13.956 seconds |
+| `test_physical_actor_rigs.gd` | All 41 rigs × 1,200 ticks, zero failures; sustained progress, actual articulation, stability, endstops, energy and recovery; 16.114 seconds |
+| `test_physical_actor_arena.gd` | 742 assertions, zero failures; all 41 × 240 native/Rapier ticks, actual travel/effects and eight largest assemblies totalling 56 parts; 7.437 seconds |
+| `test_physical_actor_integration.gd` | 354 assertions, zero failures; every desktop selection, reset/ownership/terrain fence/cache identity, cancellation and 120 live ticks each for Vector, Jolt and Ripper; 14.251 seconds |
 | Native capacity and effect fixtures | `test_act004_body_capacity.gd` and `test_physical_actor_effects.gd` passed with the fresh native runtime, including actual 64-part masks and fallback bounds |
+| Complete discovered Godot suite | Import plus all 90 cases passed with zero diagnostic errors or timeouts; 802.775 seconds; all 269 implementation/test files match the frozen source commit |
 | Fresh `make test` | Passed core native, soliding and world-generation suites and the C header check at the default 8 MiB stack; 71 core cases; 164.45 seconds |
 | `make sanitize` with `ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1` and `UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1` | Passed all 71 core cases; 134.4 seconds; establishes ASan/UBSan, not leak-freedom |
 | `make thread-sanitize` | Passed all 71 core cases; 182.6 seconds including build/run; no race diagnostics |
@@ -199,12 +204,22 @@ The first leak-enabled sanitizer run failed because LeakSanitizer could not
 inspect `/proc` under process restrictions. The subsequent ASan/UBSan invocation
 uses the repository CI's explicit no-leak-inspection policy; that environmental
 failure remains distinct from the passing memory/undefined-behavior checks.
+The sanitizer commands explicitly use a 64 MiB stack; the freshly compiled
+storage fixture and full debug suite pass with the default 8 MiB stack.
 
-The complete discovered Godot suite is also being run. Its first pass exposed
-two historical async test-worker overrides whose signatures lacked the new
-copied body epoch. Both helpers now forward that value; focused interaction and
-physics asynchronous tests passed in 12.97 and 2.925 seconds respectively. The
-final discovered suite contains 90 cases after adding queue-admission coverage.
+The first full Godot pass exposed two historical async test-worker overrides
+whose signatures lacked the new copied body epoch. Both helpers now forward that
+value. The final discovered suite, including queue-admission coverage, passed
+import and all 90 cases in 802.775 seconds. Its longest cases were WEX001 water-body
+baseline at 129.396 seconds and microscenarios at 102.873 seconds, both within
+their 180-second limits. Before/after comparison found no implementation/test or
+Linux-runtime drift. All 269 implementation/test files map to frozen source
+`d897cac257f90ff37b16ae5bc5c65de85c6465ee`; their SHA-256 ledger digest is
+`c71a0a8fe58554ad118426d68e5c530c7a984182dde9a731aca7bb8413e77e66`.
+All 37 native source inputs still match the local runtime builds. Import produced
+only the new queue-admission test's untracked UID; it did not change tracked
+bootstrap files or project configuration.
+
 Documentation validation passes 90 canonical documents/170 claims with no
 errors or warnings. Historical M11 integrity passes 18 retained records and 28
 source hashes after materializing missing public Git objects. Frozen retrieval
@@ -215,16 +230,39 @@ quality-improvement claim.
 
 ## Publication and acceptance gates
 
-The planned one-shot GitHub-hosted publisher freezes the implementation SHA,
-requires an immediate workflow-only child, builds fresh pinned Linux and Windows
-artifacts, checks native core plus scoped Godot execution, and publishes only
-the two LFS runtime payloads and their manifests while removing itself. Its
-branch lease rejects intervening source changes. This is separate from ordinary
-ready-for-review Native, GDExtension/Godot, Documentation/provenance and any
-applicable scoped Water gates. A draft skip or local pass is not exact-head
-hosted acceptance.
+The one-shot GitHub-hosted publisher was the immediate workflow-only child
+`1d69b971fdacf524e1b56cb7fc836229e328b0ac` of the frozen implementation. Its
+[publication run](https://github.com/techrote/cybersand/actions/runs/39174696657)
+passed preflight, both pinned builds and publication. Linux passed 71 native core
+tests, import and all thirteen scoped Godot runners, including the 354-assertion
+integration fixture. Windows passed cross-build and PE/import inspection.
 
-Final source publication, exact-head hosted run URLs and merge identity will be
-recorded here and in the implementation PR before issue completion. Windows
-interactive execution, Web actor migration, target-PC performance and owner
-playfeel acceptance have not been performed by these local headless checks.
+The published runtime commit
+[`43bbe43e45f5885e563a67d781fba39726df34f8`](https://github.com/techrote/cybersand/commit/43bbe43e45f5885e563a67d781fba39726df34f8)
+is the direct child of the installation commit. It changes exactly five paths:
+the two LFS runtime payloads, their two provenance manifests and removal of the
+publisher workflow. The unchanged branch lease and all frozen source bytes were
+verified before its push. Both platforms record the same 37 native inputs and
+53 build/test inputs.
+
+| Published hosted artifact | Bytes | SHA-256 |
+|---|---:|---|
+| Linux x86_64 extension | 2,116,392 | `5bdc55e7f355004fc8a6468234b0d018d3919339ebfe47faca9997de3af17847` |
+| Windows x86_64 extension | 2,586,624 | `ff417eaa63182818e5f924b9240a57868192da6cf629577f467dd9363105588d` |
+
+The committed LFS pointers, manifests and hosted build logs agree on those hashes
+and sizes. The materialized repository/provenance gate, Linux runtime floor and
+LFS integrity check passed before publication. The hosted binaries differ from
+the local builds tabulated above; local full-suite execution and hosted scoped
+execution retain their respective runtime identities. The
+[Linux manifest](../../godot/addons/cybersand_native/runtime-provenance.linux.json)
+and [Windows manifest](../../godot/addons/cybersand_native/runtime-provenance.json)
+retain source maps, dependency pins, log hashes and explicit validation scopes.
+Windows execution is absent from both local and hosted publication evidence.
+
+Runtime publication is separate from ordinary ready-for-review Native,
+GDExtension/Godot, Documentation/provenance and applicable scoped Water gates.
+A draft skip or local pass is not exact-head hosted acceptance. PR #181 records
+the final exact-head gate URLs and merge disposition before issue completion.
+Windows interactive execution, Web actor migration, target-PC performance and
+owner playfeel acceptance have not been performed by these local headless checks.

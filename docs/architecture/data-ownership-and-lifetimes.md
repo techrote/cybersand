@@ -136,8 +136,11 @@ refresh when byte or patch thresholds are exceeded. This recovery bounds the
 retained display representation; it does not implement generalized bounded
 GameplayBridge queues.
 
-Native rectangle parsing considers at most 16 complete input records, accepts
-IDs 1–16, and preserves the first parsed duplicate. The occupancy field belongs
+Native rectangle parsing considers at most 64 complete input records, accepts
+exact IDs 1–64 from finite valid records, and preserves the first valid duplicate.
+The ACT-004 physical effect queue separately admits a whole incoming batch within
+eight pending requests or publishes an explicit refusal; it does not bound the
+older generic emission queue described above. The occupancy field belongs
 to World; it is separate from material identity. See
 [coupling](rigid-body-and-cellular-coupling.md) for displacement and overflow.
 
