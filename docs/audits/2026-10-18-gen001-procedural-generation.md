@@ -206,3 +206,96 @@ full replay and comparative performance acceptance are not claimed.
 The local build guide's obsolete active external-runner prose was reconciled to
 the existing GitHub-hosted workflow and repository policy while adding GEN-001
 commands. No provider policy or execution threshold was relaxed.
+
+
+## Rendered workbench layout follow-up
+
+An isolated Xvfb/software OpenGL render completed after the normal execution
+review permitted the local display sockets unavailable in the first sandboxed
+attempt. This used the same final local Linux extension
+`ebdf89429f31cf77e6e41818f643876d92f1b10d61e72ed826a5a3d704a48614` and
+hash-matched copies of all four workbench sources. The renderer was Godot 4.7
+Compatibility, OpenGL 4.5, Mesa 25.2.8 / llvmpipe LLVM 20.1.2.
+
+Seven actual captures were inspected: the three example worlds, Brushes, Modules,
+scrolled fine controls and the Profile JSON dialog. The 1800 by 1012 main views
+and 900 by 694 JSON view contain no observed clipping or overlapping controls.
+Scrolling reaches all twelve fine parameters and both lower Apply/Regenerate
+buttons; all five JSON actions fit. The graphical example run passed 88 assertions
+and the panel run completed four captures, both with zero failures and no runtime
+or script errors. The software driver's unsupported V-Sync-change warning remains
+qualified. This establishes the inspected software-rendered layout, with no
+Windows/browser or target-GPU performance claim.
+
+The representative [Flow workbench image](../figures/worldgen-workbench.png) is
+165,789 bytes, SHA-256
+`5ba29a36df0bbf74f3c81d90e1abec4520dafd8a88613bdf24d2d3bfb80421d6`.
+Temporary display processes were cleaned up; no generator/UI source changed.
+
+## Guarded runtime publication
+
+The frozen implementation source is
+`b8a4fae53ee20d9e6d5cfec5f4e972df038491c1`, tree
+`822976524584522441a1b5003b1ed408e5915f8c`. The temporary publisher is its
+workflow-only immediate child
+`6f8c8a38088bf829c236a0831cf9e5089b283fca`; its reviewed branch/parent/write-set
+controls and explicit fail-on-UBSan behavior preserve the native runtime gates.
+[Publication run 39107152476](https://github.com/techrote/cybersand/actions/runs/39107152476)
+builds both platforms on GitHub-hosted Ubuntu 24.04 from 35 native/adapter inputs
+and 27 build/validation inputs. Source, artifact and log hashes are verified before
+publication. The allowed publication write set contains only the two LFS runtimes,
+their two manifests and deletion of the temporary workflow.
+
+Attempt 1 passed every Linux build/execution check: 70 core tests at 07:28:19 UTC,
+optimized generation/installation at 07:28:46, ASan/UBSan at 07:30:06, the 138
+workbench assertions at 07:30:18 and the 180-frame scene by 07:30:19. It also passed
+the runtime floor, source-diff guard and the three existing native Godot smoke
+cases. GitHub ArtifactService then repeatedly timed out on ListArtifacts /
+CreateArtifact and the upload failed at 07:32:13. The guarded publication job
+correctly remained skipped; no unverified runtime was pushed.
+
+That unuploaded Linux candidate was 1,936,552 bytes with SHA-256
+`cb74e86e4ca0131e0768d19de40b6f2071b7f8e8f3327a0268941905afbcdd1a`.
+The successful Windows job uploaded its 2,412,032-byte cross-build candidate,
+SHA-256 `3221acb9a91913675fcc466c82e18def19ee96c389a723925ca7bb48beec94d1`.
+Those hosted identities are distinct from the earlier local artifacts and are
+recorded separately. Failed jobs were retried on the unchanged trigger/source;
+the successful Windows result was reused. The upload failure did not justify
+source changes or relaxation of a validation gate.
+
+
+### Successful publication checkpoint
+
+Attempt 2 completed successfully at 07:45:42 UTC and published
+`6d2597cf78f026fa291ce8fa0fef1452504b4a43`. The new runtime manifests bind the
+frozen source/tree above and identical 35-file native plus 27-file build/validation
+maps. Linux records its successful attempt 2; Windows retains its successful
+attempt 1. The Linux binary was byte-identical across the two hosted attempts.
+
+| Published runtime | Bytes | SHA-256 | Executed qualification |
+|---|---:|---|---|
+| Linux x86-64 | 1,936,552 | `cb74e86e4ca0131e0768d19de40b6f2071b7f8e8f3327a0268941905afbcdd1a` | Pinned build/floor, 70 core tests, focused native and hosted ASan/UBSan generation/install checks, import, three existing native Godot regressions, 138 workbench assertions and 180 headless scene frames |
+| Windows x86-64 | 2,412,032 | `3221acb9a91913675fcc466c82e18def19ee96c389a723925ca7bb48beec94d1` | Pinned cross-build and PE inspection; execution not performed |
+
+The publisher passed `check_repository.py --require-materialized`, `git lfs fsck`
+and whitespace/source-diff guards before uploading both LFS objects and pushing
+the verified descendant. Both published artifacts are actual rebuilt bytes.
+The temporary workflow removed itself in the same narrow publication commit.
+The prior stale-provenance refusal is resolved by those artifacts and manifests,
+not by changing unbuilt hashes.
+
+Build reports and gate logs are retained in run artifacts
+`gen001-runtime-linux-39107152476`, `gen001-runtime-windows-39107152476` and
+`gen001-publication-39107152476`. The normal merge gates remain separate from
+this publisher. [PR #166](https://github.com/techrote/cybersand/pull/166) records the
+final exact-head Documentation/provenance, Native, Linux/Windows GDExtension and
+scoped Water-apparatus results; a skipped draft job does not count as a pass.
+
+
+After materializing those published objects locally, the final repository gate
+also passed with all 18 required runtime objects present; `git lfs fsck` and
+whitespace checks passed. Final frozen retrieval remains 32/32 top-five and is
+24/32 top-one, MRR 0.8646. Supplementary retrieval remains 40/40 top-five,
+27/40 top-one, MRR 0.8113. Both question fixtures preserve all earlier questions.
+The final evidence/screenshot changes contain no native, binding, script or
+runtime-source-input mutation.

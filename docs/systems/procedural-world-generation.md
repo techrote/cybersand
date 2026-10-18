@@ -47,6 +47,12 @@ pixels and performs bounded demand generation while panning. It does not run the
 ordinary sandbox simulation. Existing `main.gd`, authored demo worlds, actor
 prototypes, material rules and Rapier behavior remain separate.
 
+![Rendered native world generation workbench with its generator controls and Flow example](../figures/worldgen-workbench.png)
+
+The representative workbench capture uses the tested Linux software renderer.
+Its layout review is recorded in the [dated evidence](../audits/2026-10-18-gen001-procedural-generation.md);
+it is not a target-GPU performance result.
+
 **Planned/Deferred beyond this candidate:** a production camera-to-resident-world
 coordinator, simulation eviction, disk/network streaming, persistence of modified
 chunks, full replay, multiscale LOD and automatic reconciliation of old resident
