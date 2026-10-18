@@ -9,6 +9,10 @@ extends SceneTree
 #   <godot> --path godot --script res://tests/capture_material_review.gd -- \
 #     --output=<absolute dir> [--plates=inventory,liquids,...] [--clip-frames=90]
 #     [--shader-root=<dir with the three .gdshader files>] [--lut-script=<path>]
+#     [--fallback-r8]
+#
+# --fallback-r8 presents the inputs as the desktop GDScript fallback does:
+# R8 material IDs only, with condition projection disabled.
 #
 # --shader-root/--lut-script render another revision's presentation sources
 # (for example extracted with git show) through this same fixture, so a
@@ -39,6 +43,7 @@ var output_dir: String = ""
 var shader_root: String = "res://shaders"
 var lut_script_path: String = "res://scripts/material_appearance_lut.gd"
 var shaders: Dictionary = {}
+var fallback_r8: bool = false
 var plate_filter: Array[String] = []
 var clip_frames: int = 90
 var clip_fps: float = 30.0
@@ -64,6 +69,8 @@ func _parse_arguments() -> void:
 			shader_root = argument.trim_prefix("--shader-root=")
 		elif argument.begins_with("--lut-script="):
 			lut_script_path = argument.trim_prefix("--lut-script=")
+		elif argument == "--fallback-r8":
+			fallback_r8 = true
 		elif argument.begins_with("--clip-frames="):
 			clip_frames = maxi(0, int(argument.trim_prefix("--clip-frames=")))
 
@@ -120,6 +127,7 @@ func _run() -> void:
 		"lut_script": lut_script_path,
 		"presentation_source_sha256": sources,
 		"hdr_2d": true,
+		"fallback_r8": fallback_r8,
 		"material_names": names,
 		"plates": {},
 	}
@@ -436,6 +444,13 @@ func _make_rig(current: Image, previous: Image, scale: int) -> Dictionary:
 	background.color = BACKGROUND
 	background.size = Vector2(output_size)
 	viewport.add_child(background)
+	var condition_enabled: float = 1.0
+	if fallback_r8:
+		current = current.duplicate()
+		previous = previous.duplicate()
+		current.convert(Image.FORMAT_R8)
+		previous.convert(Image.FORMAT_R8)
+		condition_enabled = 0.0
 	var current_texture: ImageTexture = ImageTexture.create_from_image(current)
 	var previous_texture: ImageTexture = ImageTexture.create_from_image(previous)
 	var world_size: Vector2 = Vector2(current.get_size())
@@ -446,7 +461,7 @@ func _make_rig(current: Image, previous: Image, scale: int) -> Dictionary:
 	palette.set_shader_parameter("view_size_px", Vector2(VIEW))
 	palette.set_shader_parameter("view_rect_uv", Vector4(0, 0, 1, 1))
 	palette.set_shader_parameter("player_origin_px", Vector2(-1000, -1000))
-	palette.set_shader_parameter("condition_projection_enabled", 1.0)
+	palette.set_shader_parameter("condition_projection_enabled", condition_enabled)
 	palette.set_shader_parameter("water_presentation_mode", 0.0)
 	palette.set_shader_parameter("current_world_texture", current_texture)
 	palette.set_shader_parameter("previous_world_texture", previous_texture)
@@ -477,7 +492,7 @@ func _make_rig(current: Image, previous: Image, scale: int) -> Dictionary:
 	emission.set_shader_parameter("material_program_lut", program_lut)
 	emission.set_shader_parameter("world_size_px", world_size)
 	emission.set_shader_parameter("view_size_px", Vector2(VIEW))
-	emission.set_shader_parameter("condition_projection_enabled", 1.0)
+	emission.set_shader_parameter("condition_projection_enabled", condition_enabled)
 	var source: ColorRect = ColorRect.new()
 	source.color = Color.WHITE
 	source.size = Vector2(glow_viewport.size)

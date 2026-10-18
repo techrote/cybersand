@@ -171,6 +171,38 @@ def clips(root: Path, manifest: dict) -> list[Path]:
     return written
 
 
+def heatmap(root: Path, manifest: dict, plate_id: str) -> Path | None:
+    """Count of per-frame luma changes per logical pixel over the 1x glow-off
+    animation, overlaid in red on a dimmed first frame (4x nearest)."""
+    anim = manifest["plates"].get(plate_id, {}).get("anim_x1_noglow")
+    if not anim:
+        return None
+    stack = np.stack([luma(load_rgb(root / p)) for p in anim["frames"]])
+    changes = (np.abs(np.diff(stack, axis=0)) > 2.5 / 255).sum(axis=0)
+    base = load_rgb(root / anim["frames"][0]) * 0.35
+    heat = changes / max(1, changes.max())
+    base[..., 0] = np.maximum(base[..., 0], heat)
+    base[..., 1] = np.maximum(base[..., 1], (changes > 0) * 0.35)
+    image = Image.fromarray((base * 255).astype(np.uint8))
+    out = root / "derived" / f"{plate_id}_temporal_heat_enlarged4x.png"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    image.resize((image.width * 4, image.height * 4), Image.NEAREST).save(out)
+    return out
+
+
+def crop_clip(root: Path, manifest: dict, plate_id: str, box: tuple[int, int, int, int], name: str) -> Path | None:
+    """APNG of a crop (2x output pixels) from the 2x glow-on animation."""
+    clip = manifest["plates"].get(plate_id, {}).get("anim_x2_glow")
+    if not clip:
+        return None
+    frames = [Image.open(root / p).convert("RGB").crop(box) for p in clip["frames"]]
+    out = root / "derived" / "clips" / f"{name}.apng"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    frames[0].save(out, save_all=True, append_images=frames[1:],
+                   duration=int(round(1000 / clip["fps"])), loop=0, format="PNG")
+    return out
+
+
 def pairs(root: Path, other: Path, manifest: dict, label_a: str, label_b: str) -> list[Path]:
     """Side-by-side before/after sheets for identical-input stills."""
     other_manifest = json.loads((other / "manifest.json").read_text())
@@ -217,8 +249,14 @@ def main() -> None:
     labelled_sheet(root, manifest, "liquids", "still_cam0-0_t0.00_noglow_b1.00.png", 5)
     labelled_sheet(root, manifest, "construction", "still_cam0-0_t0.00_noglow_b1.00.png", 8)
     labelled_sheet(root, manifest, "emission", "still_cam0-0_t0.00_glow_b1.00.png", 7)
+    for plate_id in ("street", "construction", "liquids", "inventory"):
+        heatmap(root, manifest, plate_id)
     if not args.no_clips:
         clips(root, manifest)
+        # Compact crops (2x pixels) where still-scenery motion was reviewed.
+        crop_clip(root, manifest, "construction", (0, 88, 640, 264), "construction_glass_ice_rows_crop")
+        crop_clip(root, manifest, "liquids", (0, 0, 640, 172), "liquids_trays_crop")
+        crop_clip(root, manifest, "liquids", (0, 236, 640, 344), "liquids_wet_pairs_crop")
     if args.compare:
         label_a, label_b = args.labels.split(",")
         pairs(root, args.compare, manifest, label_a, label_b)

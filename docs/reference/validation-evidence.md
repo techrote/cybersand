@@ -372,3 +372,13 @@ X11/Mesa software rendering is UI evidence only. The retained Windows native
 library is a pinned cross-build, not Windows execution; actual
 browser/WebAssembly and target-GPU performance remain separate unavailable
 coverage unless a later dated run records them.
+
+## 2026-10-18 material readability pass
+
+The [material readability record](../audits/2026-10-18-material-readability-pass.md)
+retains paired baseline/candidate framebuffer readbacks from identical RG8 inputs
+on Windows Compatibility/OpenGL 3.3 (NVIDIA TITAN RTX), temporal-change metrics,
+crossfade endpoint checks, live desktop and natively hosted Web controller glow
+frames, focused/graphical tests and a matched per-viewport GPU-time comparison.
+It is not browser/WebAssembly, Linux or other-GPU evidence, and it does not record
+owner visual acceptance.
