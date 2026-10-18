@@ -322,6 +322,10 @@
     {
       "path": "audits/2026-10-18-owner-actor-observations.md",
       "reason": "Verbatim dated owner observations; current implementation and planned follow-up are separately scoped in the physical actor programme."
+    },
+    {
+      "path": "audits/2026-10-18-combined-features-and-physical-trial.md",
+      "reason": "Dated local validation and preserved failures; current behavior belongs to the physical actor programme and hosted final gates remain separate."
     }
   ],
   "integration_note": "Retains all scene, generation, actor, Thunderbowl and presentation routes from both parents; historical questions are preserved."
