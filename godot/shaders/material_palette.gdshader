@@ -34,6 +34,13 @@ uniform float condition_projection_enabled = 0.0;
 // coverage, and 2 adds deterministic local interface orientation.
 uniform float water_presentation_mode : hint_range(0.0, 2.0, 1.0) = 0.0;
 uniform float snapshot_blend : hint_range(0.0, 1.0, 0.01) = 1.0;
+// Negative keeps the engine TIME. Capture fixtures set the same non-negative
+// sample on this and the emission pass so paired images share one phase.
+uniform float presentation_time_override = -1.0;
+
+float presentation_time() {
+	return presentation_time_override >= 0.0 ? presentation_time_override : TIME;
+}
 
 float cheap_hash(vec2 value) {
 	// Arithmetic-only render hash: cheaper than the previous transcendental
@@ -54,7 +61,7 @@ float triangle_wave(float value) {
 float manufactured_glint(vec2 pixel, float speed) {
 	float seed = cheap_hash(pixel);
 	float sweep = 1.0 - triangle_wave(
-		TIME * speed + seed + (pixel.x - pixel.y * 0.21) / 43.0
+		presentation_time() * speed + seed + (pixel.x - pixel.y * 0.21) / 43.0
 	);
 	return step(0.982, seed) * smoothstep(0.86, 1.0, sweep);
 }
@@ -267,8 +274,8 @@ vec4 apply_material_flair(
 		float seed = cheap_hash(pixel);
 		bool flowing = material_id != 60 && material_id != 61;
 		float flow_speed = 0.045 + mod(float(material_id), 5.0) * 0.012;
-		float flow_phase = flowing ? TIME * flow_speed : 0.0;
-		float sweep = 1.0 - triangle_wave(TIME * 0.22 + seed +
+		float flow_phase = flowing ? presentation_time() * flow_speed : 0.0;
+		float sweep = 1.0 - triangle_wave(presentation_time() * 0.22 + seed +
 			(pixel.x + pixel.y * 0.35) / 37.0);
 		float sparkle = step(0.972, seed) * smoothstep(0.82, 1.0, sweep);
 		float streak = smoothstep(0.82, 0.98, triangle_wave(
@@ -351,7 +358,7 @@ vec4 apply_material_flair(
 	}
 
 	if (flair == 22) { // glass sheen without scene-dependent refraction
-		float band = 1.0 - triangle_wave((pixel.x + pixel.y * 0.72) / 13.0 + TIME * 0.035);
+		float band = 1.0 - triangle_wave((pixel.x + pixel.y * 0.72) / 13.0 + presentation_time() * 0.035);
 		float edge = smoothstep(0.90, 1.0, band);
 		colour.rgb += vec3(0.30, 0.48, 0.55) * edge;
 		return colour;
@@ -388,10 +395,10 @@ vec4 apply_material_flair(
 
 	if (flair == 27) { // neon tube pulse with rare deterministic ballast fault
 		float seed = cheap_hash(floor(pixel / 8.0));
-		float pulse = 0.94 + (1.0 - triangle_wave(TIME * 0.55 + seed)) * 0.08;
-		float fault = step(0.988, cheap_hash(vec2(seed * 91.0, floor(TIME * 2.0))));
+		float pulse = 0.94 + (1.0 - triangle_wave(presentation_time() * 0.55 + seed)) * 0.08;
+		float fault = step(0.988, cheap_hash(vec2(seed * 91.0, floor(presentation_time() * 2.0))));
 		float travelling = smoothstep(0.82, 1.0, 1.0 - triangle_wave(
-			pixel.x / 31.0 - TIME * 0.34 + seed
+			pixel.x / 31.0 - presentation_time() * 0.34 + seed
 		));
 		colour.rgb *= pulse * mix(1.0, 0.64, fault);
 		colour.rgb += colour.rgb * travelling * 0.12;
@@ -401,9 +408,9 @@ vec4 apply_material_flair(
 	if (flair == 28) { // LED panel separators and quiet scan
 		vec2 local = mod(pixel, 3.0);
 		float diode = step(0.62, local.x) * step(0.62, local.y);
-		float scan = 0.90 + 0.10 * (1.0 - triangle_wave(TIME * 0.30 + pixel.y / 18.0));
+		float scan = 0.90 + 0.10 * (1.0 - triangle_wave(presentation_time() * 0.30 + pixel.y / 18.0));
 		float refresh = smoothstep(0.90, 1.0, 1.0 - triangle_wave(
-			TIME * 0.22 + (pixel.x + pixel.y) / 41.0
+			presentation_time() * 0.22 + (pixel.x + pixel.y) / 41.0
 		));
 		colour.rgb *= mix(0.28, scan + refresh * 0.12, diode);
 		return colour;
@@ -411,10 +418,10 @@ vec4 apply_material_flair(
 
 	if (flair == 29) { // water micro-highlights
 		float seed = cheap_hash(pixel);
-		float sweep = 1.0 - triangle_wave(TIME * 0.18 + seed + pixel.x / 29.0);
+		float sweep = 1.0 - triangle_wave(presentation_time() * 0.18 + seed + pixel.x / 29.0);
 		float glint = step(0.982, seed) * smoothstep(0.86, 1.0, sweep);
 		float ripple = smoothstep(0.78, 0.98, triangle_wave(
-			(pixel.x + pixel.y * 0.22) / 21.0 + TIME * 0.075
+			(pixel.x + pixel.y * 0.22) / 21.0 + presentation_time() * 0.075
 		));
 		colour.rgb *= 0.91 + ripple * 0.13;
 		colour.rgb += vec3(0.32, 0.56, 0.75) * glint;
@@ -422,8 +429,8 @@ vec4 apply_material_flair(
 	}
 
 	if (flair == 30) { // layered flame shimmer
-		float lick_a = triangle_wave((pixel.x * 0.7 - pixel.y) / 6.0 + TIME * 0.9);
-		float lick_b = triangle_wave((pixel.x * -0.35 - pixel.y) / 11.0 + TIME * 0.53);
+		float lick_a = triangle_wave((pixel.x * 0.7 - pixel.y) / 6.0 + presentation_time() * 0.9);
+		float lick_b = triangle_wave((pixel.x * -0.35 - pixel.y) / 11.0 + presentation_time() * 0.53);
 		float hot_core = smoothstep(0.62, 0.98, 1.0 - abs(lick_a - lick_b));
 		colour.rgb *= 0.78 + lick_a * 0.19 + lick_b * 0.14;
 		colour.rgb += vec3(0.72, 0.24, 0.025) * hot_core * 0.24;
@@ -432,8 +439,8 @@ vec4 apply_material_flair(
 	}
 
 	if (flair == 31) { // lava/molten-glass convection bands and cooling crust
-		float flow = triangle_wave((pixel.x + pixel.y * 0.35) / 9.0 + TIME * 0.16);
-		float counter_flow = triangle_wave((pixel.y - pixel.x * 0.21) / 15.0 - TIME * 0.09);
+		float flow = triangle_wave((pixel.x + pixel.y * 0.35) / 9.0 + presentation_time() * 0.16);
+		float counter_flow = triangle_wave((pixel.y - pixel.x * 0.21) / 15.0 - presentation_time() * 0.09);
 		float crust = step(0.88, cheap_hash(floor(pixel / 3.0)));
 		float fissure = smoothstep(0.86, 0.98, 1.0 - abs(flow - counter_flow));
 		colour.rgb *= 0.78 + (1.0 - flow) * 0.21 + (1.0 - counter_flow) * 0.14;
@@ -444,9 +451,9 @@ vec4 apply_material_flair(
 
 	if (flair == 32) { // spark twinkle
 		float seed = cheap_hash(pixel);
-		float twinkle = 0.66 + (1.0 - triangle_wave(TIME * 2.4 + seed)) * 0.68;
+		float twinkle = 0.66 + (1.0 - triangle_wave(presentation_time() * 2.4 + seed)) * 0.68;
 		float streak = smoothstep(0.90, 1.0, 1.0 - triangle_wave(
-			(pixel.x - pixel.y) / 9.0 + TIME * 0.75 + seed
+			(pixel.x - pixel.y) / 9.0 + presentation_time() * 0.75 + seed
 		));
 		colour.rgb *= twinkle;
 		colour.rgb += vec3(0.45, 0.38, 0.12) * streak;
@@ -470,20 +477,20 @@ vec4 apply_material_flair(
 
 	if (flair == 34) { // Smoke: slow layered turbulent wisps
 		float drift_a = triangle_wave(
-			(pixel.x + pixel.y * 0.37) / 17.0 + TIME * 0.052
+			(pixel.x + pixel.y * 0.37) / 17.0 + presentation_time() * 0.052
 		);
 		float drift_b = triangle_wave(
-			(pixel.y - pixel.x * 0.23) / 23.0 - TIME * 0.031
+			(pixel.y - pixel.x * 0.23) / 23.0 - presentation_time() * 0.031
 		);
 		float wisp = smoothstep(0.18, 0.88, drift_a * 0.58 + drift_b * 0.42);
-		float billow = 0.82 + cheap_hash(floor(pixel / 5.0) + vec2(floor(TIME * 0.08))) * 0.18;
+		float billow = 0.82 + cheap_hash(floor(pixel / 5.0) + vec2(floor(presentation_time() * 0.08))) * 0.18;
 		colour.rgb *= 0.70 + wisp * 0.35;
 		colour.a *= (0.48 + wisp * 0.52) * billow;
 		return colour;
 	}
 
 	if (flair == 35) { // Steam: fine rising translucent curls
-		float rise = TIME * 0.11;
+		float rise = presentation_time() * 0.11;
 		float curl_a = triangle_wave((pixel.x + pixel.y * 0.41) / 13.0 + rise);
 		float curl_b = triangle_wave((pixel.x * -0.28 + pixel.y) / 19.0 - rise * 0.73);
 		float vapour = smoothstep(0.20, 0.92, curl_a * curl_b + curl_b * 0.25);
@@ -511,7 +518,7 @@ vec4 apply_material_flair(
 		float vein_b = triangle_wave((pixel.x - pixel.y * 0.31) / 9.0);
 		float node = step(0.965, cheap_hash(pixel + vec2(13.0, 41.0)));
 		float pulse = material_id == 18
-			? 0.94 + (1.0 - triangle_wave(TIME * 0.12 + cheap_hash(floor(pixel / 5.0)))) * 0.10
+			? 0.94 + (1.0 - triangle_wave(presentation_time() * 0.12 + cheap_hash(floor(pixel / 5.0)))) * 0.10
 			: 1.0;
 		colour.rgb *= (0.72 + vein_a * 0.20 + vein_b * 0.14) * pulse;
 		colour.rgb += vec3(0.16, 0.20, 0.08) * node;
@@ -523,7 +530,7 @@ vec4 apply_material_flair(
 		float facet_b = triangle_wave((pixel.x - pixel.y * 1.4) / 11.0);
 		float plane = 0.70 + facet_a * 0.18 + facet_b * 0.16;
 		float sheen = smoothstep(0.88, 1.0, 1.0 - triangle_wave(
-			(pixel.x + pixel.y * 0.52) / 29.0 + TIME * 0.045
+			(pixel.x + pixel.y * 0.52) / 29.0 + presentation_time() * 0.045
 		));
 		colour.rgb *= plane;
 		colour.rgb += vec3(0.28, 0.52, 0.66) * sheen;
@@ -535,13 +542,13 @@ vec4 apply_material_flair(
 		vec2 bubble_tile = floor(pixel / 6.0);
 		float seed = cheap_hash(bubble_tile);
 		vec2 local = mod(
-			pixel + vec2(seed * 4.0, TIME * speed * 7.0 + seed * 3.0),
+			pixel + vec2(seed * 4.0, presentation_time() * speed * 7.0 + seed * 3.0),
 			6.0
 		) - vec2(3.0);
 		float bubble = (1.0 - smoothstep(0.22, 0.62, abs(length(local) - (0.75 + seed))))
 			* step(0.47, seed);
 		float swirl = triangle_wave(
-			(pixel.x + pixel.y * 0.36) / 15.0 + TIME * speed
+			(pixel.x + pixel.y * 0.36) / 15.0 + presentation_time() * speed
 		);
 		vec3 reactive_tint = material_id == 12
 			? vec3(0.34, 0.42, 0.04)
@@ -553,10 +560,10 @@ vec4 apply_material_flair(
 
 	if (flair == 40) { // Mercury: travelling mirror bands and pin highlights
 		float band_a = 1.0 - triangle_wave(
-			(pixel.x + pixel.y * 0.18) / 13.0 + TIME * 0.13
+			(pixel.x + pixel.y * 0.18) / 13.0 + presentation_time() * 0.13
 		);
 		float band_b = 1.0 - triangle_wave(
-			(pixel.y - pixel.x * 0.09) / 23.0 - TIME * 0.075
+			(pixel.y - pixel.x * 0.09) / 23.0 - presentation_time() * 0.075
 		);
 		float mirror = smoothstep(0.62, 1.0, max(band_a, band_b));
 		float pin = step(0.986, cheap_hash(pixel)) * mirror;
@@ -571,10 +578,10 @@ vec4 apply_material_flair(
 		float brushed = triangle_wave((pixel.x + pixel.y * 0.15) / 8.0);
 		float glint = manufactured_glint(pixel, 0.34);
 		float route = 1.0 - triangle_wave(
-			(pixel.x + floor(pixel.y / 3.0) * 2.0) / 11.0 + TIME * 0.48
+			(pixel.x + floor(pixel.y / 3.0) * 2.0) / 11.0 + presentation_time() * 0.48
 		);
 		float arc = smoothstep(0.91, 1.0, route)
-			* step(0.78, cheap_hash(floor(pixel / 2.0) + vec2(floor(TIME * 4.0))))
+			* step(0.78, cheap_hash(floor(pixel / 2.0) + vec2(floor(presentation_time() * 4.0))))
 			* condition;
 		colour.rgb *= mix(0.86 + brushed * 0.20, 0.46, seam);
 		colour.rgb += vec3(glint * (1.0 - seam) * 0.48);
@@ -587,7 +594,7 @@ vec4 apply_material_flair(
 		float trace = max(1.0 - step(0.62, local.x), 1.0 - step(0.62, local.y));
 		float node = 1.0 - step(1.05, length(local - vec2(1.0)));
 		float scan = smoothstep(0.82, 1.0, 1.0 - triangle_wave(
-			(pixel.x + pixel.y) / 19.0 - TIME * 0.26
+			(pixel.x + pixel.y) / 19.0 - presentation_time() * 0.26
 		));
 		colour.rgb *= mix(0.62, 1.08 + scan * 0.25, max(trace, node));
 		colour.rgb += vec3(0.20, 0.05, 0.34) * node * scan;
