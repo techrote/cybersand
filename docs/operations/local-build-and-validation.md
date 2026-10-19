@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-19
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md]
 ---
 
@@ -133,10 +133,14 @@ restore the same source/runtime identity and run deterministic subsets of the
 Godot suite. Each shard performs its own clean headless import. Active external
 or self-hosted runner routing is rejected by the repository policy checker.
 
-The local/default invocation remains serial and unchanged in scope:
+The local/default invocation remains serial. Linux rendered-output tests need a
+display; a software-rendered run can use Xvfb:
 
 ```sh
-python3 tools/ci/run_godot_regressions.py --godot <godot> --output build/godot-regressions
+LIBGL_ALWAYS_SOFTWARE=1 LP_NUM_THREADS=2 GALLIVM_PERF=nopt xvfb-run -a \
+  -s '-screen 0 1920x1080x24 -nolisten tcp' \
+  python3 tools/ci/run_godot_regressions.py --godot <godot> \
+  --output build/godot-regressions --keep-going
 ```
 
 CI uses `--shard-count 4 --shard-index 0..3`. The runner still discovers every
@@ -145,6 +149,14 @@ CI uses `--shard-count 4 --shard-index 0..3`. The runner still discovers every
 historical timings only influence deterministic scheduling; they are not test
 thresholds. Unknown/new tests receive a conservative default weight and must appear
 exactly once in the union of shards.
+
+`test_*_render.gd` cases automatically request the compatibility renderer; other
+cases and import remain headless. Explicit skips are required-case failures,
+including the former headless pixel-test skip. `--keep-going` records the rest of
+the assigned cases after test failure, while import failure stops immediately.
+Read each record and the final completion/status fields in `timings.json` before
+claiming a pass. The [test-selection guide](testing-validation-and-replay.md#ci-execution-sharding)
+owns these acceptance rules.
 
 The initial migration PR proved exact serial/sharded coverage equivalence on the
 same source/runtime/Godot identity. That serial lane is now opt-in only via

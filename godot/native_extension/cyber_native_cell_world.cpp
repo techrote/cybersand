@@ -711,7 +711,8 @@ void CyberNativeCellWorld::accumulate_boundary_pressure() {
                 auto& diagnostic = (*body_diagnostics_)[body_id];
                 diagnostic.boundary += impulse;
                 const auto face = direction.y < 0 ? 0U : direction.x > 0 ? 1U : direction.y > 0 ? 2U : 3U;
-                ++diagnostic.faces[face * 81U + static_cast<std::uint8_t>(material)];
+                ++diagnostic.faces[face * cybersand::kMaterialDefinitions.size() +
+                                   static_cast<std::size_t>(material)];
             }
             record_impulse(body_id, impulse);
         }
@@ -1418,7 +1419,8 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
 
 bool CyberNativeCellWorld::diagnostic_fill_rect(Vector2i origin, Vector2i size,
     std::int64_t material, std::int64_t state_b) {
-    if (!diagnostic_fixture_ || has_failed() || material < 0 || material > 80 ||
+    if (!diagnostic_fixture_ || has_failed() || material < 0 ||
+        material > static_cast<std::int64_t>(cybersand::kLastMaterial) ||
         !cybersand::valid_material(static_cast<std::uint16_t>(material)) || state_b < 0 || state_b > 255 ||
         size.x < 1 || size.y < 1 || size.x > kWorldWidth || size.y > kWorldHeight ||
         !in_bounds(origin.x, origin.y) || !in_bounds(static_cast<std::int64_t>(origin.x) + size.x - 1,

@@ -169,6 +169,7 @@ func _apply_lab(command: Dictionary) -> bool:
 		):
 			_lab_status = _scenario_host.last_error
 			return false
+		_world_generation += 1
 		_activate_sampled_character(
 			Vector2(
 				tower_definition.player_start[0],
@@ -206,6 +207,7 @@ func _apply_lab(command: Dictionary) -> bool:
 		if not _scenario_host.install(_world, MicroCatalogue.water(resolved), str(command.get("scenario_mode", "Inspect"))):
 			_lab_status="Water Apply + Reset rejected; "+_scenario_host.last_error
 			return false
+		_world_generation += 1
 		_lab_profile=profile_result.profile.duplicate(true)
 		_lab_profile_hash=str(profile_result.hash)
 		_lab_active=true
@@ -259,6 +261,7 @@ func _apply_lab(command: Dictionary) -> bool:
 		if not _scenario_host.install(_world, command.scenario_reset, str(command.get("scenario_mode", "Inspect"))):
 			_lab_status = "MicroScenario rejected; " + _scenario_host.last_error
 			return false
+		_world_generation += 1
 		var definition: Dictionary = _scenario_host.definition()
 		var transport: Dictionary = CyberTransportProfiles.resolve(definition.transport_profile)
 		_lab_profile = transport.profile.duplicate(true)
@@ -327,6 +330,11 @@ var _published_snapshot: CyberSimulationSnapshot
 var _snapshot_serial: int = 0
 var _snapshot_cells: PackedByteArray = PackedByteArray()
 var _snapshot_world_revision: int = -1
+# World incarnation is independent of native revisions, actor epochs and
+# transport/full-refresh serials. Only the exclusive owner advances it after
+# an accepted reset/replacement; publication retains it with the render bytes.
+var _world_generation: int = 1
+var _pending_render_world_generation: int = 0
 var _last_render_snapshot_usec: int = -DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 var _pending_render_snapshot_serial: int = 0
 var _pending_render_channels: int = 1
@@ -951,6 +959,7 @@ func _worker_loop() -> void:
 			else:
 				_world.reset_demo_world()
 			if recovered:
+				_world_generation += 1
 				_scenario_host.clear()
 				_lab_active = false
 				_micro_active = false
@@ -1077,6 +1086,7 @@ func _publish_snapshot(
 	_mutex.unlock()
 	force_render_full_refresh = (
 		force_render_full_refresh or render_full_refresh_requested
+		or _world_generation != _pending_render_world_generation
 	)
 	if (
 		_pending_render_snapshot_serial > 0
@@ -1123,6 +1133,7 @@ func _publish_snapshot(
 		_snapshot_world_revision = _world.revision
 		_last_render_snapshot_usec = now_usec
 		if _pending_render_snapshot_serial > render_serial_before:
+			_pending_render_world_generation = _world_generation
 			_pending_render_tick_index = int(_world.tick_index)
 			_pending_render_generated_usec = now_usec
 			_pending_render_character_position = _character.position
@@ -1174,6 +1185,7 @@ func _publish_snapshot(
 	snapshot.hard_surface_revision = _snapshot_hard_surface_revision
 	snapshot.cells = _snapshot_cells
 	snapshot.render_snapshot_serial = _pending_render_snapshot_serial
+	snapshot.render_world_generation = _pending_render_world_generation
 	snapshot.render_channels = _pending_render_channels
 	snapshot.render_full_refresh = _pending_render_full_refresh
 	snapshot.render_tick_index = _pending_render_tick_index

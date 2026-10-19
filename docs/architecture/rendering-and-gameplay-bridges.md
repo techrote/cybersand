@@ -6,7 +6,7 @@ status: Current
 scope: Native publication outcomes, Godot render consumption and current gameplay commands; resource lifetime and wire layouts are linked
 keywords: [RenderBridge, GameplayBridge, RG8, immutable snapshot, full texture upload, backpressure, emission queue]
 related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../systems/material-appearance-and-rendering.md]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-10-19
 ---
 
 # Rendering and gameplay bridges
@@ -63,6 +63,25 @@ explicit full refresh when accumulation exceeds its patch/byte thresholds.
 The historical handoff race is guarded by
 [test_render_patch_handoff_regression](../../godot/tests/test_render_patch_handoff_regression.gd).
 Do not reuse pending buffers while a published generation remains observable.
+
+**Current desktop reset identity:** the exclusive GDScript owner advances a
+World generation only after an accepted World reset or scenario replacement.
+It retains `render_world_generation` with the exact render publication, forcing
+a complete replacement payload even when a new World reuses the old revision
+or paused tick index. The main thread invalidates vapour history only after it
+successfully uploads that generation. A newer physics/status snapshot carrying
+an older render publication cannot advance the displayed reset identity.
+
+`render_full_refresh` describes transport coverage, not World lifetime. Native
+resynchronization and ordinary R8 fallback publications can be full images of
+the same World; they preserve presentation history. Rejected reset requests do
+not advance the World generation. The
+[owner regression](../../godot/tests/test_render_world_generation.gd) checks
+native and fallback paints, resyncs, accepted/rejected resets and repeated
+identical paused scenario replacements; the
+[actual-pixel pipeline regression](../../godot/tests/test_material_vapour_pipeline_render.gd)
+checks the corresponding visible history behavior. Evidence is in the
+[2026-10-19 review](../audits/2026-10-19-mat002-review-and-validation.md).
 
 Temporal smoothing ping-pongs presentation textures. Palette/program LUTs,
 Water dither, liquid motion, material flair, relief and glow derive appearance

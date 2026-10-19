@@ -264,9 +264,8 @@ jobs:
       always() &&
       needs.linux-build.result == 'success' &&
       (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
-    # Shard 2 contains test_web_worker_parity and requires >=2 logical CPUs so
-    # its parallel arm actually executes. Standard private-repo ubuntu-24.04
-    # GitHub-hosted runners provide 2 vCPUs, so one runner class preserves parity.
+    # Every shard has >=2 logical CPUs so weighted planning may move the worker
+    # parity case without disabling its parallel arm. All use GitHub-hosted CI.
     runs-on: ubuntu-24.04
     timeout-minutes: 35
     strategy:
@@ -302,9 +301,19 @@ jobs:
           test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
           echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
 
-      - name: Run isolated regression shard
+      - name: Install software rendering display
         run: |
-          timeout 30m python3 tools/ci/run_godot_regressions.py             --godot "$GODOT_BIN"             --output "build/godot-regressions/shard-${{ matrix.shard }}"             --shard-count 4             --shard-index "${{ matrix.shard }}"
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes xvfb xauth libgl1-mesa-dri mesa-utils
+
+      - name: Run isolated regression shard with actual rendered-pixel tests
+        env:
+          LIBGL_ALWAYS_SOFTWARE: "1"
+          LP_NUM_THREADS: "2"
+          GALLIVM_PERF: "nopt"
+          CYBERSAND_PRESENTATION_EVIDENCE: ${{ github.workspace }}/build/godot-regressions/shard-${{ matrix.shard }}/presentation
+        run: |
+          timeout 30m xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24 -nolisten tcp" python3 tools/ci/run_godot_regressions.py --godot "$GODOT_BIN" --output "build/godot-regressions/shard-${{ matrix.shard }}" --shard-count 4 --shard-index "${{ matrix.shard }}" --keep-going
           git diff --exit-code -- .             ':!godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so'             ':!godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'
 
       - name: Retain shard evidence
@@ -359,9 +368,19 @@ jobs:
           test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
           echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
 
-      - name: Run legacy-equivalent serial suite
+      - name: Install software rendering display
         run: |
-          timeout 30m python3 tools/ci/run_godot_regressions.py             --godot "$GODOT_BIN"             --output build/godot-regressions/serial
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes xvfb xauth libgl1-mesa-dri mesa-utils
+
+      - name: Run serial suite with actual rendered-pixel tests
+        env:
+          LIBGL_ALWAYS_SOFTWARE: "1"
+          LP_NUM_THREADS: "2"
+          GALLIVM_PERF: "nopt"
+          CYBERSAND_PRESENTATION_EVIDENCE: ${{ github.workspace }}/build/godot-regressions/serial/presentation
+        run: |
+          timeout 30m xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24 -nolisten tcp" python3 tools/ci/run_godot_regressions.py --godot "$GODOT_BIN" --output build/godot-regressions/serial --keep-going
           git diff --exit-code -- .             ':!godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so'             ':!godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'
 
       - name: Retain serial equivalence evidence

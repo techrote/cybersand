@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Executable test selection and future gates; dated results and save format live in separate references
 canonical-for: [test-inventory, test-selection, future-validation-gates]
-last-reviewed: 2026-09-19
+last-reviewed: 2026-10-19
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md, ../reference/level-saves-and-replay.md]
 ---
 
@@ -26,6 +26,7 @@ Counts identify this inspected source inventory, not a pass for a later revision
 | Explosion or optional fields | Native bounded event validation/queue/hash/parity, static-to-granular conversion and temperature allocation/movement |
 | Immutable publication | Native slot capacity, dirty retention, deterministic patch order, lease concurrency/C lifetime; Godot native bridge and render-handoff fixtures |
 | Presentation/material catalogue | Godot appearance LUT and presentation runners: catalogue rows, representative flair, HDR values, viewport/F3 behavior |
+| MAT-002 catalogue integration | `test_building_material_integration.gd`: all 51 new IDs through native construction and saves, metadata, fill/count diagnostics, four-face histogram stride and actor occlusion; native snapshot and exhaustive pair/transport regressions |
 | Fallback cells/player | `test_cell_world.gd` has nine groups including Smoke, Water, body mask/sweep and vertical scan continuity; these are one runner |
 | Rapier or coupling | Preflight, automatic drop-in, manual-step and `test_web_rapier.gd`; see [Rapier procedure](rapier-2d-migration-runbook.md) |
 | Save, Web worker selection or benchmark | Demo-save, setup, Web worker parity, Auto and worker-benchmark runners; actual Web export must additionally execute in browser |
@@ -52,6 +53,21 @@ limits. The initial migration checkpoint executed the unsharded suite against th
 source/runtime artifact and proved exact case coverage equivalence. The serial lane
 is retained as an explicit opt-in diagnostic, while ordinary PR validation uses the
 four isolated shards.
+
+Every discovered `test_*_render.gd` case requires a display and executes with the
+OpenGL compatibility renderer. Linux CI provides Xvfb and Mesa software rendering;
+logic cases and import retain `--headless`. An explicit skip, missing display or
+executable, timeout, nonzero exit, or engine/script error fails the applicable
+case. An exit code of zero alone cannot satisfy the gate. Pixel assertions are
+rendered-output evidence for the recorded software backend, not target-GPU
+performance evidence.
+
+`--keep-going` retains outcomes for all assigned cases after an ordinary test
+failure; an import failure still stops that shard because the project could not
+be prepared. `timings.json` records the executed command, display requirement,
+skip/error details, completion state and aggregate status. The planner and runner
+regressions execute child processes to check failure, timeout, skip and
+continuation handling as well as exact discovery and assignment.
 
 ## What does equality establish?
 

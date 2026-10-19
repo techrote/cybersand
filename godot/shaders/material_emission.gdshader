@@ -3,7 +3,7 @@ render_mode unshaded;
 
 // Downsampled presentation-only light source. It reads the same immutable RG8
 // snapshot as the palette pass and never creates Light2D nodes or simulation
-// feedback. One low-resolution fragment performs a bounded thirteen-cell,
+// feedback. One low-resolution fragment performs a bounded sixteen-cell,
 // dual-radius sample before the composite pass widens the halo on the GPU.
 uniform sampler2D world_texture : filter_nearest, repeat_disable;
 uniform sampler2D material_program_lut : filter_nearest, repeat_disable;
@@ -89,8 +89,14 @@ void fragment() {
 	float radius = sample_radius_px;
 	// The half-resolution texel covers a 2x2 block of cells; taking the brightest
 	// keeps single-cell emitters (activated fireworks, sparks) in the bloom.
-	vec3 emission = max(max(emission_at(world_pixel), emission_at(world_pixel + vec2(1.0, 0.0))),
-		max(emission_at(world_pixel + vec2(0.0, 1.0)), emission_at(world_pixel + vec2(1.0, 1.0)))) * 0.22;
+	// UV is at the output texel's centre: floor(UV * view_size_px) is the
+	// bottom-right cell at 2:1, not the block's origin. Derivatives also keep
+	// full-resolution fixtures at a one-cell footprint.
+	vec2 footprint = vec2(1.0) + step(vec2(1.5), fwidth(UV * view_size_px));
+	vec2 block_pixel = camera_origin_px + floor(UV * view_size_px / footprint) * footprint;
+	vec2 span = footprint - vec2(1.0);
+	vec3 emission = max(max(emission_at(block_pixel), emission_at(block_pixel + vec2(span.x, 0.0))),
+		max(emission_at(block_pixel + vec2(0.0, span.y)), emission_at(block_pixel + span))) * 0.22;
 	emission += emission_at(world_pixel + vec2(radius, 0.0)) * 0.09;
 	emission += emission_at(world_pixel + vec2(-radius, 0.0)) * 0.09;
 	emission += emission_at(world_pixel + vec2(0.0, radius)) * 0.09;

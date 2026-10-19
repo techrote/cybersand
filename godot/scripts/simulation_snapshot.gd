@@ -18,6 +18,9 @@ var cells: PackedByteArray = PackedByteArray()
 # x, y, width, height, data offset, row stride. Data is R8 for the script
 # fallback and RG8 (material ID + read-only visual condition) for native.
 var render_snapshot_serial: int = 0
+# Accepted World/reset generation represented by these exact render bytes.
+# Full refresh is a transport choice (always true for R8 fallback), not a reset.
+var render_world_generation: int = 0
 var render_channels: int = 1
 var render_full_refresh: bool = false
 var render_patch_rectangles: PackedInt32Array = PackedInt32Array()

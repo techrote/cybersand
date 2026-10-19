@@ -1,7 +1,7 @@
 {
   "version": 1,
   "frozen_date": "2026-09-08",
-  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair. ACT01-ACT03 cover provisional actor capabilities, player/policy input lifetime and bounded-work limits. SCENE01/SCENE02 cover Neon Reliquary entry and view controls, and the four-district descent with explicit scene-state boundaries. ACT04-ACT09 cover the 29-rig sets, parametric input, consumed-action identity, fictional personas, bounded tool/rope authority and SetA compatibility. SCENE03 covers the connected Blacksite Nine route, camera-only district views, shared-world continuity and whole-complex reset.",
+  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair. ACT01-ACT03 cover provisional actor capabilities, player/policy input lifetime and bounded-work limits. SCENE01/SCENE02 cover Neon Reliquary entry and view controls, and the four-district descent with explicit scene-state boundaries. ACT04-ACT09 cover the 29-rig sets, parametric input, consumed-action identity, fictional personas, bounded tool/rope authority and SetA compatibility. SCENE03 covers the connected Blacksite Nine route, camera-only district views, shared-world continuity and whole-complex reset. MAT03 and TEST01 cover the 2026-10-19 catalogue integration and required rendered-test acceptance corrections.",
   "questions": [
     {
       "id": "C05",
@@ -1170,6 +1170,45 @@
         "../godot/scripts/physical_actor_arena.gd",
         "../godot/examples/thunderbowl/run_physical_thunderbowl.gd",
         "../godot/scripts/physical_actor_session.gd"
+      ]
+    },
+    {
+      "id": "MAT03",
+      "query": "Can the new building materials survive level saves and diagnostic counting, and do they block actor tools?",
+      "canonical": [
+        "systems/building-material-catalogue.md",
+        "reference/level-saves-and-replay.md",
+        "operations/physics-characterisation.md"
+      ],
+      "facts": [
+        "Current catalogue IDs run through 131, with reserved ID 10 invalid; constructor, import and metadata bounds reject wide inputs before narrowing.",
+        "CYSD1 retains its existing header and five-byte cell encoding. Older 81-slot readers reject levels containing new materials.",
+        "Current material histograms have 132 slots, with four 132-slot body faces; the transport profile remains an intentionally separate 81-entry schema.",
+        "New hard surfaces are protected actor tool occluders, verified with a dig positive control and an unchanged cell behind each barrier."
+      ],
+      "sources": [
+        "../native/include/cybersand/demo_snapshot.hpp",
+        "../godot/native_extension/cyber_native_cell_world.cpp",
+        "../godot/tests/test_building_material_integration.gd"
+      ]
+    },
+    {
+      "id": "TEST01",
+      "query": "Does a passing headless run prove material pixels were rendered, and how does CI detect skipped graphical tests?",
+      "canonical": [
+        "operations/testing-validation-and-replay.md",
+        "operations/local-build-and-validation.md"
+      ],
+      "facts": [
+        "The runner automatically gives test_*_render.gd an actual display and compatibility renderer; Linux CI provides Xvfb and Mesa software rendering.",
+        "Explicit skips, timeout, missing executables, nonzero exits and engine/script errors fail required cases, including errors with exit code zero.",
+        "Keep-going retains later test outcomes after ordinary case failure, while failed import stops immediately; final timing reports record completion and status.",
+        "Linux software framebuffer checks do not establish target-GPU performance or fresh WebAssembly browser execution."
+      ],
+      "sources": [
+        "../tools/ci/run_godot_regressions.py",
+        "../tools/ci/test_godot_regression_sharding.py",
+        "../.github/workflows/gdextension.yml"
       ]
     }
   ],

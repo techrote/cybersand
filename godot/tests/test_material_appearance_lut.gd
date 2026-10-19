@@ -54,6 +54,33 @@ func _run() -> void:
 		programs.get_width() == 4 and programs.get_height() == 256,
 		"appearance program dimensions changed"
 	)
+	# Exercise the complete byte address space. An unassigned catalogue row
+	# must be explicit magenta, with a neutral, finite, non-emitting program;
+	# every defined ID must have a usable row, not just the selected examples.
+	for material_id: int in range(256):
+		var invalid: bool = material_id == 10 or material_id >= CyberMaterialAppearanceLut.MATERIAL_COUNT
+		for variant: int in range(CyberMaterialAppearanceLut.ATLAS_WIDTH):
+			var colour: Color = atlas.get_pixel(variant, material_id)
+			if invalid:
+				_expect(colour == Color(1, 0, 1, 1),
+					"invalid ID %d variant %d lacks the explicit fallback" % [material_id, variant])
+			elif material_id != CyberCellWorld.EMPTY:
+				_expect(colour != Color(1, 0, 1, 1) and colour.a > 0.0,
+					"defined ID %d variant %d lacks a visible palette row" % [material_id, variant])
+		for instruction: int in range(4):
+			var value: Color = programs.get_pixel(instruction, material_id)
+			_expect(Vector4(value.r, value.g, value.b, value.a).is_finite(),
+				"material %d instruction %d contains a non-finite parameter" % [material_id, instruction])
+		var curve: Color = programs.get_pixel(1, material_id)
+		_expect(curve.g > curve.r, "material %d has an undefined smoothstep range" % material_id)
+		var emission: Color = programs.get_pixel(3, material_id)
+		_expect(emission.a == float(roundi(emission.a)) and emission.a >= 0.0 and
+			emission.a <= float(CyberMaterialAppearanceLut.FLAIR_CLASS_COUNT),
+			"material %d has an invalid flair selector" % material_id)
+		if invalid or material_id == CyberCellWorld.EMPTY:
+			var response: Color = programs.get_pixel(2, material_id)
+			_expect(response.b == 0.0 and response.a == 0.0 and emission == Color(0, 0, 0, 0),
+				"empty/invalid material %d can emit light or select a finish" % material_id)
 	_expect(
 		roundi(programs.get_pixel(3, CyberCellWorld.RED_BRICK).a) ==
 			CyberMaterialAppearanceLut.FLAIR_MASONRY,
@@ -158,6 +185,13 @@ func _run() -> void:
 	_expect(ClassDB.class_exists(&"CyberNativeCellWorld"), "native world is unavailable")
 	if ClassDB.class_exists(&"CyberNativeCellWorld"):
 		var native_world: Object = ClassDB.instantiate(&"CyberNativeCellWorld")
+		for material_id: int in range(CyberCellWorld.LAST_MATERIAL + 1):
+			if material_id == 10:
+				continue
+			var location := Vector2i(500 + (material_id % 22) * 2, 300 + (material_id / 22) * 2)
+			native_world.emit_disc(location.x, location.y, 0, material_id)
+			_expect(int(native_world.material_at(location.x, location.y)) == material_id,
+				"bundled native extension rejected catalogue material %d" % material_id)
 		var hard_revision_before: int = int(native_world.get_hard_surface_revision())
 		native_world.emit_disc(500, 300, 0, CyberCellWorld.REINFORCED_CONCRETE)
 		_expect(
@@ -175,7 +209,7 @@ func _run() -> void:
 		)
 
 	if _failures == 0:
-		print("Material appearance LUT regression passed; 132 IDs and 50 flair classes")
+		print("Material appearance LUT regression passed; all 132 ID slots, 256 palette/program rows, 50 flair classes")
 	quit(_failures)
 
 

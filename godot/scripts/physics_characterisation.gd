@@ -35,7 +35,7 @@ static func sample(world, origin: Vector2i, size: Vector2i, histogram: bool) -> 
 	var cells: PackedByteArray = PackedByteArray()
 	cells.resize(size.x * size.y)
 	var counts: Array = []
-	counts.resize(81)
+	counts.resize(CyberCellWorld.LAST_MATERIAL + 1)
 	counts.fill(0)
 	for y: int in range(size.y):
 		for x: int in range(size.x):
@@ -256,7 +256,7 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 	var grounded_ticks: int = 0
 	var max_overlap: int = 0
 	var face_totals: Array = []
-	face_totals.resize(324)
+	face_totals.resize(4 * (CyberCellWorld.LAST_MATERIAL + 1))
 	face_totals.fill(0)
 	var wex001: bool = bool(spec.get("wex001",false)) and not fallback
 	var wex_surface_stride: int = clampi(int(spec.get("wex_surface_stride",6)),1,60)
@@ -392,7 +392,7 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 				raw_contact += Vector2(d[6],d[7])
 				caps += int(d[12])
 				final_caps += int(d[13])
-				for i: int in range(324): face_totals[i] += int(d[16][i])
+				for i: int in range(face_totals.size()): face_totals[i] += int(d[16][i])
 				if d.size() >= 20:
 					raw_bearing += Vector2(d[17],d[18])
 					support_samples += int(d[19])

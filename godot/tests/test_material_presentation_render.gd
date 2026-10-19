@@ -10,6 +10,9 @@ const TOLERANCE: float = 2.0 / 255.0
 var failures: int = 0
 var palette_lut: ImageTexture
 var program_lut: ImageTexture
+var palette_shader: Shader
+var emission_shader: Shader
+var trail_shader: Shader
 
 
 func _init() -> void:
@@ -48,7 +51,7 @@ func _render(current: Image, previous: Image, time: float, blend: float = 1.0,
 	root.add_child(viewport)
 	var current_texture: ImageTexture = ImageTexture.create_from_image(current)
 	var material: ShaderMaterial = ShaderMaterial.new()
-	material.shader = load("res://shaders/material_palette.gdshader")
+	material.shader = palette_shader
 	material.set_shader_parameter("world_size_px", Vector2(current.get_size()))
 	material.set_shader_parameter("view_size_px", Vector2(view))
 	material.set_shader_parameter("view_rect_uv", Vector4(0, 0, 1, 1))
@@ -81,23 +84,25 @@ func _render(current: Image, previous: Image, time: float, blend: float = 1.0,
 	return result
 
 
-func _render_emission(world: Image, time: float) -> Image:
+func _render_emission(world: Image, time: float, output: Vector2i = SIDE,
+		camera: Vector2i = Vector2i.ZERO) -> Image:
 	var viewport: SubViewport = SubViewport.new()
-	viewport.size = SIDE
+	viewport.size = output
 	viewport.use_hdr_2d = true
 	viewport.transparent_bg = true
 	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	root.add_child(viewport)
 	var material: ShaderMaterial = ShaderMaterial.new()
-	material.shader = load("res://shaders/material_emission.gdshader")
+	material.shader = emission_shader
 	material.set_shader_parameter("world_texture", ImageTexture.create_from_image(world))
 	material.set_shader_parameter("material_program_lut", program_lut)
 	material.set_shader_parameter("world_size_px", Vector2(world.get_size()))
 	material.set_shader_parameter("view_size_px", Vector2(SIDE))
+	material.set_shader_parameter("camera_origin_px", Vector2(camera))
 	material.set_shader_parameter("condition_projection_enabled", 1.0)
 	material.set_shader_parameter("presentation_time_override", time)
 	var source: ColorRect = ColorRect.new()
-	source.size = Vector2(SIDE)
+	source.size = Vector2(output)
 	source.material = material
 	viewport.add_child(source)
 	await RenderingServer.frame_post_draw
@@ -133,6 +138,11 @@ func _run() -> void:
 		return
 	palette_lut = CyberMaterialAppearanceLut.create_texture()
 	program_lut = CyberMaterialAppearanceLut.create_program_texture()
+	# Retain these across fixtures instead of repeatedly compiling an identical
+	# large shader as each temporary viewport is freed.
+	palette_shader = load("res://shaders/material_palette.gdshader")
+	emission_shader = load("res://shaders/material_emission.gdshader")
+	trail_shader = load("res://shaders/material_vapour_trail.gdshader")
 	var full: Rect2i = Rect2i(Vector2i.ZERO, SIDE)
 
 	# Fixed presentation time reaches palette and emission; animated finishes
@@ -255,7 +265,7 @@ func _run() -> void:
 	await _check_fidelity_pass_two(full)
 
 	if failures == 0:
-		print("MATERIAL_PRESENTATION_RENDER: actual pixels passed (time override, still scenery, anchoring, crossfade endpoints, conditions, invalid row, building catalogue, growth decor, vapour trail, fireworks)")
+		print("MATERIAL_PRESENTATION_RENDER: actual pixels passed (time override, still scenery, anchoring, crossfade endpoints, conditions, all 132 ID slots, invalid bounds, growth blockers, vapour footprint, half-resolution single-cell fireworks)")
 	quit(failures)
 
 
@@ -285,8 +295,8 @@ func _check_fidelity_pass_two(full: Rect2i) -> void:
 		for index: int in range(rects.size()):
 			_expect(_difference(a, b, rects[index]) <= TOLERANCE,
 				"building material %d finish changed over time" % static_ids[offset + index])
-			_expect(_difference(a, a, rects[index], Vector2i.ZERO) <= TOLERANCE and
-				_mean_luma(a, rects[index]) > 0.0, "building material %d rendered black" % static_ids[offset + index])
+			_expect(_mean_luma(a, rects[index]) > 0.0,
+				"building material %d rendered black" % static_ids[offset + index])
 		offset += 8
 
 	# Growth decor: Empty cells above Plant/Fungus and below an overhang gain
@@ -307,6 +317,23 @@ func _check_fidelity_pass_two(full: Rect2i) -> void:
 	_expect(_difference(with_decor, without_decor, Rect2i(0, 16, 48, 8)) <= TOLERANCE and
 		_difference(with_decor, without_decor, Rect2i(0, 0, 48, 3)) <= TOLERANCE,
 		"growth decor changed material cells")
+	# A wall interrupts the host search. Decorative growth must not appear
+	# through it, and unrelated hard surfaces must never sprout.
+	var blocked: Image = garden.duplicate()
+	_block(blocked, Rect2i(0, 13, 48, 1), CyberCellWorld.WALL)
+	_block(blocked, Rect2i(0, 5, 48, 1), CyberCellWorld.WALL)
+	var blocked_on: Image = await _render(blocked, blocked, 1.0)
+	var blocked_off: Image = await _render(blocked, blocked, 1.0, 1.0, Vector2i.ZERO, SIDE, {"growth_decor": 0.0})
+	_expect(_difference(blocked_on, blocked_off, Rect2i(0, 6, 48, 7)) <= TOLERANCE,
+		"growth passed through a solid blocker")
+	var nonhost: Image = _blank()
+	_block(nonhost, Rect2i(0, 16, 48, 8), CyberCellWorld.GRANITE_BLOCK)
+	_expect(_difference(await _render(nonhost, nonhost, 1.0),
+		await _render(nonhost, nonhost, 1.0, 1.0, Vector2i.ZERO, SIDE, {"growth_decor": 0.0}), full) <= TOLERANCE,
+		"a non-host material produced growth decor")
+	var panned_growth: Image = await _render(garden, garden, 1.0, 1.0, Vector2i(3, 2))
+	_expect(_difference(with_decor, panned_growth, Rect2i(3, 3, 42, 13), Vector2i(-3, -2)) <= TOLERANCE,
+		"growth decor moved with the camera")
 
 	# Vapour trail: zero strength is an exact no-op; a remembered vapour only
 	# brightens Empty cells.
@@ -325,6 +352,11 @@ func _check_fidelity_pass_two(full: Rect2i) -> void:
 		"vapour afterimage did not appear over Empty cells")
 	_expect(_difference(plain, on, Rect2i(0, 12, 48, 12)) <= TOLERANCE,
 		"vapour afterimage was drawn over solid material")
+	var outside: Image = await _render(scene, scene, 2.0, 1.0, Vector2i.ZERO, SIDE,
+		{"vapour_trail_texture": trail, "vapour_trail_strength": 1.0,
+		"vapour_trail_origin_px": Vector2(SIDE.x, 0)})
+	_expect(_difference(plain, outside, full) <= TOLERANCE,
+		"vapour outside the history footprint smeared its edge into the view")
 
 	# Fireworks: a flying Rocket is a bright, blooming source; an idle one
 	# emits nothing. Mites glisten over time.
@@ -343,6 +375,8 @@ func _check_fidelity_pass_two(full: Rect2i) -> void:
 	_expect(_difference(fireworks, mites_later, Rect2i(34, 4, 8, 8)) > 0.05, "mite iridescence does not animate")
 
 	await _check_vapour_trail_feedback()
+	await _check_single_cell_emission()
+	await _check_catalogue_rendering()
 
 	# Colour intent: Toxic Sludge is darker than Acid; Steam is near-white.
 	var liquids: Image = _blank()
@@ -356,6 +390,72 @@ func _check_fidelity_pass_two(full: Rect2i) -> void:
 	_expect(steam_colour.s < 0.15, "Steam is tinted instead of white")
 
 
+# Exercise the actual 2:1 source-viewport footprint, including the top/left
+# border and a camera offset. Large firework blocks at 1:1 resolution cannot
+# detect a missed quadrant in the downsample filter.
+func _check_single_cell_emission() -> void:
+	var output: Vector2i = SIDE / 2
+	for camera: Vector2i in [Vector2i.ZERO, Vector2i(3, 5)]:
+		for block: Vector2i in [Vector2i.ZERO, Vector2i(10, 8), SIDE - Vector2i(2, 2)]:
+			for quadrant: Vector2i in [Vector2i.ZERO, Vector2i(1, 0), Vector2i(0, 1), Vector2i(1, 1)]:
+				var world: Image = Image.create_empty(64, 40, false, Image.FORMAT_RG8)
+				var source: Vector2i = camera + block + quadrant
+				_cell(world, source.x, source.y, CyberCellWorld.ROCKET, 1)
+				var rendered: Image = await _render_emission(world, 1.0, output, camera)
+				var target: Vector2i = block / 2
+				_expect(rendered.get_pixelv(target).get_luminance() > 0.20,
+					"single-cell firework missed its 2x2 output footprint: camera %s, block %s, quadrant %s" % [camera, block, quadrant])
+	var idle: Image = _blank()
+	_cell(idle, 10, 8, CyberCellWorld.ROCKET, 0)
+	_expect(_mean_luma(await _render_emission(idle, 1.0, output), Rect2i(Vector2i.ZERO, output)) < 0.0001,
+		"idle single-cell Rocket emitted light")
+	var spark: Image = _blank()
+	_cell(spark, 10, 8, CyberCellWorld.SPARK, 255)
+	_expect((await _render_emission(spark, 1.0, output)).get_pixel(5, 4).get_luminance() > 0.1,
+		"single-cell Spark missed its downsampled bloom source")
+
+
+# Every defined row reaches the real palette shader, including the animated
+# building exceptions omitted by the stillness test. Reserved/unknown IDs are
+# tested as negative controls at both ends of the unused byte range.
+func _check_catalogue_rendering() -> void:
+	var empty_render: Image = await _render(_blank(), _blank(), 1.0)
+	var atlas := Image.create_empty(SIDE.x * 12, SIDE.y * 11, false, Image.FORMAT_RGBA8)
+	atlas.blit_rect(empty_render, Rect2i(Vector2i.ZERO, SIDE), Vector2i.ZERO)
+	for material_id: int in range(1, CyberCellWorld.LAST_MATERIAL + 1):
+		if material_id == 10:
+			continue
+		var swatch: Image = _blank()
+		_block(swatch, Rect2i(Vector2i.ZERO, SIDE), material_id, 180)
+		var rendered: Image = await _render(swatch, swatch, 1.0)
+		atlas.blit_rect(rendered, Rect2i(Vector2i.ZERO, SIDE),
+			Vector2i(material_id % 12, material_id / 12) * SIDE)
+		_expect(_difference(rendered, empty_render, Rect2i(4, 4, 40, 16)) > TOLERANCE,
+			"material %d rendered as Empty" % material_id)
+		var invalid_pixels: int = 0
+		for y: int in range(4, 20):
+			for x: int in range(4, 44):
+				var colour: Color = rendered.get_pixel(x, y)
+				if colour.r > 0.6 and colour.b > 0.6 and colour.g < 0.1:
+					invalid_pixels += 1
+		_expect(invalid_pixels < 640, "material %d rendered the invalid-ID fallback" % material_id)
+	for invalid_id: int in [10, CyberCellWorld.LAST_MATERIAL + 1, 255]:
+		var swatch: Image = _blank()
+		_block(swatch, Rect2i(Vector2i.ZERO, SIDE), invalid_id)
+		var rendered: Image = await _render(swatch, swatch, 1.0)
+		if invalid_id == 10:
+			atlas.blit_rect(rendered, Rect2i(Vector2i.ZERO, SIDE), Vector2i(10, 0) * SIDE)
+		var colour: Color = rendered.get_pixel(24, 12)
+		_expect(colour.r > 0.6 and colour.b > 0.6 and colour.g < 0.1,
+			"invalid material %d did not render the explicit magenta fallback" % invalid_id)
+	var evidence: String = OS.get_environment("CYBERSAND_PRESENTATION_EVIDENCE")
+	if not evidence.is_empty():
+		_expect(DirAccess.make_dir_recursive_absolute(evidence) == OK,
+			"could not create the presentation evidence directory")
+		_expect(atlas.save_png(evidence.path_join("material-id-slots-000-131.png")) == OK,
+			"could not retain the rendered catalogue evidence")
+
+
 func _render_trail(world: Image, history: Texture2D, camera: Vector2i, history_origin: Vector2i,
 		delta: float) -> Image:
 	var viewport: SubViewport = SubViewport.new()
@@ -364,7 +464,7 @@ func _render_trail(world: Image, history: Texture2D, camera: Vector2i, history_o
 	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	root.add_child(viewport)
 	var material: ShaderMaterial = ShaderMaterial.new()
-	material.shader = load("res://shaders/material_vapour_trail.gdshader")
+	material.shader = trail_shader
 	material.set_shader_parameter("world_texture", ImageTexture.create_from_image(world))
 	material.set_shader_parameter("history_texture", history)
 	material.set_shader_parameter("world_size_px", Vector2(world.get_size()))

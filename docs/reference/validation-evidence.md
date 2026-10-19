@@ -4,11 +4,20 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-19
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md]
 ---
 
 # Validation evidence ledger
+
+## MAT-002 review and test completion — 2026-10-19
+
+The [PR #179 review record](../audits/2026-10-19-mat002-review-and-validation.md)
+records catalogue-boundary failures and their regressions, genuine rendered
+execution, sanitizer scope and source-matched runtime publication. It preserves
+the earlier material-pass audit and distinguishes focused local outcomes from
+the final Linux/Windows and ready-for-review workflow results. A draft-skipped
+job or headless pixel-test skip is not a behavior pass.
 
 ## Exploratory map actor integration - 2026-10-18
 

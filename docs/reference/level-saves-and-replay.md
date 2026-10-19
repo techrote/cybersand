@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Current CYSD1 finite-level format, exclusive ownership, import failure and omitted continuation state
 canonical-for: [cysd1-level-format, save-import-export, replay-persistence]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-10-19
 related-documents: [interfaces-and-message-contracts.md, ../architecture/determinism-and-boundary-transfers.md, validation-evidence.md]
 ---
 
@@ -61,8 +61,16 @@ mutable World storage from a writer is **Rejected**.
 
 The codec checks lengths, header/version fields, checksum, decompression and
 bounded metadata types/ranges. Native validation checks exact payload length
-and legal material IDs (`0…80` except reserved `10`). It does not implement a
+and legal material IDs (`0…131` except reserved `10`). Selected-material metadata
+accepts paintable IDs through `CyberCellWorld.LAST_MATERIAL`; Empty remains an
+invalid selection. Constructor IDs are range-checked before narrowing, so a wide
+integer cannot wrap into a valid material. Validation does not implement a
 complete semantic schema for every material's two state bytes.
+
+The MAT-002 catalogue extension changes the accepted IDs, not the CYSD1 header or
+five-byte cell encoding. Existing levels remain readable. Older runtimes whose
+catalogue ends at 80 reject levels containing the new materials; they do not gain
+support from the unchanged format version alone.
 
 `CyberDemoBridge::import_level` validates and builds a replacement World and
 render exchange before no-throw ownership swaps. Invalid codec/native payloads
@@ -87,6 +95,12 @@ explicit strict-mode implementation. Do not infer those contracts from CYSD1.
 
 `test_web_demo_setup.gd` covers construction, native rejection and exact level
 payload restoration; `test_web_rapier.gd` exercises body/lifecycle restoration.
+The native snapshot regression and
+[`test_building_material_integration.gd`](../../godot/tests/test_building_material_integration.gd)
+cover all 51 MAT-002 additions, selected-material metadata, exact cell-state and
+temperature restoration, invalid IDs and preservation of the active world after
+rejection. See the [MAT-002 review](../audits/2026-10-19-mat002-review-and-validation.md)
+for the source and runtime scope of that evidence.
 See the [validation ledger](validation-evidence.md) for the dated Windows and
 Chromium runs. Headless execution of a Web scene is Windows runtime evidence;
 it does not rerun the exported WASM in a browser.

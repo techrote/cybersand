@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [building-material-ids, building-material-reactions-and-finish]
 status: Current
 scope: Stable IDs 81–131 (MAT-002), their kernels, versioned pair reactions, shader finishes and limitations
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-19
 related-documents: [themed-construction-materials.md, materials-and-rule-kernels.md, intermaterial-interactions.md, material-appearance-and-rendering.md, ../reference/material-effects-register.md, ../audits/2026-10-18-material-fidelity-pass-2.md]
 ---
 
@@ -132,12 +132,28 @@ glints, snow glitter and phosphor breathing. Uranium Glass and Phosphor Panel
 carry low HDR emission. The
 [appearance contract](material-appearance-and-rendering.md) owns cost semantics.
 
+## Which integration boundaries use the expanded catalogue?
+
+Native level constructors, CYSD1 import/export, selected-material metadata,
+diagnostic fills, material histograms and MicroScenario runtime identity use the
+132-slot catalogue (reserved ID 10 remains invalid). Boundary-pressure diagnostics
+use four faces of 132 slots each. Actor sampling and bounded digging treat every
+new hard surface as an occluder, so a tool cannot dig through an uneditable new
+material to reach cells behind it. These boundaries are exercised across all 51
+additions in
+[`test_building_material_integration.gd`](../../godot/tests/test_building_material_integration.gd).
+The [save contract](../reference/level-saves-and-replay.md) owns compatibility and
+failure atomicity; the [review record](../audits/2026-10-19-mat002-review-and-validation.md)
+owns dated results and runtime publication evidence.
+
 ## Limits
 
 - Probabilities and products are authored gameplay tuning. They are not measured
   reaction rates, enthalpies or melting points.
 - Thermite, Magnesium and Sulfur reactions convert cells to Fire/Lava/Smoke; there
   is no heat field, explosion or temperature threshold.
-- The native runtime libraries must be republished from this source before Godot
-  desktop/Web can paint or simulate IDs 81+; see the
-  [dated record](../audits/2026-10-18-material-fidelity-pass-2.md).
+- Each native source change requires matching runtime publication. The original
+  [material-pass record](../audits/2026-10-18-material-fidelity-pass-2.md) describes
+  its then-stale runtime; the [review record](../audits/2026-10-19-mat002-review-and-validation.md)
+  distinguishes later Linux/Windows publication from separately unvalidated Web
+  exports and target-GPU performance.

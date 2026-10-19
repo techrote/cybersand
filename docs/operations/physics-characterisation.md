@@ -5,7 +5,7 @@ document-kind: runbook
 scope: Opt-in physics measurement tooling, historical issue 9 baseline and current interaction regression routes
 canonical-for: [physics-measurement-tooling, physics-baseline-procedure]
 keywords: [powder, Mercury viscosity, barrel depth, masked source, contact impulse, diagnostic, fixture]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-19
 related-documents: [physics-characterisation-plan.md, ../architecture/rigid-body-and-cellular-coupling.md, ../systems/materials-and-rule-kernels.md, ../audits/2026-09-09-physics-characterisation.md]
 ---
 
@@ -193,7 +193,14 @@ histogram. These APIs require the ordinary exclusive World owner.
 issue-9 fixture bound was 16): body ID, sample serial,
 displacement x/y, boundary x/y, pixel-contact x/y, accumulated capped x/y,
 pre-final-cap x/y, intermediate-cap count, final-cap flag, displaced count,
-unresolved count and 324 boundary-contact bins (world-axis N/E/S/W × 81 materials).
+unresolved count and 528 boundary-contact bins (world-axis N/E/S/W × 132 material
+slots). The producer and fixture aggregator use the same current catalogue stride;
+historical issue-9 records retain their original 324-bin layout. Native and
+fallback material histograms likewise have 132 slots, including reserved slot 10.
+This diagnostic extent is independent of the intentionally retained 81-entry
+transport-profile schema. The
+[building integration regression](../../godot/tests/test_building_material_integration.gd)
+checks every new material and distinct contacts on all four faces.
 The ordinary nine-float result ABI is unchanged. Bridge `enable_diagnostics()`
 allocates six application values per body: age, accepted impulse x/y, duplicate,
 stale and received flags. Arrays reset per application; the fixture aggregates

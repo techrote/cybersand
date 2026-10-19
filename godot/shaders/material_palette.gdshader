@@ -1638,10 +1638,6 @@ vec4 apply_material_flair(
 		return colour;
 	}
 
-	if (flair == 46) { // building catalogue without shape-aware detail
-		return apply_building_finish(colour, material_id, pixel, default_build_geometry(pixel), condition);
-	}
-
 	return colour;
 }
 
@@ -1766,6 +1762,7 @@ vec4 apply_growth_decor(vec4 colour, vec2 pixel) {
 vec4 apply_vapour_trail(vec4 colour, vec2 pixel) {
 	if (vapour_trail_strength <= 0.0) return colour;
 	vec2 uv = (pixel - vapour_trail_origin_px + vec2(0.5)) / view_size_px;
+	if (any(lessThan(uv, vec2(0.0))) || any(greaterThanEqual(uv, vec2(1.0)))) return colour;
 	vec2 ghost = texture(vapour_trail_texture, uv).rg * vapour_trail_strength;
 	if (ghost.x + ghost.y < 0.01) return colour;
 	float t = presentation_time();
@@ -2073,6 +2070,25 @@ vec4 region_extent(vec2 pixel, int material_id, ivec4 neighbours, bool previous_
 	);
 }
 
+BuildGeometry probed_build_geometry(vec2 pixel, ivec4 neighbours, vec4 extent) {
+	float span_x = extent.z + extent.w + 1.0;
+	float span_y = extent.x + extent.y + 1.0;
+	float long_x = (extent.z >= 8.0 || extent.w >= 8.0) ? 99.0 : span_x;
+	float long_y = (extent.x >= 8.0 || extent.y >= 8.0) ? 99.0 : span_y;
+	BuildGeometry g;
+	g.horizontal = long_x >= long_y;
+	g.along = g.horizontal ? pixel.x : pixel.y;
+	g.across_world = g.horizontal ? pixel.y : pixel.x;
+	g.across_span = g.horizontal ? span_y : span_x;
+	g.across_u = ((g.horizontal ? extent.x : extent.z) + 0.5) / g.across_span;
+	g.edge = min(min(extent.x, extent.y), min(extent.z, extent.w));
+	g.up = extent.x;
+	g.down = extent.y;
+	g.top_open = extent.x < 0.5 && is_open_cell(neighbours.x);
+	g.bottom_open = extent.y < 0.5 && is_open_cell(neighbours.y);
+	return g;
+}
+
 vec4 apply_detail_edges(
 	vec4 colour,
 	int material_id,
@@ -2269,21 +2285,6 @@ vec4 apply_structured_fill(
 		colour.rgb = hue * (0.50 + core * 0.40 + plasma * 0.14);
 		colour.rgb = mix(colour.rgb, vec3(1.0), smoothstep(0.70, 1.0, core) * 0.55);
 		return colour;
-	}
-
-	if (material_id >= 81) { // building catalogue with probed run geometry
-		BuildGeometry g;
-		g.along = along;
-		g.across_world = across_world;
-		g.across_u = across_u;
-		g.across_span = across_span;
-		g.edge = edge;
-		g.up = extent.x;
-		g.down = extent.y;
-		g.horizontal = horizontal;
-		g.top_open = extent.x < 0.5 && is_open_cell(neighbours.x);
-		g.bottom_open = extent.y < 0.5 && is_open_cell(neighbours.y);
-		return apply_building_finish(colour, material_id, pixel, g, condition);
 	}
 
 	// Remaining materials keep their finish and gain edge-aware detail.
@@ -2551,7 +2552,17 @@ vec4 material_colour(
 		sampled_material_id(world_pixel + vec2(-1.0, 0.0), previous_snapshot),
 		sampled_material_id(world_pixel + vec2(1.0, 0.0), previous_snapshot)
 	);
-	if (uses_structured_fill(material_id)) {
+	if (material_id >= 81 && material_id <= LAST_MATERIAL_ID) {
+		// Keep the catalogue at a single dispatch site. Putting it inside the
+		// shared flair helper duplicates this large branch at every ordinary
+		// structured finish call when GPU drivers inline shader functions.
+		BuildGeometry geometry = default_build_geometry(world_pixel);
+		if (uses_structured_fill(material_id)) {
+			geometry = probed_build_geometry(world_pixel, neighbours,
+				region_extent(world_pixel, material_id, neighbours, previous_snapshot));
+		}
+		colour = apply_building_finish(colour, material_id, world_pixel, geometry, condition);
+	} else if (uses_structured_fill(material_id)) {
 		vec4 extent = region_extent(world_pixel, material_id, neighbours, previous_snapshot);
 		colour = apply_structured_fill(
 			colour, material_id, flair, world_pixel, neighbours, extent, condition);
