@@ -2,7 +2,7 @@
 title: MAT-002 contact-lab recipe and phase-inventory revalidation
 status: Current
 document-kind: evidence
-scope: Exact-source Linux reproduction of the stale Steam-count expectation and focused recipe-v2 quantity/worker-parity regression
+scope: Exact-source Linux reproduction of the stale Steam-count expectation, focused recipe-v2 quantity/worker-parity regression and source-only ACT-005 integration review
 canonical-for: []
 last-reviewed: 2026-10-19
 related-documents: [2026-10-18-mat002-phase-quantity.md, 2026-09-19-issue-28-ms001.md, ../operations/microscenario-reference-pack.md, ../systems/water-design.md, ../systems/intermaterial-interactions.md]
@@ -143,3 +143,76 @@ tree. Conflict reconciliation requires fresh combined-source runtime publication
 and all applicable exact-head normal merge gates. No additional native sanitizer,
 Windows execution, browser, graphical or game-feel acceptance follows from these
 Linux headless results.
+
+## Read-only ACT-005 integration review — 02:18 UTC
+
+The focused correction is recoverable at
+[`71ae8a5007940bc4ab95f956f58bc7df3cc6ba31`](https://github.com/techrote/cybersand/commit/71ae8a5007940bc4ab95f956f58bc7df3cc6ba31)
+on `codex/issue-160-contact-fixture-20261019`. A separate source-only review
+compared PR #162 `19f7ff43ecc494185226d1fff07dc21ef4a220fb` with the ACT-005
+candidate `b4e2cb7ac71816239628b94a8d4240e364e7a649`, using a temporary merge-tree.
+ACT-005 was still awaiting its exact-head native gate at this review; neither a
+completed ACT-005 merge nor a combined MAT-002 runtime is claimed here. PR #179
+was excluded from this review and remains a separate integration responsibility.
+The correction adds no native input changes.
+
+No new native semantic incompatibility was found in the inspected body and
+generation interfaces. This is a source-review result, not execution evidence:
+
+| Intersection | Source-confirmed finding |
+|---|---|
+| Body identity and capacity | The merged `World::kMaximumTransientBodies`, adapter `parse_body_states` and `rigid_body_id_at` retain the current 64-body limit, finite record validation and composed occupancy query. Phase state bytes do not share body identity storage. |
+| Masked phase contact | `World::update_cell` refuses masked sources. Phase quantity reads use occupancy-aware access; masked neighbours appear as Wall instead of exposing hidden Steam/Water. |
+| Physical relocation | Adapter overlap reconciliation uses `relocate_stored_cell`; the move paths copy the complete cell payload, preserving partial Steam quantity and unfinished hot-material quench progress. |
+| Generated chunk admission | `install_generated_chunk` retains absent-chunk and body-mask admission and initializes material IDs through `World::set`. New Steam/Ice use the full-parcel zero sentinel; new Lava/MoltenGlass start with zero quench progress. |
+| State lanes and wake behavior | Water's reduced delay mask does not truncate the eight-bit Steam/Ice/Lava/MoltenGlass payload. Phase writes retain the existing dirty, activity, discovery and pending-reaction wake paths. Visual projections continue to expose their documented appearance channels rather than phase inventory. |
+
+### Authored usable recipes remain outside the closed phase ledger
+
+The ACT-005
+[usable accounting contract](https://github.com/techrote/cybersand/blob/b4e2cb7ac71816239628b94a8d4240e364e7a649/docs/systems/actor-usables.md)
+explicitly describes authored slot recipes and excludes universal mass/economy
+conservation. In that candidate, U27 Steam Condenser consumes one Steam slot and
+emits one freshly initialized Water slot. The path is `usable_catalog.gd`'s
+`steam_condenser`, `usable_runtime.gd::_object_cycle`, the physical runtime's
+`_write`, native `emit_disc`, then `World::set`; it reads material identity rather
+than the Steam quantity byte.
+
+Source inspection therefore implies that after the future MAT-002 join, an
+admitted partial Steam parcel of quantity `q` can produce a full Water cell of
+quantity `M`, adding `M - q` units through this authored recipe. Under the default
+policy, a one-unit Steam parcel could produce 255 Water units. This intersection
+was not executed in the read-only review. It is outside ACT-005's promised
+accounting envelope, and it must also be named explicitly among the MAT-002
+phase contract's sources/sinks when the branches are integrated. Do not extend
+the closed native phase conservation claim to all equipment Steam-to-Water
+behavior. A quantity-preserving processor would require a separately scoped
+recipe and bounded quantity read/write interface change.
+
+### Premises for the future combined-runtime regression
+
+`native/include/cybersand/demo_snapshot.hpp::copy_level` clears transient masks
+while exporting stored temperatures. The present `quench_snapshot` measurement
+uses a body-free fixture. A later phase/body regression must observe its mask
+condition before export, or reinstall the same body frame afterward; otherwise
+the measurement removes the condition under test.
+
+`microscenario_reference_pack.gd::PHASE_BASELINE` remains the registered recipe's
+historical lineage at `b2691594bdc27622979f52df0b9969e8da185b4f`. Future combined
+source and loaded-runtime identities need a separate receipt; that recipe string
+does not identify a newly built extension.
+
+Before accepting a combined candidate, preserve the reviewed interfaces and the
+exact recipe-v2 quantity/histogram controls, reconcile the usable accounting
+exclusion, and publish fresh Linux/Windows runtime artifacts with all current
+native source inputs. Focused intersection checks should cover body ID 64 masking
+a partial phase contact, relocation of partial Steam/quench progress, and default
+phase initialization through generated-chunk installation. Those checks, the
+combined runtime and its hosted gates remain future work. No executable source,
+runtime, dependency or earlier measured result was changed by this review.
+
+This documentation-only checkpoint passed the documentation and ordinary
+repository identity checks, historical M11 integrity (18 records, 28 hashes),
+and whitespace validation. Retrieval remained 32/32 frozen and 38/38
+supplementary top-five hits, with 22/32 and 28/38 top-one hits respectively.
+The focused runtime tests above were not rerun for this evidence-only addition.
