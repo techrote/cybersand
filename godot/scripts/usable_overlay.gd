@@ -7,6 +7,7 @@ var _view_size: Vector2i = Vector2i(320, 180)
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	clip_contents = true
 	set_process(false)
 
 func present(context: Dictionary, origin: Vector2, view_size: Vector2i, content_rect: Rect2) -> void:

@@ -121,6 +121,12 @@ Fuse time is simulation time and still advances if the movement read budget is
 exhausted; position remains at the last verified point. Collision sweep examines
 the valid in-bounds segment before discarding an out-of-world endpoint.
 
+Early activation of an eligible committed U16/U17/U19 payload is independent of
+new-launch charge, cooldown, power and muzzle clearance. It still requires the
+current held equipment identity and an active command lease, and adds no launch
+recoil. A zero-power primary use is refused; processor placement rejects it
+before releasing the physical chassis.
+
 ## U23–U32: fixed functional objects
 
 **Physical placement:** primary releases the existing equipment body. After

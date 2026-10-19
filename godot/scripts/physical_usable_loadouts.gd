@@ -57,7 +57,8 @@ static func entry(rig_id: StringName) -> Dictionary:
 	var index: int = Usables.index_for(row[0])
 	return {"version": VERSION, "usable_index": index, "usable_id": str(row[0]),
 		"strategy": str(row[1]), "power": float(row[2]), "reason": str(row[3]),
-		"category": str(Usables.category_for(index)), "none_reason": ""}
+		"category": str(Usables.category_for(index)), "none_reason": "",
+		"transport_seconds": 3.0 if rig_id == &"inchworm" else 1.4}
 
 
 static func all() -> Dictionary:

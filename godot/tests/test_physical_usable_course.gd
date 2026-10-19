@@ -33,7 +33,8 @@ func command(extra: Dictionary = {}, movement: Vector2 = Vector2.ZERO) -> Dictio
 func scripted_examples() -> void:
 	for model: StringName in [&"digger", &"runner", &"ripper", &"astra", &"tricopter", &"heavylift"]:
 		var config: Dictionary = Arena.usable_course_config(model, 1)
-		config.max_ticks = 900
+		var ticks: int = 1800 if model == &"heavylift" else 900
+		config.max_ticks = ticks
 		expect(arena.configure(config), "course starts " + str(model))
 		if arena.session == null:
 			continue
@@ -43,15 +44,17 @@ func scripted_examples() -> void:
 		var body_instance: int = body.get_instance_id()
 		var saw_projectile: bool = false
 		var saw_release: bool = false
+		var saw_pickup: bool = false
 		var travel: float = 0.0
 		var result: Dictionary = arena.snapshot()
-		for tick: int in range(900):
+		for tick: int in range(ticks):
 			result = arena.step()
 			var actor: Dictionary = result.actors[0]
 			travel = maxf(travel, actor.position.distance_to(initial.position))
 			saw_projectile = saw_projectile or not result.physical_usables.projectiles.is_empty()
+			saw_pickup = saw_pickup or (saw_release and actor.equipment.state == "held")
 			saw_release = saw_release or actor.equipment.state in ["released", "fixed", "deployed"]
-		expect(not result.failed and result.tick == 900 and result.world_tick == 900,
+		expect(not result.failed and result.tick == ticks and result.world_tick == ticks,
 			str(model) + " advances coupled clocks without faults")
 		expect(travel > 3.0 and int(result.accepted_commands) >= 150,
 			str(model) + " keeps moving through admitted scripted commands")
@@ -63,11 +66,13 @@ func scripted_examples() -> void:
 		elif model == &"heavylift":
 			expect(saw_release and body.get_instance_id() == body_instance,
 				"heavy delivery releases the original articulated payload body")
+			expect(saw_pickup and int(result.actors[0].equipment.equipment_epoch) >= 4,
+				"scripted heavy recovery approaches and picks up its original deployed processor")
 		else:
 			expect(saw_projectile, str(model) + " produces visible committed projectile state")
 		expect(initial == retained, str(model) + " retains immutable issued equipment observation")
 		print("PHYSICAL_USABLE_COURSE_DEMO model=", model, " travel=", travel,
-			" requests=", result.usable_totals, " released=", saw_release)
+			" requests=", result.usable_totals, " released=", saw_release, " recovered=", saw_pickup)
 		arena.close()
 
 

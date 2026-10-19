@@ -65,15 +65,6 @@ static func definition(base: Dictionary, _loadout: Dictionary = {}) -> Dictionar
 		mount.offset = Vector2(half.x, clampf(Vector2(mount.offset).y, -half.y, half.y))
 		var axis: Vector2 = Vector2.RIGHT
 		var tool_size: Vector2 = Vector2(5.0, 2.5)
-		if str(data.get("id", "")) == "digger":
-			# Digger steers its chassis along the DOWN-facing boring nose. A
-			# broad side wrist can fold under that pitch and fire into the hull.
-			# This trim gimbal keeps the real cutter tip on the authored bore axis.
-			axis = Vector2.DOWN
-			tool_size = Vector2(2.5, 5.0)
-			mount.offset = Vector2(0.0, half.y)
-			mount.limits = Vector2(-0.65, 0.65)
-			mount.type = "nose-gimbal"
 		var host_angle: float = float(host_part.get("angle", 0.0))
 		var pivot: Vector2 = Vector2(host_part.offset) + Vector2(mount.offset).rotated(float(host_part.get("angle", 0.0)))
 		# The permanent mounting chassis is shared by live loadout changes; a

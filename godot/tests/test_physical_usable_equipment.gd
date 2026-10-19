@@ -67,6 +67,9 @@ func run() -> void:
 		var prepared: Dictionary = Equipment.definition(base, Loadouts.entry(id))
 		expect(not prepared.is_empty() and Rig.validate_definition(prepared).is_empty(), "%s has a connected physical equipment body" % id)
 		expect(prepared.parts.size() <= 8 and prepared.mounts[0].held_part < prepared.parts.size(), "%s counts held equipment inside the eight-part budget" % id)
+		expect(int(prepared.part_count) == prepared.parts.size() and prepared.body_size == prepared.bounds.size \
+			and is_equal_approx(float(prepared.spawn_floor_clearance), float(prepared.bounds.end.y) + 2.0),
+			"%s prepared spawn metadata accounts for its actual held body" % id)
 		expect(base == retained, "%s base catalogue is immutable" % id)
 		var loadout: Dictionary = Loadouts.entry(id)
 		expect(int(loadout.usable_index) >= -1 and int(loadout.usable_index) < Usables.count() \
@@ -194,7 +197,7 @@ func run() -> void:
 	# A separate equipment aim steers the actual joint without changing the
 	# locomotion/ability aim or instantly redirecting the published barrel.
 	var aim_before: Vector2 = session.observation(1).equipment.aim_direction
-	var steering: Dictionary = {"aim": Vector2.UP,
+	var steering: Dictionary = {"aim": Vector2.UP, "effort": 0.0,
 		"equipment": {"usable_index": 6, "aim": Vector2.LEFT}}
 	expect(session.submit_local(1, steering, &"policy", 18), "independent equipment aim admitted")
 	session.advance(DT)
@@ -215,7 +218,7 @@ func run() -> void:
 	expect(not mount_joint.is_empty() and absf(float(mount_joint.angle)) > 2.2 \
 		and float(mount_joint.angle) >= float(aimed.equipment.aim_limits.x) - 0.1 \
 		and float(mount_joint.angle) <= float(aimed.equipment.aim_limits.y) + 0.1,
-		"real mount motor approaches an unreachable target within its physical angular limits")
+		"real mount motor aims within its physical limits with zero locomotion effort")
 	# A queued request cannot return at the lease boundary after its copied
 	# observation's authority has expired, even before the next cancel sweep.
 	session.submit_local(0, equip_action(), &"policy", 18)
@@ -234,6 +237,34 @@ func run() -> void:
 		step()
 		expect(not session.observation(0).equipment.pending and session.drain_equipment_requests().is_empty(),
 			"expiry discards the pending equipment token without a delayed shot")
+	# An alternate addresses a committed payload rather than paying another
+	# launch cost. A copied resource readback can report an empty launch reserve
+	# and active cooldown without disabling the independent activation button.
+	expect(session.submit_local(0, equip_action({"usable_index": 15}), &"policy", 18),
+		"held slot selects the timer payload for alternate admission")
+	step()
+	var resource_row: Dictionary = session.equipment_frame().actors[0].duplicate(true)
+	resource_row.merge({"run_id": session.run_id, "epoch": session.epoch, "charge": 0.0, "cooldown": 2.0}, true)
+	var resources: Dictionary = {"run_id": session.run_id, "epoch": session.epoch, "tick": session.tick,
+		"receipts": [], "actors": [resource_row], "projectiles": [{"owner": 0, "usable_index": 15,
+			"entity_id": 1, "state": "flight", "age": 0.7}], "objects": []}
+	session.accept_equipment_feedback(resources)
+	expect(not session.observation(0).equipment.ready and session.observation(0).equipment.charge == 0.0 \
+		and session.observation(0).equipment.projectiles.size() == 1,
+		"copied resources can block a new launch while retaining an owned payload")
+	expect(session.submit_local(0, equip_action({"alternate": true, "power": 0.0}), &"policy", 18),
+		"zero-power alternate command enters the same issued-observation envelope")
+	session.advance(DT)
+	requests = session.drain_equipment_requests()
+	expect(requests.size() == 1 and requests[0].operation == "alternate" and requests[0].power == 0.0,
+		"existing-payload activation reaches native admission despite launch cooldown and empty charge")
+	if not requests.is_empty():
+		var activation: Dictionary = receipt(requests[0])
+		activation.merge({"reason": "activated", "charge": 0.0, "cooldown": 1.9}, true)
+		before = velocity(held)
+		expect(session.accept_equipment_feedback(feedback(activation)) == 1 \
+			and velocity(held) == before and session.observation(0).equipment.last_recoil == Vector2.ZERO,
+			"accepted activation consumes its token without another launch recoil")
 	var snapshot: Dictionary = session.snapshot()
 	var saved_snapshot: Dictionary = snapshot.duplicate(true)
 	session.close()

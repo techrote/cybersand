@@ -164,8 +164,14 @@ func apply(observation: Dictionary, locomotion: Dictionary, delta: float) -> Dic
 
 func _processor(observation: Dictionary, equipment: Dictionary, action: Dictionary,
 		request: Dictionary, position: Vector2, velocity: Vector2) -> void:
-	if _time < _next_use or _time - _state_since < 1.4:
+	if _time < _next_use or _time - _state_since < float(_loadout.get("transport_seconds", 1.4)):
 		_phase = "transport"
+		return
+	# Let the locomotion producer finish an in-progress charged jump before
+	# taking a low-speed placement window. Cancelling its held primary here
+	# would itself release an impulse and undermine the placement decision.
+	if float(observation.get("charge", 0.0)) > 0.001:
+		_phase = "finish-charge"
 		return
 	_phase = "lower-and-place"
 	var flight: bool = bool(observation.get("flight_mode", false)) \
@@ -219,16 +225,19 @@ func _recover_device(observation: Dictionary, equipment: Dictionary, action: Dic
 		return
 	_phase = "recover"
 	var target: Vector2 = device
+	var grip: Variant = equipment.get("grip_position")
 	var parts: Variant = observation.get("parts", [])
 	var host_index: int = int(equipment.get("host_part", 0))
-	if parts is Array and host_index >= 0 and host_index < parts.size():
+	if grip is Vector2 and grip.is_finite():
+		target -= grip - position
+	elif parts is Array and host_index >= 0 and host_index < parts.size():
 		var host: Variant = parts[host_index]
 		if host is Dictionary and host.get("position") is Vector2:
 			# Approach using the actual mount's owner, not an axis-aligned hull.
 			target -= Vector2(host.position) - position
 	action.move.x = clampf((target.x - position.x) * 0.075 - velocity.x * 0.07, -0.8, 0.8)
 	if _rig_id in [&"heavylift", &"tandem", &"qwen"]:
-		action.move.y = clampf((target.y - position.y - 14.0) * 0.045 - velocity.y * 0.065, -0.6, 0.5)
+		action.move.y = clampf((target.y - position.y - 4.0) * 0.045 - velocity.y * 0.065, -0.6, 0.5)
 	else:
 		action.primary = bool(observation.get("blocked", false)) and bool(observation.get("grounded", false))
 	request.aim = (device - position).normalized()

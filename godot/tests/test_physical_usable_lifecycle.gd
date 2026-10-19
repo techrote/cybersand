@@ -175,7 +175,15 @@ func run() -> void:
 			body.freeze = true
 	var pedestal: StaticBody2D = box(Vector2(item.position) + Vector2(0, float(item.half_extents.y) + 0.5), Vector2(5.0, 1.0))
 	session._rigs[0].refresh_observation()
-	expect(session.submit_local(0, action({"trigger": true}), &"policy", 18), "processor deployment command admitted")
+	expect(session.submit_local(0, action({"trigger": true, "power": 0.0}), &"policy", 18),
+		"zero-power processor command is evaluated explicitly")
+	session.advance(DT)
+	expect(session.observation(0).equipment.state == "held" and not session.observation(0).equipment.deploy_intent \
+		and session.observation(0).equipment.last_result == "zero_power" and session.drain_equipment_requests().is_empty(),
+		"zero-power processor command neither releases nor registers the real body")
+	session.submit_local(0, action(), &"policy", 18)
+	session.advance(DT)
+	expect(session.submit_local(0, action({"trigger": true, "power": 0.37}), &"policy", 18), "processor deployment command admitted")
 	step()
 	expect(session.observation(0).equipment.state == "released" and session.observation(0).equipment.deploy_intent \
 		and session.drain_equipment_requests().is_empty(), "deployment first detaches the physical body before native work")
@@ -191,6 +199,8 @@ func run() -> void:
 		"supported low-speed settling fixes the existing Rapier processor body")
 	expect(requests.size() == 1 and requests[0].operation == "deploy" and item.pending,
 		"only a fixed physical body may request native processor registration")
+	expect(requests.size() == 1 and is_equal_approx(float(requests[0].power), 0.37),
+		"settling retains the admitted deployment power across neutral lease renewals")
 	expect(session.equipment_frame().devices.size() == 1 and held.get_instance_id() == held_id,
 		"published deployment is the one actual held body, with no logical clone")
 	if requests.is_empty():

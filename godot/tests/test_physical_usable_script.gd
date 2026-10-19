@@ -64,6 +64,7 @@ func _run() -> void:
 	_check(used.size() == 32, "the 41 default loadouts demonstrate all32 usables")
 	_negative_control()
 	_deployment_control()
+	_existing_payload_control()
 	_target_control()
 	print("PHYSICAL_USABLE_SCRIPT assertions=", assertions, " failures=", failures)
 	quit(1 if failures else 0)
@@ -107,7 +108,7 @@ func _deployment_control() -> void:
 	view.equipment.state = "fixed"
 	view.equipment.equipment_epoch += 1
 	view.equipment.deploy_intent = false
-	view.equipment.processor_state = {"state": "output-blocked"}
+	view.equipment.processor_state = {"state": "blocked-output"}
 	var recovered: bool = false
 	for _tick: int in range(35):
 		recovered = recovered or bool(pilot.apply(view, _locomotion(), 0.1).equipment.attach)
@@ -119,6 +120,34 @@ func _deployment_control() -> void:
 	view.equipment.equipment_epoch += 1
 	pilot.apply(view, _locomotion(), 0.1)
 	_check(int(pilot.diagnostics().pickups_observed) == 1, "recovery is acknowledged only from new physical state")
+	# The suspended grip must approach inside the real pickup radius. A policy
+	# that merely hovers fourteen cells away can never recover the payload.
+	view.equipment.state = "deployed"
+	view.equipment.attached = false
+	view.equipment.equipment_epoch += 1
+	view.equipment.position = Vector2(108, 110)
+	view.equipment.grip_position = Vector2(108, 92)
+	view.equipment.reattach_ready = false
+	view.velocity = Vector2.ZERO
+	var descending: Dictionary = {}
+	for tick: int in range(40):
+		descending = pilot.apply(view, _locomotion(), 0.1)
+	_check(descending.move.y > 0.3, "heavy recovery lowers the actual grip into pickup range")
+
+
+func _existing_payload_control() -> void:
+	var pilot := Pilot.new()
+	pilot.configure(&"astra", Vector2(100, 80))
+	var view: Dictionary = _view(&"astra")
+	view.equipment.charge = 0.0
+	view.equipment.cooldown = 2.0
+	view.equipment.ready = false
+	view.equipment.projectiles = [{"usable_index": Usables.index_for(&"timer_airburst"),
+		"state": "flight", "age": 0.4}]
+	pilot.apply(view, _locomotion(), 0.1)
+	var action: Dictionary = pilot.apply(view, _locomotion(), 0.1)
+	_check(action.equipment.alternate and not action.equipment.trigger,
+		"committed timer payload can be activated without new-launch resources")
 
 
 func _target_control() -> void:

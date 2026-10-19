@@ -839,8 +839,11 @@ func _drive_joints(buttons: Vector3i, dt: float, effort: float) -> void:
 			pin.motor_enabled = drive
 			# Rate limiting applies to the requested velocity, not the body state.
 			# Reversals retain a little mechanical play without one-tick kicks.
+			# Equipment aiming has its own command authority. A carrier may set
+			# locomotion effort to zero while continuing to turn its held nozzle.
+			var motor_effort: float = 1.0 if bool(joint.get("equipment_aim", false)) else minf(effort, 1.2)
 			pin.motor_target_velocity = move_toward(pin.motor_target_velocity,
-				target * minf(effort, 1.2), 20.0 * dt)
+				target * motor_effort, 20.0 * dt)
 			joint.target = target
 		else:
 			var axis: Vector2 = Vector2(joint.axis_local).rotated(_transforms[a].get_rotation())

@@ -4,6 +4,7 @@ extends Control
 # an evaluator view; policy producers receive only their actor-local view.
 const Arena = preload("res://scripts/physical_actor_arena.gd")
 const Catalog = preload("res://scripts/physical_actor_catalog.gd")
+const Equipment = preload("res://scripts/physical_usable_equipment.gd")
 const Session = preload("res://scripts/physical_actor_session.gd")
 const Overlay = preload("res://scripts/physical_actor_overlay.gd")
 const Palette = preload("res://scripts/material_appearance_lut.gd")
@@ -102,7 +103,7 @@ func _build_ui() -> void:
 	_model = OptionButton.new()
 	_model.custom_minimum_size.x = 208
 	for id: StringName in Catalog.RIG_IDS:
-		_model.add_item("%s · %d parts" % [Catalog.name_for(id), Catalog.entry(id).part_count])
+		_model.add_item("%s · %d parts" % [Catalog.name_for(id), Equipment.definition(Catalog.entry(id)).part_count])
 	_model.select(Catalog.RIG_IDS.find(&"ripper"))
 	_model.item_selected.connect(func(_index: int) -> void: _restart())
 	bar.add_child(_model)
@@ -164,6 +165,9 @@ func _build_ui() -> void:
 	for index: int in range(Usables.count()):
 		_equipment.add_item("U%02d · %s" % [index + 1, Usables.name_for(index)])
 	equipment_row.add_child(_equipment)
+	var equipment_power_label := Label.new()
+	equipment_power_label.text = "Equipment power"
+	equipment_row.add_child(equipment_power_label)
 	_equipment_power = HSlider.new()
 	_equipment_power.min_value = 0.0
 	_equipment_power.max_value = 1.0
@@ -402,6 +406,7 @@ func _present(state: Dictionary) -> void:
 		if section.visible:
 			section.text = str(sections[index].name)
 			section.position = content.position + (Vector2(sections[index].position) - Vector2(_view.position)) / Vector2(_view.size) * content.size
+	var occupied_labels: Array[Rect2] = []
 	for index: int in range(_labels.size()):
 		var label: Label = _labels[index]
 		label.visible = index < state.actors.size()
@@ -409,18 +414,35 @@ func _present(state: Dictionary) -> void:
 			continue
 		var actor: Dictionary = state.actors[index]
 		var local: Vector2 = (Vector2(actor.position) - Vector2(_view.position)) / Vector2(_view.size) * content.size
-		label.position = content.position + local + Vector2(8, -24)
 		label.visible = Rect2(Vector2.ZERO, content.size).has_point(local)
 		label.text = "%d %s · %d%%" % [index, Catalog.name_for(StringName(actor.model)), roundi(float(actor.energy) * 100.0)]
 		var equipment: Dictionary = actor.get("equipment", {})
 		label.text += "\n%s · %s" % [str(equipment.get("name", "")), str(equipment.get("last_result", ""))]
+		if label.visible:
+			label.reset_size()
+			var label_size: Vector2 = label.get_combined_minimum_size()
+			var position: Vector2 = content.position + local + Vector2(8, -label_size.y - 4)
+			position.x = clampf(position.x, content.position.x + 4,
+				maxf(content.position.x + 4, content.end.x - label_size.x - 4))
+			position.y = clampf(position.y, content.position.y + 4,
+				maxf(content.position.y + 4, content.end.y - label_size.y - 4))
+			var bounds := Rect2(position, label_size + Vector2(4, 4))
+			for attempt: int in range(8):
+				var overlap: bool = false
+				for occupied: Rect2 in occupied_labels:
+					overlap = overlap or bounds.intersects(occupied)
+				if not overlap:
+					break
+				bounds.position.y = maxf(content.position.y + 4, bounds.position.y - label_size.y - 5)
+			label.position = bounds.position
+			occupied_labels.append(bounds)
 	var source: String = "scripted feedback" if _producer.selected == 0 else ("human: release keys to arm" if _rearm and _producer.selected == 1 else "human active" if _producer.selected == 1 else "policy slot waiting for commands")
-	_status.text = "Tick %d / %d · %d actors / %d parts · %s · tool writes %d · %s" % [
+	_status.text = "Tick %d / %d · %d actors / %d parts · %s · %s" % [
 		int(state.tick), int(state.max_ticks), int(state.actor_count), int(state.body_count), source,
-		int(state.effect_totals.changed_cells), "PAUSED" if bool(state.paused) else str(state.reason)]
+		"PAUSED" if bool(state.paused) else str(state.reason)]
 	var usable_totals: Dictionary = state.get("usable_totals", {})
 	_status.text += " · equipment %d/%d uses, %d cell edits" % [int(usable_totals.get("accepted", 0)),
-		int(usable_totals.get("requests", 0)), int(usable_totals.get("changed_cells", 0))]
+		int(usable_totals.get("requests", 0)), int(usable_totals.get("changed_cells", 0)) + int(state.effect_totals.changed_cells)]
 
 
 func _exit_tree() -> void:

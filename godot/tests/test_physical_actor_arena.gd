@@ -185,10 +185,10 @@ func _native_effects_and_terrain() -> void:
 	_check(_arena.snapshot().usable_totals.requests == 0, "reset replaces edited world and pending equipment work")
 	_arena.close()
 
-	_check(_arena.configure(_config(&"lineshank", "policy", 10, Vector2(302, 240))), "physical cutter arena starts")
+	_check(_arena.configure(_config(&"lineshank", "policy", 10, Vector2(328, 270))), "physical cutter arena starts")
 	var previous_revision: int = int(_arena.snapshot().terrain_revision)
 	_check(int(_arena._world.material_at(328, 240)) == 56, "authored packed-earth target exists natively")
-	state = _arena.step([_command({"equipment": {"aim": [1, 0], "trigger": true, "power": 1.0}}, 1)])
+	state = _arena.step([_command({"equipment": {"aim": [0, -1], "trigger": true, "power": 1.0}}, 1)])
 	_check(int(state.usable_totals.changed_cells) > 0,
 		"catalogue cutter changes native hard terrain through the physical equipment path")
 	_check(int(state.terrain_revision) > previous_revision
