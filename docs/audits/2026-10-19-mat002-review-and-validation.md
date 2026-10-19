@@ -59,6 +59,7 @@ standalone CLI changes are tracked separately below.
 | Large building finish was nested inside repeatedly inlined shared flair calls | The software OpenGL shader compiler exhausted an 8 GiB limit before readback | Dispatch the building finish once per material-colour evaluation while retaining default/probed geometry. The full palette then renders and passes its pixel oracle on llvmpipe. |
 | The common runner counted headless pixel-test skips as passes | Five graphical fixtures could satisfy the gate without making their framebuffer assertions | Auto-classify `test_*_render.gd`, provide an actual display/backend, and fail on skips, launch failures, timeouts or engine/script diagnostics even with exit zero. A new vapour fixture is also automatically included. |
 | Pair regressions used weak probability, product and lifecycle controls | Swapped roles, untested byte values or ordinary lifetime transitions could hide a regression | Check all 256 probability rolls and both roles for each new rule; check the full 256×256 prefilter domain; refresh source state explicitly for execution fixtures; separately seed once for sleeping/busy and serial/phased comparisons, with real one/four-worker boundary contacts. |
+| Standalone physics CLI accepted the new IDs but retained 81-entry sample arrays | Sample collection could overflow stack storage or return exit zero with corrupted/truncated accounting; narrowing also admitted wrapped invalid IDs | Validate signed wide arguments before narrowing and derive both sample arrays/output loops from the catalogue. Execute all 51 IDs in both fixture layers plus old/invalid controls, and independently parse counts, moments and centroids under normal and sanitized binaries. |
 
 ## Focused evidence before publication
 
@@ -77,9 +78,11 @@ standalone CLI changes are tracked separately below.
   process-inspection-capable execution environment. Test source SHA-256 is
   `9f309158db6103eb6675ce0a0ec33e619bd1d05e4be3c3ff0dc73a66710b46e2`.
 - The complete material presentation pixel runner passes after the dispatch
-  correction. Its catalogue oracle has independently authored expected colours,
-  invalid-row checks, all current ID slots, static controls, camera anchoring,
-  crossfade endpoints, growth blockers and the real emission footprint.
+  correction. Its rendered-output oracle checks invalid rows, all current ID
+  slots, relative colour intent, static controls, camera anchoring, crossfade
+  endpoints, growth blockers and the real emission footprint. The all-ID loop
+  checks valid non-Empty/non-magenta output; it is not an independent
+  expected-colour table or golden image for every catalogue entry.
 - The final production vapour pipeline passes **26 actual-pixel assertions**;
   the real native/R8 owner-generation runner passes **23 assertions** for ordinary
   paints, transport resync, accepted/rejected reset and identical paused
@@ -134,6 +137,38 @@ inventory hashes the completed aggregate log. Raw execution evidence was
 preserved unchanged. Retained pixel artifacts include the complete material
 catalogue PNG and seeded, decayed and reset vapour EXRs.
 
+## Completed standalone CLI regression
+
+After the full Godot source was frozen, the additional standalone CLI correction
+passed **154 of 154 executable invocations** normally in **6.072 seconds**, then
+**154 of 154** under ASan, UBSan and LeakSanitizer in **5.690 seconds**, with zero
+failures, errors or sanitizer diagnostics. Each run comprises 102 building-ID
+cases (all 51 IDs in both fixture layers), four old-ID controls and 48 invalid-ID
+cases. The normal and sanitized Make targets compile the actual bench executable;
+the test oracle does not substitute a model implementation.
+
+Sanitizer execution explicitly used
+`ASAN_OPTIONS=detect_leaks=1:strict_string_checks=1` and
+`UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1` in the process-inspection-capable
+environment. Every child has a ten-second timeout; the hosted gate separately
+has a five-minute build/run limit, `pipefail`, and always-retained evidence.
+An independent review verified the fixture accounting and failure propagation.
+
+| Bound identity | SHA-256 |
+|---|---|
+| Corrected CLI source | `1fa8061d7a3ec863be988aaf9a3838fb6245dd259cc9eb3e2d3abcb0737179ea` |
+| Executable regression source | `14d019a7a5e655d312bbaf422e5f5f9298e2178210e159c7188c9474786d895c` |
+| Normal executable | `c74fb6998b70bdcc3c66b84e924bdca3948118ac50a6346e657047e4997bb797` |
+| Sanitized executable | `90d64e1a5d1da5b23a0d17cde7c481849d39659fab9861e72012010615bbd88a` |
+| Normal result manifest | `e3b96212fee4b86d9e2950aa88f8656138515cfaad9c27b931fb1c02a7382d6b` |
+| Sanitized result manifest | `f6da53501753f7e1b2456ea6b3b304ba48964d6201af9457aa6a6c2c97dd5898` |
+
+Original local per-case JSONL, stderr, command and byte identities are retained
+under `build/physics-cli-validation/{normal,sanitized}`; their compact inventory
+is `/tmp/pr179-physics-cli-final-evidence.json`. The original red runs remain
+separate. This additive bench/Makefile/Native-CI change leaves every GDExtension
+source input and the already-tested native World test source unchanged.
+
 ## Commands and acceptance
 
 Native World tests use `make build/tests` then `./build/tests` with a 15-minute
@@ -186,12 +221,14 @@ or fresh browser/WebAssembly export execution. The earlier one-desktop captures
 and palette/glow timing do not measure the total new vapour pipeline cost or
 certify other platforms.
 
-## Progress checkpoint — 2026-10-19 01:13 UTC
+## Historical progress checkpoint — preserved as recorded at 2026-10-19 01:13 UTC
 
-This checkpoint records progress while the original review and test-completion
-request remains active. It is committed on `review/pr179-validation-progress`
-so that the publisher's guarded PR-branch lease remains intact. The record will
-be incorporated into the PR after publication.
+The following interim status is preserved as recorded at 01:13 UTC, before the
+completed CLI results above. That checkpoint was committed on
+`review/pr179-validation-progress` so that the publisher's guarded PR-branch
+lease remained intact. The record was scheduled for incorporation into the PR
+after publication. Present-tense statements in this section describe that
+historical checkpoint.
 
 The current
 [guarded runtime publication run, 39183102017](https://github.com/techrote/cybersand/actions/runs/39183102017),

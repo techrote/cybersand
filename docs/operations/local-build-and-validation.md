@@ -264,6 +264,22 @@ Windows/Web results and the unavailable Linux execution environment. Local
 rebuilt artifacts are measured inputs, not automatically updated published LFS
 runtime manifests; the current release gate remains separate from M11 integrity.
 
+For the standalone CLI's current material-admission and sampled-accounting gate:
+
+```sh
+timeout 300 make physics-characterisation-test
+ASAN_OPTIONS=detect_leaks=1:strict_string_checks=1 \
+  UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 \
+  timeout 300 make physics-characterisation-sanitize
+```
+
+The sanitized command includes leak detection when the execution environment
+supports process inspection. Native CI uses its explicitly recorded ASan/UBSan
+scope. Both targets compile the actual CLI and retain per-invocation JSON/stdout,
+stderr and the executable hash under `build/physics-cli-validation/`. The
+[measurement-path contract](physics-characterisation.md#which-checks-guard-the-measurement-path)
+defines the 132-entry output and independent accounting oracle.
+
 Issue #10 uses the [current acceptance commands](physics-characterisation.md#how-do-i-reproduce-issue-10-acceptance)
 and [its own artifact audit](../audits/2026-09-09-issue-10-granular-policy.md).
 Both native Web modules were rebuilt before final script exports. The shared
