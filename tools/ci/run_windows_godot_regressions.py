@@ -116,11 +116,18 @@ def prepare_godot(archive: Path) -> tuple[Path, dict]:
     }
 
 
+def content_digest(path: Path) -> str:
+    # Hosted Windows checkouts use core.autocrlf, and Godot's import re-saves
+    # some committed .import metadata with LF endings. Compare content the way
+    # the repository stores it, so a line-ending-only rewrite is not drift.
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+
+
 def tested_inputs(root: Path) -> dict[str, str]:
     paths = git(root, "ls-files", "-z", "--", *INPUT_SCOPES).decode("utf-8").split("\0")
     # Import may regenerate the portable bootstrap cache; it is not source.
     return {
-        relative: runner.sha256(root / relative)
+        relative: content_digest(root / relative)
         for relative in sorted(paths)
         if relative and not relative.startswith("godot/.godot/")
     }

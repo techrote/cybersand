@@ -23,6 +23,18 @@ def pointer(data: bytes) -> bytes:
             f"oid sha256:{digest(data)}\nsize {len(data)}\n").encode()
 
 
+class SourceDriftTests(unittest.TestCase):
+    def test_line_ending_only_rewrite_is_not_drift(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "icon.svg.import"
+            path.write_bytes(b'[remap]\r\n\r\nimporter="texture"\r\n')
+            before = subject.content_digest(path)
+            path.write_bytes(b'[remap]\n\nimporter="texture"\n')
+            self.assertEqual(before, subject.content_digest(path))
+            path.write_bytes(b'[remap]\n\nimporter="font"\n')
+            self.assertNotEqual(before, subject.content_digest(path))
+
+
 class RetainedRuntimeTests(unittest.TestCase):
     def setUp(self):
         self.directory = tempfile.TemporaryDirectory()

@@ -193,7 +193,9 @@ The job retains `windows-execution.json`, source/runtime/tool identities,
 commands, individual logs and their SHA-256 hashes under the
 `windows-godot-headless-<run-id>` artifact even when execution fails. The report
 records incomplete import, failed cases, source drift and final completion
-explicitly. The execution step is bounded to 40 minutes within a 45-minute job.
+explicitly. Drift compares tracked inputs with CRLF normalized to LF, because the hosted
+`core.autocrlf` checkout and Godot's re-save of committed `.import` metadata
+differ only in line endings; any content change still fails the job. The execution step is bounded to 40 minutes within a 45-minute job.
 Use the dated audit and exact workflow run to establish actual platform results;
 this lane does not establish Windows rendered-output or browser acceptance.
 
