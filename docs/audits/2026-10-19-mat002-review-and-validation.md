@@ -56,7 +56,7 @@ standalone CLI changes are tracked separately below.
 |---|---|---|
 | CYSD1 and native rectangle construction retained the old ID-80 ceiling | New building cells could be painted but could not survive level construction/import; selecting them also failed save metadata validation | Derive legal bounds from the catalogue and reject wide IDs before narrowing. Native snapshot tests preserve all 51 IDs, state bytes and signed temperatures. The new Godot integration runner checks construction, codec/native round trips and unchanged active worlds on rejection. |
 | Diagnostic fill, fallback counts, MicroScenario identity and body-face stride retained old extents | New-ID fixtures were rejected, fallback counting indexed outside its array, evidence advertised 81 slots, and a 528-bin allocation was populated with an 81-slot face stride | Use 132-slot catalogue extents and four complete faces. Tests put distinct movable materials on N/E/S/W and check every bin independently. The 81-entry transport schema and 9×9 tool footprint remain intentional. |
-| Actor hard-surface and tool-protection predicates stopped at ID 80 | Sampled actor queries ignored new walls and bounded digging could reach editable cells behind an uneditable new barrier | Extend the shared mirror predicates. Tests cover all 51 barriers, a positive dig control and existing read/write budgets. |
+| Sampled-rig hard-surface and digging-protection predicates stopped at ID 80 | Sampled actor queries ignored new walls and existing `CyberActorRigEffects` digging could reach editable cells behind an uneditable new barrier | Extend the shared mirror predicates. Tests cover all 51 barriers, a positive dig control and existing read/write budgets. USABLE-001 equipment retains its separate authored eligibility and occlusion contract. |
 | Half-resolution emission sampled a block from the fragment centre | Single-cell firework emitters could miss their correct bloom texel | Anchor the 2×2 maximum at the covered source block. Real half-resolution pixel fixtures cover quadrants, parity and boundaries, with Spark and idle-firework controls. The old shader fails 11 negative controls. |
 | Vapour history lacked a complete presentation lifecycle | Reset/replacement could leave ghosts; alternating viewport resize discarded history; a slow frame prolonged trails; disabled history could return | Initialize and resize both buffers together, invalidate history on the accepted world lifecycle, retain elapsed-time decay, reject out-of-view history and provide a persistent disable hook. Production-controller pixel fixtures cover reset, resize, pan, fallback and disable/re-enable. A full transport refresh alone is not a world reset. |
 | Large building finish was nested inside repeatedly inlined shared flair calls | The software OpenGL shader compiler exhausted an 8 GiB limit before readback | Dispatch the building finish once per material-colour evaluation while retaining default/probed geometry. The full palette then renders and passes its pixel oracle on llvmpipe. |
@@ -240,10 +240,146 @@ ZIP SHA-256
 `d8f8211e914a21ed65a7fa9763d1c153e9f23b32d9eaa064a1162a258121712b`.
 These are same-run artifacts, retained by GitHub Actions under the linked run.
 
-The source-bound complete local Linux suite above used its separately identified
-library, `19924b8...`; it is not silently relabelled as a pass of retained
-`bf65f1e...`. The final delivery record identifies the complete-suite execution
-against the published library as well as the ordinary hosted CI results.
+### Complete Linux suite against the published runtime
+
+A separate, immutable checkout of runtime publication `8f841a2`, tree
+`fe6ca13b00d72c87f2dd531b00ffb13354e09fba`, passed import and **93/93 non-import
+cases** against the exact retained Linux library `bf65f1e...`. All 87 headless
+and six actual-pixel cases executed exactly once, with the original timeouts,
+in **1,006.662 seconds (16 minutes, 46.7 seconds)**. There were no failures,
+skips, timeouts or source drift. The only warnings were the six expected
+unsupported V-Sync notices from software-rendered cases.
+
+The command used the pinned Godot 4.7 runtime, Xvfb and llvmpipe with
+`LIBGL_ALWAYS_SOFTWARE=1 LP_NUM_THREADS=2 GALLIVM_PERF=nopt`, running
+`tools/ci/run_godot_regressions.py --keep-going` without a shard selection.
+Source binding verifies 427 inputs against publication bytes: 409 direct Git
+blobs and 18 materialized LFS files. All 37 native runtime inputs also match
+origin `6684017`. The retained `source-binding.json` SHA-256 is
+`34da8c79967a028be00bf8231292d6bf3f837fd229df6ead28e3377bed88641a`;
+`evidence-manifest.json` SHA-256
+`fedf38b374dadace4a6a4135f006cb53c0d78fb3d348bb1479a9220f650ee731`
+binds 105 completed evidence files, including the per-case logs and pixel images.
+
+This execution is additional evidence for the published library. The preceding
+complete local suite used separately identified `19924b8...`; its source binding,
+timings and logs remain preserved under that identity.
+
+## Upstream integration and Windows gate checkpoint — 01:58 UTC
+
+Before ordinary final CI could start, upstream `main` advanced to
+[`42d1925`](https://github.com/techrote/cybersand/commit/42d19253c71ec3cc45fc959d11b218aeb45fbe62)
+with USABLE-001 equipment and three tests. GitHub reported PR head
+`121cd6cc8253351253b8af89f1316cf418e0d6f2` as merge-conflicted and created no
+Native/GDExtension/Water workflow runs for that head. The integration preserves
+both parents and both sets of supplementary retrieval questions; the sole text
+conflict was in `retrieval-challenges.json`. No native GDExtension source input
+changed, so the published Linux and Windows runtimes remain source-matched.
+
+An isolated merged-source import and focused run using retained Linux `bf65f1e...`
+passed `test_usables.gd` (196 assertions), `test_usable_session.gd` (28),
+`test_actor_usables_integration.gd` (29), `test_render_world_generation.gd` (23)
+and `test_building_material_integration.gd` (1,091), with no failures or engine
+diagnostics in **7.985 seconds combined**. The focused result manifest SHA-256 is
+`9f90f71392e7db5f27b82d5f3be7e78b2beabd2c0e52cb1f09c75fef260fcddc`.
+Equip changes preserve World generation; accepted World replacement clears
+usable state and advances the render publication generation. Pause/resume keeps
+the existing distinction between actor input lifetime and World replacement.
+The new usable modules, tests and authored contract are unchanged from upstream.
+The catalogue's sampled-rig digging claim is explicitly scoped separately from
+the new equipment's authored eligibility and occlusion policy.
+
+The final integration adds a permanent GitHub-hosted Windows headless job to the
+ordinary GDExtension workflow, preserving the Windows cross-build check and four
+Linux shards. It verifies the retained DLL against its committed LFS bytes and
+provenance, requires complete coverage of current native source/header inputs,
+pins Godot/Rapier and executes every applicable case through the strict common
+runner. Commands, identities, completion, source drift and log hashes are retained
+incrementally and uploaded even on failure. Focused helper tests cover stale or
+missing provenance inputs, changed or unmaterialized runtimes, incorrect pins,
+failed import, real exit-zero diagnostic/skip children and continued execution.
+All **11 Windows-helper tests and 15 shared-runner tests** passed locally; an
+independent helper review found no blocker. The pinned Godot console wrapper
+owns a kill-on-close Windows Job Object, so the common runner's timeout cleanup
+also terminates the actual engine child. The helper SHA-256 is
+`b97c75ba18212794c6f501dbee1ed94a2f315333b59293268e124ffdcb1d5dad`,
+its test SHA-256 is
+`4cbc94f17b1911a29f12dc76d02688dad0fe0437578de22056ad4ac47d17780b`
+and the integrated GDExtension workflow SHA-256 is
+`3b62c06e1199619455ba2a2b9b70d52d95a67259a8af1aad2d8953c19a33afae`.
+
+The inventory at this checkpoint is **96 Linux cases, including six rendered cases, and
+90 applicable Windows headless cases**, plus import. The earlier 93-case Linux
+and 87-case Windows results remain bound to their original pre-USABLE-001 source.
+Final combined-branch execution is recorded in the PR delivery section after the
+applicable workflows complete; inventory and helper tests alone are not a suite
+pass. The canonical
+[Windows execution procedure](../operations/local-build-and-validation.md#windows-retained-runtime-execution)
+describes the permanent gate's bounds and artifact route.
+
+## Resumed delivery after upstream integration — 19:46 UTC
+
+The user resumed this review after the prepared integration tree
+`9d1d4d332ec55d54ac3d0044e55d259477e12000` had been created, but its commit request
+was interrupted by a tool-catalog change. That tree was never installed as the
+PR branch head. Meanwhile, the PR independently merged USABLE-001 as `de30f8b`,
+received the catalogue boundary correction `64aa3e8`, and merged ACT-005/current
+main `02f9c890dc4faf0bf132a95acbc13a4d9cdc002f` as
+[`232fe00`](https://github.com/techrote/cybersand/commit/232fe00bff148b775c163eb943435c351cf19791).
+The PR is open, ready and mergeable. The resumed change applies only the pending
+Windows harness, test-selection documentation and audit updates onto that current
+head, preserving both intervening merges and the newer physical-usable source.
+
+Commit `64aa3e8` fixes a further catalogue-sensitive fixture: material 81 is now
+valid, so the generated-chunk malformed-payload test uses
+`kMaterialDefinitions.size()` as the first ID past the catalogue instead. It also sizes the transport benchmark's
+internal histogram to the complete catalogue while retaining that benchmark's
+explicit 0–80 output schema. These changes are preserved. None of the intervening
+changes alters the native source/header inputs of the retained extension runtimes.
+
+The current suite contains **103 Linux cases, including six rendered cases, and
+97 Windows headless cases**, with import counted separately. This supersedes the
+96/90 inventory at the preceding checkpoint. The recovered Windows helper and its
+tests retain the exact reviewed hashes above; discovery includes the seven new
+ACT-005 cases automatically. Current USABLE01–USABLE04 retrieval questions and
+their physical-equipment facts remain intact, and TEST03 is added separately.
+
+An independent read-only review of the merged worker/main/snapshot and physical
+equipment paths found no concrete integration defect. Equipment epochs and
+receipts remain separate from World generation; accepted render bytes retain
+their corresponding generation. Physical source clearance and selective material
+recipes retain their authored contract. The 81-element physical observation
+buffer is a 9×9 spatial patch, not a catalogue limit. Existing physical lifecycle,
+owner-generation and rendered vapour regressions cover their respective paths;
+this review does not claim exhaustive physical-tool combinations for all 51 IDs.
+
+Before the resumed changes, head `232fe00` passed all four ordinary hosted gates:
+
+| Workflow | Exact run and executed scope |
+|---|---|
+| Documentation/provenance | [39219447248](https://github.com/techrote/cybersand/actions/runs/39219447248), passed |
+| Native | [39219447245](https://github.com/techrote/cybersand/actions/runs/39219447245), 78/78 normally, 78/78 ASan+UBSan, 78/78 TSan and 154/154 CLI invocations; hosted ASan disables leak detection |
+| GDExtension/Godot | [39219447265](https://github.com/techrote/cybersand/actions/runs/39219447265), Linux build, Windows cross-build, four imports and 103/103 Linux cases, including all six rendered cases |
+| Water apparatus | [39219447355](https://github.com/techrote/cybersand/actions/runs/39219447355), 120/120 registered cases with complete accounting |
+
+These runs tested GitHub's PR merge checkout
+`25635d91f454c1d15f4646b985cd15f8efd1021e` for head `232fe00` and base `02f9c89`.
+All four Linux shard artifact ZIP digests were checked against GitHub; each
+identifies the same retained Linux runtime `bf65f1e...` and pinned Godot 4.7.
+The resumed inspection passes 261 identity, coverage, timeout, rendered-command
+and log-diagnostic checks; its `inspection.json` SHA-256 is
+`0b65b40e158c376cfcc9bddfda9bac03c94fc0fa2ad43992128e7c5d8ed73f36`.
+The ready-scope classifier and optional serial-equivalence lane were skipped;
+the required implementation jobs executed. There was no actual Windows execution
+job on `232fe00`. The new 97-case Windows gate and final updated-head results are
+recorded in the PR delivery section after they execute.
+
+Workspace maintenance removed the earlier local raw-log directories during the
+interruption. The completed results and hashes recorded before removal remain
+historical evidence here; those local paths are no longer offered as recoverable
+files. The publisher and subsequent GitHub Actions artifacts provide the retained
+remote execution evidence. The resumed run restores repository source and pinned
+runtimes directly from Git and LFS.
 
 ## Repository checks and final delivery record
 
@@ -259,6 +395,24 @@ runtime files, and `git lfs fsck` passed. Documentation structure, CI-provider
 policy and historical M11 integrity also passed; the M11 check covered 18 records
 and 28 historical hashes at `05ea45fda7bdd7b0150eb86c4922c202e89e08f4`, independently
 of current runtime acceptance. `git diff --check` passed.
+
+At the 01:58 UTC checkpoint, the combined pre-commit documentation gate passed 92 canonical documents, 175
+claims, 1,781 local links and 124 heading anchors without warnings. Current
+materialized-runtime, LFS, CI-provider and M11 checks also pass after integration.
+Frozen retrieval recorded **32/32 canonical top-5 hits**, 21 top-1 and MRR 0.8031.
+The combined 74-question supplementary set records **74/74 canonical top-5
+hits**, 59 top-1 and MRR 0.8811. The added Windows execution and scoped sampled-rig
+facts were reviewed against source. These are corpus-routing measurements, not a
+before/after improvement claim or a substitute for expected-answer review.
+
+After resumption and the ACT-005 integration, the local gate again passes all 18
+materialized runtime identities, M11, LFS, provider policy and whitespace checks.
+The restored 11 Windows-helper and 15 shared-runner tests pass. Documentation
+passes 92 canonical documents, 175 claims, 1,833 local links and 137 heading
+anchors. The frozen retrieval result remains 32/32 top-five, 21 top-one and MRR
+0.8031; the 77-question supplementary set records 77/77 top-five, 59 top-one and
+MRR 0.8652. Added and changed Windows/sampled-rig facts were checked separately
+against source, with all newer physical-equipment questions preserved.
 
 The final branch head and the exact Documentation/provenance, Native,
 GDExtension/Godot and Water workflow runs are recorded in the

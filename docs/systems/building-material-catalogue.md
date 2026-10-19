@@ -137,10 +137,11 @@ carry low HDR emission. The
 Native level constructors, CYSD1 import/export, selected-material metadata,
 diagnostic fills, material histograms and MicroScenario runtime identity use the
 132-slot catalogue (reserved ID 10 remains invalid). Boundary-pressure diagnostics
-use four faces of 132 slots each. Actor sampling and bounded digging treat every
-new hard surface as an occluder, so a tool cannot dig through an uneditable new
-material to reach cells behind it. These boundaries are exercised across all 51
-additions in
+use four faces of 132 slots each. Sampled-rig movement queries and existing
+`CyberActorRigEffects` digging treat new hard surfaces as occluders, preserving
+cells behind uneditable barriers. USABLE-001 equipment retains its separate
+[authored eligibility and occlusion contract](actor-usables.md). These boundaries
+are exercised across all 51 additions in
 [`test_building_material_integration.gd`](../../godot/tests/test_building_material_integration.gd).
 The [save contract](../reference/level-saves-and-replay.md) owns compatibility and
 failure atomicity; the [review record](../audits/2026-10-19-mat002-review-and-validation.md)

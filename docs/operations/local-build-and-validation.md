@@ -167,6 +167,36 @@ Current build jobs set `SCONS_JOBS=2` directly; the
 [repository provider policy](github-development-and-release.md) owns the runner
 and provider-routing boundary.
 
+## Windows retained-runtime execution
+
+**Current:** the GDExtension workflow also executes the retained Windows DLL on a
+GitHub-hosted `windows-2022` runner. This lane is separate from the Windows
+cross-build job. The
+[Windows execution helper](../../tools/ci/run_windows_godot_regressions.py)
+requires an exact workflow checkout, committed LFS bytes, matching runtime
+provenance and complete coverage of the current native source/header input set.
+Any changed or newly added native input requires a matching runtime publication
+before the retained DLL can satisfy this gate. Historical build-input hashes
+continue to describe their original build.
+
+The helper verifies the pinned official Windows Godot 4.7 archive, executable
+version and Rapier runtime before import. It dynamically selects every discovered
+headless case, including the two profile probes and scene startup, and preserves
+the shared runner's per-case timeouts and error/skip rejection. Each applicable
+case must execute exactly once. The six current `test_*_render.gd` cases are
+explicitly outside this Windows lane; Linux's rendered shards execute them.
+After the ACT-005 integration, the source inventory is 97 Windows headless
+cases and 103 Linux cases, with import counted separately. These counts describe
+discovery, not an executed pass.
+
+The job retains `windows-execution.json`, source/runtime/tool identities,
+commands, individual logs and their SHA-256 hashes under the
+`windows-godot-headless-<run-id>` artifact even when execution fails. The report
+records incomplete import, failed cases, source drift and final completion
+explicitly. The execution step is bounded to 40 minutes within a 45-minute job.
+Use the dated audit and exact workflow run to establish actual platform results;
+this lane does not establish Windows rendered-output or browser acceptance.
+
 ## Physical usable validation
 
 ACT-005 extends the [32-item usable catalogue](../systems/actor-usables.md) onto

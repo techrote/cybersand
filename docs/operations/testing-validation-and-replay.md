@@ -26,7 +26,7 @@ Counts identify this inspected source inventory, not a pass for a later revision
 | Explosion or optional fields | Native bounded event validation/queue/hash/parity, static-to-granular conversion and temperature allocation/movement |
 | Immutable publication | Native slot capacity, dirty retention, deterministic patch order, lease concurrency/C lifetime; Godot native bridge and render-handoff fixtures |
 | Presentation/material catalogue | Godot appearance LUT and presentation runners: catalogue rows, representative flair, HDR values, viewport/F3 behavior |
-| MAT-002 catalogue integration | `test_building_material_integration.gd`: all 51 new IDs through native construction and saves, metadata, fill/count diagnostics, four-face histogram stride and actor occlusion; native snapshot and exhaustive pair/transport regressions |
+| MAT-002 catalogue integration | `test_building_material_integration.gd`: all 51 new IDs through native construction and saves, metadata, fill/count diagnostics, four-face histogram stride and sampled-rig digging occlusion; native snapshot and exhaustive pair/transport regressions |
 | Standalone physics CLI | `make physics-characterisation-test` / `physics-characterisation-sanitize`: actual executable admission and parsed sample accounting for all 51 building IDs in both layers, old controls and invalid wide inputs; [measurement-path contract](physics-characterisation.md#which-checks-guard-the-measurement-path) |
 | Fallback cells/player | `test_cell_world.gd` has nine groups including Smoke, Water, body mask/sweep and vertical scan continuity; these are one runner |
 | Rapier or coupling | Preflight, automatic drop-in, manual-step and `test_web_rapier.gd`; see [Rapier procedure](rapier-2d-migration-runbook.md) |
@@ -69,6 +69,17 @@ be prepared. `timings.json` records the executed command, display requirement,
 skip/error details, completion state and aggregate status. The planner and runner
 regressions execute child processes to check failure, timeout, skip and
 continuation handling as well as exact discovery and assignment.
+
+The separate GitHub-hosted Windows lane runs import and every applicable headless
+case against the retained Windows DLL, after verifying the committed LFS bytes,
+provenance and complete current native-input set. It uses the same discovery,
+per-case timeouts and strict failure semantics, continues after individual case
+failures, and records graphical cases as explicitly outside its scope. Its
+`windows-execution.json` includes exact case coverage, tool/source/runtime
+identities, commands, log hashes and drift/completion checks. The
+[Windows execution procedure](local-build-and-validation.md#windows-retained-runtime-execution)
+owns the job bounds and artifact route. This actual execution gate and the
+separate Windows cross-build check must retain their distinct evidence scopes.
 
 ## What does equality establish?
 
