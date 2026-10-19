@@ -10,6 +10,11 @@ related-documents: [actor-control-prototypes.md, actor-usables.md, granular-inte
 
 # Provisional actor rigs and shared control interface
 
+This page owns the **retained sampled ACT-002 reference**. The default desktop
+physical counterparts for all 29 IDs and twelve new SetX examples are documented
+in [Articulated Rapier actors](physical-actor-rigs.md). Physical v2 envelopes,
+part/joint observations and mechanics do not reinterpret the sampled fields below.
+
 ## Which actor rigs are available?
 
 **Current, experimental (ACT-002 / #168):** the desktop sandbox and exploratory showcase maps have six
