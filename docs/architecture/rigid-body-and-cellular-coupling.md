@@ -17,8 +17,9 @@ last-reviewed: 2026-10-18
 rigid bodies. Bodies are never erased from/restored into the material array.
 `CyberNativeCellWorld` projects copied rectangles into a separate transient
 body-ID field. Sand, liquids, Smoke, painting and the sampled character read
-that endpoint field as occupied. The three 8×14 demo bodies are drawn through
-shader transforms; body colour is not stored in the cell texture. Moved-body
+that endpoint field as occupied. The retained three 8×14 reference bodies are drawn through
+shader transforms. ACT-004 instead draws each articulated part from its actual
+collider and copied Rapier transform; body colour is not stored in the cell texture. Moved-body
 overlap is resolved by bounded material ejection; if no destination fits, the
 material stays in place and unresolved overlap is counted. The body receives
 bounded reaction observations instead of silently deleting trapped sand.
@@ -36,7 +37,10 @@ Source: [native `prepare_rigid_body_coupling`, `parse_body_states`, `rasterize_b
 1. Clear/wake the previous obstacle field and clear observations. Mask changes
    wake their own resident activity block and boundary neighbors without a cell
    or render write, including masks wholly inside a sleeping block. Parse at most
-   16 complete records with body IDs 1–16; retain the first duplicate ID.
+   64 complete records with body IDs 1–64; retain the first duplicate ID.
+   ACT-004 rejects nonfinite records, fractional IDs/serials and nonpositive
+   sizes/mass. The physical session checks its complete assembly budget before
+   installation; the low-level bounded parser does not admit excess records.
 2. Traverse ascending body IDs and rasterize a temporary sweep from prior to
    current accepted transform. The first mask writer wins where bodies overlap.
 3. When overlap response is enabled, reconcile movable material against the

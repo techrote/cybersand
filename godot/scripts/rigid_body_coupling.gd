@@ -4,7 +4,10 @@ extends RefCounted
 # Prototype value-data bridge between scene-tree RigidBody2D nodes and the
 # cellular worker. No Node, RID, PhysicsDirectBodyState2D, or other live Godot
 # physics object crosses the thread boundary.
-const MAX_BODIES: int = 16
+# Eight actors with up to eight rectangular Rapier parts; the float ABI stays
+# compatible with the original barrel fixtures.
+const MAX_BODIES: int = 64
+const MAX_SAMPLE_SERIAL: int = 16777215
 
 const INPUT_BODY_ID: int = 0
 const INPUT_CENTER_X: int = 1
@@ -59,6 +62,25 @@ static func input_body_count(states: PackedFloat32Array) -> int:
 	return mini(
 		MAX_BODIES,
 		floori(float(states.size()) / float(INPUT_STRIDE))
+	)
+
+
+static func input_record_valid(states: PackedFloat32Array, offset: int) -> bool:
+	if offset < 0 or offset + INPUT_STRIDE > states.size():
+		return false
+	for field: int in range(INPUT_STRIDE):
+		if not is_finite(states[offset + field]):
+			return false
+	var body_id: float = states[offset + INPUT_BODY_ID]
+	var serial: float = states[offset + INPUT_SAMPLE_SERIAL]
+	return (
+		body_id >= 1.0 and body_id <= float(MAX_BODIES)
+		and floorf(body_id) == body_id
+		and serial >= 0.0 and serial <= float(MAX_SAMPLE_SERIAL)
+		and floorf(serial) == serial
+		and states[offset + INPUT_SIZE_X] > 0.0
+		and states[offset + INPUT_SIZE_Y] > 0.0
+		and states[offset + INPUT_MASS] > 0.0
 	)
 
 

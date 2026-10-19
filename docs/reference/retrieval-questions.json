@@ -165,7 +165,7 @@
         "architecture/rigid-body-and-cellular-coupling.md"
       ],
       "facts": [
-        "The prototype packed float32 input/result strides are 11 and 9, with at most 16 accepted bodies.",
+        "The prototype packed float32 input/result strides are 11 and 9, with at most 64 accepted bodies after ACT-004; every admitted field is finite and body IDs are exact integers 1 through 64.",
         "Values carry body/sample identity and numeric rectangle state/results; no Node, RID or live direct state crosses.",
         "This is a prototype layout, not the approved generalized native ABI."
       ],
@@ -564,5 +564,5 @@
       ]
     }
   ],
-  "expectations_reviewed": "2026-09-08: original query wording retained; Q31 expected facts updated for explicit current/M11 gate separation. Metrics are not frozen-answer improvement claims."
+  "expectations_reviewed": "2026-09-08: original query wording retained; Q31 expected facts updated for explicit current/M11 gate separation. Metrics are not frozen-answer improvement claims. 2026-10-18 ACT-004: Q10 expected capacity corrected from 16 to 64 for current source. The 32 frozen query IDs and query wording are unchanged; this is a disclosed source-fact correction, not a retrieval-quality improvement claim."
 }

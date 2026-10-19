@@ -23,8 +23,16 @@ behaviour needs them. Exceptions require a specific impossible physical
 behaviour/configuration and documented justification. Sampled rigs remain
 labelled comparison controls during migration. See the
 [physical actor programme](../operations/physical-actor-programme.md) for scope,
-conversion sequence and preserved actor-specific notes. This is a requirement;
-Current physical conversions are still limited to the barrel/Ripper hull trials.
+conversion sequence and preserved actor-specific notes. ACT-004 now supplies
+[physical definitions for all 29 actors plus twelve extras](../systems/physical-actor-rigs.md),
+with actual joints, scripted feedback and shared controls. The initial hull
+trials remain reference arms.
+
+**Owner fidelity clarification, 2026-10-18:** plausible gameplay may use bounded
+gyro assistance, approximate joints, intentional compliance and controlled
+flex/play. Finite gyro momentum accounting and perfect connection kinematics
+are not requirements. Source-level implementation and headless tests do not
+establish owner feel acceptance.
 
 ## What are we building toward?
 

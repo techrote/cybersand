@@ -5,7 +5,7 @@ document-kind: runbook
 scope: Opt-in physics measurement tooling, historical issue 9 baseline and current interaction regression routes
 canonical-for: [physics-measurement-tooling, physics-baseline-procedure]
 keywords: [powder, Mercury viscosity, barrel depth, masked source, contact impulse, diagnostic, fixture]
-last-reviewed: 2026-09-09
+last-reviewed: 2026-10-18
 related-documents: [physics-characterisation-plan.md, ../architecture/rigid-body-and-cellular-coupling.md, ../systems/materials-and-rule-kernels.md, ../audits/2026-09-09-physics-characterisation.md]
 ---
 
@@ -189,7 +189,8 @@ executed outside assertions so release Web builds construct the same fixture.
 counts, hash, completed/attempted ticks, activity/chunk/core usage and optional
 histogram. These APIs require the ordinary exclusive World owner.
 
-`diagnostic_body_metrics` returns at most 16 rows: body ID, sample serial,
+`diagnostic_body_metrics` returns at most 64 rows after ACT-004 (the original
+issue-9 fixture bound was 16): body ID, sample serial,
 displacement x/y, boundary x/y, pixel-contact x/y, accumulated capped x/y,
 pre-final-cap x/y, intermediate-cap count, final-cap flag, displaced count,
 unresolved count and 324 boundary-contact bins (world-axis N/E/S/W × 81 materials).

@@ -14,10 +14,13 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 F5 now connects the sandbox, Blacksite and four showcase maps to explicit Sampled
 and Rapier choices. The selected map is restored on change; R retains the actor.
-The [physical actor programme](physical-actor-programme.md) owns controls and the
-new approved full-roster Rapier conversion requirement. Sampled-to-sampled resets
-need both owner request serial and map hash; do not regress to hash-only admission.
-The implementation remains desktop scoped and does not convert the full roster.
+ACT-004 supplies [41 articulated physical rigs](../systems/physical-actor-rigs.md),
+including all existing identities, twelve new mechanisms and local feedback
+scripts. Read its physical v2 command/mount contract before changing producers.
+Actor resets need both owner request serial and map hash; do not regress to
+hash-only admission. The implementation remains desktop scoped. Sampled control
+rows and scientific references retain their own meanings; the current generic
+body capacity is 64. Exact runtime/source evidence belongs to the dated ACT-004 audit.
 
 ## Start here for the next task
 
@@ -476,7 +479,7 @@ Parent #133 remains open after #138.
 
 ## Combined features and physical actors — 2026-10-18
 
-Use the [physical actor programme](physical-actor-programme.md) for the combined desktop launcher, reset-scoped Blacksite comparison and preserved owner notes. The Ripper arm is a single live Rapier rectangle; articulated rigs remain follow-up work.
+Use the [physical actor programme](physical-actor-programme.md) for the combined desktop launcher, retained single-hull Blacksite comparison and preserved owner notes. ACT-004's [physical actor contract](../systems/physical-actor-rigs.md) owns the articulated Ripper and full roster. Its authored gyro and flex/play mechanics deliberately approximate reality for gameplay.
 
 ## Reconstructed depth prototype — 2026-10-18
 

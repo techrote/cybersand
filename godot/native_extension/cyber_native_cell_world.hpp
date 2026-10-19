@@ -50,6 +50,7 @@ public:
     [[nodiscard]] PackedFloat32Array rigid_body_results() const;
 
     [[nodiscard]] std::int64_t material_at(std::int64_t x, std::int64_t y) const;
+    [[nodiscard]] std::int64_t rigid_body_id_at(std::int64_t x, std::int64_t y) const;
     [[nodiscard]] bool box_collides(Vector2 origin, Vector2 size) const;
     [[nodiscard]] bool character_box_collides(Vector2 origin, Vector2 size, std::int64_t mode) const;
     [[nodiscard]] std::int64_t character_disturb_granular(
@@ -146,7 +147,9 @@ private:
         std::uint64_t intermediate_caps = 0;
         std::array<std::uint64_t, 4 * 81> faces{};
     };
-    std::unique_ptr<std::array<BodyDiagnostic, 17>> body_diagnostics_;
+    using BodyDiagnostics =
+        std::array<BodyDiagnostic, cybersand::World::kMaximumTransientBodies + 1U>;
+    std::unique_ptr<BodyDiagnostics> body_diagnostics_;
     bool diagnostic_fixture_ = false;
     double displacement_gain_ = 0.18;
     double boundary_gain_ = 0.19;

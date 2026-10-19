@@ -6,7 +6,7 @@ status: Current
 scope: Desktop, Web and native stage ordering, fixed quanta, failure behavior and permitted thread access
 keywords: [fixed tick, desktop worker, Web synchronous, Rapier order, character order, tick failure, backlog]
 related-documents: [data-ownership-and-lifetimes.md, determinism-and-boundary-transfers.md, rigid-body-and-cellular-coupling.md, ../operations/web-threading.md]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-10-18
 ---
 
 # Simulation tick and threading
@@ -46,6 +46,55 @@ serial checks prevent duplicate application. See
 [main `_physics_process`](../../godot/scripts/main.gd) and
 [Rapier `step`](../../godot/scripts/rapier_physics_bridge.gd).
 
+## Physical actor scheduling
+
+**Current ACT-004 desktop:** live bodies, joints and
+[`CyberPhysicalActorSession`](../../godot/scripts/physical_actor_session.gd)
+stay on the main thread. The owner installs a complete physical assembly with a
+new epoch for the selected reset. The sandbox can create it while reset is
+pending; scenario installation waits for acknowledgement. Before its first step,
+the host requires the matching reset acknowledgement and actor epoch,
+the current hard-terrain revision and an empty collider-installation queue.
+An early Play request cannot release this initial terrain fence. Subsequent
+terrain changes keep the desktop's existing bounded asynchronous installation.
+The worker binds retained geometry to its physical epoch, refreshes full/reset
+publications and invalidates the cache when replacing a scenario. Equal revision
+numbers in different worlds do not authorize reuse of the previous geometry.
+The physics callback admits permitted input, applies matching cellular feedback,
+advances bounded actor actuation, manually steps Rapier, reads the resulting
+parts and publishes their copied states with drained usable requests. Demo
+decisions run every six physical ticks from copied actor views collected before
+any demo output is submitted.
+
+The desktop worker prepares the native body mask before consuming copied usable
+effects under exclusive cellular ownership. It then advances materials when
+unpaused and publishes effect receipts and body responses with the actor epoch.
+Reset, suspension, cancellation and lease expiry revoke pending control. The
+session cancellation signal also retires worker effect generations, including
+requests already copied out of its queue but not yet admitted. An old epoch cannot
+actuate new bodies. Desktop still has independently paced physical and cellular
+timelines, so this is not a claim of lockstep cells/body integration.
+
+**Current physical Thunderbowl v2:**
+[`CyberPhysicalActorArena.step`](../../godot/scripts/physical_actor_arena.gd)
+owns one native world and an isolated Rapier space synchronously at 60 Hz:
+
+1. Prepare the occupancy mask from the current actual part poses.
+2. Admit policy packets and advance the common actor session without integrating
+   bodies yet; source/muzzle positions still correspond to that mask.
+3. Consume bounded effects, complete one native material tick and apply its
+   cellular responses.
+4. Synchronize hard terrain, step Rapier, and publish the next actor observation.
+
+Its schedule identifier is
+`synchronous-mask-actuation-effects-material-feedback-terrain-rapier/v1`.
+The lab completes all pending bounded terrain chunks before its Rapier step;
+this makes no desktop frame-time claim. Local material patches disclose both
+their sample tick and preceding body-mask pose tick. Native failure stops the
+environment and publishes the failure disposition without another physics step.
+This separate manoeuvre/usable lab does not change sampled Thunderbowl v1's
+schedule, rewards or observation privileges, and does not migrate Web control.
+
 <a id="current-web-owner"></a>
 
 ## Current Web owner: body, player and cellular update order
@@ -66,7 +115,8 @@ publishes display data at a separate cadence; a slow cellular tick can still
 block rendering. **Deferred:** fully asynchronous Web ownership.
 
 Desktop advances the character **before** cells; Web advances it **after**
-cells. Desktop does not share Web's pending-terrain gate. These schedules are
+cells. Desktop does not share Web's continuous pending-terrain gate; its new
+articulated owners have the one-time installation fence described above. These schedules are
 not an equivalence guarantee; a common production order remains undecided.
 
 ## Current native scheduler
