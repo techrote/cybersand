@@ -40,8 +40,12 @@ result was a cross-build, not Windows runtime execution.
 Local rebuild inputs are recorded by SHA-256 for all 38 required native input
 files and the pinned godot-cpp archive. The local copy is used only for testing;
 retained binaries and provenance must come from a guarded fresh publication.
-Exact implementation/publication commits and final workflow results are recorded
-below when that publication completes.
+The reviewed implementation is committed as
+[`6684017c96d1619fe853987f5098bff670b779c8`](https://github.com/techrote/cybersand/commit/6684017c96d1619fe853987f5098bff670b779c8),
+tree `c8a8d180ec67108eee8bc7bf30822c24d0ed405a`. Its immediate child
+[`e621348f4b4fde4d49763f4c1f320b56cbcc2a29`](https://github.com/techrote/cybersand/commit/e621348f4b4fde4d49763f4c1f320b56cbcc2a29)
+installs only the temporary, guarded runtime publisher. Publication and subsequent
+standalone CLI changes are tracked separately below.
 
 ## Review findings and corrections
 
@@ -84,6 +88,51 @@ below when that publication completes.
 - The regression-runner unit/integration suite passes **15 tests**, including
   actual child-process timeout, error-with-zero-exit, explicit skip, missing
   executable and continuation-after-failure controls.
+
+## Completed full Linux suite
+
+The final frozen implementation at `6684017c96d1619fe853987f5098bff670b779c8`
+passes import plus **93 of 93 discovered regression cases**, each executed exactly
+once, in **1,024.383 seconds (17 minutes, 4 seconds)**. This comprises **87 headless
+cases** (including profiles and scene startup) and **six actual rendered-pixel
+cases**. The completed report contains zero failed, skipped or timed-out cases,
+zero engine/script errors and zero frozen-input changes. Ordinary case timeouts
+were retained. The only warnings were the expected unsupported V-Sync warning
+from the software display, once per graphical case.
+
+| Selected final regression | Result |
+|---|---|
+| Building material integration | 1,091 assertions, zero failures using the rebuilt native library |
+| MicroScenarios | 8,855 assertions, zero failures in 127.085 seconds, within the unchanged 180-second timeout |
+| Material LUT | All 132 material ID slots, 256 palette/program rows and 50 flair classes |
+| Material presentation | Actual-pixel oracle passed in 25.088 seconds |
+| Production vapour pipeline | 26 actual-pixel assertions, zero failures |
+| Render world generation | 23 assertions, zero failures with real native and fallback workers |
+| Web worker parity | Passed in 21.234 seconds; this is the Godot-side parity test, not a fresh browser export |
+| WEX-001 water-body baseline | Passed in 145.789 seconds, within the unchanged 180-second timeout |
+
+All six graphical fixtures (Blacksite Nine, depth surface, material presentation,
+production vapour, showcase backdrop and water presentation) submitted real
+frames through the backend recorded above.
+
+The local evidence directory is
+`/tmp/cybersand-pr179-evidence/final-suite`. These paths identify the original
+execution evidence; they are not a claim that transient local files are hosted
+by this repository. `timings.json` contains all 94 execution records (import plus
+93 cases), commands and durations. A separate `source-binding.json` verifies all
+38 native build inputs against the immutable implementation's Git blobs, plus
+406 direct Git-blob matches and 17 materialized LFS matches for frozen suite
+inputs. It separately accounts for the rebuilt Linux library and 135 generated
+import UID files. The binding SHA-256 is
+`190b0da844712beeed942353d8e3dbfb83315e8ca6f97289ec8e72b68a8fc072`.
+
+The final `evidence-manifest.json` inventories 105 evidence files and has SHA-256
+`daa6f5650a8d5eb20c3d10510f5c471af1e26d18a8d5e3c9ed051fae5313d5a0`.
+All 94 individual log hashes match the timing report. The wrapper hashed its
+aggregate `runner.log` before appending the final JSON footer; the final evidence
+inventory hashes the completed aggregate log. Raw execution evidence was
+preserved unchanged. Retained pixel artifacts include the complete material
+catalogue PNG and seeded, decayed and reset vapour EXRs.
 
 ## Commands and acceptance
 
@@ -137,9 +186,45 @@ or fresh browser/WebAssembly export execution. The earlier one-desktop captures
 and palette/glow timing do not measure the total new vapour pipeline cost or
 certify other platforms.
 
-## Publication and final checks
+## Progress checkpoint — 2026-10-19 01:13 UTC
 
-Publication and applicable ready-for-review workflow execution are pending at
-this implementation checkpoint. This section will retain their exact source,
-runtime and run identities, outcomes and any remaining limitations before the
-PR review is reported complete.
+This checkpoint records progress while the original review and test-completion
+request remains active. It is committed on `review/pr179-validation-progress`
+so that the publisher's guarded PR-branch lease remains intact. The record will
+be incorporated into the PR after publication.
+
+The current
+[guarded runtime publication run, 39183102017](https://github.com/techrote/cybersand/actions/runs/39183102017),
+started from publisher commit `e621348f4b4fde4d49763f4c1f320b56cbcc2a29`, has:
+
+| Hosted job | Checkpoint result |
+|---|---|
+| Linux build, job 117839855099 | **Passed**, including the current core native suite and focused execution of the actual rebuilt Linux extension |
+| Windows cross-build, job 117839860316 | **Passed** |
+| Actual Windows runtime execution, job 117843183910 | **Running** the 87 applicable headless cases after source, DLL, Rapier and engine identity checks passed |
+| Runtime publication | Waiting for successful Windows execution; retained repo runtimes have not yet been replaced by this run |
+
+The final review of the standalone physics CLI found an additional concrete
+defect in `native/bench/physics_characterisation.cpp`: it accepted new material
+IDs but indexed 81-entry stack arrays when collecting samples. Material 81
+reproduced a **stack-buffer-overflow under ASan**, while the old-ID control
+succeeded. A new parsed-output regression run against the unchanged sanitizer
+binary exercised 154 actual invocations and reported 134 failing subcases;
+some high IDs exited zero while still producing incorrect samples, so exit-code
+checks alone are insufficient. The original red log is
+`/tmp/pr179-physics-characterisation-new-id-red.log`.
+
+The CLI correction and its normal/sanitized regression gate are in progress. They
+are separate from the frozen GDExtension implementation: the standalone bench
+file is not a retained-runtime source input. The planned correction derives
+sample extents from the catalogue and rejects invalid wide IDs before narrowing;
+the executable-level oracle checks every new ID, old-ID controls, count/sum-Y/
+centroid accounting and invalid inputs. Historical fixed-fixture analysis
+reducers are outside this change.
+
+Remaining work is to complete that CLI validation, let the guarded Linux/Windows
+runtime publication finish, incorporate this checkpoint and the CLI fix into
+the PR, verify materialized runtime provenance and documentation/retrieval
+gates, and run all applicable ready-for-review Native, GDExtension, Water and
+Documentation workflows on the resulting branch head. Draft-skipped workflows
+are not counted as completed tests. The PR remains open and unmerged.
