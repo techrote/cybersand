@@ -1,7 +1,7 @@
 {
   "version": 1,
   "frozen_date": "2026-09-08",
-  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair. ACT01-ACT03 cover provisional actor capabilities, player/policy input lifetime and bounded-work limits. SCENE01/SCENE02 cover Neon Reliquary entry and view controls, and the four-district descent with explicit scene-state boundaries. ACT04-ACT09 cover the 29-rig sets, parametric input, consumed-action identity, fictional personas, bounded tool/rope authority and SetA compatibility. USABLE01 covers the separate 32-item actor equipment catalogue, ownership and work limits. SCENE03 covers the connected Blacksite Nine route, camera-only district views, shared-world continuity and whole-complex reset.",
+  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair. ACT01-ACT03 cover provisional actor capabilities, player/policy input lifetime and bounded-work limits. SCENE01/SCENE02 cover Neon Reliquary entry and view controls, and the four-district descent with explicit scene-state boundaries. ACT04-ACT09 cover the 29-rig sets, parametric input, consumed-action identity, fictional personas, bounded tool/rope authority and SetA compatibility. SCENE03 covers the connected Blacksite Nine route, camera-only district views, shared-world continuity and whole-complex reset. USABLE01 covers the separate 32-item actor equipment catalogue, ownership and work limits.",
   "questions": [
     {
       "id": "C05",
@@ -1063,7 +1063,7 @@
       ],
       "facts": [
         "The desktop launcher opens separate scenes and F2 closes the current session. The generation workbench remains an isolated preview.",
-        "The barrel and Ripper comparison uses one live Rapier rectangle each, fresh resets, capped impulses and a release/cooldown guard. Articulation and broad granular acceptance remain follow-up work."
+        "The retained barrel and Ripper comparison uses one live Rapier rectangle each, fresh resets, capped impulses and a release/cooldown guard. ACT-004 separately supplies 41 articulated rigs; generic granular acceptance remains separately owned."
       ],
       "sources": [
         "../godot/scripts/physical_actor_trial.gd",
@@ -1092,13 +1092,84 @@
         "operations/physical-actor-programme.md"
       ],
       "facts": [
-        "F5 selects sampled rigs or Rapier barrel/Ripper in the desktop sandbox, Blacksite and all four showcase districts; applying restores the selected map and resets edits and motion. R retains the actor.",
-        "Only the authored exploratory allowlist accepts actor changes; Benchmark and controlled apparatus remain protected. All actor rigs are approved for future physical Rapier conversion, with explicitly justified impossible configurations as exceptions; current physical trials remain single hulls."
+        "F5 defaults to 41 articulated Rapier choices in the desktop sandbox, Blacksite and all four showcase districts, with human, demo or policy producers; sampled rigs and barrel/Ripper hull trials remain explicit references. Applying restores the selected map and resets edits and motion; R retains the actor.",
+        "Only the authored exploratory allowlist accepts actor changes; Benchmark and controlled apparatus remain protected. Physical installation waits for the matching reset acknowledgement and starts a new actor epoch."
       ],
       "sources": [
         "../godot/scripts/main.gd",
         "../godot/scripts/simulation_worker.gd",
         "../godot/scripts/actor_prototype_panel.gd"
+      ]
+    },
+    {
+      "id": "ACT12",
+      "query": "Which existing actors have actual articulated Rapier parts, what extra rigs were added, and must gyros and joints simulate exact mechanical physics?",
+      "canonical": [
+        "systems/physical-actor-rigs.md",
+        "operations/physical-actor-programme.md"
+      ],
+      "facts": [
+        "All 29 existing actor identities have physical definitions plus twelve SetX examples, with actual rectangular bodies and jointed parts rendered from collider dimensions and published transforms.",
+        "The owner permits bounded gyro assistance without finite momentum budgets, approximate slides and controlled flex/play. The current maximum is eight parts including held objects per actor, eight actors and 64 coupled bodies.",
+        "Sampled motors remain explicit references; headless tests do not establish owner feel, universal traversal, generic granular acceptance or Windows/Web play."
+      ],
+      "sources": [
+        "../godot/scripts/physical_actor_catalog.gd",
+        "../godot/scripts/physical_actor_rig.gd",
+        "../godot/scripts/physical_actor_session.gd"
+      ]
+    },
+    {
+      "id": "ACT13",
+      "query": "Can a human, a local decision model and a slow frontier LLM safely control the same physical actor, including charge cancellation and stale responses?",
+      "canonical": [
+        "systems/physical-actor-rigs.md",
+        "reference/interfaces-and-message-contracts.md"
+      ],
+      "facts": [
+        "Human, demo and policy producers share the physical wire action and actuator path; version 2 binds commands to run, actor, epoch, sequence and an actually issued observation.",
+        "Lease deadlines are anchored to observed ticks, so late responses cannot renew old authority. Cancellation clears charged intent and pending effects without firing a release or erasing velocity.",
+        "The source provides local feedback examples and a bounded consumer, not neural training, network transport or a live model service."
+      ],
+      "sources": [
+        "../godot/scripts/physical_actor_session.gd",
+        "../godot/scripts/physical_actor_script.gd"
+      ]
+    },
+    {
+      "id": "ACT14",
+      "query": "How do articulated actors wield, aim, recoil, drop and pick up tools, and are all 32 requested usable illustrations functional items?",
+      "canonical": [
+        "systems/physical-actor-rigs.md",
+        "reference/interfaces-and-message-contracts.md"
+      ],
+      "facts": [
+        "Mounts declare their part, offset, aiming limits, cooldown and recoil; examples include mounted depositors/cutters, a recoil launcher and articulated held objects. M uses, N releases and U reattaches a nearby item.",
+        "Held and released physical items retain their part budget; reattachment checks bounded proximity. Recoil is physical-owner authority while copied cell effects are validated/applied only by the cellular owner with source-mask and wall clearance.",
+        "Ordinary deposition uses Sand and Rocketjumper has a bounded Fire/Gunpowder pattern. The 32 artwork references are not 32 implemented inventory tools."
+      ],
+      "sources": [
+        "../godot/scripts/physical_actor_catalog.gd",
+        "../godot/scripts/physical_actor_rig.gd",
+        "../godot/scripts/physical_actor_effects.gd"
+      ]
+    },
+    {
+      "id": "ACT15",
+      "query": "Does physical Thunderbowl v2 use the F5 actors, what can a local policy observe, and did the sampled arena rewards, metal or neural experiments migrate?",
+      "canonical": [
+        "systems/thunderbowl-control-reference.md",
+        "architecture/simulation-tick-and-threading.md"
+      ],
+      "facts": [
+        "Physical Thunderbowl v2 uses the common articulated actor session in its own native world and isolated Rapier space, with a synchronous mask/actuation/effects/material/feedback/terrain/Rapier schedule. Desktop remains asynchronous.",
+        "Local actor observations add a bounded composed material/body-ID patch with source ticks; full evaluator snapshots are separate and must not masquerade as local policy inputs.",
+        "The physical lab has no competitive tag rewards, damage, metal, oracle, NCA or live model service; sampled v1 examples retain their original independent contracts."
+      ],
+      "sources": [
+        "../godot/scripts/physical_actor_arena.gd",
+        "../godot/examples/thunderbowl/run_physical_thunderbowl.gd",
+        "../godot/scripts/physical_actor_session.gd"
       ]
     },
     {
@@ -1122,6 +1193,6 @@
       ]
     }
   ],
-  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set. 2026-10-18: MAT01/MAT02 add independent persistent-contact and interior mask-wake questions; the frozen 32 and prior questions are unchanged. 2026-10-18: SCENE01 adds independent demo-level entry/view/ownership routing; the frozen 32-question set is unchanged. 2026-10-18: SCENE02 adds the owner-requested four-tile descent and state-boundary question; all prior and frozen questions remain unchanged. 2026-10-18: ACT01-ACT03 add independent actor model/input/performance-boundary questions; the frozen 32-question set is unchanged. 2026-10-18 ACT-002: ACT04-ACT09 add independent expanded-rig/control/observation/persona/budget/compatibility questions. ACT03 now explicitly scopes original numeric limits to SetA and names the additive extension; the frozen 32-question set remains unchanged. 2026-10-18: SCENE03 adds the nine-district route and continuity question; all 47 prior supplementary questions, including SCENE01/SCENE02 and ACT01-ACT09, and the frozen 32-question set remain unchanged. 2026-10-18 USABLE-001: USABLE01 adds the independent actor-equipment catalogue/ownership/budget question without changing the frozen 32-question set.",
-  "integration_note": "Retains scene, generation, actor, actor-usable, Thunderbowl and presentation routes; historical questions remain separately scoped."
+  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set. 2026-10-18: MAT01/MAT02 add independent persistent-contact and interior mask-wake questions; the frozen 32 and prior questions are unchanged. 2026-10-18: SCENE01 adds independent demo-level entry/view/ownership routing; the frozen 32-question set is unchanged. 2026-10-18: SCENE02 adds the owner-requested four-tile descent and state-boundary question; all prior and frozen questions remain unchanged. 2026-10-18: ACT01-ACT03 add independent actor model/input/performance-boundary questions; the frozen 32-question set is unchanged. 2026-10-18 ACT-002: ACT04-ACT09 add independent expanded-rig/control/observation/persona/budget/compatibility questions. ACT03 now explicitly scopes original numeric limits to SetA and names the additive extension; the frozen 32-question set remains unchanged. 2026-10-18: SCENE03 adds the nine-district route and continuity question; all 47 prior supplementary questions, including SCENE01/SCENE02 and ACT01-ACT09, and the frozen 32-question set remain unchanged. 2026-10-18 ACT-004: ACT10/ACT11 expected facts reconciled with retained hull references and implemented full physical roster; ACT12-ACT15 add independent physical fidelity, producer lifetime, usable and arena-version challenges. Frozen query wording is unchanged; Q10 capacity correction is disclosed in the frozen fixture metadata. 2026-10-18 USABLE-001: USABLE01 adds the independent actor-equipment catalogue/ownership/budget question without changing the frozen 32-question set.",
+  "integration_note": "Retains all scene, generation, actor, actor-usable, Thunderbowl, physical-actor and presentation routes; historical questions are preserved."
 }
