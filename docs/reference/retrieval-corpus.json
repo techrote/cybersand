@@ -56,6 +56,7 @@
     "systems/activity-dirty-regions-and-waking.md",
     "systems/actor-control-prototypes.md",
     "systems/actor-rigs.md",
+    "systems/actor-usables.md",
     "systems/granular-interaction-policy.md",
     "systems/player-environment-profiles-and-traversal.md",
     "systems/material-appearance-and-rendering.md",
@@ -343,5 +344,5 @@
       "reason": "Dated ACT-004 source/runtime, preserved tuning failures and scoped articulated-actor validation; retrieve explicitly through the physical actor contract or validation ledger, not as a default Current runtime contract."
     }
   ],
-  "integration_note": "Retains all scene, generation, actor, Thunderbowl and presentation routes from both parents; historical questions are preserved."
+  "integration_note": "Retains scene, generation, actor, actor-usable, Thunderbowl, physical-actor and presentation routes; historical questions remain separately scoped."
 }

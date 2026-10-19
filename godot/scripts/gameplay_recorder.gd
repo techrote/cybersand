@@ -438,6 +438,7 @@ func _frame_metadata(snapshot: CyberSimulationSnapshot) -> Dictionary:
 		"environment_profile": player_environment_profile.duplicate(true),
 		"environment_profile_applied": snapshot.actor_prototypes.is_empty() and active_body_id == 0,
 		"actor_prototype": snapshot.actor_prototypes.duplicate(true),
+		"actor_usables": snapshot.actor_usables.duplicate(true),
 	}
 	var rig_states: PackedFloat32Array = snapshot.actor_prototypes.get("rig_states", PackedFloat32Array())
 	if rig_states.size() >= CyberActorPrototypeSession.RIG_OBSERVATION_STRIDE:
@@ -509,6 +510,7 @@ func _frame_metadata(snapshot: CyberSimulationSnapshot) -> Dictionary:
 			"generated_monotonic_usec": render_usec,
 			"world_revision": snapshot.world_revision,
 			"actor_prototypes": material_context.get("actor_prototypes", {}).duplicate(true),
+			"actor_usables": material_context.get("actor_usables", {}).duplicate(true),
 		},
 		"actor_sample": {
 			"snapshot_serial": snapshot.serial,
@@ -517,6 +519,7 @@ func _frame_metadata(snapshot: CyberSimulationSnapshot) -> Dictionary:
 			"representation": representation,
 			"player_body_id": active_body_id,
 			"actor_prototypes": snapshot.actor_prototypes.duplicate(true),
+			"actor_usables": snapshot.actor_usables.duplicate(true),
 		},
 		"render_publication": {
 			"serial": snapshot.render_snapshot_serial,
