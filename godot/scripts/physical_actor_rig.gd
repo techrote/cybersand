@@ -81,6 +81,10 @@ var _charge_armed: bool = false
 var _last_centre: Vector2 = Vector2.ZERO
 var _stuck_time: float = 0.0
 var _support_age: float = 1.0
+var _equipment_aim: Vector2 = Vector2.RIGHT
+var _equipment_aim_enabled: bool = false
+var _equipment_state: Dictionary = {}
+var _fixed_equipment: Dictionary = {}
 
 
 static func validate_definition(definition: Dictionary) -> String:
@@ -421,6 +425,7 @@ func advance(action: Dictionary, delta: float, allowed: bool = true) -> void:
 	if not fault.is_empty():
 		return
 	_sense()
+	_refresh_equipment_state()
 	_action = action.duplicate(true)
 	var movement: Vector2 = Vector2(action.get("move", Vector2.ZERO)).limit_length(1.0)
 	if movement.length_squared() < 0.0025:
@@ -452,9 +457,9 @@ func advance(action: Dictionary, delta: float, allowed: bool = true) -> void:
 	_apply_primary(buttons.x != 0, pressed.x != 0, released_primary, dt, effort)
 	_apply_attachment_forces(float(action.get("reel", 0.0)), dt, effort)
 	_drive_joints(buttons, dt, effort)
-	if bool(action.get("release_usable", false)):
+	if bool(action.get("release_usable", false)) and not bool(_definition.get("equipment_managed", false)):
 		release_usable()
-	if bool(action.get("attach_usable", false)):
+	if bool(action.get("attach_usable", false)) and not bool(_definition.get("equipment_managed", false)):
 		attach_usable()
 	if bool(action.get("tool", false)):
 		fire_mount(0, effort)
@@ -792,7 +797,9 @@ func _drive_joints(buttons: Vector3i, dt: float, effort: float) -> void:
 		var target: float = 0.0
 		if str(joint.type) == "rotary":
 			var pin: PinJoint2D = joint.node
-			var drive: bool = role in ["wheel", "track", "leg", "aim", "rotor", "wing", "sail", "grip", "tool", "foot", "thruster", "tilt_thruster", "fin"]
+			var drive: bool = role in ["wheel", "track", "leg", "aim", "rotor", "wing", "sail", "grip", "tool", "foot", "thruster", "tilt_thruster", "fin", "equipment"]
+			if bool(joint.get("equipment_aim", false)):
+				drive = _equipment_aim_enabled
 			if role in ["wheel", "track"]:
 				target = _smoothed_move.x * float(joint.get("motor_speed", 12.0))
 			elif role == "rotor":
@@ -803,10 +810,13 @@ func _drive_joints(buttons: Vector3i, dt: float, effort: float) -> void:
 					desired = sin(gait_phase + float(joint.get("phase", 0.0))) \
 						* float(_profile.get("gait_amplitude", 0.48)) * absf(_smoothed_move.x)
 					desired += _smoothed_move.x * 0.16
-				elif role in ["aim", "tool"]:
+				elif role in ["aim", "tool", "equipment"]:
 					var aim_axis: Vector2 = joint.get("aim_axis", Vector2.RIGHT)
-					desired = wrapf(_aim.angle() - aim_axis.angle() - _transforms[a].get_rotation()
+					var joint_aim: Vector2 = _equipment_aim if bool(joint.get("equipment_aim", false)) else _aim
+					desired = wrapf(joint_aim.angle() - aim_axis.angle() - _transforms[a].get_rotation()
 						- float(joint.initial_relative_angle), -PI, PI)
+					if bool(joint.get("equipment_aim", false)) and joint.has("limits"):
+						desired = _bounded_equipment_angle(joint, desired, relative)
 				elif role in ["wing", "sail"]:
 					desired = (0.48 if buttons.y != 0 else -0.18) * float(joint.deployment_sign)
 				elif role == "grip":
@@ -858,6 +868,28 @@ func _drive_joints(buttons: Vector3i, dt: float, effort: float) -> void:
 			_apply_angular_impulse(b, torque)
 			_apply_angular_impulse(a, -torque)
 			joint.target = target
+
+
+func _bounded_equipment_angle(joint: Dictionary, desired: float, relative: float) -> float:
+	var limits: Vector2 = joint.limits
+	var lower: float = limits.x + minf(0.03, (limits.y - limits.x) * 0.1)
+	var upper: float = limits.y - minf(0.03, (limits.y - limits.x) * 0.1)
+	var previous: float = float(joint.get("equipment_target_angle", relative))
+	if desired >= lower and desired <= upper:
+		joint["equipment_target_angle"] = desired
+		return desired
+	var best: float = clampf(desired, lower, upper)
+	var best_score: float = absf(wrapf(best - desired, -PI, PI)) + 0.35 * absf(best - previous)
+	# A target behind a limited wrist has two equally close end stops. Tiny
+	# chassis rotations across +/-pi must not reverse the motor every sample.
+	for equivalent: float in [desired + TAU, desired - TAU]:
+		var candidate: float = clampf(equivalent, lower, upper)
+		var score: float = absf(wrapf(candidate - desired, -PI, PI)) + 0.35 * absf(candidate - previous)
+		if score + 0.025 < best_score:
+			best = candidate
+			best_score = score
+	joint["equipment_target_angle"] = best
+	return best
 
 
 func cast_rope(direction: Vector2) -> bool:
@@ -1146,6 +1178,7 @@ func refresh_observation() -> void:
 	if not fault.is_empty():
 		return
 	_sense()
+	_refresh_equipment_state()
 	_publish_observation()
 	queue_redraw()
 
@@ -1216,7 +1249,7 @@ func capabilities() -> Dictionary:
 
 func fire_mount(index: int = 0, effort: float = 1.0) -> bool:
 	if not configured or not is_finite(effort) or effort <= 0.0 or index < 0 or index >= _mounts.size() \
-		or _tool_cooldown > 0.0 or not _effects.is_empty():
+		or _tool_cooldown > 0.0 or not _effects.is_empty() or bool(_definition.get("equipment_managed", false)):
 		return false
 	var mount: Dictionary = _mounts[index]
 	if not bool(mount.get("attached", true)):
@@ -1291,6 +1324,7 @@ func release_usable(index: int = 0) -> bool:
 	_total_mass -= _parts[part].mass
 	_assembly_inertia = maxf(_inertias[0], _assembly_inertia - _inertias[part]
 		- _parts[part].mass * Vector2(_part_defs[part].offset).length_squared())
+	_refresh_equipment_state()
 	return true
 
 
@@ -1307,6 +1341,11 @@ func attach_usable(index: int = 0) -> bool:
 		return false
 	if not _ray(grip_position, _transforms[part].origin).is_empty():
 		return false
+	# A fixed processor may resume dynamics only after pickup has passed the
+	# same local proximity/clearance checks as every other released object.
+	if _fixed_equipment.has(part):
+		_parts[part].freeze = false
+		_fixed_equipment.erase(part)
 	# Reattach the existing body at its current pose. No new part is allocated
 	# and no teleport/velocity reset turns a pickup into an invisible launch.
 	var pin: PinJoint2D = PinJoint2D.new()
@@ -1314,19 +1353,25 @@ func attach_usable(index: int = 0) -> bool:
 	pin.softness = 0.015
 	pin.angular_limit_enabled = true
 	var relative_angle: float = _transforms[part].get_rotation() - _transforms[host].get_rotation()
-	pin.angular_limit_lower = relative_angle - 0.8
-	pin.angular_limit_upper = relative_angle + 0.8
+	var pickup_limits: Vector2 = mount.get("physical_limits", Vector2(-0.8, 0.8))
+	pin.angular_limit_lower = relative_angle + pickup_limits.x
+	pin.angular_limit_upper = relative_angle + pickup_limits.y
 	_attach_joint_node(pin, host, part, 180.0)
 	for joint: Dictionary in _joints:
 		if int(joint.b) == part or int(joint.a) == part:
 			joint.node.queue_free()
+			for extra: String in ["spring_node", "guide_node"]:
+				if joint.has(extra):
+					if is_instance_valid(joint[extra]):
+						joint[extra].queue_free()
+					joint.erase(extra)
 			joint.node = pin
 			joint.type = "rotary"
 			joint.enabled = true
 			joint.a = host
 			joint.b = part
 			joint.initial_relative_angle = _transforms[part].get_rotation() - _transforms[host].get_rotation()
-			joint.limits = Vector2(-0.8, 0.8)
+			joint.limits = pickup_limits
 			joint.anchor_a_local = _transforms[host].affine_inverse() * grip_position
 			joint.anchor_b_local = _transforms[part].affine_inverse() * grip_position
 			break
@@ -1338,7 +1383,81 @@ func attach_usable(index: int = 0) -> bool:
 	_detached.erase(part)
 	_total_mass += _parts[part].mass
 	_assembly_inertia += _inertias[part] + _parts[part].mass * Vector2(_part_defs[part].offset).length_squared()
+	_refresh_equipment_state()
 	return true
+
+
+func set_equipment_aim(direction: Vector2, enabled: bool) -> void:
+	_equipment_aim_enabled = enabled and direction.is_finite() and direction.length_squared() > 0.00001
+	if _equipment_aim_enabled:
+		_equipment_aim = direction.normalized()
+
+
+func _refresh_equipment_state() -> void:
+	_equipment_state.clear()
+	if not configured or _mounts.is_empty() or _transforms.size() != _parts.size():
+		return
+	var mount: Dictionary = _mounts[0]
+	if not mount.has("held_part"):
+		return
+	var held: int = int(mount.held_part)
+	var host: int = int(mount.part)
+	var pose: Transform2D = _transforms[held]
+	var axis: Vector2 = Vector2(mount.get("aim_axis", Vector2.RIGHT)).normalized()
+	var direction: Vector2 = axis.rotated(pose.get_rotation())
+	var half: Vector2 = _sizes[held] * 0.5
+	var along: float = minf(half.x / absf(axis.x) if absf(axis.x) > 0.00001 else 1000.0,
+		half.y / absf(axis.y) if absf(axis.y) > 0.00001 else 1000.0)
+	var muzzle: Vector2 = pose.origin + direction * (along + 1.25)
+	var grip: Vector2 = _transforms[host] * Vector2(mount.offset)
+	var vertical: float = absf(sin(pose.get_rotation())) * half.x + absf(cos(pose.get_rotation())) * half.y
+	# At most three additional bounded rays per refresh. Observers consume this
+	# copied result, rather than initiating new space queries on every read.
+	var clearance: bool = _ray(pose.origin, muzzle).is_empty()
+	var supported: Dictionary = _ray(pose.origin, pose.origin + Vector2.DOWN * (vertical + 1.3))
+	var pickup_clear: bool = grip.distance_to(pose.origin) <= 8.0 and _ray(grip, pose.origin).is_empty()
+	_equipment_state = {"held_part": held, "host_part": host, "mount_id": str(mount.get("id", "usable")),
+		"mount_type": str(mount.get("type", "mounted")), "aim_limits": mount.get("physical_limits", mount.get("limits", Vector2(-PI, PI))),
+		"position": pose.origin, "rotation": pose.get_rotation(), "velocity": _velocities[held],
+		"angular_velocity": _angular_velocities[held], "half_extents": half, "aim_direction": direction,
+		"muzzle": muzzle, "owner_origin": _transforms[host].origin, "grip_position": grip,
+		"attached": bool(mount.get("attached", true)), "clearance": clearance,
+		"supported": not supported.is_empty() and Vector2(supported.get("normal", Vector2.ZERO)).y < -0.35,
+		"release_age": float(_detached.get(held, 0.0)), "reattach_distance": grip.distance_to(pose.origin),
+		"reattach_ready": not bool(mount.get("attached", true)) and pickup_clear,
+		"fixed": _fixed_equipment.has(held)}
+
+
+func equipment_mount_state() -> Dictionary:
+	return _equipment_state.duplicate(true)
+
+
+func fix_usable(index: int = 0) -> bool:
+	if index < 0 or index >= _mounts.size():
+		return false
+	var mount: Dictionary = _mounts[index]
+	if not mount.has("held_part") or bool(mount.get("attached", true)):
+		return false
+	var part: int = int(mount.held_part)
+	if _fixed_equipment.has(part):
+		return false
+	_parts[part].freeze_mode = RigidBody2D.FREEZE_MODE_STATIC
+	_parts[part].freeze = true
+	_fixed_equipment[part] = true
+	_refresh_equipment_state()
+	return true
+
+
+func apply_equipment_recoil(magnitude: float) -> Vector2:
+	if not is_finite(magnitude) or magnitude <= 0.0 or _equipment_state.is_empty() \
+		or not bool(_equipment_state.attached):
+		return Vector2.ZERO
+	var held: int = int(_equipment_state.held_part)
+	var reaction: Vector2 = -Vector2(_equipment_state.aim_direction) * clampf(magnitude, 0.0, 24.0)
+	var actual: Vector2 = _apply_part_impulse(held, reaction,
+		Vector2(_equipment_state.muzzle) - _transforms[held].origin)
+	_last_impulse += actual
+	return actual
 
 
 func _update_detached(dt: float) -> void:
@@ -1361,6 +1480,7 @@ func cancel() -> void:
 	_smoothed_move = Vector2.ZERO
 	_smoothed_trim = 0.0
 	_thruster_levels = Vector2.ZERO
+	_equipment_aim_enabled = false
 	_action.clear()
 	_effects.clear()
 	gripped = false
@@ -1428,6 +1548,8 @@ func close() -> void:
 	_exclusions.clear()
 	_mounts.clear()
 	_detached.clear()
+	_fixed_equipment.clear()
+	_equipment_state.clear()
 	_transforms.clear()
 	_velocities.clear()
 	_angular_velocities.clear()

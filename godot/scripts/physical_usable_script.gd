@@ -71,7 +71,7 @@ func apply(observation: Dictionary, locomotion: Dictionary, delta: float) -> Dic
 	var index: int = int(equipment.get("usable_index", -1))
 	if index < 0 or index >= Usables.count():
 		return action
-	var position: Variant = observation.get("position", Vector2.INF)
+	var position: Variant = observation.get("position", observation.get("centre", Vector2.INF))
 	var velocity: Variant = observation.get("velocity", Vector2.INF)
 	if not position is Vector2 or not velocity is Vector2 \
 		or not position.is_finite() or not velocity.is_finite():
@@ -102,7 +102,7 @@ func apply(observation: Dictionary, locomotion: Dictionary, delta: float) -> Dic
 		_phase = "rearm"
 		return action
 	var result: String = str(equipment.get("last_result", ""))
-	if result in ["blocked", "no-charge", "cooldown", "not-ready", "source_blocked", "output-blocked"]:
+	if result in ["blocked", "no-charge", "cooldown", "not-ready", "source_blocked", "blocked-output"]:
 		_last_refusal = result
 	var definition: Dictionary = Usables.entry(index)
 	if state in ["released", "deployed", "fixed"]:
@@ -136,15 +136,21 @@ func apply(observation: Dictionary, locomotion: Dictionary, delta: float) -> Dic
 	var steady: bool = angular_speed < 3.5 and (upright or not is_drop)
 	var clearance: float = float(observation.get("ground_distance", 0.0))
 	var drop_window: bool = not is_drop or (not bool(observation.get("grounded", false)) and clearance >= 6.0)
-	if bool(equipment.get("pending", false)) or not bool(equipment.get("ready", false)) \
-		or float(equipment.get("charge", 0.0)) < float(definition.get("cost", 0.0)):
+	if bool(equipment.get("pending", false)):
 		_phase = "wait-ready"
 		return action
+	# Early activation controls an already committed payload. Its launch cost,
+	# launch cooldown and current muzzle clearance do not apply a second time.
 	if _time >= _next_alternate and _eligible_alternate(equipment, definition):
 		request.alternate = true
 		_next_alternate = _time + 1.0
 		_phase = "activate-payload"
-	elif _time >= _next_use and steady and drop_window:
+		return action
+	if not bool(equipment.get("ready", false)) \
+		or float(equipment.get("charge", 0.0)) < float(definition.get("cost", 0.0)):
+		_phase = "wait-ready"
+		return action
+	if _time >= _next_use and steady and drop_window:
 		request.trigger = true
 		_use_attempts += 1
 		_phase = "use"
@@ -162,7 +168,7 @@ func _processor(observation: Dictionary, equipment: Dictionary, action: Dictiona
 		_phase = "transport"
 		return
 	_phase = "lower-and-place"
-	var flight: bool = str(observation.get("mode", "")) == "flight" \
+	var flight: bool = bool(observation.get("flight_mode", false)) \
 		or _rig_id in [&"heavylift", &"tandem", &"qwen"]
 	var grounded: bool = bool(observation.get("grounded", false))
 	var clearance: float = float(observation.get("ground_distance", 99.0))
@@ -171,8 +177,13 @@ func _processor(observation: Dictionary, equipment: Dictionary, action: Dictiona
 	action.move.x = clampf(-velocity.x * 0.07, -0.65, 0.65)
 	if flight and not grounded:
 		action.move.y = clampf((clearance - 13.0) * 0.035 - velocity.y * 0.05, -0.5, 0.45)
-	if not flight:
-		action.primary = false
+	# A traversal boost chosen before this placement correction must not fight
+	# the descent. Assisted flight and stabilization remain ordinary channels.
+	action.primary = false
+	if flight:
+		action.secondary = true
+		action.trim = clampf(-float(observation.get("rotation", 0.0)) * 0.6 \
+			- float(observation.get("angular_velocity", 0.0)) * 0.15, -0.75, 0.75)
 	request.aim = Vector2.DOWN
 	if (grounded or clearance < 24.0) and velocity.length() < 22.0 \
 		and absf(float(observation.get("angular_velocity", 0.0))) < 1.7 \
@@ -192,8 +203,15 @@ func _recover_device(observation: Dictionary, equipment: Dictionary, action: Dic
 	if not device is Vector2 or not device.is_finite():
 		return
 	var state: String = str(equipment.get("state", "released"))
+	if bool(observation.get("flight_mode", false)):
+		action.primary = false
+		action.secondary = true
+	if state == "released" and bool(equipment.get("deploy_intent", false)):
+		_phase = "wait-for-settle"
+		action.move.x = clampf((device.x - position.x) * 0.018 - velocity.x * 0.035, -0.35, 0.35)
+		return
 	var processor: Variant = equipment.get("processor_state", {})
-	var jammed: bool = processor is Dictionary and str(processor.get("state", "")) in ["blocked", "jammed", "output-blocked"]
+	var jammed: bool = processor is Dictionary and str(processor.get("state", "")) in ["blocked", "jammed", "blocked-output"]
 	var service_wait: float = 2.2 if jammed else 4.0
 	if state != "released" and _time - _state_since < service_wait:
 		_phase = "inspect-processor"
@@ -238,7 +256,10 @@ func _eligible_alternate(equipment: Dictionary, definition: Dictionary) -> bool:
 
 
 func _target(observation: Dictionary, definition: Dictionary, origin: Vector2) -> Vector2:
-	var fallback := origin + Vector2(_direction * 28.0, 8.0)
+	# Near-contact excavation should approach the seam ahead of the carrier;
+	# aiming below its low nozzle would repeatedly hit the protected floor.
+	var fallback := origin + Vector2(_direction * 28.0,
+		0.0 if str(definition.get("operation", "")) in ["bore", "line_cut", "glass_cut"] else 8.0)
 	var patch: Variant = observation.get("cell_patch", {})
 	if not patch is Dictionary or not patch.get("origin") is Vector2i or not patch.get("size") is Vector2i:
 		return fallback
@@ -263,7 +284,7 @@ func _target(observation: Dictionary, definition: Dictionary, origin: Vector2) -
 			suitable = material == 0
 		if not suitable:
 			continue
-		var point := Vector2(patch.origin) + Vector2(index % size.x, index / size.x) + Vector2(0.5, 0.5)
+		var point := Vector2(patch.origin) + Vector2(index % size.x, floori(float(index) / float(size.x))) + Vector2(0.5, 0.5)
 		var distance: float = origin.distance_squared_to(point)
 		if distance < 16.0 or (point.x - origin.x) * _direction < -2.0:
 			continue

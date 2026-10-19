@@ -6,7 +6,7 @@ status: Current
 scope: Desktop, Web and native stage ordering, fixed quanta, failure behavior and permitted thread access
 keywords: [fixed tick, desktop worker, Web synchronous, Rapier order, character order, tick failure, backlog]
 related-documents: [data-ownership-and-lifetimes.md, determinism-and-boundary-transfers.md, rigid-body-and-cellular-coupling.md, ../operations/web-threading.md]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-19
 ---
 
 # Simulation tick and threading
@@ -48,7 +48,7 @@ serial checks prevent duplicate application. See
 
 ## Physical actor scheduling
 
-**Current ACT-004 desktop:** live bodies, joints and
+**Current ACT-004/ACT-005 desktop:** live bodies, joints and
 [`CyberPhysicalActorSession`](../../godot/scripts/physical_actor_session.gd)
 stay on the main thread. The owner installs a complete physical assembly with a
 new epoch for the selected reset. The sandbox can create it while reset is
@@ -62,16 +62,28 @@ publications and invalidates the cache when replacing a scenario. Equal revision
 numbers in different worlds do not authorize reuse of the previous geometry.
 The physics callback admits permitted input, applies matching cellular feedback,
 advances bounded actor actuation, manually steps Rapier, reads the resulting
-parts and publishes their copied states with drained usable requests. Demo
+parts and publishes their copied states with drained usable requests. Equipment
+poses, muzzle directions, generations and body states enter the worker together
+through `set_physical_usable_state`; the worker never obtains a Rapier object. Demo
 decisions run every six physical ticks from copied actor views collected before
 any demo output is submitted.
 
 The desktop worker prepares the native body mask before consuming copied usable
-effects under exclusive cellular ownership. It then advances materials when
-unpaused and publishes effect receipts and body responses with the actor epoch.
+effects under exclusive cellular ownership. ACT-005 validates the captured
+physical source against the current equipment identity, lease and native body
+mask, charges source/part-mask queries against the usable work budget, and applies
+tools, projectile sweeps or fixed processor work before the material tick. It then
+advances materials when unpaused and publishes usable readback, request receipts
+and body responses with the actor epoch. Matching accepted, consumed receipts
+authorize bounded recoil on the main thread at most once; admission alone does
+not spend equipment charge or apply recoil.
 Reset, suspension, cancellation and lease expiry revoke pending control. The
 session cancellation signal also retires worker effect generations, including
-requests already copied out of its queue but not yet admitted. An old epoch cannot
+requests already copied out of its queue but not yet admitted. For physical
+usables, the mutex serializes cancellation with material consumption, and
+extracted work remains in the admission capacity until resolved. Cancellation
+leaves already committed projectiles and deployed physical devices in the current
+world; reset/replacement retires that world-owned state. An old epoch cannot
 actuate new bodies. Desktop still has independently paced physical and cellular
 timelines, so this is not a claim of lockstep cells/body integration.
 
@@ -82,13 +94,16 @@ owns one native world and an isolated Rapier space synchronously at 60 Hz:
 1. Prepare the occupancy mask from the current actual part poses.
 2. Admit policy packets and advance the common actor session without integrating
    bodies yet; source/muzzle positions still correspond to that mask.
-3. Consume bounded effects, complete one native material tick and apply its
-   cellular responses.
+3. Consume bounded effects and physical usable requests against those copied
+   poses, complete one native material tick and apply its cellular responses.
 4. Synchronize hard terrain, step Rapier, and publish the next actor observation.
 
 Its schedule identifier is
 `synchronous-mask-actuation-effects-material-feedback-terrain-rapier/v1`.
-The lab completes all pending bounded terrain chunks before its Rapier step;
+The ACT-005 usable course uses the same synchronous schedule and isolated owners.
+Its material targets and processor Feed/Jam/Clear actions are explicit bounded
+fixture authoring; they do not grant actor controllers an additional world-write
+path. The lab completes all pending bounded terrain chunks before its Rapier step;
 this makes no desktop frame-time claim. Local material patches disclose both
 their sample tick and preceding body-mask pose tick. Native failure stops the
 environment and publishes the failure disposition without another physics step.

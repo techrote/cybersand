@@ -6,7 +6,7 @@ status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
 related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-19
 ---
 
 # Architectural and simulation invariants
@@ -152,7 +152,9 @@ Contract: [articulated actors](../systems/physical-actor-rigs.md),
 [physical commands](interfaces-and-message-contracts.md#physical-actor-control-and-effects).
 Sources: [session](../../godot/scripts/physical_actor_session.gd),
 [runtime](../../godot/scripts/physical_actor_rig.gd),
-[effects](../../godot/scripts/physical_actor_effects.gd).
+[effects](../../godot/scripts/physical_actor_effects.gd),
+[equipment owner](../../godot/scripts/physical_usable_equipment.gd),
+[physical usable runtime](../../godot/scripts/physical_usable_runtime.gd).
 Focused catalogue, Rapier, session, effects and integration runners detect the
 listed boundaries; execution evidence remains separately dated.
 
@@ -167,6 +169,12 @@ listed boundaries; execution evidence remains separately dated.
 | RIG-007 | Current: physical command/environment version 2 is distinct from sampled actor rows and Thunderbowl v1; no tag, metal, neural-service or reward equivalence is implied |
 | RIG-008 | Current: new desktop assemblies wait for matching reset/epoch and installed initial terrain; a retired world's cached geometry cannot release the fence |
 | RIG-009 | Current: worker effect batches are admitted wholly within eight pending requests or explicitly refused; bounded copied admission diagnostics are separate from actual-cell receipts |
+| RIG-010 | Current: ACT-005 equipment is one real coupled part whose body ID survives held, released, fixed, deployed and nearby pickup transitions; selection/lifecycle epochs revoke superseded authority without teleporting the part or erasing momentum |
+| RIG-011 | Current: physical usable requests carry run, actor, generation, equipment epoch, instance, body and request identity; one pending request per actor includes extracted work, and a whole batch is admitted within eight slots or explicitly refused |
+| RIG-012 | Current: physical source clearance and target protection use actual native per-part occupancy; tools/projectiles/processors cannot derive an alternative virtual muzzle or write through a protected collider |
+| RIG-013 | Current: the cellular owner accounts accepted usable work; only a matching accepted, consumed receipt can apply bounded physical recoil once, and cancellation, expiry, rearm, selection and reset fence stale results |
+| RIG-014 | Current: physical processors must settle and fix their real body before worker admission; rotated nonoverlapping exterior ports preflight complete batches, and blocked outputs consume no input |
+| RIG-015 | Current: bounded per-actor/per-processor history preserves stock, age, cycles and cooldown across pickup, redeployment and selection; an exhausted physical device remains observable and inert until its physical owner retires it |
 
 ## Capacity and allocation invariants
 

@@ -299,8 +299,7 @@ func _apply_tool(owner: int, definition: Dictionary, aim: Vector2, power: float,
 func _launch(owner: int, definition: Dictionary, aim: Vector2, power: float, world) -> String:
 	if _projectiles.size() >= MAX_PROJECTILES:
 		return "capacity"
-	var origin: Vector2 = _centres[owner] if owner < _centres.size() else Vector2.ZERO
-	var muzzle: Vector2 = origin + aim * 3.0
+	var muzzle: Vector2 = _projectile_muzzle(owner, aim)
 	if _inside_foreign_actor(muzzle, owner) >= 0 or _read(Vector2i(muzzle.floor()), world) != EMPTY:
 		return "blocked"
 	var projectile: Dictionary = {
@@ -320,6 +319,20 @@ func _launch(owner: int, definition: Dictionary, aim: Vector2, power: float, wor
 	}
 	_projectiles.append(projectile)
 	return "launched"
+
+# Geometry hooks keep catalogue semantics shared by the sampled and physical
+# owners. The physical adapter supplies a real published muzzle and body ports.
+func _projectile_muzzle(owner: int, aim: Vector2) -> Vector2:
+	var origin: Vector2 = _centres[owner] if owner < _centres.size() else Vector2.ZERO
+	return origin + aim * 3.0
+
+func _object_ports(obj: Dictionary, output: bool) -> Array[Vector2i]:
+	var center := Vector2i(Vector2(obj.position).round())
+	var x: int = 2 if output else -2
+	return [center + Vector2i(x, -1), center + Vector2i(x, 1)]
+
+func _write_read_cost() -> int:
+	return 1
 
 func _deploy(owner: int, definition: Dictionary, aim: Vector2, power: float, world) -> String:
 	if _objects.size() >= MAX_OBJECTS or _owned_object_count(owner) >= MAX_OBJECTS_PER_ACTOR:
@@ -517,13 +530,13 @@ func _step_objects(dt: float, world) -> void:
 
 func _object_cycle(obj: Dictionary, definition: Dictionary, world) -> String:
 	var center := Vector2i(Vector2(obj.position).round())
-	var outputs: Array[Vector2i] = [center + Vector2i(2,-1), center + Vector2i(2,1)]
+	var outputs: Array[Vector2i] = _object_ports(obj, true)
 	if StringName(str(definition.operation)) == &"firewarden":
 		if not _sensor_has(center, [int(definition.sensor_material)], SENSOR_RADIUS, world):
 			return "waiting-condition"
 		if _read(outputs[0], world) != EMPTY:
 			return "blocked-output"
-		if write_count_last + 1 > MAX_WRITES:
+		if write_count_last + 1 > MAX_WRITES or read_count_last + _write_read_cost() > MAX_READS:
 			refused_writes_last += 1
 			return "capacity"
 		if _write(outputs[0], 3, world):
@@ -534,7 +547,7 @@ func _object_cycle(obj: Dictionary, definition: Dictionary, world) -> String:
 	for recipe in definition.get("inputs", []):
 		for _n: int in range(int(recipe[1])):
 			required.append(int(recipe[0]))
-	var inputs: Array[Vector2i] = [center + Vector2i(-2,-1), center + Vector2i(-2,1)]
+	var inputs: Array[Vector2i] = _object_ports(obj, false)
 	if required.size() > inputs.size():
 		return "invalid-recipe"
 	for ri: int in range(required.size()):
@@ -557,7 +570,7 @@ func _object_cycle(obj: Dictionary, definition: Dictionary, world) -> String:
 		if _read(outputs[oi], world) != EMPTY:
 			return "blocked-output"
 	var writes_needed: int = required.size() + produced.size()
-	if write_count_last + writes_needed > MAX_WRITES or read_count_last + writes_needed > MAX_READS:
+	if write_count_last + writes_needed > MAX_WRITES or read_count_last + writes_needed * _write_read_cost() > MAX_READS:
 		refused_writes_last += writes_needed
 		return "capacity"
 	for ri: int in range(required.size()):

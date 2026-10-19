@@ -30,7 +30,7 @@ func _options() -> Dictionary:
 	var options: Dictionary = {}
 	for argument: String in OS.get_cmdline_user_args():
 		if argument == "--help":
-			print("Physical Thunderbowl v2: --rig=ripper --actors=4 --ticks=600 --seed=0 --output=result.json")
+			print("Physical Thunderbowl v2: --rig=ripper --actors=4 --ticks=600 --seed=0 --output=result.json [--course=usables-v1]")
 			print("Or --config=config.json [--ticks=N]. Optional --actions=actions.json accepts [{tick,actor_id,action,lease_ticks?}].")
 			print("Actions require producer=policy for that actor. Engine and native state remain synchronous at 60 Hz; no competition score.")
 			return {"help": true}
@@ -39,7 +39,7 @@ func _options() -> Dictionary:
 			_error = "Expected a named --option=value"
 			return {}
 		var key: String = argument.substr(2, separator - 2)
-		if key not in ["rig", "actors", "ticks", "seed", "config", "actions", "output"] or options.has(key):
+		if key not in ["rig", "actors", "ticks", "seed", "config", "actions", "output", "course"] or options.has(key):
 			_error = "Unknown or repeated option: " + key
 			return {}
 		var value: String = argument.substr(separator + 1)
@@ -113,7 +113,7 @@ func _run() -> void:
 		return
 	var config: Variant
 	if options.has("config"):
-		if options.has("rig") or options.has("actors") or options.has("seed"):
+		if options.has("rig") or options.has("actors") or options.has("seed") or options.has("course"):
 			_finish({"version": 2, "failed": true, "reason": "Config already specifies actors and seed"}, str(options.get("output", "")), 2)
 			return
 		config = _load_json(str(options.config))
@@ -122,7 +122,10 @@ func _run() -> void:
 		if not Catalog.has_rig(rig) or not Session._integer(options.get("actors", 4), 1, 8):
 			_finish({"version": 2, "failed": true, "reason": "Unknown rig or invalid actor count"}, str(options.get("output", "")), 2)
 			return
-		config = Arena.default_config(rig, int(options.get("actors", 4)))
+		if options.has("course") and str(options.course) != "usables-v1":
+			_finish({"version": 2, "failed": true, "reason": "Unknown usable course"}, str(options.get("output", "")), 2)
+			return
+		config = Arena.usable_course_config(rig, int(options.get("actors", 4))) if options.has("course") else Arena.default_config(rig, int(options.get("actors", 4)))
 		config.seed = options.get("seed", 0)
 		config.max_ticks = 600
 	if not config is Dictionary or not _error.is_empty():

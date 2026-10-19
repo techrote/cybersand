@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Thunderbowl actuation, decision and perception distinctions; prototype control schemas and bounded battle/training experiments, with explicit limits on neural, swarm and model-link claims
 canonical-for: [thunderbowl-control-reference, thunderbowl-control-topologies, thunderbowl-training-design]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-19
 related-documents: [actor-rigs.md, actor-control-prototypes.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../reference/validation-evidence.md, ../audits/2026-10-18-act003-thunderbowl-control-lab.md]
 ---
 
@@ -41,7 +41,7 @@ from having executable examples.
 
 ## Physical Thunderbowl v2
 
-**Current experimental ACT-004:** the separate physical lab uses all 41
+**Current experimental ACT-004/ACT-005:** the separate physical lab uses all 41
 [articulated Rapier actors](physical-actor-rigs.md), their actual jointed parts,
 native materials and the same human/demo/policy session as F5. It owns a native
 world and an isolated Rapier space. Its purpose is manoeuvre, recovery and usable
@@ -61,6 +61,10 @@ human, demo or policy; companion actors use the local scripted examples. Whole
 arena/follow cameras and collider outlines show the actual parts. Click the
 arena to arm human control. WASD, mouse, Space/Shift/C, Q/E, Z/X and brackets
 match F5; M uses the tool, N releases a held object, U reattaches a nearby one.
+ACT-005 gives actor zero the full equipment picker and independent equipment
+power. Left mouse or M triggers primary use; right mouse requests the usable's
+alternate action. Selection and use enter the same physical session as demo and
+policy actions.
 Pause, cancel, focus changes and reset revoke pending control through the owner.
 The whole-arena camera is evaluator information, so human play is not an
 equal-perception policy benchmark.
@@ -108,6 +112,51 @@ native worker and 60 Hz physics; the
 owns timing details. Desktop remains asynchronous and Web is not migrated by
 this lab. Dated source/platform evidence is in the
 [ACT-004 audit](../audits/2026-10-18-act004-articulated-actors.md).
+
+### Physical usable course
+
+The launcher entry **Physical usable course — 32 tools, payloads and processors**
+opens the same physical scene in its **Usable course** mode. The scene's
+**Manoeuvre / Usable course** selector resets the environment into the selected
+authored layout. All 41 rigs retain their catalogue loadout and the same
+human/demo/policy admission path; the course does not provide a separate actor
+controller with direct material access.
+
+```text
+godot --headless --path godot --script res://examples/thunderbowl/run_physical_thunderbowl.gd -- --course=usables-v1 --rig=digger --actors=8 --ticks=600 --seed=0 --output=physical-usable-result.json
+```
+
+[`CyberPhysicalUsableCourse`](../../godot/scripts/physical_usable_course.gd)
+defines bounded native material fixtures and a varied default roster. The eight
+sections expose different interactions:
+
+| Section | Observable interaction |
+|---|---|
+| Bore / Cut | Editable packed-earth seams for advancing excavation rigs |
+| Sort / Drain | Powder, glass and liquid targets for selective material work |
+| Penetrate | Separate editable leaves for swept projectile penetration |
+| Ricochet | Protected hard faces for damped bounce and physical firing recoil |
+| Stage / Burst | Flight space for fuse, airburst and staged ignition behavior |
+| Drop / Deposit | Receiving bins for downward payloads and native deposits |
+| Release / Grip | Same-body release, retained momentum and nearby physical reattachment |
+| Place / Jam | A service pad for dropping, settling, fixing and operating processors |
+
+For a deployed processor belonging to the selected follow actor, **Feed**, **Jam**
+and **Clear output** perform explicit bounded fixture edits at the current
+physical ports. Feed uses that device's real material recipe; Jam/Clear expose
+the existing rule that blocked outputs prevent input consumption. These are
+visible authoring controls, separate from the actor's copied local observation
+and equipment actions. They do not imply autonomous material creation or a
+general inventory economy.
+
+Course configuration adds `"course": "usables-v1"` to the physical version-2
+environment schema. Equipment observations, requests, receipts and native
+processor state follow the [physical equipment interface](../reference/interfaces-and-message-contracts.md#physical-equipment-actions-and-results).
+Body pose, joint aim, charged resources and native changes remain separate
+observable facts; the course has no virtual combat score or automatic assertion
+that every scripted actor completed every section. Acceptance is recorded in
+the [ACT-005 audit](../audits/2026-10-19-act005-physical-usables.md), with
+[focused validation commands](../operations/local-build-and-validation.md#physical-usable-validation).
 
 ## How should the control modes be classified?
 

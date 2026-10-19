@@ -5,6 +5,7 @@ extends SceneTree
 const Session = preload("res://scripts/physical_actor_session.gd")
 const Catalog = preload("res://scripts/physical_actor_catalog.gd")
 const Overlay = preload("res://scripts/physical_actor_overlay.gd")
+const Equipment = preload("res://scripts/physical_usable_equipment.gd")
 const DT: float = 1.0 / 60.0
 var assertions: int = 0
 var failures: int = 0
@@ -194,13 +195,13 @@ func run() -> void:
 	# Eight maximum-size catalogue actors use the complete 64-body budget.
 	var largest: StringName = &"runner"
 	for model: StringName in Catalog.RIG_IDS:
-		if Catalog.entry(model).parts.size() > Catalog.entry(largest).parts.size():
+		if Equipment.definition(Catalog.entry(model)).parts.size() > Equipment.definition(Catalog.entry(largest)).parts.size():
 			largest = model
 	var roster: Array = []
 	roster.resize(8)
 	roster.fill(largest)
 	expect(create(roster, &"demo", 3), "eight maximal actors admitted")
-	expect(session.bodies().size() == Catalog.entry(largest).parts.size() * 8 \
+	expect(session.bodies().size() == Equipment.definition(Catalog.entry(largest)).parts.size() * 8 \
 		and session.bodies().size() <= 64, "session flattens all bodies within 64 identities")
 	close()
 	await process_frame

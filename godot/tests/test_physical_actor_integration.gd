@@ -1,6 +1,7 @@
 extends SceneTree
 
 const Catalog = preload("res://scripts/physical_actor_catalog.gd")
+const Equipment = preload("res://scripts/physical_usable_equipment.gd")
 const Session = preload("res://scripts/physical_actor_session.gd")
 const Worker = preload("res://scripts/simulation_worker.gd")
 var assertions: int = 0
@@ -136,7 +137,7 @@ func keyboard_contract() -> void:
 	key(KEY_M, true)
 	key(KEY_E, true)
 	harness._publish_physical_keyboard_input()
-	expect(harness.physical_actor_session._commands[0].tool and harness.physical_actor_session._commands[0].trim == 1.0,
+	expect(harness.physical_actor_session._commands[0].equipment.trigger and harness.physical_actor_session._commands[0].trim == 1.0,
 		"tool and trim are independent physical channels")
 	key(KEY_M, false)
 	key(KEY_E, false)
@@ -322,7 +323,7 @@ func run() -> void:
 			expect(false, "physical rig installation failed")
 			break
 		var state: Dictionary = desktop.physical_actor_session.snapshot()
-		expect(state.actor_count == 1 and state.body_count == Catalog.entry(rig_id).parts.size(),
+		expect(state.actor_count == 1 and state.body_count == Equipment.definition(Catalog.entry(rig_id)).parts.size(),
 			"F5 installs every part for " + str(rig_id))
 		expect(state.epoch > last_epoch and desktop.physical_rig_id == rig_id, "reset replaces incarnation and identity")
 		last_epoch = state.epoch

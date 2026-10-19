@@ -5,7 +5,11 @@ extends Node2D
 # sampled Thunderbowl v1 retain their own scheduling and observation contracts.
 const Session = preload("res://scripts/physical_actor_session.gd")
 const Catalog = preload("res://scripts/physical_actor_catalog.gd")
+const Equipment = preload("res://scripts/physical_usable_equipment.gd")
 const Effects = preload("res://scripts/physical_actor_effects.gd")
+const UsableRuntime = preload("res://scripts/physical_usable_runtime.gd")
+const UsableCatalog = preload("res://scripts/usable_catalog.gd")
+const UsableCourse = preload("res://scripts/physical_usable_course.gd")
 const VERSION: int = 2
 const PHYSICS_HZ: int = 60
 const MAX_TICKS: int = 36000
@@ -19,6 +23,12 @@ var config: Dictionary = {}
 var _world: Object
 var _viewport: SubViewport
 var _effects := Effects.new()
+var _usables := UsableRuntime.new()
+var _usable_requests_total: int = 0
+var _usable_accepted_total: int = 0
+var _usable_refused_total: int = 0
+var _usable_changes_total: int = 0
+var _course_fixture_result: Dictionary = {}
 var _epoch_counter: int = 0
 var _terrain_revision: int = -1
 var _finished: bool = true
@@ -47,12 +57,18 @@ static func default_config(model: StringName = &"ripper", count: int = 4) -> Dic
 	return {"version": VERSION, "seed": 0, "max_ticks": 36000, "actors": actors, "local_patch_radius": 6}
 
 
+static func usable_course_config(model: StringName = &"digger", count: int = 8) -> Dictionary:
+	return UsableCourse.config(model, count)
+
+
 func _validated_config(value: Variant) -> Dictionary:
-	if not value is Dictionary or value.size() > 5:
+	if not value is Dictionary or value.size() > 6:
 		return {}
 	for key: Variant in value:
-		if str(key) not in ["version", "seed", "max_ticks", "actors", "local_patch_radius"]:
+		if str(key) not in ["version", "seed", "max_ticks", "actors", "local_patch_radius", "course"]:
 			return {}
+	if not value.get("course", "manoeuvre") is String or str(value.get("course", "manoeuvre")) not in ["manoeuvre", UsableCourse.ID]:
+		return {}
 	if not Session._integer(value.get("version", VERSION), VERSION, VERSION) \
 		or not Session._integer(value.get("seed", 0), 0, 2147483647) \
 		or not Session._integer(value.get("max_ticks", 600), 1, MAX_TICKS) \
@@ -75,7 +91,7 @@ func _validated_config(value: Variant) -> Dictionary:
 		var producer := StringName(str(actor.get("producer", "demo")))
 		if not Catalog.has_rig(model) or producer not in Session.PRODUCERS:
 			return {}
-		var data: Dictionary = Catalog.entry(model)
+		var data: Dictionary = Equipment.definition(Catalog.entry(model))
 		var position: Variant = actor.get("position", Vector2(
 			176.0 + float(index) * 56.0, FLOOR_Y - float(data.spawn_floor_clearance)))
 		if position is Array and position.size() == 2 \
@@ -88,7 +104,7 @@ func _validated_config(value: Variant) -> Dictionary:
 		return {}
 	return {"version": VERSION, "seed": int(value.get("seed", 0)),
 		"max_ticks": int(value.get("max_ticks", 600)), "actors": definitions,
-		"local_patch_radius": int(value.get("local_patch_radius", 6))}
+		"local_patch_radius": int(value.get("local_patch_radius", 6)), "course": str(value.get("course", "manoeuvre"))}
 
 
 func configure(value: Variant) -> bool:
@@ -108,7 +124,7 @@ func configure(value: Variant) -> bool:
 		return false
 	world.set_simulation_window_enabled(false)
 	world.set_cadence_lod_enabled(false)
-	for rectangle: Dictionary in layout(int(validated.seed)):
+	for rectangle: Dictionary in (UsableCourse.layout() if validated.course == UsableCourse.ID else layout(int(validated.seed))):
 		if not world.diagnostic_fill_rect(rectangle.origin, rectangle.size, rectangle.material):
 			last_error = "native_layout"
 			return false
@@ -134,6 +150,12 @@ func configure(value: Variant) -> bool:
 	config = validated.duplicate(true)
 	_epoch_counter += 1
 	_effects.reset(_epoch_counter)
+	_usables.reset(_epoch_counter)
+	_usable_requests_total = 0
+	_usable_accepted_total = 0
+	_usable_refused_total = 0
+	_usable_changes_total = 0
+	_course_fixture_result.clear()
 	_finished = false
 	_failed = false
 	_paused = false
@@ -264,6 +286,20 @@ func step(commands: Variant = []) -> Dictionary:
 	for receipt: Dictionary in _effect_receipts:
 		_effect_changes_total += int(receipt.changed_cells)
 		_effect_refusals_total += int(receipt.status == "refused")
+	var usable_requests: Array = session.drain_equipment_requests()
+	var equipment_state: Dictionary = _usables.step(1.0 / PHYSICS_HZ, _world,
+		session.equipment_frame(), usable_requests)
+	_usable_requests_total += usable_requests.size()
+	# Autonomous impacts, fuses and processor cycles can write on ticks with no
+	# new request. Count the exclusive owner's complete per-tick edit total.
+	_usable_changes_total += int(equipment_state.get("write_count_last", 0))
+	for request: Dictionary in usable_requests:
+		for receipt: Dictionary in equipment_state.get("receipts", []):
+			if str(receipt.get("request_id", "")) != str(request.get("request_id", "")):
+				continue
+			_usable_accepted_total += int(bool(receipt.get("accepted", false)))
+			_usable_refused_total += int(not bool(receipt.get("accepted", false)))
+	session.accept_equipment_feedback(equipment_state)
 	if not bool(_world.simulation_tick()):
 		_fail("native_tick")
 		return snapshot()
@@ -322,6 +358,12 @@ func snapshot() -> Dictionary:
 		"world_tick": int(_world.get_tick_index()) if _world != null else 0,
 		"command_results": _command_receipts.duplicate(true),
 		"effects": _effect_receipts.duplicate(true),
+		"physical_usables": _usables.snapshot(),
+		"usable_totals": {"requests": _usable_requests_total, "accepted": _usable_accepted_total,
+			"refused": _usable_refused_total, "changed_cells": _usable_changes_total},
+		"course": str(config.get("course", "manoeuvre")),
+		"course_sections": UsableCourse.sections() if config.get("course") == UsableCourse.ID else [],
+		"course_fixture_result": _course_fixture_result.duplicate(true),
 		"effect_totals": {"requests": _effect_requests_total, "changed_cells": _effect_changes_total, "refused": _effect_refusals_total},
 		"cellular_results": _coupling_results.duplicate(),
 		"cellular_sample_tick": maxi(-1, int(result.tick) - 1),
@@ -333,6 +375,73 @@ func snapshot() -> Dictionary:
 
 func render_parts() -> Array:
 	return session.render_parts() if session != null else []
+
+
+func course_processor_fixture(actor_id: int, operation: String = "feed") -> Dictionary:
+	# Explicit lab authoring, never included in a policy observation/action.
+	# Ports come from the same physical body and geometry used by the worker.
+	var result: Dictionary = {"accepted": false, "operation": operation, "actor_id": actor_id, "reason": "course_only"}
+	if _world == null or session == null or _failed or config.get("course") != UsableCourse.ID:
+		return result
+	if operation not in ["feed", "jam", "clear"] or actor_id < 0 or actor_id >= session.snapshot().actor_count:
+		result.reason = "invalid_fixture_request"
+		return result
+	var object: Dictionary = {}
+	for candidate: Dictionary in _usables.snapshot().get("objects", []):
+		if int(candidate.get("owner", -1)) == actor_id:
+			object = candidate
+			break
+	if object.is_empty():
+		result.reason = "deploy_and_settle_processor_first"
+		_course_fixture_result = result
+		return result.duplicate(true)
+	var definition: Dictionary = UsableCatalog.entry(int(object.usable_index))
+	var centre: Vector2 = object.position
+	var reach: float = ceilf(Vector2(object.half_extents).x + 2.0)
+	var angle: float = float(object.rotation)
+	var input_ports: Array[Vector2i] = [Vector2i((centre + Vector2(-reach, -1).rotated(angle)).round()),
+		Vector2i((centre + Vector2(-reach, 1).rotated(angle)).round())]
+	var output_ports: Array[Vector2i] = [Vector2i((centre + Vector2(reach, -1).rotated(angle)).round()),
+		Vector2i((centre + Vector2(reach, 1).rotated(angle)).round())]
+	var writes: Array = []
+	if operation == "feed":
+		var materials: Array[int] = []
+		for pair: Array in definition.get("inputs", []):
+			for _index: int in range(int(pair[1])):
+				materials.append(int(pair[0]))
+		if materials.size() > input_ports.size():
+			result.reason = "recipe_capacity"
+			return result
+		for index: int in range(materials.size()):
+			writes.append({"point": input_ports[index], "material": materials[index]})
+		if definition.has("catalyst_any") or str(definition.operation) == "firewarden":
+			var catalyst: int = int(definition.catalyst_any[0]) if definition.has("catalyst_any") else 6
+			writes.append({"point": Vector2i((centre + Vector2(0, -ceilf(Vector2(object.half_extents).y + 1.0)).rotated(angle)).round()), "material": catalyst})
+	else:
+		var output_count: int = 0
+		for pair: Array in definition.get("outputs", []):
+			output_count += int(pair[1])
+		# Blocking the final required slot catches partial recipe consumption.
+		var port: Vector2i = output_ports[clampi(output_count - 1, 0, output_ports.size() - 1)]
+		# Industrial Brick holds the port closed until explicitly cleared. Loose
+		# Stone would fall away during the same native tick as the refusal.
+		writes.append({"point": port, "material": 57 if operation == "jam" else 0})
+	for write: Dictionary in writes:
+		var point: Vector2i = write.point
+		if point.x < 0 or point.y < 0 or point.x >= 1024 or point.y >= 1024 \
+			or int(_world.rigid_body_id_at(point.x, point.y)) != 0 \
+			or int(_world.material_at(point.x, point.y)) == 1:
+			result.reason = "fixture_port_protected"
+			_course_fixture_result = result
+			return result.duplicate(true)
+	for write: Dictionary in writes:
+		_world.emit_disc(write.point.x, write.point.y, 0, int(write.material))
+	result.accepted = true
+	result.reason = "fixture_applied"
+	result["ports"] = writes.duplicate(true)
+	result["instance_id"] = str(object.instance_id)
+	_course_fixture_result = result
+	return result.duplicate(true)
 
 
 func presentation_cells(view: Rect2i = ARENA_RECT) -> PackedByteArray:
@@ -365,6 +474,7 @@ func close() -> void:
 	_viewport = null
 	_world = null
 	_effects.reset()
+	_usables.reset()
 	_coupling_results.clear()
 	_effect_receipts.clear()
 	_command_receipts.clear()

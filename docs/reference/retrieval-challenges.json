@@ -1,7 +1,7 @@
 {
   "version": 1,
   "frozen_date": "2026-09-08",
-  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair. ACT01-ACT03 cover provisional actor capabilities, player/policy input lifetime and bounded-work limits. SCENE01/SCENE02 cover Neon Reliquary entry and view controls, and the four-district descent with explicit scene-state boundaries. ACT04-ACT09 cover the 29-rig sets, parametric input, consumed-action identity, fictional personas, bounded tool/rope authority and SetA compatibility. SCENE03 covers the connected Blacksite Nine route, camera-only district views, shared-world continuity and whole-complex reset. USABLE01 covers the separate 32-item actor equipment catalogue, ownership and work limits.",
+  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair. ACT01-ACT03 cover provisional actor capabilities, player/policy input lifetime and bounded-work limits. SCENE01/SCENE02 cover Neon Reliquary entry and view controls, and the four-district descent with explicit scene-state boundaries. ACT04-ACT09 cover the 29-rig sets, parametric input, consumed-action identity, fictional personas, bounded tool/rope authority and SetA compatibility. SCENE03 covers the connected Blacksite Nine route, camera-only district views, shared-world continuity and whole-complex reset. USABLE01 covers the separate 32-item actor equipment catalogue, ownership and work limits. ACT-005 USABLE02-USABLE04 add independent physical equipment lifetime/admission, real processor lifecycle/stock and physical usable course questions.",
   "questions": [
     {
       "id": "C05",
@@ -1141,17 +1141,19 @@
       "query": "How do articulated actors wield, aim, recoil, drop and pick up tools, and are all 32 requested usable illustrations functional items?",
       "canonical": [
         "systems/physical-actor-rigs.md",
+        "systems/actor-usables.md",
         "reference/interfaces-and-message-contracts.md"
       ],
       "facts": [
-        "Mounts declare their part, offset, aiming limits, cooldown and recoil; examples include mounted depositors/cutters, a recoil launcher and articulated held objects. M uses, N releases and U reattaches a nearby item.",
-        "Held and released physical items retain their part budget; reattachment checks bounded proximity. Recoil is physical-owner authority while copied cell effects are validated/applied only by the cellular owner with source-mask and wall clearance.",
-        "Ordinary deposition uses Sand and Rocketjumper has a bounded Fire/Gunpowder pattern. The 32 artwork references are not 32 implemented inventory tools."
+        "ACT-005 carries all 32 U01-U32 usables onto real articulated equipment parts, reusing an existing held part or adding one within the eight-part limit. M or left mouse uses, right mouse alternates, N releases and U picks up a nearby part.",
+        "Independent equipment aim steers a bounded physical mount; effects use the actual copied muzzle and per-part native source/target masks. Held, released, fixed, deployed and picked-up equipment retains one body ID; pickup checks bounded proximity and clearance without teleporting or resetting velocity.",
+        "Run, actor, generation, equipment epoch, instance, body and request identity fence remote work and receipts. Only a matching accepted consumed receipt permits bounded physical recoil once. Cancellation retires pending intent without deleting committed projectile/device state."
       ],
       "sources": [
-        "../godot/scripts/physical_actor_catalog.gd",
+        "../godot/scripts/physical_usable_equipment.gd",
         "../godot/scripts/physical_actor_rig.gd",
-        "../godot/scripts/physical_actor_effects.gd"
+        "../godot/scripts/physical_actor_session.gd",
+        "../godot/scripts/physical_usable_runtime.gd"
       ]
     },
     {
@@ -1180,19 +1182,78 @@
         "reference/configuration-reference.md"
       ],
       "facts": [
-        "USABLE-001 contains 12 material tools, 10 swept ballistic payloads and 10 fixed processors/responders with stable U01-U32 identities.",
-        "Equipment input has an independent actor epoch/sequence/lease stream; the serialized simulation owner alone performs material queries and writes.",
-        "Projectiles/devices remain committed after input release, freeze on pause and clear on a fresh actor/World reset; processors preflight complete batches and blocked outputs consume no inputs.",
-        "Recipe source/sink accounting is authored cell slots, not exact Water mass, heat, momentum or chemistry conservation; health/damage and Rapier equipment mounts are outside this increment."
+        "The catalogue contains 12 material tools, 10 swept ballistic payloads and 10 fixed processors/responders with stable U01-U32 identities. ACT-005 binds the complete catalogue to physical equipment while retaining the sampled USABLE-001 route.",
+        "Physical equipment actions use the shared physical issued-observation envelope with explicit equipment identity, independent aim and power. The retained sampled session has its own actor epoch/sequence/lease stream. Only the serialized cellular owner performs material queries and writes.",
+        "Committed projectiles/devices survive input release, freeze on pause and clear with their World/reset lifetime. Real processors drop, settle and fix before worker admission; complete batch preflight and blocked outputs prevent partial consumption.",
+        "Recipe accounting measures authored cell slots, not exact Water mass, heat, momentum or chemistry conservation. All 41 physical rigs have explicit default loadout policies; general inventory/economy, health/damage and complete physical replay remain outside this increment."
       ],
       "sources": [
         "../godot/scripts/usable_catalog.gd",
         "../godot/scripts/usable_runtime.gd",
         "../godot/scripts/usable_session.gd",
+        "../godot/scripts/physical_usable_runtime.gd",
+        "../godot/scripts/physical_usable_loadouts.gd",
         "../godot/scripts/simulation_worker.gd"
+      ]
+    },
+    {
+      "id": "USABLE02",
+      "query": "Can a delayed physical equipment request or receipt fire a replaced, dropped or cancelled tool, and how is the worker queue bounded?",
+      "canonical": [
+        "reference/interfaces-and-message-contracts.md",
+        "architecture/data-ownership-and-lifetimes.md"
+      ],
+      "facts": [
+        "Physical actions share issued-observation identity and additionally carry usable_index, instance_id and equipment_epoch; copied requests and receipts are scoped to run, actor, generation, equipment/body identity and request ID.",
+        "Worker admission is atomic for at most eight requests globally and one pending request per actor, counting extracted in-flight work. Explicit refusals do not replace already admitted queued work.",
+        "Cancellation is serialized with material consumption; old generations, expired leases, reset epochs and duplicate receipts cannot apply a new transaction or repeat recoil. Already committed projectiles and devices remain until their normal or World lifetime ends."
+      ],
+      "sources": [
+        "../godot/scripts/physical_actor_session.gd",
+        "../godot/scripts/physical_usable_equipment.gd",
+        "../godot/scripts/simulation_worker.gd",
+        "../godot/scripts/physical_usable_runtime.gd"
+      ]
+    },
+    {
+      "id": "USABLE03",
+      "query": "Does picking up a real deployed processor refill its stock, and how do rotated ports, settling and output jams affect material consumption?",
+      "canonical": [
+        "systems/actor-usables.md",
+        "reference/configuration-reference.md"
+      ],
+      "facts": [
+        "A processor is the same coupled body across held, released, fixed, deployed and nearby pickup states. It must remain supported within bounded linear/angular speed for eight consecutive ticks before fixing; distant or obstructed pickup is refused.",
+        "Worker admission checks the fixed physical source and four distinct exterior ports rotated from the actual body pose. It preflights every input/output cell; a blocked output consumes no inputs.",
+        "Bounded per-actor/per-processor history retains stock, age, cycles and cooldown across pickup, redeployment and selection. Same/older equipment epochs and exhausted deployment are refused; exhausted physical objects remain observable and inert until their physical owner retires them."
+      ],
+      "sources": [
+        "../godot/scripts/physical_usable_equipment.gd",
+        "../godot/scripts/physical_usable_runtime.gd",
+        "../godot/scripts/usable_runtime.gd"
+      ]
+    },
+    {
+      "id": "USABLE04",
+      "query": "Where can I play the physical usable course with all 41 actor loadouts, feed or jam a real processor and compare scripted use with human or policy input?",
+      "canonical": [
+        "systems/thunderbowl-control-reference.md",
+        "systems/physical-actor-rigs.md"
+      ],
+      "facts": [
+        "The Physical usable course launcher and Manoeuvre/Usable course selector use the physical Thunderbowl v2 scene; its headless runner accepts --course=usables-v1. Eight bounded fixture sections expose excavation, salvage, penetration, ricochet, staged payloads, release/grip and processor operation.",
+        "All 41 rigs have explicit default usable/strategy/power/reason policies. Scripts derive bounded equipment intent from copied observations and use the same physical command path as human and policy producers.",
+        "Feed, Jam and Clear output are explicit native fixture authoring at a selected deployed processor, separate from controller authority. Global evaluator/camera state is distinct from a local policy observation; the physical course has no sampled tag rewards or live model service."
+      ],
+      "sources": [
+        "../godot/scripts/physical_usable_course.gd",
+        "../godot/scripts/physical_usable_loadouts.gd",
+        "../godot/scripts/physical_usable_script.gd",
+        "../godot/examples/thunderbowl/physical_thunderbowl_scene.gd",
+        "../godot/examples/thunderbowl/run_physical_thunderbowl.gd"
       ]
     }
   ],
-  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set. 2026-10-18: MAT01/MAT02 add independent persistent-contact and interior mask-wake questions; the frozen 32 and prior questions are unchanged. 2026-10-18: SCENE01 adds independent demo-level entry/view/ownership routing; the frozen 32-question set is unchanged. 2026-10-18: SCENE02 adds the owner-requested four-tile descent and state-boundary question; all prior and frozen questions remain unchanged. 2026-10-18: ACT01-ACT03 add independent actor model/input/performance-boundary questions; the frozen 32-question set is unchanged. 2026-10-18 ACT-002: ACT04-ACT09 add independent expanded-rig/control/observation/persona/budget/compatibility questions. ACT03 now explicitly scopes original numeric limits to SetA and names the additive extension; the frozen 32-question set remains unchanged. 2026-10-18: SCENE03 adds the nine-district route and continuity question; all 47 prior supplementary questions, including SCENE01/SCENE02 and ACT01-ACT09, and the frozen 32-question set remain unchanged. 2026-10-18 ACT-004: ACT10/ACT11 expected facts reconciled with retained hull references and implemented full physical roster; ACT12-ACT15 add independent physical fidelity, producer lifetime, usable and arena-version challenges. Frozen query wording is unchanged; Q10 capacity correction is disclosed in the frozen fixture metadata. 2026-10-18 USABLE-001: USABLE01 adds the independent actor-equipment catalogue/ownership/budget question without changing the frozen 32-question set.",
-  "integration_note": "Retains all scene, generation, actor, actor-usable, Thunderbowl, physical-actor and presentation routes; historical questions are preserved."
+  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set. 2026-10-18: MAT01/MAT02 add independent persistent-contact and interior mask-wake questions; the frozen 32 and prior questions are unchanged. 2026-10-18: SCENE01 adds independent demo-level entry/view/ownership routing; the frozen 32-question set is unchanged. 2026-10-18: SCENE02 adds the owner-requested four-tile descent and state-boundary question; all prior and frozen questions remain unchanged. 2026-10-18: ACT01-ACT03 add independent actor model/input/performance-boundary questions; the frozen 32-question set is unchanged. 2026-10-18 ACT-002: ACT04-ACT09 add independent expanded-rig/control/observation/persona/budget/compatibility questions. ACT03 now explicitly scopes original numeric limits to SetA and names the additive extension; the frozen 32-question set remains unchanged. 2026-10-18: SCENE03 adds the nine-district route and continuity question; all 47 prior supplementary questions, including SCENE01/SCENE02 and ACT01-ACT09, and the frozen 32-question set remain unchanged. 2026-10-18 ACT-004: ACT10/ACT11 expected facts reconciled with retained hull references and implemented full physical roster; ACT12-ACT15 add independent physical fidelity, producer lifetime, usable and arena-version challenges. Frozen query wording is unchanged; Q10 capacity correction is disclosed in the frozen fixture metadata. 2026-10-18 USABLE-001: USABLE01 adds the independent actor-equipment catalogue/ownership/budget question without changing the frozen 32-question set. 2026-10-19 ACT-005: ACT14 now also routes to the expanded actor-usables canonical contract; ACT14 and USABLE01 expected facts and source routes distinguish the implemented physical equipment catalogue from retained sampled authority. Existing question IDs and query wording are unchanged. USABLE02-USABLE04 add supplementary source-discovered lifetime, processor and course challenges; the frozen 32-question fixture is unchanged, and new question results are reported separately from the prior 70-question baseline.",
+  "integration_note": "Retains all scene, generation, sampled and physical actor-usable, Thunderbowl, physical-actor and presentation routes; historical questions are preserved."
 }

@@ -7,6 +7,8 @@ const Catalog = preload("res://scripts/physical_actor_catalog.gd")
 const Session = preload("res://scripts/physical_actor_session.gd")
 const Overlay = preload("res://scripts/physical_actor_overlay.gd")
 const Palette = preload("res://scripts/material_appearance_lut.gd")
+const Usables = preload("res://scripts/usable_catalog.gd")
+const UsableOverlay = preload("res://scripts/usable_overlay.gd")
 var _arena: CyberPhysicalActorArena
 var _model: OptionButton
 var _count: SpinBox
@@ -29,6 +31,11 @@ var _last_visual_view := Rect2i()
 var _focused: bool = true
 var _rearm: bool = true
 var _sequence: int = 0
+var _course: OptionButton
+var _equipment: OptionButton
+var _equipment_power: HSlider
+var _usable_overlay: CyberUsableOverlay
+var _section_labels: Array[Label] = []
 
 
 func _ready() -> void:
@@ -37,6 +44,10 @@ func _ready() -> void:
 	_build_ui()
 	_arena = Arena.new()
 	add_child(_arena)
+	if str(get_tree().get_meta("cybersand_feature", "")) == "physical_usables":
+		_course.select(1)
+		_count.value = 8
+		_model.select(Catalog.RIG_IDS.find(&"digger"))
 	for argument: String in OS.get_cmdline_user_args():
 		if argument.begins_with("--rig="):
 			var index: int = Catalog.RIG_IDS.find(StringName(argument.trim_prefix("--rig=")))
@@ -44,6 +55,8 @@ func _ready() -> void:
 				_model.select(index)
 		elif argument.begins_with("--actors=") and argument.trim_prefix("--actors=").is_valid_int():
 			_count.value = clampi(int(argument.trim_prefix("--actors=")), 1, 8)
+		elif argument == "--course=usables-v1":
+			_course.select(1)
 	_restart()
 
 
@@ -81,6 +94,11 @@ func _build_ui() -> void:
 	var bar := HBoxContainer.new()
 	bar.add_theme_constant_override("separation", 8)
 	column.add_child(bar)
+	_course = OptionButton.new()
+	_course.add_item("Manoeuvre lab")
+	_course.add_item("Usable integration course")
+	_course.item_selected.connect(func(_index: int) -> void: _restart())
+	bar.add_child(_course)
 	_model = OptionButton.new()
 	_model.custom_minimum_size.x = 208
 	for id: StringName in Catalog.RIG_IDS:
@@ -137,6 +155,27 @@ func _build_ui() -> void:
 	tools.add_child(_effort)
 	_button("Sampled v1", func() -> void: get_tree().change_scene_to_file("res://examples/thunderbowl/thunderbowl.tscn"), tools)
 	_button("Feature menu (F2)", func() -> void: get_tree().change_scene_to_file("res://feature_launcher.tscn"), tools)
+	var equipment_row := HBoxContainer.new()
+	equipment_row.add_theme_constant_override("separation", 8)
+	column.add_child(equipment_row)
+	_equipment = OptionButton.new()
+	_equipment.custom_minimum_size.x = 235
+	_equipment.add_item("None")
+	for index: int in range(Usables.count()):
+		_equipment.add_item("U%02d · %s" % [index + 1, Usables.name_for(index)])
+	equipment_row.add_child(_equipment)
+	_equipment_power = HSlider.new()
+	_equipment_power.min_value = 0.0
+	_equipment_power.max_value = 1.0
+	_equipment_power.step = 0.05
+	_equipment_power.value = 0.8
+	_equipment_power.custom_minimum_size.x = 80
+	_equipment_power.tooltip_text = "Equipment power; independent from movement effort"
+	equipment_row.add_child(_equipment_power)
+	_button("Equip actor 0", _equip, equipment_row)
+	_button("Feed processor", func() -> void: _processor_fixture("feed"), equipment_row)
+	_button("Jam output", func() -> void: _processor_fixture("jam"), equipment_row)
+	_button("Clear output", func() -> void: _processor_fixture("clear"), equipment_row)
 	_status = Label.new()
 	_status.add_theme_font_size_override("font_size", 13)
 	column.add_child(_status)
@@ -154,6 +193,15 @@ func _build_ui() -> void:
 	_canvas.add_child(_terrain)
 	_overlay = Overlay.new()
 	_canvas.add_child(_overlay)
+	_usable_overlay = UsableOverlay.new()
+	_canvas.add_child(_usable_overlay)
+	for _index: int in range(8):
+		var section := Label.new()
+		section.add_theme_font_size_override("font_size", 10)
+		section.modulate = Color(0.45, 0.78, 0.8, 0.9)
+		section.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_canvas.add_child(section)
+		_section_labels.append(section)
 	for _index: int in range(8):
 		var label := Label.new()
 		label.add_theme_font_size_override("font_size", 12)
@@ -168,7 +216,7 @@ func _build_ui() -> void:
 	_controls.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	column.add_child(_controls)
 	var help := Label.new()
-	help.text = "Click arena to arm · WASD / mouse aim · Space primary · Shift secondary · C auxiliary · Q/E trim · Z/X reel · [ / ] effort\nM mounted tool · N detach usable · U attach nearby usable · release controls after focus changes. Policy slot waits for version 2 wire commands."
+	help.text = "WASD / mouse aim · Space primary · Shift secondary · C auxiliary · Q/E trim · Z/X reel · [ / ] movement effort\nLeft or M uses equipment · right alternate · N drops · U picks up nearby. Release controls after focus changes. Processor fixture buttons affect the selected follow actor in the usable course."
 	help.add_theme_font_size_override("font_size", 12)
 	help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	column.add_child(help)
@@ -177,7 +225,8 @@ func _build_ui() -> void:
 func _restart() -> void:
 	if _arena == null:
 		return
-	var config: Dictionary = Arena.default_config(Catalog.RIG_IDS[_model.selected], int(_count.value))
+	var config: Dictionary = Arena.usable_course_config(Catalog.RIG_IDS[_model.selected], int(_count.value)) if _course.selected == 1 \
+		else Arena.default_config(Catalog.RIG_IDS[_model.selected], int(_count.value))
 	config.seed = int(_seed.value)
 	if _producer.selected != 0:
 		config.actors[0].producer = "human" if _producer.selected == 1 else "policy"
@@ -192,7 +241,38 @@ func _restart() -> void:
 	_pause.text = "Pause"
 	_last_visual_tick = -6
 	_controls.text = Catalog.controls_text(Catalog.RIG_IDS[_model.selected])
+	var equipment: Dictionary = _arena.observation(0).get("equipment", {})
+	_equipment.select(int(equipment.get("usable_index", -1)) + 1)
+	_equipment.disabled = _producer.selected != 1
 	_present(_arena.snapshot())
+
+
+func _equip() -> void:
+	if _arena == null or _arena.session == null or _producer.selected != 1:
+		_status.text = "Choose Human actor 0 to change its equipment. Scripted actors use their authored loadouts."
+		return
+	var view: Dictionary = _arena.observation(0)
+	var command: Dictionary = Session.make_command(view, int(view.last_sequence) + 1,
+		{"equipment": {"usable_index": _equipment.selected - 1, "power": _equipment_power.value}}, 6)
+	if not _arena.submit(command, &"human"):
+		_status.text = "Equipment refused: " + _arena.last_error
+		return
+	_sequence = int(view.last_sequence) + 2
+	_rearm = true
+	var focus: Control = get_viewport().gui_get_focus_owner()
+	if focus != null:
+		focus.release_focus()
+	# Apply the admitted selection before a normal keyboard sample can replace
+	# it. This is one ordinary complete native/Rapier step, not a direct edit.
+	_present(_arena.step())
+
+
+func _processor_fixture(operation: String) -> void:
+	if _arena == null or _arena.session == null:
+		return
+	var result: Dictionary = _arena.course_processor_fixture(maxi(0, _follow.selected), operation)
+	_status.text = "%s: %s" % [operation, str(result.reason)]
+	_last_visual_tick = -6
 
 
 func _toggle_pause() -> void:
@@ -225,10 +305,12 @@ func _canvas_input(event: InputEvent) -> void:
 		var focus: Control = get_viewport().gui_get_focus_owner()
 		if focus != null:
 			focus.release_focus()
-		_rearm = true
+			_rearm = true
 
 
 func _any_control_held() -> bool:
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
+		return true
 	for key: Key in [KEY_W, KEY_A, KEY_S, KEY_D, KEY_SPACE, KEY_SHIFT, KEY_C,
 		KEY_Q, KEY_E, KEY_Z, KEY_X, KEY_M, KEY_N, KEY_U, KEY_BRACKETLEFT, KEY_BRACKETRIGHT]:
 		if Input.is_physical_key_pressed(key):
@@ -250,6 +332,7 @@ func _physics_process(delta: float) -> void:
 		if allowed and not _rearm and not bool(_arena.snapshot().paused):
 			var view: Dictionary = _arena.observation(0)
 			if not view.is_empty():
+				var pointer_in_world: bool = _content_rect().has_point(_canvas.get_local_mouse_position())
 				_effort.value += float(int(Input.is_physical_key_pressed(KEY_BRACKETRIGHT))
 					- int(Input.is_physical_key_pressed(KEY_BRACKETLEFT))) * delta * 0.7
 				var action: Dictionary = {
@@ -259,10 +342,14 @@ func _physics_process(delta: float) -> void:
 					"trim": float(int(Input.is_physical_key_pressed(KEY_E)) - int(Input.is_physical_key_pressed(KEY_Q))),
 					"reel": float(int(Input.is_physical_key_pressed(KEY_X)) - int(Input.is_physical_key_pressed(KEY_Z))),
 					"primary": Input.is_physical_key_pressed(KEY_SPACE), "secondary": Input.is_physical_key_pressed(KEY_SHIFT),
-					"auxiliary": Input.is_physical_key_pressed(KEY_C), "tool": Input.is_physical_key_pressed(KEY_M),
-					"release_usable": Input.is_physical_key_pressed(KEY_N), "attach_usable": Input.is_physical_key_pressed(KEY_U)}
+					"auxiliary": Input.is_physical_key_pressed(KEY_C),
+					"equipment": {"usable_index": int(view.get("equipment", {}).get("usable_index", -1)),
+						"aim": _pointer_aim(view.position), "power": _equipment_power.value,
+						"trigger": Input.is_physical_key_pressed(KEY_M) or (pointer_in_world and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)),
+						"alternate": pointer_in_world and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT),
+						"drop": Input.is_physical_key_pressed(KEY_N), "attach": Input.is_physical_key_pressed(KEY_U)}}
+				_sequence = int(view.last_sequence) + 1
 				_arena.submit(Session.make_command(view, _sequence, action, 6), &"human")
-				_sequence += 1
 	_present(_arena.step())
 
 
@@ -307,6 +394,14 @@ func _present(state: Dictionary) -> void:
 		_last_visual_view = _view
 	var content: Rect2 = _content_rect()
 	_overlay.present(_arena.render_parts(), Vector2(_view.position), _view.size, content)
+	_usable_overlay.present(state.get("physical_usables", {}), Vector2(_view.position), _view.size, content)
+	var sections: Array = state.get("course_sections", [])
+	for index: int in range(_section_labels.size()):
+		var section: Label = _section_labels[index]
+		section.visible = index < sections.size() and _camera.selected == 0
+		if section.visible:
+			section.text = str(sections[index].name)
+			section.position = content.position + (Vector2(sections[index].position) - Vector2(_view.position)) / Vector2(_view.size) * content.size
 	for index: int in range(_labels.size()):
 		var label: Label = _labels[index]
 		label.visible = index < state.actors.size()
@@ -317,10 +412,15 @@ func _present(state: Dictionary) -> void:
 		label.position = content.position + local + Vector2(8, -24)
 		label.visible = Rect2(Vector2.ZERO, content.size).has_point(local)
 		label.text = "%d %s · %d%%" % [index, Catalog.name_for(StringName(actor.model)), roundi(float(actor.energy) * 100.0)]
+		var equipment: Dictionary = actor.get("equipment", {})
+		label.text += "\n%s · %s" % [str(equipment.get("name", "")), str(equipment.get("last_result", ""))]
 	var source: String = "scripted feedback" if _producer.selected == 0 else ("human: release keys to arm" if _rearm and _producer.selected == 1 else "human active" if _producer.selected == 1 else "policy slot waiting for commands")
 	_status.text = "Tick %d / %d · %d actors / %d parts · %s · tool writes %d · %s" % [
 		int(state.tick), int(state.max_ticks), int(state.actor_count), int(state.body_count), source,
 		int(state.effect_totals.changed_cells), "PAUSED" if bool(state.paused) else str(state.reason)]
+	var usable_totals: Dictionary = state.get("usable_totals", {})
+	_status.text += " · equipment %d/%d uses, %d cell edits" % [int(usable_totals.get("accepted", 0)),
+		int(usable_totals.get("requests", 0)), int(usable_totals.get("changed_cells", 0))]
 
 
 func _exit_tree() -> void:

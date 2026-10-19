@@ -4,7 +4,7 @@ status: Approved design
 document-kind: design
 scope: Owner-authorized ACT-004 integration, retained Blacksite hull comparison and preserved 2026-10-18 actor preferences; not broad physics acceptance
 canonical-for: [physical-actor-programme, combined-feature-launcher, physical-blacksite-comparison]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-19
 related-documents: [blacksite-nine-demo.md, ../systems/actor-rigs.md, ../systems/thunderbowl-control-reference.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/product-intent-and-priorities.md]
 ---
 
@@ -192,5 +192,10 @@ Water programme scopes intact; historical scientific fixtures remain references.
 
 The [Strata Theatre depth prototype](../systems/depth-layers-and-parallax.md)
 retains its independent four-world host. The source-image conversation produced
-32 usable-art references. ACT-004 implements a bounded mount/recoil/held-item
-substrate and a few actual tools, not all 32 inventory items.
+32 usable-art references. ACT-004 implemented the initial mount/recoil/held-item
+substrate. **Current ACT-005 source / #182** reconciles the functional
+[U01-U32 catalogue](../systems/actor-usables.md) with that physical owner, adds
+all-roster loadouts and supports deployed processors. The
+[ACT-005 checkpoint](../audits/2026-10-19-act005-physical-usables.md) records actual
+integration and acceptance; no general inventory/economy or health system is
+implied by equipment selection.
