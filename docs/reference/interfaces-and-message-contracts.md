@@ -148,8 +148,10 @@ budgets; a policy cannot supply an arbitrary World operation or effect footprint
 
 ### Optional actor usable control surface
 
-**Current, experimental USABLE-001:** `submit_actor_usable_action` and
-`cancel_actor_usable_input` are a second copied-value input domain beside movement.
+**Current, retained sampled USABLE-001:** `submit_actor_usable_action` and
+`cancel_actor_usable_input` are a second copied-value input domain beside sampled
+movement. Physical ACT-005 control uses the issued-observation envelope in
+[physical equipment actions](#physical-equipment-actions-and-results) instead.
 A submission carries actor ID, actor epoch, an equipment-local monotonic sequence,
 observed actor tick, usable index, finite aim, power, two held buttons, lease and
 the assigned producer identity. `usable_index=-1` means unequipped.
@@ -475,7 +477,7 @@ The [physical Blacksite experiment](../operations/physical-actor-programme.md) r
 
 ## Physical actor control and effects
 
-**Current experimental ACT-004:**
+**Current experimental ACT-004 / ACT-005:**
 [`CyberPhysicalActorSession`](../../godot/scripts/physical_actor_session.gd)
 is the main-thread physical owner shared by desktop F5 and physical Thunderbowl.
 Configuration identifies a catalogue `model`, one producer (`human`, `demo` or
@@ -504,7 +506,8 @@ invented, stale and misaddressed views are refused. A queued model response cann
 extend its authority by arriving late. See the [configuration bounds](configuration-reference.md#physical-actor-values).
 
 Actions admit `move`, `aim`, `effort`, `trim`, `reel`, `primary`, `secondary`,
-`auxiliary`, `tool`, `release_usable` and `attach_usable`. Unknown keys, wrong
+`auxiliary`, `tool`, `release_usable`, `attach_usable` and the optional
+`equipment` dictionary described below. Unknown keys, wrong
 types and nonfinite values are refused. Vectors accept `Vector2` or two numeric
 array values and are length-clamped to one; effort is clamped to zero through
 one, trim/reel to minus one through one. Missing action fields receive neutral
@@ -536,8 +539,12 @@ it to revoke the worker's queued and already-copied, not-yet-admitted effects fo
 that actor. Other actors retain their own command/effect generations. A fresh
 observation immediately reports the cleared charge, grip, rope and action state.
 
-The session flattens actual part bodies into stable IDs within the 64-body
-bridge. It emits copied effect requests with `actor_slot`, `epoch`, `sequence`,
+### Retained direct physical effects
+
+The ACT-004 direct mount/effect substrate remains available to the focused
+physical regression fixtures. ACT-005 catalogue use follows the separate
+equipment request/receipt seam below. Both use the same stable part IDs within
+the 64-body bridge. Direct effect requests contain `actor_slot`, `epoch`, `sequence`,
 `kind`, `source`, `origin`, `source_part`, `source_body_id`, `radius`, `strength`,
 `material` and optional `pattern`. The physical rig applies recoil; the exclusive
 cellular owner validates and applies cell edits through
@@ -579,3 +586,84 @@ distinct [schedules](../architecture/simulation-tick-and-threading.md#physical-a
 Neither grants a controller mutable World access or guarantees equivalence with
 the historical sampled arena. Mechanism and usable semantics are owned by the
 [physical actor contract](../systems/physical-actor-rigs.md).
+
+
+### Physical equipment actions and results
+
+**Current experimental ACT-005 source:** equipment actions share the physical
+version-2 envelope, actor producer and issued-observation lease. The normalized
+`action.equipment` dictionary has these fields:
+
+| Field | Meaning and validation |
+|---|---|
+| `usable_index` | Required exact integer -1 through 31; -1 selects None |
+| `instance_id` | Required nonempty String from the observed physical equipment |
+| `equipment_epoch` | Required current positive exact integer; selection and lifecycle transitions advance it |
+| `aim` | Optional finite Vector2/two-number array, length-limited to one; zero falls back to the enclosing locomotion aim |
+| `power` | Optional finite number, clamped to 0–1; defaults to 1 |
+| `trigger`, `alternate`, `drop`, `attach` | Optional Booleans, default false; transitions share bounded physical button-edge admission |
+
+Unknown fields and wrong types are refused. `make_command` can fill the three
+identity fields from its copied observation and maps local `tool`,
+`release_usable` and `attach_usable` requests to this dictionary. Raw policy
+packets cannot activate those legacy buttons without equipment identity.
+Selecting another usable requires the existing chassis to be held; it does not
+replace a released body. Holding a trigger during selection requires a neutral
+release before a new activation.
+
+The session owns one
+[`CyberPhysicalUsableEquipment`](../../godot/scripts/physical_usable_equipment.gd)
+per actor. It publishes copied `equipment` observations and prepares
+`equipment_frame()` plus `drain_equipment_requests()` for the cellular owner.
+The worker seam is:
+
+```gdscript
+set_physical_usable_state(
+    frame: Dictionary, requests: Array = [],
+    states: PackedFloat32Array = PackedFloat32Array()
+) -> Dictionary
+```
+
+A version-1 frame binds `run_id`, actor `epoch`, physical `tick`, suspension,
+actor rows and deployed-device rows. Actor rows contain control `generation`,
+`equipment_epoch`, `instance_id`, selected usable, stable equipment `body_id`,
+state, pose, extents, muzzle/direction, owning-part origin, lease deadline and
+copied individual part records. Device rows retain the physical instance/body
+and current fixed pose. Body-state values can be published at the same mutex
+boundary, preserving their relationship with the source/muzzle frame. No node,
+RID, live World or controller object crosses that boundary.
+
+Each request has `version`, `run_id`, `epoch`, `actor_id`, `generation`,
+`equipment_epoch`, `instance_id`, `usable_index`, `body_id`, `sequence`,
+`request_id`, `operation` and `power`. Instance/request IDs are Strings. A
+request references the owner-supplied frame; it cannot supply an arbitrary
+position, material or footprint. Operations are `use`, `alternate` and `deploy`.
+An entire incoming batch is admitted or refused, within eight requests and one
+in-flight request per actor. Refusal leaves other pending requests intact.
+Copied admission fields include status (`no_requests`, `queued`, `refused`),
+reason, requested/queued/refused counts, capacity and pending count.
+
+`CyberSimulationSnapshot.physical_usables` returns copied actor charge/cooldown,
+projectiles, physical processors, effects, hit records, work counters, admission
+and at most one retained result per actor. Result receipts echo request identity
+and add `accepted`, `consumed`, `reason`, `changed_cells`, worker tick, charge and
+cooldown. `accept_equipment_feedback` admits only matching current identity and
+new readback; a matching pending token is consumed before applying recoil.
+Refused use cannot apply recoil or silently change item ownership.
+
+`observation.equipment` exposes the physical grip/body pose, current and requested
+aim, limits, clearance, release/reattach readiness, selected usable, cooldown,
+charge, pending token, last result/receipt, accepted/refused counts and recoil.
+Owned projectiles, processor status and a bounded local material patch support
+feedback controllers. Values are copied; mutating an old observation cannot
+replenish charge, alter cooldown, move a body or restore retired equipment.
+
+Cancellation retires pending requests and invalidates control generation; the
+worker rechecks extracted work against its current admission state before
+committing. Once cancellation returns, that pending work cannot later edit cells.
+Committed projectiles and admitted deployed processors retain their autonomous
+lifecycle, while reset/close clears the old run. Pausing freezes simulation time.
+A released body retains its physical velocity, and collision grace continues to
+age when physical stepping resumes. Exact catalogue effects and processor
+semantics remain with [actor usables](../systems/actor-usables.md); execution and
+merge acceptance remain with the [ACT-005 audit](../audits/2026-10-19-act005-physical-usables.md).

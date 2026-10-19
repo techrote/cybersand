@@ -7,6 +7,7 @@ var _view_size: Vector2i = Vector2i(320, 180)
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	clip_contents = true
 	set_process(false)
 
 func present(context: Dictionary, origin: Vector2, view_size: Vector2i, content_rect: Rect2) -> void:
@@ -41,12 +42,22 @@ func _draw() -> void:
 		var at: Vector2 = world_to_overlay(obj.get("position", Vector2.ZERO))
 		var color: Color = obj.get("color", Color(0.7,0.8,0.9))
 		var scale: Vector2 = size / Vector2(_view_size)
-		var half := Vector2(2.5 * scale.x, 2.5 * scale.y)
-		draw_rect(Rect2(at - half, half * 2.0), color, false, 1.2)
-		var input_a: Vector2 = world_to_overlay(Vector2(obj.position) + Vector2(-2.0,-1.0))
-		var input_b: Vector2 = world_to_overlay(Vector2(obj.position) + Vector2(-2.0,1.0))
-		var output_a: Vector2 = world_to_overlay(Vector2(obj.position) + Vector2(2.0,-1.0))
-		var output_b: Vector2 = world_to_overlay(Vector2(obj.position) + Vector2(2.0,1.0))
+		var physical: bool = obj.has("body_id") and obj.has("half_extents")
+		var rotation: float = float(obj.get("rotation", 0.0)) if physical else 0.0
+		var offset: float = ceilf(Vector2(obj.half_extents).x + 2.0) if physical else 2.0
+		if physical:
+			var status: String = str(obj.get("status", "waiting"))
+			var indicator := Color(0.4, 0.95, 0.65) if status == "processed" else Color(1.0, 0.65, 0.2)
+			if status in ["output-blocked", "blocked-output", "blocked", "jammed"]:
+				indicator = Color(1.0, 0.25, 0.2)
+			draw_arc(at, maxf(3.0, Vector2(obj.half_extents).length() * scale.x + 2.0), 0, TAU, 20, indicator, 1.2)
+		else:
+			var half := Vector2(2.5 * scale.x, 2.5 * scale.y)
+			draw_rect(Rect2(at - half, half * 2.0), color, false, 1.2)
+		var input_a: Vector2 = world_to_overlay(Vector2(obj.position) + Vector2(-offset,-1.0).rotated(rotation))
+		var input_b: Vector2 = world_to_overlay(Vector2(obj.position) + Vector2(-offset,1.0).rotated(rotation))
+		var output_a: Vector2 = world_to_overlay(Vector2(obj.position) + Vector2(offset,-1.0).rotated(rotation))
+		var output_b: Vector2 = world_to_overlay(Vector2(obj.position) + Vector2(offset,1.0).rotated(rotation))
 		draw_circle(input_a, 1.5, Color(0.45,0.9,1.0))
 		draw_circle(input_b, 1.5, Color(0.45,0.9,1.0))
 		draw_circle(output_a, 1.5, Color(1.0,0.72,0.3))

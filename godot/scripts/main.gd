@@ -4,6 +4,8 @@ const PhysicalTrial = preload("res://scripts/physical_actor_trial.gd")
 const PhysicalCatalog = preload("res://scripts/physical_actor_catalog.gd")
 const PhysicalSession = preload("res://scripts/physical_actor_session.gd")
 const PhysicalOverlay = preload("res://scripts/physical_actor_overlay.gd")
+const PhysicalLoadouts = preload("res://scripts/physical_usable_loadouts.gd")
+const PhysicalEquipment = preload("res://scripts/physical_usable_equipment.gd")
 var exploratory_actor_configuration: Dictionary = {}
 var physical_trial_arm: String = ""
 var physical_trial_input = PhysicalTrial.new()
@@ -1205,7 +1207,7 @@ func _process(delta: float) -> void:
 		camera_origin.floor(), current_view_size, view_content_rect()
 	)
 	usable_overlay.present(
-		latest_snapshot.actor_usables if latest_snapshot != null else {},
+		(latest_snapshot.physical_usables if physical_actor_session != null else latest_snapshot.actor_usables) if latest_snapshot != null else {},
 		camera_origin.floor(), current_view_size, view_content_rect()
 	)
 	physical_actor_overlay.present(
@@ -2264,7 +2266,7 @@ func toggle_actor_prototypes() -> void:
 	actor_prototype_panel.configure_selection(selected_model, actor_producer_selection, actor_demo_npcs)
 	actor_prototype_panel.set_context(str(microscenario_definition.get("id", "Sandbox")) if tower_context.get("micro_active", false) else "Sandbox")
 	actor_prototype_panel.effort_slider.value = _actor_effort
-	actor_prototype_panel.configure_equipment(actor_usable_index, _actor_usable_power)
+	actor_prototype_panel.configure_equipment(actor_usable_index, _actor_usable_power, physical_actor_session != null)
 	actor_prototype_panel.show_selection()
 
 
@@ -2291,7 +2293,7 @@ func physical_actor_definitions(model_id: StringName, producer: StringName, demo
 	var definitions: Array = []
 	var next_x: float = spawn.x + CyberSampledCharacter.BODY_SIZE.x * 0.5
 	for index: int in range(models.size()):
-		var data: Dictionary = PhysicalCatalog.entry(models[index])
+		var data: Dictionary = PhysicalEquipment.definition(PhysicalCatalog.entry(models[index]))
 		var bounds: Rect2 = data.bounds
 		# Align the lowest part above the authored player's feet. Neighbours are
 		# spaced by their complete assembly widths, including the usable mount.
@@ -2324,6 +2326,12 @@ func _activate_articulated_actor_rigs(spawn: Vector2) -> bool:
 		return false
 	physical_actor_session.input_cancelled.connect(_on_physical_actor_input_cancelled)
 	physical_actor_session.set_suspended(true)
+	var loadout: Dictionary = PhysicalLoadouts.entry(physical_rig_id)
+	actor_usable_index = int(loadout.get("usable_index", -1))
+	_actor_usable_requested_index = actor_usable_index
+	_actor_usable_power = float(loadout.get("power", 0.8))
+	_actor_usable_transition_pending = false
+	_actor_usable_pointer_rearm = true
 	rapier_bridge = physical_actor_session.bridge
 	rigid_bodies = physical_actor_session.bodies()
 	rapier_start_error = OK
@@ -2351,7 +2359,14 @@ func _close_physical_actors() -> void:
 
 func _publish_physical_body_state() -> void:
 	var effects: Array = physical_actor_session.drain_effects() if physical_actor_session != null else []
-	simulation_worker.set_rigid_body_states(pack_rigid_body_states(),
+	var states: PackedFloat32Array = pack_rigid_body_states()
+	if physical_actor_session != null:
+		var requests: Array = physical_actor_session.drain_equipment_requests()
+		var admission: Dictionary = simulation_worker.set_physical_usable_state(
+			physical_actor_session.equipment_frame(), requests, states)
+		if str(admission.get("status", "")) == "refused":
+			physical_actor_session.reject_equipment_requests(requests, str(admission.get("reason", "admission")))
+	simulation_worker.set_rigid_body_states(states,
 		_physical_epoch if physical_actor_session != null else 0, effects)
 
 
@@ -2374,11 +2389,12 @@ func _on_physical_actor_input_cancelled(actor_id: int, actor_epoch: int) -> void
 	simulation_worker.cancel_physical_actor_effects(actor_epoch, actor_id)
 
 
-func _publish_physical_keyboard_input() -> void:
+func _publish_physical_keyboard_input(trigger_override: Variant = null, alternate_override: Variant = null) -> void:
 	if actor_producer_selection != &"human":
 		return
-	if not actor_keyboard_allowed() or _actor_reset_receipt != 0 or simulation_worker.has_failed():
+	if not _actor_usable_input_allowed() or _actor_reset_receipt != 0 or simulation_worker.has_failed():
 		_actor_input_rearm = true
+		_actor_usable_pointer_rearm = true
 		physical_actor_session.cancel_input(0, _physical_epoch, &"human")
 		return
 	if _actor_input_rearm:
@@ -2386,14 +2402,30 @@ func _publish_physical_keyboard_input() -> void:
 			if Input.is_key_pressed(key):
 				return
 		_actor_input_rearm = false
+	var trigger: bool = bool(trigger_override) if trigger_override is bool else Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+	var alternate: bool = bool(alternate_override) if alternate_override is bool else Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)
+	var pointer_inside: bool = view_content_rect().has_point(world_view.get_local_mouse_position())
+	trigger = trigger and pointer_inside
+	alternate = alternate and pointer_inside
+	trigger = trigger or Input.is_key_pressed(KEY_M)
+	if _actor_usable_pointer_rearm:
+		if trigger or alternate:
+			trigger = false
+			alternate = false
+		else:
+			_actor_usable_pointer_rearm = false
 	var action: Dictionary = {
 		"move": Vector2(get_horizontal_input(), float(Input.is_key_pressed(KEY_S)) - float(Input.is_key_pressed(KEY_W))),
 		"aim": actor_pointer_aim(), "effort": _actor_effort,
 		"trim": float(Input.is_key_pressed(KEY_E)) - float(Input.is_key_pressed(KEY_Q)),
 		"reel": float(Input.is_key_pressed(KEY_X)) - float(Input.is_key_pressed(KEY_Z)),
 		"primary": Input.is_key_pressed(KEY_SPACE), "secondary": Input.is_key_pressed(KEY_SHIFT),
-		"auxiliary": Input.is_key_pressed(KEY_C), "tool": Input.is_key_pressed(KEY_M),
-		"release_usable": Input.is_key_pressed(KEY_N), "attach_usable": Input.is_key_pressed(KEY_U),
+		"auxiliary": Input.is_key_pressed(KEY_C),
+		"equipment": {"usable_index": _actor_usable_requested_index if _actor_usable_transition_pending else actor_usable_index,
+			"aim": actor_pointer_aim(), "power": _actor_usable_power,
+			"trigger": trigger and not _actor_usable_transition_pending,
+			"alternate": alternate and not _actor_usable_transition_pending,
+			"drop": Input.is_key_pressed(KEY_N), "attach": Input.is_key_pressed(KEY_U)},
 	}
 	physical_actor_session.submit_local(0, action, &"human", 6)
 
@@ -2464,6 +2496,30 @@ func apply_actor_prototype_configuration(model_id: StringName, producer: StringN
 
 
 func apply_actor_equipment_configuration(usable_index: int, power: float) -> bool:
+	if physical_actor_session != null:
+		if actor_producer_selection != &"human" or paused or simulation_worker.has_failed() \
+			or not _physical_terrain_ready or _actor_reset_receipt != 0:
+			actor_prototype_panel.set_error("Equip-only requires an active, unpaused human actor.")
+			return false
+		if usable_index < -1 or usable_index >= UsableCatalog.count() or not is_finite(power):
+			actor_prototype_panel.set_error("Unknown equipment or invalid power.")
+			return false
+		var physical_view: Dictionary = physical_actor_session.observation(0)
+		var equipment: Dictionary = physical_view.get("equipment", {})
+		if not bool(equipment.get("attached", false)) or bool(equipment.get("pending", false)):
+			actor_prototype_panel.set_error("Recover the released device and finish its pending use before switching equipment.")
+			return false
+		if not physical_actor_session.submit_local(0, {"equipment": {
+			"usable_index": usable_index, "power": clampf(power, 0.0, 1.0),
+			"trigger": false, "alternate": false}}, &"human", 6):
+			actor_prototype_panel.set_error("Equipment request refused: " + physical_actor_session.last_error)
+			return false
+		_actor_usable_requested_index = usable_index
+		_actor_usable_power = clampf(power, 0.0, 1.0)
+		_actor_usable_transition_pending = true
+		_actor_usable_pointer_rearm = true
+		actor_prototype_panel.hide()
+		return true
 	if (
 		latest_snapshot == null or latest_snapshot.actor_prototypes.is_empty()
 		or latest_snapshot.actor_prototypes.producers[0] != &"human"
@@ -2498,6 +2554,9 @@ func apply_actor_equipment_configuration(usable_index: int, power: float) -> boo
 
 
 func actor_equipment_active() -> bool:
+	if physical_actor_session != null:
+		var view: Dictionary = physical_actor_session.observation(0)
+		return int(view.get("equipment", {}).get("usable_index", -1)) >= 0
 	if latest_snapshot == null or latest_snapshot.actor_usables.is_empty():
 		return false
 	var equipped: PackedInt32Array = latest_snapshot.actor_usables.get("equipped", PackedInt32Array())
@@ -2505,6 +2564,15 @@ func actor_equipment_active() -> bool:
 
 
 func refresh_actor_usables() -> void:
+	if physical_actor_session != null:
+		if latest_snapshot != null:
+			physical_actor_session.accept_equipment_feedback(latest_snapshot.physical_usables)
+		var equipment: Dictionary = physical_actor_session.observation(0).get("equipment", {})
+		actor_usable_index = int(equipment.get("usable_index", -1))
+		if _actor_usable_transition_pending and actor_usable_index == _actor_usable_requested_index:
+			_actor_usable_transition_pending = false
+			_actor_usable_pointer_rearm = true
+		return
 	if latest_snapshot == null or latest_snapshot.actor_usables.is_empty():
 		actor_usable_index = -1
 		_actor_usable_transition_pending = false
@@ -2529,6 +2597,9 @@ func _actor_usable_input_allowed() -> bool:
 
 
 func _publish_actor_usable_buttons(trigger: bool, alternate: bool) -> void:
+	if physical_actor_session != null:
+		_publish_physical_keyboard_input(trigger, alternate)
+		return
 	if latest_snapshot == null or latest_snapshot.actor_prototypes.is_empty():
 		return
 	var context: Dictionary = latest_snapshot.actor_prototypes
@@ -2564,6 +2635,10 @@ func _publish_actor_usable_buttons(trigger: bool, alternate: bool) -> void:
 
 
 func publish_actor_usable_input() -> void:
+	# Physical keyboard publication already includes equipment. The event path
+	# above still captures a complete press/release between physics frames.
+	if physical_actor_session != null:
+		return
 	_publish_actor_usable_buttons(
 		Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT),
 		Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)
@@ -2684,9 +2759,11 @@ func refresh_actor_prototypes() -> void:
 	actor_prototype_button.disabled = not actor_prototypes_allowed()
 	if physical_actor_session != null:
 		var state: Dictionary = physical_actor_session.snapshot()
+		var equipment: Dictionary = state.actors[0].get("equipment", {}) if not state.actors.is_empty() else {}
 		actor_prototype_button.text = "Rapier %s / F5 | %s | %d actors / %d parts" % [
 			PhysicalCatalog.name_for(physical_rig_id), str(actor_producer_selection), state.actor_count, state.body_count]
-		actor_prototype_button.tooltip_text = PhysicalCatalog.controls_text(physical_rig_id) + "\nM tool · N release · U reattach. Release controls after switching."
+		actor_prototype_button.text += " | %s: %s" % [UsableCatalog.name_for(actor_usable_index), str(equipment.get("last_result", "ready"))]
+		actor_prototype_button.tooltip_text = PhysicalCatalog.controls_text(physical_rig_id) + "\nLeft/M use · right alternate · N release · U nearby pickup. Equipment uses the physical mount."
 		return
 	if not physical_trial_arm.is_empty():
 		actor_prototype_button.text = "Rapier %s / impulses + torque / F5" % physical_trial_arm

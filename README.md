@@ -103,6 +103,15 @@ inference is a future consumer. The [sampled rig](docs/systems/actor-rigs.md) an
 [SetA contracts](docs/systems/actor-control-prototypes.md) retain their original
 motor and policy compatibility details.
 
+The [32-item usable catalogue](docs/systems/actor-usables.md) supplies material
+tools, ballistic payloads and processors for the physical roster. Actors carry a
+jointed chassis with bounded aim, recoil, release and nearby pickup. Processors
+are placed as physical world objects with explicit blocked-output results. Every
+rig has a default loadout and equipment demonstration policy; keyboard, scripts
+and future policies share the same observed-identity action path. The
+[ACT-005 checkpoint](docs/audits/2026-10-19-act005-physical-usables.md) records
+integration progress and acceptance separately from the source feature list.
+
 The standalone [Thunderbowl control reference](docs/systems/thunderbowl-control-reference.md)
 adds a native battle/training test area, runnable controller scripts and eight
 versioned JSON schemas. Compare assisted controls, direct actuator profiles,

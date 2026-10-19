@@ -5,6 +5,7 @@ extends RefCounted
 # human action vocabulary and consumes copied actor observations only. It never
 # moves a body, reads World, fills energy or claims global pathfinding.
 const Catalog = preload("res://scripts/physical_actor_catalog.gd")
+const UsablePilot = preload("res://scripts/physical_usable_script.gd")
 const MAX_DELTA: float = 0.25
 const PROGRESS_WINDOW: float = 0.65
 
@@ -41,6 +42,8 @@ var _saving_energy: bool = false
 var _payload_swing: float = 0.0
 var _payload_swing_speed: float = 0.0
 var _payload_correction: float = 0.0
+var _usable_pilot = UsablePilot.new()
+var _actor_index: int = 0
 
 
 func configure(selected_rig: StringName, origin: Vector2, actor_index: int = 0) -> bool:
@@ -53,6 +56,7 @@ func configure(selected_rig: StringName, origin: Vector2, actor_index: int = 0) 
 	_style = definition.script
 	_phase_offset = float(actor_index % 17) * 0.37
 	_initial_direction = 1.0 if actor_index % 2 == 0 else -1.0
+	_actor_index = actor_index
 	reset(origin)
 	return true
 
@@ -87,6 +91,8 @@ func reset(origin: Vector2 = Vector2.INF) -> void:
 	_payload_swing = 0.0
 	_payload_swing_speed = 0.0
 	_payload_correction = 0.0
+	if rig_id != &"":
+		_usable_pilot.configure(rig_id, home, _actor_index)
 
 
 func cancel() -> void:
@@ -97,6 +103,7 @@ func cancel() -> void:
 	_next_pulse = _clock + 0.2
 	_last_action = neutral_action()
 	_was_suspended = true
+	_usable_pilot.cancel()
 
 
 static func neutral_action() -> Dictionary:
@@ -111,6 +118,7 @@ func diagnostics() -> Dictionary:
 		"still_time": _still_time, "charge_holding": _charge_holding,
 		"payload_swing": _payload_swing, "payload_swing_speed": _payload_swing_speed,
 		"payload_correction": _payload_correction,
+		"equipment": _usable_pilot.diagnostics(),
 		"controller_id": "local-feedback/" + str(rig_id) + "/v1"}
 
 
@@ -282,6 +290,7 @@ func next_action(observation: Dictionary, delta: float) -> Dictionary:
 			action.effort = minf(float(action.effort), 0.70)
 	_last_centre = centre
 	_last_grounded = grounded
+	action = _usable_pilot.apply(observation, action, delta)
 	_last_action = action.duplicate(true)
 	return action
 

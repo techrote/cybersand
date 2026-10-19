@@ -8,6 +8,8 @@ signal input_cancelled(actor_id: int, actor_epoch: int)
 const Catalog = preload("res://scripts/physical_actor_catalog.gd")
 const Rig = preload("res://scripts/physical_actor_rig.gd")
 const Scripted = preload("res://scripts/physical_actor_script.gd")
+const Equipment = preload("res://scripts/physical_usable_equipment.gd")
+const Loadouts = preload("res://scripts/physical_usable_loadouts.gd")
 const MAX_ACTORS: int = 8
 const MAX_PARTS: int = 8
 const MAX_LEASE: int = 18
@@ -16,7 +18,7 @@ const VERSION: int = 2
 const MAX_BUTTON_EDGES: int = 24
 const BUTTON_KEYS: Array[String] = ["primary", "secondary", "auxiliary", "tool", "release_usable", "attach_usable"]
 const PRODUCERS: Array[StringName] = [&"human", &"demo", &"policy"]
-const ACTION_KEYS: Array[String] = ["move", "aim", "effort", "trim", "reel", "primary", "secondary", "auxiliary", "tool", "release_usable", "attach_usable"]
+const ACTION_KEYS: Array[String] = ["move", "aim", "effort", "trim", "reel", "primary", "secondary", "auxiliary", "tool", "release_usable", "attach_usable", "equipment"]
 const COMMAND_KEYS: Array[String] = ["version", "kind", "run_id", "actor_id", "epoch", "sequence", "observed_tick", "observation_id", "lease_ticks", "action"]
 
 var bridge: CyberRapierPhysicsBridge = CyberRapierPhysicsBridge.new()
@@ -28,6 +30,7 @@ var _definitions: Array = []
 var _catalogue: Array = []
 var _rigs: Array = []
 var _scripts: Array = []
+var _equipment: Array = []
 var _body_offsets: PackedInt32Array = PackedInt32Array()
 var _sequences: PackedInt64Array = PackedInt64Array()
 var _deadlines: PackedInt64Array = PackedInt64Array()
@@ -58,7 +61,10 @@ static func valid_definitions(definitions: Array) -> bool:
 			return false
 		if value.position.x < 0.0 or value.position.y < 0.0 or value.position.x >= 1024.0 or value.position.y >= 1024.0:
 			return false
-		var count: int = Catalog.entry(model).parts.size()
+		var prepared: Dictionary = Equipment.definition(Catalog.entry(model), Loadouts.entry(model))
+		if prepared.is_empty() or not _integer(value.get("usable_index", Loadouts.entry(model).get("usable_index", -1)), -1, 31):
+			return false
+		var count: int = prepared.parts.size()
 		if count < 1 or count > MAX_PARTS:
 			return false
 		parts += count
@@ -81,7 +87,8 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 	var sizes := PackedVector2Array()
 	for index: int in range(definitions.size()):
 		var definition: Dictionary = definitions[index]
-		var data: Dictionary = Catalog.entry(StringName(str(definition.model)))
+		var loadout: Dictionary = Loadouts.entry(StringName(str(definition.model)))
+		var data: Dictionary = Equipment.definition(Catalog.entry(StringName(str(definition.model))), loadout)
 		_catalogue.append(data)
 		var rig = Rig.new()
 		add_child(rig)
@@ -91,6 +98,13 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 			last_error = "Physical rig refused: " + str(definition.model)
 			close()
 			return false
+		var item = Equipment.new()
+		if not item.configure(rig, run_id, epoch, index, _body_offsets[index],
+			int(definition.get("usable_index", loadout.get("usable_index", -1)))):
+			last_error = "Physical equipment refused: " + str(definition.model)
+			close()
+			return false
+		_equipment.append(item)
 		all_bodies.append_array(rig.bodies())
 		sizes.append_array(rig.body_sizes())
 		var pilot = Scripted.new()
@@ -148,6 +162,8 @@ func _view(actor_id: int, issue: bool) -> Dictionary:
 		"last_sequence": _sequences[actor_id], "suspended": _suspended or faulted}, true)
 	result["control_generation"] = _generations[actor_id]
 	result["pending_input_edges"] = _button_edges[actor_id].size()
+	result["equipment"] = _equipment[actor_id].observation()
+	result["cell_patch"] = result.equipment.get("cell_patch", {}).duplicate(true)
 	if issue and not faulted:
 		_issued[actor_id][tick % (MAX_LEASE + 1)] = tick
 	return result.duplicate(true)
@@ -158,11 +174,25 @@ func _observation_id(actor_id: int, observed: int) -> String:
 
 
 static func make_command(view: Dictionary, sequence: int, action: Dictionary, lease_ticks: int = 12) -> Dictionary:
+	var copied: Dictionary = action.duplicate(true)
+	var item: Dictionary = view.get("equipment", {})
+	if not item.is_empty():
+		# The existing M/N/U controls are local shorthand for exactly the same
+		# observed equipment identity; raw external packets still carry it.
+		if not copied.has("equipment") and (copied.has("tool") \
+			or copied.has("release_usable") or copied.has("attach_usable")):
+			copied["equipment"] = {"trigger": bool(copied.get("tool", false)),
+				"drop": bool(copied.get("release_usable", false)), "attach": bool(copied.get("attach_usable", false)),
+				"aim": copied.get("aim", Vector2.ZERO), "power": copied.get("effort", 0.7)}
+		if copied.get("equipment") is Dictionary:
+			for key: String in ["usable_index", "instance_id", "equipment_epoch"]:
+				if not copied.equipment.has(key):
+					copied.equipment[key] = item.get(key)
 	return {"version": VERSION, "kind": "physical_wire_action", "run_id": view.get("run_id", ""),
 		"actor_id": view.get("actor_id", -1), "epoch": view.get("epoch", -1),
 		"sequence": sequence, "observed_tick": view.get("tick", -1),
 		"observation_id": view.get("observation_id", ""), "lease_ticks": lease_ticks,
-		"action": action.duplicate(true)}
+		"action": copied}
 
 
 static func _integer(value: Variant, minimum: int, maximum: int) -> bool:
@@ -175,7 +205,7 @@ static func normalized_action(value: Variant) -> Dictionary:
 		return {}
 	var result: Dictionary = {"move": Vector2.ZERO, "aim": Vector2.ZERO, "effort": 0.7,
 		"trim": 0.0, "reel": 0.0, "primary": false, "secondary": false,
-		"auxiliary": false, "tool": false, "release_usable": false, "attach_usable": false}
+		"auxiliary": false, "tool": false, "release_usable": false, "attach_usable": false, "equipment": {}}
 	for key: Variant in value:
 		if not key is String and not key is StringName:
 			return {}
@@ -183,7 +213,12 @@ static func normalized_action(value: Variant) -> Dictionary:
 		if name not in ACTION_KEYS:
 			return {}
 		var item: Variant = value[key]
-		if name in ["move", "aim"]:
+		if name == "equipment":
+			var equipment_action: Dictionary = Equipment.normalized_action(item)
+			if equipment_action.is_empty():
+				return {}
+			result[name] = equipment_action
+		elif name in ["move", "aim"]:
 			if item is Array and item.size() == 2:
 				if not (item[0] is int or item[0] is float) or not (item[1] is int or item[1] is float):
 					return {}
@@ -234,15 +269,30 @@ func submit(command: Variant, producer: StringName = &"policy") -> bool:
 	var action: Dictionary = normalized_action(command.get("action"))
 	if action.is_empty():
 		return _reject("action")
+	if not action.equipment.is_empty():
+		if not _equipment[actor_id].matches(action.equipment):
+			return _reject("equipment_epoch_or_instance")
+		if not _equipment[actor_id].can_select(int(action.equipment.usable_index)):
+			return _reject("selection_requires_held_body")
+	elif bool(action.tool) or bool(action.release_usable) or bool(action.attach_usable):
+		return _reject("equipment_identity_required")
 	var edges: Array = []
 	for button: String in BUTTON_KEYS:
+		if button in ["tool", "release_usable", "attach_usable"]:
+			continue
 		if bool(action[button]) != bool(_accepted_buttons[actor_id].get(button, false)):
 			edges.append({"button": button, "pressed": bool(action[button])})
+	for button: String in Equipment.BUTTON_KEYS:
+		var key: String = "equipment_" + button
+		if bool(action.equipment.get(button, false)) != bool(_accepted_buttons[actor_id].get(key, false)):
+			edges.append({"button": key, "pressed": bool(action.equipment.get(button, false))})
 	if _button_edges[actor_id].size() + edges.size() > MAX_BUTTON_EDGES:
 		return _reject("button_edge_capacity")
 	_button_edges[actor_id].append_array(edges)
 	for button: String in BUTTON_KEYS:
 		_accepted_buttons[actor_id][button] = action[button]
+	for button: String in Equipment.BUTTON_KEYS:
+		_accepted_buttons[actor_id]["equipment_" + button] = bool(action.equipment.get(button, false))
 	_sequences[actor_id] = int(command.sequence)
 	_deadlines[actor_id] = observed + int(command.lease_ticks)
 	_commands[actor_id] = action
@@ -273,6 +323,7 @@ func cancel_input(actor_id: int, expected_epoch: int, producer: StringName) -> b
 	_applied_buttons[actor_id].clear()
 	_deadlines[actor_id] = -1
 	_generations[actor_id] += 1
+	_equipment[actor_id].cancel(_generations[actor_id])
 	_issued[actor_id].fill(-1)
 	_effects = _effects.filter(func(effect: Dictionary) -> bool: return int(effect.actor_slot) != actor_id)
 	_rigs[actor_id].cancel()
@@ -325,7 +376,13 @@ func advance(delta: float) -> void:
 				changed[edge.button] = true
 			for button: String in BUTTON_KEYS:
 				command[button] = bool(_applied_buttons[index].get(button, false))
+			if not command.equipment.is_empty():
+				for button: String in Equipment.BUTTON_KEYS:
+					command.equipment[button] = bool(_applied_buttons[index].get("equipment_" + button, false))
+		_equipment[index].pre_advance(command.get("equipment", {}), command.get("aim", Vector2.ZERO), not command.is_empty())
 		_rigs[index].advance(command, delta, not command.is_empty())
+		_equipment[index].advance(command.get("equipment", {}), delta, tick, _generations[index],
+			_deadlines[index], not command.is_empty() and str(_rigs[index].fault).is_empty())
 		for request: Dictionary in _rigs[index].drain_effects():
 			if _effects.size() >= MAX_ACTORS:
 				break
@@ -349,6 +406,55 @@ func drain_effects() -> Array:
 	var result: Array = _effects.duplicate(true)
 	_effects.clear()
 	return result
+
+
+func equipment_frame() -> Dictionary:
+	var actors: Array = []
+	var devices: Array = []
+	if _active:
+		for index: int in range(_rigs.size()):
+			var parts: Array = []
+			for part: Dictionary in _rigs[index].observation().get("parts", []):
+				parts.append({"body_id": _body_offsets[index] + int(part.index) + 1,
+					"position": part.position, "rotation": part.rotation, "half_extents": Vector2(part.size) * 0.5})
+			actors.append(_equipment[index].frame(_generations[index], tick, _deadlines[index],
+				not _suspended and str(_rigs[index].fault).is_empty(), parts))
+			var device: Dictionary = _equipment[index].device_frame()
+			if not device.is_empty():
+				devices.append(device)
+	return {"version": Equipment.VERSION, "run_id": run_id, "epoch": epoch, "tick": tick,
+		"suspended": _suspended or not _active, "actors": actors, "devices": devices}
+
+
+func drain_equipment_requests() -> Array:
+	var result: Array = []
+	for item in _equipment:
+		result.append_array(item.drain_requests())
+	return result.duplicate(true)
+
+
+func reject_equipment_requests(requests: Array, reason: String = "worker_admission") -> void:
+	for item in _equipment:
+		item.reject_requests(requests, reason)
+
+
+func accept_equipment_feedback(snapshot_value: Dictionary) -> int:
+	if not _active or snapshot_value.get("run_id") != run_id or snapshot_value.get("epoch") != epoch:
+		return 0
+	var accepted: int = 0
+	for receipt: Variant in snapshot_value.get("receipts", []):
+		if not receipt is Dictionary or not _integer(receipt.get("actor_id"), 0, _equipment.size() - 1):
+			continue
+		var index: int = int(receipt.actor_id)
+		if _suspended or not str(_rigs[index].fault).is_empty():
+			continue
+		if _equipment[index].accept_receipt(receipt, _generations[index], tick, _deadlines[index]):
+			accepted += 1
+	for row: Variant in snapshot_value.get("actors", []):
+		if row is Dictionary and _integer(row.get("actor_id"), 0, _equipment.size() - 1):
+			var index: int = int(row.actor_id)
+			_equipment[index].accept_readback(row, snapshot_value, _generations[index])
+	return accepted
 
 
 func render_parts() -> Array:
@@ -385,6 +491,7 @@ func close() -> void:
 			rig.free()
 	_rigs.clear()
 	_scripts.clear()
+	_equipment.clear()
 	_definitions.clear()
 	_catalogue.clear()
 	_body_offsets.clear()

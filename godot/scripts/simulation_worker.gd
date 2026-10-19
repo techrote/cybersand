@@ -10,6 +10,7 @@ const PlayerEnvironmentProfiles = preload("res://scripts/player_environment_prof
 const ActorSession = preload("res://scripts/actor_prototype_session.gd")
 const UsableSession = preload("res://scripts/usable_session.gd")
 const PhysicalEffects = preload("res://scripts/physical_actor_effects.gd")
+const PhysicalUsables = preload("res://scripts/physical_usable_runtime.gd")
 const SIMULATION_HZ: float = 60.0
 const FIXED_TIMESTEP: float = 1.0 / SIMULATION_HZ
 const TICK_INTERVAL_USEC: int = 16667
@@ -68,6 +69,12 @@ var _physical_effect_refused_batches: int = 0
 var _physical_effect_refused_requests: int = 0
 var _physical_effect_overflow_batches: int = 0
 var _physical_effect_last_admission: Dictionary = {}
+var _physical_usables := PhysicalUsables.new() # Worker-exclusive material/projectile/device owner.
+var _physical_usable_frame: Dictionary = {} # Mutex-owned copied publication.
+var _pending_physical_usables: Array = []
+var _physical_usable_inflight: Dictionary = {} # One unconsumed request per actor, including extracted work.
+var _physical_usable_admission: Dictionary = {}
+var _physical_usable_cancelled_generations := PackedInt64Array([-1, -1, -1, -1, -1, -1, -1, -1])
 
 var _pending_emissions: Array[Vector4i] = []
 var _pending_cell_emissions: Array[Dictionary] = []
@@ -117,6 +124,7 @@ func queue_lab(command: Dictionary) -> void:
 	_mutex.lock()
 	_lab_request = command.duplicate(true)
 	_pending_physical_effects.clear()
+	_cancel_physical_usables_locked()
 	if command.has("step") or command.has("reset") or command.has("water_reset") or command.has("scenario_reset") or command.has("floor"): _paused = true
 	_mutex.unlock()
 
@@ -522,6 +530,8 @@ func queue_actor_prototype_reset(definitions: Array, spawn_position: Vector2, sa
 	_pending_emissions.clear()
 	_pending_cell_emissions.clear()
 	_pending_physical_effects.clear()
+	_cancel_physical_usables_locked()
+	_physical_usable_frame.clear()
 	_mutex.unlock()
 	return receipt
 
@@ -544,6 +554,7 @@ func set_frame_state(
 	_jetpack_active = jetpack_active
 	if paused and not _paused:
 		_pending_physical_effects.clear()
+		_cancel_physical_usables_locked()
 		for actor: int in range(PhysicalEffects.MAX_ACTORS):
 			_physical_effect_generations[actor] += 1
 	_paused = paused
@@ -634,11 +645,157 @@ func physical_actor_effect_admission() -> Dictionary:
 	return result
 
 
+func set_physical_usable_state(frame: Dictionary, requests: Array = [], states: PackedFloat32Array = PackedFloat32Array()) -> Dictionary:
+	# This publication and its batch have one admission point. Identity changes
+	# retire older queued work; capacity never replaces another actor's request.
+	_mutex.lock()
+	var reason: String = PhysicalUsables.frame_error(frame)
+	if reason.is_empty() and (states.size() > CyberRigidBodyCoupling.MAX_BODIES * CyberRigidBodyCoupling.INPUT_STRIDE \
+		or states.size() % CyberRigidBodyCoupling.INPUT_STRIDE != 0):
+		reason = "body_state_capacity"
+	if reason.is_empty():
+		for value: float in states:
+			if not is_finite(value):
+				reason = "body_state_nonfinite"
+				break
+	var result: Dictionary = {"epoch": frame.get("epoch", -1), "run_id": frame.get("run_id", ""),
+		"status": "no_requests", "reason": "", "requested": requests.size(), "queued": 0,
+		"refused": 0, "capacity": PhysicalUsables.MAX_REQUESTS}
+	if reason.is_empty() and int(frame.epoch) != _physical_effect_epoch:
+		reason = "epoch"
+	if reason.is_empty() and not _physical_usable_frame.is_empty():
+		reason = PhysicalUsables.frame_transition_error(_physical_usable_frame, frame)
+	if reason.is_empty():
+		for row: Dictionary in frame.actors:
+			if bool(row.active) and int(row.generation) <= _physical_usable_cancelled_generations[int(row.actor_id)]:
+				reason = "cancelled_generation"
+				break
+	if reason.is_empty():
+		_physical_usable_frame = frame.duplicate(true)
+		if not states.is_empty():
+			_rigid_body_states = states.duplicate()
+			_rigid_body_epoch = int(frame.epoch)
+		# A changed generation/selection or cancelled lease invalidates packets
+		# even if the worker already extracted them from the pending array.
+		for actor: Variant in _physical_usable_inflight.keys():
+			if not PhysicalUsables.request_error(_physical_usable_inflight[actor], frame).is_empty():
+				_physical_usable_inflight.erase(actor)
+		_pending_physical_usables = _pending_physical_usables.filter(func(request: Dictionary) -> bool:
+			return PhysicalUsables.request_error(request, frame).is_empty())
+		if not requests.is_empty():
+			if _paused or bool(frame.suspended):
+				reason = "paused"
+			elif _reset_requested:
+				reason = "reset_pending"
+			elif not _lab_request.is_empty():
+				reason = "lab_pending"
+			elif _published_snapshot != null and _published_snapshot.simulation_failed:
+				reason = "simulation_failed"
+			elif requests.size() > PhysicalUsables.MAX_REQUESTS:
+				reason = "batch_capacity"
+			else:
+				var owners: Dictionary = {}
+				for request: Variant in requests:
+					if not request is Dictionary:
+						reason = "request_type"
+						break
+					reason = PhysicalUsables.request_error(request, frame)
+					if not reason.is_empty():
+						break
+					if owners.has(request.actor_id) or _physical_usable_inflight.has(request.actor_id):
+						reason = "actor_inflight"
+						break
+					owners[request.actor_id] = true
+	if not reason.is_empty():
+		result.status = "refused"
+		result.reason = reason
+		result.refused = requests.size()
+	elif not requests.is_empty():
+		for request: Dictionary in requests:
+			var copied: Dictionary = request.duplicate(true)
+			_pending_physical_usables.append(copied)
+			_physical_usable_inflight[int(request.actor_id)] = copied
+		result.status = "queued"
+		result.queued = requests.size()
+	result["pending"] = _physical_usable_inflight.size()
+	if not requests.is_empty() or not reason.is_empty():
+		_physical_usable_admission = result.duplicate(true)
+	_mutex.unlock()
+	return result
+
+
+func cancel_physical_usable_requests(epoch: int, actor_id: int = -1) -> bool:
+	if actor_id < -1 or actor_id >= PhysicalUsables.MAX_ACTORS:
+		return false
+	_mutex.lock()
+	if epoch <= 0 or epoch != _physical_effect_epoch:
+		_mutex.unlock()
+		return false
+	_cancel_physical_usables_locked(actor_id)
+	_mutex.unlock()
+	return true
+
+
+func _cancel_physical_usables_locked(actor_id: int = -1) -> void:
+	for owner: Variant in _physical_usable_inflight.keys():
+		if actor_id == -1 or int(owner) == actor_id:
+			_physical_usable_inflight.erase(owner)
+	_pending_physical_usables = _pending_physical_usables.filter(func(request: Dictionary) -> bool:
+		return actor_id != -1 and int(request.actor_id) != actor_id)
+	for row: Dictionary in _physical_usable_frame.get("actors", []):
+		if actor_id == -1 or int(row.actor_id) == actor_id:
+			_physical_usable_cancelled_generations[int(row.actor_id)] = maxi(
+				_physical_usable_cancelled_generations[int(row.actor_id)], int(row.generation))
+			row.active = false
+			row.lease_deadline = -1
+
+
+func _consume_physical_usables(requests: Array, body_epoch: int, allowed: bool, captured_frame: Dictionary = {}) -> void:
+	# Cancellation and the finite cell-edit transaction are linearized under the
+	# same mutex. Once cancellation returns, earlier pending work cannot commit.
+	# The material adapter still runs only on this exclusive worker thread.
+	_mutex.lock()
+	var frame: Dictionary = captured_frame.duplicate(true) if not captured_frame.is_empty() else _physical_usable_frame.duplicate(true)
+	if _physical_usable_frame.is_empty():
+		_physical_usables.reset(_physical_effect_epoch)
+		_mutex.unlock()
+		return
+	if not frame.is_empty() and body_epoch == _physical_effect_epoch and int(frame.epoch) == body_epoch:
+		var admitted: Array = []
+		for request: Dictionary in requests:
+			var owner: int = int(request.actor_id)
+			var current: Dictionary = _physical_usable_inflight.get(owner, {})
+			if current.get("request_id") == request.request_id \
+				and PhysicalUsables.request_error(request, _physical_usable_frame).is_empty():
+				admitted.append(request)
+				_physical_usable_inflight.erase(owner)
+		# Geometry remains matched to the native mask captured at the start of
+		# this tick. A newer pickup publication may nevertheless retire a device
+		# before this finite transaction starts; it must then produce no recipe.
+		frame.devices = frame.devices.filter(func(device: Dictionary) -> bool:
+			for current: Dictionary in _physical_usable_frame.get("devices", []):
+				if current.instance_id == device.instance_id and current.equipment_epoch == device.equipment_epoch \
+					and current.body_id == device.body_id and current.state in ["fixed", "settled", "deployed"]:
+					return true
+			return false)
+		if allowed and not _paused and not _reset_requested and _lab_request.is_empty():
+			_physical_usables.step(FIXED_TIMESTEP, _world, frame, admitted)
+		else:
+			frame.suspended = true
+			_physical_usables.step(FIXED_TIMESTEP, _world, frame, admitted)
+	_mutex.unlock()
+
+
 func set_physical_actor_epoch(epoch: int) -> void:
 	# Switching owners retires pending effects; no node/RID enters this boundary.
 	_mutex.lock()
 	_physical_effect_epoch = maxi(0, epoch)
 	_pending_physical_effects.clear()
+	_pending_physical_usables.clear()
+	_physical_usable_inflight.clear()
+	_physical_usable_frame.clear()
+	_physical_usable_admission.clear()
+	_physical_usable_cancelled_generations.fill(-1)
 	_physical_effect_accepted_batches = 0
 	_physical_effect_accepted_requests = 0
 	_physical_effect_refused_batches = 0
@@ -662,6 +819,7 @@ func cancel_physical_actor_effects(epoch: int, actor_id: int = -1) -> bool:
 			_physical_effect_generations[actor] += 1
 	_pending_physical_effects = _pending_physical_effects.filter(func(packet: Dictionary) -> bool:
 		return actor_id != -1 and int(packet.request.actor_slot) != actor_id)
+	_cancel_physical_usables_locked(actor_id)
 	_mutex.unlock()
 	return true
 
@@ -779,6 +937,8 @@ func queue_reset(
 	_pending_emissions.clear()
 	_pending_cell_emissions.clear()
 	_pending_physical_effects.clear()
+	_cancel_physical_usables_locked()
+	_physical_usable_frame.clear()
 	_mutex.unlock()
 
 
@@ -841,6 +1001,8 @@ func _worker_loop() -> void:
 		var local_rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 		var local_rigid_body_epoch: int = 0
 		var local_physical_effects: Array = []
+		var local_physical_usables: Array = []
+		var local_physical_usable_frame: Dictionary = {}
 		var local_emissions: Array[Vector4i] = []
 		var local_cell_emissions: Array[Dictionary] = []
 		var local_reset_requested: bool = false
@@ -871,6 +1033,9 @@ func _worker_loop() -> void:
 		local_rigid_body_epoch = _rigid_body_epoch
 		local_physical_effects = _pending_physical_effects
 		_pending_physical_effects = []
+		local_physical_usable_frame = _physical_usable_frame.duplicate(true)
+		local_physical_usables = _pending_physical_usables
+		_pending_physical_usables = []
 		local_emissions = _pending_emissions
 		_pending_emissions = []
 		local_cell_emissions = _pending_cell_emissions
@@ -909,6 +1074,11 @@ func _worker_loop() -> void:
 			_snapshot_hard_surface_revision = -1
 			local_physical_effects.clear()
 			_physical_effect_receipts.clear()
+			local_physical_usables.clear()
+			_physical_usables.reset()
+			_mutex.lock()
+			_physical_usable_frame.clear()
+			_mutex.unlock()
 			if local_actor_prototype_request:
 				_actor_prototype_result_serial = local_actor_prototype_serial
 				_actor_prototype_reset_applied = false
@@ -975,6 +1145,8 @@ func _worker_loop() -> void:
 		if local_reset_requested:
 			local_physical_effects.clear()
 			_physical_effect_receipts.clear()
+			local_physical_usables.clear()
+			_physical_usables.reset()
 			var recovered: bool = true
 			if _world.has_method(&"has_failed"):
 				recovered = bool(_world.reset_demo_world())
@@ -1025,6 +1197,7 @@ func _worker_loop() -> void:
 				local_physical_effects = _admit_physical_effects(local_physical_effects, local_rigid_body_epoch)
 				_physical_effect_receipts = _physical_effects.apply(
 					_world, local_physical_effects, local_rigid_body_epoch)
+			_consume_physical_usables(local_physical_usables, local_rigid_body_epoch, physical_effects_allowed, local_physical_usable_frame)
 			for emission_command: Vector4i in local_emissions:
 				_world.emit_disc(
 					emission_command.x,
@@ -1204,6 +1377,10 @@ func _publish_snapshot(
 	snapshot.rigid_body_epoch = rigid_body_epoch
 	snapshot.physical_actor_effects = _physical_effect_receipts.duplicate(true)
 	snapshot.physical_actor_effect_admission = physical_actor_effect_admission()
+	snapshot.physical_usables = _physical_usables.snapshot()
+	_mutex.lock()
+	snapshot.physical_usables["admission"] = _physical_usable_admission.duplicate(true)
+	_mutex.unlock()
 	snapshot.actor_prototype_status = _actor_prototype_status
 	snapshot.actor_prototype_reset_serial = _actor_prototype_result_serial
 	snapshot.actor_prototype_reset_applied = _actor_prototype_reset_applied

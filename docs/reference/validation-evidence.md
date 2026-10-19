@@ -26,6 +26,22 @@ and platform. Final branch-head workflow and published-Linux suite results are
 recorded in [PR #179](https://github.com/techrote/cybersand/pull/179). A draft-skipped
 job or headless pixel-test skip is not a behavior pass.
 
+## Physical actor usables — 2026-10-19
+
+The [ACT-005 audit](../audits/2026-10-19-act005-physical-usables.md) owns the
+source/runtime identities, preserved failures, physical equipment regressions,
+course/desktop checks and hosted gate disposition for issue #182. Current source
+contracts describe the implementation independently of that acceptance record.
+
+The intake baseline rebuilt and passed all 71 native core cases in ordinary,
+ASan/UBSan and TSan configurations. ASan explicitly disabled leak detection;
+sanitizer execution used a 64 MiB stack. A frozen PR #180 snapshot at
+`64b2e264f3778a8d74e47b264bd6885f42a26a36` separately passed the three sampled
+usable runners with 196, 28 and 29 assertions on pinned Linux Godot 4.7 and the
+source-matched retained native runtime. These baseline results protect the
+native and sampled contracts; they do not certify the new physical source,
+Windows runtime behavior, visual playability or final exact-head hosted gates.
+
 ## Exploratory map actor integration - 2026-10-18
 
 The [dated integration audit](../audits/2026-10-18-exploratory-actor-integration.md)

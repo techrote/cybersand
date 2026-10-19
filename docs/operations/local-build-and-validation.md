@@ -167,6 +167,51 @@ Current build jobs set `SCONS_JOBS=2` directly; the
 [repository provider policy](github-development-and-release.md) owns the runner
 and provider-routing boundary.
 
+## Physical usable validation
+
+ACT-005 extends the [32-item usable catalogue](../systems/actor-usables.md) onto
+the [physical actor owner](../systems/physical-actor-rigs.md). Use the pinned
+Godot runtime and materialized Linux CyberSand/Rapier libraries. Verify native
+`source_inputs` against the retained runtime provenance before attributing a
+Godot result to the current native source. A matching native input manifest
+allows GDScript-only changes to use that binary; its historical `build_inputs`
+do not establish acceptance of changed scripts or newly added tests.
+
+The focused regression groups are:
+
+| Group | Runner and evidence scope |
+|---|---|
+| Physical mount and lifecycle | [`test_physical_usable_equipment.gd`](../../godot/tests/test_physical_usable_equipment.gd), [`test_physical_usable_lifecycle.gd`](../../godot/tests/test_physical_usable_lifecycle.gd): real part/body identity, joint-driven aim, equipment epochs, receipt fencing, release/settle/fix and explicit nearby pickup |
+| Native usable work and worker admission | [`test_physical_usables_runtime.gd`](../../godot/tests/test_physical_usables_runtime.gd), [`test_physical_usables_admission.gd`](../../godot/tests/test_physical_usables_admission.gd): physical source/target masks, bounded actual-cell work, processor lifecycle, atomic queue capacity and stale/cancelled requests |
+| Scripted loadouts | [`test_physical_usable_script.gd`](../../godot/tests/test_physical_usable_script.gd): all 41 explicit loadout policies and bounded, observation-driven equipment intent |
+| Integrated hosts | [`test_physical_usable_course.gd`](../../godot/tests/test_physical_usable_course.gd), [`test_physical_usables_desktop.gd`](../../godot/tests/test_physical_usables_desktop.gd): the standalone usable course and desktop physical-owner handoff |
+| Retained sampled compatibility | [`test_usables.gd`](../../godot/tests/test_usables.gd), [`test_usable_session.gd`](../../godot/tests/test_usable_session.gd), [`test_actor_usables_integration.gd`](../../godot/tests/test_actor_usables_integration.gd): the original catalogue, sampled command/session and sampled owner integration |
+
+Run any focused runner directly after a clean headless project import, for example:
+
+```sh
+godot --headless --path godot --editor --quit
+godot --headless --path godot --script res://tests/test_physical_usables_runtime.gd
+godot --headless --path godot --script res://tests/test_physical_usables_desktop.gd
+godot --headless --path godot --script res://examples/thunderbowl/run_physical_thunderbowl.gd -- --course=usables-v1 --rig=digger --actors=8 --ticks=600 --seed=0 --output=physical-usable-result.json
+```
+
+Set writable Godot user/config/cache directories on a restricted host and retain
+import failures separately from successful test execution. A process exit code
+alone is insufficient: reject script/native error output, require each runner's
+explicit completion marker, and bound execution time. The headless course result
+reports an authored scenario, not visual usability or target-machine performance.
+
+The [automatic Godot suite](../../tools/ci/run_godot_regressions.py) discovers all
+these `test_*.gd` files without a manual registry. It also retains the ACT-004
+capacity, articulation, actuation, session, initial-terrain, effects, arena and
+trial regressions. Native tests, ASan/UBSan and TSan establish separate native
+evidence; a disabled leak detector must be reported explicitly. The
+[ACT-005 audit](../audits/2026-10-19-act005-physical-usables.md) records tested
+source/runtime identities, local results, remaining limitations and exact-head
+hosted gates. Earlier ACT-004 or sampled USABLE-001 results do not certify this
+changed physical integration.
+
 ## Procedural generation candidates and workbench
 
 GEN-001/GEN-002 provide native-only comparison, field/modifier regressions and

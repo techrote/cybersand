@@ -2,10 +2,10 @@
 title: Articulated Rapier actors and shared physical control
 status: Current
 document-kind: contract
-scope: ACT-004 desktop physical roster, authored mechanics, local scripted control, shared input and usable lifecycle; sampled references and scientific material acceptance remain separate
+scope: ACT-004 articulated desktop roster with ACT-005 physical equipment, authored mechanics, local scripted control and leased input; sampled references and scientific material acceptance remain separate
 canonical-for: [physical-actor-rigs, physical-actor-control-v2, physical-actor-usables]
-last-reviewed: 2026-10-18
-related-documents: [actor-rigs.md, thunderbowl-control-reference.md, ../operations/physical-actor-programme.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/configuration-reference.md, ../reference/interfaces-and-message-contracts.md, ../operations/local-build-and-validation.md]
+last-reviewed: 2026-10-19
+related-documents: [actor-usables.md, actor-rigs.md, thunderbowl-control-reference.md, ../operations/physical-actor-programme.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/configuration-reference.md, ../reference/interfaces-and-message-contracts.md, ../operations/local-build-and-validation.md, ../audits/2026-10-19-act005-physical-usables.md]
 ---
 
 # Articulated Rapier actors and shared physical control
@@ -37,8 +37,10 @@ an actual rectangular collider with its own mass, offset and orientation. Filled
 polygons use that collider's dimensions and published transform. A part drawn
 as a leg, rotor pod, slider or held object is a live body, rather than a cosmetic
 articulation over a sampled hull. One through eight total parts are allowed;
-the supplied examples use two through seven. Held parts count against the same
-limit.
+the ACT-004 catalogue definitions use two through seven. ACT-005 reuses each
+existing held part or adds one permanent jointed equipment chassis during session
+preparation, still within eight parts. Held and released equipment keeps its
+coupling slot for the lifetime of the actor session.
 
 ## How do I select and control them?
 
@@ -53,7 +55,10 @@ hard-terrain colliders are installed, including when Play is requested early.
 
 Physical wire controls are WASD movement, mouse aim, brackets for effort, Q/E
 trim, Z/X reel, Space primary, Shift secondary and C auxiliary. M uses the tool,
-N releases a held item and U reattaches a nearby item. Exact ability meaning is
+N releases a held item and U requests nearby pickup. Left/right pointer buttons
+use equipment primary/alternate; its aim and power are independent of locomotion.
+F5 equipment selection changes a held chassis through the same admitted action.
+Exact ability meaning is
 displayed from the selected profile. These map to `tool`, `release_usable` and
 `attach_usable` in the shared API. These are bounded gameplay
 requests; no command writes a transform or assigns velocity as locomotion.
@@ -155,27 +160,68 @@ service. Exact envelope and step boundaries are linked from
 
 ## Which usable examples exist?
 
-Mount definitions include their owning part, local offset, aiming limits,
-clearance, recoil and cooldown. The catalogue includes mounted Sand depositors
-and cutters, Vector's off-centre recoiling launcher, and articulated held
-examples such as Rocketjumper's tube, the thin blades, Hammerhead and Heavylift's
-payload. Release disables the held connection while retaining the physical
-object; reattachment requires the runtime's bounded proximity checks.
+**Current experimental ACT-005 source:** the entire
+[U01-U32 catalogue](actor-usables.md) is selectable on physical equipment. Every
+rig has a defined default loadout in
+[`physical_usable_loadouts.gd`](../../godot/scripts/physical_usable_loadouts.gd).
+Each loadout names its usable, power, demonstration strategy and purpose; no
+existing physical actor is left with an unspecified equipment policy.
 
-Recoil is applied by the main-thread physical owner. The cellular owner alone
-consumes copied material-effect requests, validates epoch/sequence/source
-identity and traces clearance. Wall, foreign body masks, world bounds and
-noneditable cells remain protected. Ordinary deposition initially uses Sand.
-Rocketjumper's named charge pattern places a Fire centre and a Gunpowder ring
-only in permitted empty cells; its propulsion remains an explicitly bounded
-actor action. Actual changed-cell receipts are distinct from requested effects.
-The desktop's bounded effect queue admits an entire incoming batch or reports a
-refusal with copied capacity counters; a saturated queue cannot silently accept
-only the first few requests. Queue admission is distinct from actual cell edits.
+Mount definitions bind a specific host/held part, grip, joint, aiming limits and
+clearance. The equipment owner aims the actual configured joint when it supports
+aiming. The shot direction comes from the current held body's pose; a limited
+joint cannot acquire an unlimited virtual muzzle. The suspended payload, hammer
+and blade preserve their authored mechanical roles. A selection change retools
+the existing held chassis without allocating another body.
 
-This is a working mount/effect substrate with a few authored tools. The separate
-32-usable artwork request does not imply that 32 functional inventory items,
-ballistic projectile systems or arbitrary material processors are implemented.
+Release clears the held connection and retains the same object, pose, velocity
+and body ID. A short collision grace ages with physical time even after input
+cancellation. Pickup checks the owning grip's proximity and terrain clearance;
+it does not teleport the object or reset its velocity. An already held, remote,
+occluded or ambiguously owned item is refused. A released chassis must return
+before it can select another usable.
+
+Processors are deployed by dropping that real body, waiting for supported
+settling, and fixing it at its current pose. A worker receipt admits processing;
+blocked output leaves recipe inputs and stock unchanged. The body and its
+rotated intake/output ports remain visible while it works, jams or exhausts.
+Physical pickup retires processing authority. See the
+[processor contract](actor-usables.md#u23u32-fixed-functional-objects).
+
+The main-thread owner applies recoil once for the matching admitted use. Native
+material effects use copied physical source/part information under worker
+ownership. Protected cells, foreign part occupancy, bounds and source clearance
+remain checked. The physical command, worker admission and changed-cell receipt
+are separate results; a valid command does not guarantee an unobstructed effect.
+Late receipts are fenced by run, actor, control generation, equipment epoch and
+request identity. The older ACT-004 direct mount/effect fixtures retain their
+bounded deposit/cut/rocket-charge substrate for regression; it is not a second
+unleased policy API for the full catalogue.
+
+### How do the scripted actors use their loadouts?
+
+[`physical_usable_script.gd`](../../godot/scripts/physical_usable_script.gd)
+adds a copied-observation equipment policy to the existing movement controller.
+It waits for current readiness, aims at local material targets, spaces shots,
+uses flight/stability windows, and handles deployment/recovery through ordinary
+actions. Its diagnostics expose use attempts, deployment/pickup observations,
+refusals and the current phase. They do not stand in for actual result receipts.
+
+| Representative actors | Default equipment | Demonstration |
+|---|---|---|
+| Digger / Scrabbler | Rotary Borer | Near-contact excavation during route obstruction |
+| Crawler | Powder Vacuum | Selective local powder removal |
+| Ripper / Hammerhead | Borer Round / Sticky Delay Charge | Penetrating or delayed breaching |
+| Copter / Tricopter / Tiltrotor | Sticky Delay Charge / Timer Airburst / Oil Igniter | Downward payloads during a controlled flight pass |
+| Heavylift / Winchbug | Stone Grinder / Brine Splitter | Carry, lower, deploy, inspect and recover processor equipment |
+| Vector / Jolt | Timer Airburst / Ricochet Pellet | Vigorous motion with distinct firing and recovery intervals |
+| Gyrocrate / Magpie | Stone Grinder / Metal Reclaimer | Ground delivery and processor servicing |
+| Runner / Monowheel | Brick Stamper / Sand Scatter | Short deposition bursts along a moving route |
+
+These remain local demonstration policies. They cannot create recipe inputs,
+clear a jam by directly editing cells, refill charge/stock, or guarantee delivery
+in every enclosure. The usable course supplies observable material conditions
+for automation and human inspection; a global planner remains separate work.
 
 ## What has been qualified?
 
@@ -183,6 +229,9 @@ The [dated ACT-004 record](../audits/2026-10-18-act004-articulated-actors.md)
 separates structural/producer tests, real Rapier motion, native material tests,
 desktop integration and hosted checks. The physical arena has its own versioned
 scope in the [Thunderbowl reference](thunderbowl-control-reference.md#physical-thunderbowl-v2).
+The [ACT-005 checkpoint](../audits/2026-10-19-act005-physical-usables.md) separately
+records full-catalogue integration, lifecycle/controller tests and its acceptance
+status; ACT-004's earlier results do not certify changed equipment code.
 Headless fixture success is not owner feel acceptance or a Windows/browser play
 result. Generic granular behaviour remains with #83, reversible soliding with
 #12, and the Water successor programme retains its independent evidence gates.

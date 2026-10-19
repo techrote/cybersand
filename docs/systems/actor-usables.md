@@ -1,45 +1,57 @@
 ---
-title: Actor usables — initial 32-item catalogue
+title: Actor usables — 32-item catalogue and physical equipment
 status: Current
 document-kind: contract
-scope: Experimental equipment for the sampled actor-rig session: material tools, swept ballistic payloads, fixed processors, copied input/readback and desktop controls
+scope: Experimental U01-U32 catalogue, physical equipment and deployed processors; retained sampled equipment compatibility, copied control and native material authority
 canonical-for: [actor-usables-catalogue, actor-usable-behaviour, actor-usable-control]
-last-reviewed: 2026-10-18
-related-documents: [actor-rigs.md, actor-control-prototypes.md, materials-and-rule-kernels.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../reference/status-and-roadmap.md]
+last-reviewed: 2026-10-19
+related-documents: [physical-actor-rigs.md, actor-rigs.md, actor-control-prototypes.md, materials-and-rule-kernels.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../reference/status-and-roadmap.md, ../audits/2026-10-19-act005-physical-usables.md]
 ---
 
-# Actor usables — initial 32-item catalogue
+# Actor usables — 32-item catalogue and physical equipment
 
 ## Current scope
 
-USABLE-001 adds **32 actor usables** to the existing sampled actor-rig session:
-12 material deposition/destruction tools, 10 ballistic payloads and 10 fixed
-functional objects. Equipment is a separate input domain; it does not replace a
-rig's movement, aim, effort, trim, reel or actuator control.
+**Current experimental source, USABLE-002 / ACT-005 / #182:** the **32 usables**
+from USABLE-001 retain their identities and authored semantics: 12 material
+deposition/destruction tools, 10 ballistic payloads and 10 processors. Physical
+equipment uses the articulated actor session's command authority. Its aim and
+power can differ from locomotion aim and effort, so firing a nozzle does not
+silently retarget a thruster, rope or charged leap. The
+[dated ACT-005 checkpoint](../audits/2026-10-19-act005-physical-usables.md) owns
+implementation progress, actual validation and merge status.
 
 The executable catalogue is
 [`usable_catalog.gd`](../../godot/scripts/usable_catalog.gd), bounded gameplay is
-owned by [`usable_runtime.gd`](../../godot/scripts/usable_runtime.gd), and
-[`usable_session.gd`](../../godot/scripts/usable_session.gd) admits copied
-human/policy commands using actor identity, epoch, sequence, observed tick and
-short leases. The simulation worker remains the sole owner permitted to query or
-mutate the cellular World.
+owned by [`usable_runtime.gd`](../../godot/scripts/usable_runtime.gd). The physical
+owner in [`physical_usable_equipment.gd`](../../godot/scripts/physical_usable_equipment.gd)
+manages a real held part, joint aiming, lifecycle and recoil. The worker-owned
+[`physical_usable_runtime.gd`](../../godot/scripts/physical_usable_runtime.gd)
+reuses the authored effects while resolving source clearance and hits against
+actual part occupancy. The simulation worker alone queries or mutates its
+cellular World; policies receive copied observations.
 
-This first integration equips the sampled actor-rig session. ACT-004 now has its
-own bounded physical mount/recoil/held-tool examples for articulated Rapier actors,
-but those examples are a separate physical-actor substrate and are not yet a
-one-to-one mounting of this U01-U32 catalogue. Selecting a USABLE-001 item therefore
-does not grant a policy a Rapier RID or live body reference.
+The retained sampled actor route still uses
+[`usable_session.gd`](../../godot/scripts/usable_session.gd) and its separate
+epoch/sequence/lease stream. Its old axis-aligned actor hull and logical device
+placement are compatibility behavior; physical equipment does not borrow those
+spatial or ownership assumptions. Neither route exposes a Rapier RID or live body
+reference to a producer.
 
 ## Desktop controls
 
 Open **F5**, select the actor rig as usual, then choose equipment. **Equip only**
-changes the current human sampled actor without resetting the World.
+changes the current human actor through its admitted equipment action. A physical
+item can be changed only while its chassis is held; a dropped or deployed object
+must be recovered first. The same chassis and existing shared equipment charge
+remain in use when its selected usable changes.
 
 - pointer position supplies equipment aim;
 - left mouse is primary activation;
-- right mouse is a tool precision pulse, supported early payload activation, or
-  device retrieval;
+- right mouse is a tool precision pulse or supported early payload activation;
+- **N** drops the physical held item and **U** requests nearby pickup; processor
+  primary starts physical placement, while sampled processors retain right-click
+  logical retrieval;
 - equipment power is independent from movement effort;
 - tools repeat while held; projectiles and deployments consume a press edge;
 - choosing **None** returns the pointer to painting only after the owner publishes
@@ -49,7 +61,9 @@ While equipment is selected, ordinary world painting is suppressed. Focus loss,
 blocking UI, pause, reset or stale input cancels held equipment input. Already
 launched projectiles and deployed devices are owner state, not held input: they
 continue after release/cancellation, freeze while simulation is paused and clear
-on a fresh actor/World reset.
+on a fresh actor/World reset. Cancelled physical input retires pending requests
+and late receipts without teleporting a released body or erasing actor momentum.
+Changing equipment while a trigger is held requires release before rearming.
 
 ## U01–U12: material deposition and destruction tools
 
@@ -70,7 +84,9 @@ on a fresh actor/World reset.
 
 Right click gives a single tool pulse at 35% selected power. It does not reduce
 the fixed stamp/bead pattern itself. Direct edits refuse Wall/composed body
-occupancy and sampled actor hulls. Emitted materials subsequently follow native
+occupancy; the sampled route additionally protects its sampled actor hulls.
+Physical source and target checks use individual body IDs, including detached
+parts, rather than an aggregate actor rectangle. Emitted materials subsequently follow native
 interaction rules; usable code does not duplicate Acid, Fire, Water or growth
 chemistry.
 
@@ -96,19 +112,35 @@ pixel-material `Rocket`.
 | U22 `water_contact_charge` | Water Contact Charge | Contact arms the carrier; nearby Water or Brine triggers one Fire pulse. |
 
 A swept non-owner actor contact publishes a bounded hit receipt containing tick,
-owner, target, projectile and usable identity. USABLE-001 does **not** add health,
-damage numbers or a generic impulse/damage system.
+owner, target, projectile and usable identity. Physical hits also identify the
+target body part. Accepted physical use applies bounded recoil through the
+main-thread equipment owner. The catalogue does **not** add health, damage numbers
+or a general damage/impact impulse system.
 
 Fuse time is simulation time and still advances if the movement read budget is
 exhausted; position remains at the last verified point. Collision sweep examines
 the valid in-bounds segment before discarding an out-of-world endpoint.
 
+Early activation of an eligible committed U16/U17/U19 payload is independent of
+new-launch charge, cooldown, power and muzzle clearance. It still requires the
+current held equipment identity and an active command lease, and adds no launch
+recoil. A zero-power primary use is refused; processor placement rejects it
+before releasing the physical chassis.
+
 ## U23–U32: fixed functional objects
 
-Deployment requires an empty 5×5 workspace and a clear actor-to-device placement
-path. The device is a logical marker, not a Rapier body. Inputs use the two
-left-side ports `(-2,-1)` and `(-2,+1)`; outputs use the two right-side ports
-`(+2,-1)` and `(+2,+1)`.
+**Physical placement:** primary releases the existing equipment body. After
+supported low-speed settling, the owner fixes that same body at its current
+pose and submits a deployment request. Only worker admission enables processing.
+The copied object pose belongs to its actor, instance, equipment epoch and stable
+body ID. Dropping a chassis alone does not automatically start a processor.
+
+Physical ports follow the body's rotation and lie outside its collider. Their
+local x distance is `ceil(half_extents.x + 2)` on the intake/output sides, with
+local y offsets `-1` and `+1`; transformed locations round to cell coordinates.
+Body occupancy and material conditions are checked under cellular ownership.
+The retained sampled route instead requires an empty 5×5 workspace and uses
+logical ports `(-2,-1)`, `(-2,+1)`, `(+2,-1)`, `(+2,+1)`.
 
 | Ref / ID | Object | Recipe / response |
 |---|---|---|
@@ -130,12 +162,54 @@ consumed. A complete batch checks every required input, catalyst, output and
 owner-side work budget before consuming the recipe. Blocked output leaves inputs
 untouched.
 
-Right click retrieves the owner's oldest matching deployment. Retrieval does not
-refund charge and is not a claim that the actor physically picked up a Rapier body.
+Physical **U** pickup requires the owning mount to be close enough with a clear
+attachment path. It reuses the existing body and retires that deployment's active
+processing authority. A bounded per-actor/per-processor history retains stock,
+age, cycles and cooldown across pickup, redeployment and selection changes;
+recovering a used device cannot refill it. Exhausted or expired devices remain
+inert and visible until physical retirement. Remote right-click retrieval applies only to the sampled
+compatibility route. Neither path refunds spent charge. Physical jam/exhaustion
+readback and the released body's pose remain observable.
 
 ## Action and readback contract
 
-The worker-facing admission seam is:
+### Physical actions and copied feedback
+
+The physical version-2 `physical_wire_action` envelope carries an optional
+`equipment` dictionary. The enclosing run, actor epoch, producer, issued
+observation and lease remain authoritative; there is no second physical policy
+mailbox with weaker freshness checks.
+
+```gdscript
+var command = CyberPhysicalActorSession.make_command(view, sequence, {
+    "move": Vector2.RIGHT,
+    "equipment": {
+        "usable_index": view.equipment.usable_index,
+        "instance_id": view.equipment.instance_id,
+        "equipment_epoch": view.equipment.equipment_epoch,
+        "aim": Vector2(1, -0.2), "power": 0.7,
+        "trigger": true, "alternate": false, "drop": false, "attach": false
+    }
+}, 12)
+```
+
+Only the physical owner supplies source positions, mount/body IDs, material
+effect requests and lifecycle changes. The helper fills missing equipment
+identity from the copied view; raw external packets must carry it. The worker
+validates the copied physical frame and request together. One pending request
+per actor prevents repeated receipt consumption from applying recoil twice.
+Selection/lifecycle transitions advance equipment epochs; cancellation advances
+the actor control generation. Old observations cannot restore a retired state.
+
+Copied `observation.equipment` includes identity/usable, owning part and held-body
+pose, actual and requested aim, joint limits, clearance, release/pickup readiness,
+charge/cooldown, pending/result/refusal state, recoil and bounded processor or
+projectile readback. Exact fields and handoff timing belong to
+[physical equipment interfaces](../reference/interfaces-and-message-contracts.md#physical-equipment-actions-and-results).
+
+### Retained sampled actions
+
+The sampled worker-facing admission seam remains:
 
 ```gdscript
 submit_actor_usable_action(
@@ -198,9 +272,10 @@ the native compact state for that material; later phase/reaction behaviour remai
 owned by the material engine.
 
 CYSD1 saves do not resume committed equipment state. Learned inference, general
-inventory, item pickup physics, actor health/damage, programmable material-graph
-items, integration of the full U01-U32 catalogue with ACT-004 physical mounts, and
-target-PC feel acceptance remain outside this increment.
+inventory/economy, actor health/damage, programmable material-graph items,
+exact thermodynamics/chemistry and target-PC feel acceptance remain outside this
+increment. The physical chassis is a bounded equipment demonstration, not a
+general inventory or arbitrary object-transfer system.
 
 ## Validation
 
@@ -212,7 +287,9 @@ godot --headless --path godot -s res://tests/test_usable_session.gd
 godot --headless --path godot -s res://tests/test_actor_usables_integration.gd
 ```
 
-The current PR must also pass the existing actor-rig regressions and repository
+The [build guide](../operations/local-build-and-validation.md#physical-usable-validation)
+adds physical equipment, lifecycle, native effects/admission and usable-course
+fixtures. The current PR must also pass the existing actor-rig regressions and repository
 documentation/provenance gates before merge. The earlier pre-publication local
 USABLE-001 run was source-matched to the ACT-002-era tree and is retained only as
 historical development evidence; it is not exact-head acceptance for the current

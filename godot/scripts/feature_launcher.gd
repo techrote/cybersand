@@ -36,6 +36,7 @@ func _ready() -> void:
 	_button(column, "Materials sandbox / Experiment Tower — F9", "sandbox")
 	_button(column, "Thunderbowl — actor control arena", "thunderbowl")
 	_button(column, "Physical Thunderbowl — articulated actors, tools and scripted pilots", "physical_actors")
+	_button(column, "Physical usable course — 32 tools, payloads and processors", "physical_usables")
 	_button(column, "World generation workbench — terrain authoring preview", "worldgen")
 	_button(column, "Strata Theatre — layering and parallax depth lab", "depth")
 	_label(column, "BLACKSITE COMPARISONS / fresh reset for each arm", 22)
@@ -60,7 +61,7 @@ func _button(parent: Node, text: String, destination: String) -> void:
 func launch(destination: String) -> void:
 	var scene: String = "res://main.tscn"
 	if destination == "thunderbowl": scene = "res://examples/thunderbowl/thunderbowl.tscn"
-	elif destination == "physical_actors": scene = "res://examples/thunderbowl/physical_thunderbowl.tscn"
+	elif destination in ["physical_actors", "physical_usables"]: scene = "res://examples/thunderbowl/physical_thunderbowl.tscn"
 	elif destination == "worldgen": scene = "res://worldgen_workbench.tscn"
 	elif destination == "depth": scene = "res://depth_lab.tscn"
 	get_tree().set_meta("cybersand_feature", destination)

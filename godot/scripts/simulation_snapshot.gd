@@ -62,6 +62,7 @@ var current_rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 var rigid_body_epoch: int = 0 # Main-thread physical owner incarnation, or reference 0.
 var physical_actor_effects: Array = [] # Bounded copied native-owner receipts.
 var physical_actor_effect_admission: Dictionary = {} # Copied queue counts and last batch outcome.
+var physical_usables: Dictionary = {} # Worker-owned U01-U32 state and retained per-actor receipts.
 var character_runtime_recovery_enabled: bool = true
 var character_runtime_enclosed: bool = false
 var character_runtime_recovery_attempts: int = 0
