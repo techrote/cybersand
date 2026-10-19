@@ -6,6 +6,7 @@ import hashlib
 import io
 import json
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -24,15 +25,88 @@ def pointer(data: bytes) -> bytes:
 
 
 class SourceDriftTests(unittest.TestCase):
-    def test_line_ending_only_rewrite_is_not_drift(self):
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "icon.svg.import"
-            path.write_bytes(b'[remap]\r\n\r\nimporter="texture"\r\n')
-            before = subject.content_digest(path)
-            path.write_bytes(b'[remap]\n\nimporter="texture"\n')
-            self.assertEqual(before, subject.content_digest(path))
-            path.write_bytes(b'[remap]\n\nimporter="font"\n')
-            self.assertNotEqual(before, subject.content_digest(path))
+    IMPORT_DESCRIPTORS = (
+        "godot/addons/godot-rapier2d/Radial2D.svg.import",
+        "godot/addons/godot-rapier2d/icons/Fluid2D.svg.import",
+        "godot/addons/godot-rapier2d/icons/StateManager2D.svg.import",
+        "godot/addons/godot-rapier2d/logo_square_2d.png.import",
+    )
+
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.root = Path(self.directory.name)
+        subprocess.run(["git", "init", "--quiet", str(self.root)], check=True, capture_output=True)
+
+    def track_inputs(self, files: dict[str, bytes]) -> None:
+        for relative, data in files.items():
+            path = self.root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(data)
+        subprocess.run(["git", "-C", str(self.root), "add", "--", *files],
+                       check=True, capture_output=True)
+
+    def test_declared_import_line_endings_are_normalized(self):
+        original = b'[remap]\r\n\r\nimporter="texture"\r\n'
+        normalized = original.replace(b"\r\n", b"\n")
+        self.track_inputs({relative: original for relative in self.IMPORT_DESCRIPTORS})
+        before = subject.tested_inputs(self.root)
+        self.assertEqual(before, {relative: digest(normalized) for relative in self.IMPORT_DESCRIPTORS})
+        for relative in self.IMPORT_DESCRIPTORS:
+            (self.root / relative).write_bytes(normalized)
+        self.assertEqual(before, subject.tested_inputs(self.root))
+
+    def test_declared_import_content_changes_are_drift(self):
+        original = b'[remap]\r\n\r\nimporter="texture"\r\n'
+        self.track_inputs({relative: original for relative in self.IMPORT_DESCRIPTORS})
+        before = subject.tested_inputs(self.root)
+        for relative in self.IMPORT_DESCRIPTORS:
+            with self.subTest(path=relative):
+                path = self.root / relative
+                path.write_bytes(b'[remap]\n\nimporter="font"\n')
+                after = subject.tested_inputs(self.root)
+                self.assertEqual({name for name in before if before[name] != after[name]}, {relative})
+                path.write_bytes(original)
+
+    def test_binary_inputs_have_raw_hashes_and_detect_byte_changes(self):
+        files = {
+            subject.NATIVE: b"MZ\x00native\r\npayload",
+            subject.RAPIER: b"MZ\x00rapier\r\npayload",
+            "godot/addons/godot-rapier2d/logo_square_2d.png": b"\x89PNG\r\n\x1a\npayload",
+        }
+        self.track_inputs(files)
+        before = subject.tested_inputs(self.root)
+        for relative, original in files.items():
+            with self.subTest(path=relative):
+                self.assertEqual(before[relative], digest(original))
+                changed = original.replace(b"\r\n", b"\n")
+                path = self.root / relative
+                path.write_bytes(changed)
+                after = subject.tested_inputs(self.root)
+                self.assertEqual(after[relative], digest(changed))
+                self.assertEqual({name for name in before if before[name] != after[name]}, {relative})
+                path.write_bytes(original)
+
+    def test_other_tracked_text_is_byte_exact(self):
+        original = b"first line\r\nsecond line\r\n"
+        paths = (
+            "native/src/world.cpp",
+            "godot/scripts/world.gd",
+            "godot/addons/godot-rapier2d/unknown.svg.import",
+            "godot/addons/other/Radial2D.svg.import",
+        )
+        self.track_inputs({relative: original for relative in paths})
+        before = subject.tested_inputs(self.root)
+        for relative in paths:
+            with self.subTest(path=relative):
+                self.assertEqual(before[relative], digest(original))
+                path = self.root / relative
+                changed = original.replace(b"\r\n", b"\n")
+                path.write_bytes(changed)
+                after = subject.tested_inputs(self.root)
+                self.assertEqual(after[relative], digest(changed))
+                self.assertEqual({name for name in before if before[name] != after[name]}, {relative})
+                path.write_bytes(original)
 
 
 class RetainedRuntimeTests(unittest.TestCase):

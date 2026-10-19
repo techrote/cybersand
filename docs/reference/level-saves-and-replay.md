@@ -41,9 +41,10 @@ and [CyberDemoBridge](../../godot/native_extension/cyber_demo_bridge.hpp).
 | Body records | At most three Physics Pit bodies: position, angle, linear/angular velocity, sleeping flag |
 | Local slot | `user://web_demo_slot_1.cys`; browser storage is origin/profile dependent |
 
-The authoritative hot cell remains four bytes. Save bytes intentionally exclude
-its update epoch and add temperature from the optional field; the five-byte
-save layout is not the in-memory `Cell` ABI.
+The five save bytes encode logical material/state values and temperature from the
+optional field; they exclude the update epoch. Current authoritative cells use
+the [eight-byte storage carrier](../architecture/chunk-tile-and-buffer-model.md#what-is-stored-per-cell-and-per-chunk).
+CYSD1's five-byte save layout is separate from the in-memory `Cell` ABI.
 
 ## May saving run concurrently with a tick?
 

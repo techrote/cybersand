@@ -123,6 +123,12 @@ Windows cross-builds use `build_pinned_godot_cpp.sh windows` and
 with `LLVM_MINGW_ROOT`/`WINDOWS_CXX`. PE/import inspection alone cannot prove a
 Windows runtime launch.
 
+The GitHub-hosted Native job has a 45-minute overall allowance. Its individual
+build, test and benchmark commands retain their separate deadlines; increasing
+the job allowance does not skip cases or relax sanitizer failures. The
+[MAT-002 completion audit](../audits/2026-10-19-mat002-review-and-validation.md#completion-resumed--2258-utc)
+records the observed 35-minute cancellation and preceding successful durations.
+
 ## Linux GDExtension CI sharding
 
 **Current:** the [GDExtension workflow](../../.github/workflows/gdextension.yml)
@@ -193,9 +199,12 @@ The job retains `windows-execution.json`, source/runtime/tool identities,
 commands, individual logs and their SHA-256 hashes under the
 `windows-godot-headless-<run-id>` artifact even when execution fails. The report
 records incomplete import, failed cases, source drift and final completion
-explicitly. Drift compares tracked inputs with CRLF normalized to LF, because the hosted
-`core.autocrlf` checkout and Godot's re-save of committed `.import` metadata
-differ only in line endings; any content change still fails the job. The execution step is bounded to 40 minutes within a 45-minute job.
+explicitly. Only the four declared Rapier texture `.import` descriptors normalize
+CRLF to LF for content comparison: the hosted checkout and Godot's re-save can
+differ in newline representation. Changes to descriptor content still fail.
+All other tracked inputs use raw SHA-256, including DLLs, images and source, so
+binary byte changes cannot be hidden by text normalization. The execution step
+is bounded to 40 minutes within a 45-minute job.
 Use the dated audit and exact workflow run to establish actual platform results;
 this lane does not establish Windows rendered-output or browser acceptance.
 

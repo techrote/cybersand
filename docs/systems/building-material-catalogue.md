@@ -29,8 +29,10 @@ owned by the [themed construction catalogue](themed-construction-materials.md).
 
 ## Catalogue
 
-"Reactions" lists the partner, the stored probability out of 255 per contact
-opportunity, then the partner's product followed by this material's product.
+"Reactions" lists the partner, the stored inclusive probability threshold in
+0–255, then the partner's product followed by this material's product. The
+resolver accepts `roll <= threshold`; for a uniform byte roll, the selection
+probability per eligible contact opportunity is `(threshold + 1) / 256`.
 Contacts use the four-tick chemistry lane and MAT-001 persistence described in the
 [material contract](materials-and-rule-kernels.md#how-do-persistent-reactions-survive-sleep).
 

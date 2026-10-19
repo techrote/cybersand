@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [material-runtime-model, material-kernel-cadence, reactive-material-families]
 status: Current
 scope: Native material identity, descriptors, mutable state, kernel execution, current interactions, and extension boundaries
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-19
 related-documents: [themed-construction-materials.md, material-appearance-and-rendering.md, water-design.md, smoke-heat-pressure-roadmap.md, ../research/sandspiel-performance-and-material-port.md]
 ---
 
@@ -33,9 +33,12 @@ permission, lateral-flow mode, viscosity, kernel, initial compact state, palette
 and maximum write radius. Numeric density and movability do not by themselves
 permit exchange. Descriptor values are fixed during a tick.
 
-World owns the four-byte Cell: material, `state_a`, `state_b`, update epoch.
-The two generic bytes hold material-specific mass, lifetime, burn/growth,
-capture, heading, or projectile state. Stone `state_b` distinguishes
+World stores material identity, `state_a`, `state_b` and update epoch in an
+eight-byte `detail::PrecisionStorage` carrier. The
+[storage contract](../architecture/chunk-tile-and-buffer-model.md#what-is-stored-per-cell-and-per-chunk)
+owns its source-qualified size and alignment. The two state fields hold
+material-specific mass, lifetime, burn/growth, capture, heading, or projectile
+state. Stone `state_b` distinguishes
 brace-aware Stone from explosion-created granular falling Stone. Temperature
 is a separate optional field; [its current uses](smoke-heat-pressure-roadmap.md)
 do not constitute a heat solver.

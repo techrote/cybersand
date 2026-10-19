@@ -31,6 +31,12 @@ INPUT_SCOPES = (
     "tools/ci/run_windows_godot_regressions.py", ".github/workflows/gdextension.yml",
     "third_party/godot-runtime.lock.json", "third_party/native-toolchain.lock.json",
 )
+RAPIER_IMPORT_DESCRIPTORS = frozenset({
+    "godot/addons/godot-rapier2d/Radial2D.svg.import",
+    "godot/addons/godot-rapier2d/icons/Fluid2D.svg.import",
+    "godot/addons/godot-rapier2d/icons/StateManager2D.svg.import",
+    "godot/addons/godot-rapier2d/logo_square_2d.png.import",
+})
 
 
 def git(root: Path, *arguments: str) -> bytes:
@@ -116,18 +122,20 @@ def prepare_godot(archive: Path) -> tuple[Path, dict]:
     }
 
 
-def content_digest(path: Path) -> str:
-    # Hosted Windows checkouts use core.autocrlf, and Godot's import re-saves
-    # some committed .import metadata with LF endings. Compare content the way
-    # the repository stores it, so a line-ending-only rewrite is not drift.
-    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+def content_digest(root: Path, relative: str) -> str:
+    data = (root / relative).read_bytes()
+    # Godot re-saves these text descriptors with LF after a CRLF Windows
+    # checkout. Every other input, including DLLs and images, stays byte-exact.
+    if relative in RAPIER_IMPORT_DESCRIPTORS:
+        data = data.replace(b"\r\n", b"\n")
+    return hashlib.sha256(data).hexdigest()
 
 
 def tested_inputs(root: Path) -> dict[str, str]:
     paths = git(root, "ls-files", "-z", "--", *INPUT_SCOPES).decode("utf-8").split("\0")
     # Import may regenerate the portable bootstrap cache; it is not source.
     return {
-        relative: content_digest(root / relative)
+        relative: content_digest(root, relative)
         for relative in sorted(paths)
         if relative and not relative.startswith("godot/.godot/")
     }

@@ -381,6 +381,140 @@ files. The publisher and subsequent GitHub Actions artifacts provide the retaine
 remote execution evidence. The resumed run restores repository source and pinned
 runtimes directly from Git and LFS.
 
+## Windows descriptor line endings and byte-exact evidence — 20:22 UTC
+
+The first permanent Windows job
+[`118273306125`](https://github.com/techrote/cybersand/actions/runs/39314781025/job/118273306125)
+at head `908ce2b` executed import plus **97/97 cases** successfully in
+**867.875 seconds**. All 98 individual records passed, but the aggregate gate
+failed its final drift check. The four changed paths were Rapier's
+`Radial2D.svg.import`, `icons/Fluid2D.svg.import`,
+`icons/StateManager2D.svg.import` and `logo_square_2d.png.import`. Those descriptors
+had CRLF checkout bytes and Godot re-saved them as LF text. The failure remains a
+failed gate; successful individual cases do not erase its identity failure.
+
+Artifact `12217529791` retains the failed report and all 98 logs. Its ZIP SHA-256
+is `82915c9f422ca3ba0b58fac2d42a3c69cfdbf0b5576d8998bc979180f39cd8d3`;
+the contained `windows-execution.json` SHA-256 is
+`66b15da8ff690185399d0afe5de6c801ff9894592bd96962f361dca4deb7f9ae`.
+It identifies Windows Server 2022, Python 3.12.10, pinned Godot 4.7, retained DLL
+`aa388270...` and test-merge tree `090ec922f6b6d97ce186c0de3ce26664759d0c26`.
+All four Linux shards and their aggregate gate passed in the same workflow.
+
+Another session's follow-up
+[`16eece8`](https://github.com/techrote/cybersand/commit/16eece87cab95bdad079acb77696d4d3c438e7dd)
+added newline normalization and a descriptor-content regression. Its initial
+implementation normalized every tracked input, including binary files. Review
+reproduced a missed byte change in an MZ/NUL binary when CRLF became LF. The actual
+retained CyberSand DLL contains 25 CRLF byte pairs; normalization reported
+`7a5eaf3f1170c4977b0e8702e8e471a851a5ebec1cfd37444b89f4c14b701a81`
+instead of its actual `aa388270...` SHA-256. Rapier and PNG hashes were also
+changed. This was an evidence and binary-drift defect, independent of the
+successfully executed Godot cases.
+
+The correction preserves the descriptor newline fix while limiting it to the
+four declared Rapier import-descriptor text files. Other tracked inputs retain
+raw SHA-256, including DLLs, image assets and source files. Descriptor content
+changes still fail, and binary-byte changes remain visible even when they look
+like newline conversions. The focused regression covers the actual input-map
+boundary and both accepted descriptor rewrites and rejected content/binary
+changes. Per-case deadlines, coverage and failure/skip rules are unchanged.
+The next exact-head Windows execution must complete before final acceptance;
+its outcome is recorded in the PR delivery section.
+
+At 20:33 UTC, independent inspection of all six execution/runtime archives from
+the intervening `16eece8` GDExtension run
+[`39317576111`](https://github.com/techrote/cybersand/actions/runs/39317576111)
+confirmed successful execution of 103 Linux and 97 Windows cases and all 205
+individual log hashes. Its workflow is green, but the Windows tested-input map
+has exactly three incorrect binary digests: the two DLLs and Rapier's logo PNG.
+The separately recorded raw runtime identities are correct. This evidence
+confirms the normalization defect; it is not accepted as a fully verified final
+run. That session recorded verification report SHA-256
+`96181d94f95020d6516fb1383e3a4cecb9f4500c87d7cdcfb18cf7ff221692ed`.
+The byte-identical original report was not recovered on the final resumption;
+this digest is retained as historical metadata, not an assertion about the later
+verification report at the same local path.
+
+The new real-Git input-map regressions first ran against the unchanged `16eece8`
+helper and failed seven subcases: three binary files and four unrelated text
+paths. Both descriptor controls passed. With the narrow correction, all
+**15 Windows-helper tests passed in 0.716 seconds**, and an independent reviewer
+confirmed the path set, call sites and Windows portability. The **15 shared-runner
+tests also passed**, in 1.386 seconds. The corrected helper SHA-256 is
+`6e66c243e2fc8fd60f2c721f80eb868a21e05b212fddeb1753072b20d98cf1f0`;
+its regression-file SHA-256 is
+`91773e3598b99247c73742d9b269e8d9f1044f1907cac9f743168f5f441d218a`.
+Materialized-runtime, documentation, M11, provider-policy, LFS and whitespace
+checks passed. Retrieval remains 32/32 frozen and 77/77 supplementary canonical
+top-five hits, with 21/59 top-one hits and MRR 0.8031/0.8652 respectively; the
+updated descriptor/binary fact was separately reviewed against source.
+
+## Completion resumed — 22:58 UTC
+
+The owner requested completion of PR #179. The public branch still points to
+`16eece8`; the five-file descriptor/binary correction above was recovered from
+the interrupted checkout without changing its implementation. The earlier
+checkout and its staged work are preserved separately. The resumed local
+Windows-helper and shared-runner commands each pass **15/15 tests** (0.509 and
+0.689 seconds respectively). A separate reviewer reproduced all seven failing
+subcases with the unchanged helper, then passed the corrected helper with Git
+`core.autocrlf=false`, `true` and `input`.
+
+Independent reinspection verified all six retained GDExtension archive digests
+against GitHub metadata, all extracted files against their ZIP members and all
+205 execution log hashes. The Linux 103-case inventory and Windows 97-case
+inventory match the immutable tested source exactly. The later retained
+verification report SHA-256 is
+`df0f25b25a9c9a8e5ebe0be4fb3c027e414421a3af5ea9f4095522ceefbf4843`.
+These checks preserve the earlier execution evidence while keeping the known
+binary-input-map defect explicit.
+
+The recreated checkout initially lacked the five companion-workspace reference
+files required by documentation validation. Restoring those exact files from
+the workflow's pinned `6a58311982941b75f46e22109a0829e5acb83c7e` commit
+resolved all six missing-reference diagnostics. Documentation, current runtime
+provenance for all 18 materialized LFS files, historical M11 integrity, CI-provider
+policy, LFS integrity and whitespace then passed. Frozen and supplementary
+retrieval retain their 32/32 and 77/77 canonical top-five results.
+
+Live reconciliation also records the prior Native run
+[`39317576052`](https://github.com/techrote/cybersand/actions/runs/39317576052)
+as **cancelled**, after its ordinary native, CLI, ASan/UBSan and TSan steps passed.
+That partial result is not a completed Native gate. The correction therefore
+requires a new identified source checkpoint and completion of Documentation,
+Native, GDExtension/Godot (including actual Windows execution) and Water gates.
+Final artifact verification must compare binary input hashes with raw bytes,
+check all expected case records and their log hashes, and confirm source identity.
+The PR delivery record owns the resulting run IDs, outcomes and integration
+disposition, so recording the results does not invalidate the tested source.
+
+The cancelled Native job ran for **35 minutes 8 seconds**, at its 35-minute job
+limit. Comparison with successful runs
+[`39219447245`](https://github.com/techrote/cybersand/actions/runs/39219447245)
+and [`39314781247`](https://github.com/techrote/cybersand/actions/runs/39314781247)
+records **28 minutes 8 seconds** and **34 minutes 8 seconds** respectively.
+The relevant native inputs and workflow are identical between these runs; the
+CLI plus evidence upload occupies 45–55 seconds. Most variability comes from the
+sanitized settled-regions build and soliding regressions. The final shared-library
+and benchmark step began at 34 minutes 40 seconds in the cancelled run; complete
+benchmark output was printed before cancellation. These observations support a
+job-budget correction rather than a source or benchmark-performance change.
+The Native job allowance is raised to **45 minutes**, preserving every test,
+per-command timeout and sanitizer setting.
+
+Final source review also corrects narrow Current documentation claims: the
+frozen interaction oracle covers original IDs 0–80 with twelve rolls, while the
+new building rules have their separate full-byte probability tests; old-to-old
+pair rules are preserved, but old materials can participate in new building
+pairs. Current World uses the eight-byte experimental storage carrier; CYSD1's
+five-byte serialized record remains a separate format contract.
+The catalogue also distinguishes stored inclusive probability thresholds from
+probability fractions. Frozen question Q30 keeps its original ID and wording;
+its expected fact is corrected to separate dated current Linux execution from
+historical and Windows evidence, with the correction disclosed in fixture
+metadata. This is not a retrieval-ranking improvement claim.
+
 ## Repository checks and final delivery record
 
 The separately saved
@@ -422,7 +556,8 @@ new untested source commit merely to record the prior commit's results. The same
 record identifies the complete published-Linux execution and final retrieval
 evaluation. This audit's dated local and publication evidence remains scoped to
 the immutable source and artifact identities above. Draft-skipped workflows are
-never counted as completed implementation tests. The PR is left open for review.
+never counted as completed implementation tests. Final review and integration
+disposition are recorded on that PR after its applicable gates complete.
 
 ## Preserved failures and scope limits
 

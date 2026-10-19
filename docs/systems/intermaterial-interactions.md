@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Versioned sparse authoring, resolution, provenance, coverage and migration contract for non-kinetic intermaterial semantics
 canonical-for: [intermaterial-interactions, interaction-schema, interaction-provenance, interaction-coverage]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-19
 related-documents: [../operations/microscenarios-programme.md, materials-and-rule-kernels.md, ../operations/microscenario-reference-pack.md, ../reference/status-and-roadmap.md]
 ---
 
@@ -99,14 +99,16 @@ tuning decision with fixtures/evidence.
 
 ## Compact pair migration
 
-The frozen Current oracle contains 14 sparse compact reactions. Stable rule IDs,
-products and probabilities are defined by kPairInteractionRules.
+The retained INT-000 oracle contains 14 sparse compact reactions over IDs 0–80.
+The corresponding prefix of `kPairInteractionRules` preserves their stable rule
+IDs, products and probabilities.
 
-Migration is behavior-preserving. Native regression compares the sparse shadow
-resolver against the pre-migration MaterialRules::pair_reaction oracle across all
-material IDs, both orientations and probability-boundary samples before authority
-is switched. After a bounded switch, the public MaterialRules API remains available
-to World but delegates to the versioned resolver.
+The original migration preserved behavior. The retained native regression compares
+the versioned resolver and public `MaterialRules::pair_reaction` API against a
+literal pre-migration oracle over every pair of IDs 0–80, both orientations and
+twelve probability-boundary samples. MAT-002's additional rules are checked
+separately in both orientations across all 256 roll values. The public
+MaterialRules API remains available to World and delegates to the versioned resolver.
 
 The four-tick contact cadence, neighbour order/random salts, Water-state
 initialization, worker ownership and writes remain World-owned; the resolver
@@ -126,9 +128,9 @@ role-preserving unordered pair rules after the 14 oracle rules
 (`kCurrentOraclePairRuleCount`). Every rule involves at least one building
 material (IDs 81+), and every partner (Fire, Lava, Water, Brine, Acid, Spark,
 Steam, Salt, Molten Glass) was already an oracle pair participant. Therefore no
-pre-existing material gains or loses a pair rule and every oracle pair keeps its
-frozen Current result; the native shadow test still compares the oracle exactly
-over IDs 0–80.
+pre-existing material gains or loses its pair-participant flag. Rules pairing
+those materials with new building materials are additive; every pair restricted
+to IDs 0–80 keeps its frozen oracle result.
 
 The pass covers thermal phase (kiln firing, glass and wax melting, snow melt and
 quench), dissolution/corrosion (salt, gypsum, adobe, chalk, sugar glass, zinc,

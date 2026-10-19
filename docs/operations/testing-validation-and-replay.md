@@ -168,11 +168,14 @@ required. No trace here upgrades CYSD1 into full deterministic replay.
 
 **Current:** `native/tests/test_world.cpp` retains a literal frozen copy of the
 pre-migration 14-rule compact pair oracle and compares it against the versioned
-resolver across all material IDs, both orientations and probability boundaries.
-The same regression checks layer precedence/conflict handling, explicit semantic
-family non-inheritance, and ordered/symmetric/unordered-role-preserving match
-semantics. Specialized neighbourhood/lifecycle mechanisms remain in their existing
-`world.cpp` kernels and are represented/provenance-visible rather than duplicated.
+resolver over every pair of IDs 0–80, both orientations and twelve
+probability-boundary samples. Separate MAT-002 checks cover each new rule in both
+roles across all 256 roll values and the derived partner prefilter across the
+full 256×256 byte-ID domain. The same regression checks layer precedence/conflict
+handling, explicit semantic family non-inheritance, and matching that is ordered,
+symmetric or unordered with role-preserving effects. Specialized neighbourhood/
+lifecycle mechanisms remain in their existing `world.cpp` kernels and are
+represented/provenance-visible rather than duplicated.
 
 `test_microscenarios.gd` validates the native interaction profile/workbench
 provenance, rolling kinetic/contact baseline identity, deterministic repeat and
