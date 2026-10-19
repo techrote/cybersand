@@ -7,6 +7,7 @@ const Tower = preload("res://scripts/experiment_tower.gd")
 const ReferencePack = preload("res://scripts/microscenario_reference_pack.gd")
 const Showcase = preload("res://scripts/showcase_tiles.gd")
 const BlacksiteNine = preload("res://scripts/blacksite_nine.gd")
+const GreyArea51 = preload("res://scripts/grey_area_51.gd")
 const PhysicalTrial = preload("res://scripts/physical_actor_trial.gd")
 
 static func ids() -> Array[String]:
@@ -17,6 +18,7 @@ static func ids() -> Array[String]:
 	result.append_array(ReferencePack.ids())
 	result.append_array(Showcase.scenario_ids())
 	result.append(BlacksiteNine.SCENARIO_ID)
+	result.append(GreyArea51.SCENARIO_ID)
 	for arm: String in PhysicalTrial.ARMS: result.append(PhysicalTrial.PREFIX + arm)
 	return result
 
@@ -58,7 +60,7 @@ static func exploratory_actor_map(definition: Dictionary) -> bool:
 	var id: String = str(definition.get("id", ""))
 	return (definition.get("maturity", "") == "exploratory"
 		and definition.get("execution", {}).get("policy", "") == "owner"
-		and (id == BlacksiteNine.SCENARIO_ID or Showcase.contains(id) or PhysicalTrial.contains(id)))
+		and (id in [BlacksiteNine.SCENARIO_ID,GreyArea51.SCENARIO_ID] or Showcase.contains(id) or PhysicalTrial.contains(id)))
 
 static func player_configuration(scenario_id: String) -> Dictionary:
 	if PhysicalTrial.contains(scenario_id): return PhysicalTrial.configuration(scenario_id)
@@ -67,6 +69,7 @@ static func player_configuration(scenario_id: String) -> Dictionary:
 
 static func definition(scenario_id: String, seed: int = 0) -> Dictionary:
 	if PhysicalTrial.contains(scenario_id): return PhysicalTrial.definition(scenario_id, seed)
+	if scenario_id == GreyArea51.SCENARIO_ID: return GreyArea51.definition(seed)
 	if scenario_id == BlacksiteNine.SCENARIO_ID:
 		return BlacksiteNine.definition(seed)
 	if Showcase.contains(scenario_id):

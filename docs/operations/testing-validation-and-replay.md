@@ -4,8 +4,8 @@ status: Current
 document-kind: guide
 scope: Executable test selection and future gates; dated results and save format live in separate references
 canonical-for: [test-inventory, test-selection, future-validation-gates]
-last-reviewed: 2026-09-19
-related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md, ../reference/level-saves-and-replay.md]
+last-reviewed: 2026-10-19
+related-documents: [local-build-and-validation.md, grey-area-51-demo.md, ../reference/validation-evidence.md, ../reference/level-saves-and-replay.md]
 ---
 
 # Testing, validation, and replay
@@ -26,6 +26,7 @@ Counts identify this inspected source inventory, not a pass for a later revision
 | Explosion or optional fields | Native bounded event validation/queue/hash/parity, static-to-granular conversion and temperature allocation/movement |
 | Immutable publication | Native slot capacity, dirty retention, deterministic patch order, lease concurrency/C lifetime; Godot native bridge and render-handoff fixtures |
 | Presentation/material catalogue | Godot appearance LUT and presentation runners: catalogue rows, representative flair, HDR values, viewport/F3 behavior |
+| Connected authored scenes, camera maps and scene-only grading | Native recipe/route runner, accepted desktop/Web-controller lifecycle and rendered-pixel continuity; see [connected-scene validation](#connected-authored-scene-validation) |
 | Fallback cells/player | `test_cell_world.gd` has nine groups including Smoke, Water, body mask/sweep and vertical scan continuity; these are one runner |
 | Rapier or coupling | Preflight, automatic drop-in, manual-step and `test_web_rapier.gd`; see [Rapier procedure](rapier-2d-migration-runbook.md) |
 | Save, Web worker selection or benchmark | Demo-save, setup, Web worker parity, Auto and worker-benchmark runners; actual Web export must additionally execute in browser |
@@ -35,6 +36,32 @@ inventory. No test name promises all combinations of materials, geometry or
 platforms. Run the smallest relevant fixture while iterating, then the applicable
 suite for the checkpoint. A source-backed correction may need a focused diagnostic
 when an existing regression does not exercise the suspected path.
+
+## Connected authored scene validation
+
+The [Grey Area 51 guide](grey-area-51-demo.md) owns the five-tile recipe and
+controls. Its focused source inventory separates three validation questions:
+
+| Runner | Scope |
+|---|---|
+| [`test_grey_area_51.gd`](../../godot/tests/test_grey_area_51.gd) | Native definition/schema identity, bounded rectangles, actual solid/Concrete proportions, shared passage geometry, reset and connected traversal |
+| [`test_grey_area_51_integration.gd`](../../godot/tests/test_grey_area_51_integration.gd) | Desktop owner acknowledgement and synchronous Web-controller admission, camera-only views, reset, popup/input release, shared Blacksite/Grey lifecycle and ordinary-demo restoration |
+| [`test_grey_area_51_render.gd`](../../godot/tests/test_grey_area_51_render.gd) | Actual rendered pixels across shared boundaries and absolute-world presentation; requires a rendering display |
+| [`test_showcase_actor_map_input.gd`](../../godot/tests/test_showcase_actor_map_input.gd) | Real desktop F5 actor installation, production input admission and held-key release across Grey/Blacksite; requires a rendering display |
+
+Run these with the pinned Godot runtime and source-matched native adapter as
+described in the [build guide](local-build-and-validation.md). The
+[capture helper](../../godot/tools/capture_grey_area_51.gd) records the production
+desktop overview and exact tile crops; its artifact identities remain separate
+from native state and controller results. Changes to the shared presenter also
+need the existing Blacksite and showcase regressions for the affected lifecycle.
+
+These are test-selection routes, not recorded passes. The
+[dated Grey Area 51 audit](../audits/2026-10-19-grey-area-51.md) owns actual
+commands, assertions, runtime/source hashes and platform outcomes. Headless
+execution of the Web controller does not execute a browser export. A route
+fixture with one sampled actor does not establish every physical rig's fit or
+broader granular/Water acceptance.
 
 ## CI execution sharding
 

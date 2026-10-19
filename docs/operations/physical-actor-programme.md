@@ -5,7 +5,7 @@ document-kind: design
 scope: Owner-authorized ACT-004 integration, retained Blacksite hull comparison and preserved 2026-10-18 actor preferences; not broad physics acceptance
 canonical-for: [physical-actor-programme, combined-feature-launcher, physical-blacksite-comparison]
 last-reviewed: 2026-10-19
-related-documents: [blacksite-nine-demo.md, ../systems/actor-rigs.md, ../systems/thunderbowl-control-reference.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/product-intent-and-priorities.md]
+related-documents: [blacksite-nine-demo.md, grey-area-51-demo.md, ../systems/actor-rigs.md, ../systems/thunderbowl-control-reference.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/product-intent-and-priorities.md]
 ---
 
 # Physical actors and combined feature trials
@@ -39,8 +39,9 @@ remaining limits are in the [ACT-004 record](../audits/2026-10-18-act004-articul
 ## How do I switch actors without leaving an exploratory map?
 
 **Current desktop implementation:** F5 is available in the ordinary sandbox,
-Blacksite Nine and all four showcase districts (Neon Reliquary, Middle Cyberberbia,
-Sewertech Alley and Industrial Underswamp). F5 lists all 41 **Rapier** rigs, plus
+Blacksite Nine, [Grey Area 51](grey-area-51-demo.md) and all four showcase districts
+(Neon Reliquary, Middle Cyberberbia, Sewertech Alley and Industrial Underswamp).
+F5 lists all 41 **Rapier** rigs, plus
 the **Sampled** baseline/rig references and original barrel/Ripper hull trials.
 Keyboard, scripted-demo and external-policy producers use the same physical
 session and action vocabulary. Applying restores the
@@ -72,10 +73,13 @@ scenario-install handling and `actor_prototype_panel.gd` physics labels.
 
 **Current implementation:** the desktop project's default scene is
 [`feature_launcher.tscn`](../../godot/feature_launcher.tscn). It opens Blacksite
-Nine, the four showcase districts, the ordinary actor/material sandbox,
+Nine, Grey Area 51, the four showcase districts, the ordinary actor/material sandbox,
 sampled or physical Thunderbowl, the separate generation workbench or Strata Theatre. F2 closes the current session
 and returns to the launcher; unsaved edits are discarded. Explicit `main.tscn`,
-`-- --blacksite-nine` and `-- --showcase` entry points remain available.
+`-- --blacksite-nine` and `-- --showcase` entry points remain available;
+`-- --grey-area-51` directly opens the five-tile concrete bunker. Its Ctrl+F11
+entry, connected route and camera/reset semantics belong to the
+[Grey Area 51 guide](grey-area-51-demo.md).
 The native generation workbench remains an isolated authoring preview, without
 live material simulation or attachment to the sandbox's World.
 

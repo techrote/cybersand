@@ -27,6 +27,17 @@ source/provenance identity, current GDScript execution, hosted exact-head checks
 and Windows interactive execution are distinct evidence. Continue the owner's
 30-minute repository progress checkpoints during this implementation task.
 
+## Grey Area 51 scene checkpoint — 2026-10-19
+
+[Grey Area 51](grey-area-51-demo.md) adds a connected five-tile concrete bunker
+through the existing MicroScenario host and exploratory actor path. The feature
+launcher, Ctrl+F11 and `-- --grey-area-51` open one 960 × 192 native slab; its
+5×1 camera map and 320 × 192 follow view retain scene state, and R restores the
+whole bunker. One presenter owns both Blacksite and Grey map/minimum-size/modal
+lifecycle. Native semantics and capacities are unchanged. Use the
+[dated scene audit](../audits/2026-10-19-grey-area-51.md) for source, recipe and
+platform evidence; the ACT-005 equipment checkpoint above retains its own gates.
+
 ## Exploratory actor picker follow-up — 2026-10-18
 
 F5 now connects the sandbox, Blacksite and four showcase maps to explicit Sampled

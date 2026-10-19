@@ -1,0 +1,2760 @@
+{
+  "schema_version": 1,
+  "kind": "Grey Area 51 scene validation and publication evidence",
+  "recorded_utc": "2026-10-19T20:47:23.875432+00:00",
+  "status": "published-draft; local-scene-validation-and-captures-passed; retrieval-answer-coverage-qualified",
+  "source": {
+    "repository": "techrote/cybersand",
+    "branch": "scene/grey-area-51",
+    "base_commit": "02f9c890dc4faf0bf132a95acbc13a4d9cdc002f",
+    "local_implementation_commit": "d9b19dbf4895588fe19abee6520d3864ce307829",
+    "local_implementation_tree": "0ea8a5dfbd914b8026c4a53ff05469e92cb86275",
+    "implementation_sha256": {
+      "godot/.godot/global_script_class_cache.cfg": "c51ff3f0fd8473fd879e4b91a33a558d12c13400b9b25d14a2e063b87aa330f8",
+      "godot/scripts/blacksite_nine_presentation.gd": "868845498348f1d85a0f6e496d3e45c05322747d434054c3b5d2405542bbc426",
+      "godot/scripts/demo_worlds.gd": "54fd57eeabb1a9af233b1fa91d338a2800bf0f19073c655466eb41a870409a5b",
+      "godot/scripts/feature_launcher.gd": "e02190bcacfbf3379be98baa2d5997034025472206e730973d960d0a1b7b5ff9",
+      "godot/scripts/grey_area_51.gd": "f6ebd071092e1222d3ec78ed99f1f53f57b04e9646c2716f663560a8a1fb753b",
+      "godot/scripts/grey_area_51_art.gd": "07c2ecf7136041b2834371ac38f121920db94d7e41ed122973080f2f37b41a65",
+      "godot/scripts/grey_area_51_east.gd": "af10fad3cab1e613214e5488682275504d91ff0ca5c61f99b33951f01a17b72a",
+      "godot/scripts/grey_area_51_layout.gd": "29c3779073c078e36fad93540d906b02baa65d7d7fa5062dc1d7d930f4223153",
+      "godot/scripts/grey_area_51_west.gd": "736d47bb3aa3cbb567315cbe3bdde420eebc6fa7ff4fdce6477fcba44662ac6d",
+      "godot/scripts/main.gd": "b686213652f814519f4d5d659b51e21c42828c9c879247c49f23e869ec65af3d",
+      "godot/scripts/microscenario_catalogue.gd": "de2784914fbd9aef0d7da16bbccf217353aae644d669c93c3aba233c895d8614",
+      "godot/scripts/web_demo_controller.gd": "566615583a7c0f19af0d1ba224452b4e768a6a2c013448c973671b34ee2ddae3",
+      "godot/shaders/grey_area_51_backdrop.gdshader": "2953f00170c344915bba65c71b2241b163ce2549993842cfc93c25480eaaee26",
+      "godot/shaders/grey_area_51_grade.gdshader": "4038c6695c9f37122641319577ef8997b2d3b8cfecc147af8cb77933e43016c3",
+      "godot/shaders/grey_area_51_mask.gdshaderinc": "f4758128e61c1de930a30d2923b61fe8045a6034a1e7fe73b673ca7c89e33be8",
+      "godot/tests/test_feature_launcher.gd": "d0c6a3bc2d826321177ac2ea752c1a3f950a2e75e5670e99004147ad252f67d4",
+      "godot/tests/test_grey_area_51.gd": "e03d15413e497a879b5356a53ae602304c214d4fc1bec16f67a2daa598b910a7",
+      "godot/tests/test_grey_area_51_integration.gd": "01d4f400c76efb64ac2a0e72bc7cd3e2b638f3c8fcfdeeb2a4a0c43999213c64",
+      "godot/tests/test_grey_area_51_render.gd": "2cf03f8c984ab46dab48452933c4efd851ab134513803e44f1017eae6a43cbcd",
+      "godot/tests/test_showcase_actor_map_input.gd": "f207d4aff90793ca280cf6e5a08b192f14e12cb9e0097644d414f37862288dd6",
+      "godot/tools/capture_grey_area_51.gd": "3a5b26b0669f3dd2dcebbf7c61a178412ae1db515a8d1dc2457b4d3f0cfdc7fa"
+    },
+    "identity_scope": "All 21 changed implementation/bootstrap/test/capture-script files are frozen at the local implementation checkpoint. Documentation and output files are recorded separately. Individual earlier tests retain their actual source boundaries."
+  },
+  "scene": {
+    "id": "showcase/grey-area-51",
+    "demo_id": "grey_area_51",
+    "title": "Grey Area 51",
+    "schema": 2,
+    "recipe_version": 1,
+    "columns": 5,
+    "rows": 1,
+    "tile_cells": [
+      192,
+      192
+    ],
+    "world_region": [
+      32,
+      32,
+      960,
+      192
+    ],
+    "native_world_cells": [
+      1024,
+      1024
+    ],
+    "passage_clearance_cells": 24,
+    "shared_port_centres": [
+      [
+        224,
+        176
+      ],
+      [
+        416,
+        96
+      ],
+      [
+        608,
+        176
+      ],
+      [
+        800,
+        96
+      ]
+    ],
+    "tile_names": [
+      "Intake Bastion",
+      "Records Mortuary",
+      "Null Containment",
+      "Isotope Engine",
+      "Disposal Lock"
+    ],
+    "metrics": {
+      "actual_seam_crossings": 8,
+      "canonical_bytes": 37933,
+      "definition_sha256": "73b3e5c17c61c54e80bff774a32de196e3c3945b1fb5f89327e8da1bddebba2f",
+      "invalid_spawn_recovery_attempts": 0,
+      "native_density": {
+        "overall": {
+          "concrete_cells": 120019,
+          "concrete_fraction": 0.651144748263889,
+          "solid_cells": 153077,
+          "solid_fraction": 0.830495876736111,
+          "total_cells": 184320
+        },
+        "tiles": [
+          {
+            "concrete_cells": 24944,
+            "concrete_fraction": 0.676649305555556,
+            "index": 0,
+            "solid_cells": 31424,
+            "solid_fraction": 0.852430555555556,
+            "total_cells": 36864
+          },
+          {
+            "concrete_cells": 24350,
+            "concrete_fraction": 0.660536024305556,
+            "index": 1,
+            "solid_cells": 30165,
+            "solid_fraction": 0.818277994791667,
+            "total_cells": 36864
+          },
+          {
+            "concrete_cells": 23451,
+            "concrete_fraction": 0.636149088541667,
+            "index": 2,
+            "solid_cells": 30336,
+            "solid_fraction": 0.822916666666667,
+            "total_cells": 36864
+          },
+          {
+            "concrete_cells": 23316,
+            "concrete_fraction": 0.632486979166667,
+            "index": 3,
+            "solid_cells": 30336,
+            "solid_fraction": 0.822916666666667,
+            "total_cells": 36864
+          },
+          {
+            "concrete_cells": 23958,
+            "concrete_fraction": 0.64990234375,
+            "index": 4,
+            "solid_cells": 30816,
+            "solid_fraction": 0.8359375,
+            "total_cells": 36864
+          }
+        ]
+      },
+      "neighbour_ports": 4,
+      "outbound_steps": 2007,
+      "outbound_tour": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "records": 2404,
+      "return_steps": 2012,
+      "return_tour": [
+        4,
+        3,
+        2,
+        1,
+        0
+      ],
+      "runtime_recovery_attempts": 0,
+      "tile_records": [
+        503,
+        527,
+        501,
+        338,
+        340
+      ],
+      "tour_character_steps": 4019,
+      "tour_jetpack_steps": 1359,
+      "tour_resets": 1,
+      "write_area": 393012
+    }
+  },
+  "runtime": {
+    "godot": {
+      "version": "4.7.stable.official.5b4e0cb0f",
+      "archive": "/tmp/grey-area-51-validation/downloads/Godot_v4.7-stable_linux.x86_64.zip",
+      "archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+      "archive_bytes": 75664355,
+      "archive_origin": "https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7",
+      "zip_integrity_passed": true,
+      "executable": "/tmp/grey-area-51-validation/runtime/Godot_v4.7-stable_linux.x86_64",
+      "executable_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+    },
+    "native": {
+      "manifest": "/workspace/scratch/fb9daf9fc631/grey-area-51/godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "manifest_sha256": "e09fce1bf5366de21730aa09a3646894059d64d021da241b2f11ac41500824b9",
+      "manifest_source_commit": "d897cac257f90ff37b16ae5bc5c65de85c6465ee",
+      "artifact": "/workspace/scratch/fb9daf9fc631/grey-area-51/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "sha256": "5bdc55e7f355004fc8a6468234b0d018d3919339ebfe47faca9997de3af17847",
+      "bytes": 2116392,
+      "source_input_count": 37,
+      "source_inputs": {
+        "godot/native_extension/cyber_demo_bridge.hpp": {
+          "sha256": "92d1ada53f684ca92832f245399078d4f43fdba0b4c6c5e41ba99f265cf759a5",
+          "canonical_sha256": "92d1ada53f684ca92832f245399078d4f43fdba0b4c6c5e41ba99f265cf759a5"
+        },
+        "godot/native_extension/cyber_native_cell_world.cpp": {
+          "sha256": "0f4a88b43ebb1e3e281fa7a98f25aacc29f150fbdb2aacbf67216689d1d7e7f5",
+          "canonical_sha256": "0f4a88b43ebb1e3e281fa7a98f25aacc29f150fbdb2aacbf67216689d1d7e7f5"
+        },
+        "godot/native_extension/cyber_native_cell_world.hpp": {
+          "sha256": "0daa96c1fe0b8d40890914cbba4c7cc489b1113d166624cb4ec2090086c786f6",
+          "canonical_sha256": "0daa96c1fe0b8d40890914cbba4c7cc489b1113d166624cb4ec2090086c786f6"
+        },
+        "godot/native_extension/cyber_observation_values.hpp": {
+          "sha256": "8b76a566de1118e2ee0c4d9b6a4c3d4d8d988c4953743f8bcf0fc786f61705e5",
+          "canonical_sha256": "8b76a566de1118e2ee0c4d9b6a4c3d4d8d988c4953743f8bcf0fc786f61705e5"
+        },
+        "godot/native_extension/cyber_world_generator.cpp": {
+          "sha256": "3f39cc42553d87a1e464e7ab5136966b67285e44757d8789c6489db5d6ded0e9",
+          "canonical_sha256": "3f39cc42553d87a1e464e7ab5136966b67285e44757d8789c6489db5d6ded0e9"
+        },
+        "godot/native_extension/cyber_world_generator.hpp": {
+          "sha256": "648dc08fe074b3476778e070208386cc230c82414b2e7f47afd20ba2237bc6ef",
+          "canonical_sha256": "648dc08fe074b3476778e070208386cc230c82414b2e7f47afd20ba2237bc6ef"
+        },
+        "godot/native_extension/register_types.cpp": {
+          "sha256": "2a225e31225918746121285f79f5dc91b3808ac3ec0a980d4eac62467e81c5c1",
+          "canonical_sha256": "2a225e31225918746121285f79f5dc91b3808ac3ec0a980d4eac62467e81c5c1"
+        },
+        "native/include/cybersand/bounded_ordered_index.hpp": {
+          "sha256": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+          "canonical_sha256": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147"
+        },
+        "native/include/cybersand/c_api.h": {
+          "sha256": "d39b153e42111e2b5696c04832f64d1d69f401799236372ca8b690c7d0e1d429",
+          "canonical_sha256": "d39b153e42111e2b5696c04832f64d1d69f401799236372ca8b690c7d0e1d429"
+        },
+        "native/include/cybersand/demo_snapshot.hpp": {
+          "sha256": "1a46f7beef756e0a916be7229956ae295955d555be047e16203eca05860cd3cb",
+          "canonical_sha256": "1a46f7beef756e0a916be7229956ae295955d555be047e16203eca05860cd3cb"
+        },
+        "native/include/cybersand/generation_fields.hpp": {
+          "sha256": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+          "canonical_sha256": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79"
+        },
+        "native/include/cybersand/interaction_policy.hpp": {
+          "sha256": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+          "canonical_sha256": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff"
+        },
+        "native/include/cybersand/interaction_rules.hpp": {
+          "sha256": "914bc68f4f82d74dc1b444b2962229ed4337ed5d7de2e6a142e28fbc47b98d1e",
+          "canonical_sha256": "914bc68f4f82d74dc1b444b2962229ed4337ed5d7de2e6a142e28fbc47b98d1e"
+        },
+        "native/include/cybersand/material.hpp": {
+          "sha256": "de1bbbccb812d49151c34831196a7e38d5ee97d2045c9b29c197b11553ed126a",
+          "canonical_sha256": "de1bbbccb812d49151c34831196a7e38d5ee97d2045c9b29c197b11553ed126a"
+        },
+        "native/include/cybersand/material_appearance.hpp": {
+          "sha256": "5668ffb77a60950159daa393aa1e292b61881f84e4f1c3c786508b4f50015168",
+          "canonical_sha256": "5668ffb77a60950159daa393aa1e292b61881f84e4f1c3c786508b4f50015168"
+        },
+        "native/include/cybersand/material_rules.hpp": {
+          "sha256": "647931176804ffe3d5c31aa62fbeb5ed3f39b643e8bbecde0d4cfb6719d5ca0e",
+          "canonical_sha256": "647931176804ffe3d5c31aa62fbeb5ed3f39b643e8bbecde0d4cfb6719d5ca0e"
+        },
+        "native/include/cybersand/physics_diagnostics.hpp": {
+          "sha256": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+          "canonical_sha256": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4"
+        },
+        "native/include/cybersand/precision_storage.hpp": {
+          "sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+          "canonical_sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266"
+        },
+        "native/include/cybersand/render_snapshot.hpp": {
+          "sha256": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+          "canonical_sha256": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3"
+        },
+        "native/include/cybersand/scheduler_geometry.hpp": {
+          "sha256": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+          "canonical_sha256": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460"
+        },
+        "native/include/cybersand/settled_discovery.hpp": {
+          "sha256": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+          "canonical_sha256": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3"
+        },
+        "native/include/cybersand/settled_regions.hpp": {
+          "sha256": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+          "canonical_sha256": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1"
+        },
+        "native/include/cybersand/settled_world_discovery.hpp": {
+          "sha256": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+          "canonical_sha256": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138"
+        },
+        "native/include/cybersand/soliding_lifecycle.hpp": {
+          "sha256": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+          "canonical_sha256": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd"
+        },
+        "native/include/cybersand/transport_policy.hpp": {
+          "sha256": "9204d1e7b112e260097ba3924c8653cde45568d5886d33b9bb53fdfa8019e348",
+          "canonical_sha256": "9204d1e7b112e260097ba3924c8653cde45568d5886d33b9bb53fdfa8019e348"
+        },
+        "native/include/cybersand/water_experiment_policy.hpp": {
+          "sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+          "canonical_sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf"
+        },
+        "native/include/cybersand/world.hpp": {
+          "sha256": "f126bb6f74f912e5614f1998ec0efd7fd8375c3c19d120853718f45ac848f461",
+          "canonical_sha256": "f126bb6f74f912e5614f1998ec0efd7fd8375c3c19d120853718f45ac848f461"
+        },
+        "native/include/cybersand/world_generation.hpp": {
+          "sha256": "1a8fbb40ead0ed8f50e2a407eca62ee2312aba64d396d1f44fa5ae6ca48148df",
+          "canonical_sha256": "1a8fbb40ead0ed8f50e2a407eca62ee2312aba64d396d1f44fa5ae6ca48148df"
+        },
+        "native/src/c_api.cpp": {
+          "sha256": "9e70906c5489bd10ec2fd00663328c818fe8b281d5199e6a01d756b2cd9b6274",
+          "canonical_sha256": "9e70906c5489bd10ec2fd00663328c818fe8b281d5199e6a01d756b2cd9b6274"
+        },
+        "native/src/generation_fields.cpp": {
+          "sha256": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+          "canonical_sha256": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3"
+        },
+        "native/src/material_rules.cpp": {
+          "sha256": "711abb73d10fef68ace68996cab9a9b1a8f0c2f0b5d12a48934714d93d6c3a4a",
+          "canonical_sha256": "711abb73d10fef68ace68996cab9a9b1a8f0c2f0b5d12a48934714d93d6c3a4a"
+        },
+        "native/src/render_snapshot.cpp": {
+          "sha256": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+          "canonical_sha256": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04"
+        },
+        "native/src/render_snapshot_internal.hpp": {
+          "sha256": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+          "canonical_sha256": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998"
+        },
+        "native/src/scheduler_geometry.cpp": {
+          "sha256": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+          "canonical_sha256": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764"
+        },
+        "native/src/settled_world_discovery.cpp": {
+          "sha256": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+          "canonical_sha256": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6"
+        },
+        "native/src/world.cpp": {
+          "sha256": "0a32fe69a6d2ff804ff053ac520a8138a7aaf89538d914b10a356dd9ce61d211",
+          "canonical_sha256": "0a32fe69a6d2ff804ff053ac520a8138a7aaf89538d914b10a356dd9ce61d211"
+        },
+        "native/src/world_generation.cpp": {
+          "sha256": "b3ebf1fa657496e438f436012b8e9b865b5a1bd82fcf550d0ceeead9fbd139ae",
+          "canonical_sha256": "b3ebf1fa657496e438f436012b8e9b865b5a1bd82fcf550d0ceeead9fbd139ae"
+        }
+      },
+      "source_input_errors": [],
+      "rebuilt": false
+    },
+    "rapier": {
+      "version": "v0.35.2",
+      "artifact": "/workspace/scratch/fb9daf9fc631/grey-area-51/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "sha256": "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831",
+      "rebuilt": false
+    },
+    "rendering": {
+      "display": ":93",
+      "screen": [
+        1920,
+        1080,
+        24
+      ],
+      "xvfb_exec_session": 80097,
+      "local_ipc_requires_require_escalated": true,
+      "renderer": "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.2 / Compatibility / llvmpipe LLVM 20.1.2, 256 bits",
+      "xvfb_packages": "/tmp/grey-area-51-validation/x11-package-manifest.json",
+      "xvfb_packages_sha256": "6ed8df8711d44e2824a4d3ebc1ecb05a9eccf414d3804fb53d920ac91b9d93f1",
+      "xvfb_path_relocation": {
+        "original": "/tmp/grey-area-51-validation/x11/usr/bin/Xvfb",
+        "original_sha256": "2c7f5a9534410fed5092d782a69ca7ffd9fce80e98b81ffe4944d703dd11d3b1",
+        "local": "/tmp/grey-area-51-validation/x11/Xvfb-local",
+        "local_sha256": "e7904b6126798c6c666534a2a7ca447e9b8c96ce189201563704f8c8f5a1ae38",
+        "change": "One embedded /usr/bin directory string relocated to /tmp/g51, which contains a symlink to the extracted xkbcomp. The unmodified packaged Xvfb is retained.",
+        "reason": "Stock Xvfb failed to activate its keyboard because /usr/bin/xkbcomp is absent; original failure log retained.",
+        "original_failure_log": "/tmp/grey-area-51-validation/logs/xvfb-original-attempt.log"
+      },
+      "xvfb_log": "/tmp/grey-area-51-validation/logs/xvfb.log",
+      "display_probe": "/tmp/grey-area-51-validation/logs/xdpyinfo-confirmed.log",
+      "display_probe_sha256": "aa747da97cd075276edf6b48c62052ae46d36b88c730cc878fc6952817db0bac",
+      "warnings": [
+        "Software driver cannot change V-Sync mode",
+        "Extracted xkbcomp reports unrecognized optional XF86 key symbols; the X server remains live"
+      ]
+    },
+    "limits": [
+      "Linux x86_64 software OpenGL readiness only",
+      "No native source rebuild or source modification",
+      "No Windows or browser runtime execution",
+      "Scene captures and focused Grey integration tests are not claimed by this setup report"
+    ],
+    "retained_runtime_files": [
+      {
+        "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "sha256": "ff417eaa63182818e5f924b9240a57868192da6cf629577f467dd9363105588d",
+        "expected_sha256": "ff417eaa63182818e5f924b9240a57868192da6cf629577f467dd9363105588d",
+        "bytes": 2586624,
+        "materialized": true
+      },
+      {
+        "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "sha256": "5bdc55e7f355004fc8a6468234b0d018d3919339ebfe47faca9997de3af17847",
+        "expected_sha256": "5bdc55e7f355004fc8a6468234b0d018d3919339ebfe47faca9997de3af17847",
+        "bytes": 2116392,
+        "materialized": true
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+        "sha256": "b4020962f6ff6c5f2c07436a94cdbf7b5e2096a5fc5832e4ff5526378ce88528",
+        "expected_sha256": "b4020962f6ff6c5f2c07436a94cdbf7b5e2096a5fc5832e4ff5526378ce88528",
+        "bytes": 2754113,
+        "materialized": true
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+        "sha256": "d8d71fd6f953972e6b650c1bf53b667433fe5a2461f21d221104d42c45251b86",
+        "expected_sha256": "d8d71fd6f953972e6b650c1bf53b667433fe5a2461f21d221104d42c45251b86",
+        "bytes": 10531096,
+        "materialized": true
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+        "sha256": "70d5dfb0dc60b3276047a17bb9824750fa527f1b46759024e23459e232343cd2",
+        "expected_sha256": "70d5dfb0dc60b3276047a17bb9824750fa527f1b46759024e23459e232343cd2",
+        "bytes": 8077888,
+        "materialized": true
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+        "sha256": "93709c0b597f801f2a476bf50f4234639cc6f902746a5a7dfbc04ae0c8322467",
+        "expected_sha256": "93709c0b597f801f2a476bf50f4234639cc6f902746a5a7dfbc04ae0c8322467",
+        "bytes": 11996416,
+        "materialized": true
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+        "sha256": "fb05e284467399144698b77412196604d136886a164fa881d13e385429607909",
+        "expected_sha256": "fb05e284467399144698b77412196604d136886a164fa881d13e385429607909",
+        "bytes": 10838824,
+        "materialized": true
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+        "sha256": "38feab99c6b53e30aa7664afced37c1e11956999d930456fb6df0da552371d54",
+        "expected_sha256": "38feab99c6b53e30aa7664afced37c1e11956999d930456fb6df0da552371d54",
+        "bytes": 8836448,
+        "materialized": true
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+        "sha256": "164927dce3772601f75a63a7f587acc0d4e59755598ccb453f21c8dac212c55c",
+        "expected_sha256": "164927dce3772601f75a63a7f587acc0d4e59755598ccb453f21c8dac212c55c",
+        "bytes": 9540432,
+        "materialized": true
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+        "sha256": "021a237af3bd99170a7b220369295e69d78f0c57ab6cc8fc93dc9a79be203358",
+        "expected_sha256": "021a237af3bd99170a7b220369295e69d78f0c57ab6cc8fc93dc9a79be203358",
+        "bytes": 9872888,
+        "materialized": true
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+        "sha256": "f4e7041aef2a508739688ea67b83802765c2249629288e5ff986079d75aab7f5",
+        "expected_sha256": "f4e7041aef2a508739688ea67b83802765c2249629288e5ff986079d75aab7f5",
+        "bytes": 10217600,
+        "materialized": true
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+        "sha256": "9e10814c3ede242b0dc95737aecec4837b9468d170e82a29dea5013614e242bd",
+        "expected_sha256": "9e10814c3ede242b0dc95737aecec4837b9468d170e82a29dea5013614e242bd",
+        "bytes": 12012020,
+        "materialized": true
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "sha256": "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831",
+        "expected_sha256": "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831",
+        "bytes": 10781080,
+        "materialized": true
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+        "sha256": "7ad1dc7a59a2689f2248ad9f1961574851acae96d1a249b39f0ecd881528569b",
+        "expected_sha256": "7ad1dc7a59a2689f2248ad9f1961574851acae96d1a249b39f0ecd881528569b",
+        "bytes": 18692816,
+        "materialized": true
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+        "sha256": "b5de2d56a30cef7d7ef9a1afc7a0fa7e5f2c3e3c12fc31643b60a1729ee901c9",
+        "expected_sha256": "b5de2d56a30cef7d7ef9a1afc7a0fa7e5f2c3e3c12fc31643b60a1729ee901c9",
+        "bytes": 8677376,
+        "materialized": true
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+        "sha256": "0e0de310bee74df67e1a5ff0532f51edd27338196c231c81817a938bee48a2ad",
+        "expected_sha256": "0e0de310bee74df67e1a5ff0532f51edd27338196c231c81817a938bee48a2ad",
+        "bytes": 8747008,
+        "materialized": true
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "sha256": "4e26ffa78ec2aaff434c4a70cd2ec85288b10ba5237912c35f204cb1e6ed2180",
+        "expected_sha256": "4e26ffa78ec2aaff434c4a70cd2ec85288b10ba5237912c35f204cb1e6ed2180",
+        "bytes": 10018816,
+        "materialized": true
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm",
+        "sha256": "5ff6933670c1377c24dcbac30d67758a307165eacdcbd33b25bf01669577c4c2",
+        "expected_sha256": "5ff6933670c1377c24dcbac30d67758a307165eacdcbd33b25bf01669577c4c2",
+        "bytes": 2751606,
+        "materialized": true
+      }
+    ],
+    "retained_runtime_identity": {
+      "count": 18,
+      "all_sha256_match_lfs_oids": true,
+      "manifest_sha256": "898054fad2dbd384b816f0d90aa646a386a9bca921f885e1f761d8489f3a8e0c"
+    }
+  },
+  "native_validation": {
+    "kind": "grey-area-51-native-validation",
+    "status": "passed",
+    "recorded_utc": "2026-10-19T20:24:13.317923+00:00",
+    "repository": "/workspace/scratch/fb9daf9fc631/grey-area-51",
+    "branch": "scene/grey-area-51",
+    "base_head": "02f9c890dc4faf0bf132a95acbc13a4d9cdc002f",
+    "source_identity_timing": "Hashes read immediately after the final native fixture with recipe and focused test held stable. Controller and presentation work is outside this test and these source bindings.",
+    "source_sha256": {
+      "godot/scripts/grey_area_51.gd": "f6ebd071092e1222d3ec78ed99f1f53f57b04e9646c2716f663560a8a1fb753b",
+      "godot/scripts/grey_area_51_art.gd": "07c2ecf7136041b2834371ac38f121920db94d7e41ed122973080f2f37b41a65",
+      "godot/scripts/grey_area_51_layout.gd": "29c3779073c078e36fad93540d906b02baa65d7d7fa5062dc1d7d930f4223153",
+      "godot/scripts/grey_area_51_west.gd": "736d47bb3aa3cbb567315cbe3bdde420eebc6fa7ff4fdce6477fcba44662ac6d",
+      "godot/scripts/grey_area_51_east.gd": "af10fad3cab1e613214e5488682275504d91ff0ca5c61f99b33951f01a17b72a",
+      "godot/scripts/neon_reliquary.gd": "f48f4ffac8d8e112991ebc948864a3da7783439b0450e6e12df4b3a2073110fa",
+      "godot/scripts/microscenario_contract.gd": "74c0266a970de37af67a2455d6aa3693915046593b9822b79418146cc62a7aa0",
+      "godot/scripts/microscenario_host.gd": "4bb2c74d5d8d8b4e2a670e59e8cf2a27e1e95efd192cf0d9cd4f5a891a853745",
+      "godot/scripts/sampled_character.gd": "fb56187c5fa44cfd2124dd003fb2bb046d3ef5377e346c933d0bd377fa29fe40",
+      "godot/tests/test_grey_area_51.gd": "e03d15413e497a879b5356a53ae602304c214d4fc1bec16f67a2daa598b910a7"
+    },
+    "command": "timeout --signal=TERM --kill-after=10s 180s /tmp/grey-area-51-validation/run-godot.sh --headless --path /workspace/scratch/fb9daf9fc631/grey-area-51/godot --script res://tests/test_grey_area_51.gd > /tmp/grey-area-51-validation/test_grey_area_51-final.log 2>&1",
+    "working_directory": "/workspace/scratch/fb9daf9fc631/grey-area-51",
+    "external_timeout_seconds": 180,
+    "kill_after_seconds": 10,
+    "log": "/tmp/grey-area-51-validation/test_grey_area_51-final.log",
+    "log_sha256": "c0c484e82c94492794ef159f524a663beb138839c0e89e2cfadf11f5ff36fbd7",
+    "assertions": 80,
+    "failures": 0,
+    "exit_code": 0,
+    "diagnostic_errors": [],
+    "runtime": {
+      "godot": {
+        "path": "/tmp/grey-area-51-validation/runtime/Godot_v4.7-stable_linux.x86_64",
+        "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "cybersand_native": {
+        "path": "/workspace/scratch/fb9daf9fc631/grey-area-51/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "sha256": "5bdc55e7f355004fc8a6468234b0d018d3919339ebfe47faca9997de3af17847",
+        "native_source_commit": "d897cac257f90ff37b16ae5bc5c65de85c6465ee"
+      },
+      "rapier": {
+        "path": "/workspace/scratch/fb9daf9fc631/grey-area-51/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "sha256": "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831",
+        "version": "v0.35.2"
+      },
+      "wrapper": {
+        "path": "/tmp/grey-area-51-validation/run-godot.sh",
+        "sha256": "dbc14d315915c951ba02156016b26e9596d0e037e3b9bc6189a96b915c18cc4b"
+      }
+    },
+    "runtime_readiness": {
+      "path": "/tmp/grey-area-51-validation/runtime-readiness.json",
+      "sha256": "54a249fb161e96ffdc4695c5cba4df34f3b0ef4e52d5ca6aa608a1a36b9560f6"
+    },
+    "native_material_ticks": 120,
+    "native_workers": 1,
+    "sampled_character_steps_including_port_cases": 4667,
+    "results": {
+      "actual_seam_crossings": 8,
+      "canonical_bytes": 37933,
+      "definition_sha256": "73b3e5c17c61c54e80bff774a32de196e3c3945b1fb5f89327e8da1bddebba2f",
+      "invalid_spawn_recovery_attempts": 0,
+      "native_density": {
+        "overall": {
+          "concrete_cells": 120019,
+          "concrete_fraction": 0.651144748263889,
+          "solid_cells": 153077,
+          "solid_fraction": 0.830495876736111,
+          "total_cells": 184320
+        },
+        "tiles": [
+          {
+            "concrete_cells": 24944,
+            "concrete_fraction": 0.676649305555556,
+            "index": 0,
+            "solid_cells": 31424,
+            "solid_fraction": 0.852430555555556,
+            "total_cells": 36864
+          },
+          {
+            "concrete_cells": 24350,
+            "concrete_fraction": 0.660536024305556,
+            "index": 1,
+            "solid_cells": 30165,
+            "solid_fraction": 0.818277994791667,
+            "total_cells": 36864
+          },
+          {
+            "concrete_cells": 23451,
+            "concrete_fraction": 0.636149088541667,
+            "index": 2,
+            "solid_cells": 30336,
+            "solid_fraction": 0.822916666666667,
+            "total_cells": 36864
+          },
+          {
+            "concrete_cells": 23316,
+            "concrete_fraction": 0.632486979166667,
+            "index": 3,
+            "solid_cells": 30336,
+            "solid_fraction": 0.822916666666667,
+            "total_cells": 36864
+          },
+          {
+            "concrete_cells": 23958,
+            "concrete_fraction": 0.64990234375,
+            "index": 4,
+            "solid_cells": 30816,
+            "solid_fraction": 0.8359375,
+            "total_cells": 36864
+          }
+        ]
+      },
+      "neighbour_ports": 4,
+      "outbound_steps": 2007,
+      "outbound_tour": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "records": 2404,
+      "return_steps": 2012,
+      "return_tour": [
+        4,
+        3,
+        2,
+        1,
+        0
+      ],
+      "runtime_recovery_attempts": 0,
+      "tile_records": [
+        503,
+        527,
+        501,
+        338,
+        340
+      ],
+      "tour_character_steps": 4019,
+      "tour_jetpack_steps": 1359,
+      "tour_resets": 1,
+      "write_area": 393012
+    },
+    "coverage": [
+      "Strict schema, local/global bounds, deterministic canonical round-trip and existing record/write/byte capacities",
+      "Every installed native material byte equals an independent ordered-rectangle raster",
+      "Collision class of each authored material checked at a retained native cell; complete slab and per-tile Concrete/hard-solid counts",
+      "Overlapping 24×24 native collision volumes cover all route segments and turn caps before and after 120 material ticks",
+      "All four actual shared ports crossed forward and reverse; continuous native footing",
+      "One character and one initial reset for west-to-east then east-to-west tour with real Character.simulate at 1/60 and discrete A/D/Space control",
+      "Zero enclosure and invalid-spawn recovery; no writes to character position/velocity during movement",
+      "Exact whole-world material stability through 120 ticks; bounded native capacity; rejected install preserves world; native solid seam-edit positive control; exact whole-slab reset"
+    ],
+    "limits": [
+      "Linux x86_64 native/headless execution only",
+      "Native material ticks are paused during the 4,667 character steps; this is geometry traversal after 120 ticks, not a complete live-material tour",
+      "No UI-event, physical-actor, browser/WebAssembly/WebGPU, Windows/macOS, target-PC feel, performance or scalability claim"
+    ],
+    "retained_prior_attempts": [
+      {
+        "log": "/tmp/grey-area-51-validation/test_grey_area_51-initial.log",
+        "log_sha256": "07bfbd9cb8c698b307781115992b7dc0937846ac8a315c86c511edf8c63d6b32",
+        "exit_code": 1,
+        "diagnosis": "Initial geometry had 58.4147135% Concrete. A fixture-only typed ternary Array assignment raised a script error while reporting the outbound tour; no complete round-trip result is claimed for this run. All eight directed native ports had passed.",
+        "recorded_identity": {
+          "actual_seam_crossings": 8,
+          "canonical_bytes": 37531,
+          "definition_sha256": "9097e4993b8e3824d83f08d43b94e33b1a50951519365009f86f5eacc822f9e5",
+          "native_density": {
+            "overall": {
+              "concrete_cells": 107670,
+              "concrete_fraction": 0.584147135416667,
+              "solid_cells": 153077,
+              "solid_fraction": 0.830495876736111,
+              "total_cells": 184320
+            },
+            "tiles": [
+              {
+                "concrete_cells": 22653,
+                "concrete_fraction": 0.614501953125,
+                "index": 0,
+                "solid_cells": 31424,
+                "solid_fraction": 0.852430555555556,
+                "total_cells": 36864
+              },
+              {
+                "concrete_cells": 21996,
+                "concrete_fraction": 0.5966796875,
+                "index": 1,
+                "solid_cells": 30165,
+                "solid_fraction": 0.818277994791667,
+                "total_cells": 36864
+              },
+              {
+                "concrete_cells": 20515,
+                "concrete_fraction": 0.556504991319444,
+                "index": 2,
+                "solid_cells": 30336,
+                "solid_fraction": 0.822916666666667,
+                "total_cells": 36864
+              },
+              {
+                "concrete_cells": 21055,
+                "concrete_fraction": 0.571153428819444,
+                "index": 3,
+                "solid_cells": 30336,
+                "solid_fraction": 0.822916666666667,
+                "total_cells": 36864
+              },
+              {
+                "concrete_cells": 21451,
+                "concrete_fraction": 0.581895616319444,
+                "index": 4,
+                "solid_cells": 30816,
+                "solid_fraction": 0.8359375,
+                "total_cells": 36864
+              }
+            ]
+          },
+          "neighbour_ports": 4,
+          "records": 2376,
+          "tile_records": [
+            481,
+            504,
+            499,
+            350,
+            347
+          ],
+          "write_area": 460835
+        },
+        "script_error": true
+      },
+      {
+        "log": "/tmp/grey-area-51-validation/test_grey_area_51-density-final.log",
+        "log_sha256": "d9eba7886b3f064201f07046f770f779b35092a0bde61c54de0b1073c0f6d68f",
+        "exit_code": 1,
+        "diagnosis": "Coordinated thinning reached 64.8524306% Concrete, 272 cells below the strict 65% target. All movement/native assertions passed; only density failed. The threshold was retained and a small central shielding correction followed.",
+        "recorded_identity": {
+          "actual_seam_crossings": 8,
+          "canonical_bytes": 37902,
+          "definition_sha256": "4cc57e03aa4ad958ca1043f72ec80a55d4083443d3a22143285c610c78cfd1d8",
+          "invalid_spawn_recovery_attempts": 0,
+          "native_density": {
+            "overall": {
+              "concrete_cells": 119536,
+              "concrete_fraction": 0.648524305555556,
+              "solid_cells": 153077,
+              "solid_fraction": 0.830495876736111,
+              "total_cells": 184320
+            },
+            "tiles": [
+              {
+                "concrete_cells": 24944,
+                "concrete_fraction": 0.676649305555556,
+                "index": 0,
+                "solid_cells": 31424,
+                "solid_fraction": 0.852430555555556,
+                "total_cells": 36864
+              },
+              {
+                "concrete_cells": 24350,
+                "concrete_fraction": 0.660536024305556,
+                "index": 1,
+                "solid_cells": 30165,
+                "solid_fraction": 0.818277994791667,
+                "total_cells": 36864
+              },
+              {
+                "concrete_cells": 22968,
+                "concrete_fraction": 0.623046875,
+                "index": 2,
+                "solid_cells": 30336,
+                "solid_fraction": 0.822916666666667,
+                "total_cells": 36864
+              },
+              {
+                "concrete_cells": 23316,
+                "concrete_fraction": 0.632486979166667,
+                "index": 3,
+                "solid_cells": 30336,
+                "solid_fraction": 0.822916666666667,
+                "total_cells": 36864
+              },
+              {
+                "concrete_cells": 23958,
+                "concrete_fraction": 0.64990234375,
+                "index": 4,
+                "solid_cells": 30816,
+                "solid_fraction": 0.8359375,
+                "total_cells": 36864
+              }
+            ]
+          },
+          "neighbour_ports": 4,
+          "outbound_steps": 2007,
+          "outbound_tour": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "records": 2402,
+          "return_steps": 2012,
+          "return_tour": [
+            4,
+            3,
+            2,
+            1,
+            0
+          ],
+          "runtime_recovery_attempts": 0,
+          "tile_records": [
+            503,
+            527,
+            499,
+            338,
+            340
+          ],
+          "tour_character_steps": 4019,
+          "tour_jetpack_steps": 1359,
+          "tour_resets": 1,
+          "write_area": 392488
+        },
+        "script_error": false
+      }
+    ]
+  },
+  "controller_and_renderer_validation": [
+    {
+      "scratch_log": "logs/test_grey_area_51_integration-final-layers.log",
+      "log_sha256": "e1a34f3e81754b31dd4295ffaf6a9511b120191b7845d5a59018d3e4df87d69f",
+      "diagnostic_errors": [],
+      "result_lines": [
+        "GREY_AREA_51_INTEGRATION_IDENTITY: [{\"backend\":\"native-phased\",\"camera_tiles\":5,\"completed_tick\":4,\"definition_sha256\":\"73b3e5c17c61c54e80bff774a32de196e3c3945b1fb5f89327e8da1bddebba2f\",\"godot\":\"4.7-stable (official)\",\"off_camera_regions_advanced\":4,\"owner\":\"desktop\",\"paint_crosses_seam\":[224,176],\"platform\":\"Linux\",\"regions_advanced\":5,\"worker_count\":1},{\"completed_tick\":37,\"map_keyboard_guard\":\"open + closed-held + fresh gesture\",\"native_steps\":33,\"owner\":\"desktop\",\"physical_keys\":[\"D\",\"Space\",\"Right\"]},{\"direct_grey_blacksite_switches\":4,\"owner\":\"desktop\",\"shared_minimum_restored_by_exit_test\":true},{\"backend\":\"native-phased\",\"camera_tiles\":5,\"completed_tick\":4,\"definition_sha256\":\"73b3e5c17c61c54e80bff774a32de196e3c3945b1fb5f89327e8da1bddebba2f\",\"godot\":\"4.7-stable (official)\",\"off_camera_regions_advanced\":4,\"owner\":\"Web\",\"paint_crosses_seam\":[224,176],\"platform\":\"Linux\",\"regions_advanced\":5,\"worker_count\":1},{\"completed_tick\":37,\"map_keyboard_guard\":\"open + closed-held + fresh gesture\",\"native_steps\":33,\"owner\":\"Web\",\"physical_keys\":[\"D\",\"Space\",\"Right\"]},{\"direct_grey_blacksite_switches\":4,\"owner\":\"Web\",\"shared_minimum_restored_by_exit_test\":true}]",
+        "GREY_AREA_51_INTEGRATION: 351 assertions; 0 failures; desktop asynchronous and synchronous Web-controller camera/edit/interest/lifecycle coverage"
+      ],
+      "script": "test_grey_area_51_integration.gd",
+      "assertions_or_checks": 351,
+      "failures": 0,
+      "exit_code": 0,
+      "status": "passed",
+      "scope": "Final implementation: desktop asynchronous native owner and synchronous Web controller on Linux. Five views preserve state, seam brush writes, all-five-region activity, reset, modal input, foreground ordering, and direct Grey/Blacksite lifecycle.",
+      "reproduction_command": "/tmp/grey-area-51-validation/run-godot.sh --headless --path /workspace/scratch/fb9daf9fc631/grey-area-51/godot --script res://tests/test_grey_area_51_integration.gd",
+      "outer_timeout_note": "External process bound was used; its numeric value is not embedded in this runner log. The committed fixture retains its own bounded waits."
+    },
+    {
+      "scratch_log": "logs/test_grey_area_51_render-final.log",
+      "log_sha256": "758cf774e352987562aaab459e4b1504b6631c4b21fea98849d51126570507fd",
+      "diagnostic_errors": [],
+      "result_lines": [
+        "GREY_AREA_51_RENDER: 26 checks; 4 shared edges × 2 world-anchored effects; failures=0"
+      ],
+      "script": "test_grey_area_51_render.gd",
+      "assertions_or_checks": 26,
+      "failures": 0,
+      "exit_code": 0,
+      "status": "passed",
+      "scope": "Final implementation: actual OpenGL pixels on four seams for both effects, material/player masks, current Concrete erase and moving-material previous-state transitions.",
+      "reproduction_command": "/tmp/grey-area-51-validation/run-rendered-godot.sh --path /workspace/scratch/fb9daf9fc631/grey-area-51/godot --script res://tests/test_grey_area_51_render.gd",
+      "outer_timeout_note": "External process bound was used; its numeric value is not embedded in this runner log. The committed fixture retains its own bounded waits."
+    },
+    {
+      "scratch_log": "logs/test_blacksite_nine_integration-final.log",
+      "log_sha256": "54e98f84bcdd535d14a4271711ccc782ed7fbeaff060c300e08c262b68d19a5f",
+      "diagnostic_errors": [],
+      "result_lines": [
+        "BLACKSITE_NINE_INTEGRATION_IDENTITY: [{\"backend\":\"native-phased\",\"camera_tiles\":9,\"completed_tick\":4,\"definition_sha256\":\"225b0cdbd677d678cdfd5188df2f8fd17987e7edfbe508049fbbae261f21d489\",\"godot\":\"4.7-stable (official)\",\"off_camera_regions_advanced\":8,\"owner\":\"desktop\",\"paint_crosses_seam\":[352,444],\"platform\":\"Linux\",\"regions_advanced\":9,\"worker_count\":1},{\"completed_tick\":21,\"map_keyboard_guard\":\"open + closed-held + fresh gesture\",\"native_steps\":17,\"owner\":\"desktop\",\"physical_keys\":[\"D\",\"Space\",\"Right\"]},{\"backend\":\"native-phased\",\"camera_tiles\":9,\"completed_tick\":4,\"definition_sha256\":\"225b0cdbd677d678cdfd5188df2f8fd17987e7edfbe508049fbbae261f21d489\",\"godot\":\"4.7-stable (official)\",\"off_camera_regions_advanced\":8,\"owner\":\"Web\",\"paint_crosses_seam\":[352,444],\"platform\":\"Linux\",\"regions_advanced\":9,\"worker_count\":1},{\"completed_tick\":21,\"map_keyboard_guard\":\"open + closed-held + fresh gesture\",\"native_steps\":17,\"owner\":\"Web\",\"physical_keys\":[\"D\",\"Space\",\"Right\"]}]",
+        "BLACKSITE_NINE_INTEGRATION: 249 assertions; 0 failures; desktop asynchronous and synchronous Web-controller camera/edit/interest/lifecycle coverage"
+      ],
+      "script": "test_blacksite_nine_integration.gd",
+      "assertions_or_checks": 249,
+      "failures": 0,
+      "exit_code": 0,
+      "status": "passed",
+      "scope": "Retained Blacksite controller regression. This run preceded final graphical ordering and actor-centre labeling changes; input/lifecycle methods were unchanged and the later 351-check Grey integration covers shared switching/order.",
+      "reproduction_command": "/tmp/grey-area-51-validation/run-godot.sh --headless --path /workspace/scratch/fb9daf9fc631/grey-area-51/godot --script res://tests/test_blacksite_nine_integration.gd",
+      "outer_timeout_note": "External process bound was used; its numeric value is not embedded in this runner log. The committed fixture retains its own bounded waits."
+    },
+    {
+      "scratch_log": "logs/test_feature_launcher-final.log",
+      "log_sha256": "63a09ea753239af7ce80fc09d218544a5c1c19af9c212820c2a3d9614e0a0127",
+      "diagnostic_errors": [],
+      "result_lines": [
+        "Feature launcher: 35 assertions, 0 failures"
+      ],
+      "script": "test_feature_launcher.gd",
+      "assertions_or_checks": 35,
+      "failures": 0,
+      "exit_code": 0,
+      "status": "passed",
+      "scope": "Launcher entry and F2 return, including Grey. This run preceded final graphical ordering and actor-centre labeling changes.",
+      "reproduction_command": "/tmp/grey-area-51-validation/run-godot.sh --headless --path /workspace/scratch/fb9daf9fc631/grey-area-51/godot --script res://tests/test_feature_launcher.gd",
+      "outer_timeout_note": "External process bound was used; its numeric value is not embedded in this runner log. The committed fixture retains its own bounded waits."
+    }
+  ],
+  "actor_input_validation": {
+    "result": {
+      "command": [
+        "/tmp/grey-area-51-validation/run-rendered-godot.sh",
+        "--path",
+        "/workspace/scratch/fb9daf9fc631/grey-area-51/godot",
+        "--script",
+        "res://tests/test_showcase_actor_map_input.gd"
+      ],
+      "timeout_seconds": 180,
+      "started_utc": "2026-10-19T20:24:52.760022+00:00",
+      "head": "02f9c890dc4faf0bf132a95acbc13a4d9cdc002f",
+      "before_sha256": {
+        "godot/scripts/main.gd": "b686213652f814519f4d5d659b51e21c42828c9c879247c49f23e869ec65af3d",
+        "godot/scripts/blacksite_nine_presentation.gd": "f8d53a9e10118f7154d5416b486dcbde3b9a5f4b58704d7d48b8494cce6bdbea",
+        "godot/scripts/simulation_worker.gd": "f7beb32af68d75a5bea4b55e64fea917ea20c152840495e4b7240da4d6b90648",
+        "godot/scripts/physical_actor_session.gd": "e3bf07f7fd23f861f54c7eef906b14c2e9cc7e4520426375a34ec62f6b5c9a7d",
+        "godot/tests/test_showcase_actor_map_input.gd": "f207d4aff90793ca280cf6e5a08b192f14e12cb9e0097644d414f37862288dd6",
+        "godot/scripts/grey_area_51.gd": "f6ebd071092e1222d3ec78ed99f1f53f57b04e9646c2716f663560a8a1fb753b",
+        "godot/scripts/blacksite_nine.gd": "81b119e4b19a886f1864efc9dd3bbf2d61745adda7f6c470627cdc93acb28244"
+      },
+      "exit_code": 0,
+      "duration_seconds": 93.789,
+      "after_sha256": {
+        "godot/scripts/main.gd": "b686213652f814519f4d5d659b51e21c42828c9c879247c49f23e869ec65af3d",
+        "godot/scripts/blacksite_nine_presentation.gd": "f8d53a9e10118f7154d5416b486dcbde3b9a5f4b58704d7d48b8494cce6bdbea",
+        "godot/scripts/simulation_worker.gd": "f7beb32af68d75a5bea4b55e64fea917ea20c152840495e4b7240da4d6b90648",
+        "godot/scripts/physical_actor_session.gd": "e3bf07f7fd23f861f54c7eef906b14c2e9cc7e4520426375a34ec62f6b5c9a7d",
+        "godot/tests/test_showcase_actor_map_input.gd": "f207d4aff90793ca280cf6e5a08b192f14e12cb9e0097644d414f37862288dd6",
+        "godot/scripts/grey_area_51.gd": "f6ebd071092e1222d3ec78ed99f1f53f57b04e9646c2716f663560a8a1fb753b",
+        "godot/scripts/blacksite_nine.gd": "81b119e4b19a886f1864efc9dd3bbf2d61745adda7f6c470627cdc93acb28244"
+      },
+      "source_stable": true,
+      "log_sha256": "774dcb8928346ec6042574d1e8c143af861f67a16e2ddeb169d2173eef30bcd6",
+      "diagnostics": [],
+      "cases": [
+        "SHOWCASE_ACTOR_MAP_INPUT_CASE: showcase/grey-area-51 / sampled",
+        "SHOWCASE_ACTOR_MAP_INPUT_CASE: showcase/grey-area-51 / articulated",
+        "SHOWCASE_ACTOR_MAP_INPUT_CASE: showcase/blacksite-nine / sampled",
+        "SHOWCASE_ACTOR_MAP_INPUT_CASE: showcase/blacksite-nine / articulated"
+      ],
+      "assertions": 582,
+      "failures": 0,
+      "passed": true
+    },
+    "scope": "Only actor_keyboard_allowed() in main.gd plus the new focused rendered test; presenter key union added separately by root. No native source or runtime changes.",
+    "platform": "Linux x86_64 / Godot Compatibility OpenGL / Mesa llvmpipe / Xvfb :93, local IPC escalation required",
+    "actor_keyboard_allowed_sha256": "246f2884c0d346686fc337aa85473c4ce3708f83ccf811995b65335f5956afec",
+    "case_matrix": [
+      "SHOWCASE_ACTOR_MAP_INPUT_CASE: showcase/grey-area-51 / sampled",
+      "SHOWCASE_ACTOR_MAP_INPUT_CASE: showcase/grey-area-51 / articulated",
+      "SHOWCASE_ACTOR_MAP_INPUT_CASE: showcase/blacksite-nine / sampled",
+      "SHOWCASE_ACTOR_MAP_INPUT_CASE: showcase/blacksite-nine / articulated"
+    ],
+    "before_attempt": {
+      "log": "before-guard.log",
+      "evidence": "before-guard.json",
+      "assertions": 586,
+      "failures": 180,
+      "qualification": "Includes genuine actor modal/release-gate failures and 8 sampled equipment fixture assertions. The extra live equipment acknowledgement was removed in favor of a stopped-owner outgoing packet fixture; native usable effects are outside this test.",
+      "preserved_sources": [
+        "main.before-guard.gd",
+        "test_showcase_actor_map_input.before-guard.gd"
+      ]
+    },
+    "limits": [
+      "Rendered display is mandatory for actual Window.has_focus(); headless explicitly fails.",
+      "Actual native F5 actor installation and owner acknowledgement precede input tests. The native owner is then stopped. Sampled outgoing packets use a command sink; physical commands are read from the main-owned Rapier session. No live mutable native World reads.",
+      "The retained held state is injected after OS focus settles to isolate the map release fence from operating-system key clearing. Fresh logical and physical key positives prevent a focus-only false pass.",
+      "No browser-hosted Web execution or native actor/equipment behavior changes are claimed."
+    ],
+    "final_source_qualification": "This successful run preceded graphical layer ordering and actor-centre labeling edits to blacksite_nine_presentation.gd. The recorded presenter SHA is the actual tested earlier revision; its keyboard/input methods were unchanged by the later edits. Other listed source hashes still match. The final Grey integration and render checks cover subsequent graphical changes."
+  },
+  "captures": {
+    "files": [
+      {
+        "path": "docs/images/grey-area-51/01-intake-bastion.png",
+        "bytes": 108444,
+        "sha256": "fffcf6296a1cf6a640f2d35761a85c36b8332689bcd68d6a2ea39613a6e1dc88"
+      },
+      {
+        "path": "docs/images/grey-area-51/02-records-mortuary.png",
+        "bytes": 105096,
+        "sha256": "597d84f923ff961fe492dd65ef2effaac4d9c40faf1793c39a5ae47aa38513c1"
+      },
+      {
+        "path": "docs/images/grey-area-51/03-null-containment.png",
+        "bytes": 101523,
+        "sha256": "c8db5d1cff0e28be52c2df5ecac992cf549c31edb9ae9cbd28e3d5e4684fb7ff"
+      },
+      {
+        "path": "docs/images/grey-area-51/04-isotope-engine.png",
+        "bytes": 107158,
+        "sha256": "89cf578fa76c5ab99f0562e4f9ec59c07dd762f89369458228a1047a4bfeb6b7"
+      },
+      {
+        "path": "docs/images/grey-area-51/05-disposal-lock.png",
+        "bytes": 104133,
+        "sha256": "8c2f3280b8ac0948ab908aec842d59296c3046b94c7e10d190bacf12946529fb"
+      },
+      {
+        "path": "docs/images/grey-area-51/capture.json",
+        "bytes": 4913,
+        "sha256": "340f0d4f4effe615ce2577775c6eb02c8bcb012f7e9146fa71c4984a07dbf38a"
+      },
+      {
+        "path": "docs/images/grey-area-51/grey-area-51.png",
+        "bytes": 515666,
+        "sha256": "bd6786ecfee0bf4526de844fe794e172a31b88025b30cdf3dcfb7410f81c59f5"
+      },
+      {
+        "path": "docs/images/grey-area-51/grey-area-51.scenario.json",
+        "bytes": 37934,
+        "sha256": "adbd6372754e67ca88a50ff67ee0bac8101441123485c589c70a0b82198591dd"
+      }
+    ],
+    "manifest": {
+      "definition_file": "grey-area-51.scenario.json",
+      "definition_sha256": "73b3e5c17c61c54e80bff774a32de196e3c3945b1fb5f89327e8da1bddebba2f",
+      "display": "X11",
+      "godot": "4.7-stable (official)",
+      "identity": {
+        "godot": "4.7-stable (official)",
+        "material_catalogue": {
+          "authority": "native artifact; cell_world.gd identifies the UI mirror",
+          "count": 81,
+          "reserved_ids": [
+            10
+          ]
+        },
+        "native_path": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "native_sha256": "5bdc55e7f355004fc8a6468234b0d018d3919339ebfe47faca9997de3af17847",
+        "platform": "Linux",
+        "revision_status": "not-embedded",
+        "script_set_sha256": "4f2c8fef63d464cf902a4692bda6aec672d0f06df70233f73d2743dd257b1458",
+        "script_sha256": {
+          "scripts/cell_world.gd": "4c117c176c3255676963e2ae488f1688083dc34a380c8746d86affe4d5298f89",
+          "scripts/experiment_tower.gd": "aa65451d8bacba91c715445a41cd64ef3849d6dce4e207166abc1a9410a545e8",
+          "scripts/gameplay_recorder.gd": "d16aed6fdec7e5757522fd838ecc5e0c6f94ffdf4db2f71d6dabb3c4cb7b7c90",
+          "scripts/main.gd": "b686213652f814519f4d5d659b51e21c42828c9c879247c49f23e869ec65af3d",
+          "scripts/material_appearance_lut.gd": "a085a53ea83ffdca703139761e33d3b17f3110584bc77143fe04b129ebc9fa15",
+          "scripts/microscenario_catalogue.gd": "de2784914fbd9aef0d7da16bbccf217353aae644d669c93c3aba233c895d8614",
+          "scripts/microscenario_comparison.gd": "a4aab7a504db70698dafedb368384bcce61b73edaa01795b5ae368a8912a4890",
+          "scripts/microscenario_contract.gd": "74c0266a970de37af67a2455d6aa3693915046593b9822b79418146cc62a7aa0",
+          "scripts/microscenario_host.gd": "4bb2c74d5d8d8b4e2a670e59e8cf2a27e1e95efd192cf0d9cd4f5a891a853745",
+          "scripts/microscenario_identity.gd": "e4590e4e8520fb56bbc5cdb6a5256ec6375c2d9e506ec3b0da91749e5a10f04a",
+          "scripts/microscenario_panel.gd": "eeb0bc948eeff10a2f5b7a9c96afc46d01d817f98dab700e35202c14273a813c",
+          "scripts/microscenario_reference_pack.gd": "98e3c2f8d215c698ac4b13501934dec2e8c48fe8f992650be0f7b658a540480f",
+          "scripts/microscenario_telemetry.gd": "539c9832b3514b844cd650afe56683dc2933bc8ed01822d04c2c1f793a52903d",
+          "scripts/microscenario_workbench.gd": "e5b0aabc5579338e58c2d08cce7e0bd463bd01dd8a8629fe7c84e1fe61e09887",
+          "scripts/sampled_character.gd": "fb56187c5fa44cfd2124dd003fb2bb046d3ef5377e346c933d0bd377fa29fe40",
+          "scripts/simulation_snapshot.gd": "6b22a59dd2d5d3e32f102834b18d18db348515fccc364c69134842941ea4c88b",
+          "scripts/simulation_worker.gd": "f7beb32af68d75a5bea4b55e64fea917ea20c152840495e4b7240da4d6b90648",
+          "scripts/transport_profiles.gd": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+          "scripts/water_experiment_contract.gd": "80c3147e28885b099d67dcb89d4327e58d84fed7357c76d2d42db65cc8375d6a",
+          "scripts/water_experiment_profiles.gd": "172cd621c16561fce17f3a16e80a060007348201c2b901922531cd620dabaca5",
+          "scripts/water_feel_scenarios.gd": "3eed68b0cf4a986c516f7b7962b91ad71e1059998ca794c0563026322b8628f7",
+          "scripts/web_demo_controller.gd": "566615583a7c0f19af0d1ba224452b4e768a6a2c013448c973671b34ee2ddae3"
+        },
+        "source_revision": "unavailable",
+        "source_scope": "listed apparatus scripts; not a full checkout manifest"
+      },
+      "overview": "grey-area-51.png",
+      "paused": true,
+      "pixels_per_cell": 4,
+      "recipe_version": 1,
+      "record_count": 2404,
+      "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+      "scene": "showcase/grey-area-51",
+      "tick": 0,
+      "tiles": [
+        {
+          "code": "01",
+          "column": 0,
+          "file": "01-intake-bastion.png",
+          "name": "Intake Bastion",
+          "row": 0,
+          "world_origin": [
+            32,
+            32
+          ],
+          "world_size": [
+            192,
+            192
+          ]
+        },
+        {
+          "code": "02",
+          "column": 1,
+          "file": "02-records-mortuary.png",
+          "name": "Records Mortuary",
+          "row": 0,
+          "world_origin": [
+            224,
+            32
+          ],
+          "world_size": [
+            192,
+            192
+          ]
+        },
+        {
+          "code": "03",
+          "column": 2,
+          "file": "03-null-containment.png",
+          "name": "Null Containment",
+          "row": 0,
+          "world_origin": [
+            416,
+            32
+          ],
+          "world_size": [
+            192,
+            192
+          ]
+        },
+        {
+          "code": "04",
+          "column": 3,
+          "file": "04-isotope-engine.png",
+          "name": "Isotope Engine",
+          "row": 0,
+          "world_origin": [
+            608,
+            32
+          ],
+          "world_size": [
+            192,
+            192
+          ]
+        },
+        {
+          "code": "05",
+          "column": 4,
+          "file": "05-disposal-lock.png",
+          "name": "Disposal Lock",
+          "row": 0,
+          "world_origin": [
+            800,
+            32
+          ],
+          "world_size": [
+            192,
+            192
+          ]
+        }
+      ],
+      "title": "Grey Area 51",
+      "world_origin": [
+        32,
+        32
+      ],
+      "world_size": [
+        960,
+        192
+      ]
+    },
+    "validation": {
+      "atlas_pixels": [
+        3840,
+        768
+      ],
+      "tiles": 5,
+      "tile_pixels": [
+        768,
+        768
+      ],
+      "decoded_rgba_sha256": "e45b25755998f344d93c4a4fbdd4f9ff86f9bf61561d68511886924ffcee5578",
+      "reassembled_tiles_match_all_pixels": true,
+      "definition_sha256": "73b3e5c17c61c54e80bff774a32de196e3c3945b1fb5f89327e8da1bddebba2f",
+      "tick": 0,
+      "paused": true
+    },
+    "execution": {
+      "scratch_log": "logs/grey-area-51-final-capture.log",
+      "log_sha256": "2fc87e1f717390a00781a81f98b8596325ea4e135a873e9ed096ae80e165fb85",
+      "diagnostic_errors": [],
+      "result_lines": [
+        "GREY_AREA_51_CAPTURE {\"directory\":\"/workspace/scratch/fb9daf9fc631/grey-area-51/docs/images/grey-area-51\",\"hash\":\"73b3e5c17c61c54e80bff774a32de196e3c3945b1fb5f89327e8da1bddebba2f\",\"ok\":true,\"records\":2404,\"size\":[3840,768]}"
+      ]
+    },
+    "reproduction_command": "/tmp/grey-area-51-validation/run-rendered-godot.sh --path /workspace/scratch/fb9daf9fc631/grey-area-51/godot --script res://tools/capture_grey_area_51.gd -- --capture-dir=/workspace/scratch/fb9daf9fc631/grey-area-51/docs/images/grey-area-51 --pixels-per-cell=4",
+    "source_identity_note": "Capture executed after local implementation commit d9b19dbf4895588fe19abee6520d3864ce307829. The runtime identity reports source_revision unavailable/not-embedded; it is not silently replaced. All apparatus hashes in capture.json match this checkpoint, and the complete changed implementation SHA256 map above binds the Grey recipe/presenter/shaders/capture script."
+  },
+  "documentation_fixture_preservation": {
+    "previous_supplementary_questions": 73,
+    "current_supplementary_questions": 74,
+    "added_question": "SCENE04",
+    "prior_question_objects_unchanged": true,
+    "frozen_fixture_unchanged": true,
+    "frozen_fixture_sha256": "2ac95316e6c24c76623a010501a8845ee2d3ae2048fd447bb0cbbff4ff634c7a",
+    "previous_supplementary_sha256": "3e5bdef411fd0b730b348ae2200de4e8943611c8f9a38d69f3a3d3212d53066e",
+    "current_supplementary_sha256": "39bd0b03709cea7f77b59c7d725a47499e7df773498952f5b20187049d695efe",
+    "corpus_keys": [
+      "version",
+      "reviewed",
+      "scope",
+      "documents",
+      "navigation",
+      "excluded",
+      "integration_note"
+    ]
+  },
+  "repository_gates": {
+    "documentation": {
+      "command": "python3 tools/ci/check_docs.py --json /tmp/grey-area-51-validation/docs-check.json",
+      "exit_code": 0,
+      "result_sha256": "ff50eb195d67ae1ec574d3a12d1b76381de9b5ed147a5f2af4c4ed021c1d6ef5",
+      "result": {
+        "status": "passed",
+        "documents": 92,
+        "navigation_link_documents": 8,
+        "canonical_claims": 177,
+        "local_links": 1810,
+        "heading_anchors": 123,
+        "questions": 32,
+        "errors": [],
+        "warnings": [],
+        "limitations": [
+          "Does not verify source semantics or runtime claims",
+          "Does not fetch external URLs",
+          "Does not rewrite or reattest historical audits",
+          "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+        ]
+      }
+    },
+    "repository": {
+      "command": "python3 tools/ci/check_repository.py --require-materialized --json /tmp/grey-area-51-validation/repository-check.json",
+      "exit_code": 0,
+      "result_sha256": "c4b223da7ca896e4f0e6a7f7890871d68b6d59bb8da0ac5b9797b9b5100c3cd0",
+      "result": {
+        "status": "passed",
+        "scope": "current source/documentation and artifact identity",
+        "documentation": {
+          "status": "passed",
+          "documents": 92,
+          "navigation_link_documents": 8,
+          "canonical_claims": 177,
+          "local_links": 1810,
+          "heading_anchors": 123,
+          "questions": 32,
+          "errors": [],
+          "warnings": [],
+          "limitations": [
+            "Does not verify source semantics or runtime claims",
+            "Does not fetch external URLs",
+            "Does not rewrite or reattest historical audits",
+            "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+          ]
+        },
+        "materialized_runtime_files": [
+          "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+          "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+        ],
+        "unmaterialized_runtime_files": [],
+        "errors": [],
+        "limitations": [
+          "Identity is not execution evidence; read the dated runtime acceptance report",
+          "Retained vendor binaries and platform execution have separate dated provenance",
+          "Historical M11 integrity is checked separately by check_m11_consistency.py"
+        ]
+      }
+    },
+    "historical_m11": {
+      "command": "python3 tools/ci/check_m11_consistency.py --json /tmp/grey-area-51-validation/m11-check.json",
+      "exit_code": 0,
+      "result_sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+      "result": {
+        "status": "passed",
+        "scope": "historical M11 integrity; no current runtime acceptance",
+        "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+        "records_checked": 18,
+        "source_hashes_checked": 28,
+        "compare_working_tree": false,
+        "working_tree_differences": [],
+        "errors": []
+      }
+    },
+    "retrieval_frozen": {
+      "created_utc": "2026-10-19T20:48:29.614071+00:00",
+      "method": {
+        "name": "heading-chunk BM25 lexical development baseline",
+        "k": 5,
+        "maximum_body_words": 420,
+        "overlap_words": 0,
+        "k1": 1.2,
+        "b": 0.75,
+        "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+        "query_expansion": false,
+        "stemming": false,
+        "reranker": false,
+        "embeddings": false,
+        "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"
+      },
+      "fixture_sha256": "2ac95316e6c24c76623a010501a8845ee2d3ae2048fd447bb0cbbff4ff634c7a",
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "corpus_manifest_sha256": "fc1147393ef3ea502872e2adcd77d02f16ab7ada3d9a83fcabc4b416839ec7b9",
+      "document_count": 92,
+      "chunk_count": 997,
+      "summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 22,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.8333,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "report_sha256": "02f9865f6bf54ba05f92c3892720ecaf27daabb6ab96ab0e9564e7001f7cf690",
+      "canonical_ranks": {
+        "Q01": 1,
+        "Q02": 1,
+        "Q03": 2,
+        "Q04": 2,
+        "Q05": 1,
+        "Q06": 1,
+        "Q07": 1,
+        "Q08": 2,
+        "Q09": 1,
+        "Q10": 2,
+        "Q11": 1,
+        "Q12": 1,
+        "Q13": 1,
+        "Q14": 1,
+        "Q15": 1,
+        "Q16": 1,
+        "Q17": 3,
+        "Q18": 1,
+        "Q19": 2,
+        "Q20": 1,
+        "Q21": 1,
+        "Q22": 1,
+        "Q23": 1,
+        "Q24": 2,
+        "Q25": 1,
+        "Q26": 2,
+        "Q27": 1,
+        "Q28": 1,
+        "Q29": 3,
+        "Q30": 1,
+        "Q31": 1,
+        "Q32": 2
+      },
+      "corpus": [
+        {
+          "path": "docs/MATERIAL_LAB.md",
+          "sha256": "bd2c022b8749becf721fd717a2050d854a52be2d2ea1a0cdd7605b7df4ebc373",
+          "bytes": 11338
+        },
+        {
+          "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+          "sha256": "abdc43ca098be1f2170934fb8456807c40463d560b308d06eba990c8f84bd489",
+          "bytes": 8143
+        },
+        {
+          "path": "docs/architecture/data-ownership-and-lifetimes.md",
+          "sha256": "4d22376ab379c6bd9c81f5e0c7867852f3827ad00a74f4c722241d8c190dd694",
+          "bytes": 23458
+        },
+        {
+          "path": "docs/architecture/determinism-and-boundary-transfers.md",
+          "sha256": "915b4a914e39e41304592b8b9873856b7c9b9714a043ac9384669ee9163d200a",
+          "bytes": 7295
+        },
+        {
+          "path": "docs/architecture/item-authored-material-programs.md",
+          "sha256": "facc6f3209743cafff997bd775ab1b77114f05439bead78c17624e62c32ecd72",
+          "bytes": 5204
+        },
+        {
+          "path": "docs/architecture/module-boundaries.md",
+          "sha256": "251e1b180528c550a830078d35fa0fa03cf864f9a4030b2d1ceee19ec05a3231",
+          "bytes": 8075
+        },
+        {
+          "path": "docs/architecture/overview.md",
+          "sha256": "47a6d4646dabf966232808c48c21ba3d5178b327644aeb9ebd1ed356f4ab7144",
+          "bytes": 5292
+        },
+        {
+          "path": "docs/architecture/principles-and-non-goals.md",
+          "sha256": "8dd55cf5b315f460b844fa66307296f4f77eb8f5e29fc2ba5ad9d1f2df60c377",
+          "bytes": 6556
+        },
+        {
+          "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+          "sha256": "c848f86507b7888cf8ac9704fbcdb95f0c19f164c65d258595eb625e07971bdc",
+          "bytes": 6485
+        },
+        {
+          "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+          "sha256": "164942ca8bcddd79bb8dac43b30c4f08f9e3ff11309ba647f30919c0c777f774",
+          "bytes": 12412
+        },
+        {
+          "path": "docs/architecture/simulation-tick-and-threading.md",
+          "sha256": "5504beefb05486ffef1ef52d918ba418cb6a457737c4efadca5c2d9a3a6d0bfc",
+          "bytes": 13634
+        },
+        {
+          "path": "docs/architecture/soliding-lifecycle.md",
+          "sha256": "10832029af506bd5b593cfc8cb4eadc39ce6097674c66eb220ea745cdb191f80",
+          "bytes": 19320
+        },
+        {
+          "path": "docs/decisions/ADR-001-native-simulation-core.md",
+          "sha256": "183256ad4f0bb86477ebb52917ef5f39dbb473befe42a2ca9c8af7a1388cd0bf",
+          "bytes": 3490
+        },
+        {
+          "path": "docs/decisions/ADR-002-double-buffered-tile-jobs.md",
+          "sha256": "b621c6eac703579ed9c737e07fe67516f04b8e02deb90bc10745aba759ce2991",
+          "bytes": 3876
+        },
+        {
+          "path": "docs/decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+          "sha256": "5f6f4317020f9b423a326945dbc54d3d04d50ace0a911aa66d2d5228d333c343",
+          "bytes": 4207
+        },
+        {
+          "path": "docs/decisions/ADR-004-interest-region-and-reconfiguration.md",
+          "sha256": "9d445644a387b0ebcb75d2488409d52e1cf5739b8c79b4d063bb73be12689c3c",
+          "bytes": 5074
+        },
+        {
+          "path": "docs/decisions/ADR-005-water-model.md",
+          "sha256": "ca741af1d41237c2c6cc70c80e5f098bf10b4cca3098183168a1f386aa0ab9bc",
+          "bytes": 4594
+        },
+        {
+          "path": "docs/decisions/ADR-006-gpu-compute-deferral.md",
+          "sha256": "de55bb1adf6d8bdb3324c80558ccdbb71e422a4e494df09dccbfcb0bf909ca00",
+          "bytes": 3351
+        },
+        {
+          "path": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+          "sha256": "4176beaad08fca041922b87f8f8451a5a3b7b4831946d117119eeb21c7e466e9",
+          "bytes": 4438
+        },
+        {
+          "path": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+          "sha256": "f57b275187490cdc12c28456f9417a6eb4a73d2daf4a97ba9e6950e07568efe5",
+          "bytes": 6062
+        },
+        {
+          "path": "docs/decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+          "sha256": "5691c7f6aaaf99418cc03a651004cc58290cc6af3e03ed5a28dfa177673ab55f",
+          "bytes": 4394
+        },
+        {
+          "path": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+          "sha256": "7c3e320ab521c0dbfffc5f8831507f948c6614775dc294ca6f77aa5c742b7000",
+          "bytes": 2879
+        },
+        {
+          "path": "docs/decisions/ADR-011-granular-interaction-policy.md",
+          "sha256": "79b0d6bb92c5bc624f3d24b76b51837d2bf81ee22b277d88f8e5d0675b828c00",
+          "bytes": 4669
+        },
+        {
+          "path": "docs/operations/architecture-programme-water-feel-addendum.md",
+          "sha256": "ace6c7f6d05d1fbc8087bbbfb9ed93481df88835f9bf974eaa6b0e0e10f6ea51",
+          "bytes": 8984
+        },
+        {
+          "path": "docs/operations/architecture-programme.md",
+          "sha256": "b2cbd93062acfd0f9209bf8dd744416fa4b434080e0e3ebec3c8371ef6eb12df",
+          "bytes": 53063
+        },
+        {
+          "path": "docs/operations/blacksite-nine-demo.md",
+          "sha256": "c7512013acc45afc51a29e25c0091a9e4d4c4bcc12d996e885e427e329d208c0",
+          "bytes": 14148
+        },
+        {
+          "path": "docs/operations/cell-layout-experiment.md",
+          "sha256": "92d2ae798728bbd5203ed648b36dc16cf69c436880ac78a3f7af07e7ca3c6e58",
+          "bytes": 26101
+        },
+        {
+          "path": "docs/operations/configuration-and-capacity-budgets.md",
+          "sha256": "e825be20e11cc4f9761670b876b1f8743fc38ab83a02143ef28c119fbd2e190e",
+          "bytes": 12097
+        },
+        {
+          "path": "docs/operations/current-and-historical-validation.md",
+          "sha256": "6e06adf2a1a9c3ff0a3e5b40dfd02565e1e66e6dc4ca8d91f4acf16d95049ee2",
+          "bytes": 6408
+        },
+        {
+          "path": "docs/operations/cybersand-codex-development-handover.md",
+          "sha256": "320a74e46199a9c2e134c04efdc910364b181da8832496b9ff31d3d2e59c6dee",
+          "bytes": 31915
+        },
+        {
+          "path": "docs/operations/development-claims-remediation-programme.md",
+          "sha256": "91508be4c98b959775070251a3a2f7b8f7a2bda9d93876564b582294f4d47711",
+          "bytes": 14706
+        },
+        {
+          "path": "docs/operations/documentation-maintenance.md",
+          "sha256": "f3de7a4bab92bc23e8efbf1c8540c74ca124c3c56314c4ca793fd41ad2ef6068",
+          "bytes": 6809
+        },
+        {
+          "path": "docs/operations/experiment-tower.md",
+          "sha256": "f171c48fad0026b61c69ccd9e902b62963068eaeec78cdcb6513f55b499c9c05",
+          "bytes": 12858
+        },
+        {
+          "path": "docs/operations/gameplay-recording.md",
+          "sha256": "4af142f26f132ca52d7d28e56719f97827b2934f7601559df30140366872fa06",
+          "bytes": 12266
+        },
+        {
+          "path": "docs/operations/github-development-and-release.md",
+          "sha256": "1a40be078ad1d1f662e67e0e427aad8255a80ff1c6de77b254e9c3d00caf16ad",
+          "bytes": 9442
+        },
+        {
+          "path": "docs/operations/grey-area-51-demo.md",
+          "sha256": "32d0f9d358409d741389aaf065d9d96740edcef81db008c9c0fd8e03151caae3",
+          "bytes": 12754
+        },
+        {
+          "path": "docs/operations/liquid-characterization.md",
+          "sha256": "d18df9a9ed150165d6f51fff5469f77ce531374a4c7673a020955a194a826147",
+          "bytes": 4710
+        },
+        {
+          "path": "docs/operations/local-build-and-validation.md",
+          "sha256": "5d4c4e9aadbb795339f3da0c5255837dcc0fce4787c67a8bacd98a60fc773bd8",
+          "bytes": 29712
+        },
+        {
+          "path": "docs/operations/microscenario-reference-pack.md",
+          "sha256": "dfddad77cd621573fa8e29254b90765552fc8e2ec00159f008c27cb4f7ed1820",
+          "bytes": 16807
+        },
+        {
+          "path": "docs/operations/microscenarios-programme.md",
+          "sha256": "738f4d459942b6918f53d0ce7143c0fa38c695400401272adaad5ac00022f0fe",
+          "bytes": 28853
+        },
+        {
+          "path": "docs/operations/microscenarios.md",
+          "sha256": "37a3dc17233192b630252c72647194b07f429b018e49982bb285df0711d2459e",
+          "bytes": 20649
+        },
+        {
+          "path": "docs/operations/neon-reliquary-demo.md",
+          "sha256": "db57bf8976427464069e8dab42a05b78e5876a3be31feaa90a1ba9e1ba5e84ca",
+          "bytes": 14168
+        },
+        {
+          "path": "docs/operations/physical-actor-programme.md",
+          "sha256": "653d7219aa14ee3c786423018488a80a595d645e76850ee2893fff8b8ff6c1bd",
+          "bytes": 13347
+        },
+        {
+          "path": "docs/operations/physics-characterisation-plan.md",
+          "sha256": "c306e1e0539835caefa668c72f5a118f2d34f0fb0235305ce7462aaca75d3a0d",
+          "bytes": 22957
+        },
+        {
+          "path": "docs/operations/physics-characterisation.md",
+          "sha256": "f11e3bb7c8db180fdf90ccecfc5d3a93a05f54468a242f85d0f3322aecf1eab0",
+          "bytes": 20307
+        },
+        {
+          "path": "docs/operations/profiling-observability-and-performance.md",
+          "sha256": "7e76b4ca6e433099d18036d3f8cd1cafb38ddf0e3c8852cfe735d267838c2fcf",
+          "bytes": 8297
+        },
+        {
+          "path": "docs/operations/rapier-2d-migration-runbook.md",
+          "sha256": "42ac74e51b946ebeaf71670a76e88c9957a64181283dccee30c3983b809ce8f6",
+          "bytes": 5159
+        },
+        {
+          "path": "docs/operations/soliding-macro-fracture-fixture.md",
+          "sha256": "a5f29551330843705a1360108965609a9973d0d167604755dd9ba5b9d8ffdd43",
+          "bytes": 8314
+        },
+        {
+          "path": "docs/operations/soliding-measurement.md",
+          "sha256": "029b9fc75960e23e00737fd4a8ef5de4d93a9b68b53173a31b144890246f7127",
+          "bytes": 16631
+        },
+        {
+          "path": "docs/operations/soliding-programme.md",
+          "sha256": "9945607e405ff94199fe2aea91da7d4a2911b20c7f13629c7762d275bf8531f0",
+          "bytes": 9976
+        },
+        {
+          "path": "docs/operations/soliding-stage3-freeze.md",
+          "sha256": "e9bb416fbc00534936f31ec823ff4200084b9839e29b104ca06c6e5842a8f855",
+          "bytes": 25036
+        },
+        {
+          "path": "docs/operations/soliding-stage3b-production-plan.md",
+          "sha256": "a2c8b0df12e69eaddb5e36200fdac89d978d43ce5190242022cf83a6bef43919",
+          "bytes": 22377
+        },
+        {
+          "path": "docs/operations/source-checkpoint-and-recovery.md",
+          "sha256": "61b421444a590c6d896bb7b93d46f7c2f96bb4f4b74771d6c76ed859f4cb58b3",
+          "bytes": 10375
+        },
+        {
+          "path": "docs/operations/state-precision-experiment.md",
+          "sha256": "5ec8493d0aea4114c3049380cd6eae3be4d34a0dfc4ca8bfbebc67df3e800c0a",
+          "bytes": 10075
+        },
+        {
+          "path": "docs/operations/testing-validation-and-replay.md",
+          "sha256": "656a720cd26874a03f5472ae5d2f1853b1e8793be2d0f64a5fff7123c343a85f",
+          "bytes": 17978
+        },
+        {
+          "path": "docs/operations/troubleshooting.md",
+          "sha256": "eddf1c8591c8396dc22c2d257410e249caee20d189ff998601d472784f731b7d",
+          "bytes": 5027
+        },
+        {
+          "path": "docs/operations/water-feel-lab-experiment.md",
+          "sha256": "be7b1e0b54803ed85f611c979d2d98c58abdece6ba9902e4855e8298437b36e4",
+          "bytes": 14686
+        },
+        {
+          "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+          "sha256": "ab5cf209f9e72714c260f75f8fcdbb64f6f96ddd111b23a055fedf8e5615d08e",
+          "bytes": 34216
+        },
+        {
+          "path": "docs/operations/web-threading.md",
+          "sha256": "47c5c6b5e10363f9d5a8bf18c643470e94bcbc70e92d15337310cfa341ec55c4",
+          "bytes": 6183
+        },
+        {
+          "path": "docs/reference/configuration-reference.md",
+          "sha256": "f628f04b4bafb4e5dbe2f573274f96033654bf5accb9bf9817ba55dd5a097ea3",
+          "bytes": 38859
+        },
+        {
+          "path": "docs/reference/glossary.md",
+          "sha256": "123cb43131703c15362ff8f85ef5e343844db526c3107d90937e7c8288debdde",
+          "bytes": 6071
+        },
+        {
+          "path": "docs/reference/interfaces-and-message-contracts.md",
+          "sha256": "6b389414b15bb65f95b15fc03a97ce969b8a40206ce664adb7e4617f22e0c26a",
+          "bytes": 39531
+        },
+        {
+          "path": "docs/reference/invariants.md",
+          "sha256": "ceb9d2df186ea9a794e1616e4e37c1622ab9f0ee0643b8741736f9fee3791003",
+          "bytes": 20458
+        },
+        {
+          "path": "docs/reference/level-saves-and-replay.md",
+          "sha256": "96eb4be87b3018893684adb35747b4804e9091c92ed0a186bcc87372fd261181",
+          "bytes": 6484
+        },
+        {
+          "path": "docs/reference/material-effects-register.md",
+          "sha256": "30146259b2ef4dbc806930183a28fc0a8ea7fe4f96439e36b42ced99f771d148",
+          "bytes": 10938
+        },
+        {
+          "path": "docs/reference/product-intent-and-priorities.md",
+          "sha256": "6aa539f5072a5b84c438700c8665c9f56c0dbf10fc42836b1d660c7b685c93b5",
+          "bytes": 16075
+        },
+        {
+          "path": "docs/reference/status-and-roadmap.md",
+          "sha256": "c0a3cec3da1116b8e771793d80f2491c2dc2da1b6d7676ef4deb76d6c9fd860c",
+          "bytes": 45553
+        },
+        {
+          "path": "docs/reference/validation-evidence.md",
+          "sha256": "c327a990d3fc889d447701a5b6bce55a55045a8b52a57aef6e73dade02d6db1b",
+          "bytes": 31898
+        },
+        {
+          "path": "docs/research/bounded-decompression-impulse-events.md",
+          "sha256": "f7e168691be4c3534894004f1c11c0e4c35e1016eda94825a74c884f3fe5e102",
+          "bytes": 16290
+        },
+        {
+          "path": "docs/research/lumped-gas-region-pressure-bookkeeping.md",
+          "sha256": "dfa36ee21cb19208fd7bc2bd30992381df0ff780f5c86c474e23e3f26473c550",
+          "bytes": 20849
+        },
+        {
+          "path": "docs/research/sandspiel-performance-and-material-port.md",
+          "sha256": "239d4fc9ca44d86a0971659305c61decec2dcd7c14b5a3d17a0f79844fa61791",
+          "bytes": 7166
+        },
+        {
+          "path": "docs/systems/activity-dirty-regions-and-waking.md",
+          "sha256": "c95ef0118736e5c98fda7e0d13d9dcb05b0a39c7c483aa08e686c26ccff3db98",
+          "bytes": 10305
+        },
+        {
+          "path": "docs/systems/actor-control-prototypes.md",
+          "sha256": "8138d39e7323c4fdfa22b93eb8718a7dddaa3f1ac972f01c8deedde1b961495f",
+          "bytes": 18075
+        },
+        {
+          "path": "docs/systems/actor-rigs.md",
+          "sha256": "3d8894b3be355871c4b1086e91c9ca53445ca447354996587c7adac5b4945f6c",
+          "bytes": 25275
+        },
+        {
+          "path": "docs/systems/actor-usables.md",
+          "sha256": "5d8b808400fa16719ff978c5b661a439670080961043f0c45eced329186356cc",
+          "bytes": 16427
+        },
+        {
+          "path": "docs/systems/depth-layers-and-parallax.md",
+          "sha256": "94bb4f153ce9d26c02ae6887aa3e123b554bb75f2a254e684bf3e8c10719e608",
+          "bytes": 7302
+        },
+        {
+          "path": "docs/systems/flow-transport-and-profiles.md",
+          "sha256": "15e10e3d1df51e2745f7e36dd917453b7b6f9b05fc4077be7c98098f8908a2de",
+          "bytes": 7805
+        },
+        {
+          "path": "docs/systems/granular-interaction-policy.md",
+          "sha256": "d3c64b172e1b701471cf4a4823cc1919f9a1dcf9cb49be5dad5805c387644688",
+          "bytes": 12363
+        },
+        {
+          "path": "docs/systems/intermaterial-interactions.md",
+          "sha256": "4639e8eba71467fcfc8231bb1df9c55823ae8ced589036d563ba72c5f095fa69",
+          "bytes": 9689
+        },
+        {
+          "path": "docs/systems/material-appearance-and-rendering.md",
+          "sha256": "b2a5dffceb211c0a28445835ff330d9cf058e186214cc23a8675c8f6f4485455",
+          "bytes": 12866
+        },
+        {
+          "path": "docs/systems/material-visual-pattern-library.md",
+          "sha256": "2820a25ad61a9ff195e367346332c9cc150f37844547af20158e860baa3b66f6",
+          "bytes": 20872
+        },
+        {
+          "path": "docs/systems/materials-and-rule-kernels.md",
+          "sha256": "24a43015214856f003e53872547300780f58e0107a65779d5629f353bd1fb349",
+          "bytes": 12291
+        },
+        {
+          "path": "docs/systems/physical-actor-rigs.md",
+          "sha256": "c7bb2acdbe74e8f2732c2568ffe5bd8ecb7b0588d40b681cfc992f1f69ef0675",
+          "bytes": 15638
+        },
+        {
+          "path": "docs/systems/player-environment-profiles-and-traversal.md",
+          "sha256": "d2d3b683c30868f4f9161ad9a8b7b9b26146e99049be950443f3557554f38042",
+          "bytes": 6898
+        },
+        {
+          "path": "docs/systems/procedural-generation-fields-and-modifiers.md",
+          "sha256": "ee488ad84d7499bbdd252e702eab61537635954de2bac98e88fdafa2e9da5c01",
+          "bytes": 21054
+        },
+        {
+          "path": "docs/systems/procedural-world-generation.md",
+          "sha256": "59e614cb6ad34c2681f732b5bcac7e511842f197de52fbc90f0d2a22a2917d0b",
+          "bytes": 24781
+        },
+        {
+          "path": "docs/systems/settled-region-discovery.md",
+          "sha256": "1bb29704ecd99425abadfbd2dd58d753bb12bbbdb00679f70562e8821778c1ba",
+          "bytes": 22753
+        },
+        {
+          "path": "docs/systems/smoke-heat-pressure-roadmap.md",
+          "sha256": "a147e13269dac95dd5b4d57c329686c2761acec4c64209c6a49c2e2d8ba2019c",
+          "bytes": 6117
+        },
+        {
+          "path": "docs/systems/themed-construction-materials.md",
+          "sha256": "6ed67b79360581f3d1249b1e21c326f00a9571b4afdb5f5d87d0a4df138827bd",
+          "bytes": 9762
+        },
+        {
+          "path": "docs/systems/thunderbowl-control-reference.md",
+          "sha256": "c8aa8a419213c0aa849cfa059a3505cf8a0f983640b9ea9453877e72d0e95c70",
+          "bytes": 40819
+        },
+        {
+          "path": "docs/systems/water-design.md",
+          "sha256": "2c0120b5e1cff9ee8e86741c39387ab5fb68e5df1bfe2c4f7bd3d583c0088d4c",
+          "bytes": 17179
+        },
+        {
+          "path": "docs/systems/world-storage-and-interest-region.md",
+          "sha256": "3aa36c9771645fe972228d9d4144cc46b2d05a3d14401bc72c94e659e48c9ba9",
+          "bytes": 12383
+        }
+      ]
+    },
+    "retrieval_supplementary": {
+      "created_utc": "2026-10-19T20:48:29.194636+00:00",
+      "method": {
+        "name": "heading-chunk BM25 lexical development baseline",
+        "k": 5,
+        "maximum_body_words": 420,
+        "overlap_words": 0,
+        "k1": 1.2,
+        "b": 0.75,
+        "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+        "query_expansion": false,
+        "stemming": false,
+        "reranker": false,
+        "embeddings": false,
+        "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"
+      },
+      "fixture_sha256": "39bd0b03709cea7f77b59c7d725a47499e7df773498952f5b20187049d695efe",
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "corpus_manifest_sha256": "fc1147393ef3ea502872e2adcd77d02f16ab7ada3d9a83fcabc4b416839ec7b9",
+      "document_count": 92,
+      "chunk_count": 997,
+      "summary": {
+        "questions": 74,
+        "canonical_hit_at_1": 56,
+        "canonical_hit_at_k": 74,
+        "mrr_at_k": 0.8563,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "report_sha256": "ba59a5ce2119d25aefd6b35880bbdb5aea960413387d7269279aa95b02de2b24",
+      "canonical_ranks": {
+        "C05": 4,
+        "C06": 2,
+        "C01": 1,
+        "C02": 1,
+        "C03": 3,
+        "C04": 1,
+        "C07": 1,
+        "C08": 1,
+        "C09": 5,
+        "C10": 1,
+        "C11": 2,
+        "C12": 1,
+        "C13": 1,
+        "C14": 1,
+        "C15": 1,
+        "C16": 2,
+        "MS01": 1,
+        "MS02": 3,
+        "MS03": 1,
+        "MS04": 2,
+        "MS05": 4,
+        "SOL01": 2,
+        "SOL02": 2,
+        "SOL03": 1,
+        "MS06": 1,
+        "REM01": 1,
+        "REM02": 1,
+        "WEX01": 1,
+        "WEX02": 1,
+        "WEX03": 1,
+        "REC01": 1,
+        "REC02": 2,
+        "REC03": 1,
+        "SOL04": 1,
+        "MAT01": 1,
+        "MAT02": 1,
+        "SCENE01": 1,
+        "SCENE02": 1,
+        "ACT01": 1,
+        "ACT02": 1,
+        "ACT03": 1,
+        "ACT04": 1,
+        "ACT05": 1,
+        "ACT06": 1,
+        "ACT07": 1,
+        "ACT08": 1,
+        "ACT09": 1,
+        "SCENE03": 1,
+        "GEN01": 4,
+        "GEN02": 1,
+        "GEN03": 1,
+        "GEN04": 1,
+        "GEN05": 1,
+        "GEN06": 1,
+        "GEN07": 1,
+        "GEN08": 1,
+        "THB01": 1,
+        "THB02": 1,
+        "THB03": 1,
+        "THB04": 1,
+        "THB05": 1,
+        "THB06": 1,
+        "ACT10": 2,
+        "DEP01": 1,
+        "ACT11": 1,
+        "ACT12": 1,
+        "ACT13": 1,
+        "ACT14": 2,
+        "ACT15": 1,
+        "USABLE01": 2,
+        "USABLE02": 4,
+        "USABLE03": 2,
+        "USABLE04": 1,
+        "SCENE04": 1
+      },
+      "corpus": [
+        {
+          "path": "docs/MATERIAL_LAB.md",
+          "sha256": "bd2c022b8749becf721fd717a2050d854a52be2d2ea1a0cdd7605b7df4ebc373",
+          "bytes": 11338
+        },
+        {
+          "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+          "sha256": "abdc43ca098be1f2170934fb8456807c40463d560b308d06eba990c8f84bd489",
+          "bytes": 8143
+        },
+        {
+          "path": "docs/architecture/data-ownership-and-lifetimes.md",
+          "sha256": "4d22376ab379c6bd9c81f5e0c7867852f3827ad00a74f4c722241d8c190dd694",
+          "bytes": 23458
+        },
+        {
+          "path": "docs/architecture/determinism-and-boundary-transfers.md",
+          "sha256": "915b4a914e39e41304592b8b9873856b7c9b9714a043ac9384669ee9163d200a",
+          "bytes": 7295
+        },
+        {
+          "path": "docs/architecture/item-authored-material-programs.md",
+          "sha256": "facc6f3209743cafff997bd775ab1b77114f05439bead78c17624e62c32ecd72",
+          "bytes": 5204
+        },
+        {
+          "path": "docs/architecture/module-boundaries.md",
+          "sha256": "251e1b180528c550a830078d35fa0fa03cf864f9a4030b2d1ceee19ec05a3231",
+          "bytes": 8075
+        },
+        {
+          "path": "docs/architecture/overview.md",
+          "sha256": "47a6d4646dabf966232808c48c21ba3d5178b327644aeb9ebd1ed356f4ab7144",
+          "bytes": 5292
+        },
+        {
+          "path": "docs/architecture/principles-and-non-goals.md",
+          "sha256": "8dd55cf5b315f460b844fa66307296f4f77eb8f5e29fc2ba5ad9d1f2df60c377",
+          "bytes": 6556
+        },
+        {
+          "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+          "sha256": "c848f86507b7888cf8ac9704fbcdb95f0c19f164c65d258595eb625e07971bdc",
+          "bytes": 6485
+        },
+        {
+          "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+          "sha256": "164942ca8bcddd79bb8dac43b30c4f08f9e3ff11309ba647f30919c0c777f774",
+          "bytes": 12412
+        },
+        {
+          "path": "docs/architecture/simulation-tick-and-threading.md",
+          "sha256": "5504beefb05486ffef1ef52d918ba418cb6a457737c4efadca5c2d9a3a6d0bfc",
+          "bytes": 13634
+        },
+        {
+          "path": "docs/architecture/soliding-lifecycle.md",
+          "sha256": "10832029af506bd5b593cfc8cb4eadc39ce6097674c66eb220ea745cdb191f80",
+          "bytes": 19320
+        },
+        {
+          "path": "docs/decisions/ADR-001-native-simulation-core.md",
+          "sha256": "183256ad4f0bb86477ebb52917ef5f39dbb473befe42a2ca9c8af7a1388cd0bf",
+          "bytes": 3490
+        },
+        {
+          "path": "docs/decisions/ADR-002-double-buffered-tile-jobs.md",
+          "sha256": "b621c6eac703579ed9c737e07fe67516f04b8e02deb90bc10745aba759ce2991",
+          "bytes": 3876
+        },
+        {
+          "path": "docs/decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+          "sha256": "5f6f4317020f9b423a326945dbc54d3d04d50ace0a911aa66d2d5228d333c343",
+          "bytes": 4207
+        },
+        {
+          "path": "docs/decisions/ADR-004-interest-region-and-reconfiguration.md",
+          "sha256": "9d445644a387b0ebcb75d2488409d52e1cf5739b8c79b4d063bb73be12689c3c",
+          "bytes": 5074
+        },
+        {
+          "path": "docs/decisions/ADR-005-water-model.md",
+          "sha256": "ca741af1d41237c2c6cc70c80e5f098bf10b4cca3098183168a1f386aa0ab9bc",
+          "bytes": 4594
+        },
+        {
+          "path": "docs/decisions/ADR-006-gpu-compute-deferral.md",
+          "sha256": "de55bb1adf6d8bdb3324c80558ccdbb71e422a4e494df09dccbfcb0bf909ca00",
+          "bytes": 3351
+        },
+        {
+          "path": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+          "sha256": "4176beaad08fca041922b87f8f8451a5a3b7b4831946d117119eeb21c7e466e9",
+          "bytes": 4438
+        },
+        {
+          "path": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+          "sha256": "f57b275187490cdc12c28456f9417a6eb4a73d2daf4a97ba9e6950e07568efe5",
+          "bytes": 6062
+        },
+        {
+          "path": "docs/decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+          "sha256": "5691c7f6aaaf99418cc03a651004cc58290cc6af3e03ed5a28dfa177673ab55f",
+          "bytes": 4394
+        },
+        {
+          "path": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+          "sha256": "7c3e320ab521c0dbfffc5f8831507f948c6614775dc294ca6f77aa5c742b7000",
+          "bytes": 2879
+        },
+        {
+          "path": "docs/decisions/ADR-011-granular-interaction-policy.md",
+          "sha256": "79b0d6bb92c5bc624f3d24b76b51837d2bf81ee22b277d88f8e5d0675b828c00",
+          "bytes": 4669
+        },
+        {
+          "path": "docs/operations/architecture-programme-water-feel-addendum.md",
+          "sha256": "ace6c7f6d05d1fbc8087bbbfb9ed93481df88835f9bf974eaa6b0e0e10f6ea51",
+          "bytes": 8984
+        },
+        {
+          "path": "docs/operations/architecture-programme.md",
+          "sha256": "b2cbd93062acfd0f9209bf8dd744416fa4b434080e0e3ebec3c8371ef6eb12df",
+          "bytes": 53063
+        },
+        {
+          "path": "docs/operations/blacksite-nine-demo.md",
+          "sha256": "c7512013acc45afc51a29e25c0091a9e4d4c4bcc12d996e885e427e329d208c0",
+          "bytes": 14148
+        },
+        {
+          "path": "docs/operations/cell-layout-experiment.md",
+          "sha256": "92d2ae798728bbd5203ed648b36dc16cf69c436880ac78a3f7af07e7ca3c6e58",
+          "bytes": 26101
+        },
+        {
+          "path": "docs/operations/configuration-and-capacity-budgets.md",
+          "sha256": "e825be20e11cc4f9761670b876b1f8743fc38ab83a02143ef28c119fbd2e190e",
+          "bytes": 12097
+        },
+        {
+          "path": "docs/operations/current-and-historical-validation.md",
+          "sha256": "6e06adf2a1a9c3ff0a3e5b40dfd02565e1e66e6dc4ca8d91f4acf16d95049ee2",
+          "bytes": 6408
+        },
+        {
+          "path": "docs/operations/cybersand-codex-development-handover.md",
+          "sha256": "320a74e46199a9c2e134c04efdc910364b181da8832496b9ff31d3d2e59c6dee",
+          "bytes": 31915
+        },
+        {
+          "path": "docs/operations/development-claims-remediation-programme.md",
+          "sha256": "91508be4c98b959775070251a3a2f7b8f7a2bda9d93876564b582294f4d47711",
+          "bytes": 14706
+        },
+        {
+          "path": "docs/operations/documentation-maintenance.md",
+          "sha256": "f3de7a4bab92bc23e8efbf1c8540c74ca124c3c56314c4ca793fd41ad2ef6068",
+          "bytes": 6809
+        },
+        {
+          "path": "docs/operations/experiment-tower.md",
+          "sha256": "f171c48fad0026b61c69ccd9e902b62963068eaeec78cdcb6513f55b499c9c05",
+          "bytes": 12858
+        },
+        {
+          "path": "docs/operations/gameplay-recording.md",
+          "sha256": "4af142f26f132ca52d7d28e56719f97827b2934f7601559df30140366872fa06",
+          "bytes": 12266
+        },
+        {
+          "path": "docs/operations/github-development-and-release.md",
+          "sha256": "1a40be078ad1d1f662e67e0e427aad8255a80ff1c6de77b254e9c3d00caf16ad",
+          "bytes": 9442
+        },
+        {
+          "path": "docs/operations/grey-area-51-demo.md",
+          "sha256": "32d0f9d358409d741389aaf065d9d96740edcef81db008c9c0fd8e03151caae3",
+          "bytes": 12754
+        },
+        {
+          "path": "docs/operations/liquid-characterization.md",
+          "sha256": "d18df9a9ed150165d6f51fff5469f77ce531374a4c7673a020955a194a826147",
+          "bytes": 4710
+        },
+        {
+          "path": "docs/operations/local-build-and-validation.md",
+          "sha256": "5d4c4e9aadbb795339f3da0c5255837dcc0fce4787c67a8bacd98a60fc773bd8",
+          "bytes": 29712
+        },
+        {
+          "path": "docs/operations/microscenario-reference-pack.md",
+          "sha256": "dfddad77cd621573fa8e29254b90765552fc8e2ec00159f008c27cb4f7ed1820",
+          "bytes": 16807
+        },
+        {
+          "path": "docs/operations/microscenarios-programme.md",
+          "sha256": "738f4d459942b6918f53d0ce7143c0fa38c695400401272adaad5ac00022f0fe",
+          "bytes": 28853
+        },
+        {
+          "path": "docs/operations/microscenarios.md",
+          "sha256": "37a3dc17233192b630252c72647194b07f429b018e49982bb285df0711d2459e",
+          "bytes": 20649
+        },
+        {
+          "path": "docs/operations/neon-reliquary-demo.md",
+          "sha256": "db57bf8976427464069e8dab42a05b78e5876a3be31feaa90a1ba9e1ba5e84ca",
+          "bytes": 14168
+        },
+        {
+          "path": "docs/operations/physical-actor-programme.md",
+          "sha256": "653d7219aa14ee3c786423018488a80a595d645e76850ee2893fff8b8ff6c1bd",
+          "bytes": 13347
+        },
+        {
+          "path": "docs/operations/physics-characterisation-plan.md",
+          "sha256": "c306e1e0539835caefa668c72f5a118f2d34f0fb0235305ce7462aaca75d3a0d",
+          "bytes": 22957
+        },
+        {
+          "path": "docs/operations/physics-characterisation.md",
+          "sha256": "f11e3bb7c8db180fdf90ccecfc5d3a93a05f54468a242f85d0f3322aecf1eab0",
+          "bytes": 20307
+        },
+        {
+          "path": "docs/operations/profiling-observability-and-performance.md",
+          "sha256": "7e76b4ca6e433099d18036d3f8cd1cafb38ddf0e3c8852cfe735d267838c2fcf",
+          "bytes": 8297
+        },
+        {
+          "path": "docs/operations/rapier-2d-migration-runbook.md",
+          "sha256": "42ac74e51b946ebeaf71670a76e88c9957a64181283dccee30c3983b809ce8f6",
+          "bytes": 5159
+        },
+        {
+          "path": "docs/operations/soliding-macro-fracture-fixture.md",
+          "sha256": "a5f29551330843705a1360108965609a9973d0d167604755dd9ba5b9d8ffdd43",
+          "bytes": 8314
+        },
+        {
+          "path": "docs/operations/soliding-measurement.md",
+          "sha256": "029b9fc75960e23e00737fd4a8ef5de4d93a9b68b53173a31b144890246f7127",
+          "bytes": 16631
+        },
+        {
+          "path": "docs/operations/soliding-programme.md",
+          "sha256": "9945607e405ff94199fe2aea91da7d4a2911b20c7f13629c7762d275bf8531f0",
+          "bytes": 9976
+        },
+        {
+          "path": "docs/operations/soliding-stage3-freeze.md",
+          "sha256": "e9bb416fbc00534936f31ec823ff4200084b9839e29b104ca06c6e5842a8f855",
+          "bytes": 25036
+        },
+        {
+          "path": "docs/operations/soliding-stage3b-production-plan.md",
+          "sha256": "a2c8b0df12e69eaddb5e36200fdac89d978d43ce5190242022cf83a6bef43919",
+          "bytes": 22377
+        },
+        {
+          "path": "docs/operations/source-checkpoint-and-recovery.md",
+          "sha256": "61b421444a590c6d896bb7b93d46f7c2f96bb4f4b74771d6c76ed859f4cb58b3",
+          "bytes": 10375
+        },
+        {
+          "path": "docs/operations/state-precision-experiment.md",
+          "sha256": "5ec8493d0aea4114c3049380cd6eae3be4d34a0dfc4ca8bfbebc67df3e800c0a",
+          "bytes": 10075
+        },
+        {
+          "path": "docs/operations/testing-validation-and-replay.md",
+          "sha256": "656a720cd26874a03f5472ae5d2f1853b1e8793be2d0f64a5fff7123c343a85f",
+          "bytes": 17978
+        },
+        {
+          "path": "docs/operations/troubleshooting.md",
+          "sha256": "eddf1c8591c8396dc22c2d257410e249caee20d189ff998601d472784f731b7d",
+          "bytes": 5027
+        },
+        {
+          "path": "docs/operations/water-feel-lab-experiment.md",
+          "sha256": "be7b1e0b54803ed85f611c979d2d98c58abdece6ba9902e4855e8298437b36e4",
+          "bytes": 14686
+        },
+        {
+          "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+          "sha256": "ab5cf209f9e72714c260f75f8fcdbb64f6f96ddd111b23a055fedf8e5615d08e",
+          "bytes": 34216
+        },
+        {
+          "path": "docs/operations/web-threading.md",
+          "sha256": "47c5c6b5e10363f9d5a8bf18c643470e94bcbc70e92d15337310cfa341ec55c4",
+          "bytes": 6183
+        },
+        {
+          "path": "docs/reference/configuration-reference.md",
+          "sha256": "f628f04b4bafb4e5dbe2f573274f96033654bf5accb9bf9817ba55dd5a097ea3",
+          "bytes": 38859
+        },
+        {
+          "path": "docs/reference/glossary.md",
+          "sha256": "123cb43131703c15362ff8f85ef5e343844db526c3107d90937e7c8288debdde",
+          "bytes": 6071
+        },
+        {
+          "path": "docs/reference/interfaces-and-message-contracts.md",
+          "sha256": "6b389414b15bb65f95b15fc03a97ce969b8a40206ce664adb7e4617f22e0c26a",
+          "bytes": 39531
+        },
+        {
+          "path": "docs/reference/invariants.md",
+          "sha256": "ceb9d2df186ea9a794e1616e4e37c1622ab9f0ee0643b8741736f9fee3791003",
+          "bytes": 20458
+        },
+        {
+          "path": "docs/reference/level-saves-and-replay.md",
+          "sha256": "96eb4be87b3018893684adb35747b4804e9091c92ed0a186bcc87372fd261181",
+          "bytes": 6484
+        },
+        {
+          "path": "docs/reference/material-effects-register.md",
+          "sha256": "30146259b2ef4dbc806930183a28fc0a8ea7fe4f96439e36b42ced99f771d148",
+          "bytes": 10938
+        },
+        {
+          "path": "docs/reference/product-intent-and-priorities.md",
+          "sha256": "6aa539f5072a5b84c438700c8665c9f56c0dbf10fc42836b1d660c7b685c93b5",
+          "bytes": 16075
+        },
+        {
+          "path": "docs/reference/status-and-roadmap.md",
+          "sha256": "c0a3cec3da1116b8e771793d80f2491c2dc2da1b6d7676ef4deb76d6c9fd860c",
+          "bytes": 45553
+        },
+        {
+          "path": "docs/reference/validation-evidence.md",
+          "sha256": "c327a990d3fc889d447701a5b6bce55a55045a8b52a57aef6e73dade02d6db1b",
+          "bytes": 31898
+        },
+        {
+          "path": "docs/research/bounded-decompression-impulse-events.md",
+          "sha256": "f7e168691be4c3534894004f1c11c0e4c35e1016eda94825a74c884f3fe5e102",
+          "bytes": 16290
+        },
+        {
+          "path": "docs/research/lumped-gas-region-pressure-bookkeeping.md",
+          "sha256": "dfa36ee21cb19208fd7bc2bd30992381df0ff780f5c86c474e23e3f26473c550",
+          "bytes": 20849
+        },
+        {
+          "path": "docs/research/sandspiel-performance-and-material-port.md",
+          "sha256": "239d4fc9ca44d86a0971659305c61decec2dcd7c14b5a3d17a0f79844fa61791",
+          "bytes": 7166
+        },
+        {
+          "path": "docs/systems/activity-dirty-regions-and-waking.md",
+          "sha256": "c95ef0118736e5c98fda7e0d13d9dcb05b0a39c7c483aa08e686c26ccff3db98",
+          "bytes": 10305
+        },
+        {
+          "path": "docs/systems/actor-control-prototypes.md",
+          "sha256": "8138d39e7323c4fdfa22b93eb8718a7dddaa3f1ac972f01c8deedde1b961495f",
+          "bytes": 18075
+        },
+        {
+          "path": "docs/systems/actor-rigs.md",
+          "sha256": "3d8894b3be355871c4b1086e91c9ca53445ca447354996587c7adac5b4945f6c",
+          "bytes": 25275
+        },
+        {
+          "path": "docs/systems/actor-usables.md",
+          "sha256": "5d8b808400fa16719ff978c5b661a439670080961043f0c45eced329186356cc",
+          "bytes": 16427
+        },
+        {
+          "path": "docs/systems/depth-layers-and-parallax.md",
+          "sha256": "94bb4f153ce9d26c02ae6887aa3e123b554bb75f2a254e684bf3e8c10719e608",
+          "bytes": 7302
+        },
+        {
+          "path": "docs/systems/flow-transport-and-profiles.md",
+          "sha256": "15e10e3d1df51e2745f7e36dd917453b7b6f9b05fc4077be7c98098f8908a2de",
+          "bytes": 7805
+        },
+        {
+          "path": "docs/systems/granular-interaction-policy.md",
+          "sha256": "d3c64b172e1b701471cf4a4823cc1919f9a1dcf9cb49be5dad5805c387644688",
+          "bytes": 12363
+        },
+        {
+          "path": "docs/systems/intermaterial-interactions.md",
+          "sha256": "4639e8eba71467fcfc8231bb1df9c55823ae8ced589036d563ba72c5f095fa69",
+          "bytes": 9689
+        },
+        {
+          "path": "docs/systems/material-appearance-and-rendering.md",
+          "sha256": "b2a5dffceb211c0a28445835ff330d9cf058e186214cc23a8675c8f6f4485455",
+          "bytes": 12866
+        },
+        {
+          "path": "docs/systems/material-visual-pattern-library.md",
+          "sha256": "2820a25ad61a9ff195e367346332c9cc150f37844547af20158e860baa3b66f6",
+          "bytes": 20872
+        },
+        {
+          "path": "docs/systems/materials-and-rule-kernels.md",
+          "sha256": "24a43015214856f003e53872547300780f58e0107a65779d5629f353bd1fb349",
+          "bytes": 12291
+        },
+        {
+          "path": "docs/systems/physical-actor-rigs.md",
+          "sha256": "c7bb2acdbe74e8f2732c2568ffe5bd8ecb7b0588d40b681cfc992f1f69ef0675",
+          "bytes": 15638
+        },
+        {
+          "path": "docs/systems/player-environment-profiles-and-traversal.md",
+          "sha256": "d2d3b683c30868f4f9161ad9a8b7b9b26146e99049be950443f3557554f38042",
+          "bytes": 6898
+        },
+        {
+          "path": "docs/systems/procedural-generation-fields-and-modifiers.md",
+          "sha256": "ee488ad84d7499bbdd252e702eab61537635954de2bac98e88fdafa2e9da5c01",
+          "bytes": 21054
+        },
+        {
+          "path": "docs/systems/procedural-world-generation.md",
+          "sha256": "59e614cb6ad34c2681f732b5bcac7e511842f197de52fbc90f0d2a22a2917d0b",
+          "bytes": 24781
+        },
+        {
+          "path": "docs/systems/settled-region-discovery.md",
+          "sha256": "1bb29704ecd99425abadfbd2dd58d753bb12bbbdb00679f70562e8821778c1ba",
+          "bytes": 22753
+        },
+        {
+          "path": "docs/systems/smoke-heat-pressure-roadmap.md",
+          "sha256": "a147e13269dac95dd5b4d57c329686c2761acec4c64209c6a49c2e2d8ba2019c",
+          "bytes": 6117
+        },
+        {
+          "path": "docs/systems/themed-construction-materials.md",
+          "sha256": "6ed67b79360581f3d1249b1e21c326f00a9571b4afdb5f5d87d0a4df138827bd",
+          "bytes": 9762
+        },
+        {
+          "path": "docs/systems/thunderbowl-control-reference.md",
+          "sha256": "c8aa8a419213c0aa849cfa059a3505cf8a0f983640b9ea9453877e72d0e95c70",
+          "bytes": 40819
+        },
+        {
+          "path": "docs/systems/water-design.md",
+          "sha256": "2c0120b5e1cff9ee8e86741c39387ab5fb68e5df1bfe2c4f7bd3d583c0088d4c",
+          "bytes": 17179
+        },
+        {
+          "path": "docs/systems/world-storage-and-interest-region.md",
+          "sha256": "3aa36c9771645fe972228d9d4144cc46b2d05a3d14401bc72c94e659e48c9ba9",
+          "bytes": 12383
+        }
+      ]
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "diagnostics": []
+    },
+    "status": "documentation-repository-and-historical-integrity-passed; retrieval-all-canonical-routes-found-with-qualified-answer-coverage",
+    "retrieval_review": {
+      "created_utc": "2026-10-19T20:52:42.658025+00:00",
+      "source": {
+        "repository": "/workspace/scratch/fb9daf9fc631/grey-area-51",
+        "documentation_state": "The gates inspected working-tree documentation and evidence on implementation commit d9b19dbf4895588fe19abee6520d3864ce307829. The parent then committed the documentation while this review was completing.",
+        "working_tree_status_after": [],
+        "input_manifest": "/tmp/grey-area-51-validation/doc-gates-inputs-before.json",
+        "input_manifest_sha256": "29d7375dd44629d3d5d01ad8dac79ef9b54eaec71261120f89372c0ca86e9f9f",
+        "captured_input_files": 209,
+        "changed_inputs_during_review": [
+          "docs/audits/2026-10-19-grey-area-51.md"
+        ],
+        "implementation_commit_at_gate_start": "d9b19dbf4895588fe19abee6520d3864ce307829",
+        "repository_head_observed_after_initial_review": "d4de739e1ec173cd1e3f550c07cf34c544a58866",
+        "repository_head_observed_at_fixture_correction": "40c27d7f6ef1cc8de022c9ae00347ab074a82af1",
+        "source_timing_caveat": "The parent appended the Grey audit publication/gate section and advanced repository HEAD during the read-only review. The documentation checker output predates that append and does not attest the subsequent audit text. The changed audit is outside the retrieval corpus; all corpus documents, both query fixtures, the corpus manifest and evaluator still match the saved retrieval-run hashes. No gate rerun was performed.",
+        "changed_inputs_as_of_fixture_correction": [
+          "docs/audits/2026-10-19-grey-area-51.md"
+        ],
+        "retrieval_inputs_unchanged": true,
+        "retrieval_corpus_hash_mismatches": []
+      },
+      "gate_processes": [
+        {
+          "name": "documentation",
+          "command": "python3 tools/ci/check_docs.py --json /tmp/grey-area-51-validation/docs-check.json",
+          "executed_command": "python3 tools/ci/check_docs.py --json /tmp/grey-area-51-validation/docs-check.json > /tmp/grey-area-51-validation/docs-check.log 2>&1",
+          "log": "/tmp/grey-area-51-validation/docs-check.log",
+          "exit_code": 0,
+          "wall_time_seconds": 0.612412327,
+          "cwd": "/workspace/scratch/fb9daf9fc631/grey-area-51",
+          "output": "/tmp/grey-area-51-validation/docs-check.json",
+          "output_sha256": "ff50eb195d67ae1ec574d3a12d1b76381de9b5ed147a5f2af4c4ed021c1d6ef5",
+          "log_sha256": "ff50eb195d67ae1ec574d3a12d1b76381de9b5ed147a5f2af4c4ed021c1d6ef5"
+        },
+        {
+          "name": "frozen_retrieval",
+          "command": "python3 tools/docs/retrieval_eval.py --output /tmp/grey-area-51-validation/retrieval-frozen.json",
+          "executed_command": "python3 tools/docs/retrieval_eval.py --output /tmp/grey-area-51-validation/retrieval-frozen.json > /tmp/grey-area-51-validation/retrieval-frozen.log 2>&1",
+          "log": "/tmp/grey-area-51-validation/retrieval-frozen.log",
+          "exit_code": 0,
+          "wall_time_seconds": 1.5338462929999999,
+          "cwd": "/workspace/scratch/fb9daf9fc631/grey-area-51",
+          "output": "/tmp/grey-area-51-validation/retrieval-frozen.json",
+          "output_sha256": "02f9865f6bf54ba05f92c3892720ecaf27daabb6ab96ab0e9564e7001f7cf690",
+          "log_sha256": "06c90181e5616427d71d76986b252243f405ac3a6cf8e271a03d2daa108eebde"
+        },
+        {
+          "name": "supplementary_retrieval",
+          "command": "python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-challenges.json --output /tmp/grey-area-51-validation/retrieval-supplementary.json",
+          "executed_command": "python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-challenges.json --output /tmp/grey-area-51-validation/retrieval-supplementary.json > /tmp/grey-area-51-validation/retrieval-supplementary.log 2>&1",
+          "log": "/tmp/grey-area-51-validation/retrieval-supplementary.log",
+          "exit_code": 0,
+          "wall_time_seconds": 0.953229742,
+          "cwd": "/workspace/scratch/fb9daf9fc631/grey-area-51",
+          "output": "/tmp/grey-area-51-validation/retrieval-supplementary.json",
+          "output_sha256": "ba59a5ce2119d25aefd6b35880bbdb5aea960413387d7269279aa95b02de2b24",
+          "log_sha256": "bca89d0979707d15920e5571bdc6ddf4047942d9b04300d047ef0050881f0a79"
+        }
+      ],
+      "documentation": {
+        "status": "passed",
+        "documents": 92,
+        "navigation_link_documents": 8,
+        "canonical_claims": 177,
+        "local_links": 1810,
+        "heading_anchors": 123,
+        "questions": 32,
+        "errors": [],
+        "warnings": [],
+        "limitations": [
+          "Does not verify source semantics or runtime claims",
+          "Does not fetch external URLs",
+          "Does not rewrite or reattest historical audits",
+          "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+        ]
+      },
+      "retrieval": {
+        "method": "heading-chunk BM25 lexical development baseline",
+        "documents": 92,
+        "chunks": 997,
+        "frozen": {
+          "questions": 32,
+          "canonical_hit_at_1": 22,
+          "canonical_hit_at_5": 32,
+          "mrr_at_5": 0.8333,
+          "route_miss_ids": [],
+          "non_top1_ranks": {
+            "Q03": 2,
+            "Q04": 2,
+            "Q08": 2,
+            "Q10": 2,
+            "Q17": 3,
+            "Q19": 2,
+            "Q24": 2,
+            "Q26": 2,
+            "Q29": 3,
+            "Q32": 2
+          }
+        },
+        "supplementary": {
+          "questions": 74,
+          "canonical_hit_at_1": 56,
+          "canonical_hit_at_5": 74,
+          "mrr_at_5": 0.8563,
+          "route_miss_ids": [],
+          "non_top1_ranks": {
+            "C05": 4,
+            "C06": 2,
+            "C03": 3,
+            "C09": 5,
+            "C11": 2,
+            "C16": 2,
+            "MS02": 3,
+            "MS04": 2,
+            "MS05": 4,
+            "SOL01": 2,
+            "SOL02": 2,
+            "REC02": 2,
+            "GEN01": 4,
+            "ACT10": 2,
+            "ACT14": 2,
+            "USABLE01": 2,
+            "USABLE02": 4,
+            "USABLE03": 2
+          }
+        },
+        "scene_family_ranks": {
+          "SCENE01": 1,
+          "SCENE02": 1,
+          "SCENE03": 1,
+          "SCENE04": 1
+        },
+        "fixtures": {
+          "prior_supplementary_question_count": 73,
+          "prior_question_objects_unchanged": true,
+          "added_question": "SCENE04",
+          "frozen_fixture_unchanged": true,
+          "frozen_sha256": "2ac95316e6c24c76623a010501a8845ee2d3ae2048fd447bb0cbbff4ff634c7a",
+          "supplementary_sha256": "39bd0b03709cea7f77b59c7d725a47499e7df773498952f5b20187049d695efe",
+          "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+          "corpus_manifest_sha256": "fc1147393ef3ea502872e2adcd77d02f16ab7ada3d9a83fcabc4b416839ec7b9",
+          "preservation_baseline_revision": "02f9c890dc4faf0bf132a95acbc13a4d9cdc002f",
+          "current_supplementary_question_count": 74,
+          "prior_question_order_unchanged": true,
+          "supplementary_question_ids_unique": true,
+          "baseline_supplementary_sha256": "3e5bdef411fd0b730b348ae2200de4e8943611c8f9a38d69f3a3d3212d53066e",
+          "frozen_question_count": 32,
+          "frozen_fixture_path": "docs/reference/retrieval-questions.json",
+          "baseline_frozen_sha256": "2ac95316e6c24c76623a010501a8845ee2d3ae2048fd447bb0cbbff4ff634c7a",
+          "verification": "Compared all prior 73 supplementary question objects in order and the entire frozen fixture bytes directly against git show at the fixed base revision. SCENE04 is the sole added question; moving HEAD was not used as the baseline."
+        },
+        "comparison_to_retained_act005": {
+          "baseline_source": "/workspace/scratch/fb9daf9fc631/grey-area-51/docs/audits/2026-10-19-act005-physical-usables.md",
+          "baseline_source_sha256": "7a81d86701791d9cab240108e2d025d7e3e8a93d3e5d5a3edfab1aa072e58f22",
+          "baseline_frozen": {
+            "questions": 32,
+            "canonical_hit_at_1": 22,
+            "canonical_hit_at_5": 32,
+            "mrr_at_5": 0.8333
+          },
+          "frozen_aggregate_change": "None in the recorded metrics.",
+          "baseline_prior73": {
+            "questions": 73,
+            "canonical_hit_at_1": 56,
+            "canonical_hit_at_5": 73,
+            "mrr_at_5": 0.8628
+          },
+          "prior73_on_current_corpus": {
+            "questions": 73,
+            "canonical_hit_at_1": 55,
+            "canonical_hit_at_5": 73,
+            "mrr_at_5": 0.8543
+          },
+          "prior73_delta": {
+            "canonical_hit_at_1": -1,
+            "canonical_hit_at_5": 0,
+            "mrr_at_5": -0.0085
+          },
+          "historical_per_question_comparison": "Unavailable in retained per-question output found for this task; the audit provides aggregate figures only. No baseline rerun was performed.",
+          "interpretation": "No canonical route misses. A small aggregate rank regression remains among the prior73; do not attribute its exact questions or claim a before/after retrieval improvement."
+        }
+      },
+      "scene04_fact_review": {
+        "canonical_rank": 1,
+        "top5": [
+          {
+            "rank": 1,
+            "path": "operations/grey-area-51-demo.md",
+            "heading": "Grey Area 51 > Open and explore Grey Area 51",
+            "part": 1
+          },
+          {
+            "rank": 2,
+            "path": "operations/grey-area-51-demo.md",
+            "heading": "Grey Area 51 > What persists across a tile view, map switch or reset?",
+            "part": 1
+          },
+          {
+            "rank": 3,
+            "path": "operations/grey-area-51-demo.md",
+            "heading": "Grey Area 51 > Open and explore Grey Area 51",
+            "part": 2
+          },
+          {
+            "rank": 4,
+            "path": "operations/grey-area-51-demo.md",
+            "heading": "Grey Area 51",
+            "part": 1
+          },
+          {
+            "rank": 5,
+            "path": "operations/cybersand-codex-development-handover.md",
+            "heading": "Development handover > Grey Area 51 scene checkpoint — 2026-10-19",
+            "part": 1
+          }
+        ],
+        "grouped_expected_facts": 6,
+        "complete_in_top5": 4,
+        "partial_in_top5": 2,
+        "coverage": [
+          {
+            "fact": 1,
+            "coverage": "complete_in_top5",
+            "hit_ranks": [
+              1,
+              4
+            ],
+            "review": "Entry buttons/shortcut/direct argument, Web menu, exact IDs, paused tick-zero overview, dimensions and world origin are present."
+          },
+          {
+            "fact": 2,
+            "coverage": "partial_in_top5",
+            "hit_ranks": [
+              1,
+              4
+            ],
+            "review": "Five districts, tile dimensions, one world and four 24-cell passages are present; the complete named west-to-east order and y144/64/144/64 offsets are not returned.",
+            "required_canonical_section": "The five districts and connected route"
+          },
+          {
+            "fact": 3,
+            "coverage": "complete_in_top5",
+            "hit_ranks": [
+              1,
+              2,
+              4
+            ],
+            "review": "Five camera views plus overview, 320×192 follow/y32 clamp, world/edits/player/tick retention and fixed [32,32,960,192] interest are present."
+          },
+          {
+            "fact": 4,
+            "coverage": "complete_in_top5",
+            "hit_ranks": [
+              1,
+              2,
+              3
+            ],
+            "review": "Whole-bunker paused reset, scene replacement and desktop F5 reset/retained actor behavior are present."
+          },
+          {
+            "fact": 5,
+            "coverage": "complete_in_top5",
+            "hit_ranks": [
+              1,
+              2,
+              3
+            ],
+            "review": "Accepted shared presenter, one saved world minimum and mouse/keyboard popup release gate are present; the release sentence spans returned parts1 and2."
+          },
+          {
+            "fact": 6,
+            "coverage": "partial_in_top5",
+            "hit_ranks": [
+              4,
+              5
+            ],
+            "review": "Native concrete construction, unchanged semantics/capacities and separate dated evidence are present at a high level. Concrete58, final Empty route pass, absolute-world grade, Baseline/Water8-coherence12 and cell-ABI detail require the construction section.",
+            "required_canonical_section": "Native concrete and presentation"
+          }
+        ],
+        "full_canonical_document_review": "All six grouped expected facts are supported in the full Grey guide; route and native-construction sections must be opened for the two partial groups.",
+        "no_contradiction_found_in_reviewed_contexts": true,
+        "answer_sufficiency": "Rank1 is a correct route, not a complete-answer pass. Entry/camera/reset/lifecycle facts are available in top5, but the full expected route/authoring answer requires additional canonical sections."
+      },
+      "limits": [
+        "Structural documentation checks do not validate native/controller source semantics, runtime outcomes or external URLs.",
+        "This is the fixed heading-chunk BM25 lexical development baseline; it does not test embeddings, unseen questions or deployed retrieval.",
+        "Canonical hit metrics are route coverage and are not answer-correctness or platform-acceptance results.",
+        "Repository, materialized-runtime, M11, publication and optional runtime testing were excluded from this assigned gate run."
+      ],
+      "read_only": true,
+      "sources_or_docs_changed_by_this_gate_task": false,
+      "optional_retests_performed": false,
+      "review_corrected_utc": "2026-10-19T20:56:52.955225+00:00",
+      "correction_note": "Corrected the initial scratch review, which had compared prior questions against moving HEAD after the parent documentation commit. The fixed base comparison confirms frozen32 and prior73 preservation. Gate outputs, metrics and SCENE04 expected-fact limitations are unchanged."
+    },
+    "retrieval_review_sha256": "a09d099882d7d31081a8691e2d2681ecf147bda72d6ece2322ff5243d1f248d9"
+  },
+  "publication": {
+    "local_content_checkpoint": "d4de739e1ec173cd1e3f550c07cf34c544a58866",
+    "remote_content_checkpoint": "40c27d7f6ef1cc8de022c9ae00347ab074a82af1",
+    "local_tree": "c76583e58565137dfc68ca0df0a768abb3b2401e",
+    "remote_tree": "c76583e58565137dfc68ca0df0a768abb3b2401e",
+    "exact_tree_match": true,
+    "local_recovery_branch": "checkpoint/grey-area-51-local",
+    "synchronization": "soft reset only after fresh fetch and exact tree equality; no file content changed",
+    "working_tree_clean": true,
+    "status": "published",
+    "branch": "scene/grey-area-51",
+    "branch_url": "https://github.com/techrote/cybersand/tree/scene/grey-area-51",
+    "pull_request": 184,
+    "pull_request_url": "https://github.com/techrote/cybersand/pull/184",
+    "pull_request_state": "open draft",
+    "merged": false,
+    "method": "Connected GitHub Git-data API after ordinary git push reported missing noninteractive HTTPS credentials. Every binary blob SHA and the complete remote tree were checked against local Git objects; a fresh CLI fetch confirmed identity.",
+    "identity_scope": "The content checkpoint above contains all implementation, images, portable definition and initial documentation. This publication-record follow-up modifies only this evidence manifest and its companion audit; the record does not contain a self-referential final commit hash.",
+    "observed_utc": "2026-10-19T20:56:04.514648+00:00",
+    "documentation_check_after_publication_record": {
+      "command": "python3 tools/ci/check_docs.py --json /tmp/grey-area-51-validation/docs-check-publication.json",
+      "exit_code": 0,
+      "result": {
+        "status": "passed",
+        "documents": 92,
+        "navigation_link_documents": 8,
+        "canonical_claims": 177,
+        "local_links": 1810,
+        "heading_anchors": 123,
+        "questions": 32,
+        "errors": [],
+        "warnings": [],
+        "limitations": [
+          "Does not verify source semantics or runtime claims",
+          "Does not fetch external URLs",
+          "Does not rewrite or reattest historical audits",
+          "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+        ]
+      },
+      "result_sha256": "ff50eb195d67ae1ec574d3a12d1b76381de9b5ed147a5f2af4c4ed021c1d6ef5"
+    }
+  },
+  "qualifications": [
+    "Local evidence is not a claim of complete CI or cross-platform acceptance.",
+    "Web controller execution used Linux native runtime, not browser-hosted WASM.",
+    "The native motor tour uses geometry progressed by 120 native ticks, with material ticks paused during motor traversal.",
+    "24-cell passage qualification applies to the default sampled character, not every F5 actor.",
+    "Exact-head gates required by repository policy remain necessary before merge."
+  ]
+}

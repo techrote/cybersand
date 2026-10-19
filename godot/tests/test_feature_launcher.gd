@@ -14,7 +14,7 @@ func _initialize() -> void:
 	run.call_deferred()
 
 func run() -> void:
-	for destination: String in ["blacksite", "showcase", "actors", "sandbox", "thunderbowl", "worldgen", "depth", "experimental/blacksite/ripper"]:
+	for destination: String in ["grey_area_51", "blacksite", "showcase", "actors", "sandbox", "thunderbowl", "worldgen", "depth", "experimental/blacksite/ripper"]:
 		var menu: Control = Launcher.instantiate()
 		root.add_child(menu)
 		current_scene = menu
@@ -24,7 +24,7 @@ func run() -> void:
 		await process_frame
 		var scene: Node = current_scene
 		expect(scene != null and scene != menu, "Launcher must replace the menu: " + destination)
-		if destination in ["blacksite", "showcase", "experimental/blacksite/ripper"]:
+		if destination in ["grey_area_51", "blacksite", "showcase", "experimental/blacksite/ripper"]:
 			var deadline: int = Time.get_ticks_msec() + 60000
 			while scene.pending_microscenario_apply.is_empty() and scene.microscenario_definition.is_empty() and Time.get_ticks_msec() < deadline: await process_frame
 			while not scene.pending_microscenario_apply.is_empty() and Time.get_ticks_msec() < deadline: await process_frame

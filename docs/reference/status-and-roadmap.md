@@ -71,6 +71,18 @@ Historical completion records remain immutable.
 
 ## Current implementation map
 
+**Connected concrete scene, 2026-10-19:**
+[Grey Area 51](../operations/grey-area-51-demo.md) adds five 192 × 192 districts
+in one 960 × 192 native region, beginning at `(32,32)`. Four 24-cell passages
+join its alternating transfer levels. Launcher/Ctrl+F11/direct entry and the Web
+menu install the paused bunker; its 5×1 map and 320 × 192 following view move
+only the camera, while R restores the whole scene. Desktop F5 uses the existing
+exploratory actor path. The single Blacksite/Grey presenter shares accepted
+installation, modal-release and world-view-minimum ownership across both maps.
+Native Baseline semantics, cell ABI and capacities are unchanged. Source content
+and controls are Current; recipe metrics and platform execution are separately
+recorded in the [dated Grey Area 51 audit](../audits/2026-10-19-grey-area-51.md).
+
 **Connected scene content, 2026-10-18:**
 [Blacksite Nine](../operations/blacksite-nine-demo.md) composes nine 320 × 320
 districts into one 960 × 960 native region: a surface laboratory between two

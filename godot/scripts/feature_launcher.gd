@@ -10,7 +10,7 @@ func _ready() -> void:
 		get_tree().set_meta("cybersand_depth_lab_visited", true)
 		get_tree().change_scene_to_file.call_deferred("res://depth_lab.tscn")
 		return
-	if first_launch and ("--blacksite-nine" in OS.get_cmdline_user_args() or "--showcase" in OS.get_cmdline_user_args()):
+	if first_launch and ("--grey-area-51" in OS.get_cmdline_user_args() or "--blacksite-nine" in OS.get_cmdline_user_args() or "--showcase" in OS.get_cmdline_user_args()):
 		get_tree().change_scene_to_file.call_deferred("res://main.tscn")
 		return
 	var background := ColorRect.new()
@@ -30,6 +30,7 @@ func _ready() -> void:
 	scroll.add_child(column)
 	_label(column, "CYBERSAND / PLAY & EXPERIMENT", 30)
 	_label(column, "Choose a feature. F2 returns here; returning closes the current session. Showcase maps start paused. F5 selects 41 articulated Rapier actors or sampled references in the sandbox and showcase maps.", 18)
+	_button(column, "Grey Area 51 — five-tile concrete bunker", "grey_area_51")
 	_button(column, "Blacksite Nine — connected industrial complex", "blacksite")
 	_button(column, "Neon Reliquary — four showcase districts", "showcase")
 	_button(column, "Actor sandbox — 41 articulated Rapier rigs / F5", "actors")
