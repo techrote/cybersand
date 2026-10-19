@@ -249,6 +249,27 @@ screenshot or video acceptance pass.
 
 ## Which checks guard the measurement path?
 
+The standalone native CLI accepts current catalogue IDs `0..131` except reserved
+ID `10`. It validates signed wide arguments before narrowing, and its sampled
+`counts` and `sum_y` arrays each contain 132 entries. This current output extent
+does not revise historical 81-slot records or the intentionally 81-entry transport
+profile. The named issue #9/#10 reducers remain scoped to their original fixture
+series; arbitrary building-material experiments require a matching consumer.
+
+Run `make physics-characterisation-test` and
+`make physics-characterisation-sanitize` to compile and exercise the actual CLI.
+The [executable-level oracle](../../tools/physics/test_characterisation_cli.py)
+checks all 51 building IDs in both fixture layers, old-ID controls and invalid
+wide, reserved and malformed inputs. It parses the JSON rows and independently
+checks rectangle counts, sum-Y/centroid accounting, complete observation totals
+and rejection before any fixture output. The sanitized target uses ASan/UBSan;
+set `ASAN_OPTIONS=detect_leaks=1:strict_string_checks=1` in a supported execution
+environment to include LeakSanitizer. Each child has a ten-second timeout. Results,
+commands, executable hash and individual stdout/stderr are retained under
+`build/physics-cli-validation/`; Native CI uploads this evidence. The
+[MAT-002 review record](../audits/2026-10-19-mat002-review-and-validation.md)
+preserves the pre-fix overflow and separately identifies successful reruns.
+
 Run `dev.cmd native-test` and `dev.cmd godot-test` after a fresh native build.
 Coverage includes exact native cell/state and histogram parity, diagnostics
 enabled/disabled comparisons, Mercury confined vertical controls, explicit

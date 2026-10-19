@@ -125,6 +125,24 @@ jobs:
       - name: Run native behavioral and integration suite
         run: timeout 15m ./build/tests
 
+      - name: Sanitize physics CLI material admission and sampled accounting
+        env:
+          ASAN_OPTIONS: detect_leaks=0:strict_string_checks=1
+          UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
+        run: |
+          set -euo pipefail
+          mkdir -p build/physics-cli-validation
+          timeout 5m make physics-characterisation-sanitize 2>&1 | tee build/physics-cli-validation/validation.log
+
+      - name: Retain physics CLI results and sanitizer logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-physics-cli-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/physics-cli-validation/
+          if-no-files-found: warn
+          retention-days: 30
+
       - name: Validate procedural generation candidates and fresh chunk admission
         run: timeout 5m make worldgen-test
 
