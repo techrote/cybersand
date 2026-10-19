@@ -249,3 +249,30 @@ The Issue 49 Water apparatus is not path-applicable: this change touches no
 matching native source/header, Water harness or `tools/physics` path. Draft skips
 are not acceptance evidence. The hosted result, accepted head and resulting
 mainline merge must be verified and recorded on PR #183 before issue closure.
+
+### Hosted import correction — 2026-10-19 01:47 UTC
+
+Candidate `cb39c6822248f1aa59abb22c0ed01d88bae0f326` passed ready-state
+[Documentation/provenance](https://github.com/techrote/cybersand/actions/runs/39185998567),
+the Windows cross-build and Linux extension build. In
+[GDExtension run 39185998542](https://github.com/techrote/cybersand/actions/runs/39185998542),
+Linux shards 2 and 3 each passed all 27 assigned regression cases, then failed
+the required post-test `git diff --exit-code`: editor import registered the new
+`CyberPhysicalUsableCourse` class in the tracked portable global class cache.
+The course itself passed all 71 assertions, including real Heavylift recovery.
+
+The correction records that eight-line class entry in
+`godot/.godot/global_script_class_cache.cfg`, one of the repository's three
+permitted portable bootstrap files. Regeneration produced exactly the same Git
+blob (`7fa217b`) reported by both hosted jobs. A repeated editor import completed
+without error diagnostics and did not change that result. The first local
+sandboxed editor attempt could not create its TCP listener; only the subsequent
+successful import with local editor sockets available is accepted. No gameplay
+source, test behavior, native input, runtime or dependency pin changed.
+
+Fresh rendered captures at 01:32:41–01:32:52 UTC had already matched all 253
+Godot source files against the candidate, with no changes during execution.
+The bootstrap-only correction preserves every captured source hash, so that
+graphical and numerical evidence still applies. The final corrected head must
+obtain its own normal exact-head hosted gates; the failed cleanliness jobs are
+retained as historical evidence and are not treated as passing acceptance.
