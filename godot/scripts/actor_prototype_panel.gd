@@ -22,6 +22,7 @@ var usable_choice: OptionButton
 var usable_power_slider: HSlider
 var usable_power_label: Label
 var usable_description: Label
+var _equipment_physical: bool = false
 var status: Label
 var _visible_models: Array[StringName] = []
 
@@ -155,7 +156,8 @@ func configure_selection(model_id: StringName, producer: StringName, demo_npcs: 
 	_refresh_description(model_choice.selected)
 
 
-func configure_equipment(usable_index: int, power: float) -> void:
+func configure_equipment(usable_index: int, power: float, physical: bool = false) -> void:
+	_equipment_physical = physical
 	var item_index: int = clampi(usable_index + 1, 0, UsableCatalog.count())
 	usable_choice.select(item_index)
 	usable_power_slider.value = clampf(power, 0.0, 1.0)
@@ -172,6 +174,11 @@ func _refresh_usable(index: int) -> void:
 		return
 	var definition: Dictionary = UsableCatalog.entry(index - 1)
 	usable_description.text = "%s — %s\n%s" % [str(definition.name), str(definition.description), UsableCatalog.controls_text(index - 1)]
+	if _equipment_physical:
+		var controls: String = "Left/M: use. Right: precision pulse or supported early payload activation. N: drop. U: nearby pickup."
+		if str(definition.category) == "object":
+			controls = "Left/M: deploy the carried processor. It works after settling. U: pick up when nearby. N: release without operating."
+		usable_description.text = "%s — %s\n%s" % [str(definition.name), str(definition.description), controls]
 
 
 func _refresh_usable_power(value: float) -> void:

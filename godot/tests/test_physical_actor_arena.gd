@@ -4,6 +4,7 @@ extends SceneTree
 # in for a roster run, a cell effect or the terrain collider update below.
 const Arena = preload("res://scripts/physical_actor_arena.gd")
 const Catalog = preload("res://scripts/physical_actor_catalog.gd")
+const Equipment = preload("res://scripts/physical_usable_equipment.gd")
 const Session = preload("res://scripts/physical_actor_session.gd")
 const Coupling = preload("res://scripts/rigid_body_coupling.gd")
 const ROSTER_TICKS: int = 240
@@ -44,7 +45,7 @@ func _roster() -> void:
 		_check(_arena.configure(config), "configure native roster " + str(id) + ": " + _arena.last_error)
 		if _arena.session == null:
 			continue
-		var data: Dictionary = Catalog.entry(id)
+		var data: Dictionary = Equipment.definition(Catalog.entry(id))
 		if int(data.part_count) > largest_count:
 			largest_count = int(data.part_count)
 			largest = id
@@ -163,37 +164,37 @@ func _protocol() -> void:
 
 
 func _native_effects_and_terrain() -> void:
-	_check(_arena.configure(_config(&"gyrocrate")), "depositor arena starts")
-	var command: Dictionary = _command({"aim": [1, 0], "tool": true}, 1)
+	_check(_arena.configure(_config(&"runner")), "physical stamper arena starts")
+	var command: Dictionary = _command({"equipment": {"aim": [1, 0], "trigger": true, "power": 1.0}}, 1)
 	var state: Dictionary = _arena.step([command])
-	_check(state.effects.size() == 1 and state.effects[0].status == "applied"
-		and int(state.effects[0].changed_cells) == 13, "mounted tool produces an actual 13-cell native deposit")
+	var receipts: Array = state.physical_usables.receipts
+	_check(receipts.size() == 1 and receipts[0].accepted and int(receipts[0].changed_cells) > 0,
+		"mounted catalogue tool produces a real native deposit")
 	var stored: PackedByteArray = _arena._world.get_cells()
 	var deposited: int = 0
-	for y: int in range(180, 205):
-		for x: int in range(320, 340):
-			deposited += int(stored[y * 1024 + x] == 2)
-	_check(deposited == 13 and state.actors[0].applied_impulse.x < 0.0,
-		"receipt matches stored native cells and the real part receives separate recoil")
+	for y: int in range(175, 205):
+		for x: int in range(300, 380):
+			deposited += int(stored[y * 1024 + x] == 57)
+	_check(deposited > 0 and deposited == int(state.usable_totals.changed_cells)
+		and state.actors[0].equipment.last_recoil.x < 0.0,
+		"native receipt agrees with stored Industrial Brick and real part recoil")
 	_check(not _arena.submit(command), "material effect cannot replay the input sequence")
 	_arena.step()
-	_check(int(_arena.snapshot().effect_totals.requests) == 1, "expired tool lease queues no later material edits")
-	_check(_arena.reset(), "depositor reset succeeds")
-	_check(int(_arena._world.material_at(328, 190)) == 0, "reset replaces the edited native world")
+	_check(int(_arena.snapshot().usable_totals.requests) == 1, "expired equipment lease queues no later material edits")
+	_check(_arena.reset(), "stamper reset succeeds")
+	_check(_arena.snapshot().usable_totals.requests == 0, "reset replaces edited world and pending equipment work")
 	_arena.close()
 
-	_check(_arena.configure(_config(&"ripper", "policy", 10, Vector2(310, 240))), "cutter arena starts")
+	_check(_arena.configure(_config(&"lineshank", "policy", 10, Vector2(328, 270))), "physical cutter arena starts")
 	var previous_revision: int = int(_arena.snapshot().terrain_revision)
 	_check(int(_arena._world.material_at(328, 240)) == 56, "authored packed-earth target exists natively")
-	state = _arena.step([_command({"aim": [1, 0], "tool": true}, 1)])
-	_check(state.effects.size() == 1 and int(state.effects[0].changed_cells) > 0,
-		"cutter changes native hard terrain through the normal usable path")
+	state = _arena.step([_command({"equipment": {"aim": [0, -1], "trigger": true, "power": 1.0}}, 1)])
+	_check(int(state.usable_totals.changed_cells) > 0,
+		"catalogue cutter changes native hard terrain through the physical equipment path")
 	_check(int(state.terrain_revision) > previous_revision
 		and int(state.terrain_revision) == int(_arena._world.get_hard_surface_revision())
 		and _arena.session.bridge.pending_hard_surface_chunks() == 0,
 		"every changed native hard-terrain chunk reaches Rapier before its next step")
-	# Query the actual updated Rapier terrain in the native excavation. Collider
-	# availability, not a material-only display change, is the regression here.
 	var query := PhysicsPointQueryParameters2D.new()
 	query.position = Vector2(328.5, 240.5)
 	query.collision_mask = 1

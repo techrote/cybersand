@@ -4,11 +4,28 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-19
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
 # Development handover
+
+## Physical usable integration checkpoint — 2026-10-19
+
+USABLE-002 / ACT-005 / #182 reconciles PR #180's U01-U32 catalogue with the
+ACT-004 physical session. Start with [actor usables](../systems/actor-usables.md),
+[physical equipment actions](../reference/interfaces-and-message-contracts.md#physical-equipment-actions-and-results)
+and the [dated checkpoint](../audits/2026-10-19-act005-physical-usables.md).
+Keep physical source/body frames, issued observations and equipment incarnations
+separate from the retained sampled equipment mailbox. Worker edits and physical
+recoil use identity-matched results. Dropped/settled/reattached chassis preserve
+body slots and processor history. All 41 default loadouts remain authored data;
+controllers only submit ordinary actions.
+
+Read the current checkpoint's unfinished gates before claiming completion. Native
+source/provenance identity, current GDScript execution, hosted exact-head checks
+and Windows interactive execution are distinct evidence. Continue the owner's
+30-minute repository progress checkpoints during this implementation task.
 
 ## Exploratory actor picker follow-up — 2026-10-18
 

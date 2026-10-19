@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-19
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md]
 ---
 
@@ -479,9 +479,11 @@ per-rig limitations remain in the [catalog contract](../systems/actor-rigs.md).
 
 ## Actor usable values
 
-**Current, experimental USABLE-001:** [actor usables](../systems/actor-usables.md)
-run as a separate equipment session beside sampled actor rigs. Units are gameplay
-cells, seconds and authored charge; recipe accounting is authored cell slots.
+**Current experimental USABLE-001 / ACT-005:** [actor usables](../systems/actor-usables.md)
+share the same catalogue/material budgets across physical and retained sampled
+routes. Physical control uses the articulated session's issued-observation lease;
+sampled control retains its separate equipment session. Units are gameplay cells,
+seconds and authored charge; recipe accounting is authored cell slots.
 
 | Boundary | Current value and consequence |
 |---|---|
@@ -496,6 +498,13 @@ cells, seconds and authored charge; recipe accounting is authored cell slots.
 | Processor lifetime / stock | 45 seconds; normally 16 successful batches; Firewarden 12 pulses |
 | Equipment leases | 12 ticks default, 18 maximum; desktop human input uses six ticks |
 | Publications | Copied equipment selection, charge/cooldown/result, projectiles, devices, effects, hit receipts and work counters |
+| Physical chassis | One per actor, reusing a held part or adding one jointed body before installation; included in the eight-part assembly limit |
+| Physical request admission | At most eight requests, one pending/in-flight request per actor; atomic batch refusal preserves other pending work |
+| Processor settling | Supported body at most 3 cells/s and 0.45 rad/s for eight consecutive physical ticks; stop automatic settling after 360 ticks |
+| Physical processor ports | Local x = ±ceil(half-width + 2), local y = ±1; rotate by body angle and round to cell coordinates |
+| Physical processor history | At most 8 × 10 actor/processor records; retain stock, age, cycles and cooldown across pickup and redeployment |
+| Physical recoil | Accepted primary projectile use: 8 × power; tool use: 1.1 × power; tool alternate scales by 0.35; early projectile activation adds no launch recoil |
+| Physical pickup / release grace | Owning grip within eight cells with clear path; released-body self-collision grace 0.2 seconds |
 
 Capacity exhaustion refuses or defers bounded work. It does not silently replace
 an existing projectile/device or authorize an unbounded catch-up queue. Exact
@@ -542,7 +551,7 @@ information, so its human examples use mechanics/asymmetric classification.
 
 ## Physical actor values
 
-**Current experimental ACT-004:** the
+**Current experimental ACT-004/ACT-005:** the
 [catalogue](../../godot/scripts/physical_actor_catalog.gd),
 [rig runtime](../../godot/scripts/physical_actor_rig.gd),
 [session](../../godot/scripts/physical_actor_session.gd),
@@ -554,7 +563,7 @@ limits, not calibrated real-world actuator specifications.
 | Value | Current bound or default |
 |---|---|
 | Catalogue | 41 rigs in seven sets; all 29 existing IDs plus twelve SetX IDs |
-| Assembly | At most eight parts, fourteen authored joints and three mounts per rig; supplied rigs use two through seven rectangular parts |
+| Assembly | At most eight parts, fourteen authored joints and three mounts per rig; catalogue definitions use two through seven parts, and ACT-005 adds a chassis only where no held part exists |
 | Population | One through eight actors and at most 64 total coupled parts; held/released objects retain their part slot |
 | Physics / demo cadence | 60 Hz physical owner; demo decisions every six ticks, or 10 Hz |
 | Command lease | One through eighteen ticks from the issued observation; helper/demo default twelve, desktop human six; nineteen issuance-history slots |

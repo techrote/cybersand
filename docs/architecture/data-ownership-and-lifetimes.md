@@ -6,7 +6,7 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-19
 ---
 
 # Data ownership and lifetimes
@@ -20,7 +20,7 @@ The sandbox may create it while reset is pending; it cannot step until the
 matching reset acknowledgement, actor epoch and initial terrain are ready.
 Exploratory scenario installation also checks the accepted map hash.
 Switching representations does not
-transfer a mutable actor or World reference between threads. ACT-004 keeps
+transfer a mutable actor or World reference between threads. ACT-004/ACT-005 keep
 `CyberPhysicalActorSession`, body/joint nodes, control state and the Rapier bridge
 on the main thread. Copied effect requests cross to the cellular owner, which
 validates and applies them; only copied receipts return. Reset/close retires the
@@ -48,6 +48,9 @@ but must not touch live scene-tree or Rapier objects.
 | Live body nodes, RIDs and physics state | Main-thread Rapier bridge and PhysicsServer2D | Scene/bridge lifetime; never passed to cellular workers |
 | Physical actor rigs, joints and local controllers | Main-thread `CyberPhysicalActorSession`; at most eight rigs/eight total parts each | Run/actor/epoch-bound command leases; cancel discards future work, close retires bodies/joints |
 | Physical usable effect requests | Copied by the physical owner; exclusively validated/consumed by the native-world owner | Epoch/sequence/source-bound, bounded per actor and batch; consumed refusals cannot replay after an obstacle disappears |
+| Physical equipment chassis and mount | Main-thread `CyberPhysicalUsableEquipment` through its actor rig; the same part/body ID is held, released, fixed, deployed and picked up | At most one equipment part per actor within the eight-part limit; equipment epochs invalidate superseded use and deployment authority without deleting velocity |
+| Physical usable frame, request and receipt mailbox | Main thread supplies copied physical poses/identity; the serialized cellular owner admits and applies usable work, then publishes copied results | Eight pending requests globally, one per actor including extracted work; run/actor/generation/equipment/body/request identity fences cancellation and recoil |
+| Physical projectile and processor state | `CyberPhysicalUsableRuntime` on the exclusive native-world owner; no live body or scene object crosses the boundary | 64 projectiles, 16 active objects globally and four per actor; bounded per-actor/per-processor history retains stock, age, cycles and cooldown across physical pickup/redeployment |
 | Body samples and observations | Adapter owns copied samples and native transient occupancy; results are copied into publication | Mask rebuilt at coupling preparation; sample IDs identify result application |
 | Godot CPU image and textures | Main thread validates patches and updates resources | Application lifetime; upload never borrows mutable World bytes |
 | Compiled procedural recipe, field graph and prepared modules | Immutable `generation::Generator`, independent of World | Jobs retain shared ownership; replacing the caller's recipe cannot mutate existing jobs |
@@ -138,8 +141,11 @@ GameplayBridge queues.
 
 Native rectangle parsing considers at most 64 complete input records, accepts
 exact IDs 1–64 from finite valid records, and preserves the first valid duplicate.
-The ACT-004 physical effect queue separately admits a whole incoming batch within
-eight pending requests or publishes an explicit refusal; it does not bound the
+The ACT-004 physical effect queue and ACT-005 physical usable queue each admit a
+whole incoming batch within eight pending requests or publish an explicit refusal.
+ACT-005 also counts extracted in-flight requests against its one-per-actor and
+global capacity until consumption or retirement; its copied physical frame and
+body sample are latched at the same mutex boundary. These queues do not bound the
 older generic emission queue described above. The occupancy field belongs
 to World; it is separate from material identity. See
 [coupling](rigid-body-and-cellular-coupling.md) for displacement and overflow.

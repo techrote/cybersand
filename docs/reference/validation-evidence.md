@@ -4,11 +4,27 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-19
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md]
 ---
 
 # Validation evidence ledger
+
+## Physical actor usables — 2026-10-19
+
+The [ACT-005 audit](../audits/2026-10-19-act005-physical-usables.md) owns the
+source/runtime identities, preserved failures, physical equipment regressions,
+course/desktop checks and hosted gate disposition for issue #182. Current source
+contracts describe the implementation independently of that acceptance record.
+
+The intake baseline rebuilt and passed all 71 native core cases in ordinary,
+ASan/UBSan and TSan configurations. ASan explicitly disabled leak detection;
+sanitizer execution used a 64 MiB stack. A frozen PR #180 snapshot at
+`64b2e264f3778a8d74e47b264bd6885f42a26a36` separately passed the three sampled
+usable runners with 196, 28 and 29 assertions on pinned Linux Godot 4.7 and the
+source-matched retained native runtime. These baseline results protect the
+native and sampled contracts; they do not certify the new physical source,
+Windows runtime behavior, visual playability or final exact-head hosted gates.
 
 ## Exploratory map actor integration - 2026-10-18
 
