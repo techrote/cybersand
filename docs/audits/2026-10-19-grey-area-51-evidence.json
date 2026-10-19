@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "Grey Area 51 scene validation and publication evidence",
   "recorded_utc": "2026-10-19T20:47:23.875432+00:00",
-  "status": "local-scene-validation-and-captures-passed; documentation-review-qualified; publication-pending",
+  "status": "published-draft; local-scene-validation-and-captures-passed; retrieval-answer-coverage-qualified",
   "source": {
     "repository": "techrote/cybersand",
     "branch": "scene/grey-area-51",
@@ -2410,45 +2410,345 @@
     },
     "status": "documentation-repository-and-historical-integrity-passed; retrieval-all-canonical-routes-found-with-qualified-answer-coverage",
     "retrieval_review": {
-      "scope": "Independent reviewer checked SCENE04 against its five retrieved contexts and canonical guide. Compact review metadata will be attached with publication bookkeeping.",
-      "frozen": {
-        "routes_found": 32,
-        "questions": 32,
-        "hit_at_1": 22,
-        "mrr": 0.8333,
-        "comparison": "Retained ACT005 aggregate totals match."
+      "created_utc": "2026-10-19T20:52:42.658025+00:00",
+      "source": {
+        "repository": "/workspace/scratch/fb9daf9fc631/grey-area-51",
+        "documentation_state": "The gates inspected working-tree documentation and evidence on implementation commit d9b19dbf4895588fe19abee6520d3864ce307829. The parent then committed the documentation while this review was completing.",
+        "working_tree_status_after": [],
+        "input_manifest": "/tmp/grey-area-51-validation/doc-gates-inputs-before.json",
+        "input_manifest_sha256": "29d7375dd44629d3d5d01ad8dac79ef9b54eaec71261120f89372c0ca86e9f9f",
+        "captured_input_files": 209,
+        "changed_inputs_during_review": [
+          "docs/audits/2026-10-19-grey-area-51.md"
+        ],
+        "implementation_commit_at_gate_start": "d9b19dbf4895588fe19abee6520d3864ce307829",
+        "repository_head_observed_after_initial_review": "d4de739e1ec173cd1e3f550c07cf34c544a58866",
+        "repository_head_observed_at_fixture_correction": "40c27d7f6ef1cc8de022c9ae00347ab074a82af1",
+        "source_timing_caveat": "The parent appended the Grey audit publication/gate section and advanced repository HEAD during the read-only review. The documentation checker output predates that append and does not attest the subsequent audit text. The changed audit is outside the retrieval corpus; all corpus documents, both query fixtures, the corpus manifest and evaluator still match the saved retrieval-run hashes. No gate rerun was performed.",
+        "changed_inputs_as_of_fixture_correction": [
+          "docs/audits/2026-10-19-grey-area-51.md"
+        ],
+        "retrieval_inputs_unchanged": true,
+        "retrieval_corpus_hash_mismatches": []
       },
-      "supplementary": {
-        "routes_found": 74,
-        "questions": 74,
-        "hit_at_1": 56,
-        "mrr": 0.8563,
-        "scene_01_to_04_ranks": [
-          1,
-          1,
-          1,
-          1
+      "gate_processes": [
+        {
+          "name": "documentation",
+          "command": "python3 tools/ci/check_docs.py --json /tmp/grey-area-51-validation/docs-check.json",
+          "executed_command": "python3 tools/ci/check_docs.py --json /tmp/grey-area-51-validation/docs-check.json > /tmp/grey-area-51-validation/docs-check.log 2>&1",
+          "log": "/tmp/grey-area-51-validation/docs-check.log",
+          "exit_code": 0,
+          "wall_time_seconds": 0.612412327,
+          "cwd": "/workspace/scratch/fb9daf9fc631/grey-area-51",
+          "output": "/tmp/grey-area-51-validation/docs-check.json",
+          "output_sha256": "ff50eb195d67ae1ec574d3a12d1b76381de9b5ed147a5f2af4c4ed021c1d6ef5",
+          "log_sha256": "ff50eb195d67ae1ec574d3a12d1b76381de9b5ed147a5f2af4c4ed021c1d6ef5"
+        },
+        {
+          "name": "frozen_retrieval",
+          "command": "python3 tools/docs/retrieval_eval.py --output /tmp/grey-area-51-validation/retrieval-frozen.json",
+          "executed_command": "python3 tools/docs/retrieval_eval.py --output /tmp/grey-area-51-validation/retrieval-frozen.json > /tmp/grey-area-51-validation/retrieval-frozen.log 2>&1",
+          "log": "/tmp/grey-area-51-validation/retrieval-frozen.log",
+          "exit_code": 0,
+          "wall_time_seconds": 1.5338462929999999,
+          "cwd": "/workspace/scratch/fb9daf9fc631/grey-area-51",
+          "output": "/tmp/grey-area-51-validation/retrieval-frozen.json",
+          "output_sha256": "02f9865f6bf54ba05f92c3892720ecaf27daabb6ab96ab0e9564e7001f7cf690",
+          "log_sha256": "06c90181e5616427d71d76986b252243f405ac3a6cf8e271a03d2daa108eebde"
+        },
+        {
+          "name": "supplementary_retrieval",
+          "command": "python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-challenges.json --output /tmp/grey-area-51-validation/retrieval-supplementary.json",
+          "executed_command": "python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-challenges.json --output /tmp/grey-area-51-validation/retrieval-supplementary.json > /tmp/grey-area-51-validation/retrieval-supplementary.log 2>&1",
+          "log": "/tmp/grey-area-51-validation/retrieval-supplementary.log",
+          "exit_code": 0,
+          "wall_time_seconds": 0.953229742,
+          "cwd": "/workspace/scratch/fb9daf9fc631/grey-area-51",
+          "output": "/tmp/grey-area-51-validation/retrieval-supplementary.json",
+          "output_sha256": "ba59a5ce2119d25aefd6b35880bbdb5aea960413387d7269279aa95b02de2b24",
+          "log_sha256": "bca89d0979707d15920e5571bdc6ddf4047942d9b04300d047ef0050881f0a79"
+        }
+      ],
+      "documentation": {
+        "status": "passed",
+        "documents": 92,
+        "navigation_link_documents": 8,
+        "canonical_claims": 177,
+        "local_links": 1810,
+        "heading_anchors": 123,
+        "questions": 32,
+        "errors": [],
+        "warnings": [],
+        "limitations": [
+          "Does not verify source semantics or runtime claims",
+          "Does not fetch external URLs",
+          "Does not rewrite or reattest historical audits",
+          "Retrieval quality requires the separate lexical evaluation and expected-fact review"
         ]
       },
-      "scene_04_answer_sufficiency": {
-        "grouped_facts_fully_covered_in_top5": 4,
-        "grouped_facts_total": 6,
-        "qualification": "Exact district names and port offsets, plus explicit Concrete58/Baseline/ABI details require the canonical guide route and native-construction sections, outside these top-five chunks."
+      "retrieval": {
+        "method": "heading-chunk BM25 lexical development baseline",
+        "documents": 92,
+        "chunks": 997,
+        "frozen": {
+          "questions": 32,
+          "canonical_hit_at_1": 22,
+          "canonical_hit_at_5": 32,
+          "mrr_at_5": 0.8333,
+          "route_miss_ids": [],
+          "non_top1_ranks": {
+            "Q03": 2,
+            "Q04": 2,
+            "Q08": 2,
+            "Q10": 2,
+            "Q17": 3,
+            "Q19": 2,
+            "Q24": 2,
+            "Q26": 2,
+            "Q29": 3,
+            "Q32": 2
+          }
+        },
+        "supplementary": {
+          "questions": 74,
+          "canonical_hit_at_1": 56,
+          "canonical_hit_at_5": 74,
+          "mrr_at_5": 0.8563,
+          "route_miss_ids": [],
+          "non_top1_ranks": {
+            "C05": 4,
+            "C06": 2,
+            "C03": 3,
+            "C09": 5,
+            "C11": 2,
+            "C16": 2,
+            "MS02": 3,
+            "MS04": 2,
+            "MS05": 4,
+            "SOL01": 2,
+            "SOL02": 2,
+            "REC02": 2,
+            "GEN01": 4,
+            "ACT10": 2,
+            "ACT14": 2,
+            "USABLE01": 2,
+            "USABLE02": 4,
+            "USABLE03": 2
+          }
+        },
+        "scene_family_ranks": {
+          "SCENE01": 1,
+          "SCENE02": 1,
+          "SCENE03": 1,
+          "SCENE04": 1
+        },
+        "fixtures": {
+          "prior_supplementary_question_count": 73,
+          "prior_question_objects_unchanged": true,
+          "added_question": "SCENE04",
+          "frozen_fixture_unchanged": true,
+          "frozen_sha256": "2ac95316e6c24c76623a010501a8845ee2d3ae2048fd447bb0cbbff4ff634c7a",
+          "supplementary_sha256": "39bd0b03709cea7f77b59c7d725a47499e7df773498952f5b20187049d695efe",
+          "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+          "corpus_manifest_sha256": "fc1147393ef3ea502872e2adcd77d02f16ab7ada3d9a83fcabc4b416839ec7b9",
+          "preservation_baseline_revision": "02f9c890dc4faf0bf132a95acbc13a4d9cdc002f",
+          "current_supplementary_question_count": 74,
+          "prior_question_order_unchanged": true,
+          "supplementary_question_ids_unique": true,
+          "baseline_supplementary_sha256": "3e5bdef411fd0b730b348ae2200de4e8943611c8f9a38d69f3a3d3212d53066e",
+          "frozen_question_count": 32,
+          "frozen_fixture_path": "docs/reference/retrieval-questions.json",
+          "baseline_frozen_sha256": "2ac95316e6c24c76623a010501a8845ee2d3ae2048fd447bb0cbbff4ff634c7a",
+          "verification": "Compared all prior 73 supplementary question objects in order and the entire frozen fixture bytes directly against git show at the fixed base revision. SCENE04 is the sole added question; moving HEAD was not used as the baseline."
+        },
+        "comparison_to_retained_act005": {
+          "baseline_source": "/workspace/scratch/fb9daf9fc631/grey-area-51/docs/audits/2026-10-19-act005-physical-usables.md",
+          "baseline_source_sha256": "7a81d86701791d9cab240108e2d025d7e3e8a93d3e5d5a3edfab1aa072e58f22",
+          "baseline_frozen": {
+            "questions": 32,
+            "canonical_hit_at_1": 22,
+            "canonical_hit_at_5": 32,
+            "mrr_at_5": 0.8333
+          },
+          "frozen_aggregate_change": "None in the recorded metrics.",
+          "baseline_prior73": {
+            "questions": 73,
+            "canonical_hit_at_1": 56,
+            "canonical_hit_at_5": 73,
+            "mrr_at_5": 0.8628
+          },
+          "prior73_on_current_corpus": {
+            "questions": 73,
+            "canonical_hit_at_1": 55,
+            "canonical_hit_at_5": 73,
+            "mrr_at_5": 0.8543
+          },
+          "prior73_delta": {
+            "canonical_hit_at_1": -1,
+            "canonical_hit_at_5": 0,
+            "mrr_at_5": -0.0085
+          },
+          "historical_per_question_comparison": "Unavailable in retained per-question output found for this task; the audit provides aggregate figures only. No baseline rerun was performed.",
+          "interpretation": "No canonical route misses. A small aggregate rank regression remains among the prior73; do not attribute its exact questions or claim a before/after retrieval improvement."
+        }
       },
-      "prior_73_comparison": {
-        "current_hit_at_1": 55,
-        "current_mrr": 0.8543,
-        "historical_hit_at_1": 56,
-        "historical_mrr": 0.8628,
-        "route_misses": 0,
-        "qualification": "Small rank regression retained. Route hits are not answer correctness."
-      }
-    }
+      "scene04_fact_review": {
+        "canonical_rank": 1,
+        "top5": [
+          {
+            "rank": 1,
+            "path": "operations/grey-area-51-demo.md",
+            "heading": "Grey Area 51 > Open and explore Grey Area 51",
+            "part": 1
+          },
+          {
+            "rank": 2,
+            "path": "operations/grey-area-51-demo.md",
+            "heading": "Grey Area 51 > What persists across a tile view, map switch or reset?",
+            "part": 1
+          },
+          {
+            "rank": 3,
+            "path": "operations/grey-area-51-demo.md",
+            "heading": "Grey Area 51 > Open and explore Grey Area 51",
+            "part": 2
+          },
+          {
+            "rank": 4,
+            "path": "operations/grey-area-51-demo.md",
+            "heading": "Grey Area 51",
+            "part": 1
+          },
+          {
+            "rank": 5,
+            "path": "operations/cybersand-codex-development-handover.md",
+            "heading": "Development handover > Grey Area 51 scene checkpoint — 2026-10-19",
+            "part": 1
+          }
+        ],
+        "grouped_expected_facts": 6,
+        "complete_in_top5": 4,
+        "partial_in_top5": 2,
+        "coverage": [
+          {
+            "fact": 1,
+            "coverage": "complete_in_top5",
+            "hit_ranks": [
+              1,
+              4
+            ],
+            "review": "Entry buttons/shortcut/direct argument, Web menu, exact IDs, paused tick-zero overview, dimensions and world origin are present."
+          },
+          {
+            "fact": 2,
+            "coverage": "partial_in_top5",
+            "hit_ranks": [
+              1,
+              4
+            ],
+            "review": "Five districts, tile dimensions, one world and four 24-cell passages are present; the complete named west-to-east order and y144/64/144/64 offsets are not returned.",
+            "required_canonical_section": "The five districts and connected route"
+          },
+          {
+            "fact": 3,
+            "coverage": "complete_in_top5",
+            "hit_ranks": [
+              1,
+              2,
+              4
+            ],
+            "review": "Five camera views plus overview, 320×192 follow/y32 clamp, world/edits/player/tick retention and fixed [32,32,960,192] interest are present."
+          },
+          {
+            "fact": 4,
+            "coverage": "complete_in_top5",
+            "hit_ranks": [
+              1,
+              2,
+              3
+            ],
+            "review": "Whole-bunker paused reset, scene replacement and desktop F5 reset/retained actor behavior are present."
+          },
+          {
+            "fact": 5,
+            "coverage": "complete_in_top5",
+            "hit_ranks": [
+              1,
+              2,
+              3
+            ],
+            "review": "Accepted shared presenter, one saved world minimum and mouse/keyboard popup release gate are present; the release sentence spans returned parts1 and2."
+          },
+          {
+            "fact": 6,
+            "coverage": "partial_in_top5",
+            "hit_ranks": [
+              4,
+              5
+            ],
+            "review": "Native concrete construction, unchanged semantics/capacities and separate dated evidence are present at a high level. Concrete58, final Empty route pass, absolute-world grade, Baseline/Water8-coherence12 and cell-ABI detail require the construction section.",
+            "required_canonical_section": "Native concrete and presentation"
+          }
+        ],
+        "full_canonical_document_review": "All six grouped expected facts are supported in the full Grey guide; route and native-construction sections must be opened for the two partial groups.",
+        "no_contradiction_found_in_reviewed_contexts": true,
+        "answer_sufficiency": "Rank1 is a correct route, not a complete-answer pass. Entry/camera/reset/lifecycle facts are available in top5, but the full expected route/authoring answer requires additional canonical sections."
+      },
+      "limits": [
+        "Structural documentation checks do not validate native/controller source semantics, runtime outcomes or external URLs.",
+        "This is the fixed heading-chunk BM25 lexical development baseline; it does not test embeddings, unseen questions or deployed retrieval.",
+        "Canonical hit metrics are route coverage and are not answer-correctness or platform-acceptance results.",
+        "Repository, materialized-runtime, M11, publication and optional runtime testing were excluded from this assigned gate run."
+      ],
+      "read_only": true,
+      "sources_or_docs_changed_by_this_gate_task": false,
+      "optional_retests_performed": false,
+      "review_corrected_utc": "2026-10-19T20:56:52.955225+00:00",
+      "correction_note": "Corrected the initial scratch review, which had compared prior questions against moving HEAD after the parent documentation commit. The fixed base comparison confirms frozen32 and prior73 preservation. Gate outputs, metrics and SCENE04 expected-fact limitations are unchanged."
+    },
+    "retrieval_review_sha256": "a09d099882d7d31081a8691e2d2681ecf147bda72d6ece2322ff5243d1f248d9"
   },
   "publication": {
-    "status": "pending",
-    "target_branch": "scene/grey-area-51",
-    "merge_authorized": false
+    "local_content_checkpoint": "d4de739e1ec173cd1e3f550c07cf34c544a58866",
+    "remote_content_checkpoint": "40c27d7f6ef1cc8de022c9ae00347ab074a82af1",
+    "local_tree": "c76583e58565137dfc68ca0df0a768abb3b2401e",
+    "remote_tree": "c76583e58565137dfc68ca0df0a768abb3b2401e",
+    "exact_tree_match": true,
+    "local_recovery_branch": "checkpoint/grey-area-51-local",
+    "synchronization": "soft reset only after fresh fetch and exact tree equality; no file content changed",
+    "working_tree_clean": true,
+    "status": "published",
+    "branch": "scene/grey-area-51",
+    "branch_url": "https://github.com/techrote/cybersand/tree/scene/grey-area-51",
+    "pull_request": 184,
+    "pull_request_url": "https://github.com/techrote/cybersand/pull/184",
+    "pull_request_state": "open draft",
+    "merged": false,
+    "method": "Connected GitHub Git-data API after ordinary git push reported missing noninteractive HTTPS credentials. Every binary blob SHA and the complete remote tree were checked against local Git objects; a fresh CLI fetch confirmed identity.",
+    "identity_scope": "The content checkpoint above contains all implementation, images, portable definition and initial documentation. This publication-record follow-up modifies only this evidence manifest and its companion audit; the record does not contain a self-referential final commit hash.",
+    "observed_utc": "2026-10-19T20:56:04.514648+00:00",
+    "documentation_check_after_publication_record": {
+      "command": "python3 tools/ci/check_docs.py --json /tmp/grey-area-51-validation/docs-check-publication.json",
+      "exit_code": 0,
+      "result": {
+        "status": "passed",
+        "documents": 92,
+        "navigation_link_documents": 8,
+        "canonical_claims": 177,
+        "local_links": 1810,
+        "heading_anchors": 123,
+        "questions": 32,
+        "errors": [],
+        "warnings": [],
+        "limitations": [
+          "Does not verify source semantics or runtime claims",
+          "Does not fetch external URLs",
+          "Does not rewrite or reattest historical audits",
+          "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+        ]
+      },
+      "result_sha256": "ff50eb195d67ae1ec574d3a12d1b76381de9b5ed147a5f2af4c4ed021c1d6ef5"
+    }
   },
   "qualifications": [
     "Local evidence is not a claim of complete CI or cross-platform acceptance.",
