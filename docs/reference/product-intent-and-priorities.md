@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Approved owner direction and deliberately preserved behavior; not current implementation or performance evidence
 canonical-for: [owner-intent, product-priorities, preserved-material-feel]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-19
 related-documents: [status-and-roadmap.md, ../decisions/ADR-008-bounded-approximate-fidelity.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -14,6 +14,18 @@ This page carries forward owner direction recorded in the
 [pre-rewrite handover](../audits/pre-rag-rewrite-2026-09-08/cybersand-codex-development-handover.md.txt)
 at checkpoint `126175c`. It preserves intent separately from source and dated
 validation; later approved decisions should update this canonical reference.
+
+## What should the authored scene demos emphasize?
+
+**Owner direction, 2026-10-19:** Grey Area 51 is five tiles across and one high,
+mostly solid concrete, with connected passages and the oppressive industrial
+aesthetic of Blacksite Nine. Advanced scene detail and composition take priority
+over practical or realistic architecture. Large native Concrete masses, small
+mechanical recesses and restrained instrument light define this scene; the
+existing routes remain connected within one bounded world. The
+[Grey Area 51 guide](../operations/grey-area-51-demo.md) owns the implemented
+layout and controls, and its dated evidence owns measured material proportions
+and traversal results. This art direction adds no native physics requirement.
 
 ## Should all actors use Rapier physics?
 

@@ -4,8 +4,8 @@ status: Current
 document-kind: runbook
 scope: Nine authored districts in one bounded native world; entry, routes, camera map, reset, presentation and reproducible captures; no broad physics qualification
 canonical-for: [blacksite-nine-demo, blacksite-nine-continuity, blacksite-nine-scene-authoring, blacksite-nine-presentation]
-last-reviewed: 2026-10-18
-related-documents: [neon-reliquary-demo.md, microscenarios.md, ../systems/material-appearance-and-rendering.md, ../systems/world-storage-and-interest-region.md, ../audits/2026-10-18-blacksite-nine.md]
+last-reviewed: 2026-10-19
+related-documents: [neon-reliquary-demo.md, grey-area-51-demo.md, microscenarios.md, ../systems/material-appearance-and-rendering.md, ../systems/world-storage-and-interest-region.md, ../audits/2026-10-18-blacksite-nine.md]
 ---
 
 # Blacksite Nine
@@ -23,6 +23,13 @@ views of that world. Crossing a district boundary preserves
 the player, materials and edits on both sides; **R restores the entire complex**.
 The separate [Neon Reliquary descent](neon-reliquary-demo.md) retains its four
 independently installed district scenes and its existing F11 launcher.
+
+The shared connected-map presenter also serves
+[Grey Area 51](grey-area-51-demo.md), available through Ctrl+F11 and the feature
+launcher. An accepted installation selects the correct map, camera list and
+shaders while retaining one modal-release and world-view-minimum owner.
+Switching between Blacksite and Grey replaces the installed scenario; tile
+views within either map preserve that map's existing world.
 
 ![Blacksite Nine rendered as one connected complex](../images/blacksite-nine/blacksite-nine.png)
 

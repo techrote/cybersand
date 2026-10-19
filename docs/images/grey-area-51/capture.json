@@ -1,0 +1,141 @@
+{
+  "definition_file": "grey-area-51.scenario.json",
+  "definition_sha256": "73b3e5c17c61c54e80bff774a32de196e3c3945b1fb5f89327e8da1bddebba2f",
+  "display": "X11",
+  "godot": "4.7-stable (official)",
+  "identity": {
+    "godot": "4.7-stable (official)",
+    "material_catalogue": {
+      "authority": "native artifact; cell_world.gd identifies the UI mirror",
+      "count": 81,
+      "reserved_ids": [
+        10
+      ]
+    },
+    "native_path": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "native_sha256": "5bdc55e7f355004fc8a6468234b0d018d3919339ebfe47faca9997de3af17847",
+    "platform": "Linux",
+    "revision_status": "not-embedded",
+    "script_set_sha256": "4f2c8fef63d464cf902a4692bda6aec672d0f06df70233f73d2743dd257b1458",
+    "script_sha256": {
+      "scripts/cell_world.gd": "4c117c176c3255676963e2ae488f1688083dc34a380c8746d86affe4d5298f89",
+      "scripts/experiment_tower.gd": "aa65451d8bacba91c715445a41cd64ef3849d6dce4e207166abc1a9410a545e8",
+      "scripts/gameplay_recorder.gd": "d16aed6fdec7e5757522fd838ecc5e0c6f94ffdf4db2f71d6dabb3c4cb7b7c90",
+      "scripts/main.gd": "b686213652f814519f4d5d659b51e21c42828c9c879247c49f23e869ec65af3d",
+      "scripts/material_appearance_lut.gd": "a085a53ea83ffdca703139761e33d3b17f3110584bc77143fe04b129ebc9fa15",
+      "scripts/microscenario_catalogue.gd": "de2784914fbd9aef0d7da16bbccf217353aae644d669c93c3aba233c895d8614",
+      "scripts/microscenario_comparison.gd": "a4aab7a504db70698dafedb368384bcce61b73edaa01795b5ae368a8912a4890",
+      "scripts/microscenario_contract.gd": "74c0266a970de37af67a2455d6aa3693915046593b9822b79418146cc62a7aa0",
+      "scripts/microscenario_host.gd": "4bb2c74d5d8d8b4e2a670e59e8cf2a27e1e95efd192cf0d9cd4f5a891a853745",
+      "scripts/microscenario_identity.gd": "e4590e4e8520fb56bbc5cdb6a5256ec6375c2d9e506ec3b0da91749e5a10f04a",
+      "scripts/microscenario_panel.gd": "eeb0bc948eeff10a2f5b7a9c96afc46d01d817f98dab700e35202c14273a813c",
+      "scripts/microscenario_reference_pack.gd": "98e3c2f8d215c698ac4b13501934dec2e8c48fe8f992650be0f7b658a540480f",
+      "scripts/microscenario_telemetry.gd": "539c9832b3514b844cd650afe56683dc2933bc8ed01822d04c2c1f793a52903d",
+      "scripts/microscenario_workbench.gd": "e5b0aabc5579338e58c2d08cce7e0bd463bd01dd8a8629fe7c84e1fe61e09887",
+      "scripts/sampled_character.gd": "fb56187c5fa44cfd2124dd003fb2bb046d3ef5377e346c933d0bd377fa29fe40",
+      "scripts/simulation_snapshot.gd": "6b22a59dd2d5d3e32f102834b18d18db348515fccc364c69134842941ea4c88b",
+      "scripts/simulation_worker.gd": "f7beb32af68d75a5bea4b55e64fea917ea20c152840495e4b7240da4d6b90648",
+      "scripts/transport_profiles.gd": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+      "scripts/water_experiment_contract.gd": "80c3147e28885b099d67dcb89d4327e58d84fed7357c76d2d42db65cc8375d6a",
+      "scripts/water_experiment_profiles.gd": "172cd621c16561fce17f3a16e80a060007348201c2b901922531cd620dabaca5",
+      "scripts/water_feel_scenarios.gd": "3eed68b0cf4a986c516f7b7962b91ad71e1059998ca794c0563026322b8628f7",
+      "scripts/web_demo_controller.gd": "566615583a7c0f19af0d1ba224452b4e768a6a2c013448c973671b34ee2ddae3"
+    },
+    "source_revision": "unavailable",
+    "source_scope": "listed apparatus scripts; not a full checkout manifest"
+  },
+  "overview": "grey-area-51.png",
+  "paused": true,
+  "pixels_per_cell": 4,
+  "recipe_version": 1,
+  "record_count": 2404,
+  "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+  "scene": "showcase/grey-area-51",
+  "tick": 0,
+  "tiles": [
+    {
+      "code": "01",
+      "column": 0,
+      "file": "01-intake-bastion.png",
+      "name": "Intake Bastion",
+      "row": 0,
+      "world_origin": [
+        32,
+        32
+      ],
+      "world_size": [
+        192,
+        192
+      ]
+    },
+    {
+      "code": "02",
+      "column": 1,
+      "file": "02-records-mortuary.png",
+      "name": "Records Mortuary",
+      "row": 0,
+      "world_origin": [
+        224,
+        32
+      ],
+      "world_size": [
+        192,
+        192
+      ]
+    },
+    {
+      "code": "03",
+      "column": 2,
+      "file": "03-null-containment.png",
+      "name": "Null Containment",
+      "row": 0,
+      "world_origin": [
+        416,
+        32
+      ],
+      "world_size": [
+        192,
+        192
+      ]
+    },
+    {
+      "code": "04",
+      "column": 3,
+      "file": "04-isotope-engine.png",
+      "name": "Isotope Engine",
+      "row": 0,
+      "world_origin": [
+        608,
+        32
+      ],
+      "world_size": [
+        192,
+        192
+      ]
+    },
+    {
+      "code": "05",
+      "column": 4,
+      "file": "05-disposal-lock.png",
+      "name": "Disposal Lock",
+      "row": 0,
+      "world_origin": [
+        800,
+        32
+      ],
+      "world_size": [
+        192,
+        192
+      ]
+    }
+  ],
+  "title": "Grey Area 51",
+  "world_origin": [
+    32,
+    32
+  ],
+  "world_size": [
+    960,
+    192
+  ]
+}

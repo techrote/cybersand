@@ -6,12 +6,27 @@ CyberSand is a C++20 cellular simulation engine hosted by Godot, with a material
 lab and bounded Rapier2D/cellular coupling proof. The longer-term product intent
 is a reusable foundation for cyberpunk RPG and exploration games.
 
-F5 selects from **41 articulated Rapier actors** in the sandbox, Blacksite and all
-four showcase districts, with keyboard, scripted-demo or external-policy control.
+F5 selects from **41 articulated Rapier actors** in the sandbox, Blacksite,
+Grey Area 51 and all four showcase districts, with keyboard, scripted-demo or external-policy control.
 Applying restores the selected map and starts paused; R retains the actor.
 WASD moves, mouse aims, Q/E trims, Z/X reels and Space/Shift/C invoke the selected
 rig's abilities. M uses its tool, N releases a held item and U reattaches a nearby
 item. Sampled rigs and the original physical hull trials remain reference choices.
+
+## Grey Area 51
+
+Choose **Grey Area 51** in the launcher, press **Ctrl+F11**, or launch with
+`-- --grey-area-51` to enter a continuous **5 × 1 concrete bunker**. Five
+192 × 192 districts pack an inspection bastion, sealed archives, a containment
+vault, an isotope engine and a disposal lock into one massive slab. Four narrow
+passages connect the upper and lower transfer levels.
+
+Use the **5×1 tile map** for district views, **Whole bunker** for the complete
+960 × 192 strip, and **F** for a following view. The scene starts paused;
+**P** runs it and **R** restores all five districts together. Camera views and
+boundary crossings preserve the installed world and edits. The Web demo menu
+offers the same scene. See the [Grey Area 51 guide](docs/operations/grey-area-51-demo.md)
+for the route, controls, native concrete construction and validation boundaries.
 
 ## Blacksite Nine
 

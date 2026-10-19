@@ -1089,12 +1089,16 @@ func _ready() -> void:
 	var feature: String = str(get_tree().get_meta("cybersand_feature", ""))
 	if PhysicalTrial.contains(feature):
 		microscenario_launch.call_deferred(feature, "Play", 0)
+	elif feature == "grey_area_51":
+		blacksite_nine_presentation.launch_grey.call_deferred()
 	elif feature == "blacksite":
 		blacksite_nine_presentation.launch.call_deferred()
 	elif feature == "showcase":
 		showcase_presentation.launch.call_deferred()
 	elif feature == "actors":
 		toggle_actor_prototypes.call_deferred()
+	elif feature.is_empty() and "--grey-area-51" in OS.get_cmdline_user_args():
+		blacksite_nine_presentation.launch_grey.call_deferred()
 	elif feature.is_empty() and "--blacksite-nine" in OS.get_cmdline_user_args():
 		blacksite_nine_presentation.launch.call_deferred()
 	elif feature.is_empty() and "--showcase" in OS.get_cmdline_user_args():
@@ -1244,7 +1248,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		return
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F11:
-		if event.shift_pressed:
+		if event.ctrl_pressed:
+			blacksite_nine_presentation.launch_grey()
+		elif event.shift_pressed:
 			blacksite_nine_presentation.launch()
 		else:
 			showcase_presentation.launch()
@@ -1559,7 +1565,7 @@ func set_liquid_surface_adhesion(enabled: bool) -> bool:
 func set_camera_follow(enabled: bool) -> bool:
 	if water_controlled_run_active(): return false
 	if enabled and blacksite_nine_presentation != null and blacksite_nine_presentation.active():
-		current_view_size = Vector2i(480, 270)
+		current_view_size = blacksite_nine_presentation.follow_view_size()
 	camera_follow_enabled=enabled
 	return true
 
@@ -2604,6 +2610,9 @@ func _reconcile_actor_prototype_reset() -> void:
 
 
 func actor_keyboard_allowed() -> bool:
+	# All actor and usable channels share the map's held-key release fence.
+	if _blacksite_keyboard_blocked():
+		return false
 	if paused or not get_window().has_focus() or not actor_prototypes_allowed():
 		return false
 	if physical_actor_session != null and not _physical_terrain_ready:
@@ -2752,6 +2761,8 @@ func character_centre() -> Vector2:
 
 
 func clamped_camera_origin(candidate: Vector2) -> Vector2:
+	if camera_follow_enabled and blacksite_nine_presentation != null and blacksite_nine_presentation.grey_active():
+		return Vector2(clampf(candidate.x,32.0,992.0-current_view_size.x),32.0)
 	return Vector2(
 		clampf(candidate.x, 0.0, float(CyberCellWorld.WORLD_WIDTH - current_view_size.x)),
 		clampf(candidate.y, 0.0, float(CyberCellWorld.WORLD_HEIGHT - current_view_size.y))

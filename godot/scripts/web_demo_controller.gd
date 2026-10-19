@@ -166,6 +166,8 @@ func microscenario_apply_definition(definition: Dictionary, mode: String = "Insp
 	blacksite_nine_presentation.installed(installed)
 	if CyberShowcaseTiles.contains(str(installed.id)):
 		demo_id = CyberShowcaseTiles.demo_id(str(installed.id))
+	elif str(installed.id) == CyberDemoWorlds.GreyArea51.SCENARIO_ID:
+		demo_id = CyberDemoWorlds.GreyArea51.ID
 	elif str(installed.id) == CyberDemoWorlds.BlacksiteNine.SCENARIO_ID:
 		demo_id = CyberDemoWorlds.BlacksiteNine.ID
 	force_publication = true
@@ -666,6 +668,9 @@ func _activate_physics(active: bool, saved_bodies: Array = []) -> void:
 func select_demo(id: String, close: bool = true) -> void:
 	if not ready_to_play or not CyberDemoWorlds.valid_id(id):
 		return
+	if id == CyberDemoWorlds.GreyArea51.ID:
+		if blacksite_nine_presentation.launch_grey() and close: ui.close_menu()
+		return
 	if id == CyberDemoWorlds.BlacksiteNine.ID:
 		if blacksite_nine_presentation.launch() and close:
 			ui.close_menu()
@@ -736,7 +741,7 @@ func update_status() -> void:
 	if showcase_presentation != null and showcase_presentation.active():
 		$Layout/Title.text = "CYBERSAND / " + CyberShowcaseTiles.title(showcase_presentation.current_scenario_id()).to_upper()
 	elif blacksite_nine_presentation != null and blacksite_nine_presentation.active():
-		$Layout/Title.text = "CYBERSAND / BLACKSITE NINE"
+		$Layout/Title.text = "CYBERSAND / " + blacksite_nine_presentation.current_title().to_upper()
 	var text: String = "%s / %s / %s" % [material_name(selected_material_id), "PAUSED" if paused else "60 TPS target", "CALM" if coherent_liquid_emission else "SPRAY"]
 	if native_world.has_failed():
 		text = "STOPPED / Restart world or load a saved level / " + str(native_world.get_last_tick_error())
@@ -775,7 +780,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		return
 	match event.keycode:
 		KEY_F11:
-			if event.shift_pressed: blacksite_nine_presentation.launch()
+			if event.ctrl_pressed: blacksite_nine_presentation.launch_grey()
+			elif event.shift_pressed: blacksite_nine_presentation.launch()
 			else: showcase_presentation.launch()
 		KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6:
 			selected_material_id = (CyberExperimentTower.QUICK[tower_floor] if tower_active and not tower_context.get("micro_active",false) else [2,3,1,4,20,21])[int(event.keycode)-KEY_1]

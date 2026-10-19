@@ -2,11 +2,19 @@ class_name CyberBlacksiteNinePresentation
 extends RefCounted
 
 const Trial = preload("res://scripts/physical_actor_trial.gd")
+# One presentation owner serves both continuous installations, so direct
+# scene switches retain one minimum-size lease and one modal release gate.
 const Scene = preload("res://scripts/blacksite_nine.gd")
+const Grey = preload("res://scripts/grey_area_51.gd")
+const GreyLayout = preload("res://scripts/grey_area_51_layout.gd")
 const Layout = preload("res://scripts/blacksite_nine_layout.gd")
 var host: Control
 var controls: HBoxContainer
 var launch_button: Button
+var grey_launch_button: Button
+var map_grid: GridContainer
+var map_heading: Label
+var _configured_grey: bool = false
 var map_button: Button
 var overview_button: Button
 var follow_button: Button
@@ -37,6 +45,9 @@ func setup(controller: Control) -> void:
 	launch_button = _button(launch_row, "Blacksite Nine / Shift+F11", launch)
 	launch_row.move_child(launch_button, 1)
 	launch_button.name = "BlacksiteNineLauncher"
+	grey_launch_button = _button(launch_row, "Grey Area 51 / Ctrl+F11", launch_grey)
+	launch_row.move_child(grey_launch_button, 2)
+	grey_launch_button.name = "GreyArea51Launcher"
 	map_button = _button(controls, "3×3 tile map", show_map)
 	overview_button = _button(controls, "Whole complex", func() -> void: frame_view(0))
 	follow_button = _button(controls, "Follow player / F", follow_player)
@@ -66,7 +77,9 @@ func setup(controller: Control) -> void:
 	var heading := Label.new()
 	heading.text = "BLACKSITE NINE / TILE VIEWS"
 	content.add_child(heading)
+	map_heading = heading
 	var grid := GridContainer.new()
+	map_grid = grid
 	grid.columns = 3
 	grid.add_theme_constant_override("h_separation", 8)
 	grid.add_theme_constant_override("v_separation", 8)
@@ -114,7 +127,46 @@ func _button(parent: Node, text: String, action: Callable) -> Button:
 func active() -> bool:
 	return (host.tower_context.get("micro_active", false)
 		and (str(host.tower_context.get("microscenario", {}).get("id", "")) == Scene.SCENARIO_ID
+		or grey_active()
 		or Trial.contains(str(host.tower_context.get("microscenario", {}).get("id", "")))))
+
+func grey_active() -> bool:
+	return (host.tower_context.get("micro_active",false)
+		and str(host.tower_context.get("microscenario", {}).get("id", "")) == Grey.SCENARIO_ID)
+
+func current_title() -> String:
+	return Grey.TITLE if grey_active() else Scene.TITLE
+
+func follow_view_size() -> Vector2i:
+	return Vector2i(320,192) if grey_active() else Vector2i(480,270)
+
+func _tile_count() -> int:
+	return 5 if grey_active() else 9
+
+func _layout() -> GDScript:
+	return GreyLayout if grey_active() else Layout
+
+func _views() -> Array[Dictionary]:
+	return Grey.viewpoints() if grey_active() else Scene.viewpoints()
+
+func _configure_scene() -> void:
+	var grey: bool = grey_active()
+	map_button.text = "5×1 tile map" if grey else "3×3 tile map"
+	overview_button.text = "Whole bunker" if grey else "Whole complex"
+	map_heading.text = current_title().to_upper() + " / TILE VIEWS"
+	map_grid.columns = 5 if grey else 3
+	for index: int in range(tile_buttons.size()):
+		var button: Button = tile_buttons[index]
+		button.visible = index < _tile_count()
+		if not button.visible: continue
+		button.text = _layout().CODES[index] + " · " + _layout().TITLES[index]
+		button.custom_minimum_size = Vector2(170 if grey else 205,38)
+		button.tooltip_text = _description(index)
+	if grey != _configured_grey:
+		var prefix: String = "grey_area_51" if grey else "blacksite_nine"
+		shader.shader = load("res://shaders/" + prefix + "_backdrop.gdshader")
+		grade_shader.shader = load("res://shaders/" + prefix + "_grade.gdshader")
+		_configured_grey = grey
 
 func _request_blocked() -> bool:
 	# Both scene launchers obey the same existing owner/modal admission boundary.
@@ -127,30 +179,38 @@ func launch() -> bool:
 	if accepted: _release_pointer()
 	return accepted
 
+func launch_grey() -> bool:
+	if _request_blocked(): return false
+	host.get_viewport().gui_release_focus()
+	var accepted: bool = host.microscenario_launch(Grey.SCENARIO_ID, "Play", 0)
+	if accepted: _release_pointer()
+	return accepted
+
 func installed(definition: Dictionary) -> void:
-	if str(definition.get("id", "")) != Scene.SCENARIO_ID and not Trial.contains(str(definition.get("id", ""))): return
+	if str(definition.get("id", "")) not in [Scene.SCENARIO_ID,Grey.SCENARIO_ID] and not Trial.contains(str(definition.get("id", ""))): return
+	_configure_scene()
 	_apply_frame(0)
 	host.get_node("Layout/Title").text = ("CYBERSAND / " + str(definition.presentation.title)
-		if Trial.contains(str(definition.id)) else "CYBERSAND / BLACKSITE NINE")
+		if Trial.contains(str(definition.id)) else "CYBERSAND / " + current_title().to_upper())
 
 func show_map() -> void:
 	if not active() or _request_blocked(): return
 	_release_pointer()
-	map_popup.popup_centered(Vector2i(700, 236))
+	map_popup.popup_centered(Vector2i(940,160) if grey_active() else Vector2i(700,236))
 
 func frame_tile(index: int) -> bool:
-	if index < 0 or index >= 9: return false
+	if index < 0 or index >= _tile_count(): return false
 	return frame_view(index + 1)
 
 func frame_view(index: int) -> bool:
-	if not active() or _request_blocked() or index < 0 or index >= 10: return false
+	if not active() or _request_blocked() or index < 0 or index > _tile_count(): return false
 	_apply_frame(index)
 	return true
 
 func _apply_frame(index: int) -> void:
 	selected_view = index
 	_release_pointer()
-	var view: Dictionary = Scene.viewpoints()[index]
+	var view: Dictionary = _views()[index]
 	host.current_view_size = view.size
 	host.camera_origin = view.origin
 	host.camera_follow_enabled = false
@@ -158,10 +218,12 @@ func _apply_frame(index: int) -> void:
 
 func move_tile(direction: Vector2i) -> bool:
 	if selected_view <= 0 or absi(direction.x) + absi(direction.y) != 1: return false
-	var current := Vector2i((selected_view - 1) % 3, (selected_view - 1) / 3)
+	var columns: int = 5 if grey_active() else 3
+	var rows: int = 1 if grey_active() else 3
+	var current := Vector2i((selected_view - 1) % columns, (selected_view - 1) / columns)
 	var target: Vector2i = current + direction
-	if target.x < 0 or target.y < 0 or target.x >= 3 or target.y >= 3: return false
-	return frame_tile(target.y * 3 + target.x)
+	if target.x < 0 or target.y < 0 or target.x >= columns or target.y >= rows: return false
+	return frame_tile(target.y * columns + target.x)
 
 func follow_player() -> bool:
 	if not active() or _request_blocked(): return false
@@ -178,7 +240,10 @@ func keyboard_blocked() -> bool:
 		_wait_for_keyboard_release = true
 		return true
 	if not _wait_for_keyboard_release: return false
-	for key: Key in [KEY_A,KEY_D,KEY_SPACE,KEY_LEFT,KEY_RIGHT,KEY_UP,KEY_DOWN]:
+	# Actor trim, vertical movement and usable keys must also be released;
+	# a held non-horizontal command cannot leak out of the tile map.
+	var keys: Array = host.ACTOR_CONTROL_KEYS + host.PHYSICAL_TOOL_KEYS + [KEY_LEFT,KEY_RIGHT,KEY_UP,KEY_DOWN]
+	for key: Key in keys:
 		if Input.is_key_pressed(key) or Input.is_physical_key_pressed(key): return true
 	_wait_for_keyboard_release = false
 	return false
@@ -206,6 +271,7 @@ func refresh() -> void:
 		host.world_view.custom_minimum_size = _world_minimum_before_active
 		_world_minimum_relaxed = false
 	launch_button.disabled = blocked
+	grey_launch_button.disabled = blocked
 	for button: Button in [map_button, overview_button, follow_button]:
 		button.visible = showing
 		button.disabled = blocked
@@ -214,10 +280,10 @@ func refresh() -> void:
 	if not showing or host.microscenario_hud_hidden:
 		map_popup.hide()
 	if showing:
-		var player_tile: int = Layout.tile_at(host.character_position + Vector2(4,7))
-		current_label.text = ("Player: " + Layout.CODES[player_tile] + " / " + Layout.TITLES[player_tile]
+		var player_tile: int = _layout().tile_at(host.character_centre())
+		current_label.text = ("Player: " + _layout().CODES[player_tile] + " / " + _layout().TITLES[player_tile]
 			if player_tile >= 0 else "Player outside the complex")
-		for index: int in range(9):
+		for index: int in range(_tile_count()):
 			tile_buttons[index].modulate = Color(0.75, 0.94, 0.92) if index == player_tile else Color.WHITE
 		if host.microscenario_hud_hidden and host.brush_preview != null:
 			host.brush_preview.visible = false
@@ -236,13 +302,24 @@ func refresh() -> void:
 	shader.set_shader_parameter("player_size_px", CyberSampledCharacter.BODY_SIZE)
 	grade_overlay.position = content.position
 	grade_overlay.size = content.size
-	if grade_overlay.get_index() != host.world_view.get_child_count() - 1:
-		host.world_view.move_child(grade_overlay, -1)
+	# Material colour and glow are below this grade. Sampled rig hulls, energy
+	# bars, ropes, usables and brush cursors remain foreground presentation.
+	var foreground: Array[Node] = []
+	var reorder: bool = host.glow_overlay != null and host.glow_overlay.get_index() > grade_overlay.get_index()
+	for name: String in ["ActorPrototypeOverlay","UsableOverlay","PhysicalActorOverlay","BrushPreview"]:
+		var node: Node = host.world_view.get_node_or_null(name)
+		if node == null: continue
+		foreground.append(node)
+		reorder = reorder or node.get_index() < grade_overlay.get_index()
+	if reorder:
+		host.world_view.move_child(grade_overlay,-1)
+		for node: Node in foreground: host.world_view.move_child(node,-1)
 	for parameter: String in ["current_world_texture", "previous_world_texture", "view_size_px",
 		"camera_origin_px", "snapshot_blend", "player_origin_px", "player_size_px"]:
 		grade_shader.set_shader_parameter(parameter, shader.get_shader_parameter(parameter))
 
 func _description(index: int) -> String:
+	if grey_active(): return GreyLayout.DESCRIPTIONS[index]
 	return ["Collapsed viaduct, buried intake bunker and the western maintenance well.",
 		"Fortified research laboratories above the main containment throat.",
 		"Ashworks salvage trenches, a wrecked cargo tram and the eastern service descent.",

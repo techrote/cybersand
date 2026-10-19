@@ -16,6 +16,11 @@ Choose all 41 [articulated Rapier actors](systems/physical-actor-rigs.md) with F
 
 Layering, quantized relief and Strata Theatre: [depth prototype contract](systems/depth-layers-and-parallax.md).
 
+For **Grey Area 51**, start with the
+[concrete-bunker guide](operations/grey-area-51-demo.md): launcher/Ctrl+F11 entry,
+the 5×1 camera map, four connected passages, actor selection and whole-bunker
+reset. Five 192 × 192 districts share one native 960 × 192 slab.
+
 For **Blacksite Nine**, start with the
 [connected-complex guide](operations/blacksite-nine-demo.md): Shift+F11 entry,
 the 3×3 camera map, twelve shared passages, player-follow exploration and the
