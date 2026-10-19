@@ -425,6 +425,25 @@ execution. Printed mock-world motor timings are informational local-host results
 not native scene throughput, learned-policy latency, target-PC playfeel or Web
 acceptance. Reproduction commands alone do not claim successful execution.
 
+## Actor usable checks
+
+USABLE-001 adds three focused Godot fixtures covering the 32-entry catalogue,
+material/tool semantics, swept/delayed payloads, processor transactions,
+equipment leases, quick clicks, pause/reset lifecycle, live worker publication
+and F5 desktop integration.
+
+```sh
+timeout 180 <godot> --headless --path godot --script res://tests/test_usables.gd
+timeout 180 <godot> --headless --path godot --script res://tests/test_usable_session.gd
+timeout 180 <godot> --headless --path godot --script res://tests/test_actor_usables_integration.gd
+```
+
+Changes to equipment input, the worker, recorder, overlay or F5 selector also
+require the existing actor-rig, recording, publication and desktop integration
+regressions. The discovered full Godot runner remains the acceptance route; these
+focused commands do not by themselves prove target-PC feel or Windows/Web
+interactive acceptance.
+
 ## Soliding successor validation
 
 `make soliding-test` and `make soliding-sanitize` compile the standalone lifecycle

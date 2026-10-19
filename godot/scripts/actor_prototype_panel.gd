@@ -2,12 +2,14 @@ class_name CyberActorPrototypePanel
 extends PopupPanel
 
 signal apply_requested(model_id: StringName, producer: StringName, demo_npcs: bool)
+signal equipment_requested(usable_index: int, power: float)
 
 # Preserve the original setA indices for callers using the first prototype panel.
 const MODELS: Array[StringName] = [&"", &"runner", &"skimmer", &"crawler"]
 const PRODUCERS: Array[StringName] = [&"human", &"demo", &"policy"]
 const Catalog = preload("res://scripts/actor_rig_catalog.gd")
 const PhysicalCatalog = preload("res://scripts/physical_actor_catalog.gd")
+const UsableCatalog = preload("res://scripts/usable_catalog.gd")
 
 var set_choice: OptionButton
 var model_choice: OptionButton
@@ -16,6 +18,10 @@ var npc_choice: CheckBox
 var effort_slider: HSlider
 var effort_label: Label
 var description: Label
+var usable_choice: OptionButton
+var usable_power_slider: HSlider
+var usable_power_label: Label
+var usable_description: Label
 var status: Label
 var _visible_models: Array[StringName] = []
 
@@ -72,6 +78,39 @@ func _ready() -> void:
 	effort_slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	effort_slider.value_changed.connect(_refresh_effort)
 	power_row.add_child(effort_slider)
+	var equipment_title := Label.new()
+	equipment_title.text = "ACTOR EQUIPMENT"
+	equipment_title.add_theme_font_size_override("font_size", 17)
+	column.add_child(equipment_title)
+	usable_choice = OptionButton.new()
+	usable_choice.add_item("None — world pointer returns to painting")
+	for definition: Dictionary in UsableCatalog.DEFINITIONS:
+		usable_choice.add_item("%s — %s" % [str(definition.id).to_upper(), str(definition.name)])
+	usable_choice.item_selected.connect(_refresh_usable)
+	column.add_child(usable_choice)
+	var usable_power_row := HBoxContainer.new()
+	column.add_child(usable_power_row)
+	usable_power_label = Label.new()
+	usable_power_label.custom_minimum_size.x = 150
+	usable_power_row.add_child(usable_power_label)
+	usable_power_slider = HSlider.new()
+	usable_power_slider.min_value = 0.0
+	usable_power_slider.max_value = 1.0
+	usable_power_slider.step = 0.05
+	usable_power_slider.value = 0.8
+	usable_power_slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	usable_power_slider.value_changed.connect(_refresh_usable_power)
+	usable_power_row.add_child(usable_power_slider)
+	usable_description = Label.new()
+	usable_description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	usable_description.custom_minimum_size.y = 54
+	column.add_child(usable_description)
+	var equipment_row := HBoxContainer.new()
+	column.add_child(equipment_row)
+	var equip_only := Button.new()
+	equip_only.text = "Equip only"
+	equip_only.pressed.connect(_equip_only)
+	equipment_row.add_child(equip_only)
 	var scroll: ScrollContainer = ScrollContainer.new()
 	scroll.custom_minimum_size.y = 180
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -97,6 +136,8 @@ func _ready() -> void:
 	row.add_child(close)
 	_populate_models(&"setA", &"")
 	_refresh_effort(effort_slider.value)
+	_refresh_usable_power(usable_power_slider.value)
+	_refresh_usable(0)
 
 
 func selected_set_id() -> StringName:
@@ -112,6 +153,33 @@ func configure_selection(model_id: StringName, producer: StringName, demo_npcs: 
 	producer_choice.select(maxi(0, PRODUCERS.find(producer)))
 	npc_choice.button_pressed = demo_npcs
 	_refresh_description(model_choice.selected)
+
+
+func configure_equipment(usable_index: int, power: float) -> void:
+	var item_index: int = clampi(usable_index + 1, 0, UsableCatalog.count())
+	usable_choice.select(item_index)
+	usable_power_slider.value = clampf(power, 0.0, 1.0)
+	_refresh_usable(item_index)
+
+
+func selected_usable_index() -> int:
+	return usable_choice.selected - 1
+
+
+func _refresh_usable(index: int) -> void:
+	if index <= 0:
+		usable_description.text = "No actor equipment. Painting is available once the owner acknowledges unequip and pointer buttons are released."
+		return
+	var definition: Dictionary = UsableCatalog.entry(index - 1)
+	usable_description.text = "%s — %s\n%s" % [str(definition.name), str(definition.description), UsableCatalog.controls_text(index - 1)]
+
+
+func _refresh_usable_power(value: float) -> void:
+	usable_power_label.text = "Equipment power: %d%%" % roundi(value * 100.0)
+
+
+func _equip_only() -> void:
+	equipment_requested.emit(selected_usable_index(), usable_power_slider.value)
 
 
 func _select_set(index: int) -> void:
@@ -183,12 +251,12 @@ func _apply() -> void:
 
 
 func show_selection() -> void:
-	popup_centered(Vector2i(600, 600))
+	popup_centered(Vector2i(620, 780))
 	# Wrapped labels need one layout frame before their final minimum height.
 	# Fit again on first opening rather than retaining a tall provisional popup.
 	await get_tree().process_frame
 	if visible:
-		popup_centered(Vector2i(600, 600))
+		popup_centered(Vector2i(620, 780))
 
 
 func set_context(map_name: String) -> void:

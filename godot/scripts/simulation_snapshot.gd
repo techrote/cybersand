@@ -49,6 +49,8 @@ var player_body_id: int = 0
 # ACT-001 current actor sample, independently timestamped from material bytes.
 # Value-only, immutable after publication; no motor or World references.
 var actor_prototypes: Dictionary = {}
+# USABLE-001 copied equipment/runtime state for the actor sample.
+var actor_usables: Dictionary = {}
 var actor_prototype_status: String = ""
 var actor_prototype_reset_serial: int = 0
 var actor_prototype_reset_applied: bool = false

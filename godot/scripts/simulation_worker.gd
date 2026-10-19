@@ -8,6 +8,7 @@ const MicroCatalogue = preload("res://scripts/microscenario_catalogue.gd")
 const MicroHost = preload("res://scripts/microscenario_host.gd")
 const PlayerEnvironmentProfiles = preload("res://scripts/player_environment_profiles.gd")
 const ActorSession = preload("res://scripts/actor_prototype_session.gd")
+const UsableSession = preload("res://scripts/usable_session.gd")
 const PhysicalEffects = preload("res://scripts/physical_actor_effects.gd")
 const SIMULATION_HZ: float = 60.0
 const FIXED_TIMESTEP: float = 1.0 / SIMULATION_HZ
@@ -29,6 +30,7 @@ var _mutex: Mutex = Mutex.new()
 var _world = _create_world()
 var _character: CyberSampledCharacter = CyberSampledCharacter.new()
 var _actor_session: CyberActorPrototypeSession = ActorSession.new()
+var _usable_session: CyberUsableSession = UsableSession.new()
 # Worker-exclusive representation state. Only one player owner is active at a
 # time; PCHAR representation changes are applied through fresh reset.
 var _sampled_character_enabled: bool = true
@@ -280,6 +282,10 @@ func _apply_lab(command: Dictionary) -> bool:
 			if not _actor_session.configure(actor_definitions, _world):
 				_lab_status = "Refused exploratory actor configuration"
 				return false
+			if not _usable_session.configure(_actor_session.snapshot()):
+				_actor_session.clear()
+				_lab_status = "Refused exploratory equipment session"
+				return false
 			_character = _actor_session.player()
 			_sampled_character_enabled = true
 		_scenario_request_applied = true
@@ -376,6 +382,7 @@ func _configure_sampled_character(
 	runtime_recovery_enabled: bool
 ) -> void:
 	_actor_session.clear()
+	_usable_session.clear()
 	if _character is CyberActorPrototype:
 		_character = CyberSampledCharacter.new()
 		_character.configure_profile(_player_environment_profile)
@@ -443,6 +450,21 @@ func submit_actor_action(
 
 func cancel_actor_input(actor_id: int, epoch: int, producer: StringName) -> bool:
 	return _actor_session.cancel_input(actor_id, epoch, producer)
+
+
+func submit_actor_usable_action(
+	actor_id: int, epoch: int, sequence: int, observed_tick: int,
+	usable_index: int, aim: Vector2, power: float, trigger: bool, alternate: bool,
+	lease_ticks: int = UsableSession.DEFAULT_LEASE_TICKS, producer: StringName = &"policy"
+) -> bool:
+	# Equipment is an independent copied-input domain. Policies never receive a
+	# World reference or permission to submit cell-edit footprints directly.
+	return _usable_session.submit_action(actor_id, epoch, sequence, observed_tick,
+		usable_index, aim, power, trigger, alternate, lease_ticks, producer)
+
+
+func cancel_actor_usable_input(actor_id: int, epoch: int, producer: StringName) -> bool:
+	return _usable_session.cancel_input(actor_id, epoch, producer)
 
 
 func submit_actor_rig_action(
@@ -963,6 +985,8 @@ func _worker_loop() -> void:
 				if not local_actor_definitions.is_empty():
 					actors_configured = _actor_session.configure(local_actor_definitions, _world)
 					if actors_configured:
+						actors_configured = _usable_session.configure(_actor_session.snapshot())
+					if actors_configured:
 						_character = _actor_session.player()
 						_sampled_character_enabled = true
 				if local_actor_prototype_request:
@@ -976,6 +1000,10 @@ func _worker_loop() -> void:
 				_actor_prototype_reset_applied = false
 				_actor_prototype_status = "Refused actor reset: World replacement failed"
 		_actor_session.set_suspended(local_paused or _simulation_failed)
+		if _actor_session.active():
+			_usable_session.sync_actor_context(_actor_session.snapshot())
+		else:
+			_usable_session.clear()
 		if not _simulation_failed:
 			_world.prepare_rigid_body_coupling(local_rigid_body_states, not local_paused)
 			# Admission is rechecked at the exclusive owner's consume boundary.
@@ -1015,6 +1043,7 @@ func _worker_loop() -> void:
 				):
 					if _actor_session.active():
 						_actor_session.step(FIXED_TIMESTEP, _world)
+						_usable_session.step(FIXED_TIMESTEP, _world, _actor_session.snapshot())
 					else:
 						_character.simulate(
 							FIXED_TIMESTEP,
@@ -1160,6 +1189,7 @@ func _publish_snapshot(
 
 	var snapshot: CyberSimulationSnapshot = CyberSimulationSnapshot.new()
 	snapshot.actor_prototypes = _actor_session.snapshot()
+	snapshot.actor_usables = _usable_session.snapshot()
 	snapshot.rigid_body_epoch = rigid_body_epoch
 	snapshot.physical_actor_effects = _physical_effect_receipts.duplicate(true)
 	snapshot.physical_actor_effect_admission = physical_actor_effect_admission()
@@ -1262,6 +1292,7 @@ func _publish_snapshot(
 		"profile_hash":_lab_profile_hash,
 		"player_environment_profile":_player_environment_profile.duplicate(true),
 		"actor_prototypes":snapshot.actor_prototypes,
+		"actor_usables":snapshot.actor_usables,
 		"sampled_character_enabled":_sampled_character_enabled,
 		"sampled_runtime_recovery_enabled":(
 			_character.runtime_enclosure_recovery_enabled
@@ -1296,6 +1327,7 @@ func _publish_snapshot(
 		var render_profile: Dictionary = snapshot.lab_context.get("profile", {})
 		_pending_render_context = {
 			"actor_prototypes": snapshot.actor_prototypes.duplicate(true),
+			"actor_usables": snapshot.actor_usables.duplicate(true),
 			"micro_active": bool(snapshot.lab_context.get("micro_active", false)),
 			"profile": {"name": str(render_profile.get("name", ""))},
 			"profile_hash": str(snapshot.lab_context.get("profile_hash", "")),

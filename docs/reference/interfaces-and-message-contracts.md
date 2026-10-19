@@ -145,6 +145,28 @@ and main-thread Rapier ownership are unchanged. New-rig tools may invoke the
 existing owner-local single-cell emission adapter under explicit per-update
 budgets; a policy cannot supply an arbitrary World operation or effect footprint.
 
+
+### Optional actor usable control surface
+
+**Current, experimental USABLE-001:** `submit_actor_usable_action` and
+`cancel_actor_usable_input` are a second copied-value input domain beside movement.
+A submission carries actor ID, actor epoch, an equipment-local monotonic sequence,
+observed actor tick, usable index, finite aim, power, two held buttons, lease and
+the assigned producer identity. `usable_index=-1` means unequipped.
+
+The owner retains the latest held values and latched rise edges rather than an
+unbounded FIFO. Changing equipment while either trigger is already held requires
+both buttons to be released before a later press can activate the new item.
+Expiry/cancellation neutralizes held equipment without deleting committed
+projectiles or deployed processors.
+
+`CyberSimulationSnapshot.actor_usables` is copied readback containing selection,
+charge/cooldown/result, committed entities, effect/hit receipts and bounded-work
+counters. It exposes no World, motor, scene-tree node or Rapier RID. Exact item
+semantics and capacities belong to the
+[actor-usables contract](../systems/actor-usables.md) and
+[configuration reference](configuration-reference.md#actor-usable-values).
+
 ### Direct actuator lane and Thunderbowl envelopes
 
 **Current, experimental ACT-003:** actor definitions may add `control_mode`
