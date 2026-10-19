@@ -25,10 +25,11 @@ human/policy commands using actor identity, epoch, sequence, observed tick and
 short leases. The simulation worker remains the sole owner permitted to query or
 mutate the cellular World.
 
-This first integration equips the sampled actor-rig session. The physical Rapier
-barrel/Ripper trials and ACT-004 articulated bodies do not yet have equipment
-mounts; #178 owns that later physical mount/recoil/articulation work. Selecting a
-usable therefore does not grant a policy a Rapier RID or live body reference.
+This first integration equips the sampled actor-rig session. ACT-004 now has its
+own bounded physical mount/recoil/held-tool examples for articulated Rapier actors,
+but those examples are a separate physical-actor substrate and are not yet a
+one-to-one mounting of this U01-U32 catalogue. Selecting a USABLE-001 item therefore
+does not grant a policy a Rapier RID or live body reference.
 
 ## Desktop controls
 
@@ -198,8 +199,8 @@ owned by the material engine.
 
 CYSD1 saves do not resume committed equipment state. Learned inference, general
 inventory, item pickup physics, actor health/damage, programmable material-graph
-items, articulated Rapier equipment mounts and target-PC feel acceptance remain
-outside this increment.
+items, integration of the full U01-U32 catalogue with ACT-004 physical mounts, and
+target-PC feel acceptance remain outside this increment.
 
 ## Validation
 
