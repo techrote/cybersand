@@ -92,7 +92,8 @@
     "systems/material-visual-pattern-library.md",
     "reference/material-effects-register.md",
     "operations/physical-actor-programme.md",
-    "systems/depth-layers-and-parallax.md"
+    "systems/depth-layers-and-parallax.md",
+    "systems/physical-actor-rigs.md"
   ],
   "navigation": [
     "README.md",
@@ -336,7 +337,11 @@
     {
       "path": "audits/2026-10-18-depth-integration-validation.md",
       "reason": "Fresh dated reconstructed-depth integration evidence; runtime semantics remain in the depth contract."
+    },
+    {
+      "path": "audits/2026-10-18-act004-articulated-actors.md",
+      "reason": "Dated ACT-004 source/runtime, preserved tuning failures and scoped articulated-actor validation; retrieve explicitly through the physical actor contract or validation ledger, not as a default Current runtime contract."
     }
   ],
-  "integration_note": "Retains scene, generation, actor, actor-usable, Thunderbowl and presentation routes; historical questions remain separately scoped."
+  "integration_note": "Retains scene, generation, actor, actor-usable, Thunderbowl, physical-actor and presentation routes; historical questions remain separately scoped."
 }
