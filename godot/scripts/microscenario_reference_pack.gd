@@ -6,6 +6,7 @@ extends RefCounted
 const Contract = preload("res://scripts/microscenario_contract.gd")
 const VERSION: int = 1
 const BASELINE: String = "de332eaf8f4e70b25b097bed0c2e2a7b2aac0173 / Baseline transport / Water8-coherence12 / exploratory"
+const PHASE_BASELINE: String = "b2691594bdc27622979f52df0b9969e8da185b4f / int.current-behaviour v2 / Baseline / Water8-coherence12 / exploratory"
 const MATERIAL_IDS: Array[String] = ["materials/contact-lab", "materials/salt-water", "materials/salt-water-dose-small", "materials/lava-water", "materials/sand-water-control", "materials/fire-gunpowder", "materials/acid-metal", "materials/spark-metal", "materials/cement-water"]
 const FLOOD_ID: String = "ms001/flood-control"
 const REM003_ID: String = "rem003/player-granular-review"
@@ -85,9 +86,18 @@ static func _bay(out: Dictionary, x: int, material: int, dose: int, seed: int) -
 	out.partial_water_fills.append_array([x+4,192,124,52,255,0])
 	out.events.append(erase(12,x+38,140,56,3))
 
+static func _phase_quantity_recipe(out: Dictionary) -> void:
+	# Only quench recipes adopt the MAT-002 trace. Geometry/action ancestry stays
+	# unchanged; complete definition identity includes this new recipe/baseline.
+	out.recipe_version = 2
+	out.presentation.baseline = PHASE_BASELINE
+	out.source_recipe = "MAT-002 reference-pack/v2/" + str(out.id)
+	out.presentation.instructions += " Quenching can need several Water contacts; a Steam parcel need not hold a full Water cell."
+
 static func laboratory(seed: int = 0) -> Dictionary:
-	var out: Dictionary = base("materials/contact-lab", seed, "Materials Laboratory", "three-bay/contact-v1", 240,
+	var out: Dictionary = base("materials/contact-lab", seed, "Materials Laboratory", "three-bay/contact-v2-phase-quantity", 240,
 		"Three sealed bays share the same Water reservoir recipe. At tick 12 the ordinary shelves are erased: Salt dissolves, Lava quenches, Sand supplies a non-reacting transport control. Pause, inspect the declared probes, reset with R, and compare complete definitions using A/B. Paint/erase is available for exploration; organic brush input is not replayed or included in reaction ledgers. F8 hides labels and HUD.")
+	_phase_quantity_recipe(out)
 	out.tools = ["paint", "erase"]
 	_bay(out,24,23,32,seed)
 	_bay(out,176,8,32,seed)
@@ -120,6 +130,9 @@ static func interaction_fixture(pair: String = "salt-water", seed: int = 0, dose
 	if dose == 16 and pair != "sand-water": id += "-dose-small"
 	var out: Dictionary = base(id, seed, "Materials Laboratory / " + pair, "%s/dose-%d/v1" % [pair,dose], 120,
 		"Generated controlled interaction fixture. The complete definition fixes the dose, reservoir, shelf release at tick 12, observations and current engine profiles. Use the normal-dose and small-dose Salt presets as a fresh-reset A/B example, not a tuning verdict. No player/body owner or live brush is omitted by the headless run. The unused bays remain empty inspection space; edit a complete JSON definition to reuse them.")
+	if pair == "lava-water":
+		_phase_quantity_recipe(out)
+		out.presentation.profile = "%s/dose-%d/v2-phase-quantity" % [pair,dose]
 	_bay(out,176,material,dose,seed)
 	out.presentation.regions = [region("contact",pair.to_upper()+" / DOSE %d" % dose,[176,64,132,184])]
 	out.observations = [observe("dose-initial",0,"material_cells",[180,68,124,176],material),

@@ -4,8 +4,8 @@ status: Current
 document-kind: runbook
 scope: Exploratory Materials Laboratory, Flood-Control Puzzle and Simulation Stress Test definitions on the shared host, with fresh-reset A/B, world-state objectives and bounded telemetry
 canonical-for: [microscenario-reference-pack, materials-laboratory-readiness, flood-control-scenario, simulation-stress-test, microscenario-workbench-controls]
-last-reviewed: 2026-09-25
-related-documents: [microscenarios.md, microscenarios-programme.md, experiment-tower.md, ../reference/status-and-roadmap.md, ../audits/2026-09-19-issue-28-ms001.md]
+last-reviewed: 2026-10-19
+related-documents: [microscenarios.md, microscenarios-programme.md, experiment-tower.md, ../reference/status-and-roadmap.md, ../audits/2026-09-19-issue-28-ms001.md, ../audits/2026-10-19-mat002-contact-lab-revalidation.md]
 ---
 
 # MS-001 reference MicroScenario pack
@@ -36,24 +36,33 @@ physics is retuned to make these worlds pass.
 
 | Catalogue ID | Complete definition and purpose |
 |---|---|
-| `materials/contact-lab` | Three sealed bays: Salt/Water dissolution, Lava/Water quenching, and a non-reacting Sand/Water transport control; 240-tick horizon; ordinary paint/erase for exploration |
+| `materials/contact-lab` | Recipe v2: three sealed bays for Salt/Water dissolution, quantity-aware Lava/Water quenching, and a non-reacting Sand/Water transport control; 240-tick horizon; ordinary paint/erase for exploration |
 | `materials/salt-water` | Generated single-bay Salt/Water fixture, 384 Salt cells, existing shelf release at tick 12, 120-tick observations |
 | `materials/salt-water-dose-small` | Same controlled apparatus with 192 Salt cells; an explicit complete-definition A/B example, not a tuning verdict |
-| `materials/lava-water` | Generated Lava/Water contact with the existing Stone/Steam conversion; 120-tick observations |
+| `materials/lava-water` | Recipe v2: generated Lava/Water contact with cumulative coolant accounting and quantity-bearing Steam; 120-tick observations |
 | `materials/sand-water-control` | Generated Sand/Water non-interaction control; transport may move materials, but no INT conversion rule is expected |
 | `materials/fire-gunpowder` | Existing Fire/Gunpowder combustion path; bounded material-count observations |
 | `materials/acid-metal` | Existing Acid/Metal corrosion path; Rust observations without changing corrosion policy |
 | `materials/spark-metal` | Existing Spark/base-Metal electrical interaction; declared cell-state/material observations |
 | `materials/cement-water` | Existing Cement cure under Water/air context; Concrete observations over a 240-tick horizon |
 
-All are recipe version 1, maturity `exploratory`, against the named current
-source/contact identity retained in each capture, Baseline transport and declared
-Water semantics. The original MS-001 fixtures retain their historical recipe
-identity; the INT-000 additions add no material-rule tuning. The declared
-seed moves the initial dose within its bay deterministically. It does not introduce
-a global RNG or an INT-000 profile. Ordinary setup rectangles provide reproducible
-material doses; finite existing erase events remove shelves. There is no generic
-pump, heater, fan, igniter, arbitrary-material recurring emitter or new reaction.
+The contact lab and generated Lava/Water fixtures, including the public half-dose
+variant, use recipe version **2** against MAT-002's `int.current-behaviour` profile
+2. Their presentation profiles end in `v2-phase-quantity` and name the qualified
+native baseline. Geometry, Water fills, shelf-release events and their ancestral
+`source_recipe_hash` remain unchanged; the complete definition hash includes the
+new recipe and presentation identity. See the
+[contact-trace revalidation](../audits/2026-10-19-mat002-contact-lab-revalidation.md)
+for the exact source/runtime and seed-2 results. Historical MS-001 recipe-v1
+captures retain their original identities and outcomes.
+
+Other Materials Laboratory entries remain recipe version 1. All retain maturity
+`exploratory`, Baseline transport, declared Water semantics and the actually
+executing source/contact identity in each capture. The declared seed moves the
+initial dose within its bay deterministically. It does not introduce a global RNG.
+Ordinary setup rectangles provide reproducible material doses; finite existing
+erase events remove shelves. This recipe revalidation introduces no material rule,
+pump, heater, fan, igniter or arbitrary-material recurring emitter.
 
 `interaction_fixture(pair, seed, dose)` returns independent complete data. The
 retained `godot/tests/fixtures/ms001-salt-water-v1.json` is one generated definition,
@@ -236,10 +245,25 @@ field changes; it never fabricates outcomes for untested pairs.
 ## Accounting, telemetry and anomaly triage
 
 Retain exact starting/ending material-cell counts and native Water integer quantity.
-The current Salt fixture reports two Brine cells per converted Salt cell; the quench
-reports existing Stone and Steam products. Water lost to those conversions is not
-mislabelled as an apparatus sink. The scheduled-source/sink ledger covers declared
-edits only; it does not reconstruct reactions or arbitrary tools.
+The current Salt fixture reports two Brine cells per converted Salt cell. Quench
+recipe v2 retains partial Water quantities in Steam and accumulates coolant before
+producing a whole Stone cell. **Steam parcel count is not aqueous quantity.** At
+seed 2 and tick 120, the full-dose quench bay contains 384 Stone cells and 386 Steam
+parcels: 384 full parcels of 255 units plus parcels of 171 and 208 units. Remaining
+Water (1,545,941) plus Steam (98,299) equals the initial 1,644,240 aqueous units.
+The half-dose Lava fixture produces 192 Stone and 194 Steam parcels while retaining
+the same initial reservoir quantity. These are exact versioned trace results,
+not universal per-contact product ratios.
+
+The focused regression decodes owned native cell snapshots in the sealed quench
+bay and sums Water `state_a` plus decoded Steam/Ice `state_b`; zero phase `state_b`
+means the full Water-policy quantity. The ordinary `water_integer` observer counts
+liquid Water only. Water converted to Steam or Brine is not an apparatus sink:
+the host's scheduled-source/sink ledger covers declared edits only and does not
+reconstruct reactions, combined phase inventory or arbitrary tools. Salt/Brine
+chemistry remains outside the closed thermal-bay ledger. The
+[Water phase contract](../systems/water-design.md#how-do-water-steam-and-ice-preserve-quantity)
+owns those quantity and chemical-boundary semantics.
 
 Optional native tick distributions exclude observer/host cost. The separate
 before/after-host distribution includes apparatus observation work but excludes
