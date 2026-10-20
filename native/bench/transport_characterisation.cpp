@@ -57,7 +57,8 @@ int main(int argc, char** argv) {
         std::vector<double> times;
         std::uint64_t visited=0, active=0, moves=0, allocations=0, late=0, chunks=0, blocks=0, injected=0;
         auto sample = [&](int tick) {
-            std::array<std::uint64_t,81> counts{};
+            // Sized to the full catalogue; the printed schema stays IDs 0-80.
+            std::array<std::uint64_t,cybersand::kMaterialDefinitions.size()> counts{};
             std::uint64_t water=0, contacts=0, deposited=0, eroded=0, eroded_initial=0;
             int front=0, depth=0;
             std::uint64_t interfaces=0;

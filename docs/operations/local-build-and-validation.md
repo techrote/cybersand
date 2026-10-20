@@ -123,6 +123,12 @@ Windows cross-builds use `build_pinned_godot_cpp.sh windows` and
 with `LLVM_MINGW_ROOT`/`WINDOWS_CXX`. PE/import inspection alone cannot prove a
 Windows runtime launch.
 
+The GitHub-hosted Native job has a 45-minute overall allowance. Its individual
+build, test and benchmark commands retain their separate deadlines; increasing
+the job allowance does not skip cases or relax sanitizer failures. The
+[MAT-002 completion audit](../audits/2026-10-19-mat002-review-and-validation.md#completion-resumed--2258-utc)
+records the observed 35-minute cancellation and preceding successful durations.
+
 ## Linux GDExtension CI sharding
 
 **Current:** the [GDExtension workflow](../../.github/workflows/gdextension.yml)
@@ -133,10 +139,14 @@ restore the same source/runtime identity and run deterministic subsets of the
 Godot suite. Each shard performs its own clean headless import. Active external
 or self-hosted runner routing is rejected by the repository policy checker.
 
-The local/default invocation remains serial and unchanged in scope:
+The local/default invocation remains serial. Linux rendered-output tests need a
+display; a software-rendered run can use Xvfb:
 
 ```sh
-python3 tools/ci/run_godot_regressions.py --godot <godot> --output build/godot-regressions
+LIBGL_ALWAYS_SOFTWARE=1 LP_NUM_THREADS=2 GALLIVM_PERF=nopt xvfb-run -a \
+  -s '-screen 0 1920x1080x24 -nolisten tcp' \
+  python3 tools/ci/run_godot_regressions.py --godot <godot> \
+  --output build/godot-regressions --keep-going
 ```
 
 CI uses `--shard-count 4 --shard-index 0..3`. The runner still discovers every
@@ -146,6 +156,14 @@ historical timings only influence deterministic scheduling; they are not test
 thresholds. Unknown/new tests receive a conservative default weight and must appear
 exactly once in the union of shards.
 
+`test_*_render.gd` cases automatically request the compatibility renderer; other
+cases and import remain headless. Explicit skips are required-case failures,
+including the former headless pixel-test skip. `--keep-going` records the rest of
+the assigned cases after test failure, while import failure stops immediately.
+Read each record and the final completion/status fields in `timings.json` before
+claiming a pass. The [test-selection guide](testing-validation-and-replay.md#ci-execution-sharding)
+owns these acceptance rules.
+
 The initial migration PR proved exact serial/sharded coverage equivalence on the
 same source/runtime/Godot identity. That serial lane is now opt-in only via
 `GDEXT_SERIAL_EQUIVALENCE=1`; ordinary PRs use the sharded gate. The active workflow
@@ -154,6 +172,41 @@ identity and the required exact-head gates are independent of shard scheduling.
 Current build jobs set `SCONS_JOBS=2` directly; the
 [repository provider policy](github-development-and-release.md) owns the runner
 and provider-routing boundary.
+
+## Windows retained-runtime execution
+
+**Current:** the GDExtension workflow also executes the retained Windows DLL on a
+GitHub-hosted `windows-2022` runner. This lane is separate from the Windows
+cross-build job. The
+[Windows execution helper](../../tools/ci/run_windows_godot_regressions.py)
+requires an exact workflow checkout, committed LFS bytes, matching runtime
+provenance and complete coverage of the current native source/header input set.
+Any changed or newly added native input requires a matching runtime publication
+before the retained DLL can satisfy this gate. Historical build-input hashes
+continue to describe their original build.
+
+The helper verifies the pinned official Windows Godot 4.7 archive, executable
+version and Rapier runtime before import. It dynamically selects every discovered
+headless case, including the two profile probes and scene startup, and preserves
+the shared runner's per-case timeouts and error/skip rejection. Each applicable
+case must execute exactly once. The six current `test_*_render.gd` cases are
+explicitly outside this Windows lane; Linux's rendered shards execute them.
+After the ACT-005 integration, the source inventory is 97 Windows headless
+cases and 103 Linux cases, with import counted separately. These counts describe
+discovery, not an executed pass.
+
+The job retains `windows-execution.json`, source/runtime/tool identities,
+commands, individual logs and their SHA-256 hashes under the
+`windows-godot-headless-<run-id>` artifact even when execution fails. The report
+records incomplete import, failed cases, source drift and final completion
+explicitly. Only the four declared Rapier texture `.import` descriptors normalize
+CRLF to LF for content comparison: the hosted checkout and Godot's re-save can
+differ in newline representation. Changes to descriptor content still fail.
+All other tracked inputs use raw SHA-256, including DLLs, images and source, so
+binary byte changes cannot be hidden by text normalization. The execution step
+is bounded to 40 minutes within a 45-minute job.
+Use the dated audit and exact workflow run to establish actual platform results;
+this lane does not establish Windows rendered-output or browser acceptance.
 
 ## Physical usable validation
 
@@ -296,6 +349,22 @@ The [2026-09-09 report](../audits/2026-09-09-physics-characterisation.md) record
 Windows/Web results and the unavailable Linux execution environment. Local
 rebuilt artifacts are measured inputs, not automatically updated published LFS
 runtime manifests; the current release gate remains separate from M11 integrity.
+
+For the standalone CLI's current material-admission and sampled-accounting gate:
+
+```sh
+timeout 300 make physics-characterisation-test
+ASAN_OPTIONS=detect_leaks=1:strict_string_checks=1 \
+  UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 \
+  timeout 300 make physics-characterisation-sanitize
+```
+
+The sanitized command includes leak detection when the execution environment
+supports process inspection. Native CI uses its explicitly recorded ASan/UBSan
+scope. Both targets compile the actual CLI and retain per-invocation JSON/stdout,
+stderr and the executable hash under `build/physics-cli-validation/`. The
+[measurement-path contract](physics-characterisation.md#which-checks-guard-the-measurement-path)
+defines the 132-entry output and independent accounting oracle.
 
 Issue #10 uses the [current acceptance commands](physics-characterisation.md#how-do-i-reproduce-issue-10-acceptance)
 and [its own artifact audit](../audits/2026-09-09-issue-10-granular-policy.md).

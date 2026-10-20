@@ -1,4 +1,5 @@
 #include "cybersand/c_api.h"
+#include "cybersand/demo_snapshot.hpp"
 #include "cybersand/interaction_rules.hpp"
 #include "cybersand/material_appearance.hpp"
 #include "cybersand/material_rules.hpp"
@@ -648,10 +649,28 @@ void test_persistent_material_contacts_survive_sleep() {
         {Material::Lava, Material::Water, Material::Stone, Material::Steam, "Lava/Water"},
         {Material::Water, Material::Salt, Material::Brine, Material::Brine, "Water/Salt"},
         {Material::Ice, Material::Water, Material::Ice, Material::Ice, "Ice/Water"},
+        {Material::Water, Material::BareIron, Material::Water, Material::RustedSteel,
+         "Water/Bare Iron"},
+        {Material::Water, Material::RammedEarth, Material::Water, Material::Sand,
+         "Water/Rammed Earth"},
+        {Material::Brine, Material::BareIron, Material::Brine, Material::RustedSteel,
+         "Brine/Bare Iron"},
+        {Material::Lava, Material::QuartzCrystal, Material::Lava, Material::MoltenGlass,
+         "Lava/Quartz Crystal"},
+        {Material::Water, Material::QuicklimeBlock, Material::Steam, Material::Cement,
+         "Water/Quicklime Block"},
+        {Material::Salt, Material::PackedSnow, Material::Brine, Material::Slush,
+         "Salt/Packed Snow"},
     };
+    bool sleeping_contact_seen = false;
     for (const auto contact : contacts) {
-        for (const auto quiet_ticks : {1U, 3U}) {
+        for (const auto& [backend, quiet_ticks] : {
+                 std::pair{cybersand::SimulationBackend::SerialInPlace, 1U},
+                 std::pair{cybersand::SimulationBackend::SerialInPlace, 3U},
+                 std::pair{cybersand::SimulationBackend::PhasedInPlace, 1U},
+                 std::pair{cybersand::SimulationBackend::PhasedInPlace, 3U}}) {
             WorldConfig config;
+            config.backend = backend;
             config.sleep_after_quiet_ticks = quiet_ticks;
             WorldConfig awake_config = config;
             awake_config.sleep_after_quiet_ticks = 1'024U;
@@ -664,10 +683,11 @@ void test_persistent_material_contacts_survive_sleep() {
             // what makes a persistent material contact receive its next sample.
             enclose_material_pair(busy, 0, 8, Material::Smoke, Material::Wall);
             bool reacted = false;
-            for (int tick = 1; tick <= 128; ++tick) {
+            for (int tick = 1; tick <= 1'024; ++tick) {
                 (void)quiet.tick();
                 (void)awake.tick();
                 (void)busy.tick();
+                sleeping_contact_seen = sleeping_contact_seen || quiet.active_chunk_count() == 0U;
                 const auto context = std::string(contact.name) + " at tick " +
                     std::to_string(tick) + ", quiet limit " + std::to_string(quiet_ticks);
                 require_same_pair(quiet, awake, 8, 8,
@@ -681,6 +701,7 @@ void test_persistent_material_contacts_survive_sleep() {
             require(reacted, std::string(contact.name) + " awake control did not react");
         }
     }
+    require(sleeping_contact_seen, "persistent contact fixture never entered quiet sleep");
 }
 
 void test_ice_contact_boundaries_and_worker_parity() {
@@ -1910,7 +1931,8 @@ void test_sandspiel_material_catalog() {
     };
     require(sizeof(Material) == 1, "material identifier is no longer byte-sized");
     require(!cybersand::valid_material(10), "reserved material slot 10 became valid");
-    require(!cybersand::valid_material(81), "out-of-range material became valid");
+    require(!cybersand::valid_material(static_cast<std::uint16_t>(cybersand::kMaterialDefinitions.size())),
+            "out-of-range material became valid");
 
     for (const auto id : expected_ids) {
         require(cybersand::valid_material(id), "catalog is missing an imported material identifier");
@@ -1958,7 +1980,7 @@ void test_sandspiel_material_catalog() {
     }
 
     const auto descriptors = cybersand::MaterialRules::descriptors();
-    require(descriptors.size() == 81, "MaterialRules descriptor span has the wrong extent");
+    require(descriptors.size() == 132, "MaterialRules descriptor span has the wrong extent");
     cybersand_material_info info{};
     require(cybersand_material_get_info(static_cast<std::uint16_t>(Material::Lava), &info) == 1,
             "C API could not query imported material information");
@@ -2021,6 +2043,330 @@ void test_themed_combustibles_reuse_bounded_kernel() {
         }
         require(ignited, "themed combustible did not reuse the bounded burn kernel");
     }
+}
+
+
+void test_building_material_catalog() {
+    for (std::uint16_t id = static_cast<std::uint16_t>(cybersand::kFirstBuildingMaterial);
+         id < cybersand::kMaterialDefinitions.size(); ++id) {
+        const auto material = static_cast<Material>(id);
+        const auto& definition = cybersand::material_definition(material);
+        require(cybersand::valid_material(id) && definition.valid && !definition.name.empty(),
+                "building material ID is not a valid named descriptor");
+        require(definition.state == cybersand::MaterialState::Solid && !definition.movable &&
+                    !definition.accepts_density_exchange &&
+                    definition.lateral_flow == cybersand::LateralFlowMode::None,
+                "building material is not an immovable solid");
+        require(cybersand::MaterialRules::is_hard_surface(material),
+                "building material is missing hard-surface collision");
+        const bool combustible = definition.kernel == cybersand::RuleKernel::Combustible;
+        require(combustible || definition.kernel == cybersand::RuleKernel::None,
+                "building material selected an unexpected kernel");
+        require(definition.maximum_write_radius == (combustible ? 1U : 0U),
+                "building material has an unexpected scheduler write radius");
+        require(combustible == cybersand::InteractionRules::in_family(
+                                   "int.family.combustible-kernel", material),
+                "combustible kernel and explicit family membership disagree");
+        require(cybersand::project_visual_state(material, 7U, 91U) == (combustible ? 91U : 0U),
+                "building material condition projection is wrong");
+    }
+}
+
+void test_building_combustibles_ignite() {
+    for (const auto combustible : {Material::PinePlanks, Material::BirchLog, Material::OakLog, Material::WalnutPanel, Material::MahoganyPanel, Material::Bamboo, Material::Plywood, Material::Driftwood, Material::CedarShingles, Material::CharredTimber, Material::Cork, Material::Wicker, Material::Cardboard, Material::PaperScreen, Material::TarBlock, Material::AcrylicSheet, Material::MossWall}) {
+        World world({16, 3, 200});
+        for (std::int64_t y = -1; y <= 1; ++y) {
+            for (std::int64_t x = -1; x <= 1; ++x) {
+                world.set(x, y, (x == 0 && y == 0) ? Material::Lava : combustible);
+            }
+        }
+        (void)world.tick();
+        bool ignited = false;
+        for (std::int64_t y = -1; y <= 1; ++y) {
+            for (std::int64_t x = -1; x <= 1; ++x) {
+                if ((x != 0 || y != 0) && world.stored_state_b(x, y) != 0U) ignited = true;
+            }
+        }
+        require(ignited, "building combustible did not reuse the bounded burn kernel");
+    }
+}
+
+void test_building_pair_reactions_execute() {
+    struct PairCase { Material first; Material second; Material first_product; Material second_product; };
+    constexpr PairCase cases[] = {
+        {Material::Acid, Material::Marble, Material::Foam, Material::Salt},
+        {Material::Acid, Material::ChalkBlock, Material::Foam, Material::Dust},
+        {Material::Water, Material::ChalkBlock, Material::Water, Material::Paste},
+        {Material::Lava, Material::BasaltColumns, Material::Lava, Material::Lava},
+        {Material::Lava, Material::Obsidian, Material::Lava, Material::MoltenGlass},
+        {Material::Water, Material::AdobeBrick, Material::Water, Material::Paste},
+        {Material::Lava, Material::AdobeBrick, Material::Lava, Material::RedBrick},
+        {Material::Fire, Material::RawClay, Material::Fire, Material::TerracottaTile},
+        {Material::Lava, Material::RawClay, Material::Lava, Material::TerracottaTile},
+        {Material::Water, Material::RawClay, Material::Water, Material::Paste},
+        {Material::Fire, Material::PackedSnow, Material::Steam, Material::Water},
+        {Material::Lava, Material::PackedSnow, Material::Stone, Material::Steam},
+        {Material::Steam, Material::PackedSnow, Material::Water, Material::PackedSnow},
+        {Material::Salt, Material::PackedSnow, Material::Brine, Material::Slush},
+        {Material::MoltenGlass, Material::PackedSnow, Material::Glass, Material::Steam},
+        {Material::Water, Material::RockSaltBlock, Material::Brine, Material::Salt},
+        {Material::Water, Material::GypsumBoard, Material::Water, Material::Paste},
+        {Material::Fire, Material::GypsumBoard, Material::Fire, Material::Dust},
+        {Material::Water, Material::QuicklimeBlock, Material::Steam, Material::Cement},
+        {Material::Water, Material::RammedEarth, Material::Water, Material::Sand},
+        {Material::Fire, Material::Sandbag, Material::Fire, Material::Sand},
+        {Material::Acid, Material::ZincSheet, Material::Smoke, Material::Salt},
+        {Material::Fire, Material::MagnesiumPlate, Material::Fire, Material::Fire},
+        {Material::Spark, Material::MagnesiumPlate, Material::Empty, Material::Fire},
+        {Material::Spark, Material::ThermiteBrick, Material::Empty, Material::Lava},
+        {Material::Fire, Material::ThermiteBrick, Material::Lava, Material::Lava},
+        {Material::Water, Material::BareIron, Material::Water, Material::RustedSteel},
+        {Material::Brine, Material::BareIron, Material::Brine, Material::RustedSteel},
+        {Material::Acid, Material::BareIron, Material::Smoke, Material::Rust},
+        {Material::Lava, Material::GlassBlock, Material::Lava, Material::MoltenGlass},
+        {Material::Lava, Material::FrostedGlass, Material::Lava, Material::MoltenGlass},
+        {Material::Lava, Material::QuartzCrystal, Material::Lava, Material::MoltenGlass},
+        {Material::Lava, Material::UraniumGlass, Material::Lava, Material::MoltenGlass},
+        {Material::Water, Material::SugarGlass, Material::Water, Material::Paste},
+        {Material::Fire, Material::SugarGlass, Material::Smoke, Material::Coal},
+        {Material::Fire, Material::WaxBlock, Material::Fire, Material::Oil},
+        {Material::Lava, Material::WaxBlock, Material::Lava, Material::Oil},
+        {Material::Fire, Material::SulfurBlock, Material::Smoke, Material::Fire},
+        {Material::Lava, Material::SulfurBlock, Material::Lava, Material::Fire},
+        {Material::Fire, Material::PhosphorPanel, Material::Fire, Material::Fire},
+        {Material::Lava, Material::PolymerPanel, Material::Lava, Material::Oil},
+        {Material::Fire, Material::PolymerPanel, Material::Smoke, Material::Oil},
+    };
+    for (const auto& c : cases) {
+        // Two-cell sealed cell: the first participant is refreshed each tick so a
+        // decaying gas or spark remains a contact until the rule's roll succeeds.
+        // set() preserves state for an unchanged material, so renew compact
+        // state explicitly: ordinary Steam condensation must not pass as the
+        // Steam/PackedSnow pair rule.
+        // Different coordinates give independent deterministic roll streams.
+        // Acid keeps its broad neighbourhood corrosion, which may win a trial.
+        bool product_seen = false;
+        for (std::int64_t trial = 0; trial < 24 && !product_seen; ++trial) {
+            const std::int64_t ox = trial * 7;
+            World world({16, 3, 200});
+            for (std::int64_t x = -1; x <= 2; ++x) {
+                world.set(ox + x, -1, Material::Wall);
+                world.set(ox + x, 1, Material::Wall);
+            }
+            world.set(ox - 1, 0, Material::Wall);
+            world.set(ox + 2, 0, Material::Wall);
+            world.set(ox + 1, 0, c.second);
+            bool reacted = false;
+            for (int tick = 0; tick < 6000 && !reacted; ++tick) {
+                const auto& source_definition = cybersand::MaterialRules::descriptor(c.first);
+                const auto source_state_a = c.first == Material::Water
+                    ? world.config().water_experiment_policy.maximum()
+                    : static_cast<std::uint16_t>(source_definition.initial_state_a);
+                (void)world.set_cell_state(ox, 0, c.first, source_state_a,
+                                           source_definition.initial_state_b);
+                (void)world.tick();
+                // The first participant's own kernel (Fire becoming Smoke, say)
+                // is not a reaction; only a changed second cell or the rule's
+                // own first product counts.
+                if (world.stored_material(ox + 1, 0) == c.second &&
+                    (world.stored_material(ox, 0) != c.first_product ||
+                     c.first_product == c.first)) continue;
+                reacted = true;
+                const auto a = world.stored_material(ox, 0);
+                const auto b = world.stored_material(ox + 1, 0);
+                const bool products = a == c.first_product && b == c.second_product;
+                const bool broad_acid = c.first == Material::Acid && b == Material::Empty;
+                if (!products && !broad_acid) {
+                    std::cerr << "[info] pair " << static_cast<int>(c.first) << "+"
+                              << static_cast<int>(c.second) << " gave " << static_cast<int>(a)
+                              << "," << static_cast<int>(b) << '\n';
+                }
+                require(products || broad_acid,
+                        "building pair reaction produced unexpected materials");
+                product_seen = products;
+            }
+            if (!reacted) {
+                std::cerr << "[info] no reaction " << static_cast<int>(c.first) << "+"
+                          << static_cast<int>(c.second) << " now "
+                          << static_cast<int>(world.stored_material(ox, 0)) << ","
+                          << static_cast<int>(world.stored_material(ox + 1, 0)) << '\n';
+            }
+            require(reacted, "building pair reaction never executed in a refreshed contact");
+        }
+        require(product_seen, "building pair rule never won against its competing kernels");
+    }
+}
+
+void test_building_inert_controls_stay_inert() {
+    for (const auto inert : {Material::Firebrick, Material::Terrazzo, Material::Gabion, Material::HeatShieldTile, Material::SolarPanel, Material::CarbonFibre, Material::AluminiumPanel, Material::GoldLeaf, Material::BrassPanel, Material::Marble, Material::Obsidian, Material::GlassBlock}) {
+        World world({16, 3, 200});
+        for (std::int64_t x = -1; x <= 2; ++x) {
+            world.set(x, -1, Material::Wall);
+            world.set(x, 1, Material::Wall);
+        }
+        world.set(-1, 0, Material::Wall);
+        world.set(2, 0, Material::Wall);
+        world.set(0, 0, Material::Water);
+        world.set(1, 0, inert);
+        for (int tick = 0; tick < 400; ++tick) (void)world.tick();
+        require(world.stored_material(1, 0) == inert,
+                "inert building material reacted with Water");
+    }
+}
+
+void test_building_level_snapshot_round_trip() {
+    // Exercise the actual CYSD1 constructor and payload boundary. In particular,
+    // the new IDs cross both the old maximum of 80 and the signed-byte boundary.
+    std::vector<std::int32_t> rectangles;
+    for (std::int32_t id = 81; id <= 131; ++id) {
+        rectangles.insert(rectangles.end(), {id - 81, 8, 1, 1, id});
+    }
+    WorldConfig config;
+    auto original = cybersand::demo::construct(config, rectangles);
+    for (std::int32_t id = 81; id <= 131; ++id) {
+        const auto material = static_cast<Material>(id);
+        const auto x = id - 81;
+        require(original->stored_material(x, 8) == material,
+                "CYSD1 constructor rejected or truncated a building material");
+        // Compact burn/condition bytes and negative/positive temperature must
+        // survive saving even when a material's presentation ignores them.
+        require(original->set_cell_state(x, 8, material, 7U, 91U),
+                "building snapshot fixture could not set compact condition");
+        original->set_temperature(x, 8, static_cast<std::int16_t>(id % 2 ? -321 : 654));
+    }
+    std::vector<std::uint8_t> bytes(cybersand::demo::kPayloadBytes);
+    cybersand::demo::copy_level(*original, bytes);
+    cybersand::demo::validate(bytes);
+    auto restored = cybersand::demo::reconstruct(config, bytes);
+    std::vector<std::uint8_t> copied(cybersand::demo::kPayloadBytes);
+    cybersand::demo::copy_level(*restored, copied);
+    require(copied == bytes, "CYSD1 building level did not round-trip byte-exactly");
+    for (std::int32_t id = 81; id <= 131; ++id) {
+        const auto x = id - 81;
+        require(restored->stored_material(x, 8) == static_cast<Material>(id) &&
+                    restored->stored_state_a(x, 8) == 7U &&
+                    restored->stored_state_b(x, 8) == 91U &&
+                    restored->temperature(x, 8) == (id % 2 ? -321 : 654),
+                "CYSD1 building level lost material, condition or temperature");
+    }
+
+    for (const std::int32_t invalid_id : {
+             -1, 10, 132, 255, 256, 65536,
+             std::numeric_limits<std::int32_t>::min(),
+             std::numeric_limits<std::int32_t>::max()}) {
+        require(!cybersand::demo::valid_material(invalid_id),
+                "CYSD1 material validation accepted a reserved or wrapped ID");
+        const std::array<std::int32_t, 5> invalid_rectangle{0, 0, 1, 1, invalid_id};
+        bool rejected = false;
+        try {
+            (void)cybersand::demo::construct(config, invalid_rectangle);
+        } catch (const std::invalid_argument&) {
+            rejected = true;
+        }
+        require(rejected, "CYSD1 constructor accepted an invalid building ID");
+    }
+    // Put the bad value at the end so validation must inspect the entire
+    // payload before a replacement World can be constructed.
+    const auto last_cell = bytes.size() - cybersand::demo::kCellBytes;
+    for (const auto invalid_id : std::array<std::uint8_t, 3>{10U, 132U, 255U}) {
+        bytes[last_cell] = invalid_id;
+        bool rejected = false;
+        try {
+            (void)cybersand::demo::reconstruct(config, bytes);
+        } catch (const std::invalid_argument&) {
+            rejected = true;
+        }
+        require(rejected, "CYSD1 reconstruction accepted an invalid material byte");
+    }
+}
+
+void test_building_transport_schema_bounds() {
+    using cybersand::TransportPolicy;
+    require(TransportPolicy::materials == 81U && TransportPolicy::packed_size == 39'529U,
+            "building catalogue silently changed the transport schema-v1 packet");
+    TransportPolicy policy;
+    policy.configured = true;
+    // Non-default last-row values distinguish a correct boundary read from
+    // either a blanket fallback or an out-of-range alias into neighbouring data.
+    policy.horizontal[80] = 1U;
+    policy.cadence[80] = 60U;
+    policy.pairs[80U * 81U + 80U] = {91U, 0U, 17U, 23U, 1U, 59U};
+    policy.validate();
+    const auto& final_pair = policy.pair(80U, 80U);
+    require(policy.horizontal_for(80U) == 1U && policy.cadence_for(80U) == 60U &&
+                final_pair.mixing == 91U && final_pair.pickup == 17U &&
+                final_pair.packing == 23U && final_pair.erosion == 1U &&
+                final_pair.permeability == 59U,
+            "transport schema-v1 final material lost its authored settings");
+    for (std::uint16_t id = 81; id <= 255; ++id) {
+        const auto outside = static_cast<std::uint8_t>(id);
+        require(policy.horizontal_for(outside) == 2U && policy.cadence_for(outside) == 1U,
+                "out-of-schema material did not receive default transport cadence");
+        for (std::uint16_t partner = 0; partner <= 255; ++partner) {
+            const auto inside_or_outside = static_cast<std::uint8_t>(partner);
+            for (const auto* pair : {&policy.pair(outside, inside_or_outside),
+                                     &policy.pair(inside_or_outside, outside)}) {
+                require(pair->mixing == 0U && pair->carrying == 0U &&
+                            pair->pickup == 64U && pair->packing == 8U &&
+                            pair->erosion == 0U && pair->permeability == 1U,
+                        "out-of-schema material read another transport row or left the table");
+            }
+        }
+    }
+}
+
+void test_building_contact_boundaries_and_worker_parity() {
+    struct Contact {
+        std::int64_t x, y;
+        Material first, second, first_product, second_product;
+    };
+    constexpr Contact contacts[] = {
+        // Four separated same-phase cores force a real multi-worker dispatch.
+        {8, 8, Material::Water, Material::BareIron, Material::Water, Material::RustedSteel},
+        {136, 8, Material::Lava, Material::QuartzCrystal, Material::Lava, Material::MoltenGlass},
+        {264, 8, Material::Water, Material::RammedEarth, Material::Water, Material::Sand},
+        {392, 8, Material::Brine, Material::BareIron, Material::Brine, Material::RustedSteel},
+        // Activity/core/chunk boundaries, including negative coordinates and
+        // both source orientations. The building cell itself has no kernel.
+        {31, 136, Material::Water, Material::QuicklimeBlock, Material::Steam, Material::Cement},
+        {63, 136, Material::QuartzCrystal, Material::Lava, Material::MoltenGlass, Material::Lava},
+        {127, 136, Material::BareIron, Material::Water, Material::RustedSteel, Material::Water},
+        {-1, 136, Material::Salt, Material::PackedSnow, Material::Brine, Material::Slush},
+    };
+    WorldConfig single_config;
+    single_config.sleep_after_quiet_ticks = 1U;
+    single_config.parallel_job_threshold = 1U;
+    // Exercise building contacts with the still-81-row opt-in policy installed.
+    single_config.transport_policy.configured = true;
+    WorldConfig multi_config = single_config;
+    multi_config.worker_threads = 4U;
+    World single(single_config), multi(multi_config);
+    for (auto* world : {&single, &multi}) {
+        for (const auto& c : contacts) {
+            enclose_material_pair(*world, c.x, c.y, c.first, c.second);
+        }
+    }
+    std::array<bool, std::size(contacts)> seen{};
+    bool parallel_phase_seen = false;
+    bool all_seen = false;
+    for (int tick = 1; tick <= 1'024 && !all_seen; ++tick) {
+        (void)single.tick();
+        const auto stats = multi.tick();
+        parallel_phase_seen = parallel_phase_seen ||
+            *std::max_element(stats.phase_jobs.begin(), stats.phase_jobs.end()) >= 4U;
+        require(single.state_hash() == multi.state_hash(),
+                "building contact state or deadlines diverged across workers");
+        all_seen = true;
+        for (std::size_t index = 0; index < std::size(contacts); ++index) {
+            const auto& c = contacts[index];
+            seen[index] = seen[index] ||
+                (single.stored_material(c.x, c.y) == c.first_product &&
+                 single.stored_material(c.x + 1, c.y) == c.second_product);
+            all_seen = all_seen && seen[index];
+        }
+    }
+    require(parallel_phase_seen, "building contact parity never dispatched concurrent jobs");
+    require(all_seen, "building boundary contact never produced its role-specific products");
 }
 
 }  // namespace
@@ -2798,12 +3144,13 @@ void test_int000_sparse_schema_shadow_equivalence() {
     require(cybersand::kInteractionSchemaVersion == 1U,
             "INT schema version changed");
     require(cybersand::kInteractionProfileId == "int.current-behaviour" &&
-                cybersand::kInteractionProfileVersion == 1U,
+                cybersand::kInteractionProfileVersion == 2U,
             "INT current profile identity changed");
     require(InteractionRules::channels().size() == 7U,
             "INT channel catalogue is incomplete");
-    require(InteractionRules::pair_rules().size() == frozen_current.size(),
-            "INT compact Current rule inventory changed");
+    require(cybersand::kCurrentOraclePairRuleCount == frozen_current.size() &&
+                InteractionRules::pair_rules().size() > frozen_current.size(),
+            "INT compact Current oracle prefix changed");
     require(InteractionRules::specialized_rules().size() == 19U,
             "INT specialized Current inventory is incomplete");
     require(InteractionRules::layer_kinds().size() == 5U &&
@@ -2943,7 +3290,10 @@ void test_int000_sparse_schema_shadow_equivalence() {
 
     constexpr std::array<std::uint8_t, 12> rolls{
         0U, 31U, 32U, 33U, 63U, 64U, 65U, 95U, 96U, 97U, 254U, 255U};
-    for (std::uint16_t source_id = 0; source_id < cybersand::kMaterialDefinitions.size(); ++source_id) {
+    // The oracle owns every pair of pre-existing materials (IDs 0-80); later
+    // passes may only add rules that involve a newer material.
+    constexpr auto oracle_extent = static_cast<std::uint16_t>(cybersand::kFirstBuildingMaterial);
+    for (std::uint16_t source_id = 0; source_id < oracle_extent; ++source_id) {
         const auto source = static_cast<Material>(source_id);
         bool frozen_has_pair = false;
         for (const auto& rule : frozen_current) {
@@ -2952,7 +3302,7 @@ void test_int000_sparse_schema_shadow_equivalence() {
         require(cybersand::MaterialRules::has_pair_reactions(source) == frozen_has_pair &&
                     InteractionRules::has_pair_rule(source) == frozen_has_pair,
                 "INT migrated pair-participant inventory differs from frozen Current");
-        for (std::uint16_t target_id = 0; target_id < cybersand::kMaterialDefinitions.size(); ++target_id) {
+        for (std::uint16_t target_id = 0; target_id < oracle_extent; ++target_id) {
             const auto target = static_cast<Material>(target_id);
             for (const auto roll : rolls) {
                 const auto expected = frozen_resolve(source, target, roll);
@@ -3012,8 +3362,64 @@ void test_int000_sparse_schema_shadow_equivalence() {
                 "themed glass inherited base Glass INT semantics");
     }
     require(InteractionRules::coverage().size() >= 7U &&
-                InteractionRules::tuning_passes().size() == 1U,
+                InteractionRules::tuning_passes().size() == 2U &&
+                InteractionRules::tuning_passes()[1].parent == "int.pass.current-oracle",
             "INT coverage/pass metadata is incomplete");
+
+    // MAT-002 pass: every later rule is a versioned, role-preserving contact
+    // that involves at least one building material, so the oracle domain above
+    // is untouched by construction.
+    for (std::size_t index = frozen_current.size(); index < InteractionRules::pair_rules().size(); ++index) {
+        const auto& rule = InteractionRules::pair_rules()[index];
+        require(rule.tuning_pass_id == cybersand::kBuildingMaterialPassId && rule.version == 1U &&
+                    rule.channels != 0U && rule.probability > 0U &&
+                    rule.trigger == cybersand::InteractionTriggerKind::PairContact &&
+                    rule.match == cybersand::InteractionMatchKind::UnorderedRolePreserving,
+                "MAT-002 pair rule lacks pass identity or Current matching semantics");
+        require(rule.first >= cybersand::kFirstBuildingMaterial ||
+                    rule.second >= cybersand::kFirstBuildingMaterial,
+                "MAT-002 pair rule changed a pre-existing oracle pair");
+        require(cybersand::valid_material(static_cast<std::uint8_t>(rule.first_product)) &&
+                    cybersand::valid_material(static_cast<std::uint8_t>(rule.second_product)),
+                "MAT-002 pair rule produces an invalid material");
+        for (const auto reversed : {false, true}) {
+            const auto source = reversed ? rule.second : rule.first;
+            const auto target = reversed ? rule.first : rule.second;
+            for (std::uint16_t roll = 0; roll <= 255; ++roll) {
+                const auto probability_roll = static_cast<std::uint8_t>(roll);
+                const auto resolved = InteractionRules::resolve_pair(source, target, probability_roll);
+                const auto public_result = cybersand::MaterialRules::pair_reaction(
+                    source, target, probability_roll);
+                require(resolved.matched && resolved.rule_index == index &&
+                            resolved.reversed == reversed &&
+                            resolved.selected == (roll <= rule.probability) &&
+                            public_result.has_value() == resolved.selected,
+                        "MAT-002 rule identity, orientation or probability boundary changed");
+                const auto source_product = reversed ? rule.second_product : rule.first_product;
+                const auto target_product = reversed ? rule.first_product : rule.second_product;
+                require(resolved.source_product == source_product &&
+                            resolved.target_product == target_product &&
+                            (!public_result ||
+                             (public_result->source_product == source_product &&
+                              public_result->target_product == target_product)),
+                        "MAT-002 pair resolver or public API lost role-specific products");
+            }
+        }
+    }
+    // Include unused byte IDs as well as valid catalogue entries: a bit-set
+    // boundary or invalid-ID alias must not fabricate a contact.
+    for (std::uint16_t s = 0; s <= 255; ++s) {
+        for (std::uint16_t g = 0; g <= 255; ++g) {
+            const auto a = static_cast<Material>(s);
+            const auto b = static_cast<Material>(g);
+            const auto scanned = InteractionRules::match_pair_from(InteractionRules::pair_rules(), a, b);
+            const auto fast = InteractionRules::match_pair(a, b);
+            require(scanned.matched == fast.matched &&
+                        (!scanned.matched || (scanned.rule_index == fast.rule_index &&
+                                              scanned.reversed == fast.reversed)),
+                    "derived pair prefilter disagrees with the authored catalogue");
+        }
+    }
 }
 
 
@@ -3121,6 +3527,13 @@ int main() {
         {"Sandspiel material catalog", test_sandspiel_material_catalog},
         {"themed static material catalog", test_themed_static_material_catalog},
         {"themed combustible kernels", test_themed_combustibles_reuse_bounded_kernel},
+        {"building material catalog", test_building_material_catalog},
+        {"building combustibles ignite", test_building_combustibles_ignite},
+        {"building pair reactions execute", test_building_pair_reactions_execute},
+        {"building inert controls stay inert", test_building_inert_controls_stay_inert},
+        {"building CYSD1 constructor and snapshot round trip", test_building_level_snapshot_round_trip},
+        {"building transport schema bounds", test_building_transport_schema_bounds},
+        {"building contact boundaries and worker parity", test_building_contact_boundaries_and_worker_parity},
     };
 
     std::size_t passed = 0;

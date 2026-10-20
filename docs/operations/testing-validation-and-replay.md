@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Executable test selection and future gates; dated results and save format live in separate references
 canonical-for: [test-inventory, test-selection, future-validation-gates]
-last-reviewed: 2026-09-19
+last-reviewed: 2026-10-19
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md, ../reference/level-saves-and-replay.md]
 ---
 
@@ -26,6 +26,8 @@ Counts identify this inspected source inventory, not a pass for a later revision
 | Explosion or optional fields | Native bounded event validation/queue/hash/parity, static-to-granular conversion and temperature allocation/movement |
 | Immutable publication | Native slot capacity, dirty retention, deterministic patch order, lease concurrency/C lifetime; Godot native bridge and render-handoff fixtures |
 | Presentation/material catalogue | Godot appearance LUT and presentation runners: catalogue rows, representative flair, HDR values, viewport/F3 behavior |
+| MAT-002 catalogue integration | `test_building_material_integration.gd`: all 51 new IDs through native construction and saves, metadata, fill/count diagnostics, four-face histogram stride and sampled-rig digging occlusion; native snapshot and exhaustive pair/transport regressions |
+| Standalone physics CLI | `make physics-characterisation-test` / `physics-characterisation-sanitize`: actual executable admission and parsed sample accounting for all 51 building IDs in both layers, old controls and invalid wide inputs; [measurement-path contract](physics-characterisation.md#which-checks-guard-the-measurement-path) |
 | Fallback cells/player | `test_cell_world.gd` has nine groups including Smoke, Water, body mask/sweep and vertical scan continuity; these are one runner |
 | Rapier or coupling | Preflight, automatic drop-in, manual-step and `test_web_rapier.gd`; see [Rapier procedure](rapier-2d-migration-runbook.md) |
 | Save, Web worker selection or benchmark | Demo-save, setup, Web worker parity, Auto and worker-benchmark runners; actual Web export must additionally execute in browser |
@@ -52,6 +54,32 @@ limits. The initial migration checkpoint executed the unsharded suite against th
 source/runtime artifact and proved exact case coverage equivalence. The serial lane
 is retained as an explicit opt-in diagnostic, while ordinary PR validation uses the
 four isolated shards.
+
+Every discovered `test_*_render.gd` case requires a display and executes with the
+OpenGL compatibility renderer. Linux CI provides Xvfb and Mesa software rendering;
+logic cases and import retain `--headless`. An explicit skip, missing display or
+executable, timeout, nonzero exit, or engine/script error fails the applicable
+case. An exit code of zero alone cannot satisfy the gate. Pixel assertions are
+rendered-output evidence for the recorded software backend, not target-GPU
+performance evidence.
+
+`--keep-going` retains outcomes for all assigned cases after an ordinary test
+failure; an import failure still stops that shard because the project could not
+be prepared. `timings.json` records the executed command, display requirement,
+skip/error details, completion state and aggregate status. The planner and runner
+regressions execute child processes to check failure, timeout, skip and
+continuation handling as well as exact discovery and assignment.
+
+The separate GitHub-hosted Windows lane runs import and every applicable headless
+case against the retained Windows DLL, after verifying the committed LFS bytes,
+provenance and complete current native-input set. It uses the same discovery,
+per-case timeouts and strict failure semantics, continues after individual case
+failures, and records graphical cases as explicitly outside its scope. Its
+`windows-execution.json` includes exact case coverage, tool/source/runtime
+identities, commands, log hashes and drift/completion checks. The
+[Windows execution procedure](local-build-and-validation.md#windows-retained-runtime-execution)
+owns the job bounds and artifact route. This actual execution gate and the
+separate Windows cross-build check must retain their distinct evidence scopes.
 
 ## What does equality establish?
 
@@ -140,11 +168,14 @@ required. No trace here upgrades CYSD1 into full deterministic replay.
 
 **Current:** `native/tests/test_world.cpp` retains a literal frozen copy of the
 pre-migration 14-rule compact pair oracle and compares it against the versioned
-resolver across all material IDs, both orientations and probability boundaries.
-The same regression checks layer precedence/conflict handling, explicit semantic
-family non-inheritance, and ordered/symmetric/unordered-role-preserving match
-semantics. Specialized neighbourhood/lifecycle mechanisms remain in their existing
-`world.cpp` kernels and are represented/provenance-visible rather than duplicated.
+resolver over every pair of IDs 0–80, both orientations and twelve
+probability-boundary samples. Separate MAT-002 checks cover each new rule in both
+roles across all 256 roll values and the derived partner prefilter across the
+full 256×256 byte-ID domain. The same regression checks layer precedence/conflict
+handling, explicit semantic family non-inheritance, and matching that is ordered,
+symmetric or unordered with role-preserving effects. Specialized neighbourhood/
+lifecycle mechanisms remain in their existing `world.cpp` kernels and are
+represented/provenance-visible rather than duplicated.
 
 `test_microscenarios.gd` validates the native interaction profile/workbench
 provenance, rolling kinetic/contact baseline identity, deterministic repeat and

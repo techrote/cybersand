@@ -1246,7 +1246,7 @@ static func _ray_cell_in_world(cell: Vector2i) -> bool:
 static func _hard_material(material: int) -> bool:
 	return material == 1 or material == 5 or material == 7 or material == 9 \
 		or material == 28 or material == 31 or material == 35 \
-		or (material >= 38 and material <= 80)
+		or (material >= 38 and material <= CyberCellWorld.LAST_MATERIAL)
 
 
 func _request_effect(kind: int, origin: Vector2, radius: int, strength: float) -> void:

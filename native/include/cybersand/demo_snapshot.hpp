@@ -18,7 +18,10 @@ inline constexpr std::size_t kPayloadBytes = std::size_t{kWidth} * kHeight * kCe
 inline constexpr std::size_t kMaximumRectangles = 4096;
 
 [[nodiscard]] inline bool valid_material(std::int32_t id) noexcept {
-    return id >= 0 && id <= 80 && id != 10;
+    // Check the wide input before narrowing: wrapped IDs must never alias a
+    // valid catalogue row during construction or restoration.
+    return id >= 0 && id <= static_cast<std::int32_t>(kLastMaterial) &&
+        cybersand::valid_material(static_cast<std::uint16_t>(id));
 }
 
 inline void validate(std::span<const std::uint8_t> bytes) {

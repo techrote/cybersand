@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Versioned sparse authoring, resolution, provenance, coverage and migration contract for non-kinetic intermaterial semantics
 canonical-for: [intermaterial-interactions, interaction-schema, interaction-provenance, interaction-coverage]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-19
 related-documents: [../operations/microscenarios-programme.md, materials-and-rule-kernels.md, ../operations/microscenario-reference-pack.md, ../reference/status-and-roadmap.md]
 ---
 
@@ -35,12 +35,19 @@ The native authored source is native/include/cybersand/interaction_rules.hpp.
 Current schema/profile:
 
 - schema ID cybersand.interactions, version 1;
-- profile ID int.current-behaviour, version 1;
-- tuning-pass root int.pass.current-oracle, version 1.
+- profile ID int.current-behaviour, version 2 (version 1 was the 14-rule oracle
+  catalogue; version 2 adds the MAT-002 building pass, 2026-10-18);
+- tuning-pass root int.pass.current-oracle, version 1;
+- tuning pass int.pass.mat002-building-materials, version 1, parent
+  int.pass.current-oracle.
 
 The source is sparse constexpr data plus a deterministic resolver. It is
-human-reviewable and diffable. A generated dense cache is not currently used and
-must not become the authored source of truth merely for convenience.
+human-reviewable and diffable. **Current since MAT-002:** the production resolver
+first consults a derived 256-bit partner set per material, rebuilt at compile time
+from `kPairInteractionRules` (`InteractionRules::build_partner_sets`/`may_pair`),
+so non-reacting neighbours are rejected without scanning every rule. It is a
+derived cache, never authored, and a native regression proves it agrees with the
+authored linear scan for every material pair.
 
 Stable independent channel IDs are thermal_phase, dissolution_corrosion,
 chemical_conversion_products, combustion, electrical,
@@ -92,14 +99,16 @@ tuning decision with fixtures/evidence.
 
 ## Compact pair migration
 
-The frozen Current oracle contains 14 sparse compact reactions. Stable rule IDs,
-products and probabilities are defined by kPairInteractionRules.
+The retained INT-000 oracle contains 14 sparse compact reactions over IDs 0–80.
+The corresponding prefix of `kPairInteractionRules` preserves their stable rule
+IDs, products and probabilities.
 
-Migration is behavior-preserving. Native regression compares the sparse shadow
-resolver against the pre-migration MaterialRules::pair_reaction oracle across all
-material IDs, both orientations and probability-boundary samples before authority
-is switched. After a bounded switch, the public MaterialRules API remains available
-to World but delegates to the versioned resolver.
+The original migration preserved behavior. The retained native regression compares
+the versioned resolver and public `MaterialRules::pair_reaction` API against a
+literal pre-migration oracle over every pair of IDs 0–80, both orientations and
+twelve probability-boundary samples. MAT-002's additional rules are checked
+separately in both orientations across all 256 roll values. The public
+MaterialRules API remains available to World and delegates to the versioned resolver.
 
 The four-tick contact cadence, neighbour order/random salts, Water-state
 initialization, worker ownership and writes remain World-owned; the resolver
@@ -111,6 +120,28 @@ rules, products, probabilities and profile version remain unchanged. Source/runt
 identity distinguishes this scheduler repair from older contact evidence; the
 [material contract](materials-and-rule-kernels.md#how-do-persistent-reactions-survive-sleep)
 and [dated audit](../audits/2026-10-18-mat001-material-reaction-progress.md) own its scope.
+
+## MAT-002 building-material pass
+
+**Current (source, 2026-10-18):** `int.pass.mat002-building-materials` appends 42
+role-preserving unordered pair rules after the 14 oracle rules
+(`kCurrentOraclePairRuleCount`). Every rule involves at least one building
+material (IDs 81+), and every partner (Fire, Lava, Water, Brine, Acid, Spark,
+Steam, Salt, Molten Glass) was already an oracle pair participant. Therefore no
+pre-existing material gains or loses its pair-participant flag. Rules pairing
+those materials with new building materials are additive; every pair restricted
+to IDs 0–80 keeps its frozen oracle result.
+
+The pass covers thermal phase (kiln firing, glass and wax melting, snow melt and
+quench), dissolution/corrosion (salt, gypsum, adobe, chalk, sugar glass, zinc,
+bare iron), combustion (magnesium, sulfur, phosphor, sandbag, thermite) and
+emissions. Exact rows live in the [building catalogue](building-material-catalogue.md).
+Acid's broad neighbourhood kernel remains a competing authority for Acid
+contacts. Seventeen building combustibles join `int.family.combustible-kernel`.
+Probabilities are gameplay tuning, not calibrated rates; the coverage ledger
+records the pass as accepted-with-limitation and the remaining building materials
+as explicitly non-interacting. Evidence: the
+[dated record](../audits/2026-10-18-material-fidelity-pass-2.md).
 
 ## Specialized Current mechanisms
 

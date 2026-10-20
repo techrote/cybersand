@@ -9,7 +9,7 @@ const ATLAS_WIDTH: int = 64
 const ATLAS_HEIGHT: int = 256
 const PROGRAM_WIDTH: int = 4
 const PROGRAM_HEIGHT: int = 256
-const MATERIAL_COUNT: int = 81
+const MATERIAL_COUNT: int = 132
 
 # Texel 3 alpha stores one integer presentation-only flair class. The shader
 # uses it to select a bounded, texture-free procedural finish; zero remains the
@@ -61,7 +61,15 @@ const FLAIR_CLONER: int = 42
 const FLAIR_PASTE: int = 43
 const FLAIR_SLUSH: int = 44
 const FLAIR_WET_SURFACE: int = 45
-const FLAIR_CLASS_COUNT: int = 45
+# Second fidelity pass (MAT-002): the building catalogue shares one class
+# whose shader branch is selected by material ID; Plant, Fungus, Mite and
+# Rocket gain dedicated living/firework finishes.
+const FLAIR_BUILDING: int = 46
+const FLAIR_PLANT: int = 47
+const FLAIR_FUNGUS: int = 48
+const FLAIR_MITE: int = 49
+const FLAIR_ROCKET: int = 50
+const FLAIR_CLASS_COUNT: int = 50
 
 # Canonical RGBA8 colours mirror native/include/cybersand/material.hpp. Keeping
 # every possible byte-sized material row allocated means unknown IDs remain
@@ -89,7 +97,7 @@ const BASE_RGBA8: Array[int] = [
 	0xE790BFFF, # 19 seed
 	0x9B8256FF, # 20 paste
 	0x73BACFFF, # 21 slush
-	0xCDE0E8D2, # 22 steam
+	0xE6EEF2D8, # 22 steam (whiter vapour, 2026-10-18 pass 2)
 	0xECE8DAFF, # 23 salt
 	0x5CA6C2FF, # 24 brine
 	0xE2DFC0FF, # 25 sodium
@@ -99,7 +107,7 @@ const BASE_RGBA8: Array[int] = [
 	0xA64A2AFF, # 29 rust
 	0x8F8F84FF, # 30 wet cement
 	0x696C70FF, # 31 concrete
-	0x4DA440FF, # 32 toxic sludge
+	0x2B6A22FF, # 32 toxic sludge (deeper green, 2026-10-18 pass 2)
 	0xB8C0CBFF, # 33 mercury
 	0xFFE85BFF, # 34 spark
 	0x80CDDCD2, # 35 glass
@@ -148,6 +156,57 @@ const BASE_RGBA8: Array[int] = [
 	0xFF3DB8FF, # 78 neon magenta
 	0xFFB52EFF, # 79 neon amber
 	0xECF8FFFF, # 80 LED white
+	0xC4985CFF, # 81 pine planks
+	0xD6CEBEFF, # 82 birch log
+	0x5C402CFF, # 83 rough oak log
+	0x4E3221FF, # 84 walnut panel
+	0x7C3624FF, # 85 mahogany panel
+	0xB6A656FF, # 86 bamboo
+	0xBE9866FF, # 87 plywood
+	0x968F83FF, # 88 driftwood
+	0x985638FF, # 89 cedar shingles
+	0x262121FF, # 90 charred timber
+	0xA2724AFF, # 91 cork
+	0xB48C54FF, # 92 wicker
+	0xB28C5EFF, # 93 cardboard
+	0xE4DAC0EC, # 94 paper screen
+	0x1A181BFF, # 95 tar block
+	0xC4E2ECB0, # 96 acrylic sheet
+	0x466834FF, # 97 moss wall
+	0xE2DFD8FF, # 98 marble
+	0xEAE7DCFF, # 99 chalk block
+	0x36383DFF, # 100 basalt columns
+	0x181320FF, # 101 obsidian
+	0xB27C54FF, # 102 adobe brick
+	0x9E6A50FF, # 103 raw clay
+	0xC89862FF, # 104 firebrick
+	0xE8F0F8FF, # 105 packed snow
+	0xDEC4BEFF, # 106 rock salt block
+	0xDEDCD4FF, # 107 gypsum board
+	0xECEADEFF, # 108 quicklime block
+	0xAC724AFF, # 109 rammed earth
+	0xAA9264FF, # 110 sandbag
+	0xC8C4BAFF, # 111 terrazzo
+	0x7A7870FF, # 112 gabion
+	0x98A2A8FF, # 113 galvanised zinc sheet
+	0xB8C0C8FF, # 114 aluminium panel
+	0xC6C8CAFF, # 115 magnesium plate
+	0x7C4A3EFF, # 116 thermite brick
+	0x5A5E64FF, # 117 bare iron plate
+	0xDEB23EFF, # 118 gold leaf
+	0xC4A048FF, # 119 brass panel
+	0x9CD2DCCC, # 120 glass block
+	0xCEE2E8D6, # 121 frosted glass
+	0xE2ECF4E0, # 122 quartz crystal
+	0x98E85ED2, # 123 uranium glass
+	0xECD49EC4, # 124 sugar glass
+	0xEEE2B8FF, # 125 wax block
+	0xE2CE3AFF, # 126 sulfur block
+	0xB0DCACFF, # 127 phosphor panel
+	0x3E7AB4FF, # 128 polymer panel
+	0x1A2E5EFF, # 129 solar panel
+	0x222429FF, # 130 carbon fibre
+	0x1A1A1DFF, # 131 heat-shield tile
 ]
 
 # Fractional value range around each canonical colour. These are appearance
@@ -157,13 +216,21 @@ const VALUE_VARIATION: Array[float] = [
 	0.100, 0.045, 0.00, 0.070, 0.080, 0.045, 0.075, 0.090,
 	0.050, 0.040, 0.080, 0.065, 0.060, 0.060, 0.075, 0.035,
 	0.050, 0.045, 0.060, 0.080, 0.045, 0.060, 0.035, 0.025,
-	0.075, 0.060, 0.160, 0.035, 0.120, 0.055,
+	0.040, 0.060, 0.160, 0.035, 0.120, 0.055,
 	0.090, 0.110, 0.120, 0.140, 0.160, 0.110, 0.080, 0.120,
 	0.140, 0.130, 0.120, 0.110, 0.140, 0.080, 0.130, 0.120,
 	0.140, 0.100, 0.160, 0.130, 0.120, 0.100, 0.120, 0.150,
 	0.090, 0.100, 0.120, 0.150, 0.180, 0.100, 0.110, 0.130,
 	0.070, 0.080, 0.080, 0.090, 0.130, 0.150, 0.050, 0.035,
 	0.035, 0.040, 0.025,
+	# 81+ building materials
+	0.110, 0.090, 0.140, 0.110, 0.110, 0.100, 0.090, 0.120,
+	0.130, 0.120, 0.140, 0.120, 0.080, 0.050, 0.080, 0.040,
+	0.150, 0.060, 0.050, 0.120, 0.080, 0.110, 0.080, 0.100,
+	0.040, 0.080, 0.035, 0.050, 0.120, 0.100, 0.050, 0.150,
+	0.080, 0.050, 0.060, 0.120, 0.090, 0.080, 0.070, 0.040,
+	0.040, 0.060, 0.040, 0.050, 0.040, 0.090, 0.040, 0.050,
+	0.040, 0.050, 0.060,
 ]
 
 
@@ -221,6 +288,10 @@ static func _hue_variation_for(material_id: int) -> float:
 	if material_id in [2, 7, 11, 13, 18, 19, 23, 27, 29, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 54, 56, 57, 61, 65, 69, 75]:
 		return 0.012
 	if material_id in [6, 8, 12, 32, 34, 36, 77, 78, 79]:
+		return 0.006
+	if material_id in [81, 83, 84, 85, 86, 87, 89, 91, 92, 97, 102, 104, 109]:
+		return 0.012
+	if material_id in [82, 88, 93, 101, 103, 106, 110, 112, 116, 118, 119, 126]:
 		return 0.006
 	return 0.0
 
@@ -312,6 +383,68 @@ static func create_program_texture() -> ImageTexture:
 		Vector2(1.12, 1.12), Vector2(1.0, 1.0), Vector2(0.36, 0.36),
 		Color(1.45, 1.72, 2.05, 0.0)) # white LED panel (halved 2026-10-18 so the display reads)
 
+	# MAT-002 burn profiles reuse the oak curve for every building combustible.
+	_set_program_row(program, 81, Color(1.0, 0.28, 0.025, 0.74), Vector2(0.02, 0.65),
+		Vector2(1.0, 1.10), Vector2(1.0, 1.0), Vector2(0.0, 0.18),
+		Color(1.25, 0.24, 0.016, 0.0)) # pine planks burn
+	_set_program_row(program, 82, Color(1.0, 0.28, 0.025, 0.74), Vector2(0.02, 0.65),
+		Vector2(1.0, 1.10), Vector2(1.0, 1.0), Vector2(0.0, 0.18),
+		Color(1.25, 0.24, 0.016, 0.0)) # birch log burn
+	_set_program_row(program, 83, Color(1.0, 0.28, 0.025, 0.74), Vector2(0.02, 0.65),
+		Vector2(1.0, 1.10), Vector2(1.0, 1.0), Vector2(0.0, 0.18),
+		Color(1.25, 0.24, 0.016, 0.0)) # rough oak log burn
+	_set_program_row(program, 84, Color(1.0, 0.28, 0.025, 0.74), Vector2(0.02, 0.65),
+		Vector2(1.0, 1.10), Vector2(1.0, 1.0), Vector2(0.0, 0.18),
+		Color(1.25, 0.24, 0.016, 0.0)) # walnut panel burn
+	_set_program_row(program, 85, Color(1.0, 0.28, 0.025, 0.74), Vector2(0.02, 0.65),
+		Vector2(1.0, 1.10), Vector2(1.0, 1.0), Vector2(0.0, 0.18),
+		Color(1.25, 0.24, 0.016, 0.0)) # mahogany panel burn
+	_set_program_row(program, 86, Color(1.0, 0.28, 0.025, 0.74), Vector2(0.02, 0.65),
+		Vector2(1.0, 1.10), Vector2(1.0, 1.0), Vector2(0.0, 0.18),
+		Color(1.25, 0.24, 0.016, 0.0)) # bamboo burn
+	_set_program_row(program, 87, Color(1.0, 0.28, 0.025, 0.74), Vector2(0.02, 0.65),
+		Vector2(1.0, 1.10), Vector2(1.0, 1.0), Vector2(0.0, 0.18),
+		Color(1.25, 0.24, 0.016, 0.0)) # plywood burn
+	_set_program_row(program, 88, Color(1.0, 0.28, 0.025, 0.74), Vector2(0.02, 0.65),
+		Vector2(1.0, 1.10), Vector2(1.0, 1.0), Vector2(0.0, 0.18),
+		Color(1.25, 0.24, 0.016, 0.0)) # driftwood burn
+	_set_program_row(program, 89, Color(1.0, 0.28, 0.025, 0.74), Vector2(0.02, 0.65),
+		Vector2(1.0, 1.10), Vector2(1.0, 1.0), Vector2(0.0, 0.18),
+		Color(1.25, 0.24, 0.016, 0.0)) # cedar shingles burn
+	_set_program_row(program, 90, Color(1.0, 0.28, 0.025, 0.74), Vector2(0.02, 0.65),
+		Vector2(1.0, 1.10), Vector2(1.0, 1.0), Vector2(0.0, 0.18),
+		Color(1.25, 0.24, 0.016, 0.0)) # charred timber burn
+	_set_program_row(program, 91, Color(1.0, 0.28, 0.025, 0.74), Vector2(0.02, 0.65),
+		Vector2(1.0, 1.10), Vector2(1.0, 1.0), Vector2(0.0, 0.18),
+		Color(1.25, 0.24, 0.016, 0.0)) # cork burn
+	_set_program_row(program, 92, Color(1.0, 0.28, 0.025, 0.74), Vector2(0.02, 0.65),
+		Vector2(1.0, 1.10), Vector2(1.0, 1.0), Vector2(0.0, 0.18),
+		Color(1.25, 0.24, 0.016, 0.0)) # wicker burn
+	_set_program_row(program, 93, Color(1.0, 0.28, 0.025, 0.74), Vector2(0.02, 0.65),
+		Vector2(1.0, 1.10), Vector2(1.0, 1.0), Vector2(0.0, 0.18),
+		Color(1.25, 0.24, 0.016, 0.0)) # cardboard burn
+	_set_program_row(program, 94, Color(1.0, 0.28, 0.025, 0.74), Vector2(0.02, 0.65),
+		Vector2(1.0, 1.10), Vector2(1.0, 1.0), Vector2(0.0, 0.18),
+		Color(1.25, 0.24, 0.016, 0.0)) # paper screen burn
+	_set_program_row(program, 95, Color(1.0, 0.28, 0.025, 0.74), Vector2(0.02, 0.65),
+		Vector2(1.0, 1.10), Vector2(1.0, 1.0), Vector2(0.0, 0.18),
+		Color(1.25, 0.24, 0.016, 0.0)) # tar block burn
+	_set_program_row(program, 96, Color(1.0, 0.28, 0.025, 0.74), Vector2(0.02, 0.65),
+		Vector2(1.0, 1.10), Vector2(1.0, 1.0), Vector2(0.0, 0.18),
+		Color(1.25, 0.24, 0.016, 0.0)) # acrylic sheet burn
+	_set_program_row(program, 97, Color(1.0, 0.28, 0.025, 0.74), Vector2(0.02, 0.65),
+		Vector2(1.0, 1.10), Vector2(1.0, 1.0), Vector2(0.0, 0.18),
+		Color(1.25, 0.24, 0.016, 0.0)) # moss wall burn
+	_set_program_row(program, 17, Color(1.0, 0.92, 0.62, 0.55), Vector2(0.0, 0.004),
+		Vector2(1.0, 1.30), Vector2(1.0, 1.0), Vector2(0.0, 1.60),
+		Color(4.6, 2.9, 1.0, 0.0)) # rocket: flight state > 0 is an activated firework
+	_set_program_row(program, 123, Color(0.0, 0.0, 0.0, 0.0), Vector2(0.0, 1.0),
+		Vector2(0.92, 0.92), Vector2(1.0, 1.0), Vector2(0.16, 0.16),
+		Color(0.16, 1.10, 0.10, 0.0)) # uranium glass fluorescence
+	_set_program_row(program, 127, Color(0.0, 0.0, 0.0, 0.0), Vector2(0.0, 1.0),
+		Vector2(0.78, 0.78), Vector2(1.0, 1.0), Vector2(0.20, 0.20),
+		Color(0.18, 1.05, 0.70, 0.0)) # phosphor afterglow
+
 	# Flair assignment changes only texel 3 alpha, preserving the condition and
 	# emission profiles above. Each branch is constant-bounded and performs no
 	# additional texture lookup in the palette shader.
@@ -357,7 +490,12 @@ static func create_program_texture() -> ImageTexture:
 	_set_flair(program, [4], FLAIR_SMOKE)
 	_set_flair(program, [22], FLAIR_STEAM)
 	_set_flair(program, [37], FLAIR_FOAM)
-	_set_flair(program, [11, 18, 19], FLAIR_ORGANIC)
+	_set_flair(program, [19], FLAIR_ORGANIC)
+	_set_flair(program, [11], FLAIR_PLANT)
+	_set_flair(program, [18], FLAIR_FUNGUS)
+	_set_flair(program, [15], FLAIR_MITE)
+	_set_flair(program, [17], FLAIR_ROCKET)
+	_set_flair(program, range(81, MATERIAL_COUNT), FLAIR_BUILDING)
 	_set_flair(program, [9], FLAIR_ICE)
 	_set_flair(program, [12, 32], FLAIR_REACTIVE_LIQUID)
 	_set_flair(program, [33], FLAIR_MERCURY)

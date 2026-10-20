@@ -20,6 +20,8 @@ struct TransportPair {
 
 struct TransportPolicy {
     static constexpr std::int32_t version = 1;
+    // Schema v1 covers IDs 0-80. Later IDs (MAT-002 static building
+    // materials) use the defaults through the bounds-safe accessors.
     static constexpr std::size_t materials = 81;
     static constexpr std::size_t packed_size = 1 + materials * 2 + materials * materials * 6;
     bool configured = false;
@@ -29,7 +31,15 @@ struct TransportPolicy {
 
     TransportPolicy() { horizontal.fill(2); cadence.fill(1); }
     const TransportPair& pair(std::uint8_t source,std::uint8_t target) const noexcept {
+        static constexpr TransportPair defaults{};
+        if(source>=materials||target>=materials) return defaults;
         return pairs[static_cast<std::size_t>(source)*materials+target];
+    }
+    std::uint8_t horizontal_for(std::uint8_t material) const noexcept {
+        return material<materials ? horizontal[material] : std::uint8_t{2};
+    }
+    std::uint8_t cadence_for(std::uint8_t material) const noexcept {
+        return material<materials ? cadence[material] : std::uint8_t{1};
     }
     void validate() const {
         for(auto n:horizontal)if(n<1||n>2)throw std::invalid_argument("Horizontal sampling range");

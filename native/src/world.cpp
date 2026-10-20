@@ -2454,7 +2454,7 @@ void World::mix_after_motion(Material carrier, std::int64_t x, std::int64_t y,
 bool World::lateral_due(Material material, std::int64_t x, std::int64_t y,
                         JobEffects* effects) noexcept {
     const auto period = config_.transport_policy.configured
-        ? config_.transport_policy.cadence[static_cast<std::size_t>(material)] : 1U;
+        ? config_.transport_policy.cadence_for(static_cast<std::uint8_t>(material)) : 1U;
     if (period == 1U) return true;
     const auto phase = mix64(static_cast<std::uint64_t>(x) ^
         std::rotl(static_cast<std::uint64_t>(y),23)) % period;
@@ -2614,7 +2614,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             if (!lateral_due(material,x,y,effects)) return false;
             if (try_lateral(material,x,y,direction,false,effects)) return true;
             if (config_.transport_policy.configured &&
-                config_.transport_policy.horizontal[static_cast<std::size_t>(material)] == 1) return false;
+                config_.transport_policy.horizontal_for(static_cast<std::uint8_t>(material)) == 1) return false;
             return try_lateral(material,x,y,-direction,false,effects);
         };
 

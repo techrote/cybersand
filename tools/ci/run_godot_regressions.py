@@ -7,6 +7,7 @@ from dataclasses import dataclass
 import hashlib
 import json
 from pathlib import Path
+import re
 import subprocess
 import sys
 import time
@@ -58,6 +59,7 @@ class Case:
     flags: tuple[str, ...]
     timeout: int
     weight: float
+    requires_display: bool = False
 
 
 def _weight(name: str) -> float:
@@ -71,6 +73,9 @@ def discover_cases(root: Path = ROOT) -> list[Case]:
             ("--script", "res://tests/" + p.name),
             180,
             _weight(p.stem),
+            # Actual-pixel fixtures use this suffix so newly added render tests
+            # cannot silently inherit the headless server's no-frame shortcut.
+            requires_display=p.stem.endswith("_render"),
         )
         for p in sorted((root / "godot/tests").glob("test_*.gd"))
     ]
@@ -132,6 +137,7 @@ def case_dict(case: Case) -> dict:
         "timeout_seconds": case.timeout,
         "estimated_seconds": case.weight,
         "flags": list(case.flags),
+        "requires_display": case.requires_display,
     }
 
 
@@ -147,13 +153,27 @@ def write_json(path: Path, value: object) -> None:
     path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
+def case_command(godot: str, case: Case, platform: str = sys.platform) -> list[str]:
+    command = [godot]
+    if case.requires_display:
+        # Match the project's compatibility renderer. On Linux, Xvfb supplies
+        # the display and Mesa supplies software OpenGL in GitHub-hosted CI.
+        command += ["--rendering-method", "gl_compatibility", "--audio-driver", "Dummy"]
+        if platform.startswith("linux"):
+            command += ["--display-driver", "x11"]
+    else:
+        command.append("--headless")
+    return [*command, "--path", str(ROOT / "godot"), *case.flags]
+
+
 def run_case(godot: str, case: Case, output_dir: Path, role: str) -> tuple[dict, bool]:
     log_path = output_dir / (case.name + ".log")
-    command = [godot, "--headless", "--path", str(ROOT / "godot"), *case.flags]
+    command = case_command(godot, case)
     print(f"Running {case.name}, timeout {case.timeout}s: {command}", flush=True)
     started = time.perf_counter()
     timed_out = False
     returncode = None
+    launch_error = None
     with log_path.open("w", encoding="utf-8") as log:
         try:
             result = subprocess.run(
@@ -167,12 +187,28 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str) -> tuple[dict,
         except subprocess.TimeoutExpired:
             timed_out = True
             log.write(f"\nTIMEOUT after {case.timeout}s\n")
+        except OSError as error:
+            launch_error = str(error)
+            log.write(f"\nLAUNCH ERROR: {launch_error}\n")
     elapsed = time.perf_counter() - started
     output = log_path.read_text(encoding="utf-8", errors="replace")
     print(output, end="", flush=True)
     diagnostic_error = "SCRIPT ERROR:" in output or "ERROR:" in output
-    failed = timed_out or returncode != 0 or diagnostic_error
-    status = "timeout" if timed_out else ("failed" if failed else "passed")
+    # A zero exit after a no-display shortcut did not exercise its oracle. Keep
+    # that outcome distinct in retained evidence and fail the required gate.
+    skip_messages = [
+        line for line in output.splitlines()
+        if re.search(r"\bskipped\b|^\s*SKIP\b", line, flags=re.IGNORECASE)
+    ]
+    failed = timed_out or returncode != 0 or diagnostic_error or bool(skip_messages)
+    if timed_out:
+        status = "timeout"
+    elif returncode != 0 or diagnostic_error:
+        status = "failed"
+    elif skip_messages:
+        status = "skipped"
+    else:
+        status = "passed"
     record = {
         "name": case.name,
         "role": role,
@@ -181,6 +217,10 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str) -> tuple[dict,
         "timeout_seconds": case.timeout,
         "returncode": returncode,
         "diagnostic_error": diagnostic_error,
+        "launch_error": launch_error,
+        "skip_messages": skip_messages,
+        "requires_display": case.requires_display,
+        "command": command,
         "log": log_path.name,
     }
     if failed:
@@ -197,6 +237,10 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--shard-count", type=int, default=1)
     parser.add_argument("--shard-index", type=int, default=0)
+    parser.add_argument(
+        "--keep-going", action="store_true",
+        help="Run every assigned case after a test failure; import still fails immediately",
+    )
     args = parser.parse_args()
 
     if args.shard_count < 1:
@@ -269,6 +313,8 @@ def main() -> int:
     timing = {
         "identity": identity,
         "assigned_cases": [case.name for case in assigned],
+        "status": "running",
+        "completed": False,
         "results": results,
     }
 
@@ -279,22 +325,33 @@ def main() -> int:
     results.append(record)
     write_json(args.output / "timings.json", timing)
     if failed:
+        timing["status"] = "failed"
+        write_json(args.output / "timings.json", timing)
         return 1
 
+    suite_failed = False
     for case in assigned:
         record, failed = run_case(args.godot, case, args.output, "case")
         results.append(record)
         write_json(args.output / "timings.json", timing)
         if failed:
-            return 1
+            suite_failed = True
+            if not args.keep_going:
+                timing["status"] = "failed"
+                timing["completed"] = len(results) == len(assigned) + 1
+                write_json(args.output / "timings.json", timing)
+                return 1
 
+    timing["status"] = "failed" if suite_failed else "passed"
+    timing["completed"] = True
+    write_json(args.output / "timings.json", timing)
     print(
-        f"Passed shard {args.shard_index + 1}/{args.shard_count}: "
+        f"{'Failed' if suite_failed else 'Passed'} shard {args.shard_index + 1}/{args.shard_count}: "
         f"import plus {len(assigned)} assigned cases "
         f"({len(cases)} unique suite cases across all shards)",
         flush=True,
     )
-    return 0
+    return int(suite_failed)
 
 
 if __name__ == "__main__":

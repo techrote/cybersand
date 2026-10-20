@@ -5,7 +5,7 @@ document-kind: runbook
 scope: Opt-in physics measurement tooling, historical issue 9 baseline and current interaction regression routes
 canonical-for: [physics-measurement-tooling, physics-baseline-procedure]
 keywords: [powder, Mercury viscosity, barrel depth, masked source, contact impulse, diagnostic, fixture]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-19
 related-documents: [physics-characterisation-plan.md, ../architecture/rigid-body-and-cellular-coupling.md, ../systems/materials-and-rule-kernels.md, ../audits/2026-09-09-physics-characterisation.md]
 ---
 
@@ -193,7 +193,14 @@ histogram. These APIs require the ordinary exclusive World owner.
 issue-9 fixture bound was 16): body ID, sample serial,
 displacement x/y, boundary x/y, pixel-contact x/y, accumulated capped x/y,
 pre-final-cap x/y, intermediate-cap count, final-cap flag, displaced count,
-unresolved count and 324 boundary-contact bins (world-axis N/E/S/W × 81 materials).
+unresolved count and 528 boundary-contact bins (world-axis N/E/S/W × 132 material
+slots). The producer and fixture aggregator use the same current catalogue stride;
+historical issue-9 records retain their original 324-bin layout. Native and
+fallback material histograms likewise have 132 slots, including reserved slot 10.
+This diagnostic extent is independent of the intentionally retained 81-entry
+transport-profile schema. The
+[building integration regression](../../godot/tests/test_building_material_integration.gd)
+checks every new material and distinct contacts on all four faces.
 The ordinary nine-float result ABI is unchanged. Bridge `enable_diagnostics()`
 allocates six application values per body: age, accepted impulse x/y, duplicate,
 stale and received flags. Arrays reset per application; the fixture aggregates
@@ -241,6 +248,27 @@ rendered evidence from recorded simulation states, distinct from a gameplay
 screenshot or video acceptance pass.
 
 ## Which checks guard the measurement path?
+
+The standalone native CLI accepts current catalogue IDs `0..131` except reserved
+ID `10`. It validates signed wide arguments before narrowing, and its sampled
+`counts` and `sum_y` arrays each contain 132 entries. This current output extent
+does not revise historical 81-slot records or the intentionally 81-entry transport
+profile. The named issue #9/#10 reducers remain scoped to their original fixture
+series; arbitrary building-material experiments require a matching consumer.
+
+Run `make physics-characterisation-test` and
+`make physics-characterisation-sanitize` to compile and exercise the actual CLI.
+The [executable-level oracle](../../tools/physics/test_characterisation_cli.py)
+checks all 51 building IDs in both fixture layers, old-ID controls and invalid
+wide, reserved and malformed inputs. It parses the JSON rows and independently
+checks rectangle counts, sum-Y/centroid accounting, complete observation totals
+and rejection before any fixture output. The sanitized target uses ASan/UBSan;
+set `ASAN_OPTIONS=detect_leaks=1:strict_string_checks=1` in a supported execution
+environment to include LeakSanitizer. Each child has a ten-second timeout. Results,
+commands, executable hash and individual stdout/stderr are retained under
+`build/physics-cli-validation/`; Native CI uploads this evidence. The
+[MAT-002 review record](../audits/2026-10-19-mat002-review-and-validation.md)
+preserves the pre-fix overflow and separately identifies successful reruns.
 
 Run `dev.cmd native-test` and `dev.cmd godot-test` after a fresh native build.
 Coverage includes exact native cell/state and histogram parity, diagnostics

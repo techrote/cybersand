@@ -1,7 +1,7 @@
 {
   "version": 1,
   "frozen_date": "2026-09-08",
-  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair. ACT01-ACT03 cover provisional actor capabilities, player/policy input lifetime and bounded-work limits. SCENE01/SCENE02 cover Neon Reliquary entry and view controls, and the four-district descent with explicit scene-state boundaries. ACT04-ACT09 cover the 29-rig sets, parametric input, consumed-action identity, fictional personas, bounded tool/rope authority and SetA compatibility. SCENE03 covers the connected Blacksite Nine route, camera-only district views, shared-world continuity and whole-complex reset. USABLE01 covers the separate 32-item actor equipment catalogue, ownership and work limits. ACT-005 USABLE02-USABLE04 add independent physical equipment lifetime/admission, real processor lifecycle/stock and physical usable course questions.",
+  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair. ACT01-ACT03 cover provisional actor capabilities, player/policy input lifetime and bounded-work limits. SCENE01/SCENE02 cover Neon Reliquary entry and view controls, and the four-district descent with explicit scene-state boundaries. ACT04-ACT09 cover the 29-rig sets, parametric input, consumed-action identity, fictional personas, bounded tool/rope authority and SetA compatibility. SCENE03 covers the connected Blacksite Nine route, camera-only district views, shared-world continuity and whole-complex reset. USABLE01 covers the separate 32-item actor equipment catalogue, ownership and work limits. ACT-005 USABLE02-USABLE04 add independent physical equipment lifetime/admission, real processor lifecycle/stock and physical usable course questions. MAT03, TEST01 and TEST02 cover the 2026-10-19 catalogue integration, required rendered-test acceptance and CLI corrections. TEST03 covers actual retained-DLL Windows execution, current native source identity and applicable test scope.",
   "questions": [
     {
       "id": "C05",
@@ -170,7 +170,7 @@
       "facts": [
         "The issue #9 full-world accounting control preserved all recorded Water mass and showed the cropped deficit below the hard floor: the defect was displacement across the barrier, not Water destruction.",
         "Historical #11 work added bounded barrier/body-mask-aware ejection in its recorded source-matched envelope, but current-main reconciliation must not describe that bounded result as owner acceptance.",
-        "WEX-001 freezes the current generic Rapier↔Water splash/displacement and hard-floor failure before later hybrid architecture changes."
+        "WEX-001 freezes the current generic Rapier\u2194Water splash/displacement and hard-floor failure before later hybrid architecture changes."
       ],
       "sources": [
         "../godot/native_extension/cyber_native_cell_world.cpp::find_ejection_target",
@@ -464,7 +464,7 @@
       ],
       "facts": [
         "Current native Water already uses fractional conserved FreeMass while most other liquids use whole-cell CellularYield-style paths, so another explicit Water pressure mechanism would add another bulk-motion authority rather than replace an already unified solver.",
-        "A generic Rapier body entering Water can already create convincing splash/wave displacement; WEX therefore tests whether at most roughly 3–5 segmented upper-volume Water tiers can reuse the generic hybrid substrate to create depth-dependent surge.",
+        "A generic Rapier body entering Water can already create convincing splash/wave displacement; WEX therefore tests whether at most roughly 3\u20135 segmented upper-volume Water tiers can reuse the generic hybrid substrate to create depth-dependent surge.",
         "The candidate is experimental, must preserve exact Water quantity and generic ownership, and must actively test slab/membrane, floor-reaction, chatter and boundary-penetration failure modes."
       ],
       "sources": [
@@ -796,7 +796,7 @@
     },
     {
       "id": "SCENE03",
-      "query": "How do I explore Blacksite Nine's connected 3×3 map from the surface lab through the underground districts, and do tile views, boundary crossings and reset preserve edits?",
+      "query": "How do I explore Blacksite Nine's connected 3\u00d73 map from the surface lab through the underground districts, and do tile views, boundary crossings and reset preserve edits?",
       "canonical": [
         "operations/blacksite-nine-demo.md"
       ],
@@ -1175,6 +1175,65 @@
       ]
     },
     {
+      "id": "MAT03",
+      "query": "Can the new building materials survive level saves and diagnostic counting, and do they block sampled-rig digging?",
+      "canonical": [
+        "systems/building-material-catalogue.md",
+        "reference/level-saves-and-replay.md",
+        "operations/physics-characterisation.md"
+      ],
+      "facts": [
+        "Current catalogue IDs run through 131, with reserved ID 10 invalid; constructor, import and metadata bounds reject wide inputs before narrowing.",
+        "CYSD1 retains its existing header and five-byte cell encoding. Older 81-slot readers reject levels containing new materials.",
+        "Current material histograms have 132 slots, with four 132-slot body faces; the transport profile remains an intentionally separate 81-entry schema.",
+        "New hard surfaces occlude sampled-rig movement queries and existing CyberActorRigEffects digging, verified with a dig positive control and an unchanged cell behind each barrier. USABLE-001 equipment retains its separate authored eligibility and occlusion contract."
+      ],
+      "sources": [
+        "../native/include/cybersand/demo_snapshot.hpp",
+        "../godot/native_extension/cyber_native_cell_world.cpp",
+        "../godot/tests/test_building_material_integration.gd"
+      ]
+    },
+    {
+      "id": "TEST02",
+      "query": "How is the standalone physics CLI checked for safe building-material counting, wide material IDs and correct sampled JSON?",
+      "canonical": [
+        "operations/physics-characterisation.md",
+        "operations/local-build-and-validation.md"
+      ],
+      "facts": [
+        "The CLI validates signed wide arguments before narrowing, accepts IDs 0 through 131 except reserved 10, and emits 132-entry counts and sum_y arrays.",
+        "The actual executable regression checks all 51 building IDs in both layers, old-ID controls and invalid wide, reserved and malformed inputs; it independently checks rectangle counts, moments and centroid accounting.",
+        "Normal and ASan/UBSan Make targets retain each invocation's JSON, stderr, command and the executable hash; leak detection is explicitly enabled only in the recorded supported environment.",
+        "Historical issue 9/10 records and their named-fixture reducers retain their original scope; the transport profile remains a separate 81-entry schema."
+      ],
+      "sources": [
+        "../native/bench/physics_characterisation.cpp",
+        "../tools/physics/test_characterisation_cli.py",
+        "../Makefile",
+        "../.github/workflows/native.yml"
+      ]
+    },
+    {
+      "id": "TEST01",
+      "query": "Does a passing headless run prove material pixels were rendered, and how does CI detect skipped graphical tests?",
+      "canonical": [
+        "operations/testing-validation-and-replay.md",
+        "operations/local-build-and-validation.md"
+      ],
+      "facts": [
+        "The runner automatically gives test_*_render.gd an actual display and compatibility renderer; Linux CI provides Xvfb and Mesa software rendering.",
+        "Explicit skips, timeout, missing executables, nonzero exits and engine/script errors fail required cases, including errors with exit code zero.",
+        "Keep-going retains later test outcomes after ordinary case failure, while failed import stops immediately; final timing reports record completion and status.",
+        "Linux software framebuffer checks do not establish target-GPU performance or fresh WebAssembly browser execution."
+      ],
+      "sources": [
+        "../tools/ci/run_godot_regressions.py",
+        "../tools/ci/test_godot_regression_sharding.py",
+        "../.github/workflows/gdextension.yml"
+      ]
+    },
+    {
       "id": "USABLE01",
       "query": "Which actor tools, projectile payloads and functional processors exist, and who owns their material edits, triggers and bounded work?",
       "canonical": [
@@ -1252,8 +1311,28 @@
         "../godot/examples/thunderbowl/physical_thunderbowl_scene.gd",
         "../godot/examples/thunderbowl/run_physical_thunderbowl.gd"
       ]
+    },
+    {
+      "id": "TEST03",
+      "query": "Does current CI actually execute the retained Windows DLL, and how does it reject stale native source or incomplete headless coverage?",
+      "canonical": [
+        "operations/local-build-and-validation.md",
+        "operations/testing-validation-and-replay.md"
+      ],
+      "facts": [
+        "The GitHub-hosted Windows execution job is separate from Windows cross-build inspection and runs the retained DLL after exact checkout, committed LFS, provenance and complete current native source/header input-set checks.",
+        "The helper verifies pinned official Godot 4.7 and Rapier, imports the project and dynamically executes every applicable headless case exactly once with the shared runner timeouts and strict diagnostic/skip rejection.",
+        "The six current rendered cases are explicitly outside the Windows lane and are executed by the Linux rendered shards; headless execution does not establish Windows rendered-output or browser acceptance.",
+        "The Windows execution artifact retains commands, source/runtime/tool identities, per-case logs and hashes, source drift and completion; actual pass claims require the dated exact workflow run.",
+        "Only the four declared Rapier texture import-descriptor text files normalize CRLF to LF for comparison; descriptor content changes still fail, and DLLs, images and all other tracked inputs retain byte-exact SHA-256 checks."
+      ],
+      "sources": [
+        "../tools/ci/run_windows_godot_regressions.py",
+        "../tools/ci/test_windows_godot_regressions.py",
+        "../.github/workflows/gdextension.yml"
+      ]
     }
   ],
-  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set. 2026-10-18: MAT01/MAT02 add independent persistent-contact and interior mask-wake questions; the frozen 32 and prior questions are unchanged. 2026-10-18: SCENE01 adds independent demo-level entry/view/ownership routing; the frozen 32-question set is unchanged. 2026-10-18: SCENE02 adds the owner-requested four-tile descent and state-boundary question; all prior and frozen questions remain unchanged. 2026-10-18: ACT01-ACT03 add independent actor model/input/performance-boundary questions; the frozen 32-question set is unchanged. 2026-10-18 ACT-002: ACT04-ACT09 add independent expanded-rig/control/observation/persona/budget/compatibility questions. ACT03 now explicitly scopes original numeric limits to SetA and names the additive extension; the frozen 32-question set remains unchanged. 2026-10-18: SCENE03 adds the nine-district route and continuity question; all 47 prior supplementary questions, including SCENE01/SCENE02 and ACT01-ACT09, and the frozen 32-question set remain unchanged. 2026-10-18 ACT-004: ACT10/ACT11 expected facts reconciled with retained hull references and implemented full physical roster; ACT12-ACT15 add independent physical fidelity, producer lifetime, usable and arena-version challenges. Frozen query wording is unchanged; Q10 capacity correction is disclosed in the frozen fixture metadata. 2026-10-18 USABLE-001: USABLE01 adds the independent actor-equipment catalogue/ownership/budget question without changing the frozen 32-question set. 2026-10-19 ACT-005: ACT14 now also routes to the expanded actor-usables canonical contract; ACT14 and USABLE01 expected facts and source routes distinguish the implemented physical equipment catalogue from retained sampled authority. Existing question IDs and query wording are unchanged. USABLE02-USABLE04 add supplementary source-discovered lifetime, processor and course challenges; the frozen 32-question fixture is unchanged, and new question results are reported separately from the prior 70-question baseline.",
-  "integration_note": "Retains all scene, generation, sampled and physical actor-usable, Thunderbowl, physical-actor and presentation routes; historical questions are preserved."
+  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set. 2026-10-18: MAT01/MAT02 add independent persistent-contact and interior mask-wake questions; the frozen 32 and prior questions are unchanged. 2026-10-18: SCENE01 adds independent demo-level entry/view/ownership routing; the frozen 32-question set is unchanged. 2026-10-18: SCENE02 adds the owner-requested four-tile descent and state-boundary question; all prior and frozen questions remain unchanged. 2026-10-18: ACT01-ACT03 add independent actor model/input/performance-boundary questions; the frozen 32-question set is unchanged. 2026-10-18 ACT-002: ACT04-ACT09 add independent expanded-rig/control/observation/persona/budget/compatibility questions. ACT03 now explicitly scopes original numeric limits to SetA and names the additive extension; the frozen 32-question set remains unchanged. 2026-10-18: SCENE03 adds the nine-district route and continuity question; all 47 prior supplementary questions, including SCENE01/SCENE02 and ACT01-ACT09, and the frozen 32-question set remain unchanged. 2026-10-18 ACT-004: ACT10/ACT11 expected facts reconciled with retained hull references and implemented full physical roster; ACT12-ACT15 add independent physical fidelity, producer lifetime, usable and arena-version challenges. Frozen query wording is unchanged; Q10 capacity correction is disclosed in the frozen fixture metadata. 2026-10-18 USABLE-001: USABLE01 adds the independent actor-equipment catalogue/ownership/budget question without changing the frozen 32-question set. 2026-10-19 ACT-005: ACT14 now also routes to the expanded actor-usables canonical contract; ACT14 and USABLE01 expected facts and source routes distinguish the implemented physical equipment catalogue from retained sampled authority. Existing question IDs and query wording are unchanged. USABLE02-USABLE04 add supplementary source-discovered lifetime, processor and course challenges; the frozen 32-question fixture is unchanged, and new question results are reported separately from the prior 70-question baseline. 2026-10-19: MAT03 and TEST01 add catalogue integration and actual graphical-test execution questions; TEST02 adds standalone CLI admission and sampled accounting. 2026-10-19 resumed MAT-002 review: MAT03 scopes sampled-rig digging separately from authored sampled and physical equipment. TEST03 adds the current Windows execution gate; all upstream USABLE01-USABLE04 questions and the frozen 32-question set are preserved. 2026-10-19 Windows follow-up: TEST03 distinguishes the four text descriptor newline comparisons from byte-exact source and binary evidence; existing questions and query wording are unchanged.",
+  "integration_note": "Retains all scene, generation, sampled and physical actor-usable, Thunderbowl, physical-actor, building-material and presentation routes; historical questions are preserved."
 }

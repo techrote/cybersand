@@ -145,7 +145,7 @@ private:
         Vector2 bearing{};
         std::uint64_t support_samples = 0;
         std::uint64_t intermediate_caps = 0;
-        std::array<std::uint64_t, 4 * 81> faces{};
+        std::array<std::uint64_t, 4 * cybersand::kMaterialDefinitions.size()> faces{};
     };
     using BodyDiagnostics =
         std::array<BodyDiagnostic, cybersand::World::kMaximumTransientBodies + 1U>;

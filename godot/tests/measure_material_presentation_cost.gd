@@ -65,6 +65,28 @@ func _effects() -> Image:
 	return image
 
 
+func _living() -> Image:
+	# Second-pass content: Plant/Fungus/Moss Wall hosts with open air (growth
+	# decor scans), building catalogue panels, Rust, Sludge, Oil, Mercury,
+	# Steam/Smoke, Mites and flying Rockets.
+	var image: Image = Image.create_empty(1024, 1024, false, Image.FORMAT_RG8)
+	image.fill(Color(0, 0, 0, 1))
+	var ids: Array[int] = [11, 18, 97, 29, 65, 32, 16, 33, 22, 4, 15, 17]
+	for id: int in range(81, 132):
+		ids.append(id)
+	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+	rng.seed = 20261019
+	for index: int in range(700):
+		var w: int = rng.randi_range(6, 36)
+		var h: int = rng.randi_range(3, 24)
+		var x: int = rng.randi_range(0, 1024 - w)
+		var y: int = rng.randi_range(0, 1024 - h)
+		var id: int = ids[rng.randi_range(0, ids.size() - 1)]
+		var condition: int = 200 if id in [4, 22] else (3 if id == 17 else (64 if id in [11, 18] else 0))
+		image.fill_rect(Rect2i(x, y, w, h), Color(id / 255.0, condition / 255.0, 0, 1))
+	return image
+
+
 func _rig(source: Dictionary, world: Image, glow: bool) -> Dictionary:
 	var viewport: SubViewport = SubViewport.new()
 	viewport.size = OUTPUT
@@ -141,7 +163,7 @@ func _run() -> void:
 		"a": _source(arguments["a-root"], arguments["a-lut"]),
 		"b": _source(arguments["b-root"], arguments["b-lut"]),
 	}
-	var scenes: Dictionary = {"mixed": _street(), "effects": _effects()}
+	var scenes: Dictionary = {"mixed": _street(), "effects": _effects(), "living": _living()}
 	var frames: int = int(arguments.frames)
 	var samples: Dictionary = {}
 	for block: int in range(int(arguments.blocks)):

@@ -293,6 +293,19 @@ height, byte offset, row stride. Snapshot also carries render serial, channels,
 full-refresh flag and copied byte array. Native is RG8; fallback is R8. The
 adapter selects three slots, 64 patches/slot and 2,097,152 bytes/slot for its
 finite world. These are prototype defaults, not universal production budgets.
+
+**Current desktop additive metadata:**
+`CyberSimulationSnapshot.render_world_generation` identifies the accepted
+World/reset incarnation represented by the retained render bytes. The exclusive
+owner increments its counter after successful reset/replacement, then copies it
+into the pending render generation only when those replacement bytes are
+published. It is independent of native revision numbers, actor/body epochs,
+render serials and `render_full_refresh`. Full-image transport resyncs and
+ordinary R8 fallback frames retain the same World generation. Consumers update
+their displayed generation only after successful upload of the corresponding
+render serial; main uses that transition to invalidate vapour history. This is
+private GDScript snapshot metadata and does not change the native C ABI.
+
 See [snapshot fields](../../godot/scripts/simulation_snapshot.gd),
 [lifetime](../architecture/data-ownership-and-lifetimes.md) and
 [consumption/failure](../architecture/rendering-and-gameplay-bridges.md).

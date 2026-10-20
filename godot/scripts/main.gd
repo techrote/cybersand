@@ -153,12 +153,67 @@ const PAINTABLE_MATERIAL_IDS: Array[int] = [
 	CyberCellWorld.NEON_MAGENTA,
 	CyberCellWorld.NEON_AMBER,
 	CyberCellWorld.LED_WHITE,
+	CyberCellWorld.PINE_PLANKS,
+	CyberCellWorld.BIRCH_LOG,
+	CyberCellWorld.OAK_LOG,
+	CyberCellWorld.WALNUT_PANEL,
+	CyberCellWorld.MAHOGANY_PANEL,
+	CyberCellWorld.BAMBOO,
+	CyberCellWorld.PLYWOOD,
+	CyberCellWorld.DRIFTWOOD,
+	CyberCellWorld.CEDAR_SHINGLES,
+	CyberCellWorld.CHARRED_TIMBER,
+	CyberCellWorld.CORK,
+	CyberCellWorld.WICKER,
+	CyberCellWorld.CARDBOARD,
+	CyberCellWorld.PAPER_SCREEN,
+	CyberCellWorld.TAR_BLOCK,
+	CyberCellWorld.ACRYLIC_SHEET,
+	CyberCellWorld.MOSS_WALL,
+	CyberCellWorld.MARBLE,
+	CyberCellWorld.CHALK_BLOCK,
+	CyberCellWorld.BASALT_COLUMNS,
+	CyberCellWorld.OBSIDIAN,
+	CyberCellWorld.ADOBE_BRICK,
+	CyberCellWorld.RAW_CLAY,
+	CyberCellWorld.FIREBRICK,
+	CyberCellWorld.PACKED_SNOW,
+	CyberCellWorld.ROCK_SALT_BLOCK,
+	CyberCellWorld.GYPSUM_BOARD,
+	CyberCellWorld.QUICKLIME_BLOCK,
+	CyberCellWorld.RAMMED_EARTH,
+	CyberCellWorld.SANDBAG,
+	CyberCellWorld.TERRAZZO,
+	CyberCellWorld.GABION,
+	CyberCellWorld.ZINC_SHEET,
+	CyberCellWorld.ALUMINIUM_PANEL,
+	CyberCellWorld.MAGNESIUM_PLATE,
+	CyberCellWorld.THERMITE_BRICK,
+	CyberCellWorld.BARE_IRON,
+	CyberCellWorld.GOLD_LEAF,
+	CyberCellWorld.BRASS_PANEL,
+	CyberCellWorld.GLASS_BLOCK,
+	CyberCellWorld.FROSTED_GLASS,
+	CyberCellWorld.QUARTZ_CRYSTAL,
+	CyberCellWorld.URANIUM_GLASS,
+	CyberCellWorld.SUGAR_GLASS,
+	CyberCellWorld.WAX_BLOCK,
+	CyberCellWorld.SULFUR_BLOCK,
+	CyberCellWorld.PHOSPHOR_PANEL,
+	CyberCellWorld.POLYMER_PANEL,
+	CyberCellWorld.SOLAR_PANEL,
+	CyberCellWorld.CARBON_FIBRE,
+	CyberCellWorld.HEAT_SHIELD_TILE,
 ]
 const MATERIAL_GROUP_FIRST_IDS: Array[int] = [
 	CyberCellWorld.SAND,
 	CyberCellWorld.LIMESTONE_BLOCK,
 	CyberCellWorld.INDUSTRIAL_BRICK,
 	CyberCellWorld.NEON_CYAN,
+	CyberCellWorld.PINE_PLANKS,
+	CyberCellWorld.MARBLE,
+	CyberCellWorld.ZINC_SHEET,
+	CyberCellWorld.GLASS_BLOCK,
 ]
 
 @onready var world_view: TextureRect = $Layout/World
@@ -838,6 +893,7 @@ var material_appearance_program: ImageTexture
 var render_channels: int = 1
 var render_image_format: Image.Format = Image.FORMAT_R8
 var last_uploaded_render_snapshot_serial: int = 0
+var last_uploaded_world_generation: int = -1
 var last_render_patch_count: int = 0
 var last_render_patch_bytes: int = 0
 var last_render_was_full_refresh: bool = false
@@ -855,6 +911,15 @@ var glow_source: ColorRect
 var glow_source_shader: ShaderMaterial
 var glow_overlay: TextureRect
 var glow_composite_shader: ShaderMaterial
+# Presentation-only Steam/Smoke afterimage: two half-float viewports ping-pong
+# once per rendered frame (see material_vapour_trail.gdshader).
+var vapour_trail_viewports: Array[SubViewport] = []
+var vapour_trail_shaders: Array[ShaderMaterial] = []
+var vapour_trail_origins: Array[Vector2] = [Vector2.ZERO, Vector2.ZERO]
+var vapour_trail_latest: int = -1
+var vapour_trail_frame: int = -1
+var vapour_trail_usec: int = 0
+var vapour_trail_enabled: bool = true
 var selected_paint_slot: int = PAINT_SLOT_SAND
 var selected_material_id: int = CyberCellWorld.SAND
 var view_size_index: int = 0
@@ -1078,6 +1143,7 @@ func _ready() -> void:
 	snapshot_blend_start_usec = Time.get_ticks_usec()
 	if latest_snapshot != null and initial_render_uploaded:
 		last_uploaded_render_snapshot_serial = latest_snapshot.render_snapshot_serial
+		last_uploaded_world_generation = latest_snapshot.render_world_generation
 		last_uploaded_revision = latest_snapshot.world_revision
 		simulation_worker.acknowledge_render_snapshot(
 			latest_snapshot.render_snapshot_serial
@@ -2065,6 +2131,11 @@ func consume_worker_snapshot() -> void:
 			snapshot.render_channels
 		)
 		if render_uploaded:
+			# Only an accepted World replacement invalidates presentation history.
+			# Full refreshes also occur during resync and every fallback frame.
+			if snapshot.render_world_generation != last_uploaded_world_generation:
+				reset_vapour_trail()
+			last_uploaded_world_generation = snapshot.render_world_generation
 			last_uploaded_render_snapshot_serial = snapshot.render_snapshot_serial
 			simulation_worker.acknowledge_render_snapshot(
 				snapshot.render_snapshot_serial
@@ -3189,6 +3260,7 @@ func update_shader_parameters() -> void:
 	world_shader.set_shader_parameter("view_size_px", Vector2(current_view_size))
 	var content_rect: Rect2 = view_content_rect()
 	update_glow_parameters(content_rect)
+	update_vapour_trail()
 	var inverse_control_size: Vector2 = Vector2(
 		1.0 / maxf(world_view.size.x, 1.0),
 		1.0 / maxf(world_view.size.y, 1.0)
@@ -3468,6 +3540,7 @@ func setup_glow_pipeline() -> void:
 	glow_overlay.material = glow_composite_shader
 	world_view.add_child(glow_overlay)
 	set_glow_enabled(glow_enabled)
+	setup_vapour_trail_pipeline()
 	glow_source_shader.set_shader_parameter("world_texture", texture)
 	glow_source_shader.set_shader_parameter(
 		"material_program_lut",
@@ -3485,6 +3558,107 @@ func set_glow_enabled(enabled: bool) -> void:
 		glow_viewport.render_target_update_mode = (
 			SubViewport.UPDATE_ALWAYS if enabled else SubViewport.UPDATE_DISABLED
 		)
+
+
+func setup_vapour_trail_pipeline() -> void:
+	if not vapour_trail_viewports.is_empty():
+		return
+	var trail_shader: Shader = load("res://shaders/material_vapour_trail.gdshader") as Shader
+	for index: int in range(2):
+		var viewport: SubViewport = SubViewport.new()
+		viewport.name = "MaterialVapourTrail%d" % index
+		viewport.disable_3d = true
+		viewport.transparent_bg = false
+		viewport.use_hdr_2d = true
+		viewport.render_target_clear_mode = SubViewport.CLEAR_MODE_ALWAYS
+		viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
+		viewport.size = current_view_size
+		add_child(viewport)
+		var shader_material: ShaderMaterial = ShaderMaterial.new()
+		shader_material.shader = trail_shader
+		var source: ColorRect = ColorRect.new()
+		source.name = "VapourTrailSource"
+		source.color = Color.WHITE
+		source.size = Vector2(current_view_size)
+		source.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		source.material = shader_material
+		viewport.add_child(source)
+		vapour_trail_viewports.append(viewport)
+		vapour_trail_shaders.append(shader_material)
+	# Each viewport reads the other's previous frame.
+	vapour_trail_shaders[0].set_shader_parameter("history_texture", vapour_trail_viewports[1].get_texture())
+	vapour_trail_shaders[1].set_shader_parameter("history_texture", vapour_trail_viewports[0].get_texture())
+	vapour_trail_shaders[0].set_shader_parameter("delta_seconds", 0.0)
+	vapour_trail_shaders[1].set_shader_parameter("delta_seconds", 0.0)
+
+
+# Invalidates both generations without an extra clear pass. The next target
+# records current gas with zero history weight; its successor can only sample
+# that newly written target. Also used when a quality setting disables the pass.
+func reset_vapour_trail() -> void:
+	vapour_trail_latest = -1
+	vapour_trail_frame = -1
+	vapour_trail_usec = 0
+	vapour_trail_origins.fill(Vector2.ZERO)
+	for viewport: SubViewport in vapour_trail_viewports:
+		viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
+	if world_shader != null:
+		world_shader.set_shader_parameter("vapour_trail_strength", 0.0)
+
+
+func set_vapour_trail_enabled(enabled: bool) -> void:
+	if vapour_trail_enabled == enabled:
+		return
+	vapour_trail_enabled = enabled
+	reset_vapour_trail()
+
+
+# Advances the afterimage once per rendered frame, however often the shader
+# parameters are refreshed. Pausing the simulation still lets ghosts fade.
+func update_vapour_trail() -> void:
+	if not vapour_trail_enabled or vapour_trail_viewports.is_empty() or world_shader == null:
+		return
+	# Resize both generations together. Resizing only the alternating target
+	# drops the first history frame and can revive a buffer after rapid resizes.
+	if vapour_trail_viewports[0].size != current_view_size or vapour_trail_viewports[1].size != current_view_size:
+		reset_vapour_trail()
+		for resized: SubViewport in vapour_trail_viewports:
+			resized.size = current_view_size
+			var source: ColorRect = resized.get_child(0) as ColorRect
+			source.size = Vector2(current_view_size)
+	var frame: int = Engine.get_process_frames()
+	if frame == vapour_trail_frame:
+		return
+	vapour_trail_frame = frame
+	var now_usec: int = Time.get_ticks_usec()
+	var delta_seconds: float = 0.0
+	if vapour_trail_latest >= 0:
+		delta_seconds = maxf(float(now_usec - vapour_trail_usec) / 1000000.0, 0.0)
+	vapour_trail_usec = now_usec
+	var target: int = 0 if vapour_trail_latest != 0 else 1
+	var history: int = 1 - target
+	var viewport: SubViewport = vapour_trail_viewports[target]
+	vapour_trail_viewports[history].render_target_update_mode = SubViewport.UPDATE_DISABLED
+	var origin: Vector2 = Vector2(floori(camera_origin.x), floori(camera_origin.y))
+	var shader_material: ShaderMaterial = vapour_trail_shaders[target]
+	shader_material.set_shader_parameter("world_texture", texture)
+	shader_material.set_shader_parameter(
+		"world_size_px", Vector2(CyberCellWorld.WORLD_WIDTH, CyberCellWorld.WORLD_HEIGHT))
+	shader_material.set_shader_parameter("view_size_px", Vector2(current_view_size))
+	shader_material.set_shader_parameter("camera_origin_px", origin)
+	shader_material.set_shader_parameter("history_origin_px", vapour_trail_origins[history])
+	shader_material.set_shader_parameter(
+		"delta_seconds",
+		delta_seconds if vapour_trail_viewports[history].size == current_view_size else 0.0
+	)
+	shader_material.set_shader_parameter(
+		"condition_projection_enabled", 1.0 if render_channels == 2 else 0.0)
+	viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
+	vapour_trail_origins[target] = origin
+	vapour_trail_latest = target
+	world_shader.set_shader_parameter("vapour_trail_texture", viewport.get_texture())
+	world_shader.set_shader_parameter("vapour_trail_origin_px", origin)
+	world_shader.set_shader_parameter("vapour_trail_strength", 1.0)
 
 
 func update_glow_parameters(content_rect: Rect2) -> void:
@@ -3678,4 +3852,6 @@ func material_name(material_id: int) -> String:
 		CyberCellWorld.LED_WHITE:
 			return "LED white"
 		_:
+			if material_id >= CyberCellWorld.FIRST_BUILDING_MATERIAL and material_id <= CyberCellWorld.LAST_MATERIAL:
+				return CyberCellWorld.BUILDING_MATERIAL_NAMES[material_id - CyberCellWorld.FIRST_BUILDING_MATERIAL]
 			return "material-%d" % material_id

@@ -106,7 +106,8 @@ void malformed_payloads_have_no_partial_effect() {
     const auto before = world.state_hash();
     const auto count = world.chunk_count();
     auto cells = payload(Material::GraniteBlock);
-    for (const auto invalid : {10, 81, 255}) {
+    // 10 is reserved; kMaterialDefinitions.size() is the first ID past the catalogue.
+    for (const auto invalid : {10, static_cast<int>(cybersand::kMaterialDefinitions.size()), 255}) {
         cells.back() = static_cast<Material>(invalid);
         require(world.install_generated_chunk({0, 0}, cells) == ChunkInstallOutcome::InvalidPayload,
                 "invalid final material must reject the complete chunk");

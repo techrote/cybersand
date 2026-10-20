@@ -13,6 +13,7 @@ GENERATION_SOURCES := native/src/world_generation.cpp native/src/generation_fiel
 CORE_HEADERS := $(wildcard native/include/cybersand/*.hpp native/include/cybersand/*.h native/src/*.hpp)
 TEST_SOURCES := native/tests/test_world.cpp
 BENCH_SOURCES := native/bench/benchmark.cpp
+PHYSICS_CHARACTERISATION_SOURCES := $(SIMULATION_SOURCES) native/src/render_snapshot.cpp native/bench/physics_characterisation.cpp
 
 .PHONY: all soliding-test soliding-sanitize soliding-benchmark-smoke soliding-stage3-cost-smoke soliding-stage3b-validation-apparatus-test soliding-stage3b-runtime-storage-test soliding-stage3b-spatial-index-test soliding-stage3b-sparse-mutation-witness-test test c-header-check benchmark shared debug sanitize thread-sanitize clean
 
@@ -32,6 +33,20 @@ $(BUILD_DIR)/libcybersand.so: $(CORE_SOURCES) $(CORE_HEADERS) | $(BUILD_DIR)
 
 $(BUILD_DIR)/tests_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) $(TEST_SOURCES) | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) $(TEST_SOURCES) -o $@
+
+.PHONY: physics-characterisation-test physics-characterisation-sanitize
+
+$(BUILD_DIR)/physics_characterisation: $(PHYSICS_CHARACTERISATION_SOURCES) $(CORE_HEADERS) | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) -pthread $(PHYSICS_CHARACTERISATION_SOURCES) -o $@
+
+$(BUILD_DIR)/physics_characterisation_sanitized: $(PHYSICS_CHARACTERISATION_SOURCES) $(CORE_HEADERS) | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -pthread $(PHYSICS_CHARACTERISATION_SOURCES) -o $@
+
+physics-characterisation-test: $(BUILD_DIR)/physics_characterisation
+	python3 tools/physics/test_characterisation_cli.py --executable $< --output $(BUILD_DIR)/physics-cli-validation/normal
+
+physics-characterisation-sanitize: $(BUILD_DIR)/physics_characterisation_sanitized
+	python3 tools/physics/test_characterisation_cli.py --executable $< --output $(BUILD_DIR)/physics-cli-validation/sanitized
 
 $(BUILD_DIR)/tests_tsan: $(CORE_SOURCES) $(CORE_HEADERS) $(TEST_SOURCES) | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=thread $(CORE_SOURCES) $(TEST_SOURCES) -o $@

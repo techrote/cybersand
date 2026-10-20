@@ -45,6 +45,7 @@ const MATERIAL_LABELS: Array[String] = [
 	"packed earth", "industrial brick", "reinforced concrete", "asphalt", "wet asphalt", "wet cobblestone", "steel plate", "painted steel",
 	"corrugated steel", "rusted steel", "steel grating", "chainlink", "steel pipe", "copper pipe", "ceramic tile", "chemical glass",
 	"dark glass", "rubber", "cable bundle", "insulation", "hazard stripe", "neon cyan", "neon magenta", "neon amber", "LED white",
+	"pine planks", "birch log", "rough oak log", "walnut panel", "mahogany panel", "bamboo", "plywood", "driftwood", "cedar shingles", "charred timber", "cork", "wicker", "cardboard", "paper screen", "tar block", "acrylic sheet", "moss wall", "marble", "chalk block", "basalt columns", "obsidian", "adobe brick", "raw clay", "firebrick", "packed snow", "rock salt block", "gypsum board", "quicklime block", "rammed earth", "sandbag", "terrazzo", "gabion", "galvanised zinc sheet", "aluminium panel", "magnesium plate", "thermite brick", "bare iron plate", "gold leaf", "brass panel", "glass block", "frosted glass", "quartz crystal", "uranium glass", "sugar glass", "wax block", "sulfur block", "phosphor panel", "polymer panel", "solar panel", "carbon fibre", "heat-shield tile",
 ]
 
 var generator: Variant

@@ -17,13 +17,22 @@ int main(int argc, char** argv) {
         return 2;
     }
     try {
-        const auto top = static_cast<Material>(std::stoi(argv[1]));
-        const auto bottom = static_cast<Material>(std::stoi(argv[2]));
+        const auto material_argument = [](const char* argument) {
+            std::size_t consumed = 0;
+            const auto id = std::stoll(argument, &consumed);
+            // Reject wide/negative IDs before narrowing to the byte-sized enum.
+            if (argument[consumed] != '\0' || id < 0 || id > static_cast<long long>(kLastMaterial) ||
+                !valid_material(static_cast<std::uint16_t>(id))) {
+                throw std::invalid_argument("fixture material bounds");
+            }
+            return static_cast<Material>(id);
+        };
+        const auto top = material_argument(argv[1]);
+        const auto bottom = material_argument(argv[2]);
         const std::string layout = argv[3], variant = argv[8];
         const int depth = std::stoi(argv[4]), seed = std::stoi(argv[5]), ticks = std::stoi(argv[6]);
         const int width = std::stoi(argv[11]);
-        if (!valid_material(static_cast<std::uint8_t>(top)) || !valid_material(static_cast<std::uint8_t>(bottom)) ||
-            width < 1 || width > 128 || depth < 1 || depth > 128 || seed < 0 || seed > 100 || ticks < 1 || ticks > 7200)
+        if (width < 1 || width > 128 || depth < 1 || depth > 128 || seed < 0 || seed > 100 || ticks < 1 || ticks > 7200)
             throw std::invalid_argument("fixture bounds");
         WorldConfig config;
         config.active_core_capacity = 512;
@@ -64,7 +73,7 @@ int main(int argc, char** argv) {
         std::uint64_t allocations=0, max_cores=0, max_chunks=0;
         int breakthrough=-1;
         auto snapshot = [&](int tick) {
-            std::array<std::uint64_t,81> counts{}, sums{};
+            std::array<std::uint64_t,kMaterialDefinitions.size()> counts{}, sums{};
             int top_min=floor, top_max=0, bottom_min=floor, bottom_max=0;
             std::uint64_t water=0, below=0;
             for(int y=0;y<=floor+2;++y) for(int x=box_left-2;x<=box_right+2;++x) {
@@ -78,8 +87,8 @@ int main(int argc, char** argv) {
                 <<"\",\"top_front\":"<<top_max-surface+1<<",\"top_below\":"<<below
                 <<",\"interface_width\":"<<std::max(0,std::min(top_max,bottom_max)-std::max(top_min,bottom_min)+1)
                 <<",\"water_mass\":"<<water<<",\"active_chunks\":"<<world.active_chunk_count()<<",\"counts\":[";
-            for(std::size_t i=0;i<81;++i)std::cout<<(i?",":"")<<counts[i];
-            std::cout<<"],\"sum_y\":[";for(std::size_t i=0;i<81;++i)std::cout<<(i?",":"")<<sums[i];
+            for(std::size_t i=0;i<counts.size();++i)std::cout<<(i?",":"")<<counts[i];
+            std::cout<<"],\"sum_y\":[";for(std::size_t i=0;i<sums.size();++i)std::cout<<(i?",":"")<<sums[i];
             std::cout<<"]}\n";
         };
         snapshot(0);

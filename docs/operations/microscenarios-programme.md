@@ -386,6 +386,11 @@ The coverage ledger distinguishes at least:
 Coverage percentages must not imply that every ordered pair deserves a bespoke
 rule.
 
+**2026-10-18:** the first such sparse pass, `int.pass.mat002-building-materials`
+(profile v2), only adds rules for new building materials 81–131 against the
+MAT-001 contact baseline; the oracle domain is unchanged. It does not change this
+graph. See the [interaction substrate](../systems/intermaterial-interactions.md#mat-002-building-material-pass).
+
 ### Rolling physics baselines
 
 Do **not** wait for a single permanent `physics-contact-baseline-v1`.

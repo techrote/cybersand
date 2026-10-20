@@ -38,7 +38,7 @@ static func validate_metadata(meta: Dictionary) -> String:
 	if not _number(player[2], -1000, 1000) or not _number(player[3], -1000, 1000):
 		return "Invalid player velocity"
 	var material: Variant = meta.get("material", null)
-	if not _number(material, 1, 80):
+	if not _number(material, 1, CyberCellWorld.LAST_MATERIAL):
 		return "Invalid selected material"
 	if float(material) != float(int(material)) or int(material) == 10:
 		return "Invalid selected material"

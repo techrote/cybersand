@@ -515,13 +515,14 @@
       ],
       "facts": [
         "No: M11 sanitizer/results are historical with their recorded revision/platform scope; current Windows tests do not prove other platforms.",
-        "Dated Chromium compatibility/threaded evidence is separate; Firefox/Safari and current Linux are not established.",
+        "Dated Chromium compatibility/threaded evidence is separate. Current Linux native, headless and rendered-fixture results have their own source/runtime records, including the MAT-002 review; old sanitizer or Windows results do not establish them. Firefox/Safari execution remains unestablished by these records.",
         "LFS pointer files are not usable runtime binaries and historical totals must not be relabelled as fresh passes."
       ],
       "sources": [
         "audits/m11/README.md",
         "audits/2026-09-08-documentation-audit.md",
-        "../../validation/browser-results.json"
+        "../../validation/browser-results.json",
+        "audits/2026-10-19-mat002-review-and-validation.md"
       ]
     },
     {
@@ -564,5 +565,5 @@
       ]
     }
   ],
-  "expectations_reviewed": "2026-09-08: original query wording retained; Q31 expected facts updated for explicit current/M11 gate separation. Metrics are not frozen-answer improvement claims. 2026-10-18 ACT-004: Q10 expected capacity corrected from 16 to 64 for current source. The 32 frozen query IDs and query wording are unchanged; this is a disclosed source-fact correction, not a retrieval-quality improvement claim."
+  "expectations_reviewed": "2026-09-08: original query wording retained; Q31 expected facts updated for explicit current/M11 gate separation. Metrics are not frozen-answer improvement claims. 2026-10-18 ACT-004: Q10 expected capacity corrected from 16 to 64 for current source. The 32 frozen query IDs and query wording are unchanged; this is a disclosed source-fact correction, not a retrieval-quality improvement claim. 2026-10-19 MAT-002: Q30 expected facts now distinguish separately recorded current Linux execution from what historical sanitizer and Windows results prove. Query IDs and wording remain unchanged; this is a disclosed source-fact correction, not a retrieval-quality improvement claim."
 }

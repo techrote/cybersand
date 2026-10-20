@@ -29,6 +29,6 @@ static func current(source_revision: String = "unavailable") -> Dictionary:
 		"script_sha256":sources, "script_set_sha256":JSON.stringify(sources).sha256_text(),
 		"source_scope":"listed apparatus scripts; not a full checkout manifest",
 		"native_path":native_path, "native_sha256":FileAccess.get_sha256(native_path) if FileAccess.file_exists(native_path) else "unavailable",
-		"material_catalogue":{"count":81, "reserved_ids":[10],
+		"material_catalogue":{"count":CyberCellWorld.LAST_MATERIAL + 1, "reserved_ids":[10],
 			"authority":"native artifact; cell_world.gd identifies the UI mirror"},
 		"platform":OS.get_name(), "godot":Engine.get_version_info().get("string", "unknown")}

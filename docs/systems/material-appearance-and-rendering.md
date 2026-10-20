@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [material-visual-projection, palette-program-appearance, render-upload-cost]
 status: Current
 scope: Native RG8 presentation, palette/program LUTs, shader flair, temporal smoothing, glow, and current GPU upload limitation
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-19
 related-documents: [material-visual-pattern-library.md, ../reference/material-effects-register.md, themed-construction-materials.md, materials-and-rule-kernels.md, ../architecture/rendering-and-gameplay-bridges.md, ../architecture/item-authored-material-programs.md]
 ---
 
@@ -86,7 +86,7 @@ The program describes tint/blend, condition range, value, alpha, emission
 response/color, and an integer flair selector in texel 3 alpha.
 
 The [material palette shader](../../godot/shaders/material_palette.gdshader)
-implements 45 non-neutral flair classes through bounded analytic branches.
+implements 50 non-neutral flair classes through bounded analytic branches.
 Their selected finish uses arithmetic, hashes, and optional presentation time;
 it adds no per-cell object, particle, light, or physics field. The common relief
 stage then reads four neighbors from the same already-uploaded world texture
@@ -149,11 +149,92 @@ paired captures and limits. The
 [construction catalogue](themed-construction-materials.md) owns exact themed
 ID-to-finish mappings.
 
-**Approved owner intent:** preserve Oil's wave character, distinguish liquid
-motion, use restrained glints on smooth/manufactured metals, and leave rough/
-hammered metals matte. World-anchored texture must not swim with the camera.
+**Approved owner intent:** distinguish liquid motion, use restrained glints on
+smooth/manufactured metals, and leave rough/hammered metals matte. **Owner
+direction 2026-10-18 (second pass):** slowly scrolling hatched bands read badly,
+especially on Oil and Mercury bulk; liquid bulk should swirl pseudorandomly. This
+supersedes the earlier "preserve Oil's wave character" preference for the bulk
+pattern; Oil keeps its named `OIL_WAVE_RATE` as the swirl phase and its
+iridescence. World-anchored texture must not swim with the camera.
 Appearance, flicker, and dither must not affect conservation, collision, sleeping,
 or replay.
+
+### Second fidelity pass (MAT-002)
+
+**Current since 2026-10-18 (pass 2):**
+
+- **Swirling liquid bulk.** `swirl_field` (two slow warp noises bending `fbm3`)
+  and `field_contours` replace the travelling `triangle_wave` bands of Oil, Mercury,
+  Water ripple, Acid/Toxic Sludge, Paste/Cement swell and Slush meltwater. Oil
+  suppresses per-cell dither and draws its rainbow along curved contours.
+- **Organic corrosion.** `corrosion_field` (blotches, gravity-stretched spill runs,
+  clustered pits) replaces the 3×3 hash blocks of Rust and Rusted Steel scale;
+  Rusted Steel spills from top edges and seams and only perforates inside corrosion.
+- **Living finishes.** `FLAIR_PLANT` draws jittered cellular leaves, midribs and
+  stems with a slight sway; `FLAIR_FUNGUS` a mycelium web with fruiting knots and
+  bioluminescent pulses; `FLAIR_MITE` thin-film iridescence with glistening
+  highlights; Seed keeps `FLAIR_ORGANIC`.
+- **Growth decor in Empty cells.** `apply_growth_decor` (quality uniform
+  `growth_decor`, default 1) draws grass tufts, flowers and leaves above Plant and
+  Moss Wall, mushrooms (some bioluminescent) above Fungus, and vines/hyphae hanging
+  beneath them. A selected sprout group scans its centre column (≤ 6 reads,
+  45% of groups); hanging growth scans its own column (≤ 5 reads, 32% of
+  columns). Both scans stop at the first occupied cell. It never alters material
+  cells or simulation; the quality hook leaves occupied pixels unchanged.
+- **Fireworks.** `FLAIR_ROCKET` stripes idle Rockets and turns any flight state
+  (condition byte ≥ 1) into a flickering white-gold core with HDR emission; Empty
+  cells beside a flying Rocket show coloured sparks (≤ 4 reads for lattice
+  candidates). The emission source takes the brightest of the 2×2 cells its
+  half-resolution texel covers. The 2026-10-19 review corrected its block origin:
+  a fragment's UV denotes the centre of that block, whose lower-right cell is
+  not the first cell. The shader now derives the footprint and block origin
+  explicitly, retaining one-cell sampling in full-resolution fixtures. Actual
+  pixel checks exercise all four single-cell positions, image edges, camera
+  offsets, an idle Rocket and a Spark.
+- **Steam and Smoke.** Steam is near-white (`0xE6EEF2D8`, mirrored natively) and
+  denser; Smoke's last lifetime thins from the wisps inward. A presentation-only
+  **vapour afterimage** ([material_vapour_trail.gdshader](../../godot/shaders/material_vapour_trail.gdshader),
+  `setup_vapour_trail_pipeline`/`update_vapour_trail` in [main.gd](../../godot/scripts/main.gd))
+  ping-pongs two half-float view-sized SubViewports once per rendered frame. Each
+  keeps the brighter of current Steam/Smoke coverage and the reprojected, risen,
+  bilinearly diffused previous frame, decayed with 0.42 s / 0.65 s e-folding times;
+  the palette draws the remainder over Empty cells. It reads the same immutable
+  snapshot and continues fading while simulation is paused. Elapsed presentation
+  time is not clamped to a simulation-step limit, so long frames also dissipate
+  old history. Capture fixtures leave `vapour_trail_strength` at 0.
+
+  Both viewport generations are initialized and resized together. Resetting the
+  view size invalidates both histories, avoiding a lost second frame or stale
+  history when switching back to an earlier size. Camera changes reproject the
+  existing history in world coordinates; samples outside its footprint contribute
+  nothing. `set_vapour_trail_enabled(false)` stops both viewport updates and sets
+  palette strength to zero; re-enabling starts from current gas. This persistent
+  quality hook remains separate from the user-facing glow control.
+
+  The desktop owner's `render_world_generation` is retained with the exact
+  render bytes. An accepted upload from a new World/reset generation clears the
+  trail. Ordinary full-image refreshes preserve it, including every R8 fallback
+  publication and native transport resyncs. The R8 shader uses a neutral lifetime
+  because that format carries no condition byte. See the
+  [bridge contract](../architecture/rendering-and-gameplay-bridges.md).
+- **Building catalogue.** `FLAIR_BUILDING` selects `apply_building_finish` by
+  material ID for IDs 81–131 using the run probe (or a fixed panel geometry
+  when `structured_detail` is 0). The 2026-10-19 review places that finish at one
+  dispatch site per `material_colour` evaluation, preserving the same geometry
+  while avoiding duplication of the large catalogue branch at every ordinary
+  flair-helper call during driver inlining. Luminous building materials do not rim-light
+  their own interior. The [building catalogue](building-material-catalogue.md)
+  lists each finish.
+- **Colour intent.** Toxic Sludge is a deeper, darker green (`0x2B6A22`, mirrored
+  natively) with dark depths and oily filaments.
+
+These are presentation-only. Evidence, cost and limits are in the
+[original dated record](../audits/2026-10-18-material-fidelity-pass-2.md) and
+[2026-10-19 review and validation](../audits/2026-10-19-mat002-review-and-validation.md).
+The latter records real software-rendered pixel checks, source-matched native
+and fallback owner checks, the software shader-compiler memory failure and its
+dispatch repair. Software-rendered correctness does not establish target-GPU
+performance or owner visual acceptance.
 
 ## Dirty bytes versus GPU upload
 
@@ -188,7 +269,8 @@ publication rate when samples are available. Overload and Web terrain backlog ca
 reduce actual progress.
 
 HDR 2D output supports one half-logical-resolution glow SubViewport. Its
-thirteen-sample source and thirteen-tap near/far additive composite derive
+sixteen-cell source (a 2×2 maximum plus twelve surrounding samples) and
+thirteen-tap near/far additive composite derive
 emission from the existing presentation inputs. This is a visual halo, not an
 authoritative heat/light field. `G` disables both its overlay and updates on
 desktop and Web; `set_glow_enabled` in [main.gd](../../godot/scripts/main.gd)

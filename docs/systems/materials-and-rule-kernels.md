@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [material-runtime-model, material-kernel-cadence, reactive-material-families]
 status: Current
 scope: Native material identity, descriptors, mutable state, kernel execution, current interactions, and extension boundaries
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-19
 related-documents: [themed-construction-materials.md, material-appearance-and-rendering.md, water-design.md, smoke-heat-pressure-roadmap.md, ../research/sandspiel-performance-and-material-port.md]
 ---
 
@@ -24,17 +24,21 @@ Test executions are scoped in the [evidence ledger](../reference/validation-evid
 [material.hpp](../../native/include/cybersand/material.hpp) defines byte-sized
 `Material`, `MaterialDefinition`, `RuleKernel`, and constexpr descriptor lookup.
 IDs 0–19 preserve the attributed Sandspiel numbering; 10 is invalid and
-`Gas` aliases `Smoke` at 4. Project IDs continue through 80. Excluding Empty
-and invalid 10 leaves 79 paintable materials. UI slots are not serialized IDs.
+`Gas` aliases `Smoke` at 4. Project IDs continue through 131 (`kLastMaterial`;
+building materials start at `kFirstBuildingMaterial` = 81). Excluding Empty and
+invalid 10 leaves 130 paintable materials. UI slots are not serialized IDs.
 
 Descriptors carry material state, density/direction, target-side exchange
 permission, lateral-flow mode, viscosity, kernel, initial compact state, palette,
 and maximum write radius. Numeric density and movability do not by themselves
 permit exchange. Descriptor values are fixed during a tick.
 
-World owns the four-byte Cell: material, `state_a`, `state_b`, update epoch.
-The two generic bytes hold material-specific mass, lifetime, burn/growth,
-capture, heading, or projectile state. Stone `state_b` distinguishes
+World stores material identity, `state_a`, `state_b` and update epoch in an
+eight-byte `detail::PrecisionStorage` carrier. The
+[storage contract](../architecture/chunk-tile-and-buffer-model.md#what-is-stored-per-cell-and-per-chunk)
+owns its source-qualified size and alignment. The two state fields hold
+material-specific mass, lifetime, burn/growth, capture, heading, or projectile
+state. Stone `state_b` distinguishes
 brace-aware Stone from explosion-created granular falling Stone. Temperature
 is a separate optional field; [its current uses](smoke-heat-pressure-roadmap.md)
 do not constitute a heat solver.
@@ -136,7 +140,10 @@ See the Coal kernel in [world.cpp](../../native/src/world.cpp) and the
 
 The [port ledger](../research/sandspiel-performance-and-material-port.md) owns
 IDs 0–19 and attribution. The [construction catalogue](themed-construction-materials.md)
-owns IDs 38–80: 41 inert hard surfaces plus combustible Oak Timber/Thatch.
+owns IDs 38–80: 41 inert hard surfaces plus combustible Oak Timber/Thatch. The
+[building catalogue](building-material-catalogue.md) owns IDs 81–131: 17 combustible
+woods/fibres/polymers, 25 materials with versioned pair reactions and 9 inert
+surfaces (MAT-002, 2026-10-18).
 
 ## Boundaries and extension obligations
 
@@ -151,8 +158,9 @@ preparation can still allocate outside individual kernels during a tick; measure
 that separately from kernel policy.
 
 **Current duplication risk:** [CyberCellWorld](../../godot/scripts/cell_world.gd)
-mirrors IDs manually and implements a narrower fallback. It treats themed
-surfaces as static but does not reproduce native Oak/Thatch combustion.
+mirrors IDs manually and implements a narrower fallback. It treats themed and
+building surfaces as static but does not reproduce native combustion or pair
+reactions.
 Native descriptors, fallback constants, and appearance tables are not generated
 from one catalogue.
 

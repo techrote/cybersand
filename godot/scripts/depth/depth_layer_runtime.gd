@@ -327,7 +327,7 @@ func _validate_definitions(definitions: Dictionary) -> String:
 			var material: int = rectangles[offset + 4]
 			if width <= 0 or height <= 0 or x < 0 or y < 0 or x + width > WORLD_SIZE.x or y + height > WORLD_SIZE.y:
 				return "%s contains an out-of-bounds rectangle" % id
-			if material < 0 or material > Cell.LED_WHITE:
+			if material < 0 or material > Cell.LAST_MATERIAL:
 				return "%s contains an invalid material ID" % id
 			writes += width * height
 			if writes > MAX_AUTHORING_CELL_WRITES:
@@ -344,7 +344,7 @@ func _validate_command(id: String, cell: Vector2i, radius: int, material: int) -
 		return "target_failed"
 	if radius < 0 or radius > MAX_RADIUS:
 		return "radius_out_of_budget"
-	if material < 0 or material > Cell.LED_WHITE:
+	if material < 0 or material > Cell.LAST_MATERIAL:
 		return "invalid_material"
 	if not _inside(cell):
 		return "cell_out_of_bounds"

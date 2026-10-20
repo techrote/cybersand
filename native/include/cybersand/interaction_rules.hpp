@@ -16,7 +16,9 @@ namespace cybersand {
 inline constexpr std::string_view kInteractionSchemaId = "cybersand.interactions";
 inline constexpr std::uint32_t kInteractionSchemaVersion = 1U;
 inline constexpr std::string_view kInteractionProfileId = "int.current-behaviour";
-inline constexpr std::uint32_t kInteractionProfileVersion = 1U;
+// Version 2 (MAT-002) adds the int.pass.mat002-building-materials pair rules;
+// version 1 was the 14-rule current-oracle catalogue.
+inline constexpr std::uint32_t kInteractionProfileVersion = 2U;
 
 enum class InteractionChannel : std::uint8_t {
     ThermalPhase,
@@ -143,7 +145,13 @@ struct PairInteractionRule {
     std::string_view tuning_pass_id = "int.pass.current-oracle";
 };
 
-inline constexpr std::array<PairInteractionRule, 14> kPairInteractionRules{{
+// Rules 0-13 are the frozen int.pass.current-oracle catalogue. Later rules
+// belong to versioned passes and always involve at least one material that
+// did not exist in that oracle, so pre-existing pairs keep Current results.
+inline constexpr std::string_view kBuildingMaterialPassId = "int.pass.mat002-building-materials";
+inline constexpr std::size_t kCurrentOraclePairRuleCount = 14U;
+
+inline constexpr std::array<PairInteractionRule, 56> kPairInteractionRules{{
     {"int.pair.lava-water.quench.v1",
      interaction_channel_bit(InteractionChannel::ThermalPhase) |
          interaction_channel_bit(InteractionChannel::ChemicalConversionProducts) |
@@ -258,6 +266,367 @@ inline constexpr std::array<PairInteractionRule, 14> kPairInteractionRules{{
      "replace both participants; preserve role-specific products",
      interaction_revalidation_bit(InteractionRevalidationTag::WaterContact) |
          interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence)},
+    {"int.pair.acid-marble.effervesce.v1",
+     interaction_channel_bit(InteractionChannel::DissolutionCorrosion) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts) |
+         interaction_channel_bit(InteractionChannel::AuthoritativeEmissionsByproducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Acid, Material::Marble, Material::Foam, Material::Salt, 192,
+     "replace both participants; preserve role-specific products",
+     interaction_revalidation_bit(InteractionRevalidationTag::SchedulerContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.acid-chalk.effervesce.v1",
+     interaction_channel_bit(InteractionChannel::DissolutionCorrosion) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts) |
+         interaction_channel_bit(InteractionChannel::AuthoritativeEmissionsByproducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Acid, Material::ChalkBlock, Material::Foam, Material::Dust, 224,
+     "replace both participants; preserve role-specific products",
+     interaction_revalidation_bit(InteractionRevalidationTag::SchedulerContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.water-chalk.soften.v1",
+     interaction_channel_bit(InteractionChannel::DissolutionCorrosion) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Water, Material::ChalkBlock, Material::Water, Material::Paste, 6,
+     "preserve Water role; convert ChalkBlock role",
+     interaction_revalidation_bit(InteractionRevalidationTag::WaterContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.lava-basalt.remelt.v1",
+     interaction_channel_bit(InteractionChannel::ThermalPhase) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Lava, Material::BasaltColumns, Material::Lava, Material::Lava, 6,
+     "preserve Lava role; convert BasaltColumns role",
+     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.lava-obsidian.remelt.v1",
+     interaction_channel_bit(InteractionChannel::ThermalPhase) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Lava, Material::Obsidian, Material::Lava, Material::MoltenGlass, 24,
+     "preserve Lava role; convert Obsidian role",
+     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.water-adobe.erode.v1",
+     interaction_channel_bit(InteractionChannel::DissolutionCorrosion) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Water, Material::AdobeBrick, Material::Water, Material::Paste, 24,
+     "preserve Water role; convert AdobeBrick role",
+     interaction_revalidation_bit(InteractionRevalidationTag::WaterContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.lava-adobe.fire.v1",
+     interaction_channel_bit(InteractionChannel::ThermalPhase) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Lava, Material::AdobeBrick, Material::Lava, Material::RedBrick, 64,
+     "preserve Lava role; convert AdobeBrick role",
+     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.fire-raw-clay.fire.v1",
+     interaction_channel_bit(InteractionChannel::ThermalPhase) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Fire, Material::RawClay, Material::Fire, Material::TerracottaTile, 48,
+     "preserve Fire role; convert RawClay role",
+     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence) |
+         interaction_revalidation_bit(InteractionRevalidationTag::SchedulerContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.lava-raw-clay.fire.v1",
+     interaction_channel_bit(InteractionChannel::ThermalPhase) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Lava, Material::RawClay, Material::Lava, Material::TerracottaTile, 128,
+     "preserve Lava role; convert RawClay role",
+     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.water-raw-clay.slake.v1",
+     interaction_channel_bit(InteractionChannel::DissolutionCorrosion) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Water, Material::RawClay, Material::Water, Material::Paste, 10,
+     "preserve Water role; convert RawClay role",
+     interaction_revalidation_bit(InteractionRevalidationTag::WaterContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.fire-packed-snow.melt.v1",
+     interaction_channel_bit(InteractionChannel::ThermalPhase) |
+         interaction_channel_bit(InteractionChannel::Combustion) |
+         interaction_channel_bit(InteractionChannel::AuthoritativeEmissionsByproducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Fire, Material::PackedSnow, Material::Steam, Material::Water, 255,
+     "replace both participants; preserve role-specific products",
+     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence) |
+         interaction_revalidation_bit(InteractionRevalidationTag::WaterContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.lava-packed-snow.quench.v1",
+     interaction_channel_bit(InteractionChannel::ThermalPhase) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts) |
+         interaction_channel_bit(InteractionChannel::AuthoritativeEmissionsByproducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Lava, Material::PackedSnow, Material::Stone, Material::Steam, 255,
+     "replace both participants; preserve role-specific products",
+     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence) |
+         interaction_revalidation_bit(InteractionRevalidationTag::WaterContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.steam-packed-snow.condense.v1",
+     interaction_channel_bit(InteractionChannel::ThermalPhase),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Steam, Material::PackedSnow, Material::Water, Material::PackedSnow, 32,
+     "convert Steam role; preserve PackedSnow role",
+     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence) |
+         interaction_revalidation_bit(InteractionRevalidationTag::WaterContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.salt-packed-snow.thaw.v1",
+     interaction_channel_bit(InteractionChannel::ThermalPhase) |
+         interaction_channel_bit(InteractionChannel::DissolutionCorrosion) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Salt, Material::PackedSnow, Material::Brine, Material::Slush, 64,
+     "replace both participants; preserve role-specific products",
+     interaction_revalidation_bit(InteractionRevalidationTag::GranularContact) |
+         interaction_revalidation_bit(InteractionRevalidationTag::WaterContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.molten-glass-packed-snow.quench.v1",
+     interaction_channel_bit(InteractionChannel::ThermalPhase) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts) |
+         interaction_channel_bit(InteractionChannel::AuthoritativeEmissionsByproducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::MoltenGlass, Material::PackedSnow, Material::Glass, Material::Steam, 255,
+     "replace both participants; preserve role-specific products",
+     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence) |
+         interaction_revalidation_bit(InteractionRevalidationTag::WaterContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.water-rock-salt.dissolve.v1",
+     interaction_channel_bit(InteractionChannel::DissolutionCorrosion) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Water, Material::RockSaltBlock, Material::Brine, Material::Salt, 48,
+     "replace both participants; preserve role-specific products",
+     interaction_revalidation_bit(InteractionRevalidationTag::WaterContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.water-gypsum.soak.v1",
+     interaction_channel_bit(InteractionChannel::DissolutionCorrosion) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Water, Material::GypsumBoard, Material::Water, Material::Paste, 16,
+     "preserve Water role; convert GypsumBoard role",
+     interaction_revalidation_bit(InteractionRevalidationTag::WaterContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.fire-gypsum.calcine.v1",
+     interaction_channel_bit(InteractionChannel::ThermalPhase) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Fire, Material::GypsumBoard, Material::Fire, Material::Dust, 6,
+     "preserve Fire role; convert GypsumBoard role",
+     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.water-quicklime.slake.v1",
+     interaction_channel_bit(InteractionChannel::ThermalPhase) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts) |
+         interaction_channel_bit(InteractionChannel::AuthoritativeEmissionsByproducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Water, Material::QuicklimeBlock, Material::Steam, Material::Cement, 128,
+     "replace both participants; preserve role-specific products",
+     interaction_revalidation_bit(InteractionRevalidationTag::WaterContact) |
+         interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.water-rammed-earth.erode.v1",
+     interaction_channel_bit(InteractionChannel::DissolutionCorrosion) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Water, Material::RammedEarth, Material::Water, Material::Sand, 6,
+     "preserve Water role; convert RammedEarth role",
+     interaction_revalidation_bit(InteractionRevalidationTag::WaterContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.fire-sandbag.burn.v1",
+     interaction_channel_bit(InteractionChannel::Combustion) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Fire, Material::Sandbag, Material::Fire, Material::Sand, 40,
+     "preserve Fire role; convert Sandbag role",
+     interaction_revalidation_bit(InteractionRevalidationTag::SchedulerContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.acid-zinc.dissolve.v1",
+     interaction_channel_bit(InteractionChannel::DissolutionCorrosion) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts) |
+         interaction_channel_bit(InteractionChannel::AuthoritativeEmissionsByproducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Acid, Material::ZincSheet, Material::Smoke, Material::Salt, 192,
+     "replace both participants; preserve role-specific products",
+     interaction_revalidation_bit(InteractionRevalidationTag::SchedulerContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.fire-magnesium.ignite.v1",
+     interaction_channel_bit(InteractionChannel::Combustion) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Fire, Material::MagnesiumPlate, Material::Fire, Material::Fire, 96,
+     "preserve Fire role; convert MagnesiumPlate role",
+     interaction_revalidation_bit(InteractionRevalidationTag::SchedulerContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.spark-magnesium.ignite.v1",
+     interaction_channel_bit(InteractionChannel::Electrical) |
+         interaction_channel_bit(InteractionChannel::Combustion) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Spark, Material::MagnesiumPlate, Material::Empty, Material::Fire, 255,
+     "replace both participants; preserve role-specific products",
+     interaction_revalidation_bit(InteractionRevalidationTag::SchedulerContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.spark-thermite.ignite.v1",
+     interaction_channel_bit(InteractionChannel::Electrical) |
+         interaction_channel_bit(InteractionChannel::Combustion) |
+         interaction_channel_bit(InteractionChannel::ThermalPhase) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Spark, Material::ThermiteBrick, Material::Empty, Material::Lava, 255,
+     "replace both participants; preserve role-specific products",
+     interaction_revalidation_bit(InteractionRevalidationTag::SchedulerContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.fire-thermite.ignite.v1",
+     interaction_channel_bit(InteractionChannel::Combustion) |
+         interaction_channel_bit(InteractionChannel::ThermalPhase) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Fire, Material::ThermiteBrick, Material::Lava, Material::Lava, 64,
+     "replace both participants; preserve role-specific products",
+     interaction_revalidation_bit(InteractionRevalidationTag::SchedulerContact) |
+         interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.water-bare-iron.rust.v1",
+     interaction_channel_bit(InteractionChannel::DissolutionCorrosion) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Water, Material::BareIron, Material::Water, Material::RustedSteel, 3,
+     "preserve Water role; convert BareIron role",
+     interaction_revalidation_bit(InteractionRevalidationTag::WaterContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.brine-bare-iron.rust.v1",
+     interaction_channel_bit(InteractionChannel::DissolutionCorrosion) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Brine, Material::BareIron, Material::Brine, Material::RustedSteel, 12,
+     "preserve Brine role; convert BareIron role",
+     interaction_revalidation_bit(InteractionRevalidationTag::WaterContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.acid-bare-iron.corrode.v1",
+     interaction_channel_bit(InteractionChannel::DissolutionCorrosion) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts) |
+         interaction_channel_bit(InteractionChannel::AuthoritativeEmissionsByproducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Acid, Material::BareIron, Material::Smoke, Material::Rust, 160,
+     "replace both participants; preserve role-specific products",
+     interaction_revalidation_bit(InteractionRevalidationTag::SchedulerContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.lava-glass-block.melt.v1",
+     interaction_channel_bit(InteractionChannel::ThermalPhase) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Lava, Material::GlassBlock, Material::Lava, Material::MoltenGlass, 255,
+     "preserve Lava role; convert GlassBlock role",
+     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.lava-frosted-glass.melt.v1",
+     interaction_channel_bit(InteractionChannel::ThermalPhase) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Lava, Material::FrostedGlass, Material::Lava, Material::MoltenGlass, 255,
+     "preserve Lava role; convert FrostedGlass role",
+     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.lava-quartz.fuse.v1",
+     interaction_channel_bit(InteractionChannel::ThermalPhase) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Lava, Material::QuartzCrystal, Material::Lava, Material::MoltenGlass, 8,
+     "preserve Lava role; convert QuartzCrystal role",
+     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.lava-uranium-glass.melt.v1",
+     interaction_channel_bit(InteractionChannel::ThermalPhase) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Lava, Material::UraniumGlass, Material::Lava, Material::MoltenGlass, 255,
+     "preserve Lava role; convert UraniumGlass role",
+     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.water-sugar-glass.dissolve.v1",
+     interaction_channel_bit(InteractionChannel::DissolutionCorrosion) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Water, Material::SugarGlass, Material::Water, Material::Paste, 48,
+     "preserve Water role; convert SugarGlass role",
+     interaction_revalidation_bit(InteractionRevalidationTag::WaterContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.fire-sugar-glass.caramelise.v1",
+     interaction_channel_bit(InteractionChannel::ThermalPhase) |
+         interaction_channel_bit(InteractionChannel::Combustion) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts) |
+         interaction_channel_bit(InteractionChannel::AuthoritativeEmissionsByproducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Fire, Material::SugarGlass, Material::Smoke, Material::Coal, 64,
+     "replace both participants; preserve role-specific products",
+     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.fire-wax.melt.v1",
+     interaction_channel_bit(InteractionChannel::ThermalPhase) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Fire, Material::WaxBlock, Material::Fire, Material::Oil, 64,
+     "preserve Fire role; convert WaxBlock role",
+     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.lava-wax.melt.v1",
+     interaction_channel_bit(InteractionChannel::ThermalPhase) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Lava, Material::WaxBlock, Material::Lava, Material::Oil, 255,
+     "preserve Lava role; convert WaxBlock role",
+     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.fire-sulfur.burn.v1",
+     interaction_channel_bit(InteractionChannel::Combustion) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts) |
+         interaction_channel_bit(InteractionChannel::AuthoritativeEmissionsByproducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Fire, Material::SulfurBlock, Material::Smoke, Material::Fire, 96,
+     "replace both participants; preserve role-specific products",
+     interaction_revalidation_bit(InteractionRevalidationTag::SchedulerContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.lava-sulfur.ignite.v1",
+     interaction_channel_bit(InteractionChannel::Combustion) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Lava, Material::SulfurBlock, Material::Lava, Material::Fire, 64,
+     "preserve Lava role; convert SulfurBlock role",
+     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.fire-phosphor.ignite.v1",
+     interaction_channel_bit(InteractionChannel::Combustion) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Fire, Material::PhosphorPanel, Material::Fire, Material::Fire, 128,
+     "preserve Fire role; convert PhosphorPanel role",
+     interaction_revalidation_bit(InteractionRevalidationTag::SchedulerContact),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.lava-polymer.melt.v1",
+     interaction_channel_bit(InteractionChannel::ThermalPhase) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Lava, Material::PolymerPanel, Material::Lava, Material::Oil, 255,
+     "preserve Lava role; convert PolymerPanel role",
+     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence),
+     1U, "", kBuildingMaterialPassId},
+    {"int.pair.fire-polymer.melt.v1",
+     interaction_channel_bit(InteractionChannel::ThermalPhase) |
+         interaction_channel_bit(InteractionChannel::Combustion) |
+         interaction_channel_bit(InteractionChannel::ChemicalConversionProducts) |
+         interaction_channel_bit(InteractionChannel::AuthoritativeEmissionsByproducts),
+     InteractionTriggerKind::PairContact, InteractionMatchKind::UnorderedRolePreserving,
+     Material::Fire, Material::PolymerPanel, Material::Smoke, Material::Oil, 32,
+     "replace both participants; preserve role-specific products",
+     interaction_revalidation_bit(InteractionRevalidationTag::ThermalCadence),
+     1U, "", kBuildingMaterialPassId},
 }};
 
 struct PairInteractionMatch {
@@ -336,10 +705,27 @@ struct InteractionCatalogueValidation {
     std::size_t invalid_supersession_links = 0U;
 };
 
-inline constexpr std::array<SemanticFamilyMembership, 16> kSemanticFamilyMemberships{{
+inline constexpr std::array<SemanticFamilyMembership, 33> kSemanticFamilyMemberships{{
     {"int.family.combustible-kernel", Material::Wood},
     {"int.family.combustible-kernel", Material::OakTimber},
     {"int.family.combustible-kernel", Material::Thatch},
+    {"int.family.combustible-kernel", Material::PinePlanks},
+    {"int.family.combustible-kernel", Material::BirchLog},
+    {"int.family.combustible-kernel", Material::OakLog},
+    {"int.family.combustible-kernel", Material::WalnutPanel},
+    {"int.family.combustible-kernel", Material::MahoganyPanel},
+    {"int.family.combustible-kernel", Material::Bamboo},
+    {"int.family.combustible-kernel", Material::Plywood},
+    {"int.family.combustible-kernel", Material::Driftwood},
+    {"int.family.combustible-kernel", Material::CedarShingles},
+    {"int.family.combustible-kernel", Material::CharredTimber},
+    {"int.family.combustible-kernel", Material::Cork},
+    {"int.family.combustible-kernel", Material::Wicker},
+    {"int.family.combustible-kernel", Material::Cardboard},
+    {"int.family.combustible-kernel", Material::PaperScreen},
+    {"int.family.combustible-kernel", Material::TarBlock},
+    {"int.family.combustible-kernel", Material::AcrylicSheet},
+    {"int.family.combustible-kernel", Material::MossWall},
     {"int.family.conductive-base-metal", Material::Metal},
     {"int.family.reactive-base-glass", Material::Glass},
     {"int.family.hot-source", Material::Fire},
@@ -493,7 +879,7 @@ struct InteractionCoverageEntry {
     std::string_view limitation;
 };
 
-inline constexpr std::array<InteractionCoverageEntry, 7> kInteractionCoverage{{
+inline constexpr std::array<InteractionCoverageEntry, 10> kInteractionCoverage{{
     {"compact-pair-current", "multiple", InteractionAuthoredStatus::ExplicitOverride,
      InteractionEvidenceStatus::CurrentRegression, "int.pair.*.v1",
      "all 14 compact pair rules are characterized against the frozen Current oracle"},
@@ -512,6 +898,15 @@ inline constexpr std::array<InteractionCoverageEntry, 7> kInteractionCoverage{{
     {"family.reactive-themed-glass", "thermal_phase", InteractionAuthoredStatus::ExplicitNonInteracting,
      InteractionEvidenceStatus::CurrentRegression, "",
      "themed glass names/appearance do not inherit base Glass pair semantics"},
+    {"mat002-building-pair-rules", "multiple", InteractionAuthoredStatus::AcceptedWithLimitation,
+     InteractionEvidenceStatus::CurrentRegression, "int.pair.*.v1@int.pass.mat002-building-materials",
+     "42 authored pair rules for building materials 81+; probabilities are gameplay tuning, not calibrated chemistry"},
+    {"mat002-building-combustibles", "combustion", InteractionAuthoredStatus::AcceptedWithLimitation,
+     InteractionEvidenceStatus::CurrentRegression, "int.kernel.combustible.burn.v1",
+     "17 building woods/fibres/polymers reuse the bounded Combustible kernel; Fungus/Mite timber rules stay Wood/Oak only"},
+    {"mat002-building-inert", "multiple", InteractionAuthoredStatus::ExplicitNonInteracting,
+     InteractionEvidenceStatus::CurrentRegression, "",
+     "building materials without a pair rule (e.g. firebrick, terrazzo, gabion, heat-shield tile) are inert apart from the broad Acid neighbourhood kernel"},
     {"future-mechanism-tuning", "multiple", InteractionAuthoredStatus::Untested,
      InteractionEvidenceStatus::None, "",
      "later bounded versioned passes own new behavior; INT-000 does not fabricate it"},
@@ -525,8 +920,10 @@ struct InteractionTuningPassDefinition {
     std::string_view changed_rules;
 };
 
-inline constexpr std::array<InteractionTuningPassDefinition, 1> kInteractionTuningPasses{{
+inline constexpr std::array<InteractionTuningPassDefinition, 2> kInteractionTuningPasses{{
     {"int.pass.current-oracle", 1U, "", "characterized-baseline", "none"},
+    {kBuildingMaterialPassId, 1U, "int.pass.current-oracle", "authored-extension",
+     "adds pair rules for building materials 81+ only; oracle rules 0-13 unchanged"},
 }};
 
 class InteractionRules final {
@@ -762,8 +1159,40 @@ public:
         return {};
     }
 
+    // Derived, never authored: one 256-bit partner set per material lets the
+    // production resolver reject non-reacting neighbours without scanning
+    // every rule. It is rebuilt from kPairInteractionRules at compile time.
+    using PartnerSet = std::array<std::uint64_t, 4>;
+    [[nodiscard]] static constexpr std::array<PartnerSet, 256> build_partner_sets() noexcept {
+        std::array<PartnerSet, 256> sets{};
+        for (const auto& rule : kPairInteractionRules) {
+            const auto a = static_cast<std::uint8_t>(rule.first);
+            const auto b = static_cast<std::uint8_t>(rule.second);
+            sets[a][b >> 6U] |= std::uint64_t{1} << (b & 63U);
+            if (rule.match != InteractionMatchKind::Ordered) {
+                sets[b][a >> 6U] |= std::uint64_t{1} << (a & 63U);
+            }
+        }
+        return sets;
+    }
+    [[nodiscard]] static constexpr std::array<bool, 256> build_participants() noexcept {
+        std::array<bool, 256> participants{};
+        for (const auto& rule : kPairInteractionRules) {
+            participants[static_cast<std::uint8_t>(rule.first)] = true;
+            participants[static_cast<std::uint8_t>(rule.second)] = true;
+        }
+        return participants;
+    }
+    [[nodiscard]] static constexpr bool may_pair(Material source, Material target) noexcept {
+        constexpr auto sets = build_partner_sets();
+        const auto s = static_cast<std::uint8_t>(source);
+        const auto t = static_cast<std::uint8_t>(target);
+        return ((sets[s][t >> 6U] >> (t & 63U)) & 1U) != 0U;
+    }
+
     [[nodiscard]] static constexpr PairInteractionMatch match_pair(
         Material source, Material target) noexcept {
+        if (!may_pair(source, target)) return {};
         return match_pair_from(kPairInteractionRules, source, target);
     }
 
@@ -789,14 +1218,13 @@ public:
 
     [[nodiscard]] static constexpr ResolvedPairInteraction resolve_pair(
         Material source, Material target, std::uint8_t probability_roll) noexcept {
+        if (!may_pair(source, target)) return {};
         return resolve_pair_from(kPairInteractionRules, source, target, probability_roll);
     }
 
     [[nodiscard]] static constexpr bool has_pair_rule(Material material) noexcept {
-        for (const auto& rule : kPairInteractionRules) {
-            if (rule.first == material || rule.second == material) return true;
-        }
-        return false;
+        constexpr auto participants = build_participants();
+        return participants[static_cast<std::uint8_t>(material)];
     }
 };
 
@@ -887,7 +1315,7 @@ public:
     return "unknown";
 }
 
-static_assert(kPairInteractionRules.size() == 14U);
+static_assert(kPairInteractionRules.size() == 56U);
 static_assert(kSpecializedInteractionRules.size() == 19U);
 static_assert(kInteractionLayerKinds.size() == 5U);
 static_assert(InteractionRules::layer_precedence(InteractionLayerKind::ChannelDefault) <

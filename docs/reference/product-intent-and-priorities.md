@@ -113,7 +113,9 @@ broader Water architecture still follows its separately approved decision gates.
 | Fast Water fronts, airborne spray and a supported film | Preserve the liked feel while distinguishing native conserved mass from the fallback's long-range discrete rules. A correctness fix should not silently retune Water into a generic viscous liquid. |
 | Foam collapsing bubbles | Retain the positive visual reference; Smoke collapse should be slower and leave a lingering volume. |
 | Smoke cannot burn or host Fire | This is also Current native behavior; richer culling/appearance must remain bounded. |
-| Oil wave pattern | Retain and preferably animate material-specific liquid variation in shaders, using existing inputs. |
+| Oil wave pattern | Superseded 2026-10-18 (second pass): slowly scrolling hatched patterns, especially Oil and Mercury bulk, look bad; use pseudorandom, dynamic swirling. Keep material-specific liquid variation from existing inputs. |
+| Living and atmospheric detail (2026-10-18) | Plants should carry procedural vines and flowers, Fungus mycelium and mushrooms; Mites glisten iridescently; activated fireworks glow/bloom; Steam is whiter and leaves a fading afterimage; Smoke's disappearance should feel gradual (visual change preferred); Rust should look like organic corrosion spills, not a chequerboard; Toxic Sludge deeper/darker green. |
+| More building vocabulary (2026-10-18) | Several dozen more solid, texture-rich building materials including several woods (grain and bark) and many chemically and thermally reactive options. |
 | Rough metals should not sparkle | Restrained glints belong to polished/coated/manufactured finishes; rough materials retain texture and shape. |
 | Strong construction-material readability | Medieval masonry/timber/roofing and industrial panels/pipes/glass/metals/hazards should differ at pixel scale, beyond palette swaps. |
 

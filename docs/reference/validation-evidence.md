@@ -10,6 +10,22 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## MAT-002 review and test completion — 2026-10-19
+
+The [PR #179 review record](../audits/2026-10-19-mat002-review-and-validation.md)
+records catalogue-boundary failures and their regressions, actual rendered
+execution, sanitizer scope and source-matched runtime publication. Its complete
+local Linux suite passed import plus 93 cases, including six rendered fixtures;
+native World tests passed 78 normally and under ASan/UBSan/LeakSanitizer, and the
+standalone CLI passed 154 executable invocations normally and sanitized.
+Publication `8f841a2` retains matching Linux/Windows runtimes from source `6684017`;
+the actual Windows DLL passed import plus 87 applicable headless cases in
+[run 39183102017](https://github.com/techrote/cybersand/actions/runs/39183102017).
+The audit preserves the earlier material-pass record and separates each artifact
+and platform. Final branch-head workflow and published-Linux suite results are
+recorded in [PR #179](https://github.com/techrote/cybersand/pull/179). A draft-skipped
+job or headless pixel-test skip is not a behavior pass.
+
 ## Physical actor usables — 2026-10-19
 
 The [ACT-005 audit](../audits/2026-10-19-act005-physical-usables.md) owns the

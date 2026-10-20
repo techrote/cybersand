@@ -39,7 +39,8 @@ remains a level save, without tuning or complete replay state.
 
 Resolved identity is SHA-256 of the lowercase hexadecimal representation of the
 packed 32-bit integer bytes (little endian on Windows/Wasm). It includes version,
-81 sampling values, 81 cadence values and 81×81 six-value pair records in
+81 sampling values, 81 cadence values and 81×81 six-value pair records (IDs
+0–80; later building IDs use defaults through bounds-safe accessors) in
 source-major order. Native `state_hash` includes configuration; `content_hash`
 continues to describe cells independently of the selected profile.
 

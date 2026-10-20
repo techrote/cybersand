@@ -30,7 +30,7 @@ const VIEW: Vector2i = Vector2i(320, 180)
 const BACKGROUND: Color = Color(0.031, 0.043, 0.071, 1.0) # main.tscn Background
 const PLATES: Array[String] = [
 	"inventory", "liquids", "construction", "emission", "transition", "street", "laboratory",
-	"reactions", "shapes", "statics",
+	"reactions", "shapes", "statics", "building", "growth",
 ]
 # Native creation values of the material-selected condition byte (see
 # native/include/cybersand/material.hpp initial_state_a and
@@ -203,6 +203,8 @@ func _plate_inputs(plate: String) -> Dictionary:
 		"reactions": return _reactions()
 		"shapes": return _shapes()
 		"statics": return _statics()
+		"building": return _building()
+		"growth": return _growth()
 	return {}
 
 
@@ -210,19 +212,19 @@ func _inventory() -> Dictionary:
 	var image: Image = _blank(VIEW)
 	var swatches: Array = []
 	for material_id: int in range(CyberMaterialAppearanceLut.MATERIAL_COUNT):
-		var column: int = material_id % 9
-		var row: int = material_id / 9
-		var x: int = 2 + column * 35
-		var y: int = 1 + row * 20
-		_fill(image, x, y + 1, 22, 13, material_id)
-		_fill(image, x + 24, y + 3, 1, 11, material_id)
-		_fill(image, x + 26, y + 3, 2, 11, material_id)
-		_put(image, x + 30, y + 4, material_id)
-		_fill(image, x + 30, y + 9, 2, 2, material_id)
-		_fill(image, x, y + 14, 33, 1, 1)
-		swatches.append({"id": material_id, "rect": [x, y + 1, 22, 13]})
+		var column: int = material_id % 12
+		var row: int = material_id / 12
+		var x: int = 2 + column * 26
+		var y: int = 1 + row * 16
+		_fill(image, x, y + 1, 16, 11, material_id)
+		_fill(image, x + 18, y + 3, 1, 9, material_id)
+		_fill(image, x + 20, y + 3, 2, 9, material_id)
+		_put(image, x + 23, y + 4, material_id)
+		_fill(image, x + 23, y + 8, 2, 2, material_id)
+		_fill(image, x, y + 12, 25, 1, 1)
+		swatches.append({"id": material_id, "rect": [x, y + 1, 16, 11]})
 	return {"current": image, "previous": image, "cameras": [Vector2i.ZERO],
-		"notes": "All 81 rows including Empty and reserved invalid ID 10. Each swatch: 22x13 block, 1- and 2-cell partitions, single and 2x2 droplets, Wall ledge. Condition bytes are native creation values (synthetic for Molten Glass heat).",
+		"notes": "All 132 rows including Empty and reserved invalid ID 10 (12 per row since the MAT-002 expansion). Each swatch: 16x11 block, 1- and 2-cell partitions, single and 2x2 droplets, Wall ledge. Condition bytes are native creation values (synthetic for Molten Glass heat).",
 		"swatches": swatches, "synthetic": true}
 
 
@@ -482,6 +484,59 @@ func _statics() -> Dictionary:
 	return {"current": image, "previous": image, "cameras": [Vector2i.ZERO],
 		"notes": "All static materials: 22x16 block, 3-wide vertical bar and 3-tall strip each, open air around.",
 		"regions": regions, "synthetic": true}
+
+
+func _building() -> Dictionary:
+	# MAT-002 building catalogue: each material as a block with open air around
+	# it, a thin vertical bar and a thin horizontal strip (shape-aware fills).
+	var image: Image = _blank(VIEW)
+	var regions: Array = []
+	var index: int = 0
+	for id: int in range(CyberCellWorld.FIRST_BUILDING_MATERIAL, CyberCellWorld.LAST_MATERIAL + 1):
+		var x: int = 2 + (index % 9) * 35
+		var y: int = 2 + (index / 9) * 29
+		_fill(image, x, y, 24, 19, id)
+		_fill(image, x + 26, y, 3, 25, id)
+		_fill(image, x, y + 22, 24, 3, id)
+		regions.append({"id": id, "rect": [x, y, 24, 19]})
+		index += 1
+	return {"current": image, "previous": image, "cameras": [Vector2i.ZERO],
+		"notes": "MAT-002 building materials 81+: 24x19 block, 3-wide vertical bar and 3-tall strip each, open air around.",
+		"regions": regions, "synthetic": true}
+
+
+func _growth() -> Dictionary:
+	# Living and firework presentation: Plant, Moss Wall and Fungus mounds with
+	# overhangs (flowers, shrooms, vines, hyphae), mites, idle and activated
+	# Rockets, Steam/Smoke, Rust, Toxic Sludge, Oil and Mercury pools.
+	var image: Image = _blank(VIEW)
+	_fill(image, 0, 150, 320, 30, 40)
+	_fill(image, 6, 120, 70, 30, 11, 120)
+	_fill(image, 20, 70, 50, 10, 11, 120)
+	_fill(image, 84, 126, 60, 24, 18, 120)
+	_fill(image, 96, 70, 46, 10, 18, 120)
+	_fill(image, 152, 112, 40, 38, CyberCellWorld.MOSS_WALL)
+	_fill(image, 150, 60, 44, 8, CyberCellWorld.MOSS_WALL)
+	for i: int in range(10):
+		_put(image, 200 + i * 3, 140 - (i % 3) * 4, 15, 1)
+	_fill(image, 236, 120, 3, 6, 17)
+	_put(image, 252, 92, 17, 3)
+	_put(image, 266, 74, 17, 5)
+	_put(image, 280, 60, 17, 2)
+	_fill(image, 200, 20, 30, 14, 22, 150)
+	_fill(image, 236, 20, 30, 14, 4, 120)
+	_fill(image, 272, 20, 40, 14, 4, 20)
+	_fill(image, 200, 150, 24, 30, 29)
+	_fill(image, 226, 150, 30, 30, 32)
+	_fill(image, 258, 150, 30, 30, 16)
+	_fill(image, 290, 150, 30, 30, 33)
+	_fill(image, 6, 20, 60, 30, CyberCellWorld.PINE_PLANKS)
+	_fill(image, 70, 10, 6, 50, CyberCellWorld.BIRCH_LOG)
+	_fill(image, 80, 10, 8, 50, CyberCellWorld.OAK_LOG)
+	_fill(image, 92, 20, 30, 30, 65)
+	return {"current": image, "previous": image, "cameras": [Vector2i.ZERO],
+		"notes": "Growth decor, mites, idle/activated Rockets (synthetic flight bytes), Steam/Smoke at two lifetimes, Rust, Toxic Sludge, Oil, Mercury, woods and Rusted Steel.",
+		"synthetic": true}
 
 
 func _snapshot_image(world: Variant) -> Image:
