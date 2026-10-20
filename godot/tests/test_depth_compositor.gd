@@ -57,6 +57,29 @@ func _run() -> void:
 	too_much["cells"] = bytes
 	too_much["serial"] = 2
 	_expect(not surface.apply_packet(too_much), "duplicated staged area escaped allocation bound")
+	var current: Dictionary = bad.duplicate(true)
+	current["rectangles"] = PackedInt32Array([100,100,1,1,0,2])
+	current["cells"] = PackedByteArray([131,0])
+	current["reset_generation"] = 7
+	current["serial"] = 50
+	current["layer_tick"] = 12
+	_expect(surface.apply_packet(current), "initial generation packet rejected")
+	current["reset_generation"] = 8
+	current["serial"] = 1
+	current["layer_tick"] = 0
+	current["cells"] = PackedByteArray([81,0])
+	_expect(surface.apply_packet(current), "newer generation packet rejected")
+	var accepted_pixels: PackedByteArray = surface.cell_image.get_data()
+	var stale: Dictionary = current.duplicate(true)
+	stale["reset_generation"] = 7
+	stale["serial"] = 999
+	stale["layer_tick"] = 99
+	stale["cells"] = PackedByteArray([0,0])
+	_expect(not surface.apply_packet(stale), "older generation with a newer serial was accepted")
+	_expect(surface.last_rejection == "packet reset generation moved backwards", "stale generation rejection reason changed")
+	_expect(surface.cell_image.get_data() == accepted_pixels, "stale generation altered copied pixels")
+	_expect(surface.last_serial == 1 and surface.reset_generation == 8 and surface.layer_tick == 0,
+		"stale generation altered accepted serial/generation/tick")
 	compositor.set_options({"mode": "diorama", "cutaway": true, "focus_position": rear_world})
 	_expect(int(compositor.get_diagnostics()["full_rg8_uploads"]) == 0, "compositor created uploads without publications")
 	if failures == 0:

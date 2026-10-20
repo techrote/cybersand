@@ -64,6 +64,11 @@ vec4 veil(vec4 source, float depth) {
 }
 
 float material_depth(int id) {
+    // MAT-002 keeps the authored glass/panel and timber bands instead of
+    // dropping the expanded building catalogue out of foreground relief.
+    if (id == 96 || (id >= 120 && id <= 124) || id == 129) return 0.38;
+    if ((id >= 81 && id <= 94) || id == 125 || id == 128) return 0.70;
+    if (id >= 81 && id <= 131) return 1.0;
     if (id == 9 || id == 35 || id == 43 || id == 44 || id == 68 || id == 69) return 0.38;
     if (id == 7 || id == 41 || id == 42) return 0.70;
     if (id == 1 || id == 13 || id == 28 || id == 29 || id == 31 || (id >= 38 && id <= 80)) return 1.0;
