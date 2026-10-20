@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <atomic>
+#include <cmath>
 #include <cstdint>
 #include <exception>
 #include <iostream>
@@ -16,6 +17,7 @@
 #include <stdexcept>
 #include <string_view>
 #include <thread>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -3450,12 +3452,292 @@ void test_serialized_relocation_preserves_payload() {
             "serialized relocation mutated state on occupied-destination refusal");
 }
 
-int main() {
+namespace {
+
+using FieldCommand = cybersand::PlayerMaterialFieldCommand;
+using FieldOutcome = cybersand::PlayerMaterialFieldOutcome;
+using FieldTuple = std::tuple<std::uint16_t, std::uint8_t, std::int16_t>;
+
+std::vector<FieldTuple> field_payloads(const World& world, Material material,
+                                      cybersand::RectI64 region) {
+    std::vector<FieldTuple> result;
+    for (auto y = region.y; y < region.y + region.height; ++y)
+        for (auto x = region.x; x < region.x + region.width; ++x)
+            if (world.stored_material(x, y) == material)
+                result.emplace_back(world.stored_state_a(x, y),
+                                    world.stored_state_b(x, y), world.temperature(x, y));
+    std::sort(result.begin(), result.end());
+    return result;
+}
+
+void test_player_field_payloads_and_signed_seams() {
+    for (const auto material : {Material::Sand, Material::Water}) {
+        for (const auto shift : {-128, -1, 0, 127}) {
+            World world;
+            const cybersand::RectI64 bounds{shift - 64, -64, 192, 192};
+            world.reserve_region(bounds);
+            world.reserve_temperature_region(bounds);
+            FieldCommand command;
+            command.center_x = shift;
+            command.center_y = 0;
+            command.move_x = 1.0;
+            command.material = material;
+            command.mode = 1;
+            command.phase = 17;
+            command.bounds = bounds;
+            std::uint64_t quantity = 0;
+            for (int index = 0; index < 7; ++index) {
+                const auto x = shift + (index % 3) * 3 - 3;
+                const auto y = (index / 3) * 3 - 3;
+                const auto a = static_cast<std::uint16_t>(7 + index * 31);
+                const auto b = static_cast<std::uint8_t>(material == Material::Water ? index : 41 + index);
+                require(world.set_cell_state(x, y, material, a, b), "field payload setup");
+                world.set_temperature(x, y, static_cast<std::int16_t>(700 + index));
+                quantity += material == Material::Water ? a : 1U;
+            }
+            const auto before = field_payloads(world, material, bounds);
+            const auto storage = world.resident_cell_bytes();
+            const auto chunks = world.chunk_count();
+            const auto result = world.apply_player_material_field(command);
+            require(result.outcome == FieldOutcome::Applied && result.moved_cells == 7,
+                    "field did not move each sparse native parcel");
+            require(result.quantity == quantity && result.observed_cells == 7,
+                    "field material/Water quantity receipt is incorrect");
+            require(field_payloads(world, material, bounds) == before,
+                    "field lost, duplicated or altered complete material payload");
+            require(result.centroid_x > shift && std::isfinite(result.centroid_y),
+                    "field direction did not translate actual material");
+            require(storage == world.resident_cell_bytes() && chunks == world.chunk_count(),
+                    "field unexpectedly allocated world storage");
+            require(world.dirty_chunk_count() > 0, "field relocation omitted render dirtiness");
+        }
+    }
+}
+
+void test_player_field_blocking_and_invalid_nonmutation() {
+    World world;
+    world.reserve_region({0, 0, 128, 128});
+    world.configure_transient_obstacles({0, 0, 128, 128});
+    world.set(64, 64, Material::Sand);
+    world.set(63, 64, Material::Wall);
+    world.set(65, 64, Material::Oil);
+    world.set(64, 65, Material::Water);
+    require(world.set_transient_obstacle(64, 63, 1), "field obstacle fixture");
+    FieldCommand command;
+    command.center_x = 64;
+    command.center_y = 64;
+    command.move_x = 1.0;
+    command.mode = 1;
+    command.bounds = {0, 0, 128, 128};
+    const auto before = world.state_hash();
+    const auto result = world.apply_player_material_field(command);
+    require(result.outcome == FieldOutcome::Applied && result.moved_cells == 0 &&
+                result.blocked_steps > 0 && world.state_hash() == before,
+            "field crossed an occupied or transient neighbour / corner");
+
+    std::vector<FieldCommand> invalid;
+    auto bad = command; bad.material = Material::Stone; invalid.push_back(bad);
+    bad = command; bad.move_x = std::numeric_limits<double>::quiet_NaN(); invalid.push_back(bad);
+    bad = command; bad.move_y = std::numeric_limits<double>::infinity(); invalid.push_back(bad);
+    bad = command; bad.move_x = 1.01; invalid.push_back(bad);
+    bad = command; bad.move_y = 1.0; invalid.push_back(bad);
+    bad = command; bad.mode = 4; invalid.push_back(bad);
+    bad = command; bad.phase = 2'147'483'648ULL; invalid.push_back(bad);
+    bad = command; bad.center_x = -1; invalid.push_back(bad);
+    bad = command; bad.center_y = std::numeric_limits<std::int64_t>::max(); invalid.push_back(bad);
+    bad = command; bad.bounds.width = 4097; invalid.push_back(bad);
+    bad = command; bad.bounds.x = std::numeric_limits<std::int64_t>::max(); invalid.push_back(bad);
+    for (const auto& value : invalid) {
+        const auto refused = world.apply_player_material_field(value);
+        require(refused.outcome == FieldOutcome::InvalidCommand &&
+                    refused.movement_steps == 0 && world.state_hash() == before,
+                "invalid material-field command mutated authority");
+    }
+    WorldConfig fail_config{};
+    fail_config.active_core_capacity = 1;
+    World failed(fail_config);
+    failed.set(20, 20, Material::Sand);
+    failed.set(160, 20, Material::Sand);
+    try { (void)failed.tick(); } catch (const std::runtime_error&) { }
+    require(failed.has_failed(), "field quarantine fixture did not fail");
+    const auto failed_state = failed.state_hash();
+    const auto refused = failed.apply_player_material_field(command);
+    require(refused.outcome == FieldOutcome::WorldFailed &&
+                failed.state_hash() == failed_state,
+            "player field mutated a quarantined World");
+}
+
+void test_player_field_budgets_and_single_source_snapshot() {
+    World world;
+    world.reserve_region({0, 0, 128, 128});
+    std::array<std::pair<std::int64_t, std::int64_t>, 1024> origins{};
+    for (std::size_t index = 0; index < origins.size(); ++index) {
+        const auto x = 32 + static_cast<std::int64_t>(index % 32U);
+        const auto y = 32 + static_cast<std::int64_t>(index / 32U);
+        origins[index] = {x, y};
+        require(world.set_cell_state(x, y, Material::Sand,
+            static_cast<std::uint16_t>(index / 256U),
+            static_cast<std::uint8_t>(index % 256U)), "field tagged population setup");
+    }
+    FieldCommand command;
+    command.center_x = 48;
+    command.center_y = 48;
+    command.move_x = 1.0;
+    command.mode = 1;
+    command.phase = 47;
+    command.bounds = {0, 0, 128, 128};
+    const auto result = world.apply_player_material_field(command);
+    require(result.outcome == FieldOutcome::Applied && result.observed_cells == 1024 &&
+                result.quantity == 1024 && result.controlled_cells == 512 && result.truncated,
+            "saturated field did not report its explicit population budget");
+    require(result.scanned_cells == 4225 && result.movement_steps <= 2048 &&
+                result.moved_cells <= 512, "field exceeded bounded scan/movement work");
+    std::array<bool, 1024> found{};
+    std::size_t count = 0;
+    for (std::int64_t y = 0; y < 128; ++y) {
+        for (std::int64_t x = 0; x < 128; ++x) {
+            if (world.stored_material(x, y) != Material::Sand) continue;
+            const auto id = static_cast<std::size_t>(world.stored_state_a(x, y)) * 256U +
+                            world.stored_state_b(x, y);
+            require(id < origins.size() && !found[id], "field duplicated a tagged source parcel");
+            found[id] = true;
+            ++count;
+            require(std::abs(x - origins[id].first) + std::abs(y - origins[id].second) <= 4,
+                    "moved source was reprocessed beyond its four-step budget");
+        }
+    }
+    require(count == origins.size(), "field dropped a source during saturated selection");
+}
+
+void test_player_field_storage_refusal() {
+    for (const bool warm : {false, true}) {
+        World world;
+        world.reserve_region({0, 0, warm ? 256 : 128, 128});
+        world.set(127, 64, Material::Sand);
+        if (warm) world.set_temperature(127, 64, 777);
+        // Up/down blocks make the missing horizontal storage the only exit.
+        world.set(127, 63, Material::Wall);
+        world.set(127, 65, Material::Wall);
+        FieldCommand command;
+        command.center_x = 127;
+        command.center_y = 64;
+        command.move_x = 1.0;
+        command.mode = 1;
+        command.bounds = {0, 0, 256, 128};
+        const auto before = world.state_hash();
+        const auto bytes = world.resident_cell_bytes();
+        const auto result = world.apply_player_material_field(command);
+        require(result.outcome == FieldOutcome::Applied && result.storage_refusals > 0 &&
+                    result.moved_cells == 0 && before == world.state_hash() &&
+                    bytes == world.resident_cell_bytes(),
+                "field silently allocated missing chunk/temperature storage");
+    }
+}
+
+double field_variance(const World& world, Material material, bool horizontal) {
+    double sum = 0.0;
+    double sum_squared = 0.0;
+    double count = 0.0;
+    for (int y = 0; y < 128; ++y) {
+        for (int x = 0; x < 128; ++x) {
+            if (world.stored_material(x, y) != material) continue;
+            const double coordinate = horizontal ? x : y;
+            sum += coordinate;
+            sum_squared += coordinate * coordinate;
+            count += 1.0;
+        }
+    }
+    return sum_squared / count - (sum / count) * (sum / count);
+}
+
+void test_player_field_distinct_spread_and_squeeze() {
+    for (const auto material : {Material::Sand, Material::Water}) {
+        World special;
+        World gather;
+        for (auto* world : {&special, &gather}) {
+            world->reserve_region({0, 0, 128, 128});
+            for (int y = 56; y <= 72; y += 2)
+                for (int x = 56; x <= 72; x += 2) world->set(x, y, material);
+        }
+        FieldCommand a;
+        a.center_x = 64; a.center_y = 64; a.material = material;
+        a.mode = 2; a.bounds = {0, 0, 128, 128};
+        FieldCommand b = a; b.mode = 3;
+        for (std::uint64_t tick = 0; tick < 6; ++tick) {
+            a.phase = tick; b.phase = tick;
+            const auto ra = special.apply_player_material_field(a);
+            const auto rb = gather.apply_player_material_field(b);
+            a.center_x = static_cast<std::int64_t>(std::lround(ra.centroid_x));
+            a.center_y = static_cast<std::int64_t>(std::lround(ra.centroid_y));
+            b.center_x = static_cast<std::int64_t>(std::lround(rb.centroid_x));
+            b.center_y = static_cast<std::int64_t>(std::lround(rb.centroid_y));
+        }
+        const double variance_x = field_variance(special, material, true);
+        const double variance_y = field_variance(special, material, false);
+        if (material == Material::Sand) {
+            require(variance_x > field_variance(gather, material, true) * 1.5,
+                    "dry spread does not differ from gathering native grains");
+        } else {
+            require(variance_x > variance_y * 1.5,
+                    "liquid squeeze did not make an actual low-profile stream");
+        }
+    }
+}
+
+void test_player_field_native_tick_quantity_and_worker_parity() {
+    WorldConfig one_config{};
+    one_config.worker_threads = 1;
+    one_config.parallel_job_threshold = 1;
+    WorldConfig four_config = one_config;
+    four_config.worker_threads = 4;
+    World one(one_config);
+    World four(four_config);
+    for (auto* world : {&one, &four}) {
+        world->reserve_region({0, 0, 256, 256});
+        for (int y = 0; y < 256; ++y) {
+            world->set(0, y, Material::Wall); world->set(255, y, Material::Wall);
+        }
+        add_floor(*world, 0, 0, 255); add_floor(*world, 255, 0, 255);
+        for (int y = 114; y < 126; ++y)
+            for (int x = 114; x < 126; ++x) world->set(x, y, Material::Water);
+    }
+    const auto quantity = total_liquid(one, 0, 0, 255, 255);
+    FieldCommand command;
+    command.center_x = 120; command.center_y = 120;
+    command.material = Material::Water;
+    command.bounds = {0, 0, 256, 256};
+    for (std::uint64_t tick = 0; tick < 90; ++tick) {
+        command.phase = tick;
+        command.move_x = tick < 45 ? 1.0 : -1.0;
+        command.mode = static_cast<std::uint32_t>((tick / 15U) % 4U);
+        const auto a = one.apply_player_material_field(command);
+        const auto b = four.apply_player_material_field(command);
+        require(a.outcome == FieldOutcome::Applied && a.movement_steps == b.movement_steps &&
+                    a.centroid_x == b.centroid_x && a.centroid_y == b.centroid_y,
+                "field operation is nondeterministic across equivalent world states");
+        command.center_x = static_cast<std::int64_t>(std::lround(a.centroid_x));
+        command.center_y = static_cast<std::int64_t>(std::lround(a.centroid_y));
+        (void)one.tick(); (void)four.tick();
+        require(one.state_hash() == four.state_hash(), "field/native-tick worker parity failed");
+        require(total_liquid(one, 0, 0, 255, 255) == quantity,
+                "material-field/native-tick sequence changed exact Water quantity");
+    }
+}
+
+} // namespace
+
+int main(int argc, char** argv) {
     struct Test {
         const char* name;
         void (*function)();
     };
     const Test tests[] = {
+        {"player material field payloads and signed seams", test_player_field_payloads_and_signed_seams},
+        {"player material field blocking and invalid nonmutation", test_player_field_blocking_and_invalid_nonmutation},
+        {"player material field budgets and source snapshot", test_player_field_budgets_and_single_source_snapshot},
+        {"player material field storage refusal", test_player_field_storage_refusal},
+        {"player material field distinct spread and squeeze", test_player_field_distinct_spread_and_squeeze},
+        {"player material field native quantity and worker parity", test_player_field_native_tick_quantity_and_worker_parity},
         {"persistent material contacts survive sleep", test_persistent_material_contacts_survive_sleep},
         {"Ice contact boundaries and worker parity", test_ice_contact_boundaries_and_worker_parity},
         {"inert material contacts still sleep", test_inert_material_contacts_still_sleep},
@@ -3537,7 +3819,10 @@ int main() {
     };
 
     std::size_t passed = 0;
+    std::cout << std::unitbuf;
     for (const auto& test : tests) {
+        if (argc > 1 && std::string_view(test.name).find(argv[1]) == std::string_view::npos)
+            continue;
         try {
             test.function();
             ++passed;
@@ -3546,6 +3831,10 @@ int main() {
             std::cerr << "[fail] " << test.name << ": " << error.what() << '\n';
             return 1;
         }
+    }
+    if (passed == 0) {
+        std::cerr << "No tests matched the requested name filter\n";
+        return 1;
     }
     std::cout << passed << " tests passed\n";
     return 0;

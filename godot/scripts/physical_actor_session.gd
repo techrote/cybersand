@@ -464,10 +464,12 @@ func render_parts() -> Array:
 		var actor_bodies: Array[RigidBody2D] = _rigs[index].bodies()
 		for part_index: int in range(actor_bodies.size()):
 			var body: RigidBody2D = actor_bodies[part_index]
-			var shape: RectangleShape2D = body.get_child(0).shape
+			var shape: Shape2D = body.get_child(0).shape
+			var dimensions: Vector2 = Vector2(shape.radius * 2.0, shape.radius * 2.0) if shape is CircleShape2D else shape.size
 			result.append({"actor_id": index, "part_id": str(parts[part_index].id),
 				"transform": bridge.body_transform(_body_offsets[index] + part_index),
-				"size": shape.size, "color": parts[part_index].color})
+				"size": dimensions, "color": parts[part_index].color,
+				"shape": "circle" if shape is CircleShape2D else "rectangle"})
 	return result
 
 

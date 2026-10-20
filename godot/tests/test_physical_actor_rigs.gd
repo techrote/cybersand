@@ -205,7 +205,7 @@ func _test_roster_rig(rig_id: StringName) -> void:
 	_expect(max_limit_error < 0.25, "%s rotary stop exceeded allowed impact play: %.3f radians" % [rig_id, max_limit_error])
 	_expect(max_slide_angle < 0.25, "%s guided slide turned over: %.3f radians" % [rig_id, max_slide_angle])
 	_expect(max_slide_error < 0.6, "%s slide passed its endstop: %.3f cells" % [rig_id, max_slide_error])
-	_expect(articulated_motion > 0.02 or articulated_translation > 0.12,
+	_expect(_rig.bodies().size() == 1 or articulated_motion > 0.02 or articulated_translation > 0.12,
 		"%s moved only as a rigid decorative assembly; no useful relative joint motion" % rig_id)
 	_expect(max_x - min_x > 8.0, "%s script made no meaningful horizontal progress: %.3f" % [rig_id, max_x-min_x])
 	_expect(late_max_x - late_min_x > 4.0, "%s script stalled after initial movement: %.3f" % [rig_id, late_max_x-late_min_x])
@@ -215,11 +215,17 @@ func _test_roster_rig(rig_id: StringName) -> void:
 	_expect(parts.size() == drawings.size() and parts.size() == Catalog.entry(rig_id).parts.size(),
 		"%s physical/drawn/catalogue part counts disagree" % rig_id)
 	for index: int in range(parts.size()):
-		var shape: RectangleShape2D = parts[index].get_child(0).shape
+		var shape: Shape2D = parts[index].get_child(0).shape
 		var pose: Transform2D = _bridge.body_transform(index)
 		var local_vertex: Vector2 = pose.affine_inverse() * Vector2(drawings[index].polygon[0])
-		_expect(local_vertex.distance_to(-shape.size * 0.5) < 0.005,
-			"%s drawn vertex differs from collider" % rig_id)
+		if shape is CircleShape2D:
+			_expect(drawings[index].polygon.size() == 32, "%s circle tessellation" % rig_id)
+			for point: Vector2 in drawings[index].polygon:
+				_expect(absf((pose.affine_inverse() * point).length() - shape.radius) < 0.005,
+					"%s circle drawing differs from collider radius" % rig_id)
+		else:
+			_expect(shape is RectangleShape2D and local_vertex.distance_to(-shape.size * 0.5) < 0.005,
+				"%s drawn vertex differs from collider" % rig_id)
 	var held: Dictionary = _rig.observation()
 	held.parts[0].position = Vector2(-999, -999)
 	_expect(Vector2(_rig.observation().parts[0].position).x > -900,

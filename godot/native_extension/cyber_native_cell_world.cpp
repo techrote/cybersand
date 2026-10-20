@@ -93,6 +93,9 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("paint_disc", "centre_x", "centre_y", "radius",
                                   "material_id", "emission_flags"),
                          &CyberNativeCellWorld::paint_disc, DEFVAL(0));
+    ClassDB::bind_method(D_METHOD("apply_player_material_field", "center", "direction",
+                                  "material_id", "mode", "phase"),
+                         &CyberNativeCellWorld::apply_player_material_field);
     ClassDB::bind_method(D_METHOD("prepare_rigid_body_coupling", "states",
                                   "resolve_overlaps"),
                          &CyberNativeCellWorld::prepare_rigid_body_coupling,
@@ -1435,6 +1438,55 @@ bool CyberNativeCellWorld::diagnostic_fill_rect(Vector2i origin, Vector2i size,
                                        static_cast<std::uint8_t>(state_b));
     ++revision_;
     return true;
+}
+
+Dictionary CyberNativeCellWorld::apply_player_material_field(Vector2i center,
+    Vector2 direction, std::int64_t material_id, std::int64_t mode, std::int64_t phase) {
+    Dictionary result;
+    result["accepted"] = false;
+    result["reason"] = "invalid_command";
+    if (world_ == nullptr || world_->has_failed()) {
+        result["reason"] = "world_failed";
+        return result;
+    }
+    if (!in_bounds(center.x, center.y) || !std::isfinite(direction.x) ||
+        !std::isfinite(direction.y) ||
+        (material_id != static_cast<std::int64_t>(cybersand::Material::Sand) &&
+         material_id != static_cast<std::int64_t>(cybersand::Material::Water)) ||
+        mode < 0 || mode > 3 || phase < 0 || phase > 2'147'483'647LL) {
+        return result;
+    }
+    cybersand::PlayerMaterialFieldCommand command;
+    command.center_x = center.x;
+    command.center_y = center.y;
+    command.move_x = direction.x;
+    command.move_y = direction.y;
+    command.material = static_cast<cybersand::Material>(material_id);
+    command.mode = static_cast<std::uint32_t>(mode);
+    command.phase = static_cast<std::uint64_t>(phase);
+    command.bounds = {0, 0, kWorldWidth, kWorldHeight};
+    const auto receipt = world_->apply_player_material_field(command);
+    using Outcome = cybersand::PlayerMaterialFieldOutcome;
+    result["accepted"] = receipt.outcome == Outcome::Applied;
+    switch (receipt.outcome) {
+        case Outcome::Applied: result["reason"] = "applied"; break;
+        case Outcome::WorldFailed: result["reason"] = "world_failed"; break;
+        case Outcome::TickInProgress: result["reason"] = "tick_in_progress"; break;
+        case Outcome::InvalidCommand: break;
+    }
+    result["scanned_cells"] = receipt.scanned_cells;
+    result["observed_cells"] = receipt.observed_cells;
+    result["controlled_cells"] = receipt.controlled_cells;
+    result["moved_cells"] = receipt.moved_cells;
+    result["movement_steps"] = receipt.movement_steps;
+    result["blocked_steps"] = receipt.blocked_steps;
+    result["storage_refusals"] = receipt.storage_refusals;
+    result["quantity"] = static_cast<std::int64_t>(receipt.quantity);
+    result["centroid"] = Vector2(receipt.centroid_x, receipt.centroid_y);
+    result["truncated"] = receipt.truncated;
+    result["radius"] = cybersand::PlayerMaterialFieldCommand::kRadius;
+    if (receipt.movement_steps > 0U) ++revision_;
+    return result;
 }
 
 bool CyberNativeCellWorld::diagnostic_relocate_cell(Vector2i from, Vector2i to) {

@@ -61,6 +61,10 @@ func diagnostics() -> Dictionary:
 
 func apply(observation: Dictionary, locomotion: Dictionary, delta: float) -> Dictionary:
 	var action: Dictionary = locomotion.duplicate(true)
+	# Player movement demonstrations never decide when an equipped tool fires.
+	# A later explicit human/policy equipment command retains its normal owner.
+	if str(_loadout.get("strategy", "")) == "human":
+		return action
 	var equipment: Variant = observation.get("equipment", {})
 	if _loadout.is_empty() or not equipment is Dictionary or equipment.is_empty() \
 		or not is_finite(delta) or delta <= 0.0 or delta > MAX_DELTA:
