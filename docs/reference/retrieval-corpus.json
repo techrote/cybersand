@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-10-19",
+  "reviewed": "2026-10-20",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -94,7 +94,10 @@
     "systems/building-material-catalogue.md",
     "operations/physical-actor-programme.md",
     "systems/depth-layers-and-parallax.md",
-    "systems/physical-actor-rigs.md"
+    "systems/physical-actor-rigs.md",
+    "operations/map-production-workflow.md",
+    "operations/map-exhibition-design.md",
+    "operations/map-layer-polish-and-validation.md"
   ],
   "navigation": [
     "README.md",
@@ -346,7 +349,11 @@
     {
       "path": "audits/2026-10-19-act005-physical-usables.md",
       "reason": "Dated ACT-005 implementation progress, source/runtime identities, preserved failures and physical-usable validation. Retrieve explicitly through the physical actor/usable contracts or validation ledger; checkpoints do not substitute for final acceptance."
+    },
+    {
+      "path": "audits/2026-10-20-map-production-guide.md",
+      "reason": "Dated documentation-only map-guide source scope, baseline/final retrieval, qualifier review and publication evidence. Retrieve explicitly through the workflow or validation routes; it does not own Current map-production guidance or certify example runtime behavior."
     }
   ],
-  "integration_note": "Retains scene, generation, actor, sampled and physical actor-usable, Thunderbowl, physical-actor and presentation routes; historical questions remain separately scoped."
+  "integration_note": "Retains scene, generation, actor, sampled and physical actor-usable, Thunderbowl, physical-actor and presentation routes; historical questions remain separately scoped. Reusable map-production, native-exhibition and layer-polish guides are Current process documentation; separately pinned example implementations retain their own source, merge and runtime scope."
 }

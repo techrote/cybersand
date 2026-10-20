@@ -4,11 +4,23 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-20
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
 # Development handover
+
+## Map-production reading route — 2026-10-20
+
+For new maps and major showcase revisions, start with the
+[map-production workflow](map-production-workflow.md), then its focused
+[native-exhibition](map-exhibition-design.md) and
+[layer-polish/visual-validation](map-layer-polish-and-validation.md) companions.
+They carry a map from the brief and actual-checkout capability audit to bounded
+authoring, functioning apparatus, visible multilayer coverage and a reviewable
+handoff. Their linked examples retain explicit source revisions; verify an
+example's APIs and evidence before applying them to a different branch.
+This checkpoint adds documentation guidance without changing runtime behavior.
 
 ## Physical usable integration checkpoint — 2026-10-19
 

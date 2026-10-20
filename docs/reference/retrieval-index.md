@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-20
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -18,6 +18,11 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 
 | Question family | Canonical route |
 |---|---|
+| How should an agent take a polished map from a brief through implementation, validation and handoff? | [Map-production workflow](../operations/map-production-workflow.md) |
+| May a linked map example's APIs or runtime claims be assumed available in this checkout? | [Source-capability and example gating](../operations/map-production-workflow.md), then the relevant subsystem contract |
+| How do I construct native material exhibits, distinguish products from injected reagents, and make a reaction replayable? | [Exhibition design and reaction validation](../operations/map-exhibition-design.md) |
+| How do I prove complete multilayer coverage and visible map pixels through the actual HUD and compositor? | [Layer polish and visual validation](../operations/map-layer-polish-and-validation.md) |
+| What map documentation, captures, evidence and review checks belong in the final delivery? | [Map-production workflow](../operations/map-production-workflow.md), [visual validation](../operations/map-layer-polish-and-validation.md), and [documentation maintenance](../operations/documentation-maintenance.md) |
 | Can IDs 81–131 survive CYSD1 saves and construction, diagnostic histograms and sampled-rig digging occlusion? | [Building integration](../systems/building-material-catalogue.md#which-integration-boundaries-use-the-expanded-catalogue), [save format](level-saves-and-replay.md), and [review evidence](../audits/2026-10-19-mat002-review-and-validation.md) |
 | Did graphical tests actually render, and can a headless skip or exit-zero script error pass CI? | [Required rendered-test execution](../operations/testing-validation-and-replay.md#ci-execution-sharding), [Linux invocation](../operations/local-build-and-validation.md#linux-gdextension-ci-sharding), and [review evidence](../audits/2026-10-19-mat002-review-and-validation.md) |
 | Can the standalone physics CLI safely count building materials, and which executable regression checks its JSON output? | [CLI admission and sample accounting](../operations/physics-characterisation.md#which-checks-guard-the-measurement-path), [build commands](../operations/local-build-and-validation.md#how-is-the-physics-baseline-rebuilt) |
@@ -208,3 +213,15 @@ separate; the programme graph owns admission.
 Integrated launch and retained hull comparisons route to the [physical actor programme](../operations/physical-actor-programme.md). Current articulation, the 41-rig roster, scripted feedback, command freshness and usable lifecycle route to the [physical actor contract](../systems/physical-actor-rigs.md).
 
 Layered material worlds, Strata Theatre, quantized relief and explicit interlayer event questions route to the [depth prototype contract](../systems/depth-layers-and-parallax.md).
+
+## Map production guides and example scope
+
+The [map-production workflow](../operations/map-production-workflow.md) owns
+the start-to-finish agent process, source-capability gate and handoff. Its
+[exhibition design companion](../operations/map-exhibition-design.md) owns
+apparatus/reaction validation; its
+[layer-polish companion](../operations/map-layer-polish-and-validation.md) owns
+per-district visual coverage and actual-pixel proof. They are reusable guidance,
+with example implementations identified by revision. Retrieve a linked
+example's source and evidence within that revision's scope; inspect the working
+checkout before treating any example API as available locally.

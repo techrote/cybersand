@@ -1,0 +1,2223 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-10-20T01:54:39.446617+00:00",
+  "scope": "Documentation, source inspection and offline lexical retrieval; no new engine, native, GUI or browser execution",
+  "source": {
+    "base_commit": "fc015a77d3b851fef4ea7734923bcdb3762a19a5",
+    "branch": "docs/polished-map-production-guide",
+    "source_root": "/workspace/scratch/4a1b7cbb1f67/cybersand-map-guide",
+    "worked_example_commit": "7590316e01f0b6efbcc11598fc454656f38f8558",
+    "worked_example_pr": "https://github.com/techrote/cybersand/pull/185",
+    "binding": "Accepted text is bound by tested document hashes and final Git history; audit and evidence packaging are excluded from self-hashing"
+  },
+  "baseline": {
+    "identity": {
+      "source_root": "/workspace/scratch/4a1b7cbb1f67/cybersand-map-guide",
+      "commit": "fc015a77d3b851fef4ea7734923bcdb3762a19a5",
+      "branch": "docs/polished-map-production-guide",
+      "fixture_sha256": {
+        "retrieval-questions.json": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+        "retrieval-challenges.json": "4efc6b4f7fdc667f8d6fb103022d51536ee1df68d52b904db08028601fbf9031",
+        "retrieval-corpus.json": "f165d6fffce852f2067b9439ddbe105527180a25ea77c7a6d27f1b57588d01dd"
+      },
+      "scope": "Accepted-main baseline before route/corpus/question additions. Frozen32 and prior77 fixtures copied unchanged."
+    },
+    "method": {
+      "name": "heading-chunk BM25 lexical development baseline",
+      "k": 5,
+      "maximum_body_words": 420,
+      "overlap_words": 0,
+      "k1": 1.2,
+      "b": 0.75,
+      "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+      "query_expansion": false,
+      "stemming": false,
+      "reranker": false,
+      "embeddings": false,
+      "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"
+    },
+    "frozen": {
+      "questions": 32,
+      "canonical_hit_at_1": 21,
+      "canonical_hit_at_5": 32,
+      "mrr_at_5": 0.8031
+    },
+    "prior77": {
+      "questions": 77,
+      "canonical_hit_at_1": 59,
+      "canonical_hit_at_5": 77,
+      "mrr_at_5": 0.8652
+    },
+    "raw_report_sha256": {
+      "frozen": "45567db7a5e917c5d6a0cb39d2079a518a0af69b84ef729986da7e9da2a2c62c",
+      "supplementary": "37cfd3f51833d7b350fefa6848e92b8c1735e11c8289ae1722b84a124f62021e"
+    }
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "scope": "Initial measured candidate with known retrieval gaps",
+      "started_utc": "2026-10-20T01:37:32.223075+00:00",
+      "finished_utc": "2026-10-20T01:37:35.023601+00:00",
+      "tools": {
+        "python": "3.12.14",
+        "git": "git version 2.51.1",
+        "host": "Linux-6.18.55-x86_64-with-glibc2.39"
+      },
+      "tested_document_sha256": {
+        "AGENTS.md": "4ad98af89ace88ff4dc3a692314d8b72479b06db8f810cce6b5640e69998e956",
+        "docs/README.md": "2a80839e57feee5e2ca0ccd8d626f752030cf7663ea8c993915a4adf8929c3e6",
+        "docs/operations/cybersand-codex-development-handover.md": "d35052fb7ee3a0ff4fc2229a21efb9b0b0c5847b7eb287d529d878a1f5cbdcdb",
+        "docs/reference/retrieval-index.md": "5fac345b1c4b3607eda617d740681b6cef2aac50cafd838f8ed9ac9aeb1e1841",
+        "docs/reference/retrieval-corpus.json": "5dffc1e05a28b46673a59283a3d5fbb0598adef9b51296a9083cc75acea53d6f",
+        "docs/reference/retrieval-challenges.json": "907e5a883040476ab5d5639994e4ea377c0da764161ef433c8b6208be9bda2cd",
+        "docs/reference/status-and-roadmap.md": "fad8c6ccc6f3e5e3e3dc6f6a92813ebf55eda235dc2b36bb4481d42a8301c7bc",
+        "docs/operations/map-production-workflow.md": "3d5c45f56c9dc672c4cbda76de76a20809c465fa8248ad1de9fdf451df2a6229",
+        "docs/operations/map-exhibition-design.md": "956fd619649682042585b92a5aef382865ea9c5a91e4d45cc0f3307b94b70af1",
+        "docs/operations/map-layer-polish-and-validation.md": "4043c3a3e5c628e6c0e3a5619fa1cb72ecea40ceca57d9da5810355227022650"
+      },
+      "documents_changed_during_checks": [],
+      "checks": {
+        "docs": {
+          "command": [
+            "python3",
+            "tools/ci/check_docs.py"
+          ],
+          "cwd": "/workspace/scratch/4a1b7cbb1f67/cybersand-map-guide",
+          "started_utc": "2026-10-20T01:37:32.227119+00:00",
+          "timeout_seconds": 180,
+          "elapsed_seconds": 1.6375,
+          "exit_code": 0,
+          "status": "passed",
+          "log": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/docs.log",
+          "log_sha256": "81dd2ff4742fb2f583b2545f5aca56a0755acc45a5fc509e8daf7f6f46fe2871"
+        },
+        "repository": {
+          "command": [
+            "python3",
+            "tools/ci/check_repository.py",
+            "--require-materialized"
+          ],
+          "cwd": "/workspace/scratch/4a1b7cbb1f67/cybersand-map-guide",
+          "started_utc": "2026-10-20T01:37:32.228091+00:00",
+          "timeout_seconds": 180,
+          "elapsed_seconds": 2.7825,
+          "exit_code": 0,
+          "status": "passed",
+          "log": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/repository.log",
+          "log_sha256": "0edcc33f4ad7fbec658bbd71b1fc220a098510cd9a6ca8fba93cea979a80be9e"
+        },
+        "m11": {
+          "command": [
+            "python3",
+            "tools/ci/check_m11_consistency.py"
+          ],
+          "cwd": "/workspace/scratch/4a1b7cbb1f67/cybersand-map-guide",
+          "started_utc": "2026-10-20T01:37:32.228657+00:00",
+          "timeout_seconds": 180,
+          "elapsed_seconds": 1.3294,
+          "exit_code": 0,
+          "status": "passed",
+          "log": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/m11.log",
+          "log_sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d"
+        },
+        "final-frozen": {
+          "command": [
+            "python3",
+            "tools/docs/retrieval_eval.py",
+            "--output",
+            "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/final-frozen.json"
+          ],
+          "cwd": "/workspace/scratch/4a1b7cbb1f67/cybersand-map-guide",
+          "started_utc": "2026-10-20T01:37:32.230892+00:00",
+          "timeout_seconds": 180,
+          "elapsed_seconds": 1.2406,
+          "exit_code": 0,
+          "status": "passed",
+          "log": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/final-frozen.log",
+          "log_sha256": "fe0e8dc82a05a6e470cc8ca771524ad94ae22cbc2f12dc67ed9734255367aa14"
+        },
+        "final-supplementary": {
+          "command": [
+            "python3",
+            "tools/docs/retrieval_eval.py",
+            "--queries",
+            "docs/reference/retrieval-challenges.json",
+            "--output",
+            "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/final-supplementary.json"
+          ],
+          "cwd": "/workspace/scratch/4a1b7cbb1f67/cybersand-map-guide",
+          "started_utc": "2026-10-20T01:37:32.240902+00:00",
+          "timeout_seconds": 180,
+          "elapsed_seconds": 1.1614,
+          "exit_code": 0,
+          "status": "passed",
+          "log": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/final-supplementary.log",
+          "log_sha256": "21a64e70ec15a05cdbba733c8c22393b005adf0a6776db9705dd4be787c71751"
+        },
+        "diff": {
+          "command": [
+            "git",
+            "diff",
+            "--check"
+          ],
+          "cwd": "/workspace/scratch/4a1b7cbb1f67/cybersand-map-guide",
+          "started_utc": "2026-10-20T01:37:32.243490+00:00",
+          "timeout_seconds": 180,
+          "elapsed_seconds": 0.0701,
+          "exit_code": 0,
+          "status": "passed",
+          "log": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/diff.log",
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "fixture_preservation": {
+        "frozen32_bytes_unchanged": true,
+        "frozen32_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+        "prior77_objects_exactly_unchanged": true,
+        "added_ids": [
+          "MAP01",
+          "MAP02",
+          "MAP03",
+          "MAP04",
+          "MAP05"
+        ],
+        "root_readme_unchanged": true
+      },
+      "raw_report_sha256": {
+        "frozen": "f884c0e4e63a22e9bcefc6a623e3e3c51b9b67b28308ad20f0532ff478f5ca04",
+        "supplementary": "174b25e31ca930651e24321c3e4f3ca04328d021f8b9c60d8338296fc51d2761"
+      },
+      "retrieval": {
+        "frozen": {
+          "questions": 32,
+          "canonical_hit_at_1": 21,
+          "canonical_hit_at_5": 31,
+          "mrr_at_5": 0.7917
+        },
+        "prior77": {
+          "questions": 77,
+          "canonical_hit_at_1": 59,
+          "canonical_hit_at_5": 77,
+          "mrr_at_5": 0.8623
+        },
+        "new5": {
+          "questions": 5,
+          "canonical_hit_at_1": 2,
+          "canonical_hit_at_5": 5,
+          "mrr_at_5": 0.6667
+        },
+        "combined82": {
+          "questions": 82,
+          "canonical_hit_at_1": 61,
+          "canonical_hit_at_5": 82,
+          "mrr_at_5": 0.8504
+        }
+      },
+      "map_question_ranks": {
+        "MAP01": 1,
+        "MAP02": 2,
+        "MAP03": 3,
+        "MAP04": 2,
+        "MAP05": 1
+      },
+      "frozen_q15": {
+        "canonical_rank": null,
+        "hits": [
+          {
+            "rank": 1,
+            "path": "operations/profiling-observability-and-performance.md",
+            "heading": "Profiling, observability, and performance > Current observations and their limits",
+            "part": 1
+          },
+          {
+            "rank": 2,
+            "path": "decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+            "heading": "ADR-003: Godot bridge and immutable snapshots > Why require immutable copies?",
+            "part": 1
+          },
+          {
+            "rank": 3,
+            "path": "systems/themed-construction-materials.md",
+            "heading": "Themed construction material palette > Appearance boundaries",
+            "part": 1
+          },
+          {
+            "rank": 4,
+            "path": "systems/material-appearance-and-rendering.md",
+            "heading": "Material appearance and rendering > Dirty bytes versus GPU upload",
+            "part": 1
+          },
+          {
+            "rank": 5,
+            "path": "operations/map-layer-polish-and-validation.md",
+            "heading": "Map layer polish and visual validation > Run and retain the visual gate",
+            "part": 1
+          }
+        ]
+      },
+      "corpus": {
+        "document_count": 95,
+        "chunk_count": 1041,
+        "corpus_manifest_sha256": "5dffc1e05a28b46673a59283a3d5fbb0598adef9b51296a9083cc75acea53d6f",
+        "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59"
+      }
+    },
+    {
+      "iteration": 2,
+      "scope": "First synopsis correction with remaining context omissions",
+      "started_utc": "2026-10-20T01:46:17.601724+00:00",
+      "finished_utc": "2026-10-20T01:46:19.809679+00:00",
+      "tools": {
+        "python": "3.12.14",
+        "git": "git version 2.51.1",
+        "host": "Linux-6.18.55-x86_64-with-glibc2.39"
+      },
+      "tested_document_sha256": {
+        "AGENTS.md": "4ad98af89ace88ff4dc3a692314d8b72479b06db8f810cce6b5640e69998e956",
+        "docs/README.md": "2a80839e57feee5e2ca0ccd8d626f752030cf7663ea8c993915a4adf8929c3e6",
+        "docs/operations/cybersand-codex-development-handover.md": "d35052fb7ee3a0ff4fc2229a21efb9b0b0c5847b7eb287d529d878a1f5cbdcdb",
+        "docs/reference/retrieval-index.md": "5fac345b1c4b3607eda617d740681b6cef2aac50cafd838f8ed9ac9aeb1e1841",
+        "docs/reference/retrieval-corpus.json": "5dffc1e05a28b46673a59283a3d5fbb0598adef9b51296a9083cc75acea53d6f",
+        "docs/reference/retrieval-challenges.json": "907e5a883040476ab5d5639994e4ea377c0da764161ef433c8b6208be9bda2cd",
+        "docs/reference/status-and-roadmap.md": "fad8c6ccc6f3e5e3e3dc6f6a92813ebf55eda235dc2b36bb4481d42a8301c7bc",
+        "docs/architecture/rendering-and-gameplay-bridges.md": "98bb7f651bbcff9fbb2172f854f85a4c61e09a874895aa68cc58e6633a51fac2",
+        "docs/operations/map-production-workflow.md": "5e12b7a9b1381878dc2dd1a56516a56feee59d587ab8c5c494df5c311cb3bec6",
+        "docs/operations/map-exhibition-design.md": "cd4e327a29cd5429b362d70a601c169409897e681e15a5d88baf8c695a641bac",
+        "docs/operations/map-layer-polish-and-validation.md": "7437ca457fcf2a44357494b1484e3c7458cd6643190835c2a7feac456af2baca"
+      },
+      "documents_changed_during_checks": [],
+      "checks": {
+        "docs": {
+          "exit_code": 0,
+          "status": "passed",
+          "command": [
+            "python3",
+            "tools/ci/check_docs.py"
+          ],
+          "cwd": "/workspace/scratch/4a1b7cbb1f67/cybersand-map-guide",
+          "started_utc": "2026-10-20T01:46:17.604434+00:00",
+          "finished_utc": "2026-10-20T01:46:18.582905+00:00",
+          "timeout_seconds": 180,
+          "elapsed_seconds": 0.9787,
+          "log": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration2/docs.log",
+          "log_sha256": "29bc92199d4eacc8c98762d1cba4393e9b1d65955e44db0e9ee92b95114f52ef"
+        },
+        "repository": {
+          "exit_code": 0,
+          "status": "passed",
+          "command": [
+            "python3",
+            "tools/ci/check_repository.py",
+            "--require-materialized"
+          ],
+          "cwd": "/workspace/scratch/4a1b7cbb1f67/cybersand-map-guide",
+          "started_utc": "2026-10-20T01:46:17.605909+00:00",
+          "finished_utc": "2026-10-20T01:46:19.787166+00:00",
+          "timeout_seconds": 180,
+          "elapsed_seconds": 2.1813,
+          "log": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration2/repository.log",
+          "log_sha256": "d678038d4773b6d89ff9e1875395ac33f56fe823033b3a049ff2b6d88c2fd39e"
+        },
+        "m11": {
+          "exit_code": 0,
+          "status": "passed",
+          "command": [
+            "python3",
+            "tools/ci/check_m11_consistency.py"
+          ],
+          "cwd": "/workspace/scratch/4a1b7cbb1f67/cybersand-map-guide",
+          "started_utc": "2026-10-20T01:46:17.610214+00:00",
+          "finished_utc": "2026-10-20T01:46:18.237827+00:00",
+          "timeout_seconds": 180,
+          "elapsed_seconds": 0.6276,
+          "log": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration2/m11.log",
+          "log_sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d"
+        },
+        "frozen": {
+          "exit_code": 0,
+          "status": "passed",
+          "command": [
+            "python3",
+            "tools/docs/retrieval_eval.py",
+            "--output",
+            "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration2/frozen.json"
+          ],
+          "cwd": "/workspace/scratch/4a1b7cbb1f67/cybersand-map-guide",
+          "started_utc": "2026-10-20T01:46:17.610807+00:00",
+          "finished_utc": "2026-10-20T01:46:18.671434+00:00",
+          "timeout_seconds": 180,
+          "elapsed_seconds": 1.0606,
+          "log": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration2/frozen.log",
+          "log_sha256": "2def1bd6d2b5964399504d05fa8b58a4d3d90f5b160233e014d8d753e0fd6a0c"
+        },
+        "supplementary": {
+          "exit_code": 0,
+          "status": "passed",
+          "command": [
+            "python3",
+            "tools/docs/retrieval_eval.py",
+            "--queries",
+            "docs/reference/retrieval-challenges.json",
+            "--output",
+            "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration2/supplementary.json"
+          ],
+          "cwd": "/workspace/scratch/4a1b7cbb1f67/cybersand-map-guide",
+          "started_utc": "2026-10-20T01:46:17.614309+00:00",
+          "finished_utc": "2026-10-20T01:46:18.777651+00:00",
+          "timeout_seconds": 180,
+          "elapsed_seconds": 1.1634,
+          "log": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration2/supplementary.log",
+          "log_sha256": "7aaebc2ed95186045afc90ea31e3098dd5338fa6d1d472850da9e30ed27b69c1"
+        },
+        "diff": {
+          "exit_code": 0,
+          "status": "passed",
+          "command": [
+            "git",
+            "diff",
+            "--check"
+          ],
+          "cwd": "/workspace/scratch/4a1b7cbb1f67/cybersand-map-guide",
+          "started_utc": "2026-10-20T01:46:17.616596+00:00",
+          "finished_utc": "2026-10-20T01:46:17.650888+00:00",
+          "timeout_seconds": 180,
+          "elapsed_seconds": 0.0343,
+          "log": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration2/diff.log",
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "fixture_preservation": {
+        "frozen32_bytes_unchanged": true,
+        "frozen32_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+        "prior77_objects_exactly_unchanged": true,
+        "prior_count": 77,
+        "current_count": 82,
+        "added_ids": [
+          "MAP01",
+          "MAP02",
+          "MAP03",
+          "MAP04",
+          "MAP05"
+        ],
+        "new_questions_unchanged_from_iteration1": true,
+        "root_readme_unchanged": true
+      },
+      "raw_report_sha256": {
+        "frozen": "e1f030ec30d99b26d4aa3f4d09ad18b802f04a01baabe8971aabdfd3247ff654",
+        "supplementary": "fee3cff7932d7ee8e38906131aba4e91b645a28040272ccc5c701816b92f7926"
+      },
+      "retrieval": {
+        "frozen": {
+          "questions": 32,
+          "canonical_hit_at_1": 22,
+          "canonical_hit_at_5": 32,
+          "mrr_at_5": 0.8229
+        },
+        "prior77": {
+          "questions": 77,
+          "canonical_hit_at_1": 59,
+          "canonical_hit_at_5": 77,
+          "mrr_at_5": 0.8623
+        },
+        "new5": {
+          "questions": 5,
+          "canonical_hit_at_1": 4,
+          "canonical_hit_at_5": 5,
+          "mrr_at_5": 0.9
+        },
+        "combined82": {
+          "questions": 82,
+          "canonical_hit_at_1": 63,
+          "canonical_hit_at_5": 82,
+          "mrr_at_5": 0.8646
+        }
+      },
+      "map_question_ranks": {
+        "MAP01": 1,
+        "MAP02": 2,
+        "MAP03": 1,
+        "MAP04": 1,
+        "MAP05": 1
+      },
+      "frozen_q15": {
+        "canonical_rank": 1,
+        "hits": [
+          {
+            "rank": 1,
+            "path": "architecture/rendering-and-gameplay-bridges.md",
+            "heading": "Rendering and gameplay bridges > Can rendering read native cells directly?",
+            "part": 1
+          },
+          {
+            "rank": 2,
+            "path": "operations/profiling-observability-and-performance.md",
+            "heading": "Profiling, observability, and performance > Current observations and their limits",
+            "part": 1
+          },
+          {
+            "rank": 3,
+            "path": "decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+            "heading": "ADR-003: Godot bridge and immutable snapshots > Why require immutable copies?",
+            "part": 1
+          },
+          {
+            "rank": 4,
+            "path": "systems/themed-construction-materials.md",
+            "heading": "Themed construction material palette > Appearance boundaries",
+            "part": 1
+          },
+          {
+            "rank": 5,
+            "path": "systems/material-appearance-and-rendering.md",
+            "heading": "Material appearance and rendering > Dirty bytes versus GPU upload",
+            "part": 1
+          }
+        ]
+      },
+      "corpus": {
+        "document_count": 95,
+        "chunk_count": 1042,
+        "corpus_manifest_sha256": "5dffc1e05a28b46673a59283a3d5fbb0598adef9b51296a9083cc75acea53d6f",
+        "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59"
+      }
+    },
+    {
+      "iteration": 3,
+      "scope": "Accepted guide candidate",
+      "started_utc": "2026-10-20T01:50:30.533704+00:00",
+      "finished_utc": "2026-10-20T01:50:33.163104+00:00",
+      "tools": {
+        "python": "3.12.14",
+        "git": "git version 2.51.1",
+        "host": "Linux-6.18.55-x86_64-with-glibc2.39"
+      },
+      "tested_document_sha256": {
+        "AGENTS.md": "4ad98af89ace88ff4dc3a692314d8b72479b06db8f810cce6b5640e69998e956",
+        "docs/README.md": "2a80839e57feee5e2ca0ccd8d626f752030cf7663ea8c993915a4adf8929c3e6",
+        "docs/operations/cybersand-codex-development-handover.md": "d35052fb7ee3a0ff4fc2229a21efb9b0b0c5847b7eb287d529d878a1f5cbdcdb",
+        "docs/reference/retrieval-index.md": "5fac345b1c4b3607eda617d740681b6cef2aac50cafd838f8ed9ac9aeb1e1841",
+        "docs/reference/retrieval-corpus.json": "5dffc1e05a28b46673a59283a3d5fbb0598adef9b51296a9083cc75acea53d6f",
+        "docs/reference/retrieval-challenges.json": "907e5a883040476ab5d5639994e4ea377c0da764161ef433c8b6208be9bda2cd",
+        "docs/reference/status-and-roadmap.md": "fad8c6ccc6f3e5e3e3dc6f6a92813ebf55eda235dc2b36bb4481d42a8301c7bc",
+        "docs/architecture/rendering-and-gameplay-bridges.md": "98bb7f651bbcff9fbb2172f854f85a4c61e09a874895aa68cc58e6633a51fac2",
+        "docs/operations/map-production-workflow.md": "bc3cc8a3b3332571c1ec1c8f6952c07ace5fd76a3433906802ca4aa5e03bb853",
+        "docs/operations/map-exhibition-design.md": "14e182c7e279fba5548d8d2e0274f5aa6100899b595e18eb438749830c4dac9d",
+        "docs/operations/map-layer-polish-and-validation.md": "8cf214ac86bbe04f98f20b0d583451ae8c8fd0251cf1236344d962650527c6b4"
+      },
+      "documents_changed_during_checks": [],
+      "checks": {
+        "docs": {
+          "exit_code": 0,
+          "status": "passed",
+          "command": [
+            "python3",
+            "tools/ci/check_docs.py"
+          ],
+          "cwd": "/workspace/scratch/4a1b7cbb1f67/cybersand-map-guide",
+          "started_utc": "2026-10-20T01:50:30.534341+00:00",
+          "finished_utc": "2026-10-20T01:50:31.616586+00:00",
+          "timeout_seconds": 180,
+          "elapsed_seconds": 1.0838,
+          "log": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration3/docs.log",
+          "log_sha256": "29bc92199d4eacc8c98762d1cba4393e9b1d65955e44db0e9ee92b95114f52ef"
+        },
+        "repository": {
+          "exit_code": 0,
+          "status": "passed",
+          "command": [
+            "python3",
+            "tools/ci/check_repository.py",
+            "--require-materialized"
+          ],
+          "cwd": "/workspace/scratch/4a1b7cbb1f67/cybersand-map-guide",
+          "started_utc": "2026-10-20T01:50:30.534737+00:00",
+          "finished_utc": "2026-10-20T01:50:33.144920+00:00",
+          "timeout_seconds": 180,
+          "elapsed_seconds": 2.6102,
+          "log": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration3/repository.log",
+          "log_sha256": "d678038d4773b6d89ff9e1875395ac33f56fe823033b3a049ff2b6d88c2fd39e"
+        },
+        "m11": {
+          "exit_code": 0,
+          "status": "passed",
+          "command": [
+            "python3",
+            "tools/ci/check_m11_consistency.py"
+          ],
+          "cwd": "/workspace/scratch/4a1b7cbb1f67/cybersand-map-guide",
+          "started_utc": "2026-10-20T01:50:30.540602+00:00",
+          "finished_utc": "2026-10-20T01:50:31.199985+00:00",
+          "timeout_seconds": 180,
+          "elapsed_seconds": 0.6594,
+          "log": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration3/m11.log",
+          "log_sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d"
+        },
+        "frozen": {
+          "exit_code": 0,
+          "status": "passed",
+          "command": [
+            "python3",
+            "tools/docs/retrieval_eval.py",
+            "--output",
+            "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration3/frozen.json"
+          ],
+          "cwd": "/workspace/scratch/4a1b7cbb1f67/cybersand-map-guide",
+          "started_utc": "2026-10-20T01:50:30.541120+00:00",
+          "finished_utc": "2026-10-20T01:50:31.817895+00:00",
+          "timeout_seconds": 180,
+          "elapsed_seconds": 1.2768,
+          "log": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration3/frozen.log",
+          "log_sha256": "2def1bd6d2b5964399504d05fa8b58a4d3d90f5b160233e014d8d753e0fd6a0c"
+        },
+        "supplementary": {
+          "exit_code": 0,
+          "status": "passed",
+          "command": [
+            "python3",
+            "tools/docs/retrieval_eval.py",
+            "--queries",
+            "docs/reference/retrieval-challenges.json",
+            "--output",
+            "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration3/supplementary.json"
+          ],
+          "cwd": "/workspace/scratch/4a1b7cbb1f67/cybersand-map-guide",
+          "started_utc": "2026-10-20T01:50:30.542559+00:00",
+          "finished_utc": "2026-10-20T01:50:32.055628+00:00",
+          "timeout_seconds": 180,
+          "elapsed_seconds": 1.5131,
+          "log": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration3/supplementary.log",
+          "log_sha256": "7aaebc2ed95186045afc90ea31e3098dd5338fa6d1d472850da9e30ed27b69c1"
+        },
+        "diff": {
+          "exit_code": 0,
+          "status": "passed",
+          "command": [
+            "git",
+            "diff",
+            "--check"
+          ],
+          "cwd": "/workspace/scratch/4a1b7cbb1f67/cybersand-map-guide",
+          "started_utc": "2026-10-20T01:50:30.543609+00:00",
+          "finished_utc": "2026-10-20T01:50:30.588067+00:00",
+          "timeout_seconds": 180,
+          "elapsed_seconds": 0.0445,
+          "log": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration3/diff.log",
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "fixture_preservation": {
+        "frozen32_bytes_unchanged": true,
+        "frozen32_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+        "prior77_objects_exactly_unchanged": true,
+        "prior_count": 77,
+        "current_count": 82,
+        "added_ids": [
+          "MAP01",
+          "MAP02",
+          "MAP03",
+          "MAP04",
+          "MAP05"
+        ],
+        "new_questions_unchanged_from_iteration1": true,
+        "root_readme_unchanged": true
+      },
+      "raw_report_sha256": {
+        "frozen": "280ce8e7dfe362589ee9591cdb375e6f7e03bd9c2ebbe64b48cef8d593440b6c",
+        "supplementary": "57b15287b46c0eb5feb037761bc224d11a041020a564f7d2b618c13f6cbe745d"
+      },
+      "retrieval": {
+        "frozen": {
+          "questions": 32,
+          "canonical_hit_at_1": 22,
+          "canonical_hit_at_5": 32,
+          "mrr_at_5": 0.8229
+        },
+        "prior77": {
+          "questions": 77,
+          "canonical_hit_at_1": 59,
+          "canonical_hit_at_5": 77,
+          "mrr_at_5": 0.8623
+        },
+        "new5": {
+          "questions": 5,
+          "canonical_hit_at_1": 4,
+          "canonical_hit_at_5": 5,
+          "mrr_at_5": 0.9
+        },
+        "combined82": {
+          "questions": 82,
+          "canonical_hit_at_1": 63,
+          "canonical_hit_at_5": 82,
+          "mrr_at_5": 0.8646
+        }
+      },
+      "map_question_ranks": {
+        "MAP01": 1,
+        "MAP02": 2,
+        "MAP03": 1,
+        "MAP04": 1,
+        "MAP05": 1
+      },
+      "frozen_q15": {
+        "canonical_rank": 1,
+        "hits": [
+          {
+            "rank": 1,
+            "path": "architecture/rendering-and-gameplay-bridges.md",
+            "heading": "Rendering and gameplay bridges > Can rendering read native cells directly?",
+            "part": 1
+          },
+          {
+            "rank": 2,
+            "path": "operations/profiling-observability-and-performance.md",
+            "heading": "Profiling, observability, and performance > Current observations and their limits",
+            "part": 1
+          },
+          {
+            "rank": 3,
+            "path": "decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+            "heading": "ADR-003: Godot bridge and immutable snapshots > Why require immutable copies?",
+            "part": 1
+          },
+          {
+            "rank": 4,
+            "path": "systems/themed-construction-materials.md",
+            "heading": "Themed construction material palette > Appearance boundaries",
+            "part": 1
+          },
+          {
+            "rank": 5,
+            "path": "systems/material-appearance-and-rendering.md",
+            "heading": "Material appearance and rendering > Dirty bytes versus GPU upload",
+            "part": 1
+          }
+        ]
+      },
+      "corpus": {
+        "document_count": 95,
+        "chunk_count": 1042,
+        "corpus_manifest_sha256": "5dffc1e05a28b46673a59283a3d5fbb0598adef9b51296a9083cc75acea53d6f",
+        "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59"
+      }
+    }
+  ],
+  "changed_existing_ranks": [
+    {
+      "set": "frozen",
+      "id": "Q15",
+      "query": "Can the renderer read live cells or reuse a patch buffer before upload finishes?",
+      "before": 5,
+      "after": 1,
+      "canonical": [
+        "architecture/rendering-and-gameplay-bridges.md",
+        "architecture/data-ownership-and-lifetimes.md"
+      ]
+    },
+    {
+      "set": "frozen",
+      "id": "Q19",
+      "query": "Is the world really limited to 1024 pixels or twice the camera size?",
+      "before": 2,
+      "after": 3,
+      "canonical": [
+        "systems/world-storage-and-interest-region.md",
+        "operations/configuration-and-capacity-budgets.md"
+      ]
+    },
+    {
+      "set": "supplementary",
+      "id": "C03",
+      "query": "Can I shrink the camera window after a failed explosion tick and then resume the same world?",
+      "before": 2,
+      "after": 3,
+      "canonical": [
+        "architecture/simulation-tick-and-threading.md",
+        "systems/world-storage-and-interest-region.md"
+      ]
+    },
+    {
+      "set": "supplementary",
+      "id": "USABLE02",
+      "query": "Can a delayed physical equipment request or receipt fire a replaced, dropped or cancelled tool, and how is the worker queue bounded?",
+      "before": 4,
+      "after": 5,
+      "canonical": [
+        "reference/interfaces-and-message-contracts.md",
+        "architecture/data-ownership-and-lifetimes.md"
+      ]
+    }
+  ],
+  "immutable_link_review": {
+    "created_utc": "2026-10-20T01:50:30.514995+00:00",
+    "finished_utc": "2026-10-20T01:50:31.104166+00:00",
+    "scope": "Immutable GitHub blob/tree paths and Markdown fragments resolved against exact locally retained Git objects; no remote availability or runtime execution assertion.",
+    "command": "Python regex extraction + git cat-file -t REV:path + git show REV:path + check_docs.anchors",
+    "subprocess_timeout_seconds": 10,
+    "elapsed_seconds": 0.5892,
+    "documents_sha256": {
+      "docs/operations/map-exhibition-design.md": "14e182c7e279fba5548d8d2e0274f5aa6100899b595e18eb438749830c4dac9d",
+      "docs/operations/map-layer-polish-and-validation.md": "8cf214ac86bbe04f98f20b0d583451ae8c8fd0251cf1236344d962650527c6b4",
+      "docs/operations/map-production-workflow.md": "bc3cc8a3b3332571c1ec1c8f6952c07ace5fd76a3433906802ca4aa5e03bb853"
+    },
+    "links_checked": 49,
+    "unique_objects": 22,
+    "fragments_checked": 5,
+    "errors": [],
+    "records": [
+      {
+        "document": "docs/operations/map-exhibition-design.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/scripts/exhibition/deepworks_exhibits.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-exhibition-design.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/scripts/exhibition/deepworks_exhibits.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-exhibition-design.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "docs/audits/2026-10-20-deepworks-exhibition.md",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-exhibition-design.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/scripts/exhibition/deepworks_runtime.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-exhibition-design.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/scripts/depth/depth_layer_runtime.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-exhibition-design.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/scripts/exhibition/deepworks_exhibits.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-exhibition-design.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/scripts/exhibition/deepworks_runtime.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-exhibition-design.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/tests/test_deepworks_reactions.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-exhibition-design.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "docs/audits/2026-10-20-deepworks-exhibition-evidence.json",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-exhibition-design.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/tests/test_deepworks.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-exhibition-design.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/scripts/exhibition/deepworks_map.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-exhibition-design.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "docs/audits/2026-10-20-deepworks-exhibition.md",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-exhibition-design.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "docs/operations/local-build-and-validation.md",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": "deepworks-and-depth-dimensions",
+        "fragment_exists": true
+      },
+      {
+        "document": "docs/operations/map-exhibition-design.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "docs/audits/2026-10-20-deepworks-exhibition-evidence.json",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-layer-polish-and-validation.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "docs/operations/deepworks-exhibition.md",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-layer-polish-and-validation.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/scripts/depth/depth_compositor.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-layer-polish-and-validation.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/scripts/exhibition/deepworks_architecture.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-layer-polish-and-validation.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "docs/operations/deepworks-exhibition.md",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": "four-full-size-worlds-and-independent-clocks",
+        "fragment_exists": true
+      },
+      {
+        "document": "docs/operations/map-layer-polish-and-validation.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/scripts/exhibition/deepworks_architecture.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-layer-polish-and-validation.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/scripts/exhibition/deepworks_map.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-layer-polish-and-validation.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/tests/test_depth_dimensions_render.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-layer-polish-and-validation.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/tests/test_deepworks_render.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-layer-polish-and-validation.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/tests/test_deepworks_render.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-layer-polish-and-validation.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/scripts/exhibition/deepworks_exhibits.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-layer-polish-and-validation.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/tests/test_deepworks_controller.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-layer-polish-and-validation.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "docs/audits/2026-10-20-deepworks-exhibition.md",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-layer-polish-and-validation.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/tools/capture_deepworks.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-layer-polish-and-validation.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "docs/audits/2026-10-20-deepworks-exhibition-evidence.json",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-production-workflow.md",
+        "revision": "1a84e87d22d490f17d79e50b538e62fc4ede0dff",
+        "path": "docs/operations/grey-area-51-demo.md",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-production-workflow.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "docs/operations/deepworks-exhibition.md",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-production-workflow.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "docs/audits/2026-10-20-deepworks-exhibition.md",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-production-workflow.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/scripts/exhibition/deepworks_map.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-production-workflow.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "docs/operations/deepworks-exhibition.md",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": "districts-and-their-paired-exhibits",
+        "fragment_exists": true
+      },
+      {
+        "document": "docs/operations/map-production-workflow.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "docs/systems/depth-layers-and-parallax.md",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-production-workflow.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "docs/reference/configuration-reference.md",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": "depth-host-and-deepworks-configuration",
+        "fragment_exists": true
+      },
+      {
+        "document": "docs/operations/map-production-workflow.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/tests/test_depth_dimensions.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-production-workflow.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/scripts/exhibition",
+        "kind": "tree",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-production-workflow.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/scripts/exhibition/deepworks_architecture.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-production-workflow.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/scripts/exhibition/deepworks_map.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-production-workflow.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/scripts/exhibition/deepworks_runtime.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-production-workflow.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/tests/test_deepworks_controller.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-production-workflow.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/tests/test_deepworks.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-production-workflow.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/tests/test_deepworks_reactions.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-production-workflow.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/tests/test_deepworks_controller.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-production-workflow.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/tests/test_deepworks_render.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-production-workflow.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "docs/operations/local-build-and-validation.md",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": "deepworks-and-depth-dimensions",
+        "fragment_exists": true
+      },
+      {
+        "document": "docs/operations/map-production-workflow.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "docs/audits/2026-10-20-deepworks-exhibition.md",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-production-workflow.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "godot/tools/capture_deepworks.gd",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      },
+      {
+        "document": "docs/operations/map-production-workflow.md",
+        "revision": "7590316e01f0b6efbcc11598fc454656f38f8558",
+        "path": "docs/images/deepworks/capture-manifest.json",
+        "kind": "blob",
+        "object_exists": true,
+        "fragment": ""
+      }
+    ]
+  },
+  "manual_semantic_review": {
+    "schema": "cybersand.map-production-guide.retrieval-review.v1",
+    "created_utc": "2026-10-20T01:54:19.768334+00:00",
+    "scope": "Manual expected-fact review of exact saved top-five lexical contexts, alongside before/after canonical-route metrics. This is documentation/routing evidence, not native/runtime/rendered or answer-generation acceptance.",
+    "accepted_candidate_iteration": 3,
+    "source_root": "/workspace/scratch/4a1b7cbb1f67/cybersand-map-guide",
+    "source_baseline": "fc015a77d3b851fef4ea7734923bcdb3762a19a5",
+    "branch": "docs/polished-map-production-guide",
+    "candidate_document_sha256": {
+      "AGENTS.md": "4ad98af89ace88ff4dc3a692314d8b72479b06db8f810cce6b5640e69998e956",
+      "docs/README.md": "2a80839e57feee5e2ca0ccd8d626f752030cf7663ea8c993915a4adf8929c3e6",
+      "docs/operations/cybersand-codex-development-handover.md": "d35052fb7ee3a0ff4fc2229a21efb9b0b0c5847b7eb287d529d878a1f5cbdcdb",
+      "docs/reference/retrieval-index.md": "5fac345b1c4b3607eda617d740681b6cef2aac50cafd838f8ed9ac9aeb1e1841",
+      "docs/reference/retrieval-corpus.json": "5dffc1e05a28b46673a59283a3d5fbb0598adef9b51296a9083cc75acea53d6f",
+      "docs/reference/retrieval-challenges.json": "907e5a883040476ab5d5639994e4ea377c0da764161ef433c8b6208be9bda2cd",
+      "docs/reference/status-and-roadmap.md": "fad8c6ccc6f3e5e3e3dc6f6a92813ebf55eda235dc2b36bb4481d42a8301c7bc",
+      "docs/architecture/rendering-and-gameplay-bridges.md": "98bb7f651bbcff9fbb2172f854f85a4c61e09a874895aa68cc58e6633a51fac2",
+      "docs/operations/map-production-workflow.md": "bc3cc8a3b3332571c1ec1c8f6952c07ace5fd76a3433906802ca4aa5e03bb853",
+      "docs/operations/map-exhibition-design.md": "14e182c7e279fba5548d8d2e0274f5aa6100899b595e18eb438749830c4dac9d",
+      "docs/operations/map-layer-polish-and-validation.md": "8cf214ac86bbe04f98f20b0d583451ae8c8fd0251cf1236344d962650527c6b4"
+    },
+    "method": {
+      "name": "heading-chunk BM25 lexical development baseline",
+      "k": 5,
+      "maximum_body_words": 420,
+      "overlap_words": 0,
+      "k1": 1.2,
+      "b": 0.75,
+      "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+      "query_expansion": false,
+      "stemming": false,
+      "reranker": false,
+      "embeddings": false,
+      "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"
+    },
+    "iteration_reasons": {
+      "baseline": "Accepted-main corpus measured before additions; frozen32 and original77 preserved.",
+      "iteration1": "Three new guides/routes and five new fixed questions. Structural gates passed; Q15 lost its top-five canonical hit, and top-five contexts omitted finite/reset, HUD/source-pulse and publication/merge procedure qualifications.",
+      "iteration2": "Added coherent short source/exhibit/visual/handoff procedure synopses and clarified existing canonical render-copy/lease/ack boundary. All route hits restored; manual review identified remaining numeric backing/scheduler, exclusive owner/layer cleanup and evidence/hash/history details outside retrieved context.",
+      "iteration3": "Concise existing-synopsis clarifications bring those remaining critical qualifications into retrieved chunks; fixtures, canonical lists and evaluator remain unchanged."
+    },
+    "metrics": {
+      "baseline": {
+        "frozen32": {
+          "questions": 32,
+          "canonical_hit_at_1": 21,
+          "canonical_hit_at_5": 32,
+          "mrr_at_5": 0.803125
+        },
+        "prior77": {
+          "questions": 77,
+          "canonical_hit_at_1": 59,
+          "canonical_hit_at_5": 77,
+          "mrr_at_5": 0.86515152
+        },
+        "new_MAP5": null,
+        "supplementary_total": {
+          "questions": 77,
+          "canonical_hit_at_1": 59,
+          "canonical_hit_at_5": 77,
+          "mrr_at_5": 0.86515152
+        },
+        "reports": {
+          "frozen": {
+            "path": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/baseline-frozen.json",
+            "sha256": "45567db7a5e917c5d6a0cb39d2079a518a0af69b84ef729986da7e9da2a2c62c"
+          },
+          "supplementary": {
+            "path": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/baseline-supplementary.json",
+            "sha256": "37cfd3f51833d7b350fefa6848e92b8c1735e11c8289ae1722b84a124f62021e"
+          }
+        }
+      },
+      "iteration1": {
+        "frozen32": {
+          "questions": 32,
+          "canonical_hit_at_1": 21,
+          "canonical_hit_at_5": 31,
+          "mrr_at_5": 0.79166667
+        },
+        "prior77": {
+          "questions": 77,
+          "canonical_hit_at_1": 59,
+          "canonical_hit_at_5": 77,
+          "mrr_at_5": 0.86233766
+        },
+        "new_MAP5": {
+          "questions": 5,
+          "canonical_hit_at_1": 2,
+          "canonical_hit_at_5": 5,
+          "mrr_at_5": 0.66666667
+        },
+        "supplementary_total": {
+          "questions": 82,
+          "canonical_hit_at_1": 61,
+          "canonical_hit_at_5": 82,
+          "mrr_at_5": 0.8504065
+        },
+        "reports": {
+          "frozen": {
+            "path": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration1/final-frozen.json",
+            "sha256": "f884c0e4e63a22e9bcefc6a623e3e3c51b9b67b28308ad20f0532ff478f5ca04"
+          },
+          "supplementary": {
+            "path": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration1/final-supplementary.json",
+            "sha256": "174b25e31ca930651e24321c3e4f3ca04328d021f8b9c60d8338296fc51d2761"
+          }
+        }
+      },
+      "iteration2": {
+        "frozen32": {
+          "questions": 32,
+          "canonical_hit_at_1": 22,
+          "canonical_hit_at_5": 32,
+          "mrr_at_5": 0.82291667
+        },
+        "prior77": {
+          "questions": 77,
+          "canonical_hit_at_1": 59,
+          "canonical_hit_at_5": 77,
+          "mrr_at_5": 0.86233766
+        },
+        "new_MAP5": {
+          "questions": 5,
+          "canonical_hit_at_1": 4,
+          "canonical_hit_at_5": 5,
+          "mrr_at_5": 0.9
+        },
+        "supplementary_total": {
+          "questions": 82,
+          "canonical_hit_at_1": 63,
+          "canonical_hit_at_5": 82,
+          "mrr_at_5": 0.86463415
+        },
+        "reports": {
+          "frozen": {
+            "path": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration2/frozen.json",
+            "sha256": "e1f030ec30d99b26d4aa3f4d09ad18b802f04a01baabe8971aabdfd3247ff654"
+          },
+          "supplementary": {
+            "path": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration2/supplementary.json",
+            "sha256": "fee3cff7932d7ee8e38906131aba4e91b645a28040272ccc5c701816b92f7926"
+          }
+        }
+      },
+      "iteration3": {
+        "frozen32": {
+          "questions": 32,
+          "canonical_hit_at_1": 22,
+          "canonical_hit_at_5": 32,
+          "mrr_at_5": 0.82291667
+        },
+        "prior77": {
+          "questions": 77,
+          "canonical_hit_at_1": 59,
+          "canonical_hit_at_5": 77,
+          "mrr_at_5": 0.86233766
+        },
+        "new_MAP5": {
+          "questions": 5,
+          "canonical_hit_at_1": 4,
+          "canonical_hit_at_5": 5,
+          "mrr_at_5": 0.9
+        },
+        "supplementary_total": {
+          "questions": 82,
+          "canonical_hit_at_1": 63,
+          "canonical_hit_at_5": 82,
+          "mrr_at_5": 0.86463415
+        },
+        "reports": {
+          "frozen": {
+            "path": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration3/frozen.json",
+            "sha256": "280ce8e7dfe362589ee9591cdb375e6f7e03bd9c2ebbe64b48cef8d593440b6c"
+          },
+          "supplementary": {
+            "path": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration3/supplementary.json",
+            "sha256": "57b15287b46c0eb5feb037761bc224d11a041020a564f7d2b618c13f6cbe745d"
+          }
+        }
+      }
+    },
+    "fixture_preservation": {
+      "frozen32_bytes_unchanged": true,
+      "frozen32_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+      "prior77_objects_exactly_unchanged": true,
+      "prior_count": 77,
+      "current_count": 82,
+      "added_ids": [
+        "MAP01",
+        "MAP02",
+        "MAP03",
+        "MAP04",
+        "MAP05"
+      ],
+      "new_questions_unchanged_from_iteration1": true,
+      "root_readme_unchanged": true
+    },
+    "evaluator_identical_across_all_reports": true,
+    "changed_existing_ranks": [
+      {
+        "id": "Q15",
+        "suite": "frozen",
+        "query": "Can the renderer read live cells or reuse a patch buffer before upload finishes?",
+        "canonical_ranks": {
+          "baseline": 5,
+          "iteration1": null,
+          "iteration2": 1,
+          "iteration3": 1
+        },
+        "top_five_set_unchanged_from_baseline": false,
+        "candidate_top_five": [
+          {
+            "rank": 1,
+            "path": "architecture/rendering-and-gameplay-bridges.md",
+            "heading": "Rendering and gameplay bridges > Can rendering read native cells directly?",
+            "part": 1,
+            "score": 24.841503,
+            "text_sha256": "f30b8367f8a0b2f54857eeb642ad2d928a30848823c7522421ab5c981baf6e67",
+            "rendered_words": 280
+          },
+          {
+            "rank": 2,
+            "path": "operations/profiling-observability-and-performance.md",
+            "heading": "Profiling, observability, and performance > Current observations and their limits",
+            "part": 1,
+            "score": 14.635937,
+            "text_sha256": "4c7751ef0480fac2b67201819c0e6210dea199655470ecf5b8e6ed915afd6def",
+            "rendered_words": 202
+          },
+          {
+            "rank": 3,
+            "path": "decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+            "heading": "ADR-003: Godot bridge and immutable snapshots > Why require immutable copies?",
+            "part": 1,
+            "score": 14.115484,
+            "text_sha256": "366e17e7c0e970cfb9de5c226e9faca83fa4557f176d3bc22ba0edadec4ab582",
+            "rendered_words": 129
+          },
+          {
+            "rank": 4,
+            "path": "systems/themed-construction-materials.md",
+            "heading": "Themed construction material palette > Appearance boundaries",
+            "part": 1,
+            "score": 13.384631,
+            "text_sha256": "3d69c8b18bd593de1ed9028f4b7d1883b13332dd03fb3b4de6df0243d2aac5e6",
+            "rendered_words": 166
+          },
+          {
+            "rank": 5,
+            "path": "systems/material-appearance-and-rendering.md",
+            "heading": "Material appearance and rendering > Dirty bytes versus GPU upload",
+            "part": 1,
+            "score": 13.295318,
+            "text_sha256": "63d3620dc90ffcb60a5442a5495a5664191dfccce6af1456a5f6816bfb576dd4",
+            "rendered_words": 138
+          }
+        ],
+        "manual_review": "Improves baseline5 → iteration1 absent → iterations2/3 rank1. The one canonical chunk covers final native lease release, adapter copies, immutable desktop generation versus mutable private accumulation, whole-payload validation before Image/blit, update-call/serial acknowledgement, rejected-data full refresh and no live World reads. It explicitly disclaims a hardware GPU completion fence. Source inspection covered native exchange, adapter, worker, main and existing handoff regression; no new runtime pass is claimed."
+      },
+      {
+        "id": "Q19",
+        "suite": "frozen",
+        "query": "Is the world really limited to 1024 pixels or twice the camera size?",
+        "canonical_ranks": {
+          "baseline": 2,
+          "iteration1": 3,
+          "iteration2": 3,
+          "iteration3": 3
+        },
+        "top_five_set_unchanged_from_baseline": false,
+        "candidate_top_five": [
+          {
+            "rank": 1,
+            "path": "reference/configuration-reference.md",
+            "heading": "Configuration reference > Native WorldConfig defaults",
+            "part": 1,
+            "score": 13.082561,
+            "text_sha256": "b3dcf08ce108a04f8ef05c209527f20973812f698198148161004c2b3657c347",
+            "rendered_words": 456
+          },
+          {
+            "rank": 2,
+            "path": "operations/map-layer-polish-and-validation.md",
+            "heading": "Map layer polish and visual validation > Establish the source and host boundary",
+            "part": 1,
+            "score": 11.889941,
+            "text_sha256": "007e4b52646160f091496572fe8cd58b9f25822ef4f85ae2b8e4eedf967b738d",
+            "rendered_words": 293
+          },
+          {
+            "rank": 3,
+            "path": "systems/world-storage-and-interest-region.md",
+            "heading": "World storage and interest region",
+            "part": 1,
+            "score": 11.583891,
+            "text_sha256": "ea4bfac5c3c8c4f941c790f5defe202dd0d29020e346e38b1c6b3f7121843857",
+            "rendered_words": 245
+          },
+          {
+            "rank": 4,
+            "path": "operations/map-layer-polish-and-validation.md",
+            "heading": "Map layer polish and visual validation > Gate 2 — give every district an intentional role on every plane > Complete depth coverage and a visible map",
+            "part": 1,
+            "score": 11.251253,
+            "text_sha256": "0e7244770a25caaacaf501e8fe77b2e5b5c3aea31dcbde080907c63463e94619",
+            "rendered_words": 358
+          },
+          {
+            "rank": 5,
+            "path": "architecture/rigid-body-and-cellular-coupling.md",
+            "heading": "Rigid-body and cellular coupling > What are the current numerical bounds and units?",
+            "part": 1,
+            "score": 11.081048,
+            "text_sha256": "2f352a842cc3a1fee1872c0bba0a73f693dfa7269d51b0b8f6a4c480d894e719",
+            "rendered_words": 328
+          }
+        ],
+        "manual_review": "Drops2 →3 but the canonical introductory chunk still includes signed sparse storage, finite1024 adapter/save scope, interest-versus-capacity, the nonbinding2× validation target, and Planned safe capacity expansion/sparse persistence. Added map source-boundary content remains separately pinned."
+      },
+      {
+        "id": "C03",
+        "suite": "supplementary",
+        "query": "Can I shrink the camera window after a failed explosion tick and then resume the same world?",
+        "canonical_ranks": {
+          "baseline": 2,
+          "iteration1": 3,
+          "iteration2": 3,
+          "iteration3": 3
+        },
+        "top_five_set_unchanged_from_baseline": true,
+        "candidate_top_five": [
+          {
+            "rank": 1,
+            "path": "systems/activity-dirty-regions-and-waking.md",
+            "heading": "Activity, dirty regions, and waking > What wakes a region?",
+            "part": 1,
+            "score": 15.914332,
+            "text_sha256": "dc40cb30eff77c919fe29e3da3634ebff9416eeafeb42b99a7bcffabf13a796b",
+            "rendered_words": 461
+          },
+          {
+            "rank": 2,
+            "path": "decisions/ADR-010-failed-tick-quarantine.md",
+            "heading": "ADR-010: Quarantine failed ticks until reset or replacement > Alternatives and scope",
+            "part": 1,
+            "score": 15.481016,
+            "text_sha256": "bd72bd7d901722058b340d1931e4c694d767c1285c96bb96b1f9aaf2e3ef79f2",
+            "rendered_words": 135
+          },
+          {
+            "rank": 3,
+            "path": "systems/world-storage-and-interest-region.md",
+            "heading": "World storage and interest region > Finite Godot adapters",
+            "part": 1,
+            "score": 15.115115,
+            "text_sha256": "e6a07c4babae98f30ee0eda7d5a98fa7bfe180ccc7b15dc5fb39bf3a9540c9c7",
+            "rendered_words": 109
+          },
+          {
+            "rank": 4,
+            "path": "operations/neon-reliquary-demo.md",
+            "heading": "Neon Reliquary and the city below > Open and explore the level",
+            "part": 1,
+            "score": 14.204546,
+            "text_sha256": "615286c094e1a75c669c236c0de510cc7a9e8d1cc3f7c57cff018107bd061768",
+            "rendered_words": 428
+          },
+          {
+            "rank": 5,
+            "path": "systems/world-storage-and-interest-region.md",
+            "heading": "World storage and interest region > Interest filtering and re-entry > Excluded rules and failed-world recovery",
+            "part": 1,
+            "score": 13.749492,
+            "text_sha256": "5b2edb33c2a90f1181e76a06f823d985e38d4bde019c7c7326dc756ffd007d05",
+            "rendered_words": 242
+          }
+        ],
+        "manual_review": "Drops2 →3; the top-five canonical failed-world recovery subsection still says region requests only latch, ticks/activity cannot revive failed state, and clear/reset/validated replacement establishes fresh state without automatic retry/live resize/event replay."
+      },
+      {
+        "id": "USABLE02",
+        "suite": "supplementary",
+        "query": "Can a delayed physical equipment request or receipt fire a replaced, dropped or cancelled tool, and how is the worker queue bounded?",
+        "canonical_ranks": {
+          "baseline": 4,
+          "iteration1": 5,
+          "iteration2": 5,
+          "iteration3": 5
+        },
+        "top_five_set_unchanged_from_baseline": true,
+        "candidate_top_five": [
+          {
+            "rank": 1,
+            "path": "systems/actor-usables.md",
+            "heading": "Actor usables — 32-item catalogue and physical equipment > Desktop controls",
+            "part": 1,
+            "score": 22.20782,
+            "text_sha256": "23ee3c8ebbf6f896a111fae745948c46955f2dd7291c23416e42dcbaef0dae7c",
+            "rendered_words": 283
+          },
+          {
+            "rank": 2,
+            "path": "reference/configuration-reference.md",
+            "heading": "Configuration reference > Actor usable values",
+            "part": 1,
+            "score": 20.002003,
+            "text_sha256": "3225e8f923dc39ca0d4ff2469fa7cf78e22afef7dd9c46b197e2406bfd18414d",
+            "rendered_words": 437
+          },
+          {
+            "rank": 3,
+            "path": "systems/actor-usables.md",
+            "heading": "Actor usables — 32-item catalogue and physical equipment > Action and readback contract > Physical actions and copied feedback",
+            "part": 1,
+            "score": 19.778788,
+            "text_sha256": "ce30ca8e781c3e4b7e7149729a0edc04a9087d28c24667e17ffe08312337a950",
+            "rendered_words": 237
+          },
+          {
+            "rank": 4,
+            "path": "systems/physical-actor-rigs.md",
+            "heading": "Articulated Rapier actors and shared physical control > Which usable examples exist?",
+            "part": 1,
+            "score": 18.600369,
+            "text_sha256": "0cedcc7795ac1bf486357c04c117cdcce8c8a5fce30c66063e4cd3af5b63fadc",
+            "rendered_words": 384
+          },
+          {
+            "rank": 5,
+            "path": "reference/interfaces-and-message-contracts.md",
+            "heading": "Interfaces and message contracts > Physical actor control and effects > Physical equipment actions and results",
+            "part": 1,
+            "score": 18.510883,
+            "text_sha256": "aa2e60c7d79b775007cffdb9f5516dcba43c1e8a9b6c65135783596c57b23ef8",
+            "rendered_words": 468
+          }
+        ],
+        "manual_review": "Drops4 →5. The top five retain physical observation/equipment identity, atomic eight-global/one-in-flight admission, refusal preservation, cancellation generations, late-receipt/recoil protection and committed projectile/device lifetime. Detailed cancellation-versus-material-consumption serialization continues beyond the retrieved first protocol chunk and must be followed in the linked interface/ownership contract; do not infer full fact sufficiency from the rank alone."
+      }
+    ],
+    "new_question_manual_review": [
+      {
+        "id": "MAP01",
+        "query": "How should an agent take a request for a richly detailed CyberSand map from the initial brief through construction, testing and final delivery?",
+        "canonical_rank": 1,
+        "top_five_contexts": [
+          {
+            "rank": 1,
+            "path": "operations/map-production-workflow.md",
+            "heading": "Polished map production workflow for agents",
+            "part": 1,
+            "score": 18.813745,
+            "text_sha256": "c22f02ca02807e19e65eeeac4835bf667b724deaca0bc91ab0c7543190e582dd",
+            "rendered_words": 342
+          },
+          {
+            "rank": 2,
+            "path": "operations/map-production-workflow.md",
+            "heading": "Polished map production workflow for agents > Choose the host and make one complete district > Verify capabilities before extending dimensions or ownership",
+            "part": 1,
+            "score": 17.767752,
+            "text_sha256": "043f3bd57d034b72869272b430f90fd4f009c8ddf38a9072737f5f6eee5f6f5b",
+            "rendered_words": 239
+          },
+          {
+            "rank": 3,
+            "path": "operations/map-production-workflow.md",
+            "heading": "Polished map production workflow for agents > Completion and handoff worksheet",
+            "part": 1,
+            "score": 17.505054,
+            "text_sha256": "1b988e8ed15064eff24dd832b38ea068a0ef7ca15d6ad83a5de9628f742738dd",
+            "rendered_words": 289
+          },
+          {
+            "rank": 4,
+            "path": "operations/map-production-workflow.md",
+            "heading": "Polished map production workflow for agents > Turn the request into a measurable map brief",
+            "part": 1,
+            "score": 16.928762,
+            "text_sha256": "888c03429a3a83e5026d4b928d814273956ea4e4c6112a6dd6c5fc12e281c8ca",
+            "rendered_words": 462
+          },
+          {
+            "rank": 5,
+            "path": "operations/map-production-workflow.md",
+            "heading": "Polished map production workflow for agents > Run separate native, controller and rendered gates",
+            "part": 1,
+            "score": 15.771277,
+            "text_sha256": "7b4812d5e18aacb6a075f7294b71c815ab4fc21c86ef17b113c62d37133916ca",
+            "rendered_words": 476
+          }
+        ],
+        "answerability": "The top five support the complete recommended phase sequence and its source/platform limits. A continuing agent can follow the linked slice and packaging sections for implementation checklists.",
+        "facts": [
+          {
+            "fact_number": 1,
+            "expected_fact": "The workflow begins with actual checkout, runtime and material-rule inspection, then turns the brief into measurable total dimensions, district purposes, layer roles, controls and acceptance evidence. An example image or pull request does not establish local capabilities.",
+            "coverage": "supported",
+            "supporting_hit_ranks": [
+              1,
+              2,
+              4
+            ],
+            "review": "The overview starts with checkout/runtime/material rules; the brief records total extent, district/layer roles, controls, budgets and evidence. The capability section distinguishes the accepted main baseline and separately pinned additions."
+          },
+          {
+            "fact_number": 2,
+            "expected_fact": "Build one complete district with functioning native apparatus, scenery, layer presentation and usable controls before expanding the composition. Reserve connected routes and track authoring/event capacities while adding themed districts and detail.",
+            "coverage": "supported_core_with_linked_detail",
+            "supporting_hit_ranks": [
+              1,
+              3,
+              4,
+              5
+            ],
+            "review": "One working district precedes connected expansion within budgets, with native apparatus and apertures before detail; brief and gate tables preserve geometry, layers, controls and evidence. The detailed responsibility table for the representative vertical slice is linked through the canonical guide rather than reproduced in these five chunks."
+          },
+          {
+            "fact_number": 3,
+            "expected_fact": "Separate native mechanism, controller and actual-renderer gates, then document controls, reset/replay, source and runtime identity, captures, remaining limits and applicable review checks. Current process guidance does not itself implement or certify a new map.",
+            "coverage": "supported",
+            "supporting_hit_ranks": [
+              1,
+              3,
+              5
+            ],
+            "review": "The overview, worksheet and gate table separate native, controller and rendered observations; require launch/reset/capture/runtime/source evidence and remaining limits; frame the result as recommended process, not implemented map acceptance."
+          }
+        ],
+        "remaining_detail_limits": [
+          "The complete representative-district responsibility table is not itself among the top five."
+        ]
+      },
+      {
+        "id": "MAP02",
+        "query": "A linked showcase pull request has the map size and layer effects I want. Can I assume its APIs and test results apply to my current checkout, and what should I verify first?",
+        "canonical_rank": 2,
+        "top_five_contexts": [
+          {
+            "rank": 1,
+            "path": "operations/cybersand-codex-development-handover.md",
+            "heading": "Development handover > Map-production reading route — 2026-10-20",
+            "part": 1,
+            "score": 30.296186,
+            "text_sha256": "81f73746d92419056a11c52495f64318a1715d27a5dcca0d9f40f6fe5b23e1cc",
+            "rendered_words": 109
+          },
+          {
+            "rank": 2,
+            "path": "operations/map-layer-polish-and-validation.md",
+            "heading": "Map layer polish and visual validation > Gate 2 — give every district an intentional role on every plane > Complete depth coverage and a visible map",
+            "part": 1,
+            "score": 24.247816,
+            "text_sha256": "0e7244770a25caaacaf501e8fe77b2e5b5c3aea31dcbde080907c63463e94619",
+            "rendered_words": 358
+          },
+          {
+            "rank": 3,
+            "path": "operations/map-production-workflow.md",
+            "heading": "Polished map production workflow for agents > Completion and handoff worksheet",
+            "part": 1,
+            "score": 22.787726,
+            "text_sha256": "1b988e8ed15064eff24dd832b38ea068a0ef7ca15d6ad83a5de9628f742738dd",
+            "rendered_words": 289
+          },
+          {
+            "rank": 4,
+            "path": "operations/map-production-workflow.md",
+            "heading": "Polished map production workflow for agents",
+            "part": 1,
+            "score": 20.963388,
+            "text_sha256": "c22f02ca02807e19e65eeeac4835bf667b724deaca0bc91ab0c7543190e582dd",
+            "rendered_words": 342
+          },
+          {
+            "rank": 5,
+            "path": "operations/map-layer-polish-and-validation.md",
+            "heading": "Map layer polish and visual validation > Gate 4 — prove full extent and visible layer contributions",
+            "part": 1,
+            "score": 20.778725,
+            "text_sha256": "0e9906551c2340bf350307cec05df73c295fabfc4efe3560d994944e3b8eb0ad",
+            "rendered_words": 429
+          }
+        ],
+        "answerability": "The canonical rank-two context now carries the important backing-versus-authored-size and missing-capability boundary. The top result is only a handover route, so an answer must consume later canonical hits.",
+        "facts": [
+          {
+            "fact_number": 1,
+            "expected_fact": "Inspect actual Git root, revision, status, requested materials, host APIs and runtime identity before adopting an example. Keep accepted checkout behavior, a pinned example implementation and tested artifact/platform evidence separately qualified; verify any dependency or implement and test the missing capability.",
+            "coverage": "supported_core_with_linked_detail",
+            "supporting_hit_ranks": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "review": "The handover and overview require actual checkout, APIs, runtime and material inspection; the worksheet records baseline/branch/delta and tested identities. The numeric/scheduling capability check is explicit. Exact Git inspection commands are in the linked opening workflow section."
+          },
+          {
+            "fact_number": 2,
+            "expected_fact": "At the guide's inspected main fc015a77d3b851fef4ea7734923bcdb3762a19a5, Strata Theatre authors 640 by 360 over 1024 by 1024 native backing. A large backing alone does not provide full-size authored surfaces, compositor views, guards, input transforms or event scheduling.",
+            "coverage": "supported",
+            "supporting_hit_ranks": [
+              2,
+              5
+            ],
+            "review": "The layer synopsis states main Strata 640×360 authored ROI over 1024-square backing, which alone does not supply full-size surfaces, camera/input guards or an exhibition source scheduler. Gate4 adds publication/surface/view/inverse-input agreement and actual far-edge pixel proof."
+          },
+          {
+            "fact_number": 3,
+            "expected_fact": "The pinned Deepworks revision 7590316e01f0b6efbcc11598fc454656f38f8558 is a separate PR185 example. Its parameterized dimensions, exhibition scheduler and validation evidence are not declared present on the guide's accepted-main baseline; readiness or screenshots do not establish a merge or all-platform acceptance.",
+            "coverage": "supported",
+            "supporting_hit_ranks": [
+              2,
+              4,
+              5
+            ],
+            "review": "Per-chunk metadata and the overview preserve fc015a7 versus immutable7590316; PR185 is explicitly open at review and does not install APIs on the older checkout. Pinned Linux pixel results do not establish universal hardware, browser, actor or platform acceptance; review, current hosted execution and merge remain separate."
+          }
+        ],
+        "remaining_detail_limits": [
+          "The top-one handover route alone is insufficient for the numeric/source distinction; top-two and top-four supply it.",
+          "The full checkout command list requires following the linked workflow."
+        ]
+      },
+      {
+        "id": "MAP03",
+        "query": "How do I turn an attractive material display into working physics and chemistry exhibits, prove the results come from native simulation, and let someone replay them?",
+        "canonical_rank": 1,
+        "top_five_contexts": [
+          {
+            "rank": 1,
+            "path": "operations/map-exhibition-design.md",
+            "heading": "Designing and validating native map exhibitions > Scope and source authority",
+            "part": 1,
+            "score": 19.890507,
+            "text_sha256": "e54bb68c0765dad432dad5ec6734eb361a32568e65a219483bcbaf041d1230a0",
+            "rendered_words": 359
+          },
+          {
+            "rank": 2,
+            "path": "operations/map-production-workflow.md",
+            "heading": "Polished map production workflow for agents",
+            "part": 1,
+            "score": 15.134505,
+            "text_sha256": "c22f02ca02807e19e65eeeac4835bf667b724deaca0bc91ab0c7543190e582dd",
+            "rendered_words": 342
+          },
+          {
+            "rank": 3,
+            "path": "operations/map-production-workflow.md",
+            "heading": "Polished map production workflow for agents > Turn the request into a measurable map brief",
+            "part": 1,
+            "score": 15.096078,
+            "text_sha256": "888c03429a3a83e5026d4b928d814273956ea4e4c6112a6dd6c5fc12e281c8ca",
+            "rendered_words": 462
+          },
+          {
+            "rank": 4,
+            "path": "operations/map-layer-polish-and-validation.md",
+            "heading": "Map layer polish and visual validation",
+            "part": 1,
+            "score": 13.508991,
+            "text_sha256": "22c241443754bae642501047528803a1cccdfc5b0bfe547afabed4c5962fcd50",
+            "rendered_words": 113
+          },
+          {
+            "rank": 5,
+            "path": "operations/map-exhibition-design.md",
+            "heading": "Designing and validating native map exhibitions > 5. Prove each mechanism with native observations",
+            "part": 2,
+            "score": 12.731115,
+            "text_sha256": "0307eb3c020642d4a48f978fabe68c4c4d9853e2a376f1515e2fe9bc0bc24533",
+            "rendered_words": 172
+          }
+        ],
+        "answerability": "The first canonical chunk now gives a coherent native exhibit procedure: rule/contact discovery, a minimal apparatus, finite owner-local feeds, copied native witnesses, fresh reset, composed-map validation and scoped evidence.",
+        "facts": [
+          {
+            "fact_number": 1,
+            "expected_fact": "Read executable material IDs, pair rules, contact/substrate conditions, cadence and competing reactions before choosing specimens. Use compatible real reactants and containment; decorative resemblance or a product list does not prove that a mechanism exists.",
+            "coverage": "supported_core_with_linked_detail",
+            "supporting_hit_ranks": [
+              1,
+              3
+            ],
+            "review": "The source-authority chunk requires native rule, substrate and contact cadence research before the apparatus and distinguishes mechanism from decoration. The brief demands an actual witness. Exact admitted material IDs, pair-row enumeration and competing reactions are in the linked discovery section and material contracts rather than this top-five set."
+          },
+          {
+            "fact_number": 2,
+            "expected_fact": "Schedule bounded reactant feeds on the exclusive native owner, keep observation regions distinct from injected products or direct feed writes, and verify copied native product creation, reactant consumption, growth or transport appropriate to each mechanism. Test a minimal apparatus, then the final composed map where geometry and competing reactions can change the outcome.",
+            "coverage": "supported",
+            "supporting_hit_ranks": [
+              1,
+              5
+            ],
+            "review": "The synopsis requires minimal-first testing, exclusive native ownership, bounded layer/source/sink regions, copied state and product/consumption/growth/transport witnesses excluding initial/direct inputs, followed by complete-map validation. The pinned native-observation chunk explains the actual product/flow checks and copied RG8 observations."
+          },
+          {
+            "fact_number": 3,
+            "expected_fact": "Finite feeds allow products to remain inspectable; environmental cleanup must stay within its declared layer. Define reset/replay explicitly and retire old generation commands. A camera tour can reach a completed exhibit, so changing the view is not a fresh simulation reset.",
+            "coverage": "supported",
+            "supporting_hit_ranks": [
+              1,
+              3
+            ],
+            "review": "Finite reactants preserve products; cleanup is declared-layer-local. Fresh reset reconstructs cells/ticks/source counts and retires old generations/queued edits. Camera changes preserve state and are explicitly not replay."
+          },
+          {
+            "fact_number": 4,
+            "expected_fact": "Report the actual tested source, native runtime, timings, observation limits and platform. Rule inspection, accepted events and screenshots are separate evidence from successful native reactions.",
+            "coverage": "supported",
+            "supporting_hit_ranks": [
+              1,
+              2,
+              5
+            ],
+            "review": "Retained evidence binds recipe/source/runtime/clock/platform/outcomes. The example chunk states sampled rather than exact first-appearance time, its 360-tick horizon, Linux result identity and the narrow Steam witness for charge; these do not certify arbitrary maps or all programme lifetimes."
+          }
+        ],
+        "remaining_detail_limits": [
+          "The retrieved high-level discovery step routes to the full material-ID/competing-rule ledger rather than containing the ledger itself.",
+          "A second part of the native observation section is retrieved; its metadata and inline immutable evidence link preserve the example scope, but the complete oracle table is a linked detail."
+        ]
+      },
+      {
+        "id": "MAP04",
+        "query": "How can I prove that every district of a layered map has complete depth coverage and that the real map remains visible and readable behind its controls?",
+        "canonical_rank": 1,
+        "top_five_contexts": [
+          {
+            "rank": 1,
+            "path": "operations/map-layer-polish-and-validation.md",
+            "heading": "Map layer polish and visual validation > Gate 2 — give every district an intentional role on every plane > Complete depth coverage and a visible map",
+            "part": 1,
+            "score": 32.384157,
+            "text_sha256": "0e7244770a25caaacaf501e8fe77b2e5b5c3aea31dcbde080907c63463e94619",
+            "rendered_words": 358
+          },
+          {
+            "rank": 2,
+            "path": "operations/map-production-workflow.md",
+            "heading": "Polished map production workflow for agents > Expand a connected map without losing the layer plan",
+            "part": 1,
+            "score": 26.506149,
+            "text_sha256": "de69ffc2c459496b15f321cdbda657f4dbed551877c0c30c0ee007f4ffb7922d",
+            "rendered_words": 385
+          },
+          {
+            "rank": 3,
+            "path": "operations/map-layer-polish-and-validation.md",
+            "heading": "Map layer polish and visual validation > Gate 2 — give every district an intentional role on every plane > Plane roles and coverage matrix",
+            "part": 1,
+            "score": 24.277758,
+            "text_sha256": "a8726f6f3ed16227f9a5271a1d890e5ced97a0ecd34189c4c249a3eb5efd0383",
+            "rendered_words": 427
+          },
+          {
+            "rank": 4,
+            "path": "operations/map-production-workflow.md",
+            "heading": "Polished map production workflow for agents > Choose the host and make one complete district > Finish a representative vertical slice",
+            "part": 1,
+            "score": 22.096392,
+            "text_sha256": "31abd8a5b67e470f9141963d49d2e905976055cf3ec054918c50c7a92bfabe59",
+            "rendered_words": 288
+          },
+          {
+            "rank": 5,
+            "path": "operations/map-layer-polish-and-validation.md",
+            "heading": "Map layer polish and visual validation > Gate 4 — prove full extent and visible layer contributions",
+            "part": 1,
+            "score": 21.11669,
+            "text_sha256": "0e9906551c2340bf350307cec05df73c295fabfc4efe3560d994944e3b8eb0ad",
+            "rendered_words": 429
+          }
+        ],
+        "answerability": "The first canonical chunk now combines complete plane roles, final-compositor visibility, native-masked source pulses and real HUD/control review, with source and platform qualifications.",
+        "facts": [
+          {
+            "fact_number": 1,
+            "expected_fact": "Track foreground, independently reacting rear sets, environmental effects and frozen distant architecture for every district. Validate authored extent, real apertures, route geometry, surface ROI and inverse input transforms; nonempty layer data alone does not prove a visible contribution.",
+            "coverage": "supported",
+            "supporting_hit_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "review": "The synopsis and matrix cover play/rear/effects/frozen architecture in every district. Expansion and extent gates require final carved routes/apertures, consistent ROI/surfaces/camera/input, and visible contributions rather than nonempty allocation."
+          },
+          {
+            "fact_number": 2,
+            "expected_fact": "Use the actual production compositor to compare matched layer-on/layer-off pixels in each district at controlled native ticks and material animation phase. Dynamic-source visibility needs a native-masked source pulse or equivalent material evidence beyond a static atmospheric decoration.",
+            "coverage": "supported",
+            "supporting_hit_ranks": [
+              1,
+              3,
+              5
+            ],
+            "review": "Matched real-compositor layer-on/off/restore comparisons fix native ticks and animation; every atmosphere source has a source-local exact-tick witness masked by native material cells, excluding Empty/static walls. The far plane must complete its frozen bake and show the new recipe after reset."
+          },
+          {
+            "fact_number": 3,
+            "expected_fact": "Inspect ordinary supported window sizes with the HUD shown, clean full-map and detail views, camera extremes and paused first frames. An oversized opaque header can hide a logically valid map, and a headless pass cannot establish rendered visibility.",
+            "coverage": "supported_core_with_linked_detail",
+            "supporting_hit_ranks": [
+              1,
+              4,
+              5
+            ],
+            "review": "The synopsis requires normal window sizes, HUD bounds and actual map pixels, clean overview/district/contact views and real host controls. Gate4 tests far-edge pixels and camera/input bounds; the representative slice must install, pause and render. The exact camera-extreme and paused-first-frame checklist remains in linked Gate6 rather than being repeated verbatim in top five."
+          },
+          {
+            "fact_number": 4,
+            "expected_fact": "Retain reproducible images and source/runtime/renderer identities with failures and platform limits. Parameterized Deepworks surfaces and example pixel fixtures require their pinned source or a separately implemented dependency on the actual checkout.",
+            "coverage": "supported",
+            "supporting_hit_ranks": [
+              1,
+              3,
+              5
+            ],
+            "review": "Controlled comparisons retain image state, tolerances and renderer/source/recipe/runtime/platform identities. The synopsis states the baseline backing/ROI limit, dependency on checked-out APIs, and explicitly rejects generalizing pinned Linux software-renderer/pixel evidence to unrelated platforms or maps."
+          }
+        ],
+        "remaining_detail_limits": [
+          "Detailed camera-extreme and paused-first-frame steps require following the linked HUD/control gate.",
+          "The fixed-state pixel protocol is retrievable; no actual new rendered execution is claimed by this documentation check."
+        ]
+      },
+      {
+        "id": "MAP05",
+        "query": "What belongs in the final handoff for a polished map, and how do I distinguish a review-ready pull request from a merged and fully validated result?",
+        "canonical_rank": 1,
+        "top_five_contexts": [
+          {
+            "rank": 1,
+            "path": "operations/map-production-workflow.md",
+            "heading": "Polished map production workflow for agents",
+            "part": 1,
+            "score": 29.691956,
+            "text_sha256": "c22f02ca02807e19e65eeeac4835bf667b724deaca0bc91ab0c7543190e582dd",
+            "rendered_words": 342
+          },
+          {
+            "rank": 2,
+            "path": "operations/map-production-workflow.md",
+            "heading": "Polished map production workflow for agents > Run separate native, controller and rendered gates",
+            "part": 2,
+            "score": 17.829218,
+            "text_sha256": "0c4ff4bf3a8e414af1a88bcf4300510ca3dfa58155082ddb3d28b17e830608e6",
+            "rendered_words": 126
+          },
+          {
+            "rank": 3,
+            "path": "operations/map-production-workflow.md",
+            "heading": "Polished map production workflow for agents > Completion and handoff worksheet",
+            "part": 1,
+            "score": 17.565077,
+            "text_sha256": "1b988e8ed15064eff24dd832b38ea068a0ef7ca15d6ad83a5de9628f742738dd",
+            "rendered_words": 289
+          },
+          {
+            "rank": 4,
+            "path": "reference/status-and-roadmap.md",
+            "heading": "Status and foundational roadmap > Recovery / current CI checkpoint — 2026-09-24",
+            "part": 1,
+            "score": 17.467398,
+            "text_sha256": "7b85ec28e698f8afc169918240556ac55370dc8582f29210d0bc8654a385fce7",
+            "rendered_words": 136
+          },
+          {
+            "rank": 5,
+            "path": "operations/map-production-workflow.md",
+            "heading": "Polished map production workflow for agents > Expand a connected map without losing the layer plan",
+            "part": 1,
+            "score": 16.939753,
+            "text_sha256": "de69ffc2c459496b15f321cdbda657f4dbed551877c0c30c0ee007f4ffb7922d",
+            "rendered_words": 385
+          }
+        ],
+        "answerability": "The first canonical chunk now contains the full handoff/identity/history/final-diff/check/merge separation. The worksheet and gate-limit chunk keep practical next steps and platform exclusions retrievable.",
+        "facts": [
+          {
+            "fact_number": 1,
+            "expected_fact": "Provide a canonical map guide with entry, dimensions, district purposes, controls, layer roles and clocks, painting and reset/replay behavior, plus reproducible captures. Update documentation routes, corpus and affected retrieval questions together, preserving frozen fixtures and historical evidence.",
+            "coverage": "supported_core_with_linked_detail",
+            "supporting_hit_ranks": [
+              1,
+              3,
+              5
+            ],
+            "review": "The overview and worksheet require launch/inspection, map/district dimensions and purposes, clocks, reset/replay, captures and canonical/retrieval updates while preserving frozen questions/history. The exact corpus/index filenames and paint-control documentation details are in the linked packaging checklist."
+          },
+          {
+            "fact_number": 2,
+            "expected_fact": "Record recoverable source and dirty-file identity, materialized runtime/tool hashes, recipe or fixture identity, commands, timeouts, renderer/platform and actual outcomes. Keep native chemistry, controller checks, screenshots, broad playability and platform acceptance separate, including failed attempts and remaining gaps.",
+            "coverage": "supported",
+            "supporting_hit_ranks": [
+              1,
+              2,
+              3,
+              5
+            ],
+            "review": "The overview now explicitly requires materialized runtime/tool hashes, source/runtime/recipe identities, commands, timeouts, outcomes and limits. The worksheet records branch/tested delta and remaining failures/platform gaps. The gate-limit and topology chunks distinguish native, rendering, browser, platform and actual actor traversal claims."
+          },
+          {
+            "fact_number": 3,
+            "expected_fact": "Inspect the final diff, exact published head and applicable CI checks; draft-skipped jobs and stale source-sensitive results cannot count as current execution. State PR readiness, merge state and platform acceptance independently, and give the user concrete launch/review instructions and deliverables.",
+            "coverage": "supported",
+            "supporting_hit_ranks": [
+              1,
+              3
+            ],
+            "review": "The overview requires final diff review, exact published head and applicable hosted checks; skipped/stale jobs are not completed execution. Review-ready, merge and platform acceptance are separate, with launch/review deliverables and a concrete next acceptance gate in the worksheet."
+          }
+        ],
+        "remaining_detail_limits": [
+          "The exact corpus/index file paths and full evidence-record schema are linked packaging details.",
+          "A dated roadmap recovery chunk also appears at rank4; it must not be generalized into current map or repository acceptance. Its heading retains the historical date."
+        ]
+      }
+    ],
+    "Q15_expected_facts_review": {
+      "canonical_rank": 1,
+      "all_three_expected_facts_supported_in_first_chunk": true,
+      "distinct_lifetimes_and_gpu_fence_limit_retained": true,
+      "top_context": {
+        "rank": 1,
+        "path": "architecture/rendering-and-gameplay-bridges.md",
+        "heading": "Rendering and gameplay bridges > Can rendering read native cells directly?",
+        "part": 1,
+        "score": 24.841503,
+        "text_sha256": "f30b8367f8a0b2f54857eeb642ad2d928a30848823c7522421ab5c981baf6e67",
+        "rendered_words": 280
+      },
+      "source_review": "Improves baseline5 → iteration1 absent → iterations2/3 rank1. The one canonical chunk covers final native lease release, adapter copies, immutable desktop generation versus mutable private accumulation, whole-payload validation before Image/blit, update-call/serial acknowledgement, rejected-data full refresh and no live World reads. It explicitly disclaims a hardware GPU completion fence. Source inspection covered native exchange, adapter, worker, main and existing handoff regression; no new runtime pass is claimed."
+    },
+    "structural_gate_evidence": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration3/checks.json",
+    "pinned_source_link_evidence": "/workspace/scratch/4a1b7cbb1f67/map-guide-validation/iteration3/pinned-link-object-review.json",
+    "remaining_limits": [
+      "The lexical top-five route score is not generated-answer correctness, an embedding evaluation or universal retrieval coverage.",
+      "Some detailed checklists remain behind explicit links, as recorded per fact. In particular MAP04 camera extremes/paused first-frame details and USABLE02 serialized consumption require the linked full protocol.",
+      "Source/pin/path checks establish the referenced local Git objects and Markdown anchors; they do not prove remote URL availability or new engine/platform execution.",
+      "Future corpus changes can shift ranks without changing fixtures. Three older questions have lower canonical rank while preserving top-five coverage; none was hidden by editing its query or expected facts."
+    ]
+  },
+  "limitations": [
+    "Development-set lexical routing; no embedding/vector database or unseen-query accuracy claim",
+    "Canonical hit rate and manual fact sufficiency are different measures",
+    "Linked Deepworks execution evidence remains pinned to its own recipe/runtime/platform",
+    "No new map was produced as a blind end-to-end agent trial",
+    "Raw local report locations identify diagnostic artifacts; this committed record preserves their hashes and curated results, not a complete archive of every earlier working-tree revision"
+  ],
+  "packaging_checks": {
+    "status": "passed",
+    "scope": "Packaging checks ran after writing the audit and evidence manifest. This field was then completed from their recorded results; no corpus document or retrieval fixture changed.",
+    "started_utc": "2026-10-20T01:56:13.190Z",
+    "finished_utc": "2026-10-20T01:56:15.759Z",
+    "timeout_seconds": 180,
+    "tested_document_hashes_reverified": 11,
+    "tested_document_hash_mismatches": [],
+    "checks": [
+      {
+        "name": "docs",
+        "command": "timeout 180 python3 tools/ci/check_docs.py > /workspace/scratch/4a1b7cbb1f67/map-guide-validation/packaging/docs.log 2>&1",
+        "exit_code": 0,
+        "elapsed_seconds": 0.72709129,
+        "log_sha256": "29bc92199d4eacc8c98762d1cba4393e9b1d65955e44db0e9ee92b95114f52ef",
+        "result": {
+          "status": "passed",
+          "documents": 95,
+          "navigation_link_documents": 8,
+          "canonical_claims": 181,
+          "local_links": 1957,
+          "heading_anchors": 177,
+          "questions": 32,
+          "errors": [],
+          "warnings": [],
+          "limitations": [
+            "Does not verify source semantics or runtime claims",
+            "Does not fetch external URLs",
+            "Does not rewrite or reattest historical audits",
+            "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+          ]
+        }
+      },
+      {
+        "name": "repository",
+        "command": "timeout 180 python3 tools/ci/check_repository.py --require-materialized > /workspace/scratch/4a1b7cbb1f67/map-guide-validation/packaging/repository.log 2>&1",
+        "exit_code": 0,
+        "elapsed_seconds": 2.213975864,
+        "log_sha256": "d678038d4773b6d89ff9e1875395ac33f56fe823033b3a049ff2b6d88c2fd39e",
+        "result": {
+          "status": "passed",
+          "scope": "current source/documentation and artifact identity",
+          "documentation": {
+            "status": "passed",
+            "documents": 95,
+            "navigation_link_documents": 8,
+            "canonical_claims": 181,
+            "local_links": 1957,
+            "heading_anchors": 177,
+            "questions": 32,
+            "errors": [],
+            "warnings": [],
+            "limitations": [
+              "Does not verify source semantics or runtime claims",
+              "Does not fetch external URLs",
+              "Does not rewrite or reattest historical audits",
+              "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+            ]
+          },
+          "materialized_runtime_files": [
+            "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+            "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+            "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+          ],
+          "unmaterialized_runtime_files": [],
+          "errors": [],
+          "limitations": [
+            "Identity is not execution evidence; read the dated runtime acceptance report",
+            "Retained vendor binaries and platform execution have separate dated provenance",
+            "Historical M11 integrity is checked separately by check_m11_consistency.py"
+          ]
+        }
+      },
+      {
+        "name": "diff",
+        "command": "timeout 180 git diff --check > /workspace/scratch/4a1b7cbb1f67/map-guide-validation/packaging/diff.log 2>&1",
+        "exit_code": 0,
+        "elapsed_seconds": 0.073655091,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "result": {
+          "status": "passed",
+          "output_bytes": 0
+        }
+      }
+    ]
+  }
+}
