@@ -92,10 +92,120 @@ func _run() -> void:
 		_expect(lab._side.get_rect().end.x <= lab.size.x and lab._side.get_rect().end.y <= lab.size.y, "Guide fits supported window size")
 		_expect(lab._top.get_rect().end.x <= lab.size.x, "Header fits supported window width")
 		_expect(lab._top.size.y <= 90, "Header cannot expand over the map through wrapped minimum sizes")
+	await _check_ui_input(lab)
 	lab.queue_free()
 	await process_frame
 	print("Deepworks controller: %d assertions, %d failures" % [assertions, failures])
 	quit(0 if failures == 0 else 1)
+
+func _check_ui_input(lab: Control) -> void:
+	# Route real events through Input and the viewport's GUI focus owner. Calling
+	# _pan or the control's callbacks directly would miss the shared-key defect.
+	var sliders: Array[Node] = lab.find_children("*", "HSlider", true, false)
+	_expect(sliders.size() == 1, "Exhibition provides one accessible brush slider")
+	if sliders.size() != 1:
+		return
+	var brush: HSlider = sliders[0] as HSlider
+	lab.select_district(5)
+	lab._process(0.0)
+	var initial_camera: Vector2 = lab.compositor.camera_origin
+	await _key_event(KEY_D, true)
+	lab._process(0.25)
+	var panned_camera: Vector2 = lab.compositor.camera_origin
+	_expect(panned_camera.x > initial_camera.x, "Fresh world key actually pans before the focus boundary")
+	brush.grab_focus()
+	_expect(root.gui_get_focus_owner() == brush, "Brush slider acquires real GUI keyboard focus")
+	# Focus may enter and leave between two host frames. It must still cancel
+	# the already-held world key, rather than reusing the old armed state.
+	root.gui_release_focus()
+	lab._process(0.25)
+	_expect(lab.compositor.camera_origin == panned_camera,
+		"A key held across UI focus cannot resume panning after focus leaves")
+	brush.grab_focus()
+	await _key_event(KEY_D, false)
+	lab._process(0.0)
+	var slider_camera: Vector2 = lab.compositor.camera_origin
+	var brush_before: float = brush.value
+	await _key_event(KEY_RIGHT, true)
+	lab._process(0.25)
+	_expect(brush.value > brush_before and lab._brush_radius == int(brush.value),
+		"Focused slider retains real arrow-key brush adjustment")
+	_expect(lab.compositor.camera_origin == slider_camera,
+		"Slider arrow input does not also move the exhibition camera")
+	# A map click explicitly returns keyboard ownership to the world, but an
+	# arrow still held from the slider must be released before it may pan.
+	var map_point: Vector2 = lab.compositor.global_position + lab.compositor.content_rect().get_center()
+	var returning_camera: Vector2 = lab.compositor.camera_origin
+	await _mouse_button(map_point, MOUSE_BUTTON_MIDDLE, true)
+	await _mouse_button(map_point, MOUSE_BUTTON_MIDDLE, false)
+	_expect(root.gui_get_focus_owner() == null, "Clicking the map relinquishes UI keyboard focus")
+	lab._process(0.25)
+	_expect(lab.compositor.camera_origin == returning_camera,
+		"Returning to the map with the slider arrow held does not pan")
+	await _key_event(KEY_RIGHT, false)
+	lab._process(0.0)
+	await _key_event(KEY_RIGHT, true)
+	lab._process(0.25)
+	_expect(lab.compositor.camera_origin.x > returning_camera.x,
+		"Releasing and freshly pressing the world arrow restores panning")
+	await _key_event(KEY_RIGHT, false)
+	lab._process(0.0)
+	# A closed picker is still a focused UI control; checking only its popup
+	# visibility must not admit WASD into world movement.
+	lab._material_picker.grab_focus()
+	var picker_camera: Vector2 = lab.compositor.camera_origin
+	await _key_event(KEY_D, true)
+	lab._process(0.25)
+	_expect(lab.compositor.camera_origin == picker_camera, "Focused closed picker blocks world WASD")
+	await _key_event(KEY_D, false)
+	root.gui_release_focus()
+	lab._process(0.0)
+	# The same focus boundary cancels an existing middle-drag, even before
+	# another host frame could poll focus or the mouse's held-button state.
+	var drag_camera: Vector2 = lab.compositor.camera_origin
+	await _mouse_button(map_point, MOUSE_BUTTON_MIDDLE, true)
+	await _mouse_motion(map_point + Vector2(20, 0), Vector2(20, 0))
+	var dragged_camera: Vector2 = lab.compositor.camera_origin
+	_expect(dragged_camera.x < drag_camera.x, "Fresh middle-drag actually pans before UI focus")
+	brush.grab_focus()
+	await _mouse_motion(map_point + Vector2(40, 0), Vector2(20, 0))
+	_expect(lab.compositor.camera_origin == dragged_camera, "UI focus immediately releases a held middle-drag")
+	await _mouse_button(map_point + Vector2(40, 0), MOUSE_BUTTON_MIDDLE, false)
+	root.gui_release_focus()
+	lab._process(0.0)
+
+func _key_event(code: Key, pressed: bool) -> void:
+	var event := InputEventKey.new()
+	event.keycode = code
+	event.physical_keycode = code
+	event.pressed = pressed
+	Input.parse_input_event(event)
+	Input.flush_buffered_events()
+	await process_frame
+
+func _mouse_button(position: Vector2, button: MouseButton, pressed: bool) -> void:
+	var motion := InputEventMouseMotion.new()
+	motion.position = position
+	motion.global_position = position
+	Input.parse_input_event(motion)
+	var event := InputEventMouseButton.new()
+	event.position = position
+	event.global_position = position
+	event.button_index = button
+	event.pressed = pressed
+	Input.parse_input_event(event)
+	Input.flush_buffered_events()
+	await process_frame
+
+func _mouse_motion(position: Vector2, relative: Vector2) -> void:
+	var event := InputEventMouseMotion.new()
+	event.position = position
+	event.global_position = position
+	event.relative = relative
+	event.button_mask = MOUSE_BUTTON_MASK_MIDDLE
+	Input.parse_input_event(event)
+	Input.flush_buffered_events()
+	await process_frame
 
 func _expect(condition: bool, message: String) -> void:
 	assertions += 1

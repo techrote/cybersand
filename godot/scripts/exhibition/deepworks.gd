@@ -71,6 +71,7 @@ func _ready() -> void:
 	compositor.mouse_filter = Control.MOUSE_FILTER_STOP
 	compositor.gui_input.connect(_map_input)
 	_build_ui()
+	get_viewport().gui_focus_changed.connect(_on_gui_focus_changed)
 	resized.connect(_layout)
 	ui_ready = true
 	_layout()
@@ -85,7 +86,7 @@ func _process(delta: float) -> void:
 		_pointer_armed = not _modal_active()
 		_dragging = false
 	if not _pan_keys_down():
-		_keys_armed = not _modal_active()
+		_keys_armed = not _modal_active() and not _ui_has_focus()
 	if _modal_active():
 		_release_input()
 	else:
@@ -250,6 +251,10 @@ func _map_input(event: InputEvent) -> void:
 	if faulted or not ui_ready or _modal_active():
 		return
 	if event is InputEventMouseButton:
+		if event.pressed and event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE] and _ui_has_focus():
+			# A fresh map click returns keyboard ownership to the world. Keys
+			# held from the UI remain disarmed until their release is observed.
+			get_viewport().gui_release_focus()
 		if event.button_index == MOUSE_BUTTON_MIDDLE:
 			_dragging = event.pressed and _pointer_armed
 		elif event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
@@ -298,7 +303,7 @@ func _zoom(local_position: Vector2, multiplier: float) -> void:
 	_tour_button.text = "Guided tour  /  T"
 
 func _pan(delta: float) -> void:
-	if not _keys_armed:
+	if not _keys_armed or _ui_has_focus():
 		return
 	var direction := Vector2.ZERO
 	if Input.is_key_pressed(KEY_A) or Input.is_key_pressed(KEY_LEFT): direction.x -= 1
@@ -317,6 +322,16 @@ func _modal_active() -> bool:
 	for picker: OptionButton in [_layer_picker, _material_picker, _mode_picker]:
 		if picker != null and picker.get_popup().visible: return true
 	return false
+
+func _ui_has_focus() -> bool:
+	var control: Control = get_viewport().gui_get_focus_owner()
+	return control != null and is_ancestor_of(control)
+
+func _on_gui_focus_changed(control: Control) -> void:
+	# Focus can enter and leave between host frames. Cancel held input at the
+	# signal boundary as well as checking focus while polling movement keys.
+	if control != null and is_ancestor_of(control):
+		_release_input()
 
 func _release_input() -> void:
 	_pointer_armed = false

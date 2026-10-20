@@ -82,7 +82,9 @@ static func _aggregate(p: PackedInt32Array, s: PackedInt32Array, e: Array[Dictio
 	_r(s, o, 175, 105, 4, 64, M.GABION)
 	_r(s, o, 149, 141, 20, 3, M.STEEL_GRATING)
 	_r(s, o, 186, 157, 23, 3, M.STEEL_GRATING)
-	_feed(e, d, "scripted", "stone-ration", o, Rect2i(157, 88, 3, 3), M.STONE, 20, 31, 40)
+	# Stone does not flow sideways off a shelf. Feed the open chute between
+	# the left grating and the Gabion so it reaches the lower collection bay.
+	_feed(e, d, "scripted", "stone-ration", o, Rect2i(170, 88, 3, 3), M.STONE, 20, 31, 40)
 	_feed(e, d, "scripted", "sand-ration", o, Rect2i(195, 88, 3, 3), M.SAND, 32, 24, 50)
 	_exhibit(x, d, "play", "Offset grain customs", o, "Sand and Dust fall through alternate baffles and form native granular heaps.", [], "flow")
 	_exhibit(x, d, "scripted", "Rear ballast classifier", o, "Stone falls under its own kernel while the neighbouring Sand works around the rack.", [], "flow")

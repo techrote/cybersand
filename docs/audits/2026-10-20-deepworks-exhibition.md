@@ -10,6 +10,17 @@ related-documents: [../operations/deepworks-exhibition.md, ../systems/depth-laye
 
 # Deepworks — the exhibition below
 
+## Later reaction-evidence correction — 2026-10-20
+
+The [PR #185 completion audit](2026-10-20-deepworks-pr185-completion.md)
+invalidates this checkpoint's native-reaction pass. Its retained local log and
+both hosted platforms contain two script errors that omitted eight A1 flow
+assertions. The old 626-plus-one summary and `verified` flags are not accepted
+reaction evidence. Restored checks exposed a blocked rear Stone feed, repaired
+without changing native material rules or weakening the transport oracle.
+The original JSON, observations, images and hashes remain historical; use the
+completion audit for corrected reaction, UI and final hosted acceptance.
+
 ## Request, source and recovery boundary
 
 The owner requested one **1024 × 1024 total-size map**, many themed areas and

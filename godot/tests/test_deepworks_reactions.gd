@@ -52,8 +52,22 @@ func _run() -> void:
 	_expect(runtime.layer_tick("background") == 0, "Distant background remains frozen")
 	for exhibit: Dictionary in recipe["exhibits"]:
 		_verify_exhibit(exhibit, recipe["events"], event_stats)
+	# A helper script error can return control to its caller without recording
+	# an assertion failure. Every distinct authored apparatus must finish its
+	# own oracle before a standalone run or its evidence can report success.
+	_expect(records.size() == 32, "Thirty-two unique apparatus observations")
+	var verified_exhibits: int = 0
+	for district: int in range(16):
+		for plane: String in PLANES:
+			var id: String = "deepworks-%02d-%s" % [district, plane]
+			var record: Dictionary = records.get(id, {})
+			var verified: bool = bool(record.get("verified", false)) and bool(record.get("oracle_completed", false)) and int(record.get("oracle_assertions", 0)) > 0
+			_expect(verified, id + " completed and passed its mechanism oracle")
+			if verified:
+				verified_exhibits += 1
 	_finish({"recipe_sha256": Map.recipe_hash(recipe), "ticks_per_dynamic_plane": TICKS,
-		"event_applications": event_stats.get("applications", 0), "exhibits": records})
+		"event_applications": event_stats.get("applications", 0),
+		"verified_exhibit_count": verified_exhibits, "exhibits": records})
 
 
 func _observe(runtime: CyberDeepworksRuntime, recipe: Dictionary, tick: int) -> void:
@@ -77,7 +91,7 @@ func _observe(runtime: CyberDeepworksRuntime, recipe: Dictionary, tick: int) -> 
 					"maximum": scan["counts"].duplicate(),
 					"lower_maximum": scan["lower"].duplicate(),
 					"first_new": {}, "final_mean_y": scan["mean_y"],
-					"verified": false,
+					"verified": false, "oracle_completed": false, "oracle_assertions": 0,
 				}
 				continue
 			var record: Dictionary = records[exhibit["id"]]
@@ -139,14 +153,17 @@ func _verify_exhibit(exhibit: Dictionary, events: Array, event_stats: Dictionary
 		source_count += fired
 	_expect(source_count > 0, id + " has fired its production reactant source")
 	var mechanism: String = exhibit["mechanism"]
+	var before_oracle_assertions: int = assertions
+	var oracle_completed: bool = false
 	match mechanism:
 		"flow":
-			_check_flow(exhibit, record)
+			oracle_completed = _check_flow(exhibit, record)
 		"purification":
 			_expect(record["initial"][Cell.TOXIC_SLUDGE] > 100, id + " starts with a real sludge bed")
 			_expect(record["minimum"][Cell.TOXIC_SLUDGE] < record["initial"][Cell.TOXIC_SLUDGE] / 4,
 				id + " removes most sludge rather than merely painting Water beside it")
 			_expect(record["maximum"][Cell.WATER] > 100, id + " publishes the resulting Water reservoir")
+			oracle_completed = true
 		"growth":
 			if exhibit["layer"] == "scripted":
 				var initial_wood: int = record["initial"][Cell.WOOD] + record["initial"][Cell.OAK_TIMBER]
@@ -154,10 +171,11 @@ func _verify_exhibit(exhibit: Dictionary, events: Array, event_stats: Dictionary
 				_expect(remaining_wood < initial_wood, id + " consumes the actual old timber substrate")
 				_expect(record["maximum"][Cell.FUNGUS] > record["initial"][Cell.FUNGUS] + int(direct_writes.get(Cell.FUNGUS, 0)),
 					id + " grows more Fungus than all directly injected cells")
+				oracle_completed = true
 			else:
-				_check_products(id, exhibit, record, source_materials)
+				oracle_completed = _check_products(id, exhibit, record, source_materials)
 		"combustion":
-			_check_products(id, exhibit, record, source_materials)
+			oracle_completed = _check_products(id, exhibit, record, source_materials)
 			var initial_fuel: int = 0
 			var minimum_fuel: int = 0
 			for material: int in [Cell.PINE_PLANKS, Cell.CARDBOARD, Cell.BAMBOO, Cell.PLYWOOD]:
@@ -165,29 +183,36 @@ func _verify_exhibit(exhibit: Dictionary, events: Array, event_stats: Dictionary
 				minimum_fuel += record["minimum"][material]
 			_expect(minimum_fuel < initial_fuel, id + " consumes combustible specimens")
 		"reaction", "charge", "curing":
-			_check_products(id, exhibit, record, source_materials)
+			oracle_completed = _check_products(id, exhibit, record, source_materials)
 		_:
 			_expect(false, id + " needs an explicit mechanism-specific oracle")
-	record["verified"] = before_failures == failures
+	record["oracle_completed"] = oracle_completed
+	record["oracle_assertions"] = assertions - before_oracle_assertions
+	_expect(oracle_completed, id + " mechanism helper returned its completion receipt")
+	_expect(record["oracle_assertions"] > 0, id + " executed mechanism assertions")
+	record["verified"] = oracle_completed and record["oracle_assertions"] > 0 and before_failures == failures
 	var products: Array[String] = []
 	for product: int in exhibit["expected_products"]:
 		products.append("%d:%d" % [product, record["maximum"][product]])
 	print("DEEPWORKS_EXHIBIT %s %s products={%s} verified=%s" % [id, mechanism, ",".join(products), record["verified"]])
 
 
-func _check_products(id: String, exhibit: Dictionary, record: Dictionary, injected: Dictionary) -> void:
+func _check_products(id: String, exhibit: Dictionary, record: Dictionary, injected: Dictionary) -> bool:
 	_expect(not exhibit["expected_products"].is_empty(), id + " declares a real observable product")
 	for product: int in exhibit["expected_products"]:
 		_expect(not injected.has(product), "%s product %d must not be painted by its sources" % [id, product])
 		_expect(record["initial"][product] == 0, "%s product %d must be absent initially" % [id, product])
 		_expect(record["maximum"][product] > 0, "%s native product %d must actually appear" % [id, product])
+	return true
 
 
-func _check_flow(exhibit: Dictionary, record: Dictionary) -> void:
+func _check_flow(exhibit: Dictionary, record: Dictionary) -> bool:
 	var id: String = exhibit["id"]
 	var district: int = exhibit["district"]
 	if district == 0:
-		var materials: Array[int] = [Cell.SAND, Cell.DUST] if exhibit["layer"] == "play" else [Cell.STONE, Cell.SAND]
+		var materials: Array[int] = [Cell.SAND, Cell.DUST]
+		if exhibit["layer"] == "scripted":
+			materials.assign([Cell.STONE, Cell.SAND])
 		for material: int in materials:
 			_expect(record["initial"][material] == 0, id + " starts without injected grains")
 			_expect(record["lower_maximum"][material] > 0,
@@ -200,6 +225,8 @@ func _check_flow(exhibit: Dictionary, record: Dictionary) -> void:
 		_expect(mean[Cell.MERCURY] > 143.0, id + " dense Mercury is observed below its y105 injection height")
 	else:
 		_expect(false, id + " needs an explicit physical transport oracle")
+		return false
+	return true
 
 
 func _finish(report: Dictionary) -> void:

@@ -1,0 +1,1140 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-10-20T06:49:02.109723+00:00",
+  "repository": "techrote/cybersand",
+  "pull_request": 185,
+  "branch": "scene/deepworks-exhibition-1024",
+  "starting_head": "7590316e01f0b6efbcc11598fc454656f38f8558",
+  "base_commit": "fc015a77d3b851fef4ea7734923bcdb3762a19a5",
+  "status": "local_corrections_validated_hosted_acceptance_pending",
+  "source_identity": "Starting head plus the four exact changed executable hashes. Published commit/tree and final hosted/merge state are recorded in the PR body.",
+  "source_files": {
+    "godot/scripts/exhibition/deepworks.gd": {
+      "sha256": "f168ffe863cd00688c96fa58a4169bfa977cdf1cfd2041fa47a060cb1627f0dd",
+      "bytes": 21627
+    },
+    "godot/scripts/exhibition/deepworks_exhibits.gd": {
+      "sha256": "b2a8603744c83acb95ecf3456760ab5dcfd58fc2ff71b55628da4d03fc01bacf",
+      "bytes": 25034
+    },
+    "godot/tests/test_deepworks_controller.gd": {
+      "sha256": "8e58ca7d6502a6199cc1029a988f354433765b9928beccf5fe0eaaecb764f11c",
+      "bytes": 11059
+    },
+    "godot/tests/test_deepworks_reactions.gd": {
+      "sha256": "963ded378a7c2036834330486af6dca11bcc903508d53689eb54bee54e04ad0a",
+      "bytes": 11674
+    }
+  },
+  "recipe_sha256": "828f5174b41aa5fa3ed693dae9bb463f24c49d8ce18b506af7573152afd83caa",
+  "historical_correction": {
+    "manifest": "2026-10-20-deepworks-exhibition-evidence.json",
+    "manifest_sha256_unchanged": "48082fefc2175d890c1177474a9d565afd14f84a45cee54c9a0c011acfa6162e",
+    "scope": "native_reactions acceptance is invalidated; historical observations, source hashes and captures are preserved",
+    "previous_log_sha256": "4ce1c2d6aa180a90242978b46a36d147636772159e87eb0cf5bb19e3adbf0af6",
+    "omitted_transport_assertions": 8,
+    "original_local_reproduction": {
+      "head": "7590316e01f0b6efbcc11598fc454656f38f8558",
+      "exit_code": 0,
+      "script_error_count": 2,
+      "assertions_including_report": 627,
+      "reported_failures": 0,
+      "accepted": false,
+      "elapsed_seconds": 28.595329,
+      "stone_below_y143": 0,
+      "log": {
+        "path": "/workspace/scratch/0e6965f1b503/validation-pr185/reproduction/reactions.log",
+        "bytes": 3717,
+        "sha256": "c68c875749d89e998b7850ac2c8d97e40f3fd2c5bb190d8db6dcc90f6f188d3e"
+      },
+      "report": {
+        "path": "/workspace/scratch/0e6965f1b503/validation-pr185/reproduction/reactions.json",
+        "bytes": 173626,
+        "sha256": "b8e30c1d0cf668d4019be82fdb2b71926b71b0e53cd040c7a01633a147f8157f"
+      }
+    }
+  },
+  "runtime": {
+    "os": "Linux x86_64",
+    "godot": "4.7.stable.official.5b4e0cb0f",
+    "godot_executable": {
+      "path": "/tmp/grey-area-51-validation/runtime/Godot_v4.7-stable_linux.x86_64",
+      "bytes": 144186224,
+      "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+    },
+    "editor_archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+    "rapier": "0.35.2",
+    "native_workers_per_plane": 1,
+    "libraries": {
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "bf65f1e1a7576b1df5fe8dc93eee807f3297200c0b1c311a52d04167fae42cf3",
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "aa38827014c193134ecf2986670f71c72609789fd0bedfee292ef276a2fbc3cc",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "4e26ffa78ec2aaff434c4a70cd2ec85288b10ba5237912c35f204cb1e6ed2180"
+    },
+    "binary_changes": false
+  },
+  "reactions_and_negative_controls": {
+    "date_utc": "2026-10-20T06:44:45.581802+00:00",
+    "scope": "PR185 reaction oracle fix, real Stone transport repair and standalone rejection controls",
+    "base_head": "7590316e01f0b6efbcc11598fc454656f38f8558",
+    "source_hashes": {
+      "godot/tests/test_deepworks_reactions.gd": "963ded378a7c2036834330486af6dca11bcc903508d53689eb54bee54e04ad0a",
+      "godot/scripts/exhibition/deepworks_exhibits.gd": "b2a8603744c83acb95ecf3456760ab5dcfd58fc2ff71b55628da4d03fc01bacf"
+    },
+    "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "runs": [
+      {
+        "name": "blocked-stone",
+        "command": [
+          "/tmp/grey-area-51-validation/runtime/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "godot",
+          "--script",
+          "res://tests/test_deepworks_reactions.gd"
+        ],
+        "cwd": "/workspace/scratch/0e6965f1b503/cybersand-pr185",
+        "timeout_seconds": 180,
+        "exit_code": 1,
+        "environment": {
+          "GODOT_SILENCE_ROOT_WARNING": "1",
+          "XDG_DATA_HOME": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/data",
+          "XDG_CONFIG_HOME": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/config",
+          "XDG_CACHE_HOME": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/cache",
+          "CYBERSAND_DEEPWORKS_REACTION_REPORT": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/blocked-stone-report.json"
+        },
+        "report": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/blocked-stone-report.json",
+        "report_sha256": "aecbf662dadd881dc19450f120e7c15b139e6927b25859e45d92830b1553996a",
+        "log": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/blocked-stone.log",
+        "log_sha256": "b2760e9a4e714beb04ffd8d702d0cab6a082457efef18304c156cf42a6fbc861",
+        "script_error_count": 0,
+        "diagnostic_errors": [
+          "ERROR: DEEPWORKS_REACTIONS: deepworks-00-scripted material 13 must reach below y143, well beyond its source nozzle",
+          "ERROR: DEEPWORKS_REACTIONS: deepworks-00-scripted completed and passed its mechanism oracle"
+        ],
+        "assertions": 732,
+        "elapsed_seconds": 54.0826,
+        "event_applications": 944,
+        "failures": 2,
+        "recipe_sha256": "ab2b18d4f1db26ad1d3bee2db467a0d39dcf8bfb00bdffe52d8187a4b053da79",
+        "ticks_per_dynamic_plane": 360,
+        "verified_exhibit_count": 31,
+        "witnesses": {
+          "deepworks-00-play": {
+            "oracle_completed": true,
+            "oracle_assertions": 4,
+            "verified": true,
+            "stone_lower_maximum": 0,
+            "stone_final_mean_y": -1.0
+          },
+          "deepworks-00-scripted": {
+            "oracle_completed": true,
+            "oracle_assertions": 4,
+            "verified": false,
+            "stone_lower_maximum": 0,
+            "stone_final_mean_y": 123.666664123535
+          }
+        },
+        "tested_changed_source_sha256": {
+          "godot/tests/test_deepworks_reactions.gd": "963ded378a7c2036834330486af6dca11bcc903508d53689eb54bee54e04ad0a",
+          "godot/scripts/exhibition/deepworks_exhibits.gd": "f475f65e4566fca9483b2d78bdc7091c7b893d2775fd3b83f80f32b369851b44"
+        },
+        "classification": "Expected failed intermediate run: corrected oracle with original blocked Stone nozzle"
+      },
+      {
+        "name": "positive",
+        "command": [
+          "/tmp/grey-area-51-validation/runtime/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "godot",
+          "--script",
+          "res://tests/test_deepworks_reactions.gd"
+        ],
+        "cwd": "/workspace/scratch/0e6965f1b503/cybersand-pr185",
+        "timeout_seconds": 180,
+        "exit_code": 0,
+        "environment": {
+          "GODOT_SILENCE_ROOT_WARNING": "1",
+          "XDG_DATA_HOME": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/positive-data",
+          "XDG_CONFIG_HOME": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/positive-config",
+          "XDG_CACHE_HOME": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/positive-cache",
+          "CYBERSAND_DEEPWORKS_REACTION_REPORT": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/positive-report.json"
+        },
+        "report": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/positive-report.json",
+        "report_sha256": "d552d9e0802a38b95c31378fbbad2a0221bd1b4a7d5e6eaf53dc63e86e163565",
+        "log": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/positive.log",
+        "log_sha256": "2e81b42372fdbeb21670b7ba5b74027c7c8c58b5113c13015797271f0255b1be",
+        "script_error_count": 0,
+        "diagnostic_errors": [],
+        "assertions": 732,
+        "elapsed_seconds": 48.515068,
+        "event_applications": 944,
+        "failures": 0,
+        "recipe_sha256": "828f5174b41aa5fa3ed693dae9bb463f24c49d8ce18b506af7573152afd83caa",
+        "ticks_per_dynamic_plane": 360,
+        "verified_exhibit_count": 32,
+        "witnesses": {
+          "deepworks-00-play": {
+            "oracle_completed": true,
+            "oracle_assertions": 4,
+            "verified": true,
+            "stone_lower_maximum": 0,
+            "stone_final_mean_y": -1.0
+          },
+          "deepworks-00-scripted": {
+            "oracle_completed": true,
+            "oracle_assertions": 4,
+            "verified": true,
+            "stone_lower_maximum": 90,
+            "stone_final_mean_y": 164.696975708008
+          }
+        },
+        "tested_changed_source_sha256": {
+          "godot/tests/test_deepworks_reactions.gd": "963ded378a7c2036834330486af6dca11bcc903508d53689eb54bee54e04ad0a",
+          "godot/scripts/exhibition/deepworks_exhibits.gd": "b2a8603744c83acb95ecf3456760ab5dcfd58fc2ff71b55628da4d03fc01bacf"
+        },
+        "classification": "Accepted positive: corrected oracle and reachable Stone channel"
+      },
+      {
+        "name": "noop",
+        "command": [
+          "/tmp/grey-area-51-validation/runtime/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "godot",
+          "--script",
+          "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/noop-helper.gd"
+        ],
+        "cwd": "/workspace/scratch/0e6965f1b503/cybersand-pr185",
+        "timeout_seconds": 180,
+        "exit_code": 1,
+        "environment": {
+          "GODOT_SILENCE_ROOT_WARNING": "1",
+          "XDG_DATA_HOME": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/noop-data",
+          "XDG_CONFIG_HOME": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/noop-config",
+          "XDG_CACHE_HOME": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/noop-cache",
+          "CYBERSAND_DEEPWORKS_REACTION_REPORT": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/noop-report.json"
+        },
+        "report": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/noop-report.json",
+        "report_sha256": "1a58bf4f9be71c8f5387ec93f2cde97e70a0873bed07148ca596019423acc7be",
+        "log": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/noop.log",
+        "log_sha256": "bba826c8a13a344479ff19b9b6e2aa07c1edb59759248c76dca832d88cdcedad",
+        "script_error_count": 0,
+        "diagnostic_errors": [
+          "ERROR: DEEPWORKS_REACTIONS: deepworks-00-play executed mechanism assertions",
+          "ERROR: DEEPWORKS_REACTIONS: deepworks-00-play completed and passed its mechanism oracle"
+        ],
+        "assertions": 728,
+        "elapsed_seconds": 30.168687,
+        "event_applications": 944,
+        "failures": 2,
+        "recipe_sha256": "828f5174b41aa5fa3ed693dae9bb463f24c49d8ce18b506af7573152afd83caa",
+        "ticks_per_dynamic_plane": 360,
+        "verified_exhibit_count": 31,
+        "witnesses": {
+          "deepworks-00-play": {
+            "oracle_completed": true,
+            "oracle_assertions": 0,
+            "verified": false,
+            "stone_lower_maximum": 0,
+            "stone_final_mean_y": -1.0
+          },
+          "deepworks-00-scripted": {
+            "oracle_completed": true,
+            "oracle_assertions": 4,
+            "verified": true,
+            "stone_lower_maximum": 90,
+            "stone_final_mean_y": 164.696975708008
+          }
+        },
+        "mutation_script_sha256": "9f7f2f628d9ee11f2fcdad49face8edfca24c4e72c51675c8257c2ca3f810575",
+        "tested_changed_source_sha256": {
+          "godot/tests/test_deepworks_reactions.gd": "963ded378a7c2036834330486af6dca11bcc903508d53689eb54bee54e04ad0a",
+          "godot/scripts/exhibition/deepworks_exhibits.gd": "b2a8603744c83acb95ecf3456760ab5dcfd58fc2ff71b55628da4d03fc01bacf"
+        },
+        "classification": "Expected rejected mutation: scratch subclass overrides only one flow helper"
+      },
+      {
+        "name": "aborted",
+        "command": [
+          "/tmp/grey-area-51-validation/runtime/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "godot",
+          "--script",
+          "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/aborted-helper.gd"
+        ],
+        "cwd": "/workspace/scratch/0e6965f1b503/cybersand-pr185",
+        "timeout_seconds": 180,
+        "exit_code": 1,
+        "environment": {
+          "GODOT_SILENCE_ROOT_WARNING": "1",
+          "XDG_DATA_HOME": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/aborted-data",
+          "XDG_CONFIG_HOME": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/aborted-config",
+          "XDG_CACHE_HOME": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/aborted-cache",
+          "CYBERSAND_DEEPWORKS_REACTION_REPORT": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/aborted-report.json"
+        },
+        "report": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/aborted-report.json",
+        "report_sha256": "32e4b6ef2ecc6776d005800caa208fe52a7b9a07f4e7200e79e8179f404f7435",
+        "log": "/workspace/scratch/0e6965f1b503/validation-pr185/oracles/aborted.log",
+        "log_sha256": "80c911e251f73b008a184015789be3333a3cfbc9012b8a159e4aa97a2d030d59",
+        "script_error_count": 1,
+        "diagnostic_errors": [
+          "SCRIPT ERROR: Trying to assign an array of type \"Array\" to a variable of type \"Array[int]\".",
+          "ERROR: DEEPWORKS_REACTIONS: deepworks-00-play mechanism helper returned its completion receipt",
+          "ERROR: DEEPWORKS_REACTIONS: deepworks-00-play executed mechanism assertions",
+          "ERROR: DEEPWORKS_REACTIONS: deepworks-00-play completed and passed its mechanism oracle"
+        ],
+        "assertions": 728,
+        "elapsed_seconds": 45.32475,
+        "event_applications": 944,
+        "failures": 3,
+        "recipe_sha256": "828f5174b41aa5fa3ed693dae9bb463f24c49d8ce18b506af7573152afd83caa",
+        "ticks_per_dynamic_plane": 360,
+        "verified_exhibit_count": 31,
+        "witnesses": {
+          "deepworks-00-play": {
+            "oracle_completed": false,
+            "oracle_assertions": 0,
+            "verified": false,
+            "stone_lower_maximum": 0,
+            "stone_final_mean_y": -1.0
+          },
+          "deepworks-00-scripted": {
+            "oracle_completed": true,
+            "oracle_assertions": 4,
+            "verified": true,
+            "stone_lower_maximum": 90,
+            "stone_final_mean_y": 164.696975708008
+          }
+        },
+        "mutation_script_sha256": "83d318e3d4da26deba47609dff6a0507d5e41e7346f708cc414f01ffd1461169",
+        "tested_changed_source_sha256": {
+          "godot/tests/test_deepworks_reactions.gd": "963ded378a7c2036834330486af6dca11bcc903508d53689eb54bee54e04ad0a",
+          "godot/scripts/exhibition/deepworks_exhibits.gd": "b2a8603744c83acb95ecf3456760ab5dcfd58fc2ff71b55628da4d03fc01bacf"
+        },
+        "classification": "Expected rejected mutation: scratch subclass overrides only one flow helper"
+      }
+    ]
+  },
+  "completed_exhibits": {
+    "deepworks-00-play": {
+      "title": "Offset grain customs",
+      "layer": "play",
+      "mechanism": "flow",
+      "oracle_completed": true,
+      "oracle_assertions": 4,
+      "verified": true
+    },
+    "deepworks-00-scripted": {
+      "title": "Rear ballast classifier",
+      "layer": "scripted",
+      "mechanism": "flow",
+      "oracle_completed": true,
+      "oracle_assertions": 4,
+      "verified": true
+    },
+    "deepworks-01-play": {
+      "title": "The charged choir",
+      "layer": "play",
+      "mechanism": "charge",
+      "oracle_completed": true,
+      "oracle_assertions": 4,
+      "verified": true
+    },
+    "deepworks-01-scripted": {
+      "title": "Remote boiler relay",
+      "layer": "scripted",
+      "mechanism": "charge",
+      "oracle_completed": true,
+      "oracle_assertions": 4,
+      "verified": true
+    },
+    "deepworks-02-play": {
+      "title": "Thermal autopsy",
+      "layer": "play",
+      "mechanism": "reaction",
+      "oracle_completed": true,
+      "oracle_assertions": 7,
+      "verified": true
+    },
+    "deepworks-02-scripted": {
+      "title": "Salt-thaw mortuary",
+      "layer": "scripted",
+      "mechanism": "reaction",
+      "oracle_completed": true,
+      "oracle_assertions": 7,
+      "verified": true
+    },
+    "deepworks-03-play": {
+      "title": "Halite percolator",
+      "layer": "play",
+      "mechanism": "reaction",
+      "oracle_completed": true,
+      "oracle_assertions": 4,
+      "verified": true
+    },
+    "deepworks-03-scripted": {
+      "title": "Rear salt evaporator",
+      "layer": "scripted",
+      "mechanism": "reaction",
+      "oracle_completed": true,
+      "oracle_assertions": 7,
+      "verified": true
+    },
+    "deepworks-04-play": {
+      "title": "Twin weathering records",
+      "layer": "play",
+      "mechanism": "reaction",
+      "oracle_completed": true,
+      "oracle_assertions": 4,
+      "verified": true
+    },
+    "deepworks-04-scripted": {
+      "title": "Zinc archive etcher",
+      "layer": "scripted",
+      "mechanism": "reaction",
+      "oracle_completed": true,
+      "oracle_assertions": 7,
+      "verified": true
+    },
+    "deepworks-05-play": {
+      "title": "Effervescent reliquary",
+      "layer": "play",
+      "mechanism": "reaction",
+      "oracle_completed": true,
+      "oracle_assertions": 7,
+      "verified": true
+    },
+    "deepworks-05-scripted": {
+      "title": "Chalk ossification theatre",
+      "layer": "scripted",
+      "mechanism": "reaction",
+      "oracle_completed": true,
+      "oracle_assertions": 7,
+      "verified": true
+    },
+    "deepworks-06-play": {
+      "title": "Terracotta firing shelves",
+      "layer": "play",
+      "mechanism": "reaction",
+      "oracle_completed": true,
+      "oracle_assertions": 4,
+      "verified": true
+    },
+    "deepworks-06-scripted": {
+      "title": "Adobe memory kiln",
+      "layer": "scripted",
+      "mechanism": "reaction",
+      "oracle_completed": true,
+      "oracle_assertions": 4,
+      "verified": true
+    },
+    "deepworks-07-play": {
+      "title": "Three-glass furnace",
+      "layer": "play",
+      "mechanism": "reaction",
+      "oracle_completed": true,
+      "oracle_assertions": 4,
+      "verified": true
+    },
+    "deepworks-07-scripted": {
+      "title": "Snow quench prism",
+      "layer": "scripted",
+      "mechanism": "reaction",
+      "oracle_completed": true,
+      "oracle_assertions": 7,
+      "verified": true
+    },
+    "deepworks-08-play": {
+      "title": "Twin thermite censers",
+      "layer": "play",
+      "mechanism": "reaction",
+      "oracle_completed": true,
+      "oracle_assertions": 4,
+      "verified": true
+    },
+    "deepworks-08-scripted": {
+      "title": "Magnesium vigil",
+      "layer": "scripted",
+      "mechanism": "reaction",
+      "oracle_completed": true,
+      "oracle_assertions": 4,
+      "verified": true
+    },
+    "deepworks-09-play": {
+      "title": "Lime slaking cascade",
+      "layer": "play",
+      "mechanism": "reaction",
+      "oracle_completed": true,
+      "oracle_assertions": 10,
+      "verified": true
+    },
+    "deepworks-09-scripted": {
+      "title": "Paired curing moulds",
+      "layer": "scripted",
+      "mechanism": "curing",
+      "oracle_completed": true,
+      "oracle_assertions": 4,
+      "verified": true
+    },
+    "deepworks-10-play": {
+      "title": "Leaking wall samples",
+      "layer": "play",
+      "mechanism": "reaction",
+      "oracle_completed": true,
+      "oracle_assertions": 4,
+      "verified": true
+    },
+    "deepworks-10-scripted": {
+      "title": "Rear earthwash",
+      "layer": "scripted",
+      "mechanism": "reaction",
+      "oracle_completed": true,
+      "oracle_assertions": 4,
+      "verified": true
+    },
+    "deepworks-11-play": {
+      "title": "Four-fibre crematorium",
+      "layer": "play",
+      "mechanism": "combustion",
+      "oracle_completed": true,
+      "oracle_assertions": 5,
+      "verified": true
+    },
+    "deepworks-11-scripted": {
+      "title": "Sandbag unseaming",
+      "layer": "scripted",
+      "mechanism": "reaction",
+      "oracle_completed": true,
+      "oracle_assertions": 4,
+      "verified": true
+    },
+    "deepworks-12-play": {
+      "title": "Wax reclaim still",
+      "layer": "play",
+      "mechanism": "reaction",
+      "oracle_completed": true,
+      "oracle_assertions": 4,
+      "verified": true
+    },
+    "deepworks-12-scripted": {
+      "title": "Polymer recovery retort",
+      "layer": "scripted",
+      "mechanism": "reaction",
+      "oracle_completed": true,
+      "oracle_assertions": 7,
+      "verified": true
+    },
+    "deepworks-13-play": {
+      "title": "Poison-to-water cascade",
+      "layer": "play",
+      "mechanism": "purification",
+      "oracle_completed": true,
+      "oracle_assertions": 3,
+      "verified": true
+    },
+    "deepworks-13-scripted": {
+      "title": "Sodium caution garden",
+      "layer": "scripted",
+      "mechanism": "reaction",
+      "oracle_completed": true,
+      "oracle_assertions": 7,
+      "verified": true
+    },
+    "deepworks-14-play": {
+      "title": "Seed reliquaries",
+      "layer": "play",
+      "mechanism": "growth",
+      "oracle_completed": true,
+      "oracle_assertions": 4,
+      "verified": true
+    },
+    "deepworks-14-scripted": {
+      "title": "Timber mycelium crypt",
+      "layer": "scripted",
+      "mechanism": "growth",
+      "oracle_completed": true,
+      "oracle_assertions": 2,
+      "verified": true
+    },
+    "deepworks-15-play": {
+      "title": "Density well",
+      "layer": "play",
+      "mechanism": "flow",
+      "oracle_completed": true,
+      "oracle_assertions": 4,
+      "verified": true
+    },
+    "deepworks-15-scripted": {
+      "title": "Geothermal drain",
+      "layer": "scripted",
+      "mechanism": "reaction",
+      "oracle_completed": true,
+      "oracle_assertions": 7,
+      "verified": true
+    }
+  },
+  "negative_mutation_sources": {
+    "noop-helper.gd": "extends \"res://tests/test_deepworks_reactions.gd\"\n\n# Negative control: a helper claims completion without running an oracle.\nfunc _check_flow(exhibit: Dictionary, record: Dictionary) -> bool:\n\tif exhibit[\"id\"] == \"deepworks-00-play\":\n\t\treturn true\n\treturn super._check_flow(exhibit, record)\n",
+    "aborted-helper.gd": "extends \"res://tests/test_deepworks_reactions.gd\"\n\n# Negative control: reproduce the original runtime typed-array error in one\n# helper while preserving the shared production test, map and native runtime.\nfunc _check_flow(exhibit: Dictionary, record: Dictionary) -> bool:\n\tif exhibit[\"id\"] == \"deepworks-00-play\":\n\t\tvar materials: Array[int] = [Cell.SAND, Cell.DUST] if exhibit[\"layer\"] == \"play\" else [Cell.STONE, Cell.SAND]\n\t\tif materials.is_empty():\n\t\t\treturn false\n\treturn super._check_flow(exhibit, record)\n"
+  },
+  "ui_controls": {
+    "command": [
+      "/tmp/grey-area-51-validation/runtime/Godot_v4.7-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "godot",
+      "--audio-driver",
+      "Dummy",
+      "--script",
+      "res://tests/test_deepworks_controller.gd"
+    ],
+    "timeout_seconds": 180,
+    "source_sha256": "f168ffe863cd00688c96fa58a4169bfa977cdf1cfd2041fa47a060cb1627f0dd",
+    "test_sha256": "8e58ca7d6502a6199cc1029a988f354433765b9928beccf5fe0eaaecb764f11c",
+    "assertions": 208,
+    "failures": 0,
+    "exit_code": 0,
+    "diagnostic_errors": false,
+    "log": {
+      "path": "/workspace/scratch/0e6965f1b503/validation-pr185/ui/fixed-controller.log",
+      "bytes": 270,
+      "sha256": "238003b2d0d9d3dc5532e80b57af2b395b4758f8f2dd4221ee1beefd68347bd4"
+    },
+    "negative_control": {
+      "original_controller_head": "7590316e01f0b6efbcc11598fc454656f38f8558",
+      "regression_assertions": 206,
+      "failures": 5,
+      "log": {
+        "path": "/workspace/scratch/0e6965f1b503/validation-pr185/ui/baseline-controller.log",
+        "bytes": 2163,
+        "sha256": "083492a131cf70e19627a340aeb08776873585528638061d3f3510d34a5a24d7"
+      },
+      "scope": "Event-driven focus/slider/held-key checks fail before repair; two further middle-drag checks added before final positive run"
+    }
+  },
+  "focused_headless": [
+    {
+      "command": [
+        "/tmp/grey-area-51-validation/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/0e6965f1b503/cybersand-pr185/godot",
+        "--script",
+        "res://tests/test_deepworks.gd"
+      ],
+      "diagnostic_error": false,
+      "launch_error": null,
+      "log": "test_deepworks.log",
+      "name": "test_deepworks",
+      "requires_display": false,
+      "returncode": 0,
+      "role": "pr185-completion",
+      "seconds": 5.934,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_seconds": 180
+    },
+    {
+      "command": [
+        "/tmp/grey-area-51-validation/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/0e6965f1b503/cybersand-pr185/godot",
+        "--script",
+        "res://tests/test_feature_launch_arguments.gd",
+        "--",
+        "--deepworks"
+      ],
+      "diagnostic_error": false,
+      "launch_error": null,
+      "log": "test_feature_launch_arguments.log",
+      "name": "test_feature_launch_arguments",
+      "requires_display": false,
+      "returncode": 0,
+      "role": "pr185-completion",
+      "seconds": 5.05,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_seconds": 180
+    },
+    {
+      "command": [
+        "/tmp/grey-area-51-validation/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/0e6965f1b503/cybersand-pr185/godot",
+        "--script",
+        "res://tests/test_feature_launcher.gd"
+      ],
+      "diagnostic_error": false,
+      "launch_error": null,
+      "log": "test_feature_launcher.log",
+      "name": "test_feature_launcher",
+      "requires_display": false,
+      "returncode": 0,
+      "role": "pr185-completion",
+      "seconds": 20.246,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_seconds": 180
+    }
+  ],
+  "rendered": {
+    "runner": {
+      "command": [
+        "/tmp/grey-area-51-validation/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "--display-driver",
+        "x11",
+        "--path",
+        "/workspace/scratch/0e6965f1b503/cybersand-pr185/godot",
+        "--script",
+        "res://tests/test_deepworks_render.gd",
+        "--max-fps",
+        "30",
+        "--",
+        "--deepworks-render-output=/workspace/scratch/0e6965f1b503/validation-pr185/render/pixels"
+      ],
+      "diagnostic_error": false,
+      "launch_error": null,
+      "log": "test_deepworks_render.log",
+      "name": "test_deepworks_render",
+      "requires_display": true,
+      "returncode": 0,
+      "role": "pr185-completion",
+      "seconds": 130.559,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_seconds": 180
+    },
+    "pixel_evidence": {
+      "artifact_errors": [],
+      "atmosphere": [
+        {
+          "district": "A1",
+          "effects_tick": 10,
+          "material": 14,
+          "source": "deepworks-00-effects-local-atmosphere",
+          "visible_native_air_pixels": 6
+        },
+        {
+          "district": "A2",
+          "effects_tick": 13,
+          "material": 34,
+          "source": "deepworks-01-effects-local-atmosphere",
+          "visible_native_air_pixels": 6
+        },
+        {
+          "district": "A3",
+          "effects_tick": 16,
+          "material": 22,
+          "source": "deepworks-02-effects-local-atmosphere",
+          "visible_native_air_pixels": 6
+        },
+        {
+          "district": "A4",
+          "effects_tick": 19,
+          "material": 3,
+          "source": "deepworks-03-effects-local-atmosphere",
+          "visible_native_air_pixels": 6
+        },
+        {
+          "district": "B1",
+          "effects_tick": 22,
+          "material": 3,
+          "source": "deepworks-04-effects-local-atmosphere",
+          "visible_native_air_pixels": 6
+        },
+        {
+          "district": "B2",
+          "effects_tick": 25,
+          "material": 4,
+          "source": "deepworks-05-effects-local-atmosphere",
+          "visible_native_air_pixels": 6
+        },
+        {
+          "district": "B3",
+          "effects_tick": 28,
+          "material": 4,
+          "source": "deepworks-06-effects-local-atmosphere",
+          "visible_native_air_pixels": 6
+        },
+        {
+          "district": "B4",
+          "effects_tick": 31,
+          "material": 22,
+          "source": "deepworks-07-effects-local-atmosphere",
+          "visible_native_air_pixels": 6
+        },
+        {
+          "district": "C1",
+          "effects_tick": 34,
+          "material": 34,
+          "source": "deepworks-08-effects-local-atmosphere",
+          "visible_native_air_pixels": 6
+        },
+        {
+          "district": "C2",
+          "effects_tick": 37,
+          "material": 22,
+          "source": "deepworks-09-effects-local-atmosphere",
+          "visible_native_air_pixels": 6
+        },
+        {
+          "district": "C3",
+          "effects_tick": 40,
+          "material": 3,
+          "source": "deepworks-10-effects-local-atmosphere",
+          "visible_native_air_pixels": 6
+        },
+        {
+          "district": "C4",
+          "effects_tick": 43,
+          "material": 4,
+          "source": "deepworks-11-effects-local-atmosphere",
+          "visible_native_air_pixels": 6
+        },
+        {
+          "district": "D1",
+          "effects_tick": 46,
+          "material": 4,
+          "source": "deepworks-12-effects-local-atmosphere",
+          "visible_native_air_pixels": 4
+        },
+        {
+          "district": "D2",
+          "effects_tick": 49,
+          "material": 22,
+          "source": "deepworks-13-effects-local-atmosphere",
+          "visible_native_air_pixels": 6
+        },
+        {
+          "district": "D3",
+          "effects_tick": 52,
+          "material": 22,
+          "source": "deepworks-14-effects-local-atmosphere",
+          "visible_native_air_pixels": 6
+        },
+        {
+          "district": "D4",
+          "effects_tick": 55,
+          "material": 3,
+          "source": "deepworks-15-effects-local-atmosphere",
+          "visible_native_air_pixels": 6
+        }
+      ],
+      "checks": 173,
+      "display": "X11",
+      "elapsed_ms": 126862,
+      "failures": 0,
+      "godot": "4.7-stable (official)",
+      "hud": [
+        {
+          "header_height": 84.0,
+          "map_size": [
+            590,
+            590
+          ],
+          "viewport": [
+            1280,
+            720
+          ],
+          "visible_map_pixels": 346876
+        },
+        {
+          "header_height": 84.0,
+          "map_size": [
+            770,
+            770
+          ],
+          "viewport": [
+            1600,
+            900
+          ],
+          "visible_map_pixels": 590566
+        }
+      ],
+      "layers": {
+        "background": [
+          25532,
+          25193,
+          28025,
+          26981,
+          25235,
+          28849,
+          30770,
+          31893,
+          28076,
+          29630,
+          33161,
+          31187,
+          25904,
+          28730,
+          29900,
+          26769
+        ],
+        "scripted": [
+          6181,
+          9990,
+          7431,
+          8034,
+          6328,
+          7377,
+          7739,
+          8648,
+          6881,
+          8317,
+          8930,
+          7111,
+          6730,
+          7377,
+          8906,
+          7156
+        ]
+      },
+      "minimum_far_pixels_per_district": 256,
+      "minimum_native_air_pixels_per_source": 4,
+      "minimum_rear_pixels_per_district": 128,
+      "pixel_channel_threshold": 4,
+      "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)"
+    },
+    "log": {
+      "path": "/workspace/scratch/0e6965f1b503/validation-pr185/render/test_deepworks_render.log",
+      "bytes": 3413,
+      "sha256": "da4cfe0fc574bffa11d976cf2fd778f2bfb9084fe07ccc23fa9ecac944687438"
+    },
+    "images": [
+      {
+        "path": "/workspace/scratch/0e6965f1b503/validation-pr185/render/pixels/atmosphere-a1.png",
+        "bytes": 2316182,
+        "sha256": "026c323e6daa3c325f840cd2ce7077454d10ce3039485d41b83535b1aee608eb"
+      },
+      {
+        "path": "/workspace/scratch/0e6965f1b503/validation-pr185/render/pixels/atmosphere-b4.png",
+        "bytes": 2316486,
+        "sha256": "e32d16d0d0e60ff0873e62f7287d6f9e0ef75286a04e7a6f711cfe515f96d9d7"
+      },
+      {
+        "path": "/workspace/scratch/0e6965f1b503/validation-pr185/render/pixels/atmosphere-d4.png",
+        "bytes": 2317372,
+        "sha256": "966a1406c1431d252ed8cefabd84462e0262544b290d7b8c1beb89ed4ab12997"
+      },
+      {
+        "path": "/workspace/scratch/0e6965f1b503/validation-pr185/render/pixels/hud-1280x720.png",
+        "bytes": 936423,
+        "sha256": "d014b97a4dd53e5f08b1ee63a6c8246e0139d7d258621ac011939a3308229d79"
+      },
+      {
+        "path": "/workspace/scratch/0e6965f1b503/validation-pr185/render/pixels/hud-1600x900.png",
+        "bytes": 1498453,
+        "sha256": "fcbee3e531d0a2a72a41963a42a7e995f5dfc14086bb9f7b1d00d6d8e47e19d4"
+      },
+      {
+        "path": "/workspace/scratch/0e6965f1b503/validation-pr185/render/pixels/overview-all-layers.png",
+        "bytes": 2315962,
+        "sha256": "606ab635e84db3332bba775ecdf88186be8dc5e7e5276fc96a14b164aa35fa8e"
+      },
+      {
+        "path": "/workspace/scratch/0e6965f1b503/validation-pr185/render/pixels/overview-without-background.png",
+        "bytes": 1604850,
+        "sha256": "49fbf5af1e43fd52da4b6e58acc42ab7df732bd8d5b1b3d714db95d58b28ea29"
+      },
+      {
+        "path": "/workspace/scratch/0e6965f1b503/validation-pr185/render/pixels/overview-without-scripted.png",
+        "bytes": 2224171,
+        "sha256": "1fb8733dc00ea029d1dbae9250999e4bc96baadcdc31169fa7834daca66d3863"
+      }
+    ],
+    "environment": {
+      "DISPLAY": ":111",
+      "LIBGL_ALWAYS_SOFTWARE": "1",
+      "audio_driver": "Dummy",
+      "rendering_method": "gl_compatibility",
+      "display_driver": "x11"
+    },
+    "xvfb": {
+      "retained_local_relocation": {
+        "original": "/tmp/grey-area-51-validation/x11/usr/bin/Xvfb",
+        "original_sha256": "2c7f5a9534410fed5092d782a69ca7ffd9fce80e98b81ffe4944d703dd11d3b1",
+        "local": "/tmp/grey-area-51-validation/x11/Xvfb-local",
+        "local_sha256": "e7904b6126798c6c666534a2a7ca447e9b8c96ce189201563704f8c8f5a1ae38",
+        "change": "One embedded /usr/bin directory string relocated to /tmp/g51, which contains a symlink to the extracted xkbcomp. The unmodified packaged Xvfb is retained.",
+        "reason": "Stock Xvfb failed to activate its keyboard because /usr/bin/xkbcomp is absent; original failure log retained.",
+        "original_failure_log": "/tmp/grey-area-51-validation/logs/xvfb-original-attempt.log"
+      },
+      "initial_sandbox_attempt": "Rejected environment startup: sandbox prevented local X11 sockets; scoped approved local render execution passed",
+      "initial_log": {
+        "path": "/workspace/scratch/0e6965f1b503/validation-pr185/render/xvfb-sandbox-attempt.log",
+        "bytes": 524,
+        "sha256": "74e8461078183718a9a717853df1b07b559af375384fd8ffb06637640316acd5"
+      }
+    }
+  },
+  "documentation": {
+    "docs": {
+      "status": "passed",
+      "documents": 93,
+      "navigation_link_documents": 8,
+      "canonical_claims": 178,
+      "local_links": 1910,
+      "heading_anchors": 147,
+      "questions": 32,
+      "errors": [],
+      "warnings": [],
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ]
+    },
+    "source_and_runtime": {
+      "status": "passed",
+      "scope": "current source/documentation and artifact identity",
+      "documentation": {
+        "status": "passed",
+        "documents": 93,
+        "navigation_link_documents": 8,
+        "canonical_claims": 178,
+        "local_links": 1910,
+        "heading_anchors": 147,
+        "questions": 32,
+        "errors": [],
+        "warnings": [],
+        "limitations": [
+          "Does not verify source semantics or runtime claims",
+          "Does not fetch external URLs",
+          "Does not rewrite or reattest historical audits",
+          "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+        ]
+      },
+      "materialized_runtime_files": [
+        "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+      ],
+      "unmaterialized_runtime_files": [],
+      "errors": [],
+      "limitations": [
+        "Identity is not execution evidence; read the dated runtime acceptance report",
+        "Retained vendor binaries and platform execution have separate dated provenance",
+        "Historical M11 integrity is checked separately by check_m11_consistency.py"
+      ]
+    },
+    "historical_m11": {
+      "status": "passed",
+      "scope": "historical M11 integrity; no current runtime acceptance",
+      "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+      "records_checked": 18,
+      "source_hashes_checked": 28,
+      "compare_working_tree": false,
+      "working_tree_differences": [],
+      "errors": []
+    },
+    "retrieval_frozen": {
+      "questions": 32,
+      "canonical_hit_at_1": 21,
+      "canonical_hit_at_k": 32,
+      "mrr_at_k": 0.7953,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "retrieval_supplementary": {
+      "questions": 79,
+      "canonical_hit_at_1": 62,
+      "canonical_hit_at_k": 79,
+      "mrr_at_k": 0.8728,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "companion_inputs": {
+      "revision": "6a58311982941b75f46e22109a0829e5acb83c7e",
+      "files": [
+        {
+          "path": "SOURCE-PROVENANCE.json",
+          "sha256": "49b86e67fa7b753f7e0904923a66192aed0348c280a46ef6750c0392e193f30d",
+          "bytes": 74804
+        },
+        {
+          "path": "docs/WEB_THREADING.md",
+          "sha256": "85b13f5d943ad6017fa4fa264bf8f9a54c9d49f80e40697a770d0524a3b9cd34",
+          "bytes": 540
+        },
+        {
+          "path": "tools/dev.py",
+          "sha256": "e9aaee35d135012f24b030acccb25d76f0e38893c58ff019138880f73f50f8ea",
+          "bytes": 10390
+        },
+        {
+          "path": "docs/LOCAL_DEVELOPMENT.md",
+          "sha256": "fafc00052588507c63380fbe312b875345699a5a145a4135ea81de461d0ab95d",
+          "bytes": 6224
+        },
+        {
+          "path": "validation/browser-results.json",
+          "sha256": "de154dd896b78384069be360c0f9424efa2ade182e6729eca6a242fcf9839839",
+          "bytes": 5978
+        }
+      ]
+    },
+    "lfs_fsck": "passed; Git LFS fsck OK",
+    "whitespace": "git diff --check passed"
+  },
+  "independent_reviews": {
+    "shared_depth": "No blocker: admitted dimensions, weather/guard arithmetic, transforms, packet generation and retained Strata callers",
+    "completion_delta": "No blocker: typed-array repair, explicit helper completion/nonempty oracles, 32-ID roster, real Stone chute and UI focus ownership"
+  },
+  "hosted_original_head": {
+    "documentation": {
+      "run_id": 39352428591,
+      "conclusion": "success"
+    },
+    "native": {
+      "run_id": 39352428486,
+      "conclusion": "success"
+    },
+    "godot": {
+      "run_id": 39352428502,
+      "conclusion": "failure",
+      "failing_jobs": [
+        118399492252,
+        118401704104
+      ],
+      "cause": "Same reaction helper typed-array error on Windows and Linux"
+    }
+  },
+  "hosted_final_candidate": "Required exact-head checks and merge disposition recorded on PR #185 after publication.",
+  "limits": [
+    "New local native/controller/actual rendered results are Linux-specific.",
+    "Actual Windows headless and fresh cross-platform builds are separate hosted gates.",
+    "No new Windows graphical, browser, hardware-GPU, target-PC performance or actor-traversal acceptance.",
+    "Historical images retain original source/recipe identity; no image has been reattested to changed source."
+  ]
+}

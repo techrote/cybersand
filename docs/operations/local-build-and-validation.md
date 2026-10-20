@@ -619,6 +619,16 @@ suffixes require a display and cannot pass by skipping headless pixels. The
 Windows lane separately discovers the applicable headless cases. Discovery
 does not establish that either platform executed this source successfully.
 
+Reaction acceptance additionally requires all 32 expected district/plane
+identities to complete and pass their mechanism checks. Check both the process
+exit status and the complete log for `SCRIPT ERROR:` / `ERROR:`. The original
+626-plus-one summary was invalid despite exit 0; the
+[PR #185 correction](../audits/2026-10-20-deepworks-pr185-completion.md) records
+the missed transport assertions and repaired rear Stone chute. When saving
+`CYBERSAND_DEEPWORKS_REACTION_REPORT`, require `verified_exhibit_count == 32`
+and every record's `oracle_completed`, positive `oracle_assertions` and
+`verified` result in addition to zero failures.
+
 [`capture_deepworks.gd`](../../godot/tools/capture_deepworks.gd) creates review
 images and a manifest from the actual renderer; its invocation and optional
 `--quick` scope are in the [capture guide](deepworks-exhibition.md#reproduce-images-and-verify-changes).

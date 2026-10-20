@@ -12,6 +12,11 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## Deepworks exhibition and depth dimensions — 2026-10-20
 
+The [PR #185 completion record](../audits/2026-10-20-deepworks-pr185-completion.md)
+corrects the original native-reaction acceptance. Do not reuse its 626-plus-one
+pass: two helper script errors hid eight A1 transport checks. Completion requires
+32 explicit mechanism receipts, a working rear Stone chute and error-free logs.
+
 Start with the [Deepworks guide](deepworks-exhibition.md) for the separate
 1024 × 1024 four-plane scene, sixteen districts, paired native apparatus,
 bounded source programme and camera/painting controls. Read the

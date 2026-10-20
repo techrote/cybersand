@@ -101,6 +101,11 @@ including competing reactions and later consumption of products.
 
 Source: the sixteen apparatus functions and `_exhibit()` records in
 [`deepworks_exhibits.gd`](../../godot/scripts/exhibition/deepworks_exhibits.gd).
+The A1 rear Stone feed falls through an open chute beside the Gabion; its native
+kernel does not spread sideways off a shelf. The
+[completion audit](../audits/2026-10-20-deepworks-pr185-completion.md) records
+this repair and supersedes the original reaction-pass claim. Retained captures
+keep their original recipe identity; post-tick images predate the feed repair.
 These demonstrations do not add pressure, thermodynamic or material rules to
 the native engine. Their canonical behavior remains in the
 [material kernels](../systems/materials-and-rule-kernels.md) and
@@ -206,6 +211,9 @@ Wall. Pointer coordinates use the selected plane's inverse parallax transform,
 so rear painting and the foreground brush target their own visible native cells.
 UI interaction, modal menus and focus loss release painting/panning input; a
 fresh press is required after those boundaries.
+Arrow keys continue adjusting a focused brush slider without moving the camera.
+Click the map to return keyboard focus to it, then release and freshly press
+any movement key held while using a control.
 
 Source: [`deepworks.gd` input, UI and focus handling](../../godot/scripts/exhibition/deepworks.gd)
 and [`CyberDepthCompositor.screen_to_layer()`](../../godot/scripts/depth/depth_compositor.gd).

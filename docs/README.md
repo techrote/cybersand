@@ -20,6 +20,8 @@ For **Deepworks**, start with the [exhibition guide](operations/deepworks-exhibi
 one 1024 × 1024 map, sixteen themed districts, 32 foreground/rear native exhibits,
 four full-size material planes, source schedules, free-camera painting and
 whole-map replay. `--deepworks` opens its separate scene from the desktop launcher.
+The [PR #185 completion record](audits/2026-10-20-deepworks-pr185-completion.md)
+owns the reaction-evidence correction and final hosted acceptance.
 
 For **Blacksite Nine**, start with the
 [connected-complex guide](operations/blacksite-nine-demo.md): Shift+F11 entry,
