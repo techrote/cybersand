@@ -77,11 +77,16 @@ and clearance, then reserve it during room construction. Treat a seam as a
 shared feature with two approaches: the exit from one district and the arrival
 into the next.
 
-For each connection, record the relevant plane, adjoining districts, opening,
-floor or shaft continuity, and nearby landmark. A pipe can continue across a
+For each connection, record the relevant plane, adjoining districts, a shared
+world-space opening with its clearance, floor or shaft continuity, and nearby
+landmark. A pipe can continue across a
 boundary while its clamps, lighting and surrounding masonry change with the
 district. An approach should give the visitor a reason to proceed and enough
-space to understand the destination.
+space to understand the destination. Reuse a structural grammar while varying
+major silhouettes and room functions. Place fine service fittings at readable
+viewing scales and leave quiet surfaces around active apparatus. If adding
+procedural variation, record seeds or stable district/world indices and retain
+deterministic iteration; keep route and apparatus masks authoritative afterward.
 
 **Current reference:** `CyberDeepworksMap.build()` composes architecture and
 apparatus, then carves foreground circulation last.
@@ -273,36 +278,60 @@ feeder collar and neighboring machinery. Check the classifier through the
 foreground opening, then in rear-focused view. Add fine fittings only after
 both views expose the downward movement and collection bay.
 
-## Iterate framing, contrast and atmosphere
+## Review visual polish and rendered multilayer coverage
 
-**Recommended action:** review a matrix of views rather than a single attractive
-screenshot: whole map, every district, apparatus close-ups, isolated planes and
-the final combined image. Include both the pristine state and meaningful later
-native ticks.
+**Recommended review:** a polished multilayer map needs readable composition,
+visible contributions from its intended planes and controls that preserve access
+to the scene. Four allocated worlds still need visual review and rendered tests
+to establish what the visitor can actually see and use.
 
-Allocate atmosphere deliberately across the map. Complete coverage means each
-district has an authored role in every intended plane; it does not require the
-same density of scenery or fog everywhere. Keep principal motion and reaction
-products legible.
+Compare matched atlas, district and apparatus views, isolated planes, the final
+composite and HUD-visible views. Record viewport, camera position/zoom, layer
+visibility, each plane's native tick and material-animation state. Inspect the
+paused initial arrangement and meaningful running or later states, including
+edge camera positions. Review silhouettes, contrast, negative space and
+purposeful close detail: the main machinery, active specimen and observation
+region should remain legible at their intended scales.
 
-**Current reference:** `_effects()` supplies sparse initial wisps;
-`CyberDeepworksExhibits._atmosphere()` adds local sources and cleanup.
-The latter places service risers in visible circulation areas. `_background()`
-and `_far_shadow()` provide distant architecture and quieter surfaces.
-See the
-[architecture](../../godot/scripts/exhibition/deepworks_architecture.gd)
-and [apparatus source](../../godot/scripts/exhibition/deepworks_exhibits.gd).
+**Current test example:** [`test_deepworks_render.gd`](../../godot/tests/test_deepworks_render.gd)
+uses the production compositor, holds simulation state and freezes material
+animation. It captures actual pixels with layers visible and hidden; restoring
+rear/far visibility must reproduce the original pixels. These matched comparisons
+isolate a plane's visible contribution from simulation or animation drift.
 
-The reference
-[`test_deepworks_render.gd`](../../godot/tests/test_deepworks_render.gd)
-compares actual pixels with layers hidden and visible. This catches scenery
-that exists in native storage but contributes nothing to the final view.
-It also checks that the HUD leaves the map visible.
+Require independent rear and far witnesses in every intended district, including
+far edges and quiet regions. For atmosphere, the current fixture follows each
+local source's first native pulse and compares visible/hidden effects at the
+same published tick. Its witness masks use actual nonempty, non-Wall effects
+cells near that source, so static riser walls and unrelated wisps cannot satisfy
+the check. Define a new map's regions and thresholds from its own geometry before
+accepting results.
 
-After changing geometry or source placement, collect source-matched views.
-Historical captures retain their original identity; the
+Review interaction alongside the image. The current rendered fixture checks HUD
+overlap and useful visible map area at two window sizes. The separate
+[controller tests](../../godot/tests/test_deepworks_controller.gd) exercise
+camera/paint transforms and input ownership. Preserve keyboard slider adjustment
+while focused controls block world movement or painting; release held input on
+focus changes and require a fresh pan press when returning. Include mid-drag
+cancellation and a positive check that fresh input works afterward.
+
+Headless structure, native-mechanism and controller checks cannot establish these
+rendered pixels. The Deepworks render fixture requires an actual display;
+record its renderer and platform, and keep target-GPU performance claims within
+their separately measured scope.
+
+Author atmosphere around these witnesses:
+[`_effects()`](../../godot/scripts/exhibition/deepworks_architecture.gd) supplies
+sparse initial wisps, while
+[`_atmosphere()`](../../godot/scripts/exhibition/deepworks_exhibits.gd) adds local
+sources and cleanup. Preserve quiet backgrounds and clear specimen sightlines.
+
+After geometry or source changes, collect source-matched views. Retain older
+captures under their original identity, as the
 [Deepworks guide](deepworks-exhibition.md#districts-and-their-paired-exhibits)
-explicitly qualifies images predating the Stone-feed repair.
+does for images predating the Stone-feed repair. Follow
+[validation and acceptance](map-authoring-validation-and-acceptance.md)
+for graphical commands, evidence and final review.
 
 ## Resolve common polish failures and hand off the result
 

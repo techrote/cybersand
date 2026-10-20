@@ -25,6 +25,7 @@ continues to own runtime and publication semantics.
 
 ## Contents
 
+- [Compose depth across every district](#compose-depth-across-every-district) — Assign each plane a visible purpose and preserve its native, rendering and review boundaries.
 - [Choose the existing integration seams](#choose-the-existing-integration-seams) — Give the new map explicit builders, scene ownership and launcher routing.
 - [Assemble deterministic layer definitions](#assemble-deterministic-layer-definitions) — Combine scenery and apparatus without closing passages or hiding rear views.
 - [Install the worlds through their owner](#install-the-worlds-through-their-owner) — Configure dimensions, clocks, reset behavior and copied publications.
@@ -33,6 +34,49 @@ continues to own runtime and publication semantics.
 - [Align the camera, surfaces and input](#align-the-camera-surfaces-and-input) — Keep full-map coverage, layer transforms and pointer targeting coherent.
 - [Make the controls part of the finished map](#make-the-controls-part-of-the-finished-map) — Preserve focus ownership and leave useful space for the scene.
 - [Register independent checks and hand off](#register-independent-checks-and-hand-off) — Give the new map its own tests, evidence identity and acceptance scope.
+
+## Compose depth across every district
+
+For a four-plane exhibition, give each district foreground reactions to inspect,
+rear machinery visible through deliberate apertures, localized atmosphere and
+distant scenery that establishes scale. Plan their combined composition before
+filling the layers with detail.
+
+| Plane | Visible purpose | Deepworks reference target |
+|---|---|---:|
+| `play` | Foreground apparatus, reaction vessels and the main architectural frame. | 30 Hz |
+| `scripted` | Working rear machinery and native reactions revealed through foreground openings. | 20 Hz |
+| `effects` | Contained atmospheric material around vents, chambers and local activity. | 15 Hz |
+| `background` | Quiet distant silhouettes and architectural continuity. | 0 Hz |
+
+[Deepworks](deepworks-exhibition.md) gives these four independent native worlds
+the complete 1024 × 1024 map. Its rates are reference choices; another map
+must choose its own supported extent and measured budget. Cells do not
+physically cross between worlds. Only supported, explicitly submitted
+interlayer routes project bounded edits; visual overlap and parallax do not
+forward native reactions. Test each intended route against the worlds it
+is allowed to change.
+
+Keep foreground apertures aligned with the intended rear specimens. Use
+localized atmospheric sources and drains so motion supports the apparatus
+without obscuring it. Give distant scenery simpler massing and quieter
+contrast, while preserving visible coverage in every district. Empty space
+can serve a route or sightline; complete coverage does not require filling
+every cell.
+
+At integration, pass the same accepted authored dimensions to the runtime and
+compositor. Preserve each surface's independent `World2D`, pair rendering and
+pointer transforms for scaled/parallax planes, and reject prior-generation
+publications after reset. These are requirements of the
+[depth contract](../systems/depth-layers-and-parallax.md).
+
+Review isolated layers and the combined rendered pixels at overview and
+district scales, including map edges. Freeze simulation and material animation
+for matched visibility comparisons. Check visible rear and distant
+contributions and actual atmospheric material in each district; a populated
+texture or static containment box is insufficient. Follow
+[visual acceptance](map-authoring-validation-and-acceptance.md) for the
+production-scene checks.
 
 ## Choose the existing integration seams
 
@@ -64,6 +108,10 @@ For a direct-launch argument, follow its first-launch
 reapply the argument and trap the user in the map. Keep the shared
 [`FeatureNavigation`](../../godot/scripts/feature_navigation.gd) F2 return path.
 The project still opens the feature launcher by default.
+
+Give the new map its own fixtures and direct-launch/return coverage; existing
+Deepworks tests still preload Deepworks. Confirm test discovery and actual
+execution using [independent checks](#register-independent-checks-and-hand-off).
 
 This exhibition integration does not create the ordinary actor session. Actor
 traversal or an F5 picker requires its own applicable integration work.
@@ -133,10 +181,11 @@ if not runtime.configure_rates({
     return false
 ```
 
-For another authored size, the shared API is
-`runtime.reset(definitions, authored_size)`. Pass the size explicitly: omission
-uses Strata's 640 × 360 default. Each axis accepts 8–1024 independently.
-Deepworks programme installation instead uses its fixed 1024-square size.
+For another authored size, use the shared
+`CyberDepthLayerRuntime.reset(definitions, authored_size)` contract and pass
+the size explicitly. The shared class defaults to 640 × 360; the Deepworks
+override defaults to 1024 × 1024, and its programme installation uses that
+fixed size. Each axis accepts 8–1024 independently.
 
 | Plane | Deepworks target | Authoring consequence |
 |---|---:|---|
@@ -210,7 +259,8 @@ so overlapping edits require an intentional ordering.
 A drain is an ordinary programme event whose material is `Cell.EMPTY`.
 Deepworks pairs repeating atmospheric sources with contained effects-plane
 drains, including condensate cleanup where needed. The admitted effects
-materials are Empty, Water, Dust, Steam, Spark and Smoke.
+materials are Empty, Water, Dust, Steam, Spark and Smoke. Keep atmospheric
+sources, native containment walls and cleanup drains in the same target plane.
 
 Prefer finite chemical supplies so products remain inspectable. The validator
 permits `repeat: 0` on dynamic targets, but Deepworks uses indefinite schedules
@@ -220,7 +270,9 @@ does not replay missed opportunities.
 
 Emit reactants and let native rules produce the result. Keep observation regions
 away from source footprints and drains, and identify a measurable mechanism
-before scaling the apparatus across the map.
+before scaling the apparatus across the map. Source admission or directly
+placed products cannot establish the mechanism; require observations of the
+native result.
 
 ## Separate mechanism from decorative purpose
 

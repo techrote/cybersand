@@ -271,8 +271,10 @@ Declare and record a capture deadline appropriate to the selected scope.
 The [capture helper](../../godot/tools/capture_deepworks.gd) rejects headless
 execution and failed image/manifest writes. Its `--quick` mode produces the
 controls image, a 2048-square atlas and sixteen exact 512-square atlas crops:
-18 images. The full run adds detail views, four isolated planes, a later atlas
-and reaction details: 34 images.
+18 images. The atlas depicts a 1024 × 1024 native map at two image pixels per
+cell; its image resolution does not enlarge the simulation. The full run adds
+detail views, four isolated planes, a later atlas and reaction details:
+34 images.
 
 The later composition follows **240 manual ticks of each dynamic plane**.
 It is a different clock from 240 frames of independently paced normal play.
@@ -282,8 +284,10 @@ with each comparison.
 Read `capture-manifest.json`, verify every listed file's dimensions and
 SHA-256, and inspect the images. Exact district crops should agree with their
 atlas regions. The manifest records the recipe, caller-supplied source
-revision, engine, renderer, runtime statistics and capture hashes. Retain
-native-library and changed-script hashes separately.
+revision, engine, renderer, runtime statistics and capture hashes. The helper
+does not independently verify the supplied revision string against Git or the
+loaded code. Verify source identity separately and retain native-library and
+changed-script hashes with it.
 
 A new map needs a capture helper targeting its own production scene and
 coverage. Reuse the procedure while replacing the scene, district roster and
@@ -296,6 +300,13 @@ preserves old-feed post-tick images as historical observations while explicitly
 superseding their acceptance claim.
 
 ## Complete documentation, retrieval and hosted acceptance
+
+Publish a recoverable candidate with controls, source-backed mechanisms,
+completed exhibit results, captures, negative controls and scoped runtime evidence.
+Implementation acceptance requires exact-head Documentation/provenance and every
+applicable Native, GDExtension/Godot and apparatus gate under
+[repository policy](../../AGENTS.md). Inspect actual case execution and complete
+logs as well as job conclusions.
 
 Apply the [documentation maintenance contract](documentation-maintenance.md).
 Update canonical scene, control, configuration or subsystem claims first.
