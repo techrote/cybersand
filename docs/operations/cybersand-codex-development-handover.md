@@ -4,11 +4,31 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-20
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
 # Development handover
+
+## Deepworks exhibition and depth dimensions — 2026-10-20
+
+Start with the [Deepworks guide](deepworks-exhibition.md) for the separate
+1024 × 1024 four-plane scene, sixteen districts, paired native apparatus,
+bounded source programme and camera/painting controls. Read the
+[depth contract](../systems/depth-layers-and-parallax.md) before modifying its
+parameterized owner, material surfaces, view transforms or generation checks.
+Strata Theatre remains 640 × 360 by default; the shared APIs admit each axis
+from 8 through 1024. Every Deepworks plane spans the complete map, with native
+rates 30/20/15/0 Hz and a frozen distant background.
+
+Reaction feeds are finite; whole-map R reset preserves the camera, then P
+replays the selected apparatus. A tour changes only the view while every
+district continues simulating. This host owns no ordinary actor session and
+adds no native ABI, material-kernel, save or replay changes. The
+[dated audit](../audits/2026-10-20-deepworks-exhibition.md) owns source/runtime
+identity, preserved failures, captures and platform-qualified acceptance;
+the [build guide](local-build-and-validation.md#deepworks-and-depth-dimensions)
+routes the focused checks.
 
 ## Physical usable integration checkpoint — 2026-10-19
 

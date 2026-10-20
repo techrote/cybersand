@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-20
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
@@ -70,6 +70,19 @@ an independent scalable-soliding programme, not the sole remaining reason for #8
 Historical completion records remain immutable.
 
 ## Current implementation map
+
+**Layered exhibition source, 2026-10-20:**
+[Deepworks](../operations/deepworks-exhibition.md) adds one 1024 × 1024
+composition with sixteen districts, 32 foreground/rear native exhibits and all
+51 MAT-002 building materials. Four independent full-size worlds run at
+30/20/15/0 Hz; the true distant background is frozen. Finite reaction sources
+preserve products, while the camera/painting viewer supports whole-map reset,
+apparatus focus and a guided tour. It does not install an ordinary actor session.
+The shared [depth APIs](../systems/depth-layers-and-parallax.md) now admit each
+axis from 8 through 1024, including non-square worlds, while preserving Strata
+Theatre's 640 × 360 default. Native ABI and material rules are unchanged.
+Runtime and actual rendered acceptance remain separately scoped by the
+[dated exhibition audit](../audits/2026-10-20-deepworks-exhibition.md).
 
 **Connected scene content, 2026-10-18:**
 [Blacksite Nine](../operations/blacksite-nine-demo.md) composes nine 320 × 320

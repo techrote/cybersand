@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-20
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -15,6 +15,11 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 Choose all 41 [articulated Rapier actors](systems/physical-actor-rigs.md) with F5 in the sandbox and exploratory maps, using keyboard, local scripted or external-policy control. Sampled references and the initial hull arms remain available; [the physical actor programme](operations/physical-actor-programme.md) preserves owner intent and integration scope.
 
 Layering, quantized relief and Strata Theatre: [depth prototype contract](systems/depth-layers-and-parallax.md).
+
+For **Deepworks**, start with the [exhibition guide](operations/deepworks-exhibition.md):
+one 1024 × 1024 map, sixteen themed districts, 32 foreground/rear native exhibits,
+four full-size material planes, source schedules, free-camera painting and
+whole-map replay. `--deepworks` opens its separate scene from the desktop launcher.
 
 For **Blacksite Nine**, start with the
 [connected-complex guide](operations/blacksite-nine-demo.md): Shift+F11 entry,
@@ -27,6 +32,7 @@ moving Above/Below, choosing viewpoints, editing native cells and capturing imag
 
 | Need | Start here |
 |---|---|
+| Explore Deepworks, replay a foreground/rear reaction or understand complete multilayer coverage | [Exhibition guide](operations/deepworks-exhibition.md), [depth contract](systems/depth-layers-and-parallax.md), and [dated source/runtime evidence](audits/2026-10-20-deepworks-exhibition.md) |
 | Review MAT-002 save/diagnostic integration, real rendered tests and matching runtime publication | [Building catalogue](systems/building-material-catalogue.md), [test acceptance](operations/testing-validation-and-replay.md#ci-execution-sharding), and [PR review evidence](audits/2026-10-19-mat002-review-and-validation.md) |
 | Generate and blend procedural chunk themes, paint broad guidance, impose exact overrides or add structured modules | [Procedural generation contract and workbench](systems/procedural-world-generation.md), then [GEN-001 source and validation evidence](audits/2026-10-18-gen001-procedural-generation.md) |
 | Compose Hilbert/Morton or noise fields, sidechain masks, sculpt with initial context, author aggregate materials or inspect modifier influence | [Generation fields and masked modifiers](systems/procedural-generation-fields-and-modifiers.md), then [GEN-002 source and validation evidence](audits/2026-10-18-gen002-fields-and-aggregates.md) |

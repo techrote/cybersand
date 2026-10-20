@@ -4,7 +4,7 @@ status: Approved design
 document-kind: design
 scope: Owner-authorized ACT-004 integration, retained Blacksite hull comparison and preserved 2026-10-18 actor preferences; not broad physics acceptance
 canonical-for: [physical-actor-programme, combined-feature-launcher, physical-blacksite-comparison]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-20
 related-documents: [blacksite-nine-demo.md, ../systems/actor-rigs.md, ../systems/thunderbowl-control-reference.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/product-intent-and-priorities.md]
 ---
 
@@ -73,11 +73,14 @@ scenario-install handling and `actor_prototype_panel.gd` physics labels.
 **Current implementation:** the desktop project's default scene is
 [`feature_launcher.tscn`](../../godot/feature_launcher.tscn). It opens Blacksite
 Nine, the four showcase districts, the ordinary actor/material sandbox,
-sampled or physical Thunderbowl, the separate generation workbench or Strata Theatre. F2 closes the current session
+sampled or physical Thunderbowl, the separate generation workbench, Strata
+Theatre or the [Deepworks exhibition](deepworks-exhibition.md). F2 closes the current session
 and returns to the launcher; unsaved edits are discarded. Explicit `main.tscn`,
 `-- --blacksite-nine` and `-- --showcase` entry points remain available.
 The native generation workbench remains an isolated authoring preview, without
 live material simulation or attachment to the sandbox's World.
+Deepworks uses its own four-world native material owner and camera/painting
+controls; it has no ordinary physical actor session or F5 picker.
 
 The launcher also offers four complete, reset-scoped definitions:
 `experimental/blacksite/sampled-baseline`, `sampled-burial-safe`, `barrel` and
