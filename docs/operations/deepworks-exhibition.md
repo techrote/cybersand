@@ -10,6 +10,14 @@ related-documents: [../systems/depth-layers-and-parallax.md, ../systems/building
 
 # Deepworks — the exhibition below
 
+Building another map? Use the
+[map-authoring agent walkthrough](map-authoring-walkthrough.md) for the complete
+process, with focused chapters on [design and materials](map-authoring-design-and-materials.md),
+[native layers and programmes](map-authoring-native-layers-and-programmes.md),
+and [validation and capture evidence](map-authoring-validation-and-acceptance.md).
+This page continues to own Deepworks' operating instructions and reference
+configuration.
+
 ## What is the map?
 
 **Current source:** Deepworks is one **1024 × 1024 total map**, divided into a

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "frozen_date": "2026-09-08",
-  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair. ACT01-ACT03 cover provisional actor capabilities, player/policy input lifetime and bounded-work limits. SCENE01/SCENE02 cover Neon Reliquary entry and view controls, and the four-district descent with explicit scene-state boundaries. ACT04-ACT09 cover the 29-rig sets, parametric input, consumed-action identity, fictional personas, bounded tool/rope authority and SetA compatibility. SCENE03 covers the connected Blacksite Nine route, camera-only district views, shared-world continuity and whole-complex reset. USABLE01 covers the separate 32-item actor equipment catalogue, ownership and work limits. ACT-005 USABLE02-USABLE04 add independent physical equipment lifetime/admission, real processor lifecycle/stock and physical usable course questions. MAT03, TEST01 and TEST02 cover the 2026-10-19 catalogue integration, required rendered-test acceptance and CLI corrections. TEST03 covers actual retained-DLL Windows execution, current native source identity and applicable test scope. SCENE04 and DEP02 cover the 2026-10-20 Deepworks map/replay boundaries and parameterized depth dimensions/publication admission.",
+  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair. ACT01-ACT03 cover provisional actor capabilities, player/policy input lifetime and bounded-work limits. SCENE01/SCENE02 cover Neon Reliquary entry and view controls, and the four-district descent with explicit scene-state boundaries. ACT04-ACT09 cover the 29-rig sets, parametric input, consumed-action identity, fictional personas, bounded tool/rope authority and SetA compatibility. SCENE03 covers the connected Blacksite Nine route, camera-only district views, shared-world continuity and whole-complex reset. USABLE01 covers the separate 32-item actor equipment catalogue, ownership and work limits. ACT-005 USABLE02-USABLE04 add independent physical equipment lifetime/admission, real processor lifecycle/stock and physical usable course questions. MAT03, TEST01 and TEST02 cover the 2026-10-19 catalogue integration, required rendered-test acceptance and CLI corrections. TEST03 covers actual retained-DLL Windows execution, current native source identity and applicable test scope. SCENE04 and DEP02 cover the 2026-10-20 Deepworks map/replay boundaries and parameterized depth dimensions/publication admission. MAPGUIDE01-MAPGUIDE10 add independent questions for the recommended polished-map authoring workflow, design/material roles, native integration, bounded programmes, visible composition, mechanism acceptance and capture/RAG evidence.",
   "questions": [
     {
       "id": "C05",
@@ -1368,6 +1368,215 @@
         "../godot/scripts/depth/depth_layer_surface.gd",
         "../godot/tests/test_depth_dimensions.gd",
         "../godot/tests/test_depth_compositor.gd"
+      ]
+    },
+    {
+      "id": "MAPGUIDE01",
+      "query": "How should an agent take a new polished CyberSand map from an open-ended brief to a finished review PR?",
+      "canonical": [
+        "operations/map-authoring-walkthrough.md"
+      ],
+      "facts": [
+        "Record total native extent, experience, visual direction, connectivity, layer coverage, controls, platform scope and requested delivery endpoint against the inspected source.",
+        "Recommended sequence: plan routes and material roles, finish one representative district, expand the full composition, complete depth and bounded programmes, polish real views, validate and publish a reproducible handoff.",
+        "Deepworks is a reference configuration; a new map does not inherit its dimensions, actor scope or validation merely by following this guide.",
+        "The reusable work packet names deliverables, source authority, exclusive file ownership, milestones, progress records and remaining gates.",
+        "An instruction to open a review PR leaves it open; merge only when that endpoint is part of the authorized task."
+      ],
+      "sources": [
+        "operations/map-authoring-walkthrough.md",
+        "../AGENTS.md",
+        "operations/deepworks-exhibition.md"
+      ]
+    },
+    {
+      "id": "MAPGUIDE02",
+      "query": "How do I design adjoining map districts that look distinct while preserving real passages and a coherent visual style?",
+      "canonical": [
+        "operations/map-authoring-design-and-materials.md"
+      ],
+      "facts": [
+        "Plan district purpose, silhouettes, material roles, voids, transitions and viewing apertures before adding fine detail.",
+        "Reserve reciprocal connections in shared world coordinates and inspect both approaches; Deepworks composes apparatus then carves circulation last.",
+        "Check the final native cells as well as rendered seam continuity; a decorative doorway does not establish native clearance or actor traversal.",
+        "Reuse a structural grammar while varying major forms and function, then add service details and quiet surfaces at appropriate viewing scales.",
+        "Added procedural variation should be reproducible and respect reserved route and apparatus masks."
+      ],
+      "sources": [
+        "operations/map-authoring-design-and-materials.md",
+        "../godot/scripts/exhibition/deepworks_map.gd::build",
+        "../godot/scripts/exhibition/deepworks_architecture.gd",
+        "../godot/tests/test_deepworks.gd"
+      ]
+    },
+    {
+      "id": "MAPGUIDE03",
+      "query": "When authoring a map, how should I select building materials for scenery and working exhibits without assuming properties from their names?",
+      "canonical": [
+        "operations/map-authoring-design-and-materials.md"
+      ],
+      "facts": [
+        "Create separate roles for main construction, inset finish, visual accents, reactive specimens, actual containment and quiet backgrounds.",
+        "Read the current native catalogue and kernels before selecting reaction or structural materials; appearance and names do not prove behavior.",
+        "Deepworks uses actual Metal electrodes with Brass casing, real Wood/Oak Timber for Fungus, and Wall containment beneath decorative shells.",
+        "The reference uses all 51 MAT-002 building materials because its brief calls for catalogue coverage; that count is not mandatory for another map.",
+        "Fallback static appearance does not qualify native combustion or pair reactions."
+      ],
+      "sources": [
+        "operations/map-authoring-design-and-materials.md",
+        "systems/building-material-catalogue.md",
+        "../godot/scripts/exhibition/deepworks_exhibits.gd"
+      ]
+    },
+    {
+      "id": "MAPGUIDE04",
+      "query": "For a new map, can I resize Deepworks by changing SIZE alone, and how do I connect its builders, scheduler, launcher and return controls?",
+      "canonical": [
+        "operations/map-authoring-native-layers-and-programmes.md"
+      ],
+      "facts": [
+        "Keep separate content/host identities and avoid duplicate class_name declarations; reuse shared depth components within their contracts.",
+        "Deepworks has fixed 1024-square, sixteen-district and 256-square assumptions across builders and programme validation; changing one constant is insufficient.",
+        "The shared depth reset supports independently sized axes but Deepworks install has its own fixed programme contract.",
+        "Add an explicit destination mapping, preserve the first-launch consumed-argument guard and shared F2 navigation so return does not loop back into the new map.",
+        "Another map needs its own fixtures and launch-argument coverage; existing Deepworks tests continue targeting Deepworks."
+      ],
+      "sources": [
+        "operations/map-authoring-native-layers-and-programmes.md",
+        "../godot/scripts/exhibition/deepworks_runtime.gd",
+        "../godot/scripts/feature_launcher.gd",
+        "../godot/scripts/feature_navigation.gd",
+        "../tools/ci/run_godot_regressions.py"
+      ]
+    },
+    {
+      "id": "MAPGUIDE05",
+      "query": "How should an authored map use foreground reactions, rear machinery, atmosphere and distant scenery so every district has convincing depth?",
+      "canonical": [
+        "operations/map-authoring-native-layers-and-programmes.md",
+        "operations/map-authoring-design-and-materials.md"
+      ],
+      "facts": [
+        "Author a purpose for every intended district and plane, preserving foreground apertures, quiet distant massing and localized atmosphere; complete coverage does not require filling every cell.",
+        "Four separate native worlds own play, scripted, effects and background; Deepworks uses target rates 30/20/15/0 Hz as its reference configuration.",
+        "Visual overlap does not imply cross-plane physical interaction; explicit admitted routes and tests are required for a cross-plane sequence.",
+        "Configure all surfaces and view transforms with the same accepted dimensions and retain independent World2D surfaces and generation admission.",
+        "Review isolated and combined actual pixels; allocated worlds and hidden content alone do not establish visible depth."
+      ],
+      "sources": [
+        "operations/map-authoring-native-layers-and-programmes.md",
+        "operations/map-authoring-design-and-materials.md",
+        "systems/depth-layers-and-parallax.md",
+        "../godot/scripts/depth/depth_layer_surface.gd",
+        "../godot/tests/test_deepworks_render.gd"
+      ]
+    },
+    {
+      "id": "MAPGUIDE06",
+      "query": "How do I schedule finite material drops and ongoing atmosphere without overwriting products, escaping containment or replaying missed events?",
+      "canonical": [
+        "operations/map-authoring-native-layers-and-programmes.md"
+      ],
+      "facts": [
+        "A Deepworks event declares unique ID, district, dynamic target plane, rectangle, material, first_tick, period and repeat within explicit validated bounds.",
+        "Source writes replace cells in their footprint before the target plane ticks; keep sources and drains away from product observations and order overlapping events intentionally.",
+        "Schedules use each plane's native tick clock; repeat zero allows indefinite repetition while finite reaction supplies preserve inspectable products.",
+        "An Empty event is a drain; repeating atmosphere needs actual same-plane containment and cleanup.",
+        "Disabling scripts stops future source writes while native worlds continue; re-enabling does not replay missed opportunities.",
+        "Native rules create reaction products; source admission or authored product placement is not mechanism evidence."
+      ],
+      "sources": [
+        "operations/map-authoring-native-layers-and-programmes.md",
+        "../godot/scripts/exhibition/deepworks_runtime.gd::_validate_programme",
+        "../godot/scripts/exhibition/deepworks_runtime.gd::_step_layer",
+        "../godot/scripts/exhibition/deepworks_exhibits.gd::_atmosphere"
+      ]
+    },
+    {
+      "id": "MAPGUIDE07",
+      "query": "How should a map-authoring agent prove every native exhibit actually completed and prevent a script helper error or zero-check success from producing false acceptance?",
+      "canonical": [
+        "operations/map-authoring-validation-and-acceptance.md"
+      ],
+      "facts": [
+        "Use the actual map and production scheduler with copied native observations and an expected identity roster independent of the produced records.",
+        "Require explicit helper completion, a positive mechanism assertion count, no exhibit failures and all expected unique verified identities.",
+        "Reaction products must be absent initially and not directly painted by sources; transport witnesses lie beyond nozzles, and injected growth seeds are accounted for.",
+        "Inspect complete logs for engine/script errors, timeouts and required skips even if exit status and the printed failure counter are zero.",
+        "Focused isolated negative controls must reject aborted helpers and successful returns with no checks; retain expected rejection separately.",
+        "The corrected Stone apparatus preserved its material and below-shelf oracle while moving the nozzle into a real chute; old failed evidence remains historical."
+      ],
+      "sources": [
+        "operations/map-authoring-validation-and-acceptance.md",
+        "../godot/tests/test_deepworks_reactions.gd",
+        "../tools/ci/run_godot_regressions.py",
+        "audits/2026-10-20-deepworks-pr185-completion.md"
+      ]
+    },
+    {
+      "id": "MAPGUIDE08",
+      "query": "What visual review and rendered tests distinguish a polished multilayer map from one that merely has four allocated worlds?",
+      "canonical": [
+        "operations/map-authoring-design-and-materials.md",
+        "operations/map-authoring-validation-and-acceptance.md"
+      ],
+      "facts": [
+        "Review atlas, district, apparatus, isolated planes and HUD at matched camera and tick states, including paused and running compositions.",
+        "Compare actual rendered pixels with layer visibility toggled and restored at a frozen state so simulation drift cannot create a false layer contribution.",
+        "Choose independent per-district rear, far and atmosphere witnesses including edges; atmosphere witnesses require actual nonempty non-Wall native effects cells.",
+        "Review silhouette hierarchy, contrast, intended negative space and purposeful fine detail alongside automated assertions.",
+        "Exercise focused controls, camera/painting boundaries and fresh-press rearming; graphical checks also need usable visible map area beneath the HUD.",
+        "Headless execution cannot establish actual graphical composition."
+      ],
+      "sources": [
+        "operations/map-authoring-design-and-materials.md",
+        "operations/map-authoring-validation-and-acceptance.md",
+        "../godot/tests/test_deepworks_render.gd",
+        "../godot/tests/test_deepworks_controller.gd"
+      ]
+    },
+    {
+      "id": "MAPGUIDE09",
+      "query": "How should an agent produce source-matched map screenshots and explain atlas crops, manual stepping and recipe hashes?",
+      "canonical": [
+        "operations/map-authoring-validation-and-acceptance.md"
+      ],
+      "facts": [
+        "Capture the actual production scene with a real renderer; another map needs its own capture helper, view roster and output identity.",
+        "Deepworks quick mode produces 18 images and full mode 34; atlas crops are exact regions of the 2048-square image of the 1024-square world.",
+        "The later full capture follows 240 manual ticks of each dynamic plane, not 240 frames of normal independently paced play.",
+        "Verify manifest image dimensions and hashes, camera/layer/tick state and source/recipe identity; caller-supplied revision text is not an independent source verification.",
+        "Record native-library and changed-script identities separately; the recipe hash does not cover all controller, renderer or runtime inputs.",
+        "When geometry or schedules change, regenerate affected evidence and preserve earlier captures under their historical identity."
+      ],
+      "sources": [
+        "operations/map-authoring-validation-and-acceptance.md",
+        "../godot/tools/capture_deepworks.gd",
+        "../godot/scripts/exhibition/deepworks_map.gd::recipe_hash",
+        "audits/2026-10-20-deepworks-pr185-completion.md"
+      ]
+    },
+    {
+      "id": "MAPGUIDE10",
+      "query": "What must a map author verify before handing off or merging, and does a green documentation retrieval workflow prove RAG answer correctness?",
+      "canonical": [
+        "operations/map-authoring-validation-and-acceptance.md",
+        "operations/map-authoring-walkthrough.md"
+      ],
+      "facts": [
+        "Publish a recoverable candidate with scene controls, source-backed mechanisms, completed exhibit results, captures, negative controls and scoped runtime evidence.",
+        "Implementation acceptance needs exact-head Documentation/provenance and every applicable Native, Godot and apparatus gate, with actual case execution rather than only job conclusions.",
+        "Register current guide pages and unique owners, update navigation/handover routes, preserve frozen retrieval questions and add independent supplementary challenges.",
+        "The BM25 evaluator reports scores without a minimum-hit exit gate; inspect ranks and returned contexts for the expected facts and status/platform qualifiers.",
+        "Documentation checks establish structure and execution of retrieval evaluation, not runtime truth or embedding-system quality.",
+        "Follow the requested delivery endpoint and keep Windows cross-build, Windows headless, Linux graphical, browser and target-machine claims distinct."
+      ],
+      "sources": [
+        "operations/map-authoring-validation-and-acceptance.md",
+        "operations/map-authoring-walkthrough.md",
+        "../AGENTS.md",
+        "../tools/docs/retrieval_eval.py",
+        "../.github/workflows/documentation.yml"
       ]
     }
   ],

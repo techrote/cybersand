@@ -12,6 +12,15 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## Deepworks exhibition and depth dimensions — 2026-10-20
 
+For the next authored map, follow the
+[agent map-authoring walkthrough](map-authoring-walkthrough.md) and its design,
+native-layer/programme and validation chapters. It turns the completed
+Deepworks implementation into a recommended production sequence: establish the
+brief and catalogue, finish one representative district, expand the connected
+composition, polish actual views, then qualify the exact candidate. Its
+[work packet](map-authoring-walkthrough.md#11-use-the-agent-work-packet)
+records file ownership, milestone outputs and the requested review endpoint.
+
 The [PR #185 completion record](../audits/2026-10-20-deepworks-pr185-completion.md)
 corrects the original native-reaction acceptance. Do not reuse its 626-plus-one
 pass: two helper script errors hid eight A1 transport checks. Completion requires

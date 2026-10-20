@@ -71,6 +71,13 @@ Historical completion records remain immutable.
 
 ## Current implementation map
 
+**Map-authoring documentation, 2026-10-20:** the
+[agent walkthrough](../operations/map-authoring-walkthrough.md) explains how to
+build another polished map using the completed Deepworks source as a reference.
+Its recommended process, material/design guidance, native integration examples
+and acceptance procedures are documentation; new recipes and platform claims
+still require their own implementation and evidence.
+
 **Layered exhibition source, 2026-10-20:**
 [Deepworks](../operations/deepworks-exhibition.md) adds one 1024 × 1024
 composition with sixteen districts, 32 foreground/rear native exhibits and all
