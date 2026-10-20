@@ -1,4 +1,5 @@
 #include "cybersand/generation_typed_fields.hpp"
+#include "cybersand/generation_numeric.hpp"
 
 #include <algorithm>
 #include <bit>
@@ -640,7 +641,7 @@ void SpatialGraph::Impl::compile_nodes(Expanded expanded) {
             info.type = SpatialType::Scalar;
             if (n.kind == SpatialKind::Length) {
                 info.minimum = 0;
-                info.maximum = std::hypot(std::max(std::abs(in(0).minimum), std::abs(in(0).maximum)),
+                info.maximum = detail::magnitude(std::max(std::abs(in(0).minimum), std::abs(in(0).maximum)),
                                           std::max(std::abs(in(0).minimum), std::abs(in(0).maximum)));
             }
             if (n.kind == SpatialKind::UnitVector) {
@@ -946,10 +947,10 @@ SpatialValue SpatialGraph::Impl::raw(std::size_t index, double x, double y, Spat
     case SpatialKind::CoordinateY:
         return output(y);
     case SpatialKind::CircleDistance:
-        return output(std::hypot(x - p[0], y - p[1]) - p[2]);
+        return output(detail::magnitude(x - p[0], y - p[1]) - p[2]);
     case SpatialKind::BoxDistance: {
         double qx = std::abs(x - p[0]) - p[2] / 2, qy = std::abs(y - p[1]) - p[3] / 2;
-        return output(std::hypot(std::max(qx, 0.0), std::max(qy, 0.0)) + std::min(std::max(qx, qy), 0.0));
+        return output(detail::magnitude(std::max(qx, 0.0), std::max(qy, 0.0)) + std::min(std::max(qx, qy), 0.0));
     }
     case SpatialKind::Noise: {
         double xx = x / p[0], yy = y / p[0], fx = std::floor(xx), fy = std::floor(yy);
@@ -1008,12 +1009,19 @@ SpatialValue SpatialGraph::Impl::raw(std::size_t index, double x, double y, Spat
         return output(input(0).y);
     case SpatialKind::Length: {
         auto a = input(0);
-        return output(std::hypot(a.x, a.y));
+        return output(detail::magnitude(a.x, a.y));
     }
     case SpatialKind::UnitVector: {
         auto a = input(0);
-        double length = std::hypot(a.x, a.y);
-        return length == 0 ? output(0, 0) : output(a.x / length, a.y / length);
+        const double scale = std::max(std::abs(a.x), std::abs(a.y));
+        if (scale == 0)
+            return output(0, 0);
+        // Normalize in the scaled domain: a subnormal vector's rounded
+        // magnitude can lose enough precision to produce a non-unit result.
+        a.x /= scale;
+        a.y /= scale;
+        double length = detail::magnitude(a.x, a.y);
+        return output(a.x / length, a.y / length);
     }
     case SpatialKind::Dot: {
         auto a = input(0), b = input(1);
@@ -1052,7 +1060,7 @@ SpatialValue SpatialGraph::Impl::raw(std::size_t index, double x, double y, Spat
     }
     case SpatialKind::Polar:
     case SpatialKind::LogPolar: {
-        double dx = x - p[0], dy = y - p[1], r = std::hypot(dx, dy);
+        double dx = x - p[0], dy = y - p[1], r = detail::magnitude(dx, dy);
         double theta = r == 0 ? 0 : std::atan2(dy, dx);
         double u = op.kind == SpatialKind::LogPolar ? std::log(std::max(r, p[4]) / p[2]) : r / p[2];
         auto v = at(0, u, theta / p[3]);
@@ -1077,7 +1085,7 @@ SpatialValue SpatialGraph::Impl::raw(std::size_t index, double x, double y, Spat
     }
     case SpatialKind::Warp: {
         auto displacement = input(1);
-        double length = std::hypot(displacement.x, displacement.y);
+        double length = detail::magnitude(displacement.x, displacement.y);
         double scale = length > p[0] && length > 0 ? p[0] / length : 1;
         auto v = at(0, x + displacement.x * scale, y + displacement.y * scale);
         v.type = op.info.type;
@@ -1099,7 +1107,7 @@ SpatialValue SpatialGraph::Impl::raw(std::size_t index, double x, double y, Spat
         if (op.kind == SpatialKind::Gradient)
             return output(gx, gy);
         if (op.kind == SpatialKind::Slope)
-            return output(std::hypot(gx, gy));
+            return output(detail::magnitude(gx, gy));
         if (op.kind == SpatialKind::Aspect)
             return output(gx == 0 && gy == 0 ? 0 : std::atan2(gy, gx));
         if (op.kind == SpatialKind::Divergence)
@@ -1116,7 +1124,7 @@ SpatialValue SpatialGraph::Impl::raw(std::size_t index, double x, double y, Spat
             return output(std::max(0.0, -fxx - fyy));
         if (op.kind == SpatialKind::Valley)
             return output(std::max(0.0, fxx + fyy));
-        double g = std::hypot(gx, gy);
+        double g = detail::magnitude(gx, gy);
         if (g == 0)
             return output(0);
         double fxy =

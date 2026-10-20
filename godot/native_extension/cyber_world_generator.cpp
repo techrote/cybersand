@@ -267,7 +267,11 @@ std::vector<gen::SpatialNode> spatial_nodes(const Variant& value, const std::str
     std::vector<gen::SpatialNode> result;
     result.reserve(static_cast<std::size_t>(array.size()));
     for (std::int64_t index = 0; index < array.size(); ++index) {
-        const auto row_context = context + "[" + std::to_string(index) + "]";
+        // Avoid rvalue concatenation's newer libstdc++ cold replacement path.
+        std::string row_context(context);
+        row_context.push_back('[');
+        row_context.append(std::to_string(index));
+        row_context.push_back(']');
         const auto item = dictionary_value(array[index], row_context);
         fields(item, {"id", "kind", "inputs", "parameters", "sampling_scale", "value", "unit_power",
                       "reference", "parameter_bindings"}, row_context);

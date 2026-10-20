@@ -28,6 +28,14 @@ transport-precision and documentation corrections below. The runtime manifests
 identify the later exact build source and all canonical native/build inputs;
 neither this checkpoint nor a local test result silently validates later bytes.
 
+Qualified source/docs/publisher checkpoint
+`724afcf144d7e22bf511745354b4a9f39520d28f` was followed by the complete-worker-
+rectangle regression checkpoint `8356cf78b965105bb115df4100a82f9c147acc58`, tree
+`dbfb36b8abb17c69b7f62809921f32af84da9af2`. The latter changes only the integration
+test: all 64 chunks and all cells of the reference rectangle are compared across
+four workers for each of four typed diagnostic channels. Native implementation,
+adapter, examples and authoring inputs remain identical to `724afcf`.
+
 The [typed contract](../systems/procedural-typed-spatial-fields.md) and
 [operator inventory](../reference/procedural-spatial-operators.md) own current
 semantics. This audit owns observed results, preserved failures and limits.
@@ -68,11 +76,19 @@ timeout 5m make -j2 worldgen-test
 timeout 10m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 make -j2 worldgen-sanitize
 ```
 
-The full sanitizer gate has its own result below; the focused typed result does
-not imply that every other suite completed. LeakSanitizer's process inspection
-is unavailable in the restricted local environment. The repository's generation
-harness uses `detect_leaks=0`; these results establish address/undefined-behavior
-coverage and do not claim leak detection.
+The full seven-suite ASan+UBSan gate subsequently passed with exit 0 and no
+sanitizer/assertion failures. Its log SHA-256 is
+`947ed3445d276dcca5ac8897421ce3365b7a42b2f5c71b6a9eba1e3ddde19db6`.
+After strengthening the worker control, all seven optimized suites were run
+again and the changed integration binary was rebuilt and passed under ASan+UBSan.
+The final optimized execution log is
+`5d0a4ac915e44065b8ade6bc33941b2d17f3df90a77874dc43c9eeb3bca954f4`;
+the final integration sanitizer log is
+`b922fd85ba8f7d8f5100be5b78180e09e78caee940142dccebd1e440d2070ad6`.
+LeakSanitizer's process inspection is unavailable in the restricted local
+environment. The repository's generation harness uses `detect_leaks=0`;
+these results establish address/undefined-behavior coverage and do not claim
+leak detection.
 
 | Review finding or failed control | Resolution and retained regression |
 |---|---|
@@ -110,13 +126,65 @@ The official Linux Godot archive SHA-256 is
 Runtime publication below identifies the exact accepted binary separately from
 these iterative local builds.
 
-The established Workbench regression passed 138 assertions and the legacy field
-regression passed 271, both with zero failures. The typed adapter/Workbench suite
-passed 394 assertions after the precision and example-budget corrections.
-All five native material/diagnostic pairs rendered, and actual Workbench layout
-was inspected under Xvfb/llvmpipe. Final publication and ready-for-review CI
-rerun the frozen source; these observations are not Windows or GPU performance
-claims.
+The final local Linux rebuild from the frozen native inputs has SHA-256
+`32232c4e52bd3dec0e731d791f82239198c5b27bf268ed7c20ec7bba57ce5670`,
+2,462,552 bytes. Its hash was verified before and after execution. The established
+Workbench regression passed 138 assertions, the legacy field regression passed
+271, and the typed adapter/Workbench suite passed 394: all zero failures and
+exit 0, without runtime/script/parse errors.
+
+All five native material/diagnostic pairs rendered 2,112 chunks and 245,760 cells.
+Three actual 1600×900 Workbench views were regenerated and inspected under
+Xvfb/llvmpipe: authoring metadata, scrolled JSON controls, and category inspection
+including the exact value `9007199254740995`. Source/runtime/recipe/log/image
+hashes and counts are retained in the local validation record, SHA-256
+`c63946f254664bd411f37e8e3f9ce7ed1986ac38febe6814e6c62d7bb86bcafa`.
+The only graphics warning was the software driver's unsupported V-Sync toggle.
+Native implementation, adapter, scripts, examples, renderer and focused Godot
+tests were verified against `724afcf`; the later worker-test checkpoint changes
+none of those inputs. These are Linux software-rendering observations, without
+Windows or GPU-performance claims. Publication identifies its own artifacts.
+
+## Hosted compatibility-floor failure and correction
+
+[Publication run 39503672713](https://github.com/techrote/cybersand/actions/runs/39503672713)
+at `8356cf` built both runtimes. Actual Windows import and all four focused cases
+passed: Workbench 138, legacy fields 271, typed adapter 394 and render/generation
+23 assertions, all zero failures. Linux failed the existing compatibility-floor
+gate before Godot execution: the new `std::hypot` calls imported
+`hypot@GLIBC_2.35`, above the required GLIBC 2.34 bundle floor. Independent ELF
+inspection also found the new adapter's chained rvalue string concatenation
+imported `std::string::_M_replace_cold@GLIBCXX_3.4.31`, above the required
+GLIBCXX 3.4.30 floor. Publication correctly skipped; no runtime was published
+from this failed run.
+
+The correction retains both gates and the pinned toolchain. Only new spatial
+magnitude calls use an internal max-component-scaled `sqrt` helper, avoiding
+overflow/underflow and the newer `hypot` symbol. Diagnostic context strings use
+copy/append operations with identical text. Production-flag object inspection
+confirmed removal of both unwanted imports. Independent magnitude controls
+compare ordinary, large, tiny and subnormal vectors against `std::hypot`, within
+four representable steps, and retain exact axes and analytic 3–4–5 triangles.
+
+That review also reproduced a distinct numerical defect:
+`unit_vector(denorm_min, -denorm_min)` returned `(1, -1)` because its physical
+magnitude rounded to one subnormal step. Max-component pre-scaling before unit
+normalization fixes the direction without using that rounded physical length as
+the divisor. Six new typed assertions cover equal/unequal signed subnormal
+components and unit length. Legacy scalar generation and its material oracle
+are unchanged. The corrected typed suite passed **14,162 assertions** in both
+optimized and ASan+UBSan builds, including tiny-amplitude curvature and the
+existing partition/cache/worker/allocation controls. Both typed execution logs
+have SHA-256 `090732a500e5f82ff784f235c218df33d602e4236dd93abfbee1c806d484dfd3`.
+The structured suite also passed normally and under ASan+UBSan. Source hashes
+were checked unchanged through those runs. Final binaries and full acceptance
+must use this corrected source; earlier local/Linux and hosted/Windows
+observations remain scoped to their recorded inputs.
+
+The combined corrected Linux extension was then rebuilt with the pinned
+toolchain and passed the unchanged full runtime-floor check: extension
+GLIBC 2.32, bundle GLIBC 2.34 (Rapier), GLIBCXX 3.4.30 and CXXABI 1.3.9.
+This checks the linked runtime, independently of the earlier object-level probes.
 
 ## Documentation, publication and repository gates
 
@@ -134,11 +202,15 @@ after corpus changes, with all expected facts still retrieved. The other 78
 previous supplementary ranks are unchanged. Historical M11 integrity passed
 all 18 records and 28 original source hashes; no historical hash was rewritten.
 
-The initial standalone checkout reports six absent companion-workspace
-expected-fact paths. Documentation CI materializes that established companion
-checkpoint. Before runtime publication, current repository checks correctly
-report stale native source identities; that failure is an acceptance blocker,
-not a bookkeeping exception.
+The initial standalone checkout reported six absent companion-workspace
+expected-fact paths. Materializing the five referenced files from exact companion
+commit `6a58311982941b75f46e22109a0829e5acb83c7e`, in the same parent/source layout
+as Documentation CI, resolved those errors without changing source or fixtures.
+Documentation then passed at 95 documents, 185 claims, 1,957 links and 149 anchors,
+with no errors or warnings. The audit route adds one corpus chunk (1,040 total)
+without further rank changes. Before runtime publication, current repository
+checks correctly report stale native source identities; that failure is an
+acceptance blocker, not a bookkeeping exception.
 
 The branch-scoped
 [runtime publisher](../../.github/workflows/gen003-runtime-publication.yml)

@@ -1,4 +1,5 @@
 #include "cybersand/generation_spatial.hpp"
+#include "cybersand/generation_numeric.hpp"
 
 #include <algorithm>
 #include <bit>
@@ -51,7 +52,7 @@ double segment_distance(Point query, Point a, Point b) noexcept {
     const auto offset = subtract(query, a);
     const auto denominator = squared(direction);
     const auto t = denominator == 0 ? 0 : std::clamp(dot(offset, direction) / denominator, 0.0, 1.0);
-    return std::hypot(offset.x - t * direction.x, offset.y - t * direction.y);
+    return detail::magnitude(offset.x - t * direction.x, offset.y - t * direction.y);
 }
 std::int64_t floor_div(std::int64_t a, std::int64_t b) noexcept {
     return a / b - static_cast<std::int64_t>(a % b < 0);
@@ -304,7 +305,7 @@ double voronoi_boundary_unchecked(const LatticeSpec& spec, Point query) noexcept
         if (dx == 0 && dy == 0) continue;
         const auto b = local_seed(spec, {owner.id.x + dx, owner.id.y + dy});
         const Point direction{static_cast<double>(dx) + b.x - a.x, static_cast<double>(dy) + b.y - a.y};
-        const auto length = std::hypot(direction.x, direction.y);
+        const auto length = detail::magnitude(direction.x, direction.y);
         // Stable plane distance, avoiding subtraction of large world squares.
         const auto distance = length * 0.5 + dot(owner.relative, direction) / length;
         boundary = std::min(boundary, std::max(0.0, distance));
@@ -328,7 +329,7 @@ DelaunayNeighborhood delaunay_unchecked(const LatticeSpec& spec, Point query) no
     result.incident_distance = std::numeric_limits<double>::infinity();
     for (std::size_t candidate = 0; candidate < count; ++candidate) {
         const auto direction = offsets[candidate];
-        const auto length = std::hypot(direction.x, direction.y);
+        const auto length = detail::magnitude(direction.x, direction.y);
         if (length > 2 * kSqrtTwo) continue;
         const Point midpoint{direction.x * 0.5, direction.y * 0.5};
         const Point tangent{-direction.y / length, direction.x / length};
@@ -424,7 +425,7 @@ std::shared_ptr<const PreparedGeometry> PreparedGeometry::compile(Geometry geome
     return std::shared_ptr<const PreparedGeometry>(new PreparedGeometry(std::move(geometry)));
 }
 double PreparedGeometry::distance(Point query) const noexcept {
-    if (geometry_.points.size() == 1) return std::hypot(query.x - geometry_.points[0].x, query.y - geometry_.points[0].y);
+    if (geometry_.points.size() == 1) return detail::magnitude(query.x - geometry_.points[0].x, query.y - geometry_.points[0].y);
     auto result = std::numeric_limits<double>::infinity();
     for (std::size_t i = 1; i < geometry_.points.size(); ++i)
         result = std::min(result, segment_distance(query, geometry_.points[i - 1], geometry_.points[i]));

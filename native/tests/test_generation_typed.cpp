@@ -161,6 +161,23 @@ std::vector<SpatialNode> polynomial_nodes() {
     };
 }
 
+void subnormal_vector_normalization() {
+    const double least = std::numeric_limits<double>::denorm_min();
+    for (const double y_factor : {-1.0, -2.0}) {
+        auto input = constant("input", least, 1, SpatialType::Vector2);
+        input.value.y = least * y_factor;
+        const auto graph = compile({input, node("unit", SpatialKind::UnitVector, {"input"})});
+        const auto actual = sample(*graph, "unit");
+        const double divisor = std::sqrt(1 + y_factor * y_factor);
+        near(actual.x, 1 / divisor,
+             "normalization scales the smallest subnormal axis before dividing by its magnitude", 1e-14);
+        near(actual.y, y_factor / divisor,
+             "normalization preserves the direction of signed unequal subnormal components", 1e-14);
+        near(std::hypot(actual.x, actual.y), 1,
+             "nonzero subnormal vectors normalize to unit length despite rounded physical magnitude", 1e-14);
+    }
+}
+
 void analytic_derivatives() {
     const auto graph = compile(polynomial_nodes());
     for (const auto point : std::array<std::array<std::int64_t, 2>, 7>{{
@@ -729,6 +746,7 @@ void validation_bounds_and_transactional_outputs() {
 int main() {
     try {
         signed_values_types_and_units();
+        subnormal_vector_normalization();
         analytic_derivatives();
         signed_distance_and_transform_conventions();
         exact_categorical_and_boolean_values();

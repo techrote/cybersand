@@ -1,8 +1,10 @@
 #include "cybersand/generation_spatial.hpp"
+#include "cybersand/generation_numeric.hpp"
 
 #include <algorithm>
 #include <array>
 #include <atomic>
+#include <bit>
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
@@ -42,6 +44,40 @@ template <class Exception = std::invalid_argument, class Function>
 void rejects(Function&& fn, const char* reason) {
     try { fn(); } catch (const Exception&) { return; }
     throw std::runtime_error(reason);
+}
+
+void bounded_finite_magnitude() {
+    using cybersand::generation::detail::magnitude;
+    const auto subnormal = std::numeric_limits<double>::denorm_min();
+    const auto normal = std::numeric_limits<double>::min();
+    const std::array<Point, 18> cases{{
+        {0, 0}, {-0.0, -0.0}, {3, 4}, {-3, 4}, {1e100, 1e100}, {3e99, -4e99},
+        {1e-200, 1e-200}, {3e-200, 4e-200}, {1e100, 1e-200}, {1e-200, 0},
+        {subnormal, 0}, {0, -subnormal}, {subnormal, subnormal},
+        {3 * subnormal, 4 * subnormal}, {normal, subnormal}, {normal, normal},
+        {std::nextafter(normal, 0.0), subnormal}, {0x1.0p-1023, 0x1.0p-1023},
+    }};
+    const auto check_reference = [&](double x, double y) {
+        const auto actual = magnitude(x, y), expected = std::hypot(x, y);
+        require(std::isfinite(actual) && actual >= 0 && !std::signbit(actual),
+                "bounded magnitude is finite, nonnegative, and canonicalizes zero");
+        require(expected == 0 || actual > 0, "nonzero tiny vectors retain a nonzero magnitude");
+        const auto a = std::bit_cast<std::uint64_t>(actual);
+        const auto e = std::bit_cast<std::uint64_t>(expected);
+        require((a > e ? a - e : e - a) <= 4,
+                "scaled magnitude agrees with independent std::hypot within four representable steps");
+        require(actual == magnitude(y, x) && actual == magnitude(-x, -y),
+                "magnitude is symmetric in axes and signs");
+    };
+    for (const auto point : cases) check_reference(point.x, point.y);
+    for (int exponent = -1074; exponent <= 328; exponent += 47) {
+        const auto scale = std::ldexp(1.0, exponent);
+        check_reference(3 * scale, 4 * scale);
+        require(magnitude(-scale, 0) == scale && magnitude(0, -scale) == scale,
+                "axis magnitude retains exact finite and subnormal values");
+    }
+    require(magnitude(3, 4) == 5 && magnitude(3 * subnormal, 4 * subnormal) == 5 * subnormal,
+            "analytic 3-4-5 triangles remain exact at ordinary and subnormal scales");
 }
 
 void peano_inverses_and_locality() {
@@ -359,6 +395,7 @@ void purity_work_and_allocation_bounds() {
 
 int main() {
     try {
+        bounded_finite_magnitude();
         peano_inverses_and_locality();
         voronoi_analytic_and_large_neighborhood_oracle();
         delaunay_dual_structure();
