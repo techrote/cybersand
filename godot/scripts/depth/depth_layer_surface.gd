@@ -19,21 +19,30 @@ var uploaded_bytes: int = 0
 var copied_patch_bytes: int = 0
 var last_rejection: String = ""
 var static_bake: bool = false
+var material_surface_size: Vector2i = MATERIAL_SURFACE_SIZE
 var render_enabled: bool = true
 var bake_requests: int = 0
+var _configured: bool = false
 
 var cell_image: Image
 var cell_texture: ImageTexture
 var _material_rect: TextureRect
 var _material: ShaderMaterial
 
-func configure(id: String, frozen: bool = false) -> void:
+func configure(id: String, frozen: bool = false, authored_size: Vector2i = MATERIAL_SURFACE_SIZE) -> bool:
+	if (authored_size.x < 8 or authored_size.y < 8
+			or authored_size.x > NATIVE_SIZE.x or authored_size.y > NATIVE_SIZE.y):
+		return _reject("Material surface dimensions must be within 8..1024 cells on each axis")
+	if _configured:
+		return id == layer_id and frozen == static_bake and authored_size == material_surface_size
+	_configured = true
 	layer_id = id
 	static_bake = frozen
+	material_surface_size = authored_size
 	# Each material plane needs its own canvas; inherited World2D would draw
 	# every sibling plane into all four viewport textures.
 	world_2d = World2D.new()
-	size = MATERIAL_SURFACE_SIZE
+	size = material_surface_size
 	transparent_bg = true
 	render_target_clear_mode = SubViewport.CLEAR_MODE_ALWAYS
 	render_enabled = not static_bake
@@ -47,7 +56,7 @@ func configure(id: String, frozen: bool = false) -> void:
 	_material_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_material_rect.stretch_mode = TextureRect.STRETCH_SCALE
 	_material_rect.position = Vector2.ZERO
-	_material_rect.size = Vector2(MATERIAL_SURFACE_SIZE)
+	_material_rect.size = Vector2(material_surface_size)
 	_material_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_material_rect.texture = cell_texture
 	_material_rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -57,7 +66,7 @@ func configure(id: String, frozen: bool = false) -> void:
 	_material.shader = load("res://shaders/material_palette.gdshader")
 	_material_rect.material = _material
 	_material.set_shader_parameter("world_size_px", Vector2(NATIVE_SIZE))
-	_material.set_shader_parameter("view_size_px", Vector2(MATERIAL_SURFACE_SIZE))
+	_material.set_shader_parameter("view_size_px", Vector2(material_surface_size))
 	_material.set_shader_parameter("view_rect_uv", Vector4(0.0, 0.0, 1.0, 1.0))
 	_material.set_shader_parameter("camera_origin_px", Vector2.ZERO)
 	_material.set_shader_parameter("player_origin_px", Vector2(-4096, -4096))
@@ -72,6 +81,7 @@ func configure(id: String, frozen: bool = false) -> void:
 	_material.set_shader_parameter("material_lut", _transparent_empty_lut())
 	_material.set_shader_parameter("material_program_lut", Appearance.create_program_texture())
 	_material.set_shader_parameter("material_lut_size", Vector2(Appearance.ATLAS_WIDTH, Appearance.ATLAS_HEIGHT))
+	return true
 
 func set_source_texture(texture: Texture2D) -> void:
 	_material_rect.texture = texture
@@ -168,6 +178,8 @@ func _validate_packet(packet: Dictionary) -> String:
 		return "packet layer tick is missing or non-integer"
 	if int(packet["reset_generation"]) < 0 or int(packet["layer_tick"]) < 0:
 		return "packet generation/tick cannot be negative"
+	if int(packet["reset_generation"]) < reset_generation:
+		return "packet reset generation moved backwards"
 	if int(packet.get("channels", 0)) != 2:
 		return "depth surface requires RG8 packets"
 	if not packet.has("serial") or typeof(packet["serial"]) != TYPE_INT:

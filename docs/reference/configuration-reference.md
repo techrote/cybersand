@@ -4,8 +4,8 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-10-19
-related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md]
+last-reviewed: 2026-10-20
+related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md]
 ---
 
 # Configuration reference
@@ -49,6 +49,54 @@ are exposed by native `field_kind_specs()` and copied by `get_catalogue`.
 The [field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md)
 owns these values, context meaning, masks and diagnostic bounds; these scalar
 authoring fields do not allocate optional simulation temperature/pressure storage.
+
+## Depth host and Deepworks configuration
+
+**Current opt-in source:** these values belong to
+[`CyberDepthLayerRuntime`](../../godot/scripts/depth/depth_layer_runtime.gd),
+[`CyberDepthCompositor`](../../godot/scripts/depth/depth_compositor.gd),
+[`CyberDepthLayerSurface`](../../godot/scripts/depth/depth_layer_surface.gd),
+[`CyberDeepworksRuntime`](../../godot/scripts/exhibition/deepworks_runtime.gd)
+and the [`Deepworks host`](../../godot/scripts/exhibition/deepworks.gd).
+The [depth contract](../systems/depth-layers-and-parallax.md) owns rendering and
+reset semantics; the [exhibition guide](../operations/deepworks-exhibition.md)
+owns map content, source scheduling and controls.
+
+| Setting | Current value or admitted bound |
+|---|---|
+| Depth authored dimensions | Each axis 8–1024 cells, including non-square worlds; omitted size defaults to 640 × 360 for Strata Theatre |
+| Native storage and copied RG8 backing | 1024 × 1024 per plane, unchanged by authored ROI |
+| Deepworks total composition | 1024 × 1024; sixteen 256 × 256 districts; four independent native worlds over the same map coordinates |
+| Native worker policy | One worker per isolated plane; host serializes adapter calls |
+| Strata default rates, play/scripted/effects/background | 60 / 20 / 30 / 0 Hz |
+| Deepworks target rates, same order | 30 / 20 / 15 / 0 Hz |
+| Dynamic rate and catch-up bounds | 0–60 Hz; at most two native steps per plane per `advance()`; background must remain at zero |
+| Authoring per plane | At most 4,096 rectangles and 4,194,304 counted cell writes; valid current material IDs excluding reserved ID 10 |
+| Guard | One cell around the complete accepted authored extent; commands/sources stay inside it and effects sinks preserve it |
+| Explicit depth command queue | At most 32 pending commands; disc radius 0–32 cells |
+| Effects material admission | Empty, Water, Dust, Steam, Spark and Smoke |
+| Surface packet limits | RG8; at most 4,096 patches, 2,097,152 bytes and one backing's cumulative staged area; generation cannot move backwards |
+| Whole-image texture upload | 2 MiB for each admitted changed plane |
+| Deepworks source programme | At most 192 events; each rectangle at most 512 cells; conservative sum at most 8,192 source cell writes per plane per native tick |
+| Event identity and district | Unique nonempty ID of at most 80 characters; district integer 0–15 |
+| Event rectangle and plane | Positive rectangle wholly inside its declared district and map guard; `play`, `scripted` or `effects`; no `background` writes |
+| Event tick and repetition | `first_tick` 0–36,000; `period` 1–36,000; `repeat` 0–10,000, where zero means unbounded repetitions |
+| Event fields | Exactly `id`, `district`, `layer`, `rect`, `material`, `first_tick`, `period`, `repeat`; numeric IDs/ticks/repetitions must be integers |
+| Deepworks views | Overview 1024 × 1024; district 256 × 256; apparatus focus 200 × 200; wheel zoom clamps width to 128–1024 |
+| Deepworks layer scales | 1 / 1 / 1 / 1 |
+| Deepworks raw parallax factors | 1 / 0.98 / 0.965 / 0.94, with strength 0.8 |
+| Deepworks relief | Depth 5, four slices, pixel quantization 1 |
+| Deepworks presentation | Haze 0.46, reflection 0.12, near-frame strength 0.30, cutaway radius 100 |
+| Deepworks paint brush | UI radius 1–8, default 2; foreground or rear apparatus |
+| Guided tour | Sixteen serpentine views, 14 running seconds each; nominal 224-second circuit |
+
+Reset and programme installation validate the complete candidate before replacing
+live worlds or generation. Event validation checks widened scalar coordinates
+before rectangle-end arithmetic, so an overflowing rectangle is refused.
+`configure(authored_size)` sets compositor/surface dimensions once;
+`set_view(origin, extent)` validates then synchronizes the view and clamps its
+camera. These are private Godot prototype APIs, with no new native ABI fields,
+general World configuration schema or change to MicroScenario event capacities.
 
 ## Native WorldConfig defaults
 

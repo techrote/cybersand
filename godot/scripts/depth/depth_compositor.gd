@@ -6,27 +6,41 @@ const IDS: Array[String] = ["play", "scripted", "effects", "background"]
 const MODES: Dictionary = {"flat": 0, "relief": 1, "stack": 2, "hybrid": 3, "diorama": 4}
 const WORLD_SIZE: Vector2 = Vector2(640, 360)
 
+var world_size: Vector2 = WORLD_SIZE
 var view_size: Vector2 = Vector2(480, 270)
 var camera_origin: Vector2 = Vector2(80, 45)
 var layer_scale: Vector4 = Vector4(1.0, 0.94, 0.88, 0.78)
 var layer_parallax: Vector4 = Vector4(1.0, 0.70, 0.44, 0.18)
 var layer_visibility: Vector4 = Vector4.ONE
+var parallax_strength: float = 1.0
 var _surfaces: Array[CyberDepthLayerSurface] = []
 var _output: TextureRect
 var _material: ShaderMaterial
 var _configured: bool = false
 var _presentation_time: float = 0.0
 var _frozen_material_animation: bool = false
+var last_error: String = ""
 
-func configure() -> void:
+func configure(authored_size: Vector2i = Vector2i(WORLD_SIZE)) -> bool:
+	if (authored_size.x < 8 or authored_size.y < 8
+			or authored_size.x > Surface.NATIVE_SIZE.x or authored_size.y > Surface.NATIVE_SIZE.y):
+		last_error = "Depth dimensions must be within 8..1024 cells on each axis"
+		return false
 	if _configured:
-		return
+		if world_size != Vector2(authored_size):
+			last_error = "Configured depth surfaces cannot change authored dimensions"
+			return false
+		last_error = ""
+		return true
+	world_size = Vector2(authored_size)
+	view_size = Vector2(minf(view_size.x, world_size.x), minf(view_size.y, world_size.y))
+	camera_origin = camera_origin.clamp(Vector2.ZERO, world_size - view_size)
 	_configured = true
 	mouse_filter = Control.MOUSE_FILTER_PASS
 	for index: int in range(IDS.size()):
 		var surface := Surface.new()
 		surface.name = "Layer_%s" % IDS[index]
-		surface.configure(IDS[index], IDS[index] == "background")
+		surface.configure(IDS[index], IDS[index] == "background", authored_size)
 		_surfaces.append(surface)
 		add_child(surface)
 	_output = TextureRect.new()
@@ -48,6 +62,8 @@ func configure() -> void:
 	_sync_uniforms()
 	resized.connect(_layout)
 	_layout()
+	last_error = ""
+	return true
 
 func apply_layer_packet(id: String, packet: Dictionary) -> bool:
 	var index: int = IDS.find(id)
@@ -59,12 +75,32 @@ func apply_layer_packet(id: String, packet: Dictionary) -> bool:
 	return accepted
 
 func set_camera(origin: Vector2) -> void:
+	if not is_finite(origin.x) or not is_finite(origin.y):
+		last_error = "Camera origin must be finite"
+		return
 	camera_origin = Vector2(
-		clampf(origin.x, 0.0, WORLD_SIZE.x - view_size.x),
-		clampf(origin.y, 0.0, WORLD_SIZE.y - view_size.y)
+		clampf(origin.x, 0.0, world_size.x - view_size.x),
+		clampf(origin.y, 0.0, world_size.y - view_size.y)
 	)
 	if _material != null:
 		_material.set_shader_parameter("camera_origin", camera_origin)
+	last_error = ""
+
+func set_view(origin: Vector2, extent: Vector2) -> bool:
+	# Reject the whole candidate before modifying either half of the view.
+	if (not is_finite(origin.x) or not is_finite(origin.y)
+			or not is_finite(extent.x) or not is_finite(extent.y)
+			or extent.x <= 0.0 or extent.y <= 0.0
+			or extent.x > world_size.x or extent.y > world_size.y):
+		last_error = "View must be finite, positive and within the authored world"
+		return false
+	view_size = extent
+	set_camera(origin)
+	if _material != null:
+		_sync_uniforms()
+	_layout()
+	last_error = ""
+	return true
 
 func set_time(value: float) -> void:
 	_presentation_time = value
@@ -79,7 +115,8 @@ func set_options(options: Dictionary) -> void:
 		var mode: int = int(raw) if raw is int else int(MODES.get(str(raw), 3))
 		_material.set_shader_parameter("mode", clampi(mode, 0, 4))
 	if options.has("parallax_strength"):
-		_material.set_shader_parameter("parallax_strength", clampf(float(options["parallax_strength"]), 0.0, 2.0))
+		parallax_strength = clampf(float(options["parallax_strength"]), 0.0, 2.0)
+		_material.set_shader_parameter("parallax_strength", parallax_strength)
 	if options.has("relief_depth"):
 		_material.set_shader_parameter("relief_depth", clampf(float(options["relief_depth"]), 0.0, 32.0))
 	if options.has("relief_slices"):
@@ -115,9 +152,9 @@ func screen_to_layer(local_position: Vector2, layer_index: int) -> Vector2:
 	var logical: Vector2 = (local_position - rect.position) / rect.size * view_size
 	var factor: float = layer_parallax[layer_index]
 	var scale: float = layer_scale[layer_index]
-	var anchor: Vector2 = WORLD_SIZE * 0.5
+	var anchor: Vector2 = world_size * 0.5
 	var delta: Vector2 = camera_origin + view_size * 0.5 - anchor
-	var effective_factor: float = 1.0 + (factor - 1.0) * float(_material.get_shader_parameter("parallax_strength"))
+	var effective_factor: float = 1.0 + (factor - 1.0) * parallax_strength
 	return anchor + delta * effective_factor + (logical - view_size * 0.5) / scale
 
 func get_layer_screen_position(world_position: Vector2, layer_index: int) -> Vector2:
@@ -125,9 +162,9 @@ func get_layer_screen_position(world_position: Vector2, layer_index: int) -> Vec
 		return Vector2(-1, -1)
 	var factor: float = layer_parallax[layer_index]
 	var scale: float = layer_scale[layer_index]
-	var anchor: Vector2 = WORLD_SIZE * 0.5
+	var anchor: Vector2 = world_size * 0.5
 	var delta: Vector2 = camera_origin + view_size * 0.5 - anchor
-	var effective_factor: float = 1.0 + (factor - 1.0) * float(_material.get_shader_parameter("parallax_strength"))
+	var effective_factor: float = 1.0 + (factor - 1.0) * parallax_strength
 	var logical: Vector2 = (world_position - anchor - delta * effective_factor) * scale + view_size * 0.5
 	var rect := content_rect()
 	return rect.position + logical / view_size * rect.size
@@ -154,6 +191,7 @@ func get_diagnostics() -> Dictionary:
 		uploads += int(diagnostic["upload_count"])
 		bytes += int(diagnostic["uploaded_bytes"])
 	return {
+		"world_size": world_size,
 		"camera_origin": camera_origin,
 		"view_size": view_size,
 		"layer_scale": layer_scale,
@@ -177,11 +215,12 @@ func _layout() -> void:
 	_output.size = rect.size
 
 func _sync_uniforms() -> void:
-	_material.set_shader_parameter("world_size", WORLD_SIZE)
+	_material.set_shader_parameter("world_size", world_size)
 	_material.set_shader_parameter("view_size", view_size)
 	_material.set_shader_parameter("camera_origin", camera_origin)
 	_material.set_shader_parameter("layer_scale", layer_scale)
 	_material.set_shader_parameter("layer_parallax", layer_parallax)
 	_material.set_shader_parameter("layer_visibility", layer_visibility)
+	_material.set_shader_parameter("parallax_strength", parallax_strength)
 	_material.set_shader_parameter("cell_texture_size", Vector2(1024, 1024))
 	_material.set_shader_parameter("presentation_time", _presentation_time)

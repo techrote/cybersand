@@ -14,7 +14,7 @@ func _initialize() -> void:
 	run.call_deferred()
 
 func run() -> void:
-	for destination: String in ["blacksite", "showcase", "actors", "sandbox", "thunderbowl", "worldgen", "depth", "experimental/blacksite/ripper"]:
+	for destination: String in ["blacksite", "showcase", "actors", "sandbox", "thunderbowl", "worldgen", "depth", "deepworks", "experimental/blacksite/ripper"]:
 		var menu: Control = Launcher.instantiate()
 		root.add_child(menu)
 		current_scene = menu
@@ -33,6 +33,7 @@ func run() -> void:
 		if destination == "worldgen": expect(scene.scene_file_path == "res://worldgen_workbench.tscn", "Worldgen must stay a separate scene")
 		if destination == "thunderbowl": expect(scene.scene_file_path.ends_with("thunderbowl.tscn"), "Arena must stay a separate scene")
 		if destination == "depth": expect(scene.scene_file_path == "res://depth_lab.tscn" and not scene.faulted, "Depth must open its isolated four-world host")
+		if destination == "deepworks": expect(scene.scene_file_path == "res://deepworks.tscn" and not scene.faulted, "Deepworks must open its complete four-world exhibition")
 		var event := InputEventKey.new()
 		event.keycode = KEY_F2
 		event.pressed = true

@@ -4,8 +4,8 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-19
-related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md]
+last-reviewed: 2026-10-20
+related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
 # Local build and validation
@@ -189,7 +189,7 @@ The helper verifies the pinned official Windows Godot 4.7 archive, executable
 version and Rapier runtime before import. It dynamically selects every discovered
 headless case, including the two profile probes and scene startup, and preserves
 the shared runner's per-case timeouts and error/skip rejection. Each applicable
-case must execute exactly once. The six current `test_*_render.gd` cases are
+case must execute exactly once. All discovered `test_*_render.gd` cases are
 explicitly outside this Windows lane; Linux's rendered shards execute them.
 After the ACT-005 integration, the source inventory is 97 Windows headless
 cases and 103 Linux cases, with import counted separately. These counts describe
@@ -573,6 +573,69 @@ small fixture. CI timings are not performance acceptance measurements.
 
 The project now defaults to `res://feature_launcher.tscn`; F2 returns there and discards the current session. Direct `res://main.tscn` and showcase user arguments remain available. See the [physical actor programme](physical-actor-programme.md) for the Blacksite comparison and `test_physical_actor_trial.gd` regression.
 
+
+## Deepworks and depth dimensions
+
+The [Deepworks guide](deepworks-exhibition.md) owns the map and interactive
+controls; the [depth contract](../systems/depth-layers-and-parallax.md) owns
+parameterized surfaces, independent worlds and publication. The new scene uses
+the current materialized native runtime without changing its ABI or dependency
+pins. Open it with `godot --path godot -- --deepworks` or
+`godot --path godot res://deepworks.tscn`.
+
+Run focused headless checks with the pinned engine, for example:
+
+```sh
+godot --headless --audio-driver Dummy --path godot --script res://tests/test_deepworks.gd
+godot --headless --audio-driver Dummy --path godot --script res://tests/test_deepworks_controller.gd
+godot --headless --audio-driver Dummy --path godot --script res://tests/test_deepworks_reactions.gd
+godot --headless --audio-driver Dummy --path godot --script res://tests/test_depth_dimensions.gd
+godot --headless --audio-driver Dummy --path godot --script res://tests/test_depth_compositor.gd
+```
+
+| Case | Meaningful scope |
+|---|---|
+| `test_deepworks.gd` | Full recipe, all districts/planes, passage openings, catalogue coverage, bounded programme and rejected-install atomicity. |
+| `test_deepworks_controller.gd` | Production host controls, view changes, input transforms, pause/reset/tour and foreground/rear painting. |
+| `test_deepworks_reactions.gd` | Actual full-map native simulation through the production source scheduler, copied material observations, reaction products and transport away from feeds. |
+| `test_depth_dimensions.gd` | Default, non-square, minimum and 1024 × 1024 worlds; failed reset preserves prior state; guards, weather, far-edge camera and input. |
+| `test_depth_compositor.gd` | Packet admission and surfaces, including an older generation with a higher serial leaving pixels and identity untouched. |
+| `test_depth_dimensions_render.gd` | Actual far-edge pixels across all four planes, full-size composition, pointer mapping and MAT-002 relief bands. |
+| `test_deepworks_render.gd` | Actual production scene pixels, usable HUD area, per-district rear/distant contribution and atmospheric visibility. |
+
+The two new `*_render.gd` cases require a graphical compatibility renderer:
+
+```sh
+godot --audio-driver Dummy --rendering-method gl_compatibility --path godot \
+  --script res://tests/test_depth_dimensions_render.gd
+godot --audio-driver Dummy --rendering-method gl_compatibility --path godot \
+  --script res://tests/test_deepworks_render.gd
+```
+
+Use a 180-second per-test deadline, as in the shared regression runner. The
+retained depth runtime, default lab and material-surface regressions remain
+applicable. Linux suite discovery includes every new `test_*.gd`; rendered
+suffixes require a display and cannot pass by skipping headless pixels. The
+Windows lane separately discovers the applicable headless cases. Discovery
+does not establish that either platform executed this source successfully.
+
+Reaction acceptance additionally requires all 32 expected district/plane
+identities to complete and pass their mechanism checks. Check both the process
+exit status and the complete log for `SCRIPT ERROR:` / `ERROR:`. The original
+626-plus-one summary was invalid despite exit 0; the
+[PR #185 correction](../audits/2026-10-20-deepworks-pr185-completion.md) records
+the missed transport assertions and repaired rear Stone chute. When saving
+`CYBERSAND_DEEPWORKS_REACTION_REPORT`, require `verified_exhibit_count == 32`
+and every record's `oracle_completed`, positive `oracle_assertions` and
+`verified` result in addition to zero failures.
+
+[`capture_deepworks.gd`](../../godot/tools/capture_deepworks.gd) creates review
+images and a manifest from the actual renderer; its invocation and optional
+`--quick` scope are in the [capture guide](deepworks-exhibition.md#reproduce-images-and-verify-changes).
+Image capture and native reaction checks establish different things. Record
+source/runtime identity, renderer, commands, timeouts and failures in the
+[dated Deepworks audit](../audits/2026-10-20-deepworks-exhibition.md) before making
+an acceptance claim.
 
 ## Exploratory map actor replacement regression
 

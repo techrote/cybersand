@@ -6,7 +6,7 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-20
 ---
 
 # Data ownership and lifetimes
@@ -27,10 +27,29 @@ validates and applies them; only copied receipts return. Reset/close retires the
 old run, command leases, effects and joint graph. See the
 [physical actor contract](../systems/physical-actor-rigs.md).
 
+## Opt-in depth exhibition ownership
+
+[Strata Theatre](../systems/depth-layers-and-parallax.md) and
+[Deepworks](../operations/deepworks-exhibition.md) use a separate synchronous
+depth owner that serializes native adapter calls into four independent worlds.
+They do not borrow the ordinary sandbox's mutable World or attach another
+simulation owner to it. The authored extent can be 8–1024 cells on each axis;
+Deepworks selects 1024 × 1024 for every plane.
+
+[`CyberDeepworksRuntime.install()`](../../godot/scripts/exhibition/deepworks_runtime.gd)
+validates the complete programme and authoring candidate before replacement,
+then retains copied event records. Successful reset advances the world
+generation and retires old queued commands and source counters. Scheduled
+writes run on the same owner immediately before their target native step.
+Rendering receives copied RG8 packets; each surface validates all patches
+before mutation and refuses a reset generation older than its accepted state.
+The frozen background caches its publication and is never ticked. Private
+viewports and camera transforms create no native cell or actor authority.
+
 ## Who may mutate each resource?
 
-**Current:** each selected cellular world has one external owner. On desktop
-that is `CyberSimulationWorker`; on Web it is the main-thread controller.
+**Current:** each selected cellular world has one external owner. In the ordinary
+desktop sandbox that is `CyberSimulationWorker`; on Web it is the main-thread controller.
 Native World coordinates its internal jobs. Queries, export, publication and
 mutation require serialization by that owner; calling a method through
 GDExtension does not make World generally thread-safe. Native pool workers call

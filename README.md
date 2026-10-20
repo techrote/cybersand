@@ -1,6 +1,6 @@
 # CyberSand
 
-Desktop opens the [combined feature launcher](docs/operations/physical-actor-programme.md): showcase maps, actor/material sandboxes, sampled and physical Thunderbowl, Strata Theatre depth studies, generation authoring and the retained barrel/Ripper Blacksite comparison. F2 returns to the launcher and closes the current session.
+Desktop opens the [combined feature launcher](docs/operations/physical-actor-programme.md): showcase maps, the Deepworks exhibition, actor/material sandboxes, sampled and physical Thunderbowl, Strata Theatre depth studies, generation authoring and the retained barrel/Ripper Blacksite comparison. F2 returns to the launcher and closes the current session.
 
 CyberSand is a C++20 cellular simulation engine hosted by Godot, with a material
 lab and bounded Rapier2D/cellular coupling proof. The longer-term product intent
@@ -12,6 +12,27 @@ Applying restores the selected map and starts paused; R retains the actor.
 WASD moves, mouse aims, Q/E trims, Z/X reels and Space/Shift/C invoke the selected
 rig's abilities. M uses its tool, N releases a held item and U reattaches a nearby
 item. Sampled rigs and the original physical hull trials remain reference choices.
+
+## Deepworks — the exhibition below
+
+Choose **Deepworks** in the launcher or pass **`--deepworks`** to open a
+**1024 × 1024 total map** of sixteen themed districts. Thirty-two native
+exhibits pair foreground apparatus with independent rear reactions: grain
+classifiers, charged Metal rails, salt thawing, corrosion, glass furnaces,
+thermite, lime casting, timber burning, purification and living crypts. All four
+material planes cover the full map, with local atmosphere, distant machinery
+and the complete 51-material building catalogue worked into the architecture.
+
+The exhibition starts paused. Choose a district, inspect either setup and press
+**P** to run. **R** restores the entire exhibition while keeping the current
+camera, then **P** replays the specimens. Pan, zoom, switch depth modes, hide
+layers or paint the foreground and rear worlds. **T** takes a guided camera
+tour; reactions keep running in every district, so reset before replaying a
+late exhibit. This is a free-camera material viewer. See the
+[Deepworks guide](docs/operations/deepworks-exhibition.md) for all districts,
+controls, source schedules and reproducible captures.
+
+![Deepworks rendered from its four full-size material planes](docs/images/deepworks/deepworks-atlas.png)
 
 ## Blacksite Nine
 

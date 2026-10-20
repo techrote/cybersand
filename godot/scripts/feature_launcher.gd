@@ -6,6 +6,9 @@ func _ready() -> void:
 	# Keep existing direct-launch arguments compatible with the desktop wrapper.
 	var first_launch: bool = not get_tree().has_meta("cybersand_launch_args_consumed")
 	get_tree().set_meta("cybersand_launch_args_consumed", true)
+	if first_launch and "--deepworks" in OS.get_cmdline_user_args():
+		get_tree().change_scene_to_file.call_deferred("res://deepworks.tscn")
+		return
 	if first_launch and "--depth-lab" in OS.get_cmdline_user_args():
 		get_tree().set_meta("cybersand_depth_lab_visited", true)
 		get_tree().change_scene_to_file.call_deferred("res://depth_lab.tscn")
@@ -30,6 +33,7 @@ func _ready() -> void:
 	scroll.add_child(column)
 	_label(column, "CYBERSAND / PLAY & EXPERIMENT", 30)
 	_label(column, "Choose a feature. F2 returns here; returning closes the current session. Showcase maps start paused. F5 selects 41 articulated Rapier actors or sampled references in the sandbox and showcase maps.", 18)
+	_button(column, "Deepworks — 1024 × 1024 multilayer material exhibition", "deepworks")
 	_button(column, "Blacksite Nine — connected industrial complex", "blacksite")
 	_button(column, "Neon Reliquary — four showcase districts", "showcase")
 	_button(column, "Actor sandbox — 41 articulated Rapier rigs / F5", "actors")
@@ -64,5 +68,6 @@ func launch(destination: String) -> void:
 	elif destination in ["physical_actors", "physical_usables"]: scene = "res://examples/thunderbowl/physical_thunderbowl.tscn"
 	elif destination == "worldgen": scene = "res://worldgen_workbench.tscn"
 	elif destination == "depth": scene = "res://depth_lab.tscn"
+	elif destination == "deepworks": scene = "res://deepworks.tscn"
 	get_tree().set_meta("cybersand_feature", destination)
 	get_tree().change_scene_to_file(scene)

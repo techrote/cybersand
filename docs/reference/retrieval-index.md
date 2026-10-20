@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-20
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -208,3 +208,16 @@ separate; the programme graph owns admission.
 Integrated launch and retained hull comparisons route to the [physical actor programme](../operations/physical-actor-programme.md). Current articulation, the 41-rig roster, scripted feedback, command freshness and usable lifecycle route to the [physical actor contract](../systems/physical-actor-rigs.md).
 
 Layered material worlds, Strata Theatre, quantized relief and explicit interlayer event questions route to the [depth prototype contract](../systems/depth-layers-and-parallax.md).
+
+## Deepworks exhibition and full-size depth worlds
+
+The [Deepworks guide](../operations/deepworks-exhibition.md) owns `--deepworks`
+entry, the total 1024 × 1024 map, sixteen districts, 32 paired native exhibits,
+foreground/rear source schedules, finite-feed replay, guided-tour timing and
+camera/painting controls. The live rear `scripted` plane and frozen true
+`background` are distinguished there. For 640 × 360 compatibility, non-square
+dimensions, the 8–1024 per-axis range, full-size material surfaces, view clamping
+and stale-packet rejection, use the
+[depth contract](../systems/depth-layers-and-parallax.md). Exact budgets belong
+to [configuration](configuration-reference.md#depth-host-and-deepworks-configuration);
+executed results belong to the [dated Deepworks audit](../audits/2026-10-20-deepworks-exhibition.md).

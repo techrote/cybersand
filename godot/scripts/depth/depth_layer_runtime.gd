@@ -7,6 +7,7 @@ const Cell = preload("res://scripts/cell_world.gd")
 const IDS: Array[String] = ["play", "scripted", "effects", "background"]
 const WORLD_SIZE: Vector2i = Vector2i(640, 360)
 const STORAGE_SIZE: Vector2i = Vector2i(1024, 1024)
+const MIN_WORLD_SIDE: int = 8
 const DEFAULT_RATES: Dictionary = {"play": 60.0, "scripted": 20.0, "effects": 30.0, "background": 0.0}
 const MAX_RATE_HZ: float = 60.0
 const MAX_STEPS_PER_ADVANCE: int = 2
@@ -25,18 +26,13 @@ const WEATHER_LABELS: Dictionary = {
 const EFFECT_MATERIALS: Array[int] = [
 	Cell.EMPTY, Cell.WATER, Cell.DUST, Cell.STEAM, Cell.SPARK, Cell.SMOKE
 ]
-const EFFECT_SINK_RECTANGLES: Array[Rect2i] = [
-	Rect2i(1, 1, 639, 3),
-	Rect2i(1, 353, 639, 7),
-	Rect2i(1, 4, 3, 349),
-	Rect2i(637, 4, 3, 349),
-]
-
 var last_error: String = ""
+var world_size: Vector2i = WORLD_SIZE
 var _worlds: Dictionary = {}
 var _layers: Dictionary = {}
 var _commands: Array[Dictionary] = []
 var _background_cache: Dictionary = {}
+var _effect_sink_rectangles: Array[Rect2i] = []
 var _generation: int = 0
 var _command_serial: int = 0
 var _weather: String = "off"
@@ -47,8 +43,10 @@ var _discarded_commands: int = 0
 var _weather_emissions: int = 0
 var _weather_sink_cells_visited: int = 0
 
-func reset(definitions: Dictionary) -> bool:
-	last_error = _validate_definitions(definitions)
+func reset(definitions: Dictionary, authored_size: Vector2i = WORLD_SIZE) -> bool:
+	# Validate the complete candidate before changing dimensions, worlds, clocks,
+	# cached publication or queued commands from the current generation.
+	last_error = _validate_definitions(definitions, authored_size)
 	if not last_error.is_empty():
 		return false
 	if not ClassDB.class_exists(&"CyberNativeCellWorld"):
@@ -63,7 +61,7 @@ func reset(definitions: Dictionary) -> bool:
 		if not world.diagnostic_reset({"workers": 1, "telemetry": false}):
 			last_error = "Could not construct native %s plane" % id
 			return false
-		world.set_simulation_window(Vector2i.ZERO, WORLD_SIZE, 16, 16)
+		world.set_simulation_window(Vector2i.ZERO, authored_size, 16, 16)
 		world.set_simulation_window_enabled(true)
 		world.set_cadence_lod_enabled(false)
 		var rectangles: PackedInt32Array = definitions[id]
@@ -75,7 +73,7 @@ func reset(definitions: Dictionary) -> bool:
 			):
 				last_error = "Native authoring rejected %s rectangle %d" % [id, offset / 5]
 				return false
-		if id != "background" and not _install_guard(world):
+		if id != "background" and not _install_guard(world, authored_size):
 			last_error = "Native authoring rejected the %s plane boundary" % id
 			return false
 		candidates[id] = world
@@ -97,6 +95,8 @@ func reset(definitions: Dictionary) -> bool:
 	_discarded_commands += _commands.size()
 	_commands.clear()
 	_worlds = candidates
+	world_size = authored_size
+	_effect_sink_rectangles = _build_effect_sinks(authored_size)
 	_layers = next_layers
 	_background_cache = {}
 	_generation += 1
@@ -295,6 +295,7 @@ func stats() -> Dictionary:
 		layer_stats[id] = state
 	return {
 		"generation": _generation,
+		"world_size": world_size,
 		"weather": _weather,
 		"pending_commands": _commands.size(),
 		"accepted_commands": _accepted_commands,
@@ -307,7 +308,10 @@ func stats() -> Dictionary:
 		"layers": layer_stats,
 	}
 
-func _validate_definitions(definitions: Dictionary) -> String:
+func _validate_definitions(definitions: Dictionary, authored_size: Vector2i = WORLD_SIZE) -> String:
+	if (authored_size.x < MIN_WORLD_SIDE or authored_size.y < MIN_WORLD_SIDE
+			or authored_size.x > STORAGE_SIZE.x or authored_size.y > STORAGE_SIZE.y):
+		return "Depth dimensions must be within 8..1024 cells on each axis"
 	for id: String in IDS:
 		if not definitions.has(id):
 			return "Missing %s depth plane" % id
@@ -325,9 +329,9 @@ func _validate_definitions(definitions: Dictionary) -> String:
 			var width: int = rectangles[offset + 2]
 			var height: int = rectangles[offset + 3]
 			var material: int = rectangles[offset + 4]
-			if width <= 0 or height <= 0 or x < 0 or y < 0 or x + width > WORLD_SIZE.x or y + height > WORLD_SIZE.y:
+			if width <= 0 or height <= 0 or x < 0 or y < 0 or x + width > authored_size.x or y + height > authored_size.y:
 				return "%s contains an out-of-bounds rectangle" % id
-			if material < 0 or material > Cell.LAST_MATERIAL:
+			if material < 0 or material == 10 or material > Cell.LAST_MATERIAL:
 				return "%s contains an invalid material ID" % id
 			writes += width * height
 			if writes > MAX_AUTHORING_CELL_WRITES:
@@ -344,11 +348,11 @@ func _validate_command(id: String, cell: Vector2i, radius: int, material: int) -
 		return "target_failed"
 	if radius < 0 or radius > MAX_RADIUS:
 		return "radius_out_of_budget"
-	if material < 0 or material > Cell.LAST_MATERIAL:
+	if material < 0 or material == 10 or material > Cell.LAST_MATERIAL:
 		return "invalid_material"
 	if not _inside(cell):
 		return "cell_out_of_bounds"
-	if cell.x - radius < 1 or cell.y - radius < 1 or cell.x + radius >= WORLD_SIZE.x - 1 or cell.y + radius >= WORLD_SIZE.y - 1:
+	if cell.x - radius < 1 or cell.y - radius < 1 or cell.x + radius >= world_size.x - 1 or cell.y + radius >= world_size.y - 1:
 		return "disc_crosses_plane_guard"
 	return ""
 
@@ -411,7 +415,7 @@ func _emit_weather(world: Object, tick: int) -> void:
 		return
 	var material: int = Cell.WATER
 	var count: int = 10
-	var y: int = 22
+	var y: int = mini(22, world_size.y - 3)
 	match _weather:
 		"rain":
 			material = Cell.WATER
@@ -422,27 +426,46 @@ func _emit_weather(world: Object, tick: int) -> void:
 		"fog":
 			material = Cell.STEAM
 			count = 5
-			y = 252
+			y = clampi(roundi(float(world_size.y) * 0.7), 3, world_size.y - 4)
 		"energy":
 			material = Cell.SPARK
 			count = 4
 	for index: int in range(count):
-		var x: int = 24 + posmod(tick * 47 + index * 61 + index * index * 7, 592)
-		var py: int = y + posmod(index * 23 + tick * 3, 34) if _weather == "fog" else y
+		var margin: int = mini(24, maxi(3, (world_size.x - 1) / 2))
+		var x: int = margin + posmod(tick * 47 + index * 61 + index * index * 7, world_size.x - margin * 2)
+		var fog_span: int = mini(34, world_size.y - 3 - y)
+		var py: int = y + posmod(index * 23 + tick * 3, fog_span) if _weather == "fog" else y
 		world.emit_disc(x, py, 1 if material != Cell.STEAM else 2, material)
 		_weather_emissions += 1
 
 func _clear_effect_edges(world: Object) -> void:
-	for rect: Rect2i in EFFECT_SINK_RECTANGLES:
+	for rect: Rect2i in _effect_sink_rectangles:
 		if world.diagnostic_fill_rect(rect.position, rect.size, Cell.EMPTY):
 			_weather_sink_cells_visited += rect.size.x * rect.size.y
 
-func _install_guard(world: Object) -> bool:
+func _build_effect_sinks(authored_size: Vector2i) -> Array[Rect2i]:
+	# All sinks stay strictly inside the guard, including the right-hand edge.
+	# At small admitted sizes the top/bottom bands consume the interior safely.
+	# Prepare the fixed rectangles during reset rather than allocating per tick.
+	var top: int = mini(3, (authored_size.y - 2) / 2)
+	var bottom: int = mini(7, authored_size.y - 2 - top)
+	var middle: int = authored_size.y - 2 - top - bottom
+	var sides: int = mini(3, (authored_size.x - 2) / 2)
+	var sinks: Array[Rect2i] = [
+		Rect2i(1, 1, authored_size.x - 2, top),
+		Rect2i(1, authored_size.y - 1 - bottom, authored_size.x - 2, bottom),
+	]
+	if middle > 0:
+		sinks.append(Rect2i(1, 1 + top, sides, middle))
+		sinks.append(Rect2i(authored_size.x - 1 - sides, 1 + top, sides, middle))
+	return sinks
+
+func _install_guard(world: Object, authored_size: Vector2i) -> bool:
 	return (
-		world.diagnostic_fill_rect(Vector2i(0, 0), Vector2i(WORLD_SIZE.x, 1), Cell.WALL)
-		and world.diagnostic_fill_rect(Vector2i(0, WORLD_SIZE.y - 1), Vector2i(WORLD_SIZE.x, 1), Cell.WALL)
-		and world.diagnostic_fill_rect(Vector2i(0, 1), Vector2i(1, WORLD_SIZE.y - 2), Cell.WALL)
-		and world.diagnostic_fill_rect(Vector2i(WORLD_SIZE.x - 1, 1), Vector2i(1, WORLD_SIZE.y - 2), Cell.WALL)
+		world.diagnostic_fill_rect(Vector2i(0, 0), Vector2i(authored_size.x, 1), Cell.WALL)
+		and world.diagnostic_fill_rect(Vector2i(0, authored_size.y - 1), Vector2i(authored_size.x, 1), Cell.WALL)
+		and world.diagnostic_fill_rect(Vector2i(0, 1), Vector2i(1, authored_size.y - 2), Cell.WALL)
+		and world.diagnostic_fill_rect(Vector2i(authored_size.x - 1, 1), Vector2i(1, authored_size.y - 2), Cell.WALL)
 	)
 
 func _unchanged_packet(id: String) -> Dictionary:
@@ -466,4 +489,4 @@ func _fail_layer(id: String, error: String) -> void:
 	last_error = error
 
 func _inside(cell: Vector2i) -> bool:
-	return cell.x >= 0 and cell.y >= 0 and cell.x < WORLD_SIZE.x and cell.y < WORLD_SIZE.y
+	return cell.x >= 0 and cell.y >= 0 and cell.x < world_size.x and cell.y < world_size.y

@@ -1,0 +1,469 @@
+{
+	"capture_failures": false,
+	"captures": [
+		{
+			"file": "deepworks-guide.png",
+			"height": 960,
+			"sha256": "256a53fd3768654d91c4342ca22ddb41b7e720d74851b16f7804a5fc590821f2",
+			"width": 1280
+		},
+		{
+			"file": "deepworks-atlas.png",
+			"height": 2048,
+			"sha256": "331431e917a612857d60ecd71c92af83e066f405468ba80c4ec79282fa6b7ac0",
+			"width": 2048
+		},
+		{
+			"file": "a1-customs.png",
+			"height": 512,
+			"sha256": "acc31dcff3b1cb0ae2cb97552684426bbe60f77f9ce0bb34a301caa5ea899664",
+			"width": 512
+		},
+		{
+			"file": "a2-copper-choir.png",
+			"height": 512,
+			"sha256": "b01117164dfb66f2045dd95e87eb1f301d3494f8ae345aca5bcd72b94fa8ca16",
+			"width": 512
+		},
+		{
+			"file": "a3-frost.png",
+			"height": 512,
+			"sha256": "b6aba7530157e1053e0cecf8d143748f4f329e705c8bf75f05d032c7f0ef6381",
+			"width": 512
+		},
+		{
+			"file": "a4-halite.png",
+			"height": 512,
+			"sha256": "e245482e361de73a5a2682c200aab69b1034e98ed17cacd830f0b1e835529be6",
+			"width": 512
+		},
+		{
+			"file": "b1-oxide.png",
+			"height": 512,
+			"sha256": "a1c43d6c327b3a62714a44b287d3eb6f4ec14a8b44162916c136f2a4bd953a98",
+			"width": 512
+		},
+		{
+			"file": "b2-reliquary.png",
+			"height": 512,
+			"sha256": "8a28a1e094c1567278dc2b53b166fb8623b06272f64427f1a51e428e4dd309b8",
+			"width": 512
+		},
+		{
+			"file": "b3-clay-ossuary.png",
+			"height": 512,
+			"sha256": "bf6173e001e7fc12df89c80f464cfe73817acfbea372226c542cd248c2dfb8e4",
+			"width": 512
+		},
+		{
+			"file": "b4-prism.png",
+			"height": 512,
+			"sha256": "c3529a98d2546f9b8bb01bde7ba008e5866117b10e8de33f49d4cd4e50efc93b",
+			"width": 512
+		},
+		{
+			"file": "c1-thermite.png",
+			"height": 512,
+			"sha256": "e66f03ab36f34211aedb4565430c429b9780a19f789fa6a78828b14a0a2fd7b0",
+			"width": 512
+		},
+		{
+			"file": "c2-lime-casting.png",
+			"height": 512,
+			"sha256": "c7ba4847ebded32ee1af8ba7850929e0a0154a74d1ea952b18e23e7c0eb8f7cd",
+			"width": 512
+		},
+		{
+			"file": "c3-rainward.png",
+			"height": 512,
+			"sha256": "b49fc6de016ac1fa1a23d4db10f0cc15291b9a4f39e047b45cb8d5a2adfdf380",
+			"width": 512
+		},
+		{
+			"file": "c4-timber.png",
+			"height": 512,
+			"sha256": "54be91c0b6cd09ea54384d5b22f5217ce52b5d29054cbe9081794c935482793e",
+			"width": 512
+		},
+		{
+			"file": "d1-polymer.png",
+			"height": 512,
+			"sha256": "7d58a151da132a3d383869bddcedd796de8ae5461936262e68247713e8266902",
+			"width": 512
+		},
+		{
+			"file": "d2-poison-garden.png",
+			"height": 512,
+			"sha256": "beda30a40484ec8ff75316eb5445ee0ff0e37900a616281875ef211f60a260bd",
+			"width": 512
+		},
+		{
+			"file": "d3-mycelium.png",
+			"height": 512,
+			"sha256": "aa41ae60aca89e9fbfe9f28ba4e735b6af042e12efeb0f25ada7ccf08e1a3cdf",
+			"width": 512
+		},
+		{
+			"file": "d4-abyssal-sump.png",
+			"height": 512,
+			"sha256": "a8700bd7f0828075c167cee09a4dfb5398a59eb721d843bf530febc40860ff10",
+			"width": 512
+		},
+		{
+			"file": "detail-a2.png",
+			"height": 1024,
+			"sha256": "9e812b2ca83f5a476073ef38624ff86280b7bbfc2ca6425f3203bf747a4422be",
+			"width": 1024
+		},
+		{
+			"file": "detail-b2.png",
+			"height": 1024,
+			"sha256": "cbd7c71ce3b4599a3e521d2629fb6acf95d74ab4beb6a841f115058d2c1f4676",
+			"width": 1024
+		},
+		{
+			"file": "detail-b4.png",
+			"height": 1024,
+			"sha256": "ca31999aa88fd27dc79883025661c611cb857addc47da15b2d6ee70c5f394af4",
+			"width": 1024
+		},
+		{
+			"file": "detail-c1.png",
+			"height": 1024,
+			"sha256": "3a838d249248f2814d88a26e91da6cc39134ae7704765c9e523c5d28765c64f0",
+			"width": 1024
+		},
+		{
+			"file": "detail-c3.png",
+			"height": 1024,
+			"sha256": "ecf121f1e7df4ae319719aff12a909d0dd56db07232064b70964939fa05bdf98",
+			"width": 1024
+		},
+		{
+			"file": "detail-d3.png",
+			"height": 1024,
+			"sha256": "34699a3d6d4bc71a6ad548b7ff9dbf3bb0e55985623ada0335561e1569d7d683",
+			"width": 1024
+		},
+		{
+			"file": "detail-d4.png",
+			"height": 1024,
+			"sha256": "8ac0e7a32863ec6a3da52e3c0e1cfed581d91f4cf85c1fc759480ee8fe110a7c",
+			"width": 1024
+		},
+		{
+			"file": "layer-play.png",
+			"height": 1024,
+			"sha256": "c6e6e3ecd8d31f6b4c3029c2914097293028bafd36c0106c3e89c288e96c8d0b",
+			"width": 1024
+		},
+		{
+			"file": "layer-scripted.png",
+			"height": 1024,
+			"sha256": "516963cad18a82f78dfdfc460529565cc41799beb4ac72cd7073a8a375e84354",
+			"width": 1024
+		},
+		{
+			"file": "layer-effects.png",
+			"height": 1024,
+			"sha256": "144d361f334937f18cc5a2f082da0ca5fcbc5b3b02fcb755615971356d6ce5e1",
+			"width": 1024
+		},
+		{
+			"file": "layer-background.png",
+			"height": 1024,
+			"sha256": "d225436c8ab79f0525906927e0700f77ee1b45b53229ff9dd6b78c739af42436",
+			"width": 1024
+		},
+		{
+			"file": "deepworks-after-240-ticks.png",
+			"height": 2048,
+			"sha256": "b945cc1a67c163f4b95c436c663715e7ce0829ed9f153d2f30a32124046abe21",
+			"width": 2048
+		},
+		{
+			"file": "reaction-a3.png",
+			"height": 1024,
+			"sha256": "a2bb7b70515460ea254c9ccf6d9db3e5a75b4af6d739da6cbaac84025d57e680",
+			"width": 1024
+		},
+		{
+			"file": "reaction-b2.png",
+			"height": 1024,
+			"sha256": "f8638522a88033e1ed1be3f0138554dad43cdb97a3f11dab95f3f47dbf6fed48",
+			"width": 1024
+		},
+		{
+			"file": "reaction-c1.png",
+			"height": 1024,
+			"sha256": "0fa53b94ad0a6f83542afefc5c621b0093826db87c030c982b670c443d27f8bd",
+			"width": 1024
+		},
+		{
+			"file": "reaction-c2.png",
+			"height": 1024,
+			"sha256": "5a277d5c9a04b031079de40d24b93739a4e2dbc945a661ad8ab75757665d89c4",
+			"width": 1024
+		}
+	],
+	"compositor": {
+		"camera_origin": "(256.0, 512.0)",
+		"full_rg8_uploaded_bytes": 14680064,
+		"full_rg8_uploads": 7,
+		"layer_parallax": "(1.0, 0.98, 0.965, 0.94)",
+		"layer_scale": "(1.0, 1.0, 1.0, 1.0)",
+		"layer_visibility": "(1.0, 1.0, 1.0, 1.0)",
+		"layers": {
+			"background": {
+				"accepted_packets": 1,
+				"bake_requests": 1,
+				"copied_patch_bytes": 2097152,
+				"last_rejection": "",
+				"layer_id": "background",
+				"layer_tick": 0,
+				"material_surface_size": "(1024, 1024)",
+				"native_texture_size": "(1024, 1024)",
+				"rejected_packets": 0,
+				"render_enabled": false,
+				"reset_generation": 1,
+				"static_bake": true,
+				"upload_count": 1,
+				"uploaded_bytes": 2097152,
+				"viewport_update_mode": 1
+			},
+			"effects": {
+				"accepted_packets": 2,
+				"bake_requests": 0,
+				"copied_patch_bytes": 3112670,
+				"last_rejection": "",
+				"layer_id": "effects",
+				"layer_tick": 240,
+				"material_surface_size": "(1024, 1024)",
+				"native_texture_size": "(1024, 1024)",
+				"rejected_packets": 0,
+				"render_enabled": false,
+				"reset_generation": 1,
+				"static_bake": false,
+				"upload_count": 2,
+				"uploaded_bytes": 4194304,
+				"viewport_update_mode": 1
+			},
+			"play": {
+				"accepted_packets": 2,
+				"bake_requests": 0,
+				"copied_patch_bytes": 2296822,
+				"last_rejection": "",
+				"layer_id": "play",
+				"layer_tick": 240,
+				"material_surface_size": "(1024, 1024)",
+				"native_texture_size": "(1024, 1024)",
+				"rejected_packets": 0,
+				"render_enabled": false,
+				"reset_generation": 1,
+				"static_bake": false,
+				"upload_count": 2,
+				"uploaded_bytes": 4194304,
+				"viewport_update_mode": 1
+			},
+			"scripted": {
+				"accepted_packets": 2,
+				"bake_requests": 0,
+				"copied_patch_bytes": 2259748,
+				"last_rejection": "",
+				"layer_id": "scripted",
+				"layer_tick": 240,
+				"material_surface_size": "(1024, 1024)",
+				"native_texture_size": "(1024, 1024)",
+				"rejected_packets": 0,
+				"render_enabled": false,
+				"reset_generation": 1,
+				"static_bake": false,
+				"upload_count": 2,
+				"uploaded_bytes": 4194304,
+				"viewport_update_mode": 1
+			}
+		},
+		"presentation_time": 0.0,
+		"view_size": "(256.0, 256.0)",
+		"world_size": "(1024.0, 1024.0)"
+	},
+	"display": "X11",
+	"engine": {
+		"build": "official",
+		"hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+		"hex": 263936,
+		"major": 4,
+		"minor": 7,
+		"patch": 0,
+		"status": "stable",
+		"string": "4.7-stable (official)",
+		"timestamp": 0
+	},
+	"events": {
+		"applications": 614,
+		"cell_writes": 37042,
+		"enabled": true,
+		"fired": {
+			"deepworks-00-effects-local-atmosphere": 6,
+			"deepworks-00-effects-riser-sink": 13,
+			"deepworks-00-play-dust-ration": 10,
+			"deepworks-00-play-sand-ration": 15,
+			"deepworks-00-scripted-sand-ration": 9,
+			"deepworks-00-scripted-stone-ration": 8,
+			"deepworks-01-effects-local-atmosphere": 5,
+			"deepworks-01-effects-riser-sink": 13,
+			"deepworks-01-play-electrode-water": 5,
+			"deepworks-01-play-rail-charge": 12,
+			"deepworks-01-scripted-rear-electrode": 13,
+			"deepworks-02-effects-condensate-drain": 9,
+			"deepworks-02-effects-local-atmosphere": 5,
+			"deepworks-02-effects-riser-sink": 13,
+			"deepworks-02-play-thermal-lance": 8,
+			"deepworks-02-scripted-salt-thaw": 8,
+			"deepworks-03-effects-local-atmosphere": 4,
+			"deepworks-03-effects-riser-sink": 13,
+			"deepworks-03-play-halite-rain": 7,
+			"deepworks-03-scripted-evaporator-flame": 9,
+			"deepworks-04-effects-local-atmosphere": 6,
+			"deepworks-04-effects-riser-sink": 13,
+			"deepworks-04-play-brine-weathering": 5,
+			"deepworks-04-play-freshwater-weathering": 5,
+			"deepworks-04-scripted-zinc-etch": 6,
+			"deepworks-05-effects-local-atmosphere": 5,
+			"deepworks-05-effects-riser-sink": 13,
+			"deepworks-05-play-marble-etch": 5,
+			"deepworks-05-scripted-chalk-etch": 5,
+			"deepworks-06-effects-local-atmosphere": 5,
+			"deepworks-06-effects-riser-sink": 13,
+			"deepworks-06-play-kiln-lava": 3,
+			"deepworks-06-scripted-rear-kiln-lava": 4,
+			"deepworks-07-effects-condensate-drain": 9,
+			"deepworks-07-effects-local-atmosphere": 4,
+			"deepworks-07-effects-riser-sink": 13,
+			"deepworks-07-play-glass-furnace": 4,
+			"deepworks-07-scripted-molten-quench": 6,
+			"deepworks-08-effects-local-atmosphere": 6,
+			"deepworks-08-effects-riser-sink": 13,
+			"deepworks-08-play-delayed-thermite-pilot": 6,
+			"deepworks-08-play-thermite-pilot": 16,
+			"deepworks-08-scripted-magnesium-pilot": 12,
+			"deepworks-09-effects-condensate-drain": 9,
+			"deepworks-09-effects-local-atmosphere": 5,
+			"deepworks-09-effects-riser-sink": 13,
+			"deepworks-09-play-lime-water": 6,
+			"deepworks-09-scripted-wet-mould": 4,
+			"deepworks-10-effects-local-atmosphere": 4,
+			"deepworks-10-effects-riser-sink": 13,
+			"deepworks-10-play-gypsum-leak": 8,
+			"deepworks-10-play-sugar-glass-leak": 8,
+			"deepworks-10-scripted-earth-rain": 7,
+			"deepworks-11-effects-local-atmosphere": 4,
+			"deepworks-11-effects-riser-sink": 13,
+			"deepworks-11-play-wood-lava-pilot": 3,
+			"deepworks-11-scripted-sandbag-flame": 9,
+			"deepworks-12-effects-local-atmosphere": 5,
+			"deepworks-12-effects-riser-sink": 13,
+			"deepworks-12-play-wax-heat": 4,
+			"deepworks-12-scripted-polymer-flame": 11,
+			"deepworks-13-effects-condensate-drain": 9,
+			"deepworks-13-effects-local-atmosphere": 5,
+			"deepworks-13-effects-riser-sink": 13,
+			"deepworks-13-play-purification-water": 10,
+			"deepworks-13-scripted-sodium-water": 8,
+			"deepworks-14-effects-condensate-drain": 9,
+			"deepworks-14-effects-local-atmosphere": 4,
+			"deepworks-14-effects-riser-sink": 13,
+			"deepworks-14-play-high-seeds": 4,
+			"deepworks-14-play-seed-fall": 5,
+			"deepworks-14-scripted-fungal-inoculation": 2,
+			"deepworks-15-effects-local-atmosphere": 4,
+			"deepworks-15-effects-riser-sink": 13,
+			"deepworks-15-play-heavy-droplets": 4,
+			"deepworks-15-play-oil-droplets": 3,
+			"deepworks-15-scripted-geothermal-rain": 7
+		},
+		"generation": 1,
+		"registered": 77
+	},
+	"initial_state": "paused, tick zero, hybrid depth, frozen material animation",
+	"map_size": [
+		1024,
+		1024
+	],
+	"method": "gl_compatibility",
+	"quick": false,
+	"recipe_sha256": "ab2b18d4f1db26ad1d3bee2db467a0d39dcf8bfb00bdffe52d8187a4b053da79",
+	"renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+	"runtime": {
+		"accepted_commands": 0,
+		"applied_commands": 0,
+		"background_cached": true,
+		"discarded_commands": 0,
+		"generation": 1,
+		"layers": {
+			"background": {
+				"accumulator": 0.0,
+				"cache_hits": 1,
+				"dropped_steps": 0,
+				"dropped_wall_time": 0.0,
+				"error": "",
+				"failed": false,
+				"native_snapshot_calls": 1,
+				"native_tick": 0,
+				"paused": false,
+				"rate_hz": 0.0,
+				"resident": true,
+				"tick": 0
+			},
+			"effects": {
+				"accumulator": 0.0,
+				"cache_hits": 0,
+				"dropped_steps": 0,
+				"dropped_wall_time": 0.0,
+				"error": "",
+				"failed": false,
+				"native_snapshot_calls": 2,
+				"native_tick": 240,
+				"paused": false,
+				"rate_hz": 15.0,
+				"resident": true,
+				"tick": 240
+			},
+			"play": {
+				"accumulator": 0.0,
+				"cache_hits": 0,
+				"dropped_steps": 0,
+				"dropped_wall_time": 0.0,
+				"error": "",
+				"failed": false,
+				"native_snapshot_calls": 2,
+				"native_tick": 240,
+				"paused": false,
+				"rate_hz": 30.0,
+				"resident": true,
+				"tick": 240
+			},
+			"scripted": {
+				"accumulator": 0.0,
+				"cache_hits": 0,
+				"dropped_steps": 0,
+				"dropped_wall_time": 0.0,
+				"error": "",
+				"failed": false,
+				"native_snapshot_calls": 2,
+				"native_tick": 240,
+				"paused": false,
+				"rate_hz": 20.0,
+				"resident": true,
+				"tick": 240
+			}
+		},
+		"pending_commands": 0,
+		"rejected_commands": 0,
+		"weather": "off",
+		"weather_emissions": 0,
+		"weather_sink_cells_visited": 3910080,
+		"world_size": "(1024, 1024)"
+	},
+	"source_revision": "fc015a77d3b851fef4ea7734923bcdb3762a19a5"
+}

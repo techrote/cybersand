@@ -4,11 +4,28 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-20
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md]
 ---
 
 # Validation evidence ledger
+
+## Deepworks exhibition and depth dimensions — 2026-10-20
+
+The [PR #185 completion audit](../audits/2026-10-20-deepworks-pr185-completion.md)
+supersedes the earlier native-reaction pass: two script errors omitted eight
+A1 flow assertions and concealed a blocked rear Stone feed. It owns the repaired
+transport/completion checks, focused UI input correction and final acceptance.
+Original observations and hashes remain preserved with that invalidation.
+
+The [Deepworks audit](../audits/2026-10-20-deepworks-exhibition.md) owns dated
+source/runtime identity, authoring and native-reaction checks, controller and
+rendered-image evidence, preserved failures and remaining platform gates for
+the full-size four-plane exhibition. Its source contract and controls belong
+to the [exhibition guide](../operations/deepworks-exhibition.md); default,
+non-square and 1024 × 1024 dimension semantics and stale-packet rejection belong
+to the [depth contract](../systems/depth-layers-and-parallax.md). Earlier Strata
+and MAT-002 results retain their original tested scope.
 
 ## MAT-002 review and test completion — 2026-10-19
 
