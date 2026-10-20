@@ -433,6 +433,8 @@ gen::Recipe parse_recipe(const Dictionary& input, std::uint64_t revision) {
     recipe.revision = revision;
     if (input.has("schema")) recipe.schema = static_cast<std::uint32_t>(bounded_integer(
         input["schema"], 1, 2, "schema"));
+    if (recipe.schema != 2 && (input.has("spatial") || input.has("spatial_limits")))
+        invalid("recipe.schema", "typed spatial declarations require schema 2");
     if (input.has("seed")) recipe.seed = static_cast<std::uint64_t>(bounded_integer(
         input["seed"], 0, std::numeric_limits<std::int64_t>::max(), "seed"));
     if (input.has("chunk_size")) recipe.chunk_size = static_cast<std::int32_t>(bounded_integer(

@@ -5,13 +5,21 @@ document-kind: contract
 scope: GEN-002 deterministic scalar sidechains, finite curve tiles, immutable proposal context, masked guidance, aggregate realization and copied diagnostics
 canonical-for: [generation-field-graph, generation-masked-modifiers, generation-aggregate-materials, generation-context-and-diagnostics]
 keywords: [world generation, Hilbert, Morton, structured noise, masks, sidechains, modifiers, sculpting, aggregates, context, diagnostic]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-20
 related-documents: [procedural-world-generation.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/configuration-reference.md, ../reference/interfaces-and-message-contracts.md, ../operations/local-build-and-validation.md, ../audits/2026-10-18-gen002-fields-and-aggregates.md]
 ---
 
 # Procedural generation fields and masked modifiers
 
 ## What does GEN-002 add?
+
+This page owns the retained normalized `fields` graph. GEN-003 schema 2 adds
+a separate [typed spatial graph](procedural-typed-spatial-fields.md), with signed
+values, distances, vectors, exact categories and explicit mask conversion.
+It does not change the scalar/context semantics described below. Existing masks,
+module application/exclusion, aggregate variation and parameter mappings may
+also name a normalized typed output as `spatial:<id>`; unconverted general
+scalars, vectors, categories and booleans reject at that consumer boundary.
 
 **Current candidate source, GEN-002 / [#171](https://github.com/techrote/cybersand/issues/171):**
 the three [procedural generators](procedural-world-generation.md) now accept a
@@ -280,8 +288,11 @@ sandbox for arbitrary registered C++ callbacks. Excess work fails and publishes
 no partial payload.
 
 Jobs retain an immutable compiled generator and prepared field/module state.
-Changing a recipe cannot mutate a prior job. Schema version remains 1, while the
-generator algorithm version is 2 and scalar field algorithm version is 1.
+Changing a recipe cannot mutate a prior job. This retained schema-1 path uses
+generator algorithm version 2 and scalar field algorithm version 1. Explicit
+schema-2 recipes use generator algorithm 3 and the separate spatial algorithm 1;
+their type-aware receipts and diagnostics follow the
+[typed contract](procedural-typed-spatial-fields.md).
 Twelve independently retained GEN-001 material hashes cover three candidates in
 four signed chunks with the old complex controls and no new fields/modifiers.
 Those regressions protect the measured legacy material output; algorithm identity

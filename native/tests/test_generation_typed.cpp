@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <array>
+#include <bit>
 #include <cmath>
 #include <cstdint>
 #include <cstdlib>
@@ -377,8 +378,8 @@ void derived_geometry_and_bounded_coordinate_maps() {
         node("mirrored", SpatialKind::Mirror, {"x"}, {{"origin_x", far_origin}, {"period_x", tiny_period}})});
     for (const auto name : {"repeated", "mirrored"}) {
         const double coordinate = sample(*narrow, name, 0, 0).x;
-        require(coordinate >= far_origin && coordinate <= far_origin + tiny_period,
-                "tiny periods at large origins stay inside the rounded representable interval instead of cancellation-folding below the origin");
+        require(coordinate >= 0 && coordinate <= tiny_period,
+                "tiny periods at large phase origins remain inside the folded local interval instead of cancellation-folding below zero");
     }
 }
 
@@ -491,6 +492,17 @@ void reusable_graphs_and_precise_cache_invalidation() {
     invalid_unused_parameter.subgraphs.back().parameters[0].type = SpatialType::Boolean;
     invalid_unused_parameter.subgraphs.back().parameters[0].unit_power = 1;
     rejects([&] { (void)SpatialGraph::compile(invalid_unused_parameter, 1); }, "unused unbound boolean parameters still reject nonzero units");
+    for (unsigned ignored = 0; ignored < 5; ++ignored) {
+        auto parameter_override = reusable_definition();
+        auto& parameter = parameter_override.subgraphs[0].nodes[0];
+        if (ignored == 0) parameter.value = value(SpatialType::Scalar, 1);
+        if (ignored == 1) parameter.unit_power = 1;
+        if (ignored == 2) parameter.inputs = {"missing"};
+        if (ignored == 3) parameter.parameters = {{"ignored", 1}};
+        if (ignored == 4) parameter.parameter_bindings = {{"ignored", "offset"}};
+        rejects([&] { (void)SpatialGraph::compile(parameter_override, 1); },
+                "parameter nodes reject ignored authored values, units, inputs, numeric parameters and bindings");
+    }
     SpatialDefinition empty_expansion;
     for (unsigned level = 0; level < 5; ++level) {
         SpatialSubgraph empty; empty.id = "empty" + std::to_string(level);
@@ -502,6 +514,100 @@ void reusable_graphs_and_precise_cache_invalidation() {
     }
     SpatialInstance empty_root; empty_root.id = "root"; empty_root.subgraph = "empty4"; empty_expansion.instances.push_back(empty_root);
     rejects([&] { (void)SpatialGraph::compile(empty_expansion, 1); }, "empty subgraphs still consume the finite expansion ledger and cannot cause unbounded traversal");
+}
+
+void numeric_parameter_binding_units() {
+    SpatialSubgraph reusable;
+    reusable.id = "reusable";
+    reusable.parameters = {{"length", SpatialType::Scalar, 1, value(SpatialType::Scalar, 16)},
+                           {"turn", SpatialType::Scalar, 0, value(SpatialType::Scalar, 0)}};
+    auto noise = node("noise", SpatialKind::Noise); noise.parameter_bindings = {{"scale", "length"}};
+    auto mask = node("mask", SpatialKind::ToMask, {"x"}); mask.parameter_bindings = {{"high", "length"}};
+    auto rotate = node("rotate", SpatialKind::Transform, {"x"}); rotate.parameter_bindings = {{"angle", "turn"}};
+    reusable.nodes = {node("x", SpatialKind::CoordinateX), noise, mask, rotate};
+    reusable.outputs = {{"noise_out", "noise"}, {"mask_out", "mask"}, {"rotated", "rotate"}};
+    SpatialDefinition definition; definition.subgraphs = {reusable};
+    SpatialInstance instance; instance.id = "a"; instance.subgraph = "reusable";
+    definition.instances = {instance};
+    const auto bound = SpatialGraph::compile(definition, 71);
+    near(sample(*bound, "a.mask_out", 8, -4).x, .5,
+         "numeric mask threshold binding uses the input field's cell exponent");
+    near(sample(*bound, "a.rotated", 8, -4).x, 8,
+         "dimensionless angular parameter binds without changing coordinate units");
+    auto literal = definition;
+    literal.subgraphs[0].nodes[1].parameter_bindings.clear();
+    literal.subgraphs[0].nodes[1].parameters = {{"scale", 16}};
+    require(sample(*bound, "a.noise_out", -19, 37) ==
+                sample(*SpatialGraph::compile(literal, 71), "a.noise_out", -19, 37),
+            "length-typed noise scale binding has the same value as the corresponding literal");
+    auto wrong_length = definition; wrong_length.subgraphs[0].parameters[0].unit_power = 0;
+    rejects([&] { (void)SpatialGraph::compile(wrong_length, 71); },
+            "dimensionless numeric binding cannot silently become a cell-unit noise scale or mask threshold");
+    auto wrong_angle = definition; wrong_angle.subgraphs[0].parameters[1].unit_power = 1;
+    rejects([&] { (void)SpatialGraph::compile(wrong_angle, 71); },
+            "cell-unit numeric binding cannot silently become a dimensionless rotation angle");
+    auto wrong_mask = definition; wrong_mask.subgraphs[0].nodes[2].parameter_bindings = {{"high", "turn"}};
+    wrong_mask.subgraphs[0].parameters[1].default_value = value(SpatialType::Scalar, 16);
+    rejects([&] { (void)SpatialGraph::compile(wrong_mask, 71); },
+            "numeric mask bounds must match input units even when the bound value is valid");
+    wrong_length.instances.clear();
+    rejects([&] { (void)SpatialGraph::compile(wrong_length, 71); },
+            "unused subgraph validation still checks numeric operator binding units");
+}
+
+void canonical_zero_cache_parity() {
+    auto negative_vector = constant("vector", -0.0, 0, SpatialType::Vector2);
+    negative_vector.value.y = -0.0;
+    auto positive_vector = negative_vector; positive_vector.value.x = positive_vector.value.y = 0.0;
+    const auto negative = compile({constant("scalar", -0.0), negative_vector});
+    const auto positive = compile({constant("scalar", 0.0), positive_vector});
+    require(negative->fingerprint() == positive->fingerprint(),
+            "signed zeros share one canonical graph and cache identity");
+    SpatialScratch scratch;
+    for (const auto& graph : {negative, positive, negative}) {
+        for (const std::string id : {"scalar", "vector"}) {
+            const auto cold = sample(*graph, id, -11, 23);
+            const auto warm = sample(*graph, id, -11, 23, &scratch);
+            require(std::bit_cast<std::uint64_t>(cold.x) == 0 && std::bit_cast<std::uint64_t>(cold.y) == 0,
+                    "authored scalar/vector negative zero returns canonical positive-zero component bits");
+            require(std::bit_cast<std::uint64_t>(cold.x) == std::bit_cast<std::uint64_t>(warm.x) &&
+                        std::bit_cast<std::uint64_t>(cold.y) == std::bit_cast<std::uint64_t>(warm.y),
+                    "cache reuse across signed-zero-equivalent graphs preserves exact component bits");
+        }
+    }
+    require(scratch.hits >= 4, "signed-zero-equivalent recompilations actually reuse cached results");
+}
+
+void deterministic_instance_seed_domains() {
+    SpatialSubgraph texture;
+    texture.id = "texture";
+    texture.nodes = {node("value", SpatialKind::Noise, {}, {{"scale", 16}, {"salt", 29}})};
+    texture.outputs = {{"out", "value"}};
+    SpatialDefinition definition; definition.subgraphs = {texture};
+    SpatialInstance left; left.id = "left"; left.subgraph = "texture";
+    SpatialInstance right; right.id = "right"; right.subgraph = "texture";
+    definition.instances = {left, right};
+    const auto graph = SpatialGraph::compile(definition, 719);
+    std::reverse(definition.instances.begin(), definition.instances.end());
+    const auto reordered = SpatialGraph::compile(definition, 719);
+    const auto other_seed = SpatialGraph::compile(definition, 720);
+    require(reordered->fingerprint() == graph->fingerprint(), "instance array order does not change seed-domain identity");
+    bool distinct_instances = false, distinct_seed = false;
+    for (std::int64_t i = 0; i < 20; ++i) {
+        const auto x = i * 7 - 63, y = 47 - i * 5;
+        const auto a = sample(*graph, "left.out", x, y), b = sample(*graph, "right.out", x, y);
+        require(a == sample(*reordered, "left.out", x, y) && b == sample(*reordered, "right.out", x, y),
+                "canonical named instances reproduce noise at negative and positive absolute coordinates");
+        distinct_instances = distinct_instances || a != b;
+        distinct_seed = distinct_seed || a != sample(*other_seed, "left.out", x, y);
+    }
+    require(distinct_instances, "distinct stable instance paths derive distinct nontrivial seed domains");
+    require(distinct_seed, "recipe seed changes affect instantiated noise");
+    auto extra = left; extra.id = "third"; definition.instances.push_back(extra);
+    const auto extended = SpatialGraph::compile(definition, 719);
+    require(info(*graph, "left.out").fingerprint == info(*extended, "left.out").fingerprint &&
+                info(*graph, "right.out").fingerprint == info(*extended, "right.out").fingerprint,
+            "adding an unrelated named instance preserves existing noise/cache identities");
 }
 
 void scale_partition_order_cache_and_allocation() {
@@ -630,6 +736,9 @@ int main() {
         derived_geometry_and_bounded_coordinate_maps();
         coarse_discrete_selection();
         reusable_graphs_and_precise_cache_invalidation();
+        numeric_parameter_binding_units();
+        canonical_zero_cache_parity();
+        deterministic_instance_seed_domains();
         scale_partition_order_cache_and_allocation();
         validation_bounds_and_transactional_outputs();
         std::cout << "PASS typed generation fields: " << assertions

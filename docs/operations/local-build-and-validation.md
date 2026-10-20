@@ -256,7 +256,9 @@ changed physical integration.
 ## Procedural generation candidates and workbench
 
 GEN-001/GEN-002 provide native-only comparison, field/modifier regressions and
-focused fresh-chunk admission checks:
+focused fresh-chunk admission checks. GEN-003 adds independent typed analytical,
+multiresolution/cache/worker, bounded seed/mapping and finite solver regressions
+to the same native targets:
 
 ```sh
 make worldgen-test
@@ -281,6 +283,7 @@ regression script using the pinned Godot executable:
 godot --path godot res://worldgen_workbench.tscn
 godot --headless --path godot --script res://tests/test_worldgen_workbench.gd
 godot --headless --path godot --script res://tests/test_worldgen_fields.gd
+godot --headless --path godot --script res://tests/test_worldgen_typed.gd
 ```
 
 The generation workbench is separate from the ordinary sandbox and its optional
@@ -296,6 +299,35 @@ module registration, receipt ownership and the separate fresh-chunk installer.
 Native generator/binding changes require rebuilt runtimes before these Godot
 commands establish source-matched evidence. Merely importing an old extension
 does not register `CyberWorldGenerator`.
+
+The [typed contract](../systems/procedural-typed-spatial-fields.md) and
+[operator inventory](../reference/procedural-spatial-operators.md) own GEN-003
+numerical/type guarantees. The Workbench's Typed spatial graphs page selects
+five executable schema-2 profiles: `typed-industrial-structure.json`,
+`typed-vector-utilities.json`, `typed-categorical-districts.json`,
+`typed-reusable-decay.json` and `typed-multiscale-seeds.json`. They exercise
+transforms, vector guidance, exact districts, nested parameterized authoring and
+world-aligned coarse sampling. Typed Godot validation checks configuration
+roundtrips, typed diagnostics, malformed/refused inputs and Workbench integration;
+native analytical tests remain the numeric oracle. New native tests do not
+replace source-matched Linux/Windows runtime publication and ready-PR gates.
+
+To reproduce the five GEN-003 material/typed-diagnostic pairs, use the typed
+renderer with an absolute script path from the repository root:
+
+```sh
+GENERATION_ROOT="$PWD"
+godot --headless --path "$GENERATION_ROOT/godot" --script "$GENERATION_ROOT/tools/render_worldgen_typed.gd" -- --output "$GENERATION_ROOT/build/worldgen-typed"
+```
+
+It samples a 256×192-cell region at `[-128,0]` from each checked-in profile and
+writes ten PNGs plus `render-manifest.json`. The manifest records the actual
+platform/Godot version, runtime and source SHA-256 values, recipe SHA-256,
+accepted graph fingerprint, typed diagnostic metadata and per-chunk material
+and receipt hashes. Colour mapping is the Workbench's presentation mapping;
+the native diagnostic payload retains signed numbers, vector components and
+exact categorical identity. These panels show generated proposals, with no
+simulation ticks or claim of visual throughput.
 
 To reproduce the three GEN-002 material/mask panels, run the checked-in renderer
 with an absolute script path. From the repository root:

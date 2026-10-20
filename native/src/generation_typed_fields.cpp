@@ -192,6 +192,7 @@ std::uint64_t add_cost(std::uint64_t a, std::uint64_t b, std::uint64_t limit, co
 struct Expanded {
     std::vector<SpatialNode> nodes;
     std::map<std::string, std::uint64_t> seeds;
+    std::map<std::string, std::map<std::string, std::int32_t>> binding_units;
 };
 struct Expansion {
     const SpatialDefinition &def;
@@ -280,6 +281,9 @@ struct Expansion {
             for (auto &input : n.inputs)
                 input = path + input;
             if (n.kind == SpatialKind::Parameter) {
+                need(n.value == SpatialValue{} && n.unit_power == 0 && n.inputs.empty() &&
+                         n.parameters.empty() && n.parameter_bindings.empty(),
+                     "parameter node contains ignored declarations");
                 auto p = declarations.find(n.reference);
                 need(p != declarations.end(), "unknown parameter node reference: " + n.reference);
                 auto b = bound.find(n.reference);
@@ -293,6 +297,7 @@ struct Expansion {
                 need(p != declarations.end() && scalar(p->second->type),
                      "numeric parameter binding needs scalar parameter");
                 need(!n.parameters.contains(key), "numeric binding collides with literal parameter");
+                out.binding_units[n.id][key] = p->second->unit_power;
                 auto b = bound.find(param);
                 if (b != bound.end())
                     n.parameters[key] = b->second.x;
@@ -849,6 +854,21 @@ void SpatialGraph::Impl::compile_nodes(Expanded expanded) {
         case SpatialKind::Parameter:
             break;
         }
+        if (const auto units = expanded.binding_units.find(n.id); units != expanded.binding_units.end()) {
+            for (const auto &[key, power] : units->second) {
+                int expected = 0;
+                if (key == "low" || key == "high")
+                    expected = in(0).unit_power;
+                else if (key == "x" || key == "y" || key == "radius" || key == "width" || key == "height" ||
+                         key == "scale" || key == "spacing" || key == "tx" || key == "ty" ||
+                         key == "origin_x" || key == "origin_y" || key == "radial_scale" ||
+                         key == "min_radius" || key == "period_x" || key == "period_y" ||
+                         key == "cell_size" || key == "max_displacement")
+                    expected = 1;
+                need(power == expected,
+                     "numeric parameter binding has incompatible units: " + n.id + "." + key);
+            }
+        }
         info.sampling_scale = n.sampling_scale;
         need(info.unit_power >= -8 && info.unit_power <= 8, "derived units exceed allowed exponent");
         need(std::isfinite(info.minimum) && std::isfinite(info.maximum) && info.minimum >= -B &&
@@ -1190,6 +1210,10 @@ SpatialValue SpatialGraph::Impl::evaluate(std::size_t index, double x, double y,
         }
     }
     v.type = info.type;
+    if (v.x == 0)
+        v.x = 0;
+    if (v.y == 0)
+        v.y = 0;
     if (!std::isfinite(v.x) || !std::isfinite(v.y) || std::abs(v.x) > B || std::abs(v.y) > B)
         throw std::runtime_error("spatial evaluation exceeded finite numeric bounds");
     if (info.type == SpatialType::Normalized && (v.x < 0 || v.x > 1))

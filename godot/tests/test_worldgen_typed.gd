@@ -30,12 +30,15 @@ func typed_recipe() -> Dictionary:
 		{"id":"gradient","kind":"gradient","inputs":["x"]},
 		{"id":"mask","kind":"to_mask","inputs":["x"],"parameters":{"low":-8,"high":0}},
 		{"id":"signed","kind":"constant","value":{"type":"scalar","x":-12.5}},
+		{"id":"circle","kind":"circle_distance","parameters":{"radius":2}},
+		{"id":"route_distance","kind":"geometry_distance","reference":"route"},
 		{"id":"vector","kind":"constant","value":{"type":"vector2","x":-3,"y":4}},
+		{"id":"large_vector","kind":"constant","value":{"type":"vector2","x":-1e60,"y":1e60}},
 		{"id":"truth","kind":"constant","value":{"type":"boolean","x":1}},
 		{"id":"category","kind":"constant","value":{"type":"category","category":{"x":"9007199254740993","y":"-9007199254740995","domain":"ffffffffffffffff"}}},
 		{"id":"category_match","kind":"category_is","inputs":["category"],"value":{"type":"category","category":{"x":"9007199254740993","y":"-9007199254740995","domain":"0000000000000000"}}},
 		{"id":"category_other_namespace","kind":"category_is","inputs":["category"],"value":{"type":"category","category":{"x":"9007199254740993","y":"-9007199254740995","domain":"0000000000000001"}}},
-	]}
+	],"geometries":[{"id":"route","points":[[0,10],[8,10]]}]}
 	recipe.modifiers = [{"id":"paint","application":"spatial:mask","material":62}]
 	return recipe
 
@@ -72,6 +75,10 @@ func check_transport() -> void:
 	expect(x.cells == plain.cells and x.hash == plain.hash and x.receipt_hash != plain.receipt_hash, "Typed inspection changed material output or was omitted from the receipt")
 	var signed: Dictionary = generator.generate_chunk(Vector2i.ZERO, "spatial:signed")
 	expect(signed.ok and signed.diagnostic_values[0] == -12.5, "Signed scalar lost its negative value")
+	var circle: Dictionary = generator.generate_chunk(Vector2i.ZERO, "spatial:circle")
+	expect(circle.ok and circle.diagnostic_info.type == "signed_distance" and circle.diagnostic_info.unit_power == 1 and circle.diagnostic_values[0] == -2 and circle.diagnostic_info.distance_min_factor == 1 and circle.diagnostic_info.distance_max_factor == 1, "Signed distance lost its sign, units or distance guarantees")
+	var route: Dictionary = generator.generate_chunk(Vector2i.ZERO, "spatial:route_distance")
+	expect(route.ok and route.diagnostic_info.type == "distance" and route.diagnostic_values[0] == 10 and route.diagnostic_info.unit_power == 1, "Immutable geometry distance lost its type, value or units")
 	var vector: Dictionary = generator.generate_chunk(Vector2i.ZERO, "spatial:vector")
 	expect(vector.ok and vector.diagnostic_info.type == "vector2" and vector.diagnostic_values.size() == 128 and vector.diagnostic_values[0] == -3 and vector.diagnostic_values[1] == 4, "Vector components were flattened or clamped")
 	var gradient: Dictionary = generator.generate_chunk(Vector2i(-1,0), "spatial:gradient")
@@ -88,7 +95,7 @@ func check_transport() -> void:
 	var copied: Dictionary = generator.get_configuration()
 	copied.spatial.nodes[0].sampling_scale = 64
 	expect(generator.get_configuration() == recipe, "Typed configuration exposes mutable accepted storage")
-	var roundtrip: Dictionary = JSON.parse_string(JSON.stringify(recipe))
+	var roundtrip: Dictionary = JSON.parse_string(JSON.stringify(recipe, "", true, true))
 	var second: Variant = ClassDB.instantiate(&"CyberWorldGenerator")
 	var restored: Dictionary = second.configure(roundtrip)
 	expect(restored.ok and restored.fingerprint == configured.fingerprint, "JSON roundtrip changed canonical typed recipe identity")
@@ -150,7 +157,7 @@ func check_subgraphs_and_examples() -> void:
 	var south: Dictionary = generator.generate_chunk(Vector2i.ZERO,"spatial:south.mask")
 	expect(north.ok and south.ok and north.diagnostic_info.type == "normalized" and south.diagnostic_info.type == "normalized", "Reusable masks are not executable normalized outputs")
 	var second: Variant = ClassDB.instantiate(&"CyberWorldGenerator")
-	var restored: Dictionary = second.configure(JSON.parse_string(JSON.stringify(recipe)))
+	var restored: Dictionary = second.configure(JSON.parse_string(JSON.stringify(recipe, "", true, true)))
 	expect(restored.ok and restored.fingerprint == configured.fingerprint, "Subgraph JSON roundtrip changed canonical identity")
 	expect(second.generate_chunk(Vector2i.ZERO,"spatial:north.mask").diagnostic_values == north.diagnostic_values, "Subgraph JSON roundtrip changed typed output")
 	var changed: Dictionary = recipe.duplicate(true)
@@ -194,13 +201,24 @@ func check_workbench() -> void:
 	if app.active_recipe.get("schema",1) != 2:
 		app.queue_free()
 		return
-	for id: String in ["signed","vector","truth","category"]:
+	var authored_identity: String = app.generator.get_catalogue().spatial_fingerprint
+	app.apply_json()
+	expect(app.last_error.is_empty() and app.generator.get_catalogue().spatial_fingerprint == authored_identity, "Profile editor text rounded accepted double precision values")
+	expect(app.apply_spatial_json() and app.generator.get_catalogue().spatial_fingerprint == authored_identity, "Spatial editor text rounded accepted double precision values")
+	var saved_profile: String = "user://gen003-typed-roundtrip.json"
+	expect(app.save_profile(saved_profile) and app.load_profile(saved_profile), "Typed profile file could not roundtrip")
+	app.apply_json()
+	expect(app.last_error.is_empty() and app.generator.get_catalogue().spatial_fingerprint == authored_identity, "Saved typed profile rounded accepted double precision values")
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(saved_profile))
+	for id: String in ["mask","signed","circle","route_distance","vector","large_vector","truth","category"]:
 		expect(app.select_diagnostic("spatial:" + id), "Typed output missing from inspection menu: " + id)
 		var packet: Dictionary = app.generator.generate_chunk(Vector2i.ZERO,"spatial:" + id)
 		expect(app.accept_chunk(packet,Vector2i.ZERO,app._view_token), "Typed packet did not enter preview: " + id + " / " + app.last_error)
 		expect(app.cache[Vector2i.ZERO].has("diagnostic_texture"), "Typed preview lacks a mapped texture")
 		app._inspect_point(Vector2.ZERO)
 		expect(app.pointer_label.text.contains("spatial:" + id), "Typed point inspection lost the output ID")
+		var color: Color = Workbench.spatial_diagnostic_color(packet,0)
+		expect(is_finite(color.r) and is_finite(color.g) and is_finite(color.b), "Display mapping narrowed or overflowed valid typed values")
 		var malformed: Dictionary = packet.duplicate(true)
 		malformed.diagnostic_info.unit_power = 7
 		expect(not app.accept_chunk(malformed), "Forged typed units metadata entered the preview")
@@ -221,7 +239,7 @@ func check_workbench() -> void:
 	var revision: int = app.active_revision
 	app.spatial_editor.text = "{\"nodes\":[{\"id\":\"bad\",\"kind\":\"unknown\"}]}"
 	expect(not app.apply_spatial_json() and app.active_revision == revision, "Rejected authoring JSON replaced the accepted graph")
-	app.spatial_editor.text = JSON.stringify(typed_recipe().spatial)
+	app.spatial_editor.text = JSON.stringify(typed_recipe().spatial, "", true, true)
 	expect(app.apply_spatial_json(), "Complete typed JSON could not be authored")
 	var saved: Dictionary = app.active_recipe.duplicate(true)
 	app.parameter_inputs.relief.value = 7

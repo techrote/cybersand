@@ -104,6 +104,7 @@ var _syncing_controls: bool = false
 var _dirty_controls: Dictionary = {}
 var page_picker: OptionButton
 var diagnostic_picker: OptionButton
+var diagnostic_legend: Label
 var diagnostic_channel: String = ""
 var _view_token: int = 0
 var _active_view_token: int = 0
@@ -179,7 +180,7 @@ static func default_recipe() -> Dictionary:
 func _ready() -> void:
 	_build_ui()
 	_connect_control_tracking()
-	profile_editor.text = JSON.stringify(default_recipe(), "  ", true)
+	profile_editor.text = JSON.stringify(default_recipe(), "  ", true, true)
 	if not ClassDB.class_exists(&"CyberWorldGenerator"):
 		_set_error("The current native generator is unavailable. Build the GDExtension for this source, then reopen this scene.")
 		return
@@ -277,9 +278,9 @@ func _build_ui() -> void:
 	diagnostic_picker = _options(inspection, ["Materials"])
 	diagnostic_picker.set_item_metadata(0, "")
 	diagnostic_picker.item_selected.connect(func(index: int) -> void: select_diagnostic(str(diagnostic_picker.get_item_metadata(index))))
-	var opacity: SpinBox = _labelled_spin(inspection, "Mask opacity", 0, 1, 0.1, 1)
+	var opacity: SpinBox = _labelled_spin(inspection, "Overlay", 0, 1, 0.1, 1)
 	opacity.value_changed.connect(func(value: float) -> void: preview.diagnostic_opacity = value; preview.queue_redraw())
-	_label(inspection, "0 dark · 1 bright", 13)
+	diagnostic_legend = _label(inspection, "Material colours", 13)
 	grid.toggled.connect(func(enabled: bool) -> void: preview.grid_visible = enabled; preview.queue_redraw())
 	guides.toggled.connect(func(enabled: bool) -> void: preview.guides_visible = enabled; preview.queue_redraw())
 	pointer_label = _label(viewer, "Drag to author · right/middle drag to pan · wheel to zoom · Esc cancels a stroke", 14, Color(0.65, 0.77, 0.81))
@@ -454,10 +455,10 @@ func _build_spatial_tab(box: VBoxContainer) -> void:
 	spatial_editor = TextEdit.new()
 	spatial_editor.custom_minimum_size = Vector2(0, 300)
 	spatial_editor.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
-	spatial_editor.text = JSON.stringify({"nodes":[]}, "  ", true)
+	spatial_editor.text = JSON.stringify({"nodes":[]}, "  ", true, true)
 	box.add_child(spatial_editor)
 	_button(box, "Apply spatial JSON", apply_spatial_json)
-	_button(box, "Restore accepted graph text", func() -> void: spatial_editor.text = JSON.stringify(active_recipe.get("spatial", {"nodes":[]}), "  ", true))
+	_button(box, "Restore accepted graph text", func() -> void: spatial_editor.text = JSON.stringify(active_recipe.get("spatial", {"nodes":[]}), "  ", true, true))
 	_note(box, "Draft input_1 / input_2 references must be replaced with real node IDs. Full profile JSON also edits material modifiers. Category addresses stay exact; colours and signed-value ramps are display mappings only.")
 
 func load_spatial_example(name: String) -> bool:
@@ -503,11 +504,12 @@ func _insert_spatial_node() -> void:
 	for parameter: Dictionary in spec.get("parameters", []): parameters[str(parameter.name)] = parameter.default_value
 	if not parameters.is_empty(): node.parameters = parameters
 	if kind == "constant": node.value = {"type":"scalar", "x":0}
+	if kind == "category_is": node.value = {"type":"category", "category":{"x":"0","y":"0","domain":"0000000000000000"}}
 	if kind in ["parameter", "geometry_distance", "assigned_region"]: node.reference = "replace-reference"
 	var nodes: Array = definition.get("nodes", [])
 	nodes.append(node)
 	definition.nodes = nodes
-	spatial_editor.text = JSON.stringify(definition, "  ", true)
+	spatial_editor.text = JSON.stringify(definition, "  ", true, true)
 
 func _refresh_spatial_help() -> void:
 	if spatial_help == null: return
@@ -697,7 +699,7 @@ func _load_modifier() -> void:
 	modifier_context_material.select(modifier_context_material.get_item_index(int(item.get("context_material", 0))))
 	modifier_bounds.text = JSON.stringify(item.bounds) if item.has("bounds") else ""
 	modifier_action.select(0)
-	modifier_json.text = JSON.stringify(item if not item.is_empty() else {"material":0}, "  ", true)
+	modifier_json.text = JSON.stringify(item if not item.is_empty() else {"material":0}, "  ", true, true)
 
 func _modifier_parameter_range() -> void:
 	var spec: Array = PARAMETER_SPECS[modifier_parameter.get_item_text(modifier_parameter.selected)]
@@ -885,7 +887,7 @@ func _build_profile_dialog() -> void:
 	_button(actions, "Apply JSON", apply_json)
 	_button(actions, "Load JSON…", _choose_load_profile)
 	_button(actions, "Save accepted…", _choose_save_profile)
-	_button(actions, "Restore accepted text", func() -> void: profile_editor.text = JSON.stringify(active_recipe, "  ", true))
+	_button(actions, "Restore accepted text", func() -> void: profile_editor.text = JSON.stringify(active_recipe, "  ", true, true))
 	_button(actions, "Close", profile_dialog.hide)
 	profile_status = _label(box, "", 14)
 	profile_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -967,8 +969,8 @@ func apply_recipe(recipe: Dictionary, record_undo: bool = true) -> bool:
 	_sync_controls()
 	_sync_preview()
 	_update_requests()
-	profile_editor.text = JSON.stringify(active_recipe, "  ", true)
-	spatial_editor.text = JSON.stringify(active_recipe.get("spatial", {"nodes":[]}), "  ", true)
+	profile_editor.text = JSON.stringify(active_recipe, "  ", true, true)
+	spatial_editor.text = JSON.stringify(active_recipe.get("spatial", {"nodes":[]}), "  ", true, true)
 	profile_status.text = "Accepted revision %d · %s" % [active_revision, active_fingerprint]
 	_refresh_status()
 	return true
@@ -1114,7 +1116,7 @@ func _load_module_instance() -> void:
 	if item.is_empty(): return
 	_select_text(module_picker, str(item.module))
 	_refresh_module_editor()
-	module_parameters.text = JSON.stringify(item.get("parameters", {}), "  ", true)
+	module_parameters.text = JSON.stringify(item.get("parameters", {}), "  ", true, true)
 	_select_reference(module_application, str(item.get("application", "")))
 	_select_reference(module_exclusion, str(item.get("exclusion", "")))
 	module_strength.value = float(item.get("strength", 1))
@@ -1260,7 +1262,7 @@ func select_diagnostic(channel: String) -> bool:
 	for index: int in range(diagnostic_picker.item_count):
 		found = found or str(diagnostic_picker.get_item_metadata(index)) == channel
 	if not found:
-		_set_error("Select an accepted field, modifier or module before inspecting its mask.")
+		_set_error("Select an accepted diagnostic output before inspecting it.")
 		return false
 	if channel == diagnostic_channel: return true
 	diagnostic_channel = channel
@@ -1359,12 +1361,20 @@ static func spatial_diagnostic_color(packet: Dictionary, index: int) -> Color:
 	var type: String = str(packet.diagnostic_info.type)
 	if type == "category":
 		var address: String = "%s:%s:%s" % [packet.diagnostic_categories[index * 3 + 2], packet.diagnostic_categories[index * 3], packet.diagnostic_categories[index * 3 + 1]]
-		return Color.from_hsv(float(address.hash() & 65535) / 65536.0, 0.65, 0.92)
+		# Mix every address bit before choosing a display hue, so neighbouring
+		# integer identities do not collapse to nearly indistinguishable colours.
+		var colour_key: int = address.hash() & 0xffffffff
+		for _round: int in range(2): colour_key = (((colour_key >> 16) ^ colour_key) * 0x45d9f3b) & 0xffffffff
+		colour_key = (colour_key >> 16) ^ colour_key
+		return Color.from_hsv(float(colour_key & 0xffffff) / 16777216.0, 0.65, 0.92)
 	var values: PackedFloat64Array = packet.diagnostic_values
 	if type == "vector2":
-		var vector := Vector2(values[index * 2], values[index * 2 + 1])
-		var hue: float = fposmod(atan2(vector.y, vector.x) / TAU, 1.0)
-		var brightness: float = 0.2 + 0.8 * (1.0 - exp(-vector.length() / 16.0))
+		# Keep double components out of Godot's single-precision Vector2 carrier.
+		var x: float = values[index * 2]
+		var y: float = values[index * 2 + 1]
+		var hue: float = fposmod(atan2(y, x) / TAU, 1.0)
+		var magnitude: float = sqrt(x * x + y * y)
+		var brightness: float = 0.2 + 0.8 * (1.0 - exp(-magnitude / 16.0))
 		return Color.from_hsv(hue, 0.75, brightness)
 	var value: float = values[index]
 	if type in ["normalized", "boolean"]: return Color(value, value, value, 1)
@@ -1477,6 +1487,14 @@ func accept_chunk(packet: Dictionary, expected_coordinate: Variant = null, expec
 func _sync_preview() -> void:
 	if preview == null:
 		return
+	if diagnostic_legend != null:
+		diagnostic_legend.text = "Material colours" if diagnostic_channel.is_empty() else "0 dark · 1 bright"
+		if diagnostic_channel.begins_with("spatial:"):
+			match str(spatial_nodes.get(diagnostic_channel.substr(8), {}).get("type", "")):
+				"vector2": diagnostic_legend.text = "Hue: direction · light: length"
+				"category": diagnostic_legend.text = "Colour: exact category"
+				"scalar", "signed_distance": diagnostic_legend.text = "Blue: negative · orange: positive"
+				"distance": diagnostic_legend.text = "Dark: near · light: far"
 	preview.camera_origin = camera_origin
 	preview.view_size = view_size
 	preview.chunk_size = int(active_recipe.get("chunk_size", 128))
@@ -1504,7 +1522,7 @@ func _refresh_module_editor() -> void:
 	if module_parameters == null:
 		return
 	var id: String = module_picker.get_item_text(module_picker.selected)
-	module_parameters.text = JSON.stringify(MODULE_DEFAULTS.get(id, {}), "  ", true)
+	module_parameters.text = JSON.stringify(MODULE_DEFAULTS.get(id, {}), "  ", true, true)
 	match id:
 		"arcology": module_help.text = "Multistory rooms around a shared service shaft. Draw bounds across several chunks."
 		"vault": module_help.text = "Connected maze prepared once per module. Placement width and height snap to cell_size; at most 64 × 64 maze nodes."
@@ -1628,7 +1646,7 @@ func save_profile(path: String) -> bool:
 	if file == null:
 		_set_error("Cannot save profile: %s" % error_string(FileAccess.get_open_error()))
 		return false
-	file.store_string(JSON.stringify(active_recipe, "  ", true) + "\n")
+	file.store_string(JSON.stringify(active_recipe, "  ", true, true) + "\n")
 	file.flush()
 	var error: Error = file.get_error()
 	file.close()

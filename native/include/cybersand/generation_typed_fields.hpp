@@ -102,7 +102,7 @@ struct SpatialNode {
     std::map<std::string, double> parameters;
     std::uint32_t sampling_scale = 1; // 1,4,16,64; absolute-world anchored
     SpatialValue value{};             // Constant only
-    std::int32_t unit_power = 0;      // Constant / Parameter declaration only
+    std::int32_t unit_power = 0;      // Constant only; parameter units come from SpatialParameter
     std::string reference;            // parameter / geometry / assignment ID
     // In a named subgraph only: numeric operator parameter -> typed parameter.
     std::map<std::string, std::string> parameter_bindings;
