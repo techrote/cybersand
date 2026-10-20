@@ -12,6 +12,15 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Choose a reading route
 
+To **author a new map with Deepworks-level quality**, use the
+[start-to-finish agent walkthrough](operations/map-authoring-walkthrough.md).
+Its focused chapters cover [design and materials](operations/map-authoring-design-and-materials.md),
+[native layers and programmes](operations/map-authoring-native-layers-and-programmes.md),
+and [validation, captures and acceptance](operations/map-authoring-validation-and-acceptance.md).
+The guide includes milestone outputs, a worked apparatus example and a reusable
+agent work packet; the existing scene and subsystem guides retain their
+canonical contracts.
+
 Choose all 41 [articulated Rapier actors](systems/physical-actor-rigs.md) with F5 in the sandbox and exploratory maps, using keyboard, local scripted or external-policy control. Sampled references and the initial hull arms remain available; [the physical actor programme](operations/physical-actor-programme.md) preserves owner intent and integration scope.
 
 Layering, quantized relief and Strata Theatre: [depth prototype contract](systems/depth-layers-and-parallax.md).

@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Executable test selection and future gates; dated results and save format live in separate references
 canonical-for: [test-inventory, test-selection, future-validation-gates]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-20
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md, ../reference/level-saves-and-replay.md]
 ---
 
@@ -54,6 +54,11 @@ limits. The initial migration checkpoint executed the unsharded suite against th
 source/runtime artifact and proved exact case coverage equivalence. The serial lane
 is retained as an explicit opt-in diagnostic, while ordinary PR validation uses the
 four isolated shards.
+
+### Rendered pixels, headless cases and skipped-test failures
+
+A passing headless run does not prove that material pixels were rendered.
+Fresh WebAssembly browser execution also requires its own evidence.
 
 Every discovered `test_*_render.gd` case requires a display and executes with the
 OpenGL compatibility renderer. Linux CI provides Xvfb and Mesa software rendering;

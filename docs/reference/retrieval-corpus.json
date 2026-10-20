@@ -95,7 +95,11 @@
     "operations/physical-actor-programme.md",
     "systems/depth-layers-and-parallax.md",
     "systems/physical-actor-rigs.md",
-    "operations/deepworks-exhibition.md"
+    "operations/deepworks-exhibition.md",
+    "operations/map-authoring-walkthrough.md",
+    "operations/map-authoring-design-and-materials.md",
+    "operations/map-authoring-native-layers-and-programmes.md",
+    "operations/map-authoring-validation-and-acceptance.md"
   ],
   "navigation": [
     "README.md",

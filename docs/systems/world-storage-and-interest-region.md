@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [world-storage, camera-interest-region]
 status: Current
 scope: Sparse native storage, finite adapters, interest pause/resume and fresh generated-chunk admission; general persistence/reconfiguration/streaming remain separate
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-20
 related-documents: [activity-dirty-regions-and-waking.md, ../architecture/chunk-tile-and-buffer-model.md, ../reference/configuration-reference.md, ../reference/level-saves-and-replay.md, ../decisions/ADR-004-interest-region-and-reconfiguration.md]
 ---
 
@@ -36,6 +36,32 @@ demo dimensions and reserved capacities do not define the future stored-world li
 
 Source identity is recorded in the [checkpoint](../operations/source-checkpoint-and-recovery.md);
 dated execution and artifact limits are in the [evidence ledger](../reference/validation-evidence.md).
+
+## Native world size, camera pixels and twice-size validation
+
+**Current:** Native `World` stores sparse chunks at signed 64-bit chunk
+coordinates. Resident storage and scheduled work are limited by explicit
+capacities; the native coordinate space is not a rectangle fixed to the camera
+size. See [`WorldConfig` and `ChunkCoord`](../../native/include/cybersand/world.hpp).
+
+The **1024 × 1024** boundary belongs to the current finite Godot/demo adapter
+and its demo-save scope. Camera pixels and enlarged screenshots describe a
+view of that finite adapter, not the dimensions of native sparse storage.
+The [native adapter](../../godot/native_extension/cyber_native_cell_world.cpp)
+and [demo save codec](../../godot/scripts/demo_save_codec.gd) retain their
+actual finite bounds; a larger native coordinate space does not enlarge them.
+
+The camera's **interest region** selects resident cores for phased simulation.
+It differs from storage capacity and from the rendered region. A workload
+described as **twice the camera size** must state its dimensions. The **2×
+validation target** is a test extent, not a permanent world-size limit; specify
+whether it doubles each axis or total area.
+
+**Planned:** general safe live capacity reconfiguration and sparse-world
+persistence. Current reservation and camera-interest changes do not implement
+the proposed pause/drain/resize/publish protocol or a sparse serializer.
+Use the [capacity procedure](../operations/configuration-and-capacity-budgets.md)
+and [persistence boundary](#persistence-boundary) for those distinct limits.
 
 ## Storage and region vocabulary
 
