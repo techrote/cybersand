@@ -6,26 +6,45 @@ status: Current
 scope: Native publication outcomes, Godot render consumption and current gameplay commands; resource lifetime and wire layouts are linked
 keywords: [RenderBridge, GameplayBridge, RG8, immutable snapshot, full texture upload, backpressure, emission queue]
 related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../systems/material-appearance-and-rendering.md]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-20
 ---
 
 # Rendering and gameplay bridges
 
 ## Can rendering read native cells directly?
 
-**Current:** display consumers receive copied immutable data. They never retain
-mutable World/chunk pointers. `RenderSnapshotExchange` provides native leases;
-`CyberNativeCellWorld::take_render_snapshot` copies their data into Godot value
-arrays. Desktop accumulates/publishes these through `CyberSimulationSnapshot`;
-Web consumes copied packets synchronously on the main thread.
+No. **Current:** the renderer consumes immutable snapshots, never live cells or
+mutable World/chunk pointers. A native patch buffer can be reused only after its
+final `RenderSnapshotLease` is released. The
+[Godot adapter](../../godot/native_extension/cyber_native_cell_world.cpp)
+copies leased patch metadata and bytes into Godot arrays before releasing the
+lease; texture upload does not borrow that native slot.
 
-Source: [native exchange](../../native/src/render_snapshot.cpp),
-[Godot adapter](../../godot/native_extension/cyber_native_cell_world.cpp),
-[desktop publication](../../godot/scripts/simulation_worker.gd) and
-[Web publication](../../godot/scripts/web_demo_controller.gd).
-Lease and acknowledgement lifetimes are canonical in
-[data ownership](data-ownership-and-lifetimes.md); exact field layouts belong in
-[interfaces](../reference/interfaces-and-message-contracts.md).
+The [desktop worker](../../godot/scripts/simulation_worker.gd) separately copies
+its pending patch arrays in `_refresh_published_render_payload` and publishes
+that frozen generation through `CyberSimulationSnapshot`. Published bytes must
+remain unchanged while a consumer can observe them, even as the private
+accumulator collects later patches. `take_latest_snapshot` retrieves a snapshot;
+it does not acknowledge consumption or authorize buffer retirement.
+
+Before constructing an Image or blitting a patch,
+[main](../../godot/scripts/main.gd) validates the complete packet's metadata,
+dimensions, channels, offsets and byte bounds. It calls
+`acknowledge_render_snapshot` only after successful CPU image consumption and
+the `ImageTexture.update` call. This acknowledgement is not an explicit GPU
+completion fence. Malformed or rejected data requests a full refresh and
+withholds acknowledgement; the renderer never repairs a packet by reading live
+World cells. The worker clears accumulated changes only when the acknowledged
+serial covers their pending publication.
+
+The [handoff regression](../../godot/tests/test_render_patch_handoff_regression.gd)
+defines controls for payload validation, retained snapshot bytes and explicit
+acknowledgement. Native slot leases and copied Godot generation lifetimes remain
+canonical in [data ownership](data-ownership-and-lifetimes.md#when-can-a-render-payload-be-reused);
+the [native exchange](../../native/src/render_snapshot.cpp) implements the former.
+[Web](../../godot/scripts/web_demo_controller.gd) consumes copied packets
+synchronously on the main thread and does not instantiate the desktop handoff.
+Exact field layouts belong in [interfaces](../reference/interfaces-and-message-contracts.md).
 
 ## What does native publication return under pressure?
 
@@ -62,7 +81,8 @@ resynchronization. The worker retains unacknowledged changes and substitutes an
 explicit full refresh when accumulation exceeds its patch/byte thresholds.
 The historical handoff race is guarded by
 [test_render_patch_handoff_regression](../../godot/tests/test_render_patch_handoff_regression.gd).
-Do not reuse pending buffers while a published generation remains observable.
+Keep published buffers immutable through consumption; the separate private
+accumulator may advance under the [ownership contract](data-ownership-and-lifetimes.md#when-can-a-render-payload-be-reused).
 
 **Current desktop reset identity:** the exclusive GDScript owner advances a
 World generation only after an accepted World reset or scenario replacement.

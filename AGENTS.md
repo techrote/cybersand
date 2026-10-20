@@ -7,6 +7,13 @@ remotes, dependency pins and required LFS state. The companion workspace reposit
 is separate from this source repository; [identity](docs/operations/source-checkpoint-and-recovery.md)
 explains the established checkpoints. Preserve unrelated work.
 
+For new maps or major showcase revisions, first read the
+[map-production workflow](docs/operations/map-production-workflow.md), then the
+[native exhibition guide](docs/operations/map-exhibition-design.md) and
+[layer, visual-polish and validation guide](docs/operations/map-layer-polish-and-validation.md).
+Check capabilities in the actual checkout before adopting a linked example;
+the workflow distinguishes accepted source from separately pinned PR examples.
+
 ## Development-order safety
 
 GitHub issue numbers are identifiers, **not a serial execution order**. Before

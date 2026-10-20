@@ -4,11 +4,22 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-20
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
 # Status and foundational roadmap
+
+## Map-production guidance — 2026-10-20
+
+**Current documentation:** the
+[map-production workflow](../operations/map-production-workflow.md) and its
+[native-exhibition](../operations/map-exhibition-design.md) and
+[layer-polish](../operations/map-layer-polish-and-validation.md) companions
+provide a reusable agent route from the brief to a validated, documented map.
+Capability checks use the actual checkout; separately pinned example
+implementations retain their own merge state and runtime evidence. This guide
+checkpoint changes no native, Godot or launcher behavior.
 
 ## Exploratory actor integration and physical migration — 2026-10-18
 
