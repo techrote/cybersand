@@ -110,16 +110,21 @@ void partition_receipts() {
         std::array<std::thread, 4> workers;
         for (std::size_t w = 0; w < workers.size(); ++w)
             workers[w] = std::thread([&, w] {
-                for (std::int64_t i = -4 + static_cast<std::int64_t>(w); i < 4; i += 4) {
-                    auto out = base->generate({i, -1}, channel);
-                    if (!base->accepts(out))
+                for (std::size_t index = w; index < 64; index += workers.size()) {
+                    const ChunkCoord c{-4 + static_cast<std::int64_t>(index % 8),
+                                       -4 + static_cast<std::int64_t>(index / 8)};
+                    auto out = base->generate(c, channel);
+                    if (!base->accepts(out)) {
                         okay = false;
-                    for (std::int64_t x = 0; x < 8; ++x) {
-                        auto expected = reference.at({i * 8 + x, -8});
-                        if (expected != Cell{out.cells[static_cast<std::size_t>(x)],
-                                             out.typed_diagnostics[static_cast<std::size_t>(x)]})
-                            okay = false;
+                        continue;
                     }
+                    for (std::int64_t y = 0; y < 8; ++y)
+                        for (std::int64_t x = 0; x < 8; ++x) {
+                            const auto expected = reference.at({c.x * 8 + x, c.y * 8 + y});
+                            const auto offset = static_cast<std::size_t>(y * 8 + x);
+                            if (expected != Cell{out.cells[offset], out.typed_diagnostics[offset]})
+                                okay = false;
+                        }
                 }
             });
         for (auto &worker : workers)
