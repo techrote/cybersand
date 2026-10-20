@@ -36,6 +36,14 @@ test: all 64 chunks and all cells of the reference rectangle are compared across
 four workers for each of four typed diagnostic channels. Native implementation,
 adapter, examples and authoring inputs remain identical to `724afcf`.
 
+The corrected source checkpoint is
+`ba37b41d41b0e42dbfa37238ed69dc6ade517ed5`, tree
+`7e898d46da1e1cc014cc4f08a58efb69a41f106d`. It repairs the two Linux ABI imports
+and subnormal vector normalization described below, retaining the existing
+compatibility-floor gates. The corrected local Linux execution record is bound
+to this commit and tree. Earlier full native-suite results and UI captures keep
+their original source qualifications.
+
 The [typed contract](../systems/procedural-typed-spatial-fields.md) and
 [operator inventory](../reference/procedural-spatial-operators.md) own current
 semantics. This audit owns observed results, preserved failures and limits.
@@ -61,7 +69,9 @@ boundary for GEN-004, without introducing a second grammar-owned solver.
 
 ## Native execution and preserved failures
 
-The ordinary `make -j2 worldgen-test` gate passed seven suites: generation,
+The full-suite results in this subsection were recorded at the pre-correction
+checkpoints `724afcf` and `8356cf`. The ordinary `make -j2 worldgen-test` gate
+passed seven suites: generation,
 fresh-chunk installation, legacy fields, legacy modifiers, typed fields, typed
 generator integration and structured spatial helpers. The independent typed
 suite subsequently passed **14,156 assertions**, including the final unit-binding,
@@ -76,19 +86,23 @@ timeout 5m make -j2 worldgen-test
 timeout 10m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 make -j2 worldgen-sanitize
 ```
 
-The full seven-suite ASan+UBSan gate subsequently passed with exit 0 and no
+The pre-correction full seven-suite ASan+UBSan gate passed with exit 0 and no
 sanitizer/assertion failures. Its log SHA-256 is
 `947ed3445d276dcca5ac8897421ce3365b7a42b2f5c71b6a9eba1e3ddde19db6`.
 After strengthening the worker control, all seven optimized suites were run
 again and the changed integration binary was rebuilt and passed under ASan+UBSan.
-The final optimized execution log is
+The `8356cf` optimized execution log is
 `5d0a4ac915e44065b8ade6bc33941b2d17f3df90a77874dc43c9eeb3bca954f4`;
-the final integration sanitizer log is
+the `8356cf` integration sanitizer log is
 `b922fd85ba8f7d8f5100be5b78180e09e78caee940142dccebd1e440d2070ad6`.
 LeakSanitizer's process inspection is unavailable in the restricted local
 environment. The repository's generation harness uses `detect_leaks=0`;
 these results establish address/undefined-behavior coverage and do not claim
 leak detection.
+
+The corrected typed/structured regressions are recorded in the ABI-correction
+section below. The earlier seven-suite runs remain evidence for their named
+pre-correction inputs; they are not a full-suite execution claim for `ba37b41`.
 
 | Review finding or failed control | Resolution and retained regression |
 |---|---|
@@ -126,7 +140,9 @@ The official Linux Godot archive SHA-256 is
 Runtime publication below identifies the exact accepted binary separately from
 these iterative local builds.
 
-The final local Linux rebuild from the frozen native inputs has SHA-256
+### Earlier `724afcf` local runtime and UI captures
+
+The earlier local Linux rebuild from the `724afcf` native inputs has SHA-256
 `32232c4e52bd3dec0e731d791f82239198c5b27bf268ed7c20ec7bba57ce5670`,
 2,462,552 bytes. Its hash was verified before and after execution. The established
 Workbench regression passed 138 assertions, the legacy field regression passed
@@ -137,7 +153,8 @@ All five native material/diagnostic pairs rendered 2,112 chunks and 245,760 cell
 Three actual 1600×900 Workbench views were regenerated and inspected under
 Xvfb/llvmpipe: authoring metadata, scrolled JSON controls, and category inspection
 including the exact value `9007199254740995`. Source/runtime/recipe/log/image
-hashes and counts are retained in the local validation record, SHA-256
+hashes and counts are retained in
+`build/worldgen-typed/local-validation-724afcf.json`, SHA-256
 `c63946f254664bd411f37e8e3f9ce7ed1986ac38febe6814e6c62d7bb86bcafa`.
 The only graphics warning was the software driver's unsupported V-Sync toggle.
 Native implementation, adapter, scripts, examples, renderer and focused Godot
@@ -186,6 +203,58 @@ toolchain and passed the unchanged full runtime-floor check: extension
 GLIBC 2.32, bundle GLIBC 2.34 (Rapier), GLIBCXX 3.4.30 and CXXABI 1.3.9.
 This checks the linked runtime, independently of the earlier object-level probes.
 
+## Corrected `ba37b41` local Linux execution
+
+The corrected Linux extension was exercised against source
+`ba37b41d41b0e42dbfa37238ed69dc6ade517ed5`, tree
+`7e898d46da1e1cc014cc4f08a58efb69a41f106d`, using the pinned Godot and Rapier
+versions above. Its SHA-256 is
+`57529fedcf4e4d2d389bf500c2510962057eb15c862c7c9e9219059f07c82b09`,
+size **2,462,560 bytes**. The pre-run source ledger covers 57 native, adapter,
+authoring, example, focused-test and build inputs, including the numeric helper
+and corrected adapter. Every recorded input matches its published Git blob and
+the unchanged working file; the renderer independently records the same runtime
+hash and its source/recipe inputs.
+
+Execution used `/tmp/gen003-deps/godot/Godot_v4.7-stable_linux.x86_64` from
+the source root. Each focused script ran with `--headless --path godot --script
+res://tests/<case>.gd` and `timeout 180`. The renderer used `timeout 300`, the
+same headless project options, an absolute `tools/render_worldgen_typed.gd`
+script path and `-- --output` pointing to the absolute `build/worldgen-typed`
+directory. All four processes ran independently/concurrently with
+`XDG_DATA_HOME=/tmp/gen003-xdg-data`,
+`XDG_CONFIG_HOME=/tmp/gen003-xdg-config` and
+`XDG_CACHE_HOME=/tmp/gen003-xdg-cache`; their captured logs were copied into
+`build/worldgen-typed/logs` and hashed in the validation record.
+
+| Corrected local process | Result |
+|---|---|
+| `test_worldgen_typed.gd` | 394 assertions, zero failures |
+| `test_worldgen_fields.gd` | 271 assertions, zero failures |
+| `test_worldgen_workbench.gd` | 138 assertions, zero failures |
+| `render_worldgen_typed.gd` | Five profiles, 2,112 complete chunks and 245,760 sampled cells; ten material/typed PNGs |
+
+All four processes exited zero with no reported errors or warnings. The renderer
+sampled each profile's complete 256×192 region at `[-128,0]`; the retained
+manifest contains typed metadata and one material/receipt hash pair for every
+chunk. The three 16-cell profiles each produced 192 chunks and the two 8-cell
+profiles each produced 768. The local review verified the complete chunk-coordinate
+sets, recipe hashes, ten PNG hashes and all four execution-log digests.
+
+| Retained local evidence | SHA-256 |
+|---|---|
+| `build/worldgen-typed/local-validation.json` | `138ce8f8972758795ac1016b1f45e7687750a0ae8307b7557bfc0459a1f1a705` |
+| `build/worldgen-typed/source-inputs-ba37b41.json` | `9d0b0b1875f1c9b67cb0f1ad2a91c417b5479d5d13127ebf20ec7714c2d5c2db` |
+| `build/worldgen-typed/render-manifest.json` | `5b53cb7665427419220a4639bdb4a9793366eb3e80cc671078110fce78d324b5` |
+
+The validation record also retains individual log and image hashes. This corrected
+pass reran the three focused suites and native renderer. Its `prior_ui_evidence`
+explicitly records `rerun: false`: the three 1600×900 Xvfb/llvmpipe Workbench
+captures remain bound to `724afcf` and the earlier `32232c4e…` runtime. They were
+not relabelled as captures of `ba37b41`. These corrected local results cover Linux
+headless execution; hosted Windows execution, runtime publication and full
+ready-PR acceptance have separate records.
+
 ## Documentation, publication and repository gates
 
 Canonical subsystem, ownership, module boundary, interface, invariant,
@@ -209,8 +278,9 @@ as Documentation CI, resolved those errors without changing source or fixtures.
 Documentation then passed at 95 documents, 185 claims, 1,957 links and 149 anchors,
 with no errors or warnings. The audit route adds one corpus chunk (1,040 total)
 without further rank changes. Before runtime publication, current repository
-checks correctly report stale native source identities; that failure is an
-acceptance blocker, not a bookkeeping exception.
+checks correctly reported stale native source identities; publication remained
+blocked until rebuilt, executed artifacts and their complete input ledgers were
+available.
 
 The branch-scoped
 [runtime publisher](../../.github/workflows/gen003-runtime-publication.yml)
@@ -222,12 +292,56 @@ can append only the two LFS runtimes and their two manifests to the unchanged
 feature branch. Build jobs have read-only repository permissions. Publication
 does not certify the independent full acceptance gates.
 
-Publication identity, full sanitizer disposition and final required gate links
-are recorded as follow-up evidence in this audit and
-[PR #195](https://github.com/techrote/cybersand/pull/195). At this source checkpoint
-the PR is intentionally draft: Linux/Windows runtime publication and exact-head
-Documentation/provenance, Native, GDExtension/Godot and scoped Water gates are
-still pending. Issue #190 remains open until those gates pass.
+The corrected [publication run 39505192343](https://github.com/techrote/cybersand/actions/runs/39505192343)
+for `ba37b41` completed all four jobs successfully. Both its Linux and actual
+Windows execution jobs passed import
+and all four focused cases: Workbench 138, legacy fields 271, typed adapter 394
+and render/generation 23 assertions, all zero failures, with no skips or errors.
+The hosted Linux bundle
+also passed the unchanged ABI-floor check: extension GLIBC 2.32, bundle GLIBC
+2.34, GLIBCXX 3.4.30 and CXXABI 1.3.9.
+
+The publisher appended commit `9966b1cb5db732a720c23d67ead34de2f995fd11`, tree
+`2f7cddf813a78120a59d2de6330f1b54290aea45`, directly to parent
+`ba37b41d41b0e42dbfa37238ed69dc6ade517ed5`. Its diff contains exactly the two
+LFS runtimes and their two provenance manifests. The
+[Linux manifest](../../godot/addons/cybersand_native/runtime-provenance.linux.json)
+and [Windows manifest](../../godot/addons/cybersand_native/runtime-provenance.json)
+each identify the `ba37b41` source/tree, **42 canonical native source inputs**,
+**329 build/test inputs**, pinned toolchains, actual target-OS execution and the
+successful workflow attempt. Their status is `validated-development-runtime`.
+
+| Published runtime | Bytes | SHA-256 |
+|---|---:|---|
+| Linux x86_64 shared library | 2,462,568 | `1df04af876b30cafeb75b81a84968bee3c827195eb70c648efd0e14d9d29023c` |
+| Windows x86_64 DLL | 2,955,776 | `fb1b53e7983f0af42ab76b22a38b16712892d612dbd26154576a871e2c9c8b1f` |
+
+The retained Linux report is
+`gen003-runtime-linux-39505192343/validation.json`, SHA-256
+`8c709ceed7250b9637cbeb348372c15b8b3375241b9ac11657a5dec73d26d0ce`.
+The Windows report is
+`gen003-runtime-windows-39505192343/validation.json`, SHA-256
+`b4ca8fbdc4dab9f0a67d890bf4eec8273c826b01ff3377fbffa07985d9c2e695`.
+These published artifacts have their own identities, separate from the corrected
+local `57529fed…` library and earlier `724afcf` UI runtime.
+
+After fetching the publication commit, local verification matched both downloaded
+binaries to their manifests and checked all **371 source/build input hashes per
+manifest**. The Linux and Windows source/build maps are identical. The commit's
+single parent and exact four-path publication diff were also verified.
+`tools/ci/check_repository.py` then passed with all **18 runtime files materialized**,
+none unmaterialized and no errors. Documentation checking passed again at 95
+documents, 185 claims, 1,957 links and 149 anchors, with no errors or warnings.
+These identity/provenance checks precede the independent full CI gates.
+
+This audit checkpoint precedes the final documentation commit and
+ready-for-review transition of [PR #195](https://github.com/techrote/cybersand/pull/195).
+Runtime publication is complete; the independent exact-head
+Documentation/provenance, Native, GDExtension/Godot and scoped Water acceptance
+gates remain pending here. Their final commit identities, results and URLs are
+recorded in the PR checks/comment after that transition, so this document does
+not change the accepted head to insert a self-referencing result. Issue #190
+requires those final gates before closure.
 
 ## Supported scope and remaining programme boundaries
 
