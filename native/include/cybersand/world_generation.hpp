@@ -2,6 +2,7 @@
 
 #include "cybersand/world.hpp"
 #include "cybersand/generation_fields.hpp"
+#include "cybersand/generation_typed_fields.hpp"
 
 #include <cstdint>
 #include <functional>
@@ -17,6 +18,8 @@ namespace cybersand::generation {
 
 inline constexpr std::uint32_t kSchemaVersion = 1;
 inline constexpr std::uint32_t kAlgorithmVersion = 2;
+inline constexpr std::uint32_t kTypedSchemaVersion = 2;
+inline constexpr std::uint32_t kTypedAlgorithmVersion = 3;
 // Brush geometry uses doubles; reject coordinates beyond the exact integer range
 // deliberately rather than silently aliasing distant chunks.
 inline constexpr std::int64_t kCoordinateLimit = (INT64_C(1) << 40);
@@ -171,6 +174,8 @@ struct Recipe {
     std::vector<HardOverride> overrides;
     std::vector<ModuleInstance> modules;
     std::vector<FieldNode> fields;
+    SpatialDefinition spatial;
+    SpatialLimits spatial_limits;
     std::vector<Aggregate> aggregates;
     std::vector<Modifier> modifiers;
     Limits limits;
@@ -225,6 +230,8 @@ struct ChunkResult {
     std::vector<Material> cells; // never published before Ready
     std::string diagnostic; // empty or field:<id>, modifier:<id>, module:<id>
     std::vector<float> diagnostics; // optional [0,1] channel, paced with cells
+    SpatialInfo diagnostic_info;
+    std::vector<SpatialValue> typed_diagnostics; // exclusive with legacy diagnostics
 };
 
 class GenerationJob;
@@ -237,6 +244,7 @@ public:
     [[nodiscard]] static std::vector<Theme> builtin_themes();
     [[nodiscard]] static std::vector<std::string> builtin_modules();
     [[nodiscard]] const Recipe& recipe() const noexcept;
+    [[nodiscard]] const SpatialGraph& spatial_graph() const noexcept;
     [[nodiscard]] std::uint64_t fingerprint() const noexcept;
     [[nodiscard]] std::vector<ThemeWeight> theme_weights_at(std::int64_t x, std::int64_t y) const;
     [[nodiscard]] Material sample(std::int64_t x, std::int64_t y) const;
@@ -272,6 +280,7 @@ private:
     std::int64_t origin_x_ = 0, origin_y_ = 0;
     unsigned diagnostic_kind_ = 0;
     std::size_t diagnostic_index_ = 0;
+    SpatialScratch spatial_scratch_;
     friend class Generator;
 };
 

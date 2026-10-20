@@ -4,9 +4,12 @@
 #include <godot_cpp/variant/array.hpp>
 #include <godot_cpp/variant/packed_byte_array.hpp>
 #include <godot_cpp/variant/packed_float32_array.hpp>
+#include <godot_cpp/variant/packed_float64_array.hpp>
+#include <godot_cpp/variant/packed_string_array.hpp>
 #include <godot_cpp/variant/string.hpp>
 
 #include <algorithm>
+#include <charconv>
 #include <cmath>
 #include <cstring>
 #include <initializer_list>
@@ -190,20 +193,266 @@ int priority_value(const Dictionary& dictionary, const std::string& context) {
         std::numeric_limits<int>::min(), std::numeric_limits<int>::max(), context + ".priority")) : 0;
 }
 
+// The schema-2 category address is exact, including values outside JSON's
+// floating-point integer range. Decimal coordinates and a fixed hexadecimal
+// namespace survive serialization without passing through a double.
+std::int64_t exact_signed_value(const Variant& value, const std::string& context) {
+    if (value.get_type() != Variant::STRING) return integer_value(value, context);
+    const auto text = string_value(value, context);
+    std::int64_t result{};
+    const auto parsed = std::from_chars(text.data(), text.data() + text.size(), result, 10);
+    if (text.empty() || parsed.ec != std::errc{} || parsed.ptr != text.data() + text.size())
+        invalid(context, "expected a signed decimal integer string");
+    return result;
+}
+
+std::uint64_t exact_unsigned_value(const Variant& value, const std::string& context) {
+    if (value.get_type() != Variant::STRING) {
+        const auto number = integer_value(value, context);
+        if (number < 0) invalid(context, "unsigned identity cannot be negative");
+        return static_cast<std::uint64_t>(number);
+    }
+    const auto text = string_value(value, context);
+    if (text.size() != 16 || std::any_of(text.begin(), text.end(), [](char digit) {
+            return !(digit >= '0' && digit <= '9') && !(digit >= 'a' && digit <= 'f');
+        })) invalid(context, "expected exactly 16 lowercase hexadecimal digits");
+    std::uint64_t result{};
+    const auto parsed = std::from_chars(text.data(), text.data() + text.size(), result, 16);
+    if (parsed.ec != std::errc{} || parsed.ptr != text.data() + text.size())
+        invalid(context, "invalid unsigned hexadecimal identity");
+    return result;
+}
+
+gen::SpatialType spatial_type_value(const Variant& value, const std::string& context) {
+    const auto type = gen::parse_spatial_type(string_value(value, context));
+    if (!type) invalid(context, "unknown spatial value type");
+    return *type;
+}
+
+gen::SpatialValue spatial_value(const Variant& input, const std::string& context) {
+    const auto value = dictionary_value(input, context);
+    fields(value, {"type", "x", "y", "category"}, context);
+    gen::SpatialValue result;
+    result.type = spatial_type_value(required(value, "type", context), context + ".type");
+    if (result.type == gen::SpatialType::Category) {
+        if (value.has("x") || value.has("y")) invalid(context, "category values use an exact category address");
+        const auto category = dictionary_value(required(value, "category", context), context + ".category");
+        fields(category, {"x", "y", "domain"}, context + ".category");
+        result.category.x = exact_signed_value(required(category, "x", context), context + ".category.x");
+        result.category.y = exact_signed_value(required(category, "y", context), context + ".category.y");
+        result.category.domain = exact_unsigned_value(required(category, "domain", context), context + ".category.domain");
+    } else {
+        if (value.has("category")) invalid(context, "numeric values cannot carry a category address");
+        if (value.has("x")) result.x = number_value(value["x"], context + ".x");
+        if (value.has("y")) {
+            if (result.type != gen::SpatialType::Vector2) invalid(context, "only a vector2 value has a y component");
+            result.y = number_value(value["y"], context + ".y");
+        }
+    }
+    return result;
+}
+
+std::map<std::string, std::string> string_bindings(const Variant& value, const std::string& context) {
+    const auto dictionary = dictionary_value(value, context);
+    if (dictionary.size() > 32) invalid(context, "too many bindings");
+    std::map<std::string, std::string> result;
+    const auto keys = dictionary.keys();
+    for (std::int64_t index = 0; index < keys.size(); ++index)
+        result.emplace(string_value(keys[index], context), string_value(dictionary[keys[index]], context));
+    return result;
+}
+
+std::vector<gen::SpatialNode> spatial_nodes(const Variant& value, const std::string& context) {
+    const auto array = array_value(value, gen::kMaxSpatialNodes, context);
+    std::vector<gen::SpatialNode> result;
+    result.reserve(static_cast<std::size_t>(array.size()));
+    for (std::int64_t index = 0; index < array.size(); ++index) {
+        const auto row_context = context + "[" + std::to_string(index) + "]";
+        const auto item = dictionary_value(array[index], row_context);
+        fields(item, {"id", "kind", "inputs", "parameters", "sampling_scale", "value", "unit_power",
+                      "reference", "parameter_bindings"}, row_context);
+        gen::SpatialNode node;
+        node.id = string_value(required(item, "id", row_context), row_context + ".id");
+        const auto kind = gen::parse_spatial_kind(string_value(required(item, "kind", row_context), row_context + ".kind"));
+        if (!kind) invalid(row_context + ".kind", "unknown spatial operator");
+        node.kind = *kind;
+        if (item.has("inputs")) node.inputs = strings(item["inputs"], gen::kMaxSpatialNodes, row_context + ".inputs");
+        if (item.has("parameters")) {
+            const auto parameters = dictionary_value(item["parameters"], row_context + ".parameters");
+            if (parameters.size() > 32) invalid(row_context + ".parameters", "too many parameters");
+            const auto keys = parameters.keys();
+            for (std::int64_t key = 0; key < keys.size(); ++key)
+                node.parameters.emplace(string_value(keys[key], row_context), number_value(parameters[keys[key]], row_context));
+        }
+        if (item.has("sampling_scale")) node.sampling_scale = static_cast<std::uint32_t>(
+            bounded_integer(item["sampling_scale"], 1, 64, row_context + ".sampling_scale"));
+        if (item.has("value")) node.value = spatial_value(item["value"], row_context + ".value");
+        if (item.has("unit_power")) node.unit_power = static_cast<std::int32_t>(
+            bounded_integer(item["unit_power"], -8, 8, row_context + ".unit_power"));
+        if (item.has("reference")) node.reference = string_value(item["reference"], row_context + ".reference");
+        if (item.has("parameter_bindings")) node.parameter_bindings = string_bindings(item["parameter_bindings"], row_context + ".parameter_bindings");
+        result.push_back(std::move(node));
+    }
+    return result;
+}
+
+std::vector<gen::SpatialInstance> spatial_instances(const Variant& value, const std::string& context) {
+    const auto array = array_value(value, gen::kMaxSpatialNodes, context);
+    std::vector<gen::SpatialInstance> result;
+    result.reserve(static_cast<std::size_t>(array.size()));
+    for (std::int64_t index = 0; index < array.size(); ++index) {
+        const auto item = dictionary_value(array[index], context);
+        fields(item, {"id", "subgraph", "bindings", "parameter_bindings"}, context);
+        gen::SpatialInstance instance;
+        instance.id = string_value(required(item, "id", context), context + ".id");
+        instance.subgraph = string_value(required(item, "subgraph", context), context + ".subgraph");
+        if (item.has("bindings")) {
+            const auto bindings = dictionary_value(item["bindings"], context + ".bindings");
+            if (bindings.size() > 32) invalid(context + ".bindings", "too many parameter bindings");
+            const auto keys = bindings.keys();
+            for (std::int64_t key = 0; key < keys.size(); ++key)
+                instance.bindings.emplace(string_value(keys[key], context), spatial_value(bindings[keys[key]], context + ".binding"));
+        }
+        if (item.has("parameter_bindings")) instance.parameter_bindings = string_bindings(item["parameter_bindings"], context + ".parameter_bindings");
+        result.push_back(std::move(instance));
+    }
+    return result;
+}
+
+gen::SpatialDefinition spatial_definition(const Variant& input) {
+    const auto definition = dictionary_value(input, "spatial");
+    fields(definition, {"nodes", "subgraphs", "instances", "geometries", "assignments"}, "spatial");
+    gen::SpatialDefinition result;
+    if (definition.has("nodes")) result.nodes = spatial_nodes(definition["nodes"], "spatial.nodes");
+    if (definition.has("instances")) result.instances = spatial_instances(definition["instances"], "spatial.instances");
+    if (definition.has("subgraphs")) {
+        const auto array = array_value(definition["subgraphs"], gen::kMaxSpatialNodes, "spatial.subgraphs");
+        for (std::int64_t index = 0; index < array.size(); ++index) {
+            const auto item = dictionary_value(array[index], "spatial.subgraph");
+            fields(item, {"id", "parameters", "nodes", "instances", "outputs"}, "spatial.subgraph");
+            gen::SpatialSubgraph subgraph;
+            subgraph.id = string_value(required(item, "id", "spatial.subgraph"), "spatial.subgraph.id");
+            if (item.has("parameters")) {
+                const auto parameters = array_value(item["parameters"], 32, "spatial.subgraph.parameters");
+                for (std::int64_t parameter_index = 0; parameter_index < parameters.size(); ++parameter_index) {
+                    const auto parameter = dictionary_value(parameters[parameter_index], "spatial.parameter");
+                    fields(parameter, {"id", "type", "unit_power", "default"}, "spatial.parameter");
+                    gen::SpatialParameter parsed;
+                    parsed.id = string_value(required(parameter, "id", "spatial.parameter"), "spatial.parameter.id");
+                    parsed.type = spatial_type_value(required(parameter, "type", "spatial.parameter"), "spatial.parameter.type");
+                    if (parameter.has("unit_power")) parsed.unit_power = static_cast<std::int32_t>(
+                        bounded_integer(parameter["unit_power"], -8, 8, "spatial.parameter.unit_power"));
+                    if (parameter.has("default")) parsed.default_value = spatial_value(parameter["default"], "spatial.parameter.default");
+                    subgraph.parameters.push_back(std::move(parsed));
+                }
+            }
+            if (item.has("nodes")) subgraph.nodes = spatial_nodes(item["nodes"], "spatial.subgraph.nodes");
+            if (item.has("instances")) subgraph.instances = spatial_instances(item["instances"], "spatial.subgraph.instances");
+            subgraph.outputs = string_bindings(required(item, "outputs", "spatial.subgraph"), "spatial.subgraph.outputs");
+            result.subgraphs.push_back(std::move(subgraph));
+        }
+    }
+    if (definition.has("geometries")) {
+        const auto array = array_value(definition["geometries"], gen::kMaxSpatialNodes, "spatial.geometries");
+        for (std::int64_t index = 0; index < array.size(); ++index) {
+            const auto item = dictionary_value(array[index], "spatial.geometry");
+            fields(item, {"id", "points", "closed"}, "spatial.geometry");
+            gen::SpatialGeometry geometry;
+            geometry.id = string_value(required(item, "id", "spatial.geometry"), "spatial.geometry.id");
+            for (const auto& point : points_value(required(item, "points", "spatial.geometry"),
+                                                  gen::spatial::kMaxGeometryPoints, "spatial.geometry.points"))
+                geometry.points.push_back({point.x, point.y});
+            if (item.has("closed")) {
+                if (item["closed"].get_type() != Variant::BOOL) invalid("spatial.geometry.closed", "expected a boolean");
+                geometry.closed = static_cast<bool>(item["closed"]);
+            }
+            result.geometries.push_back(std::move(geometry));
+        }
+    }
+    if (definition.has("assignments")) {
+        const auto array = array_value(definition["assignments"], gen::kMaxSpatialNodes, "spatial.assignments");
+        for (std::int64_t index = 0; index < array.size(); ++index) {
+            const auto item = dictionary_value(array[index], "spatial.assignment");
+            fields(item, {"id", "specification", "limits"}, "spatial.assignment");
+            gen::SpatialAssignment assignment;
+            assignment.id = string_value(required(item, "id", "spatial.assignment"), "spatial.assignment.id");
+            const auto spec = dictionary_value(required(item, "specification", "spatial.assignment"), "spatial.assignment.specification");
+            fields(spec, {"width", "height", "cell_size", "origin_x", "origin_y", "seed", "categories",
+                          "adjacency", "domains", "wrap_x", "wrap_y"}, "spatial.assignment.specification");
+            auto& parsed = assignment.specification;
+            if (spec.has("width")) parsed.width = static_cast<std::uint32_t>(bounded_integer(spec["width"], 1, 16, "assignment.width"));
+            if (spec.has("height")) parsed.height = static_cast<std::uint32_t>(bounded_integer(spec["height"], 1, 16, "assignment.height"));
+            if (spec.has("cell_size")) parsed.cell_size = static_cast<std::uint32_t>(bounded_integer(spec["cell_size"], 1, 4096, "assignment.cell_size"));
+            if (spec.has("origin_x")) parsed.origin_x = number_value(spec["origin_x"], "assignment.origin_x");
+            if (spec.has("origin_y")) parsed.origin_y = number_value(spec["origin_y"], "assignment.origin_y");
+            if (spec.has("seed")) parsed.seed = exact_unsigned_value(spec["seed"], "assignment.seed");
+            const auto categories = array_value(required(spec, "categories", "assignment"), gen::spatial::kMaxRegionCategories, "assignment.categories");
+            for (std::int64_t category = 0; category < categories.size(); ++category)
+                parsed.categories.push_back(exact_unsigned_value(categories[category], "assignment.category"));
+            const auto adjacency = array_value(required(spec, "adjacency", "assignment"), 4, "assignment.adjacency");
+            if (adjacency.size() != 4) invalid("assignment.adjacency", "expected four direction rows: right, down, left, up");
+            for (std::int64_t direction = 0; direction < 4; ++direction) {
+                const auto row = array_value(adjacency[direction], gen::spatial::kMaxRegionCategories, "assignment.adjacency.row");
+                if (row.size() != categories.size()) invalid("assignment.adjacency.row", "one exact mask per declared category is required");
+                for (std::int64_t category = 0; category < row.size(); ++category)
+                    parsed.adjacency[static_cast<std::size_t>(direction)][static_cast<std::size_t>(category)] =
+                        static_cast<std::uint16_t>(bounded_integer(row[category], 0, 65535, "assignment.adjacency.mask"));
+            }
+            if (spec.has("domains")) {
+                const auto domains = array_value(spec["domains"], gen::spatial::kMaxRegionCells, "assignment.domains");
+                for (std::int64_t cell = 0; cell < domains.size(); ++cell)
+                    parsed.domains.push_back(static_cast<std::uint16_t>(bounded_integer(domains[cell], 1, 65535, "assignment.domain")));
+            }
+            if (spec.has("wrap_x")) {
+                if (spec["wrap_x"].get_type() != Variant::BOOL) invalid("assignment.wrap_x", "expected a boolean");
+                parsed.wrap_x = static_cast<bool>(spec["wrap_x"]);
+            }
+            if (spec.has("wrap_y")) {
+                if (spec["wrap_y"].get_type() != Variant::BOOL) invalid("assignment.wrap_y", "expected a boolean");
+                parsed.wrap_y = static_cast<bool>(spec["wrap_y"]);
+            }
+            if (item.has("limits")) {
+                const auto limits = dictionary_value(item["limits"], "assignment.limits");
+                fields(limits, {"max_work", "max_scratch_bytes"}, "assignment.limits");
+                if (limits.has("max_work")) assignment.limits.max_work = static_cast<std::uint64_t>(
+                    bounded_integer(limits["max_work"], 1, static_cast<std::int64_t>(gen::spatial::kMaxRegionSolverWork), "assignment.limits.max_work"));
+                if (limits.has("max_scratch_bytes")) assignment.limits.max_scratch_bytes = static_cast<std::size_t>(
+                    bounded_integer(limits["max_scratch_bytes"], 1, static_cast<std::int64_t>(assignment.limits.max_scratch_bytes), "assignment.limits.max_scratch_bytes"));
+            }
+            result.assignments.push_back(std::move(assignment));
+        }
+    }
+    return result;
+}
+
 gen::Recipe parse_recipe(const Dictionary& input, std::uint64_t revision) {
     fields(input, {"schema", "seed", "chunk_size", "candidate", "parameters", "themes",
                    "strokes", "paths", "overrides", "modules", "limits", "catalogue",
-                   "fields", "aggregates", "modifiers"}, "recipe");
+                   "fields", "aggregates", "modifiers", "spatial", "spatial_limits"}, "recipe");
     gen::Recipe recipe;
     recipe.revision = revision;
     if (input.has("schema")) recipe.schema = static_cast<std::uint32_t>(bounded_integer(
-        input["schema"], 1, 1, "schema"));
+        input["schema"], 1, 2, "schema"));
     if (input.has("seed")) recipe.seed = static_cast<std::uint64_t>(bounded_integer(
         input["seed"], 0, std::numeric_limits<std::int64_t>::max(), "seed"));
     if (input.has("chunk_size")) recipe.chunk_size = static_cast<std::int32_t>(bounded_integer(
         input["chunk_size"], 8, 256, "chunk_size"));
     if (input.has("candidate")) recipe.candidate = candidate_value(input["candidate"], "candidate");
     if (input.has("parameters")) apply_parameters(recipe.parameters, parameter_edits(input["parameters"], "parameters"));
+    if (input.has("spatial")) recipe.spatial = spatial_definition(input["spatial"]);
+    if (input.has("spatial_limits")) {
+        const auto limits = dictionary_value(input["spatial_limits"], "spatial_limits");
+        fields(limits, {"max_nodes", "max_depth", "max_operations_per_sample", "max_preparation_operations", "max_preparation_bytes"}, "spatial_limits");
+        const auto bound = [&](const char* name, std::uint64_t maximum) {
+            return limits.has(name) ? static_cast<std::uint64_t>(bounded_integer(limits[name], 1,
+                static_cast<std::int64_t>(maximum), std::string("spatial_limits.") + name)) : maximum;
+        };
+        recipe.spatial_limits.max_nodes = static_cast<std::size_t>(bound("max_nodes", recipe.spatial_limits.max_nodes));
+        recipe.spatial_limits.max_depth = static_cast<std::size_t>(bound("max_depth", recipe.spatial_limits.max_depth));
+        recipe.spatial_limits.max_operations_per_sample = bound("max_operations_per_sample", recipe.spatial_limits.max_operations_per_sample);
+        recipe.spatial_limits.max_preparation_operations = bound("max_preparation_operations", recipe.spatial_limits.max_preparation_operations);
+        recipe.spatial_limits.max_preparation_bytes = static_cast<std::size_t>(bound("max_preparation_bytes", recipe.spatial_limits.max_preparation_bytes));
+    }
     if (input.has("limits")) {
         const auto limits = dictionary_value(input["limits"], "limits");
         fields(limits, {"max_themes", "max_strokes", "max_points_per_path", "max_paths",
@@ -425,6 +674,20 @@ String hexadecimal(std::uint64_t value) {
     return String(buffer);
 }
 
+Dictionary spatial_information(const gen::SpatialInfo& info) {
+    Dictionary result;
+    result["type"] = String(gen::spatial_type_name(info.type));
+    result["unit_power"] = info.unit_power;
+    result["minimum"] = info.minimum;
+    result["maximum"] = info.maximum;
+    result["distance_min_factor"] = info.distance_min_factor;
+    result["distance_max_factor"] = info.distance_max_factor;
+    result["fingerprint"] = hexadecimal(info.fingerprint);
+    result["operations"] = static_cast<std::int64_t>(info.operations);
+    result["sampling_scale"] = info.sampling_scale;
+    return result;
+}
+
 const char* state_name(gen::ResultState state) {
     switch (state) {
         case gen::ResultState::Pending: return "running";
@@ -540,6 +803,46 @@ Dictionary CyberWorldGenerator::get_catalogue() const {
     result["maximum_fields"] = 64;
     result["maximum_aggregates"] = 32;
     result["maximum_modifiers"] = 64;
+    result["spatial_algorithm_version"] = gen::kSpatialAlgorithmVersion;
+    result["maximum_spatial_nodes"] = static_cast<std::int64_t>(gen::kMaxSpatialNodes);
+    Array spatial_types, spatial_kinds, spatial_nodes;
+    for (const auto type : {gen::SpatialType::Normalized, gen::SpatialType::Scalar,
+            gen::SpatialType::SignedDistance, gen::SpatialType::Distance, gen::SpatialType::Vector2,
+            gen::SpatialType::Category, gen::SpatialType::Boolean})
+        spatial_types.push_back(String(gen::spatial_type_name(type)));
+    for (const auto& spec : gen::spatial_kind_specs()) {
+        Dictionary item;
+        item["id"] = String(spec.name);
+        item["input_count"] = static_cast<std::int64_t>(spec.input_count);
+        Array settings;
+        for (const auto& setting : spec.parameters) {
+            Dictionary description;
+            description["name"] = String(setting.name);
+            description["default_value"] = setting.default_value;
+            description["minimum"] = setting.minimum;
+            description["maximum"] = setting.maximum;
+            description["integer"] = setting.integer;
+            settings.push_back(description);
+        }
+        item["parameters"] = settings;
+        spatial_kinds.push_back(item);
+    }
+    if (generator_) {
+        const auto& graph = generator_->spatial_graph();
+        const auto& nodes = graph.nodes();
+        for (std::size_t index = 0; index < nodes.size(); ++index) {
+            auto item = spatial_information(graph.info(index));
+            item["id"] = String(nodes[index].id.c_str());
+            spatial_nodes.push_back(item);
+        }
+        result["spatial_fingerprint"] = hexadecimal(graph.fingerprint());
+        result["spatial_operations_per_sample"] = static_cast<std::int64_t>(graph.operations_per_sample());
+        result["spatial_preparation_operations"] = static_cast<std::int64_t>(graph.preparation_operations());
+        result["spatial_preparation_bytes"] = static_cast<std::int64_t>(graph.preparation_bytes());
+    }
+    result["spatial_types"] = spatial_types;
+    result["spatial_kinds"] = spatial_kinds;
+    result["spatial_nodes"] = spatial_nodes;
     return result;
 }
 
@@ -581,6 +884,31 @@ Dictionary CyberWorldGenerator::copy_result(const gen::ChunkResult& chunk) const
     if (!chunk.diagnostics.empty()) std::memcpy(diagnostics.ptrw(), chunk.diagnostics.data(), chunk.diagnostics.size() * sizeof(float));
     result["diagnostic"] = String(chunk.diagnostic.c_str());
     result["diagnostics"] = diagnostics;
+    if (!chunk.typed_diagnostics.empty()) {
+        result["diagnostic_info"] = spatial_information(chunk.diagnostic_info);
+        PackedFloat64Array values;
+        PackedStringArray categories;
+        if (chunk.diagnostic_info.type == gen::SpatialType::Category) {
+            if (categories.resize(static_cast<std::int64_t>(chunk.typed_diagnostics.size() * 3)) != OK)
+                return failure("cannot allocate copied exact category diagnostics");
+            for (std::size_t index = 0; index < chunk.typed_diagnostics.size(); ++index) {
+                const auto& category = chunk.typed_diagnostics[index].category;
+                categories.set(static_cast<std::int64_t>(index * 3), String(std::to_string(category.x).c_str()));
+                categories.set(static_cast<std::int64_t>(index * 3 + 1), String(std::to_string(category.y).c_str()));
+                categories.set(static_cast<std::int64_t>(index * 3 + 2), hexadecimal(category.domain));
+            }
+        } else {
+            const std::size_t components = chunk.diagnostic_info.type == gen::SpatialType::Vector2 ? 2 : 1;
+            if (values.resize(static_cast<std::int64_t>(chunk.typed_diagnostics.size() * components)) != OK)
+                return failure("cannot allocate copied typed diagnostic values");
+            for (std::size_t index = 0; index < chunk.typed_diagnostics.size(); ++index) {
+                values.set(static_cast<std::int64_t>(index * components), chunk.typed_diagnostics[index].x);
+                if (components == 2) values.set(static_cast<std::int64_t>(index * 2 + 1), chunk.typed_diagnostics[index].y);
+            }
+        }
+        result["diagnostic_values"] = values;
+        result["diagnostic_categories"] = categories;
+    }
     return result;
 }
 

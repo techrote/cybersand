@@ -1,0 +1,28 @@
+{
+  "schema": 2,
+  "seed": 19005,
+  "chunk_size": 8,
+  "candidate": "strata",
+  "parameters": {"surface_y": -128, "relief": 0, "detail": 0},
+  "themes": {"weights": {"basalt": 1}},
+  "spatial": {
+    "nodes": [
+      {"id": "detail_1", "kind": "noise", "sampling_scale": 1, "parameters": {"scale": 32, "salt": 11}},
+      {"id": "detail_4", "kind": "noise", "sampling_scale": 4, "parameters": {"scale": 32, "salt": 11}},
+      {"id": "detail_16", "kind": "noise", "sampling_scale": 16, "parameters": {"scale": 32, "salt": 11}},
+      {"id": "detail_64", "kind": "noise", "sampling_scale": 64, "parameters": {"scale": 32, "salt": 11}},
+      {"id": "seed_distance", "kind": "poisson_distance", "parameters": {"spacing": 48, "radius": 20, "search_cells": 1, "salt": 37}},
+      {"id": "seed_region", "kind": "poisson_region", "sampling_scale": 16, "parameters": {"spacing": 48, "radius": 20, "search_cells": 1, "salt": 37}},
+      {"id": "seed_found", "kind": "poisson_found", "sampling_scale": 4, "parameters": {"spacing": 48, "radius": 20, "search_cells": 1, "salt": 37}},
+      {"id": "marker_radius", "kind": "constant", "unit_power": 1, "value": {"type": "scalar", "x": 4}},
+      {"id": "marker", "kind": "less", "inputs": ["seed_distance", "marker_radius"]},
+      {"id": "marker_mask", "kind": "to_mask", "inputs": ["marker"]},
+      {"id": "tile_order", "kind": "peano", "parameters": {"order": 3, "cell_size": 4}}
+    ]
+  },
+  "aggregates": [{"id": "coarse_geology", "variation": "spatial:detail_64", "components": [{"material": 38, "weight": 1}, {"material": 100, "weight": 2}, {"material": 101, "weight": 1}]}],
+  "modifiers": [
+    {"id": "geology", "aggregate": "coarse_geology"},
+    {"id": "seed_beacons", "priority": 10, "application": "spatial:marker_mask", "material": 77}
+  ]
+}
