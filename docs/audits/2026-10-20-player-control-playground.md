@@ -169,11 +169,13 @@ PE32+ x86-64 DLL. Launcher navigation passes 39 assertions with zero failures,
 and the explicit `--player-playground --player=liquidswarm` argument test opens
 the correct owner and returns through F2 without replaying startup arguments.
 
-Automatic approval review rejected pushing the implementation branch because the
-request did not explicitly authorize external publication. The complete source
-and matching desktop runtimes are committed locally; no branch, PR or hosted CI
-result is claimed. Publishing this reviewable branch and opening its PR require
-the owner's approval. Actual Windows runtime execution, gamepad hardware, owner
-playtesting, target GPU performance and new browser/WebAssembly execution remain
-outside local evidence. The scene requires the matching native runtime for both
+At the initial local checkpoint, automatic approval review rejected pushing the
+implementation branch because the request did not explicitly authorize external
+publication. The complete source and matching desktop runtimes were committed
+locally as `57e99b6`. The owner subsequently authorized pushing this branch and
+opening its pull request on 2026-10-20. Hosted execution results are recorded in
+that pull request against its exact head; this local evidence does not pre-claim
+them. Actual Windows runtime execution, gamepad hardware, owner playtesting,
+target GPU performance and new browser/WebAssembly execution remain outside
+the local evidence. The scene requires the matching native runtime for both
 material modes; there is no decorative fallback.
