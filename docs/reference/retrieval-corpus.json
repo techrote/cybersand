@@ -95,7 +95,9 @@
     "operations/physical-actor-programme.md",
     "systems/depth-layers-and-parallax.md",
     "systems/physical-actor-rigs.md",
-    "operations/deepworks-exhibition.md"
+    "operations/deepworks-exhibition.md",
+    "systems/procedural-typed-spatial-fields.md",
+    "reference/procedural-spatial-operators.md"
   ],
   "navigation": [
     "README.md",

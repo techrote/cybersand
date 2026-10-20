@@ -260,7 +260,7 @@ func check_workbench() -> void:
 	root.add_child(app)
 	app.set_process(false)
 	await process_frame
-	expect(app.generator != null and app.field_specs.size() == 22 and app.page_picker.item_count == 6, "Native-backed field authoring pages did not initialize")
+	expect(app.generator != null and app.field_specs.size() == 22 and app.page_picker.item_count == 7, "Native-backed field authoring pages did not initialize")
 	if app.generator == null:
 		app.queue_free()
 		return

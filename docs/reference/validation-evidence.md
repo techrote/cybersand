@@ -10,6 +10,16 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## GEN-003 typed spatial computation — 2026-10-20
+
+The [GEN-003 audit](../audits/2026-10-20-gen003-typed-fields.md) records issue #190's
+typed graph, independent numerical/structural controls, legacy material oracle,
+full-rectangle invariance matrix, exact categorical transport and executable
+examples. It separates iterative local checks from source-matched Linux/Windows
+runtime publication and final exact-head repository gates in
+[PR #195](https://github.com/techrote/cybersand/pull/195). A draft-skipped job,
+stale runtime manifest or required script error does not count as acceptance.
+
 ## Deepworks exhibition and depth dimensions — 2026-10-20
 
 The [PR #185 completion audit](../audits/2026-10-20-deepworks-pr185-completion.md)

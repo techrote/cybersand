@@ -6,7 +6,7 @@ status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
 related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-20
 ---
 
 # Architectural and simulation invariants
@@ -175,6 +175,24 @@ listed boundaries; execution evidence remains separately dated.
 | RIG-013 | Current: the cellular owner accounts accepted usable work; only a matching accepted, consumed receipt can apply bounded physical recoil once, and cancellation, expiry, rearm, selection and reset fence stale results |
 | RIG-014 | Current: physical processors must settle and fix their real body before worker admission; rotated nonoverlapping exterior ports preflight complete batches, and blocked outputs consume no input |
 | RIG-015 | Current: bounded per-actor/per-processor history preserves stock, age, cycles and cooldown across pickup, redeployment and selection; an exhausted physical device remains observable and inert until its physical owner retires it |
+
+## Typed procedural generation invariants
+
+Contract: [typed spatial fields](../systems/procedural-typed-spatial-fields.md).
+Sources/tests: [typed API](../../native/include/cybersand/generation_typed_fields.hpp),
+[analytical regressions](../../native/tests/test_generation_typed.cpp),
+[structured primitives](../../native/include/cybersand/generation_spatial.hpp).
+
+| ID | Status and narrow claim |
+|---|---|
+| FIELD-001 | Current: retained schema-1 normalized fields/material fixtures keep their semantics; schema-2 typed spatial computation is explicit |
+| FIELD-002 | Current: signed values and exact category tuples are not silently clamped/interpolated into masks; normalized mask conversion is explicit |
+| FIELD-003 | Current: derivatives/transforms/coarse samples use immutable absolute-world functions, with no resident-neighbor or per-cell-context dependency |
+| FIELD-004 | Current: nonuniform/warped/coarse distance fields carry qualified/general output instead of an unsupported exact Euclidean-distance claim |
+| FIELD-005 | Current: compilation validates unused declarations, namespaces, cycles, bounds and bounded preparation; a failed finite solver exposes no partial assignment |
+| FIELD-006 | Current: caller-owned bounded cache identity includes transitive source/parameter/scale identity and coordinates; cache warmth cannot alter results |
+| FIELD-007 | Current: pending chunk materials and typed diagnostics stay private; failure/cancellation clears payloads and hashes before publication |
+| FIELD-008 | Current: finite curve traversal is not an infinite physical route; finite region assignment has cross-tile guarantees only for explicit wrap constraints |
 
 ## Capacity and allocation invariants
 

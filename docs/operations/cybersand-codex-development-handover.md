@@ -10,6 +10,28 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Typed spatial generation checkpoint — 2026-10-20
+
+GEN-003 / [#190](https://github.com/techrote/cybersand/issues/190) adds opt-in
+schema-2 [typed spatial graphs](../systems/procedural-typed-spatial-fields.md).
+Read that contract and the [operator inventory](../reference/procedural-spatial-operators.md)
+before changing numeric domains, transform/derivative sampling, category IDs,
+subgraph expansion, prepared geometry/assignments or cache identity. Schema-1
+GEN-001/002 recipes retain their scalar context and material contracts. Typed
+spatial functions never resample that per-cell context or resident World data.
+
+`make worldgen-test` includes independent analytical typed tests and bounded
+structured-mapping/solver tests; its sanitizer target covers the same native
+scope. The Workbench's Typed spatial graphs page and five `typed-*.json` profiles
+exercise authoring and copied typed diagnostics. Source-matched runtimes and
+hosted exact-head gates remain separate from local source tests. Do not infer
+merge/platform acceptance from this implementation description.
+
+Programme order is GEN-003 → GEN-004 hierarchical grammar → GEN-005 semantic
+depth → GEN-007 authoring/quality tools → GEN-006 streaming/reconciliation.
+GEN-004 consumes the immutable geometry and finite assignment interfaces;
+it should not introduce a duplicate solver or reverse field-to-grammar dependency.
+
 ## Deepworks exhibition and depth dimensions — 2026-10-20
 
 The [PR #185 completion record](../audits/2026-10-20-deepworks-pr185-completion.md)
