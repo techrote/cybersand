@@ -27,6 +27,24 @@ validates and applies them; only copied receipts return. Reset/close retires the
 old run, command leases, effects and joint graph. See the
 [physical actor contract](../systems/physical-actor-rigs.md).
 
+## Player playground ownership
+
+**Current experimental source:** the dedicated
+[player playground](../systems/player-control-playground.md) serializes calls on
+its main-thread owner. Its mechanical lane reuses `CyberPhysicalActorArena` and
+the physical session. Its material lane owns a separate native World and calls
+`apply_player_material_field` only between ordinary ticks, under a current
+observation-relative input lease. No operation borrows the sandbox worker's World.
+
+The material field snapshots a bounded local selection and moves complete native
+cells through existing relocation/wake bookkeeping. It stores no cohort, actor
+identity, persistent velocity or control state in cell storage. The scene owns
+the centre, command generation and lease; cancellation stops future field calls
+and ordinary material rules continue. Reset stages a candidate before retiring
+the old owner, commands and observations. Rendering receives copied packets
+tagged with the new reset generation. This API adds no thread-safety or general
+worker forwarding capability; the caller must already own serialized access.
+
 ## Opt-in depth exhibition ownership
 
 [Strata Theatre](../systems/depth-layers-and-parallax.md) and
@@ -66,6 +84,7 @@ but must not touch live scene-tree or Rapier objects.
 | Desktop world, sampled character and optional actor prototypes | Godot pacing Thread after startup handoff | Worker lifetime; stopped/joined before destruction; actor session reset invalidates old input epochs |
 | Live body nodes, RIDs and physics state | Main-thread Rapier bridge and PhysicsServer2D | Scene/bridge lifetime; never passed to cellular workers |
 | Physical actor rigs, joints and local controllers | Main-thread `CyberPhysicalActorSession`; at most eight rigs/eight total parts each | Run/actor/epoch-bound command leases; cancel discards future work, close retires bodies/joints |
+| Player material field commands and centre | Dedicated main-thread `CyberPlayerPlaygroundRuntime`; native World alone relocates selected Sand/Water cells | One current command, at most six ticks from its issued observation; reset/cancel retires authority, while native material remains ordinary World state |
 | Physical usable effect requests | Copied by the physical owner; exclusively validated/consumed by the native-world owner | Epoch/sequence/source-bound, bounded per actor and batch; consumed refusals cannot replay after an obstacle disappears |
 | Physical equipment chassis and mount | Main-thread `CyberPhysicalUsableEquipment` through its actor rig; the same part/body ID is held, released, fixed, deployed and picked up | At most one equipment part per actor within the eight-part limit; equipment epochs invalidate superseded use and deployment authority without deleting velocity |
 | Physical usable frame, request and receipt mailbox | Main thread supplies copied physical poses/identity; the serialized cellular owner admits and applies usable work, then publishes copied results | Eight pending requests globally, one per actor including extracted work; run/actor/generation/equipment/body/request identity fences cancellation and recoil |

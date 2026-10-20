@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Separate current source and runtime acceptance from immutable historical M11 evidence
 canonical-for: [current-validation-gates, m11-retention-policy]
-last-reviewed: 2026-09-24
+last-reviewed: 2026-10-20
 related-documents: [local-build-and-validation.md, github-development-and-release.md, ../reference/validation-evidence.md]
 ---
 
@@ -46,6 +46,14 @@ A local source checkout may validate LFS pointer identity while reporting missin
 payloads. CI and release hashing require `--require-materialized`; every required
 runtime object must match its committed SHA-256 and size. Vendor runtime libraries retain their dependency provenance. Other platforms
 are not certified by the Windows/Linux manifests or a successful LFS check.
+
+The [player playground checkpoint](../audits/2026-10-20-player-control-playground.md)
+changes native World and the adapter, so its material modes require a rebuilt
+matching extension. Source presence, a successful Windows cross-build and an
+executed Linux fixture are three distinct claims. The
+[player checks](local-build-and-validation.md#player-playground-checks) and dated
+audit record the actual scope; retained M11 records are unaffected and must not
+be updated to describe these new controls.
 
 ### #65 recovery-era retained runtime checkpoint — 2026-09-22
 

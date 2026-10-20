@@ -216,7 +216,9 @@ These are gameplay tuning/bounds, not calibrated physical units.
 
 The retained three reference rectangles are 8×14. ACT-004 admits up to eight
 physical rigs with eight total parts each, including held parts, through the
-same 64-ID bound. The current catalogue uses two through seven parts.
+same 64-ID bound. Current authored rigs use one through seven parts before an
+optional equipment chassis; prepared assemblies remain within eight. SetP
+circle wheels use conservative square native samples with the same diameter.
 Sweep truncation/sample limits and unresolved
 overlap semantics belong to the [coupling contract](../architecture/rigid-body-and-cellular-coupling.md);
 these numbers do not guarantee continuous collision detection.
@@ -398,7 +400,7 @@ for field bounds, material-response ownership and traversal semantics.
 
 ## Exploratory actor selection
 
-**Current desktop:** F5 exposes all 41 articulated Rapier rigs, 29 sampled rigs,
+**Current desktop:** F5 exposes all 46 articulated Rapier rigs, 29 sampled rigs,
 the sampled baseline and the two retained single-body hull trials in the ordinary
 sandbox and five authored exploratory maps. Physical sessions admit at most eight
 actors and 64 parts, with up to eight rigs in a set comparison. Sampled session
@@ -610,8 +612,8 @@ limits, not calibrated real-world actuator specifications.
 
 | Value | Current bound or default |
 |---|---|
-| Catalogue | 41 rigs in seven sets; all 29 existing IDs plus twelve SetX IDs |
-| Assembly | At most eight parts, fourteen authored joints and three mounts per rig; catalogue definitions use two through seven parts, and ACT-005 adds a chassis only where no held part exists |
+| Catalogue | 46 rigs in eight sets; all 29 original IDs plus twelve SetX and five SetP IDs |
+| Assembly | At most eight parts, fourteen authored joints and three mounts per rig; current authored definitions use one through seven parts, and ACT-005 adds a chassis only where no held part exists |
 | Population | One through eight actors and at most 64 total coupled parts; held/released objects retain their part slot |
 | Physics / demo cadence | 60 Hz physical owner; demo decisions every six ticks, or 10 Hz |
 | Command lease | One through eighteen ticks from the issued observation; helper/demo default twelve, desktop human six; nineteen issuance-history slots |
@@ -633,6 +635,45 @@ checks the complete assembly budget before installation. Its dictionary
 observations and version-2 commands are separate from sampled actor packed rows.
 Usable lifecycle, gyro/play semantics and producer limits belong to the
 [physical actor contract](../systems/physical-actor-rigs.md).
+
+## Player playground values
+
+**Current experimental source:** [course](../../godot/scripts/player_playground_course.gd),
+[runtime](../../godot/scripts/player_playground_runtime.gd),
+[input](../../godot/scripts/player_playground_input.gd),
+[vehicle](../../godot/scripts/player_vehicle_controller.gd),
+[acrobat](../../godot/scripts/player_acrobat_controller.gd) and
+[native field](../../native/include/cybersand/world.hpp) own these values. The
+[player guide](../systems/player-control-playground.md) owns controls and scope.
+
+| Value | Current bound or default |
+|---|---|
+| Scene / presets | `res://player_playground.tscn`; seven, of which five mechanical entries also form F5 SetP; dry/liquid remain scene-only |
+| Native world / course view | 1024 × 1024 cells; `Rect2i(128,128,512,256)` course view; follow view 256 × 128 |
+| Local owner | One native worker, synchronous calls, simulation window and cadence LOD disabled for the dedicated course |
+| Material seed | 16 × 16 = 256 cells centred near (178,304); Sand count 256 or full Water mass 65,280 at construction |
+| Human material lease | 1–6 ticks from issued observation; seven issuance-history slots; sequence 0–9,007,199,254,740,991 and strictly increasing |
+| Gamepad | First connected pad; left-stick radial deadzone 0.18; combined movement length capped at one |
+| Field source scan | Fixed radius 32; 65 × 65 = 4,225 attempted positions per call, circle and domain filtered |
+| Field source budget | At most 512 original parcels; phase-rotated scan then deterministic priority order; `truncated` if more observed |
+| Field movement | At most four axis-adjacent steps per parcel, 2,048 attempts total; outer write reach at most radius 36, clipped to domain |
+| Field storage | No missing chunk or thermal-storage allocation; unavailable storage refuses the step and increments its receipt counter |
+| Field input | Finite direction components in −1..1 and squared length ≤1.000001; Sand/Water only; mode 0–3; phase 0–2,147,483,647 |
+| Native C++ domain | Each span 1–4,096; origin in ±1,000,000,000; centre inside domain; Godot adapter fixes domain to 0..1,023 on each axis |
+| Material centre following | At most four cells per owner step toward observed quantity-weighted centroid |
+| Vehicle hop | Buggy requires support; bike preload reaches full at 0.42 s and requires supported release; 0.5 s hop cooldown |
+| Acrobat jump timing | 0.11 s coyote; 0.14 s buffer; 0.05 s confirmed support; 0.14 s launch lock |
+| Acrobat roll / glide | Roll 0.28 s; cooldown 0.32 s; grounded tap at most 0.15 s; glide reserve 1.6 s per confirmed landing |
+| Acrobat airborne inventory | One extra jump, one bullet jump and one air roll per confirmed landing; cancel does not reload them |
+| Acrobat control delta | At most 96 cells/s requested delta velocity per controller call; physical session's finite delta/impulse bounds still apply |
+| Course timing | Four ordered checkpoints, reach radius 15 cells; simulation ticks divided by 60; best times last only for the scene |
+| Mechanical course lifetime | Existing physical arena limit 36,000 ticks; restart creates a fresh owner; material lane does not reuse that arena limit |
+
+No field receipt is a persistent parcel inventory. Native temperature/compact
+state and partial Water mass survive each relocation, while the following
+ordinary material tick retains its normal chemistry/transport semantics. Exact
+receipt and admission fields are in
+[interfaces](interfaces-and-message-contracts.md#player-material-field-control).
 
 ## Initial physical Blacksite trial
 

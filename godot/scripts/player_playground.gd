@@ -345,6 +345,7 @@ func _present(state: Dictionary, force: bool = false) -> void:
 	_overlay.actor_position = position
 	_overlay.material_field = bool(state.material_mode)
 	_overlay.movement = actor.get("player_movement", {})
+	_overlay.preset = Course.PRESETS[selected]
 	_overlay.present(runtime.render_parts(), Vector2(_view.position), _view.size, _content_rect())
 	_overlay.visible = true
 	_overlay.queue_redraw()
@@ -370,7 +371,7 @@ func _present(state: Dictionary, force: bool = false) -> void:
 	if state.material_mode:
 		_hint.text = "The faint ring shows your local control field. Nearby matching material can join it. Solid walls block the parcels; try the narrow sieve on the right."
 	elif selected == 2:
-		_hint.text = "Try: build speed → hold Shift → aim the mouse → Space for a bullet jump → C to glide. The low tunnel needs a tuck; releasing a short slide starts a roll."
+		_hint.text = "Try: build speed → hold Shift → aim the mouse → Space for a bullet jump → C to glide. Tuck early for the low tunnel; releasing a short slide starts a roll."
 	elif selected in [0, 1]:
 		_hint.text = "Use the ramp to clear the tunnel roof. Lean before landing, then brake to settle. The empty equipment mount can be equipped later from F5 in the actor sandbox."
 	else:

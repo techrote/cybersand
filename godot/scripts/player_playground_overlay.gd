@@ -7,6 +7,7 @@ var actor_position := Vector2.ZERO
 var material_field: bool = false
 var field_radius: float = 32.0
 var movement: Dictionary = {}
+var preset: StringName = &""
 
 
 func _point(world: Vector2) -> Vector2:
@@ -35,6 +36,20 @@ func _draw() -> void:
 		draw_arc(point, field_radius * size.x / _view_size.x, 0.0, TAU, 64, Color(accent, 0.20), 1.0, true)
 		draw_line(point + Vector2(-5, 0), point + Vector2(5, 0), Color(accent, 0.7), 1.0)
 		draw_line(point + Vector2(0, -5), point + Vector2(0, 5), Color(accent, 0.7), 1.0)
+	# Exhaust is a presentation cue driven by accepted controller telemetry.
+	# It never adds a collider or changes the authoritative physical hull.
+	if preset in [&"arcadelander", &"jetbarrel"]:
+		for part: Dictionary in _parts:
+			if str(part.part_id) in ["chassis", "barrel"]:
+				var thrust: float = float(movement.get("thrust", 0.0))
+				if absf(thrust) > 0.01:
+					var pose: Transform2D = part.transform
+					var base: float = Vector2(part.size).y * 0.5 * signf(thrust)
+					var tip: float = base + signf(thrust) * (5.0 + 7.0 * absf(thrust))
+					draw_colored_polygon(PackedVector2Array([_point(pose * Vector2(-2.1, base)),
+						_point(pose * Vector2(2.1, base)), _point(pose * Vector2(0, tip))]), Color("ff9855"))
+					draw_colored_polygon(PackedVector2Array([_point(pose * Vector2(-1.0, base)),
+						_point(pose * Vector2(1.0, base)), _point(pose * Vector2(0, lerpf(base, tip, 0.55)))]), Color("e9faff"))
 	super._draw()
 	# A spoke makes actual wheel rotation legible without hiding its collider.
 	for part: Dictionary in _parts:
@@ -42,3 +57,11 @@ func _draw() -> void:
 			var pose: Transform2D = part.transform
 			var radius: float = Vector2(part.size).x * 0.42
 			draw_line(_point(pose.origin), _point(pose * Vector2(radius, 0)), Color(1, 1, 1, 0.65), 1.5, true)
+		elif preset == &"jetbarrel" and str(part.part_id) == "barrel":
+			var pose: Transform2D = part.transform
+			var half: Vector2 = Vector2(part.size) * 0.5
+			for band: float in [-0.62, 0.62]:
+				draw_line(_point(pose * Vector2(-half.x, half.y * band)),
+					_point(pose * Vector2(half.x, half.y * band)), Color("405364"), 2.0, true)
+			draw_line(_point(pose * Vector2(-half.x * 0.55, -half.y * 0.85)),
+				_point(pose * Vector2(-half.x * 0.55, half.y * 0.85)), Color(1, 0.9, 0.65, 0.55), 1.0, true)

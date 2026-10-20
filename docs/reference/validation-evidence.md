@@ -10,6 +10,21 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## Player control playground — 2026-10-20
+
+The [dated playground audit](../audits/2026-10-20-player-control-playground.md)
+owns recoverable source identity, rebuilt runtime hashes, Linux execution,
+preserved integration failures and final check dispositions. Recorded focused
+checks cover native complete-cell/Water-quantity preservation and bounded field
+admission, actual Rapier vehicle/acrobat movement, and seven-preset
+input/lease/pause/reset lifetime. The Windows artifact is cross-build evidence;
+execution on Windows is not implied. Headless tests also do not establish
+human feel, complete checkpoint routes, physical gamepad/window interaction or
+browser qualification. Current mechanics and controls live in the
+[player contract](../systems/player-control-playground.md); the
+[build guide](../operations/local-build-and-validation.md#player-playground-checks)
+routes reproducible fixtures. Prior ACT-004/ACT-005 results retain their scope.
+
 ## Deepworks exhibition and depth dimensions — 2026-10-20
 
 The [PR #185 completion audit](../audits/2026-10-20-deepworks-pr185-completion.md)

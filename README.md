@@ -6,12 +6,29 @@ CyberSand is a C++20 cellular simulation engine hosted by Godot, with a material
 lab and bounded Rapier2D/cellular coupling proof. The longer-term product intent
 is a reusable foundation for cyberpunk RPG and exploration games.
 
-F5 selects from **41 articulated Rapier actors** in the sandbox, Blacksite and all
+F5 selects from **46 articulated Rapier actors** in the sandbox, Blacksite and all
 four showcase districts, with keyboard, scripted-demo or external-policy control.
 Applying restores the selected map and starts paused; R retains the actor.
 WASD moves, mouse aims, Q/E trims, Z/X reels and Space/Shift/C invoke the selected
 rig's abilities. M uses its tool, N releases a held item and U reattaches a nearby
 item. Sampled rigs and the original physical hull trials remain reference choices.
+
+## Player playground
+
+Choose **Player playground** in the launcher or pass **`--player-playground`**
+for seven human movement presets: a loose-jointed stunt buggy, trials bike,
+momentum acrobat, arcade lander, real Sand cloud, real Water blob and jetpack
+barrel. The shared course has a ramp, low tunnel, air slalom, landing decks and
+material sieve. **1–7** selects, **Tab** cycles, **R** restarts, **P** pauses and
+**F** switches overview/follow. A standard gamepad can supply movement and actions.
+
+The acrobat chains slides, rolls, bullet jumps, double jumps, jump cancels and a
+finite airglide. The material presets steer native cells through a bounded local
+field; normal material simulation continues. The five mechanical presets also
+appear in **F5 → SetP**. See the [player control guide](docs/systems/player-control-playground.md)
+for every preset's controls, gamepad mapping, focus/reset behavior and current
+qualification. `--player=acrobat` selects a preset at launch. These are experimental
+controls; headless regressions do not establish target-PC human feel acceptance.
 
 ## Deepworks — the exhibition below
 
@@ -108,12 +125,13 @@ exact 4.7 pin. Desktop has an asynchronous simulation owner; Web ticks are
 synchronous even with internal pthreads. Rapier objects stay on the main thread.
 The GDScript fallback has different material semantics.
 
-The desktop sandbox includes 41 experimental
-[articulated actors](docs/systems/physical-actor-rigs.md) in seven sets: the original **SetA**
+The desktop sandbox includes 46 experimental
+[articulated actors](docs/systems/physical-actor-rigs.md) in eight sets: the original **SetA**
 Runner/Skimmer/Crawler controls, **SetB** ground machines, **SetF** flight and
 descent, **SetY** contact/rope/impulse traversal, **SetU** salvage-tool movers and
 **SetV** fictional interface personas, plus twelve **SetX** machines including
-multirotors, a suspended payload, a rocket blade and a concertina crawler.
+multirotors, a suspended payload, a rocket blade and a concertina crawler, and
+the five human movement presets in **SetP**.
 Actual collider parts, joints and copied transforms define their appearance and
 motion. Bounded gyro assistance and controlled joint play serve plausible game
 behaviour; finite gyro momentum accounting is not required. Open **F5** to choose a rig and a keyboard,
@@ -128,7 +146,8 @@ The [32-item usable catalogue](docs/systems/actor-usables.md) supplies material
 tools, ballistic payloads and processors for the physical roster. Actors carry a
 jointed chassis with bounded aim, recoil, release and nearby pickup. Processors
 are placed as physical world objects with explicit blocked-output results. Every
-rig has a default loadout and equipment demonstration policy; keyboard, scripts
+rig has a default loadout and equipment policy; SetP starts with an empty mount.
+Keyboard, scripts
 and future policies share the same observed-identity action path. The
 [ACT-005 checkpoint](docs/audits/2026-10-19-act005-physical-usables.md) records
 integration progress and acceptance separately from the source feature list.

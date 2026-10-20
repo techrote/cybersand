@@ -10,6 +10,25 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Player control playground — 2026-10-20
+
+Start with the [player control contract](../systems/player-control-playground.md)
+for seven presets, launch arguments, keyboard/gamepad controls and acrobat chains.
+The five new mechanical IDs form F5 SetP; the current physical roster is 46.
+Their circles use actual Rapier contact but conservative rectangular native
+masks. The two material modes belong only to the dedicated synchronous scene;
+native World relocates complete Sand/Water cells between ordinary ticks.
+
+Preserve observation-relative leases, rearm after focus/reset, cancelled preload
+and landing-gated acrobat inventory. Swarm input moves material near its observed
+centroid, not a cursor or persistent seed cohort. It must not become erase/repaint
+or per-cell Rapier control. See [field interfaces](../reference/interfaces-and-message-contracts.md#player-material-field-control)
+and [focused checks](local-build-and-validation.md#player-playground-checks).
+The [dated checkpoint](../audits/2026-10-20-player-control-playground.md) owns
+source/runtime identities and recorded Linux execution. Target-PC feel, actual
+controller/window interaction, all course routes, Windows execution and browser
+qualification remain distinct from source inspection or cross-build results.
+
 ## Deepworks exhibition and depth dimensions — 2026-10-20
 
 The [PR #185 completion record](../audits/2026-10-20-deepworks-pr185-completion.md)

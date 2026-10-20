@@ -1,7 +1,7 @@
 class_name CyberPhysicalActorOverlay
 extends Control
 
-# Filled polygons use the actual rectangle collision shape and the bridge's
+# Filled polygons use the actual rectangle or circle shape and the bridge's
 # authoritative physics transform. This node owns no gameplay or collision.
 var outlines: bool = true
 var _parts: Array = []

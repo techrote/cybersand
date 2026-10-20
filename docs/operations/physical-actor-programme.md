@@ -40,7 +40,7 @@ remaining limits are in the [ACT-004 record](../audits/2026-10-18-act004-articul
 
 **Current desktop implementation:** F5 is available in the ordinary sandbox,
 Blacksite Nine and all four showcase districts (Neon Reliquary, Middle Cyberberbia,
-Sewertech Alley and Industrial Underswamp). F5 lists all 41 **Rapier** rigs, plus
+Sewertech Alley and Industrial Underswamp). F5 lists all 46 **Rapier** rigs, plus
 the **Sampled** baseline/rig references and original barrel/Ripper hull trials.
 Keyboard, scripted-demo and external-policy producers use the same physical
 session and action vocabulary. Applying restores the
@@ -51,6 +51,11 @@ the choice to the destination's own spawn. The ordinary actor sandbox supports t
 same physical choices. Only the retained single-body hull arms remain
 keyboard-only. Physical comparisons admit up to eight actors from the selected
 set; SetX's twelve entries therefore require more than one simultaneous view.
+
+The later [player playground](../systems/player-control-playground.md) adds five
+human movement presets as SetP. Its separate seven-preset course also supplies
+native Sand/Water player fields, which are not F5 physical rigs. ACT-004's dated
+41-definition evidence retains its original scope.
 
 The worker configures sampled sessions at the scenario-install boundary. The
 main thread installs physical sessions for the selected reset and keeps them
@@ -81,6 +86,12 @@ The native generation workbench remains an isolated authoring preview, without
 live material simulation or attachment to the sandbox's World.
 Deepworks uses its own four-world native material owner and camera/painting
 controls; it has no ordinary physical actor session or F5 picker.
+
+**Player playground** or `-- --player-playground` opens the separate human
+movement course; optional `--player=ID` selects a preset. It reuses physical
+actors for five choices and exclusively owns a native material field for two.
+Its controls, lifecycle and qualification are in the
+[player guide](../systems/player-control-playground.md).
 
 The launcher also offers four complete, reset-scoped definitions:
 `experimental/blacksite/sampled-baseline`, `sampled-burial-safe`, `barrel` and

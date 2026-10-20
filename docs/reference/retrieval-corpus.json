@@ -95,7 +95,8 @@
     "operations/physical-actor-programme.md",
     "systems/depth-layers-and-parallax.md",
     "systems/physical-actor-rigs.md",
-    "operations/deepworks-exhibition.md"
+    "operations/deepworks-exhibition.md",
+    "systems/player-control-playground.md"
   ],
   "navigation": [
     "README.md",
@@ -351,7 +352,11 @@
     {
       "path": "audits/2026-10-20-deepworks-exhibition.md",
       "reason": "Dated Deepworks source/runtime, native apparatus, preserved failures and actual rendered-image evidence; retrieve explicitly through the exhibition guide or validation ledger, not as the default Current map or depth contract."
+    },
+    {
+      "path": "audits/2026-10-20-player-control-playground.md",
+      "reason": "Dated player playground source/runtime, native field and actual Linux mechanical/lifecycle evidence; retrieve explicitly with its platform and human acceptance limits. Current controls and ownership belong to the player playground contract."
     }
   ],
-  "integration_note": "Retains scene, generation, actor, sampled and physical actor-usable, Thunderbowl, physical-actor and presentation routes; historical questions remain separately scoped. Deepworks routes cover full-size four-plane exhibitions, independent native source schedules and parameterized depth dimensions; its dated audit remains explicitly scoped."
+  "integration_note": "Retains scene, generation, actor, sampled and physical actor-usable, Thunderbowl, physical-actor and presentation routes; historical questions remain separately scoped. Deepworks routes cover full-size four-plane exhibitions, independent native source schedules and parameterized depth dimensions; its dated audit remains explicitly scoped. Player playground adds seven human movement presets, native material-field authority and circular-wheel approximation routes; dated execution remains separately scoped."
 }

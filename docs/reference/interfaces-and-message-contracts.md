@@ -6,7 +6,7 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-20
 ---
 
 # Interfaces and message contracts
@@ -269,6 +269,9 @@ field or nonpositive size/mass, ignores trailing partial records and retains
 the first duplicate. Accepted full sizes clamp to at least one cell and mass to
 0.001. The same finite-record predicate is used by the fallback and bridge.
 The physical session rejects a complete assembly beyond capacity before spawning.
+SetP circular wheels supply their diameter as a circumscribed square in this
+unchanged rectangle layout. Rapier hard contact and graphics use circles;
+native masks and displacement retain the explicit conservative approximation.
 General contours and cellular torque feedback remain Planned; these private
 packed records are not an unrestricted public network protocol. Numerical response and sample-age policy belong in
 [coupling](../architecture/rigid-body-and-cellular-coupling.md).
@@ -474,6 +477,67 @@ GDExtension method, worker message or live runtime admission. Real World produce
 witnesses and cross-owner queues remain Planned.
 
 The [physical Blacksite experiment](../operations/physical-actor-programme.md) reuses the current body input/result ABI with one rectangle. `apply_trial_impulses` is a main-thread bridge method; no native field layout or sampled actor action/observation stride changes.
+
+## Player material field control
+
+**Current experimental, dedicated playground:** the GDExtension method is
+`apply_player_material_field(center: Vector2i, direction: Vector2,
+material_id: int, mode: int, phase: int) -> Dictionary`.
+Only the exclusive native-World owner may call it, outside native ticks. It is
+not forwarded through the ordinary desktop worker. The
+[playground contract](../systems/player-control-playground.md) owns user behavior;
+[configuration](configuration-reference.md#player-playground-values) owns limits.
+
+`center` must lie inside the adapter's 1024² domain. Direction must be finite and
+unit-bounded; material is Sand (2) or Water (3), mode is 0–3, and phase is an
+integer from 0 through 2,147,483,647. Modes are normal cohesion/loft (0), surge
+(1), dry spread/liquid squeeze (2), and gather (3). The owner uses the current
+tick as phase. Invalid commands, failed Worlds and in-tick calls refuse mutation.
+The native C++ command additionally carries an explicitly validated finite domain.
+
+Every receipt includes `accepted` and `reason`; reasons are `applied`,
+`invalid_command`, `world_failed` or `tick_in_progress`. Once native validation
+is reached, it also returns `scanned_cells`, `observed_cells`,
+`controlled_cells`, `moved_cells`, `movement_steps`, `blocked_steps`,
+`storage_refusals`, `quantity`, `centroid`, `truncated` and `radius`.
+An applied call may move zero cells. `quantity` counts all matching material
+observed in the starting circle: one per Sand cell, raw mass units per Water
+cell. The quantity-weighted centroid includes this call's successful moves,
+including the unmoved observed material when control is truncated. It is a
+per-call receipt, not a global inventory or a post-tick query.
+
+The native operation moves the complete stored tuple through existing relocation
+and wake bookkeeping. It never exchanges with an occupied destination, allocates
+missing chunks/thermal storage, or creates a persistent cohort or new material
+kernel. After the call, normal simulation proceeds under its existing rules.
+
+The separate scene command is version 1 with exactly ten fields:
+
+```json
+{
+  "version": 1, "kind": "player_material_field_action",
+  "run_id": "issued-run-id", "epoch": 1, "actor_id": 0, "sequence": 1,
+  "observed_tick": 0, "observation_id": "issued-observation-id",
+  "lease_ticks": 6,
+  "action": {"move": [1, 0], "primary": true}
+}
+```
+
+`CyberPlayerPlaygroundRuntime.make_command` copies an issued observation. Submit
+checks run/epoch/actor, exact finite integer identities, a newer sequence, issued
+observation token and an unexpired observation-relative lease of one through six
+ticks. Cancellation changes control generation and retires issuance history;
+replacement additionally changes the run and epoch. Actions admit only `move`,
+`aim`, `effort`, `trim`, `primary`, `secondary` and `auxiliary`, normalized by
+the shared physical session. Move and buttons drive this fixed-strength field;
+aim, effort and trim are compatibility values without field effects. Mode
+priority is auxiliary, secondary, primary, neutral. Lease expiry removes the
+command, so even neutral hover assistance stops until fresh input is admitted.
+
+Sources: [native command and result](../../native/include/cybersand/world.hpp),
+[World operation](../../native/src/world.cpp),
+[adapter binding](../../godot/native_extension/cyber_native_cell_world.cpp) and
+[scene owner](../../godot/scripts/player_playground_runtime.gd).
 
 ## Physical actor control and effects
 

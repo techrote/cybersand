@@ -38,7 +38,7 @@ static func layout() -> Array:
 	for index: int in range(24):
 		_rect(result, 304 + index * 2, 324 + index, 2, 28 - index, 58)
 	# A separate low tunnel rewards the acrobat's actual compact posture.
-	_rect(result, 378, 326, 62, 15, 63)
+	_rect(result, 378, 326, 62, 14, 63)
 	_rect(result, 376, 324, 66, 2, 76)
 	# Flight slalom, landing decks, and a route above the low tunnel.
 	_rect(result, 334, 132, 6, 37, 62)

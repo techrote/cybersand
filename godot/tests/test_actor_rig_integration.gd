@@ -3,6 +3,7 @@ extends SceneTree
 const Worker = preload("res://scripts/simulation_worker.gd")
 const Recorder = preload("res://scripts/gameplay_recorder.gd")
 const Catalog = preload("res://scripts/actor_rig_catalog.gd")
+const PhysicalCatalog = preload("res://scripts/physical_actor_catalog.gd")
 const MicroCatalog = preload("res://scripts/microscenario_catalogue.gd")
 const WaterProfiles = preload("res://scripts/water_experiment_profiles.gd")
 const SPAWN := Vector2(800.0, 20.0)
@@ -365,9 +366,16 @@ func _selector_and_geometry() -> void:
 	await process_frame
 	desktop.paused = true
 	var panel: CyberActorPrototypePanel = desktop.actor_prototype_panel
-	_expect(panel.set_choice.item_count == 7 and panel.model_choice.item_count == 9
+	_expect(panel.set_choice.item_count == PhysicalCatalog.SET_IDS.size() and panel.model_choice.item_count == 9
 		and panel._visible_models.slice(0, 4) == [&"", &"runner", &"skimmer", &"crawler"],
-		"rig selector lost seven sets, original Set A indices, reference trials or articulated choices")
+		"rig selector lost catalogue sets, original Set A indices, reference trials or articulated choices")
+	for model: StringName in PhysicalCatalog.rigs_in_set(&"setP"):
+		var choice := StringName("rapier/" + str(model))
+		panel.configure_selection(choice, &"human", false)
+		_expect(panel.selected_set_id() == &"setP" and panel._visible_models[panel.model_choice.selected] == choice,
+			"selector cannot address player preset " + str(model))
+		_expect(panel.description.text.contains(PhysicalCatalog.name_for(model).to_upper()) and panel.effort_slider.editable,
+			"player preset lost its description or human effort control")
 	for set_id: StringName in Catalog.SET_IDS:
 		var group: Array[StringName] = Catalog.rigs_in_set(set_id)
 		for model: StringName in group:

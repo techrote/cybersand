@@ -12,7 +12,9 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Choose a reading route
 
-Choose all 41 [articulated Rapier actors](systems/physical-actor-rigs.md) with F5 in the sandbox and exploratory maps, using keyboard, local scripted or external-policy control. Sampled references and the initial hull arms remain available; [the physical actor programme](operations/physical-actor-programme.md) preserves owner intent and integration scope.
+Choose all 46 [articulated Rapier actors](systems/physical-actor-rigs.md) with F5 in the sandbox and exploratory maps, using keyboard, local scripted or external-policy control. Sampled references and the initial hull arms remain available; [the physical actor programme](operations/physical-actor-programme.md) preserves owner intent and integration scope.
+
+For seven human movement presets, use the [player control playground](systems/player-control-playground.md): buggy, trials bike, momentum acrobat, arcade lander, native Sand cloud, native Water blob and jetpack barrel. The guide owns keyboard/gamepad controls, acrobat chains, reset/focus rules and bounded material-field ownership. The five mechanical presets also appear in F5 SetP.
 
 Layering, quantized relief and Strata Theatre: [depth prototype contract](systems/depth-layers-and-parallax.md).
 
@@ -34,6 +36,7 @@ moving Above/Below, choosing viewpoints, editing native cells and capturing imag
 
 | Need | Start here |
 |---|---|
+| Play the stunt buggy, trials bike, acrobat chains, lander, material swarms or jetpack barrel | [Player control playground](systems/player-control-playground.md), [field API](reference/interfaces-and-message-contracts.md#player-material-field-control), and [focused checks](operations/local-build-and-validation.md#player-playground-checks) |
 | Explore Deepworks, replay a foreground/rear reaction or understand complete multilayer coverage | [Exhibition guide](operations/deepworks-exhibition.md), [depth contract](systems/depth-layers-and-parallax.md), and [dated source/runtime evidence](audits/2026-10-20-deepworks-exhibition.md) |
 | Review MAT-002 save/diagnostic integration, real rendered tests and matching runtime publication | [Building catalogue](systems/building-material-catalogue.md), [test acceptance](operations/testing-validation-and-replay.md#ci-execution-sharding), and [PR review evidence](audits/2026-10-19-mat002-review-and-validation.md) |
 | Generate and blend procedural chunk themes, paint broad guidance, impose exact overrides or add structured modules | [Procedural generation contract and workbench](systems/procedural-world-generation.md), then [GEN-001 source and validation evidence](audits/2026-10-18-gen001-procedural-generation.md) |
