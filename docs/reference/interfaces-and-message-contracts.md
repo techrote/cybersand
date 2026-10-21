@@ -134,6 +134,71 @@ The [hierarchy contract](../systems/procedural-hierarchical-generation.md) and
 [grammar JSON schema](../../examples/worldgen/schemas/grammar-v1.schema.json)
 own exact semantic meaning and relational checks.
 
+### Semantic plane proposals and owner admission
+
+**Current GEN-005 extension:**
+[`PlanePlan::compile`](../../native/include/cybersand/generation_planes.hpp)
+takes shared immutable ownership of one `Generator` plus a versioned
+`PlaneDefinition`. It exposes copied/value features, projections, fixtures,
+links and actors through the adapter, together with `bounds`, `fingerprint`,
+`preparation_work`, `operations_per_cell` and `storage_bytes`. Native const
+record references borrow the plan lifetime. `sample`/`explain` use absolute
+world coordinates; projection records retain geometry references, application
+and exclusion fields, transitive field fingerprints and semantic feature IDs.
+
+`begin(RectI64)` produces a private `PlaneGenerationJob`;
+`advance(cell_budget)` counts staged plane cells. Pending, Cancelled and Failed
+states expose no material arrays. Ready results include bounds, revision, plan
+fingerprint, four content hashes, four row-major material arrays, operation
+accounting, fixture/link/actor registration IDs and a receipt hash.
+`accepts(result)` checks the complete current plan/result binding. Canonical
+registration anchors give disjoint requested tiles exactly one union of IDs.
+
+The serialized `CyberWorldGenerator` adds `get_plane_plan`,
+`generate_plane_bundle`, `generate_plane_region(Rect2i)`,
+`begin_plane_region(Rect2i)`, `advance_plane_region(cell_budget)`,
+`cancel_plane_region` and `inspect_plane_cell(plane, Vector2i)`.
+`semantic_planes` configuration remains transactional. Its explicit authored
+revision keeps identical retries stable; `adapter_serial` separately records
+the monotonic configuration request. Accepted reconfiguration retires pending
+jobs, while validation failure preserves the last valid plan.
+Ordinary `generate_chunk`/`begin_chunk`/`advance` packets retain the monotonic
+adapter revision returned by `configure`, including for semantic recipes, so
+the existing workbench's current-request check remains compatible.
+
+A complete copied dictionary has `ok`, `schema`, `algorithm`, `id`, hexadecimal
+`revision`/`definition_revision`/`fingerprint`, `bounds`, `plan_bounds`, rates,
+budgets, policies, feature/projection/fixture/link/actor arrays, copied
+`materials` (`PackedByteArray` per plane), `hashes`, registration ID arrays and
+`receipt_hash`. Only whole-bundle output has `complete=true` and `layers`
+(`PackedInt32Array` local `x,y,width,height,material` rectangles). Tile output
+has `complete=false` and cannot be submitted as a host replacement. Inspection
+returns copied material and feature→projection→fixture/link/actor provenance;
+no mutable native World or Godot object is exported.
+
+[`CyberSemanticPlaneRuntime`](../../godot/scripts/depth/semantic_plane_runtime.gd)
+validates a complete packet, reconstructs and checks its materials, then stages
+all four Worlds plus the existing play actor session before one synchronous
+publication boundary. `install_bundle(candidate, expected_generation)` returns
+false with `last_error` on rejection. A differing replacement requires the
+current generation; an identical fully validated retry is idempotent. Reset,
+activate and retire calls return copied identity-bound lifecycle receipts.
+`lifecycle_stats()` exports per-fixture applications, cleanup, active/retired
+state and aggregate accounting. `actor_snapshot()` copies the existing session
+with semantic IDs and bundle/reset identity; actor commands use its existing
+leased mailbox, exclusively on play.
+
+`event_observation(link_id)` issues a copied one-use observation with bundle,
+generation, link and endpoint revisions, planes, source tick, serial, bounded
+cell/radius and permitted material. `submit_event` checks those identities;
+only center/radius may vary within the registered zone. Accepted commands use
+the retained play→scripted `blast` or scripted→effects `burst` owner routes.
+Static/presentation links issue no runtime authority. Reset or retirement
+invalidates observations; raw painting/event bypass methods reject on this
+owner. See the [semantic contract](../systems/procedural-semantic-planes.md)
+for classification and the [limits](configuration-reference.md#semantic-plane-generation-limits)
+for finite capacity outcomes.
+
 ### Native C API
 
 **Current:** [c_api.h](../../native/include/cybersand/c_api.h) defines the

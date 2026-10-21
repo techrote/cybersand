@@ -225,6 +225,29 @@ This stage adds no persistent resident-world streaming, automatic player-edit
 reconciliation or semantic depth projection. The next programme stages remain
 GEN-005 → GEN-007 → GEN-006, subject to this issue's explicit acceptance gates.
 
+## Semantic depth checkpoint — 2026-10-21
+
+**Current source implementation, GEN-005 / [#192](https://github.com/techrote/cybersand/issues/192):**
+[one semantic hierarchy projects into four planes](../systems/procedural-semantic-planes.md)
+with explicit geometry, per-plane material intent and omissions, six typed link
+families, finite source/drain/setup fixtures, copied provenance and optional
+play-only actor placements. Native output is private until complete; the existing
+depth owner stages all four Worlds and existing sampled actor owner before one
+configuration commit. Camera/parallax never enters generation.
+
+The two executable [refinery/cavern examples](../operations/semantic-depth-authoring.md)
+cover four canonical regions and multiple negative-coordinate chunks. Runtime
+authority is limited to existing play-to-rear blast and rear-to-effects burst;
+background remains frozen. Identical bundle retries are idempotent and old
+observations/revisions cannot replay into a new generation. Native reaction
+controls measure actual transport/products and complete fixture application counts.
+
+The [dated evidence](../audits/2026-10-21-gen005-semantic-planes.md) and
+implementation PR separately record final native/sanitized, Godot/rendered,
+Linux/Windows runtime publication and hosted acceptance. Pending gates do not
+count as passes. GEN-007 #193 is the next authoring/quality stage after acceptance;
+GEN-006 #194 retains persistent streaming and durable mutation reconciliation.
+
 ## Decisions and defects to resolve
 
 Rows distinguish **Current fixes**, remaining defects and open decisions; dated

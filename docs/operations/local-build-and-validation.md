@@ -253,6 +253,53 @@ source/runtime identities, local results, remaining limitations and exact-head
 hosted gates. Earlier ACT-004 or sampled USABLE-001 results do not certify this
 changed physical integration.
 
+## Semantic plane generation and native fixtures
+
+GEN-005 adds [`test_generation_planes.cpp`](../../native/tests/test_generation_planes.cpp)
+to both existing generation targets. Its oracle compares all four material
+arrays and canonical registration unions across reversed negative-coordinate
+tiles, worker counts and bounded slices, including shared typed masks and
+actor proposals. Run it with the ordinary generation suite:
+
+```sh
+make worldgen-test
+ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 make worldgen-sanitize
+godot --headless --path godot --script res://tests/test_worldgen_planes.gd
+godot --headless --path godot --script res://tests/test_semantic_planes_runtime.gd
+godot --headless --path godot --script res://tests/test_semantic_planes_examples.gd
+```
+
+The runtime test requires every transaction, lifecycle, event, native reaction,
+cleanup and actor section to complete. The actual-example runner loads both
+checked-in recipes, requires all 40 fixture IDs and verifies every scheduled
+application/cleanup. Rear-only ticks must produce native Brine and transport
+while play/effects/background bytes stay unchanged. Separate play/effects
+ticks verify Water transport and complete the finite programmes. Inactive and
+missing-partner controls must fail the positive product/transport predicates.
+Any script error or required skip fails even if the process exits zero.
+
+The graphical oracle requires a real rendering backend:
+
+```sh
+xvfb-run -a godot --path godot --rendering-method gl_compatibility --display-driver x11 --audio-driver Dummy --script res://tests/test_semantic_depth_render.gd
+```
+
+It compares rendered pixels while camera pan/zoom/parallax leave generation,
+semantic records and live ownership unchanged. The [authoring guide](semantic-depth-authoring.md)
+documents reproducible composites, isolated planes, region details and capture
+manifests. Headless rendering does not substitute for those captures.
+
+The scoped [GEN-005 publisher](../../.github/workflows/gen005-runtime-publication.yml)
+builds source-matched Linux and Windows runtimes, runs all retained player and
+generation admission checks plus the three GEN-005 headless suites on each
+target OS, and accepts only complete positive-count error-free evidence before
+publishing the four runtime/provenance paths. Its independent
+[`unittest` suite](../../tools/ci/test_gen005_runtime_publication.py) exercises
+missing, malformed and tampered evidence. Exact-head documentation/provenance,
+native, full Godot and applicable scoped apparatus gates remain required for
+implementation acceptance. The [GEN-005 audit](../audits/2026-10-21-gen005-semantic-planes.md)
+records actual platform/source results and any environment qualification.
+
 ## Hierarchical generation example and acceptance
 
 GEN-004 extends the existing generation targets with

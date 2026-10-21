@@ -6,6 +6,7 @@
 #include <godot_cpp/variant/packed_float32_array.hpp>
 #include <godot_cpp/variant/packed_float64_array.hpp>
 #include <godot_cpp/variant/packed_string_array.hpp>
+#include <godot_cpp/variant/packed_int32_array.hpp>
 #include <godot_cpp/variant/string.hpp>
 
 #include <algorithm>
@@ -14,8 +15,10 @@
 #include <cstring>
 #include <initializer_list>
 #include <limits>
+#include <map>
 #include <stdexcept>
 #include <string>
+#include <tuple>
 
 namespace godot {
 namespace {
@@ -430,11 +433,12 @@ gen::SpatialDefinition spatial_definition(const Variant& input) {
 }
 
 #include "generation_grammar_adapter.inc"
+#include "generation_planes_adapter.inc"
 
 gen::Recipe parse_recipe(const Dictionary& input, std::uint64_t revision) {
     fields(input, {"schema", "seed", "chunk_size", "candidate", "parameters", "themes",
                    "strokes", "paths", "overrides", "modules", "limits", "catalogue",
-                   "fields", "aggregates", "modifiers", "spatial", "spatial_limits", "grammar"}, "recipe");
+                   "fields", "aggregates", "modifiers", "spatial", "spatial_limits", "grammar", "semantic_planes"}, "recipe");
     gen::Recipe recipe;
     recipe.revision = revision;
     if (input.has("schema")) recipe.schema = static_cast<std::uint32_t>(bounded_integer(
@@ -687,6 +691,7 @@ String hexadecimal(std::uint64_t value) {
 }
 
 #include "generation_grammar_inspection.inc"
+#include "generation_planes_inspection.inc"
 
 Dictionary spatial_information(const gen::SpatialInfo& info) {
     Dictionary result;
@@ -730,6 +735,13 @@ void CyberWorldGenerator::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_semantic_plan"), &CyberWorldGenerator::get_semantic_plan);
     ClassDB::bind_method(D_METHOD("validate_routes"), &CyberWorldGenerator::validate_routes);
     ClassDB::bind_method(D_METHOD("inspect_cell", "position"), &CyberWorldGenerator::inspect_cell);
+    ClassDB::bind_method(D_METHOD("get_plane_plan"), &CyberWorldGenerator::get_plane_plan);
+    ClassDB::bind_method(D_METHOD("generate_plane_bundle"), &CyberWorldGenerator::generate_plane_bundle);
+    ClassDB::bind_method(D_METHOD("generate_plane_region", "bounds"), &CyberWorldGenerator::generate_plane_region);
+    ClassDB::bind_method(D_METHOD("begin_plane_region", "bounds"), &CyberWorldGenerator::begin_plane_region);
+    ClassDB::bind_method(D_METHOD("advance_plane_region", "cell_budget"), &CyberWorldGenerator::advance_plane_region);
+    ClassDB::bind_method(D_METHOD("cancel_plane_region"), &CyberWorldGenerator::cancel_plane_region);
+    ClassDB::bind_method(D_METHOD("inspect_plane_cell", "plane", "position"), &CyberWorldGenerator::inspect_plane_cell);
     ClassDB::bind_method(D_METHOD("generate_chunk", "coord", "diagnostic"), &CyberWorldGenerator::generate_chunk, DEFVAL(String()));
     ClassDB::bind_method(D_METHOD("begin_chunk", "coord", "diagnostic"), &CyberWorldGenerator::begin_chunk, DEFVAL(String()));
     ClassDB::bind_method(D_METHOD("advance", "cell_budget"), &CyberWorldGenerator::advance);
@@ -739,7 +751,14 @@ Dictionary CyberWorldGenerator::configure(const Dictionary& input) {
     try {
         if (revision_ == static_cast<std::uint64_t>(std::numeric_limits<std::int64_t>::max()))
             return failure("generator revision exhausted");
-        auto candidate = gen::Generator::compile(parse_recipe(input, revision_ + 1));
+        std::optional<gen::PlaneDefinition> planes;
+        if (input.has("semantic_planes")) planes = plane_definition(input["semantic_planes"]);
+        auto candidate = gen::Generator::compile(parse_recipe(input, planes ? planes->revision : revision_ + 1));
+        std::shared_ptr<const gen::PlanePlan> candidate_planes;
+        if (planes) {
+            candidate_planes = gen::PlanePlan::compile(candidate, std::move(*planes));
+            (void)plane_rect(candidate_planes->bounds());
+        }
         auto configuration = input.duplicate(true);
         auto result = Dictionary();
         result["ok"] = true;
@@ -747,9 +766,13 @@ Dictionary CyberWorldGenerator::configure(const Dictionary& input) {
         result["revision"] = static_cast<std::int64_t>(revision_ + 1);
         result["fingerprint"] = hexadecimal(candidate->fingerprint());
         if (candidate->semantic_plan()) result["route_validation"] = grammar_route_validation(candidate->validate_routes());
+        if (candidate_planes) result["plane_fingerprint"] = hexadecimal(candidate_planes->fingerprint());
         if (job_) job_->cancel();
         job_.reset();
+        if (plane_job_) plane_job_->cancel();
+        plane_job_.reset();
         generator_ = std::move(candidate);
+        plane_plan_ = std::move(candidate_planes);
         configuration_ = std::move(configuration);
         ++revision_;
         return result;
@@ -922,7 +945,9 @@ Dictionary CyberWorldGenerator::copy_result(const gen::ChunkResult& chunk) const
     result["state"] = state_name(chunk.state);
     result["completed_cells"] = static_cast<std::int64_t>(chunk.cells.size());
     result["operations"] = static_cast<std::int64_t>(chunk.operations);
-    result["revision"] = static_cast<std::int64_t>(chunk.revision);
+    // The retained chunk/workbench protocol uses the adapter request serial.
+    // Semantic definitions have a separate stable native revision, checked by
+    // accepts below; it must not replace the serial returned by configure.
     result["fingerprint"] = hexadecimal(chunk.fingerprint);
     if (chunk.state != gen::ResultState::Ready || !generator_->accepts(chunk)) {
         result["ok"] = false;
@@ -1022,5 +1047,7 @@ Dictionary CyberWorldGenerator::advance(std::int64_t cell_budget) {
     } catch (const std::exception& error) { return failure(error.what()); }
     catch (...) { return failure("unknown incremental generation failure"); }
 }
+
+#include "generation_planes_methods.inc"
 
 } // namespace godot
