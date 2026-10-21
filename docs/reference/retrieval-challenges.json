@@ -170,7 +170,7 @@
       "facts": [
         "The issue #9 full-world accounting control preserved all recorded Water mass and showed the cropped deficit below the hard floor: the defect was displacement across the barrier, not Water destruction.",
         "Historical #11 work added bounded barrier/body-mask-aware ejection in its recorded source-matched envelope, but current-main reconciliation must not describe that bounded result as owner acceptance.",
-        "WEX-001 freezes the current generic Rapier\u2194Water splash/displacement and hard-floor failure before later hybrid architecture changes."
+        "WEX-001 freezes the current generic Rapier↔Water splash/displacement and hard-floor failure before later hybrid architecture changes."
       ],
       "sources": [
         "../godot/native_extension/cyber_native_cell_world.cpp::find_ejection_target",
@@ -464,7 +464,7 @@
       ],
       "facts": [
         "Current native Water already uses fractional conserved FreeMass while most other liquids use whole-cell CellularYield-style paths, so another explicit Water pressure mechanism would add another bulk-motion authority rather than replace an already unified solver.",
-        "A generic Rapier body entering Water can already create convincing splash/wave displacement; WEX therefore tests whether at most roughly 3\u20135 segmented upper-volume Water tiers can reuse the generic hybrid substrate to create depth-dependent surge.",
+        "A generic Rapier body entering Water can already create convincing splash/wave displacement; WEX therefore tests whether at most roughly 3–5 segmented upper-volume Water tiers can reuse the generic hybrid substrate to create depth-dependent surge.",
         "The candidate is experimental, must preserve exact Water quantity and generic ownership, and must actively test slab/membrane, floor-reaction, chatter and boundary-penetration failure modes."
       ],
       "sources": [
@@ -796,7 +796,7 @@
     },
     {
       "id": "SCENE03",
-      "query": "How do I explore Blacksite Nine's connected 3\u00d73 map from the surface lab through the underground districts, and do tile views, boundary crossings and reset preserve edits?",
+      "query": "How do I explore Blacksite Nine's connected 3×3 map from the surface lab through the underground districts, and do tile views, boundary crossings and reset preserve edits?",
       "canonical": [
         "operations/blacksite-nine-demo.md"
       ],
@@ -1462,8 +1462,188 @@
         "../godot/scripts/physical_actor_rig.gd",
         "../godot/native_extension/cyber_native_cell_world.cpp"
       ]
+    },
+    {
+      "id": "GEN09",
+      "query": "How can a signed spatial field or exact district category drive a material mask without silently clamping signed values or rounding region IDs?",
+      "canonical": [
+        "systems/procedural-typed-spatial-fields.md"
+      ],
+      "facts": [
+        "Schema-2 spatial functions are separate from the retained normalized fields graph and never read mutable World or per-cell initial context.",
+        "General signed scalars remain signed; only normalized spatial outputs can directly drive material masks, mappings or aggregate variation.",
+        "Explicit to_mask converts a scalar low/high interval or exact boolean to a normalized value; a category first requires explicit comparison.",
+        "Categories retain exact signed x/y and 64-bit domain components; diagnostic colours are presentation, not IDs."
+      ],
+      "sources": [
+        "../native/include/cybersand/generation_typed_fields.hpp",
+        "../native/src/generation_typed_fields.cpp",
+        "../native/src/world_generation.cpp"
+      ]
+    },
+    {
+      "id": "GEN10",
+      "query": "Does an anisotropically scaled or warped signed-distance field remain an exact clearance distance, and what is the affine transform order for points versus vectors?",
+      "canonical": [
+        "systems/procedural-typed-spatial-fields.md"
+      ],
+      "facts": [
+        "Point mapping is p=origin+translation+rotation*shear*scale*(local-origin); source evaluation uses its inverse.",
+        "Vector-value transformation applies the forward linear part and does not add translation or origin.",
+        "Rigid/reflection and uniform scale preserve exact SDF qualification with absolute-scale distance correction.",
+        "Anisotropic/sheared SDF becomes a general implicit scalar with singular-value distance bounds; arbitrary warp, polar maps and coarse interpolation lose exact-distance qualification."
+      ],
+      "sources": [
+        "../native/src/generation_typed_fields.cpp",
+        "../native/tests/test_generation_typed.cpp"
+      ]
+    },
+    {
+      "id": "GEN11",
+      "query": "Which signs, spacing, units and edge behavior do procedural gradient, curl, ridge and level-set curvature use across chunk boundaries?",
+      "canonical": [
+        "systems/procedural-typed-spatial-fields.md",
+        "reference/procedural-spatial-operators.md"
+      ],
+      "facts": [
+        "Centered first derivatives use four axial immutable absolute-world samples with spacing 1..64 cells, not resident neighboring chunks.",
+        "Gradient reduces cell exponent by one; curl is dVy/dx-dVx/dy; slope is gradient magnitude and aspect uses signed atan2 radians.",
+        "Ridge/valley use positive negative/positive Laplacian; local extrema strictly compare four axial neighbors.",
+        "Curvature uses nine-point level-set derivatives, reciprocal-cell units and an explicit zero at zero gradient; nonlinear finite differences remain approximations."
+      ],
+      "sources": [
+        "../native/src/generation_typed_fields.cpp",
+        "../native/tests/test_generation_typed.cpp"
+      ]
+    },
+    {
+      "id": "GEN12",
+      "query": "Does the Peano spatial traversal make an infinite connected route, and how are Voronoi ties and Delaunay co-circular diagonals handled?",
+      "canonical": [
+        "systems/procedural-typed-spatial-fields.md"
+      ],
+      "facts": [
+        "Peano covers a finite 3^order square with order 1..12; its rank/inverse are bijective and successive ranks share an edge only inside that tile.",
+        "Repeated finite traversal does not imply connected physical routes between tiles.",
+        "Voronoi has one deterministically jittered seed per world lattice tile, a fixed 5x5 nearest search and lexicographic signed-coordinate ties.",
+        "Delaunay-derived adjacency is the positive-length Voronoi-face dual; zero-length co-circular diagonal edges are omitted."
+      ],
+      "sources": [
+        "../native/include/cybersand/generation_spatial.hpp",
+        "../native/src/generation_spatial.cpp",
+        "../native/tests/test_generation_spatial.cpp"
+      ]
+    },
+    {
+      "id": "GEN13",
+      "query": "How do Poisson-style procedural feature seeds stay deterministic across chunk edges without recursive neighbor generation, and what happens when no seed is found?",
+      "canonical": [
+        "systems/procedural-typed-spatial-fields.md"
+      ],
+      "facts": [
+        "One half-open lattice tile owns each candidate; deterministic Matern-II priority rejection compares all nearby candidates, including rejected candidates.",
+        "Acceptance uses bounded nonrecursive neighborhoods and radius greater than zero and no greater than twice spacing.",
+        "Query radius is search_cells*spacing with search_cells 1..4; found reports a seed strictly within that radius and distance is capped at the radius.",
+        "This does not promise maximal packing, a globally nearest seed outside the search radius or a measured blue-noise spectral property."
+      ],
+      "sources": [
+        "../native/include/cybersand/generation_spatial.hpp",
+        "../native/src/generation_spatial.cpp"
+      ]
+    },
+    {
+      "id": "GEN14",
+      "query": "Can a WFC-style finite region assignment guarantee adjacency between repeated tiles, and can an unsatisfiable or work-exhausted solver publish a partial layout?",
+      "canonical": [
+        "systems/procedural-typed-spatial-fields.md"
+      ],
+      "facts": [
+        "The bounded assignment interface supports up to 16x16 cells, 16 exact categories, reciprocal four-direction adjacency masks and optional per-cell domains.",
+        "Deterministic propagation and bounded backtracking prepare a complete immutable assignment before sampling.",
+        "Unsatisfiable constraints and exhausted work are distinct failures; neither publishes partial state.",
+        "Repeated tile seams have adjacency guarantees only on axes with explicit wrap constraints; GEN-004 reuses this field solver for hierarchical layout use."
+      ],
+      "sources": [
+        "../native/include/cybersand/generation_spatial.hpp",
+        "../native/src/generation_spatial.cpp"
+      ]
+    },
+    {
+      "id": "GEN15",
+      "query": "How do reusable named generation subgraphs bind typed defaults and nested parameters without namespace collisions, recursion or unrelated cache invalidation?",
+      "canonical": [
+        "systems/procedural-typed-spatial-fields.md"
+      ],
+      "facts": [
+        "Named subgraphs declare typed parameters/defaults, local nodes, nested instances and outputs; instances bind typed values or enclosing parameters.",
+        "Dot is reserved for expanded instance namespaces; duplicate/colliding IDs, missing bindings, wrong types, graph cycles and recursive expansion reject, including unused invalid declarations.",
+        "Stable instance paths derive deterministic seed domains; reordering declarations preserves canonical meaning.",
+        "Parameter edits invalidate consuming nodes and transitive dependents while unrelated identities remain reusable; compiled graphs own immutable copies."
+      ],
+      "sources": [
+        "../native/include/cybersand/generation_typed_fields.hpp",
+        "../native/src/generation_typed_fields.cpp",
+        "../native/tests/test_generation_typed.cpp"
+      ]
+    },
+    {
+      "id": "GEN16",
+      "query": "At negative coordinates, how do 4/16/64-cell spatial sampling scales interpolate continuous fields versus district IDs, and why must cold and warm caches agree?",
+      "canonical": [
+        "systems/procedural-typed-spatial-fields.md"
+      ],
+      "facts": [
+        "Scales are 1/4/16/64, anchored at absolute world zero with mathematical floor for negatives.",
+        "Continuous values use deterministic bilinear interpolation; categories/booleans choose an exact nearest anchor with lower-anchor half ties.",
+        "Caller-owned scratch has 256 entries keyed by transitive node identity, exact double coordinates and sampling mode; compiled graph state is immutable.",
+        "Identity includes algorithm, parameters, instance seed/path, dependencies, referenced immutable inputs and scale; cache reuse changes execution reuse rather than values or conservative admission cost."
+      ],
+      "sources": [
+        "../native/include/cybersand/generation_typed_fields.hpp",
+        "../native/src/generation_typed_fields.cpp",
+        "../native/tests/test_generation_typed.cpp"
+      ]
+    },
+    {
+      "id": "GEN17",
+      "query": "What does a spatial typed diagnostic packet contain, and how do signed vectors or exact uint64 categories survive the Godot Workbench without becoming floats or material colours?",
+      "canonical": [
+        "reference/interfaces-and-message-contracts.md",
+        "systems/procedural-typed-spatial-fields.md"
+      ],
+      "facts": [
+        "spatial:<expanded.id> selects a typed diagnostic, distinct from a normalized mask consumer.",
+        "diagnostic_info carries type, units, bounds, scale, distance factors, identity and work; numeric scalar/interleaved-vector data uses PackedFloat64Array diagnostic_values.",
+        "Category diagnostics use exact signed decimal x/y and a 16-digit hexadecimal domain in PackedStringArray triples; legacy diagnostic arrays remain empty.",
+        "The receipt binds metadata and typed payload; failed/cancelled jobs publish neither material nor diagnostic prefixes."
+      ],
+      "sources": [
+        "../godot/native_extension/cyber_world_generator.cpp",
+        "../godot/scripts/worldgen_workbench.gd",
+        "../native/src/world_generation.cpp",
+        "../godot/tests/test_worldgen_typed.gd"
+      ]
+    },
+    {
+      "id": "GEN18",
+      "query": "How are transform resampling, derivative fan-out, multiresolution interpolation and solver preparation charged before typed generation can publish results?",
+      "canonical": [
+        "reference/procedural-spatial-operators.md",
+        "systems/procedural-typed-spatial-fields.md"
+      ],
+      "facts": [
+        "Each node has an explicit base cost plus conservative recursive input sampling cost; derivatives multiply source work by their complete stencil fan-out.",
+        "Continuous coarse sampling costs four times base work plus 64; exact categorical/boolean selection costs base work plus 64.",
+        "The graph charges every expanded declaration and does not discount caches or zero masks.",
+        "Immutable geometry, subgraph expansion and bounded solver work/scratch enter separate preparation capacities; insufficient limits reject without partial publication."
+      ],
+      "sources": [
+        "../native/src/generation_typed_fields.cpp",
+        "../native/src/generation_spatial.cpp",
+        "../native/src/world_generation.cpp"
+      ]
     }
   ],
-  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set. 2026-10-18: MAT01/MAT02 add independent persistent-contact and interior mask-wake questions; the frozen 32 and prior questions are unchanged. 2026-10-18: SCENE01 adds independent demo-level entry/view/ownership routing; the frozen 32-question set is unchanged. 2026-10-18: SCENE02 adds the owner-requested four-tile descent and state-boundary question; all prior and frozen questions remain unchanged. 2026-10-18: ACT01-ACT03 add independent actor model/input/performance-boundary questions; the frozen 32-question set is unchanged. 2026-10-18 ACT-002: ACT04-ACT09 add independent expanded-rig/control/observation/persona/budget/compatibility questions. ACT03 now explicitly scopes original numeric limits to SetA and names the additive extension; the frozen 32-question set remains unchanged. 2026-10-18: SCENE03 adds the nine-district route and continuity question; all 47 prior supplementary questions, including SCENE01/SCENE02 and ACT01-ACT09, and the frozen 32-question set remain unchanged. 2026-10-18 ACT-004: ACT10/ACT11 expected facts reconciled with retained hull references and implemented full physical roster; ACT12-ACT15 add independent physical fidelity, producer lifetime, usable and arena-version challenges. Frozen query wording is unchanged; Q10 capacity correction is disclosed in the frozen fixture metadata. 2026-10-18 USABLE-001: USABLE01 adds the independent actor-equipment catalogue/ownership/budget question without changing the frozen 32-question set. 2026-10-19 ACT-005: ACT14 now also routes to the expanded actor-usables canonical contract; ACT14 and USABLE01 expected facts and source routes distinguish the implemented physical equipment catalogue from retained sampled authority. Existing question IDs and query wording are unchanged. USABLE02-USABLE04 add supplementary source-discovered lifetime, processor and course challenges; the frozen 32-question fixture is unchanged, and new question results are reported separately from the prior 70-question baseline. 2026-10-19: MAT03 and TEST01 add catalogue integration and actual graphical-test execution questions; TEST02 adds standalone CLI admission and sampled accounting. 2026-10-19 resumed MAT-002 review: MAT03 scopes sampled-rig digging separately from authored sampled and physical equipment. TEST03 adds the current Windows execution gate; all upstream USABLE01-USABLE04 questions and the frozen 32-question set are preserved. 2026-10-19 Windows follow-up: TEST03 distinguishes the four text descriptor newline comparisons from byte-exact source and binary evidence; existing questions and query wording are unchanged. 2026-10-20: SCENE04 and DEP02 add independent full-map exhibition/replay and depth-size/stale-packet challenges. DEP01 preserves Strata Theatre defaults while admitting the new shared dimensions; TEST03 now refers to dynamically discovered rendered cases instead of a stale count. Existing question IDs and query wording, and the frozen 32-question fixture, are unchanged. The two new challenges are reported separately from the prior 77-question set. 2026-10-20 player playground: PLAY01-PLAY05 add five supplementary source-discovered questions; all prior 79 supplementary objects and the frozen 32-question fixture remain unchanged. New results are reported separately from the prior set.",
+  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set. 2026-10-18: MAT01/MAT02 add independent persistent-contact and interior mask-wake questions; the frozen 32 and prior questions are unchanged. 2026-10-18: SCENE01 adds independent demo-level entry/view/ownership routing; the frozen 32-question set is unchanged. 2026-10-18: SCENE02 adds the owner-requested four-tile descent and state-boundary question; all prior and frozen questions remain unchanged. 2026-10-18: ACT01-ACT03 add independent actor model/input/performance-boundary questions; the frozen 32-question set is unchanged. 2026-10-18 ACT-002: ACT04-ACT09 add independent expanded-rig/control/observation/persona/budget/compatibility questions. ACT03 now explicitly scopes original numeric limits to SetA and names the additive extension; the frozen 32-question set remains unchanged. 2026-10-18: SCENE03 adds the nine-district route and continuity question; all 47 prior supplementary questions, including SCENE01/SCENE02 and ACT01-ACT09, and the frozen 32-question set remain unchanged. 2026-10-18 ACT-004: ACT10/ACT11 expected facts reconciled with retained hull references and implemented full physical roster; ACT12-ACT15 add independent physical fidelity, producer lifetime, usable and arena-version challenges. Frozen query wording is unchanged; Q10 capacity correction is disclosed in the frozen fixture metadata. 2026-10-18 USABLE-001: USABLE01 adds the independent actor-equipment catalogue/ownership/budget question without changing the frozen 32-question set. 2026-10-19 ACT-005: ACT14 now also routes to the expanded actor-usables canonical contract; ACT14 and USABLE01 expected facts and source routes distinguish the implemented physical equipment catalogue from retained sampled authority. Existing question IDs and query wording are unchanged. USABLE02-USABLE04 add supplementary source-discovered lifetime, processor and course challenges; the frozen 32-question fixture is unchanged, and new question results are reported separately from the prior 70-question baseline. 2026-10-19: MAT03 and TEST01 add catalogue integration and actual graphical-test execution questions; TEST02 adds standalone CLI admission and sampled accounting. 2026-10-19 resumed MAT-002 review: MAT03 scopes sampled-rig digging separately from authored sampled and physical equipment. TEST03 adds the current Windows execution gate; all upstream USABLE01-USABLE04 questions and the frozen 32-question set are preserved. 2026-10-19 Windows follow-up: TEST03 distinguishes the four text descriptor newline comparisons from byte-exact source and binary evidence; existing questions and query wording are unchanged. 2026-10-20: SCENE04 and DEP02 add independent full-map exhibition/replay and depth-size/stale-packet challenges. DEP01 preserves Strata Theatre defaults while admitting the new shared dimensions; TEST03 now refers to dynamically discovered rendered cases instead of a stale count. Existing question IDs and query wording, and the frozen 32-question fixture, are unchanged. The two new challenges are reported separately from the prior 77-question set. 2026-10-20 player playground: PLAY01-PLAY05 add five supplementary source-discovered questions; all prior 79 supplementary objects and the frozen 32-question fixture remain unchanged. New results are reported separately from the prior set. 2026-10-21 PR #189 integration: retains all ten GEN-003 questions GEN09-GEN18 from main alongside PLAY01-PLAY05, for 94 supplementary questions; the frozen 32-question fixture remains unchanged.",
   "integration_note": "Retains all scene, generation, sampled and physical actor-usable, Thunderbowl, physical-actor, building-material and presentation routes; historical questions are preserved. Deepworks scene controls, finite source replay and full-size/non-square depth dimensions are additive routes; existing historical scope remains intact. Player playground controls, native field ownership and conservative wheel-mask routing are additive; original and historical questions remain unchanged."
 }

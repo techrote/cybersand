@@ -92,6 +92,8 @@ but must not touch live scene-tree or Rapier objects.
 | Body samples and observations | Adapter owns copied samples and native transient occupancy; results are copied into publication | Mask rebuilt at coupling preparation; sample IDs identify result application |
 | Godot CPU image and textures | Main thread validates patches and updates resources | Application lifetime; upload never borrows mutable World bytes |
 | Compiled procedural recipe, field graph and prepared modules | Immutable `generation::Generator`, independent of World | Jobs retain shared ownership; replacing the caller's recipe cannot mutate existing jobs |
+| Typed spatial graph, geometry and prepared region assignment | Immutable `generation::SpatialGraph`; copied typed parameters, routes and bounded complete solver results | No per-cell context or mutable World access; transforms and derivatives resample absolute-coordinate functions |
+| Typed spatial sampling cache | One caller/job/worker owns bounded `SpatialScratch` | 256 entries keyed by transitive node identity, exact coordinate and sampling mode; cold/warm behavior has identical values |
 | Procedural sample context | Copied initial candidate material, surface and route values | Captured before fields/modules/material changes; every mask for that cell sees the same values |
 | Procedural chunk staging | One `GenerationJob` owns private material/optional diagnostic arrays and cursor | Allocated before incremental advance; pending bytes stay private, failure/cancel discards both payloads |
 | World-generation workbench previews | One main-thread `CyberWorldGenerator` owner plus copied material/texture cache | Accepted recipe changes retire old preview work; cache eviction regenerates previews, never evicts simulation chunks |
@@ -136,6 +138,18 @@ cells. Diagnostic floats are job-owned and receipt-bound, then copied into the
 workbench cache; changing inspection channels retires that cache. The
 [field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md)
 owns this immutable-context and diagnostic lifecycle.
+
+GEN-003 schema-2 [`SpatialGraph`](../../native/include/cybersand/generation_typed_fields.hpp)
+adds immutable typed functions beside that retained context graph. It never
+resamples `FieldContext` as if it contained neighboring observations. Route and
+feature geometry is copied; finite region assignments finish preparation before
+publication. Each caller or job owns its bounded sampling scratch. Typed
+diagnostics preserve signed values, vector components and exact categorical
+identities; the chunk receipt binds both payload and type/unit metadata, and
+failure/cancellation publishes neither materials nor diagnostics. The
+[typed contract](../systems/procedural-typed-spatial-fields.md) owns these
+lifetimes and cache identities. Future grammar, authoring and streaming owners
+may consume the interfaces without gaining mutable cell access.
 
 ## When can a render payload be reused?
 

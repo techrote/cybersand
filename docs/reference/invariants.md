@@ -190,6 +190,24 @@ Sources: [World relocation](../../native/src/world.cpp) and
 | PLAY-003 | Current: per-call relocation preserves compact state, temperature and exact Water quantity; subsequent ordinary chemistry/transport is outside that field-only conservation claim |
 | PLAY-004 | Current: material command leases bind issued observations to run/epoch/generation/sequence; expiry/cancel stops field calls, while normal native material stepping may continue |
 
+## Typed procedural generation invariants
+
+Contract: [typed spatial fields](../systems/procedural-typed-spatial-fields.md).
+Sources/tests: [typed API](../../native/include/cybersand/generation_typed_fields.hpp),
+[analytical regressions](../../native/tests/test_generation_typed.cpp),
+[structured primitives](../../native/include/cybersand/generation_spatial.hpp).
+
+| ID | Status and narrow claim |
+|---|---|
+| FIELD-001 | Current: retained schema-1 normalized fields/material fixtures keep their semantics; schema-2 typed spatial computation is explicit |
+| FIELD-002 | Current: signed values and exact category tuples are not silently clamped/interpolated into masks; normalized mask conversion is explicit |
+| FIELD-003 | Current: derivatives/transforms/coarse samples use immutable absolute-world functions, with no resident-neighbor or per-cell-context dependency |
+| FIELD-004 | Current: nonuniform/warped/coarse distance fields carry qualified/general output instead of an unsupported exact Euclidean-distance claim |
+| FIELD-005 | Current: compilation validates unused declarations, namespaces, cycles, bounds and bounded preparation; a failed finite solver exposes no partial assignment |
+| FIELD-006 | Current: caller-owned bounded cache identity includes transitive source/parameter/scale identity and coordinates; cache warmth cannot alter results |
+| FIELD-007 | Current: pending chunk materials and typed diagnostics stay private; failure/cancellation clears payloads and hashes before publication |
+| FIELD-008 | Current: finite curve traversal is not an infinite physical route; finite region assignment has cross-tile guarantees only for explicit wrap constraints |
+
 ## Capacity and allocation invariants
 
 Contract: [capacity budgets](../operations/configuration-and-capacity-budgets.md).

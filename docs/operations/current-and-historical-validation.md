@@ -116,6 +116,15 @@ source/binary identity and logs. The earlier separate Godot workflow, which load
 the retained M11 Linux binary and a fixed fixture list, is superseded; Git history
 preserves it. Windows cross-compilation is not Windows execution.
 
+**Current workflow extension, 2026-10-20:** a separate Windows job now executes
+every applicable headless case using the retained, source-matched Windows DLL
+and pinned Windows Godot 4.7. Its harness checks the complete native input set,
+committed LFS/provenance identity, exact case coverage and source drift. See
+[Windows retained-runtime execution](local-build-and-validation.md#windows-retained-runtime-execution).
+The build-only Windows job remains a separate check; neither its success nor
+Linux execution substitutes for actual Windows execution. Linux graphical
+shards retain ownership of display-dependent pixel checks.
+
 **Planned, still tracked by issue #3:** Web producer/consumer toolchain alignment,
 real CI runtime coverage and current export/template provenance. Local browser
 acceptance for issues #1/#2 has its own recorded artifact identity. No historical

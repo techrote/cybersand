@@ -26,6 +26,8 @@ SOURCES = [
     "native/src/world.cpp", "native/src/render_snapshot.cpp", "native/src/settled_world_discovery.cpp",
     "native/src/world_generation.cpp",
     "native/src/generation_fields.cpp",
+    "native/src/generation_typed_fields.cpp",
+    "native/src/generation_spatial.cpp",
     "native/src/material_rules.cpp", "native/src/scheduler_geometry.cpp",
 ]
 

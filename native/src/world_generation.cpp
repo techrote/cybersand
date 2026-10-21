@@ -203,6 +203,19 @@ std::uint64_t receipt_hash(const ChunkResult& result) noexcept {
     hash_word(h, result.content_hash); hash_word(h, result.operations);
     hash_text(h, result.diagnostic); hash_word(h, result.diagnostics.size());
     for (const auto v : result.diagnostics) hash_word(h, std::bit_cast<std::uint32_t>(v));
+    if (!result.typed_diagnostics.empty()) {
+        const auto& info = result.diagnostic_info;
+        hash_word(h, static_cast<unsigned>(info.type)); hash_word(h, static_cast<std::uint64_t>(info.unit_power));
+        hash_real(h, info.minimum); hash_real(h, info.maximum);
+        hash_real(h, info.distance_min_factor); hash_real(h, info.distance_max_factor);
+        hash_word(h, info.fingerprint); hash_word(h, info.operations); hash_word(h, info.sampling_scale);
+        hash_word(h, result.typed_diagnostics.size());
+        for (const auto& v : result.typed_diagnostics) {
+            hash_word(h, static_cast<unsigned>(v.type)); hash_real(h, v.x); hash_real(h, v.y);
+            hash_word(h, static_cast<std::uint64_t>(v.category.x)); hash_word(h, static_cast<std::uint64_t>(v.category.y));
+            hash_word(h, v.category.domain);
+        }
+    }
     return h;
 }
 void set_diagnostic(std::string& destination, const char* message) noexcept {
@@ -353,11 +366,33 @@ struct Generator::Impl {
     };
     std::vector<Prepared> modules;
     std::shared_ptr<const FieldGraph> fields;
+    std::shared_ptr<const SpatialGraph> spatial;
+    struct Values {
+        std::array<double, kMaxFieldNodes + kMaxSpatialNodes> values{};
+        SpatialValues typed;
+    };
+    std::size_t mask_index(const std::string& name) const {
+        if (!name.starts_with("spatial:")) return fields->index(name);
+        const auto index = spatial->index(name.substr(8));
+        require(spatial->info(index).type == SpatialType::Normalized,
+            "material masks require normalized spatial output; add explicit to_mask: " + name);
+        return kMaxFieldNodes + index;
+    }
+    void evaluate_fields(std::int64_t x, std::int64_t y, const FieldContext& context,
+                         Values& values, SpatialScratch* scratch = nullptr) const {
+        FieldValues legacy;
+        fields->evaluate(x, y, context, legacy);
+        std::copy_n(legacy.values.begin(), legacy.size, values.values.begin());
+        spatial->evaluate(x, y, values.typed, scratch);
+        for (std::size_t i = 0; i < values.typed.size; ++i)
+            if (values.typed.values[i].type == SpatialType::Normalized)
+                values.values[kMaxFieldNodes + i] = values.typed.values[i].x;
+    }
     static constexpr auto absent = std::numeric_limits<std::size_t>::max();
     struct Mask {
         std::size_t application = absent, exclusion = absent;
         double strength = 1.0;
-        double at(const FieldValues& values) const noexcept {
+        double at(const Values& values) const noexcept {
             return strength * (application == absent ? 1.0 : values.values[application]) *
                 (exclusion == absent ? 1.0 : 1.0 - values.values[exclusion]);
         }
@@ -380,12 +415,13 @@ struct Generator::Impl {
 
     Mask compile_mask(const std::string& application, const std::string& exclusion, double strength) const {
         require(std::isfinite(strength) && strength >= 0 && strength <= 1, "mask strength must be 0..1");
-        return {application.empty() ? absent : fields->index(application),
-            exclusion.empty() ? absent : fields->index(exclusion), strength};
+        return {application.empty() ? absent : mask_index(application),
+            exclusion.empty() ? absent : mask_index(exclusion), strength};
     }
 
     std::pair<unsigned, std::size_t> diagnostic(const std::string& name) const {
         if (name.empty()) return {0, 0};
+        if (name.starts_with("spatial:")) return {4, spatial->index(name.substr(8))};
         if (name.starts_with("field:")) return {1, fields->index(name.substr(6))};
         if (name.starts_with("modifier:")) {
             for (std::size_t i = 0; i < recipe.modifiers.size(); ++i)
@@ -572,7 +608,7 @@ struct Generator::Impl {
         return std::pow(smooth(1.0 - distance / m.radius), m.falloff);
     }
 
-    Material aggregate_at(std::size_t index, std::int64_t x, std::int64_t y, const FieldValues& values) const noexcept {
+    Material aggregate_at(std::size_t index, std::int64_t x, std::int64_t y, const Values& values) const noexcept {
         const auto& a = recipe.aggregates[index];
         auto selector = aggregate_variations[index] == absent ?
             unit(hash_xy(recipe.seed ^ aggregate_salts[index], floor_div(x, a.grain_size), floor_div(y, a.grain_size), 880)) :
@@ -586,20 +622,21 @@ struct Generator::Impl {
     }
 
     Material sample(std::int64_t x, std::int64_t y, unsigned diagnostic_kind = 0,
-                    std::size_t diagnostic_index = 0, float* diagnostic_value = nullptr) const {
+                    std::size_t diagnostic_index = 0, float* diagnostic_value = nullptr,
+                    SpatialValue* typed_value = nullptr, SpatialScratch* scratch = nullptr) const {
         auto w = weights(x, y);
         auto p = parameters_at(w, x, y);
         auto candidate = hard_parameters(p, x, y);
         const auto* palette = &palette_at(w, x, y);
         Material result = candidate == Candidate::DistrictGrammar ? district(x, y, p, *palette) : strata(x, y, p, *palette);
-        FieldValues values;
+        Values values;
         std::array<double, 64> alpha{};
         bool changed_themes = false, changed_parameters = false;
         // One immutable analytic terrain proposal defines all context. No module,
         // earlier modifier, neighbor chunk or final override feeds this snapshot.
-        if (!recipe.fields.empty() || !recipe.modifiers.empty()) {
+        if (!recipe.fields.empty() || !recipe.spatial.empty() || !recipe.modifiers.empty()) {
             const auto base_context = field_context(x, y, p, candidate, result);
-            fields->evaluate(x, y, base_context, values);
+            evaluate_fields(x, y, base_context, values, scratch);
             for (std::size_t i = 0; i < recipe.modifiers.size(); ++i) {
                 const auto& m = recipe.modifiers[i];
                 alpha[i] = matches(m, base_context) ? modifiers[i].mask.at(values) * shape(m, x, y) : 0;
@@ -628,6 +665,7 @@ struct Generator::Impl {
                 result = candidate == Candidate::DistrictGrammar ? district(x, y, p, *palette) : strata(x, y, p, *palette);
             }
         }
+        if (typed_value) *typed_value = values.typed.values[diagnostic_index];
         if (diagnostic_value) {
             *diagnostic_value = diagnostic_kind == 1 ? static_cast<float>(values.values[diagnostic_index]) :
                 diagnostic_kind == 2 ? static_cast<float>(alpha[diagnostic_index]) : 0.0F;
@@ -696,7 +734,8 @@ std::vector<Theme> Generator::builtin_themes() {
 std::vector<std::string> Generator::builtin_modules() { return {"arcology", "vault", "aqueduct"}; }
 
 std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleRegistry& registry) {
-    require(recipe.schema == kSchemaVersion && recipe.revision > 0, "unsupported schema or zero revision");
+    require((recipe.schema == kSchemaVersion || recipe.schema == kTypedSchemaVersion) && recipe.revision > 0, "unsupported schema or zero revision");
+    require(recipe.schema == kTypedSchemaVersion || recipe.spatial.empty(), "typed spatial fields require schema 2");
     require(recipe.chunk_size >= 8 && recipe.chunk_size <= 256, "generation chunk_size must be 8..256");
     require(parse_candidate(candidate_name(recipe.candidate)).has_value(), "invalid candidate");
     for (std::size_t i = 0; i < kParameterCount; ++i) validate_parameter(static_cast<Parameter>(i), value(recipe.parameters, static_cast<Parameter>(i)));
@@ -716,8 +755,10 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
     auto impl = std::make_unique<Impl>();
     impl->fields = FieldGraph::compile(recipe.fields, recipe.seed, {limits.max_fields, kMaxFieldDepth, kMaxFieldOperations});
     recipe.fields = impl->fields->nodes();
+    impl->spatial = SpatialGraph::compile(recipe.spatial, recipe.seed, recipe.spatial_limits);
+    impl->cost += impl->spatial->operations_per_sample();
     impl->cost += impl->fields->operations_per_sample();
-    if (!recipe.fields.empty() || !recipe.modifiers.empty()) impl->cost += 384;
+    if (!recipe.fields.empty() || !recipe.spatial.empty() || !recipe.modifiers.empty()) impl->cost += 384;
     std::sort(recipe.aggregates.begin(), recipe.aggregates.end(), [](const auto& a, const auto& b) { return a.id < b.id; });
     std::map<std::string, std::size_t> aggregate_index;
     for (auto& aggregate : recipe.aggregates) {
@@ -742,7 +783,7 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
             normalized.push_back(weight);
         }
         impl->aggregate_weights.push_back(std::move(normalized));
-        impl->aggregate_variations.push_back(aggregate.variation.empty() ? Impl::absent : impl->fields->index(aggregate.variation));
+        impl->aggregate_variations.push_back(aggregate.variation.empty() ? Impl::absent : impl->mask_index(aggregate.variation));
         auto salt = kFnv; hash_text(salt, aggregate.id); impl->aggregate_salts.push_back(salt);
         impl->cost += 24 + aggregate.components.size() * 4;
     }
@@ -840,7 +881,7 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
             require(i == 0 || m.mappings[i - 1].parameter != mapping.parameter, "duplicate modifier mapping");
             require(std::none_of(m.parameters.begin(), m.parameters.end(), [&](const auto& e) { return e.parameter == mapping.parameter; }),
                 "modifier parameter cannot have both a target and a mapping");
-            prepared.mappings.push_back(impl->fields->index(mapping.field));
+            prepared.mappings.push_back(impl->mask_index(mapping.field));
         }
         impl->modifiers.push_back(std::move(prepared));
         has_guidance = has_guidance || !m.themes.weights.empty() || !m.parameters.empty() || !m.mappings.empty();
@@ -875,7 +916,7 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
         impl->cost += f.operations_per_cell + 8; emitted.insert(next->id);
     }
     impl->cost += impl->leaves.size() * kParameterCount * 4;
-    if (!recipe.fields.empty() || !recipe.modifiers.empty()) {
+    if (!recipe.fields.empty() || !recipe.spatial.empty() || !recipe.modifiers.empty()) {
         // The surface-slope context samples two neighboring immutable parameter
         // proposals, never another field graph or mutable/generated cell.
         std::uint64_t neighbor_cost = 64 + impl->leaves.size() * kParameterCount * 4;
@@ -885,7 +926,7 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
         impl->cost += neighbor_cost * 2;
     }
     auto& h = impl->fingerprint;
-    hash_word(h, kAlgorithmVersion); hash_word(h, recipe.schema); hash_word(h, recipe.seed);
+    hash_word(h, recipe.schema == kTypedSchemaVersion ? kTypedAlgorithmVersion : kAlgorithmVersion); hash_word(h, recipe.schema); hash_word(h, recipe.seed);
     hash_word(h, recipe.revision); hash_word(h, static_cast<std::uint64_t>(recipe.chunk_size)); hash_word(h, static_cast<std::uint64_t>(recipe.candidate));
     for (std::size_t i = 0; i < kParameterCount; ++i) hash_real(h, value(recipe.parameters, static_cast<Parameter>(i)));
     hash_word(h, recipe.catalogue.size());
@@ -943,6 +984,7 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
     for (const auto v : {limits.max_themes, limits.max_strokes, limits.max_points_per_path, limits.max_paths,
             limits.max_overrides, limits.max_modules, limits.max_fields, limits.max_aggregates, limits.max_modifiers}) hash_word(h, v);
     hash_word(h, limits.max_operations_per_chunk);
+    if (recipe.schema == kTypedSchemaVersion) hash_word(h, impl->spatial->fingerprint());
     impl->recipe = std::move(recipe);
     return std::shared_ptr<const Generator>(new Generator(std::move(impl)));
 }
@@ -950,6 +992,7 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
 Generator::Generator(std::unique_ptr<Impl> impl) : impl_(std::move(impl)) {}
 Generator::~Generator() = default;
 const Recipe& Generator::recipe() const noexcept { return impl_->recipe; }
+const SpatialGraph& Generator::spatial_graph() const noexcept { return *impl_->spatial; }
 std::uint64_t Generator::fingerprint() const noexcept { return impl_->fingerprint; }
 std::vector<ThemeWeight> Generator::theme_weights_at(std::int64_t x, std::int64_t y) const {
     require(x >= -kCoordinateLimit && x < kCoordinateLimit && y >= -kCoordinateLimit && y < kCoordinateLimit, "sample coordinate out of range");
@@ -960,7 +1003,7 @@ std::vector<ThemeWeight> Generator::theme_weights_at(std::int64_t x, std::int64_
         const auto& palette = impl_->palette_at(weights, x, y);
         const auto base = candidate == Candidate::DistrictGrammar ? impl_->district(x, y, p, palette) : impl_->strata(x, y, p, palette);
         const auto context = impl_->field_context(x, y, p, candidate, base);
-        FieldValues values; impl_->fields->evaluate(x, y, context, values);
+        Impl::Values values; impl_->evaluate_fields(x, y, context, values);
         for (std::size_t i = 0; i < recipe().modifiers.size(); ++i) {
             const auto& m = recipe().modifiers[i];
             if (m.themes.weights.empty() || !Impl::matches(m, context)) continue;
@@ -990,8 +1033,25 @@ bool Generator::accepts(const ChunkResult& result) const noexcept {
         result.chunk_size != size || result.cells.size() != static_cast<std::size_t>(size) * static_cast<std::size_t>(size) ||
         result.chunk.x < min_chunk || result.chunk.x > max_chunk || result.chunk.y < min_chunk || result.chunk.y > max_chunk) return false;
     for (const auto m : result.cells) if (!valid_material(m)) return false;
-    if (result.diagnostic.empty() ? !result.diagnostics.empty() : result.diagnostics.size() != result.cells.size()) return false;
-    try { (void)impl_->diagnostic(result.diagnostic); } catch (...) { return false; }
+    try {
+        const auto selected = impl_->diagnostic(result.diagnostic);
+        if (selected.first == 4) {
+            if (!result.diagnostics.empty() || result.typed_diagnostics.size() != result.cells.size() ||
+                !(result.diagnostic_info == impl_->spatial->info(selected.second))) return false;
+            for (const auto& v : result.typed_diagnostics) {
+                if (v.type != result.diagnostic_info.type || !std::isfinite(v.x) || !std::isfinite(v.y)) return false;
+                if (v.type != SpatialType::Category && !(v.category == SpatialCategory{})) return false;
+                if (v.type == SpatialType::Category && (v.x != 0 || v.y != 0)) return false;
+                if (v.type != SpatialType::Vector2 && v.y != 0) return false;
+                if (v.type == SpatialType::Normalized && (v.x < 0 || v.x > 1)) return false;
+                if (v.type == SpatialType::Boolean && v.x != 0 && v.x != 1) return false;
+                if (v.type == SpatialType::Distance && v.x < 0) return false;
+            }
+        } else {
+            if (!result.typed_diagnostics.empty() || !(result.diagnostic_info == SpatialInfo{})) return false;
+            if (result.diagnostic.empty() ? !result.diagnostics.empty() : result.diagnostics.size() != result.cells.size()) return false;
+        }
+    } catch (...) { return false; }
     for (const auto v : result.diagnostics) if (!std::isfinite(v) || v < 0 || v > 1) return false;
     return result.content_hash == payload_hash(result.cells) && result.receipt_hash == receipt_hash(result);
 }
@@ -1005,10 +1065,20 @@ GenerationJob::GenerationJob(std::shared_ptr<const Generator> generator, ChunkCo
     origin_x_ = chunk.x * size; origin_y_ = chunk.y * size;
     result_.chunk = chunk; result_.chunk_size = size; result_.revision = generator_->recipe().revision;
     result_.fingerprint = generator_->fingerprint();
-    result_.cells.resize(static_cast<std::size_t>(size) * static_cast<std::size_t>(size));
     result_.diagnostic = diagnostic;
-    if (diagnostic_kind_ != 0) result_.diagnostics.resize(result_.cells.size());
     result_.error.reserve(256);
+    const auto area = static_cast<std::size_t>(size) * static_cast<std::size_t>(size);
+    const auto cost = generator_->impl_->cost + (diagnostic_kind_ == 0 ? 0 : diagnostic_kind_ == 4 ? 16 : 4);
+    if (generator_->recipe().schema == kTypedSchemaVersion && cost > generator_->recipe().limits.max_operations_per_chunk / area) {
+        result_.state = ResultState::Failed;
+        set_diagnostic(result_.error, "generation logical operation budget exhausted during preflight");
+        return;
+    }
+    result_.cells.resize(area);
+    if (diagnostic_kind_ == 4) {
+        result_.diagnostic_info = generator_->impl_->spatial->info(diagnostic_index_);
+        result_.typed_diagnostics.resize(area);
+    } else if (diagnostic_kind_ != 0) result_.diagnostics.resize(area);
 }
 GenerationJob::~GenerationJob() = default;
 ResultState GenerationJob::advance(std::size_t cell_budget) {
@@ -1016,29 +1086,30 @@ ResultState GenerationJob::advance(std::size_t cell_budget) {
     const auto end = cursor_ + std::min(cell_budget, result_.cells.size() - cursor_);
     try {
         while (cursor_ < end) {
-            const auto cost = generator_->impl_->cost + (diagnostic_kind_ == 0 ? 0 : 4);
+            const auto cost = generator_->impl_->cost + (diagnostic_kind_ == 0 ? 0 : diagnostic_kind_ == 4 ? 16 : 4);
             if (cost > generator_->recipe().limits.max_operations_per_chunk - result_.operations) throw std::runtime_error("generation logical operation budget exhausted");
             result_.operations += cost;
             const auto size = static_cast<std::size_t>(result_.chunk_size);
             result_.cells[cursor_] = generator_->impl_->sample(origin_x_ + static_cast<std::int64_t>(cursor_ % size),
                 origin_y_ + static_cast<std::int64_t>(cursor_ / size), diagnostic_kind_, diagnostic_index_,
-                diagnostic_kind_ == 0 ? nullptr : &result_.diagnostics[cursor_]);
+                diagnostic_kind_ == 0 || diagnostic_kind_ == 4 ? nullptr : &result_.diagnostics[cursor_],
+                diagnostic_kind_ == 4 ? &result_.typed_diagnostics[cursor_] : nullptr, &spatial_scratch_);
             ++cursor_;
         }
         if (cursor_ == result_.cells.size()) {
             result_.content_hash = payload_hash(result_.cells); result_.receipt_hash = receipt_hash(result_); result_.state = ResultState::Ready;
         }
     } catch (const std::exception& error) {
-        result_.state = ResultState::Failed; result_.cells.clear(); result_.diagnostics.clear(); result_.content_hash = 0; result_.receipt_hash = 0;
+        result_.state = ResultState::Failed; result_.cells.clear(); result_.diagnostics.clear(); result_.typed_diagnostics.clear(); result_.diagnostic_info = {}; result_.content_hash = 0; result_.receipt_hash = 0;
         set_diagnostic(result_.error, error.what());
     } catch (...) {
-        result_.state = ResultState::Failed; result_.cells.clear(); result_.diagnostics.clear(); result_.content_hash = 0; result_.receipt_hash = 0;
+        result_.state = ResultState::Failed; result_.cells.clear(); result_.diagnostics.clear(); result_.typed_diagnostics.clear(); result_.diagnostic_info = {}; result_.content_hash = 0; result_.receipt_hash = 0;
         set_diagnostic(result_.error, "module threw an unknown exception");
     }
     return result_.state;
 }
 void GenerationJob::cancel() noexcept {
-    if (result_.state == ResultState::Pending) { result_.state = ResultState::Cancelled; result_.cells.clear(); result_.diagnostics.clear(); result_.content_hash = 0; result_.receipt_hash = 0; }
+    if (result_.state == ResultState::Pending) { result_.state = ResultState::Cancelled; result_.cells.clear(); result_.diagnostics.clear(); result_.typed_diagnostics.clear(); result_.diagnostic_info = {}; result_.content_hash = 0; result_.receipt_hash = 0; }
 }
 ResultState GenerationJob::state() const noexcept { return result_.state; }
 std::size_t GenerationJob::completed_cells() const noexcept { return cursor_; }

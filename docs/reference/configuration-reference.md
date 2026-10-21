@@ -50,6 +50,26 @@ The [field/modifier contract](../systems/procedural-generation-fields-and-modifi
 owns these values, context meaning, masks and diagnostic bounds; these scalar
 authoring fields do not allocate optional simulation temperature/pressure storage.
 
+**Current GEN-003 opt-in schema 2:** the separate typed `spatial` graph uses
+generator algorithm 3 and spatial algorithm 1. Schema 1 retains the preceding
+algorithm and scalar contracts. `spatial_limits` defaults to 64 expanded nodes,
+dependency depth 16, 1,000,000 logical operations per sample, 16,000,000 preparation
+operations and 16 MiB preparation storage. Nodes declare scales 1/4/16/64 cells;
+sampling uses a fixed 256-entry caller-owned cache. Subgraphs/instances have
+bounded expansion and parameter counts; recursive definitions are rejected.
+
+Internal resampling admits the bounded ±`2^44` footprint while public cells
+remain in `[-2^40,2^40)`. Continuous component bounds stay within ±`1e100`;
+unit exponents stay within −8..8. Derivative spacing is 1..64 cells and warp
+displacement 0..4096 cells. Exact category IDs retain integer components.
+Geometry has at most 256 points. Region assignment has at most 16×16 cells and
+16 categories, a default 1,000,000-operation preparation budget, hard work
+ceiling 64,000,000 and fixed bounded solver scratch. Repeated tiles require
+explicit wrap constraints for cross-tile adjacency guarantees. The
+[typed contract](../systems/procedural-typed-spatial-fields.md) and
+[operator inventory](procedural-spatial-operators.md) own exact family ranges,
+recursive cost composition, distance qualification and invalid-input behavior.
+
 ## Depth host and Deepworks configuration
 
 **Current opt-in source:** these values belong to

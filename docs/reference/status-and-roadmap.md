@@ -172,6 +172,29 @@ source/runtime results and remaining publication/platform gates belong to the
 [GEN-002 evidence](../audits/2026-10-18-gen002-fields-and-aggregates.md), independently
 of the older GEN-001 checkpoint.
 
+## Typed spatial generation checkpoint — 2026-10-20
+
+**Current source implementation, GEN-003 / [#190](https://github.com/techrote/cybersand/issues/190):**
+explicit schema 2 adds signed scalar/distance, vector, exact category and boolean
+fields; affine/polar/repeat/warp resampling; analytical finite-difference
+derivatives; ternary Peano and bounded Voronoi/Delaunay/Poisson controls; immutable
+route/feature geometry; a bounded finite adjacency solver; reusable typed
+subgraphs; and absolute-world multiresolution sampling with caller-owned cache.
+The [typed contract](../systems/procedural-typed-spatial-fields.md) and
+[operator inventory](procedural-spatial-operators.md) own types, units, numerical
+qualifications and declared costs. Schema 1 retains generator algorithm 2;
+schema 2 uses generator algorithm 3/spatial algorithm 1. Source/runtime execution
+and completion remain distinct gates.
+
+The Workbench offers minimal typed JSON authoring, catalogue metadata, raw typed
+inspection and executable profiles. This is the native field/interface stage,
+not completion of hierarchical places or runtime streaming. The approved order
+continues with [GEN-004 #191](https://github.com/techrote/cybersand/issues/191),
+[GEN-005 #192](https://github.com/techrote/cybersand/issues/192),
+[GEN-007 #193](https://github.com/techrote/cybersand/issues/193), then
+[GEN-006 #194](https://github.com/techrote/cybersand/issues/194). GEN-004 reuses
+the immutable geometry/assignment interfaces and the existing bounded solver.
+
 ## Decisions and defects to resolve
 
 Rows distinguish **Current fixes**, remaining defects and open decisions; dated

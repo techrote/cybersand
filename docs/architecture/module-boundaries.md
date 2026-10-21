@@ -6,7 +6,7 @@ status: Approved design
 scope: Approved responsibility boundaries mapped to current source; no claim that every named module is a class
 keywords: [SimulationCore, SimulationScheduler, WorldStorage, TileJob, MaterialRules, RenderBridge, GameplayBridge]
 related-documents: [overview.md, data-ownership-and-lifetimes.md, rendering-and-gameplay-bridges.md]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-20
 ---
 
 # Module boundaries
@@ -51,6 +51,19 @@ values to mask modules and guide themes, parameters or discrete aggregate output
 Aggregate definitions resolve existing material IDs; they do not define new
 MaterialRules. The [field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md)
 owns fixed observation order, finite curve scope and graph budgets.
+
+GEN-003 adds a separate immutable
+[`SpatialGraph`](../../native/include/cybersand/generation_typed_fields.hpp)
+for signed scalars, distances, vectors, exact categories and booleans. Typed
+transforms and derivatives resample only immutable absolute-coordinate inputs;
+they cannot read the scalar graph's per-cell context or mutable World storage.
+[`generation_spatial`](../../native/include/cybersand/generation_spatial.hpp)
+owns bounded Peano/lattice/Poisson primitives, copied geometry and the single
+finite region-assignment solver. GEN-004 may supply routes and use assignments
+without a reverse field-to-grammar dependency. Explicit normalized outputs feed
+the existing mask interface; the [typed contract](../systems/procedural-typed-spatial-fields.md)
+and [operator inventory](../reference/procedural-spatial-operators.md) own the
+spatial computation boundary.
 
 Modules are trusted cooperative C++ code: declared logical cost bounds admission,
 while the host cannot sandbox an arbitrary callback or enforce its execution

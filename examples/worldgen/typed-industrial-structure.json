@@ -1,0 +1,37 @@
+{
+  "schema": 2,
+  "seed": 19001,
+  "chunk_size": 16,
+  "candidate": "strata",
+  "parameters": {"surface_y": 224, "relief": 20, "cave_threshold": 0.7, "detail": 0.12},
+  "themes": {"weights": {"industrial": 1}},
+  "spatial": {
+    "nodes": [
+      {"id": "beam", "kind": "box_distance", "parameters": {"width": 7, "height": 72}},
+      {"id": "transformed", "kind": "transform", "inputs": ["beam"], "parameters": {"tx": 32, "ty": 32, "angle": 0.65, "sx": 1.25, "sy": 0.8, "shear_x": 0.18}},
+      {"id": "bracing", "kind": "repeat", "inputs": ["transformed"], "parameters": {"period_x": 64, "period_y": 64}},
+      {"id": "frame", "kind": "box_distance", "parameters": {"x": 32, "y": 32, "width": 58, "height": 58}},
+      {"id": "negative", "kind": "constant", "value": {"type": "scalar", "x": -1}},
+      {"id": "frame_negative", "kind": "multiply", "inputs": ["frame", "negative"]},
+      {"id": "frame_edge", "kind": "maximum", "inputs": ["frame", "frame_negative"]},
+      {"id": "frame_repeat", "kind": "mirror", "inputs": ["frame_edge"], "parameters": {"period_x": 64, "period_y": 64}},
+      {"id": "zero", "kind": "constant", "unit_power": 1, "value": {"type": "scalar", "x": 0}},
+      {"id": "edge_width", "kind": "constant", "unit_power": 1, "value": {"type": "scalar", "x": 2}},
+      {"id": "beam_inside", "kind": "less", "inputs": ["bracing", "zero"]},
+      {"id": "frame_inside", "kind": "less", "inputs": ["frame_repeat", "edge_width"]},
+      {"id": "beam_mask", "kind": "to_mask", "inputs": ["beam_inside"]},
+      {"id": "frame_mask", "kind": "to_mask", "inputs": ["frame_inside"]},
+      {"id": "structure", "kind": "maximum", "inputs": ["beam_mask", "frame_mask"]},
+      {"id": "displacement", "kind": "constant", "unit_power": 1, "value": {"type": "vector2", "x": 2, "y": -3}},
+      {"id": "bounded_structure", "kind": "warp", "inputs": ["structure", "displacement"], "parameters": {"max_displacement": 4}},
+      {"id": "finish", "kind": "noise", "sampling_scale": 4, "parameters": {"scale": 22, "salt": 11}}
+    ]
+  },
+  "aggregates": [{"id": "steel_finish", "variation": "spatial:finish", "components": [{"material": 62, "weight": 5}, {"material": 63, "weight": 3}, {"material": 65, "weight": 1}]}],
+  "modifiers": [
+    {"id": "steel_structure", "application": "spatial:bounded_structure", "bounds": [-256, 0, 512, 224], "aggregate": "steel_finish"},
+    {"id": "copper_frame", "priority": 10, "application": "spatial:frame_mask", "bounds": [-256, 0, 512, 224], "material": 69}
+  ],
+  "paths": [{"id": "inspection_gallery", "points": [[-256, 192], [256, 192]], "width": 8, "material": 0}],
+  "overrides": [{"id": "foundation", "bounds": [-256, 220, 512, 5], "material": 58, "priority": 100}]
+}

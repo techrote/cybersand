@@ -65,6 +65,36 @@ owns scalar DAG/context semantics and catalogue descriptors.
 The [generation contract](../systems/procedural-world-generation.md) owns exact
 schema and packet fields, module trust and source/runtime limits.
 
+**Current schema-2 / GEN-003 extension:** recipes may additionally contain
+`spatial` (`nodes`, `subgraphs`, `instances`, `geometries`, `assignments`) and
+`spatial_limits`. Native `SpatialGraph` returns a typed `SpatialValues` array
+with per-output `SpatialInfo`; its evaluation takes absolute coordinates and
+optional caller-owned bounded `SpatialScratch`, with no initial-context or live
+World input. `Generator::spatial_graph()` exposes const compiled metadata.
+
+`spatial:<expanded.id>` requests a typed diagnostic. Native results store
+`diagnostic_info` and `typed_diagnostics` exclusively from the legacy float
+diagnostic array. The adapter copies numeric values to `PackedFloat64Array`
+`diagnostic_values` (one scalar or interleaved x/y vector components per cell).
+Exact category tuples use `PackedStringArray` `diagnostic_categories`: signed
+decimal x, signed decimal y and a 16-digit hexadecimal domain per cell.
+`diagnostic_info` identifies type, unit exponent, component bounds, distance
+factors, scale, fingerprint and declared work. The receipt binds those values
+and rejects malformed/mismatched payloads before adapter publication.
+
+The same `spatial:<id>` reference in a modifier, module, mapping or aggregate
+accepts only an explicitly `normalized` output. This is distinct from selecting
+a diagnostic of any type. Workbench colours are presentation; raw signed,
+vector and exact category data remain inspectable. `get_catalogue` adds
+`spatial_kinds` and accepted `spatial_nodes`. Complete configuration roundtrips
+retain subgraphs, typed bindings, immutable inputs and explicit schema selection.
+GDScript JSON writers must request `full_precision=true`, for example
+`JSON.stringify(recipe, "  ", true, true)`, to preserve accepted double values
+and `get_catalogue().spatial_fingerprint`. Reconfiguration advances the adapter
+revision and overall recipe fingerprint even when the spatial graph is unchanged.
+See the [typed graph contract](../systems/procedural-typed-spatial-fields.md) and
+[operator inventory](procedural-spatial-operators.md) for exact semantics.
+
 ### Native C API
 
 **Current:** [c_api.h](../../native/include/cybersand/c_api.h) defines the
