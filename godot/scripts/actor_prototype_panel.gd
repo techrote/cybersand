@@ -47,7 +47,7 @@ func _ready() -> void:
 	title.add_theme_font_size_override("font_size", 23)
 	column.add_child(title)
 	var subtitle: Label = Label.new()
-	subtitle.text = "41 articulated Rapier actors, scripted pilots and sampled references"
+	subtitle.text = "%d articulated Rapier actors, scripted pilots and sampled references" % PhysicalCatalog.RIG_IDS.size()
 	subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	column.add_child(subtitle)
 	set_choice = OptionButton.new()

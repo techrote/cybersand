@@ -6,7 +6,7 @@ status: Current
 scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact; generalized physics and exact replay remain absent
 keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
 related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-20
 ---
 
 # Rigid-body and cellular coupling
@@ -53,6 +53,17 @@ Source: [native `prepare_rigid_body_coupling`, `parse_body_states`, `rasterize_b
 
 The GDScript fallback projects input order; arbitrary sample reordering is not
 claimed equivalent. Body/body collision remains Rapier's responsibility.
+
+### Circular player wheels retain rectangular native occupancy
+
+**Current experimental SetP:** the [player buggy and trials bike](../systems/player-control-playground.md)
+use real `CircleShape2D` Rapier colliders and matching round graphics. Their
+copied native body records still carry the circle's full diameter as rectangle
+size. The resulting oriented circumscribed square conservatively includes corner
+cells outside the wheel and may change its mask as it rotates. Hard contact is
+circular; native material occupancy, sweep and displacement remain rectangular.
+This declared approximation adds no generalized contour rasterizer or packed-ABI
+change and does not widen earlier rectangle-fixture acceptance.
 
 ## What are the current numerical bounds and units?
 

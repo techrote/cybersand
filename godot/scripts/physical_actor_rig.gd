@@ -3,7 +3,8 @@ extends Node2D
 
 # ACT-004's main-thread articulation and actuation owner. The bridge, not this
 # node, steps the Rapier space. Only copied observations/effect requests leave
-# this owner. Rectangles are shared by the collider, drawing and native mask.
+# this owner. Legacy rectangles share collider, drawing and native mask. New
+# player wheels explicitly use round Rapier collision and a square native mask.
 # Assistance is an authored game mechanic; no flywheel momentum model is implied.
 const MAX_PARTS: int = 8
 const MAX_JOINTS: int = 14
@@ -18,6 +19,8 @@ const MAX_ROPE_LENGTH: float = 96.0
 const MIN_ROPE_LENGTH: float = 6.0
 const PROFILE_VERSION: int = 1
 const TERRAIN_MASK: int = 1
+const PlayerVehicle = preload("res://scripts/player_vehicle_controller.gd")
+const PlayerAcrobat = preload("res://scripts/player_acrobat_controller.gd")
 
 var rig_id: StringName = &""
 var actor_slot: int = 0
@@ -85,6 +88,10 @@ var _equipment_aim: Vector2 = Vector2.RIGHT
 var _equipment_aim_enabled: bool = false
 var _equipment_state: Dictionary = {}
 var _fixed_equipment: Dictionary = {}
+var _player_controller: RefCounted
+var _player_joint_targets: Dictionary = {}
+var _player_wheel_speeds: Dictionary = {}
+var _player_free_joints: Dictionary = {}
 
 
 static func validate_definition(definition: Dictionary) -> String:
@@ -107,12 +114,15 @@ static func validate_definition(definition: Dictionary) -> String:
 		if id.is_empty() or names.has(id):
 			return "missing or duplicate part id"
 		names[id] = true
-		if str(item.get("shape", "rectangle")) not in ["rectangle", "rect"]:
-			return "only collider-matched rectangles are admitted"
+		if str(item.get("shape", "rectangle")) not in ["rectangle", "rect", "circle"]:
+			return "unsupported collider shape"
 		if not _finite_vector(item.get("offset", null)) or not _finite_vector(item.get("size", null)):
 			return "nonfinite part geometry"
 		var size: Vector2 = item.size
 		var offset: Vector2 = item.offset
+		if str(item.get("shape", "rectangle")) == "circle" and (not is_equal_approx(size.x, size.y) \
+			or str(item.get("native_mask", "")) != "circumscribed_rectangle"):
+			return "circle requires equal diameters and declared circumscribed native mask"
 		if size.x < 0.5 or size.y < 0.5 or size.x > 64.0 or size.y > 64.0 or offset.length() > 64.0:
 			return "part geometry outside authored envelope"
 		if not _finite_number(item.get("mass", 1.0)) or float(item.get("mass", 1.0)) < 0.02 \
@@ -224,6 +234,11 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 	_definition = definition.duplicate(true)
 	_profile = _definition.get("profile", {})
 	_part_defs = _definition.parts
+	_player_controller = null
+	if str(_profile.get("player_controller", "")) == "acrobat":
+		_player_controller = PlayerAcrobat.new()
+	elif str(_profile.get("player_controller", "")) == "vehicle":
+		_player_controller = PlayerVehicle.new()
 	rig_id = StringName(str(_definition.id))
 	actor_slot = slot
 	epoch = incarnation
@@ -238,6 +253,8 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 		body.rotation = float(part.get("angle", 0.0))
 		body.mass = float(part.get("mass", 1.0))
 		body.inertia = maxf(0.01, body.mass * Vector2(part.size).length_squared() / 12.0)
+		if str(part.get("shape", "rectangle")) == "circle":
+			body.inertia = maxf(0.01, body.mass * pow(float(part.size.x) * 0.5, 2.0) * 0.5)
 		body.gravity_scale = _gravity / maxf(1.0, float(ProjectSettings.get_setting("physics/2d/default_gravity", 980.0)))
 		body.linear_damp_mode = RigidBody2D.DAMP_MODE_REPLACE
 		body.angular_damp_mode = RigidBody2D.DAMP_MODE_REPLACE
@@ -253,9 +270,14 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 		material.bounce = clampf(float(part.get("bounce", 0.02)), 0.0, 0.6)
 		body.physics_material_override = material
 		var collider: CollisionShape2D = CollisionShape2D.new()
-		var rectangle: RectangleShape2D = RectangleShape2D.new()
-		rectangle.size = part.size
-		collider.shape = rectangle
+		if str(part.get("shape", "rectangle")) == "circle":
+			var circle := CircleShape2D.new()
+			circle.radius = float(part.size.x) * 0.5
+			collider.shape = circle
+		else:
+			var rectangle: RectangleShape2D = RectangleShape2D.new()
+			rectangle.size = part.size
+			collider.shape = rectangle
 		body.add_child(collider)
 		add_child(body)
 		_parts.append(body)
@@ -444,7 +466,8 @@ func advance(action: Dictionary, delta: float, allowed: bool = true) -> void:
 	var pressed: Vector3i = Vector3i(int(buttons.x > _previous_buttons.x),
 		int(buttons.y > _previous_buttons.y), int(buttons.z > _previous_buttons.z))
 	var released_primary: bool = buttons.x == 0 and _previous_buttons.x != 0
-	_apply_auxiliary(buttons.z != 0, pressed.z != 0, dt, effort)
+	if _player_controller == null:
+		_apply_auxiliary(buttons.z != 0, pressed.z != 0, dt, effort)
 	var supported: bool = not _support.is_empty() or gripped
 	_support_age = 0.0 if supported else _support_age + dt
 	if supported:
@@ -452,9 +475,15 @@ func advance(action: Dictionary, delta: float, allowed: bool = true) -> void:
 	var family: String = str(_profile.get("movement", "ground"))
 	if str(_profile.get("auxiliary", "")) == "mode" and rig_id == &"qwen":
 		family = "flight" if _flight_mode else "ground"
-	_apply_locomotion(family, buttons, dt, effort)
-	_apply_secondary(buttons.y != 0, pressed.y != 0, family, dt, effort)
-	_apply_primary(buttons.x != 0, pressed.x != 0, released_primary, dt, effort)
+	if _player_controller != null:
+		_player_joint_targets.clear()
+		_player_wheel_speeds.clear()
+		_player_free_joints.clear()
+		_player_controller.advance(self, action, dt, effort)
+	else:
+		_apply_locomotion(family, buttons, dt, effort)
+		_apply_secondary(buttons.y != 0, pressed.y != 0, family, dt, effort)
+		_apply_primary(buttons.x != 0, pressed.x != 0, released_primary, dt, effort)
 	_apply_attachment_forces(float(action.get("reel", 0.0)), dt, effort)
 	_drive_joints(buttons, dt, effort)
 	if bool(action.get("release_usable", false)) and not bool(_definition.get("equipment_managed", false)):
@@ -798,10 +827,13 @@ func _drive_joints(buttons: Vector3i, dt: float, effort: float) -> void:
 		if str(joint.type) == "rotary":
 			var pin: PinJoint2D = joint.node
 			var drive: bool = role in ["wheel", "track", "leg", "aim", "rotor", "wing", "sail", "grip", "tool", "foot", "thruster", "tilt_thruster", "fin", "equipment"]
+			drive = drive or _player_joint_targets.has(str(joint.id))
 			if bool(joint.get("equipment_aim", false)):
 				drive = _equipment_aim_enabled
 			if role in ["wheel", "track"]:
 				target = _smoothed_move.x * float(joint.get("motor_speed", 12.0))
+				if _player_wheel_speeds.has(str(joint.id)):
+					target = clampf(float(_player_wheel_speeds[str(joint.id)]), -float(joint.get("motor_speed", 12.0)), float(joint.get("motor_speed", 12.0)))
 			elif role == "rotor":
 				target = float(joint.get("motor_speed", 14.0)) * (1.0 if _power_enabled else 0.0)
 			elif drive:
@@ -829,6 +861,8 @@ func _drive_joints(buttons: Vector3i, dt: float, effort: float) -> void:
 					# Both pods exchange real joint torque with the chassis; they are
 					# not rigid decorations held at a permanent zero-angle target.
 					desired = _smoothed_move.x * 0.20 + _smoothed_trim * 0.10
+				if _player_joint_targets.has(str(joint.id)):
+					desired = float(_player_joint_targets[str(joint.id)])
 				if joint.has("limits"):
 					desired = clampf(desired, joint.limits.x + 0.03, joint.limits.y - 0.03)
 				var error: float = desired - relative
@@ -836,7 +870,7 @@ func _drive_joints(buttons: Vector3i, dt: float, effort: float) -> void:
 				error = signf(error) * maxf(0.0, absf(error) - play)
 				target = clampf(error * 9.0 - relative_speed * 0.25,
 					-float(joint.get("motor_speed", 8.0)), float(joint.get("motor_speed", 8.0)))
-			pin.motor_enabled = drive
+			pin.motor_enabled = drive and not _player_free_joints.has(str(joint.id))
 			# Rate limiting applies to the requested velocity, not the body state.
 			# Reversals retain a little mechanical play without one-tick kicks.
 			# Equipment aiming has its own command authority. A carrier may set
@@ -859,6 +893,8 @@ func _drive_joints(buttons: Vector3i, dt: float, effort: float) -> void:
 				if buttons.y != 0:
 					target -= 0.8
 				target = clampf(target, limits.x * 0.7, limits.y * 0.7)
+			if _player_joint_targets.has(str(joint.id)):
+				target = clampf(float(_player_joint_targets[str(joint.id)]), limits.x * 0.85, limits.y * 0.85)
 			var force: float = clampf((target - displacement) * float(joint.get("stiffness", 45.0))
 				- speed * 8.0, -float(joint.get("max_force", 180.0)), float(joint.get("max_force", 180.0)))
 			_apply_part_impulse(b, axis * force * dt)
@@ -1125,6 +1161,8 @@ func _sense() -> void:
 		var half: Vector2 = _sizes[index] * 0.5
 		var angle: float = pose.get_rotation()
 		var vertical_half: float = absf(sin(angle)) * half.x + absf(cos(angle)) * half.y
+		if str(_part_defs[index].get("shape", "rectangle")) == "circle":
+			vertical_half = half.x
 		var hit: Dictionary = _ray(pose.origin, pose.origin + Vector2.DOWN * (vertical_half + 2.5))
 		if not hit.is_empty() and Vector2(hit.normal).y < -0.35:
 			var clearance: float = maxf(0.0, Vector2(hit.position).y - pose.origin.y - vertical_half)
@@ -1192,7 +1230,9 @@ func _publish_observation() -> void:
 		part_states.append({"id": str(_part_defs[index].id), "index": index,
 			"position": _transforms[index].origin, "rotation": _transforms[index].get_rotation(),
 			"velocity": _velocities[index], "angular_velocity": _angular_velocities[index],
-			"size": _sizes[index], "mass": _parts[index].mass, "detached": _detached.has(index)})
+			"size": _sizes[index], "mass": _parts[index].mass, "detached": _detached.has(index),
+			"shape": str(_part_defs[index].get("shape", "rectangle")),
+			"native_mask": str(_part_defs[index].get("native_mask", "matching_rectangle"))})
 	var joint_states: Array[Dictionary] = []
 	for joint: Dictionary in _joints:
 		var a: int = int(joint.a)
@@ -1231,6 +1271,8 @@ func _publish_observation() -> void:
 		"applied_torque_impulse": _last_torque_impulse, "energy_used": _last_energy_used,
 		"ray_queries": _ray_count, "movement_limited": _movement_limited, "fault": fault}
 	_observation.merge(_sensors)
+	if _player_controller != null:
+		_observation["player_movement"] = _player_controller.observation()
 
 
 func observation() -> Dictionary:
@@ -1246,7 +1288,8 @@ func capabilities() -> Dictionary:
 		"parts": _part_defs.duplicate(true), "joints": _definition.get("joints", []).duplicate(true),
 		"mounts": _definition.get("mounts", []).duplicate(true), "profile": _profile.duplicate(true),
 		"maximum_parts": MAX_PARTS, "maximum_rays": MAX_RAYS,
-		"native_geometry": "oriented-rectangles", "gyro_semantics": "bounded-authored-assistance",
+		"native_geometry": "oriented-rectangles", "circle_native_mask": "circumscribed_rectangle",
+		"gyro_semantics": "bounded-authored-assistance",
 		"slide_semantics": "paired-slot-guide-with-spring-and-endstops", "learned_controller": false}
 
 
@@ -1478,6 +1521,11 @@ func cancel() -> void:
 	# Revocation discards future work/charge; it never performs a release action,
 	# erases momentum, resets a spring, or launches a charged leap.
 	charge = 0.0
+	if _player_controller != null:
+		_player_controller.cancel()
+	_player_joint_targets.clear()
+	_player_wheel_speeds.clear()
+	_player_free_joints.clear()
 	_charge_armed = false
 	_previous_buttons = Vector3i.ZERO
 	_smoothed_move = Vector2.ZERO
@@ -1507,9 +1555,14 @@ func draw_parts() -> Array[Dictionary]:
 		var polygon: PackedVector2Array = PackedVector2Array([
 			Vector2(-half.x, -half.y), Vector2(half.x, -half.y),
 			Vector2(half.x, half.y), Vector2(-half.x, half.y)])
+		if str(_part_defs[index].get("shape", "rectangle")) == "circle":
+			polygon.clear()
+			for vertex: int in range(32):
+				polygon.append(Vector2.RIGHT.rotated(TAU * float(vertex) / 32.0) * half.x)
 		for vertex: int in range(polygon.size()):
 			polygon[vertex] = _transforms[index] * polygon[vertex]
 		result.append({"id": str(_part_defs[index].id), "polygon": polygon,
+			"shape": str(_part_defs[index].get("shape", "rectangle")),
 			"colour": _part_defs[index].get("colour", _part_defs[index].get("color", Color(0.24, 0.85, 0.91))),
 			"position": _transforms[index].origin, "rotation": _transforms[index].get_rotation()})
 	return result
@@ -1533,6 +1586,7 @@ func _draw() -> void:
 
 func close() -> void:
 	cancel()
+	_player_controller = null
 	configured = false
 	for joint: Dictionary in _joints:
 		if is_instance_valid(joint.node):

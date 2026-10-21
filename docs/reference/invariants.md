@@ -161,7 +161,7 @@ listed boundaries; execution evidence remains separately dated.
 | ID | Status and narrow claim |
 |---|---|
 | RIG-001 | Current: main-thread Rapier owns every live part/joint; the cellular owner receives copied values and alone writes native materials |
-| RIG-002 | Current: physical actor polygons use actual rectangular collider dimensions and published transforms; authored leg, rotor and held parts are physical bodies |
+| RIG-002 | Current: physical actor graphics use actual declared rectangle/circle collider dimensions and published transforms; authored leg, rotor and held parts are physical bodies; SetP circles explicitly retain conservative square native masks |
 | RIG-003 | Current: installation checks at most eight actors, eight parts per actor including held objects, and 64 total coupled bodies before activation |
 | RIG-004 | Current: human, demo and policy producers use one normalized action path; run/actor/epoch/sequence/issued-observation leases prevent stale authority from controlling a replacement |
 | RIG-005 | Current: cancellation clears stored launch intent and pending effects without interpreting it as charged release or deleting physical velocity |
@@ -175,6 +175,20 @@ listed boundaries; execution evidence remains separately dated.
 | RIG-013 | Current: the cellular owner accounts accepted usable work; only a matching accepted, consumed receipt can apply bounded physical recoil once, and cancellation, expiry, rearm, selection and reset fence stale results |
 | RIG-014 | Current: physical processors must settle and fix their real body before worker admission; rotated nonoverlapping exterior ports preflight complete batches, and blocked outputs consume no input |
 | RIG-015 | Current: bounded per-actor/per-processor history preserves stock, age, cycles and cooldown across pickup, redeployment and selection; an exhausted physical device remains observable and inert until its physical owner retires it |
+
+### Player material field invariants
+
+Contract: [player playground](../systems/player-control-playground.md) and
+[native field interface](interfaces-and-message-contracts.md#player-material-field-control).
+Sources: [World relocation](../../native/src/world.cpp) and
+[dedicated owner](../../godot/scripts/player_playground_runtime.gd).
+
+| ID | Status and narrow claim |
+|---|---|
+| PLAY-001 | Current: a serialized between-tick native field selects local Sand/Water and moves complete stored cells; no per-cell Rapier object, repaint, hidden cohort or material-kernel replacement |
+| PLAY-002 | Current: source scan, parcel count and axis-adjacent relocation are bounded; invalid input or a failed/in-tick World refuses mutation; occupied destinations and unavailable storage retain the source |
+| PLAY-003 | Current: per-call relocation preserves compact state, temperature and exact Water quantity; subsequent ordinary chemistry/transport is outside that field-only conservation claim |
+| PLAY-004 | Current: material command leases bind issued observations to run/epoch/generation/sequence; expiry/cancel stops field calls, while normal native material stepping may continue |
 
 ## Typed procedural generation invariants
 

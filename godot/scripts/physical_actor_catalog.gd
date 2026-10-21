@@ -1,13 +1,15 @@
 class_name CyberPhysicalActorCatalog
 extends RefCounted
 
-# ACT-004 authoring data. Every visible part is the corresponding rectangular
-# Rapier collider. All dictionaries are constructed afresh; no live scene object
+# ACT-004 authoring data with additive player presets. Visible geometry matches
+# Rapier collision; player circles declare their separate square native masks.
+# All dictionaries are constructed afresh; no live scene object
 # or shared mutable tuning escapes this catalogue. Values use cells and seconds.
 const Sampled = preload("res://scripts/actor_rig_catalog.gd")
+const Player = preload("res://scripts/player_actor_catalog.gd")
 const VERSION: int = 1
 const MAX_PARTS: int = 8
-const SET_IDS: Array[StringName] = [&"setA", &"setB", &"setF", &"setY", &"setU", &"setV", &"setX"]
+const SET_IDS: Array[StringName] = [&"setA", &"setB", &"setF", &"setY", &"setU", &"setV", &"setX", &"setP"]
 const RIG_IDS: Array[StringName] = [
 	&"runner", &"skimmer", &"crawler", &"scout", &"scrabbler", &"ripper",
 	&"groundeffect", &"digger", &"copter", &"pouncer", &"dropbot", &"lineshank",
@@ -16,6 +18,7 @@ const RIG_IDS: Array[StringName] = [
 	&"astra", &"claude", &"luna", &"qwen", &"bonsai", &"jev", &"gemini",
 	&"monowheel", &"inchworm", &"pendulum", &"rocker", &"hammerhead", &"rocketblade",
 	&"tandem", &"tricopter", &"tiltrotor", &"heavylift", &"needlejet", &"gyrosled",
+	&"stuntbuggy", &"trialsbike", &"acrobat", &"arcadelander", &"jetbarrel",
 ]
 const EXTRA_NAMES: Dictionary = {
 	&"monowheel": "Monowheel", &"inchworm": "Inchworm", &"pendulum": "Pendulum",
@@ -38,12 +41,16 @@ static func rigs_in_set(set_id: StringName) -> Array[StringName]:
 
 
 static func set_for(rig_id: StringName) -> StringName:
+	if Player.has_rig(rig_id):
+		return &"setP"
 	if EXTRA_NAMES.has(rig_id):
 		return &"setX"
 	return Sampled.set_for(rig_id)
 
 
 static func name_for(rig_id: StringName) -> String:
+	if Player.has_rig(rig_id):
+		return Player.name_for(rig_id)
 	return str(EXTRA_NAMES.get(rig_id, Sampled.name_for(rig_id)))
 
 
@@ -73,7 +80,10 @@ static func entry(rig_id: StringName) -> Dictionary:
 		"Authored assistance and compliant rectangular parts; no finite gyro momentum accounting.",
 		"Scripted feedback is deterministic local control, not learned inference or global pathfinding.",
 	]
-	_build(data, rig_id)
+	if Player.has_rig(rig_id):
+		Player.build(data, rig_id)
+	else:
+		_build(data, rig_id)
 	var bounds := Rect2()
 	var first: bool = true
 	for part: Dictionary in data.parts:
@@ -93,11 +103,15 @@ static func entry(rig_id: StringName) -> Dictionary:
 	data["spawn_radius"] = maxf(bounds.position.length(), bounds.end.length()) + 2.0
 	data["part_count"] = data.parts.size()
 	data["controller_id"] = "local-feedback/" + str(rig_id) + "/v1"
+	if Player.has_rig(rig_id):
+		data["controller_id"] = "player-movement/" + str(rig_id) + "/v1"
 	data["controls"] = controls_text(rig_id, data)
 	return data
 
 
 static func controls_text(rig_id: StringName, supplied: Dictionary = {}) -> String:
+	if Player.has_rig(rig_id):
+		return Player.controls(rig_id)
 	var data: Dictionary = supplied if not supplied.is_empty() else entry(rig_id)
 	if data.is_empty():
 		return ""

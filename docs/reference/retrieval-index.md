@@ -22,12 +22,12 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Did graphical tests actually render, and can a headless skip or exit-zero script error pass CI? | [Required rendered-test execution](../operations/testing-validation-and-replay.md#ci-execution-sharding), [Linux invocation](../operations/local-build-and-validation.md#linux-gdextension-ci-sharding), and [review evidence](../audits/2026-10-19-mat002-review-and-validation.md) |
 | Can the standalone physics CLI safely count building materials, and which executable regression checks its JSON output? | [CLI admission and sample accounting](../operations/physics-characterisation.md#which-checks-guard-the-measurement-path), [build commands](../operations/local-build-and-validation.md#how-is-the-physics-baseline-rebuilt) |
 | Does current CI actually execute the retained Windows DLL, and what source and test coverage does that prove? | [Windows execution gate](../operations/local-build-and-validation.md#windows-retained-runtime-execution), [test acceptance](../operations/testing-validation-and-replay.md#ci-execution-sharding), and [dated runtime evidence](../audits/2026-10-19-mat002-review-and-validation.md) |
-| How do I choose all 41 articulated Rapier actors in Blacksite/showcase maps, retain sampled references, and use the same scripted or policy controls? | [Physical actor contract](../systems/physical-actor-rigs.md), [physical actor programme](../operations/physical-actor-programme.md) |
+| How do I choose all 46 articulated Rapier actors in Blacksite/showcase maps, retain sampled references, and use the same scripted or policy controls? | [Physical actor contract](../systems/physical-actor-rigs.md), [physical actor programme](../operations/physical-actor-programme.md) |
 | Do gyros track finite momentum, what flex/play is intentional, and which joints or held tools are actual bodies? | [Physical mechanics and usables](../systems/physical-actor-rigs.md), [physical limits](configuration-reference.md#physical-actor-values) |
 | How does physical Thunderbowl v2 differ from the sampled v1 control lab and its metal/NCA examples? | [Physical Thunderbowl v2](../systems/thunderbowl-control-reference.md#physical-thunderbowl-v2) |
 | How do all 32 usables share real physical mounts, independent aim/power, accepted recoil and the same human/demo/policy command path? | [Physical equipment](../systems/actor-usables.md), [equipment actions and results](interfaces-and-message-contracts.md#physical-equipment-actions-and-results) |
 | Can a stale receipt fire a dropped tool, can pickup refill a processor, and who owns a deployed device's native ports? | [Physical equipment lifecycle](../systems/actor-usables.md), [physical ownership](../architecture/data-ownership-and-lifetimes.md), [equipment interface](interfaces-and-message-contracts.md#physical-equipment-actions-and-results) |
-| How do I run the physical usable course, test a processor jam and inspect useful default loadouts for all 41 actors? | [Physical usable course](../systems/thunderbowl-control-reference.md#physical-usable-course), [scripted loadouts](../systems/physical-actor-rigs.md#how-do-the-scripted-actors-use-their-loadouts), [focused validation](../operations/local-build-and-validation.md#physical-usable-validation) |
+| How do I run the physical usable course, test a processor jam and inspect useful default loadouts for all 46 actors? | [Physical usable course](../systems/thunderbowl-control-reference.md#physical-usable-course), [scripted loadouts](../systems/physical-actor-rigs.md#how-do-the-scripted-actors-use-their-loadouts), [focused validation](../operations/local-build-and-validation.md#physical-usable-validation) |
 | How do I enter Blacksite Nine, follow the route through its connected 3×3 districts, use the camera map, and preserve or reset edits across shared boundaries? | [Blacksite Nine connected-complex guide](../operations/blacksite-nine-demo.md) |
 | How do I open Neon Reliquary, descend through Middle Cyberberbia, Sewertech Alley and Industrial Underswamp, inspect viewpoints, or capture all four tiles? | [Neon Reliquary scene guide](../operations/neon-reliquary-demo.md) |
 
@@ -211,7 +211,21 @@ separate; the programme graph owns admission.
 
 - Blocked falling/torque/coherent-child motion fixture: [macro-fracture preregistration](../operations/soliding-macro-fracture-fixture.md).
 
-Integrated launch and retained hull comparisons route to the [physical actor programme](../operations/physical-actor-programme.md). Current articulation, the 41-rig roster, scripted feedback, command freshness and usable lifecycle route to the [physical actor contract](../systems/physical-actor-rigs.md).
+Integrated launch and retained hull comparisons route to the [physical actor programme](../operations/physical-actor-programme.md). Current articulation, the 46-rig roster, scripted feedback, command freshness and usable lifecycle route to the [physical actor contract](../systems/physical-actor-rigs.md).
+
+## Human player controls, acrobat chains and material swarms
+
+Use the [player playground](../systems/player-control-playground.md) for all seven
+presets, `--player-playground` / `--player=ID`, F5 SetP, keyboard/gamepad mapping,
+slide/roll/bullet-jump chains, quick reset and focus rearm. It distinguishes five
+Rapier actors from native Sand/Water fields and their local selection, ordinary
+material behavior and lease cancellation. Exact fields/receipts belong to
+[interfaces](interfaces-and-message-contracts.md#player-material-field-control);
+limits belong to [configuration](configuration-reference.md#player-playground-values).
+Circle hard contact versus square native masks belongs to
+[coupling](../architecture/rigid-body-and-cellular-coupling.md#circular-player-wheels-retain-rectangular-native-occupancy).
+Execution and human/platform qualification route to the
+[dated evidence](../audits/2026-10-20-player-control-playground.md).
 
 Layered material worlds, Strata Theatre, quantized relief and explicit interlayer event questions route to the [depth prototype contract](../systems/depth-layers-and-parallax.md).
 

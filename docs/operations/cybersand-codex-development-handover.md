@@ -10,6 +10,32 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Player control playground — 2026-10-20
+
+Start with the [player control contract](../systems/player-control-playground.md)
+for seven presets, launch arguments, keyboard/gamepad controls and acrobat chains.
+The five new mechanical IDs form F5 SetP; the current physical roster is 46.
+Their circles use actual Rapier contact but conservative rectangular native
+masks. The two material modes belong only to the dedicated synchronous scene;
+native World relocates complete Sand/Water cells between ordinary ticks.
+
+Preserve observation-relative leases, rearm after focus/reset, cancelled preload
+and landing-gated acrobat inventory. Swarm input moves material near its observed
+centroid, not a cursor or persistent seed cohort. It must not become erase/repaint
+or per-cell Rapier control. See [field interfaces](../reference/interfaces-and-message-contracts.md#player-material-field-control)
+and [focused checks](local-build-and-validation.md#player-playground-checks).
+The [original checkpoint](../audits/2026-10-20-player-control-playground.md)
+preserves local source/runtime identities and Linux execution. The
+[PR #189 completion record](../audits/2026-10-21-player-playground-pr189-completion.md)
+adds original-head hosted Linux/Windows results, including 107/107 Windows
+headless cases, and tracks the GEN-003 integration and later GEN-004 reintegration.
+Combined-source runtime publication and final exact-head evidence are routed through that
+record and PR #189's description and Checks; local passes retain their own scope.
+Admitted quick button taps start the course clock even when released before
+the next physics tick; elapsed time still counts simulation ticks only.
+Target-PC feel, physical controller/window interaction, complete timed routes
+and browser qualification remain separate from headless execution.
+
 ## Hierarchical generation checkpoint — 2026-10-21
 
 GEN-004 / [#191](https://github.com/techrote/cybersand/issues/191) adds opt-in

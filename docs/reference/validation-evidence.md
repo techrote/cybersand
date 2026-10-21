@@ -10,6 +10,28 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## Player control playground — 2026-10-20
+
+The [original playground audit](../audits/2026-10-20-player-control-playground.md)
+preserves recoverable source identity, rebuilt runtime hashes, Linux execution
+and integration failures. Its focused checks cover native complete-cell/Water
+quantity preservation and bounded field admission, actual Rapier vehicle/acrobat
+movement, and seven-preset input/lease/pause/reset lifetime.
+
+The [PR #189 completion record](../audits/2026-10-21-player-playground-pr189-completion.md)
+adds hosted results for original head `6663d8e`, including successful Native,
+Linux/Godot, Documentation/provenance, Water and actual Windows execution of
+107/107 applicable headless cases. It separately tracks the GEN-003 main merge,
+the later GEN-004 reintegration, fast-tap course-clock correction, combined-source
+runtime rebuild and final exact-head gates. The record distinguishes completed local validation from
+hosted publication and routes final outcomes to PR #189's description and Checks.
+Headless tests do not
+establish human feel, complete timed routes, physical gamepad/window interaction
+or browser qualification. Current mechanics and controls live in the
+[player contract](../systems/player-control-playground.md); the
+[build guide](../operations/local-build-and-validation.md#player-playground-checks)
+routes reproducible fixtures. Prior ACT-004/ACT-005 results retain their scope.
+
 ## GEN-004 hierarchical places — 2026-10-21
 
 The [GEN-004 audit](../audits/2026-10-21-gen004-hierarchical-generation.md)

@@ -31,6 +31,7 @@ Counts identify this inspected source inventory, not a pass for a later revision
 | Standalone physics CLI | `make physics-characterisation-test` / `physics-characterisation-sanitize`: actual executable admission and parsed sample accounting for all 51 building IDs in both layers, old controls and invalid wide inputs; [measurement-path contract](physics-characterisation.md#which-checks-guard-the-measurement-path) |
 | Fallback cells/player | `test_cell_world.gd` has nine groups including Smoke, Water, body mask/sweep and vertical scan continuity; these are one runner |
 | Rapier or coupling | Preflight, automatic drop-in, manual-step and `test_web_rapier.gd`; see [Rapier procedure](rapier-2d-migration-runbook.md) |
+| Player movement and material fields | Native `player material field` groups plus binding, vehicle, acrobat planner/real-physics and seven-preset runtime/UI runners; [focused commands](local-build-and-validation.md#player-playground-checks) separate material conservation/admission from physical motion and input lifecycle |
 | Save, Web worker selection or benchmark | Demo-save, setup, Web worker parity, Auto and worker-benchmark runners; actual Web export must additionally execute in browser |
 
 Use the test filenames in [godot/tests](../../godot/tests) for the exact current

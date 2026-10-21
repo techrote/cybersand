@@ -104,6 +104,46 @@ struct DirtyChunk {
     RectI64 local_rect;
 };
 
+// Optional, serialized player control over ordinary native Sand/Water cells.
+// A field selects material by location/type, not by a hidden particle identity.
+// It never creates material, exchanges with occupied cells or changes a kernel.
+struct PlayerMaterialFieldCommand {
+    static constexpr std::int32_t kRadius = 32;
+    static constexpr std::size_t kMaximumParcels = 512;
+    static constexpr std::uint32_t kMaximumStepsPerParcel = 4;
+    std::int64_t center_x = 0;
+    std::int64_t center_y = 0;
+    double move_x = 0.0;
+    double move_y = 0.0;
+    Material material = Material::Sand;
+    // 0: cohere/hover; 1: surge; 2: dry spread/liquid squeeze; 3: gather.
+    std::uint32_t mode = 0;
+    std::uint64_t phase = 0;
+    RectI64 bounds{0, 0, 1024, 1024};
+};
+
+enum class PlayerMaterialFieldOutcome : std::uint8_t {
+    Applied,
+    InvalidCommand,
+    WorldFailed,
+    TickInProgress,
+};
+
+struct PlayerMaterialFieldResult {
+    PlayerMaterialFieldOutcome outcome = PlayerMaterialFieldOutcome::InvalidCommand;
+    std::uint32_t scanned_cells = 0;
+    std::uint32_t observed_cells = 0;
+    std::uint32_t controlled_cells = 0;
+    std::uint32_t moved_cells = 0;
+    std::uint32_t movement_steps = 0;
+    std::uint32_t blocked_steps = 0;
+    std::uint32_t storage_refusals = 0;
+    std::uint64_t quantity = 0;
+    double centroid_x = 0.0;
+    double centroid_y = 0.0;
+    bool truncated = false;
+};
+
 class PrecisionProbe;
 
 class World {
@@ -166,6 +206,11 @@ public:
                                                        std::int64_t y) const noexcept;
     [[nodiscard]] bool relocate_stored_cell(std::int64_t from_x, std::int64_t from_y,
                                             std::int64_t to_x, std::int64_t to_y);
+    // Exclusive external owner, between ticks. The caller fences input leases
+    // and reset identity. Fixed scratch, resident destinations and preallocated
+    // thermal fields keep this operation free of World-owned allocations.
+    [[nodiscard]] PlayerMaterialFieldResult apply_player_material_field(
+        const PlayerMaterialFieldCommand& command);
     [[nodiscard]] std::uint64_t transient_contact_count(std::uint16_t body_id) const noexcept;
     [[nodiscard]] std::int64_t transient_contact_impulse_x(std::uint16_t body_id) const noexcept;
     [[nodiscard]] std::int64_t transient_contact_impulse_y(std::uint16_t body_id) const noexcept;

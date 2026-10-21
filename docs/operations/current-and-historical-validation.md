@@ -47,6 +47,14 @@ payloads. CI and release hashing require `--require-materialized`; every require
 runtime object must match its committed SHA-256 and size. Vendor runtime libraries retain their dependency provenance. Other platforms
 are not certified by the Windows/Linux manifests or a successful LFS check.
 
+The [player playground checkpoint](../audits/2026-10-20-player-control-playground.md)
+changes native World and the adapter, so its material modes require a rebuilt
+matching extension. Source presence, a successful Windows cross-build and an
+executed Linux fixture are three distinct claims. The
+[player checks](local-build-and-validation.md#player-playground-checks) and dated
+audit record the actual scope; retained M11 records are unaffected and must not
+be updated to describe these new controls.
+
 ### #65 recovery-era retained runtime checkpoint — 2026-09-22
 
 PR #106's validated native/test source froze at

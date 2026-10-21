@@ -10,6 +10,29 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Player control playground — 2026-10-20
+
+**Current experimental source:** the [player playground](../systems/player-control-playground.md)
+adds seven human movement presets and a dedicated course. Five mechanical
+presets form F5 SetP, bringing the physical catalogue to 46 rigs across eight
+sets; dry Sand and liquid Water remain separate native material-field modes.
+Acrobat chains, sprung vehicles, damped lander flight and strong barrel torque
+use the shared leased physical owner. Circular wheels keep conservative square
+native material masks. The material lane relocates bounded local native cells
+without repainting or changing Water kernels.
+
+The [original evidence](../audits/2026-10-20-player-control-playground.md) preserves
+local Linux execution and desktop builds. The
+[PR #189 completion record](../audits/2026-10-21-player-playground-pr189-completion.md)
+records original-head hosted success, including actual Windows headless
+execution of 107/107 applicable cases. Integration with GEN-003 main and the
+quick-tap course-clock correction require combined-source runtimes and fresh
+final-head gates. That record owns their status and routes exact final-head
+outcomes to PR #189's description and Checks. Physical gamepad/window
+interaction, target-PC human feel, complete timed routes and new browser
+execution remain separate qualifications. Generic granular, soliding and Water
+successor work retains its own gates.
+
 ## Exploratory actor integration and physical migration — 2026-10-18
 
 **Current experimental desktop source, ACT-004:** F5 selects all 29 existing
@@ -109,7 +132,8 @@ It is an aesthetic showcase; existing physics programmes retain their own gates.
 | Procedural generation candidates | Opt-in Strata, Flow Network and District Grammar; theme/brush/override/module recipes plus bounded scalar fields, masked context guidance and aggregate materials; copied chunk proposals and explicit fresh-chunk admission; [generation contract](../systems/procedural-world-generation.md), [field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md) |
 | Materials | Bounded adapted kernels, mass-conserving native Water, discrete fallback, secondary interaction lanes; 51 MAT-002 building materials (IDs 81–131) with combustion and 42 versioned pair reactions; [materials](../systems/materials-and-rule-kernels.md), [building catalogue](../systems/building-material-catalogue.md), [Water](../systems/water-design.md). Source/runtime publication and completed-test scope are recorded in the [MAT-002 review](../audits/2026-10-19-mat002-review-and-validation.md). |
 | Field storage and events | Optional temperature storage and bounded explosions; no general heat/pressure/wind solver; [field roadmap](../systems/smoke-heat-pressure-roadmap.md) |
-| Bodies and character | Main-thread Rapier, 64-ID rectangular coupling, static terrain packets, 41 articulated [physical actors](../systems/physical-actor-rigs.md), shared keyboard/demo/policy control and usables; sampled and single-hull references remain available |
+| Bodies and character | Main-thread Rapier, 64-ID rectangular native coupling, static terrain packets, 46 articulated [physical actors](../systems/physical-actor-rigs.md), shared keyboard/demo/policy control and usables; SetP circles retain conservative square native masks; sampled and single-hull references remain available |
+| Human movement playground | Seven [player presets](../systems/player-control-playground.md), keyboard/gamepad sampler, acrobat chains and separate leased native Sand/Water fields; course checkpoints and focused tests are not human feel or route-completion acceptance |
 | Actor control and battle experiments | Separate physical Thunderbowl v2 plus retained sampled [Thunderbowl v1](../systems/thunderbowl-control-reference.md); physical wire control does not silently inherit sampled metal/NCA/message semantics; trained policies and general actor damage remain Planned |
 | Rendering | Immutable native snapshots, copied dirty RG8 patches, full finite GPU texture update and derived material appearance; [bridges](../architecture/rendering-and-gameplay-bridges.md) |
 | Persistence | Fixed CYSD1 demo levels; complete resumed replay absent; [save contract](level-saves-and-replay.md) |

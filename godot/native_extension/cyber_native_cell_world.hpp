@@ -44,6 +44,10 @@ public:
     void paint_disc(std::int64_t centre_x, std::int64_t centre_y,
                     std::int64_t radius, std::int64_t material_id,
                     std::int64_t emission_flags = 0);
+    // Synchronous player playground only; the exclusive owner fences lifecycle
+    // and input leases before invoking this bounded native material operation.
+    [[nodiscard]] Dictionary apply_player_material_field(Vector2i center, Vector2 direction,
+        std::int64_t material_id, std::int64_t mode, std::int64_t phase);
 
     void prepare_rigid_body_coupling(const PackedFloat32Array& states,
                                      bool resolve_overlaps = true);

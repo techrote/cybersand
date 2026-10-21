@@ -224,7 +224,7 @@ The focused regression groups are:
 |---|---|
 | Physical mount and lifecycle | [`test_physical_usable_equipment.gd`](../../godot/tests/test_physical_usable_equipment.gd), [`test_physical_usable_lifecycle.gd`](../../godot/tests/test_physical_usable_lifecycle.gd): real part/body identity, joint-driven aim, equipment epochs, receipt fencing, release/settle/fix and explicit nearby pickup |
 | Native usable work and worker admission | [`test_physical_usables_runtime.gd`](../../godot/tests/test_physical_usables_runtime.gd), [`test_physical_usables_admission.gd`](../../godot/tests/test_physical_usables_admission.gd): physical source/target masks, bounded actual-cell work, processor lifecycle, atomic queue capacity and stale/cancelled requests |
-| Scripted loadouts | [`test_physical_usable_script.gd`](../../godot/tests/test_physical_usable_script.gd): all 41 explicit loadout policies and bounded, observation-driven equipment intent |
+| Scripted loadouts | [`test_physical_usable_script.gd`](../../godot/tests/test_physical_usable_script.gd): all 46 explicit loadout policies, including five empty SetP mounts, and bounded, observation-driven equipment intent |
 | Integrated hosts | [`test_physical_usable_course.gd`](../../godot/tests/test_physical_usable_course.gd), [`test_physical_usables_desktop.gd`](../../godot/tests/test_physical_usables_desktop.gd): the standalone usable course and desktop physical-owner handoff |
 | Retained sampled compatibility | [`test_usables.gd`](../../godot/tests/test_usables.gd), [`test_usable_session.gd`](../../godot/tests/test_usable_session.gd), [`test_actor_usables_integration.gd`](../../godot/tests/test_actor_usables_integration.gd): the original catalogue, sampled command/session and sampled owner integration |
 
@@ -474,6 +474,46 @@ The [MicroScenario runbook](microscenarios.md#headless-runs-from-the-same-defini
 describes the bounded native-only JSON runner. Its result is not a Windows or
 browser run merely because it exercises the synchronous controller on Linux.
 Use actual platform artifacts and retain their identities for platform acceptance.
+
+## Player playground checks
+
+Use the pinned Godot 4.7/Rapier runtime and a rebuilt source-matched native
+extension. The new field method must exist; a preceding retained binary cannot
+exercise the material presets. On Linux provide writable XDG data/config/cache
+directories if the environment's defaults are read-only.
+
+```text
+make build/tests
+./build/tests "player material field"
+godot --headless --path godot --script res://tests/test_player_material_field.gd
+godot --headless --path godot --script res://tests/test_player_vehicle_controls.gd
+godot --headless --path godot --script res://tests/test_player_acrobat.gd
+godot --headless --path godot --script res://tests/test_player_acrobat_physics.gd
+godot --headless --path godot --script res://tests/test_player_playground_runtime.gd
+godot --headless --path godot --script res://tests/test_player_playground_course.gd
+```
+
+The native executable accepts an optional name substring; no match fails and
+omitting the filter runs the complete suite. Its field groups check complete
+stored-state/temperature/partial-Water preservation, collisions, invalid inputs,
+work bounds, distinct modes and deterministic ordering. The binding runner
+checks actual native admission and nonmutation; mechanical runners exercise
+bounded control plans and actual Rapier motion. The integrated runner covers
+seven owners, issued observations, replay/refusal, expiry, cancellation, pause,
+reset and UI rearm. It also verifies that an admitted press/release between
+physics ticks starts the course clock and counts subsequent neutral/coasting
+ticks. The course runner checks mounted spawns and actual short traversal
+routes. Counts and outcomes belong to the
+[original local audit](../audits/2026-10-20-player-control-playground.md) and
+[PR #189 completion record](../audits/2026-10-21-player-playground-pr189-completion.md),
+which separates original-head hosted passes from pending combined-source gates.
+
+Changed shared catalogue/session/loadout behavior also uses the existing
+physical regressions below. Focused execution is not a complete suite, human
+play or platform result. Run the normal applicable native/Godot gates before
+publication; dynamic Godot discovery includes the new `test_*.gd` files.
+Controls and manual course entry are in the
+[player guide](../systems/player-control-playground.md).
 
 ## Actor control prototype checks
 
