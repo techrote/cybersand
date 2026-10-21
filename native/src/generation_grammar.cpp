@@ -103,7 +103,12 @@ spatial::RegionId cell_owner(const GrammarDefinition& d,std::int64_t x,std::int6
     const auto n=d.region_size;return {x/n-static_cast<std::int64_t>(x%n<0),y/n-static_cast<std::int64_t>(y%n<0)};
 }
 std::string region_id(const GrammarDefinition& d, spatial::RegionId r) {
-    return d.id + "/grid" + std::to_string(d.region_size) + "/region(" + std::to_string(r.x) + "," + std::to_string(r.y) + ")";
+    // Append into our own string to preserve the retained libstdc++ floor;
+    // GCC 13's rvalue concatenation can import its newer replacement helper.
+    auto id=d.id;
+    id.append("/grid").append(std::to_string(d.region_size)).append("/region(");
+    id.append(std::to_string(r.x)).append(",").append(std::to_string(r.y)).append(")");
+    return id;
 }
 std::uint64_t curve_rank(const GrammarDefinition& d, const GrammarCandidate& c) {
     if (d.curve == GrammarCurve::Peano) return spatial::peano_index(d.curve_order, c.order_x, c.order_y);
@@ -227,7 +232,9 @@ struct GrammarPlan::Impl {
             const bool vertical=side<2;
             const auto bx=owner.x+static_cast<std::int64_t>(side==1);
             const auto by=owner.y+static_cast<std::int64_t>(side==3);
-            const auto key=d.id+"/grid"+std::to_string(d.region_size)+"/boundary/"+(vertical?"x/":"y/")+std::to_string(bx)+"/"+std::to_string(by);
+            auto key=d.id;
+            key.append("/grid").append(std::to_string(d.region_size)).append("/boundary/").append(vertical?"x/":"y/");
+            key.append(std::to_string(bx)).append("/").append(std::to_string(by));
             const auto h=identity_seed(seed,key);
             // Width-independent central aperture coordinate. The boundary key
             // and seed, never either neighbor's compilation window, determine it.
@@ -258,7 +265,9 @@ struct GrammarPlan::Impl {
         const auto utility=[&](const std::string& type,std::int64_t row,std::uint32_t width,Material material) {
             for(unsigned side=0;side<2;++side) {
                 const auto bx=owner.x+side;const spatial::RegionId boundary_owner{bx-1,owner.y};
-                const auto key=d.id+"/grid"+std::to_string(d.region_size)+"/boundary/"+type+"/x/"+std::to_string(bx)+"/"+std::to_string(owner.y);
+                auto key=d.id;
+                key.append("/grid").append(std::to_string(d.region_size)).append("/boundary/").append(type).append("/x/");
+                key.append(std::to_string(bx)).append("/").append(std::to_string(owner.y));
                 add_socket({key,region_id(d,boundary_owner),type,"",boundary_owner,bx*n,row,SocketDirection::East,width,false,true});
                 add_socket({rid+"/port/"+type+(side==0?"-west":"-east"),rid,type,key,owner,bx*n,row,
                     side==0?SocketDirection::West:SocketDirection::East,width,false,false});
@@ -469,7 +478,7 @@ struct GrammarPlan::Impl {
             std::set<std::string> used;
             std::vector<std::size_t> placed;
             for(std::uint32_t slot=0;slot<r.count;++slot) {
-                const auto fid=parent.id+"/"+r.id+"/"+std::to_string(slot);
+                auto fid=parent.id;fid.append("/").append(r.id).append("/").append(std::to_string(slot));
                 struct Choice{const GrammarCandidate* c;RectI64 bounds;double score;std::uint64_t rank;};
                 std::vector<Choice> choices;choices.reserve(r.candidates.size());
                 for(const auto& c:r.candidates) {
@@ -499,7 +508,10 @@ struct GrammarPlan::Impl {
                 f.wall_thickness=r.wall_thickness;f.aggregate=r.aggregate;f.application=r.application;f.exclusion=r.exclusion;
                 const auto index=features.size();add_feature(std::move(f));
                 features[parent_index].children.push_back(fid);siblings.push_back(index);placed.push_back(index);used.insert(selected->c->id);
-                receipt(fid,r.id,"placement",true,"candidate="+selected->c->id+"; hard constraints passed; preference="+std::to_string(selected->score)+"; curve rank="+std::to_string(selected->rank));
+                std::string placement("candidate=");
+                placement.append(selected->c->id).append("; hard constraints passed; preference=").append(std::to_string(selected->score));
+                placement.append("; curve rank=").append(std::to_string(selected->rank));
+                receipt(fid,r.id,"placement",true,std::move(placement));
                 attach(index,r);
             }
             double occupied=0;for(const auto index:placed)occupied+=area(features[index].bounds);
@@ -510,8 +522,12 @@ struct GrammarPlan::Impl {
                 // No alternate quota is silently substituted. Explicit omit
                 // removes this rule's complete sibling group before recursion.
                 for(const auto index:placed)features[index].candidate_id.clear();
-                receipt(parent.id,r.id,"occupancy",false,"authored omit: area fraction "+std::to_string(fraction),true);
-            } else receipt(parent.id,r.id,"occupancy",true,"area fraction "+std::to_string(fraction));
+                std::string detail("authored omit: area fraction ");detail.append(std::to_string(fraction));
+                receipt(parent.id,r.id,"occupancy",false,std::move(detail),true);
+            } else {
+                std::string detail("area fraction ");detail.append(std::to_string(fraction));
+                receipt(parent.id,r.id,"occupancy",true,std::move(detail));
+            }
         }
         // Sibling declarations are all visible before semantic neighbor checks.
         // Greedy priority placement is deliberately finite, not a claim of a
@@ -705,7 +721,7 @@ std::shared_ptr<const GrammarPlan> GrammarPlan::compile(GrammarDefinition defini
     // compile window is enumerated, and each region sees its own skeleton/tree.
     for(std::int64_t ry=window.y;ry<window.y+window.height;++ry)for(std::int64_t rx=window.x;rx<window.x+window.width;++rx) {
         const spatial::RegionId owner{rx,ry};SemanticFeature region;
-        region.id=region_id(impl->definition,owner);region.candidate_id="region";region.kind=SemanticKind::Region;
+        region.id=region_id(impl->definition,owner);region.candidate_id=std::string("region");region.kind=SemanticKind::Region;
         region.bounds={rx*n,ry*n,n,n};region.owner=owner;
         if(impl->assignment)region.themes=normalized_themes(impl->definition.district_themes.at(impl->assignment->sample({static_cast<double>(rx*n+n/2),static_cast<double>(ry*n+n/2)})));
         const auto index=impl->features.size();impl->add_feature(std::move(region));impl->build_region_routes(owner);
@@ -769,9 +785,9 @@ std::shared_ptr<const GrammarPlan> GrammarPlan::compile(GrammarDefinition defini
                 impl->charge(8);count+=!s.matched.empty();if(s.required&&s.matched.empty())all=false;
             }
             std::string failure;
-            if(!all)failure="required socket has no compatible attachment";
-            if(count<f.constraints.minimum_sockets||f.sockets.size()>f.constraints.maximum_sockets)failure="required compatible socket count is unsatisfied";
-            if(f.constraints.connected&&!connected.contains(f.id))failure="feature lacks a connected passage socket";
+            if(!all)failure=std::string("required socket has no compatible attachment");
+            if(count<f.constraints.minimum_sockets||f.sockets.size()>f.constraints.maximum_sockets)failure=std::string("required compatible socket count is unsatisfied");
+            if(f.constraints.connected&&!connected.contains(f.id))failure=std::string("feature lacks a connected passage socket");
             if(failure.empty())continue;
             const auto& r=impl->rule(f.rule_id);
             if(r.fallback==GrammarFallback::Reject)throw std::runtime_error("grammar: "+f.id+": "+failure);
@@ -933,26 +949,26 @@ std::vector<SpatialGeometry> GrammarPlan::geometry_inputs()const {
     return result;
 }
 GrammarDefinition GrammarPlan::example() {
-    GrammarDefinition d;d.id="industrial";d.region_window={-1,-1,2,2};d.region_size=128;d.curve_services=true;
-    GrammarRule district;district.id="district";district.kind=SemanticKind::District;
+    GrammarDefinition d;d.id=std::string("industrial");d.region_window={-1,-1,2,2};d.region_size=128;d.curve_services=true;
+    GrammarRule district;district.id=std::string("district");district.kind=SemanticKind::District;
     district.candidates={{"whole",{0,0,128,128},0,0}};district.material.reset();district.interior.reset();district.wall_thickness=0;
     district.themes={{"industrial",3},{"garden",1}};district.tags={"district"};district.children={"complex"};
-    GrammarRule complex;complex.id="complex";complex.kind=SemanticKind::Complex;
+    GrammarRule complex;complex.id=std::string("complex");complex.kind=SemanticKind::Complex;
     complex.candidates={{"north",{12,28,104,72},0,0},{"south",{12,36,104,72},0,1}};
     complex.tags={"building"};complex.children={"room"};complex.constraints.intersects_route=true;
     complex.sockets={{"entry","passage",SocketDirection::West,36,7,true,true}};
     complex.constraints.connected=true;complex.constraints.minimum_sockets=1;
     complex.preferences={{"tour","curve_density",1,{}}};
-    GrammarRule room;room.id="room";room.kind=SemanticKind::Room;room.candidates={{"interior",{4,4,96,64},0,0}};
+    GrammarRule room;room.id=std::string("room");room.kind=SemanticKind::Room;room.candidates={{"interior",{4,4,96,64},0,0}};
     room.tags={"workshop"};room.children={"pump","console"};room.constraints.open_volume=true;
-    GrammarRule pump;pump.id="pump";pump.kind=SemanticKind::Apparatus;
+    GrammarRule pump;pump.id=std::string("pump");pump.kind=SemanticKind::Apparatus;
     pump.candidates={{"floor",{8,54,8,8},0,0}};pump.material=Material::Copper;pump.interior=Material::Copper;pump.wall_thickness=0;
-    pump.tags={"service","pump"};pump.constraints.floor=true;pump.constraints.service="service";pump.constraints.neighbor_distance=64;
+    pump.tags={"service","pump"};pump.constraints.floor=true;pump.constraints.service=std::string("service");pump.constraints.neighbor_distance=64;
     pump.children={"detail"};pump.parameters["flow"]={SpatialType::Scalar,0.75};
-    GrammarRule console;console.id="console";console.kind=SemanticKind::Apparatus;
+    GrammarRule console;console.id=std::string("console");console.kind=SemanticKind::Apparatus;
     console.candidates={{"ceiling",{64,2,12,6},1,0}};console.material=Material::Metal;console.interior=Material::Metal;console.wall_thickness=0;
     console.constraints.ceiling=true;console.constraints.open_volume=true;console.constraints.minimum_separation=8;
-    GrammarRule detail;detail.id="detail";detail.kind=SemanticKind::Detail;detail.candidates={{"gauge",{2,2,3,3},0,0}};
+    GrammarRule detail;detail.id=std::string("detail");detail.kind=SemanticKind::Detail;detail.candidates={{"gauge",{2,2,3,3},0,0}};
     detail.material=Material::Glass;detail.interior=Material::Glass;detail.wall_thickness=0;detail.tags={"gauge"};
     d.rules={district,complex,room,pump,console,detail};d.roots={"district"};
     d.geometry_exports={{"industrial_loop","industrial/grid128/region(0,0)/route/loop"},{"industrial_room","industrial/grid128/region(0,0)/district/0/complex/0/room/0"}};

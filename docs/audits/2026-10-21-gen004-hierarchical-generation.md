@@ -90,10 +90,11 @@ git diff --check
 
 Structural documentation validation passed with 97 documents, eight navigation
 files, 189 canonical claims and 152 heading anchors, with no errors or warnings.
-Both JSON files parsed and the whitespace check passed. Full JSON Schema
-evaluation was not run: the local Python environment did not provide the
-`jsonschema` package. This does not qualify recipe execution, which requires the
-native compiler and adapter controls recorded separately.
+Both JSON files parsed and the whitespace check passed. At this documentation
+checkpoint, full JSON Schema evaluation was not run because the local Python
+environment did not provide `jsonschema`. The later frozen-source check below
+adds that receipt. Schema validation does not qualify recipe execution, which
+requires the native compiler and adapter controls recorded separately.
 
 The resulting retrieval corpus contains 97 documents and 1,063 heading chunks.
 The evaluator SHA-256 is
@@ -167,6 +168,11 @@ later rebuilt binaries or commits.
 
 ## Local integration verification before publication
 
+The complete frozen source was published as
+[`e25fbbc921f35435f369928c5b53bde2c2c223a5`](https://github.com/techrote/cybersand/commit/e25fbbc921f35435f369928c5b53bde2c2c223a5),
+tree `77194f834e8bb1f79286a7a5b4b17e89a764180f`, retaining the implementation,
+schema/example, regression tests and scoped runtime publisher.
+
 The final native source working tree based on remote checkpoint `66fddb78` passed
 `make -j2 BUILD_DIR=build/gen004-acceptance worldgen-test` on Linux x86_64 with
 GCC 13.3.0. All eight executables passed: legacy generation, atomic World
@@ -212,6 +218,54 @@ then execution with `ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1` and
 `UBSAN_OPTIONS=halt_on_error=1`. Its binary SHA-256 was
 `a053007c861de9b6d8c7af0b3f8e8d2f245e23fce8eafa99e17d0117c1d176ac`;
 the implementation and test source hashes were unchanged before and after.
+
+The frozen grammar schema also passed `Draft202012Validator.check_schema`, and
+the complete example's `grammar` member passed that schema's `validate` method,
+using `jsonschema==4.23.0` installed in an isolated temporary environment. This
+added no repository dependency or source change.
+
+## Linux runtime compatibility correction
+
+The first scoped runtime publication for source `e25fbbc921f35435f369928c5b53bde2c2c223a5`,
+[run 39558540625](https://github.com/techrote/cybersand/actions/runs/39558540625),
+failed the Linux compatibility gate before its focused tests could execute:
+the rebuilt extension required `GLIBCXX_3.4.31` instead of the retained
+`GLIBCXX_3.4.30` floor. The Windows cross-build and actual Windows execution
+passed, but the publication job correctly skipped; no runtime publication
+commit was created. The earlier local Linux test pass above was on a host
+providing the newer symbol and therefore did not establish distribution
+compatibility.
+
+Object-level inspection attributed the new import to GCC 13's
+`std::string::_M_replace_cold` helper, introduced by literal assignments and
+rvalue concatenation in semantic IDs, constraint receipts and final route/support
+diagnostics. Those expressions now construct then move strings or append into
+owned strings. Compiler, dependency pins and the compatibility gate are
+unchanged. The optimized planner, raster integration and Godot adapter objects
+contain no `_M_replace_cold` import.
+
+Nine before/after planner fixtures (Hilbert, Morton and Peano, each with seeds
+`0`, `191` and `UINT64_MAX`) produced byte-identical fingerprints, work/storage
+receipts, feature IDs/revisions and constraint receipts. Both comparison files
+had SHA-256 `dbd31f7fa32091dbe58474e1e1d365e957378f10891721c027e775c1a9595f3b`.
+The corrected implementation hashes are:
+
+| Source | SHA-256 |
+|---|---|
+| `native/src/world_generation.cpp` | `f4af7b2deaf68348acc22699a5aca636a93d3dfbb0f91d26e7c675ed679f6561` |
+| `native/src/generation_grammar.cpp` | `4f872a4140a9bb2be617947f4fd491d546a584f396f97bd6efaa801121163eba` |
+
+The corrected source passed the independent debug grammar suite's **77,294
+assertions**. Rebuilding the complete extension through the pinned Linux build
+script produced SHA-256
+`8e23761806f944896f094ad927c245673689e5b3bdaccfeea335acd763fddd5d`.
+`bash tools/check_linux_runtime_floor.sh` passed with bundle `GLIBC_2.34`,
+CyberSand `GLIBC_2.32`, `GLIBCXX_3.4.30` and `CXXABI_1.3.9`, and Rapier2D
+`GLIBC_2.34`. This corrected runtime then passed the pinned Godot import and
+the same five focused cases: Workbench **138**, fields **271**, typed generation
+**394**, semantic grammar **438** and render integration **23** assertions,
+with no skips or errors. These are local receipts; both target-OS builds and
+execution are repeated by the scoped publisher for the corrected source commit.
 
 ## Acceptance status at documentation preparation
 

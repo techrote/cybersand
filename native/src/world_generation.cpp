@@ -882,14 +882,19 @@ void Generator::Impl::check_routes() {
             if (clear[index] == 2) return;
             if (outcome.blocked_centres++ != 0) return;
             outcome.first_block_x = x; outcome.first_block_y = y;
-            outcome.detail = clear[index] == 0 ? "final raster blocks declared square clearance" : "final raster disconnects this route from the required network";
+            // Construct then move: GCC 13's pointer assignment may import the
+            // newer libstdc++ overlap helper even for these disjoint literals.
+            outcome.detail = std::string(clear[index] == 0 ? "final raster blocks declared square clearance" : "final raster disconnects this route from the required network");
             for (const auto& hard : recipe.overrides) if (hard.material && *hard.material != Material::Empty &&
                 x + radius >= hard.bounds.x && x - radius < hard.bounds.x + hard.bounds.width &&
                 y + radius >= hard.bounds.y && y - radius < hard.bounds.y + hard.bounds.height)
-                outcome.detail += "; final hard override: " + hard.id;
+            {
+                outcome.detail.append("; final hard override: ");
+                outcome.detail.append(hard.id);
+            }
         });
         outcome.passed = outcome.checked_centres > 0 && outcome.blocked_centres == 0;
-        if (outcome.passed) outcome.detail = "final Empty-cell square clearance and four-neighbour connectivity verified";
+        if (outcome.passed) outcome.detail = std::string("final Empty-cell square clearance and four-neighbour connectivity verified");
         result.passed = result.passed && outcome.passed;
         result.routes.push_back(std::move(outcome));
     }
@@ -898,7 +903,7 @@ void Generator::Impl::check_routes() {
         const auto b = feature.bounds;
         const auto check_support = [&](const char* constraint, bool horizontal, bool floor) {
             SupportOutcome outcome;
-            outcome.feature_id = feature.id; outcome.constraint = constraint;
+            outcome.feature_id = feature.id; outcome.constraint = std::string(constraint);
             const auto contact = [&](std::int64_t x, std::int64_t y) {
                 ++outcome.checked_cells;
                 if (inside(bounds, x, y)) {
@@ -914,8 +919,8 @@ void Generator::Impl::check_routes() {
                 for (auto y = b.y; y < b.y + b.height; ++y) { contact(b.x - 1, y); contact(b.x + b.width, y); }
             }
             outcome.passed = outcome.checked_cells > outcome.missing_cells;
-            outcome.detail = outcome.passed ? "final raster retains static solid contact on the declared side" :
-                "final raster removed all static solid contact on the declared side; inspect final material contributions";
+            outcome.detail = std::string(outcome.passed ? "final raster retains static solid contact on the declared side" :
+                "final raster removed all static solid contact on the declared side; inspect final material contributions");
             result.supports_passed = result.supports_passed && outcome.passed;
             result.supports.push_back(std::move(outcome));
         };
