@@ -26,7 +26,7 @@ and [Checks](https://github.com/techrote/cybersand/pull/189/checks) record the e
 final PR head, required hosted outcomes, merge identity and landed-main result.
 Local results and scoped runtime publication do not establish those final outcomes.
 
-## Latest-base reintegration — 2026-10-21
+## Latest-base reintegration: initial checkpoint — 2026-10-21
 
 The first completion reached successful required hosted validation at PR head
 `d3d4f4ce2e4c73a87199516c86c01aa2cc7d84b1`, with tree
@@ -53,21 +53,23 @@ runs above remain valid evidence for their earlier exact tree.
 The latest-base reintegration preserves player controls and material-field
 ownership alongside GEN-003 typed fields and GEN-004 semantic hierarchy, native
 compilation units, bindings, regressions and documentation/retrieval routes.
-Its combined source requires **new Linux and Windows runtime builds and matching
+At this initial checkpoint, its combined source required **new Linux and Windows runtime builds and matching
 provenance**, actual execution covering the player and generation additions,
 and fresh applicable exact-head Documentation, Native, GDExtension/Godot and
 Water gates before merge. Neither the earlier player runtime publication nor
 GEN-004 main's retained runtime alone certifies this new combined source.
-Those new results are not established by this checkpoint; PR #189's description
-and Checks retain ownership of the eventual exact-head acceptance and merge
-record. All source identities, hashes, assertion counts and failures below
-preserve the scope of the earlier checkpoints.
+Those new results were not yet established at that checkpoint. The subsequent
+combined runtime publication is recorded in the next section; PR #189's
+description and Checks retain ownership of the eventual exact-head acceptance
+and merge record. Earlier source identities, hashes, assertion counts and
+failures remain unchanged in their separately scoped sections.
 
 The scoped player publisher now requires all six player regressions and five
 generation cases, including `test_worldgen_grammar.gd`, on each actual target OS.
 Its expanded guard suite passed **17 tests** at this reintegration checkpoint;
-the earlier 15-test result below retains its historical scope. Actual combined
-runtime execution and full hosted acceptance remain separately required.
+the earlier 15-test result below retains its historical scope. Those guard tests
+did not themselves establish actual combined-runtime execution or full hosted
+acceptance.
 
 The documentation merge preserves all parent question objects and corpus routes:
 102 supplementary questions, 98 current documents and 64 explicit exclusions.
@@ -80,6 +82,110 @@ The [Web builder's source list](../../tools/build_web.py) now includes
 `native/src/generation_grammar.cpp`, matching the desktop builders and correcting
 the omitted `GrammarPlan` definitions. This is a source-list integration fix;
 it establishes no new Web runtime build or browser execution acceptance.
+
+## GEN-004 combined runtime publication — 2026-10-21
+
+The scoped publisher completed [run 39651211155](https://github.com/techrote/cybersand/actions/runs/39651211155)
+with all four jobs successful. It rebuilt the Linux and Windows runtimes from
+the combined player, GEN-003 and GEN-004 source, executed the focused suite on
+each actual target OS, and published the verified binaries and manifests.
+
+| Identity | Verified value |
+|---|---|
+| Combined implementation source | `0e8e466a9235756b8ac7b61367e4cb8b7dd75dd7` |
+| Implementation tree | `6ebc49f6832348f98e0fd7d102aca60898aa0368` |
+| Integrated main | `471e6b876d9724d2e4ee18bdbd8c9a9b37f1d623`, including GEN-004 / PR #196 |
+| Runtime publication commit | `c0c129c33c72be20dd20f4de2d333728816a0213` |
+| Runtime publication tree | `35cab55157ba38272f52ddd8f9267d1786a65682` |
+| Publication parent | Sole parent `0e8e466a9235756b8ac7b61367e4cb8b7dd75dd7` |
+
+The publication changes exactly four paths under
+`godot/addons/cybersand_native/`: the Linux and Windows binaries in `bin/`,
+`runtime-provenance.linux.json` and `runtime-provenance.json`. Both manifests
+record `validated-development-runtime` and bind their source/build commits to
+`0e8e466a9235756b8ac7b61367e4cb8b7dd75dd7`. Their identical ledgers contain
+**46 native inputs and 350 build/test inputs**. Independent recomputation matched
+both ledgers to the canonical implementation source and the publication checkout;
+both materialized binary hashes and sizes match their manifests.
+
+| Hosted job | Completed result |
+|---|---|
+| [Linux build and execution 119399705757](https://github.com/techrote/cybersand/actions/runs/39651211155/job/119399705757) | Passed build, ABI floor, import and all 11 focused cases; **4,514 assertions**, zero failures/errors/skips |
+| [Windows cross-build 119399706103](https://github.com/techrote/cybersand/actions/runs/39651211155/job/119399706103) | Passed pinned Windows build and artifact/source recording |
+| [Actual Windows execution 119403023826](https://github.com/techrote/cybersand/actions/runs/39651211155/job/119403023826) | Passed import and all 11 focused cases on Windows Server 2022; **4,543 assertions**, zero failures/errors/skips |
+| [Publication 119404309886](https://github.com/techrote/cybersand/actions/runs/39651211155/job/119404309886) | Verified both receipts, bounded staged paths/LFS identities and unchanged source head; published the four-path commit |
+
+The actual target-OS logs contain these positive summaries:
+
+| Focused case | Linux assertions | Windows assertions |
+|---|---:|---:|
+| Player acrobat | 304 | 304 |
+| Acrobat physics | 36 | 36 |
+| Player material field | 56 | 56 |
+| Playground course | 1,446 | 1,475 |
+| Playground runtime | 1,329 | 1,329 |
+| Player vehicle controls | 79 | 79 |
+| Worldgen workbench | 138 | 138 |
+| Generation fields | 271 | 271 |
+| GEN-003 typed adapter/workbench | 394 | 394 |
+| GEN-004 grammar adapter | 438 | 438 |
+| Render-world generation | 23 | 23 |
+| **Total** | **4,514** | **4,543** |
+
+Every summary reports zero failures. Both integrated player-runtime summaries
+explicitly report `scope=all-seven-native-and-Rapier`. Full job-log review found
+no engine/script errors, workflow error markers or skipped cases. Course totals
+retain their measured platform difference because the fixture counts checks
+during actual physics traversal. Godot remains
+`4.7.stable.official.5b4e0cb0f` with pinned Rapier `0.35.2`.
+
+Linux used GCC 13.3.0, GNU binutils 2.42, SCons 4.10.1 and godot-cpp
+`101ae38034304346a46ea9ea84ae156d3e860496`. The Windows cross-build used pinned
+LLVM-MinGW 20260826 UCRT with Clang/LLD 23.1.0. The Linux ABI floor passed:
+bundle GLIBC 2.34; CyberSand GLIBC 2.32 / GLIBCXX 3.4.30 / CXXABI 1.3.9;
+Rapier GLIBC 2.34.
+
+| Published artifact | Size | SHA-256 |
+|---|---|---|
+| Linux `libcybersand_native.linux.x86_64.so` | 2,926,808 bytes | `42f677728ca3a11a0a3626de06d43be3bc7976b35fd70d7f2b193f3f6c6b06e3` |
+| Windows `cybersand_native.windows.x86_64.dll` | 3,447,808 bytes | `c59b81de317d23808790304994498f7661ce804fa19e66e1176b3cbb762f0724` |
+
+| Runtime evidence bundle | Artifact ID | `validation.json` SHA-256 |
+|---|---|---|
+| `player-runtime-linux-39651211155` | `12369108467` | `174a21d354b085493eff9be477ae41747d23497e9f53b188f262bee2268c4425` |
+| `player-runtime-windows-39651211155` | `12369188291` | `4f65a1d888a83c82c529daab1649cbc40018fb9f69d0e4ac45089b25ce28c39a` |
+
+The clean publication checkout passed
+`python3 tools/ci/check_repository.py --require-materialized` with all **18 required
+runtime files materialized**, and `git lfs fsck` passed. This current-source
+provenance check is separate from the deliberately skipped provenance step in
+the preceding draft Documentation run.
+
+### Draft documentation evidence and final acceptance routing
+
+Source-head [Documentation run 39651220370](https://github.com/techrote/cybersand/actions/runs/39651220370)
+and [job 119399735827](https://github.com/techrote/cybersand/actions/runs/39651220370/job/119399735827)
+passed. The job used companion revision
+`6a58311982941b75f46e22109a0829e5acb83c7e` and synthetic PR merge
+`397bcb859c004370de255d61144aa6bc960fed9f` for source `0e8e466` against main
+`471e6b8`. It passed 98-document lint (192 canonical claims, 2,076 links and
+169 anchors; zero errors/warnings), historical M11 integrity (18 records and
+28 source hashes), CI-provider policy, checker regressions, retrieval and
+LFS/whitespace validation. The retrieval measurements match the initial
+reintegration checkpoint above; evidence artifact `retrieval-39651220370` has
+ID `12369976277`. Published-runtime provenance was explicitly skipped while the
+PR was draft, so that run alone did not establish runtime acceptance.
+
+The scoped publication and current materialized-runtime checks now supply the
+combined-runtime evidence missing at the initial reintegration checkpoint.
+They do not replace fresh full ready-PR validation. The final
+[PR #189 description](https://github.com/techrote/cybersand/pull/189) and
+[Checks](https://github.com/techrote/cybersand/pull/189/checks) must record the
+eventual exact final head and all applicable Documentation/provenance, Native,
+Linux/Godot, actual Windows and Water outcomes, followed by the merge identity
+and landed-main verification. No final ready-PR or merge result is claimed here.
+The earlier `d3d4f4c` results and first runtime publication retain their own
+historical source/artifact scope.
 
 ## Source identities
 
