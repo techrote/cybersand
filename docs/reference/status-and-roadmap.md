@@ -177,6 +177,30 @@ continues with [GEN-004 #191](https://github.com/techrote/cybersand/issues/191),
 [GEN-006 #194](https://github.com/techrote/cybersand/issues/194). GEN-004 reuses
 the immutable geometry/assignment interfaces and the existing bounded solver.
 
+## Hierarchical places checkpoint — 2026-10-21
+
+**Current source implementation, GEN-004 / [#191](https://github.com/techrote/cybersand/issues/191):**
+schema 3 adds a finite canonical regional hierarchy with stable rule/slot IDs,
+bounded candidate placement, exact multiplicities and occupancy ranges,
+support/neighbor/family requirements, matched sockets, shared boundary ports,
+explicit loops/service trunks and finite-curve structural tours. Geometry exports
+feed GEN-003 typed fields; the shared finite assignment solver owns district
+categories. The existing candidates/modules/masks/aggregates rasterize the
+semantic plan and preserve final hard material authority.
+
+The [hierarchy contract](../systems/procedural-hierarchical-generation.md) and
+[ADR-013](../decisions/ADR-013-canonical-semantic-generation.md) own semantics and
+ownership. The executable four-district profile contains cross-chunk foundries,
+rooms, apparatus and nested detail. Copied inspection exposes semantic ancestry,
+constraints, field inputs and material contributions. Final raster route reports
+qualify an explicit floating-square clearance profile; they do not establish
+actor/controller or gravity traversal. Source/runtime acceptance is separately
+recorded in the [GEN-004 audit](../audits/2026-10-21-gen004-hierarchical-generation.md).
+
+This stage adds no persistent resident-world streaming, automatic player-edit
+reconciliation or semantic depth projection. The next programme stages remain
+GEN-005 → GEN-007 → GEN-006, subject to this issue's explicit acceptance gates.
+
 ## Decisions and defects to resolve
 
 Rows distinguish **Current fixes**, remaining defects and open decisions; dated

@@ -333,6 +333,14 @@ diagnostic. The display may map a signed scalar or category to colour, while the
 inspector preserves the raw typed value. Presentation colour is never the stored
 categorical identity or a material mask.
 
+GEN-004 schema-3 recipes may populate selected `spatial` geometry inputs from
+[immutable semantic route/feature exports](procedural-hierarchical-generation.md).
+The planner resolves those names before the typed compiler runs. Each export
+is one actual polyline or feature boundary; separate routes are never joined by
+invented segments. Fields retain no dependency on grammar types, live World
+state or partially rasterized neighboring cells. GEN-004 also reuses this finite
+assignment solver for declared district themes.
+
 The Workbench writes JSON with full floating-point precision. External GDScript
 authors should use `JSON.stringify(recipe, "  ", true, true)` so the
 `full_precision` argument preserves accepted double values and the compiled

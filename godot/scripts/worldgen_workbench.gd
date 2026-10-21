@@ -129,6 +129,8 @@ var spatial_id: LineEdit
 var spatial_choice: OptionButton
 var spatial_help: Label
 var spatial_example: OptionButton
+var semantic_feature_count: int = 0
+var semantic_route_report: Dictionary = {}
 var aggregate_choice: OptionButton
 var aggregate_id: LineEdit
 var aggregate_grain: SpinBox
@@ -444,6 +446,8 @@ func _build_spatial_tab(box: VBoxContainer) -> void:
 	_note(box, "Schema 2 adds typed, immutable spatial functions. Edit nodes, named subgraphs, instances, geometry and finite adjacency assignments here. Only explicit normalized outputs can drive material masks.")
 	spatial_example = _options(box, SPATIAL_EXAMPLES)
 	_button(box, "Load complete spatial example", func() -> void: load_spatial_example(spatial_example.get_item_text(spatial_example.selected)))
+	_button(box, "Load four foundries hierarchy", load_hierarchy_example)
+	_note(box, "The hierarchy profile creates four districts with nested rooms, apparatus, shared passages and utilities. Edit its grammar in the full profile JSON; inspect a cell for ancestry and material decisions.")
 	spatial_choice = _field_reference(box, "Accepted typed output")
 	spatial_choice.item_selected.connect(func(_index: int) -> void: _refresh_spatial_help())
 	_button(box, "Inspect typed output", func() -> void: select_diagnostic("spatial:" + _reference(spatial_choice)))
@@ -472,6 +476,19 @@ func load_spatial_example(name: String) -> bool:
 		return false
 	return apply_recipe(parser.data)
 
+func load_hierarchy_example() -> bool:
+	var path: String = ProjectSettings.globalize_path("res://../examples/worldgen/hierarchy-multi-district.json")
+	var parser := JSON.new()
+	if parser.parse(FileAccess.get_file_as_string(path)) != OK or not parser.data is Dictionary:
+		_set_error("Cannot read the four foundries hierarchy example.")
+		return false
+	if not apply_recipe(parser.data):
+		return false
+	camera_origin = Vector2(-128, -128)
+	view_size = Vector2(256, 256)
+	_sync_preview()
+	return true
+
 func apply_spatial_json() -> bool:
 	if spatial_editor.text.to_utf8_buffer().size() > MAX_PROFILE_BYTES:
 		_set_error("Spatial JSON exceeds the 1 MiB profile limit.")
@@ -481,7 +498,7 @@ func apply_spatial_json() -> bool:
 		_set_error("Spatial JSON must be a valid object: " + parser.get_error_message())
 		return false
 	var recipe: Dictionary = active_recipe.duplicate(true)
-	recipe.schema = 2
+	recipe.schema = maxi(2, int(recipe.get("schema", 1)))
 	recipe.spatial = parser.data
 	return apply_recipe(recipe)
 
@@ -862,7 +879,7 @@ func _pick_context_material() -> void:
 
 func _build_profile_dialog() -> void:
 	profile_dialog = Window.new()
-	profile_dialog.title = "World generation / schema 1 and 2 profiles"
+	profile_dialog.title = "World generation / schema 1, 2 and 3 profiles"
 	profile_dialog.size = Vector2i(960, 740)
 	profile_dialog.min_size = Vector2i(620, 460)
 	profile_dialog.visible = false
@@ -951,6 +968,11 @@ func apply_recipe(recipe: Dictionary, record_undo: bool = true) -> bool:
 	active_recipe = generator.get_configuration().duplicate(true)
 	active_revision = int(checked.revision)
 	active_fingerprint = str(checked.fingerprint)
+	semantic_feature_count = 0
+	semantic_route_report = checked.get("route_validation", {}).duplicate(true)
+	if active_recipe.has("grammar"):
+		var plan: Dictionary = generator.get_semantic_plan()
+		semantic_feature_count = plan.get("features", []).size()
 	_view_token += 1
 	_has_active_chunk = false
 	_job_completed = 0
@@ -1545,6 +1567,16 @@ func _inspect_point(point: Vector2) -> void:
 			text += " · %s = %s" % [diagnostic_channel, spatial_diagnostic_text(cache[coordinate], index)]
 		elif not diagnostic_channel.is_empty() and cache[coordinate].has("diagnostics"):
 			text += " · %s = %.5f" % [diagnostic_channel, float(cache[coordinate].diagnostics[index])]
+	if active_recipe.has("grammar"):
+		var provenance: Dictionary = generator.inspect_cell(Vector2i(x, y))
+		if provenance.get("ok", false):
+			text += " · " + " > ".join(PackedStringArray(provenance.get("ancestry", [])))
+			var contributions: Array = provenance.get("contributions", [])
+			if not contributions.is_empty():
+				text += " · final: " + str(contributions.back().stage) + "/" + str(contributions.back().id)
+			pointer_label.tooltip_text = JSON.stringify(provenance, "  ", true, true)
+	else:
+		pointer_label.tooltip_text = ""
 	pointer_label.text = text
 
 func _refresh_status() -> void:
@@ -1554,6 +1586,7 @@ func _refresh_status() -> void:
 	marks_label.text = "%d theme/parameter strokes · %d routes · %d hard overrides · %d modules" % [active_recipe.get("strokes", []).size(), active_recipe.get("paths", []).size(), active_recipe.get("overrides", []).size(), active_recipe.get("modules", []).size()]
 	marks_label.text += " · %d fields · %d aggregates · %d modifiers" % [active_recipe.get("fields", []).size(), active_recipe.get("aggregates", []).size(), active_recipe.get("modifiers", []).size()]
 	if not spatial_nodes.is_empty(): marks_label.text += " · %d typed nodes" % spatial_nodes.size()
+	if semantic_feature_count > 0: marks_label.text += " · %d semantic features" % semantic_feature_count
 	if not last_error.is_empty():
 		status_label.text = last_error
 		return
@@ -1565,6 +1598,8 @@ func _refresh_status() -> void:
 		text += " · visible region ready"
 	if not last_packet.is_empty():
 		text += " · last chunk %s · %s operations · %.2f ms native work" % [str(last_packet.get("hash", "")), str(last_packet.get("operations", 0)), float(last_packet.get("compute_usec", 0)) / 1000.0]
+	if not semantic_route_report.is_empty() and not semantic_route_report.get("passed", false):
+		text += " · route clearance conflict: inspect validate_routes() for the blocking material decision"
 	_set_status(text)
 
 func _set_error(message: String) -> void:

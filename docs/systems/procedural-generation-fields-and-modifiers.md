@@ -11,6 +11,13 @@ related-documents: [procedural-world-generation.md, ../architecture/data-ownersh
 
 # Procedural generation fields and masked modifiers
 
+GEN-004's opt-in schema-3 [semantic hierarchy](procedural-hierarchical-generation.md)
+can reference these normalized application/exclusion masks and existing aggregate
+recipes on feature proposals. Its immutable geometry exports can also feed
+GEN-003 typed distance fields. Scalar initial context remains the original analytic
+candidate snapshot; it never observes partially rasterized semantic features.
+Semantic routes restore after material controls and before final hard overrides.
+
 ## What does GEN-002 add?
 
 This page owns the retained normalized `fields` graph. GEN-003 schema 2 adds

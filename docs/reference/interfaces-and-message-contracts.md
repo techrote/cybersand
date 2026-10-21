@@ -95,6 +95,38 @@ revision and overall recipe fingerprint even when the spatial graph is unchanged
 See the [typed graph contract](../systems/procedural-typed-spatial-fields.md) and
 [operator inventory](procedural-spatial-operators.md) for exact semantics.
 
+### Native semantic plans and copied hierarchy inspection
+
+**Current schema-3 / GEN-004 extension:** `Recipe::grammar` is a versioned
+`GrammarDefinition`. `GrammarPlan::compile(definition, seed)` returns immutable
+features, sockets, routes and constraint receipts, with finite `bounds()`,
+`fingerprint()`, work/storage metadata, ID lookup, bounded rectangle `query()`
+and `ancestry()` APIs. Feature IDs include the world namespace, region grid size,
+signed region address, parent path, rule ID and stable numeric slot. Content
+revision, recipe revision and receipt identity are separate values.
+
+`Generator::semantic_plan()` exposes the const plan. `validate_routes()` returns
+the complete retained report for final material cells and the declared odd square
+clearance profile. It records success/failure per required explicit route;
+intentional final hard material blockers remain in the material output and fail
+their route checks. `explain(x,y)` returns a bounded `CellProvenance` value with
+final material, semantic ancestry, constraint receipts, stage contributions and
+scalar/typed field values. Native query pointers borrow only their immutable
+plan, so callers must retain that plan's lifetime.
+
+Godot adds `get_semantic_plan()`, `inspect_cell(Vector2i)` and
+`validate_routes()` to the separate `CyberWorldGenerator`. They return copied
+dictionaries/arrays; no live World or feature pointer crosses the adapter.
+`configure` includes the route report for accepted grammar recipes, while
+`get_configuration` preserves the authored `grammar` declaration. The grammar's
+`district_assignment` wraps GEN-003 `specification` and optional `limits`, and
+`district_themes` uses exact 16-digit lowercase hexadecimal keys. Typed feature
+parameters use the existing `SpatialValue` JSON encoding. Unknown fields and
+malformed inputs reject transactionally, preserving the previous configuration.
+The [hierarchy contract](../systems/procedural-hierarchical-generation.md) and
+[grammar JSON schema](../../examples/worldgen/schemas/grammar-v1.schema.json)
+own exact semantic meaning and relational checks.
+
 ### Native C API
 
 **Current:** [c_api.h](../../native/include/cybersand/c_api.h) defines the

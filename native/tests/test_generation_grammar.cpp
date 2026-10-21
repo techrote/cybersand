@@ -1,0 +1,853 @@
+#include "cybersand/generation_grammar.hpp"
+#include "cybersand/world_generation.hpp"
+
+#include <algorithm>
+#include <array>
+#include <atomic>
+#include <cmath>
+#include <cstdint>
+#include <deque>
+#include <iostream>
+#include <limits>
+#include <map>
+#include <random>
+#include <set>
+#include <stdexcept>
+#include <string>
+#include <string_view>
+#include <thread>
+#include <vector>
+
+namespace {
+using namespace cybersand;
+using namespace cybersand::generation;
+
+std::uint64_t assertions = 0;
+void require(bool value, const std::string& reason) {
+    ++assertions;
+    if (!value) throw std::runtime_error(reason);
+}
+template<class Action>
+std::string rejection(Action&& action) {
+    try { action(); }
+    catch (const std::exception& error) { return error.what(); }
+    throw std::runtime_error("expected deterministic rejection");
+}
+
+GrammarCandidate candidate(std::string id, RectI64 bounds, std::uint32_t ox = 0, std::uint32_t oy = 0) {
+    GrammarCandidate value;
+    value.id = std::move(id);
+    value.bounds = bounds;
+    value.order_x = ox;
+    value.order_y = oy;
+    return value;
+}
+GrammarRule room(std::string id, RectI64 bounds) {
+    GrammarRule value;
+    value.id = std::move(id);
+    value.kind = SemanticKind::Room;
+    value.candidates = {candidate("fixed", bounds)};
+    value.material = Material::Concrete;
+    value.interior = Material::Empty;
+    value.wall_thickness = 1;
+    return value;
+}
+GrammarDefinition flat() {
+    GrammarDefinition result;
+    result.id = "acceptance";
+    result.region_size = 64;
+    result.region_window = {0, 0, 1, 1};
+    result.roots = {"hall"};
+    result.rules = {room("hall", {2, 2, 60, 60})};
+    return result;
+}
+bool contains(RectI64 a, RectI64 b) {
+    return b.x >= a.x && b.y >= a.y && b.width <= a.width && b.height <= a.height &&
+           b.x - a.x <= a.width - b.width && b.y - a.y <= a.height - b.height;
+}
+bool intersects(RectI64 a, RectI64 b) {
+    return a.x < b.x + b.width && b.x < a.x + a.width &&
+           a.y < b.y + b.height && b.y < a.y + a.height;
+}
+bool same_bounds(RectI64 a, RectI64 b) {
+    return a.x == b.x && a.y == b.y && a.width == b.width && a.height == b.height;
+}
+const SemanticFeature& by_rule(const GrammarPlan& plan, std::string_view id) {
+    auto found = std::find_if(plan.features().begin(), plan.features().end(),
+                              [&](const auto& value) { return value.rule_id == id; });
+    if (found == plan.features().end()) throw std::runtime_error("missing feature for rule " + std::string(id));
+    return *found;
+}
+void same_feature(const SemanticFeature& a, const SemanticFeature& b) {
+    require(a.id == b.id && a.parent == b.parent && a.rule_id == b.rule_id &&
+                a.candidate_id == b.candidate_id && a.kind == b.kind &&
+                same_bounds(a.bounds, b.bounds) && a.owner == b.owner &&
+                a.seed == b.seed && a.revision == b.revision && a.order == b.order &&
+                a.priority == b.priority && a.children == b.children && a.tags == b.tags &&
+                a.parameters == b.parameters && a.allowed_materials == b.allowed_materials &&
+                a.sockets == b.sockets && a.material == b.material && a.interior == b.interior &&
+                a.wall_thickness == b.wall_thickness && a.aggregate == b.aggregate &&
+                a.application == b.application && a.exclusion == b.exclusion,
+            "semantic record changed with declaration or planning partition");
+    require(a.themes.size() == b.themes.size(), "theme count is stable");
+    for (std::size_t i = 0; i < a.themes.size(); ++i)
+        require(a.themes[i].id == b.themes[i].id && a.themes[i].weight == b.themes[i].weight,
+                "theme blend record is stable");
+}
+std::size_t count_rule(const GrammarPlan& plan, const std::string& id) {
+    return static_cast<std::size_t>(std::count_if(plan.features().begin(), plan.features().end(),
+        [&](const auto& value) { return value.rule_id == id; }));
+}
+
+void hierarchy_queries_and_stable_identity() {
+    auto definition = flat();
+    auto chamber = room("chamber", {4, 4, 40, 40});
+    chamber.kind = SemanticKind::Complex;
+    chamber.tags = {"habitat", "industrial"};
+    chamber.themes = {{"foundry", 3}, {"garden", 1}};
+    chamber.parameters["pressure"] = {SpatialType::Scalar, 2.5};
+    chamber.allowed_materials = {Material::Concrete, Material::Empty};
+    auto apparatus = room("apparatus", {4, 4, 8, 8});
+    apparatus.kind = SemanticKind::Apparatus;
+    apparatus.material = Material::Copper;
+    definition.rules[0].kind = SemanticKind::District;
+    definition.rules[0].children = {"chamber"};
+    chamber.children = {"apparatus"};
+    definition.rules.push_back(chamber);
+    definition.rules.push_back(apparatus);
+    definition.region_window = {-1, -1, 2, 2};
+    const auto plan = GrammarPlan::compile(definition, 191);
+    require(plan->features().size() >= 16, "multiple regions contain all nested places");
+    require(count_rule(*plan, "hall") == 4 && count_rule(*plan, "chamber") == 4 &&
+                count_rule(*plan, "apparatus") == 4, "each canonical region has exactly one nested rule instance");
+    std::set<std::string> identities;
+    for (const auto& feature : plan->features()) {
+        require(identities.insert(feature.id).second, "feature has exactly one semantic owner");
+        require(plan->feature(feature.id) == &feature, "query returns immutable owned feature");
+        if (!feature.parent.empty()) {
+            const auto* parent = plan->feature(feature.parent);
+            require(parent && contains(parent->bounds, feature.bounds), "child lies within its parent");
+            require(std::find(parent->children.begin(), parent->children.end(), feature.id) != parent->children.end(),
+                    "parent/child links are reciprocal");
+        }
+        const auto ancestry = plan->ancestry(feature.id);
+        require(!ancestry.empty() && std::find(ancestry.begin(), ancestry.end(), feature.id) != ancestry.end(),
+                "ancestry preserves the queried identity");
+        if (feature.rule_id == "apparatus") require(ancestry.size() >= 4, "nested apparatus exposes complete ancestry");
+    }
+    for (RectI64 query : {RectI64{-64, -64, 32, 32}, RectI64{-1, -1, 2, 2}, RectI64{127, 127, 1, 1}}) {
+        std::set<std::string> expected, observed;
+        for (const auto& feature : plan->features()) if (intersects(query, feature.bounds)) expected.insert(feature.id);
+        for (const auto* feature : plan->query(query)) observed.insert(feature->id);
+        require(observed == expected, "bounded semantic query equals independent rectangle overlap");
+    }
+    require(plan->feature("missing") == nullptr, "unknown feature lookup is explicit");
+    auto reordered = definition;
+    std::reverse(reordered.roots.begin(), reordered.roots.end());
+    std::reverse(reordered.rules.begin(), reordered.rules.end());
+    for (auto& rule : reordered.rules) {
+        std::reverse(rule.tags.begin(), rule.tags.end());
+        std::reverse(rule.themes.begin(), rule.themes.end());
+        std::reverse(rule.children.begin(), rule.children.end());
+        std::reverse(rule.candidates.begin(), rule.candidates.end());
+    }
+    const auto reordered_plan = GrammarPlan::compile(reordered, 191);
+    require(reordered_plan->fingerprint() == plan->fingerprint(), "declaration reorder preserves canonical receipt");
+    for (const auto& feature : plan->features()) same_feature(feature, *reordered_plan->feature(feature.id));
+    auto unrelated = definition;
+    auto extra = room("unrelated", {48, 48, 8, 8});
+    extra.kind = SemanticKind::Detail;
+    unrelated.rules.push_back(extra);
+    unrelated.roots.push_back("unrelated");
+    const auto enlarged = GrammarPlan::compile(unrelated, 191);
+    require(enlarged->fingerprint() != plan->fingerprint(), "new authored feature changes recipe receipt");
+    for (const auto& feature : plan->features()) {
+        const auto* retained = enlarged->feature(feature.id);
+        require(retained && retained->seed == feature.seed, "unrelated feature does not renumber existing identities/seeds");
+        if (feature.kind != SemanticKind::Region) same_feature(feature, *retained);
+    }
+    auto renamed = definition;
+    renamed.rules[2].id = "new-apparatus";
+    renamed.rules[1].children = {"new-apparatus"};
+    const auto replaced = GrammarPlan::compile(renamed, 191);
+    require(!replaced->feature(by_rule(*plan, "apparatus").id), "authored rule rename deliberately replaces identity");
+    definition.rules[2].material = Material::Metal;
+    const auto edited = GrammarPlan::compile(definition, 191);
+    const auto& original = by_rule(*plan, "apparatus");
+    const auto* changed = edited->feature(original.id);
+    require(changed && changed->seed == original.seed && changed->revision != original.revision,
+            "material edit changes revision while preserving semantic identity/seed");
+    require(plan->feature(original.id)->material == Material::Copper, "compiled plan is immutable after caller mutation");
+    auto regridded = definition; regridded.region_size = 128;
+    const auto new_grid = GrammarPlan::compile(regridded, 191);
+    require(!new_grid->feature(original.id), "ownership-grid change deliberately replaces affected semantic identities");
+}
+
+void independent_regions_and_boundaries() {
+    auto definition = flat();
+    definition.region_window = {-1, -1, 2, 2};
+    const auto whole = GrammarPlan::compile(definition, 334);
+    std::set<std::string> owners;
+    for (std::int64_t ry = -1; ry <= 0; ++ry) for (std::int64_t rx = -1; rx <= 0; ++rx) {
+        auto part = definition;
+        part.region_window = {rx, ry, 1, 1};
+        const auto region = GrammarPlan::compile(part, 334);
+        for (const auto& feature : region->features()) {
+            require(feature.owner == spatial::RegionId{rx, ry}, "finite request does not adopt a neighboring owner");
+            require(owners.insert(feature.id).second, "partition has no duplicate feature owners");
+            const auto* expected = whole->feature(feature.id);
+            require(expected != nullptr, "independent request discovers canonical feature without owner chunk");
+            same_feature(*expected, feature);
+        }
+        for (const auto& route : region->routes()) {
+            auto found = std::find_if(whole->routes().begin(), whole->routes().end(),
+                                     [&](const auto& other) { return other.id == route.id; });
+            require(found != whole->routes().end() && found->type == route.type && found->width == route.width &&
+                        found->owner == route.owner && found->from_socket == route.from_socket &&
+                        found->to_socket == route.to_socket && found->points.size() == route.points.size(),
+                    "route topology agrees across independent planning windows");
+            for (std::size_t i = 0; i < route.points.size(); ++i)
+                require(route.points[i].x == found->points[i].x && route.points[i].y == found->points[i].y,
+                        "route geometry agrees across planning windows");
+        }
+    }
+    require(owners.size() == whole->features().size(), "independent partitions cover the whole semantic plan exactly");
+    for (const auto shift : {std::int64_t{-1}, std::int64_t{0}, std::int64_t{1}, std::int64_t{-131072}}) {
+        auto left = flat(), right = flat();
+        left.region_window = {shift, -1, 1, 1}; right.region_window = {shift + 1, -1, 1, 1};
+        const auto a = GrammarPlan::compile(left, 991), b = GrammarPlan::compile(right, 991);
+        std::size_t matches = 0;
+        const auto edge_x = (shift + 1) * 64;
+        for (const auto& port : a->sockets()) {
+            if (!port.shared || port.x != edge_x) continue;
+            const auto counterpart = std::find_if(b->sockets().begin(), b->sockets().end(), [&](const auto& other) {
+                return other.shared && other.id == port.id && other.x == port.x && other.y == port.y &&
+                       other.type == port.type && other.width == port.width && other.direction == port.direction &&
+                       other.owner == port.owner;
+            });
+            require(counterpart != b->sockets().end(), "neighbor alone discovers identical canonical shared port record");
+            ++matches;
+        }
+        require(matches > 0, "negative and positive shared boundaries have actual canonical ports");
+    }
+}
+
+void bounded_constraints_and_failures() {
+    // Two independently declared neighboring features require one another;
+    // declaration/priority order must not turn final-plan checks into partial observations.
+    auto neighbors = flat();
+    neighbors.roots = {"a", "b"};
+    auto a = room("a", {8, 8, 8, 8}), b = room("b", {20, 8, 8, 8});
+    a.tags = {"first"}; b.tags = {"second"};
+    a.constraints.required_neighbors = {"second"};
+    b.constraints.required_neighbors = {"first"};
+    a.constraints.neighbor_distance = 8; b.constraints.neighbor_distance = 8;
+    neighbors.rules = {a, b};
+    require(count_rule(*GrammarPlan::compile(neighbors, 191), "a") == 1,
+            "mutual required neighbors validate against complete immutable plan");
+    auto impossible = neighbors;
+    impossible.rules[0].constraints.forbidden_neighbors = {"second"};
+    const auto contradiction = rejection([&] { (void)GrammarPlan::compile(impossible, 191); });
+    require(!contradiction.empty() && rejection([&] { (void)GrammarPlan::compile(impossible, 191); }) == contradiction,
+            "contradictory neighborhood constraints reject deterministically");
+    impossible = neighbors;
+    impossible.rules[0].constraints.neighbor_distance = 1;
+    (void)rejection([&] { (void)GrammarPlan::compile(impossible, 191); });
+    ++assertions;
+
+    auto quota = flat();
+    quota.rules[0] = room("hall", {8, 8, 8, 8});
+    quota.rules[0].count = 2;
+    quota.rules[0].candidates.push_back(candidate("second", {24, 8, 8, 8}, 1, 0));
+    quota.rules[0].constraints.open_volume = true;
+    quota.rules[0].constraints.minimum_separation = 4;
+    quota.rules[0].constraints.occupancy_min = 0.03;
+    quota.rules[0].constraints.occupancy_max = 0.04;
+    const auto occupied = GrammarPlan::compile(quota, 191);
+    require(count_rule(*occupied, "hall") == 2, "exact multiplicity emits two distinct slots");
+    std::set<std::pair<std::int64_t, std::int64_t>> boxes;
+    double area = 0;
+    for (const auto& feature : occupied->features()) if (feature.rule_id == "hall") {
+        boxes.emplace(feature.bounds.x, feature.bounds.y);
+        area += static_cast<double>(feature.bounds.width * feature.bounds.height);
+    }
+    require(boxes.size() == 2 && area / (64 * 64) == 0.03125,
+            "occupancy is measured from actual selected areas and distinct geometry");
+    impossible = quota; impossible.rules[0].constraints.occupancy_min = 0.05;
+    impossible.rules[0].constraints.occupancy_max = 0.1;
+    (void)rejection([&] { (void)GrammarPlan::compile(impossible, 191); }); ++assertions;
+    impossible = quota; impossible.rules[0].constraints.minimum_separation = 9;
+    (void)rejection([&] { (void)GrammarPlan::compile(impossible, 191); }); ++assertions;
+    impossible = quota; impossible.rules[0].count = 3;
+    (void)rejection([&] { (void)GrammarPlan::compile(impossible, 191); }); ++assertions;
+
+    auto competing = flat();
+    a = room("alpha", {8, 8, 8, 8}); b = room("beta", {8, 8, 8, 8});
+    a.priority = 10; b.priority = 1;
+    a.constraints.open_volume = b.constraints.open_volume = true;
+    a.constraints.exclusive_family = b.constraints.exclusive_family = "exclusive";
+    b.fallback = GrammarFallback::Omit;
+    competing.rules = {b, a}; competing.roots = {"beta", "alpha"};
+    const auto chosen = GrammarPlan::compile(competing, 191);
+    require(count_rule(*chosen, "alpha") == 1 && count_rule(*chosen, "beta") == 0,
+            "higher priority wins constrained placement competition");
+    require(std::any_of(chosen->receipts().begin(), chosen->receipts().end(), [](const auto& receipt) {
+        return receipt.rule_id == "beta" && receipt.fallback && !receipt.passed;
+    }), "authored omission retains failed hard-constraint receipt");
+    impossible = competing; impossible.rules[0].fallback = GrammarFallback::Reject;
+    (void)rejection([&] { (void)GrammarPlan::compile(impossible, 191); }); ++assertions;
+    std::reverse(competing.rules.begin(), competing.rules.end());
+    std::reverse(competing.roots.begin(), competing.roots.end());
+    const auto chosen_again = GrammarPlan::compile(competing, 191);
+    require(chosen->fingerprint() == chosen_again->fingerprint(), "competition and fallback are independent of declaration order");
+    for (const auto& feature : chosen->features()) same_feature(feature, *chosen_again->feature(feature.id));
+
+    auto supported = flat();
+    supported.rules[0].children = {"supported"};
+    auto child = room("supported", {4, 51, 8, 8});
+    child.kind = SemanticKind::Apparatus;
+    child.constraints.floor = true;
+    supported.rules.push_back(child);
+    require(count_rule(*GrammarPlan::compile(supported, 191), "supported") == 1,
+            "floor requirement accepts contact with declared parent solid shell");
+    impossible = supported; impossible.rules[1].candidates[0].bounds.y -= 1;
+    (void)rejection([&] { (void)GrammarPlan::compile(impossible, 191); }); ++assertions;
+    supported.rules[1].constraints.floor = false;
+    supported.rules[1].constraints.ceiling = true;
+    supported.rules[1].candidates[0].bounds.y = 1;
+    require(count_rule(*GrammarPlan::compile(supported, 191), "supported") == 1, "ceiling support is geometric");
+    supported.rules[1].constraints.ceiling = false;
+    supported.rules[1].constraints.wall = true;
+    supported.rules[1].candidates[0].bounds.x = 1;
+    supported.rules[1].candidates[0].bounds.y = 12;
+    require(count_rule(*GrammarPlan::compile(supported, 191), "supported") == 1, "wall support is geometric");
+    impossible = supported; impossible.rules[1].candidates[0].bounds.x = 2;
+    (void)rejection([&] { (void)GrammarPlan::compile(impossible, 191); }); ++assertions;
+
+    auto sockets = flat();
+    sockets.rules[0].candidates[0].bounds = {4, 4, 56, 56};
+    GrammarSocket west;
+    west.id = "west"; west.direction = SocketDirection::West; west.offset = 28;
+    GrammarSocket east = west; east.id = "east"; east.direction = SocketDirection::East;
+    sockets.rules[0].sockets = {west, east};
+    sockets.rules[0].constraints.minimum_sockets = 2;
+    sockets.rules[0].constraints.maximum_sockets = 2;
+    sockets.rules[0].constraints.connected = true;
+    const auto attached = GrammarPlan::compile(sockets, 191);
+    const auto& hall = by_rule(*attached, "hall");
+    require(hall.sockets.size() == 2, "required socket count comes from emitted feature sockets");
+    for (const auto& socket : attached->sockets()) if (socket.feature_id == hall.id) {
+        require(!socket.matched.empty() && socket.width >= sockets.clearance,
+                "attached passage sockets expose compatible matching and clearance");
+    }
+    impossible = sockets; impossible.rules[0].sockets.pop_back();
+    (void)rejection([&] { (void)GrammarPlan::compile(impossible, 191); }); ++assertions;
+    impossible = sockets; impossible.rules[0].sockets[0].offset = 60;
+    (void)rejection([&] { (void)GrammarPlan::compile(impossible, 191); }); ++assertions;
+    impossible = sockets; impossible.rules[0].sockets[0].width = 1;
+    (void)rejection([&] { (void)GrammarPlan::compile(impossible, 191); }); ++assertions;
+    impossible = sockets; impossible.rules[0].sockets[0].type = "unregistered-connector";
+    (void)rejection([&] { (void)GrammarPlan::compile(impossible, 191); }); ++assertions;
+    impossible = sockets; impossible.rules[0].sockets[0].attach_to_route = false;
+    (void)rejection([&] { (void)GrammarPlan::compile(impossible, 191); }); ++assertions;
+
+    auto service = flat();
+    service.rules[0].constraints.service = "service";
+    service.rules[0].constraints.neighbor_distance = 0;
+    require(count_rule(*GrammarPlan::compile(service, 191), "hall") == 1,
+            "service requirement consumes declared immutable service geometry");
+    service.service_trunk = false;
+    (void)rejection([&] { (void)GrammarPlan::compile(service, 191); }); ++assertions;
+    service.rules[0].constraints.service = "liquid";
+    service.liquid_trunk = true;
+    require(count_rule(*GrammarPlan::compile(service, 191), "hall") == 1,
+            "liquid requirement consumes separately typed declared geometry");
+
+    auto valid = flat();
+    std::vector<GrammarDefinition> invalid;
+    invalid.push_back(valid); invalid.back().schema = 99;
+    invalid.push_back(valid); invalid.back().id.clear();
+    invalid.push_back(valid); invalid.back().region_size = 0;
+    invalid.push_back(valid); invalid.back().region_window.width = 0;
+    invalid.push_back(valid); invalid.back().region_window.width = 17;
+    invalid.push_back(valid); invalid.back().roots = {"absent"};
+    invalid.push_back(valid); invalid.back().rules.push_back(valid.rules[0]);
+    invalid.push_back(valid); invalid.back().rules[0].children = {"hall"};
+    invalid.push_back(valid); invalid.back().rules[0].children = {"absent"};
+    invalid.push_back(valid); invalid.back().rules[0].candidates[0].bounds.width = 0;
+    invalid.push_back(valid); invalid.back().rules[0].candidates[0].bounds = {-1, 2, 8, 8};
+    invalid.push_back(valid); invalid.back().rules[0].constraints.occupancy_min = 0.5;
+    invalid.back().rules[0].constraints.occupancy_max = 0.25;
+    invalid.push_back(valid); invalid.back().rules[0].constraints.minimum_separation = -1;
+    invalid.push_back(valid); invalid.back().rules[0].constraints.minimum_sockets = 3;
+    invalid.back().rules[0].constraints.maximum_sockets = 2;
+    invalid.push_back(valid); invalid.back().rules[0].candidates.push_back(valid.rules[0].candidates[0]);
+    invalid.push_back(valid); invalid.back().rules[0].kind = static_cast<SemanticKind>(255);
+    invalid.push_back(valid); invalid.back().curve = static_cast<GrammarCurve>(255);
+    invalid.push_back(valid); invalid.back().clearance = valid.route_width + 2;
+    invalid.push_back(valid); invalid.back().rules[0].material = static_cast<Material>(255);
+    invalid.push_back(valid); invalid.back().rules[0].allowed_materials = {Material::Copper};
+    invalid.push_back(valid); invalid.back().limits.max_features = 1;
+    invalid.push_back(valid); invalid.back().limits.max_routes = 1;
+    invalid.push_back(valid); invalid.back().limits.max_sockets = 1;
+    invalid.push_back(valid); invalid.back().limits.max_depth = 0;
+    invalid.push_back(valid); invalid.back().limits.max_prepared_bytes = 1;
+    invalid.push_back(valid); invalid.back().limits.max_work = 1;
+    for (std::size_t i = 0; i < invalid.size(); ++i) {
+        const auto error = rejection([&] { (void)GrammarPlan::compile(invalid[i], 191); });
+        require(!error.empty() && error == rejection([&] { (void)GrammarPlan::compile(invalid[i], 191); }),
+                "invalid or exhausted grammar deterministically rejects, case " + std::to_string(i));
+    }
+    auto unreachable_cycle = flat();
+    auto unused = room("unused", {1, 1, 4, 4}); unused.children = {"unused"};
+    unreachable_cycle.rules.push_back(unused);
+    (void)rejection([&] { (void)GrammarPlan::compile(unreachable_cycle, 191); });
+    ++assertions;
+}
+
+Recipe integration_recipe(Candidate kind = Candidate::Strata) {
+    Recipe recipe;
+    recipe.schema = kHierarchySchemaVersion;
+    recipe.seed = 191;
+    recipe.chunk_size = 16;
+    recipe.candidate = kind;
+    recipe.grammar = flat();
+    recipe.grammar.region_window = {-1, -1, 2, 2};
+    auto apparatus = room("machine", {8, 8, 8, 8});
+    apparatus.kind = SemanticKind::Apparatus;
+    apparatus.material = Material::Copper;
+    recipe.grammar.rules[0].children = {"machine"};
+    recipe.grammar.rules.push_back(apparatus);
+    recipe.parameters.surface_y = 0;
+    recipe.parameters.relief = 0;
+    return recipe;
+}
+using CellKey = std::pair<std::int64_t, std::int64_t>;
+using CellMap = std::map<CellKey, Material>;
+CellMap generate_rectangle(const Generator& generator, int size, bool reverse, std::size_t budget) {
+    std::vector<ChunkCoord> coordinates;
+    for (std::int64_t y = -64 / size; y < 64 / size; ++y)
+        for (std::int64_t x = -64 / size; x < 64 / size; ++x) coordinates.push_back({x, y});
+    if (reverse) std::reverse(coordinates.begin(), coordinates.end());
+    else std::shuffle(coordinates.begin(), coordinates.end(), std::mt19937(191));
+    CellMap output;
+    for (const auto& coord : coordinates) {
+        auto job = generator.begin(coord);
+        while (job->state() == ResultState::Pending) (void)job->advance(budget);
+        const auto& packet = job->result();
+        require(packet.state == ResultState::Ready && generator.accepts(packet), "complete chunk receipt accepts after paced generation");
+        for (std::int64_t y = 0; y < size; ++y) for (std::int64_t x = 0; x < size; ++x)
+            output.emplace(CellKey{coord.x * size + x, coord.y * size + y},
+                           packet.cells[static_cast<std::size_t>(y * size + x)]);
+    }
+    return output;
+}
+std::set<CellKey> clear_centres(const CellMap& cells, int width) {
+    const auto half = width / 2;
+    std::set<CellKey> result;
+    for (const auto& [position, material] : cells) {
+        if (material != Material::Empty) continue;
+        bool clear = true;
+        for (int y = -half; y <= half && clear; ++y) for (int x = -half; x <= half; ++x) {
+            const auto found = cells.find({position.first + x, position.second + y});
+            if (found != cells.end() && found->second != Material::Empty) { clear = false; break; }
+        }
+        if (clear) result.insert(position);
+    }
+    return result;
+}
+void native_raster_invariance_and_clearance() {
+    for (const auto kind : {Candidate::Strata, Candidate::FlowNetwork, Candidate::DistrictGrammar}) {
+        auto recipe = integration_recipe(kind);
+        const auto generator = Generator::compile(recipe);
+        require(generator->semantic_plan() != nullptr, "schema 3 retains immutable semantic plan");
+        const auto reference = generate_rectangle(*generator, 16, false, 17);
+        for (int size : {8, 32, 64}) {
+            auto partition = recipe;
+            partition.chunk_size = size;
+            const auto other = Generator::compile(partition);
+            require(reference == generate_rectangle(*other, size, true, size == 8 ? 1U : 31U),
+                    "complete material rectangle is invariant under chunks, negative coordinates, order and budgets");
+            for (const auto& feature : generator->semantic_plan()->features())
+                same_feature(feature, *other->semantic_plan()->feature(feature.id));
+        }
+        // The source field/budget/placement mechanisms are exercised through all
+        // three candidate strategies; worker queries share only immutable inputs.
+        std::atomic<bool> success{true};
+        std::array<std::thread, 4> workers;
+        for (std::size_t w = 0; w < workers.size(); ++w) workers[w] = std::thread([&, w] {
+            for (std::size_t i = w; i < 64; i += workers.size()) {
+                const ChunkCoord coord{static_cast<std::int64_t>(i % 8) - 4, static_cast<std::int64_t>(i / 8) - 4};
+                const auto packet = generator->generate(coord);
+                if (packet.state != ResultState::Ready || !generator->accepts(packet)) { success = false; continue; }
+                for (std::int64_t y = 0; y < 16; ++y) for (std::int64_t x = 0; x < 16; ++x)
+                    if (packet.cells[static_cast<std::size_t>(y * 16 + x)] != reference.at({coord.x * 16 + x, coord.y * 16 + y}))
+                        success = false;
+            }
+        });
+        for (auto& worker : workers) worker.join();
+        require(success, "four-worker material requests match single-worker full rectangle");
+        const auto centres = clear_centres(reference, static_cast<int>(recipe.grammar.clearance));
+        const auto& validation = generator->validate_routes();
+        require(validation.passed && validation.profile == "floating-square-v1" &&
+                    validation.clearance == recipe.grammar.clearance && !validation.routes.empty(),
+                "native final-raster traversal is explicitly qualified for a geometric profile");
+        std::set<CellKey> required;
+        for (const auto& route : generator->semantic_plan()->routes()) {
+            if (!route.required || route.type != "passage") continue;
+            for (std::size_t i = 1; i < route.points.size(); ++i) {
+                auto x = static_cast<std::int64_t>(route.points[i - 1].x);
+                auto y = static_cast<std::int64_t>(route.points[i - 1].y);
+                const auto tx = static_cast<std::int64_t>(route.points[i].x);
+                const auto ty = static_cast<std::int64_t>(route.points[i].y);
+                require(x == tx || y == ty, "physical routes use explicit orthogonal edges");
+                const auto dx = (tx > x) - (tx < x), dy = (ty > y) - (ty < y);
+                for (;;) {
+                    if (reference.contains({x, y})) {
+                        require(centres.contains({x, y}), "independent square-footprint oracle clears every required route centre");
+                        required.emplace(x, y);
+                    }
+                    if (x == tx && y == ty) break;
+                    x += dx; y += dy;
+                }
+            }
+        }
+        require(!required.empty(), "fixture contains physically rasterized required routes");
+        std::set<CellKey> reached{*required.begin()};
+        std::deque<CellKey> queue{*required.begin()};
+        while (!queue.empty()) {
+            const auto [x, y] = queue.front(); queue.pop_front();
+            for (const auto& step : {CellKey{-1, 0}, CellKey{1, 0}, CellKey{0, -1}, CellKey{0, 1}}) {
+                const CellKey next{x + step.first, y + step.second};
+                if (centres.contains(next) && reached.insert(next).second) queue.push_back(next);
+            }
+        }
+        for (const auto& position : required) require(reached.contains(position),
+            "independent flood fill connects primary routes and secondary loops through shared region boundaries");
+    }
+}
+
+void override_provenance_and_transactionality() {
+    auto recipe = integration_recipe();
+    FieldNode one; one.id = "one"; one.kind = FieldKind::Constant; one.parameters = {{"value", 1}};
+    recipe.fields = {one};
+    SpatialNode position; position.id = "absolute-x"; position.kind = SpatialKind::CoordinateX;
+    SpatialNode routes; routes.id = "route-distance"; routes.kind = SpatialKind::GeometryDistance; routes.reference = "route-fixture";
+    recipe.spatial.nodes = {position, routes};
+    const auto declared = GrammarPlan::compile(recipe.grammar, recipe.seed);
+    const auto exported = std::find_if(declared->routes().begin(), declared->routes().end(), [](const auto& r) {
+        return r.required && r.type == "passage" && r.points.size() >= 2;
+    });
+    require(exported != declared->routes().end(), "fixture declares an exportable route");
+    recipe.grammar.geometry_exports["route-fixture"] = exported->id;
+    auto generator = Generator::compile(recipe);
+    const auto& plan = *generator->semantic_plan();
+    auto route = std::find_if(plan.routes().begin(), plan.routes().end(), [](const auto& r) {
+        return r.required && r.type == "passage" && r.points.size() >= 2;
+    });
+    require(route != plan.routes().end(), "provenance fixture has explicit required route");
+    auto x = static_cast<std::int64_t>(route->points.front().x);
+    auto y = static_cast<std::int64_t>(route->points.front().y);
+    // Select a known in-window centre, independent of implementation failure
+    // diagnostics, then deliberately replace it using final material authority.
+    const auto bounds = plan.bounds();
+    for (const auto& point : route->points) {
+        if (point.x >= static_cast<double>(bounds.x) && point.y >= static_cast<double>(bounds.y) &&
+            point.x < static_cast<double>(bounds.x + bounds.width) && point.y < static_cast<double>(bounds.y + bounds.height)) {
+            x = static_cast<std::int64_t>(point.x); y = static_cast<std::int64_t>(point.y); break;
+        }
+    }
+    const auto before = generator->explain(x, y);
+    require(before.material == Material::Empty && before.material == generator->sample(x, y),
+            "material provenance matches final output on a route");
+    require(std::find_if(before.scalar_fields.begin(), before.scalar_fields.end(), [](const auto& value) {
+        return value.first == "one" && value.second == 1;
+    }) != before.scalar_fields.end(), "provenance exports scalar field inputs");
+    require(std::find_if(before.typed_fields.begin(), before.typed_fields.end(), [&](const auto& value) {
+        return value.first == "absolute-x" && value.second.type == SpatialType::Scalar && value.second.x == static_cast<double>(x);
+    }) != before.typed_fields.end(), "provenance exports typed field inputs");
+    require(generator->spatial_graph().sample("route-distance", x, y).x == 0,
+            "typed geometry input comes from pre-raster semantic route geometry");
+    HardOverride final;
+    final.id = "deliberate-blocker"; final.bounds = {x, y, 1, 1}; final.material = Material::Metal;
+    recipe.overrides = {final};
+    const auto blocked = Generator::compile(recipe);
+    require(blocked->sample(x, y) == Material::Metal, "final override is preserved even when it blocks a required route");
+    const auto& report = blocked->validate_routes();
+    require(!report.passed && std::any_of(report.routes.begin(), report.routes.end(), [](const auto& row) {
+        return !row.passed && row.blocked_centres > 0;
+    }), "required route conflict is explicit after final override");
+    const auto explanation = blocked->explain(x, y);
+    require(explanation.material == Material::Metal && std::any_of(explanation.contributions.begin(), explanation.contributions.end(), [](const auto& c) {
+        return c.id == "deliberate-blocker" && c.after == Material::Metal;
+    }), "cell provenance identifies final override decision");
+    require(!explanation.contributions.empty() && explanation.contributions.back().after == Material::Metal,
+            "last provenance contribution agrees with final material authority");
+    const auto& apparatus = by_rule(*generator->semantic_plan(), "machine");
+    auto feature_trace = generator->explain(apparatus.bounds.x, apparatus.bounds.y);
+    require(std::find(feature_trace.ancestry.begin(), feature_trace.ancestry.end(), apparatus.id) != feature_trace.ancestry.end(),
+            "feature provenance retains apparatus ancestry");
+    require(!feature_trace.constraints.empty(), "feature provenance retains constraint outcomes");
+
+    auto job = generator->begin({0, 0});
+    (void)job->advance(3);
+    (void)rejection([&] { (void)job->result(); }); ++assertions;
+    job->cancel();
+    require(job->result().state == ResultState::Cancelled && job->result().cells.empty() &&
+                job->result().content_hash == 0 && job->result().receipt_hash == 0,
+            "cancelled material preparation publishes no partial packet");
+    auto exhausted = recipe; exhausted.grammar.limits.max_raster_cells = 1;
+    (void)rejection([&] { (void)Generator::compile(exhausted); }); ++assertions;
+    exhausted = recipe; exhausted.limits.max_operations_per_chunk = 1;
+    auto tiny = Generator::compile(exhausted)->begin({0, 0});
+    require(tiny->state() == ResultState::Failed && tiny->result().cells.empty() && tiny->completed_cells() == 0,
+            "insufficient chunk budget fails before partial material publication");
+    auto invalid_schema = recipe; invalid_schema.schema = kTypedSchemaVersion;
+    (void)rejection([&] { (void)Generator::compile(invalid_schema); }); ++assertions;
+    require(generator->validate_routes().passed && generator->sample(x, y) == Material::Empty,
+            "failed/replacement compiles do not mutate retained valid plan/raster");
+}
+
+void structural_curves_assignment_and_example() {
+    std::set<std::vector<std::string>> orders;
+    for (const auto curve : {GrammarCurve::Hilbert, GrammarCurve::Morton, GrammarCurve::Peano}) {
+        auto definition = flat();
+        definition.curve = curve; definition.curve_order = 1;
+        auto& rule = definition.rules[0];
+        rule.count = 4;
+        rule.constraints.open_volume = true;
+        rule.candidates = {
+            candidate("reverse-d", {8, 8, 8, 8}, 0, 0),
+            candidate("reverse-c", {8, 24, 8, 8}, 0, 1),
+            candidate("reverse-b", {24, 8, 8, 8}, 1, 0),
+            candidate("reverse-a", {24, 24, 8, 8}, 1, 1),
+        };
+        const auto plan = GrammarPlan::compile(definition, 191);
+        std::vector<std::pair<std::uint64_t, std::string>> ordered;
+        for (const auto& feature : plan->features()) if (feature.rule_id == "hall") {
+            const auto input = std::find_if(rule.candidates.begin(), rule.candidates.end(), [&](const auto& value) {
+                return value.id == feature.candidate_id;
+            });
+            require(input != rule.candidates.end(), "curve placement traces its authored candidate");
+            const auto rank = curve == GrammarCurve::Peano ? spatial::peano_index(1, input->order_x, input->order_y) :
+                curve_index(curve == GrammarCurve::Hilbert ? FieldKind::Hilbert : FieldKind::Morton,
+                            1, input->order_x, input->order_y);
+            require(feature.order == rank, "inspection order is actual finite curve rank rather than declaration position");
+            ordered.emplace_back(feature.order, feature.candidate_id);
+        }
+        std::sort(ordered.begin(), ordered.end());
+        std::vector<std::string> sequence;
+        for (const auto& value : ordered) sequence.push_back(value.second);
+        orders.insert(sequence);
+        std::reverse(rule.candidates.begin(), rule.candidates.end());
+        const auto reordered = GrammarPlan::compile(definition, 191);
+        require(reordered->fingerprint() == plan->fingerprint(), "candidate declaration order does not change structural curve placement");
+    }
+    require(orders.size() >= 2, "different finite curve orderings affect structural traversal order");
+
+    auto assigned = flat();
+    spatial::RegionAssignment assignment;
+    assignment.width = 2; assignment.height = 1; assignment.cell_size = 64;
+    assignment.categories = {11, 22};
+    assignment.domains = {1, 2};
+    for (auto& direction : assignment.adjacency) { direction[0] = 3; direction[1] = 3; }
+    assigned.region_window = {0, 0, 2, 1};
+    assigned.district_assignment = assignment;
+    assigned.district_themes = {{11, {{"foundry", 1}}}, {22, {{"garden", 1}}}};
+    const auto plan = GrammarPlan::compile(assigned, 191);
+    std::set<std::string> themes;
+    for (const auto& feature : plan->features()) if (feature.kind == SemanticKind::Region) {
+        require(feature.themes.size() == 1, "region assignment selects exact declared theme blend");
+        themes.insert(feature.themes.front().id);
+    }
+    require(themes == std::set<std::string>{"foundry", "garden"}, "GEN003 assignment is consumed by actual semantic regions");
+    assigned.assignment_limits.max_work = 1;
+    (void)rejection([&] { (void)GrammarPlan::compile(assigned, 191); }); ++assertions;
+    assigned.assignment_limits.max_work = 1'000'000;
+    assigned.district_assignment->adjacency[0][0] = 1;
+    assigned.district_assignment->adjacency[2][1] = 2;
+    (void)rejection([&] { (void)GrammarPlan::compile(assigned, 191); }); ++assertions;
+
+    const auto example = GrammarPlan::compile(GrammarPlan::example(), 191);
+    require(example->definition().region_window.width * example->definition().region_window.height > 1,
+            "executable fixture is multi-district");
+    std::set<SemanticKind> kinds;
+    bool spans_chunks = false;
+    for (const auto& feature : example->features()) {
+        kinds.insert(feature.kind);
+        if (feature.kind == SemanticKind::Complex)
+            spans_chunks |= feature.bounds.width > 64 && feature.bounds.height > 64;
+    }
+    require(spans_chunks && kinds.contains(SemanticKind::District) && kinds.contains(SemanticKind::Complex) &&
+                kinds.contains(SemanticKind::Room) && kinds.contains(SemanticKind::Apparatus) && kinds.contains(SemanticKind::Detail),
+            "example has cross-chunk complexes, rooms and nested apparatus/detail children");
+    require(std::any_of(example->routes().begin(), example->routes().end(), [](const auto& r) { return r.type == "service"; }),
+            "example declares real service trunks");
+    require(example->definition().secondary_loop && example->routes().size() > 4,
+            "example contains explicit secondary loop routes");
+    require(example->preparation_work() > 0 && example->preparation_work() <= example->definition().limits.max_work &&
+                example->storage_bytes() > 0 && example->storage_bytes() <= example->definition().limits.max_prepared_bytes,
+            "prepared semantic work and storage have bounded receipts");
+    require(example->geometry_inputs().size() <= 16, "immutable field geometry export is bounded");
+}
+
+void priority_preferences_and_fallback_ghosts() {
+    auto definition = flat();
+    auto high = room("alpha", {8, 8, 8, 8});
+    auto low = room("beta", {8, 8, 8, 8});
+    high.priority = 10; high.material = Material::Copper; high.interior = Material::Copper;
+    low.priority = -10; low.material = Material::Metal; low.interior = Material::Metal;
+    definition.roots = {"alpha", "beta"}; definition.rules = {low, high};
+    const auto priority = GrammarPlan::compile(definition, 191);
+    require(priority->proposal(9, 9).material == Material::Copper &&
+                priority->proposal(9, 9).feature->rule_id == "alpha",
+            "overlapping semantic material proposals honor priority before lexical identity");
+
+    // A failed authored occupancy fallback is absent, and cannot occupy space
+    // or provide a support surface to later features during bounded placement.
+    high.constraints.occupancy_min = 0.5;
+    high.constraints.occupancy_max = 1;
+    high.fallback = GrammarFallback::Omit;
+    high.constraints.open_volume = true;
+    low.constraints.open_volume = true;
+    definition.rules = {low, high};
+    const auto omitted = GrammarPlan::compile(definition, 191);
+    require(count_rule(*omitted, "alpha") == 0 && count_rule(*omitted, "beta") == 1,
+            "occupancy fallback leaves no ghost blocker for subsequent lower-priority placement");
+    low.constraints.floor = true;
+    low.candidates[0].bounds = {8, 0, 8, 8};
+    definition.rules = {low, high};
+    (void)rejection([&] { (void)GrammarPlan::compile(definition, 191); }); ++assertions;
+
+    auto left = room("left-theme", {4, 4, 8, 40});
+    left.priority = 10; left.themes = {{"industrial", 1}};
+    auto right = room("right-theme", {44, 4, 8, 40});
+    right.priority = 9; right.themes = {{"garden", 1}};
+    auto boundary = room("boundary-device", {12, 16, 8, 8});
+    boundary.kind = SemanticKind::Apparatus;
+    boundary.constraints.open_volume = true;
+    boundary.candidates = {candidate("near-left", {12, 16, 8, 8}, 0, 0),
+                           candidate("central", {24, 16, 8, 8}, 0, 1)};
+    boundary.preferences = {{"between-themes", "theme_boundary", 1, {"garden", "industrial"}}};
+    definition.rules = {boundary, right, left};
+    definition.roots = {boundary.id, right.id, left.id};
+    const auto preferred = GrammarPlan::compile(definition, 191);
+    require(by_rule(*preferred, "boundary-device").candidate_id == "central",
+            "weighted theme-boundary preference uses declared theme geometry to choose central candidate");
+    definition.rules[0].preferences[0].weight = 0;
+    require(by_rule(*GrammarPlan::compile(definition, 191), "boundary-device").candidate_id == "near-left",
+            "zero preference restores stable curve-order tie breaking");
+    definition.rules[0].preferences[0].weight = 1'000'000;
+    definition.rules[0].constraints.minimum_separation = 13;
+    (void)rejection([&] { (void)GrammarPlan::compile(definition, 191); }); ++assertions;
+
+    auto supported = flat();
+    supported.rules[0].interior = Material::Metal;
+    supported.rules[0].children = {"requires-open"};
+    auto open = room("requires-open", {8, 8, 8, 8});
+    open.constraints.open_volume = true;
+    supported.rules.push_back(open);
+    (void)rejection([&] { (void)GrammarPlan::compile(supported, 191); }); ++assertions;
+}
+
+void independent_window_material_and_provenance() {
+    auto recipe = integration_recipe();
+    recipe.grammar.liquid_trunk = true;
+    recipe.grammar.curve_services = true;
+    recipe.grammar.rules[0].candidates[0].bounds = {4, 4, 56, 56};
+    recipe.grammar.rules[0].sockets = {{"west", "passage", SocketDirection::West, 28, 5, true, true}};
+    recipe.grammar.rules[0].constraints.connected = true;
+    const auto whole = Generator::compile(recipe);
+    require(whole->validate_routes().passed, "whole connected fixture qualifies final material geometry");
+    for (std::int64_t ry = -1; ry <= 0; ++ry) for (std::int64_t rx = -1; rx <= 0; ++rx) {
+        auto part = recipe;
+        part.grammar.region_window = {rx, ry, 1, 1};
+        const auto independently_requested = Generator::compile(part);
+        require(independently_requested->validate_routes().passed, "neighbor-alone final geometry qualifies its half aperture");
+        for (std::int64_t y = ry * 64; y < (ry + 1) * 64; ++y)
+            for (std::int64_t x = rx * 64; x < (rx + 1) * 64; ++x) {
+                require(whole->sample(x, y) == independently_requested->sample(x, y),
+                        "independently planned owning region produces the same cell as whole-window planning");
+                const auto all = whole->semantic_plan()->proposal(x, y);
+                const auto one = independently_requested->semantic_plan()->proposal(x, y);
+                require(all.material == one.material && ((all.feature == nullptr) == (one.feature == nullptr)) &&
+                            ((all.route == nullptr) == (one.route == nullptr)),
+                        "semantic contribution kind/material independent of requested planning window");
+                if (all.feature) require(all.feature->id == one.feature->id,
+                        "semantic material contribution has stable feature owner across windows");
+                if (all.route) require(all.route->id == one.route->id,
+                        "service/liquid contribution has stable route owner at shared boundaries");
+                const auto* all_route = whole->semantic_plan()->route_at(x, y);
+                const auto* one_route = independently_requested->semantic_plan()->route_at(x, y);
+                require((all_route == nullptr) == (one_route == nullptr), "route membership independent of requested planning window");
+                if (all_route) require(all_route->id == one_route->id,
+                        "passage provenance has stable canonical cell owner at shared boundaries");
+            }
+    }
+    auto near_edge = flat();
+    near_edge.rules[0].sockets = {{"west", "passage", SocketDirection::West, 30, 5, true, true}};
+    (void)rejection([&] { (void)GrammarPlan::compile(near_edge, 191); }); ++assertions;
+    near_edge.rules[0].fallback = GrammarFallback::Omit;
+    const auto fallback = GrammarPlan::compile(near_edge, 191);
+    require(count_rule(*fallback, "hall") == 0 && std::any_of(fallback->receipts().begin(), fallback->receipts().end(), [](const auto& receipt) {
+        return receipt.fallback && !receipt.passed;
+    }), "cross-owner attachment failure can use an explicit omission receipt");
+}
+
+void typed_parameters_and_bound_controls() {
+    auto definition = flat();
+    std::vector<SpatialValue> invalid_values;
+    invalid_values.push_back({SpatialType::Scalar, 1, 2});
+    invalid_values.push_back({SpatialType::Distance, -1});
+    invalid_values.push_back({SpatialType::Normalized, 2});
+    invalid_values.push_back({SpatialType::Boolean, 0.5});
+    invalid_values.push_back({SpatialType::Category, 1});
+    SpatialValue malformed;
+    malformed.type = SpatialType::Scalar; malformed.category.domain = 1;
+    invalid_values.push_back(malformed);
+    malformed = {}; malformed.x = std::numeric_limits<double>::infinity();
+    invalid_values.push_back(malformed);
+    for (const auto& value : invalid_values) {
+        auto bad = definition;
+        bad.rules[0].parameters["payload"] = value;
+        (void)rejection([&] { (void)GrammarPlan::compile(bad, 191); }); ++assertions;
+    }
+    const auto bound = kCoordinateLimit / 64 - 2;
+    definition.region_window = {-bound, -bound, 1, 1};
+    require(GrammarPlan::compile(definition, 191)->bounds().x == -bound * 64,
+            "minimum admitted canonical region uses exact negative coordinates");
+    definition.region_window = {bound - 1, bound - 1, 1, 1};
+    require(GrammarPlan::compile(definition, 191)->bounds().x == (bound - 1) * 64,
+            "maximum admitted canonical region uses exact positive coordinates");
+    definition.region_window.x = std::numeric_limits<std::int64_t>::max();
+    (void)rejection([&] { (void)GrammarPlan::compile(definition, 191); }); ++assertions;
+    definition.region_window.x = std::numeric_limits<std::int64_t>::min();
+    (void)rejection([&] { (void)GrammarPlan::compile(definition, 191); }); ++assertions;
+    const auto plan = GrammarPlan::compile(flat(), 191);
+    require(!plan->proposal(-1, -1).material && plan->route_at(-1, -1) == nullptr,
+            "out-of-window samples publish no borrowed neighboring ownership");
+    (void)rejection([&] { (void)plan->query({0, 0, 0, 1}); }); ++assertions;
+    (void)rejection([&] { (void)plan->ancestry("absent"); }); ++assertions;
+    auto exported = flat(); exported.geometry_exports["missing"] = "absent";
+    (void)rejection([&] { (void)GrammarPlan::compile(exported, 191); }); ++assertions;
+}
+
+} // namespace
+int main() {
+    try {
+        hierarchy_queries_and_stable_identity();
+        independent_regions_and_boundaries();
+        bounded_constraints_and_failures();
+        structural_curves_assignment_and_example();
+        priority_preferences_and_fallback_ghosts();
+        independent_window_material_and_provenance();
+        typed_parameters_and_bound_controls();
+        native_raster_invariance_and_clearance();
+        override_provenance_and_transactionality();
+        std::cout << "PASS semantic grammar: " << assertions << " assertions\n";
+        return 0;
+    } catch (const std::exception& error) {
+        std::cerr << "FAIL semantic grammar: " << error.what() << '\n';
+        return 1;
+    }
+}

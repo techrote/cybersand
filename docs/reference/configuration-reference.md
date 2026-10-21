@@ -70,6 +70,61 @@ explicit wrap constraints for cross-tile adjacency guarantees. The
 [operator inventory](procedural-spatial-operators.md) own exact family ranges,
 recursive cost composition, distance qualification and invalid-input behavior.
 
+## Hierarchical generation limits
+
+**Current GEN-004 opt-in schema 3:** generator algorithm 4 adds grammar schema 1,
+algorithm 1. [`GrammarDefinition` and `GrammarLimits`](../../native/include/cybersand/generation_grammar.hpp)
+are compiled before material rasterization. Schema-1/2 recipes retain their
+previous algorithm identities. The JSON adapter permits lowering the default
+limits; native C++ callers can raise them only to the hard ceilings below.
+
+| Setting | Native default / JSON cap | Native hard ceiling or admitted range |
+|---|---:|---:|
+| `region_size` | 256 cells | Integer 64–2048 |
+| `region_window` | `[0,0,1,1]` region addresses | Positive finite rectangle; at most 64 per axis and `max_regions` total |
+| `max_regions` | 16 | 64 |
+| `max_rules` | 64 | 128 |
+| `max_depth` | 8 | 12 |
+| `max_children` | 32 | 64 expanded children per parent |
+| `max_candidates` | 64 | 256 per rule |
+| `max_features` | 2,048 | 8,192 |
+| `max_sockets` / `max_routes` | 4,096 each | 16,384 each |
+| `max_work` | 16,000,000 logical planning operations | 1,000,000,000 |
+| `max_prepared_bytes` | 16 MiB | 256 MiB |
+| `max_raster_cells` | 4,194,304 | 16,777,216 |
+| `max_raster_operations` | 1,000,000,000 | 16,000,000,000 |
+| `curve` / `curve_order` | Hilbert / 2 | Hilbert, Morton or Peano; order 1–6 |
+| `route_width` / `clearance` | 7 / 3 cells | Odd integers 1–31, route width ≥ clearance and ≤ region size/4 |
+| `secondary_loop` / `service_trunk` / `liquid_trunk` | true / true / false | Explicit booleans |
+| `geometry_exports` | Empty map | At most 16 exact semantic route/feature aliases |
+
+Planning coordinates preserve the generator's signed ±`2^40` domain with room
+for canonical boundary geometry. Candidate rectangles have positive dimensions
+through 16,384 cells and must fit their declared parent. Candidate finite-curve
+addresses must lie in the selected order's domain. Semantic IDs use 1–64 ASCII
+letters/digits/underscore/hyphen/dot per authored component; full generated paths
+are distinct from those components.
+
+Rules carry exact positive counts, priority within ±1,000,000, at most 16 tags,
+16 theme entries, 32 typed parameters, 16 sockets and 16 preferences. Theme weights
+are finite positive values through 1,000,000 and normalize canonically. Preference
+weights are finite within ±1,000,000; negative weights invert a preference while
+hard constraints remain mandatory. Separation and neighbor radii are 0–16,384
+cells; inclusive occupancy fractions are within `[0,1]`. Socket aperture widths
+are odd 1–31 and must fit the selected edge; passage widths also meet clearance.
+The JSON adapter caps wall thickness at 64 while native declarations admit 128;
+the selected rectangle must retain a nonempty interior for any positive shell.
+
+`district_assignment` reuses GEN-003's bounded finite solver and scratch contract.
+`district_themes` is keyed by exact unsigned category IDs represented as sixteen
+lowercase hexadecimal digits in JSON. Neither assignment nor feature metadata
+allocates live World fields. The
+[hierarchy contract](../systems/procedural-hierarchical-generation.md) owns
+priority, fallback, semantic identity, canonical boundary ownership and geometric
+traversal qualifications; the
+[interfaces](interfaces-and-message-contracts.md#native-semantic-plans-and-copied-hierarchy-inspection)
+own returned records.
+
 ## Depth host and Deepworks configuration
 
 **Current opt-in source:** these values belong to
