@@ -264,7 +264,9 @@ std::shared_ptr<const PlanePlan> PlanePlan::compile(std::shared_ptr<const Genera
         (a.id.size() + a.rule.size() + a.model.size() + a.producer.size()) * 2);
 
     if (definition.policies[0].base_generator) for (const auto& feature : plan.features()) {
-        PlaneProjection p; p.id = record_id(feature.id, "plane", "native-play"); p.adapter = "native-play";
+        // Append into known-empty storage: GCC 13's C-string replacement path
+        // imports GLIBCXX_3.4.31, beyond the retained Linux runtime floor.
+        PlaneProjection p; p.id = record_id(feature.id, "plane", "native-play"); p.adapter.append("native-play");
         p.feature_id = feature.id; p.geometry_ref = feature.id; p.plane = Plane::Play;
         p.shape = ProjectionShape::Native; p.bounds = feature.bounds; p.owner = feature.owner;
         p.seed = feature.seed; p.material = feature.material.value_or(Material::Empty);
@@ -370,7 +372,7 @@ std::shared_ptr<const PlanePlan> PlanePlan::compile(std::shared_ptr<const Genera
             need(impl->fixtures.size() < definition.limits.max_fixtures, "fixture record budget exhausted");
             need(impl->endpoint(feature.id, t.plane), "fixture has no corresponding feature-plane projection");
             PlaneFixture f; f.id = record_id(feature.id, "fixture", t.id); f.adapter = t.id; f.feature_id = feature.id;
-            f.plane = t.plane; f.clock = plane_name(t.plane); f.bounds = local_bounds(feature.bounds, t.bounds);
+            f.plane = t.plane; f.clock.append(plane_name(t.plane)); f.bounds = local_bounds(feature.bounds, t.bounds);
             need(encloses(guarded, f.bounds), "fixture touches the plane guard");
             f.owner = feature.owner; f.material = t.material; f.mode = t.mode;
             f.first_tick = t.first_tick; f.period = t.period; f.repeat = t.repeat; f.cleanup_tick = t.cleanup_tick;
@@ -627,7 +629,7 @@ ResultState PlaneGenerationJob::advance(std::size_t budget) {
             result_.receipt_hash = result_receipt(result_); result_.state = ResultState::Ready;
         }
     } catch (const std::exception& e) { discard(result_, ResultState::Failed); result_.error = std::string(e.what()).substr(0, 255); }
-    catch (...) { discard(result_, ResultState::Failed); result_.error = "unknown generation failure"; }
+    catch (...) { discard(result_, ResultState::Failed); result_.error.clear(); result_.error.append("unknown generation failure"); }
     return result_.state;
 }
 void PlaneGenerationJob::cancel() noexcept { if (result_.state == ResultState::Pending) discard(result_, ResultState::Cancelled); }
