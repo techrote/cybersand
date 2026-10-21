@@ -1025,6 +1025,176 @@ void unused_and_omitted_external_bindings() {
     }
 }
 
+void manually_joined_socket_materials() {
+    struct Case {
+        std::string type;
+        Material default_material, configured_material;
+    };
+    const std::array<Case, 3> cases{{
+        {"passage", Material::Empty, Material::Empty},
+        {"service", Material::Copper, Material::Metal},
+        {"liquid", Material::Water, Material::Acid},
+    }};
+    for (const bool configured : {false, true}) for (const auto& test : cases) {
+        auto recipe = integration_recipe();
+        auto& definition = recipe.grammar;
+        definition = GrammarDefinition{};
+        definition.id = "manual-joins"; definition.region_size = 64;
+        definition.secondary_loop = false; definition.service_trunk = false; definition.liquid_trunk = false;
+        if (configured) {
+            definition.service_material = Material::Metal;
+            definition.liquid_material = Material::Acid;
+        }
+        auto left = room("left", {4, 4, 8, 8});
+        auto right = room("right", {12, 4, 8, 8});
+        left.interior = right.interior = Material::Concrete;
+        left.constraints.open_volume = right.constraints.open_volume = true;
+        left.constraints.minimum_sockets = left.constraints.maximum_sockets = 1;
+        right.constraints.minimum_sockets = right.constraints.maximum_sockets = 1;
+        GrammarSocket east;
+        east.id = "east"; east.type = test.type; east.direction = SocketDirection::East;
+        east.offset = 4; east.width = 3; east.required = true; east.attach_to_route = false;
+        auto west = east; west.id = "west"; west.direction = SocketDirection::West;
+        left.sockets = {east}; right.sockets = {west};
+        definition.roots = {"right", "left"}; definition.rules = {right, left};
+        const auto generator = Generator::compile(recipe);
+        const auto& plan = *generator->semantic_plan();
+        const std::string left_id = "manual-joins/grid64/region(0,0)/left/0/socket/east";
+        const std::string right_id = "manual-joins/grid64/region(0,0)/right/0/socket/west";
+        const auto socket = [&](const std::string& id) -> const SemanticSocket& {
+            const auto found = std::find_if(plan.sockets().begin(), plan.sockets().end(), [&](const auto& value) {
+                return value.id == id;
+            });
+            require(found != plan.sockets().end(), "manual socket retains its authored feature and port identity");
+            return *found;
+        };
+        const auto& a = socket(left_id);
+        const auto& b = socket(right_id);
+        require(a.matched == right_id && b.matched == left_id && a.type == test.type && b.type == test.type &&
+                    a.direction == SocketDirection::East && b.direction == SocketDirection::West &&
+                    a.width == 3 && b.width == 3 && !a.shared && !b.shared,
+                "manual adjoining sockets match each other reciprocally with the authored type and aperture");
+        require(a.x == 11 && a.y == 8 && b.x == 12 && b.y == 8,
+                "manual join endpoints are the independently specified neighboring feature edges");
+        const auto joined = std::find_if(plan.routes().begin(), plan.routes().end(), [&](const auto& route) {
+            return route.from_socket == left_id && route.to_socket == right_id;
+        });
+        require(joined != plan.routes().end(), "manual compatible pair emits an explicit route between the two ports");
+        const auto expected = configured ? test.configured_material : test.default_material;
+        require(joined->material == expected,
+                "manual " + test.type + " join selects its " + (configured ? "configured" : "default") + " material");
+        require(joined->id == left_id + "/join" && joined->type == test.type && joined->width == 3 &&
+                    joined->required == (test.type == "passage") && joined->owner == spatial::RegionId{0, 0},
+                "manual route has stable identity, owner, type, and traversal requirement");
+        require(joined->points.size() == 2 && joined->points[0].x == 11 && joined->points[0].y == 8 &&
+                    joined->points[1].x == 12 && joined->points[1].y == 8,
+                "manual route geometry directly joins adjacent ports without a regional trunk attachment");
+        require(std::count_if(plan.routes().begin(), plan.routes().end(), [](const auto& route) {
+            return route.id.ends_with("/join");
+        }) == 1, "one socket pair emits exactly one manual join");
+
+        // Explicit width-three centre, side, and end-cap cells; these locations
+        // are far from every primary regional route and utility trunks are off.
+        const std::array<CellKey, 6> inside_cells{{{11, 8}, {12, 8}, {11, 7}, {12, 9}, {10, 8}, {13, 8}}};
+        for (const auto& [x, y] : inside_cells) {
+            require(generator->sample(x, y) == expected, "manual join raster preserves the declared material at centre and corridor edges");
+            if (test.type == "passage") {
+                const auto* route = plan.route_at(x, y);
+                require(route && route->id == joined->id, "manual passage owns its explicit restoration footprint");
+            } else {
+                const auto proposal = plan.proposal(x, y);
+                require(proposal.route && proposal.route->id == joined->id && proposal.material == expected,
+                        "manual utility material proposal comes from the paired socket route");
+            }
+        }
+        const std::array<CellKey, 4> outside_cells{{{11, 6}, {11, 10}, {9, 8}, {14, 8}}};
+        for (const auto& [x, y] : outside_cells)
+            require(generator->sample(x, y) == Material::Concrete, "manual join stops at its declared corridor footprint");
+        const auto trace = generator->explain(11, 8);
+        require(trace.material == expected && std::any_of(trace.contributions.begin(), trace.contributions.end(), [&](const auto& value) {
+            return value.id == joined->id && value.after == expected;
+        }), "manual socket join material is attributable in final cell provenance");
+        auto reordered = definition;
+        std::reverse(reordered.rules.begin(), reordered.rules.end());
+        std::reverse(reordered.roots.begin(), reordered.roots.end());
+        require(GrammarPlan::compile(reordered, recipe.seed)->fingerprint() == plan.fingerprint(),
+                "manual pairing identities and materials are independent of declaration order");
+    }
+}
+
+void omitted_manual_peer_removes_join() {
+    auto recipe = integration_recipe();
+    auto& definition = recipe.grammar;
+    definition = GrammarDefinition{};
+    definition.id = "omitted-peer"; definition.region_size = 64;
+    definition.secondary_loop = false; definition.service_trunk = false; definition.liquid_trunk = false;
+    definition.service_material = Material::Metal; definition.liquid_material = Material::Acid;
+    auto survivor = room("left", {4, 4, 8, 8});
+    auto omitted = room("right", {12, 4, 8, 8});
+    survivor.interior = omitted.interior = Material::Concrete;
+    GrammarSocket east;
+    east.id = "east"; east.type = "liquid"; east.direction = SocketDirection::East;
+    east.offset = 4; east.width = 3; east.required = false; east.attach_to_route = false;
+    auto west = east; west.id = "west"; west.direction = SocketDirection::West; west.required = true;
+    auto unmatched = east; unmatched.id = "unmatched"; unmatched.direction = SocketDirection::North; unmatched.required = true;
+    survivor.sockets = {east}; omitted.sockets = {west, unmatched};
+    omitted.constraints.minimum_sockets = 1;
+    omitted.fallback = GrammarFallback::Omit;
+    definition.roots = {"left", "right"}; definition.rules = {survivor, omitted};
+    auto control_recipe = recipe;
+    control_recipe.grammar.roots = {"left"}; control_recipe.grammar.rules = {survivor};
+    const auto control = Generator::compile(control_recipe);
+    const auto generator = Generator::compile(recipe);
+    const auto& plan = *generator->semantic_plan();
+    const std::string deleted_id = "omitted-peer/grid64/region(0,0)/right/0";
+    const std::string surviving_socket = "omitted-peer/grid64/region(0,0)/left/0/socket/east";
+    require(count_rule(plan, "left") == 1 && count_rule(plan, "right") == 0 && plan.feature(deleted_id) == nullptr,
+            "optional-port survivor remains when its peer is omitted for another unmatched required port");
+    const auto socket = std::find_if(plan.sockets().begin(), plan.sockets().end(), [&](const auto& value) {
+        return value.id == surviving_socket;
+    });
+    require(socket != plan.sockets().end() && socket->matched.empty() && !socket->required,
+            "surviving optional socket becomes unmatched after its peer is removed");
+    require(std::all_of(plan.routes().begin(), plan.routes().end(), [&](const auto& route) {
+        return !route.id.starts_with(deleted_id) && !route.from_socket.starts_with(deleted_id) &&
+               !route.to_socket.starts_with(deleted_id);
+    }), "omitting a manual peer removes every route that references its deleted socket");
+    require(std::none_of(plan.routes().begin(), plan.routes().end(), [](const auto& route) {
+        return route.id.ends_with("/join");
+    }), "a join owned by the surviving feature is also removed when its opposite endpoint disappears");
+    for (const auto& route : plan.routes()) for (const auto& endpoint : {route.from_socket, route.to_socket}) {
+        if (endpoint.empty()) continue;
+        require(std::any_of(plan.sockets().begin(), plan.sockets().end(), [&](const auto& value) {
+            return value.id == endpoint;
+        }), "every remaining explicit route endpoint resolves to a published socket");
+    }
+    same_feature(by_rule(plan, "left"), by_rule(*control->semantic_plan(), "left"));
+    const auto omission = std::find_if(plan.receipts().begin(), plan.receipts().end(), [&](const auto& row) {
+        return row.feature_id == deleted_id && row.rule_id == "right" && row.constraint == "sockets" &&
+               row.fallback && !row.passed;
+    });
+    require(omission != plan.receipts().end() && !omission->detail.empty(),
+            "removed peer retains a meaningful failed socket constraint and authored fallback receipt");
+    auto reordered = definition;
+    std::reverse(reordered.rules.begin(), reordered.rules.end());
+    std::reverse(reordered.roots.begin(), reordered.roots.end());
+    const auto replay = GrammarPlan::compile(reordered, recipe.seed);
+    require(replay->fingerprint() == plan.fingerprint() && std::any_of(replay->receipts().begin(), replay->receipts().end(), [&](const auto& row) {
+        return row.feature_id == omission->feature_id && row.constraint == omission->constraint &&
+               row.detail == omission->detail && row.fallback && !row.passed;
+    }), "peer omission and its receipt remain stable under declaration reordering");
+    const auto proposal = plan.proposal(11, 8);
+    require(!proposal.route && proposal.material == Material::Concrete && generator->sample(11, 8) == Material::Concrete,
+            "deleted join leaves no utility material over the surviving feature edge");
+    const std::array<CellKey, 6> former_join{{{11, 8}, {12, 8}, {11, 7}, {12, 9}, {10, 8}, {13, 8}}};
+    for (const auto& [x, y] : former_join)
+        require(generator->sample(x, y) == control->sample(x, y), "omitted peer leaves no ghost join material at either former endpoint or corridor edge");
+    const auto trace = generator->explain(11, 8);
+    require(std::none_of(trace.contributions.begin(), trace.contributions.end(), [](const auto& value) {
+        return value.id.ends_with("/join");
+    }), "final material provenance contains no contribution from the removed join");
+}
+
 } // namespace
 int main() {
     try {
@@ -1040,6 +1210,8 @@ int main() {
         override_provenance_and_transactionality();
         final_support_qualification();
         unused_and_omitted_external_bindings();
+        omitted_manual_peer_removes_join();
+        manually_joined_socket_materials();
         std::cout << "PASS semantic grammar: " << assertions << " assertions\n";
         return 0;
     } catch (const std::exception& error) {

@@ -267,6 +267,87 @@ the same five focused cases: Workbench **138**, fields **271**, typed generation
 with no skips or errors. These are local receipts; both target-OS builds and
 execution are repeated by the scoped publisher for the corrected source commit.
 
+The compatibility checkpoint was published as
+[`5f772f8221a5bae4f4f60f5c0eacedabdc050976`](https://github.com/techrote/cybersand/commit/5f772f8221a5bae4f4f60f5c0eacedabdc050976),
+tree `a130c07c85b035931c232142e414f94ccdca3d6e`.
+Its scoped [run 39560390001](https://github.com/techrote/cybersand/actions/runs/39560390001)
+passed the Linux floor and focused execution, Windows cross-build and actual
+Windows focused execution, then published both runtimes in
+`77d24cf2aa40d7e6d92529c9eb308a20a33cdf78`. This proves the compatibility
+correction at that source; the subsequent socket corrections below require
+their own source-matched publication and are not covered by that pair.
+
+## Adjoining socket corrections
+
+The final acceptance review found that manually adjoining `liquid` sockets with
+`attach_to_route=false` emitted a correctly typed route but selected the generic
+service material. Automatic trunk attachments already inherited the correct
+route material. The adjoining-pair dispatch now selects Empty for passages,
+the declared `liquid_material` for liquids and `service_material` for services.
+Pairing, geometry, IDs, ownership and required traversal flags are unchanged.
+The corrected planner SHA-256 is
+`92e4a42f7326e14b962e299ae5e4043dc62722bfc1b4ced104d6972e39ae4356`.
+Its rebuilt Linux runtime, SHA-256
+`fd14e6c013b5efcf2eb5be8a4d914d5035ddf93cbdce5275b3dd8c6fe035ac4c`,
+passed the unchanged runtime-floor check, pinned Godot import and all five
+focused cases (138/271/394/438/23 assertions, zero failures, skips or diagnostic
+errors). The earlier compatibility-only runtime is not the final candidate.
+
+The same review found an omission case where a manual route's ID belonged to
+the surviving feature while its peer socket belonged to a subsequently omitted
+feature. Removing only routes under the omitted feature's ID left a dangling
+endpoint and residual raster geometry. Pruning now removes routes owned by the
+omitted subtree or connected to either of its removed endpoints; existing
+reciprocal-match cleanup remains active. The per-route pruning work charge
+increases from 16 to 48 to cover all three bounded identity checks.
+
+The expanded independent debug suite passed **77,480 assertions**. Its manual
+socket controls cover passage/service/liquid materials with defaults and custom
+Metal/Acid values, reciprocal endpoint IDs, exact corridor and adjacent unaffected
+cells, material provenance and declaration reordering. The omission control
+compares surviving cells against an independently compiled survivor-only recipe,
+checks every route endpoint remains published and rejects leftover join material
+or provenance. Both negative controls failed against the exact prior `5f772f82`
+planner at their intended material-selection and removed-endpoint assertions.
+
+Final socket source SHA-256 is
+`1d2f024eb3165233b5d012c4fd62ed5cdaad0adb972df1c486007e77b57afce0`;
+test SHA-256 is `af61209ba9ed75fc60bdfa659ae273fa8e8dc6d68b3f8facf34ce02324fd9c78`.
+Its rebuilt Linux runtime, SHA-256
+`0b0843a07ab824a801d708c9d98ba0776973c48b269b28da96ad42d2f14e7048`,
+passed the unchanged compatibility floor, pinned Godot import and all five
+focused cases (138/271/394/438/23 assertions), with no skips or errors.
+
+## Cold native build budget
+
+The prior full local suite used an incremental build with parallel compilation;
+it did not qualify the hosted cold serial command. With final socket sources and
+tests frozen, a separate empty output directory ran the existing
+`timeout 5m make worldgen-test` command with inherited parallel flags removed.
+On local GCC 13.3 it exited **124 at 300.053 seconds** while compiling the last
+`test_generation_modifiers` executable. Seven binaries had been built, but none
+of the target's test commands had started. This is a build-budget failure, not a
+failed assertion or a passed suite. Input hashes were unchanged; child CPU time
+was 281.926 seconds user and 16.173 seconds system, with peak child RSS
+601,444 KiB.
+
+The generation test recipes now reuse compiled objects within four distinct
+flag sets: optimized plain, optimized threaded, sanitized plain and sanitized
+threaded. Each executable retains its previous source subset, compile/link
+flags and test commands. Source, shared-header and Makefile dependencies prevent
+stale objects after relevant edits. Installation and demo compilation, runtime
+build scripts, dependency pins, all eight normal/sanitized executables and the
+five-/ten-minute CI timeouts remain unchanged. Cold normal and sanitizer runs
+separately qualify the revised build before implementation acceptance.
+An independent old/new dry-run comparison expanded every object back to its
+source and verified all 17 executable targets (eight normal, eight sanitized
+and the unchanged demo) retain ordered per-source flags, link flags, source
+order and execution commands. The twenty generation objects are separated by
+all four flag contracts and depend on their source, Makefile, all 26 shared
+headers and their variant directory. `clean` removes only the new dedicated
+cache in addition to its existing cleanup. Makefile SHA-256 is
+`efe0ce424c8f5782d8001627f00a6ed582fe5fd307bd8e0c7cf6ab8a7be8ebdb`.
+
 ## Acceptance status at documentation preparation
 
 The implementation is in progress. The narrow local example inspection above is

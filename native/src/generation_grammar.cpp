@@ -730,11 +730,11 @@ std::shared_ptr<const GrammarPlan> GrammarPlan::compile(GrammarDefinition defini
     }
     // Delete authored omissions, including their sockets/routes and descendants.
     auto prune=[&](const std::string& id) {
-        impl->charge(32+impl->features.size()*64+impl->sockets.size()*16+impl->routes.size()*16);
+        impl->charge(32+impl->features.size()*64+impl->sockets.size()*16+impl->routes.size()*48);
         const auto under=[&](const std::string& value){return value==id||value.starts_with(id+"/");};
         std::erase_if(impl->features,[&](const auto& f){return under(f.id);});
         std::erase_if(impl->sockets,[&](const auto& s){return under(s.id)||under(s.feature_id);});
-        std::erase_if(impl->routes,[&](const auto& r){return under(r.id);});
+        std::erase_if(impl->routes,[&](const auto& r){return under(r.id)||under(r.from_socket)||under(r.to_socket);});
         for(auto& f:impl->features)std::erase_if(f.children,[&](const auto& child){return under(child);});
         for(auto& s:impl->sockets)if(under(s.matched))s.matched.clear();
     };
@@ -757,7 +757,8 @@ std::shared_ptr<const GrammarPlan> GrammarPlan::compile(GrammarDefinition defini
                 a.matched=b.id;b.matched=a.id;
                 impl->add_route({a.id+"/join",a.type,a.id,b.id,a.owner,
                     {{static_cast<double>(a.x),static_cast<double>(a.y)},{static_cast<double>(b.x),static_cast<double>(b.y)}},a.width,
-                    a.type=="passage"&&(a.required||b.required),a.type=="passage"?Material::Empty:impl->definition.service_material});break;
+                    a.type=="passage"&&(a.required||b.required),a.type=="passage"?Material::Empty:
+                        a.type=="liquid"?impl->definition.liquid_material:impl->definition.service_material});break;
             }
         }
     }

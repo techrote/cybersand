@@ -268,6 +268,15 @@ ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1
 godot --headless --path godot --script res://tests/test_worldgen_grammar.gd
 ```
 
+The native targets reuse generation objects within each existing compiler flag
+set under `$(BUILD_DIR)/worldgen-objects`: normal/sanitized and
+threaded/non-threaded variants stay separate. Source, shared-header and Makefile
+changes invalidate those objects. This avoids recompiling the same generation
+sources for each test while retaining all eight executables and the five-minute
+normal and ten-minute sanitizer CI bounds. The
+[dated audit](../audits/2026-10-21-gen004-hierarchical-generation.md)
+retains the cold-build timeout that motivated this change and subsequent results.
+
 Godot execution requires a source-matched extension and the exact pinned editor.
 The [hierarchy profile](../../examples/worldgen/hierarchy-multi-district.json)
 is an executable schema-3 recipe; the
