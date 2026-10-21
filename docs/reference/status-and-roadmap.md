@@ -27,7 +27,8 @@ local Linux execution and desktop builds. The
 records original-head hosted success, including actual Windows headless
 execution of 107/107 applicable cases. Integration with GEN-003 main and the
 quick-tap course-clock correction require combined-source runtimes and fresh
-final-head gates, currently pending in that record. Physical gamepad/window
+final-head gates. That record owns their status and routes exact final-head
+outcomes to PR #189's description and Checks. Physical gamepad/window
 interaction, target-PC human feel, complete timed routes and new browser
 execution remain separate qualifications. Generic granular, soliding and Water
 successor work retains its own gates.

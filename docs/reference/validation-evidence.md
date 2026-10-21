@@ -23,7 +23,9 @@ adds hosted results for original head `6663d8e`, including successful Native,
 Linux/Godot, Documentation/provenance, Water and actual Windows execution of
 107/107 applicable headless cases. It separately tracks the GEN-003 main merge,
 fast-tap course-clock correction, combined-source runtime rebuild and final
-exact-head gates; these completion gates remain pending. Headless tests do not
+exact-head gates. The record distinguishes completed local validation from
+hosted publication and routes final outcomes to PR #189's description and Checks.
+Headless tests do not
 establish human feel, complete timed routes, physical gamepad/window interaction
 or browser qualification. Current mechanics and controls live in the
 [player contract](../systems/player-control-playground.md); the

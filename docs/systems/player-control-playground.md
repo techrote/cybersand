@@ -192,8 +192,8 @@ The [original playground record](../audits/2026-10-20-player-control-playground.
 preserves source/artifact identities, local Linux native/Godot checks and
 failures. The [PR #189 completion record](../audits/2026-10-21-player-playground-pr189-completion.md)
 adds original-head hosted Linux and actual Windows headless results and tracks
-the pending combined-source runtime and final-head gates after integration with
-GEN-003 main. The
+combined-source runtime and final-head gates after integration with GEN-003 main,
+with the final exact-head outcomes recorded in PR #189's description and Checks. The
 [build guide](../operations/local-build-and-validation.md#player-playground-checks)
 routes focused regressions. Human feel on the target PC, complete checkpoint
 routes, real gamepad/window-focus behavior and browser execution are not

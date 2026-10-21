@@ -29,7 +29,8 @@ preserves local source/runtime identities and Linux execution. The
 [PR #189 completion record](../audits/2026-10-21-player-playground-pr189-completion.md)
 adds original-head hosted Linux/Windows results, including 107/107 Windows
 headless cases, and tracks integration with GEN-003 main. Combined-source
-runtime publication and final exact-head gates remain pending in that record.
+runtime publication and final exact-head evidence are routed through that
+record and PR #189's description and Checks; local passes retain their own scope.
 Admitted quick button taps start the course clock even when released before
 the next physics tick; elapsed time still counts simulation ticks only.
 Target-PC feel, physical controller/window interaction, complete timed routes
