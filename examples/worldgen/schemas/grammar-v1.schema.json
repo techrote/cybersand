@@ -529,7 +529,7 @@
         "max_raster_operations": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 1000000000
+          "maximum": 16000000000
         }
       }
     },

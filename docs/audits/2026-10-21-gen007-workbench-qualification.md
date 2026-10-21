@@ -97,3 +97,107 @@ Iteration uses focused native and Godot tests. The PR stays draft while work is
 incomplete, as required by the repository's CI cost policy. Source-sensitive
 native changes need fresh Linux/Windows runtime publication. The final ready
 transition runs every applicable exact-head gate before merge and issue closure.
+
+## Initial local checkpoint: native replay and editor
+
+Draft [PR #198](https://github.com/techrote/cybersand/pull/198) retains the
+scope and recovery checkpoints. The local Linux build with the new inspector and immutable
+configuration adoption passed `test_gen007_inspection.gd`: 116 assertions,
+zero failures, all three explicit sections complete. These compare replay and
+real stage cells to independently generated native payloads, reject stale
+identities, test cancellation and prove that adoption advances the adapter
+serial without rewriting native result receipts.
+
+The focused native generation suite passed all nine executables, including
+208,576 grammar and 742,068 semantic-plane assertions. It retains the frozen
+GEN-001 oracle and compares spatially indexed candidates with independent
+full scans, including negative coordinates and route boundaries. Later
+accounting changes still need a final source-matched rerun. The local authoring
+suite has passed 151 assertions across graph transactions, trace/stages,
+planes/hierarchy, comparison/seeds and responsive transactions. Final adoption
+and graphical source checks remain part of the next checkpoint.
+
+The complete scene has not yet passed. Its first source-matched full-map probe
+correctly rejected a conservative 4,337-million-operation charge above the
+declared four-billion limit. The next correction takes the maximum sum of
+co-located plane candidates; summing unrelated per-plane spatial maxima was
+unnecessarily pessimistic for a bundle that samples the same coordinate in
+all four planes. This is a bound correction, not permission to raise the scene's
+limit or claim runtime quality from source inspection.
+
+The existing native grammar verification ceiling of 16 billion operations is
+now available through the JSON adapter and matching grammar schema; its
+one-billion default is unchanged. All four grammar examples and all three
+semantic-plane examples, including GEN-007, validate against their published
+schemas. The scene explicitly requests its larger finite verification budget.
+
+The new scoped publisher requires actual Linux and Windows execution of four
+GEN-007 cases, all three GEN-005 cases, six retained player cases and five
+retained generation cases. Its 22 adversarial guard tests pass; an independent
+source review found no blocking defect in exact-source ledgers, target-OS
+execution, helper completion, four-path publication or unchanged-head lease
+checks. This does not substitute for executing the workflow.
+
+The local documentation checker passes with 103 documents and no errors or
+warnings. The frozen 32-question fixture remains byte-identical; all 105 prior
+supplementary question objects are unchanged, and four GEN-007 questions were
+added. A heading refinement keeps the canonical generic route-validation
+contract discoverable alongside the new final-plane qualification guide.
+Final retrieval scores will be recorded after the evidence and docs stabilize.
+
+Before graphical qualification, the local process peak-RSS envelope is declared
+as **2 GiB**. This is separate from native prepared-byte, raster and publication
+limits. Actual process peak RSS, Godot static peak, native charged capacities,
+wall time and concurrent/isolated execution context will be reported separately.
+Local environment: Linux 6.18.55, glibc 2.39, AMD EPYC 9V74, nine visible logical
+processors, GCC 13.3.0 and the pinned Godot 4.7 runtime. None is a target-PC
+performance qualification.
+
+## Pre-publication corrections and remaining gates
+
+The corrected co-located plane bound passed the independent analytical controls
+and all nine optimized plus nine ASan/UBSan generation executables. Final native
+counts at this checkpoint are 208,576 grammar and 774,842 semantic-plane
+assertions, zero failures. Leak detection is disabled for the successful local
+sanitizer run, matching the repository's CI environment; the initial default
+LeakSanitizer run could not inspect this restricted process environment and is
+not counted as a passing execution.
+
+The local editor test passed 161 assertions with all five sections complete.
+Its actual X11/OpenGL graphical test passed 69 assertions across seven completed
+sections and produced 18 captures, including the native cell inspector, populated
+four-seed browser and exact semantic/material comparison. Independent review
+corrected plane-identity admission, stale visible traces, stage/final hash labels,
+feature-versus-cell provenance and route-report scope. A later cancellation
+footer correction and final-source capture bindings remain to be recorded.
+
+The local runtime also passed the 14 retained GEN-005, player and generation
+cases. However, the release preflight rejected its `GLIBCXX_3.4.31` dependency
+against the unchanged `GLIBCXX_3.4.30` maximum. This is a publication blocker,
+even though the local functional tests pass. The correction must preserve the
+compiler pin and compatibility floor and be retested before platform publication.
+
+The first complete scene passed its four-seed structure, whole/tiled/worker and
+all-eight-exhibit mechanism controls after relocating apparatus out of a native
+route. Independent visual review still rejected the repeated cabinet/bar/grille
+composition and a route-cut lower grille. The next revision adds distinct
+room-scale equipment, different upper/lower arrangements and intact apparatus;
+its fresh structural, reaction and display evidence remains required. These
+earlier numeric passes do not qualify the revised recipe or close the visual gate.
+
+The initial **2 GiB graphical process envelope failed**: cold llvmpipe capture
+peaked at 3,874,537,472 bytes; an independent two-thread cold render run peaked
+at 3,873,660,928 bytes. Limiting llvmpipe to two threads did not remove that cold
+peak. Warm capture measured 1,906,675,712 bytes, and a later warm capture
+766,615,552 bytes. The observed cold/warm difference is consistent with renderer
+initialization and shader compilation/cache overhead; it is not a native
+allocation attribution. No canonical material shader was changed to obtain a pass.
+
+The revised declared envelope is **4 GiB for display-backed graphical processes**,
+while **2 GiB remains the headless qualification envelope**. This explicit
+revision preserves the failed original bound; native prepared and publication
+caps remain unchanged. Linux peak RSS is the child-process high-water value
+reported by Python `resource.getrusage(RUSAGE_CHILDREN).ru_maxrss` for one Godot
+child per measurement, converted from KiB to bytes. It does not sum Xvfb, driver
+helpers or unrelated processes. Cold/warm cache state, concurrency and actual
+duration must accompany final measurements.

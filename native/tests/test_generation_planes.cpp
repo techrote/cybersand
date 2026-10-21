@@ -438,10 +438,132 @@ void shared_spatial_projection_masks() {
         changed_cells += density->sample(Plane::Background, px, py) == Material::Copper ? 1 : 0;
     require(changed_cells > 500 && changed_cells < 2600, "normalized masks cause an effective bounded deterministic density");
 }
+void indexed_plane_raster_and_stages_match_bruteforce() {
+    auto r=recipe(); auto d=definition();
+    r.grammar.region_size=128; r.grammar.rules.front().candidates.front().bounds={2,2,124,124};
+    auto patch=projection("index-boundary", "hall", Plane::Background, ProjectionShape::Shell, Material::Copper,
+        RectI64{58,58,14,14}); patch.wall_thickness=2; patch.density=0.43; patch.priority=10;
+    d.projections.push_back(patch);
+    r.overrides={{"last", {-65,-65,2,2}, Material::SteelPlate, {}, {}, 0}};
+    const auto plan=compiled(d,r);
+    const auto within=[](RectI64 b,std::int64_t x,std::int64_t y){return x>=b.x&&y>=b.y&&x<b.x+b.width&&y<b.y+b.height;};
+    const auto hash_word=[](std::uint64_t& hash,std::uint64_t value){for(unsigned byte=0;byte<8;++byte){hash^=(value>>(byte*8))&255;hash*=UINT64_C(1099511628211);}};
+    for (std::int64_t y=-128;y<128;++y) for (std::int64_t x=-128;x<128;++x) {
+        for (unsigned plane=0;plane<4;++plane) {
+            const auto kind=static_cast<Plane>(plane);
+            Material expected=d.policies[plane].material;
+            std::size_t applied=0;
+            for (const auto& p:plan->projections()) {
+                if(p.plane!=kind||p.shape==ProjectionShape::Omit||p.shape==ProjectionShape::Native||!within(p.bounds,x,y))continue;
+                if(!p.points.empty()) {
+                    bool hit=false;const auto half=static_cast<double>(p.route_width/2);
+                    for(std::size_t i=1;i<p.points.size();++i) {
+                        const auto a=p.points[i-1],b=p.points[i];
+                        if(static_cast<double>(x)>=std::min(a.x,b.x)-half&&static_cast<double>(x)<=std::max(a.x,b.x)+half&&
+                           static_cast<double>(y)>=std::min(a.y,b.y)-half&&static_cast<double>(y)<=std::max(a.y,b.y)+half)hit=true;
+                    }
+                    if(!hit)continue;
+                }
+                auto h=p.seed;hash_word(h,static_cast<std::uint64_t>(x));hash_word(h,static_cast<std::uint64_t>(y));
+                if(p.density!=1&&static_cast<double>(h>>32)>=p.density*4294967296.0)continue;
+                const auto wall=static_cast<std::int64_t>(p.wall_thickness);
+                const bool inner=within({p.bounds.x+wall,p.bounds.y+wall,p.bounds.width-2*wall,p.bounds.height-2*wall},x,y);
+                expected=p.shape==ProjectionShape::Shell&&inner?p.interior:p.material; ++applied;
+            }
+            const auto projected=expected;
+            if(kind==Plane::Play&&within(r.overrides.front().bounds,x,y))expected=*r.overrides.front().material;
+            require(plan->sample(kind,x,y)==expected,
+                "indexed planes equal independent full projection scan across negative coordinates, density and bin halos");
+            const auto stages=plan->stages(kind,x,y);
+            require(!stages.has_source&&stages.policy==d.policies[plane].material&&stages.base==stages.policy&&
+                stages.projections==projected&&stages.final==expected&&stages.projection_checks>=applied,
+                "plane stages are actual policy/base/projection/override values and observed candidate counts");
+        }
+    }
+    const auto trace=plan->explain(Plane::Play,-65,-65);
+    require(trace.material==Material::SteelPlate&&!trace.source&&trace.stages.final==Material::SteelPlate&&trace.proposal_hash!=0,
+        "plane trace attributes final authored override and does not fabricate unused base generator");
+    require(!trace.contributions.empty()&&trace.contributions.back().stage=="hard_override",
+        "plane override is reported after exact projection precedence");
+    const auto stage_identity=trace.proposal_hash;
+    (void)plan->stages(Plane::Background,3,3);
+    require(plan->explain(Plane::Play,-65,-65).proposal_hash==stage_identity,
+        "diagnostics and stage snapshots never mutate accepted plane result identity");
+    auto small=d; small.limits.max_prepared_bytes=plan->storage_bytes()-1;
+    require(reject([&]{(void)compiled(small,r);}).find("memory")!=std::string::npos,
+        "projection index storage participates in bounded preparation accounting");
+}
+
+void projection_trace_truncation_does_not_truncate_materials() {
+    auto r=recipe();r.grammar.region_window={0,0,1,1};
+    PlaneDefinition d; d.policies[0].base_generator=false; d.limits.max_templates=300;
+    d.projections={projection("air", "$region", Plane::Effects, ProjectionShape::Omit),
+        projection("far", "$region", Plane::Background, ProjectionShape::Omit)};
+    for(unsigned i=0;i<270;++i) {
+        auto p=projection("layer-"+std::to_string(i),"hall",Plane::Scripted,ProjectionShape::Fill,Material::Copper);
+        p.priority=static_cast<int>(i);d.projections.push_back(p);
+    }
+    d.projections.back().material=Material::SteelPlate;
+    const auto plan=compiled(d,r);
+    const auto trace=plan->explain(Plane::Scripted,5,5);
+    require(trace.material==Material::SteelPlate&&plan->sample(Plane::Scripted,5,5)==Material::SteelPlate,
+        "trace output limit never truncates generation or final precedence");
+    require(trace.truncated&&trace.omitted_entries>0&&trace.decisions.size()==kMaxTraceEntries&&
+        trace.contributions.size()==kMaxTraceEntries,
+        "bounded trace declares omitted decisions and contributions explicitly");
+}
+
+void co_located_plane_work_bound() {
+    auto r=recipe(); r.grammar.region_size=128; r.grammar.region_window={-1,-1,1,1};
+    r.grammar.rules.front().candidates.front().bounds={2,2,124,124};
+    PlaneDefinition d; d.policies[0].base_generator=false;
+    d.projections={projection("air", "$region", Plane::Effects, ProjectionShape::Omit),
+        projection("far", "$region", Plane::Background, ProjectionShape::Omit),
+        projection("near", "hall", Plane::Play, ProjectionShape::Fill, Material::Copper, RectI64{0,0,32,32}),
+        projection("remote", "hall", Plane::Scripted, ProjectionShape::Fill, Material::SteelPlate, RectI64{92,92,20,20})};
+    const auto separated=compiled(d,r);
+    // Two region omissions cost 4 each in every bin. These material patches
+    // occupy opposite bins, hence at most one 64-work patch is ever examined
+    // alongside the fixed 128-work four-plane sampling/receipt allowance.
+    constexpr std::uint64_t independent_bound=128+4+4+64;
+    require(separated->operations_per_cell()==independent_bound,
+        "bundle bound is the largest co-located four-plane cost, not unrelated plane maxima");
+    for(std::int64_t y=-128;y<0;++y)for(std::int64_t x=-128;x<0;++x) {
+        const bool near=x>=-126&&x< -94&&y>=-126&&y< -94;
+        const bool remote=x>=-34&&x< -14&&y>=-34&&y< -14;
+        require(separated->sample(Plane::Play,x,y)==(near?Material::Copper:Material::Empty)&&
+            separated->sample(Plane::Scripted,x,y)==(remote?Material::SteelPlate:Material::Empty),
+            "analytical separate-bin patch oracle preserves all negative-coordinate cells");
+        std::uint64_t observed_checks=0;
+        for(unsigned plane=0;plane<4;++plane) {
+            const auto sampled=separated->stages(static_cast<Plane>(plane),x,y);
+            observed_checks+=sampled.projection_checks;
+        }
+        require(observed_checks<=3,
+            "actual all-plane candidate checks never exceed two omissions and one local patch");
+    }
+    const auto whole=separated->generate(separated->bounds());
+    require(separated->accepts(whole)&&whole.operations==128*128*independent_bound+128,
+        "whole bundle receipt charges the conservative per-cell bound plus publication exactly");
+    auto exact=d; exact.limits.max_operations=whole.operations;
+    require(compiled(exact,r)->generate(separated->bounds()).state==ResultState::Ready,
+        "exact co-located logical budget is admitted");
+    --exact.limits.max_operations;
+    require(reject([&]{(void)compiled(exact,r);}).find("complete bundle raster")!=std::string::npos,
+        "one operation below the complete co-located bound is refused");
+    d.projections.back().bounds=RectI64{0,0,20,20};
+    const auto together=compiled(d,r);
+    require(together->operations_per_cell()==independent_bound+64,
+        "co-located cross-plane patches add their complete work rather than taking one plane maximum");
+}
+
 } // namespace
 
 int main() {
     try {
+        indexed_plane_raster_and_stages_match_bruteforce();
+        projection_trace_truncation_does_not_truncate_materials();
+        co_located_plane_work_bound();
         semantic_correspondence_and_provenance();
         tiled_order_workers_and_budget_slices();
         regional_identity_and_declaration_order();

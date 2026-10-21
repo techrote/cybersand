@@ -10,6 +10,12 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## GEN-007 Workbench 2 candidate — 2026-10-21
+
+Implementation and qualification for issue [#193](https://github.com/techrote/cybersand/issues/193) are underway on draft [PR #198](https://github.com/techrote/cybersand/pull/198). Acceptance remains pending. Read the [workbench contract](../systems/generation-workbench-2.md), [qualification guide](procedural-qualification.md) and [dated gate ledger](../audits/2026-10-21-gen007-workbench-qualification.md). Preserve accepted native identity, genuine sampler stages, bounded trace output and fresh authoring/session tokens. Graph/rule/plane/brush changes share one transaction; invalid edits cannot retire the prior valid preview or history.
+
+Native grammar/projection candidate indices preserve canonical ordering and original geometry/mask decisions. Their preparation and raster work/memory remain explicitly charged. Actual graphical, native reaction and Linux/Windows runtime publication evidence remains required before completion. Programme order remains GEN-003 → GEN-004 → GEN-005 → GEN-007 → GEN-006.
+
 ## Semantic plane generation checkpoint — 2026-10-21
 
 GEN-005 / [#192](https://github.com/techrote/cybersand/issues/192) projects a single

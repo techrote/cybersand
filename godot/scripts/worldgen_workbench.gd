@@ -5,6 +5,7 @@ extends Control
 # owner. These copied recipes/cells never access the live sandbox's World.
 const Preview = preload("res://scripts/worldgen_preview.gd")
 const Palette = preload("res://scripts/material_appearance_lut.gd")
+const WorkbenchTools = preload("res://scripts/worldgen_workbench_tools.gd")
 const MAX_CACHE_CHUNKS: int = 32
 const MAX_QUEUED_CHUNKS: int = 24
 const MAX_UNDO: int = 16
@@ -52,6 +53,15 @@ const MATERIAL_LABELS: Array[String] = [
 	"pine planks", "birch log", "rough oak log", "walnut panel", "mahogany panel", "bamboo", "plywood", "driftwood", "cedar shingles", "charred timber", "cork", "wicker", "cardboard", "paper screen", "tar block", "acrylic sheet", "moss wall", "marble", "chalk block", "basalt columns", "obsidian", "adobe brick", "raw clay", "firebrick", "packed snow", "rock salt block", "gypsum board", "quicklime block", "rammed earth", "sandbag", "terrazzo", "gabion", "galvanised zinc sheet", "aluminium panel", "magnesium plate", "thermite brick", "bare iron plate", "gold leaf", "brass panel", "glass block", "frosted glass", "quartz crystal", "uranium glass", "sugar glass", "wax block", "sulfur block", "phosphor panel", "polymer panel", "solar panel", "carbon fibre", "heat-shield tile",
 ]
 
+var tools2: RefCounted
+var _redo: Array[Dictionary] = []
+var _interactive_edit: bool = false
+var _edit_serial: int = 0
+var _edit_thread: Thread
+var _pending_edit: Dictionary = {}
+var _active_edit: Dictionary = {}
+var last_prepare_usec: int = 0
+var last_adopt_usec: int = 0
 var generator: Variant
 var active_recipe: Dictionary = {}
 var active_revision: int = -1
@@ -88,6 +98,7 @@ var profile_editor: TextEdit
 var profile_status: Label
 var status_label: Label
 var identity_label: Label
+var inspect_toggle: CheckButton
 var pointer_label: Label
 var marks_label: Label
 var origin_x: SpinBox
@@ -201,6 +212,7 @@ func _ready() -> void:
 	apply_recipe(default_recipe(), false)
 
 func _build_ui() -> void:
+	tools2 = WorkbenchTools.new(self)
 	var background := ColorRect.new()
 	background.color = Color(0.035, 0.047, 0.067)
 	background.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -216,12 +228,14 @@ func _build_ui() -> void:
 	margin.add_child(layout)
 	var heading := HBoxContainer.new()
 	layout.add_child(heading)
-	var title: Label = _label(heading, "CYBERSAND / WORLD GENERATION", 25)
+	var title: Label = _label(heading, "CYBERSAND / GENERATION WORKBENCH 2", 23)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_button(heading, "Examples…", func() -> void: _open_profile(); _choose_load_profile(true))
 	_button(heading, "Profile JSON…", _open_profile)
 	_button(heading, "Apply controls", apply_controls)
 	_button(heading, "Undo", undo_authoring)
+	_button(heading, "Redo", redo_authoring)
+	_button(heading, "Cancel edit", cancel_pending_edit)
 	_label(layout, "Native procedural preview · globally addressed chunks · generation only", 15, Color(0.62, 0.8, 0.85))
 	var body := HBoxContainer.new()
 	body.add_theme_constant_override("separation", 16)
@@ -231,7 +245,7 @@ func _build_ui() -> void:
 	sidebar.custom_minimum_size = Vector2(390, 450)
 	sidebar.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	body.add_child(sidebar)
-	page_picker = _options(sidebar, ["Generator", "Brushes / contextual sculpt", "Modules", "Fields & masks", "Aggregates", "Modifiers", "Typed spatial graphs"])
+	page_picker = _options(sidebar, ["Generator", "Brushes / contextual sculpt", "Modules", "Fields & masks", "Aggregates", "Modifiers", "Typed spatial graphs", "Graph canvas", "Hierarchy / planes", "Why is this here?", "Quality / comparisons"])
 	var tabs := TabContainer.new()
 	tabs.tabs_visible = false
 	tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -244,6 +258,10 @@ func _build_ui() -> void:
 	_build_aggregate_tab(_tab(tabs, "Aggregates"))
 	_build_modifier_tab(_tab(tabs, "Modifiers"))
 	_build_spatial_tab(_tab(tabs, "Spatial"))
+	tools2.build_graph_tab(_tab(tabs, "Graph"))
+	tools2.build_hierarchy_tab(_tab(tabs, "Hierarchy"))
+	tools2.build_inspector_tab(_tab(tabs, "Inspector"))
+	tools2.build_quality_tab(_tab(tabs, "Quality"))
 	var viewer := VBoxContainer.new()
 	viewer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	viewer.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -261,16 +279,28 @@ func _build_ui() -> void:
 	grid.text = "Chunks"
 	grid.button_pressed = true
 	navigation.add_child(grid)
+	inspect_toggle = CheckButton.new()
+	inspect_toggle.text = "Inspect"
+	inspect_toggle.button_pressed = true
+	inspect_toggle.toggled.connect(func(enabled: bool) -> void:
+		preview.inspection_only = enabled
+		preview.cancel_gesture())
+	navigation.add_child(inspect_toggle)
 	var guides := CheckButton.new()
 	guides.text = "Guides"
 	guides.button_pressed = true
 	navigation.add_child(guides)
+	tools2.build_view_controls(viewer)
 	preview = Preview.new()
+	preview.inspection_only = true
 	preview.custom_minimum_size = Vector2(380, 320)
 	preview.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	preview.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	viewer.add_child(preview)
-	preview.stroke_finished.connect(add_gesture)
+	preview.stroke_finished.connect(func(points: PackedVector2Array) -> void:
+		_interactive_edit = true
+		add_gesture(points)
+		_interactive_edit = false)
 	preview.pan_requested.connect(func(delta: Vector2) -> void: set_camera_origin(camera_origin + delta))
 	preview.zoom_requested.connect(zoom_view)
 	preview.point_inspected.connect(_inspect_point)
@@ -285,7 +315,7 @@ func _build_ui() -> void:
 	diagnostic_legend = _label(inspection, "Material colours", 13)
 	grid.toggled.connect(func(enabled: bool) -> void: preview.grid_visible = enabled; preview.queue_redraw())
 	guides.toggled.connect(func(enabled: bool) -> void: preview.guides_visible = enabled; preview.queue_redraw())
-	pointer_label = _label(viewer, "Drag to author · right/middle drag to pan · wheel to zoom · Esc cancels a stroke", 14, Color(0.65, 0.77, 0.81))
+	pointer_label = _label(viewer, "Inspect click / Ctrl-click · turn Inspect off to paint · right/middle drag to pan · wheel to zoom", 14, Color(0.65, 0.77, 0.81))
 	pointer_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	marks_label = _label(viewer, "", 14)
 	marks_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -351,6 +381,7 @@ func _build_brush_tab(box: VBoxContainer) -> void:
 		if preview != null:
 			preview.cancel_gesture()
 			preview.tool_mode = index
+			if inspect_toggle != null: inspect_toggle.button_pressed = false
 			_refresh_brush_preview())
 	var note: Label = _label(box, "Drag in the preview, then release to validate and regenerate. Brush edits use the accepted profile; Apply generator controls first to keep any pending numeric edits.", 14)
 	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -957,11 +988,57 @@ func apply_recipe(recipe: Dictionary, record_undo: bool = true) -> bool:
 	if generator == null:
 		_set_error("Native generation is unavailable; the profile cannot be applied.")
 		return false
-	var checked: Dictionary = generator.configure(recipe.duplicate(true))
+	if _interactive_edit:
+		return request_recipe(recipe, record_undo)
+	cancel_pending_edit()
+	var candidate: Variant = ClassDB.instantiate(&"CyberWorldGenerator")
+	var size: int = int(recipe.get("chunk_size", 128))
+	if size <= 0: size = 128 # Native parsing owns the diagnostic for invalid size.
+	var coordinate := Vector2i(floori(camera_origin.x / size), floori(camera_origin.y / size))
+	var prepared: Dictionary = _prepare_candidate(candidate, recipe.duplicate(true), coordinate)
+	if not prepared.get("ok", false):
+		_set_error(str(prepared.get("error", "Candidate preparation failed.")))
+		return false
+	return _commit_prepared(candidate, prepared, record_undo)
+
+static func _prepare_candidate(candidate: Variant, recipe: Dictionary, coordinate: Vector2i) -> Dictionary:
+	# This function runs either on the caller or one exclusive GDScript worker.
+	# It never accesses a scene node, live World, shared app state or native pool.
+	var started: int = Time.get_ticks_usec()
+	if JSON.stringify(recipe, "", true, true).to_utf8_buffer().size() > MAX_PROFILE_BYTES:
+		return {"ok":false, "error":"Profile exceeds the 1 MiB authoring limit."}
+	var checked: Dictionary = candidate.configure(recipe)
+	if not bool(checked.get("ok", false)): return checked
+	var sampled: Dictionary = candidate.generate_chunk(coordinate)
+	if not bool(sampled.get("ok", false)):
+		return {"ok":false, "error":"Candidate work budget failed before commit: " + str(sampled.get("error", "unavailable"))}
+	if recipe.has("semantic_planes"):
+		var candidate_planes: Dictionary = candidate.get_plane_plan()
+		var bounds: Rect2i = candidate_planes.get("bounds", Rect2i())
+		var patch := Rect2i(bounds.position, Vector2i(mini(bounds.size.x, 16), mini(bounds.size.y, 16)))
+		var sampled_planes: Dictionary = candidate.generate_plane_region(patch)
+		if not bool(sampled_planes.get("ok", false)):
+			return {"ok":false, "error":"Candidate plane budget failed before commit: " + str(sampled_planes.get("error", "unavailable"))}
+	checked["prepare_usec"] = Time.get_ticks_usec() - started
+	return checked
+
+func _commit_prepared(candidate: Variant, prepared: Dictionary, record_undo: bool = true) -> bool:
+	var started: int = Time.get_ticks_usec()
+	var checked: Dictionary
+	if generator.has_method(&"adopt_configuration"):
+		checked = generator.adopt_configuration(candidate, maxi(active_revision, 0))
+		if prepared.has("route_validation"): checked["route_validation"] = prepared.route_validation.duplicate(true)
+	else:
+		# Old runtimes may still open the retained GEN-001 surface while new
+		# diagnostics clearly refuse. Source-matched GEN-007 uses adoption.
+		checked = generator.configure(candidate.get_configuration())
+	last_prepare_usec = int(prepared.get("prepare_usec", 0))
+	last_adopt_usec = Time.get_ticks_usec() - started
 	if not bool(checked.get("ok", false)):
 		_set_error(str(checked.get("error", "Native profile validation failed.")))
 		return false
 	if record_undo and active_revision >= 0:
+		_redo.clear()
 		_undo.append(active_recipe.duplicate(true))
 		if _undo.size() > MAX_UNDO:
 			_undo.pop_front()
@@ -988,6 +1065,7 @@ func apply_recipe(recipe: Dictionary, record_undo: bool = true) -> bool:
 	view_size.x = clampf(view_size.x, chunk_size, chunk_size * 4)
 	view_size.y = view_size.x * 2.0 / 3.0
 	_populate_catalogue(generator.get_catalogue())
+	tools2.on_recipe_accepted()
 	_sync_controls()
 	_sync_preview()
 	_update_requests()
@@ -996,6 +1074,67 @@ func apply_recipe(recipe: Dictionary, record_undo: bool = true) -> bool:
 	profile_status.text = "Accepted revision %d · %s" % [active_revision, active_fingerprint]
 	_refresh_status()
 	return true
+
+func request_recipe(recipe: Dictionary, record_undo: bool = true, history_action: String = "") -> bool:
+	if JSON.stringify(recipe, "", true, true).to_utf8_buffer().size() > MAX_PROFILE_BYTES:
+		_set_error("Profile exceeds the 1 MiB authoring limit.")
+		return false
+	_edit_serial += 1
+	_pending_edit = {"serial":_edit_serial, "recipe":recipe.duplicate(true), "record_undo":record_undo, "history":history_action, "base_revision":active_revision, "before":active_recipe.duplicate(true)}
+	_set_status("Validating a candidate on its private generation owner; the accepted preview remains available…")
+	service_editor_transaction()
+	return true
+
+func cancel_pending_edit() -> void:
+	_edit_serial += 1
+	_pending_edit.clear()
+	# Cancellation retires identity immediately. At most one bounded native
+	# preparation may finish in the background; its result cannot be admitted.
+
+func service_editor_transaction() -> void:
+	if _edit_thread != null:
+		if _edit_thread.is_alive(): return
+		var prepared: Dictionary = _edit_thread.wait_to_finish()
+		_edit_thread = null
+		var job: Dictionary = _active_edit
+		_active_edit = {}
+		if int(job.get("serial", -1)) == _edit_serial and int(job.get("base_revision", -1)) == active_revision:
+			if not prepared.get("ok", false):
+				_set_error(str(prepared.get("error", "Candidate validation failed.")))
+			elif _commit_prepared(job.owner, prepared, bool(job.record_undo)):
+				if str(job.history) == "undo":
+					_undo.pop_back()
+					_redo.append(job.before)
+				elif str(job.history) == "redo":
+					_redo.pop_back()
+					_undo.append(job.before)
+				while _undo.size() > MAX_UNDO: _undo.pop_front()
+				while _redo.size() > MAX_UNDO: _redo.pop_front()
+	if _pending_edit.is_empty(): return
+	_active_edit = _pending_edit
+	_pending_edit = {}
+	if int(_active_edit.base_revision) != active_revision:
+		_active_edit.clear()
+		return
+	var candidate: Variant = ClassDB.instantiate(&"CyberWorldGenerator")
+	_active_edit.owner = candidate
+	var recipe: Dictionary = _active_edit.recipe
+	var size: int = maxi(int(recipe.get("chunk_size", 128)), 1)
+	var coordinate := Vector2i(floori(camera_origin.x / size), floori(camera_origin.y / size))
+	_edit_thread = Thread.new()
+	var error: Error = _edit_thread.start(_prepare_candidate.bind(candidate, recipe, coordinate))
+	if error != OK:
+		_edit_thread = null
+		_active_edit.clear()
+		_set_error("Could not start the private recipe validator: " + error_string(error))
+
+func _exit_tree() -> void:
+	cancel_pending_edit()
+	if _edit_thread != null:
+		_edit_thread.wait_to_finish()
+		_edit_thread = null
+	_active_edit.clear()
+	if tools2 != null: tools2.shutdown()
 
 func apply_controls() -> void:
 	var recipe: Dictionary = active_recipe.duplicate(true) if active_revision >= 0 else default_recipe()
@@ -1037,13 +1176,13 @@ func _sync_controls() -> void:
 	_syncing_controls = true
 	candidate_picker.select(maxi(CANDIDATES.find(str(active_recipe.get("candidate", "strata"))), 0))
 	seed_input.value = int(active_recipe.get("seed", 1))
-	var chunk_text: String = str(active_recipe.get("chunk_size", 128))
+	var chunk_text: String = str(int(active_recipe.get("chunk_size", 128)))
 	var known_chunk: bool = false
 	for index: int in range(chunk_picker.item_count):
 		known_chunk = known_chunk or chunk_picker.get_item_text(index) == chunk_text
 	if not known_chunk:
 		chunk_picker.add_item(chunk_text)
-	_select_text(chunk_picker, str(active_recipe.get("chunk_size", 128)))
+	_select_text(chunk_picker, chunk_text)
 	var parameters: Dictionary = active_recipe.get("parameters", {})
 	for key: String in parameter_inputs:
 		parameter_inputs[key].value = float(parameters.get(key, PARAMETER_SPECS[key][4]))
@@ -1210,8 +1349,27 @@ func undo_authoring() -> void:
 	if _undo.is_empty():
 		_set_status("No earlier accepted profile in this workbench session.")
 		return
+	if _interactive_edit:
+		request_recipe(_undo[-1], false, "undo")
+		return
+	var previous: Dictionary = active_recipe.duplicate(true)
 	if apply_recipe(_undo[-1], false):
 		_undo.pop_back()
+		_redo.append(previous)
+		if _redo.size() > MAX_UNDO: _redo.pop_front()
+
+func redo_authoring() -> void:
+	if _redo.is_empty():
+		_set_status("No later accepted profile in this workbench session.")
+		return
+	if _interactive_edit:
+		request_recipe(_redo[-1], false, "redo")
+		return
+	var previous: Dictionary = active_recipe.duplicate(true)
+	if apply_recipe(_redo[-1], false):
+		_redo.pop_back()
+		_undo.append(previous)
+		if _undo.size() > MAX_UNDO: _undo.pop_front()
 
 func clear_authoring() -> void:
 	if active_revision < 0:
@@ -1277,7 +1435,9 @@ func _update_requests() -> void:
 	preview.queue_redraw()
 
 func _process(_delta: float) -> void:
+	service_editor_transaction()
 	service_generation()
+	tools2.service_auxiliary()
 
 func select_diagnostic(channel: String) -> bool:
 	var found: bool = false
@@ -1288,7 +1448,14 @@ func select_diagnostic(channel: String) -> bool:
 		return false
 	if channel == diagnostic_channel: return true
 	diagnostic_channel = channel
+	reset_view_jobs()
+	return true
+
+func reset_view_jobs() -> void:
 	_view_token += 1
+	tools2.retire_trace("The plane, stage or diagnostic changed. Click a ready cell to inspect this view.")
+	pointer_label.text = "Click a ready cell to inspect this view."
+	pointer_label.tooltip_text = ""
 	_has_active_chunk = false
 	_job_completed = 0
 	_job_compute_us = 0
@@ -1299,11 +1466,10 @@ func select_diagnostic(channel: String) -> bool:
 	last_packet.clear()
 	last_error = ""
 	_inspected_material = -1
-	_select_reference(diagnostic_picker, channel)
+	_select_reference(diagnostic_picker, diagnostic_channel)
 	_sync_preview()
 	_update_requests()
 	_refresh_status()
-	return true
 
 func service_generation() -> void:
 	if generator == null or active_revision < 0:
@@ -1313,7 +1479,7 @@ func service_generation() -> void:
 			return
 		_active_chunk = pending_chunks.pop_front()
 		_active_view_token = _view_token
-		var started: Dictionary = generator.begin_chunk(_active_chunk, diagnostic_channel)
+		var started: Dictionary = tools2.begin_preview(_active_chunk)
 		if not bool(started.get("ok", false)):
 			_blocked_chunks[_active_chunk] = true
 			_set_error(str(started.get("error", "Chunk request rejected.")))
@@ -1322,7 +1488,7 @@ func service_generation() -> void:
 		_job_completed = 0
 		_job_compute_us = 0
 	var start_us: int = Time.get_ticks_usec()
-	var packet: Dictionary = generator.advance(CELL_BUDGET)
+	var packet: Dictionary = tools2.advance_preview(CELL_BUDGET)
 	_job_compute_us += Time.get_ticks_usec() - start_us
 	_job_completed = int(packet.get("completed_cells", 0))
 	var state: String = str(packet.get("state", "failed"))
@@ -1332,6 +1498,7 @@ func service_generation() -> void:
 		_set_error(str(packet.get("error", "Native chunk generation failed.")))
 	elif state == "ready":
 		_has_active_chunk = false
+		packet = tools2.normalize_plane_packet(packet, _active_chunk)
 		packet["compute_usec"] = _job_compute_us
 		if not accept_chunk(packet, _active_chunk, _active_view_token):
 			_blocked_chunks[_active_chunk] = true
@@ -1424,7 +1591,9 @@ func accept_chunk(packet: Dictionary, expected_coordinate: Variant = null, expec
 	if expected_view_token >= 0 and expected_view_token != _view_token:
 		_set_error("Discarded a chunk from an older inspection request.")
 		return false
-	if str(packet.get("diagnostic", "")) != diagnostic_channel:
+	var expected_channel: String = diagnostic_channel
+	if expected_channel.is_empty() and tools2.selected_stage != "final" and not tools2.uses_plane_preview(): expected_channel = "stage:" + tools2.selected_stage
+	if str(packet.get("diagnostic", "")) != expected_channel:
 		_set_error("Native diagnostic channel does not match the current inspection.")
 		return false
 	for key: String in ["chunk_x", "chunk_y"]:
@@ -1443,6 +1612,20 @@ func accept_chunk(packet: Dictionary, expected_coordinate: Variant = null, expec
 	if cells.size() != chunk_size * chunk_size:
 		_set_error("Native chunk byte count does not match its dimensions.")
 		return false
+	if packet.has("stage_cells") and tools2.selected_stage == "final":
+		_set_error("Unrequested stage cells cannot replace the final preview.")
+		return false
+	if packet.has("stage") and str(packet.stage) != tools2.selected_stage:
+		_set_error("Native stage does not match the selected intermediate view.")
+		return false
+	var shown: PackedByteArray = packet.get("stage_cells", cells)
+	if not shown is PackedByteArray or shown.size() != cells.size():
+		_set_error("Native generation stage has an invalid material extent.")
+		return false
+	for material: int in shown:
+		if material == 10 or material >= Palette.MATERIAL_COUNT:
+			_set_error("Native stage contains an invalid material ID.")
+			return false
 	var diagnostics := PackedFloat32Array()
 	var typed: bool = diagnostic_channel.begins_with("spatial:")
 	if typed:
@@ -1481,7 +1664,10 @@ func accept_chunk(packet: Dictionary, expected_coordinate: Variant = null, expec
 		rgba[index * 4 + 2] = (packed >> 8) & 255
 		rgba[index * 4 + 3] = 255
 	var copied: Dictionary = packet.duplicate(true)
-	copied["texture"] = ImageTexture.create_from_image(Image.create_from_data(chunk_size, chunk_size, false, Image.FORMAT_RGBA8, rgba))
+	copied["texture"] = tools2.display_texture(packet)
+	if copied.texture == null:
+		_set_error("Native plane/stage display payload is malformed.")
+		return false
 	if typed or not diagnostics.is_empty():
 		var pixels := PackedByteArray()
 		pixels.resize(cells.size() * 4)
@@ -1567,22 +1753,16 @@ func _inspect_point(point: Vector2) -> void:
 			text += " · %s = %s" % [diagnostic_channel, spatial_diagnostic_text(cache[coordinate], index)]
 		elif not diagnostic_channel.is_empty() and cache[coordinate].has("diagnostics"):
 			text += " · %s = %.5f" % [diagnostic_channel, float(cache[coordinate].diagnostics[index])]
-	if active_recipe.has("grammar"):
-		var provenance: Dictionary = generator.inspect_cell(Vector2i(x, y))
-		if provenance.get("ok", false):
-			text += " · " + " > ".join(PackedStringArray(provenance.get("ancestry", [])))
-			var contributions: Array = provenance.get("contributions", [])
-			if not contributions.is_empty():
-				text += " · final: " + str(contributions.back().stage) + "/" + str(contributions.back().id)
-			pointer_label.tooltip_text = JSON.stringify(provenance, "  ", true, true)
-	else:
-		pointer_label.tooltip_text = ""
+	var provenance: Dictionary = tools2.inspect_point(Vector2i(x, y))
+	if provenance.get("ok", false):
+		text += " · native replay · accepted revision %d" % active_revision
+		pointer_label.tooltip_text = "Full bounded provenance is in Why is this here?"
 	pointer_label.text = text
 
 func _refresh_status() -> void:
 	if active_revision < 0:
 		return
-	identity_label.text = "%s · seed %s · revision %d · %s" % [str(active_recipe.get("candidate", "strata")), str(active_recipe.get("seed", 1)), active_revision, active_fingerprint]
+	identity_label.text = "%s · seed %s · revision %d · %s" % [str(active_recipe.get("candidate", "strata")), str(int(active_recipe.get("seed", 1))), active_revision, active_fingerprint]
 	marks_label.text = "%d theme/parameter strokes · %d routes · %d hard overrides · %d modules" % [active_recipe.get("strokes", []).size(), active_recipe.get("paths", []).size(), active_recipe.get("overrides", []).size(), active_recipe.get("modules", []).size()]
 	marks_label.text += " · %d fields · %d aggregates · %d modifiers" % [active_recipe.get("fields", []).size(), active_recipe.get("aggregates", []).size(), active_recipe.get("modifiers", []).size()]
 	if not spatial_nodes.is_empty(): marks_label.text += " · %d typed nodes" % spatial_nodes.size()
@@ -1596,12 +1776,13 @@ func _refresh_status() -> void:
 		text += " · generating %d, %d: %d / %d cells" % [_active_chunk.x, _active_chunk.y, _job_completed, chunk_size * chunk_size]
 	elif pending_chunks.is_empty():
 		text += " · visible region ready"
+	if _edit_thread != null or not _pending_edit.is_empty(): text += " · validating candidate (accepted preview retained)"
 	if not last_packet.is_empty():
 		text += " · last chunk %s · %s operations · %.2f ms native work" % [str(last_packet.get("hash", "")), str(last_packet.get("operations", 0)), float(last_packet.get("compute_usec", 0)) / 1000.0]
 	if not semantic_route_report.is_empty() and not semantic_route_report.get("passed", false):
-		text += " · route clearance conflict: inspect validate_routes() for the blocking material decision"
+		text += " · base-generator route clearance conflict (before semantic-plane projection): inspect validate_routes()"
 	if not semantic_route_report.get("supports_passed", true):
-		text += " · support contact conflict: inspect the final material contributions"
+		text += " · base-generator support contact conflict: inspect material contributions"
 	_set_status(text)
 
 func _set_error(message: String) -> void:
@@ -1758,7 +1939,10 @@ func _button(parent: Node, text: String, action: Callable) -> Button:
 	var button := Button.new()
 	button.text = text
 	button.focus_mode = Control.FOCUS_NONE
-	button.pressed.connect(action)
+	button.pressed.connect(func() -> void:
+		_interactive_edit = true
+		action.call()
+		_interactive_edit = false)
 	parent.add_child(button)
 	return button
 

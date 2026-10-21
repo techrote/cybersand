@@ -127,7 +127,7 @@ func check_workbench() -> void:
 		expect(app.semantic_feature_count > 20 and app.semantic_route_report.passed, "Workbench did not retain semantic metadata")
 		expect(app.apply_spatial_json() and app.active_recipe.schema == 3 and app.active_recipe.has("grammar"), "Typed editor downgraded/removed accepted hierarchy")
 		app._inspect_point(Vector2(-64, -64))
-		expect(app.pointer_label.tooltip_text.contains("contributions") and app.pointer_label.tooltip_text.contains("ancestry"), "Workbench inspection omitted copied provenance")
+		expect(app.tools2.trace_view.text.contains("contributions") and app.tools2.trace_view.text.contains("ancestry") and app.tools2.trace.get("revision", -1) == app.active_revision, "Workbench inspection pane omitted copied provenance or its accepted identity")
 		var path: String = "user://gen004-profile-roundtrip.json"
 		expect(app.save_profile(path) and app.load_profile(path) and app.active_recipe.schema == 3, "Hierarchy profile save/load failed")
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(path))

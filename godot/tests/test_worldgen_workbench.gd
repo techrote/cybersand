@@ -200,14 +200,19 @@ func check_workbench() -> void:
 		expect(app.pending_chunks.size() <= Workbench.MAX_QUEUED_CHUNKS, "Distant pan accumulated old requests")
 		drain(app)
 	expect(app.cache.size() == Workbench.MAX_CACHE_CHUNKS, "Cache did not exercise its eviction bound")
-	# Rejected work also has bounded retention across repeated distant pans.
+	# GEN-007 preflights exhausted work before accepting any replacement.
 	var limited: Dictionary = small_recipe()
 	limited.limits = {"max_operations_per_chunk": 1}
-	expect(app.apply_recipe(limited), "Limited-work preview fixture did not configure")
+	var retained_recipe: Dictionary = app.active_recipe.duplicate(true)
+	var retained_revision: int = app.active_revision
+	var retained_cache: Dictionary = app.cache.duplicate(true)
+	var retained_history: int = app._undo.size()
+	expect(not app.apply_recipe(limited), "Exhausted-work candidate was committed")
+	expect(app.active_recipe == retained_recipe and app.active_revision == retained_revision and app.cache == retained_cache and app._undo.size() == retained_history, "Budget rejection replaced valid recipe, preview or history")
 	for index: int in range(4):
 		app.set_camera_origin(Vector2(index * 1024, 64))
 		drain(app)
-		expect(app.cache.is_empty() and app._blocked_chunks.size() <= Workbench.MAX_QUEUED_CHUNKS, "Failed generation retained partial cells or unbounded refusal history")
+		expect(not app.cache.is_empty() and app._blocked_chunks.size() <= Workbench.MAX_QUEUED_CHUNKS, "Valid predecessor could not continue after budget rejection")
 	expect(app.apply_recipe(small_recipe()), "Failed generation could not recover by accepted replacement")
 	# Profile save/load round-trips accepted input, not edited invalid JSON.
 	var saved_recipe: Dictionary = app.active_recipe.duplicate(true)

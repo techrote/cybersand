@@ -108,7 +108,7 @@ std::uint64_t link_hash(const PlaneLink& l, std::uint64_t from, std::uint64_t to
     word(h, static_cast<unsigned>(l.material)); word(h, l.radius); word(h, l.max_events_per_tick);
     return h;
 }
-bool projection_contains(const PlaneProjection& p, std::int64_t x, std::int64_t y, double influence = 1) noexcept {
+bool projection_footprint_contains(const PlaneProjection& p, std::int64_t x, std::int64_t y) noexcept {
     if (!contains(p.bounds, x, y)) return false;
     if (!p.points.empty()) {
         const auto r = static_cast<std::int64_t>(p.route_width / 2);
@@ -122,6 +122,10 @@ bool projection_contains(const PlaneProjection& p, std::int64_t x, std::int64_t 
         }
         if (!hit) return false;
     }
+    return true;
+}
+bool projection_contains(const PlaneProjection& p, std::int64_t x, std::int64_t y, double influence = 1) noexcept {
+    if (!projection_footprint_contains(p, x, y)) return false;
     const auto density = p.density * influence;
     if (density == 1) return true;
     auto h = p.seed; word(h, static_cast<std::uint64_t>(x)); word(h, static_cast<std::uint64_t>(y));
@@ -161,6 +165,18 @@ struct PlanePlan::Impl {
     std::vector<PlaneLink> links;
     std::vector<PlaneActor> actors;
     std::array<std::vector<std::size_t>, 4> by_plane;
+    // Fixed 64-cell bins retain canonical projection order. The index is finite,
+    // preflighted against the existing prepared-memory/work bounds, and samples
+    // never consult another request or allocate an index entry.
+    static constexpr std::int64_t bin_size = 64;
+    std::size_t bin_columns = 0, bin_rows = 0;
+    std::array<std::vector<std::vector<std::size_t>>, 4> bins;
+    [[nodiscard]] const std::vector<std::size_t>& candidates(Plane plane, std::int64_t x, std::int64_t y) const {
+        const auto bx = static_cast<std::size_t>((x - bounds.x) / bin_size);
+        const auto by = static_cast<std::size_t>((y - bounds.y) / bin_size);
+        return bins[index(plane)][by * bin_columns + bx];
+    }
+    Material sample(Plane, std::int64_t, std::int64_t, PlaneCellProvenance*, PlaneStages*) const;
     std::vector<std::pair<int, int>> masks;
     std::array<bool, 4> masked_planes{};
     std::uint64_t fingerprint = fnv, work = 0, cost = 0, publication_work = 0;
@@ -335,7 +351,53 @@ std::shared_ptr<const PlanePlan> PlanePlan::compile(std::shared_ptr<const Genera
         const auto a = impl->mask_index(p.application), e = impl->mask_index(p.exclusion);
         impl->masks.emplace_back(a, e);
         impl->masked_planes[index(p.plane)] = impl->masked_planes[index(p.plane)] || a >= 0 || e >= 0;
-        impl->cost += p.shape == ProjectionShape::Native || p.shape == ProjectionShape::Omit ? 4 : 64 + p.points.size() * 16;
+    }
+    impl->bin_columns = static_cast<std::size_t>((impl->bounds.width + Impl::bin_size - 1) / Impl::bin_size);
+    impl->bin_rows = static_cast<std::size_t>((impl->bounds.height + Impl::bin_size - 1) / Impl::bin_size);
+    const auto bin_count = impl->bin_columns * impl->bin_rows;
+    impl->charge(bin_count * 4, bin_count * sizeof(std::vector<std::size_t>) * 8);
+    for (auto& bins : impl->bins) bins.resize(bin_count);
+    for (std::size_t i = 0; i < impl->projections.size(); ++i) {
+        const auto& p = impl->projections[i];
+        const auto left = static_cast<std::size_t>((p.bounds.x - impl->bounds.x) / Impl::bin_size);
+        const auto top = static_cast<std::size_t>((p.bounds.y - impl->bounds.y) / Impl::bin_size);
+        const auto right = static_cast<std::size_t>((p.bounds.x + p.bounds.width - 1 - impl->bounds.x) / Impl::bin_size);
+        const auto bottom = static_cast<std::size_t>((p.bounds.y + p.bounds.height - 1 - impl->bounds.y) / Impl::bin_size);
+        impl->charge((right-left+1)*(bottom-top+1)*(8+p.points.size()*16), (right-left+1)*(bottom-top+1)*sizeof(std::size_t)*2);
+        for (auto by = top; by <= bottom; ++by) for (auto bx = left; bx <= right; ++bx) {
+            if (!p.points.empty()) {
+                const auto x0=impl->bounds.x+static_cast<std::int64_t>(bx)*Impl::bin_size;
+                const auto y0=impl->bounds.y+static_cast<std::int64_t>(by)*Impl::bin_size;
+                const auto x1=std::min(x0+Impl::bin_size,impl->bounds.x+impl->bounds.width);
+                const auto y1=std::min(y0+Impl::bin_size,impl->bounds.y+impl->bounds.height);
+                const auto radius=static_cast<std::int64_t>(p.route_width/2);
+                bool intersects=false;
+                for (std::size_t point=1;point<p.points.size();++point) {
+                    const auto a=p.points[point-1], b=p.points[point];
+                    if (x0<=static_cast<std::int64_t>(std::max(a.x,b.x))+radius &&
+                        x1>static_cast<std::int64_t>(std::min(a.x,b.x))-radius &&
+                        y0<=static_cast<std::int64_t>(std::max(a.y,b.y))+radius &&
+                        y1>static_cast<std::int64_t>(std::min(a.y,b.y))-radius) {intersects=true;break;}
+                }
+                if (!intersects) continue;
+            }
+            impl->bins[index(p.plane)][by*impl->bin_columns+bx].push_back(i);
+        }
+    }
+    // A bundle samples all four planes at one coordinate. Bound that sum in
+    // each co-located bin, then choose the largest bin; separate plane maxima
+    // may occur at different coordinates and need not be added. Every term is
+    // non-negative, so this also conservatively bounds a single-plane stage.
+    // Observed candidate counts remain separate from this logical work bound.
+    for (std::size_t bin = 0; bin < bin_count; ++bin) {
+        std::uint64_t work = 0;
+        for (const auto& bins : impl->bins) {
+            for (const auto i : bins[bin]) {
+                const auto& p = impl->projections[i];
+                work += p.shape == ProjectionShape::Native || p.shape == ProjectionShape::Omit ? 4 : 64 + p.points.size()*16;
+            }
+        }
+        impl->cost = std::max(impl->cost, work);
     }
     for (bool masked : impl->masked_planes) if (masked) impl->cost += impl->generator->spatial_graph().operations_per_sample();
     // A named region always declares atmospheric and distant composition,
@@ -500,9 +562,14 @@ std::shared_ptr<const PlanePlan> PlanePlan::compile(std::shared_ptr<const Genera
     need(publication <= definition.limits.max_publication_bytes, "complete bundle publication memory budget exhausted");
     impl->cost += 128 + impl->generator->recipe().overrides.size() * 16;
     if (definition.policies[0].base_generator) impl->cost += impl->generator->operations_per_cell();
-    need(impl->publication_work <= definition.limits.max_operations &&
-        impl->cost <= (definition.limits.max_operations - impl->publication_work) / area(impl->bounds),
-        "complete bundle raster work budget exhausted");
+    if (impl->publication_work > definition.limits.max_operations ||
+        impl->cost > (definition.limits.max_operations - impl->publication_work) / area(impl->bounds)) {
+        std::string detail("complete bundle raster work budget exhausted: cells=");
+        detail.append(std::to_string(area(impl->bounds))).append(" per_cell=").append(std::to_string(impl->cost));
+        detail.append(" publication=").append(std::to_string(impl->publication_work));
+        detail.append(" maximum=").append(std::to_string(definition.limits.max_operations));
+        need(false, detail);
+    }
     impl->charge(impl->projections.size() * sizeof(std::size_t),
         impl->projections.size() * (sizeof(std::size_t) + sizeof(std::pair<int, int>)) * 2);
     auto& h = impl->fingerprint; word(h, kPlaneAlgorithmVersion); word(h, definition.schema); text(h, definition.id);
@@ -531,40 +598,116 @@ RectI64 PlanePlan::bounds() const noexcept { return impl_->bounds; }
 std::uint64_t PlanePlan::fingerprint() const noexcept { return impl_->fingerprint; }
 std::uint64_t PlanePlan::preparation_work() const noexcept { return impl_->work; }
 std::uint64_t PlanePlan::operations_per_cell() const noexcept { return impl_->cost; }
-std::size_t PlanePlan::storage_bytes() const noexcept { return impl_->bytes; }
-Material PlanePlan::sample(Plane plane, std::int64_t x, std::int64_t y) const {
-    const auto n = index(plane); need(contains(impl_->bounds, x, y), "sample lies outside finite semantic window");
-    const auto& policy = impl_->definition.policies[n];
-    SpatialValues values;
-    if (impl_->masked_planes[n]) impl_->generator->spatial_graph().evaluate(x, y, values);
-    auto result = policy.base_generator ? impl_->generator->sample(x, y) : policy.material;
-    for (auto i : impl_->by_plane[n]) {
-        const auto& p = impl_->projections[i];
-        if (p.shape == ProjectionShape::Omit || p.shape == ProjectionShape::Native ||
-            !projection_contains(p, x, y, impl_->mask_influence(i, values))) continue;
-        result = projection_material(p, x, y);
+GenerationIndexInfo PlanePlan::index_info() const noexcept {
+    GenerationIndexInfo result;
+    for(const auto& plane:impl_->bins) {
+        result.bins+=plane.size();
+        for(const auto& bin:plane) {
+            result.entries+=bin.size(); result.maximum_candidates=std::max(result.maximum_candidates,bin.size());
+        }
     }
-    if (plane == Plane::Play) for (const auto& hard : impl_->generator->recipe().overrides)
-        if (hard.material && contains(hard.bounds, x, y)) result = *hard.material;
     return result;
 }
-PlaneCellProvenance PlanePlan::explain(Plane plane, std::int64_t x, std::int64_t y) const {
-    PlaneCellProvenance result; result.plane = plane; result.x = x; result.y = y; result.material = sample(plane, x, y);
+std::size_t PlanePlan::storage_bytes() const noexcept { return impl_->bytes; }
+Material PlanePlan::Impl::sample(Plane plane, std::int64_t x, std::int64_t y, PlaneCellProvenance* trace, PlaneStages* stages) const {
+    const auto n = index(plane); need(contains(bounds, x, y), "sample lies outside finite semantic window");
+    const auto& policy = definition.policies[n];
+    PlaneStages snapshots;
+    snapshots.policy = policy.material; snapshots.has_source = policy.base_generator;
     SpatialValues values;
-    if (impl_->masked_planes[index(plane)]) impl_->generator->spatial_graph().evaluate(x, y, values);
+    if (masked_planes[n]) generator->spatial_graph().evaluate(x, y, values);
+    auto result = policy.material;
+    if (policy.base_generator) {
+        if (trace) {
+            trace->source = generator->explain(x, y);
+            result = trace->source->material; snapshots.source = trace->source->stages;
+        } else if (stages) {
+            snapshots.source = generator->stages(x, y); result = snapshots.source.at(GenerationStage::Final);
+        } else result = generator->sample(x, y);
+    }
+    snapshots.base = result;
+    const auto room = [&](std::size_t count) {
+        if (count < kMaxTraceEntries) return true;
+        trace->truncated = true; ++trace->omitted_entries; return false;
+    };
+    const auto record = [&](const char* stage, const std::string& id, Material next, double influence) {
+        if (trace && room(trace->contributions.size())) trace->contributions.push_back({stage, id, result, next, influence});
+        result = next;
+    };
     std::set<std::string> features;
-    for (auto i : impl_->by_plane[index(plane)]) {
-        const auto& p = impl_->projections[i]; if (!projection_contains(p, x, y, impl_->mask_influence(i, values))) continue;
-        features.insert(p.feature_id); result.projections.push_back(p.id);
+    const auto add_feature = [&](const std::string& id) {
+        if (features.contains(id)) return;
+        if (room(features.size())) features.insert(id);
+    };
+    for (auto i : candidates(plane, x, y)) {
+        ++snapshots.projection_checks;
+        const auto& p = projections[i];
+        const auto influence = mask_influence(i, values);
+        const bool metadata_only = p.shape == ProjectionShape::Omit || p.shape == ProjectionShape::Native;
+        const bool accepted = !metadata_only && projection_contains(p, x, y, influence);
+        if (trace && contains(p.bounds, x, y)) {
+            if (room(trace->decisions.size())) {
+                EvaluationDecision entry;
+                entry.stage = "plane_projection"; entry.id = p.id;
+                entry.application = p.application; entry.exclusion = p.exclusion;
+                const auto [a, e] = masks[i];
+                entry.application_value = a < 0 ? 1 : values.values[static_cast<std::size_t>(a)].x;
+                entry.exclusion_value = e < 0 ? 0 : values.values[static_cast<std::size_t>(e)].x;
+                entry.strength = p.density; entry.influence = p.density * influence;
+                auto draw_hash = p.seed; word(draw_hash, static_cast<std::uint64_t>(x)); word(draw_hash, static_cast<std::uint64_t>(y));
+                entry.draw = static_cast<double>(draw_hash >> 32) / 4294967296.0;
+                entry.shape = projection_footprint_contains(p, x, y) ? 1 : 0;
+                entry.draw_used = !metadata_only && entry.shape != 0 && entry.influence != 1;
+                entry.accepted = accepted;
+                entry.detail = p.shape == ProjectionShape::Omit ? "intentional omission: " + p.omission :
+                    p.shape == ProjectionShape::Native ? "base generator metadata; see source trace" :
+                    accepted ? "projection applied in canonical priority/id order" : "route geometry/mask/density rejected";
+                trace->decisions.push_back(std::move(entry));
+            }
+            if (accepted) {
+                if (room(trace->projections.size())) trace->projections.push_back(p.id);
+                add_feature(p.feature_id);
+            }
+        }
+        if (accepted) record("plane_projection", p.id, projection_material(p, x, y), p.density * influence);
     }
-    for (const auto& f : impl_->fixtures) if (f.plane == plane && contains(f.bounds, x, y)) {
-        features.insert(f.feature_id); result.fixtures.push_back(f.id);
+    snapshots.projections = result;
+    if (plane == Plane::Play) for (const auto& hard : generator->recipe().overrides)
+        if (hard.material && contains(hard.bounds, x, y)) record("hard_override", hard.id, *hard.material, 1);
+    snapshots.final = result;
+    if (stages) *stages = snapshots;
+    if (trace) {
+        trace->stages = snapshots; trace->material = result;
+        for (const auto& f : fixtures) if (f.plane == plane && contains(f.bounds, x, y)) {
+            if (room(trace->fixtures.size())) trace->fixtures.push_back(f.id);
+            add_feature(f.feature_id);
+        }
+        for (const auto& k : links) if (k.target_plane == plane && contains(k.bounds, x, y))
+            if (room(trace->links.size())) trace->links.push_back(k.id);
+        for (const auto& a : actors) if (a.plane == plane && a.x == x && a.y == y) {
+            if (room(trace->actors.size())) trace->actors.push_back(a.id);
+            add_feature(a.feature_id);
+        }
+        if (trace->source && !trace->source->accepted_feature_id.empty()) add_feature(trace->source->accepted_feature_id);
+        trace->features.assign(features.begin(), features.end());
+        auto h = fnv; word(h, fingerprint); word(h, definition.revision); word(h, n);
+        word(h, static_cast<std::uint64_t>(x)); word(h, static_cast<std::uint64_t>(y)); word(h, static_cast<unsigned>(result));
+        trace->proposal_hash = h;
     }
-    for (const auto& k : impl_->links) if (k.target_plane == plane && contains(k.bounds, x, y)) result.links.push_back(k.id);
-    for (const auto& a : impl_->actors) if (a.plane == plane && a.x == x && a.y == y) {
-        features.insert(a.feature_id); result.actors.push_back(a.id);
-    }
-    result.features.assign(features.begin(), features.end()); return result;
+    return result;
+}
+Material PlanePlan::sample(Plane plane, std::int64_t x, std::int64_t y) const {
+    return impl_->sample(plane, x, y, nullptr, nullptr);
+}
+PlaneCellProvenance PlanePlan::explain(Plane plane, std::int64_t x, std::int64_t y) const {
+    PlaneCellProvenance result; result.plane = plane; result.x = x; result.y = y;
+    (void)impl_->sample(plane, x, y, &result, nullptr);
+    return result;
+}
+PlaneStages PlanePlan::stages(Plane plane, std::int64_t x, std::int64_t y) const {
+    PlaneStages result;
+    (void)impl_->sample(plane, x, y, nullptr, &result);
+    return result;
 }
 std::unique_ptr<PlaneGenerationJob> PlanePlan::begin(RectI64 bounds) const {
     return std::unique_ptr<PlaneGenerationJob>(new PlaneGenerationJob(shared_from_this(), bounds));

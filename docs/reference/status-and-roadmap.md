@@ -10,6 +10,10 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## GEN-007 authoring and qualification — 2026-10-21
+
+**Current implementation candidate; acceptance pending:** [Generation Workbench 2](../systems/generation-workbench-2.md) adds native provenance replay and true stages, transactional visual authoring, graph/hierarchy/plane diagnostics, undo/redo and bounded seed/recipe comparison. The [procedural qualification scene](../operations/procedural-qualification.md) targets one compact 1024 × 1024 four-plane map with structural, native-reaction and actual rendered checks. [PR #198](https://github.com/techrote/cybersand/pull/198) and the [dated ledger](../audits/2026-10-21-gen007-workbench-qualification.md) retain unpassed gates; counts or runnable source do not establish visual polish or platform acceptance. GEN-006 remains the subsequent streaming/persistence owner.
+
 ## Player control playground — 2026-10-20
 
 **Current experimental source:** the [player playground](../systems/player-control-playground.md)

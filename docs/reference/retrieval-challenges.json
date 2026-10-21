@@ -1,7 +1,7 @@
 {
   "version": 1,
   "frozen_date": "2026-09-08",
-  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair. ACT01-ACT03 cover provisional actor capabilities, player/policy input lifetime and bounded-work limits. SCENE01/SCENE02 cover Neon Reliquary entry and view controls, and the four-district descent with explicit scene-state boundaries. ACT04-ACT09 cover the 29-rig sets, parametric input, consumed-action identity, fictional personas, bounded tool/rope authority and SetA compatibility. SCENE03 covers the connected Blacksite Nine route, camera-only district views, shared-world continuity and whole-complex reset. USABLE01 covers the separate 32-item actor equipment catalogue, ownership and work limits. ACT-005 USABLE02-USABLE04 add independent physical equipment lifetime/admission, real processor lifecycle/stock and physical usable course questions. MAT03, TEST01 and TEST02 cover the 2026-10-19 catalogue integration, required rendered-test acceptance and CLI corrections. TEST03 covers actual retained-DLL Windows execution, current native source identity and applicable test scope. SCENE04 and DEP02 cover the 2026-10-20 Deepworks map/replay boundaries and parameterized depth dimensions/publication admission. PLAY01-PLAY05 independently cover the seven human presets, acrobat chains, native material field bounds, input lifetime/gamepad mapping and circular-wheel approximation. GEN005-1–GEN005-3 cover coherent plane projection, identity-bound admission/events and actual finite fixture/capture evidence.",
+  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair. ACT01-ACT03 cover provisional actor capabilities, player/policy input lifetime and bounded-work limits. SCENE01/SCENE02 cover Neon Reliquary entry and view controls, and the four-district descent with explicit scene-state boundaries. ACT04-ACT09 cover the 29-rig sets, parametric input, consumed-action identity, fictional personas, bounded tool/rope authority and SetA compatibility. SCENE03 covers the connected Blacksite Nine route, camera-only district views, shared-world continuity and whole-complex reset. USABLE01 covers the separate 32-item actor equipment catalogue, ownership and work limits. ACT-005 USABLE02-USABLE04 add independent physical equipment lifetime/admission, real processor lifecycle/stock and physical usable course questions. MAT03, TEST01 and TEST02 cover the 2026-10-19 catalogue integration, required rendered-test acceptance and CLI corrections. TEST03 covers actual retained-DLL Windows execution, current native source identity and applicable test scope. SCENE04 and DEP02 cover the 2026-10-20 Deepworks map/replay boundaries and parameterized depth dimensions/publication admission. PLAY01-PLAY05 independently cover the seven human presets, acrobat chains, native material field bounds, input lifetime/gamepad mapping and circular-wheel approximation. GEN005-1\u2013GEN005-3 cover coherent plane projection, identity-bound admission/events and actual finite fixture/capture evidence.",
   "questions": [
     {
       "id": "C05",
@@ -170,7 +170,7 @@
       "facts": [
         "The issue #9 full-world accounting control preserved all recorded Water mass and showed the cropped deficit below the hard floor: the defect was displacement across the barrier, not Water destruction.",
         "Historical #11 work added bounded barrier/body-mask-aware ejection in its recorded source-matched envelope, but current-main reconciliation must not describe that bounded result as owner acceptance.",
-        "WEX-001 freezes the current generic Rapier↔Water splash/displacement and hard-floor failure before later hybrid architecture changes."
+        "WEX-001 freezes the current generic Rapier\u2194Water splash/displacement and hard-floor failure before later hybrid architecture changes."
       ],
       "sources": [
         "../godot/native_extension/cyber_native_cell_world.cpp::find_ejection_target",
@@ -464,7 +464,7 @@
       ],
       "facts": [
         "Current native Water already uses fractional conserved FreeMass while most other liquids use whole-cell CellularYield-style paths, so another explicit Water pressure mechanism would add another bulk-motion authority rather than replace an already unified solver.",
-        "A generic Rapier body entering Water can already create convincing splash/wave displacement; WEX therefore tests whether at most roughly 3–5 segmented upper-volume Water tiers can reuse the generic hybrid substrate to create depth-dependent surge.",
+        "A generic Rapier body entering Water can already create convincing splash/wave displacement; WEX therefore tests whether at most roughly 3\u20135 segmented upper-volume Water tiers can reuse the generic hybrid substrate to create depth-dependent surge.",
         "The candidate is experimental, must preserve exact Water quantity and generic ownership, and must actively test slab/membrane, floor-reaction, chatter and boundary-penetration failure modes."
       ],
       "sources": [
@@ -796,7 +796,7 @@
     },
     {
       "id": "SCENE03",
-      "query": "How do I explore Blacksite Nine's connected 3×3 map from the surface lab through the underground districts, and do tile views, boundary crossings and reset preserve edits?",
+      "query": "How do I explore Blacksite Nine's connected 3\u00d73 map from the surface lab through the underground districts, and do tile views, boundary crossings and reset preserve edits?",
       "canonical": [
         "operations/blacksite-nine-demo.md"
       ],
@@ -1773,7 +1773,7 @@
       ],
       "facts": [
         "The schema-3 hierarchy-multi-district.json profile covers four 128-cell canonical regions at negative and positive coordinates using 64-cell chunks.",
-        "It contains nested foundries, rooms, floor/ceiling/wall-constrained apparatus and two embedded dais lights, a 10–25 percent machinery occupancy constraint, primary passages, loops and service/liquid trunks.",
+        "It contains nested foundries, rooms, floor/ceiling/wall-constrained apparatus and two embedded dais lights, a 10\u201325 percent machinery occupancy constraint, primary passages, loops and service/liquid trunks.",
         "The Workbench hierarchy example loads the authored JSON, while get_semantic_plan, inspect_cell and validate_routes return copied inspection and qualification data.",
         "The example also composes candidate strategies, a prepared native module, ordinary aggregate materials and a typed distance mask from immutable semantic geometry.",
         "The example uses order-1 Hilbert sites and bounded four-site service tours; both route passed and supports_passed must be checked."
@@ -1866,8 +1866,89 @@
         "../godot/tests/test_semantic_depth_render.gd"
       ],
       "revision_sensitive": true
+    },
+    {
+      "id": "GEN007-1",
+      "query": "How does the Why is this here inspector prove its explanation belongs to the accepted native generation and distinguish actual stages from replay?",
+      "canonical": [
+        "systems/generation-workbench-2.md",
+        "reference/interfaces-and-message-contracts.md"
+      ],
+      "facts": [
+        "Inspector replay uses immutable native plans and expected revision/fingerprint, with copied preview readback separately identified.",
+        "Actual stages sample the normal pipeline; changing the recipe to imitate a stage is invalid.",
+        "Trace collection and UI byte bounds are explicit, with truncated and unavailable detail.",
+        "No historical full-cell trace or live simulation state is inferred."
+      ],
+      "sources": [
+        "../godot/native_extension/cyber_world_generator.hpp",
+        "../native/src/world_generation.cpp",
+        "../native/src/generation_planes.cpp",
+        "../godot/scripts/worldgen_workbench_tools.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "GEN007-2",
+      "query": "Can invalid graph layer brush edits or undo redo and rapid seed changes corrupt my last valid generation preview or admit stale comparisons?",
+      "canonical": [
+        "systems/generation-workbench-2.md",
+        "architecture/data-ownership-and-lifetimes.md"
+      ],
+      "facts": [
+        "Candidate validation happens before commit; rejection preserves accepted recipe, preview and history.",
+        "Graph, hierarchy, parameters, planes and brushes share the same canonical transaction and preserve supported fields not shown by the form.",
+        "History restores deterministic recipe output with fresh adapter/session identities, invalidating stale preview trace and comparison work.",
+        "Queues, cache, traces, comparison buffers and seed jobs are finite."
+      ],
+      "sources": [
+        "../godot/scripts/worldgen_workbench.gd",
+        "../godot/scripts/worldgen_workbench_tools.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "GEN007-3",
+      "query": "How does procedural Deepworks qualification prove final projected route clearance and actual native reactions across all paired exhibit helpers?",
+      "canonical": [
+        "operations/procedural-qualification.md",
+        "systems/generation-workbench-2.md"
+      ],
+      "facts": [
+        "The scene is one declarative 1024-square four-plane map using reusable native grammar and projections, not an imported raster.",
+        "Routes and loops must be checked after projections and final overrides, separately from semantic topology.",
+        "All eight paired plane exhibits require completed mechanism receipts; finite ordinary reagents feed native kernels.",
+        "No-op missing-reagent or aborted helper and script errors invalidate the run.",
+        "Structural counts alone do not prove visual polish; display-backed captures and candid Deepworks review are required."
+      ],
+      "sources": [
+        "../examples/worldgen/gen007-deepworks.json",
+        "../godot/scripts/worldgen_qualification.gd",
+        "../godot/tests/test_gen007_qualification.gd",
+        "../godot/tests/test_gen007_reactions.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "GEN007-4",
+      "query": "What do the workbench seed browser before after difference view density histogram and cost heatmap actually measure and how are they bounded?",
+      "canonical": [
+        "systems/generation-workbench-2.md",
+        "reference/configuration-reference.md"
+      ],
+      "facts": [
+        "Before/after compares both recipes at the same seed and absolute rectangle; material differences are exact and semantic records use stable identities.",
+        "Seed cards bound one active owner and at most four requests, each at most 128-square per plane.",
+        "Feature density counts semantic records; conservative logical charges differ from measured local chunk time.",
+        "Trace detail and semantic change lists can truncate explicitly; no target-PC or per-cell timing is inferred."
+      ],
+      "sources": [
+        "../godot/scripts/worldgen_workbench_tools.gd",
+        "../godot/scripts/worldgen_preview.gd"
+      ],
+      "revision_sensitive": true
     }
   ],
-  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set. 2026-10-18: MAT01/MAT02 add independent persistent-contact and interior mask-wake questions; the frozen 32 and prior questions are unchanged. 2026-10-18: SCENE01 adds independent demo-level entry/view/ownership routing; the frozen 32-question set is unchanged. 2026-10-18: SCENE02 adds the owner-requested four-tile descent and state-boundary question; all prior and frozen questions remain unchanged. 2026-10-18: ACT01-ACT03 add independent actor model/input/performance-boundary questions; the frozen 32-question set is unchanged. 2026-10-18 ACT-002: ACT04-ACT09 add independent expanded-rig/control/observation/persona/budget/compatibility questions. ACT03 now explicitly scopes original numeric limits to SetA and names the additive extension; the frozen 32-question set remains unchanged. 2026-10-18: SCENE03 adds the nine-district route and continuity question; all 47 prior supplementary questions, including SCENE01/SCENE02 and ACT01-ACT09, and the frozen 32-question set remain unchanged. 2026-10-18 ACT-004: ACT10/ACT11 expected facts reconciled with retained hull references and implemented full physical roster; ACT12-ACT15 add independent physical fidelity, producer lifetime, usable and arena-version challenges. Frozen query wording is unchanged; Q10 capacity correction is disclosed in the frozen fixture metadata. 2026-10-18 USABLE-001: USABLE01 adds the independent actor-equipment catalogue/ownership/budget question without changing the frozen 32-question set. 2026-10-19 ACT-005: ACT14 now also routes to the expanded actor-usables canonical contract; ACT14 and USABLE01 expected facts and source routes distinguish the implemented physical equipment catalogue from retained sampled authority. Existing question IDs and query wording are unchanged. USABLE02-USABLE04 add supplementary source-discovered lifetime, processor and course challenges; the frozen 32-question fixture is unchanged, and new question results are reported separately from the prior 70-question baseline. 2026-10-19: MAT03 and TEST01 add catalogue integration and actual graphical-test execution questions; TEST02 adds standalone CLI admission and sampled accounting. 2026-10-19 resumed MAT-002 review: MAT03 scopes sampled-rig digging separately from authored sampled and physical equipment. TEST03 adds the current Windows execution gate; all upstream USABLE01-USABLE04 questions and the frozen 32-question set are preserved. 2026-10-19 Windows follow-up: TEST03 distinguishes the four text descriptor newline comparisons from byte-exact source and binary evidence; existing questions and query wording are unchanged. 2026-10-20: SCENE04 and DEP02 add independent full-map exhibition/replay and depth-size/stale-packet challenges. DEP01 preserves Strata Theatre defaults while admitting the new shared dimensions; TEST03 now refers to dynamically discovered rendered cases instead of a stale count. Existing question IDs and query wording, and the frozen 32-question fixture, are unchanged. The two new challenges are reported separately from the prior 77-question set. 2026-10-20 player playground: PLAY01-PLAY05 add five supplementary source-discovered questions; all prior 79 supplementary objects and the frozen 32-question fixture remain unchanged. New results are reported separately from the prior set. 2026-10-21 PR #189 integration: retains all ten GEN-003 questions GEN09-GEN18 from main alongside PLAY01-PLAY05, for 94 supplementary questions; the frozen 32-question fixture remains unchanged. 2026-10-21: GEN19–GEN26 add independently scoped semantic identity, hierarchy constraints/fallback, structural curve, final-raster override, immutable geometry, bounded publication, authoring and final support-contact questions. All prior 89 supplementary queries and the frozen 32-question set remain unchanged. 2026-10-21 PR #189 GEN-004 reintegration: preserves all 94 player/GEN-003 supplementary questions and all 97 questions from GEN-004 main, yielding 102 distinct questions with unchanged IDs, query wording and expected facts; the frozen 32-question fixture remains unchanged. 2026-10-21 GEN-005: adds three supplementary semantic-plane questions; the original frozen 32-question fixture and all 102 prior supplementary objects remain unchanged. New question results are reported separately.",
+  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set. 2026-10-18: MAT01/MAT02 add independent persistent-contact and interior mask-wake questions; the frozen 32 and prior questions are unchanged. 2026-10-18: SCENE01 adds independent demo-level entry/view/ownership routing; the frozen 32-question set is unchanged. 2026-10-18: SCENE02 adds the owner-requested four-tile descent and state-boundary question; all prior and frozen questions remain unchanged. 2026-10-18: ACT01-ACT03 add independent actor model/input/performance-boundary questions; the frozen 32-question set is unchanged. 2026-10-18 ACT-002: ACT04-ACT09 add independent expanded-rig/control/observation/persona/budget/compatibility questions. ACT03 now explicitly scopes original numeric limits to SetA and names the additive extension; the frozen 32-question set remains unchanged. 2026-10-18: SCENE03 adds the nine-district route and continuity question; all 47 prior supplementary questions, including SCENE01/SCENE02 and ACT01-ACT09, and the frozen 32-question set remain unchanged. 2026-10-18 ACT-004: ACT10/ACT11 expected facts reconciled with retained hull references and implemented full physical roster; ACT12-ACT15 add independent physical fidelity, producer lifetime, usable and arena-version challenges. Frozen query wording is unchanged; Q10 capacity correction is disclosed in the frozen fixture metadata. 2026-10-18 USABLE-001: USABLE01 adds the independent actor-equipment catalogue/ownership/budget question without changing the frozen 32-question set. 2026-10-19 ACT-005: ACT14 now also routes to the expanded actor-usables canonical contract; ACT14 and USABLE01 expected facts and source routes distinguish the implemented physical equipment catalogue from retained sampled authority. Existing question IDs and query wording are unchanged. USABLE02-USABLE04 add supplementary source-discovered lifetime, processor and course challenges; the frozen 32-question fixture is unchanged, and new question results are reported separately from the prior 70-question baseline. 2026-10-19: MAT03 and TEST01 add catalogue integration and actual graphical-test execution questions; TEST02 adds standalone CLI admission and sampled accounting. 2026-10-19 resumed MAT-002 review: MAT03 scopes sampled-rig digging separately from authored sampled and physical equipment. TEST03 adds the current Windows execution gate; all upstream USABLE01-USABLE04 questions and the frozen 32-question set are preserved. 2026-10-19 Windows follow-up: TEST03 distinguishes the four text descriptor newline comparisons from byte-exact source and binary evidence; existing questions and query wording are unchanged. 2026-10-20: SCENE04 and DEP02 add independent full-map exhibition/replay and depth-size/stale-packet challenges. DEP01 preserves Strata Theatre defaults while admitting the new shared dimensions; TEST03 now refers to dynamically discovered rendered cases instead of a stale count. Existing question IDs and query wording, and the frozen 32-question fixture, are unchanged. The two new challenges are reported separately from the prior 77-question set. 2026-10-20 player playground: PLAY01-PLAY05 add five supplementary source-discovered questions; all prior 79 supplementary objects and the frozen 32-question fixture remain unchanged. New results are reported separately from the prior set. 2026-10-21 PR #189 integration: retains all ten GEN-003 questions GEN09-GEN18 from main alongside PLAY01-PLAY05, for 94 supplementary questions; the frozen 32-question fixture remains unchanged. 2026-10-21: GEN19\u2013GEN26 add independently scoped semantic identity, hierarchy constraints/fallback, structural curve, final-raster override, immutable geometry, bounded publication, authoring and final support-contact questions. All prior 89 supplementary queries and the frozen 32-question set remain unchanged. 2026-10-21 PR #189 GEN-004 reintegration: preserves all 94 player/GEN-003 supplementary questions and all 97 questions from GEN-004 main, yielding 102 distinct questions with unchanged IDs, query wording and expected facts; the frozen 32-question fixture remains unchanged. 2026-10-21 GEN-005: adds three supplementary semantic-plane questions; the original frozen 32-question fixture and all 102 prior supplementary objects remain unchanged. New question results are reported separately. 2026-10-21 GEN-007: adds four independent workbench/procedural qualification questions; frozen 32 and all 105 prior supplementary objects are preserved.",
   "integration_note": "Retains all scene, generation, sampled and physical actor-usable, Thunderbowl, physical-actor, building-material and presentation routes; historical questions are preserved. Deepworks scene controls, finite source replay and full-size/non-square depth dimensions are additive routes; existing historical scope remains intact. Player playground controls, native field ownership and conservative wheel-mask routing are additive; original and historical questions remain unchanged. GEN-004 semantic identity, hierarchy constraints, structural routes, final-raster qualification, immutable geometry, bounded publication, authoring and support-contact routes coexist with all five player questions."
 }

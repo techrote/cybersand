@@ -199,6 +199,8 @@ Copied semantic/cell data belongs to the caller, with no borrowed World storage.
 The [interface reference](../reference/interfaces-and-message-contracts.md)
 owns the exact C++ and Godot method/packet names.
 
+### What does floating-square route validation prove after a hard override?
+
 `validate_routes()` checks **final rasterized cells**, after fields, modules,
 aggregates and hard overrides, for an explicitly declared odd square clearance.
 This is the `floating-square-v1` geometric profile with four-neighbor
@@ -211,6 +213,11 @@ motion after simulation. An authored hard override can intentionally block a
 required route: material output preserves the override and the route report
 records failure. A blocked report must not be described as successful traversal.
 No abstract graph result substitutes for this final-cell check.
+
+For a semantic-plane recipe, additional projections can subsequently change
+material. The [GEN-007 qualification oracle](../operations/procedural-qualification.md#how-are-routes-checked-after-all-material-decisions)
+therefore checks the final projected play plane independently, with the same
+distinction between geometric clearance and actor traversal.
 
 The same report separately exposes `supports_passed` for the
 `static-solid-contact-v1` profile. For each declared floor, ceiling or wall

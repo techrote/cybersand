@@ -173,6 +173,13 @@ struct GrammarPlan::Impl {
     RectI64 bounds;
     std::vector<SemanticFeature> features;
     std::vector<std::size_t> feature_depths;
+    static constexpr std::int64_t bin_size = 64;
+    std::size_t bin_columns = 0;
+    std::vector<std::vector<std::size_t>> feature_bins, route_bins;
+    std::uint64_t sample_cost = 64;
+    [[nodiscard]] std::size_t bin(std::int64_t x, std::int64_t y) const noexcept {
+        return static_cast<std::size_t>((y-bounds.y)/bin_size)*bin_columns + static_cast<std::size_t>((x-bounds.x)/bin_size);
+    }
     std::vector<SemanticSocket> sockets;
     std::vector<SemanticRoute> routes;
     std::vector<ConstraintReceipt> receipts;
@@ -828,6 +835,52 @@ std::shared_ptr<const GrammarPlan> GrammarPlan::compile(GrammarDefinition defini
             hash_int(f.revision,static_cast<unsigned>(found->direction));hash_int(f.revision,found->width);hash_int(f.revision,found->required);
         }
     }
+    // Build a bounded conservative 64-cell candidate index after canonical
+    // ordering. Rectangles and route halos are clipped only for indexing; the
+    // original tests still decide coverage. Negative regions retain exact IDs.
+    impl->bin_columns = static_cast<std::size_t>((impl->bounds.width+Impl::bin_size-1)/Impl::bin_size);
+    const auto bin_rows = static_cast<std::size_t>((impl->bounds.height+Impl::bin_size-1)/Impl::bin_size);
+    const auto bin_count = impl->bin_columns*bin_rows;
+    impl->charge(bin_count*2); impl->memory(bin_count*sizeof(std::vector<std::size_t>)*4);
+    impl->feature_bins.resize(bin_count); impl->route_bins.resize(bin_count);
+    const auto index_box = [&](std::vector<std::vector<std::size_t>>& bins, std::size_t record, RectI64 box, const SemanticRoute* route = nullptr) {
+        const auto x0=std::max(box.x,impl->bounds.x), y0=std::max(box.y,impl->bounds.y);
+        const auto x1=std::min(box.x+box.width,impl->bounds.x+impl->bounds.width);
+        const auto y1=std::min(box.y+box.height,impl->bounds.y+impl->bounds.height);
+        if(x0>=x1||y0>=y1)return;
+        const auto left=static_cast<std::size_t>((x0-impl->bounds.x)/Impl::bin_size);
+        const auto top=static_cast<std::size_t>((y0-impl->bounds.y)/Impl::bin_size);
+        const auto right=static_cast<std::size_t>((x1-1-impl->bounds.x)/Impl::bin_size);
+        const auto bottom=static_cast<std::size_t>((y1-1-impl->bounds.y)/Impl::bin_size);
+        const auto count=(right-left+1)*(bottom-top+1);
+        impl->charge(count*(8+(route?route->points.size()*16:0))); impl->memory(count*sizeof(std::size_t)*2);
+        for(auto by=top;by<=bottom;++by)for(auto bx=left;bx<=right;++bx) {
+            const auto cell_x=impl->bounds.x+static_cast<std::int64_t>(bx)*Impl::bin_size;
+            const auto cell_y=impl->bounds.y+static_cast<std::int64_t>(by)*Impl::bin_size;
+            const RectI64 tile{cell_x,cell_y,std::min(Impl::bin_size,impl->bounds.x+impl->bounds.width-cell_x),
+                std::min(Impl::bin_size,impl->bounds.y+impl->bounds.height-cell_y)};
+            if(route&&!route_intersects(*route,tile))continue;
+            bins[by*impl->bin_columns+bx].push_back(record);
+        }
+    };
+    for(std::size_t i=0;i<impl->features.size();++i)index_box(impl->feature_bins,i,impl->features[i].bounds);
+    for(std::size_t i=0;i<impl->routes.size();++i) {
+        const auto& route=impl->routes[i];
+        auto box=segment_box(route.points[0],route.points[1],route.width);
+        for(std::size_t p=2;p<route.points.size();++p) {
+            const auto segment=segment_box(route.points[p-1],route.points[p],route.width);
+            const auto right=std::max(box.x+box.width,segment.x+segment.width);
+            const auto bottom=std::max(box.y+box.height,segment.y+segment.height);
+            box.x=std::min(box.x,segment.x);box.y=std::min(box.y,segment.y);
+            box.width=right-box.x;box.height=bottom-box.y;
+        }
+        index_box(impl->route_bins,i,box,&route);
+    }
+    for(std::size_t i=0;i<bin_count;++i) {
+        std::uint64_t cost=64+impl->feature_bins[i].size()*64;
+        for(auto r:impl->route_bins[i])cost+=32+32*impl->routes[r].points.size();
+        impl->sample_cost=std::max(impl->sample_cost,cost);
+    }
     // Receipt identity is separate from semantic IDs and binds declaration
     // versions, finite window, selected geometry, material constraints and seeds.
     auto& h=impl->fingerprint;hash_int(h,kGrammarAlgorithmVersion);hash_int(h,seed);hash_text(h,impl->definition.id);hash_rect(h,window);
@@ -880,10 +933,14 @@ const std::vector<ConstraintReceipt>& GrammarPlan::receipts()const noexcept{retu
 RectI64 GrammarPlan::bounds()const noexcept{return impl_->bounds;}
 std::uint64_t GrammarPlan::fingerprint()const noexcept{return impl_->fingerprint;}
 std::uint64_t GrammarPlan::preparation_work()const noexcept{return impl_->work;}
-std::uint64_t GrammarPlan::operations_per_sample()const noexcept {
-    std::uint64_t count=64+impl_->features.size()*64; // geometry selection plus native immutable mask eligibility
-    for(const auto& r:impl_->routes)count+=32+32*r.points.size();
-    return count;
+std::uint64_t GrammarPlan::operations_per_sample()const noexcept { return impl_->sample_cost; }
+GenerationIndexInfo GrammarPlan::index_info()const noexcept {
+    GenerationIndexInfo result; result.bins=impl_->feature_bins.size();
+    for(std::size_t i=0;i<result.bins;++i) {
+        const auto count=impl_->feature_bins[i].size()+impl_->route_bins[i].size();
+        result.entries+=count;result.maximum_candidates=std::max(result.maximum_candidates,count);
+    }
+    return result;
 }
 std::size_t GrammarPlan::storage_bytes()const noexcept{return impl_->bytes;}
 const SemanticFeature* GrammarPlan::feature(const std::string& id)const noexcept {
@@ -909,7 +966,7 @@ SemanticProposal GrammarPlan::proposal(std::int64_t x,std::int64_t y,
     SemanticProposal result;
     if(!contains(impl_->bounds,x,y))return result;
     std::size_t best_depth=0;int priority=std::numeric_limits<int>::min();
-    for(std::size_t index=0;index<impl_->features.size();++index) {
+    for(const auto index:impl_->feature_bins[impl_->bin(x,y)]) {
         const auto& f=impl_->features[index];if(!contains(f.bounds,x,y))continue;
         const auto depth=impl_->feature_depths[index];
         // Features are already in canonical lexical order, so a later equal
@@ -924,12 +981,18 @@ SemanticProposal GrammarPlan::proposal(std::int64_t x,std::int64_t y,
     }
     // Service trunks are structural material proposals. Traversable passages
     // are restored separately after modifiers and remain below hard overrides.
-    for(const auto& r:impl_->routes)if(r.owner==cell_owner(impl_->definition,x,y)&&r.type!="passage"&&route_contains(r,x,y))result={r.material,nullptr,&r,false};
+    for(const auto index:impl_->route_bins[impl_->bin(x,y)]) {
+        const auto& r=impl_->routes[index];
+        if(r.owner==cell_owner(impl_->definition,x,y)&&r.type!="passage"&&route_contains(r,x,y))result={r.material,nullptr,&r,false};
+    }
     return result;
 }
 const SemanticRoute* GrammarPlan::route_at(std::int64_t x,std::int64_t y)const noexcept {
     if(!contains(impl_->bounds,x,y))return nullptr;
-    for(const auto& r:impl_->routes)if(r.owner==cell_owner(impl_->definition,x,y)&&r.type=="passage"&&route_contains(r,x,y))return &r;
+    for(const auto index:impl_->route_bins[impl_->bin(x,y)]) {
+        const auto& r=impl_->routes[index];
+        if(r.owner==cell_owner(impl_->definition,x,y)&&r.type=="passage"&&route_contains(r,x,y))return &r;
+    }
     return nullptr;
 }
 std::vector<SpatialGeometry> GrammarPlan::geometry_inputs()const {

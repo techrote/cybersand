@@ -103,7 +103,9 @@
     "decisions/ADR-013-canonical-semantic-generation.md",
     "systems/procedural-semantic-planes.md",
     "operations/semantic-depth-authoring.md",
-    "decisions/ADR-014-semantic-plane-admission.md"
+    "decisions/ADR-014-semantic-plane-admission.md",
+    "systems/generation-workbench-2.md",
+    "operations/procedural-qualification.md"
   ],
   "navigation": [
     "README.md",

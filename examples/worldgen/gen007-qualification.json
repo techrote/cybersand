@@ -1,0 +1,131 @@
+{
+  "schema": 1,
+  "recipe": "gen007-deepworks.json",
+  "reference_seed": 19301,
+  "variant_seeds": [
+    19317,
+    19337,
+    19361
+  ],
+  "map_bounds": [
+    0,
+    0,
+    1024,
+    1024
+  ],
+  "region_rule_ids": [
+    "copper-choir",
+    "frost-observatory",
+    "ember-terraces",
+    "basalt-archive"
+  ],
+  "subregions": [
+    {
+      "district": "copper-choir",
+      "rule": "upper-gallery",
+      "name": "Intake Choir"
+    },
+    {
+      "district": "copper-choir",
+      "rule": "lower-gallery",
+      "name": "Copper Service Cloister"
+    },
+    {
+      "district": "frost-observatory",
+      "rule": "upper-gallery",
+      "name": "Meltwater Lens"
+    },
+    {
+      "district": "frost-observatory",
+      "rule": "lower-gallery",
+      "name": "Frosted Survey Vault"
+    },
+    {
+      "district": "ember-terraces",
+      "rule": "upper-gallery",
+      "name": "Firing Terrace"
+    },
+    {
+      "district": "ember-terraces",
+      "rule": "lower-gallery",
+      "name": "Ember Transit Gallery"
+    },
+    {
+      "district": "basalt-archive",
+      "rule": "upper-gallery",
+      "name": "Geothermal Registry"
+    },
+    {
+      "district": "basalt-archive",
+      "rule": "lower-gallery",
+      "name": "Basalt Memory Hall"
+    }
+  ],
+  "exhibits": [
+    {
+      "rule": "brine-retort",
+      "substrate": 23,
+      "feed": 3,
+      "product": 24,
+      "title": "Salt + falling Water \u2192 Brine"
+    },
+    {
+      "rule": "snow-lens",
+      "substrate": 105,
+      "feed": 6,
+      "product": 3,
+      "title": "Packed Snow + Fire \u2192 meltwater"
+    },
+    {
+      "rule": "clay-kiln",
+      "substrate": 103,
+      "feed": 8,
+      "product": 48,
+      "title": "Raw Clay + falling Lava \u2192 Terracotta Tile"
+    },
+    {
+      "rule": "geothermal-well",
+      "substrate": 8,
+      "feed": 3,
+      "product": 13,
+      "title": "Lava + falling Water \u2192 Stone"
+    }
+  ],
+  "structural_minima": {
+    "major_regions": 4,
+    "named_subregions": 8,
+    "micro_features": 24,
+    "cross_chunk_structures": 2,
+    "optional_loops": 2,
+    "paired_exhibits": 4
+  },
+  "bounds": {
+    "recipe_bytes": 131072,
+    "whole_map_operations": 4000000000,
+    "plane_cells": 1048576,
+    "trace_cells": 4096,
+    "publication_bytes": 67108864,
+    "host_rectangles_per_plane": 4096
+  },
+  "manual_placements": {
+    "district_anchors": 4,
+    "shared_gallery_definitions": 2,
+    "optional_loop_definition": 1,
+    "unique_exhibit_definitions": 4,
+    "per_cell_material_list": false,
+    "imported_raster": false
+  },
+  "reused_definitions": [
+    "upper-gallery",
+    "lower-gallery",
+    "service-module",
+    "cabinet-window",
+    "gauge",
+    "shelf",
+    "signal",
+    "service-rail",
+    "light-rail",
+    "optional-loop"
+  ],
+  "visual_intent": "Copper choir ribs, frost lenses, horizontal firing terraces and basalt archive pylons share deliberate service-cabinet vocabulary. Clear central circulation and optional courtyard rings link the eight galleries. Native foreground and rear vessels remain separately contained."
+}

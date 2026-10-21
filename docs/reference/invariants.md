@@ -335,3 +335,19 @@ state/eligibility table; the standalone model tests logical transitions only.
 | SOL-002 | Approved: summary and stationary eligibility never manufacture dynamic granular cohesion |
 | SOL-003 | Current standalone journal: bounded complete tile publication, ABA revision, explicit capacity/failure and starvation protection; real producer completeness remains Planned |
 | SOL-004 | Approved future fracture: partition exact membership into coherent children and only genuinely loose cells; account inherited momentum/rotation and any motion loss |
+
+## Generation authoring invariants
+
+The [Workbench 2 contract](../systems/generation-workbench-2.md) requires truthful
+bounded native replay tied to accepted identity and explicit unavailable/truncated
+detail. Actual intermediate stage cells must agree with the normal native sampler;
+turning off controls in a separate final recipe is not a stage implementation.
+Invalid candidates preserve accepted recipe, preview and undo/redo history.
+Successful edits, including history navigation and seed changes, invalidate old
+preview/trace/comparison jobs through fresh session/revision identity.
+
+Generated four-plane scene clearance is checked on the final projected play
+materials after overrides. Native fixture feeds never paint their expected
+reaction products; every required helper must complete and no-op/aborted cases
+must fail. Counts, logical work, local timing, actual rendered pixels and visual
+quality judgments remain separately labelled evidence.

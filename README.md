@@ -174,3 +174,14 @@ replay continuation. Review [license status](LICENSE_STATUS.md) and
 ## Semantic depth examples
 
 The Semantic depth launcher entry / `--semantic-depth` opens two generated places: refinery service galleries and a flooded cavern. A single semantic hierarchy owns matching play, rear, atmosphere and frozen far projections, finite native-material fixtures and play-only actor placements. See the [authoring and controls guide](docs/operations/semantic-depth-authoring.md), [native contract](docs/systems/procedural-semantic-planes.md) and [dated validation ledger](docs/audits/2026-10-21-gen005-semantic-planes.md).
+
+## Generation Workbench 2
+
+The opt-in generation workbench adds a native **Why is this here?** inspector,
+actual generation stages, typed graph and semantic hierarchy editing, four-plane
+views and bounded seed/recipe comparison. Invalid changes preserve the accepted
+preview; undo/redo restores recipe content with fresh request identities. See the
+[workbench contract](docs/systems/generation-workbench-2.md) and
+[procedural qualification guide](docs/operations/procedural-qualification.md).
+The GEN-007 candidate's acceptance and visual review are tracked in
+[PR #198](https://github.com/techrote/cybersand/pull/198).

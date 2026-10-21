@@ -425,3 +425,14 @@ The [GEN-001 evidence](../audits/2026-10-18-gen001-procedural-generation.md) and
 their actual native, sanitizer, Godot, source/runtime and publication results separately.
 Visual preference, production tuning and target-device performance remain owner
 evaluation rather than conclusions inferred from passing software tests.
+
+## Generation Workbench 2 inspection and quality
+
+The [GEN-007 workbench contract](generation-workbench-2.md) extends the existing
+opt-in scene with native identity-bound provenance, actual sampler-stage views,
+typed graph and semantic hierarchy editing, four-plane inspection, bounded
+seed/recipe comparisons and transactional undo/redo. All editing paths retain
+complete supported recipe data and native validation. The
+[procedural qualification guide](../operations/procedural-qualification.md)
+owns the complete 1024-square scene and distinguishes final projected-material
+checks and actual visual review from a generation preview or base route report.

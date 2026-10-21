@@ -10,6 +10,12 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## Generation Workbench 2 and procedural quality
+
+- [Workbench inspection and transactions](../systems/generation-workbench-2.md): accepted native identities, bounded deterministic replay, actual stage meanings, invalid-edit preservation, graph/hierarchy/plane editing, undo/redo, seeds and comparison.
+- [Procedural qualification](../operations/procedural-qualification.md): compact 1024-square recipe, final projected-material clearance, complete native mechanism receipts, display-backed captures and candid Deepworks comparison.
+
+
 Use this navigation page to select focused documents. Default machine retrieval
 uses [retrieval-corpus.json](retrieval-corpus.json), not this index's repeated
 question wording. Each answer must preserve the target's status/platform/evidence

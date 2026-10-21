@@ -29,6 +29,7 @@ Dictionary plane_plan_dictionary(const gen::PlanePlan& plan) {
     result["preparation_work"] = static_cast<std::int64_t>(plan.preparation_work());
     result["operations_per_cell"] = static_cast<std::int64_t>(plan.operations_per_cell());
     result["storage_bytes"] = static_cast<std::int64_t>(plan.storage_bytes());
+    result["spatial_index"] = generation_index_dictionary(plan.index_info());
     result["budgets"] = plane_limits_dictionary(plan.definition().limits);
     Dictionary rates; Array policies, features, projections, fixtures, links, actors;
     for (const auto& policy : plan.definition().policies) {
