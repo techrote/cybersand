@@ -181,6 +181,14 @@ public:
     [[nodiscard]] std::vector<const SemanticFeature*> query(RectI64 bounds) const;
     [[nodiscard]] std::vector<std::string> ancestry(const std::string& id) const;
     [[nodiscard]] SemanticProposal proposal(std::int64_t x, std::int64_t y) const noexcept;
+    // Optional trusted, bounded eligibility over immutable caller values.
+    // The index addresses features(); rejected children reveal eligible parents.
+    // Callback cost belongs to the integrating caller's raster work bound.
+    // No per-cell vector or function-object allocation is performed. Callback
+    // exceptions propagate so the generation job can fail transactionally.
+    using FeatureEligibility = bool (*)(std::size_t, const SemanticFeature&, const void*);
+    [[nodiscard]] SemanticProposal proposal(std::int64_t x, std::int64_t y,
+        FeatureEligibility eligible, const void* context) const;
     [[nodiscard]] const SemanticRoute* route_at(std::int64_t x, std::int64_t y) const noexcept;
     // <=16 explicitly named immutable route polylines or closed feature boxes.
     // Independent geometries are never concatenated into artificial segments.

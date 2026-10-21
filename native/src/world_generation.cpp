@@ -686,7 +686,18 @@ struct Generator::Impl {
                 trace->typed_fields.emplace_back(spatial->nodes()[i].id, values.typed.values[i]);
         }
         if (grammar) {
-            const auto proposal = grammar->proposal(x, y);
+            struct SemanticMaskContext {
+                const Impl* generator;
+                const Values* values;
+                std::int64_t x, y;
+            };
+            const SemanticMaskContext mask_context{this, &values, x, y};
+            const auto proposal = grammar->proposal(x, y,
+                [](std::size_t index, const SemanticFeature& feature, const void* context_ptr) {
+                    const auto& context = *static_cast<const SemanticMaskContext*>(context_ptr);
+                    const auto mask = context.generator->semantic_masks[index].at(*context.values);
+                    return mask > 0 && (mask == 1 || unit(hash_xy(feature.seed, context.x, context.y, 883)) < mask);
+                }, &mask_context);
             if (trace) {
                 const SemanticFeature* semantic = nullptr;
                 std::size_t depth = 0;
@@ -705,12 +716,10 @@ struct Generator::Impl {
             if (proposal.feature) {
                 const auto index = static_cast<std::size_t>(proposal.feature - grammar->features().data());
                 const auto mask = semantic_masks[index].at(values);
-                if (mask > 0 && (mask == 1 || unit(hash_xy(proposal.feature->seed, x, y, 883)) < mask)) {
-                    if (!proposal.interior && semantic_aggregates[index] != absent)
-                        record("semantic_aggregate", proposal.feature->id,
-                            aggregate_at(semantic_aggregates[index], x, y, values), mask);
-                    else if (proposal.material) record("semantic_feature", proposal.feature->id, *proposal.material, mask);
-                }
+                if (!proposal.interior && semantic_aggregates[index] != absent)
+                    record("semantic_aggregate", proposal.feature->id,
+                        aggregate_at(semantic_aggregates[index], x, y, values), mask);
+                else if (proposal.material) record("semantic_feature", proposal.feature->id, *proposal.material, mask);
             } else if (proposal.material) {
                 record("semantic_structure", proposal.route ? proposal.route->id : "grammar", *proposal.material);
             }
@@ -763,8 +772,19 @@ void Generator::Impl::check_routes() {
         "semantic final-raster cell budget exhausted");
     const auto area = width * height;
     const auto prefix_area = (width + 1) * (height + 1);
-    const auto bytes = area * (sizeof(Material) + sizeof(std::uint8_t) + sizeof(std::uint32_t)) +
+    auto bytes = area * (sizeof(Material) + sizeof(std::uint8_t) + sizeof(std::uint32_t)) +
         prefix_area * sizeof(std::uint32_t);
+    // Retained inspection outcomes coexist with raster scratch while checked.
+    // Include IDs and the bounded override names in their string allowance.
+    for (const auto& route : grammar->routes()) if (route.required)
+        bytes += sizeof(RouteOutcome) + route.id.size() + 256 + recipe.overrides.size() * 96;
+    std::size_t support_count = 0;
+    for (const auto& feature : grammar->features()) {
+        const auto& c = feature.constraints;
+        const auto count = static_cast<std::size_t>(c.floor) + static_cast<std::size_t>(c.ceiling) + static_cast<std::size_t>(c.wall);
+        support_count += count;
+        bytes += count * (sizeof(SupportOutcome) + feature.id.size() + 256);
+    }
     require(grammar->storage_bytes() <= limits.max_prepared_bytes &&
         bytes <= limits.max_prepared_bytes - grammar->storage_bytes(),
         "semantic final-raster scratch memory budget exhausted");
@@ -782,6 +802,15 @@ void Generator::Impl::check_routes() {
                 "semantic route verification operation budget exhausted");
             work += centres * 16;
         }
+    }
+    for (const auto& feature : grammar->features()) {
+        const auto& c = feature.constraints;
+        const auto contacts = static_cast<std::uint64_t>(feature.bounds.width) *
+            (static_cast<std::uint64_t>(c.floor) + static_cast<std::uint64_t>(c.ceiling)) +
+            static_cast<std::uint64_t>(feature.bounds.height) * (c.wall ? 2U : 0U);
+        require(contacts <= (limits.max_raster_operations - work) / 16,
+            "semantic support verification operation budget exhausted");
+        work += contacts * 16;
     }
     std::vector<Material> cells(area);
     std::vector<std::uint32_t> prefix(prefix_area, 0);
@@ -842,6 +871,9 @@ void Generator::Impl::check_routes() {
     RouteValidation result;
     result.clearance = grammar->definition().clearance;
     result.cells = area; result.operations = work;
+    result.routes.reserve(static_cast<std::size_t>(std::count_if(grammar->routes().begin(), grammar->routes().end(),
+        [](const auto& route) { return route.required; })));
+    result.supports.reserve(support_count);
     for (const auto& route : grammar->routes()) if (route.required) {
         RouteOutcome outcome;
         outcome.id = route.id;
@@ -860,6 +892,36 @@ void Generator::Impl::check_routes() {
         if (outcome.passed) outcome.detail = "final Empty-cell square clearance and four-neighbour connectivity verified";
         result.passed = result.passed && outcome.passed;
         result.routes.push_back(std::move(outcome));
+    }
+    for (const auto& feature : grammar->features()) {
+        const auto& c = feature.constraints;
+        const auto b = feature.bounds;
+        const auto check_support = [&](const char* constraint, bool horizontal, bool floor) {
+            SupportOutcome outcome;
+            outcome.feature_id = feature.id; outcome.constraint = constraint;
+            const auto contact = [&](std::int64_t x, std::int64_t y) {
+                ++outcome.checked_cells;
+                if (inside(bounds, x, y)) {
+                    const auto index = static_cast<std::size_t>(y - bounds.y) * width + static_cast<std::size_t>(x - bounds.x);
+                    if (material_definition(cells[index]).state == MaterialState::Solid) return;
+                }
+                if (outcome.missing_cells++ == 0) { outcome.first_missing_x = x; outcome.first_missing_y = y; }
+            };
+            if (horizontal) {
+                const auto y = floor ? b.y + b.height : b.y - 1;
+                for (auto x = b.x; x < b.x + b.width; ++x) contact(x, y);
+            } else {
+                for (auto y = b.y; y < b.y + b.height; ++y) { contact(b.x - 1, y); contact(b.x + b.width, y); }
+            }
+            outcome.passed = outcome.checked_cells > outcome.missing_cells;
+            outcome.detail = outcome.passed ? "final raster retains static solid contact on the declared side" :
+                "final raster removed all static solid contact on the declared side; inspect final material contributions";
+            result.supports_passed = result.supports_passed && outcome.passed;
+            result.supports.push_back(std::move(outcome));
+        };
+        if (c.floor) check_support("floor", true, true);
+        if (c.ceiling) check_support("ceiling", true, false);
+        if (c.wall) check_support("wall", false, false);
     }
     route_validation = std::move(result);
 }
@@ -920,12 +982,15 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
     auto impl = std::make_unique<Impl>();
     impl->fields = FieldGraph::compile(recipe.fields, recipe.seed, {limits.max_fields, kMaxFieldDepth, kMaxFieldOperations});
     recipe.fields = impl->fields->nodes();
+    auto prepared_spatial = recipe.spatial;
     if (!recipe.grammar.empty()) {
         impl->grammar = GrammarPlan::compile(recipe.grammar, recipe.seed);
-        for (auto geometry : impl->grammar->geometry_inputs()) recipe.spatial.geometries.push_back(std::move(geometry));
+        // Semantic exports are prepared inputs, not authored recipe entries.
+        // Keeping them out of the retained recipe makes recompilation exact.
+        for (auto geometry : impl->grammar->geometry_inputs()) prepared_spatial.geometries.push_back(std::move(geometry));
         impl->cost += impl->grammar->operations_per_sample();
     }
-    impl->spatial = SpatialGraph::compile(recipe.spatial, recipe.seed, recipe.spatial_limits);
+    impl->spatial = SpatialGraph::compile(std::move(prepared_spatial), recipe.seed, recipe.spatial_limits);
     impl->cost += impl->spatial->operations_per_sample();
     impl->cost += impl->fields->operations_per_sample();
     if (!recipe.fields.empty() || !recipe.spatial.empty() || !recipe.modifiers.empty()) impl->cost += 384;
@@ -956,6 +1021,17 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
         impl->aggregate_variations.push_back(aggregate.variation.empty() ? Impl::absent : impl->mask_index(aggregate.variation));
         auto salt = kFnv; hash_text(salt, aggregate.id); impl->aggregate_salts.push_back(salt);
         impl->cost += 24 + aggregate.components.size() * 4;
+    }
+    // Validate authored external bindings even when a rule is unreachable or
+    // its explicit placement fallback omitted every feature in this window.
+    if (impl->grammar) for (const auto& rule : impl->grammar->definition().rules) {
+        (void)impl->compile_mask(rule.application, rule.exclusion, 1);
+        if (rule.aggregate.empty()) continue;
+        const auto found = aggregate_index.find(rule.aggregate);
+        require(found != aggregate_index.end(), "unknown semantic aggregate: " + rule.aggregate);
+        for (const auto& component : recipe.aggregates[found->second].components)
+            require(rule.allowed_materials.empty() || std::find(rule.allowed_materials.begin(), rule.allowed_materials.end(), component.material) != rule.allowed_materials.end(),
+                "semantic aggregate violates allowed materials: " + rule.id);
     }
     if (impl->grammar) for (const auto& feature : impl->grammar->features()) {
         impl->semantic_masks.push_back(impl->compile_mask(feature.application, feature.exclusion, 1));

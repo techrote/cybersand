@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Executable test selection and future gates; dated results and save format live in separate references
 canonical-for: [test-inventory, test-selection, future-validation-gates]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-21
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md, ../reference/level-saves-and-replay.md]
 ---
 

@@ -6,7 +6,7 @@ status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
 related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-21
 ---
 
 # Architectural and simulation invariants
@@ -211,6 +211,7 @@ Source: [semantic API](../../native/include/cybersand/generation_grammar.hpp),
 | GRAMMAR-006 | Current: exported geometry is immutable declared context; semantic planning and typed fields do not read partial raster output or live World state |
 | GRAMMAR-007 | Current: final hard material overrides preserve authority and can fail a route report; geometric clearance is qualified for the declared floating square profile, not an actor/controller |
 | GRAMMAR-008 | Current: compile/budget failure publishes no partial plan, material or diagnostic packet; semantic inspection does not grant World admission or streaming authority |
+| GRAMMAR-009 | Current: final support qualification is separate from route success; each declared floor/ceiling/wall check needs at least one final Solid contact and reports partial missing contacts without claiming gravity stability or apparatus preservation |
 
 ## Capacity and allocation invariants
 

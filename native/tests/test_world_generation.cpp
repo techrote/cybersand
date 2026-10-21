@@ -715,7 +715,7 @@ void validation_rejects_invalid_recipes_and_graphs() {
         mutate(recipe);
         rejects([&] { (void)Generator::compile(recipe); }, reason);
     };
-    invalid([](Recipe& r) { r.schema = kTypedSchemaVersion + 1; }, "unknown schema rejected");
+    invalid([](Recipe& r) { r.schema = kHierarchySchemaVersion + 1; }, "unknown schema rejected");
     invalid([](Recipe& r) { r.revision = 0; }, "zero revision rejected");
     invalid([](Recipe& r) { r.chunk_size = 0; }, "zero chunk size rejected");
     invalid([](Recipe& r) { r.chunk_size = -1; }, "negative chunk size rejected");

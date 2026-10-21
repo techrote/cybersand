@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-21
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
@@ -277,10 +277,12 @@ to inspect four canonical districts. It uses 64-cell chunks so its complete
 256×256-cell window occupies sixteen preview cache entries.
 
 The adapter test checks copied semantic records, accepted recipe roundtrips,
-cell provenance, final route reporting and failed configuration retention.
+cell provenance, final route/support reporting and failed configuration retention.
 The [canonical contract](../systems/procedural-hierarchical-generation.md)
 qualifies region-contained buildings, explicit cross-region routes, semantic
-support and the final floating-square clearance profile. A hard blocker may
+support, final static solid contact and the floating-square clearance profile.
+Require both `passed` and `supports_passed` for the authored example; their
+profiles establish distinct geometric facts. A hard blocker may
 produce a valid material proposal with a failed route report; test and report
 both facts without silently erasing the override.
 

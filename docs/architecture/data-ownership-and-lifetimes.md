@@ -6,7 +6,7 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-21
 ---
 
 # Data ownership and lifetimes
@@ -75,7 +75,7 @@ but must not touch live scene-tree or Rapier objects.
 | Compiled procedural recipe, field graph and prepared modules | Immutable `generation::Generator`, independent of World | Jobs retain shared ownership; replacing the caller's recipe cannot mutate existing jobs |
 | Typed spatial graph, geometry and prepared region assignment | Immutable `generation::SpatialGraph`; copied typed parameters, routes and bounded complete solver results | No per-cell context or mutable World access; transforms and derivatives resample absolute-coordinate functions |
 | Semantic hierarchy, sockets, routes and constraint receipts | Immutable `generation::GrammarPlan`, prepared before rasterization for a finite world-anchored region window | Stable owner/rule/slot identities are separate from recipe revisions; chunks query complete plans without resident-neighbor negotiation |
-| Hierarchy raster qualification and cell provenance | `generation::Generator` owns the complete final-cell route report; callers own copied inspection data | Hard overrides remain authoritative and may produce explicit blocked-route reports; no report changes World admission authority |
+| Hierarchy raster qualification and cell provenance | `generation::Generator` owns the complete final-cell route/support report; callers own copied inspection data | Hard overrides remain authoritative and may produce explicit blocked-route or missing-contact reports; neither report changes World admission authority |
 | Typed spatial sampling cache | One caller/job/worker owns bounded `SpatialScratch` | 256 entries keyed by transitive node identity, exact coordinate and sampling mode; cold/warm behavior has identical values |
 | Procedural sample context | Copied initial candidate material, surface and route values | Captured before fields/modules/material changes; every mask for that cell sees the same values |
 | Procedural chunk staging | One `GenerationJob` owns private material/optional diagnostic arrays and cursor | Allocated before incremental advance; pending bytes stay private, failure/cancel discards both payloads |

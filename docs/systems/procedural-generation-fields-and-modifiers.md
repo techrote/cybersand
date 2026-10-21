@@ -5,7 +5,7 @@ document-kind: contract
 scope: GEN-002 deterministic scalar sidechains, finite curve tiles, immutable proposal context, masked guidance, aggregate realization and copied diagnostics
 canonical-for: [generation-field-graph, generation-masked-modifiers, generation-aggregate-materials, generation-context-and-diagnostics]
 keywords: [world generation, Hilbert, Morton, structured noise, masks, sidechains, modifiers, sculpting, aggregates, context, diagnostic]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-21
 related-documents: [procedural-world-generation.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/configuration-reference.md, ../reference/interfaces-and-message-contracts.md, ../operations/local-build-and-validation.md, ../audits/2026-10-18-gen002-fields-and-aggregates.md]
 ---
 

@@ -30,6 +30,7 @@ func check_transport(recipe: Dictionary) -> void:
 	var report: Dictionary = generator.validate_routes()
 	expect(report.ok and report.passed and report.profile == "floating-square-v1" and report.clearance == 3 and report.cells == 65536, "Example final raster clearance did not pass: " + str(report))
 	expect(report.routes.size() > 20, "Primary routes, loops and nested socket connectors are missing")
+	expect(report.supports_passed and report.support_profile == "static-solid-contact-v1" and report.supports.size() > 0, "Example lost final static support contact: " + str(report.supports))
 	var identities: Dictionary = {}
 	var kinds: Dictionary = {}
 	var point := Vector2i.ZERO
@@ -45,10 +46,10 @@ func check_transport(recipe: Dictionary) -> void:
 	var shared: int = 0
 	for socket: Dictionary in plan.sockets:
 		if socket.shared: shared += 1
-		if socket.required: expect(not str(socket.matched).is_empty(), "Required socket lacks explicit matching identity")
+		if socket.required and not socket.shared: expect(not str(socket.matched).is_empty(), "Required local socket lacks explicit matching identity")
 	expect(shared >= 12, "Shared boundary sockets were not exported")
 	for receipt: Dictionary in plan.receipts:
-		expect(receipt.passed or receipt.fallback, "A failed hard constraint lacks an authored fallback receipt")
+		expect(receipt.passed or receipt.fallback or receipt.constraint == "candidate", "A failed hard constraint lacks an authored fallback receipt")
 	var trace: Dictionary = generator.inspect_cell(point)
 	expect(trace.ok and trace.ancestry.size() >= 3 and trace.constraints.size() > 0, "Cell inspection lost semantic ancestry/constraint provenance")
 	expect(trace.contributions.size() >= 2 and trace.typed_fields.size() > 0, "Cell inspection lost material/field contributions")

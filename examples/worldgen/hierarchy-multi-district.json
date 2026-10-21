@@ -30,7 +30,7 @@
       "district"
     ],
     "curve": "hilbert",
-    "curve_order": 2,
+    "curve_order": 1,
     "route_width": 7,
     "clearance": 3,
     "secondary_loop": true,
@@ -97,7 +97,7 @@
               72
             ],
             "order_x": 1,
-            "order_y": 2
+            "order_y": 0
           },
           {
             "id": "upper",
@@ -119,20 +119,14 @@
           "intersects_route": true,
           "occupancy_min": 0.4,
           "occupancy_max": 0.5,
-          "minimum_sockets": 2,
-          "maximum_sockets": 2,
+          "minimum_sockets": 1,
+          "maximum_sockets": 1,
           "connected": true
         },
         "sockets": [
           {
             "id": "west",
             "direction": "west",
-            "offset": 36,
-            "width": 7
-          },
-          {
-            "id": "east",
-            "direction": "east",
             "offset": 36,
             "width": 7
           }
@@ -169,7 +163,7 @@
               4,
               4,
               64,
-              64
+              66
             ],
             "order_x": 0,
             "order_y": 1
@@ -226,7 +220,7 @@
               26,
               64
             ],
-            "order_x": 3,
+            "order_x": 1,
             "order_y": 1
           }
         ],
@@ -270,18 +264,19 @@
           {
             "id": "floor",
             "bounds": [
-              22,
-              54,
-              20,
-              8
+              2,
+              62,
+              8,
+              2
             ],
             "order_x": 1,
-            "order_y": 3
+            "order_y": 1
           }
         ],
         "constraints": {
           "floor": true,
-          "open_volume": true
+          "open_volume": true,
+          "wall": true
         },
         "children": [
           "dais-light"
@@ -317,13 +312,13 @@
           {
             "id": "floor-pump",
             "bounds": [
-              4,
-              50,
+              16,
+              58,
               8,
-              12
+              4
             ],
             "order_x": 0,
-            "order_y": 3
+            "order_y": 1
           }
         ],
         "constraints": {
@@ -332,10 +327,7 @@
           "service": "service",
           "neighbor_distance": 64,
           "exclusive_family": "pump"
-        },
-        "children": [
-          "pump-light"
-        ]
+        }
       },
       {
         "id": "console",
@@ -352,10 +344,10 @@
           {
             "id": "ceiling-panel",
             "bounds": [
-              4,
+              14,
               2,
               8,
-              10
+              4
             ],
             "order_x": 0,
             "order_y": 0
@@ -368,30 +360,6 @@
           "service": "service",
           "neighbor_distance": 32
         }
-      },
-      {
-        "id": "pump-light",
-        "kind": "detail",
-        "count": 1,
-        "tags": [
-          "indicator"
-        ],
-        "material": 79,
-        "interior": 79,
-        "wall_thickness": 0,
-        "candidates": [
-          {
-            "id": "status",
-            "bounds": [
-              2,
-              2,
-              2,
-              2
-            ],
-            "order_x": 0,
-            "order_y": 0
-          }
-        ]
       },
       {
         "id": "dais-light",
@@ -407,10 +375,10 @@
           {
             "id": "left",
             "bounds": [
+              1,
+              0,
               2,
-              2,
-              3,
-              3
+              1
             ],
             "order_x": 0,
             "order_y": 0
@@ -418,18 +386,17 @@
           {
             "id": "right",
             "bounds": [
-              15,
+              5,
+              0,
               2,
-              3,
-              3
+              1
             ],
-            "order_x": 3,
+            "order_x": 1,
             "order_y": 0
           }
         ],
         "constraints": {
-          "open_volume": true,
-          "minimum_separation": 4
+          "minimum_separation": 2
         }
       },
       {
@@ -536,7 +503,7 @@
               8,
               8
             ],
-            "order_x": 3,
+            "order_x": 1,
             "order_y": 0
           }
         ],

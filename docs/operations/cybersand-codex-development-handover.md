@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-21
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
@@ -27,7 +27,9 @@ exports. The Workbench adds a hierarchy example and copied cell inspection.
 [dated audit](../audits/2026-10-21-gen004-hierarchical-generation.md) separates
 those tests from matching Linux/Windows runtime publication and required hosted
 gates. A blocked final route report preserves the authored hard override and must
-remain visible. GEN-005, GEN-007 and GEN-006 retain their programme scope/order.
+remain visible. Final `supports_passed` separately qualifies retained solid
+contact on each declared support edge; route success alone does not imply it.
+GEN-005, GEN-007 and GEN-006 retain their programme scope/order.
 
 ## Typed spatial generation checkpoint — 2026-10-20
 

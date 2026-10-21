@@ -1600,6 +1600,8 @@ func _refresh_status() -> void:
 		text += " · last chunk %s · %s operations · %.2f ms native work" % [str(last_packet.get("hash", "")), str(last_packet.get("operations", 0)), float(last_packet.get("compute_usec", 0)) / 1000.0]
 	if not semantic_route_report.is_empty() and not semantic_route_report.get("passed", false):
 		text += " · route clearance conflict: inspect validate_routes() for the blocking material decision"
+	if not semantic_route_report.get("supports_passed", true):
+		text += " · support contact conflict: inspect the final material contributions"
 	_set_status(text)
 
 func _set_error(message: String) -> void:

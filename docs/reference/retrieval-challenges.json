@@ -170,7 +170,7 @@
       "facts": [
         "The issue #9 full-world accounting control preserved all recorded Water mass and showed the cropped deficit below the hard floor: the defect was displacement across the barrier, not Water destruction.",
         "Historical #11 work added bounded barrier/body-mask-aware ejection in its recorded source-matched envelope, but current-main reconciliation must not describe that bounded result as owner acceptance.",
-        "WEX-001 freezes the current generic Rapier\u2194Water splash/displacement and hard-floor failure before later hybrid architecture changes."
+        "WEX-001 freezes the current generic Rapier↔Water splash/displacement and hard-floor failure before later hybrid architecture changes."
       ],
       "sources": [
         "../godot/native_extension/cyber_native_cell_world.cpp::find_ejection_target",
@@ -464,7 +464,7 @@
       ],
       "facts": [
         "Current native Water already uses fractional conserved FreeMass while most other liquids use whole-cell CellularYield-style paths, so another explicit Water pressure mechanism would add another bulk-motion authority rather than replace an already unified solver.",
-        "A generic Rapier body entering Water can already create convincing splash/wave displacement; WEX therefore tests whether at most roughly 3\u20135 segmented upper-volume Water tiers can reuse the generic hybrid substrate to create depth-dependent surge.",
+        "A generic Rapier body entering Water can already create convincing splash/wave displacement; WEX therefore tests whether at most roughly 3–5 segmented upper-volume Water tiers can reuse the generic hybrid substrate to create depth-dependent surge.",
         "The candidate is experimental, must preserve exact Water quantity and generic ownership, and must actively test slab/membrane, floor-reaction, chatter and boundary-penetration failure modes."
       ],
       "sources": [
@@ -796,7 +796,7 @@
     },
     {
       "id": "SCENE03",
-      "query": "How do I explore Blacksite Nine's connected 3\u00d73 map from the surface lab through the underground districts, and do tile views, boundary crossings and reset preserve edits?",
+      "query": "How do I explore Blacksite Nine's connected 3×3 map from the surface lab through the underground districts, and do tile views, boundary crossings and reset preserve edits?",
       "canonical": [
         "operations/blacksite-nine-demo.md"
       ],
@@ -1549,8 +1549,170 @@
         "../native/src/generation_spatial.cpp",
         "../native/src/world_generation.cpp"
       ]
+    },
+    {
+      "id": "GEN19",
+      "query": "How do independently planned neighboring regions keep cross-chunk building IDs and shared sockets stable after rule reordering or an unrelated feature addition?",
+      "canonical": [
+        "systems/procedural-hierarchical-generation.md"
+      ],
+      "facts": [
+        "A finite world-zero-anchored region grid owns feature hierarchies; storage chunks sample complete immutable plans without owner-chunk residency.",
+        "IDs include world namespace, grid size, signed region address and stable parent/rule/slot path; planning window, recipe revision and array order are excluded.",
+        "Canonical boundary keys give the same aperture and west/north owner on both independently compiled sides.",
+        "A grid-size, namespace, parent or rule/slot change intentionally replaces identity; content edits are recorded separately as revisions and receipts."
+      ],
+      "sources": [
+        "../native/include/cybersand/generation_grammar.hpp",
+        "../native/src/generation_grammar.cpp",
+        "../native/src/world_generation.cpp",
+        "../examples/worldgen/hierarchy-multi-district.json",
+        "../godot/tests/test_worldgen_grammar.gd"
+      ]
+    },
+    {
+      "id": "GEN20",
+      "query": "How are hard grammar occupancy, exact multiplicity, neighbor, support and socket constraints distinguished from weighted placement preferences and omission fallbacks?",
+      "canonical": [
+        "systems/procedural-hierarchical-generation.md"
+      ],
+      "facts": [
+        "Rules run by descending priority then ID; finite candidate choices rank preferences, curve rank and ID before hard requirements filter them.",
+        "Occupancy is summed rule feature area divided by parent area, and count requests exact stable slots per parent.",
+        "Support/open volume, separation, required or forbidden sibling tags, exclusive families, service access and compatible sockets are checked as declared semantic constraints.",
+        "Rejected layouts fail transactionally; an authored omit fallback records the unmet requirement and removed features cannot satisfy later hard neighbors or support.",
+        "The bounded priority strategy may reject a feasible arrangement requiring earlier placement changes; it is not a complete packing solver.",
+        "Final static-solid-contact-v1 qualification is separate from semantic placement receipts and route clearance; each declared support requires at least one surviving final Solid contact."
+      ],
+      "sources": [
+        "../native/include/cybersand/generation_grammar.hpp",
+        "../native/src/generation_grammar.cpp",
+        "../native/src/world_generation.cpp",
+        "../examples/worldgen/hierarchy-multi-district.json",
+        "../godot/tests/test_worldgen_grammar.gd"
+      ]
+    },
+    {
+      "id": "GEN21",
+      "query": "Do finite curve-ranked districts, apparatus placements or utility tours guarantee physical route connectivity?",
+      "canonical": [
+        "systems/procedural-hierarchical-generation.md"
+      ],
+      "facts": [
+        "Hilbert, Morton and Peano ranks affect candidate choice, density and retained inspection order within a finite declared domain.",
+        "The optional curve service tour emits explicit orthogonal utility edges in rank order; Morton jumps are bridged explicitly.",
+        "Primary hub arms, secondary loops and compatible socket connectors remain explicit geometry, independent of finite curve continuity.",
+        "Required passage clearance and connectivity are checked against final rasterized material cells under the declared geometric profile."
+      ],
+      "sources": [
+        "../native/include/cybersand/generation_grammar.hpp",
+        "../native/src/generation_grammar.cpp",
+        "../native/src/world_generation.cpp",
+        "../examples/worldgen/hierarchy-multi-district.json",
+        "../godot/tests/test_worldgen_grammar.gd"
+      ]
+    },
+    {
+      "id": "GEN22",
+      "query": "What happens when a final hard material override blocks a generated passage, and what does floating-square route validation actually prove?",
+      "canonical": [
+        "systems/procedural-hierarchical-generation.md"
+      ],
+      "facts": [
+        "Final hard material overrides remain in the published material proposal; the generator does not remove the blocker.",
+        "A retained route report observes the full final material stack and reports the blocked required route and relevant override.",
+        "The floating-square-v1 profile checks odd square Empty-cell clearance and four-neighbor connectivity, with clipped shared apertures at finite window boundaries.",
+        "This does not qualify gravity navigation, actor/controller performance or material geometry after simulation."
+      ],
+      "sources": [
+        "../native/include/cybersand/generation_grammar.hpp",
+        "../native/src/generation_grammar.cpp",
+        "../native/src/world_generation.cpp",
+        "../examples/worldgen/hierarchy-multi-district.json",
+        "../godot/tests/test_worldgen_grammar.gd"
+      ]
+    },
+    {
+      "id": "GEN23",
+      "query": "How can typed spatial fields use semantic feature and route geometry without reading partially generated neighbors or duplicating the region solver?",
+      "canonical": [
+        "systems/procedural-hierarchical-generation.md"
+      ],
+      "facts": [
+        "The grammar compiles before rasterization and exports selected immutable geometry aliases to exact route polylines or rectangular feature boundaries.",
+        "GEN-003 geometry_distance nodes consume those aliases; separate routes are not concatenated into invented connecting segments.",
+        "The existing PreparedRegions finite assignment solver supplies declared district categories and theme blends.",
+        "No field reads live World state or partial raster output, and normalized mask conversion remains explicit."
+      ],
+      "sources": [
+        "../native/include/cybersand/generation_grammar.hpp",
+        "../native/src/generation_grammar.cpp",
+        "../native/src/world_generation.cpp",
+        "../examples/worldgen/hierarchy-multi-district.json",
+        "../godot/tests/test_worldgen_grammar.gd"
+      ]
+    },
+    {
+      "id": "GEN24",
+      "query": "What limits bound hierarchy planning, queries, prepared memory and final raster verification, and can failure expose half a place?",
+      "canonical": [
+        "systems/procedural-hierarchical-generation.md"
+      ],
+      "facts": [
+        "Finite region/rule/depth/child/candidate/feature/socket/route caps bound the declared plan and its queries.",
+        "Logical work and prepared storage include planning, the shared assignment solver, and separate final-raster cell/work/scratch limits.",
+        "Compilation or budget failure returns no partial plan; failed or cancelled generation exposes no partial material or diagnostic packet.",
+        "A complete material proposal with an explicit blocked-route report is an authored conflict, not partial publication or a traversal pass."
+      ],
+      "sources": [
+        "../native/include/cybersand/generation_grammar.hpp",
+        "../native/src/generation_grammar.cpp",
+        "../native/src/world_generation.cpp",
+        "../examples/worldgen/hierarchy-multi-district.json",
+        "../godot/tests/test_worldgen_grammar.gd"
+      ]
+    },
+    {
+      "id": "GEN25",
+      "query": "How do I load the four-foundry hierarchical example and inspect ancestry, constraint receipts, field inputs and material contributions?",
+      "canonical": [
+        "systems/procedural-hierarchical-generation.md"
+      ],
+      "facts": [
+        "The schema-3 hierarchy-multi-district.json profile covers four 128-cell canonical regions at negative and positive coordinates using 64-cell chunks.",
+        "It contains nested foundries, rooms, floor/ceiling/wall-constrained apparatus and two embedded dais lights, a 10–25 percent machinery occupancy constraint, primary passages, loops and service/liquid trunks.",
+        "The Workbench hierarchy example loads the authored JSON, while get_semantic_plan, inspect_cell and validate_routes return copied inspection and qualification data.",
+        "The example also composes candidate strategies, a prepared native module, ordinary aggregate materials and a typed distance mask from immutable semantic geometry.",
+        "The example uses order-1 Hilbert sites and bounded four-site service tours; both route passed and supports_passed must be checked."
+      ],
+      "sources": [
+        "../native/include/cybersand/generation_grammar.hpp",
+        "../native/src/generation_grammar.cpp",
+        "../native/src/world_generation.cpp",
+        "../examples/worldgen/hierarchy-multi-district.json",
+        "../godot/tests/test_worldgen_grammar.gd"
+      ]
+    },
+    {
+      "id": "GEN26",
+      "query": "Does generated apparatus support validation require a whole solid floor, and can a route pass hide destroyed support after modifiers or final overrides?",
+      "canonical": [
+        "systems/procedural-hierarchical-generation.md"
+      ],
+      "facts": [
+        "Semantic support checks declared parent or sibling geometry before rasterization; final support checks run on the complete final material stack.",
+        "validate_routes returns route passed and supports_passed as separate results, with profiles floating-square-v1 and static-solid-contact-v1.",
+        "Each declared floor, ceiling or wall check requires at least one final MaterialState::Solid contact; wall checks scan both vertical sides and partial missing contacts remain explicit.",
+        "The report does not prove apparatus preservation, a fully supported footprint, grounded support, gravity stability or behavior after simulation."
+      ],
+      "sources": [
+        "../native/include/cybersand/world_generation.hpp",
+        "../native/src/world_generation.cpp",
+        "../godot/native_extension/generation_grammar_inspection.inc",
+        "../godot/tests/test_worldgen_grammar.gd"
+      ]
     }
   ],
-  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set. 2026-10-18: MAT01/MAT02 add independent persistent-contact and interior mask-wake questions; the frozen 32 and prior questions are unchanged. 2026-10-18: SCENE01 adds independent demo-level entry/view/ownership routing; the frozen 32-question set is unchanged. 2026-10-18: SCENE02 adds the owner-requested four-tile descent and state-boundary question; all prior and frozen questions remain unchanged. 2026-10-18: ACT01-ACT03 add independent actor model/input/performance-boundary questions; the frozen 32-question set is unchanged. 2026-10-18 ACT-002: ACT04-ACT09 add independent expanded-rig/control/observation/persona/budget/compatibility questions. ACT03 now explicitly scopes original numeric limits to SetA and names the additive extension; the frozen 32-question set remains unchanged. 2026-10-18: SCENE03 adds the nine-district route and continuity question; all 47 prior supplementary questions, including SCENE01/SCENE02 and ACT01-ACT09, and the frozen 32-question set remain unchanged. 2026-10-18 ACT-004: ACT10/ACT11 expected facts reconciled with retained hull references and implemented full physical roster; ACT12-ACT15 add independent physical fidelity, producer lifetime, usable and arena-version challenges. Frozen query wording is unchanged; Q10 capacity correction is disclosed in the frozen fixture metadata. 2026-10-18 USABLE-001: USABLE01 adds the independent actor-equipment catalogue/ownership/budget question without changing the frozen 32-question set. 2026-10-19 ACT-005: ACT14 now also routes to the expanded actor-usables canonical contract; ACT14 and USABLE01 expected facts and source routes distinguish the implemented physical equipment catalogue from retained sampled authority. Existing question IDs and query wording are unchanged. USABLE02-USABLE04 add supplementary source-discovered lifetime, processor and course challenges; the frozen 32-question fixture is unchanged, and new question results are reported separately from the prior 70-question baseline. 2026-10-19: MAT03 and TEST01 add catalogue integration and actual graphical-test execution questions; TEST02 adds standalone CLI admission and sampled accounting. 2026-10-19 resumed MAT-002 review: MAT03 scopes sampled-rig digging separately from authored sampled and physical equipment. TEST03 adds the current Windows execution gate; all upstream USABLE01-USABLE04 questions and the frozen 32-question set are preserved. 2026-10-19 Windows follow-up: TEST03 distinguishes the four text descriptor newline comparisons from byte-exact source and binary evidence; existing questions and query wording are unchanged. 2026-10-20: SCENE04 and DEP02 add independent full-map exhibition/replay and depth-size/stale-packet challenges. DEP01 preserves Strata Theatre defaults while admitting the new shared dimensions; TEST03 now refers to dynamically discovered rendered cases instead of a stale count. Existing question IDs and query wording, and the frozen 32-question fixture, are unchanged. The two new challenges are reported separately from the prior 77-question set.",
+  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set. 2026-10-18: MAT01/MAT02 add independent persistent-contact and interior mask-wake questions; the frozen 32 and prior questions are unchanged. 2026-10-18: SCENE01 adds independent demo-level entry/view/ownership routing; the frozen 32-question set is unchanged. 2026-10-18: SCENE02 adds the owner-requested four-tile descent and state-boundary question; all prior and frozen questions remain unchanged. 2026-10-18: ACT01-ACT03 add independent actor model/input/performance-boundary questions; the frozen 32-question set is unchanged. 2026-10-18 ACT-002: ACT04-ACT09 add independent expanded-rig/control/observation/persona/budget/compatibility questions. ACT03 now explicitly scopes original numeric limits to SetA and names the additive extension; the frozen 32-question set remains unchanged. 2026-10-18: SCENE03 adds the nine-district route and continuity question; all 47 prior supplementary questions, including SCENE01/SCENE02 and ACT01-ACT09, and the frozen 32-question set remain unchanged. 2026-10-18 ACT-004: ACT10/ACT11 expected facts reconciled with retained hull references and implemented full physical roster; ACT12-ACT15 add independent physical fidelity, producer lifetime, usable and arena-version challenges. Frozen query wording is unchanged; Q10 capacity correction is disclosed in the frozen fixture metadata. 2026-10-18 USABLE-001: USABLE01 adds the independent actor-equipment catalogue/ownership/budget question without changing the frozen 32-question set. 2026-10-19 ACT-005: ACT14 now also routes to the expanded actor-usables canonical contract; ACT14 and USABLE01 expected facts and source routes distinguish the implemented physical equipment catalogue from retained sampled authority. Existing question IDs and query wording are unchanged. USABLE02-USABLE04 add supplementary source-discovered lifetime, processor and course challenges; the frozen 32-question fixture is unchanged, and new question results are reported separately from the prior 70-question baseline. 2026-10-19: MAT03 and TEST01 add catalogue integration and actual graphical-test execution questions; TEST02 adds standalone CLI admission and sampled accounting. 2026-10-19 resumed MAT-002 review: MAT03 scopes sampled-rig digging separately from authored sampled and physical equipment. TEST03 adds the current Windows execution gate; all upstream USABLE01-USABLE04 questions and the frozen 32-question set are preserved. 2026-10-19 Windows follow-up: TEST03 distinguishes the four text descriptor newline comparisons from byte-exact source and binary evidence; existing questions and query wording are unchanged. 2026-10-20: SCENE04 and DEP02 add independent full-map exhibition/replay and depth-size/stale-packet challenges. DEP01 preserves Strata Theatre defaults while admitting the new shared dimensions; TEST03 now refers to dynamically discovered rendered cases instead of a stale count. Existing question IDs and query wording, and the frozen 32-question fixture, are unchanged. The two new challenges are reported separately from the prior 77-question set. 2026-10-21: GEN19–GEN26 add independently scoped semantic identity, hierarchy constraints/fallback, structural curve, final-raster override, immutable geometry, bounded publication, authoring and final support-contact questions. All prior 89 supplementary queries and the frozen 32-question set remain unchanged.",
   "integration_note": "Retains all scene, generation, sampled and physical actor-usable, Thunderbowl, physical-actor, building-material and presentation routes; historical questions are preserved. Deepworks scene controls, finite source replay and full-size/non-square depth dimensions are additive routes; existing historical scope remains intact."
 }

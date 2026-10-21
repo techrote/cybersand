@@ -6,7 +6,7 @@ scope: GEN-004 semantic hierarchy, canonical region ownership, bounded placement
 canonical-for: [procedural-semantic-hierarchy, generation-region-ownership, structural-route-qualification]
 keywords: [GEN-004, hierarchy, grammar, district, room, apparatus, stable identity, boundary sockets, occupancy, constraints, traversal, semantic plan]
 last-reviewed: 2026-10-21
-related-documents: [procedural-world-generation.md, procedural-generation-fields-and-modifiers.md, procedural-typed-spatial-fields.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../reference/invariants.md, ../audits/2026-10-21-gen004-hierarchical-generation.md]
+related-documents: [../decisions/ADR-013-canonical-semantic-generation.md, procedural-world-generation.md, procedural-generation-fields-and-modifiers.md, procedural-typed-spatial-fields.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../reference/invariants.md, ../audits/2026-10-21-gen004-hierarchical-generation.md]
 ---
 
 # Hierarchical procedural places and structural routes
@@ -121,7 +121,7 @@ is no claim of complete search over all possible layouts.
 |---|---|
 | `intersects_route` | Candidate intersects an explicit regional passage footprint. Curve succession does not satisfy it. |
 | `minimum_separation` | Euclidean distance between sibling rectangle extents is at least the greater of their two requested separations. |
-| `floor`, `ceiling`, `wall` | Candidate contacts the corresponding declared solid parent interior surface or a previously placed solid sibling surface. These are semantic support checks, before later carving or simulation. |
+| `floor`, `ceiling`, `wall` | Candidate contacts the corresponding declared solid parent interior surface or a previously placed solid sibling surface. A separate final-cell report checks whether a solid contact survives rasterization; neither check models stability after simulation. |
 | `open_volume` | Candidate fits inside a shelled parent's interior and does not overlap a sibling for which either side requires open volume. Ancestors are not competing siblings. |
 | `service` | A declared `service` or `liquid` route lies within `neighbor_distance` of the candidate rectangle. This is bounded geometric access, not liquid dynamics. |
 | `occupancy_min/max` | Sum of this rule's placed sibling rectangle areas divided by parent rectangle area falls in the inclusive range. It is a semantic area quota, distinct from aggregate material weights. |
@@ -201,19 +201,39 @@ owns the exact C++ and Godot method/packet names.
 
 `validate_routes()` checks **final rasterized cells**, after fields, modules,
 aggregates and hard overrides, for an explicitly declared odd square clearance.
-This is a floating geometric profile with four-neighbor connectivity. It does not
+This is the `floating-square-v1` geometric profile with four-neighbor
+connectivity. At the finite window edge, footprint checks are clipped to the
+canonical shared aperture; the report explicitly sets `boundary_apertures`.
+Independently planned opposite halves complete that aperture, and stitched
+boundary controls are required to establish the full crossing. It does not
 model gravity, jumps, a particular articulated actor, controllers or material
 motion after simulation. An authored hard override can intentionally block a
 required route: material output preserves the override and the route report
 records failure. A blocked report must not be described as successful traversal.
 No abstract graph result substitutes for this final-cell check.
 
+The same report separately exposes `supports_passed` for the
+`static-solid-contact-v1` profile. For each declared floor, ceiling or wall
+constraint it inspects final material cells immediately outside the feature's
+rectangle. A check passes when at least one inspected cell has `MaterialState::Solid`;
+the wall check inspects both vertical sides. It retains checked/missing counts,
+the first missing coordinate and the feature/constraint identity. Partial contact
+can therefore pass, and `passed` still means the route profile alone. A consumer
+requiring both qualifications must inspect both booleans.
+
+This catches total removal of a required support by routes, modules, modifiers
+or final overrides. It does not establish that the whole apparatus survived,
+that its support spans the entire footprint, that the solid is itself grounded,
+or that the resulting assembly remains stable after simulation. Cell provenance
+and fixture-specific raster controls are needed for those stronger claims.
+
 ## What are the work, memory and failure bounds?
 
 The [configuration reference](../reference/configuration-reference.md#hierarchical-generation-limits)
 owns exact defaults and hard maxima. The planner bounds region count, rules,
 hierarchy depth, children, candidates, feature/socket/route records, spatial
-queries, solver work, prepared bytes and raster verification size/work. There is
+queries, solver work, prepared bytes and raster verification size/work, including
+support-contact scans and retained reports. There is
 no arbitrary-coordinate recursive neighbor query. Queries inspect only the
 finite immutable plan. Successful per-cell proposal sampling performs no heap
 allocation; generation jobs retain complete private output until Ready.
@@ -232,19 +252,24 @@ Load [`hierarchy-multi-district.json`](../../examples/worldgen/hierarchy-multi-d
 through the Workbench hierarchy example control or `CyberWorldGenerator.configure`.
 It covers `[-128,-128,256,256]` cells in four canonical 128-cell regions, using
 64-cell storage chunks. Each region contains semantic theme subdivisions, one
-104×72 foundry, a gallery, a machinery bay, a supported inspection dais,
-floor-mounted pump, ceiling console and nested lights. The machinery bay occupies
+104×72 foundry, a 64×66 gallery, a machinery bay, an inspection dais with floor
+and wall constraints, a floor-mounted pump, a ceiling console and two embedded
+dais lights. The machinery bay occupies
 22.22% of its foundry. Neighbor, separation, service, exact multiplicity, socket
 and occupancy constraints are authored data.
 
 The profile uses the shared finite assignment solver for district theme blends,
-Hilbert-ranked foundry candidates and detail placement, a real theme-boundary
-preference for a marker, explicit primary routes and secondary loops, a finite curve-ordered service
+order-1 Hilbert-ranked foundry candidates and detail placement, a real theme-boundary
+preference for a marker, explicit primary routes and secondary loops, a four-site curve-ordered service
 tour and straight service/liquid trunks, a prepared vault module, a weathered aggregate shell and a
 typed distance mask around an exported tour loop. Its Strata base is composed
 with Flow Network and District Grammar overrides. `get_semantic_plan()` exposes
 the hierarchy and receipts; `inspect_cell()` reports contribution provenance;
-`validate_routes()` reports the declared final-cell traversal qualification.
+`validate_routes()` reports the declared final-cell traversal and support-contact
+qualifications separately. The example deliberately places its compact apparatus
+away from both semantic passage footprints and the existing candidate macro
+network for the authored seed. Its retained qualification and the footprint
+inspection are recorded in the [dated audit](../audits/2026-10-21-gen004-hierarchical-generation.md).
 
 For a new place, choose its canonical region/window and stable rule IDs first.
 Declare parent-relative candidate rectangles and exact counts, then add hard

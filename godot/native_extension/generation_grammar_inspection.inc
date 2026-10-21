@@ -51,6 +51,20 @@ Dictionary grammar_route_validation(const gen::RouteValidation& report) {
         routes.push_back(item);
     }
     result["routes"] = routes;
+    result["supports_passed"] = report.supports_passed;
+    result["support_profile"] = String(report.support_profile.c_str());
+    Array supports;
+    for (const auto& support : report.supports) {
+        Dictionary item;
+        item["feature_id"] = String(support.feature_id.c_str());
+        item["constraint"] = String(support.constraint.c_str()); item["passed"] = support.passed;
+        item["detail"] = String(support.detail.c_str());
+        item["checked_cells"] = static_cast<std::int64_t>(support.checked_cells);
+        item["missing_cells"] = static_cast<std::int64_t>(support.missing_cells);
+        item["first_missing_x"] = support.first_missing_x; item["first_missing_y"] = support.first_missing_y;
+        supports.push_back(item);
+    }
+    result["supports"] = supports;
     return result;
 }
 Dictionary grammar_plan_dictionary(const gen::GrammarPlan& plan) {

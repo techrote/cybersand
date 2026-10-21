@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-21
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md]
 ---
 
@@ -96,6 +96,7 @@ limits; native C++ callers can raise them only to the hard ceilings below.
 | `curve` / `curve_order` | Hilbert / 2 | Hilbert, Morton or Peano; order 1–6 |
 | `route_width` / `clearance` | 7 / 3 cells | Odd integers 1–31, route width ≥ clearance and ≤ region size/4 |
 | `secondary_loop` / `service_trunk` / `liquid_trunk` | true / true / false | Explicit booleans |
+| `curve_services` | false | Requires `service_trunk`; selected finite curve has at most 16 sites |
 | `geometry_exports` | Empty map | At most 16 exact semantic route/feature aliases |
 
 Planning coordinates preserve the generator's signed ±`2^40` domain with room
@@ -114,6 +115,13 @@ cells; inclusive occupancy fractions are within `[0,1]`. Socket aperture widths
 are odd 1–31 and must fit the selected edge; passage widths also meet clearance.
 The JSON adapter caps wall thickness at 64 while native declarations admit 128;
 the selected rectangle must retain a nonempty interior for any positive shell.
+
+`max_raster_operations` covers full final-cell sampling, square-clearance and
+route connectivity work, plus scans along every declared floor/ceiling/wall
+contact edge. `max_prepared_bytes` includes final-cell scratch and retained
+route/support records. `static-solid-contact-v1` requires at least one surviving
+solid contact on each declared side; it introduces no gravity or full-footprint
+support threshold. Inspect `supports_passed` separately from route `passed`.
 
 `district_assignment` reuses GEN-003's bounded finite solver and scratch contract.
 `district_themes` is keyed by exact unsigned category IDs represented as sixteen

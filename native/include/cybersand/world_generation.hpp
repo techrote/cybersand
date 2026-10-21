@@ -258,6 +258,12 @@ struct RouteOutcome {
     std::uint64_t checked_centres = 0, blocked_centres = 0;
     std::int64_t first_block_x{}, first_block_y{};
 };
+struct SupportOutcome {
+    std::string feature_id, constraint, detail;
+    bool passed = false;
+    std::uint64_t checked_cells = 0, missing_cells = 0;
+    std::int64_t first_missing_x{}, first_missing_y{};
+};
 struct RouteValidation {
     bool passed = true;
     std::string profile = "floating-square-v1";
@@ -267,6 +273,12 @@ struct RouteValidation {
     // aperture. Independently planned opposite halves complete that aperture.
     bool boundary_apertures = true;
     std::vector<RouteOutcome> routes;
+    // Separate final-cell qualification of semantic support requirements:
+    // at least one static solid contact on each requested boundary side.
+    // This is neither structural stability nor simulated gravity behavior.
+    bool supports_passed = true;
+    std::string support_profile = "static-solid-contact-v1";
+    std::vector<SupportOutcome> supports;
 };
 
 class GenerationJob;

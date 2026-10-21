@@ -126,7 +126,13 @@ void themes(std::vector<GrammarTheme>& values) {
         need(i == 0 || values[i-1].id != values[i].id, "duplicate theme");
         sum += values[i].weight;
     }
-    if (sum > 0) for (auto& value : values) value.weight /= sum;
+    if (sum > 0) for (const auto& value : values)
+        need(value.weight / sum > 0, "theme blend normalization underflows a positive weight");
+}
+std::vector<GrammarTheme> normalized_themes(const std::vector<GrammarTheme>& authored) {
+    auto result=authored;double sum=0;for(const auto& value:result)sum+=value.weight;
+    if(sum>0)for(auto& value:result)value.weight/=sum;
+    return result;
 }
 bool tag(const SemanticFeature& f, const std::string& t) { return std::binary_search(f.tags.begin(), f.tags.end(), t); }
 std::uint64_t feature_revision(const SemanticFeature& f) {
@@ -161,6 +167,7 @@ struct GrammarPlan::Impl {
     std::size_t bytes{};
     RectI64 bounds;
     std::vector<SemanticFeature> features;
+    std::vector<std::size_t> feature_depths;
     std::vector<SemanticSocket> sockets;
     std::vector<SemanticRoute> routes;
     std::vector<ConstraintReceipt> receipts;
@@ -301,7 +308,8 @@ struct GrammarPlan::Impl {
     }
     std::string candidate_failure(const SemanticFeature& parent, RectI64 b, const GrammarRule& r,
                                   const std::vector<std::size_t>& siblings) {
-        charge(32+routes.size()*16+siblings.size()*16);
+        std::uint64_t route_work=0;for(const auto& route:routes)route_work+=16+route.points.size()*16;
+        charge(32+route_work+siblings.size()*16);
         if(!encloses(parent.bounds,b))return "bounds: candidate lies outside its canonical parent";
         if(r.wall_thickness>0 && (2*r.wall_thickness>=b.width || 2*r.wall_thickness>=b.height))
             return "bounds: shell consumes its interior";
@@ -357,7 +365,8 @@ struct GrammarPlan::Impl {
                             const GrammarCandidate& candidate, const std::vector<std::size_t>& siblings) {
         double score=0;
         for(const auto& pref:r.preferences) {
-            charge(16+routes.size()*16+siblings.size()*16);
+            std::uint64_t route_work=0;for(const auto& route:routes)route_work+=16+route.points.size()*16;
+            charge(16+route_work+siblings.size()*16);
             double value=0;
             if(pref.kind=="route") {
                 double distance=definition.region_size*2;
@@ -419,10 +428,6 @@ struct GrammarPlan::Impl {
                     destination.y=std::clamp(destination.y,static_cast<double>(region_y+radius),static_cast<double>(region_y+definition.region_size-1-radius));
                     socket.matched=closest->id;
                     const auto mate=socket.id+"/attachment";
-                    const auto opposite_dir=templ.direction==SocketDirection::West?SocketDirection::East:
-                        templ.direction==SocketDirection::East?SocketDirection::West:
-                        templ.direction==SocketDirection::North?SocketDirection::South:SocketDirection::North;
-                    add_socket({mate,closest->id,templ.type,socket.id,f.owner,static_cast<std::int64_t>(destination.x),static_cast<std::int64_t>(destination.y),opposite_dir,templ.width,templ.required,false});
                     socket.matched=mate;
                     const spatial::Point start{static_cast<double>(x),static_cast<double>(y)};
                     // First step follows the socket's declared outward normal;
@@ -435,8 +440,15 @@ struct GrammarPlan::Impl {
                     const auto reach=static_cast<double>(std::min<std::int64_t>(space,std::max<std::uint32_t>(templ.width,f.wall_thickness+1)));
                     const spatial::Point exit{start.x+(templ.direction==SocketDirection::West?-reach:templ.direction==SocketDirection::East?reach:0),
                         start.y+(templ.direction==SocketDirection::North?-reach:templ.direction==SocketDirection::South?reach:0)};
+                    std::vector<spatial::Point> path{start,exit,{destination.x,exit.y},destination};
+                    auto previous=path.size()-2;
+                    while(previous>0&&path[previous].x==destination.x&&path[previous].y==destination.y)--previous;
+                    const auto direction=path[previous].x<destination.x?SocketDirection::West:
+                        path[previous].x>destination.x?SocketDirection::East:
+                        path[previous].y<destination.y?SocketDirection::North:SocketDirection::South;
+                    add_socket({mate,closest->id,templ.type,socket.id,f.owner,static_cast<std::int64_t>(destination.x),static_cast<std::int64_t>(destination.y),direction,templ.width,templ.required,false});
                     add_route({f.id+"/connection/"+templ.id,templ.type,socket.id,mate,f.owner,
-                        {start,exit,{destination.x,exit.y},destination},templ.width,templ.type=="passage"&&templ.required,
+                        std::move(path),templ.width,templ.type=="passage"&&templ.required,
                         templ.type=="passage"?Material::Empty:closest->material});
                 }
             }
@@ -482,7 +494,7 @@ struct GrammarPlan::Impl {
                 }
                 SemanticFeature f;f.id=fid;f.parent=parent.id;f.rule_id=r.id;f.candidate_id=selected->c->id;f.kind=r.kind;
                 f.bounds=selected->bounds;f.owner=parent.owner;f.order=selected->rank;f.priority=r.priority;
-                f.tags=r.tags;f.themes=r.themes.empty()?parent.themes:r.themes;f.parameters=r.parameters;
+                f.tags=r.tags;f.themes=r.themes.empty()?parent.themes:normalized_themes(r.themes);f.parameters=r.parameters;
                 f.allowed_materials=r.allowed_materials;f.constraints=r.constraints;f.material=r.material;f.interior=r.interior;
                 f.wall_thickness=r.wall_thickness;f.aggregate=r.aggregate;f.application=r.application;f.exclusion=r.exclusion;
                 const auto index=features.size();add_feature(std::move(f));
@@ -570,6 +582,7 @@ std::shared_ptr<const GrammarPlan> GrammarPlan::compile(GrammarDefinition defini
     std::sort(definition.rules.begin(),definition.rules.end(),[](const auto& a,const auto& b){return a.id<b.id;});
     std::map<std::string,std::size_t> indices;
     std::set<std::string> theme_names;
+    need(definition.district_themes.size()<=16,"district theme mapping capacity exceeded");
     for(auto& [category,blend]:definition.district_themes){(void)category;themes(blend);for(const auto& t:blend)theme_names.insert(t.id);}
     for(std::size_t i=0;i<definition.rules.size();++i) {
         auto& r=definition.rules[i];identifier(r.id);need(indices.emplace(r.id,i).second,"duplicate rule "+r.id);
@@ -679,6 +692,9 @@ std::shared_ptr<const GrammarPlan> GrammarPlan::compile(GrammarDefinition defini
         impl->charge(r.candidates.size()*64+r.parameters.size()*64+r.preferences.size()*64+r.sockets.size()*64);
         impl->memory(r.candidates.size()*256+r.parameters.size()*256+r.sockets.size()*256+r.preferences.size()*256);
     }
+    for(const auto& [category,blend]:impl->definition.district_themes) {
+        (void)category;impl->charge(64+blend.size()*128);impl->memory(128+blend.size()*192);
+    }
     if(impl->definition.district_assignment) {
         impl->assignment=spatial::PreparedRegions::compile(*impl->definition.district_assignment,impl->definition.assignment_limits);
         impl->charge(impl->assignment->declared_preparation_work());impl->memory(impl->assignment->storage_bytes()+spatial::kRegionSolverScratchBytes);
@@ -691,13 +707,14 @@ std::shared_ptr<const GrammarPlan> GrammarPlan::compile(GrammarDefinition defini
         const spatial::RegionId owner{rx,ry};SemanticFeature region;
         region.id=region_id(impl->definition,owner);region.candidate_id="region";region.kind=SemanticKind::Region;
         region.bounds={rx*n,ry*n,n,n};region.owner=owner;
-        if(impl->assignment)region.themes=impl->definition.district_themes.at(impl->assignment->sample({static_cast<double>(rx*n+n/2),static_cast<double>(ry*n+n/2)}));
+        if(impl->assignment)region.themes=normalized_themes(impl->definition.district_themes.at(impl->assignment->sample({static_cast<double>(rx*n+n/2),static_cast<double>(ry*n+n/2)})));
         const auto index=impl->features.size();impl->add_feature(std::move(region));impl->build_region_routes(owner);
         for(const auto& socket:impl->sockets)if(socket.feature_id==impl->features[index].id&&!socket.shared)impl->features[index].sockets.push_back(socket.id);
         impl->expand(index,impl->definition.roots,1);
     }
     // Delete authored omissions, including their sockets/routes and descendants.
     auto prune=[&](const std::string& id) {
+        impl->charge(32+impl->features.size()*64+impl->sockets.size()*16+impl->routes.size()*16);
         const auto under=[&](const std::string& value){return value==id||value.starts_with(id+"/");};
         std::erase_if(impl->features,[&](const auto& f){return under(f.id);});
         std::erase_if(impl->sockets,[&](const auto& s){return under(s.id)||under(s.feature_id);});
@@ -747,6 +764,7 @@ std::shared_ptr<const GrammarPlan> GrammarPlan::compile(GrammarDefinition defini
         for(const auto& f:impl->features) {
             if(f.rule_id.empty())continue;
             std::size_t count=0;bool all=true;
+            impl->charge(impl->sockets.size()*8);
             for(const auto& s:impl->sockets)if(s.feature_id==f.id) {
                 impl->charge(8);count+=!s.matched.empty();if(s.required&&s.matched.empty())all=false;
             }
@@ -780,7 +798,11 @@ std::shared_ptr<const GrammarPlan> GrammarPlan::compile(GrammarDefinition defini
     std::sort(impl->features.begin(),impl->features.end(),[](const auto& a,const auto& b){return a.id<b.id;});
     std::sort(impl->sockets.begin(),impl->sockets.end(),[](const auto& a,const auto& b){return a.id<b.id;});
     std::sort(impl->routes.begin(),impl->routes.end(),[](const auto& a,const auto& b){return a.id<b.id;});
+    impl->memory(impl->features.size()*sizeof(std::size_t)*2);
+    impl->feature_depths.reserve(impl->features.size());
     for(auto& f:impl->features) {
+        impl->charge(f.id.size()+f.children.size()*16+f.sockets.size()*32);
+        impl->feature_depths.push_back(static_cast<std::size_t>(std::count(f.id.begin(),f.id.end(),'/')));
         std::sort(f.children.begin(),f.children.end());std::sort(f.sockets.begin(),f.sockets.end());f.revision=feature_revision(f);
         for(const auto& id:f.sockets) {
             const auto found=std::lower_bound(impl->sockets.begin(),impl->sockets.end(),id,[](const auto& socket,const auto& key){return socket.id<key;});
@@ -842,7 +864,7 @@ RectI64 GrammarPlan::bounds()const noexcept{return impl_->bounds;}
 std::uint64_t GrammarPlan::fingerprint()const noexcept{return impl_->fingerprint;}
 std::uint64_t GrammarPlan::preparation_work()const noexcept{return impl_->work;}
 std::uint64_t GrammarPlan::operations_per_sample()const noexcept {
-    std::uint64_t count=64+impl_->features.size()*32;
+    std::uint64_t count=64+impl_->features.size()*64; // geometry selection plus native immutable mask eligibility
     for(const auto& r:impl_->routes)count+=32+32*r.points.size();
     return count;
 }
@@ -863,17 +885,24 @@ std::vector<std::string> GrammarPlan::ancestry(const std::string& id)const {
     std::reverse(result.begin(),result.end());return result;
 }
 SemanticProposal GrammarPlan::proposal(std::int64_t x,std::int64_t y)const noexcept {
+    return proposal(x,y,nullptr,nullptr);
+}
+SemanticProposal GrammarPlan::proposal(std::int64_t x,std::int64_t y,
+                                      FeatureEligibility eligible,const void* context)const {
     SemanticProposal result;
     if(!contains(impl_->bounds,x,y))return result;
     std::size_t best_depth=0;int priority=std::numeric_limits<int>::min();
-    for(const auto& f:impl_->features) {
-        if(!contains(f.bounds,x,y))continue;
-        const auto depth=static_cast<std::size_t>(std::count(f.id.begin(),f.id.end(),'/'));
-        if(result.feature&&(depth<best_depth||(depth==best_depth&&(f.priority<priority||(f.priority==priority&&f.id<result.feature->id)))))continue;
+    for(std::size_t index=0;index<impl_->features.size();++index) {
+        const auto& f=impl_->features[index];if(!contains(f.bounds,x,y))continue;
+        const auto depth=impl_->feature_depths[index];
+        // Features are already in canonical lexical order, so a later equal
+        // priority/depth feature is exactly the existing lexical winner.
+        if(result.feature&&(depth<best_depth||(depth==best_depth&&f.priority<priority)))continue;
         const bool inside=f.wall_thickness==0||contains(interior(f.bounds,f.wall_thickness),x,y);
         const auto material=inside?f.interior:f.material;
         // Semantic scopes without a material retain an enclosing contribution.
-        if(!material&&f.aggregate.empty())continue;
+        if(!material&&(inside||f.aggregate.empty()))continue;
+        if(eligible&&!eligible(index,f,context))continue;
         result={material,&f,nullptr,inside};best_depth=depth;priority=f.priority;
     }
     // Service trunks are structural material proposals. Traversable passages

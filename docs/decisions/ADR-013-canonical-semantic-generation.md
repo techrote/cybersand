@@ -53,6 +53,9 @@ physical path, especially for Morton jumps or repeated finite tiles. Routes use
 explicit rectilinear geometry and compatible sockets. Final raster validation
 then checks Empty-cell clearance/connectivity for the declared floating square
 profile, including independently authored shared apertures.
+Final support qualification separately checks retained solid contact along
+declared floor/ceiling/wall edges, with partial-contact diagnostics. Neither
+profile claims post-simulation structural stability or controller performance.
 
 ## Consequences and acceptance boundary
 

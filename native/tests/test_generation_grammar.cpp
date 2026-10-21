@@ -12,6 +12,7 @@
 #include <map>
 #include <random>
 #include <set>
+#include <source_location>
 #include <stdexcept>
 #include <string>
 #include <string_view>
@@ -28,10 +29,10 @@ void require(bool value, const std::string& reason) {
     if (!value) throw std::runtime_error(reason);
 }
 template<class Action>
-std::string rejection(Action&& action) {
+std::string rejection(Action&& action, std::source_location location = std::source_location::current()) {
     try { action(); }
     catch (const std::exception& error) { return error.what(); }
-    throw std::runtime_error("expected deterministic rejection");
+    throw std::runtime_error("expected deterministic rejection at line " + std::to_string(location.line()));
 }
 
 GrammarCandidate candidate(std::string id, RectI64 bounds, std::uint32_t ox = 0, std::uint32_t oy = 0) {
@@ -541,6 +542,8 @@ void override_provenance_and_transactionality() {
     require(exported != declared->routes().end(), "fixture declares an exportable route");
     recipe.grammar.geometry_exports["route-fixture"] = exported->id;
     auto generator = Generator::compile(recipe);
+    const auto canonical = Generator::compile(generator->recipe());
+    require(canonical->fingerprint() == generator->fingerprint(), "canonical recipe recompiles without duplicating semantic geometry inputs");
     const auto& plan = *generator->semantic_plan();
     auto route = std::find_if(plan.routes().begin(), plan.routes().end(), [](const auto& r) {
         return r.required && r.type == "passage" && r.points.size() >= 2;
@@ -661,6 +664,13 @@ void structural_curves_assignment_and_example() {
         themes.insert(feature.themes.front().id);
     }
     require(themes == std::set<std::string>{"foundry", "garden"}, "GEN003 assignment is consumed by actual semantic regions");
+    auto capacity = assigned;
+    for (std::uint64_t category = 100; category < 114; ++category)
+        capacity.district_themes.emplace(category, std::vector<GrammarTheme>{{"unused", 1}});
+    require(GrammarPlan::compile(capacity, 191)->definition().district_themes.size() == 16,
+            "district theme declarations admit the documented sixteen-entry boundary");
+    capacity.district_themes.emplace(114, std::vector<GrammarTheme>{{"unused", 1}});
+    (void)rejection([&] { (void)GrammarPlan::compile(capacity, 191); }); ++assertions;
     assigned.assignment_limits.max_work = 1;
     (void)rejection([&] { (void)GrammarPlan::compile(assigned, 191); }); ++assertions;
     assigned.assignment_limits.max_work = 1'000'000;
@@ -689,6 +699,32 @@ void structural_curves_assignment_and_example() {
                 example->storage_bytes() > 0 && example->storage_bytes() <= example->definition().limits.max_prepared_bytes,
             "prepared semantic work and storage have bounded receipts");
     require(example->geometry_inputs().size() <= 16, "immutable field geometry export is bounded");
+    for (const auto& route : example->routes()) {
+        const auto endpoint = [&](const std::string& id, const spatial::Point& point) -> const SemanticSocket* {
+            if (id.empty()) return nullptr;
+            const auto found = std::find_if(example->sockets().begin(), example->sockets().end(), [&](const auto& socket) { return socket.id == id; });
+            require(found != example->sockets().end(), "route endpoint names an actual immutable socket");
+            require(static_cast<double>(found->x) == point.x && static_cast<double>(found->y) == point.y && found->type == route.type && found->width >= route.width,
+                    "route endpoint position/type/aperture agrees with socket geometry");
+            return &*found;
+        };
+        const auto* from = endpoint(route.from_socket, route.points.front());
+        const auto* to = endpoint(route.to_socket, route.points.back());
+        if (route.id.find("/connection/") != std::string::npos && from && to) {
+            const auto direction = [](const spatial::Point& a, const spatial::Point& b) {
+                if (b.x < a.x) return SocketDirection::West;
+                if (b.x > a.x) return SocketDirection::East;
+                return b.y < a.y ? SocketDirection::North : SocketDirection::South;
+            };
+            require(from->direction == direction(route.points.front(), route.points[1]),
+                    "authored attachment exits along its declared socket normal");
+            std::size_t previous = route.points.size() - 2;
+            while (previous > 0 && route.points[previous].x == route.points.back().x && route.points[previous].y == route.points.back().y) --previous;
+            require(to->direction == direction(route.points.back(), route.points[previous]),
+                    "bent attachment arrives along the actual destination socket normal");
+        }
+    }
+
 }
 
 void priority_preferences_and_fallback_ghosts() {
@@ -796,6 +832,18 @@ void independent_window_material_and_provenance() {
 
 void typed_parameters_and_bound_controls() {
     auto definition = flat();
+    const std::array<double, 7> weights{759.1992752506993,787.0867812001934,871.4264168830628,
+        513.354106291798,145.07069131097478,403.11292446113225,639.508862881271};
+    for (std::size_t i = 0; i < weights.size(); ++i)
+        definition.rules[0].themes.push_back({"theme-" + std::to_string(i), weights[i]});
+    const auto authored = GrammarPlan::compile(definition, 191);
+    const auto canonical = GrammarPlan::compile(authored->definition(), 191);
+    require(canonical->fingerprint() == authored->fingerprint(), "canonical grammar recompiles without normalizing theme weights twice");
+    for (const auto& feature : authored->features()) same_feature(feature, *canonical->feature(feature.id));
+    auto underflow = flat();
+    underflow.rules[0].themes = {{"tiny", std::numeric_limits<double>::denorm_min()}, {"large", 1e6}};
+    (void)rejection([&] { (void)GrammarPlan::compile(underflow, 191); }); ++assertions;
+    definition = flat();
     std::vector<SpatialValue> invalid_values;
     invalid_values.push_back({SpatialType::Scalar, 1, 2});
     invalid_values.push_back({SpatialType::Distance, -1});
@@ -832,6 +880,151 @@ void typed_parameters_and_bound_controls() {
     (void)rejection([&] { (void)GrammarPlan::compile(exported, 191); }); ++assertions;
 }
 
+void semantic_mask_aggregate_and_module_composition() {
+    auto recipe = integration_recipe();
+    recipe.grammar.region_window = {0, 0, 1, 1};
+    recipe.grammar.rules[0].material = Material::Metal;
+    recipe.grammar.rules[0].interior = Material::Metal;
+    recipe.grammar.rules[1].wall_thickness = 0;
+    recipe.grammar.rules[1].material = Material::Copper;
+    recipe.grammar.rules[1].interior = Material::Copper;
+    FieldNode zero; zero.id = "zero"; zero.kind = FieldKind::Constant; zero.parameters = {{"value", 0}};
+    FieldNode one = zero; one.id = "one"; one.parameters = {{"value", 1}};
+    recipe.fields = {zero, one};
+    recipe.grammar.rules[1].application = "zero";
+    const auto suppressed = Generator::compile(recipe);
+    require(suppressed->sample(10, 10) == Material::Metal,
+            "zero child mask suppresses only child contribution and retains parent material");
+    recipe.grammar.rules[1].application = "one";
+    const auto active = Generator::compile(recipe);
+    require(active->sample(10, 10) == Material::Copper, "full child mask selects child material over parent");
+    recipe.grammar.rules[1].exclusion = "one";
+    require(Generator::compile(recipe)->sample(10, 10) == Material::Metal,
+            "child exclusion restores the underlying parent contribution");
+    recipe.grammar.rules[1].exclusion.clear();
+    recipe.grammar.rules[1].wall_thickness = 1;
+    recipe.grammar.rules[1].aggregate = "structural-mix";
+    Aggregate aggregate;
+    aggregate.id = "structural-mix"; aggregate.grain_size = 1;
+    aggregate.components = {{Material::Copper, 1}, {Material::Metal, 1}};
+    recipe.aggregates = {aggregate};
+    const auto mixed = Generator::compile(recipe);
+    std::set<Material> observed;
+    for (std::int64_t x = 10; x < 18; ++x) {
+        const auto material = mixed->sample(x, 10);
+        require(material == Material::Copper || material == Material::Metal,
+                "semantic aggregate emits only ordinary declared materials on shell");
+        observed.insert(material);
+    }
+    require(observed.size() == 2, "semantic shell uses real aggregate variation");
+    const auto trace = mixed->explain(10, 10);
+    require(std::any_of(trace.contributions.begin(), trace.contributions.end(), [](const auto& c) {
+        return c.stage == "semantic_aggregate";
+    }), "semantic aggregate material decision is inspectable");
+    recipe.grammar.rules[1].allowed_materials = {Material::Copper};
+    (void)rejection([&] { (void)Generator::compile(recipe); }); ++assertions;
+
+    recipe = integration_recipe();
+    recipe.grammar.region_window = {0, 0, 1, 1};
+    ModuleInstance vault;
+    vault.id = "native-vault"; vault.module = "vault"; vault.bounds = {8, 8, 16, 16};
+    vault.parameters = {{"cell_size", 16}};
+    recipe.modules = {vault};
+    const auto module = Generator::compile(recipe);
+    require(module->validate_routes().passed, "registered native module composes beneath restored semantic routes");
+    const auto module_trace = module->explain(8, 8);
+    require(std::any_of(module_trace.contributions.begin(), module_trace.contributions.end(), [](const auto& c) {
+        return c.stage == "module" && c.id == "native-vault";
+    }), "registered module material contribution remains in semantic cell provenance");
+}
+
+void final_support_qualification() {
+    auto recipe = integration_recipe();
+    recipe.grammar.region_window = {0, 0, 1, 1};
+    auto& apparatus = recipe.grammar.rules[1];
+    apparatus.candidates = {candidate("on-floor", {4, 51, 8, 8})};
+    apparatus.constraints.floor = true;
+    const auto supported = Generator::compile(recipe);
+    const auto& feature = by_rule(*supported->semantic_plan(), "machine");
+    require(same_bounds(feature.bounds, {6, 53, 8, 8}), "support fixture has independently specified contact geometry");
+    for (std::int64_t x = 6; x < 14; ++x)
+        require(supported->sample(x, 61) == Material::Concrete, "parent floor contact consists of final solid cells");
+    const auto& before = supported->validate_routes();
+    require(before.passed && before.supports_passed && before.support_profile == "static-solid-contact-v1",
+            "unmodified declared floor qualifies against final raster independently of route clearance");
+    const auto original = std::find_if(before.supports.begin(), before.supports.end(), [&](const auto& row) {
+        return row.feature_id == feature.id && row.constraint == "floor";
+    });
+    require(original != before.supports.end() && original->passed && original->checked_cells == 8 && original->missing_cells == 0,
+            "support receipt counts the independently known floor contact line");
+
+    HardOverride removal;
+    removal.id = "remove-floor"; removal.bounds = {6, 61, 7, 1}; removal.material = Material::Empty;
+    recipe.overrides = {removal};
+    const auto partial = Generator::compile(recipe);
+    require(partial->validate_routes().supports_passed && partial->sample(13, 61) == Material::Concrete,
+            "declared static-contact profile permits one remaining solid contact");
+    removal.bounds.width = 8;
+    recipe.overrides = {removal};
+    const auto unsupported = Generator::compile(recipe);
+    const auto& after = unsupported->validate_routes();
+    require(after.passed && !after.supports_passed, "lost floor support is reported separately from still-valid routes");
+    const auto failed = std::find_if(after.supports.begin(), after.supports.end(), [&](const auto& row) {
+        return row.feature_id == feature.id && row.constraint == "floor";
+    });
+    require(failed != after.supports.end() && !failed->passed && failed->checked_cells == 8 && failed->missing_cells == 8 &&
+                failed->first_missing_x == 6 && failed->first_missing_y == 61 && !failed->detail.empty(),
+            "final support failure names the feature and exact missing contact geometry");
+    same_feature(feature, by_rule(*unsupported->semantic_plan(), "machine"));
+    for (std::int64_t x = 6; x < 14; ++x)
+        require(unsupported->sample(x, 61) == Material::Empty, "support qualification preserves authoritative final material override");
+    const auto trace = unsupported->explain(6, 61);
+    require(!trace.contributions.empty() && trace.contributions.back().stage == "hard_override" &&
+                trace.contributions.back().id == "remove-floor" && trace.material == Material::Empty,
+            "missing floor material remains attributable to the final authored override");
+}
+
+void unused_and_omitted_external_bindings() {
+    for (const bool omitted : {false, true}) {
+        auto recipe = integration_recipe();
+        recipe.grammar.region_window = {0, 0, 1, 1};
+        FieldNode one; one.id = "one"; one.kind = FieldKind::Constant; one.parameters = {{"value", 1}};
+        recipe.fields = {one};
+        SpatialNode coordinate; coordinate.id = "absolute-x"; coordinate.kind = SpatialKind::CoordinateX;
+        recipe.spatial.nodes = {coordinate};
+        Aggregate aggregate; aggregate.id = "declared-mix"; aggregate.components = {{Material::Copper, 1}};
+        recipe.aggregates = {aggregate};
+        auto unused = room("unbound", {4, 4, 8, 8});
+        unused.application = "one"; unused.exclusion = "one"; unused.aggregate = "declared-mix";
+        unused.allowed_materials = {Material::Concrete, Material::Empty, Material::Copper};
+        if (omitted) {
+            unused.constraints.floor = true; // A root region has no declared solid floor.
+            unused.fallback = GrammarFallback::Omit;
+            recipe.grammar.roots.push_back(unused.id);
+        }
+        recipe.grammar.rules.push_back(unused);
+        const auto valid = Generator::compile(recipe);
+        require(count_rule(*valid->semantic_plan(), "unbound") == 0,
+                "valid external bindings compile even when their rule emits no feature");
+        if (omitted) require(std::any_of(valid->semantic_plan()->receipts().begin(), valid->semantic_plan()->receipts().end(), [](const auto& row) {
+            return row.rule_id == "unbound" && row.fallback && !row.passed;
+        }), "omitted external-binding control exercises a real recorded placement fallback");
+
+        std::vector<Recipe> invalid(6, recipe);
+        invalid[0].grammar.rules.back().application = "missing-mask";
+        invalid[1].grammar.rules.back().exclusion = "missing-mask";
+        invalid[2].grammar.rules.back().application = "absolute-x";
+        invalid[3].grammar.rules.back().exclusion = "absolute-x";
+        invalid[4].grammar.rules.back().aggregate = "missing-aggregate";
+        invalid[5].grammar.rules.back().allowed_materials = {Material::Concrete, Material::Empty};
+        for (const auto& broken : invalid) {
+            const auto error = rejection([&] { (void)Generator::compile(broken); });
+            require(!error.empty() && error == rejection([&] { (void)Generator::compile(broken); }),
+                    "every declared external binding validates deterministically before emitted-feature selection");
+        }
+    }
+}
+
 } // namespace
 int main() {
     try {
@@ -843,7 +1036,10 @@ int main() {
         independent_window_material_and_provenance();
         typed_parameters_and_bound_controls();
         native_raster_invariance_and_clearance();
+        semantic_mask_aggregate_and_module_composition();
         override_provenance_and_transactionality();
+        final_support_qualification();
+        unused_and_omitted_external_bindings();
         std::cout << "PASS semantic grammar: " << assertions << " assertions\n";
         return 0;
     } catch (const std::exception& error) {

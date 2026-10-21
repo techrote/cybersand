@@ -98,7 +98,8 @@
     "operations/deepworks-exhibition.md",
     "systems/procedural-typed-spatial-fields.md",
     "reference/procedural-spatial-operators.md",
-    "systems/procedural-hierarchical-generation.md"
+    "systems/procedural-hierarchical-generation.md",
+    "decisions/ADR-013-canonical-semantic-generation.md"
   ],
   "navigation": [
     "README.md",

@@ -5,7 +5,7 @@ document-kind: contract
 scope: GEN-003 schema-2 immutable typed spatial computation, explicit mask conversion, bounded resampling, structured seeds and finite region assignment; platform acceptance remains separately evidenced
 canonical-for: [generation-typed-values, generation-spatial-transforms, generation-derived-geometry, generation-reusable-subgraphs, generation-structured-mappings, generation-multiresolution-cache]
 keywords: [GEN-003, typed fields, signed distance, vector, category, transform, gradient, curvature, Peano, Voronoi, Delaunay, Poisson, subgraph, multiresolution, cache]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-21
 related-documents: [procedural-world-generation.md, procedural-generation-fields-and-modifiers.md, ../reference/procedural-spatial-operators.md, ../reference/configuration-reference.md, ../reference/interfaces-and-message-contracts.md, ../architecture/data-ownership-and-lifetimes.md, ../operations/local-build-and-validation.md]
 ---
 

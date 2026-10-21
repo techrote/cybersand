@@ -5,7 +5,7 @@ document-kind: contract
 scope: GEN-001/GEN-002 native procedural proposals, theme and field guidance, trusted feature modules, bounded jobs, fresh chunk admission and isolated Godot preview
 canonical-for: [procedural-chunk-generation, generation-theme-authoring, generation-module-contract]
 keywords: [world generation, procgen, chunks, strata, flow network, district grammar, themes, blends, brushstroke, overrides, arcology, vault, aqueduct]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-21
 related-documents: [procedural-generation-fields-and-modifiers.md, world-storage-and-interest-region.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/configuration-reference.md, ../reference/interfaces-and-message-contracts.md, ../operations/local-build-and-validation.md, ../audits/2026-10-18-gen001-procedural-generation.md, ../audits/2026-10-18-gen002-fields-and-aggregates.md]
 ---
 
