@@ -22,6 +22,9 @@ public:
     [[nodiscard]] Dictionary configure(const Dictionary& recipe);
     [[nodiscard]] Dictionary get_configuration() const;
     [[nodiscard]] Dictionary get_catalogue() const;
+    [[nodiscard]] Dictionary get_semantic_plan() const;
+    [[nodiscard]] Dictionary validate_routes() const;
+    [[nodiscard]] Dictionary inspect_cell(Vector2i position) const;
     [[nodiscard]] Dictionary generate_chunk(Vector2i coord, const String& diagnostic = String()) const;
     [[nodiscard]] Dictionary begin_chunk(Vector2i coord, const String& diagnostic = String());
     [[nodiscard]] Dictionary advance(std::int64_t cell_budget);

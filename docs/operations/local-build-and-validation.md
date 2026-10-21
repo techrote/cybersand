@@ -253,6 +253,55 @@ source/runtime identities, local results, remaining limitations and exact-head
 hosted gates. Earlier ACT-004 or sampled USABLE-001 results do not certify this
 changed physical integration.
 
+## Hierarchical generation example and acceptance
+
+GEN-004 extends the existing generation targets with
+[`test_generation_grammar.cpp`](../../native/tests/test_generation_grammar.cpp).
+Its controls cover stable semantic IDs, canonical shared ports, finite region
+partitions, nested cross-chunk structures, constraints/fallbacks, socket geometry,
+bounded solving and final raster routes. Run the focused native target while
+iterating, then the combined generation and sanitizer targets:
+
+```sh
+make worldgen-test
+ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 make worldgen-sanitize
+godot --headless --path godot --script res://tests/test_worldgen_grammar.gd
+```
+
+The native targets reuse generation objects within each existing compiler flag
+set under `$(BUILD_DIR)/worldgen-objects`: normal/sanitized and
+threaded/non-threaded variants stay separate. Source, shared-header and Makefile
+changes invalidate those objects. This avoids recompiling the same generation
+sources for each test while retaining all eight executables and the five-minute
+normal and ten-minute sanitizer CI bounds. The
+[dated audit](../audits/2026-10-21-gen004-hierarchical-generation.md)
+retains the cold-build timeout that motivated this change and subsequent results.
+
+Godot execution requires a source-matched extension and the exact pinned editor.
+The [hierarchy profile](../../examples/worldgen/hierarchy-multi-district.json)
+is an executable schema-3 recipe; the
+[grammar schema](../../examples/worldgen/schemas/grammar-v1.schema.json)
+documents its `grammar` member. Load it with the Workbench's hierarchy control
+to inspect four canonical districts. It uses 64-cell chunks so its complete
+256×256-cell window occupies sixteen preview cache entries.
+
+The adapter test checks copied semantic records, accepted recipe roundtrips,
+cell provenance, final route/support reporting and failed configuration retention.
+The [canonical contract](../systems/procedural-hierarchical-generation.md)
+qualifies region-contained buildings, explicit cross-region routes, semantic
+support, final static solid contact and the floating-square clearance profile.
+Require both `passed` and `supports_passed` for the authored example; their
+profiles establish distinct geometric facts. A hard blocker may
+produce a valid material proposal with a failed route report; test and report
+both facts without silently erasing the override.
+
+Implementation acceptance additionally requires the repository's exact-head
+Documentation/provenance, Native, GDExtension Linux/Windows and applicable scoped
+apparatus gates. The [dated audit](../audits/2026-10-21-gen004-hierarchical-generation.md)
+records actual commands, source/runtime identities, failures and limits. A
+successful abstract route graph, native compile or inherited runtime binary
+alone does not satisfy these gates.
+
 ## Procedural generation candidates and workbench
 
 GEN-001/GEN-002 provide native-only comparison, field/modifier regressions and

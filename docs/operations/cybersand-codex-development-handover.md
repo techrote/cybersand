@@ -28,13 +28,34 @@ The [original checkpoint](../audits/2026-10-20-player-control-playground.md)
 preserves local source/runtime identities and Linux execution. The
 [PR #189 completion record](../audits/2026-10-21-player-playground-pr189-completion.md)
 adds original-head hosted Linux/Windows results, including 107/107 Windows
-headless cases, and tracks integration with GEN-003 main. Combined-source
-runtime publication and final exact-head evidence are routed through that
+headless cases, and tracks the GEN-003 integration and later GEN-004 reintegration.
+Combined-source runtime publication and final exact-head evidence are routed through that
 record and PR #189's description and Checks; local passes retain their own scope.
 Admitted quick button taps start the course clock even when released before
 the next physics tick; elapsed time still counts simulation ticks only.
 Target-PC feel, physical controller/window interaction, complete timed routes
 and browser qualification remain separate from headless execution.
+
+## Hierarchical generation checkpoint — 2026-10-21
+
+GEN-004 / [#191](https://github.com/techrote/cybersand/issues/191) adds opt-in
+schema-3 [semantic places and structural routes](../systems/procedural-hierarchical-generation.md).
+Read its canonical-region ownership and [ADR-013](../decisions/ADR-013-canonical-semantic-generation.md)
+before changing hierarchy IDs, boundary sockets, priority constraints, finite
+curve tours or final-raster clearance. Region windows are finite authored plans;
+they do not implement the later streaming/reconciliation owner.
+
+`hierarchy-multi-district.json` exercises four regions, nested cross-chunk
+foundries, service/detail children, loops, finite assignment and typed geometry
+exports. The Workbench adds a hierarchy example and copied cell inspection.
+`make worldgen-test` / `worldgen-sanitize` include native hierarchy controls;
+`test_worldgen_grammar.gd` exercises the adapter and accepted profile. The
+[dated audit](../audits/2026-10-21-gen004-hierarchical-generation.md) separates
+those tests from matching Linux/Windows runtime publication and required hosted
+gates. A blocked final route report preserves the authored hard override and must
+remain visible. Final `supports_passed` separately qualifies retained solid
+contact on each declared support edge; route success alone does not imply it.
+GEN-005, GEN-007 and GEN-006 retain their programme scope/order.
 
 ## Typed spatial generation checkpoint — 2026-10-20
 

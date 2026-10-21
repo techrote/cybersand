@@ -25,7 +25,7 @@ MANIFESTS = {
     "linux": "godot/addons/cybersand_native/runtime-provenance.linux.json",
     "windows": "godot/addons/cybersand_native/runtime-provenance.json",
 }
-# An independent fixture: omitting a player/legacy case from the implementation
+# An independent fixture: omitting a player/generation case from the implementation
 # must invalidate the otherwise passing complete execution receipt below.
 SUCCESS_LOGS = {
     "test_player_acrobat": "PLAYER_ACROBAT: 304 assertions, 0 failures\n",
@@ -37,6 +37,7 @@ SUCCESS_LOGS = {
     "test_worldgen_workbench": "WORLDGEN_WORKBENCH: 100 assertions; 0 failures\n",
     "test_worldgen_fields": "WORLDGEN_FIELDS: 100 assertions; 0 failures\n",
     "test_worldgen_typed": "GEN-003 typed adapter and workbench: 100 assertions; 0 failures\n",
+    "test_worldgen_grammar": "GEN-004 grammar adapter: 100 assertions; 0 failures\n",
     "test_render_world_generation": "RENDER_WORLD_GENERATION: 100 assertions, 0 failures\n",
 }
 
@@ -119,6 +120,47 @@ class ContextTests(RepositoryFixture):
         self.assertEqual(self.git("rev-parse", "HEAD").decode().strip(), self.source)
 
 
+class InputLedgerTests(RepositoryFixture):
+    def test_grammar_sources_examples_and_fixture_are_source_bound(self):
+        native_inputs = {
+            "native/include/cybersand/generation_grammar.hpp": b"// grammar interface\n",
+            "native/src/generation_grammar.cpp": b"// grammar implementation\n",
+            "godot/native_extension/generation_grammar_adapter.inc": b"// grammar adapter\n",
+            "godot/native_extension/generation_grammar_inspection.inc": b"// grammar inspection\n",
+        }
+        build_inputs = {
+            "examples/worldgen/hierarchy-multi-district.json": b'{"example":"hierarchy"}\n',
+            "examples/worldgen/schemas/grammar-v1.schema.json": b'{"schema":"grammar-v1"}\n',
+            "godot/tests/test_worldgen_grammar.gd": b"# grammar adapter regression\n",
+        }
+        for relative in subject.BUILD_EXACT:
+            path = self.root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b"# pinned build fixture\n")
+        for relative, data in (native_inputs | build_inputs).items():
+            path = self.root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(data)
+        self.git("add", ".")
+        self.git("commit", "--quiet", "-m", "Grammar input fixture")
+        source = self.git("rev-parse", "HEAD").decode().strip()
+        ledgers = subject.input_ledgers(source)
+        self.assertEqual(ledgers["source_inputs"], {path: digest(data) for path, data in native_inputs.items()})
+        for relative, data in build_inputs.items():
+            self.assertEqual(ledgers["build_inputs"][relative], digest(data))
+        for relative in (
+            "godot/native_extension/generation_grammar_adapter.inc",
+            "examples/worldgen/hierarchy-multi-district.json",
+        ):
+            with self.subTest(changed=relative):
+                path = self.root / relative
+                original = path.read_bytes()
+                path.write_bytes(original + b"changed\n")
+                with self.assertRaisesRegex(RuntimeError, "Working build/test input differs from source commit"):
+                    subject.input_ledgers(source)
+                path.write_bytes(original)
+
+
 class EvidenceTests(unittest.TestCase):
     def setUp(self):
         directory = tempfile.TemporaryDirectory()
@@ -150,13 +192,16 @@ class EvidenceTests(unittest.TestCase):
             subject.write_json(path, {"source": "fixture", "passed": True})
         self.assertEqual(path.read_bytes(), b'{\n  "passed": true,\n  "source": "fixture"\n}\n')
 
-    def test_complete_six_player_and_four_worldgen_cases_are_required(self):
+    def test_complete_ordered_six_player_and_five_generation_cases_are_required(self):
         subject.verify_case_results(self.root, self.report)
         for omitted in SUCCESS_LOGS:
             with self.subTest(omitted=omitted):
                 shortened = dict(self.report, results=[item for item in self.report["results"] if item["name"] != omitted])
                 with self.assertRaisesRegex(RuntimeError, "Incomplete focused case coverage"):
                     subject.verify_case_results(self.root, shortened)
+        reordered = dict(self.report, results=[self.report["results"][0], *reversed(self.report["results"][1:])])
+        with self.assertRaisesRegex(RuntimeError, "Incomplete focused case coverage"):
+            subject.verify_case_results(self.root, reordered)
 
     def test_duplicate_case_cannot_substitute_for_missing_case(self):
         self.report["results"][-1] = dict(self.report["results"][-2])
@@ -170,6 +215,18 @@ class EvidenceTests(unittest.TestCase):
         ):
             with self.subTest(output=output):
                 self.write_log("test_player_playground_runtime", output)
+                with self.assertRaisesRegex(RuntimeError, "Missing successful assertion summary"):
+                    subject.verify_case_results(self.root, self.report)
+
+    def test_grammar_requires_its_own_positive_zero_failure_summary(self):
+        for output in (
+            "Clean execution with no grammar assertions\n",
+            "GEN-004 grammar adapter: 0 assertions; 0 failures\n",
+            "GEN-004 grammar adapter: 100 assertions; 1 failures\n",
+            SUCCESS_LOGS["test_worldgen_typed"],
+        ):
+            with self.subTest(output=output):
+                self.write_log("test_worldgen_grammar", output)
                 with self.assertRaisesRegex(RuntimeError, "Missing successful assertion summary"):
                     subject.verify_case_results(self.root, self.report)
 

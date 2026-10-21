@@ -28,6 +28,7 @@ SOURCES = [
     "native/src/generation_fields.cpp",
     "native/src/generation_typed_fields.cpp",
     "native/src/generation_spatial.cpp",
+    "native/src/generation_grammar.cpp",
     "native/src/material_rules.cpp", "native/src/scheduler_geometry.cpp",
 ]
 

@@ -52,6 +52,7 @@ CASE_MARKERS = {
     "test_worldgen_workbench": r"(?m)^WORLDGEN_WORKBENCH: [1-9][0-9]* assertions; 0 failures\s*$",
     "test_worldgen_fields": r"(?m)^WORLDGEN_FIELDS: [1-9][0-9]* assertions; 0 failures\s*$",
     "test_worldgen_typed": r"(?m)^GEN-003 typed adapter and workbench: [1-9][0-9]* assertions; 0 failures\s*$",
+    "test_worldgen_grammar": r"(?m)^GEN-004 grammar adapter: [1-9][0-9]* assertions; 0 failures\s*$",
     "test_render_world_generation": r"(?m)^RENDER_WORLD_GENERATION: [1-9][0-9]* assertions, 0 failures\s*$",
 }
 BUILD_EXACT = {
@@ -304,7 +305,7 @@ def execute(args: argparse.Namespace) -> None:
         "runtime": runtime_identity(ROOT / RUNTIMES[args.platform], args.platform),
         "godot": godot_identity, "rapier_sha256": rapier_hash, "status": "running",
         "completed": False, "results": [], "log_sha256": {},
-        "scope": "Import plus six player and four legacy/typed worldgen headless cases; full ready-PR CI is separate",
+        "scope": "Import plus six player and five legacy/typed/grammar generation headless cases; full ready-PR CI is separate",
     }
     report_path = args.bundle / "validation.json"
     write_json(report_path, report)
@@ -330,7 +331,7 @@ def execute(args: argparse.Namespace) -> None:
     manifest.update({
         "status": "validated-development-runtime", "workflow_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
         "validated_platform": args.platform.title() + " x86_64 Godot 4.7 (actual GitHub-hosted headless execution)",
-        "acceptance": "This exact source-matched runtime passed import, all six player cases and four legacy/typed worldgen cases, with no skips or errors. Full ready-for-review CI remains a separate required gate.",
+        "acceptance": "This exact source-matched runtime passed import, all six player cases and five legacy/typed/grammar generation cases, with no skips or errors. Full ready-for-review CI remains a separate required gate.",
         "validation_output": "player-runtime-" + args.platform + "-" + os.environ["GITHUB_RUN_ID"] + "/validation.json",
         "validation_sha256": runner.sha256(report_path),
         "other_platforms": "This publisher claims only its recorded target-OS headless scope. It does not establish graphical pixel, browser/WebAssembly, owner visual, target-PC or GPU acceptance.",

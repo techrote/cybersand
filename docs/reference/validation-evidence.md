@@ -22,8 +22,8 @@ The [PR #189 completion record](../audits/2026-10-21-player-playground-pr189-com
 adds hosted results for original head `6663d8e`, including successful Native,
 Linux/Godot, Documentation/provenance, Water and actual Windows execution of
 107/107 applicable headless cases. It separately tracks the GEN-003 main merge,
-fast-tap course-clock correction, combined-source runtime rebuild and final
-exact-head gates. The record distinguishes completed local validation from
+the later GEN-004 reintegration, fast-tap course-clock correction, combined-source
+runtime rebuild and final exact-head gates. The record distinguishes completed local validation from
 hosted publication and routes final outcomes to PR #189's description and Checks.
 Headless tests do not
 establish human feel, complete timed routes, physical gamepad/window interaction
@@ -31,6 +31,17 @@ or browser qualification. Current mechanics and controls live in the
 [player contract](../systems/player-control-playground.md); the
 [build guide](../operations/local-build-and-validation.md#player-playground-checks)
 routes reproducible fixtures. Prior ACT-004/ACT-005 results retain their scope.
+
+## GEN-004 hierarchical places — 2026-10-21
+
+The [GEN-004 audit](../audits/2026-10-21-gen004-hierarchical-generation.md)
+records issue #191's canonical ownership design, semantic/raster constraints,
+independent partition/boundary controls, declarative example and documentation
+retrieval results. It distinguishes source inspection and local native/Godot
+execution from matching Linux/Windows runtime publication and exact-head hosted
+acceptance. Required skips, stale manifests and script errors do not pass those
+gates. The [hierarchy contract](../systems/procedural-hierarchical-generation.md)
+owns current semantics and explicit geometry/platform qualifications.
 
 ## GEN-003 typed spatial computation — 2026-10-20
 

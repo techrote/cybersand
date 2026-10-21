@@ -2,7 +2,7 @@
 title: Player playground PR 189 integration and completion checkpoint
 status: Current
 document-kind: evidence
-scope: Original-head hosted results, GEN-003 integration, measured combined-source local validation, scoped runtime publication and final-head acceptance routing
+scope: Original-head hosted results, GEN-003 completion evidence, latest-base GEN-004 reintegration, measured local validation, scoped runtime publication and final-head acceptance routing
 canonical-for: []
 last-reviewed: 2026-10-21
 related-documents: [2026-10-20-player-control-playground.md, ../systems/player-control-playground.md, ../reference/validation-evidence.md, ../operations/local-build-and-validation.md, ../operations/github-development-and-release.md]
@@ -17,14 +17,69 @@ and local validation remain preserved in the
 subsequent hosted results, current-main integration and completion work; earlier
 passes do not certify the new combined source.
 
-**Local preflight and scoped hosted runtime publication passed.** Combined-source
+**First completion checkpoint: local preflight and scoped hosted runtime publication passed.** Combined-source
 native tests, desktop builds and the strict Linux player/launcher suite passed.
 Both published runtimes passed the ten focused cases on their actual target OS,
-as recorded below. This documentation checkpoint precedes final
+as recorded below. That documentation checkpoint preceded final
 ready-for-review acceptance: the [PR description](https://github.com/techrote/cybersand/pull/189)
 and [Checks](https://github.com/techrote/cybersand/pull/189/checks) record the exact
 final PR head, required hosted outcomes, merge identity and landed-main result.
 Local results and scoped runtime publication do not establish those final outcomes.
+
+## Latest-base reintegration — 2026-10-21
+
+The first completion reached successful required hosted validation at PR head
+`d3d4f4ce2e4c73a87199516c86c01aa2cc7d84b1`, with tree
+`cb73ef40ca93da6c27983d687eac544b847f0c86`. GitHub tested synthetic PR merge
+`92106c6bcd5d9ce8293dd7d2d60cb816cb3d2954`; its tree was verified equal to that
+head, with parents `ba19d3a2b2608ef0ffbe252b684561e45aeaa457` and
+`d3d4f4ce2e4c73a87199516c86c01aa2cc7d84b1`.
+
+| First completion gate at `d3d4f4c` | Preserved hosted result |
+|---|---|
+| Documentation and provenance | Passed, [run 39557360758](https://github.com/techrote/cybersand/actions/runs/39557360758) |
+| Native C++ validation | Passed, [run 39557360747](https://github.com/techrote/cybersand/actions/runs/39557360747) |
+| GDExtension build and current Godot regression | Passed, [run 39557360754](https://github.com/techrote/cybersand/actions/runs/39557360754), including Linux shards/aggregate and actual Windows execution |
+| Water apparatus v2 | Passed, [run 39557360778](https://github.com/techrote/cybersand/actions/runs/39557360778) |
+
+PR #189 had not been merged when work paused. During the approximately eleven-hour
+pause, main advanced through [PR #196](https://github.com/techrote/cybersand/pull/196)
+to `471e6b876d9724d2e4ee18bdbd8c9a9b37f1d623`, adding GEN-004 hierarchical
+generation. PR #189 then required conflict resolution against that newer base.
+The resumed progress is recorded in the
+[PR description](https://github.com/techrote/cybersand/pull/189); the four green
+runs above remain valid evidence for their earlier exact tree.
+
+The latest-base reintegration preserves player controls and material-field
+ownership alongside GEN-003 typed fields and GEN-004 semantic hierarchy, native
+compilation units, bindings, regressions and documentation/retrieval routes.
+Its combined source requires **new Linux and Windows runtime builds and matching
+provenance**, actual execution covering the player and generation additions,
+and fresh applicable exact-head Documentation, Native, GDExtension/Godot and
+Water gates before merge. Neither the earlier player runtime publication nor
+GEN-004 main's retained runtime alone certifies this new combined source.
+Those new results are not established by this checkpoint; PR #189's description
+and Checks retain ownership of the eventual exact-head acceptance and merge
+record. All source identities, hashes, assertion counts and failures below
+preserve the scope of the earlier checkpoints.
+
+The scoped player publisher now requires all six player regressions and five
+generation cases, including `test_worldgen_grammar.gd`, on each actual target OS.
+Its expanded guard suite passed **17 tests** at this reintegration checkpoint;
+the earlier 15-test result below retains its historical scope. Actual combined
+runtime execution and full hosted acceptance remain separately required.
+
+The documentation merge preserves all parent question objects and corpus routes:
+102 supplementary questions, 98 current documents and 64 explicit exclusions.
+Documentation lint passed without errors or warnings. Frozen retrieval remains
+21/32 hit@1, 32/32 hit@5, MRR 0.7953; the combined supplementary set records
+81/102 hit@1, 102/102 hit@5, MRR 0.8778. These are routing measurements, not
+runtime acceptance or a before/after claim against the differently sized sets.
+
+The [Web builder's source list](../../tools/build_web.py) now includes
+`native/src/generation_grammar.cpp`, matching the desktop builders and correcting
+the omitted `GrammarPlan` definitions. This is a source-list integration fix;
+it establishes no new Web runtime build or browser execution acceptance.
 
 ## Source identities
 
@@ -34,7 +89,7 @@ Local results and scoped runtime publication do not establish those final outcom
 | Feature branch | `feat/player-control-playground` |
 | Original implementation base | `4f3685b71366218e82e7c2188e4ecdf27553f4cf` |
 | Original PR head with completed hosted checks | `6663d8e25f4743d58863bf0538232e7c77c08f77` |
-| Current main integrated for completion | `ba19d3a2b2608ef0ffbe252b684561e45aeaa457`, including GEN-003 / PR #195 |
+| Main integrated for the first completion checkpoint | `ba19d3a2b2608ef0ffbe252b684561e45aeaa457`, including GEN-003 / PR #195 |
 | Recoverable integration checkpoint | `e7deae705af513bfb2793182f16f482b3430584f`, tree `b0758376e74ef8030277ad66337f01fd6d0f6cc2`; identical integration tree to local checkpoint `1caccf09d09148d97f16ec4a2bdd13a8a756477b` |
 | Published implementation and publisher source | `72961e2c809313123b4fa93b4e2fd4c23045df38`, tree `8ac5894a9e883311adbc718ed788c05448084437` |
 | Verified runtime publication | `1690cfb22643a0bcdbea19838238d35635f08146`, tree `4d49589a6f6294c5a1466c74d657c469d0471e7c`; sole parent is the built implementation source |
@@ -47,8 +102,8 @@ spatial generation, including their native sources, bindings, tests and canonica
 documentation routes. The two original branches had different native inputs.
 Neither branch's retained runtime alone represents the combined tree; both
 desktop binaries required a combined-source rebuild. Local build results are
-recorded below; the hosted publication row owns the current manifest/artifact
-disposition.
+recorded below; the hosted publication row owns that first checkpoint's
+manifest/artifact disposition. The latest-base section above qualifies its reuse.
 The GEN-003 build scripts retain their added typed/spatial compilation units and
 Linux ABI-floor treatment. Dependency pins and historical M11 identities remain
 unchanged.

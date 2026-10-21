@@ -3,6 +3,7 @@
 #include "cybersand/world.hpp"
 #include "cybersand/generation_fields.hpp"
 #include "cybersand/generation_typed_fields.hpp"
+#include "cybersand/generation_grammar.hpp"
 
 #include <cstdint>
 #include <functional>
@@ -20,6 +21,8 @@ inline constexpr std::uint32_t kSchemaVersion = 1;
 inline constexpr std::uint32_t kAlgorithmVersion = 2;
 inline constexpr std::uint32_t kTypedSchemaVersion = 2;
 inline constexpr std::uint32_t kTypedAlgorithmVersion = 3;
+inline constexpr std::uint32_t kHierarchySchemaVersion = 3;
+inline constexpr std::uint32_t kHierarchyAlgorithmVersion = 4;
 // Brush geometry uses doubles; reject coordinates beyond the exact integer range
 // deliberately rather than silently aliasing distant chunks.
 inline constexpr std::int64_t kCoordinateLimit = (INT64_C(1) << 40);
@@ -176,6 +179,7 @@ struct Recipe {
     std::vector<FieldNode> fields;
     SpatialDefinition spatial;
     SpatialLimits spatial_limits;
+    GrammarDefinition grammar;
     std::vector<Aggregate> aggregates;
     std::vector<Modifier> modifiers;
     Limits limits;
@@ -234,6 +238,49 @@ struct ChunkResult {
     std::vector<SpatialValue> typed_diagnostics; // exclusive with legacy diagnostics
 };
 
+struct MaterialContribution {
+    std::string stage, id;
+    Material before{}, after{};
+    double influence = 1;
+};
+struct CellProvenance {
+    std::int64_t x{}, y{};
+    Material material{};
+    std::vector<std::string> ancestry;
+    std::vector<ConstraintReceipt> constraints;
+    std::vector<MaterialContribution> contributions;
+    std::vector<std::pair<std::string, double>> scalar_fields;
+    std::vector<std::pair<std::string, SpatialValue>> typed_fields;
+};
+struct RouteOutcome {
+    std::string id, detail;
+    bool passed = false;
+    std::uint64_t checked_centres = 0, blocked_centres = 0;
+    std::int64_t first_block_x{}, first_block_y{};
+};
+struct SupportOutcome {
+    std::string feature_id, constraint, detail;
+    bool passed = false;
+    std::uint64_t checked_cells = 0, missing_cells = 0;
+    std::int64_t first_missing_x{}, first_missing_y{};
+};
+struct RouteValidation {
+    bool passed = true;
+    std::string profile = "floating-square-v1";
+    std::uint32_t clearance = 1;
+    std::uint64_t cells = 0, operations = 0;
+    // Footprints at the finite window boundary are clipped to its shared
+    // aperture. Independently planned opposite halves complete that aperture.
+    bool boundary_apertures = true;
+    std::vector<RouteOutcome> routes;
+    // Separate final-cell qualification of semantic support requirements:
+    // at least one static solid contact on each requested boundary side.
+    // This is neither structural stability nor simulated gravity behavior.
+    bool supports_passed = true;
+    std::string support_profile = "static-solid-contact-v1";
+    std::vector<SupportOutcome> supports;
+};
+
 class GenerationJob;
 class Generator final : public std::enable_shared_from_this<Generator> {
 public:
@@ -245,6 +292,9 @@ public:
     [[nodiscard]] static std::vector<std::string> builtin_modules();
     [[nodiscard]] const Recipe& recipe() const noexcept;
     [[nodiscard]] const SpatialGraph& spatial_graph() const noexcept;
+    [[nodiscard]] const GrammarPlan* semantic_plan() const noexcept;
+    [[nodiscard]] const RouteValidation& validate_routes() const noexcept;
+    [[nodiscard]] CellProvenance explain(std::int64_t x, std::int64_t y) const;
     [[nodiscard]] std::uint64_t fingerprint() const noexcept;
     [[nodiscard]] std::vector<ThemeWeight> theme_weights_at(std::int64_t x, std::int64_t y) const;
     [[nodiscard]] Material sample(std::int64_t x, std::int64_t y) const;

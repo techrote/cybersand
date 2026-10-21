@@ -2,6 +2,7 @@ name: Player playground scoped runtime publication
 
 # Temporary branch-scoped publisher. Runtime/manifests are deliberately absent
 # from this filter, and existing ready-for-review acceptance gates are unchanged.
+# Each target OS executes six player and five generation cases after import.
 on:
   push:
     branches: [feat/player-control-playground]
@@ -112,7 +113,7 @@ jobs:
           } > "$RUNNER_TEMP/toolchain.txt"
           python3 tools/ci/player_runtime_publication.py record --platform linux --source-sha "$GITHUB_SHA" --runtime "$CYBERSAND_NATIVE_OUTPUT" --toolchain "$RUNNER_TEMP/toolchain.txt" --bundle build/player-linux
 
-      - name: Execute actual Linux player and worldgen cases
+      - name: Execute six player and five generation cases on Linux
         run: |
           set -euo pipefail
           timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot-linux.zip" "$GODOT_URL"
@@ -243,7 +244,7 @@ jobs:
           git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
           echo "4e26ffa78ec2aaff434c4a70cd2ec85288b10ba5237912c35f204cb1e6ed2180  godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" | sha256sum --check --strict
 
-      - name: Execute actual Windows player and worldgen cases
+      - name: Execute six player and five generation cases on Windows
         run: |
           set -euo pipefail
           curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
@@ -321,6 +322,6 @@ jobs:
             echo '### Player playground runtime publication'
             echo "Built source: $GITHUB_SHA"
             echo "Runtime publication commit: $(git rev-parse HEAD)"
-            echo 'Both exact runtimes passed import, six player cases and four worldgen cases on their target OS.'
+            echo 'Both exact runtimes passed import, six player cases and five generation cases on their target OS.'
             echo 'The existing full ready-for-review validation gates remain required on the resulting PR head.'
           } >> "$GITHUB_STEP_SUMMARY"

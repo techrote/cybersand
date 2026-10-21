@@ -5,7 +5,7 @@ document-kind: contract
 scope: GEN-001/GEN-002 native procedural proposals, theme and field guidance, trusted feature modules, bounded jobs, fresh chunk admission and isolated Godot preview
 canonical-for: [procedural-chunk-generation, generation-theme-authoring, generation-module-contract]
 keywords: [world generation, procgen, chunks, strata, flow network, district grammar, themes, blends, brushstroke, overrides, arcology, vault, aqueduct]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-21
 related-documents: [procedural-generation-fields-and-modifiers.md, world-storage-and-interest-region.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/configuration-reference.md, ../reference/interfaces-and-message-contracts.md, ../operations/local-build-and-validation.md, ../audits/2026-10-18-gen001-procedural-generation.md, ../audits/2026-10-18-gen002-fields-and-aggregates.md]
 ---
 
@@ -36,6 +36,14 @@ subgraphs, structured seeds, finite adjacency assignments and world-aligned
 multiresolution sampling. The retained scalar graph remains separately defined;
 typed spatial functions have no per-cell initial-context input. Only explicit
 normalized `spatial:<id>` outputs may drive existing masks and mappings.
+
+GEN-004 / [#191](https://github.com/techrote/cybersand/issues/191) adds explicit
+schema-3 [hierarchical semantic plans](procedural-hierarchical-generation.md).
+Finite canonical regions own nested places and cross-chunk structures; stable
+rule/slot IDs, placement constraints, matched sockets, explicit loops/service
+trunks and final-raster route reports precede ordinary chunk publication.
+Selected immutable semantic geometries may feed the typed graph. The hierarchy
+does not add World streaming or replace final hard material authority.
 
 | Candidate | Generated structure | Suitable starting point |
 |---|---|---|
@@ -142,6 +150,14 @@ Later values win. Moving an item in a JSON array is not a hidden priority contro
 | 8 | Masked material or aggregate modifiers | Use the original captured influence to select discrete existing material IDs |
 | 9 | Shared network and explicit guide paths | Reserve connective space after modules/modifiers; a guide may carve Empty or paint another material |
 | 10 | Hard material overrides | Force the final material, including intentionally blocking a route |
+
+Schema 3 inserts accepted semantic shell/interior/aggregate proposals between
+steps 6 and 7 and restores explicit semantic passages after step 9. Existing
+native modules and material modifiers can therefore contribute to semantic
+places, while final hard material overrides still win. The hierarchy's final-cell
+route report observes that complete stack and reports any blocked passage;
+it does not reinterpret a hard override as optional. Recipes without grammar
+retain the table's preceding behavior.
 
 The [field/modifier contract](procedural-generation-fields-and-modifiers.md)
 defines the two guidance stages, mapping endpoints and immutable context.

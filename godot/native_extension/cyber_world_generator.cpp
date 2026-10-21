@@ -429,16 +429,22 @@ gen::SpatialDefinition spatial_definition(const Variant& input) {
     return result;
 }
 
+#include "generation_grammar_adapter.inc"
+
 gen::Recipe parse_recipe(const Dictionary& input, std::uint64_t revision) {
     fields(input, {"schema", "seed", "chunk_size", "candidate", "parameters", "themes",
                    "strokes", "paths", "overrides", "modules", "limits", "catalogue",
-                   "fields", "aggregates", "modifiers", "spatial", "spatial_limits"}, "recipe");
+                   "fields", "aggregates", "modifiers", "spatial", "spatial_limits", "grammar"}, "recipe");
     gen::Recipe recipe;
     recipe.revision = revision;
     if (input.has("schema")) recipe.schema = static_cast<std::uint32_t>(bounded_integer(
-        input["schema"], 1, 2, "schema"));
-    if (recipe.schema != 2 && (input.has("spatial") || input.has("spatial_limits")))
-        invalid("recipe.schema", "typed spatial declarations require schema 2");
+        input["schema"], 1, 3, "schema"));
+    if (recipe.schema < 2 && (input.has("spatial") || input.has("spatial_limits")))
+        invalid("recipe.schema", "typed spatial declarations require schema 2 or 3");
+    if (input.has("grammar")) {
+        if (recipe.schema != 3) invalid("recipe.schema", "semantic hierarchy requires schema 3");
+        recipe.grammar = grammar_definition(input["grammar"]);
+    }
     if (input.has("seed")) recipe.seed = static_cast<std::uint64_t>(bounded_integer(
         input["seed"], 0, std::numeric_limits<std::int64_t>::max(), "seed"));
     if (input.has("chunk_size")) recipe.chunk_size = static_cast<std::int32_t>(bounded_integer(
@@ -680,6 +686,8 @@ String hexadecimal(std::uint64_t value) {
     return String(buffer);
 }
 
+#include "generation_grammar_inspection.inc"
+
 Dictionary spatial_information(const gen::SpatialInfo& info) {
     Dictionary result;
     result["type"] = String(gen::spatial_type_name(info.type));
@@ -719,6 +727,9 @@ void CyberWorldGenerator::_bind_methods() {
     ClassDB::bind_method(D_METHOD("configure", "recipe"), &CyberWorldGenerator::configure);
     ClassDB::bind_method(D_METHOD("get_configuration"), &CyberWorldGenerator::get_configuration);
     ClassDB::bind_method(D_METHOD("get_catalogue"), &CyberWorldGenerator::get_catalogue);
+    ClassDB::bind_method(D_METHOD("get_semantic_plan"), &CyberWorldGenerator::get_semantic_plan);
+    ClassDB::bind_method(D_METHOD("validate_routes"), &CyberWorldGenerator::validate_routes);
+    ClassDB::bind_method(D_METHOD("inspect_cell", "position"), &CyberWorldGenerator::inspect_cell);
     ClassDB::bind_method(D_METHOD("generate_chunk", "coord", "diagnostic"), &CyberWorldGenerator::generate_chunk, DEFVAL(String()));
     ClassDB::bind_method(D_METHOD("begin_chunk", "coord", "diagnostic"), &CyberWorldGenerator::begin_chunk, DEFVAL(String()));
     ClassDB::bind_method(D_METHOD("advance", "cell_budget"), &CyberWorldGenerator::advance);
@@ -735,6 +746,7 @@ Dictionary CyberWorldGenerator::configure(const Dictionary& input) {
         result["error"] = "";
         result["revision"] = static_cast<std::int64_t>(revision_ + 1);
         result["fingerprint"] = hexadecimal(candidate->fingerprint());
+        if (candidate->semantic_plan()) result["route_validation"] = grammar_route_validation(candidate->validate_routes());
         if (job_) job_->cancel();
         job_.reset();
         generator_ = std::move(candidate);
@@ -747,6 +759,44 @@ Dictionary CyberWorldGenerator::configure(const Dictionary& input) {
 
 Dictionary CyberWorldGenerator::get_configuration() const {
     return configuration_.duplicate(true);
+}
+
+Dictionary CyberWorldGenerator::get_semantic_plan() const {
+    try {
+        if (!generator_ || !generator_->semantic_plan()) return failure("no semantic plan configured");
+        return grammar_plan_dictionary(*generator_->semantic_plan());
+    } catch (const std::exception& error) { return failure(error.what()); }
+}
+
+Dictionary CyberWorldGenerator::validate_routes() const {
+    if (!generator_ || !generator_->semantic_plan()) return failure("no semantic plan configured");
+    return grammar_route_validation(generator_->validate_routes());
+}
+
+Dictionary CyberWorldGenerator::inspect_cell(Vector2i position) const {
+    try {
+        if (!generator_) return failure("no generator configured");
+        const auto trace = generator_->explain(position.x, position.y);
+        Dictionary result;
+        result["ok"] = true; result["x"] = trace.x; result["y"] = trace.y;
+        result["material"] = static_cast<std::int64_t>(trace.material);
+        result["ancestry"] = grammar_strings(trace.ancestry);
+        Array receipts, contributions;
+        for (const auto& receipt : trace.constraints) receipts.push_back(grammar_receipt(receipt));
+        for (const auto& contribution : trace.contributions) {
+            Dictionary item;
+            item["stage"] = String(contribution.stage.c_str()); item["id"] = String(contribution.id.c_str());
+            item["before"] = static_cast<std::int64_t>(contribution.before);
+            item["after"] = static_cast<std::int64_t>(contribution.after);
+            item["influence"] = contribution.influence; contributions.push_back(item);
+        }
+        Dictionary scalar, typed;
+        for (const auto& [name, value] : trace.scalar_fields) scalar[String(name.c_str())] = value;
+        for (const auto& [name, value] : trace.typed_fields) typed[String(name.c_str())] = grammar_value(value);
+        result["constraints"] = receipts; result["contributions"] = contributions;
+        result["scalar_fields"] = scalar; result["typed_fields"] = typed;
+        return result;
+    } catch (const std::exception& error) { return failure(error.what()); }
 }
 
 Dictionary CyberWorldGenerator::get_catalogue() const {
@@ -779,6 +829,9 @@ Dictionary CyberWorldGenerator::get_catalogue() const {
     result["parameters"] = parameters;
     result["minimum_chunk_size"] = 8;
     result["maximum_chunk_size"] = 256;
+    result["hierarchy_schema_version"] = gen::kHierarchySchemaVersion;
+    result["grammar_schema_version"] = gen::kGrammarSchemaVersion;
+    result["grammar_algorithm_version"] = gen::kGrammarAlgorithmVersion;
     Array field_kinds, field_contexts, contexts;
     for (const auto& spec : gen::field_kind_specs()) {
         Dictionary item;

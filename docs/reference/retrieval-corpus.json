@@ -98,7 +98,9 @@
     "operations/deepworks-exhibition.md",
     "systems/player-control-playground.md",
     "systems/procedural-typed-spatial-fields.md",
-    "reference/procedural-spatial-operators.md"
+    "reference/procedural-spatial-operators.md",
+    "systems/procedural-hierarchical-generation.md",
+    "decisions/ADR-013-canonical-semantic-generation.md"
   ],
   "navigation": [
     "README.md",
@@ -361,8 +363,12 @@
     },
     {
       "path": "audits/2026-10-21-player-playground-pr189-completion.md",
-      "reason": "Dated PR #189 original-head hosted evidence, GEN-003 integration, quick-tap timing correction and separately tracked final gates. Retrieve explicitly through the player playground contract or validation ledger with its source/artifact/platform qualifications; pending completion entries are not acceptance."
+      "reason": "Dated PR #189 original-head and first-completion hosted evidence, GEN-003/GEN-004 integrations, quick-tap timing correction and separately tracked final gates. Retrieve explicitly through the player playground contract or validation ledger with its source/artifact/platform qualifications; prior green results do not certify a later combined tree."
+    },
+    {
+      "path": "audits/2026-10-21-gen004-hierarchical-generation.md",
+      "reason": "Dated GEN-004 source, semantic/raster validation, runtime publication and acceptance evidence; retrieve explicitly with its platform and source scope, not as a default Current contract"
     }
   ],
-  "integration_note": "Retains scene, generation, actor, sampled and physical actor-usable, Thunderbowl, physical-actor and presentation routes; historical questions remain separately scoped. Deepworks routes cover full-size four-plane exhibitions, independent native source schedules and parameterized depth dimensions; its dated audit remains explicitly scoped. Player playground adds seven human movement presets, native material-field authority and circular-wheel approximation routes; dated execution remains separately scoped. GEN-003 typed-spatial and operator-reference routes from main are retained alongside player playground routes."
+  "integration_note": "Retains scene, generation, actor, sampled and physical actor-usable, Thunderbowl, physical-actor and presentation routes; historical questions remain separately scoped. Deepworks routes cover full-size four-plane exhibitions, independent native source schedules and parameterized depth dimensions; its dated audit remains explicitly scoped. Player playground adds seven human movement presets, native material-field authority and circular-wheel approximation routes; dated execution remains separately scoped. GEN-003 typed-spatial and operator-reference routes from main are retained alongside player playground routes. GEN-004 hierarchy and ADR-013 canonical routes coexist with the player and GEN-003 routes; both GEN-004 and player completion audits remain explicitly excluded from ordinary retrieval."
 }

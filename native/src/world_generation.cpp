@@ -367,6 +367,8 @@ struct Generator::Impl {
     std::vector<Prepared> modules;
     std::shared_ptr<const FieldGraph> fields;
     std::shared_ptr<const SpatialGraph> spatial;
+    std::shared_ptr<const GrammarPlan> grammar;
+    RouteValidation route_validation;
     struct Values {
         std::array<double, kMaxFieldNodes + kMaxSpatialNodes> values{};
         SpatialValues typed;
@@ -405,6 +407,8 @@ struct Generator::Impl {
         std::uint64_t salt = 0;
     };
     std::vector<PreparedModifier> modifiers;
+    std::vector<Mask> semantic_masks;
+    std::vector<std::size_t> semantic_aggregates;
     std::vector<Mask> module_masks;
     std::vector<std::uint64_t> module_salts;
     std::vector<std::size_t> aggregate_variations;
@@ -412,6 +416,8 @@ struct Generator::Impl {
     std::vector<std::vector<double>> aggregate_weights;
     std::uint64_t fingerprint = kFnv;
     std::uint64_t cost = 128;
+
+    void check_routes();
 
     Mask compile_mask(const std::string& application, const std::string& exclusion, double strength) const {
         require(std::isfinite(strength) && strength >= 0 && strength <= 1, "mask strength must be 0..1");
@@ -623,12 +629,18 @@ struct Generator::Impl {
 
     Material sample(std::int64_t x, std::int64_t y, unsigned diagnostic_kind = 0,
                     std::size_t diagnostic_index = 0, float* diagnostic_value = nullptr,
-                    SpatialValue* typed_value = nullptr, SpatialScratch* scratch = nullptr) const {
+                    SpatialValue* typed_value = nullptr, SpatialScratch* scratch = nullptr,
+                    CellProvenance* trace = nullptr) const {
         auto w = weights(x, y);
         auto p = parameters_at(w, x, y);
         auto candidate = hard_parameters(p, x, y);
         const auto* palette = &palette_at(w, x, y);
         Material result = candidate == Candidate::DistrictGrammar ? district(x, y, p, *palette) : strata(x, y, p, *palette);
+        const auto record = [&](const char* stage, const std::string& id, Material next, double influence = 1.0) {
+            if (trace) trace->contributions.push_back({stage, id, result, next, influence});
+            result = next;
+        };
+        if (trace) trace->contributions.push_back({"candidate", candidate_name(candidate), Material::Empty, result, 1});
         Values values;
         std::array<double, 64> alpha{};
         bool changed_themes = false, changed_parameters = false;
@@ -663,6 +675,53 @@ struct Generator::Impl {
                 candidate = hard_parameters(p, x, y);
                 palette = &palette_at(w, x, y);
                 result = candidate == Candidate::DistrictGrammar ? district(x, y, p, *palette) : strata(x, y, p, *palette);
+                if (trace) trace->contributions.push_back({"guided_candidate", candidate_name(candidate),
+                    trace->contributions.back().after, result, 1});
+            }
+        }
+        if (trace) {
+            for (std::size_t i = 0; i < recipe.fields.size(); ++i)
+                trace->scalar_fields.emplace_back(recipe.fields[i].id, values.values[i]);
+            for (std::size_t i = 0; i < spatial->nodes().size(); ++i)
+                trace->typed_fields.emplace_back(spatial->nodes()[i].id, values.typed.values[i]);
+        }
+        if (grammar) {
+            struct SemanticMaskContext {
+                const Impl* generator;
+                const Values* values;
+                std::int64_t x, y;
+            };
+            const SemanticMaskContext mask_context{this, &values, x, y};
+            const auto proposal = grammar->proposal(x, y,
+                [](std::size_t index, const SemanticFeature& feature, const void* context_ptr) {
+                    const auto& context = *static_cast<const SemanticMaskContext*>(context_ptr);
+                    const auto mask = context.generator->semantic_masks[index].at(*context.values);
+                    return mask > 0 && (mask == 1 || unit(hash_xy(feature.seed, context.x, context.y, 883)) < mask);
+                }, &mask_context);
+            if (trace) {
+                const SemanticFeature* semantic = nullptr;
+                std::size_t depth = 0;
+                for (const auto& feature : grammar->features()) if (inside(feature.bounds, x, y)) {
+                    const auto candidate_depth = static_cast<std::size_t>(std::count(feature.id.begin(), feature.id.end(), '/'));
+                    if (!semantic || candidate_depth > depth || (candidate_depth == depth &&
+                        (feature.priority > semantic->priority || (feature.priority == semantic->priority && feature.id > semantic->id)))) {
+                        semantic = &feature; depth = candidate_depth;
+                    }
+                }
+                if (semantic) trace->ancestry = grammar->ancestry(semantic->id);
+                for (const auto& receipt : grammar->receipts())
+                    if (std::find(trace->ancestry.begin(), trace->ancestry.end(), receipt.feature_id) != trace->ancestry.end())
+                        trace->constraints.push_back(receipt);
+            }
+            if (proposal.feature) {
+                const auto index = static_cast<std::size_t>(proposal.feature - grammar->features().data());
+                const auto mask = semantic_masks[index].at(values);
+                if (!proposal.interior && semantic_aggregates[index] != absent)
+                    record("semantic_aggregate", proposal.feature->id,
+                        aggregate_at(semantic_aggregates[index], x, y, values), mask);
+                else if (proposal.material) record("semantic_feature", proposal.feature->id, *proposal.material, mask);
+            } else if (proposal.material) {
+                record("semantic_structure", proposal.route ? proposal.route->id : "grammar", *proposal.material);
             }
         }
         if (typed_value) *typed_value = values.typed.values[diagnostic_index];
@@ -679,7 +738,7 @@ struct Generator::Impl {
                 const auto changed = module.sampler->sample(context, result);
                 if (changed) {
                     if (!valid_material(*changed)) throw std::runtime_error("module returned invalid material: " + module.instance.id);
-                    result = *changed;
+                    record("module", module.instance.id, *changed, mask);
                 }
             }
         }
@@ -687,18 +746,190 @@ struct Generator::Impl {
             const auto& m = recipe.modifiers[i];
             if ((!m.material && m.aggregate.empty()) || alpha[i] == 0) continue;
             if (alpha[i] < 1 && unit(hash_xy(recipe.seed ^ modifiers[i].salt, x, y, 882)) >= alpha[i]) continue;
-            result = m.material ? *m.material : aggregate_at(modifiers[i].aggregate, x, y, values);
+            record("modifier", m.id, m.material ? *m.material : aggregate_at(modifiers[i].aggregate, x, y, values), alpha[i]);
         }
         // Network/paths reserve connective space after structural modules. A hard
         // authored override below is the explicit way to block that connection.
-        if (candidate != Candidate::Strata && network(x, y, p.corridor_width)) result = Material::Empty;
+        if (candidate != Candidate::Strata && network(x, y, p.corridor_width)) record("candidate_route", "macro-network", Material::Empty);
         for (const auto& path : recipe.paths)
             if (path_distance2({static_cast<double>(x), static_cast<double>(y)}, path.points) <= path.width * path.width / 4.0)
-                result = path.material;
-        for (const auto& hard : recipe.overrides) if (hard.material && inside(hard.bounds, x, y)) result = *hard.material;
+                record("guide_path", path.id, path.material);
+        if (grammar) if (const auto* route = grammar->route_at(x, y)) record("semantic_route", route->id, route->material);
+        for (const auto& hard : recipe.overrides) if (hard.material && inside(hard.bounds, x, y)) record("hard_override", hard.id, *hard.material);
+        if (trace) trace->material = result;
         return result;
     }
 };
+
+// Full finite-plan verification uses the same final sampler as chunk jobs.
+// All scratch and work are preflighted before sampling or publishing a plan.
+void Generator::Impl::check_routes() {
+    const auto bounds = grammar->bounds();
+    const auto& limits = grammar->definition().limits;
+    const auto width = static_cast<std::size_t>(bounds.width);
+    const auto height = static_cast<std::size_t>(bounds.height);
+    require(width > 0 && height > 0 && width <= limits.max_raster_cells / height,
+        "semantic final-raster cell budget exhausted");
+    const auto area = width * height;
+    const auto prefix_area = (width + 1) * (height + 1);
+    auto bytes = area * (sizeof(Material) + sizeof(std::uint8_t) + sizeof(std::uint32_t)) +
+        prefix_area * sizeof(std::uint32_t);
+    // Retained inspection outcomes coexist with raster scratch while checked.
+    // Include IDs and the bounded override names in their string allowance.
+    for (const auto& route : grammar->routes()) if (route.required)
+        bytes += sizeof(RouteOutcome) + route.id.size() + 256 + recipe.overrides.size() * 96;
+    std::size_t support_count = 0;
+    for (const auto& feature : grammar->features()) {
+        const auto& c = feature.constraints;
+        const auto count = static_cast<std::size_t>(c.floor) + static_cast<std::size_t>(c.ceiling) + static_cast<std::size_t>(c.wall);
+        support_count += count;
+        bytes += count * (sizeof(SupportOutcome) + feature.id.size() + 256);
+    }
+    require(grammar->storage_bytes() <= limits.max_prepared_bytes &&
+        bytes <= limits.max_prepared_bytes - grammar->storage_bytes(),
+        "semantic final-raster scratch memory budget exhausted");
+    require(cost + 96 <= limits.max_raster_operations / area,
+        "semantic final-raster operation budget exhausted");
+    std::uint64_t work = static_cast<std::uint64_t>(area) * (cost + 96);
+    for (const auto& route : grammar->routes()) if (route.required) {
+        require(route.material == Material::Empty, "required traversal route must emit Empty");
+        for (std::size_t p = 1; p < route.points.size(); ++p) {
+            const auto a = route.points[p - 1], b = route.points[p];
+            require(std::floor(a.x) == a.x && std::floor(a.y) == a.y && std::floor(b.x) == b.x && std::floor(b.y) == b.y &&
+                (a.x == b.x || a.y == b.y), "traversal route must have integer rectilinear geometry");
+            const auto centres = static_cast<std::uint64_t>(std::abs(a.x - b.x) + std::abs(a.y - b.y)) + 1;
+            require(centres <= (limits.max_raster_operations - work) / 16,
+                "semantic route verification operation budget exhausted");
+            work += centres * 16;
+        }
+    }
+    for (const auto& feature : grammar->features()) {
+        const auto& c = feature.constraints;
+        const auto contacts = static_cast<std::uint64_t>(feature.bounds.width) *
+            (static_cast<std::uint64_t>(c.floor) + static_cast<std::uint64_t>(c.ceiling)) +
+            static_cast<std::uint64_t>(feature.bounds.height) * (c.wall ? 2U : 0U);
+        require(contacts <= (limits.max_raster_operations - work) / 16,
+            "semantic support verification operation budget exhausted");
+        work += contacts * 16;
+    }
+    std::vector<Material> cells(area);
+    std::vector<std::uint32_t> prefix(prefix_area, 0);
+    SpatialScratch scratch;
+    for (std::size_t y = 0; y < height; ++y) {
+        std::uint32_t row = 0;
+        for (std::size_t x = 0; x < width; ++x) {
+            const auto material = sample(bounds.x + static_cast<std::int64_t>(x),
+                bounds.y + static_cast<std::int64_t>(y), 0, 0, nullptr, nullptr, &scratch);
+            cells[y * width + x] = material;
+            row += material == Material::Empty ? 0U : 1U;
+            prefix[(y + 1) * (width + 1) + x + 1] = prefix[y * (width + 1) + x + 1] + row;
+        }
+    }
+    const auto radius = static_cast<std::int64_t>(grammar->definition().clearance / 2);
+    std::vector<std::uint8_t> clear(area, 0);
+    for (std::size_t y = 0; y < height; ++y) for (std::size_t x = 0; x < width; ++x) {
+        const auto x0 = static_cast<std::size_t>(std::max<std::int64_t>(0, static_cast<std::int64_t>(x) - radius));
+        const auto y0 = static_cast<std::size_t>(std::max<std::int64_t>(0, static_cast<std::int64_t>(y) - radius));
+        const auto x1 = static_cast<std::size_t>(std::min<std::int64_t>(bounds.width, static_cast<std::int64_t>(x) + radius + 1));
+        const auto y1 = static_cast<std::size_t>(std::min<std::int64_t>(bounds.height, static_cast<std::int64_t>(y) + radius + 1));
+        const auto obstacles = prefix[y1 * (width + 1) + x1] + prefix[y0 * (width + 1) + x0] -
+            prefix[y1 * (width + 1) + x0] - prefix[y0 * (width + 1) + x1];
+        clear[y * width + x] = obstacles == 0 ? 1 : 0;
+    }
+    const auto each_centre = [&](const SemanticRoute& route, const auto& callback) {
+        for (std::size_t p = 1; p < route.points.size(); ++p) {
+            auto x = static_cast<std::int64_t>(route.points[p - 1].x);
+            auto y = static_cast<std::int64_t>(route.points[p - 1].y);
+            const auto end_x = static_cast<std::int64_t>(route.points[p].x);
+            const auto end_y = static_cast<std::int64_t>(route.points[p].y);
+            const auto dx = (end_x > x) - (end_x < x), dy = (end_y > y) - (end_y < y);
+            for (;;) {
+                if (inside(bounds, x, y)) callback(x, y, static_cast<std::size_t>(y - bounds.y) * width + static_cast<std::size_t>(x - bounds.x));
+                if (x == end_x && y == end_y) break;
+                x += dx; y += dy;
+            }
+        }
+    };
+    // The profile is a floating square with four-neighbour movement. This
+    // qualifies raster clearance/connectivity, never a controller or gravity.
+    std::vector<std::uint32_t> queue;
+    queue.reserve(area);
+    for (const auto& route : grammar->routes()) if (route.required && queue.empty())
+        each_centre(route, [&](auto, auto, std::size_t index) {
+            if (queue.empty() && clear[index] == 1) { clear[index] = 2; queue.push_back(static_cast<std::uint32_t>(index)); }
+        });
+    const auto enqueue = [&](std::size_t index) {
+        if (clear[index] == 1) { clear[index] = 2; queue.push_back(static_cast<std::uint32_t>(index)); }
+    };
+    for (std::size_t cursor = 0; cursor < queue.size(); ++cursor) {
+        const auto index = static_cast<std::size_t>(queue[cursor]);
+        if (index % width > 0) enqueue(index - 1);
+        if (index % width + 1 < width) enqueue(index + 1);
+        if (index >= width) enqueue(index - width);
+        if (index + width < area) enqueue(index + width);
+    }
+    RouteValidation result;
+    result.clearance = grammar->definition().clearance;
+    result.cells = area; result.operations = work;
+    result.routes.reserve(static_cast<std::size_t>(std::count_if(grammar->routes().begin(), grammar->routes().end(),
+        [](const auto& route) { return route.required; })));
+    result.supports.reserve(support_count);
+    for (const auto& route : grammar->routes()) if (route.required) {
+        RouteOutcome outcome;
+        outcome.id = route.id;
+        each_centre(route, [&](std::int64_t x, std::int64_t y, std::size_t index) {
+            ++outcome.checked_centres;
+            if (clear[index] == 2) return;
+            if (outcome.blocked_centres++ != 0) return;
+            outcome.first_block_x = x; outcome.first_block_y = y;
+            // Construct then move: GCC 13's pointer assignment may import the
+            // newer libstdc++ overlap helper even for these disjoint literals.
+            outcome.detail = std::string(clear[index] == 0 ? "final raster blocks declared square clearance" : "final raster disconnects this route from the required network");
+            for (const auto& hard : recipe.overrides) if (hard.material && *hard.material != Material::Empty &&
+                x + radius >= hard.bounds.x && x - radius < hard.bounds.x + hard.bounds.width &&
+                y + radius >= hard.bounds.y && y - radius < hard.bounds.y + hard.bounds.height)
+            {
+                outcome.detail.append("; final hard override: ");
+                outcome.detail.append(hard.id);
+            }
+        });
+        outcome.passed = outcome.checked_centres > 0 && outcome.blocked_centres == 0;
+        if (outcome.passed) outcome.detail = std::string("final Empty-cell square clearance and four-neighbour connectivity verified");
+        result.passed = result.passed && outcome.passed;
+        result.routes.push_back(std::move(outcome));
+    }
+    for (const auto& feature : grammar->features()) {
+        const auto& c = feature.constraints;
+        const auto b = feature.bounds;
+        const auto check_support = [&](const char* constraint, bool horizontal, bool floor) {
+            SupportOutcome outcome;
+            outcome.feature_id = feature.id; outcome.constraint = std::string(constraint);
+            const auto contact = [&](std::int64_t x, std::int64_t y) {
+                ++outcome.checked_cells;
+                if (inside(bounds, x, y)) {
+                    const auto index = static_cast<std::size_t>(y - bounds.y) * width + static_cast<std::size_t>(x - bounds.x);
+                    if (material_definition(cells[index]).state == MaterialState::Solid) return;
+                }
+                if (outcome.missing_cells++ == 0) { outcome.first_missing_x = x; outcome.first_missing_y = y; }
+            };
+            if (horizontal) {
+                const auto y = floor ? b.y + b.height : b.y - 1;
+                for (auto x = b.x; x < b.x + b.width; ++x) contact(x, y);
+            } else {
+                for (auto y = b.y; y < b.y + b.height; ++y) { contact(b.x - 1, y); contact(b.x + b.width, y); }
+            }
+            outcome.passed = outcome.checked_cells > outcome.missing_cells;
+            outcome.detail = std::string(outcome.passed ? "final raster retains static solid contact on the declared side" :
+                "final raster removed all static solid contact on the declared side; inspect final material contributions");
+            result.supports_passed = result.supports_passed && outcome.passed;
+            result.supports.push_back(std::move(outcome));
+        };
+        if (c.floor) check_support("floor", true, true);
+        if (c.ceiling) check_support("ceiling", true, false);
+        if (c.wall) check_support("wall", false, false);
+    }
+    route_validation = std::move(result);
+}
 
 void ModuleRegistry::add(ModuleFactory factory) {
     identifier(factory.id);
@@ -734,8 +965,9 @@ std::vector<Theme> Generator::builtin_themes() {
 std::vector<std::string> Generator::builtin_modules() { return {"arcology", "vault", "aqueduct"}; }
 
 std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleRegistry& registry) {
-    require((recipe.schema == kSchemaVersion || recipe.schema == kTypedSchemaVersion) && recipe.revision > 0, "unsupported schema or zero revision");
-    require(recipe.schema == kTypedSchemaVersion || recipe.spatial.empty(), "typed spatial fields require schema 2");
+    require((recipe.schema == kSchemaVersion || recipe.schema == kTypedSchemaVersion || recipe.schema == kHierarchySchemaVersion) && recipe.revision > 0, "unsupported schema or zero revision");
+    require(recipe.schema >= kTypedSchemaVersion || recipe.spatial.empty(), "typed spatial fields require schema 2 or 3");
+    require(recipe.schema == kHierarchySchemaVersion || recipe.grammar.empty(), "semantic hierarchy requires schema 3");
     require(recipe.chunk_size >= 8 && recipe.chunk_size <= 256, "generation chunk_size must be 8..256");
     require(parse_candidate(candidate_name(recipe.candidate)).has_value(), "invalid candidate");
     for (std::size_t i = 0; i < kParameterCount; ++i) validate_parameter(static_cast<Parameter>(i), value(recipe.parameters, static_cast<Parameter>(i)));
@@ -755,7 +987,15 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
     auto impl = std::make_unique<Impl>();
     impl->fields = FieldGraph::compile(recipe.fields, recipe.seed, {limits.max_fields, kMaxFieldDepth, kMaxFieldOperations});
     recipe.fields = impl->fields->nodes();
-    impl->spatial = SpatialGraph::compile(recipe.spatial, recipe.seed, recipe.spatial_limits);
+    auto prepared_spatial = recipe.spatial;
+    if (!recipe.grammar.empty()) {
+        impl->grammar = GrammarPlan::compile(recipe.grammar, recipe.seed);
+        // Semantic exports are prepared inputs, not authored recipe entries.
+        // Keeping them out of the retained recipe makes recompilation exact.
+        for (auto geometry : impl->grammar->geometry_inputs()) prepared_spatial.geometries.push_back(std::move(geometry));
+        impl->cost += impl->grammar->operations_per_sample();
+    }
+    impl->spatial = SpatialGraph::compile(std::move(prepared_spatial), recipe.seed, recipe.spatial_limits);
     impl->cost += impl->spatial->operations_per_sample();
     impl->cost += impl->fields->operations_per_sample();
     if (!recipe.fields.empty() || !recipe.spatial.empty() || !recipe.modifiers.empty()) impl->cost += 384;
@@ -786,6 +1026,30 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
         impl->aggregate_variations.push_back(aggregate.variation.empty() ? Impl::absent : impl->mask_index(aggregate.variation));
         auto salt = kFnv; hash_text(salt, aggregate.id); impl->aggregate_salts.push_back(salt);
         impl->cost += 24 + aggregate.components.size() * 4;
+    }
+    // Validate authored external bindings even when a rule is unreachable or
+    // its explicit placement fallback omitted every feature in this window.
+    if (impl->grammar) for (const auto& rule : impl->grammar->definition().rules) {
+        (void)impl->compile_mask(rule.application, rule.exclusion, 1);
+        if (rule.aggregate.empty()) continue;
+        const auto found = aggregate_index.find(rule.aggregate);
+        require(found != aggregate_index.end(), "unknown semantic aggregate: " + rule.aggregate);
+        for (const auto& component : recipe.aggregates[found->second].components)
+            require(rule.allowed_materials.empty() || std::find(rule.allowed_materials.begin(), rule.allowed_materials.end(), component.material) != rule.allowed_materials.end(),
+                "semantic aggregate violates allowed materials: " + rule.id);
+    }
+    if (impl->grammar) for (const auto& feature : impl->grammar->features()) {
+        impl->semantic_masks.push_back(impl->compile_mask(feature.application, feature.exclusion, 1));
+        auto aggregate = Impl::absent;
+        if (!feature.aggregate.empty()) {
+            const auto found = aggregate_index.find(feature.aggregate);
+            require(found != aggregate_index.end(), "unknown semantic aggregate: " + feature.aggregate);
+            aggregate = found->second;
+            for (const auto& component : recipe.aggregates[aggregate].components)
+                require(feature.allowed_materials.empty() || std::find(feature.allowed_materials.begin(), feature.allowed_materials.end(), component.material) != feature.allowed_materials.end(),
+                    "semantic aggregate violates allowed materials: " + feature.id);
+        }
+        impl->semantic_aggregates.push_back(aggregate);
     }
     std::sort(recipe.catalogue.begin(), recipe.catalogue.end(), [](const auto& a, const auto& b) { return a.id < b.id; });
     std::map<std::string, std::size_t> theme_index;
@@ -926,7 +1190,7 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
         impl->cost += neighbor_cost * 2;
     }
     auto& h = impl->fingerprint;
-    hash_word(h, recipe.schema == kTypedSchemaVersion ? kTypedAlgorithmVersion : kAlgorithmVersion); hash_word(h, recipe.schema); hash_word(h, recipe.seed);
+    hash_word(h, recipe.schema == kHierarchySchemaVersion ? kHierarchyAlgorithmVersion : recipe.schema == kTypedSchemaVersion ? kTypedAlgorithmVersion : kAlgorithmVersion); hash_word(h, recipe.schema); hash_word(h, recipe.seed);
     hash_word(h, recipe.revision); hash_word(h, static_cast<std::uint64_t>(recipe.chunk_size)); hash_word(h, static_cast<std::uint64_t>(recipe.candidate));
     for (std::size_t i = 0; i < kParameterCount; ++i) hash_real(h, value(recipe.parameters, static_cast<Parameter>(i)));
     hash_word(h, recipe.catalogue.size());
@@ -984,8 +1248,10 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
     for (const auto v : {limits.max_themes, limits.max_strokes, limits.max_points_per_path, limits.max_paths,
             limits.max_overrides, limits.max_modules, limits.max_fields, limits.max_aggregates, limits.max_modifiers}) hash_word(h, v);
     hash_word(h, limits.max_operations_per_chunk);
-    if (recipe.schema == kTypedSchemaVersion) hash_word(h, impl->spatial->fingerprint());
+    if (recipe.schema >= kTypedSchemaVersion) hash_word(h, impl->spatial->fingerprint());
+    if (impl->grammar) hash_word(h, impl->grammar->fingerprint());
     impl->recipe = std::move(recipe);
+    if (impl->grammar) impl->check_routes();
     return std::shared_ptr<const Generator>(new Generator(std::move(impl)));
 }
 
@@ -993,6 +1259,15 @@ Generator::Generator(std::unique_ptr<Impl> impl) : impl_(std::move(impl)) {}
 Generator::~Generator() = default;
 const Recipe& Generator::recipe() const noexcept { return impl_->recipe; }
 const SpatialGraph& Generator::spatial_graph() const noexcept { return *impl_->spatial; }
+const GrammarPlan* Generator::semantic_plan() const noexcept { return impl_->grammar.get(); }
+const RouteValidation& Generator::validate_routes() const noexcept { return impl_->route_validation; }
+CellProvenance Generator::explain(std::int64_t x, std::int64_t y) const {
+    require(x >= -kCoordinateLimit && x < kCoordinateLimit && y >= -kCoordinateLimit && y < kCoordinateLimit, "sample coordinate out of range");
+    CellProvenance result;
+    result.x = x; result.y = y;
+    (void)impl_->sample(x, y, 0, 0, nullptr, nullptr, nullptr, &result);
+    return result;
+}
 std::uint64_t Generator::fingerprint() const noexcept { return impl_->fingerprint; }
 std::vector<ThemeWeight> Generator::theme_weights_at(std::int64_t x, std::int64_t y) const {
     require(x >= -kCoordinateLimit && x < kCoordinateLimit && y >= -kCoordinateLimit && y < kCoordinateLimit, "sample coordinate out of range");
@@ -1069,7 +1344,7 @@ GenerationJob::GenerationJob(std::shared_ptr<const Generator> generator, ChunkCo
     result_.error.reserve(256);
     const auto area = static_cast<std::size_t>(size) * static_cast<std::size_t>(size);
     const auto cost = generator_->impl_->cost + (diagnostic_kind_ == 0 ? 0 : diagnostic_kind_ == 4 ? 16 : 4);
-    if (generator_->recipe().schema == kTypedSchemaVersion && cost > generator_->recipe().limits.max_operations_per_chunk / area) {
+    if (generator_->recipe().schema >= kTypedSchemaVersion && cost > generator_->recipe().limits.max_operations_per_chunk / area) {
         result_.state = ResultState::Failed;
         set_diagnostic(result_.error, "generation logical operation budget exhausted during preflight");
         return;
