@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-21
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md]
 ---
 
@@ -12,15 +12,20 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 ## Player control playground — 2026-10-20
 
-The [dated playground audit](../audits/2026-10-20-player-control-playground.md)
-owns recoverable source identity, rebuilt runtime hashes, Linux execution,
-preserved integration failures and final check dispositions. Recorded focused
-checks cover native complete-cell/Water-quantity preservation and bounded field
-admission, actual Rapier vehicle/acrobat movement, and seven-preset
-input/lease/pause/reset lifetime. The Windows artifact is cross-build evidence;
-execution on Windows is not implied. Headless tests also do not establish
-human feel, complete checkpoint routes, physical gamepad/window interaction or
-browser qualification. Current mechanics and controls live in the
+The [original playground audit](../audits/2026-10-20-player-control-playground.md)
+preserves recoverable source identity, rebuilt runtime hashes, Linux execution
+and integration failures. Its focused checks cover native complete-cell/Water
+quantity preservation and bounded field admission, actual Rapier vehicle/acrobat
+movement, and seven-preset input/lease/pause/reset lifetime.
+
+The [PR #189 completion record](../audits/2026-10-21-player-playground-pr189-completion.md)
+adds hosted results for original head `6663d8e`, including successful Native,
+Linux/Godot, Documentation/provenance, Water and actual Windows execution of
+107/107 applicable headless cases. It separately tracks the GEN-003 main merge,
+fast-tap course-clock correction, combined-source runtime rebuild and final
+exact-head gates; these completion gates remain pending. Headless tests do not
+establish human feel, complete timed routes, physical gamepad/window interaction
+or browser qualification. Current mechanics and controls live in the
 [player contract](../systems/player-control-playground.md); the
 [build guide](../operations/local-build-and-validation.md#player-playground-checks)
 routes reproducible fixtures. Prior ACT-004/ACT-005 results retain their scope.

@@ -375,14 +375,23 @@ func test_playground_ui() -> void:
 		scene.advance_frame(neutral, scene._can_control())
 	expect(not scene._rearm and bool(scene.runtime.observation().grounded),
 		"released controls arm the real scene on actual floor support")
+	expect(not scene._lap_started and scene._lap_ticks == 0,
+		"neutral settling does not start the course clock")
 	var before_tick: int = scene.runtime.tick
 	key_event(KEY_SPACE, true)
 	key_event(KEY_SPACE, false)
 	expect(scene.runtime.tick == before_tick and int(scene.runtime.observation().pending_input_edges) == 2,
 		"actual keyboard press+release are captured before the fixed tick")
+	expect(scene._lap_started and scene._lap_ticks == 0,
+		"admitted fast tap starts the course clock without advancing simulation")
 	scene.advance_frame(neutral, scene._can_control())
 	expect(Vector2(scene.runtime.observation().velocity).y < -30.0,
 		"real scene fast-tap path produces a physical jump")
+	expect(scene._lap_ticks == 1,
+		"the first movement tick counts even when the input sample is already neutral")
+	scene.advance_frame(neutral, scene._can_control())
+	expect(scene._lap_ticks == 2,
+		"coasting after a fast tap keeps the course clock running")
 	# Cancellation between event and physics tick must not create a jump when
 	# focus returns, even if the same physical key remains held.
 	scene.select_preset(Course.PRESETS.find(&"acrobat"))

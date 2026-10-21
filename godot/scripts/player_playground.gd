@@ -259,7 +259,7 @@ func _input(event: InputEvent) -> void:
 	# Submit every button edge as well as the fixed-tick sample. The shared
 	# Session retains a quick press+release even when both precede a physics tick.
 	if (event is InputEventKey or event is InputEventJoypadButton) and _can_control() and not _rearm:
-		runtime.submit_action(_sample_action())
+		_submit_action(_sample_action())
 
 
 func _can_control() -> bool:
@@ -286,6 +286,16 @@ func _physics_process(_delta: float) -> void:
 	advance_frame(_sample_action(), _can_control())
 
 
+func _submit_action(action: Dictionary) -> bool:
+	if not runtime.submit_action(action):
+		return false
+	# A complete press/release can precede the fixed-tick sample. Start timing
+	# when that movement is admitted, even if the next sample is neutral.
+	if PlayerInput.active(action):
+		_lap_started = true
+	return true
+
+
 func advance_frame(action: Dictionary, allowed: bool) -> void:
 	if not allowed:
 		if not _rearm:
@@ -293,9 +303,7 @@ func advance_frame(action: Dictionary, allowed: bool) -> void:
 	elif _rearm and not PlayerInput.active(action):
 		_rearm = false
 	if allowed and not _rearm:
-		runtime.submit_action(action)
-		if PlayerInput.active(action):
-			_lap_started = true
+		_submit_action(action)
 	var before: int = runtime.tick
 	var state: Dictionary = runtime.step()
 	if runtime.tick > before:

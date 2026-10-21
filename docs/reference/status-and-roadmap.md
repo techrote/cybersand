@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-21
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
@@ -21,11 +21,16 @@ use the shared leased physical owner. Circular wheels keep conservative square
 native material masks. The material lane relocates bounded local native cells
 without repainting or changing Water kernels.
 
-The [dated evidence](../audits/2026-10-20-player-control-playground.md) records
-Linux native/Godot execution and source-matched Linux/Windows builds separately.
-Windows execution, actual gamepad/window interaction, target-PC human feel,
-complete course routes and new browser execution are not established by those
-checks. Generic granular, soliding and Water successor work retains its own gates.
+The [original evidence](../audits/2026-10-20-player-control-playground.md) preserves
+local Linux execution and desktop builds. The
+[PR #189 completion record](../audits/2026-10-21-player-playground-pr189-completion.md)
+records original-head hosted success, including actual Windows headless
+execution of 107/107 applicable cases. Integration with GEN-003 main and the
+quick-tap course-clock correction require combined-source runtimes and fresh
+final-head gates, currently pending in that record. Physical gamepad/window
+interaction, target-PC human feel, complete timed routes and new browser
+execution remain separate qualifications. Generic granular, soliding and Water
+successor work retains its own gates.
 
 ## Exploratory actor integration and physical migration — 2026-10-18
 

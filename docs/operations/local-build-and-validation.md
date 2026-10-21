@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-21
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
@@ -441,6 +441,7 @@ godot --headless --path godot --script res://tests/test_player_vehicle_controls.
 godot --headless --path godot --script res://tests/test_player_acrobat.gd
 godot --headless --path godot --script res://tests/test_player_acrobat_physics.gd
 godot --headless --path godot --script res://tests/test_player_playground_runtime.gd
+godot --headless --path godot --script res://tests/test_player_playground_course.gd
 ```
 
 The native executable accepts an optional name substring; no match fails and
@@ -450,8 +451,13 @@ work bounds, distinct modes and deterministic ordering. The binding runner
 checks actual native admission and nonmutation; mechanical runners exercise
 bounded control plans and actual Rapier motion. The integrated runner covers
 seven owners, issued observations, replay/refusal, expiry, cancellation, pause,
-reset and UI rearm. Counts and outcomes belong to the
-[dated audit](../audits/2026-10-20-player-control-playground.md).
+reset and UI rearm. It also verifies that an admitted press/release between
+physics ticks starts the course clock and counts subsequent neutral/coasting
+ticks. The course runner checks mounted spawns and actual short traversal
+routes. Counts and outcomes belong to the
+[original local audit](../audits/2026-10-20-player-control-playground.md) and
+[PR #189 completion record](../audits/2026-10-21-player-playground-pr189-completion.md),
+which separates original-head hosted passes from pending combined-source gates.
 
 Changed shared catalogue/session/loadout behavior also uses the existing
 physical regressions below. Focused execution is not a complete suite, human

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-10-20",
+  "reviewed": "2026-10-21",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -358,6 +358,10 @@
     {
       "path": "audits/2026-10-20-player-control-playground.md",
       "reason": "Dated player playground source/runtime, native field and actual Linux mechanical/lifecycle evidence; retrieve explicitly with its platform and human acceptance limits. Current controls and ownership belong to the player playground contract."
+    },
+    {
+      "path": "audits/2026-10-21-player-playground-pr189-completion.md",
+      "reason": "Dated PR #189 original-head hosted evidence, GEN-003 integration, quick-tap timing correction and separately tracked final gates. Retrieve explicitly through the player playground contract or validation ledger with its source/artifact/platform qualifications; pending completion entries are not acceptance."
     }
   ],
   "integration_note": "Retains scene, generation, actor, sampled and physical actor-usable, Thunderbowl, physical-actor and presentation routes; historical questions remain separately scoped. Deepworks routes cover full-size four-plane exhibitions, independent native source schedules and parameterized depth dimensions; its dated audit remains explicitly scoped. Player playground adds seven human movement presets, native material-field authority and circular-wheel approximation routes; dated execution remains separately scoped. GEN-003 typed-spatial and operator-reference routes from main are retained alongside player playground routes."

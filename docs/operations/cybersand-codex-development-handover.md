@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-21
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
@@ -24,10 +24,16 @@ and landing-gated acrobat inventory. Swarm input moves material near its observe
 centroid, not a cursor or persistent seed cohort. It must not become erase/repaint
 or per-cell Rapier control. See [field interfaces](../reference/interfaces-and-message-contracts.md#player-material-field-control)
 and [focused checks](local-build-and-validation.md#player-playground-checks).
-The [dated checkpoint](../audits/2026-10-20-player-control-playground.md) owns
-source/runtime identities and recorded Linux execution. Target-PC feel, actual
-controller/window interaction, all course routes, Windows execution and browser
-qualification remain distinct from source inspection or cross-build results.
+The [original checkpoint](../audits/2026-10-20-player-control-playground.md)
+preserves local source/runtime identities and Linux execution. The
+[PR #189 completion record](../audits/2026-10-21-player-playground-pr189-completion.md)
+adds original-head hosted Linux/Windows results, including 107/107 Windows
+headless cases, and tracks integration with GEN-003 main. Combined-source
+runtime publication and final exact-head gates remain pending in that record.
+Admitted quick button taps start the course clock even when released before
+the next physics tick; elapsed time still counts simulation ticks only.
+Target-PC feel, physical controller/window interaction, complete timed routes
+and browser qualification remain separate from headless execution.
 
 ## Typed spatial generation checkpoint — 2026-10-20
 

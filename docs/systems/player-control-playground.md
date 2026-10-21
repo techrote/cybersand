@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Experimental seven-preset human movement course, shared mechanical control, bounded native Sand and Water fields, input lifetime and qualified validation
 canonical-for: [player-control-playground, player-movement-presets, player-material-field]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-21
 related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-20-player-control-playground.md]
 ---
 
@@ -23,8 +23,11 @@ godot --path godot -- --player-playground --player=acrobat
 The optional player value is an ID from the table below. The course combines a
 ramp, low tunnel, airborne slalom, landing decks and a material sieve in a
 512 × 256 view of one native world. Four ordered checkpoints give each preset
-a route and a simulation-time lap counter. The timer starts on movement input;
-best times are kept only during this scene's lifetime. Authored routes and
+a route and a simulation-time lap counter. The timer starts when active movement
+or action input is admitted, including a quick press/release before the next
+physics tick. Elapsed time advances only with simulation ticks and continues
+while coasting with neutral input. Best times are kept only during this scene's
+lifetime. Authored routes and
 checkpoint detection do not establish that every route has been completed.
 
 Five mechanical presets also appear in **F5 → Rapier → SetP**, increasing the
@@ -185,12 +188,15 @@ an explicit approximation, not circular native rasterization or a generalized
 shape-coupling change. See the
 [coupling contract](../architecture/rigid-body-and-cellular-coupling.md).
 
-The [dated playground record](../audits/2026-10-20-player-control-playground.md)
-owns source/artifact identities, actual Linux native/Godot checks, preserved
-failures and remaining acceptance. The
+The [original playground record](../audits/2026-10-20-player-control-playground.md)
+preserves source/artifact identities, local Linux native/Godot checks and
+failures. The [PR #189 completion record](../audits/2026-10-21-player-playground-pr189-completion.md)
+adds original-head hosted Linux and actual Windows headless results and tracks
+the pending combined-source runtime and final-head gates after integration with
+GEN-003 main. The
 [build guide](../operations/local-build-and-validation.md#player-playground-checks)
 routes focused regressions. Human feel on the target PC, complete checkpoint
 routes, real gamepad/window-focus behavior and browser execution are not
-established by headless tests. Cross-building a Windows DLL is also separate
-from executing it. Generic body/granular, soliding and Water successor acceptance
+established by headless tests. Actual Windows headless execution does not
+establish interactive Windows feel. Generic body/granular, soliding and Water successor acceptance
 retain their existing programme owners.
