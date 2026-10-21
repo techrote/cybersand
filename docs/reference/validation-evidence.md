@@ -4,11 +4,22 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-21
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md]
 ---
 
 # Validation evidence ledger
+
+## GEN-004 hierarchical places — 2026-10-21
+
+The [GEN-004 audit](../audits/2026-10-21-gen004-hierarchical-generation.md)
+records issue #191's canonical ownership design, semantic/raster constraints,
+independent partition/boundary controls, declarative example and documentation
+retrieval results. It distinguishes source inspection and local native/Godot
+execution from matching Linux/Windows runtime publication and exact-head hosted
+acceptance. Required skips, stale manifests and script errors do not pass those
+gates. The [hierarchy contract](../systems/procedural-hierarchical-generation.md)
+owns current semantics and explicit geometry/platform qualifications.
 
 ## GEN-003 typed spatial computation — 2026-10-20
 

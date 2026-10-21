@@ -6,7 +6,7 @@ status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
 related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-21
 ---
 
 # Architectural and simulation invariants
@@ -193,6 +193,25 @@ Sources/tests: [typed API](../../native/include/cybersand/generation_typed_field
 | FIELD-006 | Current: caller-owned bounded cache identity includes transitive source/parameter/scale identity and coordinates; cache warmth cannot alter results |
 | FIELD-007 | Current: pending chunk materials and typed diagnostics stay private; failure/cancellation clears payloads and hashes before publication |
 | FIELD-008 | Current: finite curve traversal is not an infinite physical route; finite region assignment has cross-tile guarantees only for explicit wrap constraints |
+
+## Hierarchical generation invariants
+
+Contract: [hierarchical places and routes](../systems/procedural-hierarchical-generation.md).
+Source: [semantic API](../../native/include/cybersand/generation_grammar.hpp),
+[planner](../../native/src/generation_grammar.cpp), and
+[generator](../../native/src/world_generation.cpp).
+
+| ID | Status and narrow claim |
+|---|---|
+| GRAMMAR-001 | Current: semantic region/rule/slot identities exclude storage-chunk size, request order, recipe revision and finite window; a region-grid-size change explicitly changes identity |
+| GRAMMAR-002 | Current: region-contained features may cross storage chunks; canonical boundary/socket ownership and explicit routes do not require either owning chunk to have been generated |
+| GRAMMAR-003 | Current: hard layout requirements precede preferences; bounded priority search may reject a feasible alternative rather than silently relaxing a constraint |
+| GRAMMAR-004 | Current: omitted features require authored fallback receipts; required neighbors and support are rechecked after omission |
+| GRAMMAR-005 | Current: finite curve order controls placement/inspection but never substitutes for explicit route edges, matching sockets or final-cell clearance |
+| GRAMMAR-006 | Current: exported geometry is immutable declared context; semantic planning and typed fields do not read partial raster output or live World state |
+| GRAMMAR-007 | Current: final hard material overrides preserve authority and can fail a route report; geometric clearance is qualified for the declared floating square profile, not an actor/controller |
+| GRAMMAR-008 | Current: compile/budget failure publishes no partial plan, material or diagnostic packet; semantic inspection does not grant World admission or streaming authority |
+| GRAMMAR-009 | Current: final support qualification is separate from route success; each declared floor/ceiling/wall check needs at least one final Solid contact and reports partial missing contacts without claiming gravity stability or apparatus preservation |
 
 ## Capacity and allocation invariants
 

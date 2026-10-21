@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-21
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -39,6 +39,7 @@ moving Above/Below, choosing viewpoints, editing native cells and capturing imag
 | Generate and blend procedural chunk themes, paint broad guidance, impose exact overrides or add structured modules | [Procedural generation contract and workbench](systems/procedural-world-generation.md), then [GEN-001 source and validation evidence](audits/2026-10-18-gen001-procedural-generation.md) |
 | Compose Hilbert/Morton or noise fields, sidechain masks, sculpt with initial context, author aggregate materials or inspect modifier influence | [Generation fields and masked modifiers](systems/procedural-generation-fields-and-modifiers.md), then [GEN-002 source and validation evidence](audits/2026-10-18-gen002-fields-and-aggregates.md) |
 | Author signed distances, vector/category fields, reusable transformed subgraphs, multiscale seeds or finite adjacency assignments | [Typed spatial graph contract](systems/procedural-typed-spatial-fields.md), [operator inventory](reference/procedural-spatial-operators.md) |
+| Author nested districts, cross-chunk buildings, constrained apparatus and explicit structural routes | [Hierarchical generation contract](systems/procedural-hierarchical-generation.md) |
 | Distinguish generated previews, fresh native chunk admission and general world streaming | [Procedural generation](systems/procedural-world-generation.md), [World storage](systems/world-storage-and-interest-region.md), and [ownership](architecture/data-ownership-and-lifetimes.md) |
 | Reconcile a completed/closed claim, broad gameplay acceptance, or remediation owner | [Development-claims remediation programme](operations/development-claims-remediation-programme.md), then the [dated REM-001 audit](audits/2026-09-20-development-claims-closure-audit.md) for intake evidence |
 | Explore the MS-001 Materials Lab / Flood / Stress pack or compare generated definitions | [Reference pack and controls](operations/microscenario-reference-pack.md), [MS-001 evidence](audits/2026-09-19-issue-28-ms001.md) |

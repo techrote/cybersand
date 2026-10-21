@@ -1,0 +1,712 @@
+{
+  "schema": 3,
+  "seed": 19101,
+  "chunk_size": 64,
+  "candidate": "strata",
+  "parameters": {
+    "surface_y": -104,
+    "relief": 12,
+    "detail": 0.14,
+    "cave_threshold": 0.68,
+    "district_size": 128
+  },
+  "themes": {
+    "weights": {
+      "industrial": 3,
+      "ruins": 1
+    }
+  },
+  "grammar": {
+    "schema": 1,
+    "id": "four-foundries",
+    "region_window": [
+      -1,
+      -1,
+      2,
+      2
+    ],
+    "region_size": 128,
+    "roots": [
+      "district"
+    ],
+    "curve": "hilbert",
+    "curve_order": 1,
+    "route_width": 7,
+    "clearance": 3,
+    "secondary_loop": true,
+    "service_trunk": true,
+    "liquid_trunk": true,
+    "service_material": 69,
+    "liquid_material": 3,
+    "rules": [
+      {
+        "id": "district",
+        "kind": "district",
+        "count": 1,
+        "tags": [
+          "industrial-district"
+        ],
+        "material": null,
+        "interior": null,
+        "wall_thickness": 0,
+        "parameters": {
+          "hazard": {
+            "type": "normalized",
+            "x": 0.35
+          }
+        },
+        "candidates": [
+          {
+            "id": "region",
+            "bounds": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ],
+        "children": [
+          "industrial-zone",
+          "garden-zone",
+          "threshold-marker",
+          "foundry"
+        ]
+      },
+      {
+        "id": "foundry",
+        "kind": "complex",
+        "count": 1,
+        "priority": 20,
+        "tags": [
+          "foundry",
+          "occupied-complex"
+        ],
+        "material": 58,
+        "interior": 0,
+        "wall_thickness": 2,
+        "candidates": [
+          {
+            "id": "lower",
+            "bounds": [
+              12,
+              28,
+              104,
+              72
+            ],
+            "order_x": 1,
+            "order_y": 0
+          },
+          {
+            "id": "upper",
+            "bounds": [
+              12,
+              20,
+              104,
+              72
+            ],
+            "order_x": 1,
+            "order_y": 1
+          }
+        ],
+        "children": [
+          "gallery",
+          "machinery"
+        ],
+        "constraints": {
+          "intersects_route": true,
+          "occupancy_min": 0.4,
+          "occupancy_max": 0.5,
+          "minimum_sockets": 1,
+          "maximum_sockets": 1,
+          "connected": true
+        },
+        "sockets": [
+          {
+            "id": "west",
+            "direction": "west",
+            "offset": 36,
+            "width": 7
+          }
+        ],
+        "preferences": [
+          {
+            "id": "main-route",
+            "kind": "route",
+            "weight": 2
+          },
+          {
+            "id": "progressive-density",
+            "kind": "curve_density",
+            "weight": 0.25
+          }
+        ],
+        "aggregate": "weathered-shell"
+      },
+      {
+        "id": "gallery",
+        "kind": "room",
+        "count": 1,
+        "priority": 10,
+        "tags": [
+          "gallery"
+        ],
+        "material": 57,
+        "interior": 0,
+        "wall_thickness": 2,
+        "candidates": [
+          {
+            "id": "west-hall",
+            "bounds": [
+              4,
+              4,
+              64,
+              66
+            ],
+            "order_x": 0,
+            "order_y": 1
+          }
+        ],
+        "constraints": {
+          "open_volume": true,
+          "minimum_separation": 4,
+          "required_neighbors": [
+            "machinery"
+          ],
+          "forbidden_neighbors": [
+            "reactor"
+          ],
+          "neighbor_distance": 16,
+          "minimum_sockets": 2,
+          "connected": true
+        },
+        "sockets": [
+          {
+            "id": "west",
+            "direction": "west",
+            "offset": 32,
+            "width": 7
+          },
+          {
+            "id": "east",
+            "direction": "east",
+            "offset": 32,
+            "width": 7
+          }
+        ],
+        "children": [
+          "inspection-dais"
+        ]
+      },
+      {
+        "id": "machinery",
+        "kind": "room",
+        "count": 1,
+        "priority": 10,
+        "tags": [
+          "machinery"
+        ],
+        "material": 62,
+        "interior": 0,
+        "wall_thickness": 2,
+        "candidates": [
+          {
+            "id": "east-bay",
+            "bounds": [
+              74,
+              4,
+              26,
+              64
+            ],
+            "order_x": 1,
+            "order_y": 1
+          }
+        ],
+        "constraints": {
+          "open_volume": true,
+          "minimum_separation": 4,
+          "required_neighbors": [
+            "gallery"
+          ],
+          "neighbor_distance": 16,
+          "occupancy_min": 0.1,
+          "occupancy_max": 0.25,
+          "minimum_sockets": 1,
+          "connected": true
+        },
+        "sockets": [
+          {
+            "id": "west",
+            "direction": "west",
+            "offset": 32,
+            "width": 5
+          }
+        ],
+        "children": [
+          "pump",
+          "console"
+        ]
+      },
+      {
+        "id": "inspection-dais",
+        "kind": "apparatus",
+        "count": 1,
+        "tags": [
+          "inspection",
+          "solid-support"
+        ],
+        "material": 66,
+        "interior": 66,
+        "wall_thickness": 0,
+        "candidates": [
+          {
+            "id": "floor",
+            "bounds": [
+              2,
+              62,
+              8,
+              2
+            ],
+            "order_x": 1,
+            "order_y": 1
+          }
+        ],
+        "constraints": {
+          "floor": true,
+          "open_volume": true,
+          "wall": true
+        },
+        "children": [
+          "dais-light"
+        ]
+      },
+      {
+        "id": "pump",
+        "kind": "apparatus",
+        "count": 1,
+        "priority": 5,
+        "tags": [
+          "pump",
+          "liquid-apparatus"
+        ],
+        "material": 53,
+        "interior": 53,
+        "wall_thickness": 0,
+        "parameters": {
+          "flow": {
+            "type": "vector2",
+            "x": 1,
+            "y": 0
+          },
+          "enabled": {
+            "type": "boolean",
+            "x": 1
+          }
+        },
+        "allowed_materials": [
+          53
+        ],
+        "candidates": [
+          {
+            "id": "floor-pump",
+            "bounds": [
+              16,
+              58,
+              8,
+              4
+            ],
+            "order_x": 0,
+            "order_y": 1
+          }
+        ],
+        "constraints": {
+          "floor": true,
+          "open_volume": true,
+          "service": "service",
+          "neighbor_distance": 64,
+          "exclusive_family": "pump"
+        }
+      },
+      {
+        "id": "console",
+        "kind": "apparatus",
+        "count": 1,
+        "tags": [
+          "control",
+          "service-apparatus"
+        ],
+        "material": 74,
+        "interior": 74,
+        "wall_thickness": 0,
+        "candidates": [
+          {
+            "id": "ceiling-panel",
+            "bounds": [
+              14,
+              2,
+              8,
+              4
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ],
+        "constraints": {
+          "ceiling": true,
+          "open_volume": true,
+          "minimum_separation": 8,
+          "service": "service",
+          "neighbor_distance": 32
+        }
+      },
+      {
+        "id": "dais-light",
+        "kind": "detail",
+        "count": 2,
+        "tags": [
+          "tour-marker"
+        ],
+        "material": 77,
+        "interior": 77,
+        "wall_thickness": 0,
+        "candidates": [
+          {
+            "id": "left",
+            "bounds": [
+              1,
+              0,
+              2,
+              1
+            ],
+            "order_x": 0,
+            "order_y": 0
+          },
+          {
+            "id": "right",
+            "bounds": [
+              5,
+              0,
+              2,
+              1
+            ],
+            "order_x": 1,
+            "order_y": 0
+          }
+        ],
+        "constraints": {
+          "minimum_separation": 2
+        }
+      },
+      {
+        "id": "industrial-zone",
+        "kind": "district",
+        "count": 1,
+        "priority": 100,
+        "tags": [
+          "theme-zone"
+        ],
+        "themes": [
+          {
+            "id": "industrial",
+            "weight": 1
+          }
+        ],
+        "material": null,
+        "interior": null,
+        "wall_thickness": 0,
+        "candidates": [
+          {
+            "id": "half-region",
+            "bounds": [
+              0,
+              0,
+              64,
+              128
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "garden-zone",
+        "kind": "district",
+        "count": 1,
+        "priority": 100,
+        "tags": [
+          "theme-zone"
+        ],
+        "themes": [
+          {
+            "id": "garden",
+            "weight": 1
+          }
+        ],
+        "material": null,
+        "interior": null,
+        "wall_thickness": 0,
+        "candidates": [
+          {
+            "id": "half-region",
+            "bounds": [
+              64,
+              0,
+              64,
+              128
+            ],
+            "order_x": 1,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "threshold-marker",
+        "kind": "apparatus",
+        "count": 1,
+        "priority": 30,
+        "tags": [
+          "boundary-marker"
+        ],
+        "material": 76,
+        "interior": 76,
+        "wall_thickness": 0,
+        "candidates": [
+          {
+            "id": "west",
+            "bounds": [
+              8,
+              6,
+              8,
+              8
+            ],
+            "order_x": 0,
+            "order_y": 0
+          },
+          {
+            "id": "between-themes",
+            "bounds": [
+              60,
+              6,
+              8,
+              8
+            ],
+            "order_x": 1,
+            "order_y": 0
+          },
+          {
+            "id": "east",
+            "bounds": [
+              112,
+              6,
+              8,
+              8
+            ],
+            "order_x": 1,
+            "order_y": 0
+          }
+        ],
+        "preferences": [
+          {
+            "id": "selected-theme-edge",
+            "kind": "theme_boundary",
+            "weight": 1,
+            "themes": [
+              "industrial",
+              "garden"
+            ]
+          }
+        ],
+        "constraints": {
+          "service": "service",
+          "neighbor_distance": 16
+        }
+      }
+    ],
+    "geometry_exports": {
+      "tour_loop": "four-foundries/grid128/region(0,0)/route/loop",
+      "foundry_outline": "four-foundries/grid128/region(0,0)/district/0/foundry/0"
+    },
+    "district_assignment": {
+      "specification": {
+        "width": 2,
+        "height": 2,
+        "cell_size": 128,
+        "origin_x": 0,
+        "origin_y": 0,
+        "seed": 19101,
+        "categories": [
+          1,
+          2
+        ],
+        "adjacency": [
+          [
+            3,
+            3
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            3,
+            3
+          ]
+        ],
+        "domains": [
+          1,
+          2,
+          2,
+          1
+        ],
+        "wrap_x": true,
+        "wrap_y": true
+      }
+    },
+    "district_themes": {
+      "0000000000000001": [
+        {
+          "id": "industrial",
+          "weight": 3
+        },
+        {
+          "id": "ruins",
+          "weight": 1
+        }
+      ],
+      "0000000000000002": [
+        {
+          "id": "garden",
+          "weight": 3
+        },
+        {
+          "id": "ruins",
+          "weight": 1
+        }
+      ]
+    },
+    "curve_services": true
+  },
+  "spatial": {
+    "nodes": [
+      {
+        "id": "finish",
+        "kind": "noise",
+        "sampling_scale": 4,
+        "parameters": {
+          "scale": 17,
+          "salt": 191
+        }
+      },
+      {
+        "id": "tour_distance",
+        "kind": "geometry_distance",
+        "reference": "tour_loop"
+      },
+      {
+        "id": "tour_trim_width",
+        "kind": "constant",
+        "unit_power": 1,
+        "value": {
+          "type": "scalar",
+          "x": 5
+        }
+      },
+      {
+        "id": "near_tour",
+        "kind": "less",
+        "inputs": [
+          "tour_distance",
+          "tour_trim_width"
+        ]
+      },
+      {
+        "id": "tour_mask",
+        "kind": "to_mask",
+        "inputs": [
+          "near_tour"
+        ]
+      }
+    ]
+  },
+  "aggregates": [
+    {
+      "id": "weathered-shell",
+      "variation": "spatial:finish",
+      "components": [
+        {
+          "material": 62,
+          "weight": 5
+        },
+        {
+          "material": 63,
+          "weight": 2
+        },
+        {
+          "material": 65,
+          "weight": 1
+        }
+      ]
+    }
+  ],
+  "overrides": [
+    {
+      "id": "west-substrate",
+      "bounds": [
+        -128,
+        -128,
+        128,
+        256
+      ],
+      "candidate": "flow_network",
+      "priority": 5
+    },
+    {
+      "id": "east-substrate",
+      "bounds": [
+        0,
+        -128,
+        128,
+        256
+      ],
+      "candidate": "district_grammar",
+      "priority": 5
+    }
+  ],
+  "modules": [
+    {
+      "id": "surface-vault",
+      "module": "vault",
+      "bounds": [
+        -112,
+        -120,
+        64,
+        16
+      ],
+      "parameters": {
+        "cell_size": 16,
+        "wall": 1,
+        "door_width": 6
+      }
+    }
+  ],
+  "modifiers": [
+    {
+      "id": "tour-trim",
+      "application": "spatial:tour_mask",
+      "material": 77,
+      "priority": 20,
+      "bounds": [
+        0,
+        0,
+        128,
+        128
+      ]
+    }
+  ]
+}

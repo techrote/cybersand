@@ -6,7 +6,7 @@ status: Approved design
 scope: Approved responsibility boundaries mapped to current source; no claim that every named module is a class
 keywords: [SimulationCore, SimulationScheduler, WorldStorage, TileJob, MaterialRules, RenderBridge, GameplayBridge]
 related-documents: [overview.md, data-ownership-and-lifetimes.md, rendering-and-gameplay-bridges.md]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-21
 ---
 
 # Module boundaries
@@ -24,7 +24,7 @@ and [implementation](../../native/src/world.cpp).
 | SimulationCore | Authoritative cell/field semantics and invariants | World kernels and tick entry; extraction remains incomplete |
 | SimulationScheduler | Work planning, pool, barriers, deterministic coordination and overload metrics | `World::tick_phased`, `ParallelState`; desktop wall-clock pacing is still GDScript and Web owns synchronous callbacks |
 | WorldStorage | Chunk lifetime, optional fields, activity and capacity; future persistence | `World::Chunk`, `chunks_`, reservation/query methods and explicit fresh generated-chunk admission; general streaming and live resize are absent |
-| Procedural generator | Compile generation guidance and prepare complete deterministic material proposals | Opt-in `generation::Generator`/`GenerationJob`, immutable scalar graphs/aggregates and prepared feature modules; no mutable World access; [generation contract](../systems/procedural-world-generation.md) |
+| Procedural generator | Compile generation guidance and prepare complete deterministic material proposals | Opt-in `generation::Generator`/`GenerationJob`, immutable scalar/typed graphs, canonical semantic plans, aggregates and prepared modules; no mutable World access; [generation contract](../systems/procedural-world-generation.md) |
 | TileJob | Temporary bounded work assignment and local observations | Core indices, `JobEffects`, local `TickStats`; no public type-enforced bounded rule context |
 | MaterialRules | Immutable descriptors, traits and kernel selection | Descriptor/pair-reaction APIs are separate; executable kernels remain inside World |
 | RenderBridge | Consume immutable simulation publication and update presentation | Native `RenderSnapshotExchange`, copied Godot packets and CPU-image consumer; GPU subregion writes are absent |
@@ -59,11 +59,23 @@ transforms and derivatives resample only immutable absolute-coordinate inputs;
 they cannot read the scalar graph's per-cell context or mutable World storage.
 [`generation_spatial`](../../native/include/cybersand/generation_spatial.hpp)
 owns bounded Peano/lattice/Poisson primitives, copied geometry and the single
-finite region-assignment solver. GEN-004 may supply routes and use assignments
-without a reverse field-to-grammar dependency. Explicit normalized outputs feed
+finite region-assignment solver. Explicit normalized outputs feed
 the existing mask interface; the [typed contract](../systems/procedural-typed-spatial-fields.md)
 and [operator inventory](../reference/procedural-spatial-operators.md) own the
 spatial computation boundary.
+
+**Current GEN-004 source:** the separate immutable
+[`GrammarPlan`](../../native/include/cybersand/generation_grammar.hpp) prepares a
+bounded hierarchy, canonical boundary ports, explicit routes and constraint
+receipts before rasterization. It uses the shared region-assignment solver and
+exports selected immutable geometry to typed fields without a reverse
+field-to-grammar dependency. The generator applies feature proposals, modules
+and modifiers, restores required passages, then retains final hard overrides.
+It qualifies that complete material stack against a declared geometric route
+profile and separate static-solid-contact profile before publishing the recipe. This planning and inspection boundary
+does not own simulation admission or actor navigation; the
+[hierarchy contract](../systems/procedural-hierarchical-generation.md) owns its
+finite scope, deterministic identities and limits.
 
 Modules are trusted cooperative C++ code: declared logical cost bounds admission,
 while the host cannot sandbox an arbitrary callback or enforce its execution

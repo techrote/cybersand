@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Executable test selection and future gates; dated results and save format live in separate references
 canonical-for: [test-inventory, test-selection, future-validation-gates]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-21
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md, ../reference/level-saves-and-replay.md]
 ---
 
@@ -21,6 +21,7 @@ Counts identify this inspected source inventory, not a pass for a later revision
 
 | Change | Focused executable coverage |
 |---|---|
+| Semantic hierarchy and procedural routes | `make worldgen-test` / `worldgen-sanitize` include grammar ownership, identity, constraints, negative-region partitions, socket compatibility and final material clearance; `test_worldgen_grammar.gd` validates the copied Godot interface and declarative example. Source-matched Linux/Windows runtime and hosted acceptance remain separate. |
 | Scheduler, storage, activity | Native geometry/non-overlap, signed/core/chunk crossings, stamps, repeat and one/four-worker parity, sleep/wake and capacity tests |
 | Materials, Water and INT-000 interaction substrate | Native catalogue/radius, frozen pair-oracle equivalence, layer precedence/conflict validation, chemistry/state machines, Smoke lifetime/Fire exclusion, density exchange, generated schema-2 interaction fixtures, conserved leveling/rest and one/four-worker fixtures |
 | Explosion or optional fields | Native bounded event validation/queue/hash/parity, static-to-granular conversion and temperature allocation/movement |

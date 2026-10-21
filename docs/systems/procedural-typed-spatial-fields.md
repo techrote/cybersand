@@ -5,7 +5,7 @@ document-kind: contract
 scope: GEN-003 schema-2 immutable typed spatial computation, explicit mask conversion, bounded resampling, structured seeds and finite region assignment; platform acceptance remains separately evidenced
 canonical-for: [generation-typed-values, generation-spatial-transforms, generation-derived-geometry, generation-reusable-subgraphs, generation-structured-mappings, generation-multiresolution-cache]
 keywords: [GEN-003, typed fields, signed distance, vector, category, transform, gradient, curvature, Peano, Voronoi, Delaunay, Poisson, subgraph, multiresolution, cache]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-21
 related-documents: [procedural-world-generation.md, procedural-generation-fields-and-modifiers.md, ../reference/procedural-spatial-operators.md, ../reference/configuration-reference.md, ../reference/interfaces-and-message-contracts.md, ../architecture/data-ownership-and-lifetimes.md, ../operations/local-build-and-validation.md]
 ---
 
@@ -332,6 +332,14 @@ qualification, identity and work. `spatial:<expanded.id>` selects a copied typed
 diagnostic. The display may map a signed scalar or category to colour, while the
 inspector preserves the raw typed value. Presentation colour is never the stored
 categorical identity or a material mask.
+
+GEN-004 schema-3 recipes may populate selected `spatial` geometry inputs from
+[immutable semantic route/feature exports](procedural-hierarchical-generation.md).
+The planner resolves those names before the typed compiler runs. Each export
+is one actual polyline or feature boundary; separate routes are never joined by
+invented segments. Fields retain no dependency on grammar types, live World
+state or partially rasterized neighboring cells. GEN-004 also reuses this finite
+assignment solver for declared district themes.
 
 The Workbench writes JSON with full floating-point precision. External GDScript
 authors should use `JSON.stringify(recipe, "  ", true, true)` so the

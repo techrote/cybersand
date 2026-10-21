@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-21
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -41,6 +41,8 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | What do affine/polar/repeat/warp transforms, gradient/curl/curvature and their distance qualifications mean? | [Spatial transforms and derivatives](../systems/procedural-typed-spatial-fields.md), [operator inventory](procedural-spatial-operators.md) |
 | Can Peano traversal, Voronoi/Delaunay structure, Poisson-style seeds or finite adjacency assignments promise continuous world routes? | [Structured spatial mappings](../systems/procedural-typed-spatial-fields.md) |
 | How are typed subgraph parameters, namespaces, multiresolution lattices and warm-cache identities bounded? | [Reusable graphs and sampling](../systems/procedural-typed-spatial-fields.md), [configuration](configuration-reference.md) |
+| How can independently generated neighboring districts share semantic feature identities, boundary ports and explicit routes? | [Hierarchical generation and region ownership](../systems/procedural-hierarchical-generation.md) |
+| Which hierarchy placement constraints are hard, how are fallbacks reported, and does a route graph prove raster clearance? | [Hierarchical constraints and structural-route qualification](../systems/procedural-hierarchical-generation.md), [configuration](configuration-reference.md) |
 | Is a closed/completed development claim actually implemented, integrated, verified and owner-accepted now? | [Development-claims remediation programme](../operations/development-claims-remediation-programme.md); use the [2026-09-20 audit](../audits/2026-09-20-development-claims-closure-audit.md) for the frozen intake findings |
 | How do Play/Inspect/Benchmark share a definition, and is a scenario capture replay? | [MicroScenario contract](../operations/microscenarios.md) |
 | Actual version, commits, local changes, recovery | [Source checkpoint](../operations/source-checkpoint-and-recovery.md) |

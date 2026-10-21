@@ -102,6 +102,7 @@ command=(
     "$project_root/native/src/generation_fields.cpp"
     "$project_root/native/src/generation_typed_fields.cpp"
     "$project_root/native/src/generation_spatial.cpp"
+    "$project_root/native/src/generation_grammar.cpp"
     "$project_root/native/src/render_snapshot.cpp"
     "$project_root/native/src/settled_world_discovery.cpp"
     "$project_root/native/src/material_rules.cpp"
