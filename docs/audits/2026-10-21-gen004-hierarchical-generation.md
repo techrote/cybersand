@@ -348,14 +348,84 @@ headers and their variant directory. `clean` removes only the new dedicated
 cache in addition to its existing cleanup. Makefile SHA-256 is
 `efe0ce424c8f5782d8001627f00a6ed582fe5fd307bd8e0c7cf6ab8a7be8ebdb`.
 
-## Acceptance status at documentation preparation
+The revised cold serial normal run passed all eight executables in **211.158
+seconds**, exit 0, under the unchanged 300-second bound. Semantic grammar
+reported **77,480 assertions** and typed fields **14,162 assertions**. The run
+used a new empty output directory, unchanged input hashes and the same GCC 13.3
+flags; peak child RSS was 601,372 KiB. Its normal compiler warnings in the
+preexisting C API are not sanitizer diagnostics or failed assertions.
 
-The implementation is in progress. The narrow local example inspection above is
-recorded separately from the complete local native/adapter suite above. Runtime
-publication and exact-head hosted gate receipts remain to be added here.
-Required skips, script errors or stale runtime manifests
-will not be counted as passes. The implementation PR must record recoverable
-source checkpoints and the final disposition before issue closure.
+The revised cold serial sanitizer run passed all eight executables in
+**546.001 seconds**, exit 0, under the unchanged 600-second bound. Semantic
+grammar again reported **77,480 assertions** and typed fields **14,162**.
+It used another new empty output directory, unchanged input hashes,
+`ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1` and
+`UBSAN_OPTIONS=halt_on_error=1`; peak child RSS was 928,972 KiB. No sanitizer
+runtime diagnostics appeared. Leak detection was explicitly disabled. Both
+cold measurements used default serial make with inherited `MAKEFLAGS` and
+`MFLAGS` removed and ran concurrently on the same local host. These observed
+times qualify that host; hosted CI retains its own independent timing gate.
+
+The complete socket fixes, expanded tests and build-object reuse were published
+as [`23ca883f81bd7eac9498b8271359ffc8099bf809`](https://github.com/techrote/cybersand/commit/23ca883f81bd7eac9498b8271359ffc8099bf809),
+tree `b8535961d52d9dee0cbb014db1ba59ee3dba2d95`, based on the earlier runtime
+publication `77d24cf2aa40d7e6d92529c9eb308a20a33cdf78`. Its frozen source and
+test hashes are the final socket identities above; the runtime build scripts
+and toolchain pins did not change.
+
+## Final source-matched runtime publication
+
+[Publication run 39562462805](https://github.com/techrote/cybersand/actions/runs/39562462805)
+completed all four jobs successfully against source
+`23ca883f81bd7eac9498b8271359ffc8099bf809`, source tree
+`b8535961d52d9dee0cbb014db1ba59ee3dba2d95`:
+
+| Job | Executed scope |
+|---|---|
+| [Linux build and execution](https://github.com/techrote/cybersand/actions/runs/39562462805/job/119096712830) | Pinned GCC 13.3/binutils 2.42 build, unchanged compatibility floor, Godot import and all five focused cases |
+| [Windows cross-build](https://github.com/techrote/cybersand/actions/runs/39562462805/job/119096712526) | Pinned LLVM-MinGW 20260826 UCRT/Clang 23.1 build |
+| [Actual Windows execution](https://github.com/techrote/cybersand/actions/runs/39562462805/job/119097995767) | Windows x86_64 Godot import and all five focused cases |
+| [Pair publication](https://github.com/techrote/cybersand/actions/runs/39562462805/job/119099442794) | Validated bundle hashes, source lease, LFS pointers and two manifests; published only the two runtime binaries and their manifests |
+
+Both execution jobs used pinned Godot 4.7 and passed the workbench, scalar fields,
+typed fields, hierarchical grammar and world-generation rendering cases with
+**138 / 271 / 394 / 438 / 23 assertions**, respectively, zero failures and no
+required skips or diagnostic errors. Linux retained the existing bundle floor:
+GLIBC 2.34 overall, CyberSand GLIBC 2.32 / GLIBCXX 3.4.30 / CXXABI 1.3.9 and
+Rapier2D GLIBC 2.34. This publisher establishes its recorded target-OS headless
+scope; full graphical and repository acceptance remains separately gated.
+
+The publication commit is
+[`33e782dcf2a3d4062d410964f1f80157f1ee5e99`](https://github.com/techrote/cybersand/commit/33e782dcf2a3d4062d410964f1f80157f1ee5e99),
+tree `fdcc98a3e2d96bffa797e8a435c35302f695086a`, with the built source as its
+single parent. Its materialized runtime identities are:
+
+| Platform | Bytes | SHA-256 |
+|---|---:|---|
+| Linux x86_64 | 2,912,480 | `9cc482b9d6be23e23adc8ce784929d34e0fd2c36b2c5b51696df53ec1a3e546f` |
+| Windows x86_64 | 3,429,376 | `df9f098bcd431c8c37620bb9643cfe686dbfd07b8966d42fc0360e22180318a7` |
+
+After fetching the publication, `check_repository.py --require-materialized`
+passed with all eighteen runtime files materialized and no source/build-input
+or artifact-identity errors. `git lfs fsck`, the Linux floor check and historical
+M11 integrity (18 records, 28 retained source hashes) passed. Documentation
+validation reported 97 documents, 189 canonical claims, 2,002 local links and
+152 anchors, with zero errors or warnings. The final retrieval evaluation kept
+the frozen 32-question result at 21 hit@1 / 32 hit@5 / MRR@5 0.7953; the expanded
+97-question supplementary set returned 75 hit@1 / 97 hit@5 / MRR@5 0.8698.
+
+## Exact-head acceptance record
+
+The source implementation, focused local controls and both published runtimes
+are qualified above. The final evidence-only commit preserves every recorded
+source and build input. Its exact accepted head, full hosted workflow/job links
+and merge disposition are recorded on [PR #196](https://github.com/techrote/cybersand/pull/196)
+so that adding the final receipts does not create a new untested source head.
+Merge requires actual successful execution of Documentation/provenance, Native,
+GDExtension Linux and Windows, and the applicable Issue #49 Water apparatus
+workflow on that exact head. A skipped draft, required skipped case, script
+error or stale runtime manifest does not satisfy acceptance. Historical local
+and publication receipts above retain their original source/platform scope.
 
 ## Explicit scope limits
 
