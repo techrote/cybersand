@@ -6,6 +6,9 @@ func _ready() -> void:
 	# Keep existing direct-launch arguments compatible with the desktop wrapper.
 	var first_launch: bool = not get_tree().has_meta("cybersand_launch_args_consumed")
 	get_tree().set_meta("cybersand_launch_args_consumed", true)
+	if first_launch and "--semantic-depth" in OS.get_cmdline_user_args():
+		get_tree().change_scene_to_file.call_deferred("res://semantic_depth.tscn")
+		return
 	if first_launch and "--player-playground" in OS.get_cmdline_user_args():
 		get_tree().change_scene_to_file.call_deferred("res://player_playground.tscn")
 		return
@@ -46,6 +49,7 @@ func _ready() -> void:
 	_button(column, "Physical Thunderbowl — articulated actors, tools and scripted pilots", "physical_actors")
 	_button(column, "Physical usable course — 32 tools, payloads and processors", "physical_usables")
 	_button(column, "World generation workbench — terrain authoring preview", "worldgen")
+	_button(column, "Semantic depth — refinery service gallery and flooded cavern", "semantic_depth")
 	_button(column, "Strata Theatre — layering and parallax depth lab", "depth")
 	_label(column, "BLACKSITE COMPARISONS / fresh reset for each arm", 22)
 	_label(column, "Original single-hull Rapier barrel and Ripper reference trials: A/D drive, Q/E torque, Space short upward pulse. The articulated actor versions and scripted pilots are available through F5 and Physical Thunderbowl.", 17)
@@ -71,6 +75,7 @@ func launch(destination: String) -> void:
 	if destination == "thunderbowl": scene = "res://examples/thunderbowl/thunderbowl.tscn"
 	elif destination in ["physical_actors", "physical_usables"]: scene = "res://examples/thunderbowl/physical_thunderbowl.tscn"
 	elif destination == "worldgen": scene = "res://worldgen_workbench.tscn"
+	elif destination == "semantic_depth": scene = "res://semantic_depth.tscn"
 	elif destination == "depth": scene = "res://depth_lab.tscn"
 	elif destination == "deepworks": scene = "res://deepworks.tscn"
 	elif destination == "player_playground": scene = "res://player_playground.tscn"

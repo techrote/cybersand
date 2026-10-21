@@ -92,6 +92,11 @@ func reset(definitions: Dictionary, authored_size: Vector2i = WORLD_SIZE) -> boo
 			"failed": false,
 			"error": "",
 		}
+	# Optional specialized owners prepare against private candidates before any
+	# live generation is replaced. The default depth host adds no extra owner.
+	last_error = _prepare_candidate_owners(candidates, authored_size)
+	if not last_error.is_empty():
+		return false
 	_discarded_commands += _commands.size()
 	_commands.clear()
 	_worlds = candidates
@@ -490,3 +495,6 @@ func _fail_layer(id: String, error: String) -> void:
 
 func _inside(cell: Vector2i) -> bool:
 	return cell.x >= 0 and cell.y >= 0 and cell.x < world_size.x and cell.y < world_size.y
+
+func _prepare_candidate_owners(_candidates: Dictionary, _authored_size: Vector2i) -> String:
+	return ""

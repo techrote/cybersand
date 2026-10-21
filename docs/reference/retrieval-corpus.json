@@ -100,7 +100,10 @@
     "systems/procedural-typed-spatial-fields.md",
     "reference/procedural-spatial-operators.md",
     "systems/procedural-hierarchical-generation.md",
-    "decisions/ADR-013-canonical-semantic-generation.md"
+    "decisions/ADR-013-canonical-semantic-generation.md",
+    "systems/procedural-semantic-planes.md",
+    "operations/semantic-depth-authoring.md",
+    "decisions/ADR-014-semantic-plane-admission.md"
   ],
   "navigation": [
     "README.md",

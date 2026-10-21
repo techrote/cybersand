@@ -55,6 +55,28 @@ Sources: [World](../../native/include/cybersand/world.hpp),
 | MOD-002 | Current descriptors; Approved execution separation: immutable rule data owns no threads/per-cell object containers |
 | MOD-003 | Approved, partial: storage owns chunk/field lifetime and capacity; general serialization is Planned |
 
+## Semantic generation invariants
+
+Contract: [four-plane generation](../systems/procedural-semantic-planes.md).
+Sources: [native plan](../../native/src/generation_planes.cpp),
+[owner](../../godot/scripts/depth/semantic_plane_runtime.gd).
+Fixtures: [native determinism](../../native/tests/test_generation_planes.cpp),
+[adapter](../../godot/tests/test_worldgen_planes.gd),
+[owner rejection/lifecycle](../../godot/tests/test_semantic_planes_runtime.gd),
+[actual example reactions](../../godot/tests/test_semantic_planes_examples.gd)
+and [render isolation](../../godot/tests/test_semantic_depth_render.gd).
+
+| ID | Status and narrow claim |
+|---|---|
+| GEN-PLANE-001 | Current: all four planes reference one immutable semantic hierarchy, canonical geometry and shared typed fields; absolute coordinates and semantic IDs do not depend on camera or request order |
+| GEN-PLANE-002 | Current: pending/failed/cancelled generation publishes no partial plane arrays; complete host replacement stages four Worlds, registries and the existing play actor owner before one commit |
+| GEN-PLANE-003 | Current: play, scripted and effects own separate native clocks; background has no runtime ticks, source/drain, actor or event writes |
+| GEN-PLANE-004 | Current: only copied identity-checked play→scripted blast and scripted→effects burst observations authorize bounded interlayer commands; static/presentation links and pixel overlap confer no authority |
+| GEN-PLANE-005 | Current: finite source/drain/setup declarations feed ordinary materials; expected products remain diagnostics produced by native kernels |
+| GEN-PLANE-006 | Current: canonical anchors yield one tiled registration union; identical validated admission is idempotent, reset retires old commands, and retired revisions cannot replace current state |
+| GEN-PLANE-007 | Current: all expansion, material, diagnostic, publication, schedule and observation budgets fail explicitly; native acceptance does not waive stricter host caps |
+| GEN-PLANE-008 | Current finite-preview scope: no streaming eviction, durable mutation reconciliation, implicit Z physics or direct generation-worker Rapier access is introduced |
+
 ## Timing and threading invariants
 
 Contract/source: [tick order and failures](../architecture/simulation-tick-and-threading.md),

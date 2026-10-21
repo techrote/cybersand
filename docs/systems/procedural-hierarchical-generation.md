@@ -39,9 +39,9 @@ random stream or Godot callback. GEN-003 fields consume explicitly exported
 immutable geometry; they do not depend on grammar types or partially rasterized
 neighbors. Material proposal publication, native World admission and presentation
 remain separate owners. The planner does not evict chunks, reconcile player edits,
-run simulation or complete persistent streaming. GEN-005 owns semantic depth
-projection, GEN-007 the full authoring/quality editor, and GEN-006 streaming and
-reconciliation.
+run simulation or complete persistent streaming. [GEN-005 semantic planes](procedural-semantic-planes.md) now compose this immutable
+hierarchy for finite four-plane projection. GEN-007 owns the full authoring/quality
+editor, and GEN-006 streaming and reconciliation.
 
 ## How do finite planning regions own cross-chunk places?
 

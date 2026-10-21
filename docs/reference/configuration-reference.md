@@ -133,6 +133,64 @@ traversal qualifications; the
 [interfaces](interfaces-and-message-contracts.md#native-semantic-plans-and-copied-hierarchy-inspection)
 own returned records.
 
+## Semantic plane generation limits
+
+**Current GEN-005 opt-in extension:** a schema-3 recipe may include
+`semantic_planes` schema 1 / algorithm 1. It composes the existing hierarchy and
+typed graph; it does not change the retained generator algorithms. Values below
+come from [`PlaneLimits`](../../native/include/cybersand/generation_planes.hpp),
+the [JSON adapter](../../godot/native_extension/generation_planes_adapter.inc)
+and the [semantic owner](../../godot/scripts/depth/semantic_plane_runtime.gd).
+
+| Limit | Native default | Godot JSON maximum | Native hard maximum |
+|---|---:|---:|---:|
+| Templates across projections, fixtures, links and actors | 128 | 128 | 512 |
+| Expanded projections | 8,192 | 8,192 | 16,384 |
+| Expanded fixtures | 1,024 | 1,024 | 4,096 |
+| Expanded links | 2,048 | 2,048 | 8,192 |
+| Play actors | 8 | 8 | 8 |
+| Cells per plane | 1,048,576 | 1,048,576 | 4,194,304 |
+| Logical preparation/raster operations | 250,000,000 | 4,000,000,000 | 4,000,000,000 |
+| Prepared storage | 16 MiB | 64 MiB | 64 MiB |
+| Publication storage | 64 MiB | 256 MiB | 256 MiB |
+| Diagnostic storage | 4 MiB | 16 MiB | 16 MiB |
+| Aggregate declared runtime event rate | 256 | 256 | 256 |
+| Scheduled fixture cell writes over lifetime | 4,194,304 | 4,194,304 | 67,108,864 |
+
+The examples explicitly request 2,000,000,000 logical operations to cover the
+conservative full-region projection scans. Raster work includes generator work
+when play uses it, the shared typed graph once per affected plane/sample, and
+final registration/receipt scans. `max_operations` independently bounds semantic
+preparation and each requested raster/publication, not cumulative session work
+or elapsed time. Prepared storage reports additional plane-compiler allocations;
+the shared GEN-003/004 generator retains its own existing budgets.
+Native declaration acceptance does not waive
+the stricter host limits below.
+
+| Host or authored bound | Admitted value |
+|---|---|
+| Complete finite world | Each axis 8–1024 cells; signed Godot `Rect2i` coordinates; all four planes required |
+| Native material rectangles | At most 4,096 nonempty merged runs per plane; payload must exactly reconstruct copied material bytes |
+| Complete copied packet | 64 MiB and 262,144 metadata nodes |
+| Features / projections / fixtures / links / actors | 8,192 / 8,192 / 1,024 / 2,048 / 8 |
+| Fixture rectangle | At most 512 cells, contained in its feature and plane |
+| Simultaneous fixture writes | At most 8,192 cells per plane tick, including cleanup |
+| Schedule / repeat | Through tick 360,000; 1–10,000 repetitions; positive period; cleanup after final application |
+| Expected native products | At most 16 valid nonempty material IDs, distinct from the fixture's feed |
+| Outstanding observations / queued commands | 32 each through the retained depth boundary |
+| Runtime event radius / rate | At most 32 cells; 256 events per target-plane tick, additionally constrained by each link |
+| Retired bundle revisions | 128; further replacement fails explicitly rather than evicting stale-admission history |
+| Dynamic rates | 0–60 Hz; example play/rear/effects rates 30/20/15 Hz |
+| Frozen background | Zero ticks, fixtures, actors and runtime event writes |
+| Projection density / wall thickness / route width | Finite 0–1 / 0–128 cells / zero or odd 1–63 cells, with valid contained geometry |
+| Projection masks | Optional `application`/`exclusion` `spatial:<expanded.id>`; normalized or boolean dimensionless output |
+
+Lifecycle reset constructs a new bounded incarnation; it is not persistent
+mutation rebasing. The [semantic contract](../systems/procedural-semantic-planes.md)
+owns interpretation and [interfaces](interfaces-and-message-contracts.md#semantic-plane-proposals-and-owner-admission)
+own copied packet fields. The [authoring guide](../operations/semantic-depth-authoring.md)
+owns example controls and reproducible captures.
+
 ## Depth host and Deepworks configuration
 
 **Current opt-in source:** these values belong to

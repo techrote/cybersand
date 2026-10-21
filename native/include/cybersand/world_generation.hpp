@@ -296,6 +296,8 @@ public:
     [[nodiscard]] const RouteValidation& validate_routes() const noexcept;
     [[nodiscard]] CellProvenance explain(std::int64_t x, std::int64_t y) const;
     [[nodiscard]] std::uint64_t fingerprint() const noexcept;
+    // Conservative logical work charged by ordinary generation jobs per cell.
+    [[nodiscard]] std::uint64_t operations_per_cell() const noexcept;
     [[nodiscard]] std::vector<ThemeWeight> theme_weights_at(std::int64_t x, std::int64_t y) const;
     [[nodiscard]] Material sample(std::int64_t x, std::int64_t y) const;
     [[nodiscard]] std::unique_ptr<GenerationJob> begin(ChunkCoord chunk, const std::string& diagnostic = {}) const;

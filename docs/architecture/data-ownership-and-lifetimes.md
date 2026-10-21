@@ -45,6 +45,39 @@ the old owner, commands and observations. Rendering receives copied packets
 tagged with the new reset generation. This API adds no thread-safety or general
 worker forwarding capability; the caller must already own serialized access.
 
+## Generated semantic depth ownership
+
+**Current GEN-005:** immutable `PlanePlan` retains the existing `Generator`,
+hierarchy and typed spatial graph. Its jobs own four private material arrays and
+copied registration/provenance records. They have no World, actor, Rapier,
+camera or engine-clock input. Cancellation/failure discards unpublished work;
+native receipts bind Ready values to the exact plan and requested rectangle.
+
+The main-thread serialized `CyberWorldGenerator` copies a complete proposal.
+`CyberSemanticPlaneRuntime` validates it, constructs four candidate native
+Worlds privately and prepares a sampled actor session through the existing
+play-plane actor owner. Its inherited `_prepare_candidate_owners` hook runs
+before the four-World publication, so a failed actor model or placement retains
+the previous Worlds and session. One synchronous commit installs materials,
+registries, clocks and actor identity together. The compositor consumes only
+subsequent copied packets and retains the existing generation/serial checks.
+
+Fixtures and links belong to stable semantic features and canonical regions.
+Each fixture advances only on its declared plane clock. Completed feeds remain
+spent; an identical bundle retry leaves native state and clocks untouched.
+Explicit reset constructs fresh Worlds and invalidates old observations and
+actor actions. A differing replacement needs the current owner generation;
+the bounded retired-revision ledger prevents old bundle resurrection.
+
+Runtime observations are copied, owner-issued, one-use values. Registered
+play→scripted blast and scripted→effects burst routes are the only interlayer
+writes. Static service/machinery links, presentation window links and pixel overlap carry no write
+authority. Background is frozen; generation never creates a non-play physics
+owner. The [semantic contract](../systems/procedural-semantic-planes.md) and
+[message reference](../reference/interfaces-and-message-contracts.md#semantic-plane-proposals-and-owner-admission)
+own packet/lifecycle details. Persistent residency and mutation rebasing remain
+GEN-006.
+
 ## Opt-in depth exhibition ownership
 
 [Strata Theatre](../systems/depth-layers-and-parallax.md) and

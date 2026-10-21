@@ -1269,6 +1269,7 @@ CellProvenance Generator::explain(std::int64_t x, std::int64_t y) const {
     return result;
 }
 std::uint64_t Generator::fingerprint() const noexcept { return impl_->fingerprint; }
+std::uint64_t Generator::operations_per_cell() const noexcept { return impl_->cost; }
 std::vector<ThemeWeight> Generator::theme_weights_at(std::int64_t x, std::int64_t y) const {
     require(x >= -kCoordinateLimit && x < kCoordinateLimit && y >= -kCoordinateLimit && y < kCoordinateLimit, "sample coordinate out of range");
     auto weights = impl_->weights(x, y); std::vector<ThemeWeight> result;

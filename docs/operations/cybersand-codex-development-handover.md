@@ -10,6 +10,28 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Semantic plane generation checkpoint — 2026-10-21
+
+GEN-005 / [#192](https://github.com/techrote/cybersand/issues/192) projects a single
+GEN-004 semantic hierarchy into play, scripted, effects and background. Read the
+[contract](../systems/procedural-semantic-planes.md),
+[ADR-014](../decisions/ADR-014-semantic-plane-admission.md) and
+[authoring guide](semantic-depth-authoring.md) before changing schema, fixture
+lifecycle, event admission, actor placement or complete-bundle replacement.
+
+The optional `semantic_planes` schema-1 member preserves retained recipe schemas.
+The new launcher/`--semantic-depth` opens the refinery and flooded-cavern examples.
+The existing sampled actor session receives play-only placements. Native kernels
+produce fixture products; no cross-plane event is inferred from pixel overlap.
+Preserve the complete candidate staging boundary, stale observation rejection,
+finite registration/receipt bounds, independent clocks and frozen background.
+
+Run the focused native and Godot cases routed in
+[local validation](local-build-and-validation.md#semantic-plane-generation-and-native-fixtures).
+[The dated ledger](../audits/2026-10-21-gen005-semantic-planes.md) records the
+current checkpoint and remaining hosted/source-matched platform gates. The next
+programme stages are GEN-007 then GEN-006; this finite host is not streaming.
+
 ## Player control playground — 2026-10-20
 
 Start with the [player control contract](../systems/player-control-playground.md)

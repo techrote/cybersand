@@ -9,7 +9,7 @@ DEBUG_FLAGS := -O0 -g3
 SIMULATION_SOURCES := native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp
 BRIDGE_SOURCES := native/src/render_snapshot.cpp native/src/c_api.cpp
 CORE_SOURCES := $(SIMULATION_SOURCES) $(BRIDGE_SOURCES)
-GENERATION_SOURCES := native/src/world_generation.cpp native/src/generation_fields.cpp native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp native/src/generation_grammar.cpp
+GENERATION_SOURCES := native/src/world_generation.cpp native/src/generation_fields.cpp native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp native/src/generation_grammar.cpp native/src/generation_planes.cpp
 GENERATION_OPT_OBJECTS := $(patsubst native/src/%.cpp,$(BUILD_DIR)/worldgen-objects/normal/%.o,$(GENERATION_SOURCES))
 GENERATION_OPT_THREADED_OBJECTS := $(patsubst native/src/%.cpp,$(BUILD_DIR)/worldgen-objects/normal-threaded/%.o,$(GENERATION_SOURCES))
 GENERATION_SAN_OBJECTS := $(patsubst native/src/%.cpp,$(BUILD_DIR)/worldgen-objects/sanitized/%.o,$(GENERATION_SOURCES))
@@ -187,7 +187,7 @@ $(BUILD_DIR)/test_generation_fields: $(BUILD_DIR)/worldgen-objects/normal/genera
 $(BUILD_DIR)/test_generation_modifiers: $(GENERATION_OPT_OBJECTS) $(CORE_HEADERS) native/tests/test_generation_modifiers.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O2 -g -Werror $(GENERATION_OPT_OBJECTS) native/tests/test_generation_modifiers.cpp -o $@
 
-worldgen-test: $(BUILD_DIR)/test_generation_grammar $(BUILD_DIR)/test_generation_typed_integration $(BUILD_DIR)/test_generation_typed $(BUILD_DIR)/test_generation_spatial $(BUILD_DIR)/test_world_generation $(BUILD_DIR)/test_world_generation_install $(BUILD_DIR)/test_generation_fields $(BUILD_DIR)/test_generation_modifiers
+worldgen-test: $(BUILD_DIR)/test_generation_planes $(BUILD_DIR)/test_generation_grammar $(BUILD_DIR)/test_generation_typed_integration $(BUILD_DIR)/test_generation_typed $(BUILD_DIR)/test_generation_spatial $(BUILD_DIR)/test_world_generation $(BUILD_DIR)/test_world_generation_install $(BUILD_DIR)/test_generation_fields $(BUILD_DIR)/test_generation_modifiers
 	./$(BUILD_DIR)/test_world_generation
 	./$(BUILD_DIR)/test_world_generation_install
 	./$(BUILD_DIR)/test_generation_fields
@@ -196,6 +196,7 @@ worldgen-test: $(BUILD_DIR)/test_generation_grammar $(BUILD_DIR)/test_generation
 	./$(BUILD_DIR)/test_generation_typed_integration
 	./$(BUILD_DIR)/test_generation_spatial
 	./$(BUILD_DIR)/test_generation_grammar
+	./$(BUILD_DIR)/test_generation_planes
 
 $(BUILD_DIR)/test_world_generation_sanitized: $(GENERATION_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_world_generation.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(GENERATION_SAN_OBJECTS) native/tests/test_world_generation.cpp -o $@
@@ -209,7 +210,7 @@ $(BUILD_DIR)/test_generation_fields_sanitized: $(BUILD_DIR)/worldgen-objects/san
 $(BUILD_DIR)/test_generation_modifiers_sanitized: $(GENERATION_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_generation_modifiers.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(GENERATION_SAN_OBJECTS) native/tests/test_generation_modifiers.cpp -o $@
 
-worldgen-sanitize: $(BUILD_DIR)/test_generation_grammar_sanitized $(BUILD_DIR)/test_generation_typed_integration_sanitized $(BUILD_DIR)/test_generation_typed_sanitized $(BUILD_DIR)/test_generation_spatial_sanitized $(BUILD_DIR)/test_world_generation_sanitized $(BUILD_DIR)/test_world_generation_install_sanitized $(BUILD_DIR)/test_generation_fields_sanitized $(BUILD_DIR)/test_generation_modifiers_sanitized
+worldgen-sanitize: $(BUILD_DIR)/test_generation_planes_sanitized $(BUILD_DIR)/test_generation_grammar_sanitized $(BUILD_DIR)/test_generation_typed_integration_sanitized $(BUILD_DIR)/test_generation_typed_sanitized $(BUILD_DIR)/test_generation_spatial_sanitized $(BUILD_DIR)/test_world_generation_sanitized $(BUILD_DIR)/test_world_generation_install_sanitized $(BUILD_DIR)/test_generation_fields_sanitized $(BUILD_DIR)/test_generation_modifiers_sanitized
 	./$(BUILD_DIR)/test_world_generation_sanitized
 	./$(BUILD_DIR)/test_world_generation_install_sanitized
 	./$(BUILD_DIR)/test_generation_fields_sanitized
@@ -218,6 +219,7 @@ worldgen-sanitize: $(BUILD_DIR)/test_generation_grammar_sanitized $(BUILD_DIR)/t
 	./$(BUILD_DIR)/test_generation_typed_integration_sanitized
 	./$(BUILD_DIR)/test_generation_spatial_sanitized
 	./$(BUILD_DIR)/test_generation_grammar_sanitized
+	./$(BUILD_DIR)/test_generation_planes_sanitized
 
 $(BUILD_DIR)/worldgen_demo: $(GENERATION_SOURCES) $(CORE_HEADERS) native/bench/worldgen_demo.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O2 -Werror $(GENERATION_SOURCES) native/bench/worldgen_demo.cpp -o $@
@@ -268,3 +270,9 @@ $(BUILD_DIR)/test_generation_grammar: $(GENERATION_OPT_THREADED_OBJECTS) $(CORE_
 
 $(BUILD_DIR)/test_generation_grammar_sanitized: $(GENERATION_SAN_THREADED_OBJECTS) $(CORE_HEADERS) native/tests/test_generation_grammar.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(GENERATION_SAN_THREADED_OBJECTS) native/tests/test_generation_grammar.cpp -o $@
+
+$(BUILD_DIR)/test_generation_planes: $(GENERATION_OPT_THREADED_OBJECTS) $(CORE_HEADERS) native/tests/test_generation_planes.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread -Werror $(GENERATION_OPT_THREADED_OBJECTS) native/tests/test_generation_planes.cpp -o $@
+
+$(BUILD_DIR)/test_generation_planes_sanitized: $(GENERATION_SAN_THREADED_OBJECTS) $(CORE_HEADERS) native/tests/test_generation_planes.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(GENERATION_SAN_THREADED_OBJECTS) native/tests/test_generation_planes.cpp -o $@

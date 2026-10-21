@@ -170,3 +170,7 @@ the sampled arena's model-link examples retain their version-1 scope.
 ran and which artifacts/platforms it covers. CYSD1 restores levels, not exact
 replay continuation. Review [license status](LICENSE_STATUS.md) and
 [third-party notices](THIRD_PARTY_NOTICES.md) before distribution.
+
+## Semantic depth examples
+
+The Semantic depth launcher entry / `--semantic-depth` opens two generated places: refinery service galleries and a flooded cavern. A single semantic hierarchy owns matching play, rear, atmosphere and frozen far projections, finite native-material fixtures and play-only actor placements. See the [authoring and controls guide](docs/operations/semantic-depth-authoring.md), [native contract](docs/systems/procedural-semantic-planes.md) and [dated validation ledger](docs/audits/2026-10-21-gen005-semantic-planes.md).

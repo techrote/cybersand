@@ -10,6 +10,17 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## GEN-005 semantic four-plane generation — 2026-10-21
+
+The [GEN-005 audit](../audits/2026-10-21-gen005-semantic-planes.md) records the
+implementation source, source-matched runtime publication, native deterministic
+projection tests, transactional owner controls, all 40 actual-example fixture
+receipts and graphical captures. The
+[semantic contract](../systems/procedural-semantic-planes.md) owns the finite
+four-plane and permitted-route claims; the audit distinguishes executed local
+checks from hosted exact-head acceptance. Source presence or a previous
+generation-stage pass does not establish this stage's acceptance.
+
 ## Player control playground — 2026-10-20
 
 The [original playground audit](../audits/2026-10-20-player-control-playground.md)

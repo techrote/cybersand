@@ -1,0 +1,1397 @@
+{
+  "schema": 3,
+  "seed": 19201,
+  "chunk_size": 64,
+  "candidate": "strata",
+  "parameters": {
+    "surface_y": -128,
+    "relief": 0,
+    "detail": 0,
+    "cave_threshold": 0.8,
+    "district_size": 128
+  },
+  "themes": {
+    "weights": {
+      "industrial": 3,
+      "ruins": 1
+    }
+  },
+  "spatial": {
+    "nodes": [
+      {
+        "id": "exposure",
+        "kind": "noise",
+        "sampling_scale": 4,
+        "parameters": {
+          "scale": 44,
+          "salt": 11
+        }
+      },
+      {
+        "id": "weathering",
+        "kind": "to_mask",
+        "inputs": [
+          "exposure"
+        ],
+        "parameters": {
+          "low": 0.25,
+          "high": 0.72
+        }
+      }
+    ]
+  },
+  "grammar": {
+    "schema": 1,
+    "id": "refinery-galleries",
+    "region_window": [
+      -1,
+      -1,
+      2,
+      2
+    ],
+    "region_size": 128,
+    "roots": [
+      "district"
+    ],
+    "curve": "hilbert",
+    "curve_order": 1,
+    "route_width": 7,
+    "clearance": 3,
+    "secondary_loop": false,
+    "service_trunk": true,
+    "curve_services": false,
+    "liquid_trunk": false,
+    "service_material": 69,
+    "rules": [
+      {
+        "id": "district",
+        "kind": "district",
+        "count": 1,
+        "material": null,
+        "interior": null,
+        "wall_thickness": 0,
+        "tags": [
+          "refinery-district"
+        ],
+        "candidates": [
+          {
+            "id": "canonical",
+            "bounds": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ],
+        "children": [
+          "gallery"
+        ]
+      },
+      {
+        "id": "gallery",
+        "kind": "complex",
+        "count": 1,
+        "material": 58,
+        "interior": 0,
+        "wall_thickness": 2,
+        "tags": [
+          "gallery"
+        ],
+        "candidates": [
+          {
+            "id": "canonical",
+            "bounds": [
+              4,
+              6,
+              120,
+              114
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ],
+        "children": [
+          "reactor",
+          "window",
+          "waterfall",
+          "service-pipe",
+          "vent",
+          "walkway",
+          "central-pier",
+          "inspection-lamp"
+        ]
+      },
+      {
+        "id": "reactor",
+        "kind": "apparatus",
+        "count": 1,
+        "material": 62,
+        "interior": 0,
+        "wall_thickness": 2,
+        "tags": [
+          "native-brine-reactor",
+          "machinery"
+        ],
+        "candidates": [
+          {
+            "id": "canonical",
+            "bounds": [
+              76,
+              70,
+              32,
+              32
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "window",
+        "kind": "detail",
+        "count": 4,
+        "material": 62,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "visibility-aperture"
+        ],
+        "candidates": [
+          {
+            "id": "aperture-0",
+            "bounds": [
+              12,
+              12,
+              16,
+              22
+            ],
+            "order_x": 0,
+            "order_y": 0
+          },
+          {
+            "id": "aperture-1",
+            "bounds": [
+              38,
+              12,
+              16,
+              22
+            ],
+            "order_x": 1,
+            "order_y": 0
+          },
+          {
+            "id": "aperture-2",
+            "bounds": [
+              12,
+              43,
+              16,
+              18
+            ],
+            "order_x": 0,
+            "order_y": 1
+          },
+          {
+            "id": "aperture-3",
+            "bounds": [
+              38,
+              43,
+              16,
+              18
+            ],
+            "order_x": 1,
+            "order_y": 1
+          }
+        ]
+      },
+      {
+        "id": "waterfall",
+        "kind": "apparatus",
+        "count": 1,
+        "material": 68,
+        "interior": 0,
+        "wall_thickness": 2,
+        "tags": [
+          "waterfall",
+          "fluid-source"
+        ],
+        "candidates": [
+          {
+            "id": "canonical",
+            "bounds": [
+              14,
+              64,
+              20,
+              42
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "service-pipe",
+        "kind": "apparatus",
+        "count": 1,
+        "material": 69,
+        "interior": 69,
+        "wall_thickness": 0,
+        "tags": [
+          "canonical-service-pipe"
+        ],
+        "candidates": [
+          {
+            "id": "canonical",
+            "bounds": [
+              10,
+              36,
+              98,
+              6
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "vent",
+        "kind": "apparatus",
+        "count": 1,
+        "material": 64,
+        "interior": 0,
+        "wall_thickness": 2,
+        "tags": [
+          "atmospheric-vent"
+        ],
+        "candidates": [
+          {
+            "id": "canonical",
+            "bounds": [
+              89,
+              8,
+              18,
+              24
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "walkway",
+        "kind": "room",
+        "count": 1,
+        "material": 66,
+        "interior": 0,
+        "wall_thickness": 0,
+        "tags": [
+          "lower-walkway"
+        ],
+        "candidates": [
+          {
+            "id": "canonical",
+            "bounds": [
+              4,
+              93,
+              112,
+              10
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "central-pier",
+        "kind": "detail",
+        "count": 1,
+        "material": 58,
+        "interior": 58,
+        "wall_thickness": 0,
+        "tags": [
+          "central-pier"
+        ],
+        "candidates": [
+          {
+            "id": "canonical",
+            "bounds": [
+              52,
+              52,
+              10,
+              38
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "inspection-lamp",
+        "kind": "detail",
+        "count": 1,
+        "material": 79,
+        "interior": 79,
+        "wall_thickness": 0,
+        "tags": [
+          "inspection-lamp"
+        ],
+        "candidates": [
+          {
+            "id": "canonical",
+            "bounds": [
+              73,
+              51,
+              30,
+              4
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ]
+      }
+    ]
+  },
+  "semantic_planes": {
+    "schema": 1,
+    "id": "refinery-galleries",
+    "revision": 1,
+    "policies": [
+      {
+        "plane": "play",
+        "material": 0,
+        "base_generator": false,
+        "rate": 30,
+        "omission": "Traversable open air between authored terrain and apparatus."
+      },
+      {
+        "plane": "scripted",
+        "material": 0,
+        "base_generator": false,
+        "rate": 20,
+        "omission": "Service void between the rear shells and independent native reactors."
+      },
+      {
+        "plane": "effects",
+        "material": 0,
+        "base_generator": false,
+        "rate": 15,
+        "omission": "Clear air is intentional outside bounded vents and waterfall spray."
+      },
+      {
+        "plane": "background",
+        "material": 0,
+        "base_generator": false,
+        "rate": 0,
+        "omission": "Open distant void between frozen silhouettes; no runtime source or simulation."
+      }
+    ],
+    "projections": [
+      {
+        "id": "region-effects-composition",
+        "rule": "$region",
+        "plane": "effects",
+        "geometry": "feature",
+        "shape": "omit",
+        "priority": 0,
+        "omission": "Intentionally clear air; only each declared vent and waterfall contributes local atmosphere."
+      },
+      {
+        "id": "region-background-composition",
+        "rule": "$region",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "omit",
+        "priority": 0,
+        "omission": "Intentional negative sky between feature-owned refinery towers."
+      },
+      {
+        "id": "play-gallery",
+        "rule": "gallery",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 1,
+        "material": 58,
+        "interior": 0,
+        "wall_thickness": 2
+      },
+      {
+        "id": "cast-support-0",
+        "rule": "gallery",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 2,
+        "material": 58,
+        "bounds": [
+          2,
+          53,
+          116,
+          2
+        ]
+      },
+      {
+        "id": "cast-support-1",
+        "rule": "gallery",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 2,
+        "material": 58,
+        "bounds": [
+          2,
+          90,
+          116,
+          3
+        ]
+      },
+      {
+        "id": "cast-support-2",
+        "rule": "gallery",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 2,
+        "material": 58,
+        "bounds": [
+          7,
+          2,
+          2,
+          110
+        ]
+      },
+      {
+        "id": "cast-support-3",
+        "rule": "gallery",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 2,
+        "material": 58,
+        "bounds": [
+          111,
+          2,
+          2,
+          110
+        ]
+      },
+      {
+        "id": "warning-strip-0",
+        "rule": "gallery",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 3,
+        "material": 76,
+        "bounds": [
+          4,
+          4,
+          30,
+          1
+        ]
+      },
+      {
+        "id": "warning-strip-1",
+        "rule": "gallery",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 3,
+        "material": 76,
+        "bounds": [
+          78,
+          4,
+          34,
+          1
+        ]
+      },
+      {
+        "id": "warning-strip-2",
+        "rule": "gallery",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 3,
+        "material": 76,
+        "bounds": [
+          4,
+          88,
+          24,
+          1
+        ]
+      },
+      {
+        "id": "warning-strip-3",
+        "rule": "gallery",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 3,
+        "material": 76,
+        "bounds": [
+          86,
+          88,
+          28,
+          1
+        ]
+      },
+      {
+        "id": "copper-header",
+        "rule": "gallery",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 4,
+        "material": 69,
+        "bounds": [
+          5,
+          49,
+          110,
+          2
+        ]
+      },
+      {
+        "id": "rear-gallery",
+        "rule": "gallery",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 1,
+        "material": 64,
+        "interior": 0,
+        "wall_thickness": 2,
+        "bounds": [
+          3,
+          3,
+          114,
+          104
+        ]
+      },
+      {
+        "id": "rear-weathering",
+        "rule": "gallery",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 1,
+        "material": 65,
+        "interior": 0,
+        "wall_thickness": 2,
+        "bounds": [
+          3,
+          3,
+          114,
+          104
+        ],
+        "application": "spatial:weathering"
+      },
+      {
+        "id": "rear-column-0",
+        "rule": "gallery",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 2,
+        "material": 65,
+        "bounds": [
+          10,
+          4,
+          4,
+          100
+        ]
+      },
+      {
+        "id": "rear-column-1",
+        "rule": "gallery",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 2,
+        "material": 65,
+        "bounds": [
+          41,
+          4,
+          3,
+          100
+        ]
+      },
+      {
+        "id": "rear-column-2",
+        "rule": "gallery",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 2,
+        "material": 65,
+        "bounds": [
+          75,
+          4,
+          3,
+          100
+        ]
+      },
+      {
+        "id": "rear-column-3",
+        "rule": "gallery",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 2,
+        "material": 65,
+        "bounds": [
+          105,
+          4,
+          4,
+          100
+        ]
+      },
+      {
+        "id": "rear-service-0",
+        "rule": "gallery",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 3,
+        "material": 69,
+        "bounds": [
+          6,
+          16,
+          106,
+          2
+        ]
+      },
+      {
+        "id": "rear-service-1",
+        "rule": "gallery",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 3,
+        "material": 69,
+        "bounds": [
+          6,
+          83,
+          106,
+          2
+        ]
+      },
+      {
+        "id": "rear-service-2",
+        "rule": "gallery",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 3,
+        "material": 69,
+        "bounds": [
+          6,
+          98,
+          106,
+          2
+        ]
+      },
+      {
+        "id": "distant-column-0",
+        "rule": "gallery",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 1,
+        "material": 65,
+        "bounds": [
+          16,
+          6,
+          15,
+          98
+        ]
+      },
+      {
+        "id": "distant-column-1",
+        "rule": "gallery",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 1,
+        "material": 65,
+        "bounds": [
+          42,
+          0,
+          22,
+          113
+        ]
+      },
+      {
+        "id": "distant-column-2",
+        "rule": "gallery",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 1,
+        "material": 65,
+        "bounds": [
+          79,
+          10,
+          19,
+          102
+        ]
+      },
+      {
+        "id": "distant-column-3",
+        "rule": "gallery",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 1,
+        "material": 65,
+        "bounds": [
+          103,
+          20,
+          9,
+          90
+        ]
+      },
+      {
+        "id": "distant-lit-seam-0",
+        "rule": "gallery",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 2,
+        "material": 79,
+        "bounds": [
+          20,
+          13,
+          6,
+          58
+        ],
+        "density": 0.85,
+        "application": "spatial:weathering"
+      },
+      {
+        "id": "distant-lit-seam-1",
+        "rule": "gallery",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 2,
+        "material": 79,
+        "bounds": [
+          48,
+          12,
+          7,
+          78
+        ],
+        "density": 0.85,
+        "application": "spatial:weathering"
+      },
+      {
+        "id": "distant-lit-seam-2",
+        "rule": "gallery",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 2,
+        "material": 79,
+        "bounds": [
+          84,
+          24,
+          7,
+          64
+        ],
+        "density": 0.85,
+        "application": "spatial:weathering"
+      },
+      {
+        "id": "reactor-play",
+        "rule": "reactor",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 20,
+        "material": 62,
+        "interior": 0,
+        "wall_thickness": 2
+      },
+      {
+        "id": "reactor-scripted",
+        "rule": "reactor",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 20,
+        "material": 71,
+        "interior": 0,
+        "wall_thickness": 2
+      },
+      {
+        "id": "reactor-collision-pedestal",
+        "rule": "reactor",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 21,
+        "material": 62,
+        "bounds": [
+          1,
+          24,
+          30,
+          4
+        ]
+      },
+      {
+        "id": "reactor-rear-salt",
+        "rule": "reactor",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 21,
+        "material": 23,
+        "bounds": [
+          4,
+          21,
+          24,
+          3
+        ]
+      },
+      {
+        "id": "reactor-status",
+        "rule": "reactor",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 22,
+        "material": 77,
+        "bounds": [
+          2,
+          1,
+          28,
+          1
+        ]
+      },
+      {
+        "id": "reactor-far-support",
+        "rule": "reactor",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 10,
+        "material": 64,
+        "interior": 0,
+        "wall_thickness": 1
+      },
+      {
+        "id": "window-frame",
+        "rule": "window",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 20,
+        "material": 62,
+        "interior": 0,
+        "wall_thickness": 1
+      },
+      {
+        "id": "window-reveal",
+        "rule": "window",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 10,
+        "material": 79,
+        "interior": 0,
+        "wall_thickness": 1
+      },
+      {
+        "id": "window-crossbar",
+        "rule": "window",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 21,
+        "material": 62,
+        "bounds": [
+          7,
+          0,
+          1,
+          18
+        ]
+      },
+      {
+        "id": "service-front",
+        "rule": "service-pipe",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 30,
+        "material": 69,
+        "bounds": [
+          0,
+          1,
+          98,
+          2
+        ]
+      },
+      {
+        "id": "service-rear",
+        "rule": "service-pipe",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 30,
+        "material": 68,
+        "bounds": [
+          0,
+          1,
+          98,
+          2
+        ]
+      },
+      {
+        "id": "service-trunk-play",
+        "rule": "$region",
+        "plane": "play",
+        "geometry": "routes",
+        "shape": "fill",
+        "priority": 31,
+        "material": 69,
+        "route_type": "service",
+        "route_width": 1
+      },
+      {
+        "id": "service-trunk-scripted",
+        "rule": "$region",
+        "plane": "scripted",
+        "geometry": "routes",
+        "shape": "fill",
+        "priority": 31,
+        "material": 69,
+        "route_type": "service",
+        "route_width": 1
+      },
+      {
+        "id": "waterfall-wall",
+        "rule": "waterfall",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 20,
+        "material": 68,
+        "interior": 0,
+        "wall_thickness": 1
+      },
+      {
+        "id": "waterfall-mouth",
+        "rule": "waterfall",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 21,
+        "material": 3,
+        "bounds": [
+          7,
+          3,
+          5,
+          2
+        ]
+      },
+      {
+        "id": "waterfall-basin",
+        "rule": "waterfall",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 21,
+        "material": 3,
+        "bounds": [
+          2,
+          32,
+          16,
+          7
+        ]
+      },
+      {
+        "id": "waterfall-rear-channel",
+        "rule": "waterfall",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 20,
+        "material": 69,
+        "interior": 0,
+        "wall_thickness": 1
+      },
+      {
+        "id": "waterfall-mist",
+        "rule": "waterfall",
+        "plane": "effects",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 20,
+        "material": 22,
+        "bounds": [
+          4,
+          18,
+          12,
+          20
+        ],
+        "density": 0.2
+      },
+      {
+        "id": "vent-casing",
+        "rule": "vent",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 20,
+        "material": 64,
+        "interior": 0,
+        "wall_thickness": 2
+      },
+      {
+        "id": "vent-rear-grille",
+        "rule": "vent",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 20,
+        "material": 66,
+        "interior": 0,
+        "wall_thickness": 2
+      },
+      {
+        "id": "vent-atmosphere",
+        "rule": "vent",
+        "plane": "effects",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 20,
+        "material": 22,
+        "bounds": [
+          3,
+          3,
+          12,
+          16
+        ],
+        "density": 0.12
+      },
+      {
+        "id": "walkway-deck",
+        "rule": "walkway",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 20,
+        "material": 66,
+        "bounds": [
+          0,
+          0,
+          112,
+          2
+        ]
+      },
+      {
+        "id": "walkway-rear",
+        "rule": "walkway",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 20,
+        "material": 65,
+        "bounds": [
+          0,
+          3,
+          112,
+          2
+        ]
+      },
+      {
+        "id": "pier-play",
+        "rule": "central-pier",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 20,
+        "material": 58
+      },
+      {
+        "id": "pier-rear",
+        "rule": "central-pier",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 20,
+        "material": 64
+      },
+      {
+        "id": "inspection-lamp-play",
+        "rule": "inspection-lamp",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 20,
+        "material": 79
+      },
+      {
+        "id": "inspection-lamp-rear",
+        "rule": "inspection-lamp",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 20,
+        "material": 77
+      },
+      {
+        "id": "canonical-passage-carve",
+        "rule": "$region",
+        "plane": "play",
+        "geometry": "routes",
+        "shape": "fill",
+        "priority": 100,
+        "material": 0,
+        "route_type": "passage"
+      }
+    ],
+    "fixtures": [
+      {
+        "id": "reactor-water",
+        "rule": "reactor",
+        "plane": "scripted",
+        "bounds": [
+          4,
+          4,
+          24,
+          2
+        ],
+        "material": 3,
+        "mode": "source",
+        "first_tick": 1,
+        "period": 8,
+        "repeat": 12,
+        "cleanup_tick": 110,
+        "expected_products": [
+          24
+        ]
+      },
+      {
+        "id": "waterfall-feed",
+        "rule": "waterfall",
+        "plane": "play",
+        "bounds": [
+          7,
+          3,
+          5,
+          2
+        ],
+        "material": 3,
+        "mode": "source",
+        "first_tick": 1,
+        "period": 4,
+        "repeat": 40,
+        "cleanup_tick": 170,
+        "expected_products": []
+      },
+      {
+        "id": "waterfall-spray",
+        "rule": "waterfall",
+        "plane": "effects",
+        "bounds": [
+          5,
+          19,
+          10,
+          2
+        ],
+        "material": 22,
+        "mode": "source",
+        "first_tick": 1,
+        "period": 6,
+        "repeat": 26,
+        "cleanup_tick": 170,
+        "expected_products": []
+      },
+      {
+        "id": "local-vent",
+        "rule": "vent",
+        "plane": "effects",
+        "bounds": [
+          4,
+          10,
+          10,
+          2
+        ],
+        "material": 22,
+        "mode": "source",
+        "first_tick": 1,
+        "period": 10,
+        "repeat": 18,
+        "cleanup_tick": 190,
+        "expected_products": []
+      },
+      {
+        "id": "vent-drain",
+        "rule": "vent",
+        "plane": "effects",
+        "bounds": [
+          2,
+          2,
+          14,
+          1
+        ],
+        "material": 0,
+        "mode": "drain",
+        "first_tick": 5,
+        "period": 5,
+        "repeat": 40,
+        "cleanup_tick": 210,
+        "expected_products": []
+      }
+    ],
+    "links": [
+      {
+        "id": "reactor-machinery",
+        "rule": "reactor",
+        "family": "machinery",
+        "classification": "static",
+        "source_plane": "play",
+        "target_plane": "scripted",
+        "effect": "correspondence",
+        "bounds": [
+          0,
+          0,
+          32,
+          32
+        ],
+        "fixture": "reactor-water"
+      },
+      {
+        "id": "reactor-breach",
+        "rule": "reactor",
+        "family": "explosion",
+        "classification": "runtime",
+        "source_plane": "play",
+        "target_plane": "scripted",
+        "effect": "blast",
+        "bounds": [
+          2,
+          2,
+          28,
+          28
+        ],
+        "material": 6,
+        "radius": 8,
+        "max_events_per_tick": 1
+      },
+      {
+        "id": "vent-feed",
+        "rule": "vent",
+        "family": "vent",
+        "classification": "static",
+        "source_plane": "play",
+        "target_plane": "effects",
+        "effect": "source",
+        "bounds": [
+          0,
+          0,
+          18,
+          24
+        ],
+        "fixture": "local-vent"
+      },
+      {
+        "id": "vent-drain-link",
+        "rule": "vent",
+        "family": "vent",
+        "classification": "static",
+        "source_plane": "scripted",
+        "target_plane": "effects",
+        "effect": "drain",
+        "bounds": [
+          0,
+          0,
+          18,
+          24
+        ],
+        "fixture": "vent-drain"
+      },
+      {
+        "id": "vent-burst",
+        "rule": "vent",
+        "family": "vent",
+        "classification": "runtime",
+        "source_plane": "scripted",
+        "target_plane": "effects",
+        "effect": "burst",
+        "bounds": [
+          1,
+          1,
+          16,
+          22
+        ],
+        "material": 22,
+        "radius": 4,
+        "max_events_per_tick": 1
+      },
+      {
+        "id": "window-visibility",
+        "rule": "window",
+        "family": "window",
+        "classification": "presentation",
+        "source_plane": "play",
+        "target_plane": "background",
+        "effect": "visibility",
+        "bounds": [
+          1,
+          1,
+          14,
+          16
+        ]
+      },
+      {
+        "id": "pipe-match",
+        "rule": "service-pipe",
+        "family": "pipe",
+        "classification": "static",
+        "source_plane": "play",
+        "target_plane": "scripted",
+        "effect": "correspondence",
+        "bounds": [
+          0,
+          0,
+          98,
+          6
+        ]
+      },
+      {
+        "id": "waterfall-and-spray",
+        "rule": "waterfall",
+        "family": "waterfall",
+        "classification": "static",
+        "source_plane": "play",
+        "target_plane": "effects",
+        "effect": "source_and_spray",
+        "bounds": [
+          0,
+          0,
+          20,
+          42
+        ],
+        "fixture": "waterfall-spray"
+      }
+    ],
+    "limits": {
+      "max_operations": 2000000000
+    },
+    "actors": [
+      {
+        "id": "gallery-inspector",
+        "rule": "gallery",
+        "plane": "play",
+        "model": "skimmer",
+        "producer": "policy",
+        "x": 64,
+        "y": 65
+      }
+    ]
+  }
+}
