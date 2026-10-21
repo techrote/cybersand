@@ -303,10 +303,16 @@ func check_responsive_transactions(app: Variant) -> void:
 	app.request_recipe(invalid)
 	await drain_edits(app)
 	expect(int(app.active_recipe.seed) == 300 and app._undo == undo and app.tools2.accepts_token(token), "Async failed candidate mutated active identity or history")
+	drain(app)
+	var cancellation_cache: Dictionary = app.cache.duplicate(true)
 	app.request_recipe(a)
 	app.cancel_pending_edit()
+	expect(app.status_label.text.contains("cancelled") and not app.status_label.text.to_lower().contains("validating"), "Cancel left the pending validation footer visible")
+	app._refresh_status()
+	expect(not app.status_label.text.to_lower().contains("validating") and app.cache == cancellation_cache, "Retiring private validator reappeared as a current edit or disturbed preview cache")
 	await drain_edits(app)
 	expect(int(app.active_recipe.seed) == 300, "Cancelled worker result was later admitted")
+	expect(not app.status_label.text.to_lower().contains("validating") and app.cache == cancellation_cache and app.tools2.accepts_token(token), "Quiesced cancelled edit left pending status or changed accepted identity/cache")
 	app._interactive_edit = true
 	app.undo_authoring()
 	app._interactive_edit = false

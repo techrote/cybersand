@@ -22,6 +22,9 @@ func _run() -> void:
 		push_error("GEN007 captures require a display-backed material renderer")
 		quit(2)
 		return
+	var library: String = "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so" if OS.get_name() == "Linux" else "res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
+	var native_sha: String = FileAccess.get_sha256(library)
+	var recipe_sha: String = FileAccess.get_sha256(Data.RECIPE)
 	if DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output_path)) != OK:
 		quit(1)
 		return
@@ -96,13 +99,15 @@ func _run() -> void:
 		await _settle()
 		_save(root.get_texture().get_image(),"gen007-after-220-ticks.png","Actual result after220 manual ticks of each dynamic plane; native products")
 	var expected: int = 10 if quick else 27
+	if FileAccess.get_sha256(library) != native_sha or FileAccess.get_sha256(Data.RECIPE) != recipe_sha:
+		failed = true
+		push_error("GEN007 capture source or loaded-library file changed during capture; identity is not stable")
 	if captures.size() != expected or records.size() != (1 if quick else 4) or failed:
 		push_error("Incomplete GEN007 capture helpers: %d/%d"%[captures.size(),expected])
 		quit(1)
 		return
-	var library: String = "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so" if OS.get_name() == "Linux" else "res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
 	var manifest: Dictionary = {"schema":1,"source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
-		"native_library_sha256":FileAccess.get_sha256(library),"recipe_sha256":FileAccess.get_sha256(Data.RECIPE),
+		"native_library_sha256":native_sha,"recipe_sha256":recipe_sha,
 		"recipe_bytes":FileAccess.get_file_as_bytes(Data.RECIPE).size(),"qualification":Data.manifest(),
 		"engine":Engine.get_version_info(),"display":DisplayServer.get_name(),"renderer":RenderingServer.get_video_adapter_name(),
 		"rendering_method":RenderingServer.get_current_rendering_method(),"records":records,"captures":captures,
@@ -126,6 +131,7 @@ func _record(app: Control) -> void:
 		material_counts[plane] = {"nonempty_cells":nonempty,"intentional_empty_cells":1048576-nonempty}
 	records.append({"seed":Data.SEEDS[app.seed_index],"revision":app.bundle.revision,"hashes":app.bundle.hashes,
 		"generation_and_admission_ms":app.generation_ms,"operations":app.bundle.operations,
+		"native_storage_bytes":app.bundle.storage_bytes,"native_limits":app.bundle.budgets,"native_spatial_index":app.bundle.spatial_index,
 		"features":app.bundle.features.size(),"projections":app.bundle.projections.size(),"fixtures":app.bundle.fixtures.size(),
 		"material_coverage":material_counts,"complete":true})
 

@@ -28,6 +28,7 @@ var _overlay: Control
 var _time: float = 0.0
 var _drag: bool = false
 var _visibility := Vector4.ONE
+var _plane_checks: Array[CheckBox] = []
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -100,6 +101,8 @@ func load_seed(index: int) -> bool:
 	last_error = ""
 	generation_ms = float(Time.get_ticks_usec()-began)/1000.0
 	_seed.select(index)
+	_title.text = "THE FOURFOLD WORKS"
+	for check: CheckBox in _plane_checks: check.set_pressed_no_signal(true)
 	_places.clear()
 	_places.add_item("Whole map / four districts")
 	for place: Dictionary in Data.manifest().subregions: _places.add_item(place.name)
@@ -216,6 +219,9 @@ func _map_input(event: InputEvent) -> void:
 		compositor.set_camera(compositor.camera_origin-event.relative/compositor.content_rect().size*compositor.view_size)
 		_overlay.queue_redraw()
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_WINDOW_FOCUS_OUT: _drag = false
+
 func _unhandled_key_input(event: InputEvent) -> void:
 	if not event is InputEventKey or not event.pressed or event.echo: return
 	match event.keycode:
@@ -248,7 +254,10 @@ func _build_ui() -> void:
 	rows.add_child(subtitle)
 	_seed = OptionButton.new()
 	for seed: int in Data.SEEDS: _seed.add_item("Seed %d"%seed)
-	_seed.item_selected.connect(load_seed)
+	_seed.item_selected.connect(func(index: int) -> void:
+		if not load_seed(index):
+			_seed.select(seed_index)
+			_status.text = last_error)
 	rows.add_child(_seed)
 	_places = OptionButton.new()
 	_places.item_selected.connect(func(index: int) -> void:
@@ -270,6 +279,7 @@ func _build_ui() -> void:
 		check.button_pressed = true
 		check.toggled.connect(func(value: bool) -> void: set_layer_visible(index,value))
 		rows.add_child(check)
+		_plane_checks.append(check)
 	var routes := CheckBox.new()
 	routes.text = "Show final route skeleton"
 	routes.toggled.connect(func(value: bool) -> void: set_diagnostics(value,show_sockets))

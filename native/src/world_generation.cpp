@@ -667,16 +667,18 @@ struct Generator::Impl {
         }
         snapshot(GenerationStage::Candidate);
         if (trace) {
+            // Append to fresh trace strings: GCC 13 can lower C-string assignment
+            // to the newer libstdc++ overlap helper, above our Linux ABI floor.
             for (const auto& brush : recipe.strokes) {
-                EvaluationDecision entry; entry.stage = "brush_guidance"; entry.id = brush.id;
+                EvaluationDecision entry; entry.stage.append("brush_guidance"); entry.id = brush.id;
                 entry.influence = influence(brush, x, y); entry.accepted = entry.influence > 0;
-                entry.strength = brush.strength; entry.detail = entry.accepted ?
-                    "initial theme/parameter guidance in canonical priority order" : "outside bounded brush influence";
+                entry.strength = brush.strength; entry.detail.append(entry.accepted ?
+                    "initial theme/parameter guidance in canonical priority order" : "outside bounded brush influence");
                 decision(std::move(entry));
             }
             for (const auto& hard : recipe.overrides) if (inside(hard.bounds, x, y)) {
-                EvaluationDecision entry; entry.stage = "hard_parameter_precedence"; entry.id = hard.id; entry.accepted = true;
-                entry.detail = "candidate/parameters take precedence before initial and guided candidates; material override is last";
+                EvaluationDecision entry; entry.stage.append("hard_parameter_precedence"); entry.id = hard.id; entry.accepted = true;
+                entry.detail.append("candidate/parameters take precedence before initial and guided candidates; material override is last");
                 decision(std::move(entry));
             }
         }
@@ -712,15 +714,15 @@ struct Generator::Impl {
                 if (trace) {
                     const auto& mask = modifiers[i].mask;
                     EvaluationDecision entry;
-                    entry.stage = "modifier_mask"; entry.id = m.id;
+                    entry.stage.append("modifier_mask"); entry.id = m.id;
                     entry.application = m.application; entry.exclusion = m.exclusion;
                     entry.application_value = mask.application == absent ? 1 : values.values[mask.application];
                     entry.exclusion_value = mask.exclusion == absent ? 0 : values.values[mask.exclusion];
                     entry.strength = mask.strength; entry.shape = footprint;
-                    entry.predicate = context_predicate_name(m.context); entry.context_passed = context_passed;
+                    entry.predicate.append(context_predicate_name(m.context)); entry.context_passed = context_passed;
                     entry.influence = alpha[i]; entry.accepted = alpha[i] > 0;
-                    entry.detail = !context_passed ? "initial candidate context rejected" : footprint == 0 ?
-                        "outside modifier footprint" : alpha[i] == 0 ? "application/exclusion mask rejected" : "guidance influence evaluated";
+                    entry.detail.append(!context_passed ? "initial candidate context rejected" : footprint == 0 ?
+                        "outside modifier footprint" : alpha[i] == 0 ? "application/exclusion mask rejected" : "guidance influence evaluated");
                     decision(std::move(entry));
                 }
                 if (alpha[i] == 0) continue;
@@ -775,12 +777,12 @@ struct Generator::Impl {
                     if (context.trace) {
                         if (context.trace->decisions.size() < kMaxTraceEntries) {
                             EvaluationDecision entry;
-                            entry.stage = "semantic_mask"; entry.id = feature.id;
+                            entry.stage.append("semantic_mask"); entry.id = feature.id;
                             entry.application = feature.application; entry.exclusion = feature.exclusion;
                             entry.application_value = compiled.application == absent ? 1 : context.values->values[compiled.application];
                             entry.exclusion_value = compiled.exclusion == absent ? 0 : context.values->values[compiled.exclusion];
                             entry.influence = mask; entry.draw = draw; entry.draw_used = mask > 0 && mask < 1;
-                            entry.accepted = accepted; entry.detail = accepted ? "eligible structural alternative; later precedence may replace" : "semantic mask/deterministic draw rejected";
+                            entry.accepted = accepted; entry.detail.append(accepted ? "eligible structural alternative; later precedence may replace" : "semantic mask/deterministic draw rejected");
                             context.trace->decisions.push_back(std::move(entry));
                         } else { context.trace->truncated = true; ++context.trace->omitted_entries; }
                     }
@@ -831,13 +833,13 @@ struct Generator::Impl {
             if (trace) {
                 EvaluationDecision entry;
                 const auto& compiled = module_masks[i];
-                entry.stage = "module_mask"; entry.id = module.instance.id;
+                entry.stage.append("module_mask"); entry.id = module.instance.id;
                 entry.application = module.instance.application; entry.exclusion = module.instance.exclusion;
                 entry.application_value = compiled.application == absent ? 1 : values.values[compiled.application];
                 entry.exclusion_value = compiled.exclusion == absent ? 0 : values.values[compiled.exclusion];
                 entry.strength = compiled.strength; entry.shape = inside(module.instance.bounds, x, y) ? 1 : 0;
                 entry.influence = mask; entry.draw = draw; entry.draw_used = mask > 0 && mask < 1; entry.accepted = eligible;
-                entry.detail = eligible ? "prepared native module invoked" : "module bounds/mask/draw rejected";
+                entry.detail.append(eligible ? "prepared native module invoked" : "module bounds/mask/draw rejected");
                 decision(std::move(entry));
             }
             if (eligible) {
@@ -854,9 +856,9 @@ struct Generator::Impl {
             const auto draw = unit(hash_xy(recipe.seed ^ modifiers[i].salt, x, y, 882));
             const bool accepted = alpha[i] > 0 && (alpha[i] == 1 || draw < alpha[i]);
             if (trace) {
-                EvaluationDecision entry; entry.stage = "modifier_material"; entry.id = m.id;
+                EvaluationDecision entry; entry.stage.append("modifier_material"); entry.id = m.id;
                 entry.influence = alpha[i]; entry.draw = draw; entry.draw_used = alpha[i] > 0 && alpha[i] < 1;
-                entry.accepted = accepted; entry.detail = accepted ? "ordered material replacement" : "mask/deterministic draw rejected";
+                entry.accepted = accepted; entry.detail.append(accepted ? "ordered material replacement" : "mask/deterministic draw rejected");
                 decision(std::move(entry));
             }
             if (!accepted) continue;

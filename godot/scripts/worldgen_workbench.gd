@@ -1086,10 +1086,14 @@ func request_recipe(recipe: Dictionary, record_undo: bool = true, history_action
 	return true
 
 func cancel_pending_edit() -> void:
+	var had_pending: bool = _edit_thread != null or not _pending_edit.is_empty()
 	_edit_serial += 1
 	_pending_edit.clear()
 	# Cancellation retires identity immediately. At most one bounded native
 	# preparation may finish in the background; its result cannot be admitted.
+	if had_pending:
+		last_error = ""
+		_set_status("Edit cancelled; accepted recipe and preview retained.")
 
 func service_editor_transaction() -> void:
 	if _edit_thread != null:
@@ -1110,6 +1114,7 @@ func service_editor_transaction() -> void:
 					_undo.append(job.before)
 				while _undo.size() > MAX_UNDO: _undo.pop_front()
 				while _redo.size() > MAX_UNDO: _redo.pop_front()
+		_refresh_status()
 	if _pending_edit.is_empty(): return
 	_active_edit = _pending_edit
 	_pending_edit = {}
@@ -1776,7 +1781,10 @@ func _refresh_status() -> void:
 		text += " · generating %d, %d: %d / %d cells" % [_active_chunk.x, _active_chunk.y, _job_completed, chunk_size * chunk_size]
 	elif pending_chunks.is_empty():
 		text += " · visible region ready"
-	if _edit_thread != null or not _pending_edit.is_empty(): text += " · validating candidate (accepted preview retained)"
+	if not _pending_edit.is_empty() or (_edit_thread != null and int(_active_edit.get("serial", -1)) == _edit_serial):
+		text += " · validating candidate (accepted preview retained)"
+	elif _edit_thread != null:
+		text += " · cancelled edit retiring privately (accepted preview retained)"
 	if not last_packet.is_empty():
 		text += " · last chunk %s · %s operations · %.2f ms native work" % [str(last_packet.get("hash", "")), str(last_packet.get("operations", 0)), float(last_packet.get("compute_usec", 0)) / 1000.0]
 	if not semantic_route_report.is_empty() and not semantic_route_report.get("passed", false):

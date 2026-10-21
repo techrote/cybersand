@@ -18,6 +18,10 @@ static func manifest() -> Dictionary:
 	var value: Variant = JSON.parse_string(FileAccess.get_file_as_string(MANIFEST))
 	return value if value is Dictionary else {}
 
+static func vessel_bounds(feature: Dictionary, plane: String) -> Rect2i:
+	var vessel: Dictionary = manifest().vessel
+	return Rect2i(feature.bounds.position+Vector2i(0 if plane == "play" else int(vessel.rear_offset),0),Vector2i(int(vessel.width),int(vessel.height)))
+
 static func feature_map(bundle: Dictionary) -> Dictionary:
 	var result: Dictionary = {}
 	for feature: Dictionary in bundle.get("features", []): result[feature.id] = feature
@@ -43,6 +47,49 @@ static func structural_receipt(bundle: Dictionary, grammar: Dictionary) -> Dicti
 	if micros.size() < 24: errors.append("At least twenty-four identifiable micro-features required")
 	if loops.size() < 2: errors.append("At least two optional material loops required")
 	if exhibits.size() != 4 or bundle.get("fixtures", []).size() != 8: errors.append("Four paired native exhibits required")
+	var features: Dictionary = feature_map(bundle)
+	var regional_exhibits: Dictionary = {}
+	var exhibit_specs: Dictionary = {}
+	for spec: Dictionary in manifest().get("exhibits",[]): exhibit_specs[spec.rule] = spec
+	var exhibit_materials: Dictionary = {}
+	var region_rules: Array[String] = []
+	for region: Dictionary in regions:
+		region_rules.append(region.rule_id)
+		var owned: Array[Dictionary] = []
+		for exhibit: Dictionary in exhibits:
+			var ancestor: String = exhibit.parent
+			while not ancestor.is_empty() and ancestor != region.id:
+				ancestor = features.get(ancestor,{}).get("parent","")
+			if ancestor == region.id: owned.append(exhibit)
+		if owned.size() != 1: errors.append("Exactly one paired native exhibit required in " + str(region.id))
+		var plane_counts: Dictionary = {"play":0,"scripted":0}
+		for exhibit: Dictionary in owned:
+			for fixture: Dictionary in bundle.get("fixtures",[]):
+				if fixture.feature_id != exhibit.id: continue
+				plane_counts[fixture.plane] = plane_counts.get(fixture.plane,0)+1
+				var spec: Dictionary = exhibit_specs.get(exhibit.rule_id,{})
+				var vessel: Rect2i = vessel_bounds(exhibit,fixture.plane)
+				var materials: PackedByteArray = bundle.materials[fixture.plane]
+				var substrate: int = 0
+				var products: int = 0
+				var wall_gaps: int = 0
+				for y: int in range(vessel.position.y,vessel.end.y):
+					for x: int in range(vessel.position.x,vessel.end.x):
+						var material: int = materials[y*SIDE+x]
+						if material == int(spec.get("substrate",-1)): substrate += 1
+						if material == int(spec.get("product",-1)): products += 1
+						if x in [vessel.position.x,vessel.end.x-1] or y in [vessel.position.y,vessel.end.y-1]:
+							if material != 131: wall_gaps += 1
+				if substrate == 0 or products > 0 or wall_gaps > 0:
+					errors.append("Exhibit reagent, absent product or native containment invalid after projection/override: "+str(fixture.id))
+				exhibit_materials[fixture.id] = {"substrate":substrate,"products":products,"wall_gaps":wall_gaps}
+		if plane_counts != {"play":1,"scripted":1}:
+			errors.append("Exactly one play and one rear native feed required in " + str(region.id))
+		regional_exhibits[region.id] = {"features":owned.size(),"fixtures":plane_counts}
+	region_rules.sort()
+	var expected_rules: Array = manifest().get("region_rule_ids",[])
+	expected_rules.sort()
+	if region_rules != expected_rules: errors.append("Major region rules differ from the four declared themes")
 	var cross_chunk: int = 0
 	var ids: Dictionary = {}
 	for feature: Dictionary in bundle.features:
@@ -66,10 +113,17 @@ static func structural_receipt(bundle: Dictionary, grammar: Dictionary) -> Dicti
 		coverage[hall.id] = record
 	var routes: Dictionary = route_receipt(bundle, grammar)
 	for message: String in routes.get("errors", []): errors.append(message)
+	var expected_regions: Array = regions.map(func(region: Dictionary) -> String: return region.id)
+	expected_regions.sort()
+	var reached_regions: Array = routes.get("regions",{}).keys()
+	reached_regions.sort()
+	if reached_regions != expected_regions: errors.append("Primary route receipt must account for every declared major region exactly")
+	for region_id: String in expected_regions:
+		if not routes.get("regions",{}).get(region_id,false): errors.append("Primary route cannot reach major region " + region_id)
 	return {"ok":errors.is_empty(),"complete":true,"errors":errors,"major_regions":regions.size(),
 		"named_subregions":halls.size(),"micro_features":micros.size(),"cross_chunk_structures":cross_chunk,
 		"optional_loops":loops.size(),"paired_exhibits":exhibits.size(),"stable_ids":ids.keys(),
-		"coverage":coverage,"routes":routes,"operations":bundle.get("operations",0)}
+		"coverage":coverage,"regional_exhibits":regional_exhibits,"exhibit_materials":exhibit_materials,"routes":routes,"operations":bundle.get("operations",0)}
 
 static func route_paths(bundle: Dictionary, grammar: Dictionary) -> Array[Dictionary]:
 	var paths: Array[Dictionary] = []

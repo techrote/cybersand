@@ -185,6 +185,23 @@ room-scale equipment, different upper/lower arrangements and intact apparatus;
 its fresh structural, reaction and display evidence remains required. These
 earlier numeric passes do not qualify the revised recipe or close the visual gate.
 
+The compatibility correction changes only construction of strings in a newly
+created native replay decision: appending into the known-empty string produces
+the same text without GCC 13's newer `_M_replace_cold` import. An independent
+object control found one such import before and none after. Corrected local
+build 5 passes the unchanged floor (bundle `GLIBC_2.34`; CyberSand `GLIBC_2.32`,
+`GLIBCXX_3.4.30`, `CXXABI_1.3.9`), all 208,576 grammar assertions and the 116
+inspection assertions. Its runtime SHA-256 is
+`0d867938166e63c2b8dc3079c76fbb148d9e78c7c8b7ac3d4299b674ac07044e`.
+This is local development execution, not the future published platform artifact.
+
+The cancellation follow-up passes 166 editor assertions: the footer retires
+pending validation immediately, does not revert while the private worker
+finishes, and preserves the exact accepted cache/token. Fresh build-5 graphical
+execution again passes 69 assertions and all seven sections, with 18 captures.
+The capture manifest identifies the editor checkpoint separately from its
+runtime hash; final evidence binds those source bytes to the publication candidate.
+
 The initial **2 GiB graphical process envelope failed**: cold llvmpipe capture
 peaked at 3,874,537,472 bytes; an independent two-thread cold render run peaked
 at 3,873,660,928 bytes. Limiting llvmpipe to two threads did not remove that cold

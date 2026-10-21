@@ -29,6 +29,7 @@ func _run() -> void:
 		return
 	var first_ids: Array = []
 	var distinct: Dictionary = {}
+	var distinct_layouts: Dictionary = {}
 	for seed: int in Data.SEEDS:
 		var generator: Object = ClassDB.instantiate(&"CyberWorldGenerator")
 		var start: int = Time.get_ticks_usec()
@@ -42,23 +43,31 @@ func _run() -> void:
 		var structural: Dictionary = Data.structural_receipt(whole,generator.get_semantic_plan())
 		_expect(structural.get("complete",false) and structural.get("ok",false),"Seed %d independent structural oracle: %s" % [seed,structural.get("errors",[])])
 		_expect(whole.operations <= 4000000000,"Declared full-map work bound respected")
+		_expect(whole.storage_bytes <= whole.budgets.max_prepared_bytes,"Native prepared storage respects its declared cap")
 		for plane: String in PLANES:
 			_expect(whole.materials[plane].size() == 1048576,"Exactly 1024x1024 on " + plane)
 			_expect(whole.layers[plane].size() / 5 <= 4096,"Bounded host rectangles for " + plane)
 		if first_ids.is_empty(): first_ids = structural.stable_ids
 		else: _expect(structural.stable_ids == first_ids,"Stable feature IDs survive seed variation")
 		distinct[whole.hashes.play] = true
-		_tiled(generator,whole,128,true)
+		var cabinet_layout: Array = []
+		for cabinet: Dictionary in Data.tagged(whole,"service-cabinet"): cabinet_layout.append({"id":cabinet.id,"bounds":cabinet.bounds})
+		distinct_layouts[Data.digest(var_to_bytes(cabinet_layout))] = true
+		var tiled_receipt: Variant = _tiled(generator,whole,128,true)
+		_expect(tiled_receipt is Dictionary and tiled_receipt.get("complete",false),"Every reverse tile oracle completed for this seed")
 		if seed == Data.SEEDS[0]:
 			baseline = whole
 			baseline_generator = generator
-			_tiled(generator,whole,256,false)
-			records.append({"seed":seed,"revision":whole.revision,"hashes":whole.hashes,"generation_ms":ms,"structure":structural,"complete":true})
+			var alternate_receipt: Variant = _tiled(generator,whole,256,false)
+			_expect(alternate_receipt is Dictionary and alternate_receipt.get("complete",false),"Alternate partition oracle explicitly completed")
+			records.append({"seed":seed,"revision":whole.revision,"hashes":whole.hashes,"generation_ms":ms,"structure":structural,"cabinet_layout":cabinet_layout,"native_storage_bytes":whole.storage_bytes,"native_limits":whole.budgets,"native_spatial_index":whole.spatial_index,"complete":true})
 		else:
-			records.append({"seed":seed,"revision":whole.revision,"hashes":whole.hashes,"generation_ms":ms,"structure":structural,"complete":true})
+			records.append({"seed":seed,"revision":whole.revision,"hashes":whole.hashes,"generation_ms":ms,"structure":structural,"cabinet_layout":cabinet_layout,"native_storage_bytes":whole.storage_bytes,"native_limits":whole.budgets,"native_spatial_index":whole.spatial_index,"complete":true})
 		completed.append("seed-%d"%seed)
+		print("GEN007_SEED: seed=%d; structural_ok=%s; route_centres=%d; connected_loops=%d; generation_ms=%.3f; complete=true"%[seed,structural.ok,structural.routes.checked_centres,structural.routes.connected_optional_loops,ms])
 	_expect(records.size() == 4,"Reference plus three declared seed helpers completed")
 	_expect(distinct.size() == 4,"All four seeds produce distinct actual material content")
+	_expect(distinct_layouts.size() >= 2,"Native route preference changes actual cabinet placement across declared seeds")
 	if not baseline.is_empty():
 		_parallel_workers()
 		_budget_slices()
@@ -66,7 +75,7 @@ func _run() -> void:
 	_expect(completed.size() == 7,"All seven independent qualification sections completed")
 	_finish()
 
-func _tiled(generator: Object, whole: Dictionary, side: int, reverse: bool) -> void:
+func _tiled(generator: Object, whole: Dictionary, side: int, reverse: bool) -> Dictionary:
 	var requests: Array[Rect2i] = []
 	for y: int in range(0,1024,side):
 		for x: int in range(0,1024,side): requests.append(Rect2i(x,y,side,side))
@@ -74,6 +83,8 @@ func _tiled(generator: Object, whole: Dictionary, side: int, reverse: bool) -> v
 	var reconstructed: Dictionary = {}
 	var fixture_ids: Dictionary = {}
 	var link_ids: Dictionary = {}
+	var expected_fixtures: Dictionary = _records_by_id(whole.fixtures)
+	var expected_links: Dictionary = _records_by_id(whole.links)
 	for plane: String in PLANES:
 		var bytes := PackedByteArray()
 		bytes.resize(1048576)
@@ -84,17 +95,30 @@ func _tiled(generator: Object, whole: Dictionary, side: int, reverse: bool) -> v
 		_expect(tile.get("ok",false),"Independent native tile: " + str(tile.get("error","")))
 		if not tile.get("ok",false): continue
 		_expect(tile.fingerprint == whole.fingerprint,"Tile proposal identifies same accepted plan")
+		var plan: Dictionary = generator.get_plane_plan()
+		_expect(plan.features == whole.features and plan.projections == whole.projections,"Every tile retains exact semantic and projection records")
+		var fixtures: Dictionary = _records_by_id(plan.fixtures)
+		var links: Dictionary = _records_by_id(plan.links)
 		_copy_tile(tile,reconstructed)
 		for id: String in tile.fixture_ids:
 			_expect(not fixture_ids.has(id),"Exactly one tile owns fixture " + id)
-			fixture_ids[id] = true
+			_expect(fixtures.get(id,{}) == expected_fixtures.get(id,{}) and fixtures.has(id),"Tile-owned native fixture record matches whole-map record")
+			fixture_ids[id] = fixtures.get(id,{})
 		for id: String in tile.link_ids:
 			_expect(not link_ids.has(id),"Exactly one tile owns link " + id)
-			link_ids[id] = true
+			_expect(links.get(id,{}) == expected_links.get(id,{}) and links.has(id),"Tile-owned native link record matches whole-map record")
+			link_ids[id] = links.get(id,{})
 		tiles += 1
 	for plane: String in PLANES: _expect(reconstructed[plane] == whole.materials[plane],"Whole/tiled exact material parity: " + plane)
 	_expect(tiles == requests.size(),"Every requested tile completed")
 	_expect(fixture_ids.size() == whole.fixtures.size() and link_ids.size() == whole.links.size(),"Complete registration union under request reordering")
+	_expect(fixture_ids == expected_fixtures and link_ids == expected_links,"Whole/tiled exact normalized fixture and link record parity")
+	return {"complete":tiles == requests.size(),"tiles":tiles}
+
+func _records_by_id(values: Array) -> Dictionary:
+	var result: Dictionary = {}
+	for value: Dictionary in values: result[value.id] = value
+	return result
 
 func _copy_tile(tile: Dictionary, target: Dictionary) -> void:
 	var bounds: Rect2i = tile.bounds
@@ -114,6 +138,8 @@ func _worker(seed: int, bounds: Rect2i) -> Dictionary:
 	var result: Dictionary = generator.generate_plane_region(bounds)
 	result["features"] = generator.get_plane_plan().get("features",[])
 	result["fixtures"] = generator.get_plane_plan().get("fixtures",[])
+	result["links"] = generator.get_plane_plan().get("links",[])
+	result["projections"] = generator.get_plane_plan().get("projections",[])
 	return result
 
 func _parallel_workers() -> void:
@@ -134,7 +160,7 @@ func _parallel_workers() -> void:
 		var result: Dictionary = thread.wait_to_finish()
 		_expect(result.get("ok",false),"Native worker generation completes")
 		if not result.get("ok",false): continue
-		_expect(result.features == baseline.features and result.fixtures == baseline.fixtures,"Workers reproduce exact semantic/fixture records")
+		_expect(result.features == baseline.features and result.fixtures == baseline.fixtures and result.links == baseline.links and result.projections == baseline.projections,"Workers reproduce exact semantic, projection, fixture and link records")
 		_copy_tile(result,target)
 		finished += 1
 	for plane: String in PLANES: _expect(target[plane] == baseline.materials[plane],"One/four independent worker material parity on " + plane)
@@ -153,6 +179,7 @@ func _budget_slices() -> void:
 		_expect(pending.get("ok",false) and pending.get("state","") == "ready","Bounded budget %d completes"%budget)
 		_expect(pending.get("materials",{}) == direct.get("materials",{}),"Budget slicing preserves every plane byte")
 		_expect(pending.get("fixture_ids",[]) == direct.get("fixture_ids",[]),"Budget slicing preserves registration records")
+		_expect(pending.get("link_ids",[]) == direct.get("link_ids",[]),"Budget slicing preserves owned link records")
 	completed.append("budgets")
 
 func _negative_controls() -> void:

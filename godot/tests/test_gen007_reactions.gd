@@ -51,19 +51,21 @@ func _run() -> void:
 	for fixture: Dictionary in bundle.fixtures:
 		var feature: Dictionary = features[fixture.feature_id]
 		var spec: Dictionary = metadata[feature.rule_id]
-		var vessel := Rect2i(feature.bounds.position+Vector2i(0 if fixture.plane == "play" else 56,0),Vector2i(52,64))
+		var vessel: Rect2i = Data.vessel_bounds(feature,fixture.plane)
 		var scan: Dictionary = _scan(original[fixture.plane],vessel,int(spec.product),int(spec.feed),int(spec.substrate))
 		records[fixture.id] = {"fixture_id":fixture.id,"feature_id":feature.id,"plane":fixture.plane,
 			"title":spec.title,"bounds":vessel,"product":int(spec.product),"feed":int(spec.feed),"substrate":int(spec.substrate),
 			"initial":scan,"max_product":scan.product,"max_transport":scan.transport,"min_substrate":scan.substrate,
 			"completed":false,"oracle_assertions":0,"verified":false}
 	_expect(runtime.configure_rates({"play":0,"scripted":20,"effects":0}),"Rear clock isolated")
-	_run_ticks(runtime,"scripted",records)
+	var rear_receipt: Variant = _run_ticks(runtime,"scripted",records)
+	_expect(rear_receipt is Dictionary and rear_receipt.get("complete",false),"Rear helper explicitly completed every tick and observation")
 	for plane: String in ["play","effects","background"]:
 		_expect(runtime.snapshot_layer(plane,true).cells == original[plane],"Rear reaction preserves complete "+plane+" material state")
 	var frozen_rear: PackedByteArray = runtime.snapshot_layer("scripted",true).cells
 	_expect(runtime.configure_rates({"play":30,"scripted":0,"effects":0}),"Play clock isolated")
-	_run_ticks(runtime,"play",records)
+	var play_receipt: Variant = _run_ticks(runtime,"play",records)
+	_expect(play_receipt is Dictionary and play_receipt.get("complete",false),"Play helper explicitly completed every tick and observation")
 	_expect(runtime.snapshot_layer("scripted",true).cells == frozen_rear,"Play reactions cannot modify rear native World")
 	_expect(runtime.layer_tick("background") == 0,"Far plane remains frozen")
 	var ledger: Dictionary = runtime.lifecycle_stats()
@@ -89,6 +91,7 @@ func _run() -> void:
 		record["verified"] = failures == errors_before and record.oracle_assertions >= 5
 		_expect(_meaningful(record),"Explicit complete mechanism receipt: "+fixture.id)
 		if _meaningful(record): verified_exhibits += 1
+		print("GEN007_EXHIBIT: id=%s; plane=%s; product_peak=%d; substrate_initial=%d; substrate_minimum=%d; applications=%d; complete=%s; verified=%s"%[fixture.id,fixture.plane,record.max_product,record.initial.substrate,record.min_substrate,state.fired,record.completed,record.verified])
 	_expect(ledger.applications == expected_applications and ledger.fixture_cell_writes == expected_writes,"Full fixture write/accounting totals match declaration")
 	_expect(verified_exhibits == 8,"All eight apparatus oracles returned, including any helper script errors")
 	complete_sections.append("native-pairs")
@@ -107,15 +110,15 @@ func _run() -> void:
 func _meaningful(record: Dictionary) -> bool:
 	return bool(record.get("completed",false)) and bool(record.get("verified",false)) and int(record.get("oracle_assertions",0)) >= 5 and int(record.get("max_product",0)) > 0
 
-func _run_ticks(runtime: CyberSemanticPlaneRuntime, plane: String, observed: Dictionary) -> void:
+func _run_ticks(runtime: CyberSemanticPlaneRuntime, plane: String, observed: Dictionary) -> Dictionary:
 	for tick: int in range(1,TICKS+1):
 		var result: Dictionary = runtime.step_once()
 		_expect(result.get("ok",false),"Native "+plane+" step "+str(tick))
-		if not result.get("ok",false): return
+		if not result.get("ok",false): return {}
 		if tick % 2 == 0:
 			var packet: Dictionary = runtime.snapshot_layer(plane,true)
 			_expect(not packet.get("failed",false) and packet.get("cells",PackedByteArray()).size() == 2097152,"Complete independent native observation")
-			if packet.get("failed",false): return
+			if packet.get("failed",false): return {}
 			for record: Dictionary in observed.values():
 				if record.plane != plane: continue
 				var scan: Dictionary = _scan(packet.cells,record.bounds,record.product,record.feed,record.substrate)
@@ -123,6 +126,8 @@ func _run_ticks(runtime: CyberSemanticPlaneRuntime, plane: String, observed: Dic
 				record.max_transport = maxi(record.max_transport,scan.transport)
 				record.min_substrate = mini(record.min_substrate,scan.substrate)
 	_expect(runtime.layer_tick(plane) == TICKS,"Entire native clock run completed: "+plane)
+	print("GEN007_REACTION_STAGE: plane=%s; ticks=%d; complete=%s"%[plane,runtime.layer_tick(plane),runtime.layer_tick(plane) == TICKS])
+	return {"complete":runtime.layer_tick(plane) == TICKS,"ticks":runtime.layer_tick(plane)}
 
 func _run_control(original: Dictionary, label: String, positive: Dictionary) -> void:
 	var recipe: Dictionary = original.duplicate(true)

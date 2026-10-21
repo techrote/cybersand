@@ -103,8 +103,8 @@
         "children": [
           "upper-gallery",
           "lower-gallery",
-          "optional-loop",
-          "brine-retort"
+          "brine-retort",
+          "optional-loop"
         ],
         "themes": [
           {
@@ -140,8 +140,8 @@
         "children": [
           "upper-gallery",
           "lower-gallery",
-          "optional-loop",
-          "snow-lens"
+          "snow-lens",
+          "optical-core"
         ],
         "themes": [
           {
@@ -177,8 +177,8 @@
         "children": [
           "upper-gallery",
           "lower-gallery",
-          "optional-loop",
-          "clay-kiln"
+          "clay-kiln",
+          "optional-loop"
         ],
         "themes": [
           {
@@ -214,13 +214,172 @@
         "children": [
           "upper-gallery",
           "lower-gallery",
-          "optional-loop",
-          "geothermal-well"
+          "geothermal-well",
+          "vault-lock"
         ],
         "themes": [
           {
             "id": "basalt-archive",
             "weight": 1
+          }
+        ]
+      },
+      {
+        "id": "optical-core",
+        "kind": "apparatus",
+        "count": 2,
+        "material": 122,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "regional-focal",
+          "optical-instrument"
+        ],
+        "candidates": [
+          {
+            "id": "upper",
+            "bounds": [
+              232,
+              52,
+              162,
+              118
+            ],
+            "order_x": 0,
+            "order_y": 0
+          },
+          {
+            "id": "lower",
+            "bounds": [
+              76,
+              310,
+              162,
+              118
+            ],
+            "order_x": 1,
+            "order_y": 0
+          }
+        ],
+        "children": [
+          "optical-aperture",
+          "optical-brace"
+        ]
+      },
+      {
+        "id": "optical-aperture",
+        "kind": "detail",
+        "count": 1,
+        "material": 72,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "micro-detail",
+          "optical-aperture"
+        ],
+        "candidates": [
+          {
+            "id": "anchor",
+            "bounds": [
+              46,
+              22,
+              70,
+              74
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "optical-brace",
+        "kind": "detail",
+        "count": 4,
+        "material": 114,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "micro-detail",
+          "optical-support"
+        ],
+        "candidates": [
+          {
+            "id": "brace-0",
+            "bounds": [
+              12,
+              50,
+              12,
+              18
+            ],
+            "order_x": 0,
+            "order_y": 0
+          },
+          {
+            "id": "brace-1",
+            "bounds": [
+              138,
+              50,
+              12,
+              18
+            ],
+            "order_x": 1,
+            "order_y": 0
+          },
+          {
+            "id": "brace-2",
+            "bounds": [
+              72,
+              12,
+              18,
+              12
+            ],
+            "order_x": 2,
+            "order_y": 0
+          },
+          {
+            "id": "brace-3",
+            "bounds": [
+              72,
+              94,
+              18,
+              12
+            ],
+            "order_x": 3,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "vault-lock",
+        "kind": "detail",
+        "count": 2,
+        "material": 119,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "micro-detail",
+          "vault-lock"
+        ],
+        "candidates": [
+          {
+            "id": "upper",
+            "bounds": [
+              306,
+              102,
+              14,
+              18
+            ],
+            "order_x": 0,
+            "order_y": 0
+          },
+          {
+            "id": "lower",
+            "bounds": [
+              151,
+              357,
+              14,
+              18
+            ],
+            "order_x": 1,
+            "order_y": 0
           }
         ]
       },
@@ -250,8 +409,7 @@
         ],
         "children": [
           "service-module",
-          "service-rail",
-          "light-rail"
+          "service-rail"
         ],
         "sockets": [
           {
@@ -290,9 +448,8 @@
           }
         ],
         "children": [
-          "service-module",
-          "service-rail",
-          "light-rail"
+          "lower-service-module",
+          "service-rail"
         ],
         "sockets": [
           {
@@ -309,7 +466,7 @@
       {
         "id": "service-module",
         "kind": "apparatus",
-        "count": 3,
+        "count": 2,
         "material": 62,
         "interior": 0,
         "wall_thickness": 1,
@@ -368,6 +525,84 @@
           "gauge",
           "shelf",
           "signal"
+        ],
+        "preferences": [
+          {
+            "id": "quiet-service-bay",
+            "kind": "route",
+            "weight": -1
+          }
+        ]
+      },
+      {
+        "id": "lower-service-module",
+        "kind": "apparatus",
+        "count": 2,
+        "material": 62,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "micro-feature",
+          "service-cabinet"
+        ],
+        "candidates": [
+          {
+            "id": "bay-0",
+            "bounds": [
+              24,
+              20,
+              76,
+              58
+            ],
+            "order_x": 0,
+            "order_y": 1
+          },
+          {
+            "id": "bay-1",
+            "bounds": [
+              328,
+              94,
+              76,
+              58
+            ],
+            "order_x": 1,
+            "order_y": 1
+          },
+          {
+            "id": "bay-2",
+            "bounds": [
+              128,
+              20,
+              76,
+              58
+            ],
+            "order_x": 2,
+            "order_y": 1
+          },
+          {
+            "id": "bay-3",
+            "bounds": [
+              328,
+              20,
+              76,
+              58
+            ],
+            "order_x": 3,
+            "order_y": 1
+          }
+        ],
+        "children": [
+          "cabinet-window",
+          "gauge",
+          "shelf",
+          "signal"
+        ],
+        "preferences": [
+          {
+            "id": "quiet-lower-service-bay",
+            "kind": "route",
+            "weight": -1
+          }
         ]
       },
       {
@@ -496,31 +731,6 @@
         ]
       },
       {
-        "id": "light-rail",
-        "kind": "detail",
-        "count": 1,
-        "material": 79,
-        "interior": 0,
-        "wall_thickness": 1,
-        "tags": [
-          "micro-feature",
-          "gallery-beacon"
-        ],
-        "candidates": [
-          {
-            "id": "anchor",
-            "bounds": [
-              244,
-              94,
-              156,
-              3
-            ],
-            "order_x": 0,
-            "order_y": 0
-          }
-        ]
-      },
-      {
         "id": "optional-loop",
         "kind": "complex",
         "count": 1,
@@ -560,14 +770,20 @@
           {
             "id": "anchor",
             "bounds": [
-              64,
-              114,
-              112,
-              68
+              48,
+              164,
+              168,
+              96
             ],
             "order_x": 0,
             "order_y": 0
           }
+        ],
+        "children": [
+          "vessel-pilot",
+          "vessel-foot",
+          "play-inlet-post",
+          "rear-inlet-post"
         ]
       },
       {
@@ -585,14 +801,20 @@
           {
             "id": "anchor",
             "bounds": [
-              312,
-              114,
-              112,
-              68
+              280,
+              164,
+              168,
+              96
             ],
             "order_x": 0,
             "order_y": 0
           }
+        ],
+        "children": [
+          "vessel-pilot",
+          "vessel-foot",
+          "play-inlet-post",
+          "rear-inlet-post"
         ]
       },
       {
@@ -610,14 +832,20 @@
           {
             "id": "anchor",
             "bounds": [
-              64,
-              114,
-              112,
-              68
+              48,
+              164,
+              168,
+              96
             ],
             "order_x": 0,
             "order_y": 0
           }
+        ],
+        "children": [
+          "vessel-pilot",
+          "vessel-foot",
+          "play-inlet-post",
+          "rear-inlet-post"
         ]
       },
       {
@@ -635,12 +863,184 @@
           {
             "id": "anchor",
             "bounds": [
-              312,
-              114,
-              112,
-              68
+              280,
+              164,
+              168,
+              96
             ],
             "order_x": 0,
+            "order_y": 0
+          }
+        ],
+        "children": [
+          "vessel-pilot",
+          "vessel-foot",
+          "play-inlet-post",
+          "rear-inlet-post"
+        ]
+      },
+      {
+        "id": "vessel-pilot",
+        "kind": "detail",
+        "count": 2,
+        "material": 79,
+        "interior": 0,
+        "wall_thickness": 0,
+        "tags": [
+          "micro-detail",
+          "vessel-pilot"
+        ],
+        "candidates": [
+          {
+            "id": "pilot-0",
+            "bounds": [
+              4,
+              87,
+              68,
+              1
+            ],
+            "order_x": 0,
+            "order_y": 0
+          },
+          {
+            "id": "pilot-1",
+            "bounds": [
+              88,
+              87,
+              68,
+              1
+            ],
+            "order_x": 1,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "vessel-foot",
+        "kind": "detail",
+        "count": 4,
+        "material": 62,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "micro-detail",
+          "vessel-support"
+        ],
+        "candidates": [
+          {
+            "id": "foot-0",
+            "bounds": [
+              2,
+              92,
+              16,
+              4
+            ],
+            "order_x": 0,
+            "order_y": 0
+          },
+          {
+            "id": "foot-1",
+            "bounds": [
+              58,
+              92,
+              16,
+              4
+            ],
+            "order_x": 1,
+            "order_y": 0
+          },
+          {
+            "id": "foot-2",
+            "bounds": [
+              86,
+              92,
+              16,
+              4
+            ],
+            "order_x": 2,
+            "order_y": 0
+          },
+          {
+            "id": "foot-3",
+            "bounds": [
+              142,
+              92,
+              16,
+              4
+            ],
+            "order_x": 3,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "play-inlet-post",
+        "kind": "detail",
+        "count": 2,
+        "material": 68,
+        "interior": 0,
+        "wall_thickness": 0,
+        "tags": [
+          "micro-detail",
+          "native-inlet"
+        ],
+        "candidates": [
+          {
+            "id": "post-0",
+            "bounds": [
+              10,
+              2,
+              2,
+              16
+            ],
+            "order_x": 0,
+            "order_y": 0
+          },
+          {
+            "id": "post-1",
+            "bounds": [
+              64,
+              2,
+              2,
+              16
+            ],
+            "order_x": 1,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "rear-inlet-post",
+        "kind": "detail",
+        "count": 2,
+        "material": 68,
+        "interior": 0,
+        "wall_thickness": 0,
+        "tags": [
+          "micro-detail",
+          "native-inlet"
+        ],
+        "candidates": [
+          {
+            "id": "post-0",
+            "bounds": [
+              94,
+              2,
+              2,
+              16
+            ],
+            "order_x": 0,
+            "order_y": 0
+          },
+          {
+            "id": "post-1",
+            "bounds": [
+              148,
+              2,
+              2,
+              16
+            ],
+            "order_x": 1,
             "order_y": 0
           }
         ]
@@ -694,23 +1094,6 @@
         "wall_thickness": 4
       },
       {
-        "id": "copper-choir-rear-frame",
-        "rule": "copper-choir",
-        "plane": "scripted",
-        "geometry": "feature",
-        "shape": "shell",
-        "priority": 1,
-        "material": 69,
-        "bounds": [
-          8,
-          8,
-          464,
-          464
-        ],
-        "interior": 0,
-        "wall_thickness": 5
-      },
-      {
         "id": "copper-choir-sky",
         "rule": "copper-choir",
         "plane": "background",
@@ -762,75 +1145,119 @@
         "rule": "copper-choir",
         "plane": "background",
         "geometry": "feature",
-        "shape": "fill",
-        "priority": 2,
-        "material": 65,
+        "shape": "shell",
+        "priority": 6,
+        "material": 69,
         "bounds": [
           42,
           30,
           27,
           400
-        ]
+        ],
+        "interior": 65,
+        "wall_thickness": 3
       },
       {
         "id": "copper-choir-organ-1",
         "rule": "copper-choir",
         "plane": "background",
         "geometry": "feature",
-        "shape": "fill",
-        "priority": 2,
-        "material": 65,
+        "shape": "shell",
+        "priority": 6,
+        "material": 69,
         "bounds": [
           146,
           42,
           27,
           378
-        ]
+        ],
+        "interior": 65,
+        "wall_thickness": 3
       },
       {
         "id": "copper-choir-organ-2",
         "rule": "copper-choir",
         "plane": "background",
         "geometry": "feature",
-        "shape": "fill",
-        "priority": 2,
-        "material": 65,
+        "shape": "shell",
+        "priority": 6,
+        "material": 69,
         "bounds": [
           250,
           54,
           27,
           356
-        ]
+        ],
+        "interior": 65,
+        "wall_thickness": 3
       },
       {
         "id": "copper-choir-organ-3",
         "rule": "copper-choir",
         "plane": "background",
         "geometry": "feature",
-        "shape": "fill",
-        "priority": 2,
-        "material": 65,
+        "shape": "shell",
+        "priority": 6,
+        "material": 69,
         "bounds": [
           354,
           66,
           27,
           334
-        ]
+        ],
+        "interior": 65,
+        "wall_thickness": 3
       },
       {
-        "id": "copper-choir-air",
+        "id": "copper-choir-organ-chest",
         "rule": "copper-choir",
-        "plane": "effects",
+        "plane": "background",
         "geometry": "feature",
-        "shape": "fill",
-        "priority": 1,
-        "material": 22,
+        "shape": "shell",
+        "priority": 7,
+        "material": 119,
         "bounds": [
-          32,
-          230,
-          52,
-          6
-        ]
+          202,
+          38,
+          224,
+          132
+        ],
+        "interior": 72,
+        "wall_thickness": 6
+      },
+      {
+        "id": "copper-choir-upper-manifold",
+        "rule": "copper-choir",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 10,
+        "material": 69,
+        "bounds": [
+          214,
+          58,
+          198,
+          92
+        ],
+        "interior": 66,
+        "wall_thickness": 4
+      },
+      {
+        "id": "copper-choir-lower-manifold",
+        "rule": "copper-choir",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 7,
+        "material": 69,
+        "bounds": [
+          258,
+          308,
+          168,
+          132
+        ],
+        "interior": 72,
+        "wall_thickness": 6
       },
       {
         "id": "frost-observatory-frame",
@@ -842,23 +1269,6 @@
         "material": 121,
         "interior": 0,
         "wall_thickness": 4
-      },
-      {
-        "id": "frost-observatory-rear-frame",
-        "rule": "frost-observatory",
-        "plane": "scripted",
-        "geometry": "feature",
-        "shape": "shell",
-        "priority": 1,
-        "material": 114,
-        "bounds": [
-          8,
-          8,
-          464,
-          464
-        ],
-        "interior": 0,
-        "wall_thickness": 5
       },
       {
         "id": "frost-observatory-sky",
@@ -908,79 +1318,55 @@
         ]
       },
       {
-        "id": "frost-observatory-lens-0",
+        "id": "frost-observatory-upper-lens-cradle",
         "rule": "frost-observatory",
         "plane": "background",
         "geometry": "feature",
-        "shape": "fill",
-        "priority": 2,
-        "material": 122,
+        "shape": "shell",
+        "priority": 6,
+        "material": 114,
         "bounds": [
-          35,
-          40,
-          54,
-          330
-        ]
-      },
-      {
-        "id": "frost-observatory-lens-1",
-        "rule": "frost-observatory",
-        "plane": "background",
-        "geometry": "feature",
-        "shape": "fill",
-        "priority": 2,
-        "material": 122,
-        "bounds": [
-          137,
-          68,
-          54,
-          290
-        ]
-      },
-      {
-        "id": "frost-observatory-lens-2",
-        "rule": "frost-observatory",
-        "plane": "background",
-        "geometry": "feature",
-        "shape": "fill",
-        "priority": 2,
-        "material": 122,
-        "bounds": [
-          239,
-          96,
-          54,
-          250
-        ]
-      },
-      {
-        "id": "frost-observatory-lens-3",
-        "rule": "frost-observatory",
-        "plane": "background",
-        "geometry": "feature",
-        "shape": "fill",
-        "priority": 2,
-        "material": 122,
-        "bounds": [
-          341,
-          124,
-          54,
-          210
-        ]
-      },
-      {
-        "id": "frost-observatory-air",
-        "rule": "frost-observatory",
-        "plane": "effects",
-        "geometry": "feature",
-        "shape": "fill",
-        "priority": 1,
-        "material": 22,
-        "bounds": [
-          32,
+          198,
+          30,
           230,
-          52,
-          6
-        ]
+          160
+        ],
+        "interior": 72,
+        "wall_thickness": 8
+      },
+      {
+        "id": "frost-observatory-lower-lens-cradle",
+        "rule": "frost-observatory",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 6,
+        "material": 114,
+        "bounds": [
+          42,
+          296,
+          232,
+          142
+        ],
+        "interior": 72,
+        "wall_thickness": 8
+      },
+      {
+        "id": "frost-observatory-optical-spine",
+        "rule": "frost-observatory",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 7,
+        "material": 114,
+        "bounds": [
+          292,
+          192,
+          30,
+          108
+        ],
+        "interior": 72,
+        "wall_thickness": 4
       },
       {
         "id": "ember-terraces-frame",
@@ -992,23 +1378,6 @@
         "material": 104,
         "interior": 0,
         "wall_thickness": 4
-      },
-      {
-        "id": "ember-terraces-rear-frame",
-        "rule": "ember-terraces",
-        "plane": "scripted",
-        "geometry": "feature",
-        "shape": "shell",
-        "priority": 1,
-        "material": 51,
-        "bounds": [
-          8,
-          8,
-          464,
-          464
-        ],
-        "interior": 0,
-        "wall_thickness": 5
       },
       {
         "id": "ember-terraces-sky",
@@ -1058,79 +1427,123 @@
         ]
       },
       {
-        "id": "ember-terraces-kiln-step-0",
+        "id": "ember-terraces-upper-furnace",
         "rule": "ember-terraces",
         "plane": "background",
         "geometry": "feature",
-        "shape": "fill",
-        "priority": 2,
+        "shape": "shell",
+        "priority": 6,
         "material": 104,
         "bounds": [
-          30,
-          52,
-          420,
-          27
-        ]
-      },
-      {
-        "id": "ember-terraces-kiln-step-1",
-        "rule": "ember-terraces",
-        "plane": "background",
-        "geometry": "feature",
-        "shape": "fill",
-        "priority": 2,
-        "material": 104,
-        "bounds": [
-          42,
-          146,
-          396,
-          27
-        ]
-      },
-      {
-        "id": "ember-terraces-kiln-step-2",
-        "rule": "ember-terraces",
-        "plane": "background",
-        "geometry": "feature",
-        "shape": "fill",
-        "priority": 2,
-        "material": 104,
-        "bounds": [
-          54,
-          240,
-          372,
-          27
-        ]
-      },
-      {
-        "id": "ember-terraces-kiln-step-3",
-        "rule": "ember-terraces",
-        "plane": "background",
-        "geometry": "feature",
-        "shape": "fill",
-        "priority": 2,
-        "material": 104,
-        "bounds": [
-          66,
-          334,
-          348,
-          27
-        ]
-      },
-      {
-        "id": "ember-terraces-air",
-        "rule": "ember-terraces",
-        "plane": "effects",
-        "geometry": "feature",
-        "shape": "fill",
-        "priority": 1,
-        "material": 4,
-        "bounds": [
+          194,
           32,
-          230,
-          52,
-          6
-        ]
+          236,
+          160
+        ],
+        "interior": 100,
+        "wall_thickness": 12
+      },
+      {
+        "id": "ember-terraces-upper-refractory",
+        "rule": "ember-terraces",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 7,
+        "material": 131,
+        "bounds": [
+          218,
+          56,
+          188,
+          112
+        ],
+        "interior": 72,
+        "wall_thickness": 8
+      },
+      {
+        "id": "ember-terraces-lower-furnace",
+        "rule": "ember-terraces",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 6,
+        "material": 104,
+        "bounds": [
+          246,
+          298,
+          184,
+          142
+        ],
+        "interior": 100,
+        "wall_thickness": 10
+      },
+      {
+        "id": "ember-terraces-lower-refractory",
+        "rule": "ember-terraces",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 7,
+        "material": 131,
+        "bounds": [
+          268,
+          320,
+          140,
+          98
+        ],
+        "interior": 72,
+        "wall_thickness": 7
+      },
+      {
+        "id": "ember-terraces-flue",
+        "rule": "ember-terraces",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 7,
+        "material": 51,
+        "bounds": [
+          290,
+          192,
+          46,
+          108
+        ],
+        "interior": 0,
+        "wall_thickness": 5
+      },
+      {
+        "id": "ember-terraces-upper-fire-window",
+        "rule": "ember-terraces",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 8,
+        "material": 79,
+        "bounds": [
+          250,
+          84,
+          124,
+          56
+        ],
+        "interior": 66,
+        "wall_thickness": 4
+      },
+      {
+        "id": "ember-terraces-lower-fire-window",
+        "rule": "ember-terraces",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 8,
+        "material": 79,
+        "bounds": [
+          292,
+          342,
+          92,
+          54
+        ],
+        "interior": 66,
+        "wall_thickness": 4
       },
       {
         "id": "basalt-archive-frame",
@@ -1142,23 +1555,6 @@
         "material": 100,
         "interior": 0,
         "wall_thickness": 4
-      },
-      {
-        "id": "basalt-archive-rear-frame",
-        "rule": "basalt-archive",
-        "plane": "scripted",
-        "geometry": "feature",
-        "shape": "shell",
-        "priority": 1,
-        "material": 122,
-        "bounds": [
-          8,
-          8,
-          464,
-          464
-        ],
-        "interior": 0,
-        "wall_thickness": 5
       },
       {
         "id": "basalt-archive-sky",
@@ -1208,79 +1604,159 @@
         ]
       },
       {
-        "id": "basalt-archive-pylon-0",
+        "id": "basalt-archive-upper-vault",
+        "rule": "basalt-archive",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 6,
+        "material": 122,
+        "bounds": [
+          196,
+          30,
+          234,
+          162
+        ],
+        "interior": 100,
+        "wall_thickness": 8
+      },
+      {
+        "id": "basalt-archive-upper-vault-door",
+        "rule": "basalt-archive",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 7,
+        "material": 119,
+        "bounds": [
+          244,
+          54,
+          138,
+          114
+        ],
+        "interior": 72,
+        "wall_thickness": 6
+      },
+      {
+        "id": "basalt-archive-lower-register",
+        "rule": "basalt-archive",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 6,
+        "material": 122,
+        "bounds": [
+          42,
+          296,
+          234,
+          144
+        ],
+        "interior": 100,
+        "wall_thickness": 8
+      },
+      {
+        "id": "basalt-archive-lower-register-door",
+        "rule": "basalt-archive",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 7,
+        "material": 119,
+        "bounds": [
+          68,
+          318,
+          182,
+          100
+        ],
+        "interior": 72,
+        "wall_thickness": 5
+      },
+      {
+        "id": "basalt-archive-register-shelf-0",
         "rule": "basalt-archive",
         "plane": "background",
         "geometry": "feature",
         "shape": "fill",
-        "priority": 2,
-        "material": 100,
+        "priority": 8,
+        "material": 66,
         "bounds": [
-          48,
-          24,
-          40,
-          420
+          84,
+          336,
+          150,
+          5
         ]
       },
       {
-        "id": "basalt-archive-pylon-1",
+        "id": "basalt-archive-register-shelf-1",
         "rule": "basalt-archive",
         "plane": "background",
         "geometry": "feature",
         "shape": "fill",
-        "priority": 2,
-        "material": 100,
+        "priority": 8,
+        "material": 66,
         "bounds": [
-          152,
-          78,
-          40,
-          366
+          84,
+          362,
+          150,
+          5
         ]
       },
       {
-        "id": "basalt-archive-pylon-2",
+        "id": "basalt-archive-register-shelf-2",
         "rule": "basalt-archive",
         "plane": "background",
         "geometry": "feature",
         "shape": "fill",
-        "priority": 2,
-        "material": 100,
+        "priority": 8,
+        "material": 66,
         "bounds": [
-          256,
-          24,
-          40,
-          420
+          84,
+          388,
+          150,
+          5
         ]
       },
       {
-        "id": "basalt-archive-pylon-3",
-        "rule": "basalt-archive",
+        "id": "optical-core",
+        "rule": "optical-core",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 7,
+        "material": 122,
+        "interior": 121,
+        "wall_thickness": 12
+      },
+      {
+        "id": "optical-aperture",
+        "rule": "optical-aperture",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 8,
+        "material": 66,
+        "interior": 72,
+        "wall_thickness": 3
+      },
+      {
+        "id": "optical-brace",
+        "rule": "optical-brace",
         "plane": "background",
         "geometry": "feature",
         "shape": "fill",
-        "priority": 2,
-        "material": 100,
-        "bounds": [
-          360,
-          78,
-          40,
-          366
-        ]
+        "priority": 9,
+        "material": 114
       },
       {
-        "id": "basalt-archive-air",
-        "rule": "basalt-archive",
-        "plane": "effects",
+        "id": "vault-lock",
+        "rule": "vault-lock",
+        "plane": "background",
         "geometry": "feature",
-        "shape": "fill",
-        "priority": 1,
-        "material": 22,
-        "bounds": [
-          32,
-          230,
-          52,
-          6
-        ]
+        "shape": "shell",
+        "priority": 9,
+        "material": 119,
+        "interior": 78,
+        "wall_thickness": 3
       },
       {
         "id": "upper-gallery-floor",
@@ -1463,7 +1939,7 @@
         ]
       },
       {
-        "id": "cabinet-frame",
+        "id": "service-module-frame",
         "rule": "service-module",
         "plane": "play",
         "geometry": "feature",
@@ -1474,7 +1950,7 @@
         "wall_thickness": 2
       },
       {
-        "id": "cabinet-rear",
+        "id": "service-module-rear",
         "rule": "service-module",
         "plane": "scripted",
         "geometry": "feature",
@@ -1491,19 +1967,32 @@
         "wall_thickness": 3
       },
       {
-        "id": "cabinet-shadow",
-        "rule": "service-module",
-        "plane": "background",
+        "id": "lower-service-module-frame",
+        "rule": "lower-service-module",
+        "plane": "play",
         "geometry": "feature",
-        "shape": "fill",
-        "priority": 8,
-        "material": 65,
+        "shape": "shell",
+        "priority": 15,
+        "material": 62,
+        "interior": 0,
+        "wall_thickness": 2
+      },
+      {
+        "id": "lower-service-module-rear",
+        "rule": "lower-service-module",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 15,
+        "material": 69,
         "bounds": [
-          6,
-          6,
-          64,
-          44
-        ]
+          3,
+          3,
+          70,
+          52
+        ],
+        "interior": 0,
+        "wall_thickness": 3
       },
       {
         "id": "cabinet-window-play",
@@ -1522,7 +2011,7 @@
         "shape": "shell",
         "priority": 16,
         "material": 74,
-        "interior": 0,
+        "interior": 72,
         "wall_thickness": 2
       },
       {
@@ -1534,7 +2023,8 @@
         "priority": 17,
         "material": 119,
         "interior": 121,
-        "wall_thickness": 2
+        "wall_thickness": 2,
+        "application": "spatial:weathering"
       },
       {
         "id": "shelf-play",
@@ -1555,15 +2045,6 @@
         "material": 77
       },
       {
-        "id": "signal-rear",
-        "rule": "signal",
-        "plane": "scripted",
-        "geometry": "feature",
-        "shape": "fill",
-        "priority": 18,
-        "material": 79
-      },
-      {
         "id": "rail-play",
         "rule": "service-rail",
         "plane": "play",
@@ -1582,15 +2063,6 @@
         "material": 68
       },
       {
-        "id": "light-rail-play",
-        "rule": "light-rail",
-        "plane": "play",
-        "geometry": "feature",
-        "shape": "fill",
-        "priority": 20,
-        "material": 79
-      },
-      {
         "id": "loop-clearance",
         "rule": "optional-loop",
         "plane": "play",
@@ -1604,10 +2076,10 @@
       {
         "id": "loop-inner-trim",
         "rule": "optional-loop",
-        "plane": "scripted",
+        "plane": "play",
         "geometry": "feature",
         "shape": "shell",
-        "priority": 25,
+        "priority": 26,
         "material": 69,
         "bounds": [
           16,
@@ -1615,7 +2087,7 @@
           160,
           48
         ],
-        "interior": 0,
+        "interior": 72,
         "wall_thickness": 2
       },
       {
@@ -1631,6 +2103,51 @@
           20,
           152,
           40
+        ]
+      },
+      {
+        "id": "loop-status-band",
+        "rule": "optional-loop",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 27,
+        "material": 77,
+        "bounds": [
+          30,
+          23,
+          132,
+          2
+        ]
+      },
+      {
+        "id": "loop-access-grille",
+        "rule": "optional-loop",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 27,
+        "material": 66,
+        "bounds": [
+          30,
+          34,
+          132,
+          17
+        ]
+      },
+      {
+        "id": "loop-foot-rail",
+        "rule": "optional-loop",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 27,
+        "material": 69,
+        "bounds": [
+          30,
+          55,
+          132,
+          2
         ]
       },
       {
@@ -1661,21 +2178,6 @@
           100,
           11,
           322
-        ]
-      },
-      {
-        "id": "frost-observatory-loop-exit",
-        "rule": "frost-observatory",
-        "plane": "play",
-        "geometry": "feature",
-        "shape": "fill",
-        "priority": 80,
-        "material": 0,
-        "bounds": [
-          234,
-          405,
-          230,
-          11
         ]
       },
       {
@@ -1724,21 +2226,6 @@
         ]
       },
       {
-        "id": "basalt-archive-loop-exit",
-        "rule": "basalt-archive",
-        "plane": "play",
-        "geometry": "feature",
-        "shape": "fill",
-        "priority": 80,
-        "material": 0,
-        "bounds": [
-          234,
-          405,
-          230,
-          11
-        ]
-      },
-      {
         "id": "basalt-archive-secondary-shaft",
         "rule": "basalt-archive",
         "plane": "play",
@@ -1764,8 +2251,8 @@
         "bounds": [
           0,
           0,
-          52,
-          64
+          76,
+          92
         ],
         "interior": 0,
         "wall_thickness": 2
@@ -1780,24 +2267,9 @@
         "material": 23,
         "bounds": [
           7,
-          40,
-          38,
+          60,
+          62,
           7
-        ]
-      },
-      {
-        "id": "brine-retort-play-pilot",
-        "rule": "brine-retort",
-        "plane": "play",
-        "geometry": "feature",
-        "shape": "fill",
-        "priority": 32,
-        "material": 79,
-        "bounds": [
-          4,
-          59,
-          44,
-          1
         ]
       },
       {
@@ -1809,10 +2281,10 @@
         "priority": 30,
         "material": 131,
         "bounds": [
-          56,
+          84,
           0,
-          52,
-          64
+          76,
+          92
         ],
         "interior": 0,
         "wall_thickness": 2
@@ -1826,25 +2298,10 @@
         "priority": 31,
         "material": 23,
         "bounds": [
-          63,
-          40,
-          38,
-          7
-        ]
-      },
-      {
-        "id": "brine-retort-scripted-pilot",
-        "rule": "brine-retort",
-        "plane": "scripted",
-        "geometry": "feature",
-        "shape": "fill",
-        "priority": 32,
-        "material": 77,
-        "bounds": [
+          91,
           60,
-          59,
-          44,
-          1
+          62,
+          7
         ]
       },
       {
@@ -1856,10 +2313,10 @@
         "priority": 33,
         "material": 0,
         "bounds": [
-          54,
+          82,
           0,
-          58,
-          66
+          86,
+          92
         ]
       },
       {
@@ -1871,9 +2328,9 @@
         "priority": 32,
         "material": 22,
         "bounds": [
-          56,
+          84,
           2,
-          48,
+          72,
           4
         ]
       },
@@ -1888,8 +2345,8 @@
         "bounds": [
           0,
           0,
-          52,
-          64
+          76,
+          92
         ],
         "interior": 0,
         "wall_thickness": 2
@@ -1904,24 +2361,9 @@
         "material": 105,
         "bounds": [
           7,
-          40,
-          38,
+          60,
+          62,
           7
-        ]
-      },
-      {
-        "id": "snow-lens-play-pilot",
-        "rule": "snow-lens",
-        "plane": "play",
-        "geometry": "feature",
-        "shape": "fill",
-        "priority": 32,
-        "material": 79,
-        "bounds": [
-          4,
-          59,
-          44,
-          1
         ]
       },
       {
@@ -1933,10 +2375,10 @@
         "priority": 30,
         "material": 131,
         "bounds": [
-          56,
+          84,
           0,
-          52,
-          64
+          76,
+          92
         ],
         "interior": 0,
         "wall_thickness": 2
@@ -1950,25 +2392,10 @@
         "priority": 31,
         "material": 105,
         "bounds": [
-          63,
-          40,
-          38,
-          7
-        ]
-      },
-      {
-        "id": "snow-lens-scripted-pilot",
-        "rule": "snow-lens",
-        "plane": "scripted",
-        "geometry": "feature",
-        "shape": "fill",
-        "priority": 32,
-        "material": 77,
-        "bounds": [
+          91,
           60,
-          59,
-          44,
-          1
+          62,
+          7
         ]
       },
       {
@@ -1980,10 +2407,10 @@
         "priority": 33,
         "material": 0,
         "bounds": [
-          54,
+          82,
           0,
-          58,
-          66
+          86,
+          92
         ]
       },
       {
@@ -1995,9 +2422,9 @@
         "priority": 32,
         "material": 22,
         "bounds": [
-          56,
+          84,
           2,
-          48,
+          72,
           4
         ]
       },
@@ -2012,8 +2439,8 @@
         "bounds": [
           0,
           0,
-          52,
-          64
+          76,
+          92
         ],
         "interior": 0,
         "wall_thickness": 2
@@ -2028,24 +2455,9 @@
         "material": 103,
         "bounds": [
           7,
-          40,
-          38,
+          60,
+          62,
           7
-        ]
-      },
-      {
-        "id": "clay-kiln-play-pilot",
-        "rule": "clay-kiln",
-        "plane": "play",
-        "geometry": "feature",
-        "shape": "fill",
-        "priority": 32,
-        "material": 79,
-        "bounds": [
-          4,
-          59,
-          44,
-          1
         ]
       },
       {
@@ -2057,10 +2469,10 @@
         "priority": 30,
         "material": 131,
         "bounds": [
-          56,
+          84,
           0,
-          52,
-          64
+          76,
+          92
         ],
         "interior": 0,
         "wall_thickness": 2
@@ -2074,25 +2486,10 @@
         "priority": 31,
         "material": 103,
         "bounds": [
-          63,
-          40,
-          38,
-          7
-        ]
-      },
-      {
-        "id": "clay-kiln-scripted-pilot",
-        "rule": "clay-kiln",
-        "plane": "scripted",
-        "geometry": "feature",
-        "shape": "fill",
-        "priority": 32,
-        "material": 77,
-        "bounds": [
+          91,
           60,
-          59,
-          44,
-          1
+          62,
+          7
         ]
       },
       {
@@ -2104,10 +2501,10 @@
         "priority": 33,
         "material": 0,
         "bounds": [
-          54,
+          82,
           0,
-          58,
-          66
+          86,
+          92
         ]
       },
       {
@@ -2119,9 +2516,9 @@
         "priority": 32,
         "material": 22,
         "bounds": [
-          56,
+          84,
           2,
-          48,
+          72,
           4
         ]
       },
@@ -2136,8 +2533,8 @@
         "bounds": [
           0,
           0,
-          52,
-          64
+          76,
+          92
         ],
         "interior": 0,
         "wall_thickness": 2
@@ -2152,24 +2549,9 @@
         "material": 8,
         "bounds": [
           7,
-          40,
-          38,
+          60,
+          62,
           7
-        ]
-      },
-      {
-        "id": "geothermal-well-play-pilot",
-        "rule": "geothermal-well",
-        "plane": "play",
-        "geometry": "feature",
-        "shape": "fill",
-        "priority": 32,
-        "material": 79,
-        "bounds": [
-          4,
-          59,
-          44,
-          1
         ]
       },
       {
@@ -2181,10 +2563,10 @@
         "priority": 30,
         "material": 131,
         "bounds": [
-          56,
+          84,
           0,
-          52,
-          64
+          76,
+          92
         ],
         "interior": 0,
         "wall_thickness": 2
@@ -2198,25 +2580,10 @@
         "priority": 31,
         "material": 8,
         "bounds": [
-          63,
-          40,
-          38,
-          7
-        ]
-      },
-      {
-        "id": "geothermal-well-scripted-pilot",
-        "rule": "geothermal-well",
-        "plane": "scripted",
-        "geometry": "feature",
-        "shape": "fill",
-        "priority": 32,
-        "material": 77,
-        "bounds": [
+          91,
           60,
-          59,
-          44,
-          1
+          62,
+          7
         ]
       },
       {
@@ -2228,10 +2595,10 @@
         "priority": 33,
         "material": 0,
         "bounds": [
-          54,
+          82,
           0,
-          58,
-          66
+          86,
+          92
         ]
       },
       {
@@ -2243,11 +2610,56 @@
         "priority": 32,
         "material": 22,
         "bounds": [
-          56,
+          84,
           2,
-          48,
+          72,
           4
         ]
+      },
+      {
+        "id": "vessel-pilot-play",
+        "rule": "vessel-pilot",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 32,
+        "material": 79
+      },
+      {
+        "id": "vessel-pilot-rear",
+        "rule": "vessel-pilot",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 32,
+        "material": 77
+      },
+      {
+        "id": "vessel-foot",
+        "rule": "vessel-foot",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 34,
+        "material": 62
+      },
+      {
+        "id": "play-inlet-post",
+        "rule": "play-inlet-post",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 32,
+        "material": 68
+      },
+      {
+        "id": "rear-inlet-post",
+        "rule": "rear-inlet-post",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 32,
+        "material": 68
       },
       {
         "id": "regional-effects-negative-space",
@@ -2276,33 +2688,6 @@
         "priority": 90,
         "material": 0,
         "route_type": "passage"
-      },
-      {
-        "id": "outer-foundation",
-        "rule": "$region",
-        "plane": "background",
-        "geometry": "feature",
-        "shape": "shell",
-        "priority": 0,
-        "material": 100,
-        "interior": 0,
-        "wall_thickness": 6
-      },
-      {
-        "id": "cabinet-weathering",
-        "rule": "cabinet-window",
-        "plane": "scripted",
-        "geometry": "feature",
-        "shape": "fill",
-        "priority": 17,
-        "material": 65,
-        "bounds": [
-          3,
-          3,
-          54,
-          2
-        ],
-        "application": "spatial:weathering"
       }
     ],
     "fixtures": [
@@ -2314,7 +2699,7 @@
         "bounds": [
           12,
           5,
-          28,
+          52,
           2
         ],
         "mode": "source",
@@ -2331,9 +2716,9 @@
         "plane": "scripted",
         "material": 3,
         "bounds": [
-          68,
+          96,
           5,
-          28,
+          52,
           2
         ],
         "mode": "source",
@@ -2351,8 +2736,8 @@
         "material": 6,
         "bounds": [
           10,
-          39,
-          32,
+          59,
+          56,
           1
         ],
         "mode": "source",
@@ -2369,9 +2754,9 @@
         "plane": "scripted",
         "material": 6,
         "bounds": [
-          66,
-          39,
-          32,
+          94,
+          59,
+          56,
           1
         ],
         "mode": "source",
@@ -2390,7 +2775,7 @@
         "bounds": [
           12,
           5,
-          28,
+          52,
           2
         ],
         "mode": "source",
@@ -2407,9 +2792,9 @@
         "plane": "scripted",
         "material": 8,
         "bounds": [
-          68,
+          96,
           5,
-          28,
+          52,
           2
         ],
         "mode": "source",
@@ -2428,7 +2813,7 @@
         "bounds": [
           12,
           5,
-          28,
+          52,
           2
         ],
         "mode": "source",
@@ -2445,9 +2830,9 @@
         "plane": "scripted",
         "material": 3,
         "bounds": [
-          68,
+          96,
           5,
-          28,
+          52,
           2
         ],
         "mode": "source",
@@ -2484,10 +2869,10 @@
         "target_plane": "scripted",
         "effect": "correspondence",
         "bounds": [
-          56,
+          84,
           0,
-          52,
-          64
+          76,
+          92
         ]
       },
       {
@@ -2499,10 +2884,10 @@
         "target_plane": "scripted",
         "effect": "correspondence",
         "bounds": [
-          56,
+          84,
           0,
-          52,
-          64
+          76,
+          92
         ]
       },
       {
@@ -2514,10 +2899,10 @@
         "target_plane": "scripted",
         "effect": "correspondence",
         "bounds": [
-          56,
+          84,
           0,
-          52,
-          64
+          76,
+          92
         ]
       },
       {
@@ -2529,10 +2914,10 @@
         "target_plane": "scripted",
         "effect": "correspondence",
         "bounds": [
-          56,
+          84,
           0,
-          52,
-          64
+          76,
+          92
         ]
       }
     ],
