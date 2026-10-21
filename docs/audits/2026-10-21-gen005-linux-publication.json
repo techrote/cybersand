@@ -1,0 +1,353 @@
+{
+  "completed": true,
+  "godot": {
+    "archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+    "runtime_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "log_sha256": {
+    "import.log": "a59903e67357be24a099f71ba67efb1cdef33dfef74fb4e4922f8cb8f22fbbb3",
+    "test_player_acrobat.log": "6ccd1e53d794f29b0610c44e63be731fc7cb98d452fde8d97c80172e3a3ed48d",
+    "test_player_acrobat_physics.log": "601cc7d9b6e57ec8e7c212e920d938e6f7bf4fe2e00f427cd412653162674f82",
+    "test_player_material_field.log": "8768eebe57406a79633b2cdf02b462a8a9ec8874df7f16cbe473b7d73e934d9f",
+    "test_player_playground_course.log": "45de40a0480735ba0b82ddee3f66c41aa84ad7ead9d3cb68f7236228942af6c5",
+    "test_player_playground_runtime.log": "70ed2f66f56bfc50b27eb032823dcdc7185533afd0e091fc741cf97115b7a26d",
+    "test_player_vehicle_controls.log": "b4a82fe8c933ab9cbe4e3410d2d7ee515ab3afe55814b0d9c200d35463da6358",
+    "test_render_world_generation.log": "b75505bfd0cb9c5dc461db528c2691042070620afbac3ebfec49845947cd8255",
+    "test_semantic_planes_examples.log": "9a4015987a3863700c65b7a8d9cbf2006f27c82ef81714e9c21521645388f651",
+    "test_semantic_planes_runtime.log": "08fa451a7c2475a023c68f1a62176704565a57787f0d0fdc3a9b91d4deced673",
+    "test_worldgen_fields.log": "6536ea48a7b009d6b49bf7ddd1398942f013b8151f348381c3f267c7b92d6df2",
+    "test_worldgen_grammar.log": "b8722593c40810e6d939738a8bde08e1da40f35b1637f86371a0ae1acee863ca",
+    "test_worldgen_planes.log": "002813b94d1ac72723cf0674d5415ed4fa791c596c766d5fe5e0ef315435d464",
+    "test_worldgen_typed.log": "779ae4e51d23eca19ba5a09b2fdd2b234cec3eb216aee5af4cc7520cbc2723b8",
+    "test_worldgen_workbench.log": "dc3b0c6f2faea48e1fc9a1d002369f0a6b544989f7b48ff9f55ede069a01b4d9"
+  },
+  "platform": "linux",
+  "rapier_sha256": "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831",
+  "results": [
+    {
+      "command": [
+        "/home/runner/work/_temp/godot-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/runner/work/cybersand/cybersand/godot",
+        "--editor",
+        "--quit"
+      ],
+      "diagnostic_error": false,
+      "launch_error": null,
+      "log": "import.log",
+      "name": "import",
+      "requires_display": false,
+      "returncode": 0,
+      "role": "preflight",
+      "seconds": 6.328,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_seconds": 240
+    },
+    {
+      "command": [
+        "/home/runner/work/_temp/godot-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/runner/work/cybersand/cybersand/godot",
+        "--script",
+        "res://tests/test_worldgen_planes.gd"
+      ],
+      "diagnostic_error": false,
+      "launch_error": null,
+      "log": "test_worldgen_planes.log",
+      "name": "test_worldgen_planes",
+      "requires_display": false,
+      "returncode": 0,
+      "role": "case",
+      "seconds": 3.722,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_seconds": 180
+    },
+    {
+      "command": [
+        "/home/runner/work/_temp/godot-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/runner/work/cybersand/cybersand/godot",
+        "--script",
+        "res://tests/test_semantic_planes_runtime.gd"
+      ],
+      "diagnostic_error": false,
+      "launch_error": null,
+      "log": "test_semantic_planes_runtime.log",
+      "name": "test_semantic_planes_runtime",
+      "requires_display": false,
+      "returncode": 0,
+      "role": "case",
+      "seconds": 8.735,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_seconds": 180
+    },
+    {
+      "command": [
+        "/home/runner/work/_temp/godot-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/runner/work/cybersand/cybersand/godot",
+        "--script",
+        "res://tests/test_semantic_planes_examples.gd"
+      ],
+      "diagnostic_error": false,
+      "launch_error": null,
+      "log": "test_semantic_planes_examples.log",
+      "name": "test_semantic_planes_examples",
+      "requires_display": false,
+      "returncode": 0,
+      "role": "case",
+      "seconds": 18.407,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_seconds": 180
+    },
+    {
+      "command": [
+        "/home/runner/work/_temp/godot-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/runner/work/cybersand/cybersand/godot",
+        "--script",
+        "res://tests/test_player_acrobat.gd"
+      ],
+      "diagnostic_error": false,
+      "launch_error": null,
+      "log": "test_player_acrobat.log",
+      "name": "test_player_acrobat",
+      "requires_display": false,
+      "returncode": 0,
+      "role": "case",
+      "seconds": 0.265,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_seconds": 180
+    },
+    {
+      "command": [
+        "/home/runner/work/_temp/godot-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/runner/work/cybersand/cybersand/godot",
+        "--script",
+        "res://tests/test_player_acrobat_physics.gd"
+      ],
+      "diagnostic_error": false,
+      "launch_error": null,
+      "log": "test_player_acrobat_physics.log",
+      "name": "test_player_acrobat_physics",
+      "requires_display": false,
+      "returncode": 0,
+      "role": "case",
+      "seconds": 0.766,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_seconds": 180
+    },
+    {
+      "command": [
+        "/home/runner/work/_temp/godot-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/runner/work/cybersand/cybersand/godot",
+        "--script",
+        "res://tests/test_player_material_field.gd"
+      ],
+      "diagnostic_error": false,
+      "launch_error": null,
+      "log": "test_player_material_field.log",
+      "name": "test_player_material_field",
+      "requires_display": false,
+      "returncode": 0,
+      "role": "case",
+      "seconds": 0.465,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_seconds": 180
+    },
+    {
+      "command": [
+        "/home/runner/work/_temp/godot-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/runner/work/cybersand/cybersand/godot",
+        "--script",
+        "res://tests/test_player_playground_course.gd"
+      ],
+      "diagnostic_error": false,
+      "launch_error": null,
+      "log": "test_player_playground_course.log",
+      "name": "test_player_playground_course",
+      "requires_display": false,
+      "returncode": 0,
+      "role": "case",
+      "seconds": 3.071,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_seconds": 180
+    },
+    {
+      "command": [
+        "/home/runner/work/_temp/godot-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/runner/work/cybersand/cybersand/godot",
+        "--script",
+        "res://tests/test_player_playground_runtime.gd"
+      ],
+      "diagnostic_error": false,
+      "launch_error": null,
+      "log": "test_player_playground_runtime.log",
+      "name": "test_player_playground_runtime",
+      "requires_display": false,
+      "returncode": 0,
+      "role": "case",
+      "seconds": 4.675,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_seconds": 180
+    },
+    {
+      "command": [
+        "/home/runner/work/_temp/godot-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/runner/work/cybersand/cybersand/godot",
+        "--script",
+        "res://tests/test_player_vehicle_controls.gd"
+      ],
+      "diagnostic_error": false,
+      "launch_error": null,
+      "log": "test_player_vehicle_controls.log",
+      "name": "test_player_vehicle_controls",
+      "requires_display": false,
+      "returncode": 0,
+      "role": "case",
+      "seconds": 0.916,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_seconds": 180
+    },
+    {
+      "command": [
+        "/home/runner/work/_temp/godot-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/runner/work/cybersand/cybersand/godot",
+        "--script",
+        "res://tests/test_worldgen_workbench.gd"
+      ],
+      "diagnostic_error": false,
+      "launch_error": null,
+      "log": "test_worldgen_workbench.log",
+      "name": "test_worldgen_workbench",
+      "requires_display": false,
+      "returncode": 0,
+      "role": "case",
+      "seconds": 0.665,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_seconds": 180
+    },
+    {
+      "command": [
+        "/home/runner/work/_temp/godot-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/runner/work/cybersand/cybersand/godot",
+        "--script",
+        "res://tests/test_worldgen_fields.gd"
+      ],
+      "diagnostic_error": false,
+      "launch_error": null,
+      "log": "test_worldgen_fields.log",
+      "name": "test_worldgen_fields",
+      "requires_display": false,
+      "returncode": 0,
+      "role": "case",
+      "seconds": 0.866,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_seconds": 180
+    },
+    {
+      "command": [
+        "/home/runner/work/_temp/godot-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/runner/work/cybersand/cybersand/godot",
+        "--script",
+        "res://tests/test_worldgen_typed.gd"
+      ],
+      "diagnostic_error": false,
+      "launch_error": null,
+      "log": "test_worldgen_typed.log",
+      "name": "test_worldgen_typed",
+      "requires_display": false,
+      "returncode": 0,
+      "role": "case",
+      "seconds": 0.565,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_seconds": 180
+    },
+    {
+      "command": [
+        "/home/runner/work/_temp/godot-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/runner/work/cybersand/cybersand/godot",
+        "--script",
+        "res://tests/test_worldgen_grammar.gd"
+      ],
+      "diagnostic_error": false,
+      "launch_error": null,
+      "log": "test_worldgen_grammar.log",
+      "name": "test_worldgen_grammar",
+      "requires_display": false,
+      "returncode": 0,
+      "role": "case",
+      "seconds": 1.869,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_seconds": 180
+    },
+    {
+      "command": [
+        "/home/runner/work/_temp/godot-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/runner/work/cybersand/cybersand/godot",
+        "--script",
+        "res://tests/test_render_world_generation.gd"
+      ],
+      "diagnostic_error": false,
+      "launch_error": null,
+      "log": "test_render_world_generation.log",
+      "name": "test_render_world_generation",
+      "requires_display": false,
+      "returncode": 0,
+      "role": "case",
+      "seconds": 3.924,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_seconds": 180
+    }
+  ],
+  "runtime": {
+    "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "sha256": "f3dd574268d1f4cf01167faf7e9d0e1ccbdf4f0a219051fdbbb6e0a76b9ed326",
+    "size": 3237264
+  },
+  "schema_version": 1,
+  "scope": "Import plus three GEN-005, six player and five legacy/typed/grammar generation headless cases; full ready-PR CI is separate",
+  "source_commit": "720e51e2b6bdaa1fdf20a06d732892fdbeb736fe",
+  "status": "passed"
+}

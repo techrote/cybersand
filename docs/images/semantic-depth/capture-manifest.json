@@ -1,0 +1,4452 @@
+{
+	"capture_failures": false,
+	"captures": [
+		{
+			"file": "refinery-guide.png",
+			"height": 1000,
+			"sha256": "ecf9521d1b37419c36f50c8211658f13ff9a6150ed78301438469a41a75520ec",
+			"width": 1440
+		},
+		{
+			"file": "refinery-composite.png",
+			"height": 1024,
+			"sha256": "423d87f5cfcc6170c5b5c669c978a8df4f33f654f9c01927070200b3a624a34a",
+			"width": 1024
+		},
+		{
+			"file": "refinery-play.png",
+			"height": 1024,
+			"sha256": "07fd266bce1ef9f3f2e9133374086e890a448dc5738b7477811dc5e4f2de3476",
+			"width": 1024
+		},
+		{
+			"file": "refinery-scripted.png",
+			"height": 1024,
+			"sha256": "22b15122257afe2383f43fcb043a92376f7c104152cb87a0f22482445d5bda2f",
+			"width": 1024
+		},
+		{
+			"file": "refinery-effects.png",
+			"height": 1024,
+			"sha256": "598906aa167354c0e10c2c77cc840ee030b0eecff2d6fe47d983d2240a7ceae6",
+			"width": 1024
+		},
+		{
+			"file": "refinery-background.png",
+			"height": 1024,
+			"sha256": "ee57c539da8679f9628ecab9a3aacc4d19c914346a1440fa21e69070389b18ce",
+			"width": 1024
+		},
+		{
+			"file": "refinery-region-1.png",
+			"height": 1024,
+			"sha256": "092dc93fff397e51ecaf20a941aa6916fb2c9cdfd736b9484f42542964896419",
+			"width": 1024
+		},
+		{
+			"file": "refinery-region-2.png",
+			"height": 1024,
+			"sha256": "43a86195804b487d1e92f14e2fc26880d8f6471c4723f8667d8040c2427fb00d",
+			"width": 1024
+		},
+		{
+			"file": "refinery-region-3.png",
+			"height": 1024,
+			"sha256": "9479002db58621c80eb9784023add625f5d8bde77fbc29796dafdcad617c6c05",
+			"width": 1024
+		},
+		{
+			"file": "refinery-region-4.png",
+			"height": 1024,
+			"sha256": "fdd80156da6a5b17e935ba8264caa5b95bada72a52b8ec69dd4a411efcc3f7ed",
+			"width": 1024
+		},
+		{
+			"file": "refinery-after-240-ticks.png",
+			"height": 1024,
+			"sha256": "b231b229b140051e488cbd5465fdcb964675ef43a039848ca453e52367d3bde9",
+			"width": 1024
+		},
+		{
+			"file": "flooded-cavern-guide.png",
+			"height": 1000,
+			"sha256": "bfe1aeb8e5add7e2649da8a3a6b1052196b03350e20a4bdcb918b49891731bf4",
+			"width": 1440
+		},
+		{
+			"file": "flooded-cavern-composite.png",
+			"height": 1024,
+			"sha256": "de5e2bb863e7ec40b534229b25277dc69b6a6ae79122cd4eefcaeb8c43160536",
+			"width": 1024
+		},
+		{
+			"file": "flooded-cavern-play.png",
+			"height": 1024,
+			"sha256": "75db6282db59813d8796dde48f82e1256da08f1b241501a44aca16388d07195f",
+			"width": 1024
+		},
+		{
+			"file": "flooded-cavern-scripted.png",
+			"height": 1024,
+			"sha256": "309e0b232eb2f94306cb2fe1f5322ba2466fba53e4d7e604ae1d285874834003",
+			"width": 1024
+		},
+		{
+			"file": "flooded-cavern-effects.png",
+			"height": 1024,
+			"sha256": "617f5ad3df180380fd64d1b3637e0e67e03b91a5984d56b466ad3c4d26a4526e",
+			"width": 1024
+		},
+		{
+			"file": "flooded-cavern-background.png",
+			"height": 1024,
+			"sha256": "a03fb9eaaa4ef0fd554acfc24088a09b5f80e2f3ae3bdd4d62c49a56067ad07d",
+			"width": 1024
+		},
+		{
+			"file": "flooded-cavern-region-1.png",
+			"height": 1024,
+			"sha256": "8406b0b0526a1d7b85b00b3c1d3c4b2070ba1dbea03d0d05ee1e65c12f2efb98",
+			"width": 1024
+		},
+		{
+			"file": "flooded-cavern-region-2.png",
+			"height": 1024,
+			"sha256": "ab354844e3325d3eef9c80c495be6f6638689a1ade11676b86bb275f3c3fbdc8",
+			"width": 1024
+		},
+		{
+			"file": "flooded-cavern-region-3.png",
+			"height": 1024,
+			"sha256": "e6a56684bc225dc843f09e4b98d61b7dbcc2d320b2147914e4f265bef3a49fe5",
+			"width": 1024
+		},
+		{
+			"file": "flooded-cavern-region-4.png",
+			"height": 1024,
+			"sha256": "d6c231946228e68c65a499ca237ef0e1a83fa33f7d61c289eaee1d68efbc4c64",
+			"width": 1024
+		},
+		{
+			"file": "flooded-cavern-after-240-ticks.png",
+			"height": 1024,
+			"sha256": "8709b2ad38ae1e2304213fb348e55964518a3a46fb5c5c4b1c870c04b1b05992",
+			"width": 1024
+		}
+	],
+	"display": "X11",
+	"engine": {
+		"build": "official",
+		"hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+		"hex": 263936,
+		"major": 4,
+		"minor": 7,
+		"patch": 0,
+		"status": "stable",
+		"string": "4.7-stable (official)",
+		"timestamp": 0
+	},
+	"initial_state": "paused at native tick zero; copied native RG8 material surfaces; frozen material animation",
+	"method": "gl_compatibility",
+	"native_library_sha256": "f3dd574268d1f4cf01167faf7e9d0e1ccbdf4f0a219051fdbbb6e0a76b9ed326",
+	"records": [
+		{
+			"actors": 4,
+			"bounds": "[P: (-128, -128), S: (256, 256)]",
+			"bundle_id": "refinery-galleries",
+			"bundle_revision": "a9ae4e7ecad92a14",
+			"compositor": {
+				"camera_origin": "(0.0, 0.0)",
+				"full_rg8_uploaded_bytes": 16777216,
+				"full_rg8_uploads": 8,
+				"layer_parallax": "(1.0, 0.97, 0.95, 0.91)",
+				"layer_scale": "(1.0, 1.0, 1.0, 1.0)",
+				"layer_visibility": "(1.0, 1.0, 1.0, 1.0)",
+				"layers": {
+					"background": {
+						"accepted_packets": 2,
+						"bake_requests": 2,
+						"copied_patch_bytes": 4194304,
+						"last_rejection": "",
+						"layer_id": "background",
+						"layer_tick": 0,
+						"material_surface_size": "(256, 256)",
+						"native_texture_size": "(1024, 1024)",
+						"rejected_packets": 0,
+						"render_enabled": false,
+						"reset_generation": 1,
+						"static_bake": true,
+						"upload_count": 2,
+						"uploaded_bytes": 4194304,
+						"viewport_update_mode": 1
+					},
+					"effects": {
+						"accepted_packets": 2,
+						"bake_requests": 0,
+						"copied_patch_bytes": 4194304,
+						"last_rejection": "",
+						"layer_id": "effects",
+						"layer_tick": 240,
+						"material_surface_size": "(256, 256)",
+						"native_texture_size": "(1024, 1024)",
+						"rejected_packets": 0,
+						"render_enabled": false,
+						"reset_generation": 1,
+						"static_bake": false,
+						"upload_count": 2,
+						"uploaded_bytes": 4194304,
+						"viewport_update_mode": 1
+					},
+					"play": {
+						"accepted_packets": 2,
+						"bake_requests": 0,
+						"copied_patch_bytes": 4194304,
+						"last_rejection": "",
+						"layer_id": "play",
+						"layer_tick": 240,
+						"material_surface_size": "(256, 256)",
+						"native_texture_size": "(1024, 1024)",
+						"rejected_packets": 0,
+						"render_enabled": false,
+						"reset_generation": 1,
+						"static_bake": false,
+						"upload_count": 2,
+						"uploaded_bytes": 4194304,
+						"viewport_update_mode": 1
+					},
+					"scripted": {
+						"accepted_packets": 2,
+						"bake_requests": 0,
+						"copied_patch_bytes": 4194304,
+						"last_rejection": "",
+						"layer_id": "scripted",
+						"layer_tick": 240,
+						"material_surface_size": "(256, 256)",
+						"native_texture_size": "(1024, 1024)",
+						"rejected_packets": 0,
+						"render_enabled": false,
+						"reset_generation": 1,
+						"static_bake": false,
+						"upload_count": 2,
+						"uploaded_bytes": 4194304,
+						"viewport_update_mode": 1
+					}
+				},
+				"presentation_time": 0.0,
+				"view_size": "(256.0, 256.0)",
+				"world_size": "(256.0, 256.0)"
+			},
+			"example": "semantic-refinery",
+			"features": 56,
+			"fixtures": 20,
+			"lifecycle": {
+				"actor_receipts": {
+					"refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/actor/gallery-inspector": {
+						"activate": {
+							"accepted": true,
+							"action": "activate",
+							"generation": 1,
+							"id": "refinery-galleries",
+							"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/actor/gallery-inspector",
+							"revision": "a9ae4e7ecad92a14"
+						},
+						"install": {
+							"accepted": true,
+							"action": "install",
+							"generation": 1,
+							"id": "refinery-galleries",
+							"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/actor/gallery-inspector",
+							"revision": "a9ae4e7ecad92a14"
+						}
+					},
+					"refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/actor/gallery-inspector": {
+						"activate": {
+							"accepted": true,
+							"action": "activate",
+							"generation": 1,
+							"id": "refinery-galleries",
+							"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/actor/gallery-inspector",
+							"revision": "a9ae4e7ecad92a14"
+						},
+						"install": {
+							"accepted": true,
+							"action": "install",
+							"generation": 1,
+							"id": "refinery-galleries",
+							"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/actor/gallery-inspector",
+							"revision": "a9ae4e7ecad92a14"
+						}
+					},
+					"refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/actor/gallery-inspector": {
+						"activate": {
+							"accepted": true,
+							"action": "activate",
+							"generation": 1,
+							"id": "refinery-galleries",
+							"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/actor/gallery-inspector",
+							"revision": "a9ae4e7ecad92a14"
+						},
+						"install": {
+							"accepted": true,
+							"action": "install",
+							"generation": 1,
+							"id": "refinery-galleries",
+							"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/actor/gallery-inspector",
+							"revision": "a9ae4e7ecad92a14"
+						}
+					},
+					"refinery-galleries/grid128/region(0,0)/district/0/gallery/0/actor/gallery-inspector": {
+						"activate": {
+							"accepted": true,
+							"action": "activate",
+							"generation": 1,
+							"id": "refinery-galleries",
+							"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/actor/gallery-inspector",
+							"revision": "a9ae4e7ecad92a14"
+						},
+						"install": {
+							"accepted": true,
+							"action": "install",
+							"generation": 1,
+							"id": "refinery-galleries",
+							"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/actor/gallery-inspector",
+							"revision": "a9ae4e7ecad92a14"
+						}
+					}
+				},
+				"applications": 544,
+				"cleanup_cell_writes": 448,
+				"commit_generation": 1,
+				"fixture_cell_writes": 9664,
+				"fixtures": {
+					"refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/fixture/reactor-water": {
+						"active": false,
+						"cleaned": true,
+						"fired": 12,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/vent/0/fixture/local-vent": {
+						"active": false,
+						"cleaned": true,
+						"fired": 18,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/vent/0/fixture/vent-drain": {
+						"active": false,
+						"cleaned": true,
+						"fired": 40,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed": {
+						"active": false,
+						"cleaned": true,
+						"fired": 40,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray": {
+						"active": false,
+						"cleaned": true,
+						"fired": 26,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/reactor/0/fixture/reactor-water": {
+						"active": false,
+						"cleaned": true,
+						"fired": 12,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/vent/0/fixture/local-vent": {
+						"active": false,
+						"cleaned": true,
+						"fired": 18,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/vent/0/fixture/vent-drain": {
+						"active": false,
+						"cleaned": true,
+						"fired": 40,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed": {
+						"active": false,
+						"cleaned": true,
+						"fired": 40,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray": {
+						"active": false,
+						"cleaned": true,
+						"fired": 26,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/reactor/0/fixture/reactor-water": {
+						"active": false,
+						"cleaned": true,
+						"fired": 12,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/vent/0/fixture/local-vent": {
+						"active": false,
+						"cleaned": true,
+						"fired": 18,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/vent/0/fixture/vent-drain": {
+						"active": false,
+						"cleaned": true,
+						"fired": 40,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed": {
+						"active": false,
+						"cleaned": true,
+						"fired": 40,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray": {
+						"active": false,
+						"cleaned": true,
+						"fired": 26,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(0,0)/district/0/gallery/0/reactor/0/fixture/reactor-water": {
+						"active": false,
+						"cleaned": true,
+						"fired": 12,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(0,0)/district/0/gallery/0/vent/0/fixture/local-vent": {
+						"active": false,
+						"cleaned": true,
+						"fired": 18,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(0,0)/district/0/gallery/0/vent/0/fixture/vent-drain": {
+						"active": false,
+						"cleaned": true,
+						"fired": 40,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(0,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed": {
+						"active": false,
+						"cleaned": true,
+						"fired": 40,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(0,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray": {
+						"active": false,
+						"cleaned": true,
+						"fired": 26,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					}
+				},
+				"generation": 1,
+				"id": "refinery-galleries",
+				"last_transition": {
+					"accepted": true,
+					"action": "install",
+					"generation": 1,
+					"id": "refinery-galleries",
+					"identity": "refinery-galleries",
+					"revision": "a9ae4e7ecad92a14"
+				},
+				"links": {
+					"refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/link/reactor-breach": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/link/reactor-breach",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/link/reactor-breach",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/link/reactor-machinery": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/service-pipe/0/link/pipe-match": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/service-pipe/0/link/pipe-match",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/service-pipe/0/link/pipe-match",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/vent/0/link/vent-burst": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/vent/0/link/vent-burst",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/vent/0/link/vent-burst",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/vent/0/link/vent-drain-link": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/vent/0/link/vent-feed": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/window/0/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/window/0/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/window/0/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/window/1/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/window/1/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/window/1/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/window/2/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/window/2/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/window/2/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/window/3/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/window/3/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/window/3/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/reactor/0/link/reactor-breach": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/reactor/0/link/reactor-breach",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/reactor/0/link/reactor-breach",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/reactor/0/link/reactor-machinery": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/service-pipe/0/link/pipe-match": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/service-pipe/0/link/pipe-match",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/service-pipe/0/link/pipe-match",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/vent/0/link/vent-burst": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/vent/0/link/vent-burst",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/vent/0/link/vent-burst",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/vent/0/link/vent-drain-link": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/vent/0/link/vent-feed": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/window/0/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/window/0/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/window/0/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/window/1/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/window/1/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/window/1/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/window/2/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/window/2/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/window/2/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/window/3/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/window/3/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/window/3/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/reactor/0/link/reactor-breach": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/reactor/0/link/reactor-breach",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/reactor/0/link/reactor-breach",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/reactor/0/link/reactor-machinery": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/service-pipe/0/link/pipe-match": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/service-pipe/0/link/pipe-match",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/service-pipe/0/link/pipe-match",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/vent/0/link/vent-burst": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/vent/0/link/vent-burst",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/vent/0/link/vent-burst",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/vent/0/link/vent-drain-link": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/vent/0/link/vent-feed": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/window/0/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/window/0/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/window/0/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/window/1/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/window/1/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/window/1/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/window/2/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/window/2/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/window/2/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/window/3/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/window/3/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/window/3/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(0,0)/district/0/gallery/0/reactor/0/link/reactor-breach": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/reactor/0/link/reactor-breach",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/reactor/0/link/reactor-breach",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(0,0)/district/0/gallery/0/reactor/0/link/reactor-machinery": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(0,0)/district/0/gallery/0/service-pipe/0/link/pipe-match": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/service-pipe/0/link/pipe-match",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/service-pipe/0/link/pipe-match",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(0,0)/district/0/gallery/0/vent/0/link/vent-burst": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/vent/0/link/vent-burst",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/vent/0/link/vent-burst",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(0,0)/district/0/gallery/0/vent/0/link/vent-drain-link": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(0,0)/district/0/gallery/0/vent/0/link/vent-feed": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(0,0)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": true
+					},
+					"refinery-galleries/grid128/region(0,0)/district/0/gallery/0/window/0/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/window/0/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/window/0/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(0,0)/district/0/gallery/0/window/1/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/window/1/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/window/1/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(0,0)/district/0/gallery/0/window/2/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/window/2/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/window/2/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					},
+					"refinery-galleries/grid128/region(0,0)/district/0/gallery/0/window/3/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/window/3/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "refinery-galleries",
+								"identity": "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/window/3/link/window-visibility",
+								"revision": "a9ae4e7ecad92a14"
+							}
+						},
+						"retired": false
+					}
+				},
+				"outstanding_observations": 0,
+				"registered_actors": 4,
+				"registered_fixtures": 20,
+				"registered_links": 44,
+				"retired_revisions": 0,
+				"revision": "a9ae4e7ecad92a14",
+				"transition_counts": {
+					"activate": 1,
+					"duplicate": 0,
+					"install": 1,
+					"reset": 0,
+					"retire": 36
+				}
+			},
+			"links": 44,
+			"material_surface_nonempty_pixels": {
+				"background": 21076,
+				"effects": 1310,
+				"play": 14485,
+				"scripted": 16090
+			},
+			"oracle_completed": true,
+			"projections": 272,
+			"recipe_sha256": "e6872ef1bf8a8919a195cf9d4670a1a346e7ce09ab23c6abe94cf53a1b8ba52d",
+			"runtime": {
+				"accepted_commands": 0,
+				"applied_commands": 0,
+				"background_cached": true,
+				"discarded_commands": 0,
+				"generation": 1,
+				"layers": {
+					"background": {
+						"accumulator": 0.0,
+						"cache_hits": 1,
+						"dropped_steps": 0,
+						"dropped_wall_time": 0.0,
+						"error": "",
+						"failed": false,
+						"native_snapshot_calls": 1,
+						"native_tick": 0,
+						"paused": false,
+						"rate_hz": 0.0,
+						"resident": true,
+						"tick": 0
+					},
+					"effects": {
+						"accumulator": 0.0,
+						"cache_hits": 0,
+						"dropped_steps": 0,
+						"dropped_wall_time": 0.0,
+						"error": "",
+						"failed": false,
+						"native_snapshot_calls": 2,
+						"native_tick": 240,
+						"paused": false,
+						"rate_hz": 15.0,
+						"resident": true,
+						"tick": 240
+					},
+					"play": {
+						"accumulator": 0.0,
+						"cache_hits": 0,
+						"dropped_steps": 0,
+						"dropped_wall_time": 0.0,
+						"error": "",
+						"failed": false,
+						"native_snapshot_calls": 2,
+						"native_tick": 240,
+						"paused": false,
+						"rate_hz": 30.0,
+						"resident": true,
+						"tick": 240
+					},
+					"scripted": {
+						"accumulator": 0.0,
+						"cache_hits": 0,
+						"dropped_steps": 0,
+						"dropped_wall_time": 0.0,
+						"error": "",
+						"failed": false,
+						"native_snapshot_calls": 2,
+						"native_tick": 240,
+						"paused": false,
+						"rate_hz": 20.0,
+						"resident": true,
+						"tick": 240
+					}
+				},
+				"pending_commands": 0,
+				"rejected_commands": 0,
+				"weather": "off",
+				"weather_emissions": 0,
+				"weather_sink_cells_visited": 960960,
+				"world_size": "(256, 256)"
+			},
+			"ticks": 240
+		},
+		{
+			"actors": 4,
+			"bounds": "[P: (-128, -128), S: (256, 256)]",
+			"bundle_id": "drowned-vault",
+			"bundle_revision": "94b7ebaa1329d946",
+			"compositor": {
+				"camera_origin": "(0.0, 0.0)",
+				"full_rg8_uploaded_bytes": 16777216,
+				"full_rg8_uploads": 8,
+				"layer_parallax": "(1.0, 0.97, 0.95, 0.91)",
+				"layer_scale": "(1.0, 1.0, 1.0, 1.0)",
+				"layer_visibility": "(1.0, 1.0, 1.0, 1.0)",
+				"layers": {
+					"background": {
+						"accepted_packets": 2,
+						"bake_requests": 2,
+						"copied_patch_bytes": 4194304,
+						"last_rejection": "",
+						"layer_id": "background",
+						"layer_tick": 0,
+						"material_surface_size": "(256, 256)",
+						"native_texture_size": "(1024, 1024)",
+						"rejected_packets": 0,
+						"render_enabled": false,
+						"reset_generation": 1,
+						"static_bake": true,
+						"upload_count": 2,
+						"uploaded_bytes": 4194304,
+						"viewport_update_mode": 1
+					},
+					"effects": {
+						"accepted_packets": 2,
+						"bake_requests": 0,
+						"copied_patch_bytes": 4194304,
+						"last_rejection": "",
+						"layer_id": "effects",
+						"layer_tick": 240,
+						"material_surface_size": "(256, 256)",
+						"native_texture_size": "(1024, 1024)",
+						"rejected_packets": 0,
+						"render_enabled": false,
+						"reset_generation": 1,
+						"static_bake": false,
+						"upload_count": 2,
+						"uploaded_bytes": 4194304,
+						"viewport_update_mode": 1
+					},
+					"play": {
+						"accepted_packets": 2,
+						"bake_requests": 0,
+						"copied_patch_bytes": 4194304,
+						"last_rejection": "",
+						"layer_id": "play",
+						"layer_tick": 240,
+						"material_surface_size": "(256, 256)",
+						"native_texture_size": "(1024, 1024)",
+						"rejected_packets": 0,
+						"render_enabled": false,
+						"reset_generation": 1,
+						"static_bake": false,
+						"upload_count": 2,
+						"uploaded_bytes": 4194304,
+						"viewport_update_mode": 1
+					},
+					"scripted": {
+						"accepted_packets": 2,
+						"bake_requests": 0,
+						"copied_patch_bytes": 4194304,
+						"last_rejection": "",
+						"layer_id": "scripted",
+						"layer_tick": 240,
+						"material_surface_size": "(256, 256)",
+						"native_texture_size": "(1024, 1024)",
+						"rejected_packets": 0,
+						"render_enabled": false,
+						"reset_generation": 1,
+						"static_bake": false,
+						"upload_count": 2,
+						"uploaded_bytes": 4194304,
+						"viewport_update_mode": 1
+					}
+				},
+				"presentation_time": 0.0,
+				"view_size": "(256.0, 256.0)",
+				"world_size": "(256.0, 256.0)"
+			},
+			"example": "semantic-flooded-cavern",
+			"features": 56,
+			"fixtures": 20,
+			"lifecycle": {
+				"actor_receipts": {
+					"drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/actor/gallery-inspector": {
+						"activate": {
+							"accepted": true,
+							"action": "activate",
+							"generation": 1,
+							"id": "drowned-vault",
+							"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/actor/gallery-inspector",
+							"revision": "94b7ebaa1329d946"
+						},
+						"install": {
+							"accepted": true,
+							"action": "install",
+							"generation": 1,
+							"id": "drowned-vault",
+							"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/actor/gallery-inspector",
+							"revision": "94b7ebaa1329d946"
+						}
+					},
+					"drowned-vault/grid128/region(-1,0)/district/0/gallery/0/actor/gallery-inspector": {
+						"activate": {
+							"accepted": true,
+							"action": "activate",
+							"generation": 1,
+							"id": "drowned-vault",
+							"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/actor/gallery-inspector",
+							"revision": "94b7ebaa1329d946"
+						},
+						"install": {
+							"accepted": true,
+							"action": "install",
+							"generation": 1,
+							"id": "drowned-vault",
+							"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/actor/gallery-inspector",
+							"revision": "94b7ebaa1329d946"
+						}
+					},
+					"drowned-vault/grid128/region(0,-1)/district/0/gallery/0/actor/gallery-inspector": {
+						"activate": {
+							"accepted": true,
+							"action": "activate",
+							"generation": 1,
+							"id": "drowned-vault",
+							"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/actor/gallery-inspector",
+							"revision": "94b7ebaa1329d946"
+						},
+						"install": {
+							"accepted": true,
+							"action": "install",
+							"generation": 1,
+							"id": "drowned-vault",
+							"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/actor/gallery-inspector",
+							"revision": "94b7ebaa1329d946"
+						}
+					},
+					"drowned-vault/grid128/region(0,0)/district/0/gallery/0/actor/gallery-inspector": {
+						"activate": {
+							"accepted": true,
+							"action": "activate",
+							"generation": 1,
+							"id": "drowned-vault",
+							"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/actor/gallery-inspector",
+							"revision": "94b7ebaa1329d946"
+						},
+						"install": {
+							"accepted": true,
+							"action": "install",
+							"generation": 1,
+							"id": "drowned-vault",
+							"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/actor/gallery-inspector",
+							"revision": "94b7ebaa1329d946"
+						}
+					}
+				},
+				"applications": 544,
+				"cleanup_cell_writes": 448,
+				"commit_generation": 1,
+				"fixture_cell_writes": 9664,
+				"fixtures": {
+					"drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/fixture/reactor-water": {
+						"active": false,
+						"cleaned": true,
+						"fired": 12,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/vent/0/fixture/local-vent": {
+						"active": false,
+						"cleaned": true,
+						"fired": 18,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/vent/0/fixture/vent-drain": {
+						"active": false,
+						"cleaned": true,
+						"fired": 40,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed": {
+						"active": false,
+						"cleaned": true,
+						"fired": 40,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray": {
+						"active": false,
+						"cleaned": true,
+						"fired": 26,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(-1,0)/district/0/gallery/0/reactor/0/fixture/reactor-water": {
+						"active": false,
+						"cleaned": true,
+						"fired": 12,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(-1,0)/district/0/gallery/0/vent/0/fixture/local-vent": {
+						"active": false,
+						"cleaned": true,
+						"fired": 18,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(-1,0)/district/0/gallery/0/vent/0/fixture/vent-drain": {
+						"active": false,
+						"cleaned": true,
+						"fired": 40,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed": {
+						"active": false,
+						"cleaned": true,
+						"fired": 40,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray": {
+						"active": false,
+						"cleaned": true,
+						"fired": 26,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(0,-1)/district/0/gallery/0/reactor/0/fixture/reactor-water": {
+						"active": false,
+						"cleaned": true,
+						"fired": 12,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(0,-1)/district/0/gallery/0/vent/0/fixture/local-vent": {
+						"active": false,
+						"cleaned": true,
+						"fired": 18,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(0,-1)/district/0/gallery/0/vent/0/fixture/vent-drain": {
+						"active": false,
+						"cleaned": true,
+						"fired": 40,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed": {
+						"active": false,
+						"cleaned": true,
+						"fired": 40,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray": {
+						"active": false,
+						"cleaned": true,
+						"fired": 26,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(0,0)/district/0/gallery/0/reactor/0/fixture/reactor-water": {
+						"active": false,
+						"cleaned": true,
+						"fired": 12,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/reactor/0/fixture/reactor-water",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(0,0)/district/0/gallery/0/vent/0/fixture/local-vent": {
+						"active": false,
+						"cleaned": true,
+						"fired": 18,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/vent/0/fixture/local-vent",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(0,0)/district/0/gallery/0/vent/0/fixture/vent-drain": {
+						"active": false,
+						"cleaned": true,
+						"fired": 40,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/vent/0/fixture/vent-drain",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(0,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed": {
+						"active": false,
+						"cleaned": true,
+						"fired": 40,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(0,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray": {
+						"active": false,
+						"cleaned": true,
+						"fired": 26,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					}
+				},
+				"generation": 1,
+				"id": "drowned-vault",
+				"last_transition": {
+					"accepted": true,
+					"action": "install",
+					"generation": 1,
+					"id": "drowned-vault",
+					"identity": "drowned-vault",
+					"revision": "94b7ebaa1329d946"
+				},
+				"links": {
+					"drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/link/reactor-breach": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/link/reactor-breach",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/link/reactor-breach",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/link/reactor-machinery": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/service-pipe/0/link/pipe-match": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/service-pipe/0/link/pipe-match",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/service-pipe/0/link/pipe-match",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/vent/0/link/vent-burst": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/vent/0/link/vent-burst",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/vent/0/link/vent-burst",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/vent/0/link/vent-drain-link": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/vent/0/link/vent-feed": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/window/0/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/window/0/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/window/0/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/window/1/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/window/1/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/window/1/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/window/2/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/window/2/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/window/2/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/window/3/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/window/3/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/window/3/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(-1,0)/district/0/gallery/0/reactor/0/link/reactor-breach": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/reactor/0/link/reactor-breach",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/reactor/0/link/reactor-breach",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(-1,0)/district/0/gallery/0/reactor/0/link/reactor-machinery": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(-1,0)/district/0/gallery/0/service-pipe/0/link/pipe-match": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/service-pipe/0/link/pipe-match",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/service-pipe/0/link/pipe-match",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(-1,0)/district/0/gallery/0/vent/0/link/vent-burst": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/vent/0/link/vent-burst",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/vent/0/link/vent-burst",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(-1,0)/district/0/gallery/0/vent/0/link/vent-drain-link": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(-1,0)/district/0/gallery/0/vent/0/link/vent-feed": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(-1,0)/district/0/gallery/0/window/0/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/window/0/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/window/0/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(-1,0)/district/0/gallery/0/window/1/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/window/1/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/window/1/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(-1,0)/district/0/gallery/0/window/2/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/window/2/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/window/2/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(-1,0)/district/0/gallery/0/window/3/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/window/3/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/window/3/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(0,-1)/district/0/gallery/0/reactor/0/link/reactor-breach": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/reactor/0/link/reactor-breach",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/reactor/0/link/reactor-breach",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(0,-1)/district/0/gallery/0/reactor/0/link/reactor-machinery": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(0,-1)/district/0/gallery/0/service-pipe/0/link/pipe-match": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/service-pipe/0/link/pipe-match",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/service-pipe/0/link/pipe-match",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(0,-1)/district/0/gallery/0/vent/0/link/vent-burst": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/vent/0/link/vent-burst",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/vent/0/link/vent-burst",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(0,-1)/district/0/gallery/0/vent/0/link/vent-drain-link": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(0,-1)/district/0/gallery/0/vent/0/link/vent-feed": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(0,-1)/district/0/gallery/0/window/0/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/window/0/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/window/0/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(0,-1)/district/0/gallery/0/window/1/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/window/1/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/window/1/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(0,-1)/district/0/gallery/0/window/2/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/window/2/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/window/2/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(0,-1)/district/0/gallery/0/window/3/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/window/3/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/window/3/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(0,0)/district/0/gallery/0/reactor/0/link/reactor-breach": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/reactor/0/link/reactor-breach",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/reactor/0/link/reactor-breach",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(0,0)/district/0/gallery/0/reactor/0/link/reactor-machinery": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/reactor/0/link/reactor-machinery",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(0,0)/district/0/gallery/0/service-pipe/0/link/pipe-match": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/service-pipe/0/link/pipe-match",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/service-pipe/0/link/pipe-match",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(0,0)/district/0/gallery/0/vent/0/link/vent-burst": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/vent/0/link/vent-burst",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/vent/0/link/vent-burst",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(0,0)/district/0/gallery/0/vent/0/link/vent-drain-link": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/vent/0/link/vent-drain-link",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(0,0)/district/0/gallery/0/vent/0/link/vent-feed": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/vent/0/link/vent-feed",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(0,0)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray": {
+						"active": false,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "94b7ebaa1329d946"
+							},
+							"retire": {
+								"accepted": true,
+								"action": "retire",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/waterfall/0/link/waterfall-and-spray",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": true
+					},
+					"drowned-vault/grid128/region(0,0)/district/0/gallery/0/window/0/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/window/0/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/window/0/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(0,0)/district/0/gallery/0/window/1/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/window/1/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/window/1/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(0,0)/district/0/gallery/0/window/2/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/window/2/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/window/2/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					},
+					"drowned-vault/grid128/region(0,0)/district/0/gallery/0/window/3/link/window-visibility": {
+						"active": true,
+						"event_count": 0,
+						"event_tick": -1,
+						"events": 0,
+						"receipts": {
+							"activate": {
+								"accepted": true,
+								"action": "activate",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/window/3/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							},
+							"install": {
+								"accepted": true,
+								"action": "install",
+								"generation": 1,
+								"id": "drowned-vault",
+								"identity": "drowned-vault/grid128/region(0,0)/district/0/gallery/0/window/3/link/window-visibility",
+								"revision": "94b7ebaa1329d946"
+							}
+						},
+						"retired": false
+					}
+				},
+				"outstanding_observations": 0,
+				"registered_actors": 4,
+				"registered_fixtures": 20,
+				"registered_links": 44,
+				"retired_revisions": 0,
+				"revision": "94b7ebaa1329d946",
+				"transition_counts": {
+					"activate": 1,
+					"duplicate": 0,
+					"install": 1,
+					"reset": 0,
+					"retire": 36
+				}
+			},
+			"links": 44,
+			"material_surface_nonempty_pixels": {
+				"background": 23040,
+				"effects": 1323,
+				"play": 22039,
+				"scripted": 17184
+			},
+			"oracle_completed": true,
+			"projections": 280,
+			"recipe_sha256": "5c191c90c3c6daf61a0bff00806ae0c99340d339ae5de4e0fdac8370da8fb370",
+			"runtime": {
+				"accepted_commands": 0,
+				"applied_commands": 0,
+				"background_cached": true,
+				"discarded_commands": 0,
+				"generation": 1,
+				"layers": {
+					"background": {
+						"accumulator": 0.0,
+						"cache_hits": 1,
+						"dropped_steps": 0,
+						"dropped_wall_time": 0.0,
+						"error": "",
+						"failed": false,
+						"native_snapshot_calls": 1,
+						"native_tick": 0,
+						"paused": false,
+						"rate_hz": 0.0,
+						"resident": true,
+						"tick": 0
+					},
+					"effects": {
+						"accumulator": 0.0,
+						"cache_hits": 0,
+						"dropped_steps": 0,
+						"dropped_wall_time": 0.0,
+						"error": "",
+						"failed": false,
+						"native_snapshot_calls": 2,
+						"native_tick": 240,
+						"paused": false,
+						"rate_hz": 15.0,
+						"resident": true,
+						"tick": 240
+					},
+					"play": {
+						"accumulator": 0.0,
+						"cache_hits": 0,
+						"dropped_steps": 0,
+						"dropped_wall_time": 0.0,
+						"error": "",
+						"failed": false,
+						"native_snapshot_calls": 2,
+						"native_tick": 240,
+						"paused": false,
+						"rate_hz": 30.0,
+						"resident": true,
+						"tick": 240
+					},
+					"scripted": {
+						"accumulator": 0.0,
+						"cache_hits": 0,
+						"dropped_steps": 0,
+						"dropped_wall_time": 0.0,
+						"error": "",
+						"failed": false,
+						"native_snapshot_calls": 2,
+						"native_tick": 240,
+						"paused": false,
+						"rate_hz": 20.0,
+						"resident": true,
+						"tick": 240
+					}
+				},
+				"pending_commands": 0,
+				"rejected_commands": 0,
+				"weather": "off",
+				"weather_emissions": 0,
+				"weather_sink_cells_visited": 960960,
+				"world_size": "(256, 256)"
+			},
+			"ticks": 240
+		}
+	],
+	"renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+	"schema": 1,
+	"source_products": "Native fixtures supply reagents; reaction products are made by the existing native kernels.",
+	"source_revision": "4925e4349fa221507a754c091887fbc3044ef63a"
+}

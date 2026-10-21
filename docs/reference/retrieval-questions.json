@@ -563,68 +563,6 @@
       "sources": [
         "../AGENTS.md::Documentation obligations"
       ]
-    },
-    {
-      "id": "GEN005-1",
-      "query": "How do GEN-005 semantic four-plane generation projections keep the refinery and flooded cavern coherent across play rear atmosphere and frozen background?",
-      "canonical": [
-        "systems/procedural-semantic-planes.md",
-        "operations/semantic-depth-authoring.md"
-      ],
-      "facts": [
-        "One GEN-004 hierarchy owns stable feature IDs, absolute geometry and canonical routes; per-plane adapters project those records.",
-        "Camera pan, zoom and parallax are presentation only; they do not alter generation cells, feature identities or collision ownership.",
-        "The 256x256 examples cover four canonical regions and sixteen chunks at negative coordinates; streaming remains GEN-006."
-      ],
-      "sources": [
-        "../native/include/cybersand/generation_planes.hpp",
-        "../native/src/generation_planes.cpp",
-        "../examples/worldgen/semantic-refinery.json",
-        "../examples/worldgen/semantic-flooded-cavern.json"
-      ],
-      "revision_sensitive": true
-    },
-    {
-      "id": "GEN005-2",
-      "query": "Which typed semantic links can mutate another plane, and how does semantic bundle admission prevent stale events or duplicate finite source fixtures?",
-      "canonical": [
-        "systems/procedural-semantic-planes.md",
-        "architecture/data-ownership-and-lifetimes.md",
-        "reference/interfaces-and-message-contracts.md"
-      ],
-      "facts": [
-        "Links are static correspondence, presentation metadata or explicitly permitted runtime routes. Runtime allows only play-to-scripted blast and scripted-to-effects burst.",
-        "Complete candidate bundles are validated and staged before atomic four-World replacement. Rejected candidates preserve previous worlds and registries.",
-        "Identity-checked copied owner observations bind generation, link/endpoints, source tick and one-use serial. Pixel overlap is never an event source.",
-        "Identical retries do not replay setup; explicit reset creates new generation; finite sources/drains and retirement have bounded receipts."
-      ],
-      "sources": [
-        "../godot/scripts/depth/semantic_plane_runtime.gd",
-        "../native/src/generation_planes.cpp",
-        "../godot/tests/test_semantic_planes_runtime.gd"
-      ],
-      "revision_sensitive": true
-    },
-    {
-      "id": "GEN005-3",
-      "query": "How do I author and validate native reaction fixtures and capture the GEN-005 refinery service gallery and flooded cavern?",
-      "canonical": [
-        "operations/semantic-depth-authoring.md",
-        "operations/local-build-and-validation.md",
-        "systems/procedural-semantic-planes.md"
-      ],
-      "facts": [
-        "Fixtures supply finite ordinary reagents; expected products are diagnostic metadata and native kernels produce them.",
-        "Rear-only fixtures prove transport and product cells with play/effects/background unchanged, complete accounting and failure controls.",
-        "Actual graphical captures include composites, per-plane views, region details and post-tick images with source/runtime/recipe/image hashes.",
-        "Actor declarations are play-only and go through the existing sampled owner, not generation workers or non-play Rapier."
-      ],
-      "sources": [
-        "../godot/tools/capture_semantic_depth.gd",
-        "../godot/tests/test_semantic_planes_runtime.gd",
-        "../godot/tests/test_semantic_depth_render.gd"
-      ],
-      "revision_sensitive": true
     }
   ],
   "expectations_reviewed": "2026-09-08: original query wording retained; Q31 expected facts updated for explicit current/M11 gate separation. Metrics are not frozen-answer improvement claims. 2026-10-18 ACT-004: Q10 expected capacity corrected from 16 to 64 for current source. The 32 frozen query IDs and query wording are unchanged; this is a disclosed source-fact correction, not a retrieval-quality improvement claim. 2026-10-19 MAT-002: Q30 expected facts now distinguish separately recorded current Linux execution from what historical sanitizer and Windows results prove. Query IDs and wording remain unchanged; this is a disclosed source-fact correction, not a retrieval-quality improvement claim."

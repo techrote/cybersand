@@ -158,3 +158,22 @@ The [build guide](local-build-and-validation.md#semantic-plane-generation-and-na
 lists focused and hosted gates. The [dated audit](../audits/2026-10-21-gen005-semantic-planes.md)
 records what actually executed, with limitations. A static screenshot alone is
 not evidence of native chemistry, actor traversal or persistent streaming.
+
+## Rendered examples
+
+The capture package contains actual Godot material renders. Its exact source,
+native runtime and renderer are identified in the
+[capture manifest](../images/semantic-depth/capture-manifest.json); publication
+status and platform qualifications are recorded in the
+[dated audit](../audits/2026-10-21-gen005-semantic-planes.md#current-publication-and-final-acceptance).
+Each set also contains four named-region details, the guide UI and a composition
+after 240 native ticks.
+
+| Example | Composite and native evolution | Isolated material planes |
+|---|---|---|
+| Refinery/service gallery | [Composite](../images/semantic-depth/refinery-composite.png) · [After 240 ticks](../images/semantic-depth/refinery-after-240-ticks.png) · [Guide](../images/semantic-depth/refinery-guide.png) | [Play](../images/semantic-depth/refinery-play.png) · [Rear](../images/semantic-depth/refinery-scripted.png) · [Atmosphere](../images/semantic-depth/refinery-effects.png) · [Far](../images/semantic-depth/refinery-background.png) |
+| Flooded cavern | [Composite](../images/semantic-depth/flooded-cavern-composite.png) · [After 240 ticks](../images/semantic-depth/flooded-cavern-after-240-ticks.png) · [Guide](../images/semantic-depth/flooded-cavern-guide.png) | [Play](../images/semantic-depth/flooded-cavern-play.png) · [Rear](../images/semantic-depth/flooded-cavern-scripted.png) · [Atmosphere](../images/semantic-depth/flooded-cavern-effects.png) · [Far](../images/semantic-depth/flooded-cavern-background.png) |
+
+![Refinery service galleries with four related material planes](../images/semantic-depth/refinery-guide.png)
+
+![Flooded cavern after finite native source programmes](../images/semantic-depth/flooded-cavern-after-240-ticks.png)
