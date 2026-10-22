@@ -89,7 +89,7 @@ def verify(root: Path) -> dict:
     try:
         run = json.loads((root / "run.json").read_text())
         reg = json.loads((root / "source/tools/experiments/mat003_s2a/registration.json").read_text())
-        require(reg["registration_version"] == 2 and
+        require(reg["registration_version"] == 3 and
                 reg["status"] == "preregistered-apparatus-qualification-only" and
                 reg["formal_timing_admitted"] is False and
                 reg["performance_comparisons_admitted"] is False,
@@ -165,7 +165,7 @@ def verify(root: Path) -> dict:
             "positive_visit_ticks", "warmup_input_calls", "sample_input_calls",
             "warmup_water_added", "warmup_water_removed", "sample_water_added",
             "sample_water_removed", "initial_water_mass", "final_water_mass",
-            "content_hash", "summary", "clear_ticks", "visits", "phase_jobs"
+            "content_hash", "summary", "visits", "phase_jobs"
         )
         references = {
             "active_512_w4": values[("C64-E8-source", "active_512_w4")],
