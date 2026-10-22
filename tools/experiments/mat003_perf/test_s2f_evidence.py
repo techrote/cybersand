@@ -57,7 +57,7 @@ class EvidenceContracts(unittest.TestCase):
         obs, ctx = specimen()
         obs["visits"] = [14] * 200 + [0] * 56
         obs["positive_visit_ticks"] = 200
-        with self.assertRaisesRegex(ValueError, "inactive"):
+        with self.assertRaisesRegex(ValueError, "vacuous"):
             validator.check_observation(obs, ctx, CONFIG)
 
     def test_incomplete_ticks_rejected(self):
