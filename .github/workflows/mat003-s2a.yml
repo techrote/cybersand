@@ -1,0 +1,64 @@
+name: MAT-003PREPASS S2A apparatus qualification
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/mat003-s2a.yml'
+      - 'tools/experiments/mat003_s2a/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mat003-s2a-apparatus-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  apparatus-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Check out exact registered source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          lfs: false
+      - name: Confirm GitHub-hosted runner policy
+        run: timeout 1m python3 tools/ci/check_ci_provider_policy.py
+      - name: Syntax-check frozen S2A Python apparatus
+        run: |
+          python3 -m py_compile \
+            tools/experiments/mat003_s2a/apparatus.py \
+            tools/experiments/mat003_s2a/measure.py \
+            tools/experiments/mat003_s2a/verify_apparatus.py \
+            tools/experiments/mat003_s2a/verify_measurement.py
+      - name: Build sealed timing-capable binaries and run untimed qualification only
+        run: |
+          python3 tools/experiments/mat003_s2a/apparatus.py \
+            --output build/mat003-s2a/apparatus
+      - name: Independently read back S2A apparatus qualification
+        run: |
+          set -o pipefail
+          python3 tools/experiments/mat003_s2a/verify_apparatus.py \
+            build/mat003-s2a/apparatus \
+            | tee build/mat003-s2a/apparatus/independent-readback.json
+      - name: Publish exact admission source and evidence identities
+        run: |
+          sha256sum \
+            tools/experiments/mat003_s2a/registration.json \
+            tools/experiments/mat003_s2a/fixture.cpp \
+            tools/experiments/mat003_s2a/measure.py \
+            tools/experiments/mat003_s2a/verify_measurement.py \
+            build/mat003-s2a/apparatus/run.json \
+            build/mat003-s2a/apparatus/sealed-binaries.json \
+            build/mat003-s2a/apparatus/independent-readback.json
+      - name: Retain sealed S2A apparatus and independent readback
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mat003-s2a-apparatus-${{ github.run_id }}
+          path: build/mat003-s2a/apparatus/
+          if-no-files-found: error
+          retention-days: 30
