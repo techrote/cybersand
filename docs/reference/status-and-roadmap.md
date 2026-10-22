@@ -565,6 +565,27 @@ production solver change is selected. Equal-level communicating-head fixtures ar
 vented/shared-pressure controls, not universal sealed-room targets. #18 remains
 held pending the resulting evidence rather than by issue-number sequence alone.
 
+## Liquid Comparison Build design checkpoint — 2026-10-23
+
+**Planned; nothing implemented.** LCB-000 [#213](https://github.com/techrote/cybersand/issues/213)
+Gates C–E submissions for review:
+
+- the [solver-family policy/API](../architecture/liquid-solver-family-policy.md)
+  and source-derived [capability matrix](liquid-solver-capability-matrix.json):
+  Water is the only `freemass_v1` liquid and ten liquids are `cellular_yield_v1`
+  by default; Brine is the proposed first inertial material;
+- the [Water comparison contract and fixtures](../operations/lcb-water-comparison-and-fixtures.md);
+- the [manual UX flow](../operations/lcb-manual-comparison-ux.md) for
+  [#202](https://github.com/techrote/cybersand/issues/202).
+
+The protected `lcb.dam.water.freemass.reference.v1` Dam Break and the
+`lcb.mixed.water-oil-brine.v1` fixture are frozen MicroScenario definitions
+with measured Current-default controls (local Windows, 1/4-worker identical).
+The mixed control runs **two** families today; three need
+[#212](https://github.com/techrote/cybersand/issues/212). LCB-000 is **not
+PASS**: Gate A (#95/#45) and Gate B (#204 storage) lack accepted evidence, so
+LCB-001 implementation stays blocked.
+
 ## Opt-in transport profiles
 
 **Current:** the [profile contract](../systems/flow-transport-and-profiles.md)

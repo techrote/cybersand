@@ -1,0 +1,250 @@
+{
+  "schema": "lcb-fixture-manifest-v1",
+  "status": "LCB-000 Gate E proposal; only arms with status 'measured' have executed",
+  "matrix": "docs/reference/liquid-solver-capability-matrix.json",
+  "fixtures": [
+    {
+      "id": "lcb.dam.water.freemass.reference.v1",
+      "path": "godot/tests/fixtures/lcb/lcb.dam.water.freemass.reference.v1.json",
+      "contract": "MicroScenario schema 2",
+      "definition_hash": "494a017b0c7c9afed6923c84608f6fbd913b7040cf40e92fb18392f2d11119bf",
+      "protected": true,
+      "horizon_ticks": 1800,
+      "initial": {
+        "water_integer": 7833600,
+        "water_cells": 30720,
+        "normalized_mass": 255
+      },
+      "arms": [
+        {
+          "id": "W-FM",
+          "policy": {
+            "water": "freemass_v1/reference"
+          },
+          "status": "measured",
+          "control": {
+            "status": "measured",
+            "date": "2026-10-23",
+            "platform": "Windows (local), native-only run_microscenario.gd",
+            "godot": "4.7.stable.official.5b4e0cb0f",
+            "native_sha256": "e6d9ec7d0847287c4c6b1acaffd52dc2807fe43e9dccfc36123ffa117fb6045f",
+            "native_build_commit": "2f7f65bf6e80c7258f2bdda19f949760d211b59e",
+            "source_commit": "9012425e3bba62aa1fefb15ea5d7306f196b8da2",
+            "workers_compared": [
+              1,
+              4
+            ],
+            "worker_parity": "identical observations, content_hash and state_hash",
+            "outcome": "complete",
+            "completed_tick": 1800,
+            "final": {
+              "content_hash": "163e4c93b98320a8",
+              "state_hash": "140af7ed71e7d2e5",
+              "water_integer": 7833600,
+              "water_cells": 30915
+            },
+            "observations": {
+              "total-t0": 7833600,
+              "band-a-t30": 197287,
+              "downstream-t60": 387600,
+              "band-a-t120": 426438,
+              "band-b-t120": 0,
+              "band-c-t120": 0,
+              "band-a-t240": 460855,
+              "band-b-t240": 0,
+              "band-c-t240": 0,
+              "reservoir-t240": 7181169,
+              "reservoir-t480": 7093923,
+              "reservoir-t1800": 6664680,
+              "total-t1800": 7833600
+            },
+            "report_sha256": {
+              "w1": "f73a5deb843096d680e11c20195c828ef05af34a037dbe503ecffe3904de1a49",
+              "w4": "ed2f72b95103799438edc16ebc06cb9cb0d8fd21c0c7cf41afffd960f8317898"
+            },
+            "scope": "Current defaults only; characterization, not acceptance; no player, Rapier or render"
+          }
+        },
+        {
+          "id": "W-CY",
+          "policy": {
+            "water": "cellular_yield_v1/reference"
+          },
+          "status": "proposed",
+          "blocked_by": [
+            "#200 policy",
+            "Gate D whole-cell regime implementation"
+          ]
+        },
+        {
+          "id": "W-PF",
+          "policy": {
+            "water": "pressure_flow_v1/{reference,cached,cached_dormant}"
+          },
+          "status": "proposed",
+          "blocked_by": [
+            "LCB-000 PASS",
+            "#200",
+            "#201"
+          ]
+        },
+        {
+          "id": "W-IN",
+          "policy": {
+            "water": "inertial_cellular_v1/reference"
+          },
+          "status": "proposed",
+          "blocked_by": [
+            "#200 policy",
+            "#212"
+          ]
+        }
+      ],
+      "conditions": [
+        "total-t1800 == 7833600 -> complete",
+        "reservoir-t480 >= 7833601 -> fail"
+      ]
+    },
+    {
+      "id": "lcb.mixed.water-oil-brine.v1",
+      "path": "godot/tests/fixtures/lcb/lcb.mixed.water-oil-brine.v1.json",
+      "contract": "MicroScenario schema 2",
+      "definition_hash": "208d488fbc3a218d61ab4468bd6fb31ddcdfde4cc44d5b2f43061dcd6f2036cc",
+      "protected": true,
+      "horizon_ticks": 900,
+      "initial": {
+        "water_integer": 6838080,
+        "oil_cells": 26880,
+        "brine_cells": 26880,
+        "salt_cells": 64
+      },
+      "arms": [
+        {
+          "id": "M0",
+          "policy": {
+            "water": "freemass_v1",
+            "oil": "cellular_yield_v1",
+            "brine": "cellular_yield_v1"
+          },
+          "families_active": 2,
+          "status": "measured",
+          "control": {
+            "status": "measured",
+            "date": "2026-10-23",
+            "platform": "Windows (local), native-only run_microscenario.gd",
+            "godot": "4.7.stable.official.5b4e0cb0f",
+            "native_sha256": "e6d9ec7d0847287c4c6b1acaffd52dc2807fe43e9dccfc36123ffa117fb6045f",
+            "native_build_commit": "2f7f65bf6e80c7258f2bdda19f949760d211b59e",
+            "source_commit": "9012425e3bba62aa1fefb15ea5d7306f196b8da2",
+            "workers_compared": [
+              1,
+              4
+            ],
+            "worker_parity": "identical observations, content_hash and state_hash",
+            "outcome": "complete",
+            "completed_tick": 900,
+            "final": {
+              "content_hash": "d43b52e8bbaf9176",
+              "state_hash": "7bdf182aa1cecd70",
+              "water_integer": 6830685,
+              "water_cells": 26928
+            },
+            "observations": {
+              "water-t0": 6838080,
+              "oil-t0": 26880,
+              "brine-t0": 26880,
+              "salt-t0": 64,
+              "water-t30": 6830685,
+              "salt-t30": 35,
+              "water-runout-t240": 0,
+              "oil-runout-t240": 355,
+              "brine-runout-t240": 0,
+              "water-t900": 6830685,
+              "oil-t900": 26880,
+              "brine-t900": 26938,
+              "water-runout-t900": 0,
+              "oil-runout-t900": 1216,
+              "brine-runout-t900": 0
+            },
+            "report_sha256": {
+              "w1": "4fb293b4074e2b9332bbe5f73c2892777325382b2aeaf6417ce3779f23ae4c82",
+              "w4": "71b1908834ea9126caa4609232304e1839eb59b4458c96feadee372fb1a73c55"
+            },
+            "scope": "Current defaults only; characterization, not acceptance; no player, Rapier or render"
+          },
+          "reaction_ledger": {
+            "salt_consumed_by_t30": 29,
+            "water_delta": -7395,
+            "brine_delta": 58,
+            "oil_delta": 0,
+            "exact_because": "all Water cells full; partial-cell semantics are #160"
+          }
+        },
+        {
+          "id": "M1",
+          "policy": {
+            "water": "freemass_v1",
+            "oil": "cellular_yield_v1",
+            "brine": "inertial_cellular_v1"
+          },
+          "families_active": 3,
+          "status": "proposed",
+          "blocked_by": [
+            "#200 policy",
+            "#212 Brine qualification"
+          ]
+        },
+        {
+          "id": "M2",
+          "policy": {
+            "water": "pressure_flow_v1/reference",
+            "oil": "cellular_yield_v1",
+            "brine": "inertial_cellular_v1"
+          },
+          "families_active": 3,
+          "status": "proposed",
+          "blocked_by": [
+            "LCB-000 PASS",
+            "#200",
+            "#212"
+          ]
+        },
+        {
+          "id": "M2b",
+          "policy": {
+            "water": "pressure_flow_v1/reference",
+            "oil": "cellular_yield_v1",
+            "brine": "cellular_yield_v1"
+          },
+          "families_active": 2,
+          "status": "proposed",
+          "blocked_by": [
+            "LCB-000 PASS",
+            "#200"
+          ]
+        },
+        {
+          "id": "M1-alt",
+          "policy": {
+            "water": "freemass_v1",
+            "oil": "cellular_yield_v1",
+            "toxic-sludge": "inertial_cellular_v1"
+          },
+          "families_active": 3,
+          "status": "proposed_alternate",
+          "blocked_by": [
+            "#212",
+            "new geometry version"
+          ]
+        }
+      ],
+      "conditions": [
+        "oil-t900 == 26880 -> complete",
+        "water-t900 >= 6838081 -> fail"
+      ]
+    }
+  ],
+  "negative_controls": [
+    "NC-1..NC-10 in docs/operations/lcb-water-comparison-and-fixtures.md#negative-controls-registered-owners-in-brackets"
+  ]
+}

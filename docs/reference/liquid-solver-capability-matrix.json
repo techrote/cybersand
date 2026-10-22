@@ -1,0 +1,643 @@
+{
+  "schema": "lcb-liquid-capability-matrix-v1",
+  "status": "Approved design is NOT claimed; LCB-000 Gate C proposal. Only current_default cells execute today.",
+  "sources": {
+    "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+    "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5"
+  },
+  "families": {
+    "freemass_v1": {
+      "variants": [
+        "reference"
+      ]
+    },
+    "cellular_yield_v1": {
+      "variants": [
+        "reference"
+      ]
+    },
+    "pressure_flow_v1": {
+      "variants": [
+        "reference",
+        "cached",
+        "cached_dormant"
+      ]
+    },
+    "inertial_cellular_v1": {
+      "variants": [
+        "reference"
+      ]
+    }
+  },
+  "legacy_arms": {
+    "current": {
+      "material": "water",
+      "family": "freemass_v1",
+      "variant": "reference"
+    },
+    "pressure": {
+      "material": "water",
+      "family": "pressure_flow_v1",
+      "variant": "reference"
+    },
+    "pressure_cached": {
+      "material": "water",
+      "family": "pressure_flow_v1",
+      "variant": "cached"
+    },
+    "pressure_dormant": {
+      "material": "water",
+      "family": "pressure_flow_v1",
+      "variant": "cached_dormant"
+    }
+  },
+  "status_vocabulary": {
+    "current_default": "executes today as the unchanged production default",
+    "proposed_experimental": "Gate C/D design target; not implemented, must be refused until its owner lands it",
+    "proposed_alternate": "documented substitute candidate; not a design commitment",
+    "rejected": "construction must refuse this mapping before replacing any session"
+  },
+  "material_descriptor_count": 132,
+  "liquid_rows": [
+    {
+      "material_id": 3,
+      "enum": "Water",
+      "name": "water",
+      "density": 1000,
+      "kernel": "Water",
+      "lateral_flow": "FreeMass",
+      "viscosity_index": 0,
+      "density_motion": "Down",
+      "accepts_density_exchange": true,
+      "kernel_specialization": "FreeMass pairwise mass transfer, coherent emission, adhesion (World::update_water)",
+      "mercury_viscosity_diagnostic_override": false,
+      "pair_reactions_as_reactant": [
+        "int.pair.lava-water.quench.v1",
+        "int.pair.fire-water.extinguish.v1",
+        "int.pair.water-salt.dissolve.v1",
+        "int.pair.water-sodium.react.v1",
+        "int.pair.water-toxic-sludge.purify.v1",
+        "int.pair.water-molten-glass.quench.v1",
+        "int.pair.water-chalk.soften.v1",
+        "int.pair.water-adobe.erode.v1",
+        "int.pair.water-raw-clay.slake.v1",
+        "int.pair.water-rock-salt.dissolve.v1",
+        "int.pair.water-gypsum.soak.v1",
+        "int.pair.water-quicklime.slake.v1",
+        "int.pair.water-rammed-earth.erode.v1",
+        "int.pair.water-bare-iron.rust.v1",
+        "int.pair.water-sugar-glass.dissolve.v1"
+      ],
+      "pair_reactions_producing": [
+        "int.pair.steam-ice.condense.v1",
+        "int.pair.fire-packed-snow.melt.v1",
+        "int.pair.steam-packed-snow.condense.v1"
+      ],
+      "current_default_family": "freemass_v1",
+      "families": {
+        "freemass_v1": {
+          "status": "current_default",
+          "executable_today": true,
+          "variants": [
+            "reference"
+          ],
+          "note": "unchanged production behavior; protected control"
+        },
+        "cellular_yield_v1": {
+          "status": "proposed_experimental",
+          "executable_today": false,
+          "variants": [
+            "reference"
+          ],
+          "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+        },
+        "pressure_flow_v1": {
+          "status": "proposed_experimental",
+          "executable_today": false,
+          "variants": [
+            "reference",
+            "cached",
+            "cached_dormant"
+          ],
+          "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
+        },
+        "inertial_cellular_v1": {
+          "status": "proposed_experimental",
+          "executable_today": false,
+          "variants": [
+            "reference"
+          ],
+          "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
+        }
+      }
+    },
+    {
+      "material_id": 8,
+      "enum": "Lava",
+      "name": "lava",
+      "density": 2600,
+      "kernel": "Lava",
+      "lateral_flow": "CellularYield",
+      "viscosity_index": 224,
+      "density_motion": "Down",
+      "accepts_density_exchange": true,
+      "kernel_specialization": "hot material; ignites/quenches through pair rules",
+      "mercury_viscosity_diagnostic_override": false,
+      "pair_reactions_as_reactant": [
+        "int.pair.lava-water.quench.v1",
+        "int.pair.lava-glass.melt.v1",
+        "int.pair.lava-basalt.remelt.v1",
+        "int.pair.lava-obsidian.remelt.v1",
+        "int.pair.lava-adobe.fire.v1",
+        "int.pair.lava-raw-clay.fire.v1",
+        "int.pair.lava-packed-snow.quench.v1",
+        "int.pair.lava-glass-block.melt.v1",
+        "int.pair.lava-frosted-glass.melt.v1",
+        "int.pair.lava-quartz.fuse.v1",
+        "int.pair.lava-uranium-glass.melt.v1",
+        "int.pair.lava-wax.melt.v1",
+        "int.pair.lava-sulfur.ignite.v1",
+        "int.pair.lava-polymer.melt.v1"
+      ],
+      "pair_reactions_producing": [
+        "int.pair.spark-thermite.ignite.v1",
+        "int.pair.fire-thermite.ignite.v1"
+      ],
+      "current_default_family": "cellular_yield_v1",
+      "families": {
+        "freemass_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
+        },
+        "cellular_yield_v1": {
+          "status": "current_default",
+          "executable_today": true,
+          "variants": [
+            "reference"
+          ],
+          "note": "unchanged production behavior; protected control"
+        },
+        "pressure_flow_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
+        },
+        "inertial_cellular_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "not proposed for v1; kernel specialization or chemistry not qualified by #212"
+        }
+      }
+    },
+    {
+      "material_id": 12,
+      "enum": "Acid",
+      "name": "acid",
+      "density": 1050,
+      "kernel": "Acid",
+      "lateral_flow": "CellularYield",
+      "viscosity_index": 64,
+      "density_motion": "Down",
+      "accepts_density_exchange": true,
+      "kernel_specialization": "corrosion/dissolution kernel",
+      "mercury_viscosity_diagnostic_override": false,
+      "pair_reactions_as_reactant": [
+        "int.pair.acid-metal.corrosion.v1",
+        "int.pair.acid-marble.effervesce.v1",
+        "int.pair.acid-chalk.effervesce.v1",
+        "int.pair.acid-zinc.dissolve.v1",
+        "int.pair.acid-bare-iron.corrode.v1"
+      ],
+      "pair_reactions_producing": [],
+      "current_default_family": "cellular_yield_v1",
+      "families": {
+        "freemass_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
+        },
+        "cellular_yield_v1": {
+          "status": "current_default",
+          "executable_today": true,
+          "variants": [
+            "reference"
+          ],
+          "note": "unchanged production behavior; protected control"
+        },
+        "pressure_flow_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
+        },
+        "inertial_cellular_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "not proposed for v1; kernel specialization or chemistry not qualified by #212"
+        }
+      }
+    },
+    {
+      "material_id": 16,
+      "enum": "Oil",
+      "name": "oil",
+      "density": 800,
+      "kernel": "Oil",
+      "lateral_flow": "CellularYield",
+      "viscosity_index": 160,
+      "density_motion": "Down",
+      "accepts_density_exchange": true,
+      "kernel_specialization": "ignition from hot neighbours, burn countdown in state_b, Water extinguishes, Fire emission",
+      "mercury_viscosity_diagnostic_override": false,
+      "pair_reactions_as_reactant": [
+        "int.pair.spark-oil.ignite.v1"
+      ],
+      "pair_reactions_producing": [
+        "int.pair.fire-wax.melt.v1",
+        "int.pair.lava-wax.melt.v1",
+        "int.pair.lava-polymer.melt.v1",
+        "int.pair.fire-polymer.melt.v1"
+      ],
+      "current_default_family": "cellular_yield_v1",
+      "families": {
+        "freemass_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
+        },
+        "cellular_yield_v1": {
+          "status": "current_default",
+          "executable_today": true,
+          "variants": [
+            "reference"
+          ],
+          "note": "unchanged production behavior; protected control"
+        },
+        "pressure_flow_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
+        },
+        "inertial_cellular_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "not proposed for v1; kernel specialization or chemistry not qualified by #212"
+        }
+      }
+    },
+    {
+      "material_id": 20,
+      "enum": "Paste",
+      "name": "paste",
+      "density": 1300,
+      "kernel": "YieldingLiquid",
+      "lateral_flow": "CellularYield",
+      "viscosity_index": 240,
+      "density_motion": "Down",
+      "accepts_density_exchange": true,
+      "kernel_specialization": "generic heap-capable CellularYield motion (flow_as_yielding_liquid)",
+      "mercury_viscosity_diagnostic_override": false,
+      "pair_reactions_as_reactant": [],
+      "pair_reactions_producing": [
+        "int.pair.water-chalk.soften.v1",
+        "int.pair.water-adobe.erode.v1",
+        "int.pair.water-raw-clay.slake.v1",
+        "int.pair.water-gypsum.soak.v1",
+        "int.pair.water-sugar-glass.dissolve.v1"
+      ],
+      "current_default_family": "cellular_yield_v1",
+      "families": {
+        "freemass_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
+        },
+        "cellular_yield_v1": {
+          "status": "current_default",
+          "executable_today": true,
+          "variants": [
+            "reference"
+          ],
+          "note": "unchanged production behavior; protected control"
+        },
+        "pressure_flow_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
+        },
+        "inertial_cellular_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "not proposed for v1; kernel specialization or chemistry not qualified by #212"
+        }
+      }
+    },
+    {
+      "material_id": 21,
+      "enum": "Slush",
+      "name": "slush",
+      "density": 1080,
+      "kernel": "YieldingLiquid",
+      "lateral_flow": "CellularYield",
+      "viscosity_index": 192,
+      "density_motion": "Down",
+      "accepts_density_exchange": true,
+      "kernel_specialization": "generic heap-capable CellularYield motion (flow_as_yielding_liquid)",
+      "mercury_viscosity_diagnostic_override": false,
+      "pair_reactions_as_reactant": [],
+      "pair_reactions_producing": [
+        "int.pair.salt-packed-snow.thaw.v1"
+      ],
+      "current_default_family": "cellular_yield_v1",
+      "families": {
+        "freemass_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
+        },
+        "cellular_yield_v1": {
+          "status": "current_default",
+          "executable_today": true,
+          "variants": [
+            "reference"
+          ],
+          "note": "unchanged production behavior; protected control"
+        },
+        "pressure_flow_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
+        },
+        "inertial_cellular_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "not proposed for v1; kernel specialization or chemistry not qualified by #212"
+        }
+      }
+    },
+    {
+      "material_id": 24,
+      "enum": "Brine",
+      "name": "brine",
+      "density": 1120,
+      "kernel": "YieldingLiquid",
+      "lateral_flow": "CellularYield",
+      "viscosity_index": 32,
+      "density_motion": "Down",
+      "accepts_density_exchange": true,
+      "kernel_specialization": "generic heap-capable CellularYield motion (flow_as_yielding_liquid)",
+      "mercury_viscosity_diagnostic_override": false,
+      "pair_reactions_as_reactant": [
+        "int.pair.brine-sodium.react.v1",
+        "int.pair.fire-brine.evaporate.v1",
+        "int.pair.brine-bare-iron.rust.v1"
+      ],
+      "pair_reactions_producing": [
+        "int.pair.water-salt.dissolve.v1",
+        "int.pair.salt-packed-snow.thaw.v1",
+        "int.pair.water-rock-salt.dissolve.v1"
+      ],
+      "current_default_family": "cellular_yield_v1",
+      "families": {
+        "freemass_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
+        },
+        "cellular_yield_v1": {
+          "status": "current_default",
+          "executable_today": true,
+          "variants": [
+            "reference"
+          ],
+          "note": "unchanged production behavior; protected control"
+        },
+        "pressure_flow_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
+        },
+        "inertial_cellular_v1": {
+          "status": "proposed_experimental",
+          "executable_today": false,
+          "variants": [
+            "reference"
+          ],
+          "note": "first non-Water inertial candidate: generic YieldingLiquid kernel; aqueous pair rules need #212 qualification"
+        }
+      }
+    },
+    {
+      "material_id": 30,
+      "enum": "Cement",
+      "name": "cement",
+      "density": 2600,
+      "kernel": "Cement",
+      "lateral_flow": "CellularYield",
+      "viscosity_index": 176,
+      "density_motion": "Down",
+      "accepts_density_exchange": true,
+      "kernel_specialization": "cure lifecycle toward Concrete on air/Water/Brine/Concrete contact",
+      "mercury_viscosity_diagnostic_override": false,
+      "pair_reactions_as_reactant": [],
+      "pair_reactions_producing": [
+        "int.pair.water-quicklime.slake.v1"
+      ],
+      "current_default_family": "cellular_yield_v1",
+      "families": {
+        "freemass_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
+        },
+        "cellular_yield_v1": {
+          "status": "current_default",
+          "executable_today": true,
+          "variants": [
+            "reference"
+          ],
+          "note": "unchanged production behavior; protected control"
+        },
+        "pressure_flow_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
+        },
+        "inertial_cellular_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "not proposed for v1; kernel specialization or chemistry not qualified by #212"
+        }
+      }
+    },
+    {
+      "material_id": 32,
+      "enum": "ToxicSludge",
+      "name": "toxic-sludge",
+      "density": 1050,
+      "kernel": "YieldingLiquid",
+      "lateral_flow": "CellularYield",
+      "viscosity_index": 64,
+      "density_motion": "Down",
+      "accepts_density_exchange": true,
+      "kernel_specialization": "generic heap-capable CellularYield motion (flow_as_yielding_liquid)",
+      "mercury_viscosity_diagnostic_override": false,
+      "pair_reactions_as_reactant": [
+        "int.pair.water-toxic-sludge.purify.v1"
+      ],
+      "pair_reactions_producing": [],
+      "current_default_family": "cellular_yield_v1",
+      "families": {
+        "freemass_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
+        },
+        "cellular_yield_v1": {
+          "status": "current_default",
+          "executable_today": true,
+          "variants": [
+            "reference"
+          ],
+          "note": "unchanged production behavior; protected control"
+        },
+        "pressure_flow_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
+        },
+        "inertial_cellular_v1": {
+          "status": "proposed_alternate",
+          "executable_today": false,
+          "variants": [],
+          "note": "documented fallback inertial candidate if Brine fails qualification: generic YieldingLiquid kernel"
+        }
+      }
+    },
+    {
+      "material_id": 33,
+      "enum": "Mercury",
+      "name": "mercury",
+      "density": 13500,
+      "kernel": "YieldingLiquid",
+      "lateral_flow": "CellularYield",
+      "viscosity_index": 96,
+      "density_motion": "Down",
+      "accepts_density_exchange": true,
+      "kernel_specialization": "generic heap-capable CellularYield motion (flow_as_yielding_liquid)",
+      "mercury_viscosity_diagnostic_override": true,
+      "pair_reactions_as_reactant": [],
+      "pair_reactions_producing": [],
+      "current_default_family": "cellular_yield_v1",
+      "families": {
+        "freemass_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
+        },
+        "cellular_yield_v1": {
+          "status": "current_default",
+          "executable_today": true,
+          "variants": [
+            "reference"
+          ],
+          "note": "unchanged production behavior; protected control"
+        },
+        "pressure_flow_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
+        },
+        "inertial_cellular_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "not proposed for v1; kernel specialization or chemistry not qualified by #212"
+        }
+      }
+    },
+    {
+      "material_id": 36,
+      "enum": "MoltenGlass",
+      "name": "molten-glass",
+      "density": 2500,
+      "kernel": "MoltenGlass",
+      "lateral_flow": "CellularYield",
+      "viscosity_index": 224,
+      "density_motion": "Down",
+      "accepts_density_exchange": true,
+      "kernel_specialization": "cooling lifecycle toward Glass",
+      "mercury_viscosity_diagnostic_override": false,
+      "pair_reactions_as_reactant": [
+        "int.pair.water-molten-glass.quench.v1",
+        "int.pair.molten-glass-packed-snow.quench.v1"
+      ],
+      "pair_reactions_producing": [
+        "int.pair.lava-glass.melt.v1",
+        "int.pair.lava-obsidian.remelt.v1",
+        "int.pair.lava-glass-block.melt.v1",
+        "int.pair.lava-frosted-glass.melt.v1",
+        "int.pair.lava-quartz.fuse.v1",
+        "int.pair.lava-uranium-glass.melt.v1"
+      ],
+      "current_default_family": "cellular_yield_v1",
+      "families": {
+        "freemass_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
+        },
+        "cellular_yield_v1": {
+          "status": "current_default",
+          "executable_today": true,
+          "variants": [
+            "reference"
+          ],
+          "note": "unchanged production behavior; protected control"
+        },
+        "pressure_flow_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
+        },
+        "inertial_cellular_v1": {
+          "status": "rejected",
+          "executable_today": false,
+          "variants": [],
+          "note": "not proposed for v1; kernel specialization or chemistry not qualified by #212"
+        }
+      }
+    }
+  ],
+  "non_liquid_policy": {
+    "status": "rejected",
+    "note": "family assignment applies to liquid descriptors only; any assignment for these materials is refused",
+    "count": 120
+  }
+}

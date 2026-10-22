@@ -1,0 +1,368 @@
+{
+  "schema_version": 2,
+  "id": "lcb.dam.water.freemass.reference.v1",
+  "recipe_version": 1,
+  "seed": 0,
+  "maturity": "reference",
+  "rectangles": [
+    0,
+    0,
+    1024,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1024,
+    1,
+    1023,
+    0,
+    1,
+    1024,
+    1,
+    0,
+    1023,
+    1024,
+    1,
+    1,
+    32,
+    256,
+    960,
+    8,
+    1,
+    32,
+    64,
+    8,
+    192,
+    1,
+    984,
+    64,
+    8,
+    192,
+    1,
+    232,
+    64,
+    8,
+    192,
+    1
+  ],
+  "partial_water_fills": [
+    40,
+    96,
+    192,
+    160,
+    255,
+    0
+  ],
+  "transport_profile": {
+    "families": {
+      "liquid": {
+        "cadence": 1,
+        "carrying": 0,
+        "erosion": 0,
+        "horizontal": 2,
+        "permeability": 1
+      },
+      "powder": {
+        "mixing": 0,
+        "packing": 8,
+        "pickup": 64
+      }
+    },
+    "materials": {
+      "33": {
+        "permeability": 30
+      }
+    },
+    "name": "Baseline",
+    "pairs": [],
+    "version": 1
+  },
+  "water_semantics": [
+    1,
+    8,
+    12,
+    0
+  ],
+  "player_start": [
+    24,
+    222
+  ],
+  "camera_origin": [
+    0,
+    0
+  ],
+  "player_enabled": false,
+  "body_enabled": false,
+  "tools": [],
+  "interest": {
+    "policy": "fixed",
+    "region": [
+      16,
+      16,
+      992,
+      272
+    ]
+  },
+  "execution": {
+    "policy": "fixed",
+    "cadence_lod_enabled": false,
+    "liquid_surface_adhesion_enabled": true
+  },
+  "events": [
+    {
+      "tick": 0,
+      "kind": "erase",
+      "x": 232,
+      "y": 64,
+      "width": 8,
+      "height": 192,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    }
+  ],
+  "observations": [
+    {
+      "id": "total-t0",
+      "tick": 0,
+      "metric": "water_integer",
+      "region": [
+        40,
+        32,
+        944,
+        224
+      ],
+      "material": 3
+    },
+    {
+      "id": "band-a-t30",
+      "tick": 30,
+      "metric": "water_integer",
+      "region": [
+        240,
+        64,
+        248,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "downstream-t60",
+      "tick": 60,
+      "metric": "water_integer",
+      "region": [
+        240,
+        64,
+        744,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "band-a-t120",
+      "tick": 120,
+      "metric": "water_integer",
+      "region": [
+        240,
+        64,
+        248,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "band-b-t120",
+      "tick": 120,
+      "metric": "water_integer",
+      "region": [
+        488,
+        64,
+        248,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "band-c-t120",
+      "tick": 120,
+      "metric": "water_integer",
+      "region": [
+        736,
+        64,
+        248,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "band-a-t240",
+      "tick": 240,
+      "metric": "water_integer",
+      "region": [
+        240,
+        64,
+        248,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "band-b-t240",
+      "tick": 240,
+      "metric": "water_integer",
+      "region": [
+        488,
+        64,
+        248,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "band-c-t240",
+      "tick": 240,
+      "metric": "water_integer",
+      "region": [
+        736,
+        64,
+        248,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "reservoir-t240",
+      "tick": 240,
+      "metric": "water_integer",
+      "region": [
+        40,
+        64,
+        192,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "reservoir-t480",
+      "tick": 480,
+      "metric": "water_integer",
+      "region": [
+        40,
+        64,
+        192,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "reservoir-t1800",
+      "tick": 1800,
+      "metric": "water_integer",
+      "region": [
+        40,
+        64,
+        192,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "total-t1800",
+      "tick": 1800,
+      "metric": "water_integer",
+      "region": [
+        40,
+        32,
+        944,
+        224
+      ],
+      "material": 3
+    }
+  ],
+  "conditions": [
+    {
+      "observation": "total-t1800",
+      "comparison": "eq",
+      "value": 7833600,
+      "outcome": "complete"
+    },
+    {
+      "observation": "reservoir-t480",
+      "comparison": "ge",
+      "value": 7833601,
+      "outcome": "fail"
+    }
+  ],
+  "source_recipe": "LCB-000 Gate E protected Dam Break: Water / freemass_v1 / reference / Dam Break, Current native Water",
+  "source_recipe_hash": "",
+  "presentation": {
+    "title": "LCB Dam Break - Water / FreeMass / Reference",
+    "instructions": "Protected reference. A 192 x 160 full-cell Water reservoir (mass8, 255 per cell, coherence 0) is held by a full-height 8-cell gate that is erased before tick 1. The released front runs along a 744-cell floor to a full-height end wall. Controlled runs use fixed interest, no cadence LOD, no player or bodies and the Baseline transport profile. Any manual edit makes the session exploratory.",
+    "duration_ticks": 1800,
+    "baseline": "Current native Water (freemass_v1 / reference)",
+    "profile": "Baseline",
+    "regions": [
+      {
+        "id": "reservoir",
+        "label": "Reservoir",
+        "region": [
+          40,
+          96,
+          192,
+          160
+        ]
+      },
+      {
+        "id": "gate",
+        "label": "Removable gate",
+        "region": [
+          232,
+          64,
+          8,
+          192
+        ]
+      },
+      {
+        "id": "downstream",
+        "label": "Downstream runout",
+        "region": [
+          240,
+          32,
+          744,
+          232
+        ]
+      },
+      {
+        "id": "band-a",
+        "label": "Near band",
+        "region": [
+          240,
+          32,
+          248,
+          232
+        ]
+      },
+      {
+        "id": "band-b",
+        "label": "Middle band",
+        "region": [
+          488,
+          32,
+          248,
+          232
+        ]
+      },
+      {
+        "id": "band-c",
+        "label": "Far band",
+        "region": [
+          736,
+          32,
+          248,
+          232
+        ]
+      }
+    ]
+  }
+}
