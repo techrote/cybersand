@@ -124,6 +124,10 @@
   ],
   "excluded": [
     {
+      "path": "audits/2026-10-22-mat003-s2f-preflight.md",
+      "reason": "Dated S2F six-source-scenario untimed preflight and failed-attempt receipts; retrieve via S2F operations contract/validation ledger, not as universal performance evidence"
+    },
+    {
       "path": "audits/2026-10-18-act002-actor-rigs.md",
       "reason": "Dated ACT-002 source/runtime, preserved failure and scoped rig validation evidence; retrieve explicitly through the rig contract or validation ledger, not as a default Current runtime contract"
     },
