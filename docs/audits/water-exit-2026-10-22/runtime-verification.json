@@ -1,0 +1,20 @@
+{
+  "godot_path": "/workspace/scratch/20964ae84be4/jolt-host/godot/Godot_v4.7-stable_linux.x86_64",
+  "godot_version": "4.7.stable.official.5b4e0cb0f",
+  "archive_path": "/workspace/scratch/20964ae84be4/jolt-host/Godot_v4.7-stable_linux.x86_64.zip",
+  "archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+  "binary_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "archive_size": 75664355,
+  "extensions": {
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": {
+      "sha256": "28f99172da4256acc34bcd932b113dacabe52bdb459fd0ee4883f741e41bd8e5",
+      "size": 3397208,
+      "head_lfs_pointer_matches": true
+    },
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": {
+      "sha256": "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831",
+      "size": 10781080,
+      "head_lfs_pointer_matches": true
+    }
+  }
+}

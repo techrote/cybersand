@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-10-21
+last-reviewed: 2026-10-22
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md]
 ---
 
@@ -452,6 +452,17 @@ and was resolved by rebuilding, not by suppressing the case.
 This evidence establishes a technically safe, reproducible H-ready apparatus.
 It is not a human preference study, a production precision/packing selection,
 #18 admission, #20 admission, representative GPU performance result or G-final.
+
+### Water exit acknowledgement correction, 2026-10-22
+
+PR #198's pre-merge gates passed, including all 116 Windows headless cases, and
+its merge retained the tested tree. A subsequent Windows run on that same tree
+failed the Water Feel controller case: a stale rejection snapshot could retire
+a later exit before the blind session was cleared. The
+[dated failure/correction record](../audits/2026-10-22-water-exit-acknowledgement.md)
+retains the failed artifact identity, the explicit request/outcome correction
+and its separate local/hosted validation status. Original GEN-007 scene/runtime
+evidence and qualified visual/resource limits retain their recorded scope.
 
 ## 2026-09-19 MS-000 harness extraction
 

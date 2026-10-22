@@ -6,7 +6,7 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md]
-last-reviewed: 2026-10-21
+last-reviewed: 2026-10-22
 ---
 
 # Interfaces and message contracts
@@ -534,6 +534,29 @@ owns modes and limits. Body messages and saves retain their existing schemas.
 ## Issue #13 experiment checkpoint
 
 `CyberSimulationWorker.queue_lab(Dictionary)` is a developer-lab command boundary: reset/floor, single-step, release and a two-release schedule. `CyberSimulationSnapshot.lab_context` publishes copied status/input metadata. [Tower controls](../operations/experiment-tower.md) own semantics; this is separate from CYSD1 and the C ABI.
+
+### Desktop Water exit receipts
+
+**Current:** [main.gd](../../godot/scripts/main.gd) records a fresh positive
+per-controller serial in `pending_water_exit.request_serial` for both Fresh tower
+and ordinary profile resets. The reset command and copied
+`CyberSimulationSnapshot.lab_context` use the following fields:
+
+| Field | Producer and meaning |
+|---|---|
+| Command `water_exit_request_serial` | Controller-issued identity of this reset/Water-exit request |
+| Context `water_exit_request_serial` | Worker echo of the reset it actually processed; zero is untracked |
+| Context `water_exit_request_applied` | Worker initializes false before any reset failure path and sets true only after successful native candidate installation |
+
+[Worker `_apply_lab` and `_publish_snapshot`](../../godot/scripts/simulation_worker.gd)
+publish the outcome through the existing snapshot copy. Controller
+`_reconcile_water_exit` requires an exact positive serial match and a present
+outcome. A matching false result clears the pending request while preserving
+blind state; a matching true result also requires `water_active=false` and a
+`profile` before ending/restoring the blind session. Missing or stale receipts
+leave the pending request intact. Human-readable `status` is never an exit
+acknowledgement. This is a desktop control message; native ABI, saves, Water
+policy schema and the synchronous Web path are unchanged.
 
 
 ## Opt-in transport profiles

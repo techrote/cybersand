@@ -35,10 +35,80 @@ func _policy(scenario_id: String, bits: int=5) -> Dictionary:
 	return CyberWaterExperimentProfiles.resolve({},{},{"scenario_id":scenario_id,
 		"mass_bits":bits,"coherence_ticks":7,"interface_mode":"oriented","seed":441})
 
+func _water_exit_state(controller: Control) -> Dictionary:
+	return {"pending":controller.pending_water_exit.duplicate(true),
+		"policy":controller.water_policy_resolved.duplicate(true),
+		"available":controller.water_policy_available,
+		"blind_set":controller.water_blind_set.duplicate(true),
+		"blind_base":controller.water_blind_base.duplicate(true),
+		"blind_index":controller.water_blind_index,
+		"blind_label":controller.water_active_blind_label}
+
+func _test_water_exit_receipts(scene: PackedScene) -> void:
+	# Stay off-tree: replay owner receipts through the live reconciliation helper
+	# without worker timing deciding whether the stale acknowledgement is observed.
+	var controller: Control=scene.instantiate()
+	var previous_failures: int=failures
+	var base: Dictionary=_policy("shallow-pool",5)
+	var hidden: Dictionary=_policy("shallow-pool",3)
+	var cases: Array[Dictionary]=[
+		{"name":"missing receipt", "outcome":"pending", "context":{
+			"water_active":true,"status":"Profile rejected"}},
+		{"name":"older rejection", "outcome":"pending", "context":{
+			"water_exit_request_serial":41,"water_exit_request_applied":false,
+			"water_active":true,"status":"Profile rejected"}},
+		{"name":"older success", "outcome":"pending", "context":{
+			"water_exit_request_serial":41,"water_exit_request_applied":true,
+			"water_active":false,"profile":{}}},
+		{"name":"different newer success", "outcome":"pending", "context":{
+			"water_exit_request_serial":43,"water_exit_request_applied":true,
+			"water_active":false,"profile":{}}},
+		{"name":"matching receipt without outcome", "outcome":"pending", "context":{
+			"water_exit_request_serial":42,"water_active":false,"profile":{}}},
+		{"name":"matching success still in Water", "outcome":"pending", "context":{
+			"water_exit_request_serial":42,"water_exit_request_applied":true,
+			"water_active":true,"profile":{}}},
+		{"name":"matching success without Water state", "outcome":"pending", "context":{
+			"water_exit_request_serial":42,"water_exit_request_applied":true,
+			"profile":{}}},
+		{"name":"matching success without profile", "outcome":"pending", "context":{
+			"water_exit_request_serial":42,"water_exit_request_applied":true,
+			"water_active":false}},
+		{"name":"matching rejection", "outcome":"rejected", "context":{
+			"water_exit_request_serial":42,"water_exit_request_applied":false,
+			"water_active":true,"status":"The worker kept the current World"}},
+		{"name":"matching success", "outcome":"applied", "context":{
+			"water_exit_request_serial":42,"water_exit_request_applied":true,
+			"water_active":false,"profile":{},"status":"Earlier profile rejected"}},
+	]
+	for test_case: Dictionary in cases:
+		controller.pending_water_exit={"kind":"profile","request_serial":42}
+		controller.water_policy_resolved=hidden.duplicate(true)
+		controller.water_policy_available=true
+		controller.water_blind_base=base.duplicate(true)
+		controller.water_blind_set={"ok":true,"hidden_mapping":{"A":hidden.duplicate(true)}}
+		controller.water_blind_index=1
+		controller.water_active_blind_label="A"
+		var expected: Dictionary=_water_exit_state(controller)
+		if test_case.outcome!="pending": expected.pending={}
+		if test_case.outcome=="applied":
+			expected.policy=base.duplicate(true)
+			expected.blind_set={}
+			expected.blind_base={}
+			expected.blind_index=0
+			expected.blind_label=""
+		controller._reconcile_water_exit(test_case.context)
+		_expect(_water_exit_state(controller)==expected,
+			"desktop Water exit receipt mishandled "+str(test_case.name))
+	controller.free()
+	if failures==previous_failures:
+		print("WATER_EXIT_RECEIPTS: %d deterministic acknowledgement cases passed" % cases.size())
+
 func _run() -> void:
 	var scene: PackedScene=load("res://main.tscn")
 	_expect(scene!=null,"desktop Water controller scene did not load")
 	if scene==null: quit(failures);return
+	_test_water_exit_receipts(scene)
 	var controller: Control=scene.instantiate()
 	root.add_child(controller)
 	await process_frame
@@ -155,19 +225,29 @@ func _run() -> void:
 	var ordinary_tuning: Dictionary=CyberTransportProfiles.resolve(
 		CyberTransportProfiles.preset(0))
 	controller.tower_apply_profile({"ok":false})
+	var rejected_exit_serial: int=int(controller.pending_water_exit.get("request_serial",0))
 	var exit_rejection_deadline: int=Time.get_ticks_msec()+15_000
 	while Time.get_ticks_msec()<exit_rejection_deadline and not controller.pending_water_exit.is_empty():
 		await process_frame
 	_expect(controller.pending_water_exit.is_empty()
 		and bool(controller.tower_context.get("water_active",false)),
 		"rejected desktop profile exit did not preserve the Water worker World")
+	_expect(rejected_exit_serial>0
+		and int(controller.tower_context.get("water_exit_request_serial",0))==rejected_exit_serial
+		and not bool(controller.tower_context.get("water_exit_request_applied",true)),
+		"rejected desktop profile exit did not echo its request and rejection")
 	_expect(controller.water_blind_set.hidden_mapping==blind_mapping
 		and controller.water_active_blind_label==label
 		and str(controller.water_policy_resolved.hash)==hidden_hash,
 		"rejected desktop profile exit cleared or revealed the blind session")
 	controller.tower_apply_profile(ordinary_tuning)
+	var applied_exit_serial: int=int(controller.pending_water_exit.get("request_serial",0))
 	_expect(await _wait_ordinary(controller),
 		"desktop Tower profile reset did not leave Water Feel")
+	_expect(applied_exit_serial>rejected_exit_serial
+		and int(controller.tower_context.get("water_exit_request_serial",0))==applied_exit_serial
+		and bool(controller.tower_context.get("water_exit_request_applied",false)),
+		"desktop Tower profile exit did not echo its newer request and success")
 	_expect(controller.water_blind_set.is_empty()
 		and controller.water_blind_base.is_empty()
 		and controller.water_active_blind_label.is_empty(),
@@ -192,8 +272,13 @@ func _run() -> void:
 	_expect(await _wait_applied(controller,second_hidden_hash),
 		"second desktop blind candidate was not acknowledged")
 	controller.tower_reset()
+	var fresh_exit_serial: int=int(controller.pending_water_exit.get("request_serial",0))
 	_expect(await _wait_ordinary(controller),
 		"Fresh tower was not acknowledged after the blind run")
+	_expect(fresh_exit_serial>applied_exit_serial
+		and int(controller.tower_context.get("water_exit_request_serial",0))==fresh_exit_serial
+		and bool(controller.tower_context.get("water_exit_request_applied",false)),
+		"Fresh tower did not echo its newer request and success")
 	_expect(controller.water_blind_set.is_empty(),"Fresh tower retained blind mapping")
 	_expect(controller.water_active_blind_label.is_empty(),"Fresh tower retained blind label")
 	_expect(str(controller.water_policy_resolved.hash)==previous_hash,

@@ -6,7 +6,7 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-10-21
+last-reviewed: 2026-10-22
 ---
 
 # Data ownership and lifetimes
@@ -349,6 +349,13 @@ they are not live unsynchronized descriptor edits or representation handoffs.
 ## Issue #13 experiment checkpoint
 
 [Tower controls](../operations/experiment-tower.md) use a copied latest pending command on desktop. The existing exclusive worker constructs and installs the native candidate outside ticks. Web uses its synchronous owner. Copied lab context accompanies snapshots; no mutable tables are shared with jobs.
+
+Desktop Water exits additionally bind each pending controller request to the
+worker's copied serial/outcome receipt. A stale snapshot cannot retire a newer
+exit or end its blind session; matching rejection preserves that session. The
+[receipt contract](../reference/interfaces-and-message-contracts.md#desktop-water-exit-receipts)
+owns the fields and commit conditions. The existing one-slot command bound and
+native World owner remain unchanged.
 
 
 ## Opt-in transport profiles
