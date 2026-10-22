@@ -11,6 +11,10 @@ last-reviewed: 2026-10-22
 
 # Data ownership and lifetimes
 
+## MAT-003PREPASS optional-state proposal
+
+**Planned; isolated storage fixtures only:** the [prepass handoff](../research/mat-003prepass-gen006-handoff.md) requires every new authoritative field to declare cell/coordinate/chunk/solver ownership, move/swap/split/merge/reaction policy, bounded allocation/refusal and persistence. A tail sidecar in a synthetic test is not a production World field. Epoch stamps remain scheduling/support state, separate from world/session/chunk/mutation identities. Unsupported authoritative owners must pin or refuse continuation until their transfer contract is implemented and qualified.
+
 ## Exploratory map actor installation
 
 **Current desktop:** the simulation owner installs copied sampled actor definitions

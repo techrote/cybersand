@@ -10,6 +10,12 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## MAT-003PREPASS foundation — 2026-10-22
+
+**Current isolated experimental source; full issue incomplete:** [#204](https://github.com/techrote/cybersand/issues/204) now has an initial material/continuation inventory, complete epoch consumer audit, a [registered 17-arm storage harness](../operations/mat-003prepass-registration.md), and a [proposed GEN-006 semantic handoff](../research/mat-003prepass-gen006-handoff.md). Production storage remains 64-bit/epoch8. Synthetic neutral payload and counter fixtures do not qualify real World semantics, conservation, performance or continuation. The [dated checkpoint](../audits/2026-10-22-mat003-prepass-foundation.md) owns exact execution and platform limits.
+
+Next: separately isolate the World candidate, preserve every support/scheduling consumer, and qualify real sixteen-bit rollover before admitting paired timings. Programme order is GEN-007 → MAT-003PREPASS → GEN-006 → full MAT-003; GEN-006 architecture can continue, but durable state contracts must consume this prepass. #14/G-final and unrelated Water/soliding gates remain open.
+
 ## GEN-007 authoring and qualification — 2026-10-21
 
 **Current implementation with scoped qualification:** [Generation Workbench 2](../systems/generation-workbench-2.md) adds native provenance replay and true stages, transactional visual authoring, graph/hierarchy/plane diagnostics, undo/redo and bounded seed/recipe comparison. The [procedural qualification scene](../operations/procedural-qualification.md) supplies one compact 1024 × 1024 four-plane map: four declared seeds pass final-raster structural and equivalence checks, eight paired-plane native exhibits pass mechanism controls, and retained display captures receive a qualified visual pass for approaching Deepworks. Broad negative spaces, repeated service cabinets and less varied fine machinery remain explicit. Source-matched Linux and Windows publication passed; the [dated ledger](../audits/2026-10-21-gen007-workbench-qualification.md) retains source/runtime identities, the revised 4 GiB graphical envelope and observed authoring hitches. [PR #198](https://github.com/techrote/cybersand/pull/198) records final exact-head repository acceptance and merge verification. GEN-006 remains the subsequent streaming/persistence owner.

@@ -2,8 +2,8 @@
   "schema_version": 1,
   "experiment": "MAT-003PREPASS",
   "stage": "S0-storage-correctness",
-  "registration_version": 1,
-  "status": "registered-before-prototype-implementation",
+  "registration_version": 2,
+  "status": "S0-correctness-amendment-before-formal-collection",
   "issue": 204,
   "planning_commit": "da5112c066416346d6fe3984d4161cd162611e50",
   "execution_baseline": "da5112c066416346d6fe3984d4161cd162611e50",
@@ -237,7 +237,11 @@
       65536,
       131071
     ],
-    "synthetic_only": true
+    "synthetic_only": true,
+    "operation_streams": [
+      "width-only: identical4096 operations, neutral extra zero, compare all17 arms",
+      "full-capacity:4096 operations with width-masked extra, compare representations/epochs within each width"
+    ]
   },
   "correctness": [
     "zero initialization and field isolation",
@@ -295,5 +299,15 @@
     "assembly/hardware-counter analysis",
     "Windows/Wasm execution",
     "secondary C64-E24 C72-E32 C80-E32"
-  ]
+  ],
+  "amendment": {
+    "original_local_commit": "101b72738cfa392aeaea141764baebba36a50cc4",
+    "published_original_commit": "f6e16afed03b3df1e5c5f8de61fd1f5af187a285",
+    "reason": "Make width-only zero-extra and full-capacity operation streams independently observable after prototype review; no timing admission or field-mapping change.",
+    "stage": "before formal normal/sanitized collection; earlier developer smoke attempts retained and unqualified"
+  },
+  "baseline_control_sha256": {
+    "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+    "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375"
+  }
 }

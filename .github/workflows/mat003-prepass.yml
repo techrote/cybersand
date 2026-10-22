@@ -1,0 +1,46 @@
+name: MAT-003PREPASS storage correctness
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - '.github/workflows/mat003-prepass.yml'
+      - 'tools/experiments/mat003_prepass/**'
+      - 'native/include/cybersand/precision_storage.hpp'
+      - 'native/include/cybersand/material.hpp'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mat003-prepass-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  storage-correctness:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out source and registered control history
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          lfs: false
+      - name: Check provider policy
+        run: timeout 1m python3 tools/ci/check_ci_provider_policy.py
+      - name: Test evidence rejection contracts
+        run: timeout 1m python3 -m unittest discover -s tools/experiments/mat003_prepass -p test_evidence.py -v
+      - name: Run isolated normal and ASan plus UBSan carriers
+        run: python3 tools/experiments/mat003_prepass/run.py --compiler g++-13 --output build/mat003-prepass/hosted
+      - name: Independently read back all evidence
+        if: always()
+        run: python3 tools/experiments/mat003_prepass/verify.py build/mat003-prepass/hosted
+      - name: Retain source snapshots, binaries, raw outcomes and hashes
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mat003-prepass-${{ github.run_id }}
+          path: build/mat003-prepass/hosted/
+          if-no-files-found: error
+          retention-days: 30

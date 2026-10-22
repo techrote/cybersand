@@ -10,6 +10,10 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## MAT-003PREPASS first checkpoint — 2026-10-22
+
+Resume [#204](https://github.com/techrote/cybersand/issues/204) from the [registration](mat-003prepass-registration.md) and [dated checkpoint](../audits/2026-10-22-mat003-prepass-foundation.md). The isolated `tools/experiments/mat003_prepass` kit covers storage capabilities and synthetic lifecycles only. Read the [state inventory](../research/mat-003prepass-state-inventory.md), [all-consumer epoch audit](../research/mat-003prepass-epoch-consumers.md) and [GEN-006 proposal](../research/mat-003prepass-gen006-handoff.md) before a real World carrier experiment. Preserve the unchanged production control, full state_a16 and nonzero Empty records; `content_hash` alone is insufficient. Next acceptance work is real-World equivalence/rollover, then separately registered performance. Do not close #204 or infer a production winner from S0.
+
 ## GEN-007 Workbench 2 qualification — 2026-10-21
 
 Issue [#193](https://github.com/techrote/cybersand/issues/193) now has an implemented workbench, four-seed procedural qualification, native exhibit controls, actual rendered evidence and source-matched Linux/Windows runtime publication. [PR #198](https://github.com/techrote/cybersand/pull/198) owns the final exact-head acceptance/merge receipt. Read the [workbench contract](../systems/generation-workbench-2.md), [qualification guide](procedural-qualification.md) and [dated gate ledger](../audits/2026-10-21-gen007-workbench-qualification.md). Preserve accepted native identity, genuine sampler stages, bounded trace output and fresh authoring/session tokens. Graph/rule/plane/brush changes share one transaction; invalid edits cannot retire the prior valid preview or history.

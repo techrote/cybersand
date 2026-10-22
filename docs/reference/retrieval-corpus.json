@@ -105,7 +105,11 @@
     "operations/semantic-depth-authoring.md",
     "decisions/ADR-014-semantic-plane-admission.md",
     "systems/generation-workbench-2.md",
-    "operations/procedural-qualification.md"
+    "operations/procedural-qualification.md",
+    "operations/mat-003prepass-registration.md",
+    "research/mat-003prepass-state-inventory.md",
+    "research/mat-003prepass-epoch-consumers.md",
+    "research/mat-003prepass-gen006-handoff.md"
   ],
   "navigation": [
     "README.md",

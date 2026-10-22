@@ -157,6 +157,8 @@ frozen-wake retention, and optional sparse-flight sampling.
 
 ## Persistence boundary
 
+**Planned GEN-006 input:** the [MAT-003PREPASS handoff](../research/mat-003prepass-gen006-handoff.md) proposes layout-independent semantic records, old-baseline availability, explicit same-value edits/Empty tombstones, clock/fixture continuation and pin/refuse outcomes for unsupported authoritative fields. Its [carrier experiments](../operations/mat-003prepass-registration.md) do not implement eviction, reload or schema migration.
+
 **Current:** CYSD1 reconstructs a fixed demo level. It is neither a general
 WorldStorage format nor exact continuation. Its cell layout, validation,
 exclusive export ownership, state omissions, and body tolerance belong to the

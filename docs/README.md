@@ -12,6 +12,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Choose a reading route
 
+For **MAT-003PREPASS / #204**, start with the [staged carrier registration](operations/mat-003prepass-registration.md), [source state inventory](research/mat-003prepass-state-inventory.md), [epoch consumer audit](research/mat-003prepass-epoch-consumers.md) and [proposed GEN-006 handoff](research/mat-003prepass-gen006-handoff.md). The [first checkpoint](audits/2026-10-22-mat003-prepass-foundation.md) distinguishes isolated storage checks from unfinished World/performance qualification.
+
 For **Generation Workbench 2**, use the [inspection and authoring contract](systems/generation-workbench-2.md): truthful native replay, actual intermediate stages, graph/hierarchy tools, transactional undo/redo and bounded seed/recipe comparisons. The [procedural qualification guide](operations/procedural-qualification.md) routes the 1024 × 1024 scene, final-raster paths, native exhibits and visual evidence.
 
 Choose all 46 [articulated Rapier actors](systems/physical-actor-rigs.md) with F5 in the sandbox and exploratory maps, using keyboard, local scripted or external-policy control. Sampled references and the initial hull arms remain available; [the physical actor programme](operations/physical-actor-programme.md) preserves owner intent and integration scope.

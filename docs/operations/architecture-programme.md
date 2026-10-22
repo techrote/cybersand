@@ -30,6 +30,10 @@ claim; #85 owns the full current-truth cleanup without changing G-L/G-P history.
 For broad #10/#11 acceptance and issue-state routing, use the
 [development-claims remediation programme](development-claims-remediation-programme.md).
 
+## MAT-003PREPASS evidence lane — 2026-10-22
+
+**Current isolated research / Planned engine qualification:** [#204](https://github.com/techrote/cybersand/issues/204) registers 64/72/80-bit storage, epoch8/16 and packed/aligned/split controls in the [prepass](mat-003prepass-registration.md). Its source inventory and GEN-006 semantic proposal precede durable streaming-contract selection. The first checkpoint supplies synthetic correctness, not a layout or solver migration. Preserve #16/#17 historical controls and the open G-final disposition. No Water successor, compact history or soliding gate is admitted by this new evidence lane.
+
 ## Post-H bulk Water disposition — 2026-09-19
 
 The Water H handoff and [issue #26 characterization](../audits/2026-09-19-issue-26-water-leveling.md)

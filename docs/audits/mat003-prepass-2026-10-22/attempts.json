@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "scope": "attempt accounting, no performance results",
+  "attempts": [
+    {
+      "name": "attempt-01",
+      "scope": "developer diagnostic, not formal acceptance",
+      "files": {
+        "test_carriers": {
+          "bytes": 188512,
+          "sha256": "b415f68614ce454c35f26cd8471e5d419a4ab2cc60594eb81b1bad7b386b7fa1"
+        },
+        "result.json": {
+          "bytes": 6259,
+          "sha256": "c6f5ffddf929a948910c6eb41250adc73145f0e8e3a98d8387f18cd0a72a1b2d"
+        },
+        "compile.stdout": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "run.stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "compile.stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "qualification": false
+    },
+    {
+      "name": "attempt-02",
+      "scope": "developer diagnostic, not formal acceptance",
+      "files": {
+        "test_carriers": {
+          "bytes": 189848,
+          "sha256": "3b9c58b7d972d8906aa9c2712d02a3332d2d922cacaa4728f164ece1df90e271"
+        },
+        "result.json": {
+          "bytes": 22261,
+          "sha256": "5a159e2842fb9451306d14b2d6ffa6eb4f5a775dc83458c0f2cb192bc0c694fc"
+        },
+        "compile.stdout": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "run.stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "compile.stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "qualification": false
+    },
+    {
+      "name": "attempt-03",
+      "scope": "developer diagnostic, not formal acceptance",
+      "files": {
+        "test_carriers": {
+          "bytes": 225240,
+          "sha256": "e1bd5bc63d45c16d19117198d2eafd8938e7da42b38bf50faf07f233b1f5bc34"
+        },
+        "result.json": {
+          "bytes": 34433,
+          "sha256": "9f049455fd7af9d373ad8a9a782967926c8c38d3e0696fa7464132782e633219"
+        },
+        "source-hashes.txt": {
+          "bytes": 229,
+          "sha256": "1df1628188285510a6b84f017232dadf8819fe68132077c03a3e20c830340c0f"
+        },
+        "compile.stdout": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "test_carriers.cpp": {
+          "bytes": 25659,
+          "sha256": "efc597825f68db0ef151da226e78a940d10d8eaa30abf509d40532f0ffb86ce4"
+        },
+        "run.stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "compile.stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "carriers.hpp": {
+          "bytes": 12916,
+          "sha256": "542f35323ad97e385424fec8f69d143dddeb5fc41350140d917756d3d739dc81"
+        }
+      },
+      "qualification": false
+    },
+    {
+      "name": "run-001",
+      "status": "failed",
+      "reason": "LeakSanitizer could not inspect /proc in the process sandbox",
+      "sanitizer_stderr": "==25==Can't open /proc/24/task for reading.\n==24==LeakSanitizer has encountered a fatal error.\n==24==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1\n==24==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)\n",
+      "receipt": "local-run-001-failed.json",
+      "qualified": false
+    },
+    {
+      "name": "run-002",
+      "status": "passed",
+      "scope": "synthetic storage only",
+      "same_registered_source_and_flags": true,
+      "environment_change": "Executed outside the process sandbox after preserving the failed attempt; LeakSanitizer remained enabled.",
+      "receipt": "local-run-002.json",
+      "world_qualified": false,
+      "timing_qualified": false
+    }
+  ],
+  "developer_limits": [
+    "attempt-01 passed its original assertions but review rejected swap-allocation and refused-merge bookkeeping behavior; those were fixed before formal collection.",
+    "attempt-02 lacks immutable source snapshots; developer diagnostics only.",
+    "attempt-03 retains source snapshots but precedes addition of record-count output metadata; formal source was recompiled."
+  ]
+}

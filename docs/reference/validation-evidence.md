@@ -10,6 +10,16 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## MAT-003PREPASS isolated storage foundation — 2026-10-22
+
+The [first prepass checkpoint](../audits/2026-10-22-mat003-prepass-foundation.md)
+records 17 isolated 64/72/80-bit carrier arms, normal and sanitizer checks,
+primitive epoch rollovers, full semantic records and source/artifact identities.
+It preserves the initial sanitizer environment failure and the incomplete broad
+native-suite run. Real-World candidate equivalence, wide-epoch lifecycle,
+performance, Windows/Wasm and continuation qualification remain outstanding;
+the storage result does not select a production layout or close issue #204.
+
 ## GEN-005 semantic four-plane generation — 2026-10-21
 
 The [GEN-005 audit](../audits/2026-10-21-gen005-semantic-planes.md) records the

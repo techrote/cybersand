@@ -10,6 +10,8 @@ related-documents: [themed-construction-materials.md, material-appearance-and-re
 
 # Materials and rule kernels
 
+The [MAT-003PREPASS state inventory](../research/mat-003prepass-state-inventory.md) records current material-local meanings, ranges, conversion/move policies and narrower adapters at `da5112c`. Its prospective pressure/momentum fields are separately scoped proposals. The isolated carrier tests change no material rules or production defaults.
+
 **Current:** native materials use immutable compiled descriptors and bounded
 kernel families inside World. They do not own per-material threads or objects.
 Every valid catalogue ID has implemented behavior, including intentional inert
