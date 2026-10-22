@@ -1,4 +1,4 @@
-name: MAT-003PREPASS S2F untimed feasibility preflight
+name: MAT-003PREPASS S2F full untimed qualification
 
 on:
   pull_request:
@@ -16,9 +16,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  source-workload-preflight:
+  source-context-qualification:
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - name: Check out exact head and registered historical native baseline
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -29,16 +29,16 @@ jobs:
         run: timeout 1m python3 tools/ci/check_ci_provider_policy.py
       - name: Test negative evidence/readback contracts
         run: timeout 1m python3 -m unittest discover -s tools/experiments/mat003_perf -p 'test_*.py' -v
-      - name: Build frozen source-control qualifier and run six untimed smoke contexts
-        run: python3 tools/experiments/mat003_perf/s2f.py --output build/mat003-s2f/preflight
-      - name: Independently verify all frozen preflight outputs
+      - name: Build frozen source-control qualifier and run all 24 untimed contexts
+        run: python3 tools/experiments/mat003_perf/s2f.py --output build/mat003-s2f/source-full
+      - name: Independently verify all 24 frozen source outputs
         if: always()
-        run: python3 tools/experiments/mat003_perf/verify_s2f.py build/mat003-s2f/preflight
+        run: python3 tools/experiments/mat003_perf/verify_s2f.py build/mat003-s2f/source-full
       - name: Retain source, binary, machine registration, raw receipts and errors
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: mat003-s2f-preflight-${{ github.run_id }}
-          path: build/mat003-s2f/preflight/
+          name: mat003-s2f-source-full-${{ github.run_id }}
+          path: build/mat003-s2f/source-full/
           if-no-files-found: error
           retention-days: 30
