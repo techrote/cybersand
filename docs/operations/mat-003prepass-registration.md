@@ -294,3 +294,18 @@ temperature/activity/scheduler storage and process peak RSS. Existing
 Keep fixed-cell and fixed-memory analyses separate. Current split tails are
 eagerly allocated: unread metadata does not establish absent optional-storage
 cost, and accessed/clustered/dispersed payload claims need declared workloads.
+
+
+## S2F source-only preflight registration — 2026-10-22
+
+**Preregistered for untimed apparatus/scene qualification only; not an S2A
+timing admission.** A separate continuation branch from S1 evidence head
+7b71fbb9e1b4286197fb948da3d34f3c3bd5f879 contains the
+[S2F decision and bounded preflight](mat-003-s2f-feasibility.md) and its
+[machine registration](../../tools/experiments/mat003_perf/s2f_registration.json).
+Registration commit 89b2b22635f53e0caee045bdc9fbfd3803f5b051 precedes
+all S2F apparatus changes. The six source-C64-E8 untimed developer fixtures
+are a subset of the proposed 24-context feasibility grid. No interleaved
+AB/BA timing comparison, representation winner, restored-World persistence
+or new pressure/momentum implementation is authorized. The S0/S1 checkpoint
+and 17-arm evidence remain unchanged and separately source-qualified.
