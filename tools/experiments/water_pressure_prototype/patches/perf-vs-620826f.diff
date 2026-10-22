@@ -1,0 +1,290 @@
+--- a/native/src/world.cpp
++++ b/native/src/world.cpp
+@@ -2,6 +2,7 @@
+ #include "cybersand/precision_storage.hpp"
+ 
+ #include "cybersand/material_rules.hpp"
++#include "cybersand/interaction_rules.hpp"
+ #include "cybersand/material_appearance.hpp"
+ #include "cybersand/render_snapshot.hpp"
+ 
+@@ -241,9 +242,10 @@
+           activity_blocks(static_cast<std::size_t>(activity_blocks_per_axis) *
+                           static_cast<std::size_t>(activity_blocks_per_axis)) {}
+ 
+-    // Four-byte hot cell: byte material ID, two material-specific state
+-    // registers, and one update epoch. Temperature remains an optional
+-    // structure-of-arrays field rather than consuming every resident cell.
++    // Eight-byte hot cell (detail::PrecisionStorage): material ID, two
++    // material-specific state registers and one update epoch, with spare bits.
++    // Temperature remains an optional structure-of-arrays field rather than
++    // consuming every resident cell.
+     std::vector<Cell> cells;
+     std::unique_ptr<std::vector<std::int16_t>> temperatures;
+     std::int32_t activity_blocks_per_axis = 0;
+@@ -466,6 +468,8 @@
+     if (config_.chunk_size < 8 || config_.chunk_size > 1'024) {
+         throw std::invalid_argument("chunk_size must be between 8 and 1024");
+     }
++    if (std::has_single_bit(static_cast<std::uint32_t>(config_.chunk_size)))
++        chunk_shift_ = std::countr_zero(static_cast<std::uint32_t>(config_.chunk_size));
+     if (config_.sleep_after_quiet_ticks == 0) {
+         throw std::invalid_argument("sleep_after_quiet_ticks must be greater than zero");
+     }
+@@ -1276,6 +1280,20 @@
+ SimulationBackend World::backend() const noexcept { return config_.backend; }
+ 
+ World::Address World::address(std::int64_t x, std::int64_t y) const noexcept {
++    if (chunk_shift_ >= 0) {
++        // Arithmetic shift and two's-complement masking are floor division and
++        // positive modulo for every power-of-two chunk size.
++        const auto mask = static_cast<std::int64_t>(config_.chunk_size) - 1;
++        const auto local_x = static_cast<std::int32_t>(x & mask);
++        const auto local_y = static_cast<std::int32_t>(y & mask);
++        return {
++            {x >> chunk_shift_, y >> chunk_shift_},
++            local_x,
++            local_y,
++            (static_cast<std::size_t>(local_y) << static_cast<unsigned>(chunk_shift_)) +
++                static_cast<std::size_t>(local_x),
++        };
++    }
+     const auto chunk_x = floor_div(x, config_.chunk_size);
+     const auto chunk_y = floor_div(y, config_.chunk_size);
+     const auto local_x = positive_mod(x, config_.chunk_size);
+@@ -1290,13 +1308,31 @@
+ }
+ 
+ World::Chunk* World::find_chunk(ChunkCoord coord) noexcept {
+-    const auto found = chunks_.find(coord);
+-    return found == chunks_.end() ? nullptr : found->second.get();
++    return const_cast<Chunk*>(std::as_const(*this).find_chunk(coord));
+ }
+ 
+ const World::Chunk* World::find_chunk(ChunkCoord coord) const noexcept {
++    // Rule kernels probe neighbours that are almost always in the chunk they
++    // last touched. Each thread remembers one lookup, keyed on the globally
++    // unique map identity, so a hit skips hashing and bucket traversal. Misses
++    // (including absent chunks) are cached too; any insert renews the identity.
++    struct LastLookup {
++        std::uint64_t identity = 0;
++        ChunkCoord coord{};
++        const Chunk* chunk = nullptr;
++    };
++    thread_local LastLookup last{};
++    const auto identity = chunk_map_identity_.value();
++    if (last.identity == identity && last.coord == coord) return last.chunk;
+     const auto found = chunks_.find(coord);
+-    return found == chunks_.end() ? nullptr : found->second.get();
++    const Chunk* chunk = found == chunks_.end() ? nullptr : found->second.get();
++    last = {identity, coord, chunk};
++    return chunk;
++}
++
++std::uint64_t World::ChunkMapIdentity::fresh() noexcept {
++    static std::atomic<std::uint64_t> next{1};
++    return next.fetch_add(1, std::memory_order_relaxed);
+ }
+ 
+ World::Chunk& World::ensure_chunk(ChunkCoord coord) {
+@@ -1306,6 +1342,7 @@
+     }
+     auto chunk = std::make_unique<Chunk>(config_.chunk_size, config_.activity_block_size);
+     const auto [iterator, inserted] = chunks_.try_emplace(coord, std::move(chunk));
++    chunk_map_identity_.renew();
+     if (inserted) register_discovery_chunk(coord, *iterator->second);
+     if (tick_in_progress_) ++tick_chunk_allocations_;
+     return *iterator->second;
+@@ -2123,6 +2160,7 @@
+     tick_failed_ = false;
+     clear_transient_obstacles();
+     chunks_.clear();
++    chunk_map_identity_.renew();
+     active_chunk_scratch_.clear();
+     active_core_scratch_.clear();
+     pending_explosions_.clear();
+@@ -2474,8 +2512,35 @@
+ bool World::update_water(std::int64_t x, std::int64_t y, JobEffects* effects) {
+     record_physics(PhysicsEvent::WaterUpdate, Material::Water, Material::Empty, 0, 0, effects);
+     bool changed = false;
+-    const auto direction = deterministic_direction(x, y);
+     const auto coherence_delay = state_b(x, y);
++    // Bulk fast path: a full, calm cell whose downward and lateral candidates
++    // can accept nothing would run every probe below to a guaranteed no-op.
++    // Diagnostics and transport profiles observe/schedule from those probes,
++    // so they always take the complete path.
++    if (coherence_delay == 0U && physics_totals_ == nullptr &&
++        !config_.transport_policy.configured) {
++        const auto maximum = config_.water_experiment_policy.maximum();
++        if (liquid_mass(x, y) == maximum) {
++            const auto inert_below = [this, maximum](std::int64_t tx, std::int64_t ty) {
++                if (transient_obstacle_at(tx, ty) != 0U) return false;
++                const auto m = stored_material(tx, ty);
++                if (m == Material::Water) return stored_state_a(tx, ty) == maximum;
++                return m != Material::Empty &&
++                       !MaterialRules::can_density_exchange(Material::Water, m, 1);
++            };
++            const auto inert_side = [this, maximum](std::int64_t tx, std::int64_t ty) {
++                const auto m = get(tx, ty);
++                if (m == Material::Water)
++                    return maximum <= stored_state_a(tx, ty) +
++                                          config_.water_experiment_policy.tolerance();
++                return m != Material::Empty;
++            };
++            if (inert_below(x, y + 1) && inert_below(x - 1, y + 1) &&
++                inert_below(x + 1, y + 1) && inert_side(x - 1, y) && inert_side(x + 1, y))
++                return false;
++        }
++    }
++    const auto direction = deterministic_direction(x, y);
+     if (coherence_delay != 0U) {
+         changed = write_cell(x, y, Material::Water, state_a(x, y),
+                              static_cast<std::uint8_t>(coherence_delay - 1U), effects);
+@@ -2624,6 +2689,8 @@
+         for (std::size_t step = 0; step < kMooreNeighbours.size(); ++step) {
+             const auto [target_x, target_y] = neighbour(start + step);
+             const auto target = get(target_x, target_y);
++            // Inline partner-bit rejection; identical to the resolver's own check.
++            if (!InteractionRules::may_pair(material, target)) continue;
+             const auto reaction =
+                 MaterialRules::pair_reaction(material, target, probability_roll);
+             if (!reaction.has_value()) continue;
+@@ -3296,7 +3363,8 @@
+         const auto target = get(x + offset.x, y + offset.y);
+         if (has_pair_reactions && !pair_pending) {
+             // A failed probability roll must retain its next opportunity too.
+-            pair_pending = MaterialRules::pair_reaction(material, target, 0U).has_value();
++            pair_pending = InteractionRules::may_pair(material, target) &&
++                MaterialRules::pair_reaction(material, target, 0U).has_value();
+         }
+         if (is_ice) {
+             melt_pending = melt_pending || is_hot(target);
+--- a/native/include/cybersand/interaction_rules.hpp
++++ b/native/include/cybersand/interaction_rules.hpp
+@@ -926,6 +926,36 @@
+      "adds pair rules for building materials 81+ only; oracle rules 0-13 unchanged"},
+ }};
+ 
++namespace detail {
++// Derived, never authored: one 256-bit partner set per material lets the
++// production resolver reject non-reacting neighbours without scanning every
++// rule. Namespace-scope storage matters: a function-local constexpr array is an
++// automatic object, which some compilers rebuild on the stack per call.
++using PairPartnerSet = std::array<std::uint64_t, 4>;
++[[nodiscard]] constexpr std::array<PairPartnerSet, 256> build_pair_partner_sets() noexcept {
++    std::array<PairPartnerSet, 256> sets{};
++    for (const auto& rule : kPairInteractionRules) {
++        const auto a = static_cast<std::uint8_t>(rule.first);
++        const auto b = static_cast<std::uint8_t>(rule.second);
++        sets[a][b >> 6U] |= std::uint64_t{1} << (b & 63U);
++        if (rule.match != InteractionMatchKind::Ordered) {
++            sets[b][a >> 6U] |= std::uint64_t{1} << (a & 63U);
++        }
++    }
++    return sets;
++}
++[[nodiscard]] constexpr std::array<bool, 256> build_pair_participants() noexcept {
++    std::array<bool, 256> participants{};
++    for (const auto& rule : kPairInteractionRules) {
++        participants[static_cast<std::uint8_t>(rule.first)] = true;
++        participants[static_cast<std::uint8_t>(rule.second)] = true;
++    }
++    return participants;
++}
++inline constexpr auto kPairPartnerSets = build_pair_partner_sets();
++inline constexpr auto kPairParticipants = build_pair_participants();
++}  // namespace detail
++
+ class InteractionRules final {
+ public:
+     InteractionRules() = delete;
+@@ -1159,35 +1189,17 @@
+         return {};
+     }
+ 
+-    // Derived, never authored: one 256-bit partner set per material lets the
+-    // production resolver reject non-reacting neighbours without scanning
+-    // every rule. It is rebuilt from kPairInteractionRules at compile time.
+-    using PartnerSet = std::array<std::uint64_t, 4>;
++    using PartnerSet = detail::PairPartnerSet;
+     [[nodiscard]] static constexpr std::array<PartnerSet, 256> build_partner_sets() noexcept {
+-        std::array<PartnerSet, 256> sets{};
+-        for (const auto& rule : kPairInteractionRules) {
+-            const auto a = static_cast<std::uint8_t>(rule.first);
+-            const auto b = static_cast<std::uint8_t>(rule.second);
+-            sets[a][b >> 6U] |= std::uint64_t{1} << (b & 63U);
+-            if (rule.match != InteractionMatchKind::Ordered) {
+-                sets[b][a >> 6U] |= std::uint64_t{1} << (a & 63U);
+-            }
+-        }
+-        return sets;
++        return detail::build_pair_partner_sets();
+     }
+     [[nodiscard]] static constexpr std::array<bool, 256> build_participants() noexcept {
+-        std::array<bool, 256> participants{};
+-        for (const auto& rule : kPairInteractionRules) {
+-            participants[static_cast<std::uint8_t>(rule.first)] = true;
+-            participants[static_cast<std::uint8_t>(rule.second)] = true;
+-        }
+-        return participants;
++        return detail::build_pair_participants();
+     }
+     [[nodiscard]] static constexpr bool may_pair(Material source, Material target) noexcept {
+-        constexpr auto sets = build_partner_sets();
+         const auto s = static_cast<std::uint8_t>(source);
+         const auto t = static_cast<std::uint8_t>(target);
+-        return ((sets[s][t >> 6U] >> (t & 63U)) & 1U) != 0U;
++        return ((detail::kPairPartnerSets[s][t >> 6U] >> (t & 63U)) & 1U) != 0U;
+     }
+ 
+     [[nodiscard]] static constexpr PairInteractionMatch match_pair(
+@@ -1223,8 +1235,7 @@
+     }
+ 
+     [[nodiscard]] static constexpr bool has_pair_rule(Material material) noexcept {
+-        constexpr auto participants = build_participants();
+-        return participants[static_cast<std::uint8_t>(material)];
++        return detail::kPairParticipants[static_cast<std::uint8_t>(material)];
+     }
+ };
+ 
+--- a/native/include/cybersand/world.hpp
++++ b/native/include/cybersand/world.hpp
+@@ -237,9 +237,37 @@
+         std::uint8_t collapse_strength = 0;
+     };
+ 
++    // Globally unique identity of one chunk-map state. Every insert/clear and
++    // every move of the owning World takes a fresh value, so a per-thread
++    // last-chunk lookup cache keyed on it can never return a stale pointer.
++    class ChunkMapIdentity final {
++    public:
++        ChunkMapIdentity() noexcept : value_(fresh()) {}
++        ChunkMapIdentity(const ChunkMapIdentity&) = delete;
++        ChunkMapIdentity& operator=(const ChunkMapIdentity&) = delete;
++        ChunkMapIdentity(ChunkMapIdentity&& other) noexcept : value_(fresh()) {
++            other.value_ = fresh();
++        }
++        ChunkMapIdentity& operator=(ChunkMapIdentity&& other) noexcept {
++            value_ = fresh();
++            other.value_ = fresh();
++            return *this;
++        }
++        void renew() noexcept { value_ = fresh(); }
++        [[nodiscard]] std::uint64_t value() const noexcept { return value_; }
++
++    private:
++        static std::uint64_t fresh() noexcept;
++        std::uint64_t value_;
++    };
++
+     WorldConfig config_;
+     bool flow_mixing_enabled_ = false;
+     bool flow_carrying_enabled_ = false;
++    // Power-of-two chunk sizes address cells with shifts/masks; -1 selects the
++    // general floor-division path for other validated sizes.
++    std::int32_t chunk_shift_ = -1;
++    ChunkMapIdentity chunk_map_identity_;
+     std::unordered_map<ChunkCoord, std::unique_ptr<Chunk>, ChunkCoordHash> chunks_;
+     std::vector<ChunkCoord> active_chunk_scratch_;
+     std::vector<SchedulingCoreCoord> active_core_scratch_;
