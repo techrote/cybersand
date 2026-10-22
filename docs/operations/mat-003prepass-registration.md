@@ -309,3 +309,5 @@ are a subset of the proposed 24-context feasibility grid. No interleaved
 AB/BA timing comparison, representation winner, restored-World persistence
 or new pressure/momentum implementation is authorized. The S0/S1 checkpoint
 and 17-arm evidence remain unchanged and separately source-qualified.
+
+**Observed S2F developer preflight (2026-10-22):** Six source-C64-E8 untimed specimens, eight evidence-contract tests and a 57-file independent raw-artifact readback passed on GitHub-hosted Linux; see the [dated evidence](../audits/2026-10-22-mat003-s2f-preflight.md). Earlier failed attempts remain retained; this pass does not qualify the other 18 source contexts, a wider-carrier comparison or seven-pair S2A/S2B timing. The source-control binary and fixture were frozen separately from S1.
