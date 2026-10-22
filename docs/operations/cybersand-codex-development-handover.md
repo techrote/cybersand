@@ -628,6 +628,22 @@ The current affected route is therefore
 `#49 corrected apparatus + #91/#92 hybrid evidence + #93 optional gas evidence -> #95 -> #45 disposition -> #18 admission/no-go`.
 #28/#29 remain independently runnable.
 
+## WEX-005 / LCB-000 Gate A handoff, 2026-10-23
+
+The [WEX-005 synthesis](../audits/2026-10-23-wex005-water-evidence-synthesis.md)
+records the #95 disposition: **#45 NARROW** (admission/design only, under a
+vented/shared atmosphere, with deep-release surge registered as its own fixture
+family). The deep-release deficit remains unresolved, #92 is still blocked, #93
+is research only, #94 is narrow-use and #18 is held. Before any #45 candidate,
+read that record and the current-main #49 v2 rerun it cites.
+
+The owner-approved opt-in Liquid Comparison Build (#200) is a separate
+experimental lane. Its pressure family is bounded by the
+[LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
+**LCB-000 (#213) is not PASS.** Gates B–E (#204 storage handoff, family policy,
+Water comparison contract, Dam Break/mixed fixtures) remain open, so do not port
+the `7ef2aac` pressure prototype or freeze LCB state/schema yet.
+
 
 ## PENV-001 player/environment tuning handoff
 
