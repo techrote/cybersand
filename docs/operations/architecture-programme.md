@@ -4,7 +4,7 @@ status: Planned
 document-kind: design
 scope: Evidence gates for Cell representation, liquid state and transport, presentation, and conditional sparse motion; no production architecture selection
 canonical-for: [architecture-experimental-programme]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-22
 related-documents: [architecture-programme-source-ledger.md, physics-characterisation.md, physics-characterisation-plan.md, microscenarios-programme.md, water-hybrid-pressure-extension-programme.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md]
 ---
 
@@ -32,7 +32,9 @@ For broad #10/#11 acceptance and issue-state routing, use the
 
 ## MAT-003PREPASS evidence lane — 2026-10-22
 
-**Current isolated research / Planned engine qualification:** [#204](https://github.com/techrote/cybersand/issues/204) registers 64/72/80-bit storage, epoch8/16 and packed/aligned/split controls in the [prepass](mat-003prepass-registration.md). Its source inventory and GEN-006 semantic proposal precede durable streaming-contract selection. The first checkpoint supplies synthetic correctness, not a layout or solver migration. Preserve #16/#17 historical controls and the open G-final disposition. No Water successor, compact history or soliding gate is admitted by this new evidence lane.
+**Current experimental apparatus / Planned World qualification:** [#204](https://github.com/techrote/cybersand/issues/204) registers 64/72/80-bit storage, epoch8/16 and packed/aligned/split controls in the [prepass](mat-003prepass-registration.md). [S0 isolated storage checks passed](../audits/2026-10-22-mat003-prepass-foundation.md). The [S1 World apparatus](../audits/2026-10-22-mat003-world-correctness.md) adds all seventeen real World arms, typed 8/16-bit counters and a gate covering two natural sixteen-bit rollovers; full formal collection remains pending and World qualification is not accepted. Generated copies preserve unchanged production source and storage. S2 paired performance requires separate registration, and #204 remains open.
+
+The source inventory and GEN-006 semantic proposal precede durable streaming-contract selection. Preserve #16/#17 historical controls and the open G-final disposition. This checkpoint selects no production layout or solver and admits no Water successor, compact history or soliding gate.
 
 ## Post-H bulk Water disposition — 2026-09-19
 

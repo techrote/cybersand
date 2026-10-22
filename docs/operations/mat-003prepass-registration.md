@@ -2,7 +2,7 @@
 title: MAT-003PREPASS carrier experiment registration
 status: Planned
 document-kind: guide
-scope: Staged experimental material-state and 64/72/80-bit carrier research; S0 admits synthetic correctness only and no production migration
+scope: Staged experimental material-state and 64/72/80-bit carrier research; S0 storage and S1 native World correctness, with performance and production migration separately held
 canonical-for: [mat003-prepass-registration, mat003-carrier-experiment-matrix]
 last-reviewed: 2026-10-22
 related-documents: [../research/mat-003prepass-state-inventory.md, ../research/mat-003prepass-epoch-consumers.md, ../research/mat-003prepass-gen006-handoff.md, architecture-programme.md, cell-layout-experiment.md]
@@ -12,7 +12,8 @@ related-documents: [../research/mat-003prepass-state-inventory.md, ../research/m
 
 ## Scope and source identity
 
-**Planned experimental programme; isolated S0 correctness implementation.**
+**Planned experimental programme; isolated S0 foundation and registered S1
+native World correctness continuation.**
 Issue [#204](https://github.com/techrote/cybersand/issues/204) supplies evidence
 before GEN-006 freezes continuation contracts. It does not migrate production
 storage, select G-final, implement pressure/momentum or change Water conservation.
@@ -149,7 +150,7 @@ claimed as freshly executed binaries.
 
 ## Later World and performance admission
 
-**Planned, not admitted by S0:** implement a separately isolated World carrier
+**Not admitted by S0; separately registered in S1 below:** implement an isolated World carrier
 switch only after the [consumer audit](../research/mat-003prepass-epoch-consumers.md).
 Keep the original World binary and rebuild an abstraction-matched E8 control.
 Classify every hash/snapshot, support predicate and diagnostic. Validate full
@@ -228,3 +229,8 @@ source and binary identities are frozen before formal collection. Retain develop
 failures separately; any corrected source receives a new immutable run directory.
 A budget stop remains incomplete. Performance, other platforms, Godot adapter
 execution, continuation and production migration remain deferred.
+
+The [S1 implementation checkpoint](../audits/2026-10-22-mat003-world-correctness.md)
+records the apparatus freeze, retained developer corrections and the disposition
+of the formal collection. Its exact source ledger is the implementation amendment
+before full collection; a selected-arm smoke pass is not all-arm acceptance.

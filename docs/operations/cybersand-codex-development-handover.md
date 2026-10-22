@@ -10,9 +10,11 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
-## MAT-003PREPASS first checkpoint — 2026-10-22
+## MAT-003PREPASS S1 World apparatus — 2026-10-22
 
-Resume [#204](https://github.com/techrote/cybersand/issues/204) from the [registration](mat-003prepass-registration.md) and [dated checkpoint](../audits/2026-10-22-mat003-prepass-foundation.md). The isolated `tools/experiments/mat003_prepass` kit covers storage capabilities and synthetic lifecycles only. Read the [state inventory](../research/mat-003prepass-state-inventory.md), [all-consumer epoch audit](../research/mat-003prepass-epoch-consumers.md) and [GEN-006 proposal](../research/mat-003prepass-gen006-handoff.md) before a real World carrier experiment. Preserve the unchanged production control, full state_a16 and nonzero Empty records; `content_hash` alone is insufficient. Next acceptance work is real-World equivalence/rollover, then separately registered performance. Do not close #204 or infer a production winner from S0.
+Resume [#204](https://github.com/techrote/cybersand/issues/204) from the [registration](mat-003prepass-registration.md) and [S1 World report](../audits/2026-10-22-mat003-world-correctness.md). [S0 isolated storage checks passed](../audits/2026-10-22-mat003-prepass-foundation.md). The experimental kit now supplies all seventeen real World arms through generated source copies, typed 8/16-bit counters, full semantic records and a gate spanning two natural sixteen-bit rollovers. **Full formal S1 collection remains pending; World qualification is not accepted.** Production source and its 64-bit/epoch8 storage remain unchanged.
+
+Read the [state inventory](../research/mat-003prepass-state-inventory.md), [all-consumer epoch audit](../research/mat-003prepass-epoch-consumers.md) and [GEN-006 proposal](../research/mat-003prepass-gen006-handoff.md). Preserve full state_a16 and nonzero Empty records; `content_hash` alone is insufficient. Next: complete the registered normal/sanitized World collection and independent readback, then separately register S2 paired performance. #204 remains open; this apparatus checkpoint selects no production layout.
 
 ## GEN-007 Workbench 2 qualification — 2026-10-21
 

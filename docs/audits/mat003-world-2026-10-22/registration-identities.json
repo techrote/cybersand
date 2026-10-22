@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "local": [
+    {
+      "sha": "2614d6ac3ef966808eec93209f0141746c978a9f",
+      "raw_commit": "tree e4aa5171fc4f7742424223afc7a4ba748ddd5b7b\nparent de767c6419ac23273232c5fa9699432af62116a4\nauthor Codex <codex@openai.com> 1792702040 +0200\ncommitter Codex <codex@openai.com> 1792702040 +0200\n\nRegister MAT-003PREPASS isolated World correctness continuation\n",
+      "git_object_sha1": "2614d6ac3ef966808eec93209f0141746c978a9f"
+    },
+    {
+      "sha": "0c876a154c8d315191737d5eda57737074134eb8",
+      "raw_commit": "tree b017cf56cd80fa600376f6b600f0fad04ddf4ebf\nparent 2614d6ac3ef966808eec93209f0141746c978a9f\nauthor Codex <codex@openai.com> 1792702102 +0200\ncommitter Codex <codex@openai.com> 1792702102 +0200\n\nFreeze private native headers for World control identity\n",
+      "git_object_sha1": "0c876a154c8d315191737d5eda57737074134eb8"
+    }
+  ],
+  "published_registration": "fa6802d5e64f41b967ccce46d9005d5fca3194ab",
+  "published_tree": "b017cf56cd80fa600376f6b600f0fad04ddf4ebf"
+}

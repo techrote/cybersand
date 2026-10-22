@@ -1,4 +1,4 @@
-name: MAT-003PREPASS storage correctness
+name: MAT-003PREPASS correctness
 
 on:
   pull_request:
@@ -8,6 +8,12 @@ on:
       - 'tools/experiments/mat003_prepass/**'
       - 'native/include/cybersand/precision_storage.hpp'
       - 'native/include/cybersand/material.hpp'
+      - 'native/src/world.cpp'
+      - 'native/src/render_snapshot_internal.hpp'
+      - 'native/src/material_rules.cpp'
+      - 'native/src/scheduler_geometry.cpp'
+      - 'native/src/settled_world_discovery.cpp'
+      - 'native/include/cybersand/world.hpp'
   workflow_dispatch:
 
 permissions:
@@ -43,4 +49,69 @@ jobs:
           name: mat003-prepass-${{ github.run_id }}
           path: build/mat003-prepass/hosted/
           if-no-files-found: error
+          retention-days: 30
+
+  world-correctness:
+    # This research stage pins a historical control. It must not turn unrelated
+    # future World changes into failures against an obsolete registration.
+    if: github.event_name == 'workflow_dispatch' || github.head_ref == 'codex/mat-003prepass-foundation'
+    needs: storage-correctness
+    runs-on: ubuntu-24.04
+    timeout-minutes: 125
+    steps:
+      - name: Check out source and registered control history
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          lfs: false
+      - name: Identify changed World experiment inputs
+        id: scope
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_ACTION: ${{ github.event.action }}
+          PREVIOUS_HEAD: ${{ github.event.before }}
+          CURRENT_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          python3 - <<'PY'
+          import os, re, subprocess
+          from pathlib import Path
+          changed = True
+          before, after = os.environ['PREVIOUS_HEAD'], os.environ['CURRENT_HEAD']
+          if (os.environ['EVENT_NAME'] == 'pull_request'
+              and os.environ['EVENT_ACTION'] == 'synchronize'
+              and re.fullmatch(r'[0-9a-f]{40}', before)
+              and re.fullmatch(r'[0-9a-f]{40}', after)):
+              diff = subprocess.run(['git', 'diff', '--name-only', before, after],
+                                    check=False, capture_output=True, text=True)
+              if diff.returncode == 0:
+                  prefixes = ('tools/experiments/mat003_prepass/',
+                              'native/include/', 'native/src/')
+                  exact = {'.github/workflows/mat003-prepass.yml',
+                           'third_party/native-toolchain.lock.json'}
+                  changed = any(p in exact or p.startswith(prefixes)
+                                for p in diff.stdout.splitlines())
+          with Path(os.environ['GITHUB_OUTPUT']).open('a') as output:
+              output.write('changed=' + str(changed).lower() + '\n')
+          if not changed:
+              print('Evidence/docs-only update: no new World collection. Prior evidence remains source-qualified; ready-for-review and manual events rerun it.')
+          PY
+      - name: Check provider policy
+        run: timeout 1m python3 tools/ci/check_ci_provider_policy.py
+      - name: Test isolated overlays and World evidence rejection
+        if: steps.scope.outputs.changed == 'true'
+        run: timeout 2m python3 -m unittest discover -s tools/experiments/mat003_prepass -p 'test_world_*.py' -v
+      - name: Collect all seventeen World arms in normal and ASan plus UBSan builds
+        if: steps.scope.outputs.changed == 'true'
+        run: python3 tools/experiments/mat003_prepass/world_run.py --compiler g++-13 --output build/mat003-prepass/world-hosted
+      - name: Independently read back exact World semantics and source identities
+        if: always() && steps.scope.outputs.changed == 'true'
+        run: python3 tools/experiments/mat003_prepass/world_verify.py build/mat003-prepass/world-hosted
+      - name: Retain immutable sources, original and candidate binaries, traces and failures
+        if: always() && steps.scope.outputs.changed == 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mat003-world-${{ github.run_id }}
+          path: build/mat003-prepass/world-hosted/
+          if-no-files-found: error
+          compression-level: 9
           retention-days: 30

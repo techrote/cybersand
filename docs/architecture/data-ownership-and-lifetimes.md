@@ -13,7 +13,31 @@ last-reviewed: 2026-10-22
 
 ## MAT-003PREPASS optional-state proposal
 
-**Planned; isolated storage fixtures only:** the [prepass handoff](../research/mat-003prepass-gen006-handoff.md) requires every new authoritative field to declare cell/coordinate/chunk/solver ownership, move/swap/split/merge/reaction policy, bounded allocation/refusal and persistence. A tail sidecar in a synthetic test is not a production World field. Epoch stamps remain scheduling/support state, separate from world/session/chunk/mutation identities. Unsupported authoritative owners must pin or refuse continuation until their transfer contract is implemented and qualified.
+**Planned continuation contract:** the
+[prepass handoff](../research/mat-003prepass-gen006-handoff.md) requires every new
+authoritative field to declare cell/coordinate/chunk/solver ownership,
+move/swap/split/merge/reaction policy, bounded allocation/refusal and persistence.
+Epoch stamps remain scheduling/support state, separate from
+world/session/chunk/mutation identities. Unsupported authoritative owners must
+pin or refuse continuation until their transfer contract is implemented and
+qualified.
+
+**Implemented experimental apparatus:** the
+[S1 registration](../operations/mat-003prepass-registration.md#s1-continuation-admission--2026-10-22)
+uses isolated generated World copies under one serialized fixture owner.
+Split candidates eagerly prepare one neutral-tail array with each chunk,
+bounded by existing chunk/cell capacities and accounted separately from cells
+and temperatures. Whole-cell moves/swaps transfer tails; replacement and new
+Water destinations reset them; partial Water transfer retains surviving endpoint
+tails. Same-value writes preserve the existing tail and stamp. These synthetic
+payloads introduce no production field or solver semantics.
+
+The existing `PrecisionProbe` friend supplies fixture setup, direct lifecycle
+checks and copied observations; it grants no new production mutation or
+publication API. Ordinary-tick and direct-helper evidence are distinguished in
+the [material contract](../systems/materials-and-rule-kernels.md#mat-003prepass-experimental-rule-evidence).
+The [S1 report](../audits/2026-10-22-mat003-world-correctness.md) records execution
+and qualification limits separately from this ownership description.
 
 ## Exploratory map actor installation
 

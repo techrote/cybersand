@@ -4,17 +4,17 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-21
+last-reviewed: 2026-10-22
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
 # Status and foundational roadmap
 
-## MAT-003PREPASS foundation — 2026-10-22
+## MAT-003PREPASS S1 World apparatus — 2026-10-22
 
-**Current isolated experimental source; full issue incomplete:** [#204](https://github.com/techrote/cybersand/issues/204) now has an initial material/continuation inventory, complete epoch consumer audit, a [registered 17-arm storage harness](../operations/mat-003prepass-registration.md), and a [proposed GEN-006 semantic handoff](../research/mat-003prepass-gen006-handoff.md). Production storage remains 64-bit/epoch8. Synthetic neutral payload and counter fixtures do not qualify real World semantics, conservation, performance or continuation. The [dated checkpoint](../audits/2026-10-22-mat003-prepass-foundation.md) owns exact execution and platform limits.
+**Current experimental apparatus; formal World qualification pending:** [#204](https://github.com/techrote/cybersand/issues/204) retains the [S0 isolated-storage pass](../audits/2026-10-22-mat003-prepass-foundation.md), source inventory, epoch consumer audit and [proposed GEN-006 semantic handoff](../research/mat-003prepass-gen006-handoff.md). The [registered S1 apparatus](../operations/mat-003prepass-registration.md) adds seventeen real World arms using generated source copies, typed 8/16-bit counters, full semantic and conservation checks, and a gate covering two natural sixteen-bit rollovers. Full formal collection is pending, so S1 is not accepted. The [World report](../audits/2026-10-22-mat003-world-correctness.md) owns execution status and limits. Production source and 64-bit/epoch8 storage remain unchanged.
 
-Next: separately isolate the World candidate, preserve every support/scheduling consumer, and qualify real sixteen-bit rollover before admitting paired timings. Programme order is GEN-007 → MAT-003PREPASS → GEN-006 → full MAT-003; GEN-006 architecture can continue, but durable state contracts must consume this prepass. #14/G-final and unrelated Water/soliding gates remain open.
+Next: complete formal normal/sanitized S1 collection and independent readback; paired performance belongs to a separately registered S2. #204 remains open. Programme order is GEN-007 → MAT-003PREPASS → GEN-006 → full MAT-003; GEN-006 architecture can continue, but durable state contracts must consume this prepass. #14/G-final and unrelated Water/soliding gates remain open.
 
 ## GEN-007 authoring and qualification — 2026-10-21
 

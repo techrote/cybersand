@@ -4,13 +4,13 @@ document-kind: contract
 canonical-for: [material-runtime-model, material-kernel-cadence, reactive-material-families]
 status: Current
 scope: Native material identity, descriptors, mutable state, kernel execution, current interactions, and extension boundaries
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-22
 related-documents: [themed-construction-materials.md, material-appearance-and-rendering.md, water-design.md, smoke-heat-pressure-roadmap.md, ../research/sandspiel-performance-and-material-port.md]
 ---
 
 # Materials and rule kernels
 
-The [MAT-003PREPASS state inventory](../research/mat-003prepass-state-inventory.md) records current material-local meanings, ranges, conversion/move policies and narrower adapters at `da5112c`. Its prospective pressure/momentum fields are separately scoped proposals. The isolated carrier tests change no material rules or production defaults.
+The [MAT-003PREPASS state inventory](../research/mat-003prepass-state-inventory.md) records current material-local meanings, ranges, conversion/move policies and narrower adapters at `da5112c`. Its prospective pressure/momentum fields are separately scoped proposals. The isolated storage and World fixtures change no production material rules or defaults.
 
 **Current:** native materials use immutable compiled descriptors and bounded
 kernel families inside World. They do not own per-material threads or objects.
@@ -44,6 +44,23 @@ state. Stone `state_b` distinguishes
 brace-aware Stone from explosion-created granular falling Stone. Temperature
 is a separate optional field; [its current uses](smoke-heat-pressure-roadmap.md)
 do not constitute a heat solver.
+
+### MAT-003PREPASS experimental rule evidence
+
+The [registered S1 apparatus](../operations/mat-003prepass-registration.md#s1-continuation-admission--2026-10-22)
+compares isolated World carriers using lossless records of material ID, full
+16-bit `state_a`, `state_b` and signed temperature, including valid nonzero Empty
+state. Inert raw high-`state_a` sentinels and neutral extra payloads are explicitly
+synthetic; they do not extend accepted runtime material-state ranges.
+
+Normal-tick fixtures exercise closed Water/Sand accounting, persistent
+Brine/BareIron reaction, prewritten Fire lifetime, support and sleep/re-entry.
+Separate direct helper probes exercise move/swap, partial Water transfer and
+configured transport's current-stamp rejection and stale-stamp pickup. Helper
+entry coverage alone does not establish that ordinary default rules reach that
+path. The [S1 report](../audits/2026-10-22-mat003-world-correctness.md) owns execution
+and qualification status; these fixtures do not establish complete material-pair
+coverage, Godot adapter behavior or a performance ranking.
 
 ## Kernel execution and cadence
 

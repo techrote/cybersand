@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [world-storage, camera-interest-region]
 status: Current
 scope: Sparse native storage, finite adapters, interest pause/resume and fresh generated-chunk admission; general persistence/reconfiguration/streaming remain separate
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-22
 related-documents: [activity-dirty-regions-and-waking.md, ../architecture/chunk-tile-and-buffer-model.md, ../reference/configuration-reference.md, ../reference/level-saves-and-replay.md, ../decisions/ADR-004-interest-region-and-reconfiguration.md]
 ---
 
@@ -59,6 +59,27 @@ observations are therefore meaningful. Reservation is not a streaming manager.
 The [configuration reference](../reference/configuration-reference.md) owns
 construction defaults and the [capacity guide](../operations/configuration-and-capacity-budgets.md)
 owns failure/preparation procedures.
+
+## MAT-003PREPASS isolated World apparatus
+
+**Implemented experimental S1 apparatus; qualification pending:** the
+[registration](../operations/mat-003prepass-registration.md#s1-continuation-admission--2026-10-22)
+defines generated candidate World copies with a selected carrier and an actual
+`uint8_t` or `uint16_t` counter, matching increment cast and cell epoch accessor.
+The source control retains byte-identical original World files and
+`PrecisionStorage`. Production storage, counter width and defaults remain
+unchanged. Split candidates eagerly allocate bounded chunk-owned neutral tails;
+their lifetime and transfer policies belong to the
+[ownership contract](../architecture/data-ownership-and-lifetimes.md#mat-003prepass-optional-state-proposal).
+
+The apparatus records resident cell semantics, temperatures, activity/deadlines,
+work, events and support after every ordinary or natural tick. It compares each
+cell's current-stamp predicate separately from the numeric epoch and global tick.
+The uninterrupted natural rollover fixture and separately labelled forced clears
+cover different obligations, including excluded resident storage and re-entry.
+Execution evidence and limitations belong to the
+[S1 report](../audits/2026-10-22-mat003-world-correctness.md); this stage supplies no
+performance qualification, eviction/reload protocol or production migration.
 
 ## What does fresh generated-chunk admission protect?
 

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "scope": "S1 implementation freeze before the formal hosted collection; no timing admission",
+  "registration": "tools/experiments/mat003_prepass/world_registration.json",
+  "registration_version": 2,
+  "publication_parent": "fa6802d5e64f41b967ccce46d9005d5fca3194ab",
+  "local_registration_head": "0c876a154c8d315191737d5eda57737074134eb8",
+  "source_sha256": {
+    "tools/experiments/mat003_prepass/carriers.hpp": "542f35323ad97e385424fec8f69d143dddeb5fc41350140d917756d3d739dc81",
+    "tools/experiments/mat003_prepass/registration.json": "4e4ffb9825617d8c0f98b5cfe28ff42a6d52ccf9802c4206e831618160be4d5a",
+    "tools/experiments/mat003_prepass/run.py": "a92ba224937af286227ff85a5b7879b60139bdc876874c8d5bb0c8827a326526",
+    "tools/experiments/mat003_prepass/test_carriers.cpp": "bf4260950c119cbbf0a3fd69f9114cb276a2f4a1effb99610797c5749951ab5e",
+    "tools/experiments/mat003_prepass/test_evidence.py": "b0504d7670c00592937ac3de859d9831b6de0924b36933045f1c5ce5c9f355b8",
+    "tools/experiments/mat003_prepass/test_world.cpp": "14fd0c6fe7d51ea944370abee99892a0e32bbdfb85b1ce56e72d720a77bff3d0",
+    "tools/experiments/mat003_prepass/test_world_evidence.py": "f231ef7613baac40e23841638a59c8de5477bd9468bebf0b59b0838647096133",
+    "tools/experiments/mat003_prepass/test_world_overlay.py": "ab242bfbca8ecfc942d3628421707c30184d510b38a8dddf7c49e37d35e7b3a2",
+    "tools/experiments/mat003_prepass/verify.py": "b9b904cc213043c213a6ed361b6158577e6f7ed4c35044cff84650356ff3e0cb",
+    "tools/experiments/mat003_prepass/world_adapter.hpp": "14fe715fb40ca09431c51cb3ac82a283fe0b25d428d97f9f23046d7718d539a8",
+    "tools/experiments/mat003_prepass/world_overlay.py": "bc3b0646a7150424836c56f03779f216c2d1328110eda7d81f5c7933a4cfcbff",
+    "tools/experiments/mat003_prepass/world_registration.json": "d4d78f2ae3ca64edc4639bacf2a973c7354647040eac635bf63ad5a0a2dae9bf",
+    "tools/experiments/mat003_prepass/world_run.py": "eac271fa31264bac76e75076d15d75d29db4c5ddfd0b8d9aa19f390193143778",
+    "tools/experiments/mat003_prepass/world_verify.py": "8845d2df81e77cfad374e203d8ae68b94ed8c5436bd77773fd25c7419ad73452"
+  },
+  "developer_corrections": [
+    "Dev001 preceded strengthened actual-epoch/clear witnesses, configured nonvacuous transport and reactive assertion coverage.",
+    "Dev002 used an overlarge Brine/BareIron chamber; the final two-cell interior prevents Brine moving away from the asserted product position.",
+    "Dev002 also retained a LeakSanitizer process-sandbox failure. Dev003 kept leak detection enabled in the compatible execution context."
+  ],
+  "formal_collection": "Complete immutable source snapshots and all registered native input hashes are recorded before compilation by world_run.py; formal acceptance requires all 17 arms in both configurations and independent readback.",
+  "review": "Independent fixture/overlay/evidence review found no S1 acceptance blocker. Full consumer-map, nonzero-tail parallel continuation, discovery-enabled, platform and timing acceptance remain outside S1."
+}
