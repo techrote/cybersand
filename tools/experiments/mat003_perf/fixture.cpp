@@ -130,8 +130,9 @@ unsigned maintain(World& world, const Params& p, int step) {
     if (p.scenario == "active") {
         for (int j = 0; j < 8; ++j) for (int i = 0; i < 8; ++i) {
             const int x = 21 + i * 56, y = 21 + j * 56;
-            world.set(x + phase % 11, y + 1, Material::Water);
-            world.set(x + phase % 11, y + 2, Material::Sand);
+            const bool pulse = (step & 1) == 0;
+            world.set(x + 1, y + 1, pulse ? Material::Water : Material::Sand);
+            world.set(x + 2, y + 1, pulse ? Material::Sand : Material::Water);
         }
         return 128;
     }
