@@ -1,0 +1,112 @@
+---
+title: MAT-003PREPASS S2F source-control feasibility and untimed preflight
+status: Planned
+document-kind: guide
+scope: Isolated S2F source-only workload qualification, without admitted paired performance comparisons or production migration
+canonical-for: []
+last-reviewed: 2026-10-22
+related-documents: [mat-003prepass-registration.md, architecture-programme.md, ../audits/2026-10-22-mat003-world-correctness.md, ../research/mat-003prepass-gen006-handoff.md]
+---
+
+# MAT-003PREPASS S2F source-only preflight
+
+## Immutable predecessor and stage decision
+
+Issue [#204](https://github.com/techrote/cybersand/issues/204) has S0 storage
+and [S1 native World correctness](../audits/2026-10-22-mat003-world-correctness.md)
+qualified only for their tested Linux inputs. The S1 checkpoint head is
+7b71fbb9e1b4286197fb948da3d34f3c3bd5f879; its 17-arm World execution
+and independent readback are run 39854839256. Draft
+[PR #208](https://github.com/techrote/cybersand/pull/208) remains independent.
+
+S2F prepares a **separately registered source-control workload feasibility
+gate**, not 64/72/80-bit carrier performance rankings, epoch cost claims,
+new material semantics or production migration. Its first
+[machine registration](../../tools/experiments/mat003_perf/s2f_registration.json)
+was committed as 89b2b22635f53e0caee045bdc9fbfd3803f5b051 **before
+apparatus code**. Native baseline da5112c066416346d6fe3984d4161cd162611e50
+is guarded by the registered source hashes in the original S1
+[world registration](../../tools/experiments/mat003_prepass/world_registration.json).
+S1 production inputs, experimental tools and its evidence are unchanged.
+
+## Frozen scope and preliminary subset
+
+The future source-control-only S2F grid has **24 contexts**:
+512² / 1024² / 2048² resident cells × quiet/sleeping, small active region,
+maintained liquid/granular and reactive catalogue scenes × phased 1/4
+configured workers. Each uses seed 204, 120 warmup and 256 sample ticks.
+Every future context must separately qualify; neither source timings nor
+candidate comparisons are accepted yet.
+
+This preflight deliberately executes six **untimed** developer specimens, in
+literal registration order: quiet-512-w1, small-512-w1, active-512-w4,
+reactive-512-w4, quiet-2048-w1, active-2048-w4. It checks 376 completed
+ticks, exact resident geometry, quiescent zero visits, maintained positive
+visits on at least 231 of 256 post-warmup ticks, deterministic input-call
+counts, and actual RustedSteel presence in the reactive control.
+
+This is neither the full 24-context feasibility matrix nor an equivalence
+qualification of new candidate arms. Four configured workers do not prove
+four actual background threads; S1 observer atomics must not enter
+candidate primary timing measurements.
+
+## Frozen input, execution and readback contract
+
+The isolated [collector](../../tools/experiments/mat003_perf/s2f.py)
+refuses an existing output path, copies all compiled native dependency bytes
+and experiment scripts into an immutable source snapshot, checks each native
+input against S1 hashes and the baseline Git object, captures compiler binary
+SHA-256/GCC 13.3/binutils 2.42, and compiles one source-control binary.
+It **seals the binary hash before invoking** any fixture. Each sequential
+preflight retains command, stdout, stderr, exit/timeout, final work counters,
+source hashes, process peak RSS, nonadditive resident aggregate and every
+artifact size/SHA-256. A failure or budget stop is incomplete, not a pass.
+
+The independent [verifier](../../tools/experiments/mat003_perf/verify_s2f.py)
+requires six complete cases, correct order, exact registration fields,
+consistent raw work arrays and zero timing arrays. It rejects changed
+artifacts, invented worker observations, missing nonquiet work and vacuous
+reactive results. Dedicated [negative tests](../../tools/experiments/mat003_perf/test_s2f_evidence.py)
+check representative refusal cases.
+
+From repository root in the registered Ubuntu 24.04/GCC 13.3 Linux host:
+
+    python3 tools/experiments/mat003_perf/s2f.py --output build/mat003-s2f/preflight-001
+    python3 tools/experiments/mat003_perf/verify_s2f.py build/mat003-s2f/preflight-001
+
+The [GitHub-hosted job](../../.github/workflows/mat003-s2f.yml)
+runs the collector and verifier separately and preserves raw evidence for 30
+days. Bounds are 180 seconds per compiler process, 120 seconds per fixture,
+1,200 seconds total; no competing benchmark job or external runner.
+
+The executable also contains an optional diagnostic timing path, but the
+registered collector **only invokes qualify mode**. No collected nanosecond
+arrays are permitted in the preflight. Any independently invoked timing
+before its own formal registration is unqualified diagnostic data. Process
+peak RSS is not additive with World resident-cell accounting; no allocator
+overhead, cache causality, hardware-counter result or candidate advantage
+is claimed.
+
+## S2A/S2B remain unadmitted
+
+The parent [S2 proposal](mat-003prepass-registration.md#s2-performance-feasibility-proposal--not-admitted)
+requires eight E8 physical/capacity contrasts and eight matched E8/E16
+contrasts: 16 × seven independent interleaved AB/BA process pairs =
+**224 primary processes**. An optional follow-on S2B has 23 further
+full-grid word64 E8/E16 contrasts = **322** more processes. These counts are
+budget proposals, not authorizations or measured results.
+
+Before those runs, qualify all 24 source-control contexts, immutable
+candidate builds without correctness observers or per-tick semantic capture,
+source-matched observed twins, actual background worker execution,
+conservation and input/source/sink ledgers, registered binary/fixture hashes,
+real clear events and clear-time observability. Record startup separately
+from 120-tick warmup and per-process sampled ticks. E16 no-wrap runs
+cannot substitute for actual rollover cost, and periodic amortization is
+a projection, not elimination of clear hitches.
+
+**Next step:** observe the untimed hosted preflight, fix and preserve failures
+in new commits/artifacts, then complete the 18 remaining source contexts
+and correctness-observed twins before requesting separate S2A timing admission.
+Keep #204 and G-final open, GEN-006 persistence unimplemented, and the
+production 64-bit E8 carrier unchanged.
