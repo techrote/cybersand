@@ -1,3 +1,12 @@
+Dictionary generation_index_dictionary(const gen::GenerationIndexInfo& index) {
+    Dictionary result;
+    result["bin_size"] = index.bin_size; result["bins"] = static_cast<std::int64_t>(index.bins);
+    result["entries"] = static_cast<std::int64_t>(index.entries);
+    result["maximum_candidates"] = static_cast<std::int64_t>(index.maximum_candidates);
+    result["kind"] = "measured prepared index counts; 64-cell bins preserve canonical candidate order";
+    result["cost_kind"] = "operations_per_sample/cell are conservative logical bounds, not elapsed time";
+    return result;
+}
 Array grammar_strings(const std::vector<std::string>& values) {
     Array result;
     for (const auto& value : values) result.push_back(String(value.c_str()));
@@ -79,6 +88,7 @@ Dictionary grammar_plan_dictionary(const gen::GrammarPlan& plan) {
     result["preparation_work"] = static_cast<std::int64_t>(plan.preparation_work());
     result["operations_per_sample"] = static_cast<std::int64_t>(plan.operations_per_sample());
     result["storage_bytes"] = static_cast<std::int64_t>(plan.storage_bytes());
+    result["spatial_index"] = generation_index_dictionary(plan.index_info());
     Array features, sockets, routes, receipts, geometries;
     for (const auto& feature : plan.features()) {
         Dictionary item;

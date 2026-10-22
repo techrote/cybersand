@@ -16,6 +16,7 @@
 #include <initializer_list>
 #include <limits>
 #include <map>
+#include <set>
 #include <stdexcept>
 #include <string>
 #include <tuple>
@@ -692,6 +693,7 @@ String hexadecimal(std::uint64_t value) {
 
 #include "generation_grammar_inspection.inc"
 #include "generation_planes_inspection.inc"
+#include "generation_workbench_inspection.inc"
 
 Dictionary spatial_information(const gen::SpatialInfo& info) {
     Dictionary result;
@@ -725,16 +727,32 @@ Dictionary failure(const char* error) {
 }
 } // namespace
 
+struct CyberWorldGenerator::StageRegionJob {
+    Rect2i bounds;
+    std::optional<gen::Plane> plane;
+    std::string stage;
+    std::uint64_t revision{}, fingerprint{}, operations{}, cost{};
+    std::size_t cursor = 0;
+    std::vector<cybersand::Material> cells, final_cells;
+    std::vector<std::int32_t> checks;
+    gen::ResultState state = gen::ResultState::Pending;
+};
+
 CyberWorldGenerator::CyberWorldGenerator() = default;
 CyberWorldGenerator::~CyberWorldGenerator() = default;
 
 void CyberWorldGenerator::_bind_methods() {
     ClassDB::bind_method(D_METHOD("configure", "recipe"), &CyberWorldGenerator::configure);
+    ClassDB::bind_method(D_METHOD("adopt_configuration", "prepared", "expected_revision"), &CyberWorldGenerator::adopt_configuration);
     ClassDB::bind_method(D_METHOD("get_configuration"), &CyberWorldGenerator::get_configuration);
     ClassDB::bind_method(D_METHOD("get_catalogue"), &CyberWorldGenerator::get_catalogue);
     ClassDB::bind_method(D_METHOD("get_semantic_plan"), &CyberWorldGenerator::get_semantic_plan);
     ClassDB::bind_method(D_METHOD("validate_routes"), &CyberWorldGenerator::validate_routes);
     ClassDB::bind_method(D_METHOD("inspect_cell", "position"), &CyberWorldGenerator::inspect_cell);
+    ClassDB::bind_method(D_METHOD("inspect_generation", "position", "plane", "expected_revision", "expected_fingerprint"), &CyberWorldGenerator::inspect_generation);
+    ClassDB::bind_method(D_METHOD("begin_stage_region", "bounds", "plane", "stage"), &CyberWorldGenerator::begin_stage_region);
+    ClassDB::bind_method(D_METHOD("advance_stage_region", "cell_budget"), &CyberWorldGenerator::advance_stage_region);
+    ClassDB::bind_method(D_METHOD("cancel_stage_region"), &CyberWorldGenerator::cancel_stage_region);
     ClassDB::bind_method(D_METHOD("get_plane_plan"), &CyberWorldGenerator::get_plane_plan);
     ClassDB::bind_method(D_METHOD("generate_plane_bundle"), &CyberWorldGenerator::generate_plane_bundle);
     ClassDB::bind_method(D_METHOD("generate_plane_region", "bounds"), &CyberWorldGenerator::generate_plane_region);
@@ -771,6 +789,7 @@ Dictionary CyberWorldGenerator::configure(const Dictionary& input) {
         job_.reset();
         if (plane_job_) plane_job_->cancel();
         plane_job_.reset();
+        stage_job_.reset();
         generator_ = std::move(candidate);
         plane_plan_ = std::move(candidate_planes);
         configuration_ = std::move(configuration);
@@ -800,26 +819,32 @@ Dictionary CyberWorldGenerator::inspect_cell(Vector2i position) const {
     try {
         if (!generator_) return failure("no generator configured");
         const auto trace = generator_->explain(position.x, position.y);
-        Dictionary result;
-        result["ok"] = true; result["x"] = trace.x; result["y"] = trace.y;
-        result["material"] = static_cast<std::int64_t>(trace.material);
-        result["ancestry"] = grammar_strings(trace.ancestry);
-        Array receipts, contributions;
-        for (const auto& receipt : trace.constraints) receipts.push_back(grammar_receipt(receipt));
-        for (const auto& contribution : trace.contributions) {
-            Dictionary item;
-            item["stage"] = String(contribution.stage.c_str()); item["id"] = String(contribution.id.c_str());
-            item["before"] = static_cast<std::int64_t>(contribution.before);
-            item["after"] = static_cast<std::int64_t>(contribution.after);
-            item["influence"] = contribution.influence; contributions.push_back(item);
-        }
-        Dictionary scalar, typed;
-        for (const auto& [name, value] : trace.scalar_fields) scalar[String(name.c_str())] = value;
-        for (const auto& [name, value] : trace.typed_fields) typed[String(name.c_str())] = grammar_value(value);
-        result["constraints"] = receipts; result["contributions"] = contributions;
-        result["scalar_fields"] = scalar; result["typed_fields"] = typed;
+        auto result = generation_trace_dictionary(trace);
+        result["position"] = position; result["plane"] = "play";
+        result["revision"] = static_cast<std::int64_t>(revision_);
+        result["adapter_serial"] = static_cast<std::int64_t>(revision_);
+        result["recipe_schema"] = generator_->recipe().schema;
+        result["algorithm"] = generator_->recipe().schema == gen::kHierarchySchemaVersion ? gen::kHierarchyAlgorithmVersion :
+            generator_->recipe().schema == gen::kTypedSchemaVersion ? gen::kTypedAlgorithmVersion : gen::kAlgorithmVersion;
+        generation_semantic_details(result, generator_->semantic_plan(), trace.ancestry);
         return result;
     } catch (const std::exception& error) { return failure(error.what()); }
+}
+Dictionary CyberWorldGenerator::inspect_generation(Vector2i position, const String& plane, std::int64_t expected_revision, const String& expected_fingerprint) const {
+    if (!generator_ || expected_revision < 0 || static_cast<std::uint64_t>(expected_revision) != revision_ ||
+        expected_fingerprint != hexadecimal(generator_->fingerprint())) return failure("stale inspection identity");
+    if (!plane_plan_ && !plane.is_empty() && plane != "play") return failure("plane not configured");
+    auto result = plane.is_empty() || !plane_plan_ ? inspect_cell(position) : inspect_plane_cell(plane, position);
+    if (!static_cast<bool>(result.get("ok", false))) return result;
+    result["revision"] = static_cast<std::int64_t>(revision_);
+    result["adapter_serial"] = static_cast<std::int64_t>(revision_);
+    result["fingerprint"] = hexadecimal(generator_->fingerprint());
+    result["recipe_schema"] = generator_->recipe().schema;
+    result["algorithm"] = generator_->recipe().schema == gen::kHierarchySchemaVersion ? gen::kHierarchyAlgorithmVersion :
+        generator_->recipe().schema == gen::kTypedSchemaVersion ? gen::kTypedAlgorithmVersion : gen::kAlgorithmVersion;
+    result["identity_checked"] = true;
+    result["preview_comparison"] = "caller must compare copied material with the accepted preview at this identity";
+    return result;
 }
 
 Dictionary CyberWorldGenerator::get_catalogue() const {
@@ -850,6 +875,9 @@ Dictionary CyberWorldGenerator::get_catalogue() const {
     result["modules"] = modules;
     result["candidates"] = candidates;
     result["parameters"] = parameters;
+    result["generation_stages"] = generation_stage_names();
+    result["maximum_stage_region_cells"] = 65536;
+    result["maximum_trace_entries_per_collection"] = static_cast<std::int64_t>(gen::kMaxTraceEntries);
     result["minimum_chunk_size"] = 8;
     result["maximum_chunk_size"] = 256;
     result["hierarchy_schema_version"] = gen::kHierarchySchemaVersion;
@@ -960,6 +988,13 @@ Dictionary CyberWorldGenerator::copy_result(const gen::ChunkResult& chunk) const
     static_assert(sizeof(cybersand::Material) == 1);
     if (!chunk.cells.empty()) std::memcpy(cells.ptrw(), chunk.cells.data(), chunk.cells.size());
     result["cells"] = cells;
+    if (!chunk.stage_cells.empty()) {
+        PackedByteArray stages;
+        if (stages.resize(static_cast<std::int64_t>(chunk.stage_cells.size())) != OK) return failure("cannot allocate copied stage output");
+        std::memcpy(stages.ptrw(), chunk.stage_cells.data(), chunk.stage_cells.size());
+        result["stage_cells"] = stages; result["stage"] = String(chunk.diagnostic.substr(6).c_str());
+        result["stage_origin"] = "actual intermediate of the accepted native pipeline";
+    }
     result["hash"] = hexadecimal(chunk.content_hash);
     result["receipt_hash"] = hexadecimal(chunk.receipt_hash);
     PackedFloat32Array diagnostics;
@@ -1049,5 +1084,6 @@ Dictionary CyberWorldGenerator::advance(std::int64_t cell_budget) {
 }
 
 #include "generation_planes_methods.inc"
+#include "generation_workbench_methods.inc"
 
 } // namespace godot

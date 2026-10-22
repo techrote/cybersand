@@ -1,0 +1,36 @@
+{
+  "windows": {
+    "identity": {
+      "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "sha256": "e6d9ec7d0847287c4c6b1acaffd52dc2807fe43e9dccfc36123ffa117fb6045f",
+      "size": 3945472
+    },
+    "validation_sha256": "7899cb9b21bee684c167a197b586ebd75eaf3bdd52adf5bc0e9a9f6f66376a58",
+    "manifest_blob": "6c931cc3a1a301d0d7fbac6d8e3365309639c7aa",
+    "records": 19,
+    "summary": [
+      "SEMANTIC_PLANES_RUNTIME: 1107 assertions; 0 failures; completed={ \"admission\": true, \"events\": true, \"lifecycle\": true, \"clocks\": true, \"reactions\": true, \"actors\": true }",
+      "GEN007_INSPECTION: 116 assertions; 0 failures; completed=[\"base-stages-and-identity\", \"plane-stage-and-cancellation\", \"immutable-adoption\"]",
+      "GEN007_WORKBENCH: 166 assertions; 0 failures; completed={\"comparison_seeds\":19,\"graph_transactions\":22,\"planes_hierarchy\":52,\"responsive_transactions\":22,\"trace_stages\":46}",
+      "GEN007_QUALIFICATION: 1147 assertions; 0 failures; completed=[\"seed-19301\", \"seed-19317\", \"seed-19337\", \"seed-19361\", \"workers\", \"budgets\", \"negative-controls\"]",
+      "GEN007_REACTIONS: 1420 assertions; 0 failures; verified_exhibits=8; completed=[\"native-pairs\", \"no-feed\", \"missing-partner\"]"
+    ]
+  },
+  "linux": {
+    "identity": {
+      "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "sha256": "28f99172da4256acc34bcd932b113dacabe52bdb459fd0ee4883f741e41bd8e5",
+      "size": 3397208
+    },
+    "validation_sha256": "75a52dba6728be596fcd702d88d3c9a51016193e159f3a1b5bbd1c056d73d021",
+    "manifest_blob": "7ab3bd043ae522e9e3ae546b1e8d479d40088fd2",
+    "records": 19,
+    "summary": [
+      "SEMANTIC_PLANES_RUNTIME: 1107 assertions; 0 failures; completed={ \"admission\": true, \"events\": true, \"lifecycle\": true, \"clocks\": true, \"reactions\": true, \"actors\": true }",
+      "GEN007_INSPECTION: 116 assertions; 0 failures; completed=[\"base-stages-and-identity\", \"plane-stage-and-cancellation\", \"immutable-adoption\"]",
+      "GEN007_WORKBENCH: 166 assertions; 0 failures; completed={\"comparison_seeds\":19,\"graph_transactions\":22,\"planes_hierarchy\":52,\"responsive_transactions\":22,\"trace_stages\":46}",
+      "GEN007_QUALIFICATION: 1147 assertions; 0 failures; completed=[\"seed-19301\", \"seed-19317\", \"seed-19337\", \"seed-19361\", \"workers\", \"budgets\", \"negative-controls\"]",
+      "GEN007_REACTIONS: 1420 assertions; 0 failures; verified_exhibits=8; completed=[\"native-pairs\", \"no-feed\", \"missing-partner\"]"
+    ]
+  }
+}

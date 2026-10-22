@@ -142,11 +142,24 @@ struct PlaneActor {
     spatial::RegionId owner;
     std::uint64_t revision{};
 };
+struct PlaneStages {
+    Material policy = Material::Empty, base = Material::Empty, projections = Material::Empty, final = Material::Empty;
+    GenerationStages source;
+    bool has_source = false;
+    std::size_t projection_checks = 0; // actual inspected index entries, not elapsed time
+};
 struct PlaneCellProvenance {
     Plane plane = Plane::Play;
     std::int64_t x{}, y{};
     Material material = Material::Empty;
     std::vector<std::string> features, projections, fixtures, links, actors;
+    std::optional<CellProvenance> source;
+    PlaneStages stages;
+    std::vector<EvaluationDecision> decisions;
+    std::vector<MaterialContribution> contributions;
+    bool truncated = false;
+    std::size_t omitted_entries = 0;
+    std::uint64_t proposal_hash = 0;
 };
 struct PlaneResult {
     ResultState state = ResultState::Pending;
@@ -176,9 +189,11 @@ public:
     [[nodiscard]] std::uint64_t fingerprint() const noexcept;
     [[nodiscard]] std::uint64_t preparation_work() const noexcept;
     [[nodiscard]] std::uint64_t operations_per_cell() const noexcept;
+    [[nodiscard]] GenerationIndexInfo index_info() const noexcept;
     [[nodiscard]] std::size_t storage_bytes() const noexcept;
     [[nodiscard]] Material sample(Plane, std::int64_t, std::int64_t) const;
     [[nodiscard]] PlaneCellProvenance explain(Plane, std::int64_t, std::int64_t) const;
+    [[nodiscard]] PlaneStages stages(Plane, std::int64_t, std::int64_t) const;
     [[nodiscard]] std::unique_ptr<PlaneGenerationJob> begin(RectI64) const;
     [[nodiscard]] PlaneResult generate(RectI64) const;
     [[nodiscard]] bool accepts(const PlaneResult&) const noexcept;

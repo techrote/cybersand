@@ -196,7 +196,7 @@ func check_workbench() -> void:
 	root.add_child(app)
 	app.set_process(false)
 	await process_frame
-	expect(app.spatial_specs.size() >= 50 and app.page_picker.item_count == 7, "Typed native authoring catalogue did not initialize")
+	expect(app.spatial_specs.size() >= 50 and app.page_picker.item_count == 11 and app.page_picker.get_item_text(6) == "Typed spatial graphs", "Typed native authoring catalogue or retained legacy page did not initialize")
 	expect(app.apply_recipe(typed_recipe()), "Workbench rejected typed recipe: " + app.last_error)
 	if app.active_recipe.get("schema",1) != 2:
 		app.queue_free()

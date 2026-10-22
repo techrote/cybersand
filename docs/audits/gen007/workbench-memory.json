@@ -1,0 +1,58 @@
+{
+  "acceptance_bound_bytes": 4294967296,
+  "child_system_seconds": 0.44392499999999996,
+  "child_user_seconds": 33.705151,
+  "command": [
+    "/workspace/scratch/a81c7f866d80/dependencies/godot/Godot_v4.7-stable_linux.x86_64",
+    "--path",
+    "/workspace/scratch/b64391497be2/cybersand/godot",
+    "--rendering-method",
+    "gl_compatibility",
+    "--audio-driver",
+    "Dummy",
+    "--script",
+    "/workspace/scratch/b64391497be2/cybersand/docs/audits/gen007/workbench-latency-probe.gd",
+    "--",
+    "--output=/workspace/scratch/b64391497be2/cybersand/build/gen007-evidence/workbench-rss/workbench-rss-latency.json"
+  ],
+  "environment": {
+    "GALLIVM_PERF": "nopt",
+    "LIBGL_ALWAYS_SOFTWARE": "1",
+    "LP_NUM_THREADS": "2",
+    "XDG_CACHE_HOME": "/tmp/gen007-workbench-rss.Eg38nU/cache",
+    "XDG_CONFIG_HOME": "/tmp/gen007-workbench-rss.Eg38nU/config",
+    "XDG_DATA_HOME": "/tmp/gen007-workbench-rss.Eg38nU/data"
+  },
+  "latency_receipt": "workbench-rss-latency.json",
+  "latency_receipt_sha256": "98a575df2819574e1e2c555a7a9c5b243ca2fdd573c2bf2d741d911975b54388",
+  "measurement": "Linux resource.getrusage(RUSAGE_CHILDREN).ru_maxrss after waiting for the sole Godot child; peak resident memory, not virtual address space or aggregate concurrent-process memory.",
+  "memory_limit_enforcement": "No additional RLIMIT or cgroup memory limit was imposed by this wrapper; the observed process high-water RSS is compared with the 4 GiB acceptance bound.",
+  "passed": true,
+  "peak_rss_bytes": 405815296,
+  "probe_failures": [],
+  "probe_sha256": "3a533ca91170766bfe2b1f1ab4e62c4314a18eb7e41f485a92f52fcddc61b3a3",
+  "recipe_sha256": "688e5ee0cddf630109219030821baf38a82ef6f06afe8002fc720bd4c319186b",
+  "returncode": 0,
+  "rlimit_as": [
+    -1,
+    -1
+  ],
+  "ru_maxrss": 396304,
+  "ru_maxrss_before_child": 0,
+  "ru_maxrss_units": "KiB (Linux)",
+  "runtime_sha256": "0d867938166e63c2b8dc3079c76fbb148d9e78c7c8b7ac3d4299b674ac07044e",
+  "schema": 1,
+  "scope": "One isolated display-backed Godot authoring process running the portable full-recipe Workbench probe; Xvfb and the parent Python process are excluded.",
+  "source_commit": "2f7f65bf6e80c7258f2bdda19f949760d211b59e",
+  "source_file_sha256": {
+    "res://scripts/worldgen_preview.gd": "f9f23c1b0f968a341560646489ec940767a9efaaf11f23b0d1c5f0c58389bd3f",
+    "res://scripts/worldgen_workbench.gd": "e4ffed66d8e628cfafb6ab6f95274be9aa66172da4c4205a4241f900c91c6d5f",
+    "res://scripts/worldgen_workbench_tools.gd": "764e1eac346ea8fba5e29d572b22548e27971d766755291a67b2d35aacb38908"
+  },
+  "started_at_utc": "2026-10-21T23:48:58.137008+00:00",
+  "timed_out": false,
+  "timeout_seconds": 180.0,
+  "wall_seconds": 14.31009398599781,
+  "within_4_gib": true,
+  "wrapper_sha256": "4272ea6b86fe7f4f4be21f09db853e2ff598e22700fe7db9d08788d6bdd71165"
+}

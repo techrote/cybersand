@@ -4,6 +4,7 @@
 #include "cybersand/generation_planes.hpp"
 
 #include <godot_cpp/classes/ref_counted.hpp>
+#include <godot_cpp/classes/ref.hpp>
 #include <godot_cpp/variant/dictionary.hpp>
 #include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/variant/vector2i.hpp>
@@ -22,11 +23,18 @@ public:
     ~CyberWorldGenerator() override;
 
     [[nodiscard]] Dictionary configure(const Dictionary& recipe);
+    // Both adapters must be exclusively owned and any preparation worker joined.
+    // Only immutable plans cross; serials/jobs/configuration dictionaries do not.
+    [[nodiscard]] Dictionary adopt_configuration(const Ref<CyberWorldGenerator>& prepared, std::int64_t expected_revision);
     [[nodiscard]] Dictionary get_configuration() const;
     [[nodiscard]] Dictionary get_catalogue() const;
     [[nodiscard]] Dictionary get_semantic_plan() const;
     [[nodiscard]] Dictionary validate_routes() const;
     [[nodiscard]] Dictionary inspect_cell(Vector2i position) const;
+    [[nodiscard]] Dictionary inspect_generation(Vector2i position, const String& plane, std::int64_t expected_revision, const String& expected_fingerprint) const;
+    [[nodiscard]] Dictionary begin_stage_region(Rect2i bounds, const String& plane, const String& stage);
+    [[nodiscard]] Dictionary advance_stage_region(std::int64_t cell_budget);
+    [[nodiscard]] Dictionary cancel_stage_region();
     [[nodiscard]] Dictionary get_plane_plan() const;
     [[nodiscard]] Dictionary generate_plane_bundle() const;
     [[nodiscard]] Dictionary generate_plane_region(Rect2i bounds) const;
@@ -42,6 +50,8 @@ protected:
     static void _bind_methods();
 
 private:
+    struct StageRegionJob;
+    std::unique_ptr<StageRegionJob> stage_job_;
     std::shared_ptr<const cybersand::generation::Generator> generator_;
     std::unique_ptr<cybersand::generation::GenerationJob> job_;
     std::shared_ptr<const cybersand::generation::PlanePlan> plane_plan_;

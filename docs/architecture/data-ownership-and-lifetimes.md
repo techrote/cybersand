@@ -420,3 +420,18 @@ changes Current owners. Production hooks, barriers, queues and payload transitio
 remain separately gated; the source reader must stay serialized and read-only.
 
 The desktop [physical actor trial](../operations/physical-actor-programme.md) uses one main-thread Rapier rectangle and the existing immutable body-value publication. It disables the sampled owner, adds no worker-side Rapier access and does not attach the generation preview to live cell storage.
+
+## Generation Workbench 2 ownership
+
+The [GEN-007 authoring owner](../systems/generation-workbench-2.md) holds no live
+simulation World or Rapier object. Native compiled generators and semantic/plane
+plans are immutable; jobs own private output until complete. Provenance is a
+bounded deterministic replay of those plans. Copied cells and records are the
+only inputs to diagnostic drawing.
+
+Candidate preparation has an exclusive private adapter owner. A successful
+main-thread commit retires the previous preview jobs and diagnostics; rejected
+candidates preserve the accepted recipe, cache and history. Undo/redo restores
+recipe content with fresh session/request identities so old results cannot be
+readmitted. Auxiliary seed/comparison owners are private, finite and cancelled
+on identity changes. This is authoring isolation, not world mutation rebasing.

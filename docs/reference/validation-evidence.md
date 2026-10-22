@@ -507,3 +507,15 @@ owner visual acceptance.
 The [combined-feature audit](../audits/2026-10-18-combined-features-and-physical-trial.md) records Windows focused launcher/physical-body checks, the broad sweep and repaired entry premise, actual NVIDIA render inspection, source/runtime hashes and preserved failures. Final hosted exact-head gates and merge disposition are separately recorded in PRs #164/#173/#175/#176.
 
 The [fresh reconstructed-depth audit](../audits/2026-10-18-depth-integration-validation.md) records Windows 83/13/17 focused checks and actual NVIDIA material-surface pixel checks, separately from original local depth evidence. Final exact-head gates belong to PR #169.
+
+## GEN-007 authoring and qualification — 2026-10-21
+
+The [GEN-007 ledger](../audits/2026-10-21-gen007-workbench-qualification.md)
+records implementation checkpoints and all required acceptance gates for
+[issue #193](https://github.com/techrote/cybersand/issues/193) /
+[PR #198](https://github.com/techrote/cybersand/pull/198). Native replay, stage and
+candidate-index controls; transactional editing/history; final-plane structural
+and reaction oracles; actual rendered captures; cost/memory and source-matched
+Linux/Windows publication each retain their own scope. Pending or skipped gates
+do not establish completion. Retained Deepworks evidence is the visual reference,
+not a substituted result for the new procedural scene.

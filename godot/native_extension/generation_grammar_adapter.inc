@@ -99,7 +99,8 @@ gen::GrammarDefinition grammar_definition(const Variant& value) {
         out.max_sockets = bound("max_sockets", out.max_sockets); out.max_routes = bound("max_routes", out.max_routes);
         out.max_work = bound("max_work", out.max_work); out.max_prepared_bytes = bound("max_prepared_bytes", out.max_prepared_bytes);
         out.max_raster_cells = bound("max_raster_cells", out.max_raster_cells);
-        out.max_raster_operations = bound("max_raster_operations", out.max_raster_operations);
+        if (limits.has("max_raster_operations")) out.max_raster_operations = static_cast<std::uint64_t>(
+            bounded_integer(limits["max_raster_operations"], 1, INT64_C(16'000'000'000), "grammar.limits.max_raster_operations"));
     }
     if (item.has("rules")) {
         const auto rules = array_value(item["rules"], 64, "grammar.rules");

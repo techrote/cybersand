@@ -1195,9 +1195,119 @@ void omitted_manual_peer_removes_join() {
     }), "final material provenance contains no contribution from the removed join");
 }
 
+void native_stage_replay_and_bounded_inspection() {
+    Recipe r; r.schema = 3; r.seed = 193; r.chunk_size = 8;
+    r.grammar = flat(); r.grammar.rules.front().interior = Material::Concrete;
+    FieldNode one; one.id = "one"; one.parameters["value"] = 1; r.fields = {one};
+    Aggregate mixture; mixture.id = "grit"; mixture.components = {{Material::Sand, 5}};
+    r.aggregates = {mixture};
+    Modifier apply; apply.id = "apply"; apply.aggregate = "grit"; apply.application = "one";
+    Modifier excluded = apply; excluded.id = "excluded"; excluded.exclusion = "one"; excluded.aggregate.clear(); excluded.material = Material::Water;
+    Modifier predicate = excluded; predicate.id = "predicate"; predicate.exclusion.clear(); predicate.context = ContextPredicate::Occupied;
+    r.modifiers = {predicate, excluded, apply};
+    r.paths = {{"clearance", {{4, 6}, {12, 6}}, 1, Material::Empty, 0}};
+    r.overrides = {{"final-authored", {6, 6, 1, 1}, Material::SteelPlate, {}, {}, 0}};
+    const auto generator = Generator::compile(r);
+    const auto before = generator->generate({0, 0});
+    const auto trace = generator->explain(6, 6);
+    const std::array<Material, kGenerationStageCount> expected{Material::Empty, Material::Empty, Material::Concrete,
+        Material::Sand, Material::Empty, Material::SteelPlate};
+    require(trace.stages.materials == expected && generator->stages(6, 6).materials == expected,
+        "actual stages independently witness candidate, grammar, aggregate, clearance and last override");
+    require(trace.material == generator->sample(6, 6) && trace.initial_material == Material::Empty &&
+        trace.context_evaluated && trace.context.material == 0 && trace.context.occupied == 0,
+        "inspector context is original analytic candidate, not earlier material modifiers");
+    require(trace.revision == r.revision && trace.fingerprint == generator->fingerprint() && trace.proposal_hash != 0,
+        "cell replay binds recipe identity, absolute coordinate and final material");
+    require(trace.aggregates.size() == 1 && trace.aggregates[0].id == "grit" && trace.aggregates[0].material == Material::Sand &&
+        trace.aggregates[0].components.size() == 1 && trace.aggregates[0].components[0].weight == 1,
+        "aggregate trace exposes canonical normalized weights and realized ordinary material");
+    bool saw_exclusion = false, saw_predicate = false;
+    for (const auto& d : trace.decisions) {
+        if (d.id == "excluded" && d.stage == "modifier_mask") saw_exclusion = !d.accepted && d.exclusion_value == 1 && d.influence == 0;
+        if (d.id == "predicate" && d.stage == "modifier_mask") saw_predicate = !d.accepted && !d.context_passed && d.predicate == "occupied";
+    }
+    require(saw_exclusion && saw_predicate, "rejected alternatives identify actual exclusion and immutable context predicate");
+    require(!trace.truncated && trace.accepted_feature_id.ends_with("/hall/0") && !trace.ancestry.empty(),
+        "accepted semantic producer is identified without invented detail");
+    for (std::size_t stage = 0; stage < kGenerationStageCount; ++stage) {
+        const auto name = std::string("stage:") + generation_stage_name(static_cast<GenerationStage>(stage));
+        auto job = generator->begin({0, 0}, name);
+        while (job->state() == ResultState::Pending) (void)job->advance(3);
+        auto result = job->result();
+        require(generator->accepts(result) && result.cells == before.cells && result.stage_cells[6*8+6] == expected[stage],
+            "stage job publishes actual intermediate plus invariant final baseline under sliced budgets");
+        result.stage_cells[6*8+6] = Material::Fire;
+        require(!generator->accepts(result), "stage material tamper invalidates native receipt");
+    }
+    auto cancelled = generator->begin({0, 0}, "stage:grammar"); (void)cancelled->advance(7); cancelled->cancel();
+    require(cancelled->result().stage_cells.empty() && cancelled->result().cells.empty(), "cancelled stage job publishes no partial buffers");
+    require(rejection([&] { (void)generator->begin({0, 0}, "stage:imagined"); }).find("stage") != std::string::npos,
+        "unimplemented stage is explicit failure");
+    const auto after = generator->generate({0, 0});
+    require(before.cells == after.cells && before.receipt_hash == after.receipt_hash,
+        "all inspection and stage replay leave subsequent generation untouched");
+    auto changed = r; changed.seed += 1;
+    require(Generator::compile(changed)->explain(6, 6).proposal_hash != trace.proposal_hash,
+        "same final authored cell under different seed cannot reuse prior proposal identity");
+}
+
+void indexed_grammar_matches_independent_bruteforce() {
+    auto d = flat(); d.id = "index-control"; d.region_size = 128; d.region_window = {-1, -1, 2, 2};
+    d.rules.front().candidates.front().bounds = {2, 2, 124, 124};
+    auto child = room("child", {30, 30, 64, 64}); child.interior = Material::RedBrick; child.material = Material::Metal;
+    d.rules.front().children = {"child"}; d.rules.push_back(child);
+    const auto plan = GrammarPlan::compile(d, 193);
+    const auto hit = [](RectI64 b, std::int64_t x, std::int64_t y) { return x >= b.x && y >= b.y && x < b.x+b.width && y < b.y+b.height; };
+    const auto route_hit = [](const SemanticRoute& route, std::int64_t x, std::int64_t y) {
+        const auto half = static_cast<std::int64_t>(route.width / 2);
+        for (std::size_t i=1;i<route.points.size();++i) {
+            const auto a=route.points[i-1], b=route.points[i];
+            if (static_cast<double>(x) >= std::min(a.x,b.x)-static_cast<double>(half) &&
+                static_cast<double>(x) <= std::max(a.x,b.x)+static_cast<double>(half) &&
+                static_cast<double>(y) >= std::min(a.y,b.y)-static_cast<double>(half) &&
+                static_cast<double>(y) <= std::max(a.y,b.y)+static_cast<double>(half)) return true;
+        }
+        return false;
+    };
+    for (std::int64_t y=-128;y<128;++y) for (std::int64_t x=-128;x<128;++x) {
+        const SemanticFeature* winner=nullptr; std::optional<Material> material; bool inner=false;
+        for (const auto& f:plan->features()) {
+            if (!hit(f.bounds,x,y)) continue;
+            const auto depth=std::count(f.id.begin(),f.id.end(),'/');
+            const auto old_depth=winner ? std::count(winner->id.begin(),winner->id.end(),'/') : 0;
+            if (winner && (depth<old_depth || (depth==old_depth && f.priority<winner->priority))) continue;
+            const auto w=static_cast<std::int64_t>(f.wall_thickness);
+            const bool interior=f.wall_thickness==0 || hit({f.bounds.x+w,f.bounds.y+w,f.bounds.width-2*w,f.bounds.height-2*w},x,y);
+            const auto proposed=interior ? f.interior : f.material;
+            if (!proposed && (interior || f.aggregate.empty())) continue;
+            winner=&f; material=proposed; inner=interior;
+        }
+        const auto owner=spatial::RegionId{static_cast<std::int64_t>(std::floor(static_cast<double>(x)/128)),
+            static_cast<std::int64_t>(std::floor(static_cast<double>(y)/128))};
+        const SemanticRoute* structural=nullptr; const SemanticRoute* clearance=nullptr;
+        for (const auto& route:plan->routes()) if (route.owner==owner && route_hit(route,x,y)) {
+            if (route.type=="passage") { if (!clearance) clearance=&route; }
+            else { structural=&route; material=route.material; winner=nullptr; inner=false; }
+        }
+        const auto actual=plan->proposal(x,y);
+        require(actual.feature==winner && actual.route==structural && actual.material==material && actual.interior==inner,
+            "bounded grammar index equals full independent hierarchy/route scan, including negative bins and halos");
+        require(plan->route_at(x,y)==clearance, "indexed clearance equals full route scan at every boundary and seam cell");
+    }
+    std::uint64_t old_cost=64+plan->features().size()*64;
+    for (const auto& route:plan->routes()) old_cost+=32+32*route.points.size();
+    require(plan->operations_per_sample()<old_cost, "local candidate upper bound is smaller than scanning the entire finite window");
+    auto memory=d; memory.limits.max_prepared_bytes=plan->storage_bytes()-1;
+    require(rejection([&]{(void)GrammarPlan::compile(memory,193);}).find("memory")!=std::string::npos,
+        "index allocations obey declared prepared memory budget");
+}
+
 } // namespace
 int main() {
     try {
+        native_stage_replay_and_bounded_inspection();
+        indexed_grammar_matches_independent_bruteforce();
         hierarchy_queries_and_stable_identity();
         independent_regions_and_boundaries();
         bounded_constraints_and_failures();

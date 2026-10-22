@@ -155,6 +155,10 @@ struct SemanticRoute {
     bool required = false;
     Material material = Material::Empty;
 };
+struct GenerationIndexInfo {
+    std::int64_t bin_size = 64;
+    std::size_t bins = 0, entries = 0, maximum_candidates = 0;
+};
 struct SemanticProposal {
     std::optional<Material> material;
     const SemanticFeature* feature = nullptr;
@@ -176,6 +180,7 @@ public:
     [[nodiscard]] std::uint64_t fingerprint() const noexcept;
     [[nodiscard]] std::uint64_t preparation_work() const noexcept;
     [[nodiscard]] std::uint64_t operations_per_sample() const noexcept;
+    [[nodiscard]] GenerationIndexInfo index_info() const noexcept;
     [[nodiscard]] std::size_t storage_bytes() const noexcept;
     [[nodiscard]] const SemanticFeature* feature(const std::string& id) const noexcept;
     [[nodiscard]] std::vector<const SemanticFeature*> query(RectI64 bounds) const;

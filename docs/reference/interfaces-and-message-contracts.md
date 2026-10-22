@@ -865,3 +865,35 @@ A released body retains its physical velocity, and collision grace continues to
 age when physical stepping resumes. Exact catalogue effects and processor
 semantics remain with [actor usables](../systems/actor-usables.md); execution and
 merge acceptance remain with the [ACT-005 audit](../audits/2026-10-19-act005-physical-usables.md).
+
+## Workbench replay and genuine stage interfaces
+
+[GEN-007](../systems/generation-workbench-2.md) adds
+`inspect_generation(position, plane, expected_revision, expected_fingerprint)`
+to `CyberWorldGenerator`. The method rejects stale caller identities and returns
+copied deterministic replay with native material, initial context, effective
+parameters, scalar/typed values, ordered masks/modifiers/aggregate decisions,
+semantic ancestry/constraints, plane projections, fixtures/links, precedence,
+proposal identity and explicit truncation/unavailable metadata. It does not
+read a live simulation World or imply a stored historical execution log.
+
+`stage:<name>` chunk diagnostics keep final `cells` and actual intermediate
+`stage_cells` separately and bind them in the native receipt. The six base names
+are `candidate`, `guided_candidate`, `grammar`, `modifiers`, `connectivity` and
+`final`. `begin_stage_region(bounds, plane, stage)`, `advance_stage_region(budget)`
+and `cancel_stage_region()` supply bounded private finite-region stage jobs.
+Plane stages also include `policy`, `base` and `projections`; a plane without the
+base generator rejects its unavailable source stages. Stages are sampled from
+the real pipeline, never from a modified final recipe.
+
+Adapter revision, native recipe/plane fingerprint, UI session/view token and
+owner World generation are distinct identities. Workbench comparison binds the
+same seed and coordinates for both recipes and rejects stale result serials.
+`adopt_configuration(prepared_owner, expected_revision)` transfers immutable
+plans only after the caller has joined the private preparation worker. It rejects
+null, self, unconfigured, pending or stale owners. The receiving adapter serial
+advances; the native recipe revision and its material/diagnostic receipt remain
+unchanged and are reported separately. Subsequent changes to the private owner
+cannot mutate the adopted plans.
+Neither explanation nor stage output supplies authority to install or mutate a
+World; existing material/semantic admission interfaces keep that responsibility.

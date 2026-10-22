@@ -10,6 +10,10 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## GEN-007 authoring and qualification — 2026-10-21
+
+**Current implementation with scoped qualification:** [Generation Workbench 2](../systems/generation-workbench-2.md) adds native provenance replay and true stages, transactional visual authoring, graph/hierarchy/plane diagnostics, undo/redo and bounded seed/recipe comparison. The [procedural qualification scene](../operations/procedural-qualification.md) supplies one compact 1024 × 1024 four-plane map: four declared seeds pass final-raster structural and equivalence checks, eight paired-plane native exhibits pass mechanism controls, and retained display captures receive a qualified visual pass for approaching Deepworks. Broad negative spaces, repeated service cabinets and less varied fine machinery remain explicit. Source-matched Linux and Windows publication passed; the [dated ledger](../audits/2026-10-21-gen007-workbench-qualification.md) retains source/runtime identities, the revised 4 GiB graphical envelope and observed authoring hitches. [PR #198](https://github.com/techrote/cybersand/pull/198) records final exact-head repository acceptance and merge verification. GEN-006 remains the subsequent streaming/persistence owner.
+
 ## Player control playground — 2026-10-20
 
 **Current experimental source:** the [player playground](../systems/player-control-playground.md)

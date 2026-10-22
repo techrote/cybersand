@@ -1,0 +1,1083 @@
+{
+  "schema": 1,
+  "source_revision": "2f7f65bf6e80c7258f2bdda19f949760d211b59e",
+  "recipe_sha256": "688e5ee0cddf630109219030821baf38a82ef6f06afe8002fc720bd4c319186b",
+  "native_library_sha256": "0d867938166e63c2b8dc3079c76fbb148d9e78c7c8b7ac3d4299b674ac07044e",
+  "recipe_bytes": 61845,
+  "quantities": {
+    "total_map_cells": 1048576,
+    "planes": 4,
+    "major_regions": 4,
+    "named_subregions": 8,
+    "micro_features": 24,
+    "cross_chunk_structures": 14,
+    "optional_loops": 2,
+    "paired_exhibits": 4,
+    "plane_specific_exhibits": 8,
+    "grammar_rules": 26,
+    "projection_templates": 111,
+    "fixture_templates": 8,
+    "link_templates": 5,
+    "total_plane_templates": 124,
+    "expanded_semantic_features": 161,
+    "expanded_projections": 336,
+    "expanded_fixtures": 8,
+    "retained_actual_captures": 27,
+    "declared_seeds": 4
+  },
+  "manual_placements": {
+    "district_anchors": 4,
+    "shared_gallery_definitions": 2,
+    "optional_loop_definition": 1,
+    "unique_exhibit_definitions": 4,
+    "authored_candidate_boxes": 43,
+    "projection_relative_rectangles": 83,
+    "fixture_relative_rectangles": 8,
+    "hard_material_overrides": 0,
+    "per_cell_material_list": false,
+    "imported_raster": false
+  },
+  "reused_definitions": [
+    "upper-gallery",
+    "lower-gallery",
+    "service-module",
+    "lower-service-module",
+    "cabinet-window",
+    "gauge",
+    "shelf",
+    "signal",
+    "service-rail",
+    "optional-loop",
+    "optical-core",
+    "optical-aperture",
+    "optical-brace",
+    "vault-lock",
+    "vessel-pilot",
+    "vessel-foot",
+    "play-inlet-post",
+    "rear-inlet-post"
+  ],
+  "bounds": {
+    "recipe_bytes": 131072,
+    "whole_map_operations": 4000000000,
+    "generic_final_raster_operations": 16000000000,
+    "plane_cells": 1048576,
+    "trace_cells": 4096,
+    "publication_bytes": 67108864,
+    "host_rectangles_per_plane": 4096,
+    "native_prepared_bytes": 16777216,
+    "qualification_process_peak_rss_bytes": 2147483648,
+    "graphical_process_peak_rss_bytes": 4294967296
+  },
+  "seeds": [
+    {
+      "seed": 19301,
+      "generator_fingerprint": "5f512fa7de534bec",
+      "semantic_grammar_fingerprint": "abf3dcc5ee20f453",
+      "plane_fingerprint": "db70c8902e921712",
+      "material_hashes": {
+        "background": "a2542213e8296879",
+        "effects": "3db945f379696555",
+        "play": "7e78bccdb2d96378",
+        "scripted": "93a6104b7a8b8cfe"
+      },
+      "plane_charged_storage_bytes": 715772,
+      "grammar_charged_storage_bytes": 1712806,
+      "plane_bundle_logical_operations": 3900705643,
+      "plane_logical_operations_per_cell": 3720,
+      "generic_raster_route_validation_operations": 4932597984,
+      "final_play_route_centres": 7902,
+      "final_play_blocked_centres": 0,
+      "connected_optional_loops": 2,
+      "all_four_regions_reached": true,
+      "all_eight_galleries_reached": true,
+      "generation_ms": 3264.379,
+      "generation_and_admission_ms": 3691.519,
+      "whole_plane_coverage": {
+        "background": {
+          "intentional_empty_cells": 626782,
+          "nonempty_cells": 421794
+        },
+        "effects": {
+          "intentional_empty_cells": 1046144,
+          "nonempty_cells": 2432
+        },
+        "play": {
+          "intentional_empty_cells": 929063,
+          "nonempty_cells": 119513
+        },
+        "scripted": {
+          "intentional_empty_cells": 951427,
+          "nonempty_cells": 97149
+        }
+      },
+      "galleries": [
+        {
+          "order": 1,
+          "district": "copper-choir",
+          "rule": "upper-gallery",
+          "name": "Intake Choir",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 30028,
+              "nonempty": 48820
+            },
+            "effects": {
+              "intentional_empty": 78400,
+              "nonempty": 448
+            },
+            "play": {
+              "intentional_empty": 70989,
+              "nonempty": 7859
+            },
+            "scripted": {
+              "intentional_empty": 51803,
+              "nonempty": 27045
+            }
+          }
+        },
+        {
+          "order": 2,
+          "district": "copper-choir",
+          "rule": "lower-gallery",
+          "name": "Copper Service Cloister",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 32138,
+              "nonempty": 46710
+            },
+            "effects": {
+              "intentional_empty": 78688,
+              "nonempty": 160
+            },
+            "play": {
+              "intentional_empty": 62808,
+              "nonempty": 16040
+            },
+            "scripted": {
+              "intentional_empty": 69862,
+              "nonempty": 8986
+            }
+          }
+        },
+        {
+          "order": 3,
+          "district": "frost-observatory",
+          "rule": "upper-gallery",
+          "name": "Meltwater Lens",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 34964,
+              "nonempty": 43884
+            },
+            "effects": {
+              "intentional_empty": 78400,
+              "nonempty": 448
+            },
+            "play": {
+              "intentional_empty": 71534,
+              "nonempty": 7314
+            },
+            "scripted": {
+              "intentional_empty": 69746,
+              "nonempty": 9102
+            }
+          }
+        },
+        {
+          "order": 4,
+          "district": "frost-observatory",
+          "rule": "lower-gallery",
+          "name": "Frosted Survey Vault",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 36064,
+              "nonempty": 42784
+            },
+            "effects": {
+              "intentional_empty": 78688,
+              "nonempty": 160
+            },
+            "play": {
+              "intentional_empty": 70741,
+              "nonempty": 8107
+            },
+            "scripted": {
+              "intentional_empty": 69712,
+              "nonempty": 9136
+            }
+          }
+        },
+        {
+          "order": 5,
+          "district": "ember-terraces",
+          "rule": "upper-gallery",
+          "name": "Firing Terrace",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 34560,
+              "nonempty": 44288
+            },
+            "effects": {
+              "intentional_empty": 78400,
+              "nonempty": 448
+            },
+            "play": {
+              "intentional_empty": 71674,
+              "nonempty": 7174
+            },
+            "scripted": {
+              "intentional_empty": 69774,
+              "nonempty": 9074
+            }
+          }
+        },
+        {
+          "order": 6,
+          "district": "ember-terraces",
+          "rule": "lower-gallery",
+          "name": "Ember Transit Gallery",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 37072,
+              "nonempty": 41776
+            },
+            "effects": {
+              "intentional_empty": 78688,
+              "nonempty": 160
+            },
+            "play": {
+              "intentional_empty": 62384,
+              "nonempty": 16464
+            },
+            "scripted": {
+              "intentional_empty": 69742,
+              "nonempty": 9106
+            }
+          }
+        },
+        {
+          "order": 7,
+          "district": "basalt-archive",
+          "rule": "upper-gallery",
+          "name": "Geothermal Registry",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 34380,
+              "nonempty": 44468
+            },
+            "effects": {
+              "intentional_empty": 78400,
+              "nonempty": 448
+            },
+            "play": {
+              "intentional_empty": 71761,
+              "nonempty": 7087
+            },
+            "scripted": {
+              "intentional_empty": 69896,
+              "nonempty": 8952
+            }
+          }
+        },
+        {
+          "order": 8,
+          "district": "basalt-archive",
+          "rule": "lower-gallery",
+          "name": "Basalt Memory Hall",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 35784,
+              "nonempty": 43064
+            },
+            "effects": {
+              "intentional_empty": 78688,
+              "nonempty": 160
+            },
+            "play": {
+              "intentional_empty": 70570,
+              "nonempty": 8278
+            },
+            "scripted": {
+              "intentional_empty": 69862,
+              "nonempty": 8986
+            }
+          }
+        }
+      ]
+    },
+    {
+      "seed": 19317,
+      "generator_fingerprint": "e40a706561f6689a",
+      "semantic_grammar_fingerprint": "9bd58920ddb3b233",
+      "plane_fingerprint": "536fb742a4d1ca50",
+      "material_hashes": {
+        "background": "a2542213e8296879",
+        "effects": "3db945f379696555",
+        "play": "eef58673f979df86",
+        "scripted": "ce28fc43edd973d8"
+      },
+      "plane_charged_storage_bytes": 716204,
+      "grammar_charged_storage_bytes": 1713228,
+      "plane_bundle_logical_operations": 3900705643,
+      "plane_logical_operations_per_cell": 3720,
+      "generic_raster_route_validation_operations": 4999710112,
+      "final_play_route_centres": 7936,
+      "final_play_blocked_centres": 0,
+      "connected_optional_loops": 2,
+      "all_four_regions_reached": true,
+      "all_eight_galleries_reached": true,
+      "generation_ms": 3469.334,
+      "generation_and_admission_ms": 3838.69,
+      "whole_plane_coverage": {
+        "background": {
+          "intentional_empty_cells": 626782,
+          "nonempty_cells": 421794
+        },
+        "effects": {
+          "intentional_empty_cells": 1046144,
+          "nonempty_cells": 2432
+        },
+        "play": {
+          "intentional_empty_cells": 930044,
+          "nonempty_cells": 118532
+        },
+        "scripted": {
+          "intentional_empty_cells": 951217,
+          "nonempty_cells": 97359
+        }
+      },
+      "galleries": [
+        {
+          "order": 1,
+          "district": "copper-choir",
+          "rule": "upper-gallery",
+          "name": "Intake Choir",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 30028,
+              "nonempty": 48820
+            },
+            "effects": {
+              "intentional_empty": 78400,
+              "nonempty": 448
+            },
+            "play": {
+              "intentional_empty": 71066,
+              "nonempty": 7782
+            },
+            "scripted": {
+              "intentional_empty": 51803,
+              "nonempty": 27045
+            }
+          }
+        },
+        {
+          "order": 2,
+          "district": "copper-choir",
+          "rule": "lower-gallery",
+          "name": "Copper Service Cloister",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 32138,
+              "nonempty": 46710
+            },
+            "effects": {
+              "intentional_empty": 78688,
+              "nonempty": 160
+            },
+            "play": {
+              "intentional_empty": 65455,
+              "nonempty": 13393
+            },
+            "scripted": {
+              "intentional_empty": 69792,
+              "nonempty": 9056
+            }
+          }
+        },
+        {
+          "order": 3,
+          "district": "frost-observatory",
+          "rule": "upper-gallery",
+          "name": "Meltwater Lens",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 34964,
+              "nonempty": 43884
+            },
+            "effects": {
+              "intentional_empty": 78400,
+              "nonempty": 448
+            },
+            "play": {
+              "intentional_empty": 71484,
+              "nonempty": 7364
+            },
+            "scripted": {
+              "intentional_empty": 69746,
+              "nonempty": 9102
+            }
+          }
+        },
+        {
+          "order": 4,
+          "district": "frost-observatory",
+          "rule": "lower-gallery",
+          "name": "Frosted Survey Vault",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 36064,
+              "nonempty": 42784
+            },
+            "effects": {
+              "intentional_empty": 78688,
+              "nonempty": 160
+            },
+            "play": {
+              "intentional_empty": 70846,
+              "nonempty": 8002
+            },
+            "scripted": {
+              "intentional_empty": 69642,
+              "nonempty": 9206
+            }
+          }
+        },
+        {
+          "order": 5,
+          "district": "ember-terraces",
+          "rule": "upper-gallery",
+          "name": "Firing Terrace",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 34560,
+              "nonempty": 44288
+            },
+            "effects": {
+              "intentional_empty": 78400,
+              "nonempty": 448
+            },
+            "play": {
+              "intentional_empty": 71525,
+              "nonempty": 7323
+            },
+            "scripted": {
+              "intentional_empty": 69774,
+              "nonempty": 9074
+            }
+          }
+        },
+        {
+          "order": 6,
+          "district": "ember-terraces",
+          "rule": "lower-gallery",
+          "name": "Ember Transit Gallery",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 37072,
+              "nonempty": 41776
+            },
+            "effects": {
+              "intentional_empty": 78688,
+              "nonempty": 160
+            },
+            "play": {
+              "intentional_empty": 62657,
+              "nonempty": 16191
+            },
+            "scripted": {
+              "intentional_empty": 69742,
+              "nonempty": 9106
+            }
+          }
+        },
+        {
+          "order": 7,
+          "district": "basalt-archive",
+          "rule": "upper-gallery",
+          "name": "Geothermal Registry",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 34380,
+              "nonempty": 44468
+            },
+            "effects": {
+              "intentional_empty": 78400,
+              "nonempty": 448
+            },
+            "play": {
+              "intentional_empty": 71707,
+              "nonempty": 7141
+            },
+            "scripted": {
+              "intentional_empty": 69896,
+              "nonempty": 8952
+            }
+          }
+        },
+        {
+          "order": 8,
+          "district": "basalt-archive",
+          "rule": "lower-gallery",
+          "name": "Basalt Memory Hall",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 35784,
+              "nonempty": 43064
+            },
+            "effects": {
+              "intentional_empty": 78688,
+              "nonempty": 160
+            },
+            "play": {
+              "intentional_empty": 70276,
+              "nonempty": 8572
+            },
+            "scripted": {
+              "intentional_empty": 69792,
+              "nonempty": 9056
+            }
+          }
+        }
+      ]
+    },
+    {
+      "seed": 19337,
+      "generator_fingerprint": "47c27aab096ca7ec",
+      "semantic_grammar_fingerprint": "2c19e8c57c21dfac",
+      "plane_fingerprint": "45e2c965c9d099fc",
+      "material_hashes": {
+        "background": "a2542213e8296879",
+        "effects": "3db945f379696555",
+        "play": "598a24d47e04cbef",
+        "scripted": "8b421bd98a737ad8"
+      },
+      "plane_charged_storage_bytes": 716204,
+      "grammar_charged_storage_bytes": 1713160,
+      "plane_bundle_logical_operations": 3967814507,
+      "plane_logical_operations_per_cell": 3784,
+      "generic_raster_route_validation_operations": 4999704896,
+      "final_play_route_centres": 7799,
+      "final_play_blocked_centres": 0,
+      "connected_optional_loops": 2,
+      "all_four_regions_reached": true,
+      "all_eight_galleries_reached": true,
+      "generation_ms": 3498.144,
+      "generation_and_admission_ms": 3720.457,
+      "whole_plane_coverage": {
+        "background": {
+          "intentional_empty_cells": 626782,
+          "nonempty_cells": 421794
+        },
+        "effects": {
+          "intentional_empty_cells": 1046144,
+          "nonempty_cells": 2432
+        },
+        "play": {
+          "intentional_empty_cells": 926777,
+          "nonempty_cells": 121799
+        },
+        "scripted": {
+          "intentional_empty_cells": 951217,
+          "nonempty_cells": 97359
+        }
+      },
+      "galleries": [
+        {
+          "order": 1,
+          "district": "copper-choir",
+          "rule": "upper-gallery",
+          "name": "Intake Choir",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 30028,
+              "nonempty": 48820
+            },
+            "effects": {
+              "intentional_empty": 78400,
+              "nonempty": 448
+            },
+            "play": {
+              "intentional_empty": 71321,
+              "nonempty": 7527
+            },
+            "scripted": {
+              "intentional_empty": 51803,
+              "nonempty": 27045
+            }
+          }
+        },
+        {
+          "order": 2,
+          "district": "copper-choir",
+          "rule": "lower-gallery",
+          "name": "Copper Service Cloister",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 32138,
+              "nonempty": 46710
+            },
+            "effects": {
+              "intentional_empty": 78688,
+              "nonempty": 160
+            },
+            "play": {
+              "intentional_empty": 62735,
+              "nonempty": 16113
+            },
+            "scripted": {
+              "intentional_empty": 69792,
+              "nonempty": 9056
+            }
+          }
+        },
+        {
+          "order": 3,
+          "district": "frost-observatory",
+          "rule": "upper-gallery",
+          "name": "Meltwater Lens",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 34964,
+              "nonempty": 43884
+            },
+            "effects": {
+              "intentional_empty": 78400,
+              "nonempty": 448
+            },
+            "play": {
+              "intentional_empty": 71055,
+              "nonempty": 7793
+            },
+            "scripted": {
+              "intentional_empty": 69746,
+              "nonempty": 9102
+            }
+          }
+        },
+        {
+          "order": 4,
+          "district": "frost-observatory",
+          "rule": "lower-gallery",
+          "name": "Frosted Survey Vault",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 36064,
+              "nonempty": 42784
+            },
+            "effects": {
+              "intentional_empty": 78688,
+              "nonempty": 160
+            },
+            "play": {
+              "intentional_empty": 70581,
+              "nonempty": 8267
+            },
+            "scripted": {
+              "intentional_empty": 69642,
+              "nonempty": 9206
+            }
+          }
+        },
+        {
+          "order": 5,
+          "district": "ember-terraces",
+          "rule": "upper-gallery",
+          "name": "Firing Terrace",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 34560,
+              "nonempty": 44288
+            },
+            "effects": {
+              "intentional_empty": 78400,
+              "nonempty": 448
+            },
+            "play": {
+              "intentional_empty": 71746,
+              "nonempty": 7102
+            },
+            "scripted": {
+              "intentional_empty": 69774,
+              "nonempty": 9074
+            }
+          }
+        },
+        {
+          "order": 6,
+          "district": "ember-terraces",
+          "rule": "lower-gallery",
+          "name": "Ember Transit Gallery",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 37072,
+              "nonempty": 41776
+            },
+            "effects": {
+              "intentional_empty": 78688,
+              "nonempty": 160
+            },
+            "play": {
+              "intentional_empty": 62489,
+              "nonempty": 16359
+            },
+            "scripted": {
+              "intentional_empty": 69742,
+              "nonempty": 9106
+            }
+          }
+        },
+        {
+          "order": 7,
+          "district": "basalt-archive",
+          "rule": "upper-gallery",
+          "name": "Geothermal Registry",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 34380,
+              "nonempty": 44468
+            },
+            "effects": {
+              "intentional_empty": 78400,
+              "nonempty": 448
+            },
+            "play": {
+              "intentional_empty": 71508,
+              "nonempty": 7340
+            },
+            "scripted": {
+              "intentional_empty": 69896,
+              "nonempty": 8952
+            }
+          }
+        },
+        {
+          "order": 8,
+          "district": "basalt-archive",
+          "rule": "lower-gallery",
+          "name": "Basalt Memory Hall",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 35784,
+              "nonempty": 43064
+            },
+            "effects": {
+              "intentional_empty": 78688,
+              "nonempty": 160
+            },
+            "play": {
+              "intentional_empty": 70153,
+              "nonempty": 8695
+            },
+            "scripted": {
+              "intentional_empty": 69792,
+              "nonempty": 9056
+            }
+          }
+        }
+      ]
+    },
+    {
+      "seed": 19361,
+      "generator_fingerprint": "5236d6ec3c8ce787",
+      "semantic_grammar_fingerprint": "10fe062a73b2994d",
+      "plane_fingerprint": "1e6581aff14061d7",
+      "material_hashes": {
+        "background": "a2542213e8296879",
+        "effects": "3db945f379696555",
+        "play": "728f73f134bc016b",
+        "scripted": "e3d9c22c7aefc64c"
+      },
+      "plane_charged_storage_bytes": 715932,
+      "grammar_charged_storage_bytes": 1712742,
+      "plane_bundle_logical_operations": 3900705643,
+      "plane_logical_operations_per_cell": 3720,
+      "generic_raster_route_validation_operations": 5100371200,
+      "final_play_route_centres": 7822,
+      "final_play_blocked_centres": 0,
+      "connected_optional_loops": 2,
+      "all_four_regions_reached": true,
+      "all_eight_galleries_reached": true,
+      "generation_ms": 3332.845,
+      "generation_and_admission_ms": 3618.116,
+      "whole_plane_coverage": {
+        "background": {
+          "intentional_empty_cells": 626782,
+          "nonempty_cells": 421794
+        },
+        "effects": {
+          "intentional_empty_cells": 1046144,
+          "nonempty_cells": 2432
+        },
+        "play": {
+          "intentional_empty_cells": 929468,
+          "nonempty_cells": 119108
+        },
+        "scripted": {
+          "intentional_empty_cells": 951357,
+          "nonempty_cells": 97219
+        }
+      },
+      "galleries": [
+        {
+          "order": 1,
+          "district": "copper-choir",
+          "rule": "upper-gallery",
+          "name": "Intake Choir",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 30028,
+              "nonempty": 48820
+            },
+            "effects": {
+              "intentional_empty": 78400,
+              "nonempty": 448
+            },
+            "play": {
+              "intentional_empty": 71052,
+              "nonempty": 7796
+            },
+            "scripted": {
+              "intentional_empty": 51803,
+              "nonempty": 27045
+            }
+          }
+        },
+        {
+          "order": 2,
+          "district": "copper-choir",
+          "rule": "lower-gallery",
+          "name": "Copper Service Cloister",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 32138,
+              "nonempty": 46710
+            },
+            "effects": {
+              "intentional_empty": 78688,
+              "nonempty": 160
+            },
+            "play": {
+              "intentional_empty": 62834,
+              "nonempty": 16014
+            },
+            "scripted": {
+              "intentional_empty": 69862,
+              "nonempty": 8986
+            }
+          }
+        },
+        {
+          "order": 3,
+          "district": "frost-observatory",
+          "rule": "upper-gallery",
+          "name": "Meltwater Lens",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 34964,
+              "nonempty": 43884
+            },
+            "effects": {
+              "intentional_empty": 78400,
+              "nonempty": 448
+            },
+            "play": {
+              "intentional_empty": 71412,
+              "nonempty": 7436
+            },
+            "scripted": {
+              "intentional_empty": 69746,
+              "nonempty": 9102
+            }
+          }
+        },
+        {
+          "order": 4,
+          "district": "frost-observatory",
+          "rule": "lower-gallery",
+          "name": "Frosted Survey Vault",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 36064,
+              "nonempty": 42784
+            },
+            "effects": {
+              "intentional_empty": 78688,
+              "nonempty": 160
+            },
+            "play": {
+              "intentional_empty": 70835,
+              "nonempty": 8013
+            },
+            "scripted": {
+              "intentional_empty": 69642,
+              "nonempty": 9206
+            }
+          }
+        },
+        {
+          "order": 5,
+          "district": "ember-terraces",
+          "rule": "upper-gallery",
+          "name": "Firing Terrace",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 34560,
+              "nonempty": 44288
+            },
+            "effects": {
+              "intentional_empty": 78400,
+              "nonempty": 448
+            },
+            "play": {
+              "intentional_empty": 71639,
+              "nonempty": 7209
+            },
+            "scripted": {
+              "intentional_empty": 69774,
+              "nonempty": 9074
+            }
+          }
+        },
+        {
+          "order": 6,
+          "district": "ember-terraces",
+          "rule": "lower-gallery",
+          "name": "Ember Transit Gallery",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 37072,
+              "nonempty": 41776
+            },
+            "effects": {
+              "intentional_empty": 78688,
+              "nonempty": 160
+            },
+            "play": {
+              "intentional_empty": 62438,
+              "nonempty": 16410
+            },
+            "scripted": {
+              "intentional_empty": 69742,
+              "nonempty": 9106
+            }
+          }
+        },
+        {
+          "order": 7,
+          "district": "basalt-archive",
+          "rule": "upper-gallery",
+          "name": "Geothermal Registry",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 34380,
+              "nonempty": 44468
+            },
+            "effects": {
+              "intentional_empty": 78400,
+              "nonempty": 448
+            },
+            "play": {
+              "intentional_empty": 71844,
+              "nonempty": 7004
+            },
+            "scripted": {
+              "intentional_empty": 69896,
+              "nonempty": 8952
+            }
+          }
+        },
+        {
+          "order": 8,
+          "district": "basalt-archive",
+          "rule": "lower-gallery",
+          "name": "Basalt Memory Hall",
+          "semantic_id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0",
+          "cells": 78848,
+          "coverage": {
+            "background": {
+              "intentional_empty": 35784,
+              "nonempty": 43064
+            },
+            "effects": {
+              "intentional_empty": 78688,
+              "nonempty": 160
+            },
+            "play": {
+              "intentional_empty": 70608,
+              "nonempty": 8240
+            },
+            "scripted": {
+              "intentional_empty": 69862,
+              "nonempty": 8986
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "complete": true
+}

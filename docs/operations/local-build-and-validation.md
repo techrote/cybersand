@@ -816,3 +816,26 @@ Existing Set A/rig, physical-trial, Blacksite/showcase and controller tests rema
 required. The [physical actor programme](physical-actor-programme.md) owns controls
 and the full-roster Rapier conversion requirement; these tests do not validate
 articulated actors or broad granular contact fidelity.
+
+## Generation Workbench 2 and procedural qualification
+
+Read the [workbench contract](../systems/generation-workbench-2.md),
+[scene qualification guide](procedural-qualification.md) and
+[dated GEN-007 ledger](../audits/2026-10-21-gen007-workbench-qualification.md).
+Native source changes require rebuilt runtimes before executing these scripts.
+
+```sh
+make worldgen-test
+make worldgen-sanitize
+godot --headless --path godot --script res://tests/test_gen007_inspection.gd
+godot --headless --path godot --script res://tests/test_gen007_workbench.gd
+godot --headless --path godot --script res://tests/test_gen007_qualification.gd
+godot --headless --path godot --script res://tests/test_gen007_reactions.gd
+```
+
+Run the additional `test_gen007_*_render.gd` cases through the existing regression
+runner on a display-backed renderer. The `_render` suffix prevents a headless
+no-frame shortcut. `capture_gen007.gd` retains real scene views and identities;
+its successful completion and each required output image must be checked.
+The scoped GEN-007 publisher binds Linux/Windows execution to exact source and
+runtime bytes; the ready-for-review full repository gates remain separate.

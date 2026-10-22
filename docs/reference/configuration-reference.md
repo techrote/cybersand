@@ -75,8 +75,10 @@ recursive cost composition, distance qualification and invalid-input behavior.
 **Current GEN-004 opt-in schema 3:** generator algorithm 4 adds grammar schema 1,
 algorithm 1. [`GrammarDefinition` and `GrammarLimits`](../../native/include/cybersand/generation_grammar.hpp)
 are compiled before material rasterization. Schema-1/2 recipes retain their
-previous algorithm identities. The JSON adapter permits lowering the default
-limits; native C++ callers can raise them only to the hard ceilings below.
+previous algorithm identities. The JSON adapter normally permits lowering default limits. GEN-007 also exposes
+the already supported native `max_raster_operations` ceiling of 16,000,000,000;
+its default remains 1,000,000,000. Other native C++ increases remain bounded by
+the hard ceilings below.
 
 | Setting | Native default / JSON cap | Native hard ceiling or admitted range |
 |---|---:|---:|
@@ -157,8 +159,9 @@ and the [semantic owner](../../godot/scripts/depth/semantic_plane_runtime.gd).
 | Aggregate declared runtime event rate | 256 | 256 | 256 |
 | Scheduled fixture cell writes over lifetime | 4,194,304 | 4,194,304 | 67,108,864 |
 
-The examples explicitly request 2,000,000,000 logical operations to cover the
-conservative full-region projection scans. Raster work includes generator work
+The retained GEN-005 examples explicitly request 2,000,000,000 logical operations.
+GEN-007 replaces whole-list sample scans with bounded spatial candidate indices
+and conservative maximum local-candidate charges. Raster work includes generator work
 when play uses it, the shared typed graph once per affected plane/sample, and
 final registration/receipt scans. `max_operations` independently bounds semantic
 preparation and each requested raster/publication, not cumulative session work
@@ -819,3 +822,36 @@ receipt and admission fields are in
 ## Initial physical Blacksite trial
 
 The [physical actor programme](../operations/physical-actor-programme.md) owns the reset-scoped barrel/Ripper control bounds, hull sizes, cooldown and desktop-only scope. Existing reference controls and registered definitions retain their defaults.
+
+## Generation Workbench 2 limits
+
+The [workbench owner](../../godot/scripts/worldgen_workbench.gd),
+[tool controller](../../godot/scripts/worldgen_workbench_tools.gd),
+[preview](../../godot/scripts/worldgen_preview.gd) and native adapter own these
+finite authoring limits. They do not enlarge native recipe or live World caps.
+
+| Resource | Bound |
+|---|---:|
+| Canonical authoring recipe | 1 MiB UTF-8 |
+| Edit preparation | One exclusive worker and one newest pending candidate |
+| Undo / redo | 16 canonical recipe entries in each direction |
+| Preview cache / queue | 32 cached chunks / 24 queued chunks |
+| Preview generation slice | 2,048 cells per owner service call |
+| Auxiliary seed/comparison requests | At most 4; one active native owner |
+| Auxiliary preparation | One exclusive worker; retirement cannot admit stale results |
+| Auxiliary rectangle / slice | At most 128 × 128 cells per plane / 256 cells |
+| Serialized UI trace | 256 KiB; overflow explicitly reported |
+| Semantic comparison records | 4,096; counts cover retained records and truncation is explicit |
+| Detailed semantic comparison changes | 64; retained-record counts reported separately |
+| Graph canvas | 256 nodes; complete supported recipe remains in JSON |
+| Vector arrows | 256 |
+| Streamlines | 24 lines, at most 64 integration steps each |
+| Native trace collection | 256 entries; omitted count and truncation reported |
+| Native stage-region output | At most 256 × 256 cells; pending output remains private |
+
+Grammar and projection sample indices use 64-cell bins. Candidate membership,
+container capacity and index construction are charged to the existing prepared
+memory/work limits. A conservative maximum local candidate charge bounds each
+raster sample. Real geometry/mask checks and canonical ordering still select
+materials. Measured index checks and local chunk durations are distinct from
+these declared logical charges.
