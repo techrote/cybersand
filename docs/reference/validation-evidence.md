@@ -10,6 +10,10 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## MAT-003PREPASS S2F source-only preflight — 2026-10-22
+
+The [dated S2F preflight report](../audits/2026-10-22-mat003-s2f-preflight.md) retains **six of six passed untimed** Linux source-C64-E8 workload specimens (quiet, small-active, maintained liquid/granular and reactive), eight evidence tests and 57-file independent raw evidence readback. Source, binary, raw ZIP and failed attempts are explicitly qualified. Other 18 contexts, candidate observed twins and all S2A/S2B paired timings remain unexecuted/unadmitted; no candidate performance ranking or production layout decision follows.
+
 ## MAT-003PREPASS isolated native World stage — 2026-10-22
 
 The [S1 checkpoint](../audits/2026-10-22-mat003-world-correctness.md) follows the
