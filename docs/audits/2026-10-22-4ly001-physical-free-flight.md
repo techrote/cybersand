@@ -58,7 +58,8 @@ The session additionally binds prepared/consumed snapshots to the bridge's
 actual physical-step counter. Cancellation before consumption removes pending
 force; cancellation after consumption retains the original producer, generation,
 sequence, action and actuator receipt. New submissions cannot rewrite that
-history. Invalid host step order is diagnosed and suspended until replacement.
+history. Unexpected physical steps cause a sticky suspension until replacement;
+duplicate preparation or completion without a physical step is refused.
 
 ## Actual physical results
 
