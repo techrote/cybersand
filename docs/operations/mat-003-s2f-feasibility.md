@@ -105,13 +105,45 @@ from 120-tick warmup and per-process sampled ticks. E16 no-wrap runs
 cannot substitute for actual rollover cost, and periodic amortization is
 a projection, not elimination of clear hitches.
 
-**Next step:** observe the untimed hosted preflight, fix and preserve failures
-in new commits/artifacts, then complete the 18 remaining source contexts
-and correctness-observed twins before requesting separate S2A timing admission.
-Keep #204 and G-final open, GEN-006 persistence unimplemented, and the
-production 64-bit E8 carrier unchanged.
+**Next step:** complete the separately registered full source matrix and
+correctness-observed/timing-twin qualification before requesting a distinct S2A
+timing admission. Keep #204 and G-final open, GEN-006 persistence unimplemented,
+and the production 64-bit E8 carrier unchanged.
 
 
 ## Actual hosted preflight readback — 2026-10-22
 
 [CI run 39867638084](https://github.com/techrote/cybersand/actions/runs/39867638084) passed six of six untimed source-control fixtures and all eight preflight evidence tests. The independent verifier passed 57 raw file size/hash checks. [Documentation run 39867638180](https://github.com/techrote/cybersand/actions/runs/39867638180) also passed for the apparatus source. The [dated evidence report](../audits/2026-10-22-mat003-s2f-preflight.md) and [compact machine index](../audits/mat003-s2f-2026-10-22/hosted-summary.json) retain source/binary/artifact identities and earlier failures. The first non-vacuous active scene failed and was corrected to alternate Water/Sand sources; its raw failure artifact remains independent. Work tallies and process RSS are not speed measurements. The remaining 18 source contexts and all S2A/paired performance comparisons stay held.
+
+
+## Full source matrix and candidate twins — 2026-10-23
+
+[CI run 39870102635](https://github.com/techrote/cybersand/actions/runs/39870102635)
+completed the next untimed gate. All **24/24** registered source-control contexts
+passed, including the eighteen contexts held after the six-specimen preflight.
+Independent source readback checked **93 files** with zero errors.
+
+The dependent candidate job then built all seventeen S1 arms twice from one
+immutable per-arm overlay: an observer-enabled correctness form and an
+observer-off timing-twin form. Both forms ran untimed at active-512-w4 and
+quiet-2048-w1. The resulting **34 builds / 68 fixture executions** passed
+independent readback of **1,075 files** and all **68 cases**. Non-source observed
+four-worker candidates produced direct dispatch/background-worker task evidence;
+observer-off twins retained zero observer counts. Pair members matched exact
+registered semantic/work/input/Water-ledger fields, and candidate semantics/work
+matched the source reference at both anchors.
+
+The retained artifacts are source
+[12465598582](https://github.com/techrote/cybersand/actions/runs/39870102635/artifacts/12465598582)
+(`sha256:f4ff6e4baf81e44c0e7b09e82b66131272a1b5445ba4c7f2bc69431f0f10a908`)
+and candidate twins
+[12466540426](https://github.com/techrote/cybersand/actions/runs/39870102635/artifacts/12466540426)
+(`sha256:eaef86b77775e4f8b266879db4726e4523f98c9ee62988c5e21e073e03eb9b45`).
+See the [dated evidence](../audits/2026-10-23-mat003-s2f-full-and-twins.md).
+
+This qualifies the source-context and twin prerequisites only. S2A timings remain
+unadmitted until a new registration freezes its 16 contrasts, seven alternating
+AB/BA pairs per contrast, timing-capable observer-off apparatus, flags/hashes,
+warmup/horizon, process order, budgets and stop rules. Wide-epoch clear
+**correctness** is inherited from S1, but clear latency remains a separate timing
+requirement and no speed or carrier winner is claimed here.
