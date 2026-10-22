@@ -42,3 +42,47 @@ jobs:
           path: build/mat003-s2f/source-full/
           if-no-files-found: error
           retention-days: 30
+
+  candidate-twin-qualification:
+    needs: source-context-qualification
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Check out exact head and registered historical native baseline
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          lfs: false
+      - name: Confirm GitHub-hosted runner policy
+        run: timeout 1m python3 tools/ci/check_ci_provider_policy.py
+      - name: Restore passed full source qualification evidence
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: mat003-s2f-source-full-${{ github.run_id }}
+          path: build/mat003-s2f/source-full
+      - name: Independently re-read the 24 source contexts before any candidate build
+        run: |
+          python3 tools/experiments/mat003_perf/verify_s2f.py build/mat003-s2f/source-full > build/mat003-s2f/source-readback.json
+          cat build/mat003-s2f/source-readback.json
+      - name: Build sealed observer-on/off twins and run the registered untimed matrix
+        run: |
+          python3 tools/experiments/mat003_perf/candidate_twins.py \
+            --output build/mat003-s2f/candidate-twins \
+            --source-evidence build/mat003-s2f/source-full \
+            --source-readback build/mat003-s2f/source-readback.json
+      - name: Independently validate twin identity, semantics, ledgers and worker evidence
+        if: always()
+        run: |
+          python3 tools/experiments/mat003_perf/verify_candidate_twins.py \
+            build/mat003-s2f/candidate-twins \
+            --source-evidence build/mat003-s2f/source-full
+      - name: Retain candidate twins, source readback and all failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mat003-s2-candidate-twins-${{ github.run_id }}
+          path: |
+            build/mat003-s2f/candidate-twins/
+            build/mat003-s2f/source-readback.json
+          if-no-files-found: error
+          retention-days: 30
