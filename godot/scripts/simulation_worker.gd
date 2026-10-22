@@ -101,6 +101,8 @@ var _scenario_host: CyberMicroScenarioHost = MicroHost.new()
 var _micro_active: bool = false
 var _scenario_request_serial: int = 0
 var _scenario_request_applied: bool = false
+var _water_exit_request_serial: int = 0
+var _water_exit_request_applied: bool = false
 var _micro_capture: Dictionary = {}
 var _micro_capture_serial: int = 0
 var _water_lab_active: bool = false
@@ -164,6 +166,8 @@ func _apply_due_water_actions() -> bool:
 func _apply_lab(command: Dictionary) -> bool:
 	if command.is_empty(): return false
 	if command.has("reset"):
+		_water_exit_request_serial = int(command.get("water_exit_request_serial",0))
+		_water_exit_request_applied = false
 		if not ClassDB.class_exists(&"CyberDemoBridge") or not _world.has_method(&"has_failed"):
 			_lab_status = "Experiment Tower requires the native backend"
 			return false
@@ -196,6 +200,7 @@ func _apply_lab(command: Dictionary) -> bool:
 		_water_lab_active=false
 		_micro_active=false
 		_micro_capture={}
+		_water_exit_request_applied = true
 	if command.has("water_reset"):
 		if not ClassDB.class_exists(&"CyberDemoBridge") or not _world.has_method(&"get_water_experiment_policy"):
 			_lab_status="Water Feel Lab requires the current native backend"
@@ -1488,6 +1493,8 @@ func _publish_snapshot(
 		),
 		"scenario_request_serial":_scenario_request_serial,
 		"scenario_request_applied":_scenario_request_applied,
+		"water_exit_request_serial":_water_exit_request_serial,
+		"water_exit_request_applied":_water_exit_request_applied,
 		"micro_active":_micro_active,
 		"microscenario":_scenario_host.summary() if _lab_active else {},
 		"micro_capture_serial":_micro_capture_serial,

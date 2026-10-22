@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-10-21
+last-reviewed: 2026-10-22
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -104,6 +104,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Meaning of a term or unexplained symptom | [Glossary](glossary.md), [troubleshooting](../operations/troubleshooting.md) |
 | Why #17 does not make mass8 the perceptual minimum | [Water-feel programme addendum](../operations/architecture-programme-water-feel-addendum.md), [#17 evidence](../audits/2026-09-11-issue-17-state-precision.md) |
 | What #19 delivers, and whether the Water Feel Lab is ready for a formal blind human study | [Experiment Tower](../operations/experiment-tower.md), [policy registration](../operations/water-feel-lab-experiment.md), [completion evidence](../audits/2026-09-12-issue-19-water-feel-lab.md), then [REM-001 current qualification](../operations/development-claims-remediation-programme.md) |
+| Can a stale Water snapshot end a blind session or acknowledge a newer Tower reset? | [Tower exit ownership](../operations/experiment-tower.md#how-is-a-desktop-water-exit-acknowledged), [receipt fields](interfaces-and-message-contracts.md#desktop-water-exit-receipts), then [dated correction](../audits/2026-10-22-water-exit-acknowledgement.md) |
 | Why #18 remains held after G-P | [Water-feel programme addendum](../operations/architecture-programme-water-feel-addendum.md), [compact-motion prompt](../operations/architecture-programme-prompts/compact-motion.md) |
 | What is the actual #24/#27-#30 development order, and may MicroScenarios run before G-final? | [Canonical MicroScenarios/interactions programme](../operations/microscenarios-programme.md), [roadmap](status-and-roadmap.md) |
 | What interaction schema/rule/provenance is authoritative now, and how do we avoid a destructive N² matrix? | [Current interaction substrate](../systems/intermaterial-interactions.md), [canonical programme](../operations/microscenarios-programme.md) |

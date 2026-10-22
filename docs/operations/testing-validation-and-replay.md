@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Executable test selection and future gates; dated results and save format live in separate references
 canonical-for: [test-inventory, test-selection, future-validation-gates]
-last-reviewed: 2026-10-21
+last-reviewed: 2026-10-22
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md, ../reference/level-saves-and-replay.md]
 ---
 
@@ -259,6 +259,18 @@ selection surfaces/provenance, all 35 recipes, deterministic reset/actions,
 owner-boundary transaction/rejection, blind lifecycle, RG8 authority and eight
 presentation-model groups. The rendered-pixel runner must execute non-headless
 because headless scene success is not visual evidence.
+
+The existing [controller regression](../../godot/tests/test_water_feel_controller.gd)
+also exercises desktop Water exit receipt ordering: a previous rejection or
+success must not acknowledge a newer reset, and a matching rejection must preserve
+the blind session. The deterministic receipt control complements the live
+desktop worker and synchronous Web-controller cases in that runner. Execute it
+with the pinned Godot runtime using
+`--headless --path godot --script res://tests/test_water_feel_controller.gd`;
+the hosted case timeout is 180 seconds. Record script errors and nonzero exits
+as failures. The [2026-10-22 correction evidence](../audits/2026-10-22-water-exit-acknowledgement.md)
+preserves the Windows scheduling failure rather than treating a later rerun as
+proof that no defect existed.
 
 Actual Web acceptance requires exported compatibility and threaded builds served
 with cross-origin isolation, then

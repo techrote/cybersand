@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-21
+last-reviewed: 2026-10-22
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
@@ -15,6 +15,12 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 Issue [#193](https://github.com/techrote/cybersand/issues/193) now has an implemented workbench, four-seed procedural qualification, native exhibit controls, actual rendered evidence and source-matched Linux/Windows runtime publication. [PR #198](https://github.com/techrote/cybersand/pull/198) owns the final exact-head acceptance/merge receipt. Read the [workbench contract](../systems/generation-workbench-2.md), [qualification guide](procedural-qualification.md) and [dated gate ledger](../audits/2026-10-21-gen007-workbench-qualification.md). Preserve accepted native identity, genuine sampler stages, bounded trace output and fresh authoring/session tokens. Graph/rule/plane/brush changes share one transaction; invalid edits cannot retire the prior valid preview or history.
 
 Native grammar/projection candidate indices preserve canonical ordering and original geometry/mask decisions. Their preparation and raster work/memory remain explicitly charged. The four declared seeds fit the unchanged four-billion bundle-work limit; the worst has only 0.80% headroom. Graphical process RSS uses an explicit revised 4 GiB envelope after the original 2 GiB cold-renderer failure. Authoring measurements retain the observed 171 ms frame gap; no target-hardware or 60 fps claim follows. The visual disposition is a qualified approach to Deepworks, with remaining composition/detail limits. Local captures use the source-matched development binary, while the separate published Linux/Windows artifacts have their own execution identities. Programme order remains GEN-003 → GEN-004 → GEN-005 → GEN-007 → GEN-006.
+
+The [2026-10-22 post-merge correction record](../audits/2026-10-22-water-exit-acknowledgement.md)
+preserves a subsequent Windows Water Feel controller failure on the unchanged
+accepted tree. Desktop Water exits now require matching request/outcome receipts;
+follow that record for correction validation, separately from GEN-007's retained
+scene and runtime qualification.
 
 ## Semantic plane generation checkpoint — 2026-10-21
 

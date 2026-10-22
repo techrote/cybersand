@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Shared five-floor recipe, exclusive owner controls, issue 13 transport evidence and current issue 19 Water Feel Lab annex
 canonical-for: [experiment-tower, transport-comparison-procedure]
-last-reviewed: 2026-09-19
+last-reviewed: 2026-10-22
 related-documents: [physics-characterisation.md, water-feel-lab-experiment.md, architecture-programme-water-feel-addendum.md, architecture-programme-prompts/fractional-presentation.md, microscenarios-programme.md, ../systems/granular-interaction-policy.md, ../audits/2026-09-09-issue-13-transport.md, ../audits/2026-09-12-issue-19-water-feel-lab.md]
 ---
 
@@ -159,6 +159,26 @@ Quantitative differences such as levelness or settling remain descriptive contex
 later human evaluation, not this runbook or issue #19, decides whether they are
 desirable. See the [dated acceptance record](../audits/2026-09-12-issue-19-water-feel-lab.md)
 for exact artifacts, failures, platform results and limitations.
+
+### How is a desktop Water exit acknowledged?
+
+**Current source, 2026-10-22:** Fresh tower and applying an ordinary Tower
+profile each allocate a new per-controller request serial in
+[main.gd](../../godot/scripts/main.gd) (`tower_reset`, `tower_apply_profile`).
+The exclusive worker echoes that serial and an explicit applied/rejected outcome
+in its copied lab context. `_reconcile_water_exit` acts only on the pending
+request's matching receipt. Old snapshots, missing identities and status text
+cannot acknowledge a later request.
+
+A matching rejection retires only the pending exit: the Water World and blind
+mapping, anonymous label and candidate policy remain intact. A matching applied
+receipt ends the blind session and restores its pre-blind policy only when the
+same context confirms inactive Water and an ordinary profile. This uses the
+existing latest-command slot and immutable snapshot boundary. Web retains its
+synchronous owner path. Field names belong to the
+[message contract](../reference/interfaces-and-message-contracts.md#desktop-water-exit-receipts);
+the [dated correction](../audits/2026-10-22-water-exit-acknowledgement.md)
+retains the post-merge Windows failure and subsequent validation scope.
 
 
 ## Planned MicroScenarios extraction
