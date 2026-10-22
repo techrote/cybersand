@@ -18,10 +18,8 @@ HERE = Path("tools/experiments/mat003_perf")
 S1 = Path("tools/experiments/mat003_prepass/world_registration.json")
 COMMON = ["native/src/material_rules.cpp", "native/src/scheduler_geometry.cpp",
           "native/src/settled_world_discovery.cpp"]
-# Deliberately selected developer preflight subset. This does NOT satisfy the
-# 24-context formal S2F matrix or admit S2A's paired candidate comparisons.
-PREFLIGHT_IDS = ["quiet-512-w1", "small-512-w1", "active-512-w4",
-                 "reactive-512-w4", "quiet-2048-w1", "active-2048-w4"]
+# Formal S2F source qualification executes the complete registered context list
+# in literal order. It is still untimed and cannot admit S2A/S2B comparisons.
 
 
 def digest(path: Path) -> str:
@@ -79,7 +77,8 @@ def collect(output: Path, compiler_request: str) -> dict:
     report: dict = {
         "stage": "S2F-source-feasibility", "schema_version": 1,
         "status": "incomplete", "performance_qualification": False,
-        "formal_timing_admitted": False, "preflight_only": True,
+        "formal_timing_admitted": False, "preflight_only": False,
+        "source_context_qualification": True, "candidate_twin_qualification": False,
         "source_head": subprocess.check_output(["git", "rev-parse", "HEAD"],
                                                cwd=ROOT, text=True).strip(),
         "source_status": subprocess.check_output(["git", "status", "--porcelain"],
@@ -101,10 +100,12 @@ def collect(output: Path, compiler_request: str) -> dict:
         return max(1, min(limit, int(seconds)))
 
     try:
-        if spec["status"] != "preregistered-preflight-only" or \
+        if spec["status"] != "preregistered-full-source-and-candidate-twins-untimed" or \
                 spec["formal_timing_admitted"] is not False or \
-                spec["performance_comparisons_admitted"] is not False:
-            raise ValueError("preflight cannot promote S2 to formal timing")
+                spec["performance_comparisons_admitted"] is not False or \
+                spec["source_context_qualification"]["admitted"] is not True or \
+                spec["source_context_qualification"]["timed"] is not False:
+            raise ValueError("source qualification registration cannot promote S2 to timing")
         if spec["baseline_native_commit"] != s1["planning_commit"]:
             raise ValueError("baseline disagrees with S1 frozen native control")
         if platform.system() != "Linux" or platform.machine() != "x86_64":
@@ -135,7 +136,8 @@ def collect(output: Path, compiler_request: str) -> dict:
              {"input_sha256": report["input_sha256"],
               "baseline_native_commit": spec["baseline_native_commit"],
               "source_head": report["source_head"],
-              "preflight_only": True})
+              "preflight_only": False,
+              "source_context_qualification": True})
         version = command([compiler, "--version"], source, output, "compiler-version", 10)
         linker = command(["ld", "--version"], source, output, "linker-version", 10)
         report["compiler_version"] = version
@@ -163,11 +165,13 @@ def collect(output: Path, compiler_request: str) -> dict:
         dump(output / "sealed-binary.json",
              {"path": "bin/source-world-qualifier", "sha256": report["binary_sha256"],
               "source_sha256": report["input_sha256"],
-              "status": "preflight-not-formal-timing"})
-        contexts = {item["id"]: item for item in spec["contexts"]}
-        for case_id in PREFLIGHT_IDS:
+              "status": "formal-source-qualification-not-timing"})
+        contexts = spec["contexts"]
+        if len(contexts) != 24 or len({item["id"] for item in contexts}) != 24:
+            raise ValueError("formal source context registration must contain 24 unique contexts")
+        for case in contexts:
+            case_id = case["id"]
             timeout = remaining(limits["fixture_timeout_seconds"])
-            case = contexts[case_id]
             if digest(binary) != report["binary_sha256"]:
                 raise ValueError("binary changed after pre-execution seal")
             argv = [str(binary), "--side", str(case["side"]), "--workers",
@@ -178,14 +182,14 @@ def collect(output: Path, compiler_request: str) -> dict:
             receipt = command(argv, source, output, "cases/" + case_id, timeout)
             report["processes"].append({"id": case_id, "receipt": receipt})
             if not succeeded(receipt):
-                raise ValueError("preflight fixture failed/timed out: " + case_id)
+                raise ValueError("source qualification fixture failed/timed out: " + case_id)
             if (output / receipt["stderr"]).read_bytes().strip():
-                raise ValueError("preflight fixture stderr not empty: " + case_id)
+                raise ValueError("source qualification fixture stderr not empty: " + case_id)
             observed = json.loads((output / receipt["stdout"]).read_text())
             if observed.get("status") != "passed" or observed.get("mode") != "qualify" or \
                     observed.get("tick_ns") != [] or observed.get("input_ns") != []:
-                raise ValueError("preflight emitted timing or malformed outcome: " + case_id)
-        report["status"] = "passed-preflight-only"
+                raise ValueError("source qualification emitted timing or malformed outcome: " + case_id)
+        report["status"] = "passed-source-context-qualification"
     except (OSError, ValueError, KeyError, subprocess.SubprocessError) as exc:
         report["status"] = "incomplete"
         report["errors"].append(str(exc))
@@ -208,9 +212,10 @@ def main() -> int:
         result = collect(args.output, args.compiler)
     except (OSError, ValueError) as exc:
         parser.error(str(exc))
-    print(json.dumps({"status": result["status"], "preflight_only": True,
+    print(json.dumps({"status": result["status"], "preflight_only": False,
+                      "source_context_qualification": True,
                       "errors": result["errors"]}, indent=2))
-    return int(result["status"] != "passed-preflight-only")
+    return int(result["status"] != "passed-source-context-qualification")
 
 
 if __name__ == "__main__":
