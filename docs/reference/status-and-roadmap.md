@@ -4,11 +4,35 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-21
+last-reviewed: 2026-10-22
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
 # Status and foundational roadmap
+
+## 4LY shared physical free-flight — 2026-10-22
+
+**Current experimental source, 4LY-001 / #205:** the
+[free-flight contract](../systems/physical-free-flight.md) adds a shared single
+rectangular Rapier chassis, validated versioned profile schema and two-output
+desired-velocity controller. Gravity compensation, response/slew and braking
+share finite thrust authority; attitude assistance has its own bounded torque.
+The stabilizer has no goal, terrain or evaluator input. Authorized neutral
+brakes/hovers; cancellation and expiry select explicit passive fallback.
+
+The four stable `4ly_*` IDs are available to explicit physical-session lookup,
+with no automatic equipment body. Trainer has initial conformance tuning;
+Hauler, Drifter and Dart share those numbers as uncalibrated placeholders. The
+ordinary 46-actor F5 roster remains unchanged. Fixture source and hash identity
+do not themselves prove runtime/platform or learned-policy qualification.
+
+Next are [4LY-002 #206](https://github.com/techrote/cybersand/issues/206) for
+authored differentiation and selection and [4LY-003 #207](https://github.com/techrote/cybersand/issues/207)
+for the actual-host flight lab and teacher. Their independent preparation may
+overlap after this interface is fixed, but final host evidence uses frozen
+4LY-002 profiles. Companion 4LY-004/005 own Trainer-first and family learning,
+with a passing Trainer result required before family learning. Parent #132 and
+generic physical/Jolt/morphology gates remain separate.
 
 ## GEN-007 authoring and qualification — 2026-10-21
 
@@ -138,6 +162,7 @@ It is an aesthetic showcase; existing physics programmes retain their own gates.
 | Field storage and events | Optional temperature storage and bounded explosions; no general heat/pressure/wind solver; [field roadmap](../systems/smoke-heat-pressure-roadmap.md) |
 | Bodies and character | Main-thread Rapier, 64-ID rectangular native coupling, static terrain packets, 46 articulated [physical actors](../systems/physical-actor-rigs.md), shared keyboard/demo/policy control and usables; SetP circles retain conservative square native masks; sampled and single-hull references remain available |
 | Human movement playground | Seven [player presets](../systems/player-control-playground.md), keyboard/gamepad sampler, acrobat chains and separate leased native Sand/Water fields; course checkpoints and focused tests are not human feel or route-completion acceptance |
+| Assisted physical free flight | Internal [4LY single-chassis family](../systems/physical-free-flight.md), strict two-output velocity profile, bounded goal-blind assistance and passive revocation; initial Trainer conformance numbers only, with normal selection and differentiated handling owned by 4LY-002 |
 | Actor control and battle experiments | Separate physical Thunderbowl v2 plus retained sampled [Thunderbowl v1](../systems/thunderbowl-control-reference.md); physical wire control does not silently inherit sampled metal/NCA/message semantics; trained policies and general actor damage remain Planned |
 | Rendering | Immutable native snapshots, copied dirty RG8 patches, full finite GPU texture update and derived material appearance; [bridges](../architecture/rendering-and-gameplay-bridges.md) |
 | Persistence | Fixed CYSD1 demo levels; complete resumed replay absent; [save contract](level-saves-and-replay.md) |

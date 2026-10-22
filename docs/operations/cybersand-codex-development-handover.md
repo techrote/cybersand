@@ -10,6 +10,36 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## 4LY single-chassis flight contract — 2026-10-22
+
+Start with the [physical free-flight contract](../systems/physical-free-flight.md)
+for 4LY-001 / #205, its [strict action/publication interface](../reference/interfaces-and-message-contracts.md#physical-free-flight-actions),
+[profile values](../reference/configuration-reference.md#physical-free-flight-values)
+and [focused checks](local-build-and-validation.md#physical-free-flight-checks).
+The shared main-thread physical owner installs exactly one rectangular chassis;
+explicit no-equipment preparation must survive normal session installation.
+Do not replace that with a legacy empty usable, which can retain a jointed
+equipment body.
+
+The pure controller accepts own velocity/attitude and the admitted two-output
+request, with no position, goal, terrain, reward or World access. Keep gravity
+compensation inside total thrust, retain response/slew and torque bounds, and
+do not append legacy extreme-motion forces. Admitted zero movement means bounded
+braking/hover; cancellation, expiry, takeover and power changes retire command
+and filter state while preserving momentum. The copied profile/controller hashes
+and requested/admitted/applied records identify the actual control path.
+Sustained thrust uses an owned force channel for one actual Rapier step. Retain
+the prepare/bridge-step/complete protocol, immutable original receipt attribution
+and replacement requirement after a sticky step-order fault.
+
+All four stable IDs resolve, but only Trainer has initial conformance tuning;
+the others are identical uncalibrated placeholders. Ordinary `RIG_IDS` stays at
+46 until 4LY-002 authors and measures the profiles and adds selection. 4LY-003
+final flight-lab/teacher evidence must use those frozen profiles. Companion
+4LY-004 Trainer learning must pass independently before 4LY-005 family learning.
+No training run, compute allocation, generic physics acceptance or closure of
+long-lived #132 follows from this source checkpoint.
+
 ## GEN-007 Workbench 2 qualification — 2026-10-21
 
 Issue [#193](https://github.com/techrote/cybersand/issues/193) now has an implemented workbench, four-seed procedural qualification, native exhibit controls, actual rendered evidence and source-matched Linux/Windows runtime publication. [PR #198](https://github.com/techrote/cybersand/pull/198) owns the final exact-head acceptance/merge receipt. Read the [workbench contract](../systems/generation-workbench-2.md), [qualification guide](procedural-qualification.md) and [dated gate ledger](../audits/2026-10-21-gen007-workbench-qualification.md). Preserve accepted native identity, genuine sampler stages, bounded trace output and fresh authoring/session tokens. Graph/rule/plane/brush changes share one transaction; invalid edits cannot retire the prior valid preview or history.

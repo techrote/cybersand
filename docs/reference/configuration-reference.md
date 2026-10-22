@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-10-21
+last-reviewed: 2026-10-22
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md]
 ---
 
@@ -779,6 +779,68 @@ checks the complete assembly budget before installation. Its dictionary
 observations and version-2 commands are separate from sampled actor packed rows.
 Usable lifecycle, gyro/play semantics and producer limits belong to the
 [physical actor contract](../systems/physical-actor-rigs.md).
+
+## Physical free-flight values
+
+**Current experimental 4LY-001:**
+[`physical_flight_profile.gd`](../../godot/scripts/physical_flight_profile.gd)
+owns the complete closed schema and its validation.
+[`physical_flight_controller.gd`](../../godot/scripts/physical_flight_controller.gd)
+owns the pure local assistance. These are authored adapter quantities; the
+[4LY contract](../systems/physical-free-flight.md) owns behavior and follow-up
+qualification. All four IDs share these initial numbers. Trainer is
+`conformance_only`; Hauler, Drifter and Dart are `uncalibrated_placeholder`.
+
+| Profile field | Initial value | Admitted schema-1 bound or meaning |
+|---|---|---|
+| `version`, `family`, `topology` | `1`, `4ly`, `single_rectangle` | Exact declared identities |
+| `id` | One of the four stable `4ly_*` IDs | `4ly_trainer`, `4ly_hauler`, `4ly_drifter`, `4ly_dart` |
+| `action_profile` | `4ly_velocity_v1` | Exactly two normalized desired-velocity components in `move` |
+| `fixed_delta` | 1/60 s | Requires the fixed 60 Hz physical cadence within an absolute 1e-9 s tolerance; a different cadence is refused |
+| `collider_size` | `[10, 6]` cells | Two numeric dimensions, each 0.5–64 cells |
+| `mass` | 1.2 authored mass units | 0.02–20 |
+| `inertia` | 13.6 authored mass·cell² | 0.0001–14,000; must equal `mass * (width² + height²) / 12` within the declared numeric tolerance |
+| `gravity` | 156 cells/s² downward | 0–500; declared compensation reference, implemented by per-body gravity scale |
+| `friction`, `bounce` | 0.82, 0.04 | 0–1 and 0–0.6 respectively; real collider contact material, included in profile identity |
+| `desired_speed` | `[48, 36]` cells/s | Each axis 0.1–240; unit-disk `move` is multiplied componentwise |
+| `acceleration`, `braking` | 90, 135 cells/s² | Each 0.1–1,200; the opposed-velocity braking component and remaining drive share one normalized effort ellipse |
+| `max_force` | 360 authored mass·cell/s² | 0.001–24,000, also at most `mass * 1200`; gravity compensation shares this total cap |
+| `velocity_response_seconds` | 0.25 s | 1/600–5; velocity error divided by this time requests acceleration |
+| `thrust_response_seconds` | 0.06 s | 1/600–5; first-order response toward already-saturated total force |
+| `max_force_slew` | 2,400 force units/s | 0.001–1,000,000; actual force change per step is bounded by this value times `fixed_delta` |
+| `linear_drag`, `angular_drag` | 0.05, 0.25 | 0–3 and 0–8 respectively; replace-mode passive Rapier damping |
+| `attitude_kp`, `attitude_kd` | 18, 8 | 0–100 and 0–40; upright angular PD request scaled by chassis inertia |
+| `max_torque` | 300 authored mass·cell²/s² | 0.001–1,400,000, also at most `inertia * 100` |
+| `max_torque_slew` | 3,600 torque units/s | 0.001–10,000,000; actual torque change is bounded each physical step |
+| `resource_mode` | `continuous_authored_power` | No fuel timer or reserve drain; explicit host power-off disables both force and torque |
+| `calibration` | Profile-specific status above | `conformance_only` or `uncalibrated_placeholder`; does not assert measured handling or learned-policy qualification |
+
+All fields are required. Unknown fields, wrong types, nonfinite numbers,
+out-of-range values, inconsistent rectangular inertia and plant-envelope
+violations are refused before installation. No implicit clamping resolves an
+invalid profile. Resolved numeric values and sorted full-precision JSON define
+the profile hash; identity and calibration status participate in that hash even
+when numerical dynamics match.
+
+Installation requires a finite positive project default gravity, exactly
+downward default gravity direction and a 60 Hz project physics cadence. Both
+the default gravity and the resulting per-body scale must remain representable
+by the physics backend; otherwise installation is refused before allocation. The
+profile supplies the controller's gravity reference; the controller does not
+query local gravity areas or change its budget in response to environmental
+fields. At fresh-step admission, zero, negative and nonfinite runtime deltas
+revoke flight input, as does a positive delta outside the fixed-step tolerance.
+
+Reset/cancellation/power cutoff clears force and torque response immediately;
+ordinary enabled slew bounds do not delay revocation.
+
+The no-equipment preparation is explicit (`equipment_preparation = "none"`,
+empty loadout, one part and no joints/mounts). Session population/body limits
+remain those of the shared physical owner. `Catalog.has_rig`/`entry` recognize
+the four IDs, while ordinary `RIG_IDS`/`SET_IDS` remain 46/eight until 4LY-002.
+Wire envelope version 2, one-through-eighteen-tick observation-relative leases
+and six-tick demo decisions are retained. The separate profile cadence does not
+redefine the legacy physical actor delta clamp above.
 
 ## Player playground values
 

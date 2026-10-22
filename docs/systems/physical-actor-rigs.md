@@ -4,8 +4,8 @@ status: Current
 document-kind: contract
 scope: Articulated desktop roster with ACT-005 physical equipment and SetP human movement presets, authored mechanics, local scripted control and leased input; sampled references and scientific material acceptance remain separate
 canonical-for: [physical-actor-rigs, physical-actor-control-v2, physical-actor-usables]
-last-reviewed: 2026-10-20
-related-documents: [actor-usables.md, actor-rigs.md, thunderbowl-control-reference.md, ../operations/physical-actor-programme.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/configuration-reference.md, ../reference/interfaces-and-message-contracts.md, ../operations/local-build-and-validation.md, ../audits/2026-10-19-act005-physical-usables.md]
+last-reviewed: 2026-10-22
+related-documents: [physical-free-flight.md, actor-usables.md, actor-rigs.md, thunderbowl-control-reference.md, ../operations/physical-actor-programme.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/configuration-reference.md, ../reference/interfaces-and-message-contracts.md, ../operations/local-build-and-validation.md, ../audits/2026-10-19-act005-physical-usables.md]
 ---
 
 # Articulated Rapier actors and shared physical control
@@ -46,6 +46,15 @@ the current authored definitions use one through seven. ACT-005 reuses each
 existing held part or adds one permanent jointed equipment chassis during session
 preparation, still within eight parts. Held and released equipment keeps its
 coupling slot for the lifetime of the actor session.
+
+The internal [4LY free-flight family](physical-free-flight.md) adds four explicit
+lookup IDs through this same owner, outside the 46-entry ordinary roster. Its
+single rectangular chassis has no joints, mounts or equipment; its explicit
+no-equipment preparation bypasses the usual ACT-005 chassis insertion.
+Trainer has initial conformance tuning and the other three IDs remain identical,
+uncalibrated placeholders until 4LY-002. Its strict two-output velocity profile
+has a separately declared action interpretation; it does not alter the legacy
+controls below.
 
 ## How do I select and control them?
 

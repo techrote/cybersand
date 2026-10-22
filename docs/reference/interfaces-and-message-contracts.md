@@ -726,7 +726,7 @@ Lease expiry is `observed_tick + lease_ticks`, never receipt time; future,
 invented, stale and misaddressed views are refused. A queued model response cannot
 extend its authority by arriving late. See the [configuration bounds](configuration-reference.md#physical-actor-values).
 
-Actions admit `move`, `aim`, `effort`, `trim`, `reel`, `primary`, `secondary`,
+Legacy physical profiles admit `move`, `aim`, `effort`, `trim`, `reel`, `primary`, `secondary`,
 `auxiliary`, `tool`, `release_usable`, `attach_usable` and the optional
 `equipment` dictionary described below. Unknown keys, wrong
 types and nonfinite values are refused. Vectors accept `Vector2` or two numeric
@@ -734,6 +734,10 @@ array values and are length-clamped to one; effort is clamped to zero through
 one, trim/reel to minus one through one. Missing action fields receive neutral
 defaults; buttons must be Booleans. All producers reach the same normalized
 action and bounded physical actuator path.
+
+The additive [4LY velocity profile](#physical-free-flight-actions) retains this
+envelope and ownership fence but admits only its declared `move` field. Existing
+actor IDs and their action meanings are unchanged.
 
 `observation(actor_id)` returns copied identity, tick, selected profile,
 pose/velocity, contacts and local rays, resource/charge/cooldown, part and joint
@@ -759,6 +763,113 @@ session's `input_cancelled(actor_id, epoch)` notification. The desktop host uses
 it to revoke the worker's queued and already-copied, not-yet-admitted effects for
 that actor. Other actors retain their own command/effect generations. A fresh
 observation immediately reports the cleared charge, grip, rope and action state.
+
+### Physical free-flight actions
+
+**Current experimental 4LY-001:** a session-installed `4ly_*` actor declares
+`action_profile = "4ly_velocity_v1"`, `control_mode = "4ly_velocity_v1"` and
+`profile_version = 1` in its copied observation. Its command still uses the
+version-2 `physical_wire_action` envelope above. The action object must contain
+exactly one field:
+
+```json
+{"move": [0.6, -0.8]}
+```
+
+The two finite numeric components must individually lie in `[-1, 1]` before
+unit-disk normalization. `Vector2` is also accepted by the in-process API. A
+finite oversized request is rejected in this profile; the retained legacy
+normalizer still clamps its own vectors. Arrays of the wrong length, booleans,
+NaN/infinity, missing movement and extra fields such as `effort`, `trim`,
+abilities, goals or equipment are refused. Existing run/actor/epoch/producer,
+sequence, issued-observation and lease checks apply before actuation.
+
+The admitted vector is world-relative: `+x` right, `+y` down. Componentwise
+multiplication by the resolved `desired_speed` gives cells/second. Diagonal
+normalization precedes this mapping; unequal axis limits therefore describe an
+ellipse of possible desired velocities. Desired speed is not an enforced cap
+on physical motion after collisions or external impulses.
+
+`Session.set_propulsion_enabled(actor_id, enabled)` is an explicit host/fixture
+switch, outside the two-output action. It revokes existing input before changing
+power. `Session.takeover(actor_id, expected_epoch, producer)` revokes old
+capabilities before assigning a new authorized source; neither operation
+reconstructs the body or deletes momentum. Suspension, cancellation, expiry and
+reset retain their existing lifetime fences. The
+[4LY lifecycle table](../systems/physical-free-flight.md#how-do-neutral-cancellation-power-off-and-suspension-differ)
+distinguishes an authorized neutral request from passive fallback.
+
+The resolved profile descriptor carries `profile_hash`, `controller_id`, units,
+axes, speed mapping, empty default loadout, fallback, neutral and resource
+semantics. Controller receipts add `controller_hash` and `fixed_delta`.
+`profile_hash` is SHA-256 of the validated resolved profile serialized with
+sorted keys and full float precision. `controller_hash` is the embedded SHA-256
+of checked-in UTF-8 controller source with the `SOURCE_SHA256` value replaced
+by the literal `<CONTROLLER_HASH>`; its conformance test checks the digest. The
+embedded digest remains available when exported scripts omit source text.
+Keep repository/runtime identity alongside these hashes; they are not an
+attestation of the physics engine or a learned-policy result.
+
+Controller receipts distinguish `requested_move`, `admitted_move`,
+`desired_velocity`, `requested_acceleration`, `bounded_acceleration`,
+`gravity_compensation`, `requested_force`, `target_force`, `applied_force`,
+`requested_torque`, `target_torque` and `applied_torque`. Saturation and slew
+flags expose the active bounds. The requested force already includes
+acceleration limiting and gravity compensation; the target force additionally
+includes total-thrust saturation, and applied force includes response/slew.
+The session retains the raw requested action separately from its admitted
+normalized action, plus accepted sequence/source/admission tick and the physical
+step's consumed sequence/tick. A newly admitted command and the last applied
+step are therefore distinguishable.
+
+| Copied observation field | Meaning |
+|---|---|
+| `flight.mode` | `velocity`, `neutral`, `passive_no_lease`, `power_off` or `suspended` |
+| `flight.propulsion_enabled` | Explicit host power state; distinct from possession of a live command |
+| `flight.capabilities` | Resolved profile, units/semantics and profile/controller identities |
+| `flight.controller` | Current pure controller response/receipt with requested/bounded/applied force and torque, saturation/slew flags and reason; cleared on revocation |
+| `flight.command` | Raw `requested_action`, normalized `admitted_action`, `sequence`, `observed_tick` and `admitted_tick` for the accepted command; empty after revocation |
+| `flight.command_live` | A current unexpired command exists and the actor is neither suspended nor faulted; host propulsion may still be disabled |
+| `flight.applied` | Prepared actuator snapshot: `run_id`, `epoch`, `actor_id`, `producer`, `control_generation`, `sequence`, `observed_tick`, `step_tick`, expected `physics_step`, admitted `action` and `controller`; separate from a newly accepted command and cleared on revocation |
+| `flight.last_step` | The same snapshot after the bridge counter proves its physical step occurred; retains the original source attribution across later cancellation/takeover and is cleared by close/replacement |
+| `flight.fallback_reason` | Explicit lifecycle reason such as `not_commanded`, `cancelled`, `expired`, `suspended`, `resumed`, `power_changed`, `takeover`, `invalid_cadence`, `step_fault` or `fault`; `none` for an admitted command |
+| `flight.step_fault` | Empty in a healthy session; a sticky physical-step ordering fault requires session replacement |
+
+Top-level run/actor/epoch/tick, `control_generation`, `last_sequence`,
+`lease_remaining` and pose/velocity retain the existing session meanings.
+For 4LY, `applied_impulse` and `applied_torque_impulse` are the bounded actuator
+force/torque multiplied by the admitted physical step duration. Sustained
+assistance uses an owned constant-force/torque channel during Rapier integration;
+the host clears that channel after each step or on cancellation. These fields
+do not decompose passive damping, gravity, contact or native material impulses.
+Preparing force does not itself prove that physics consumed it; use completed
+`flight.last_step` attribution and sampled motion for completed-step evidence.
+Expiry revokes the command at the completed deadline tick, before a delayed
+reply can extend an old observation's authority. Passive assistance is not
+represented as a synthetic fresh external command. The pure controller source
+digest does not cover rig/session integration, plant construction or Rapier
+itself; retain their source/runtime identities separately.
+
+A session containing 4LY requires one `advance` preparation, one actual bridge
+step and one `complete_step` accounting call in that order. The bridge's
+`manual_step_count` binds prepared and completed receipts. Duplicate preparation
+sets `last_error = "flight_step_already_prepared"`; completion without physics
+sets `flight_step_not_completed`. Neither advances the flight clock. Unprepared
+or extra physical steps, preparing before accounting for a step, or physics
+advancing while suspended instead set a sticky step fault and suspend the
+session. Cancellation before the native step discards pending force without
+creating history; cancellation after it preserves the original completed
+snapshot before clearing current authority. Paused views do not issue command
+capabilities, and resume increments the flight control generation before a
+fresh observation can be used.
+
+Every descriptor, observation and receipt is copied. `equipment` reports
+explicit absence (`preparation = "none"`, `usable_index = -1`, `body_id = 0`,
+`available = false`); no equipment body or worker request is synthesized. The
+[canonical 4LY contract](../systems/physical-free-flight.md) owns goal blindness,
+neutral/fallback behavior, initial calibration scope and follow-up order. The
+[configuration reference](configuration-reference.md#physical-free-flight-values)
+owns numerical defaults and profile constraints.
 
 ### Retained direct physical effects
 

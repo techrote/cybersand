@@ -7,6 +7,7 @@ extends RefCounted
 # or shared mutable tuning escapes this catalogue. Values use cells and seconds.
 const Sampled = preload("res://scripts/actor_rig_catalog.gd")
 const Player = preload("res://scripts/player_actor_catalog.gd")
+const Flight = preload("res://scripts/physical_flight_profile.gd")
 const VERSION: int = 1
 const MAX_PARTS: int = 8
 const SET_IDS: Array[StringName] = [&"setA", &"setB", &"setF", &"setY", &"setU", &"setV", &"setX", &"setP"]
@@ -29,7 +30,7 @@ const EXTRA_NAMES: Dictionary = {
 
 
 static func has_rig(rig_id: StringName) -> bool:
-	return rig_id in RIG_IDS
+	return rig_id in RIG_IDS or rig_id in Flight.IDS
 
 
 static func rigs_in_set(set_id: StringName) -> Array[StringName]:
@@ -41,6 +42,8 @@ static func rigs_in_set(set_id: StringName) -> Array[StringName]:
 
 
 static func set_for(rig_id: StringName) -> StringName:
+	if rig_id in Flight.IDS:
+		return &"set4LY"
 	if Player.has_rig(rig_id):
 		return &"setP"
 	if EXTRA_NAMES.has(rig_id):
@@ -49,6 +52,8 @@ static func set_for(rig_id: StringName) -> StringName:
 
 
 static func name_for(rig_id: StringName) -> String:
+	if rig_id in Flight.IDS:
+		return str(rig_id).trim_prefix("4ly_").capitalize()
 	if Player.has_rig(rig_id):
 		return Player.name_for(rig_id)
 	return str(EXTRA_NAMES.get(rig_id, Sampled.name_for(rig_id)))
@@ -61,6 +66,8 @@ static func definition(rig_id: StringName) -> Dictionary:
 static func entry(rig_id: StringName) -> Dictionary:
 	if not has_rig(rig_id):
 		return {}
+	if rig_id in Flight.IDS:
+		return _flight_entry(rig_id)
 	var data: Dictionary = Sampled.entry(rig_id)
 	if data.is_empty():
 		data = {"id": rig_id, "name": name_for(rig_id), "set": &"setX",
@@ -110,6 +117,8 @@ static func entry(rig_id: StringName) -> Dictionary:
 
 
 static func controls_text(rig_id: StringName, supplied: Dictionary = {}) -> String:
+	if rig_id in Flight.IDS:
+		return "WASD: desired world velocity. Release movement: brake and hover while the command is live. Cancel/expiry: passive fall."
 	if Player.has_rig(rig_id):
 		return Player.controls(rig_id)
 	var data: Dictionary = supplied if not supplied.is_empty() else entry(rig_id)
@@ -119,6 +128,33 @@ static func controls_text(rig_id: StringName, supplied: Dictionary = {}) -> Stri
 	return "WASD move; mouse aim; [ / ] effort; Q/E trim; Z/X reel.\nSpace: %s. Shift: %s. C: %s.\nM: use tool. N: release held item. U: reattach nearby item. Release controls after focus/menu changes." % [
 		_ability_text(str(profile.primary)), _ability_text(str(profile.secondary)),
 		_ability_text(str(profile.auxiliary))]
+
+
+static func _flight_entry(rig_id: StringName) -> Dictionary:
+	# Reserved conformance family. 4LY-002 owns ordinary-game enumeration and
+	# measured handling differences; RIG_IDS/SET_IDS retain their current roster.
+	var flight: Dictionary = Flight.entry(rig_id)
+	var size := Vector2(float(flight.collider_size[0]), float(flight.collider_size[1]))
+	var half: Vector2 = size * 0.5
+	return {"id": rig_id, "name": name_for(rig_id), "set": &"set4LY",
+		"version": VERSION, "representation": "articulated-rapier", "experimental": true,
+		"description": "Single-chassis physical free-flight conformance profile; family calibration follows in 4LY-002.",
+		"color": Color(0.32, 0.83, 0.91), "channels": ["move"],
+		"controller_id": Flight.CONTROLLER_ID, "action_profile": Flight.ACTION_PROFILE,
+		"flight_profile": flight, "equipment_preparation": "none", "equipment_managed": true,
+		"parts": [{"id": "chassis", "offset": Vector2.ZERO, "size": size,
+			"mass": float(flight.mass), "inertia": float(flight.inertia), "angle": 0.0,
+			"shape": "rectangle", "friction": float(flight.friction), "bounce": float(flight.bounce),
+			"role": "hull", "color": Color(0.32, 0.83, 0.91)}],
+		"joints": [], "mounts": [], "part_count": 1,
+		"profile": {"movement": "4ly_velocity", "gravity": float(flight.gravity),
+			"air_drag": float(flight.linear_drag), "angular_drag": float(flight.angular_drag)},
+		"script": {"kind": "neutral_conformance"},
+		"bounds": Rect2(-half, size), "body_size": size,
+		"spawn_floor_clearance": half.y + 2.0, "spawn_radius": half.length() + 2.0,
+		"controls": controls_text(rig_id),
+		"limitations": ["Continuous authored power, bounded force/torque; no calibrated fuel model.",
+			"Neutral demonstration only; flight lab, teacher and measured family differences are follow-up work."]}
 
 
 static func _ability_text(ability: String) -> String:
