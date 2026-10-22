@@ -9,10 +9,6 @@ from pathlib import Path
 import sys
 
 HERE = Path(__file__).resolve().parent
-EXPECTED_PREFLIGHT = ("quiet-512-w1", "small-512-w1", "active-512-w4",
-                      "reactive-512-w4", "quiet-2048-w1", "active-2048-w4")
-
-
 def sha256(path: Path) -> str:
     h = hashlib.sha256()
     with path.open("rb") as handle:
@@ -87,16 +83,20 @@ def verify_directory(root: Path) -> dict:
         report = json.loads((root / "run.json").read_text())
         spec = json.loads((root / "source/tools/experiments/mat003_perf/s2f_registration.json").read_text())
         s1 = json.loads((root / "source/tools/experiments/mat003_prepass/world_registration.json").read_text())
-        require(report["stage"] == spec["stage"] and spec["status"] == "preregistered-preflight-only",
+        require(report["stage"] == spec["stage"] and
+                spec["status"] == "preregistered-full-source-and-candidate-twins-untimed",
                 "wrong registration stage/status")
-        require(report["status"] == "passed-preflight-only" and report["errors"] == [],
-                "collector did not pass preflight")
-        require(report["preflight_only"] is True and
+        require(report["status"] == "passed-source-context-qualification" and
+                report["errors"] == [],
+                "collector did not pass full source qualification")
+        require(report["preflight_only"] is False and
+                report["source_context_qualification"] is True and
+                report["candidate_twin_qualification"] is False and
                 report["formal_timing_admitted"] is False and
                 report["performance_qualification"] is False and
                 spec["formal_timing_admitted"] is False and
                 spec["performance_comparisons_admitted"] is False,
-                "preflight status promoted without admission")
+                "source qualification promoted timing without admission")
         require(report["baseline_native_commit"] == spec["baseline_native_commit"] and
                 report["native_control_sha256"] == s1["baseline_control_sha256"],
                 "native control identities disagree")
@@ -125,12 +125,13 @@ def verify_directory(root: Path) -> dict:
                     "registered native dependency drift: " + name)
         require(report["compile"]["exit_code"] == 0 and
                 not report["compile"]["timed_out"], "compile failed")
-        require(len(report["processes"]) == len(EXPECTED_PREFLIGHT), "incomplete preflight suite")
-        require([p["id"] for p in report["processes"]] == list(EXPECTED_PREFLIGHT),
-                "preflight order/duplicates changed")
-        contexts = {row["id"]: row for row in spec["contexts"]}
-        require(len(contexts) == 24 and len(spec["contexts"]) == 24,
+        expected = [row["id"] for row in spec["contexts"]]
+        require(len(expected) == 24 and len(set(expected)) == 24,
                 "registered full grid mutated")
+        require(len(report["processes"]) == 24, "incomplete source qualification suite")
+        require([p["id"] for p in report["processes"]] == expected,
+                "source qualification order/duplicates changed")
+        contexts = {row["id"]: row for row in spec["contexts"]}
         for item in report["processes"]:
             ident = item["id"]
             receipt = item["receipt"]
@@ -142,9 +143,11 @@ def verify_directory(root: Path) -> dict:
             check_observation(observed, contexts[ident], spec)
     except (OSError, ValueError, KeyError, TypeError, IndexError) as exc:
         errors.append(str(exc))
-    return {"stage": "S2F-source-feasibility", "preflight_only": True,
-            "performance_qualification": False, "status": "passed" if not errors else "failed",
-            "checked_file_count": len(checked), "checked_cases": list(EXPECTED_PREFLIGHT),
+    return {"stage": "S2F-source-feasibility", "preflight_only": False,
+            "source_context_qualification": True, "performance_qualification": False,
+            "status": "passed" if not errors else "failed",
+            "checked_file_count": len(checked),
+            "checked_cases": expected if "expected" in locals() else [],
             "errors": errors}
 
 
