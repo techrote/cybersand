@@ -153,6 +153,13 @@ def run(apparatus: Path, output: Path) -> dict:
         admission = reg.get("admission_evidence")
         if not isinstance(admission, dict):
             raise ValueError("S2A admission evidence missing")
+        for filename, key in (
+            ("measure.py", "measure_py_sha256"),
+            ("verify_measurement.py", "verify_measurement_py_sha256"),
+            ("fixture.cpp", "fixture_cpp_sha256"),
+        ):
+            if digest(ROOT / HERE / filename) != admission[key]:
+                raise ValueError("S2A admitted runner/fixture source changed: " + filename)
 
         apparatus_run = json.loads((apparatus / "run.json").read_text())
         readback = json.loads((apparatus / "independent-readback.json").read_text())
