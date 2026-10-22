@@ -1,0 +1,271 @@
+{
+  "schema_version": 1,
+  "experiment": "MAT-003PREPASS",
+  "stage": "S2A-paired-performance",
+  "issue": 204,
+  "predecessor_pr": 211,
+  "status": "preregistered-apparatus-qualification-only",
+  "formal_timing_admitted": false,
+  "performance_comparisons_admitted": false,
+  "prerequisite_evidence": {
+    "s1_world_run_id": 39854839256,
+    "full_source_and_twins_run_id": 39870102635,
+    "qualified_branch_head": "3c9deff11c8bf4d761c4a1e5d64b8625ad915058",
+    "qualified_pr_checkout": "440316fec74fa871b1b37fbde73a1e1b4f3dcff0",
+    "source_artifact": {
+      "id": 12465598582,
+      "sha256": "f4ff6e4baf81e44c0e7b09e82b66131272a1b5445ba4c7f2bc69431f0f10a908",
+      "checked_files": 93,
+      "contexts": 24
+    },
+    "twin_artifact": {
+      "id": 12466540426,
+      "sha256": "eaef86b77775e4f8b266879db4726e4523f98c9ee62988c5e21e073e03eb9b45",
+      "checked_files": 1075,
+      "cases": 68,
+      "builds": 34
+    },
+    "qualification": "source context and candidate twin prerequisites passed; no timing inherited"
+  },
+  "platform": {
+    "runner": "github-hosted-ubuntu-24.04",
+    "architecture": "x86_64",
+    "compiler": "g++-13",
+    "compiler_version": "13.3.0",
+    "linker": "GNU ld 2.42"
+  },
+  "inputs": {
+    "seed": 204,
+    "warmup_ticks": 120,
+    "sample_ticks": 256,
+    "backend": "phased",
+    "parallel_job_threshold": 1,
+    "storage_chunk": 128,
+    "scheduler_core": 64,
+    "activity_block": 32,
+    "input_cost": "separately timed and excluded from tick_ns",
+    "tick_metric": "steady_clock wall-clock nanoseconds around World::tick only",
+    "startup": "reported separately; excluded from warmup and sample tick metrics"
+  },
+  "anchors": {
+    "active_512_w4": {
+      "id": "active-512-w4",
+      "side": 512,
+      "scenario": "active",
+      "workers": 4
+    },
+    "quiet_2048_w1": {
+      "id": "quiet-2048-w1",
+      "side": 2048,
+      "scenario": "quiet",
+      "workers": 1
+    }
+  },
+  "pair_orders": [
+    "AB",
+    "BA",
+    "AB",
+    "BA",
+    "AB",
+    "BA",
+    "AB"
+  ],
+  "contrasts": [
+    {
+      "id": "A01-source-word-e8",
+      "anchor": "active_512_w4",
+      "a": "C64-E8-source",
+      "b": "C64-E8-word",
+      "claim": "source-to-matched-word abstraction overhead"
+    },
+    {
+      "id": "A02-word-padded-e8",
+      "anchor": "active_512_w4",
+      "a": "C64-E8-word",
+      "b": "C64-E8-padded",
+      "claim": "padded64 physical layout cost relative to word64"
+    },
+    {
+      "id": "A03-word-c72-packed-e8",
+      "anchor": "active_512_w4",
+      "a": "C64-E8-word",
+      "b": "C72-E8-packed",
+      "claim": "packed72 cost relative to matched word64"
+    },
+    {
+      "id": "A04-word-c80-packed-e8",
+      "anchor": "active_512_w4",
+      "a": "C64-E8-word",
+      "b": "C80-E8-packed",
+      "claim": "packed80 cost relative to matched word64"
+    },
+    {
+      "id": "A05-word-c72-aligned-e8",
+      "anchor": "active_512_w4",
+      "a": "C64-E8-word",
+      "b": "C72-E8-aligned",
+      "claim": "aligned72 cost relative to matched word64"
+    },
+    {
+      "id": "A06-word-c80-aligned-e8",
+      "anchor": "active_512_w4",
+      "a": "C64-E8-word",
+      "b": "C80-E8-aligned",
+      "claim": "aligned80 cost relative to matched word64"
+    },
+    {
+      "id": "A07-word-c72-split-e8",
+      "anchor": "active_512_w4",
+      "a": "C64-E8-word",
+      "b": "C72-E8-split",
+      "claim": "split72 cost relative to matched word64"
+    },
+    {
+      "id": "A08-word-c80-split-e8",
+      "anchor": "active_512_w4",
+      "a": "C64-E8-word",
+      "b": "C80-E8-split",
+      "claim": "split80 cost relative to matched word64"
+    },
+    {
+      "id": "A09-word-e8-e16",
+      "anchor": "quiet_2048_w1",
+      "a": "C64-E8-word",
+      "b": "C64-E16-word",
+      "claim": "word64 epoch-width steady/resident contrast"
+    },
+    {
+      "id": "A10-padded-e8-e16",
+      "anchor": "quiet_2048_w1",
+      "a": "C64-E8-padded",
+      "b": "C64-E16-padded",
+      "claim": "padded64 epoch-width steady/resident contrast"
+    },
+    {
+      "id": "A11-c72-packed-e8-e16",
+      "anchor": "quiet_2048_w1",
+      "a": "C72-E8-packed",
+      "b": "C72-E16-packed",
+      "claim": "packed72 epoch-width steady/resident contrast"
+    },
+    {
+      "id": "A12-c80-packed-e8-e16",
+      "anchor": "quiet_2048_w1",
+      "a": "C80-E8-packed",
+      "b": "C80-E16-packed",
+      "claim": "packed80 epoch-width steady/resident contrast"
+    },
+    {
+      "id": "A13-c72-aligned-e8-e16",
+      "anchor": "quiet_2048_w1",
+      "a": "C72-E8-aligned",
+      "b": "C72-E16-aligned",
+      "claim": "aligned72 epoch-width steady/resident contrast"
+    },
+    {
+      "id": "A14-c80-aligned-e8-e16",
+      "anchor": "quiet_2048_w1",
+      "a": "C80-E8-aligned",
+      "b": "C80-E16-aligned",
+      "claim": "aligned80 epoch-width steady/resident contrast"
+    },
+    {
+      "id": "A15-c72-split-e8-e16",
+      "anchor": "quiet_2048_w1",
+      "a": "C72-E8-split",
+      "b": "C72-E16-split",
+      "claim": "split72 epoch-width steady/resident contrast"
+    },
+    {
+      "id": "A16-c80-split-e8-e16",
+      "anchor": "quiet_2048_w1",
+      "a": "C80-E8-split",
+      "b": "C80-E16-split",
+      "claim": "split80 epoch-width steady/resident contrast"
+    }
+  ],
+  "run_order": {
+    "contrast_order": "literal contrasts array order",
+    "within_contrast": "seven independent pairs; pair i uses pair_orders[i], each letter is a fresh process",
+    "primary_processes": 224,
+    "no_reordering": true,
+    "no_post_hoc_omission": true
+  },
+  "binary_contract": {
+    "source": "one immutable S1 baseline/native snapshot and hash-guarded per-arm overlay",
+    "observers": "MAT003_TWIN_OBSERVERS=0; candidate correctness atomics compiled out",
+    "apparatus": "one timing-capable binary per arm with qualify and measure modes; same sealed binary must pass untimed qualify mode before later measure mode",
+    "qualification_mode": "does not call timing clocks and must emit empty tick_ns/input_ns",
+    "measurement_mode": "same sealed binary records startup separately, input_ns outside tick interval, tick_ns around World::tick only",
+    "semantic_capture": "no per-tick semantic snapshot/trace in measurement mode; final hashes/work/ledgers retained outside timed interval"
+  },
+  "apparatus_qualification": {
+    "status": "not-yet-executed",
+    "formal_timing_admitted": false,
+    "required_contexts": "each arm in every anchor where that arm appears in a contrast",
+    "expected_unique_arm_contexts": 25,
+    "requirements": [
+      "all builds sealed before qualifier execution",
+      "qualify mode emits no timing arrays",
+      "source/candidate semantics and work match registered source reference per anchor",
+      "closed Water input source/sink ledger reconciles",
+      "performance binary contains dormant measure mode but qualification invokes only qualify",
+      "independent verifier checks exact build/context set and binary hashes"
+    ]
+  },
+  "execution": {
+    "flags": [
+      "-std=c++20",
+      "-O2",
+      "-DNDEBUG",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-pthread"
+    ],
+    "maximum_builds": 17,
+    "maximum_qualification_processes": 25,
+    "maximum_primary_timing_processes": 224,
+    "concurrent_processes": 1,
+    "compile_timeout_seconds": 180,
+    "qualification_timeout_seconds": 120,
+    "timing_timeout_seconds": 120,
+    "apparatus_wall_budget_seconds": 2400,
+    "timing_wall_budget_seconds": 3600,
+    "stop_rules": [
+      "source/native drift, toolchain mismatch or binary hash mismatch refuses execution",
+      "qualification failure leaves timing unadmitted",
+      "nonzero exit, timeout, stderr diagnostic or malformed evidence rejects the process",
+      "semantic/work/input-ledger mismatch rejects the arm/context before any timing",
+      "timing process count/order must be exactly 224; budget stop is incomplete",
+      "no replacement, retry or omission may be silently substituted for a registered process"
+    ]
+  },
+  "reporting": {
+    "primary": "seven process-level B/A ratios per contrast plus median and spread; retain all raw per-tick samples",
+    "tick_distribution": [
+      "p50",
+      "p95",
+      "p99",
+      "max"
+    ],
+    "work": [
+      "visited_cells",
+      "phase_jobs",
+      "resident_cells",
+      "process_peak_rss"
+    ],
+    "clear_interpretation": "E8 sample includes its registered natural clear when it falls in the 120+256 horizon; E16 does not naturally clear in this horizon. Do not infer E16 long-run maintenance from S2A; separately measured wide-epoch clear latency remains required before final epoch-width selection.",
+    "zero_visit": "report absolute tick latency; never divide by zero visits"
+  },
+  "deferred": [
+    "all timing until apparatus qualification and separate admission amendment",
+    "wide-epoch clear-latency calibration and amortized long-run epoch-cost conclusion",
+    "S2B 322-process full-grid word64 E8/E16 timing",
+    "fixed-memory equivalence conclusion",
+    "Windows/Wasm/Godot",
+    "E24/E32",
+    "production carrier selection or migration",
+    "GEN-006 persistence/streaming"
+  ]
+}
