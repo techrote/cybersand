@@ -2441,6 +2441,9 @@ func _publish_physical_keyboard_input(trigger_override: Variant = null, alternat
 			"alternate": alternate and not _actor_usable_transition_pending,
 			"drop": Input.is_key_pressed(KEY_N), "attach": Input.is_key_pressed(KEY_U)},
 	}
+	if physical_actor_session.is_flight_actor(0):
+		# The reserved 4LY interpretation has exactly two velocity outputs.
+		action = {"move": action.move}
 	physical_actor_session.submit_local(0, action, &"human", 6)
 
 

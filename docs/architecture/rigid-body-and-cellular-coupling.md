@@ -6,7 +6,7 @@ status: Current
 scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact; generalized physics and exact replay remain absent
 keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
 related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-22
 ---
 
 # Rigid-body and cellular coupling
@@ -89,6 +89,13 @@ Ejection transfers the compact cell state including Water mass. Pure closed
 Water conservation does not establish general body/cell energy conservation.
 Duplicate sample serials are not applied twice. Sample wrap and age constants
 are in [Rapier `apply_cellular_results`](../../godot/scripts/rapier_physics_bridge.gd).
+
+The internal [4LY free-flight chassis](../systems/physical-free-flight.md) reuses
+this same rectangle publication and cellular response. Its authored propulsion
+force cap is separate from the native impulse cap above. Raising a flight thrust
+limit does not repair or requalify body/material coupling. Flight receipts report
+only their own applied assistance; they cannot decompose Rapier contact, passive
+damping or delayed cellular impulses into a claimed total-force measurement.
 
 ## Who resolves hard terrain and thin floors?
 

@@ -4,11 +4,26 @@ status: Approved design
 document-kind: design
 scope: Owner-authorized ACT-004 integration, retained Blacksite hull comparison and preserved 2026-10-18 actor preferences; not broad physics acceptance
 canonical-for: [physical-actor-programme, combined-feature-launcher, physical-blacksite-comparison]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-22
 related-documents: [blacksite-nine-demo.md, ../systems/actor-rigs.md, ../systems/thunderbowl-control-reference.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/product-intent-and-priorities.md]
 ---
 
 # Physical actors and combined feature trials
+
+## Shared free-flight training family
+
+The [4LY contract and dependency chain](../systems/physical-free-flight.md)
+owns the single-chassis Trainer/Hauler/Drifter/Dart lane under long-lived parent
+#132. 4LY-001 reuses the physical session and native coupling, with strict
+two-output desired-velocity input and bounded goal-blind assistance. It supplies
+initial Trainer conformance tuning; the other three profiles remain identical
+uncalibrated placeholders. The ordinary 46-actor roster is unchanged.
+
+4LY-002 owns distinct authored handling and normal-game selection, then 4LY-003
+owns the flight lab, actual-host episodes and qualified teacher. Trainer learning
+and subsequent family learning belong to the companion repository's 4LY-004/005
+gates. None of these stages closes #132, generic granular/soliding acceptance or
+the separate Jolt/morphology programme by implication.
 
 ## What is the approved direction for the complete actor roster?
 

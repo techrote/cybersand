@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-10-21
+last-reviewed: 2026-10-22
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -15,6 +15,14 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 For **Generation Workbench 2**, use the [inspection and authoring contract](systems/generation-workbench-2.md): truthful native replay, actual intermediate stages, graph/hierarchy tools, transactional undo/redo and bounded seed/recipe comparisons. The [procedural qualification guide](operations/procedural-qualification.md) routes the 1024 × 1024 scene, final-raster paths, native exhibits and visual evidence.
 
 Choose all 46 [articulated Rapier actors](systems/physical-actor-rigs.md) with F5 in the sandbox and exploratory maps, using keyboard, local scripted or external-policy control. Sampled references and the initial hull arms remain available; [the physical actor programme](operations/physical-actor-programme.md) preserves owner intent and integration scope.
+
+For the internal **4LY** single-chassis drone family, use the
+[physical free-flight contract](systems/physical-free-flight.md): two desired
+velocity outputs, bounded assistance, profile identity and passive cancellation.
+Trainer conformance tuning and three uncalibrated placeholders share one plant;
+ordinary-game selection and measured handling differences belong to 4LY-002.
+The [4LY-001 conformance audit](audits/2026-10-22-4ly001-physical-free-flight.md)
+records actual Rapier measurements, lifecycle negatives and source/runtime identity.
 
 For seven human movement presets, use the [player control playground](systems/player-control-playground.md): buggy, trials bike, momentum acrobat, arcade lander, native Sand cloud, native Water blob and jetpack barrel. The guide owns keyboard/gamepad controls, acrobat chains, reset/focus rules and bounded material-field ownership. The five mechanical presets also appear in F5 SetP.
 
@@ -38,6 +46,7 @@ moving Above/Below, choosing viewpoints, editing native cells and capturing imag
 
 | Need | Start here |
 |---|---|
+| Implement or test Trainer, Hauler, Drifter and Dart without giving the stabilizer goal or world access | [4LY free-flight contract and programme](systems/physical-free-flight.md), [action interface](reference/interfaces-and-message-contracts.md#physical-free-flight-actions), [profile values](reference/configuration-reference.md#physical-free-flight-values), and [focused checks](operations/local-build-and-validation.md#physical-free-flight-checks) |
 | Play the stunt buggy, trials bike, acrobat chains, lander, material swarms or jetpack barrel | [Player control playground](systems/player-control-playground.md), [field API](reference/interfaces-and-message-contracts.md#player-material-field-control), and [focused checks](operations/local-build-and-validation.md#player-playground-checks) |
 | Explore Deepworks, replay a foreground/rear reaction or understand complete multilayer coverage | [Exhibition guide](operations/deepworks-exhibition.md), [depth contract](systems/depth-layers-and-parallax.md), and [dated source/runtime evidence](audits/2026-10-20-deepworks-exhibition.md) |
 | Review MAT-002 save/diagnostic integration, real rendered tests and matching runtime publication | [Building catalogue](systems/building-material-catalogue.md), [test acceptance](operations/testing-validation-and-replay.md#ci-execution-sharding), and [PR review evidence](audits/2026-10-19-mat002-review-and-validation.md) |

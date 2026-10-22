@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-21
+last-reviewed: 2026-10-22
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
@@ -603,6 +603,42 @@ records what ran, failures corrected during tuning and remaining platform limits
 The [physical Thunderbowl reference](../systems/thunderbowl-control-reference.md#physical-thunderbowl-v2)
 contains scene and headless runner examples. Its version-2 command and observation
 contract is separate from the sampled control lab below.
+
+### Physical free-flight checks
+
+The internal [4LY family](../systems/physical-free-flight.md) uses the same
+pinned Godot 4.7, Rapier 0.35.2 and source-matched native runtime. Import the
+project first, then run these automatically discovered fixtures from the source
+root:
+
+```text
+godot --headless --path godot --script res://tests/test_physical_flight_profile.gd
+godot --headless --path godot --script res://tests/test_physical_flight_session.gd
+godot --headless --path godot --script res://tests/test_physical_flight_physics.gd
+```
+
+The profile fixture checks the closed schema, numerical limits, canonical
+profile/controller hashes, force/torque response and goal-blind pure controller.
+The session fixture checks the one-body/no-equipment topology for all four IDs,
+strict two-output input, copied observations, producer parity and lifecycle
+fences, including actual-step receipt attribution and rejection of incorrect
+host step ordering. The physical fixture requires actual Rapier and native World: unsupported
+hover, ascent/descent, neutral braking, attitude recovery, explicit power-off
+fall, underpowered gravity saturation, high-momentum bounded actuation and native
+body/hard-contact integration. A skipped backend or script error is not a pass.
+
+Run the existing physical catalogue/session/rig/equipment, sampled reference and
+protected scientific-fixture regressions when changing shared owners. The three
+new cases join the existing applicable Linux and Windows Godot discovery; no
+separate provider or external runner is required. Draft-skipped expensive checks
+do not qualify the implementation. Before merge, follow the
+[exact-head release gates](github-development-and-release.md) and record source,
+runtime, commands, outcomes and unmeasured platforms separately.
+
+These are reproduction instructions and fixture scopes, not a statement that
+the current checkout has passed. Trainer conformance does not establish four
+distinct handling profiles, a qualified teacher, learned navigation, target-PC
+human feel or new Web runtime support; those have their own 4LY follow-up gates.
 
 ### Thunderbowl controls and native arena
 
