@@ -327,3 +327,37 @@ the 16 contrasts, seven alternating AB/BA process pairs, exact timing-capable
 binaries/fixtures and hashes, warmup/horizon, process order, budgets and stop
 rules before the first timed invocation. Wide-epoch clear latency remains timing
 work; S1's natural/forced rollover evidence is correctness-only.
+
+
+### S2A admission update — 2026-10-23
+
+The prerequisite source/twin gate above was followed by a distinct S2A
+preregistration and timing-apparatus qualification. Registration versions 1–3
+froze the sixteen primary contrasts, seven alternating `AB/BA` fresh-process
+pairs per contrast, exact 224-process order, warmup/sample horizons, primary
+paired statistic, flags, budgets and stop rules **before any S2A compile or timed
+invocation**.
+
+The first apparatus readback run 39871650103 retained a verifier-only failure.
+Corrected [run 39872073828](https://github.com/techrote/cybersand/actions/runs/39872073828)
+passed 17 sealed timing-capable observer-off builds, all 25 required untimed
+arm/anchor qualifiers, a 940-file independent readback and 25/25 independent
+case checks. Admitted artifact
+[12466348465](https://github.com/techrote/cybersand/actions/runs/39872073828/artifacts/12466348465)
+has GitHub digest
+`sha256:ef0720eeca60dbe4daa7a05eaa5d792dbcb5138875e5d37f564fe6579b8d9a4a`.
+
+Atomic commit `e40cc0d060f4a26ead664ad5c6787a7aafd53cfe` then moved the S2A
+machine registration to version 4 / `admitted-paired-timing` and simultaneously
+made timing **manual workflow_dispatch only**, bound to that exact artifact and
+the published runner/fixture/readback hashes. No S2A timed workflow has executed
+as part of admission.
+
+This admission is narrow: it authorizes only the exact 224 primary S2A processes.
+It does not authorize S2B, wide-epoch clear-latency timing, fixed-memory
+conclusions, platform timing, a carrier winner, production migration or GEN-006
+persistence. Because E8 samples include the natural clear at completed tick 256
+while E16 samples do not naturally clear in this horizon, final epoch-width
+selection still requires separately measured wide-epoch clear latency.
+
+See [S2A admission evidence](../audits/2026-10-23-mat003-s2a-admission.md).
