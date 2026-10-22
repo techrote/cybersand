@@ -2,7 +2,7 @@
 title: MAT-003PREPASS epoch consumer inventory
 status: Current
 document-kind: reference
-scope: Source inspection at da5112c of native update epochs, indirect support consumers and separate fallback bookkeeping; future World experiment gates remain Planned
+scope: Source inspection at da5112c of native update epochs, indirect support consumers and separate fallback bookkeeping; isolated S1 World evidence is separately qualified
 canonical-for: [mat003-epoch-consumer-inventory]
 last-reviewed: 2026-10-22
 related-documents: [../architecture/chunk-tile-and-buffer-model.md, ../architecture/data-ownership-and-lifetimes.md, ../systems/activity-dirty-regions-and-waking.md, ../systems/granular-interaction-policy.md, ../reference/level-saves-and-replay.md, ../operations/cell-layout-experiment.md]
@@ -21,8 +21,14 @@ runtime, performance, platform or production acceptance.
 The isolated storage prototypes have a separate
 [S0 registration](../../tools/experiments/mat003_prepass/registration.json).
 Their synthetic counter/clear exercises do not qualify a widened native World.
-Every full-engine gate below is **Planned** until source-qualified execution is
-recorded. Preserve the unmodified production control and all existing physics.
+The [S1 checkpoint](../audits/2026-10-22-mat003-world-correctness.md) separately
+records the real native World adapter, exact per-tick records and observed scope.
+Its registered Linux normal/sanitized matrix and independent readback passed.
+Natural E16 coverage is one phased worker and 256 resident cells; four-worker
+ordinary execution and large forced clears are separate coverage. The broader
+gates below remain Planned unless that report explicitly qualifies their tested
+subset. Preserve the
+unmodified production control and all existing physics.
 
 Search coverage was `epoch`, `update_epoch_`, `epoch_value`, `set_epoch`,
 `PrecisionStorage`, raw carrier writes and indirect support calls across native
@@ -228,7 +234,9 @@ discovery revision unchanged; those 260 ticks would no longer reach rollover in
 a widened candidate. Keep its original control and add a genuinely appropriate
 wide-epoch gate.
 
-**Next action:** finish and review S0's independent storage evidence, then
-register the smallest all-consumer World candidate and lossless comparator.
+**Next action:** separately register S2 performance feasibility and paired
+measurements after the bounded S1 correctness pass. S1's
+direct native support and transport probes do not execute Godot bearing/collision
+adapters; discovery-enabled epoch maintenance and live continuation remain gaps.
 Do not choose a production representation, persistence migration, lazy epoch
 scheme or solver from carrier byte counts or primitive-counter success.

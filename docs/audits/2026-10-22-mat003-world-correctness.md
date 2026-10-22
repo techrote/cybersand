@@ -12,12 +12,14 @@ related-documents: [../operations/mat-003prepass-registration.md, ../research/ma
 
 ## Disposition
 
-**Implemented S1 apparatus; formal all-arm collection pending.** This continuation
+**Registered S1 native World correctness passed on Linux.** This continuation
 of [#204](https://github.com/techrote/cybersand/issues/204) and draft
 [PR #208](https://github.com/techrote/cybersand/pull/208) adds the actual native
-World to the earlier S0 carrier checks. The final selected C80-E16-split developer
-diagnostic passes normal and ASan/UBSan with leak detection. It does not substitute
-for the registered seventeen-arm, two-configuration collection.
+World to the earlier S0 carrier checks. [Hosted run 39854839256](https://github.com/techrote/cybersand/actions/runs/39854839256)
+passed all seventeen arms in both normal and ASan/UBSan configurations. The
+separate independent readback passed 132 literal trace comparisons and four
+canonical trace decodes with no errors. Selected-arm developer diagnostics and
+retained failures remain separate from this formal result.
 
 Production remains the original 64-bit carrier and eight-bit epoch. The candidate
 World copies are isolated experiment inputs; no production native source, public
@@ -36,6 +38,10 @@ winner, other-platform qualification or continuation codec is accepted. Issue
 | Registration tree | `b017cf56cd80fa600376f6b600f0fad04ddf4ebf` |
 | Local initial S1 registration | `2614d6a`; full object in the identity ledger |
 | Local dependency-completeness amendment | `0c876a154c8d315191737d5eda57737074134eb8` |
+| Published apparatus | `e31d2961594d5c09fa5541b9ba2a0e43471801e4` |
+| Apparatus tree | `51b3c72bdea14fc692982635fd9dc657cb935249` |
+| Actual hosted PR merge checkout | `ed70604f52234ea6c90ef6718870df65571908f6`; same apparatus tree |
+| Final fixture SHA-256 | `14fd0c6fe7d51ea944370abee99892a0e32bbdfb85b1ce56e72d720a77bff3d0` |
 | Work branch | `codex/mat-003prepass-foundation` |
 
 The [registration identity ledger](mat003-world-2026-10-22/registration-identities.json)
@@ -46,7 +52,9 @@ The [implementation freeze](mat003-world-2026-10-22/apparatus-freeze.json) recor
 all apparatus input hashes and the developer corrections. The collector takes a
 complete immutable source snapshot before any compile; later working-tree edits
 cannot change a running attempt. Source hashes, rather than coincident local and
-remote commit metadata, bind the executable input.
+remote commit metadata, bind the executable input. The
+[publication identity ledger](mat003-world-2026-10-22/publication-identities.json)
+retains the equivalent local apparatus commit and hosted merge identity.
 
 The source-control arm uses byte-identical original World header/source and
 `PrecisionStorage`. All native dependencies are checked against the registered
@@ -70,8 +78,8 @@ The fixture contains four complementary groups:
   storage/core seam. A separate two-cell Brine/BareIron chamber exercises actual
   conversion to RustedSteel. Scheduled events test prewritten Fire suppression.
 - **Natural rollover:** 131,080 uninterrupted ticks from a fresh zero counter in
-  one 16-by-16 chunk. Water wake/movement, an excluded granular specimen, region
-  re-entry and events straddle both sixteen-bit boundaries. Attempted/completed
+  one 16-by-16 chunk with one phased worker. Water wake/movement, an excluded
+  granular specimen, region re-entry and events straddle both sixteen-bit boundaries. Attempted/completed
   clocks are recorded every tick. A nonzero excluded sentinel must be cleared at
   each observed maximum-to-one counter transition.
 - **Forced resident clear:** 512², 1024² and 2048² resident cells, with only the
@@ -89,6 +97,8 @@ Candidate observers count actual dispatch and background-worker tasks. The
 unchanged source control has no injected observer; its exact matched-E8 bridge
 is kept separate from worker-execution evidence. Configured worker count and
 `phase_jobs` alone are not proof that pool workers ran.
+Task counts do not establish participation by four distinct workers or simultaneous
+execution. ASan/UBSan qualification is separate from race-detector coverage.
 
 ### Exact comparison and ledgers
 
@@ -105,6 +115,9 @@ completed/attempted clocks, TickStats, support queries and conversion diagnostic
 Water mass and all 132 catalogue species are independently reduced from the
 decoded cells. Epoch numbers, reserved bits and ABI padding do not masquerade as
 semantic state; their separate preservation/type checks remain required.
+Numeric epochs are not recorded in every semantic frame. The no-seeding and
+actual-width claims therefore depend on the frozen source, verified overlay,
+actual counter/accessor sizes and clear receipts together with the exact traces.
 
 Valid nonzero Empty state is retained. Raw high-a16 inert sentinels are labelled
 as storage probes because the current public non-Water API accepts byte-sized a
@@ -162,7 +175,49 @@ Six CI-provider policy tests and the active provider check also pass. These test
 validate apparatus behavior; their fabricated negative fixtures are not observed
 World experiment results.
 
-## Formal collection and readback contract
+## Observed formal collection and independent readback
+
+[World job 120090685614](https://github.com/techrote/cybersand/actions/runs/39854839256/job/120090685614)
+passed collection, separate independent verification and artifact upload. The
+collector reports `developer_attempt: false`, `performance_qualification: false`
+and no errors. All 35 overlay/evidence tests also passed on the hosted runner.
+
+| Registered mapping | Arms | Normal | ASan/UBSan |
+|---|---:|---|---|
+| Unchanged source C64-E8 | 1 | Passed | Passed |
+| Word C64, E8/E16 | 2 | Passed | Passed |
+| Padded C64, E8/E16 | 2 | Passed | Passed |
+| Packed C72/C80, E8/E16 | 4 | Passed | Passed |
+| Aligned C72/C80, E8/E16 | 4 | Passed | Passed |
+| Split C72/C80, E8/E16 | 4 | Passed | Passed |
+
+The independent verifier reports **132 literal trace comparisons and four decoded
+canonical traces**, with no errors. Comparisons are across arms and normal/sanitized
+configurations within each named suite; they do not assert cross-suite serial/phased
+or phased-one/phased-four byte equality. Each ordinary suite contains 2,049 frames and
+2,048 ticks over 65,536 resident cells, retains 8,925 Water units and four Sand
+cells, and records three deferred events and three conversions. The natural suite
+contains 131,081 frames and 131,080 uninterrupted ticks over 256 cells, retains
+255 Water units and four Sand cells, and records two events and three support-change
+frames. Full-a16, nonzero Empty and nonambient-temperature sentinels are retained.
+These frame/ledger observations are read from the hosted verifier output. Its
+passed per-arm checks also require 40 successful compiler receipts, 34 complete
+fixture receipts, E8's 514 natural clears and E16's maximum-to-one transitions at
+ticks 65,536 and 131,071 with the excluded sentinel cleared. The original per-arm
+results and literal transition receipts remain in the raw artifact.
+
+The [hosted outcome receipt](mat003-world-2026-10-22/hosted-outcome.json) and
+[independent readback](mat003-world-2026-10-22/hosted-independent-readback.json)
+retain the actual outcomes. The [raw World evidence artifact](https://github.com/techrote/cybersand/actions/runs/39854839256/artifacts/12461153830)
+is 132,324,591 bytes, with GitHub-reported and locally verified ZIP SHA-256
+`dd460bd34c7d5c00d76730bccc8c89e5c2d438ab5fc60a6a495b7472e35c170d`.
+Its recorded expiry is **2026-11-21 21:54:16 UTC**. Compact receipts do not replace
+the raw traces and binaries. The retained readback JSON is the complete output of
+the separate hosted verifier. [Post-collection inspection diagnostics](mat003-world-2026-10-22/postcollection-inspection-attempts.json)
+record the local workspace resets, missing downloaded file and later download
+failure; no additional local trace replay or World execution is claimed.
+
+### Registered collection contract
 
 Formal acceptance requires all seventeen arms in both normal and sanitized
 configurations: forty compiler processes (including six shared-source object
@@ -184,10 +239,32 @@ states this explicitly; prior evidence remains qualified to its tested inputs.
 Ready-for-review and manual events always collect again. This draft checkpoint
 does not supply merge authorization or a full release-platform gate.
 
+## Documentation and retrieval validation
+
+[Pre-completion validation receipts](mat003-world-2026-10-22/validation-before-world-completion.json)
+retain the actual local documentation/repository/M11 checks, all 31 unchanged
+native input hashes, focused apparatus/provider tests and retrieval reports.
+The frozen 32-question set retained its ranks and 32/32 canonical top-five hits.
+The supplemental set grew from 114 to 116 questions; the two new source-reviewed
+questions cover natural-versus-forced rollover and the timing/split/continuation
+limits. Earlier question IDs and wording remain unchanged. The
+[source sufficiency review](mat003-world-2026-10-22/source-sufficiency-review.json)
+records their expected-fact boundaries. These are pre-completion measurements,
+not a claim about retrieval on a later documentation tree.
+
+[Documentation/provenance run 39854839246](https://github.com/techrote/cybersand/actions/runs/39854839246)
+passed for apparatus publication `e31d296`, including documentation, historical
+M11, failure-contract tests, retrieval and LFS/whitespace checks. Published-runtime
+provenance was path-skipped. Final evidence-only publication checks are recorded
+on [PR #208](https://github.com/techrote/cybersand/pull/208); a reused World result
+continues to identify its original tested inputs. Draft-skipped Native/Godot jobs
+do not become passes.
+
 ## Remaining work
 
-After formal S1 acceptance, the next bounded step is separately registered S2
-performance feasibility and paired measurements. Timing builds must remove
+The next bounded step is separately registered S2 performance feasibility and
+paired measurements. The [S2 proposal](../operations/mat-003prepass-registration.md#s2-performance-feasibility-proposal--not-admitted)
+is not an admitted timing campaign. Timing builds must remove
 observer atomics and per-tick semantic capture; their observed twins must first
 qualify the new scenarios. Every primary contrast requires the registered seven
 interleaved AB/BA process pairs. A settled scene cannot stand in for maintained
@@ -196,6 +273,8 @@ active work, and 2,048 E16 ticks without a clear cannot measure maintenance cost
 The [consumer audit](../research/mat-003prepass-epoch-consumers.md) retains broader
 discovery, Godot support/bearing and continuation gates. Windows/Wasm, secondary
 E24/E32, pressure-prototype integration, real streaming/eviction/reload and any
-production layout selection remain outside S1. The
+production layout selection remain outside S1. Natural rollover is qualified only
+for the one-worker, 256-cell fixture; four-worker ordinary execution and large
+forced clears do not establish four-worker natural E16 rollover. The
 [GEN-006 handoff](../research/mat-003prepass-gen006-handoff.md) remains a proposed
 semantic contract, including unresolved epoch-rebase behavior.

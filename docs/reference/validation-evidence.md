@@ -10,15 +10,32 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## MAT-003PREPASS isolated native World stage — 2026-10-22
+
+The [S1 checkpoint](../audits/2026-10-22-mat003-world-correctness.md) follows the
+storage foundation below with generated native World candidates, full per-tick
+semantic/work/event/support traces, independent ledgers, actual typed natural
+rollover and forced resident-clear fixtures. Hosted run
+[39854839256](https://github.com/techrote/cybersand/actions/runs/39854839256) passes
+all seventeen arms in both normal and ASan/UBSan configurations at apparatus
+source `e31d296`. Separate independent readback passes 132 literal trace comparisons
+and four canonical decodes with no errors. All 35 overlay/evidence tests pass.
+Natural E16 coverage uses one phased worker and 256 resident cells; ordinary
+four-worker execution and large forced clears are separate checks. The final
+selected split-E16 developer diagnostic and its earlier failures remain separately
+labelled. Source snapshots, raw artifact retention, actual receipts and corrections
+are linked from the report. Performance, other platforms, live continuation and
+production layout acceptance remain separate gates.
+
 ## MAT-003PREPASS isolated storage foundation — 2026-10-22
 
 The [first prepass checkpoint](../audits/2026-10-22-mat003-prepass-foundation.md)
 records 17 isolated 64/72/80-bit carrier arms, normal and sanitizer checks,
 primitive epoch rollovers, full semantic records and source/artifact identities.
 It preserves the initial sanitizer environment failure and the incomplete broad
-native-suite run. Real-World candidate equivalence, wide-epoch lifecycle,
-performance, Windows/Wasm and continuation qualification remain outstanding;
-the storage result does not select a production layout or close issue #204.
+native-suite run. The S0 storage result alone does not qualify real-World
+equivalence, wide-epoch lifecycle, performance, Windows/Wasm or continuation,
+select a production layout or close issue #204. S1 is separately scoped above.
 
 ## GEN-005 semantic four-plane generation — 2026-10-21
 

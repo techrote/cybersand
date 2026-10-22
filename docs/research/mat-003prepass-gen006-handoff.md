@@ -169,6 +169,13 @@ admission and between-tick support queries.
 The [epoch consumer audit](mat-003prepass-epoch-consumers.md) is the detailed
 source-site and test-obligation map for reviewing any restoration proposal.
 
+The [isolated S1 World checkpoint](../audits/2026-10-22-mat003-world-correctness.md)
+adds actual typed counters, uninterrupted ticks, support predicates, wake/event
+records and ownership/refusal fixtures. Those observations compare live Worlds
+without eviction or restore. They do not establish a valid rebase or a durable
+continuation format; all-arm correctness evidence and continuation acceptance
+remain separate claims.
+
 One design candidate is to capture each relevant cell's **written-in-current-
 epoch predicate**, then rebase equal/non-equal stamps into a fresh scheduling
 cycle while preserving global tick, pending work and observation phase. This is

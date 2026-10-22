@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "scope": "Post-collection local archive handling; not World experiment execution",
+  "hosted_collection_status": "passed",
+  "hosted_independent_readback_status": "passed",
+  "zip_verification": {
+    "path": "/tmp/mat003-world-39854839256.zip",
+    "bytes": 132324591,
+    "sha256": "dd460bd34c7d5c00d76730bccc8c89e5c2d438ab5fc60a6a495b7472e35c170d",
+    "matches_github_digest": true,
+    "actual_download_verified": true
+  },
+  "attempts": [
+    {
+      "kind": "selected-receipt extraction",
+      "result": {
+        "chunk_id": "e703d9",
+        "wall_time_seconds": 0.000056102,
+        "exit_code": 1,
+        "original_token_count": 90,
+        "output": "{\n  \"inspection_status\": \"failed\",\n  \"qualification_decision\": null,\n  \"source_head\": null,\n  \"reported_run_status\": null,\n  \"reported_readback_status\": null,\n  \"copied_files\": 0,\n  \"summary\": \"/tmp/mat003-world-39854839256-inspected/inspection-summary.json\",\n  \"errors\": [\n    \"[Errno 2] No such file or directory: '/tmp/mat003-world-39854839256.zip'\"\n  ]\n}\n"
+      }
+    },
+    {
+      "kind": "later archive download reference",
+      "result": {
+        "chunk_id": "49ecb7",
+        "wall_time_seconds": 0.099683057,
+        "exit_code": 1,
+        "original_token_count": 324,
+        "output": "Traceback (most recent call last):\n  File \"<string>\", line 5, in <module>\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/urllib/request.py\", line 215, in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/urllib/request.py\", line 521, in open\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/urllib/request.py\", line 630, in http_response\n    response = self.parent.error(\n               ^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/urllib/request.py\", line 559, in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 403: Forbidden\n"
+      }
+    },
+    {
+      "kind": "executor session recovery",
+      "result": "exec-server transport disconnected; executor key changed during session recovery; no result inferred"
+    }
+  ],
+  "outcome": "Raw archive remains available from GitHub. Complete successful hosted readback output and all 34 passed arm log rows are retained; no local trace replay is claimed."
+}

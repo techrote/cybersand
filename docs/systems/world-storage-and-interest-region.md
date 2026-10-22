@@ -62,7 +62,7 @@ owns failure/preparation procedures.
 
 ## MAT-003PREPASS isolated World apparatus
 
-**Implemented experimental S1 apparatus; qualification pending:** the
+**Registered experimental S1 Linux correctness passed:** the
 [registration](../operations/mat-003prepass-registration.md#s1-continuation-admission--2026-10-22)
 defines generated candidate World copies with a selected carrier and an actual
 `uint8_t` or `uint16_t` counter, matching increment cast and cell epoch accessor.

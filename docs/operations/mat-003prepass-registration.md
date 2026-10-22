@@ -12,8 +12,8 @@ related-documents: [../research/mat-003prepass-state-inventory.md, ../research/m
 
 ## Scope and source identity
 
-**Planned experimental programme; isolated S0 foundation and registered S1
-native World correctness continuation.**
+**Planned experimental programme; S0 storage and registered S1 native Linux
+World correctness checkpoints passed.**
 Issue [#204](https://github.com/techrote/cybersand/issues/204) supplies evidence
 before GEN-006 freezes continuation contracts. It does not migrate production
 storage, select G-final, implement pressure/momentum or change Water conservation.
@@ -28,11 +28,13 @@ clarifies the two independent operation streams and pins control-header hashes.
 The dated checkpoint preserves both raw local commit objects and publication
 identities; local and published commit metadata are distinct.
 
-This first checkpoint is deliberately S0: storage capability, physical accounting,
-source inventory and a proposed persistence handoff. The issue's mandatory
-**full-engine** comparisons, natural World rollover and paired performance
-campaign remain incomplete. The [dated checkpoint](../audits/2026-10-22-mat003-prepass-foundation.md)
-owns observations and failures; this registration is not an acceptance report.
+The first checkpoint was S0: storage capability, physical accounting, source
+inventory and a proposed persistence handoff. Its
+[dated report](../audits/2026-10-22-mat003-prepass-foundation.md) owns those historical
+observations and failures. The later [S1 report](../audits/2026-10-22-mat003-world-correctness.md)
+records the passed native Linux World fixtures, exact semantic/conservation gates
+and natural E16 rollover. Broader consumer/platform coverage and the paired
+performance campaign remain incomplete; this registration is not an acceptance report.
 
 The sequencing constraint is GEN-007 qualified baseline → MAT-003PREPASS →
 GEN-006 → full MAT-003. GEN-006 architecture work can proceed while the evidence
@@ -117,9 +119,10 @@ model; a digest is supplementary, not a lossless comparator.
 The natural E16 primitive must clear at 65,536 and 131,071 and run beyond both;
 E8 first clears at 256, then every 255 ticks. Forced counter seeding must be
 identified separately. This is **synthetic storage/epoch evidence**, not the
-issue's real-World 131,080-tick gate. Support predicates, RNG/global cadence,
-interest/re-entry, event ordering, partial Water transfer and failed-world
-quarantine still require the later World candidate.
+issue's real-World 131,080-tick gate. S0 did not qualify support predicates,
+RNG/global cadence, interest/re-entry, event ordering, partial Water transfer or
+failed-world quarantine. S1 below adds bounded native fixtures for those consumers;
+the report preserves its Godot, discovery and continuation gaps.
 
 S0 permits one test process at a time, two correctness configurations (optimized
 normal and AddressSanitizer+UndefinedBehaviorSanitizer), 180 seconds per compile,
@@ -185,9 +188,10 @@ need their own evidence; elapsed time alone establishes no cache causality.
 ## Checkpoint completion versus issue acceptance
 
 S0 can establish useful, source-bound storage capability and identify schema
-hazards. It cannot close #204 or authorize production migration. Next evidence
-must resolve the full World consumer map, actual sixteen-bit rollover, semantic
-and conservation gates, physical memory accounting and registered paired costs.
+hazards. It cannot close #204 or authorize production migration. S1 now qualifies
+its registered native Linux semantic/conservation and actual sixteen-bit rollover
+fixtures. Broader consumer/platform coverage, complete process memory accounting
+and registered paired costs remain outstanding.
 The [GEN-006 handoff](../research/mat-003prepass-gen006-handoff.md) is a proposal
 to keep durable semantics independent of ABI; no real streaming/eviction/reload
 or replay acceptance is inferred. Retain the baseline unless later evidence
@@ -213,12 +217,15 @@ E8 arm must bridge its exact semantic results. No observer cost or speed ranking
 is established by these checks.
 
 The registered fixtures include 2,048 ordinary ticks for serial1/phased1/phased4,
-131,080 uninterrupted natural ticks in a small phased World, forced overflow at
-512²/1024²/2048² resident cells, and lifecycle/refusal checks. Exact records retain
+131,080 uninterrupted natural ticks with one phased worker and 256 resident cells
+in one 16-by-16 chunk, forced overflow at 512²/1024²/2048² resident cells, and
+lifecycle/refusal checks. Four-worker ordinary execution and large forced clears
+do not establish four-worker natural E16 rollover. Exact records retain
 material16, a16, b8 and temperature16, including valid nonzero Empty state. Raw
 high-a16 probes are separately labelled because current public APIs constrain
-non-Water a to a byte and default Water mass to 255. Epoch/padding are excluded
-from semantic equality but independently verified. Compare identical backend,
+non-Water a to a byte and default Water mass to 255. Numeric epoch/padding are
+excluded from semantic equality but independently verified; each cell's
+current-stamp predicate remains in the semantic record. Compare identical backend,
 coordinates, work and inputs; do not assert that serial and phased trajectories
 or translated RNG scenes must match.
 
@@ -234,3 +241,56 @@ The [S1 implementation checkpoint](../audits/2026-10-22-mat003-world-correctness
 records the apparatus freeze, retained developer corrections and the disposition
 of the formal collection. Its exact source ledger is the implementation amendment
 before full collection; a selected-arm smoke pass is not all-arm acceptance.
+
+## S2 performance feasibility proposal — not admitted
+
+**Planned proposal; no timing admission or frozen execution contract.**
+S1 correctness has passed; candidate timing remains withheld until a new
+registration freezes sources, fixtures, binaries, flags, horizons, pair order,
+budgets and stop rules.
+
+A suggested source-only feasibility probe would cover 24 contexts:
+512²/1024²/2048² × quiet/sleeping, small-active-region, active-liquid/granular and
+current-catalogue reactive fixtures × phased workers 1/4. Suggested bounds are
+20 minutes total and 120 seconds per process, with a short fixed horizon.
+These limits are suggestions for a new registration, not a finalized execution
+contract or completion estimate. A budget stop would remain incomplete.
+
+**Proposed S2A:** first compare eight E8 contrasts at an active-liquid/granular 512²/four-worker
+anchor: source versus word, word versus padded, and word versus each of the six
+C72/C80 packed/aligned/split arms. Then run eight within-representation E8/E16
+contrasts at a quiet 2048²/one-worker anchor. Seven independent interleaved AB/BA
+process pairs require fourteen processes per contrast: **224 primary processes**
+before correctness rejections. This covers all seventeen arms, with conclusions
+limited to those anchors. Source versus matched word E8 measures abstraction
+overhead within that context.
+
+**Proposed S2B:** compare C64-word E8/E16 across the full 24-context grid. Reusing
+the identical registered quiet anchor leaves 23 contrasts, or **322 additional
+primary processes**. Wider-representation scaling and optional S2C combined-choice
+comparisons need their own declared scope; this proposal does not require a full
+Cartesian product or select a winner.
+
+Timing builds would compile out candidate observers and omit per-tick semantic
+capture. Separate observed twins would establish semantic/work equivalence,
+actual background-worker execution and observer overhead. Native `TickStats`
+does not count scanned cells or epoch clears: observed counters or a validated
+exact derivation are needed; scheduled-core area alone is not generally enough.
+Retain 120-tick warmup and startup separately. Active fixtures must maintain their
+declared workload after warmup, with deterministic inputs, explicit material
+source/sink ledgers and separately reported input costs.
+
+S1 natural-rollover correctness and separately labelled forced-clear timing
+answer different questions. Observe actual clear latency, cells, defined byte
+counts and neighboring excess; period-based amortization is a projection and
+does not remove the residual clear hitch. Report ordinary p50/p95/p99/max,
+scanned/visited work, allocation/refusal and all seven process-level paired
+ratios. Individual ticks are not independent replicates; zero visits must not
+produce division by zero.
+
+Memory accounting would distinguish cell and tail capacity, vector descriptors,
+temperature/activity/scheduler storage and process peak RSS. Existing
+`resident_cell_bytes()` omits split tails and is not whole-process memory.
+Keep fixed-cell and fixed-memory analyses separate. Current split tails are
+eagerly allocated: unread metadata does not establish absent optional-storage
+cost, and accessed/clustered/dispersed payload claims need declared workloads.
