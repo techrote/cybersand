@@ -147,3 +147,40 @@ AB/BA pairs per contrast, timing-capable observer-off apparatus, flags/hashes,
 warmup/horizon, process order, budgets and stop rules. Wide-epoch clear
 **correctness** is inherited from S1, but clear latency remains a separate timing
 requirement and no speed or carrier winner is claimed here.
+
+
+## S2A apparatus qualification and narrow admission — 2026-10-23
+
+The separately preregistered S2A apparatus is now qualified and the exact primary
+paired schedule is admitted, but no S2A timing run has executed.
+
+The first apparatus run,
+[39871650103](https://github.com/techrote/cybersand/actions/runs/39871650103),
+preserved a verifier-only failure after 17/17 builds and 25/25 qualifier
+executions: the readback still expected registration v2 after the preregistered
+statistics amendment had advanced it to v3. The retained failed artifact is
+12467345034. No timing was admitted.
+
+The corrected
+[run 39872073828](https://github.com/techrote/cybersand/actions/runs/39872073828)
+passed **17 sealed builds, 25/25 untimed qualifier contexts, 940-file independent
+readback and 25/25 independent case checks**. The admitted apparatus artifact is
+[12466348465](https://github.com/techrote/cybersand/actions/runs/39872073828/artifacts/12466348465),
+`sha256:ef0720eeca60dbe4daa7a05eaa5d792dbcb5138875e5d37f564fe6579b8d9a4a`.
+
+Atomic admission commit
+`e40cc0d060f4a26ead664ad5c6787a7aafd53cfe` changed registration v4 to
+`admitted-paired-timing` and, in the same commit, changed the S2A workflow to
+**manual `workflow_dispatch` only**. The timing runner is bound to the exact
+qualified binary artifact and published source/evidence hashes. No S2A timing
+workflow was started by admission.
+
+Admitted scope is exactly **16 contrasts × seven alternating AB/BA fresh-process
+pairs × two processes = 224 processes**, with seed 204, 120 warmup ticks and
+256 measured ticks. Input cost and startup remain outside `tick_ns`; the
+primary pair ratio is B/A mean tick latency over the full 256-tick sample.
+
+S2B, wide-epoch clear-latency timing, fixed-memory conclusions,
+Windows/Wasm/Godot performance, E24/E32, carrier selection, production migration
+and GEN-006 persistence remain held. See the
+[dated S2A admission evidence](../audits/2026-10-23-mat003-s2a-admission.md).
