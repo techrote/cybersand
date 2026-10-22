@@ -1,64 +1,73 @@
-name: MAT-003PREPASS S2A apparatus qualification
+name: MAT-003PREPASS S2A admitted paired timing
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
-    paths:
-      - '.github/workflows/mat003-s2a.yml'
-      - 'tools/experiments/mat003_s2a/**'
   workflow_dispatch:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
-  group: mat003-s2a-apparatus-${{ github.ref }}
-  cancel-in-progress: true
+  group: mat003-s2a-admitted-timing
+  cancel-in-progress: false
 
 jobs:
-  apparatus-qualification:
+  paired-s2a:
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 70
     steps:
-      - name: Check out exact registered source
+      - name: Check out admitted registration and frozen runner
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           fetch-depth: 0
           lfs: false
       - name: Confirm GitHub-hosted runner policy
         run: timeout 1m python3 tools/ci/check_ci_provider_policy.py
-      - name: Syntax-check frozen S2A Python apparatus
+      - name: Confirm narrow S2A admission and runner source identities
         run: |
-          python3 -m py_compile \
-            tools/experiments/mat003_s2a/apparatus.py \
-            tools/experiments/mat003_s2a/measure.py \
-            tools/experiments/mat003_s2a/verify_apparatus.py \
-            tools/experiments/mat003_s2a/verify_measurement.py
-      - name: Build sealed timing-capable binaries and run untimed qualification only
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("tools/experiments/mat003_s2a/registration.json").read_text())
+          assert r["status"] == "admitted-paired-timing"
+          assert r["formal_timing_admitted"] is True
+          assert r["performance_comparisons_admitted"] is True
+          assert r["run_order"]["primary_processes"] == 224
+          assert r["admission_evidence"]["artifact_id"] == 12466348465
+          PY
+          echo "a374b1f3f8fc839bc13ed03410143a80b790ce3180cf0c6f584c2e46d7aabdf7  tools/experiments/mat003_s2a/measure.py" | sha256sum -c -
+          echo "2ff91978067e35544731d5c33537f3c87c062f2abf091d586cfc68d1e933d479  tools/experiments/mat003_s2a/verify_measurement.py" | sha256sum -c -
+          echo "bbc9e3c5ae26fd8b44a1caf14317a543b0afc2e3d5467cb42382da25aa8729f3  tools/experiments/mat003_s2a/fixture.cpp" | sha256sum -c -
+      - name: Restore exact independently qualified S2A apparatus
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: mat003-s2a-apparatus-39872073828
+          path: build/mat003-s2a/apparatus
+          github-token: ${{ github.token }}
+          run-id: 39872073828
+      - name: Verify admitted apparatus evidence identities
         run: |
-          python3 tools/experiments/mat003_s2a/apparatus.py \
-            --output build/mat003-s2a/apparatus
-      - name: Independently read back S2A apparatus qualification
+          echo "cd4bf5096f023788fc65702e18d1643fe8f36ee0433474c65dd75eff0b58a3a4  build/mat003-s2a/apparatus/run.json" | sha256sum -c -
+          echo "b40659b95268ed887ee8181a46cd9b1d09e8e4937f39ee825dd460cd957c914f  build/mat003-s2a/apparatus/sealed-binaries.json" | sha256sum -c -
+          echo "9db6991150ecc23215cfe15072e0b0dc38e562990532d1e55f8cc72ec1930759  build/mat003-s2a/apparatus/independent-readback.json" | sha256sum -c -
+      - name: Execute exact 224-process admitted S2A schedule
+        run: |
+          python3 tools/experiments/mat003_s2a/measure.py \
+            --apparatus build/mat003-s2a/apparatus \
+            --output build/mat003-s2a/timing
+      - name: Independently read back all S2A timing evidence
+        if: always()
         run: |
           set -o pipefail
-          python3 tools/experiments/mat003_s2a/verify_apparatus.py \
-            build/mat003-s2a/apparatus \
-            | tee build/mat003-s2a/apparatus/independent-readback.json
-      - name: Publish exact admission source and evidence identities
-        run: |
-          sha256sum \
-            tools/experiments/mat003_s2a/registration.json \
-            tools/experiments/mat003_s2a/fixture.cpp \
-            tools/experiments/mat003_s2a/measure.py \
-            tools/experiments/mat003_s2a/verify_measurement.py \
-            build/mat003-s2a/apparatus/run.json \
-            build/mat003-s2a/apparatus/sealed-binaries.json \
-            build/mat003-s2a/apparatus/independent-readback.json
-      - name: Retain sealed S2A apparatus and independent readback
+          python3 tools/experiments/mat003_s2a/verify_measurement.py \
+            build/mat003-s2a/timing \
+            --apparatus build/mat003-s2a/apparatus \
+            | tee build/mat003-s2a/timing/independent-readback.json
+      - name: Retain all S2A raw timing, receipts and readback
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: mat003-s2a-apparatus-${{ github.run_id }}
-          path: build/mat003-s2a/apparatus/
+          name: mat003-s2a-timing-${{ github.run_id }}
+          path: build/mat003-s2a/timing/
           if-no-files-found: error
           retention-days: 30

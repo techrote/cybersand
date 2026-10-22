@@ -4,9 +4,9 @@
   "stage": "S2A-paired-performance",
   "issue": 204,
   "predecessor_pr": 211,
-  "status": "preregistered-apparatus-qualification-only",
-  "formal_timing_admitted": false,
-  "performance_comparisons_admitted": false,
+  "status": "admitted-paired-timing",
+  "formal_timing_admitted": true,
+  "performance_comparisons_admitted": true,
   "prerequisite_evidence": {
     "s1_world_run_id": 39854839256,
     "full_source_and_twins_run_id": 39870102635,
@@ -200,7 +200,7 @@
     "semantic_capture": "no per-tick semantic snapshot/trace in measurement mode; final hashes/work/ledgers retained outside timed interval"
   },
   "apparatus_qualification": {
-    "status": "not-yet-executed",
+    "status": "passed",
     "formal_timing_admitted": false,
     "required_contexts": "each arm in every anchor where that arm appears in a contrast",
     "expected_unique_arm_contexts": 25,
@@ -211,7 +211,13 @@
       "closed Water input source/sink ledger reconciles",
       "performance binary contains dormant measure mode but qualification invokes only qualify",
       "independent verifier checks exact build/context set and binary hashes"
-    ]
+    ],
+    "run_id": 39872073828,
+    "job_id": 120148650332,
+    "builds": 17,
+    "qualified_contexts": 25,
+    "independent_checked_files": 940,
+    "independent_checked_cases": 25
   },
   "execution": {
     "flags": [
@@ -262,7 +268,6 @@
     "ratio_spread": "minimum, maximum and median absolute deviation of the seven process-level B/A ratios; raw ratios always retained"
   },
   "deferred": [
-    "all timing until apparatus qualification and separate admission amendment",
     "wide-epoch clear-latency calibration and amortized long-run epoch-cost conclusion",
     "S2B 322-process full-grid word64 E8/E16 timing",
     "fixed-memory equivalence conclusion",
@@ -271,11 +276,49 @@
     "production carrier selection or migration",
     "GEN-006 persistence/streaming"
   ],
-  "registration_version": 3,
+  "registration_version": 4,
   "baseline_native_commit": "da5112c066416346d6fe3984d4161cd162611e50",
   "s1_registration": "tools/experiments/mat003_prepass/world_registration.json",
   "amendments": [
     "v2 explicitly binds the frozen S1 native baseline and registration path before any S2A compile or execution; contrasts, process order, horizons, budgets and timing admission remain unchanged.",
-    "v3 freezes the primary paired ratio metric and percentile/spread definitions before any S2A compile or execution; admission remains false."
-  ]
+    "v3 freezes the primary paired ratio metric and percentile/spread definitions before any S2A compile or execution; admission remains false.",
+    "v4 admits only the exact 224-process S2A paired timing schedule after run 39872073828 passed 17 sealed builds, 25 untimed qualifiers and independent 940-file/25-case readback. Execution remains manual and is bound to artifact 12466348465; S2B and wide-epoch clear-latency timing remain held."
+  ],
+  "admission_evidence": {
+    "apparatus_run_id": 39872073828,
+    "apparatus_job_id": 120148650332,
+    "qualified_branch_head": "26b324979517755a2c59282cd7daeab459517539",
+    "source_head": "65a11780ca34406de05a795acf2a2172278f7bd2",
+    "artifact_id": 12466348465,
+    "artifact_name": "mat003-s2a-apparatus-39872073828",
+    "artifact_size_bytes": 6964923,
+    "artifact_sha256": "ef0720eeca60dbe4daa7a05eaa5d792dbcb5138875e5d37f564fe6579b8d9a4a",
+    "artifact_expires_at": "2026-11-21T23:31:08Z",
+    "preregistration_sha256": "6d6fcca136af925ce57b95561d30feddb128ccb82f25750418404387c32d86b5",
+    "fixture_cpp_sha256": "bbc9e3c5ae26fd8b44a1caf14317a543b0afc2e3d5467cb42382da25aa8729f3",
+    "measure_py_sha256": "a374b1f3f8fc839bc13ed03410143a80b790ce3180cf0c6f584c2e46d7aabdf7",
+    "verify_measurement_py_sha256": "2ff91978067e35544731d5c33537f3c87c062f2abf091d586cfc68d1e933d479",
+    "run_json_sha256": "cd4bf5096f023788fc65702e18d1643fe8f36ee0433474c65dd75eff0b58a3a4",
+    "sealed_binaries_sha256": "b40659b95268ed887ee8181a46cd9b1d09e8e4937f39ee825dd460cd957c914f",
+    "readback_sha256": "9db6991150ecc23215cfe15072e0b0dc38e562990532d1e55f8cc72ec1930759",
+    "independent_readback": {
+      "status": "passed",
+      "checked_files": 940,
+      "checked_cases": 25,
+      "errors": []
+    },
+    "authority": "only the exact 224-process S2A schedule in this registration, using the exact retained apparatus artifact",
+    "expiry_rule": "after artifact expiry or any admitted runner/fixture hash change, timing is held until a new apparatus qualification and admission amendment"
+  },
+  "admission_scope": {
+    "admitted": "exactly 16 registered S2A contrasts × seven alternating AB/BA fresh-process pairs = 224 primary processes",
+    "execution": "manual workflow_dispatch only; no automatic timed execution on pull_request/push",
+    "binary_source": "exact sealed observer-off binaries from artifact 12466348465",
+    "interpretation": [
+      "paired primary metric is B/A mean tick_ns over all 256 sample ticks, seven ratios per contrast",
+      "input_ns and startup are separately reported and excluded from tick_ns",
+      "E8 horizons contain the registered natural clear at completed tick 256; E16 horizons do not clear",
+      "S2A E16 results are not a long-run epoch-maintenance conclusion; wide-epoch clear latency remains separately required"
+    ]
+  }
 }
