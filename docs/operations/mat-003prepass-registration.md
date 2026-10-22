@@ -191,3 +191,40 @@ The [GEN-006 handoff](../research/mat-003prepass-gen006-handoff.md) is a proposa
 to keep durable semantics independent of ABI; no real streaming/eviction/reload
 or replay acceptance is inferred. Retain the baseline unless later evidence
 supports a separately scoped migration.
+
+
+## S1 continuation admission — 2026-10-22
+
+**Registered correctness continuation of PR #208:** the owner's instruction to
+continue this handoff admits an isolated native World adapter and fixtures under
+the [S1 machine registration](../../tools/experiments/mat003_prepass/world_registration.json).
+The continuation intake is `de767c6419ac23273232c5fa9699432af62116a4`;
+production control source still matches the original `da5112c` baseline.
+S0 artifacts and its registration remain unchanged.
+
+All seventeen existing mappings remain in scope. The source-control World/header
+are byte-identical; candidate copies replace the carrier alias and both counter
+type/increment together. Split candidates use eagerly prepared chunk-owned tails
+with explicit move/swap/reset handling and separate allocation accounting.
+Correctness-only candidate observers record actual pool dispatch and background
+worker execution; the unchanged control has no such instrumentation. The matched
+E8 arm must bridge its exact semantic results. No observer cost or speed ranking
+is established by these checks.
+
+The registered fixtures include 2,048 ordinary ticks for serial1/phased1/phased4,
+131,080 uninterrupted natural ticks in a small phased World, forced overflow at
+512²/1024²/2048² resident cells, and lifecycle/refusal checks. Exact records retain
+material16, a16, b8 and temperature16, including valid nonzero Empty state. Raw
+high-a16 probes are separately labelled because current public APIs constrain
+non-Water a to a byte and default Water mass to 255. Epoch/padding are excluded
+from semantic equality but independently verified. Compare identical backend,
+coordinates, work and inputs; do not assert that serial and phased trajectories
+or translated RNG scenes must match.
+
+S1 permits sequential optimized and ASan/UBSan configurations, at most 64 compiler
+processes and 34 complete fixture processes, 240 seconds per compile, 360 seconds
+per fixture and 7,200 seconds per formal collection. Exact implemented fixture,
+source and binary identities are frozen before formal collection. Retain developer
+failures separately; any corrected source receives a new immutable run directory.
+A budget stop remains incomplete. Performance, other platforms, Godot adapter
+execution, continuation and production migration remain deferred.
