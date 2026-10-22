@@ -13,7 +13,7 @@ related-documents: [procedural-world-generation.md, procedural-generation-fields
 
 ## What is the current scope?
 
-**Current implementation candidate, GEN-007 / #193:** the opt-in
+**Current implementation, GEN-007 / #193:** the opt-in
 [workbench](../../godot/scripts/worldgen_workbench.gd) edits the same native
 GEN-001/002/003/004/005 recipe consumed by production generation APIs. Its
 [tool controller](../../godot/scripts/worldgen_workbench_tools.gd) supplies the
@@ -29,6 +29,39 @@ bounded movable viewport; it does not keep an unlimited world or trace history.
 Execution and visual acceptance are recorded in the
 [dated ledger](../audits/2026-10-21-gen007-workbench-qualification.md), separately
 from source feature availability. Runtime residency and persistence remain GEN-006.
+
+## Which controls open the tools and retained captures?
+
+Use the page selector at the top of the left sidebar. The controls below are the
+labels in the current UI; the linked images are actual Workbench viewports.
+
+| Task | Controls | Retained capture |
+|---|---|---|
+| Edit a graph | **Graph canvas → Open graph canvas…**. Choose **Typed spatial** or **Scalar fields** and a namespace. Select a node to edit its numeric controls/JSON, then **Validate node**; **New operator → New node draft** starts a new operator. Drag ports to submit a connection. | [Graph canvas](../images/gen007/workbench/workbench-graph-canvas.png) |
+| Inspect fields and stages | Select a field in the lower **Inspect** selector. The upper overlay selector offers **Vector arrows** and **Bounded streamlines**. Use **Stage** for applicable native boundaries. | [Vector arrows](../images/gen007/workbench/workbench-vector-arrows.png), [streamlines](../images/gen007/workbench/workbench-streamlines.png), [candidate stage](../images/gen007/workbench/workbench-candidate-stage.png) |
+| Inspect semantic planes | Use **Plane → Play / Rear / Atmosphere / Far / Four-plane composite**. These correspond to native `play`, `scripted`, `effects` and `background` data. | [Composite](../images/gen007/workbench/workbench-four-plane-composite.png), [isolated play](../images/gen007/workbench/workbench-isolated-play.png) |
+| Inspect or edit hierarchy | **Hierarchy / planes** shows accepted features. Select a feature for its copied record and parent chain; edit rule or plane JSON, then **Validate and apply selected rule** or **Validate and apply plane data**. The overlay selector exposes **Feature bounds / sockets / routes**. | [Hierarchy, sockets and routes](../images/gen007/workbench/workbench-route-socket-hierarchy.png) |
+| Explain a cell | Leave the upper **Inspect** toggle on and click a ready cell, or Ctrl-click. Read **Why is this here?** for native replay and the accepted-material comparison. | [Cell provenance](../images/gen007/workbench/workbench-cell-provenance.png) |
+| Review density and work | Open **Quality / comparisons** for counts; choose **Semantic feature density**, **Measured chunk time** or **Charged logical work** in the overlay selector. | [Density](../images/gen007/workbench/workbench-feature-density.png), [measured time](../images/gen007/workbench/workbench-measured-chunk-time.png), [charged work](../images/gen007/workbench/workbench-logical-work.png) |
+| Browse seeds or compare edits | In **Quality / comparisons**, enter up to four seeds and select **Generate seed cards**. For a comparison, **Pin current recipe and view**, make an accepted edit, then **Compare pinned / accepted**. | [Seed cards](../images/gen007/workbench/workbench-seed-browser.png), [before/after](../images/gen007/workbench/workbench-before-after.png) |
+
+Right/middle drag pans; the wheel or **− / +** zooms. **Origin → Go** and **Home**
+set the viewport location. Turn **Inspect** off to draw with **Brushes / contextual
+sculpt**. The header supplies **Undo**, **Redo** and **Cancel edit**;
+**Cancel auxiliary jobs** in **Quality / comparisons** retires seed/compare work.
+
+The [18-capture manifest](../images/gen007/workbench/workbench-render-evidence.json)
+and [display test](../../godot/tests/test_gen007_workbench_render.gd) bind these
+feature cases to bounded GEN-003/004/005 data: the
+[typed vector utilities](../../examples/worldgen/typed-vector-utilities.json) and
+[semantic refinery](../../examples/worldgen/semantic-refinery.json), with deliberate
+local changes for the comparison. They do not depict the complete qualification
+recipe. To load that recipe, use **Graph canvas → Load GEN-007 Deepworks recipe**.
+The additional [qualification viewport](../images/gen007/workbench/workbench-qualification-viewport.png)
+shows the actual final, 61,845-byte
+[GEN-007 recipe](../../examples/worldgen/gen007-deepworks.json), at seed `19337`
+after rapid replacement. It shows a bounded current viewport of the 1024 × 1024
+place; the separate qualification scene owns full-region visual acceptance.
 
 ## Why is this cell or feature here?
 
@@ -162,6 +195,84 @@ partial seed or comparison data. Trace admission checks its captured token again
 
 These are finite authoring transactions. They do not rebase player edits into
 new generation or replace an active gameplay World's ownership contract.
+
+### What responsiveness was measured?
+
+The 2026-10-21 [latency receipt](../audits/gen007/workbench-latency.json) measures
+the actual final qualification recipe in an open Workbench. The
+[portable probe](../audits/gen007/workbench-latency-probe.gd) retains the same
+frame/service measurement loop. **Committing accepted content still caused a
+108–129 ms main-thread service call, with a worst observed frame gap of 166.333 ms.**
+The sub-millisecond native adoption time alone does not describe that UI hitch.
+The separate RSS verification below increased the observed maxima to
+**136.857 ms for the complete UI service call and 170.958 ms for a frame gap**.
+
+| Operation | Observed local result |
+|---|---|
+| Prepare and accept seed `19301` | Submission 2.403 ms; private preparation 2,456.247 ms; native adoption 0.562 ms. Complete commit/UI service 108.158 ms; largest frame gap 152.194 ms. The previous accepted cache remained intact until commit. |
+| Cancel a running full-recipe candidate | Cancel call 0.025 ms; the private worker took a further 2,536.583 ms to quiesce. Accepted recipe identity and preview remained intact. Cancellation retires publication immediately; it does not synchronously stop the worker. |
+| Replace a pending edit with seed `19337` | Two submission calls totalled 3.260 ms; the newest candidate was accepted after 4,861.329 ms, including retired work. Complete commit/UI service 128.995 ms; largest frame gap 166.333 ms. |
+| Complete the first four-plane viewport | A 256 × 192 view used twelve 64 × 64 chunks and retained 196,608 material bytes. Completion took 1,127.129 ms; native generation calls totalled 54.382 ms. Largest preview service call 18.883 ms; largest frame gap 61.819 ms. |
+
+The receipt includes min/median/95th-percentile/maximum frame and service times,
+including the frame after each final service call. It records exact recipe,
+runtime and editor input hashes. This isolated Linux run used Godot 4.7, X11 and
+llvmpipe on an AMD EPYC 9V74, with `LIBGL_ALWAYS_SOFTWARE=1`, `LP_NUM_THREADS=2`
+and `GALLIVM_PERF=nopt`. XDG directories were fresh; the starter 128 × 128 view
+and 20 rendered frames were warmed before measurement. Operating-system file
+caches were uncontrolled, and this original run imposed no explicit memory
+limit. These are local interaction measurements, not cold-start, target-hardware
+frame-rate or full-map rendering guarantees. The [dated ledger](../audits/2026-10-21-gen007-workbench-qualification.md)
+owns the publication/source binding and remaining platform evidence.
+
+#### Separate process-memory verification
+
+A second isolated run of the portable probe on source
+`2f7f65bf6e80c7258f2bdda19f949760d211b59e` retained a
+[memory receipt](../audits/gen007/workbench-memory.json) and its own
+[timing receipt](../audits/gen007/workbench-rss-latency.json). Godot's peak resident
+memory was **405,815,296 bytes (387.016 MiB)**, below the 4 GiB comparison bound.
+The [Python wrapper](../audits/gen007/workbench-memory-wrapper.py) used Linux
+`resource.getrusage(RUSAGE_CHILDREN).ru_maxrss` after its sole Godot child exited.
+This measures that process's high-water RSS; Xvfb and the parent Python process
+are excluded. It imposed no additional RLIMIT or cgroup memory limit.
+
+Both the process and the probe completed successfully. This run retained the
+same final recipe/runtime bytes and canonical renderer flags, with fresh XDG
+paths and the same starter-view warmup. Private preparation took 2,472.113 ms;
+cancellation returned in 0.024 ms while retaining the accepted state. The rapid
+replacement's **136.857 ms UI service and 170.958 ms frame gap** are larger than
+the original receipt and remain part of the evidence. The original latency JSON
+is unchanged; the portable probe changes output-path selection and self-hashing,
+with the measurement loop preserved.
+
+The memory receipt contains the exact tested Godot child command, environment,
+180-second timeout and artifact hashes. To reproduce the workload, use the
+recorded native/editor input bytes and run from the repository root. Set
+`GEN007_GODOT` to the pinned Godot executable and `GEN007_OUTPUT_DIR` to an output
+directory. The command below records the actual checkout revision; the resulting
+runtime/input hashes identify a new measurement, even when the implementation
+bytes match the retained run.
+
+```sh
+GEN007_XDG_ROOT="$(mktemp -d)"
+LIBGL_ALWAYS_SOFTWARE=1 LP_NUM_THREADS=2 GALLIVM_PERF=nopt \
+XDG_DATA_HOME="$GEN007_XDG_ROOT/data" XDG_CONFIG_HOME="$GEN007_XDG_ROOT/config" \
+XDG_CACHE_HOME="$GEN007_XDG_ROOT/cache" \
+xvfb-run -a -s '-screen 0 1920x1200x24' \
+python3 docs/audits/gen007/workbench-memory-wrapper.py \
+  --godot "$GEN007_GODOT" --project godot \
+  --probe docs/audits/gen007/workbench-latency-probe.gd \
+  --output-dir "$GEN007_OUTPUT_DIR" \
+  --source "$(git rev-parse HEAD)"
+```
+
+The tested portable probe SHA256 is
+`3a533ca91170766bfe2b1f1ab4e62c4314a18eb7e41f485a92f52fcddc61b3a3`;
+the wrapper SHA256 is
+`4272ea6b86fe7f4f4be21f09db853e2ff598e22700fe7db9d08788d6bdd71165`.
+The probe also accepts an absolute report path through `--output=…` after Godot's
+`--` separator, or `CYBERSAND_WORKBENCH_EVIDENCE_OUTPUT`.
 
 ## How do seed and before/after comparisons work?
 

@@ -1,0 +1,15 @@
+{
+  "os": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "cpu": "AMD EPYC 9V74 80-Core Processor",
+  "logical_processors": 9,
+  "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+  "memory_kib": "MemTotal:       10206484 kB",
+  "godot": "4.7.stable.official.5b4e0cb0f",
+  "render_backend": "Xvfb X11 + Mesa llvmpipe compatibility OpenGL for actual display cases",
+  "scope": "Local correctness execution; isolated timing identified separately",
+  "initial_predeclared_graphical_process_peak_rss_limit_mib": 2048,
+  "initial_graphical_envelope_status": "failed: cold llvmpipe peak exceeded 2 GiB; retained in dated audit",
+  "declared_headless_process_peak_rss_limit_mib": 2048,
+  "revised_declared_graphical_process_peak_rss_limit_mib": 4096,
+  "rss_method": "one Godot child per Python subprocess measurement; resource.getrusage(RUSAGE_CHILDREN).ru_maxrss in KiB converted to bytes; not a sum of Xvfb, driver helpers or unrelated processes"
+}

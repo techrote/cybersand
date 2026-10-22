@@ -1,0 +1,653 @@
+{
+	"complete": true,
+	"native_library_sha256": "0d867938166e63c2b8dc3079c76fbb148d9e78c7c8b7ac3d4299b674ac07044e",
+	"recipe_sha256": "688e5ee0cddf630109219030821baf38a82ef6f06afe8002fc720bd4c319186b",
+	"records": [
+		{
+			"complete": true,
+			"generator_fingerprint": "5f512fa7de534bec",
+			"grammar_fingerprint": "abf3dcc5ee20f453",
+			"grammar_operations_per_sample": 864,
+			"grammar_preparation_work": 372378,
+			"grammar_spatial_index": {
+				"bin_size": 64,
+				"bins": 256,
+				"cost_kind": "operations_per_sample/cell are conservative logical bounds, not elapsed time",
+				"entries": 1324,
+				"kind": "measured prepared index counts; 64-cell bins preserve canonical candidate order",
+				"maximum_candidates": 11
+			},
+			"grammar_storage_bytes": 1712806,
+			"plane_fingerprint": "db70c8902e921712",
+			"plane_operations_per_cell": 3720,
+			"plane_preparation_work": 321467,
+			"plane_storage_bytes": 715772,
+			"route_validation": {
+				"boundary_apertures": true,
+				"cells": 1048576,
+				"clearance": 7,
+				"ok": true,
+				"operations": 4932597984,
+				"passed": true,
+				"profile": "floating-square-v1",
+				"routes": [
+					{
+						"blocked_centres": 0,
+						"checked_centres": 363,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 162,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 36,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 82,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 145,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 26,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 148,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 380,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 526,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/east",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 2052,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/loop",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 257,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/loop-link",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 560,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/north",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 654,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/south",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 637,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/west",
+						"passed": true
+					}
+				],
+				"support_profile": "static-solid-contact-v1",
+				"supports": [],
+				"supports_passed": true
+			},
+			"seed": 19301
+		},
+		{
+			"complete": true,
+			"generator_fingerprint": "e40a706561f6689a",
+			"grammar_fingerprint": "9bd58920ddb3b233",
+			"grammar_operations_per_sample": 928,
+			"grammar_preparation_work": 373074,
+			"grammar_spatial_index": {
+				"bin_size": 64,
+				"bins": 256,
+				"cost_kind": "operations_per_sample/cell are conservative logical bounds, not elapsed time",
+				"entries": 1335,
+				"kind": "measured prepared index counts; 64-cell bins preserve canonical candidate order",
+				"maximum_candidates": 11
+			},
+			"grammar_storage_bytes": 1713228,
+			"plane_fingerprint": "536fb742a4d1ca50",
+			"plane_operations_per_cell": 3720,
+			"plane_preparation_work": 321683,
+			"plane_storage_bytes": 716204,
+			"route_validation": {
+				"boundary_apertures": true,
+				"cells": 1048576,
+				"clearance": 7,
+				"ok": true,
+				"operations": 4999710112,
+				"passed": true,
+				"profile": "floating-square-v1",
+				"routes": [
+					{
+						"blocked_centres": 0,
+						"checked_centres": 368,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 245,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 36,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 130,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 144,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 144,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 65,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 317,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 609,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/east",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 2052,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/loop",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 257,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/loop-link",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 608,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/north",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 665,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/south",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 592,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/west",
+						"passed": true
+					}
+				],
+				"support_profile": "static-solid-contact-v1",
+				"supports": [],
+				"supports_passed": true
+			},
+			"seed": 19317
+		},
+		{
+			"complete": true,
+			"generator_fingerprint": "47c27aab096ca7ec",
+			"grammar_fingerprint": "2c19e8c57c21dfac",
+			"grammar_operations_per_sample": 928,
+			"grammar_preparation_work": 372994,
+			"grammar_spatial_index": {
+				"bin_size": 64,
+				"bins": 256,
+				"cost_kind": "operations_per_sample/cell are conservative logical bounds, not elapsed time",
+				"entries": 1346,
+				"kind": "measured prepared index counts; 64-cell bins preserve canonical candidate order",
+				"maximum_candidates": 11
+			},
+			"grammar_storage_bytes": 1713160,
+			"plane_fingerprint": "45e2c965c9d099fc",
+			"plane_operations_per_cell": 3784,
+			"plane_preparation_work": 321683,
+			"plane_storage_bytes": 716204,
+			"route_validation": {
+				"boundary_apertures": true,
+				"cells": 1048576,
+				"clearance": 7,
+				"ok": true,
+				"operations": 4999704896,
+				"passed": true,
+				"profile": "floating-square-v1",
+				"routes": [
+					{
+						"blocked_centres": 0,
+						"checked_centres": 368,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 143,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 36,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 114,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 19,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 19,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 167,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 380,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 519,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/east",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 2052,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/loop",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 257,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/loop-link",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 636,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/north",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 540,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/south",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 656,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/west",
+						"passed": true
+					}
+				],
+				"support_profile": "static-solid-contact-v1",
+				"supports": [],
+				"supports_passed": true
+			},
+			"seed": 19337
+		},
+		{
+			"complete": true,
+			"generator_fingerprint": "5236d6ec3c8ce787",
+			"grammar_fingerprint": "10fe062a73b2994d",
+			"grammar_operations_per_sample": 1024,
+			"grammar_preparation_work": 371634,
+			"grammar_spatial_index": {
+				"bin_size": 64,
+				"bins": 256,
+				"cost_kind": "operations_per_sample/cell are conservative logical bounds, not elapsed time",
+				"entries": 1325,
+				"kind": "measured prepared index counts; 64-cell bins preserve canonical candidate order",
+				"maximum_candidates": 11
+			},
+			"grammar_storage_bytes": 1712742,
+			"plane_fingerprint": "1e6581aff14061d7",
+			"plane_operations_per_cell": 3720,
+			"plane_preparation_work": 321547,
+			"plane_storage_bytes": 715932,
+			"route_validation": {
+				"boundary_apertures": true,
+				"cells": 1048576,
+				"clearance": 7,
+				"ok": true,
+				"operations": 5100371200,
+				"passed": true,
+				"profile": "floating-square-v1",
+				"routes": [
+					{
+						"blocked_centres": 0,
+						"checked_centres": 340,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 243,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 36,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 105,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 145,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 136,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 67,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 319,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/connection/entry",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 607,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/east",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 2052,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/loop",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 257,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/loop-link",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 583,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/north",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 677,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/south",
+						"passed": true
+					},
+					{
+						"blocked_centres": 0,
+						"checked_centres": 527,
+						"detail": "final Empty-cell square clearance and four-neighbour connectivity verified",
+						"first_block_x": 0,
+						"first_block_y": 0,
+						"id": "deepworks-procedural/grid1024/region(0,0)/route/west",
+						"passed": true
+					}
+				],
+				"support_profile": "static-solid-contact-v1",
+				"supports": [],
+				"supports_passed": true
+			},
+			"seed": 19361
+		}
+	],
+	"schema": 1,
+	"source_revision": "2f7f65bf6e80c7258f2bdda19f949760d211b59e"
+}

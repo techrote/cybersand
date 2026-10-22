@@ -1,0 +1,2117 @@
+{
+	"assertions": 1148,
+	"completed": [
+		"seed-19301",
+		"seed-19317",
+		"seed-19337",
+		"seed-19361",
+		"workers",
+		"budgets",
+		"negative-controls"
+	],
+	"elapsed_ms": 30538.836,
+	"engine": {
+		"build": "official",
+		"hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+		"hex": 263936,
+		"major": 4,
+		"minor": 7,
+		"patch": 0,
+		"status": "stable",
+		"string": "4.7-stable (official)",
+		"timestamp": 0
+	},
+	"failures": 0,
+	"godot_static_peak_bytes": 52580957,
+	"memory_scope": "Godot static allocation peak only; native/process peak RSS is recorded by the process wrapper",
+	"os": "Linux",
+	"recipe_sha256": "688e5ee0cddf630109219030821baf38a82ef6f06afe8002fc720bd4c319186b",
+	"records": [
+		{
+			"cabinet_layout": [
+				{
+					"bounds": "[P: (872, 898), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0"
+				},
+				{
+					"bounds": "[P: (568, 824), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1"
+				},
+				{
+					"bounds": "[P: (880, 572), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0"
+				},
+				{
+					"bounds": "[P: (672, 572), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1"
+				},
+				{
+					"bounds": "[P: (56, 312), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0"
+				},
+				{
+					"bounds": "[P: (360, 386), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1"
+				},
+				{
+					"bounds": "[P: (56, 60), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0"
+				},
+				{
+					"bounds": "[P: (160, 60), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1"
+				},
+				{
+					"bounds": "[P: (56, 824), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0"
+				},
+				{
+					"bounds": "[P: (160, 824), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1"
+				},
+				{
+					"bounds": "[P: (56, 572), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0"
+				},
+				{
+					"bounds": "[P: (160, 572), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1"
+				},
+				{
+					"bounds": "[P: (872, 312), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0"
+				},
+				{
+					"bounds": "[P: (872, 386), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1"
+				},
+				{
+					"bounds": "[P: (672, 60), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0"
+				},
+				{
+					"bounds": "[P: (568, 60), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1"
+				}
+			],
+			"complete": true,
+			"generation_ms": 3264.379,
+			"hashes": {
+				"background": "a2542213e8296879",
+				"effects": "3db945f379696555",
+				"play": "7e78bccdb2d96378",
+				"scripted": "93a6104b7a8b8cfe"
+			},
+			"native_limits": {
+				"max_actors": 8,
+				"max_cells_per_plane": 1048576,
+				"max_diagnostic_bytes": 4194304,
+				"max_events_per_tick": 256,
+				"max_fixture_cell_writes": 4194304,
+				"max_fixtures": 1024,
+				"max_links": 2048,
+				"max_operations": 4000000000,
+				"max_prepared_bytes": 16777216,
+				"max_projections": 2048,
+				"max_publication_bytes": 67108864,
+				"max_templates": 128
+			},
+			"native_spatial_index": {
+				"bin_size": 64,
+				"bins": 1024,
+				"cost_kind": "operations_per_sample/cell are conservative logical bounds, not elapsed time",
+				"entries": 3072,
+				"kind": "measured prepared index counts; 64-cell bins preserve canonical candidate order",
+				"maximum_candidates": 12
+			},
+			"native_storage_bytes": 715772,
+			"revision": "db70c8902e921712",
+			"seed": 19301,
+			"structure": {
+				"complete": true,
+				"coverage": {
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0": {
+						"background": {
+							"intentional_empty": 35784,
+							"nonempty": 43064
+						},
+						"effects": {
+							"intentional_empty": 78688,
+							"nonempty": 160
+						},
+						"play": {
+							"intentional_empty": 70570,
+							"nonempty": 8278
+						},
+						"scripted": {
+							"intentional_empty": 69862,
+							"nonempty": 8986
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0": {
+						"background": {
+							"intentional_empty": 34380,
+							"nonempty": 44468
+						},
+						"effects": {
+							"intentional_empty": 78400,
+							"nonempty": 448
+						},
+						"play": {
+							"intentional_empty": 71761,
+							"nonempty": 7087
+						},
+						"scripted": {
+							"intentional_empty": 69896,
+							"nonempty": 8952
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0": {
+						"background": {
+							"intentional_empty": 32138,
+							"nonempty": 46710
+						},
+						"effects": {
+							"intentional_empty": 78688,
+							"nonempty": 160
+						},
+						"play": {
+							"intentional_empty": 62808,
+							"nonempty": 16040
+						},
+						"scripted": {
+							"intentional_empty": 69862,
+							"nonempty": 8986
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0": {
+						"background": {
+							"intentional_empty": 30028,
+							"nonempty": 48820
+						},
+						"effects": {
+							"intentional_empty": 78400,
+							"nonempty": 448
+						},
+						"play": {
+							"intentional_empty": 70989,
+							"nonempty": 7859
+						},
+						"scripted": {
+							"intentional_empty": 51803,
+							"nonempty": 27045
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0": {
+						"background": {
+							"intentional_empty": 37072,
+							"nonempty": 41776
+						},
+						"effects": {
+							"intentional_empty": 78688,
+							"nonempty": 160
+						},
+						"play": {
+							"intentional_empty": 62384,
+							"nonempty": 16464
+						},
+						"scripted": {
+							"intentional_empty": 69742,
+							"nonempty": 9106
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0": {
+						"background": {
+							"intentional_empty": 34560,
+							"nonempty": 44288
+						},
+						"effects": {
+							"intentional_empty": 78400,
+							"nonempty": 448
+						},
+						"play": {
+							"intentional_empty": 71674,
+							"nonempty": 7174
+						},
+						"scripted": {
+							"intentional_empty": 69774,
+							"nonempty": 9074
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0": {
+						"background": {
+							"intentional_empty": 36064,
+							"nonempty": 42784
+						},
+						"effects": {
+							"intentional_empty": 78688,
+							"nonempty": 160
+						},
+						"play": {
+							"intentional_empty": 70741,
+							"nonempty": 8107
+						},
+						"scripted": {
+							"intentional_empty": 69712,
+							"nonempty": 9136
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0": {
+						"background": {
+							"intentional_empty": 34964,
+							"nonempty": 43884
+						},
+						"effects": {
+							"intentional_empty": 78400,
+							"nonempty": 448
+						},
+						"play": {
+							"intentional_empty": 71534,
+							"nonempty": 7314
+						},
+						"scripted": {
+							"intentional_empty": 69746,
+							"nonempty": 9102
+						}
+					}
+				},
+				"cross_chunk_structures": 14,
+				"errors": [],
+				"exhibit_materials": {
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/fixture/geothermal-well-play-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/fixture/geothermal-well-scripted-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/fixture/brine-retort-play-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/fixture/brine-retort-scripted-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/fixture/clay-kiln-play-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/fixture/clay-kiln-scripted-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/fixture/snow-lens-play-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/fixture/snow-lens-scripted-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					}
+				},
+				"major_regions": 4,
+				"micro_features": 24,
+				"named_subregions": 8,
+				"ok": true,
+				"operations": 3900705643,
+				"optional_loops": 2,
+				"paired_exhibits": 4,
+				"regional_exhibits": {
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0": {
+						"features": 1,
+						"fixtures": {
+							"play": 1,
+							"scripted": 1
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0": {
+						"features": 1,
+						"fixtures": {
+							"play": 1,
+							"scripted": 1
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0": {
+						"features": 1,
+						"fixtures": {
+							"play": 1,
+							"scripted": 1
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0": {
+						"features": 1,
+						"fixtures": {
+							"play": 1,
+							"scripted": 1
+						}
+					}
+				},
+				"routes": {
+					"blocked_centres": 0,
+					"checked_centres": 7902,
+					"complete": true,
+					"connected_centres": 7902,
+					"connected_optional_loops": 2,
+					"errors": [],
+					"galleries": {
+						"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0": true
+					},
+					"ok": true,
+					"profile": "seven-cell square clearance on every explicit final-material path centre; no actor dynamics claim",
+					"regions": {
+						"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/copper-choir/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0": true
+					},
+					"temporary_grid_bytes": 3177336
+				},
+				"stable_ids": [
+					"deepworks-procedural/grid1024/region(0,0)",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/play-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/play-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/rear-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/rear-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-foot/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-foot/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-foot/2",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-foot/3",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-pilot/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-pilot/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/vault-lock/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/vault-lock/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/play-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/play-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/rear-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/rear-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-foot/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-foot/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-foot/2",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-foot/3",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-pilot/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-pilot/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/optional-loop/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/play-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/play-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/rear-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/rear-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-foot/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-foot/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-foot/2",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-foot/3",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-pilot/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-pilot/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/optional-loop/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0/optical-aperture/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0/optical-brace/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0/optical-brace/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0/optical-brace/2",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0/optical-brace/3",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1/optical-aperture/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1/optical-brace/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1/optical-brace/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1/optical-brace/2",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1/optical-brace/3",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/play-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/play-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/rear-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/rear-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-foot/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-foot/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-foot/2",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-foot/3",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-pilot/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-pilot/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-rail/0"
+				]
+			}
+		},
+		{
+			"cabinet_layout": [
+				{
+					"bounds": "[P: (568, 824), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0"
+				},
+				{
+					"bounds": "[P: (672, 824), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1"
+				},
+				{
+					"bounds": "[P: (568, 572), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0"
+				},
+				{
+					"bounds": "[P: (880, 572), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1"
+				},
+				{
+					"bounds": "[P: (56, 312), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0"
+				},
+				{
+					"bounds": "[P: (360, 312), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1"
+				},
+				{
+					"bounds": "[P: (56, 60), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0"
+				},
+				{
+					"bounds": "[P: (160, 60), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1"
+				},
+				{
+					"bounds": "[P: (56, 824), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0"
+				},
+				{
+					"bounds": "[P: (160, 824), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1"
+				},
+				{
+					"bounds": "[P: (56, 572), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0"
+				},
+				{
+					"bounds": "[P: (160, 572), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1"
+				},
+				{
+					"bounds": "[P: (872, 312), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0"
+				},
+				{
+					"bounds": "[P: (672, 312), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1"
+				},
+				{
+					"bounds": "[P: (776, 60), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0"
+				},
+				{
+					"bounds": "[P: (672, 60), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1"
+				}
+			],
+			"complete": true,
+			"generation_ms": 3469.334,
+			"hashes": {
+				"background": "a2542213e8296879",
+				"effects": "3db945f379696555",
+				"play": "eef58673f979df86",
+				"scripted": "ce28fc43edd973d8"
+			},
+			"native_limits": {
+				"max_actors": 8,
+				"max_cells_per_plane": 1048576,
+				"max_diagnostic_bytes": 4194304,
+				"max_events_per_tick": 256,
+				"max_fixture_cell_writes": 4194304,
+				"max_fixtures": 1024,
+				"max_links": 2048,
+				"max_operations": 4000000000,
+				"max_prepared_bytes": 16777216,
+				"max_projections": 2048,
+				"max_publication_bytes": 67108864,
+				"max_templates": 128
+			},
+			"native_spatial_index": {
+				"bin_size": 64,
+				"bins": 1024,
+				"cost_kind": "operations_per_sample/cell are conservative logical bounds, not elapsed time",
+				"entries": 3095,
+				"kind": "measured prepared index counts; 64-cell bins preserve canonical candidate order",
+				"maximum_candidates": 12
+			},
+			"native_storage_bytes": 716204,
+			"revision": "536fb742a4d1ca50",
+			"seed": 19317,
+			"structure": {
+				"complete": true,
+				"coverage": {
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0": {
+						"background": {
+							"intentional_empty": 35784,
+							"nonempty": 43064
+						},
+						"effects": {
+							"intentional_empty": 78688,
+							"nonempty": 160
+						},
+						"play": {
+							"intentional_empty": 70276,
+							"nonempty": 8572
+						},
+						"scripted": {
+							"intentional_empty": 69792,
+							"nonempty": 9056
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0": {
+						"background": {
+							"intentional_empty": 34380,
+							"nonempty": 44468
+						},
+						"effects": {
+							"intentional_empty": 78400,
+							"nonempty": 448
+						},
+						"play": {
+							"intentional_empty": 71707,
+							"nonempty": 7141
+						},
+						"scripted": {
+							"intentional_empty": 69896,
+							"nonempty": 8952
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0": {
+						"background": {
+							"intentional_empty": 32138,
+							"nonempty": 46710
+						},
+						"effects": {
+							"intentional_empty": 78688,
+							"nonempty": 160
+						},
+						"play": {
+							"intentional_empty": 65455,
+							"nonempty": 13393
+						},
+						"scripted": {
+							"intentional_empty": 69792,
+							"nonempty": 9056
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0": {
+						"background": {
+							"intentional_empty": 30028,
+							"nonempty": 48820
+						},
+						"effects": {
+							"intentional_empty": 78400,
+							"nonempty": 448
+						},
+						"play": {
+							"intentional_empty": 71066,
+							"nonempty": 7782
+						},
+						"scripted": {
+							"intentional_empty": 51803,
+							"nonempty": 27045
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0": {
+						"background": {
+							"intentional_empty": 37072,
+							"nonempty": 41776
+						},
+						"effects": {
+							"intentional_empty": 78688,
+							"nonempty": 160
+						},
+						"play": {
+							"intentional_empty": 62657,
+							"nonempty": 16191
+						},
+						"scripted": {
+							"intentional_empty": 69742,
+							"nonempty": 9106
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0": {
+						"background": {
+							"intentional_empty": 34560,
+							"nonempty": 44288
+						},
+						"effects": {
+							"intentional_empty": 78400,
+							"nonempty": 448
+						},
+						"play": {
+							"intentional_empty": 71525,
+							"nonempty": 7323
+						},
+						"scripted": {
+							"intentional_empty": 69774,
+							"nonempty": 9074
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0": {
+						"background": {
+							"intentional_empty": 36064,
+							"nonempty": 42784
+						},
+						"effects": {
+							"intentional_empty": 78688,
+							"nonempty": 160
+						},
+						"play": {
+							"intentional_empty": 70846,
+							"nonempty": 8002
+						},
+						"scripted": {
+							"intentional_empty": 69642,
+							"nonempty": 9206
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0": {
+						"background": {
+							"intentional_empty": 34964,
+							"nonempty": 43884
+						},
+						"effects": {
+							"intentional_empty": 78400,
+							"nonempty": 448
+						},
+						"play": {
+							"intentional_empty": 71484,
+							"nonempty": 7364
+						},
+						"scripted": {
+							"intentional_empty": 69746,
+							"nonempty": 9102
+						}
+					}
+				},
+				"cross_chunk_structures": 14,
+				"errors": [],
+				"exhibit_materials": {
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/fixture/geothermal-well-play-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/fixture/geothermal-well-scripted-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/fixture/brine-retort-play-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/fixture/brine-retort-scripted-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/fixture/clay-kiln-play-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/fixture/clay-kiln-scripted-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/fixture/snow-lens-play-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/fixture/snow-lens-scripted-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					}
+				},
+				"major_regions": 4,
+				"micro_features": 24,
+				"named_subregions": 8,
+				"ok": true,
+				"operations": 3900705643,
+				"optional_loops": 2,
+				"paired_exhibits": 4,
+				"regional_exhibits": {
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0": {
+						"features": 1,
+						"fixtures": {
+							"play": 1,
+							"scripted": 1
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0": {
+						"features": 1,
+						"fixtures": {
+							"play": 1,
+							"scripted": 1
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0": {
+						"features": 1,
+						"fixtures": {
+							"play": 1,
+							"scripted": 1
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0": {
+						"features": 1,
+						"fixtures": {
+							"play": 1,
+							"scripted": 1
+						}
+					}
+				},
+				"routes": {
+					"blocked_centres": 0,
+					"checked_centres": 7936,
+					"complete": true,
+					"connected_centres": 7936,
+					"connected_optional_loops": 2,
+					"errors": [],
+					"galleries": {
+						"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0": true
+					},
+					"ok": true,
+					"profile": "seven-cell square clearance on every explicit final-material path centre; no actor dynamics claim",
+					"regions": {
+						"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/copper-choir/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0": true
+					},
+					"temporary_grid_bytes": 3177472
+				},
+				"stable_ids": [
+					"deepworks-procedural/grid1024/region(0,0)",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/play-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/play-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/rear-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/rear-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-foot/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-foot/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-foot/2",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-foot/3",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-pilot/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-pilot/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/vault-lock/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/vault-lock/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/play-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/play-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/rear-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/rear-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-foot/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-foot/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-foot/2",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-foot/3",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-pilot/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-pilot/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/optional-loop/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/play-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/play-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/rear-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/rear-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-foot/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-foot/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-foot/2",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-foot/3",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-pilot/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-pilot/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/optional-loop/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0/optical-aperture/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0/optical-brace/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0/optical-brace/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0/optical-brace/2",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0/optical-brace/3",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1/optical-aperture/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1/optical-brace/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1/optical-brace/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1/optical-brace/2",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1/optical-brace/3",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/play-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/play-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/rear-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/rear-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-foot/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-foot/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-foot/2",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-foot/3",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-pilot/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-pilot/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-rail/0"
+				]
+			}
+		},
+		{
+			"cabinet_layout": [
+				{
+					"bounds": "[P: (568, 824), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0"
+				},
+				{
+					"bounds": "[P: (672, 824), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1"
+				},
+				{
+					"bounds": "[P: (568, 572), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0"
+				},
+				{
+					"bounds": "[P: (880, 572), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1"
+				},
+				{
+					"bounds": "[P: (56, 312), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0"
+				},
+				{
+					"bounds": "[P: (160, 312), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1"
+				},
+				{
+					"bounds": "[P: (56, 60), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0"
+				},
+				{
+					"bounds": "[P: (160, 60), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1"
+				},
+				{
+					"bounds": "[P: (56, 824), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0"
+				},
+				{
+					"bounds": "[P: (160, 824), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1"
+				},
+				{
+					"bounds": "[P: (56, 572), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0"
+				},
+				{
+					"bounds": "[P: (368, 572), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1"
+				},
+				{
+					"bounds": "[P: (568, 312), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0"
+				},
+				{
+					"bounds": "[P: (872, 312), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1"
+				},
+				{
+					"bounds": "[P: (568, 60), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0"
+				},
+				{
+					"bounds": "[P: (672, 60), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1"
+				}
+			],
+			"complete": true,
+			"generation_ms": 3498.144,
+			"hashes": {
+				"background": "a2542213e8296879",
+				"effects": "3db945f379696555",
+				"play": "598a24d47e04cbef",
+				"scripted": "8b421bd98a737ad8"
+			},
+			"native_limits": {
+				"max_actors": 8,
+				"max_cells_per_plane": 1048576,
+				"max_diagnostic_bytes": 4194304,
+				"max_events_per_tick": 256,
+				"max_fixture_cell_writes": 4194304,
+				"max_fixtures": 1024,
+				"max_links": 2048,
+				"max_operations": 4000000000,
+				"max_prepared_bytes": 16777216,
+				"max_projections": 2048,
+				"max_publication_bytes": 67108864,
+				"max_templates": 128
+			},
+			"native_spatial_index": {
+				"bin_size": 64,
+				"bins": 1024,
+				"cost_kind": "operations_per_sample/cell are conservative logical bounds, not elapsed time",
+				"entries": 3107,
+				"kind": "measured prepared index counts; 64-cell bins preserve canonical candidate order",
+				"maximum_candidates": 12
+			},
+			"native_storage_bytes": 716204,
+			"revision": "45e2c965c9d099fc",
+			"seed": 19337,
+			"structure": {
+				"complete": true,
+				"coverage": {
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0": {
+						"background": {
+							"intentional_empty": 35784,
+							"nonempty": 43064
+						},
+						"effects": {
+							"intentional_empty": 78688,
+							"nonempty": 160
+						},
+						"play": {
+							"intentional_empty": 70153,
+							"nonempty": 8695
+						},
+						"scripted": {
+							"intentional_empty": 69792,
+							"nonempty": 9056
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0": {
+						"background": {
+							"intentional_empty": 34380,
+							"nonempty": 44468
+						},
+						"effects": {
+							"intentional_empty": 78400,
+							"nonempty": 448
+						},
+						"play": {
+							"intentional_empty": 71508,
+							"nonempty": 7340
+						},
+						"scripted": {
+							"intentional_empty": 69896,
+							"nonempty": 8952
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0": {
+						"background": {
+							"intentional_empty": 32138,
+							"nonempty": 46710
+						},
+						"effects": {
+							"intentional_empty": 78688,
+							"nonempty": 160
+						},
+						"play": {
+							"intentional_empty": 62735,
+							"nonempty": 16113
+						},
+						"scripted": {
+							"intentional_empty": 69792,
+							"nonempty": 9056
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0": {
+						"background": {
+							"intentional_empty": 30028,
+							"nonempty": 48820
+						},
+						"effects": {
+							"intentional_empty": 78400,
+							"nonempty": 448
+						},
+						"play": {
+							"intentional_empty": 71321,
+							"nonempty": 7527
+						},
+						"scripted": {
+							"intentional_empty": 51803,
+							"nonempty": 27045
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0": {
+						"background": {
+							"intentional_empty": 37072,
+							"nonempty": 41776
+						},
+						"effects": {
+							"intentional_empty": 78688,
+							"nonempty": 160
+						},
+						"play": {
+							"intentional_empty": 62489,
+							"nonempty": 16359
+						},
+						"scripted": {
+							"intentional_empty": 69742,
+							"nonempty": 9106
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0": {
+						"background": {
+							"intentional_empty": 34560,
+							"nonempty": 44288
+						},
+						"effects": {
+							"intentional_empty": 78400,
+							"nonempty": 448
+						},
+						"play": {
+							"intentional_empty": 71746,
+							"nonempty": 7102
+						},
+						"scripted": {
+							"intentional_empty": 69774,
+							"nonempty": 9074
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0": {
+						"background": {
+							"intentional_empty": 36064,
+							"nonempty": 42784
+						},
+						"effects": {
+							"intentional_empty": 78688,
+							"nonempty": 160
+						},
+						"play": {
+							"intentional_empty": 70581,
+							"nonempty": 8267
+						},
+						"scripted": {
+							"intentional_empty": 69642,
+							"nonempty": 9206
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0": {
+						"background": {
+							"intentional_empty": 34964,
+							"nonempty": 43884
+						},
+						"effects": {
+							"intentional_empty": 78400,
+							"nonempty": 448
+						},
+						"play": {
+							"intentional_empty": 71055,
+							"nonempty": 7793
+						},
+						"scripted": {
+							"intentional_empty": 69746,
+							"nonempty": 9102
+						}
+					}
+				},
+				"cross_chunk_structures": 14,
+				"errors": [],
+				"exhibit_materials": {
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/fixture/geothermal-well-play-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/fixture/geothermal-well-scripted-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/fixture/brine-retort-play-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/fixture/brine-retort-scripted-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/fixture/clay-kiln-play-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/fixture/clay-kiln-scripted-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/fixture/snow-lens-play-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/fixture/snow-lens-scripted-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					}
+				},
+				"major_regions": 4,
+				"micro_features": 24,
+				"named_subregions": 8,
+				"ok": true,
+				"operations": 3967814507,
+				"optional_loops": 2,
+				"paired_exhibits": 4,
+				"regional_exhibits": {
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0": {
+						"features": 1,
+						"fixtures": {
+							"play": 1,
+							"scripted": 1
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0": {
+						"features": 1,
+						"fixtures": {
+							"play": 1,
+							"scripted": 1
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0": {
+						"features": 1,
+						"fixtures": {
+							"play": 1,
+							"scripted": 1
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0": {
+						"features": 1,
+						"fixtures": {
+							"play": 1,
+							"scripted": 1
+						}
+					}
+				},
+				"routes": {
+					"blocked_centres": 0,
+					"checked_centres": 7799,
+					"complete": true,
+					"connected_centres": 7799,
+					"connected_optional_loops": 2,
+					"errors": [],
+					"galleries": {
+						"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0": true
+					},
+					"ok": true,
+					"profile": "seven-cell square clearance on every explicit final-material path centre; no actor dynamics claim",
+					"regions": {
+						"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/copper-choir/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0": true
+					},
+					"temporary_grid_bytes": 3176924
+				},
+				"stable_ids": [
+					"deepworks-procedural/grid1024/region(0,0)",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/play-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/play-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/rear-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/rear-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-foot/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-foot/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-foot/2",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-foot/3",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-pilot/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-pilot/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/vault-lock/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/vault-lock/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/play-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/play-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/rear-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/rear-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-foot/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-foot/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-foot/2",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-foot/3",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-pilot/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-pilot/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/optional-loop/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/play-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/play-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/rear-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/rear-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-foot/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-foot/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-foot/2",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-foot/3",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-pilot/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-pilot/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/optional-loop/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0/optical-aperture/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0/optical-brace/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0/optical-brace/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0/optical-brace/2",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0/optical-brace/3",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1/optical-aperture/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1/optical-brace/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1/optical-brace/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1/optical-brace/2",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1/optical-brace/3",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/play-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/play-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/rear-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/rear-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-foot/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-foot/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-foot/2",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-foot/3",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-pilot/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-pilot/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-rail/0"
+				]
+			}
+		},
+		{
+			"cabinet_layout": [
+				{
+					"bounds": "[P: (568, 824), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0"
+				},
+				{
+					"bounds": "[P: (872, 898), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1"
+				},
+				{
+					"bounds": "[P: (880, 572), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0"
+				},
+				{
+					"bounds": "[P: (568, 572), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1"
+				},
+				{
+					"bounds": "[P: (56, 312), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0"
+				},
+				{
+					"bounds": "[P: (360, 386), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1"
+				},
+				{
+					"bounds": "[P: (56, 60), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0"
+				},
+				{
+					"bounds": "[P: (160, 60), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1"
+				},
+				{
+					"bounds": "[P: (56, 824), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0"
+				},
+				{
+					"bounds": "[P: (160, 824), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1"
+				},
+				{
+					"bounds": "[P: (56, 572), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0"
+				},
+				{
+					"bounds": "[P: (368, 572), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1"
+				},
+				{
+					"bounds": "[P: (872, 312), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0"
+				},
+				{
+					"bounds": "[P: (672, 312), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1"
+				},
+				{
+					"bounds": "[P: (776, 60), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0"
+				},
+				{
+					"bounds": "[P: (672, 60), S: (76, 58)]",
+					"id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1"
+				}
+			],
+			"complete": true,
+			"generation_ms": 3332.845,
+			"hashes": {
+				"background": "a2542213e8296879",
+				"effects": "3db945f379696555",
+				"play": "728f73f134bc016b",
+				"scripted": "e3d9c22c7aefc64c"
+			},
+			"native_limits": {
+				"max_actors": 8,
+				"max_cells_per_plane": 1048576,
+				"max_diagnostic_bytes": 4194304,
+				"max_events_per_tick": 256,
+				"max_fixture_cell_writes": 4194304,
+				"max_fixtures": 1024,
+				"max_links": 2048,
+				"max_operations": 4000000000,
+				"max_prepared_bytes": 16777216,
+				"max_projections": 2048,
+				"max_publication_bytes": 67108864,
+				"max_templates": 128
+			},
+			"native_spatial_index": {
+				"bin_size": 64,
+				"bins": 1024,
+				"cost_kind": "operations_per_sample/cell are conservative logical bounds, not elapsed time",
+				"entries": 3077,
+				"kind": "measured prepared index counts; 64-cell bins preserve canonical candidate order",
+				"maximum_candidates": 12
+			},
+			"native_storage_bytes": 715932,
+			"revision": "1e6581aff14061d7",
+			"seed": 19361,
+			"structure": {
+				"complete": true,
+				"coverage": {
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0": {
+						"background": {
+							"intentional_empty": 35784,
+							"nonempty": 43064
+						},
+						"effects": {
+							"intentional_empty": 78688,
+							"nonempty": 160
+						},
+						"play": {
+							"intentional_empty": 70608,
+							"nonempty": 8240
+						},
+						"scripted": {
+							"intentional_empty": 69862,
+							"nonempty": 8986
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0": {
+						"background": {
+							"intentional_empty": 34380,
+							"nonempty": 44468
+						},
+						"effects": {
+							"intentional_empty": 78400,
+							"nonempty": 448
+						},
+						"play": {
+							"intentional_empty": 71844,
+							"nonempty": 7004
+						},
+						"scripted": {
+							"intentional_empty": 69896,
+							"nonempty": 8952
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0": {
+						"background": {
+							"intentional_empty": 32138,
+							"nonempty": 46710
+						},
+						"effects": {
+							"intentional_empty": 78688,
+							"nonempty": 160
+						},
+						"play": {
+							"intentional_empty": 62834,
+							"nonempty": 16014
+						},
+						"scripted": {
+							"intentional_empty": 69862,
+							"nonempty": 8986
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0": {
+						"background": {
+							"intentional_empty": 30028,
+							"nonempty": 48820
+						},
+						"effects": {
+							"intentional_empty": 78400,
+							"nonempty": 448
+						},
+						"play": {
+							"intentional_empty": 71052,
+							"nonempty": 7796
+						},
+						"scripted": {
+							"intentional_empty": 51803,
+							"nonempty": 27045
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0": {
+						"background": {
+							"intentional_empty": 37072,
+							"nonempty": 41776
+						},
+						"effects": {
+							"intentional_empty": 78688,
+							"nonempty": 160
+						},
+						"play": {
+							"intentional_empty": 62438,
+							"nonempty": 16410
+						},
+						"scripted": {
+							"intentional_empty": 69742,
+							"nonempty": 9106
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0": {
+						"background": {
+							"intentional_empty": 34560,
+							"nonempty": 44288
+						},
+						"effects": {
+							"intentional_empty": 78400,
+							"nonempty": 448
+						},
+						"play": {
+							"intentional_empty": 71639,
+							"nonempty": 7209
+						},
+						"scripted": {
+							"intentional_empty": 69774,
+							"nonempty": 9074
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0": {
+						"background": {
+							"intentional_empty": 36064,
+							"nonempty": 42784
+						},
+						"effects": {
+							"intentional_empty": 78688,
+							"nonempty": 160
+						},
+						"play": {
+							"intentional_empty": 70835,
+							"nonempty": 8013
+						},
+						"scripted": {
+							"intentional_empty": 69642,
+							"nonempty": 9206
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0": {
+						"background": {
+							"intentional_empty": 34964,
+							"nonempty": 43884
+						},
+						"effects": {
+							"intentional_empty": 78400,
+							"nonempty": 448
+						},
+						"play": {
+							"intentional_empty": 71412,
+							"nonempty": 7436
+						},
+						"scripted": {
+							"intentional_empty": 69746,
+							"nonempty": 9102
+						}
+					}
+				},
+				"cross_chunk_structures": 14,
+				"errors": [],
+				"exhibit_materials": {
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/fixture/geothermal-well-play-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/fixture/geothermal-well-scripted-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/fixture/brine-retort-play-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/fixture/brine-retort-scripted-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/fixture/clay-kiln-play-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/fixture/clay-kiln-scripted-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/fixture/snow-lens-play-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					},
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/fixture/snow-lens-scripted-feed": {
+						"products": 0,
+						"substrate": 434,
+						"wall_gaps": 0
+					}
+				},
+				"major_regions": 4,
+				"micro_features": 24,
+				"named_subregions": 8,
+				"ok": true,
+				"operations": 3900705643,
+				"optional_loops": 2,
+				"paired_exhibits": 4,
+				"regional_exhibits": {
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0": {
+						"features": 1,
+						"fixtures": {
+							"play": 1,
+							"scripted": 1
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0": {
+						"features": 1,
+						"fixtures": {
+							"play": 1,
+							"scripted": 1
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0": {
+						"features": 1,
+						"fixtures": {
+							"play": 1,
+							"scripted": 1
+						}
+					},
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0": {
+						"features": 1,
+						"fixtures": {
+							"play": 1,
+							"scripted": 1
+						}
+					}
+				},
+				"routes": {
+					"blocked_centres": 0,
+					"checked_centres": 7822,
+					"complete": true,
+					"connected_centres": 7822,
+					"connected_optional_loops": 2,
+					"errors": [],
+					"galleries": {
+						"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0": true
+					},
+					"ok": true,
+					"profile": "seven-cell square clearance on every explicit final-material path centre; no actor dynamics claim",
+					"regions": {
+						"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/copper-choir/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0": true,
+						"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0": true
+					},
+					"temporary_grid_bytes": 3177016
+				},
+				"stable_ids": [
+					"deepworks-procedural/grid1024/region(0,0)",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/play-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/play-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/rear-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/rear-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-foot/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-foot/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-foot/2",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-foot/3",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-pilot/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/vessel-pilot/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/lower-service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/lower-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/upper-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/vault-lock/0",
+					"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/vault-lock/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/play-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/play-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/rear-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/rear-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-foot/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-foot/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-foot/2",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-foot/3",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-pilot/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/vessel-pilot/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/lower-service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/lower-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/optional-loop/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/upper-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/play-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/play-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/rear-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/rear-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-foot/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-foot/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-foot/2",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-foot/3",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-pilot/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/vessel-pilot/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/lower-service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/lower-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/optional-loop/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/upper-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/lower-service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/lower-gallery/0/service-rail/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0/optical-aperture/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0/optical-brace/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0/optical-brace/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0/optical-brace/2",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/0/optical-brace/3",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1/optical-aperture/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1/optical-brace/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1/optical-brace/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1/optical-brace/2",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/optical-core/1/optical-brace/3",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/play-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/play-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/rear-inlet-post/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/rear-inlet-post/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-foot/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-foot/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-foot/2",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-foot/3",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-pilot/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/vessel-pilot/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/0/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1/cabinet-window/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1/gauge/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1/shelf/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-module/1/signal/0",
+					"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/upper-gallery/0/service-rail/0"
+				]
+			}
+		}
+	],
+	"schema": 1,
+	"source_revision": "2f7f65bf6e80c7258f2bdda19f949760d211b59e"
+}

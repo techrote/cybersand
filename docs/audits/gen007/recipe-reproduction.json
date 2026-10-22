@@ -1,0 +1,31 @@
+{
+  "source_revision": "2f7f65bf6e80c7258f2bdda19f949760d211b59e",
+  "builder_stdout": "gen007-deepworks.json: 61845 bytes, 26 rules, 111 projection templates, 8 finite feeds",
+  "reproduced_exact_bytes": true,
+  "files": {
+    "examples/worldgen/gen007-deepworks.json": {
+      "bytes": 61845,
+      "sha256": "688e5ee0cddf630109219030821baf38a82ef6f06afe8002fc720bd4c319186b"
+    },
+    "examples/worldgen/gen007-qualification.json": {
+      "bytes": 3755,
+      "sha256": "e2f8055cbd99addb6ca52979650d66aa8b942e580eb097c03e839ce0f27fea33"
+    }
+  },
+  "jsonschema_version": "4.26.0",
+  "schema_checks": [
+    {
+      "section": "grammar",
+      "schema": "grammar-v1.schema.json",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "section": "semantic_planes",
+      "schema": "semantic-planes-v1.schema.json",
+      "valid": true,
+      "errors": []
+    }
+  ],
+  "complete": true
+}

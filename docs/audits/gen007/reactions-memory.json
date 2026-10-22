@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "started_utc": "2026-10-21T23:43:37.696155+00:00",
+  "command": [
+    "/workspace/scratch/a81c7f866d80/dependencies/godot/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--audio-driver",
+    "Dummy",
+    "--path",
+    "godot",
+    "--script",
+    "res://tests/test_gen007_reactions.gd"
+  ],
+  "cwd": "/workspace/scratch/b64391497be2/cybersand",
+  "returncode": 0,
+  "timed_out": false,
+  "timeout_seconds": 180,
+  "elapsed_seconds": 35.88744475200292,
+  "process_peak_rss_bytes": 360480768,
+  "process_rss_limit_bytes": 2147483648,
+  "within_process_rss_limit": true,
+  "source_revision": "2f7f65bf6e80c7258f2bdda19f949760d211b59e",
+  "identities_before": {
+    "recipe_sha256": "688e5ee0cddf630109219030821baf38a82ef6f06afe8002fc720bd4c319186b",
+    "native_library_sha256": "0d867938166e63c2b8dc3079c76fbb148d9e78c7c8b7ac3d4299b674ac07044e"
+  },
+  "identities_after": {
+    "recipe_sha256": "688e5ee0cddf630109219030821baf38a82ef6f06afe8002fc720bd4c319186b",
+    "native_library_sha256": "0d867938166e63c2b8dc3079c76fbb148d9e78c7c8b7ac3d4299b674ac07044e"
+  },
+  "identities_unchanged": true,
+  "environment": {
+    "CYBERSAND_SOURCE_REVISION": "2f7f65bf6e80c7258f2bdda19f949760d211b59e",
+    "LIBGL_ALWAYS_SOFTWARE": "",
+    "LP_NUM_THREADS": "",
+    "GALLIVM_PERF": "",
+    "MESA_SHADER_CACHE_DIR": "",
+    "XDG_DATA_HOME": "/tmp/gen007-isolated-data",
+    "XDG_CONFIG_HOME": "/tmp/gen007-isolated-config",
+    "XDG_CACHE_HOME": "/tmp/gen007-isolated-cache",
+    "CYBERSAND_GEN007_QUALIFICATION_REPORT": "",
+    "CYBERSAND_GEN007_REACTIONS_REPORT": "/tmp/gen007-isolated-reactions.json"
+  },
+  "cache_state": "headless-no-renderer-cache",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "python": "3.12.14",
+  "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+  "logical_cpus_visible": 9,
+  "scope": "Isolated local GEN007 qualification process; no other native builds or Godot test processes running. Linux getrusage(RUSAGE_CHILDREN) maximum resident set of child/descendant processes, not simultaneous aggregate process-tree memory. Native prepared bytes and Godot static peak are separate report fields."
+}

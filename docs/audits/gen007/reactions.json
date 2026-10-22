@@ -1,0 +1,233 @@
+{
+	"assertions": 1421,
+	"completed": [
+		"native-pairs",
+		"no-feed",
+		"missing-partner"
+	],
+	"controls": {
+		"missing-partner": {
+			"complete": true,
+			"maximum_products": {
+				"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/fixture/geothermal-well-play-feed": 0,
+				"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/fixture/geothermal-well-scripted-feed": 0,
+				"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/fixture/brine-retort-play-feed": 0,
+				"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/fixture/brine-retort-scripted-feed": 0,
+				"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/fixture/clay-kiln-play-feed": 0,
+				"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/fixture/clay-kiln-scripted-feed": 0,
+				"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/fixture/snow-lens-play-feed": 0,
+				"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/fixture/snow-lens-scripted-feed": 0
+			},
+			"observed_exhibits": 8,
+			"ticks": 220
+		},
+		"no-feed": {
+			"complete": true,
+			"maximum_products": {
+				"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/fixture/geothermal-well-play-feed": 0,
+				"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/fixture/geothermal-well-scripted-feed": 0,
+				"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/fixture/brine-retort-play-feed": 0,
+				"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/fixture/brine-retort-scripted-feed": 0,
+				"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/fixture/clay-kiln-play-feed": 0,
+				"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/fixture/clay-kiln-scripted-feed": 0,
+				"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/fixture/snow-lens-play-feed": 0,
+				"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/fixture/snow-lens-scripted-feed": 0
+			},
+			"observed_exhibits": 8,
+			"ticks": 220
+		}
+	},
+	"elapsed_ms": 35416.723,
+	"failures": 0,
+	"recipe_sha256": "688e5ee0cddf630109219030821baf38a82ef6f06afe8002fc720bd4c319186b",
+	"records": {
+		"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/fixture/geothermal-well-play-feed": {
+			"applications": 16,
+			"bounds": "[P: (808, 692), S: (76, 92)]",
+			"completed": true,
+			"feature_id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0",
+			"feed": 3,
+			"fixture_id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/fixture/geothermal-well-play-feed",
+			"initial": {
+				"feed": 0,
+				"product": 0,
+				"substrate": 434,
+				"transport": 0
+			},
+			"max_product": 101,
+			"max_transport": 1612,
+			"min_substrate": 333,
+			"oracle_assertions": 6,
+			"plane": "play",
+			"product": 13,
+			"substrate": 8,
+			"title": "Lava + falling Water → Stone",
+			"verified": true
+		},
+		"deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/fixture/geothermal-well-scripted-feed": {
+			"applications": 16,
+			"bounds": "[P: (892, 692), S: (76, 92)]",
+			"completed": true,
+			"feature_id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0",
+			"feed": 3,
+			"fixture_id": "deepworks-procedural/grid1024/region(0,0)/basalt-archive/0/geothermal-well/0/fixture/geothermal-well-scripted-feed",
+			"initial": {
+				"feed": 0,
+				"product": 0,
+				"substrate": 434,
+				"transport": 0
+			},
+			"max_product": 105,
+			"max_transport": 1608,
+			"min_substrate": 329,
+			"oracle_assertions": 6,
+			"plane": "scripted",
+			"product": 13,
+			"substrate": 8,
+			"title": "Lava + falling Water → Stone",
+			"verified": true
+		},
+		"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/fixture/brine-retort-play-feed": {
+			"applications": 16,
+			"bounds": "[P: (64, 180), S: (76, 92)]",
+			"completed": true,
+			"feature_id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0",
+			"feed": 3,
+			"fixture_id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/fixture/brine-retort-play-feed",
+			"initial": {
+				"feed": 0,
+				"product": 0,
+				"substrate": 434,
+				"transport": 0
+			},
+			"max_product": 164,
+			"max_transport": 1631,
+			"min_substrate": 352,
+			"oracle_assertions": 6,
+			"plane": "play",
+			"product": 24,
+			"substrate": 23,
+			"title": "Salt + falling Water → Brine",
+			"verified": true
+		},
+		"deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/fixture/brine-retort-scripted-feed": {
+			"applications": 16,
+			"bounds": "[P: (148, 180), S: (76, 92)]",
+			"completed": true,
+			"feature_id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0",
+			"feed": 3,
+			"fixture_id": "deepworks-procedural/grid1024/region(0,0)/copper-choir/0/brine-retort/0/fixture/brine-retort-scripted-feed",
+			"initial": {
+				"feed": 0,
+				"product": 0,
+				"substrate": 434,
+				"transport": 0
+			},
+			"max_product": 136,
+			"max_transport": 1636,
+			"min_substrate": 366,
+			"oracle_assertions": 6,
+			"plane": "scripted",
+			"product": 24,
+			"substrate": 23,
+			"title": "Salt + falling Water → Brine",
+			"verified": true
+		},
+		"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/fixture/clay-kiln-play-feed": {
+			"applications": 16,
+			"bounds": "[P: (64, 692), S: (76, 92)]",
+			"completed": true,
+			"feature_id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0",
+			"feed": 8,
+			"fixture_id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/fixture/clay-kiln-play-feed",
+			"initial": {
+				"feed": 0,
+				"product": 0,
+				"substrate": 434,
+				"transport": 0
+			},
+			"max_product": 74,
+			"max_transport": 1664,
+			"min_substrate": 360,
+			"oracle_assertions": 6,
+			"plane": "play",
+			"product": 48,
+			"substrate": 103,
+			"title": "Raw Clay + falling Lava → Terracotta Tile",
+			"verified": true
+		},
+		"deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/fixture/clay-kiln-scripted-feed": {
+			"applications": 16,
+			"bounds": "[P: (148, 692), S: (76, 92)]",
+			"completed": true,
+			"feature_id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0",
+			"feed": 8,
+			"fixture_id": "deepworks-procedural/grid1024/region(0,0)/ember-terraces/0/clay-kiln/0/fixture/clay-kiln-scripted-feed",
+			"initial": {
+				"feed": 0,
+				"product": 0,
+				"substrate": 434,
+				"transport": 0
+			},
+			"max_product": 74,
+			"max_transport": 1664,
+			"min_substrate": 360,
+			"oracle_assertions": 6,
+			"plane": "scripted",
+			"product": 48,
+			"substrate": 103,
+			"title": "Raw Clay + falling Lava → Terracotta Tile",
+			"verified": true
+		},
+		"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/fixture/snow-lens-play-feed": {
+			"applications": 16,
+			"bounds": "[P: (808, 180), S: (76, 92)]",
+			"completed": true,
+			"feature_id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0",
+			"feed": 6,
+			"fixture_id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/fixture/snow-lens-play-feed",
+			"initial": {
+				"feed": 0,
+				"product": 0,
+				"substrate": 434,
+				"transport": 0
+			},
+			"max_product": 45,
+			"max_transport": 587,
+			"min_substrate": 376,
+			"oracle_assertions": 5,
+			"plane": "play",
+			"product": 3,
+			"substrate": 105,
+			"title": "Packed Snow + Fire → meltwater",
+			"verified": true
+		},
+		"deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/fixture/snow-lens-scripted-feed": {
+			"applications": 16,
+			"bounds": "[P: (892, 180), S: (76, 92)]",
+			"completed": true,
+			"feature_id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0",
+			"feed": 6,
+			"fixture_id": "deepworks-procedural/grid1024/region(0,0)/frost-observatory/0/snow-lens/0/fixture/snow-lens-scripted-feed",
+			"initial": {
+				"feed": 0,
+				"product": 0,
+				"substrate": 434,
+				"transport": 0
+			},
+			"max_product": 42,
+			"max_transport": 518,
+			"min_substrate": 374,
+			"oracle_assertions": 5,
+			"plane": "scripted",
+			"product": 3,
+			"substrate": 105,
+			"title": "Packed Snow + Fire → meltwater",
+			"verified": true
+		}
+	},
+	"schema": 1,
+	"source_revision": "2f7f65bf6e80c7258f2bdda19f949760d211b59e",
+	"ticks_per_active_plane": 220,
+	"verified_exhibits": 8
+}

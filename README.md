@@ -183,5 +183,7 @@ views and bounded seed/recipe comparison. Invalid changes preserve the accepted
 preview; undo/redo restores recipe content with fresh request identities. See the
 [workbench contract](docs/systems/generation-workbench-2.md) and
 [procedural qualification guide](docs/operations/procedural-qualification.md).
-The GEN-007 candidate's acceptance and visual review are tracked in
+The 61,845-byte qualification recipe generates four regions and eight galleries
+across a 1024 × 1024 map. Retained captures, native reaction observations and the
+candid Deepworks comparison are linked from the guide. Final acceptance is tracked in
 [PR #198](https://github.com/techrote/cybersand/pull/198).

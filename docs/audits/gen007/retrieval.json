@@ -1,0 +1,2810 @@
+{
+  "added_question_ids": [
+    "GEN007-1",
+    "GEN007-2",
+    "GEN007-3",
+    "GEN007-4"
+  ],
+  "expected_fact_review": "The four added GEN007 questions were reviewed against native adapter/stages, Workbench transactions/caps and final projected-material route/reaction controls. All four canonical ranks are1. Retrieval rank alone does not prove answer correctness.",
+  "frozen_32_question_bytes_unchanged": true,
+  "frozen_fixture_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+  "prior_105_question_objects_unchanged": true,
+  "reports": {
+    "frozen_after": {
+      "chunk_count": 1137,
+      "corpus": [
+        {
+          "bytes": 12759,
+          "path": "docs/MATERIAL_LAB.md",
+          "sha256": "aaa9671c20d06d65cd0e6b2306a53cd6ea89ba64dde50ac2948abffc92f170bf"
+        },
+        {
+          "bytes": 8752,
+          "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+          "sha256": "2e1ed6542e984366519dd782687980f0c8445052ef11b8afef06877972730d81"
+        },
+        {
+          "bytes": 30992,
+          "path": "docs/architecture/data-ownership-and-lifetimes.md",
+          "sha256": "7369018a4e2e88a3c7fca3725ffb7cb59ae85b1ad16e3fe0c0c1a6cb372a4713"
+        },
+        {
+          "bytes": 7295,
+          "path": "docs/architecture/determinism-and-boundary-transfers.md",
+          "sha256": "915b4a914e39e41304592b8b9873856b7c9b9714a043ac9384669ee9163d200a"
+        },
+        {
+          "bytes": 5204,
+          "path": "docs/architecture/item-authored-material-programs.md",
+          "sha256": "facc6f3209743cafff997bd775ab1b77114f05439bead78c17624e62c32ecd72"
+        },
+        {
+          "bytes": 9775,
+          "path": "docs/architecture/module-boundaries.md",
+          "sha256": "50d887de70b5cc49f7e2a0504ce3e08415c9900b4b437e036345a0181aebd3c6"
+        },
+        {
+          "bytes": 5948,
+          "path": "docs/architecture/overview.md",
+          "sha256": "4fb7c0c48e043786ba0bab144d9fbb0cf1bee1facac60303357bac907dd1e730"
+        },
+        {
+          "bytes": 6556,
+          "path": "docs/architecture/principles-and-non-goals.md",
+          "sha256": "8dd55cf5b315f460b844fa66307296f4f77eb8f5e29fc2ba5ad9d1f2df60c377"
+        },
+        {
+          "bytes": 7737,
+          "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+          "sha256": "5ad80c488b0463a43dd4572f7e32f0861e81b4768e34a6acb57ca1f0d13fe127"
+        },
+        {
+          "bytes": 13125,
+          "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+          "sha256": "2f92d6b8ef34ca7405e22a66213713fb503b8fb82af19ca7cd9857fc95c2de29"
+        },
+        {
+          "bytes": 13634,
+          "path": "docs/architecture/simulation-tick-and-threading.md",
+          "sha256": "5504beefb05486ffef1ef52d918ba418cb6a457737c4efadca5c2d9a3a6d0bfc"
+        },
+        {
+          "bytes": 19320,
+          "path": "docs/architecture/soliding-lifecycle.md",
+          "sha256": "10832029af506bd5b593cfc8cb4eadc39ce6097674c66eb220ea745cdb191f80"
+        },
+        {
+          "bytes": 3490,
+          "path": "docs/decisions/ADR-001-native-simulation-core.md",
+          "sha256": "183256ad4f0bb86477ebb52917ef5f39dbb473befe42a2ca9c8af7a1388cd0bf"
+        },
+        {
+          "bytes": 3876,
+          "path": "docs/decisions/ADR-002-double-buffered-tile-jobs.md",
+          "sha256": "b621c6eac703579ed9c737e07fe67516f04b8e02deb90bc10745aba759ce2991"
+        },
+        {
+          "bytes": 4207,
+          "path": "docs/decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+          "sha256": "5f6f4317020f9b423a326945dbc54d3d04d50ace0a911aa66d2d5228d333c343"
+        },
+        {
+          "bytes": 5074,
+          "path": "docs/decisions/ADR-004-interest-region-and-reconfiguration.md",
+          "sha256": "9d445644a387b0ebcb75d2488409d52e1cf5739b8c79b4d063bb73be12689c3c"
+        },
+        {
+          "bytes": 4594,
+          "path": "docs/decisions/ADR-005-water-model.md",
+          "sha256": "ca741af1d41237c2c6cc70c80e5f098bf10b4cca3098183168a1f386aa0ab9bc"
+        },
+        {
+          "bytes": 3351,
+          "path": "docs/decisions/ADR-006-gpu-compute-deferral.md",
+          "sha256": "de55bb1adf6d8bdb3324c80558ccdbb71e422a4e494df09dccbfcb0bf909ca00"
+        },
+        {
+          "bytes": 4438,
+          "path": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+          "sha256": "4176beaad08fca041922b87f8f8451a5a3b7b4831946d117119eeb21c7e466e9"
+        },
+        {
+          "bytes": 6062,
+          "path": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+          "sha256": "f57b275187490cdc12c28456f9417a6eb4a73d2daf4a97ba9e6950e07568efe5"
+        },
+        {
+          "bytes": 4394,
+          "path": "docs/decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+          "sha256": "5691c7f6aaaf99418cc03a651004cc58290cc6af3e03ed5a28dfa177673ab55f"
+        },
+        {
+          "bytes": 2879,
+          "path": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+          "sha256": "7c3e320ab521c0dbfffc5f8831507f948c6614775dc294ca6f77aa5c742b7000"
+        },
+        {
+          "bytes": 4669,
+          "path": "docs/decisions/ADR-011-granular-interaction-policy.md",
+          "sha256": "79b0d6bb92c5bc624f3d24b76b51837d2bf81ee22b277d88f8e5d0675b828c00"
+        },
+        {
+          "bytes": 4168,
+          "path": "docs/decisions/ADR-013-canonical-semantic-generation.md",
+          "sha256": "208ba8ca556dda6d5d52f867986d379c9bb8a2a2dbcc5e0c1a515ee7b61fc07a"
+        },
+        {
+          "bytes": 2636,
+          "path": "docs/decisions/ADR-014-semantic-plane-admission.md",
+          "sha256": "f43cf3261ead2dfe86e895c3b73c5df7a173c48997a2989f5a254502184857a4"
+        },
+        {
+          "bytes": 8984,
+          "path": "docs/operations/architecture-programme-water-feel-addendum.md",
+          "sha256": "ace6c7f6d05d1fbc8087bbbfb9ed93481df88835f9bf974eaa6b0e0e10f6ea51"
+        },
+        {
+          "bytes": 53063,
+          "path": "docs/operations/architecture-programme.md",
+          "sha256": "b2cbd93062acfd0f9209bf8dd744416fa4b434080e0e3ebec3c8371ef6eb12df"
+        },
+        {
+          "bytes": 13714,
+          "path": "docs/operations/blacksite-nine-demo.md",
+          "sha256": "f94c5f0241a0ed0bfa022e448a0a973977681f4310238132c2982d18e5c76d97"
+        },
+        {
+          "bytes": 26101,
+          "path": "docs/operations/cell-layout-experiment.md",
+          "sha256": "92d2ae798728bbd5203ed648b36dc16cf69c436880ac78a3f7af07e7ca3c6e58"
+        },
+        {
+          "bytes": 12097,
+          "path": "docs/operations/configuration-and-capacity-budgets.md",
+          "sha256": "e825be20e11cc4f9761670b876b1f8743fc38ab83a02143ef28c119fbd2e190e"
+        },
+        {
+          "bytes": 7539,
+          "path": "docs/operations/current-and-historical-validation.md",
+          "sha256": "37d75f33ea23ef837d0661df3ce81324ba07941181cd506ebd1d502e81317b0c"
+        },
+        {
+          "bytes": 40422,
+          "path": "docs/operations/cybersand-codex-development-handover.md",
+          "sha256": "944ce53a81103414990525eb90aaf28537c9d4e36a9695d793d87765e8849ed4"
+        },
+        {
+          "bytes": 17395,
+          "path": "docs/operations/deepworks-exhibition.md",
+          "sha256": "5f646c5eed80101d8bdc36be38985ee34898ed145ed28f2aa01d3ae1bbb3ffc7"
+        },
+        {
+          "bytes": 14706,
+          "path": "docs/operations/development-claims-remediation-programme.md",
+          "sha256": "91508be4c98b959775070251a3a2f7b8f7a2bda9d93876564b582294f4d47711"
+        },
+        {
+          "bytes": 6809,
+          "path": "docs/operations/documentation-maintenance.md",
+          "sha256": "f3de7a4bab92bc23e8efbf1c8540c74ca124c3c56314c4ca793fd41ad2ef6068"
+        },
+        {
+          "bytes": 12858,
+          "path": "docs/operations/experiment-tower.md",
+          "sha256": "f171c48fad0026b61c69ccd9e902b62963068eaeec78cdcb6513f55b499c9c05"
+        },
+        {
+          "bytes": 12266,
+          "path": "docs/operations/gameplay-recording.md",
+          "sha256": "4af142f26f132ca52d7d28e56719f97827b2934f7601559df30140366872fa06"
+        },
+        {
+          "bytes": 9442,
+          "path": "docs/operations/github-development-and-release.md",
+          "sha256": "1a40be078ad1d1f662e67e0e427aad8255a80ff1c6de77b254e9c3d00caf16ad"
+        },
+        {
+          "bytes": 4710,
+          "path": "docs/operations/liquid-characterization.md",
+          "sha256": "d18df9a9ed150165d6f51fff5469f77ce531374a4c7673a020955a194a826147"
+        },
+        {
+          "bytes": 49208,
+          "path": "docs/operations/local-build-and-validation.md",
+          "sha256": "86fef1b71d470742ba384012bd5a362faa54ece8f47f968a1b79a07e689ac41b"
+        },
+        {
+          "bytes": 16807,
+          "path": "docs/operations/microscenario-reference-pack.md",
+          "sha256": "dfddad77cd621573fa8e29254b90765552fc8e2ec00159f008c27cb4f7ed1820"
+        },
+        {
+          "bytes": 29208,
+          "path": "docs/operations/microscenarios-programme.md",
+          "sha256": "c8c713f43a8ccb4bcd7f5428456c70abcab9564bb221ed35563eb82dbda881ae"
+        },
+        {
+          "bytes": 20649,
+          "path": "docs/operations/microscenarios.md",
+          "sha256": "37a3dc17233192b630252c72647194b07f429b018e49982bb285df0711d2459e"
+        },
+        {
+          "bytes": 14168,
+          "path": "docs/operations/neon-reliquary-demo.md",
+          "sha256": "db57bf8976427464069e8dab42a05b78e5876a3be31feaa90a1ba9e1ba5e84ca"
+        },
+        {
+          "bytes": 13915,
+          "path": "docs/operations/physical-actor-programme.md",
+          "sha256": "9240f2ec214b5228d61a40966410bba583667de63319d33ef79280b29e45e612"
+        },
+        {
+          "bytes": 22957,
+          "path": "docs/operations/physics-characterisation-plan.md",
+          "sha256": "c306e1e0539835caefa668c72f5a118f2d34f0fb0235305ce7462aaca75d3a0d"
+        },
+        {
+          "bytes": 22281,
+          "path": "docs/operations/physics-characterisation.md",
+          "sha256": "cec934e26ddc204d538ad2cfb79b9a670b9c62a0d3464b13695de0894ca634f3"
+        },
+        {
+          "bytes": 21341,
+          "path": "docs/operations/procedural-qualification.md",
+          "sha256": "15cfd957d8f8763c06aa635533757e991b154d373b5b4e5a821ba01acb6dd414"
+        },
+        {
+          "bytes": 8297,
+          "path": "docs/operations/profiling-observability-and-performance.md",
+          "sha256": "7e76b4ca6e433099d18036d3f8cd1cafb38ddf0e3c8852cfe735d267838c2fcf"
+        },
+        {
+          "bytes": 5159,
+          "path": "docs/operations/rapier-2d-migration-runbook.md",
+          "sha256": "42ac74e51b946ebeaf71670a76e88c9957a64181283dccee30c3983b809ce8f6"
+        },
+        {
+          "bytes": 10897,
+          "path": "docs/operations/semantic-depth-authoring.md",
+          "sha256": "be6b9a9f6c2d1a4893a1a136e18544ec38a57c21ef6938b9c1d5e96d76314dc6"
+        },
+        {
+          "bytes": 8314,
+          "path": "docs/operations/soliding-macro-fracture-fixture.md",
+          "sha256": "a5f29551330843705a1360108965609a9973d0d167604755dd9ba5b9d8ffdd43"
+        },
+        {
+          "bytes": 16631,
+          "path": "docs/operations/soliding-measurement.md",
+          "sha256": "029b9fc75960e23e00737fd4a8ef5de4d93a9b68b53173a31b144890246f7127"
+        },
+        {
+          "bytes": 9976,
+          "path": "docs/operations/soliding-programme.md",
+          "sha256": "9945607e405ff94199fe2aea91da7d4a2911b20c7f13629c7762d275bf8531f0"
+        },
+        {
+          "bytes": 25036,
+          "path": "docs/operations/soliding-stage3-freeze.md",
+          "sha256": "e9bb416fbc00534936f31ec823ff4200084b9839e29b104ca06c6e5842a8f855"
+        },
+        {
+          "bytes": 22377,
+          "path": "docs/operations/soliding-stage3b-production-plan.md",
+          "sha256": "a2c8b0df12e69eaddb5e36200fdac89d978d43ce5190242022cf83a6bef43919"
+        },
+        {
+          "bytes": 10375,
+          "path": "docs/operations/source-checkpoint-and-recovery.md",
+          "sha256": "61b421444a590c6d896bb7b93d46f7c2f96bb4f4b74771d6c76ed859f4cb58b3"
+        },
+        {
+          "bytes": 10075,
+          "path": "docs/operations/state-precision-experiment.md",
+          "sha256": "5ec8493d0aea4114c3049380cd6eae3be4d34a0dfc4ca8bfbebc67df3e800c0a"
+        },
+        {
+          "bytes": 18982,
+          "path": "docs/operations/testing-validation-and-replay.md",
+          "sha256": "0e009901e6917d9a69eddb9c34e783f59191391292507fbe2c35ef065cf72e51"
+        },
+        {
+          "bytes": 5027,
+          "path": "docs/operations/troubleshooting.md",
+          "sha256": "eddf1c8591c8396dc22c2d257410e249caee20d189ff998601d472784f731b7d"
+        },
+        {
+          "bytes": 14686,
+          "path": "docs/operations/water-feel-lab-experiment.md",
+          "sha256": "be7b1e0b54803ed85f611c979d2d98c58abdece6ba9902e4855e8298437b36e4"
+        },
+        {
+          "bytes": 34216,
+          "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+          "sha256": "ab5cf209f9e72714c260f75f8fcdbb64f6f96ddd111b23a055fedf8e5615d08e"
+        },
+        {
+          "bytes": 6183,
+          "path": "docs/operations/web-threading.md",
+          "sha256": "47c5c6b5e10363f9d5a8bf18c643470e94bcbc70e92d15337310cfa341ec55c4"
+        },
+        {
+          "bytes": 58075,
+          "path": "docs/reference/configuration-reference.md",
+          "sha256": "0c7e8a2b7c59eb17b6e85cc68eeae3658cbe583f7f494721049317fbbaf09d59"
+        },
+        {
+          "bytes": 6071,
+          "path": "docs/reference/glossary.md",
+          "sha256": "123cb43131703c15362ff8f85ef5e343844db526c3107d90937e7c8288debdde"
+        },
+        {
+          "bytes": 55111,
+          "path": "docs/reference/interfaces-and-message-contracts.md",
+          "sha256": "9a7b4f7dcb29ba4a3b6976fd477874938867ae727528e17d69da1433078786e9"
+        },
+        {
+          "bytes": 28579,
+          "path": "docs/reference/invariants.md",
+          "sha256": "4ff67ae554ce8cd91e28a952f9db30201d4a067d96e79a375140053ccb4ae031"
+        },
+        {
+          "bytes": 7605,
+          "path": "docs/reference/level-saves-and-replay.md",
+          "sha256": "1c9af3a8e4e58baa46b0f4e2b24e42242d2a69048a83381cca76317443b80224"
+        },
+        {
+          "bytes": 12618,
+          "path": "docs/reference/material-effects-register.md",
+          "sha256": "21f4071dd5d558ad5e85f7b7f273dc56bc3f8a30d33141faed77faac0e0bc00b"
+        },
+        {
+          "bytes": 11102,
+          "path": "docs/reference/procedural-spatial-operators.md",
+          "sha256": "2aa8a05ab1566fae6b5cf9a187954a3d16bb6b95b999aa15f89d24e1c31e1037"
+        },
+        {
+          "bytes": 16049,
+          "path": "docs/reference/product-intent-and-priorities.md",
+          "sha256": "d07a4b84deb00738819562e79b2ee36d88c27cfa44c9af417d3a26c09a58b1ef"
+        },
+        {
+          "bytes": 53450,
+          "path": "docs/reference/status-and-roadmap.md",
+          "sha256": "dcc17cc52a0abda38163231a7d9f937a75ee5064908c34e95a5a084f17cc6fe4"
+        },
+        {
+          "bytes": 38079,
+          "path": "docs/reference/validation-evidence.md",
+          "sha256": "fcc1021e535b648fb7ad64daaba9c8e854ee9674a3ef4b4c65c5225f58c4ac63"
+        },
+        {
+          "bytes": 16290,
+          "path": "docs/research/bounded-decompression-impulse-events.md",
+          "sha256": "f7e168691be4c3534894004f1c11c0e4c35e1016eda94825a74c884f3fe5e102"
+        },
+        {
+          "bytes": 20849,
+          "path": "docs/research/lumped-gas-region-pressure-bookkeeping.md",
+          "sha256": "dfa36ee21cb19208fd7bc2bd30992381df0ff780f5c86c474e23e3f26473c550"
+        },
+        {
+          "bytes": 7166,
+          "path": "docs/research/sandspiel-performance-and-material-port.md",
+          "sha256": "239d4fc9ca44d86a0971659305c61decec2dcd7c14b5a3d17a0f79844fa61791"
+        },
+        {
+          "bytes": 10305,
+          "path": "docs/systems/activity-dirty-regions-and-waking.md",
+          "sha256": "c95ef0118736e5c98fda7e0d13d9dcb05b0a39c7c483aa08e686c26ccff3db98"
+        },
+        {
+          "bytes": 18075,
+          "path": "docs/systems/actor-control-prototypes.md",
+          "sha256": "8138d39e7323c4fdfa22b93eb8718a7dddaa3f1ac972f01c8deedde1b961495f"
+        },
+        {
+          "bytes": 25275,
+          "path": "docs/systems/actor-rigs.md",
+          "sha256": "3d8894b3be355871c4b1086e91c9ca53445ca447354996587c7adac5b4945f6c"
+        },
+        {
+          "bytes": 16427,
+          "path": "docs/systems/actor-usables.md",
+          "sha256": "5d8b808400fa16719ff978c5b661a439670080961043f0c45eced329186356cc"
+        },
+        {
+          "bytes": 12965,
+          "path": "docs/systems/building-material-catalogue.md",
+          "sha256": "ef548766623f9469bc6a58423cecbceeef64409b85ecac643b0d6e12da53922d"
+        },
+        {
+          "bytes": 12257,
+          "path": "docs/systems/depth-layers-and-parallax.md",
+          "sha256": "9f31c71e5608871265a0cabd8dcbba43040294ccdd9c67180b2844c5c10af446"
+        },
+        {
+          "bytes": 7881,
+          "path": "docs/systems/flow-transport-and-profiles.md",
+          "sha256": "fd452353ab27a31c73cbffa72afeecf447af16d05cd7b211dcc2db03761d2e4c"
+        },
+        {
+          "bytes": 21430,
+          "path": "docs/systems/generation-workbench-2.md",
+          "sha256": "c9aef9a878d100bcf61a4d8c01e752487b3056a6e16a6763fcf8c159fe4a5503"
+        },
+        {
+          "bytes": 12363,
+          "path": "docs/systems/granular-interaction-policy.md",
+          "sha256": "d3c64b172e1b701471cf4a4823cc1919f9a1dcf9cb49be5dad5805c387644688"
+        },
+        {
+          "bytes": 11701,
+          "path": "docs/systems/intermaterial-interactions.md",
+          "sha256": "7438daa1478dd70b7ed1d7769ffdc36c750acc4521c42c81037bb8d86bcfcfad"
+        },
+        {
+          "bytes": 18581,
+          "path": "docs/systems/material-appearance-and-rendering.md",
+          "sha256": "6e1f9612e46f72fdc97080132ff789c50d9570e56ca49c76f389ba691e834e6f"
+        },
+        {
+          "bytes": 23049,
+          "path": "docs/systems/material-visual-pattern-library.md",
+          "sha256": "ec9f21593de8f92af9499ba217993330378782abddf1e3481f1a8e9943206b8a"
+        },
+        {
+          "bytes": 12791,
+          "path": "docs/systems/materials-and-rule-kernels.md",
+          "sha256": "d3e1104a6e70a5fe6a04b11f161c94da0aee22ea0416ff5f799e8d4a9b531dd5"
+        },
+        {
+          "bytes": 16934,
+          "path": "docs/systems/physical-actor-rigs.md",
+          "sha256": "c49f78b9fcbaa9eefa14dd0f83c7dc9d52ddd021dda7e2f7c198517b4b1912d6"
+        },
+        {
+          "bytes": 13232,
+          "path": "docs/systems/player-control-playground.md",
+          "sha256": "14303b49fe441d8269d06ab213d35879aba7bdde7e98120825cb7d38a75cf204"
+        },
+        {
+          "bytes": 6898,
+          "path": "docs/systems/player-environment-profiles-and-traversal.md",
+          "sha256": "d2d3b683c30868f4f9161ad9a8b7b9b26146e99049be950443f3557554f38042"
+        },
+        {
+          "bytes": 22273,
+          "path": "docs/systems/procedural-generation-fields-and-modifiers.md",
+          "sha256": "9b0d490b8d0e1f94e600d355f3574782f520edb6e0f64a2cb99d8cd044cbf6ba"
+        },
+        {
+          "bytes": 20322,
+          "path": "docs/systems/procedural-hierarchical-generation.md",
+          "sha256": "c5a17691ee02b1eeb3c132093f71596b0f7fe2011e39b41b55f758ecd4ba0897"
+        },
+        {
+          "bytes": 12923,
+          "path": "docs/systems/procedural-semantic-planes.md",
+          "sha256": "5f5877cf5deb48f29a18f7aecc48dcddb84a441162166416074fb912c7a98fa1"
+        },
+        {
+          "bytes": 23376,
+          "path": "docs/systems/procedural-typed-spatial-fields.md",
+          "sha256": "5062c1899617444cc02a2d9d0a743ab5507bda4f776e2583f200eec275f373eb"
+        },
+        {
+          "bytes": 27978,
+          "path": "docs/systems/procedural-world-generation.md",
+          "sha256": "c3ba36a03a706d64b1a1fe697526a931814d4ca0a3980bddb73a45d3d9ca216e"
+        },
+        {
+          "bytes": 22753,
+          "path": "docs/systems/settled-region-discovery.md",
+          "sha256": "1bb29704ecd99425abadfbd2dd58d753bb12bbbdb00679f70562e8821778c1ba"
+        },
+        {
+          "bytes": 6117,
+          "path": "docs/systems/smoke-heat-pressure-roadmap.md",
+          "sha256": "a147e13269dac95dd5b4d57c329686c2761acec4c64209c6a49c2e2d8ba2019c"
+        },
+        {
+          "bytes": 9963,
+          "path": "docs/systems/themed-construction-materials.md",
+          "sha256": "8b9f5995299aef16d2d94939ea904b8445c6b738495d8a6653763f9a02a63170"
+        },
+        {
+          "bytes": 41184,
+          "path": "docs/systems/thunderbowl-control-reference.md",
+          "sha256": "71c2487a64b566b0a708a79278e47ce2303778c014a3e94a7fe922b24a0f9107"
+        },
+        {
+          "bytes": 17179,
+          "path": "docs/systems/water-design.md",
+          "sha256": "2c0120b5e1cff9ee8e86741c39387ab5fb68e5df1bfe2c4f7bd3d583c0088d4c"
+        },
+        {
+          "bytes": 12383,
+          "path": "docs/systems/world-storage-and-interest-region.md",
+          "sha256": "3aa36c9771645fe972228d9d4144cc46b2d05a3d14401bc72c94e659e48c9ba9"
+        }
+      ],
+      "corpus_manifest_sha256": "5d450aa791a1927a6a34aa57922c67318096ecae39de1ff38e3884bdb32d5297",
+      "created_utc": "2026-10-22T00:03:43.111884+00:00",
+      "document_count": 103,
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "fixture_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+      "method": {
+        "b": 0.75,
+        "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded",
+        "embeddings": false,
+        "k": 5,
+        "k1": 1.2,
+        "maximum_body_words": 420,
+        "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+        "name": "heading-chunk BM25 lexical development baseline",
+        "overlap_words": 0,
+        "query_expansion": false,
+        "reranker": false,
+        "stemming": false
+      },
+      "ranks": [
+        {
+          "canonical": [
+            "operations/source-checkpoint-and-recovery.md",
+            "operations/cybersand-codex-development-handover.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q01"
+        },
+        {
+          "canonical": [
+            "architecture/data-ownership-and-lifetimes.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q02"
+        },
+        {
+          "canonical": [
+            "architecture/simulation-tick-and-threading.md",
+            "operations/web-threading.md"
+          ],
+          "canonical_rank": 2,
+          "id": "Q03"
+        },
+        {
+          "canonical": [
+            "operations/web-threading.md"
+          ],
+          "canonical_rank": 2,
+          "id": "Q04"
+        },
+        {
+          "canonical": [
+            "architecture/simulation-tick-and-threading.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q05"
+        },
+        {
+          "canonical": [
+            "architecture/simulation-tick-and-threading.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q06"
+        },
+        {
+          "canonical": [
+            "operations/rapier-2d-migration-runbook.md",
+            "decisions/ADR-009-rapier-2d-rigid-body-backend.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q07"
+        },
+        {
+          "canonical": [
+            "architecture/rigid-body-and-cellular-coupling.md"
+          ],
+          "canonical_rank": 2,
+          "id": "Q08"
+        },
+        {
+          "canonical": [
+            "architecture/rigid-body-and-cellular-coupling.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q09"
+        },
+        {
+          "canonical": [
+            "reference/interfaces-and-message-contracts.md",
+            "architecture/rigid-body-and-cellular-coupling.md"
+          ],
+          "canonical_rank": 2,
+          "id": "Q10"
+        },
+        {
+          "canonical": [
+            "reference/level-saves-and-replay.md",
+            "reference/interfaces-and-message-contracts.md",
+            "operations/testing-validation-and-replay.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q11"
+        },
+        {
+          "canonical": [
+            "reference/level-saves-and-replay.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q12"
+        },
+        {
+          "canonical": [
+            "reference/level-saves-and-replay.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q13"
+        },
+        {
+          "canonical": [
+            "architecture/determinism-and-boundary-transfers.md",
+            "operations/testing-validation-and-replay.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q14"
+        },
+        {
+          "canonical": [
+            "architecture/rendering-and-gameplay-bridges.md",
+            "architecture/data-ownership-and-lifetimes.md"
+          ],
+          "canonical_rank": 5,
+          "id": "Q15"
+        },
+        {
+          "canonical": [
+            "architecture/rendering-and-gameplay-bridges.md",
+            "operations/configuration-and-capacity-budgets.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q16"
+        },
+        {
+          "canonical": [
+            "architecture/rendering-and-gameplay-bridges.md",
+            "systems/material-appearance-and-rendering.md"
+          ],
+          "canonical_rank": 3,
+          "id": "Q17"
+        },
+        {
+          "canonical": [
+            "architecture/chunk-tile-and-buffer-model.md",
+            "architecture/determinism-and-boundary-transfers.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q18"
+        },
+        {
+          "canonical": [
+            "systems/world-storage-and-interest-region.md",
+            "operations/configuration-and-capacity-budgets.md"
+          ],
+          "canonical_rank": 4,
+          "id": "Q19"
+        },
+        {
+          "canonical": [
+            "operations/configuration-and-capacity-budgets.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q20"
+        },
+        {
+          "canonical": [
+            "systems/water-design.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q21"
+        },
+        {
+          "canonical": [
+            "systems/water-design.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q22"
+        },
+        {
+          "canonical": [
+            "systems/water-design.md",
+            "operations/troubleshooting.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q23"
+        },
+        {
+          "canonical": [
+            "decisions/ADR-008-bounded-approximate-fidelity.md",
+            "architecture/principles-and-non-goals.md"
+          ],
+          "canonical_rank": 3,
+          "id": "Q24"
+        },
+        {
+          "canonical": [
+            "architecture/principles-and-non-goals.md",
+            "architecture/item-authored-material-programs.md",
+            "decisions/ADR-006-gpu-compute-deferral.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q25"
+        },
+        {
+          "canonical": [
+            "architecture/module-boundaries.md",
+            "reference/status-and-roadmap.md"
+          ],
+          "canonical_rank": 2,
+          "id": "Q26"
+        },
+        {
+          "canonical": [
+            "systems/smoke-heat-pressure-roadmap.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q27"
+        },
+        {
+          "canonical": [
+            "operations/github-development-and-release.md",
+            "operations/local-build-and-validation.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q28"
+        },
+        {
+          "canonical": [
+            "operations/github-development-and-release.md",
+            "operations/testing-validation-and-replay.md"
+          ],
+          "canonical_rank": 3,
+          "id": "Q29"
+        },
+        {
+          "canonical": [
+            "reference/validation-evidence.md",
+            "operations/testing-validation-and-replay.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q30"
+        },
+        {
+          "canonical": [
+            "operations/current-and-historical-validation.md",
+            "operations/github-development-and-release.md",
+            "operations/testing-validation-and-replay.md",
+            "reference/validation-evidence.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q31"
+        },
+        {
+          "canonical": [
+            "../AGENTS.md",
+            "operations/documentation-maintenance.md",
+            "reference/retrieval-index.md"
+          ],
+          "canonical_rank": 2,
+          "id": "Q32"
+        }
+      ],
+      "summary": {
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+        "canonical_hit_at_1": 21,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7953,
+        "questions": 32
+      }
+    },
+    "frozen_before": {
+      "chunk_count": 1109,
+      "corpus_manifest_sha256": "a3f9bf75d3b6b84f10dc1ccbfd39d7d3108ba8ee7c1ee02370ba255376a1b0f5",
+      "created_utc": "2026-10-21T22:44:22.666547+00:00",
+      "document_count": 101,
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "fixture_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+      "method": {
+        "b": 0.75,
+        "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded",
+        "embeddings": false,
+        "k": 5,
+        "k1": 1.2,
+        "maximum_body_words": 420,
+        "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+        "name": "heading-chunk BM25 lexical development baseline",
+        "overlap_words": 0,
+        "query_expansion": false,
+        "reranker": false,
+        "stemming": false
+      },
+      "ranks": [
+        {
+          "canonical": [
+            "operations/source-checkpoint-and-recovery.md",
+            "operations/cybersand-codex-development-handover.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q01"
+        },
+        {
+          "canonical": [
+            "architecture/data-ownership-and-lifetimes.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q02"
+        },
+        {
+          "canonical": [
+            "architecture/simulation-tick-and-threading.md",
+            "operations/web-threading.md"
+          ],
+          "canonical_rank": 2,
+          "id": "Q03"
+        },
+        {
+          "canonical": [
+            "operations/web-threading.md"
+          ],
+          "canonical_rank": 2,
+          "id": "Q04"
+        },
+        {
+          "canonical": [
+            "architecture/simulation-tick-and-threading.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q05"
+        },
+        {
+          "canonical": [
+            "architecture/simulation-tick-and-threading.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q06"
+        },
+        {
+          "canonical": [
+            "operations/rapier-2d-migration-runbook.md",
+            "decisions/ADR-009-rapier-2d-rigid-body-backend.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q07"
+        },
+        {
+          "canonical": [
+            "architecture/rigid-body-and-cellular-coupling.md"
+          ],
+          "canonical_rank": 2,
+          "id": "Q08"
+        },
+        {
+          "canonical": [
+            "architecture/rigid-body-and-cellular-coupling.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q09"
+        },
+        {
+          "canonical": [
+            "reference/interfaces-and-message-contracts.md",
+            "architecture/rigid-body-and-cellular-coupling.md"
+          ],
+          "canonical_rank": 2,
+          "id": "Q10"
+        },
+        {
+          "canonical": [
+            "reference/level-saves-and-replay.md",
+            "reference/interfaces-and-message-contracts.md",
+            "operations/testing-validation-and-replay.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q11"
+        },
+        {
+          "canonical": [
+            "reference/level-saves-and-replay.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q12"
+        },
+        {
+          "canonical": [
+            "reference/level-saves-and-replay.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q13"
+        },
+        {
+          "canonical": [
+            "architecture/determinism-and-boundary-transfers.md",
+            "operations/testing-validation-and-replay.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q14"
+        },
+        {
+          "canonical": [
+            "architecture/rendering-and-gameplay-bridges.md",
+            "architecture/data-ownership-and-lifetimes.md"
+          ],
+          "canonical_rank": 5,
+          "id": "Q15"
+        },
+        {
+          "canonical": [
+            "architecture/rendering-and-gameplay-bridges.md",
+            "operations/configuration-and-capacity-budgets.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q16"
+        },
+        {
+          "canonical": [
+            "architecture/rendering-and-gameplay-bridges.md",
+            "systems/material-appearance-and-rendering.md"
+          ],
+          "canonical_rank": 3,
+          "id": "Q17"
+        },
+        {
+          "canonical": [
+            "architecture/chunk-tile-and-buffer-model.md",
+            "architecture/determinism-and-boundary-transfers.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q18"
+        },
+        {
+          "canonical": [
+            "systems/world-storage-and-interest-region.md",
+            "operations/configuration-and-capacity-budgets.md"
+          ],
+          "canonical_rank": 4,
+          "id": "Q19"
+        },
+        {
+          "canonical": [
+            "operations/configuration-and-capacity-budgets.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q20"
+        },
+        {
+          "canonical": [
+            "systems/water-design.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q21"
+        },
+        {
+          "canonical": [
+            "systems/water-design.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q22"
+        },
+        {
+          "canonical": [
+            "systems/water-design.md",
+            "operations/troubleshooting.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q23"
+        },
+        {
+          "canonical": [
+            "decisions/ADR-008-bounded-approximate-fidelity.md",
+            "architecture/principles-and-non-goals.md"
+          ],
+          "canonical_rank": 3,
+          "id": "Q24"
+        },
+        {
+          "canonical": [
+            "architecture/principles-and-non-goals.md",
+            "architecture/item-authored-material-programs.md",
+            "decisions/ADR-006-gpu-compute-deferral.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q25"
+        },
+        {
+          "canonical": [
+            "architecture/module-boundaries.md",
+            "reference/status-and-roadmap.md"
+          ],
+          "canonical_rank": 2,
+          "id": "Q26"
+        },
+        {
+          "canonical": [
+            "systems/smoke-heat-pressure-roadmap.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q27"
+        },
+        {
+          "canonical": [
+            "operations/github-development-and-release.md",
+            "operations/local-build-and-validation.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q28"
+        },
+        {
+          "canonical": [
+            "operations/github-development-and-release.md",
+            "operations/testing-validation-and-replay.md"
+          ],
+          "canonical_rank": 3,
+          "id": "Q29"
+        },
+        {
+          "canonical": [
+            "reference/validation-evidence.md",
+            "operations/testing-validation-and-replay.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q30"
+        },
+        {
+          "canonical": [
+            "operations/current-and-historical-validation.md",
+            "operations/github-development-and-release.md",
+            "operations/testing-validation-and-replay.md",
+            "reference/validation-evidence.md"
+          ],
+          "canonical_rank": 1,
+          "id": "Q31"
+        },
+        {
+          "canonical": [
+            "../AGENTS.md",
+            "operations/documentation-maintenance.md",
+            "reference/retrieval-index.md"
+          ],
+          "canonical_rank": 2,
+          "id": "Q32"
+        }
+      ],
+      "summary": {
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+        "canonical_hit_at_1": 21,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7953,
+        "questions": 32
+      }
+    },
+    "supplemental_after": {
+      "chunk_count": 1137,
+      "corpus_manifest_sha256": "5d450aa791a1927a6a34aa57922c67318096ecae39de1ff38e3884bdb32d5297",
+      "created_utc": "2026-10-22T00:03:43.684283+00:00",
+      "document_count": 103,
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "fixture_sha256": "e19d15171d8fd10cd4fa3e93defaa3d6ce45c6226e57bc07d281152abb74f567",
+      "method": {
+        "b": 0.75,
+        "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded",
+        "embeddings": false,
+        "k": 5,
+        "k1": 1.2,
+        "maximum_body_words": 420,
+        "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+        "name": "heading-chunk BM25 lexical development baseline",
+        "overlap_words": 0,
+        "query_expansion": false,
+        "reranker": false,
+        "stemming": false
+      },
+      "ranks": [
+        {
+          "canonical": [
+            "systems/granular-interaction-policy.md"
+          ],
+          "canonical_rank": 4,
+          "id": "C05"
+        },
+        {
+          "canonical": [
+            "reference/product-intent-and-priorities.md",
+            "operations/development-claims-remediation-programme.md",
+            "operations/water-hybrid-pressure-extension-programme.md",
+            "operations/soliding-programme.md"
+          ],
+          "canonical_rank": 2,
+          "id": "C06"
+        },
+        {
+          "canonical": [
+            "architecture/simulation-tick-and-threading.md",
+            "operations/configuration-and-capacity-budgets.md"
+          ],
+          "canonical_rank": 1,
+          "id": "C01"
+        },
+        {
+          "canonical": [
+            "systems/world-storage-and-interest-region.md",
+            "systems/activity-dirty-regions-and-waking.md"
+          ],
+          "canonical_rank": 1,
+          "id": "C02"
+        },
+        {
+          "canonical": [
+            "architecture/simulation-tick-and-threading.md",
+            "systems/world-storage-and-interest-region.md"
+          ],
+          "canonical_rank": 3,
+          "id": "C03"
+        },
+        {
+          "canonical": [
+            "systems/world-storage-and-interest-region.md",
+            "systems/activity-dirty-regions-and-waking.md"
+          ],
+          "canonical_rank": 1,
+          "id": "C04"
+        },
+        {
+          "canonical": [
+            "operations/physics-characterisation.md",
+            "systems/materials-and-rule-kernels.md"
+          ],
+          "canonical_rank": 1,
+          "id": "C07"
+        },
+        {
+          "canonical": [
+            "operations/physics-characterisation.md",
+            "architecture/rigid-body-and-cellular-coupling.md"
+          ],
+          "canonical_rank": 1,
+          "id": "C08"
+        },
+        {
+          "canonical": [
+            "operations/development-claims-remediation-programme.md",
+            "reference/product-intent-and-priorities.md",
+            "architecture/rigid-body-and-cellular-coupling.md",
+            "operations/physics-characterisation.md"
+          ],
+          "canonical_rank": 5,
+          "id": "C09"
+        },
+        {
+          "canonical": [
+            "operations/water-hybrid-pressure-extension-programme.md",
+            "operations/development-claims-remediation-programme.md",
+            "operations/physics-characterisation.md",
+            "architecture/rigid-body-and-cellular-coupling.md"
+          ],
+          "canonical_rank": 1,
+          "id": "C10"
+        },
+        {
+          "canonical": [
+            "systems/granular-interaction-policy.md"
+          ],
+          "canonical_rank": 2,
+          "id": "C11"
+        },
+        {
+          "canonical": [
+            "systems/granular-interaction-policy.md",
+            "systems/activity-dirty-regions-and-waking.md"
+          ],
+          "canonical_rank": 1,
+          "id": "C12"
+        },
+        {
+          "canonical": [
+            "systems/flow-transport-and-profiles.md",
+            "operations/experiment-tower.md"
+          ],
+          "canonical_rank": 1,
+          "id": "C13"
+        },
+        {
+          "canonical": [
+            "systems/flow-transport-and-profiles.md",
+            "operations/experiment-tower.md"
+          ],
+          "canonical_rank": 1,
+          "id": "C14"
+        },
+        {
+          "canonical": [
+            "systems/materials-and-rule-kernels.md"
+          ],
+          "canonical_rank": 1,
+          "id": "C15"
+        },
+        {
+          "canonical": [
+            "systems/water-design.md"
+          ],
+          "canonical_rank": 2,
+          "id": "C16"
+        },
+        {
+          "canonical": [
+            "operations/microscenarios.md"
+          ],
+          "canonical_rank": 1,
+          "id": "MS01"
+        },
+        {
+          "canonical": [
+            "operations/microscenarios.md",
+            "reference/level-saves-and-replay.md"
+          ],
+          "canonical_rank": 3,
+          "id": "MS02"
+        },
+        {
+          "canonical": [
+            "operations/microscenarios.md",
+            "architecture/data-ownership-and-lifetimes.md"
+          ],
+          "canonical_rank": 1,
+          "id": "MS03"
+        },
+        {
+          "canonical": [
+            "operations/microscenario-reference-pack.md",
+            "operations/microscenarios-programme.md"
+          ],
+          "canonical_rank": 2,
+          "id": "MS04"
+        },
+        {
+          "canonical": [
+            "operations/microscenario-reference-pack.md",
+            "operations/microscenarios.md"
+          ],
+          "canonical_rank": 4,
+          "id": "MS05"
+        },
+        {
+          "canonical": [
+            "operations/soliding-programme.md"
+          ],
+          "canonical_rank": 2,
+          "id": "SOL01"
+        },
+        {
+          "canonical": [
+            "architecture/soliding-lifecycle.md",
+            "operations/soliding-programme.md"
+          ],
+          "canonical_rank": 3,
+          "id": "SOL02"
+        },
+        {
+          "canonical": [
+            "systems/settled-region-discovery.md",
+            "operations/soliding-measurement.md"
+          ],
+          "canonical_rank": 1,
+          "id": "SOL03"
+        },
+        {
+          "canonical": [
+            "operations/microscenario-reference-pack.md",
+            "operations/microscenarios.md"
+          ],
+          "canonical_rank": 1,
+          "id": "MS06"
+        },
+        {
+          "canonical": [
+            "operations/development-claims-remediation-programme.md"
+          ],
+          "canonical_rank": 1,
+          "id": "REM01"
+        },
+        {
+          "canonical": [
+            "operations/development-claims-remediation-programme.md"
+          ],
+          "canonical_rank": 1,
+          "id": "REM02"
+        },
+        {
+          "canonical": [
+            "operations/water-hybrid-pressure-extension-programme.md",
+            "systems/water-design.md"
+          ],
+          "canonical_rank": 1,
+          "id": "WEX01"
+        },
+        {
+          "canonical": [
+            "operations/water-hybrid-pressure-extension-programme.md",
+            "systems/water-design.md"
+          ],
+          "canonical_rank": 1,
+          "id": "WEX02"
+        },
+        {
+          "canonical": [
+            "operations/water-hybrid-pressure-extension-programme.md"
+          ],
+          "canonical_rank": 1,
+          "id": "WEX03"
+        },
+        {
+          "canonical": [
+            "operations/github-development-and-release.md",
+            "reference/status-and-roadmap.md"
+          ],
+          "canonical_rank": 1,
+          "id": "REC01"
+        },
+        {
+          "canonical": [
+            "reference/validation-evidence.md",
+            "operations/soliding-stage3b-production-plan.md"
+          ],
+          "canonical_rank": 2,
+          "id": "REC02"
+        },
+        {
+          "canonical": [
+            "operations/current-and-historical-validation.md",
+            "reference/validation-evidence.md"
+          ],
+          "canonical_rank": 1,
+          "id": "REC03"
+        },
+        {
+          "canonical": [
+            "operations/soliding-stage3b-production-plan.md",
+            "reference/status-and-roadmap.md"
+          ],
+          "canonical_rank": 1,
+          "id": "SOL04"
+        },
+        {
+          "canonical": [
+            "systems/materials-and-rule-kernels.md",
+            "systems/activity-dirty-regions-and-waking.md"
+          ],
+          "canonical_rank": 1,
+          "id": "MAT01"
+        },
+        {
+          "canonical": [
+            "systems/activity-dirty-regions-and-waking.md",
+            "architecture/rigid-body-and-cellular-coupling.md"
+          ],
+          "canonical_rank": 1,
+          "id": "MAT02"
+        },
+        {
+          "canonical": [
+            "operations/neon-reliquary-demo.md"
+          ],
+          "canonical_rank": 1,
+          "id": "SCENE01"
+        },
+        {
+          "canonical": [
+            "operations/neon-reliquary-demo.md"
+          ],
+          "canonical_rank": 1,
+          "id": "SCENE02"
+        },
+        {
+          "canonical": [
+            "systems/actor-control-prototypes.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT01"
+        },
+        {
+          "canonical": [
+            "systems/actor-control-prototypes.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT02"
+        },
+        {
+          "canonical": [
+            "systems/actor-control-prototypes.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT03"
+        },
+        {
+          "canonical": [
+            "systems/actor-rigs.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT04"
+        },
+        {
+          "canonical": [
+            "systems/actor-rigs.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT05"
+        },
+        {
+          "canonical": [
+            "systems/actor-rigs.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT06"
+        },
+        {
+          "canonical": [
+            "systems/actor-rigs.md",
+            "reference/product-intent-and-priorities.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT07"
+        },
+        {
+          "canonical": [
+            "systems/actor-rigs.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT08"
+        },
+        {
+          "canonical": [
+            "systems/actor-rigs.md",
+            "systems/actor-control-prototypes.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT09"
+        },
+        {
+          "canonical": [
+            "operations/blacksite-nine-demo.md"
+          ],
+          "canonical_rank": 1,
+          "id": "SCENE03"
+        },
+        {
+          "canonical": [
+            "systems/procedural-world-generation.md"
+          ],
+          "canonical_rank": 4,
+          "id": "GEN01"
+        },
+        {
+          "canonical": [
+            "systems/procedural-world-generation.md",
+            "architecture/chunk-tile-and-buffer-model.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN02"
+        },
+        {
+          "canonical": [
+            "systems/procedural-world-generation.md",
+            "architecture/data-ownership-and-lifetimes.md",
+            "systems/world-storage-and-interest-region.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN03"
+        },
+        {
+          "canonical": [
+            "systems/procedural-world-generation.md",
+            "architecture/module-boundaries.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN04"
+        },
+        {
+          "canonical": [
+            "systems/procedural-generation-fields-and-modifiers.md",
+            "architecture/chunk-tile-and-buffer-model.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN05"
+        },
+        {
+          "canonical": [
+            "systems/procedural-generation-fields-and-modifiers.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN06"
+        },
+        {
+          "canonical": [
+            "systems/procedural-generation-fields-and-modifiers.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN07"
+        },
+        {
+          "canonical": [
+            "systems/procedural-generation-fields-and-modifiers.md",
+            "architecture/data-ownership-and-lifetimes.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN08"
+        },
+        {
+          "canonical": [
+            "systems/thunderbowl-control-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "THB01"
+        },
+        {
+          "canonical": [
+            "systems/thunderbowl-control-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "THB02"
+        },
+        {
+          "canonical": [
+            "systems/thunderbowl-control-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "THB03"
+        },
+        {
+          "canonical": [
+            "systems/thunderbowl-control-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "THB04"
+        },
+        {
+          "canonical": [
+            "systems/thunderbowl-control-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "THB05"
+        },
+        {
+          "canonical": [
+            "systems/thunderbowl-control-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "THB06"
+        },
+        {
+          "canonical": [
+            "operations/physical-actor-programme.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT10"
+        },
+        {
+          "canonical": [
+            "systems/depth-layers-and-parallax.md"
+          ],
+          "canonical_rank": 1,
+          "id": "DEP01"
+        },
+        {
+          "canonical": [
+            "operations/physical-actor-programme.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT11"
+        },
+        {
+          "canonical": [
+            "systems/physical-actor-rigs.md",
+            "operations/physical-actor-programme.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT12"
+        },
+        {
+          "canonical": [
+            "systems/physical-actor-rigs.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT13"
+        },
+        {
+          "canonical": [
+            "systems/physical-actor-rigs.md",
+            "systems/actor-usables.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 2,
+          "id": "ACT14"
+        },
+        {
+          "canonical": [
+            "systems/thunderbowl-control-reference.md",
+            "architecture/simulation-tick-and-threading.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT15"
+        },
+        {
+          "canonical": [
+            "systems/building-material-catalogue.md",
+            "reference/level-saves-and-replay.md",
+            "operations/physics-characterisation.md"
+          ],
+          "canonical_rank": 1,
+          "id": "MAT03"
+        },
+        {
+          "canonical": [
+            "operations/physics-characterisation.md",
+            "operations/local-build-and-validation.md"
+          ],
+          "canonical_rank": 1,
+          "id": "TEST02"
+        },
+        {
+          "canonical": [
+            "operations/testing-validation-and-replay.md",
+            "operations/local-build-and-validation.md"
+          ],
+          "canonical_rank": 1,
+          "id": "TEST01"
+        },
+        {
+          "canonical": [
+            "systems/actor-usables.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 2,
+          "id": "USABLE01"
+        },
+        {
+          "canonical": [
+            "reference/interfaces-and-message-contracts.md",
+            "architecture/data-ownership-and-lifetimes.md"
+          ],
+          "canonical_rank": 4,
+          "id": "USABLE02"
+        },
+        {
+          "canonical": [
+            "systems/actor-usables.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 3,
+          "id": "USABLE03"
+        },
+        {
+          "canonical": [
+            "systems/thunderbowl-control-reference.md",
+            "systems/physical-actor-rigs.md"
+          ],
+          "canonical_rank": 1,
+          "id": "USABLE04"
+        },
+        {
+          "canonical": [
+            "operations/local-build-and-validation.md",
+            "operations/testing-validation-and-replay.md"
+          ],
+          "canonical_rank": 1,
+          "id": "TEST03"
+        },
+        {
+          "canonical": [
+            "operations/deepworks-exhibition.md"
+          ],
+          "canonical_rank": 1,
+          "id": "SCENE04"
+        },
+        {
+          "canonical": [
+            "systems/depth-layers-and-parallax.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "DEP02"
+        },
+        {
+          "canonical": [
+            "systems/player-control-playground.md"
+          ],
+          "canonical_rank": 1,
+          "id": "PLAY01"
+        },
+        {
+          "canonical": [
+            "systems/player-control-playground.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "PLAY02"
+        },
+        {
+          "canonical": [
+            "systems/player-control-playground.md",
+            "reference/interfaces-and-message-contracts.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "PLAY03"
+        },
+        {
+          "canonical": [
+            "systems/player-control-playground.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 1,
+          "id": "PLAY04"
+        },
+        {
+          "canonical": [
+            "architecture/rigid-body-and-cellular-coupling.md",
+            "systems/player-control-playground.md",
+            "systems/physical-actor-rigs.md"
+          ],
+          "canonical_rank": 1,
+          "id": "PLAY05"
+        },
+        {
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN09"
+        },
+        {
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 2,
+          "id": "GEN10"
+        },
+        {
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md",
+            "reference/procedural-spatial-operators.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN11"
+        },
+        {
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 2,
+          "id": "GEN12"
+        },
+        {
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN13"
+        },
+        {
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN14"
+        },
+        {
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN15"
+        },
+        {
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN16"
+        },
+        {
+          "canonical": [
+            "reference/interfaces-and-message-contracts.md",
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN17"
+        },
+        {
+          "canonical": [
+            "reference/procedural-spatial-operators.md",
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN18"
+        },
+        {
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN19"
+        },
+        {
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN20"
+        },
+        {
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN21"
+        },
+        {
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN22"
+        },
+        {
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 2,
+          "id": "GEN23"
+        },
+        {
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN24"
+        },
+        {
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 2,
+          "id": "GEN25"
+        },
+        {
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN26"
+        },
+        {
+          "canonical": [
+            "systems/procedural-semantic-planes.md",
+            "operations/semantic-depth-authoring.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN005-1"
+        },
+        {
+          "canonical": [
+            "systems/procedural-semantic-planes.md",
+            "architecture/data-ownership-and-lifetimes.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN005-2"
+        },
+        {
+          "canonical": [
+            "operations/semantic-depth-authoring.md",
+            "operations/local-build-and-validation.md",
+            "systems/procedural-semantic-planes.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN005-3"
+        },
+        {
+          "canonical": [
+            "systems/generation-workbench-2.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN007-1"
+        },
+        {
+          "canonical": [
+            "systems/generation-workbench-2.md",
+            "architecture/data-ownership-and-lifetimes.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN007-2"
+        },
+        {
+          "canonical": [
+            "operations/procedural-qualification.md",
+            "systems/generation-workbench-2.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN007-3"
+        },
+        {
+          "canonical": [
+            "systems/generation-workbench-2.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN007-4"
+        }
+      ],
+      "summary": {
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+        "canonical_hit_at_1": 88,
+        "canonical_hit_at_k": 109,
+        "mrr_at_k": 0.8856,
+        "questions": 109
+      }
+    },
+    "supplemental_before": {
+      "chunk_count": 1109,
+      "corpus_manifest_sha256": "a3f9bf75d3b6b84f10dc1ccbfd39d7d3108ba8ee7c1ee02370ba255376a1b0f5",
+      "created_utc": "2026-10-21T22:48:36.533775+00:00",
+      "document_count": 101,
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "fixture_sha256": "28f41f4cced0f9044590d10b3850e51a47f111a54789e408d4c14f27f25dd927",
+      "method": {
+        "b": 0.75,
+        "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded",
+        "embeddings": false,
+        "k": 5,
+        "k1": 1.2,
+        "maximum_body_words": 420,
+        "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+        "name": "heading-chunk BM25 lexical development baseline",
+        "overlap_words": 0,
+        "query_expansion": false,
+        "reranker": false,
+        "stemming": false
+      },
+      "ranks": [
+        {
+          "canonical": [
+            "systems/granular-interaction-policy.md"
+          ],
+          "canonical_rank": 4,
+          "id": "C05"
+        },
+        {
+          "canonical": [
+            "reference/product-intent-and-priorities.md",
+            "operations/development-claims-remediation-programme.md",
+            "operations/water-hybrid-pressure-extension-programme.md",
+            "operations/soliding-programme.md"
+          ],
+          "canonical_rank": 2,
+          "id": "C06"
+        },
+        {
+          "canonical": [
+            "architecture/simulation-tick-and-threading.md",
+            "operations/configuration-and-capacity-budgets.md"
+          ],
+          "canonical_rank": 1,
+          "id": "C01"
+        },
+        {
+          "canonical": [
+            "systems/world-storage-and-interest-region.md",
+            "systems/activity-dirty-regions-and-waking.md"
+          ],
+          "canonical_rank": 1,
+          "id": "C02"
+        },
+        {
+          "canonical": [
+            "architecture/simulation-tick-and-threading.md",
+            "systems/world-storage-and-interest-region.md"
+          ],
+          "canonical_rank": 3,
+          "id": "C03"
+        },
+        {
+          "canonical": [
+            "systems/world-storage-and-interest-region.md",
+            "systems/activity-dirty-regions-and-waking.md"
+          ],
+          "canonical_rank": 1,
+          "id": "C04"
+        },
+        {
+          "canonical": [
+            "operations/physics-characterisation.md",
+            "systems/materials-and-rule-kernels.md"
+          ],
+          "canonical_rank": 1,
+          "id": "C07"
+        },
+        {
+          "canonical": [
+            "operations/physics-characterisation.md",
+            "architecture/rigid-body-and-cellular-coupling.md"
+          ],
+          "canonical_rank": 1,
+          "id": "C08"
+        },
+        {
+          "canonical": [
+            "operations/development-claims-remediation-programme.md",
+            "reference/product-intent-and-priorities.md",
+            "architecture/rigid-body-and-cellular-coupling.md",
+            "operations/physics-characterisation.md"
+          ],
+          "canonical_rank": 5,
+          "id": "C09"
+        },
+        {
+          "canonical": [
+            "operations/water-hybrid-pressure-extension-programme.md",
+            "operations/development-claims-remediation-programme.md",
+            "operations/physics-characterisation.md",
+            "architecture/rigid-body-and-cellular-coupling.md"
+          ],
+          "canonical_rank": 1,
+          "id": "C10"
+        },
+        {
+          "canonical": [
+            "systems/granular-interaction-policy.md"
+          ],
+          "canonical_rank": 2,
+          "id": "C11"
+        },
+        {
+          "canonical": [
+            "systems/granular-interaction-policy.md",
+            "systems/activity-dirty-regions-and-waking.md"
+          ],
+          "canonical_rank": 1,
+          "id": "C12"
+        },
+        {
+          "canonical": [
+            "systems/flow-transport-and-profiles.md",
+            "operations/experiment-tower.md"
+          ],
+          "canonical_rank": 1,
+          "id": "C13"
+        },
+        {
+          "canonical": [
+            "systems/flow-transport-and-profiles.md",
+            "operations/experiment-tower.md"
+          ],
+          "canonical_rank": 1,
+          "id": "C14"
+        },
+        {
+          "canonical": [
+            "systems/materials-and-rule-kernels.md"
+          ],
+          "canonical_rank": 1,
+          "id": "C15"
+        },
+        {
+          "canonical": [
+            "systems/water-design.md"
+          ],
+          "canonical_rank": 2,
+          "id": "C16"
+        },
+        {
+          "canonical": [
+            "operations/microscenarios.md"
+          ],
+          "canonical_rank": 1,
+          "id": "MS01"
+        },
+        {
+          "canonical": [
+            "operations/microscenarios.md",
+            "reference/level-saves-and-replay.md"
+          ],
+          "canonical_rank": 3,
+          "id": "MS02"
+        },
+        {
+          "canonical": [
+            "operations/microscenarios.md",
+            "architecture/data-ownership-and-lifetimes.md"
+          ],
+          "canonical_rank": 1,
+          "id": "MS03"
+        },
+        {
+          "canonical": [
+            "operations/microscenario-reference-pack.md",
+            "operations/microscenarios-programme.md"
+          ],
+          "canonical_rank": 2,
+          "id": "MS04"
+        },
+        {
+          "canonical": [
+            "operations/microscenario-reference-pack.md",
+            "operations/microscenarios.md"
+          ],
+          "canonical_rank": 4,
+          "id": "MS05"
+        },
+        {
+          "canonical": [
+            "operations/soliding-programme.md"
+          ],
+          "canonical_rank": 2,
+          "id": "SOL01"
+        },
+        {
+          "canonical": [
+            "architecture/soliding-lifecycle.md",
+            "operations/soliding-programme.md"
+          ],
+          "canonical_rank": 3,
+          "id": "SOL02"
+        },
+        {
+          "canonical": [
+            "systems/settled-region-discovery.md",
+            "operations/soliding-measurement.md"
+          ],
+          "canonical_rank": 1,
+          "id": "SOL03"
+        },
+        {
+          "canonical": [
+            "operations/microscenario-reference-pack.md",
+            "operations/microscenarios.md"
+          ],
+          "canonical_rank": 1,
+          "id": "MS06"
+        },
+        {
+          "canonical": [
+            "operations/development-claims-remediation-programme.md"
+          ],
+          "canonical_rank": 1,
+          "id": "REM01"
+        },
+        {
+          "canonical": [
+            "operations/development-claims-remediation-programme.md"
+          ],
+          "canonical_rank": 1,
+          "id": "REM02"
+        },
+        {
+          "canonical": [
+            "operations/water-hybrid-pressure-extension-programme.md",
+            "systems/water-design.md"
+          ],
+          "canonical_rank": 1,
+          "id": "WEX01"
+        },
+        {
+          "canonical": [
+            "operations/water-hybrid-pressure-extension-programme.md",
+            "systems/water-design.md"
+          ],
+          "canonical_rank": 1,
+          "id": "WEX02"
+        },
+        {
+          "canonical": [
+            "operations/water-hybrid-pressure-extension-programme.md"
+          ],
+          "canonical_rank": 1,
+          "id": "WEX03"
+        },
+        {
+          "canonical": [
+            "operations/github-development-and-release.md",
+            "reference/status-and-roadmap.md"
+          ],
+          "canonical_rank": 1,
+          "id": "REC01"
+        },
+        {
+          "canonical": [
+            "reference/validation-evidence.md",
+            "operations/soliding-stage3b-production-plan.md"
+          ],
+          "canonical_rank": 2,
+          "id": "REC02"
+        },
+        {
+          "canonical": [
+            "operations/current-and-historical-validation.md",
+            "reference/validation-evidence.md"
+          ],
+          "canonical_rank": 1,
+          "id": "REC03"
+        },
+        {
+          "canonical": [
+            "operations/soliding-stage3b-production-plan.md",
+            "reference/status-and-roadmap.md"
+          ],
+          "canonical_rank": 1,
+          "id": "SOL04"
+        },
+        {
+          "canonical": [
+            "systems/materials-and-rule-kernels.md",
+            "systems/activity-dirty-regions-and-waking.md"
+          ],
+          "canonical_rank": 1,
+          "id": "MAT01"
+        },
+        {
+          "canonical": [
+            "systems/activity-dirty-regions-and-waking.md",
+            "architecture/rigid-body-and-cellular-coupling.md"
+          ],
+          "canonical_rank": 1,
+          "id": "MAT02"
+        },
+        {
+          "canonical": [
+            "operations/neon-reliquary-demo.md"
+          ],
+          "canonical_rank": 1,
+          "id": "SCENE01"
+        },
+        {
+          "canonical": [
+            "operations/neon-reliquary-demo.md"
+          ],
+          "canonical_rank": 1,
+          "id": "SCENE02"
+        },
+        {
+          "canonical": [
+            "systems/actor-control-prototypes.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT01"
+        },
+        {
+          "canonical": [
+            "systems/actor-control-prototypes.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT02"
+        },
+        {
+          "canonical": [
+            "systems/actor-control-prototypes.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT03"
+        },
+        {
+          "canonical": [
+            "systems/actor-rigs.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT04"
+        },
+        {
+          "canonical": [
+            "systems/actor-rigs.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT05"
+        },
+        {
+          "canonical": [
+            "systems/actor-rigs.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT06"
+        },
+        {
+          "canonical": [
+            "systems/actor-rigs.md",
+            "reference/product-intent-and-priorities.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT07"
+        },
+        {
+          "canonical": [
+            "systems/actor-rigs.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT08"
+        },
+        {
+          "canonical": [
+            "systems/actor-rigs.md",
+            "systems/actor-control-prototypes.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT09"
+        },
+        {
+          "canonical": [
+            "operations/blacksite-nine-demo.md"
+          ],
+          "canonical_rank": 1,
+          "id": "SCENE03"
+        },
+        {
+          "canonical": [
+            "systems/procedural-world-generation.md"
+          ],
+          "canonical_rank": 4,
+          "id": "GEN01"
+        },
+        {
+          "canonical": [
+            "systems/procedural-world-generation.md",
+            "architecture/chunk-tile-and-buffer-model.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN02"
+        },
+        {
+          "canonical": [
+            "systems/procedural-world-generation.md",
+            "architecture/data-ownership-and-lifetimes.md",
+            "systems/world-storage-and-interest-region.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN03"
+        },
+        {
+          "canonical": [
+            "systems/procedural-world-generation.md",
+            "architecture/module-boundaries.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN04"
+        },
+        {
+          "canonical": [
+            "systems/procedural-generation-fields-and-modifiers.md",
+            "architecture/chunk-tile-and-buffer-model.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN05"
+        },
+        {
+          "canonical": [
+            "systems/procedural-generation-fields-and-modifiers.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN06"
+        },
+        {
+          "canonical": [
+            "systems/procedural-generation-fields-and-modifiers.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN07"
+        },
+        {
+          "canonical": [
+            "systems/procedural-generation-fields-and-modifiers.md",
+            "architecture/data-ownership-and-lifetimes.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN08"
+        },
+        {
+          "canonical": [
+            "systems/thunderbowl-control-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "THB01"
+        },
+        {
+          "canonical": [
+            "systems/thunderbowl-control-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "THB02"
+        },
+        {
+          "canonical": [
+            "systems/thunderbowl-control-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "THB03"
+        },
+        {
+          "canonical": [
+            "systems/thunderbowl-control-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "THB04"
+        },
+        {
+          "canonical": [
+            "systems/thunderbowl-control-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "THB05"
+        },
+        {
+          "canonical": [
+            "systems/thunderbowl-control-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "THB06"
+        },
+        {
+          "canonical": [
+            "operations/physical-actor-programme.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT10"
+        },
+        {
+          "canonical": [
+            "systems/depth-layers-and-parallax.md"
+          ],
+          "canonical_rank": 1,
+          "id": "DEP01"
+        },
+        {
+          "canonical": [
+            "operations/physical-actor-programme.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT11"
+        },
+        {
+          "canonical": [
+            "systems/physical-actor-rigs.md",
+            "operations/physical-actor-programme.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT12"
+        },
+        {
+          "canonical": [
+            "systems/physical-actor-rigs.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT13"
+        },
+        {
+          "canonical": [
+            "systems/physical-actor-rigs.md",
+            "systems/actor-usables.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 2,
+          "id": "ACT14"
+        },
+        {
+          "canonical": [
+            "systems/thunderbowl-control-reference.md",
+            "architecture/simulation-tick-and-threading.md"
+          ],
+          "canonical_rank": 1,
+          "id": "ACT15"
+        },
+        {
+          "canonical": [
+            "systems/building-material-catalogue.md",
+            "reference/level-saves-and-replay.md",
+            "operations/physics-characterisation.md"
+          ],
+          "canonical_rank": 1,
+          "id": "MAT03"
+        },
+        {
+          "canonical": [
+            "operations/physics-characterisation.md",
+            "operations/local-build-and-validation.md"
+          ],
+          "canonical_rank": 1,
+          "id": "TEST02"
+        },
+        {
+          "canonical": [
+            "operations/testing-validation-and-replay.md",
+            "operations/local-build-and-validation.md"
+          ],
+          "canonical_rank": 1,
+          "id": "TEST01"
+        },
+        {
+          "canonical": [
+            "systems/actor-usables.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 2,
+          "id": "USABLE01"
+        },
+        {
+          "canonical": [
+            "reference/interfaces-and-message-contracts.md",
+            "architecture/data-ownership-and-lifetimes.md"
+          ],
+          "canonical_rank": 4,
+          "id": "USABLE02"
+        },
+        {
+          "canonical": [
+            "systems/actor-usables.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 3,
+          "id": "USABLE03"
+        },
+        {
+          "canonical": [
+            "systems/thunderbowl-control-reference.md",
+            "systems/physical-actor-rigs.md"
+          ],
+          "canonical_rank": 1,
+          "id": "USABLE04"
+        },
+        {
+          "canonical": [
+            "operations/local-build-and-validation.md",
+            "operations/testing-validation-and-replay.md"
+          ],
+          "canonical_rank": 1,
+          "id": "TEST03"
+        },
+        {
+          "canonical": [
+            "operations/deepworks-exhibition.md"
+          ],
+          "canonical_rank": 1,
+          "id": "SCENE04"
+        },
+        {
+          "canonical": [
+            "systems/depth-layers-and-parallax.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "DEP02"
+        },
+        {
+          "canonical": [
+            "systems/player-control-playground.md"
+          ],
+          "canonical_rank": 1,
+          "id": "PLAY01"
+        },
+        {
+          "canonical": [
+            "systems/player-control-playground.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "PLAY02"
+        },
+        {
+          "canonical": [
+            "systems/player-control-playground.md",
+            "reference/interfaces-and-message-contracts.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1,
+          "id": "PLAY03"
+        },
+        {
+          "canonical": [
+            "systems/player-control-playground.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 1,
+          "id": "PLAY04"
+        },
+        {
+          "canonical": [
+            "architecture/rigid-body-and-cellular-coupling.md",
+            "systems/player-control-playground.md",
+            "systems/physical-actor-rigs.md"
+          ],
+          "canonical_rank": 1,
+          "id": "PLAY05"
+        },
+        {
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN09"
+        },
+        {
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 2,
+          "id": "GEN10"
+        },
+        {
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md",
+            "reference/procedural-spatial-operators.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN11"
+        },
+        {
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 2,
+          "id": "GEN12"
+        },
+        {
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN13"
+        },
+        {
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN14"
+        },
+        {
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN15"
+        },
+        {
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN16"
+        },
+        {
+          "canonical": [
+            "reference/interfaces-and-message-contracts.md",
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN17"
+        },
+        {
+          "canonical": [
+            "reference/procedural-spatial-operators.md",
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN18"
+        },
+        {
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN19"
+        },
+        {
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN20"
+        },
+        {
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN21"
+        },
+        {
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN22"
+        },
+        {
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 2,
+          "id": "GEN23"
+        },
+        {
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN24"
+        },
+        {
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 2,
+          "id": "GEN25"
+        },
+        {
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN26"
+        },
+        {
+          "canonical": [
+            "systems/procedural-semantic-planes.md",
+            "operations/semantic-depth-authoring.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN005-1"
+        },
+        {
+          "canonical": [
+            "systems/procedural-semantic-planes.md",
+            "architecture/data-ownership-and-lifetimes.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN005-2"
+        },
+        {
+          "canonical": [
+            "operations/semantic-depth-authoring.md",
+            "operations/local-build-and-validation.md",
+            "systems/procedural-semantic-planes.md"
+          ],
+          "canonical_rank": 1,
+          "id": "GEN005-3"
+        }
+      ],
+      "summary": {
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+        "canonical_hit_at_1": 84,
+        "canonical_hit_at_k": 105,
+        "mrr_at_k": 0.8813,
+        "questions": 105
+      }
+    }
+  },
+  "schema": 1
+}

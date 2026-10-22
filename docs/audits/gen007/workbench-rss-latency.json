@@ -1,0 +1,182 @@
+{
+  "cache_state": {
+    "full_recipe": "First qualification preparation in this process; operating-system file/page caches are uncontrolled.",
+    "later_candidates": "Same warmed process; each edit uses a new private native adapter and immutable compiled plan.",
+    "timing_scope": "Interaction latency in an open editor, not application startup or cold-renderer performance.",
+    "unmeasured_warmup": "Native extension and starter recipe loaded; one accepted 128x128 starter preview plus 20 rendered frames before the first full qualification submission.",
+    "xdg_directories": "Fresh isolated paths for this run; no user renderer cache reused."
+  },
+  "cancelled_candidate": {
+    "accepted_cache_retained_until_commit": true,
+    "accepted_fingerprint": "5f512fa7de534bec",
+    "accepted_identity_preserved": true,
+    "accepted_revision": 2,
+    "accepted_seed": 19301.0,
+    "cancel_main_call_usec": 24,
+    "frame_gaps": {
+      "max_usec": 49513,
+      "min_usec": 32913,
+      "p50_usec": 41030,
+      "p95_usec": 46450,
+      "samples": 55
+    },
+    "heartbeat_frames": 55,
+    "last_error": "",
+    "main_service_calls": {
+      "max_usec": 1051,
+      "min_usec": 6,
+      "p50_usec": 7,
+      "p95_usec": 11,
+      "samples": 54
+    },
+    "native_timing_scope": "Cancelled private candidate is never adopted; only observed quiescence and retained accepted identity are measured.",
+    "submit_main_call_usec": 2537,
+    "wall_usec": 2160100,
+    "worker_quiescence_usec": 2160100,
+    "worker_was_alive_at_cancel": true
+  },
+  "display": "X11",
+  "editor_source_commit": "5dda4faf6daa5fd77693c9cd93e5108f35454f97",
+  "environment": {
+    "GALLIVM_PERF": "nopt",
+    "LIBGL_ALWAYS_SOFTWARE": "1",
+    "LP_NUM_THREADS": "2",
+    "XDG_CACHE_HOME": "/tmp/gen007-workbench-rss.Eg38nU/cache",
+    "XDG_CONFIG_HOME": "/tmp/gen007-workbench-rss.Eg38nU/config",
+    "XDG_DATA_HOME": "/tmp/gen007-workbench-rss.Eg38nU/data"
+  },
+  "failures": [],
+  "four_plane_preview": {
+    "cached_chunks": 12,
+    "camera_origin": "(0.0, 0.0)",
+    "chunk_size": 64.0,
+    "conservative_logical_operations": 182880516,
+    "frame_gaps": {
+      "max_usec": 64017,
+      "min_usec": 33359,
+      "p50_usec": 47684,
+      "p95_usec": 55045,
+      "samples": 25
+    },
+    "heartbeat_frames": 25,
+    "main_service_calls": {
+      "max_usec": 18773,
+      "min_usec": 2016,
+      "p50_usec": 15302,
+      "p95_usec": 18002,
+      "samples": 24
+    },
+    "material_bytes": 196608,
+    "native_generation_calls_usec": 50886,
+    "view_size": "(256.0, 192.0)",
+    "wall_usec": 1106862
+  },
+  "frame_cap": 60,
+  "full_recipe": {
+    "accepted_cache_retained_until_commit": true,
+    "accepted_fingerprint": "5f512fa7de534bec",
+    "accepted_revision": 2,
+    "accepted_seed": 19301.0,
+    "frame_gaps": {
+      "max_usec": 132914,
+      "min_usec": 30581,
+      "p50_usec": 34150,
+      "p95_usec": 45812,
+      "samples": 70
+    },
+    "heartbeat_frames": 70,
+    "last_error": "",
+    "main_service_calls": {
+      "max_usec": 97773,
+      "min_usec": 6,
+      "p50_usec": 7,
+      "p95_usec": 9,
+      "samples": 69
+    },
+    "native_adopt_usec": 543,
+    "native_prepare_usec": 2472113,
+    "submit_main_call_usec": 2275,
+    "wall_usec": 2608238
+  },
+  "godot": {
+    "build": "official",
+    "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "hex": 263936,
+    "major": 4,
+    "minor": 7,
+    "patch": 0,
+    "status": "stable",
+    "string": "4.7-stable (official)",
+    "timestamp": 0
+  },
+  "heartbeat_measurement": "Each phase includes the first process_frame heartbeat after its final service call, including completed commit/UI rebuild cost.",
+  "input_worktree_changes": "",
+  "latest_preview": {
+    "cached_chunks": 12,
+    "camera_origin": "(0.0, 0.0)",
+    "chunk_size": 64.0,
+    "conservative_logical_operations": 186026244,
+    "frame_gaps": {
+      "max_usec": 63130,
+      "min_usec": 35707,
+      "p50_usec": 50557,
+      "p95_usec": 62477,
+      "samples": 25
+    },
+    "heartbeat_frames": 25,
+    "main_service_calls": {
+      "max_usec": 18582,
+      "min_usec": 1969,
+      "p50_usec": 15291,
+      "p95_usec": 18174,
+      "samples": 24
+    },
+    "material_bytes": 196608,
+    "native_generation_calls_usec": 48776,
+    "view_size": "(256.0, 170.6667)",
+    "wall_usec": 1239937
+  },
+  "platform": "Linux",
+  "probe_sha256": "3a533ca91170766bfe2b1f1ab4e62c4314a18eb7e41f485a92f52fcddc61b3a3",
+  "processor": "AMD EPYC 9V74 80-Core Processor",
+  "rapid_latest_candidate": {
+    "accepted_cache_retained_until_commit": true,
+    "accepted_fingerprint": "47c27aab096ca7ec",
+    "accepted_revision": 3,
+    "accepted_seed": 19337,
+    "frame_gaps": {
+      "max_usec": 170958,
+      "min_usec": 32837,
+      "p50_usec": 40547,
+      "p95_usec": 49996,
+      "samples": 120
+    },
+    "heartbeat_frames": 120,
+    "last_error": "",
+    "main_service_calls": {
+      "max_usec": 136857,
+      "min_usec": 6,
+      "p50_usec": 7,
+      "p95_usec": 8,
+      "samples": 119
+    },
+    "native_adopt_usec": 1136,
+    "native_prepare_usec": 2380546,
+    "native_timing_scope": "Preparation/adoption fields describe only the accepted latest candidate; retired work is included only in overall wall time.",
+    "submit_two_main_calls_usec": 3248,
+    "wall_usec": 5019933
+  },
+  "recipe_sha256": "688e5ee0cddf630109219030821baf38a82ef6f06afe8002fc720bd4c319186b",
+  "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+  "runtime_sha256": "0d867938166e63c2b8dc3079c76fbb148d9e78c7c8b7ac3d4299b674ac07044e",
+  "schema": 1,
+  "scope": "Isolated local display-backed Workbench; full 1024x1024 recipe preparation, bounded viewport rendering. No target-hardware or full-map rendering timing claim.",
+  "source_binding": "Checkout commit identifies the starting revision; exact recipe, runtime, and editor input hashes bind the measured working tree.",
+  "source_commit": "2f7f65bf6e80c7258f2bdda19f949760d211b59e",
+  "source_file_sha256": {
+    "res://scripts/worldgen_preview.gd": "f9f23c1b0f968a341560646489ec940767a9efaaf11f23b0d1c5f0c58389bd3f",
+    "res://scripts/worldgen_workbench.gd": "e4ffed66d8e628cfafb6ab6f95274be9aa66172da4c4205a4241f900c91c6d5f",
+    "res://scripts/worldgen_workbench_tools.gd": "764e1eac346ea8fba5e29d572b22548e27971d766755291a67b2d35aacb38908"
+  },
+  "viewport_file_sha256": "d68158d73ab902d8f9085e254e9747795eeebddde0fda2d556d250ddb3cafa15"
+}

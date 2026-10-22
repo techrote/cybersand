@@ -1,0 +1,598 @@
+{
+	"captures": [
+		{
+			"file": "gen007-guide.png",
+			"height": 1000,
+			"meaning": "UI and complete scene",
+			"sha256": "6f616c6833f9b131a18fc3b4c27e045b08c066760d1328d910cc064e38b53c08",
+			"width": 1440
+		},
+		{
+			"file": "gen007-atlas.png",
+			"height": 2048,
+			"meaning": "Reference seed actual four-plane composite, 2x presentation scale",
+			"sha256": "9dcac26442a689ef480975b6b9f4d3906bc4d9de6b272c83269b488af5d1f53b",
+			"width": 2048
+		},
+		{
+			"file": "gen007-central-vertical-seam.png",
+			"height": 2048,
+			"meaning": "Exact atlas crop across x512 theme/region transition",
+			"sha256": "da1bd8865d288a6243c88448a47b54a5ca29725ebcd3e9ad2dae13a161064549",
+			"width": 128
+		},
+		{
+			"file": "gen007-central-horizontal-seam.png",
+			"height": 128,
+			"meaning": "Exact atlas crop across y512 theme/region transition",
+			"sha256": "bf2f9b5fdb3aeaa26bbf481fae3b01ad0b97c85b165519bcbc5adc04be57f9d0",
+			"width": 2048
+		},
+		{
+			"file": "gen007-chunk-seam-x64.png",
+			"height": 512,
+			"meaning": "Exact atlas crop across native chunk x64",
+			"sha256": "873e9613b01acf7a53702ea5047501adc0e3f7520fbadc98286412f80ede949d",
+			"width": 16
+		},
+		{
+			"file": "gen007-chunk-seam-y128.png",
+			"height": 16,
+			"meaning": "Exact atlas crop across native chunk y128",
+			"sha256": "e34e642b6865f1c8c7380bc1fae6b3e997848d94fddf0a73eb885e6bbcdc88d0",
+			"width": 512
+		},
+		{
+			"file": "gen007-region-1.png",
+			"height": 1024,
+			"meaning": "Actual 512-cell thematic district close-up",
+			"sha256": "d1bbac481b306d8c376e25d307cdf7cd2d34430a8bc721215a45f3c985bc631d",
+			"width": 1024
+		},
+		{
+			"file": "gen007-region-2.png",
+			"height": 1024,
+			"meaning": "Actual 512-cell thematic district close-up",
+			"sha256": "9a3d65dab86253d6642075c79113e2b4fc058413fa7f5e036e0e2672fd9d5489",
+			"width": 1024
+		},
+		{
+			"file": "gen007-region-3.png",
+			"height": 1024,
+			"meaning": "Actual 512-cell thematic district close-up",
+			"sha256": "f8342209100ce43e0dab7bc888e546cc9d239c90709823ca6165dfcb15cca64c",
+			"width": 1024
+		},
+		{
+			"file": "gen007-region-4.png",
+			"height": 1024,
+			"meaning": "Actual 512-cell thematic district close-up",
+			"sha256": "4c4b33ff4811a307d45906027d2aaa7c9fd1ae28171498901f90068bc73b4262",
+			"width": 1024
+		},
+		{
+			"file": "gen007-play.png",
+			"height": 1024,
+			"meaning": "Actual isolated play material plane",
+			"sha256": "837b5b69a82059bd1417cd693f2d860bebd1e7a848111f61347973b542ad841c",
+			"width": 1024
+		},
+		{
+			"file": "gen007-scripted.png",
+			"height": 1024,
+			"meaning": "Actual isolated scripted material plane",
+			"sha256": "3486322fa7cec3b04ab5b4dd403ff5ec6d5236338450bc6439447d0e43793f8c",
+			"width": 1024
+		},
+		{
+			"file": "gen007-effects.png",
+			"height": 1024,
+			"meaning": "Actual isolated effects material plane",
+			"sha256": "8eb6b83068a4e0e60726184a0fcc9917b89802829eae54f00c9239b42cd6db84",
+			"width": 1024
+		},
+		{
+			"file": "gen007-background.png",
+			"height": 1024,
+			"meaning": "Actual isolated background material plane",
+			"sha256": "fc169185a12adb00d908f940957fe22da6068fad49832b299a6f781c9b306f4a",
+			"width": 1024
+		},
+		{
+			"file": "gen007-routes-sockets.png",
+			"height": 1024,
+			"meaning": "Accepted semantic route and socket overlay",
+			"sha256": "733575ef29d7116ad4f429276db397d310be4e9ac82b4334e794342e2ca3f85a",
+			"width": 1024
+		},
+		{
+			"file": "gen007-gallery-1.png",
+			"height": 1024,
+			"meaning": "Actual named gallery close-up",
+			"sha256": "c84f9de5afef086cd07981e020bc62d221e68bac4fa8c4ffbbe32b9935a75f0c",
+			"width": 1024
+		},
+		{
+			"file": "gen007-gallery-2.png",
+			"height": 1024,
+			"meaning": "Actual named gallery close-up",
+			"sha256": "d3f44067976372b6a0e9d9f0182c48810e0ced59384beec24b7289d477bd1509",
+			"width": 1024
+		},
+		{
+			"file": "gen007-gallery-3.png",
+			"height": 1024,
+			"meaning": "Actual named gallery close-up",
+			"sha256": "16c1375c9932de2ea871b60a33866f7ab095dd839c6ccfb84fa03313c010abc3",
+			"width": 1024
+		},
+		{
+			"file": "gen007-gallery-4.png",
+			"height": 1024,
+			"meaning": "Actual named gallery close-up",
+			"sha256": "8387651f9d39ecbec40607477de4a3f483152dcbd8899df4844f5371c5f8014f",
+			"width": 1024
+		},
+		{
+			"file": "gen007-gallery-5.png",
+			"height": 1024,
+			"meaning": "Actual named gallery close-up",
+			"sha256": "5a78aca3909344ec135e4f264219e62de77e24f155f181b6cf93da2729117d62",
+			"width": 1024
+		},
+		{
+			"file": "gen007-gallery-6.png",
+			"height": 1024,
+			"meaning": "Actual named gallery close-up",
+			"sha256": "c38638149dc9d078592009a749401afcd482dfea47285207be40374a3ccec94c",
+			"width": 1024
+		},
+		{
+			"file": "gen007-gallery-7.png",
+			"height": 1024,
+			"meaning": "Actual named gallery close-up",
+			"sha256": "33e9e20ed9503930a832928a6c97dbbaa2d26f5427ef3dd609148a3540a11dda",
+			"width": 1024
+		},
+		{
+			"file": "gen007-gallery-8.png",
+			"height": 1024,
+			"meaning": "Actual named gallery close-up",
+			"sha256": "7102acd60db9647adb9e8dc155ee42d49a66f5125b1a2d8ce10d2ec2a5ba1eb8",
+			"width": 1024
+		},
+		{
+			"file": "gen007-seed-19317.png",
+			"height": 1024,
+			"meaning": "Declared seed variation at identical world coordinates",
+			"sha256": "4fb581293ffb5abb6b0c6aa0a140756d05363fa8c2ccefb530ad2e4f0bf85a86",
+			"width": 1024
+		},
+		{
+			"file": "gen007-seed-19337.png",
+			"height": 1024,
+			"meaning": "Declared seed variation at identical world coordinates",
+			"sha256": "a504a60130f6dce5d580a0bf9273f2b9781d87893dd4aa0c847562e8f7c12093",
+			"width": 1024
+		},
+		{
+			"file": "gen007-seed-19361.png",
+			"height": 1024,
+			"meaning": "Declared seed variation at identical world coordinates",
+			"sha256": "de20b7a3f00cb696b28ce4b36376c6768ad5bc6bad8e65fc5a442e2b70a6261a",
+			"width": 1024
+		},
+		{
+			"file": "gen007-after-220-ticks.png",
+			"height": 1024,
+			"meaning": "Actual result after220 manual ticks of each dynamic plane; native products",
+			"sha256": "7c9bc672704f14bb3d3da566486da5d00fde2f4c9f132f0ff310edbd620729b3",
+			"width": 1024
+		}
+	],
+	"complete": true,
+	"display": "X11",
+	"engine": {
+		"build": "official",
+		"hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+		"hex": 263936,
+		"major": 4,
+		"minor": 7,
+		"patch": 0,
+		"status": "stable",
+		"string": "4.7-stable (official)",
+		"timestamp": 0
+	},
+	"native_library_sha256": "0d867938166e63c2b8dc3079c76fbb148d9e78c7c8b7ac3d4299b674ac07044e",
+	"native_products_painted": false,
+	"qualification": {
+		"bounds": {
+			"generic_final_raster_operations": 16000000000.0,
+			"graphical_process_peak_rss_bytes": 4294967296.0,
+			"host_rectangles_per_plane": 4096.0,
+			"native_prepared_bytes": 16777216.0,
+			"plane_cells": 1048576.0,
+			"publication_bytes": 67108864.0,
+			"qualification_process_peak_rss_bytes": 2147483648.0,
+			"recipe_bytes": 131072.0,
+			"trace_cells": 4096.0,
+			"whole_map_operations": 4000000000.0
+		},
+		"exhibits": [
+			{
+				"feed": 3.0,
+				"product": 24.0,
+				"rule": "brine-retort",
+				"substrate": 23.0,
+				"title": "Salt + falling Water → Brine"
+			},
+			{
+				"feed": 6.0,
+				"product": 3.0,
+				"rule": "snow-lens",
+				"substrate": 105.0,
+				"title": "Packed Snow + Fire → meltwater"
+			},
+			{
+				"feed": 8.0,
+				"product": 48.0,
+				"rule": "clay-kiln",
+				"substrate": 103.0,
+				"title": "Raw Clay + falling Lava → Terracotta Tile"
+			},
+			{
+				"feed": 3.0,
+				"product": 13.0,
+				"rule": "geothermal-well",
+				"substrate": 8.0,
+				"title": "Lava + falling Water → Stone"
+			}
+		],
+		"manual_placements": {
+			"authored_candidate_boxes": 43.0,
+			"district_anchors": 4.0,
+			"fixture_relative_rectangles": 8.0,
+			"hard_material_overrides": 0.0,
+			"imported_raster": false,
+			"optional_loop_definition": 1.0,
+			"per_cell_material_list": false,
+			"projection_relative_rectangles": 83.0,
+			"shared_gallery_definitions": 2.0,
+			"unique_exhibit_definitions": 4.0
+		},
+		"map_bounds": [
+			0.0,
+			0.0,
+			1024.0,
+			1024.0
+		],
+		"recipe": "gen007-deepworks.json",
+		"reference_seed": 19301.0,
+		"region_rule_ids": [
+			"copper-choir",
+			"frost-observatory",
+			"ember-terraces",
+			"basalt-archive"
+		],
+		"reused_definitions": [
+			"upper-gallery",
+			"lower-gallery",
+			"service-module",
+			"lower-service-module",
+			"cabinet-window",
+			"gauge",
+			"shelf",
+			"signal",
+			"service-rail",
+			"optional-loop",
+			"optical-core",
+			"optical-aperture",
+			"optical-brace",
+			"vault-lock",
+			"vessel-pilot",
+			"vessel-foot",
+			"play-inlet-post",
+			"rear-inlet-post"
+		],
+		"schema": 1.0,
+		"structural_minima": {
+			"cross_chunk_structures": 2.0,
+			"major_regions": 4.0,
+			"micro_features": 24.0,
+			"named_subregions": 8.0,
+			"optional_loops": 2.0,
+			"paired_exhibits": 4.0
+		},
+		"subregions": [
+			{
+				"district": "copper-choir",
+				"name": "Intake Choir",
+				"rule": "upper-gallery"
+			},
+			{
+				"district": "copper-choir",
+				"name": "Copper Service Cloister",
+				"rule": "lower-gallery"
+			},
+			{
+				"district": "frost-observatory",
+				"name": "Meltwater Lens",
+				"rule": "upper-gallery"
+			},
+			{
+				"district": "frost-observatory",
+				"name": "Frosted Survey Vault",
+				"rule": "lower-gallery"
+			},
+			{
+				"district": "ember-terraces",
+				"name": "Firing Terrace",
+				"rule": "upper-gallery"
+			},
+			{
+				"district": "ember-terraces",
+				"name": "Ember Transit Gallery",
+				"rule": "lower-gallery"
+			},
+			{
+				"district": "basalt-archive",
+				"name": "Geothermal Registry",
+				"rule": "upper-gallery"
+			},
+			{
+				"district": "basalt-archive",
+				"name": "Basalt Memory Hall",
+				"rule": "lower-gallery"
+			}
+		],
+		"variant_seeds": [
+			19317.0,
+			19337.0,
+			19361.0
+		],
+		"vessel": {
+			"height": 92.0,
+			"rear_offset": 84.0,
+			"wall_material": 131.0,
+			"width": 76.0
+		},
+		"visual_intent": "Copper organ/manifold assemblies, framed frost lenses, refractory furnaces and basalt archive vaults establish different regional focal forms. Upper cabinet lines and staggered lower service bays frame that machinery. Two outboard courtyard rings supplement the primary circulation. Enlarged foreground and rear vessels remain separately contained."
+	},
+	"quick": false,
+	"recipe_bytes": 61845,
+	"recipe_sha256": "688e5ee0cddf630109219030821baf38a82ef6f06afe8002fc720bd4c319186b",
+	"records": [
+		{
+			"complete": true,
+			"features": 161,
+			"fixtures": 8,
+			"generation_and_admission_ms": 3691.519,
+			"hashes": {
+				"background": "a2542213e8296879",
+				"effects": "3db945f379696555",
+				"play": "7e78bccdb2d96378",
+				"scripted": "93a6104b7a8b8cfe"
+			},
+			"material_coverage": {
+				"background": {
+					"intentional_empty_cells": 626782,
+					"nonempty_cells": 421794
+				},
+				"effects": {
+					"intentional_empty_cells": 1046144,
+					"nonempty_cells": 2432
+				},
+				"play": {
+					"intentional_empty_cells": 929063,
+					"nonempty_cells": 119513
+				},
+				"scripted": {
+					"intentional_empty_cells": 951427,
+					"nonempty_cells": 97149
+				}
+			},
+			"native_limits": {
+				"max_actors": 8,
+				"max_cells_per_plane": 1048576,
+				"max_diagnostic_bytes": 4194304,
+				"max_events_per_tick": 256,
+				"max_fixture_cell_writes": 4194304,
+				"max_fixtures": 1024,
+				"max_links": 2048,
+				"max_operations": 4000000000,
+				"max_prepared_bytes": 16777216,
+				"max_projections": 2048,
+				"max_publication_bytes": 67108864,
+				"max_templates": 128
+			},
+			"native_spatial_index": {
+				"bin_size": 64,
+				"bins": 1024,
+				"cost_kind": "operations_per_sample/cell are conservative logical bounds, not elapsed time",
+				"entries": 3072,
+				"kind": "measured prepared index counts; 64-cell bins preserve canonical candidate order",
+				"maximum_candidates": 12
+			},
+			"native_storage_bytes": 715772,
+			"operations": 3900705643,
+			"projections": 336,
+			"revision": "db70c8902e921712",
+			"seed": 19301
+		},
+		{
+			"complete": true,
+			"features": 161,
+			"fixtures": 8,
+			"generation_and_admission_ms": 3838.69,
+			"hashes": {
+				"background": "a2542213e8296879",
+				"effects": "3db945f379696555",
+				"play": "eef58673f979df86",
+				"scripted": "ce28fc43edd973d8"
+			},
+			"material_coverage": {
+				"background": {
+					"intentional_empty_cells": 626782,
+					"nonempty_cells": 421794
+				},
+				"effects": {
+					"intentional_empty_cells": 1046144,
+					"nonempty_cells": 2432
+				},
+				"play": {
+					"intentional_empty_cells": 930044,
+					"nonempty_cells": 118532
+				},
+				"scripted": {
+					"intentional_empty_cells": 951217,
+					"nonempty_cells": 97359
+				}
+			},
+			"native_limits": {
+				"max_actors": 8,
+				"max_cells_per_plane": 1048576,
+				"max_diagnostic_bytes": 4194304,
+				"max_events_per_tick": 256,
+				"max_fixture_cell_writes": 4194304,
+				"max_fixtures": 1024,
+				"max_links": 2048,
+				"max_operations": 4000000000,
+				"max_prepared_bytes": 16777216,
+				"max_projections": 2048,
+				"max_publication_bytes": 67108864,
+				"max_templates": 128
+			},
+			"native_spatial_index": {
+				"bin_size": 64,
+				"bins": 1024,
+				"cost_kind": "operations_per_sample/cell are conservative logical bounds, not elapsed time",
+				"entries": 3095,
+				"kind": "measured prepared index counts; 64-cell bins preserve canonical candidate order",
+				"maximum_candidates": 12
+			},
+			"native_storage_bytes": 716204,
+			"operations": 3900705643,
+			"projections": 336,
+			"revision": "536fb742a4d1ca50",
+			"seed": 19317
+		},
+		{
+			"complete": true,
+			"features": 161,
+			"fixtures": 8,
+			"generation_and_admission_ms": 3720.457,
+			"hashes": {
+				"background": "a2542213e8296879",
+				"effects": "3db945f379696555",
+				"play": "598a24d47e04cbef",
+				"scripted": "8b421bd98a737ad8"
+			},
+			"material_coverage": {
+				"background": {
+					"intentional_empty_cells": 626782,
+					"nonempty_cells": 421794
+				},
+				"effects": {
+					"intentional_empty_cells": 1046144,
+					"nonempty_cells": 2432
+				},
+				"play": {
+					"intentional_empty_cells": 926777,
+					"nonempty_cells": 121799
+				},
+				"scripted": {
+					"intentional_empty_cells": 951217,
+					"nonempty_cells": 97359
+				}
+			},
+			"native_limits": {
+				"max_actors": 8,
+				"max_cells_per_plane": 1048576,
+				"max_diagnostic_bytes": 4194304,
+				"max_events_per_tick": 256,
+				"max_fixture_cell_writes": 4194304,
+				"max_fixtures": 1024,
+				"max_links": 2048,
+				"max_operations": 4000000000,
+				"max_prepared_bytes": 16777216,
+				"max_projections": 2048,
+				"max_publication_bytes": 67108864,
+				"max_templates": 128
+			},
+			"native_spatial_index": {
+				"bin_size": 64,
+				"bins": 1024,
+				"cost_kind": "operations_per_sample/cell are conservative logical bounds, not elapsed time",
+				"entries": 3107,
+				"kind": "measured prepared index counts; 64-cell bins preserve canonical candidate order",
+				"maximum_candidates": 12
+			},
+			"native_storage_bytes": 716204,
+			"operations": 3967814507,
+			"projections": 336,
+			"revision": "45e2c965c9d099fc",
+			"seed": 19337
+		},
+		{
+			"complete": true,
+			"features": 161,
+			"fixtures": 8,
+			"generation_and_admission_ms": 3618.116,
+			"hashes": {
+				"background": "a2542213e8296879",
+				"effects": "3db945f379696555",
+				"play": "728f73f134bc016b",
+				"scripted": "e3d9c22c7aefc64c"
+			},
+			"material_coverage": {
+				"background": {
+					"intentional_empty_cells": 626782,
+					"nonempty_cells": 421794
+				},
+				"effects": {
+					"intentional_empty_cells": 1046144,
+					"nonempty_cells": 2432
+				},
+				"play": {
+					"intentional_empty_cells": 929468,
+					"nonempty_cells": 119108
+				},
+				"scripted": {
+					"intentional_empty_cells": 951357,
+					"nonempty_cells": 97219
+				}
+			},
+			"native_limits": {
+				"max_actors": 8,
+				"max_cells_per_plane": 1048576,
+				"max_diagnostic_bytes": 4194304,
+				"max_events_per_tick": 256,
+				"max_fixture_cell_writes": 4194304,
+				"max_fixtures": 1024,
+				"max_links": 2048,
+				"max_operations": 4000000000,
+				"max_prepared_bytes": 16777216,
+				"max_projections": 2048,
+				"max_publication_bytes": 67108864,
+				"max_templates": 128
+			},
+			"native_spatial_index": {
+				"bin_size": 64,
+				"bins": 1024,
+				"cost_kind": "operations_per_sample/cell are conservative logical bounds, not elapsed time",
+				"entries": 3077,
+				"kind": "measured prepared index counts; 64-cell bins preserve canonical candidate order",
+				"maximum_candidates": 12
+			},
+			"native_storage_bytes": 715932,
+			"operations": 3900705643,
+			"projections": 336,
+			"revision": "1e6581aff14061d7",
+			"seed": 19361
+		}
+	],
+	"renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+	"rendering_method": "gl_compatibility",
+	"schema": 1,
+	"source_revision": "2f7f65bf6e80c7258f2bdda19f949760d211b59e"
+}
